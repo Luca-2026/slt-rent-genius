@@ -1024,30 +1024,35 @@ async function generateDocumentPdf(data: {
     const companyLine = data.profile.legal_form
       ? `${data.profile.company_name} ${data.profile.legal_form}`
       : data.profile.company_name;
-    dt(pg, companyLine, ADDR_X, ay, bold, 10.5); ay -= 11;
+    dt(pg, companyLine, ADDR_X, ay, bold, 10.5); ay -= 12;
     const cn = `${data.profile.contact_first_name || ''} ${data.profile.contact_last_name || ''}`.trim();
-    if (cn) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 10; }
-    dt(pg, `${data.profile.street}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`, ADDR_X, ay, font, 9.5); ay -= 10;
-    dt(pg, `${data.profile.postal_code} ${data.profile.city}`, ADDR_X, ay, font, 9.5); ay -= 10;
-    dt(pg, data.profile.country || 'Deutschland', ADDR_X, ay, font, 9.5);
+    if (cn) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 11; }
+    dt(pg, `${data.profile.street}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`, ADDR_X, ay, font, 9.5); ay -= 11;
+    dt(pg, `${data.profile.postal_code} ${data.profile.city}`, ADDR_X, ay, font, 9.5); ay -= 11;
+    dt(pg, data.profile.country || 'Deutschland', ADDR_X, ay, font, 9.5); ay -= 11;
+    // USt-IdNr NUR bei Reverse-Charge (innergemeinschaftliche Leistung) im Adressblock
+    if (data.totals?.isReverseCharge && data.profile.tax_id) {
+      ay -= 2;
+      dt(pg, `USt-IdNr.: ${data.profile.tax_id}`, ADDR_X, ay, font, 9, MUTED);
+    }
 
-    // Logo oben RECHTS (~40 mm breit = ~113 pt)
+    // Logo oben RECHTS (~60 mm breit ≈ 170 pt), mit Luft zum Seitenrand und zum Inhalt
     let logoBottomY = H - MT;
     if (logoImg) {
-      const targetW = 113;
+      const targetW = 170; // ~60 mm
       const scale = targetW / logoImg.width;
       const drawH = logoImg.height * scale;
       logoBottomY = H - MT - drawH;
       pg.drawImage(logoImg, { x: W - MR - targetW, y: logoBottomY, width: targetW, height: drawH });
     }
 
-    // Info-Block rechts, zweispaltig (Label grau / Wert schwarz) – UNTER dem Logo
+    // Info-Block rechts, zweispaltig (Label grau / Wert schwarz) – deutlich UNTER dem Logo
     const infoX = W - MR - 200;
-    let iy = Math.min(ADDR_Y_TOP, logoBottomY - 14);
+    let iy = Math.min(ADDR_Y_TOP, logoBottomY - 26);
     const infoRow = (label: string, value: string) => {
       dt(pg, label, infoX, iy, font, 8.5, MUTED);
       dt(pg, value, infoX + 95, iy, font, 9, INK);
-      iy -= 11;
+      iy -= 13;
     };
     infoRow("Rechnungsnummer:", data.documentNumber);
     infoRow("Rechnungsdatum:", fd(data.date));
@@ -1068,13 +1073,15 @@ async function generateDocumentPdf(data: {
     infoRow("Zahlungskondition:", termsLabel);
     infoRow("Ansprechpartner:", SLT_COMPANY.managingDirector);
 
-    // Titelblock (kein Versalienschreien)
-    let ty = ADDR_Y_TOP - 105;
-    dt(pg, data.title, ML, ty, bold, 22, BRAND);
-    ty -= 16;
-    dt(pg, `Nr. ${data.documentNumber}`, ML, ty, font, 10, MUTED);
+    // Titelblock (dominant in linker Spalte, spürbar Luft zwischen Adresse und Titel,
+    // sowie zwischen Titel und Nummer)
+    const contentTopY = Math.min(ay, iy) - 40;
+    let ty = contentTopY;
+    dt(pg, data.title, ML, ty, bold, 30, BRAND);
+    ty -= 26;
+    dt(pg, `Nr. ${data.documentNumber}`, ML, ty, font, 10.5, MUTED);
 
-    return ty - 24; // return cursor y for content below
+    return ty - 34; // deutlich mehr Abstand zum nächsten Block (Tabellenkopf)
   };
 
   const renderTableHeader = (pg: any, startY: number): number => {
@@ -1115,7 +1122,7 @@ async function generateDocumentPdf(data: {
   let { pg, y } = newPage(true);
 
   // Reserve space at bottom for summary/payment/footer so we don't crash into them
-  const RESERVE_BOTTOM = MB + 90;
+  const RESERVE_BOTTOM = MB + 60;
   const need = (h: number) => {
     if (y - h < RESERVE_BOTTOM) {
       ({ pg, y } = newPage(false));
@@ -1130,6 +1137,8 @@ async function generateDocumentPdf(data: {
   const unitPriceRight = ML + CW * 0.85;
   const totalRight = W - MR - 4;
 
+  // Einheit = NUR das Wort (Tage/Wochen/Stück/Pauschale). Menge steht separat
+  // in der Menge-Spalte. Niemals Zahl in die Einheit mischen.
   const deriveUnit = (item: any, fallback = 'Stück'): string => {
     if (item.unit) return item.unit;
     if (item.rentalStart && item.rentalEnd) {
@@ -1137,7 +1146,7 @@ async function generateDocumentPdf(data: {
         const a = new Date(item.rentalStart.split(' ')[0]);
         const b = new Date(item.rentalEnd.split(' ')[0]);
         const days = Math.max(1, Math.round((b.getTime() - a.getTime()) / 86400000) + 1);
-        return days >= 28 && days % 7 === 0 ? `${days / 7} Wo` : `${days} Tage`;
+        return days >= 28 && days % 7 === 0 ? 'Wochen' : 'Tage';
       } catch { return 'Tage'; }
     }
     return fallback;
@@ -1164,15 +1173,15 @@ async function generateDocumentPdf(data: {
       const period = `Mietzeitraum: ${fd(item.rentalStart)}${item.rentalEnd ? ' – ' + fd(item.rentalEnd) : ''}`;
       subLines.push(...wt(period, font, 8, nameColW));
     }
-    const rowH = 4 + nameLines.length * 11 + subLines.length * 9 + 2;
+    const rowH = 10 + nameLines.length * 12 + (subLines.length ? 4 + subLines.length * 10 : 0);
     renderRow(rowH, (top) => {
-      dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
-      nameLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 11, bold, 9.5));
-      subLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - nameLines.length * 11 - li * 9, font, 8, MUTED));
-      dtr(pg, String(item.quantity), qtyColRight, top - 8, font, 9.5);
-      dt(pg, deriveUnit(item), unitColX, top - 8, font, 9.5, MUTED);
-      if (item.unitPrice != null) dtr(pg, fm(item.unitPrice), unitPriceRight, top - 8, font, 9.5);
-      dtr(pg, fm(item.totalPrice || 0), totalRight, top - 8, bold, 9.5);
+      dt(pg, `${posNum}`, ML + 2, top - 10, font, 9);
+      nameLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 10 - li * 12, bold, 9.5));
+      subLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 10 - nameLines.length * 12 - 4 - li * 10, font, 8, MUTED));
+      dtr(pg, String(item.quantity), qtyColRight, top - 10, font, 9.5);
+      dt(pg, deriveUnit(item), unitColX, top - 10, font, 9.5, MUTED);
+      if (item.unitPrice != null) dtr(pg, fm(item.unitPrice), unitPriceRight, top - 10, font, 9.5);
+      dtr(pg, fm(item.totalPrice || 0), totalRight, top - 10, bold, 9.5);
     });
     posNum++;
 
@@ -1191,13 +1200,13 @@ async function generateDocumentPdf(data: {
 
   // Delivery cost as its own row
   if (data.totals?.deliveryCost && data.totals.deliveryCost > 0) {
-    renderRow(18, (top) => {
-      dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
-      dt(pg, "Anlieferung / Transport", nameColX, top - 8, bold, 9.5);
-      dtr(pg, "1", qtyColRight, top - 8, font, 9.5);
-      dt(pg, "Pauschale", unitColX, top - 8, font, 9.5, MUTED);
-      dtr(pg, fm(data.totals.deliveryCost), unitPriceRight, top - 8, font, 9.5);
-      dtr(pg, fm(data.totals.deliveryCost), totalRight, top - 8, bold, 9.5);
+    renderRow(26, (top) => {
+      dt(pg, `${posNum}`, ML + 2, top - 10, font, 9);
+      dt(pg, "Anlieferung / Transport", nameColX, top - 10, bold, 9.5);
+      dtr(pg, "1", qtyColRight, top - 10, font, 9.5);
+      dt(pg, "Pauschale", unitColX, top - 10, font, 9.5, MUTED);
+      dtr(pg, fm(data.totals.deliveryCost), unitPriceRight, top - 10, font, 9.5);
+      dtr(pg, fm(data.totals.deliveryCost), totalRight, top - 10, bold, 9.5);
     });
     posNum++;
   }
@@ -1233,7 +1242,7 @@ async function generateDocumentPdf(data: {
 
   // Underline table end
   pg.drawRectangle({ x: ML, y, width: CW, height: 0.5, color: LINE });
-  y -= 14;
+  y -= 26;
 
   // ── Totals block (right aligned) ──
   if (data.totals) {
@@ -1279,47 +1288,43 @@ async function generateDocumentPdf(data: {
     }
   }
 
-  // ── Payment / Proforma-Kasten ──
-  need(90);
+  // ── Payment / Proforma-Kasten (mit deutlich mehr Innenpadding und Zeilenabstand) ──
+  y -= 8; // Luft vor dem Kasten
   if (proformaFlag) {
     const notice = "Dies ist keine Rechnung im Sinne des \u00A714 UStG und berechtigt nicht zum Vorsteuerabzug. Zahlung vor Mietbeginn (Vorkasse); die Bereitstellung erfolgt nach Zahlungseingang.";
-    const lines = wt(notice, font, 8.5, CW - 20);
-    const boxH = 14 + lines.length * 11 + 8;
+    const lines = wt(notice, font, 9, CW - 32);
+    const boxH = 24 + 16 + lines.length * 13 + 14;
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(1, 0.97, 0.88) });
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
-    dt(pg, "Proforma – Hinweis nach §14 UStG", ML + 10, y + 2, bold, 9, rgb(0.55, 0.32, 0));
-    lines.forEach((ln, i) => dt(pg, ln, ML + 10, y - 10 - i * 11, font, 8.5, rgb(0.35, 0.25, 0.1)));
-    y -= boxH + 6;
+    dt(pg, "Proforma – Hinweis nach §14 UStG", ML + 16, y - 4, bold, 10, rgb(0.55, 0.32, 0));
+    lines.forEach((ln, i) => dt(pg, ln, ML + 16, y - 22 - i * 13, font, 9, rgb(0.35, 0.25, 0.1)));
+    y -= boxH + 10;
   } else if (data.totals?.dueDate) {
     const dueText = data.totals.paymentDueDays === 0
       ? "Zahlungsziel: Vorkasse. Die Bereitstellung erfolgt nach Zahlungseingang."
       : `Zahlbar bis: ${fd(data.totals.dueDate)} (${data.totals.paymentDueDays} Tage netto)`;
     const bankLine = `${SLT_COMPANY.bankName} | IBAN: ${SLT_COMPANY.iban} | BIC: ${SLT_COMPANY.bic}`;
     const ref = `Verwendungszweck: ${data.documentNumber}`;
-    const boxH = 60;
+    const boxH = 84;
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.995, 0.97, 0.93) });
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
-    dt(pg, "Zahlungshinweis", ML + 10, y + 2, bold, 9.5, INK);
-    dt(pg, dueText, ML + 10, y - 11, font, 9, INK);
-    dt(pg, bankLine, ML + 10, y - 25, font, 9, INK);
-    dt(pg, ref, ML + 10, y - 38, bold, 9, INK);
-    y -= boxH + 6;
+    dt(pg, "Zahlungshinweis", ML + 16, y - 2, bold, 10, INK);
+    dt(pg, dueText, ML + 16, y - 20, font, 9.5, INK);
+    dt(pg, bankLine, ML + 16, y - 38, font, 9.5, INK);
+    dt(pg, ref, ML + 16, y - 56, bold, 9.5, INK);
+    y -= boxH + 10;
   }
 
   if (data.totals?.isReverseCharge && !proformaFlag) {
-    need(30);
-    pg.drawRectangle({ x: ML, y: y - 22, width: CW, height: 28, color: rgb(0.94, 0.97, 0.98) });
-    pg.drawRectangle({ x: ML, y: y - 22, width: 3, height: 28, color: BRAND });
-    dt(pg, "Steuerschuldnerschaft des Leistungsempfängers (Reverse-Charge gem. §13b UStG).", ML + 10, y - 8, font, 8.5, INK);
-    y -= 36;
+    need(46);
+    // Pflichthinweis Reverse-Charge (§13b UStG). USt-IdNr. des Kunden steht bereits im Adressblock.
+    pg.drawRectangle({ x: ML, y: y - 30, width: CW, height: 36, color: rgb(0.94, 0.97, 0.98) });
+    pg.drawRectangle({ x: ML, y: y - 30, width: 3, height: 36, color: BRAND });
+    dt(pg, "Steuerschuldnerschaft des Leistungsempfängers", ML + 12, y - 6, bold, 9, INK);
+    dt(pg, "Reverse-Charge-Verfahren gem. §13b UStG – die Umsatzsteuer schuldet der Leistungsempfänger.", ML + 12, y - 20, font, 8.5, INK);
+    y -= 46;
   }
 
-  // Kunden-USt-IdNr. explizit
-  if (data.profile.tax_id) {
-    need(16);
-    dt(pg, `Ihre USt-IdNr.: ${data.profile.tax_id}`, ML, y, font, 8.5, MUTED);
-    y -= 14;
-  }
 
   // Sections (notes)
   for (const sec of data.sections) {
