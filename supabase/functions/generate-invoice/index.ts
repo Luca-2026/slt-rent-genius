@@ -1257,7 +1257,7 @@ async function generateDocumentPdf(data: {
         y -= 16;
       }
       page.drawRectangle({ x: tx, y: y + 12, width: vx - tx, height: 1.5, color: rgb(0, 0.314, 0.49) });
-      dt("Zu zahlender Betrag (inkl. gesetzl. MwSt.):", tx, y, bold, 11, rgb(0, 0.314, 0.49));
+      dt("Zu zahlen (inkl. MwSt.):", tx, y, bold, 11, rgb(0, 0.314, 0.49));
       dtr(fm(data.totals.gross), vx, y, bold, 12, rgb(0, 0.314, 0.49));
       y -= 25;
     } else {
