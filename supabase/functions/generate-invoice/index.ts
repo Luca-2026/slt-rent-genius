@@ -1130,6 +1130,8 @@ async function generateDocumentPdf(data: {
   const unitPriceRight = ML + CW * 0.85;
   const totalRight = W - MR - 4;
 
+  // Einheit = NUR das Wort (Tage/Wochen/Stück/Pauschale). Menge steht separat
+  // in der Menge-Spalte. Niemals Zahl in die Einheit mischen.
   const deriveUnit = (item: any, fallback = 'Stück'): string => {
     if (item.unit) return item.unit;
     if (item.rentalStart && item.rentalEnd) {
@@ -1137,7 +1139,7 @@ async function generateDocumentPdf(data: {
         const a = new Date(item.rentalStart.split(' ')[0]);
         const b = new Date(item.rentalEnd.split(' ')[0]);
         const days = Math.max(1, Math.round((b.getTime() - a.getTime()) / 86400000) + 1);
-        return days >= 28 && days % 7 === 0 ? `${days / 7} Wo` : `${days} Tage`;
+        return days >= 28 && days % 7 === 0 ? 'Wochen' : 'Tage';
       } catch { return 'Tage'; }
     }
     return fallback;
