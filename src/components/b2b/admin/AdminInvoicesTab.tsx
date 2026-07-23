@@ -27,8 +27,8 @@ import { usePagedList, PaginationBar } from "./ClientPagination";
 
 interface Invoice {
   id: string;
-  invoice_number: string;
-  invoice_date: string;
+  invoice_number: string | null;
+  invoice_date: string | null;
   due_date: string | null;
   gross_amount: number;
   net_amount: number;
@@ -40,9 +40,12 @@ interface Invoice {
   customer_company: string | null;
   b2b_profile_id: string;
   reservation_id: string | null;
+  source_offer_id?: string | null;
+  payment_terms?: string | null;
   created_at: string;
   notes: string | null;
 }
+
 
 interface Props {
   invoices: Invoice[];
