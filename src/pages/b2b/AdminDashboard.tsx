@@ -449,9 +449,10 @@ export default function AdminDashboard() {
       toast({
         title: asDraft ? "Entwurf gespeichert!" : (proformaMode ? "Proforma-Rechnung erstellt!" : "Rechnung erstellt!"),
         description: asDraft
-          ? `Rechnungsentwurf ${data.invoice?.invoice_number} wurde gespeichert. Sie können ihn im Rechnungs-Tab einsehen und später versenden.`
+          ? "Rechnungsentwurf wurde gespeichert. Sie können ihn im Rechnungs-Tab bearbeiten und finalisieren."
           : `${proformaMode ? "Proforma-Rechnung" : "Rechnung"} ${data.invoice?.invoice_number} wurde erfolgreich generiert.`,
       });
+
       setInvoiceDialogOpen(false);
       setSelectedReservation(null);
       setInvoiceFromOffer(null);
