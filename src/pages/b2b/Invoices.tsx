@@ -278,7 +278,17 @@ export default function B2BInvoices() {
                         </div>
                       </TableCell>
                       <TableCell>{formatDate(inv.invoice_date)}</TableCell>
-                      <TableCell>{inv.due_date ? formatDate(inv.due_date) : "–"}</TableCell>
+                      <TableCell>
+                        {inv.due_date ? (
+                          <div>
+                            <p>{formatDate(inv.due_date)}</p>
+                            {inv.payment_terms && (
+                              <p className="text-[10px] text-muted-foreground">{paymentTermsLabel(inv.payment_terms)}</p>
+                            )}
+                          </div>
+                        ) : "–"}
+                      </TableCell>
+
                       <TableCell className="text-right">{formatCurrency(inv.net_amount)}</TableCell>
                       <TableCell className="text-right">
                         {inv.vat_amount > 0 ? formatCurrency(inv.vat_amount) : "0,00 €"}
