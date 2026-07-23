@@ -1220,10 +1220,10 @@ async function generateDocumentPdf(data: {
   // Surcharges
   data.surchargeItems.forEach(sc => {
     const scLines = wt(sc.name, font, 9.5, nameColW);
-    const h = 6 + scLines.length * 12;
+    const h = 4 + scLines.length * 11;
     renderRow(h, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
-      scLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 12, font, 9.5));
+      scLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 11, font, 9.5));
       dtr(pg, "1", qtyColRight, top - 8, font, 9.5);
       dt(pg, "Pauschale", unitColX, top - 8, font, 9.5, MUTED);
       dtr(pg, fm(sc.amount), totalRight, top - 8, bold, 9.5);
