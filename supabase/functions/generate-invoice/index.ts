@@ -1242,7 +1242,7 @@ async function generateDocumentPdf(data: {
 
   // Underline table end
   pg.drawRectangle({ x: ML, y, width: CW, height: 0.5, color: LINE });
-  y -= 14;
+  y -= 26;
 
   // ── Totals block (right aligned) ──
   if (data.totals) {
