@@ -5947,8 +5947,7 @@ export function getProductSEO(
   locationId?: string,
 ): ProductSEOData | undefined {
   if (locationId) {
-    const prefix = locationId === "muelheim" ? "mh" : locationId;
-    const prefixed = productSEOData[`${prefix}-${productId}`];
+    const prefixed = productSEOData[`${locationId}-${productId}`];
     if (prefixed) return prefixed;
   }
   return productSEOData[productId];
