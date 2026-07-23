@@ -224,6 +224,17 @@ export function AdminOffersTab({
                           >
                             <Undo2 className="h-4 w-4" />
                           </Button>
+                          {(offer.status === "sent" || offer.status === "draft" || offer.status === "revised") && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => onMarkAccepted(offer)}
+                              title="Als angenommen markieren"
+                              className="text-primary"
+                            >
+                              <CheckCircle2 className="h-4 w-4" />
+                            </Button>
+                          )}
                           {offer.status === "accepted" && (
                             <Button
                               size="sm"
