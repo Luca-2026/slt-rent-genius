@@ -1112,6 +1112,12 @@ export default function AdminDashboard() {
             onResendOffer={handleResendOffer}
             onViewOffer={openInvoiceInNewWindow}
             onCreateInvoice={(offer) => {
+              const existing = invoices.find((inv: any) => inv.source_offer_id === offer.id && inv.status !== 'cancelled');
+              if (existing) {
+                const label = existing.status === 'draft' ? `Entwurf` : `Rechnung ${existing.invoice_number}`;
+                const proceed = window.confirm(`Für Angebot ${offer.offer_number} existiert bereits ${label}. Trotzdem eine weitere Rechnung erstellen?`);
+                if (!proceed) return;
+              }
               const matchingReservation = offer.reservation_id
                 ? reservations.find((r) => r.id === offer.reservation_id) || null
                 : null;
@@ -1128,6 +1134,7 @@ export default function AdminDashboard() {
               setProformaMode(true);
               setInvoiceDialogOpen(true);
             }}
+
             onCreateDeliveryNote={(offer) => {
               setDeliveryNoteOffer(offer);
               setDeliveryNoteOpen(true);
