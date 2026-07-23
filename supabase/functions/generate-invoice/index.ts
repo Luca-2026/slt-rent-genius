@@ -1288,47 +1288,44 @@ async function generateDocumentPdf(data: {
     }
   }
 
-  // ── Payment / Proforma-Kasten ──
-  need(90);
+  // ── Payment / Proforma-Kasten (mit deutlich mehr Innenpadding und Zeilenabstand) ──
+  y -= 8; // Luft vor dem Kasten
+  need(110);
   if (proformaFlag) {
     const notice = "Dies ist keine Rechnung im Sinne des \u00A714 UStG und berechtigt nicht zum Vorsteuerabzug. Zahlung vor Mietbeginn (Vorkasse); die Bereitstellung erfolgt nach Zahlungseingang.";
-    const lines = wt(notice, font, 8.5, CW - 20);
-    const boxH = 14 + lines.length * 11 + 8;
+    const lines = wt(notice, font, 9, CW - 32);
+    const boxH = 24 + 16 + lines.length * 13 + 14;
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(1, 0.97, 0.88) });
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
-    dt(pg, "Proforma – Hinweis nach §14 UStG", ML + 10, y + 2, bold, 9, rgb(0.55, 0.32, 0));
-    lines.forEach((ln, i) => dt(pg, ln, ML + 10, y - 10 - i * 11, font, 8.5, rgb(0.35, 0.25, 0.1)));
-    y -= boxH + 6;
+    dt(pg, "Proforma – Hinweis nach §14 UStG", ML + 16, y - 4, bold, 10, rgb(0.55, 0.32, 0));
+    lines.forEach((ln, i) => dt(pg, ln, ML + 16, y - 22 - i * 13, font, 9, rgb(0.35, 0.25, 0.1)));
+    y -= boxH + 10;
   } else if (data.totals?.dueDate) {
     const dueText = data.totals.paymentDueDays === 0
       ? "Zahlungsziel: Vorkasse. Die Bereitstellung erfolgt nach Zahlungseingang."
       : `Zahlbar bis: ${fd(data.totals.dueDate)} (${data.totals.paymentDueDays} Tage netto)`;
     const bankLine = `${SLT_COMPANY.bankName} | IBAN: ${SLT_COMPANY.iban} | BIC: ${SLT_COMPANY.bic}`;
     const ref = `Verwendungszweck: ${data.documentNumber}`;
-    const boxH = 60;
+    const boxH = 84;
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.995, 0.97, 0.93) });
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
-    dt(pg, "Zahlungshinweis", ML + 10, y + 2, bold, 9.5, INK);
-    dt(pg, dueText, ML + 10, y - 11, font, 9, INK);
-    dt(pg, bankLine, ML + 10, y - 25, font, 9, INK);
-    dt(pg, ref, ML + 10, y - 38, bold, 9, INK);
-    y -= boxH + 6;
+    dt(pg, "Zahlungshinweis", ML + 16, y - 2, bold, 10, INK);
+    dt(pg, dueText, ML + 16, y - 20, font, 9.5, INK);
+    dt(pg, bankLine, ML + 16, y - 38, font, 9.5, INK);
+    dt(pg, ref, ML + 16, y - 56, bold, 9.5, INK);
+    y -= boxH + 10;
   }
 
   if (data.totals?.isReverseCharge && !proformaFlag) {
-    need(30);
-    pg.drawRectangle({ x: ML, y: y - 22, width: CW, height: 28, color: rgb(0.94, 0.97, 0.98) });
-    pg.drawRectangle({ x: ML, y: y - 22, width: 3, height: 28, color: BRAND });
-    dt(pg, "Steuerschuldnerschaft des Leistungsempfängers (Reverse-Charge gem. §13b UStG).", ML + 10, y - 8, font, 8.5, INK);
-    y -= 36;
+    need(46);
+    // Pflichthinweis Reverse-Charge (§13b UStG). USt-IdNr. des Kunden steht bereits im Adressblock.
+    pg.drawRectangle({ x: ML, y: y - 30, width: CW, height: 36, color: rgb(0.94, 0.97, 0.98) });
+    pg.drawRectangle({ x: ML, y: y - 30, width: 3, height: 36, color: BRAND });
+    dt(pg, "Steuerschuldnerschaft des Leistungsempfängers", ML + 12, y - 6, bold, 9, INK);
+    dt(pg, "Reverse-Charge-Verfahren gem. §13b UStG – die Umsatzsteuer schuldet der Leistungsempfänger.", ML + 12, y - 20, font, 8.5, INK);
+    y -= 46;
   }
 
-  // Kunden-USt-IdNr. explizit
-  if (data.profile.tax_id) {
-    need(16);
-    dt(pg, `Ihre USt-IdNr.: ${data.profile.tax_id}`, ML, y, font, 8.5, MUTED);
-    y -= 14;
-  }
 
   // Sections (notes)
   for (const sec of data.sections) {
