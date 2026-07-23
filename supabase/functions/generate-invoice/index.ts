@@ -1035,11 +1035,15 @@ async function generateDocumentPdf(data: {
     const noticeH = 34;
     page.drawRectangle({ x: MG, y: y - noticeH + 10, width: CW, height: noticeH, color: rgb(1, 0.97, 0.88) });
     page.drawRectangle({ x: MG, y: y - noticeH + 10, width: 3, height: noticeH, color: rgb(0.85, 0.55, 0) });
-    const noticeLines = wt("Hinweis: Diese Proforma-Rechnung ist vor Mietbeginn zu begleichen. Die Bereitstellung der Mietgeraete erfolgt erst nach vollstaendigem Zahlungseingang.", bold, 8, CW - 25);
+    const proformaNotice = "PROFORMA - Dies ist keine Rechnung im Sinne des \u00A714 UStG und berechtigt nicht zum Vorsteuerabzug. Zahlung vor Mietbeginn (Vorkasse); die Bereitstellung erfolgt erst nach vollstaendigem Zahlungseingang. Eine ordnungsgemaesse Rechnung wird nach Leistungserbringung separat gestellt.";
+    const noticeLines = wt(proformaNotice, bold, 8, CW - 25);
+    const dynamicH = Math.max(noticeH, noticeLines.length * 11 + 12);
+    page.drawRectangle({ x: MG, y: y - dynamicH + 10, width: CW, height: dynamicH, color: rgb(1, 0.97, 0.88) });
+    page.drawRectangle({ x: MG, y: y - dynamicH + 10, width: 3, height: dynamicH, color: rgb(0.85, 0.55, 0) });
     noticeLines.forEach((line, i) => {
       dt(line, MG + 10, y - 2 - i * 11, bold, 8, rgb(0.45, 0.25, 0));
     });
-    y -= noticeH + 5;
+    y -= dynamicH + 5;
   }
 
   // ── Items table header ──
