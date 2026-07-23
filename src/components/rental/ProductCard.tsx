@@ -154,9 +154,9 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
             <PriceGuaranteeBadge variant="inline" />
           </div>
           
-          <Button 
-            size="default" 
-            className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+          <Button
+            size="default"
+            className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover group/btn"
             onClick={(e) => {
               if (onClick && !linkTo) {
                 e.preventDefault();
@@ -165,22 +165,9 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
               }
             }}
           >
-            Als Privatkunde mieten
+            Details ansehen & mieten
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-0.5" />
           </Button>
-          
-          <Link 
-            to="/b2b/login" 
-            className="block"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Button 
-              size="default" 
-              variant="default"
-              className="w-full"
-            >
-              B2B-Konditionen anfragen
-            </Button>
-          </Link>
         </div>
       </CardContent>
     </>
