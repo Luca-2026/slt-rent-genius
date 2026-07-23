@@ -1175,13 +1175,13 @@ async function generateDocumentPdf(data: {
     }
     const rowH = 10 + nameLines.length * 12 + (subLines.length ? 4 + subLines.length * 10 : 0);
     renderRow(rowH, (top) => {
-      dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
-      nameLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 11, bold, 9.5));
-      subLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - nameLines.length * 11 - li * 9, font, 8, MUTED));
-      dtr(pg, String(item.quantity), qtyColRight, top - 8, font, 9.5);
-      dt(pg, deriveUnit(item), unitColX, top - 8, font, 9.5, MUTED);
-      if (item.unitPrice != null) dtr(pg, fm(item.unitPrice), unitPriceRight, top - 8, font, 9.5);
-      dtr(pg, fm(item.totalPrice || 0), totalRight, top - 8, bold, 9.5);
+      dt(pg, `${posNum}`, ML + 2, top - 10, font, 9);
+      nameLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 10 - li * 12, bold, 9.5));
+      subLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 10 - nameLines.length * 12 - 4 - li * 10, font, 8, MUTED));
+      dtr(pg, String(item.quantity), qtyColRight, top - 10, font, 9.5);
+      dt(pg, deriveUnit(item), unitColX, top - 10, font, 9.5, MUTED);
+      if (item.unitPrice != null) dtr(pg, fm(item.unitPrice), unitPriceRight, top - 10, font, 9.5);
+      dtr(pg, fm(item.totalPrice || 0), totalRight, top - 10, bold, 9.5);
     });
     posNum++;
 
