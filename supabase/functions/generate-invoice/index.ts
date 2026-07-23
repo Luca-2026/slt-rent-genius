@@ -925,13 +925,16 @@ function escapeHtml(str: string): string {
     .replace(/'/g, "&#039;");
 }
 
-// ─── PDF Generator for Invoice ─────────────────────
+// ─── PDF Generator for Invoice (DIN 5008 + SLT CI) ─────────────────────
+// SINGLE SOURCE OF TRUTH für Firmen- & Steuerdaten ist die Konstante SLT_COMPANY
+// oben in dieser Datei (spiegelt die Angaben im Impressum). Keine Hardcodes im
+// Template unten – alles wird ausschließlich aus SLT_COMPANY gelesen.
 async function generateDocumentPdf(data: {
   title: string;
   documentNumber: string;
   date: string;
   profile: any;
-  productItems: Array<{ name: string; description?: string; quantity: number; unitPrice?: number; totalPrice?: number; discount?: number; rentalStart?: string; rentalEnd?: string; itemIndex?: number }>;
+  productItems: Array<{ name: string; description?: string; quantity: number; unit?: string; unitPrice?: number; totalPrice?: number; discount?: number; rentalStart?: string; rentalEnd?: string; itemIndex?: number }>;
   serviceItems: Array<{ name: string; description?: string; amount: number; parentItemIndex?: number }>;
   surchargeItems: Array<{ name: string; description?: string; amount: number }>;
   sections: Array<{ label: string; value: string }>;
@@ -944,427 +947,443 @@ async function generateDocumentPdf(data: {
   const font = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
   const italic = await doc.embedFont(StandardFonts.HelveticaOblique);
-  const W = 595.28, H = 841.89, MG = 50, CW = W - 2 * MG;
-  const FOOTER_ZONE = MG + 50;
-  let page = doc.addPage([W, H]);
-  let y = H - MG;
 
-  const checkPage = (need: number) => { if (y - need < FOOTER_ZONE) { page = doc.addPage([W, H]); y = H - MG; } };
+  // ── Layout constants (A4, DIN 5008 fensterkuverttauglich) ──
+  const W = 595.28, H = 841.89;
+  const ML = 57, MR = 57;          // ~20 mm links/rechts
+  const MT = 45, MB = 60;          // Ränder oben/unten
+  const CW = W - ML - MR;
+  const BRAND = rgb(0/255, 80/255, 125/255);   // #00507d
+  const ORANGE = rgb(255/255, 142/255, 2/255); // #ff8e02
+  const INK = rgb(0.13, 0.13, 0.15);
+  const MUTED = rgb(0.48, 0.5, 0.55);
+  const LINE = rgb(0.82, 0.84, 0.87);
+  const ZEBRA = rgb(0.972, 0.976, 0.982);
 
-  // Draw text at position
-  const dt = (t: string, x: number, yy: number, f = font, s = 10, c = rgb(0.2, 0.2, 0.2)) => {
-    try { page.drawText(t || '', { x, y: yy, size: s, font: f, color: c }); } catch {}
+  // DIN 5008 Sichtfenster: Adresse links bei ca. 25mm/45mm
+  const ADDR_X = ML;
+  const ADDR_Y_TOP = H - 105;     // ~37 mm von oben (Fensterbereich)
+
+  let pageIdx = 0;
+  const pages: any[] = [];
+  const proformaFlag = !!data.isProforma;
+
+  // Load logo (bitmap – niemals als SVG/Text nachbauen)
+  let logoImg: any = null;
+  try {
+    const lr = await fetch("https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png");
+    if (lr.ok) {
+      const lb = new Uint8Array(await lr.arrayBuffer());
+      logoImg = await doc.embedPng(lb);
+    }
+  } catch {}
+
+  // ── helpers ──
+  const fm = (n: number) => n.toFixed(2).replace('.', ',') + ' \u20AC';
+  const fd = (d: string) => {
+    if (!d) return '';
+    const sp = d.split(' '); const p = sp[0].split('-');
+    return p.length === 3 ? `${p[2]}.${p[1]}.${p[0]}` : sp[0];
   };
-
-  // Draw text right-aligned
-  const dtr = (t: string, xRight: number, yy: number, f = font, s = 10, c = rgb(0.2, 0.2, 0.2)) => {
-    try {
-      const tw = f.widthOfTextAtSize(t || '', s);
-      page.drawText(t || '', { x: xRight - tw, y: yy, size: s, font: f, color: c });
-    } catch {}
-  };
-
-  // Word-wrap text
   const wt = (t: string, f: any, s: number, mw: number): string[] => {
     if (!t) return [''];
-    const words = t.split(' '); const lines: string[] = []; let cur = '';
+    const words = String(t).split(/\s+/); const lines: string[] = []; let cur = '';
     for (const w of words) {
       const test = cur ? `${cur} ${w}` : w;
-      if (f.widthOfTextAtSize(test, s) <= mw) { cur = test; }
+      if (f.widthOfTextAtSize(test, s) <= mw) cur = test;
       else { if (cur) lines.push(cur); cur = w; }
     }
     if (cur) lines.push(cur);
     return lines.length ? lines : [''];
   };
-
-  const fd = (d: string) => {
-    const sp = d.split(' '); const p = sp[0].split('-');
-    const dateStr = p.length === 3 ? `${p[2]}.${p[1]}.${p[0]}` : sp[0];
-    return sp[1] ? `${dateStr} ${sp[1]} Uhr` : dateStr;
+  const dt = (pg: any, t: string, x: number, yy: number, f = font, s = 9.5, c = INK) => {
+    try { pg.drawText(String(t ?? ''), { x, y: yy, size: s, font: f, color: c }); } catch {}
   };
-  const fm = (n: number) => n.toFixed(2).replace('.', ',') + ' \u20AC';
+  const dtr = (pg: any, t: string, xRight: number, yy: number, f = font, s = 9.5, c = INK) => {
+    try {
+      const tw = f.widthOfTextAtSize(String(t ?? ''), s);
+      pg.drawText(String(t ?? ''), { x: xRight - tw, y: yy, size: s, font: f, color: c });
+    } catch {}
+  };
 
-  // Column positions
-  const colPos = MG + 4;
-  const colName = MG + 30;
-  const colQty = W - MG - 160;
-  const colUnit = W - MG - 110;
-  const colTotal = W - MG;
-  const nameMaxW = colQty - colName - 10;
+  const drawProformaWatermark = (pg: any) => {
+    if (!proformaFlag) return;
+    try {
+      pg.drawText("PROFORMA", { x: 90, y: H / 2 - 60, size: 96, font: bold, color: rgb(0.95, 0.9, 0.85), rotate: { type: 'degrees', angle: 30 } as any });
+    } catch {}
+  };
 
-  // ── Logo ──
-  try {
-    const lr = await fetch("https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png");
-    const lb = new Uint8Array(await lr.arrayBuffer()); const li = await doc.embedPng(lb);
-    const ls = 45 / li.height; page.drawImage(li, { x: MG, y: y - 45, width: li.width * ls, height: 45 });
-  } catch {}
+  // Renders sender line, address block, info block, title. Only on page 1.
+  const renderHeader = (pg: any): number => {
+    // Absenderzeile (7pt) direkt über Adressfeld
+    dt(pg, `${SLT_COMPANY.name} · ${SLT_COMPANY.street} · ${SLT_COMPANY.city}`, ADDR_X, ADDR_Y_TOP + 12, font, 7, MUTED);
+    pg.drawRectangle({ x: ADDR_X, y: ADDR_Y_TOP + 10, width: 220, height: 0.4, color: LINE });
 
-  [SLT_COMPANY.name, `${SLT_COMPANY.street}, ${SLT_COMPANY.city}`].forEach((l, i) => {
-    dtr(l, W - MG, y - 10 - i * 10, font, 7, rgb(0.5, 0.5, 0.5));
-  });
-  y -= 60;
-  page.drawRectangle({ x: MG, y, width: CW, height: 2, color: rgb(0, 0.314, 0.49) });
-  y -= 30;
-  dt(data.title, MG, y, bold, 18, rgb(0, 0.314, 0.49)); y -= 22;
-  dt(data.documentNumber, MG, y, bold, 11);
-  dtr(`Datum: ${fd(data.date)}`, W - MG, y, font, 10);
-  y -= 30;
+    // Empfängeradresse (DIN 5008 Fensterbereich, max ~85mm × 40mm)
+    let ay = ADDR_Y_TOP;
+    dt(pg, data.profile.company_name, ADDR_X, ay, bold, 10.5); ay -= 13;
+    if (data.profile.legal_form) { dt(pg, data.profile.legal_form, ADDR_X, ay, font, 9.5, MUTED); ay -= 12; }
+    const cn = `${data.profile.contact_first_name || ''} ${data.profile.contact_last_name || ''}`.trim();
+    if (cn) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 12; }
+    dt(pg, `${data.profile.street}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`, ADDR_X, ay, font, 9.5); ay -= 12;
+    dt(pg, `${data.profile.postal_code} ${data.profile.city}`, ADDR_X, ay, font, 9.5); ay -= 12;
+    dt(pg, data.profile.country || 'Deutschland', ADDR_X, ay, font, 9.5);
 
-  // ── Customer address ──
-  dt("Rechnungsadresse:", MG, y, bold, 9, rgb(0.5, 0.5, 0.5)); y -= 14;
-  dt(data.profile.company_name, MG, y, bold, 10); y -= 14;
-  dt(`${data.profile.contact_first_name} ${data.profile.contact_last_name}`, MG, y, font, 10); y -= 14;
-  dt(`${data.profile.street}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`, MG, y, font, 10); y -= 14;
-  dt(`${data.profile.postal_code} ${data.profile.city}`, MG, y, font, 10);
-  if (data.profile.tax_id) { y -= 14; dt(`USt-IdNr.: ${data.profile.tax_id}`, MG, y, font, 9, rgb(0.4, 0.4, 0.4)); }
-  y -= 20;
+    // Logo oben RECHTS (~50 mm breit = ~142 pt)
+    if (logoImg) {
+      const targetW = 142;
+      const scale = targetW / logoImg.width;
+      const drawH = logoImg.height * scale;
+      pg.drawImage(logoImg, { x: W - MR - targetW, y: H - MT - drawH, width: targetW, height: drawH });
+    }
 
-  // ── Delivery address (if different) ──
-  if (data.deliveryAddress && (data.deliveryAddress.street || data.deliveryAddress.city)) {
-    dt("Lieferadresse:", MG, y, bold, 9, rgb(0.5, 0.5, 0.5)); y -= 14;
-    if (data.deliveryAddress.street) { dt(data.deliveryAddress.street, MG, y, font, 10); y -= 14; }
-    const delCityLine = [data.deliveryAddress.postal_code, data.deliveryAddress.city].filter(Boolean).join(' ');
-    if (delCityLine) { dt(delCityLine, MG, y, font, 10); y -= 14; }
-    y -= 6;
-  }
-  y -= 5;
+    // Info-Block rechts, zweispaltig (Label grau / Wert schwarz)
+    const infoX = W - MR - 200;
+    let iy = ADDR_Y_TOP;
+    const infoRow = (label: string, value: string) => {
+      dt(pg, label, infoX, iy, font, 8.5, MUTED);
+      dt(pg, value, infoX + 95, iy, font, 9, INK);
+      iy -= 13;
+    };
+    infoRow("Rechnungsnummer:", data.documentNumber);
+    infoRow("Rechnungsdatum:", fd(data.date));
+    infoRow("Kundennummer:", String(data.profile.id).substring(0, 8).toUpperCase());
+    // Leistungszeitraum aus productItems (falls einheitlich)
+    const periods = data.productItems.filter(i => i.rentalStart).map(i => `${i.rentalStart}|${i.rentalEnd || ''}`);
+    if (periods.length && periods.every(p => p === periods[0])) {
+      const first = data.productItems.find(i => i.rentalStart)!;
+      infoRow("Leistungszeitraum:", `${fd(first.rentalStart!)}${first.rentalEnd ? ' – ' + fd(first.rentalEnd) : ''}`);
+    }
+    // Zahlungskondition
+    const termsLabel = proformaFlag
+      ? "Vorkasse"
+      : data.totals?.paymentDueDays === 0 ? "Vorkasse"
+      : data.totals?.paymentDueDays === 7 ? "7 Tage netto"
+      : data.totals?.paymentDueDays === 30 ? "30 Tage netto"
+      : "14 Tage netto";
+    infoRow("Zahlungskondition:", termsLabel);
+    infoRow("Ansprechpartner:", SLT_COMPANY.managingDirector);
 
-  // ── Proforma notice ──
-  if (data.isProforma) {
-    checkPage(45);
-    const noticeH = 34;
-    page.drawRectangle({ x: MG, y: y - noticeH + 10, width: CW, height: noticeH, color: rgb(1, 0.97, 0.88) });
-    page.drawRectangle({ x: MG, y: y - noticeH + 10, width: 3, height: noticeH, color: rgb(0.85, 0.55, 0) });
-    const proformaNotice = "PROFORMA - Dies ist keine Rechnung im Sinne des \u00A714 UStG und berechtigt nicht zum Vorsteuerabzug. Zahlung vor Mietbeginn (Vorkasse); die Bereitstellung erfolgt erst nach vollstaendigem Zahlungseingang. Eine ordnungsgemaesse Rechnung wird nach Leistungserbringung separat gestellt.";
-    const noticeLines = wt(proformaNotice, bold, 8, CW - 25);
-    const dynamicH = Math.max(noticeH, noticeLines.length * 11 + 12);
-    page.drawRectangle({ x: MG, y: y - dynamicH + 10, width: CW, height: dynamicH, color: rgb(1, 0.97, 0.88) });
-    page.drawRectangle({ x: MG, y: y - dynamicH + 10, width: 3, height: dynamicH, color: rgb(0.85, 0.55, 0) });
-    noticeLines.forEach((line, i) => {
-      dt(line, MG + 10, y - 2 - i * 11, bold, 8, rgb(0.45, 0.25, 0));
-    });
-    y -= dynamicH + 5;
-  }
+    // Titelblock (kein Versalienschreien)
+    let ty = ADDR_Y_TOP - 105;
+    dt(pg, data.title, ML, ty, bold, 22, BRAND);
+    ty -= 16;
+    dt(pg, `Nr. ${data.documentNumber}`, ML, ty, font, 10, MUTED);
 
-  // ── Items table header ──
-  const hasPrice = data.productItems.some(i => i.unitPrice != null);
-  page.drawRectangle({ x: MG, y: y + 5, width: CW, height: 18, color: rgb(0, 0.314, 0.49) });
-  dt("Pos.", colPos, y + 8, bold, 8, rgb(1, 1, 1));
-  dt("Bezeichnung", colName, y + 8, bold, 8, rgb(1, 1, 1));
-  if (hasPrice) {
-    dtr("Menge", colQty + 30, y + 8, bold, 8, rgb(1, 1, 1));
-    dtr("Einzelpreis", colUnit + 50, y + 8, bold, 8, rgb(1, 1, 1));
-    dtr("Gesamt", colTotal, y + 8, bold, 8, rgb(1, 1, 1));
-  }
-  y -= 5;
-  page.drawRectangle({ x: MG, y, width: CW, height: 0.5, color: rgb(0.8, 0.8, 0.8) });
-  y -= 14;
+    return ty - 24; // return cursor y for content below
+  };
+
+  const renderTableHeader = (pg: any, startY: number): number => {
+    // Weiße Kopfzeile mit 2pt Unterstreichung in BRAND, Titel in BRAND
+    const y = startY;
+    dt(pg, "Pos.", ML + 2, y, bold, 8.5, BRAND);
+    dt(pg, "Bezeichnung", ML + 32, y, bold, 8.5, BRAND);
+    dtr(pg, "Menge", ML + CW * 0.60, y, bold, 8.5, BRAND);
+    dt(pg, "Einheit", ML + CW * 0.60 + 8, y, bold, 8.5, BRAND);
+    dtr(pg, "Einzelpreis", ML + CW * 0.85, y, bold, 8.5, BRAND);
+    dtr(pg, "Gesamt", W - MR - 4, y, bold, 8.5, BRAND);
+    pg.drawRectangle({ x: ML, y: y - 5, width: CW, height: 2, color: BRAND });
+    return y - 16;
+  };
+
+  const newPage = (isFirst: boolean): { pg: any; y: number } => {
+    const pg = doc.addPage([W, H]);
+    pages.push(pg);
+    drawProformaWatermark(pg);
+    pageIdx = pages.length - 1;
+    if (isFirst) {
+      const y = renderHeader(pg);
+      return { pg, y: renderTableHeader(pg, y) };
+    }
+    // Folgeseiten: nur schlanker Tabellenkopf (Titel + Nr. dünn)
+    let y = H - MT;
+    if (logoImg) {
+      const targetW = 90;
+      const scale = targetW / logoImg.width;
+      const drawH = logoImg.height * scale;
+      pg.drawImage(logoImg, { x: W - MR - targetW, y: y - drawH, width: targetW, height: drawH });
+    }
+    dt(pg, `${data.title} · ${data.documentNumber}`, ML, y - 12, bold, 10, BRAND);
+    y -= 40;
+    return { pg, y: renderTableHeader(pg, y) };
+  };
+
+  let { pg, y } = newPage(true);
+
+  // Reserve space at bottom for summary/payment/footer so we don't crash into them
+  const RESERVE_BOTTOM = MB + 90;
+  const need = (h: number) => {
+    if (y - h < RESERVE_BOTTOM) {
+      ({ pg, y } = newPage(false));
+    }
+  };
+
+  // ── item rendering ──
+  const nameColX = ML + 32;
+  const nameColW = CW * 0.60 - 32 - 6;
+  const qtyColRight = ML + CW * 0.60;
+  const unitColX = ML + CW * 0.60 + 8;
+  const unitPriceRight = ML + CW * 0.85;
+  const totalRight = W - MR - 4;
+
+  const deriveUnit = (item: any, fallback = 'Stück'): string => {
+    if (item.unit) return item.unit;
+    if (item.rentalStart && item.rentalEnd) {
+      try {
+        const a = new Date(item.rentalStart.split(' ')[0]);
+        const b = new Date(item.rentalEnd.split(' ')[0]);
+        const days = Math.max(1, Math.round((b.getTime() - a.getTime()) / 86400000) + 1);
+        return days >= 28 && days % 7 === 0 ? `${days / 7} Wo` : `${days} Tage`;
+      } catch { return 'Tage'; }
+    }
+    return fallback;
+  };
 
   let posNum = 1;
+  let rowZebra = false;
 
-  // ── Product items ──
+  const renderRow = (rowH: number, drawer: (rowTop: number) => void) => {
+    need(rowH);
+    if (rowZebra) pg.drawRectangle({ x: ML, y: y - rowH + 3, width: CW, height: rowH, color: ZEBRA });
+    drawer(y);
+    y -= rowH;
+    rowZebra = !rowZebra;
+  };
+
   data.productItems.forEach((item, productIndex) => {
-    checkPage(45);
-    dt(`${posNum}`, colPos, y, font, 9);
+    let nameText = item.name || '';
+    if (item.discount && item.discount > 0) nameText += ` (${item.discount}% Rabatt)`;
+    const nameLines = wt(nameText, bold, 9.5, nameColW);
+    let subLines: string[] = [];
+    if (item.description) subLines.push(...wt(item.description, font, 8, nameColW));
+    if (item.rentalStart) {
+      const period = `Mietzeitraum: ${fd(item.rentalStart)}${item.rentalEnd ? ' – ' + fd(item.rentalEnd) : ''}`;
+      subLines.push(...wt(period, font, 8, nameColW));
+    }
+    const rowH = 6 + nameLines.length * 12 + subLines.length * 10 + 4;
+    renderRow(rowH, (top) => {
+      dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
+      nameLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 12, bold, 9.5));
+      subLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - nameLines.length * 12 - li * 10, font, 8, MUTED));
+      dtr(pg, String(item.quantity), qtyColRight, top - 8, font, 9.5);
+      dt(pg, deriveUnit(item), unitColX, top - 8, font, 9.5, MUTED);
+      if (item.unitPrice != null) dtr(pg, fm(item.unitPrice), unitPriceRight, top - 8, font, 9.5);
+      dtr(pg, fm(item.totalPrice || 0), totalRight, top - 8, bold, 9.5);
+    });
     posNum++;
 
-    // Product name with word wrap
-    let nameText = item.name;
-    if (item.discount && item.discount > 0) nameText += ` (${item.discount}% Rabatt)`;
-    const nl = wt(nameText, bold, 9, nameMaxW);
-    nl.forEach((line, li) => {
-      dt(line, colName, y, bold, 9);
-      if (li === 0 && hasPrice) {
-        dtr(`${item.quantity}`, colQty + 30, y, font, 9);
-        if (item.unitPrice != null) {
-          dtr(fm(item.unitPrice), colUnit + 50, y, font, 9);
-          dtr(fm(item.totalPrice || 0), colTotal, y, font, 9);
-        }
-      }
-      y -= 13;
+    // Linked services under a product
+    const linked = data.serviceItems.filter(s => s.parentItemIndex === productIndex);
+    linked.forEach(svc => {
+      const svcLines = wt(`↳ ${svc.name}`, font, 8.5, nameColW);
+      const h = 6 + svcLines.length * 11;
+      renderRow(h, (top) => {
+        svcLines.forEach((ln, li) => dt(pg, ln, nameColX + 8, top - 8 - li * 11, font, 8.5, MUTED));
+        dt(pg, 'Pauschale', unitColX, top - 8, font, 8.5, MUTED);
+        dtr(pg, fm(svc.amount), totalRight, top - 8, font, 8.5, MUTED);
+      });
     });
-
-    // Description
-    if (item.description) {
-      const descLines = wt(item.description, font, 8, nameMaxW);
-      descLines.forEach(line => {
-        checkPage(13);
-        dt(line, colName, y, font, 8, rgb(0.4, 0.4, 0.4));
-        y -= 11;
-      });
-    }
-    // Rental period
-    if (item.rentalStart) {
-      const period = `Mietzeitraum: ${fd(item.rentalStart)}${item.rentalEnd ? ' - ' + fd(item.rentalEnd) : ''}`;
-      const periodLines = wt(period, font, 8, nameMaxW);
-      periodLines.forEach(line => {
-        checkPage(11);
-        dt(line, colName, y, font, 8, rgb(0.4, 0.4, 0.4));
-        y -= 11;
-      });
-    }
-
-    const linkedServices = data.serviceItems.filter((svc) => svc.parentItemIndex === productIndex);
-    linkedServices.forEach((svc) => {
-      checkPage(18);
-      const svcLines = wt(`> Zusatzoption: ${svc.name}`, font, 7, nameMaxW);
-      svcLines.forEach((line, li) => {
-        dt(line, colName + 8, y, font, 7, rgb(0.45, 0.45, 0.45));
-        if (li === 0 && hasPrice) {
-          dtr(fm(svc.amount), colTotal, y, font, 8, rgb(0.45, 0.45, 0.45));
-        }
-        y -= 10;
-      });
-      if (svc.description) {
-        const descLines = wt(svc.description, italic, 6.5, nameMaxW - 8);
-        descLines.forEach(line => {
-          checkPage(10);
-          dt(line, colName + 14, y, italic, 6.5, rgb(0.55, 0.55, 0.55));
-          y -= 9;
-        });
-      }
-    });
-
-    y -= 3;
-    page.drawRectangle({ x: MG, y: y + 10, width: CW, height: 0.3, color: rgb(0.92, 0.92, 0.92) });
   });
 
-  // ── Delivery cost as line item ──
+  // Delivery cost as its own row
   if (data.totals?.deliveryCost && data.totals.deliveryCost > 0) {
-    checkPage(25);
-    dt(`${posNum}`, colPos, y, font, 9);
+    renderRow(22, (top) => {
+      dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
+      dt(pg, "Anlieferung / Transport", nameColX, top - 8, bold, 9.5);
+      dtr(pg, "1", qtyColRight, top - 8, font, 9.5);
+      dt(pg, "Pauschale", unitColX, top - 8, font, 9.5, MUTED);
+      dtr(pg, fm(data.totals.deliveryCost), unitPriceRight, top - 8, font, 9.5);
+      dtr(pg, fm(data.totals.deliveryCost), totalRight, top - 8, bold, 9.5);
+    });
     posNum++;
-    dt("Anlieferung / Transport", colName, y, bold, 9);
-    if (hasPrice) {
-      dtr("1", colQty + 30, y, font, 9);
-      dtr(fm(data.totals.deliveryCost), colUnit + 50, y, font, 9);
-      dtr(fm(data.totals.deliveryCost), colTotal, y, font, 9);
-    }
-    y -= 13;
-    y -= 3;
-    page.drawRectangle({ x: MG, y: y + 10, width: CW, height: 0.3, color: rgb(0.92, 0.92, 0.92) });
   }
 
-  // ── Additional services section (only unassigned services) ──
-  const unassignedServiceItems = data.serviceItems.filter((svc) => svc.parentItemIndex == null);
-  if (unassignedServiceItems.length > 0) {
-    checkPage(25);
-    y -= 5;
-    page.drawRectangle({ x: MG, y: y + 5, width: CW, height: 16, color: rgb(0.96, 0.97, 0.98) });
-    dt("Zusatzleistungen / Versicherungen", colName, y + 7, bold, 8, rgb(0.3, 0.3, 0.3));
-    y -= 14;
-
-    unassignedServiceItems.forEach((svc) => {
-      checkPage(30);
-      dt(`${posNum}`, colPos, y, font, 9);
-      posNum++;
-
-      const svcLines = wt(svc.name, font, 9, nameMaxW);
-      svcLines.forEach((line, li) => {
-        dt(line, colName, y, font, 9);
-        if (li === 0 && hasPrice) {
-          dtr(fm(svc.amount), colTotal, y, font, 9);
-        }
-        y -= 13;
-      });
-      if (svc.description) {
-        const descLines = wt(svc.description, italic, 7, nameMaxW);
-        descLines.forEach(line => {
-          checkPage(11);
-          dt(line, colName, y, italic, 7, rgb(0.5, 0.5, 0.5));
-          y -= 10;
-        });
-      }
-      y -= 2;
-      page.drawRectangle({ x: MG, y: y + 10, width: CW, height: 0.3, color: rgb(0.92, 0.92, 0.92) });
+  // Unassigned services
+  const unassigned = data.serviceItems.filter(s => s.parentItemIndex == null);
+  unassigned.forEach(svc => {
+    const svcLines = wt(svc.name, font, 9.5, nameColW);
+    const h = 6 + svcLines.length * 12;
+    renderRow(h, (top) => {
+      dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
+      svcLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 12, font, 9.5));
+      dtr(pg, "1", qtyColRight, top - 8, font, 9.5);
+      dt(pg, "Pauschale", unitColX, top - 8, font, 9.5, MUTED);
+      dtr(pg, fm(svc.amount), totalRight, top - 8, bold, 9.5);
     });
-  }
+    posNum++;
+  });
 
-  // ── Surcharges ──
-  if (data.surchargeItems.length > 0) {
-    checkPage(25);
-    y -= 5;
-    page.drawRectangle({ x: MG, y: y + 5, width: CW, height: 16, color: rgb(1, 0.97, 0.94) });
-    dt("Zusatzkosten", colName, y + 7, bold, 8, rgb(0.4, 0.2, 0.1));
-    y -= 14;
-
-    data.surchargeItems.forEach((sc) => {
-      checkPage(25);
-      dt(`${posNum}`, colPos, y, font, 9);
-      posNum++;
-      const scLines = wt(sc.name, font, 9, nameMaxW);
-      scLines.forEach((line, li) => {
-        dt(line, colName, y, font, 9);
-        if (li === 0 && hasPrice) dtr(fm(sc.amount), colTotal, y, font, 9);
-        y -= 13;
-      });
-      if (sc.description) {
-        const descLines = wt(sc.description, font, 7, nameMaxW);
-        descLines.forEach(line => {
-          checkPage(11);
-          dt(line, colName, y, font, 7, rgb(0.5, 0.5, 0.5));
-          y -= 10;
-        });
-      }
-      y -= 2;
-      page.drawRectangle({ x: MG, y: y + 10, width: CW, height: 0.3, color: rgb(0.92, 0.92, 0.92) });
+  // Surcharges
+  data.surchargeItems.forEach(sc => {
+    const scLines = wt(sc.name, font, 9.5, nameColW);
+    const h = 6 + scLines.length * 12;
+    renderRow(h, (top) => {
+      dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
+      scLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 12, font, 9.5));
+      dtr(pg, "1", qtyColRight, top - 8, font, 9.5);
+      dt(pg, "Pauschale", unitColX, top - 8, font, 9.5, MUTED);
+      dtr(pg, fm(sc.amount), totalRight, top - 8, bold, 9.5);
     });
-  }
+    posNum++;
+  });
 
-  y -= 15;
+  // Underline table end
+  pg.drawRectangle({ x: ML, y, width: CW, height: 0.5, color: LINE });
+  y -= 14;
 
-  // ── Totals ──
+  // ── Totals block (right aligned) ──
   if (data.totals) {
-    checkPage(130);
-    const tx = MG + CW * 0.55;
-    const vx = W - MG;
+    need(120);
+    const tx = ML + CW * 0.55;
+    const vx = W - MR - 4;
+    const showSubtotals = (data.serviceItems.length > 0) || (data.surchargeItems.length > 0) || ((data.totals.deliveryCost || 0) > 0);
 
-    // Subtotals
-    const itemsSubtotal = data.productItems.reduce((s, i) => s + (i.totalPrice || 0), 0);
-    dt("Teilsumme Mietartikel:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
-    dtr(fm(itemsSubtotal), vx, y, font, 9);
-    y -= 14;
-
-    if (data.totals.deliveryCost && data.totals.deliveryCost > 0) {
-      dt("Teilsumme Logistik:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
-      dtr(fm(data.totals.deliveryCost), vx, y, font, 9);
-      y -= 14;
+    if (showSubtotals) {
+      const itemsSubtotal = data.productItems.reduce((s, i) => s + (i.totalPrice || 0), 0);
+      dt(pg, "Zwischensumme Mietartikel", tx, y, font, 9, MUTED);
+      dtr(pg, fm(itemsSubtotal), vx, y, font, 9); y -= 13;
     }
 
-    if (data.serviceItems.length > 0) {
-      const svcTotal = data.serviceItems.reduce((s, i) => s + i.amount, 0);
-      if (svcTotal > 0) {
-        dt("Teilsumme Zusatzoptionen:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
-        dtr(fm(svcTotal), vx, y, font, 9);
-        y -= 14;
-      }
-    }
-
-    if (data.surchargeItems.length > 0) {
-      const scTotal = data.surchargeItems.reduce((s, i) => s + i.amount, 0);
-      if (scTotal > 0) {
-        dt("Zusatzkosten:", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
-        dtr(fm(scTotal), vx, y, font, 9);
-        y -= 14;
-      }
-    }
-
-    if (data.isProforma) {
-      // Proforma: KEIN gesonderter USt-Ausweis im Stil einer Rechnung.
+    if (proformaFlag) {
       if (data.totals.depositTotal && data.totals.depositTotal > 0) {
-        dt("Kaution (umsatzsteuerfrei):", tx, y, font, 9, rgb(0.3, 0.3, 0.3));
-        dtr(fm(data.totals.depositTotal), vx, y, font, 9, rgb(0.3, 0.3, 0.3));
-        y -= 16;
+        dt(pg, "Kaution (umsatzsteuerfrei)", tx, y, font, 9, MUTED);
+        dtr(pg, fm(data.totals.depositTotal), vx, y, font, 9); y -= 13;
       }
-      page.drawRectangle({ x: tx, y: y + 12, width: vx - tx, height: 1.5, color: rgb(0, 0.314, 0.49) });
-      dt("Zu zahlen (inkl. MwSt.):", tx, y, bold, 11, rgb(0, 0.314, 0.49));
-      dtr(fm(data.totals.gross), vx, y, bold, 12, rgb(0, 0.314, 0.49));
-      y -= 25;
+      // dezenter Hintergrund #00507d @ ~6%
+      pg.drawRectangle({ x: tx - 6, y: y - 4, width: vx - tx + 10, height: 22, color: rgb(0.94, 0.96, 0.98) });
+      pg.drawRectangle({ x: tx - 6, y: y + 17, width: vx - tx + 10, height: 1, color: BRAND });
+      dt(pg, "Zu zahlender Betrag (inkl. gesetzl. MwSt.)", tx, y + 4, bold, 10.5, BRAND);
+      dtr(pg, fm(data.totals.gross), vx, y + 4, bold, 12, BRAND);
+      y -= 30;
     } else {
-      page.drawRectangle({ x: tx, y: y + 12, width: vx - tx, height: 0.5, color: rgb(0.7, 0.7, 0.7) });
-      dt("Nettobetrag:", tx, y, bold, 9);
-      dtr(fm(data.totals.net), vx, y, bold, 9);
-      y -= 16;
-
+      dt(pg, "Nettobetrag", tx, y, font, 9.5); dtr(pg, fm(data.totals.net), vx, y, font, 9.5); y -= 13;
       if (data.totals.isReverseCharge) {
-        dt("USt. (Reverse Charge):", tx, y, font, 9, rgb(0.4, 0.4, 0.4));
-        dtr("0,00 \u20AC", vx, y, font, 9);
+        dt(pg, "USt. (Reverse Charge)", tx, y, font, 9, MUTED); dtr(pg, "0,00 \u20AC", vx, y, font, 9); y -= 13;
       } else {
-        dt(`USt. ${data.totals.vatRate}%:`, tx, y, font, 9, rgb(0.4, 0.4, 0.4));
-        dtr(fm(data.totals.vat), vx, y, font, 9);
+        dt(pg, `USt. ${data.totals.vatRate}%`, tx, y, font, 9, MUTED); dtr(pg, fm(data.totals.vat), vx, y, font, 9); y -= 13;
       }
-      y -= 16;
-
       if (data.totals.depositTotal && data.totals.depositTotal > 0) {
-        page.drawRectangle({ x: tx, y: y + 12, width: vx - tx, height: 0.5, color: rgb(0.7, 0.7, 0.7) });
-        dt("Kaution (umsatzsteuerfrei):", tx, y, font, 9, rgb(0.3, 0.3, 0.3));
-        dtr(fm(data.totals.depositTotal), vx, y, font, 9, rgb(0.3, 0.3, 0.3));
-        y -= 16;
+        dt(pg, "Kaution (umsatzsteuerfrei)", tx, y, font, 9, MUTED); dtr(pg, fm(data.totals.depositTotal), vx, y, font, 9); y -= 13;
       }
-
-      page.drawRectangle({ x: tx, y: y + 12, width: vx - tx, height: 1.5, color: rgb(0, 0.314, 0.49) });
-      dt("Gesamtbetrag:", tx, y, bold, 12, rgb(0, 0.314, 0.49));
-      dtr(fm(data.totals.gross), vx, y, bold, 12, rgb(0, 0.314, 0.49));
-      y -= 25;
-    }
-
-    // Payment terms
-    if (data.totals.dueDate) {
-      checkPage(25);
-      const paymentText = data.isProforma
-        ? "Zahlungsziel: Vorkasse (vor Mietbeginn)"
-        : data.totals.paymentDueDays === 0
-          ? "Zahlungsziel: Vorkasse"
-          : `Zahlbar bis: ${fd(data.totals.dueDate)} (${data.totals.paymentDueDays} Tage netto)`;
-      page.drawRectangle({ x: MG, y: y - 6, width: CW, height: 22, color: rgb(0.95, 0.97, 1) });
-      page.drawRectangle({ x: MG, y: y - 6, width: 3, height: 22, color: rgb(0, 0.314, 0.49) });
-      dt(paymentText, MG + 10, y + 2, bold, 8);
+      pg.drawRectangle({ x: tx - 6, y: y - 4, width: vx - tx + 10, height: 22, color: rgb(0.94, 0.96, 0.98) });
+      pg.drawRectangle({ x: tx - 6, y: y + 17, width: vx - tx + 10, height: 1, color: BRAND });
+      dt(pg, "Gesamtbetrag", tx, y + 4, bold, 11, BRAND);
+      dtr(pg, fm(data.totals.gross), vx, y + 4, bold, 12, BRAND);
       y -= 30;
     }
-
-    if (data.totals.isReverseCharge) {
-      checkPage(30);
-      page.drawRectangle({ x: MG, y: y - 8, width: CW, height: 26, color: rgb(0.94, 0.97, 0.98) });
-      page.drawRectangle({ x: MG, y: y - 8, width: 3, height: 26, color: rgb(0, 0.314, 0.49) });
-      dt("Steuerschuldnerschaft des Leistungsempfaengers (Reverse-Charge gem. \u00A713b UStG).", MG + 10, y + 2, font, 8, rgb(0.3, 0.3, 0.3));
-      y -= 35;
-    }
-
-    y -= 5;
-    dt("Bankverbindung:", MG, y, bold, 9);
-    y -= 13;
-    dt(`${SLT_COMPANY.bankName} | IBAN: ${SLT_COMPANY.iban} | BIC: ${SLT_COMPANY.bic}`, MG, y, font, 8, rgb(0.4, 0.4, 0.4));
-    y -= 13;
-    dt(`Verwendungszweck: ${data.documentNumber}`, MG, y, font, 8, rgb(0.4, 0.4, 0.4));
-    y -= 20;
   }
 
-  // ── Sections (notes) ──
-  for (const sec of data.sections) {
-    checkPage(30);
-    dt(sec.label + ":", MG, y, bold, 9);
+  // ── Payment / Proforma-Kasten ──
+  need(90);
+  if (proformaFlag) {
+    const notice = "Dies ist keine Rechnung im Sinne des \u00A714 UStG und berechtigt nicht zum Vorsteuerabzug. Zahlung vor Mietbeginn (Vorkasse); die Bereitstellung erfolgt nach Zahlungseingang.";
+    const lines = wt(notice, font, 8.5, CW - 20);
+    const boxH = 14 + lines.length * 11 + 8;
+    pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(1, 0.97, 0.88) });
+    pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
+    dt(pg, "Proforma – Hinweis nach §14 UStG", ML + 10, y + 2, bold, 9, rgb(0.55, 0.32, 0));
+    lines.forEach((ln, i) => dt(pg, ln, ML + 10, y - 10 - i * 11, font, 8.5, rgb(0.35, 0.25, 0.1)));
+    y -= boxH + 6;
+  } else if (data.totals?.dueDate) {
+    const dueText = data.totals.paymentDueDays === 0
+      ? "Zahlungsziel: Vorkasse. Die Bereitstellung erfolgt nach Zahlungseingang."
+      : `Zahlbar bis: ${fd(data.totals.dueDate)} (${data.totals.paymentDueDays} Tage netto)`;
+    const bankLine = `${SLT_COMPANY.bankName} | IBAN: ${SLT_COMPANY.iban} | BIC: ${SLT_COMPANY.bic}`;
+    const ref = `Verwendungszweck: ${data.documentNumber}`;
+    const boxH = 60;
+    pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.995, 0.97, 0.93) });
+    pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
+    dt(pg, "Zahlungshinweis", ML + 10, y + 2, bold, 9.5, INK);
+    dt(pg, dueText, ML + 10, y - 11, font, 9, INK);
+    dt(pg, bankLine, ML + 10, y - 25, font, 9, INK);
+    dt(pg, ref, ML + 10, y - 38, bold, 9, INK);
+    y -= boxH + 6;
+  }
+
+  if (data.totals?.isReverseCharge && !proformaFlag) {
+    need(30);
+    pg.drawRectangle({ x: ML, y: y - 22, width: CW, height: 28, color: rgb(0.94, 0.97, 0.98) });
+    pg.drawRectangle({ x: ML, y: y - 22, width: 3, height: 28, color: BRAND });
+    dt(pg, "Steuerschuldnerschaft des Leistungsempfängers (Reverse-Charge gem. §13b UStG).", ML + 10, y - 8, font, 8.5, INK);
+    y -= 36;
+  }
+
+  // Kunden-USt-IdNr. explizit
+  if (data.profile.tax_id) {
+    need(16);
+    dt(pg, `Ihre USt-IdNr.: ${data.profile.tax_id}`, ML, y, font, 8.5, MUTED);
     y -= 14;
-    const lines = wt(sec.value, font, 9, CW);
-    for (const line of lines) { checkPage(15); dt(line, MG, y, font, 9); y -= 13; }
-    y -= 8;
   }
 
-  // ── Signatures ──
+  // Sections (notes)
+  for (const sec of data.sections) {
+    need(30);
+    dt(pg, sec.label + ":", ML, y, bold, 9);
+    y -= 12;
+    const lines = wt(sec.value, font, 8.5, CW);
+    for (const line of lines) { need(12); dt(pg, line, ML, y, font, 8.5, INK); y -= 11; }
+    y -= 6;
+  }
+
+  // Signatures
   if (data.signatures) {
-    checkPage(90); y -= 10;
-    page.drawRectangle({ x: MG, y: y + 5, width: CW, height: 0.5, color: rgb(0.8, 0.8, 0.8) }); y -= 55;
+    need(80); y -= 6;
+    pg.drawRectangle({ x: ML, y, width: CW, height: 0.5, color: LINE }); y -= 50;
     for (const [sigData, xOff] of [[data.signatures.customerData, 0], [data.signatures.staffData, CW / 2 + 10]] as [string | undefined, number][]) {
       if (sigData) { try {
         const b64 = sigData.split(',')[1]; const sb = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
         const si = sigData.includes('png') ? await doc.embedPng(sb) : await doc.embedJpg(sb);
         const sc = Math.min(120 / si.width, 45 / si.height);
-        page.drawImage(si, { x: MG + xOff, y, width: si.width * sc, height: si.height * sc });
+        pg.drawImage(si, { x: ML + xOff, y, width: si.width * sc, height: si.height * sc });
       } catch {} }
     }
-    y -= 8;
-    page.drawRectangle({ x: MG, y, width: CW / 2 - 15, height: 0.5, color: rgb(0.6, 0.6, 0.6) });
-    page.drawRectangle({ x: MG + CW / 2 + 10, y, width: CW / 2 - 10, height: 0.5, color: rgb(0.6, 0.6, 0.6) });
-    y -= 12; dt("Kunde", MG, y, font, 8, rgb(0.5, 0.5, 0.5));
-    dt(`Mitarbeiter: ${data.signatures.staffName || ''}`, MG + CW / 2 + 10, y, font, 8, rgb(0.5, 0.5, 0.5));
+    y -= 6;
+    pg.drawRectangle({ x: ML, y, width: CW / 2 - 15, height: 0.5, color: MUTED });
+    pg.drawRectangle({ x: ML + CW / 2 + 10, y, width: CW / 2 - 10, height: 0.5, color: MUTED });
+    y -= 10; dt(pg, "Kunde", ML, y, font, 8, MUTED);
+    dt(pg, `Mitarbeiter: ${data.signatures.staffName || ''}`, ML + CW / 2 + 10, y, font, 8, MUTED);
   }
 
-  // ── Footer on all pages ──
-  const footerLines = [
-    `${SLT_COMPANY.name} - GF: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone}`,
-    `${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}`,
-    `${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}`,
-    `${SLT_COMPANY.web} - ${SLT_COMPANY.email}`,
+  // ── Footer auf ALLEN Seiten (3-spaltig, Trenner = Pipe) ──
+  const total = doc.getPageCount();
+  const colW = CW / 3;
+  const footerCol1 = [
+    SLT_COMPANY.name,
+    `GF ${SLT_COMPANY.managingDirector}`,
+    `${SLT_COMPANY.registry}`,
   ];
-  for (let i = 0; i < doc.getPageCount(); i++) {
+  const footerCol2 = [
+    `${SLT_COMPANY.street} | ${SLT_COMPANY.city}`,
+    `Tel: ${SLT_COMPANY.phone}`,
+    `${SLT_COMPANY.email} | ${SLT_COMPANY.web}`,
+  ];
+  const footerCol3 = [
+    `Steuer-Nr. ${SLT_COMPANY.steuerNr}`,
+    `USt-IdNr. ${SLT_COMPANY.ustId}`,
+    `${SLT_COMPANY.bankName} | IBAN ${SLT_COMPANY.iban}`,
+  ];
+  for (let i = 0; i < total; i++) {
     const p = doc.getPage(i);
-    p.drawRectangle({ x: MG, y: MG + 20, width: CW, height: 0.5, color: rgb(0, 0.314, 0.49) });
-    footerLines.forEach((line, li) => {
+    // Trennlinie
+    p.drawRectangle({ x: ML, y: MB + 42, width: CW, height: 0.5, color: LINE });
+    const drawCol = (lines: string[], x: number) => {
+      lines.forEach((ln, li) => {
+        try { p.drawText(ln, { x, y: MB + 32 - li * 9, size: 6.8, font, color: MUTED }); } catch {}
+      });
+    };
+    drawCol(footerCol1, ML);
+    drawCol(footerCol2, ML + colW);
+    drawCol(footerCol3, ML + 2 * colW);
+    // Seite X von Y ab Seite 2
+    if (total > 1 && i >= 1) {
       try {
-        const tw = font.widthOfTextAtSize(line, 5.5);
-        p.drawText(line, { x: (W - tw) / 2, y: MG + 14 - li * 7, size: 5.5, font, color: rgb(0.5, 0.5, 0.5) });
+        const t = `Seite ${i + 1} von ${total}`;
+        const tw = font.widthOfTextAtSize(t, 7.5);
+        p.drawText(t, { x: W - MR - tw, y: MB + 55, size: 7.5, font, color: MUTED });
       } catch {}
-    });
+    }
   }
 
   return await doc.save();
 }
+
