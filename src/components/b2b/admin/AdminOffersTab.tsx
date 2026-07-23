@@ -69,6 +69,7 @@ interface Props {
   onCreateDeliveryNote: (offer: Offer) => void;
   onCreateReturnProtocol: (offer: Offer) => void;
   onCreateOffer: () => void;
+  onMarkAccepted: (offer: Offer) => void;
   onDelete: (offerId: string) => void;
   resendingId: string | null;
   onRefresh: () => void;
