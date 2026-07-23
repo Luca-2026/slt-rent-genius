@@ -162,7 +162,7 @@ Deno.serve(async (req: Request) => {
 
       // Build PDF from stored items (all rendered as product rows – simplification)
       const pdfBytes = await generateDocumentPdf({
-        title: "RECHNUNG",
+        title: "Rechnung",
         documentNumber: finalNumber,
         date: finalDate,
         profile: draftProfile,
