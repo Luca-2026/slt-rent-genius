@@ -1024,11 +1024,11 @@ async function generateDocumentPdf(data: {
     const companyLine = data.profile.legal_form
       ? `${data.profile.company_name} ${data.profile.legal_form}`
       : data.profile.company_name;
-    dt(pg, companyLine, ADDR_X, ay, bold, 10.5); ay -= 13;
+    dt(pg, companyLine, ADDR_X, ay, bold, 10.5); ay -= 11;
     const cn = `${data.profile.contact_first_name || ''} ${data.profile.contact_last_name || ''}`.trim();
-    if (cn) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 12; }
-    dt(pg, `${data.profile.street}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`, ADDR_X, ay, font, 9.5); ay -= 12;
-    dt(pg, `${data.profile.postal_code} ${data.profile.city}`, ADDR_X, ay, font, 9.5); ay -= 12;
+    if (cn) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 10; }
+    dt(pg, `${data.profile.street}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`, ADDR_X, ay, font, 9.5); ay -= 10;
+    dt(pg, `${data.profile.postal_code} ${data.profile.city}`, ADDR_X, ay, font, 9.5); ay -= 10;
     dt(pg, data.profile.country || 'Deutschland', ADDR_X, ay, font, 9.5);
 
     // Logo oben RECHTS (~40 mm breit = ~113 pt)
@@ -1047,7 +1047,7 @@ async function generateDocumentPdf(data: {
     const infoRow = (label: string, value: string) => {
       dt(pg, label, infoX, iy, font, 8.5, MUTED);
       dt(pg, value, infoX + 95, iy, font, 9, INK);
-      iy -= 13;
+      iy -= 11;
     };
     infoRow("Rechnungsnummer:", data.documentNumber);
     infoRow("Rechnungsdatum:", fd(data.date));
@@ -1164,11 +1164,11 @@ async function generateDocumentPdf(data: {
       const period = `Mietzeitraum: ${fd(item.rentalStart)}${item.rentalEnd ? ' – ' + fd(item.rentalEnd) : ''}`;
       subLines.push(...wt(period, font, 8, nameColW));
     }
-    const rowH = 6 + nameLines.length * 12 + subLines.length * 10 + 4;
+    const rowH = 4 + nameLines.length * 11 + subLines.length * 9 + 2;
     renderRow(rowH, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
-      nameLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 12, bold, 9.5));
-      subLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - nameLines.length * 12 - li * 10, font, 8, MUTED));
+      nameLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 11, bold, 9.5));
+      subLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - nameLines.length * 11 - li * 9, font, 8, MUTED));
       dtr(pg, String(item.quantity), qtyColRight, top - 8, font, 9.5);
       dt(pg, deriveUnit(item), unitColX, top - 8, font, 9.5, MUTED);
       if (item.unitPrice != null) dtr(pg, fm(item.unitPrice), unitPriceRight, top - 8, font, 9.5);
@@ -1180,9 +1180,9 @@ async function generateDocumentPdf(data: {
     const linked = data.serviceItems.filter(s => s.parentItemIndex === productIndex);
     linked.forEach(svc => {
       const svcLines = wt(`↳ ${svc.name}`, font, 8.5, nameColW);
-      const h = 6 + svcLines.length * 11;
+      const h = 4 + svcLines.length * 10;
       renderRow(h, (top) => {
-        svcLines.forEach((ln, li) => dt(pg, ln, nameColX + 8, top - 8 - li * 11, font, 8.5, MUTED));
+        svcLines.forEach((ln, li) => dt(pg, ln, nameColX + 8, top - 8 - li * 10, font, 8.5, MUTED));
         dt(pg, 'Pauschale', unitColX, top - 8, font, 8.5, MUTED);
         dtr(pg, fm(svc.amount), totalRight, top - 8, font, 8.5, MUTED);
       });
@@ -1191,7 +1191,7 @@ async function generateDocumentPdf(data: {
 
   // Delivery cost as its own row
   if (data.totals?.deliveryCost && data.totals.deliveryCost > 0) {
-    renderRow(22, (top) => {
+    renderRow(18, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
       dt(pg, "Anlieferung / Transport", nameColX, top - 8, bold, 9.5);
       dtr(pg, "1", qtyColRight, top - 8, font, 9.5);
@@ -1206,10 +1206,10 @@ async function generateDocumentPdf(data: {
   const unassigned = data.serviceItems.filter(s => s.parentItemIndex == null);
   unassigned.forEach(svc => {
     const svcLines = wt(svc.name, font, 9.5, nameColW);
-    const h = 6 + svcLines.length * 12;
+    const h = 4 + svcLines.length * 11;
     renderRow(h, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
-      svcLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 12, font, 9.5));
+      svcLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 11, font, 9.5));
       dtr(pg, "1", qtyColRight, top - 8, font, 9.5);
       dt(pg, "Pauschale", unitColX, top - 8, font, 9.5, MUTED);
       dtr(pg, fm(svc.amount), totalRight, top - 8, bold, 9.5);
@@ -1220,10 +1220,10 @@ async function generateDocumentPdf(data: {
   // Surcharges
   data.surchargeItems.forEach(sc => {
     const scLines = wt(sc.name, font, 9.5, nameColW);
-    const h = 6 + scLines.length * 12;
+    const h = 4 + scLines.length * 11;
     renderRow(h, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
-      scLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 12, font, 9.5));
+      scLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 11, font, 9.5));
       dtr(pg, "1", qtyColRight, top - 8, font, 9.5);
       dt(pg, "Pauschale", unitColX, top - 8, font, 9.5, MUTED);
       dtr(pg, fm(sc.amount), totalRight, top - 8, bold, 9.5);
