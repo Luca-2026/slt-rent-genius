@@ -1290,7 +1290,6 @@ async function generateDocumentPdf(data: {
 
   // ── Payment / Proforma-Kasten (mit deutlich mehr Innenpadding und Zeilenabstand) ──
   y -= 8; // Luft vor dem Kasten
-  need(110);
   if (proformaFlag) {
     const notice = "Dies ist keine Rechnung im Sinne des \u00A714 UStG und berechtigt nicht zum Vorsteuerabzug. Zahlung vor Mietbeginn (Vorkasse); die Bereitstellung erfolgt nach Zahlungseingang.";
     const lines = wt(notice, font, 9, CW - 32);
