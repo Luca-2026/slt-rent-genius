@@ -195,7 +195,7 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
             <Input type="number" min={0} step={100} value={form.credit_limit} onChange={(e) => setForm({ ...form, credit_limit: Number(e.target.value) })} />
           </div>
           <div>
-            <Label>Zahlungsziel (Tage)</Label>
+            <Label>Zahlungsziel (Tage) – Legacy</Label>
             <Select value={String(form.payment_due_days)} onValueChange={(v) => setForm({ ...form, payment_due_days: Number(v) })}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -205,6 +205,20 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
               </SelectContent>
             </Select>
           </div>
+          <div>
+            <Label>Standard-Zahlungskondition (neue Rechnungen)</Label>
+            <Select value={form.default_payment_terms} onValueChange={(v) => setForm({ ...form, default_payment_terms: v })}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="vorkasse">Vorkasse (0 Tage)</SelectItem>
+                <SelectItem value="net_7">Zahlbar innerhalb 7 Tagen</SelectItem>
+                <SelectItem value="net_14">Zahlbar innerhalb 14 Tagen</SelectItem>
+                <SelectItem value="net_30">Zahlbar innerhalb 30 Tagen</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground mt-1">Wird beim Erstellen neuer Rechnungen aus Angeboten automatisch vorbelegt.</p>
+          </div>
+
 
           <div>
             <Label>Zugewiesener Standort</Label>
