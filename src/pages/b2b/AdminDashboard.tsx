@@ -207,8 +207,13 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
-    if (user && isAdmin) fetchData();
+    if (user && isAdmin) {
+      // Mark overdue invoices once per session load (server-side date compare)
+      supabase.rpc("mark_overdue_invoices").catch(() => {});
+      fetchData();
+    }
   }, [user, isAdmin]);
+
 
   // ─── Actions ──────────────────────────────────────────
   const toggleVatVerification = async (profile: B2BProfile) => {
