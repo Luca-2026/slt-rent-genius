@@ -391,7 +391,7 @@ export function AdminInvoicesTab({
                     <TableRow key={inv.id}>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <p className="font-medium text-sm">{inv.invoice_number}</p>
+                          <p className="font-medium text-sm">{inv.invoice_number || <span className="italic text-muted-foreground">Entwurf</span>}</p>
                           {inv.is_reverse_charge && (
                             <Badge variant="outline" className="text-[10px] px-1.5 py-0">RC</Badge>
                           )}
@@ -405,9 +405,10 @@ export function AdminInvoicesTab({
                             <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-red-600 border-red-300">Gutschrift</Badge>
                           )}
                         </div>
+                        <p className="text-[10px] text-muted-foreground mt-0.5">{paymentTermsLabel(inv.payment_terms)}</p>
                       </TableCell>
                       <TableCell className="text-sm">{inv.customer_company || "–"}</TableCell>
-                      <TableCell className="text-sm">{formatDate(inv.invoice_date)}</TableCell>
+                      <TableCell className="text-sm">{inv.invoice_date ? formatDate(inv.invoice_date) : "–"}</TableCell>
                       <TableCell className="text-sm">
                         {inv.due_date ? formatDate(inv.due_date) : "–"}
                       </TableCell>
@@ -418,6 +419,7 @@ export function AdminInvoicesTab({
                         <Select
                           value={inv.status}
                           onValueChange={(v) => onStatusChange(inv.id, v)}
+                          disabled={inv.status === 'draft'}
                         >
                           <SelectTrigger className={`w-[130px] h-8 text-xs border ${statusColor(inv.status)}`}>
                             <SelectValue />
@@ -433,16 +435,32 @@ export function AdminInvoicesTab({
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-1">
+                          {inv.status === 'draft' && (
+                            <Button
+                              size="sm"
+                              className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                              onClick={() => setFinalizeConfirmInvoice(inv)}
+                              disabled={finalizingId === inv.id}
+                            >
+                              {finalizingId === inv.id ? (
+                                <RefreshCw className="h-3.5 w-3.5 animate-spin mr-1" />
+                              ) : (
+                                <CheckCircle className="h-3.5 w-3.5 mr-1" />
+                              )}
+                              <span className="text-xs">Finalisieren</span>
+                            </Button>
+                          )}
                           {inv.file_url && (
                             <Button
                               size="sm"
                               variant="ghost"
-                              onClick={() => onViewInvoice(inv.file_url!, inv.invoice_number)}
+                              onClick={() => onViewInvoice(inv.file_url!, inv.invoice_number || 'Entwurf')}
                             >
                               <Eye className="h-4 w-4 mr-1" />
                               <span className="text-xs">PDF</span>
                             </Button>
                           )}
+
                           {inv.file_url && (
                             <Button
                               size="sm"
