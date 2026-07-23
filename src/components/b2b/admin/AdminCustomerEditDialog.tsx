@@ -79,7 +79,9 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
       credit_limit: p.credit_limit,
       payment_due_days: p.payment_due_days,
       assigned_location: p.assigned_location || "",
+      default_payment_terms: (p as any).default_payment_terms || "net_14",
       status: p.status,
+
     });
   };
 
