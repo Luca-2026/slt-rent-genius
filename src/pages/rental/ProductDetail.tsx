@@ -1330,6 +1330,9 @@ export default function ProductDetail() {
                           : product.pricePerDay
                             ? product.pricePerDay
                             : `ab ${Number.isInteger(productSEO!.dailyPriceFrom as number) ? productSEO!.dailyPriceFrom : (productSEO!.dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
+                        {!product.pricePerMonth && typeof productSEO?.dailyPriceFrom === "number" && !product.pricePerDay && (
+                          <span className="text-primary">*</span>
+                        )}
                         <span className="text-sm md:text-xs lg:text-base font-normal text-muted-foreground"> {product.pricePerMonth ? "/ Monat" : t("rental.perDay")}</span>
                       </div>
                       {product.priceWeekend && !product.pricePerMonth && (
@@ -1340,6 +1343,11 @@ export default function ProductDetail() {
                       <p className="text-[11px] text-muted-foreground mt-1">
                         Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
                       </p>
+                      {!product.pricePerMonth && typeof productSEO?.dailyPriceFrom === "number" && !product.pricePerDay && (
+                        <p className="text-[11px] leading-snug text-muted-foreground mt-1">
+                          *Unverbindlicher Ab-Preis, gerechnet auf Monatsmiete. Der tatsächliche Preis ist abhängig von Standort, Mietdauer, Saison und Auslastung und wird tagesaktuell im Buchungsprozess ausgewiesen.
+                        </p>
+                      )}
                     </div>
                   )}
                   <div className="space-y-2 md:space-y-1.5 lg:space-y-2 mb-3 md:mb-2 lg:mb-4">
@@ -1351,11 +1359,15 @@ export default function ProductDetail() {
                       {t("rental.rentNow")}
                     </Button>
                     <Link to="/b2b/login" className="block">
-                      <Button size="lg" variant="default" className="w-full md:h-9 md:text-sm lg:h-11 lg:text-base">
+                      <Button size="lg" variant="outline" className="w-full md:h-9 md:text-sm lg:h-11 lg:text-base border-primary/40 text-primary hover:bg-primary/5">
                         {t("rental.b2bConditions")}
                       </Button>
                     </Link>
+                    <p className="text-[11px] leading-snug text-muted-foreground">
+                      B2B-Konditionen sinnvoll ab größeren Mengen, Rahmenverträgen oder wiederkehrenden Bestellungen. Für einzelne Kurzmieten bitte direkt „{t("rental.rentNow")}" nutzen.
+                    </p>
                   </div>
+
 
                   {/* Location */}
                   <div className="border-t border-border pt-3 md:pt-2 lg:pt-4 space-y-1.5 md:space-y-1 lg:space-y-2">
@@ -1522,6 +1534,9 @@ function MobileBookingCard({
               : product.pricePerDay
                 ? product.pricePerDay
                 : `ab ${Number.isInteger(dailyPriceFrom as number) ? dailyPriceFrom : (dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
+            {!product.pricePerMonth && !product.pricePerDay && typeof dailyPriceFrom === "number" && (
+              <span className="text-primary">*</span>
+            )}
             <span className="text-sm font-normal text-muted-foreground"> {product.pricePerMonth ? "/ Monat" : t("rental.perDay")}</span>
           </div>
           {product.priceWeekend && !product.pricePerMonth && (
@@ -1532,22 +1547,31 @@ function MobileBookingCard({
           <p className="text-[11px] text-muted-foreground mt-1">
             Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
           </p>
+          {!product.pricePerMonth && !product.pricePerDay && typeof dailyPriceFrom === "number" && (
+            <p className="text-[11px] leading-snug text-muted-foreground mt-1">
+              *Unverbindlicher Ab-Preis, gerechnet auf Monatsmiete. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
+            </p>
+          )}
         </div>
       )}
-      <div className="flex flex-col sm:flex-row gap-2">
+      <div className="flex flex-col gap-2">
         <Button
           size="default"
-          className="w-full sm:flex-1 bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+          className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
           onClick={onBook}
         >
           {t("rental.rentNow")}
         </Button>
-        <Link to="/b2b/login" className="w-full sm:flex-1">
-          <Button size="default" variant="default" className="w-full">
+        <Link to="/b2b/login" className="w-full">
+          <Button size="default" variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/5">
             {t("rental.b2bConditions")}
           </Button>
         </Link>
+        <p className="text-[11px] leading-snug text-muted-foreground">
+          B2B-Konditionen sinnvoll ab größeren Mengen, Rahmenverträgen oder wiederkehrenden Bestellungen. Für einzelne Kurzmieten bitte direkt „{t("rental.rentNow")}" nutzen.
+        </p>
       </div>
+
       <div className="flex items-center gap-2 text-xs text-muted-foreground mt-3">
         <MapPin className="h-3 w-3 flex-shrink-0" />
         <span className="truncate">{location.address}</span>
