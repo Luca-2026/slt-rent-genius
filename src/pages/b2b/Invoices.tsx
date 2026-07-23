@@ -35,7 +35,9 @@ interface Invoice {
   file_url: string | null;
   file_name: string | null;
   notes: string | null;
+  payment_terms: string | null;
   created_at: string;
+
 }
 
 const statusConfig: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline"; icon: typeof Clock }> = {
