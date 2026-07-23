@@ -1563,7 +1563,7 @@ function MobileBookingCard({
           {t("rental.rentNow")}
         </Button>
         <Link to="/b2b/login" className="w-full">
-          <Button size="default" variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/5">
+          <Button size="default" variant="outline" className="w-full border-2 border-primary text-primary bg-background hover:bg-primary hover:text-primary-foreground hover:border-primary">
             {t("rental.b2bConditions")}
           </Button>
         </Link>
