@@ -1180,9 +1180,9 @@ async function generateDocumentPdf(data: {
     const linked = data.serviceItems.filter(s => s.parentItemIndex === productIndex);
     linked.forEach(svc => {
       const svcLines = wt(`↳ ${svc.name}`, font, 8.5, nameColW);
-      const h = 6 + svcLines.length * 11;
+      const h = 4 + svcLines.length * 10;
       renderRow(h, (top) => {
-        svcLines.forEach((ln, li) => dt(pg, ln, nameColX + 8, top - 8 - li * 11, font, 8.5, MUTED));
+        svcLines.forEach((ln, li) => dt(pg, ln, nameColX + 8, top - 8 - li * 10, font, 8.5, MUTED));
         dt(pg, 'Pauschale', unitColX, top - 8, font, 8.5, MUTED);
         dtr(pg, fm(svc.amount), totalRight, top - 8, font, 8.5, MUTED);
       });
