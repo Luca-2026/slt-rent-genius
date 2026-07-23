@@ -1021,25 +1021,29 @@ async function generateDocumentPdf(data: {
 
     // Empfängeradresse (DIN 5008 Fensterbereich, max ~85mm × 40mm)
     let ay = ADDR_Y_TOP;
-    dt(pg, data.profile.company_name, ADDR_X, ay, bold, 10.5); ay -= 13;
-    if (data.profile.legal_form) { dt(pg, data.profile.legal_form, ADDR_X, ay, font, 9.5, MUTED); ay -= 12; }
+    const companyLine = data.profile.legal_form
+      ? `${data.profile.company_name} ${data.profile.legal_form}`
+      : data.profile.company_name;
+    dt(pg, companyLine, ADDR_X, ay, bold, 10.5); ay -= 13;
     const cn = `${data.profile.contact_first_name || ''} ${data.profile.contact_last_name || ''}`.trim();
     if (cn) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 12; }
     dt(pg, `${data.profile.street}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`, ADDR_X, ay, font, 9.5); ay -= 12;
     dt(pg, `${data.profile.postal_code} ${data.profile.city}`, ADDR_X, ay, font, 9.5); ay -= 12;
     dt(pg, data.profile.country || 'Deutschland', ADDR_X, ay, font, 9.5);
 
-    // Logo oben RECHTS (~50 mm breit = ~142 pt)
+    // Logo oben RECHTS (~40 mm breit = ~113 pt)
+    let logoBottomY = H - MT;
     if (logoImg) {
-      const targetW = 142;
+      const targetW = 113;
       const scale = targetW / logoImg.width;
       const drawH = logoImg.height * scale;
-      pg.drawImage(logoImg, { x: W - MR - targetW, y: H - MT - drawH, width: targetW, height: drawH });
+      logoBottomY = H - MT - drawH;
+      pg.drawImage(logoImg, { x: W - MR - targetW, y: logoBottomY, width: targetW, height: drawH });
     }
 
-    // Info-Block rechts, zweispaltig (Label grau / Wert schwarz)
+    // Info-Block rechts, zweispaltig (Label grau / Wert schwarz) – UNTER dem Logo
     const infoX = W - MR - 200;
-    let iy = ADDR_Y_TOP;
+    let iy = Math.min(ADDR_Y_TOP, logoBottomY - 14);
     const infoRow = (label: string, value: string) => {
       dt(pg, label, infoX, iy, font, 8.5, MUTED);
       dt(pg, value, infoX + 95, iy, font, 9, INK);
