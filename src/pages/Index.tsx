@@ -357,13 +357,13 @@ export default function Index() {
                 </a>
                 <div className="text-center md:text-left">
                   <p className="text-sm text-accent font-medium uppercase tracking-wide mb-1">
-                    Dein persönlicher Ansprechpartner
+                    {t("cta.personalContact")}
                   </p>
                   <p className="text-lg md:text-xl font-bold text-headline">
                     Benedikt Nöchel
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Geschäftsführer & Inhaber
+                    {t("cta.ceoRole")}
                   </p>
                 </div>
               </div>
@@ -372,7 +372,7 @@ export default function Index() {
                 {t("cta.title")}
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto mb-8 md:mb-10 text-base md:text-lg text-center">
-                Ob Privatperson oder Unternehmen – bei uns findest du das passende Equipment. Bei Fragen oder Anregungen melde dich gerne persönlich bei mir oder unserem Team.
+                {t("cta.subtitleExtended")}
               </p>
               <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center w-full">
                 <Link to="/mieten" className="sm:flex-1">
@@ -450,8 +450,8 @@ export default function Index() {
       {/* Ratgeber-Teaser: stärkt interne Verlinkung der Ratgeber-Artikel */}
       <RatgeberTeaserBlock
         articles={getLatestArticles(3)}
-        heading="Aus unserem Ratgeber"
-        subheading="Praxiswissen rund ums Mieten – verständlich erklärt"
+        heading={t("ratgeberTeaser.heading")}
+        subheading={t("ratgeberTeaser.subheading")}
       />
 
 

@@ -36,22 +36,22 @@ export function Footer() {
     { to: "/so-funktionierts", label: t("footer.howItWorks") },
     { to: "/hilfe", label: t("footer.help") },
     { to: "/lieferung", label: t("footer.deliveryCosts") },
-    { to: "/tiefpreisgarantie", label: "Tiefpreisgarantie" },
+    { to: "/tiefpreisgarantie", label: t("footer.lowPriceGuarantee") },
     { to: "/standorte", label: t("footer.locations") },
     { to: "/karriere", label: t("footer.career") },
     { to: "/kontakt", label: t("footer.contact") },
-    { to: "/ratgeber", label: "Ratgeber" },
-    { to: "/dienstleistungen", label: "Dienstleistungen" },
-    { to: "/vergleich", label: "Anbietervergleich" },
-    { to: "/glasfaserausbau-maschinen-mieten", label: "Glasfaserausbau" },
-    { to: "/hochzeit-technik-mieten", label: "Hochzeit Technik mieten" },
+    { to: "/ratgeber", label: t("footer.guide") },
+    { to: "/dienstleistungen", label: t("footer.services") },
+    { to: "/vergleich", label: t("footer.comparison") },
+    { to: "/glasfaserausbau-maschinen-mieten", label: t("footer.fiberOptic") },
+    { to: "/hochzeit-technik-mieten", label: t("footer.weddingTech") },
     { to: "/faq", label: t("footer.faq") },
   ];
 
   const salesLinks = [
-    { to: "/verkauf/neumaschinen", label: "Neumaschinen kaufen" },
-    { to: "/verkauf/gebrauchtmaschinen", label: "Gebrauchtmaschinen kaufen" },
-    { to: "/service/baumax-reparatur-nrw", label: "BAUMAX Service & Reparatur" },
+    { to: "/verkauf/neumaschinen", label: t("footer.buyNewMachines") },
+    { to: "/verkauf/gebrauchtmaschinen", label: t("footer.buyUsedMachines") },
+    { to: "/service/baumax-reparatur-nrw", label: t("footer.baumaxService") },
   ];
 
   const legalLinks = [
@@ -152,7 +152,7 @@ export function Footer() {
                 to={`/standorte/${loc.id}`}
                 className="text-xs text-white/80 hover:text-accent transition-colors"
               >
-                {`Standort ${loc.name}`}
+                {t("footer.locationPrefix", { name: loc.name })}
               </Link>
             ))}
           </div>
@@ -205,7 +205,7 @@ export function Footer() {
               onClick={handleCookieSettings}
               className="hover:text-white transition-colors cursor-pointer"
             >
-              Cookie-Einstellungen
+              {t("footer.cookieSettings")}
             </button>
           </div>
         </div>
