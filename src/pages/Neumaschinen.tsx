@@ -152,8 +152,8 @@ const brandDbNames: Record<string, string> = {
 
 type SortKey = "featured" | "price-asc" | "price-desc" | "name";
 
-function formatPriceGross(price: number | null, onRequest: boolean) {
-  if (onRequest || !price) return "Preis auf Anfrage";
+function formatPriceGross(price: number | null, onRequest: boolean, onRequestLabel = "Preis auf Anfrage") {
+  if (onRequest || !price) return onRequestLabel;
   return new Intl.NumberFormat("de-DE", {
     style: "currency",
     currency: "EUR",
@@ -162,6 +162,7 @@ function formatPriceGross(price: number | null, onRequest: boolean) {
 }
 
 function BrandNewMachines({ brandKey }: { brandKey: string }) {
+  const { t } = useTranslation();
   const { data: machines } = useQuery({
     queryKey: ["verkauf-new-machines", brandKey],
     queryFn: async () => {
@@ -184,7 +185,7 @@ function BrandNewMachines({ brandKey }: { brandKey: string }) {
 
   return (
     <div className="mt-2 pt-6 border-t border-border">
-      <h3 className="text-lg font-bold text-foreground mb-4">Verfügbare Neumaschinen</h3>
+      <h3 className="text-lg font-bold text-foreground mb-4">{t("sales.new.brandNewMachinesHeading")}</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {machines.map((m: any) => {
           const img = Array.isArray(m.images) && m.images.length > 0 ? m.images[0] : null;
@@ -211,16 +212,16 @@ function BrandNewMachines({ brandKey }: { brandKey: string }) {
                 <div className="flex items-center justify-between gap-2 mt-2">
                   <div className="flex flex-col">
                     <span className="text-sm font-bold text-primary">
-                      {m.price_on_request || !m.price_gross ? "Preis auf Anfrage" : `${fmt(Number(m.price_gross))} brutto`}
+                      {m.price_on_request || !m.price_gross ? t("sales.new.priceOnRequest") : `${fmt(Number(m.price_gross))} ${t("sales.new.gross")}`}
                     </span>
                     {!m.price_on_request && m.price_gross && m.compare_at_price && Number(m.compare_at_price) > Number(m.price_gross) && (
                       <span className="text-[11px] text-muted-foreground line-through">
-                        UVP {fmt(Number(m.compare_at_price))}
+                        {t("sales.new.rrp")} {fmt(Number(m.compare_at_price))}
                       </span>
                     )}
                   </div>
                   <span className="inline-flex items-center gap-1 text-xs text-primary group-hover:translate-x-0.5 transition-transform">
-                    Details <ArrowRight className="h-3 w-3" />
+                    {t("sales.new.details")} <ArrowRight className="h-3 w-3" />
                   </span>
                 </div>
               </div>
@@ -602,25 +603,25 @@ export default function Neumaschinen() {
         <div className="section-container">
           <AnimatedSection>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6 leading-tight">
-              Neue Baumaschinen und Zubehör kaufen
+              {t("sales.new.pageTitle")}
             </h1>
             <p className="text-lg text-primary-foreground/80 max-w-3xl mb-8">
-              Neue Baumaschinen, Anhänger, Erdraketen und Zubehör direkt vom Fachhändler in NRW – mit Herstellergarantie, Service, Beratung und Lieferung.
+              {t("sales.new.pageSubtitle")}
             </p>
             <div className="flex flex-wrap gap-4 mb-8">
               <a href="#angebote">
                 <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                  Alle Neumaschinen ansehen <ChevronDown className="ml-2 h-4 w-4" />
+                  {t("sales.new.ctaShowAll")} <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </a>
               <Link to="/verkauf/gebrauchtmaschinen">
                 <Button size="lg" variant="secondary" className="gap-2">
-                  <Tag className="mr-2 h-5 w-5" /> Zu den Gebrauchtmaschinen
+                  <Tag className="mr-2 h-5 w-5" /> {t("sales.new.ctaToUsed")}
                 </Button>
               </Link>
               <a href="#kaufanfrage">
                 <Button size="lg" variant="outline" className="gap-2 bg-transparent text-primary-foreground border-primary-foreground/40 hover:bg-primary-foreground/10 hover:text-primary-foreground">
-                  Kaufanfrage stellen
+                  {t("sales.new.ctaSubmitInquiry")}
                 </Button>
               </a>
             </div>
@@ -644,29 +645,29 @@ export default function Neumaschinen() {
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Suche nach Modell, Marke oder Artikelnummer …"
+                placeholder={t("sales.new.searchPlaceholder")}
                 className="pl-9"
-                aria-label="Neumaschinen durchsuchen"
+                aria-label={t("sales.new.searchAria")}
               />
             </div>
             <div className={`grid grid-cols-2 sm:grid-cols-${showDiameterFilter && availableDiameters.length > 0 ? 4 : 3} gap-2 lg:flex lg:gap-2`}>
               <Select value={brand} onValueChange={setBrand}>
-                <SelectTrigger className="lg:w-[140px]" aria-label="Marke filtern">
-                  <SelectValue placeholder="Marke" />
+                <SelectTrigger className="lg:w-[140px]" aria-label={t("sales.new.brandAria")}>
+                  <SelectValue placeholder={t("sales.new.brandLabel")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Alle Marken</SelectItem>
+                  <SelectItem value="all">{t("sales.new.allBrands")}</SelectItem>
                   {brands.map((b) => (
                     <SelectItem key={b} value={b}>{b}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
               <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger className="lg:w-[180px]" aria-label="Kategorie filtern">
-                  <SelectValue placeholder="Kategorie" />
+                <SelectTrigger className="lg:w-[180px]" aria-label={t("sales.new.categoryAria")}>
+                  <SelectValue placeholder={t("sales.new.categoryLabel")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Alle Kategorien</SelectItem>
+                  <SelectItem value="all">{t("sales.new.allCategories")}</SelectItem>
                   {categories.map((c) => (
                     <SelectItem key={c} value={c}>{c}</SelectItem>
                   ))}
@@ -674,40 +675,40 @@ export default function Neumaschinen() {
               </Select>
               {showDiameterFilter && availableDiameters.length > 0 && (
                 <Select value={diameter} onValueChange={setDiameter}>
-                  <SelectTrigger className="lg:w-[170px]" aria-label="Erdrakete: Bohrdurchmesser">
-                    <SelectValue placeholder="Ø Erdrakete" />
+                  <SelectTrigger className="lg:w-[170px]" aria-label={t("sales.new.diameterAria")}>
+                    <SelectValue placeholder={t("sales.new.diameterPlaceholder")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Alle Ø (Erdraketen)</SelectItem>
+                    <SelectItem value="all">{t("sales.new.allDiameters")}</SelectItem>
                     {availableDiameters.map((d) => (
-                      <SelectItem key={d} value={d}>Erdrakete Ø {d} mm</SelectItem>
+                      <SelectItem key={d} value={d}>{t("sales.new.diameterOption", { d })}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               )}
               <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
-                <SelectTrigger className="lg:w-[180px]" aria-label="Sortierung">
+                <SelectTrigger className="lg:w-[180px]" aria-label={t("sales.new.sortAria")}>
                   <SlidersHorizontal className="h-3.5 w-3.5 mr-1" />
-                  <SelectValue placeholder="Sortieren" />
+                  <SelectValue placeholder={t("sales.new.sortLabel")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="featured">Empfohlen (nach Kategorie)</SelectItem>
-                  <SelectItem value="price-asc">Preis aufsteigend</SelectItem>
-                  <SelectItem value="price-desc">Preis absteigend</SelectItem>
-                  <SelectItem value="name">Name (A–Z)</SelectItem>
+                  <SelectItem value="featured">{t("sales.new.sortFeatured")}</SelectItem>
+                  <SelectItem value="price-asc">{t("sales.new.sortPriceAsc")}</SelectItem>
+                  <SelectItem value="price-desc">{t("sales.new.sortPriceDesc")}</SelectItem>
+                  <SelectItem value="name">{t("sales.new.sortName")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             {hasActiveFilters && (
               <Button variant="ghost" size="sm" onClick={resetFilters} className="gap-1 self-start lg:self-auto">
-                <X className="h-3.5 w-3.5" /> Zurücksetzen
+                <X className="h-3.5 w-3.5" /> {t("sales.new.reset")}
               </Button>
             )}
           </div>
           {!isLoading && (
             <p className="text-xs text-muted-foreground mt-3">
-              {filtered.length} {filtered.length === 1 ? "Artikel" : "Artikel"}
-              {hasActiveFilters && machines && ` von ${machines.length}`}
+              {filtered.length} {t("sales.new.articles")}
+              {hasActiveFilters && machines && ` ${t("sales.new.articlesOf", { total: machines.length })}`}
             </p>
           )}
         </div>
@@ -716,17 +717,17 @@ export default function Neumaschinen() {
       {/* Machine grid */}
       <section className="section-container py-10 md:py-14">
         {isLoading ? (
-          <p className="text-center text-muted-foreground py-12">Lade Neumaschinen…</p>
+          <p className="text-center text-muted-foreground py-12">{t("sales.new.loading")}</p>
         ) : !machines || machines.length === 0 ? (
           <div className="text-center py-12 bg-muted/30 rounded-lg">
             <Package className="h-12 w-12 text-muted-foreground/40 mx-auto mb-3" />
-            <p className="text-muted-foreground">Aktuell sind keine Neumaschinen-Artikel hinterlegt.</p>
+            <p className="text-muted-foreground">{t("sales.new.emptyAll")}</p>
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-12 bg-muted/30 rounded-lg">
             <Search className="h-12 w-12 text-muted-foreground/40 mx-auto mb-3" />
-            <p className="text-muted-foreground mb-4">Keine Neumaschinen passen zu deinen Filtern.</p>
-            <Button onClick={resetFilters} variant="outline">Filter zurücksetzen</Button>
+            <p className="text-muted-foreground mb-4">{t("sales.new.emptyFiltered")}</p>
+            <Button onClick={resetFilters} variant="outline">{t("sales.new.resetFilters")}</Button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -754,7 +755,7 @@ export default function Neumaschinen() {
                           <Badge variant="secondary" className="font-normal">{m.category}</Badge>
                         )}
                         {m.is_featured && (
-                          <Badge className="bg-accent text-accent-foreground">Top-Angebot</Badge>
+                          <Badge className="bg-accent text-accent-foreground">{t("sales.new.badgeTop")}</Badge>
                         )}
                       </div>
                       <h2 className="font-bold text-headline text-lg leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-3 min-h-[4.5rem]">
@@ -765,13 +766,13 @@ export default function Neumaschinen() {
                       </p>
                       <div className="mt-auto flex items-baseline justify-between gap-2 pt-3 border-t border-border min-h-[6.25rem]">
                         <div>
-                          <p className="text-xs text-muted-foreground">Preis</p>
+                          <p className="text-xs text-muted-foreground">{t("sales.new.priceLabel")}</p>
                           <p className="text-lg font-bold text-primary">
-                            {formatPriceGross(m.price_gross ? Number(m.price_gross) : null, m.price_on_request)}
+                            {formatPriceGross(m.price_gross ? Number(m.price_gross) : null, m.price_on_request, t("sales.new.priceOnRequest"))}
                           </p>
                           {!m.price_on_request && m.price_gross && m.compare_at_price && Number(m.compare_at_price) > Number(m.price_gross) && (
                             <p className="text-xs text-muted-foreground line-through">
-                              UVP {formatPriceGross(Number(m.compare_at_price), false)}
+                              {t("sales.new.rrp")} {formatPriceGross(Number(m.compare_at_price), false, t("sales.new.priceOnRequest"))}
                             </p>
                           )}
                           {!m.price_on_request && m.price_gross && (
