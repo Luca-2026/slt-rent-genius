@@ -28,6 +28,17 @@ const locations = [
   },
 ];
 
+/**
+ * Offizielle SLT-Rental Social-Media-Profile.
+ * Bewusst als eingefrorene Modul-Konstante hinterlegt (nicht aus DB/CMS/env),
+ * damit die Links nicht durch Datenbank- oder CMS-Manipulation geändert werden
+ * können. Änderungen ausschließlich per Code-Review möglich.
+ */
+const SOCIAL_LINKS = Object.freeze({
+  facebook: "https://www.facebook.com/sltrental1",
+  instagram: "https://www.instagram.com/sltrental/",
+} as const);
+
 export function Footer() {
   const { t } = useTranslation();
 
@@ -96,20 +107,20 @@ export function Footer() {
           {/* Social Links */}
           <div className="flex items-center gap-3 shrink-0">
             <a
-              href="https://www.facebook.com/sltrental"
+              href={SOCIAL_LINKS.facebook}
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-accent transition-colors"
-              aria-label="Facebook"
+              aria-label="Facebook – SLT Rental"
             >
               <Facebook className="h-4 w-4 text-white" />
             </a>
             <a
-              href="https://www.instagram.com/slt_rental"
+              href={SOCIAL_LINKS.instagram}
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-accent transition-colors"
-              aria-label="Instagram"
+              aria-label="Instagram – SLT Rental"
             >
               <Instagram className="h-4 w-4 text-white" />
             </a>
