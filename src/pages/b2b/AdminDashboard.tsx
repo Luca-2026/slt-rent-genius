@@ -1039,6 +1039,12 @@ export default function AdminDashboard() {
             <Boxes className="h-4 w-4" />
             <span className="hidden sm:inline">Inventar</span>
           </TabsTrigger>
+          {SUPER_ADMIN_EMAILS.includes((user?.email ?? "").toLowerCase()) && (
+            <TabsTrigger value="audit" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Shield className="h-4 w-4" />
+              <span className="hidden sm:inline">Audit-Log</span>
+            </TabsTrigger>
+          )}
         </TabsList>
 
 
