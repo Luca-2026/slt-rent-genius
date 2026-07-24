@@ -84,7 +84,7 @@ export default function AdminAuditLogTab() {
         </div>
         <p className="text-sm text-muted-foreground">
           Letzte 500 Ereignisse. Nur für dich und Benedikt sichtbar. Ein täglicher Report wird an
-          l.sandhoff@slt-rental.de und b.noechle@slt-rental.de versendet.
+          l.sandhoff@slt-rental.de und b.noechel@slt-rental.de versendet.
         </p>
       </CardHeader>
       <CardContent className="space-y-4">

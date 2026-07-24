@@ -22,7 +22,7 @@ import { AdminDamageOverview } from "@/components/b2b/admin/AdminDamageOverview"
 import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
 import AdminAuditLogTab from "@/components/b2b/admin/AdminAuditLogTab";
 
-const SUPER_ADMIN_EMAILS = ["l.sandhoff@slt-rental.de", "b.noechle@slt-rental.de"];
+const SUPER_ADMIN_EMAILS = ["l.sandhoff@slt-rental.de", "b.noechel@slt-rental.de"];
 
 import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
 import { AdminCustomerDetailDialog } from "@/components/b2b/admin/AdminCustomerDetailDialog";

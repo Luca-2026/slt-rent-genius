@@ -5,7 +5,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const SUPER_ADMINS = ["l.sandhoff@slt-rental.de", "b.noechle@slt-rental.de"];
+const SUPER_ADMINS = ["l.sandhoff@slt-rental.de", "b.noechel@slt-rental.de"];
 
 const ENTITY_LABELS: Record<string, string> = {
   auth: "Anmeldung",
