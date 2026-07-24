@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, LogIn, Building2 } from "lucide-react";
+import { Eye, EyeOff, LogIn, Building2, ShieldCheck } from "lucide-react";
 
 export default function B2BLogin() {
   const [email, setEmail] = useState("");
