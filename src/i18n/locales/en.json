@@ -2706,7 +2706,9 @@
       "usp4Desc": "All listed machines are ready for pickup or delivery.",
       "searchingHeading": "Looking for a specific machine?",
       "searchingText": "Tell us what you need – we'll find the right used machine for you.",
-      "generalInquiry": "Send general inquiry"
+      "generalInquiry": "Send general inquiry",
+      "contactHeading": "Questions about our used machines?",
+      "contactText": "Our team is happy to advise you personally."
     },
     "newDetail": {
       "loading": "Loading machine…",

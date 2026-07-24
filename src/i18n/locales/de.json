@@ -2706,7 +2706,9 @@
       "usp4Desc": "Alle gelisteten Maschinen sind sofort abholbereit oder lieferbar.",
       "searchingHeading": "Sie suchen eine bestimmte Maschine?",
       "searchingText": "Teilen Sie uns Ihren Bedarf mit – wir finden die passende Gebrauchtmaschine für Sie.",
-      "generalInquiry": "Allgemeine Anfrage senden"
+      "generalInquiry": "Allgemeine Anfrage senden",
+      "contactHeading": "Fragen zu unseren Gebrauchtmaschinen?",
+      "contactText": "Unser Team berät Sie gerne persönlich."
     },
     "newDetail": {
       "loading": "Lade Maschine…",
