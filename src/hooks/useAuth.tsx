@@ -146,6 +146,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email,
       password,
     });
+    if (!error) {
+      // Fire-and-forget: server-side check ensures only admins are logged
+      supabase.rpc("log_admin_login" as any).then(() => {}, () => {});
+    }
     return { error };
   };
 

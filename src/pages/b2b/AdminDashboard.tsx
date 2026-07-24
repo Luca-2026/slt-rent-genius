@@ -20,6 +20,9 @@ import { AdminReturnProtocolsTab } from "@/components/b2b/admin/AdminReturnProto
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
 import { AdminDamageOverview } from "@/components/b2b/admin/AdminDamageOverview";
 import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
+import AdminAuditLogTab from "@/components/b2b/admin/AdminAuditLogTab";
+
+const SUPER_ADMIN_EMAILS = ["l.sandhoff@slt-rental.de", "b.noechle@slt-rental.de"];
 
 import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
 import { AdminCustomerDetailDialog } from "@/components/b2b/admin/AdminCustomerDetailDialog";
@@ -1036,6 +1039,12 @@ export default function AdminDashboard() {
             <Boxes className="h-4 w-4" />
             <span className="hidden sm:inline">Inventar</span>
           </TabsTrigger>
+          {SUPER_ADMIN_EMAILS.includes((user?.email ?? "").toLowerCase()) && (
+            <TabsTrigger value="audit" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Shield className="h-4 w-4" />
+              <span className="hidden sm:inline">Audit-Log</span>
+            </TabsTrigger>
+          )}
         </TabsList>
 
 
@@ -1247,6 +1256,12 @@ export default function AdminDashboard() {
         <TabsContent value="inventory" forceMount className="data-[state=inactive]:hidden">
           <AdminInventoryTab />
         </TabsContent>
+
+        {SUPER_ADMIN_EMAILS.includes((user?.email ?? "").toLowerCase()) && (
+          <TabsContent value="audit" forceMount className="data-[state=inactive]:hidden">
+            <AdminAuditLogTab />
+          </TabsContent>
+        )}
       </Tabs>
 
 

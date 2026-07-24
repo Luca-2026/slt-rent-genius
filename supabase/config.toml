@@ -65,3 +65,5 @@ project_id = "ccmxitxgyznethanixlg"
     verify_jwt = false
   [functions.send-admin-message]
     verify_jwt = false
+  [functions.send-super-admin-report]
+    verify_jwt = false
