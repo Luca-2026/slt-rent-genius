@@ -70,7 +70,13 @@
     "popular": "Beliebt:",
     "articlesFound": "{{count}} Artikel gefunden",
     "noArticlesFound": "Keine Artikel für \"{{query}}\" gefunden",
-    "popularTerms": ["Bagger", "Anhänger", "Geschirr", "Bautrockner", "Arbeitsbühnen"],
+    "popularTerms": [
+      "Bagger",
+      "Anhänger",
+      "Geschirr",
+      "Bautrockner",
+      "Arbeitsbühnen"
+    ],
     "browseAll": "Alle Produkte durchsuchen",
     "selectLocation": "Standort wählen",
     "selectLocationHint": "Wähle einen Standort für die Abholung",
@@ -130,7 +136,10 @@
     "title": "Bereit für dein nächstes Projekt?",
     "subtitle": "Ob Privatperson oder Unternehmen – bei uns findest du das passende Equipment. Jetzt online buchen oder persönlich beraten lassen.",
     "rentEquipment": "Jetzt Equipment mieten",
-    "b2bInquiry": "B2B-Konditionen anfragen"
+    "b2bInquiry": "B2B-Konditionen anfragen",
+    "personalContact": "Dein persönlicher Ansprechpartner",
+    "ceoRole": "Geschäftsführer & Inhaber",
+    "subtitleExtended": "Ob Privatperson oder Unternehmen – bei uns findest du das passende Equipment. Bei Fragen oder Anregungen melde dich gerne persönlich bei mir oder unserem Team."
   },
   "benefits": {
     "fairPrices": "Faire Preise",
@@ -162,7 +171,18 @@
     "zoomlionDealer": "Zoomlion Händler NRW",
     "baumaxDealer": "BAUMAX Fachhändler",
     "temaredBuy": "Temared Anhänger kaufen",
-    "purchaseInquiry": "Kaufanfrage stellen →"
+    "purchaseInquiry": "Kaufanfrage stellen →",
+    "lowPriceGuarantee": "Tiefpreisgarantie",
+    "guide": "Ratgeber",
+    "services": "Dienstleistungen",
+    "comparison": "Anbietervergleich",
+    "fiberOptic": "Glasfaserausbau",
+    "weddingTech": "Hochzeit Technik mieten",
+    "buyNewMachines": "Neumaschinen kaufen",
+    "buyUsedMachines": "Gebrauchtmaschinen kaufen",
+    "baumaxService": "BAUMAX Service & Reparatur",
+    "locationPrefix": "Standort {{name}}",
+    "cookieSettings": "Cookie-Einstellungen"
   },
   "homeSeo": {
     "heading": "Baumaschinen & Equipment mieten in NRW – Ihr Partner für jedes Projekt",
@@ -375,22 +395,70 @@
     "moreAboutWeekend": "Mehr zum Wochenend-Tarif",
     "filterBySize": "Filtern nach Größe:",
     "cat": {
-      "bagger-radlader": { "title": "Bagger & Radlader", "desc": "Minibagger, Radlader und Erdbaumaschinen für jedes Bauvorhaben." },
-      "verdichtung": { "title": "Verdichtung", "desc": "Rüttelplatten, Stampfer und Walzen für professionelle Bodenverdichtung." },
-      "anhaenger": { "title": "Anhänger", "desc": "Pkw-Anhänger, Kipper, Maschinentransporter und Transportanhänger." },
-      "hebebuehnen": { "title": "Hebebühnen & Arbeitsbühnen", "desc": "Scherenbühnen, Teleskopbühnen und Gelenkbühnen für Höhenarbeiten." },
-      "buehnen-podeste": { "title": "Bühnen & Podeste", "desc": "Event-Bühnen, Podeste und Laufstege für Veranstaltungen." },
-      "moebel-zelte": { "title": "Möbel & Zelte", "desc": "Party- / Eventzelte, Bierzeltgarnituren, Stehtische und Event-Mobiliar." },
-      "geschirr": { "title": "Geschirr", "desc": "Teller, Schalen, Gläser und Tassen für Ihre Veranstaltung." },
-      "besteck": { "title": "Besteck", "desc": "Messer, Gabeln und Löffel für Events und Feiern." },
-      "huepfburgen": { "title": "Hüpfburgen", "desc": "Aufblasbare Hüpfburgen und Spiele für Kinderveranstaltungen." },
-      "spezialeffekte": { "title": "Spezialeffekte", "desc": "Nebelmaschinen, Seifenblasen, Funkeneffekte und Fotobooth." },
-      "led-spots": { "title": "LED Spots & Effektlicht", "desc": "Moving Heads, PAR-Scheinwerfer und Bühnenlicht für Events." },
-      "beleuchtung": { "title": "Beleuchtung & Flutlicht", "desc": "Baustellenstrahler, Flutlichtmasten und mobile Beleuchtung." },
-      "stromerzeuger": { "title": "Stromerzeuger", "desc": "Aggregate und Notstromgeräte für Baustelle und Event." },
-      "heizung-klima": { "title": "Heizung & Klima", "desc": "Heizlüfter, Heizpilze und Klimageräte für jede Situation." },
-      "kabel-leitungen": { "title": "Kabel & Leitungen", "desc": "Verlängerungskabel, Kabelbrücken und Stromverteiler." },
-      "absperrung-sicherheit": { "title": "Absperrung & Sicherheit", "desc": "Absperrgitter, Bauzäune, Warnbaken und Sicherheitsequipment." }
+      "bagger-radlader": {
+        "title": "Bagger & Radlader",
+        "desc": "Minibagger, Radlader und Erdbaumaschinen für jedes Bauvorhaben."
+      },
+      "verdichtung": {
+        "title": "Verdichtung",
+        "desc": "Rüttelplatten, Stampfer und Walzen für professionelle Bodenverdichtung."
+      },
+      "anhaenger": {
+        "title": "Anhänger",
+        "desc": "Pkw-Anhänger, Kipper, Maschinentransporter und Transportanhänger."
+      },
+      "hebebuehnen": {
+        "title": "Hebebühnen & Arbeitsbühnen",
+        "desc": "Scherenbühnen, Teleskopbühnen und Gelenkbühnen für Höhenarbeiten."
+      },
+      "buehnen-podeste": {
+        "title": "Bühnen & Podeste",
+        "desc": "Event-Bühnen, Podeste und Laufstege für Veranstaltungen."
+      },
+      "moebel-zelte": {
+        "title": "Möbel & Zelte",
+        "desc": "Party- / Eventzelte, Bierzeltgarnituren, Stehtische und Event-Mobiliar."
+      },
+      "geschirr": {
+        "title": "Geschirr",
+        "desc": "Teller, Schalen, Gläser und Tassen für Ihre Veranstaltung."
+      },
+      "besteck": {
+        "title": "Besteck",
+        "desc": "Messer, Gabeln und Löffel für Events und Feiern."
+      },
+      "huepfburgen": {
+        "title": "Hüpfburgen",
+        "desc": "Aufblasbare Hüpfburgen und Spiele für Kinderveranstaltungen."
+      },
+      "spezialeffekte": {
+        "title": "Spezialeffekte",
+        "desc": "Nebelmaschinen, Seifenblasen, Funkeneffekte und Fotobooth."
+      },
+      "led-spots": {
+        "title": "LED Spots & Effektlicht",
+        "desc": "Moving Heads, PAR-Scheinwerfer und Bühnenlicht für Events."
+      },
+      "beleuchtung": {
+        "title": "Beleuchtung & Flutlicht",
+        "desc": "Baustellenstrahler, Flutlichtmasten und mobile Beleuchtung."
+      },
+      "stromerzeuger": {
+        "title": "Stromerzeuger",
+        "desc": "Aggregate und Notstromgeräte für Baustelle und Event."
+      },
+      "heizung-klima": {
+        "title": "Heizung & Klima",
+        "desc": "Heizlüfter, Heizpilze und Klimageräte für jede Situation."
+      },
+      "kabel-leitungen": {
+        "title": "Kabel & Leitungen",
+        "desc": "Verlängerungskabel, Kabelbrücken und Stromverteiler."
+      },
+      "absperrung-sicherheit": {
+        "title": "Absperrung & Sicherheit",
+        "desc": "Absperrgitter, Bauzäune, Warnbaken und Sicherheitsequipment."
+      }
     }
   },
   "solutions": {
@@ -418,7 +486,12 @@
         "title": "Garten- & Landschaftsbau",
         "subtitle": "Vom Privatgarten bis zur Parkanlage",
         "description": "Komplette Ausstattung für GaLaBau-Betriebe und ambitionierte Hobbygärtner. Von der Baumstumpffräse bis zum Minibagger – alles für die professionelle Gartengestaltung.",
-        "highlights": ["Minibagger 1t - 2,7t (Diesel)", "Baumstumpffräse & Häcksler", "Rüttelplatten & Stampfer", "Anhänger für Grünschnitt & Material"],
+        "highlights": [
+          "Minibagger 1t - 2,7t (Diesel)",
+          "Baumstumpffräse & Häcksler",
+          "Rüttelplatten & Stampfer",
+          "Anhänger für Grünschnitt & Material"
+        ],
         "contentSections": [
           {
             "heading": "Typische Projekte im GaLaBau",
@@ -433,20 +506,46 @@
             "text": "Plane den Maschineneinsatz in der richtigen Reihenfolge: Erst roden und räumen, dann ausheben und profilieren, abschließend verdichten und gestalten. Achte bei Minibaggern auf die Durchfahrtsbreite deines Grundstücks – unsere 1-Tonnen-Modelle passen durch Gartentore ab 80 cm. Bei Pflasterarbeiten sollte die Tragschicht mindestens 20 cm betragen und lagenweise verdichtet werden. Nutze den Wochenend-Tarif für mehrtägige Projekte und spare bis zu 40 % der Mietkosten."
           }
         ],
-        "advantages": ["Kompakte Maschinen für enge Gartenzugänge", "Komplettausstattung aus einer Hand", "Persönliche Beratung durch Fachpersonal", "Flexible Mietzeiten ab 1 Tag"],
+        "advantages": [
+          "Kompakte Maschinen für enge Gartenzugänge",
+          "Komplettausstattung aus einer Hand",
+          "Persönliche Beratung durch Fachpersonal",
+          "Flexible Mietzeiten ab 1 Tag"
+        ],
         "faq": [
-          {"q": "Welcher Minibagger passt durch mein Gartentor?", "a": "Unsere 1-Tonnen-Minibagger haben eine Breite ab 72 cm und passen durch Standard-Gartentore ab 80 cm. Für besonders enge Zugänge beraten wir dich gerne vor Ort."},
-          {"q": "Kann ich Grünschnitt direkt vor Ort häckseln?", "a": "Ja, unsere Häcksler zerkleinern Äste bis 10 cm Durchmesser direkt auf der Baustelle. Das spart Entsorgungsfahrten und der Häcksel eignet sich als Mulch für Beete."},
-          {"q": "Welche Rüttelplatte brauche ich für Pflasterarbeiten?", "a": "Für Gehwege und Terrassen reicht eine leichte Rüttelplatte (50-90 kg). Für Einfahrten und befahrbare Flächen empfehlen wir Modelle ab 200 kg mit höherer Verdichtungsleistung."},
-          {"q": "Bietet ihr auch Lieferung der Maschinen an?", "a": "Ja, wir liefern Minibagger, Rüttelplatten und Anhänger direkt zu deinem Einsatzort. Die Kosten richten sich nach der Entfernung – ab 25 km Umkreis ist die Lieferung besonders günstig."},
-          {"q": "Was kostet ein Minibagger für ein Wochenende?", "a": "Wir bieten attraktive Wochenend-Tarife: Du zahlst für 3 Tage zum Preis von einem Tag. So kannst du dein Gartenprojekt in Ruhe am Wochenende umsetzen."}
+          {
+            "q": "Welcher Minibagger passt durch mein Gartentor?",
+            "a": "Unsere 1-Tonnen-Minibagger haben eine Breite ab 72 cm und passen durch Standard-Gartentore ab 80 cm. Für besonders enge Zugänge beraten wir dich gerne vor Ort."
+          },
+          {
+            "q": "Kann ich Grünschnitt direkt vor Ort häckseln?",
+            "a": "Ja, unsere Häcksler zerkleinern Äste bis 10 cm Durchmesser direkt auf der Baustelle. Das spart Entsorgungsfahrten und der Häcksel eignet sich als Mulch für Beete."
+          },
+          {
+            "q": "Welche Rüttelplatte brauche ich für Pflasterarbeiten?",
+            "a": "Für Gehwege und Terrassen reicht eine leichte Rüttelplatte (50-90 kg). Für Einfahrten und befahrbare Flächen empfehlen wir Modelle ab 200 kg mit höherer Verdichtungsleistung."
+          },
+          {
+            "q": "Bietet ihr auch Lieferung der Maschinen an?",
+            "a": "Ja, wir liefern Minibagger, Rüttelplatten und Anhänger direkt zu deinem Einsatzort. Die Kosten richten sich nach der Entfernung – ab 25 km Umkreis ist die Lieferung besonders günstig."
+          },
+          {
+            "q": "Was kostet ein Minibagger für ein Wochenende?",
+            "a": "Wir bieten attraktive Wochenend-Tarife: Du zahlst für 3 Tage zum Preis von einem Tag. So kannst du dein Gartenprojekt in Ruhe am Wochenende umsetzen."
+          }
         ]
       },
       "tiefbau-erdbewegung": {
         "title": "Tiefbau & Erdbewegung",
         "subtitle": "Kanalbau, Hausanschlüsse, Erdarbeiten",
         "description": "Professionelle Baumaschinen für anspruchsvolle Tiefbauprojekte. Mit unseren Minibaggern, Dumpern und dem passenden Zubehör meisterst du jede Erdarbeit.",
-        "highlights": ["Minibagger 1t - 2,7t mit Anbaugeräten", "Elektro-Dumper für leisen Materialtransport", "Grabenräumlöffel & Tieflöffel", "Baumaschinenanhänger 1,8t - 3,5t", "Verkehrssicherung & Absperrung"],
+        "highlights": [
+          "Minibagger 1t - 2,7t mit Anbaugeräten",
+          "Elektro-Dumper für leisen Materialtransport",
+          "Grabenräumlöffel & Tieflöffel",
+          "Baumaschinenanhänger 1,8t - 3,5t",
+          "Verkehrssicherung & Absperrung"
+        ],
         "contentSections": [
           {
             "heading": "Professioneller Tiefbau mit dem richtigen Equipment",
@@ -461,20 +560,45 @@
             "text": "Vor Beginn der Erdarbeiten müssen Leitungspläne eingeholt und Schachtgenehmigungen beantragt werden. Bei Arbeiten im Straßenraum ist eine Verkehrsrechtliche Anordnung (VRA) erforderlich. Unser Partner SLT Infra unterstützt dich bei der Absperrplanung, der Einrichtung von Halteverbotszonen und der Koordination mit Straßenverkehrsbehörden. So kannst du dich auf die eigentliche Bauarbeit konzentrieren."
           }
         ],
-        "advantages": ["Minibagger mit verschiedenen Anbaugeräten", "Verkehrssicherung durch SLT Infra", "Elektro-Dumper für leise Wohngebiete", "Baumaschinenanhänger für den Transport"],
+        "advantages": [
+          "Minibagger mit verschiedenen Anbaugeräten",
+          "Verkehrssicherung durch SLT Infra",
+          "Elektro-Dumper für leise Wohngebiete",
+          "Baumaschinenanhänger für den Transport"
+        ],
         "faq": [
-          {"q": "Welchen Minibagger brauche ich für Hausanschlüsse?", "a": "Für Hausanschlüsse empfehlen wir unseren 1,5t-Minibagger mit Tieflöffel (30-60 cm Breite). Er ist kompakt genug für Vorgärten und bietet eine Grabtiefe bis 2,5 m – ideal für Wasser-, Gas- und Stromanschlüsse."},
-          {"q": "Brauche ich für Tiefbauarbeiten eine Genehmigung?", "a": "Ja, für Arbeiten im öffentlichen Straßenraum benötigst du eine Schachtgenehmigung und ggf. eine Verkehrsrechtliche Anordnung (VRA). Unser Partner SLT Infra unterstützt dich bei der Antragstellung und Koordination mit Behörden."},
-          {"q": "Was ist ein Elektro-Dumper und wann brauche ich ihn?", "a": "Ein Elektro-Dumper ist ein batteriebetriebener Materialtransporter. Er ist besonders in Wohngebieten ideal, da er nahezu geräuschlos und emissionsfrei arbeitet. Perfekt für Erdaushub, Schüttgut oder Baumaterial."},
-          {"q": "Bietet ihr auch Absperrtechnik für Baustellen?", "a": "Ja, wir haben Absperrschranken, Warnleuchten, Verkehrszeichen und Leitbaken im Sortiment. Für die komplette Verkehrssicherungsplanung und -durchführung empfehlen wir unseren Partner SLT Infra (www.slt-infra.de)."},
-          {"q": "Kann ich einen Minibagger ohne Führerschein bedienen?", "a": "Für Minibagger auf privaten Baustellen ist kein spezieller Führerschein erforderlich. Wir empfehlen jedoch eine Einweisung, die wir bei Abholung kostenlos anbieten. Im öffentlichen Straßenverkehr gelten andere Regelungen."}
+          {
+            "q": "Welchen Minibagger brauche ich für Hausanschlüsse?",
+            "a": "Für Hausanschlüsse empfehlen wir unseren 1,5t-Minibagger mit Tieflöffel (30-60 cm Breite). Er ist kompakt genug für Vorgärten und bietet eine Grabtiefe bis 2,5 m – ideal für Wasser-, Gas- und Stromanschlüsse."
+          },
+          {
+            "q": "Brauche ich für Tiefbauarbeiten eine Genehmigung?",
+            "a": "Ja, für Arbeiten im öffentlichen Straßenraum benötigst du eine Schachtgenehmigung und ggf. eine Verkehrsrechtliche Anordnung (VRA). Unser Partner SLT Infra unterstützt dich bei der Antragstellung und Koordination mit Behörden."
+          },
+          {
+            "q": "Was ist ein Elektro-Dumper und wann brauche ich ihn?",
+            "a": "Ein Elektro-Dumper ist ein batteriebetriebener Materialtransporter. Er ist besonders in Wohngebieten ideal, da er nahezu geräuschlos und emissionsfrei arbeitet. Perfekt für Erdaushub, Schüttgut oder Baumaterial."
+          },
+          {
+            "q": "Bietet ihr auch Absperrtechnik für Baustellen?",
+            "a": "Ja, wir haben Absperrschranken, Warnleuchten, Verkehrszeichen und Leitbaken im Sortiment. Für die komplette Verkehrssicherungsplanung und -durchführung empfehlen wir unseren Partner SLT Infra (www.slt-infra.de)."
+          },
+          {
+            "q": "Kann ich einen Minibagger ohne Führerschein bedienen?",
+            "a": "Für Minibagger auf privaten Baustellen ist kein spezieller Führerschein erforderlich. Wir empfehlen jedoch eine Einweisung, die wir bei Abholung kostenlos anbieten. Im öffentlichen Straßenverkehr gelten andere Regelungen."
+          }
         ]
       },
       "hochbau-renovierung": {
         "title": "Hochbau & Renovierung",
         "subtitle": "Neubau, Sanierung, Ausbau",
         "description": "Vom Rohbau bis zum Feinschliff: Werkzeuge, Arbeitsbühnen und Gerüste für jede Bauphase. Unsere Profi-Geräte machen auch anspruchsvolle Projekte zum Kinderspiel.",
-        "highlights": ["Scherenbühnen bis 12m Höhe", "Rollgerüste bis 11m", "Abbruchhammer & Bohrhammer", "Bautrockner für die Trocknung"],
+        "highlights": [
+          "Scherenbühnen bis 12m Höhe",
+          "Rollgerüste bis 11m",
+          "Abbruchhammer & Bohrhammer",
+          "Bautrockner für die Trocknung"
+        ],
         "contentSections": [
           {
             "heading": "Arbeitsbühnen & Gerüste für sichere Höhenarbeit",
@@ -489,20 +613,45 @@
             "text": "Beginne mit einer Bestandsaufnahme: Welche Arbeiten stehen an? In welcher Höhe wird gearbeitet? Gibt es Zugangsbeschränkungen? Für Außenfassaden bis 12 m empfehlen wir Scherenbühnen, für Innenbereiche Rollgerüste. Bei Neubau-Projekten lohnt sich ein Komplettpaket aus Werkzeugen, Gerüsten und Bautrocknern. Sprich uns auf individuelle Mietpakete an – wir stellen dir das optimale Setup zusammen und beraten dich bei der Einsatzplanung."
           }
         ],
-        "advantages": ["Arbeitsbühnen für Innen- und Außeneinsatz", "Profi-Werkzeuge von Bosch & Hilti", "Bautrockner für schnelle Trocknungszeiten", "Kompetente Beratung bei der Gerätewahl"],
+        "advantages": [
+          "Arbeitsbühnen für Innen- und Außeneinsatz",
+          "Profi-Werkzeuge von Bosch & Hilti",
+          "Bautrockner für schnelle Trocknungszeiten",
+          "Kompetente Beratung bei der Gerätewahl"
+        ],
         "faq": [
-          {"q": "Welche Arbeitsbühne eignet sich für Fassadenarbeiten?", "a": "Für Fassadenarbeiten bis 12 m Höhe empfehlen wir unsere Scherenbühnen. Sie bieten eine große, stabile Arbeitsfläche und lassen sich präzise positionieren. Für schwer zugängliche Stellen wie Dachüberstände eignen sich Gelenkbühnen."},
-          {"q": "Wie lange muss ich einen Bautrockner einsetzen?", "a": "Die Trocknungsdauer hängt von der Feuchtigkeit der Bausubstanz und der Raumgröße ab. Als Faustregel gelten 2-4 Wochen für Neubauten. Wir beraten dich gerne zur optimalen Gerätezahl und Aufstellposition."},
-          {"q": "Kann ich ein Rollgerüst im Treppenhaus aufbauen?", "a": "Ja, unsere Rollgerüste sind modular aufgebaut und lassen sich an Treppenhaus-Geometrien anpassen. Die höhenverstellbaren Füße gleichen Stufen aus. Wir zeigen dir bei der Abholung, wie der Aufbau funktioniert."},
-          {"q": "Was brauche ich für Kernbohrungen in Beton?", "a": "Für Kernbohrungen bieten wir Diamantbohrkronen in verschiedenen Durchmessern (ab 50 mm). Dazu benötigst du einen Bohrständer für präzise Ergebnisse. Für kleinere Durchbrüche reicht oft ein leistungsstarker Bohrhammer."},
-          {"q": "Gibt es Scherenbühnen für den Inneneinsatz?", "a": "Ja, unsere Elektro-Scherenbühnen sind speziell für den Inneneinsatz geeignet. Sie sind emissionsfrei, haben nicht-markierende Reifen und passen durch Standard-Türen. Ideal für Hallen, Lagerhäuser und Innenräume."}
+          {
+            "q": "Welche Arbeitsbühne eignet sich für Fassadenarbeiten?",
+            "a": "Für Fassadenarbeiten bis 12 m Höhe empfehlen wir unsere Scherenbühnen. Sie bieten eine große, stabile Arbeitsfläche und lassen sich präzise positionieren. Für schwer zugängliche Stellen wie Dachüberstände eignen sich Gelenkbühnen."
+          },
+          {
+            "q": "Wie lange muss ich einen Bautrockner einsetzen?",
+            "a": "Die Trocknungsdauer hängt von der Feuchtigkeit der Bausubstanz und der Raumgröße ab. Als Faustregel gelten 2-4 Wochen für Neubauten. Wir beraten dich gerne zur optimalen Gerätezahl und Aufstellposition."
+          },
+          {
+            "q": "Kann ich ein Rollgerüst im Treppenhaus aufbauen?",
+            "a": "Ja, unsere Rollgerüste sind modular aufgebaut und lassen sich an Treppenhaus-Geometrien anpassen. Die höhenverstellbaren Füße gleichen Stufen aus. Wir zeigen dir bei der Abholung, wie der Aufbau funktioniert."
+          },
+          {
+            "q": "Was brauche ich für Kernbohrungen in Beton?",
+            "a": "Für Kernbohrungen bieten wir Diamantbohrkronen in verschiedenen Durchmessern (ab 50 mm). Dazu benötigst du einen Bohrständer für präzise Ergebnisse. Für kleinere Durchbrüche reicht oft ein leistungsstarker Bohrhammer."
+          },
+          {
+            "q": "Gibt es Scherenbühnen für den Inneneinsatz?",
+            "a": "Ja, unsere Elektro-Scherenbühnen sind speziell für den Inneneinsatz geeignet. Sie sind emissionsfrei, haben nicht-markierende Reifen und passen durch Standard-Türen. Ideal für Hallen, Lagerhäuser und Innenräume."
+          }
         ]
       },
       "events-veranstaltungen": {
         "title": "Events & Veranstaltungen",
         "subtitle": "Firmenfeiern, Hochzeiten, Festivals",
         "description": "Alles für unvergessliche Events: Von der Beschallung über Beleuchtung bis zu Zelten und Möbeln. Wir statten Veranstaltungen jeder Größe professionell aus.",
-        "highlights": ["PA-Systeme & Soundboks", "LED-Beleuchtung & Moving Heads", "Party- / Eventzelte 3x3m bis 6x12m", "Geschirr, Gläser & Besteck"],
+        "highlights": [
+          "PA-Systeme & Soundboks",
+          "LED-Beleuchtung & Moving Heads",
+          "Party- / Eventzelte 3x3m bis 6x12m",
+          "Geschirr, Gläser & Besteck"
+        ],
         "contentSections": [
           {
             "heading": "Eventausstattung für jede Veranstaltungsgröße",
@@ -517,20 +666,45 @@
             "text": "Für Hintergrundmusik bei Empfängen und Dinner reicht eine Soundboks oder ein kompaktes PA-System. Bei Partys und Tanzveranstaltungen empfehlen wir PA-Systeme mit Subwoofer für satte Bässe. Die Beleuchtung setzt Akzente: LED-Scheinwerfer in Warmweiß für elegante Atmosphäre, RGB-Strahler für farbige Effekte, Moving Heads für dynamische Shows. Nebelmaschinen und Seifenblasenmaschinen ergänzen den visuellen Effekt. Wir beraten dich gerne zur optimalen Kombination."
           }
         ],
-        "advantages": ["Alles aus einer Hand: Technik, Zelte, Ausstattung", "Professioneller Auf- und Abbauservice", "Hochwertige Gastro-Qualität bei Geschirr", "Flexible Mietzeiten auch am Wochenende"],
+        "advantages": [
+          "Alles aus einer Hand: Technik, Zelte, Ausstattung",
+          "Professioneller Auf- und Abbauservice",
+          "Hochwertige Gastro-Qualität bei Geschirr",
+          "Flexible Mietzeiten auch am Wochenende"
+        ],
         "faq": [
-          {"q": "Wie groß muss mein Party- / Eventzelt sein?", "a": "Als Faustregel rechnet man 2-3 m² pro stehendem Gast und 3-4 m² pro sitzendem Gast (mit Tisch). Für 50 sitzende Gäste empfehlen wir ein 6x6m Zelt. Für 100 Gäste eignet sich ein 6x12m Zelt oder zwei verbundene Zelte."},
-          {"q": "Bietet ihr auch Auf- und Abbau an?", "a": "Ja, wir bieten professionellen Auf- und Abbauservice für Zelte, Bühnen, Beschallung und Beleuchtung. Sprich uns bei der Buchung einfach darauf an – wir erstellen dir ein Komplettangebot."},
-          {"q": "Wie viel Geschirr brauche ich pro Person?", "a": "Wir empfehlen pro Gast: 2 Teller (flach + tief), 3 Gläser (Wasser, Wein, Sekt), 1 Besteckset. Bei mehrgängigen Menüs entsprechend mehr. Unsere Sets sind in 10er-Einheiten buchbar und kommen sauber und sortiert."},
-          {"q": "Welches PA-System reicht für 100 Gäste outdoor?", "a": "Für 100 Gäste im Freien empfehlen wir ein aktives PA-System mit mindestens 2x 500W Topspeakern und einem Subwoofer. Bei Partys mit Tanzfläche empfehlen wir ein stärkeres Setup. Wir beraten dich gerne zur passenden Konfiguration."},
-          {"q": "Kann ich Equipment auch kurzfristig buchen?", "a": "Grundsätzlich ja, sofern die gewünschten Artikel verfügbar sind. Wir empfehlen jedoch eine Vorlaufzeit von mindestens 2 Wochen, besonders in der Hochzeitssaison (Mai–September)."}
+          {
+            "q": "Wie groß muss mein Party- / Eventzelt sein?",
+            "a": "Als Faustregel rechnet man 2-3 m² pro stehendem Gast und 3-4 m² pro sitzendem Gast (mit Tisch). Für 50 sitzende Gäste empfehlen wir ein 6x6m Zelt. Für 100 Gäste eignet sich ein 6x12m Zelt oder zwei verbundene Zelte."
+          },
+          {
+            "q": "Bietet ihr auch Auf- und Abbau an?",
+            "a": "Ja, wir bieten professionellen Auf- und Abbauservice für Zelte, Bühnen, Beschallung und Beleuchtung. Sprich uns bei der Buchung einfach darauf an – wir erstellen dir ein Komplettangebot."
+          },
+          {
+            "q": "Wie viel Geschirr brauche ich pro Person?",
+            "a": "Wir empfehlen pro Gast: 2 Teller (flach + tief), 3 Gläser (Wasser, Wein, Sekt), 1 Besteckset. Bei mehrgängigen Menüs entsprechend mehr. Unsere Sets sind in 10er-Einheiten buchbar und kommen sauber und sortiert."
+          },
+          {
+            "q": "Welches PA-System reicht für 100 Gäste outdoor?",
+            "a": "Für 100 Gäste im Freien empfehlen wir ein aktives PA-System mit mindestens 2x 500W Topspeakern und einem Subwoofer. Bei Partys mit Tanzfläche empfehlen wir ein stärkeres Setup. Wir beraten dich gerne zur passenden Konfiguration."
+          },
+          {
+            "q": "Kann ich Equipment auch kurzfristig buchen?",
+            "a": "Grundsätzlich ja, sofern die gewünschten Artikel verfügbar sind. Wir empfehlen jedoch eine Vorlaufzeit von mindestens 2 Wochen, besonders in der Hochzeitssaison (Mai–September)."
+          }
         ]
       },
       "umzug-transport": {
         "title": "Umzug & Transport",
         "subtitle": "Privat- und Firmenumzüge",
         "description": "Unsere 24/7 Anhängermiete macht Umzüge flexibel und günstig. Per SMS-Code abholbereit – auch nachts und am Wochenende. Für jeden Transport der passende Anhänger.",
-        "highlights": ["Planenanhänger S bis XXL", "Kofferanhänger abschließbar", "24/7 Self-Service-Miete", "Wochenend-Tarif: 3 Tage zahlen, 1 Tag Preis"],
+        "highlights": [
+          "Planenanhänger S bis XXL",
+          "Kofferanhänger abschließbar",
+          "24/7 Self-Service-Miete",
+          "Wochenend-Tarif: 3 Tage zahlen, 1 Tag Preis"
+        ],
         "contentSections": [
           {
             "heading": "Der richtige Anhänger für deinen Umzug",
@@ -545,20 +719,45 @@
             "text": "Vor dem Umzug: Anhängergröße anhand des Transportvolumens wählen, Kugelkupplung am Fahrzeug prüfen (Anhängelast beachten!), Spanngurte und Decken einpacken. Am Umzugstag: Schwere Gegenstände zuerst laden und nach vorne (zur Deichsel), Last gleichmäßig verteilen, Ladung mit Spanngurten sichern. Nach dem Umzug: Anhänger besenrein zurückgeben. Tipp: Nutze den Wochenend-Tarif – freitags ab 16 Uhr abholen, montags bis 9:30 Uhr zurückgeben, nur 1 Tagessatz zahlen."
           }
         ],
-        "advantages": ["24/7 Verfügbarkeit per SMS-Code", "Günstige Wochenend-Tarife", "Alle Größen von S bis XXL", "Kein Anhängerführerschein nötig bis 750 kg"],
+        "advantages": [
+          "24/7 Verfügbarkeit per SMS-Code",
+          "Günstige Wochenend-Tarife",
+          "Alle Größen von S bis XXL",
+          "Kein Anhängerführerschein nötig bis 750 kg"
+        ],
         "faq": [
-          {"q": "Brauche ich einen Anhängerführerschein?", "a": "Für Anhänger bis 750 kg Gesamtgewicht reicht der Führerschein Klasse B. Für schwerere Anhänger benötigst du Klasse BE oder B96 – je nach Gesamtgewicht der Kombination. Wir beraten dich gerne zur passenden Größe."},
-          {"q": "Wie funktioniert die 24/7-Miete genau?", "a": "Du buchst online und erhältst per SMS einen Code. Damit öffnest du das Schloss am Anhänger – jederzeit, auch nachts und am Wochenende. Kein Kontakt mit Personal nötig, volle Flexibilität."},
-          {"q": "Welche Anhängergröße brauche ich für einen Umzug?", "a": "Für eine 1-Zimmer-Wohnung reicht meist ein Planenanhänger M (1.300 kg). Für 2-3 Zimmer empfehlen wir Größe L oder XL (2.000-2.700 kg). Bei einer kompletten Haushaltsauflösung ist der XXL (3.500 kg) die richtige Wahl."},
-          {"q": "Was kostet ein Anhänger für ein Wochenende?", "a": "Unser Wochenend-Tarif ist besonders günstig: Du zahlst nur einen Tagessatz für das gesamte Wochenende (Freitag ab 16 Uhr bis Montag 9:30 Uhr). Die genauen Preise findest du bei den einzelnen Anhängern."},
-          {"q": "Sind Spanngurte und Zubehör im Preis enthalten?", "a": "Spanngurte sind in der Regel am Anhänger vorhanden. Zusätzliche Umzugsdecken und Transportzubehör kannst du bei Bedarf dazu mieten. Sprich uns einfach an."}
+          {
+            "q": "Brauche ich einen Anhängerführerschein?",
+            "a": "Für Anhänger bis 750 kg Gesamtgewicht reicht der Führerschein Klasse B. Für schwerere Anhänger benötigst du Klasse BE oder B96 – je nach Gesamtgewicht der Kombination. Wir beraten dich gerne zur passenden Größe."
+          },
+          {
+            "q": "Wie funktioniert die 24/7-Miete genau?",
+            "a": "Du buchst online und erhältst per SMS einen Code. Damit öffnest du das Schloss am Anhänger – jederzeit, auch nachts und am Wochenende. Kein Kontakt mit Personal nötig, volle Flexibilität."
+          },
+          {
+            "q": "Welche Anhängergröße brauche ich für einen Umzug?",
+            "a": "Für eine 1-Zimmer-Wohnung reicht meist ein Planenanhänger M (1.300 kg). Für 2-3 Zimmer empfehlen wir Größe L oder XL (2.000-2.700 kg). Bei einer kompletten Haushaltsauflösung ist der XXL (3.500 kg) die richtige Wahl."
+          },
+          {
+            "q": "Was kostet ein Anhänger für ein Wochenende?",
+            "a": "Unser Wochenend-Tarif ist besonders günstig: Du zahlst nur einen Tagessatz für das gesamte Wochenende (Freitag ab 16 Uhr bis Montag 9:30 Uhr). Die genauen Preise findest du bei den einzelnen Anhängern."
+          },
+          {
+            "q": "Sind Spanngurte und Zubehör im Preis enthalten?",
+            "a": "Spanngurte sind in der Regel am Anhänger vorhanden. Zusätzliche Umzugsdecken und Transportzubehör kannst du bei Bedarf dazu mieten. Sprich uns einfach an."
+          }
         ]
       },
       "handwerk-gewerbe": {
         "title": "Handwerk & Gewerbe",
         "subtitle": "Elektriker, Maler, Installateure",
         "description": "Spezialwerkzeuge und Equipment für Handwerksbetriebe. Von der Mauerschlitzfräse bis zum Akku-Werkzeug – professionelle Geräte für professionelle Arbeit.",
-        "highlights": ["Mauerschlitzfräse & Diamantbohrer", "Bosch Profi-Akkugeräte", "Stromerzeuger 2,8 - 100 kVA", "Rollgerüste & Leitern"],
+        "highlights": [
+          "Mauerschlitzfräse & Diamantbohrer",
+          "Bosch Profi-Akkugeräte",
+          "Stromerzeuger 2,8 - 100 kVA",
+          "Rollgerüste & Leitern"
+        ],
         "contentSections": [
           {
             "heading": "Profi-Werkzeuge für jeden Handwerksberuf",
@@ -573,20 +772,45 @@
             "text": "Mieten statt kaufen rechnet sich besonders bei Spezialgeräten: Keine Kapitalbindung, keine Wartungskosten, immer aktuelle Technik. Bei uns findest du Geräte, die du vielleicht nur 2-3 Mal im Jahr brauchst – in top-gewarteter Profi-Qualität. Für Stammkunden und Gewerbetreibende bieten wir über unser B2B-Portal individuelle Konditionen, Rahmenverträge und Rechnungskauf. So wird die Werkzeugmiete zum planbaren Betriebskostenfaktor."
           }
         ],
-        "advantages": ["Markengeräte von Bosch, Hilti & Makita", "Keine Investitions- und Wartungskosten", "B2B-Konditionen für Gewerbetreibende", "Immer aktuelle und gewartete Technik"],
+        "advantages": [
+          "Markengeräte von Bosch, Hilti & Makita",
+          "Keine Investitions- und Wartungskosten",
+          "B2B-Konditionen für Gewerbetreibende",
+          "Immer aktuelle und gewartete Technik"
+        ],
         "faq": [
-          {"q": "Bietet ihr B2B-Konditionen für Handwerksbetriebe?", "a": "Ja, über unser B2B-Portal erhalten Gewerbetreibende individuelle Rabatte, Rechnungskauf und Rahmenverträge. Registriere dich kostenlos und profitiere von Sonderkonditionen."},
-          {"q": "Welche Mauerschlitzfräse eignet sich für Elektroinstallationen?", "a": "Für Standard-Elektroinstallationen empfehlen wir unsere Mauerschlitzfräse mit 2 Diamantscheiben. Sie schneidet präzise Schlitze in Mauerwerk und Beton – staubarm durch integrierte Absaugung."},
-          {"q": "Wie leistungsstark muss mein Stromerzeuger sein?", "a": "Für einzelne Elektrowerkzeuge reicht ein 2,8 kVA Inverter. Für eine komplette Baustelle mit mehreren Geräten empfehlen wir mindestens 6 kVA. Für Großbaustellen oder Events stehen Aggregate bis 100 kVA bereit."},
-          {"q": "Kann ich Werkzeuge auch tageweise mieten?", "a": "Ja, alle unsere Werkzeuge und Geräte sind ab einem Tag mietbar. Für längere Projekte bieten wir attraktive Wochen- und Monatspreise. Je länger du mietest, desto günstiger wird der Tagessatz."},
-          {"q": "Sind die Werkzeuge bei Abholung einsatzbereit?", "a": "Ja, alle Geräte werden vor jeder Vermietung geprüft, gereinigt und gewartet. Verbrauchsmaterialien wie Bohrkronen und Trennscheiben sind gegen Aufpreis verfügbar."}
+          {
+            "q": "Bietet ihr B2B-Konditionen für Handwerksbetriebe?",
+            "a": "Ja, über unser B2B-Portal erhalten Gewerbetreibende individuelle Rabatte, Rechnungskauf und Rahmenverträge. Registriere dich kostenlos und profitiere von Sonderkonditionen."
+          },
+          {
+            "q": "Welche Mauerschlitzfräse eignet sich für Elektroinstallationen?",
+            "a": "Für Standard-Elektroinstallationen empfehlen wir unsere Mauerschlitzfräse mit 2 Diamantscheiben. Sie schneidet präzise Schlitze in Mauerwerk und Beton – staubarm durch integrierte Absaugung."
+          },
+          {
+            "q": "Wie leistungsstark muss mein Stromerzeuger sein?",
+            "a": "Für einzelne Elektrowerkzeuge reicht ein 2,8 kVA Inverter. Für eine komplette Baustelle mit mehreren Geräten empfehlen wir mindestens 6 kVA. Für Großbaustellen oder Events stehen Aggregate bis 100 kVA bereit."
+          },
+          {
+            "q": "Kann ich Werkzeuge auch tageweise mieten?",
+            "a": "Ja, alle unsere Werkzeuge und Geräte sind ab einem Tag mietbar. Für längere Projekte bieten wir attraktive Wochen- und Monatspreise. Je länger du mietest, desto günstiger wird der Tagessatz."
+          },
+          {
+            "q": "Sind die Werkzeuge bei Abholung einsatzbereit?",
+            "a": "Ja, alle Geräte werden vor jeder Vermietung geprüft, gereinigt und gewartet. Verbrauchsmaterialien wie Bohrkronen und Trennscheiben sind gegen Aufpreis verfügbar."
+          }
         ]
       },
       "private-projekte": {
         "title": "Private Projekte",
         "subtitle": "Heimwerken, Garten, Renovierung",
         "description": "Du hast ein Projekt? Wir haben das Equipment. Ob Terrassenbau, Gartenumgestaltung oder Renovierung – mit unseren Mietgeräten wird dein Projekt zum Erfolg.",
-        "highlights": ["Vertikutierer & Häcksler", "Rüttelplatten für Pflasterarbeiten", "Anhänger für Grünschnitt", "Elektrowerkzeuge für Renovierung"],
+        "highlights": [
+          "Vertikutierer & Häcksler",
+          "Rüttelplatten für Pflasterarbeiten",
+          "Anhänger für Grünschnitt",
+          "Elektrowerkzeuge für Renovierung"
+        ],
         "contentSections": [
           {
             "heading": "Die beliebtesten Heimwerker-Projekte",
@@ -601,20 +825,45 @@
             "text": "Plane genügend Zeit ein – Projekte dauern oft länger als gedacht. Nutze unsere Wochenend-Tarife für mehrtägige Vorhaben. Lass dich vor der Abholung in die Geräte einweisen – wir erklären dir Bedienung und Sicherheitshinweise. Trage immer passende Schutzausrüstung: Gehörschutz bei Maschinen, Schutzbrille bei Schneidarbeiten, Handschuhe bei Vibrationsgeräten. Bei Unsicherheiten ruf uns einfach an – wir helfen gerne weiter, auch nach der Abholung."
           }
         ],
-        "advantages": ["Profi-Qualität zum Mietpreis", "Kostenlose Einweisung bei Abholung", "Attraktive Wochenend-Tarife", "Persönliche Beratung für Heimwerker"],
+        "advantages": [
+          "Profi-Qualität zum Mietpreis",
+          "Kostenlose Einweisung bei Abholung",
+          "Attraktive Wochenend-Tarife",
+          "Persönliche Beratung für Heimwerker"
+        ],
         "faq": [
-          {"q": "Ich bin Anfänger – bekomme ich eine Einweisung?", "a": "Selbstverständlich! Bei Abholung erklären wir dir jedes Gerät ausführlich – Bedienung, Sicherheitshinweise und praktische Tipps. Auch während der Mietzeit kannst du uns jederzeit anrufen."},
-          {"q": "Was brauche ich zum Terrasse pflastern?", "a": "Für eine Terrasse brauchst du eine Rüttelplatte zum Verdichten des Untergrunds, eventuell einen Minibagger für den Aushub und einen Anhänger für Materialanlieferung. Wir stellen dir gerne ein individuelles Paket zusammen."},
-          {"q": "Lohnt sich das Mieten für nur einen Tag?", "a": "Auf jeden Fall! Viele Geräte wie Rüttelplatten, Häcksler oder Bohrhämmer brauchst du nur wenige Stunden. Ein Miettag kostet einen Bruchteil des Kaufpreises – und du sparst dir Lagerung und Wartung."},
-          {"q": "Welchen Anhänger kann ich mit normalem Führerschein fahren?", "a": "Mit Führerschein Klasse B darfst du Anhänger bis 750 kg Gesamtgewicht ziehen. Für schwerere Anhänger benötigst du Klasse BE oder B96. Wir beraten dich gerne zur passenden Größe."},
-          {"q": "Kann ich Geräte auch liefern lassen?", "a": "Ja, wir liefern Minibagger, Rüttelplatten und schwere Geräte direkt zu dir. Die Lieferkosten richten sich nach der Entfernung. Für Anhänger brauchst du natürlich ein Zugfahrzeug mit Kupplung."}
+          {
+            "q": "Ich bin Anfänger – bekomme ich eine Einweisung?",
+            "a": "Selbstverständlich! Bei Abholung erklären wir dir jedes Gerät ausführlich – Bedienung, Sicherheitshinweise und praktische Tipps. Auch während der Mietzeit kannst du uns jederzeit anrufen."
+          },
+          {
+            "q": "Was brauche ich zum Terrasse pflastern?",
+            "a": "Für eine Terrasse brauchst du eine Rüttelplatte zum Verdichten des Untergrunds, eventuell einen Minibagger für den Aushub und einen Anhänger für Materialanlieferung. Wir stellen dir gerne ein individuelles Paket zusammen."
+          },
+          {
+            "q": "Lohnt sich das Mieten für nur einen Tag?",
+            "a": "Auf jeden Fall! Viele Geräte wie Rüttelplatten, Häcksler oder Bohrhämmer brauchst du nur wenige Stunden. Ein Miettag kostet einen Bruchteil des Kaufpreises – und du sparst dir Lagerung und Wartung."
+          },
+          {
+            "q": "Welchen Anhänger kann ich mit normalem Führerschein fahren?",
+            "a": "Mit Führerschein Klasse B darfst du Anhänger bis 750 kg Gesamtgewicht ziehen. Für schwerere Anhänger benötigst du Klasse BE oder B96. Wir beraten dich gerne zur passenden Größe."
+          },
+          {
+            "q": "Kann ich Geräte auch liefern lassen?",
+            "a": "Ja, wir liefern Minibagger, Rüttelplatten und schwere Geräte direkt zu dir. Die Lieferkosten richten sich nach der Entfernung. Für Anhänger brauchst du natürlich ein Zugfahrzeug mit Kupplung."
+          }
         ]
       },
       "kindergeburtstage": {
         "title": "Kindergeburtstage & Feste",
         "subtitle": "Hüpfburgen, Spiele, Unterhaltung",
         "description": "Mach den Kindergeburtstag zum unvergesslichen Erlebnis! Unsere Hüpfburgen, Spezialeffekte und Sound-Systeme bringen Kinderaugen zum Leuchten.",
-        "highlights": ["Hüpfburgen 2,8m bis 6m", "Hüpfburg mit Wasserrutsche", "Nebelmaschine & Seifenblasen", "Mobile Soundboks-Lautsprecher"],
+        "highlights": [
+          "Hüpfburgen 2,8m bis 6m",
+          "Hüpfburg mit Wasserrutsche",
+          "Nebelmaschine & Seifenblasen",
+          "Mobile Soundboks-Lautsprecher"
+        ],
         "contentSections": [
           {
             "heading": "Die perfekte Hüpfburg für jeden Anlass",
@@ -629,13 +878,33 @@
             "text": "Sicherheit steht an erster Stelle: Hüpfburgen müssen auf ebenem Untergrund aufgestellt und mit den mitgelieferten Erdnägeln oder Sandsäcken gesichert werden. Eine erwachsene Aufsichtsperson muss immer anwesend sein. Die maximale Kinderzahl pro Hüpfburg sollte eingehalten werden (in der Regel 4-8 Kinder gleichzeitig, je nach Modell). Bei starkem Wind (ab Windstärke 5) muss die Hüpfburg abgebaut werden. Wir erklären dir bei der Abholung oder Lieferung alles Wichtige."
           }
         ],
-        "advantages": ["TÜV-geprüfte Hüpfburgen", "Lieferung und Abholung möglich", "Verschiedene Größen für jeden Garten", "Komplettes Party-Paket mit Sound & Effekten"],
+        "advantages": [
+          "TÜV-geprüfte Hüpfburgen",
+          "Lieferung und Abholung möglich",
+          "Verschiedene Größen für jeden Garten",
+          "Komplettes Party-Paket mit Sound & Effekten"
+        ],
         "faq": [
-          {"q": "Wie viel Platz brauche ich für eine Hüpfburg?", "a": "Je nach Modell benötigst du eine ebene Fläche von 4x4m (kleine Hüpfburg) bis 8x8m (große Eventburg mit Rutsche). Dazu sollte rundherum 1,5 m Sicherheitsabstand eingehalten werden. Gras ist der ideale Untergrund."},
-          {"q": "Ab welchem Alter können Kinder hüpfen?", "a": "Unsere Hüpfburgen sind für Kinder ab 3 Jahren geeignet. Für kleinere Kinder empfehlen wir die kompakten Modelle mit niedrigeren Seitenwänden. Eine erwachsene Aufsichtsperson muss immer dabei sein."},
-          {"q": "Was passiert bei schlechtem Wetter?", "a": "Leichter Regen ist kein Problem – die Hüpfburg kann weiter genutzt werden (wird etwas rutschiger). Bei starkem Wind oder Gewitter muss die Hüpfburg aus Sicherheitsgründen abgebaut werden. Bei Regen empfehlen wir zusätzlich ein Party- / Eventzelt."},
-          {"q": "Liefert ihr die Hüpfburg auch?", "a": "Ja, wir liefern Hüpfburgen direkt zu dir und bauen sie auf Wunsch auch auf. Die Lieferkosten richten sich nach der Entfernung. Alternativ kannst du kleinere Modelle auch selbst abholen – sie passen in einen Kombi."},
-          {"q": "Brauche ich einen Stromanschluss?", "a": "Ja, Hüpfburgen benötigen ein Dauergebläse (230V Schuko-Steckdose). Ein normaler Hausanschluss reicht aus. Alternativ bieten wir auch Stromerzeuger für Standorte ohne Steckdose."}
+          {
+            "q": "Wie viel Platz brauche ich für eine Hüpfburg?",
+            "a": "Je nach Modell benötigst du eine ebene Fläche von 4x4m (kleine Hüpfburg) bis 8x8m (große Eventburg mit Rutsche). Dazu sollte rundherum 1,5 m Sicherheitsabstand eingehalten werden. Gras ist der ideale Untergrund."
+          },
+          {
+            "q": "Ab welchem Alter können Kinder hüpfen?",
+            "a": "Unsere Hüpfburgen sind für Kinder ab 3 Jahren geeignet. Für kleinere Kinder empfehlen wir die kompakten Modelle mit niedrigeren Seitenwänden. Eine erwachsene Aufsichtsperson muss immer dabei sein."
+          },
+          {
+            "q": "Was passiert bei schlechtem Wetter?",
+            "a": "Leichter Regen ist kein Problem – die Hüpfburg kann weiter genutzt werden (wird etwas rutschiger). Bei starkem Wind oder Gewitter muss die Hüpfburg aus Sicherheitsgründen abgebaut werden. Bei Regen empfehlen wir zusätzlich ein Party- / Eventzelt."
+          },
+          {
+            "q": "Liefert ihr die Hüpfburg auch?",
+            "a": "Ja, wir liefern Hüpfburgen direkt zu dir und bauen sie auf Wunsch auch auf. Die Lieferkosten richten sich nach der Entfernung. Alternativ kannst du kleinere Modelle auch selbst abholen – sie passen in einen Kombi."
+          },
+          {
+            "q": "Brauche ich einen Stromanschluss?",
+            "a": "Ja, Hüpfburgen benötigen ein Dauergebläse (230V Schuko-Steckdose). Ein normaler Hausanschluss reicht aus. Alternativ bieten wir auch Stromerzeuger für Standorte ohne Steckdose."
+          }
         ]
       }
     }
@@ -927,14 +1196,34 @@
     "s3Item3": "einen Mietvertrag über unseren Online-Shop abschließen",
     "s3Item4": "uns per E-Mail, Telefon oder postalisch kontaktieren",
     "s3DataTitle": "Verarbeitete Datenarten:",
-    "s3Data": ["Name, Vorname", "Anschrift, ggf. Firma", "Telefonnummer, E-Mail-Adresse", "Vertragsdaten (z.B. Mietgegenstand, Zeitraum, Preis)", "Zahlungsinformationen (bei Online-Buchung)", "Nutzungsdaten (IP-Adresse, Zeitpunkt, aufgerufene Seiten)", "Kommunikationsinhalte"],
+    "s3Data": [
+      "Name, Vorname",
+      "Anschrift, ggf. Firma",
+      "Telefonnummer, E-Mail-Adresse",
+      "Vertragsdaten (z.B. Mietgegenstand, Zeitraum, Preis)",
+      "Zahlungsinformationen (bei Online-Buchung)",
+      "Nutzungsdaten (IP-Adresse, Zeitpunkt, aufgerufene Seiten)",
+      "Kommunikationsinhalte"
+    ],
     "s4Title": "Zwecke und Rechtsgrundlagen der Verarbeitung",
     "s4Intro": "Wir verarbeiten Ihre Daten:",
     "s4Items": [
-      {"basis": "Art. 6 Abs. 1 lit. b DSGVO", "purpose": "Zur Vertragserfüllung und -anbahnung"},
-      {"basis": "Art. 6 Abs. 1 lit. c DSGVO", "purpose": "Zur Erfüllung gesetzlicher Pflichten"},
-      {"basis": "Art. 6 Abs. 1 lit. a DSGVO", "purpose": "Auf Basis Ihrer Einwilligung, z.B. für Cookies/Tracking"},
-      {"basis": "Art. 6 Abs. 1 lit. f DSGVO", "purpose": "Zur Wahrung unserer berechtigten Interessen, z.B. für IT-Sicherheit, Webstatistik, Marketing"}
+      {
+        "basis": "Art. 6 Abs. 1 lit. b DSGVO",
+        "purpose": "Zur Vertragserfüllung und -anbahnung"
+      },
+      {
+        "basis": "Art. 6 Abs. 1 lit. c DSGVO",
+        "purpose": "Zur Erfüllung gesetzlicher Pflichten"
+      },
+      {
+        "basis": "Art. 6 Abs. 1 lit. a DSGVO",
+        "purpose": "Auf Basis Ihrer Einwilligung, z.B. für Cookies/Tracking"
+      },
+      {
+        "basis": "Art. 6 Abs. 1 lit. f DSGVO",
+        "purpose": "Zur Wahrung unserer berechtigten Interessen, z.B. für IT-Sicherheit, Webstatistik, Marketing"
+      }
     ],
     "s5Title": "Cookies & Tracking-Technologien",
     "s5Desc": "Wir verwenden auf unserer Webseite Cookies und vergleichbare Technologien. Cookies sind kleine Textdateien, die auf Ihrem Endgerät gespeichert werden und bestimmte Informationen über Sie enthalten (z.B. zur Funktionalität des Online-Shops, zu Analysezwecken oder für Marketing).",
@@ -958,13 +1247,34 @@
     "s11Title": "Ihre Rechte",
     "s11Intro": "Sie haben jederzeit das Recht:",
     "s11Rights": [
-      {"article": "Art. 15 DSGVO", "right": "auf Auskunft über die bei uns gespeicherten personenbezogenen Daten"},
-      {"article": "Art. 16 DSGVO", "right": "auf Berichtigung unrichtiger Daten"},
-      {"article": "Art. 17 DSGVO", "right": "auf Löschung (\"Recht auf Vergessenwerden\")"},
-      {"article": "Art. 18 DSGVO", "right": "auf Einschränkung der Verarbeitung"},
-      {"article": "Art. 20 DSGVO", "right": "auf Datenübertragbarkeit"},
-      {"article": "Art. 21 DSGVO", "right": "auf Widerspruch gegen die Verarbeitung"},
-      {"article": "Art. 7 Abs. 3 DSGVO", "right": "auf Widerruf Ihrer Einwilligung (mit Wirkung für die Zukunft)"}
+      {
+        "article": "Art. 15 DSGVO",
+        "right": "auf Auskunft über die bei uns gespeicherten personenbezogenen Daten"
+      },
+      {
+        "article": "Art. 16 DSGVO",
+        "right": "auf Berichtigung unrichtiger Daten"
+      },
+      {
+        "article": "Art. 17 DSGVO",
+        "right": "auf Löschung (\"Recht auf Vergessenwerden\")"
+      },
+      {
+        "article": "Art. 18 DSGVO",
+        "right": "auf Einschränkung der Verarbeitung"
+      },
+      {
+        "article": "Art. 20 DSGVO",
+        "right": "auf Datenübertragbarkeit"
+      },
+      {
+        "article": "Art. 21 DSGVO",
+        "right": "auf Widerspruch gegen die Verarbeitung"
+      },
+      {
+        "article": "Art. 7 Abs. 3 DSGVO",
+        "right": "auf Widerruf Ihrer Einwilligung (mit Wirkung für die Zukunft)"
+      }
     ],
     "s11Contact": "Bitte richten Sie Ihre Anfrage an die oben genannte Kontaktadresse. Sie haben außerdem das Recht, sich bei einer Datenschutzaufsichtsbehörde zu beschweren.",
     "s12Title": "Sicherheit",
@@ -1181,7 +1491,13 @@
       "3_5b": "Rückgaben außerhalb der Geschäftszeiten sind nur nach schriftlicher Vereinbarung möglich. Das Risiko für Verlust und Beschädigung bleibt bis zur tatsächlichen Rücknahme durch SLT beim Mieter.",
       "3_6_title": "3.6 Rückgabevorgaben und Reinigung",
       "3_6_intro": "Die Mietsache ist wie folgt zurückzugeben:",
-      "3_6_items": ["<strong>Anhänger:</strong> besenrein", "<strong>Baumaschinen, Stromaggregate, Arbeitsbühnen:</strong> vollgetankt oder vollgeladen, frei von grobem Schmutz", "<strong>Zelte und Textilien:</strong> trocken, sortiert, gefaltet", "<strong>Geräte mit Akku:</strong> vollgeladen", "<strong>Kraftfahrzeuge:</strong> vollgetankt, gereinigt"],
+      "3_6_items": [
+        "<strong>Anhänger:</strong> besenrein",
+        "<strong>Baumaschinen, Stromaggregate, Arbeitsbühnen:</strong> vollgetankt oder vollgeladen, frei von grobem Schmutz",
+        "<strong>Zelte und Textilien:</strong> trocken, sortiert, gefaltet",
+        "<strong>Geräte mit Akku:</strong> vollgeladen",
+        "<strong>Kraftfahrzeuge:</strong> vollgetankt, gereinigt"
+      ],
       "3_6b": "Wird die Mietsache verspätet, unvollständig oder verschmutzt zurückgegeben, ist SLT berechtigt, den Mehraufwand (insbesondere Reinigung, Desinfektion und zusätzliche Mietgebühren) in Rechnung zu stellen.",
       "3_6c": "Reinigung, Entsorgung und Transport werden - sofern nicht pauschal vereinbart - nach tatsächlichem Aufwand abgerechnet. Reparaturen, die auf vom Mieter zu vertretende Beschädigungen zurückzuführen sind, gehen zu dessen Lasten.",
       "3_7_title": "3.7 Rückgabebestätigung",
@@ -1203,7 +1519,12 @@
       "4_4": "Bei verspäteter Rückgabe ist SLT berechtigt, einen Zuschlag in Höhe von 50 % des Bruttomietpreises pro verspätetem Tag zu berechnen. SLT behält sich die Geltendmachung eines höheren, konkret entstandenen Schadens vor; der Mieter kann den Nachweis eines geringeren Schadens führen.",
       "4_5_title": "4.5 Zusätzliche Gebühren und Kostenerstattungen",
       "4_5_intro": "Zusätzlich zum Mietzins werden folgende Posten in Rechnung gestellt:",
-      "4_5_items": ["Gebühren, Bußgelder und Mautkosten, die während der Mietzeit anfallen;", "eine Bearbeitungspauschale von 15,00 EUR je Vorgang für Bußgelder/Maut;", "eine Bearbeitungspauschale von 40,00 EUR je Schadensfall;", "Reinigungskosten ab 50,00 EUR netto, wenn die Rückgabevorgaben (siehe III.6) nicht erfüllt werden."],
+      "4_5_items": [
+        "Gebühren, Bußgelder und Mautkosten, die während der Mietzeit anfallen;",
+        "eine Bearbeitungspauschale von 15,00 EUR je Vorgang für Bußgelder/Maut;",
+        "eine Bearbeitungspauschale von 40,00 EUR je Schadensfall;",
+        "Reinigungskosten ab 50,00 EUR netto, wenn die Rückgabevorgaben (siehe III.6) nicht erfüllt werden."
+      ],
       "4_5_outro": "Dem Mieter bleibt der Nachweis eines geringeren Aufwands vorbehalten."
     },
     "v": {
@@ -1222,7 +1543,13 @@
       "6_1": "Der Mieter kann den Mietvertrag vor Mietbeginn jederzeit durch schriftliche Erklärung (Textform genügt) gegenüber SLT kündigen ('Stornierung').",
       "6_2_title": "6.2 Stornogebühren (pauschalierte Entschädigung)",
       "6_2_intro": "Im Falle der Stornierung kann SLT eine pauschalierte Entschädigung verlangen, die sich - vorbehaltlich eines niedrigeren oder höheren Nachweises nach Abs. 6.3 - wie folgt bemisst (in Prozent des vereinbarten Gesamtmietpreises):",
-      "6_2_items": ["bis 20 Tage vor Mietbeginn: 30 %", "bis 7 Tage vor Mietbeginn: 50 %", "bis 3 Tage vor Mietbeginn: 70 %", "bis 48 Stunden vor Mietbeginn: 90 %", "bei späterer Stornierung: 100 %"],
+      "6_2_items": [
+        "bis 20 Tage vor Mietbeginn: 30 %",
+        "bis 7 Tage vor Mietbeginn: 50 %",
+        "bis 3 Tage vor Mietbeginn: 70 %",
+        "bis 48 Stunden vor Mietbeginn: 90 %",
+        "bei späterer Stornierung: 100 %"
+      ],
       "6_3_title": "6.3 Nachweisvorbehalt",
       "6_3": "Dem Mieter bleibt ausdrücklich der Nachweis vorbehalten, dass SLT kein oder nur ein wesentlich geringerer Schaden entstanden ist (z.B. durch anderweitige Vermietung, ersparte Auf- und Abbau-, Transport- oder Personalkosten). SLT bleibt umgekehrt der Nachweis eines höheren, konkret entstandenen Schadens vorbehalten.",
       "6_4_title": "6.4 Kostenfreie Stornierungsoption",
@@ -1550,12 +1877,10 @@
     "tischeStühle_sub": "Bierzeltgarnitur, Stehtisch, Stuhl",
     "stuehle": "Stühle",
     "stuehle_sub": "Stapelstuhl, Klappstuhl",
-
     "hussen": "Hussen",
     "hussen_sub": "Tisch- & Bankhussen",
     "schirme": "Schirme",
     "schirme_sub": "Sonnenschirme",
-
     "kuehlgeraete": "Kühlgeräte",
     "kuehlgeraete_sub": "Getränkekühlschränke",
     "garderobe": "Garderobe",
@@ -1817,117 +2142,171 @@
   "infoBanner": {
     "werkzeuge": {
       "desc": "Professionelle Akku- und Elektrowerkzeuge von Bosch, Eibenstock und Einhell für Bau, Renovierung und Handwerk. Alle Akkuwerkzeuge inkl. Akku und Ladegerät.",
-      "item1": "Markenqualität", "item1sub": "Bosch Professional & mehr",
-      "item2": "Inkl. Akku & Ladegerät", "item2sub": "Sofort einsatzbereit",
-      "item3": "Geprüft & gewartet", "item3sub": "Top Zustand garantiert"
+      "item1": "Markenqualität",
+      "item1sub": "Bosch Professional & mehr",
+      "item2": "Inkl. Akku & Ladegerät",
+      "item2sub": "Sofort einsatzbereit",
+      "item3": "Geprüft & gewartet",
+      "item3sub": "Top Zustand garantiert"
     },
     "gartenpflege": {
       "desc": "Gartengeräte für Profis und Heimwerker. Von der Kettensäge bis zum Erdbohrer – alles für Ihren Garten.",
-      "item1": "Schneiden & Pflegen", "item1sub": "Kettensägen, Heckenscheren",
-      "item2": "Bodenbearbeitung", "item2sub": "Erdbohrer, Fräsen, Hacken",
-      "item3": "Akku & Benzin", "item3sub": "Verschiedene Antriebe"
+      "item1": "Schneiden & Pflegen",
+      "item1sub": "Kettensägen, Heckenscheren",
+      "item2": "Bodenbearbeitung",
+      "item2sub": "Erdbohrer, Fräsen, Hacken",
+      "item3": "Akku & Benzin",
+      "item3sub": "Verschiedene Antriebe"
     },
     "aggregate": {
       "desc": "Zuverlässige Stromversorgung und Druckluft für Baustelle, Event oder Notfall. Von kleinen Akkupacks bis zu leistungsstarken Industrieaggregaten und Kompressoren.",
-      "item1": "2,8 bis 100 kVA", "item1sub": "Für jeden Bedarf",
-      "item2": "Akkupacks", "item2sub": "Tragbar & leise",
-      "item3": "Kompressoren", "item3sub": "Druckluft vor Ort"
+      "item1": "2,8 bis 100 kVA",
+      "item1sub": "Für jeden Bedarf",
+      "item2": "Akkupacks",
+      "item2sub": "Tragbar & leise",
+      "item3": "Kompressoren",
+      "item3sub": "Druckluft vor Ort"
     },
     "arbeitsbuehnen": {
       "desc": "Sichere Höhenarbeit mit unseren elektrischen Arbeitsbühnen. Alle Bühnen werden eingewiesen und sind für Innen- und Außeneinsatz geeignet.",
-      "item1": "8m bis 18m+", "item1sub": "Verschiedene Arbeitshöhen",
-      "item2": "Elektrisch", "item2sub": "Emissionsfrei & leise",
-      "item3": "Einweisung inkl.", "item3sub": "Sichere Bedienung",
+      "item1": "8m bis 18m+",
+      "item1sub": "Verschiedene Arbeitshöhen",
+      "item2": "Elektrisch",
+      "item2sub": "Emissionsfrei & leise",
+      "item3": "Einweisung inkl.",
+      "item3sub": "Sichere Bedienung",
       "highlightTitle": "Zoomlion Fachhändler",
       "highlightText": "Als offizieller Zoomlion-Fachhändler bieten wir erstklassige Arbeitsbühnen mit vollem Service.",
       "highlightLink": "Zur Verkaufsseite zoomlion-nrw.de"
     },
     "verdichtung": {
       "desc": "Professionelle Bodenverdichtung mit Stampfern und Rüttelplatten für Pflasterarbeiten, Gräben und Fundamentvorbereitung.",
-      "item1": "70 bis 1,5 Tonnen", "item1sub": "Verschiedene Gewichtsklassen",
-      "item2": "Stampfer & Platten", "item2sub": "Für jeden Einsatz",
-      "item3": "Sofort einsatzbereit", "item3sub": "Betankt & geprüft"
+      "item1": "70 bis 1,5 Tonnen",
+      "item1sub": "Verschiedene Gewichtsklassen",
+      "item2": "Stampfer & Platten",
+      "item2sub": "Für jeden Einsatz",
+      "item3": "Sofort einsatzbereit",
+      "item3sub": "Betankt & geprüft"
     },
     "heizung": {
       "desc": "Heizgeräte und Bautrockner für Rohbau, Renovierung und Events. Effiziente Lösungen für Wärme und Entfeuchtung.",
-      "item1": "Heizgeräte", "item1sub": "Elektro & Gas",
-      "item2": "Bautrockner", "item2sub": "Schnelle Entfeuchtung",
-      "item3": "Ventilatoren", "item3sub": "Luftzirkulation"
+      "item1": "Heizgeräte",
+      "item1sub": "Elektro & Gas",
+      "item2": "Bautrockner",
+      "item2sub": "Schnelle Entfeuchtung",
+      "item3": "Ventilatoren",
+      "item3sub": "Luftzirkulation"
     },
     "leitern": {
       "desc": "Sichere Leitern und Rollgerüste für Arbeiten in der Höhe. TÜV-geprüft und regelmäßig gewartet.",
-      "item1": "Verschiedene Höhen", "item1sub": "Bis 12m Arbeitshöhe",
-      "item2": "Rollgerüste", "item2sub": "Fahrbar & stabil",
-      "item3": "TÜV-geprüft", "item3sub": "Maximale Sicherheit nach neuer Norm DIN EN 1004-1 (an allen Standorten)"
+      "item1": "Verschiedene Höhen",
+      "item1sub": "Bis 12m Arbeitshöhe",
+      "item2": "Rollgerüste",
+      "item2sub": "Fahrbar & stabil",
+      "item3": "TÜV-geprüft",
+      "item3sub": "Maximale Sicherheit nach neuer Norm DIN EN 1004-1 (an allen Standorten)"
     },
     "beleuchtung": {
       "desc": "Professionelle Beleuchtung für Events, Baustellen und Veranstaltungen. Von LED-Fluter bis Bühnenlicht.",
-      "item1": "LED-Technik", "item1sub": "Energieeffizient",
-      "item2": "Bühnenlicht", "item2sub": "Moving Heads, PAR",
-      "item3": "Akku & Strom", "item3sub": "Flexible Lösungen"
+      "item1": "LED-Technik",
+      "item1sub": "Energieeffizient",
+      "item2": "Bühnenlicht",
+      "item2sub": "Moving Heads, PAR",
+      "item3": "Akku & Strom",
+      "item3sub": "Flexible Lösungen"
     },
     "beschallung": {
       "desc": "PA-Systeme und Beschallungstechnik für Events, Konferenzen und Feiern – von der Komplett-Anlage bis zum einzelnen Mikrofon.",
-      "item1": "PA-Systeme", "item1sub": "Bis 250 Personen",
-      "item2": "Funkmikrofone", "item2sub": "Kabellose Freiheit",
-      "item3": "Aufbau & Betreuung", "item3sub": "Vor Ort durch unser Team"
+      "item1": "PA-Systeme",
+      "item1sub": "Bis 250 Personen",
+      "item2": "Funkmikrofone",
+      "item2sub": "Kabellose Freiheit",
+      "item3": "Aufbau & Betreuung",
+      "item3sub": "Vor Ort durch unser Team"
     },
     "moebelZelte": {
       "desc": "Event-Mobiliar und Zelte für Ihre Veranstaltung. Bierzeltgarnituren, Stehtische, Party- / Eventzelte und Lounge-Möbel.",
-      "item1": "Party- / Eventzelte", "item1sub": "Verschiedene Größen",
-      "item2": "Tische & Stühle", "item2sub": "Für jeden Anlass",
-      "item3": "Sauber & gepflegt", "item3sub": "Event-ready"
+      "item1": "Party- / Eventzelte",
+      "item1sub": "Verschiedene Größen",
+      "item2": "Tische & Stühle",
+      "item2sub": "Für jeden Anlass",
+      "item3": "Sauber & gepflegt",
+      "item3sub": "Event-ready"
     },
     "geschirr": {
       "desc": "Geschirr, Gläser und Besteck für Ihre Veranstaltung. Hochwertig, gespült und transportfertig in Kisten verpackt.",
-      "item1": "Komplette Sets", "item1sub": "Geschirr, Besteck, Gläser",
-      "item2": "Gespült geliefert", "item2sub": "Sofort einsatzbereit",
-      "item3": "In Kisten verpackt", "item3sub": "Einfacher Transport"
+      "item1": "Komplette Sets",
+      "item1sub": "Geschirr, Besteck, Gläser",
+      "item2": "Gespült geliefert",
+      "item2sub": "Sofort einsatzbereit",
+      "item3": "In Kisten verpackt",
+      "item3sub": "Einfacher Transport"
     },
     "huepfburgen": {
       "desc": "Aufblasbare Hüpfburgen und Spiele für Kinderfeste, Firmenevents und Veranstaltungen.",
-      "item1": "Verschiedene Modelle", "item1sub": "Für jedes Alter",
-      "item2": "Inkl. Gebläse", "item2sub": "Komplett-Set",
-      "item3": "TÜV-geprüft", "item3sub": "Maximale Sicherheit"
+      "item1": "Verschiedene Modelle",
+      "item1sub": "Für jedes Alter",
+      "item2": "Inkl. Gebläse",
+      "item2sub": "Komplett-Set",
+      "item3": "TÜV-geprüft",
+      "item3sub": "Maximale Sicherheit"
     },
     "absperrtechnik": {
       "desc": "Verkehrszeichen, Bauzäune, Warnbarken und komplette Verkehrssicherung – inkl. Planung und Antrag für Halteverbotszonen.",
-      "item1": "Verkehrszeichen", "item1sub": "RA1 & RA2, alle Typen",
-      "item2": "Bauzäune & Gitter", "item2sub": "Baustelle & Events",
-      "item3": "Vollservice möglich", "item3sub": "Planung & Antragstellung",
+      "item1": "Verkehrszeichen",
+      "item1sub": "RA1 & RA2, alle Typen",
+      "item2": "Bauzäune & Gitter",
+      "item2sub": "Baustelle & Events",
+      "item3": "Vollservice möglich",
+      "item3sub": "Planung & Antragstellung",
       "highlightTitle": "Verkehrssicherung aus einer Hand",
       "highlightText": "Wir übernehmen die komplette Planung Ihrer Verkehrssicherung – inkl. Halteverbotszonen, Behördenanträgen und Aufbau.",
       "highlightLink": "Mehr Infos auf slt-infra.de"
     },
     "spezialeffekte": {
       "desc": "Beeindruckende Spezialeffekte für unvergessliche Events. Nebel, Seifenblasen, Funken und mehr.",
-      "item1": "Nebelmaschinen", "item1sub": "Atmosphäre schaffen",
-      "item2": "Kalte Funken", "item2sub": "Sichere Pyrotechnik",
-      "item3": "Einweisung inkl.", "item3sub": "Sichere Bedienung"
+      "item1": "Nebelmaschinen",
+      "item1sub": "Atmosphäre schaffen",
+      "item2": "Kalte Funken",
+      "item2sub": "Sichere Pyrotechnik",
+      "item3": "Einweisung inkl.",
+      "item3sub": "Sichere Bedienung"
     },
     "kabel": {
       "desc": "Verlängerungskabel, Stromverteiler und Kabelbrücken für die sichere Stromversorgung Ihrer Veranstaltung oder Baustelle.",
-      "item1": "Kabel", "item1sub": "Verschiedene Längen",
-      "item2": "Verteiler", "item2sub": "CEE & Schuko",
-      "item3": "Geprüft", "item3sub": "Sicherheit zuerst"
+      "item1": "Kabel",
+      "item1sub": "Verschiedene Längen",
+      "item2": "Verteiler",
+      "item2sub": "CEE & Schuko",
+      "item3": "Geprüft",
+      "item3sub": "Sicherheit zuerst"
     },
     "buehne": {
       "desc": "Bühnenelemente und Podeste für professionelle Auftritte. Nivtec-Systeme für flexible Bühnengestaltung.",
-      "item1": "Nivtec-System", "item1sub": "Modulare Bühne",
-      "item2": "Verschiedene Höhen", "item2sub": "20cm bis 100cm",
-      "item3": "Aufbau-Service", "item3sub": "Auf Wunsch verfügbar"
+      "item1": "Nivtec-System",
+      "item1sub": "Modulare Bühne",
+      "item2": "Verschiedene Höhen",
+      "item2sub": "20cm bis 100cm",
+      "item3": "Aufbau-Service",
+      "item3sub": "Auf Wunsch verfügbar"
     },
     "traversen": {
       "desc": "Traversen und Rigging-Equipment für professionelle Bühnenkonstruktionen. Milos-Traversen in Schwarz.",
-      "item1": "Milos Traversen", "item1sub": "Hochwertig & stabil",
-      "item2": "Verschiedene Längen", "item2sub": "0,5m bis 3m",
-      "item3": "Schwarz eloxiert", "item3sub": "Dezent & elegant"
+      "item1": "Milos Traversen",
+      "item1sub": "Hochwertig & stabil",
+      "item2": "Verschiedene Längen",
+      "item2sub": "0,5m bis 3m",
+      "item3": "Schwarz eloxiert",
+      "item3sub": "Dezent & elegant"
     },
     "kommunikation": {
       "desc": "Funkgeräte für Events, Baustellen und Veranstaltungen. Zuverlässige Kommunikation für Ihr Team.",
-      "item1": "UHF-Funkgeräte", "item1sub": "Große Reichweite",
-      "item2": "Inkl. Akkus", "item2sub": "Sofort einsatzbereit",
-      "item3": "Mehrere Sets", "item3sub": "Für große Teams"
+      "item1": "UHF-Funkgeräte",
+      "item1sub": "Große Reichweite",
+      "item2": "Inkl. Akkus",
+      "item2sub": "Sofort einsatzbereit",
+      "item3": "Mehrere Sets",
+      "item3sub": "Für große Teams"
     }
   },
   "services": {
@@ -1979,12 +2358,30 @@
     "usps": {
       "title": "Warum bei SLT Rental kaufen?",
       "subtitle": "Sechs gute Gründe, Ihre nächste Maschine oder Ihren nächsten Anhänger bei uns zu kaufen.",
-      "dealer": { "title": "Autorisierter Fachhändler", "desc": "Direkt vom zertifizierten Händler kaufen – mit Herstellergarantie und offiziellem Servicenetz." },
-      "service": { "title": "Service & Wartung vor Ort", "desc": "Als Servicestützpunkt übernehmen wir Wartung, Reparatur und Ersatzteilversorgung für alle Marken." },
-      "delivery": { "title": "Lieferung in ganz NRW", "desc": "Wir liefern Ihre Neumaschine direkt zur Baustelle, zum Betrieb oder nach Hause – zuverlässig und termingerecht." },
-      "consulting": { "title": "Persönliche Beratung", "desc": "Kein Callcenter – Sie sprechen direkt mit unseren Maschinenexperten an den Standorten Bonn und Krefeld." },
-      "rentToBuy": { "title": "Erst mieten, dann kaufen", "desc": "Testen Sie die Maschine im Mietbetrieb und rechnen Sie die Mietkosten auf den Kaufpreis an – fragen Sie uns." },
-      "spareParts": { "title": "Ersatzteile ab Lager", "desc": "Wir führen Originalersatzteile aller Marken auf Lager und liefern bundesweit innerhalb von 1–2 Arbeitstagen." }
+      "dealer": {
+        "title": "Autorisierter Fachhändler",
+        "desc": "Direkt vom zertifizierten Händler kaufen – mit Herstellergarantie und offiziellem Servicenetz."
+      },
+      "service": {
+        "title": "Service & Wartung vor Ort",
+        "desc": "Als Servicestützpunkt übernehmen wir Wartung, Reparatur und Ersatzteilversorgung für alle Marken."
+      },
+      "delivery": {
+        "title": "Lieferung in ganz NRW",
+        "desc": "Wir liefern Ihre Neumaschine direkt zur Baustelle, zum Betrieb oder nach Hause – zuverlässig und termingerecht."
+      },
+      "consulting": {
+        "title": "Persönliche Beratung",
+        "desc": "Kein Callcenter – Sie sprechen direkt mit unseren Maschinenexperten an den Standorten Bonn und Krefeld."
+      },
+      "rentToBuy": {
+        "title": "Erst mieten, dann kaufen",
+        "desc": "Testen Sie die Maschine im Mietbetrieb und rechnen Sie die Mietkosten auf den Kaufpreis an – fragen Sie uns."
+      },
+      "spareParts": {
+        "title": "Ersatzteile ab Lager",
+        "desc": "Wir führen Originalersatzteile aller Marken auf Lager und liefern bundesweit innerhalb von 1–2 Arbeitstagen."
+      }
     },
     "brands": {
       "zoomlion": {
@@ -2070,13 +2467,34 @@
     "faq": {
       "title": "Häufig gestellte Fragen zum Kauf",
       "items": [
-        { "q": "Wo finde ich einen Zoomlion Händler in NRW?", "a": "SLT Rental in Bonn und Krefeld ist autorisierter Zoomlion-Fachhändler und Servicestützpunkt für Nordrhein-Westfalen. Wir führen Bagger, Radlader, Teleskoplader und Arbeitsbühnen der Zoomlion-Linie und bieten persönliche Beratung, Vorführung und Werksdienst." },
-        { "q": "Wo kann ich BAUMAX Baumaschinen kaufen?", "a": "SLT Rental ist autorisierter BAUMAX-Fachhändler in NRW. Wir führen das komplette BAUMAX-Sortiment: Rüttelplatten (VP, HVP, RVP-Serie), Vibrationsstampfer, Minidumper, Steinsägen und Betonrüttler – mit Ersatzteilservice und Kundendienst vor Ort." },
-        { "q": "Kann ich Temared Anhänger in Bonn oder Krefeld kaufen?", "a": "Ja – SLT Rental ist autorisierter Temared-Fachhändler in NRW mit Ausstellungsmodellen in Bonn und Krefeld. Wir führen das komplette Temared-Sortiment von 750 kg bis 3.500 kg und übernehmen Zulassung, Lieferung und Service." },
-        { "q": "Bietet SLT Rental auch Service und Reparatur für gekaufte Maschinen an?", "a": "Ja – als zertifizierter Servicestützpunkt für Zoomlion, BAUMAX und Temared übernehmen wir Wartung, Inspektion, Reparatur und Ersatzteilversorgung für alle bei uns verkauften Maschinen und Anhänger." },
-        { "q": "Kann ich eine Baumaschine erst mieten und dann kaufen?", "a": "Ja, bei SLT Rental bieten wir ein Mietkauf-Modell an: Testen Sie die Maschine im Mietbetrieb und rechnen Sie die Mietkosten anteilig auf den Kaufpreis an. Sprechen Sie uns einfach an – wir beraten Sie individuell." },
-        { "q": "Liefert SLT Rental Baumaschinen und Anhänger auch an?", "a": "Ja, wir liefern alle bei uns gekauften Maschinen und Anhänger direkt zur Baustelle, zum Betrieb oder nach Hause – in ganz NRW und darüber hinaus. Die Lieferkosten teilen wir Ihnen im Angebot transparent mit." },
-        { "q": "Welche Finanzierungsmöglichkeiten gibt es beim Kauf?", "a": "Wir beraten Sie gerne zu individuellen Finanzierungs- und Leasingoptionen für Baumaschinen und Anhänger. Kontaktieren Sie uns für ein persönliches Angebot – als gewerblicher Kunde profitieren Sie von attraktiven Konditionen." }
+        {
+          "q": "Wo finde ich einen Zoomlion Händler in NRW?",
+          "a": "SLT Rental in Bonn und Krefeld ist autorisierter Zoomlion-Fachhändler und Servicestützpunkt für Nordrhein-Westfalen. Wir führen Bagger, Radlader, Teleskoplader und Arbeitsbühnen der Zoomlion-Linie und bieten persönliche Beratung, Vorführung und Werksdienst."
+        },
+        {
+          "q": "Wo kann ich BAUMAX Baumaschinen kaufen?",
+          "a": "SLT Rental ist autorisierter BAUMAX-Fachhändler in NRW. Wir führen das komplette BAUMAX-Sortiment: Rüttelplatten (VP, HVP, RVP-Serie), Vibrationsstampfer, Minidumper, Steinsägen und Betonrüttler – mit Ersatzteilservice und Kundendienst vor Ort."
+        },
+        {
+          "q": "Kann ich Temared Anhänger in Bonn oder Krefeld kaufen?",
+          "a": "Ja – SLT Rental ist autorisierter Temared-Fachhändler in NRW mit Ausstellungsmodellen in Bonn und Krefeld. Wir führen das komplette Temared-Sortiment von 750 kg bis 3.500 kg und übernehmen Zulassung, Lieferung und Service."
+        },
+        {
+          "q": "Bietet SLT Rental auch Service und Reparatur für gekaufte Maschinen an?",
+          "a": "Ja – als zertifizierter Servicestützpunkt für Zoomlion, BAUMAX und Temared übernehmen wir Wartung, Inspektion, Reparatur und Ersatzteilversorgung für alle bei uns verkauften Maschinen und Anhänger."
+        },
+        {
+          "q": "Kann ich eine Baumaschine erst mieten und dann kaufen?",
+          "a": "Ja, bei SLT Rental bieten wir ein Mietkauf-Modell an: Testen Sie die Maschine im Mietbetrieb und rechnen Sie die Mietkosten anteilig auf den Kaufpreis an. Sprechen Sie uns einfach an – wir beraten Sie individuell."
+        },
+        {
+          "q": "Liefert SLT Rental Baumaschinen und Anhänger auch an?",
+          "a": "Ja, wir liefern alle bei uns gekauften Maschinen und Anhänger direkt zur Baustelle, zum Betrieb oder nach Hause – in ganz NRW und darüber hinaus. Die Lieferkosten teilen wir Ihnen im Angebot transparent mit."
+        },
+        {
+          "q": "Welche Finanzierungsmöglichkeiten gibt es beim Kauf?",
+          "a": "Wir beraten Sie gerne zu individuellen Finanzierungs- und Leasingoptionen für Baumaschinen und Anhänger. Kontaktieren Sie uns für ein persönliches Angebot – als gewerblicher Kunde profitieren Sie von attraktiven Konditionen."
+        }
       ]
     },
     "form": {
@@ -2125,7 +2543,14 @@
       "message": "Ihre Nachricht / weitere Informationen",
       "howFound": "Wie haben Sie uns gefunden?",
       "howFoundOptional": "– optional –",
-      "howFoundOptions": ["Google-Suche", "Weiterempfehlung", "Ich bin bereits Stammkunde", "Messe / Veranstaltung", "Social Media", "Sonstiges"],
+      "howFoundOptions": [
+        "Google-Suche",
+        "Weiterempfehlung",
+        "Ich bin bereits Stammkunde",
+        "Messe / Veranstaltung",
+        "Social Media",
+        "Sonstiges"
+      ],
       "privacyConsent": "Ich habe die <link>Datenschutzerklärung</link> gelesen und bin damit einverstanden, dass meine Daten zur Bearbeitung dieser Kaufanfrage gespeichert und verwendet werden.",
       "sslSecured": "SSL-gesichert",
       "callbackPossible": "Rückruf möglich",
@@ -2144,5 +2569,51 @@
       "toRentals": "Zum Mietangebot",
       "toHome": "Zur Startseite"
     }
+  },
+  "summerPromo": {
+    "badge": "Sommer-Aktion · gültig bis {{date}}",
+    "badgeShort": "Sommer-Aktion · bis {{date}}",
+    "headline": "Wir feiern den Sommer",
+    "titleSuffix": "– sichere dir jetzt 10% Rabatt auf alle Mietartikel aus dem Bereich Event!",
+    "dialogTitleSuffix": "– 10% Rabatt auf alle Event-Mietartikel!",
+    "details": "Gültig an allen Standorten (Krefeld, Bonn, Mülheim an der Ruhr) auf alle Event-Kategorien: Möbel & Zelte, Beleuchtung, Beschallung, Bühne, Traversen & Rigging, Geschirr, Hüpfburgen und mehr.",
+    "codeLabel": "Code:",
+    "yourCode": "Dein Gutscheincode",
+    "cta": "Zu den Event-Mietartikeln",
+    "ctaDialog": "Jetzt Event-Artikel mieten",
+    "later": "Später",
+    "toastCopied": "Gutscheincode kopiert",
+    "toastError": "Kopieren nicht möglich",
+    "ariaCopyCode": "Gutscheincode {{code}} kopieren"
+  },
+  "newMachinesSlider": {
+    "badge": "Neumaschinen",
+    "title": "Neue Baumaschinen direkt vom Fachhändler",
+    "subtitle": "Originalverpackte Neumaschinen von BAUMAX, Zoomlion, Temared & Co. – mit Herstellergarantie und persönlicher Beratung.",
+    "badgeNew": "Neu",
+    "badgeTop": "Top",
+    "viewDetails": "Details ansehen",
+    "priceOnRequest": "Preis auf Anfrage",
+    "gross": "brutto",
+    "viewAll": "Alle Neumaschinen ansehen"
+  },
+  "usedMachinesSlider": {
+    "badge": "SLT Used",
+    "title": "Geprüfte Gebrauchtmaschinen aus unserem Mietpark",
+    "subtitle": "Sofort verfügbare Maschinen mit Servicehistorie und 12 Monaten SLT Used Garantie – jetzt zum attraktiven Sonderpreis sichern.",
+    "badgeTop": "Top",
+    "badgeReserved": "Reserviert",
+    "viewDetails": "Details ansehen",
+    "viewAll": "Alle Gebrauchtmaschinen ansehen",
+    "priceOnRequest": "Preis auf Anfrage",
+    "net": "netto",
+    "yearAbbr": "Bj. {{year}}",
+    "hoursAbbr": "{{hours}} Bh"
+  },
+  "ratgeberTeaser": {
+    "heading": "Aus unserem Ratgeber",
+    "subheading": "Praxiswissen rund ums Mieten – verständlich erklärt",
+    "viewAll": "Alle Ratgeber",
+    "readMore": "Weiterlesen"
   }
 }
