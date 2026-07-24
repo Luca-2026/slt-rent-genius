@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompleteRegistration } from "@/hooks/useCompleteRegistration";
@@ -52,6 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [b2bProfile, setB2BProfile] = useState<B2BProfile | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [authorizedPersonInfo, setAuthorizedPersonInfo] = useState<AuthorizedPersonInfo | null>(null);
+  const loggedLoginTokens = useRef<Set<string>>(new Set());
 
   const fetchB2BProfile = async (userId: string) => {
     // First try direct profile ownership
@@ -108,11 +109,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
+    const logLoginEvent = (currentSession: Session | null) => {
+      const token = currentSession?.access_token;
+      if (!token || loggedLoginTokens.current.has(token)) return;
+      loggedLoginTokens.current.add(token);
+      supabase.rpc("log_admin_login" as any).then(() => {}, () => {});
+    };
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+
+        if (event === "SIGNED_IN") {
+          logLoginEvent(session);
+        }
 
         if (session?.user) {
           setTimeout(() => {
@@ -146,10 +158,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email,
       password,
     });
-    if (!error) {
-      // Fire-and-forget: server-side check ensures only admins are logged
-      supabase.rpc("log_admin_login" as any).then(() => {}, () => {});
-    }
     return { error };
   };
 
