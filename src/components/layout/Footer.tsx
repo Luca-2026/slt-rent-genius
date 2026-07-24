@@ -28,6 +28,17 @@ const locations = [
   },
 ];
 
+/**
+ * Offizielle SLT-Rental Social-Media-Profile.
+ * Bewusst als eingefrorene Modul-Konstante hinterlegt (nicht aus DB/CMS/env),
+ * damit die Links nicht durch Datenbank- oder CMS-Manipulation geändert werden
+ * können. Änderungen ausschließlich per Code-Review möglich.
+ */
+const SOCIAL_LINKS = Object.freeze({
+  facebook: "https://www.facebook.com/sltrental1",
+  instagram: "https://www.instagram.com/sltrental/",
+} as const);
+
 export function Footer() {
   const { t } = useTranslation();
 
