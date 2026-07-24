@@ -344,7 +344,7 @@ export default function Index() {
               {/* Personal touch: Benedikt Nöchel */}
               <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 mb-6 md:mb-8">
                 <a
-                  href="mailto:b.noechle@slt-rental.de"
+                  href="mailto:b.noechel@slt-rental.de"
                   title="E-Mail an Benedikt Nöchel"
                   className="shrink-0"
                 >
