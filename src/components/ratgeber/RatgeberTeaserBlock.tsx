@@ -1,26 +1,24 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, BookOpen } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import type { BlogArticle } from "@/data/blogArticles";
 
 interface RatgeberTeaserBlockProps {
   articles: BlogArticle[];
-  /** Überschrift über dem Block. */
   heading?: string;
-  /** Kurzer Untertitel/Lead. */
   subheading?: string;
 }
 
-/**
- * Wiederverwendbarer Teaserblock mit 1–3 Ratgeber-Karten.
- * Wird auf Kategorie- und Startseite eingesetzt, um interne Verlinkung
- * der Ratgeber-Artikel zu stärken (SEO: PageRank-Verteilung).
- */
 export function RatgeberTeaserBlock({
   articles,
-  heading = "Aus unserem Ratgeber",
+  heading,
   subheading,
 }: RatgeberTeaserBlockProps) {
+  const { t } = useTranslation();
   if (!articles?.length) return null;
+
+  const resolvedHeading = heading ?? t("ratgeberTeaser.heading");
+  const resolvedSubheading = subheading ?? t("ratgeberTeaser.subheading");
 
   return (
     <section className="py-10 sm:py-14 bg-muted/30 border-t border-border">
@@ -29,17 +27,17 @@ export function RatgeberTeaserBlock({
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2">
               <BookOpen className="h-5 w-5 text-primary" aria-hidden="true" />
-              {heading}
+              {resolvedHeading}
             </h2>
-            {subheading && (
-              <p className="text-sm text-muted-foreground mt-1">{subheading}</p>
+            {resolvedSubheading && (
+              <p className="text-sm text-muted-foreground mt-1">{resolvedSubheading}</p>
             )}
           </div>
           <Link
             to="/ratgeber"
             className="hidden sm:inline-flex items-center gap-1 text-sm text-primary hover:underline shrink-0"
           >
-            Alle Ratgeber <ArrowRight className="h-4 w-4" />
+            {t("ratgeberTeaser.viewAll")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
@@ -58,7 +56,7 @@ export function RatgeberTeaserBlock({
               </h3>
               <p className="text-sm text-muted-foreground line-clamp-3">{a.teaser}</p>
               <span className="inline-flex items-center gap-1 text-sm text-primary mt-3 group-hover:gap-2 transition-all">
-                Weiterlesen <ArrowRight className="h-3.5 w-3.5" />
+                {t("ratgeberTeaser.readMore")} <ArrowRight className="h-3.5 w-3.5" />
               </span>
             </Link>
           ))}
@@ -66,7 +64,7 @@ export function RatgeberTeaserBlock({
 
         <div className="mt-6 text-center sm:hidden">
           <Link to="/ratgeber" className="inline-flex items-center gap-1 text-sm text-primary hover:underline">
-            Alle Ratgeber <ArrowRight className="h-4 w-4" />
+            {t("ratgeberTeaser.viewAll")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>

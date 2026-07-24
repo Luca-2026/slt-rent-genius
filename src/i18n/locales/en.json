@@ -136,7 +136,10 @@
     "title": "Ready for Your Next Project?",
     "subtitle": "Whether private or business – we have the right equipment for you. Book online now or get personal advice.",
     "rentEquipment": "Rent Equipment Now",
-    "b2bInquiry": "Request B2B Conditions"
+    "b2bInquiry": "Request B2B Conditions",
+    "personalContact": "Your personal contact",
+    "ceoRole": "Managing Director & Owner",
+    "subtitleExtended": "Whether private customer or business – you'll find the right equipment with us. If you have any questions or ideas, feel free to reach out to me or our team directly."
   },
   "benefits": {
     "fairPrices": "Fair Prices",
@@ -168,7 +171,18 @@
     "zoomlionDealer": "Zoomlion Dealer NRW",
     "baumaxDealer": "BAUMAX Dealer",
     "temaredBuy": "Buy Temared Trailers",
-    "purchaseInquiry": "Submit Purchase Inquiry →"
+    "purchaseInquiry": "Submit Purchase Inquiry →",
+    "lowPriceGuarantee": "Low-price guarantee",
+    "guide": "Guide",
+    "services": "Services",
+    "comparison": "Provider comparison",
+    "fiberOptic": "Fibre-optic rollout",
+    "weddingTech": "Wedding equipment rental",
+    "buyNewMachines": "Buy new machines",
+    "buyUsedMachines": "Buy used machines",
+    "baumaxService": "BAUMAX service & repair",
+    "locationPrefix": "Location {{name}}",
+    "cookieSettings": "Cookie settings"
   },
   "homeSeo": {
     "heading": "Rent Construction Equipment in NRW – Your Partner for Every Project",
@@ -2555,5 +2569,51 @@
       "toRentals": "View Rental Offers",
       "toHome": "Back to Home"
     }
+  },
+  "summerPromo": {
+    "badge": "Summer promo · valid until {{date}}",
+    "badgeShort": "Summer promo · until {{date}}",
+    "headline": "Celebrating summer with you",
+    "titleSuffix": "– save 10% now on all event rental items!",
+    "dialogTitleSuffix": "– 10% off on all event rental items!",
+    "details": "Valid at all locations (Krefeld, Bonn, Mülheim an der Ruhr) for all event categories: furniture & tents, lighting, PA systems, stage, truss & rigging, tableware, bouncy castles and more.",
+    "codeLabel": "Code:",
+    "yourCode": "Your voucher code",
+    "cta": "Browse event rentals",
+    "ctaDialog": "Rent event items now",
+    "later": "Later",
+    "toastCopied": "Voucher code copied",
+    "toastError": "Unable to copy",
+    "ariaCopyCode": "Copy voucher code {{code}}"
+  },
+  "newMachinesSlider": {
+    "badge": "New machines",
+    "title": "Brand-new construction machinery direct from the authorised dealer",
+    "subtitle": "Factory-new machines from BAUMAX, Zoomlion, Temared & Co. – with manufacturer warranty and personal advice.",
+    "badgeNew": "New",
+    "badgeTop": "Top",
+    "viewDetails": "View details",
+    "priceOnRequest": "Price on request",
+    "gross": "gross",
+    "viewAll": "View all new machines"
+  },
+  "usedMachinesSlider": {
+    "badge": "SLT Used",
+    "title": "Inspected used machinery from our rental fleet",
+    "subtitle": "Immediately available machines with service history and a 12-month SLT Used warranty – secure yours now at an attractive special price.",
+    "badgeTop": "Top",
+    "badgeReserved": "Reserved",
+    "viewDetails": "View details",
+    "viewAll": "View all used machines",
+    "priceOnRequest": "Price on request",
+    "net": "net",
+    "yearAbbr": "Yr. {{year}}",
+    "hoursAbbr": "{{hours}} hrs"
+  },
+  "ratgeberTeaser": {
+    "heading": "From our guide",
+    "subheading": "Practical rental know-how – clearly explained",
+    "viewAll": "All guides",
+    "readMore": "Read more"
   }
 }

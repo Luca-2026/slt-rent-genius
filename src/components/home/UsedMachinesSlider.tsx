@@ -2,6 +2,7 @@ import { useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import useEmblaCarousel from "embla-carousel-react";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,8 +10,8 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { ArrowRight, Tag, Package } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-function formatPrice(price: number | null, onRequest: boolean) {
-  if (onRequest || !price) return "Preis auf Anfrage";
+function formatPrice(price: number | null, onRequest: boolean, fallback: string) {
+  if (onRequest || !price) return fallback;
   return new Intl.NumberFormat("de-DE", {
     style: "currency",
     currency: "EUR",
@@ -19,6 +20,7 @@ function formatPrice(price: number | null, onRequest: boolean) {
 }
 
 export function UsedMachinesSlider() {
+  const { t } = useTranslation();
   const { data: machines = [] } = useQuery({
     queryKey: ["used-machines-slider"],
     queryFn: async () => {
@@ -62,14 +64,13 @@ export function UsedMachinesSlider() {
         <AnimatedSection className="text-center mb-10">
           <span className="inline-flex items-center gap-1.5 bg-accent/10 text-accent px-4 py-1.5 rounded-full text-sm font-medium mb-4 border border-accent/20">
             <Tag className="h-3.5 w-3.5" />
-            SLT Used
+            {t("usedMachinesSlider.badge")}
           </span>
           <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
-            Geprüfte Gebrauchtmaschinen aus unserem Mietpark
+            {t("usedMachinesSlider.title")}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Sofort verfügbare Maschinen mit Servicehistorie und 12 Monaten SLT Used Garantie –
-            jetzt zum attraktiven Sonderpreis sichern.
+            {t("usedMachinesSlider.subtitle")}
           </p>
         </AnimatedSection>
       </div>
@@ -100,12 +101,12 @@ export function UsedMachinesSlider() {
                   <div className="absolute top-2 left-2 flex flex-wrap gap-1">
                     {m.is_featured && (
                       <Badge className="bg-accent text-accent-foreground text-[10px] px-1.5 py-0">
-                        Top
+                        {t("usedMachinesSlider.badgeTop")}
                       </Badge>
                     )}
                     {m.status === "reserved" && (
                       <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
-                        Reserviert
+                        {t("usedMachinesSlider.badgeReserved")}
                       </Badge>
                     )}
                   </div>
@@ -119,22 +120,22 @@ export function UsedMachinesSlider() {
                   </p>
                   <p className="text-xs text-muted-foreground flex-1">
                     {[
-                      m.year ? `Bj. ${m.year}` : null,
-                      m.hours != null ? `${Number(m.hours).toLocaleString("de-DE")} Bh` : null,
+                      m.year ? t("usedMachinesSlider.yearAbbr", { year: m.year }) : null,
+                      m.hours != null ? t("usedMachinesSlider.hoursAbbr", { hours: Number(m.hours).toLocaleString("de-DE") }) : null,
                     ]
                       .filter(Boolean)
                       .join(" · ")}
                   </p>
                   <p className="text-sm font-bold text-primary mt-2">
-                    {formatPrice(price, m.price_on_request)}
+                    {formatPrice(price, m.price_on_request, t("usedMachinesSlider.priceOnRequest"))}
                     {price && (
                       <span className="text-[10px] font-normal text-muted-foreground ml-1">
-                        netto
+                        {t("usedMachinesSlider.net")}
                       </span>
                     )}
                   </p>
                   <span className="inline-flex items-center gap-1 text-xs font-medium text-accent mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    Details ansehen
+                    {t("usedMachinesSlider.viewDetails")}
                     <ArrowRight className="h-3 w-3" />
                   </span>
                 </CardContent>
@@ -178,7 +179,7 @@ export function UsedMachinesSlider() {
             size="lg"
             className="group border-2 hover:border-primary hover:bg-primary hover:text-primary-foreground"
           >
-            Alle Gebrauchtmaschinen ansehen
+            {t("usedMachinesSlider.viewAll")}
             <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </Button>
         </Link>

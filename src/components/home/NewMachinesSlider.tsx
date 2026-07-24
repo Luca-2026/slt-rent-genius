@@ -2,6 +2,7 @@ import { useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import useEmblaCarousel from "embla-carousel-react";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,8 +10,8 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { ArrowRight, Sparkles, Package } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-function formatPrice(price: number | null, onRequest: boolean) {
-  if (onRequest || !price) return "Preis auf Anfrage";
+function formatPrice(price: number | null, onRequest: boolean, fallback: string) {
+  if (onRequest || !price) return fallback;
   return new Intl.NumberFormat("de-DE", {
     style: "currency",
     currency: "EUR",
@@ -19,6 +20,7 @@ function formatPrice(price: number | null, onRequest: boolean) {
 }
 
 export function NewMachinesSlider() {
+  const { t } = useTranslation();
   const { data: machines = [] } = useQuery({
     queryKey: ["new-machines-slider"],
     queryFn: async () => {
@@ -81,11 +83,11 @@ export function NewMachinesSlider() {
             )}
             <div className="absolute top-2 left-2 flex flex-wrap gap-1">
               <Badge className="bg-primary text-primary-foreground text-[10px] px-1.5 py-0">
-                Neu
+                {t("newMachinesSlider.badgeNew")}
               </Badge>
               {m.is_featured && (
                 <Badge className="bg-accent text-accent-foreground text-[10px] px-1.5 py-0">
-                  Top
+                  {t("newMachinesSlider.badgeTop")}
                 </Badge>
               )}
             </div>
@@ -102,15 +104,15 @@ export function NewMachinesSlider() {
             </p>
             <div className="mt-auto pt-2">
               <p className="text-sm font-bold text-primary">
-                {formatPrice(price, m.price_on_request)}
+                {formatPrice(price, m.price_on_request, t("newMachinesSlider.priceOnRequest"))}
                 {price && !m.price_on_request && (
                   <span className="text-[10px] font-normal text-muted-foreground ml-1">
-                    brutto
+                    {t("newMachinesSlider.gross")}
                   </span>
                 )}
               </p>
               <span className="inline-flex items-center gap-1 text-xs font-medium text-primary mt-2 opacity-70 group-hover:opacity-100 transition-opacity">
-                Details ansehen
+                {t("newMachinesSlider.viewDetails")}
                 <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
               </span>
             </div>
@@ -127,14 +129,13 @@ export function NewMachinesSlider() {
         <AnimatedSection className="text-center mb-10">
           <span className="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4 border border-primary/20">
             <Sparkles className="h-3.5 w-3.5" />
-            Neumaschinen
+            {t("newMachinesSlider.badge")}
           </span>
           <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
-            Neue Baumaschinen direkt vom Fachhändler
+            {t("newMachinesSlider.title")}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Originalverpackte Neumaschinen von BAUMAX, Zoomlion, Temared & Co. –
-            mit Herstellergarantie und persönlicher Beratung.
+            {t("newMachinesSlider.subtitle")}
           </p>
         </AnimatedSection>
       </div>
@@ -161,7 +162,7 @@ export function NewMachinesSlider() {
             size="lg"
             className="group border-2 hover:border-primary hover:bg-primary hover:text-primary-foreground"
           >
-            Alle Neumaschinen ansehen
+            {t("newMachinesSlider.viewAll")}
             <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </Button>
         </Link>
