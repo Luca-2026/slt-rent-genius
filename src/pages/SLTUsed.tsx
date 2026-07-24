@@ -24,33 +24,39 @@ import iconWerkzeug from "@/assets/icons/werkzeug.png";
 import { UsedMachineInquiryModal, type MachineData } from "@/components/used/UsedMachineInquiryModal";
 import { getUsedMachineDisplayModel } from "@/data/usedMachineDisplayNames";
 
-const usedCategories = [
-  { id: "all", label: "Alle Kategorien", icon: null },
-  { id: "minibagger", label: "Minibagger", icon: iconBagger },
-  { id: "radlader", label: "Radlader", icon: iconBagger },
-  { id: "teleskoplader", label: "Teleskoplader", icon: iconBagger },
-  { id: "arbeitsbuehnen", label: "Arbeitsbühnen", icon: iconHebebuehne },
-  { id: "verdichtung", label: "Verdichtung", icon: iconVerdichtung },
-  { id: "anhaenger", label: "Anhänger", icon: iconAnhaenger },
-  { id: "aggregate", label: "Aggregate", icon: iconAggregat },
-  { id: "werkzeuge", label: "Werkzeuge", icon: iconWerkzeug },
-  { id: "eventboden", label: "Eventboden", icon: null },
-  { id: "sonstiges", label: "Sonstiges", icon: null },
-];
-
-const demoMachines: any[] = [];
-
 const locationLabels: Record<string, string> = {
   krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim",
 };
 
-function formatPrice(price: number | null, onRequest: boolean) {
-  if (onRequest || !price) return "Preis auf Anfrage";
-  return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 0 }).format(price) + " netto";
-}
+const demoMachines: any[] = [];
 
-function machineToData(m: any): MachineData {
-  return {
+export default function SLTUsed() {
+  const { t } = useTranslation();
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMachine, setModalMachine] = useState<MachineData | null>(null);
+
+  const formatPrice = (price: number | null, onRequest: boolean) => {
+    if (onRequest || !price) return t("sales.used.priceOnRequest");
+    return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 0 }).format(price) + " " + t("sales.used.priceNetSuffix");
+  };
+
+  const usedCategories = [
+    { id: "all", label: t("sales.used.categoryAll"), icon: null },
+    { id: "minibagger", label: t("sales.used.categoryMinibagger"), icon: iconBagger },
+    { id: "radlader", label: t("sales.used.categoryRadlader"), icon: iconBagger },
+    { id: "teleskoplader", label: t("sales.used.categoryTeleskoplader"), icon: iconBagger },
+    { id: "arbeitsbuehnen", label: t("sales.used.categoryArbeitsbuehnen"), icon: iconHebebuehne },
+    { id: "verdichtung", label: t("sales.used.categoryVerdichtung"), icon: iconVerdichtung },
+    { id: "anhaenger", label: t("sales.used.categoryAnhaenger"), icon: iconAnhaenger },
+    { id: "aggregate", label: t("sales.used.categoryAggregate"), icon: iconAggregat },
+    { id: "werkzeuge", label: t("sales.used.categoryWerkzeuge"), icon: iconWerkzeug },
+    { id: "eventboden", label: t("sales.used.categoryEventboden"), icon: null },
+    { id: "sonstiges", label: t("sales.used.categorySonstiges"), icon: null },
+  ];
+
+  const machineToData = (m: any): MachineData => ({
     id: m.id,
     manufacturer: m.manufacturer,
     model: m.model,
@@ -59,15 +65,7 @@ function machineToData(m: any): MachineData {
     location: m.location || "",
     referenceNumber: m.reference_number || "",
     status: m.status,
-  };
-}
-
-export default function SLTUsed() {
-  const { t } = useTranslation();
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalMachine, setModalMachine] = useState<MachineData | null>(null);
+  });
 
   const { data: dbMachines } = useQuery({
     queryKey: ["used-machines"],
@@ -144,19 +142,19 @@ export default function SLTUsed() {
       {/* Hero */}
       <section className="bg-primary py-14 lg:py-20">
         <div className="section-container">
-          <Badge className="bg-accent text-accent-foreground mb-4">SLT Used</Badge>
+          <Badge className="bg-accent text-accent-foreground mb-4">{t("sales.used.heroBadge")}</Badge>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4">
-            Geprüfte Gebrauchtmaschinen
+            {t("sales.used.pageTitle")}
           </h1>
           <p className="text-lg md:text-xl text-primary-foreground/80 mb-6 max-w-3xl">
-            Hochwertige Baumaschinen und Equipment aus unserem eigenen Mietpark – professionell gewartet, sofort einsatzbereit.
+            {t("sales.used.pageSubtitle")}
           </p>
           <div className="flex flex-wrap gap-6">
             {[
-              { icon: Shield, text: "Geprüft & gewartet" },
-              { icon: Wrench, text: "Servicehistorie" },
-              { icon: Truck, text: "Lieferung möglich" },
-              { icon: Clock, text: "Sofort verfügbar" },
+              { icon: Shield, text: t("sales.used.heroTagChecked") },
+              { icon: Wrench, text: t("sales.used.heroTagService") },
+              { icon: Truck, text: t("sales.used.heroTagDelivery") },
+              { icon: Clock, text: t("sales.used.heroTagAvailable") },
             ].map((item, idx) => (
               <div key={idx} className="flex items-center gap-2 text-sm text-primary-foreground/70">
                 <item.icon className="h-4 w-4 text-accent" />
@@ -167,7 +165,7 @@ export default function SLTUsed() {
           <div className="mt-6">
             <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
               <Link to="/verkauf/neumaschinen">
-                Zu den Neumaschinen
+                {t("sales.used.ctaToNew")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -180,12 +178,12 @@ export default function SLTUsed() {
         <AnimatedSection>
           <div className="flex flex-col md:flex-row gap-4 md:items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-headline">
-              {filteredMachines.length} {filteredMachines.length === 1 ? "Maschine" : "Maschinen"} verfügbar
+              {t("sales.used.machinesAvailable", { count: filteredMachines.length })}
             </h2>
             <div className="relative w-full md:w-80">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Hersteller, Modell oder Ref.-Nr. suchen..."
+                placeholder={t("sales.used.searchPlaceholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
@@ -216,14 +214,14 @@ export default function SLTUsed() {
           <div className="text-center py-20">
             <Package className="h-16 w-16 text-muted-foreground/40 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-headline mb-2">
-              Aktuell keine Gebrauchtmaschinen vorhanden
+              {t("sales.used.emptyTitle")}
             </h3>
             <p className="text-muted-foreground max-w-md mx-auto mb-6">
-              Schauen Sie gerne später nochmal vorbei – unser Bestand wechselt regelmäßig. Oder kontaktieren Sie uns direkt für eine individuelle Anfrage.
+              {t("sales.used.emptyText")}
             </p>
             <Link to="/kontakt">
               <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                Kontakt aufnehmen
+                {t("sales.used.contactCta")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
@@ -236,9 +234,9 @@ export default function SLTUsed() {
               const isSold = machine.status === "sold";
               const isDisabled = isReserved || isSold;
               const tooltipText = isReserved
-                ? "Diese Maschine ist bereits reserviert"
+                ? t("sales.used.tooltipReserved")
                 : isSold
-                ? "Diese Maschine wurde bereits verkauft"
+                ? t("sales.used.tooltipSold")
                 : "";
 
               const detailHref = machine.slug ? `/verkauf/gebrauchtmaschinen/${machine.slug}` : null;
@@ -262,10 +260,10 @@ export default function SLTUsed() {
                       )}
                       <div className="absolute top-3 left-3 flex gap-2">
                         {machine.is_featured && (
-                          <Badge className="bg-accent text-accent-foreground text-xs">Top-Angebot</Badge>
+                          <Badge className="bg-accent text-accent-foreground text-xs">{t("sales.used.badgeTop")}</Badge>
                         )}
-                        {isReserved && <Badge variant="secondary" className="text-xs">Reserviert</Badge>}
-                        {isSold && <Badge variant="destructive" className="text-xs">Verkauft</Badge>}
+                        {isReserved && <Badge variant="secondary" className="text-xs">{t("sales.used.badgeReserved")}</Badge>}
+                        {isSold && <Badge variant="destructive" className="text-xs">{t("sales.used.badgeSold")}</Badge>}
                       </div>
                       {machine.reference_number && (
                         <div className="absolute bottom-3 right-3">
@@ -283,8 +281,8 @@ export default function SLTUsed() {
                       <h3 className="text-lg font-bold text-headline group-hover:text-primary transition-colors">{getUsedMachineDisplayModel(machine.model)}</h3>
                     </Wrapper>
                     <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground mb-3 min-h-[2.75rem] content-start">
-                      {machine.year && <span>Bj. {machine.year}</span>}
-                      {machine.hours != null && <span>{machine.hours.toLocaleString("de-DE")} Bh</span>}
+                      {machine.year && <span>{t("sales.used.yearAbbr", { year: machine.year })}</span>}
+                      {machine.hours != null && <span>{t("sales.used.hoursAbbr", { hours: machine.hours.toLocaleString("de-DE") })}</span>}
                       {machine.location && (
                         <span>{locationLabels[machine.location] || machine.location}</span>
                       )}
@@ -314,7 +312,7 @@ export default function SLTUsed() {
                         <TooltipTrigger asChild>
                           <span className="block">
                             <Button className="w-full" variant="outline" disabled>
-                              {isReserved ? "Reserviert" : "Verkauft"}
+                              {isReserved ? t("sales.used.badgeReserved") : t("sales.used.badgeSold")}
                             </Button>
                           </span>
                         </TooltipTrigger>
@@ -323,12 +321,12 @@ export default function SLTUsed() {
                     ) : detailHref ? (
                       <Button asChild className="w-full">
                         <Link to={detailHref}>
-                          Details ansehen <ArrowRight className="ml-2 h-4 w-4" />
+                          {t("sales.used.detailsBtn")} <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                       </Button>
                     ) : (
                       <Button className="w-full" onClick={() => openInquiry(machine)}>
-                        Anfrage senden <ArrowRight className="ml-2 h-4 w-4" />
+                        {t("sales.used.inquiryBtn")} <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     )}
                     </div>
@@ -343,8 +341,8 @@ export default function SLTUsed() {
         {machines.length > 0 && filteredMachines.length === 0 && (
           <div className="text-center py-16">
             <Package className="h-12 w-12 text-muted-foreground/40 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-headline mb-2">Keine Maschinen gefunden</h3>
-            <p className="text-muted-foreground">Versuchen Sie eine andere Kategorie oder Suchbegriff.</p>
+            <h3 className="text-lg font-semibold text-headline mb-2">{t("sales.used.noResultsTitle")}</h3>
+            <p className="text-muted-foreground">{t("sales.used.noResultsText")}</p>
           </div>
         )}
       </section>
@@ -354,14 +352,14 @@ export default function SLTUsed() {
         <div className="section-container">
           <AnimatedSection>
             <h2 className="text-2xl md:text-3xl font-bold text-headline text-center mb-8">
-              Warum Gebrauchtmaschinen von SLT?
+              {t("sales.used.uspHeading")}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { icon: Shield, title: "Geprüfte Qualität", desc: "Jede Maschine wird vor dem Verkauf gründlich geprüft und aufbereitet." },
-                { icon: Wrench, title: "Komplette Servicehistorie", desc: "Lückenlose Wartungsdokumentation aus unserem eigenen Mietpark." },
-                { icon: Truck, title: "Lieferung deutschlandweit", desc: "Wir liefern Ihre Maschine direkt an den Einsatzort." },
-                { icon: Clock, title: "Sofort verfügbar", desc: "Alle gelisteten Maschinen sind sofort abholbereit oder lieferbar." },
+                { icon: Shield, title: t("sales.used.usp1Title"), desc: t("sales.used.usp1Desc") },
+                { icon: Wrench, title: t("sales.used.usp2Title"), desc: t("sales.used.usp2Desc") },
+                { icon: Truck, title: t("sales.used.usp3Title"), desc: t("sales.used.usp3Desc") },
+                { icon: Clock, title: t("sales.used.usp4Title"), desc: t("sales.used.usp4Desc") },
               ].map((usp, idx) => (
                 <Card key={idx} className="text-center p-6">
                   <usp.icon className="h-10 w-10 text-primary mx-auto mb-3" />
@@ -376,12 +374,12 @@ export default function SLTUsed() {
 
       {/* General Inquiry CTA */}
       <section className="section-container py-12 text-center">
-        <h2 className="text-2xl font-bold text-headline mb-4">Sie suchen eine bestimmte Maschine?</h2>
+        <h2 className="text-2xl font-bold text-headline mb-4">{t("sales.used.searchingHeading")}</h2>
         <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-          Teilen Sie uns Ihren Bedarf mit – wir finden die passende Gebrauchtmaschine für Sie.
+          {t("sales.used.searchingText")}
         </p>
         <Button size="lg" onClick={() => openInquiry()}>
-          Allgemeine Anfrage senden
+          {t("sales.used.generalInquiry")}
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
       </section>
@@ -389,8 +387,8 @@ export default function SLTUsed() {
       {/* Contact */}
       <section className="bg-primary text-primary-foreground py-10">
         <div className="section-container text-center">
-          <h2 className="text-xl font-bold mb-2 text-primary-foreground">Fragen zu unseren Gebrauchtmaschinen?</h2>
-          <p className="text-primary-foreground mb-4">Unser Team berät Sie gerne persönlich.</p>
+          <h2 className="text-xl font-bold mb-2 text-primary-foreground">{t("sales.used.contactHeading")}</h2>
+          <p className="text-primary-foreground mb-4">{t("sales.used.contactText")}</p>
           <div className="flex flex-wrap justify-center gap-4">
             <a href="tel:021514179904" className="flex items-center gap-2 hover:text-accent transition-colors">
               <Phone className="h-4 w-4" /> 02151 417 99 04
