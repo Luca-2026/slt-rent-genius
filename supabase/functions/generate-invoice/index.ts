@@ -160,13 +160,18 @@ Deno.serve(async (req: Request) => {
       const dueDays = daysForTerms(effTerms);
       const finalDueDate = new Date(Date.now() + dueDays * 86400000).toISOString().split("T")[0];
 
-      // Build PDF from stored items (all rendered as product rows – simplification)
+      // Build PDF from stored items – respect item_type so services/surcharges render in their own blocks
+      const allDraftItems = draftItems || [];
+      const draftProducts = allDraftItems.filter((i: any) => (i.item_type || 'product') === 'product');
+      const draftServices = allDraftItems.filter((i: any) => i.item_type === 'service');
+      const draftSurcharges = allDraftItems.filter((i: any) => i.item_type === 'surcharge');
+
       const pdfBytes = await generateDocumentPdf({
         title: "Rechnung",
         documentNumber: finalNumber,
         date: finalDate,
         profile: draftProfile,
-        productItems: (draftItems || []).map((it: any, idx: number) => ({
+        productItems: draftProducts.map((it: any, idx: number) => ({
           name: it.product_name,
           description: it.description || undefined,
           quantity: it.quantity,
@@ -177,8 +182,17 @@ Deno.serve(async (req: Request) => {
           rentalEnd: it.rental_end,
           itemIndex: idx,
         })),
-        serviceItems: [],
-        surchargeItems: [],
+        serviceItems: draftServices.map((it: any) => ({
+          name: it.product_name,
+          description: it.description || undefined,
+          amount: Number(it.total_price),
+          parentItemIndex: it.parent_item_index ?? undefined,
+        })),
+        surchargeItems: draftSurcharges.map((it: any) => ({
+          name: it.product_name,
+          description: it.description || undefined,
+          amount: Number(it.total_price),
+        })),
         sections: notes ? [{ label: "Bemerkungen", value: notes }] : (draft.notes ? [{ label: "Bemerkungen", value: draft.notes }] : []),
         totals: {
           net: Number(draft.net_amount),
@@ -192,6 +206,7 @@ Deno.serve(async (req: Request) => {
         },
         isProforma: false,
       });
+
 
       const safeName = draftProfile.company_name.replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/Ä/g,"Ae").replace(/Ö/g,"Oe").replace(/Ü/g,"Ue").replace(/ß/g,"ss").replace(/[^a-zA-Z0-9_\- ]/g, "_").replace(/\s+/g, "_");
       const fileName = `Rechnung_SLTRental_${finalNumber}_${safeName}.pdf`;
