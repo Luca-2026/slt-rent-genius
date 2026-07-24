@@ -15,6 +15,7 @@ export interface BlogArticle {
   quickFacts: string[];
   content: string;
   relatedSlugs: string[];
+  faqs?: { question: string; answer: string }[];
 }
 
 export const blogArticles: BlogArticle[] = [
@@ -785,6 +786,142 @@ Bei einer Anhängerbühne oft ja, wenn Zugfahrzeug, Anhängelast und Führersche
 Ob Scherenbühne für die Halle, Gelenkteleskop für die Fassade oder Anhängerbühne für den schnellen Einsatz: An allen SLT-Standorten findest Du Arbeitsbühnen mit unterschiedlichen Arbeitshöhen und Reichweiten. Wähle Deinen Standort und vergleiche die Modelle direkt nach Arbeitshöhe, Korblast und Antrieb.
 
 [→ Arbeitsbühnen in Krefeld](/mieten/krefeld/arbeitsbuehnen) · [→ Arbeitsbühnen in Bonn](/mieten/bonn/arbeitsbuehnen) · [→ Arbeitsbühnen in Mülheim an der Ruhr](/mieten/muelheim/arbeitsbuehnen)`
+  },
+  {
+    slug: "anhaenger-richtig-beladen-ladung-sichern",
+    title: "Anhänger richtig beladen und Ladung sichern: Vorschriften, Stützlast und Bußgelder",
+    metaTitle: "Anhänger richtig beladen: Ladung sichern, Stützlast & Bußgeld | SLT Rental",
+    metaDescription: "Ladung im Anhänger richtig sichern: Was § 22 StVO verlangt, wie Du die Stützlast korrekt einstellst und welche Bußgelder drohen. Mit Checkliste für die Abfahrt.",
+    teaser: "Verrutschte Ladung kostet ab 35 Euro, im Ernstfall deutlich mehr. So belädst Du Deinen Mietanhänger richtig: Stützlast, Zurrgurte, Überstand und die Checkliste vor der Abfahrt.",
+    date: "2026-07-24",
+    updatedAt: "2026-07-24",
+    author: "SLT Rental",
+    category: "Anhänger",
+    keyword: "anhänger richtig beladen",
+    image: "/images/ratgeber/og/blog_thumbnail_anhaenger_beladen_ladungssicherung.png",
+    imageAlt: "Pkw-Anhänger mit Spanngurten gesicherter Ladung",
+    ogImage: "/images/ratgeber/og/blog_thumbnail_anhaenger_beladen_ladungssicherung.png",
+    quickFacts: [
+      "§ 22 StVO: Ladung muss auch bei Vollbremsung oder Ausweichen sicher liegen",
+      "Bußgeld ab 35 Euro, mit Gefährdung 60 Euro und 1 Punkt, mit Unfall 75 Euro und 1 Punkt",
+      "Stützlast: mindestens 4 Prozent des Anhängergewichts (§ 44 Abs. 3 StVZO), maximal der niedrigste zulässige Wert",
+      "Überstand nach hinten bis 1,5 m, bei Fahrten bis 100 km bis 3 m, ab 1 m Kennzeichnung Pflicht",
+      "Verantwortlich ist der Fahrer, die Kaskoversicherung muss bei ungesicherter Ladung nicht zahlen"
+    ],
+    relatedSlugs: ["anhaenger-fuehrerschein-b-b96-be", "anhaenger-24-stunden-mieten-sms-code", "wochenendtarif-vs-tagesmiete"],
+    faqs: [
+      {
+        question: "Wie hoch ist das Bußgeld für ungesicherte Ladung auf dem Anhänger?",
+        answer: "Nicht ausreichend gesicherte Ladung kostet 35 Euro Verwarnungsgeld. Kommt es dadurch zu einer Gefährdung anderer, werden 60 Euro und ein Punkt in Flensburg fällig, bei einem Unfall 75 Euro und ein Punkt."
+      },
+      {
+        question: "Wie viel Stützlast muss auf der Anhängerkupplung liegen?",
+        answer: "Nach § 44 Abs. 3 StVZO muss die Stützlast mindestens 4 Prozent des tatsächlichen Anhängergewichts betragen, mehr als 25 kg sind bei Anhängern bis 3,5 t zulässigem Gesamtgewicht aber nicht erforderlich. Die maximal zulässige Stützlast des Zugfahrzeugs steht in Feld 13 der Zulassungsbescheinigung Teil I und darf nicht überschritten werden."
+      },
+      {
+        question: "Wie weit darf Ladung nach hinten über den Anhänger hinausragen?",
+        answer: "Bis zu 1,5 m darf Ladung nach hinten hinausragen, bei Strecken bis 100 km sogar bis zu 3 m. Ragt die Ladung mehr als 1 m über die Rückstrahler hinaus, muss sie gekennzeichnet werden, zum Beispiel mit einer hellroten Fahne von mindestens 30 × 30 cm."
+      },
+      {
+        question: "Wie breit und wie hoch darf ein beladener Anhänger sein?",
+        answer: "Fahrzeug und Ladung dürfen zusammen maximal 2,55 m breit und 4 m hoch sein. Diese Grenzen gelten auch für Anhänger."
+      },
+      {
+        question: "Zahlt die Versicherung, wenn verrutschte Ladung einen Schaden verursacht?",
+        answer: "Nicht unbedingt. Für Schäden durch verrutschte, unzureichend gesicherte Ladung muss die Kaskoversicherung nicht aufkommen. Die Ladungssicherung liegt in der Verantwortung des Fahrers."
+      }
+    ],
+    content: `## Was das Gesetz verlangt: § 22 StVO in einem Satz
+
+Der Anhänger ist gemietet, das Material liegt bereit, und jetzt soll alles möglichst schnell drauf und los. Genau in diesem Moment entscheidet sich, ob die Fahrt entspannt wird oder teuer. Verrutschte Ladung gehört zu den Klassikern bei Polizeikontrollen, und die Physik kennt kein Pardon: Bei einer Vollbremsung aus 50 km/h entwickeln selbst mittelschwere Gegenstände Kräfte, die kein Mensch mehr festhalten kann. Wir zeigen Dir, was das Gesetz verlangt, wie Du die Stützlast richtig einstellst und wie Du Deinen Mietanhänger in wenigen Minuten sauber belädst.
+
+Die zentrale Vorschrift steht in § 22 Abs. 1 StVO: Ladung, Zurrmittel und Ladeeinrichtungen müssen so verstaut und gesichert sein, dass sie selbst bei einer Vollbremsung oder einer plötzlichen Ausweichbewegung nicht verrutschen, umfallen, hin- und herrollen, herabfallen oder vermeidbaren Lärm erzeugen können.
+
+Der Maßstab ist also nicht die normale Fahrt, sondern der Ernstfall. „Liegt ja stabil" reicht nicht. Verantwortlich ist in erster Linie der Fahrer, bei gewerblichen Transporten zusätzlich der Halter und der Verlader. Wer einen Anhänger mietet und selbst belädt, trägt die Verantwortung also selbst.
+
+## Diese Bußgelder drohen bei schlechter Ladungssicherung
+
+Der Bußgeldkatalog kennt für Pkw-Gespanne drei Stufen:
+
+| Verstoß | Sanktion |
+|---|---|
+| Ladung nicht ausreichend gesichert | 35 Euro |
+| Ladung nicht ausreichend gesichert, mit Gefährdung anderer | 60 Euro und 1 Punkt |
+| Ladung nicht ausreichend gesichert, mit Unfall | 75 Euro und 1 Punkt |
+| Ladung nicht gegen vermeidbaren Lärm gesichert | 10 Euro |
+
+Die Beträge klingen überschaubar, das eigentliche Risiko liegt woanders: Verursacht verrutschte Ladung einen Unfall mit Personenschaden, steht schnell der Vorwurf der fahrlässigen Körperverletzung im Raum. Und auch versicherungsrechtlich wird es unangenehm, denn für Schäden durch unzureichend gesicherte Ladung muss die Kaskoversicherung nicht aufkommen.
+
+## Maße und Überstand: Wie viel darf drauf?
+
+Für Fahrzeug und Ladung zusammen gelten feste Grenzen:
+
+- **Breite:** maximal 2,55 m
+- **Höhe:** maximal 4 m
+- **Überstand nach hinten:** bis zu 1,5 m, bei Strecken bis 100 km bis zu 3 m
+
+Ragt die Ladung mehr als 1 m über die Rückstrahler des Anhängers hinaus, musst Du sie kenntlich machen: mit einer hellroten Fahne oder einem hellroten Schild von mindestens 30 × 30 cm oder einem roten zylindrischen Körper mit mindestens 35 cm Durchmesser. Diese Kennzeichnung darf höchstens 1,5 m über der Fahrbahn angebracht sein. Bei Dunkelheit kommt eine rote Leuchte hinzu.
+
+Und ganz wichtig: Das zulässige Gesamtgewicht des Anhängers ist keine Empfehlung. Es steht in der Zulassungsbescheinigung und in unseren Produktdaten zum jeweiligen Mietanhänger. Falls Du unsicher bist, findest Du in unserem Ratgeber, [welche Führerscheinklasse Du für Deinen Anhänger brauchst](/ratgeber/anhaenger-fuehrerschein-b-b96-be).
+
+## Stützlast: Die unterschätzte Stellschraube
+
+Die Stützlast ist das Gewicht, mit dem die Anhängerdeichsel auf die Kupplung des Zugfahrzeugs drückt. Sie entscheidet maßgeblich darüber, ob Dein Gespann ruhig läuft oder ab 80 km/h zu pendeln beginnt.
+
+Die Rechtslage nach § 44 Abs. 3 StVZO: Die Stützlast muss mindestens 4 Prozent des tatsächlichen Anhängergewichts betragen, mehr als 25 kg sind bei Anhängern bis 3,5 t zulässigem Gesamtgewicht aber nicht erforderlich. Das gilt auch bei Leerfahrten. Nach oben begrenzen drei Werte die Stützlast, und es gilt immer der niedrigste: die zulässige Stützlast des Zugfahrzeugs (Feld 13 der Zulassungsbescheinigung Teil I), die der Anhängerkupplung und die des Anhängers.
+
+In der Praxis gilt: Nutze die zulässige Stützlast möglichst weit aus, denn eine hohe Stützlast stabilisiert das Gespann. Zu wenig Gewicht auf der Deichsel macht den Anhänger nervös, zu viel entlastet die Vorderachse des Zugfahrzeugs und verschlechtert die Lenkung. Konkret heißt das beim Beladen:
+
+- Schwere Teile gehören über die Achse, nicht ans Heck
+- Gewicht möglichst tief und mittig platzieren
+- Nach dem Beladen die Deichsel prüfen: Sie soll spürbar auf die Kupplung drücken, aber das Heck des Zugfahrzeugs nicht in die Knie zwingen
+
+## Formschluss und Kraftschluss: So sicherst Du richtig
+
+Bei der Ladungssicherung werden zwei Prinzipien unterschieden, und die beste Sicherung kombiniert beide:
+
+**Formschlüssig** bedeutet: Die Ladung liegt lückenlos an, an der Stirnwand, an den Bordwänden, an anderen Ladungsteilen. Was nicht rutschen kann, muss nicht mit Gewalt festgezurrt werden. Lücken füllst Du mit Kanthölzern, Paletten oder Füllmaterial.
+
+**Kraftschlüssig** bedeutet: Zurrgurte pressen die Ladung auf die Ladefläche und erhöhen so die Reibung. Dafür brauchst Du intakte Zurrgurte mit lesbarem Etikett, auf dem die zulässige Zurrkraft steht. Gurte mit Rissen, Knoten oder ohne Etikett gehören in den Müll, nicht auf den Anhänger. Antirutschmatten unter der Ladung erhöhen die Reibung zusätzlich und reduzieren die nötige Vorspannkraft deutlich.
+
+Für Kleinteile und leichtes Schüttgut wie Grünschnitt gilt: Netz oder Plane drüber. Schon ein einzelner davonfliegender Ast ist verlorene Ladung im Sinne der StVO.
+
+Ein Praxis-Tipp aus der Vermietung: Zurre nach den ersten Kilometern einmal nach. Ladung setzt sich, Gurte verlieren Spannung. Zwei Minuten auf dem nächsten Parkplatz ersparen Dir böse Überraschungen.
+
+## Checkliste vor der Abfahrt
+
+1. Zulässiges Gesamtgewicht und Zuladung des Anhängers geprüft
+2. Schwere Ladung über der Achse, tief und mittig
+3. Stützlast passt: mindestens 4 Prozent des Anhängergewichts, maximal der niedrigste zulässige Wert von Fahrzeug, Kupplung und Anhänger
+4. Ladung formschlüssig gestaut, Lücken gefüllt
+5. Zurrgurte intakt, mit Etikett, korrekt gespannt
+6. Kleinteile mit Netz oder Plane gesichert
+7. Überstand geprüft und ab 1 m über den Rückstrahlern gekennzeichnet
+8. Beleuchtung und Kennzeichen frei sichtbar
+9. Nach wenigen Kilometern: anhalten und nachzurren
+
+## Anhänger mieten bei SLT Rental
+
+Bei uns bekommst Du Anhänger in verschiedenen Größen an unseren Standorten in Krefeld, Bonn und Mülheim an der Ruhr, auf Wunsch auch außerhalb der Öffnungszeiten: Du kannst Deinen Anhänger [rund um die Uhr per SMS-Code abholen](/ratgeber/anhaenger-24-stunden-mieten-sms-code). Und wenn Du das Wochenende über Zeit brauchst, lohnt sich ein Blick auf unseren [Wochenendtarif](/ratgeber/wochenendtarif-vs-tagesmiete). Zulässiges Gesamtgewicht, Nutzlast und Innenmaße findest Du bei jedem Anhänger direkt auf der Produktseite, so kannst Du schon vor der Buchung planen, was drauf darf.
+
+## Häufige Fragen
+
+**Wie hoch ist das Bußgeld für ungesicherte Ladung auf dem Anhänger?**
+Nicht ausreichend gesicherte Ladung kostet 35 Euro Verwarnungsgeld. Kommt es dadurch zu einer Gefährdung anderer, werden 60 Euro und ein Punkt in Flensburg fällig, bei einem Unfall 75 Euro und ein Punkt.
+
+**Wie viel Stützlast muss auf der Anhängerkupplung liegen?**
+Nach § 44 Abs. 3 StVZO mindestens 4 Prozent des tatsächlichen Anhängergewichts, mehr als 25 kg sind bei Anhängern bis 3,5 t zulässigem Gesamtgewicht aber nicht erforderlich. Die maximal zulässige Stützlast des Zugfahrzeugs steht in Feld 13 der Zulassungsbescheinigung Teil I.
+
+**Wie weit darf Ladung nach hinten überstehen?**
+Bis zu 1,5 m, bei Strecken bis 100 km bis zu 3 m. Ab 1 m Überstand über die Rückstrahler ist eine Kennzeichnung Pflicht, zum Beispiel eine hellrote Fahne von mindestens 30 × 30 cm.
+
+**Wie breit und hoch darf der beladene Anhänger sein?**
+Fahrzeug und Ladung dürfen zusammen maximal 2,55 m breit und 4 m hoch sein.
+
+**Zahlt die Versicherung bei Schäden durch verrutschte Ladung?**
+Nicht unbedingt. Für Schäden durch unzureichend gesicherte Ladung muss die Kaskoversicherung nicht aufkommen. Verantwortlich für die Sicherung ist der Fahrer.
+
+*Hinweis: Dieser Beitrag gibt den Stand Juli 2026 wieder und ersetzt keine Rechtsberatung. Maßgeblich sind die jeweils aktuellen Fassungen von StVO, StVZO und Bußgeldkatalog.*`
   }
 ];
 

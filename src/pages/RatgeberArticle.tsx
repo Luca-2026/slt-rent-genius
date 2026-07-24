@@ -19,6 +19,7 @@ const SLUG_TO_CATEGORY: Record<string, { categoryId: string; label: string }> = 
   "geschirr-mieten-hochzeit-mengen-checkliste": { categoryId: "geschirr-glaeser-besteck", label: "Geschirr, Gläser & Besteck mieten" },
   "halteverbotszone-einrichten-ratgeber": { categoryId: "absperrtechnik", label: "Halteverbotsschilder & Absperrtechnik mieten" },
   "anhaenger-fuehrerschein-b-b96-be": { categoryId: "anhaenger", label: "Passenden Anhänger mieten" },
+  "anhaenger-richtig-beladen-ladung-sichern": { categoryId: "anhaenger", label: "Passenden Anhänger mieten" },
   "arbeitsbuehne-mieten-typ-arbeitshoehe": { categoryId: "arbeitsbuehnen", label: "Arbeitsbühne mieten" },
 };
 
@@ -230,9 +231,23 @@ const RatgeberArticle = () => {
     mainEntityOfPage: { "@type": "WebPage", "@id": `https://www.slt-rental.de/ratgeber/${article.slug}` },
   };
 
+  const faqJsonLd = article.faqs && article.faqs.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: article.faqs.map((f) => ({
+          "@type": "Question",
+          name: f.question,
+          acceptedAnswer: { "@type": "Answer", text: f.answer },
+        })),
+      }
+    : null;
+
   const relatedArticles = article.relatedSlugs
     .map((s) => blogArticles.find((a) => a.slug === s))
     .filter(Boolean) as typeof blogArticles;
+
+  const jsonLdBlocks = [breadcrumbJsonLd, articleJsonLd, ...(faqJsonLd ? [faqJsonLd] : [])];
 
   return (
     <Layout>
@@ -243,7 +258,7 @@ const RatgeberArticle = () => {
         ogType="article"
         ogImage={`https://www.slt-rental.de${article.ogImage}`}
         keywords={article.keyword}
-        jsonLd={[breadcrumbJsonLd, articleJsonLd]}
+        jsonLd={jsonLdBlocks}
       />
 
       <article className="py-12">
