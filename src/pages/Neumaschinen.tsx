@@ -776,11 +776,11 @@ export default function Neumaschinen() {
                             </p>
                           )}
                           {!m.price_on_request && m.price_gross && (
-                            <p className="text-xs text-muted-foreground">brutto inkl. MwSt.</p>
+                            <p className="text-xs text-muted-foreground">{t("sales.new.grossIncVat")}</p>
                           )}
                         </div>
                         <span className="inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:translate-x-0.5 transition-transform">
-                          Details <ArrowRight className="h-3.5 w-3.5" />
+                          {t("sales.new.details")} <ArrowRight className="h-3.5 w-3.5" />
                         </span>
                       </div>
                     </CardContent>
