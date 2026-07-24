@@ -50,42 +50,63 @@ Deno.serve(async (req) => {
       byEntity[r.entity_type] = (byEntity[r.entity_type] ?? 0) + 1;
     }
 
-    const rowsHtml = (rows ?? []).slice(0, 100).map((r: any) => `
-      <tr>
-        <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:12px;color:#666;white-space:nowrap;">${formatGermanTime(r.created_at)}</td>
-        <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:13px;">${r.actor_email ?? "System"}</td>
-        <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:13px;"><strong>${r.action}</strong></td>
-        <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:13px;">${ENTITY_LABELS[r.entity_type] ?? r.entity_type}</td>
-        <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:13px;">${r.entity_label ?? r.entity_id ?? "—"}</td>
-      </tr>
-    `).join("");
+    // Group by section for a clearly consolidated report
+    const SECTIONS: { key: string; title: string; entities: string[] }[] = [
+      { key: "auth", title: "Anmeldungen", entities: ["auth"] },
+      { key: "cms", title: "CMS – Produkte", entities: ["b2b_managed_products"] },
+      {
+        key: "b2b",
+        title: "B2B – Profile, Angebote, Rechnungen, Lieferscheine",
+        entities: ["b2b_profiles", "b2b_offers", "b2b_invoices", "b2b_delivery_notes"],
+      },
+    ];
+    const knownEntities = new Set(SECTIONS.flatMap((s) => s.entities));
 
-    const statsHtml = `
-      <p style="margin:0 0 8px;font-size:14px;color:#393d46;"><strong>Gesamt:</strong> ${total} Ereignisse in den letzten 24h</p>
-      <p style="margin:0 0 4px;font-size:13px;color:#595959;"><strong>Nach Nutzer:</strong> ${Object.entries(byActor).map(([k, v]) => `${k} (${v})`).join(", ") || "—"}</p>
-      <p style="margin:0 0 16px;font-size:13px;color:#595959;"><strong>Nach Bereich:</strong> ${Object.entries(byEntity).map(([k, v]) => `${ENTITY_LABELS[k] ?? k} (${v})`).join(", ") || "—"}</p>
-    `;
+    const renderRows = (subset: any[]) =>
+      subset.slice(0, 100).map((r: any) => `
+        <tr>
+          <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:12px;color:#666;white-space:nowrap;">${formatGermanTime(r.created_at)}</td>
+          <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:13px;">${r.actor_email ?? "System"}</td>
+          <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:13px;"><strong>${r.action}</strong></td>
+          <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:13px;">${ENTITY_LABELS[r.entity_type] ?? r.entity_type}</td>
+          <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:13px;">${r.entity_label ?? r.entity_id ?? "—"}</td>
+        </tr>
+      `).join("");
+
+    const sectionsHtml = SECTIONS.map((s) => {
+      let subset = (rows ?? []).filter((r: any) => s.entities.includes(r.entity_type));
+      if (s.key === "b2b") {
+        const extra = (rows ?? []).filter((r: any) => !knownEntities.has(r.entity_type));
+        subset = [...subset, ...extra];
+      }
+      if (subset.length === 0) {
+        return `<h2 style="color:#00507d;font-size:16px;margin:24px 0 8px;border-bottom:2px solid #ff8e02;padding-bottom:4px;">${s.title} <span style="color:#999;font-weight:normal;font-size:13px;">(0)</span></h2>
+          <p style="color:#999;font-size:13px;margin:0 0 8px;">Keine Ereignisse.</p>`;
+      }
+      return `
+        <h2 style="color:#00507d;font-size:16px;margin:24px 0 8px;border-bottom:2px solid #ff8e02;padding-bottom:4px;">${s.title} <span style="color:#666;font-weight:normal;font-size:13px;">(${subset.length})</span></h2>
+        <table style="width:100%;border-collapse:collapse;border:1px solid #eee;">
+          <thead><tr style="background:#f5f5f5;">
+            <th style="padding:8px;text-align:left;font-size:12px;">Zeit (Deutschland)</th>
+            <th style="padding:8px;text-align:left;font-size:12px;">Nutzer</th>
+            <th style="padding:8px;text-align:left;font-size:12px;">Aktion</th>
+            <th style="padding:8px;text-align:left;font-size:12px;">Bereich</th>
+            <th style="padding:8px;text-align:left;font-size:12px;">Objekt</th>
+          </tr></thead>
+          <tbody>${renderRows(subset)}</tbody>
+        </table>
+        ${subset.length > 100 ? `<p style="color:#666;font-size:12px;margin-top:8px;">… ${subset.length - 100} weitere Einträge im Admin-Dashboard → Audit-Log.</p>` : ""}
+      `;
+    }).join("");
 
     const html = `<!DOCTYPE html><html><body style="margin:0;padding:0;font-family:Montserrat,Arial,sans-serif;background:#fff;">
       <div style="max-width:800px;margin:0 auto;padding:24px;">
         <div style="border-bottom:3px solid #ff8e02;padding-bottom:12px;margin-bottom:20px;">
-          <h1 style="color:#00507d;font-size:22px;margin:0;">SLT Rental – Admin Audit Report</h1>
-          <p style="color:#666;font-size:12px;margin:4px 0 0;">Zeitraum: letzte 24 Stunden · Stand ${formatGermanTime(new Date())} deutscher Zeit</p>
+          <h1 style="color:#00507d;font-size:22px;margin:0;">SLT Rental – Täglicher Admin-Report</h1>
+          <p style="color:#666;font-size:12px;margin:4px 0 0;">Konsolidiert alle Bereiche · Zeitraum: letzte 24 Stunden · Stand ${formatGermanTime(new Date())} deutscher Zeit</p>
         </div>
         ${statsHtml}
-        ${total > 0 ? `
-          <table style="width:100%;border-collapse:collapse;border:1px solid #eee;">
-            <thead><tr style="background:#f5f5f5;">
-              <th style="padding:8px;text-align:left;font-size:12px;">Zeit (Deutschland)</th>
-              <th style="padding:8px;text-align:left;font-size:12px;">Nutzer</th>
-              <th style="padding:8px;text-align:left;font-size:12px;">Aktion</th>
-              <th style="padding:8px;text-align:left;font-size:12px;">Bereich</th>
-              <th style="padding:8px;text-align:left;font-size:12px;">Objekt</th>
-            </tr></thead>
-            <tbody>${rowsHtml}</tbody>
-          </table>
-          ${total > 100 ? `<p style="color:#666;font-size:12px;margin-top:8px;">… ${total - 100} weitere Einträge im Admin-Dashboard → Audit-Log.</p>` : ""}
-        ` : `<p style="color:#666;">Keine Aktivitäten in den letzten 24 Stunden.</p>`}
+        ${total > 0 ? sectionsHtml : `<p style="color:#666;">Keine Aktivitäten in den letzten 24 Stunden.</p>`}
         <p style="margin-top:24px;font-size:12px;color:#999;">Vollständige Historie: https://www.slt-rental.de/b2b/admin (Tab „Audit-Log")</p>
       </div>
     </body></html>`;
