@@ -109,7 +109,7 @@ export default function AdminAuditLogTab() {
           <Select value={actorFilter} onValueChange={setActorFilter}>
             <SelectTrigger><SelectValue placeholder="Admin" /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Alle Admins</SelectItem>
+              <SelectItem value="all">Alle Nutzer</SelectItem>
               {uniqueActors.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}
             </SelectContent>
           </Select>

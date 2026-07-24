@@ -62,7 +62,7 @@ Deno.serve(async (req) => {
 
     const statsHtml = `
       <p style="margin:0 0 8px;font-size:14px;color:#393d46;"><strong>Gesamt:</strong> ${total} Ereignisse in den letzten 24h</p>
-      <p style="margin:0 0 4px;font-size:13px;color:#595959;"><strong>Nach Admin:</strong> ${Object.entries(byActor).map(([k, v]) => `${k} (${v})`).join(", ") || "—"}</p>
+      <p style="margin:0 0 4px;font-size:13px;color:#595959;"><strong>Nach Nutzer:</strong> ${Object.entries(byActor).map(([k, v]) => `${k} (${v})`).join(", ") || "—"}</p>
       <p style="margin:0 0 16px;font-size:13px;color:#595959;"><strong>Nach Bereich:</strong> ${Object.entries(byEntity).map(([k, v]) => `${ENTITY_LABELS[k] ?? k} (${v})`).join(", ") || "—"}</p>
     `;
 
