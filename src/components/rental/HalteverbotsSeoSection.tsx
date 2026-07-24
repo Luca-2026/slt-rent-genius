@@ -116,9 +116,11 @@ export function HalteverbotsSeoSection({ locationId }: HalteverbotsSeoSectionPro
           ))}
         </ul>
         <div className="bg-accent/10 border border-accent/30 rounded-lg p-3 text-sm text-foreground">
-          <strong>24/7 Abholung möglich:</strong> Halteverbotsschilder kannst Du an allen
-          SLT-Standorten (Krefeld, Bonn, Mülheim an der Ruhr) rund um die Uhr abholen –
-          auch außerhalb der Öffnungszeiten und am Wochenende.
+          <strong>24/7 kontaktlose Abholung & Rückgabe:</strong> Das komplette
+          Halteverbotsschilder-Set kannst Du an allen SLT-Standorten (Krefeld, Bonn,
+          Mülheim an der Ruhr) rund um die Uhr kontaktlos abholen – und nach dem
+          Einsatz genauso kontaktlos wieder zurückbringen. Auch außerhalb der
+          Öffnungszeiten und am Wochenende.
         </div>
       </section>
 

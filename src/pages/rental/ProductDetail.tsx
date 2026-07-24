@@ -912,6 +912,12 @@ export default function ProductDetail() {
                 </div>
               )}
 
+              {/* Halteverbotsschilder: ausführlicher Ratgeber direkt nach den technischen Daten,
+                  damit Aufstellprotokoll & One-Pager sofort sichtbar sind. */}
+              {(product.id === "halteverbotsschilder-set" || product.id === "bonn-halteverbotsschilder-set") && (
+                <HalteverbotsSeoSection locationId={location.id} />
+              )}
+
               {/* Rental Notes (e.g. operating hours, fuel costs) */}
               {product.rentalNotes && product.rentalNotes.length > 0 && (
                 <div className="bg-accent/5 border border-accent/20 rounded-xl p-5">
@@ -1290,11 +1296,9 @@ export default function ProductDetail() {
                 additionalFaqs={locationId && categoryId ? getLocalCategoryContent(locationId, categoryId)?.faqs : undefined}
               />
 
+              {/* HalteverbotsSeoSection wurde für Halteverbotsschilder-Sets nach oben
+                  direkt unter die technischen Daten verschoben. */}
 
-              {/* Halteverbotsschilder: ausführlicher Ratgeber im SEO-Bereich */}
-              {(product.id === "halteverbotsschilder-set" || product.id === "bonn-halteverbotsschilder-set") && (
-                <HalteverbotsSeoSection locationId={location.id} />
-              )}
 
             </div>
 
