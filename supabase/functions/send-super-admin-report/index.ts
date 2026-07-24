@@ -119,7 +119,7 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         from: `SLT-Rental Monitoring <noreply@${domain}>`,
         to: SUPER_ADMINS,
-        subject: `Admin Audit Report – ${total} Ereignisse (24h)`,
+        subject: `SLT Admin-Report (24h) – ${total} Ereignisse · Anmeldungen · CMS · B2B`,
         html,
       }),
     });
