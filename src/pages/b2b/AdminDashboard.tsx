@@ -20,6 +20,9 @@ import { AdminReturnProtocolsTab } from "@/components/b2b/admin/AdminReturnProto
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
 import { AdminDamageOverview } from "@/components/b2b/admin/AdminDamageOverview";
 import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
+import AdminAuditLogTab from "@/components/b2b/admin/AdminAuditLogTab";
+
+const SUPER_ADMIN_EMAILS = ["l.sandhoff@slt-rental.de", "b.noechle@slt-rental.de"];
 
 import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
 import { AdminCustomerDetailDialog } from "@/components/b2b/admin/AdminCustomerDetailDialog";
