@@ -1256,6 +1256,12 @@ export default function AdminDashboard() {
         <TabsContent value="inventory" forceMount className="data-[state=inactive]:hidden">
           <AdminInventoryTab />
         </TabsContent>
+
+        {SUPER_ADMIN_EMAILS.includes((user?.email ?? "").toLowerCase()) && (
+          <TabsContent value="audit" forceMount className="data-[state=inactive]:hidden">
+            <AdminAuditLogTab />
+          </TabsContent>
+        )}
       </Tabs>
 
 
