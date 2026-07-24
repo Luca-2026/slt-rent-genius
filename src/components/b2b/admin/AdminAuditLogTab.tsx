@@ -36,6 +36,13 @@ const ACTION_COLORS: Record<string, string> = {
   delete: "bg-red-100 text-red-800",
 };
 
+const formatGermanTime = (value: string) =>
+  new Intl.DateTimeFormat("de-DE", {
+    timeZone: "Europe/Berlin",
+    dateStyle: "short",
+    timeStyle: "medium",
+  }).format(new Date(value));
+
 export default function AdminAuditLogTab() {
   const [rows, setRows] = useState<AuditRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -83,7 +90,7 @@ export default function AdminAuditLogTab() {
           </Button>
         </div>
         <p className="text-sm text-muted-foreground">
-          Letzte 500 Ereignisse. Nur für dich und Benedikt sichtbar. Ein täglicher Report wird an
+          Letzte 500 Ereignisse in deutscher Zeit. Nur für dich und Benedikt sichtbar. Ein täglicher Report wird an
           l.sandhoff@slt-rental.de und b.noechel@slt-rental.de versendet.
         </p>
       </CardHeader>
@@ -112,8 +119,8 @@ export default function AdminAuditLogTab() {
           <table className="w-full text-sm">
             <thead className="bg-muted">
               <tr className="text-left">
-                <th className="px-3 py-2">Zeit</th>
-                <th className="px-3 py-2">Admin</th>
+                <th className="px-3 py-2">Zeit (Deutschland)</th>
+                <th className="px-3 py-2">Nutzer</th>
                 <th className="px-3 py-2">Aktion</th>
                 <th className="px-3 py-2">Bereich</th>
                 <th className="px-3 py-2">Objekt</th>
@@ -127,7 +134,7 @@ export default function AdminAuditLogTab() {
               {filtered.map((r) => (
                 <tr key={r.id} className="border-t align-top">
                   <td className="px-3 py-2 whitespace-nowrap text-muted-foreground">
-                    {new Date(r.created_at).toLocaleString("de-DE")}
+                    {formatGermanTime(r.created_at)}
                   </td>
                   <td className="px-3 py-2">
                     <div>{r.actor_email ?? "System"}</div>

@@ -6,6 +6,12 @@ const corsHeaders = {
 };
 
 const SUPER_ADMINS = ["l.sandhoff@slt-rental.de", "b.noechel@slt-rental.de"];
+const TIME_ZONE = "Europe/Berlin";
+const dateTimeFormatter = new Intl.DateTimeFormat("de-DE", {
+  timeZone: TIME_ZONE,
+  dateStyle: "short",
+  timeStyle: "medium",
+});
 
 const ENTITY_LABELS: Record<string, string> = {
   auth: "Anmeldung",
@@ -15,6 +21,8 @@ const ENTITY_LABELS: Record<string, string> = {
   b2b_offers: "Angebot",
   b2b_delivery_notes: "Lieferschein",
 };
+
+const formatGermanTime = (value: string | Date) => dateTimeFormatter.format(new Date(value));
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -44,7 +52,7 @@ Deno.serve(async (req) => {
 
     const rowsHtml = (rows ?? []).slice(0, 100).map((r: any) => `
       <tr>
-        <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:12px;color:#666;white-space:nowrap;">${new Date(r.created_at).toLocaleString("de-DE")}</td>
+        <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:12px;color:#666;white-space:nowrap;">${formatGermanTime(r.created_at)}</td>
         <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:13px;">${r.actor_email ?? "System"}</td>
         <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:13px;"><strong>${r.action}</strong></td>
         <td style="padding:6px 8px;border-bottom:1px solid #eee;font-size:13px;">${ENTITY_LABELS[r.entity_type] ?? r.entity_type}</td>
@@ -62,14 +70,14 @@ Deno.serve(async (req) => {
       <div style="max-width:800px;margin:0 auto;padding:24px;">
         <div style="border-bottom:3px solid #ff8e02;padding-bottom:12px;margin-bottom:20px;">
           <h1 style="color:#00507d;font-size:22px;margin:0;">SLT Rental – Admin Audit Report</h1>
-          <p style="color:#666;font-size:12px;margin:4px 0 0;">Zeitraum: letzte 24 Stunden · Stand ${new Date().toLocaleString("de-DE")}</p>
+          <p style="color:#666;font-size:12px;margin:4px 0 0;">Zeitraum: letzte 24 Stunden · Stand ${formatGermanTime(new Date())} deutscher Zeit</p>
         </div>
         ${statsHtml}
         ${total > 0 ? `
           <table style="width:100%;border-collapse:collapse;border:1px solid #eee;">
             <thead><tr style="background:#f5f5f5;">
-              <th style="padding:8px;text-align:left;font-size:12px;">Zeit</th>
-              <th style="padding:8px;text-align:left;font-size:12px;">Admin</th>
+              <th style="padding:8px;text-align:left;font-size:12px;">Zeit (Deutschland)</th>
+              <th style="padding:8px;text-align:left;font-size:12px;">Nutzer</th>
               <th style="padding:8px;text-align:left;font-size:12px;">Aktion</th>
               <th style="padding:8px;text-align:left;font-size:12px;">Bereich</th>
               <th style="padding:8px;text-align:left;font-size:12px;">Objekt</th>
