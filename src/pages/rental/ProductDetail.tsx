@@ -727,32 +727,7 @@ export default function ProductDetail() {
                   {product.modelName && (
                     <p className="text-sm text-muted-foreground font-medium mt-1">Modell: {product.modelName}</p>
                   )}
-                  {product.pricePerMonth && (
-                    <div className="mt-2">
-                      <div className="inline-flex items-baseline gap-1 rounded-lg bg-accent/10 px-3 py-1.5 border border-accent/30">
-                        <span className="text-xl font-bold text-accent">{product.pricePerMonth}<span className="text-accent">*</span></span>
-                        <span className="text-sm font-medium text-accent/90">/ Monat</span>
-                      </div>
-                      <p className="text-[11px] text-muted-foreground mt-1 ml-1">
-                        Inkl. 19 % USt.{product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""} · zzgl. Maschinenbruchversicherung
-                      </p>
-                      <p className="text-[11px] leading-snug text-muted-foreground mt-1 ml-1">
-                        *Unverbindlicher Ab-Preis. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
-                      </p>
-                    </div>
-                  )}
-                  {typeof productSEO?.dailyPriceFrom === "number" && !getMoebelInfoKey(product.id) && !product.pricePerMonth && (
-                    <div className="mt-2">
-                      <div className="inline-flex items-baseline gap-1 rounded-lg bg-accent/10 px-3 py-1.5 border border-accent/30">
-                        <span className="text-xl font-bold text-accent">ab {Number.isInteger(productSEO.dailyPriceFrom) ? productSEO.dailyPriceFrom : productSEO.dailyPriceFrom.toFixed(2).replace(".", ",")} €<span className="text-accent">*</span></span>
-                        <span className="text-sm font-medium text-accent/90">/ Tag</span>
-                      </div>
-                      <p className="text-[11px] text-muted-foreground mt-1 ml-1">Brutto inkl. 19 % USt.</p>
-                      <p className="text-[11px] leading-snug text-muted-foreground mt-1 ml-1">
-                        *Unverbindlicher Ab-Preis, gerechnet auf Monatsmiete. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
-                      </p>
-                    </div>
-                  )}
+                  {/* Preis-Anzeige entfernt: erscheint bereits oben rechts (Desktop) bzw. über "Jetzt mieten" (Mobil) im blauen Preis-Block */}
                   {(() => {
                     const moebelKey = getMoebelInfoKey(product.id);
                     const locKey = location.id as "krefeld" | "bonn" | "muelheim";
