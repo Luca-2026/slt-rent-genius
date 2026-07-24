@@ -130,6 +130,11 @@ export default function B2BLogin() {
                       </>
                     )}
                   </Button>
+
+                  <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground mt-3">
+                    <ShieldCheck className="h-4 w-4 text-emerald-500" />
+                    <span>SSL Secure – Deine Daten werden verschlüsselt übertragen.</span>
+                  </div>
                 </form>
 
                 <div className="mt-6 pt-6 border-t border-border text-center">
