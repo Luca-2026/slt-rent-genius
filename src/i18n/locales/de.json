@@ -2654,7 +2654,8 @@
       "gross": "brutto",
       "rrp": "UVP",
       "brandNewMachinesHeading": "Verfügbare Neumaschinen",
-      "details": "Details"
+      "details": "Details",
+      "grossIncVat": "brutto inkl. MwSt."
     },
     "used": {
       "pageTitle": "Geprüfte Gebrauchtmaschinen",

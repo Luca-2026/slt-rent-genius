@@ -2654,7 +2654,8 @@
       "gross": "gross",
       "rrp": "RRP",
       "brandNewMachinesHeading": "Available new machines",
-      "details": "Details"
+      "details": "Details",
+      "grossIncVat": "gross incl. VAT"
     },
     "used": {
       "pageTitle": "Inspected used machinery",
