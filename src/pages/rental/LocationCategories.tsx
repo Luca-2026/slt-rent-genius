@@ -29,7 +29,7 @@ const locationImages: Record<string, string> = {
 const locationManagers: Record<string, { name: string; roleKey: string; image: string | null; email: string }> = {
   krefeld: { name: "Benedikt Nöchel", roleKey: "rental.locationManager", image: imgBenedikt, email: "b.noechel@slt-rental.de" },
   bonn: { name: "Ersel Uzun", roleKey: "rental.locationManager", image: imgErsel, email: "e.uzun@slt-rental.de" },
-  muelheim: { name: "Andreas Scherzow", roleKey: "rental.locationManager", image: null, email: "a.scherzow@slt-rental.de" },
+  muelheim: { name: "Andreas Mühlenhof", roleKey: "rental.locationManager", image: null, email: "muelheim@slt-rental.de" },
 };
 
 // Location descriptions (visible on page)

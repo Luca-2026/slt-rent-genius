@@ -150,7 +150,7 @@ export const locationData: LocationInfo[] = [
     phone: "02151 417 99 04",
     email: "muelheim@slt-rental.de",
     image: imgMuelheim,
-    manager: { name: "Andreas Scherzow", role: "locations.locationManager", image: null, email: "muelheim@slt-rental.de" },
+    manager: { name: "Andreas Mühlenhof", role: "locations.locationManager", image: null, email: "muelheim@slt-rental.de" },
     hours: [
       { day: "Online-Buchung", time: "24/7 verfügbar" },
       { day: "Abholung", time: "nach Vereinbarung" },
