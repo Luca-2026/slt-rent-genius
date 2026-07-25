@@ -99,6 +99,31 @@ Deno.serve(async (req) => {
       `;
     }).join("");
 
+    const actorRows = Object.entries(byActor)
+      .sort((a, b) => b[1] - a[1])
+      .map(([a, n]) => `<li style="font-size:13px;color:#333;">${a}: <strong>${n}</strong></li>`)
+      .join("");
+    const entityRows = Object.entries(byEntity)
+      .sort((a, b) => b[1] - a[1])
+      .map(([e, n]) => `<li style="font-size:13px;color:#333;">${ENTITY_LABELS[e] ?? e}: <strong>${n}</strong></li>`)
+      .join("");
+    const statsHtml = `
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
+        <div style="flex:1;min-width:200px;background:#f5f9fc;border-left:3px solid #00507d;padding:12px 16px;">
+          <div style="color:#00507d;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Gesamt</div>
+          <div style="font-size:24px;font-weight:bold;color:#00507d;">${total}</div>
+        </div>
+        <div style="flex:2;min-width:240px;background:#fafafa;padding:12px 16px;">
+          <div style="color:#666;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Nach Nutzer</div>
+          <ul style="margin:0;padding-left:18px;">${actorRows || '<li style="color:#999;font-size:13px;">—</li>'}</ul>
+        </div>
+        <div style="flex:2;min-width:240px;background:#fafafa;padding:12px 16px;">
+          <div style="color:#666;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Nach Bereich</div>
+          <ul style="margin:0;padding-left:18px;">${entityRows || '<li style="color:#999;font-size:13px;">—</li>'}</ul>
+        </div>
+      </div>
+    `;
+
     const html = `<!DOCTYPE html><html><body style="margin:0;padding:0;font-family:Montserrat,Arial,sans-serif;background:#fff;">
       <div style="max-width:800px;margin:0 auto;padding:24px;">
         <div style="border-bottom:3px solid #ff8e02;padding-bottom:12px;margin-bottom:20px;">
