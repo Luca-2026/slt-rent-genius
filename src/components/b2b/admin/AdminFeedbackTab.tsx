@@ -308,6 +308,11 @@ export default function AdminFeedbackTab() {
             <p className="text-sm text-muted-foreground">
               {[r.customer_name, r.customer_email, r.order_ref].filter(Boolean).join(" · ") || "Anonym"}
             </p>
+            {r.rented_items && (
+              <p className="text-sm">
+                <span className="font-medium">Gemietet:</span> {r.rented_items}
+              </p>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {FEEDBACK_QUESTIONS.map((q) => {
