@@ -1571,6 +1571,7 @@ export type Database = {
           customer_email: string | null
           customer_name: string | null
           customer_type: string | null
+          google_review_confirmed: boolean
           id: string
           internal_note: string | null
           location: string | null
@@ -1580,6 +1581,9 @@ export type Database = {
           source: string | null
           status: string
           updated_at: string
+          voucher_code: string | null
+          voucher_sent_at: string | null
+          voucher_sent_to: string | null
         }
         Insert: {
           answers?: Json
@@ -1588,6 +1592,7 @@ export type Database = {
           customer_email?: string | null
           customer_name?: string | null
           customer_type?: string | null
+          google_review_confirmed?: boolean
           id?: string
           internal_note?: string | null
           location?: string | null
@@ -1597,6 +1602,9 @@ export type Database = {
           source?: string | null
           status?: string
           updated_at?: string
+          voucher_code?: string | null
+          voucher_sent_at?: string | null
+          voucher_sent_to?: string | null
         }
         Update: {
           answers?: Json
@@ -1605,6 +1613,7 @@ export type Database = {
           customer_email?: string | null
           customer_name?: string | null
           customer_type?: string | null
+          google_review_confirmed?: boolean
           id?: string
           internal_note?: string | null
           location?: string | null
@@ -1614,6 +1623,9 @@ export type Database = {
           source?: string | null
           status?: string
           updated_at?: string
+          voucher_code?: string | null
+          voucher_sent_at?: string | null
+          voucher_sent_to?: string | null
         }
         Relationships: []
       }
