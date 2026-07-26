@@ -15,6 +15,7 @@ interface FeedbackRow {
   source: string | null;
   location: string | null;
   order_ref: string | null;
+  rented_items: string | null;
   customer_name: string | null;
   customer_email: string | null;
   customer_type: string | null;
