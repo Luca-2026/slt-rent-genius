@@ -117,8 +117,36 @@ export default function AdminFeedbackTab() {
     setRows((prev) => prev.map((r) => (r.id === id ? { ...r, status } : r)));
   };
 
+  const sendVoucher = async (row: FeedbackRow) => {
+    const code = (voucherDrafts[row.id] ?? row.voucher_code ?? "").trim();
+    if (!code) {
+      toast({ title: "Gutscheincode fehlt", description: "Bitte trage einen individuellen Code ein.", variant: "destructive" });
+      return;
+    }
+    if (!row.customer_email) {
+      toast({ title: "Keine E-Mail hinterlegt", description: "Ohne E-Mail-Adresse kann kein Gutschein versendet werden.", variant: "destructive" });
+      return;
+    }
+    setSendingId(row.id);
+    const { data, error } = await supabase.functions.invoke("send-feedback-voucher", {
+      body: { feedback_id: row.id, voucher_code: code },
+    });
+    setSendingId(null);
+    if (error || (data as any)?.error) {
+      toast({ title: "Versand fehlgeschlagen", description: (data as any)?.error ?? error?.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: "Gutschein versendet", description: `An ${row.customer_email}` });
+    setRows((prev) =>
+      prev.map((r) =>
+        r.id === row.id ? { ...r, voucher_code: code, voucher_sent_at: new Date().toISOString(), status: "done" } : r,
+      ),
+    );
+  };
+
   return (
     <div className="space-y-4">
+
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-base">
