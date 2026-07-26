@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { RefreshCw, Star, Copy, MessageSquare } from "lucide-react";
+import { RefreshCw, Star, Copy, MessageSquare, Gift, Send, ChevronDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { FEEDBACK_QUESTIONS, FEEDBACK_QUESTION_SHORT } from "@/data/feedbackQuestions";
 
@@ -23,6 +23,9 @@ interface FeedbackRow {
   recommend_score: number | null;
   avg_rating: number | null;
   status: string;
+  voucher_code: string | null;
+  voucher_sent_at: string | null;
+  google_review_confirmed: boolean | null;
 }
 
 const LOCATION_LABELS: Record<string, string> = {
@@ -45,6 +48,10 @@ export default function AdminFeedbackTab() {
   const [search, setSearch] = useState("");
   const [locationFilter, setLocationFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [voucherDrafts, setVoucherDrafts] = useState<Record<string, string>>({});
+  const [sendingId, setSendingId] = useState<string | null>(null);
+  const [showQuestions, setShowQuestions] = useState(false);
+
 
   const load = async () => {
     setLoading(true);
@@ -114,8 +121,36 @@ export default function AdminFeedbackTab() {
     setRows((prev) => prev.map((r) => (r.id === id ? { ...r, status } : r)));
   };
 
+  const sendVoucher = async (row: FeedbackRow) => {
+    const code = (voucherDrafts[row.id] ?? row.voucher_code ?? "").trim();
+    if (!code) {
+      toast({ title: "Gutscheincode fehlt", description: "Bitte trage einen individuellen Code ein.", variant: "destructive" });
+      return;
+    }
+    if (!row.customer_email) {
+      toast({ title: "Keine E-Mail hinterlegt", description: "Ohne E-Mail-Adresse kann kein Gutschein versendet werden.", variant: "destructive" });
+      return;
+    }
+    setSendingId(row.id);
+    const { data, error } = await supabase.functions.invoke("send-feedback-voucher", {
+      body: { feedback_id: row.id, voucher_code: code },
+    });
+    setSendingId(null);
+    if (error || (data as any)?.error) {
+      toast({ title: "Versand fehlgeschlagen", description: (data as any)?.error ?? error?.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: "Gutschein versendet", description: `An ${row.customer_email}` });
+    setRows((prev) =>
+      prev.map((r) =>
+        r.id === row.id ? { ...r, voucher_code: code, voucher_sent_at: new Date().toISOString(), status: "done" } : r,
+      ),
+    );
+  };
+
   return (
     <div className="space-y-4">
+
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-base">
@@ -138,8 +173,36 @@ export default function AdminFeedbackTab() {
           </div>
           <p className="text-xs text-muted-foreground">
             Nicht verlinkt und für Suchmaschinen gesperrt. Optionale Parameter:{" "}
-            <code>?src=rentware&amp;standort=krefeld&amp;ref=BUCHUNGSNR</code>
+            <code>?src=rentware&amp;standort=krefeld&amp;ref=BUCHUNGSNR</code>. Buchungsnummer und E-Mail sind für
+            Kunden Pflicht, max. 20 Rückmeldungen pro Stunde.
           </p>
+
+          <div className="rounded-lg border">
+            <button
+              type="button"
+              onClick={() => setShowQuestions((v) => !v)}
+              className="w-full flex items-center justify-between p-3 text-sm font-medium"
+            >
+              Die 10 Fragen des Fragebogens ansehen
+              <ChevronDown className={`h-4 w-4 transition-transform ${showQuestions ? "rotate-180" : ""}`} />
+            </button>
+            {showQuestions && (
+              <ol className="px-4 pb-4 space-y-2">
+                {FEEDBACK_QUESTIONS.map((q) => (
+                  <li key={q.key} className="text-sm">
+                    <span className="font-medium">{q.title}</span>
+                    <span className="block text-xs text-muted-foreground">
+                      {q.hint} · Freitext: {q.textLabel}
+                    </span>
+                  </li>
+                ))}
+                <li className="text-sm">
+                  <span className="font-medium">Empfehlung (NPS): Wie wahrscheinlich empfiehlst du uns weiter? 0–10</span>
+                </li>
+              </ol>
+            )}
+          </div>
+
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="rounded-lg border p-3">
@@ -266,6 +329,37 @@ export default function AdminFeedbackTab() {
                 <p className="text-sm whitespace-pre-wrap">{r.answers.gesamt_kommentar}</p>
               </div>
             )}
+
+            <div className="rounded-md border border-accent/50 bg-accent/5 p-3 space-y-2">
+              <p className="text-xs font-medium flex items-center gap-1.5">
+                <Gift className="h-3.5 w-3.5 text-accent" /> 10 %-Cashback-Gutschein
+                {r.voucher_sent_at && (
+                  <Badge variant="secondary" className="ml-1">
+                    versendet am {formatTime(r.voucher_sent_at)}
+                  </Badge>
+                )}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Input
+                  placeholder="Individueller Gutscheincode, z. B. SLT-10-AB12"
+                  value={voucherDrafts[r.id] ?? r.voucher_code ?? ""}
+                  onChange={(e) => setVoucherDrafts((prev) => ({ ...prev, [r.id]: e.target.value }))}
+                  className="sm:max-w-xs h-9"
+                />
+                <Button
+                  size="sm"
+                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                  disabled={sendingId === r.id || !r.customer_email}
+                  onClick={() => sendVoucher(r)}
+                >
+                  <Send className="h-4 w-4 mr-1" />
+                  {sendingId === r.id ? "Sende …" : r.voucher_sent_at ? "Erneut senden" : "Gutschein senden"}
+                </Button>
+              </div>
+              {!r.customer_email && (
+                <p className="text-xs text-muted-foreground">Keine E-Mail-Adresse hinterlegt – Versand nicht möglich.</p>
+              )}
+            </div>
           </CardContent>
         </Card>
       ))}

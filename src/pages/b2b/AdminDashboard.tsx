@@ -134,7 +134,7 @@ export default function AdminDashboard() {
   // deep-link, share, and reload without losing their place. The default tab
   // stays "reservations" for backward compatibility.
   const [searchParams, setSearchParams] = useSearchParams();
-  const VALID_TABS = ["reservations", "rentals", "offers", "delivery-notes", "return-protocols", "invoices", "customers", "damages", "staff", "inventory"] as const;
+  const VALID_TABS = ["reservations", "rentals", "offers", "delivery-notes", "return-protocols", "invoices", "customers", "damages", "staff", "inventory", "feedback", "audit"] as const;
   const urlTab = searchParams.get("tab") ?? "";
   const activeTab = (VALID_TABS as readonly string[]).includes(urlTab) ? urlTab : "reservations";
   const setActiveTab = (next: string) => {
@@ -992,7 +992,7 @@ export default function AdminDashboard() {
           </div>
         </div>
         {/* Desktop: original grid tabs */}
-        <TabsList className="hidden sm:grid w-full grid-cols-11 h-12">
+        <TabsList className={`hidden sm:grid w-full h-12 ${SUPER_ADMIN_EMAILS.includes((user?.email ?? "").toLowerCase()) ? "grid-cols-12" : "grid-cols-11"}`}>
           <TabsTrigger value="reservations" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <FileText className="h-4 w-4" />
             <span className="hidden sm:inline">Anfragen</span>
