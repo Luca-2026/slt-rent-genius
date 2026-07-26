@@ -4,18 +4,21 @@ Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
+Disallow: /feedback
 
 User-agent: Bingbot
 Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
+Disallow: /feedback
 
 User-agent: DuckDuckBot
 Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
+Disallow: /feedback
 
 # === Social Crawlers (für Link-Previews) ===
 User-agent: Twitterbot
@@ -34,12 +37,14 @@ Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
+Disallow: /feedback
 
 User-agent: OAI-SearchBot
 Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
+Disallow: /feedback
 
 User-agent: ChatGPT-User
 Allow: /
@@ -50,6 +55,7 @@ Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
+Disallow: /feedback
 
 User-agent: Claude-Web
 Allow: /
@@ -64,6 +70,7 @@ Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
+Disallow: /feedback
 
 User-agent: Perplexity-User
 Allow: /
@@ -74,12 +81,14 @@ Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
+Disallow: /feedback
 
 User-agent: Applebot
 Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
+Disallow: /feedback
 
 User-agent: Applebot-Extended
 Allow: /
@@ -90,18 +99,21 @@ Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
+Disallow: /feedback
 
 User-agent: Amazonbot
 Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
+Disallow: /feedback
 
 User-agent: CCBot
 Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
+Disallow: /feedback
 
 User-agent: Meta-ExternalAgent
 Allow: /
@@ -125,6 +137,7 @@ Allow: /
 Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
+Disallow: /feedback
 
 # === Sitemaps & LLM Index ===
 Sitemap: https://www.slt-rental.de/sitemap.xml

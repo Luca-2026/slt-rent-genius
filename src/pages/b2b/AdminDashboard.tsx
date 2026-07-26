@@ -21,6 +21,8 @@ import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
 import { AdminDamageOverview } from "@/components/b2b/admin/AdminDamageOverview";
 import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
 import AdminAuditLogTab from "@/components/b2b/admin/AdminAuditLogTab";
+import AdminFeedbackTab from "@/components/b2b/admin/AdminFeedbackTab";
+
 
 const SUPER_ADMIN_EMAILS = ["l.sandhoff@slt-rental.de", "b.noechel@slt-rental.de"];
 
@@ -45,7 +47,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import {
-  Users, Receipt, FileText, Package, Boxes, Shield, RefreshCw, Clock, Send, ClipboardCheck, UserCog, AlertTriangle, ArrowRight, Plus, Trash2, Eye,
+  Users, Receipt, FileText, Package, Boxes, Shield, RefreshCw, Clock, Send, ClipboardCheck, UserCog, AlertTriangle, ArrowRight, Plus, Trash2, Eye, MessageSquare,
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -961,6 +963,8 @@ export default function AdminDashboard() {
               { value: "damages", label: "Schäden", icon: AlertTriangle },
               { value: "staff", label: "Mitarbeiter", icon: UserCog },
               { value: "inventory", label: "Inventar", icon: Boxes },
+              { value: "feedback", label: "Feedback", icon: MessageSquare },
+
 
             ].map((tab) => {
               const Icon = tab.icon;
@@ -988,7 +992,7 @@ export default function AdminDashboard() {
           </div>
         </div>
         {/* Desktop: original grid tabs */}
-        <TabsList className="hidden sm:grid w-full grid-cols-10 h-12">
+        <TabsList className="hidden sm:grid w-full grid-cols-11 h-12">
           <TabsTrigger value="reservations" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <FileText className="h-4 w-4" />
             <span className="hidden sm:inline">Anfragen</span>
@@ -1039,6 +1043,11 @@ export default function AdminDashboard() {
             <Boxes className="h-4 w-4" />
             <span className="hidden sm:inline">Inventar</span>
           </TabsTrigger>
+          <TabsTrigger value="feedback" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <MessageSquare className="h-4 w-4" />
+            <span className="hidden sm:inline">Feedback</span>
+          </TabsTrigger>
+
           {SUPER_ADMIN_EMAILS.includes((user?.email ?? "").toLowerCase()) && (
             <TabsTrigger value="audit" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <Shield className="h-4 w-4" />
@@ -1256,6 +1265,11 @@ export default function AdminDashboard() {
         <TabsContent value="inventory" forceMount className="data-[state=inactive]:hidden">
           <AdminInventoryTab />
         </TabsContent>
+
+        <TabsContent value="feedback" className="data-[state=inactive]:hidden">
+          <AdminFeedbackTab />
+        </TabsContent>
+
 
         {SUPER_ADMIN_EMAILS.includes((user?.email ?? "").toLowerCase()) && (
           <TabsContent value="audit" forceMount className="data-[state=inactive]:hidden">
