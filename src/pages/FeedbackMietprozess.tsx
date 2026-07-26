@@ -189,15 +189,21 @@ export default function FeedbackMietprozess() {
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="fb-ref">Buchungs-/Rechnungsnummer</Label>
+                    <Label htmlFor="fb-ref">
+                      Rentware-Buchungsnummer <span className="text-destructive">*</span>
+                    </Label>
                     <Input
                       id="fb-ref"
                       value={orderRef}
                       onChange={(e) => setOrderRef(e.target.value)}
                       maxLength={80}
-                      placeholder="optional"
+                      required
+                      placeholder="z. B. 123456"
                       className="mt-1.5"
                     />
+                    <p className="text-[11px] text-muted-foreground mt-1">
+                      Pflichtangabe – nur so können wir dir den Gutschein zuordnen.
+                    </p>
                   </div>
                   <div>
                     <Label htmlFor="fb-name">Name</Label>
