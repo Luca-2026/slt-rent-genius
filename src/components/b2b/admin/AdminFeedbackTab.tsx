@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { RefreshCw, Star, Copy, MessageSquare } from "lucide-react";
+import { RefreshCw, Star, Copy, MessageSquare, Gift, Send, ChevronDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { FEEDBACK_QUESTIONS, FEEDBACK_QUESTION_SHORT } from "@/data/feedbackQuestions";
 
