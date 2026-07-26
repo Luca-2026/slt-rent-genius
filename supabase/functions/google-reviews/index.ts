@@ -21,7 +21,7 @@ serve(async (req) => {
   }
 
   try {
-    const { placeId } = await req.json();
+    const { placeId, verify } = await req.json();
 
     if (!placeId || typeof placeId !== "string") {
       return new Response(JSON.stringify({ error: 'placeId is required' }), {
