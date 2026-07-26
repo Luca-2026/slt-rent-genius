@@ -48,6 +48,10 @@ export default function AdminFeedbackTab() {
   const [search, setSearch] = useState("");
   const [locationFilter, setLocationFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [voucherDrafts, setVoucherDrafts] = useState<Record<string, string>>({});
+  const [sendingId, setSendingId] = useState<string | null>(null);
+  const [showQuestions, setShowQuestions] = useState(false);
+
 
   const load = async () => {
     setLoading(true);
