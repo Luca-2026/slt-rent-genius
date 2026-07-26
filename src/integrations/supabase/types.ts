@@ -1563,6 +1563,60 @@ export type Database = {
           },
         ]
       }
+      customer_feedback: {
+        Row: {
+          answers: Json
+          avg_rating: number | null
+          created_at: string
+          customer_email: string | null
+          customer_name: string | null
+          customer_type: string | null
+          id: string
+          internal_note: string | null
+          location: string | null
+          order_ref: string | null
+          ratings: Json
+          recommend_score: number | null
+          source: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          answers?: Json
+          avg_rating?: number | null
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_type?: string | null
+          id?: string
+          internal_note?: string | null
+          location?: string | null
+          order_ref?: string | null
+          ratings?: Json
+          recommend_score?: number | null
+          source?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          answers?: Json
+          avg_rating?: number | null
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_type?: string | null
+          id?: string
+          internal_note?: string | null
+          location?: string | null
+          order_ref?: string | null
+          ratings?: Json
+          recommend_score?: number | null
+          source?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       google_reviews_cache: {
         Row: {
           created_at: string
