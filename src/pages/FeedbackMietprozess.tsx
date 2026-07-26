@@ -142,8 +142,17 @@ export default function FeedbackMietprozess() {
           </h1>
           <p className="text-primary-foreground/80 text-sm md:text-base">
             Wir wollen jeden Schritt besser machen – von der Buchung bis zur Rückgabe. Zehn kurze Fragen, jeweils mit
-            Sternen und Platz für deine Worte. Dauert rund 3 Minuten und ist auf Wunsch anonym.
+            Sternen und Platz für deine Worte. Dauert rund 3 Minuten.
           </p>
+          <div className="mt-5 rounded-lg bg-accent/15 border border-accent/40 p-4">
+            <p className="text-primary-foreground font-semibold flex items-center gap-2">
+              <Gift className="h-5 w-5 text-accent" /> 10 % Cashback-Gutschein für deine nächste Miete
+            </p>
+            <p className="text-primary-foreground/80 text-sm mt-1">
+              Feedback ausfüllen + Google-Bewertung abgeben = du erhältst nach unserer Prüfung deinen persönlichen
+              10-%-Gutscheincode per E-Mail. Buchungsnummer und E-Mail-Adresse sind dafür Pflicht.
+            </p>
+          </div>
         </div>
       </section>
 
