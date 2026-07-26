@@ -236,10 +236,12 @@ export default function FeedbackMietprozess() {
               <Card>
                 <CardContent className="p-5 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="fb-location">Standort</Label>
+                    <Label htmlFor="fb-location">
+                      Standort <span className="text-destructive">*</span>
+                    </Label>
                     <Select value={location} onValueChange={setLocation}>
                       <SelectTrigger id="fb-location" className="mt-1.5">
-                        <SelectValue placeholder="Standort wählen (optional)" />
+                        <SelectValue placeholder="Standort wählen" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="krefeld">Krefeld</SelectItem>
@@ -289,6 +291,21 @@ export default function FeedbackMietprozess() {
                     />
                   </div>
                   <div className="md:col-span-2">
+                    <Label htmlFor="fb-items">
+                      Was hast du gemietet? <span className="text-destructive">*</span>
+                    </Label>
+                    <Textarea
+                      id="fb-items"
+                      value={rentedItems}
+                      onChange={(e) => setRentedItems(e.target.value.slice(0, 500))}
+                      maxLength={500}
+                      required
+                      rows={2}
+                      placeholder="z. B. Minibagger 1,8 t + Anhänger 750 kg"
+                      className="mt-1.5"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
                     <Label htmlFor="fb-email">
                       E-Mail für Gutschein & Rückfragen <span className="text-destructive">*</span>
                     </Label>
@@ -299,7 +316,7 @@ export default function FeedbackMietprozess() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       maxLength={180}
-                      placeholder="optional"
+                      placeholder="name@beispiel.de"
                       className="mt-1.5"
                     />
                   </div>
