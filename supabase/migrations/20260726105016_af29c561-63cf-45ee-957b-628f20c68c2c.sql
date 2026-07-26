@@ -1,0 +1,1 @@
+DELETE FROM public.customer_feedback WHERE order_ref = 'QA-TEST-001';
