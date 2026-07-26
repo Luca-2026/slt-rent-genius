@@ -1578,6 +1578,7 @@ export type Database = {
           order_ref: string | null
           ratings: Json
           recommend_score: number | null
+          rented_items: string | null
           source: string | null
           status: string
           updated_at: string
@@ -1599,6 +1600,7 @@ export type Database = {
           order_ref?: string | null
           ratings?: Json
           recommend_score?: number | null
+          rented_items?: string | null
           source?: string | null
           status?: string
           updated_at?: string
@@ -1620,6 +1622,7 @@ export type Database = {
           order_ref?: string | null
           ratings?: Json
           recommend_score?: number | null
+          rented_items?: string | null
           source?: string | null
           status?: string
           updated_at?: string
