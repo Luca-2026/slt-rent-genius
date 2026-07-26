@@ -60,6 +60,7 @@ export default function FeedbackMietprozess() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [freeText, setFreeText] = useState("");
+  const [googleReviewDone, setGoogleReviewDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
 
