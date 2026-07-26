@@ -23,6 +23,9 @@ interface FeedbackRow {
   recommend_score: number | null;
   avg_rating: number | null;
   status: string;
+  voucher_code: string | null;
+  voucher_sent_at: string | null;
+  google_review_confirmed: boolean | null;
 }
 
 const LOCATION_LABELS: Record<string, string> = {
