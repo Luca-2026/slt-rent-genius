@@ -25,16 +25,16 @@ const LOCATION_LABELS: Record<string, string> = {
 };
 
 const QUESTION_LABELS: Record<string, string> = {
-  q1_buchung: "Buchung / Anfrage",
-  q2_beratung: "Beratung & Erreichbarkeit",
-  q3_preis: "Preise & Konditionen",
-  q4_abholung: "Abholung / Lieferung",
-  q5_zustand: "Zustand des Mietartikels",
+  q1_buchung: "Buchung",
+  q2_beratung: "Beratung",
+  q3_preis: "Preis/Transparenz",
+  q4_abholung: "Abholung/Lieferung",
+  q5_zustand: "Zustand Gerät",
   q6_einweisung: "Einweisung",
-  q7_service: "Service während der Miete",
-  q8_rueckgabe: "Rückgabe",
-  q9_abrechnung: "Abrechnung",
-  q10_gesamt: "Gesamteindruck",
+  q7_miete: "Mietverlauf",
+  q8_support: "Erreichbarkeit",
+  q9_ruecknahme: "Rückgabe",
+  q10_rechnung: "Rechnung",
 };
 
 Deno.serve(async (req: Request) => {
