@@ -64,6 +64,7 @@ export default function FeedbackMietprozess() {
   const [recommend, setRecommend] = useState<number | null>(null);
   const [location, setLocation] = useState<string>(searchParams.get("standort") ?? "");
   const [orderRef, setOrderRef] = useState<string>(searchParams.get("ref") ?? "");
+  const [rentedItems, setRentedItems] = useState("");
   const [customerType, setCustomerType] = useState<string>("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -84,6 +85,30 @@ export default function FeedbackMietprozess() {
       });
       return;
     }
+    if (!location) {
+      toast({
+        title: "Standort fehlt",
+        description: "Bitte wähle den Standort aus, an dem du gemietet hast.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!rentedItems.trim()) {
+      toast({
+        title: "Angabe fehlt",
+        description: "Bitte trage kurz ein, was du gemietet hast.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) {
+      toast({
+        title: "E-Mail erforderlich",
+        description: "Bitte gib eine gültige E-Mail-Adresse an – dorthin senden wir deinen Gutscheincode.",
+        variant: "destructive",
+      });
+      return;
+    }
     if (answeredCount === 0 && !freeText.trim()) {
       toast({
         title: "Noch keine Bewertung",
@@ -92,20 +117,19 @@ export default function FeedbackMietprozess() {
       });
       return;
     }
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) {
-      toast({ title: "E-Mail ungültig", description: "Bitte prüfe die E-Mail-Adresse.", variant: "destructive" });
-      return;
-    }
     setSubmitting(true);
     const values = Object.values(ratings);
     const avg = values.length ? Number((values.reduce((a, b) => a + b, 0) / values.length).toFixed(2)) : null;
+    const feedbackId = crypto.randomUUID();
 
     const { error } = await supabase.from("customer_feedback" as any).insert({
+      id: feedbackId,
       source: searchParams.get("src")?.slice(0, 60) || "link",
-      location: location ? location.slice(0, 60) : null,
+      location: location.slice(0, 60),
       order_ref: orderRef.trim().slice(0, 80),
+      rented_items: rentedItems.trim().slice(0, 500),
       customer_name: name ? name.trim().slice(0, 120) : null,
-      customer_email: email ? email.trim().slice(0, 180) : null,
+      customer_email: email.trim().slice(0, 180),
       customer_type: customerType || null,
       ratings,
       answers: { ...answers, gesamt_kommentar: freeText.trim().slice(0, 3000) },
@@ -125,11 +149,21 @@ export default function FeedbackMietprozess() {
             ? "Gerade sind sehr viele Rückmeldungen eingegangen. Bitte versuche es in einer Stunde erneut."
             : /Buchungsnummer/i.test(msg)
               ? "Bitte gib deine Buchungsnummer ein."
-              : "Bitte versuche es später erneut oder schreib uns an info@slt-rental.de.",
+              : /E-Mail/i.test(msg)
+                ? "Bitte gib eine gültige E-Mail-Adresse an."
+                : /gemieteten Artikel/i.test(msg)
+                  ? "Bitte trage ein, was du gemietet hast."
+                  : "Bitte versuche es später erneut oder schreib uns an info@slt-rental.de.",
         variant: "destructive",
       });
       return;
     }
+
+    // Standort-Team per E-Mail benachrichtigen (Fehler blockieren den Kunden nicht)
+    supabase.functions
+      .invoke("notify-feedback", { body: { feedback_id: feedbackId } })
+      .catch((err) => console.error("notify-feedback failed", err));
+
     setDone(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
