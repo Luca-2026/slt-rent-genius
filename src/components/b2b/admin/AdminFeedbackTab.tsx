@@ -301,6 +301,37 @@ export default function AdminFeedbackTab() {
                 <p className="text-sm whitespace-pre-wrap">{r.answers.gesamt_kommentar}</p>
               </div>
             )}
+
+            <div className="rounded-md border border-accent/50 bg-accent/5 p-3 space-y-2">
+              <p className="text-xs font-medium flex items-center gap-1.5">
+                <Gift className="h-3.5 w-3.5 text-accent" /> 10 %-Cashback-Gutschein
+                {r.voucher_sent_at && (
+                  <Badge variant="secondary" className="ml-1">
+                    versendet am {formatTime(r.voucher_sent_at)}
+                  </Badge>
+                )}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Input
+                  placeholder="Individueller Gutscheincode, z. B. SLT-10-AB12"
+                  value={voucherDrafts[r.id] ?? r.voucher_code ?? ""}
+                  onChange={(e) => setVoucherDrafts((prev) => ({ ...prev, [r.id]: e.target.value }))}
+                  className="sm:max-w-xs h-9"
+                />
+                <Button
+                  size="sm"
+                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                  disabled={sendingId === r.id || !r.customer_email}
+                  onClick={() => sendVoucher(r)}
+                >
+                  <Send className="h-4 w-4 mr-1" />
+                  {sendingId === r.id ? "Sende …" : r.voucher_sent_at ? "Erneut senden" : "Gutschein senden"}
+                </Button>
+              </div>
+              {!r.customer_email && (
+                <p className="text-xs text-muted-foreground">Keine E-Mail-Adresse hinterlegt – Versand nicht möglich.</p>
+              )}
+            </div>
           </CardContent>
         </Card>
       ))}
