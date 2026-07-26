@@ -227,10 +227,13 @@ export default function FeedbackMietprozess() {
                     />
                   </div>
                   <div className="md:col-span-2">
-                    <Label htmlFor="fb-email">E-Mail für Rückfragen</Label>
+                    <Label htmlFor="fb-email">
+                      E-Mail für Gutschein & Rückfragen <span className="text-destructive">*</span>
+                    </Label>
                     <Input
                       id="fb-email"
                       type="email"
+                      required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       maxLength={180}
