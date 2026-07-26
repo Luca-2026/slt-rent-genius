@@ -173,8 +173,36 @@ export default function AdminFeedbackTab() {
           </div>
           <p className="text-xs text-muted-foreground">
             Nicht verlinkt und für Suchmaschinen gesperrt. Optionale Parameter:{" "}
-            <code>?src=rentware&amp;standort=krefeld&amp;ref=BUCHUNGSNR</code>
+            <code>?src=rentware&amp;standort=krefeld&amp;ref=BUCHUNGSNR</code>. Buchungsnummer und E-Mail sind für
+            Kunden Pflicht, max. 20 Rückmeldungen pro Stunde.
           </p>
+
+          <div className="rounded-lg border">
+            <button
+              type="button"
+              onClick={() => setShowQuestions((v) => !v)}
+              className="w-full flex items-center justify-between p-3 text-sm font-medium"
+            >
+              Die 10 Fragen des Fragebogens ansehen
+              <ChevronDown className={`h-4 w-4 transition-transform ${showQuestions ? "rotate-180" : ""}`} />
+            </button>
+            {showQuestions && (
+              <ol className="px-4 pb-4 space-y-2">
+                {FEEDBACK_QUESTIONS.map((q) => (
+                  <li key={q.key} className="text-sm">
+                    <span className="font-medium">{q.title}</span>
+                    <span className="block text-xs text-muted-foreground">
+                      {q.hint} · Freitext: {q.textLabel}
+                    </span>
+                  </li>
+                ))}
+                <li className="text-sm">
+                  <span className="font-medium">Empfehlung (NPS): Wie wahrscheinlich empfiehlst du uns weiter? 0–10</span>
+                </li>
+              </ol>
+            )}
+          </div>
+
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="rounded-lg border p-3">
