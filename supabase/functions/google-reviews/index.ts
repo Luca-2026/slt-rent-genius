@@ -21,7 +21,7 @@ serve(async (req) => {
   }
 
   try {
-    const { placeId } = await req.json();
+    const { placeId, verify } = await req.json();
 
     if (!placeId || typeof placeId !== "string") {
       return new Response(JSON.stringify({ error: 'placeId is required' }), {
@@ -37,9 +37,26 @@ serve(async (req) => {
       });
     }
 
+    // Verification mode: resolve the Place ID to its business name/address
+    // (no cache, no reviews) so we can confirm the ID belongs to our location.
+    if (verify === true) {
+      const apiKeyV = Deno.env.get('GOOGLE_PLACES_API_KEY');
+      if (!apiKeyV) throw new Error('GOOGLE_PLACES_API_KEY is not configured');
+      const res = await fetch(
+        `https://places.googleapis.com/v1/places/${placeId}?languageCode=de`,
+        { headers: { 'X-Goog-Api-Key': apiKeyV, 'X-Goog-FieldMask': 'displayName,formattedAddress,rating,userRatingCount,googleMapsUri' } },
+      );
+      const body = await res.text();
+      return new Response(body, {
+        status: res.status,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
 
     // Check cache first
     const { data: cached } = await supabase
