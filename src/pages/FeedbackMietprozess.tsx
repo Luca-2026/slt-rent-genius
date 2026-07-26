@@ -14,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { FEEDBACK_QUESTIONS } from "@/data/feedbackQuestions";
 import { cn } from "@/lib/utils";
+import { getReviewUrl } from "@/components/reviews/GoogleReviews";
 /** Direktlinks zum Google-Bewertungsfenster je Standort (Place-IDs aus GoogleReviews). */
 const GOOGLE_REVIEW_LINKS = {
   krefeld: getReviewUrl("krefeld") ?? "",
