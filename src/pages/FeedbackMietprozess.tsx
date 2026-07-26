@@ -311,6 +311,38 @@ export default function FeedbackMietprozess() {
                 </CardContent>
               </Card>
 
+              <Card className="border-accent/50">
+                <CardContent className="p-5 md:p-6">
+                  <h2 className="font-semibold text-foreground flex items-center gap-2">
+                    <Gift className="h-5 w-5 text-accent" /> Letzter Schritt: Google-Bewertung & 10 % Cashback
+                  </h2>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Gib zusätzlich eine Google-Bewertung ab. Sobald wir dein Feedback geprüft und freigegeben haben,
+                    senden wir dir deinen persönlichen 10-%-Gutscheincode per E-Mail zu.
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <a href={GOOGLE_REVIEW_LINKS.krefeld} target="_blank" rel="noopener noreferrer">
+                      <Button type="button" variant="outline" className="gap-2">
+                        <ExternalLink className="h-4 w-4" /> Google-Bewertung Krefeld
+                      </Button>
+                    </a>
+                    <a href={GOOGLE_REVIEW_LINKS.bonn} target="_blank" rel="noopener noreferrer">
+                      <Button type="button" variant="outline" className="gap-2">
+                        <ExternalLink className="h-4 w-4" /> Google-Bewertung Bonn
+                      </Button>
+                    </a>
+                  </div>
+                  <label className="mt-4 flex items-start gap-3 text-sm cursor-pointer">
+                    <Checkbox
+                      checked={googleReviewDone}
+                      onCheckedChange={(v) => setGoogleReviewDone(v === true)}
+                      className="mt-0.5"
+                    />
+                    <span>Ich habe eine Google-Bewertung abgegeben und möchte den 10-%-Gutschein erhalten.</span>
+                  </label>
+                </CardContent>
+              </Card>
+
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                 <Button
                   type="submit"
