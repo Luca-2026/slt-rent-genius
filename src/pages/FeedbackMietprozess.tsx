@@ -14,10 +14,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { FEEDBACK_QUESTIONS } from "@/data/feedbackQuestions";
 import { cn } from "@/lib/utils";
-/** Kurzlinks für Google-Bewertungen je Standort (Mülheim wird über Krefeld bewertet). */
+/** Direktlinks zum Google-Bewertungsfenster je Standort (Place-IDs aus GoogleReviews). */
 const GOOGLE_REVIEW_LINKS = {
-  krefeld: "https://g.page/r/CQB75VoF3xeXEBM/review",
-  bonn: "https://g.page/r/CVBrmvB2IRwgEBM/review",
+  krefeld: getReviewUrl("krefeld") ?? "",
+  bonn: getReviewUrl("bonn") ?? "",
 } as const;
 
 
