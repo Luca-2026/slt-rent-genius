@@ -67,6 +67,14 @@ export default function FeedbackMietprozess() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!orderRef.trim()) {
+      toast({
+        title: "Buchungsnummer fehlt",
+        description: "Bitte gib deine Rentware-Buchungsnummer ein – nur so können wir den Gutschein zuordnen.",
+        variant: "destructive",
+      });
+      return;
+    }
     if (answeredCount === 0 && !freeText.trim()) {
       toast({
         title: "Noch keine Bewertung",
@@ -86,7 +94,7 @@ export default function FeedbackMietprozess() {
     const { error } = await supabase.from("customer_feedback" as any).insert({
       source: searchParams.get("src")?.slice(0, 60) || "link",
       location: location ? location.slice(0, 60) : null,
-      order_ref: orderRef ? orderRef.trim().slice(0, 80) : null,
+      order_ref: orderRef.trim().slice(0, 80),
       customer_name: name ? name.trim().slice(0, 120) : null,
       customer_email: email ? email.trim().slice(0, 180) : null,
       customer_type: customerType || null,
@@ -94,13 +102,21 @@ export default function FeedbackMietprozess() {
       answers: { ...answers, gesamt_kommentar: freeText.trim().slice(0, 3000) },
       recommend_score: recommend,
       avg_rating: avg,
+      google_review_confirmed: googleReviewDone,
     });
     setSubmitting(false);
 
     if (error) {
+      const msg = (error as any)?.message ?? "";
       toast({
         title: "Senden fehlgeschlagen",
-        description: "Bitte versuche es später erneut oder schreib uns an info@slt-rental.de.",
+        description: /bereits Feedback/i.test(msg)
+          ? "Zu dieser Buchungsnummer haben wir bereits Feedback erhalten."
+          : /Zu viele/i.test(msg)
+            ? "Gerade sind sehr viele Rückmeldungen eingegangen. Bitte versuche es in einer Stunde erneut."
+            : /Buchungsnummer/i.test(msg)
+              ? "Bitte gib deine Buchungsnummer ein."
+              : "Bitte versuche es später erneut oder schreib uns an info@slt-rental.de.",
         variant: "destructive",
       });
       return;
