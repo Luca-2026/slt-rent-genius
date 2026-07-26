@@ -174,6 +174,27 @@ export default function FeedbackMietprozess() {
                 <p className="text-muted-foreground">
                   Deine Antworten landen direkt bei unserem Team und helfen uns, den Mietprozess zu verbessern.
                 </p>
+                <div className="mt-6 rounded-lg border border-accent/50 bg-accent/10 p-4 text-left">
+                  <p className="font-semibold flex items-center gap-2">
+                    <Gift className="h-5 w-5 text-accent" /> Dein 10-%-Cashback-Gutschein
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Falls noch nicht geschehen: Gib jetzt deine Google-Bewertung ab. Nach unserer Prüfung erhältst du
+                    deinen persönlichen Gutscheincode per E-Mail.
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <a href={GOOGLE_REVIEW_LINKS.krefeld} target="_blank" rel="noopener noreferrer">
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <ExternalLink className="h-4 w-4" /> Krefeld bewerten
+                      </Button>
+                    </a>
+                    <a href={GOOGLE_REVIEW_LINKS.bonn} target="_blank" rel="noopener noreferrer">
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <ExternalLink className="h-4 w-4" /> Bonn bewerten
+                      </Button>
+                    </a>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           ) : (
