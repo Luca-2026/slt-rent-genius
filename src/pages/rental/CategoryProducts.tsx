@@ -566,6 +566,12 @@ export default function CategoryProducts() {
                   "druckluftwerkzeug": ["druckluftwerkzeug", "presslufthammer"],
                   "erdrakete": ["erdrakete"],
                 };
+                const gastroTypeGroups: Record<string, string[]> = {
+                  "kuehlgeraet": ["kuehlgeraet", "kuehlschrank"],
+                  "eiswuerfel": ["eiswuerfel", "eiswuerfelmaschine", "kuechengeraet"],
+                  "fritteuse": ["fritteuse"],
+                  "grill": ["grill", "schwenkgrill"],
+                };
                 const groupCategories =
                   category?.id === "beschallung" ? beschallungTypeGroups[value] :
                   category?.id === "werkzeuge" ? werkzeugeTypeGroups[value] :
@@ -574,6 +580,7 @@ export default function CategoryProducts() {
                   category?.id === "moebel-zelte" ? moebelZelteTypeGroups[value] :
                   category?.id === "beleuchtung" ? beleuchtungTypeGroups[value] :
                   category?.id === "geschirr-glaeser-besteck" ? geschirrTypeGroups[value] :
+                  category?.id === "gastro-equipment" ? gastroTypeGroups[value] :
                   category?.id === "aggregate" ? aggregateTypeGroups[value] :
                   undefined;
 
