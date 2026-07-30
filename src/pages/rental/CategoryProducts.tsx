@@ -571,6 +571,8 @@ export default function CategoryProducts() {
                   "eiswuerfel": ["eiswuerfel", "eiswuerfelmaschine", "kuechengeraet"],
                   "fritteuse": ["fritteuse"],
                   "grill": ["grill", "schwenkgrill"],
+                  "schneidgeraet": ["schneidgeraet", "wurstschneider"],
+
                 };
                 const groupCategories =
                   category?.id === "beschallung" ? beschallungTypeGroups[value] :
@@ -622,6 +624,8 @@ export default function CategoryProducts() {
                     if (value === "eiswuerfel") return nameLower.includes("eiswürfel") || nameLower.includes("eiswuerfel") || nameLower.includes("ice maker");
                     if (value === "fritteuse") return nameLower.includes("fritteuse");
                     if (value === "grill") return nameLower.includes("grill");
+                    if (value === "grill") return nameLower.includes("grill");
+                    if (value === "schneidgeraet") return nameLower.includes("schneider") || nameLower.includes("schneidemaschine") || nameLower.includes("aufschnitt");
                   }
                   return false;
                 }
