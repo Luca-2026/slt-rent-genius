@@ -27,6 +27,7 @@ import iconBeleuchtungNeu from "@/assets/icons/beleuchtung-neu.png";
 import iconKommunikation from "@/assets/icons/kommunikation.png";
 import iconGartenpflege from "@/assets/icons/SLT_Rental_Icons_Gartenpflege.png";
 import iconNutzfahrzeuge from "@/assets/icons/category-nutzfahrzeuge.png";
+import iconGastroEquipment from "@/assets/icons/gastro-equipment.png";
 
 // Product Images - Anhänger (all images)
 import imgUrlaub750 from "@/assets/products/anhaenger/urlaub-750.jpg";
@@ -155,6 +156,7 @@ import {
   spezialeffekteProducts,
   moebelZelteProducts,
   geschirrGlaeserBesteckProducts,
+  gastroEquipmentProducts,
   huepfburgenProducts,
   leiternGeruesteProducts,
   kabelStromverteilerProducts,
@@ -182,6 +184,7 @@ import {
   bonnZelteProducts,
   bonnMoebelProducts,
   bonnGeschirrProducts,
+  bonnGastroProducts,
   bonnBesteckProducts,
   bonnBeschallungProducts,
   bonnBeleuchtungProducts,
@@ -358,6 +361,12 @@ export const productCategories: ProductCategory[] = [
     title: "Geschirr, Gläser & Besteck",
     description: "Teller, Gläser, Tassen und Besteck für Ihre Veranstaltung.",
     icon: iconGeschirrGlaeserBesteck,
+  },
+  {
+    id: "gastro-equipment",
+    title: "Gastro Equipment",
+    description: "Getränkekühlschrank, Eiswürfelmaschinen, Fritteusen und Schwenkgrill für Catering, Gastronomie und Feste.",
+    icon: iconGastroEquipment,
   },
   {
     id: "spezialeffekte",
@@ -1714,6 +1723,7 @@ export const locations: LocationData[] = [
       "traversen-rigging",
       "moebel-zelte",
       "geschirr-glaeser-besteck",
+      "gastro-equipment",
       "spezialeffekte",
       "huepfburgen",
       "wohnwagen-camping",
@@ -1738,6 +1748,7 @@ export const locations: LocationData[] = [
       "traversen-rigging": traversenRiggingProducts,
       "moebel-zelte": moebelZelteProducts,
       "geschirr-glaeser-besteck": geschirrGlaeserBesteckProducts,
+      "gastro-equipment": gastroEquipmentProducts,
       "spezialeffekte": spezialeffekteProducts,
       "huepfburgen": huepfburgenProducts,
       "wohnwagen-camping": wohnwagenCampingProducts,
@@ -1771,6 +1782,7 @@ export const locations: LocationData[] = [
       "traversen-rigging",
       "moebel-zelte",
       "geschirr-glaeser-besteck",
+      "gastro-equipment",
       "spezialeffekte",
       "huepfburgen",
       "wohnwagen-camping",
@@ -1878,6 +1890,11 @@ export const locations: LocationData[] = [
         geschirrGlaeserBesteckProducts,
         "bonn"
       ),
+      "gastro-equipment": mergeWithFallback(
+        bonnGastroProducts as unknown as Product[],
+        gastroEquipmentProducts,
+        "bonn"
+      ),
       "spezialeffekte": mergeWithFallback(
         bonnSpezialeffekteProducts as unknown as Product[],
         spezialeffekteProducts,
@@ -1919,6 +1936,7 @@ export const locations: LocationData[] = [
       "traversen-rigging",
       "moebel-zelte",
       "geschirr-glaeser-besteck",
+      "gastro-equipment",
       "spezialeffekte",
       "huepfburgen",
       "wohnwagen-camping",
@@ -1957,6 +1975,7 @@ export const locations: LocationData[] = [
       "traversen-rigging": traversenRiggingProducts,
       "moebel-zelte": moebelZelteProducts,
       "geschirr-glaeser-besteck": geschirrGlaeserBesteckProducts,
+      "gastro-equipment": gastroEquipmentProducts,
       "spezialeffekte": spezialeffekteProducts,
       "huepfburgen": huepfburgenProducts,
       "wohnwagen-camping": wohnwagenCampingProducts,
