@@ -125,6 +125,7 @@ export const categoryConfigs: Record<string, CategoryConfig> = {
   kommunikation: { defaultTarif: "A", label: "Kommunikation" },
   "moebel-zelte": { defaultTarif: "A", label: "Möbel & Zelte", scope: "moebel", hinweis: "Möbel-Aufschlag/Stück ab 5 Stück" },
   "geschirr-glaeser-besteck": { defaultTarif: "A", label: "Geschirr, Gläser & Besteck" },
+  "gastro-equipment": { defaultTarif: "A", label: "Gastro Equipment (Kühlschrank, Eiswürfelmaschine, Fritteuse, Schwenkgrill)" },
   spezialeffekte: { defaultTarif: "A", label: "Spezialeffekte" },
   huepfburgen: { defaultTarif: "A", label: "Hüpfburgen", hinweis: "Bei XL-Hüpfburgen individuelles Angebot" },
   "leitern-gerueste": { defaultTarif: "A", label: "Leitern & Gerüste", scope: "geruest", hinweis: "Inkl. optional Aufbau-Service" },
