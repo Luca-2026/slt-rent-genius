@@ -654,7 +654,10 @@ export default function ProductDetail() {
                     <>
                       <img
                         src={images[currentImageIndex]}
-                        alt={`${product.name} – ${currentImageIndex === 0 ? 'Produktbild' : `Ansicht ${currentImageIndex + 1}`} | SLT Rental ${location.name}`}
+                        alt={
+                          product.imageAlts?.[currentImageIndex] ||
+                          `${product.name} – ${currentImageIndex === 0 ? 'Produktbild' : `Ansicht ${currentImageIndex + 1}`} | SLT Rental ${location.name}`
+                        }
                         className="w-full h-full object-contain"
                       />
                       {images.length > 1 && (
