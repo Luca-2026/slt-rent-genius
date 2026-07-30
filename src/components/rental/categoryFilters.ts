@@ -230,7 +230,6 @@ export const moebelZelteFilterSections: FilterSection[] = [
       { id: "stuhl", label: "catFilters.stuehle", sublabel: "catFilters.stuehle_sub" },
       { id: "husse", label: "catFilters.hussen", sublabel: "catFilters.hussen_sub" },
       { id: "schirm", label: "catFilters.schirme", sublabel: "catFilters.schirme_sub" },
-      { id: "kuehlgeraet", label: "catFilters.kuehlgeraete", sublabel: "catFilters.kuehlgeraete_sub" },
       { id: "garderobe", label: "catFilters.garderobe", sublabel: "catFilters.garderobe_sub" },
     ],
 
@@ -298,7 +297,6 @@ export const geschirrFilterSections: FilterSection[] = [
       { id: "geschirr", label: "catFilters.geschirr", sublabel: "catFilters.geschirr_sub" },
       { id: "glaeser", label: "catFilters.glaeser", sublabel: "catFilters.glaeser_sub" },
       { id: "besteck", label: "catFilters.besteck", sublabel: "catFilters.besteck_sub" },
-      { id: "kuechengeraet", label: "catFilters.kuechengeraet", sublabel: "catFilters.kuechengeraet_sub" },
       { id: "zubehoer", label: "catFilters.zubehoer_geschirr", sublabel: "catFilters.zubehoer_geschirr_sub" },
     ],
   },
@@ -588,6 +586,21 @@ export const nutzfahrzeugeFilterSections: FilterSection[] = [
   },
 ];
 
+// ============= GASTRO EQUIPMENT =============
+export const gastroEquipmentFilterSections: FilterSection[] = [
+  {
+    id: "type",
+    label: "catFilters.produktart",
+    defaultExpanded: true,
+    options: [
+      { id: "kuehlgeraet", label: "catFilters.kuehlgeraete", sublabel: "catFilters.kuehlgeraete_sub" },
+      { id: "eiswuerfel", label: "catFilters.eiswuerfelmaschinen", sublabel: "catFilters.eiswuerfelmaschinen_sub" },
+      { id: "fritteuse", label: "catFilters.fritteusen", sublabel: "catFilters.fritteusen_sub" },
+      { id: "grill", label: "catFilters.grills", sublabel: "catFilters.grills_sub" },
+    ],
+  },
+];
+
 export const categoryFilterMap: Record<string, FilterSection[]> = {
   "werkzeuge": werkzeugeFilterSections,
   "gartenpflege": gartenpflegeFilterSections,
@@ -600,6 +613,7 @@ export const categoryFilterMap: Record<string, FilterSection[]> = {
   "beschallung": beschallungFilterSections,
   "moebel-zelte": moebelZelteFilterSections,
   "geschirr-glaeser-besteck": geschirrFilterSections,
+  "gastro-equipment": gastroEquipmentFilterSections,
   "huepfburgen": huepfburgenFilterSections,
   "absperrtechnik": absperrtechnikFilterSections,
   "spezialeffekte": spezialeffekteFilterSections,
@@ -625,6 +639,7 @@ export const categorySearchPlaceholders: Record<string, string> = {
   "beschallung": "catSearch.beschallung",
   "moebel-zelte": "catSearch.moebelZelte",
   "geschirr-glaeser-besteck": "catSearch.geschirr",
+  "gastro-equipment": "catSearch.gastroEquipment",
   "huepfburgen": "catSearch.huepfburgen",
   "absperrtechnik": "catSearch.absperrtechnik",
   "spezialeffekte": "catSearch.spezialeffekte",
@@ -650,6 +665,7 @@ export const categoryDisplayNames: Record<string, string> = {
   "beschallung": "catDisplay.beschallung",
   "moebel-zelte": "catDisplay.moebelZelte",
   "geschirr-glaeser-besteck": "catDisplay.geschirr",
+  "gastro-equipment": "catDisplay.gastroEquipment",
   "huepfburgen": "catDisplay.huepfburgen",
   "absperrtechnik": "catDisplay.absperrtechnik",
   "spezialeffekte": "catDisplay.spezialeffekte",

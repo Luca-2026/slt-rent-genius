@@ -49,6 +49,7 @@ const CATEGORY_GROUPS: Array<{
       "spezialeffekte",
       "moebel-zelte",
       "geschirr-glaeser-besteck",
+      "gastro-equipment",
       "huepfburgen",
     ],
   },
