@@ -16,6 +16,141 @@ export interface ProductSEOData {
 
 // Lookup by product ID (from rentalData.ts)
 export const productSEOData: Record<string, ProductSEOData> = {
+  "fritteuse-doppel-230v": {
+    seoTitle: "Fritteuse mieten Krefeld – Doppelfritteuse 16 l | SLT",
+    metaDescription:
+      "Doppelfritteuse mit 2 Becken und 16 l mieten in Krefeld: 6.500 W, 230 V, 30–190 °C, Tischgerät. Ab 10 € pro Tag – für Imbiss, Vereinsfest und Catering.",
+    h1: "Doppelfritteuse 230 V mieten in Krefeld – 2 Becken, 16 Liter",
+    h2s: [
+      "Technische Daten der Doppelfritteuse",
+      "Zwei Becken: getrennt frittieren ohne Geschmacksübertragung",
+      "Stromversorgung richtig planen: 6.500 W an 230 V",
+      "Abholung in Krefeld, Reinigung und Rückgabe",
+    ],
+    useCaseBau:
+      "Verpflegung von Montageteams bei Richtfest, Betriebsfest oder Baustellenabschluss – die Fritteuse läuft an jeder abgesicherten Schuko-Steckdose im Aufenthaltscontainer oder Zelt.",
+    useCaseEvent:
+      "Vereinsfeste, Schützenfeste, Firmenfeiern, Foodtrucks und Imbissstände: Zwei getrennte Becken erlauben Pommes im einen und panierte oder vegetarische Ware im anderen Becken – ohne Wartezeit zwischen den Chargen.",
+    useCasePrivat:
+      "Geburtstag, Straßenfest oder Silvester in der Nachbarschaft: Das Tischgerät passt auf jeden stabilen Tisch und liefert deutlich mehr Durchsatz als eine Haushaltsfritteuse.",
+    dailyPriceFrom: 10,
+    faqs: [
+      {
+        q: "Wie viel Fassungsvermögen hat die Doppelfritteuse?",
+        a: "Insgesamt 16 Liter, verteilt auf zwei getrennte Frittierbecken. So kannst du zwei Fettbäder parallel und unabhängig voneinander betreiben.",
+      },
+      {
+        q: "Welchen Stromanschluss brauche ich?",
+        a: "Die Fritteuse arbeitet mit 220–240 V, also normalem Haushaltsstrom. Die Gesamtleistung beträgt 6.500 W für beide Becken zusammen. Plane die Becken nach Möglichkeit auf zwei getrennt abgesicherten Stromkreisen ein, damit beim gleichzeitigen Aufheizen keine Sicherung auslöst.",
+      },
+      {
+        q: "Welche Temperaturen lassen sich einstellen?",
+        a: "Der Temperaturbereich reicht von 30 bis 190 °C. Die Einstellung erfolgt über ein mechanisches Bedienfeld mit Temperaturanzeige.",
+      },
+      {
+        q: "Wie groß und schwer ist das Gerät?",
+        a: "Die Doppelfritteuse misst 39 cm (H) × 55 cm (B) × 55,8 cm (T) und wiegt 13,75 kg. Sie ist ein Tischgerät und passt in jeden Kombi.",
+      },
+      {
+        q: "Ist Frittierfett im Mietpreis enthalten?",
+        a: "Nein. Öl oder Fett bringst du selbst mit. Die Rückgabe erfolgt entleert und grob gereinigt, sonst berechnen wir eine Reinigungspauschale.",
+      },
+      {
+        q: "Was kostet die Miete der Doppelfritteuse in Krefeld?",
+        a: "Die Miete startet ab 10 € pro Tag netto. Für Wochenend- oder Wochenpreise und die Verfügbarkeit im gewünschten Zeitraum meldest du dich kurz über das Anfrageformular oder telefonisch bei unserem Standort Krefeld.",
+      },
+    ],
+  },
+  "bonn-fritteuse-doppel-230v": {
+    seoTitle: "Fritteuse mieten Bonn – Doppelfritteuse 2 Becken | SLT",
+    metaDescription:
+      "Doppelfritteuse 16 l in Bonn mieten: 2 Becken, 6.500 W, 230 V, 30–190 °C. Ab 10 € pro Tag für Straßenfest, Foodtruck und Catering in Bonn und dem Rhein-Sieg-Kreis.",
+    h1: "Doppelfritteuse 230 V mieten in Bonn – 16 Liter, 2 Becken",
+    h2s: [
+      "Ausstattung und Leistungsdaten",
+      "Einsatz bei Stadtfesten und Catering in Bonn",
+      "Anschlusswerte und Aufstellung",
+      "Abholung am Standort Bonn",
+    ],
+    useCaseBau:
+      "Warme Verpflegung für Bautrupps und Handwerksbetriebe im Bonner Umland – Betrieb über eine abgesicherte Schuko-Steckdose im Container oder Pavillon.",
+    useCaseEvent:
+      "Straßenfeste, Karnevalsveranstaltungen, Schulfeste und Firmenevents in Bonn und dem Rhein-Sieg-Kreis: Mit zwei Becken bedienst du Fleisch- und vegetarische Gäste getrennt und hältst den Andrang am Stand kurz.",
+    useCasePrivat:
+      "Nachbarschaftsfest, runder Geburtstag oder Gartenparty in Bonn: mehr Durchsatz als jede Haushaltsfritteuse, ohne Starkstromanschluss.",
+    dailyPriceFrom: 10,
+    faqs: [
+      {
+        q: "Kann ich die Doppelfritteuse am Standort Bonn abholen?",
+        a: "Ja. Die Fritteuse wird am Standort Bonn übergeben; Abholtermin und Verfügbarkeit stimmen wir vorab über das Anfrageformular oder telefonisch ab.",
+      },
+      {
+        q: "Wie viele Portionen schafft die Fritteuse parallel?",
+        a: "Mit 16 Litern in zwei Becken und 6.500 W Heizleistung frittierst du zwei Chargen gleichzeitig. Die konkrete Portionszahl hängt von Produkt, Füllmenge und gewünschter Bräunung ab – wir beraten dich dazu am Telefon.",
+      },
+      {
+        q: "Reicht eine normale Steckdose für die Doppelfritteuse?",
+        a: "Das Gerät läuft an 220–240 V. Da beide Becken zusammen bis zu 6.500 W ziehen, sollten sie auf zwei getrennt abgesicherten Stromkreisen betrieben werden, sonst fliegt beim gleichzeitigen Aufheizen die Sicherung.",
+      },
+      {
+        q: "Muss die Fritteuse gereinigt zurückgegeben werden?",
+        a: "Ja, bitte entleert und grob gereinigt. Altfett entsorgst du selbst fachgerecht; andernfalls stellen wir eine Reinigungspauschale in Rechnung.",
+      },
+      {
+        q: "Welche Abmessungen hat das Gerät für den Transport?",
+        a: "39 × 55 × 55,8 cm bei 13,75 kg Eigengewicht – das Tischgerät passt in jeden Kombi oder Kleinwagen mit umgeklappter Rückbank.",
+      },
+      {
+        q: "Was kostet die Doppelfritteuse in Bonn pro Tag?",
+        a: "Der Mietpreis startet ab 10 € netto pro Tag. Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage für deinen Zeitraum.",
+      },
+    ],
+  },
+  "muelheim-fritteuse-doppel-230v": {
+    seoTitle: "Fritteuse mieten Mülheim – Doppelfritteuse 16 l | SLT",
+    metaDescription:
+      "Doppelfritteuse mieten in Mülheim an der Ruhr: 2 Becken, 16 l, 6.500 W, 230 V, 30–190 °C. Ab 10 € pro Tag für Vereinsfest, Imbiss und Catering im Ruhrgebiet.",
+    h1: "Doppelfritteuse 230 V mieten in Mülheim an der Ruhr",
+    h2s: [
+      "Technische Daten im Überblick",
+      "Zwei Becken für parallelen Betrieb",
+      "Strom, Aufstellung und Sicherheit",
+      "Abholung in Mülheim an der Ruhr",
+    ],
+    useCaseBau:
+      "Verpflegung von Montage- und Bautrupps im Ruhrgebiet – die Fritteuse braucht nur eine abgesicherte 230-V-Steckdose, kein Aggregat mit Starkstrom.",
+    useCaseEvent:
+      "Vereinsfeste, Sportplatzfeste, Firmenfeiern und Foodtrucks in Mülheim an der Ruhr: zwei getrennte Fettbäder für Pommes und panierte Ware, damit die Schlange am Stand nicht steht.",
+    useCasePrivat:
+      "Gartenparty, Schulfest oder Geburtstagsfeier in Mülheim an der Ruhr – deutlich mehr Kapazität als eine Haushaltsfritteuse, kompakt genug für jeden Tisch.",
+    dailyPriceFrom: 10,
+    faqs: [
+      {
+        q: "Ist die Doppelfritteuse in Mülheim an der Ruhr verfügbar?",
+        a: "Die Vermietung läuft am Standort Mülheim an der Ruhr auf Anfrage. Wir prüfen deinen Zeitraum kurzfristig und melden uns per Telefon oder E-Mail mit einer verbindlichen Zusage zurück.",
+      },
+      {
+        q: "Warum zwei getrennte Becken?",
+        a: "Zwei Becken mit insgesamt 16 Litern erlauben getrennte Fettbäder – zum Beispiel Pommes im einen, Fisch oder vegetarische Ware im anderen Becken. Das verhindert Geschmacksübertragung und verdoppelt den Durchsatz.",
+      },
+      {
+        q: "Welche Leistung und Spannung hat die Fritteuse?",
+        a: "6.500 W Gesamtleistung bei 220–240 V. Beide Becken sollten auf getrennt abgesicherten Stromkreisen laufen, damit beim gleichzeitigen Aufheizen keine Sicherung auslöst.",
+      },
+      {
+        q: "Wie wird die Temperatur eingestellt?",
+        a: "Über ein mechanisches Bedienfeld von 30 bis 190 °C, mit Temperaturanzeige am Gerät. Es ist keine Einarbeitung nötig.",
+      },
+      {
+        q: "Wird Frittierfett mitgeliefert?",
+        a: "Nein, Öl oder Fett bringst du selbst mit und entsorgst es nach dem Einsatz fachgerecht. Die Rückgabe erfolgt entleert und grob gereinigt.",
+      },
+      {
+        q: "Was kostet die Miete pro Tag?",
+        a: "Ab 10 € netto pro Tag. Für längere Mietzeiträume und Wochenendpauschalen erhältst du auf Anfrage ein individuelles Angebot.",
+      },
+    ],
+  },
   "slt-eiswuerfelmaschine-profi-35kg": {
     seoTitle: "Profi-Eiswürfelmaschine mieten Krefeld – 35 kg/Tag | SLT",
     metaDescription: "Profi-Eiswürfelmaschine mieten in Krefeld: 35 kg Eis pro Tag, Edelstahl, mit oder ohne Wasseranschluss. Ideal für Gastronomie, Catering & Hochzeit. Auf Anfrage buchbar.",
