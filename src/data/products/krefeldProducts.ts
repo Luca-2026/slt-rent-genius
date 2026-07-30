@@ -6597,4 +6597,47 @@ export const gastroEquipmentProducts: Product[] = [
     ],
     tags: ["event", "catering", "gastronomie", "imbiss", "fritteuse"],
   },
+  {
+    id: "currywurstschneider-elektrisch",
+    name: "Currywurstschneider elektrisch",
+    description: "Elektrischer Currywurstschneider aus Edelstahl (135 W) für Imbiss, Foodtruck und Vereinsfest – schneidet Bratwurst in gleichmäßige Stücke.",
+    detailedDescription:
+      "Der elektrische Currywurstschneider aus Edelstahl zerteilt gegarte Bratwurst in gleichmäßige Stücke – direkt in die Schale oder auf den Teller. Die Wurst wird oben in den Einfüllstutzen gegeben und fällt geschnitten über die Auslaufschräge auf die Abstellfläche. Das Gerät ist ein kompaktes Tischmodell mit 32,7 cm Höhe, 18,5 cm Breite und 24,3 cm Tiefe bei 6,7 kg Eigengewicht und lässt sich auf jeder stabilen Arbeitsfläche im Imbisswagen, Foodtruck oder Vereinsheim aufstellen. Die Motorleistung beträgt 135 W, betrieben wird der Schneider an einer normalen Schuko-Steckdose. Gehäuse, Trichter und Schneidwerk sind aus Edelstahl und lassen sich nach dem Einsatz zerlegen und reinigen. Verfügbarkeit und Termine stimmen wir telefonisch oder per Anfrage mit dir ab.",
+    category: "schneidgeraet",
+    onRequest: true,
+    pricePerDay: "ab 10 €",
+    images: [
+      "/product-images/currywurstschneider-elektrisch-1.jpeg",
+      "/product-images/currywurstschneider-elektrisch-2.jpeg",
+    ],
+    image: "/product-images/currywurstschneider-elektrisch-1.jpeg",
+    imageAlts: [
+      "Currywurstschneider elektrisch aus Edelstahl mit Einfüllstutzen mieten bei SLT Rental",
+      "Elektrischer Currywurstschneider im Einsatz – geschnittene Wurststücke auf der Abstellfläche",
+    ],
+    specifications: {
+      "Bauart": "Elektrischer Currywurstschneider (Tischgerät)",
+      "Material": "Edelstahl",
+      "Leistung": "135 W",
+      "Abmessungen (H × B × T)": "32,7 × 18,5 × 24,3 cm",
+      "Gewicht": "6,7 kg",
+      "Gewicht inkl. Verpackung": "7,7 kg",
+      "Verpackungsmaße (H × B × T)": "36,5 × 24,5 × 29 cm",
+      "Farbe": "Silber",
+    },
+    features: [
+      "Schneidet Bratwurst in gleichmäßige Stücke",
+      "Edelstahlgehäuse, zum Reinigen zerlegbar",
+      "135-W-Motor, Betrieb an normaler Schuko-Steckdose",
+      "Kompaktes Tischgerät (32,7 × 18,5 × 24,3 cm, 6,7 kg)",
+      "Einfüllstutzen mit Handschutz",
+    ],
+    rentalNotes: [
+      "Rückgabe bitte gereinigt – andernfalls berechnen wir eine Reinigungspauschale.",
+      "Nur für gegarte Wurst geeignet; keine gefrorenen Produkte einfüllen.",
+      "Schneidwerk nur bei gezogenem Netzstecker zerlegen und reinigen.",
+    ],
+    tags: ["event", "catering", "gastronomie", "imbiss", "currywurst"],
+  },
 ];
+
