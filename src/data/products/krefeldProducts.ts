@@ -978,6 +978,7 @@ export const arbeitsbuehnenProducts: Product[] = [
     category: "scherenbuehne",
     pricePerDay: "ab 55 €",
     rentwareCode: { krefeld: "G98ORG" },
+    pdfUrl: "/manuals/datenblatt-scherenbuehne-zs1012.pdf",
     detailedDescription: "Die Zoomlion ZS1012AC ist eine kompakte, elektrische Scherenarbeitsbühne mit 11,80 m Arbeitshöhe und 1 m Plattformausschub. Mit Non-Marking-Reifen ist sie ideal für den Inneneinsatz geeignet. Die Plattform (2,30 × 1,12 m) bietet Platz für bis zu 3 Personen bei einer maximalen Traglast von 350 kg. Die Transporthöhe von nur 2 m ermöglicht den Zugang durch Standardtore.",
     specifications: {
       "Typ": "ZS1012AC",
