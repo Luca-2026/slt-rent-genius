@@ -201,6 +201,7 @@ export interface Product {
   detailedDescription?: string; // Longer description for product detail page
   image?: string; // Primary image (first in images array)
   images?: string[]; // All images for gallery/slider
+  imageAlts?: string[]; // Individual alt texts per image (SEO/accessibility)
   videoUrl?: string; // YouTube video URL (primary)
   videoUrls?: string[]; // Additional YouTube video URLs
   pricePerDay?: string;
