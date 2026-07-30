@@ -16,6 +16,141 @@ export interface ProductSEOData {
 
 // Lookup by product ID (from rentalData.ts)
 export const productSEOData: Record<string, ProductSEOData> = {
+  "currywurstschneider-elektrisch": {
+    seoTitle: "Currywurstschneider mieten Krefeld – elektrisch | SLT",
+    metaDescription:
+      "Elektrischen Currywurstschneider mieten in Krefeld: Edelstahl, 135 W, 32,7 × 18,5 × 24,3 cm, 6,7 kg. Ab 10 € pro Tag für Imbiss, Foodtruck und Vereinsfest.",
+    h1: "Currywurstschneider elektrisch mieten in Krefeld",
+    h2s: [
+      "Technische Daten des Currywurstschneiders",
+      "Gleichmäßige Wurststücke ohne Handarbeit",
+      "Aufstellung, Strom und Reinigung",
+      "Abholung am Standort Krefeld",
+    ],
+    useCaseBau:
+      "Betriebsfest, Richtfest oder Baustellenabschluss: Der Schneider läuft an jeder Schuko-Steckdose im Aufenthaltscontainer oder Zelt und hält den Wurststand in Bewegung.",
+    useCaseEvent:
+      "Vereinsfeste, Schützenfeste, Stadtfeste und Foodtrucks am Niederrhein: Currywurst wird gleichmäßig portioniert statt mühsam von Hand geschnitten – das spart am Stand spürbar Zeit.",
+    useCasePrivat:
+      "Geburtstag, Straßenfest oder Gartenparty in Krefeld: Das 6,7 kg leichte Tischgerät passt auf jeden Klapptisch und liefert saubere Wurststücke für alle Gäste.",
+    dailyPriceFrom: 10,
+    faqs: [
+      {
+        q: "Welche Leistung hat der elektrische Currywurstschneider?",
+        a: "Der Motor leistet 135 W. Betrieben wird das Gerät an einer normalen Schuko-Steckdose – ein Starkstromanschluss ist nicht nötig.",
+      },
+      {
+        q: "Wie groß und schwer ist der Currywurstschneider?",
+        a: "Das Gerät misst 32,7 cm (H) × 18,5 cm (B) × 24,3 cm (T) und wiegt 6,7 kg. Mit Verpackung sind es 7,7 kg bei 36,5 × 24,5 × 29 cm.",
+      },
+      {
+        q: "Aus welchem Material besteht das Gerät?",
+        a: "Gehäuse, Einfüllstutzen und Schneidwerk sind aus Edelstahl in Silber – robust und für den Reinigungsalltag im Imbiss ausgelegt.",
+      },
+      {
+        q: "Wie wird der Currywurstschneider gereinigt?",
+        a: "Das Schneidwerk lässt sich bei gezogenem Netzstecker zerlegen und reinigen. Bitte gib das Gerät gereinigt zurück, sonst berechnen wir eine Reinigungspauschale.",
+      },
+      {
+        q: "Kann ich auch gefrorene Wurst schneiden?",
+        a: "Nein. Der Schneider ist für gegarte Bratwurst ausgelegt; gefrorene Produkte gehören nicht in den Einfüllstutzen.",
+      },
+      {
+        q: "Was kostet der Currywurstschneider in Krefeld pro Tag?",
+        a: "Die Miete startet ab 10 € netto pro Tag. Wochenend- und Wochenpreise sowie die Verfügbarkeit in deinem Zeitraum nennen wir dir über das Anfrageformular oder telefonisch am Standort Krefeld.",
+      },
+    ],
+  },
+  "bonn-currywurstschneider-elektrisch": {
+    seoTitle: "Currywurstschneider mieten Bonn – elektrisch 135 W | SLT",
+    metaDescription:
+      "Currywurstschneider elektrisch mieten in Bonn: Edelstahl, 135 W, kompaktes Tischgerät mit 6,7 kg. Ab 10 € pro Tag für Straßenfest, Imbiss und Catering.",
+    h1: "Currywurstschneider elektrisch mieten in Bonn",
+    h2s: [
+      "Ausstattung und Leistungsdaten",
+      "Einsatz bei Straßenfesten und Catering in Bonn",
+      "Anschluss, Aufstellung und Handhabung",
+      "Abholung am Standort Bonn",
+    ],
+    useCaseBau:
+      "Warme Verpflegung für Bautrupps und Handwerksbetriebe im Bonner Umland – Betrieb über eine abgesicherte Schuko-Steckdose im Container oder Pavillon.",
+    useCaseEvent:
+      "Straßenfeste, Karnevalsveranstaltungen, Schulfeste und Firmenevents in Bonn und dem Rhein-Sieg-Kreis: gleichmäßig geschnittene Currywurst ohne Handarbeit, auch bei hohem Andrang.",
+    useCasePrivat:
+      "Nachbarschaftsfest, runder Geburtstag oder Gartenparty in Bonn: Das kompakte Tischgerät ergänzt Grill oder Fritteuse und portioniert die Wurst zuverlässig.",
+    dailyPriceFrom: 10,
+    faqs: [
+      {
+        q: "Kann ich den Currywurstschneider am Standort Bonn abholen?",
+        a: "Ja. Die Übergabe erfolgt am Standort Bonn; Abholtermin und Verfügbarkeit stimmen wir vorab über das Anfrageformular oder telefonisch ab.",
+      },
+      {
+        q: "Reicht eine normale Steckdose?",
+        a: "Ja. Der Motor zieht 135 W und läuft an jeder üblichen Schuko-Steckdose.",
+      },
+      {
+        q: "Passt das Gerät in einen Pkw?",
+        a: "Ja. Mit 32,7 × 18,5 × 24,3 cm und 6,7 kg passt der Schneider in jeden Kofferraum; das Verpackungsmaß beträgt 36,5 × 24,5 × 29 cm bei 7,7 kg.",
+      },
+      {
+        q: "Wie wird das Gerät bedient?",
+        a: "Die gegarte Wurst wird oben in den Einfüllstutzen gegeben und fällt geschnitten über die Auslaufschräge auf die Abstellfläche. Eine Einweisung ist nicht nötig.",
+      },
+      {
+        q: "Muss ich das Gerät gereinigt zurückgeben?",
+        a: "Ja, bitte gereinigt. Das Schneidwerk lässt sich bei gezogenem Netzstecker zerlegen; andernfalls stellen wir eine Reinigungspauschale in Rechnung.",
+      },
+      {
+        q: "Was kostet die Miete in Bonn pro Tag?",
+        a: "Der Mietpreis startet ab 10 € netto pro Tag. Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage für deinen Zeitraum.",
+      },
+    ],
+  },
+  "muelheim-currywurstschneider-elektrisch": {
+    seoTitle: "Currywurstschneider mieten Mülheim – elektrisch | SLT",
+    metaDescription:
+      "Currywurstschneider elektrisch mieten in Mülheim an der Ruhr: Edelstahl, 135 W, 6,7 kg Tischgerät. Ab 10 € pro Tag für Vereinsfest, Imbiss und Catering.",
+    h1: "Currywurstschneider elektrisch mieten in Mülheim an der Ruhr",
+    h2s: [
+      "Technische Daten im Überblick",
+      "Currywurst portionieren im Imbiss- und Vereinsbetrieb",
+      "Strom, Aufstellung und Sicherheit",
+      "Abholung in Mülheim an der Ruhr",
+    ],
+    useCaseBau:
+      "Verpflegung von Montage- und Bautrupps im Ruhrgebiet – der Schneider braucht nur eine abgesicherte 230-V-Steckdose und wenig Stellfläche.",
+    useCaseEvent:
+      "Vereinsfeste, Sportplatzfeste, Firmenfeiern und Foodtrucks in Mülheim an der Ruhr: gleichmäßige Wurststücke direkt in die Schale, damit die Schlange am Stand nicht steht.",
+    useCasePrivat:
+      "Gartenparty, Schulfest oder Geburtstagsfeier in Mülheim an der Ruhr – deutlich schneller und sauberer als das Schneiden von Hand.",
+    dailyPriceFrom: 10,
+    faqs: [
+      {
+        q: "Ist der Currywurstschneider in Mülheim an der Ruhr verfügbar?",
+        a: "Die Vermietung läuft am Standort Mülheim an der Ruhr auf Anfrage. Wir prüfen deinen Zeitraum kurzfristig und melden uns telefonisch oder per E-Mail mit einer verbindlichen Zusage zurück.",
+      },
+      {
+        q: "Welche technischen Daten hat das Gerät?",
+        a: "Edelstahlgehäuse in Silber, 135 W Motorleistung, Abmessungen 32,7 × 18,5 × 24,3 cm (H × B × T) und 6,7 kg Eigengewicht.",
+      },
+      {
+        q: "Wofür ist der Schneider geeignet?",
+        a: "Für gegarte Bratwurst, die in gleichmäßige Stücke zerteilt wird. Gefrorene Produkte sind nicht geeignet.",
+      },
+      {
+        q: "Wie viel Stellfläche brauche ich?",
+        a: "Sehr wenig: Das Tischgerät ist 18,5 cm breit und 24,3 cm tief und passt neben Fritteuse oder Grill auf jede stabile Arbeitsfläche.",
+      },
+      {
+        q: "Wie erfolgt die Reinigung?",
+        a: "Bei gezogenem Netzstecker lässt sich das Schneidwerk zerlegen und reinigen. Die Rückgabe erfolgt gereinigt.",
+      },
+      {
+        q: "Was kostet die Miete pro Tag?",
+        a: "Ab 10 € netto pro Tag. Für längere Mietzeiträume und Wochenendpauschalen erhältst du auf Anfrage ein individuelles Angebot.",
+      },
+    ],
+  },
   "fritteuse-doppel-230v": {
     seoTitle: "Fritteuse mieten Krefeld – Doppelfritteuse 16 l | SLT",
     metaDescription:
