@@ -381,6 +381,153 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
     ],
   },
+  "schwenkgrill-profi-120": {
+    seoTitle: "Schwenkgrill mieten Krefeld – Profi Ø 120 cm | SLT",
+    metaDescription:
+      "Profi-Schwenkgrill Ø 120 cm mieten in Krefeld: ca. 1,1 m² Grillfläche, Kurbel-Höhenverstellung, Holzkohle. Ab 90 € pro Tag – dauerhaft im Bestand.",
+    h1: "Schwenkgrill mieten in Krefeld – Profi-Schwenkgrill Ø 120 cm",
+    h2s: [
+      "Technische Daten des Profi-Schwenkgrills",
+      "120 cm Grillrost: Kapazität und Holzkohlebedarf",
+      "Transport, Anhänger und Lieferung in Krefeld",
+      "Sicherer Betrieb und Rückgabe",
+    ],
+    useCaseBau:
+      "Richtfest, Baustellenabschluss oder Sommerfest der Firma: Der Schwenkgrill braucht keinen Strom und arbeitet mit Holzkohle – ideal auf Betriebshöfen und Freiflächen ohne Anschluss.",
+    useCaseEvent:
+      "Vereinsfeste, Schützenfeste, Straßenfeste, Hochzeiten und Catering in Krefeld: ca. 1,1 m² Grillfläche halten den Nachschub für große Gruppen konstant.",
+    useCasePrivat:
+      "Große Geburtstage, Nachbarschafts- und Gartenfeste: deutlich mehr Rostfläche als jeder Kugelgrill, mit stufenloser Hitzeregelung über die Kurbel.",
+    dailyPriceFrom: 90,
+    faqs: [
+      {
+        q: "Wie groß ist der Grillrost des Profi-Schwenkgrills?",
+        a: "Der runde Rost hat 120 cm Durchmesser, das entspricht rund 1,1 m² Grillfläche. Damit lassen sich Bratwürste, Steaks, Spieße und Gemüse in einem Durchgang zubereiten.",
+      },
+      {
+        q: "Wie viel Holzkohle brauche ich für den 120-cm-Schwenkgrill?",
+        a: "Als Richtwert sind rund 6–8 kg Grundfüllung realistisch, bei mehrstündigem Betrieb kommt Nachschub dazu. Briketts halten die Glut länger, stückige Holzkohle wird schneller heiß. Der tatsächliche Verbrauch hängt von Grilldauer, Grillgut und Wetter ab – Kohle und Anzünder sind nicht im Mietpreis enthalten.",
+      },
+      {
+        q: "Wie wird die Hitze reguliert?",
+        a: "Über die Handkurbel mit Seilzug wird der Rost stufenlos in der Höhe verstellt. Du regelst die Hitze also über den Abstand zur Glut – vom scharfen Angrillen bis zum Warmhalten. Zusätzlich lässt sich der Rost seitlich ausschwenken.",
+      },
+      {
+        q: "Wie transportiere ich den Schwenkgrill?",
+        a: "Der Grill ist rund 2,20 m hoch und wird liegend transportiert. Ein Transporter oder Anhänger ist nötig – einen passenden Anhänger zum Ankoppeln kannst du bei uns optional mitmieten.",
+      },
+      {
+        q: "Was kostet die Lieferung des Schwenkgrills?",
+        a: "Die Lieferung erfolgt nach Tarif A (Sprinter Standard) unseres Lieferkostenrechners – wie bei unserem übrigen Eventbedarf. Den genauen Preis für deine Entfernung berechnest du direkt im Lieferkostenrechner.",
+      },
+      {
+        q: "Ist der Schwenkgrill in Krefeld dauerhaft verfügbar?",
+        a: "Ja, am Hauptsitz Krefeld ist der Profi-Schwenkgrill dauerhaft im Bestand. Für deinen Wunschtermin bestätigen wir die Verfügbarkeit kurzfristig über das Anfrageformular oder telefonisch.",
+      },
+      {
+        q: "Was kostet die Miete pro Tag?",
+        a: "Die Miete startet ab 90 € netto pro Tag. Für Wochenend- und Mehrtagespauschalen erhältst du auf Anfrage ein individuelles Angebot.",
+      },
+      {
+        q: "Wie muss der Schwenkgrill zurückgegeben werden?",
+        a: "Ausgekühlt, grob gereinigt und mit entfernter Asche. Andernfalls berechnen wir eine Reinigungspauschale.",
+      },
+    ],
+  },
+  "bonn-schwenkgrill-profi-120": {
+    seoTitle: "Schwenkgrill mieten Bonn – Profi-Grill Ø 120 cm | SLT",
+    metaDescription:
+      "Profi-Schwenkgrill Ø 120 cm mieten in Bonn: ca. 1,1 m² Rostfläche, Höhenverstellung per Kurbel, Holzkohle. Ab 90 € pro Tag für Fest, Feier und Catering.",
+    h1: "Schwenkgrill mieten in Bonn – Profi-Schwenkgrill Ø 120 cm",
+    h2s: [
+      "Ausstattung und Maße des Schwenkgrills",
+      "Grillmengen und Holzkohlebedarf",
+      "Abholung in Bonn, Transport und Anhänger",
+      "Sicherheitshinweise für den Betrieb",
+    ],
+    useCaseBau:
+      "Firmenfeste, Richtfeste und Betriebsfeiern im Bonner Umland – der Schwenkgrill arbeitet ohne Strom, nur mit Holzkohle oder Holz.",
+    useCaseEvent:
+      "Straßenfeste, Karnevalsveranstaltungen, Schützenfeste und Cateringeinsätze in Bonn und dem Rhein-Sieg-Kreis: große Rostfläche für viele Portionen gleichzeitig.",
+    useCasePrivat:
+      "Gartenparty, Hochzeit oder runder Geburtstag in Bonn: 120 cm Rost und stufenlose Höhenverstellung machen das Grillen für große Runden entspannt.",
+    dailyPriceFrom: 90,
+    faqs: [
+      {
+        q: "Kann ich den Schwenkgrill am Standort Bonn abholen?",
+        a: "Ja. Der Grill wird für Bonn aus unserem Hauptsitz Krefeld disponiert; Abholtermin und Verfügbarkeit stimmen wir vorab per Anfrage oder telefonisch ab.",
+      },
+      {
+        q: "Wie viele Personen kann ich mit dem Grill versorgen?",
+        a: "Mit 120 cm Rostdurchmesser stehen rund 1,1 m² Grillfläche zur Verfügung. Wie viele Portionen daraus werden, hängt von Grillgut und Grilldauer ab – für Vereinsfeste und Catering mit großen Gruppen ist der Grill ausgelegt.",
+      },
+      {
+        q: "Welche Kohlemenge sollte ich einplanen?",
+        a: "Rund 6–8 kg als Grundfüllung sind ein realistischer Richtwert, bei längerem Betrieb kommt Nachschub dazu. Kohle, Briketts und Anzünder bringst du selbst mit.",
+      },
+      {
+        q: "Wie hoch ist der Grill und passt er in mein Fahrzeug?",
+        a: "Der Schwenkgrill ist ca. 2,20 m hoch und wird liegend transportiert. Ein Transporter oder Anhänger ist erforderlich – einen passenden Anhänger kannst du optional dazumieten.",
+      },
+      {
+        q: "Liefert ihr den Schwenkgrill nach Bonn?",
+        a: "Ja, die Lieferung erfolgt nach Tarif A (Sprinter Standard) unseres Lieferkostenrechners – identisch zu unserem übrigen Eventbedarf.",
+      },
+      {
+        q: "Was kostet die Miete in Bonn?",
+        a: "Ab 90 € netto pro Tag. Für Wochenend- und Mehrtagespauschalen melden wir uns mit einem individuellen Angebot für deinen Zeitraum zurück.",
+      },
+      {
+        q: "Worauf muss ich beim Aufstellen achten?",
+        a: "Der Grill wird ausschließlich im Freien betrieben, auf festem, nicht brennbarem Untergrund und mit ausreichend Abstand zu Zelten, Markisen und Gebäuden.",
+      },
+    ],
+  },
+  "muelheim-schwenkgrill-profi-120": {
+    seoTitle: "Schwenkgrill mieten Mülheim – Profi Ø 120 cm | SLT",
+    metaDescription:
+      "Profi-Schwenkgrill Ø 120 cm mieten in Mülheim an der Ruhr: ca. 1,1 m² Grillfläche, Kurbel-Höhenverstellung, Holzkohle. Ab 90 € pro Tag.",
+    h1: "Schwenkgrill mieten in Mülheim an der Ruhr – Ø 120 cm",
+    h2s: [
+      "Technische Daten im Überblick",
+      "Grillfläche, Kohlebedarf und Handhabung",
+      "Transport und Lieferung im Ruhrgebiet",
+      "Betrieb im Freien und Rückgabe",
+    ],
+    useCaseBau:
+      "Betriebsfeste und Richtfeste im Ruhrgebiet: Der Schwenkgrill kommt ohne Strom aus und läuft mit Holzkohle, Briketts oder Holz.",
+    useCaseEvent:
+      "Vereinsfeste, Sportplatzfeste, Firmenfeiern und Cateringeinsätze in Mülheim an der Ruhr – große Rostfläche für konstanten Nachschub am Stand.",
+    useCasePrivat:
+      "Gartenfest, Hochzeit oder Geburtstag in Mülheim an der Ruhr: viel mehr Grillfläche als ein Kugelgrill, mit stufenlos regelbarer Hitze.",
+    dailyPriceFrom: 90,
+    faqs: [
+      {
+        q: "Ist der Schwenkgrill in Mülheim an der Ruhr verfügbar?",
+        a: "Die Vermietung läuft für Mülheim an der Ruhr auf Anfrage – der Grill wird aus unserem Hauptsitz Krefeld disponiert, wo er dauerhaft im Bestand ist. Wir prüfen deinen Zeitraum kurzfristig.",
+      },
+      {
+        q: "Wie groß ist die Grillfläche?",
+        a: "Der Rost misst 120 cm im Durchmesser, das sind rund 1,1 m² Grillfläche für Bratwürste, Steaks, Spieße und Gemüse.",
+      },
+      {
+        q: "Wie viel Holzkohle wird benötigt?",
+        a: "Als Orientierung gelten rund 6–8 kg Grundfüllung, plus Nachschub bei mehrstündigem Grillen. Der tatsächliche Bedarf hängt von Grillgut, Dauer und Wetter ab.",
+      },
+      {
+        q: "Wie funktioniert die Höhenverstellung?",
+        a: "Der Rost hängt an Ketten und wird über eine Handkurbel mit Seilzug stufenlos angehoben oder abgesenkt. So regelst du die Hitze über den Abstand zur Glut.",
+      },
+      {
+        q: "Wie wird der Grill transportiert?",
+        a: "Liegend – der Grill ist ca. 2,20 m hoch. Einen passenden Anhänger zum Ankoppeln kannst du optional mitmieten, alternativ liefern wir nach Tarif A unseres Lieferkostenrechners.",
+      },
+      {
+        q: "Was kostet die Miete pro Tag?",
+        a: "Ab 90 € netto pro Tag. Für längere Mietzeiträume und Wochenendpauschalen erhältst du auf Anfrage ein individuelles Angebot.",
+      },
+    ],
+  },
   "muelheim-fritteuse-doppel-230v": {
     seoTitle: "Fritteuse mieten Mülheim – Doppelfritteuse 16 l | SLT",
     metaDescription:
