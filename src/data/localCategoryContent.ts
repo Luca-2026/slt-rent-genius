@@ -368,6 +368,23 @@ export const localCategoryContent: LocalContentMap = {
       ],
     },
 
+    "gastro-equipment": {
+      hookline:
+        "Getränkekühlschrank, Eiswürfelbereiter und Eiswürfelmaschine mietest du an unserer Filiale Bonn – samstags bis 17:30 Uhr abholbar, Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
+      standortFakten:
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Der Getränkekühlschrank 236 l (54 × 55 × 144 cm, 45 kg) und der kompakte SLT Eiswürfelbereiter sind an der Filiale Bonn direkt buchbar; der Kühlschrank muss stehend transportiert werden und benötigt einen Kombi oder Transporter. Lieferung ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler.",
+      faqs: [
+        {
+          q: "Kann ich Getränkekühlschrank und Eiswürfelmaschine in Bonn auch samstags abholen?",
+          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags von 08:00 bis 17:30 Uhr geöffnet, werktags ab 07:00 Uhr. Der kompakte Eiswürfelbereiter passt in jeden Pkw, der Getränkekühlschrank 236 l muss stehend transportiert werden – dafür brauchst du einen Kombi oder Transporter oder du buchst die Lieferung dazu.",
+        },
+        {
+          q: "Liefert ihr Gastro Equipment ins Ahrtal und in den Rhein-Sieg-Kreis?",
+          a: "Ja. Ab unserer Filiale Bonn liefern wir Getränkekühlschränke und Eiswürfelmaschinen ins gesamte Bonner Stadtgebiet sowie nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin und ins Ahrtal bis Bad Neuenahr-Ahrweiler – Anfahrt über A555, A565 und B9, in der Regel am nächsten Werktag.",
+        },
+      ],
+    },
+
     "geschirr-glaeser-besteck": {
       hookline:
         "Gläser (Passionata & Brunelli), Teller, Schüsseln, Besteck und Gastro-Spülmaschine mietest du an unserer Filiale Bonn – abholbar samstags bis 17:30 Uhr, Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
@@ -507,6 +524,23 @@ export const localCategoryContent: LocalContentMap = {
   // Kempen, Willich, Neuss, Meerbusch, Korschenbroich
   // =================================================================
   krefeld: {
+    "gastro-equipment": {
+      hookline:
+        "Getränkekühlschrank, kompakter Eiswürfelbereiter und Profi-Eiswürfelmaschine mit 35 kg/24 h mietest du an unserem Hauptsitz Krefeld – mit dem größten Mietpark aller drei Standorte.",
+      standortFakten:
+        "Abholung und Übergabe an unserem Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain. Geöffnet Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr (samstags früher nach vorheriger Buchung möglich). Anfahrt direkt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). Der Getränkekühlschrank 236 l (54 × 55 × 144 cm, 45 kg, Glastür mit LED) und der kompakte SLT Eiswürfelbereiter sind hier direkt buchbar, die Profi-Eiswürfelmaschine mit 35 kg Tagesleistung steht ebenfalls im Krefelder Mietpark. Kühlgeräte müssen stehend transportiert werden – Lieferung ins Krefelder Stadtgebiet und in den Niederrhein-Raum organisieren wir auf Anfrage mit.",
+      faqs: [
+        {
+          q: "Welche Gastro-Geräte stehen am Hauptsitz Krefeld direkt vor Ort?",
+          a: "Am Hauptsitz Krefeld führen wir den Getränkekühlschrank 236 l, den kompakten SLT Eiswürfelbereiter und die Profi-Eiswürfelmaschine mit bis zu 35 kg Eis pro 24 Stunden. Als Hauptsitz mit dem größten Mietpark ist die Verfügbarkeit hier am höchsten – Bonn und Mülheim beliefern wir bei Bedarf aus Krefeld.",
+        },
+        {
+          q: "Wie transportiere ich den Getränkekühlschrank ab Krefeld?",
+          a: "Der Getränkekühlschrank 236 l wiegt 45 kg, misst 54 × 55 × 144 cm und muss stehend transportiert werden. Für die Selbstabholung an der Anrather Straße 291 brauchst du daher einen Kombi, Transporter oder Kofferanhänger – passende Anhänger vermieten wir am selben Standort 24/7 per SMS-Code. Alternativ liefern wir das Gerät auf Anfrage.",
+        },
+      ],
+    },
+
     anhaenger: {
       hookline:
         "Auto-, Kasten-, Planen-, Koffer-, Baumaschinen- und Aggregat-Anhänger mietest du an unserem Hauptsitz Krefeld – 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss abholbar und zurückgebbar. Anhänger werden grundsätzlich abgeholt, eine Lieferung bieten wir hierfür nicht an.",
@@ -996,6 +1030,23 @@ export const localCategoryContent: LocalContentMap = {
         {
           q: "Kann ich Bierzeltgarnituren und Stehtische in Mülheim einfach mit dem Pkw abholen?",
           a: "Ja. Bierzeltgarnitur-Sets, Hussen-Sets, Stehtische mit Hussen (weiß/schwarz), Stühle weiß, Sonnenschirm Premium Ø 3 m, Kleiderständer mit Rollen und einzelne Zeltboden-Module passen in der Regel in jeden Kombi oder kleinen Transporter und können nach Terminvereinbarung an der Ruhrorter Str. 122 in Mülheim übergeben werden. Für komplette Party- / Eventzelt- oder Party- / Eventzelt-Aufbauten empfehlen wir die Lieferung direkt zur Veranstaltungsstelle.",
+        },
+      ],
+    },
+
+    "gastro-equipment": {
+      hookline:
+        "Getränkekühlschrank und Eiswürfelmaschinen fürs Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim an der Ruhr in der Bobcat-Filiale.",
+      standortFakten:
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Getränkekühlschrank 236 l, kompakter SLT Eiswürfelbereiter und die Profi-Eiswürfelmaschine mit 35 kg/24 h disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden. Lieferung ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen.",
+      faqs: [
+        {
+          q: "Liefert ihr Getränkekühlschrank und Eiswürfelmaschine nach Essen, Duisburg oder Oberhausen?",
+          a: "Ja. Ab unserem Service-Standort Mülheim an der Ruhr liefern wir Gastro Equipment ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen. Anfahrt über A40 und A52, der Transport wird aus Krefeld organisiert, in der Regel am nächsten Werktag.",
+        },
+        {
+          q: "Stehen die Geräte direkt am Standort Mülheim an der Ruhr?",
+          a: "Gastro Equipment disponieren wir für Mülheim an der Ruhr aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden, bei dringendem Bedarf häufig auch taggleich. Übergabe, Einweisung und Rückgabe finden vollständig an der Ruhrorter Str. 122 statt. Den konkreten Verfügbarkeits-Status zeigen wir an jedem Produkt direkt an.",
         },
       ],
     },
