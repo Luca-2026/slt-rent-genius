@@ -595,6 +595,7 @@ function categoryTitleDe(catId: string): string {
     "traversen-rigging": "Traversen & Rigging",
     "moebel-zelte": "Möbel & Zelte",
     "geschirr-glaeser-besteck": "Geschirr, Gläser & Besteck",
+    "gastro-equipment": "Gastro Equipment",
     "spezialeffekte": "Spezialeffekte",
     "huepfburgen": "Hüpfburgen",
   };

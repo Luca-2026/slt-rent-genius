@@ -141,6 +141,7 @@ export default function Mietartikel() {
         "spezialeffekte",
         "moebel-zelte",
         "geschirr-glaeser-besteck",
+      "gastro-equipment",
         "huepfburgen",
       ],
     },

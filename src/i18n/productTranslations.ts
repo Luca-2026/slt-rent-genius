@@ -21,6 +21,7 @@ export const categoryTranslations: Record<string, { title: string; description: 
   "traversen-rigging": { title: "Truss & Rigging", description: "Truss systems, rigging equipment and stage constructions." },
   "moebel-zelte": { title: "Furniture & Tents", description: "Party tents, beer garden sets, standing tables and event furniture." },
   "geschirr-glaeser-besteck": { title: "Tableware, Glasses & Cutlery", description: "Plates, glasses, cups and cutlery for your event." },
+  "gastro-equipment": { title: "Catering & Kitchen Equipment", description: "Beverage fridge, ice makers, fryers and swivel grill for catering, hospitality and events." },
   spezialeffekte: { title: "Special Effects", description: "Fog machines, bubble machines, spark effects and photo booths." },
   huepfburgen: { title: "Bouncy Castles", description: "Inflatable bouncy castles and games for children's events." },
 };
