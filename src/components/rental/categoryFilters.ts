@@ -597,6 +597,8 @@ export const gastroEquipmentFilterSections: FilterSection[] = [
       { id: "eiswuerfel", label: "catFilters.eiswuerfelmaschinen", sublabel: "catFilters.eiswuerfelmaschinen_sub" },
       { id: "fritteuse", label: "catFilters.fritteusen", sublabel: "catFilters.fritteusen_sub" },
       { id: "grill", label: "catFilters.grills", sublabel: "catFilters.grills_sub" },
+      { id: "schneidgeraet", label: "catFilters.schneidgeraete", sublabel: "catFilters.schneidgeraete_sub" },
+
     ],
   },
 ];
