@@ -571,6 +571,8 @@ export default function CategoryProducts() {
                   "eiswuerfel": ["eiswuerfel", "eiswuerfelmaschine", "kuechengeraet"],
                   "fritteuse": ["fritteuse"],
                   "grill": ["grill", "schwenkgrill"],
+                  "schneidgeraet": ["schneidgeraet", "wurstschneider"],
+
                 };
                 const groupCategories =
                   category?.id === "beschallung" ? beschallungTypeGroups[value] :
