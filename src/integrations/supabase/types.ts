@@ -2305,6 +2305,7 @@ export type Database = {
           external_manual_url: string | null
           features: string[] | null
           id: string | null
+          image_alts: string[] | null
           images: string[] | null
           min_rental_months: number | null
           model_name: string | null
@@ -2338,6 +2339,7 @@ export type Database = {
           external_manual_url?: string | null
           features?: string[] | null
           id?: string | null
+          image_alts?: string[] | null
           images?: string[] | null
           min_rental_months?: number | null
           model_name?: string | null
@@ -2371,6 +2373,7 @@ export type Database = {
           external_manual_url?: string | null
           features?: string[] | null
           id?: string | null
+          image_alts?: string[] | null
           images?: string[] | null
           min_rental_months?: number | null
           model_name?: string | null
