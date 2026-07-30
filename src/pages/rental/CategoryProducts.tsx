@@ -615,6 +615,14 @@ export default function CategoryProducts() {
                     if (value === "besteck") return nameLower.includes("messer") || nameLower.includes("gabel") || nameLower.includes("löffel") || nameLower.includes("loeffel") || nameLower.includes("besteck");
                     if (value === "zubehoer") return nameLower.includes("aschenbecher") || nameLower.includes("kerzenständer") || nameLower.includes("kerzenstaender");
                   }
+                  // Fallback: name-based matching for gastro equipment (CMS-Artikel ohne Subtyp)
+                  if (category?.id === "gastro-equipment") {
+                    const nameLower = p.name.toLowerCase();
+                    if (value === "kuehlgeraet") return nameLower.includes("kühlschrank") || nameLower.includes("kuehlschrank") || nameLower.includes("kühlung") || nameLower.includes("kuehltheke");
+                    if (value === "eiswuerfel") return nameLower.includes("eiswürfel") || nameLower.includes("eiswuerfel") || nameLower.includes("ice maker");
+                    if (value === "fritteuse") return nameLower.includes("fritteuse");
+                    if (value === "grill") return nameLower.includes("grill");
+                  }
                   return false;
                 }
                 // For moebel-zelte "moebel" group also match by name keywords
