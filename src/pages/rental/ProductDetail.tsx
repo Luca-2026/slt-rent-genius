@@ -701,7 +701,7 @@ export default function ProductDetail() {
                               : "border-transparent hover:border-muted-foreground/30"
                           }`}
                         >
-                          <img src={img} alt={`${product.name} – Vorschau ${index + 1}`} className="w-full h-full object-cover" />
+                          <img src={img} alt={product.imageAlts?.[index] || `${product.name} – Vorschau ${index + 1}`} className="w-full h-full object-cover" />
                         </button>
                       ))}
                     </div>
