@@ -953,6 +953,7 @@ export const arbeitsbuehnenProducts: Product[] = [
     category: "scherenbuehne",
     pricePerDay: "ab 40 €",
     rentwareCode: { krefeld: "TQ7BOF" },
+    pdfUrl: "/manuals/datenblatt-scherenbuehne-zs0607.pdf",
     detailedDescription: "Die Zoomlion ZS0607AC-Li ist eine kompakte, elektrische Scherenarbeitsbühne mit 7,80 m Arbeitshöhe und 0,91 m Plattformausschub. Mit Non-Marking-Reifen ist sie für den Innen- und Außeneinsatz geeignet. Die Plattform (1,65 × 0,74 m) bietet Platz für bis zu 2 Personen bei einer maximalen Traglast von 230 kg. Die Durchfahrtshöhe von nur 1,79 m (Geländer eingeklappt) ermöglicht den Zugang durch niedrige Durchfahrten.",
     specifications: {
       "Hersteller": "Zoomlion",
