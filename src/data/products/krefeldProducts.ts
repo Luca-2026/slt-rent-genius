@@ -6444,7 +6444,7 @@ export const gastroEquipmentProducts: Product[] = [
       "Beleuchtung": "LED",
       "Tür": "Glastür",
     },
-    rentwareCode: { krefeld: "Q3VB7F" }
+    rentwareCode: { krefeld: "Q3VB7F", bonn: "MY5VGV" }
   },
   {
     id: "slt-eiswuerfelbereiter",

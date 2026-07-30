@@ -566,6 +566,12 @@ export default function CategoryProducts() {
                   "druckluftwerkzeug": ["druckluftwerkzeug", "presslufthammer"],
                   "erdrakete": ["erdrakete"],
                 };
+                const gastroTypeGroups: Record<string, string[]> = {
+                  "kuehlgeraet": ["kuehlgeraet", "kuehlschrank"],
+                  "eiswuerfel": ["eiswuerfel", "eiswuerfelmaschine", "kuechengeraet"],
+                  "fritteuse": ["fritteuse"],
+                  "grill": ["grill", "schwenkgrill"],
+                };
                 const groupCategories =
                   category?.id === "beschallung" ? beschallungTypeGroups[value] :
                   category?.id === "werkzeuge" ? werkzeugeTypeGroups[value] :
@@ -574,6 +580,7 @@ export default function CategoryProducts() {
                   category?.id === "moebel-zelte" ? moebelZelteTypeGroups[value] :
                   category?.id === "beleuchtung" ? beleuchtungTypeGroups[value] :
                   category?.id === "geschirr-glaeser-besteck" ? geschirrTypeGroups[value] :
+                  category?.id === "gastro-equipment" ? gastroTypeGroups[value] :
                   category?.id === "aggregate" ? aggregateTypeGroups[value] :
                   undefined;
 
@@ -607,6 +614,14 @@ export default function CategoryProducts() {
                     if (value === "geschirr") return !isKuechengeraet && (nameLower.includes("teller") || nameLower.includes("schüssel") || nameLower.includes("schuessel") || nameLower.includes("tasse") || nameLower.includes("untertasse") || nameLower.includes("suppenteller"));
                     if (value === "besteck") return nameLower.includes("messer") || nameLower.includes("gabel") || nameLower.includes("löffel") || nameLower.includes("loeffel") || nameLower.includes("besteck");
                     if (value === "zubehoer") return nameLower.includes("aschenbecher") || nameLower.includes("kerzenständer") || nameLower.includes("kerzenstaender");
+                  }
+                  // Fallback: name-based matching for gastro equipment (CMS-Artikel ohne Subtyp)
+                  if (category?.id === "gastro-equipment") {
+                    const nameLower = p.name.toLowerCase();
+                    if (value === "kuehlgeraet") return nameLower.includes("kühlschrank") || nameLower.includes("kuehlschrank") || nameLower.includes("kühlung") || nameLower.includes("kuehltheke");
+                    if (value === "eiswuerfel") return nameLower.includes("eiswürfel") || nameLower.includes("eiswuerfel") || nameLower.includes("ice maker");
+                    if (value === "fritteuse") return nameLower.includes("fritteuse");
+                    if (value === "grill") return nameLower.includes("grill");
                   }
                   return false;
                 }
