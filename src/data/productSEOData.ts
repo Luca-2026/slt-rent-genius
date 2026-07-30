@@ -151,7 +151,147 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
     ],
   },
+  "fritteuse-einzel-230v": {
+    seoTitle: "Fritteuse mieten Krefeld – Einzelfritteuse 8 l | SLT",
+    metaDescription:
+      "Einzelfritteuse 8 l mieten in Krefeld: bis 190 °C, Ölablasshahn, 18/10-Edelstahl, 230 V. Ab 10 € pro Tag für Imbiss, Vereinsfest und Catering.",
+    h1: "Einzelfritteuse 230 V mieten in Krefeld – 8 Liter",
+    h2s: [
+      "Technische Daten der Einzelfritteuse",
+      "8 Liter Becken: Durchsatz und Aufheizzeit",
+      "Reinigung über den Ölablasshahn",
+      "Abholung in Krefeld und Rückgabe",
+    ],
+    useCaseBau:
+      "Warme Verpflegung für Montage- und Bautrupps bei Richtfest oder Baustellenabschluss – die Fritteuse läuft an jeder abgesicherten Schuko-Steckdose im Aufenthaltscontainer oder Zelt.",
+    useCaseEvent:
+      "Vereinsfeste, Schützenfeste, Schulfeste, Foodtrucks und Imbissstände: 8 Liter Fettbad und rund 3 Minuten Aufheizzeit von 130 auf 180 °C halten den Nachschub an Pommes konstant.",
+    useCasePrivat:
+      "Geburtstag, Straßenfest oder Silvester in der Nachbarschaft: Das Tischgerät passt auf jede stabile Arbeitsfläche und liefert deutlich mehr Durchsatz als eine Haushaltsfritteuse.",
+    dailyPriceFrom: 10,
+    faqs: [
+      {
+        q: "Wie viel Fassungsvermögen hat die Einzelfritteuse?",
+        a: "Das Frittierbecken fasst 8 Liter. Damit frittierst du rund 800 g gefrorene Pommes frites in etwa 5 Minuten.",
+      },
+      {
+        q: "Welchen Stromanschluss brauche ich?",
+        a: "Eine normale, abgesicherte 230-V-Schuko-Steckdose reicht aus. Starkstrom ist nicht nötig.",
+      },
+      {
+        q: "Welche Temperatur erreicht die Fritteuse?",
+        a: "Der Temperaturbereich reicht bis 190 °C. Von 130 auf 180 °C heizt das Gerät in rund 3 Minuten auf.",
+      },
+      {
+        q: "Wie groß und schwer ist das Gerät?",
+        a: "Die Fritteuse misst 29,5 × 54,5 × 42,7 cm (B × L × H) und wiegt 8,75 kg. Als Tischgerät passt sie in jeden Kombi.",
+      },
+      {
+        q: "Wie wird die Fritteuse gereinigt?",
+        a: "Über den Ölablasshahn lässt sich das Fett bequem ablassen; das Bedienfeld ist abnehmbar. Alle Lebensmittelkontaktteile bestehen aus 18/10-Edelstahl.",
+      },
+      {
+        q: "Ist Frittierfett im Mietpreis enthalten?",
+        a: "Nein. Öl oder Fett bringst du selbst mit und entsorgst es fachgerecht. Die Rückgabe erfolgt entleert und grob gereinigt, sonst berechnen wir eine Reinigungspauschale.",
+      },
+      {
+        q: "Was kostet die Miete der Einzelfritteuse in Krefeld?",
+        a: "Die Miete startet ab 10 € netto pro Tag. Für Wochenend- und Wochenpauschalen meldest du dich kurz über das Anfrageformular oder telefonisch bei unserem Standort Krefeld.",
+      },
+    ],
+  },
+  "bonn-fritteuse-einzel-230v": {
+    seoTitle: "Fritteuse mieten Bonn – Einzelfritteuse 8 Liter | SLT",
+    metaDescription:
+      "Einzelfritteuse 8 l in Bonn mieten: bis 190 °C, 18/10-Edelstahl, Ölablasshahn, 230 V. Ab 10 € pro Tag für Straßenfest, Foodtruck und Catering.",
+    h1: "Einzelfritteuse 230 V mieten in Bonn – 8 Liter Becken",
+    h2s: [
+      "Ausstattung und Leistungsdaten",
+      "Einsatz bei Stadtfesten und Catering in Bonn",
+      "Anschluss und Aufstellung",
+      "Abholung am Standort Bonn",
+    ],
+    useCaseBau:
+      "Warme Verpflegung für Bautrupps und Handwerksbetriebe im Bonner Umland – Betrieb über eine abgesicherte Schuko-Steckdose im Container oder Pavillon.",
+    useCaseEvent:
+      "Straßenfeste, Karnevalsveranstaltungen, Schulfeste und Firmenevents in Bonn und dem Rhein-Sieg-Kreis: 8 Liter Fettbad für konstanten Nachschub am Stand.",
+    useCasePrivat:
+      "Nachbarschaftsfest, runder Geburtstag oder Gartenparty in Bonn: mehr Durchsatz als jede Haushaltsfritteuse, ohne Starkstromanschluss.",
+    dailyPriceFrom: 10,
+    faqs: [
+      {
+        q: "Kann ich die Einzelfritteuse am Standort Bonn abholen?",
+        a: "Ja. Die Fritteuse wird am Standort Bonn übergeben; Abholtermin und Verfügbarkeit stimmen wir vorab über das Anfrageformular oder telefonisch ab.",
+      },
+      {
+        q: "Wie viele Portionen schafft die Fritteuse?",
+        a: "Bei 8 Litern Becken sind rund 800 g gefrorene Pommes frites in etwa 5 Minuten fertig. Die konkrete Portionszahl hängt von Produkt, Füllmenge und gewünschter Bräunung ab.",
+      },
+      {
+        q: "Reicht eine normale Steckdose?",
+        a: "Ja, das Gerät läuft an einer abgesicherten 230-V-Schuko-Steckdose.",
+      },
+      {
+        q: "Muss die Fritteuse gereinigt zurückgegeben werden?",
+        a: "Ja, bitte entleert und grob gereinigt. Über den Ölablasshahn lässt sich das Fett einfach ablassen; Altfett entsorgst du selbst fachgerecht.",
+      },
+      {
+        q: "Welche Abmessungen hat das Gerät für den Transport?",
+        a: "29,5 × 54,5 × 42,7 cm (B × L × H) bei 8,75 kg Eigengewicht – das Tischgerät passt in jeden Kombi.",
+      },
+      {
+        q: "Was kostet die Einzelfritteuse in Bonn pro Tag?",
+        a: "Der Mietpreis startet ab 10 € netto pro Tag. Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage für deinen Zeitraum.",
+      },
+    ],
+  },
+  "muelheim-fritteuse-einzel-230v": {
+    seoTitle: "Fritteuse mieten Mülheim – Einzelfritteuse 8 l | SLT",
+    metaDescription:
+      "Einzelfritteuse mieten in Mülheim an der Ruhr: 8 l, bis 190 °C, Ölablasshahn, 230 V. Ab 10 € pro Tag für Vereinsfest, Imbiss und Catering im Ruhrgebiet.",
+    h1: "Einzelfritteuse 230 V mieten in Mülheim an der Ruhr",
+    h2s: [
+      "Technische Daten im Überblick",
+      "8 Liter Becken für den Imbissbetrieb",
+      "Strom, Aufstellung und Sicherheit",
+      "Abholung in Mülheim an der Ruhr",
+    ],
+    useCaseBau:
+      "Verpflegung von Montage- und Bautrupps im Ruhrgebiet – die Fritteuse braucht nur eine abgesicherte 230-V-Steckdose, kein Aggregat mit Starkstrom.",
+    useCaseEvent:
+      "Vereinsfeste, Sportplatzfeste, Firmenfeiern und Foodtrucks in Mülheim an der Ruhr: 8 Liter Fettbad und kurze Aufheizzeit, damit die Schlange am Stand nicht steht.",
+    useCasePrivat:
+      "Gartenparty, Schulfest oder Geburtstagsfeier in Mülheim an der Ruhr – deutlich mehr Kapazität als eine Haushaltsfritteuse, kompakt genug für jeden Tisch.",
+    dailyPriceFrom: 10,
+    faqs: [
+      {
+        q: "Ist die Einzelfritteuse in Mülheim an der Ruhr verfügbar?",
+        a: "Die Vermietung läuft am Standort Mülheim an der Ruhr auf Anfrage. Wir prüfen deinen Zeitraum kurzfristig und melden uns per Telefon oder E-Mail mit einer verbindlichen Zusage zurück.",
+      },
+      {
+        q: "Wie schnell ist die Fritteuse einsatzbereit?",
+        a: "Von 130 auf 180 °C heizt sie in rund 3 Minuten auf. 800 g gefrorene Pommes frites sind in etwa 5 Minuten frittiert.",
+      },
+      {
+        q: "Welche Sicherheitsausstattung hat das Gerät?",
+        a: "Die Fritteuse verfügt über einen Sicherheitsthermostat. Das Bedienfeld ist abnehmbar, die Lebensmittelkontaktteile bestehen aus 18/10-Edelstahl.",
+      },
+      {
+        q: "Welchen Anschluss braucht die Fritteuse?",
+        a: "Eine abgesicherte 230-V-Schuko-Steckdose genügt, Starkstrom ist nicht erforderlich.",
+      },
+      {
+        q: "Wird Frittierfett mitgeliefert?",
+        a: "Nein, Öl oder Fett bringst du selbst mit und entsorgst es nach dem Einsatz fachgerecht. Die Rückgabe erfolgt entleert und grob gereinigt.",
+      },
+      {
+        q: "Was kostet die Miete pro Tag?",
+        a: "Ab 10 € netto pro Tag. Für längere Mietzeiträume und Wochenendpauschalen erhältst du auf Anfrage ein individuelles Angebot.",
+      },
+    ],
+  },
   "fritteuse-doppel-230v": {
+
     seoTitle: "Fritteuse mieten Krefeld – Doppelfritteuse 16 l | SLT",
     metaDescription:
       "Doppelfritteuse mit 2 Becken und 16 l mieten in Krefeld: 6.500 W, 230 V, 30–190 °C, Tischgerät. Ab 10 € pro Tag – für Imbiss, Vereinsfest und Catering.",
