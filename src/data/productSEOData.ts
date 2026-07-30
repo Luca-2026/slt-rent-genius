@@ -4053,22 +4053,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Für welche Zwecke eignet sich das Mannesmanngitter?", a: "Es eignet sich für die Absperrung von Festbereichen, die Besucherführung und die Verkehrssicherung auf Baustellen." },
     ],
   },
-  "mastbuehne-11m": {
-    dailyPriceFrom: 75,
-    seoTitle: "11,2 m Teleskop-Mastarbeitsbühne elektro ZMP09",
-    metaDescription: "Elektrische Mastbühne ZMP09 mit 11,20 m Arbeitshöhe, 3,23 m Reichweite und 200 kg Traglast. Kompakte Bauweise mit Non-Marking-Reifen für Innen und Außen.",
-    h1: "11,2 m Teleskop-Mastarbeitsbühne elektro (Typ ZMP09) mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
-    h2s: ["Technische Eigenschaften der Teleskop-Mastarbeitsbühne", "Einsatz in Baumärkten, Supermärkten & Lagerhallen", "Abmessungen und Transportdaten"],
-    useCaseBau: "Typischer Einsatz in Baumärkten, Supermärkten und Lagerhallen: Die schmale Bauweise kommt problemlos durch enge Regalgänge, während die seitliche Reichweite von bis zu 3,23 m und die Arbeitshöhe von 11,20 m ein sicheres Arbeiten an Beleuchtung, Sprinklern, Lüftung, Regalböden und Werbeflächen ermöglichen. Auch für Wartung und punktuelle Arbeiten in beengten Innenbereichen ideal.",
-    useCaseEvent: "",
-    useCasePrivat: "",
-    faqs: [
-      { q: "Eignet sich die ZMP09 für enge Regalgänge in Baumärkten, Supermärkten oder Lagern?", a: "Ja, genau dafür ist die Mastbühne prädestiniert. Die schmale Bauweise passt durch typische Verkaufs- und Lagergänge, gleichzeitig erreicht sie 11,20 m Arbeitshöhe und bis zu 3,23 m seitliche Reichweite – ideal für Beleuchtung, Werbeflächen, Sprinkler und obere Regalböden." },
-      { q: "Welche Hindernisse können mit der ZMP09 überbrückt werden?", a: "Die Mastbühne verfügt über eine Überbrückungshöhe von 7,75 m bei einer seitlichen Reichweite von maximal 3,23 m." },
-      { q: "Ist die Mastbühne für empfindliche Böden geeignet?", a: "Ja, das Gerät ist mit Non-Marking-Reifen ausgestattet und verfügt über einen elektrischen Batterie-Antrieb für den Einsatz in Innenräumen." },
-      { q: "Wie viele Personen dürfen auf der Plattform arbeiten?", a: "Die Plattform bietet bei einer Größe von 0,99 x 0,76 m Platz für bis zu 2 Personen und eine maximale Traglast von 200 kg." },
-    ],
-  },
   "mauerschlitzfraese": {
     seoTitle: "Mauerschlitzfräse mieten | 2.300 W bis 45 mm Tiefe",
     metaDescription: "Leistungsstarke Mauerschlitzfräse für Elektroinstallationen. 2.300 W, max. 45 mm Schlitztiefe & 46 mm Breite. Ideal zum Fräsen von Kabelschlitzen.",
