@@ -1,0 +1,2 @@
+UPDATE public.b2b_managed_products SET pdf_url = '/manuals/datenblatt-scherenbuehne-zs0607.pdf', updated_at = now() WHERE slug = 'scherenbuehne-8m';
+UPDATE public.b2b_managed_products SET pdf_url = '/manuals/datenblatt-scherenbuehne-zs1012.pdf', updated_at = now() WHERE slug = 'scherenbuehne-12m';
