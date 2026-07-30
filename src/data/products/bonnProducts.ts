@@ -2892,25 +2892,7 @@ export const bonnAbsperrtechnikProducts = [
 
 
 // ==================== EXPORT ALL BONN PRODUCTS ====================
-export const bonnGastroProducts = [
-  {
-    id: "bonn-getraenkekuehlschrank-236l",
-    name: "Getränkekühlschrank 236l",
-    description: "Gewerblicher Glastürkühlschrank mit LED-Beleuchtung und 236 l Fassungsvermögen – ideal für Events und Catering.",
-    image: getraenkekuehlschrank236l_1,
-    images: [getraenkekuehlschrank236l_1, getraenkekuehlschrank236l_2, getraenkekuehlschrank236l_3],
-    detailedDescription: "Der Getränkekühlschrank mit 236 Litern Fassungsvermögen ist ein gewerblicher Glastürkühlschrank mit energieeffizienter LED-Beleuchtung. Dank seiner kompakten Abmessungen (54 × 55 × 144 cm) passt er in jede Eventlocation und bietet ausreichend Platz für Getränke aller Art.",
-    pricePerDay: "ab 20 €",
-    specifications: {
-      "Fassungsvermögen": "236 l",
-      "Abmessung (B×T×H)": "54 cm × 55 cm × 144 cm",
-      "Gewicht": "45 kg",
-      "Beleuchtung": "LED",
-      "Tür": "Glastür",
-    },
-    rentwareCode: { bonn: "MY5VGV" },
-  },
-];
+export const bonnGastroProducts: never[] = [];
 
 export const allBonnProducts = {
   aggregate: bonnAggregateProducts,
