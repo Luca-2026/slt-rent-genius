@@ -748,7 +748,6 @@ export const RENTAL_LINK_PATHS = [
   "/mieten/bonn/geschirr-glaeser-besteck/bonn-dessertteller-deluxe-21-10er/",
   "/mieten/bonn/geschirr-glaeser-besteck/bonn-schuessel-deluxe-18-10er/",
   "/mieten/bonn/geschirr-glaeser-besteck/bonn-kaffeetasse-12er/",
-  "/mieten/bonn/gastro-equipment/bonn-getraenkekuehlschrank-236l/",
   "/mieten/bonn/geschirr-glaeser-besteck/bonn-spuelmaschine-gastro/",
   "/mieten/bonn/geschirr-glaeser-besteck/bonn-buffet-tellerwaermer/",
   "/mieten/bonn/geschirr-glaeser-besteck/bonn-aschenbecher-glas/",
