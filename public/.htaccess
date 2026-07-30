@@ -28,6 +28,10 @@ AddDefaultCharset UTF-8
   RewriteRule ^mieten/bonn/verdichtung/bonn-ruettelplatte-hvp50/?$ /mieten/bonn/verdichtung/ruettelplatte-hvp50-60/ [L,R=301]
   RewriteRule ^mieten/bonn/verdichtung/bonn-grabenwalze-bmp8500/?$ /mieten/bonn/verdichtung/grabenwalze-bmp8500/ [L,R=301]
 
+  # Umzug in die neue Kategorie "Gastro Equipment"
+  RewriteRule ^mieten/(bonn|krefeld|muelheim)/moebel-zelte/getraenkekuehlschrank-236l/?$ /mieten/$1/gastro-equipment/getraenkekuehlschrank-236l/ [L,R=301]
+  RewriteRule ^mieten/(bonn|krefeld|muelheim)/geschirr-glaeser-besteck/(bonn-getraenkekuehlschrank-236l|slt-eiswuerfelbereiter|slt-eiswuerfelmaschine-profi-35kg)/?$ /mieten/$1/gastro-equipment/$2/ [L,R=301]
+
   # =====================================================
   # Legacy URL Redirects (alte Webflow-Pfade -> neue Struktur)
   # =====================================================
