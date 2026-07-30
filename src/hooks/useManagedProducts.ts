@@ -36,6 +36,7 @@ export interface ManagedProductRow {
   seo_meta_description: string | null;
   seo_faqs: Array<{ question: string; answer: string }>;
   seo_local_content: Record<string, string>;
+  image_alts?: string[] | null;
 }
 
 export function managedRowToProduct(row: ManagedProductRow): Product {
@@ -47,6 +48,7 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
     detailedDescription: row.detailed_description ?? undefined,
     image: row.images[0],
     images: row.images.length ? row.images : undefined,
+    imageAlts: row.image_alts?.length ? row.image_alts : undefined,
     videoUrl: row.video_url ?? undefined,
     videoUrls: row.video_urls?.length ? row.video_urls : undefined,
     pricePerDay: row.price_per_day ?? undefined,

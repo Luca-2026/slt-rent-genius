@@ -654,7 +654,10 @@ export default function ProductDetail() {
                     <>
                       <img
                         src={images[currentImageIndex]}
-                        alt={`${product.name} – ${currentImageIndex === 0 ? 'Produktbild' : `Ansicht ${currentImageIndex + 1}`} | SLT Rental ${location.name}`}
+                        alt={
+                          product.imageAlts?.[currentImageIndex] ||
+                          `${product.name} – ${currentImageIndex === 0 ? 'Produktbild' : `Ansicht ${currentImageIndex + 1}`} | SLT Rental ${location.name}`
+                        }
                         className="w-full h-full object-contain"
                       />
                       {images.length > 1 && (
@@ -698,7 +701,7 @@ export default function ProductDetail() {
                               : "border-transparent hover:border-muted-foreground/30"
                           }`}
                         >
-                          <img src={img} alt={`${product.name} – Vorschau ${index + 1}`} className="w-full h-full object-cover" />
+                          <img src={img} alt={product.imageAlts?.[index] || `${product.name} – Vorschau ${index + 1}`} className="w-full h-full object-cover" />
                         </button>
                       ))}
                     </div>
