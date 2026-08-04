@@ -771,40 +771,40 @@ export function AdminCreateOfferDialog({
                       </Button>
                     )}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                      <div>
+                      <div className="min-w-0">
                         <Label className="text-xs">Mietbeginn</Label>
                         <Input
                           type="date"
                           value={item.rental_start || ""}
                           onChange={(e) => updateItem(index, "rental_start", e.target.value)}
-                          className="h-8 text-sm"
+                          className="h-8 text-sm w-full min-w-0"
                         />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <Label className="text-xs">Uhrzeit Beginn</Label>
                         <Input
                           type="time"
                           value={item.start_time || ""}
                           onChange={(e) => updateItem(index, "start_time", e.target.value)}
-                          className="h-8 text-sm"
+                          className="h-8 text-sm w-full min-w-0"
                         />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <Label className="text-xs">Mietende</Label>
                         <Input
                           type="date"
                           value={item.rental_end || ""}
                           onChange={(e) => updateItem(index, "rental_end", e.target.value)}
-                          className="h-8 text-sm"
+                          className="h-8 text-sm w-full min-w-0"
                         />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <Label className="text-xs">Uhrzeit Ende</Label>
                         <Input
                           type="time"
                           value={item.end_time || ""}
                           onChange={(e) => updateItem(index, "end_time", e.target.value)}
-                          className="h-8 text-sm"
+                          className="h-8 text-sm w-full min-w-0"
                         />
                       </div>
                     </div>
