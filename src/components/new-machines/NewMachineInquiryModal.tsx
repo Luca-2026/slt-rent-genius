@@ -288,7 +288,7 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
                         <span className="text-primary font-bold">99 € brutto</span>
                         {" "}<span className="text-muted-foreground line-through">119 €</span>{" "}
                         <Link
-                          to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550"
+                          to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550/"
                           target="_blank"
                           className="text-primary underline underline-offset-2 hover:text-primary/80"
                         >

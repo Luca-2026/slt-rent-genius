@@ -67,7 +67,7 @@ const CATEGORY_GROUPS: Array<{
 
 function CategoryCard({ category, locationId }: { category: ProductCategory; locationId: string }) {
   return (
-    <Link to={`/mieten/${locationId}/${category.id}`}>
+    <Link to={`/mieten/${locationId}/${category.id}/`}>
       <Card className="h-full group hover:shadow-lg transition-all hover:border-primary/50 cursor-pointer">
         <div className="aspect-square bg-muted/50 flex items-center justify-center p-3 md:p-4 group-hover:bg-primary/5 transition-colors">
           {category.id === "alle" ? (

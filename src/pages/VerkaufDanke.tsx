@@ -25,7 +25,7 @@ export default function VerkaufDanke() {
             {t("verkauf.thanks.message")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/mieten">
+            <Link to="/mieten/">
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
                 {t("verkauf.thanks.toRentals")} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>

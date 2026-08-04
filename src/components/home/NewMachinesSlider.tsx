@@ -64,7 +64,7 @@ export function NewMachinesSlider() {
     const price = m.price_gross ? Number(m.price_gross) : null;
     return (
       <Link
-        to={`/verkauf/neumaschinen/${m.slug}`}
+        to={`/verkauf/neumaschinen/${m.slug}/`}
         className="block w-full text-left group h-full"
       >
         <Card className="h-[460px] flex flex-col overflow-hidden border-2 hover:border-primary/40 hover:shadow-lg transition-all duration-300">
@@ -156,7 +156,7 @@ export function NewMachinesSlider() {
 
 
       <div className="section-container text-center mt-10">
-        <Link to="/verkauf/neumaschinen">
+        <Link to="/verkauf/neumaschinen/">
           <Button
             variant="outline"
             size="lg"

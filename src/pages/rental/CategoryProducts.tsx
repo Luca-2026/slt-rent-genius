@@ -1045,7 +1045,7 @@ export default function CategoryProducts() {
       <Layout>
         <div className="section-container py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">{t("rental.locationNotFound")}</h1>
-          <Link to="/mieten">
+          <Link to="/mieten/">
             <Button>{t("rental.backToLocations")}</Button>
           </Link>
         </div>
@@ -1058,7 +1058,7 @@ export default function CategoryProducts() {
       <Layout>
         <div className="section-container py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">{t("rental.categoryNotFound")}</h1>
-          <Link to={`/mieten/${location.id}`}>
+          <Link to={`/mieten/${location.id}/`}>
             <Button>{t("rental.backToCategories")}</Button>
           </Link>
         </div>
@@ -1521,7 +1521,7 @@ export default function CategoryProducts() {
       <section className="bg-primary py-8 lg:py-12">
         <div className="section-container">
           <Link 
-            to={`/mieten/${location.id}`}
+            to={`/mieten/${location.id}/`}
             className="inline-flex items-center text-primary-foreground/80 hover:text-primary-foreground mb-4 transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -2081,12 +2081,12 @@ export default function CategoryProducts() {
                     <div className="mt-6">
                       <h3 className="text-lg font-semibold text-headline mt-6 mb-3">Beliebte Beschallungs- und DJ-Artikel</h3>
                       <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
-                        <li><Link to={`/mieten/${location.id}/beschallung/soundsystem-2-1-1400w`} className="text-primary hover:underline">2.1 Soundsystem 1400W RMS – mit Mischpult & Bluetooth-Empfänger (bis 75 Personen)</Link></li>
-                        <li><Link to={`/mieten/${location.id}/beschallung/das-soundsystem-3500w`} className="text-primary hover:underline">D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen</Link></li>
-                        <li><Link to={`/mieten/${location.id}/beschallung/das-vantec-12a`} className="text-primary hover:underline">D.A.S. Audio Vantec 12A Aktiv-Topteil</Link> · <Link to={`/mieten/${location.id}/beschallung/das-vantec-18a`} className="text-primary hover:underline">Vantec 18A Subwoofer</Link> · <Link to={`/mieten/${location.id}/beschallung/das-action-508a`} className="text-primary hover:underline">Action 508A</Link></li>
-                        <li><Link to={`/mieten/${location.id}/beschallung/pioneer-cdj2000-nxs`} className="text-primary hover:underline">Pioneer CDJ 2000 NXS</Link> · <Link to={`/mieten/${location.id}/beschallung/pioneer-djm900-nxs2`} className="text-primary hover:underline">Pioneer DJM 900 NXS2 Mixer</Link></li>
-                        <li><Link to={`/mieten/${location.id}/beschallung/yamaha-dm3`} className="text-primary hover:underline">Yamaha DM3 Digitalmischpult</Link> · <Link to={`/mieten/${location.id}/beschallung/midas-dl16-stagebox`} className="text-primary hover:underline">Midas DL16 Digital-Stagebox</Link></li>
-                        <li><Link to={`/mieten/${location.id}/beschallung/funkmikrofon`} className="text-primary hover:underline">Sennheiser XSW 1-835 Funkmikrofon</Link> · <Link to={`/mieten/${location.id}/beschallung/shure-qlxd4e-empfaenger`} className="text-primary hover:underline">Shure QLXD-Funkstrecken</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/soundsystem-2-1-1400w/`} className="text-primary hover:underline">2.1 Soundsystem 1400W RMS – mit Mischpult & Bluetooth-Empfänger (bis 75 Personen)</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/das-soundsystem-3500w/`} className="text-primary hover:underline">D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/das-vantec-12a/`} className="text-primary hover:underline">D.A.S. Audio Vantec 12A Aktiv-Topteil</Link> · <Link to={`/mieten/${location.id}/beschallung/das-vantec-18a/`} className="text-primary hover:underline">Vantec 18A Subwoofer</Link> · <Link to={`/mieten/${location.id}/beschallung/das-action-508a/`} className="text-primary hover:underline">Action 508A</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/pioneer-cdj2000-nxs/`} className="text-primary hover:underline">Pioneer CDJ 2000 NXS</Link> · <Link to={`/mieten/${location.id}/beschallung/pioneer-djm900-nxs2/`} className="text-primary hover:underline">Pioneer DJM 900 NXS2 Mixer</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/yamaha-dm3/`} className="text-primary hover:underline">Yamaha DM3 Digitalmischpult</Link> · <Link to={`/mieten/${location.id}/beschallung/midas-dl16-stagebox/`} className="text-primary hover:underline">Midas DL16 Digital-Stagebox</Link></li>
+                        <li><Link to={`/mieten/${location.id}/beschallung/funkmikrofon/`} className="text-primary hover:underline">Sennheiser XSW 1-835 Funkmikrofon</Link> · <Link to={`/mieten/${location.id}/beschallung/shure-qlxd4e-empfaenger/`} className="text-primary hover:underline">Shure QLXD-Funkstrecken</Link></li>
                       </ul>
                     </div>
                   )}
@@ -2141,7 +2141,7 @@ export default function CategoryProducts() {
               {otherCategories.slice(0, 6).map((cat) => (
                 <Link 
                   key={cat.id}
-                  to={`/mieten/${location.id}/${cat.id}`}
+                  to={`/mieten/${location.id}/${cat.id}/`}
                   className="bg-background rounded-lg p-4 text-center hover:shadow-md transition-shadow border border-border hover:border-primary/30"
                 >
                   {cat.icon ? (

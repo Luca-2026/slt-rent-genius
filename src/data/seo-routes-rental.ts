@@ -279,6 +279,9 @@ const STATIC_ROUTES: SeoRoute[] = [
     description: "Neumaschinen und gebrauchte Baumaschinen kaufen bei SLT Rental. Persönliche Beratung an drei Standorten in NRW.",
     h1: "Maschinen kaufen bei SLT Rental",
     intro: ["Neu- und Gebrauchtmaschinen aus dem SLT-Bestand – mit Beratung und Inspektion."],
+    // /verkauf leitet clientseitig auf /verkauf/neumaschinen/ weiter → nicht indexieren,
+    // sonst meldet die Search Console "Seite mit Weiterleitung".
+    noindex: true,
     changefreq: "weekly",
     priority: 0.6,
     lastmod: TODAY,

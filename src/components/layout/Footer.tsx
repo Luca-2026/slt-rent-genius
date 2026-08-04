@@ -160,7 +160,7 @@ export function Footer() {
             {locations.map((loc) => (
               <Link
                 key={loc.id}
-                to={`/standorte/${loc.id}`}
+                to={`/standorte/${loc.id}/`}
                 className="text-xs text-white/80 hover:text-accent transition-colors"
               >
                 {t("footer.locationPrefix", { name: loc.name })}
@@ -184,7 +184,7 @@ export function Footer() {
                     {areas.map((area) => (
                       <Link
                         key={area.slug}
-                        to={`/mieten-in/${area.slug}`}
+                        to={`/mieten-in/${area.slug}/`}
                         className="text-xs text-white/80 hover:text-accent transition-colors"
                       >
                         {area.name}

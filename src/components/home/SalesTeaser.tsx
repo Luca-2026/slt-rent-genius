@@ -35,7 +35,7 @@ export function SalesTeaser() {
           {brands.map((brand) => (
             <Link
               key={brand.name}
-              to="/verkauf/neumaschinen"
+              to="/verkauf/neumaschinen/"
               className="grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300"
             >
               <img
@@ -48,7 +48,7 @@ export function SalesTeaser() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-          <Link to="/verkauf/neumaschinen" className="group">
+          <Link to="/verkauf/neumaschinen/" className="group">
             <div className="border-2 border-border rounded-xl p-6 text-center hover:border-primary/40 hover:shadow-md transition-all h-full flex flex-col items-center justify-center gap-3">
               <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
                 <ShoppingCart className="h-6 w-6 text-primary" />
@@ -66,7 +66,7 @@ export function SalesTeaser() {
             </div>
           </Link>
 
-          <Link to="/verkauf/gebrauchtmaschinen" className="group">
+          <Link to="/verkauf/gebrauchtmaschinen/" className="group">
             <div className="border-2 border-border rounded-xl p-6 text-center hover:border-primary/40 hover:shadow-md transition-all h-full flex flex-col items-center justify-center gap-3">
               <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
                 <PackageSearch className="h-6 w-6 text-accent" />

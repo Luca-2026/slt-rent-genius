@@ -533,7 +533,7 @@ export default function HochzeitTechnik() {
             >
               <Mail className="mr-2 h-4 w-4" /> Jetzt Angebot anfordern
             </Button>
-            <Link to="/ratgeber">
+            <Link to="/ratgeber/">
               <Button size="lg" variant="outline">Ratgeber &amp; Mengenrechner</Button>
             </Link>
             <Link to="/lieferung">

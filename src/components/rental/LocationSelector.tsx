@@ -20,7 +20,7 @@ export function LocationSelector() {
         {locationData.map((location) => (
           <Card key={location.id} className="h-full group hover:shadow-lg transition-all hover:border-primary/50 overflow-hidden flex flex-col">
             {/* Location Image */}
-            <Link to={`/mieten/${location.id}`} className="aspect-[16/9] bg-gradient-to-br from-primary/10 to-primary/5 relative overflow-hidden block cursor-pointer">
+            <Link to={`/mieten/${location.id}/`} className="aspect-[16/9] bg-gradient-to-br from-primary/10 to-primary/5 relative overflow-hidden block cursor-pointer">
               {location.image ? (
                 <img 
                   src={location.image} 
@@ -113,7 +113,7 @@ export function LocationSelector() {
               </a>
 
               {/* CTA */}
-              <Link to={`/mieten/${location.id}`} className="mt-auto">
+              <Link to={`/mieten/${location.id}/`} className="mt-auto">
                 <Button className="w-full bg-primary hover:bg-primary/90 text-xs md:text-sm" size="sm">
                   {t("rental.selectThisLocation")}
                   <ArrowRight className="ml-2 h-3.5 w-3.5 md:h-4 md:w-4" />

@@ -156,7 +156,7 @@ export default function Locations() {
                 ].map((c) => (
                   <Link
                     key={c.slug}
-                    to={`/mieten/${id}/${c.slug}`}
+                    to={`/mieten/${id}/${c.slug}/`}
                     className="text-xs md:text-sm text-primary hover:text-accent hover:underline bg-background border border-border rounded-md px-3 py-2 transition-colors"
                   >
                     {c.label}
@@ -177,7 +177,7 @@ export default function Locations() {
               <AnimatedSection key={location.id} animation="fade-in-up" delay={index * 150} className="min-w-[75vw] md:min-w-0 snap-center">
                 <Card className="h-full overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300 group">
                   {/* Location Image */}
-                  <Link to={`/mieten/${location.id}`} className="block h-28 md:h-32 lg:h-40 overflow-hidden bg-muted">
+                  <Link to={`/mieten/${location.id}/`} className="block h-28 md:h-32 lg:h-40 overflow-hidden bg-muted">
                     {location.image ? (
                       <img
                         src={location.image}
@@ -285,7 +285,7 @@ export default function Locations() {
                           {t("locations.route")}
                         </Button>
                       </a>
-                      <Link to={`/mieten/${location.id}`} className="flex-1">
+                      <Link to={`/mieten/${location.id}/`} className="flex-1">
                         <Button className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover text-[11px] md:text-xs lg:text-sm h-8 md:h-8 lg:h-9 px-2 md:px-3" size="sm">
                           {t("locations.rentalArticles")}
                         </Button>
@@ -316,7 +316,7 @@ export default function Locations() {
           {/* Markers on ALL viewports */}
           <div className="absolute inset-0 pointer-events-none">
             <Link
-              to="/mieten/krefeld"
+              to="/mieten/krefeld/"
               className="absolute pointer-events-auto hover:scale-110 transition-transform z-10"
               style={{ top: '22%', left: '32%' }}
             >
@@ -329,7 +329,7 @@ export default function Locations() {
               </div>
             </Link>
             <Link
-              to="/mieten/muelheim"
+              to="/mieten/muelheim/"
               className="absolute pointer-events-auto hover:scale-110 transition-transform z-10"
               style={{ top: '17%', left: '47%' }}
             >
@@ -342,7 +342,7 @@ export default function Locations() {
               </div>
             </Link>
             <Link
-              to="/mieten/bonn"
+              to="/mieten/bonn/"
               className="absolute pointer-events-auto hover:scale-110 transition-transform z-10"
               style={{ top: '62%', left: '55%' }}
             >
@@ -410,11 +410,11 @@ export default function Locations() {
         <div className="section-container max-w-4xl text-center">
           <p className="text-xs md:text-sm text-muted-foreground">
             Sie vergleichen Anbieter in NRW? Sachliche Anbietervergleiche:{" "}
-            <Link to="/vergleich/slt-vs-hkl" className="underline hover:text-primary">SLT vs. HKL</Link>
+            <Link to="/vergleich/slt-vs-hkl/" className="underline hover:text-primary">SLT vs. HKL</Link>
             {" · "}
-            <Link to="/vergleich/slt-vs-boels" className="underline hover:text-primary">SLT vs. Boels</Link>
+            <Link to="/vergleich/slt-vs-boels/" className="underline hover:text-primary">SLT vs. Boels</Link>
             {" · "}
-            <Link to="/vergleich/slt-vs-beyer" className="underline hover:text-primary">SLT vs. Beyer</Link>.
+            <Link to="/vergleich/slt-vs-beyer/" className="underline hover:text-primary">SLT vs. Beyer</Link>.
           </p>
         </div>
       </section>

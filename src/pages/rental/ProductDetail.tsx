@@ -568,7 +568,7 @@ export default function ProductDetail() {
                 </Link>
               </Button>
               <Button variant="outline" asChild>
-                <Link to="/mieten">Alle Standorte</Link>
+                <Link to="/mieten/">Alle Standorte</Link>
               </Button>
             </div>
           </div>
@@ -581,7 +581,7 @@ export default function ProductDetail() {
                 {suggestedProducts.map((p) => (
                   <Link
                     key={p.id}
-                    to={`/mieten/${locationId}/${categoryId}/${p.id}`}
+                    to={`/mieten/${locationId}/${categoryId}/${p.id}/`}
                     className="border rounded-lg p-3 hover:shadow-md transition-shadow"
                   >
                     {p.image && (
@@ -615,19 +615,19 @@ export default function ProductDetail() {
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link to="/mieten">{t("nav.locations")}</Link>
+                  <Link to="/mieten/">{t("nav.locations")}</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link to={`/mieten/${location.id}`}>{location.name}</Link>
+                  <Link to={`/mieten/${location.id}/`}>{location.name}</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link to={`/mieten/${location.id}/${category.id}`}>{category.title}</Link>
+                  <Link to={`/mieten/${location.id}/${category.id}/`}>{category.title}</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
@@ -971,7 +971,7 @@ export default function ProductDetail() {
 
               {/* Ratgeber-Hinweis für Geschirr-Kategorie */}
               {categoryId === "geschirr-glaeser-besteck" && (
-                <Link to="/ratgeber/geschirr-mieten-hochzeit-mengen-checkliste" className="block">
+                <Link to="/ratgeber/geschirr-mieten-hochzeit-mengen-checkliste/" className="block">
                   <div className="flex items-start gap-3 bg-primary/5 border border-primary/20 rounded-xl p-4 hover:bg-primary/10 transition-colors group">
                     <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <Info className="h-4 w-4 text-primary" />
@@ -1446,7 +1446,7 @@ export default function ProductDetail() {
               <h2 className="text-lg font-bold text-headline mb-5">{t("rental.relatedProducts")}</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {relatedProducts.map((relatedProduct) => (
-                  <Link key={relatedProduct.id} to={`/mieten/${location.id}/${categoryId}/${relatedProduct.id}`}>
+                  <Link key={relatedProduct.id} to={`/mieten/${location.id}/${categoryId}/${relatedProduct.id}/`}>
                     <Card className="h-full hover:shadow-md transition-shadow group overflow-hidden">
                       <div className="aspect-[4/3] bg-muted">
                         {relatedProduct.image ? (

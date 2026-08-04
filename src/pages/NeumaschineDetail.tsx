@@ -169,7 +169,7 @@ export default function NeumaschineDetail() {
   }
 
   if (!machine) {
-    return <Navigate to="/verkauf/neumaschinen" replace />;
+    return <Navigate to="/verkauf/neumaschinen/" replace />;
   }
 
   const priceGross = machine.price_gross ? Number(machine.price_gross) : null;
@@ -361,7 +361,7 @@ export default function NeumaschineDetail() {
 
       <div className="bg-muted/30 border-b border-border">
         <div className="section-container py-3 text-sm text-muted-foreground">
-          <Link to="/verkauf/neumaschinen" className="inline-flex items-center gap-1 hover:text-primary transition-colors">
+          <Link to="/verkauf/neumaschinen/" className="inline-flex items-center gap-1 hover:text-primary transition-colors">
             <ArrowLeft className="h-3 w-3" />
             Zurück zu allen Neumaschinen
           </Link>
@@ -571,7 +571,7 @@ export default function NeumaschineDetail() {
         <section className="section-container py-8 md:py-10 border-t border-border">
           <Card className="overflow-hidden border-accent/40 bg-accent/5">
             <div className="grid grid-cols-1 md:grid-cols-[200px_1fr_auto] gap-4 md:gap-6 items-center p-5">
-              <Link to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550" className="block">
+              <Link to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550/" className="block">
                 <div className="aspect-square bg-white rounded-lg overflow-hidden border border-border">
                   <img
                     src="/product-images/anhaengerkupplung-kde550-1.png"
@@ -584,7 +584,7 @@ export default function NeumaschineDetail() {
               </Link>
               <div>
                 <Badge className="bg-accent text-accent-foreground mb-2">Passendes Zubehör</Badge>
-                <Link to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550" className="block hover:text-primary transition-colors">
+                <Link to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550/" className="block hover:text-primary transition-colors">
                   <h3 className="text-xl font-bold text-headline mb-1">
                     Anhängerkupplung für BAUMAX Raddumper KDe550 / KDe550p
                   </h3>
@@ -603,7 +603,7 @@ export default function NeumaschineDetail() {
               </div>
               <div className="flex flex-col gap-2 md:items-end">
                 <Button asChild>
-                  <Link to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550">
+                  <Link to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550/">
                     Details ansehen <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>

@@ -95,7 +95,7 @@ export default function LocationCategories() {
       <Layout>
         <div className="section-container py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">{t("rental.locationNotFound")}</h1>
-          <Link to="/mieten">
+          <Link to="/mieten/">
             <Button>{t("rental.backToLocations")}</Button>
           </Link>
         </div>
@@ -144,7 +144,7 @@ export default function LocationCategories() {
       <section className="bg-primary py-6 md:py-8 lg:py-12">
         <div className="section-container">
           <Link 
-            to="/mieten" 
+            to="/mieten/" 
             className="inline-flex items-center text-primary-foreground/80 hover:text-primary-foreground mb-4 md:mb-6 transition-colors text-sm"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />

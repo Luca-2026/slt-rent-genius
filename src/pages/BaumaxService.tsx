@@ -260,7 +260,7 @@ export default function BaumaxService() {
             </ul>
             <p className="text-xs text-muted-foreground mt-4">
               Du suchst eine BAUMAX-Maschine zum Kauf?{" "}
-              <Link to="/verkauf/neumaschinen" className="text-primary hover:underline">
+              <Link to="/verkauf/neumaschinen/" className="text-primary hover:underline">
                 Hier geht es zum Neumaschinen-Sortiment
               </Link>
               .
@@ -306,7 +306,7 @@ export default function BaumaxService() {
                       ))}
                     </div>
                     <Button asChild variant="outline" size="sm">
-                      <Link to={`/standorte/${loc.id}`}>
+                      <Link to={`/standorte/${loc.id}/`}>
                         Zum Standort {loc.name} <ArrowRight className="h-4 w-4 ml-1" />
                       </Link>
                     </Button>

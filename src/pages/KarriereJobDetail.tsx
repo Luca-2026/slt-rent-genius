@@ -46,7 +46,7 @@ export default function KarriereJobDetail() {
   );
 
   if (!job) {
-    return <Navigate to="/karriere" replace />;
+    return <Navigate to="/karriere/" replace />;
   }
 
   const datePosted = job.datePosted ?? new Date().toISOString().slice(0, 10);
@@ -138,7 +138,7 @@ export default function KarriereJobDetail() {
           <nav className="text-sm text-muted-foreground flex items-center flex-wrap gap-1">
             <Link to="/" className="hover:text-primary">Home</Link>
             <ChevronRight className="h-3 w-3" />
-            <Link to="/karriere" className="hover:text-primary">Karriere</Link>
+            <Link to="/karriere/" className="hover:text-primary">Karriere</Link>
             <ChevronRight className="h-3 w-3" />
             <span className="text-foreground line-clamp-1">{job.title}</span>
           </nav>
@@ -334,7 +334,7 @@ export default function KarriereJobDetail() {
               {relatedJobs.map((rj) => (
                 <Link
                   key={rj.id}
-                  to={`/karriere/${rj.slug}`}
+                  to={`/karriere/${rj.slug}/`}
                   className="block group"
                 >
                   <Card className="h-full hover:border-primary/40 transition-colors">

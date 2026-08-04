@@ -34,7 +34,7 @@ export function RatgeberTeaserBlock({
             )}
           </div>
           <Link
-            to="/ratgeber"
+            to="/ratgeber/"
             className="hidden sm:inline-flex items-center gap-1 text-sm text-primary hover:underline shrink-0"
           >
             {t("ratgeberTeaser.viewAll")} <ArrowRight className="h-4 w-4" />
@@ -45,7 +45,7 @@ export function RatgeberTeaserBlock({
           {articles.map((a) => (
             <Link
               key={a.slug}
-              to={`/ratgeber/${a.slug}`}
+              to={`/ratgeber/${a.slug}/`}
               className="group block bg-background border border-border rounded-xl p-5 hover:shadow-md hover:border-primary/40 transition-all"
             >
               <p className="text-xs font-medium text-primary uppercase tracking-wide mb-2">
@@ -63,7 +63,7 @@ export function RatgeberTeaserBlock({
         </div>
 
         <div className="mt-6 text-center sm:hidden">
-          <Link to="/ratgeber" className="inline-flex items-center gap-1 text-sm text-primary hover:underline">
+          <Link to="/ratgeber/" className="inline-flex items-center gap-1 text-sm text-primary hover:underline">
             {t("ratgeberTeaser.viewAll")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

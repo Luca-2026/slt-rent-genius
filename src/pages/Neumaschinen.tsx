@@ -192,7 +192,7 @@ function BrandNewMachines({ brandKey }: { brandKey: string }) {
           return (
             <Link
               key={m.id}
-              to={`/verkauf/neumaschinen/${m.slug}`}
+              to={`/verkauf/neumaschinen/${m.slug}/`}
               className="group flex gap-4 p-4 rounded-lg border border-border hover:border-primary hover:shadow-md transition-all bg-background"
             >
               <div className="w-20 h-20 rounded bg-muted flex items-center justify-center shrink-0 overflow-hidden">
@@ -614,7 +614,7 @@ export default function Neumaschinen() {
                   {t("sales.new.ctaShowAll")} <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </a>
-              <Link to="/verkauf/gebrauchtmaschinen">
+              <Link to="/verkauf/gebrauchtmaschinen/">
                 <Button size="lg" variant="secondary" className="gap-2">
                   <Tag className="mr-2 h-5 w-5" /> {t("sales.new.ctaToUsed")}
                 </Button>
@@ -734,7 +734,7 @@ export default function Neumaschinen() {
             {filtered.map((m: any) => {
               const img = Array.isArray(m.images) && m.images.length > 0 ? m.images[0] : null;
               return (
-                <Link key={m.id} to={`/verkauf/neumaschinen/${m.slug}`} className="group flex">
+                <Link key={m.id} to={`/verkauf/neumaschinen/${m.slug}/`} className="group flex">
                   <Card className="h-full w-full flex flex-col hover:shadow-lg hover:border-primary/40 transition-all overflow-hidden">
                     <div className="aspect-[4/3] bg-muted flex items-center justify-center overflow-hidden">
                       {img ? (
@@ -986,7 +986,7 @@ export default function Neumaschinen() {
                           <span className="text-primary font-bold">99 € brutto</span>
                           {" "}<span className="text-muted-foreground line-through">119 €</span>{" "}
                           <Link
-                            to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550"
+                            to="/verkauf/neumaschinen/baumax-anhaengerkupplung-kde550/"
                             className="text-primary underline underline-offset-2 hover:text-primary/80"
                             onClick={(e) => e.stopPropagation()}
                           >
