@@ -705,6 +705,26 @@ Deno.serve(async (req: Request) => {
           ⏰ Dieses Angebot ist gültig bis zum <strong>${formatDate(validUntil)}</strong>.
         </p>
       </div>
+      ${paymentTerms === "vorkasse" ? `
+      <div style="background:#f0f6fa;border:1px solid #b3d4e8;border-left:4px solid #00507d;border-radius:8px;padding:16px 18px;margin-bottom:25px;">
+        <p style="font-size:14px;font-weight:700;color:#00507d;margin:0 0 8px;">Zahlung per Vorkasse</p>
+        <p style="font-size:13px;color:#555;margin:0 0 10px;line-height:1.6;">
+          Für dieses Angebot gilt <strong>Vorkasse</strong>. Bitte überweisen Sie den Gesamtbetrag von
+          <strong>${formatCurrency(grossAmount)}</strong>${deposit && deposit > 0 ? ` (zzgl. Kaution ${formatCurrency(deposit)})` : ""}
+          bis spätestens <strong>${formatDate(validUntil)}</strong> – also innerhalb der Angebotsgültigkeit – auf das unten genannte Konto.
+        </p>
+        <table style="width:100%;font-size:13px;color:#333;margin-bottom:10px;">
+          <tr><td style="color:#64748b;padding:2px 0;">Kontoinhaber:</td><td style="padding:2px 0;font-weight:600;">${escapeHtml(SLT_COMPANY.name)}</td></tr>
+          <tr><td style="color:#64748b;padding:2px 0;">Bank:</td><td style="padding:2px 0;font-weight:600;">${escapeHtml(SLT_COMPANY.bankName)}</td></tr>
+          <tr><td style="color:#64748b;padding:2px 0;">IBAN:</td><td style="padding:2px 0;font-weight:600;">${escapeHtml(SLT_COMPANY.iban)}</td></tr>
+          <tr><td style="color:#64748b;padding:2px 0;">BIC:</td><td style="padding:2px 0;font-weight:600;">${escapeHtml(SLT_COMPANY.bic)}</td></tr>
+          <tr><td style="color:#64748b;padding:2px 0;">Verwendungszweck:</td><td style="padding:2px 0;font-weight:600;">${escapeHtml(offerNumber)}</td></tr>
+        </table>
+        <p style="font-size:13px;color:#555;margin:0;line-height:1.6;">
+          Mit Zahlungseingang ist Ihre Buchung <strong>verbindlich bestätigt</strong> und die Mietgeräte werden für den vereinbarten Zeitraum reserviert.
+          Nach Abschluss der Miete erhalten Sie die offizielle Rechnung per E-Mail.
+        </p>
+      </div>` : ""}
       <p style="font-size:14px;color:#555;line-height:1.6;margin-bottom:25px;">
         Das vollständige Angebotsdokument (Nr. <strong>${offerNumber}</strong>) finden Sie als PDF im Anhang dieser E-Mail sowie in Ihrem B2B-Portal.
       </p>
