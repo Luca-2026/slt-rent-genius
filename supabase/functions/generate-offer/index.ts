@@ -1309,6 +1309,45 @@ async function generateOfferPdf(data: {
   drawText(paymentText, margin + 10, y + 2, { s: 8 });
   y -= 35;
 
+  // ── VORKASSE: BANK DETAILS ──
+  if (data.paymentTerms === "vorkasse") {
+    ensureSpace(120);
+    const boxH = 104;
+    page.drawRectangle({ x: margin, y: y - boxH + 14, width: contentWidth, height: boxH, color: rgb(0.94, 0.97, 0.99) });
+    page.drawRectangle({ x: margin, y: y - boxH + 14, width: 3, height: boxH, color: blue });
+    let by = y;
+    drawText("Zahlung per Vorkasse", margin + 10, by, { f: fontBold, s: 9, c: blue });
+    by -= 13;
+    drawText(
+      safe(
+        `Bitte \u00FCberweisen Sie den Gesamtbetrag von ${fmtCurrency(data.grossAmount)}` +
+        (data.deposit && data.deposit > 0 ? ` (zzgl. Kaution ${fmtCurrency(data.deposit)})` : "") +
+        ` bis sp\u00E4testens`
+      ),
+      margin + 10, by, { s: 8 }
+    );
+    by -= 11;
+    drawText(safe(`${fmtDate(data.validUntil)} \u2013 innerhalb der Angebotsg\u00FCltigkeit \u2013 auf folgendes Konto:`), margin + 10, by, { s: 8 });
+    by -= 14;
+    const rows: [string, string][] = [
+      ["Kontoinhaber:", SLT_COMPANY.name],
+      ["Bank:", SLT_COMPANY.bankName],
+      ["IBAN:", SLT_COMPANY.iban],
+      ["BIC:", SLT_COMPANY.bic],
+      ["Verwendungszweck:", data.offerNumber],
+    ];
+    for (const [label, value] of rows) {
+      drawText(safe(label), margin + 10, by, { s: 8, c: gray });
+      drawText(safe(value), margin + 110, by, { s: 8, f: fontBold });
+      by -= 10;
+    }
+    by -= 3;
+    drawText(safe("Mit Zahlungseingang ist Ihre Buchung verbindlich best\u00E4tigt. Nach Abschluss der Miete"), margin + 10, by, { s: 8 });
+    by -= 10;
+    drawText(safe("erhalten Sie die offizielle Rechnung per E-Mail."), margin + 10, by, { s: 8 });
+    y -= boxH + 6;
+  }
+
   // ── REVERSE CHARGE NOTE ──
   if (data.isReverseCharge) {
     ensureSpace(50);
