@@ -282,8 +282,15 @@ Deno.serve(async (req: Request) => {
         });
       };
 
+      // If NO item carries a category, category-based filtering would zero out
+      // every percentage service (MBV etc.). In that case fall back to all items.
+      const hasAnyCategory = items.some((it: any) => !!it?.category_slug);
+
       for (const svc of additionalServices) {
-        const applicableIndexes = getApplicableIndexes(svc as any);
+        let applicableIndexes = getApplicableIndexes(svc as any);
+        if (applicableIndexes.length === 0 && !hasAnyCategory) {
+          applicableIndexes = offerItems.map((_, idx) => idx);
+        }
         const baseForService = applicableIndexes.reduce((sum, idx) => sum + (offerItems[idx]?.total_price || 0), 0);
 
         let amount = 0;
@@ -311,6 +318,10 @@ Deno.serve(async (req: Request) => {
             }
           });
         }
+
+        // Never persist a 0 € service line — it would show up as "0,00 €" in
+        // PDF/e-mail and get dropped silently when converting to an invoice.
+        if (amount <= 0) continue;
 
         servicesWithPrices.push({
           id: svc.id,
