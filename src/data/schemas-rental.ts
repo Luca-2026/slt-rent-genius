@@ -139,7 +139,7 @@ function localBusiness(locId: string): JsonLd {
     "@id": LOCATION_BUSINESS_ID(loc.id),
     name: loc.name,
     legalName: "SLT Technology Group GmbH & Co. KG",
-    url: `${BASE_URL}/standorte/${loc.id}`,
+    url: abs(`/standorte/${loc.id}`),
     logo: DEFAULT_IMG,
     image: DEFAULT_IMG,
     description: loc.description,
@@ -173,6 +173,16 @@ function localBusiness(locId: string): JsonLd {
 // Breadcrumbs
 // ---------------------------------------------------------------
 
+// Kanonische URL-Form der Website: immer mit abschließendem Slash.
+// Ohne Slash liefert Apache einen 301 → Google meldet "Seite mit Weiterleitung".
+function abs(path: string): string {
+  if (!path) return `${BASE_URL}/`;
+  if (/^https?:/i.test(path)) return path;
+  const [pure, hash] = path.split("#");
+  const withSlash = pure.endsWith("/") || /\.[a-zA-Z0-9]+$/.test(pure) ? pure : `${pure}/`;
+  return `${BASE_URL}${withSlash}${hash ? `#${hash}` : ""}`;
+}
+
 function breadcrumbList(items: Array<{ name: string; path: string }>): JsonLd {
   return {
     "@context": "https://schema.org",
@@ -181,7 +191,7 @@ function breadcrumbList(items: Array<{ name: string; path: string }>): JsonLd {
       "@type": "ListItem",
       position: i + 1,
       name: it.name,
-      item: `${BASE_URL}${it.path}`,
+      item: abs(it.path),
     })),
   };
 }
@@ -223,7 +233,7 @@ export function buildLocalAreaSchemas(area: LocalArea | undefined): JsonLd[] {
       provider: { "@id": ORG_ID },
       areaServed: { "@type": "City", name: area.name },
       description: desc,
-      url: `${BASE_URL}/mieten-in/${area.slug}`,
+      url: abs(`/mieten-in/${area.slug}`),
     },
     breadcrumbList([
       { name: "Start", path: "/" },
@@ -243,7 +253,7 @@ export function buildSolutionSchemas(sol: Solution | undefined): JsonLd[] {
       serviceType: "Equipment rental package",
       provider: { "@id": ORG_ID },
       areaServed: ["Krefeld", "Bonn", "Mülheim an der Ruhr", "Nordrhein-Westfalen"],
-      url: `${BASE_URL}/loesungen/${sol.id}`,
+      url: abs(`/loesungen/${sol.id}`),
     },
     breadcrumbList([
       { name: "Start", path: "/" },
@@ -261,7 +271,7 @@ export function buildCategorySchemas(cat: PrerenderCategory | undefined): JsonLd
       "@context": "https://schema.org",
       "@type": "CollectionPage",
       name: `${cat.category} mieten in ${loc?.cityFull || cat.locationId}`,
-      url: `${BASE_URL}/mieten/${cat.locationId}/${cat.category}`,
+      url: abs(`/mieten/${cat.locationId}/${cat.category}`),
       isPartOf: { "@id": WEBSITE_ID },
     },
     {
@@ -273,7 +283,7 @@ export function buildCategorySchemas(cat: PrerenderCategory | undefined): JsonLd
         "@type": "ListItem",
         position: i + 1,
         name: p.name,
-        url: `${BASE_URL}${p.path}`,
+        url: abs(p.path),
       })),
     },
     breadcrumbList([
@@ -298,7 +308,7 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
       .replace(/an mieten@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`)
       .replace(/an (?:krefeld|bonn|muelheim)@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`);
   };
-  const productUrl = `${BASE_URL}/mieten/${p.locationId}/${p.category}/${p.id}`;
+  const productUrl = abs(`/mieten/${p.locationId}/${p.category}/${p.id}`);
   const image = p.image
     ? p.image.startsWith("http")
       ? p.image
@@ -422,7 +432,7 @@ function buildArticleAuthor(authorName: string | undefined): JsonLd {
 
 export function buildRatgeberSchemas(a: BlogArticle | undefined): JsonLd[] {
   if (!a) return [];
-  const url = `${BASE_URL}/ratgeber/${a.slug}`;
+  const url = abs(`/ratgeber/${a.slug}`);
   const image = a.ogImage?.startsWith("http") ? a.ogImage : `${BASE_URL}${a.ogImage}`;
   const wordCount = (a.content || "").trim().split(/\s+/).filter(Boolean).length;
   const keywords = (a.keyword || "")
