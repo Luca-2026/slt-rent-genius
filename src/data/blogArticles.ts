@@ -55,7 +55,7 @@ Sobald der Minibagger auf **öffentlichen Straßen** bewegt werden soll – etwa
 - **Über 25 km/h**: Fahrerlaubnis Klasse **T** oder eine Sondergenehmigung
 - **Über 3,5 t zulässiges Gesamtgewicht**: Zusätzlich Klasse **C1** oder **C** erforderlich
 
-In der Praxis werden die meisten Minibagger jedoch per [Anhänger](/mieten/krefeld/anhaenger) transportiert, sodass der Führerschein für den Bagger selbst keine Rolle spielt. Hier reicht der normale Pkw-Führerschein Klasse B bis 3,5 t Gesamtgewicht des Gespanns oder BE für schwerere Anhänger.
+In der Praxis werden die meisten Minibagger jedoch per [Anhänger](/mieten/krefeld/anhaenger/) transportiert, sodass der Führerschein für den Bagger selbst keine Rolle spielt. Hier reicht der normale Pkw-Führerschein Klasse B bis 3,5 t Gesamtgewicht des Gespanns oder BE für schwerere Anhänger.
 
 ## Einweisungspflicht – das Wichtigste für Privatpersonen
 
@@ -102,9 +102,9 @@ Für die **einmalige Privatnutzung** (Gartenteich ausheben, Fundament graben) re
 
 ## Fazit: Einfach mieten und loslegen
 
-Für die meisten privaten Projekte gilt: **Sie brauchen keinen Führerschein und keinen Baggerschein**, um einen Minibagger zu mieten und zu bedienen. Eine Einweisung durch SLT Rental reicht aus. Kommen Sie einfach an einem unserer drei Standorte in [Krefeld](/mieten/krefeld/erdbewegung), [Bonn](/mieten/bonn/erdbewegung) oder [Mülheim an der Ruhr](/mieten/muelheim/erdbewegung) vorbei und legen Sie los.
+Für die meisten privaten Projekte gilt: **Sie brauchen keinen Führerschein und keinen Baggerschein**, um einen Minibagger zu mieten und zu bedienen. Eine Einweisung durch SLT Rental reicht aus. Kommen Sie einfach an einem unserer drei Standorte in [Krefeld](/mieten/krefeld/erdbewegung/), [Bonn](/mieten/bonn/erdbewegung/) oder [Mülheim an der Ruhr](/mieten/muelheim/erdbewegung/) vorbei und legen Sie los.
 
-[→ Alle Erdbewegungsmaschinen ansehen](/mieten/krefeld/erdbewegung)`
+[→ Alle Erdbewegungsmaschinen ansehen](/mieten/krefeld/erdbewegung/)`
   },
   {
     slug: "anhaenger-24-stunden-mieten-sms-code",
@@ -135,7 +135,7 @@ Viele kennen das Problem: Der Umzug beginnt samstags um 7 Uhr, der Baumarkt-Eink
 ## Schritt für Schritt: Vom Klick zum Anhänger
 
 ### 1. Online buchen
-Wählen Sie auf [slt-rental.de](/mieten/krefeld/anhaenger) Ihren Wunschanhänger, den gewünschten Zeitraum und den Abholstandort. Die Verfügbarkeit wird in Echtzeit angezeigt.
+Wählen Sie auf [slt-rental.de](/mieten/krefeld/anhaenger/) Ihren Wunschanhänger, den gewünschten Zeitraum und den Abholstandort. Die Verfügbarkeit wird in Echtzeit angezeigt.
 
 ### 2. Online bezahlen
 Bezahlen Sie bequem per Kreditkarte, PayPal oder bar im Ladengeschäft. Nach erfolgreicher Zahlung erhalten Sie eine Buchungsbestätigung per E-Mail.
@@ -187,11 +187,11 @@ Bei Verstößen drohen **Bußgelder ab 35 € bis 425 €** und bei Unfällen au
 ## An welchen Standorten ist 24/7 verfügbar?
 
 Das SMS-Code-System ist an allen drei SLT-Standorten aktiv:
-- [Krefeld – Anrather Straße 291](/mieten/krefeld/anhaenger)
-- [Bonn – Drachenburgstraße 8](/mieten/bonn/anhaenger)
-- [Mülheim an der Ruhr – Ruhrorter Str. 122](/mieten/muelheim/anhaenger)
+- [Krefeld – Anrather Straße 291](/mieten/krefeld/anhaenger/)
+- [Bonn – Drachenburgstraße 8](/mieten/bonn/anhaenger/)
+- [Mülheim an der Ruhr – Ruhrorter Str. 122](/mieten/muelheim/anhaenger/)
 
-[→ Alle Anhänger ansehen](/mieten/krefeld/anhaenger)`
+[→ Alle Anhänger ansehen](/mieten/krefeld/anhaenger/)`
   },
   {
     slug: "wochenendtarif-vs-tagesmiete",
@@ -248,9 +248,9 @@ Selbst wenn Sie den Bagger erst Samstagmorgen abholen und am Sonntag zurückbrin
 
 Der Wochenendtarif gilt für die meisten Mietprodukte bei SLT Rental, darunter:
 
-- **Baumaschinen**: [Minibagger](/mieten/krefeld/erdbewegung), Radlader, Rüttelplatten, Stampfer
-- **Anhänger**: [Kastenanhänger](/mieten/krefeld/anhaenger), Kippanhänger, Autotransporter
-- **Event-Equipment**: [PA-Anlagen](/mieten/bonn/pa-anlagen-veranstaltungstechnik), Lichtanlagen, Geschirr
+- **Baumaschinen**: [Minibagger](/mieten/krefeld/erdbewegung/), Radlader, Rüttelplatten, Stampfer
+- **Anhänger**: [Kastenanhänger](/mieten/krefeld/anhaenger/), Kippanhänger, Autotransporter
+- **Event-Equipment**: [PA-Anlagen](/mieten/bonn/pa-anlagen-veranstaltungstechnik/), Lichtanlagen, Geschirr
 - **Arbeitsbühnen**: Scherenarbeitsbühnen, Teleskoplader
 
 Ausgenommen sind lediglich einige Spezialgeräte mit hoher Wochenend-Nachfrage. Fragen Sie im Zweifel bei der Buchung nach.
@@ -264,14 +264,14 @@ Ausgenommen sind lediglich einige Spezialgeräte mit hoher Wochenend-Nachfrage. 
 
 ## So buchen Sie den Wochenendtarif
 
-1. Wählen Sie Ihren [Mietartikel](/mietartikel) und Standort
+1. Wählen Sie Ihren [Mietartikel](/mietartikel/) und Standort
 2. Wählen Sie als Mietbeginn Freitag und als Mietende Montag
 3. Der Wochenendtarif wird automatisch berechnet
 4. Buchen Sie online oder rufen Sie uns an
 
 **Tipp:** Kombinieren Sie den Wochenendtarif mit einem Anhänger für den Transport – so sparen Sie doppelt.
 
-[→ Alle Mietartikel ansehen](/mietartikel)`
+[→ Alle Mietartikel ansehen](/mietartikel/)`
   },
   {
     slug: "baustelle-innenstadt-baumaschine-beengte-verhaeltnisse",
@@ -307,7 +307,7 @@ Für Baustellen mit eingeschränktem Platzangebot empfehlen wir **Mikro- und Min
 - **Minibagger 1,0 t** (Breite ca. 98 cm): Kompakt genug für enge Einfahrten, aber kraftvoll genug für Fundamentarbeiten.
 - **Minibagger 1,7 t mit einfahrbarem Unterwagen**: Lässt sich auf unter 1 m Breite zusammenfahren und im Arbeitsbetrieb auf volle Breite ausfahren.
 
-Alle diese Maschinen sind bei SLT Rental an den Standorten [Krefeld](/mieten/krefeld/erdbewegung), [Bonn](/mieten/bonn/erdbewegung) und [Mülheim an der Ruhr](/mieten/muelheim/erdbewegung) verfügbar.
+Alle diese Maschinen sind bei SLT Rental an den Standorten [Krefeld](/mieten/krefeld/erdbewegung/), [Bonn](/mieten/bonn/erdbewegung/) und [Mülheim an der Ruhr](/mieten/muelheim/erdbewegung/) verfügbar.
 
 ## Elektro-Minibagger: Leise und emissionsfrei
 
@@ -365,7 +365,7 @@ Unser Schwesterunternehmen [slt-infra.de](https://www.slt-infra.de) übernimmt d
 
 Mit der richtigen Maschinenwahl – kompakter Bauform, Gummiketten und ggf. Elektroantrieb – lassen sich auch anspruchsvolle Innenstadtprojekte effizient und nachbarschaftsverträglich umsetzen. SLT Rental berät Sie gerne bei der Auswahl.
 
-[→ Erdbewegungsmaschinen für Ihre Baustelle](/mieten/krefeld/erdbewegung)`
+[→ Erdbewegungsmaschinen für Ihre Baustelle](/mieten/krefeld/erdbewegung/)`
   },
   {
     slug: "geschirr-mieten-hochzeit-mengen-checkliste",
@@ -393,7 +393,7 @@ Mit der richtigen Maschinenwahl – kompakter Bauform, Gummiketten und ggf. Elek
 
 Eine Hochzeitsfeier mit 100 Gästen erfordert leicht **300–500 Geschirrteile**. Einweggeschirr sieht billig aus und belastet die Umwelt. Hochwertiges Geschirr kaufen? Teuer und nach der Feier nutzlos. **Mieten ist die elegante Lösung**: Sie erhalten einheitliches, hochwertiges Porzellan und Kristallgläser – zu einem Bruchteil des Kaufpreises.
 
-Bei SLT Rental vermieten wir an unseren Standorten [Bonn](/mieten/bonn/geschirr-glaeser-besteck) und [Krefeld](/mieten/krefeld/geschirr-glaeser-besteck) komplette Geschirr-Sets in 25er-Einheiten. So können Sie exakt die benötigte Menge zusammenstellen.
+Bei SLT Rental vermieten wir an unseren Standorten [Bonn](/mieten/bonn/geschirr-glaeser-besteck/) und [Krefeld](/mieten/krefeld/geschirr-glaeser-besteck/) komplette Geschirr-Sets in 25er-Einheiten. So können Sie exakt die benötigte Menge zusammenstellen.
 
 ## Die große Mengen-Checkliste
 
@@ -442,7 +442,7 @@ Unser Tipp aus über zehn Jahren Eventerfahrung: Bei gut organisierten Hochzeite
 
 Ein oft vergessener Punkt: **Wer spült die 500 Teile?** Bei SLT Rental können Sie eine gewerbliche Gastro-Spülmaschine Frontlader dazu mieten. Damit dauert ein Spülgang nur 2–3 Minuten, und die Rückgabe geht deutlich schneller.
 
-Direkt buchen am Standort: [Bonn](/mieten/bonn/geschirr-glaeser-besteck/spuelmaschine-frontlader) · [Krefeld](/mieten/krefeld/geschirr-glaeser-besteck/spuelmaschine-frontlader)
+Direkt buchen am Standort: [Bonn](/mieten/bonn/geschirr-glaeser-besteck/spuelmaschine-frontlader/) · [Krefeld](/mieten/krefeld/geschirr-glaeser-besteck/spuelmaschine-frontlader/)
 
 Alternativ können Sie das Geschirr und die Gläser auch **ungespült zurückgeben** – gegen einen Aufpreis für die professionelle Reinigung. Die genauen Konditionen finden Sie auf den jeweiligen Produktseiten oder fragen Sie uns einfach bei der Buchung.
 
@@ -458,13 +458,13 @@ Alternativ können Sie das Geschirr und die Gläser auch **ungespült zurückgeb
 
 ## Tipp: Wochenendtarif nutzen
 
-Hochzeiten finden meist am Wochenende statt – perfekt für den [SLT-Wochenendtarif](/ratgeber/wochenendtarif-vs-tagesmiete): Freitag abholen, Montag zurückgeben, nur einen Tag bezahlen. So haben Sie entspannt Zeit zum Eindecken und Aufräumen.
+Hochzeiten finden meist am Wochenende statt – perfekt für den [SLT-Wochenendtarif](/ratgeber/wochenendtarif-vs-tagesmiete/): Freitag abholen, Montag zurückgeben, nur einen Tag bezahlen. So haben Sie entspannt Zeit zum Eindecken und Aufräumen.
 
 ## Jetzt Geschirr für Ihre Hochzeit reservieren
 
 Stöbern Sie in unserem Geschirr-Sortiment und stellen Sie Ihr individuelles Set zusammen. Bei Fragen zur Mengenplanung beraten wir Sie gerne telefonisch oder per E-Mail.
 
-[→ Geschirr, Gläser & Besteck in Bonn ansehen](/mieten/bonn/geschirr-glaeser-besteck) · [→ Geschirr, Gläser & Besteck in Krefeld ansehen](/mieten/krefeld/geschirr-glaeser-besteck)`
+[→ Geschirr, Gläser & Besteck in Bonn ansehen](/mieten/bonn/geschirr-glaeser-besteck/) · [→ Geschirr, Gläser & Besteck in Krefeld ansehen](/mieten/krefeld/geschirr-glaeser-besteck/)`
   },
   {
     slug: "halteverbotszone-einrichten-ratgeber",
@@ -533,7 +533,7 @@ Unser **18-teiliges Komplett-Set** passt mit den klappbaren Standfüßen in jede
 - Diebstahlsicherung
 - Werkzeug- & Zubehörtasche
 
-Verfügbar in [Krefeld](/mieten/krefeld/absperrtechnik/halteverbotsschilder-set), [Bonn](/mieten/bonn/absperrtechnik/halteverbotsschilder-set) und [Mülheim an der Ruhr](/mieten/muelheim/absperrtechnik/halteverbotsschilder-set).
+Verfügbar in [Krefeld](/mieten/krefeld/absperrtechnik/halteverbotsschilder-set/), [Bonn](/mieten/bonn/absperrtechnik/halteverbotsschilder-set/) und [Mülheim an der Ruhr](/mieten/muelheim/absperrtechnik/halteverbotsschilder-set/).
 
 | Variante | Preis | Leistungsumfang |
 |---|---|---|
@@ -580,9 +580,9 @@ Wer im ausgewiesenen Halteverbot parkt, riskiert ein **Verwarnungs- bzw. Bußgel
 
 ## Jetzt Halteverbotszone in NRW einrichten
 
-Du brauchst eine Halteverbotszone für Umzug, Baustelle oder Event? Wir liefern Schilder, Beratung und auf Wunsch das komplette Sorglos-Paket – an unseren Standorten in [Krefeld](/mieten/krefeld/absperrtechnik/halteverbotsschilder-set), [Bonn](/mieten/bonn/absperrtechnik/halteverbotsschilder-set) und [Mülheim an der Ruhr](/mieten/muelheim/absperrtechnik/halteverbotsschilder-set).
+Du brauchst eine Halteverbotszone für Umzug, Baustelle oder Event? Wir liefern Schilder, Beratung und auf Wunsch das komplette Sorglos-Paket – an unseren Standorten in [Krefeld](/mieten/krefeld/absperrtechnik/halteverbotsschilder-set/), [Bonn](/mieten/bonn/absperrtechnik/halteverbotsschilder-set/) und [Mülheim an der Ruhr](/mieten/muelheim/absperrtechnik/halteverbotsschilder-set/).
 
-[→ Halteverbotsschilder-Set jetzt mieten](/mieten/krefeld/absperrtechnik/halteverbotsschilder-set)`
+[→ Halteverbotsschilder-Set jetzt mieten](/mieten/krefeld/absperrtechnik/halteverbotsschilder-set/)`
   },
   {
     slug: "anhaenger-fuehrerschein-b-b96-be",
@@ -608,7 +608,7 @@ Du brauchst eine Halteverbotszone für Umzug, Baustelle oder Event? Wir liefern 
     relatedSlugs: ["anhaenger-24-stunden-mieten-sms-code", "wochenendtarif-vs-tagesmiete"],
     content: `## Anhänger-Führerschein auf einen Blick
 
-Du willst einen [Anhänger mieten](/mieten/krefeld/anhaenger), einen Baggertransporter, einen Kastenanhänger oder einen Tieflader, und plötzlich stellt sich die Frage: Reicht mein normaler Pkw-Führerschein dafür überhaupt? Die Antwort entscheidet sich an einer einzigen Zahl, die viele falsch verstehen, nämlich der zulässigen Gesamtmasse. Hier bekommst Du die Regeln klar und korrekt, plus eine kleine Rechnung, mit der Du in zwei Minuten weißt, ob Du B, B96 oder BE brauchst.
+Du willst einen [Anhänger mieten](/mieten/krefeld/anhaenger/), einen Baggertransporter, einen Kastenanhänger oder einen Tieflader, und plötzlich stellt sich die Frage: Reicht mein normaler Pkw-Führerschein dafür überhaupt? Die Antwort entscheidet sich an einer einzigen Zahl, die viele falsch verstehen, nämlich der zulässigen Gesamtmasse. Hier bekommst Du die Regeln klar und korrekt, plus eine kleine Rechnung, mit der Du in zwei Minuten weißt, ob Du B, B96 oder BE brauchst.
 
 - **Klasse B:** Gespann bis 3.500 kg zulässiger Gesamtmasse. Ein Anhänger bis 750 kg ist immer erlaubt, ein schwererer nur, solange die Summe aus Auto und Anhänger 3.500 kg nicht überschreitet.
 - **B96:** Erweiterung der Klasse B (eine Schlüsselzahl, keine eigene Klasse) für Gespanne über 3.500 bis maximal 4.250 kg. Nur eine Schulung, keine Prüfung.
@@ -662,7 +662,7 @@ Kurz gesagt: Führerschein, Anhängelast und Stützlast müssen alle drei passen
 
 Wir haben Anhänger in unterschiedlichen Gewichtsklassen, vom leichten Kastenanhänger bis zum Maschinentransporter. Viele lassen sich mit dem normalen Pkw-Führerschein der Klasse B fahren, schwerere Modelle setzen je nach Zugfahrzeug B96 oder BE voraus. Weil es immer auf die Kombination aus Deinem Auto und dem konkreten Anhänger ankommt, lohnt sich vor der Buchung ein kurzer Blick in Deinen Fahrzeugschein. Wenn Du unsicher bist, welcher Anhänger zu Deinem Führerschein und Deinem Zugfahrzeug passt, hilft Dir unser Team weiter, und unser KI-Assistent Renty beantwortet die ersten Fragen rund um die Uhr.
 
-Unsere Anhänger findest Du an allen drei Standorten: [Krefeld](/mieten/krefeld/anhaenger), [Bonn](/mieten/bonn/anhaenger) und [Mülheim an der Ruhr](/mieten/muelheim/anhaenger). Jedes Modell zeigt die zulässige Gesamtmasse direkt in den Produktdaten, so siehst Du auf einen Blick, ob Dein Führerschein passt.
+Unsere Anhänger findest Du an allen drei Standorten: [Krefeld](/mieten/krefeld/anhaenger/), [Bonn](/mieten/bonn/anhaenger/) und [Mülheim an der Ruhr](/mieten/muelheim/anhaenger/). Jedes Modell zeigt die zulässige Gesamtmasse direkt in den Produktdaten, so siehst Du auf einen Blick, ob Dein Führerschein passt.
 
 ## Häufige Fragen zum Anhänger-Führerschein
 
@@ -685,7 +685,7 @@ Nein. Zusätzlich müssen die zulässige Anhängelast und die Stützlast Deines 
 
 Ob Kastenanhänger, Kippanhänger oder Maschinentransporter: An allen SLT-Standorten holst Du Deinen Anhänger rund um die Uhr per SMS-Code ab. Wähle Deinen Standort und vergleiche die Modelle direkt nach zulässiger Gesamtmasse.
 
-[→ Anhänger in Krefeld](/mieten/krefeld/anhaenger) · [→ Anhänger in Bonn](/mieten/bonn/anhaenger) · [→ Anhänger in Mülheim an der Ruhr](/mieten/muelheim/anhaenger)`
+[→ Anhänger in Krefeld](/mieten/krefeld/anhaenger/) · [→ Anhänger in Bonn](/mieten/bonn/anhaenger/) · [→ Anhänger in Mülheim an der Ruhr](/mieten/muelheim/anhaenger/)`
   },
   {
     slug: "arbeitsbuehne-mieten-typ-arbeitshoehe",
@@ -711,7 +711,7 @@ Ob Kastenanhänger, Kippanhänger oder Maschinentransporter: An allen SLT-Stando
     relatedSlugs: ["baustelle-innenstadt-baumaschine-beengte-verhaeltnisse", "anhaenger-fuehrerschein-b-b96-be", "wochenendtarif-vs-tagesmiete"],
     content: `## Arbeitsbühne mieten auf einen Blick
 
-Fassade streichen, Hallenbeleuchtung tauschen, einen Baum auslichten oder Werbeschilder montieren: Sobald die Arbeit ein paar Meter über dem Boden liegt, ist die Leiter schnell am Limit. Eine [Arbeitsbühne](/mieten/krefeld/arbeitsbuehnen) ist dann sicherer und meist auch schneller. Die Frage ist nur: Welche? Zwischen Scherenbühne, Gelenkteleskop und Anhängerbühne liegen Welten, und wer den falschen Typ bestellt, steht am Einsatztag entweder zu niedrig oder kommt mit dem Gerät gar nicht erst an die Arbeitsstelle. Dieser Ratgeber zeigt Dir, worauf es bei der Auswahl wirklich ankommt.
+Fassade streichen, Hallenbeleuchtung tauschen, einen Baum auslichten oder Werbeschilder montieren: Sobald die Arbeit ein paar Meter über dem Boden liegt, ist die Leiter schnell am Limit. Eine [Arbeitsbühne](/mieten/krefeld/arbeitsbuehnen/) ist dann sicherer und meist auch schneller. Die Frage ist nur: Welche? Zwischen Scherenbühne, Gelenkteleskop und Anhängerbühne liegen Welten, und wer den falschen Typ bestellt, steht am Einsatztag entweder zu niedrig oder kommt mit dem Gerät gar nicht erst an die Arbeitsstelle. Dieser Ratgeber zeigt Dir, worauf es bei der Auswahl wirklich ankommt.
 
 - **Arbeitshöhe ist nicht Plattformhöhe.** Faustformel: Arbeitshöhe = Plattformhöhe plus rund 2 Meter. Eine Bühne mit "12 m Arbeitshöhe" bringt Dich also auf etwa 10 m Standhöhe.
 - **Der Typ entscheidet über die Reichweite.** Senkrecht nach oben? Scherenbühne. Über Hindernisse hinweg oder seitlich versetzt? Gelenk- oder Teleskopbühne.
@@ -739,7 +739,7 @@ Ein paar Punkte, die in der Tabelle leicht untergehen:
 
 **Scherenbühnen** haben praktisch keine seitliche Reichweite. Du stehst senkrecht über der Maschine. Genau dort, wo Du den Korb hinfährst, kannst Du arbeiten, sonst nirgends. Dafür bieten sie viel Standfläche und Traglast, ideal also, wenn zwei Leute mit Material gleichzeitig hochmüssen.
 
-**Anhängerbühnen** sind der Liebling vieler Privatkunden und Hausmeisterdienste: geringes Eigengewicht, niedriger Mietpreis, und mit der passenden Anhängerkupplung kannst Du sie selbst abholen und vor Ort umsetzen. Ob Dein Zugfahrzeug und Führerschein dafür reichen, klärst Du am besten vorab mit unserem [Anhänger-Führerschein-Ratgeber](/ratgeber/anhaenger-fuehrerschein-b-b96-be).
+**Anhängerbühnen** sind der Liebling vieler Privatkunden und Hausmeisterdienste: geringes Eigengewicht, niedriger Mietpreis, und mit der passenden Anhängerkupplung kannst Du sie selbst abholen und vor Ort umsetzen. Ob Dein Zugfahrzeug und Führerschein dafür reichen, klärst Du am besten vorab mit unserem [Anhänger-Führerschein-Ratgeber](/ratgeber/anhaenger-fuehrerschein-b-b96-be/).
 
 ## Innen oder außen: der Antrieb entscheidet
 
@@ -785,7 +785,7 @@ Bei einer Anhängerbühne oft ja, wenn Zugfahrzeug, Anhängelast und Führersche
 
 Ob Scherenbühne für die Halle, Gelenkteleskop für die Fassade oder Anhängerbühne für den schnellen Einsatz: An allen SLT-Standorten findest Du Arbeitsbühnen mit unterschiedlichen Arbeitshöhen und Reichweiten. Wähle Deinen Standort und vergleiche die Modelle direkt nach Arbeitshöhe, Korblast und Antrieb.
 
-[→ Arbeitsbühnen in Krefeld](/mieten/krefeld/arbeitsbuehnen) · [→ Arbeitsbühnen in Bonn](/mieten/bonn/arbeitsbuehnen) · [→ Arbeitsbühnen in Mülheim an der Ruhr](/mieten/muelheim/arbeitsbuehnen)`
+[→ Arbeitsbühnen in Krefeld](/mieten/krefeld/arbeitsbuehnen/) · [→ Arbeitsbühnen in Bonn](/mieten/bonn/arbeitsbuehnen/) · [→ Arbeitsbühnen in Mülheim an der Ruhr](/mieten/muelheim/arbeitsbuehnen/)`
   },
   {
     slug: "anhaenger-richtig-beladen-ladung-sichern",
@@ -862,7 +862,7 @@ Für Fahrzeug und Ladung zusammen gelten feste Grenzen:
 
 Ragt die Ladung mehr als 1 m über die Rückstrahler des Anhängers hinaus, musst Du sie kenntlich machen: mit einer hellroten Fahne oder einem hellroten Schild von mindestens 30 × 30 cm oder einem roten zylindrischen Körper mit mindestens 35 cm Durchmesser. Diese Kennzeichnung darf höchstens 1,5 m über der Fahrbahn angebracht sein. Bei Dunkelheit kommt eine rote Leuchte hinzu.
 
-Und ganz wichtig: Das zulässige Gesamtgewicht des Anhängers ist keine Empfehlung. Es steht in der Zulassungsbescheinigung und in unseren Produktdaten zum jeweiligen Mietanhänger. Falls Du unsicher bist, findest Du in unserem Ratgeber, [welche Führerscheinklasse Du für Deinen Anhänger brauchst](/ratgeber/anhaenger-fuehrerschein-b-b96-be).
+Und ganz wichtig: Das zulässige Gesamtgewicht des Anhängers ist keine Empfehlung. Es steht in der Zulassungsbescheinigung und in unseren Produktdaten zum jeweiligen Mietanhänger. Falls Du unsicher bist, findest Du in unserem Ratgeber, [welche Führerscheinklasse Du für Deinen Anhänger brauchst](/ratgeber/anhaenger-fuehrerschein-b-b96-be/).
 
 ## Stützlast: Die unterschätzte Stellschraube
 
@@ -902,7 +902,7 @@ Ein Praxis-Tipp aus der Vermietung: Zurre nach den ersten Kilometern einmal nach
 
 ## Anhänger mieten bei SLT Rental
 
-Bei uns bekommst Du Anhänger in verschiedenen Größen an unseren Standorten in Krefeld, Bonn und Mülheim an der Ruhr, auf Wunsch auch außerhalb der Öffnungszeiten: Du kannst Deinen Anhänger [rund um die Uhr per SMS-Code abholen](/ratgeber/anhaenger-24-stunden-mieten-sms-code). Und wenn Du das Wochenende über Zeit brauchst, lohnt sich ein Blick auf unseren [Wochenendtarif](/ratgeber/wochenendtarif-vs-tagesmiete). Zulässiges Gesamtgewicht, Nutzlast und Innenmaße findest Du bei jedem Anhänger direkt auf der Produktseite, so kannst Du schon vor der Buchung planen, was drauf darf.
+Bei uns bekommst Du Anhänger in verschiedenen Größen an unseren Standorten in Krefeld, Bonn und Mülheim an der Ruhr, auf Wunsch auch außerhalb der Öffnungszeiten: Du kannst Deinen Anhänger [rund um die Uhr per SMS-Code abholen](/ratgeber/anhaenger-24-stunden-mieten-sms-code/). Und wenn Du das Wochenende über Zeit brauchst, lohnt sich ein Blick auf unseren [Wochenendtarif](/ratgeber/wochenendtarif-vs-tagesmiete/). Zulässiges Gesamtgewicht, Nutzlast und Innenmaße findest Du bei jedem Anhänger direkt auf der Produktseite, so kannst Du schon vor der Buchung planen, was drauf darf.
 
 ## Häufige Fragen
 
