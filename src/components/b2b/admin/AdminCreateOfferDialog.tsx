@@ -991,11 +991,42 @@ export function AdminCreateOfferDialog({
                           {isMandatory && <span className="text-[10px] text-primary ml-1">(Pflicht)</span>}
                         </p>
                         {service.pricePercent !== null && !service.customPriceInput && (
-                          <span className="text-[11px] text-muted-foreground whitespace-nowrap">
-                            {service.pricePercent}% {selectedServices.has(service.id) && itemsNetTotal > 0 && surchargeEntry
-                              ? `(${formatCurrency(surchargeEntry.amount)})`
-                              : ""}
-                          </span>
+                          selectedServices.has(service.id) ? (
+                            <div className="flex items-center gap-1 shrink-0">
+                              <Input
+                                type="number"
+                                min={0}
+                                max={100}
+                                step={0.1}
+                                value={
+                                  customServicePercents[service.id] !== undefined
+                                    ? customServicePercents[service.id]
+                                    : service.pricePercent
+                                }
+                                onChange={(e) => {
+                                  const raw = e.target.value;
+                                  setCustomServicePercents((prev) => {
+                                    const next = { ...prev };
+                                    if (raw === "") {
+                                      delete next[service.id];
+                                    } else {
+                                      next[service.id] = Math.max(0, Math.min(100, parseFloat(raw) || 0));
+                                    }
+                                    return next;
+                                  });
+                                }}
+                                className="h-7 w-16 text-[11px] px-1.5 text-right"
+                                aria-label={`Prozentsatz ${service.name}`}
+                              />
+                              <span className="text-[11px] text-muted-foreground whitespace-nowrap">
+                                % {itemsNetTotal > 0 && surchargeEntry ? `(${formatCurrency(surchargeEntry.amount)})` : ""}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-[11px] text-muted-foreground whitespace-nowrap">
+                              {service.pricePercent}%
+                            </span>
+                          )
                         )}
                       </div>
                       <p className="text-[11px] text-muted-foreground">{service.description}</p>
