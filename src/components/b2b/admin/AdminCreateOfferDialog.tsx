@@ -1030,6 +1030,25 @@ export function AdminCreateOfferDialog({
                         )}
                       </div>
                       <p className="text-[11px] text-muted-foreground">{service.description}</p>
+                      {service.pricePercent !== null &&
+                        !service.customPriceInput &&
+                        selectedServices.has(service.id) &&
+                        customServicePercents[service.id] !== undefined &&
+                        customServicePercents[service.id] !== service.pricePercent && (
+                          <button
+                            type="button"
+                            className="text-[11px] text-primary underline mt-0.5"
+                            onClick={() =>
+                              setCustomServicePercents((prev) => {
+                                const next = { ...prev };
+                                delete next[service.id];
+                                return next;
+                              })
+                            }
+                          >
+                            Standard {service.pricePercent}% wiederherstellen
+                          </button>
+                        )}
                       {service.customPriceInput && selectedServices.has(service.id) && (
                         <div className="flex items-center gap-2 mt-1.5">
                           <Euro className="h-3.5 w-3.5 text-muted-foreground" />
