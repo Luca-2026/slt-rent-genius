@@ -161,7 +161,7 @@ export default function Index() {
               <AnimatedSection key={loc.id} delay={index * 100} animation="fade-in-up">
                 <Card className="h-full group hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary/30 overflow-hidden flex flex-col">
                   {/* Location Image */}
-                  <Link to={`/mieten/${loc.id}`} className="aspect-[16/9] relative overflow-hidden block cursor-pointer">
+                  <Link to={`/mieten/${loc.id}/`} className="aspect-[16/9] relative overflow-hidden block cursor-pointer">
                     {loc.image ? (
                       <img
                         src={loc.image}
@@ -256,7 +256,7 @@ export default function Index() {
                     </a>
 
                     {/* CTA - pushed to bottom */}
-                    <Link to={`/mieten/${loc.id}`} className="mt-auto">
+                    <Link to={`/mieten/${loc.id}/`} className="mt-auto">
                       <Button className="w-full bg-primary hover:bg-primary/90 md:text-[10px] md:h-9 md:px-2 lg:text-sm lg:h-10 lg:px-4">
                         {t("locations.viewCategories")}
                         <ArrowRight className="ml-1 h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 shrink-0" />
@@ -269,7 +269,7 @@ export default function Index() {
           </div>
 
           <AnimatedSection className="text-center mt-10" delay={300}>
-            <Link to="/standorte">
+            <Link to="/standorte/">
               <Button variant="outline" size="lg" className="group border-2 hover:border-primary hover:bg-primary hover:text-primary-foreground">
                 {t("locations.viewAll")}
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -375,7 +375,7 @@ export default function Index() {
                 {t("cta.subtitleExtended")}
               </p>
               <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center w-full">
-                <Link to="/mieten" className="sm:flex-1">
+                <Link to="/mieten/" className="sm:flex-1">
                   <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-10 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 w-full">
                     {t("cta.rentEquipment")}
                   </Button>
@@ -418,14 +418,14 @@ export default function Index() {
             <div className="max-w-4xl mx-auto prose prose-sm sm:prose-base text-muted-foreground px-1 sm:px-0">
               <h2 className="text-xl sm:text-2xl font-bold text-headline mb-4 sm:mb-6">{t("homeSeo.heading")}</h2>
               <p>
-                {t("homeSeo.intro")} <Link to="/mieten/krefeld" className="text-primary hover:underline font-medium">Krefeld</Link>, <Link to="/mieten/bonn" className="text-primary hover:underline font-medium">Bonn</Link> und <Link to="/mieten/muelheim" className="text-primary hover:underline font-medium">Mülheim an der Ruhr</Link> {t("homeSeo.introMiddle")} <button type="button" onClick={() => { setSeoLocationTarget("erdbewegung"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">{t("homeSeo.miniExcavator")}</button> {t("homeSeo.introFor1")} <button type="button" onClick={() => { setSeoLocationTarget("arbeitsbuehnen"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">{t("homeSeo.aerialPlatform")}</button> {t("homeSeo.introFor2")} <button type="button" onClick={() => { setSeoLocationTarget("huepfburgen"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">{t("homeSeo.bouncyCastle")}</button> {t("homeSeo.introFor3")}
+                {t("homeSeo.intro")} <Link to="/mieten/krefeld/" className="text-primary hover:underline font-medium">Krefeld</Link>, <Link to="/mieten/bonn/" className="text-primary hover:underline font-medium">Bonn</Link> und <Link to="/mieten/muelheim/" className="text-primary hover:underline font-medium">Mülheim an der Ruhr</Link> {t("homeSeo.introMiddle")} <button type="button" onClick={() => { setSeoLocationTarget("erdbewegung"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">{t("homeSeo.miniExcavator")}</button> {t("homeSeo.introFor1")} <button type="button" onClick={() => { setSeoLocationTarget("arbeitsbuehnen"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">{t("homeSeo.aerialPlatform")}</button> {t("homeSeo.introFor2")} <button type="button" onClick={() => { setSeoLocationTarget("huepfburgen"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">{t("homeSeo.bouncyCastle")}</button> {t("homeSeo.introFor3")}
               </p>
               <h3 className="text-base sm:text-lg font-semibold text-headline mt-6 sm:mt-8 mb-2 sm:mb-3">{t("homeSeo.sortimentHeading")}</h3>
               <p>
                 {t("homeSeo.sortimentIntro")} <button type="button" onClick={() => { setSeoLocationTarget("erdbewegung"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0"><strong>{t("homeSeo.excavatorsAndLoaders")}</strong></button> {t("homeSeo.sortimentOver")} 
                 <button type="button" onClick={() => { setSeoLocationTarget("verdichtung"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0"><strong> {t("homeSeo.compactors")}</strong></button> {t("homeSeo.sortimentAnd")} <button type="button" onClick={() => { setSeoLocationTarget("heizung-trocknung"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0"><strong>{t("homeSeo.dryers")}</strong></button> {t("homeSeo.sortimentTo")} <button type="button" onClick={() => { setSeoLocationTarget("werkzeuge"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0"><strong>{t("homeSeo.tools")}</strong></button>. 
                 {t("homeSeo.sortimentEvents")} <button type="button" onClick={() => { setSeoLocationTarget("moebel-zelte"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">{t("homeSeo.tentsAndFurniture")}</button>, <button type="button" onClick={() => { setSeoLocationTarget("geschirr-glaeser-besteck"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">{t("homeSeo.dishware")}</button>, <button type="button" onClick={() => { setSeoLocationTarget("beschallung"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">{t("homeSeo.paSystem")}</button>, <button type="button" onClick={() => { setSeoLocationTarget("beleuchtung"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">{t("homeSeo.lighting")}</button> 
-                {t("homeSeo.sortimentAndPro")} <button type="button" onClick={() => { setSeoLocationTarget("buehne"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">{t("homeSeo.stageSystems")}</button>. {t("homeSeo.sortimentMuelheim")} <Link to="/mieten/muelheim/erdbewegung" className="text-primary hover:underline font-medium">{t("homeSeo.bobcatProgram")}</Link> {t("homeSeo.sortimentMuelheimEnd")}
+                {t("homeSeo.sortimentAndPro")} <button type="button" onClick={() => { setSeoLocationTarget("buehne"); setLocationDialogOpen(true); }} className="text-primary hover:underline font-medium inline cursor-pointer bg-transparent border-none p-0">{t("homeSeo.stageSystems")}</button>. {t("homeSeo.sortimentMuelheim")} <Link to="/mieten/muelheim/erdbewegung/" className="text-primary hover:underline font-medium">{t("homeSeo.bobcatProgram")}</Link> {t("homeSeo.sortimentMuelheimEnd")}
               </p>
               <h3 className="text-base sm:text-lg font-semibold text-headline mt-6 sm:mt-8 mb-2 sm:mb-3">{t("homeSeo.trailerHeading")}</h3>
               <p>
@@ -437,7 +437,7 @@ export default function Index() {
               </p>
               <h3 className="text-base sm:text-lg font-semibold text-headline mt-6 sm:mt-8 mb-2 sm:mb-3">{t("homeSeo.deliveryHeading")}</h3>
               <p>
-                {t("homeSeo.deliveryText1")} <Link to="/standorte" className="text-primary hover:underline font-medium">{t("homeSeo.deliveryLocations")}</Link> {t("homeSeo.deliveryText2")} <strong>{t("homeSeo.niederrhein")}</strong>, das <strong>{t("homeSeo.rheinland")}</strong> und das <strong>{t("homeSeo.ruhrgebiet")}</strong> {t("homeSeo.deliveryText3")} <Link to="/lieferung" className="text-primary hover:underline font-medium">{t("homeSeo.deliveryCalculator")}</Link>.
+                {t("homeSeo.deliveryText1")} <Link to="/standorte/" className="text-primary hover:underline font-medium">{t("homeSeo.deliveryLocations")}</Link> {t("homeSeo.deliveryText2")} <strong>{t("homeSeo.niederrhein")}</strong>, das <strong>{t("homeSeo.rheinland")}</strong> und das <strong>{t("homeSeo.ruhrgebiet")}</strong> {t("homeSeo.deliveryText3")} <Link to="/lieferung" className="text-primary hover:underline font-medium">{t("homeSeo.deliveryCalculator")}</Link>.
               </p>
               <p className="mt-4 sm:mt-6">
                 <strong>{t("homeSeo.slogan")}</strong>

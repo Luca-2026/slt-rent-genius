@@ -49,7 +49,7 @@ export default function LocalAreaPage() {
   const area = areaSlug ? getAreaBySlug(areaSlug) : undefined;
   
   if (!area) {
-    return <Navigate to="/standorte" replace />;
+    return <Navigate to="/standorte/" replace />;
   }
 
   const location = getLocationInfoById(area.locationId);
@@ -146,7 +146,7 @@ export default function LocalAreaPage() {
             <nav className="flex items-center gap-2 text-sm text-primary-foreground/60 mb-6">
               <Link to="/" className="hover:text-accent transition-colors">Home</Link>
               <span>/</span>
-              <Link to="/standorte" className="hover:text-accent transition-colors">{t("localArea.locations")}</Link>
+              <Link to="/standorte/" className="hover:text-accent transition-colors">{t("localArea.locations")}</Link>
               <span>/</span>
               <span className="text-primary-foreground">{area.name}</span>
             </nav>
@@ -172,7 +172,7 @@ export default function LocalAreaPage() {
             )}
 
             <div className="flex flex-wrap gap-4 mt-8">
-              <Link to={`/mieten/${area.locationId}`}>
+              <Link to={`/mieten/${area.locationId}/`}>
                 <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
                   <Calendar className="h-5 w-5 mr-2" />
                   {t("localArea.rentNow")}
@@ -242,7 +242,7 @@ export default function LocalAreaPage() {
           <div className={`grid grid-cols-1 sm:grid-cols-2 ${rentalCategories.length > 4 ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-6`}>
             {rentalCategories.map((category, index) => (
               <AnimatedSection key={category.id} delay={index * 100} animation="fade-in-up">
-                <Link to={`/mieten/${area.locationId}/${category.id}`}>
+                <Link to={`/mieten/${area.locationId}/${category.id}/`}>
                   <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group border-2 border-transparent hover:border-primary/20">
                     <CardContent className="p-6">
                       <h3 className="font-bold text-headline text-lg mb-2 group-hover:text-primary transition-colors">
@@ -263,7 +263,7 @@ export default function LocalAreaPage() {
           </div>
 
           <AnimatedSection className="text-center mt-10" delay={400}>
-            <Link to={`/mieten/${area.locationId}`}>
+            <Link to={`/mieten/${area.locationId}/`}>
               <Button variant="outline" size="lg" className="group">
                 {t("localArea.allCategories")}
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -351,7 +351,7 @@ export default function LocalAreaPage() {
                     </div>
 
                     <div className="flex flex-wrap gap-3 mt-6 pt-6 border-t border-border">
-                      <Link to={`/mieten/${location.id}`}>
+                      <Link to={`/mieten/${location.id}/`}>
                         <Button className="bg-primary hover:bg-primary/90">
                           {t("localArea.viewProducts")}
                           <ArrowRight className="ml-2 h-4 w-4" />
@@ -412,7 +412,7 @@ export default function LocalAreaPage() {
               {t("localArea.ctaDesc")}
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <Link to={`/mieten/${area.locationId}`}>
+              <Link to={`/mieten/${area.locationId}/`}>
                 <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
                   {t("localArea.rentNow")}
                 </Button>

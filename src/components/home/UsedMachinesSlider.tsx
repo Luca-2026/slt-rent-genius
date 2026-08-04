@@ -81,7 +81,7 @@ export function UsedMachinesSlider() {
           const price = m.price_net ? Number(m.price_net) : null;
           return (
             <Link
-              to={`/verkauf/gebrauchtmaschinen/${m.slug}`}
+              to={`/verkauf/gebrauchtmaschinen/${m.slug}/`}
               className="block w-full text-left group h-full"
             >
               <Card className="h-[360px] flex flex-col overflow-hidden border-2 hover:border-accent/40 hover:shadow-lg transition-all duration-300">
@@ -173,7 +173,7 @@ export function UsedMachinesSlider() {
       })()}
 
       <div className="section-container text-center mt-10">
-        <Link to="/verkauf/gebrauchtmaschinen">
+        <Link to="/verkauf/gebrauchtmaschinen/">
           <Button
             variant="outline"
             size="lg"

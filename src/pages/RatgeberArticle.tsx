@@ -207,7 +207,7 @@ const RatgeberArticle = () => {
   const article = slug ? getArticleBySlug(slug) : undefined;
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
 
-  if (!article) return <Navigate to="/ratgeber" replace />;
+  if (!article) return <Navigate to="/ratgeber/" replace />;
 
   const categoryCta = SLUG_TO_CATEGORY[article.slug];
 
@@ -267,7 +267,7 @@ const RatgeberArticle = () => {
           <nav className="text-sm text-muted-foreground mb-6 flex items-center gap-1">
             <Link to="/" className="hover:text-primary">Startseite</Link>
             <span>/</span>
-            <Link to="/ratgeber" className="hover:text-primary">Ratgeber</Link>
+            <Link to="/ratgeber/" className="hover:text-primary">Ratgeber</Link>
             <span>/</span>
             <span className="text-foreground truncate">{article.title}</span>
           </nav>
@@ -367,7 +367,7 @@ const RatgeberArticle = () => {
                 {relatedArticles.map((ra) => (
                   <Link
                     key={ra.slug}
-                    to={`/ratgeber/${ra.slug}`}
+                    to={`/ratgeber/${ra.slug}/`}
                     className="group flex items-center gap-3 p-4 rounded-lg border border-border hover:shadow-md transition-shadow"
                   >
                     <ArrowRight className="h-5 w-5 text-primary shrink-0" />
@@ -385,7 +385,7 @@ const RatgeberArticle = () => {
 
           {/* Back link */}
           <div className="mt-10">
-            <Link to="/ratgeber" className="inline-flex items-center gap-2 text-sm text-primary hover:underline">
+            <Link to="/ratgeber/" className="inline-flex items-center gap-2 text-sm text-primary hover:underline">
               <ArrowLeft className="h-4 w-4" />
               Alle Ratgeber-Artikel
             </Link>

@@ -151,7 +151,7 @@ function SolutionCard({ solution }: { solution: Solution }) {
   const highlights = t(`solutions.items.${solution.id}.highlights`, { returnObjects: true }) as string[];
 
   return (
-    <Link to={`/loesungen/${solution.id}`}>
+    <Link to={`/loesungen/${solution.id}/`}>
       <Card className="h-full group hover:shadow-lg transition-all duration-300 overflow-hidden border-2 hover:border-primary/20 hover:-translate-y-1">
         <div className={`aspect-[16/10] md:aspect-[16/9] bg-gradient-to-br ${solution.color} relative overflow-hidden`}>
           <img src={solution.image} alt={title} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-500" />
@@ -263,7 +263,7 @@ export default function Loesungen() {
                     {t("solutions.requestConsultation")}
                   </Button>
                 </Link>
-                <Link to="/standorte">
+                <Link to="/standorte/">
                   <Button size="lg" variant="outline">
                     {t("solutions.findLocations")}
                   </Button>

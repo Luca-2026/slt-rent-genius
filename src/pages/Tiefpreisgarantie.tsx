@@ -150,7 +150,7 @@ export default function Tiefpreisgarantie() {
                       <p className="text-sm text-muted-foreground">
                         Der günstigere Anbieter muss sich innerhalb eines Radius von 10 km
                         zu einem unserer{" "}
-                        <Link to="/standorte" className="text-primary hover:underline">
+                        <Link to="/standorte/" className="text-primary hover:underline">
                           Standorte
                         </Link>{" "}
                         (Krefeld, Bonn oder Mülheim) befinden.

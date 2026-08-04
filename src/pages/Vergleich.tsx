@@ -183,7 +183,7 @@ export default function Vergleich() {
         <div className="section-container">
           <AnimatedSection animation="fade-in-up">
             <Link
-              to="/vergleich"
+              to="/vergleich/"
               className="inline-flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground text-xs md:text-sm mb-4 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -309,7 +309,7 @@ export default function Vergleich() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg" variant="secondary">
-                <Link to="/mieten">Mietkatalog ansehen</Link>
+                <Link to="/mieten/">Mietkatalog ansehen</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="bg-transparent text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary">
                 <Link to="/kontakt">
@@ -324,7 +324,7 @@ export default function Vergleich() {
                 .filter((v) => v.slug !== data.slug)
                 .map((v, i, arr) => (
                   <span key={v.slug}>
-                    <Link to={`/vergleich/${v.slug}`} className="underline hover:text-primary-foreground">
+                    <Link to={`/vergleich/${v.slug}/`} className="underline hover:text-primary-foreground">
                       SLT vs. {v.competitorShort}
                     </Link>
                     {i < arr.length - 1 ? " · " : ""}

@@ -99,7 +99,7 @@ export default function VergleichIndex() {
                       {v.teaser}
                     </p>
                     <Button asChild variant="outline" className="w-full">
-                      <Link to={`/vergleich/${v.slug}`}>
+                      <Link to={`/vergleich/${v.slug}/`}>
                         Zum Vergleich
                         <ArrowRight className="h-4 w-4 ml-2" />
                       </Link>
@@ -127,7 +127,7 @@ export default function VergleichIndex() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg" variant="secondary">
-                <Link to="/mieten">Mietkatalog ansehen</Link>
+                <Link to="/mieten/">Mietkatalog ansehen</Link>
               </Button>
               <Button
                 asChild

@@ -119,7 +119,7 @@ export default function Dienstleistungen() {
               Service drumherum – damit Sie sich auf Ihr Projekt konzentrieren können.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link to="/mieten">
+              <Link to="/mieten/">
                 <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
                   {t("nav.rentNow")}
                   <ArrowRight className="ml-2 h-4 w-4" />

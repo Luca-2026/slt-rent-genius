@@ -234,7 +234,7 @@ export default function Contact() {
                 </AnimatedSection>
 
                 <div className="mt-6">
-                  <Link to="/standorte">
+                  <Link to="/standorte/">
                     <Button variant="outline" className="w-full">{t("contact.allLocations")}</Button>
                   </Link>
                 </div>

@@ -260,7 +260,7 @@ export function Header() {
             <NavDropdown label={t("nav.service")} items={serviceItems} />
             <NavDropdown label={t("nav.solutions")} items={loesungenItems} />
             <Link
-              to="/standorte"
+              to="/standorte/"
               className={`text-xs xl:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                 isActive("/standorte")
                   ? "text-primary"
@@ -296,7 +296,7 @@ export function Header() {
             <div className="hidden lg:flex items-center gap-2">
               <LanguageSwitcher />
 
-              <Link to="/mieten">
+              <Link to="/mieten/">
                 <Button size="sm" className="bg-accent text-accent-foreground hover:bg-cta-orange-hover whitespace-nowrap">
                   {t("nav.rentNow")}
                 </Button>
@@ -343,7 +343,7 @@ export function Header() {
             />
 
             <Link
-              to="/standorte"
+              to="/standorte/"
               className={`px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                 isActive("/standorte") ? "bg-primary/10 text-primary" : "hover:bg-muted text-foreground"
               }`}
@@ -372,7 +372,7 @@ export function Header() {
             </Link>
 
             <Link
-              to="/mieten"
+              to="/mieten/"
               className="mt-2 px-4"
               onClick={() => setIsMenuOpen(false)}
             >

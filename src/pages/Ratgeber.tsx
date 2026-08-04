@@ -40,7 +40,7 @@ const Ratgeber = () => {
               .map((article) => (
               <Link
                 key={article.slug}
-                to={`/ratgeber/${article.slug}`}
+                to={`/ratgeber/${article.slug}/`}
                 className="group block rounded-xl border border-border bg-card overflow-hidden hover:shadow-lg transition-shadow"
               >
                 <div className="aspect-[16/9] bg-muted overflow-hidden">

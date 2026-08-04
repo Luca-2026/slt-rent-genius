@@ -52,7 +52,7 @@ export default function SLTUsedDetail() {
   }
 
   if (!machine) {
-    return <Navigate to="/verkauf/gebrauchtmaschinen" replace />;
+    return <Navigate to="/verkauf/gebrauchtmaschinen/" replace />;
   }
 
   const priceNet = machine.price_net ? Number(machine.price_net) : null;
@@ -207,7 +207,7 @@ export default function SLTUsedDetail() {
       {/* Breadcrumb */}
       <div className="bg-muted/30 border-b border-border">
         <div className="section-container py-3 text-sm text-muted-foreground">
-          <Link to="/verkauf/gebrauchtmaschinen" className="inline-flex items-center gap-1 hover:text-primary transition-colors">
+          <Link to="/verkauf/gebrauchtmaschinen/" className="inline-flex items-center gap-1 hover:text-primary transition-colors">
             <ArrowLeft className="h-3 w-3" />
             Zurück zu allen Gebrauchtmaschinen
           </Link>

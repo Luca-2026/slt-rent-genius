@@ -37,7 +37,7 @@ export default function LoesungDetail() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>();
 
   if (!solution) {
-    return <Navigate to="/loesungen" replace />;
+    return <Navigate to="/loesungen/" replace />;
   }
 
   const Icon = solution.icon;
@@ -129,7 +129,7 @@ export default function LoesungDetail() {
         </div>
         <div className="section-container relative z-10">
           <Link 
-            to="/loesungen" 
+            to="/loesungen/" 
             className="inline-flex items-center text-primary hover:text-primary/80 mb-6 transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -427,7 +427,7 @@ export default function LoesungDetail() {
                       {t("solutions.readyForProjectDesc")}
                     </p>
                     <div className="flex flex-wrap gap-4">
-                      <Link to="/standorte">
+                      <Link to="/standorte/">
                         <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
                           <MapPin className="mr-2 h-4 w-4" />
                           {t("solutions.findLocations")}
@@ -466,7 +466,7 @@ export default function LoesungDetail() {
               const otherSubtitle = t(`solutions.items.${otherSolution.id}.subtitle`);
               return (
                 <AnimatedSection key={otherSolution.id} animation="fade-in-up" delay={index * 0.1}>
-                  <Link to={`/loesungen/${otherSolution.id}`}>
+                  <Link to={`/loesungen/${otherSolution.id}/`}>
                     <Card className="h-full group hover:shadow-md transition-all border-2 hover:border-primary/20">
                       <div className="aspect-[16/9] relative overflow-hidden">
                         {otherSolution.image ? (
