@@ -124,6 +124,7 @@ export interface OfferFormDraft {
   deposit: string;
   selectedServices: string[];
   customServicePrices: Record<string, number>;
+  customServicePercents?: Record<string, number>;
   issuingLocation: string;
   returnLocation: string;
   selectedProfileId: string;
