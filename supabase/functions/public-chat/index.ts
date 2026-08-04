@@ -630,7 +630,6 @@ function labelFromSlug(slug: string) {
   const overrides: Record<string, string> = {
     "scherenbuehne-8m": "7,8 m Scherenarbeitsbühne elektro (Typ ZS0607)",
     "scherenbuehne-12m": "11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)",
-    "mastbuehne-11m": "11 m Mastbühne",
     "gelenkteleskopsteiger-12m": "12 m Gelenkteleskopsteiger",
     "anhaengerbuehne-18m": "18 m Anhängerbühne",
   };
@@ -828,7 +827,7 @@ function curatedProductLinks(categoryId: string, text: string, location: string)
   const wantsTrailer = /(anhaenger|anhaengerbuehne|18\s*m)/i.test(normalized);
 
   if (wantsTelescope) add("12 m Gelenkteleskopsteiger", "gelenkteleskopsteiger-12m");
-  if (wantsMast || height === 11) add("11 m Mastbühne", "mastbuehne-11m");
+  if (wantsMast || height === 11) add("11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)", "scherenbuehne-12m");
   if (wantsScissor && (height === null || height <= 8)) add("7,8 m Scherenarbeitsbühne elektro (Typ ZS0607)", "scherenbuehne-8m");
   if (wantsScissor && (height === null || height > 8)) add("11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)", "scherenbuehne-12m");
   if (wantsTrailer || (height !== null && height > 12)) add("Anhängerbühne 18 m", "anhaengerbuehne-18m");
@@ -836,7 +835,6 @@ function curatedProductLinks(categoryId: string, text: string, location: string)
   if (links.length === 0 && height !== null) {
     if (height <= 8) add("7,8 m Scherenarbeitsbühne elektro (Typ ZS0607)", "scherenbuehne-8m");
     else if (height <= 11) {
-      add("Mastbühne 11 m", "mastbuehne-11m");
       add("11,8 m Scherenarbeitsbühne elektro (Typ ZS1012)", "scherenbuehne-12m");
     } else if (height <= 12) {
       add("Gelenkteleskopsteiger 12 m", "gelenkteleskopsteiger-12m");
