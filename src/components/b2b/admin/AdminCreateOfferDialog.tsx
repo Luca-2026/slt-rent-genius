@@ -290,7 +290,7 @@ export function AdminCreateOfferDialog({
   // Auto-select mandatory services whenever item categories change
   useEffect(() => {
     const categorySlugs = items
-      .map((item) => item.category_slug)
+      .map((item) => item.category_slug || getProductCategorySlug(item.product_name))
       .filter((s): s is string => !!s);
     const mandatoryIds = getMandatoryServiceIds(categorySlugs);
     if (mandatoryIds.size > 0) {
@@ -390,8 +390,13 @@ export function AdminCreateOfferDialog({
     setItems((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // Resolve the category of an item; fall back to a name lookup so percentage
+  // services (MBV, Vollkasko …) never silently calculate on a 0 € base.
+  const resolveItemCategory = (item: OfferItemInput): string | undefined =>
+    item.category_slug || getProductCategorySlug(item.product_name) || undefined;
+
   // Compute mandatory service IDs for current items
-  const currentCategorySlugs = items.map((i) => i.category_slug).filter((s): s is string => !!s);
+  const currentCategorySlugs = items.map(resolveItemCategory).filter((s): s is string => !!s);
   const mandatoryServiceIds = getMandatoryServiceIds(currentCategorySlugs);
 
   const toggleService = (serviceId: string) => {
@@ -426,7 +431,7 @@ export function AdminCreateOfferDialog({
   // Base = item totals only (excl. delivery & deposit) for service % calculation
   const itemTotalsForServices = items.map((item) => ({
     netAmount: calculateItemTotal(item),
-    categorySlug: item.category_slug || null,
+    categorySlug: resolveItemCategory(item) || null,
   }));
   const itemsNetTotal = itemTotalsForServices.reduce((sum, item) => sum + item.netAmount, 0);
   const { total: servicesSurcharge, breakdown: servicesBreakdown } = calculateServicesSurcharge(
@@ -518,7 +523,7 @@ export function AdminCreateOfferDialog({
             rental_end: item.rental_end || endDate,
             start_time: item.start_time || undefined,
             end_time: item.end_time || undefined,
-            category_slug: item.category_slug || undefined,
+            category_slug: resolveItemCategory(item),
             image_url: (() => {
               // Prioritize item-specific name lookup to avoid all items getting the same reservation image
               const stablePath = getProductImageStablePathByName(item.product_name) || getProductImageStablePath(reservation?.product_id || "");
