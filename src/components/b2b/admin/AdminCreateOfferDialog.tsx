@@ -333,7 +333,7 @@ export function AdminCreateOfferDialog({
           quantity: res.quantity || 1,
           unit_price: priceMap.get(productName) || res.original_price || 0,
           discount_percent: 0,
-          category_slug: res.category_slug || undefined,
+          category_slug: res.category_slug || getProductCategorySlug(res.product_name) || undefined,
         };
       })
     );
