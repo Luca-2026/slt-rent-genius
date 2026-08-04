@@ -21,11 +21,27 @@ export function getProductDescription(productName: string): string {
   return "";
 }
 
-/** Resolve category slug from product name for edit/reload flows */
+const normalizeProductName = (value: string) =>
+  value.toLowerCase().replace(/\s+/g, " ").replace(/[^a-z0-9äöüß ,.-]/g, "").trim();
+
+/**
+ * Resolve category slug from product name for edit/reload flows.
+ * Falls back to a normalized comparison so slightly different spellings
+ * (extra spaces, casing) still resolve — a missing category silently zeroes
+ * percentage-based additional services (MBV etc.).
+ */
 export function getProductCategorySlug(productName: string): string | undefined {
+  if (!productName) return undefined;
   for (const loc of locations) {
     for (const [categorySlug, products] of Object.entries(loc.products)) {
       if (products.some((p) => p.name === productName)) return categorySlug;
+    }
+  }
+  const normalized = normalizeProductName(productName);
+  if (!normalized) return undefined;
+  for (const loc of locations) {
+    for (const [categorySlug, products] of Object.entries(loc.products)) {
+      if (products.some((p) => normalizeProductName(p.name) === normalized)) return categorySlug;
     }
   }
   return undefined;
