@@ -69,6 +69,8 @@ export function AdminCreateOfferDialog({
   const [deposit, setDeposit] = useState<string>("");
   const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
   const [customServicePrices, setCustomServicePrices] = useState<Record<string, number>>({});
+  // Editable percentage overrides per service (empty = use the default rate)
+  const [customServicePercents, setCustomServicePercents] = useState<Record<string, number>>({});
   const [issuingLocation, setIssuingLocation] = useState("krefeld");
   const [returnLocation, setReturnLocation] = useState("");
   const [selectedProfileId, setSelectedProfileId] = useState("");
@@ -104,6 +106,7 @@ export function AdminCreateOfferDialog({
       deposit,
       selectedServices: Array.from(selectedServices),
       customServicePrices: { ...customServicePrices },
+      customServicePercents: { ...customServicePercents },
       issuingLocation,
       returnLocation,
       selectedProfileId,
@@ -112,7 +115,7 @@ export function AdminCreateOfferDialog({
       deliveryAddressCity,
       paymentTerms,
     };
-  }, [items, deliveryCostDelivery, deliveryCostReturn, includeReturn, validDays, notes, sendEmail, deposit, selectedServices, customServicePrices, issuingLocation, returnLocation, selectedProfileId, deliveryAddressStreet, deliveryAddressPostalCode, deliveryAddressCity, paymentTerms, existingOffer?.id, reservation?.id]);
+  }, [items, deliveryCostDelivery, deliveryCostReturn, includeReturn, validDays, notes, sendEmail, deposit, selectedServices, customServicePrices, customServicePercents, issuingLocation, returnLocation, selectedProfileId, deliveryAddressStreet, deliveryAddressPostalCode, deliveryAddressCity, paymentTerms, existingOffer?.id, reservation?.id]);
 
   // Auto-save draft on every state change (debounced)
   useEffect(() => {
@@ -143,6 +146,7 @@ export function AdminCreateOfferDialog({
       setDeposit(draft.deposit);
       setSelectedServices(new Set(draft.selectedServices));
       setCustomServicePrices(draft.customServicePrices || {});
+      setCustomServicePercents(draft.customServicePercents || {});
       setIssuingLocation(draft.issuingLocation);
       setReturnLocation(draft.returnLocation);
       setSelectedProfileId(draft.selectedProfileId);
@@ -223,13 +227,20 @@ export function AdminCreateOfferDialog({
       if (parsedServices && Array.isArray(parsedServices) && parsedServices.length > 0) {
         setSelectedServices(new Set(parsedServices.map((s: any) => s.id)));
         const restoredPrices: Record<string, number> = {};
+        const restoredPercents: Record<string, number> = {};
         for (const s of parsedServices as any[]) {
           if (s.customPrice) restoredPrices[s.id] = s.customPrice;
+          const defaultPercent = ADDITIONAL_SERVICES.find((d) => d.id === s.id)?.pricePercent ?? null;
+          if (typeof s.pricePercent === "number" && s.pricePercent !== defaultPercent) {
+            restoredPercents[s.id] = s.pricePercent;
+          }
         }
         setCustomServicePrices(restoredPrices);
+        setCustomServicePercents(restoredPercents);
       } else {
         setSelectedServices(new Set());
         setCustomServicePrices({});
+        setCustomServicePercents({});
       }
     } else if (reservation) {
       setDeposit(reservation.deposit ? String(reservation.deposit) : "");
@@ -247,6 +258,7 @@ export function AdminCreateOfferDialog({
       }
       setSelectedServices(collectedServiceIds);
       setCustomServicePrices({});
+      setCustomServicePercents({});
       // Parse delivery address from reservation notes
       const resNotes = reservation.notes || "";
       const deliveryMatch = resNotes.match(/🚚\s*Lieferung gewünscht:\s*(.+),\s*(\d{4,5})\s+(.+)/);
@@ -269,6 +281,7 @@ export function AdminCreateOfferDialog({
       setDeposit("");
       setSelectedServices(new Set());
       setCustomServicePrices({});
+      setCustomServicePercents({});
       setSelectedProfileId("");
       setIssuingLocation("krefeld");
       setReturnLocation("");
@@ -438,7 +451,8 @@ export function AdminCreateOfferDialog({
     selectedServices,
     itemsNetTotal,
     customServicePrices,
-    itemTotalsForServices
+    itemTotalsForServices,
+    customServicePercents
   );
   const totalDeliveryCost = deliveryCostDelivery + (includeReturn ? deliveryCostReturn : 0);
   const netAmount = itemsNetTotal + totalDeliveryCost + servicesSurcharge;
@@ -499,7 +513,9 @@ export function AdminCreateOfferDialog({
             id: s.id,
             name: s.name,
             description: s.description,
-            pricePercent: s.pricePercent,
+            pricePercent: s.customPriceInput
+              ? s.pricePercent
+              : (typeof customServicePercents[s.id] === "number" ? customServicePercents[s.id] : s.pricePercent),
             applicableCategories: s.applicableCategories,
             calculationBase: s.calculationBase,
             customPrice: s.customPriceInput ? (customServicePrices[s.id] || 0) : undefined,
@@ -975,14 +991,64 @@ export function AdminCreateOfferDialog({
                           {isMandatory && <span className="text-[10px] text-primary ml-1">(Pflicht)</span>}
                         </p>
                         {service.pricePercent !== null && !service.customPriceInput && (
-                          <span className="text-[11px] text-muted-foreground whitespace-nowrap">
-                            {service.pricePercent}% {selectedServices.has(service.id) && itemsNetTotal > 0 && surchargeEntry
-                              ? `(${formatCurrency(surchargeEntry.amount)})`
-                              : ""}
-                          </span>
+                          selectedServices.has(service.id) ? (
+                            <div className="flex items-center gap-1 shrink-0">
+                              <Input
+                                type="number"
+                                min={0}
+                                max={100}
+                                step={0.1}
+                                value={
+                                  customServicePercents[service.id] !== undefined
+                                    ? customServicePercents[service.id]
+                                    : service.pricePercent
+                                }
+                                onChange={(e) => {
+                                  const raw = e.target.value;
+                                  setCustomServicePercents((prev) => {
+                                    const next = { ...prev };
+                                    if (raw === "") {
+                                      delete next[service.id];
+                                    } else {
+                                      next[service.id] = Math.max(0, Math.min(100, parseFloat(raw) || 0));
+                                    }
+                                    return next;
+                                  });
+                                }}
+                                className="h-7 w-16 text-[11px] px-1.5 text-right"
+                                aria-label={`Prozentsatz ${service.name}`}
+                              />
+                              <span className="text-[11px] text-muted-foreground whitespace-nowrap">
+                                % {itemsNetTotal > 0 && surchargeEntry ? `(${formatCurrency(surchargeEntry.amount)})` : ""}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-[11px] text-muted-foreground whitespace-nowrap">
+                              {service.pricePercent}%
+                            </span>
+                          )
                         )}
                       </div>
                       <p className="text-[11px] text-muted-foreground">{service.description}</p>
+                      {service.pricePercent !== null &&
+                        !service.customPriceInput &&
+                        selectedServices.has(service.id) &&
+                        customServicePercents[service.id] !== undefined &&
+                        customServicePercents[service.id] !== service.pricePercent && (
+                          <button
+                            type="button"
+                            className="text-[11px] text-primary underline mt-0.5"
+                            onClick={() =>
+                              setCustomServicePercents((prev) => {
+                                const next = { ...prev };
+                                delete next[service.id];
+                                return next;
+                              })
+                            }
+                          >
+                            Standard {service.pricePercent}% wiederherstellen
+                          </button>
+                        )}
                       {service.customPriceInput && selectedServices.has(service.id) && (
                         <div className="flex items-center gap-2 mt-1.5">
                           <Euro className="h-3.5 w-3.5 text-muted-foreground" />

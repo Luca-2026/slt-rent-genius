@@ -178,9 +178,11 @@ export function calculateServicesSurcharge(
   selectedServiceIds: Set<string>,
   baseNetAmount: number,
   customPrices?: Record<string, number>,
-  itemTotals?: ServicePricingItem[]
-): { total: number; breakdown: { service: AdditionalService; amount: number }[] } {
-  const breakdown: { service: AdditionalService; amount: number }[] = [];
+  itemTotals?: ServicePricingItem[],
+  /** Optional per-service percentage overrides (admin can adjust the default rate) */
+  customPercents?: Record<string, number>
+): { total: number; breakdown: { service: AdditionalService; amount: number; percent: number | null }[] } {
+  const breakdown: { service: AdditionalService; amount: number; percent: number | null }[] = [];
   let total = 0;
 
   const hasItemContext = !!itemTotals?.length;
@@ -197,13 +199,19 @@ export function calculateServicesSurcharge(
     if (service.customPriceInput) {
       const customAmount = customPrices?.[service.id] || 0;
       if (customAmount > 0) {
-        breakdown.push({ service, amount: customAmount });
+        breakdown.push({ service, amount: customAmount, percent: null });
         total += customAmount;
       }
       continue;
     }
 
-    if (service.pricePercent === null) continue;
+    const overridePercent = customPercents?.[service.id];
+    const effectivePercent =
+      typeof overridePercent === "number" && !Number.isNaN(overridePercent) && overridePercent >= 0
+        ? overridePercent
+        : service.pricePercent;
+
+    if (effectivePercent === null || effectivePercent === undefined) continue;
 
     let baseForService = baseNetAmount;
     if (hasItemContext) {
@@ -226,9 +234,9 @@ export function calculateServicesSurcharge(
       }
     }
 
-    const amount = Math.round(baseForService * (service.pricePercent / 100) * 100) / 100;
+    const amount = Math.round(baseForService * (effectivePercent / 100) * 100) / 100;
     if (amount <= 0) continue;
-    breakdown.push({ service, amount });
+    breakdown.push({ service, amount, percent: effectivePercent });
     total += amount;
   }
 
