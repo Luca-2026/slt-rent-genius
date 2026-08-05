@@ -36,8 +36,15 @@ Deno.test("Angebot und Rechnung teilen denselben Layout-Rahmen", async () => {
   const titleI = textsOfPage(invoice).find((t) => t.t === "RECHNUNG")!;
   assert(titleO && titleI, "Dokumenttitel fehlt");
   near(titleO.x, titleI.x, 0.6, "Titel X");
-  near(titleO.y, titleI.y, 2, "Titel Y");
   near(titleO.size, titleI.size, 0.1, "Titelgröße");
+  // Titel-Y hängt von der Länge des Info-Blocks ab (Angebot hat mehr Zeilen),
+  // konstant sein muss aber der Abstand Titel -> Dokumentnummer.
+  const numO = textsOfPage(offer).find((t) => t.t.startsWith("Nr. ANG-"))!;
+  const numI = textsOfPage(invoice).find((t) => t.t.startsWith("Nr. RE-"))!;
+  assert(numO && numI, "Dokumentnummer unter dem Titel fehlt");
+  near(titleO.y - numO.y, titleI.y - numI.y, 0.1, "Abstand Titel/Nummer");
+  near(numO.x, numI.x, 0.6, "Nummer X");
+  near(numO.size, numI.size, 0.1, "Nummer-Schriftgröße");
 
   // Fußzeile auf gleicher Höhe
   const footY = (s: typeof offer) => Math.min(...textsOfPage(s).map((t) => t.y));
