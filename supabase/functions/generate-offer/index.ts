@@ -1046,8 +1046,8 @@ async function generateOfferPdf(data: {
       const drawH = logoImg.height * scale;
       pg.drawImage(logoImg, { x: W - MR - targetW, y: yy - drawH, width: targetW, height: drawH });
     }
-    dt(pg, `${TITLE} \u00B7 ${data.offerNumber}`, ML, yy - 12, bold, 10, BRAND);
-    yy -= 40;
+    dt(pg, `${TITLE} \u00B7 ${data.offerNumber}`, ML, yy - 46, bold, 10, BRAND);
+    yy -= 74;
     return { pg, y: renderTableHeader(pg, yy) };
   };
 
