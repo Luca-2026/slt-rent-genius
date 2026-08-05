@@ -110,7 +110,7 @@ async function inflate(bytes: Uint8Array): Promise<Uint8Array> {
   for (const fmt of ["deflate", "deflate-raw"] as const) {
     try {
       const ds = new DecompressionStream(fmt);
-      const stream = new Blob([bytes]).stream().pipeThrough(ds);
+      const stream = new Blob([bytes as unknown as BlobPart]).stream().pipeThrough(ds);
       return new Uint8Array(await new Response(stream).arrayBuffer());
     } catch {
       // nächstes Format probieren
