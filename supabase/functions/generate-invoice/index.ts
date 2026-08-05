@@ -1,6 +1,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
+import { embedProductImages, normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -181,6 +182,7 @@ Deno.serve(async (req: Request) => {
           rentalStart: it.rental_start,
           rentalEnd: it.rental_end,
           itemIndex: idx,
+          imageUrl: it.image_url || null,
         })),
         serviceItems: draftServices.map((it: any) => ({
           name: it.product_name,
@@ -459,6 +461,7 @@ Deno.serve(async (req: Request) => {
           rentalStart: item.rental_start,
           rentalEnd: item.rental_end,
           itemIndex: idx,
+          imageUrl: item.image_url || null,
         })),
         serviceItems: serviceItems.map((item: any) => ({
           name: item.product_name,
@@ -949,7 +952,7 @@ async function generateDocumentPdf(data: {
   documentNumber: string;
   date: string;
   profile: any;
-  productItems: Array<{ name: string; description?: string; quantity: number; unit?: string; unitPrice?: number; totalPrice?: number; discount?: number; rentalStart?: string; rentalEnd?: string; itemIndex?: number }>;
+  productItems: Array<{ name: string; description?: string; quantity: number; unit?: string; unitPrice?: number; totalPrice?: number; discount?: number; rentalStart?: string; rentalEnd?: string; itemIndex?: number; imageUrl?: string | null }>;
   serviceItems: Array<{ name: string; description?: string; amount: number; parentItemIndex?: number }>;
   surchargeItems: Array<{ name: string; description?: string; amount: number }>;
   sections: Array<{ label: string; value: string }>;
