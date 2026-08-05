@@ -1,6 +1,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
+import { embedProductImages, normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -181,6 +182,7 @@ Deno.serve(async (req: Request) => {
           rentalStart: it.rental_start,
           rentalEnd: it.rental_end,
           itemIndex: idx,
+          imageUrl: it.image_url || null,
         })),
         serviceItems: draftServices.map((it: any) => ({
           name: it.product_name,
@@ -348,7 +350,7 @@ Deno.serve(async (req: Request) => {
           total_price: Math.round(totalPrice * 100) / 100,
           rental_start: item.rental_start || reservation?.start_date || null,
           rental_end: item.rental_end || reservation?.end_date || null,
-          image_url: item.image_url || fallbackImageUrl || null,
+          image_url: normalizeImageUrl(item.image_url || fallbackImageUrl),
           item_type: item.item_type || 'product',
           parent_item_index: item.parent_item_index,
         };
@@ -388,7 +390,7 @@ Deno.serve(async (req: Request) => {
           total_price: totalPrice,
           rental_start: res.start_date,
           rental_end: res.end_date,
-          image_url: fallbackImageUrl || null,
+          image_url: normalizeImageUrl(fallbackImageUrl),
         };
       });
     } else {
@@ -459,6 +461,7 @@ Deno.serve(async (req: Request) => {
           rentalStart: item.rental_start,
           rentalEnd: item.rental_end,
           itemIndex: idx,
+          imageUrl: item.image_url || null,
         })),
         serviceItems: serviceItems.map((item: any) => ({
           name: item.product_name,
@@ -949,7 +952,7 @@ async function generateDocumentPdf(data: {
   documentNumber: string;
   date: string;
   profile: any;
-  productItems: Array<{ name: string; description?: string; quantity: number; unit?: string; unitPrice?: number; totalPrice?: number; discount?: number; rentalStart?: string; rentalEnd?: string; itemIndex?: number }>;
+  productItems: Array<{ name: string; description?: string; quantity: number; unit?: string; unitPrice?: number; totalPrice?: number; discount?: number; rentalStart?: string; rentalEnd?: string; itemIndex?: number; imageUrl?: string | null }>;
   serviceItems: Array<{ name: string; description?: string; amount: number; parentItemIndex?: number }>;
   surchargeItems: Array<{ name: string; description?: string; amount: number }>;
   sections: Array<{ label: string; value: string }>;
@@ -1144,9 +1147,33 @@ async function generateDocumentPdf(data: {
     }
   };
 
+  // ── Produktbilder auflösen und einbetten ──
+  const imgServiceClient = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+  );
+  for (const it of data.productItems) {
+    it.imageUrl = normalizeImageUrl(it.imageUrl);
+  }
+  const missingImgNames = data.productItems.filter((i) => !i.imageUrl).map((i) => i.name);
+  if (missingImgNames.length) {
+    const resolvedImgs = await resolveImagesByName(imgServiceClient, missingImgNames);
+    for (const it of data.productItems) {
+      if (it.imageUrl) continue;
+      it.imageUrl = resolvedImgs.get((it.name || "").trim().toLowerCase()) || null;
+    }
+  }
+  const imageCache = await embedProductImages(doc, data.productItems.map((i) => i.imageUrl));
+  console.log(
+    `Produktbilder (Rechnung): ${data.productItems.filter((i) => i.imageUrl && imageCache.get(i.imageUrl)).length}/${data.productItems.length} Positionen mit Bild`,
+  );
+
   // ── item rendering ──
+  const IMG = 34;
+  const hasAnyImage = data.productItems.some((i) => i.imageUrl && imageCache.get(i.imageUrl));
   const nameColX = ML + 32;
-  const nameColW = CW * 0.60 - 32 - 6;
+  const textColX = hasAnyImage ? nameColX + IMG + 8 : nameColX;
+  const nameColW = ML + CW * 0.60 - textColX - 6;
   const qtyColRight = ML + CW * 0.60;
   const unitColX = ML + CW * 0.60 + 8;
   const unitPriceRight = ML + CW * 0.85;
@@ -1188,11 +1215,17 @@ async function generateDocumentPdf(data: {
       const period = `Mietzeitraum: ${fd(item.rentalStart)}${item.rentalEnd ? ' – ' + fd(item.rentalEnd) : ''}`;
       subLines.push(...wt(period, font, 8, nameColW));
     }
-    const rowH = 10 + nameLines.length * 12 + (subLines.length ? 4 + subLines.length * 10 : 0);
+    const img = item.imageUrl ? imageCache.get(item.imageUrl) : null;
+    let rowH = 10 + nameLines.length * 12 + (subLines.length ? 4 + subLines.length * 10 : 0);
+    if (img) rowH = Math.max(rowH, IMG + 14);
     renderRow(rowH, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 10, font, 9);
-      nameLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 10 - li * 12, bold, 9.5));
-      subLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 10 - nameLines.length * 12 - 4 - li * 10, font, 8, MUTED));
+      if (img) {
+        const sc = Math.min(IMG / img.width, IMG / img.height);
+        pg.drawImage(img, { x: nameColX, y: top - 8 - img.height * sc, width: img.width * sc, height: img.height * sc });
+      }
+      nameLines.forEach((ln, li) => dt(pg, ln, textColX, top - 10 - li * 12, bold, 9.5));
+      subLines.forEach((ln, li) => dt(pg, ln, textColX, top - 10 - nameLines.length * 12 - 4 - li * 10, font, 8, MUTED));
       dtr(pg, String(item.quantity), qtyColRight, top - 10, font, 9.5);
       dt(pg, deriveUnit(item), unitColX, top - 10, font, 9.5, MUTED);
       if (item.unitPrice != null) dtr(pg, fm(item.unitPrice), unitPriceRight, top - 10, font, 9.5);
@@ -1206,7 +1239,7 @@ async function generateDocumentPdf(data: {
       const svcLines = wt(`- ${svc.name}`, font, 8.5, nameColW);
       const h = 4 + svcLines.length * 10;
       renderRow(h, (top) => {
-        svcLines.forEach((ln, li) => dt(pg, ln, nameColX + 8, top - 8 - li * 10, font, 8.5, MUTED));
+        svcLines.forEach((ln, li) => dt(pg, ln, textColX + 8, top - 8 - li * 10, font, 8.5, MUTED));
         dt(pg, 'Pauschale', unitColX, top - 8, font, 8.5, MUTED);
         dtr(pg, fm(svc.amount), totalRight, top - 8, font, 8.5, MUTED);
       });
@@ -1217,7 +1250,7 @@ async function generateDocumentPdf(data: {
   if (data.totals?.deliveryCost && data.totals.deliveryCost > 0) {
     renderRow(26, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 10, font, 9);
-      dt(pg, "Anlieferung / Transport", nameColX, top - 10, bold, 9.5);
+      dt(pg, "Anlieferung / Transport", textColX, top - 10, bold, 9.5);
       dtr(pg, "1", qtyColRight, top - 10, font, 9.5);
       dt(pg, "Pauschale", unitColX, top - 10, font, 9.5, MUTED);
       dtr(pg, fm(data.totals.deliveryCost), unitPriceRight, top - 10, font, 9.5);
@@ -1233,7 +1266,7 @@ async function generateDocumentPdf(data: {
     const h = 4 + svcLines.length * 11;
     renderRow(h, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
-      svcLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 11, font, 9.5));
+      svcLines.forEach((ln, li) => dt(pg, ln, textColX, top - 8 - li * 11, font, 9.5));
       dtr(pg, "1", qtyColRight, top - 8, font, 9.5);
       dt(pg, "Pauschale", unitColX, top - 8, font, 9.5, MUTED);
       dtr(pg, fm(svc.amount), totalRight, top - 8, bold, 9.5);
@@ -1247,7 +1280,7 @@ async function generateDocumentPdf(data: {
     const h = 4 + scLines.length * 11;
     renderRow(h, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
-      scLines.forEach((ln, li) => dt(pg, ln, nameColX, top - 8 - li * 11, font, 9.5));
+      scLines.forEach((ln, li) => dt(pg, ln, textColX, top - 8 - li * 11, font, 9.5));
       dtr(pg, "1", qtyColRight, top - 8, font, 9.5);
       dt(pg, "Pauschale", unitColX, top - 8, font, 9.5, MUTED);
       dtr(pg, fm(sc.amount), totalRight, top - 8, bold, 9.5);

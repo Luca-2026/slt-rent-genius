@@ -1,6 +1,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { PDFDocument, StandardFonts, rgb } from "https://esm.sh/pdf-lib@1.17.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
+import { embedProductImages, normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -233,11 +234,26 @@ Deno.serve(async (req: Request) => {
         total_price: totalPrice,
         rental_start: rentalStart,
         rental_end: rentalEnd,
-        image_url: item.image_url || null,
+        image_url: normalizeImageUrl(item.image_url),
       };
     });
 
+    // Produktbilder serverseitig ergänzen: Positionen ohne (nutzbares) Bild
+    // werden über den Produktnamen im CMS nachgeschlagen.
+    const missingImageNames = offerItems.filter((i) => !i.image_url).map((i) => i.product_name);
+    if (missingImageNames.length) {
+      const resolved = await resolveImagesByName(serviceClient, missingImageNames);
+      for (const item of offerItems) {
+        if (item.image_url) continue;
+        item.image_url = resolved.get((item.product_name || "").trim().toLowerCase()) || null;
+      }
+    }
+    console.log(
+      `Produktbilder: ${offerItems.filter((i) => i.image_url).length}/${offerItems.length} Positionen mit Bild`,
+    );
+
     const itemsTotal = offerItems.reduce((sum, item) => sum + item.total_price, 0);
+
 
     // Calculate additional services surcharges and allocate them to matching items
     const sanitizeServiceDescription = (description?: string | null) => {
@@ -727,6 +743,7 @@ Deno.serve(async (req: Request) => {
       </div>` : ""}
       <p style="font-size:14px;color:#555;line-height:1.6;margin-bottom:25px;">
         Das vollständige Angebotsdokument (Nr. <strong>${offerNumber}</strong>) finden Sie als PDF im Anhang dieser E-Mail sowie in Ihrem B2B-Portal.
+        Ebenfalls im Anhang: unsere <strong>Allgemeinen Geschäfts- und Vermietbedingungen für Geschäftskunden (AGB B2B)</strong>, die diesem Angebot zugrunde liegen.
       </p>
       <div style="background:#eef6fc;border:1px solid #b3d4e8;border-radius:8px;padding:14px 18px;margin-bottom:25px;">
         <p style="font-size:14px;color:#00507d;margin:0;line-height:1.6;">
@@ -751,13 +768,41 @@ Deno.serve(async (req: Request) => {
 </body>
 </html>`;
 
-        // Attach PDF
+        // Anhang 1: Angebots-PDF
         const base64Content = encodeBase64(pdfBytes);
-        const attachments = [{
+        const attachments: { filename: string; content: string; content_type: string }[] = [{
           filename: fileName,
           content: base64Content,
           content_type: "application/pdf",
         }];
+
+        // Anhang 2: B2B-AGB (verpflichtend jedem Angebot beilegen)
+        try {
+          const { data: agbFile, error: agbError } = await serviceClient.storage
+            .from("brand-assets")
+            .download("legal/agb-b2b.pdf");
+          let agbBytes: Uint8Array | null = null;
+          if (!agbError && agbFile) {
+            agbBytes = new Uint8Array(await agbFile.arrayBuffer());
+          } else {
+            console.error("AGB-Download aus Storage fehlgeschlagen:", agbError?.message);
+            const agbResp = await fetch("https://www.slt-rental.de/b2b-documents/agb-b2b.pdf");
+            if (agbResp.ok) agbBytes = new Uint8Array(await agbResp.arrayBuffer());
+          }
+          if (agbBytes && agbBytes.length > 0) {
+            attachments.push({
+              filename: "AGB-B2B-SLT-Rental.pdf",
+              content: encodeBase64(agbBytes),
+              content_type: "application/pdf",
+            });
+            console.log(`AGB angehängt (${agbBytes.length} Bytes)`);
+          } else {
+            console.error("AGB konnten nicht angehängt werden – Angebot wird trotzdem versendet");
+          }
+        } catch (agbErr: any) {
+          console.error("AGB-Anhang fehlgeschlagen:", agbErr?.message);
+        }
+
 
         const emailRes = await fetch("https://api.resend.com/emails", {
           method: "POST",
@@ -1078,27 +1123,9 @@ async function generateOfferPdf(data: {
     return fallback;
   };
 
-  // Produktbilder vorladen
-  const imageCache = new Map<string, any>();
-  await Promise.all(
-    data.items
-      .filter((item: any) => item.image_url)
-      .map(async (item: any) => {
-        const url = item.image_url as string;
-        if (imageCache.has(url)) return;
-        try {
-          const controller = new AbortController();
-          const timeout = setTimeout(() => controller.abort(), 2000);
-          const imgResp = await fetch(url, { signal: controller.signal });
-          clearTimeout(timeout);
-          if (!imgResp.ok) return;
-          const contentType = imgResp.headers.get("content-type") || "";
-          if (!contentType.includes("image/")) return;
-          const imgBytes = new Uint8Array(await imgResp.arrayBuffer());
-          imageCache.set(url, contentType.includes("png") ? await doc.embedPng(imgBytes) : await doc.embedJpg(imgBytes));
-        } catch {}
-      })
-  );
+  // Produktbilder vorladen (JPEG/PNG; WebP/AVIF via JPG-Geschwisterdatei)
+  const imageCache = await embedProductImages(doc, data.items.map((i: any) => i.image_url));
+
 
   const IMG = 34;
   const hasAnyImage = data.items.some((i: any) => i.image_url && imageCache.get(i.image_url));
