@@ -350,7 +350,7 @@ Deno.serve(async (req: Request) => {
           total_price: Math.round(totalPrice * 100) / 100,
           rental_start: item.rental_start || reservation?.start_date || null,
           rental_end: item.rental_end || reservation?.end_date || null,
-          image_url: item.image_url || fallbackImageUrl || null,
+          image_url: normalizeImageUrl(item.image_url || fallbackImageUrl),
           item_type: item.item_type || 'product',
           parent_item_index: item.parent_item_index,
         };
@@ -390,7 +390,7 @@ Deno.serve(async (req: Request) => {
           total_price: totalPrice,
           rental_start: res.start_date,
           rental_end: res.end_date,
-          image_url: fallbackImageUrl || null,
+          image_url: normalizeImageUrl(fallbackImageUrl),
         };
       });
     } else {
