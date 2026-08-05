@@ -209,15 +209,15 @@ export async function generateDocumentPdf(data: {
   };
 
   // ── Produktbilder auflösen und einbetten ──
-  const imgServiceClient = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-  );
   for (const it of data.productItems) {
     it.imageUrl = normalizeImageUrl(it.imageUrl);
   }
   const missingImgNames = data.productItems.filter((i) => !i.imageUrl).map((i) => i.name);
-  if (missingImgNames.length) {
+  if (missingImgNames.length && Deno.env.get("SUPABASE_URL") && Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")) {
+    const imgServiceClient = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
     const resolvedImgs = await resolveImagesByName(imgServiceClient, missingImgNames);
     for (const it of data.productItems) {
       if (it.imageUrl) continue;
