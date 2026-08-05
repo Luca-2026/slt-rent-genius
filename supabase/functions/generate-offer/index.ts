@@ -234,11 +234,26 @@ Deno.serve(async (req: Request) => {
         total_price: totalPrice,
         rental_start: rentalStart,
         rental_end: rentalEnd,
-        image_url: item.image_url || null,
+        image_url: normalizeImageUrl(item.image_url),
       };
     });
 
+    // Produktbilder serverseitig ergänzen: Positionen ohne (nutzbares) Bild
+    // werden über den Produktnamen im CMS nachgeschlagen.
+    const missingImageNames = offerItems.filter((i) => !i.image_url).map((i) => i.product_name);
+    if (missingImageNames.length) {
+      const resolved = await resolveImagesByName(serviceClient, missingImageNames);
+      for (const item of offerItems) {
+        if (item.image_url) continue;
+        item.image_url = resolved.get((item.product_name || "").trim().toLowerCase()) || null;
+      }
+    }
+    console.log(
+      `Produktbilder: ${offerItems.filter((i) => i.image_url).length}/${offerItems.length} Positionen mit Bild`,
+    );
+
     const itemsTotal = offerItems.reduce((sum, item) => sum + item.total_price, 0);
+
 
     // Calculate additional services surcharges and allocate them to matching items
     const sanitizeServiceDescription = (description?: string | null) => {
