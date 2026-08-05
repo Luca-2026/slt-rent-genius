@@ -869,7 +869,16 @@ async function generateOfferPdf(data: {
 
   const TITLE = "ANGEBOT";
 
-  const safe = (str: any) => String(str ?? "").replace(/[^\x20-\x7E\xA0-\xFF]/g, "");
+  // WinAnsi-sichere Normalisierung: typografische Zeichen auf darstellbare mappen,
+  // Euro-Zeichen bleibt erhalten (WinAnsi kann 0x20AC).
+  const safe = (str: any) =>
+    String(str ?? "")
+      .replace(/[\u2010-\u2015]/g, "-")
+      .replace(/[\u2018\u2019\u201A\u2032]/g, "'")
+      .replace(/[\u201C\u201D\u201E]/g, '"')
+      .replace(/\u2026/g, "...")
+      .replace(/\u00A0/g, " ")
+      .replace(/[^\x20-\x7E\xA0-\xFF\u20AC]/g, "");
 
   const fm = (n: number) => {
     const abs = Math.abs(n || 0);
@@ -1124,7 +1133,7 @@ async function generateOfferPdf(data: {
     const subLines: string[] = [];
     if (item.description) subLines.push(...wt(item.description, font, 8, nameColW));
     if (item.rental_start) {
-      subLines.push(...wt(`Mietzeitraum: ${fd(item.rental_start)}${item.rental_end ? " \u2013 " + fd(item.rental_end) : ""}`, font, 8, nameColW));
+      subLines.push(...wt(`Mietzeitraum: ${fd(item.rental_start)}${item.rental_end ? " - " + fd(item.rental_end) : ""}`, font, 8, nameColW));
     }
     let rowH = 10 + nameLines.length * 12 + (subLines.length ? 4 + subLines.length * 10 : 0);
     if (img) rowH = Math.max(rowH, IMG + 14);
