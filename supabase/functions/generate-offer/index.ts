@@ -743,6 +743,7 @@ Deno.serve(async (req: Request) => {
       </div>` : ""}
       <p style="font-size:14px;color:#555;line-height:1.6;margin-bottom:25px;">
         Das vollständige Angebotsdokument (Nr. <strong>${offerNumber}</strong>) finden Sie als PDF im Anhang dieser E-Mail sowie in Ihrem B2B-Portal.
+        Ebenfalls im Anhang: unsere <strong>Allgemeinen Geschäfts- und Vermietbedingungen für Geschäftskunden (AGB B2B)</strong>, die diesem Angebot zugrunde liegen.
       </p>
       <div style="background:#eef6fc;border:1px solid #b3d4e8;border-radius:8px;padding:14px 18px;margin-bottom:25px;">
         <p style="font-size:14px;color:#00507d;margin:0;line-height:1.6;">
