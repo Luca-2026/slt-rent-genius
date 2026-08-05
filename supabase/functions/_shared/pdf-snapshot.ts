@@ -135,10 +135,6 @@ export async function buildPdfSnapshot(
   for (let i = 0; i < pages.length; i++) {
     const page = pages[i];
     const { width, height } = page.getSize();
-    // deno-lint-ignore no-explicit-any
-    const contentsRef: any = page.node.get(page.node.context.obj("Contents").constructor
-      ? undefined
-      : undefined);
     let raw = "";
     // deno-lint-ignore no-explicit-any
     const streams: any[] = [];
@@ -153,7 +149,6 @@ export async function buildPdfSnapshot(
         streams.push(contents);
       }
     }
-    void contentsRef;
     for (const s of streams) {
       if (!s) continue;
       let content: Uint8Array | undefined = s.contents ?? s.getContents?.();
