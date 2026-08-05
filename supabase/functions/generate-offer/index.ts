@@ -767,13 +767,41 @@ Deno.serve(async (req: Request) => {
 </body>
 </html>`;
 
-        // Attach PDF
+        // Anhang 1: Angebots-PDF
         const base64Content = encodeBase64(pdfBytes);
-        const attachments = [{
+        const attachments: { filename: string; content: string; content_type: string }[] = [{
           filename: fileName,
           content: base64Content,
           content_type: "application/pdf",
         }];
+
+        // Anhang 2: B2B-AGB (verpflichtend jedem Angebot beilegen)
+        try {
+          const { data: agbFile, error: agbError } = await serviceClient.storage
+            .from("brand-assets")
+            .download("legal/agb-b2b.pdf");
+          let agbBytes: Uint8Array | null = null;
+          if (!agbError && agbFile) {
+            agbBytes = new Uint8Array(await agbFile.arrayBuffer());
+          } else {
+            console.error("AGB-Download aus Storage fehlgeschlagen:", agbError?.message);
+            const agbResp = await fetch("https://www.slt-rental.de/b2b-documents/agb-b2b.pdf");
+            if (agbResp.ok) agbBytes = new Uint8Array(await agbResp.arrayBuffer());
+          }
+          if (agbBytes && agbBytes.length > 0) {
+            attachments.push({
+              filename: "AGB-B2B-SLT-Rental.pdf",
+              content: encodeBase64(agbBytes),
+              content_type: "application/pdf",
+            });
+            console.log(`AGB angehängt (${agbBytes.length} Bytes)`);
+          } else {
+            console.error("AGB konnten nicht angehängt werden – Angebot wird trotzdem versendet");
+          }
+        } catch (agbErr: any) {
+          console.error("AGB-Anhang fehlgeschlagen:", agbErr?.message);
+        }
+
 
         const emailRes = await fetch("https://api.resend.com/emails", {
           method: "POST",
