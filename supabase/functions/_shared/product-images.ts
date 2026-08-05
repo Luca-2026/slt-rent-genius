@@ -83,6 +83,38 @@ export async function resolveImagesByName(
   return result;
 }
 
+const FETCH_HEADERS = {
+  // Manche Hoster (Serverprofis) resetten Verbindungen ohne Browser-typische Header
+  "User-Agent":
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+  "Accept": "image/avif,image/webp,image/png,image/jpeg,*/*;q=0.8",
+  "Accept-Language": "de-DE,de;q=0.9",
+};
+
+async function fetchImageBytes(url: string): Promise<Uint8Array | null> {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      const resp = await fetch(url, { signal: controller.signal, headers: FETCH_HEADERS });
+      clearTimeout(timeout);
+      if (!resp.ok) {
+        await resp.body?.cancel();
+        return null;
+      }
+      const bytes = new Uint8Array(await resp.arrayBuffer());
+      return bytes.length ? bytes : null;
+    } catch (e) {
+      if (attempt === 1) {
+        console.warn(`Bild konnte nicht geladen werden: ${url} (${(e as Error).message})`);
+        return null;
+      }
+      await new Promise((r) => setTimeout(r, 400));
+    }
+  }
+  return null;
+}
+
 /**
  * Bilder laden und in das PDF-Dokument einbetten.
  * Rückgabe: Map original-URL -> eingebettetes pdf-lib-Bild.
@@ -94,34 +126,33 @@ export async function embedProductImages(
   const cache = new Map<string, any>();
   const unique = Array.from(new Set(urls.filter(Boolean).map(String)));
 
-  await Promise.all(
-    unique.map(async (url) => {
+  // Begrenzte Parallelität – zu viele gleichzeitige Requests werden vom Webserver abgewiesen
+  const queue = [...unique];
+  const worker = async () => {
+    while (queue.length) {
+      const url = queue.shift()!;
+      let done = false;
       for (const candidate of imageCandidates(url)) {
+        const bytes = await fetchImageBytes(candidate);
+        if (!bytes) continue;
+        const isPng = bytes[0] === 0x89 && bytes[1] === 0x50;
+        const isJpg = bytes[0] === 0xff && bytes[1] === 0xd8;
+        if (!isPng && !isJpg) {
+          console.warn(`Bildformat für PDF nicht unterstützt: ${candidate}`);
+          continue;
+        }
         try {
-          const controller = new AbortController();
-          const timeout = setTimeout(() => controller.abort(), 4000);
-          const resp = await fetch(candidate, { signal: controller.signal });
-          clearTimeout(timeout);
-          if (!resp.ok) continue;
-          const ct = (resp.headers.get("content-type") || "").toLowerCase();
-          const bytes = new Uint8Array(await resp.arrayBuffer());
-          if (!bytes.length) continue;
-          // Signatur prüfen – zuverlässiger als der Content-Type des Servers
-          const isPng = bytes[0] === 0x89 && bytes[1] === 0x50;
-          const isJpg = bytes[0] === 0xff && bytes[1] === 0xd8;
-          if (!isPng && !isJpg) {
-            console.warn(`Bildformat für PDF nicht unterstützt (${ct}): ${candidate}`);
-            continue;
-          }
           cache.set(url, isPng ? await doc.embedPng(bytes) : await doc.embedJpg(bytes));
-          return;
+          done = true;
+          break;
         } catch (e) {
-          console.warn(`Bild konnte nicht geladen werden: ${candidate} (${(e as Error).message})`);
+          console.warn(`Einbetten fehlgeschlagen: ${candidate} (${(e as Error).message})`);
         }
       }
-      console.warn(`Kein einbettbares Bild gefunden für: ${url}`);
-    }),
-  );
+      if (!done) console.warn(`Kein einbettbares Bild gefunden für: ${url}`);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(4, unique.length) }, worker));
 
   return cache;
 }
