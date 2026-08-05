@@ -314,8 +314,8 @@ export async function generateDocumentPdf(data: {
       dt(pg, "Anlieferung / Transport", textColX, top - 10, bold, 9.5);
       dtr(pg, "1", qtyColRight, top - 10, font, 9.5);
       dt(pg, "Pauschale", unitColX, top - 10, font, 9.5, MUTED);
-      dtr(pg, fm(data.totals.deliveryCost), unitPriceRight, top - 10, font, 9.5);
-      dtr(pg, fm(data.totals.deliveryCost), totalRight, top - 10, bold, 9.5);
+      dtr(pg, fm(data.totals!.deliveryCost!), unitPriceRight, top - 10, font, 9.5);
+      dtr(pg, fm(data.totals!.deliveryCost!), totalRight, top - 10, bold, 9.5);
     });
     posNum++;
   }
