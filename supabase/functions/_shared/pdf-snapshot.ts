@@ -56,6 +56,16 @@ function decodePdfString(raw: string): string {
   return out;
 }
 
+/** Hex-String-Literal <…> dekodieren (WinAnsi/Latin-1). */
+function decodeHexString(raw: string): string {
+  const hex = raw.replace(/\s+/g, "");
+  let out = "";
+  for (let i = 0; i + 1 < hex.length; i += 2) {
+    out += String.fromCharCode(parseInt(hex.slice(i, i + 2), 16));
+  }
+  return out;
+}
+
 /** Content-Stream einer Seite parsen: Text- und Zeichen-Operationen. */
 export function parseContentStream(content: string): { texts: PdfTextOp[]; shapes: PdfShapeOp[] } {
   const texts: PdfTextOp[] = [];
@@ -111,7 +121,8 @@ async function inflate(bytes: Uint8Array): Promise<Uint8Array> {
     try {
       const ds = new DecompressionStream(fmt);
       const stream = new Blob([bytes as unknown as BlobPart]).stream().pipeThrough(ds);
-      return new Uint8Array(await new Response(stream).arrayBuffer());
+      const out = new Uint8Array(await new Response(stream).arrayBuffer());
+      if (out.length) return out;
     } catch {
       // nächstes Format probieren
     }
@@ -153,9 +164,9 @@ export async function buildPdfSnapshot(
       if (!s) continue;
       let content: Uint8Array | undefined = s.contents ?? s.getContents?.();
       if (!content) continue;
-      const filter = s.dict?.get?.(s.dict.context.obj("Filter"));
-      const filterName = filter ? String(filter) : "";
-      if (filterName.includes("FlateDecode")) content = await inflate(content);
+      // pdf-lib komprimiert Content-Streams mit FlateDecode – immer versuchen
+      // zu entpacken, unkomprimierte Streams bleiben unverändert.
+      content = await inflate(content);
       raw += new TextDecoder("latin1").decode(content) + "\n";
     }
 
