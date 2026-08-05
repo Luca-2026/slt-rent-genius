@@ -1,0 +1,777 @@
+{
+  "pages": 2,
+  "pageSnapshots": [
+    {
+      "page": 1,
+      "width": 595.28,
+      "height": 841.89,
+      "texts": [
+        {
+          "t": "SLT Technology Group GmbH & Co. KG · Anrather Straße 291 · 47807 Krefeld",
+          "x": 57,
+          "y": 748.89,
+          "size": 7
+        },
+        {
+          "t": "Musterbau GmbH",
+          "x": 57,
+          "y": 736.89,
+          "size": 10.5
+        },
+        {
+          "t": "Teststraße 12",
+          "x": 57,
+          "y": 724.89,
+          "size": 9.5
+        },
+        {
+          "t": "40213 Düsseldorf",
+          "x": 57,
+          "y": 713.89,
+          "size": 9.5
+        },
+        {
+          "t": "Deutschland",
+          "x": 57,
+          "y": 702.89,
+          "size": 9.5
+        },
+        {
+          "t": "Angebotsnummer:",
+          "x": 338.28,
+          "y": 600.89,
+          "size": 8.5
+        },
+        {
+          "t": "ANG-2026-0815",
+          "x": 433.28,
+          "y": 600.89,
+          "size": 9
+        },
+        {
+          "t": "Angebotsdatum:",
+          "x": 338.28,
+          "y": 587.89,
+          "size": 8.5
+        },
+        {
+          "t": "01.08.2026",
+          "x": 433.28,
+          "y": 587.89,
+          "size": 9
+        },
+        {
+          "t": "Gültig bis:",
+          "x": 338.28,
+          "y": 574.89,
+          "size": 8.5
+        },
+        {
+          "t": "15.08.2026",
+          "x": 433.28,
+          "y": 574.89,
+          "size": 9
+        },
+        {
+          "t": "Kundennummer:",
+          "x": 338.28,
+          "y": 561.89,
+          "size": 8.5
+        },
+        {
+          "t": "00000000",
+          "x": 433.28,
+          "y": 561.89,
+          "size": 9
+        },
+        {
+          "t": "Ansprechpartner:",
+          "x": 338.28,
+          "y": 548.89,
+          "size": 8.5
+        },
+        {
+          "t": "Max Mustermann",
+          "x": 433.28,
+          "y": 548.89,
+          "size": 9
+        },
+        {
+          "t": "Ausgabestandort:",
+          "x": 338.28,
+          "y": 535.89,
+          "size": 8.5
+        },
+        {
+          "t": "SLT Rental Krefeld",
+          "x": 433.28,
+          "y": 535.89,
+          "size": 9
+        },
+        {
+          "t": "Anrather Str. 291, 47807 Krefeld",
+          "x": 433.28,
+          "y": 525.89,
+          "size": 7
+        },
+        {
+          "t": "ANGEBOT",
+          "x": 57,
+          "y": 472.89,
+          "size": 30
+        },
+        {
+          "t": "Nr. ANG-2026-0815",
+          "x": 57,
+          "y": 446.89,
+          "size": 10.5
+        },
+        {
+          "t": "Lieferadresse:",
+          "x": 57,
+          "y": 420.89,
+          "size": 9
+        },
+        {
+          "t": "Baustelle Nord 4, 47807 Krefeld",
+          "x": 135,
+          "y": 420.89,
+          "size": 9
+        },
+        {
+          "t": "Sehr geehrte Damen und Herren,",
+          "x": 57,
+          "y": 400.89,
+          "size": 9.5
+        },
+        {
+          "t": "vielen Dank für Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:",
+          "x": 57,
+          "y": 387.89,
+          "size": 9.5
+        },
+        {
+          "t": "Pos.",
+          "x": 59,
+          "y": 357.89,
+          "size": 8.5
+        },
+        {
+          "t": "Bezeichnung",
+          "x": 89,
+          "y": 357.89,
+          "size": 8.5
+        },
+        {
+          "t": "Menge",
+          "x": 318.76,
+          "y": 357.89,
+          "size": 8.5
+        },
+        {
+          "t": "Einheit",
+          "x": 353.77,
+          "y": 357.89,
+          "size": 8.5
+        },
+        {
+          "t": "Einzelpreis",
+          "x": 421.12,
+          "y": 357.89,
+          "size": 8.5
+        },
+        {
+          "t": "Gesamt",
+          "x": 503.1,
+          "y": 357.89,
+          "size": 8.5
+        },
+        {
+          "t": "1",
+          "x": 59,
+          "y": 331.89,
+          "size": 9
+        },
+        {
+          "t": "Minibagger 1,8 t (10% Rabatt)",
+          "x": 89,
+          "y": 331.89,
+          "size": 9.5
+        },
+        {
+          "t": "Inkl. Tieflöffel 30/60 cm, Grabenräumlöffel",
+          "x": 89,
+          "y": 315.89,
+          "size": 8
+        },
+        {
+          "t": "Mietzeitraum: 10.08.2026 · 08:00 Uhr - 14.08.2026 · 16:00 Uhr",
+          "x": 89,
+          "y": 305.89,
+          "size": 8
+        },
+        {
+          "t": "1",
+          "x": 340.49,
+          "y": 331.89,
+          "size": 9.5
+        },
+        {
+          "t": "Tage",
+          "x": 353.77,
+          "y": 331.89,
+          "size": 9.5
+        },
+        {
+          "t": "180,00 ",
+          "x": 429.11,
+          "y": 331.89,
+          "size": 9.5
+        },
+        {
+          "t": "0,00 ",
+          "x": 507.87,
+          "y": 331.89,
+          "size": 9.5
+        },
+        {
+          "t": "- Maschinenbruchversicherung",
+          "x": 97,
+          "y": 287.89,
+          "size": 8.5
+        },
+        {
+          "t": "Pauschale",
+          "x": 353.77,
+          "y": 287.89,
+          "size": 8.5
+        },
+        {
+          "t": "64,80 ",
+          "x": 505.92,
+          "y": 287.89,
+          "size": 8.5
+        },
+        {
+          "t": "2",
+          "x": 59,
+          "y": 271.89,
+          "size": 9
+        },
+        {
+          "t": "Bautrockner 70 l/Tag",
+          "x": 89,
+          "y": 271.89,
+          "size": 9.5
+        },
+        {
+          "t": "Kondenstrockner für Estrich- und Wasserschäden",
+          "x": 89,
+          "y": 255.89,
+          "size": 8
+        },
+        {
+          "t": "Mietzeitraum: 10.08.2026 · 08:00 Uhr - 17.08.2026 · 08:00 Uhr",
+          "x": 89,
+          "y": 245.89,
+          "size": 8
+        },
+        {
+          "t": "3",
+          "x": 340.49,
+          "y": 271.89,
+          "size": 9.5
+        },
+        {
+          "t": "Tage",
+          "x": 353.77,
+          "y": 271.89,
+          "size": 9.5
+        },
+        {
+          "t": "24,50 ",
+          "x": 434.4,
+          "y": 271.89,
+          "size": 9.5
+        },
+        {
+          "t": "0,00 ",
+          "x": 507.87,
+          "y": 271.89,
+          "size": 9.5
+        },
+        {
+          "t": "3",
+          "x": 59,
+          "y": 225.89,
+          "size": 9
+        },
+        {
+          "t": "Anlieferung / Transport",
+          "x": 89,
+          "y": 225.89,
+          "size": 9.5
+        },
+        {
+          "t": "1",
+          "x": 340.49,
+          "y": 225.89,
+          "size": 9.5
+        },
+        {
+          "t": "Pauschale",
+          "x": 353.77,
+          "y": 225.89,
+          "size": 9.5
+        },
+        {
+          "t": "60,00 ",
+          "x": 434.4,
+          "y": 225.89,
+          "size": 9.5
+        },
+        {
+          "t": "60,00 ",
+          "x": 502.59,
+          "y": 225.89,
+          "size": 9.5
+        },
+        {
+          "t": "4",
+          "x": 59,
+          "y": 199.89,
+          "size": 9
+        },
+        {
+          "t": "Rücklieferung / Abholung",
+          "x": 89,
+          "y": 199.89,
+          "size": 9.5
+        },
+        {
+          "t": "1",
+          "x": 340.49,
+          "y": 199.89,
+          "size": 9.5
+        },
+        {
+          "t": "Pauschale",
+          "x": 353.77,
+          "y": 199.89,
+          "size": 9.5
+        },
+        {
+          "t": "60,00 ",
+          "x": 434.4,
+          "y": 199.89,
+          "size": 9.5
+        },
+        {
+          "t": "60,00 ",
+          "x": 502.59,
+          "y": 199.89,
+          "size": 9.5
+        },
+        {
+          "t": "5",
+          "x": 59,
+          "y": 175.89,
+          "size": 9
+        },
+        {
+          "t": "Endreinigung",
+          "x": 89,
+          "y": 175.89,
+          "size": 9.5
+        },
+        {
+          "t": "1",
+          "x": 340.49,
+          "y": 175.89,
+          "size": 9.5
+        },
+        {
+          "t": "Pauschale",
+          "x": 353.77,
+          "y": 175.89,
+          "size": 9.5
+        },
+        {
+          "t": "35,00 ",
+          "x": 502.59,
+          "y": 175.89,
+          "size": 9.5
+        },
+        {
+          "t": "SLT Technology Group GmbH & Co. KG",
+          "x": 57,
+          "y": 92,
+          "size": 6.8
+        },
+        {
+          "t": "GF Benedikt Nöchel",
+          "x": 57,
+          "y": 83,
+          "size": 6.8
+        },
+        {
+          "t": "Registergericht Krefeld HRA7075",
+          "x": 57,
+          "y": 74,
+          "size": 6.8
+        },
+        {
+          "t": "Anrather Straße 291 | 47807 Krefeld",
+          "x": 217.43,
+          "y": 92,
+          "size": 6.8
+        },
+        {
+          "t": "Tel: 02151 417 990 4",
+          "x": 217.43,
+          "y": 83,
+          "size": 6.8
+        },
+        {
+          "t": "mieten@slt-rental.de | www.slt-rental.de",
+          "x": 217.43,
+          "y": 74,
+          "size": 6.8
+        },
+        {
+          "t": "Steuer-Nr. 117/5717/1398",
+          "x": 377.85,
+          "y": 92,
+          "size": 6.8
+        },
+        {
+          "t": "USt-IdNr. DE340481717",
+          "x": 377.85,
+          "y": 83,
+          "size": 6.8
+        },
+        {
+          "t": "Sparkasse Krefeld | IBAN DE65 3205 0000 0000 4784 46",
+          "x": 377.85,
+          "y": 74,
+          "size": 6.8
+        }
+      ],
+      "shapes": []
+    },
+    {
+      "page": 2,
+      "width": 595.28,
+      "height": 841.89,
+      "texts": [
+        {
+          "t": "ANGEBOT · ANG-2026-0815",
+          "x": 57,
+          "y": 750.89,
+          "size": 10
+        },
+        {
+          "t": "Pos.",
+          "x": 59,
+          "y": 722.89,
+          "size": 8.5
+        },
+        {
+          "t": "Bezeichnung",
+          "x": 89,
+          "y": 722.89,
+          "size": 8.5
+        },
+        {
+          "t": "Menge",
+          "x": 318.76,
+          "y": 722.89,
+          "size": 8.5
+        },
+        {
+          "t": "Einheit",
+          "x": 353.77,
+          "y": 722.89,
+          "size": 8.5
+        },
+        {
+          "t": "Einzelpreis",
+          "x": 421.12,
+          "y": 722.89,
+          "size": 8.5
+        },
+        {
+          "t": "Gesamt",
+          "x": 503.1,
+          "y": 722.89,
+          "size": 8.5
+        },
+        {
+          "t": "Zwischensumme Mietartikel",
+          "x": 321.7,
+          "y": 706.89,
+          "size": 9
+        },
+        {
+          "t": "0,00 ",
+          "x": 509.26,
+          "y": 706.89,
+          "size": 9
+        },
+        {
+          "t": "Zwischensumme Zusatzoptionen",
+          "x": 321.7,
+          "y": 693.89,
+          "size": 9
+        },
+        {
+          "t": "99,80 ",
+          "x": 504.26,
+          "y": 693.89,
+          "size": 9
+        },
+        {
+          "t": "Zwischensumme Logistik",
+          "x": 321.7,
+          "y": 680.89,
+          "size": 9
+        },
+        {
+          "t": "120,00 ",
+          "x": 499.25,
+          "y": 680.89,
+          "size": 9
+        },
+        {
+          "t": "Nettobetrag",
+          "x": 321.7,
+          "y": 667.89,
+          "size": 9.5
+        },
+        {
+          "t": "1.039,30 ",
+          "x": 489.38,
+          "y": 667.89,
+          "size": 9.5
+        },
+        {
+          "t": "USt. 19%",
+          "x": 321.7,
+          "y": 654.89,
+          "size": 9
+        },
+        {
+          "t": "197,47 ",
+          "x": 499.25,
+          "y": 654.89,
+          "size": 9
+        },
+        {
+          "t": "Kaution (umsatzsteuerfrei)",
+          "x": 321.7,
+          "y": 641.89,
+          "size": 9
+        },
+        {
+          "t": "250,00 ",
+          "x": 499.25,
+          "y": 641.89,
+          "size": 9
+        },
+        {
+          "t": "Gesamtbetrag",
+          "x": 321.7,
+          "y": 626.89,
+          "size": 11
+        },
+        {
+          "t": "1.236,77 ",
+          "x": 477.57,
+          "y": 626.89,
+          "size": 12
+        },
+        {
+          "t": "Zahlungshinweis - Vorkasse",
+          "x": 73,
+          "y": 582.89,
+          "size": 10
+        },
+        {
+          "t": "Bitte überweisen Sie 1.236,77  (zzgl. Kaution 250,00 ) bis spätestens 15.08.2026",
+          "x": 73,
+          "y": 566.89,
+          "size": 9
+        },
+        {
+          "t": "- innerhalb der Angebotsgültigkeit - auf folgendes Konto:",
+          "x": 73,
+          "y": 554.89,
+          "size": 9
+        },
+        {
+          "t": "Kontoinhaber:",
+          "x": 73,
+          "y": 540.89,
+          "size": 8.5
+        },
+        {
+          "t": "SLT Technology Group GmbH & Co. KG",
+          "x": 177,
+          "y": 540.89,
+          "size": 8.5
+        },
+        {
+          "t": "Bank:",
+          "x": 73,
+          "y": 529.89,
+          "size": 8.5
+        },
+        {
+          "t": "Sparkasse Krefeld",
+          "x": 177,
+          "y": 529.89,
+          "size": 8.5
+        },
+        {
+          "t": "IBAN / BIC:",
+          "x": 73,
+          "y": 518.89,
+          "size": 8.5
+        },
+        {
+          "t": "DE65 3205 0000 0000 4784 46 | SPKRDE33XXX",
+          "x": 177,
+          "y": 518.89,
+          "size": 8.5
+        },
+        {
+          "t": "Verwendungszweck:",
+          "x": 73,
+          "y": 507.89,
+          "size": 8.5
+        },
+        {
+          "t": "ANG-2026-0815",
+          "x": 177,
+          "y": 507.89,
+          "size": 8.5
+        },
+        {
+          "t": "Mit Zahlungseingang ist Ihre Buchung verbindlich bestätigt; nach Mietende erhalten Sie die Rechnung per E-Mail.",
+          "x": 73,
+          "y": 494.89,
+          "size": 8
+        },
+        {
+          "t": "Gültigkeit:",
+          "x": 57,
+          "y": 466.89,
+          "size": 9
+        },
+        {
+          "t": "Dieses Angebot ist gültig bis zum 15.08.2026 (14 Tage).",
+          "x": 115,
+          "y": 466.89,
+          "size": 9
+        },
+        {
+          "t": "Anmerkungen:",
+          "x": 57,
+          "y": 444.89,
+          "size": 9
+        },
+        {
+          "t": "Abholung nach telefonischer Absprache.",
+          "x": 57,
+          "y": 432.89,
+          "size": 8.5
+        },
+        {
+          "t": "Wir freuen uns auf Ihre Rückmeldung und stehen Ihnen für Rückfragen gerne zur Verfügung.",
+          "x": 57,
+          "y": 415.89,
+          "size": 9
+        },
+        {
+          "t": "Mit freundlichen Grüßen",
+          "x": 57,
+          "y": 393.89,
+          "size": 9
+        },
+        {
+          "t": "Max Mustermann",
+          "x": 57,
+          "y": 378.89,
+          "size": 9
+        },
+        {
+          "t": "SLT-Rental",
+          "x": 57,
+          "y": 367.89,
+          "size": 8
+        },
+        {
+          "t": "SLT Technology Group GmbH & Co. KG",
+          "x": 57,
+          "y": 92,
+          "size": 6.8
+        },
+        {
+          "t": "GF Benedikt Nöchel",
+          "x": 57,
+          "y": 83,
+          "size": 6.8
+        },
+        {
+          "t": "Registergericht Krefeld HRA7075",
+          "x": 57,
+          "y": 74,
+          "size": 6.8
+        },
+        {
+          "t": "Anrather Straße 291 | 47807 Krefeld",
+          "x": 217.43,
+          "y": 92,
+          "size": 6.8
+        },
+        {
+          "t": "Tel: 02151 417 990 4",
+          "x": 217.43,
+          "y": 83,
+          "size": 6.8
+        },
+        {
+          "t": "mieten@slt-rental.de | www.slt-rental.de",
+          "x": 217.43,
+          "y": 74,
+          "size": 6.8
+        },
+        {
+          "t": "Steuer-Nr. 117/5717/1398",
+          "x": 377.85,
+          "y": 92,
+          "size": 6.8
+        },
+        {
+          "t": "USt-IdNr. DE340481717",
+          "x": 377.85,
+          "y": 83,
+          "size": 6.8
+        },
+        {
+          "t": "Sparkasse Krefeld | IBAN DE65 3205 0000 0000 4784 46",
+          "x": 377.85,
+          "y": 74,
+          "size": 6.8
+        },
+        {
+          "t": "Seite 2 von 2",
+          "x": 494.69,
+          "y": 115,
+          "size": 7.5
+        }
+      ],
+      "shapes": []
+    }
+  ]
+}
