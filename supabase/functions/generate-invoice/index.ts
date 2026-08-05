@@ -1129,8 +1129,8 @@ async function generateDocumentPdf(data: {
       const drawH = logoImg.height * scale;
       pg.drawImage(logoImg, { x: W - MR - targetW, y: y - drawH, width: targetW, height: drawH });
     }
-    dt(pg, `${data.title} · ${data.documentNumber}`, ML, y - 12, bold, 10, BRAND);
-    y -= 40;
+    dt(pg, `${data.title} · ${data.documentNumber}`, ML, y - 46, bold, 10, BRAND);
+    y -= 74;
     return { pg, y: renderTableHeader(pg, y) };
   };
 
