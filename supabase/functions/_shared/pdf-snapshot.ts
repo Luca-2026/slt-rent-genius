@@ -85,7 +85,7 @@ export function parseContentStream(content: string): { texts: PdfTextOp[]; shape
     let x = 0;
     let y = 0;
     const tokenRegex =
-      /\/(\S+)\s+([\d.]+)\s+Tf|(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+Tm|(-?[\d.]+)\s+(-?[\d.]+)\s+Td|\(((?:\\.|[^\\)])*)\)\s*Tj/g;
+      /\/(\S+)\s+([\d.]+)\s+Tf|(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+Tm|(-?[\d.]+)\s+(-?[\d.]+)\s+Td|\(((?:\\.|[^\\)])*)\)\s*Tj|<([0-9A-Fa-f\s]*)>\s*Tj/g;
     let tk: RegExpExecArray | null;
     while ((tk = tokenRegex.exec(block))) {
       if (tk[2] !== undefined) {
@@ -96,8 +96,8 @@ export function parseContentStream(content: string): { texts: PdfTextOp[]; shape
       } else if (tk[9] !== undefined) {
         x += parseFloat(tk[9]);
         y += parseFloat(tk[10]);
-      } else if (tk[11] !== undefined) {
-        const t = decodePdfString(tk[11]);
+      } else if (tk[11] !== undefined || tk[12] !== undefined) {
+        const t = tk[11] !== undefined ? decodePdfString(tk[11]) : decodeHexString(tk[12]);
         if (t.trim()) texts.push({ t, x: r2(x), y: r2(y), size: r2(size) });
       }
     }
