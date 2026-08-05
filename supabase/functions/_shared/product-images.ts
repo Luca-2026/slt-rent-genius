@@ -44,12 +44,22 @@ export function pickPdfImage(images?: (string | null)[] | null): string | null {
   return normalizeImageUrl(supported || list[0]);
 }
 
-/** WebP/AVIF kann pdf-lib nicht – daher zusätzlich JPG/PNG-Geschwister probieren. */
+/**
+ * pdf-lib kann nur JPEG/PNG. Zusätzlich zu prüfen:
+ *  - Geschwisterdateien mit .jpg/.jpeg/.png (WebP/AVIF-Quellen),
+ *  - Doppelendungen wie "bild.jpg.webp" -> "bild.jpg",
+ *  - falsch benannte Dateien (z. B. WebP mit .png-Endung) -> ebenfalls Geschwister.
+ */
 function imageCandidates(url: string): string[] {
   const base = url.split("?")[0];
-  if (SUPPORTED_EXT.test(base)) return [url];
   const stem = base.replace(/\.[a-z0-9]+$/i, "");
-  return [`${stem}.jpg`, `${stem}.jpeg`, `${stem}.png`];
+  const out = [url];
+  if (SUPPORTED_EXT.test(stem)) out.push(stem); // "bild.jpg.webp" -> "bild.jpg"
+  for (const ext of [".jpg", ".jpeg", ".png"]) {
+    const c = `${stem.replace(SUPPORTED_EXT, "")}${ext}`;
+    if (!out.includes(c)) out.push(c);
+  }
+  return out;
 }
 
 /**
