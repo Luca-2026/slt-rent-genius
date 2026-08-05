@@ -1094,27 +1094,9 @@ async function generateOfferPdf(data: {
     return fallback;
   };
 
-  // Produktbilder vorladen
-  const imageCache = new Map<string, any>();
-  await Promise.all(
-    data.items
-      .filter((item: any) => item.image_url)
-      .map(async (item: any) => {
-        const url = item.image_url as string;
-        if (imageCache.has(url)) return;
-        try {
-          const controller = new AbortController();
-          const timeout = setTimeout(() => controller.abort(), 2000);
-          const imgResp = await fetch(url, { signal: controller.signal });
-          clearTimeout(timeout);
-          if (!imgResp.ok) return;
-          const contentType = imgResp.headers.get("content-type") || "";
-          if (!contentType.includes("image/")) return;
-          const imgBytes = new Uint8Array(await imgResp.arrayBuffer());
-          imageCache.set(url, contentType.includes("png") ? await doc.embedPng(imgBytes) : await doc.embedJpg(imgBytes));
-        } catch {}
-      })
-  );
+  // Produktbilder vorladen (JPEG/PNG; WebP/AVIF via JPG-Geschwisterdatei)
+  const imageCache = await embedProductImages(doc, data.items.map((i: any) => i.image_url));
+
 
   const IMG = 34;
   const hasAnyImage = data.items.some((i: any) => i.image_url && imageCache.get(i.image_url));
