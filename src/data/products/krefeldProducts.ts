@@ -1,5 +1,7 @@
 // Krefeld location products - organized by category
 import sltEiswuerfelbereiter1 from "@/assets/products/geschirr/slt-eiswuerfelbereiter-1.jpeg";
+import sltEiswuerfelbereiter2 from "@/assets/products/geschirr/slt-eiswuerfelbereiter-2.jpeg";
+import sltEiswuerfelbereiter3 from "@/assets/products/geschirr/slt-eiswuerfelbereiter-3.jpeg";
 import sltEiswuerfelmaschineProfi1 from "@/assets/products/geschirr/slt-eiswuerfelmaschine-profi-45kg-1.jpeg";
 import sltEiswuerfelmaschineProfi2 from "@/assets/products/geschirr/slt-eiswuerfelmaschine-profi-45kg-2.jpeg";
 import dessertellerSimply19_1 from "@/assets/products/geschirr/dessertteller-simply-19-1.jpeg";
