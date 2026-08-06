@@ -623,8 +623,8 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "slt-eiswuerfelbereiter": {
-    seoTitle: "Eiswürfelmaschine mieten Krefeld – kompakt | SLT Rental",
-    metaDescription: "Kompakte SLT Eiswürfelmaschine mieten in Krefeld – für Hausbar, Party & kleinere Feiern. Ohne Wasseranschluss, direkt buchbar in Krefeld & Bonn, Mülheim auf Anfrage.",
+    seoTitle: "Eiswürfelmaschine mieten – 12 kg/24 h kompakt | SLT Rental",
+    metaDescription: "Kompakte Eiswürfelmaschine mieten: 12 kg Eis/24 h, 3,2-l-Tank, ohne Wasseranschluss. Direkt buchbar in Krefeld & Bonn, Mülheim an der Ruhr aus Krefeld geliefert.",
     h1: "Kompakte Eiswürfelmaschine mieten in Krefeld – SLT Eiswürfelbereiter",
     h2s: [
       "Technische Daten & Ausstattung",
@@ -633,21 +633,25 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Reinigung & Rückgabe",
     ],
     useCaseBau: "Kühle Getränke bei Richtfest, Baustellenübergabe oder Firmenfeier – überall, wo ein Stromanschluss vorhanden ist.",
-    useCaseEvent: "Hochzeiten, Firmenfeiern, Sommerfeste, Foodtrucks, Messeauftritte, Barbetrieb und Cateringzelte – schneller Nachschub an Eiswürfeln für Cocktails, Longdrinks, Softdrinks und Sekt-Kübel.",
+    useCaseEvent: "Hochzeiten, Firmenfeiern, Sommerfeste, Foodtrucks, Messeauftritte, Barbetrieb und Cateringzelte – bis zu 12 kg Bullet-Eis pro Tag für Cocktails, Longdrinks, Softdrinks und Sekt-Kübel.",
     useCasePrivat: "Gartenparty, Geburtstag, Grillabend, Silvester oder Hausbar – frische Eiswürfel ohne verstopftes Gefrierfach oder Plastikbeutel.",
     dailyPriceFrom: 9,
     faqs: [
       {
         q: "Wird ein fester Wasseranschluss benötigt?",
-        a: "Nein. Der SLT Eiswürfelbereiter arbeitet mit einem integrierten Wassertank, den Sie manuell mit Leitungswasser befüllen. Sie brauchen nur eine Schuko-Steckdose (230 V) am Aufstellort.",
+        a: "Nein. Der SLT Eiswürfelbereiter arbeitet mit einem integrierten 3,2-Liter-Wassertank, den Sie manuell mit Leitungswasser befüllen. Sie brauchen nur eine Schuko-Steckdose (220–240 V) am Aufstellort.",
+      },
+      {
+        q: "Wie viel Eis produziert die Eiswürfelmaschine pro Tag?",
+        a: "Bis zu 12 kg Bullet-Eis in 24 Stunden. Pro Zyklus entstehen 14 Eiskugeln, die im entnehmbaren Vorratsbehälter mit 1,8 kg Fassungsvermögen landen. Die tatsächliche Menge hängt von Umgebungstemperatur und gewählter Eisgröße ab.",
       },
       {
         q: "Wie lange dauert es, bis die ersten Eiswürfel fertig sind?",
-        a: "Nach dem Einschalten produziert das Gerät die ersten Eiswürfel innerhalb weniger Minuten. Danach läuft die Produktion vollautomatisch weiter, solange Wasser im Tank ist und der Eiskorb nicht voll ist.",
+        a: "Nach dem Einschalten sind die ersten Eiswürfel innerhalb weniger Minuten fertig. Danach produziert der Kompressor (Kältemittel R290) ohne Vorkühlzeit durchgehend weiter, solange Wasser im Tank ist und der Behälter nicht voll ist.",
       },
       {
-        q: "Wie viele Eiswürfel schafft die Maschine pro Stunde?",
-        a: "Die genaue Ausbringungsmenge hängt von Umgebungstemperatur und gewählter Würfelgröße ab. Für größere Events (mehrere Hundert Gäste, viele Cocktails parallel) beraten wir Sie gerne zur Kombination mit einem zusätzlichen Getränkekühler oder Eisvorrat – rufen Sie uns dazu einfach kurz an.",
+        q: "Wie groß und schwer ist das Gerät?",
+        a: "Das Tischgerät misst ca. 31 × 43 × 40 cm (B×H×T) und wiegt rund 12,5 kg. Das Netzkabel ist ca. 130 cm lang. Es passt damit auf jede Theke, Küchenarbeitsplatte oder Cateringstation.",
       },
       {
         q: "Für welche Einsatzorte ist der Eiswürfelbereiter geeignet?",
@@ -655,7 +659,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "Wie muss das Gerät zurückgegeben werden?",
-        a: "Bitte geben Sie den Eiswürfelbereiter gereinigt und mit vollständig entleertem Wassertank zurück. Innenraum und Eiskorb einfach mit klarem Wasser ausspülen und trocken wischen. Bei stark verschmutzter Rückgabe berechnen wir eine Reinigungspauschale.",
+        a: "Bitte geben Sie den Eiswürfelbereiter gereinigt und mit vollständig entleertem Wassertank zurück. Innenraum und Vorratsbehälter einfach mit klarem Wasser ausspülen und trocken wischen. Bei stark verschmutzter Rückgabe berechnen wir eine Reinigungspauschale.",
       },
       {
         q: "Ist der SLT Eiswürfelbereiter an allen drei Standorten verfügbar?",

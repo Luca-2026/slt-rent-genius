@@ -1,5 +1,7 @@
 // Krefeld location products - organized by category
 import sltEiswuerfelbereiter1 from "@/assets/products/geschirr/slt-eiswuerfelbereiter-1.jpeg";
+import sltEiswuerfelbereiter2 from "@/assets/products/geschirr/slt-eiswuerfelbereiter-2.jpeg";
+import sltEiswuerfelbereiter3 from "@/assets/products/geschirr/slt-eiswuerfelbereiter-3.jpeg";
 import sltEiswuerfelmaschineProfi1 from "@/assets/products/geschirr/slt-eiswuerfelmaschine-profi-45kg-1.jpeg";
 import sltEiswuerfelmaschineProfi2 from "@/assets/products/geschirr/slt-eiswuerfelmaschine-profi-45kg-2.jpeg";
 import dessertellerSimply19_1 from "@/assets/products/geschirr/dessertteller-simply-19-1.jpeg";
@@ -6448,32 +6450,34 @@ export const gastroEquipmentProducts: Product[] = [
   {
     id: "slt-eiswuerfelbereiter",
     name: "SLT Eiswürfelbereiter kompakt – kleine Eiswürfelmaschine",
-    modelName: "Kompakt-Modell (ca. 150 W) – ideal für Bar, Hausbar & kleinere Feiern",
-    description: "Kompakte Eiswürfelmaschine für Events, Bar und Zuhause. Vollautomatisch, mit integriertem Wassertank – kein Wasseranschluss nötig. Erste Eiswürfel in wenigen Minuten.",
+    modelName: "Kompakt-Modell 12 kg/24 h, Bullet-Eis – ideal für Bar, Hausbar & Feiern",
+    description: "Kompakte Eiswürfelmaschine mit bis zu 12 kg Eis pro Tag. Vollautomatisch, mit 3,2-l-Wassertank – kein Wasseranschluss nötig. Erste Eiswürfel nach wenigen Minuten.",
     image: sltEiswuerfelbereiter1,
-    images: [sltEiswuerfelbereiter1],
+    images: [sltEiswuerfelbereiter1, sltEiswuerfelbereiter2, sltEiswuerfelbereiter3],
     category: "eiswuerfel",
     detailedDescription:
-      "Kompakter SLT Eiswürfelbereiter zum Mieten – die praktische Eiswürfelmaschine für Hochzeiten, Firmenfeiern, Gartenpartys, Foodtrucks, Messestände und den privaten Haushalt. Das freistehende Tischgerät produziert Eiswürfel vollautomatisch aus dem integrierten Wassertank, ohne festen Wasseranschluss. So lässt es sich flexibel überall dort aufstellen, wo Strom vorhanden ist – auf der Theke, im Cateringzelt oder im Getränkeausschank.\n\nDie Bedienung erfolgt über ein übersichtliches Tastenfeld: Wasser einfüllen, Knopf drücken – nach wenigen Minuten sind die ersten Eiswürfel fertig. Sensoren stoppen die Produktion automatisch, wenn der Wassertank leer oder der Eiswürfelkorb voll ist. Ein Sichtfenster im Deckel zeigt jederzeit den Füllstand. Der entnehmbare Eiskorb und das Ablaufventil erleichtern Entnahme, Umfüllen in einen Getränkekühler und Reinigung.\n\nDas Gerät ist an unserem Hauptsitz Krefeld und an unserer Filiale Bonn direkt buchbar. Für Mülheim an der Ruhr disponieren wir es kurzfristig aus dem Hauptsitz Krefeld.",
+      "Kompakter SLT Eiswürfelbereiter zum Mieten – die praktische Eiswürfelmaschine für Hochzeiten, Firmenfeiern, Gartenpartys, Foodtrucks, Messestände und den privaten Haushalt. Das freistehende Edelstahl-Tischgerät produziert bis zu 12 kg Bullet-Eis pro 24 Stunden – 14 Eiskugeln pro Zyklus – vollautomatisch aus dem integrierten 3,2-Liter-Wassertank, ohne festen Wasseranschluss. So lässt es sich flexibel überall dort aufstellen, wo Strom vorhanden ist – auf der Theke, im Cateringzelt oder im Getränkeausschank.\n\nDie Bedienung erfolgt über ein Touch-Bedienfeld mit LED-Display: Wasser einfüllen, Eisgröße wählen, starten – nach wenigen Minuten sind die ersten Eiswürfel fertig. Ein Alarmsignal meldet vollen Eisbehälter oder niedrigen Wasserstand. Der leistungsstarke, geräuscharme Kompressor arbeitet mit dem Kältemittel R290 und produziert ohne Vorkühlzeit durchgehend. Das Sichtfenster im Deckel zeigt jederzeit den Füllstand, der entnehmbare Vorratsbehälter (1,8 kg) erleichtert Entnahme, Umfüllen in einen Getränkekühler und Reinigung.\n\nDas Gerät ist an unserem Hauptsitz Krefeld und an unserer Filiale Bonn direkt buchbar. Für Mülheim an der Ruhr disponieren wir es kurzfristig aus dem Hauptsitz Krefeld.",
     specifications: {
       "Geräteart": "Freistehende Eiswürfelmaschine (Ice Maker), Tischgerät",
-      "Gehäusefarbe": "Schwarz",
-      "Material": "Kunststoff / Edelstahl",
-      "Abmessungen (B×H×T)": "ca. 27 × 29,5 × 33,5 cm",
-      "Leistung": "ca. 150 W",
-      "Spannung": "230 V (Schuko-Steckdose)",
-      "Wasserversorgung": "Integrierter Wassertank – kein Festwasseranschluss nötig",
-      "Ausstattung": "Entnehmbarer Eiswürfelkorb, transparentes Sichtfenster im Deckel, Kontrollanzeigen (Wasser leer / Eis voll)",
-      "Automatik": "Automatische Abschaltung bei leerem Tank oder vollem Korb",
+      "Eisproduktion": "ca. 12 kg / 24 h, 14 Eiskugeln pro Zyklus (Bullet-Eis)",
+      "Wassertank": "3,2 Liter, manuelles Nachfüllen",
+      "Eisvorratsbehälter": "1,8 kg, entnehmbar",
+      "Gehäuse": "Edelstahl, Silber – Deckel mit Sichtfenster",
+      "Abmessungen (B×H×T)": "ca. 31 × 43 × 40 cm",
+      "Gewicht": "ca. 12,5 kg",
+      "Stromversorgung": "220–240 V~ / 50–60 Hz (Schuko-Steckdose)",
+      "Kältemittel": "R290",
+      "Bedienung": "Touch-Bedienfeld mit LED-Display, Alarm bei vollem Behälter / niedrigem Wasserstand",
+      "Netzkabel": "ca. 130 cm",
       "Aufstellort": "Bar-/Küchentheke, Cateringzelt, Foodtruck, Büro, Hausbar",
     },
     features: [
-      "Vollautomatische Eiswürfelproduktion",
+      "Bis zu 12 kg Bullet-Eis pro 24 Stunden",
+      "3,2-l-Wassertank – kein Festwasseranschluss nötig",
       "Erste Eiswürfel nach wenigen Minuten",
-      "Kein Wasseranschluss nötig – flexibler Aufstellort",
-      "Automatische Abschaltung bei vollem Korb / leerem Tank",
-      "Sichtfenster im Deckel zur Füllstandskontrolle",
-      "Entnehmbarer Eiskorb, einfach zu reinigen",
+      "Touch-Bedienfeld mit LED-Display und Eisgrößenwahl",
+      "Alarmsignal bei vollem Eisbehälter / niedrigem Wasserstand",
+      "Entnehmbarer 1,8-kg-Vorratsbehälter, einfach zu reinigen",
     ],
     tags: ["event", "hochzeit", "gastronomie", "bar"],
     rentwareCode: { krefeld: "7GGNJB", bonn: "5ZOOLD" }

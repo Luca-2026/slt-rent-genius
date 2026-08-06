@@ -526,13 +526,13 @@ export const localCategoryContent: LocalContentMap = {
   krefeld: {
     "gastro-equipment": {
       hookline:
-        "Getränkekühlschrank, kompakter Eiswürfelbereiter und Profi-Eiswürfelmaschine mit 35 kg/24 h mietest du an unserem Hauptsitz Krefeld – mit dem größten Mietpark aller drei Standorte.",
+        "Getränkekühlschrank, kompakter Eiswürfelbereiter und Profi-Eiswürfelmaschine mit 45 kg/24 h mietest du an unserem Hauptsitz Krefeld – mit dem größten Mietpark aller drei Standorte.",
       standortFakten:
-        "Abholung und Übergabe an unserem Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain. Geöffnet Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr (samstags früher nach vorheriger Buchung möglich). Anfahrt direkt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). Der Getränkekühlschrank 236 l (54 × 55 × 144 cm, 45 kg, Glastür mit LED) und der kompakte SLT Eiswürfelbereiter sind hier direkt buchbar, die Profi-Eiswürfelmaschine mit 35 kg Tagesleistung steht ebenfalls im Krefelder Mietpark. Kühlgeräte müssen stehend transportiert werden – Lieferung ins Krefelder Stadtgebiet und in den Niederrhein-Raum organisieren wir auf Anfrage mit.",
+        "Abholung und Übergabe an unserem Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain. Geöffnet Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr (samstags früher nach vorheriger Buchung möglich). Anfahrt direkt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). Der Getränkekühlschrank 236 l (54 × 55 × 144 cm, 45 kg, Glastür mit LED) und der kompakte SLT Eiswürfelbereiter sind hier direkt buchbar, die Profi-Eiswürfelmaschine mit 45 kg Tagesleistung steht ebenfalls im Krefelder Mietpark. Kühlgeräte müssen stehend transportiert werden – Lieferung ins Krefelder Stadtgebiet und in den Niederrhein-Raum organisieren wir auf Anfrage mit.",
       faqs: [
         {
           q: "Welche Gastro-Geräte stehen am Hauptsitz Krefeld direkt vor Ort?",
-          a: "Am Hauptsitz Krefeld führen wir den Getränkekühlschrank 236 l, den kompakten SLT Eiswürfelbereiter und die Profi-Eiswürfelmaschine mit bis zu 35 kg Eis pro 24 Stunden. Als Hauptsitz mit dem größten Mietpark ist die Verfügbarkeit hier am höchsten – Bonn und Mülheim beliefern wir bei Bedarf aus Krefeld.",
+          a: "Am Hauptsitz Krefeld führen wir den Getränkekühlschrank 236 l, den kompakten SLT Eiswürfelbereiter und die Profi-Eiswürfelmaschine mit bis zu 45 kg Eis pro 24 Stunden. Als Hauptsitz mit dem größten Mietpark ist die Verfügbarkeit hier am höchsten – Bonn und Mülheim beliefern wir bei Bedarf aus Krefeld.",
         },
         {
           q: "Wie transportiere ich den Getränkekühlschrank ab Krefeld?",
@@ -1038,7 +1038,7 @@ export const localCategoryContent: LocalContentMap = {
       hookline:
         "Getränkekühlschrank und Eiswürfelmaschinen fürs Ruhrgebiet – Beratung, Übergabe und Rücknahme an unserem Service-Standort Mülheim an der Ruhr in der Bobcat-Filiale.",
       standortFakten:
-        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Getränkekühlschrank 236 l, kompakter SLT Eiswürfelbereiter und die Profi-Eiswürfelmaschine mit 35 kg/24 h disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden. Lieferung ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen.",
+        "Übergabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr – nach Vereinbarung, eingebettet in die Bobcat-Filiale vor Ort. Online-Buchung 24/7 möglich. Anfahrt direkt über die A40 (Ruhrschnellweg) und die A52. Getränkekühlschrank 236 l, kompakter SLT Eiswürfelbereiter und die Profi-Eiswürfelmaschine mit 45 kg/24 h disponieren wir aus unserem Hauptsitz Krefeld, in der Regel innerhalb von 24 Stunden. Lieferung ins gesamte Ruhrgebiet – Essen, Duisburg, Oberhausen, Mülheim, Bochum, Gelsenkirchen und Hattingen.",
       faqs: [
         {
           q: "Liefert ihr Getränkekühlschrank und Eiswürfelmaschine nach Essen, Duisburg oder Oberhausen?",
