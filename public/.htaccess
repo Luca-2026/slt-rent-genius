@@ -30,7 +30,10 @@ AddDefaultCharset UTF-8
 
   # Umzug in die neue Kategorie "Gastro Equipment"
   RewriteRule ^mieten/(bonn|krefeld|muelheim)/moebel-zelte/getraenkekuehlschrank-236l/?$ /mieten/$1/gastro-equipment/getraenkekuehlschrank-236l/ [L,R=301]
-  RewriteRule ^mieten/(bonn|krefeld|muelheim)/geschirr-glaeser-besteck/(slt-eiswuerfelbereiter|slt-eiswuerfelmaschine-profi-35kg)/?$ /mieten/$1/gastro-equipment/$2/ [L,R=301]
+  RewriteRule ^mieten/(bonn|krefeld|muelheim)/geschirr-glaeser-besteck/slt-eiswuerfelbereiter/?$ /mieten/$1/gastro-equipment/slt-eiswuerfelbereiter/ [L,R=301]
+  # Modellwechsel: 35-kg-Eiswürfelmaschine -> 45-kg-Nachfolger (nur Krefeld/Bonn, Mülheim -> Kategorie)
+  RewriteRule ^mieten/(bonn|krefeld)/(geschirr-glaeser-besteck|gastro-equipment)/slt-eiswuerfelmaschine-profi-35kg/?$ /mieten/$1/gastro-equipment/slt-eiswuerfelmaschine-profi-45kg/ [L,R=301]
+  RewriteRule ^mieten/muelheim/(geschirr-glaeser-besteck|gastro-equipment)/slt-eiswuerfelmaschine-profi-35kg/?$ /mieten/muelheim/gastro-equipment/ [L,R=301]
   RewriteRule ^mieten/bonn/(geschirr-glaeser-besteck|gastro-equipment)/bonn-getraenkekuehlschrank-236l/?$ /mieten/bonn/gastro-equipment/getraenkekuehlschrank-236l/ [L,R=301]
 
   # =====================================================
