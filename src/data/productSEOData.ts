@@ -115,9 +115,9 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "muelheim-cdj-3000x": {
-    seoTitle: "CDJ-3000X mieten Mülheim an der Ruhr – ab 69 € | SLT",
+    seoTitle: "CDJ-3000X mieten Mülheim an der Ruhr – ab 59 € | SLT",
     metaDescription:
-      "AlphaTheta CDJ-3000X mieten in Mülheim an der Ruhr: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, 96 kHz/32-Bit-DAC. Ab 69 € pro Tag, auf Anfrage.",
+      "AlphaTheta CDJ-3000X mieten in Mülheim an der Ruhr: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, 96 kHz/32-Bit-DAC. Ab 59 € je Wochenende, auf Anfrage.",
     h1: "CDJ-3000X mieten in Mülheim an der Ruhr – AlphaTheta DJ-Multiplayer",
     h2s: [
       "Technische Daten des CDJ-3000X",
@@ -131,11 +131,11 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Clubabend, Vereinsfest oder Open Air in Mülheim an der Ruhr: Zwei CDJ-3000X plus Mixer sind der Branchenstandard – jeder gebuchte DJ kennt die Bedienung.",
     useCasePrivat:
       "Hochzeit, Abiparty oder großer Geburtstag: Auflegen von USB-Stick, Laptop oder aus der Cloud, ohne eigenes DJ-Equipment kaufen zu müssen.",
-    dailyPriceFrom: 69,
+    dailyPriceFrom: 59,
     faqs: [
       {
         q: "Was kostet der CDJ-3000X in Mülheim an der Ruhr?",
-        a: "Der Mietpreis startet ab 69 € netto pro Tag und Player. Preise für 2er-Setups, Wochenenden und ganze Wochen nennen wir dir auf Anfrage.",
+        a: "Der Mietpreis startet ab 59 € netto je Wochenende und Player. Preise für 2er-Setups, Wochenenden und ganze Wochen nennen wir dir auf Anfrage.",
       },
       {
         q: "Ist der CDJ-3000X in Mülheim an der Ruhr verfügbar?",
