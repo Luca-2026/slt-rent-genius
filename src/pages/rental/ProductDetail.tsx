@@ -1523,7 +1523,7 @@ function MobileBookingCard({
             {(product.pricePerMonth || product.pricePerDay || typeof dailyPriceFrom === "number") && (
               <span className="text-primary">*</span>
             )}
-            <span className="text-sm font-normal text-muted-foreground"> {product.pricePerMonth ? "/ Monat" : t("rental.perDay")}</span>
+            <span className="text-sm font-normal text-muted-foreground"> {product.priceUnitLabel ?? (product.pricePerMonth ? "/ Monat" : t("rental.perDay"))}</span>
           </div>
           {product.priceWeekend && !product.pricePerMonth && (
             <p className="text-sm text-accent font-medium mt-0.5">
