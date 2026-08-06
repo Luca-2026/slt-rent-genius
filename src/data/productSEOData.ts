@@ -618,7 +618,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "An welchen Standorten ist die Profi-Eiswürfelmaschine verfügbar?",
-        a: "Ja, das Gerät ist über die Standorte Krefeld, Bonn und Mülheim an der Ruhr buchbar. Da die Vermietung aktuell auf Anfrage läuft, prüfen wir Verfügbarkeit und Bereitstellung für Ihren Zeitraum kurzfristig und melden uns per E-Mail oder Telefon zurück.",
+        a: "Die Maschine ist an den Standorten Krefeld und Bonn im Bestand. Die Vermietung läuft auf Anfrage: Wir prüfen Verfügbarkeit und Bereitstellung für deinen Zeitraum kurzfristig und melden uns per E-Mail oder Telefon zurück.",
       },
     ],
   },
