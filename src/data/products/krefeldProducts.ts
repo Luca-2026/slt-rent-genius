@@ -3043,6 +3043,9 @@ export const beschallungProducts: Product[] = [
       "Weitere Anschlüsse": "1× LAN, 1× Control (3,5 mm Minibuchse)",
     },
     pdfUrl: "/manuals/pioneer-cdj2000-nxs-bedienungsanleitung.pdf",
+    pricePerDay: "ab 29 €",
+    priceUnitLabel: "/ Wochenende",
+    tags: ["event", "dj", "party", "hochzeit", "club"],
     rentwareCode: { krefeld: "PAVOZ5" }
   },
   {
@@ -3201,6 +3204,9 @@ export const beschallungProducts: Product[] = [
       "Maße (B × T × H)": "333 × 414 × 108 mm",
       "Gewicht": "8 kg",
     },
+    pricePerDay: "ab 69 €",
+    priceUnitLabel: "/ Wochenende",
+    tags: ["event", "dj", "party", "hochzeit", "club"],
     rentwareCode: { krefeld: "SZ3C5J" }
   },
   {

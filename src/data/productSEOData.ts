@@ -5679,31 +5679,237 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "pioneer-cdj2000-nxs": {
-    seoTitle: "Pioneer CDJ 2000 NXS Multiplayer | DJ-Equipment mieten",
-    metaDescription: "Professioneller DJ-Multiplayer mit Beat-Sync, Wave-Zoom und Unterstützung für USB, SD, CD sowie Smartphones. Jetzt für Events in NRW mieten.",
-    h1: "Pioneer CDJ 2000 NXS mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
-    h2s: ["Technische Merkmale und Displayfunktionen", "Unterstützte Medien und Dateiformate", "Anschlussmöglichkeiten und Integration"],
-    useCaseBau: "",
-    useCaseEvent: "Das Gerät eignet sich für DJ-Sets bei Hochzeiten und Firmenfeiern sowie für Clubevents und Partys.",
-    useCasePrivat: "Der Multiplayer dient der Musikbeschallung bei Privatfeiern.",
+    seoTitle: "CDJ 2000 NXS mieten Krefeld – ab 29 €/WE | SLT",
+    metaDescription:
+      "Pioneer CDJ 2000 NXS mieten in Krefeld: DJ-Multiplayer für USB, SD, CD und Smartphone mit Beat-Sync und Wave-Zoom. Ab 29 € je Wochenende bei SLT Rental.",
+    h1: "Pioneer CDJ 2000 NXS mieten in Krefeld – DJ-Multiplayer",
+    h2s: [
+      "Technische Daten des CDJ 2000 NXS",
+      "DJ-Equipment mieten in Krefeld",
+      "Medien, Formate und Anschlüsse",
+      "Abholung und Anfrage in Krefeld",
+    ],
+    useCaseBau:
+      "Firmenfeier oder Betriebsjubiläum in Krefeld: Der Player läuft an jeder 230-V-Steckdose und ist in wenigen Minuten am Mixer angeschlossen.",
+    useCaseEvent:
+      "Clubnacht, Stadtfest oder Vereinsfeier in Krefeld: Zwei CDJ 2000 NXS plus Mixer sind der Club-Klassiker – Gast-DJs finden sich sofort zurecht.",
+    useCasePrivat:
+      "Hochzeit, Abiparty oder runder Geburtstag in Krefeld: Musik kommt vom USB-Stick, von SD-Karte oder direkt von der CD.",
+    dailyPriceFrom: 29,
     faqs: [
-      { q: "Welche Medien können mit dem CDJ 2000 NXS abgespielt werden?", a: "Es können Smartphones via USB oder Wi-Fi, USB-Speichermedien, SD-Karten, Audio-CDs sowie CD-R/RW und DVDs genutzt werden." },
-      { q: "Welche Audioausgänge sind am Gerät vorhanden?", a: "Das Gerät verfügt über einen Stereo-Cinch-Ausgang sowie einen digitalen Koaxial-Ausgang." },
-      { q: "Wie hoch ist der Rauschabstand des Multiplayers?", a: "Der Rauschabstand liegt bei 115 dB oder größer." },
+      { q: "Was kostet der CDJ 2000 NXS in Krefeld?", a: "Die Miete startet ab 29 € netto je Wochenende und Player. Für 2er-Setups mit Mixer nennen wir dir auf Anfrage einen Gesamtpreis." },
+      { q: "Welche Medien spielt der CDJ 2000 NXS ab?", a: "Smartphone über USB oder Wi-Fi, USB-Speichermedien, SD-Karten, Audio-CDs sowie CD-R/RW und DVD. Unterstützte Dateiformate sind MP3, AAC, WAV und AIFF." },
+      { q: "Welche Anschlüsse hat der Player?", a: "1× Stereo-Cinch-Ausgang, 1× koaxialer Digitalausgang, 2× USB, 1× LAN sowie ein Control-Anschluss (3,5-mm-Minibuchse)." },
+      { q: "Wie gut ist die Audioqualität?", a: "Der Frequenzgang reicht von 4 Hz bis 20 kHz, der Rauschabstand liegt bei 115 dB oder größer, der Klirrfaktor bei 0,0018 % oder kleiner." },
+      { q: "Kann ich Player und Mixer zusammen mieten?", a: "Ja. Wir kombinieren den CDJ 2000 NXS auf Anfrage mit dem DJM 900 NXS2 oder dem DJM-A9, passenden Kabeln sowie Beschallung und Licht für deine Veranstaltung in Krefeld." },
+    ],
+  },
+  "bonn-pioneer-cdj2000-nxs": {
+    seoTitle: "CDJ 2000 NXS mieten Bonn – ab 29 €/WE | SLT",
+    metaDescription:
+      "Pioneer CDJ 2000 NXS mieten in Bonn: DJ-Multiplayer für USB, SD, CD und Smartphone mit Beat-Sync und Wave-Zoom. Ab 29 € je Wochenende bei SLT Rental.",
+    h1: "Pioneer CDJ 2000 NXS mieten in Bonn – DJ-Multiplayer",
+    h2s: [
+      "Technische Daten des CDJ 2000 NXS",
+      "DJ-Equipment mieten in Bonn",
+      "Medien, Formate und Anschlüsse",
+      "Abholung und Anfrage in Bonn",
+    ],
+    useCaseBau:
+      "Firmenfeier oder Betriebsjubiläum in Bonn: Der Player läuft an jeder 230-V-Steckdose und ist in wenigen Minuten am Mixer angeschlossen.",
+    useCaseEvent:
+      "Clubnacht, Stadtfest oder Vereinsfeier in Bonn: Zwei CDJ 2000 NXS plus Mixer sind der Club-Klassiker – Gast-DJs finden sich sofort zurecht.",
+    useCasePrivat:
+      "Hochzeit, Abiparty oder runder Geburtstag in Bonn: Musik kommt vom USB-Stick, von SD-Karte oder direkt von der CD.",
+    dailyPriceFrom: 29,
+    faqs: [
+      { q: "Was kostet der CDJ 2000 NXS in Bonn?", a: "Die Miete startet ab 29 € netto je Wochenende und Player. Für 2er-Setups mit Mixer nennen wir dir auf Anfrage einen Gesamtpreis." },
+      { q: "Welche Medien spielt der CDJ 2000 NXS ab?", a: "Smartphone über USB oder Wi-Fi, USB-Speichermedien, SD-Karten, Audio-CDs sowie CD-R/RW und DVD. Unterstützte Dateiformate sind MP3, AAC, WAV und AIFF." },
+      { q: "Welche Anschlüsse hat der Player?", a: "1× Stereo-Cinch-Ausgang, 1× koaxialer Digitalausgang, 2× USB, 1× LAN sowie ein Control-Anschluss (3,5-mm-Minibuchse)." },
+      { q: "Wie gut ist die Audioqualität?", a: "Der Frequenzgang reicht von 4 Hz bis 20 kHz, der Rauschabstand liegt bei 115 dB oder größer, der Klirrfaktor bei 0,0018 % oder kleiner." },
+      { q: "Kann ich Player und Mixer zusammen mieten?", a: "Ja. Wir kombinieren den CDJ 2000 NXS auf Anfrage mit dem DJM 900 NXS2 oder dem DJM-A9, passenden Kabeln sowie Beschallung und Licht für deine Veranstaltung in Bonn." },
+    ],
+  },
+  "muelheim-pioneer-cdj2000-nxs": {
+    seoTitle: "CDJ 2000 NXS mieten Mülheim a. d. Ruhr – ab 29 €/WE | SLT",
+    metaDescription:
+      "Pioneer CDJ 2000 NXS mieten in Mülheim an der Ruhr: DJ-Multiplayer für USB, SD, CD und Smartphone mit Beat-Sync und Wave-Zoom. Ab 29 € je Wochenende bei SLT Rental.",
+    h1: "Pioneer CDJ 2000 NXS mieten in Mülheim an der Ruhr – DJ-Multiplayer",
+    h2s: [
+      "Technische Daten des CDJ 2000 NXS",
+      "DJ-Equipment mieten in Mülheim an der Ruhr",
+      "Medien, Formate und Anschlüsse",
+      "Abholung und Anfrage in Mülheim an der Ruhr",
+    ],
+    useCaseBau:
+      "Firmenfeier oder Betriebsjubiläum in Mülheim an der Ruhr: Der Player läuft an jeder 230-V-Steckdose und ist in wenigen Minuten am Mixer angeschlossen.",
+    useCaseEvent:
+      "Clubnacht, Stadtfest oder Vereinsfeier in Mülheim an der Ruhr: Zwei CDJ 2000 NXS plus Mixer sind der Club-Klassiker – Gast-DJs finden sich sofort zurecht.",
+    useCasePrivat:
+      "Hochzeit, Abiparty oder runder Geburtstag in Mülheim an der Ruhr: Musik kommt vom USB-Stick, von SD-Karte oder direkt von der CD.",
+    dailyPriceFrom: 29,
+    faqs: [
+      { q: "Was kostet der CDJ 2000 NXS in Mülheim an der Ruhr?", a: "Die Miete startet ab 29 € netto je Wochenende und Player. Für 2er-Setups mit Mixer nennen wir dir auf Anfrage einen Gesamtpreis." },
+      { q: "Welche Medien spielt der CDJ 2000 NXS ab?", a: "Smartphone über USB oder Wi-Fi, USB-Speichermedien, SD-Karten, Audio-CDs sowie CD-R/RW und DVD. Unterstützte Dateiformate sind MP3, AAC, WAV und AIFF." },
+      { q: "Welche Anschlüsse hat der Player?", a: "1× Stereo-Cinch-Ausgang, 1× koaxialer Digitalausgang, 2× USB, 1× LAN sowie ein Control-Anschluss (3,5-mm-Minibuchse)." },
+      { q: "Wie gut ist die Audioqualität?", a: "Der Frequenzgang reicht von 4 Hz bis 20 kHz, der Rauschabstand liegt bei 115 dB oder größer, der Klirrfaktor bei 0,0018 % oder kleiner." },
+      { q: "Kann ich Player und Mixer zusammen mieten?", a: "Ja. Wir kombinieren den CDJ 2000 NXS auf Anfrage mit dem DJM 900 NXS2 oder dem DJM-A9, passenden Kabeln sowie Beschallung und Licht für deine Veranstaltung in Mülheim an der Ruhr." },
     ],
   },
   "pioneer-djm900-nxs2": {
-    seoTitle: "Pioneer DJM 900 NXS2 | 4-Kanal DJ-Mixer mieten",
-    metaDescription: "Der Pioneer DJM 900 NXS2 bietet als 4-Kanal-Mixer einen 64-bit Mixing Prozessor, 2 USB-Ports und unabhängige Send/Return Wege für professionelle DJ-Sets.",
-    h1: "Pioneer DJM 900 NXS2 mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
-    h2s: ["Technische Highlights und Signalverarbeitung", "Anschlussmöglichkeiten für DJs", "Präzise Steuerung und Design"],
-    useCaseBau: "",
-    useCaseEvent: "Das Gerät ist für DJ-Sets bei Hochzeiten und Firmenfeiern sowie für Clubevents und Partys konzipiert.",
-    useCasePrivat: "Dieses Mischpult eignet sich für die Musikbeschallung bei Privatfeiern.",
+    seoTitle: "DJM 900 NXS2 mieten Krefeld – ab 69 €/WE | SLT",
+    metaDescription:
+      "Pioneer DJM 900 NXS2 mieten in Krefeld: 4-Kanal-Club-Mixer mit 64-Bit-Prozessor, 2 USB-Ports und Send/Return. Ab 69 € je Wochenende bei SLT Rental.",
+    h1: "Pioneer DJM 900 NXS2 mieten in Krefeld – 4-Kanal-DJ-Mixer",
+    h2s: [
+      "Technische Daten des DJM 900 NXS2",
+      "Komplettes DJ-Setup für Krefeld",
+      "Anschlüsse, Effekte und Send/Return",
+      "Abholung und Anfrage in Krefeld",
+    ],
+    useCaseBau:
+      "Firmenevent oder Betriebsfeier in Krefeld: Der Mixer bündelt bis zu vier Zuspieler und zwei Mikrofone an einer Anlage.",
+    useCaseEvent:
+      "Clubabend, Stadtfest oder Festival in Krefeld: Vier Kanäle, Send/Return und die gewohnte Nexus-Bedienung – Standard hinter fast jedem Pult.",
+    useCasePrivat:
+      "Hochzeit oder Geburtstag in Krefeld: Auch ohne eigenes Equipment legt dein DJ mit vertrauter Technik auf.",
+    dailyPriceFrom: 69,
     faqs: [
-      { q: "Über wie viele Kanäle verfügt der Pioneer DJM 900 NXS2?", a: "Der Mixer ist mit 4 Audiokanälen und 2 Mikrofonkanälen ausgestattet." },
-      { q: "Welche digitalen Anschlüsse stehen für die Verbindung mit Computern bereit?", a: "Das Gerät verfügt über 2 USB-B Anschlüsse und einen Link-Anschluss." },
-      { q: "Wie hoch ist die Audio-Auflösung des internen Prozessors?", a: "Der integrierte 64-bit Mixing Prozessor arbeitet mit einem 32-Bit D/A-Wandler und einem 24-Bit A/D-Wandler bei einem Frequenzgang von 20 Hz bis 40 kHz." },
+      { q: "Was kostet der DJM 900 NXS2 in Krefeld?", a: "Die Miete startet ab 69 € netto je Wochenende. Für Komplett-Setups mit CDJ-Playern erstellen wir dir auf Anfrage ein Angebot." },
+      { q: "Über wie viele Kanäle verfügt der DJM 900 NXS2?", a: "Der Mixer hat 4 Audiokanäle und 2 Mikrofonkanäle, dazu unabhängige Send/Return-Wege über 6,3-mm-Klinke." },
+      { q: "Welche digitalen Anschlüsse gibt es?", a: "2× USB-B für zwei Laptops sowie 1× Link-Anschluss für den Verbund mit CDJ-Playern." },
+      { q: "Wie arbeitet die Signalverarbeitung?", a: "Der 64-Bit-Mixing-Prozessor arbeitet mit 32-Bit-D/A- und 24-Bit-A/D-Wandlern, Frequenzgang 20 Hz–40 kHz, Klirrfaktor 0,005 % oder niedriger." },
+      { q: "Wie groß und schwer ist der Mixer?", a: "333 × 414 × 108 mm (B × T × H) bei 8 kg – transportsicher im Mixer-Case im Pkw." },
+      { q: "Passt der Mixer zu euren CDJ-Playern?", a: "Ja. Wir vermieten den DJM 900 NXS2 in Krefeld üblicherweise zusammen mit zwei Pioneer CDJ 2000 NXS oder den CDJ-3000X inklusive Verkabelung." },
+    ],
+  },
+  "bonn-pioneer-djm900-nxs2": {
+    seoTitle: "DJM 900 NXS2 mieten Bonn – ab 69 €/WE | SLT",
+    metaDescription:
+      "Pioneer DJM 900 NXS2 mieten in Bonn: 4-Kanal-Club-Mixer mit 64-Bit-Prozessor, 2 USB-Ports und Send/Return. Ab 69 € je Wochenende bei SLT Rental.",
+    h1: "Pioneer DJM 900 NXS2 mieten in Bonn – 4-Kanal-DJ-Mixer",
+    h2s: [
+      "Technische Daten des DJM 900 NXS2",
+      "Komplettes DJ-Setup für Bonn",
+      "Anschlüsse, Effekte und Send/Return",
+      "Abholung und Anfrage in Bonn",
+    ],
+    useCaseBau:
+      "Firmenevent oder Betriebsfeier in Bonn: Der Mixer bündelt bis zu vier Zuspieler und zwei Mikrofone an einer Anlage.",
+    useCaseEvent:
+      "Clubabend, Stadtfest oder Festival in Bonn: Vier Kanäle, Send/Return und die gewohnte Nexus-Bedienung – Standard hinter fast jedem Pult.",
+    useCasePrivat:
+      "Hochzeit oder Geburtstag in Bonn: Auch ohne eigenes Equipment legt dein DJ mit vertrauter Technik auf.",
+    dailyPriceFrom: 69,
+    faqs: [
+      { q: "Was kostet der DJM 900 NXS2 in Bonn?", a: "Die Miete startet ab 69 € netto je Wochenende. Für Komplett-Setups mit CDJ-Playern erstellen wir dir auf Anfrage ein Angebot." },
+      { q: "Über wie viele Kanäle verfügt der DJM 900 NXS2?", a: "Der Mixer hat 4 Audiokanäle und 2 Mikrofonkanäle, dazu unabhängige Send/Return-Wege über 6,3-mm-Klinke." },
+      { q: "Welche digitalen Anschlüsse gibt es?", a: "2× USB-B für zwei Laptops sowie 1× Link-Anschluss für den Verbund mit CDJ-Playern." },
+      { q: "Wie arbeitet die Signalverarbeitung?", a: "Der 64-Bit-Mixing-Prozessor arbeitet mit 32-Bit-D/A- und 24-Bit-A/D-Wandlern, Frequenzgang 20 Hz–40 kHz, Klirrfaktor 0,005 % oder niedriger." },
+      { q: "Wie groß und schwer ist der Mixer?", a: "333 × 414 × 108 mm (B × T × H) bei 8 kg – transportsicher im Mixer-Case im Pkw." },
+      { q: "Passt der Mixer zu euren CDJ-Playern?", a: "Ja. Wir vermieten den DJM 900 NXS2 in Bonn üblicherweise zusammen mit zwei Pioneer CDJ 2000 NXS oder den CDJ-3000X inklusive Verkabelung." },
+    ],
+  },
+  "muelheim-pioneer-djm900-nxs2": {
+    seoTitle: "DJM 900 NXS2 mieten Mülheim a. d. Ruhr – ab 69 €/WE | SLT",
+    metaDescription:
+      "Pioneer DJM 900 NXS2 mieten in Mülheim an der Ruhr: 4-Kanal-Club-Mixer mit 64-Bit-Prozessor, 2 USB-Ports und Send/Return. Ab 69 € je Wochenende bei SLT Rental.",
+    h1: "Pioneer DJM 900 NXS2 mieten in Mülheim an der Ruhr – 4-Kanal-DJ-Mixer",
+    h2s: [
+      "Technische Daten des DJM 900 NXS2",
+      "Komplettes DJ-Setup für Mülheim an der Ruhr",
+      "Anschlüsse, Effekte und Send/Return",
+      "Abholung und Anfrage in Mülheim an der Ruhr",
+    ],
+    useCaseBau:
+      "Firmenevent oder Betriebsfeier in Mülheim an der Ruhr: Der Mixer bündelt bis zu vier Zuspieler und zwei Mikrofone an einer Anlage.",
+    useCaseEvent:
+      "Clubabend, Stadtfest oder Festival in Mülheim an der Ruhr: Vier Kanäle, Send/Return und die gewohnte Nexus-Bedienung – Standard hinter fast jedem Pult.",
+    useCasePrivat:
+      "Hochzeit oder Geburtstag in Mülheim an der Ruhr: Auch ohne eigenes Equipment legt dein DJ mit vertrauter Technik auf.",
+    dailyPriceFrom: 69,
+    faqs: [
+      { q: "Was kostet der DJM 900 NXS2 in Mülheim an der Ruhr?", a: "Die Miete startet ab 69 € netto je Wochenende. Für Komplett-Setups mit CDJ-Playern erstellen wir dir auf Anfrage ein Angebot." },
+      { q: "Über wie viele Kanäle verfügt der DJM 900 NXS2?", a: "Der Mixer hat 4 Audiokanäle und 2 Mikrofonkanäle, dazu unabhängige Send/Return-Wege über 6,3-mm-Klinke." },
+      { q: "Welche digitalen Anschlüsse gibt es?", a: "2× USB-B für zwei Laptops sowie 1× Link-Anschluss für den Verbund mit CDJ-Playern." },
+      { q: "Wie arbeitet die Signalverarbeitung?", a: "Der 64-Bit-Mixing-Prozessor arbeitet mit 32-Bit-D/A- und 24-Bit-A/D-Wandlern, Frequenzgang 20 Hz–40 kHz, Klirrfaktor 0,005 % oder niedriger." },
+      { q: "Wie groß und schwer ist der Mixer?", a: "333 × 414 × 108 mm (B × T × H) bei 8 kg – transportsicher im Mixer-Case im Pkw." },
+      { q: "Passt der Mixer zu euren CDJ-Playern?", a: "Ja. Wir vermieten den DJM 900 NXS2 in Mülheim an der Ruhr üblicherweise zusammen mit zwei Pioneer CDJ 2000 NXS oder den CDJ-3000X inklusive Verkabelung." },
+    ],
+  },
+  "yamaha-dm3": {
+    seoTitle: "Yamaha DM3 mieten Krefeld – Digitalmischpult | SLT",
+    metaDescription:
+      "Yamaha DM3 mieten in Krefeld: 16-Kanal-Digitalmischpult mit 9\" Touchscreen, 9 Motorfadern und 16×16 Dante. Für Live, Stream und Studio bei SLT Rental.",
+    h1: "Yamaha DM3 mieten in Krefeld – Digitalmischpult mit Dante",
+    h2s: [
+      "Technische Daten des Yamaha DM3",
+      "Dante- und USB-Interface im Einsatz",
+      "Live, Stream und Studio in Krefeld",
+      "Abholung und Anfrage in Krefeld",
+    ],
+    useCaseBau:
+      "Betriebsversammlung oder Tagung in Krefeld: Mit 6,5 kg und 320 × 140 × 455 mm passt das Pult in jeden Regieplatz und mischt Mikrofone, Zuspieler und Rückwege sauber.",
+    useCaseEvent:
+      "Konzert, Stadtfest oder Firmenevent in Krefeld: 16 Mono- plus 1 Stereokanal, 6 Mix-Busse und 18 Effekte inklusive GEQ auf Mix 1–6 und Stereo-Bus.",
+    useCasePrivat:
+      "Bandprobe, Gottesdienst oder Livestream in Krefeld: Über das 18×18-USB-Interface bei 48 oder 96 kHz nimmst du direkt in die DAW auf.",
+    faqs: [
+      { q: "Wie viele Kanäle hat der Yamaha DM3?", a: "16 Mono-Kanäle, 1 Stereo-Kanal und 2 FX-Returns bei 8 Ausgängen sowie 1 Stereo-, 6 Mix-, 2 FX- und 2 Matrix-Bussen." },
+      { q: "Ist die Dante-Version im Verleih?", a: "Ja, wir vermieten die Dante-Variante mit 16×16 Ein- und Ausgängen – ideal für Split zu Broadcast, Recording oder Monitorpult." },
+      { q: "Kann ich mit dem DM3 direkt aufnehmen?", a: "Ja. Das USB-Audio-Interface arbeitet mit 18×18 Kanälen bei 48 oder 96 kHz, zusätzlich ist eine 2×2-Kanal-Aufnahme über den USB-Port möglich." },
+      { q: "Wie wird das Pult bedient?", a: "Über einen 9\"-Multi-Touchscreen, 9 Motorfader, den \"Touch and Turn\"-Regler und 6 frei belegbare Taster. DAW-Remote erfolgt per HUI, für Installationen wird OSC unterstützt." },
+      { q: "Kann ich das Pult in Krefeld abholen?", a: "Ja, Abholung und Rückgabe sind am Standort möglich. Auf Wunsch liefern wir das DM3 zusammen mit Beschallung, Mikrofonen und Stagebox an deinen Veranstaltungsort." },
+    ],
+  },
+  "bonn-yamaha-dm3": {
+    seoTitle: "Yamaha DM3 mieten Bonn – Digitalmischpult | SLT",
+    metaDescription:
+      "Yamaha DM3 mieten in Bonn: 16-Kanal-Digitalmischpult mit 9\" Touchscreen, 9 Motorfadern und 16×16 Dante. Für Live, Stream und Studio bei SLT Rental.",
+    h1: "Yamaha DM3 mieten in Bonn – Digitalmischpult mit Dante",
+    h2s: [
+      "Technische Daten des Yamaha DM3",
+      "Dante- und USB-Interface im Einsatz",
+      "Live, Stream und Studio in Bonn",
+      "Abholung und Anfrage in Bonn",
+    ],
+    useCaseBau:
+      "Betriebsversammlung oder Tagung in Bonn: Mit 6,5 kg und 320 × 140 × 455 mm passt das Pult in jeden Regieplatz und mischt Mikrofone, Zuspieler und Rückwege sauber.",
+    useCaseEvent:
+      "Konzert, Stadtfest oder Firmenevent in Bonn: 16 Mono- plus 1 Stereokanal, 6 Mix-Busse und 18 Effekte inklusive GEQ auf Mix 1–6 und Stereo-Bus.",
+    useCasePrivat:
+      "Bandprobe, Gottesdienst oder Livestream in Bonn: Über das 18×18-USB-Interface bei 48 oder 96 kHz nimmst du direkt in die DAW auf.",
+    faqs: [
+      { q: "Wie viele Kanäle hat der Yamaha DM3?", a: "16 Mono-Kanäle, 1 Stereo-Kanal und 2 FX-Returns bei 8 Ausgängen sowie 1 Stereo-, 6 Mix-, 2 FX- und 2 Matrix-Bussen." },
+      { q: "Ist die Dante-Version im Verleih?", a: "Ja, wir vermieten die Dante-Variante mit 16×16 Ein- und Ausgängen – ideal für Split zu Broadcast, Recording oder Monitorpult." },
+      { q: "Kann ich mit dem DM3 direkt aufnehmen?", a: "Ja. Das USB-Audio-Interface arbeitet mit 18×18 Kanälen bei 48 oder 96 kHz, zusätzlich ist eine 2×2-Kanal-Aufnahme über den USB-Port möglich." },
+      { q: "Wie wird das Pult bedient?", a: "Über einen 9\"-Multi-Touchscreen, 9 Motorfader, den \"Touch and Turn\"-Regler und 6 frei belegbare Taster. DAW-Remote erfolgt per HUI, für Installationen wird OSC unterstützt." },
+      { q: "Kann ich das Pult in Bonn abholen?", a: "Ja, Abholung und Rückgabe sind am Standort möglich. Auf Wunsch liefern wir das DM3 zusammen mit Beschallung, Mikrofonen und Stagebox an deinen Veranstaltungsort." },
+    ],
+  },
+  "muelheim-yamaha-dm3": {
+    seoTitle: "Yamaha DM3 mieten Mülheim a. d. Ruhr – Digitalmischpult | SLT",
+    metaDescription:
+      "Yamaha DM3 mieten in Mülheim an der Ruhr: 16-Kanal-Digitalmischpult mit 9\" Touchscreen, 9 Motorfadern und 16×16 Dante. Für Live, Stream und Studio bei SLT Rental.",
+    h1: "Yamaha DM3 mieten in Mülheim an der Ruhr – Digitalmischpult mit Dante",
+    h2s: [
+      "Technische Daten des Yamaha DM3",
+      "Dante- und USB-Interface im Einsatz",
+      "Live, Stream und Studio in Mülheim an der Ruhr",
+      "Abholung und Anfrage in Mülheim an der Ruhr",
+    ],
+    useCaseBau:
+      "Betriebsversammlung oder Tagung in Mülheim an der Ruhr: Mit 6,5 kg und 320 × 140 × 455 mm passt das Pult in jeden Regieplatz und mischt Mikrofone, Zuspieler und Rückwege sauber.",
+    useCaseEvent:
+      "Konzert, Stadtfest oder Firmenevent in Mülheim an der Ruhr: 16 Mono- plus 1 Stereokanal, 6 Mix-Busse und 18 Effekte inklusive GEQ auf Mix 1–6 und Stereo-Bus.",
+    useCasePrivat:
+      "Bandprobe, Gottesdienst oder Livestream in Mülheim an der Ruhr: Über das 18×18-USB-Interface bei 48 oder 96 kHz nimmst du direkt in die DAW auf.",
+    faqs: [
+      { q: "Wie viele Kanäle hat der Yamaha DM3?", a: "16 Mono-Kanäle, 1 Stereo-Kanal und 2 FX-Returns bei 8 Ausgängen sowie 1 Stereo-, 6 Mix-, 2 FX- und 2 Matrix-Bussen." },
+      { q: "Ist die Dante-Version im Verleih?", a: "Ja, wir vermieten die Dante-Variante mit 16×16 Ein- und Ausgängen – ideal für Split zu Broadcast, Recording oder Monitorpult." },
+      { q: "Kann ich mit dem DM3 direkt aufnehmen?", a: "Ja. Das USB-Audio-Interface arbeitet mit 18×18 Kanälen bei 48 oder 96 kHz, zusätzlich ist eine 2×2-Kanal-Aufnahme über den USB-Port möglich." },
+      { q: "Wie wird das Pult bedient?", a: "Über einen 9\"-Multi-Touchscreen, 9 Motorfader, den \"Touch and Turn\"-Regler und 6 frei belegbare Taster. DAW-Remote erfolgt per HUI, für Installationen wird OSC unterstützt." },
+      { q: "Kann ich das Pult in Mülheim an der Ruhr abholen?", a: "Ja, Abholung und Rückgabe sind am Standort möglich. Auf Wunsch liefern wir das DM3 zusammen mit Beschallung, Mikrofonen und Stagebox an deinen Veranstaltungsort." },
     ],
   },
   "planen-1300": {

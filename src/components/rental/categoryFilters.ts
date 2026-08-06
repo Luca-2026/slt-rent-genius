@@ -257,6 +257,7 @@ export const beschallungFilterSections: FilterSection[] = [
     defaultExpanded: true,
     options: [
       { id: "pa", label: "catFilters.paSysteme", sublabel: "catFilters.paSysteme_sub" },
+      { id: "dj", label: "catFilters.djEquipment", sublabel: "catFilters.djEquipment_sub" },
       { id: "lautsprecher", label: "catFilters.lautsprecher", sublabel: "catFilters.lautsprecher_sub" },
       { id: "subwoofer", label: "catFilters.subwoofer", sublabel: "catFilters.subwoofer_sub" },
       { id: "mikrofon", label: "catFilters.mikrofone", sublabel: "catFilters.mikrofone_sub" },

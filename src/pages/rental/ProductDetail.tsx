@@ -1,6 +1,6 @@
 import { Navigate, useParams, Link, useNavigate } from "react-router-dom";
 import { categoryContent as seoCategoryContent } from "@/components/rental/ProductSEOContent";
-import { getProductSEO } from "@/data/productSEOData";
+import { getProductSEO, productSEOData } from "@/data/productSEOData";
 import { useMemo, useEffect, useState } from "react";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_LOCATION_JSONLD } from "@/components/SEO";
@@ -148,18 +148,27 @@ export default function ProductDetail() {
       : [];
   }, [product]);
 
-  // Get product-specific SEO data from Excel, then let CMS overrides (seoFaqs, seoMetaDescription) win
+  // Get product-specific SEO data from Excel, then let CMS overrides (seoFaqs, seoMetaDescription) win.
+  // Ausnahme: Gibt es eine standort-spezifische SEO-Variante (z. B. "bonn-<id>"), hat diese Vorrang
+  // vor der einheitlichen CMS-Beschreibung – sonst wären die Standortseiten identisch.
   const productSEO = useMemo(() => {
     if (!product) return undefined;
     const base = getProductSEO(product.id, location?.id);
+    const hasLocalizedSEO = !!(
+      location?.id &&
+      (productSEOData[`${location.id}-${product.id}`] ||
+        productSEOData[`bonn-${product.id}`] ||
+        productSEOData[`muelheim-${product.id}`])
+    );
     const cmsFaqs = product.seoFaqs?.length
       ? product.seoFaqs.map((f) => ({ q: f.question, a: f.answer }))
       : null;
     if (!cmsFaqs && !product.seoMetaDescription) return base;
+    const useCmsMeta = !!product.seoMetaDescription && !(hasLocalizedSEO && base?.metaDescription);
     return {
       ...(base ?? {}),
-      ...(cmsFaqs ? { faqs: cmsFaqs } : {}),
-      ...(product.seoMetaDescription ? { metaDescription: product.seoMetaDescription } : {}),
+      ...(cmsFaqs && !(hasLocalizedSEO && base?.faqs?.length) ? { faqs: cmsFaqs } : {}),
+      ...(useCmsMeta ? { metaDescription: product.seoMetaDescription } : {}),
     } as typeof base;
   }, [product, location]);
 
@@ -231,8 +240,17 @@ export default function ProductDetail() {
       // SEO: Title - "{name} mieten in {Stadtname} | SLT Rental"
       const genericName = product.name;
       const titleBase = `${genericName} mieten in ${cityName}`;
+      const localizedEntry = location?.id
+        ? productSEOData[`${location.id}-${product.id}`]
+          ?? (productSEOData[`bonn-${product.id}`] || productSEOData[`muelheim-${product.id}`]
+                ? productSEOData[product.id]
+                : undefined)
+        : undefined;
+      const localizedSeoTitle = localizedEntry?.seoTitle;
       let seoTitle: string;
-      if (titleBase.length + ' | SLT Rental'.length <= 60) {
+      if (localizedSeoTitle) {
+        seoTitle = localizedSeoTitle;
+      } else if (titleBase.length + ' | SLT Rental'.length <= 60) {
         seoTitle = `${titleBase} | SLT Rental`;
       } else {
         seoTitle = titleBase;
@@ -242,7 +260,9 @@ export default function ProductDetail() {
       // SEO: Meta description - CMS override wins, else generated
       const modelInfo = product.modelName ? ` ${product.modelName}` : '';
       let descText: string;
-      if (product.seoMetaDescription && product.seoMetaDescription.trim()) {
+      if (productSEO?.metaDescription && productSEO.metaDescription.trim()) {
+        descText = productSEO.metaDescription.trim();
+      } else if (product.seoMetaDescription && product.seoMetaDescription.trim()) {
         descText = product.seoMetaDescription.trim();
       } else if (product.description) {
         const localizedDesc = localizeText(product.description);
