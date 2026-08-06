@@ -17,7 +17,7 @@ export interface ProductSEOData {
 // Lookup by product ID (from rentalData.ts)
 export const productSEOData: Record<string, ProductSEOData> = {
   "cdj-3000x": {
-    seoTitle: "CDJ-3000X mieten Krefeld – DJ-Player ab 69 € | SLT",
+    seoTitle: "CDJ-3000X mieten Krefeld – DJ-Player ab 59 € | SLT",
     metaDescription:
       "AlphaTheta CDJ-3000X mieten in Krefeld: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, USB-C, 96 kHz/32-Bit-DAC. Ab 69 € pro Tag, auf Anfrage – auch als 2er-Setup.",
     h1: "CDJ-3000X mieten in Krefeld – AlphaTheta DJ-Multiplayer",
@@ -37,7 +37,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     faqs: [
       {
         q: "Was kostet es, einen CDJ-3000X in Krefeld zu mieten?",
-        a: "Die Miete startet ab 69 € netto pro Tag und Player. Für 2er-Setups mit Mixer sowie Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage einen Preis für deinen Zeitraum.",
+        a: "Die Miete startet ab 59 € netto je Wochenende und Player. Für 2er-Setups mit Mixer sowie Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage einen Preis für deinen Zeitraum.",
       },
       {
         q: "Ist der CDJ-3000X in Krefeld sofort verfügbar?",
@@ -66,7 +66,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-cdj-3000x": {
-    seoTitle: "CDJ-3000X mieten Bonn – DJ-Player ab 69 € | SLT",
+    seoTitle: "CDJ-3000X mieten Bonn – DJ-Player ab 59 € | SLT",
     metaDescription:
       "AlphaTheta CDJ-3000X mieten in Bonn: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, USB-C, 96 kHz/32-Bit-DAC. Ab 69 € pro Tag, auf Anfrage – ideal als 2er-Setup.",
     h1: "CDJ-3000X mieten in Bonn – AlphaTheta DJ-Multiplayer",
@@ -86,7 +86,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     faqs: [
       {
         q: "Was kostet der CDJ-3000X in Bonn pro Tag?",
-        a: "Die Miete startet ab 69 € netto pro Tag und Player. Für 2er-Setups mit Mixer sowie Wochenend- und Wochenpreise erstellen wir dir auf Anfrage ein Angebot.",
+        a: "Die Miete startet ab 59 € netto je Wochenende und Player. Für 2er-Setups mit Mixer sowie Wochenend- und Wochenpreise erstellen wir dir auf Anfrage ein Angebot.",
       },
       {
         q: "Ist der CDJ-3000X in Bonn direkt buchbar?",
