@@ -1,6 +1,6 @@
 import { Navigate, useParams, Link, useNavigate } from "react-router-dom";
 import { categoryContent as seoCategoryContent } from "@/components/rental/ProductSEOContent";
-import { getProductSEO } from "@/data/productSEOData";
+import { getProductSEO, productSEOData } from "@/data/productSEOData";
 import { useMemo, useEffect, useState } from "react";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_LOCATION_JSONLD } from "@/components/SEO";
@@ -235,8 +235,11 @@ export default function ProductDetail() {
       // SEO: Title - "{name} mieten in {Stadtname} | SLT Rental"
       const genericName = product.name;
       const titleBase = `${genericName} mieten in ${cityName}`;
+      const localizedSeoTitle = location?.id ? productSEOData[`${location.id}-${product.id}`]?.seoTitle : undefined;
       let seoTitle: string;
-      if (titleBase.length + ' | SLT Rental'.length <= 60) {
+      if (localizedSeoTitle) {
+        seoTitle = localizedSeoTitle;
+      } else if (titleBase.length + ' | SLT Rental'.length <= 60) {
         seoTitle = `${titleBase} | SLT Rental`;
       } else {
         seoTitle = titleBase;
@@ -246,7 +249,9 @@ export default function ProductDetail() {
       // SEO: Meta description - CMS override wins, else generated
       const modelInfo = product.modelName ? ` ${product.modelName}` : '';
       let descText: string;
-      if (product.seoMetaDescription && product.seoMetaDescription.trim()) {
+      if (productSEO?.metaDescription && productSEO.metaDescription.trim()) {
+        descText = productSEO.metaDescription.trim();
+      } else if (product.seoMetaDescription && product.seoMetaDescription.trim()) {
         descText = product.seoMetaDescription.trim();
       } else if (product.description) {
         const localizedDesc = localizeText(product.description);
