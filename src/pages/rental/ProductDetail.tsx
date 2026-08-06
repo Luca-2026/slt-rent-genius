@@ -148,18 +148,22 @@ export default function ProductDetail() {
       : [];
   }, [product]);
 
-  // Get product-specific SEO data from Excel, then let CMS overrides (seoFaqs, seoMetaDescription) win
+  // Get product-specific SEO data from Excel, then let CMS overrides (seoFaqs, seoMetaDescription) win.
+  // Ausnahme: Gibt es eine standort-spezifische SEO-Variante (z. B. "bonn-<id>"), hat diese Vorrang
+  // vor der einheitlichen CMS-Beschreibung – sonst wären die Standortseiten identisch.
   const productSEO = useMemo(() => {
     if (!product) return undefined;
     const base = getProductSEO(product.id, location?.id);
+    const hasLocalizedSEO = !!(location?.id && productSEOData[`${location.id}-${product.id}`]);
     const cmsFaqs = product.seoFaqs?.length
       ? product.seoFaqs.map((f) => ({ q: f.question, a: f.answer }))
       : null;
     if (!cmsFaqs && !product.seoMetaDescription) return base;
+    const useCmsMeta = !!product.seoMetaDescription && !(hasLocalizedSEO && base?.metaDescription);
     return {
       ...(base ?? {}),
-      ...(cmsFaqs ? { faqs: cmsFaqs } : {}),
-      ...(product.seoMetaDescription ? { metaDescription: product.seoMetaDescription } : {}),
+      ...(cmsFaqs && !(hasLocalizedSEO && base?.faqs?.length) ? { faqs: cmsFaqs } : {}),
+      ...(useCmsMeta ? { metaDescription: product.seoMetaDescription } : {}),
     } as typeof base;
   }, [product, location]);
 
