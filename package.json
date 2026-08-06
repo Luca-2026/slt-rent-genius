@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vite-node scripts/exportRoutes.ts && node scripts/prerender-rental.mjs && node scripts/audit-404-mapping.mjs && node scripts/build-htaccess.mjs",
+    "build": "vite build && vite-node --mode production scripts/exportRoutes.ts && node scripts/prerender-rental.mjs && node scripts/audit-404-mapping.mjs && node scripts/build-htaccess.mjs",
     "build:spa": "vite build",
-    "prerender": "vite-node scripts/exportRoutes.ts && node scripts/prerender-rental.mjs && node scripts/audit-404-mapping.mjs && node scripts/build-htaccess.mjs",
+    "prerender": "vite-node --mode production scripts/exportRoutes.ts && node scripts/prerender-rental.mjs && node scripts/audit-404-mapping.mjs && node scripts/build-htaccess.mjs",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
