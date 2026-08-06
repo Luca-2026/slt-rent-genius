@@ -3049,10 +3049,11 @@ export const beschallungProducts: Product[] = [
     id: "cdj-3000x",
     name: "AlphaTheta CDJ-3000X DJ-Multiplayer",
     modelName: "CDJ-3000X – Profi-DJ-Player mit 10,1\" Touchscreen, PRO DJ LINK und WLAN",
-    description: "CDJ-3000X mieten: Profi-DJ-Multiplayer von AlphaTheta (Pioneer DJ) mit 10,1\"-Touchscreen, PRO DJ LINK, WLAN, USB-C und 96 kHz/32-Bit-DAC. Ab 69 € pro Tag – an allen Standorten auf Anfrage.",
+    description: "CDJ-3000X mieten: Profi-DJ-Multiplayer von AlphaTheta (Pioneer DJ) mit 10,1\"-Touchscreen, PRO DJ LINK, WLAN, USB-C und 96 kHz/32-Bit-DAC. Ab 59 € je Wochenende – an allen Standorten auf Anfrage.",
     category: "dj-equipment",
     onRequest: true,
-    pricePerDay: "ab 69 €",
+    pricePerDay: "ab 59 €",
+    priceUnitLabel: "/ Wochenende",
     images: [
       "/product-images/cdj-3000x-1.jpeg",
       "/product-images/cdj-3000x-2.jpeg",
