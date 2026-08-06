@@ -55,7 +55,7 @@ export function SendMessageDialog({ profileId, companyName, contactEmail, trigge
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild onClick={(e) => e.stopPropagation()}>
         {trigger ?? (
-          <Button size="sm" variant="outline">
+          <Button size="sm" variant="outline" className="flex-1 min-w-[7rem] lg:flex-none">
             <MessageSquare className="h-3.5 w-3.5 mr-1" />
             Nachricht
           </Button>

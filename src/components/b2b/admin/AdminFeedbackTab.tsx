@@ -172,11 +172,12 @@ export default function AdminFeedbackTab() {
               <Copy className="h-4 w-4 mr-1" /> Link kopieren
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground break-words">
             Nicht verlinkt und für Suchmaschinen gesperrt. Optionale Parameter:{" "}
-            <code>?src=rentware&amp;standort=krefeld&amp;ref=BUCHUNGSNR</code>. Buchungsnummer und E-Mail sind für
+            <code className="break-all">?src=rentware&amp;standort=krefeld&amp;ref=BUCHUNGSNR</code>. Buchungsnummer und E-Mail sind für
             Kunden Pflicht, max. 20 Rückmeldungen pro Stunde.
           </p>
+
 
           <div className="rounded-lg border">
             <button
