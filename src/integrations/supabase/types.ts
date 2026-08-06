@@ -827,6 +827,7 @@ export type Database = {
           pdf_url: string | null
           price_per_day: string | null
           price_per_month: string | null
+          price_unit_label: string | null
           price_weekend: string | null
           quantities: Json
           quantity_notes: Json
@@ -873,6 +874,7 @@ export type Database = {
           pdf_url?: string | null
           price_per_day?: string | null
           price_per_month?: string | null
+          price_unit_label?: string | null
           price_weekend?: string | null
           quantities?: Json
           quantity_notes?: Json
@@ -919,6 +921,7 @@ export type Database = {
           pdf_url?: string | null
           price_per_day?: string | null
           price_per_month?: string | null
+          price_unit_label?: string | null
           price_weekend?: string | null
           quantities?: Json
           quantity_notes?: Json
@@ -2314,6 +2317,7 @@ export type Database = {
           pdf_url: string | null
           price_per_day: string | null
           price_per_month: string | null
+          price_unit_label: string | null
           price_weekend: string | null
           rental_notes: string[] | null
           rentware_code: Json | null
@@ -2348,6 +2352,7 @@ export type Database = {
           pdf_url?: string | null
           price_per_day?: string | null
           price_per_month?: string | null
+          price_unit_label?: string | null
           price_weekend?: string | null
           rental_notes?: string[] | null
           rentware_code?: Json | null
@@ -2382,6 +2387,7 @@ export type Database = {
           pdf_url?: string | null
           price_per_day?: string | null
           price_per_month?: string | null
+          price_unit_label?: string | null
           price_weekend?: string | null
           rental_notes?: string[] | null
           rentware_code?: Json | null
