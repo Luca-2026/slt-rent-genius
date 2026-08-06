@@ -154,7 +154,12 @@ export default function ProductDetail() {
   const productSEO = useMemo(() => {
     if (!product) return undefined;
     const base = getProductSEO(product.id, location?.id);
-    const hasLocalizedSEO = !!(location?.id && productSEOData[`${location.id}-${product.id}`]);
+    const hasLocalizedSEO = !!(
+      location?.id &&
+      (productSEOData[`${location.id}-${product.id}`] ||
+        productSEOData[`bonn-${product.id}`] ||
+        productSEOData[`muelheim-${product.id}`])
+    );
     const cmsFaqs = product.seoFaqs?.length
       ? product.seoFaqs.map((f) => ({ q: f.question, a: f.answer }))
       : null;
@@ -235,7 +240,13 @@ export default function ProductDetail() {
       // SEO: Title - "{name} mieten in {Stadtname} | SLT Rental"
       const genericName = product.name;
       const titleBase = `${genericName} mieten in ${cityName}`;
-      const localizedSeoTitle = location?.id ? productSEOData[`${location.id}-${product.id}`]?.seoTitle : undefined;
+      const localizedEntry = location?.id
+        ? productSEOData[`${location.id}-${product.id}`]
+          ?? (productSEOData[`bonn-${product.id}`] || productSEOData[`muelheim-${product.id}`]
+                ? productSEOData[product.id]
+                : undefined)
+        : undefined;
+      const localizedSeoTitle = localizedEntry?.seoTitle;
       let seoTitle: string;
       if (localizedSeoTitle) {
         seoTitle = localizedSeoTitle;
