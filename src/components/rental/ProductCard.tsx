@@ -148,7 +148,7 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
             {displayPrice && (
               <p className="text-lg font-bold text-primary mb-1">
                 {displayPrice}
-                <span className="text-sm font-normal text-muted-foreground">/Tag</span>
+                <span className="text-sm font-normal text-muted-foreground">{product.priceUnitLabel ?? "/Tag"}</span>
               </p>
             )}
             <PriceGuaranteeBadge variant="inline" />
