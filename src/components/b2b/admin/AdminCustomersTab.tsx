@@ -232,7 +232,10 @@ export function AdminCustomersTab({
                     </div>
 
                     {/* Actions */}
-                    <div className="flex gap-2 shrink-0" onClick={(e) => e.stopPropagation()}>
+                    <div
+                      className="flex flex-wrap gap-2 w-full lg:w-auto lg:flex-nowrap lg:shrink-0"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <SendMessageDialog
                         profileId={profile.id}
                         companyName={profile.company_name}
@@ -241,22 +244,25 @@ export function AdminCustomersTab({
                       <Button
                         size="sm"
                         variant="outline"
+                        className="flex-1 min-w-[7rem] lg:flex-none"
                         onClick={(e) => { e.stopPropagation(); onEditCustomer(profile); }}
                       >
-                        <Edit className="h-3.5 w-3.5 mr-1" />
+                        <Edit className="h-3.5 w-3.5 mr-1 shrink-0" />
                         Bearbeiten
                       </Button>
                       {profile.tax_id && (
                         <Button
                           size="sm"
                           variant={profile.vat_id_verified ? "outline" : "default"}
+                          className="flex-1 min-w-[9rem] lg:flex-none"
                           onClick={(e) => { e.stopPropagation(); onToggleVat(profile); }}
                         >
-                          <Shield className="h-3.5 w-3.5 mr-1" />
+                          <Shield className="h-3.5 w-3.5 mr-1 shrink-0" />
                           {profile.vat_id_verified ? "VAT entziehen" : "VAT verifizieren"}
                         </Button>
                       )}
                     </div>
+
                   </div>
                 </CardContent>
               </Card>

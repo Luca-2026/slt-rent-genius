@@ -478,7 +478,7 @@ export function AdminStaffTab() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-9 px-3 flex-1 min-w-0"
+                        className="h-9 px-3 flex-1 basis-0 min-w-0 justify-center"
                         onClick={() => {
                           setSelectedStaff(s);
                           setNewRole(getStaffRole(s.user_id));
@@ -491,7 +491,7 @@ export function AdminStaffTab() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-9 px-3 flex-1 min-w-0"
+                        className="h-9 px-3 flex-1 basis-0 min-w-0 justify-center"
                         onClick={() => handleToggleActive(s)}
                         disabled={saving}
                       >
@@ -510,7 +510,7 @@ export function AdminStaffTab() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-9 px-3 text-destructive hover:text-destructive"
+                        className="h-9 w-9 p-0 shrink-0 justify-center text-destructive hover:text-destructive"
                         onClick={() => {
                           setSelectedStaff(s);
                           setDeleteConfirmOpen(true);
