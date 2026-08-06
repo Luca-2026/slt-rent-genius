@@ -474,11 +474,11 @@ export function AdminStaffTab() {
                       </span>
                     </div>
 
-                    <div className="flex gap-2 flex-wrap">
+                    <div className="flex gap-2">
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-9 px-3 flex-1 basis-0 min-w-0 justify-center"
+                        className="h-9 px-2 text-xs flex-1 basis-0 min-w-0 justify-center"
                         onClick={() => {
                           setSelectedStaff(s);
                           setNewRole(getStaffRole(s.user_id));
@@ -486,27 +486,28 @@ export function AdminStaffTab() {
                         }}
                       >
                         <Pencil className="h-3.5 w-3.5 mr-1.5 shrink-0" />
-                        Rolle
+                        <span className="truncate">Rolle</span>
                       </Button>
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-9 px-3 flex-1 basis-0 min-w-0 justify-center"
+                        className="h-9 px-2 text-xs flex-1 basis-0 min-w-0 justify-center"
                         onClick={() => handleToggleActive(s)}
                         disabled={saving}
                       >
                         {s.is_active ? (
                           <>
                             <UserX className="h-3.5 w-3.5 mr-1.5 shrink-0" />
-                            Deaktivieren
+                            <span className="truncate">Deaktivieren</span>
                           </>
                         ) : (
                           <>
                             <UserCheck className="h-3.5 w-3.5 mr-1.5 shrink-0" />
-                            Aktivieren
+                            <span className="truncate">Aktivieren</span>
                           </>
                         )}
                       </Button>
+
                       <Button
                         variant="outline"
                         size="sm"
