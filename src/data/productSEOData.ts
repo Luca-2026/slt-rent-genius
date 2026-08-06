@@ -5854,7 +5854,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Konzert, Stadtfest oder Firmenevent in Krefeld: 16 Mono- plus 1 Stereokanal, 6 Mix-Busse und 18 Effekte inklusive GEQ auf Mix 1–6 und Stereo-Bus.",
     useCasePrivat:
       "Bandprobe, Gottesdienst oder Livestream in Krefeld: Über das 18×18-USB-Interface bei 48 oder 96 kHz nimmst du direkt in die DAW auf.",
-    dailyPriceFrom: 0,
     faqs: [
       { q: "Wie viele Kanäle hat der Yamaha DM3?", a: "16 Mono-Kanäle, 1 Stereo-Kanal und 2 FX-Returns bei 8 Ausgängen sowie 1 Stereo-, 6 Mix-, 2 FX- und 2 Matrix-Bussen." },
       { q: "Ist die Dante-Version im Verleih?", a: "Ja, wir vermieten die Dante-Variante mit 16×16 Ein- und Ausgängen – ideal für Split zu Broadcast, Recording oder Monitorpult." },
@@ -5880,7 +5879,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Konzert, Stadtfest oder Firmenevent in Bonn: 16 Mono- plus 1 Stereokanal, 6 Mix-Busse und 18 Effekte inklusive GEQ auf Mix 1–6 und Stereo-Bus.",
     useCasePrivat:
       "Bandprobe, Gottesdienst oder Livestream in Bonn: Über das 18×18-USB-Interface bei 48 oder 96 kHz nimmst du direkt in die DAW auf.",
-    dailyPriceFrom: 0,
     faqs: [
       { q: "Wie viele Kanäle hat der Yamaha DM3?", a: "16 Mono-Kanäle, 1 Stereo-Kanal und 2 FX-Returns bei 8 Ausgängen sowie 1 Stereo-, 6 Mix-, 2 FX- und 2 Matrix-Bussen." },
       { q: "Ist die Dante-Version im Verleih?", a: "Ja, wir vermieten die Dante-Variante mit 16×16 Ein- und Ausgängen – ideal für Split zu Broadcast, Recording oder Monitorpult." },
@@ -5906,7 +5904,6 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Konzert, Stadtfest oder Firmenevent in Mülheim an der Ruhr: 16 Mono- plus 1 Stereokanal, 6 Mix-Busse und 18 Effekte inklusive GEQ auf Mix 1–6 und Stereo-Bus.",
     useCasePrivat:
       "Bandprobe, Gottesdienst oder Livestream in Mülheim an der Ruhr: Über das 18×18-USB-Interface bei 48 oder 96 kHz nimmst du direkt in die DAW auf.",
-    dailyPriceFrom: 0,
     faqs: [
       { q: "Wie viele Kanäle hat der Yamaha DM3?", a: "16 Mono-Kanäle, 1 Stereo-Kanal und 2 FX-Returns bei 8 Ausgängen sowie 1 Stereo-, 6 Mix-, 2 FX- und 2 Matrix-Bussen." },
       { q: "Ist die Dante-Version im Verleih?", a: "Ja, wir vermieten die Dante-Variante mit 16×16 Ein- und Ausgängen – ideal für Split zu Broadcast, Recording oder Monitorpult." },
