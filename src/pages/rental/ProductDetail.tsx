@@ -1467,7 +1467,7 @@ export default function ProductDetail() {
                         </h3>
                         {relatedProduct.pricePerDay && (
                           <p className="text-sm font-semibold text-primary mt-1">
-                            {relatedProduct.pricePerDay}{t("rental.perDay")}
+                            {relatedProduct.pricePerDay}{relatedProduct.priceUnitLabel ?? t("rental.perDay")}
                           </p>
                         )}
                       </CardContent>
