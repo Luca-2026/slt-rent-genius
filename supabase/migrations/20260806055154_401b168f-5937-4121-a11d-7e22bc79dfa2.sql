@@ -1,0 +1,1 @@
+UPDATE public.b2b_managed_products SET category = 'beschallung' WHERE category = 'dj-equipment';
