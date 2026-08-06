@@ -589,6 +589,13 @@ export default function CategoryProducts() {
 
                 if (groupCategories) {
                   if (p.category && groupCategories.includes(p.category)) return true;
+                  // Fallback: name-based matching for DJ equipment (auch CMS-Artikel ohne Tags)
+                  if (category?.id === "beschallung" && value === "dj") {
+                    const n = p.name.toLowerCase();
+                    const id = (p.id || "").toLowerCase();
+                    return n.includes("cdj") || n.includes("djm") || n.includes("dj-multiplayer") || n.includes("dj-mixer") || n.includes("dj mixer")
+                      || id.includes("cdj") || id.includes("djm");
+                  }
                   // Fallback: name-based matching for products without a category field
                   if (category?.id === "beleuchtung") {
                     const nameLower = p.name.toLowerCase();
