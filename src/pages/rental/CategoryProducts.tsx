@@ -532,6 +532,7 @@ export default function CategoryProducts() {
                   "lautsprecher": ["lautsprecher", "bluetooth-speaker"],
                   "mikrofon": ["mikrofon"],
                   "subwoofer": ["subwoofer"],
+                  "dj": ["dj-equipment", "dj"],
                   "zubehoer": ["zubehoer"],
                 };
                 const moebelZelteTypeGroups: Record<string, string[]> = {
