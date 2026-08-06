@@ -19,7 +19,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
   "cdj-3000x": {
     seoTitle: "CDJ-3000X mieten Krefeld – DJ-Player ab 59 € | SLT",
     metaDescription:
-      "AlphaTheta CDJ-3000X mieten in Krefeld: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, USB-C, 96 kHz/32-Bit-DAC. Ab 69 € pro Tag, auf Anfrage – auch als 2er-Setup.",
+      "AlphaTheta CDJ-3000X mieten in Krefeld: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, USB-C, 96 kHz/32-Bit-DAC. Ab 59 € je Wochenende, auf Anfrage – auch als 2er-Setup.",
     h1: "CDJ-3000X mieten in Krefeld – AlphaTheta DJ-Multiplayer",
     h2s: [
       "Technische Daten des CDJ-3000X",
@@ -33,7 +33,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Clubnacht, Stadtfest oder Festival am Niederrhein: Zwei CDJ-3000X plus Mixer sind der vertraute Standard hinter dem Pult – Gast-DJs finden sich sofort zurecht, per PRO DJ LINK und WLAN sind die Player vernetzt.",
     useCasePrivat:
       "Hochzeit, Abiparty oder runder Geburtstag in Krefeld: Musik kommt vom USB-Stick, vom Laptop oder direkt aus der Cloud – ganz ohne eigenes DJ-Equipment anschaffen zu müssen.",
-    dailyPriceFrom: 69,
+    dailyPriceFrom: 59,
     faqs: [
       {
         q: "Was kostet es, einen CDJ-3000X in Krefeld zu mieten?",
@@ -68,7 +68,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
   "bonn-cdj-3000x": {
     seoTitle: "CDJ-3000X mieten Bonn – DJ-Player ab 59 € | SLT",
     metaDescription:
-      "AlphaTheta CDJ-3000X mieten in Bonn: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, USB-C, 96 kHz/32-Bit-DAC. Ab 69 € pro Tag, auf Anfrage – ideal als 2er-Setup.",
+      "AlphaTheta CDJ-3000X mieten in Bonn: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, USB-C, 96 kHz/32-Bit-DAC. Ab 59 € je Wochenende, auf Anfrage – ideal als 2er-Setup.",
     h1: "CDJ-3000X mieten in Bonn – AlphaTheta DJ-Multiplayer",
     h2s: [
       "Technische Daten des CDJ-3000X",
@@ -82,7 +82,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Clubnacht, Uni-Party oder Rheinfest: Zwei CDJ-3000X mit Mixer sind das Setup, das jeder Gast-DJ in Bonn sofort bedienen kann – vernetzt über PRO DJ LINK und WLAN.",
     useCasePrivat:
       "Hochzeit, Geburtstag oder Gartenparty im Raum Bonn: Musik vom USB-Stick, Laptop oder direkt aus der Cloud – Club-Technik nur für den einen Abend gemietet.",
-    dailyPriceFrom: 69,
+    dailyPriceFrom: 59,
     faqs: [
       {
         q: "Was kostet der CDJ-3000X in Bonn pro Tag?",
