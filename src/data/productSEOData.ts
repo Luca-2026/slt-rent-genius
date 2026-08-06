@@ -16,6 +16,153 @@ export interface ProductSEOData {
 
 // Lookup by product ID (from rentalData.ts)
 export const productSEOData: Record<string, ProductSEOData> = {
+  "cdj-3000x": {
+    seoTitle: "CDJ-3000X mieten Krefeld – DJ-Player ab 69 € | SLT",
+    metaDescription:
+      "AlphaTheta CDJ-3000X mieten in Krefeld: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, USB-C, 96 kHz/32-Bit-DAC. Ab 69 € pro Tag, auf Anfrage – auch als 2er-Setup.",
+    h1: "CDJ-3000X mieten in Krefeld – AlphaTheta DJ-Multiplayer",
+    h2s: [
+      "Technische Daten des CDJ-3000X",
+      "CDJ-3000X als 2er-Setup mit Mixer mieten",
+      "Medien, rekordbox und Streaming",
+      "Abholung und Anfrage am Standort Krefeld",
+    ],
+    useCaseBau:
+      "Firmenfeier, Richtfest oder Betriebsjubiläum in Krefeld: Der CDJ-3000X läuft an jeder 230-V-Steckdose und liefert mit 6,0 kg Gewicht Club-Technik, die sich in wenigen Minuten in der Halle oder im Zelt aufbauen lässt.",
+    useCaseEvent:
+      "Clubnacht, Stadtfest oder Festival am Niederrhein: Zwei CDJ-3000X plus Mixer sind der vertraute Standard hinter dem Pult – Gast-DJs finden sich sofort zurecht, per PRO DJ LINK und WLAN sind die Player vernetzt.",
+    useCasePrivat:
+      "Hochzeit, Abiparty oder runder Geburtstag in Krefeld: Musik kommt vom USB-Stick, vom Laptop oder direkt aus der Cloud – ganz ohne eigenes DJ-Equipment anschaffen zu müssen.",
+    dailyPriceFrom: 69,
+    faqs: [
+      {
+        q: "Was kostet es, einen CDJ-3000X in Krefeld zu mieten?",
+        a: "Die Miete startet ab 69 € netto pro Tag und Player. Für 2er-Setups mit Mixer sowie Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage einen Preis für deinen Zeitraum.",
+      },
+      {
+        q: "Ist der CDJ-3000X in Krefeld sofort verfügbar?",
+        a: "Der CDJ-3000X ist bei uns auf Anfrage im Programm. Sag uns deinen Termin und die gewünschte Stückzahl – wir bestätigen dir Verfügbarkeit und Abholzeit kurzfristig.",
+      },
+      {
+        q: "Welche Medien und Formate spielt der CDJ-3000X ab?",
+        a: "USB-Flash-Speicher, USB-SSD/-HDD, PC/Mac über USB oder LAN sowie iOS- und Android-Geräte. Unterstützt werden MP3, AAC, WAV, AIFF, FLAC und ALAC; Dateisysteme FAT16, FAT32, exFAT und HFS+ – NTFS wird nicht unterstützt.",
+      },
+      {
+        q: "Welche Anschlüsse hat der CDJ-3000X?",
+        a: "1× USB Typ A, 2× USB Typ C, 1× LAN-Anschluss für PRO DJ LINK sowie WLAN (IEEE 802.11a/b/g/n/ac). Ausgangsseitig gibt es einen analogen Cinch-Ausgang und einen koaxialen Digitalausgang.",
+      },
+      {
+        q: "Wie groß und schwer ist der Player für den Transport?",
+        a: "344,6 × 490,4 × 130,1 mm (B × T × H) bei 6,0 kg. Zwei Player passen problemlos in einen Pkw und in gängige DJ-Cases.",
+      },
+      {
+        q: "Kann ich mit dem CDJ-3000X ohne USB-Stick auflegen?",
+        a: "Ja. Über CloudDirectPlay lassen sich Tracks aus Dropbox oder Google Drive direkt abspielen, außerdem werden Apple Music, Beatport Streaming und TIDAL unterstützt. Voraussetzung ist eine stabile WLAN-Verbindung vor Ort.",
+      },
+      {
+        q: "Brauche ich zusätzlich einen Mixer?",
+        a: "Ja, der CDJ-3000X ist ein Player ohne Mischfunktion. Bitte frage einen passenden DJ-Mixer mit an – wir stellen dir das Setup gemeinsam zusammen.",
+      },
+    ],
+  },
+  "bonn-cdj-3000x": {
+    seoTitle: "CDJ-3000X mieten Bonn – DJ-Player ab 69 € | SLT",
+    metaDescription:
+      "AlphaTheta CDJ-3000X mieten in Bonn: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, USB-C, 96 kHz/32-Bit-DAC. Ab 69 € pro Tag, auf Anfrage – ideal als 2er-Setup.",
+    h1: "CDJ-3000X mieten in Bonn – AlphaTheta DJ-Multiplayer",
+    h2s: [
+      "Technische Daten des CDJ-3000X",
+      "DJ-Setup für Clubs und Veranstaltungen in Bonn",
+      "Medien, rekordbox und Streaming",
+      "Anfrage und Abholung am Standort Bonn",
+    ],
+    useCaseBau:
+      "Firmenevent, Werksfeier oder Messeabend in Bonn: Der Player braucht nur eine 230-V-Steckdose und ist mit 6,0 kg schnell in Halle, Foyer oder Zelt aufgebaut.",
+    useCaseEvent:
+      "Clubnacht, Uni-Party oder Rheinfest: Zwei CDJ-3000X mit Mixer sind das Setup, das jeder Gast-DJ in Bonn sofort bedienen kann – vernetzt über PRO DJ LINK und WLAN.",
+    useCasePrivat:
+      "Hochzeit, Geburtstag oder Gartenparty im Raum Bonn: Musik vom USB-Stick, Laptop oder direkt aus der Cloud – Club-Technik nur für den einen Abend gemietet.",
+    dailyPriceFrom: 69,
+    faqs: [
+      {
+        q: "Was kostet der CDJ-3000X in Bonn pro Tag?",
+        a: "Die Miete startet ab 69 € netto pro Tag und Player. Für 2er-Setups mit Mixer sowie Wochenend- und Wochenpreise erstellen wir dir auf Anfrage ein Angebot.",
+      },
+      {
+        q: "Ist der CDJ-3000X in Bonn direkt buchbar?",
+        a: "Der Player ist am Standort Bonn auf Anfrage verfügbar. Nenne uns Termin und Stückzahl – wir prüfen die Verfügbarkeit und melden uns kurzfristig zurück.",
+      },
+      {
+        q: "Welche Medien und Formate spielt der CDJ-3000X ab?",
+        a: "USB-Flash-Speicher, USB-SSD/-HDD, PC/Mac über USB oder LAN sowie iOS- und Android-Geräte. Formate: MP3, AAC, WAV, AIFF, FLAC und ALAC; Dateisysteme FAT16, FAT32, exFAT und HFS+ – NTFS wird nicht unterstützt.",
+      },
+      {
+        q: "Welche Anschlüsse bietet der Player?",
+        a: "1× USB Typ A, 2× USB Typ C, 1× LAN (PRO DJ LINK) und WLAN nach IEEE 802.11a/b/g/n/ac. Ausgänge: 1× analog (Cinch) und 1× digital (koaxial).",
+      },
+      {
+        q: "Wie transportiere ich zwei Player nach Bonn?",
+        a: "Jeder Player misst 344,6 × 490,4 × 130,1 mm und wiegt 6,0 kg. Zwei Geräte passen in jeden Pkw; für den Transport empfehlen wir ein DJ-Case.",
+      },
+      {
+        q: "Funktioniert Streaming ohne USB-Stick?",
+        a: "Ja, über CloudDirectPlay mit Dropbox oder Google Drive sowie Apple Music, Beatport Streaming und TIDAL. Dafür wird vor Ort eine stabile WLAN-Verbindung benötigt.",
+      },
+      {
+        q: "Ist ein Mixer im Mietpreis enthalten?",
+        a: "Nein, der CDJ-3000X ist ein reiner Player. Frage einen passenden DJ-Mixer bitte separat mit an, dann stellen wir dir ein komplettes Setup zusammen.",
+      },
+    ],
+  },
+  "muelheim-cdj-3000x": {
+    seoTitle: "CDJ-3000X mieten Mülheim an der Ruhr – ab 69 € | SLT",
+    metaDescription:
+      "AlphaTheta CDJ-3000X mieten in Mülheim an der Ruhr: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, 96 kHz/32-Bit-DAC. Ab 69 € pro Tag, auf Anfrage.",
+    h1: "CDJ-3000X mieten in Mülheim an der Ruhr – AlphaTheta DJ-Multiplayer",
+    h2s: [
+      "Technische Daten des CDJ-3000X",
+      "DJ-Player für Events im Ruhrgebiet",
+      "Medien, rekordbox und Streaming",
+      "Anfrage und Abholung in Mülheim an der Ruhr",
+    ],
+    useCaseBau:
+      "Betriebsfeier oder Jubiläum im Ruhrgebiet: Der CDJ-3000X läuft an einer normalen 230-V-Steckdose und ist mit 6,0 kg auch in Werkshallen schnell eingerichtet.",
+    useCaseEvent:
+      "Clubabend, Vereinsfest oder Open Air in Mülheim an der Ruhr: Zwei CDJ-3000X plus Mixer sind der Branchenstandard – jeder gebuchte DJ kennt die Bedienung.",
+    useCasePrivat:
+      "Hochzeit, Abiparty oder großer Geburtstag: Auflegen von USB-Stick, Laptop oder aus der Cloud, ohne eigenes DJ-Equipment kaufen zu müssen.",
+    dailyPriceFrom: 69,
+    faqs: [
+      {
+        q: "Was kostet der CDJ-3000X in Mülheim an der Ruhr?",
+        a: "Der Mietpreis startet ab 69 € netto pro Tag und Player. Preise für 2er-Setups, Wochenenden und ganze Wochen nennen wir dir auf Anfrage.",
+      },
+      {
+        q: "Ist der CDJ-3000X in Mülheim an der Ruhr verfügbar?",
+        a: "Ja, auf Anfrage. Teile uns Termin und Stückzahl mit – wir bestätigen dir Verfügbarkeit und Abholung am Standort Mülheim an der Ruhr.",
+      },
+      {
+        q: "Welche Medien und Formate spielt der Player ab?",
+        a: "USB-Flash-Speicher, USB-SSD/-HDD, PC/Mac über USB oder LAN sowie iOS- und Android-Geräte. Formate: MP3, AAC, WAV, AIFF, FLAC, ALAC; Dateisysteme FAT16, FAT32, exFAT, HFS+ – NTFS wird nicht unterstützt.",
+      },
+      {
+        q: "Welche Anschlüsse hat der CDJ-3000X?",
+        a: "1× USB Typ A, 2× USB Typ C, 1× LAN für PRO DJ LINK und WLAN (IEEE 802.11a/b/g/n/ac). Ausgänge: analog über Cinch und digital koaxial.",
+      },
+      {
+        q: "Wie schwer ist ein CDJ-3000X?",
+        a: "6,0 kg bei Abmessungen von 344,6 × 490,4 × 130,1 mm (B × T × H) – gut allein zu tragen und im Pkw zu transportieren.",
+      },
+      {
+        q: "Kann ich Musik direkt aus der Cloud abspielen?",
+        a: "Ja. CloudDirectPlay unterstützt Dropbox und Google Drive, zusätzlich lassen sich Apple Music, Beatport Streaming und TIDAL nutzen – bei stabiler WLAN-Verbindung vor Ort.",
+      },
+      {
+        q: "Brauche ich zusätzlich einen DJ-Mixer?",
+        a: "Ja, der CDJ-3000X ist ein Player ohne Mischpultfunktion. Frag einen passenden Mixer einfach mit an.",
+      },
+    ],
+  },
   "currywurstschneider-elektrisch": {
     seoTitle: "Currywurstschneider mieten Krefeld – elektrisch | SLT",
     metaDescription:
