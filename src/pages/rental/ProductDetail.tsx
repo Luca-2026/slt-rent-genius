@@ -1321,7 +1321,7 @@ export default function ProductDetail() {
                         {(product.pricePerMonth || product.pricePerDay || typeof productSEO?.dailyPriceFrom === "number") && (
                           <span className="text-primary">*</span>
                         )}
-                        <span className="text-sm md:text-xs lg:text-base font-normal text-muted-foreground"> {product.pricePerMonth ? "/ Monat" : t("rental.perDay")}</span>
+                        <span className="text-sm md:text-xs lg:text-base font-normal text-muted-foreground"> {product.priceUnitLabel ?? (product.pricePerMonth ? "/ Monat" : t("rental.perDay"))}</span>
                       </div>
                       {product.priceWeekend && !product.pricePerMonth && (
                         <p className="text-sm md:text-xs lg:text-sm text-accent font-medium mt-1">
@@ -1467,7 +1467,7 @@ export default function ProductDetail() {
                         </h3>
                         {relatedProduct.pricePerDay && (
                           <p className="text-sm font-semibold text-primary mt-1">
-                            {relatedProduct.pricePerDay}{t("rental.perDay")}
+                            {relatedProduct.pricePerDay}{relatedProduct.priceUnitLabel ?? t("rental.perDay")}
                           </p>
                         )}
                       </CardContent>
@@ -1523,7 +1523,7 @@ function MobileBookingCard({
             {(product.pricePerMonth || product.pricePerDay || typeof dailyPriceFrom === "number") && (
               <span className="text-primary">*</span>
             )}
-            <span className="text-sm font-normal text-muted-foreground"> {product.pricePerMonth ? "/ Monat" : t("rental.perDay")}</span>
+            <span className="text-sm font-normal text-muted-foreground"> {product.priceUnitLabel ?? (product.pricePerMonth ? "/ Monat" : t("rental.perDay"))}</span>
           </div>
           {product.priceWeekend && !product.pricePerMonth && (
             <p className="text-sm text-accent font-medium mt-0.5">

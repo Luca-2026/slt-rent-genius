@@ -16,10 +16,157 @@ export interface ProductSEOData {
 
 // Lookup by product ID (from rentalData.ts)
 export const productSEOData: Record<string, ProductSEOData> = {
-  "cdj-3000x": {
-    seoTitle: "CDJ-3000X mieten Krefeld – DJ-Player ab 69 € | SLT",
+  "djm-a9": {
+    seoTitle: "DJM-A9 mieten Krefeld – DJ-Mixer ab 59 € | SLT",
     metaDescription:
-      "AlphaTheta CDJ-3000X mieten in Krefeld: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, USB-C, 96 kHz/32-Bit-DAC. Ab 69 € pro Tag, auf Anfrage – auch als 2er-Setup.",
+      "AlphaTheta DJM-A9 mieten in Krefeld: 4-Kanal-Club-Mixer mit MAGVEL FADER PRO, Beat FX, Bluetooth und 96 kHz/32-Bit. Ab 59 € je Wochenende, auf Anfrage.",
+    h1: "DJM-A9 mieten in Krefeld – AlphaTheta 4-Kanal-DJ-Mixer",
+    h2s: [
+      "Technische Daten des DJM-A9",
+      "DJM-A9 mit CDJ-3000X als Club-Setup mieten",
+      "Anschlüsse, Effekte und Bluetooth",
+      "Abholung und Anfrage am Standort Krefeld",
+    ],
+    useCaseBau:
+      "Firmenfeier, Jubiläum oder Messeabend in Krefeld: Der DJM-A9 läuft an jeder 230-V-Steckdose (61 W) und liefert über XLR-Master und Booth-Ausgang ein sauberes Signal an jede Beschallungsanlage.",
+    useCaseEvent:
+      "Clubnacht, Stadtfest oder Festival am Niederrhein: Vier Kanäle, MAGVEL FADER PRO und Beat FX mit X-PAD sind der Standard hinter dem Pult – Gast-DJs finden sich sofort zurecht, PRO DJ LINK verbindet Mixer und Player.",
+    useCasePrivat:
+      "Hochzeit, Abiparty oder runder Geburtstag in Krefeld: Zwei Kopfhörerausgänge erlauben B2B-Sets, über den Bluetooth-Eingang kommt die Playlist notfalls direkt vom Handy.",
+    dailyPriceFrom: 59,
+    faqs: [
+      {
+        q: "Was kostet es, einen DJM-A9 in Krefeld zu mieten?",
+        a: "Die Miete startet ab 59 € netto je Wochenende. Für Komplett-Setups mit zwei CDJ-3000X sowie für längere Mietzeiträume nennen wir dir auf Anfrage einen Preis.",
+      },
+      {
+        q: "Ist der DJM-A9 in Krefeld sofort verfügbar?",
+        a: "Der DJM-A9 ist bei uns auf Anfrage im Programm. Sag uns deinen Termin – wir bestätigen dir Verfügbarkeit und Abholzeit kurzfristig.",
+      },
+      {
+        q: "Welche Anschlüsse hat der DJM-A9?",
+        a: "Je 4 Sätze PHONO- und LINE-Cinch-Eingänge, 4 koaxiale DIGITAL-IN, MIC 1 als XLR/6,3-mm-TRS mit 48-V-Phantomspeisung, MIC 2 als 6,3-mm-TRS sowie Send/Return. Ausgänge: MASTER (XLR und Cinch), BOOTH (6,3 mm TRS), REC OUT, SEND und ein koaxialer DIGITAL MASTER OUT.",
+      },
+      {
+        q: "Kann ich Musik per Bluetooth zuspielen?",
+        a: "Ja. Der DJM-A9 hat einen Bluetooth-5.0-Eingang mit rund 10 m Reichweite, der sich auf jeden Kanal legen lässt.",
+      },
+      {
+        q: "Wie viele Laptops und Kopfhörer lassen sich anschließen?",
+        a: "Zwei Rechner gleichzeitig über 2× USB Typ B / Typ C, dazu 1× USB Typ A. Für B2B-Sets stehen zwei unabhängige Kopfhörerausgänge (je 6,3 mm und 3,5 mm) bereit.",
+      },
+      {
+        q: "Wie groß und schwer ist der Mixer für den Transport?",
+        a: "407,4 × 458,3 × 107,9 mm (B × T × H) bei 10,2 kg. Mit aufgestellter WLAN-Antenne beträgt die Höhe 140,7 mm – zum Transport bitte umklappen.",
+      },
+      {
+        q: "Passt der DJM-A9 zu den CDJ-3000X?",
+        a: "Ja, beides ist über PRO DJ LINK (LAN, 100BASE-TX) vernetzbar. Wir vermieten den Mixer üblicherweise zusammen mit zwei CDJ-3000X als komplettes Club-Setup.",
+      },
+    ],
+  },
+  "bonn-djm-a9": {
+    seoTitle: "DJM-A9 mieten Bonn – DJ-Mixer ab 59 € | SLT",
+    metaDescription:
+      "AlphaTheta DJM-A9 mieten in Bonn: 4-Kanal-Profi-Mixer mit MAGVEL FADER PRO, Beat FX, Bluetooth-Eingang und 96 kHz/32-Bit. Ab 59 € je Wochenende, auf Anfrage.",
+    h1: "DJM-A9 mieten in Bonn – AlphaTheta 4-Kanal-DJ-Mixer",
+    h2s: [
+      "Technische Daten des DJM-A9",
+      "Komplettes DJ-Setup für Bonn und Umgebung",
+      "Anschlüsse, Effekte und Bluetooth",
+      "Abholung und Anfrage am Standort Bonn",
+    ],
+    useCaseBau:
+      "Firmenevent, Richtfest oder Betriebsfeier in Bonn: 61 W Leistungsaufnahme an 230 V und ein symmetrischer XLR-Master-Ausgang machen den DJM-A9 zum unkomplizierten Zuspieler für jede Anlage.",
+    useCaseEvent:
+      "Clubabend, Rheinuferfest oder Studentenparty in Bonn: Vier Kanäle, Sound Color FX und Beat FX mit X-PAD gehören zum Club-Standard – Gast-DJs brauchen keine Einweisung.",
+    useCasePrivat:
+      "Hochzeit, Geburtstag oder Gartenparty im Raum Bonn: Zwei Kopfhörerausgänge für Wechsel-DJs und ein Bluetooth-Eingang für spontane Musikwünsche.",
+    dailyPriceFrom: 59,
+    faqs: [
+      {
+        q: "Was kostet die Miete des DJM-A9 in Bonn?",
+        a: "Die Miete startet ab 59 € netto je Wochenende. Für Setups mit zwei CDJ-3000X oder längere Zeiträume erstellen wir dir auf Anfrage ein Angebot.",
+      },
+      {
+        q: "Kann ich den DJM-A9 in Bonn abholen?",
+        a: "Ja, Abholung ist an unserem Standort in der Drachenburgstraße 8, 53179 Bonn möglich. Auf Wunsch liefern wir das Setup auch an deine Veranstaltungsadresse.",
+      },
+      {
+        q: "Welche Klangqualität bietet der DJM-A9?",
+        a: "Der Mixer arbeitet mit 96 kHz Abtastrate, 32-Bit-A/D-Wandler im Kanaleingang und 32-Bit-D/A-Wandlern für Master, Booth, REC und SEND. Der Frequenzgang (LINE) reicht von 20 Hz bis 40 kHz bei 0,005 % Klirrfaktor.",
+      },
+      {
+        q: "Kann ich ein Mikrofon direkt anschließen?",
+        a: "Ja. MIC 1 ist eine XLR-/6,3-mm-TRS-Kombibuchse mit 48-V-Phantomspeisung, MIC 2 eine 6,3-mm-TRS-Buchse. Über Push To Talk lässt sich das Mikrofon nur bei Bedarf öffnen.",
+      },
+      {
+        q: "Ist WLAN oder LAN nötig?",
+        a: "Für PRO DJ LINK genügt die LAN-Buchse (100BASE-TX). Zusätzlich unterstützt der DJM-A9 WLAN nach IEEE 802.11a/b/g/n/ac im 2,4- und 5-GHz-Band.",
+      },
+      {
+        q: "Wie schwer ist der DJM-A9?",
+        a: "10,2 kg bei 407,4 × 458,3 × 107,9 mm (B × T × H) – gut im Pkw zu transportieren, idealerweise im Mixer-Case.",
+      },
+      {
+        q: "Bekomme ich Player und Mixer aus einer Hand?",
+        a: "Ja. Wir kombinieren den DJM-A9 auf Anfrage mit zwei CDJ-3000X, passenden Kabeln und auf Wunsch mit Beschallung und Licht für deine Veranstaltung in Bonn.",
+      },
+    ],
+  },
+  "muelheim-djm-a9": {
+    seoTitle: "DJM-A9 mieten Mülheim an der Ruhr – ab 59 € | SLT",
+    metaDescription:
+      "AlphaTheta DJM-A9 mieten in Mülheim an der Ruhr: 4-Kanal-Club-Mixer mit MAGVEL FADER PRO, Beat FX und Bluetooth. Ab 59 € je Wochenende, auf Anfrage.",
+    h1: "DJM-A9 mieten in Mülheim an der Ruhr – AlphaTheta DJ-Mixer",
+    h2s: [
+      "Technische Daten des DJM-A9",
+      "DJ-Setup für Events im Ruhrgebiet",
+      "Anschlüsse, Effekte und Bluetooth",
+      "Lieferung und Anfrage für Mülheim an der Ruhr",
+    ],
+    useCaseBau:
+      "Firmenfeier, Werksjubiläum oder Hallenevent in Mülheim an der Ruhr: Der DJM-A9 braucht nur eine 230-V-Steckdose und liefert über XLR-Master ein sauberes Signal an jede PA.",
+    useCaseEvent:
+      "Clubnacht, Stadtfest oder Festival im Ruhrgebiet: Vier Kanäle, MAGVEL FADER PRO und Beat FX mit X-PAD sind hinter dem Pult vertraute Technik für jeden Gast-DJ.",
+    useCasePrivat:
+      "Hochzeit, Abiball oder Geburtstag in Mülheim an der Ruhr: Zwei Kopfhörerausgänge für DJ-Wechsel und ein Bluetooth-Eingang für Musik vom Handy.",
+    dailyPriceFrom: 59,
+    faqs: [
+      {
+        q: "Was kostet der DJM-A9 in Mülheim an der Ruhr?",
+        a: "Der Mietpreis startet ab 59 € netto je Wochenende. Preise für komplette Setups mit zwei CDJ-3000X nennen wir dir auf Anfrage.",
+      },
+      {
+        q: "Wie komme ich in Mülheim an der Ruhr an den DJM-A9?",
+        a: "Der Mixer ist auf Anfrage verfügbar und wird für Mülheim an der Ruhr aus Krefeld geliefert. Sag uns Termin und Veranstaltungsort – wir stimmen Lieferung und Abholung mit dir ab.",
+      },
+      {
+        q: "Welche Effekte bietet der DJM-A9?",
+        a: "Sound Color FX mit Center-Lock sowie Beat FX mit X-PAD und getrennter FX-Frequenzauswahl für LOW, MID und HI.",
+      },
+      {
+        q: "Welche Eingänge hat der Mixer?",
+        a: "4× PHONO und 4× LINE als Cinch, 4× DIGITAL IN koaxial, MIC 1 (XLR/6,3 mm TRS mit 48 V Phantomspeisung), MIC 2 (6,3 mm TRS) sowie Return.",
+      },
+      {
+        q: "Kann ich zwei Laptops anschließen?",
+        a: "Ja, über 2× USB Typ B / Typ C lassen sich zwei Rechner gleichzeitig verbinden; zusätzlich gibt es 1× USB Typ A mit 5 V / 2,1 A.",
+      },
+      {
+        q: "Wie transportiere ich den DJM-A9?",
+        a: "Am besten im Mixer-Case: 407,4 × 458,3 × 107,9 mm bei 10,2 kg. Die WLAN-Antenne vor dem Transport bitte umklappen.",
+      },
+      {
+        q: "Gibt es eine Bedienungsanleitung?",
+        a: "Ja, die vollständige deutsche Bedienungsanleitung steht auf dieser Seite als PDF zum Download bereit.",
+      },
+    ],
+  },
+  "cdj-3000x": {
+    seoTitle: "CDJ-3000X mieten Krefeld – DJ-Player ab 59 € | SLT",
+    metaDescription:
+      "AlphaTheta CDJ-3000X mieten in Krefeld: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, USB-C, 96 kHz/32-Bit-DAC. Ab 59 € je Wochenende, auf Anfrage – auch als 2er-Setup.",
     h1: "CDJ-3000X mieten in Krefeld – AlphaTheta DJ-Multiplayer",
     h2s: [
       "Technische Daten des CDJ-3000X",
@@ -33,11 +180,11 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Clubnacht, Stadtfest oder Festival am Niederrhein: Zwei CDJ-3000X plus Mixer sind der vertraute Standard hinter dem Pult – Gast-DJs finden sich sofort zurecht, per PRO DJ LINK und WLAN sind die Player vernetzt.",
     useCasePrivat:
       "Hochzeit, Abiparty oder runder Geburtstag in Krefeld: Musik kommt vom USB-Stick, vom Laptop oder direkt aus der Cloud – ganz ohne eigenes DJ-Equipment anschaffen zu müssen.",
-    dailyPriceFrom: 69,
+    dailyPriceFrom: 59,
     faqs: [
       {
         q: "Was kostet es, einen CDJ-3000X in Krefeld zu mieten?",
-        a: "Die Miete startet ab 69 € netto pro Tag und Player. Für 2er-Setups mit Mixer sowie Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage einen Preis für deinen Zeitraum.",
+        a: "Die Miete startet ab 59 € netto je Wochenende und Player. Für 2er-Setups mit Mixer sowie Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage einen Preis für deinen Zeitraum.",
       },
       {
         q: "Ist der CDJ-3000X in Krefeld sofort verfügbar?",
@@ -66,9 +213,9 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bonn-cdj-3000x": {
-    seoTitle: "CDJ-3000X mieten Bonn – DJ-Player ab 69 € | SLT",
+    seoTitle: "CDJ-3000X mieten Bonn – DJ-Player ab 59 € | SLT",
     metaDescription:
-      "AlphaTheta CDJ-3000X mieten in Bonn: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, USB-C, 96 kHz/32-Bit-DAC. Ab 69 € pro Tag, auf Anfrage – ideal als 2er-Setup.",
+      "AlphaTheta CDJ-3000X mieten in Bonn: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, USB-C, 96 kHz/32-Bit-DAC. Ab 59 € je Wochenende, auf Anfrage – ideal als 2er-Setup.",
     h1: "CDJ-3000X mieten in Bonn – AlphaTheta DJ-Multiplayer",
     h2s: [
       "Technische Daten des CDJ-3000X",
@@ -82,11 +229,11 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Clubnacht, Uni-Party oder Rheinfest: Zwei CDJ-3000X mit Mixer sind das Setup, das jeder Gast-DJ in Bonn sofort bedienen kann – vernetzt über PRO DJ LINK und WLAN.",
     useCasePrivat:
       "Hochzeit, Geburtstag oder Gartenparty im Raum Bonn: Musik vom USB-Stick, Laptop oder direkt aus der Cloud – Club-Technik nur für den einen Abend gemietet.",
-    dailyPriceFrom: 69,
+    dailyPriceFrom: 59,
     faqs: [
       {
         q: "Was kostet der CDJ-3000X in Bonn pro Tag?",
-        a: "Die Miete startet ab 69 € netto pro Tag und Player. Für 2er-Setups mit Mixer sowie Wochenend- und Wochenpreise erstellen wir dir auf Anfrage ein Angebot.",
+        a: "Die Miete startet ab 59 € netto je Wochenende und Player. Für 2er-Setups mit Mixer sowie Wochenend- und Wochenpreise erstellen wir dir auf Anfrage ein Angebot.",
       },
       {
         q: "Ist der CDJ-3000X in Bonn direkt buchbar?",
@@ -115,9 +262,9 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "muelheim-cdj-3000x": {
-    seoTitle: "CDJ-3000X mieten Mülheim an der Ruhr – ab 69 € | SLT",
+    seoTitle: "CDJ-3000X mieten Mülheim an der Ruhr – ab 59 € | SLT",
     metaDescription:
-      "AlphaTheta CDJ-3000X mieten in Mülheim an der Ruhr: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, 96 kHz/32-Bit-DAC. Ab 69 € pro Tag, auf Anfrage.",
+      "AlphaTheta CDJ-3000X mieten in Mülheim an der Ruhr: 10,1\"-Touchscreen, PRO DJ LINK, WLAN, 96 kHz/32-Bit-DAC. Ab 59 € je Wochenende, auf Anfrage.",
     h1: "CDJ-3000X mieten in Mülheim an der Ruhr – AlphaTheta DJ-Multiplayer",
     h2s: [
       "Technische Daten des CDJ-3000X",
@@ -131,11 +278,11 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Clubabend, Vereinsfest oder Open Air in Mülheim an der Ruhr: Zwei CDJ-3000X plus Mixer sind der Branchenstandard – jeder gebuchte DJ kennt die Bedienung.",
     useCasePrivat:
       "Hochzeit, Abiparty oder großer Geburtstag: Auflegen von USB-Stick, Laptop oder aus der Cloud, ohne eigenes DJ-Equipment kaufen zu müssen.",
-    dailyPriceFrom: 69,
+    dailyPriceFrom: 59,
     faqs: [
       {
         q: "Was kostet der CDJ-3000X in Mülheim an der Ruhr?",
-        a: "Der Mietpreis startet ab 69 € netto pro Tag und Player. Preise für 2er-Setups, Wochenenden und ganze Wochen nennen wir dir auf Anfrage.",
+        a: "Der Mietpreis startet ab 59 € netto je Wochenende und Player. Preise für 2er-Setups, Wochenenden und ganze Wochen nennen wir dir auf Anfrage.",
       },
       {
         q: "Ist der CDJ-3000X in Mülheim an der Ruhr verfügbar?",

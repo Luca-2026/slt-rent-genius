@@ -455,7 +455,7 @@ export function HeroSearch() {
                           )}
                           {product.pricePerDay && (
                             <span className="text-sm font-semibold text-primary mt-0.5 block">
-                              {product.pricePerDay}{t("rental.perDay")}
+                              {product.pricePerDay}{product.priceUnitLabel ?? t("rental.perDay")}
                             </span>
                           )}
                         </div>

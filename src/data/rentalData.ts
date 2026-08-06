@@ -205,6 +205,7 @@ export interface Product {
   videoUrl?: string; // YouTube video URL (primary)
   videoUrls?: string[]; // Additional YouTube video URLs
   pricePerDay?: string;
+  priceUnitLabel?: string; // Abweichende Preiseinheit, z. B. "/ Wochenende" statt "/Tag"
   priceWeekend?: string;
   pricePerMonth?: string; // Monthly price (e.g. for long-term sets)
   minRentalMonths?: number; // Minimum rental period in months for pricePerMonth
