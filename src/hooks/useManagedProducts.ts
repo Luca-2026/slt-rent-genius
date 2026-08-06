@@ -21,6 +21,7 @@ export interface ManagedProductRow {
   tags: string[];
   rental_notes: string[];
   price_per_day: string | null;
+  price_unit_label?: string | null;
   price_weekend: string | null;
   price_per_month: string | null;
   min_rental_months: number | null;
@@ -52,6 +53,7 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
     videoUrl: row.video_url ?? undefined,
     videoUrls: row.video_urls?.length ? row.video_urls : undefined,
     pricePerDay: row.price_per_day ?? undefined,
+    priceUnitLabel: row.price_unit_label ?? undefined,
     priceWeekend: row.price_weekend ?? undefined,
     pricePerMonth: row.price_per_month ?? undefined,
     minRentalMonths: row.min_rental_months ?? undefined,
