@@ -960,9 +960,6 @@ export default function AdminDashboard() {
               { value: "invoices", label: "Rechnungen", icon: Receipt },
               { value: "customers", label: "Kunden", icon: Users },
               { value: "damages", label: "Schäden", icon: AlertTriangle },
-              { value: "staff", label: "Mitarbeiter", icon: UserCog },
-              { value: "inventory", label: "Inventar", icon: Boxes },
-              { value: "feedback", label: "Feedback", icon: MessageSquare },
 
 
             ].map((tab) => {
@@ -991,7 +988,7 @@ export default function AdminDashboard() {
           </div>
         </div>
         {/* Desktop: original grid tabs */}
-        <TabsList className={`hidden sm:grid w-full h-12 ${SUPER_ADMIN_EMAILS.includes((user?.email ?? "").toLowerCase()) ? "grid-cols-12" : "grid-cols-11"}`}>
+        <TabsList className={`hidden sm:grid w-full h-12 ${SUPER_ADMIN_EMAILS.includes((user?.email ?? "").toLowerCase()) ? "grid-cols-9" : "grid-cols-8"}`}>
           <TabsTrigger value="reservations" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <FileText className="h-4 w-4" />
             <span className="hidden sm:inline">Anfragen</span>
