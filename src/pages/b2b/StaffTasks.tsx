@@ -11,7 +11,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { TodoListEditorDialog } from "@/components/b2b/tasks/TodoListEditorDialog";
 import { TodoListDetailSheet } from "@/components/b2b/tasks/TodoListDetailSheet";
 import { MaterialDispoTab } from "@/components/b2b/tasks/MaterialDispoTab";
-import { CheckSquare, Clock, FileEdit, Pencil, Plus, Truck, User } from "lucide-react";
+import { Boxes, CheckSquare, Clock, FileEdit, MessageSquare, Pencil, Plus, Truck, User, UserCog } from "lucide-react";
+import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
+import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
+import AdminFeedbackTab from "@/components/b2b/admin/AdminFeedbackTab";
 import { STATUS_LABELS, formatMinutes, locationLabel, type TodoList } from "@/components/b2b/tasks/types";
 
 const PRIORITY_LABELS: Record<string, string> = { low: "Niedrig", normal: "Normal", high: "Hoch" };
@@ -96,16 +99,34 @@ export default function StaffTasks() {
   }
 
   return (
-    <B2BPortalLayout title="Aufgaben & Dispo" subtitle="To-do-Listen und Materialtransporte zwischen den Standorten">
+    <B2BPortalLayout
+      title="Interne Verwaltung"
+      subtitle="Aufgaben, Materialdispo, Inventar, Feedback und Mitarbeiter"
+    >
       <Tabs defaultValue="tasks" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-2 h-11">
-          <TabsTrigger value="tasks" className="text-sm">
-            <CheckSquare className="h-4 w-4 mr-1.5" /> Aufgaben
-          </TabsTrigger>
-          <TabsTrigger value="material" className="text-sm">
-            <Truck className="h-4 w-4 mr-1.5" /> Materialdispo
-          </TabsTrigger>
-        </TabsList>
+        <div className="-mx-4 px-4 sm:mx-0 sm:px-0">
+          <TabsList className="flex w-max sm:w-full gap-1 h-11 overflow-x-auto">
+            <TabsTrigger value="tasks" className="text-sm whitespace-nowrap sm:flex-1">
+              <CheckSquare className="h-4 w-4 mr-1.5" /> Aufgaben
+            </TabsTrigger>
+            <TabsTrigger value="material" className="text-sm whitespace-nowrap sm:flex-1">
+              <Truck className="h-4 w-4 mr-1.5" /> Materialdispo
+            </TabsTrigger>
+            <TabsTrigger value="inventory" className="text-sm whitespace-nowrap sm:flex-1">
+              <Boxes className="h-4 w-4 mr-1.5" /> Inventar
+            </TabsTrigger>
+            {isAdmin && (
+              <TabsTrigger value="feedback" className="text-sm whitespace-nowrap sm:flex-1">
+                <MessageSquare className="h-4 w-4 mr-1.5" /> Feedback
+              </TabsTrigger>
+            )}
+            {isAdmin && (
+              <TabsTrigger value="staff" className="text-sm whitespace-nowrap sm:flex-1">
+                <UserCog className="h-4 w-4 mr-1.5" /> Mitarbeiter
+              </TabsTrigger>
+            )}
+          </TabsList>
+        </div>
 
         <TabsContent value="tasks" className="space-y-4">
           <div className="flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
@@ -212,6 +233,22 @@ export default function StaffTasks() {
         <TabsContent value="material">
           <MaterialDispoTab />
         </TabsContent>
+
+        <TabsContent value="inventory">
+          <AdminInventoryTab />
+        </TabsContent>
+
+        {isAdmin && (
+          <TabsContent value="feedback">
+            <AdminFeedbackTab />
+          </TabsContent>
+        )}
+
+        {isAdmin && (
+          <TabsContent value="staff">
+            <AdminStaffTab />
+          </TabsContent>
+        )}
       </Tabs>
 
       <TodoListEditorDialog
