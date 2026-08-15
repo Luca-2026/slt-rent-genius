@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { useAuth } from "@/hooks/useAuth";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
+import { useOpenTodos } from "@/hooks/useOpenTodos";
 import { Button } from "@/components/ui/button";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -50,6 +51,7 @@ const staffNavItems = [
 export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutProps) {
   const { user, b2bProfile, loading, signOut, isAdmin } = useAuth();
   const { isStaff } = useStaffAccess();
+  const { count: openTodoCount } = useOpenTodos();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
