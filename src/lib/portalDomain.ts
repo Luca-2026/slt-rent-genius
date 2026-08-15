@@ -31,6 +31,19 @@ export function authRedirectOrigin(): string {
 }
 
 /**
+ * Ziel-URL für Auth-Mails (Passwort-Reset, Bestätigung).
+ * Auf der Portal-Subdomain bleibt der Nutzer dort, sonst www.
+ * Wichtig: beide Origins müssen in der Redirect-Allow-List des Backends stehen.
+ */
+export function authRedirectUrl(path = "/"): string {
+  if (typeof window !== "undefined" && window.location.hostname.toLowerCase() === PORTAL_HOST) {
+    return `${PORTAL_ORIGIN}${path}`;
+  }
+  return `${PUBLIC_ORIGIN}${path}`;
+}
+
+
+/**
  * Absolute URL für einen Portal-Link. In Produktion zeigt sie auf die
  * Subdomain, lokal/Preview bleibt sie relativ zum aktuellen Origin.
  */
