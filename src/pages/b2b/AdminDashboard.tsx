@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
-import { OpenTodosWidget } from "@/components/b2b/tasks/OpenTodosWidget";
+import { StaffWorkWidget } from "@/components/b2b/tasks/StaffWorkWidget";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
@@ -859,7 +859,7 @@ export default function AdminDashboard() {
 
   return (
     <B2BPortalLayout title="Admin-Dashboard" subtitle="Verwaltung & Übersicht">
-      <OpenTodosWidget />
+      <StaffWorkWidget />
       {/* KPI Overview (Phase B2) */}
       <AdminStatsOverview
         revenueThisMonth={revenueThisMonth}
