@@ -12,6 +12,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CreditLimitWidget } from "@/components/b2b/CreditLimitWidget";
+import { StaffWorkWidget } from "@/components/b2b/tasks/StaffWorkWidget";
 import { DashboardKpis } from "@/components/b2b/dashboard/DashboardKpis";
 import { AdminMessagesInbox } from "@/components/b2b/AdminMessagesInbox";
 import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
@@ -375,6 +376,8 @@ export default function B2BDashboard() {
               />
             </div>
           )}
+
+          <StaffWorkWidget />
 
           {/* Phase B1 — KPI tiles + Nächste Schritte (only for approved profiles) */}
           {isApproved && b2bProfile && (
