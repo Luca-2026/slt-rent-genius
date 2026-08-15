@@ -3,13 +3,14 @@ import { Helmet } from "react-helmet-async";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { useAuth } from "@/hooks/useAuth";
+import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { Button } from "@/components/ui/button";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 import {
   LayoutDashboard, Package, FileText, Receipt,
-  LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen, Building2, Download, Menu,
+  LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen, Building2, Download, Menu, CheckSquare,
 } from "lucide-react";
 
 interface B2BPortalLayoutProps {
@@ -36,10 +37,19 @@ const customerNavItems = [
 const adminNavItems = [
   { href: "/", label: "Startseite", icon: Home },
   { href: "/b2b/admin", label: "Admin Dashboard", icon: Settings },
+  { href: "/b2b/aufgaben", label: "Aufgaben & Dispo", icon: CheckSquare },
 ];
+
+const staffNavItems = [
+  { href: "/", label: "Startseite", icon: Home },
+  { href: "/b2b/aufgaben", label: "Aufgaben & Dispo", icon: CheckSquare },
+  { href: "/hilfe", label: "Hilfe & Anleitungen", icon: BookOpen },
+];
+
 
 export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutProps) {
   const { user, b2bProfile, loading, signOut, isAdmin } = useAuth();
+  const { isStaff } = useStaffAccess();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -113,7 +123,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
       <div className="bg-background border-b border-border sticky top-16 z-30">
         <div className="section-container">
           {(() => {
-            const navItems = isAdmin ? adminNavItems : customerNavItems;
+            const navItems = isAdmin ? adminNavItems : isStaff ? staffNavItems : customerNavItems;
             const activeItem = navItems.find((i) => i.href === location.pathname);
 
             return (
