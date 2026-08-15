@@ -2024,6 +2024,65 @@ export type Database = {
         }
         Relationships: []
       }
+      staff_material_transfers: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          created_by_name: string | null
+          done_at: string | null
+          from_location: string
+          id: string
+          item_name: string
+          notes: string | null
+          quantity: number
+          status: string
+          to_location: string
+          todo_list_id: string | null
+          tour_date: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          created_by_name?: string | null
+          done_at?: string | null
+          from_location: string
+          id?: string
+          item_name: string
+          notes?: string | null
+          quantity?: number
+          status?: string
+          to_location: string
+          todo_list_id?: string | null
+          tour_date?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          created_by_name?: string | null
+          done_at?: string | null
+          from_location?: string
+          id?: string
+          item_name?: string
+          notes?: string | null
+          quantity?: number
+          status?: string
+          to_location?: string
+          todo_list_id?: string | null
+          tour_date?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "staff_material_transfers_todo_list_id_fkey"
+            columns: ["todo_list_id"]
+            isOneToOne: false
+            referencedRelation: "staff_todo_lists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       staff_profiles: {
         Row: {
           created_at: string
@@ -2060,6 +2119,163 @@ export type Database = {
           position?: string | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      staff_todo_comments: {
+        Row: {
+          author_id: string | null
+          author_name: string | null
+          body: string
+          created_at: string
+          id: string
+          list_id: string
+        }
+        Insert: {
+          author_id?: string | null
+          author_name?: string | null
+          body: string
+          created_at?: string
+          id?: string
+          list_id: string
+        }
+        Update: {
+          author_id?: string | null
+          author_name?: string | null
+          body?: string
+          created_at?: string
+          id?: string
+          list_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "staff_todo_comments_list_id_fkey"
+            columns: ["list_id"]
+            isOneToOne: false
+            referencedRelation: "staff_todo_lists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      staff_todo_items: {
+        Row: {
+          actual_minutes: number | null
+          created_at: string
+          done_at: string | null
+          done_by: string | null
+          estimated_minutes: number | null
+          id: string
+          is_done: boolean
+          list_id: string
+          note: string | null
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          actual_minutes?: number | null
+          created_at?: string
+          done_at?: string | null
+          done_by?: string | null
+          estimated_minutes?: number | null
+          id?: string
+          is_done?: boolean
+          list_id: string
+          note?: string | null
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          actual_minutes?: number | null
+          created_at?: string
+          done_at?: string | null
+          done_by?: string | null
+          estimated_minutes?: number | null
+          id?: string
+          is_done?: boolean
+          list_id?: string
+          note?: string | null
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "staff_todo_items_list_id_fkey"
+            columns: ["list_id"]
+            isOneToOne: false
+            referencedRelation: "staff_todo_lists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      staff_todo_lists: {
+        Row: {
+          actual_minutes: number | null
+          assigned_email: string | null
+          assigned_name: string | null
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          created_by_name: string | null
+          description: string | null
+          due_date: string | null
+          email_sent: boolean
+          email_sent_at: string | null
+          estimated_minutes: number | null
+          id: string
+          location: string | null
+          priority: string
+          sent_at: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          actual_minutes?: number | null
+          assigned_email?: string | null
+          assigned_name?: string | null
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          created_by_name?: string | null
+          description?: string | null
+          due_date?: string | null
+          email_sent?: boolean
+          email_sent_at?: string | null
+          estimated_minutes?: number | null
+          id?: string
+          location?: string | null
+          priority?: string
+          sent_at?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          actual_minutes?: number | null
+          assigned_email?: string | null
+          assigned_name?: string | null
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          created_by_name?: string | null
+          description?: string | null
+          due_date?: string | null
+          email_sent?: boolean
+          email_sent_at?: string | null
+          estimated_minutes?: number | null
+          id?: string
+          location?: string | null
+          priority?: string
+          sent_at?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -2407,6 +2623,10 @@ export type Database = {
       }
     }
     Functions: {
+      can_access_todo_list: {
+        Args: { _list_id: string; _user_id: string }
+        Returns: boolean
+      }
       complete_maintenance: {
         Args: {
           _cost: number
@@ -2459,6 +2679,7 @@ export type Database = {
       }
       is_approved_b2b: { Args: { _user_id: string }; Returns: boolean }
       is_authorized_person: { Args: { _user_id: string }; Returns: boolean }
+      is_staff_member: { Args: { _user_id: string }; Returns: boolean }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
       log_admin_login: { Args: never; Returns: undefined }
       mark_overdue_invoices: { Args: never; Returns: number }
