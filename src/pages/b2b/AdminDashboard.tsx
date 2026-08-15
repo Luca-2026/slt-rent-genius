@@ -18,11 +18,8 @@ import { AdminCustomersTab } from "@/components/b2b/admin/AdminCustomersTab";
 import { AdminOffersTab, type Offer, type OfferItem } from "@/components/b2b/admin/AdminOffersTab";
 import { AdminDeliveryNotesTab } from "@/components/b2b/admin/AdminDeliveryNotesTab";
 import { AdminReturnProtocolsTab } from "@/components/b2b/admin/AdminReturnProtocolsTab";
-import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
 import { AdminDamageOverview } from "@/components/b2b/admin/AdminDamageOverview";
-import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
 import AdminAuditLogTab from "@/components/b2b/admin/AdminAuditLogTab";
-import AdminFeedbackTab from "@/components/b2b/admin/AdminFeedbackTab";
 
 
 const SUPER_ADMIN_EMAILS = ["l.sandhoff@slt-rental.de", "b.noechel@slt-rental.de"];
@@ -1037,18 +1034,6 @@ export default function AdminDashboard() {
             <AlertTriangle className="h-4 w-4" />
             <span className="hidden sm:inline">Schäden</span>
           </TabsTrigger>
-          <TabsTrigger value="staff" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <UserCog className="h-4 w-4" />
-            <span className="hidden sm:inline">Mitarbeiter</span>
-          </TabsTrigger>
-          <TabsTrigger value="inventory" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <Boxes className="h-4 w-4" />
-            <span className="hidden sm:inline">Inventar</span>
-          </TabsTrigger>
-          <TabsTrigger value="feedback" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <MessageSquare className="h-4 w-4" />
-            <span className="hidden sm:inline">Feedback</span>
-          </TabsTrigger>
 
           {SUPER_ADMIN_EMAILS.includes((user?.email ?? "").toLowerCase()) && (
             <TabsTrigger value="audit" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
@@ -1260,17 +1245,6 @@ export default function AdminDashboard() {
           <AdminDamageOverview profiles={profiles} />
         </TabsContent>
 
-        <TabsContent value="staff" forceMount className="data-[state=inactive]:hidden">
-          <AdminStaffTab />
-        </TabsContent>
-
-        <TabsContent value="inventory" forceMount className="data-[state=inactive]:hidden">
-          <AdminInventoryTab />
-        </TabsContent>
-
-        <TabsContent value="feedback" className="data-[state=inactive]:hidden">
-          <AdminFeedbackTab />
-        </TabsContent>
 
 
         {SUPER_ADMIN_EMAILS.includes((user?.email ?? "").toLowerCase()) && (
