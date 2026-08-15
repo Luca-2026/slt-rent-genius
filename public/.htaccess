@@ -14,9 +14,27 @@ AddDefaultCharset UTF-8
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # Force www (Canonical: https://www.slt-rental.de)
-  RewriteCond %{HTTP_HOST} ^slt-rental\.de [NC]
+  # Force www (Canonical: https://www.slt-rental.de) – Subdomains (app.) ausgenommen
+  RewriteCond %{HTTP_HOST} ^slt-rental\.de$ [NC]
   RewriteRule ^ https://www.slt-rental.de%{REQUEST_URI} [L,R=301]
+
+  # ---- Portal-Subdomain app.slt-rental.de (B2B-Portal) ----
+  <IfModule mod_headers.c>
+    SetEnvIf Host ^app\.slt-rental\.de$ PORTAL_HOST=1
+    Header always set X-Robots-Tag "noindex, nofollow" env=PORTAL_HOST
+  </IfModule>
+
+  # Root der Subdomain -> Portal-Login
+  RewriteCond %{HTTP_HOST} ^app\.slt-rental\.de$ [NC]
+  RewriteRule ^$ /b2b/login/ [L,R=302]
+
+  # Öffentliche Marketing-Routen auf der Subdomain -> www
+  RewriteCond %{HTTP_HOST} ^app\.slt-rental\.de$ [NC]
+  RewriteCond %{REQUEST_URI} !^/(b2b|assets|product-images|images|manuals|fonts|lovable-uploads)(/|$)
+  RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]+$
+  RewriteRule ^(.*)$ https://www.slt-rental.de/$1 [L,R=301]
+
+
 
   # Kanonische Produkt-Slugs Bonn/Verdichtung
   # Alte Rentware-/Standort-Slugs dürfen nie als 404/noindex-Produktseite ausliefern.
