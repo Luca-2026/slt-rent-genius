@@ -158,7 +158,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                                 <Icon className="h-4 w-4 mr-2" />
                                 {item.label}
                                 {badge && (
-                                  <span className="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-cta px-1.5 text-[11px] font-bold text-cta-foreground">
+                                  <span className="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-cta-orange px-1.5 text-[11px] font-bold text-white">
                                     {badge}
                                   </span>
                                 )}
@@ -195,7 +195,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                           <Icon className="h-3.5 w-3.5 mr-1.5" />
                           {item.label}
                           {badge && (
-                            <span className="ml-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-cta px-1.5 text-[11px] font-bold text-cta-foreground">
+                            <span className="ml-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-cta-orange px-1.5 text-[11px] font-bold text-white">
                               {badge}
                             </span>
                           )}
