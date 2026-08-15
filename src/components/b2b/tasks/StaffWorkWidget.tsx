@@ -236,7 +236,7 @@ export function StaffWorkWidget() {
           )}
 
           <Button asChild size="sm" variant="outline" className="w-full sm:hidden">
-            <Link to="/b2b/aufgaben">Aufgaben &amp; Dispo öffnen</Link>
+            <Link to="/b2b/aufgaben">Interne Verwaltung öffnen</Link>
           </Button>
         </CardContent>
       </Card>

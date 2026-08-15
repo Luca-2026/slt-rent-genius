@@ -38,12 +38,12 @@ const customerNavItems = [
 const adminNavItems = [
   { href: "/", label: "Startseite", icon: Home },
   { href: "/b2b/admin", label: "Admin Dashboard", icon: Settings },
-  { href: "/b2b/aufgaben", label: "Aufgaben & Dispo", icon: CheckSquare },
+  { href: "/b2b/aufgaben", label: "Interne Verwaltung", icon: CheckSquare },
 ];
 
 const staffNavItems = [
   { href: "/", label: "Startseite", icon: Home },
-  { href: "/b2b/aufgaben", label: "Aufgaben & Dispo", icon: CheckSquare },
+  { href: "/b2b/aufgaben", label: "Interne Verwaltung", icon: CheckSquare },
   { href: "/hilfe", label: "Hilfe & Anleitungen", icon: BookOpen },
 ];
 
