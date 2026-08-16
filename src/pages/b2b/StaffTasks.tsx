@@ -80,13 +80,17 @@ export default function StaffTasks() {
 
   const visible = useMemo(() => {
     return lists.filter((l) => {
+      if (locationFilter !== "all" && l.location !== locationFilter) return false;
       if (scope === "mine") return l.assigned_to === user?.id && l.status !== "done";
+      if (scope === "created") return l.created_by === user?.id && l.status !== "done";
+      if (scope === "unassigned") return !l.assigned_to && l.status !== "done" && l.status !== "draft";
       if (scope === "drafts") return l.status === "draft" && (isAdmin || l.created_by === user?.id);
       if (scope === "open") return l.status !== "done";
       if (scope === "done") return l.status === "done";
       return true;
     });
-  }, [lists, scope, user?.id, isAdmin]);
+  }, [lists, scope, locationFilter, user?.id, isAdmin]);
+
 
   if (accessLoading) {
     return (
