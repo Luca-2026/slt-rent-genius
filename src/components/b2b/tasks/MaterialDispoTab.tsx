@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowRight, Plus, Trash2, Truck } from "lucide-react";
 import { LOCATIONS, TRANSFER_STATUS_LABELS, locationLabel, type MaterialTransfer } from "./types";
+import { EquipmentCombobox } from "./EquipmentCombobox";
 
 const STATUS_FLOW = ["offen", "eingeplant", "unterwegs", "erledigt"] as const;
 
@@ -134,7 +135,16 @@ export function MaterialDispoTab() {
             <div className="space-y-4">
               <div className="space-y-1.5">
                 <Label htmlFor="mat-name">Artikel / Equipment *</Label>
-                <Input id="mat-name" value={itemName} onChange={(e) => setItemName(e.target.value)} placeholder="z. B. Rüttelplatte VP 25-50" maxLength={160} />
+                <EquipmentCombobox
+                  id="mat-name"
+                  value={itemName}
+                  onChange={setItemName}
+                  location={fromLocation}
+                  placeholder="z. B. Rüttelplatte VP 25-50"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Aus dem Mietartikel-Katalog wählen oder freien Text eintragen.
+                </p>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
