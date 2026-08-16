@@ -30,7 +30,7 @@ import { notifyTodoUpdate } from "./notify";
  */
 export function StaffWorkWidget() {
   const { user } = useAuth();
-  const { isStaff, isAdmin, displayName } = useStaffAccess();
+  const { isStaff, displayName } = useStaffAccess();
   const { toast } = useToast();
   const {
     lists,
