@@ -14,7 +14,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { TodoListEditorDialog } from "@/components/b2b/tasks/TodoListEditorDialog";
 import { TodoListDetailSheet } from "@/components/b2b/tasks/TodoListDetailSheet";
 import { MaterialDispoTab } from "@/components/b2b/tasks/MaterialDispoTab";
-import { Boxes, CheckSquare, Clock, FileEdit, MessageSquare, Pencil, Plus, Truck, User, UserCog } from "lucide-react";
+import { Boxes, CheckSquare, Clock, FileEdit, MessageSquare, Pencil, Plus, Trash2, Truck, User, UserCog } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
 import AdminFeedbackTab from "@/components/b2b/admin/AdminFeedbackTab";
@@ -36,6 +46,8 @@ export default function StaffTasks() {
   const [detailList, setDetailList] = useState<TodoList | null>(null);
   const [scope, setScope] = useState<string>("open");
   const [locationFilter, setLocationFilter] = useState<string>("all");
+  const [deleteTarget, setDeleteTarget] = useState<TodoList | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   // Tab-Steuerung über die URL, damit Deep-Links und Zurück-Navigation funktionieren
   const [searchParams, setSearchParams] = useSearchParams();
@@ -102,6 +114,25 @@ export default function StaffTasks() {
     }
     setLoading(false);
   }, []);
+
+  /** Entwurf endgültig löschen (inkl. Aufgabenpunkte). Nur Ersteller oder Admin. */
+  const deleteDraft = useCallback(
+    async (list: TodoList) => {
+      setDeletingId(list.id);
+      await supabase.from("staff_todo_items").delete().eq("list_id", list.id);
+      const { error } = await supabase.from("staff_todo_lists").delete().eq("id", list.id);
+      setDeletingId(null);
+      setDeleteTarget(null);
+      if (error) {
+        toast({ title: "Löschen fehlgeschlagen", description: error.message, variant: "destructive" });
+        return;
+      }
+      toast({ title: "Entwurf gelöscht", description: `„${list.title}“ wurde entfernt.` });
+      load();
+    },
+    [toast, load],
+  );
+
 
   useEffect(() => {
     if (isStaff) load();
@@ -303,6 +334,19 @@ export default function StaffTasks() {
                           <span className="ml-1">{list.status === "draft" ? "Entwurf" : "Bearbeiten"}</span>
                         </Button>
                       )}
+
+                      {canEdit && list.status === "draft" && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="text-destructive hover:text-destructive"
+                          disabled={deletingId === list.id}
+                          onClick={() => setDeleteTarget(list)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                          <span className="ml-1">Löschen</span>
+                        </Button>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -346,6 +390,31 @@ export default function StaffTasks() {
         onOpenChange={(open) => !open && setDetailList(null)}
         onChanged={load}
       />
+
+      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Entwurf löschen?</AlertDialogTitle>
+            <AlertDialogDescription>
+              „{deleteTarget?.title}“ wird mitsamt allen Aufgabenpunkten unwiderruflich gelöscht.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              disabled={!!deletingId}
+              onClick={(e) => {
+                e.preventDefault();
+                if (deleteTarget) deleteDraft(deleteTarget);
+              }}
+            >
+              Endgültig löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
     </B2BPortalLayout>
   );
 }
