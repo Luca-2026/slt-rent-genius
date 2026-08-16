@@ -426,7 +426,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
       >
 
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="pr-8 text-base sm:text-lg">
             {initial ? `Artikel bearbeiten: ${initial.name}` : "Neuen Mietartikel anlegen"}
           </DialogTitle>
         </DialogHeader>
