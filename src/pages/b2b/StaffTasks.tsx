@@ -14,7 +14,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { TodoListEditorDialog } from "@/components/b2b/tasks/TodoListEditorDialog";
 import { TodoListDetailSheet } from "@/components/b2b/tasks/TodoListDetailSheet";
 import { MaterialDispoTab } from "@/components/b2b/tasks/MaterialDispoTab";
-import { Boxes, CheckSquare, Clock, FileEdit, MessageSquare, Pencil, Plus, Truck, User, UserCog } from "lucide-react";
+import { Boxes, CheckSquare, Clock, FileEdit, MessageSquare, Pencil, Plus, Trash2, Truck, User, UserCog } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
 import AdminFeedbackTab from "@/components/b2b/admin/AdminFeedbackTab";
