@@ -102,6 +102,7 @@ interface ManagedProductRoutePayload {
   model_name: string | null;
   seo_meta_description: string | null;
   seo_faqs: Array<{ q?: string; a?: string; question?: string; answer?: string }> | null;
+  updated_at?: string | null;
 }
 
 async function fetchManagedProducts(): Promise<ManagedProductRoutePayload[]> {
@@ -114,7 +115,7 @@ async function fetchManagedProducts(): Promise<ManagedProductRoutePayload[]> {
   try {
     const endpoint =
       `${url}/rest/v1/managed_products_public` +
-      `?select=slug,name,description,category,available_locations,images,model_name,seo_meta_description,seo_faqs`;
+      `?select=slug,name,description,category,available_locations,images,model_name,seo_meta_description,seo_faqs,updated_at`;
     const res = await fetch(endpoint, {
       headers: { apikey: key, Authorization: `Bearer ${key}` },
     });
@@ -177,6 +178,8 @@ if (managedProducts.length) {
       const path = `/mieten/${loc}/${m.category}/${m.slug}`;
       const route = routeByPath.get(path);
       if (!route) continue;
+      // Authoritative per-page timestamp aus dem CMS (letzte Inhaltsänderung).
+      if (m.updated_at) route.lastmod = m.updated_at.slice(0, 10);
       const locName = LOCATION_DISPLAY_FOR_OVERRIDE[loc] || loc;
       route.title = clampTitle(`${m.name} mieten in ${locName} | SLT Rental`);
       route.h1 = `${m.name} mieten in ${locName}`;
