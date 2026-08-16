@@ -89,13 +89,8 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
       await supabase.from("staff_todo_lists").update({ status: "in_progress" }).eq("id", list.id);
       onChanged();
     }
-    if (checked) {
-      void notifyTodoUpdate(list.id, "progress", {
-        itemTitle: item.title,
-        createdBy: list.created_by,
-        currentUserId: user?.id,
-      });
-    }
+    // Keine Mail pro Punkt – Live-Update im Portal reicht, E-Mail nur bei Zuweisung/Abschluss.
+
   };
 
   const saveItemMinutes = async (item: TodoItem, value: string) => {
