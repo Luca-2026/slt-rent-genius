@@ -192,3 +192,45 @@ export function getCategoryForProductAtLocation(productId: string, locationId: s
 export function buildProductPath(locationId: string, categoryId: string, productId: string): string {
   return `/mieten/${locationId}/${categoryId}/${productId}/`;
 }
+
+/**
+ * Häufige Suchbegriffe, die im Katalog anders heißen.
+ * Wird nur als Fallback genutzt, wenn die Originalsuche keine Artikel findet.
+ */
+const SEARCH_SYNONYMS: Record<string, string> = {
+  stromerzeuger: "Aggregat",
+  stromaggregat: "Aggregat",
+  generator: "Aggregat",
+  notstrom: "Aggregat",
+  hebebuehne: "Arbeitsbühne",
+  hubsteiger: "Arbeitsbühne",
+  steiger: "Arbeitsbühne",
+  ruettler: "Rüttelplatte",
+  vibrationsplatte: "Rüttelplatte",
+  bagger: "Minibagger",
+  kompressor: "Kompressor",
+  hochdruckreiniger: "Hochdruckreiniger",
+  eismaschine: "Eiswürfelmaschine",
+  eiswuerfel: "Eiswürfel",
+  hüpfburg: "Hüpfburg",
+  partyzelt: "Eventzelt",
+  faltzelt: "Eventzelt",
+  bierbank: "Bierzeltgarnitur",
+  biertisch: "Bierzeltgarnitur",
+  boxen: "Lautsprecher",
+  musikanlage: "Soundsystem",
+  pa: "Soundsystem",
+  dj: "DJ",
+  gitterbox: "Gitterbox",
+  kipper: "Kippanhänger",
+  autoanhaenger: "Autotransportanhänger",
+};
+
+export function getSynonymQuery(query: string): string | null {
+  const tokens = getSearchTokens(query);
+  if (tokens.length !== 1) return null;
+  const key = tokens[0];
+  const hit = SEARCH_SYNONYMS[key] ?? SEARCH_SYNONYMS[foldSearchText(key)];
+  if (!hit) return null;
+  return normalizeSearchText(hit) === key ? null : hit;
+}
