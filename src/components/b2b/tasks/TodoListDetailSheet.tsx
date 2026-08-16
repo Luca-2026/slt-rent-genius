@@ -150,8 +150,8 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
 
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div className="rounded-lg border border-border p-3">
-              <div className="text-muted-foreground text-xs">Geschätzt</div>
-              <div className="font-semibold">{formatMinutes(list.estimated_minutes)}</div>
+              <div className="text-muted-foreground text-xs">Gebrauchte Zeit</div>
+              <div className="font-semibold">{list.actual_minutes != null ? formatMinutes(list.actual_minutes) : "–"}</div>
             </div>
             <div className="rounded-lg border border-border p-3">
               <div className="text-muted-foreground text-xs">Erledigt</div>
@@ -179,7 +179,7 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
                 <div className="flex items-center gap-2 pl-7">
                   <Clock className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
                   <span className="text-xs text-muted-foreground whitespace-nowrap">
-                    geplant {formatMinutes(item.estimated_minutes)} ·
+                    Gebrauchte Zeit:
                   </span>
                   <Input
                     type="number"

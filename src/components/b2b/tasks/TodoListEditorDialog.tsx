@@ -23,7 +23,7 @@ interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   list?: TodoList | null;
-  onSaved: () => void;
+  onSaved: (savedAsDraft?: boolean) => void;
 }
 
 export function TodoListEditorDialog({ open, onOpenChange, list, onSaved }: Props) {
@@ -38,7 +38,6 @@ export function TodoListEditorDialog({ open, onOpenChange, list, onSaved }: Prop
   const [assignedUserId, setAssignedUserId] = useState<string>("");
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState("normal");
-  const [estimate, setEstimate] = useState("");
   const [items, setItems] = useState<DraftItem[]>([{ title: "", note: "", estimated_minutes: "" }]);
   const [saving, setSaving] = useState(false);
 
@@ -51,7 +50,6 @@ export function TodoListEditorDialog({ open, onOpenChange, list, onSaved }: Prop
       setAssignedUserId(list.assigned_to ?? "");
       setDueDate(list.due_date ?? "");
       setPriority(list.priority ?? "normal");
-      setEstimate(list.estimated_minutes ? String(list.estimated_minutes) : "");
       supabase
         .from("staff_todo_items")
         .select("*")
@@ -73,7 +71,6 @@ export function TodoListEditorDialog({ open, onOpenChange, list, onSaved }: Prop
       setAssignedUserId("");
       setDueDate("");
       setPriority("normal");
-      setEstimate("");
       setItems([{ title: "", note: "", estimated_minutes: "" }]);
     }
   }, [open, list]);
@@ -105,7 +102,7 @@ export function TodoListEditorDialog({ open, onOpenChange, list, onSaved }: Prop
         assigned_email: assignee?.email ?? null,
         priority,
         due_date: dueDate || null,
-        estimated_minutes: estimate ? Number(estimate) : null,
+        estimated_minutes: null,
         status: send ? "sent" : (list?.status === "draft" || !list ? "draft" : list.status),
         ...(send ? { sent_at: new Date().toISOString() } : {}),
       };
@@ -132,7 +129,7 @@ export function TodoListEditorDialog({ open, onOpenChange, list, onSaved }: Prop
             list_id: listId!,
             title: it.title.trim(),
             note: it.note.trim() || null,
-            estimated_minutes: it.estimated_minutes ? Number(it.estimated_minutes) : null,
+            estimated_minutes: null,
             sort_order: idx,
           })),
         );
@@ -155,7 +152,7 @@ export function TodoListEditorDialog({ open, onOpenChange, list, onSaved }: Prop
         toast({ title: "Entwurf gespeichert" });
       }
 
-      onSaved();
+      onSaved(!send);
       onOpenChange(false);
     } catch (err: any) {
       toast({ title: "Fehler", description: err.message ?? "Speichern fehlgeschlagen.", variant: "destructive" });
@@ -220,15 +217,12 @@ export function TodoListEditorDialog({ open, onOpenChange, list, onSaved }: Prop
             </Select>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
-              <Label htmlFor="todo-due">Fällig am</Label>
-              <Input id="todo-due" type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="todo-est">Aufwand (Min.)</Label>
-              <Input id="todo-est" type="number" min={0} inputMode="numeric" value={estimate} onChange={(e) => setEstimate(e.target.value)} placeholder="z. B. 90" />
-            </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="todo-due">Fällig am</Label>
+            <Input id="todo-due" type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+            <p className="text-xs text-muted-foreground">
+              Zeiten gibst du nicht vor – die Kolleginnen und Kollegen tragen die tatsächlich benötigte Zeit selbst ein.
+            </p>
           </div>
 
           <div className="space-y-1.5">
@@ -258,22 +252,12 @@ export function TodoListEditorDialog({ open, onOpenChange, list, onSaved }: Prop
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <Input
-                    value={item.note}
-                    onChange={(e) => updateItem(idx, { note: e.target.value })}
-                    placeholder="Notiz (optional)"
-                    maxLength={300}
-                  />
-                  <Input
-                    type="number"
-                    min={0}
-                    inputMode="numeric"
-                    value={item.estimated_minutes}
-                    onChange={(e) => updateItem(idx, { estimated_minutes: e.target.value })}
-                    placeholder="Min."
-                  />
-                </div>
+                <Input
+                  value={item.note}
+                  onChange={(e) => updateItem(idx, { note: e.target.value })}
+                  placeholder="Notiz (optional)"
+                  maxLength={300}
+                />
               </div>
             ))}
             <Button

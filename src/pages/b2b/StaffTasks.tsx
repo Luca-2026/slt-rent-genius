@@ -29,7 +29,7 @@ export default function StaffTasks() {
   const [editorOpen, setEditorOpen] = useState(false);
   const [editList, setEditList] = useState<TodoList | null>(null);
   const [detailList, setDetailList] = useState<TodoList | null>(null);
-  const [scope, setScope] = useState<string>("mine");
+  const [scope, setScope] = useState<string>("open");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -68,12 +68,12 @@ export default function StaffTasks() {
   const visible = useMemo(() => {
     return lists.filter((l) => {
       if (scope === "mine") return l.assigned_to === user?.id && l.status !== "done";
-      if (scope === "drafts") return l.status === "draft" && l.created_by === user?.id;
+      if (scope === "drafts") return l.status === "draft" && (isAdmin || l.created_by === user?.id);
       if (scope === "open") return l.status !== "done";
       if (scope === "done") return l.status === "done";
       return true;
     });
-  }, [lists, scope, user?.id]);
+  }, [lists, scope, user?.id, isAdmin]);
 
   if (accessLoading) {
     return (
@@ -135,7 +135,7 @@ export default function StaffTasks() {
               <SelectContent>
                 <SelectItem value="mine">Meine Aufgaben</SelectItem>
                 <SelectItem value="drafts">Meine Entwürfe</SelectItem>
-                <SelectItem value="open">Alle offenen</SelectItem>
+                <SelectItem value="open">Alle offenen (inkl. Entwürfe)</SelectItem>
                 <SelectItem value="done">Erledigt</SelectItem>
                 <SelectItem value="all">Alle</SelectItem>
               </SelectContent>
@@ -199,8 +199,7 @@ export default function StaffTasks() {
                         </span>
                         <span className="inline-flex items-center gap-1">
                           <Clock className="h-3.5 w-3.5" />
-                          {formatMinutes(list.actual_minutes ?? list.estimated_minutes)}
-                          {list.actual_minutes == null && list.estimated_minutes != null ? " geplant" : ""}
+                          {list.actual_minutes != null ? `${formatMinutes(list.actual_minutes)} gebraucht` : "Zeit offen"}
                         </span>
                       </div>
                     </button>
@@ -255,7 +254,10 @@ export default function StaffTasks() {
         open={editorOpen}
         onOpenChange={setEditorOpen}
         list={editList}
-        onSaved={load}
+        onSaved={(savedAsDraft) => {
+          if (savedAsDraft) setScope("drafts");
+          load();
+        }}
       />
       <TodoListDetailSheet
         list={detailList}
