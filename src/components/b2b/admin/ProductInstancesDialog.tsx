@@ -105,9 +105,9 @@ export function ProductInstancesDialog({
 // Liste aller Einzelartikel
 // ============================================================
 function InstancesList({
-  const { canManageInventory } = useStaffAccess();
   productId, availableLocations, onSelect,
 }: { productId: string; availableLocations: string[]; onSelect: (i: ProductInstance) => void }) {
+  const { canManageInventory } = useStaffAccess();
   const { data: instances = [], isLoading, refetch } = useProductInstances(productId);
   const invalidate = useInvalidateInstances();
   const [adding, setAdding] = useState(false);
