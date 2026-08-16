@@ -346,7 +346,7 @@ export function TimeTrackingTab() {
                         <Input
                           id={`start-${d.iso}`}
                           type="time"
-                          className="w-full"
+                          className="w-full px-2 text-sm"
                           value={e?.start_time?.slice(0, 5) ?? ""}
                           disabled={locked}
                           onChange={(ev) => patchLocal(d.iso, { start_time: ev.target.value || null })}
@@ -361,7 +361,7 @@ export function TimeTrackingTab() {
                         <Input
                           id={`end-${d.iso}`}
                           type="time"
-                          className="w-full"
+                          className="w-full px-2 text-sm"
                           value={e?.end_time?.slice(0, 5) ?? ""}
                           disabled={locked}
                           onChange={(ev) => patchLocal(d.iso, { end_time: ev.target.value || null })}
