@@ -54,6 +54,10 @@ export interface MaterialTransfer {
   todo_list_id: string | null;
   created_by: string | null;
   created_by_name: string | null;
+  assigned_to?: string | null;
+  assigned_name?: string | null;
+  assigned_at?: string | null;
+  done_at?: string | null;
   created_at: string;
 }
 
