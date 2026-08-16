@@ -247,7 +247,7 @@ export function MaterialDispoTab() {
           <Card key={t.id}>
             <CardContent className="p-4 space-y-3">
               <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <div className="font-semibold text-sm break-words">{t.item_name}</div>
                   <div className="text-xs text-muted-foreground">{t.quantity} Stk.</div>
                 </div>
@@ -256,25 +256,59 @@ export function MaterialDispoTab() {
                 </Badge>
               </div>
 
-              <div className="flex items-center gap-2 text-sm">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
                 <Truck className="h-4 w-4 text-muted-foreground shrink-0" />
                 <span className="break-words">{locationLabel(t.from_location)}</span>
                 <ArrowRight className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
                 <span className="break-words">{locationLabel(t.to_location)}</span>
               </div>
 
-              <div className="text-xs text-muted-foreground">
+              <div className="text-xs text-muted-foreground break-words">
                 {t.tour_date ? `Tour: ${new Date(t.tour_date).toLocaleDateString("de-DE")}` : "Tour noch offen"}
                 {t.created_by_name ? ` · von ${t.created_by_name}` : ""}
               </div>
 
-              {t.notes && <p className="text-sm text-muted-foreground whitespace-pre-line">{t.notes}</p>}
+              <div className="text-xs">
+                {t.assigned_to ? (
+                  <span className="inline-flex items-center gap-1.5 text-foreground">
+                    <User className="h-3.5 w-3.5 text-primary shrink-0" />
+                    Fährt: <span className="font-medium break-words">{t.assigned_name || "Mitarbeiter"}</span>
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 text-amber-600">
+                    <User className="h-3.5 w-3.5 shrink-0" />
+                    Noch niemand zugewiesen
+                  </span>
+                )}
+                {t.status === "erledigt" && t.done_at && (
+                  <span className="block text-muted-foreground mt-1">
+                    Erledigt am {new Date(t.done_at).toLocaleDateString("de-DE")}
+                  </span>
+                )}
+              </div>
+
+              {t.notes && <p className="text-sm text-muted-foreground whitespace-pre-line break-words">{t.notes}</p>}
 
               <div className="flex flex-wrap gap-2">
                 {t.status !== "erledigt" && (
-                  <Button size="sm" variant="outline" className="flex-1 min-w-[140px]" onClick={() => advanceStatus(t)}>
-                    Weiter zu „{TRANSFER_STATUS_LABELS[STATUS_FLOW[Math.min(STATUS_FLOW.indexOf(t.status as any) + 1, STATUS_FLOW.length - 1)]]}"
-                  </Button>
+                  <>
+                    <Button
+                      size="sm"
+                      variant={t.assigned_to === user?.id ? "ghost" : "secondary"}
+                      className="flex-1 min-w-[140px]"
+                      onClick={() => toggleAssignment(t)}
+                      disabled={!!t.assigned_to && t.assigned_to !== user?.id && !isAdmin}
+                    >
+                      {t.assigned_to === user?.id
+                        ? "Zuweisung aufheben"
+                        : t.assigned_to
+                          ? "Übernehmen"
+                          : "Tour übernehmen"}
+                    </Button>
+                    <Button size="sm" variant="outline" className="flex-1 min-w-[140px]" onClick={() => advanceStatus(t)}>
+                      Weiter zu „{TRANSFER_STATUS_LABELS[STATUS_FLOW[Math.min(STATUS_FLOW.indexOf(t.status as any) + 1, STATUS_FLOW.length - 1)]]}"
+                    </Button>
+                  </>
                 )}
                 {(isAdmin || t.created_by === user?.id) && (
                   <Button size="sm" variant="ghost" onClick={() => removeTransfer(t.id)} aria-label="Eintrag löschen">
