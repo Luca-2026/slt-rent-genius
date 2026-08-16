@@ -115,6 +115,25 @@ export default function StaffTasks() {
     setLoading(false);
   }, []);
 
+  /** Entwurf endgültig löschen (inkl. Aufgabenpunkte). Nur Ersteller oder Admin. */
+  const deleteDraft = useCallback(
+    async (list: TodoList) => {
+      setDeletingId(list.id);
+      await supabase.from("staff_todo_items").delete().eq("list_id", list.id);
+      const { error } = await supabase.from("staff_todo_lists").delete().eq("id", list.id);
+      setDeletingId(null);
+      setDeleteTarget(null);
+      if (error) {
+        toast({ title: "Löschen fehlgeschlagen", description: error.message, variant: "destructive" });
+        return;
+      }
+      toast({ title: "Entwurf gelöscht", description: `„${list.title}“ wurde entfernt.` });
+      load();
+    },
+    [toast, load],
+  );
+
+
   useEffect(() => {
     if (isStaff) load();
   }, [isStaff, load]);
