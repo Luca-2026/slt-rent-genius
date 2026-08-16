@@ -16,7 +16,7 @@ export interface StaffMember {
  * Mitarbeiter = aktiver Eintrag in staff_profiles oder Admin-Rolle.
  */
 export function useStaffAccess() {
-  const { user, isAdmin, loading: authLoading } = useAuth();
+  const { user, isAdmin, isSuperAdmin, loading: authLoading } = useAuth();
   const [staffProfile, setStaffProfile] = useState<StaffMember | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -57,6 +57,11 @@ export function useStaffAccess() {
   return {
     isStaff: isAdmin || !!staffProfile,
     isAdmin,
+    isSuperAdmin,
+    /** Inventar-/CMS-Pflege bleibt Admins vorbehalten (Standort-Mitarbeitende ausgeschlossen). */
+    canManageInventory: isAdmin,
+    /** Mietartikel-CMS: nur Geschäftsführung (Super-Admins). */
+    canManageCMS: isSuperAdmin,
     staffProfile,
     displayName,
     loading: authLoading || loading,

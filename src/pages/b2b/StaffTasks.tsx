@@ -35,7 +35,7 @@ const PRIORITY_LABELS: Record<string, string> = { low: "Niedrig", normal: "Norma
 
 export default function StaffTasks() {
   const { user } = useAuth();
-  const { isStaff, isAdmin, displayName, loading: accessLoading } = useStaffAccess();
+  const { isStaff, isAdmin, canManageInventory, displayName, loading: accessLoading } = useStaffAccess();
   const { toast } = useToast();
 
 
@@ -54,7 +54,10 @@ export default function StaffTasks() {
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedTab = searchParams.get("tab");
   const allowedTabs = useMemo(
-    () => (isAdmin ? ["tasks", "material", "inventory", "zeiten", "feedback", "staff"] : ["tasks", "material", "inventory", "zeiten"]),
+    () =>
+      isAdmin
+        ? ["tasks", "material", "inventory", "zeiten", "feedback", "staff"]
+        : ["tasks", "material", "zeiten"],
     [isAdmin],
   );
   const activeTab = requestedTab && allowedTabs.includes(requestedTab) ? requestedTab : "tasks";

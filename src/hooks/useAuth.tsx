@@ -34,6 +34,7 @@ interface AuthContextType {
   loading: boolean;
   b2bProfile: B2BProfile | null;
   isAdmin: boolean;
+  isSuperAdmin: boolean;
   isApprovedB2B: boolean;
   isAuthorizedPerson: boolean;
   authorizedPersonInfo: AuthorizedPersonInfo | null;
@@ -51,6 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [b2bProfile, setB2BProfile] = useState<B2BProfile | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [authorizedPersonInfo, setAuthorizedPersonInfo] = useState<AuthorizedPersonInfo | null>(null);
   const loggedLoginTokens = useRef<Set<string>>(new Set());
 
@@ -100,6 +102,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .maybeSingle();
     
     setIsAdmin(!!data);
+
+    const { data: superData } = await supabase.rpc("is_super_admin" as any, { _user_id: userId });
+    setIsSuperAdmin(!!superData);
   };
 
   const refreshB2BProfile = async () => {
@@ -134,6 +139,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } else {
           setB2BProfile(null);
           setIsAdmin(false);
+          setIsSuperAdmin(false);
           setAuthorizedPersonInfo(null);
         }
       }
@@ -180,6 +186,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setSession(null);
     setB2BProfile(null);
     setIsAdmin(false);
+    setIsSuperAdmin(false);
     setAuthorizedPersonInfo(null);
     await supabase.auth.signOut();
   };
@@ -197,6 +204,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading,
         b2bProfile,
         isAdmin,
+        isSuperAdmin,
         isApprovedB2B,
         isAuthorizedPerson,
         authorizedPersonInfo,
