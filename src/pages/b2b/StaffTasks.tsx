@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { TodoListEditorDialog } from "@/components/b2b/tasks/TodoListEditorDialog";
 import { TodoListDetailSheet } from "@/components/b2b/tasks/TodoListDetailSheet";
 import { MaterialDispoTab } from "@/components/b2b/tasks/MaterialDispoTab";
-import { Boxes, CheckSquare, Clock, FileEdit, MessageSquare, Pencil, Plus, Trash2, Truck, User, UserCog } from "lucide-react";
+import { Boxes, CalendarClock, CheckSquare, Clock, FileEdit, MessageSquare, Pencil, Plus, Trash2, Truck, User, UserCog } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,6 +25,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { TimeTrackingTab } from "@/components/b2b/tasks/TimeTrackingTab";
 import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
 import AdminFeedbackTab from "@/components/b2b/admin/AdminFeedbackTab";
@@ -53,7 +54,7 @@ export default function StaffTasks() {
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedTab = searchParams.get("tab");
   const allowedTabs = useMemo(
-    () => (isAdmin ? ["tasks", "material", "inventory", "feedback", "staff"] : ["tasks", "material", "inventory"]),
+    () => (isAdmin ? ["tasks", "material", "inventory", "zeiten", "feedback", "staff"] : ["tasks", "material", "inventory", "zeiten"]),
     [isAdmin],
   );
   const activeTab = requestedTab && allowedTabs.includes(requestedTab) ? requestedTab : "tasks";
@@ -191,7 +192,7 @@ export default function StaffTasks() {
   return (
     <B2BPortalLayout
       title="Interne Verwaltung"
-      subtitle="Aufgaben, Materialdispo, Inventar, Feedback und Mitarbeiter"
+      subtitle="Aufgaben, Materialdispo, Inventar, Zeiterfassung, Feedback und Mitarbeiter"
     >
       <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
         <TabsList className="grid grid-cols-3 gap-1 h-auto w-full p-1 sm:flex sm:h-11">
@@ -203,6 +204,9 @@ export default function StaffTasks() {
           </TabsTrigger>
           <TabsTrigger value="inventory" className="text-xs sm:text-sm py-2 sm:flex-1">
             <Boxes className="h-4 w-4 mr-1.5 shrink-0" /> Inventar
+          </TabsTrigger>
+          <TabsTrigger value="zeiten" className="text-xs sm:text-sm py-2 sm:flex-1">
+            <CalendarClock className="h-4 w-4 mr-1.5 shrink-0" /> Zeiten
           </TabsTrigger>
           {isAdmin && (
             <TabsTrigger value="feedback" className="text-xs sm:text-sm py-2 sm:flex-1">
@@ -361,6 +365,10 @@ export default function StaffTasks() {
 
         <TabsContent value="inventory">
           <AdminInventoryTab />
+        </TabsContent>
+
+        <TabsContent value="zeiten">
+          <TimeTrackingTab />
         </TabsContent>
 
         {isAdmin && (

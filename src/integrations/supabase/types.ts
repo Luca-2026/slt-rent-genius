@@ -2131,6 +2131,90 @@ export type Database = {
         }
         Relationships: []
       }
+      staff_time_entries: {
+        Row: {
+          break_minutes: number
+          created_at: string
+          end_time: string | null
+          id: string
+          location: string | null
+          note: string | null
+          start_time: string | null
+          updated_at: string
+          user_id: string
+          work_date: string
+        }
+        Insert: {
+          break_minutes?: number
+          created_at?: string
+          end_time?: string | null
+          id?: string
+          location?: string | null
+          note?: string | null
+          start_time?: string | null
+          updated_at?: string
+          user_id: string
+          work_date: string
+        }
+        Update: {
+          break_minutes?: number
+          created_at?: string
+          end_time?: string | null
+          id?: string
+          location?: string | null
+          note?: string | null
+          start_time?: string | null
+          updated_at?: string
+          user_id?: string
+          work_date?: string
+        }
+        Relationships: []
+      }
+      staff_timesheets: {
+        Row: {
+          created_at: string
+          id: string
+          month: number
+          pdf_path: string | null
+          staff_email: string | null
+          staff_name: string | null
+          status: string
+          submitted_at: string | null
+          total_minutes: number
+          updated_at: string
+          user_id: string
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          month: number
+          pdf_path?: string | null
+          staff_email?: string | null
+          staff_name?: string | null
+          status?: string
+          submitted_at?: string | null
+          total_minutes?: number
+          updated_at?: string
+          user_id: string
+          year: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          month?: number
+          pdf_path?: string | null
+          staff_email?: string | null
+          staff_name?: string | null
+          status?: string
+          submitted_at?: string | null
+          total_minutes?: number
+          updated_at?: string
+          user_id?: string
+          year?: number
+        }
+        Relationships: []
+      }
       staff_todo_comments: {
         Row: {
           author_id: string | null
