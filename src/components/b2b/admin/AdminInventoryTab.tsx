@@ -96,14 +96,14 @@ export function AdminInventoryTab() {
   return (
     <div className="space-y-4">
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
+        <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
             <CardTitle className="flex items-center gap-2"><Package className="h-5 w-5" /> Mietartikel-CMS</CardTitle>
             <p className="text-sm text-muted-foreground mt-1">
               CMS-gepflegte Artikel überschreiben statische Artikel mit gleicher Slug im Frontend. Interne Bestandsmengen sind nie öffentlich sichtbar.
             </p>
           </div>
-          <Button onClick={() => setCreating(true)}><Plus className="h-4 w-4 mr-1" /> Neuer Artikel</Button>
+          <Button className="w-full sm:w-auto shrink-0" onClick={() => setCreating(true)}><Plus className="h-4 w-4 mr-1" /> Neuer Artikel</Button>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
@@ -133,7 +133,73 @@ export function AdminInventoryTab() {
             </Select>
           </div>
 
-          <div className="border rounded-lg overflow-x-auto">
+          {/* Mobile: Kartenliste statt breiter Tabelle */}
+          <div className="space-y-3 md:hidden">
+            {isLoading && <p className="text-sm text-muted-foreground">Lade …</p>}
+            {!isLoading && !filtered.length && (
+              <p className="text-sm text-muted-foreground">Keine Artikel im CMS. Über „Neuer Artikel" anlegen.</p>
+            )}
+            {filtered.map((row) => {
+              const cat = productCategories.find((c) => c.id === row.category);
+              const counts = instanceCounts[row.id];
+              const codes = ["krefeld", "bonn", "muelheim"]
+                .filter((l) => row.rentware_code?.[l])
+                .map((l) => `${l.slice(0, 1).toUpperCase()}:${row.rentware_code?.[l]}`);
+              return (
+                <div key={row.id} className="border rounded-lg p-3 space-y-3">
+                  <div className="flex gap-3">
+                    {row.images?.[0]
+                      ? <img src={row.images[0]} className="h-14 w-14 object-cover rounded shrink-0" alt="" loading="lazy" />
+                      : <div className="h-14 w-14 bg-muted rounded shrink-0" />}
+                    <div className="min-w-0 flex-1">
+                      <div className="font-medium text-sm break-words">{row.name}</div>
+                      <div className="text-xs text-muted-foreground break-all">{row.slug}</div>
+                      <div className="flex flex-wrap gap-1 mt-1.5">
+                        <Badge variant="outline" className="text-xs">{cat?.title ?? row.category}</Badge>
+                        {row.available_locations?.map((l) => (
+                          <Badge key={l} variant="secondary" className="text-xs">{l.slice(0, 1).toUpperCase()}</Badge>
+                        ))}
+                        {row.is_published
+                          ? <Badge className="bg-green-600 hover:bg-green-700 text-xs">Live</Badge>
+                          : <Badge variant="outline" className="text-xs">Entwurf</Badge>}
+                        {hasDraft(row) && <Badge className="bg-amber-500 hover:bg-amber-600 text-white text-xs">SEO-Entwurf</Badge>}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-xs text-muted-foreground space-y-0.5">
+                    <div>
+                      Einzelartikel K / B / M:{" "}
+                      {counts && counts.total > 0
+                        ? ["krefeld", "bonn", "muelheim"].map((l) => counts.byLocation[l] ?? 0).join(" / ")
+                        : "—"}
+                    </div>
+                    <div className="font-mono break-all">Rentware: {codes.length ? codes.join(" · ") : "—"}</div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button size="sm" variant="outline" onClick={() => setEditing(row)}>
+                      <Pencil className="h-4 w-4 mr-1" /> Bearbeiten
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => setInstancesFor(row)}>
+                      <Wrench className="h-4 w-4 mr-1" /> Einzelartikel
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => togglePublish(row)}>
+                      {row.is_published ? <><EyeOff className="h-4 w-4 mr-1" /> Verstecken</> : <><Eye className="h-4 w-4 mr-1" /> Live setzen</>}
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => duplicate(row)}>
+                      <Copy className="h-4 w-4 mr-1" /> Duplizieren
+                    </Button>
+                    <Button size="sm" variant="ghost" className="col-span-2 text-destructive" onClick={() => setConfirmDelete(row)}>
+                      <Trash2 className="h-4 w-4 mr-1" /> Löschen
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="border rounded-lg overflow-x-auto hidden md:block">
             <Table>
               <TableHeader>
                 <TableRow>

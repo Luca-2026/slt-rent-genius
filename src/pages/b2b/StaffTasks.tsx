@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
@@ -35,6 +36,24 @@ export default function StaffTasks() {
   const [detailList, setDetailList] = useState<TodoList | null>(null);
   const [scope, setScope] = useState<string>("open");
   const [locationFilter, setLocationFilter] = useState<string>("all");
+
+  // Tab-Steuerung über die URL, damit Deep-Links und Zurück-Navigation funktionieren
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedTab = searchParams.get("tab");
+  const allowedTabs = useMemo(
+    () => (isAdmin ? ["tasks", "material", "inventory", "feedback", "staff"] : ["tasks", "material", "inventory"]),
+    [isAdmin],
+  );
+  const activeTab = requestedTab && allowedTabs.includes(requestedTab) ? requestedTab : "tasks";
+  const handleTabChange = useCallback(
+    (value: string) => {
+      const next = new URLSearchParams(searchParams);
+      if (value === "tasks") next.delete("tab");
+      else next.set("tab", value);
+      setSearchParams(next, { replace: true });
+    },
+    [searchParams, setSearchParams],
+  );
 
   const takeOver = useCallback(
     async (list: TodoList) => {
@@ -143,30 +162,28 @@ export default function StaffTasks() {
       title="Interne Verwaltung"
       subtitle="Aufgaben, Materialdispo, Inventar, Feedback und Mitarbeiter"
     >
-      <Tabs defaultValue="tasks" className="space-y-4">
-        <div className="-mx-4 px-4 sm:mx-0 sm:px-0">
-          <TabsList className="flex w-max sm:w-full gap-1 h-11 overflow-x-auto">
-            <TabsTrigger value="tasks" className="text-sm whitespace-nowrap sm:flex-1">
-              <CheckSquare className="h-4 w-4 mr-1.5" /> Aufgaben
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
+        <TabsList className="grid grid-cols-3 gap-1 h-auto w-full p-1 sm:flex sm:h-11">
+          <TabsTrigger value="tasks" className="text-xs sm:text-sm py-2 sm:flex-1">
+            <CheckSquare className="h-4 w-4 mr-1.5 shrink-0" /> Aufgaben
+          </TabsTrigger>
+          <TabsTrigger value="material" className="text-xs sm:text-sm py-2 sm:flex-1">
+            <Truck className="h-4 w-4 mr-1.5 shrink-0" /> Dispo
+          </TabsTrigger>
+          <TabsTrigger value="inventory" className="text-xs sm:text-sm py-2 sm:flex-1">
+            <Boxes className="h-4 w-4 mr-1.5 shrink-0" /> Inventar
+          </TabsTrigger>
+          {isAdmin && (
+            <TabsTrigger value="feedback" className="text-xs sm:text-sm py-2 sm:flex-1">
+              <MessageSquare className="h-4 w-4 mr-1.5 shrink-0" /> Feedback
             </TabsTrigger>
-            <TabsTrigger value="material" className="text-sm whitespace-nowrap sm:flex-1">
-              <Truck className="h-4 w-4 mr-1.5" /> Materialdispo
+          )}
+          {isAdmin && (
+            <TabsTrigger value="staff" className="text-xs sm:text-sm py-2 sm:flex-1">
+              <UserCog className="h-4 w-4 mr-1.5 shrink-0" /> Team
             </TabsTrigger>
-            <TabsTrigger value="inventory" className="text-sm whitespace-nowrap sm:flex-1">
-              <Boxes className="h-4 w-4 mr-1.5" /> Inventar
-            </TabsTrigger>
-            {isAdmin && (
-              <TabsTrigger value="feedback" className="text-sm whitespace-nowrap sm:flex-1">
-                <MessageSquare className="h-4 w-4 mr-1.5" /> Feedback
-              </TabsTrigger>
-            )}
-            {isAdmin && (
-              <TabsTrigger value="staff" className="text-sm whitespace-nowrap sm:flex-1">
-                <UserCog className="h-4 w-4 mr-1.5" /> Mitarbeiter
-              </TabsTrigger>
-            )}
-          </TabsList>
-        </div>
+          )}
+        </TabsList>
 
         <TabsContent value="tasks" className="space-y-4">
           <div className="flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
