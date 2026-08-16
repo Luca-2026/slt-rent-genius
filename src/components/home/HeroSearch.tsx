@@ -338,6 +338,11 @@ export function HeroSearch() {
                           <span className="font-medium text-foreground block truncate group-hover:text-primary transition-colors">
                             {product.name}
                           </span>
+                          {ambiguousNames.has(normalizeSearchText(product.name)) && product.modelName && (
+                            <span className="text-xs font-medium text-muted-foreground block truncate">
+                              {product.modelName}
+                            </span>
+                          )}
                           {product.description && (
                             <span className="text-xs text-muted-foreground line-clamp-1">{product.description}</span>
                           )}
