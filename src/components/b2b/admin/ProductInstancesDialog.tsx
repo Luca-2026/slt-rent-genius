@@ -16,6 +16,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertTriangle, ArrowLeft, CheckCircle2, Plus, Trash2, Wrench } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { toast } from "sonner";
 import {
   useProductInstances, useMaintenanceIntervals, useMaintenanceLog,
@@ -104,6 +105,7 @@ export function ProductInstancesDialog({
 // Liste aller Einzelartikel
 // ============================================================
 function InstancesList({
+  const { canManageInventory } = useStaffAccess();
   productId, availableLocations, onSelect,
 }: { productId: string; availableLocations: string[]; onSelect: (i: ProductInstance) => void }) {
   const { data: instances = [], isLoading, refetch } = useProductInstances(productId);
@@ -158,9 +160,11 @@ function InstancesList({
         <p className="text-sm text-muted-foreground">
           {instances.length} Einzelartikel {instances.length ? `(${instances.filter(i => i.status === "available").length} verfügbar)` : ""}
         </p>
-        <Button size="sm" onClick={() => setAdding(!adding)}>
-          <Plus className="h-4 w-4 mr-1" /> {adding ? "Abbrechen" : "Neuer Einzelartikel"}
-        </Button>
+        {canManageInventory && (
+          <Button size="sm" onClick={() => setAdding(!adding)}>
+            <Plus className="h-4 w-4 mr-1" /> {adding ? "Abbrechen" : "Neuer Einzelartikel"}
+          </Button>
+        )}
       </div>
 
       {adding && (
@@ -206,7 +210,7 @@ function InstancesList({
           <Field label="Notizen">
             <Textarea rows={2} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
           </Field>
-          <Button onClick={save}>Speichern</Button>
+          {canManageInventory && <Button onClick={save}>Speichern</Button>}
         </div>
       )}
 
@@ -238,9 +242,11 @@ function InstancesList({
                   <TableCell>{i.current_operating_hours ?? 0} h</TableCell>
                   <TableCell className="text-xs">{i.purchase_date ?? "—"}</TableCell>
                   <TableCell className="text-right">
-                    <Button size="icon" variant="ghost" onClick={(e) => { e.stopPropagation(); del(i.id); }}>
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
+                    {canManageInventory && (
+                      <Button size="icon" variant="ghost" onClick={(e) => { e.stopPropagation(); del(i.id); }}>
+                        <Trash2 className="h-4 w-4 text-destructive" />
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               );
@@ -300,6 +306,7 @@ function InstanceDetail({
 }
 
 function StammdatenTab({ instance, onSaved }: { instance: ProductInstance; onSaved: () => void }) {
+  const { canManageInventory } = useStaffAccess();
   const [form, setForm] = useState({
     serial_number: instance.serial_number ?? "",
     internal_inventory_number: instance.internal_inventory_number ?? "",
@@ -351,12 +358,13 @@ function StammdatenTab({ instance, onSaved }: { instance: ProductInstance; onSav
         <Field label="Lieferant"><Input value={form.supplier} onChange={(e) => setForm({ ...form, supplier: e.target.value })} /></Field>
       </div>
       <Field label="Notizen"><Textarea rows={3} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} /></Field>
-      <Button onClick={save}>Speichern</Button>
+      {canManageInventory && <Button onClick={save}>Speichern</Button>}
     </div>
   );
 }
 
 function HoursTab({ instance, onSaved }: { instance: ProductInstance; onSaved: () => void }) {
+  const { canManageInventory } = useStaffAccess();
   const [hours, setHours] = useState("");
   const [note, setNote] = useState("");
 
@@ -383,7 +391,7 @@ function HoursTab({ instance, onSaved }: { instance: ProductInstance; onSaved: (
         <Field label="Notiz (optional)">
           <Input value={note} onChange={(e) => setNote(e.target.value)} placeholder="z.B. abgelesen bei Rückgabe" />
         </Field>
-        <Button onClick={add}>Eintragen</Button>
+        <Button onClick={add} disabled={!canManageInventory}>Eintragen</Button>
       </div>
       <p className="text-xs text-muted-foreground">
         Aktueller Stand: <b>{instance.current_operating_hours ?? 0} h</b>.
@@ -394,6 +402,7 @@ function HoursTab({ instance, onSaved }: { instance: ProductInstance; onSaved: (
 }
 
 function IntervalsTab({ instance, productCategory, onChanged }: { instance: ProductInstance; productCategory: string; onChanged: () => void }) {
+  const { canManageInventory } = useStaffAccess();
   const { data: intervals = [], refetch } = useMaintenanceIntervals(instance.id);
   const suggestions = useMemo(() => getMaintenanceSuggestions(productCategory), [productCategory]);
   const complete = useCompleteMaintenance();
@@ -478,7 +487,7 @@ function IntervalsTab({ instance, productCategory, onChanged }: { instance: Prod
           <div className="text-sm font-medium mb-2">Vorschläge für Kategorie „{productCategory}":</div>
           <div className="flex flex-wrap gap-2">
             {suggestions.map((s) => (
-              <Button key={s.title} size="sm" variant="outline" onClick={() => addSuggestion(s)}>
+              <Button key={s.title} size="sm" variant="outline" disabled={!canManageInventory} onClick={() => addSuggestion(s)}>
                 <Plus className="h-3 w-3 mr-1" />
                 {s.title} ({s.type === "hours" ? `alle ${s.value}h` : s.type === "years" ? "jährlich" : `alle ${s.value} ${s.type}`})
               </Button>
@@ -488,9 +497,11 @@ function IntervalsTab({ instance, productCategory, onChanged }: { instance: Prod
       )}
 
       <div className="flex justify-end">
-        <Button size="sm" variant="outline" onClick={() => setAdding(!adding)}>
-          <Plus className="h-4 w-4 mr-1" /> {adding ? "Abbrechen" : "Individuelles Intervall"}
-        </Button>
+        {canManageInventory && (
+          <Button size="sm" variant="outline" onClick={() => setAdding(!adding)}>
+            <Plus className="h-4 w-4 mr-1" /> {adding ? "Abbrechen" : "Individuelles Intervall"}
+          </Button>
+        )}
       </div>
 
       {adding && (
@@ -561,12 +572,16 @@ function IntervalsTab({ instance, productCategory, onChanged }: { instance: Prod
                     {!iv.is_active && <Badge variant="secondary">Inaktiv</Badge>}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button size="sm" variant="outline" onClick={() => doComplete(iv)}>
-                      <CheckCircle2 className="h-4 w-4 mr-1" /> Erledigt
-                    </Button>
-                    <Button size="icon" variant="ghost" onClick={() => del(iv.id)}>
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
+                    {canManageInventory && (
+                      <>
+                        <Button size="sm" variant="outline" onClick={() => doComplete(iv)}>
+                          <CheckCircle2 className="h-4 w-4 mr-1" /> Erledigt
+                        </Button>
+                        <Button size="icon" variant="ghost" onClick={() => del(iv.id)}>
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      </>
+                    )}
                   </TableCell>
                 </TableRow>
               );

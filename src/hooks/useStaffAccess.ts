@@ -58,8 +58,10 @@ export function useStaffAccess() {
     isStaff: isAdmin || !!staffProfile,
     isAdmin,
     isSuperAdmin,
-    /** Inventar-/CMS-Pflege bleibt Admins vorbehalten (Standort-Mitarbeitende ausgeschlossen). */
-    canManageInventory: isAdmin,
+    /** Inventar/CMS ansehen: alle Mitarbeitenden mit Portalzugang. */
+    canViewInventory: isAdmin || !!staffProfile,
+    /** Inventar-/CMS-Pflege (schreiben): nur Geschäftsführung. */
+    canManageInventory: isSuperAdmin,
     /** Mietartikel-CMS: nur Geschäftsführung (Super-Admins). */
     canManageCMS: isSuperAdmin,
     staffProfile,

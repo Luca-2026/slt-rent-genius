@@ -18,6 +18,7 @@ import { ProductInstancesDialog } from "./ProductInstancesDialog";
 import { useInstanceCounts } from "@/hooks/useProductInstances";
 import { productCategories } from "@/data/rentalData";
 import { supabase } from "@/integrations/supabase/client";
+import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { toast } from "sonner";
 
 const LOCATIONS = [
@@ -37,6 +38,7 @@ export function AdminInventoryTab() {
   const [instancesFor, setInstancesFor] = useState<AdminManagedProductRow | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<AdminManagedProductRow | null>(null);
   const { data: instanceCounts = {} } = useInstanceCounts();
+  const { canManageInventory } = useStaffAccess();
 
   const hasDraft = (p: AdminManagedProductRow) =>
     !!(p.seo_draft_meta_description && p.seo_draft_meta_description.trim()) ||
@@ -103,7 +105,11 @@ export function AdminInventoryTab() {
               CMS-gepflegte Artikel überschreiben statische Artikel mit gleicher Slug im Frontend. Interne Bestandsmengen sind nie öffentlich sichtbar.
             </p>
           </div>
-          <Button className="w-full sm:w-auto shrink-0" onClick={() => setCreating(true)}><Plus className="h-4 w-4 mr-1" /> Neuer Artikel</Button>
+          {canManageInventory ? (
+            <Button className="w-full sm:w-auto shrink-0" onClick={() => setCreating(true)}><Plus className="h-4 w-4 mr-1" /> Neuer Artikel</Button>
+          ) : (
+            <Badge variant="outline" className="shrink-0 self-start">Nur Ansicht</Badge>
+          )}
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
@@ -137,7 +143,7 @@ export function AdminInventoryTab() {
           <div className="space-y-3 md:hidden">
             {isLoading && <p className="text-sm text-muted-foreground">Lade …</p>}
             {!isLoading && !filtered.length && (
-              <p className="text-sm text-muted-foreground">Keine Artikel im CMS. Über „Neuer Artikel" anlegen.</p>
+              <p className="text-sm text-muted-foreground">Keine Artikel gefunden.</p>
             )}
             {filtered.map((row) => {
               const cat = productCategories.find((c) => c.id === row.category);
@@ -177,6 +183,7 @@ export function AdminInventoryTab() {
                     <div className="font-mono break-all">Rentware: {codes.length ? codes.join(" · ") : "—"}</div>
                   </div>
 
+                  {canManageInventory ? (
                   <div className="grid grid-cols-2 gap-2">
                     <Button size="sm" variant="outline" onClick={() => setEditing(row)}>
                       <Pencil className="h-4 w-4 mr-1" /> Bearbeiten
@@ -194,6 +201,11 @@ export function AdminInventoryTab() {
                       <Trash2 className="h-4 w-4 mr-1" /> Löschen
                     </Button>
                   </div>
+                  ) : (
+                    <Button size="sm" variant="outline" className="w-full" onClick={() => setInstancesFor(row)}>
+                      <Wrench className="h-4 w-4 mr-1" /> Einzelartikel ansehen
+                    </Button>
+                  )}
                 </div>
               );
             })}
@@ -215,7 +227,7 @@ export function AdminInventoryTab() {
               </TableHeader>
               <TableBody>
                 {isLoading && <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground">Lade …</TableCell></TableRow>}
-                {!isLoading && !filtered.length && <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground">Keine Artikel im CMS. Über „Neuer Artikel" anlegen.</TableCell></TableRow>}
+                {!isLoading && !filtered.length && <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground">Keine Artikel gefunden.</TableCell></TableRow>}
                 {filtered.map((row) => {
                   const cat = productCategories.find((c) => c.id === row.category);
                   return (
@@ -264,13 +276,17 @@ export function AdminInventoryTab() {
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-1">
-                          <Button size="icon" variant="ghost" title="Bearbeiten" onClick={() => setEditing(row)}><Pencil className="h-4 w-4" /></Button>
-                          <Button size="icon" variant="ghost" title="Einzelartikel & Wartungen" onClick={() => setInstancesFor(row)}><Wrench className="h-4 w-4" /></Button>
-                          <Button size="icon" variant="ghost" title="Duplizieren" onClick={() => duplicate(row)}><Copy className="h-4 w-4" /></Button>
-                          <Button size="icon" variant="ghost" title={row.is_published ? "Verstecken" : "Veröffentlichen"} onClick={() => togglePublish(row)}>
-                            {row.is_published ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                          </Button>
-                          <Button size="icon" variant="ghost" title="Löschen" onClick={() => setConfirmDelete(row)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                          <Button size="icon" variant="ghost" title={canManageInventory ? "Einzelartikel & Wartungen" : "Einzelartikel ansehen"} onClick={() => setInstancesFor(row)}><Wrench className="h-4 w-4" /></Button>
+                          {canManageInventory && (
+                            <>
+                              <Button size="icon" variant="ghost" title="Bearbeiten" onClick={() => setEditing(row)}><Pencil className="h-4 w-4" /></Button>
+                              <Button size="icon" variant="ghost" title="Duplizieren" onClick={() => duplicate(row)}><Copy className="h-4 w-4" /></Button>
+                              <Button size="icon" variant="ghost" title={row.is_published ? "Verstecken" : "Veröffentlichen"} onClick={() => togglePublish(row)}>
+                                {row.is_published ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                              </Button>
+                              <Button size="icon" variant="ghost" title="Löschen" onClick={() => setConfirmDelete(row)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                            </>
+                          )}
                         </div>
                       </TableCell>
                     </TableRow>
