@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
+import { useToast } from "@/hooks/use-toast";
+
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
