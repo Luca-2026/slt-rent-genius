@@ -59,7 +59,9 @@ Deno.serve(async (req: Request) => {
 
     const body = await req.json().catch(() => ({}));
     const listId = typeof body.list_id === "string" ? body.list_id : "";
-    const kind = body.kind === "comment" ? "comment" : "assigned";
+    const allowedKinds = ["comment", "progress", "completed", "assigned"] as const;
+    const kind = (allowedKinds as readonly string[]).includes(body.kind) ? (body.kind as string) : "assigned";
+    const itemTitle = typeof body.item_title === "string" ? body.item_title.slice(0, 300) : "";
     const commentBody = typeof body.comment === "string" ? body.comment.slice(0, 2000) : "";
     if (!/^[0-9a-f-]{36}$/i.test(listId)) return json({ error: "list_id ist erforderlich" }, 400);
 
@@ -82,10 +84,12 @@ Deno.serve(async (req: Request) => {
       .eq("todo_list_id", listId)
       .order("tour_date", { ascending: true });
 
-    // Empfänger: zugewiesene Person, sonst Standort-Postfach
+    // Empfänger: zugewiesene Person, sonst Standort-Postfach.
+    // Bei Fortschritts-/Abschlussmeldungen geht die Mail an den Ersteller.
     const recipients = new Set<string>();
-    if (list.assigned_email) recipients.add(list.assigned_email);
-    if (list.assigned_to) {
+    const toCreatorOnly = kind === "progress" || kind === "completed";
+    if (!toCreatorOnly && list.assigned_email) recipients.add(list.assigned_email);
+    if (!toCreatorOnly && list.assigned_to) {
       const { data: staff } = await service
         .from("staff_profiles")
         .select("email")
@@ -93,7 +97,7 @@ Deno.serve(async (req: Request) => {
         .maybeSingle();
       if (staff?.email) recipients.add(staff.email);
     }
-    if (kind === "comment" && list.created_by) {
+    if ((kind === "comment" || kind === "progress" || kind === "completed") && list.created_by) {
       const { data: creator } = await service
         .from("staff_profiles")
         .select("email")
@@ -111,7 +115,9 @@ Deno.serve(async (req: Request) => {
           <td style="padding:8px 10px;border-bottom:1px solid #eaeaea;font-size:14px;">${it.is_done ? "&#10003;" : "&#9744;"} ${esc(it.title)}${
             it.note ? `<br><span style="color:#666;font-size:12px;">${esc(it.note)}</span>` : ""
           }</td>
-          <td style="padding:8px 10px;border-bottom:1px solid #eaeaea;font-size:13px;white-space:nowrap;">${fmtMinutes(it.estimated_minutes)}</td>
+          <td style="padding:8px 10px;border-bottom:1px solid #eaeaea;font-size:13px;white-space:nowrap;">${
+            it.actual_minutes != null ? fmtMinutes(it.actual_minutes) : "–"
+          }</td>
         </tr>`,
       )
       .join("");
@@ -130,13 +136,27 @@ Deno.serve(async (req: Request) => {
       )
       .join("");
 
+    const doneCount = (items ?? []).filter((it: any) => it.is_done).length;
+    const totalCount = (items ?? []).length;
+    const worker = list.assigned_name || "Ein Kollege";
+
     const subject =
       kind === "comment"
         ? `Neue Anmerkung zur Aufgabe: ${list.title}`
-        : `Neue Aufgabenliste: ${list.title}`;
+        : kind === "progress"
+          ? `Fortschritt: ${list.title} (${doneCount}/${totalCount})`
+          : kind === "completed"
+            ? `Erledigt: ${list.title}`
+            : `Neue Aufgabenliste: ${list.title}`;
 
     const intro =
-      kind === "comment"
+      kind === "progress"
+        ? `<p style="font-size:15px;line-height:1.6;">${esc(worker)} hat einen Punkt der Aufgabenliste <strong>${esc(list.title)}</strong> abgehakt${
+            itemTitle ? `: <strong>${esc(itemTitle)}</strong>` : ""
+          }.<br>Stand: <strong>${doneCount} von ${totalCount}</strong> Punkten erledigt.</p>`
+        : kind === "completed"
+        ? `<p style="font-size:15px;line-height:1.6;">${esc(worker)} hat die Aufgabenliste <strong>${esc(list.title)}</strong> komplett abgeschlossen.<br>Gebrauchte Zeit: <strong>${fmtMinutes(list.actual_minutes)}</strong>.</p>`
+        : kind === "comment"
         ? `<p style="font-size:15px;line-height:1.6;">Es gibt eine neue Anmerkung zur Aufgabenliste <strong>${esc(list.title)}</strong>:</p>
            <div style="background:#f6f8fa;border-left:4px solid ${BRAND_ORANGE};padding:12px 14px;font-size:14px;line-height:1.6;">${esc(commentBody).replace(/\n/g, "<br>")}</div>`
         : `<p style="font-size:15px;line-height:1.6;">Hallo${list.assigned_name ? ` ${esc(list.assigned_name)}` : ""},<br>
@@ -155,7 +175,9 @@ Deno.serve(async (req: Request) => {
         <tr><td style="padding:6px 0;font-size:14px;color:#666;">Fällig am</td><td style="padding:6px 0;font-size:14px;">${
           list.due_date ? esc(new Date(list.due_date).toLocaleDateString("de-DE")) : "–"
         }</td></tr>
-        <tr><td style="padding:6px 0;font-size:14px;color:#666;">Geschätzter Aufwand</td><td style="padding:6px 0;font-size:14px;">${fmtMinutes(list.estimated_minutes)}</td></tr>
+        <tr><td style="padding:6px 0;font-size:14px;color:#666;">Gebrauchte Zeit</td><td style="padding:6px 0;font-size:14px;">${
+          list.actual_minutes != null ? fmtMinutes(list.actual_minutes) : "noch offen"
+        }</td></tr>
       </table>
       ${list.description ? `<p style="font-size:14px;line-height:1.6;">${esc(list.description).replace(/\n/g, "<br>")}</p>` : ""}
       ${
