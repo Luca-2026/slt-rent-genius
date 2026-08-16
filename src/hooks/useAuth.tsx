@@ -60,7 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .from("b2b_profiles")
       .select("id, company_name, status, contact_first_name, contact_last_name, contact_email, contact_phone, billing_email, credit_limit, used_credit, assigned_location, assigned_contact_override, deletion_requested_at, credit_limit_requested_at")
       .eq("user_id", userId)
-      .single();
+      .maybeSingle();
     
     if (data) {
       setB2BProfile(data as B2BProfile);
@@ -74,7 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .select("b2b_profile_id, first_name, last_name, max_rental_value, is_active")
       .eq("user_id", userId)
       .eq("is_active", true)
-      .single();
+      .maybeSingle();
 
     if (apData) {
       setAuthorizedPersonInfo(apData as AuthorizedPersonInfo);
@@ -83,7 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .from("b2b_profiles")
         .select("id, company_name, status, contact_first_name, contact_last_name, contact_email, contact_phone, billing_email, credit_limit, used_credit, assigned_location, assigned_contact_override, deletion_requested_at, credit_limit_requested_at")
         .eq("id", apData.b2b_profile_id)
-        .single();
+        .maybeSingle();
       setB2BProfile(companyProfile as B2BProfile | null);
     } else {
       setB2BProfile(null);
@@ -97,7 +97,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .select("role")
       .eq("user_id", userId)
       .eq("role", "admin")
-      .single();
+      .maybeSingle();
     
     setIsAdmin(!!data);
   };
