@@ -68,6 +68,19 @@ Deno.serve(async (req: Request) => {
           : (user.email ?? "Mitarbeiter/in"));
     const staffEmail = staff?.email ?? (targetUserId === user.id ? user.email : null);
 
+    // Download nur für bereits bestätigte Monate (PDF entsteht erst mit der Bestätigung)
+    const { data: existingSheet } = await service
+      .from("staff_timesheets")
+      .select("status, submitted_at")
+      .eq("user_id", targetUserId)
+      .eq("year", year)
+      .eq("month", month)
+      .maybeSingle();
+
+    if (action === "preview" && existingSheet?.status !== "submitted") {
+      return json({ error: "Der Monat ist noch nicht bestätigt – erst danach steht das PDF bereit." }, 403);
+    }
+
     const first = `${year}-${String(month).padStart(2, "0")}-01`;
     const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
     const last = `${year}-${String(month).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
@@ -80,7 +93,8 @@ Deno.serve(async (req: Request) => {
       .lte("work_date", last)
       .order("work_date", { ascending: true });
 
-    const submittedAt = new Date().toISOString();
+    const submittedAt =
+      action === "submit" ? new Date().toISOString() : (existingSheet?.submitted_at ?? new Date().toISOString());
     const pdfBytes = await generateTimesheetPdf({
       staffName,
       staffEmail,
@@ -88,7 +102,7 @@ Deno.serve(async (req: Request) => {
       month,
       entries: (entries ?? []) as any[],
       submittedAt,
-      confirmed: action === "submit",
+      confirmed: true,
     });
 
     // Gesamtminuten (identische Logik wie im PDF)
