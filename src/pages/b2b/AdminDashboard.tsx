@@ -949,7 +949,7 @@ export default function AdminDashboard() {
       {/* Tab Navigation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
         {/* Mobile: horizontally scrollable tabs with labels */}
-        <div className="sm:hidden -mx-4 px-4">
+        <div className="sm:hidden -mx-4 px-4 overflow-hidden">
           <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory">
             {[
               { value: "reservations", label: "Anfragen", icon: FileText, badge: pendingReservations.length },
