@@ -1,5 +1,5 @@
 import { PDFDocument, StandardFonts, rgb } from "https://esm.sh/pdf-lib@1.17.1";
-import { SLT_COMPANY } from "../generate-invoice/company.ts";
+import { SLT_COMPANY } from "../_shared/company.ts";
 
 export interface TimesheetEntry {
   work_date: string; // YYYY-MM-DD
