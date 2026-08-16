@@ -71,9 +71,9 @@ export function EquipmentCombobox({ value, onChange, location, placeholder, id }
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between font-normal"
+          className="w-full max-w-full justify-between font-normal overflow-hidden h-auto min-h-10 py-2"
         >
-          <span className={cn("truncate text-left", !value && "text-muted-foreground")}>
+          <span className={cn("min-w-0 flex-1 truncate text-left", !value && "text-muted-foreground")}>
             {value || placeholder || "Artikel wählen oder eintragen"}
           </span>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
