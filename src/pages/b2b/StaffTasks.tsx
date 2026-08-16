@@ -17,7 +17,7 @@ import { Boxes, CheckSquare, Clock, FileEdit, MessageSquare, Pencil, Plus, Truck
 import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
 import AdminFeedbackTab from "@/components/b2b/admin/AdminFeedbackTab";
-import { STATUS_LABELS, formatMinutes, locationLabel, type TodoList } from "@/components/b2b/tasks/types";
+import { LOCATIONS, STATUS_LABELS, formatMinutes, locationLabel, type TodoList } from "@/components/b2b/tasks/types";
 
 const PRIORITY_LABELS: Record<string, string> = { low: "Niedrig", normal: "Normal", high: "Hoch" };
 
