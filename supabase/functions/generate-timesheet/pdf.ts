@@ -214,16 +214,20 @@ export async function generateTimesheetPdf(data: TimesheetPdfData): Promise<Uint
     `Durchschnitt je Arbeitstag: ${daysWorked ? fmtHours(Math.round(total / daysWorked)) : "–"}`,
     ML, y, font, 9, MUTED,
   );
-  y -= 30;
+  y -= 26;
 
   // ── Bestätigung / Unterschriften ──
-  if (y < 110) { page = newPage(); y = H - 80; }
+  if (y < 78) { page = newPage(); y = H - 80; }
   if (data.confirmed) {
     const when = data.submittedAt
-      ? new Date(data.submittedAt).toLocaleString("de-DE", { timeZone: "Europe/Berlin" })
+      ? new Date(data.submittedAt).toLocaleString("de-DE", {
+          timeZone: "Europe/Berlin",
+          day: "2-digit", month: "2-digit", year: "numeric",
+          hour: "2-digit", minute: "2-digit",
+        })
       : "";
     dt(page, `Vom Mitarbeitenden digital bestätigt${when ? ` am ${when} Uhr` : ""}.`, ML, y, font, 9, INK);
-    y -= 26;
+    y -= 22;
   }
   const sigW = (CW - 40) / 2;
   page.drawRectangle({ x: ML, y: y, width: sigW, height: 0.6, color: LINE });
