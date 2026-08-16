@@ -267,6 +267,12 @@ export default function StaffTasks() {
                       <Button size="sm" variant="outline" className="flex-1 min-w-[130px]" onClick={() => setDetailList(list)}>
                         Öffnen
                       </Button>
+                      {list.status !== "draft" && list.status !== "done" && list.assigned_to !== user?.id && (
+                        <Button size="sm" variant="secondary" onClick={() => takeOver(list)}>
+                          Übernehmen
+                        </Button>
+                      )}
+
                       {canEdit && (
                         <Button
                           size="sm"
