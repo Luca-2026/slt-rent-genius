@@ -250,6 +250,14 @@ export function MaterialDispoTab() {
     });
   }, [visible]);
 
+  const [openWeeks, setOpenWeeks] = useState<string[]>([]);
+  const [weeksInit, setWeeksInit] = useState(false);
+  useEffect(() => {
+    if (weeksInit || loading || weeks.length === 0) return;
+    setOpenWeeks(weeks.slice(0, 2).map((w) => w.key));
+    setWeeksInit(true);
+  }, [weeks, weeksInit, loading]);
+
   const openCount = transfers.filter((t) => t.status !== "erledigt").length;
   const unassignedCount = transfers.filter((t) => t.status !== "erledigt" && !t.assigned_to).length;
   const mineCount = transfers.filter((t) => t.status !== "erledigt" && t.assigned_to === user?.id).length;
@@ -339,7 +347,7 @@ export function MaterialDispoTab() {
         <Card><CardContent className="py-8 text-center text-sm text-muted-foreground">Keine Einträge.</CardContent></Card>
       )}
 
-      <Accordion type="multiple" defaultValue={weeks.slice(0, 2).map((w) => w.key)} className="space-y-3">
+      <Accordion type="multiple" value={openWeeks} onValueChange={setOpenWeeks} className="space-y-3">
         {weeks.map((week) => (
           <AccordionItem key={week.key} value={week.key} className="border rounded-lg bg-card px-3 sm:px-4">
             <AccordionTrigger className="py-3 hover:no-underline">
