@@ -35,7 +35,7 @@ const PRIORITY_LABELS: Record<string, string> = { low: "Niedrig", normal: "Norma
 
 export default function StaffTasks() {
   const { user } = useAuth();
-  const { isStaff, isAdmin, displayName, loading: accessLoading } = useStaffAccess();
+  const { isStaff, isAdmin, canManageInventory, displayName, loading: accessLoading } = useStaffAccess();
   const { toast } = useToast();
 
 
@@ -54,7 +54,10 @@ export default function StaffTasks() {
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedTab = searchParams.get("tab");
   const allowedTabs = useMemo(
-    () => (isAdmin ? ["tasks", "material", "inventory", "zeiten", "feedback", "staff"] : ["tasks", "material", "inventory", "zeiten"]),
+    () =>
+      isAdmin
+        ? ["tasks", "material", "inventory", "zeiten", "feedback", "staff"]
+        : ["tasks", "material", "zeiten"],
     [isAdmin],
   );
   const activeTab = requestedTab && allowedTabs.includes(requestedTab) ? requestedTab : "tasks";
@@ -202,9 +205,11 @@ export default function StaffTasks() {
           <TabsTrigger value="material" className="text-xs sm:text-sm py-2 sm:flex-1">
             <Truck className="h-4 w-4 mr-1.5 shrink-0" /> Dispo
           </TabsTrigger>
-          <TabsTrigger value="inventory" className="text-xs sm:text-sm py-2 sm:flex-1">
-            <Boxes className="h-4 w-4 mr-1.5 shrink-0" /> Inventar
-          </TabsTrigger>
+          {canManageInventory && (
+            <TabsTrigger value="inventory" className="text-xs sm:text-sm py-2 sm:flex-1">
+              <Boxes className="h-4 w-4 mr-1.5 shrink-0" /> Inventar
+            </TabsTrigger>
+          )}
           <TabsTrigger value="zeiten" className="text-xs sm:text-sm py-2 sm:flex-1">
             <CalendarClock className="h-4 w-4 mr-1.5 shrink-0" /> Zeiten
           </TabsTrigger>
@@ -363,9 +368,11 @@ export default function StaffTasks() {
           <MaterialDispoTab />
         </TabsContent>
 
-        <TabsContent value="inventory">
-          <AdminInventoryTab />
-        </TabsContent>
+        {canManageInventory && (
+          <TabsContent value="inventory">
+            <AdminInventoryTab />
+          </TabsContent>
+        )}
 
         <TabsContent value="zeiten">
           <TimeTrackingTab />
