@@ -144,7 +144,8 @@ export async function generateTimesheetPdf(data: TimesheetPdfData): Promise<Uint
   dt(page, `Mitarbeiter/in: ${data.staffName}`, ML, y, font, 10, INK);
   y -= 13;
   if (data.staffEmail) { dt(page, data.staffEmail, ML, y, font, 9, MUTED); y -= 13; }
-  y -= 6;
+  // Tabelle nie unter das Logo schieben – fester Mindestabstand vom Seitenkopf
+  y = Math.min(y - 6, H - 150);
 
   const drawTableHead = (pg: any, yy: number) => {
     pg.drawRectangle({ x: ML, y: yy - 4, width: CW, height: ROW_H, color: BRAND });
