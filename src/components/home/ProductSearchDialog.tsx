@@ -4,54 +4,26 @@ import { Search, MapPin, ChevronRight, Package, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
-import { locations, getAllProductsForLocation, type Product } from "@/data/rentalData";
-import { productTranslations } from "@/i18n/productTranslations";
+import { locations, type Product } from "@/data/rentalData";
 import { useTranslatedProducts } from "@/hooks/useTranslatedProduct";
-import { diversifyByFamily, isAccessoryProduct } from "@/lib/searchDiversify";
+import { diversifyByFamily } from "@/lib/searchDiversify";
+import {
+  normalizeSearchText,
+  getSearchTokens,
+  matchesAllTokens,
+  getAllUniqueRentalProducts,
+  getAmbiguousNameSet,
+  getLocationsForProduct,
+  getProductIdAtLocation,
+  getCategoryForProductAtLocation,
+  buildProductPath,
+} from "@/lib/productSearch";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-function getAllUniqueProducts(): Product[] {
-  const productMap = new Map<string, Product>();
-  for (const location of locations) {
-    const products = getAllProductsForLocation(location.id);
-    for (const product of products) {
-      if (isAccessoryProduct(product)) continue;
-      if (!productMap.has(product.name)) {
-        productMap.set(product.name, product);
-      }
-    }
-  }
-  return Array.from(productMap.values());
-}
-
-function getLocationsForProduct(productId: string): typeof locations {
-  return locations.filter((location) => {
-    const products = getAllProductsForLocation(location.id);
-    return products.some((p) => p.id === productId);
-  });
-}
-
-function getProductIdAtLocation(productId: string, locationId: string): string | null {
-  const products = getAllProductsForLocation(locationId);
-  const product = products.find((p) => p.id === productId);
-  return product?.id || null;
-}
-
-function getCategoryForProductAtLocation(productId: string, locationId: string): string {
-  const location = locations.find((l) => l.id === locationId);
-  if (!location) return "alle";
-  for (const [categoryId, products] of Object.entries(location.products)) {
-    if (products.some((p) => p.id === productId)) {
-      return categoryId;
-    }
-  }
-  return "alle";
-}
 
 interface ProductSearchDialogProps {
   open: boolean;
@@ -65,27 +37,32 @@ export function ProductSearchDialog({ open, onOpenChange }: ProductSearchDialogP
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showLocationStep, setShowLocationStep] = useState(false);
 
-  const allProducts = useMemo(() => getAllUniqueProducts(), []);
+  const allProducts = useMemo(() => getAllUniqueRentalProducts(), []);
+  const ambiguousNames = useMemo(() => getAmbiguousNameSet(allProducts), [allProducts]);
   const translatedProducts = useTranslatedProducts(allProducts);
 
   const filteredProducts = useMemo(() => {
     if (!searchQuery.trim()) return translatedProducts.slice(0, 8);
-    const query = searchQuery.toLowerCase();
+
+    const queryTokens = getSearchTokens(searchQuery);
+    if (queryTokens.length === 0) return translatedProducts.slice(0, 8);
+
     const matches = translatedProducts.filter((p, index) => {
-      if (p.name.toLowerCase().includes(query)) return true;
-      if (p.description?.toLowerCase().includes(query)) return true;
-      if (p.tags?.some((t) => t.toLowerCase().includes(query))) return true;
       const original = allProducts[index];
-      if (original) {
-        if (original.name.toLowerCase().includes(query)) return true;
-        if (original.description?.toLowerCase().includes(query)) return true;
-        if (original.tags?.some((t) => t.toLowerCase().includes(query))) return true;
-      }
-      const tr = productTranslations[p.id];
-      if (tr?.name?.toLowerCase().includes(query)) return true;
-      if (tr?.description?.toLowerCase().includes(query)) return true;
-      return false;
+      const haystack = [
+        p.name,
+        p.description,
+        ...(p.tags ?? []),
+        original?.name,
+        original?.modelName,
+        original?.description,
+        ...(original?.tags ?? []),
+      ]
+        .filter(Boolean)
+        .join(" ");
+      return matchesAllTokens(haystack, queryTokens);
     });
+
     // Round-robin durch Modellfamilien, damit Varianten gemischt erscheinen
     return diversifyByFamily(matches, (p) => p.name, 8);
   }, [searchQuery, translatedProducts, allProducts]);
@@ -104,7 +81,7 @@ export function ProductSearchDialog({ open, onOpenChange }: ProductSearchDialogP
       const productId = getProductIdAtLocation(selectedProduct.id, locationId);
       const categoryId = getCategoryForProductAtLocation(selectedProduct.id, locationId);
       if (productId) {
-        navigate(`/mieten/${locationId}/${categoryId}/${productId}`);
+        navigate(buildProductPath(locationId, categoryId, productId));
       }
     }
     handleClose();
@@ -182,6 +159,11 @@ export function ProductSearchDialog({ open, onOpenChange }: ProductSearchDialogP
                         <span className="font-medium text-foreground block truncate group-hover:text-primary transition-colors">
                           {product.name}
                         </span>
+                        {ambiguousNames.has(normalizeSearchText(product.name)) && product.modelName && (
+                          <span className="text-xs font-medium text-muted-foreground block truncate">
+                            {product.modelName}
+                          </span>
+                        )}
                         {product.pricePerDay && (
                           <span className="text-sm font-semibold text-primary mt-0.5 block">
                             {product.pricePerDay}{product.priceUnitLabel ?? t("rental.perDay")}

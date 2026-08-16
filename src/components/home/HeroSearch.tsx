@@ -4,141 +4,29 @@ import { Search, MapPin, ChevronRight, Package, X, FolderOpen } from "lucide-rea
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
-import { locations, getAllProductsForLocation, type Product, productCategories, type ProductCategory } from "@/data/rentalData";
+import { locations, type Product, productCategories } from "@/data/rentalData";
 import { categoryTranslations } from "@/i18n/productTranslations";
 import { useTranslatedProducts } from "@/hooks/useTranslatedProduct";
-import { diversifyByFamily, isAccessoryProduct } from "@/lib/searchDiversify";
+import { diversifyByFamily } from "@/lib/searchDiversify";
+import {
+  normalizeSearchText,
+  getSearchTokens,
+  matchesAllTokens,
+  getFieldSearchScore,
+  getAllUniqueRentalProducts,
+  getAmbiguousNameSet,
+  getLocationsForProduct,
+  getProductIdAtLocation,
+  getCategoryForProductAtLocation,
+  buildProductPath,
+  getSynonymQuery,
+} from "@/lib/productSearch";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-// Get all unique products across all locations (deduplicated by name)
-function getAllUniqueProducts(): Product[] {
-  const productMap = new Map<string, Product>();
-
-  for (const location of locations) {
-    const products = getAllProductsForLocation(location.id);
-    for (const product of products) {
-      if (!product.name) continue;
-      if (isAccessoryProduct(product)) continue;
-
-      const normalizedName = normalizeSearchText(product.name);
-      if (!normalizedName || productMap.has(normalizedName)) continue;
-
-      productMap.set(normalizedName, product);
-    }
-  }
-
-  return Array.from(productMap.values());
-}
-
-function normalizeSearchText(value?: string): string {
-  return (value ?? "")
-    .toLowerCase()
-    .replace(/ä/g, "ae")
-    .replace(/ö/g, "oe")
-    .replace(/ü/g, "ue")
-    .replace(/ß/g, "ss")
-    .replace(/&/g, " und ")
-    .replace(/,/g, ".")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9.\s/-]/g, " ")
-    .replace(/[/-]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function getSearchTokens(value: string): string[] {
-  return normalizeSearchText(value).split(" ").filter(Boolean);
-}
-
-function matchesAllTokens(target: string | undefined, queryTokens: string[]): boolean {
-  if (!target || queryTokens.length === 0) return false;
-
-  const normalizedTarget = normalizeSearchText(target);
-  const compactTarget = normalizedTarget.replace(/\s+/g, "");
-
-  return queryTokens.every((token) => {
-    const compactToken = token.replace(/\s+/g, "");
-    return normalizedTarget.includes(token) || compactTarget.includes(compactToken);
-  });
-}
-
-function countMatchingTokens(target: string | undefined, queryTokens: string[]): number {
-  if (!target || queryTokens.length === 0) return 0;
-
-  const normalizedTarget = normalizeSearchText(target);
-  const compactTarget = normalizedTarget.replace(/\s+/g, "");
-
-  return queryTokens.filter((token) => {
-    const compactToken = token.replace(/\s+/g, "");
-    return normalizedTarget.includes(token) || compactTarget.includes(compactToken);
-  }).length;
-}
-
-function getFieldSearchScore(
-  target: string | undefined,
-  normalizedQuery: string,
-  queryTokens: string[],
-  weights: {
-    exact: number;
-    startsWith: number;
-    includes: number;
-    allTokens: number;
-    perToken: number;
-  },
-): number {
-  if (!target || !normalizedQuery) return 0;
-
-  const normalizedTarget = normalizeSearchText(target);
-  if (!normalizedTarget) return 0;
-
-  const compactTarget = normalizedTarget.replace(/\s+/g, "");
-  const compactQuery = normalizedQuery.replace(/\s+/g, "");
-  const matchedTokenCount = countMatchingTokens(target, queryTokens);
-
-  let score = 0;
-
-  if (normalizedTarget === normalizedQuery || compactTarget === compactQuery) score += weights.exact;
-  if (normalizedTarget.startsWith(normalizedQuery) || compactTarget.startsWith(compactQuery)) score += weights.startsWith;
-  if (normalizedTarget.includes(normalizedQuery) || compactTarget.includes(compactQuery)) score += weights.includes;
-  if (matchesAllTokens(target, queryTokens)) score += weights.allTokens;
-  score += matchedTokenCount * weights.perToken;
-
-  return score;
-}
-
-// Get locations that have a specific product (by id match)
-function getLocationsForProduct(productId: string): typeof locations {
-  return locations.filter((location) => {
-    const products = getAllProductsForLocation(location.id);
-    return products.some((p) => p.id === productId);
-  });
-}
-
-// Get product ID at a specific location (by id match)
-function getProductIdAtLocation(productId: string, locationId: string): string | null {
-  const products = getAllProductsForLocation(locationId);
-  const product = products.find((p) => p.id === productId);
-  return product?.id || null;
-}
-
-// Get category for product at a specific location
-function getCategoryForProductAtLocation(productId: string, locationId: string): string {
-  const location = locations.find((l) => l.id === locationId);
-  if (!location) return "alle";
-
-  for (const [categoryId, products] of Object.entries(location.products)) {
-    if (products.some((p) => p.id === productId)) {
-      return categoryId;
-    }
-  }
-  return "alle";
-}
 
 export function HeroSearch() {
   const navigate = useNavigate();
@@ -151,7 +39,8 @@ export function HeroSearch() {
   const [showLocationDialog, setShowLocationDialog] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
 
-  const allProducts = useMemo(() => getAllUniqueProducts(), []);
+  const allProducts = useMemo(() => getAllUniqueRentalProducts(), []);
+  const ambiguousNames = useMemo(() => getAmbiguousNameSet(allProducts), [allProducts]);
   const translatedProducts = useTranslatedProducts(allProducts);
 
   const filteredCategories = useMemo(() => {
@@ -195,8 +84,9 @@ export function HeroSearch() {
   }, [searchQuery, isGerman]);
 
   const filteredProducts = useMemo(() => {
-    const normalizedQuery = normalizeSearchText(searchQuery);
-    const queryTokens = getSearchTokens(searchQuery);
+    const runSearch = (rawQuery: string): Product[] => {
+    const normalizedQuery = normalizeSearchText(rawQuery);
+    const queryTokens = getSearchTokens(rawQuery);
     if (!normalizedQuery || queryTokens.length === 0) return [];
 
     const categoryProductIds = new Set<string>();
@@ -261,17 +151,36 @@ export function HeroSearch() {
         if (score <= 0) return null;
         if (categoryProductIds.has(original.id)) score += 15;
 
+        // "Stark" = Treffer im Namen oder Modellnamen (nicht nur in Beschreibung/Specs)
+        const strong =
+          matchesAllTokens(original.name, queryTokens) ||
+          matchesAllTokens(translatedProduct.name, queryTokens) ||
+          matchesAllTokens(original.modelName, queryTokens);
+
         return {
           product: translatedProduct,
           score,
+          strong,
           nameLength: original.name.length,
         };
       })
-      .filter((item): item is { product: Product; score: number; nameLength: number } => Boolean(item))
+      .filter((item): item is { product: Product; score: number; strong: boolean; nameLength: number } => Boolean(item))
       .sort((a, b) => b.score - a.score || a.nameLength - b.nameLength || a.product.name.localeCompare(b.product.name, isGerman ? "de" : "en"));
 
+    // Wenn es Namens-/Modelltreffer gibt, keine reinen Beschreibungstreffer vorschlagen
+    const strongMatches = scored.filter((item) => item.strong);
+    const relevant = strongMatches.length > 0 ? strongMatches : scored;
+
     // Round-robin durch Modellfamilien, damit nicht 8x dasselbe Modell (z.B. "Breitaufbau") oben steht
-    return diversifyByFamily(scored, (item) => item.product.name, 8).map(({ product }) => product);
+    return diversifyByFamily(relevant, (item) => item.product.name, 8).map(({ product }) => product);
+    };
+
+    const results = runSearch(searchQuery);
+    if (results.length > 0) return results;
+
+    // Fallback über Synonyme ("Stromerzeuger" -> "Aggregat")
+    const synonym = getSynonymQuery(searchQuery);
+    return synonym ? runSearch(synonym) : [];
   }, [searchQuery, translatedProducts, allProducts, filteredCategories, isGerman]);
 
   // Close dropdown when clicking outside
@@ -304,10 +213,10 @@ export function HeroSearch() {
       const productId = getProductIdAtLocation(selectedProduct.id, locationId);
       const categoryId = getCategoryForProductAtLocation(selectedProduct.id, locationId);
       if (productId) {
-        navigate(`/mieten/${locationId}/${categoryId}/${productId}`);
+        navigate(buildProductPath(locationId, categoryId, productId));
       }
     } else if (selectedCategoryId) {
-      navigate(`/mieten/${locationId}/${selectedCategoryId}`);
+      navigate(`/mieten/${locationId}/${selectedCategoryId}/`);
     } else {
       navigate(`/mieten/${locationId}/alle`);
     }
@@ -323,7 +232,7 @@ export function HeroSearch() {
     } else if (filteredProducts.length > 0) {
       handleProductSelect(filteredProducts[0]);
     } else {
-      navigate(`/mieten/krefeld/alle`);
+      navigate(`/mieten/krefeld/alle/`);
     }
   };
 
@@ -450,6 +359,11 @@ export function HeroSearch() {
                           <span className="font-medium text-foreground block truncate group-hover:text-primary transition-colors">
                             {product.name}
                           </span>
+                          {ambiguousNames.has(normalizeSearchText(product.name)) && product.modelName && (
+                            <span className="text-xs font-medium text-muted-foreground block truncate">
+                              {product.modelName}
+                            </span>
+                          )}
                           {product.description && (
                             <span className="text-xs text-muted-foreground line-clamp-1">{product.description}</span>
                           )}
