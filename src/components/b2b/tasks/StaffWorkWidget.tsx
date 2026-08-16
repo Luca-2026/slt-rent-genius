@@ -30,15 +30,28 @@ import { notifyTodoUpdate } from "./notify";
  */
 export function StaffWorkWidget() {
   const { user } = useAuth();
-  const { isStaff, displayName } = useStaffAccess();
+  const { isStaff, isAdmin, displayName } = useStaffAccess();
   const { toast } = useToast();
-  const { lists, transfers, count, todoCount, transferCount, overdue, dueToday, loading, reload } = useStaffWork();
+  const {
+    lists,
+    teamLists,
+    transfers,
+    count,
+    todoCount,
+    teamCount,
+    transferCount,
+    overdue,
+    dueToday,
+    loading,
+    reload,
+  } = useStaffWork();
 
   const [expanded, setExpanded] = useState<string | null>(null);
   const [detail, setDetail] = useState<TodoList | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
 
   if (!isStaff || loading || count === 0) return null;
+
 
   const today = new Date().toISOString().slice(0, 10);
   const hasOverdue = overdue.length > 0;
