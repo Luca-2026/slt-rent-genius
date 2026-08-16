@@ -30,6 +30,25 @@ export default function StaffTasks() {
   const [editList, setEditList] = useState<TodoList | null>(null);
   const [detailList, setDetailList] = useState<TodoList | null>(null);
   const [scope, setScope] = useState<string>("open");
+  const [locationFilter, setLocationFilter] = useState<string>("all");
+
+  const takeOver = useCallback(
+    async (list: TodoList) => {
+      if (!user) return;
+      await supabase
+        .from("staff_todo_lists")
+        .update({
+          assigned_to: user.id,
+          assigned_name: displayName ?? null,
+          assigned_email: user.email ?? null,
+          status: list.status === "draft" ? list.status : "in_progress",
+        })
+        .eq("id", list.id);
+      toast({ title: "Übernommen", description: `„${list.title}“ ist jetzt dir zugewiesen.` });
+    },
+    [user, displayName, toast],
+  );
+
 
   const load = useCallback(async () => {
     setLoading(true);
