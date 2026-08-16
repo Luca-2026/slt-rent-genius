@@ -224,6 +224,49 @@ export function StaffWorkWidget() {
             </div>
           )}
 
+          {/* Aufgaben im Team (zugewiesen an andere) – Live-Fortschritt */}
+          {teamLists.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground flex items-center gap-1.5">
+                <ClipboardList className="h-3.5 w-3.5" /> Aufgaben im Team
+              </p>
+              {teamLists.map((list) => {
+                const done = list.items.filter((i) => i.is_done).length;
+                const total = list.items.length;
+                const isOverdue = !!list.due_date && list.due_date < today;
+                return (
+                  <button
+                    key={list.id}
+                    type="button"
+                    onClick={() => setDetail(list)}
+                    className="w-full text-left rounded-lg border border-border bg-background p-3 hover:border-primary/50 transition-colors"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="font-medium text-sm break-words">{list.title}</span>
+                      {isOverdue && (
+                        <Badge variant="destructive" className="text-[11px] shrink-0">
+                          überfällig
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                      <span>{list.assigned_name || "Nicht zugewiesen"}</span>
+                      <span>{locationLabel(list.location)}</span>
+                      {list.due_date && (
+                        <span className="inline-flex items-center gap-1">
+                          <CalendarClock className="h-3.5 w-3.5" />
+                          {new Date(list.due_date).toLocaleDateString("de-DE")}
+                        </span>
+                      )}
+                      {total > 0 && <span>{done}/{total} erledigt</span>}
+                    </div>
+                    {total > 0 && <Progress value={(done / total) * 100} className="h-1.5 mt-2" />}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
           {/* Materialtransporte */}
           {transfers.length > 0 && (
             <div className="space-y-2">
@@ -231,10 +274,11 @@ export function StaffWorkWidget() {
                 <Truck className="h-3.5 w-3.5" /> Materialtransporte
               </p>
               {transfers.slice(0, 5).map((t) => (
-                <label
+                <div
                   key={t.id}
-                  className="flex items-start gap-3 rounded-lg border border-border bg-background p-3 cursor-pointer hover:border-primary/50 transition-colors"
+                  className="rounded-lg border border-border bg-background p-3 space-y-2"
                 >
+                  <label className="flex items-start gap-3 cursor-pointer">
                   <Checkbox
                     checked={false}
                     disabled={busy === t.id}
@@ -245,7 +289,7 @@ export function StaffWorkWidget() {
                     <span className="block text-sm font-medium break-words">
                       {t.item_name} · {t.quantity} Stk.
                     </span>
-                    <span className="block text-xs text-muted-foreground">
+                    <span className="block text-xs text-muted-foreground break-words">
                       {locationLabel(t.from_location)} → {locationLabel(t.to_location)}
                       {t.tour_date ? ` · Tour ${new Date(t.tour_date).toLocaleDateString("de-DE")}` : ""}
                     </span>
