@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
+import { useToast } from "@/hooks/use-toast";
+
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,13 +17,15 @@ import { Boxes, CheckSquare, Clock, FileEdit, MessageSquare, Pencil, Plus, Truck
 import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
 import AdminFeedbackTab from "@/components/b2b/admin/AdminFeedbackTab";
-import { STATUS_LABELS, formatMinutes, locationLabel, type TodoList } from "@/components/b2b/tasks/types";
+import { LOCATIONS, STATUS_LABELS, formatMinutes, locationLabel, type TodoList } from "@/components/b2b/tasks/types";
 
 const PRIORITY_LABELS: Record<string, string> = { low: "Niedrig", normal: "Normal", high: "Hoch" };
 
 export default function StaffTasks() {
   const { user } = useAuth();
-  const { isStaff, isAdmin, loading: accessLoading } = useStaffAccess();
+  const { isStaff, isAdmin, displayName, loading: accessLoading } = useStaffAccess();
+  const { toast } = useToast();
+
 
   const [lists, setLists] = useState<TodoList[]>([]);
   const [itemCounts, setItemCounts] = useState<Record<string, { total: number; done: number }>>({});
@@ -30,6 +34,25 @@ export default function StaffTasks() {
   const [editList, setEditList] = useState<TodoList | null>(null);
   const [detailList, setDetailList] = useState<TodoList | null>(null);
   const [scope, setScope] = useState<string>("open");
+  const [locationFilter, setLocationFilter] = useState<string>("all");
+
+  const takeOver = useCallback(
+    async (list: TodoList) => {
+      if (!user) return;
+      await supabase
+        .from("staff_todo_lists")
+        .update({
+          assigned_to: user.id,
+          assigned_name: displayName ?? null,
+          assigned_email: user.email ?? null,
+          status: list.status === "draft" ? list.status : "in_progress",
+        })
+        .eq("id", list.id);
+      toast({ title: "Übernommen", description: `„${list.title}“ ist jetzt dir zugewiesen.` });
+    },
+    [user, displayName, toast],
+  );
+
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -80,13 +103,17 @@ export default function StaffTasks() {
 
   const visible = useMemo(() => {
     return lists.filter((l) => {
+      if (locationFilter !== "all" && l.location !== locationFilter) return false;
       if (scope === "mine") return l.assigned_to === user?.id && l.status !== "done";
+      if (scope === "created") return l.created_by === user?.id && l.status !== "done";
+      if (scope === "unassigned") return !l.assigned_to && l.status !== "done" && l.status !== "draft";
       if (scope === "drafts") return l.status === "draft" && (isAdmin || l.created_by === user?.id);
       if (scope === "open") return l.status !== "done";
       if (scope === "done") return l.status === "done";
       return true;
     });
-  }, [lists, scope, user?.id, isAdmin]);
+  }, [lists, scope, locationFilter, user?.id, isAdmin]);
+
 
   if (accessLoading) {
     return (
@@ -143,16 +170,30 @@ export default function StaffTasks() {
 
         <TabsContent value="tasks" className="space-y-4">
           <div className="flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
-            <Select value={scope} onValueChange={setScope}>
-              <SelectTrigger className="w-full sm:w-56"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="mine">Meine Aufgaben</SelectItem>
-                <SelectItem value="drafts">Meine Entwürfe</SelectItem>
-                <SelectItem value="open">Alle offenen (inkl. Entwürfe)</SelectItem>
-                <SelectItem value="done">Erledigt</SelectItem>
-                <SelectItem value="all">Alle</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              <Select value={scope} onValueChange={setScope}>
+                <SelectTrigger className="w-full sm:w-64"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="mine">Mir zugewiesen</SelectItem>
+                  <SelectItem value="created">Von mir erstellt</SelectItem>
+                  <SelectItem value="unassigned">Standort-Aufgaben (offen, ohne Zuweisung)</SelectItem>
+                  <SelectItem value="drafts">Entwürfe</SelectItem>
+                  <SelectItem value="open">Alle offenen (inkl. Entwürfe)</SelectItem>
+                  <SelectItem value="done">Erledigt</SelectItem>
+                  <SelectItem value="all">Alle</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={locationFilter} onValueChange={setLocationFilter}>
+                <SelectTrigger className="w-full sm:w-52"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alle Standorte</SelectItem>
+                  {LOCATIONS.map((l) => (
+                    <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <Button
               className="w-full sm:w-auto"
               onClick={() => {
@@ -187,23 +228,28 @@ export default function StaffTasks() {
                     >
                       <div className="flex items-start justify-between gap-3">
                         <span className="font-semibold text-sm break-words">{list.title}</span>
-                        <Badge
-                          variant={list.status === "done" ? "secondary" : list.status === "draft" ? "outline" : "default"}
-                          className="shrink-0"
-                        >
-                          {STATUS_LABELS[list.status] ?? list.status}
-                        </Badge>
+                        <div className="flex flex-wrap justify-end gap-1 shrink-0">
+                          {list.assigned_to === user?.id && <Badge variant="outline">Mir zugewiesen</Badge>}
+                          {!list.assigned_to && list.status !== "draft" && <Badge variant="outline">Standort-Aufgabe</Badge>}
+                          <Badge
+                            variant={list.status === "done" ? "secondary" : list.status === "draft" ? "outline" : "default"}
+                          >
+                            {STATUS_LABELS[list.status] ?? list.status}
+                          </Badge>
+                        </div>
                       </div>
 
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
                         <span className="inline-flex items-center gap-1">
                           <User className="h-3.5 w-3.5" />
-                          {list.assigned_name ?? "offen"}
+                          {list.assigned_name ?? "noch offen"}
                         </span>
+                        {list.created_by_name && <span>erstellt von {list.created_by_name}</span>}
                         <span>{locationLabel(list.location)}</span>
                         {list.due_date && <span>fällig {new Date(list.due_date).toLocaleDateString("de-DE")}</span>}
                         {list.priority === "high" && <span className="text-destructive font-medium">Hohe Priorität</span>}
                       </div>
+
 
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
                         <span className="inline-flex items-center gap-1">
@@ -221,6 +267,12 @@ export default function StaffTasks() {
                       <Button size="sm" variant="outline" className="flex-1 min-w-[130px]" onClick={() => setDetailList(list)}>
                         Öffnen
                       </Button>
+                      {list.status !== "draft" && list.status !== "done" && list.assigned_to !== user?.id && (
+                        <Button size="sm" variant="secondary" onClick={() => takeOver(list)}>
+                          Übernehmen
+                        </Button>
+                      )}
+
                       {canEdit && (
                         <Button
                           size="sm"

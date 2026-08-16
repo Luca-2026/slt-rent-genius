@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 
-export type TodoNotifyKind = "assigned" | "comment" | "progress" | "completed";
+export type TodoNotifyKind = "assigned" | "comment" | "completed";
 
 /**
  * Informiert den Ersteller einer Aufgabenliste per E-Mail über Fortschritt.

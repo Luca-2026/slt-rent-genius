@@ -52,13 +52,8 @@ export function StaffWorkWidget() {
     if (done && list.status === "sent") {
       await supabase.from("staff_todo_lists").update({ status: "in_progress" }).eq("id", list.id);
     }
-    if (done) {
-      void notifyTodoUpdate(list.id, "progress", {
-        itemTitle: item.title,
-        createdBy: list.created_by,
-        currentUserId: user?.id,
-      });
-    }
+    // Bewusst keine E-Mail pro abgehaktem Punkt – nur bei Zuweisung und Abschluss.
+
     setBusy(null);
     reload();
   };
