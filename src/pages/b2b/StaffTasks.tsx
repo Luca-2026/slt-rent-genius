@@ -46,6 +46,8 @@ export default function StaffTasks() {
   const [detailList, setDetailList] = useState<TodoList | null>(null);
   const [scope, setScope] = useState<string>("open");
   const [locationFilter, setLocationFilter] = useState<string>("all");
+  const [deleteTarget, setDeleteTarget] = useState<TodoList | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   // Tab-Steuerung über die URL, damit Deep-Links und Zurück-Navigation funktionieren
   const [searchParams, setSearchParams] = useSearchParams();
