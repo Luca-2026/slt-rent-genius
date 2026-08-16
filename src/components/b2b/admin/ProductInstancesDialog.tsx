@@ -71,11 +71,11 @@ export function ProductInstancesDialog({
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) setSelectedInstance(null); onOpenChange(v); }}>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-5xl w-[calc(100vw-1.5rem)] sm:w-full max-h-[90vh] overflow-y-auto overflow-x-hidden p-4 sm:p-6 [&>*]:min-w-0">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Wrench className="h-5 w-5" />
-            Einzelartikel-Bestand: {productName}
+          <DialogTitle className="flex items-start gap-2 pr-8 text-base sm:text-lg">
+            <Wrench className="h-5 w-5 shrink-0 mt-0.5" />
+            <span className="min-w-0 break-words">Einzelartikel-Bestand: {productName}</span>
           </DialogTitle>
           <DialogDescription>
             Verwalte physische Geräte einzeln – Seriennummer, Betriebsstunden, Wartungen. Nicht öffentlich sichtbar.
@@ -153,8 +153,8 @@ function InstancesList({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
+    <div className="space-y-4 min-w-0">
+      <div className="flex flex-wrap justify-between items-center gap-2">
         <p className="text-sm text-muted-foreground">
           {instances.length} Einzelartikel {instances.length ? `(${instances.filter(i => i.status === "available").length} verfügbar)` : ""}
         </p>
@@ -210,8 +210,8 @@ function InstancesList({
         </div>
       )}
 
-      <div className="border rounded-lg overflow-x-auto">
-        <Table>
+      <div className="border rounded-lg overflow-x-auto max-w-full">
+        <Table className="min-w-[560px]">
           <TableHeader>
             <TableRow>
               <TableHead>Inv.-Nr. / Serial</TableHead>

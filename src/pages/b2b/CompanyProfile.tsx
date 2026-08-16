@@ -69,7 +69,7 @@ export default function CompanyProfile() {
       .from("b2b_profiles")
       .select("*")
       .eq("user_id", user.id)
-      .single();
+      .maybeSingle();
     if (data) {
       setCompanyName(data.company_name);
       setLegalForm(data.legal_form || "");

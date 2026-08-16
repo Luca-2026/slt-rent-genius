@@ -419,31 +419,31 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) requestClose(); else onOpenChange(true); }}>
       <DialogContent
-        className="max-w-4xl max-h-[92vh] overflow-hidden flex flex-col"
+        className="max-w-4xl w-[calc(100vw-1.5rem)] sm:w-full max-h-[92vh] overflow-hidden flex flex-col p-4 sm:p-6"
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => { if (dirty) e.preventDefault(); }}
       >
 
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="pr-8 text-base sm:text-lg">
             {initial ? `Artikel bearbeiten: ${initial.name}` : "Neuen Mietartikel anlegen"}
           </DialogTitle>
         </DialogHeader>
 
         <Tabs value={tab} onValueChange={setTab} className="flex-1 overflow-hidden flex flex-col">
-          <TabsList className="grid grid-cols-6">
-            <TabsTrigger value="basis">Basis</TabsTrigger>
-            <TabsTrigger value="bilder">Bilder</TabsTrigger>
-            <TabsTrigger value="technik">Technik</TabsTrigger>
-            <TabsTrigger value="preise">Preise & Buchung</TabsTrigger>
-            <TabsTrigger value="seo">SEO & Content</TabsTrigger>
-            <TabsTrigger value="intern">Intern (Bestand)</TabsTrigger>
+          <TabsList className="grid grid-cols-3 sm:grid-cols-6 gap-1 h-auto w-full p-1">
+            <TabsTrigger value="basis" className="text-xs sm:text-sm py-2">Basis</TabsTrigger>
+            <TabsTrigger value="bilder" className="text-xs sm:text-sm py-2">Bilder</TabsTrigger>
+            <TabsTrigger value="technik" className="text-xs sm:text-sm py-2">Technik</TabsTrigger>
+            <TabsTrigger value="preise" className="text-xs sm:text-sm py-2">Preise</TabsTrigger>
+            <TabsTrigger value="seo" className="text-xs sm:text-sm py-2">SEO</TabsTrigger>
+            <TabsTrigger value="intern" className="text-xs sm:text-sm py-2">Intern</TabsTrigger>
           </TabsList>
 
           <div className="flex-1 overflow-y-auto pr-2 mt-4">
             <TabsContent value="basis" className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label>Name *</Label>
                   <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
@@ -474,7 +474,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
               </div>
               <div>
                 <Label>Verfügbare Standorte *</Label>
-                <div className="flex gap-4 mt-2">
+                <div className="flex flex-wrap gap-x-4 gap-y-2 mt-2">
                   {LOCATIONS.map((loc) => (
                     <label key={loc.id} className="flex items-center gap-2">
                       <Checkbox
@@ -493,7 +493,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                   ))}
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label>Sortierung (Zahl, kleiner = früher)</Label>
                   <Input type="number" value={form.sort_order} onChange={(e) => setForm({ ...form, sort_order: e.target.value })} />
@@ -516,7 +516,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                 </Button>
                 <span className="text-sm text-muted-foreground">{form.images.length} Bild(er)</span>
               </div>
-              <div className="grid grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {form.images.map((url, i) => (
                   <div key={url} className="relative border rounded overflow-hidden group">
                     <img src={url} className="w-full h-32 object-cover" alt="" />
@@ -576,7 +576,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                   ))}
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div><Label>Gewicht (kg)</Label><Input type="number" value={form.weight_kg} onChange={(e) => setForm({ ...form, weight_kg: e.target.value })} /></div>
                 <div><Label>Antriebsart</Label><Input placeholder="diesel/elektro/…" value={form.drive_type} onChange={(e) => setForm({ ...form, drive_type: e.target.value })} /></div>
                 <div><Label>PDF-Handbuch URL</Label><Input value={form.pdf_url} onChange={(e) => setForm({ ...form, pdf_url: e.target.value })} /></div>
@@ -584,7 +584,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
             </TabsContent>
 
             <TabsContent value="preise" className="space-y-4">
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div><Label>Preis / Tag</Label><Input placeholder="z.B. 89 €" value={form.price_per_day} onChange={(e) => setForm({ ...form, price_per_day: e.target.value })} /></div>
                 <div><Label>Preis / Wochenende</Label><Input value={form.price_weekend} onChange={(e) => setForm({ ...form, price_weekend: e.target.value })} /></div>
                 <div><Label>Preis / Monat</Label><Input value={form.price_per_month} onChange={(e) => setForm({ ...form, price_per_month: e.target.value })} /></div>
@@ -592,7 +592,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
               <div>
                 <Label>Rentware-Codes je Standort</Label>
                 <p className="text-xs text-muted-foreground mb-2">Sobald ein Code eingetragen ist, wird der Artikel dort direkt buchbar. „Auf Anfrage"-Texte werden beim Speichern automatisch entfernt.</p>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {LOCATIONS.map((loc) => (
                     <div key={loc.id}>
                       <Label className="text-xs">{loc.label}</Label>
@@ -605,7 +605,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                 <Checkbox id="req" checked={form.on_request} disabled={hasAnyRentware} onCheckedChange={(v) => setForm({ ...form, on_request: !!v })} />
                 <Label htmlFor="req">Nur auf Anfrage buchbar {hasAnyRentware && <span className="text-xs text-muted-foreground">(deaktiviert, weil Rentware-Code gesetzt)</span>}</Label>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div><Label>Mindestmietdauer (Monate)</Label><Input type="number" value={form.min_rental_months} onChange={(e) => setForm({ ...form, min_rental_months: e.target.value })} /></div>
                 <div><Label>Video-URL</Label><Input value={form.video_url} onChange={(e) => setForm({ ...form, video_url: e.target.value })} /></div>
               </div>
@@ -756,7 +756,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                 {LOCATIONS.map((loc) => (
                   <div key={loc.id} className="border rounded p-3">
                     <div className="font-medium mb-2">{loc.label}</div>
-                    <div className="grid grid-cols-4 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                       <div>
                         <Label className="text-xs">Menge</Label>
                         <Input type="number" value={form.quantities[loc.id]} onChange={(e) => setForm((f) => ({ ...f, quantities: { ...f.quantities, [loc.id]: e.target.value } }))} />
