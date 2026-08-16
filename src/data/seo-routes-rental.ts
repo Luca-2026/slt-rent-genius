@@ -812,7 +812,7 @@ const KARRIERE_VALID_DAYS = 90;
 const KARRIERE_OG_IMAGE = `${BASE_URL}/images/og/karriere-slt-rental.png`;
 
 function buildJobPostingJsonLd(job: typeof jobListings[number], absUrl: string) {
-  const datePosted = job.datePosted ?? TODAY;
+  const datePosted = job.datePosted ?? new Date().toISOString().slice(0, 10);
   const validThrough =
     job.validThrough ??
     new Date(Date.now() + 1000 * 60 * 60 * 24 * KARRIERE_VALID_DAYS)
@@ -1046,7 +1046,7 @@ export function buildUsedMachineRoute(m: UsedMachineSeoInput): SeoRoute {
     ],
     changefreq: "weekly",
     priority: 0.6,
-    lastmod: m.updated_at ? m.updated_at.slice(0, 10) : TODAY,
+    lastmod: m.updated_at ? m.updated_at.slice(0, 10) : undefined,
   };
 }
 
@@ -1110,7 +1110,7 @@ export function buildNewMachineRoute(m: NewMachineSeoInput): SeoRoute {
     ],
     changefreq: "weekly",
     priority: 0.6,
-    lastmod: m.updated_at ? m.updated_at.slice(0, 10) : TODAY,
+    lastmod: m.updated_at ? m.updated_at.slice(0, 10) : undefined,
   };
 }
 
