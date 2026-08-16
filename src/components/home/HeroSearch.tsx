@@ -149,17 +149,28 @@ export function HeroSearch() {
         if (score <= 0) return null;
         if (categoryProductIds.has(original.id)) score += 15;
 
+        // "Stark" = Treffer im Namen oder Modellnamen (nicht nur in Beschreibung/Specs)
+        const strong =
+          matchesAllTokens(original.name, queryTokens) ||
+          matchesAllTokens(translatedProduct.name, queryTokens) ||
+          matchesAllTokens(original.modelName, queryTokens);
+
         return {
           product: translatedProduct,
           score,
+          strong,
           nameLength: original.name.length,
         };
       })
-      .filter((item): item is { product: Product; score: number; nameLength: number } => Boolean(item))
+      .filter((item): item is { product: Product; score: number; strong: boolean; nameLength: number } => Boolean(item))
       .sort((a, b) => b.score - a.score || a.nameLength - b.nameLength || a.product.name.localeCompare(b.product.name, isGerman ? "de" : "en"));
 
+    // Wenn es Namens-/Modelltreffer gibt, keine reinen Beschreibungstreffer vorschlagen
+    const strongMatches = scored.filter((item) => item.strong);
+    const relevant = strongMatches.length > 0 ? strongMatches : scored;
+
     // Round-robin durch Modellfamilien, damit nicht 8x dasselbe Modell (z.B. "Breitaufbau") oben steht
-    return diversifyByFamily(scored, (item) => item.product.name, 8).map(({ product }) => product);
+    return diversifyByFamily(relevant, (item) => item.product.name, 8).map(({ product }) => product);
   }, [searchQuery, translatedProducts, allProducts, filteredCategories, isGerman]);
 
   // Close dropdown when clicking outside
