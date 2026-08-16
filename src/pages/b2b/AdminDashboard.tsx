@@ -858,7 +858,7 @@ export default function AdminDashboard() {
   // ─── Loading ──────────────────────────────────────────
   if (authLoading || loading) {
     return (
-      <B2BPortalLayout title="Admin-Dashboard" subtitle="Verwaltung">
+      <B2BPortalLayout title="B2B-Vermietung" subtitle="Vermietgeschäft">
         <div className="flex items-center justify-center py-16">
           <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" />
         </div>
@@ -867,7 +867,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <B2BPortalLayout title="Admin-Dashboard" subtitle="Verwaltung & Übersicht">
+    <B2BPortalLayout title="B2B-Vermietung" subtitle="Anfragen, Angebote &amp; Rechnungen">
       <StaffWorkWidget />
       {/* KPI Overview (Phase B2) */}
       <AdminStatsOverview
