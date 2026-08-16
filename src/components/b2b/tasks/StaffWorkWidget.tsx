@@ -294,7 +294,24 @@ export function StaffWorkWidget() {
                       {t.tour_date ? ` · Tour ${new Date(t.tour_date).toLocaleDateString("de-DE")}` : ""}
                     </span>
                   </span>
-                </label>
+                  </label>
+                  <div className="flex flex-wrap items-center justify-between gap-2 pl-8">
+                    <span className="text-xs text-muted-foreground break-words">
+                      {t.assigned_to ? `Fährt: ${t.assigned_name || "Mitarbeiter"}` : "Noch niemand zugewiesen"}
+                    </span>
+                    {!t.assigned_to && (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        className="h-8"
+                        disabled={busy === t.id}
+                        onClick={() => claimTransfer(t)}
+                      >
+                        Tour übernehmen
+                      </Button>
+                    )}
+                  </div>
+                </div>
               ))}
               {transfers.length > 5 && (
                 <p className="text-xs text-muted-foreground">+ {transfers.length - 5} weitere Transporte</p>
