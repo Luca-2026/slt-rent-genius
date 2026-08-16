@@ -390,6 +390,31 @@ export default function StaffTasks() {
         onOpenChange={(open) => !open && setDetailList(null)}
         onChanged={load}
       />
+
+      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Entwurf löschen?</AlertDialogTitle>
+            <AlertDialogDescription>
+              „{deleteTarget?.title}“ wird mitsamt allen Aufgabenpunkten unwiderruflich gelöscht.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              disabled={!!deletingId}
+              onClick={(e) => {
+                e.preventDefault();
+                if (deleteTarget) deleteDraft(deleteTarget);
+              }}
+            >
+              Endgültig löschen
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
     </B2BPortalLayout>
   );
 }
