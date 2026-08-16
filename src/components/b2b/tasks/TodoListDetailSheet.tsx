@@ -21,6 +21,7 @@ import {
   type TodoItem,
   type TodoList,
 } from "./types";
+import { notifyTodoUpdate } from "./notify";
 
 interface Props {
   list: TodoList | null;
@@ -57,6 +58,18 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
     load();
   }, [load]);
 
+  useEffect(() => {
+    if (!list) return;
+    const channel = supabase
+      .channel(`todo-detail-${list.id}`)
+      .on("postgres_changes", { event: "*", schema: "public", table: "staff_todo_items", filter: `list_id=eq.${list.id}` }, () => load())
+      .on("postgres_changes", { event: "*", schema: "public", table: "staff_todo_comments", filter: `list_id=eq.${list.id}` }, () => load())
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [list?.id, load]);
+
   if (!list) return null;
 
   const doneCount = items.filter((i) => i.is_done).length;
@@ -75,6 +88,13 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
     if (checked && list.status === "sent") {
       await supabase.from("staff_todo_lists").update({ status: "in_progress" }).eq("id", list.id);
       onChanged();
+    }
+    if (checked) {
+      void notifyTodoUpdate(list.id, "progress", {
+        itemTitle: item.title,
+        createdBy: list.created_by,
+        currentUserId: user?.id,
+      });
     }
   };
 
@@ -101,6 +121,7 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
         actual_minutes: actualMinutes === "" ? null : Number(actualMinutes),
       })
       .eq("id", list.id);
+    void notifyTodoUpdate(list.id, "completed", { createdBy: list.created_by, currentUserId: user?.id });
     setBusy(false);
     toast({ title: "Aufgabe erledigt", description: "Die Liste wurde als erledigt markiert." });
     onChanged();
