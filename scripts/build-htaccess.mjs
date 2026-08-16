@@ -270,7 +270,22 @@ lines.push(
   "",
 );
 
-writeFileSync(OUT_PATH, lines.join("\n"), "utf-8");
+// Redirect-Ketten vermeiden: interne 301-Ziele immer mit Trailing Slash,
+// sonst greift danach noch Regel 5 (Trailing-Slash-Konsistenz) → zwei Hops.
+const normalizedLines = lines.map((line) => {
+  if (!line.startsWith("RewriteRule ") || !line.includes("R=301")) return line;
+  return line.replace(
+    /(\s)(\/[A-Za-z0-9\-_/$.]*?)(\s\[[^\]]*R=301[^\]]*\])/,
+    (match, sp, target, flags) => {
+      if (target.endsWith("/")) return match;
+      if (/\.[A-Za-z0-9]+$/.test(target)) return match;
+      return `${sp}${target}/${flags}`;
+    },
+  );
+});
+
+writeFileSync(OUT_PATH, normalizedLines.join("\n"), "utf-8");
+
 
 const r301Count = lines.filter((l) => l.includes("R=301")).length;
 console.log(`[build-htaccess] Wrote ${OUT_PATH}`);
