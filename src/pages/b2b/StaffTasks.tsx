@@ -228,23 +228,28 @@ export default function StaffTasks() {
                     >
                       <div className="flex items-start justify-between gap-3">
                         <span className="font-semibold text-sm break-words">{list.title}</span>
-                        <Badge
-                          variant={list.status === "done" ? "secondary" : list.status === "draft" ? "outline" : "default"}
-                          className="shrink-0"
-                        >
-                          {STATUS_LABELS[list.status] ?? list.status}
-                        </Badge>
+                        <div className="flex flex-wrap justify-end gap-1 shrink-0">
+                          {list.assigned_to === user?.id && <Badge variant="outline">Mir zugewiesen</Badge>}
+                          {!list.assigned_to && list.status !== "draft" && <Badge variant="outline">Standort-Aufgabe</Badge>}
+                          <Badge
+                            variant={list.status === "done" ? "secondary" : list.status === "draft" ? "outline" : "default"}
+                          >
+                            {STATUS_LABELS[list.status] ?? list.status}
+                          </Badge>
+                        </div>
                       </div>
 
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
                         <span className="inline-flex items-center gap-1">
                           <User className="h-3.5 w-3.5" />
-                          {list.assigned_name ?? "offen"}
+                          {list.assigned_name ?? "noch offen"}
                         </span>
+                        {list.created_by_name && <span>erstellt von {list.created_by_name}</span>}
                         <span>{locationLabel(list.location)}</span>
                         {list.due_date && <span>fällig {new Date(list.due_date).toLocaleDateString("de-DE")}</span>}
                         {list.priority === "high" && <span className="text-destructive font-medium">Hohe Priorität</span>}
                       </div>
+
 
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
                         <span className="inline-flex items-center gap-1">
