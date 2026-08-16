@@ -35,7 +35,7 @@ const PRIORITY_LABELS: Record<string, string> = { low: "Niedrig", normal: "Norma
 
 export default function StaffTasks() {
   const { user } = useAuth();
-  const { isStaff, isAdmin, canManageInventory, displayName, loading: accessLoading } = useStaffAccess();
+  const { isStaff, isAdmin, canViewInventory, displayName, loading: accessLoading } = useStaffAccess();
   const { toast } = useToast();
 
 
@@ -205,7 +205,7 @@ export default function StaffTasks() {
           <TabsTrigger value="material" className="text-xs sm:text-sm py-2 sm:flex-1">
             <Truck className="h-4 w-4 mr-1.5 shrink-0" /> Dispo
           </TabsTrigger>
-          {canManageInventory && (
+          {canViewInventory && (
             <TabsTrigger value="inventory" className="text-xs sm:text-sm py-2 sm:flex-1">
               <Boxes className="h-4 w-4 mr-1.5 shrink-0" /> Inventar
             </TabsTrigger>
@@ -368,7 +368,7 @@ export default function StaffTasks() {
           <MaterialDispoTab />
         </TabsContent>
 
-        {canManageInventory && (
+        {canViewInventory && (
           <TabsContent value="inventory">
             <AdminInventoryTab />
           </TabsContent>

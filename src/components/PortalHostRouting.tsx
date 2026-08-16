@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { isPortalHost, isPortalPath, PUBLIC_ORIGIN } from "@/lib/portalDomain";
+import { isPortalHost, isPortalPath, PUBLIC_HOST, PORTAL_ORIGIN, PUBLIC_ORIGIN } from "@/lib/portalDomain";
 
 /**
  * Hostname-Weiche für app.slt-rental.de:
@@ -24,6 +24,18 @@ export function PortalHostRouting() {
       document.head.appendChild(meta);
     }
   }, []);
+
+  // Öffentliche Domain: Portal-Routen gehören auf die Subdomain (Server-301
+  // greift nur bei echten Requests, nicht bei SPA-Navigation).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const host = window.location.hostname.toLowerCase();
+    if (host !== PUBLIC_HOST && host !== "slt-rental.de") return;
+    const { pathname, search, hash } = location;
+    if (isPortalPath(pathname)) {
+      window.location.replace(`${PORTAL_ORIGIN}${pathname}${search}${hash}`);
+    }
+  }, [location]);
 
   useEffect(() => {
     if (!isPortalHost()) return;

@@ -77,6 +77,11 @@ lines.push(
   "RewriteCond %{REQUEST_URI} !\\.[a-zA-Z0-9]+$",
   "RewriteRule ^(.*)$ https://www.slt-rental.de/$1 [L,R=301]",
   "",
+  "# B2B-Portal lebt jetzt ausschliesslich auf app.slt-rental.de:",
+  "# alle /b2b-Aufrufe auf www/apex dauerhaft auf die Subdomain umleiten.",
+  "RewriteCond %{HTTP_HOST} ^(www\\.)?slt-rental\\.de$ [NC]",
+  "RewriteRule ^b2b(/.*)?$ https://app.slt-rental.de/b2b$1 [L,R=301]",
+  "",
 
   "# === 2b. Kanonische Produkt-Slugs Bonn/Verdichtung ===",
   "# Alte Rentware-/Standort-Slugs dürfen nie als 404/noindex-Produktseite ausliefern.",
