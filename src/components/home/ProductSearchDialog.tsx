@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { locations, type Product } from "@/data/rentalData";
-import { productTranslations } from "@/i18n/productTranslations";
 import { useTranslatedProducts } from "@/hooks/useTranslatedProduct";
 import { diversifyByFamily } from "@/lib/searchDiversify";
 import {
@@ -160,6 +159,11 @@ export function ProductSearchDialog({ open, onOpenChange }: ProductSearchDialogP
                         <span className="font-medium text-foreground block truncate group-hover:text-primary transition-colors">
                           {product.name}
                         </span>
+                        {ambiguousNames.has(normalizeSearchText(product.name)) && product.modelName && (
+                          <span className="text-xs font-medium text-muted-foreground block truncate">
+                            {product.modelName}
+                          </span>
+                        )}
                         {product.pricePerDay && (
                           <span className="text-sm font-semibold text-primary mt-0.5 block">
                             {product.pricePerDay}{product.priceUnitLabel ?? t("rental.perDay")}
