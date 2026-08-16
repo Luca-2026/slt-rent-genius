@@ -170,16 +170,30 @@ export default function StaffTasks() {
 
         <TabsContent value="tasks" className="space-y-4">
           <div className="flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
-            <Select value={scope} onValueChange={setScope}>
-              <SelectTrigger className="w-full sm:w-56"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="mine">Meine Aufgaben</SelectItem>
-                <SelectItem value="drafts">Meine Entwürfe</SelectItem>
-                <SelectItem value="open">Alle offenen (inkl. Entwürfe)</SelectItem>
-                <SelectItem value="done">Erledigt</SelectItem>
-                <SelectItem value="all">Alle</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              <Select value={scope} onValueChange={setScope}>
+                <SelectTrigger className="w-full sm:w-64"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="mine">Mir zugewiesen</SelectItem>
+                  <SelectItem value="created">Von mir erstellt</SelectItem>
+                  <SelectItem value="unassigned">Standort-Aufgaben (offen, ohne Zuweisung)</SelectItem>
+                  <SelectItem value="drafts">Entwürfe</SelectItem>
+                  <SelectItem value="open">Alle offenen (inkl. Entwürfe)</SelectItem>
+                  <SelectItem value="done">Erledigt</SelectItem>
+                  <SelectItem value="all">Alle</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={locationFilter} onValueChange={setLocationFilter}>
+                <SelectTrigger className="w-full sm:w-52"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alle Standorte</SelectItem>
+                  {LOCATIONS.map((l) => (
+                    <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <Button
               className="w-full sm:w-auto"
               onClick={() => {
