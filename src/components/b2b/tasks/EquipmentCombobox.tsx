@@ -79,7 +79,10 @@ export function EquipmentCombobox({ value, onChange, location, placeholder, id }
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+      <PopoverContent
+        className="w-[--radix-popover-trigger-width] max-w-[calc(100vw-3rem)] p-0 overflow-hidden"
+        align="start"
+      >
         <Command shouldFilter>
           <CommandInput
             placeholder="Suchen oder freien Text eintragen…"
