@@ -108,19 +108,68 @@ export function MaterialDispoTab() {
     load();
   };
 
-  const visible = transfers.filter((t) => (filter === "open" ? t.status !== "erledigt" : filter === "done" ? t.status === "erledigt" : true));
+  /** Tour übernehmen bzw. Zuweisung wieder freigeben. */
+  const toggleAssignment = async (transfer: MaterialTransfer) => {
+    if (!user) return;
+    const mine = transfer.assigned_to === user.id;
+    const { error } = await supabase
+      .from("staff_material_transfers")
+      .update(
+        mine
+          ? { assigned_to: null, assigned_name: null, assigned_at: null }
+          : {
+              assigned_to: user.id,
+              assigned_name: displayName,
+              assigned_at: new Date().toISOString(),
+              status: transfer.status === "offen" ? "eingeplant" : transfer.status,
+            },
+      )
+      .eq("id", transfer.id);
+    if (error) {
+      toast({ title: "Fehler", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({
+      title: mine ? "Zuweisung aufgehoben" : "Tour übernommen",
+      description: mine ? "Der Transport ist wieder offen für alle." : `${transfer.item_name} ist dir zugewiesen.`,
+    });
+    load();
+  };
+
+  const visible = transfers.filter((t) => {
+    switch (filter) {
+      case "open":
+        return t.status !== "erledigt";
+      case "unassigned":
+        return t.status !== "erledigt" && !t.assigned_to;
+      case "mine":
+        return t.status !== "erledigt" && t.assigned_to === user?.id;
+      case "done":
+        return t.status === "erledigt";
+      default:
+        return true;
+    }
+  });
+
+  const openCount = transfers.filter((t) => t.status !== "erledigt").length;
+  const unassignedCount = transfers.filter((t) => t.status !== "erledigt" && !t.assigned_to).length;
+  const mineCount = transfers.filter((t) => t.status !== "erledigt" && t.assigned_to === user?.id).length;
+  const doneCount = transfers.filter((t) => t.status === "erledigt").length;
 
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
         <Select value={filter} onValueChange={setFilter}>
-          <SelectTrigger className="w-full sm:w-52"><SelectValue /></SelectTrigger>
+          <SelectTrigger className="w-full sm:w-64"><SelectValue /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="open">Offene Transporte</SelectItem>
-            <SelectItem value="done">Erledigt</SelectItem>
-            <SelectItem value="all">Alle</SelectItem>
+            <SelectItem value="open">Offene Transporte ({openCount})</SelectItem>
+            <SelectItem value="unassigned">Ohne Zuweisung ({unassignedCount})</SelectItem>
+            <SelectItem value="mine">Mir zugewiesen ({mineCount})</SelectItem>
+            <SelectItem value="done">Erledigt ({doneCount})</SelectItem>
+            <SelectItem value="all">Alle ({transfers.length})</SelectItem>
           </SelectContent>
         </Select>
+
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
