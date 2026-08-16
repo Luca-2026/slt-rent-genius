@@ -18,6 +18,8 @@ const BRAND_BLUE = "#00507d";
 const BRAND_ORANGE = "#ff8e02";
 const PORTAL_URL = "https://www.slt-rental.de/b2b/aufgaben/?tab=zeiten";
 const ADMIN_EMAIL = "info@slt-rental.de";
+/** Geschäftsführung / Super-Admins erhalten jeden bestätigten Monatsnachweis. */
+const SUPER_ADMIN_EMAILS = ["l.sandhoff@slt-rental.de", "b.noechel@slt-rental.de"];
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -148,7 +150,9 @@ Deno.serve(async (req: Request) => {
       const resendApiKey = Deno.env.get("RESEND_API_KEY");
       const resendDomain = Deno.env.get("RESEND_DOMAIN") ?? "slt-rental.de";
       if (resendApiKey) {
-        const recipients = Array.from(new Set([staffEmail, ADMIN_EMAIL].filter(Boolean) as string[]));
+        const recipients = Array.from(
+          new Set([staffEmail, ADMIN_EMAIL, ...SUPER_ADMIN_EMAILS].filter(Boolean) as string[]),
+        );
         const html = `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f4f5f7;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
   <div style="max-width:640px;margin:0 auto;background:#ffffff;">
     <div style="background:${BRAND_BLUE};padding:20px 24px;color:#ffffff;font-size:18px;font-weight:bold;">SLT-Rental &ndash; Arbeitszeitnachweis</div>

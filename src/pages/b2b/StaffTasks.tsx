@@ -205,9 +205,11 @@ export default function StaffTasks() {
           <TabsTrigger value="material" className="text-xs sm:text-sm py-2 sm:flex-1">
             <Truck className="h-4 w-4 mr-1.5 shrink-0" /> Dispo
           </TabsTrigger>
-          <TabsTrigger value="inventory" className="text-xs sm:text-sm py-2 sm:flex-1">
-            <Boxes className="h-4 w-4 mr-1.5 shrink-0" /> Inventar
-          </TabsTrigger>
+          {canManageInventory && (
+            <TabsTrigger value="inventory" className="text-xs sm:text-sm py-2 sm:flex-1">
+              <Boxes className="h-4 w-4 mr-1.5 shrink-0" /> Inventar
+            </TabsTrigger>
+          )}
           <TabsTrigger value="zeiten" className="text-xs sm:text-sm py-2 sm:flex-1">
             <CalendarClock className="h-4 w-4 mr-1.5 shrink-0" /> Zeiten
           </TabsTrigger>
@@ -366,9 +368,11 @@ export default function StaffTasks() {
           <MaterialDispoTab />
         </TabsContent>
 
-        <TabsContent value="inventory">
-          <AdminInventoryTab />
-        </TabsContent>
+        {canManageInventory && (
+          <TabsContent value="inventory">
+            <AdminInventoryTab />
+          </TabsContent>
+        )}
 
         <TabsContent value="zeiten">
           <TimeTrackingTab />
