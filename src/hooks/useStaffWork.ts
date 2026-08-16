@@ -11,18 +11,22 @@ export interface WorkList extends TodoList {
 /**
  * Alles, was für den eingeloggten Mitarbeiter heute ansteht:
  * zugewiesene, offene To-do-Listen inkl. Punkte + offene Materialtransporte.
+ * Admins sehen zusätzlich die Listen, die anderen Mitarbeitern zugewiesen sind
+ * (bzw. die sie selbst erstellt haben) inkl. Live-Fortschritt.
  * Wird live aktualisiert und im Dashboard-Widget direkt abhakbar gerendert.
  */
 export function useStaffWork() {
   const { user } = useAuth();
-  const { isStaff, loading: accessLoading } = useStaffAccess();
+  const { isStaff, isAdmin, loading: accessLoading } = useStaffAccess();
   const [lists, setLists] = useState<WorkList[]>([]);
+  const [teamLists, setTeamLists] = useState<WorkList[]>([]);
   const [transfers, setTransfers] = useState<MaterialTransfer[]>([]);
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
     if (!user || !isStaff) {
       setLists([]);
+      setTeamLists([]);
       setTransfers([]);
       setLoading(false);
       return;
@@ -32,7 +36,6 @@ export function useStaffWork() {
       supabase
         .from("staff_todo_lists")
         .select("*")
-        .eq("assigned_to", user.id)
         .in("status", ["sent", "in_progress"])
         .order("due_date", { ascending: true, nullsFirst: false })
         .order("created_at", { ascending: false }),
@@ -44,7 +47,14 @@ export function useStaffWork() {
         .order("created_at", { ascending: false }),
     ]);
 
-    const rows = (listRes.data as TodoList[] | null) ?? [];
+    const allRows = (listRes.data as TodoList[] | null) ?? [];
+    const mineRows = allRows.filter((l) => l.assigned_to === user.id);
+    // Für Admins: alle übrigen offenen Listen. Für Mitarbeiter: nur selbst erstellte.
+    const teamRows = allRows.filter(
+      (l) => l.assigned_to !== user.id && (isAdmin || l.created_by === user.id),
+    );
+    const rows = [...mineRows, ...teamRows];
+
     let itemsByList: Record<string, TodoItem[]> = {};
     if (rows.length) {
       const { data: items } = await supabase
@@ -58,10 +68,12 @@ export function useStaffWork() {
       }, {});
     }
 
-    setLists(rows.map((l) => ({ ...l, items: itemsByList[l.id] ?? [] })));
+    const withItems = (l: TodoList): WorkList => ({ ...l, items: itemsByList[l.id] ?? [] });
+    setLists(mineRows.map(withItems));
+    setTeamLists(teamRows.map(withItems));
     setTransfers((transferRes.data as MaterialTransfer[] | null) ?? []);
     setLoading(false);
-  }, [user, isStaff]);
+  }, [user, isStaff, isAdmin]);
 
   useEffect(() => {
     if (!accessLoading) load();
@@ -84,16 +96,20 @@ export function useStaffWork() {
   const overdue = lists.filter((l) => l.due_date && l.due_date < today);
   const dueToday = lists.filter((l) => l.due_date === today);
   const dueTransfers = transfers.filter((t) => t.tour_date && t.tour_date <= today);
+  const unassignedTransfers = transfers.filter((t) => !t.assigned_to);
 
   return {
     lists,
+    teamLists,
     transfers,
-    count: lists.length + transfers.length,
+    count: lists.length + teamLists.length + transfers.length,
     todoCount: lists.length,
+    teamCount: teamLists.length,
     transferCount: transfers.length,
     overdue,
     dueToday,
     dueTransfers,
+    unassignedTransfers,
     loading,
     reload: load,
   };

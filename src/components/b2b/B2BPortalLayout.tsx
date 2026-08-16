@@ -37,7 +37,7 @@ const customerNavItems = [
 
 const adminNavItems = [
   { href: "/", label: "Startseite", icon: Home },
-  { href: "/b2b/admin", label: "Admin Dashboard", icon: Settings },
+  { href: "/b2b/admin", label: "B2B-Vermietung", icon: Settings },
   { href: "/b2b/aufgaben", label: "Interne Verwaltung", icon: CheckSquare },
 ];
 

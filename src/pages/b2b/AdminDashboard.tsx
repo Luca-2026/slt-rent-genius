@@ -807,9 +807,21 @@ export default function AdminDashboard() {
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
   const formatCurrency = (n: number) => n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
-  const pendingReservations = reservations.filter(
-    (r) => (r.status === "pending" || r.status === "offer_sent") && !invoices.some((inv) => inv.reservation_id === r.id)
-  );
+  /**
+   * "Anfragen" zeigt nur, was wirklich noch Arbeit ist:
+   * offen, ohne Rechnung – und ohne bereits laufendes/angenommenes Angebot.
+   * Abgelehnte oder abgelaufene Angebote lassen die Anfrage wieder auftauchen.
+   */
+  const handledOfferStatus = (s?: string | null) =>
+    !!s && !["rejected", "declined", "expired", "cancelled"].includes(s);
+
+  const pendingReservations = reservations.filter((r) => {
+    if (r.status !== "pending" && r.status !== "offer_sent") return false;
+    if (invoices.some((inv) => inv.reservation_id === r.id)) return false;
+    return !offers.some(
+      (o) => o.reservation_id === r.id && handledOfferStatus(o.status),
+    );
+  });
 
   const paidInvoices = invoices.filter((i) => i.status === "paid");
   const openInvoices = invoices.filter((i) => i.status === "open");
@@ -846,7 +858,7 @@ export default function AdminDashboard() {
   // ─── Loading ──────────────────────────────────────────
   if (authLoading || loading) {
     return (
-      <B2BPortalLayout title="Admin-Dashboard" subtitle="Verwaltung">
+      <B2BPortalLayout title="B2B-Vermietung" subtitle="Vermietgeschäft">
         <div className="flex items-center justify-center py-16">
           <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" />
         </div>
@@ -855,7 +867,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <B2BPortalLayout title="Admin-Dashboard" subtitle="Verwaltung & Übersicht">
+    <B2BPortalLayout title="B2B-Vermietung" subtitle="Anfragen, Angebote & Rechnungen">
       <StaffWorkWidget />
       {/* KPI Overview (Phase B2) */}
       <AdminStatsOverview

@@ -2026,6 +2026,9 @@ export type Database = {
       }
       staff_material_transfers: {
         Row: {
+          assigned_at: string | null
+          assigned_name: string | null
+          assigned_to: string | null
           created_at: string
           created_by: string | null
           created_by_name: string | null
@@ -2042,6 +2045,9 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          assigned_at?: string | null
+          assigned_name?: string | null
+          assigned_to?: string | null
           created_at?: string
           created_by?: string | null
           created_by_name?: string | null
@@ -2058,6 +2064,9 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          assigned_at?: string | null
+          assigned_name?: string | null
+          assigned_to?: string | null
           created_at?: string
           created_by?: string | null
           created_by_name?: string | null

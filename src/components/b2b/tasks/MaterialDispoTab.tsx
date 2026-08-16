@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ArrowRight, Plus, Trash2, Truck } from "lucide-react";
+import { ArrowRight, Plus, Trash2, Truck, User } from "lucide-react";
 import { LOCATIONS, TRANSFER_STATUS_LABELS, locationLabel, type MaterialTransfer } from "./types";
 import { EquipmentCombobox } from "./EquipmentCombobox";
 
@@ -108,19 +108,68 @@ export function MaterialDispoTab() {
     load();
   };
 
-  const visible = transfers.filter((t) => (filter === "open" ? t.status !== "erledigt" : filter === "done" ? t.status === "erledigt" : true));
+  /** Tour übernehmen bzw. Zuweisung wieder freigeben. */
+  const toggleAssignment = async (transfer: MaterialTransfer) => {
+    if (!user) return;
+    const mine = transfer.assigned_to === user.id;
+    const { error } = await supabase
+      .from("staff_material_transfers")
+      .update(
+        mine
+          ? { assigned_to: null, assigned_name: null, assigned_at: null }
+          : {
+              assigned_to: user.id,
+              assigned_name: displayName,
+              assigned_at: new Date().toISOString(),
+              status: transfer.status === "offen" ? "eingeplant" : transfer.status,
+            },
+      )
+      .eq("id", transfer.id);
+    if (error) {
+      toast({ title: "Fehler", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({
+      title: mine ? "Zuweisung aufgehoben" : "Tour übernommen",
+      description: mine ? "Der Transport ist wieder offen für alle." : `${transfer.item_name} ist dir zugewiesen.`,
+    });
+    load();
+  };
+
+  const visible = transfers.filter((t) => {
+    switch (filter) {
+      case "open":
+        return t.status !== "erledigt";
+      case "unassigned":
+        return t.status !== "erledigt" && !t.assigned_to;
+      case "mine":
+        return t.status !== "erledigt" && t.assigned_to === user?.id;
+      case "done":
+        return t.status === "erledigt";
+      default:
+        return true;
+    }
+  });
+
+  const openCount = transfers.filter((t) => t.status !== "erledigt").length;
+  const unassignedCount = transfers.filter((t) => t.status !== "erledigt" && !t.assigned_to).length;
+  const mineCount = transfers.filter((t) => t.status !== "erledigt" && t.assigned_to === user?.id).length;
+  const doneCount = transfers.filter((t) => t.status === "erledigt").length;
 
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
         <Select value={filter} onValueChange={setFilter}>
-          <SelectTrigger className="w-full sm:w-52"><SelectValue /></SelectTrigger>
+          <SelectTrigger className="w-full sm:w-64"><SelectValue /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="open">Offene Transporte</SelectItem>
-            <SelectItem value="done">Erledigt</SelectItem>
-            <SelectItem value="all">Alle</SelectItem>
+            <SelectItem value="open">Offene Transporte ({openCount})</SelectItem>
+            <SelectItem value="unassigned">Ohne Zuweisung ({unassignedCount})</SelectItem>
+            <SelectItem value="mine">Mir zugewiesen ({mineCount})</SelectItem>
+            <SelectItem value="done">Erledigt ({doneCount})</SelectItem>
+            <SelectItem value="all">Alle ({transfers.length})</SelectItem>
           </SelectContent>
         </Select>
+
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
@@ -198,7 +247,7 @@ export function MaterialDispoTab() {
           <Card key={t.id}>
             <CardContent className="p-4 space-y-3">
               <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <div className="font-semibold text-sm break-words">{t.item_name}</div>
                   <div className="text-xs text-muted-foreground">{t.quantity} Stk.</div>
                 </div>
@@ -207,25 +256,59 @@ export function MaterialDispoTab() {
                 </Badge>
               </div>
 
-              <div className="flex items-center gap-2 text-sm">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
                 <Truck className="h-4 w-4 text-muted-foreground shrink-0" />
                 <span className="break-words">{locationLabel(t.from_location)}</span>
                 <ArrowRight className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
                 <span className="break-words">{locationLabel(t.to_location)}</span>
               </div>
 
-              <div className="text-xs text-muted-foreground">
+              <div className="text-xs text-muted-foreground break-words">
                 {t.tour_date ? `Tour: ${new Date(t.tour_date).toLocaleDateString("de-DE")}` : "Tour noch offen"}
                 {t.created_by_name ? ` · von ${t.created_by_name}` : ""}
               </div>
 
-              {t.notes && <p className="text-sm text-muted-foreground whitespace-pre-line">{t.notes}</p>}
+              <div className="text-xs">
+                {t.assigned_to ? (
+                  <span className="inline-flex items-center gap-1.5 text-foreground">
+                    <User className="h-3.5 w-3.5 text-primary shrink-0" />
+                    Fährt: <span className="font-medium break-words">{t.assigned_name || "Mitarbeiter"}</span>
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 text-amber-600">
+                    <User className="h-3.5 w-3.5 shrink-0" />
+                    Noch niemand zugewiesen
+                  </span>
+                )}
+                {t.status === "erledigt" && t.done_at && (
+                  <span className="block text-muted-foreground mt-1">
+                    Erledigt am {new Date(t.done_at).toLocaleDateString("de-DE")}
+                  </span>
+                )}
+              </div>
+
+              {t.notes && <p className="text-sm text-muted-foreground whitespace-pre-line break-words">{t.notes}</p>}
 
               <div className="flex flex-wrap gap-2">
                 {t.status !== "erledigt" && (
-                  <Button size="sm" variant="outline" className="flex-1 min-w-[140px]" onClick={() => advanceStatus(t)}>
-                    Weiter zu „{TRANSFER_STATUS_LABELS[STATUS_FLOW[Math.min(STATUS_FLOW.indexOf(t.status as any) + 1, STATUS_FLOW.length - 1)]]}"
-                  </Button>
+                  <>
+                    <Button
+                      size="sm"
+                      variant={t.assigned_to === user?.id ? "ghost" : "secondary"}
+                      className="flex-1 min-w-[140px]"
+                      onClick={() => toggleAssignment(t)}
+                      disabled={!!t.assigned_to && t.assigned_to !== user?.id && !isAdmin}
+                    >
+                      {t.assigned_to === user?.id
+                        ? "Zuweisung aufheben"
+                        : t.assigned_to
+                          ? "Übernehmen"
+                          : "Tour übernehmen"}
+                    </Button>
+                    <Button size="sm" variant="outline" className="flex-1 min-w-[140px]" onClick={() => advanceStatus(t)}>
+                      Weiter zu „{TRANSFER_STATUS_LABELS[STATUS_FLOW[Math.min(STATUS_FLOW.indexOf(t.status as any) + 1, STATUS_FLOW.length - 1)]]}"
+                    </Button>
+                  </>
                 )}
                 {(isAdmin || t.created_by === user?.id) && (
                   <Button size="sm" variant="ghost" onClick={() => removeTransfer(t.id)} aria-label="Eintrag löschen">
