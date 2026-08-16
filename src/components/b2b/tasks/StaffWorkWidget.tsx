@@ -21,6 +21,7 @@ import {
 import { useStaffWork, type WorkList } from "@/hooks/useStaffWork";
 import { TodoListDetailSheet } from "./TodoListDetailSheet";
 import { locationLabel, type MaterialTransfer, type TodoItem, type TodoList } from "./types";
+import { notifyTodoUpdate } from "./notify";
 
 /**
  * „Mein Arbeitstag“ – ganz oben im Portal für Mitarbeiter & Admins.
@@ -51,6 +52,13 @@ export function StaffWorkWidget() {
     if (done && list.status === "sent") {
       await supabase.from("staff_todo_lists").update({ status: "in_progress" }).eq("id", list.id);
     }
+    if (done) {
+      void notifyTodoUpdate(list.id, "progress", {
+        itemTitle: item.title,
+        createdBy: list.created_by,
+        currentUserId: user?.id,
+      });
+    }
     setBusy(null);
     reload();
   };
@@ -62,6 +70,7 @@ export function StaffWorkWidget() {
       .update({ status: "done", completed_at: new Date().toISOString() })
       .eq("id", list.id);
     await supabase.from("staff_todo_items").update({ is_done: true }).eq("list_id", list.id).eq("is_done", false);
+    void notifyTodoUpdate(list.id, "completed", { createdBy: list.created_by, currentUserId: user?.id });
     setBusy(null);
     toast({ title: "Erledigt", description: `„${list.title}“ ist abgehakt.` });
     reload();

@@ -65,6 +65,19 @@ export default function StaffTasks() {
     if (isStaff) load();
   }, [isStaff, load]);
 
+  // Live-Fortschritt: Ersteller sieht sofort, wenn abgehakt wird
+  useEffect(() => {
+    if (!isStaff) return;
+    const channel = supabase
+      .channel("staff-tasks-live")
+      .on("postgres_changes", { event: "*", schema: "public", table: "staff_todo_lists" }, () => load())
+      .on("postgres_changes", { event: "*", schema: "public", table: "staff_todo_items" }, () => load())
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [isStaff, load]);
+
   const visible = useMemo(() => {
     return lists.filter((l) => {
       if (scope === "mine") return l.assigned_to === user?.id && l.status !== "done";
