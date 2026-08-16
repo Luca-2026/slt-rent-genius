@@ -114,11 +114,17 @@ export function StaffWorkWidget() {
                   Mein Arbeitstag{displayName ? `, ${displayName.split(" ")[0]}` : ""}
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  {todoCount > 0 && `${todoCount} ${todoCount === 1 ? "Aufgabe" : "Aufgaben"}`}
-                  {todoCount > 0 && transferCount > 0 && " · "}
-                  {transferCount > 0 && `${transferCount} ${transferCount === 1 ? "Transport" : "Transporte"}`}
-                  {hasOverdue && ` · ${overdue.length} überfällig`}
-                  {!hasOverdue && dueToday.length > 0 && ` · ${dueToday.length} heute fällig`}
+                  {[
+                    todoCount > 0 ? `${todoCount} ${todoCount === 1 ? "Aufgabe" : "Aufgaben"}` : null,
+                    teamCount > 0 ? `${teamCount} im Team` : null,
+                    transferCount > 0
+                      ? `${transferCount} ${transferCount === 1 ? "Transport" : "Transporte"}`
+                      : null,
+                    hasOverdue ? `${overdue.length} überfällig` : null,
+                    !hasOverdue && dueToday.length > 0 ? `${dueToday.length} heute fällig` : null,
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")}
                 </p>
               </div>
             </div>
