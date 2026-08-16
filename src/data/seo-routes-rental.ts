@@ -16,7 +16,6 @@ import { getProductAvailability } from "@/lib/productAvailability";
 
 const BASE_URL = "https://www.slt-rental.de";
 const DEFAULT_OG_IMAGE = `${BASE_URL}/images/og/default-slt-rental.png`;
-const TODAY = new Date().toISOString().slice(0, 10);
 
 // Helper: clamp title under 60 chars (soft – never strip mid-word)
 function clamp(str: string, max = 60): string {
@@ -132,7 +131,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     ],
     changefreq: "daily",
     priority: 1.0,
-    lastmod: TODAY,
   },
   {
     path: "/mieten",
@@ -145,7 +143,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     ],
     changefreq: "weekly",
     priority: 0.9,
-    lastmod: TODAY,
   },
   {
     path: "/mietartikel",
@@ -156,7 +153,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: ["Alle Mietartikel von SLT Rental im Überblick – Baumaschinen, Anhänger, Aggregate, Event-Equipment."],
     changefreq: "weekly",
     priority: 0.7,
-    lastmod: TODAY,
   },
   {
     path: "/standorte",
@@ -169,7 +165,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     ],
     changefreq: "monthly",
     priority: 0.8,
-    lastmod: TODAY,
   },
   {
     path: "/loesungen",
@@ -182,7 +177,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     ],
     changefreq: "monthly",
     priority: 0.8,
-    lastmod: TODAY,
   },
   {
     path: "/dienstleistungen",
@@ -193,7 +187,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: ["Lieferung, Übergabe, Werkstattservice und Beratung rund um Ihren Mietvorgang."],
     changefreq: "monthly",
     priority: 0.6,
-    lastmod: TODAY,
   },
   {
     path: "/lieferung",
@@ -204,7 +197,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: ["Wir liefern Ihre Mietgeräte direkt zur Baustelle oder zum Veranstaltungsort – mit kalkulierbarer Kilometerpauschale."],
     changefreq: "monthly",
     priority: 0.6,
-    lastmod: TODAY,
   },
   {
     path: "/so-funktionierts",
@@ -215,7 +207,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: ["In wenigen Schritten zur Reservierung – wir zeigen Ihnen den Ablauf von der Anfrage bis zur Rückgabe."],
     changefreq: "monthly",
     priority: 0.5,
-    lastmod: TODAY,
   },
   {
     path: "/faq",
@@ -226,7 +217,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: ["Die wichtigsten Antworten zu Mietvertrag, Versicherung, Lieferung und Rückgabe."],
     changefreq: "monthly",
     priority: 0.5,
-    lastmod: TODAY,
   },
   {
     path: "/kontakt",
@@ -237,7 +227,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: ["Erreichen Sie unsere Standorte Krefeld, Bonn und Mülheim per Telefon, E-Mail oder direkt vor Ort."],
     changefreq: "monthly",
     priority: 0.6,
-    lastmod: TODAY,
   },
   {
     path: "/ueber-uns",
@@ -248,7 +237,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: ["Seit 2016 Ihr Mietpartner in NRW – mit eigenem Maschinenpark, Werkstatt und Service-Team."],
     changefreq: "yearly",
     priority: 0.5,
-    lastmod: TODAY,
   },
   {
     path: "/karriere",
@@ -259,7 +247,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: ["Werden Sie Teil des SLT-Teams – aktuelle Stellen an unseren Standorten."],
     changefreq: "weekly",
     priority: 0.5,
-    lastmod: TODAY,
   },
   {
     path: "/tiefpreisgarantie",
@@ -270,7 +257,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: ["Faire Mietpreise garantiert – mit der SLT-Tiefpreisgarantie."],
     changefreq: "yearly",
     priority: 0.5,
-    lastmod: TODAY,
   },
   {
     path: "/verkauf",
@@ -284,7 +270,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     noindex: true,
     changefreq: "weekly",
     priority: 0.6,
-    lastmod: TODAY,
   },
   {
     path: "/verkauf/gebrauchtmaschinen",
@@ -295,7 +280,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: ["Geprüfte Gebrauchtmaschinen aus unserem Mietpark mit dokumentierter Wartungshistorie."],
     changefreq: "weekly",
     priority: 0.6,
-    lastmod: TODAY,
   },
   {
     path: "/verkauf/neumaschinen",
@@ -306,7 +290,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: ["Neumaschinen aus unserem Sortiment – mit persönlicher Beratung, Einweisung und Service-Anbindung."],
     changefreq: "weekly",
     priority: 0.6,
-    lastmod: TODAY,
   },
   {
     path: "/hilfe",
@@ -317,7 +300,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: ["Anleitungen und Tipps zur Anmietung und zum Betrieb der Geräte."],
     changefreq: "monthly",
     priority: 0.5,
-    lastmod: TODAY,
   },
   {
     path: "/ratgeber",
@@ -328,7 +310,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: ["Praxis-Tipps und Checklisten rund ums Mieten – aktuell und aus der täglichen Praxis."],
     changefreq: "weekly",
     priority: 0.7,
-    lastmod: TODAY,
   },
   // ---------------------------------------------------------------
   // Anbietervergleiche (statisch geprerendert wie City-Pages)
@@ -345,7 +326,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     ],
     changefreq: "monthly",
     priority: 0.6,
-    lastmod: TODAY,
     breadcrumbs: [
       { name: "Start", path: "/" },
       { name: "Anbietervergleich", path: "/vergleich" },
@@ -366,7 +346,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     ],
     changefreq: "monthly",
     priority: 0.7,
-    lastmod: TODAY,
     breadcrumbs: [
       { name: "Start", path: "/" },
       { name: "BAUMAX Service NRW", path: "/service/baumax-reparatur-nrw" },
@@ -426,7 +405,6 @@ const STATIC_ROUTES: SeoRoute[] = [
     ],
     changefreq: "monthly",
     priority: 0.6,
-    lastmod: TODAY,
     breadcrumbs: [
       { name: "Start", path: "/" },
       { name: "Vergleich", path: "/vergleich" },
@@ -481,7 +459,6 @@ const STANDORT_ROUTES: SeoRoute[] = locationData.map((loc) => {
     ],
     changefreq: "monthly",
     priority: 0.9,
-    lastmod: TODAY,
   };
 });
 
@@ -510,7 +487,6 @@ const MIETEN_LOCATION_ROUTES: SeoRoute[] = (locations as LocationData[]).map((lo
     ],
     changefreq: "weekly",
     priority: 0.85,
-    lastmod: TODAY,
   };
 });
 
@@ -544,7 +520,6 @@ const LOCALAREA_ROUTES: SeoRoute[] = localAreas.map((area) => {
     ],
     changefreq: "monthly",
     priority: 0.7,
-    lastmod: TODAY,
   };
 });
 
@@ -571,7 +546,6 @@ const SOLUTION_ROUTES: SeoRoute[] = (solutionData as Solution[]).map((sol) => ({
   ],
   changefreq: "monthly",
   priority: 0.7,
-  lastmod: TODAY,
 }));
 
 // ---------------------------------------------------------------
@@ -711,7 +685,6 @@ for (const loc of locations as LocationData[]) {
       ],
       changefreq: "weekly",
       priority: 0.8,
-      lastmod: TODAY,
     });
 
     // Standort-Präfix für SEO-Lookup (bonn-/krefeld-/muelheim-…). Überschreibt
@@ -802,7 +775,6 @@ for (const loc of locations as LocationData[]) {
         ],
         changefreq: "weekly",
         priority: hasSEO ? 0.7 : 0.5,
-        lastmod: TODAY,
       });
     }
   }
@@ -959,7 +931,6 @@ const KARRIERE_ROUTES: SeoRoute[] = jobListings.map((job) => {
     ],
     changefreq: "weekly",
     priority: 0.6,
-    lastmod: TODAY,
     inlineSchemas,
   };
 });
@@ -983,7 +954,6 @@ const LEGAL_ROUTES: SeoRoute[] = [
     ],
     changefreq: "yearly",
     priority: 0.1,
-    lastmod: TODAY,
   },
   {
     path: "/datenschutz",
@@ -999,7 +969,6 @@ const LEGAL_ROUTES: SeoRoute[] = [
     ],
     changefreq: "yearly",
     priority: 0.1,
-    lastmod: TODAY,
   },
   {
     path: "/agb",
@@ -1015,7 +984,6 @@ const LEGAL_ROUTES: SeoRoute[] = [
     ],
     changefreq: "yearly",
     priority: 0.1,
-    lastmod: TODAY,
   },
 ];
 
