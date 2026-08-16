@@ -300,8 +300,14 @@ export function TimeTrackingTab() {
       ) : (
         <Card>
           <CardContent className="p-0">
-            <div className="hidden md:grid grid-cols-[150px_100px_100px_90px_100px_1fr] gap-2 border-b bg-muted/50 px-3 py-2 text-xs font-semibold">
-              <span>Datum</span><span>Beginn</span><span>Ende</span><span>Pause (min)</span><span>Stunden</span><span>Tätigkeit / Notiz</span>
+            {/* Desktop-Kopfzeile */}
+            <div className="hidden lg:grid grid-cols-[150px_110px_110px_100px_110px_1fr] gap-3 border-b bg-muted/60 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              <span>Datum</span>
+              <span>Beginn</span>
+              <span>Ende</span>
+              <span>Pause (min)</span>
+              <span className="text-center">Stunden</span>
+              <span>Tätigkeit / Notiz</span>
             </div>
             <div className="divide-y">
               {days.map((d) => {
@@ -310,70 +316,128 @@ export function TimeTrackingTab() {
                 return (
                   <div
                     key={d.iso}
-                    className={`grid grid-cols-2 gap-2 px-3 py-2 md:grid-cols-[150px_100px_100px_90px_100px_1fr] md:items-center ${
+                    className={`px-3 py-3 lg:grid lg:grid-cols-[150px_110px_110px_100px_110px_1fr] lg:items-center lg:gap-3 lg:px-4 lg:py-2 ${
                       d.weekend ? "bg-muted/40" : ""
                     }`}
                   >
-                    <div className="col-span-2 text-sm font-medium md:col-span-1">
-                      {WEEKDAY_SHORT[d.dow]}, {pad(d.day)}.{pad(month)}.{year}
-                      {saving === d.iso && <span className="ml-2 text-xs text-muted-foreground">speichert…</span>}
-                    </div>
-                    <Input
-                      type="time"
-                      value={e?.start_time?.slice(0, 5) ?? ""}
-                      disabled={locked}
-                      onChange={(ev) => patchLocal(d.iso, { start_time: ev.target.value || null })}
-                      onBlur={() => persist(d.iso)}
-                      aria-label={`Beginn ${d.iso}`}
-                    />
-                    <Input
-                      type="time"
-                      value={e?.end_time?.slice(0, 5) ?? ""}
-                      disabled={locked}
-                      onChange={(ev) => patchLocal(d.iso, { end_time: ev.target.value || null })}
-                      onBlur={() => persist(d.iso)}
-                      aria-label={`Ende ${d.iso}`}
-                    />
-                    <Input
-                      type="number"
-                      min={0}
-                      step={5}
-                      inputMode="numeric"
-                      placeholder="0"
-                      value={e?.break_minutes ?? ""}
-                      disabled={locked}
-                      onChange={(ev) =>
-                        patchLocal(d.iso, { break_minutes: ev.target.value === "" ? 0 : Number(ev.target.value) })
-                      }
-                      onBlur={() => persist(d.iso)}
-                      aria-label={`Pause ${d.iso}`}
-                    />
-                    <div className="text-sm font-semibold tabular-nums">{min > 0 ? fmtHours(min) : "–"}</div>
-                    <div className="col-span-2 flex gap-2 md:col-span-1">
-                      <Input
-                        placeholder="Tätigkeit / Notiz"
-                        value={e?.note ?? ""}
-                        disabled={locked}
-                        onChange={(ev) => patchLocal(d.iso, { note: ev.target.value })}
-                        onBlur={() => persist(d.iso)}
-                        aria-label={`Notiz ${d.iso}`}
-                      />
-                      <Select
-                        value={e?.location ?? "none"}
-                        disabled={locked}
-                        onValueChange={(v) => {
-                          patchLocal(d.iso, { location: v === "none" ? null : v });
-                          setTimeout(() => persist(d.iso), 0);
-                        }}
+                    {/* Datum + Stundenanzeige (mobil in einer Zeile) */}
+                    <div className="mb-2 flex items-center justify-between gap-2 lg:mb-0 lg:block">
+                      <div className="text-sm font-semibold">
+                        {WEEKDAY_SHORT[d.dow]}, {pad(d.day)}.{pad(month)}.{year}
+                        {saving === d.iso && (
+                          <span className="ml-2 text-xs font-normal text-muted-foreground">speichert…</span>
+                        )}
+                      </div>
+                      <span
+                        className={`rounded-md px-2 py-0.5 text-sm font-semibold tabular-nums lg:hidden ${
+                          min > 0 ? "bg-primary/10 text-primary" : "text-muted-foreground"
+                        }`}
                       >
-                        <SelectTrigger className="w-[120px] shrink-0"><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="none">Standort</SelectItem>
-                          {LOCATIONS.map((l) => (
-                            <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                        {min > 0 ? fmtHours(min) : "–"}
+                      </span>
+                    </div>
+
+                    {/* Zeitfelder: mobil mit sichtbaren Beschriftungen */}
+                    <div className="grid grid-cols-3 gap-2 lg:contents">
+                      <div className="space-y-1 lg:space-y-0">
+                        <label className="block text-[11px] font-medium text-muted-foreground lg:hidden" htmlFor={`start-${d.iso}`}>
+                          Beginn
+                        </label>
+                        <Input
+                          id={`start-${d.iso}`}
+                          type="time"
+                          className="w-full px-2 text-sm"
+                          value={e?.start_time?.slice(0, 5) ?? ""}
+                          disabled={locked}
+                          onChange={(ev) => patchLocal(d.iso, { start_time: ev.target.value || null })}
+                          onBlur={() => persist(d.iso)}
+                          aria-label={`Beginn ${d.iso}`}
+                        />
+                      </div>
+                      <div className="space-y-1 lg:space-y-0">
+                        <label className="block text-[11px] font-medium text-muted-foreground lg:hidden" htmlFor={`end-${d.iso}`}>
+                          Ende
+                        </label>
+                        <Input
+                          id={`end-${d.iso}`}
+                          type="time"
+                          className="w-full px-2 text-sm"
+                          value={e?.end_time?.slice(0, 5) ?? ""}
+                          disabled={locked}
+                          onChange={(ev) => patchLocal(d.iso, { end_time: ev.target.value || null })}
+                          onBlur={() => persist(d.iso)}
+                          aria-label={`Ende ${d.iso}`}
+                        />
+                      </div>
+                      <div className="space-y-1 lg:space-y-0">
+                        <label className="block text-[11px] font-medium text-muted-foreground lg:hidden" htmlFor={`break-${d.iso}`}>
+                          Pause (min)
+                        </label>
+                        <Input
+                          id={`break-${d.iso}`}
+                          type="number"
+                          min={0}
+                          step={5}
+                          inputMode="numeric"
+                          placeholder="0"
+                          className="w-full"
+                          value={e?.break_minutes ?? ""}
+                          disabled={locked}
+                          onChange={(ev) =>
+                            patchLocal(d.iso, { break_minutes: ev.target.value === "" ? 0 : Number(ev.target.value) })
+                          }
+                          onBlur={() => persist(d.iso)}
+                          aria-label={`Pause ${d.iso}`}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Stunden (nur Desktop, mittig) */}
+                    <div
+                      className={`hidden text-center text-sm font-semibold tabular-nums lg:block ${
+                        min > 0 ? "text-primary" : "text-muted-foreground"
+                      }`}
+                    >
+                      {min > 0 ? fmtHours(min) : "–"}
+                    </div>
+
+                    {/* Notiz + Standort */}
+                    <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-[1fr_150px] lg:mt-0">
+                      <div className="space-y-1 lg:space-y-0">
+                        <label className="block text-[11px] font-medium text-muted-foreground lg:hidden" htmlFor={`note-${d.iso}`}>
+                          Tätigkeit / Notiz
+                        </label>
+                        <Input
+                          id={`note-${d.iso}`}
+                          placeholder="Tätigkeit / Notiz"
+                          value={e?.note ?? ""}
+                          disabled={locked}
+                          onChange={(ev) => patchLocal(d.iso, { note: ev.target.value })}
+                          onBlur={() => persist(d.iso)}
+                          aria-label={`Notiz ${d.iso}`}
+                        />
+                      </div>
+                      <div className="space-y-1 lg:space-y-0">
+                        <label className="block text-[11px] font-medium text-muted-foreground lg:hidden">Standort</label>
+                        <Select
+                          value={e?.location ?? "none"}
+                          disabled={locked}
+                          onValueChange={(v) => {
+                            patchLocal(d.iso, { location: v === "none" ? null : v });
+                            setTimeout(() => persist(d.iso), 0);
+                          }}
+                        >
+                          <SelectTrigger className="w-full min-w-0">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="none">Standort</SelectItem>
+                            {LOCATIONS.map((l) => (
+                              <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                   </div>
                 );
@@ -382,6 +446,7 @@ export function TimeTrackingTab() {
           </CardContent>
         </Card>
       )}
+
 
       {/* Summe + Aktionen */}
       <Card>
@@ -394,9 +459,15 @@ export function TimeTrackingTab() {
             <p className="text-xs text-muted-foreground">{workedDays} Tage mit erfasster Arbeitszeit</p>
           </div>
           <div className="flex flex-col gap-2 sm:flex-row">
-            <Button variant="outline" disabled={downloading} onClick={() => downloadPdf(year, month, viewUserId)}>
-              <Download className="mr-2 h-4 w-4" /> PDF herunterladen
-            </Button>
+            {sheet?.status === "submitted" ? (
+              <Button variant="outline" disabled={downloading} onClick={() => downloadPdf(year, month, viewUserId)}>
+                <Download className="mr-2 h-4 w-4" /> PDF herunterladen
+              </Button>
+            ) : (
+              <p className="max-w-[240px] text-xs text-muted-foreground">
+                Das PDF steht zum Download bereit, sobald der Monat bestätigt und versendet wurde.
+              </p>
+            )}
             {isOwnSheet && sheet?.status !== "submitted" && (
               <Button disabled={total === 0} onClick={() => setConfirmOpen(true)}>
                 <CheckCircle2 className="mr-2 h-4 w-4" /> Monat bestätigen &amp; senden
