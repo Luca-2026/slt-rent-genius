@@ -867,7 +867,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <B2BPortalLayout title="B2B-Vermietung" subtitle="Anfragen, Angebote &amp; Rechnungen">
+    <B2BPortalLayout title="B2B-Vermietung" subtitle="Anfragen, Angebote & Rechnungen">
       <StaffWorkWidget />
       {/* KPI Overview (Phase B2) */}
       <AdminStatsOverview
