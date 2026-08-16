@@ -116,7 +116,7 @@ export function EquipmentCombobox({ value, onChange, location, placeholder, id }
                   }}
                 >
                   <Check className={cn("mr-2 h-4 w-4", value === item.name ? "opacity-100" : "opacity-0")} />
-                  <div className="min-w-0">
+                  <div className="min-w-0 flex-1">
                     <div className="truncate">{item.name}</div>
                     <div className="text-xs text-muted-foreground truncate">
                       {item.category}
