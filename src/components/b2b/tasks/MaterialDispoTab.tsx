@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
@@ -10,12 +10,52 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ArrowRight, Plus, Trash2, Truck, User } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { ArrowRight, CalendarDays, Plus, Trash2, Truck, User } from "lucide-react";
 import { LOCATIONS, TRANSFER_STATUS_LABELS, locationLabel, type MaterialTransfer } from "./types";
 import { EquipmentCombobox } from "./EquipmentCombobox";
 
 const STATUS_FLOW = ["offen", "eingeplant", "unterwegs", "erledigt"] as const;
+
+/** Montag der Woche zu einem Datum (lokal, ohne Zeitzonen-Drift). */
+function weekStart(dateStr: string): Date {
+  const d = new Date(`${dateStr}T00:00:00`);
+  const day = (d.getDay() + 6) % 7; // Mo = 0
+  d.setDate(d.getDate() - day);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+function isoKey(d: Date) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+function isoWeekNumber(d: Date) {
+  const t = new Date(d.getTime());
+  t.setDate(t.getDate() + 3);
+  const firstThursday = new Date(t.getFullYear(), 0, 4);
+  const diff = t.getTime() - firstThursday.getTime();
+  return 1 + Math.round(diff / (7 * 86400000));
+}
+
+const fmtDay = (d: Date) => d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit" });
+
+interface WeekGroup {
+  key: string;
+  label: string;
+  sublabel: string;
+  monday: Date | null;
+  routes: RouteGroup[];
+  count: number;
+}
+
+interface RouteGroup {
+  key: string;
+  from: string;
+  to: string;
+  items: MaterialTransfer[];
+}
 
 export function MaterialDispoTab() {
   const { user } = useAuth();
@@ -59,6 +99,17 @@ export function MaterialDispoTab() {
     setNotes("");
   };
 
+  /** Dialog öffnen und optional mit Route/Datum einer bestehenden Tour vorbelegen. */
+  const openDialog = (prefill?: { from: string; to: string; date?: string | null }) => {
+    setItemName("");
+    setQuantity("1");
+    setNotes("");
+    setFromLocation(prefill?.from ?? "krefeld");
+    setToLocation(prefill?.to ?? "bonn");
+    setTourDate(prefill?.date ?? "");
+    setDialogOpen(true);
+  };
+
   const createTransfer = async () => {
     if (!user) return;
     if (!itemName.trim()) {
@@ -92,14 +143,23 @@ export function MaterialDispoTab() {
     load();
   };
 
-  const advanceStatus = async (transfer: MaterialTransfer) => {
-    const idx = STATUS_FLOW.indexOf(transfer.status as (typeof STATUS_FLOW)[number]);
-    const next = STATUS_FLOW[Math.min(idx + 1, STATUS_FLOW.length - 1)];
-    if (next === transfer.status) return;
-    await supabase
-      .from("staff_material_transfers")
-      .update({ status: next, done_at: next === "erledigt" ? new Date().toISOString() : null })
-      .eq("id", transfer.id);
+  const advanceStatus = async (list: MaterialTransfer[]) => {
+    const updates = list
+      .map((t) => {
+        const idx = STATUS_FLOW.indexOf(t.status as (typeof STATUS_FLOW)[number]);
+        const next = STATUS_FLOW[Math.min(idx + 1, STATUS_FLOW.length - 1)];
+        return next === t.status ? null : { id: t.id, next };
+      })
+      .filter(Boolean) as { id: string; next: string }[];
+    if (!updates.length) return;
+    await Promise.all(
+      updates.map((u) =>
+        supabase
+          .from("staff_material_transfers")
+          .update({ status: u.next, done_at: u.next === "erledigt" ? new Date().toISOString() : null })
+          .eq("id", u.id),
+      ),
+    );
     load();
   };
 
@@ -108,30 +168,32 @@ export function MaterialDispoTab() {
     load();
   };
 
-  /** Tour übernehmen bzw. Zuweisung wieder freigeben. */
-  const toggleAssignment = async (transfer: MaterialTransfer) => {
-    if (!user) return;
-    const mine = transfer.assigned_to === user.id;
-    const { error } = await supabase
-      .from("staff_material_transfers")
-      .update(
-        mine
-          ? { assigned_to: null, assigned_name: null, assigned_at: null }
-          : {
-              assigned_to: user.id,
-              assigned_name: displayName,
-              assigned_at: new Date().toISOString(),
-              status: transfer.status === "offen" ? "eingeplant" : transfer.status,
-            },
-      )
-      .eq("id", transfer.id);
+  /** Tour übernehmen bzw. Zuweisung wieder freigeben – für alle Positionen der Tour. */
+  const toggleAssignment = async (list: MaterialTransfer[]) => {
+    if (!user || !list.length) return;
+    const mine = list.every((t) => t.assigned_to === user.id);
+    const payloadFor = (t: MaterialTransfer) =>
+      mine
+        ? { assigned_to: null, assigned_name: null, assigned_at: null }
+        : {
+            assigned_to: user.id,
+            assigned_name: displayName,
+            assigned_at: new Date().toISOString(),
+            status: t.status === "offen" ? "eingeplant" : t.status,
+          };
+    const results = await Promise.all(
+      list.map((t) => supabase.from("staff_material_transfers").update(payloadFor(t)).eq("id", t.id)),
+    );
+    const error = results.find((r) => r.error)?.error;
     if (error) {
       toast({ title: "Fehler", description: error.message, variant: "destructive" });
       return;
     }
     toast({
       title: mine ? "Zuweisung aufgehoben" : "Tour übernommen",
-      description: mine ? "Der Transport ist wieder offen für alle." : `${transfer.item_name} ist dir zugewiesen.`,
+      description: mine
+        ? "Die Tour ist wieder offen für alle."
+        : `${list.length} Position${list.length === 1 ? "" : "en"} sind dir zugewiesen.`,
     });
     load();
   };
@@ -150,6 +212,43 @@ export function MaterialDispoTab() {
         return true;
     }
   });
+
+  /** Nach Kalenderwoche (Mo–So) und darin nach Route bündeln. */
+  const weeks: WeekGroup[] = useMemo(() => {
+    const map = new Map<string, WeekGroup>();
+    for (const t of visible) {
+      let key = "no-date";
+      let label = "Ohne Termin";
+      let sublabel = "Noch keiner Tour zugeordnet";
+      let monday: Date | null = null;
+      if (t.tour_date) {
+        monday = weekStart(t.tour_date);
+        const sunday = new Date(monday);
+        sunday.setDate(sunday.getDate() + 6);
+        key = isoKey(monday);
+        label = `KW ${isoWeekNumber(monday)}`;
+        sublabel = `${fmtDay(monday)} – ${sunday.toLocaleDateString("de-DE")}`;
+      }
+      let group = map.get(key);
+      if (!group) {
+        group = { key, label, sublabel, monday, routes: [], count: 0 };
+        map.set(key, group);
+      }
+      const routeKey = `${t.from_location}>${t.to_location}`;
+      let route = group.routes.find((r) => r.key === routeKey);
+      if (!route) {
+        route = { key: routeKey, from: t.from_location, to: t.to_location, items: [] };
+        group.routes.push(route);
+      }
+      route.items.push(t);
+      group.count += 1;
+    }
+    return [...map.values()].sort((a, b) => {
+      if (!a.monday) return 1;
+      if (!b.monday) return -1;
+      return a.monday.getTime() - b.monday.getTime();
+    });
+  }, [visible]);
 
   const openCount = transfers.filter((t) => t.status !== "erledigt").length;
   const unassignedCount = transfers.filter((t) => t.status !== "erledigt" && !t.assigned_to).length;
@@ -170,156 +269,207 @@ export function MaterialDispoTab() {
           </SelectContent>
         </Select>
 
-
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="w-full sm:w-auto">
-              <Plus className="h-4 w-4 mr-1" /> Material eintragen
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-md max-h-[92vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Material zwischen Standorten</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="mat-name">Artikel / Equipment *</Label>
-                <EquipmentCombobox
-                  id="mat-name"
-                  value={itemName}
-                  onChange={setItemName}
-                  location={fromLocation}
-                  placeholder="z. B. Rüttelplatte VP 25-50"
-                />
-                <p className="text-xs text-muted-foreground">
-                  Aus dem Mietartikel-Katalog wählen oder freien Text eintragen.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <Label htmlFor="mat-qty">Menge</Label>
-                  <Input id="mat-qty" type="number" min={1} inputMode="numeric" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="mat-date">Tour am</Label>
-                  <Input id="mat-date" type="date" value={tourDate} onChange={(e) => setTourDate(e.target.value)} />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <Label>Von</Label>
-                  <Select value={fromLocation} onValueChange={setFromLocation}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      {LOCATIONS.map((l) => <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>)}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-1.5">
-                  <Label>Nach</Label>
-                  <Select value={toLocation} onValueChange={setToLocation}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      {LOCATIONS.map((l) => <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>)}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="mat-notes">Notiz</Label>
-                <Textarea id="mat-notes" value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} maxLength={500} placeholder="z. B. inkl. Transportkiste, vor 10 Uhr benötigt" />
-              </div>
-              <Button className="w-full" onClick={createTransfer} disabled={saving}>
-                Eintragen
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <Button className="w-full sm:w-auto" onClick={() => openDialog()}>
+          <Plus className="h-4 w-4 mr-1" /> Material eintragen
+        </Button>
       </div>
 
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="w-[calc(100vw-1.5rem)] max-w-md max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+          <DialogHeader>
+            <DialogTitle className="text-lg">Material zwischen Standorten</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 min-w-0">
+            <div className="space-y-1.5 min-w-0">
+              <Label htmlFor="mat-name">Artikel / Equipment *</Label>
+              <EquipmentCombobox
+                id="mat-name"
+                value={itemName}
+                onChange={setItemName}
+                location={fromLocation}
+                placeholder="z. B. Rüttelplatte VP 25-50"
+              />
+              <p className="text-xs text-muted-foreground">
+                Aus dem Mietartikel-Katalog wählen oder freien Text eintragen.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
+              <div className="space-y-1.5 min-w-0">
+                <Label htmlFor="mat-qty">Menge</Label>
+                <Input id="mat-qty" type="number" min={1} inputMode="numeric" value={quantity} onChange={(e) => setQuantity(e.target.value)} className="w-full min-w-0" />
+              </div>
+              <div className="space-y-1.5 min-w-0">
+                <Label htmlFor="mat-date">Tour am</Label>
+                <Input id="mat-date" type="date" value={tourDate} onChange={(e) => setTourDate(e.target.value)} className="w-full min-w-0" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
+              <div className="space-y-1.5 min-w-0">
+                <Label>Von</Label>
+                <Select value={fromLocation} onValueChange={setFromLocation}>
+                  <SelectTrigger className="w-full min-w-0"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {LOCATIONS.map((l) => <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-1.5 min-w-0">
+                <Label>Nach</Label>
+                <Select value={toLocation} onValueChange={setToLocation}>
+                  <SelectTrigger className="w-full min-w-0"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {LOCATIONS.map((l) => <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="space-y-1.5 min-w-0">
+              <Label htmlFor="mat-notes">Notiz</Label>
+              <Textarea id="mat-notes" value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} maxLength={500} placeholder="z. B. inkl. Transportkiste, vor 10 Uhr benötigt" />
+            </div>
+            <Button className="w-full" onClick={createTransfer} disabled={saving}>
+              Eintragen
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {loading && <p className="text-sm text-muted-foreground">Lade Materialdispo…</p>}
-      {!loading && visible.length === 0 && (
+      {!loading && weeks.length === 0 && (
         <Card><CardContent className="py-8 text-center text-sm text-muted-foreground">Keine Einträge.</CardContent></Card>
       )}
 
-      <div className="space-y-3">
-        {visible.map((t) => (
-          <Card key={t.id}>
-            <CardContent className="p-4 space-y-3">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <div className="font-semibold text-sm break-words">{t.item_name}</div>
-                  <div className="text-xs text-muted-foreground">{t.quantity} Stk.</div>
+      <Accordion type="multiple" defaultValue={weeks.slice(0, 2).map((w) => w.key)} className="space-y-3">
+        {weeks.map((week) => (
+          <AccordionItem key={week.key} value={week.key} className="border rounded-lg bg-card px-3 sm:px-4">
+            <AccordionTrigger className="py-3 hover:no-underline">
+              <div className="flex min-w-0 flex-1 items-center gap-3 text-left">
+                <CalendarDays className="h-4 w-4 shrink-0 text-primary" />
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold">{week.label}</div>
+                  <div className="text-xs text-muted-foreground truncate">{week.sublabel}</div>
                 </div>
-                <Badge variant={t.status === "erledigt" ? "secondary" : "default"} className="shrink-0">
-                  {TRANSFER_STATUS_LABELS[t.status] ?? t.status}
+                <Badge variant="secondary" className="ml-auto mr-2 shrink-0">
+                  {week.count} Pos.
                 </Badge>
               </div>
+            </AccordionTrigger>
+            <AccordionContent className="pb-4 space-y-3">
+              {week.routes.map((route) => {
+                const openItems = route.items.filter((t) => t.status !== "erledigt");
+                const assignedNames = [...new Set(route.items.map((t) => t.assigned_name).filter(Boolean))] as string[];
+                const allMine = openItems.length > 0 && openItems.every((t) => t.assigned_to === user?.id);
+                const someoneElse =
+                  openItems.length > 0 && openItems.some((t) => t.assigned_to && t.assigned_to !== user?.id);
+                const nextStatus =
+                  openItems.length > 0
+                    ? STATUS_FLOW[
+                        Math.min(
+                          STATUS_FLOW.indexOf(openItems[0].status as (typeof STATUS_FLOW)[number]) + 1,
+                          STATUS_FLOW.length - 1,
+                        )
+                      ]
+                    : null;
 
-              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
-                <Truck className="h-4 w-4 text-muted-foreground shrink-0" />
-                <span className="break-words">{locationLabel(t.from_location)}</span>
-                <ArrowRight className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                <span className="break-words">{locationLabel(t.to_location)}</span>
-              </div>
+                return (
+                  <div key={route.key} className="rounded-lg border bg-background p-3 space-y-3">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium">
+                      <Truck className="h-4 w-4 shrink-0 text-muted-foreground" />
+                      <span className="break-words">{locationLabel(route.from)}</span>
+                      <ArrowRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                      <span className="break-words">{locationLabel(route.to)}</span>
+                    </div>
 
-              <div className="text-xs text-muted-foreground break-words">
-                {t.tour_date ? `Tour: ${new Date(t.tour_date).toLocaleDateString("de-DE")}` : "Tour noch offen"}
-                {t.created_by_name ? ` · von ${t.created_by_name}` : ""}
-              </div>
+                    <div className="text-xs">
+                      {assignedNames.length ? (
+                        <span className="inline-flex items-center gap-1.5">
+                          <User className="h-3.5 w-3.5 shrink-0 text-primary" />
+                          Fährt: <span className="font-medium break-words">{assignedNames.join(", ")}</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 text-amber-600">
+                          <User className="h-3.5 w-3.5 shrink-0" />
+                          Noch niemand zugewiesen
+                        </span>
+                      )}
+                    </div>
 
-              <div className="text-xs">
-                {t.assigned_to ? (
-                  <span className="inline-flex items-center gap-1.5 text-foreground">
-                    <User className="h-3.5 w-3.5 text-primary shrink-0" />
-                    Fährt: <span className="font-medium break-words">{t.assigned_name || "Mitarbeiter"}</span>
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center gap-1.5 text-amber-600">
-                    <User className="h-3.5 w-3.5 shrink-0" />
-                    Noch niemand zugewiesen
-                  </span>
-                )}
-                {t.status === "erledigt" && t.done_at && (
-                  <span className="block text-muted-foreground mt-1">
-                    Erledigt am {new Date(t.done_at).toLocaleDateString("de-DE")}
-                  </span>
-                )}
-              </div>
+                    <ul className="divide-y rounded-md border">
+                      {route.items.map((t) => (
+                        <li key={t.id} className="p-2.5 space-y-1">
+                          <div className="flex items-start gap-2">
+                            <div className="min-w-0 flex-1">
+                              <div className="text-sm font-medium break-words leading-snug">{t.item_name}</div>
+                              <div className="text-xs text-muted-foreground">
+                                {t.quantity} Stk.
+                                {t.tour_date ? ` · ${new Date(t.tour_date).toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit" })}` : ""}
+                                {t.created_by_name ? ` · ${t.created_by_name}` : ""}
+                              </div>
+                            </div>
+                            <Badge
+                              variant={t.status === "erledigt" ? "secondary" : "default"}
+                              className="shrink-0 text-[11px]"
+                            >
+                              {TRANSFER_STATUS_LABELS[t.status] ?? t.status}
+                            </Badge>
+                            {(isAdmin || t.created_by === user?.id) && (
+                              <Button
+                                size="icon"
+                                variant="ghost"
+                                className="h-7 w-7 shrink-0 text-muted-foreground"
+                                onClick={() => removeTransfer(t.id)}
+                                aria-label="Position löschen"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </Button>
+                            )}
+                          </div>
+                          {t.notes && (
+                            <p className="text-xs text-muted-foreground whitespace-pre-line break-words">{t.notes}</p>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
 
-              {t.notes && <p className="text-sm text-muted-foreground whitespace-pre-line break-words">{t.notes}</p>}
-
-              <div className="flex flex-wrap gap-2">
-                {t.status !== "erledigt" && (
-                  <>
-                    <Button
-                      size="sm"
-                      variant={t.assigned_to === user?.id ? "ghost" : "secondary"}
-                      className="flex-1 min-w-[140px]"
-                      onClick={() => toggleAssignment(t)}
-                      disabled={!!t.assigned_to && t.assigned_to !== user?.id && !isAdmin}
-                    >
-                      {t.assigned_to === user?.id
-                        ? "Zuweisung aufheben"
-                        : t.assigned_to
-                          ? "Übernehmen"
-                          : "Tour übernehmen"}
-                    </Button>
-                    <Button size="sm" variant="outline" className="flex-1 min-w-[140px]" onClick={() => advanceStatus(t)}>
-                      Weiter zu „{TRANSFER_STATUS_LABELS[STATUS_FLOW[Math.min(STATUS_FLOW.indexOf(t.status as any) + 1, STATUS_FLOW.length - 1)]]}"
-                    </Button>
-                  </>
-                )}
-                {(isAdmin || t.created_by === user?.id) && (
-                  <Button size="sm" variant="ghost" onClick={() => removeTransfer(t.id)} aria-label="Eintrag löschen">
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full"
+                        onClick={() =>
+                          openDialog({ from: route.from, to: route.to, date: route.items[0]?.tour_date })
+                        }
+                      >
+                        <Plus className="h-4 w-4 mr-1" /> Artikel hinzufügen
+                      </Button>
+                      {openItems.length > 0 && (
+                        <Button
+                          size="sm"
+                          variant={allMine ? "ghost" : "secondary"}
+                          className="w-full"
+                          onClick={() => toggleAssignment(openItems)}
+                          disabled={someoneElse && !allMine && !isAdmin}
+                        >
+                          {allMine ? "Zuweisung aufheben" : "Tour übernehmen"}
+                        </Button>
+                      )}
+                      {openItems.length > 0 && nextStatus && (
+                        <Button
+                          size="sm"
+                          className="w-full sm:col-span-2"
+                          onClick={() => advanceStatus(openItems)}
+                        >
+                          Tour weiter zu „{TRANSFER_STATUS_LABELS[nextStatus]}“
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </AccordionContent>
+          </AccordionItem>
         ))}
-      </div>
+      </Accordion>
     </div>
   );
 }
