@@ -95,6 +95,24 @@ export function StaffWorkWidget() {
     reload();
   };
 
+  /** Transport für sich selbst reservieren – so ist klar, wer wann fährt. */
+  const claimTransfer = async (transfer: MaterialTransfer) => {
+    if (!user) return;
+    setBusy(transfer.id);
+    await supabase
+      .from("staff_material_transfers")
+      .update({
+        assigned_to: user.id,
+        assigned_name: displayName,
+        assigned_at: new Date().toISOString(),
+        status: transfer.status === "offen" ? "eingeplant" : transfer.status,
+      })
+      .eq("id", transfer.id);
+    setBusy(null);
+    toast({ title: "Tour übernommen", description: `${transfer.item_name} ist dir zugewiesen.` });
+    reload();
+  };
+
   return (
     <>
       <Card
