@@ -303,6 +303,19 @@ export default function StaffTasks() {
                           <span className="ml-1">{list.status === "draft" ? "Entwurf" : "Bearbeiten"}</span>
                         </Button>
                       )}
+
+                      {canEdit && list.status === "draft" && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="text-destructive hover:text-destructive"
+                          disabled={deletingId === list.id}
+                          onClick={() => setDeleteTarget(list)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                          <span className="ml-1">Löschen</span>
+                        </Button>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
