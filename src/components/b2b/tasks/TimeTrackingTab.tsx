@@ -459,9 +459,15 @@ export function TimeTrackingTab() {
             <p className="text-xs text-muted-foreground">{workedDays} Tage mit erfasster Arbeitszeit</p>
           </div>
           <div className="flex flex-col gap-2 sm:flex-row">
-            <Button variant="outline" disabled={downloading} onClick={() => downloadPdf(year, month, viewUserId)}>
-              <Download className="mr-2 h-4 w-4" /> PDF herunterladen
-            </Button>
+            {sheet?.status === "submitted" ? (
+              <Button variant="outline" disabled={downloading} onClick={() => downloadPdf(year, month, viewUserId)}>
+                <Download className="mr-2 h-4 w-4" /> PDF herunterladen
+              </Button>
+            ) : (
+              <p className="max-w-[240px] text-xs text-muted-foreground">
+                Das PDF steht zum Download bereit, sobald der Monat bestätigt und versendet wurde.
+              </p>
+            )}
             {isOwnSheet && sheet?.status !== "submitted" && (
               <Button disabled={total === 0} onClick={() => setConfirmOpen(true)}>
                 <CheckCircle2 className="mr-2 h-4 w-4" /> Monat bestätigen &amp; senden
