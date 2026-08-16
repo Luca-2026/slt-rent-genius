@@ -71,11 +71,11 @@ export function ProductInstancesDialog({
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) setSelectedInstance(null); onOpenChange(v); }}>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-5xl w-[calc(100vw-1.5rem)] sm:w-full max-h-[90vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Wrench className="h-5 w-5" />
-            Einzelartikel-Bestand: {productName}
+          <DialogTitle className="flex items-start gap-2 pr-8 text-base sm:text-lg">
+            <Wrench className="h-5 w-5 shrink-0 mt-0.5" />
+            <span className="min-w-0 break-words">Einzelartikel-Bestand: {productName}</span>
           </DialogTitle>
           <DialogDescription>
             Verwalte physische Geräte einzeln – Seriennummer, Betriebsstunden, Wartungen. Nicht öffentlich sichtbar.
