@@ -19,6 +19,7 @@ import {
   getProductIdAtLocation,
   getCategoryForProductAtLocation,
   buildProductPath,
+  getSynonymQuery,
 } from "@/lib/productSearch";
 import {
   Dialog,
@@ -83,8 +84,9 @@ export function HeroSearch() {
   }, [searchQuery, isGerman]);
 
   const filteredProducts = useMemo(() => {
-    const normalizedQuery = normalizeSearchText(searchQuery);
-    const queryTokens = getSearchTokens(searchQuery);
+    const runSearch = (rawQuery: string): Product[] => {
+    const normalizedQuery = normalizeSearchText(rawQuery);
+    const queryTokens = getSearchTokens(rawQuery);
     if (!normalizedQuery || queryTokens.length === 0) return [];
 
     const categoryProductIds = new Set<string>();
@@ -171,6 +173,14 @@ export function HeroSearch() {
 
     // Round-robin durch Modellfamilien, damit nicht 8x dasselbe Modell (z.B. "Breitaufbau") oben steht
     return diversifyByFamily(relevant, (item) => item.product.name, 8).map(({ product }) => product);
+    };
+
+    const results = runSearch(searchQuery);
+    if (results.length > 0) return results;
+
+    // Fallback über Synonyme ("Stromerzeuger" -> "Aggregat")
+    const synonym = getSynonymQuery(searchQuery);
+    return synonym ? runSearch(synonym) : [];
   }, [searchQuery, translatedProducts, allProducts, filteredCategories, isGerman]);
 
   // Close dropdown when clicking outside
