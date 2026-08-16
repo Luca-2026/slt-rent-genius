@@ -21,7 +21,9 @@ const PRIORITY_LABELS: Record<string, string> = { low: "Niedrig", normal: "Norma
 
 export default function StaffTasks() {
   const { user } = useAuth();
-  const { isStaff, isAdmin, loading: accessLoading } = useStaffAccess();
+  const { isStaff, isAdmin, displayName, loading: accessLoading } = useStaffAccess();
+  const { toast } = useToast();
+
 
   const [lists, setLists] = useState<TodoList[]>([]);
   const [itemCounts, setItemCounts] = useState<Record<string, { total: number; done: number }>>({});
