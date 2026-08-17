@@ -54,11 +54,14 @@ export default function StaffTasks() {
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedTab = searchParams.get("tab");
   const allowedTabs = useMemo(
-    () =>
-      isAdmin
-        ? ["tasks", "material", "inventory", "zeiten", "feedback", "staff"]
-        : ["tasks", "material", "zeiten"],
-    [isAdmin],
+    () => [
+      "tasks",
+      "material",
+      ...(canViewInventory ? ["inventory"] : []),
+      "zeiten",
+      ...(isAdmin ? ["feedback", "staff"] : []),
+    ],
+    [isAdmin, canViewInventory],
   );
   const activeTab = requestedTab && allowedTabs.includes(requestedTab) ? requestedTab : "tasks";
   const handleTabChange = useCallback(
