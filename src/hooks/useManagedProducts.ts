@@ -16,6 +16,8 @@ export interface ManagedProductRow {
   description: string | null;
   detailed_description: string | null;
   category: string;
+  /** Filter-Zugehörigkeit (Untertyp), steuert die Kategoriefilter im Frontend. */
+  subcategory?: string | null;
   available_locations: string[];
   images: string[];
   specifications: Record<string, string>;
