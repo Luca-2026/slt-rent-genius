@@ -2,7 +2,7 @@
  * Editor-Dialog für CMS-Mietartikel. 6 Tabs: Basis, Bilder, Technik, Preise & Buchung,
  * SEO & Content, Intern (Bestand). KI-Buttons rufen `admin-generate-product-content`.
  */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -225,6 +225,18 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.name]);
+
+  // Bekannte Untertypen der aktuellen Hauptkategorie als Vorschlagsliste
+  const { data: allProducts = [] } = useAdminManagedProducts();
+  const subcategoryOptions = useMemo(() => {
+    const set = new Set<string>();
+    for (const p of allProducts) {
+      if (form.category && p.category !== form.category) continue;
+      const sub = resolveSubcategory(p);
+      if (sub && sub !== p.category) set.add(sub);
+    }
+    return Array.from(set).sort();
+  }, [allProducts, form.category]);
 
   const hasAnyRentware = Object.values(form.rentware_code).some((c) => c.trim());
 
