@@ -846,6 +846,7 @@ export type Database = {
           slug: string
           sort_order: number | null
           specifications: Json
+          subcategory: string | null
           tags: string[]
           updated_at: string
           updated_by: string | null
@@ -893,6 +894,7 @@ export type Database = {
           slug: string
           sort_order?: number | null
           specifications?: Json
+          subcategory?: string | null
           tags?: string[]
           updated_at?: string
           updated_by?: string | null
@@ -940,6 +942,7 @@ export type Database = {
           slug?: string
           sort_order?: number | null
           specifications?: Json
+          subcategory?: string | null
           tags?: string[]
           updated_at?: string
           updated_by?: string | null
@@ -2636,6 +2639,7 @@ export type Database = {
           slug: string | null
           sort_order: number | null
           specifications: Json | null
+          subcategory: string | null
           tags: string[] | null
           updated_at: string | null
           video_url: string | null
@@ -2671,6 +2675,7 @@ export type Database = {
           slug?: string | null
           sort_order?: number | null
           specifications?: Json | null
+          subcategory?: string | null
           tags?: string[] | null
           updated_at?: string | null
           video_url?: string | null
@@ -2706,6 +2711,7 @@ export type Database = {
           slug?: string | null
           sort_order?: number | null
           specifications?: Json | null
+          subcategory?: string | null
           tags?: string[] | null
           updated_at?: string | null
           video_url?: string | null
