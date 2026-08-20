@@ -44,6 +44,16 @@ export interface ManagedProductRow {
   image_alts?: string[] | null;
 }
 
+/**
+ * Effektive Filter-Zugehörigkeit eines CMS-Artikels.
+ * CMS-Feld schlägt die statische Migrations-Map, diese schlägt die Hauptkategorie.
+ */
+export function resolveSubcategory(row: { slug: string; category: string; subcategory?: string | null }): string {
+  const explicit = row.subcategory?.trim();
+  if (explicit) return explicit;
+  return PRODUCT_SUBCATEGORIES[row.slug] ?? row.category;
+}
+
 export function managedRowToProduct(row: ManagedProductRow): Product {
   return {
     id: row.slug, // id im Frontend = slug für stabile URLs
