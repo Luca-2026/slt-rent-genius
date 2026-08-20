@@ -11,9 +11,10 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Eye, EyeOff, Copy, Package, Wrench } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, Copy, Package, Wrench, ArrowUpDown } from "lucide-react";
 import { useAdminManagedProducts, type AdminManagedProductRow } from "@/hooks/useManagedProducts";
 import { InventoryEditorDialog } from "./InventoryEditorDialog";
+import { CategorySortDialog } from "./CategorySortDialog";
 import { ProductInstancesDialog } from "./ProductInstancesDialog";
 import { useInstanceCounts } from "@/hooks/useProductInstances";
 import { productCategories } from "@/data/rentalData";
@@ -37,6 +38,7 @@ export function AdminInventoryTab() {
   const [creating, setCreating] = useState(false);
   const [instancesFor, setInstancesFor] = useState<AdminManagedProductRow | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<AdminManagedProductRow | null>(null);
+  const [sortOpen, setSortOpen] = useState(false);
   const { data: instanceCounts = {} } = useInstanceCounts();
   const { canManageInventory } = useStaffAccess();
 
@@ -106,7 +108,12 @@ export function AdminInventoryTab() {
             </p>
           </div>
           {canManageInventory ? (
-            <Button className="w-full sm:w-auto shrink-0" onClick={() => setCreating(true)}><Plus className="h-4 w-4 mr-1" /> Neuer Artikel</Button>
+            <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+              <Button variant="outline" className="w-full sm:w-auto" onClick={() => setSortOpen(true)}>
+                <ArrowUpDown className="h-4 w-4 mr-1" /> Reihenfolge festlegen
+              </Button>
+              <Button className="w-full sm:w-auto" onClick={() => setCreating(true)}><Plus className="h-4 w-4 mr-1" /> Neuer Artikel</Button>
+            </div>
           ) : (
             <Badge variant="outline" className="shrink-0 self-start">Nur Ansicht</Badge>
           )}
@@ -302,6 +309,14 @@ export function AdminInventoryTab() {
         open={creating || !!editing}
         onOpenChange={(v) => { if (!v) { setCreating(false); setEditing(null); } }}
         initial={editing}
+        onSaved={refetch}
+      />
+
+      <CategorySortDialog
+        open={sortOpen}
+        onOpenChange={setSortOpen}
+        products={products}
+        initialCategory={catFilter !== "all" ? catFilter : undefined}
         onSaved={refetch}
       />
 
