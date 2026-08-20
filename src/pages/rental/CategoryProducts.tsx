@@ -1035,6 +1035,20 @@ export default function CategoryProducts() {
       });
     }
 
+    // Manuelle CMS-Reihenfolge hat immer Vorrang: Artikel mit gepflegtem sortOrder
+    // stehen aufsteigend vorne, alle übrigen behalten ihre bisherige Reihenfolge.
+    if (filtered.some((p) => typeof p.sortOrder === "number")) {
+      const idx = new Map(filtered.map((p, i) => [p, i]));
+      filtered = [...filtered].sort((a, b) => {
+        const sa = typeof a.sortOrder === "number" ? a.sortOrder : null;
+        const sb = typeof b.sortOrder === "number" ? b.sortOrder : null;
+        if (sa !== null && sb !== null && sa !== sb) return sa - sb;
+        if (sa !== null && sb === null) return -1;
+        if (sa === null && sb !== null) return 1;
+        return (idx.get(a) ?? 0) - (idx.get(b) ?? 0);
+      });
+    }
+
     return filtered;
   }, [allProducts, allSearchQuery, selectedCategoryFilter, productCategoryMap, trailerFilters, earthMovingFilters, genericFilters, category?.id, locationId, onlyAvailable]);
 
