@@ -16,7 +16,7 @@ import { Loader2, Plus, Trash2, Sparkles, Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { productCategories } from "@/data/rentalData";
-import type { AdminManagedProductRow } from "@/hooks/useManagedProducts";
+import { resolveSubcategory, useAdminManagedProducts, type AdminManagedProductRow } from "@/hooks/useManagedProducts";
 
 const LOCATIONS = [
   { id: "krefeld", label: "Krefeld" },
@@ -50,6 +50,7 @@ interface FormState {
   description: string;
   detailed_description: string;
   category: string;
+  subcategory: string;
   available_locations: LocId[];
   images: string[];
   specifications: Array<{ key: string; value: string }>;
@@ -84,6 +85,7 @@ const emptyForm = (): FormState => ({
   description: "",
   detailed_description: "",
   category: "",
+  subcategory: "",
   available_locations: [],
   images: [],
   specifications: [],
@@ -120,6 +122,7 @@ function fromRow(row: AdminManagedProductRow): FormState {
     description: row.description ?? "",
     detailed_description: row.detailed_description ?? "",
     category: row.category,
+    subcategory: resolveSubcategory(row),
     available_locations: (row.available_locations ?? []) as LocId[],
     images: row.images ?? [],
     specifications: Object.entries(specs).map(([key, value]) => ({ key, value: String(value) })),
@@ -362,6 +365,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         description: form.description.trim() || null,
         detailed_description: detailedDesc || null,
         category: form.category,
+        subcategory: form.subcategory.trim() || null,
         available_locations: form.available_locations,
         images: form.images,
         specifications: specsObj,
