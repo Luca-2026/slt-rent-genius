@@ -527,7 +527,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <Label>Sortierung (Zahl, kleiner = früher)</Label>
+                  <Label>Sortierung (kleiner = früher; einfacher über „Reihenfolge festlegen“)</Label>
                   <Input type="number" value={form.sort_order} onChange={(e) => setForm({ ...form, sort_order: e.target.value })} />
                 </div>
                 <div className="flex items-end gap-2">
