@@ -473,6 +473,22 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                 </div>
               </div>
               <div>
+                <Label>Filter-Zugehörigkeit (Untertyp) *</Label>
+                <Input
+                  list="subcategory-options"
+                  placeholder="z. B. minibagger, tiefloeffel, zelt …"
+                  value={form.subcategory}
+                  onChange={(e) => setForm({ ...form, subcategory: e.target.value.toLowerCase().trim() })}
+                />
+                <datalist id="subcategory-options">
+                  {subcategoryOptions.map((s) => <option key={s} value={s} />)}
+                </datalist>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Steuert, unter welchem Filter der Artikel in seiner Kategorie erscheint (z. B. „Anbaugeräte“ →
+                  <span className="font-mono"> tiefloeffel</span>). Leer lassen = Artikel taucht nur ohne Filter auf.
+                </p>
+              </div>
+              <div>
                 <Label>Kurzbeschreibung</Label>
                 <Textarea rows={2} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
               </div>
