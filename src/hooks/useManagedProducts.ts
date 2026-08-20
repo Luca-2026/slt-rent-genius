@@ -16,6 +16,8 @@ export interface ManagedProductRow {
   description: string | null;
   detailed_description: string | null;
   category: string;
+  /** Filter-Zugehörigkeit (Untertyp), steuert die Kategoriefilter im Frontend. */
+  subcategory?: string | null;
   available_locations: string[];
   images: string[];
   specifications: Record<string, string>;
@@ -40,6 +42,16 @@ export interface ManagedProductRow {
   seo_faqs: Array<{ question: string; answer: string }>;
   seo_local_content: Record<string, string>;
   image_alts?: string[] | null;
+}
+
+/**
+ * Effektive Filter-Zugehörigkeit eines CMS-Artikels.
+ * CMS-Feld schlägt die statische Migrations-Map, diese schlägt die Hauptkategorie.
+ */
+export function resolveSubcategory(row: { slug: string; category: string; subcategory?: string | null }): string {
+  const explicit = row.subcategory?.trim();
+  if (explicit) return explicit;
+  return PRODUCT_SUBCATEGORIES[row.slug] ?? row.category;
 }
 
 export function managedRowToProduct(row: ManagedProductRow): Product {
@@ -68,7 +80,8 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
     tags: row.tags?.length ? row.tags : undefined,
     // Frontend-Filter matchen auf dem Artikel-Untertyp (z. B. "minibagger"),
     // im CMS steht in `category` dagegen die Hauptkategorie ("erdbewegung").
-    category: PRODUCT_SUBCATEGORIES[row.slug] ?? row.category,
+    // Priorität: CMS-Feld „Filter-Zugehörigkeit" > statische Map > Hauptkategorie.
+    category: resolveSubcategory(row),
 
     weightKg: row.weight_kg ?? undefined,
     sortOrder: row.sort_order ?? undefined,

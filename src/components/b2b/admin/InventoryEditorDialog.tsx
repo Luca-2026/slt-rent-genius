@@ -2,7 +2,7 @@
  * Editor-Dialog für CMS-Mietartikel. 6 Tabs: Basis, Bilder, Technik, Preise & Buchung,
  * SEO & Content, Intern (Bestand). KI-Buttons rufen `admin-generate-product-content`.
  */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -16,7 +16,7 @@ import { Loader2, Plus, Trash2, Sparkles, Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { productCategories } from "@/data/rentalData";
-import type { AdminManagedProductRow } from "@/hooks/useManagedProducts";
+import { resolveSubcategory, useAdminManagedProducts, type AdminManagedProductRow } from "@/hooks/useManagedProducts";
 
 const LOCATIONS = [
   { id: "krefeld", label: "Krefeld" },
@@ -50,6 +50,7 @@ interface FormState {
   description: string;
   detailed_description: string;
   category: string;
+  subcategory: string;
   available_locations: LocId[];
   images: string[];
   specifications: Array<{ key: string; value: string }>;
@@ -84,6 +85,7 @@ const emptyForm = (): FormState => ({
   description: "",
   detailed_description: "",
   category: "",
+  subcategory: "",
   available_locations: [],
   images: [],
   specifications: [],
@@ -120,6 +122,7 @@ function fromRow(row: AdminManagedProductRow): FormState {
     description: row.description ?? "",
     detailed_description: row.detailed_description ?? "",
     category: row.category,
+    subcategory: resolveSubcategory(row),
     available_locations: (row.available_locations ?? []) as LocId[],
     images: row.images ?? [],
     specifications: Object.entries(specs).map(([key, value]) => ({ key, value: String(value) })),
@@ -222,6 +225,18 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.name]);
+
+  // Bekannte Untertypen der aktuellen Hauptkategorie als Vorschlagsliste
+  const { data: allProducts = [] } = useAdminManagedProducts();
+  const subcategoryOptions = useMemo(() => {
+    const set = new Set<string>();
+    for (const p of allProducts) {
+      if (form.category && p.category !== form.category) continue;
+      const sub = resolveSubcategory(p);
+      if (sub && sub !== p.category) set.add(sub);
+    }
+    return Array.from(set).sort();
+  }, [allProducts, form.category]);
 
   const hasAnyRentware = Object.values(form.rentware_code).some((c) => c.trim());
 
@@ -362,6 +377,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         description: form.description.trim() || null,
         detailed_description: detailedDesc || null,
         category: form.category,
+        subcategory: form.subcategory.trim() || null,
         available_locations: form.available_locations,
         images: form.images,
         specifications: specsObj,
@@ -469,6 +485,22 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                 </div>
               </div>
               <div>
+                <Label>Filter-Zugehörigkeit (Untertyp) *</Label>
+                <Input
+                  list="subcategory-options"
+                  placeholder="z. B. minibagger, tiefloeffel, zelt …"
+                  value={form.subcategory}
+                  onChange={(e) => setForm({ ...form, subcategory: e.target.value.toLowerCase().trim() })}
+                />
+                <datalist id="subcategory-options">
+                  {subcategoryOptions.map((s) => <option key={s} value={s} />)}
+                </datalist>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Steuert, unter welchem Filter der Artikel in seiner Kategorie erscheint (z. B. „Anbaugeräte“ →
+                  <span className="font-mono"> tiefloeffel</span>). Leer lassen = Artikel taucht nur ohne Filter auf.
+                </p>
+              </div>
+              <div>
                 <Label>Kurzbeschreibung</Label>
                 <Textarea rows={2} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
               </div>
@@ -495,7 +527,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <Label>Sortierung (Zahl, kleiner = früher)</Label>
+                  <Label>Sortierung (kleiner = früher; einfacher über „Reihenfolge festlegen“)</Label>
                   <Input type="number" value={form.sort_order} onChange={(e) => setForm({ ...form, sort_order: e.target.value })} />
                 </div>
                 <div className="flex items-end gap-2">
