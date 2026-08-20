@@ -5,6 +5,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Product } from "@/data/rentalData";
+import { PRODUCT_SUBCATEGORIES } from "@/data/productSubcategories";
+
 
 export interface ManagedProductRow {
   id: string;
@@ -64,7 +66,10 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
     pdfUrl: row.pdf_url ?? undefined,
     externalManualUrl: row.external_manual_url ?? undefined,
     tags: row.tags?.length ? row.tags : undefined,
-    category: row.category,
+    // Frontend-Filter matchen auf dem Artikel-Untertyp (z. B. "minibagger"),
+    // im CMS steht in `category` dagegen die Hauptkategorie ("erdbewegung").
+    category: PRODUCT_SUBCATEGORIES[row.slug] ?? row.category,
+
     weightKg: row.weight_kg ?? undefined,
     sortOrder: row.sort_order ?? undefined,
     rentwareCode: row.rentware_code && Object.keys(row.rentware_code).length
