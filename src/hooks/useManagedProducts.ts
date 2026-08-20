@@ -70,7 +70,8 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
     tags: row.tags?.length ? row.tags : undefined,
     // Frontend-Filter matchen auf dem Artikel-Untertyp (z. B. "minibagger"),
     // im CMS steht in `category` dagegen die Hauptkategorie ("erdbewegung").
-    category: PRODUCT_SUBCATEGORIES[row.slug] ?? row.category,
+    // Priorität: CMS-Feld „Filter-Zugehörigkeit" > statische Map > Hauptkategorie.
+    category: resolveSubcategory(row),
 
     weightKg: row.weight_kg ?? undefined,
     sortOrder: row.sort_order ?? undefined,
