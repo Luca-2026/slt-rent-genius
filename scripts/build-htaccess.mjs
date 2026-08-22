@@ -83,6 +83,10 @@ lines.push(
   "RewriteRule ^b2b(/.*)?$ https://app.slt-rental.de/b2b$1 [L,R=301]",
   "",
 
+  "# === 2a. Ratgeber-Slug-Umbenennung (SMS-Code -> E-Mail-Code) ===",
+  "RewriteRule ^ratgeber/anhaenger-24-stunden-mieten-sms-code/?$ /ratgeber/anhaenger-24-stunden-mieten-email-code/ [L,R=301]",
+  "",
+
   "# === 2b. Kanonische Produkt-Slugs Bonn/Verdichtung ===",
   "# Alte Rentware-/Standort-Slugs dürfen nie als 404/noindex-Produktseite ausliefern.",
   "RewriteRule ^mieten/bonn/verdichtung/bonn-stampfer-gs72/?$ /mieten/bonn/verdichtung/stampfer-gs72-xh/ [L,R=301]",

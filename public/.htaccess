@@ -43,6 +43,7 @@ RewriteRule ^b2b(/.*)?$ https://app.slt-rental.de/b2b$1 [L,R=301]
 
   # Kanonische Produkt-Slugs Bonn/Verdichtung
   # Alte Rentware-/Standort-Slugs dürfen nie als 404/noindex-Produktseite ausliefern.
+  RewriteRule ^ratgeber/anhaenger-24-stunden-mieten-sms-code/?$ /ratgeber/anhaenger-24-stunden-mieten-email-code/ [L,R=301]
   RewriteRule ^mieten/bonn/verdichtung/bonn-stampfer-gs72/?$ /mieten/bonn/verdichtung/stampfer-gs72-xh/ [L,R=301]
   RewriteRule ^mieten/bonn/verdichtung/bonn-ruettelplatte-vp16/?$ /mieten/bonn/verdichtung/ruettelplatte-vp16-44/ [L,R=301]
   RewriteRule ^mieten/bonn/verdichtung/bonn-ruettelplatte-vp25/?$ /mieten/bonn/verdichtung/ruettelplatte-vp25-50/ [L,R=301]
