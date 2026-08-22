@@ -16,7 +16,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Smartphone, Lock, Key, Play, Info, FileDown, ShieldCheck, ExternalLink, Car, HardHat, Sparkles, Truck } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Lock, Key, Play, Info, FileDown, ShieldCheck, ExternalLink, Car, HardHat, Sparkles, Truck } from "lucide-react";
 import {
   getLocationById,
   getCategoryById,
