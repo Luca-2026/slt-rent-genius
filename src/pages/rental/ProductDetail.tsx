@@ -43,6 +43,7 @@ import { getLocalCategoryContent } from "@/data/localCategoryContent";
 import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
 import { REAL_LOCATION_REVIEWS } from "@/data/realGoogleReviews";
+import { ProductPriceBlock, hasAnyPrice } from "@/components/rental/ProductPriceBlock";
 
 const LEGACY_PRODUCT_ID_REDIRECTS: Record<string, string> = {
   "bonn-stampfer-gs72": "/mieten/bonn/verdichtung/stampfer-gs72-xh/",
@@ -1330,24 +1331,13 @@ export default function ProductDetail() {
               <div className="sticky top-4 space-y-4 md:space-y-3 lg:space-y-5">
                 {/* Booking Card – desktop/tablet only */}
                 <div className="hidden md:block bg-card rounded-xl border border-border p-4 md:p-3 lg:p-5">
-                  {(product.pricePerMonth || product.pricePerDay || typeof productSEO?.dailyPriceFrom === "number") && (
+                  {hasAnyPrice(product, productSEO?.dailyPriceFrom) && (
                     <div className="mb-3 md:mb-2 lg:mb-4 pb-3 md:pb-2 lg:pb-4 border-b border-border">
-                      <div className="text-2xl md:text-xl lg:text-3xl font-bold text-primary">
-                        {product.pricePerMonth
-                          ? product.pricePerMonth
-                          : product.pricePerDay
-                            ? product.pricePerDay
-                            : `ab ${Number.isInteger(productSEO!.dailyPriceFrom as number) ? productSEO!.dailyPriceFrom : (productSEO!.dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
-                        {(product.pricePerMonth || product.pricePerDay || typeof productSEO?.dailyPriceFrom === "number") && (
-                          <span className="text-primary">*</span>
-                        )}
-                        <span className="text-sm md:text-xs lg:text-base font-normal text-muted-foreground"> {product.priceUnitLabel ?? (product.pricePerMonth ? "/ Monat" : t("rental.perDay"))}</span>
-                      </div>
-                      {product.priceWeekend && !product.pricePerMonth && (
-                        <p className="text-sm md:text-xs lg:text-sm text-accent font-medium mt-1">
-                          Weekend-Tarif: {product.priceWeekend}
-                        </p>
-                      )}
+                      <ProductPriceBlock
+                        product={product}
+                        dailyPriceFrom={typeof productSEO?.dailyPriceFrom === "number" ? productSEO.dailyPriceFrom : undefined}
+                        perDayLabel={t("rental.perDay")}
+                      />
                       <p className="text-[11px] text-muted-foreground mt-1">
                         Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
                       </p>
@@ -1356,6 +1346,7 @@ export default function ProductDetail() {
                       </p>
                     </div>
                   )}
+
                   <div className="space-y-2 md:space-y-1.5 lg:space-y-2 mb-3 md:mb-2 lg:mb-4">
                     <Button
                       size="lg"
@@ -1529,27 +1520,17 @@ function MobileBookingCard({
   t: (key: string) => string;
 }) {
   if (!location) return null;
-  const showPrice = product.pricePerMonth || product.pricePerDay || typeof dailyPriceFrom === "number";
+  const showPrice = hasAnyPrice(product, dailyPriceFrom);
   return (
     <div className="bg-card rounded-xl border border-border p-4">
       {showPrice && (
         <div className="mb-3 pb-3 border-b border-border">
-          <div className="text-2xl font-bold text-primary">
-            {product.pricePerMonth
-              ? product.pricePerMonth
-              : product.pricePerDay
-                ? product.pricePerDay
-                : `ab ${Number.isInteger(dailyPriceFrom as number) ? dailyPriceFrom : (dailyPriceFrom as number).toFixed(2).replace(".", ",")} €`}
-            {(product.pricePerMonth || product.pricePerDay || typeof dailyPriceFrom === "number") && (
-              <span className="text-primary">*</span>
-            )}
-            <span className="text-sm font-normal text-muted-foreground"> {product.priceUnitLabel ?? (product.pricePerMonth ? "/ Monat" : t("rental.perDay"))}</span>
-          </div>
-          {product.priceWeekend && !product.pricePerMonth && (
-            <p className="text-sm text-accent font-medium mt-0.5">
-              Weekend-Tarif: {product.priceWeekend}
-            </p>
-          )}
+          <ProductPriceBlock
+            product={product}
+            dailyPriceFrom={dailyPriceFrom}
+            perDayLabel={t("rental.perDay")}
+          />
+
           <p className="text-[11px] text-muted-foreground mt-1">
             Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
           </p>

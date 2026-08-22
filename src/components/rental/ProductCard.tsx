@@ -8,6 +8,7 @@ import type { Product } from "@/data/rentalData";
 import { useTranslatedProduct } from "@/hooks/useTranslatedProduct";
 import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
 import { getProductSEO } from "@/data/productSEOData";
+import { formatPriceValue } from "@/components/rental/ProductPriceBlock";
 
 interface ProductCardProps {
   product: Product;
@@ -26,7 +27,15 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
   const seoPriceFrom = typeof seo?.dailyPriceFrom === "number"
     ? `ab ${Number.isInteger(seo.dailyPriceFrom) ? seo.dailyPriceFrom : seo.dailyPriceFrom.toFixed(2).replace(".", ",")} €`
     : undefined;
-  const displayPrice = product.pricePerDay || seoPriceFrom;
+  // Hauptpreis: Tagespreis > SEO-Ab-Preis > Monatspreis > Wochenendpreis
+  const fallbackMain = !product.pricePerDay && !seoPriceFrom
+    ? (product.pricePerMonth ? { value: formatPriceValue(product.pricePerMonth), unit: "/Monat" } :
+       product.priceWeekend ? { value: formatPriceValue(product.priceWeekend), unit: "/Wochenende" } : undefined)
+    : undefined;
+  const displayPrice = (product.pricePerDay ? formatPriceValue(product.pricePerDay) : undefined) || seoPriceFrom || fallbackMain?.value;
+  const displayUnit = fallbackMain ? fallbackMain.unit : (product.priceUnitLabel ?? "/Tag");
+  const showWeekendRow = Boolean(product.priceWeekend) && formatPriceValue(product.priceWeekend!) !== displayPrice;
+  const showMonthRow = Boolean(product.pricePerMonth) && formatPriceValue(product.pricePerMonth!) !== displayPrice;
 
   const handlePrev = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -146,13 +155,33 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
         <div className="space-y-2 mt-auto">
           <div>
             {displayPrice && (
-              <p className="text-lg font-bold text-primary mb-1">
+              <p className="text-lg font-bold text-primary mb-1 leading-tight break-words">
                 {displayPrice}
-                <span className="text-sm font-normal text-muted-foreground">{product.priceUnitLabel ?? "/Tag"}</span>
+                <span className="text-sm font-normal text-muted-foreground">{displayUnit}</span>
               </p>
             )}
+            {(showWeekendRow || showMonthRow) && (
+              <ul className="mb-1 space-y-0.5">
+                {showWeekendRow && (
+                  <li className="flex flex-wrap items-baseline justify-between gap-x-2 text-xs">
+                    <span className="text-muted-foreground">Wochenende</span>
+                    <span className="font-semibold text-foreground">{formatPriceValue(product.priceWeekend!)}</span>
+                  </li>
+                )}
+                {showMonthRow && (
+                  <li className="flex flex-wrap items-baseline justify-between gap-x-2 text-xs">
+                    <span className="text-muted-foreground">
+                      {product.minRentalMonths ? `Monat (ab ${product.minRentalMonths} Mon.)` : "Monat"}
+                    </span>
+                    <span className="font-semibold text-foreground">{formatPriceValue(product.pricePerMonth!)}</span>
+                  </li>
+                )}
+              </ul>
+            )}
+
             <PriceGuaranteeBadge variant="inline" />
           </div>
+
           
           <Button
             size="default"
