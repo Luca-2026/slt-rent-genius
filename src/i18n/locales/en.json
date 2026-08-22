@@ -64,7 +64,7 @@
     "title": "Rent excavators, trailers and event tech –",
     "titleHighlight": "today in NRW.",
     "subtitle": "1,700 rental items at 3 locations in Krefeld, Bonn and Mülheim.",
-    "subtitleLine2": "Pick up trailers 24/7 in 30 minutes – per E-Mail code. Low-price guarantee included.",
+    "subtitleLine2": "Pick up trailers 24/7 in 30 minutes – via email code. Low-price guarantee included.",
     "searchPlaceholder": "Search equipment (e.g. trailer, excavator...)",
     "searchButton": "Search",
     "popular": "Popular:",
@@ -213,7 +213,7 @@
     "sortimentMuelheim": "In Mülheim, you'll also find our",
     "bobcatProgram": "Bobcat program",
     "sortimentMuelheimEnd": "with compact excavators, articulated dumpers, and wheel loaders for professional earthmoving.",
-    "trailerHeading": "Rent Trailers – 24/7 per E-Mail Code",
+    "trailerHeading": "Rent Trailers – 24/7 via Email Code",
     "trailerIntro": "Our",
     "trailers": "trailers",
     "trailerText": "are available around the clock – including weekends and public holidays. Thanks to our email code system, you can pick up and return your trailer independently at any time. Whether covered trailers, car transporters, machinery trailers, or box trailers with leaf guards – we have the right model for every purpose.",
@@ -340,7 +340,7 @@
     "accessoriesHint": "Compatible attachments and transport solutions for this machine – easily add to your booking.",
     "available247": "Available 24/7",
     "available247Desc": "Rentable around the clock",
-    "emailCodeSystem": "email code system",
+    "emailCodeSystem": "Email Code System",
     "emailCodeSystemDesc": "After booking, you will receive an email code to unlock the trailer.",
     "electronicLock": "Electronic Lock",
     "electronicLockDesc": "Enter the code on the drawbar lock and take the trailer.",
@@ -698,7 +698,7 @@
       "umzug-transport": {
         "title": "Moving & Transport",
         "subtitle": "Private and business moves",
-        "description": "Our 24/7 trailer rental makes moving flexible and affordable. Ready for pickup per E-Mail code – even at night and on weekends. The right trailer for every transport.",
+        "description": "Our 24/7 trailer rental makes moving flexible and affordable. Ready for pickup via email code – even at night and on weekends. The right trailer for every transport.",
         "highlights": [
           "Tarpaulin trailers S to XXL",
           "Lockable box trailers",
@@ -720,7 +720,7 @@
           }
         ],
         "advantages": [
-          "24/7 availability per E-Mail code",
+          "24/7 availability via email code",
           "Affordable weekend rates",
           "All sizes from S to XXL",
           "No trailer licence needed up to 750 kg"
