@@ -156,18 +156,18 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
             {displayPrice && (
               <p className="text-lg font-bold text-primary mb-1 leading-tight break-words">
                 {displayPrice}
-                <span className="text-sm font-normal text-muted-foreground">{product.priceUnitLabel ?? "/Tag"}</span>
+                <span className="text-sm font-normal text-muted-foreground">{displayUnit}</span>
               </p>
             )}
-            {(product.priceWeekend || product.pricePerMonth) && (
+            {(showWeekendRow || showMonthRow) && (
               <ul className="mb-1 space-y-0.5">
-                {product.priceWeekend && (
+                {showWeekendRow && (
                   <li className="flex flex-wrap items-baseline justify-between gap-x-2 text-xs">
                     <span className="text-muted-foreground">Wochenende</span>
                     <span className="font-semibold text-foreground">{product.priceWeekend}</span>
                   </li>
                 )}
-                {product.pricePerMonth && (
+                {showMonthRow && (
                   <li className="flex flex-wrap items-baseline justify-between gap-x-2 text-xs">
                     <span className="text-muted-foreground">
                       {product.minRentalMonths ? `Monat (ab ${product.minRentalMonths} Mon.)` : "Monat"}
@@ -177,6 +177,7 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
                 )}
               </ul>
             )}
+
             <PriceGuaranteeBadge variant="inline" />
           </div>
 
