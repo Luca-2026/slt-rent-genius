@@ -26,7 +26,15 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
   const seoPriceFrom = typeof seo?.dailyPriceFrom === "number"
     ? `ab ${Number.isInteger(seo.dailyPriceFrom) ? seo.dailyPriceFrom : seo.dailyPriceFrom.toFixed(2).replace(".", ",")} €`
     : undefined;
-  const displayPrice = product.pricePerDay || seoPriceFrom;
+  // Hauptpreis: Tagespreis > SEO-Ab-Preis > Monatspreis > Wochenendpreis
+  const fallbackMain = !product.pricePerDay && !seoPriceFrom
+    ? (product.pricePerMonth ? { value: product.pricePerMonth, unit: "/Monat" } :
+       product.priceWeekend ? { value: product.priceWeekend, unit: "/Wochenende" } : undefined)
+    : undefined;
+  const displayPrice = product.pricePerDay || seoPriceFrom || fallbackMain?.value;
+  const displayUnit = fallbackMain ? fallbackMain.unit : (product.priceUnitLabel ?? "/Tag");
+  const showWeekendRow = Boolean(product.priceWeekend) && product.priceWeekend !== displayPrice;
+  const showMonthRow = Boolean(product.pricePerMonth) && product.pricePerMonth !== displayPrice;
 
   const handlePrev = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
