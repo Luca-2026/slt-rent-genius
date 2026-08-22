@@ -1598,7 +1598,7 @@ function TrailerInfoCard({ t }: { t: (key: string) => string }) {
       </div>
       <div className="space-y-3">
         {[
-          { icon: Smartphone, title: t("rental.emailCodeSystem"), desc: t("rental.emailCodeSystemDesc") },
+          { icon: Mail, title: t("rental.emailCodeSystem"), desc: t("rental.emailCodeSystemDesc") },
           { icon: Lock, title: t("rental.electronicLock"), desc: t("rental.electronicLockDesc") },
           { icon: Key, title: t("rental.selfPickup"), desc: t("rental.selfPickupDesc") },
         ].map(({ icon: Icon, title, desc }) => (
