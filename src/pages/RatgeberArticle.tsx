@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
  */
 const SLUG_TO_CATEGORY: Record<string, { categoryId: string; label: string }> = {
   "minibagger-mieten-ohne-fuehrerschein": { categoryId: "erdbewegung", label: "Minibagger & Erdbewegung mieten" },
-  "anhaenger-24-stunden-mieten-sms-code": { categoryId: "anhaenger", label: "Anhänger 24/7 mieten" },
+  "anhaenger-24-stunden-mieten-email-code": { categoryId: "anhaenger", label: "Anhänger 24/7 mieten" },
   "baustelle-innenstadt-baumaschine-beengte-verhaeltnisse": { categoryId: "erdbewegung", label: "Kompakt-Baumaschinen mieten" },
   "geschirr-mieten-hochzeit-mengen-checkliste": { categoryId: "geschirr-glaeser-besteck", label: "Geschirr, Gläser & Besteck mieten" },
   "halteverbotszone-einrichten-ratgeber": { categoryId: "absperrtechnik", label: "Halteverbotsschilder & Absperrtechnik mieten" },

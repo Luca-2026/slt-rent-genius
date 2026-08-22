@@ -32,12 +32,12 @@ export const categoryContent: Record<string, {
     tips: [
       "Achten Sie auf das zulässige Gesamtgewicht Ihres Zugfahrzeugs.",
       "Ladungssicherung ist Pflicht – Spanngurte sind optional im Buchungsprozess dazubuchbar.",
-      "Unsere Anhänger sind 24/7 per SMS-Codesystem verfügbar – auch am Wochenende. Der Code kommt spätestens 15 Minuten vor Beginn der Buchungszeit und wird erst dann aktiv.",
+      "Unsere Anhänger sind 24/7 per E-Mail-Codesystem verfügbar – auch am Wochenende. Der Code kommt spätestens 15 Minuten vor Beginn der Buchungszeit und wird erst dann aktiv.",
       "Planen schützen Ihre Ladung bei Regen und verhindern das Herausfallen kleiner Teile.",
     ],
     faqs: [
       { q: "Brauche ich einen speziellen Führerschein?", a: "Für Anhänger bis 750 kg zGG reicht der Führerschein Klasse B. Für schwerere Anhänger benötigen Sie Klasse BE oder B96, je nach Gesamtgewicht des Gespanns." },
-      { q: "Wie funktioniert das 24/7-Codesystem?", a: "Nach der Buchung erhalten Sie per SMS einen Zugangscode. Damit entsperren Sie das elektronische Schloss am Anhänger – rund um die Uhr, ohne Personalaufwand." },
+      { q: "Wie funktioniert das 24/7-Codesystem?", a: "Nach der Buchung erhalten Sie per E-Mail einen Zugangscode. Damit entsperren Sie das elektronische Schloss am Anhänger – rund um die Uhr, ohne Personalaufwand." },
       { q: "Kann ich den Anhänger auch am Wochenende mieten?", a: "Ja! Alle Anhänger sind dank des automatischen Codesystems 24/7 verfügbar – auch an Sonn- und Feiertagen." },
     ],
   },

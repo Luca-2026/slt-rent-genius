@@ -96,7 +96,7 @@ Wir vermieten eine breite Palette an Geräten, darunter:
 **Anhänger (Planenanhänger, Kofferanhänger, Kastenanhänger, Laubgitter, Motorrad-, Auto-, Baumaschinen-, Plattformanhänger, Rückwärtskipper):**
 • Verschiedene Größen von S bis XXL
 • 100 km/h Zulassung, 13-poliger Anschluss
-• 24/7 Selbstbedienungsmiete möglich (per SMS-Code und elektronischem Deichselschloss)
+• 24/7 Selbstbedienungsmiete möglich (per E-Mail-Code und elektronischem Deichselschloss)
 
 **Event & Veranstaltung:**
 • Hüpfburgen & Eventmodule
@@ -181,7 +181,7 @@ Neben der Vermietung verkaufen wir geprüfte Gebrauchtmaschinen aus unserem eige
 === RATGEBER / BLOG ===
 Unter https://www.slt-rental.de/ratgeber findest du redaktionelle Artikel zu typischen Mietfragen. Aktuell verfügbar:
 • /ratgeber/minibagger-mieten-ohne-fuehrerschein – Rechtslage & Einweisungspflicht
-• /ratgeber/anhaenger-24-stunden-mieten-sms-code – Selbstbedienung 24/7
+• /ratgeber/anhaenger-24-stunden-mieten-email-code – Selbstbedienung 24/7
 • /ratgeber/wochenendtarif-vs-tagesmiete – Wann lohnt welcher Tarif?
 • /ratgeber/baustelle-innenstadt-baumaschine-beengte-verhaeltnisse – Maschinenwahl bei engen Zugängen
 • /ratgeber/geschirr-mieten-hochzeit-mengen-checkliste – Mengen für Hochzeiten & Events
@@ -202,7 +202,7 @@ Bewerbungen direkt über das Online-Formular auf der jeweiligen Stellenseite ode
 1. **Online buchen**: Anhänger auf www.slt-rental.de auswählen, Standort wählen, Zeitraum festlegen
 2. **Bestätigung**: Buchungsbestätigung per E-Mail mit allen Details
 3. **24/7-Abholung (Selbstbedienung)**:
-   - Du erhältst einen SMS-Code
+   - Du erhältst einen E-Mail-Code
    - Am Standort den Code am elektronischen Deichselschloss eingeben
    - Anhänger ist sofort fahrbereit
 4. **Während der Miete**:
@@ -302,7 +302,7 @@ Klick auf den passenden Anhänger. Auf der Artikelseite öffnest du über „Jet
 4. Nach dem Anspringen: Choke langsam zurückschieben
 
 **Anhänger-Code funktioniert nicht:**
-1. SMS-Code korrekt eingegeben? (Groß-/Kleinschreibung beachten)
+1. E-Mail-Code korrekt eingegeben? (Groß-/Kleinschreibung beachten)
 2. Richtiger Anhänger? (Kennzeichen mit Buchung vergleichen)
 3. Bei Problemen: Tel. 02151 417 990 4 – auch außerhalb der Öffnungszeiten
 
@@ -866,9 +866,9 @@ const categoryConsult: Record<string, ConsultConfig> = {
       { key: "loadType", answered: /(umzug|transport|m[oö]bel|m[uü]ll|gartenabfall|rasen|laub|motorrad|quad|auto|baumaschine|pflaster|kies|sand|fracht)/i, question: "**Was möchtest du transportieren?** (z. B. Umzugsgut, Gartenabfälle, Pflastersteine, Motorrad …)" },
       { key: "weight", answered: /(\d{3,4}\s*kg|tonne|leergewicht|nutzlast|gesamtgewicht)/i, question: "**Wie schwer ist die Ladung** ungefähr (kg) – brauchst du 750 kg oder einen größeren Anhänger?" },
       { key: "license", answered: /(f[üu]hrerschein|klasse\s*b|be|b96)/i, question: "Welchen **Führerschein** hast du? (Klasse B reicht bis 3,5 t Zugkombi, darüber B96/BE)" },
-      { key: "pickup", answered: /(24[\/ -]?7|selbstabholung|nachts|wochenende|sms|code)/i, question: "Brauchst du **24/7-Abholung per SMS-Code** oder reicht eine Abholung zu den Öffnungszeiten?" },
+      { key: "pickup", answered: /(24[\/ -]?7|selbstabholung|nachts|wochenende|email|code)/i, question: "Brauchst du **24/7-Abholung per E-Mail-Code** oder reicht eine Abholung zu den Öffnungszeiten?" },
     ],
-    extraTips: "Unsere Anhänger haben **100 km/h-Zulassung** und **13-poligen Anschluss** (Adapter auf 7-polig erhältlich). 24/7-Selbstabholung per SMS-Code ist bei den meisten Modellen möglich.",
+    extraTips: "Unsere Anhänger haben **100 km/h-Zulassung** und **13-poligen Anschluss** (Adapter auf 7-polig erhältlich). 24/7-Selbstabholung per E-Mail-Code ist bei den meisten Modellen möglich.",
   },
   erdbewegung: {
     id: "erdbewegung",

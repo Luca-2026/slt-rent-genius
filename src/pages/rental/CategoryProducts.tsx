@@ -1129,7 +1129,7 @@ export default function CategoryProducts() {
 
   // Category-specific meta descriptions with dynamic city name
   const categorySeoDescriptions: Record<string, string> = {
-    anhaenger: `Anhänger mieten in ${cityName} – Anhängerverleih 24/7 per SMS-Code: Planenanhänger, Autotransporter, Baumaschinen- & Kastenanhänger. Online buchbar, Tiefpreisgarantie.`,
+    anhaenger: `Anhänger mieten in ${cityName} – Anhängerverleih 24/7 per E-Mail-Code: Planenanhänger, Autotransporter, Baumaschinen- & Kastenanhänger. Online buchbar, Tiefpreisgarantie.`,
     erdbewegung: `Bagger & Erdbewegungsmaschinen mieten in ${cityName}: Bobcat, Minibagger, Radlader, Dumper + Anbaugeräte. Tiefpreisgarantie, sofort verfügbar.`,
     werkzeuge: `Elektro- & Handwerkzeuge mieten in ${cityName}: Bohrmaschinen, Flex, Sägen, Rotationslaser & mehr. Kurzfristig verfügbar – SLT Rental Tiefpreisgarantie.`,
     gartenpflege: `Gartengeräte mieten in ${cityName}: Kettensäge, Heckenschere, Häcksler, Vertikutierer & Hochdruckreiniger. Online buchbar bei SLT Rental.`,
@@ -1205,8 +1205,8 @@ export default function CategoryProducts() {
   // SEO text content for each category page (array of paragraphs)
   const categorySeoTexts: Record<string, string[]> = {
     anhaenger: [
-      `Sie suchen einen Anhänger zum Mieten in ${location.name}? Bei SLT Rental finden Sie über ${products.length} verschiedene Anhänger-Modelle – vom kleinen ungebremsten Pkw-Anhänger für den Umzug bis zum schweren 3.500 kg Baumaschinenanhänger. Unsere Anhänger sind rund um die Uhr per SMS-Code verfügbar, auch am Wochenende und an Feiertagen.`,
-      `Ob Planenanhänger, Kofferanhänger, Kippanhänger oder Autotransporter: Alle Anhänger werden regelmäßig geprüft und sind sofort einsatzbereit. Die Abholung funktioniert bequem per Smartphone – buchen Sie online und erhalten Sie Ihren Zugangscode per SMS. Attraktive Wochenend-Tarife und Tiefpreisgarantie inklusive.`,
+      `Sie suchen einen Anhänger zum Mieten in ${location.name}? Bei SLT Rental finden Sie über ${products.length} verschiedene Anhänger-Modelle – vom kleinen ungebremsten Pkw-Anhänger für den Umzug bis zum schweren 3.500 kg Baumaschinenanhänger. Unsere Anhänger sind rund um die Uhr per E-Mail-Code verfügbar, auch am Wochenende und an Feiertagen.`,
+      `Ob Planenanhänger, Kofferanhänger, Kippanhänger oder Autotransporter: Alle Anhänger werden regelmäßig geprüft und sind sofort einsatzbereit. Die Abholung funktioniert bequem per Smartphone – buchen Sie online und erhalten Sie Ihren Zugangscode per E-Mail. Attraktive Wochenend-Tarife und Tiefpreisgarantie inklusive.`,
       `SLT Rental ist Ihr Anhängerverleih in ${location.name} und Umgebung. Wir beraten Sie gerne bei der Wahl des richtigen Anhängers für Ihren Transport, Umzug oder Ihr Bauprojekt.${(location.id === "krefeld" || location.id === "bonn") ? " Übrigens: In unserer eigenen Werkstatt führen wir auch Wartungs- und Reparaturarbeiten an Anhängern durch – auch an Fremdgeräten." : ""}`,
     ],
     erdbewegung: [
@@ -1348,7 +1348,7 @@ export default function CategoryProducts() {
   // Category-specific FAQs for FAQ schema
   const categoryFaqs: Record<string, { question: string; answer: string }[]> = {
     anhaenger: [
-      { question: `Kann ich einen Anhänger in ${location.name} auch am Wochenende mieten?`, answer: `Ja! Unsere Anhänger in ${location.name} sind 24/7 per SMS-Code-System verfügbar – auch an Wochenenden und Feiertagen. Sie benötigen lediglich eine Online-Buchung.` },
+      { question: `Kann ich einen Anhänger in ${location.name} auch am Wochenende mieten?`, answer: `Ja! Unsere Anhänger in ${location.name} sind 24/7 per E-Mail-Code-System verfügbar – auch an Wochenenden und Feiertagen. Sie benötigen lediglich eine Online-Buchung.` },
       { question: `Brauche ich einen Führerschein für den Anhänger?`, answer: `Für Anhänger bis 750 kg reicht der Führerschein Klasse B. Für schwerere Anhänger benötigen Sie Klasse BE oder B96.` },
       { question: `Wie lange kann ich einen Anhänger mieten?`, answer: `Sie können unsere Anhänger stundenweise, tageweise oder wochenweise mieten. Langzeitmiete ist auf Anfrage ebenfalls möglich.` },
       { question: `Was kostet ein Anhänger mieten in ${location.name}?`, answer: `Unsere Anhänger gibt es ab 19 €/Tag. Der Preis variiert je nach Größe und Typ. Wochenend-Tarife bieten besonders günstige Konditionen.` },
@@ -1614,8 +1614,8 @@ export default function CategoryProducts() {
                   <Smartphone className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                   <p className="font-semibold text-foreground">{t("rental.trailerSmsCode")}</p>
-                   <p className="text-sm text-muted-foreground">{t("rental.trailerSmsCodeDesc")}</p>
+                   <p className="font-semibold text-foreground">{t("rental.trailerEmailCode")}</p>
+                   <p className="text-sm text-muted-foreground">{t("rental.trailerEmailCodeDesc")}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">

@@ -122,11 +122,11 @@ const faqCategories: FAQCategory[] = [
     questions: [
       {
         q: "Was ist die 24/7-Anhängermiete?",
-        a: "An ausgewählten Anhängern an unseren Standorten kannst du rund um die Uhr selbstständig mieten – auch nachts, am Wochenende und an Feiertagen. Die Freigabe erfolgt per SMS-Code an deinem gebuchten Anhänger.",
+        a: "An ausgewählten Anhängern an unseren Standorten kannst du rund um die Uhr selbstständig mieten – auch nachts, am Wochenende und an Feiertagen. Die Freigabe erfolgt per E-Mail-Code an deinem gebuchten Anhänger.",
       },
       {
-        q: "Wie funktioniert der SMS-Code?",
-        a: "Spätestens 15 Minuten vor Beginn deiner Buchungszeit erhältst du per SMS deinen persönlichen Code. Der Code wird erst aktiv, sobald die Buchungszeit beginnt – vorher funktioniert das Entsperren noch nicht. Damit öffnest du das Bügelschloss am Anhänger.",
+        q: "Wie funktioniert der E-Mail-Code?",
+        a: "Spätestens 15 Minuten vor Beginn deiner Buchungszeit erhältst du per E-Mail deinen persönlichen Code. Der Code wird erst aktiv, sobald die Buchungszeit beginnt – vorher funktioniert das Entsperren noch nicht. Damit öffnest du das Bügelschloss am Anhänger.",
       },
       {
         q: "Wie öffne ich das Bügelschloss?",

@@ -64,7 +64,7 @@
     "title": "Baumaschinen, Anhänger und Eventausstattung mieten –",
     "titleHighlight": "heute in NRW.",
     "subtitle": "1.700 Mietartikel an 3 Standorten in Krefeld, Bonn und Mülheim.",
-    "subtitleLine2": "Anhänger 24/7 in 30 Minuten abholen – per SMS-Code. Tiefpreisgarantie inklusive.",
+    "subtitleLine2": "Anhänger 24/7 in 30 Minuten abholen – per E-Mail-Code. Tiefpreisgarantie inklusive.",
     "searchPlaceholder": "Artikel suchen (z.B. Anhänger, Bagger...)",
     "searchButton": "Suchen",
     "popular": "Beliebt:",
@@ -213,10 +213,10 @@
     "sortimentMuelheim": "In Mülheim finden Sie zudem unser",
     "bobcatProgram": "Bobcat-Programm",
     "sortimentMuelheimEnd": "mit Kompaktbaggern, Knickdumpern und Radladern für professionelle Erdbewegung.",
-    "trailerHeading": "Anhänger mieten – 24/7 per SMS-Code",
+    "trailerHeading": "Anhänger mieten – 24/7 per E-Mail-Code",
     "trailerIntro": "Unsere",
     "trailers": "Anhänger",
-    "trailerText": "sind rund um die Uhr verfügbar – auch an Wochenenden und Feiertagen. Dank unserem SMS-Code-System können Sie Ihren Anhänger jederzeit selbstständig abholen und zurückbringen. Ob Planenanhänger, Autotransporter, Baumaschinenanhänger oder Kastenanhänger mit Laubgitter: Bei uns finden Sie das passende Modell für jeden Einsatz.",
+    "trailerText": "sind rund um die Uhr verfügbar – auch an Wochenenden und Feiertagen. Dank unserem E-Mail-Code-System können Sie Ihren Anhänger jederzeit selbstständig abholen und zurückbringen. Ob Planenanhänger, Autotransporter, Baumaschinenanhänger oder Kastenanhänger mit Laubgitter: Bei uns finden Sie das passende Modell für jeden Einsatz.",
     "priceHeading": "Faire Preise & Tiefpreisgarantie",
     "priceText1": "Bei SLT Rental profitieren Sie von unserer",
     "priceGuarantee": "Tiefpreisgarantie",
@@ -340,8 +340,8 @@
     "accessoriesHint": "Passende Anbaugeräte und Transportlösungen für diese Maschine – einfach dazu buchen.",
     "available247": "24/7 Verfügbar",
     "available247Desc": "Rund um die Uhr mietbar",
-    "smsCodeSystem": "SMS-Code System",
-    "smsCodeSystemDesc": "Nach Buchung erhalten Sie einen SMS-Code zum Entsperren des Anhängers.",
+    "emailCodeSystem": "E-Mail-Code-System",
+    "emailCodeSystemDesc": "Nach Buchung erhalten Sie einen E-Mail-Code zum Entsperren des Anhängers.",
     "electronicLock": "Elektronisches Schloss",
     "electronicLockDesc": "Code am Schloss der Deichsel eingeben und Anhänger mitnehmen.",
     "selfPickup": "Selbstabholung",
@@ -349,8 +349,8 @@
     "idRequired": "Personalausweis für Identifikation bei der Buchung erforderlich",
     "trailerAvailable247": "24/7 verfügbar",
     "trailerCodeSystem": "Mieten per Codesystem",
-    "trailerSmsCode": "SMS-Code nach Zahlung",
-    "trailerSmsCodeDesc": "Code nur im Mietzeitraum gültig",
+    "trailerEmailCode": "E-Mail-Code nach Zahlung",
+    "trailerEmailCodeDesc": "Code nur im Mietzeitraum gültig",
     "trailerUnlock": "Schloss entsperren",
     "trailerUnlockDesc": "Rückgabe am Abholort",
     "trailerWeight": "750 kg bis 3.500 kg",
@@ -359,7 +359,7 @@
     "trailerLoadGuideDesc": "Lesen Sie unsere Schritt-für-Schritt-Anleitung zur korrekten Beladung und Sicherung Ihres Mietanhängers.",
     "trailerLoadGuideLink": "Zur Ladungssicherungs-Anleitung →",
     "trailerCodeGuide": "Kontaktlose Miete: So funktioniert das Codesystem",
-    "trailerCodeGuideDesc": "SMS-Code empfangen, Schloss öffnen, Anhänger abholen – ganz ohne persönlichen Kontakt.",
+    "trailerCodeGuideDesc": "E-Mail-Code empfangen, Schloss öffnen, Anhänger abholen – ganz ohne persönlichen Kontakt.",
     "trailerCodeGuideLink": "Zum Codesystem-Guide →",
     "trailerLicenseGuide": "Welcher Führerschein für welchen Anhänger?",
     "trailerLicenseGuideDesc": "Klasse B, B96 oder BE? Alle Infos zu Führerscheinklassen, Anhängelasten und Zugfahrzeug-Voraussetzungen.",
@@ -698,7 +698,7 @@
       "umzug-transport": {
         "title": "Umzug & Transport",
         "subtitle": "Privat- und Firmenumzüge",
-        "description": "Unsere 24/7 Anhängermiete macht Umzüge flexibel und günstig. Per SMS-Code abholbereit – auch nachts und am Wochenende. Für jeden Transport der passende Anhänger.",
+        "description": "Unsere 24/7 Anhängermiete macht Umzüge flexibel und günstig. Per E-Mail-Code abholbereit – auch nachts und am Wochenende. Für jeden Transport der passende Anhänger.",
         "highlights": [
           "Planenanhänger S bis XXL",
           "Kofferanhänger abschließbar",
@@ -712,7 +712,7 @@
           },
           {
             "heading": "24/7 Self-Service: So funktioniert's",
-            "text": "Unsere Anhängermiete funktioniert rund um die Uhr – auch nachts, am Wochenende und an Feiertagen. So geht's: 1. Online buchen und Wunschzeitraum wählen. 2. SMS-Code erhalten – der Code öffnet das Schloss am Anhänger. 3. Anhänger abholen – jederzeit, ganz ohne Wartezeit. 4. Anhänger zurückbringen – einfach am gleichen Platz abstellen. Das ist besonders praktisch für spontane Transporte oder Umzüge am Wochenende."
+            "text": "Unsere Anhängermiete funktioniert rund um die Uhr – auch nachts, am Wochenende und an Feiertagen. So geht's: 1. Online buchen und Wunschzeitraum wählen. 2. E-Mail-Code erhalten – der Code öffnet das Schloss am Anhänger. 3. Anhänger abholen – jederzeit, ganz ohne Wartezeit. 4. Anhänger zurückbringen – einfach am gleichen Platz abstellen. Das ist besonders praktisch für spontane Transporte oder Umzüge am Wochenende."
           },
           {
             "heading": "Umzugs-Checkliste: Daran solltest du denken",
@@ -720,7 +720,7 @@
           }
         ],
         "advantages": [
-          "24/7 Verfügbarkeit per SMS-Code",
+          "24/7 Verfügbarkeit per E-Mail-Code",
           "Günstige Wochenend-Tarife",
           "Alle Größen von S bis XXL",
           "Kein Anhängerführerschein nötig bis 750 kg"
@@ -732,7 +732,7 @@
           },
           {
             "q": "Wie funktioniert die 24/7-Miete genau?",
-            "a": "Du buchst online und erhältst per SMS einen Code. Damit öffnest du das Schloss am Anhänger – jederzeit, auch nachts und am Wochenende. Kein Kontakt mit Personal nötig, volle Flexibilität."
+            "a": "Du buchst online und erhältst per E-Mail einen Code. Damit öffnest du das Schloss am Anhänger – jederzeit, auch nachts und am Wochenende. Kein Kontakt mit Personal nötig, volle Flexibilität."
           },
           {
             "q": "Welche Anhängergröße brauche ich für einen Umzug?",
@@ -1479,7 +1479,7 @@
       "3_1_title": "3.1 Übergabeort und -zeit",
       "3_1": "Die Übergabe erfolgt zum vereinbarten Mietbeginn an einem der Geschäftssitze von SLT (Krefeld, Bonn oder Mülheim an der Ruhr), sofern nichts anderes schriftlich vereinbart ist. Ein Versand oder eine Anlieferung erfolgt nach individueller Vereinbarung und gegen gesondertes Entgelt.",
       "3_1a_title": "3.1a Kontaktlose Übergabe von Anhängern",
-      "3_1a": "Anhänger können nach vorheriger Vereinbarung kontaktlos mittels Code-System übergeben und zurückgenommen werden. Der Zugangscode ist ausschließlich für den vereinbarten Mietzeitraum gültig. Der Mieter ist verpflichtet, Verspätungen bzw. eine notwendige Verlängerung der Mietzeit rechtzeitig, mindestens 2 Stunden vor Mietende, schriftlich gegenüber SLT anzuzeigen. Erfolgt keine rechtzeitige Mitteilung, bleibt SLT die Berechnung der zusätzlichen Mietzeit und etwaiger Mehraufwände vorbehalten. Die Codes werden per SMS an die im Buchungsprozess angegebene Mobilfunknummer des Mieters versandt. Mit Eingabe seiner Mobilfunknummer im Buchungsprozess stimmt der Mieter dem Erhalt von SMS zum Zwecke der Abwicklung des Mietverhältnisses ausdrücklich zu.",
+      "3_1a": "Anhänger können nach vorheriger Vereinbarung kontaktlos mittels Code-System übergeben und zurückgenommen werden. Der Zugangscode ist ausschließlich für den vereinbarten Mietzeitraum gültig. Der Mieter ist verpflichtet, Verspätungen bzw. eine notwendige Verlängerung der Mietzeit rechtzeitig, mindestens 2 Stunden vor Mietende, schriftlich gegenüber SLT anzuzeigen. Erfolgt keine rechtzeitige Mitteilung, bleibt SLT die Berechnung der zusätzlichen Mietzeit und etwaiger Mehraufwände vorbehalten. Die Codes werden per E-Mail an die im Buchungsprozess angegebene E-Mail-Adresse des Mieters versandt. Mit Eingabe seiner E-Mail-Adresse im Buchungsprozess stimmt der Mieter dem Erhalt dieser E-Mails zum Zwecke der Abwicklung des Mietverhältnisses ausdrücklich zu.",
       "3_2_title": "3.2 Zustandsprüfung bei Übergabe",
       "3_2": "Bei Übergabe hat der Mieter den Zustand, die Vollständigkeit und die Funktion der Mietsache zu prüfen. Die Übernahme durch Unterzeichnung des Lieferscheins oder Übergabeprotokolls gilt als Anerkennung des ordnungsgemäßen Zustandes der Mietsache.",
       "3_3_title": "3.3 Pflichten des Mieters beim Umgang mit der Mietsache",

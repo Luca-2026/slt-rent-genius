@@ -258,7 +258,7 @@ export const productCategories: ProductCategory[] = [
   {
     id: "anhaenger",
     title: "Anhänger",
-    description: "24/7 mietbar per Codesystem – SMS-Code nach Zahlung, Schloss an Deichsel entsperren, Rückgabe am Abholort.",
+    description: "24/7 mietbar per Codesystem – E-Mail-Code nach Zahlung, Schloss an Deichsel entsperren, Rückgabe am Abholort.",
     icon: iconAnhaenger,
   },
   {
