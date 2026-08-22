@@ -8,6 +8,7 @@ import type { Product } from "@/data/rentalData";
 import { useTranslatedProduct } from "@/hooks/useTranslatedProduct";
 import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
 import { getProductSEO } from "@/data/productSEOData";
+import { formatPriceValue } from "@/components/rental/ProductPriceBlock";
 
 interface ProductCardProps {
   product: Product;
@@ -28,13 +29,13 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
     : undefined;
   // Hauptpreis: Tagespreis > SEO-Ab-Preis > Monatspreis > Wochenendpreis
   const fallbackMain = !product.pricePerDay && !seoPriceFrom
-    ? (product.pricePerMonth ? { value: product.pricePerMonth, unit: "/Monat" } :
-       product.priceWeekend ? { value: product.priceWeekend, unit: "/Wochenende" } : undefined)
+    ? (product.pricePerMonth ? { value: formatPriceValue(product.pricePerMonth), unit: "/Monat" } :
+       product.priceWeekend ? { value: formatPriceValue(product.priceWeekend), unit: "/Wochenende" } : undefined)
     : undefined;
-  const displayPrice = product.pricePerDay || seoPriceFrom || fallbackMain?.value;
+  const displayPrice = (product.pricePerDay ? formatPriceValue(product.pricePerDay) : undefined) || seoPriceFrom || fallbackMain?.value;
   const displayUnit = fallbackMain ? fallbackMain.unit : (product.priceUnitLabel ?? "/Tag");
-  const showWeekendRow = Boolean(product.priceWeekend) && product.priceWeekend !== displayPrice;
-  const showMonthRow = Boolean(product.pricePerMonth) && product.pricePerMonth !== displayPrice;
+  const showWeekendRow = Boolean(product.priceWeekend) && formatPriceValue(product.priceWeekend!) !== displayPrice;
+  const showMonthRow = Boolean(product.pricePerMonth) && formatPriceValue(product.pricePerMonth!) !== displayPrice;
 
   const handlePrev = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -164,7 +165,7 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
                 {showWeekendRow && (
                   <li className="flex flex-wrap items-baseline justify-between gap-x-2 text-xs">
                     <span className="text-muted-foreground">Wochenende</span>
-                    <span className="font-semibold text-foreground">{product.priceWeekend}</span>
+                    <span className="font-semibold text-foreground">{formatPriceValue(product.priceWeekend!)}</span>
                   </li>
                 )}
                 {showMonthRow && (
@@ -172,7 +173,7 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
                     <span className="text-muted-foreground">
                       {product.minRentalMonths ? `Monat (ab ${product.minRentalMonths} Mon.)` : "Monat"}
                     </span>
-                    <span className="font-semibold text-foreground">{product.pricePerMonth}</span>
+                    <span className="font-semibold text-foreground">{formatPriceValue(product.pricePerMonth!)}</span>
                   </li>
                 )}
               </ul>

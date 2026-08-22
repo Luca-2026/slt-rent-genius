@@ -16,6 +16,12 @@ export interface ProductPriceBlockProps {
   className?: string;
 }
 
+/** Ergänzt fehlende Währungsangabe, wenn im CMS nur eine Zahl gepflegt wurde. */
+export function formatPriceValue(value: string): string {
+  const v = value.trim();
+  return /^[\d.,]+$/.test(v) ? `${v} €` : v;
+}
+
 function formatFrom(value: number) {
   return `ab ${Number.isInteger(value) ? value : value.toFixed(2).replace(".", ",")} €`;
 }
@@ -44,30 +50,30 @@ export function ProductPriceBlock({
   let mainValue: string;
   let mainUnit: string;
   if (hasDay) {
-    mainValue = product.pricePerDay!;
+    mainValue = formatPriceValue(product.pricePerDay!);
     mainUnit = product.priceUnitLabel ?? perDayLabel;
   } else if (hasSeoFrom) {
     mainValue = formatFrom(dailyPriceFrom!);
     mainUnit = product.priceUnitLabel ?? perDayLabel;
   } else if (hasMonth) {
-    mainValue = product.pricePerMonth!;
+    mainValue = formatPriceValue(product.pricePerMonth!);
     mainUnit = product.priceUnitLabel ?? "/ Monat";
   } else {
-    mainValue = product.priceWeekend!;
+    mainValue = formatPriceValue(product.priceWeekend!);
     mainUnit = "/ Wochenende";
   }
 
   // Zusatztarife (nur, was nicht schon Hauptpreis ist)
   const extras: Array<{ label: string; value: string }> = [];
-  if (hasWeekend && mainValue !== product.priceWeekend) {
-    extras.push({ label: "Wochenende", value: product.priceWeekend! });
+  if (hasWeekend && mainValue !== formatPriceValue(product.priceWeekend!)) {
+    extras.push({ label: "Wochenende", value: formatPriceValue(product.priceWeekend!) });
   }
-  if (hasMonth && mainValue !== product.pricePerMonth) {
+  if (hasMonth && mainValue !== formatPriceValue(product.pricePerMonth!)) {
     extras.push({
       label: product.minRentalMonths
         ? `Monat (ab ${product.minRentalMonths} Mon.)`
         : "Monat",
-      value: product.pricePerMonth!,
+      value: formatPriceValue(product.pricePerMonth!),
     });
   }
 
