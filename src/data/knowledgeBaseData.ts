@@ -249,25 +249,25 @@ export const kbArticles: KBArticle[] = [
   {
     id: "anhaenger-codesystem",
     title: "Kontaktlose Anhängermiete: So funktioniert das Codesystem",
-    description: "SMS-Code empfangen, Schloss öffnen, Anhänger abholen und zurückbringen – ganz ohne persönlichen Kontakt.",
+    description: "E-Mail-Code empfangen, Schloss öffnen, Anhänger abholen und zurückbringen – ganz ohne persönlichen Kontakt.",
     categoryId: "anhaenger",
     type: "anleitung",
-    tags: ["codesystem", "24/7", "sms", "schloss", "selbstbedienung", "kontaktlos", "code"],
+    tags: ["codesystem", "24/7", "email", "schloss", "selbstbedienung", "kontaktlos", "code"],
     updatedAt: "2026-04-04",
     sections: [
       {
         type: "info",
         icon: "Smartphone",
         heading: "Was ist das Codesystem?",
-        text: "Das kontaktlose Mietsystem ermöglicht es Ihnen, Ihren Anhänger bequem und sicher ohne persönlichen Kontakt abzuholen und zurückzubringen. Der SMS-Code dient als digitaler Schlüssel für das Zahlenschloss an der Deichsel.",
+        text: "Das kontaktlose Mietsystem ermöglicht es Ihnen, Ihren Anhänger bequem und sicher ohne persönlichen Kontakt abzuholen und zurückzubringen. Der E-Mail-Code dient als digitaler Schlüssel für das Zahlenschloss an der Deichsel.",
       },
       {
         icon: "MessageSquare",
         heading: "Code-Empfang und Gültigkeit",
         items: [
-          "Spätestens 15 Minuten vor Beginn der Buchungszeit erhalten Sie den SMS-Code an die hinterlegte Mobilnummer. Der Code wird erst aktiv, sobald die Buchungszeit beginnt – vorher funktioniert das Entsperren noch nicht.",
+          "Spätestens 15 Minuten vor Beginn der Buchungszeit erhalten Sie den E-Mail-Code an die hinterlegte Mobilnummer. Der Code wird erst aktiv, sobald die Buchungszeit beginnt – vorher funktioniert das Entsperren noch nicht.",
           "Der Code ist ausschließlich für Ihre Buchung und während des Mietzeitraums gültig.",
-          "Bewahren Sie die SMS sicher auf – es wird kein Ersatzcode ausgestellt.",
+          "Bewahren Sie die E-Mail sicher auf – es wird kein Ersatzcode ausgestellt.",
         ],
       },
       {
@@ -275,7 +275,7 @@ export const kbArticles: KBArticle[] = [
         heading: "Anhänger entsperren – Schritt für Schritt",
         items: [
           "Stellen Sie sicher, dass Sie sich am richtigen Anhänger befinden (Kennzeichen mit Buchung abgleichen).",
-          "Geben Sie den Code aus der SMS am Schloss vorne an der Deichsel ein.",
+          "Geben Sie den Code aus der E-Mail am Schloss vorne an der Deichsel ein.",
           "Bestätigen Sie die Eingabe durch Drücken der Schloss-Taste.",
           "Ziehen Sie anschließend kräftig am Bügel – das Schloss öffnet sich, und Sie können den Anhänger ankuppeln.",
         ],

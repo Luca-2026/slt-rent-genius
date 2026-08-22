@@ -48,7 +48,7 @@ const faqData = [
   },
   {
     question: "Kann ich einen Anhänger auch am Wochenende abholen?",
-    answer: "Ja! An unserem Standort Mülheim an der Ruhr bieten wir für Anhänger einen 24/7-Service per SMS-Code an. Sie können Ihren Anhänger rund um die Uhr abholen und zurückbringen – auch an Sonn- und Feiertagen. An den Standorten Krefeld und Bonn gelten die regulären Öffnungszeiten.",
+    answer: "Ja! An unserem Standort Mülheim an der Ruhr bieten wir für Anhänger einen 24/7-Service per E-Mail-Code an. Sie können Ihren Anhänger rund um die Uhr abholen und zurückbringen – auch an Sonn- und Feiertagen. An den Standorten Krefeld und Bonn gelten die regulären Öffnungszeiten.",
   },
   {
     question: "Liefert SLT Rental direkt zur Baustelle?",
@@ -280,7 +280,7 @@ export default function Mietartikel() {
               Ob Sie einen <strong className="text-foreground">Bagger</strong> für den Aushub, eine <strong className="text-foreground">Rüttelplatte</strong> für den Wegebau, einen <strong className="text-foreground">Anhänger</strong> für den Transport oder <strong className="text-foreground">Arbeitsbühnen</strong> für Arbeiten in der Höhe benötigen – bei SLT Rental finden Sie das passende Equipment. Für Events und Veranstaltungen bieten wir <strong className="text-foreground">Geschirr & Gläser</strong>, <strong className="text-foreground">PA-Anlagen</strong>, Beleuchtung, Bühnen und sogar Hüpfburgen. Neu im Sortiment: <strong className="text-foreground">Wohnwagen & Camping</strong> – unser familientauglicher Weinsberg CaraOne 480 QDK ist auf Anfrage an allen drei Standorten verfügbar.
             </p>
             <p>
-              Profitieren Sie von unserer <strong className="text-foreground">Tiefpreisgarantie</strong>, attraktiven <strong className="text-foreground">Wochenendtarifen</strong> und der bequemen Online-Buchung. Anhänger sind in Mülheim an der Ruhr per SMS-Code sogar <strong className="text-foreground">24/7</strong> verfügbar. Für Geschäftskunden bieten wir individuelle <strong className="text-foreground">B2B-Konditionen</strong> mit Rahmenverträgen und Mengenrabatten. Lieferung ins gesamte Rhein-Ruhr-Gebiet auf Anfrage.
+              Profitieren Sie von unserer <strong className="text-foreground">Tiefpreisgarantie</strong>, attraktiven <strong className="text-foreground">Wochenendtarifen</strong> und der bequemen Online-Buchung. Anhänger sind in Mülheim an der Ruhr per E-Mail-Code sogar <strong className="text-foreground">24/7</strong> verfügbar. Für Geschäftskunden bieten wir individuelle <strong className="text-foreground">B2B-Konditionen</strong> mit Rahmenverträgen und Mengenrabatten. Lieferung ins gesamte Rhein-Ruhr-Gebiet auf Anfrage.
             </p>
           </div>
         </AnimatedSection>

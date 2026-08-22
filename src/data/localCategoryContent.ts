@@ -82,17 +82,17 @@ export const localCategoryContent: LocalContentMap = {
 
     anhaenger: {
       hookline:
-        "Auto-, Kasten-, Planen-, Koffer-, Baumaschinen- und Aggregat-Anhänger mietest du an unserer Filiale Bonn – 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss abholbar und zurückgebbar. Anhänger werden grundsätzlich abgeholt, eine Lieferung bieten wir hierfür nicht an.",
+        "Auto-, Kasten-, Planen-, Koffer-, Baumaschinen- und Aggregat-Anhänger mietest du an unserer Filiale Bonn – 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss abholbar und zurückgebbar. Anhänger werden grundsätzlich abgeholt, eine Lieferung bieten wir hierfür nicht an.",
       standortFakten:
-        "Abholung und Rückgabe an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg) – 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss, auch nachts, sonntags und an Feiertagen, ohne Personalaufwand. Für persönliche Einweisung, Zubehör (Planen, Spanngurte) oder Beratung sind wir Mo–Fr ab 07:00 Uhr und samstags regulär von 08:00 bis 17:30 Uhr vor Ort. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565. Hinweis: Mietanhänger werden ausschließlich vor Ort abgeholt und zurückgegeben – eine Lieferung wie bei Baumaschinen ist für Anhänger und Nutzfahrzeuge nicht vorgesehen.",
+        "Abholung und Rückgabe an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg) – 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss, auch nachts, sonntags und an Feiertagen, ohne Personalaufwand. Für persönliche Einweisung, Zubehör (Planen, Spanngurte) oder Beratung sind wir Mo–Fr ab 07:00 Uhr und samstags regulär von 08:00 bis 17:30 Uhr vor Ort. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565. Hinweis: Mietanhänger werden ausschließlich vor Ort abgeholt und zurückgegeben – eine Lieferung wie bei Baumaschinen ist für Anhänger und Nutzfahrzeuge nicht vorgesehen.",
       faqs: [
         {
           q: "Kann ich den Anhänger an der Filiale Bonn auch nachts, sonntags oder an Feiertagen abholen und zurückgeben?",
-          a: "Ja. An unserem Standort Drachenburgstraße 8 in Bonn-Bad Godesberg sind alle Mietanhänger 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss abholbar und zurückgebbar – auch nachts, sonntags und an Feiertagen, ohne dass jemand vor Ort sein muss. Nach der Buchung bekommst du den Code per SMS. Für persönliche Einweisung oder Zubehör nutze zusätzlich unsere regulären Öffnungszeiten Mo–Fr 07:00–18:00 und Sa 08:00–17:30.",
+          a: "Ja. An unserem Standort Drachenburgstraße 8 in Bonn-Bad Godesberg sind alle Mietanhänger 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss abholbar und zurückgebbar – auch nachts, sonntags und an Feiertagen, ohne dass jemand vor Ort sein muss. Nach der Buchung bekommst du den Code per E-Mail. Für persönliche Einweisung oder Zubehör nutze zusätzlich unsere regulären Öffnungszeiten Mo–Fr 07:00–18:00 und Sa 08:00–17:30.",
         },
         {
           q: "Liefert ihr Anhänger auch nach Bonn oder ins Ahrtal?",
-          a: "Nein. Anhänger und Nutzfahrzeuge werden bei uns grundsätzlich nicht geliefert – sie werden an der Filiale Bonn (Drachenburgstraße 8) abgeholt und dort wieder zurückgegeben. Dafür ist die Abholung und Rückgabe 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss möglich, also völlig unabhängig von Öffnungszeiten.",
+          a: "Nein. Anhänger und Nutzfahrzeuge werden bei uns grundsätzlich nicht geliefert – sie werden an der Filiale Bonn (Drachenburgstraße 8) abgeholt und dort wieder zurückgegeben. Dafür ist die Abholung und Rückgabe 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss möglich, also völlig unabhängig von Öffnungszeiten.",
         },
         {
           q: "Welche Anhänger habt ihr an der Filiale Bonn vor Ort?",
@@ -536,24 +536,24 @@ export const localCategoryContent: LocalContentMap = {
         },
         {
           q: "Wie transportiere ich den Getränkekühlschrank ab Krefeld?",
-          a: "Der Getränkekühlschrank 236 l wiegt 45 kg, misst 54 × 55 × 144 cm und muss stehend transportiert werden. Für die Selbstabholung an der Anrather Straße 291 brauchst du daher einen Kombi, Transporter oder Kofferanhänger – passende Anhänger vermieten wir am selben Standort 24/7 per SMS-Code. Alternativ liefern wir das Gerät auf Anfrage.",
+          a: "Der Getränkekühlschrank 236 l wiegt 45 kg, misst 54 × 55 × 144 cm und muss stehend transportiert werden. Für die Selbstabholung an der Anrather Straße 291 brauchst du daher einen Kombi, Transporter oder Kofferanhänger – passende Anhänger vermieten wir am selben Standort 24/7 per E-Mail-Code. Alternativ liefern wir das Gerät auf Anfrage.",
         },
       ],
     },
 
     anhaenger: {
       hookline:
-        "Auto-, Kasten-, Planen-, Koffer-, Baumaschinen- und Aggregat-Anhänger mietest du an unserem Hauptsitz Krefeld – 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss abholbar und zurückgebbar. Anhänger werden grundsätzlich abgeholt, eine Lieferung bieten wir hierfür nicht an.",
+        "Auto-, Kasten-, Planen-, Koffer-, Baumaschinen- und Aggregat-Anhänger mietest du an unserem Hauptsitz Krefeld – 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss abholbar und zurückgebbar. Anhänger werden grundsätzlich abgeholt, eine Lieferung bieten wir hierfür nicht an.",
       standortFakten:
-        "Abholung und Rückgabe an unserem Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain – 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss, auch nachts, sonntags und an Feiertagen, ohne Personalaufwand. Für persönliche Einweisung, Zubehör (Planen, Spanngurte) oder Beratung sind wir Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr vor Ort, samstags früher nach vorheriger Buchung möglich. Anfahrt direkt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). Hinweis: Mietanhänger werden ausschließlich vor Ort abgeholt und zurückgegeben – eine Lieferung wie bei Baumaschinen ist für Anhänger und Nutzfahrzeuge nicht vorgesehen.",
+        "Abholung und Rückgabe an unserem Hauptsitz Krefeld, Anrather Straße 291, 47807 Krefeld-Fichtenhain – 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss, auch nachts, sonntags und an Feiertagen, ohne Personalaufwand. Für persönliche Einweisung, Zubehör (Planen, Spanngurte) oder Beratung sind wir Mo–Fr 08:00–18:00 Uhr und samstags 10:00–14:30 Uhr vor Ort, samstags früher nach vorheriger Buchung möglich. Anfahrt direkt über die A57 (Krefeld–Düsseldorf) und die A40 (Ruhrschnellweg). Hinweis: Mietanhänger werden ausschließlich vor Ort abgeholt und zurückgegeben – eine Lieferung wie bei Baumaschinen ist für Anhänger und Nutzfahrzeuge nicht vorgesehen.",
       faqs: [
         {
           q: "Kann ich den Anhänger am Hauptsitz Krefeld auch nachts, sonntags oder an Feiertagen abholen und zurückgeben?",
-          a: "Ja. An unserem Hauptsitz Anrather Straße 291 in Krefeld-Fichtenhain sind alle Mietanhänger 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss abholbar und zurückgebbar – auch nachts, sonntags und an Feiertagen, ohne dass jemand vor Ort sein muss. Nach der Buchung bekommst du den Code per SMS. Für persönliche Einweisung oder Zubehör nutze zusätzlich unsere regulären Öffnungszeiten Mo–Fr 08:00–18:00 und Sa 10:00–14:30 (früher nach vorheriger Buchung möglich).",
+          a: "Ja. An unserem Hauptsitz Anrather Straße 291 in Krefeld-Fichtenhain sind alle Mietanhänger 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss abholbar und zurückgebbar – auch nachts, sonntags und an Feiertagen, ohne dass jemand vor Ort sein muss. Nach der Buchung bekommst du den Code per E-Mail. Für persönliche Einweisung oder Zubehör nutze zusätzlich unsere regulären Öffnungszeiten Mo–Fr 08:00–18:00 und Sa 10:00–14:30 (früher nach vorheriger Buchung möglich).",
         },
         {
           q: "Liefert ihr Anhänger auch nach Krefeld oder in die Umgebung?",
-          a: "Nein. Anhänger und Nutzfahrzeuge werden bei uns grundsätzlich nicht geliefert – sie werden an unserem Hauptsitz Krefeld (Anrather Straße 291) abgeholt und dort wieder zurückgegeben. Dafür ist die Abholung und Rückgabe 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss möglich, also völlig unabhängig von Öffnungszeiten.",
+          a: "Nein. Anhänger und Nutzfahrzeuge werden bei uns grundsätzlich nicht geliefert – sie werden an unserem Hauptsitz Krefeld (Anrather Straße 291) abgeholt und dort wieder zurückgegeben. Dafür ist die Abholung und Rückgabe 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss möglich, also völlig unabhängig von Öffnungszeiten.",
         },
         {
           q: "Welche Anhänger habt ihr am Hauptsitz Krefeld vor Ort?",
@@ -754,17 +754,17 @@ export const localCategoryContent: LocalContentMap = {
 
     anhaenger: {
       hookline:
-        "Anhänger für das Ruhrgebiet – 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss abholbar und zurückgebbar an unserem Service-Standort Mülheim in der Bobcat-Filiale. Anhänger werden grundsätzlich abgeholt, eine Lieferung bieten wir hierfür nicht an.",
+        "Anhänger für das Ruhrgebiet – 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss abholbar und zurückgebbar an unserem Service-Standort Mülheim in der Bobcat-Filiale. Anhänger werden grundsätzlich abgeholt, eine Lieferung bieten wir hierfür nicht an.",
       standortFakten:
-        "Abholung und Rückgabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr, eingebettet in die Bobcat-Filiale vor Ort – 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss, auch nachts, sonntags und an Feiertagen. Persönliche Übergabe, Einweisung und Beratung nach Vereinbarung. Anfahrt direkt über A40 (Ruhrschnellweg) und A52. Hinweis: Mietanhänger und Nutzfahrzeuge werden ausschließlich vor Ort abgeholt und zurückgegeben – eine Lieferung wie bei Baumaschinen ist hierfür nicht vorgesehen.",
+        "Abholung und Rückgabe an unserem Service-Standort Ruhrorter Str. 122, 45478 Mülheim an der Ruhr, eingebettet in die Bobcat-Filiale vor Ort – 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss, auch nachts, sonntags und an Feiertagen. Persönliche Übergabe, Einweisung und Beratung nach Vereinbarung. Anfahrt direkt über A40 (Ruhrschnellweg) und A52. Hinweis: Mietanhänger und Nutzfahrzeuge werden ausschließlich vor Ort abgeholt und zurückgegeben – eine Lieferung wie bei Baumaschinen ist hierfür nicht vorgesehen.",
       faqs: [
         {
           q: "Kann ich den Anhänger in Mülheim auch nachts, sonntags oder an Feiertagen abholen und zurückgeben?",
-          a: "Ja. An unserem Standort Ruhrorter Str. 122 in der Bobcat-Filiale Mülheim sind Mietanhänger 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss abholbar und zurückgebbar – auch nachts, sonntags und an Feiertagen, ohne dass jemand vor Ort sein muss. Nach der Buchung bekommst du den Code per SMS. Persönliche Übergabe und Einweisung sind zusätzlich nach Vereinbarung möglich.",
+          a: "Ja. An unserem Standort Ruhrorter Str. 122 in der Bobcat-Filiale Mülheim sind Mietanhänger 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss abholbar und zurückgebbar – auch nachts, sonntags und an Feiertagen, ohne dass jemand vor Ort sein muss. Nach der Buchung bekommst du den Code per E-Mail. Persönliche Übergabe und Einweisung sind zusätzlich nach Vereinbarung möglich.",
         },
         {
           q: "Liefert ihr Anhänger auch ins Ruhrgebiet?",
-          a: "Nein. Anhänger und Nutzfahrzeuge werden bei uns grundsätzlich nicht geliefert – sie werden am Service-Standort Mülheim (Ruhrorter Str. 122) abgeholt und dort wieder zurückgegeben. Dafür ist die Abholung und Rückgabe 24/7 an 365 Tagen im Jahr per SMS-Code-Schloss möglich, also unabhängig von Öffnungszeiten.",
+          a: "Nein. Anhänger und Nutzfahrzeuge werden bei uns grundsätzlich nicht geliefert – sie werden am Service-Standort Mülheim (Ruhrorter Str. 122) abgeholt und dort wieder zurückgegeben. Dafür ist die Abholung und Rückgabe 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss möglich, also unabhängig von Öffnungszeiten.",
         },
         {
           q: "Welche Anhänger habt ihr am Standort Mülheim vor Ort?",

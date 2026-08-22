@@ -3,7 +3,7 @@
 
 export const categoryTranslations: Record<string, { title: string; description: string }> = {
   alle: { title: "All Items", description: "All available rental products at this location." },
-  anhaenger: { title: "Trailers", description: "Available 24/7 via code system – SMS code after payment, unlock hitch lock, return to pickup location." },
+  anhaenger: { title: "Trailers", description: "Available 24/7 via code system – email code after payment, unlock hitch lock, return to pickup location." },
   erdbewegung: { title: "Earthmoving", description: "Mini excavators, wheel loaders, dumpers and attachments for every construction project." },
   werkzeuge: { title: "Tools", description: "Hand and power tools for construction and renovation." },
   gartenpflege: { title: "Garden Care", description: "Lawn mowers, scarifiers, shredders and garden tools." },

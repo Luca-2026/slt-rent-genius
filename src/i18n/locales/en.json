@@ -64,7 +64,7 @@
     "title": "Rent excavators, trailers and event tech –",
     "titleHighlight": "today in NRW.",
     "subtitle": "1,700 rental items at 3 locations in Krefeld, Bonn and Mülheim.",
-    "subtitleLine2": "Pick up trailers 24/7 in 30 minutes – via SMS code. Low-price guarantee included.",
+    "subtitleLine2": "Pick up trailers 24/7 in 30 minutes – per E-Mail code. Low-price guarantee included.",
     "searchPlaceholder": "Search equipment (e.g. trailer, excavator...)",
     "searchButton": "Search",
     "popular": "Popular:",
@@ -213,10 +213,10 @@
     "sortimentMuelheim": "In Mülheim, you'll also find our",
     "bobcatProgram": "Bobcat program",
     "sortimentMuelheimEnd": "with compact excavators, articulated dumpers, and wheel loaders for professional earthmoving.",
-    "trailerHeading": "Rent Trailers – 24/7 via SMS Code",
+    "trailerHeading": "Rent Trailers – 24/7 per E-Mail Code",
     "trailerIntro": "Our",
     "trailers": "trailers",
-    "trailerText": "are available around the clock – including weekends and public holidays. Thanks to our SMS code system, you can pick up and return your trailer independently at any time. Whether covered trailers, car transporters, machinery trailers, or box trailers with leaf guards – we have the right model for every purpose.",
+    "trailerText": "are available around the clock – including weekends and public holidays. Thanks to our email code system, you can pick up and return your trailer independently at any time. Whether covered trailers, car transporters, machinery trailers, or box trailers with leaf guards – we have the right model for every purpose.",
     "priceHeading": "Fair Prices & Best Price Guarantee",
     "priceText1": "At SLT Rental, you benefit from our",
     "priceGuarantee": "Best Price Guarantee",
@@ -340,8 +340,8 @@
     "accessoriesHint": "Compatible attachments and transport solutions for this machine – easily add to your booking.",
     "available247": "Available 24/7",
     "available247Desc": "Rentable around the clock",
-    "smsCodeSystem": "SMS Code System",
-    "smsCodeSystemDesc": "After booking, you will receive an SMS code to unlock the trailer.",
+    "emailCodeSystem": "email code system",
+    "emailCodeSystemDesc": "After booking, you will receive an email code to unlock the trailer.",
     "electronicLock": "Electronic Lock",
     "electronicLockDesc": "Enter the code on the drawbar lock and take the trailer.",
     "selfPickup": "Self Pickup",
@@ -349,8 +349,8 @@
     "idRequired": "ID required for identification during booking",
     "trailerAvailable247": "Available 24/7",
     "trailerCodeSystem": "Rent via code system",
-    "trailerSmsCode": "SMS code after payment",
-    "trailerSmsCodeDesc": "Code valid only during rental period",
+    "trailerEmailCode": "email code after payment",
+    "trailerEmailCodeDesc": "Code valid only during rental period",
     "trailerUnlock": "Unlock lock",
     "trailerUnlockDesc": "Return at pickup location",
     "trailerWeight": "750 kg to 3,500 kg",
@@ -359,7 +359,7 @@
     "trailerLoadGuideDesc": "Read our step-by-step guide on how to correctly load and secure your rental trailer.",
     "trailerLoadGuideLink": "View cargo securing guide →",
     "trailerCodeGuide": "Contactless rental: How the code system works",
-    "trailerCodeGuideDesc": "Receive your SMS code, unlock the trailer and pick it up – no personal contact needed.",
+    "trailerCodeGuideDesc": "Receive your email code, unlock the trailer and pick it up – no personal contact needed.",
     "trailerCodeGuideLink": "View code system guide →",
     "trailerLicenseGuide": "Which driving license for which trailer?",
     "trailerLicenseGuideDesc": "Class B, B96 or BE? All info on license classes, towing capacities and tow vehicle requirements.",
@@ -698,7 +698,7 @@
       "umzug-transport": {
         "title": "Moving & Transport",
         "subtitle": "Private and business moves",
-        "description": "Our 24/7 trailer rental makes moving flexible and affordable. Ready for pickup via SMS code – even at night and on weekends. The right trailer for every transport.",
+        "description": "Our 24/7 trailer rental makes moving flexible and affordable. Ready for pickup per E-Mail code – even at night and on weekends. The right trailer for every transport.",
         "highlights": [
           "Tarpaulin trailers S to XXL",
           "Lockable box trailers",
@@ -712,7 +712,7 @@
           },
           {
             "heading": "24/7 self-service: how it works",
-            "text": "Our trailer rental works around the clock – including nights, weekends and holidays. Here's how: 1. Book online and choose your slot. 2. Receive an SMS code – the code opens the lock on the trailer. 3. Pick up the trailer – any time, no waiting. 4. Return the trailer – simply park it back in the same spot. Especially handy for spontaneous transports or weekend moves."
+            "text": "Our trailer rental works around the clock – including nights, weekends and holidays. Here's how: 1. Book online and choose your slot. 2. Receive an email code – the code opens the lock on the trailer. 3. Pick up the trailer – any time, no waiting. 4. Return the trailer – simply park it back in the same spot. Especially handy for spontaneous transports or weekend moves."
           },
           {
             "heading": "Moving checklist: what to think about",
@@ -720,7 +720,7 @@
           }
         ],
         "advantages": [
-          "24/7 availability via SMS code",
+          "24/7 availability per E-Mail code",
           "Affordable weekend rates",
           "All sizes from S to XXL",
           "No trailer licence needed up to 750 kg"
@@ -732,7 +732,7 @@
           },
           {
             "q": "How exactly does the 24/7 rental work?",
-            "a": "You book online and receive an SMS code. Use it to open the lock on the trailer – any time, including nights and weekends. No contact with staff needed, full flexibility."
+            "a": "You book online and receive an email code. Use it to open the lock on the trailer – any time, including nights and weekends. No contact with staff needed, full flexibility."
           },
           {
             "q": "Which trailer size do I need for a move?",
@@ -1479,7 +1479,7 @@
       "3_1_title": "3.1 Handover Location and Time",
       "3_1": "Handover takes place at the agreed start of rental at one of SLT's business premises (Krefeld, Bonn or Muelheim an der Ruhr), unless otherwise agreed in writing. Shipping or delivery is arranged by individual agreement and for a separate fee.",
       "3_1a_title": "3.1a Contactless Handover of Trailers",
-      "3_1a": "Trailers can be handed over and returned contactlessly by prior arrangement using a code system. The access code is valid exclusively for the agreed rental period. The lessee is obliged to notify SLT in writing of delays or a necessary extension of the rental period in good time, at least 2 hours before the end of rental. If no timely notification is given, SLT reserves the right to charge for the additional rental time and any additional costs. The codes are sent by SMS to the mobile number provided by the lessee during the booking process. By entering their mobile number in the booking process, the lessee expressly consents to receiving SMS for the purpose of processing the rental relationship.",
+      "3_1a": "Trailers can be handed over and returned contactlessly by prior arrangement using a code system. The access code is valid exclusively for the agreed rental period. The lessee is obliged to notify SLT in writing of delays or a necessary extension of the rental period in good time, at least 2 hours before the end of rental. If no timely notification is given, SLT reserves the right to charge for the additional rental time and any additional costs. The codes are sent by E-Mail to the mobile number provided by the lessee during the booking process. By entering their mobile number in the booking process, the lessee expressly consents to receiving E-Mail for the purpose of processing the rental relationship.",
       "3_2_title": "3.2 Condition Check upon Handover",
       "3_2": "Upon handover, the lessee must inspect the condition, completeness and functionality of the rental item. Acceptance by signing the delivery note or handover protocol is deemed acknowledgement of the proper condition of the rental item.",
       "3_3_title": "3.3 Lessee's Obligations in Handling the Rental Item",
