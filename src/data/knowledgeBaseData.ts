@@ -265,7 +265,7 @@ export const kbArticles: KBArticle[] = [
         icon: "MessageSquare",
         heading: "Code-Empfang und Gültigkeit",
         items: [
-          "Spätestens 15 Minuten vor Beginn der Buchungszeit erhalten Sie den E-Mail-Code an die hinterlegte Mobilnummer. Der Code wird erst aktiv, sobald die Buchungszeit beginnt – vorher funktioniert das Entsperren noch nicht.",
+          "Spätestens 15 Minuten vor Beginn der Buchungszeit erhalten Sie den E-Mail-Code an die hinterlegte E-Mail-Adresse. Der Code wird erst aktiv, sobald die Buchungszeit beginnt – vorher funktioniert das Entsperren noch nicht.",
           "Der Code ist ausschließlich für Ihre Buchung und während des Mietzeitraums gültig.",
           "Bewahren Sie die E-Mail sicher auf – es wird kein Ersatzcode ausgestellt.",
         ],
@@ -313,7 +313,7 @@ export const kbArticles: KBArticle[] = [
           {
             heading: "Was tun, wenn der Code nicht ankommt?",
             items: [
-              "Prüfen Sie Spam-Ordner oder Mobilfunkempfang.",
+              "Prüfen Sie Ihren Spam- und Werbe-Ordner.",
               "Fordern Sie bei Bedarf einen Neuversand über unseren Kundenservice an.",
             ],
           },

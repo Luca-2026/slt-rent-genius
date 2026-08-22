@@ -265,7 +265,7 @@ export const AGB_B2B_SECTIONS: LegalSection[] = [
           },
           {
             type: "p",
-            text: "Die Codes werden per E-Mail an die im Buchungsprozess angegebene Mobilfunknummer des Mieters versandt. Mit Eingabe seiner Mobilfunknummer im Buchungsprozess stimmt der Mieter dem Erhalt von E-Mail zum Zwecke der Abwicklung des Mietverhältnisses ausdrücklich zu.",
+            text: "Die Codes werden per E-Mail an die im Buchungsprozess angegebene E-Mail-Adresse des Mieters versandt. Mit Eingabe seiner E-Mail-Adresse im Buchungsprozess stimmt der Mieter dem Erhalt dieser E-Mails zum Zwecke der Abwicklung des Mietverhältnisses ausdrücklich zu.",
           },
         ],
       },
