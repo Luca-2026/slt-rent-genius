@@ -22,7 +22,11 @@ import { SALES_ADDON_PRESETS, isSalesAddonNegative } from "@/lib/salesAddons";
 import { loadSalesCatalog } from "@/hooks/useSalesCatalog";
 
 /** Angebotsposition inkl. der im CMS erlaubten Zusatzoptionen (nur lokal). */
-type FormLine = OfferLine & { available_addons?: AddonOption[] };
+type FormLine = OfferLine & {
+  available_addons?: AddonOption[];
+  /** Woher der Einzelpreis stammt: aus dem CMS vorbelegt oder manuell überschrieben. */
+  price_source?: "cms" | "manual";
+};
 
 /**
  * Auswahlliste der Zusatzoptionen einer Position: die im CMS gepflegten Optionen
@@ -45,6 +49,18 @@ function addonOptionsFor(item: FormLine, isSales = false): AddonOption[] {
   for (const p of presets) if (!merged.some((o) => o.key === p.key)) merged.push(p);
   return merged;
 }
+
+/**
+ * Preis-Vorbelegung beim Artikelwechsel: CMS-Preis übernehmen, sofern hinterlegt
+ * und der Preis nicht manuell überschrieben wurde. Ohne CMS-Preis bleibt das Feld
+ * leer (bzw. der manuell gesetzte Preis erhalten).
+ */
+function resolvePricePatch(item: FormLine, cmsPrice: number | undefined): Partial<FormLine> {
+  if (item.price_source === "manual" && item.unit_price > 0) return {};
+  if (cmsPrice !== undefined) return { unit_price: cmsPrice, price_source: "cms" };
+  return { unit_price: 0, price_source: undefined };
+}
+
 
 const PAYMENT_OPTIONS: Record<"business" | "private", { value: string; label: string }[]> = {
   business: [
@@ -140,18 +156,28 @@ export function InquiryOfferForm({
               (c) => c.name.toLowerCase() === item.product_name.trim().toLowerCase(),
             );
             if (!hit) return { ...item, available_addons: [] };
+            const salesPrice = hit.net_price ?? undefined;
+            const useSalesCms = item.unit_price <= 0 && salesPrice !== undefined;
             return {
               ...item,
               image_url: item.image_url ?? hit.image ?? undefined,
-              unit_price: item.unit_price > 0 ? item.unit_price : hit.net_price ?? 0,
+              unit_price: useSalesCms ? salesPrice! : item.unit_price,
+              price_source: useSalesCms ? ("cms" as const) : item.price_source,
               available_addons: [],
             };
           }
           const match = await findCatalogProductByName(item.product_name);
           if (!match) return item;
           const image = pickCatalogImage(match.images);
-          const price = item.unit_price > 0 ? item.unit_price : parsePrice(match.price_per_day) ?? 0;
-          return { ...item, image_url: item.image_url ?? image, unit_price: price, available_addons: parseAddonOptions(match.addon_options) };
+          const cmsPrice = parsePrice(match.price_per_day);
+          const useCms = item.unit_price <= 0 && cmsPrice !== undefined;
+          return {
+            ...item,
+            image_url: item.image_url ?? image,
+            unit_price: useCms ? cmsPrice! : item.unit_price,
+            price_source: useCms ? ("cms" as const) : item.price_source,
+            available_addons: parseAddonOptions(match.addon_options),
+          };
         }),
       );
       if (!cancelled && enriched.some((item, i) => item !== items[i])) setItems(enriched);
@@ -190,7 +216,7 @@ export function InquiryOfferForm({
         inquiry_type: inquiryType,
         inquiry_id: inquiryId,
         location,
-        items: items.map(({ available_addons: _unused, ...rest }) => ({
+        items: items.map(({ available_addons: _unused, price_source: _src, ...rest }) => ({
           ...rest,
           addons: (rest.addons ?? []).filter((a) => Number(a.amount) !== 0),
         })),
@@ -248,34 +274,32 @@ export function InquiryOfferForm({
                 <SalesProductCombobox
                   value={item.product_name}
                   disabled={disabled}
-                  onSelect={(product, freeText) =>
+                  onSelect={(product, freeText) => {
+                    const cmsPrice = product?.net_price ?? undefined;
                     patchItem(index, {
                       product_name: freeText,
                       image_url: product?.image ?? undefined,
-                      unit_price:
-                        product && item.unit_price === 0 ? product.net_price ?? 0 : item.unit_price,
+                      ...resolvePricePatch(item, cmsPrice),
                       available_addons: [],
                       addons: [],
-                    })
-                  }
+                    });
+                  }}
                 />
                 ) : (
                 <InquiryProductCombobox
                   value={item.product_name}
                   location={location}
                   disabled={disabled}
-                  onSelect={(product, freeText) =>
+                  onSelect={(product, freeText) => {
+                    const cmsPrice = product ? parsePrice(product.price_per_day) : undefined;
                     patchItem(index, {
                       product_name: freeText,
                       image_url: product ? pickCatalogImage(product.images) : undefined,
-                      unit_price:
-                        product && item.unit_price === 0
-                          ? parsePrice(product.price_per_day) ?? 0
-                          : item.unit_price,
+                      ...resolvePricePatch(item, cmsPrice),
                       available_addons: product ? parseAddonOptions(product.addon_options) : [],
                       addons: [],
-                    })
-                  }
+                    });
+                  }}
                 />
                 )}
               </div>
@@ -314,9 +338,15 @@ export function InquiryOfferForm({
                   min={0}
                   step="0.01"
                   value={item.unit_price}
-                  onChange={(e) => patchItem(index, { unit_price: Number(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    patchItem(index, { unit_price: Number(e.target.value) || 0, price_source: "manual" })
+                  }
                   disabled={disabled}
                 />
+                {item.price_source === "cms" ? (
+                  <p className="mt-1 text-[11px] text-muted-foreground">Preis aus CMS – anpassbar</p>
+                ) : null}
+
               </div>
               <div>
                 <Label className="text-xs">Rabatt %</Label>
