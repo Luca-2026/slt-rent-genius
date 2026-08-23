@@ -262,34 +262,32 @@ export function InquiryOfferForm({
                 <SalesProductCombobox
                   value={item.product_name}
                   disabled={disabled}
-                  onSelect={(product, freeText) =>
+                  onSelect={(product, freeText) => {
+                    const cmsPrice = product?.net_price ?? undefined;
                     patchItem(index, {
                       product_name: freeText,
                       image_url: product?.image ?? undefined,
-                      unit_price:
-                        product && item.unit_price === 0 ? product.net_price ?? 0 : item.unit_price,
+                      ...resolvePricePatch(item, cmsPrice),
                       available_addons: [],
                       addons: [],
-                    })
-                  }
+                    });
+                  }}
                 />
                 ) : (
                 <InquiryProductCombobox
                   value={item.product_name}
                   location={location}
                   disabled={disabled}
-                  onSelect={(product, freeText) =>
+                  onSelect={(product, freeText) => {
+                    const cmsPrice = product ? parsePrice(product.price_per_day) : undefined;
                     patchItem(index, {
                       product_name: freeText,
                       image_url: product ? pickCatalogImage(product.images) : undefined,
-                      unit_price:
-                        product && item.unit_price === 0
-                          ? parsePrice(product.price_per_day) ?? 0
-                          : item.unit_price,
+                      ...resolvePricePatch(item, cmsPrice),
                       available_addons: product ? parseAddonOptions(product.addon_options) : [],
                       addons: [],
-                    })
-                  }
+                    });
+                  }}
                 />
                 )}
               </div>
