@@ -227,6 +227,8 @@ export async function generateOfferPdf(data: {
     return yy - 16;
   };
 
+  let tableClosed = false;
+
   const newPage = (isFirst: boolean): { pg: any; y: number } => {
     const pg = doc.addPage([W, H]);
     pages.push(pg);
@@ -243,8 +245,10 @@ export async function generateOfferPdf(data: {
     }
     dt(pg, `${TITLE} \u00B7 ${data.offerNumber}`, ML, yy - 46, bold, 10, BRAND);
     yy -= 74;
-    return { pg, y: renderTableHeader(pg, yy) };
+    // Fortsetzungsseiten nach der Positionstabelle brauchen keinen Tabellenkopf
+    return { pg, y: tableClosed ? yy : renderTableHeader(pg, yy) };
   };
+
 
   let { pg, y } = newPage(true);
 
