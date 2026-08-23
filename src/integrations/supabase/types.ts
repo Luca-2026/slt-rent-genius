@@ -2027,6 +2027,300 @@ export type Database = {
         }
         Relationships: []
       }
+      rental_inquiries: {
+        Row: {
+          assigned_at: string | null
+          assigned_name: string | null
+          assigned_to: string | null
+          attachments: Json
+          category_slug: string | null
+          created_at: string
+          customer_city: string | null
+          customer_email: string | null
+          customer_name: string | null
+          customer_phone: string | null
+          customer_postal_code: string | null
+          customer_street: string | null
+          delivery_city: string | null
+          delivery_postal_code: string | null
+          delivery_requested: boolean
+          delivery_street: string | null
+          email_sent: boolean
+          end_date: string | null
+          end_time: string | null
+          id: string
+          internal_notes: string | null
+          location: string | null
+          location_email: string | null
+          message: string | null
+          offer_file_url: string | null
+          offer_number: string | null
+          offer_sent_at: string | null
+          offer_total_gross: number | null
+          product_id: string | null
+          product_name: string | null
+          quantity: number | null
+          raw_payload: Json | null
+          setup_service_requested: boolean
+          source: string
+          start_date: string | null
+          start_time: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          assigned_name?: string | null
+          assigned_to?: string | null
+          attachments?: Json
+          category_slug?: string | null
+          created_at?: string
+          customer_city?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          customer_postal_code?: string | null
+          customer_street?: string | null
+          delivery_city?: string | null
+          delivery_postal_code?: string | null
+          delivery_requested?: boolean
+          delivery_street?: string | null
+          email_sent?: boolean
+          end_date?: string | null
+          end_time?: string | null
+          id?: string
+          internal_notes?: string | null
+          location?: string | null
+          location_email?: string | null
+          message?: string | null
+          offer_file_url?: string | null
+          offer_number?: string | null
+          offer_sent_at?: string | null
+          offer_total_gross?: number | null
+          product_id?: string | null
+          product_name?: string | null
+          quantity?: number | null
+          raw_payload?: Json | null
+          setup_service_requested?: boolean
+          source?: string
+          start_date?: string | null
+          start_time?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_at?: string | null
+          assigned_name?: string | null
+          assigned_to?: string | null
+          attachments?: Json
+          category_slug?: string | null
+          created_at?: string
+          customer_city?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          customer_postal_code?: string | null
+          customer_street?: string | null
+          delivery_city?: string | null
+          delivery_postal_code?: string | null
+          delivery_requested?: boolean
+          delivery_street?: string | null
+          email_sent?: boolean
+          end_date?: string | null
+          end_time?: string | null
+          id?: string
+          internal_notes?: string | null
+          location?: string | null
+          location_email?: string | null
+          message?: string | null
+          offer_file_url?: string | null
+          offer_number?: string | null
+          offer_sent_at?: string | null
+          offer_total_gross?: number | null
+          product_id?: string | null
+          product_name?: string | null
+          quantity?: number | null
+          raw_payload?: Json | null
+          setup_service_requested?: boolean
+          source?: string
+          start_date?: string | null
+          start_time?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sales_inquiries: {
+        Row: {
+          addons: Json
+          article_number: string | null
+          assigned_at: string | null
+          assigned_name: string | null
+          assigned_to: string | null
+          billing_city: string | null
+          billing_company: string | null
+          billing_country: string | null
+          billing_identical: boolean | null
+          billing_postal_code: string | null
+          billing_street: string | null
+          brand: string | null
+          company_name: string | null
+          created_at: string
+          customer_email: string | null
+          customer_phone: string | null
+          customer_type: string | null
+          delivery_city: string | null
+          delivery_note: string | null
+          delivery_option: string | null
+          delivery_postal_code: string | null
+          delivery_street: string | null
+          email_sent: boolean
+          financing_desired: boolean | null
+          financing_down_payment: string | null
+          financing_term: string | null
+          first_name: string | null
+          found_via: string | null
+          id: string
+          interest: string | null
+          internal_notes: string | null
+          kind: string
+          last_name: string | null
+          listed_price: string | null
+          location: string | null
+          location_email: string | null
+          message: string | null
+          model: string | null
+          offer_file_url: string | null
+          offer_number: string | null
+          offer_sent_at: string | null
+          offer_total_gross: number | null
+          product_category: string | null
+          quantity: string | null
+          raw_payload: Json | null
+          requirements: string | null
+          salutation: string | null
+          searched_machine: string | null
+          source: string | null
+          status: string
+          updated_at: string
+          vat_id: string | null
+          wish_date: string | null
+          year: number | null
+        }
+        Insert: {
+          addons?: Json
+          article_number?: string | null
+          assigned_at?: string | null
+          assigned_name?: string | null
+          assigned_to?: string | null
+          billing_city?: string | null
+          billing_company?: string | null
+          billing_country?: string | null
+          billing_identical?: boolean | null
+          billing_postal_code?: string | null
+          billing_street?: string | null
+          brand?: string | null
+          company_name?: string | null
+          created_at?: string
+          customer_email?: string | null
+          customer_phone?: string | null
+          customer_type?: string | null
+          delivery_city?: string | null
+          delivery_note?: string | null
+          delivery_option?: string | null
+          delivery_postal_code?: string | null
+          delivery_street?: string | null
+          email_sent?: boolean
+          financing_desired?: boolean | null
+          financing_down_payment?: string | null
+          financing_term?: string | null
+          first_name?: string | null
+          found_via?: string | null
+          id?: string
+          interest?: string | null
+          internal_notes?: string | null
+          kind?: string
+          last_name?: string | null
+          listed_price?: string | null
+          location?: string | null
+          location_email?: string | null
+          message?: string | null
+          model?: string | null
+          offer_file_url?: string | null
+          offer_number?: string | null
+          offer_sent_at?: string | null
+          offer_total_gross?: number | null
+          product_category?: string | null
+          quantity?: string | null
+          raw_payload?: Json | null
+          requirements?: string | null
+          salutation?: string | null
+          searched_machine?: string | null
+          source?: string | null
+          status?: string
+          updated_at?: string
+          vat_id?: string | null
+          wish_date?: string | null
+          year?: number | null
+        }
+        Update: {
+          addons?: Json
+          article_number?: string | null
+          assigned_at?: string | null
+          assigned_name?: string | null
+          assigned_to?: string | null
+          billing_city?: string | null
+          billing_company?: string | null
+          billing_country?: string | null
+          billing_identical?: boolean | null
+          billing_postal_code?: string | null
+          billing_street?: string | null
+          brand?: string | null
+          company_name?: string | null
+          created_at?: string
+          customer_email?: string | null
+          customer_phone?: string | null
+          customer_type?: string | null
+          delivery_city?: string | null
+          delivery_note?: string | null
+          delivery_option?: string | null
+          delivery_postal_code?: string | null
+          delivery_street?: string | null
+          email_sent?: boolean
+          financing_desired?: boolean | null
+          financing_down_payment?: string | null
+          financing_term?: string | null
+          first_name?: string | null
+          found_via?: string | null
+          id?: string
+          interest?: string | null
+          internal_notes?: string | null
+          kind?: string
+          last_name?: string | null
+          listed_price?: string | null
+          location?: string | null
+          location_email?: string | null
+          message?: string | null
+          model?: string | null
+          offer_file_url?: string | null
+          offer_number?: string | null
+          offer_sent_at?: string | null
+          offer_total_gross?: number | null
+          product_category?: string | null
+          quantity?: string | null
+          raw_payload?: Json | null
+          requirements?: string | null
+          salutation?: string | null
+          searched_machine?: string | null
+          source?: string | null
+          status?: string
+          updated_at?: string
+          vat_id?: string | null
+          wish_date?: string | null
+          year?: number | null
+        }
+        Relationships: []
+      }
       staff_material_transfers: {
         Row: {
           assigned_at: string | null
@@ -2740,6 +3034,7 @@ export type Database = {
       }
       confirm_b2b_email: { Args: { _user_id: string }; Returns: undefined }
       generate_delivery_note_number: { Args: never; Returns: string }
+      generate_inquiry_offer_number: { Args: never; Returns: string }
       generate_invoice_number: { Args: never; Returns: string }
       generate_offer_number: { Args: never; Returns: string }
       generate_return_protocol_number: { Args: never; Returns: string }

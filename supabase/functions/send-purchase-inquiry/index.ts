@@ -1,3 +1,5 @@
+import { saveSalesInquiry, salesInquiryLink } from "../_shared/inquiry-store.ts";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -25,6 +27,41 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: "Pflichtfelder fehlen" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
+    const inquiryId = await saveSalesInquiry({
+      kind: "new_machine",
+      source: "verkauf_formular",
+      brand: marke ?? null,
+      product_category: produktkategorie ?? null,
+      model: modell ?? null,
+      quantity: anzahl ? String(anzahl) : null,
+      requirements: anforderungen ?? null,
+      addons: Array.isArray(addons) ? addons : [],
+      wish_date: wunschtermin ?? null,
+      delivery_option: lieferOption ?? null,
+      delivery_street: strasse ?? null,
+      delivery_postal_code: plz ?? null,
+      delivery_city: ort ?? null,
+      delivery_note: lieferhinweis ?? null,
+      customer_type: kundentyp ?? null,
+      company_name: firmenname ?? null,
+      vat_id: ustIdNr ?? null,
+      salutation: anrede ?? null,
+      first_name: vorname ?? null,
+      last_name: nachname ?? null,
+      customer_email: email ?? null,
+      customer_phone: telefon ?? null,
+      billing_identical: rechnungGleich ?? null,
+      billing_company: rechnungFirma ?? null,
+      billing_street: rechnungStrasse ?? null,
+      billing_postal_code: rechnungPlz ?? null,
+      billing_city: rechnungOrt ?? null,
+      billing_country: rechnungLand ?? null,
+      message: nachricht ?? null,
+      found_via: wieGefunden ?? null,
+      raw_payload: body,
+    });
+    const portalLink = salesInquiryLink(inquiryId);
+
     const now = new Date().toLocaleString("de-DE", { timeZone: "Europe/Berlin" });
     const subject = `Neue Kaufanfrage: ${marke} – ${produktkategorie} – ${firmenname || `${vorname} ${nachname}`}`;
 
@@ -35,6 +72,7 @@ Deno.serve(async (req) => {
     const textBody = `────────────────────────────────────────────────
 NEUE KAUFANFRAGE über slt-rental.de/verkauf
 Eingegangen: ${now}
+Im Portal bearbeiten: ${portalLink}
 ────────────────────────────────────────────────
 
 PRODUKTWUNSCH

@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { saveRentalInquiry, rentalInquiryLink } from "../_shared/inquiry-store.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -66,6 +67,32 @@ serve(async (req) => {
 
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
+    // Persist the inquiry so it can be worked on inside the B2B portal.
+    const inquiryId = await saveRentalInquiry({
+      source: "product_booking",
+      location: locationName ?? null,
+      location_email: locationEmail ?? null,
+      product_name: productName ?? null,
+      start_date: startDate ?? null,
+      start_time: startTime ?? null,
+      end_date: endDate ?? null,
+      end_time: endTime ?? null,
+      delivery_requested: !!deliveryRequested,
+      delivery_street: deliveryStreet ?? null,
+      delivery_postal_code: deliveryPostalCode ?? null,
+      delivery_city: deliveryCity ?? null,
+      setup_service_requested: !!setupServiceRequested,
+      customer_name: name ?? null,
+      customer_email: email ?? null,
+      customer_phone: phone ?? null,
+      customer_street: street ?? null,
+      customer_postal_code: postalCode ?? null,
+      customer_city: city ?? null,
+      message: message ?? null,
+      attachments: safeAttachments.map((a) => ({ filename: a.filename })),
+    });
+    const portalLink = rentalInquiryLink(inquiryId);
+
     const dateRange = startDate
       ? `${startDate}${endDate ? ` bis ${endDate}` : ""}`
       : "Kein Datum angegeben";
@@ -126,6 +153,8 @@ serve(async (req) => {
   </div>
   <div style="padding: 24px;">
     <h2 style="color: #1a1a1a; margin-top: 0;">Neue Mietanfrage</h2>
+    <p style="margin: 0 0 12px;"><a href="${portalLink}" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;padding:10px 16px;border-radius:6px;font-weight:bold;">Im B2B-Portal bearbeiten</a></p>
+    <p style="color:#6b7280;font-size:12px;margin:0 0 12px;">Bitte die Anfrage im Portal übernehmen, damit klar ist, wer sie bearbeitet.</p>
     <div style="background: #fff7ed; border-left: 4px solid #f97316; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
       <strong style="color: #ea580c;">Artikel:</strong> ${e.productName}<br>
       <strong style="color: #ea580c;">Standort:</strong> ${e.locationName}

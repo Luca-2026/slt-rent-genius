@@ -44,6 +44,8 @@ const B2BFAQ = lazy(() => import("./pages/b2b/B2BFAQ"));
 const B2BDownloads = lazy(() => import("./pages/b2b/Downloads"));
 const AdminDashboard = lazy(() => import("./pages/b2b/AdminDashboard"));
 const StaffTasks = lazy(() => import("./pages/b2b/StaffTasks"));
+const RentalInquiries = lazy(() => import("./pages/b2b/RentalInquiries"));
+const SalesInquiries = lazy(() => import("./pages/b2b/SalesInquiries"));
 const ForgotPassword = lazy(() => import("./pages/b2b/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/b2b/ResetPassword"));
 
@@ -228,6 +230,8 @@ const App = () => (
               <Route path="/b2b/downloads" element={<B2BDownloads />} />
               <Route path="/b2b/admin" element={<AdminDashboard />} />
               <Route path="/b2b/aufgaben" element={<StaffTasks />} />
+              <Route path="/b2b/mietanfragen" element={<RentalInquiries />} />
+              <Route path="/b2b/verkaufsanfragen" element={<SalesInquiries />} />
               <Route path="/b2b" element={<B2BLogin />} />
               
               {/* Catch-all */}

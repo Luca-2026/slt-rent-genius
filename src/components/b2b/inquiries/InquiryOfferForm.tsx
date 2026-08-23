@@ -1,0 +1,212 @@
+import { useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Plus, Send, Trash2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { buildOfferTotals, formatEuro, type OfferLine } from "./offerMath";
+
+interface Props {
+  inquiryType: "rental" | "sales";
+  inquiryId: string;
+  location: string | null;
+  defaultItems: OfferLine[];
+  staffName: string;
+  disabled?: boolean;
+  onSent?: () => void;
+}
+
+export function InquiryOfferForm({
+  inquiryType,
+  inquiryId,
+  location,
+  defaultItems,
+  staffName,
+  disabled,
+  onSent,
+}: Props) {
+  const { toast } = useToast();
+  const [items, setItems] = useState<OfferLine[]>(
+    defaultItems.length ? defaultItems : [{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0 }],
+  );
+  const [deliveryCostDelivery, setDeliveryCostDelivery] = useState(0);
+  const [deliveryCostReturn, setDeliveryCostReturn] = useState(0);
+  const [deposit, setDeposit] = useState(0);
+  const [validDays, setValidDays] = useState(14);
+  const [notes, setNotes] = useState("");
+  const [sending, setSending] = useState(false);
+
+  const totals = useMemo(
+    () => buildOfferTotals(items, deliveryCostDelivery + deliveryCostReturn),
+    [items, deliveryCostDelivery, deliveryCostReturn],
+  );
+
+  const patchItem = (index: number, patch: Partial<OfferLine>) =>
+    setItems((prev) => prev.map((item, i) => (i === index ? { ...item, ...patch } : item)));
+
+  const send = async () => {
+    const invalid = items.some((i) => !i.product_name.trim() || i.quantity <= 0 || i.unit_price < 0);
+    if (invalid) {
+      toast({ title: "Bitte alle Positionen ausfüllen", description: "Bezeichnung, Menge und Preis werden benötigt.", variant: "destructive" });
+      return;
+    }
+    setSending(true);
+    const { data, error } = await supabase.functions.invoke("send-inquiry-offer", {
+      body: {
+        inquiry_type: inquiryType,
+        inquiry_id: inquiryId,
+        location,
+        items,
+        delivery_cost_delivery: deliveryCostDelivery,
+        delivery_cost_return: deliveryCostReturn,
+        deposit,
+        valid_days: validDays,
+        notes,
+        staff_name: staffName,
+      },
+    });
+    setSending(false);
+
+    if (error || (data as any)?.error) {
+      toast({
+        title: "Angebot konnte nicht gesendet werden",
+        description: (data as any)?.error ?? error?.message ?? "Unbekannter Fehler",
+        variant: "destructive",
+      });
+      return;
+    }
+    toast({
+      title: "Angebot gesendet",
+      description: `${(data as any)?.offer_number} · ${formatEuro(totals.grossAmount)} brutto`,
+    });
+    onSent?.();
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="space-y-3">
+        {items.map((item, index) => (
+          <div key={index} className="rounded-lg border border-border p-3 space-y-2">
+            <div className="flex gap-2">
+              <Input
+                value={item.product_name}
+                onChange={(e) => patchItem(index, { product_name: e.target.value })}
+                placeholder="Artikel / Leistung"
+                disabled={disabled}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => setItems((prev) => prev.filter((_, i) => i !== index))}
+                disabled={disabled || items.length === 1}
+                aria-label="Position entfernen"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+            <Input
+              value={item.description ?? ""}
+              onChange={(e) => patchItem(index, { description: e.target.value })}
+              placeholder="Beschreibung / Zeitraum (optional)"
+              disabled={disabled}
+            />
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div>
+                <Label className="text-xs">Menge</Label>
+                <Input
+                  type="number"
+                  min={1}
+                  value={item.quantity}
+                  onChange={(e) => patchItem(index, { quantity: Number(e.target.value) || 0 })}
+                  disabled={disabled}
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Einzelpreis netto</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  step="0.01"
+                  value={item.unit_price}
+                  onChange={(e) => patchItem(index, { unit_price: Number(e.target.value) || 0 })}
+                  disabled={disabled}
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Rabatt %</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={item.discount_percent}
+                  onChange={(e) => patchItem(index, { discount_percent: Number(e.target.value) || 0 })}
+                  disabled={disabled}
+                />
+              </div>
+              <div className="flex items-end text-sm font-semibold">
+                {formatEuro(item.quantity * item.unit_price * (1 - (item.discount_percent || 0) / 100))}
+              </div>
+            </div>
+          </div>
+        ))}
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() =>
+            setItems((prev) => [...prev, { product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0 }])
+          }
+          disabled={disabled}
+        >
+          <Plus className="h-4 w-4 mr-1" /> Position hinzufügen
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <div>
+          <Label className="text-xs">Lieferkosten</Label>
+          <Input type="number" min={0} step="0.01" value={deliveryCostDelivery}
+            onChange={(e) => setDeliveryCostDelivery(Number(e.target.value) || 0)} disabled={disabled} />
+        </div>
+        <div>
+          <Label className="text-xs">Abholkosten</Label>
+          <Input type="number" min={0} step="0.01" value={deliveryCostReturn}
+            onChange={(e) => setDeliveryCostReturn(Number(e.target.value) || 0)} disabled={disabled} />
+        </div>
+        <div>
+          <Label className="text-xs">Kaution</Label>
+          <Input type="number" min={0} step="0.01" value={deposit}
+            onChange={(e) => setDeposit(Number(e.target.value) || 0)} disabled={disabled} />
+        </div>
+        <div>
+          <Label className="text-xs">Gültig (Tage)</Label>
+          <Input type="number" min={1} max={180} value={validDays}
+            onChange={(e) => setValidDays(Number(e.target.value) || 14)} disabled={disabled} />
+        </div>
+      </div>
+
+      <div>
+        <Label className="text-xs">Hinweis für den Kunden (optional)</Label>
+        <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} disabled={disabled} />
+      </div>
+
+      <div className="rounded-lg bg-muted p-3 text-sm space-y-1">
+        <div className="flex justify-between"><span>Netto</span><span>{formatEuro(totals.netAmount)}</span></div>
+        <div className="flex justify-between"><span>MwSt. {totals.vatRate}%</span><span>{formatEuro(totals.vatAmount)}</span></div>
+        <div className="flex justify-between font-bold text-base"><span>Brutto</span><span>{formatEuro(totals.grossAmount)}</span></div>
+      </div>
+
+      <Button onClick={send} disabled={disabled || sending} className="w-full">
+        <Send className="h-4 w-4 mr-2" />
+        {sending ? "Angebot wird gesendet …" : "Angebot per E-Mail senden"}
+      </Button>
+      <p className="text-xs text-muted-foreground">
+        Der Kunde wird in der E-Mail gebeten, die Annahme per Antwort an das Standort-Postfach zu bestätigen.
+        Danach den Job manuell in Rentware anlegen.
+      </p>
+    </div>
+  );
+}

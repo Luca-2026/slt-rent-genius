@@ -1,3 +1,5 @@
+import { saveSalesInquiry, salesInquiryLink } from "../_shared/inquiry-store.ts";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -43,6 +45,43 @@ Deno.serve(async (req) => {
     const now = new Date().toLocaleString("de-DE", { timeZone: "Europe/Berlin" });
     const isSpecific = !!articleNumber;
 
+    const inquiryId = await saveSalesInquiry({
+      kind: "used_machine",
+      source: isSpecific ? "slt_used_artikel" : "slt_used_suchanfrage",
+      location: location ?? null,
+      brand: preferredManufacturer ?? null,
+      model: manufacturerModel ?? null,
+      article_number: articleNumber ?? null,
+      year: typeof year === "number" ? year : (year ? Number(year) || null : null),
+      listed_price: price ? String(price) : null,
+      searched_machine: searchedMachine ?? null,
+      interest: interest ?? null,
+      wish_date: wishDate ?? null,
+      delivery_option: deliveryOption ?? null,
+      delivery_street: deliveryStreet ?? null,
+      delivery_postal_code: deliveryPlz ?? null,
+      delivery_city: deliveryCity ?? null,
+      customer_type: customerType ?? null,
+      company_name: companyName ?? null,
+      vat_id: vatId ?? null,
+      salutation: salutation ?? null,
+      first_name: firstName ?? null,
+      last_name: lastName ?? null,
+      customer_email: email ?? null,
+      customer_phone: phone ?? null,
+      billing_identical: billingIdentical ?? null,
+      billing_company: billingCompany ?? null,
+      billing_street: billingStreet ?? null,
+      billing_postal_code: billingPlz ?? null,
+      billing_city: billingCity ?? null,
+      financing_desired: financingDesired ?? null,
+      financing_term: financingTerm ? String(financingTerm) : null,
+      financing_down_payment: financingDownPayment ? String(financingDownPayment) : null,
+      message: message ?? null,
+      raw_payload: body,
+    });
+    const portalLink = salesInquiryLink(inquiryId);
+
     const subject = isSpecific
       ? `Gebrauchtmaschinen-Anfrage: ${articleNumber} – ${manufacturerModel} – ${lastName}`
       : `Gebrauchtmaschinen-Suchanfrage: ${searchedMachine || "Allgemein"} – ${lastName}`;
@@ -64,6 +103,7 @@ Deno.serve(async (req) => {
 
     const textBody = `SLT USED — NEUE ANFRAGE
 Eingegangen: ${now}
+Im Portal bearbeiten: ${portalLink}
 ─────────────────────────────────────
 
 ANGEFRAGTE MASCHINE
