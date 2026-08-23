@@ -230,6 +230,8 @@ const App = () => (
               <Route path="/b2b/downloads" element={<B2BDownloads />} />
               <Route path="/b2b/admin" element={<AdminDashboard />} />
               <Route path="/b2b/aufgaben" element={<StaffTasks />} />
+              <Route path="/b2b/mietanfragen" element={<RentalInquiries />} />
+              <Route path="/b2b/verkaufsanfragen" element={<SalesInquiries />} />
               <Route path="/b2b" element={<B2BLogin />} />
               
               {/* Catch-all */}
