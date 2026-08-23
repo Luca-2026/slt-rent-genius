@@ -271,14 +271,17 @@ export function InquiryOfferForm({
               </div>
             </div>
 
-            {/* Zusatzoptionen dieser Position (aus dem CMS-Artikel) */}
-            {(item.available_addons?.length ?? 0) > 0 && (
+            {/* Zusatzoptionen dieser Position (CMS-Optionen + Standardauswahl + Freifeld) */}
+            {(() => {
+              const options = addonOptionsFor(item);
+              return (
               <div className="rounded-md bg-muted/50 p-2 space-y-2">
+                <div className="flex gap-2">
                 <Select
                   value=""
                   disabled={disabled}
                   onValueChange={(key) => {
-                    const option = item.available_addons?.find((o) => o.key === key);
+                    const option = options.find((o) => o.key === key);
                     if (!option) return;
                     if ((item.addons ?? []).some((a) => a.key === option.key)) return;
                     patchItem(index, {
@@ -298,22 +301,56 @@ export function InquiryOfferForm({
                     <SelectValue placeholder="Zusatzoption hinzufügen …" />
                   </SelectTrigger>
                   <SelectContent>
-                    {(item.available_addons ?? [])
+                    {options
                       .filter((o) => !(item.addons ?? []).some((a) => a.key === o.key))
                       .map((o) => (
                         <SelectItem key={o.key} value={o.key}>{o.label}</SelectItem>
                       ))}
                   </SelectContent>
                 </Select>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="h-9 shrink-0"
+                  disabled={disabled}
+                  onClick={() =>
+                    patchItem(index, {
+                      addons: [
+                        ...(item.addons ?? []),
+                        { key: `custom-${Date.now()}`, label: "", amount: 0 },
+                      ],
+                    })
+                  }
+                >
+                  <Plus className="h-4 w-4 mr-1" /> Freie Option
+                </Button>
+                </div>
 
                 {(item.addons ?? []).map((addon, ai) => (
                   <div key={addon.key} className="flex items-end gap-2">
-                    <div className="min-w-0 flex-1">
-                      <Label className="text-xs break-words">
-                        {addon.label}
-                        {addon.note ? <span className="block text-muted-foreground font-normal">{addon.note}</span> : null}
-                      </Label>
+                    <div className="min-w-0 flex-1 space-y-1">
+                      {addon.key.startsWith("custom") ? (
+                        <Input
+                          value={addon.label}
+                          placeholder="Bezeichnung der Zusatzoption"
+                          disabled={disabled}
+                          onChange={(e) =>
+                            patchItem(index, {
+                              addons: (item.addons ?? []).map((a, j) =>
+                                j === ai ? { ...a, label: e.target.value } : a,
+                              ),
+                            })
+                          }
+                        />
+                      ) : (
+                        <Label className="text-xs break-words">
+                          {addon.label}
+                          {addon.note ? <span className="block text-muted-foreground font-normal">{addon.note}</span> : null}
+                        </Label>
+                      )}
                       <Input
+
                         type="number"
                         min={0}
                         step="0.01"
