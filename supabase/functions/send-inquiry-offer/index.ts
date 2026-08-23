@@ -281,6 +281,8 @@ Deno.serve(async (req: Request) => {
   </table>
   <p style="font-size:15px;"><strong>Gesamtsumme brutto: ${money(totals.grossAmount)}</strong><br>
   <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span></p>
+  ${deliveryRequested && (deliveryAddress.street || deliveryAddress.city) ? `<p style="font-size:14px;"><strong>Lieferadresse:</strong><br>${escapeHtml(deliveryAddress.street)}<br>${escapeHtml([deliveryAddress.postal_code, deliveryAddress.city].filter(Boolean).join(" "))}</p>` : ""}
+
   <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>So nehmen Sie das Angebot an:</strong><br>
     Bitte bestätigen Sie uns die Annahme kurz per E-Mail an
