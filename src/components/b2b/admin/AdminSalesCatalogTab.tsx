@@ -13,7 +13,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Eye, EyeOff, ShoppingCart } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, ShoppingCart, ImageOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
@@ -21,6 +21,7 @@ import {
   useSalesCatalogAdmin,
   invalidateSalesCatalog,
   grossToNet,
+  firstImage,
   type NewMachineRow,
   type SalesArticleKind,
   type UsedMachineRow,
@@ -109,7 +110,19 @@ export function AdminSalesCatalogTab() {
     visible: boolean;
     statusLabel?: string;
   }) => (
-    <div className="flex flex-col gap-2 rounded-lg border border-border p-3 sm:flex-row sm:items-center">
+    <div className="flex flex-col gap-3 rounded-lg border border-border p-3 sm:flex-row sm:items-center">
+      {firstImage(row.images) ? (
+        <img
+          src={firstImage(row.images) as string}
+          alt={title}
+          loading="lazy"
+          className="h-20 w-full shrink-0 rounded-md border border-border bg-muted object-cover sm:h-16 sm:w-24"
+        />
+      ) : (
+        <div className="flex h-20 w-full shrink-0 items-center justify-center rounded-md border border-dashed border-border text-muted-foreground sm:h-16 sm:w-24">
+          <ImageOff className="h-4 w-4" />
+        </div>
+      )}
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-semibold break-words">{title}</span>
