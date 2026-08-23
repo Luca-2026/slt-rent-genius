@@ -9,7 +9,7 @@ import {
 import { ExternalLink, UserCheck, UserMinus } from "lucide-react";
 import { INQUIRY_STATUSES, canTransition, type InquiryStatus } from "@/lib/inquiryStatus";
 import { InquiryStatusBadge } from "./InquiryStatusBadge";
-import { InquiryOfferForm } from "./InquiryOfferForm";
+import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm";
 import { useInquiryActions } from "./useInquiryActions";
 import { InquiryCustomerCard, type CustomerKind } from "./InquiryCustomerCard";
 import type { OfferLine } from "./offerMath";
@@ -53,7 +53,7 @@ interface Props {
 }
 
 
-export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, details, onChanged }: Props) {
+export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, defaultDelivery, details, onChanged }: Props) {
   const { user } = useAuth();
   const { busy, actorName, claim, release, setStatus, saveNotes, update } = useInquiryActions(table, onChanged);
   const [notes, setNotes] = useState(inquiry.internal_notes ?? "");
