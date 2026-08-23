@@ -32,7 +32,7 @@ export const PRODUCT_SUBCATEGORIES: Record<string, string> = {
   "blockbatterie-6v": "absperrtechnik",
   "bobcat-e10z": "minibagger",
   "bobcat-e35z": "minibagger",
-  "bobcat-e50z": "minibagger",
+  "minibagger-5t": "minibagger",
   "bobcat-l28-knicklader": "knicklader",
   "bodenhacke-af1212": "bodenhacke",
   "bodenschutz-fahrmatten": "zubehoer",

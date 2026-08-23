@@ -575,7 +575,7 @@ const trailerProducts: Product[] = [
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"],
     specifications: { "Eigengewicht": "ca. 645 kg", "Nutzlast": "ca. 1.155 kg" },
-    compatibleMachines: ["bobcat-e10z", "xcmg-xe20e", "minibagger-2-7t", "bobcat-e35z", "bobcat-e50z"],
+    compatibleMachines: ["bobcat-e10z", "xcmg-xe20e", "minibagger-2-7t", "bobcat-e35z", "minibagger-5t"],
     rentwareCode: { krefeld: "EDE97K", bonn: "3F11ZC" } 
   },
   { 
@@ -597,7 +597,7 @@ const trailerProducts: Product[] = [
       "Führerschein": "Klasse 3 oder BE",
       "100 km/h-Zulassung": "Zugfahrzeug-Leergewicht min. 3.182 kg"
     },
-    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "bobcat-e50z"],
+    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-5t"],
     rentwareCode: { krefeld: "7WW3IY", bonn: "WFQBAR", muelheim: "GWO6D9" } 
   },
 
