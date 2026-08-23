@@ -918,6 +918,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     category: "minibagger",
     tags: ["minibagger", "diesel", "ab-2500", "maschine"],
     onRequest: true,
+    pdfUrl: "/manuals/datenblatt-liugong-9057f-zts.pdf",
     specifications: {
       "Modell": "LiuGong 9057F ZTS",
       "Betriebsgewicht": "5.700 kg (typisch)",
