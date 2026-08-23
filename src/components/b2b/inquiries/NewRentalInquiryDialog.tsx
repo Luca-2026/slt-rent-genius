@@ -233,21 +233,21 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
               />
             </div>
             <div>
-              <Label>Menge</Label>
-              <Input type="number" min={1} value={form.quantity} onChange={(e) => set("quantity", e.target.value)} />
+              <Label htmlFor="nri-qty">Menge</Label>
+              <Input id="nri-qty" type="number" min={1} value={form.quantity} onChange={(e) => set("quantity", e.target.value)} />
             </div>
             <div />
             <div>
-              <Label>Abholung / Lieferung am</Label>
-              <Input type="date" value={form.start_date} onChange={(e) => set("start_date", e.target.value)} />
+              <Label htmlFor="nri-start-date">Abholung / Lieferung am</Label>
+              <Input id="nri-start-date" type="date" value={form.start_date} onChange={(e) => set("start_date", e.target.value)} />
             </div>
             <div>
               <Label>Uhrzeit</Label>
               <Input type="time" value={form.start_time} onChange={(e) => set("start_time", e.target.value)} />
             </div>
             <div>
-              <Label>Rückgabe am</Label>
-              <Input type="date" value={form.end_date} onChange={(e) => set("end_date", e.target.value)} />
+              <Label htmlFor="nri-end-date">Rückgabe am</Label>
+              <Input id="nri-end-date" type="date" value={form.end_date} onChange={(e) => set("end_date", e.target.value)} />
             </div>
             <div>
               <Label>Uhrzeit</Label>
@@ -255,40 +255,40 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
             </div>
 
             <div className="sm:col-span-2">
-              <Label>Firma</Label>
-              <Input value={form.company_name} onChange={(e) => set("company_name", e.target.value)} maxLength={160} />
+              <Label htmlFor="nri-company">Firma</Label>
+              <Input id="nri-company" value={form.company_name} onChange={(e) => set("company_name", e.target.value)} maxLength={160} />
             </div>
             <div>
-              <Label>Name des Kunden</Label>
-              <Input value={form.customer_name} onChange={(e) => set("customer_name", e.target.value)} maxLength={120} />
+              <Label htmlFor="nri-name">Name des Kunden</Label>
+              <Input id="nri-name" value={form.customer_name} onChange={(e) => set("customer_name", e.target.value)} maxLength={120} />
             </div>
             <div>
-              <Label>USt-IdNr. (optional)</Label>
-              <Input value={form.vat_id} onChange={(e) => set("vat_id", e.target.value)} maxLength={30} />
+              <Label htmlFor="nri-vat">USt-IdNr. (optional)</Label>
+              <Input id="nri-vat" value={form.vat_id} onChange={(e) => set("vat_id", e.target.value)} maxLength={30} />
             </div>
             <div>
-              <Label>E-Mail (für Angebot)</Label>
-              <Input type="email" value={form.customer_email} onChange={(e) => set("customer_email", e.target.value)} maxLength={255} />
+              <Label htmlFor="nri-email">E-Mail (für Angebot)</Label>
+              <Input id="nri-email" type="email" value={form.customer_email} onChange={(e) => set("customer_email", e.target.value)} maxLength={255} />
             </div>
             <div>
-              <Label>Telefon</Label>
-              <Input value={form.customer_phone} onChange={(e) => set("customer_phone", e.target.value)} maxLength={40} />
+              <Label htmlFor="nri-phone">Telefon</Label>
+              <Input id="nri-phone" value={form.customer_phone} onChange={(e) => set("customer_phone", e.target.value)} maxLength={40} />
             </div>
             <div className="sm:col-span-2">
-              <Label>Straße & Hausnummer</Label>
-              <Input value={form.customer_street} onChange={(e) => set("customer_street", e.target.value)} maxLength={160} />
+              <Label htmlFor="nri-street">Straße &amp; Hausnummer</Label>
+              <Input id="nri-street" value={form.customer_street} onChange={(e) => set("customer_street", e.target.value)} maxLength={160} />
             </div>
             <div>
-              <Label>PLZ</Label>
-              <Input value={form.customer_postal_code} onChange={(e) => set("customer_postal_code", e.target.value)} maxLength={10} />
+              <Label htmlFor="nri-zip">PLZ</Label>
+              <Input id="nri-zip" value={form.customer_postal_code} onChange={(e) => set("customer_postal_code", e.target.value)} maxLength={10} />
             </div>
             <div>
-              <Label>Ort</Label>
-              <Input value={form.customer_city} onChange={(e) => set("customer_city", e.target.value)} maxLength={100} />
+              <Label htmlFor="nri-city">Ort</Label>
+              <Input id="nri-city" value={form.customer_city} onChange={(e) => set("customer_city", e.target.value)} maxLength={100} />
             </div>
             <div className="sm:col-span-2">
-              <Label>Notiz zur Anfrage</Label>
-              <Textarea value={form.message} onChange={(e) => set("message", e.target.value)} rows={3} maxLength={2000} />
+              <Label htmlFor="nri-note">Notiz zur Anfrage</Label>
+              <Textarea id="nri-note" value={form.message} onChange={(e) => set("message", e.target.value)} rows={3} maxLength={2000} />
             </div>
           </div>
 
