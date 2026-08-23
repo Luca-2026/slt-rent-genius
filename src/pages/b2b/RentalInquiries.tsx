@@ -11,6 +11,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { isOpenInquiry } from "@/lib/inquiryStatus";
 import type { RentalInquiry } from "@/components/b2b/inquiries/types";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
+import { NewRentalInquiryDialog } from "@/components/b2b/inquiries/NewRentalInquiryDialog";
+import { Plus } from "lucide-react";
 
 const fmtDate = (value: string | null) =>
   value ? new Date(value).toLocaleDateString("de-DE") : "—";
@@ -28,6 +30,7 @@ export default function RentalInquiries() {
   const [search, setSearch] = useState("");
   const [onlyOpen, setOnlyOpen] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [newOpen, setNewOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -62,7 +65,16 @@ export default function RentalInquiries() {
         <Button variant={onlyOpen ? "default" : "outline"} onClick={() => setOnlyOpen((v) => !v)}>
           {onlyOpen ? "Nur offene" : "Alle Anfragen"}
         </Button>
+        <Button className="sm:ml-auto" onClick={() => setNewOpen(true)}>
+          <Plus className="h-4 w-4 mr-1" /> Anfrage manuell anlegen
+        </Button>
       </div>
+
+      <NewRentalInquiryDialog
+        open={newOpen}
+        onOpenChange={setNewOpen}
+        onCreated={reload}
+      />
 
       {loading ? (
         <p className="text-muted-foreground">Wird geladen …</p>

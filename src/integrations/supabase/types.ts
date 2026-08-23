@@ -1575,6 +1575,69 @@ export type Database = {
           },
         ]
       }
+      crm_customers: {
+        Row: {
+          city: string | null
+          company_name: string | null
+          country: string | null
+          created_at: string
+          created_by: string | null
+          customer_kind: string
+          email: string | null
+          first_name: string | null
+          id: string
+          last_name: string | null
+          location: string | null
+          notes: string | null
+          phone: string | null
+          postal_code: string | null
+          salutation: string | null
+          street: string | null
+          updated_at: string
+          vat_id: string | null
+        }
+        Insert: {
+          city?: string | null
+          company_name?: string | null
+          country?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_kind?: string
+          email?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          location?: string | null
+          notes?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          salutation?: string | null
+          street?: string | null
+          updated_at?: string
+          vat_id?: string | null
+        }
+        Update: {
+          city?: string | null
+          company_name?: string | null
+          country?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_kind?: string
+          email?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          location?: string | null
+          notes?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          salutation?: string | null
+          street?: string | null
+          updated_at?: string
+          vat_id?: string | null
+        }
+        Relationships: []
+      }
       customer_feedback: {
         Row: {
           answers: Json
@@ -2039,6 +2102,7 @@ export type Database = {
           category_slug: string | null
           company_name: string | null
           created_at: string
+          crm_customer_id: string | null
           customer_city: string | null
           customer_email: string | null
           customer_kind: string
@@ -2082,6 +2146,7 @@ export type Database = {
           category_slug?: string | null
           company_name?: string | null
           created_at?: string
+          crm_customer_id?: string | null
           customer_city?: string | null
           customer_email?: string | null
           customer_kind?: string
@@ -2125,6 +2190,7 @@ export type Database = {
           category_slug?: string | null
           company_name?: string | null
           created_at?: string
+          crm_customer_id?: string | null
           customer_city?: string | null
           customer_email?: string | null
           customer_kind?: string
@@ -2160,7 +2226,15 @@ export type Database = {
           updated_at?: string
           vat_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "rental_inquiries_crm_customer_id_fkey"
+            columns: ["crm_customer_id"]
+            isOneToOne: false
+            referencedRelation: "crm_customers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sales_inquiries: {
         Row: {

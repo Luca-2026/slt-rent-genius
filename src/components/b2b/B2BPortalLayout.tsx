@@ -12,6 +12,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import {
   LayoutDashboard, Package, FileText, Receipt,
   LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen, Building2, Download, Menu, CheckSquare,
+  Users,
   Inbox, ShoppingCart,
 } from "lucide-react";
 import { useOpenInquiryCounts } from "@/hooks/useInquiries";
@@ -53,6 +54,7 @@ const adminNavItems = [
   { href: "/b2b/admin", label: "B2B-Vermietung", icon: Settings },
   { href: "/b2b/mietanfragen", label: "Mietanfragen", icon: Inbox },
   { href: "/b2b/verkaufsanfragen", label: "Verkaufsanfragen", icon: ShoppingCart },
+  { href: "/b2b/kundendaten", label: "Kundendaten", icon: Users },
   { href: "/b2b/aufgaben", label: "Interne Verwaltung", icon: CheckSquare },
 ];
 
@@ -60,6 +62,7 @@ const staffNavItems = [
   { href: "/", label: "Startseite", icon: Home },
   { href: "/b2b/mietanfragen", label: "Mietanfragen", icon: Inbox },
   { href: "/b2b/verkaufsanfragen", label: "Verkaufsanfragen", icon: ShoppingCart },
+  { href: "/b2b/kundendaten", label: "Kundendaten", icon: Users },
   { href: "/b2b/aufgaben", label: "Interne Verwaltung", icon: CheckSquare },
   { href: "/hilfe", label: "Hilfe & Anleitungen", icon: BookOpen },
 ];
