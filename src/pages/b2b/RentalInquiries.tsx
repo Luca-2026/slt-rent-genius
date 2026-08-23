@@ -71,19 +71,20 @@ export default function RentalInquiries() {
             >
               <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-semibold truncate">{r.product_name || "Mietanfrage"}</span>
+                  <div className="flex flex-wrap items-center gap-2 min-w-0">
+                    <span className="font-semibold break-words min-w-0">{r.product_name || "Mietanfrage"}</span>
                     <InquiryStatusBadge status={r.status} />
                   </div>
-                  <p className="text-sm text-muted-foreground truncate">
+                  <p className="text-sm text-muted-foreground break-words">
                     {r.customer_name || r.customer_email || "—"}
                     {r.location && ` · ${getLocationDisplayName(r.location)}`}
                   </p>
                 </div>
-                <div className="text-sm text-muted-foreground sm:text-right">
+                <div className="text-sm text-muted-foreground sm:text-right shrink-0">
                   <div>{fmtDate(r.start_date)} – {fmtDate(r.end_date)}</div>
                   <div>{r.assigned_name ? `→ ${r.assigned_name}` : "offen"}</div>
                 </div>
+
               </CardContent>
             </Card>
           ))}
