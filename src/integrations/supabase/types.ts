@@ -2034,6 +2034,7 @@ export type Database = {
           assigned_to: string | null
           attachments: Json
           category_slug: string | null
+          company_name: string | null
           created_at: string
           customer_city: string | null
           customer_email: string | null
@@ -2068,6 +2069,7 @@ export type Database = {
           start_time: string | null
           status: string
           updated_at: string
+          vat_id: string | null
         }
         Insert: {
           assigned_at?: string | null
@@ -2075,6 +2077,7 @@ export type Database = {
           assigned_to?: string | null
           attachments?: Json
           category_slug?: string | null
+          company_name?: string | null
           created_at?: string
           customer_city?: string | null
           customer_email?: string | null
@@ -2109,6 +2112,7 @@ export type Database = {
           start_time?: string | null
           status?: string
           updated_at?: string
+          vat_id?: string | null
         }
         Update: {
           assigned_at?: string | null
@@ -2116,6 +2120,7 @@ export type Database = {
           assigned_to?: string | null
           attachments?: Json
           category_slug?: string | null
+          company_name?: string | null
           created_at?: string
           customer_city?: string | null
           customer_email?: string | null
@@ -2150,6 +2155,7 @@ export type Database = {
           start_time?: string | null
           status?: string
           updated_at?: string
+          vat_id?: string | null
         }
         Relationships: []
       }
