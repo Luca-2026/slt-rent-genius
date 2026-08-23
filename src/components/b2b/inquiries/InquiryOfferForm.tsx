@@ -216,7 +216,7 @@ export function InquiryOfferForm({
         inquiry_type: inquiryType,
         inquiry_id: inquiryId,
         location,
-        items: items.map(({ available_addons: _unused, ...rest }) => ({
+        items: items.map(({ available_addons: _unused, price_source: _src, ...rest }) => ({
           ...rest,
           addons: (rest.addons ?? []).filter((a) => Number(a.amount) !== 0),
         })),
