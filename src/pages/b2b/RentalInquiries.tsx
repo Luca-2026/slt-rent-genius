@@ -113,6 +113,17 @@ export default function RentalInquiries() {
                     discount_percent: 0,
                   },
                 ]}
+                defaultDelivery={{
+                  requested: Boolean(
+                    selected.delivery_requested ||
+                      selected.delivery_street ||
+                      selected.delivery_city,
+                  ),
+                  street: selected.delivery_street ?? "",
+                  postal_code: selected.delivery_postal_code ?? "",
+                  city: selected.delivery_city ?? "",
+                }}
+
                 details={<RentalDetails inquiry={selected} />}
               />
             </div>
