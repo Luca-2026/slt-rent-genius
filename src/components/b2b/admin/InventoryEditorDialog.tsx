@@ -647,6 +647,12 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                 <div><Label>Mindestmietdauer (Monate)</Label><Input type="number" value={form.min_rental_months} onChange={(e) => setForm({ ...form, min_rental_months: e.target.value })} /></div>
                 <div><Label>Video-URL</Label><Input value={form.video_url} onChange={(e) => setForm({ ...form, video_url: e.target.value })} /></div>
               </div>
+              <div className="rounded-lg border border-border p-3">
+                <AddonOptionsEditor
+                  value={form.addon_options}
+                  onChange={(next) => setForm((f) => ({ ...f, addon_options: next }))}
+                />
+              </div>
             </TabsContent>
 
             <TabsContent value="seo" className="space-y-6">
