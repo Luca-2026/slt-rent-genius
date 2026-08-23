@@ -298,9 +298,13 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
           </label>
         </div>
 
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={busy}>Abbrechen</Button>
-          <Button onClick={submit} disabled={busy}>{busy ? "Wird angelegt …" : "Anfrage anlegen"}</Button>
+        <DialogFooter className="shrink-0 gap-3 border-t bg-background px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:gap-2 sm:px-6">
+          <Button variant="outline" className="w-full sm:w-auto" onClick={() => onOpenChange(false)} disabled={busy}>
+            Abbrechen
+          </Button>
+          <Button className="w-full sm:w-auto" onClick={submit} disabled={busy}>
+            {busy ? "Wird angelegt …" : "Anfrage anlegen"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
