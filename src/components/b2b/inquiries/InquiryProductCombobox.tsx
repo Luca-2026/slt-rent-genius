@@ -21,14 +21,14 @@ let catalogPromise: Promise<CatalogProduct[]> | null = null;
 async function loadCatalog(): Promise<CatalogProduct[]> {
   if (catalogCache) return catalogCache;
   if (!catalogPromise) {
-    catalogPromise = supabase
-      .from("managed_products_public")
-      .select("slug,name,category,images,price_per_day,available_locations")
-      .order("name")
-      .then(({ data }) => {
-        catalogCache = (data ?? []) as CatalogProduct[];
-        return catalogCache;
-      });
+    catalogPromise = (async () => {
+      const { data } = await supabase
+        .from("managed_products_public")
+        .select("slug,name,category,images,price_per_day,available_locations")
+        .order("name");
+      catalogCache = (data ?? []) as CatalogProduct[];
+      return catalogCache;
+    })();
   }
   return catalogPromise;
 }
