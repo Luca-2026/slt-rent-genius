@@ -645,10 +645,11 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
             </TabsContent>
 
             <TabsContent value="preise" className="space-y-4">
+              <p className="text-xs text-muted-foreground">Nur die Zahl eingeben (z. B. <span className="font-mono">89</span>) – das €-Zeichen wird beim Speichern automatisch ergänzt.</p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div><Label>Preis / Tag</Label><Input placeholder="z.B. 89 €" value={form.price_per_day} onChange={(e) => setForm({ ...form, price_per_day: e.target.value })} /></div>
-                <div><Label>Preis / Wochenende</Label><Input value={form.price_weekend} onChange={(e) => setForm({ ...form, price_weekend: e.target.value })} /></div>
-                <div><Label>Preis / Monat</Label><Input value={form.price_per_month} onChange={(e) => setForm({ ...form, price_per_month: e.target.value })} /></div>
+                <div><Label>Preis / Tag (€)</Label><Input inputMode="decimal" placeholder="z. B. 89" value={form.price_per_day} onChange={(e) => setForm({ ...form, price_per_day: e.target.value })} /></div>
+                <div><Label>Preis / Wochenende (€)</Label><Input inputMode="decimal" placeholder="z. B. 149" value={form.price_weekend} onChange={(e) => setForm({ ...form, price_weekend: e.target.value })} /></div>
+                <div><Label>Preis / Monat (€)</Label><Input inputMode="decimal" placeholder="z. B. 990" value={form.price_per_month} onChange={(e) => setForm({ ...form, price_per_month: e.target.value })} /></div>
               </div>
               <div>
                 <Label>Rentware-Codes je Standort</Label>
