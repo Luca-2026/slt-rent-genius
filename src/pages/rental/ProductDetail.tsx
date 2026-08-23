@@ -635,7 +635,7 @@ export default function ProductDetail() {
                       <img src={p.image} alt={p.name} className="w-full h-32 object-contain mb-2" loading="lazy" />
                     )}
                     <p className="text-sm font-medium text-headline line-clamp-2">{p.name}</p>
-                    {p.pricePerDay && <p className="text-xs text-primary mt-1">{p.pricePerDay}</p>}
+                    {p.pricePerDay && <p className="text-xs text-primary mt-1">{formatPriceValue(p.pricePerDay)}</p>}
                   </Link>
                 ))}
               </div>
@@ -1504,7 +1504,7 @@ export default function ProductDetail() {
                         </h3>
                         {relatedProduct.pricePerDay && (
                           <p className="text-sm font-semibold text-primary mt-1">
-                            {relatedProduct.pricePerDay}{relatedProduct.priceUnitLabel ?? t("rental.perDay")}
+                            {formatPriceValue(relatedProduct.pricePerDay)}{relatedProduct.priceUnitLabel ?? t("rental.perDay")}
                           </p>
                         )}
                       </CardContent>

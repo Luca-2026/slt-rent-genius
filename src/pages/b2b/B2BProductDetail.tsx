@@ -1,3 +1,4 @@
+import { formatPriceValue } from "@/components/rental/ProductPriceBlock";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useMemo, useEffect, useState } from "react";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
@@ -551,7 +552,7 @@ function B2BInquiryCard({
       {product.pricePerDay && (
         <div className="pb-3 border-b border-border">
           <div className={`text-2xl font-bold ${hasDiscount ? "line-through text-muted-foreground" : "text-primary"}`}>
-            {product.pricePerDay}
+            {formatPriceValue(product.pricePerDay)}
             <span className="text-sm font-normal"> / Tag</span>
           </div>
           {hasDiscount && (
@@ -564,7 +565,7 @@ function B2BInquiryCard({
           )}
           {product.priceWeekend && (
             <p className="text-xs text-muted-foreground mt-1">
-              Weekend-Tarif: {product.priceWeekend}
+              Weekend-Tarif: {formatPriceValue(product.priceWeekend)}
             </p>
           )}
         </div>
