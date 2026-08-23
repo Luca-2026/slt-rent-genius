@@ -47,6 +47,7 @@ serve(async (req) => {
       deliveryPostalCode,
       deliveryCity,
       setupServiceRequested,
+      customerKind,
       attachments,
     } = await req.json();
 
