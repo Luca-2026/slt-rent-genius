@@ -8,13 +8,32 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Send, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { buildOfferTotals, formatEuro, type OfferLine } from "./offerMath";
+import { parseAddonOptions, suggestAddonAmount, type AddonOption } from "@/lib/offerAddons";
 import {
   InquiryProductCombobox,
   findCatalogProductByName,
   parsePrice,
   pickCatalogImage,
 } from "./InquiryProductCombobox";
+
+/** Angebotsposition inkl. der im CMS erlaubten Zusatzoptionen (nur lokal). */
+type FormLine = OfferLine & { available_addons?: AddonOption[] };
+
+const PAYMENT_OPTIONS: Record<"business" | "private", { value: string; label: string }[]> = {
+  business: [
+    { value: "net_14", label: "Rechnung – 14 Tage netto" },
+    { value: "net_7", label: "Rechnung – 7 Tage netto" },
+    { value: "net_30", label: "Rechnung – 30 Tage netto" },
+    { value: "vorkasse", label: "Vorkasse per Banküberweisung" },
+  ],
+  private: [
+    { value: "anzahlung_30", label: "30 % Anzahlung binnen 48 Std. (Zahlungslink)" },
+    { value: "rentpair_vorkasse", label: "Vorkasse komplett über Zahlungslink" },
+    { value: "vorkasse", label: "Vorkasse per Banküberweisung" },
+  ],
+};
 
 export interface OfferDeliveryAddress {
   requested: boolean;
@@ -30,6 +49,8 @@ interface Props {
   defaultItems: OfferLine[];
   /** Vom Kunden im Anfrageformular angegebene Lieferadresse (im Portal änderbar). */
   defaultDelivery?: OfferDeliveryAddress;
+  /** Privat- oder Geschäftskunde – steuert die Zahlungsbedingungen. */
+  customerKind?: "business" | "private";
   staffName: string;
   disabled?: boolean;
   onSent?: () => void;
@@ -41,12 +62,13 @@ export function InquiryOfferForm({
   location,
   defaultItems,
   defaultDelivery,
+  customerKind = "private",
   staffName,
   disabled,
   onSent,
 }: Props) {
   const { toast } = useToast();
-  const [items, setItems] = useState<OfferLine[]>(
+  const [items, setItems] = useState<FormLine[]>(
     defaultItems.length ? defaultItems : [{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0 }],
   );
   const emptyDelivery: OfferDeliveryAddress = { requested: false, street: "", postal_code: "", city: "" };
@@ -55,6 +77,13 @@ export function InquiryOfferForm({
   const [deliveryCostReturn, setDeliveryCostReturn] = useState(0);
   const [deposit, setDeposit] = useState(0);
   const [validDays, setValidDays] = useState(14);
+  const [paymentTerms, setPaymentTerms] = useState(
+    customerKind === "business" ? "net_14" : "anzahlung_30",
+  );
+
+  useEffect(() => {
+    setPaymentTerms(customerKind === "business" ? "net_14" : "anzahlung_30");
+  }, [customerKind]);
   const [notes, setNotes] = useState("");
   const [sending, setSending] = useState(false);
 
@@ -70,7 +99,7 @@ export function InquiryOfferForm({
   );
 
 
-  const patchItem = (index: number, patch: Partial<OfferLine>) =>
+  const patchItem = (index: number, patch: Partial<FormLine>) =>
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, ...patch } : item)));
 
   // Vorbelegte Positionen automatisch mit Bild (und ggf. Preis) aus dem CMS anreichern.
@@ -84,7 +113,7 @@ export function InquiryOfferForm({
           if (!match) return item;
           const image = pickCatalogImage(match.images);
           const price = item.unit_price > 0 ? item.unit_price : parsePrice(match.price_per_day) ?? 0;
-          return image || price !== item.unit_price ? { ...item, image_url: image, unit_price: price } : item;
+          return { ...item, image_url: item.image_url ?? image, unit_price: price, available_addons: parseAddonOptions(match.addon_options) };
         }),
       );
       if (!cancelled && enriched.some((item, i) => item !== items[i])) setItems(enriched);
@@ -115,7 +144,11 @@ export function InquiryOfferForm({
         inquiry_type: inquiryType,
         inquiry_id: inquiryId,
         location,
-        items,
+        items: items.map(({ available_addons: _unused, ...rest }) => ({
+          ...rest,
+          addons: (rest.addons ?? []).filter((a) => a.amount > 0),
+        })),
+        payment_terms: paymentTerms,
         delivery_cost_delivery: deliveryCostDelivery,
         delivery_cost_return: deliveryCostReturn,
         delivery_requested: delivery.requested,
@@ -177,6 +210,8 @@ export function InquiryOfferForm({
                         product && item.unit_price === 0
                           ? parsePrice(product.price_per_day) ?? 0
                           : item.unit_price,
+                      available_addons: product ? parseAddonOptions(product.addon_options) : [],
+                      addons: [],
                     })
                   }
                 />
