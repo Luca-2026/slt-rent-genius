@@ -93,6 +93,20 @@ Deno.serve(async (req: Request) => {
       .maybeSingle();
     if (inqErr || !inquiry) return json({ error: "Anfrage nicht gefunden" }, 404);
 
+    // Doppelklick-/Retry-Schutz: wurde in den letzten 2 Minuten bereits ein
+    // Angebot zu dieser Anfrage versendet, wird kein zweites erzeugt/gemailt.
+    const lastSentAt = inquiry.offer_sent_at ? Date.parse(inquiry.offer_sent_at) : 0;
+    if (lastSentAt && Date.now() - lastSentAt < 2 * 60 * 1000) {
+      console.log("Duplicate send suppressed for inquiry", inquiryId);
+      return json({
+        success: true,
+        duplicate_suppressed: true,
+        offer_number: inquiry.offer_number,
+        file_url: inquiry.offer_file_url,
+        email_sent: true,
+      });
+    }
+
     const customerEmail: string | null = inquiry.customer_email;
     if (!customerEmail) return json({ error: "Anfrage hat keine E-Mail-Adresse" }, 400);
 
