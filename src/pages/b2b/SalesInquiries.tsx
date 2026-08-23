@@ -124,6 +124,7 @@ export default function SalesInquiries() {
                 inquiryType="sales"
                 inquiry={selected}
                 onChanged={reload}
+                onDeleted={() => setSelectedId(null)}
                 defaultItems={[
                   {
                     product_name: salesInquiryTitle(selected),
