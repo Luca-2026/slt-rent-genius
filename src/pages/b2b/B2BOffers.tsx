@@ -14,6 +14,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import { SignaturePad } from "@/components/b2b/SignaturePad";
+import { BonnPriorityHotline } from "@/components/b2b/BonnPriorityHotline";
 import {
   FileText, RefreshCw, Download, Send, ThumbsUp, Clock, CheckCircle2, XCircle, PenTool,
 } from "lucide-react";
@@ -55,7 +56,7 @@ const statusConfig: Record<string, { label: string; variant: "default" | "second
 };
 
 function B2BOffers() {
-  const { user } = useAuth();
+  const { user, b2bProfile } = useAuth();
   const { toast } = useToast();
   const [offers, setOffers] = useState<Offer[]>([]);
   const [offerItems, setOfferItems] = useState<OfferItem[]>([]);
@@ -164,6 +165,8 @@ function B2BOffers() {
           </CardContent>
         </Card>
       </div>
+
+      <BonnPriorityHotline location={b2bProfile?.assigned_location} className="mb-6" />
 
       <div className="flex justify-end mb-4">
         <Button variant="outline" size="sm" onClick={fetchData} disabled={loading}>
