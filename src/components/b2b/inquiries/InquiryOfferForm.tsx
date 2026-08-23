@@ -22,7 +22,11 @@ import { SALES_ADDON_PRESETS, isSalesAddonNegative } from "@/lib/salesAddons";
 import { loadSalesCatalog } from "@/hooks/useSalesCatalog";
 
 /** Angebotsposition inkl. der im CMS erlaubten Zusatzoptionen (nur lokal). */
-type FormLine = OfferLine & { available_addons?: AddonOption[] };
+type FormLine = OfferLine & {
+  available_addons?: AddonOption[];
+  /** Woher der Einzelpreis stammt: aus dem CMS vorbelegt oder manuell überschrieben. */
+  price_source?: "cms" | "manual";
+};
 
 /**
  * Auswahlliste der Zusatzoptionen einer Position: die im CMS gepflegten Optionen
