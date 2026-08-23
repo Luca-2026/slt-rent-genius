@@ -101,6 +101,17 @@ Deno.serve(async (req: Request) => {
     const validDays = Number(body.valid_days) > 0 ? Math.min(Number(body.valid_days), 180) : 14;
     const notes: string | null = typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
 
+    // ── Lieferadresse: aus dem Portal übergeben (Vorbelegung stammt aus dem
+    //    öffentlichen Anfrageformular) – Fallback auf die gespeicherten Felder.
+    const str = (v: unknown) => (typeof v === "string" ? v.trim().slice(0, 200) : "");
+    const addrIn = body.delivery_address && typeof body.delivery_address === "object"
+      ? body.delivery_address as Record<string, unknown>
+      : null;
+    const deliveryRequested = body.delivery_requested === undefined
+      ? Boolean(inquiry_placeholder_unused)
+      : body.delivery_requested === true;
+
+
     const totals = buildOfferTotals(items, deliveryCostDelivery + deliveryCostReturn);
 
     const locationKey = resolveLocationKey(body.location || inquiry.location);
