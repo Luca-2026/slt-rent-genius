@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { buildOfferTotals, formatEuro, type OfferLine } from "./offerMath";
-import { parseAddonOptions, suggestAddonAmount, type AddonOption } from "@/lib/offerAddons";
+import { ADDON_PRESETS, parseAddonOptions, suggestAddonAmount, type AddonOption } from "@/lib/offerAddons";
 import {
   InquiryProductCombobox,
   findCatalogProductByName,
