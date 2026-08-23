@@ -5885,12 +5885,13 @@ $productDetails = [
     'description' => 'Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V',
     'weightKg' => '3500',
   ],
-  'bonn-bobcat-e50z' => [
+  'bonn-minibagger-5t' => [
     'name' => '5t Minibagger',
-    'modelName' => 'Bobcat E50z',
-    'description' => 'Einsatzgewicht: 4.800 kg | Grabtiefe: 3.520 mm | Motorleistung: 36,4 kW | Abgasnorm Stufe V',
-    'weightKg' => '4800',
+    'modelName' => 'LiuGong 9057F ZTS',
+    'description' => 'Betriebsgewicht: 5.700 kg | Grabtiefe: 3.600 mm | 35,5 kW (48 PS) Yanmar Stufe V | Null-Heckschwenk (ZTS)',
+    'weightKg' => '5700',
   ],
+
   'bonn-radlader-kramer-5050' => [
     'name' => '3t Radlader',
     'description'
