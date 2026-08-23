@@ -196,6 +196,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           inquiryId={inquiry.id}
           location={inquiry.location}
           defaultItems={defaultItems}
+          defaultDelivery={defaultDelivery}
+
           staffName={actorName}
           disabled={busy}
           onSent={onChanged}
