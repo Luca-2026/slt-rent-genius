@@ -59,6 +59,12 @@ RewriteRule ^b2b(/.*)?$ https://app.slt-rental.de/b2b$1 [L,R=301]
   RewriteRule ^mieten/(bonn|krefeld|muelheim)/(geschirr-glaeser-besteck|gastro-equipment)/slt-eiswuerfelmaschine-profi-35kg/?$ /mieten/$1/gastro-equipment/slt-eiswuerfelmaschine-profi-45kg/ [L,R=301]
   RewriteRule ^mieten/bonn/(geschirr-glaeser-besteck|gastro-equipment)/bonn-getraenkekuehlschrank-236l/?$ /mieten/bonn/gastro-equipment/getraenkekuehlschrank-236l/ [L,R=301]
 
+  # Modellwechsel + Umbenennung: 5t Minibagger (Bobcat E50z) -> 6t Minibagger (LiuGong 9057F ZTS)
+  RewriteRule ^mieten/(bonn|krefeld|muelheim)/erdbewegung/bobcat-e50z/?$ /mieten/$1/erdbewegung/minibagger-6t/ [L,R=301]
+  RewriteRule ^mieten/(bonn|krefeld|muelheim)/erdbewegung/minibagger-5t/?$ /mieten/$1/erdbewegung/minibagger-6t/ [L,R=301]
+
+
+
   # =====================================================
   # Legacy URL Redirects (alte Webflow-Pfade -> neue Struktur)
   # =====================================================

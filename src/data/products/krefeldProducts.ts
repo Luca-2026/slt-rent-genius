@@ -6168,7 +6168,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgTiefloeffelMs03_50cm_1,
     images: [imgTiefloeffelMs03_50cm_1],
     category: "tiefloeffel",
-    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-5t"],
+    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-6t"],
     specifications: {
       "Aufnahme": "MS03 (Symlock)",
       "Volumen": "107 l",
@@ -6207,7 +6207,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgKabelloeffelMs03_20cm_1,
     images: [imgKabelloeffelMs03_20cm_1],
     category: "kabelloeffel",
-    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-5t"],
+    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-6t"],
     specifications: {
       "Aufnahme": "MS03 (Symlock)",
       "Gewichtsklasse Trägergerät": "2,5 – 4 t",
@@ -6309,7 +6309,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgGrabenraeumloeffelMs03_140cm_1,
     images: [imgGrabenraeumloeffelMs03_140cm_1],
     category: "grabenraeumloeffel",
-    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-5t"],
+    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-6t"],
     specifications: {
       "Aufnahme": "MS03 (Symlock)",
       "Volumen": "170 l",
@@ -6396,7 +6396,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgHydraulikhammer1,
     images: [imgHydraulikhammer1, imgHydraulikhammer2, imgHydraulikhammer3],
     category: "hydraulikhammer",
-    compatibleMachines: ["bobcat-e10z", "xcmg-xe20e", "minibagger-2-7t", "bobcat-e35z", "minibagger-5t"],
+    compatibleMachines: ["bobcat-e10z", "xcmg-xe20e", "minibagger-2-7t", "bobcat-e35z", "minibagger-6t"],
     rentwareCode: { krefeld: "CRLJPA" }
   },
   {
@@ -6446,7 +6446,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgSortiergreiferSsg150_1,
     images: [imgSortiergreiferSsg150_1, imgSortiergreiferSsg150_2, imgSortiergreiferSsg150_3],
     category: "sortiergreifer",
-    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-5t"],
+    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-6t"],
     videoUrls: ["https://www.youtube.com/watch?v=NxHLwYjWVA8"],
     specifications: {
       "Arbeitsbreite": "400 mm",
@@ -6485,7 +6485,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgDieseltankstelle1,
     images: [imgDieseltankstelle1, imgDieseltankstelle2],
     category: "zubehoer",
-    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-5t", "kramer-5045"],
+    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-6t", "kramer-5045"],
     rentwareCode: { krefeld: "KP5KOB" }
   },
   // Diesel Kanister
@@ -6497,7 +6497,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgDieselKanister10l_1,
     images: [imgDieselKanister10l_1],
     category: "zubehoer",
-    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-5t", "kramer-5045"],
+    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-6t", "kramer-5045"],
     specifications: {
       "Volumen": "10 l",
       "Kraftstoff": "Diesel",
@@ -6512,7 +6512,7 @@ export const erdbewegungZusatzProducts: Product[] = [
     image: imgDieselKanister20l_1,
     images: [imgDieselKanister20l_1],
     category: "zubehoer",
-    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-5t", "kramer-5045"],
+    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-6t", "kramer-5045"],
     specifications: {
       "Volumen": "20 l",
       "Kraftstoff": "Diesel",

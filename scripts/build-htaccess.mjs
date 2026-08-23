@@ -104,10 +104,14 @@ lines.push(
   "RewriteRule ^mieten/muelheim/erdbewegung/xcmg-xe27e/?$ /mieten/muelheim/erdbewegung/minibagger-2-7t/ [L,R=301]",
   "",
 
-  "# === 2e. Modellwechsel 5t Minibagger (Bobcat E50z -> LiuGong 9057F ZTS) ===",
-  "RewriteRule ^mieten/krefeld/erdbewegung/bobcat-e50z/?$ /mieten/krefeld/erdbewegung/minibagger-5t/ [L,R=301]",
-  "RewriteRule ^mieten/bonn/erdbewegung/bobcat-e50z/?$ /mieten/bonn/erdbewegung/minibagger-5t/ [L,R=301]",
-  "RewriteRule ^mieten/muelheim/erdbewegung/bobcat-e50z/?$ /mieten/muelheim/erdbewegung/minibagger-5t/ [L,R=301]",
+  "# === 2e. Modellwechsel 6t Minibagger (Bobcat E50z -> LiuGong 9057F ZTS) ===",
+  "RewriteRule ^mieten/krefeld/erdbewegung/bobcat-e50z/?$ /mieten/krefeld/erdbewegung/minibagger-6t/ [L,R=301]",
+  "RewriteRule ^mieten/bonn/erdbewegung/bobcat-e50z/?$ /mieten/bonn/erdbewegung/minibagger-6t/ [L,R=301]",
+  "RewriteRule ^mieten/muelheim/erdbewegung/bobcat-e50z/?$ /mieten/muelheim/erdbewegung/minibagger-6t/ [L,R=301]",
+  "# Umbenennung 5t -> 6t Minibagger (Betriebsgewicht 5.700 kg, Klasse 6 t)",
+  "RewriteRule ^mieten/krefeld/erdbewegung/minibagger-5t/?$ /mieten/krefeld/erdbewegung/minibagger-6t/ [L,R=301]",
+  "RewriteRule ^mieten/bonn/erdbewegung/minibagger-5t/?$ /mieten/bonn/erdbewegung/minibagger-6t/ [L,R=301]",
+  "RewriteRule ^mieten/muelheim/erdbewegung/minibagger-5t/?$ /mieten/muelheim/erdbewegung/minibagger-6t/ [L,R=301]",
   "",
 
   `# === 3. Legacy-URL-Redirects (aus GSC-404-Liste, ${mapping.total} URLs) ===`,

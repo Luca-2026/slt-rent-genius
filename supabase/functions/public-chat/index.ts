@@ -420,7 +420,7 @@ const minibaggerSlugs = [
   { label: "2t Minibagger (XCMG XE20E)", slug: "xcmg-xe20e", exact: /(^|\D)2\s*t|2\s*tonnen?/i },
   { label: "2,7t Minibagger (XCMG XE27E)", slug: "xcmg-xe27e", exact: /2[,.]7\s*t|2[,.]7\s*tonnen?/i },
   { label: "3,5t Minibagger (Bobcat E35z)", slug: "bobcat-e35z", exact: /3[,.]5\s*t|3[,.]5\s*tonnen?/i },
-  { label: "5t Minibagger (Bobcat E50z)", slug: "bobcat-e50z", exact: /(^|\D)5\s*t|5\s*tonnen?/i },
+  { label: "6t Minibagger (LiuGong 9057F ZTS)", slug: "minibagger-6t", exact: /(^|\D)[56]\s*t|[56]\s*tonnen?/i },
 ];
 
 // Strukturierte Beratungsdaten zu jedem Minibagger-Modell – Quelle: src/data/rentalData.ts
