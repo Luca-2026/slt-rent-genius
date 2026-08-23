@@ -198,9 +198,9 @@ import imgBobcatE10z4 from "@/assets/products/erdbewegung/bobcat-e10z-4.jpg";
 import imgXcmgXe20e1 from "@/assets/products/erdbewegung/xcmg-xe20e-1.jpg";
 import imgXcmgXe20e2 from "@/assets/products/erdbewegung/xcmg-xe20e-2.jpg";
 import imgXcmgXe20e3 from "@/assets/products/erdbewegung/xcmg-xe20e-3.jpg";
-import imgXcmgXe27e1 from "@/assets/products/erdbewegung/minibagger-2-7t-1.jpg";
-import imgXcmgXe27e2 from "@/assets/products/erdbewegung/minibagger-2-7t-2.jpg";
-import imgXcmgXe27e3 from "@/assets/products/erdbewegung/minibagger-2-7t-3.jpg";
+const imgXcmgXe27e1 = "/product-images/erdbewegung/minibagger-2-7t-1.webp";
+const imgXcmgXe27e2 = "/product-images/erdbewegung/minibagger-2-7t-2.webp";
+const imgXcmgXe27e3 = "/product-images/erdbewegung/minibagger-2-7t-3.webp";
 import imgKramer1 from "@/assets/products/erdbewegung/kramer-5045-1.png";
 import imgKramer2 from "@/assets/products/erdbewegung/kramer-5045-2.png";
 import imgCormidi1 from "@/assets/products/erdbewegung/cormidi-c60-1.jpg";
@@ -463,23 +463,27 @@ export const bonnErdbewegungProducts = [
   {
     id: "bonn-minibagger-2-7t",
     name: "2,7t Minibagger",
-    modelName: "XCMG XE27E",
-    description: "Einsatzgewicht: 2.700 kg | Grabtiefe: 2.800 mm | Breite: 1.500 mm",
+    modelName: "LiuGong 9027F ZTS",
+    description: "Betriebsgewicht 2.750 kg | Transportbreite 1.550 mm | Null-Heckschwenk (ZTS) | 21 PS Yanmar Stufe V",
     image: imgXcmgXe27e1,
     images: [imgXcmgXe27e1, imgXcmgXe27e2, imgXcmgXe27e3],
     rentwareCode: { bonn: "QU4BYW" },
-    weightKg: 2700,
+    weightKg: 2750,
     category: "minibagger",
     tags: ["maschine"],
     driveType: "diesel",
     specifications: {
-      "Betriebsgewicht": "2780 kg",
-      "Gesamtbreite": "1500 mm",
-      "Gesamthöhe": "2580 mm",
-      "Löffelklasse": "MS03",
-      "PS": "21",
-      "Anbaugeräte": "Tieflöffel 300 mm inklusive",
-      "Kraftstoff": "Diesel (33 l)",
+      "Betriebsgewicht": "2.750 kg (mit Kabine)",
+      "Motor": "Yanmar 3TNV80F-SNLY, EU Stufe V",
+      "Motorleistung": "15,2 kW (21 PS)",
+      "Löffelinhalt": "0,02 – 0,08 m³",
+      "Transportlänge": "4.160 mm",
+      "Transportbreite": "1.550 mm",
+      "Transporthöhe": "2.450 mm",
+      "Grabreichweite": "4.757 mm",
+      "Hydraulik-Durchfluss": "max. 86 l/min",
+      "Kraftstoff": "Diesel",
+      "Heckschwenk": "Null-Heckschwenk (ZTS)",
     },
     rentalNotes: [
       "Preis gilt für 8 Betriebsstunden/Tag. Mehrstunden werden gesondert berechnet.",

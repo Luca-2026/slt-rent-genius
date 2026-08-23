@@ -93,9 +93,9 @@ import imgPlattform3500Absenkbar_5 from "@/assets/products/anhaenger/plattform-3
 import imgXcmgXe20e_1 from "@/assets/products/erdbewegung/xcmg-xe20e-1.jpg";
 import imgXcmgXe20e_2 from "@/assets/products/erdbewegung/xcmg-xe20e-2.jpg";
 import imgXcmgXe20e_3 from "@/assets/products/erdbewegung/xcmg-xe20e-3.jpg";
-import imgXcmgXe27e_1 from "@/assets/products/erdbewegung/minibagger-2-7t-1.jpg";
-import imgXcmgXe27e_2 from "@/assets/products/erdbewegung/minibagger-2-7t-2.jpg";
-import imgXcmgXe27e_3 from "@/assets/products/erdbewegung/minibagger-2-7t-3.jpg";
+const imgXcmgXe27e_1 = "/product-images/erdbewegung/minibagger-2-7t-1.webp";
+const imgXcmgXe27e_2 = "/product-images/erdbewegung/minibagger-2-7t-2.webp";
+const imgXcmgXe27e_3 = "/product-images/erdbewegung/minibagger-2-7t-3.webp";
 import imgBobcatE10z_1 from "@/assets/products/erdbewegung/bobcat-e10z-1.jpg";
 import imgBobcatE10z_2 from "@/assets/products/erdbewegung/bobcat-e10z-2.jpg";
 import imgBobcatE10z_3 from "@/assets/products/erdbewegung/bobcat-e10z-3.jpg";
@@ -850,20 +850,24 @@ const erdbewegungProductsUnsorted: Product[] = [
   {
     id: "minibagger-2-7t",
     name: "2,7t Minibagger",
-    modelName: "XCMG XE27E",
-    description: "Einsatzgewicht: 2.700 kg | Grabtiefe: 2.800 mm | Breite: 1.500 mm",
+    modelName: "LiuGong 9027F ZTS",
+    description: "Betriebsgewicht 2.750 kg | Transportbreite 1.550 mm | Null-Heckschwenk (ZTS) | 21 PS Yanmar Stufe V",
     specifications: {
-      "Betriebsgewicht": "2780 kg",
-      "Gesamtbreite": "1500 mm",
-      "Gesamthöhe": "2580 mm",
-      "Löffelklasse": "MS03",
-      "PS": "21",
-      "Anbaugeräte": "Tieflöffel 300mm inklusive",
-      "Kraftstoff": "Diesel (33 l)",
+      "Betriebsgewicht": "2.750 kg (mit Kabine)",
+      "Motor": "Yanmar 3TNV80F-SNLY, EU Stufe V",
+      "Motorleistung": "15,2 kW (21 PS)",
+      "Löffelinhalt": "0,02 – 0,08 m³",
+      "Transportlänge": "4.160 mm",
+      "Transportbreite": "1.550 mm",
+      "Transporthöhe": "2.450 mm",
+      "Grabreichweite": "4.757 mm",
+      "Hydraulik-Durchfluss": "max. 86 l/min",
+      "Kraftstoff": "Diesel",
+      "Heckschwenk": "Null-Heckschwenk (ZTS)",
     },
     image: imgXcmgXe27e_1,
     images: [imgXcmgXe27e_1, imgXcmgXe27e_2, imgXcmgXe27e_3],
-    weightKg: 2700,
+    weightKg: 2750,
     category: "minibagger",
     tags: ["minibagger", "diesel", "ab-2500", "maschine"],
     rentwareCode: { krefeld: "MBUX18" },
