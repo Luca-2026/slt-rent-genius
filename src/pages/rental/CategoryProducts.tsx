@@ -1210,7 +1210,7 @@ export default function CategoryProducts() {
       `SLT Rental ist Ihr Anhängerverleih in ${location.name} und Umgebung. Wir beraten Sie gerne bei der Wahl des richtigen Anhängers für Ihren Transport, Umzug oder Ihr Bauprojekt.${(location.id === "krefeld" || location.id === "bonn") ? " Übrigens: In unserer eigenen Werkstatt führen wir auch Wartungs- und Reparaturarbeiten an Anhängern durch – auch an Fremdgeräten." : ""}`,
     ],
     erdbewegung: [
-      `Minibagger mieten in ${location.name} – bei SLT Rental finden Sie Bagger von 1 Tonne bis 5 Tonnen Einsatzgewicht für jedes Erdbauprojekt. Ob Fundamentaushub, Leitungsgraben, Gartenumgestaltung oder Pool-Bau: Unsere Minibagger und Radlader sind sofort einsatzbereit und werden inklusive Tieflöffel vermietet.`,
+      `Minibagger mieten in ${location.name} – bei SLT Rental finden Sie Bagger von 1 Tonne bis 6 Tonnen Einsatzgewicht für jedes Erdbauprojekt. Ob Fundamentaushub, Leitungsgraben, Gartenumgestaltung oder Pool-Bau: Unsere Minibagger und Radlader sind sofort einsatzbereit und werden inklusive Tieflöffel vermietet.`,
       `Zusätzlich bieten wir ein umfangreiches Sortiment an Anbaugeräten: Tieflöffel in verschiedenen Breiten, Grabenräumlöffel, Hydraulikhammer für Abbrucharbeiten und Sortiergreifer. Alle Anbaugeräte mit MS01 oder MS03 Aufnahme. Lieferung direkt auf Ihre Baustelle in ${location.name} möglich – berechnen Sie die Lieferkosten mit unserem Online-Rechner.`,
       `Für größere Projekte bieten wir auch Radlader und Kettendumper. Fragen Sie nach unseren attraktiven Wochen- und Monatstarifen für Langzeitmieten.${(location.id === "krefeld" || location.id === "bonn") ? " In unserer hauseigenen Werkstatt bieten wir zudem Wartung und Reparatur von Baumaschinen aller Hersteller an – auch für Fremdgeräte." : ""}`,
     ],
@@ -1358,8 +1358,8 @@ export default function CategoryProducts() {
       { question: `Kann ich einen Minibagger ohne Baggerschein mieten?`, answer: `Für private Bauprojekte auf Ihrem eigenen Grundstück benötigen Sie in der Regel keinen Baggerschein. Im öffentlichen Bereich ist ein Bedienerausweis erforderlich.` },
       { question: `Wird der Minibagger geliefert oder muss ich ihn abholen?`, answer: `Wir bieten sowohl Selbstabholung als auch Lieferung direkt auf Ihre Baustelle in ${location.name} und Umgebung an. Die Lieferkosten berechnen Sie online.` },
       { question: `Welches Anbaugerät brauche ich für meinen Bagger?`, answer: `Das hängt von Ihrem Projekt ab: Tieflöffel zum Ausheben, Grabenräumlöffel für Gräben, Hydraulikhammer für Abbruch, Sortiergreifer zum Sortieren. Wir beraten Sie gerne!` },
-      { question: `Was kostet ein Minibagger mieten in ${location.name}?`, answer: `Minibagger gibt es bei SLT Rental ab ca. 95 €/Tag. Der Preis hängt von der Größe (1t bis 5t) und der Mietdauer ab. Wochen- und Monatstarife sind günstiger.` },
-      { question: `Welche Bagger kann ich in ${location.name} mieten?`, answer: `Wir vermieten Minibagger von 1t bis 5t, Radlader und Dumper. Alle Maschinen inklusive passendem Tieflöffel. Weitere Anbaugeräte auf Anfrage.` },
+      { question: `Was kostet ein Minibagger mieten in ${location.name}?`, answer: `Minibagger gibt es bei SLT Rental ab ca. 95 €/Tag. Der Preis hängt von der Größe (1t bis 6t) und der Mietdauer ab. Wochen- und Monatstarife sind günstiger.` },
+      { question: `Welche Bagger kann ich in ${location.name} mieten?`, answer: `Wir vermieten Minibagger von 1t bis 6t, Radlader und Dumper. Alle Maschinen inklusive passendem Tieflöffel. Weitere Anbaugeräte auf Anfrage.` },
     ],
     werkzeuge: [
       { question: `Kann ich Werkzeuge auch nur für einen Tag mieten?`, answer: `Ja, alle Werkzeuge bei SLT Rental in ${location.name} können tageweise gemietet werden. Auch Wochenend- und Wochenmiete ist möglich.` },
