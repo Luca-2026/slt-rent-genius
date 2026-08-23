@@ -77,6 +77,8 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
     email: "",
     phone: "",
     eventDate: "",
+    startTime: "",
+    endTime: "",
     venueName: "",
     street: "",
     houseNumber: "",
