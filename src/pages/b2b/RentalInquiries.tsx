@@ -11,6 +11,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { isOpenInquiry } from "@/lib/inquiryStatus";
 import type { RentalInquiry } from "@/components/b2b/inquiries/types";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
+import { NewRentalInquiryDialog } from "@/components/b2b/inquiries/NewRentalInquiryDialog";
+import { Plus } from "lucide-react";
 
 const fmtDate = (value: string | null) =>
   value ? new Date(value).toLocaleDateString("de-DE") : "—";
