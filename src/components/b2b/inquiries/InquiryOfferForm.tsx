@@ -21,6 +21,25 @@ import {
 /** Angebotsposition inkl. der im CMS erlaubten Zusatzoptionen (nur lokal). */
 type FormLine = OfferLine & { available_addons?: AddonOption[] };
 
+/**
+ * Auswahlliste der Zusatzoptionen einer Position: die im CMS gepflegten Optionen
+ * plus die Standard-Presets (Versicherungen etc.), damit auch bei Artikeln ohne
+ * CMS-Pflege immer Zusatzoptionen angeboten werden.
+ */
+function addonOptionsFor(item: FormLine): AddonOption[] {
+  const fromCms = item.available_addons ?? [];
+  const presets: AddonOption[] = ADDON_PRESETS.filter((p) => p.key !== "custom").map((p) => ({
+    key: p.key,
+    label: p.label,
+    price_type: p.price_type,
+    price: p.price,
+    deductible: p.deductible ?? null,
+  }));
+  const merged = [...fromCms];
+  for (const p of presets) if (!merged.some((o) => o.key === p.key)) merged.push(p);
+  return merged;
+}
+
 const PAYMENT_OPTIONS: Record<"business" | "private", { value: string; label: string }[]> = {
   business: [
     { value: "net_14", label: "Rechnung – 14 Tage netto" },
