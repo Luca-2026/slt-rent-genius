@@ -15,6 +15,7 @@ import { CreditLimitWidget } from "@/components/b2b/CreditLimitWidget";
 import { StaffWorkWidget } from "@/components/b2b/tasks/StaffWorkWidget";
 import { DashboardKpis } from "@/components/b2b/dashboard/DashboardKpis";
 import { AdminMessagesInbox } from "@/components/b2b/AdminMessagesInbox";
+import { BonnPriorityHotline } from "@/components/b2b/BonnPriorityHotline";
 import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
 import { ChangePasswordDialog } from "@/components/b2b/ChangePasswordDialog";
 import { locationData, getLocationInfoById } from "@/data/locationData";
@@ -357,6 +358,11 @@ export default function B2BDashboard() {
                 </div>
               </CardContent>
             </Card>
+          )}
+
+          {/* Direktleitung Bonn (nur Geschäftskunden mit Standort Bonn) */}
+          {isApproved && b2bProfile && (
+            <BonnPriorityHotline location={b2bProfile.assigned_location} className="mb-8" />
           )}
 
           {/* Admin Messages Inbox */}
