@@ -134,7 +134,10 @@ export async function generateOfferPdf(data: {
       : data.profile.company_name;
     dt(pg, companyLine, ADDR_X, ay, bold, 10.5); ay -= 12;
     const cn = `${data.profile.contact_first_name || ""} ${data.profile.contact_last_name || ""}`.trim();
-    if (cn) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 11; }
+    const norm = (s: string) => s.toLowerCase().replace(/\s+/g, " ").trim();
+    // Ansprechpartner nur ausgeben, wenn er sich vom Firmennamen unterscheidet
+    if (cn && norm(cn) !== norm(String(companyLine || ""))) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 11; }
+
     dt(pg, `${data.profile.street || ""}${data.profile.house_number ? " " + data.profile.house_number : ""}`, ADDR_X, ay, font, 9.5); ay -= 11;
     dt(pg, `${data.profile.postal_code || ""} ${data.profile.city || ""}`, ADDR_X, ay, font, 9.5); ay -= 11;
     dt(pg, data.profile.country || "Deutschland", ADDR_X, ay, font, 9.5); ay -= 11;
