@@ -27,6 +27,11 @@ export interface RentalInquiry {
   vat_id: string | null;
   message: string | null;
   attachments: unknown;
+  /** Gesetzt, wenn die Anfrage aus dem B2B-Portal eines Firmenkunden stammt. */
+  b2b_profile_id?: string | null;
+  b2b_reservation_id?: string | null;
+  rental_group_id?: string | null;
+  crm_customer_id?: string | null;
   status: string;
   assigned_to: string | null;
   assigned_name: string | null;

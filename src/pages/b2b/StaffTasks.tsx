@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { TodoListEditorDialog } from "@/components/b2b/tasks/TodoListEditorDialog";
 import { TodoListDetailSheet } from "@/components/b2b/tasks/TodoListDetailSheet";
 import { MaterialDispoTab } from "@/components/b2b/tasks/MaterialDispoTab";
-import { Boxes, CalendarClock, CheckSquare, Clock, FileEdit, MessageSquare, Pencil, Plus, ShoppingCart, Trash2, Truck, User, UserCog } from "lucide-react";
+import { Boxes, CalendarClock, CheckSquare, Clock, FileEdit, MessageSquare, Pencil, Plus, ShoppingCart, Shield, Trash2, Truck, User, UserCog } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,6 +30,8 @@ import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
 import { AdminSalesCatalogTab } from "@/components/b2b/admin/AdminSalesCatalogTab";
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
 import AdminFeedbackTab from "@/components/b2b/admin/AdminFeedbackTab";
+import AdminAuditLogTab from "@/components/b2b/admin/AdminAuditLogTab";
+import { isSuperAdminEmail } from "@/lib/superAdmins";
 import { LOCATIONS, STATUS_LABELS, formatMinutes, locationLabel, type TodoList } from "@/components/b2b/tasks/types";
 
 const PRIORITY_LABELS: Record<string, string> = { low: "Niedrig", normal: "Normal", high: "Hoch" };
@@ -37,6 +39,8 @@ const PRIORITY_LABELS: Record<string, string> = { low: "Niedrig", normal: "Norma
 export default function StaffTasks() {
   const { user } = useAuth();
   const { isStaff, isAdmin, canViewInventory, displayName, loading: accessLoading } = useStaffAccess();
+  // Audit-Log ist bewusst auf Super-Admins beschränkt (zuvor im Reiter B2B-Vermietung)
+  const canViewAudit = isSuperAdminEmail(user?.email);
   const { toast } = useToast();
 
 
@@ -61,8 +65,9 @@ export default function StaffTasks() {
       ...(canViewInventory ? ["inventory", "verkauf"] : []),
       "zeiten",
       ...(isAdmin ? ["feedback", "staff"] : []),
+      ...(canViewAudit ? ["audit"] : []),
     ],
-    [isAdmin, canViewInventory],
+    [isAdmin, canViewInventory, canViewAudit],
   );
   const activeTab = requestedTab && allowedTabs.includes(requestedTab) ? requestedTab : "tasks";
   const handleTabChange = useCallback(
@@ -199,7 +204,7 @@ export default function StaffTasks() {
   return (
     <B2BPortalLayout
       title="Interne Verwaltung"
-      subtitle="Aufgaben, Materialdispo, Inventar, Verkaufsartikel, Zeiterfassung, Feedback und Mitarbeiter"
+      subtitle="Aufgaben, Materialdispo, Inventar, Verkaufsartikel, Zeiterfassung, Feedback, Mitarbeiter und Audit-Log"
     >
       <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
         <TabsList className="grid grid-cols-3 gap-1 h-auto w-full p-1 sm:flex sm:h-11">
@@ -227,6 +232,11 @@ export default function StaffTasks() {
           {isAdmin && (
             <TabsTrigger value="feedback" className="text-xs sm:text-sm py-2 sm:flex-1">
               <MessageSquare className="h-4 w-4 mr-1.5 shrink-0" /> Feedback
+            </TabsTrigger>
+          )}
+          {canViewAudit && (
+            <TabsTrigger value="audit" className="text-xs sm:text-sm py-2 sm:flex-1">
+              <Shield className="h-4 w-4 mr-1.5 shrink-0" /> Audit-Log
             </TabsTrigger>
           )}
           {isAdmin && (
@@ -404,6 +414,12 @@ export default function StaffTasks() {
         {isAdmin && (
           <TabsContent value="staff">
             <AdminStaffTab />
+          </TabsContent>
+        )}
+
+        {canViewAudit && (
+          <TabsContent value="audit">
+            <AdminAuditLogTab />
           </TabsContent>
         )}
       </Tabs>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { StaffWorkWidget } from "@/components/b2b/tasks/StaffWorkWidget";
 import { useAuth } from "@/hooks/useAuth";
@@ -19,10 +19,9 @@ import { AdminOffersTab, type Offer, type OfferItem } from "@/components/b2b/adm
 import { AdminDeliveryNotesTab } from "@/components/b2b/admin/AdminDeliveryNotesTab";
 import { AdminReturnProtocolsTab } from "@/components/b2b/admin/AdminReturnProtocolsTab";
 import { AdminDamageOverview } from "@/components/b2b/admin/AdminDamageOverview";
-import AdminAuditLogTab from "@/components/b2b/admin/AdminAuditLogTab";
 
 
-const SUPER_ADMIN_EMAILS = ["l.sandhoff@slt-rental.de", "b.noechel@slt-rental.de"];
+
 
 import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
 import { AdminCustomerDetailDialog } from "@/components/b2b/admin/AdminCustomerDetailDialog";
@@ -114,6 +113,8 @@ interface Reservation {
   notes: string | null;
   created_at: string;
   rental_group_id?: string | null;
+  /** Gesetzt, sobald aus der Portal-Anfrage eine Mietanfrage erzeugt wurde (Bearbeitung dort). */
+  inquiry_id?: string | null;
 }
 
 interface InvoiceSurcharge {
@@ -132,7 +133,7 @@ export default function AdminDashboard() {
   // deep-link, share, and reload without losing their place. The default tab
   // stays "reservations" for backward compatibility.
   const [searchParams, setSearchParams] = useSearchParams();
-  const VALID_TABS = ["reservations", "rentals", "offers", "delivery-notes", "return-protocols", "invoices", "customers", "damages", "audit"] as const;
+  const VALID_TABS = ["reservations", "rentals", "offers", "delivery-notes", "return-protocols", "invoices", "customers", "damages"] as const;
   const urlTab = searchParams.get("tab") ?? "";
   const activeTab = (VALID_TABS as readonly string[]).includes(urlTab) ? urlTab : "reservations";
   const setActiveTab = (next: string) => {
@@ -817,6 +818,8 @@ export default function AdminDashboard() {
 
   const pendingReservations = reservations.filter((r) => {
     if (r.status !== "pending" && r.status !== "offer_sent") return false;
+    // Portal-Anfragen werden zentral im Reiter „Mietanfragen" bearbeitet
+    if (r.inquiry_id) return false;
     if (invoices.some((inv) => inv.reservation_id === r.id)) return false;
     return !offers.some(
       (o) => o.reservation_id === r.id && handledOfferStatus(o.status),
@@ -1000,7 +1003,7 @@ export default function AdminDashboard() {
           </div>
         </div>
         {/* Desktop: original grid tabs */}
-        <TabsList className={`hidden sm:grid w-full h-12 ${SUPER_ADMIN_EMAILS.includes((user?.email ?? "").toLowerCase()) ? "grid-cols-9" : "grid-cols-8"}`}>
+        <TabsList className="hidden sm:grid w-full h-12 grid-cols-8">
           <TabsTrigger value="reservations" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <FileText className="h-4 w-4" />
             <span className="hidden sm:inline">Anfragen</span>
@@ -1043,18 +1046,19 @@ export default function AdminDashboard() {
             <AlertTriangle className="h-4 w-4" />
             <span className="hidden sm:inline">Schäden</span>
           </TabsTrigger>
-
-          {SUPER_ADMIN_EMAILS.includes((user?.email ?? "").toLowerCase()) && (
-            <TabsTrigger value="audit" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              <Shield className="h-4 w-4" />
-              <span className="hidden sm:inline">Audit-Log</span>
-            </TabsTrigger>
-          )}
         </TabsList>
 
 
         {/* Tabs Content */}
          <TabsContent value="reservations" forceMount className="data-[state=inactive]:hidden">
+          <div className="mb-4 rounded-lg border border-border bg-muted/40 p-3 text-sm text-muted-foreground">
+            Neue Anfragen aus dem B2B-Portal werden zentral unter{" "}
+            <Link to="/b2b/mietanfragen" className="font-medium text-primary underline underline-offset-2">
+              Mietanfragen
+            </Link>{" "}
+            bearbeitet – dort laufen Website- und Firmenkundenanfragen in einer Pipeline zusammen.
+          </div>
+
           <AdminReservationsTab
             reservations={pendingReservations}
             profiles={profiles}
@@ -1254,13 +1258,6 @@ export default function AdminDashboard() {
           <AdminDamageOverview profiles={profiles} />
         </TabsContent>
 
-
-
-        {SUPER_ADMIN_EMAILS.includes((user?.email ?? "").toLowerCase()) && (
-          <TabsContent value="audit" forceMount className="data-[state=inactive]:hidden">
-            <AdminAuditLogTab />
-          </TabsContent>
-        )}
       </Tabs>
 
 

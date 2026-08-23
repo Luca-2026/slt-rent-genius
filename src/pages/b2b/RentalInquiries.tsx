@@ -6,13 +6,20 @@ import { InquiryStatusBadge } from "@/components/b2b/inquiries/InquiryStatusBadg
 import { InquiryDetailPanel } from "@/components/b2b/inquiries/InquiryDetailPanel";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { isOpenInquiry } from "@/lib/inquiryStatus";
 import type { RentalInquiry } from "@/components/b2b/inquiries/types";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { NewRentalInquiryDialog } from "@/components/b2b/inquiries/NewRentalInquiryDialog";
-import { Plus } from "lucide-react";
+import { Building2, Plus } from "lucide-react";
+
+const SOURCE_LABELS: Record<string, string> = {
+  b2b_portal: "B2B-Portal (Firmenkunde)",
+  manual: "Manuell angelegt",
+  website: "Website",
+};
 
 const fmtDate = (value: string | null) =>
   value ? new Date(value).toLocaleDateString("de-DE") : "—";
@@ -37,7 +44,7 @@ export default function RentalInquiries() {
     return rows.filter((r) => {
       if (onlyOpen && !isOpenInquiry(r.status)) return false;
       if (!q) return true;
-      return [r.product_name, r.customer_name, r.customer_email, r.location, r.customer_city]
+      return [r.product_name, r.customer_name, r.customer_email, r.company_name, r.location, r.customer_city]
         .filter(Boolean)
         .some((v) => String(v).toLowerCase().includes(q));
     });
@@ -93,8 +100,10 @@ export default function RentalInquiries() {
                   <div className="flex flex-wrap items-center gap-2 min-w-0">
                     <span className="font-semibold break-words min-w-0">{r.product_name || "Mietanfrage"}</span>
                     <InquiryStatusBadge status={r.status} />
+                    <InquirySourceBadges inquiry={r} />
                   </div>
                   <p className="text-sm text-muted-foreground break-words">
+                    {r.company_name ? `${r.company_name} · ` : ""}
                     {r.customer_name || r.customer_email || "—"}
                     {r.location && ` · ${getLocationDisplayName(r.location)}`}
                   </p>
@@ -157,6 +166,22 @@ export default function RentalInquiries() {
   );
 }
 
+/** Kennzeichnet Firmenkunden bzw. Anfragen aus dem B2B-Portal. */
+function InquirySourceBadges({ inquiry }: { inquiry: RentalInquiry }) {
+  const isPortal = inquiry.source === "b2b_portal";
+  const isBusiness = inquiry.customer_kind === "business" || isPortal;
+  return (
+    <>
+      {isBusiness && (
+        <Badge variant="outline" className="gap-1">
+          <Building2 className="h-3 w-3" /> Firmenkunde
+        </Badge>
+      )}
+      {isPortal && <Badge variant="secondary">B2B-Portal</Badge>}
+    </>
+  );
+}
+
 function Row({ label, value }: { label: string; value: string | null | undefined }) {
   if (!value) return null;
   return (
@@ -178,6 +203,9 @@ function RentalDetails({ inquiry }: { inquiry: RentalInquiry }) {
         label="Zeitraum"
         value={`${fmtDate(inquiry.start_date)}${inquiry.start_time ? ` ${inquiry.start_time}` : ""} – ${fmtDate(inquiry.end_date)}${inquiry.end_time ? ` ${inquiry.end_time}` : ""}`}
       />
+      <Row label="Quelle" value={SOURCE_LABELS[inquiry.source] ?? inquiry.source} />
+      <Row label="Firma" value={inquiry.company_name} />
+      <Row label="USt-IdNr." value={inquiry.vat_id} />
       <Row label="Kunde" value={inquiry.customer_name} />
       <Row label="E-Mail" value={inquiry.customer_email} />
       <Row label="Telefon" value={inquiry.customer_phone} />
