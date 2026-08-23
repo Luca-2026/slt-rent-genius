@@ -88,6 +88,7 @@ serve(async (req) => {
       customer_street: street ?? null,
       customer_postal_code: postalCode ?? null,
       customer_city: city ?? null,
+      customer_kind: customerKind === "business" ? "business" : "private",
       message: message ?? null,
       attachments: safeAttachments.map((a) => ({ filename: a.filename })),
     });
