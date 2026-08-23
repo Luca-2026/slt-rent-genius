@@ -336,23 +336,43 @@ Deno.serve(async (req: Request) => {
         <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${money(i.unit_price)}</td>
       </tr>`).join("");
 
+    // ── Transportkosten & Kaution als eigene Zeilen ──
+    const extraRow = (label: string, value: string) => `
+      <tr>
+        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;">${label}</td>
+        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;"></td>
+        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${value}</td>
+      </tr>`;
+    const transportRowsHtml =
+      (deliveryCostDelivery > 0 ? extraRow("Transportkosten Anlieferung", money(deliveryCostDelivery)) : "") +
+      (deliveryCostReturn > 0 ? extraRow("Transportkosten Abholung/Rückholung", money(deliveryCostReturn)) : "");
+    const transportTotal = deliveryCostDelivery + deliveryCostReturn;
+
     // ── Zahlungshinweis für die E-Mail ──
+    const depositText = deposit > 0
+      ? ` Zusätzlich ist die <strong>Kaution in Höhe von ${money(deposit)}</strong> mit zu überweisen; sie wird nach ordnungsgemäßer Rückgabe vollständig erstattet.`
+      : "";
     const PAYMENT_EMAIL: Record<string, string> = {
-      net_7: "Zahlung innerhalb von 7 Tagen nach Rechnungsstellung (netto).",
-      net_14: "Zahlung innerhalb von 14 Tagen nach Rechnungsstellung (netto).",
-      net_30: "Zahlung innerhalb von 30 Tagen nach Rechnungsstellung (netto).",
-      vorkasse: "Vorkasse per Banküberweisung. Die Zahlung ist vor Mietbeginn zu leisten – die Bankdaten finden Sie im Angebots-PDF.",
+      net_7: "Zahlung innerhalb von 7 Tagen nach Rechnungsstellung (netto)." + depositText,
+      net_14: "Zahlung innerhalb von 14 Tagen nach Rechnungsstellung (netto)." + depositText,
+      net_30: "Zahlung innerhalb von 30 Tagen nach Rechnungsstellung (netto)." + depositText,
+      vorkasse: "Vorkasse per Banküberweisung. Die Zahlung ist vor Mietbeginn zu leisten – die Bankdaten finden Sie im Angebots-PDF." + depositText,
       anzahlung_30:
-        "Nach Ihrer Annahme senden wir Ihnen eine Buchungsbestätigung mit Zahlungslink. Innerhalb von <strong>48 Stunden</strong> " +
-        "sind mindestens <strong>30 % Anzahlung</strong> zu leisten – per PayPal, Kredit-/Debitkarte oder Überweisung unter Angabe der Angebotsnummer " +
-        `<strong>${escapeHtml(offerNumber)}</strong>. Erfolgt die Anzahlung nicht fristgerecht, wird die Reservierung systemseitig wieder freigegeben. ` +
-        "Der Restbetrag ist vor Mietbeginn fällig.",
+        "Nach Ihrer Annahme senden wir Ihnen eine Buchungsbestätigung. Darin erhalten Sie Ihre persönliche " +
+        "<strong>Buchungsreferenz</strong> sowie einen Zahlungslink. Innerhalb von <strong>48 Stunden</strong> " +
+        "sind mindestens <strong>30 % Anzahlung</strong> zu leisten – per PayPal, Kredit-/Debitkarte oder Überweisung. " +
+        "Bitte geben Sie bei einer Überweisung ausschließlich die <strong>Buchungsreferenz aus der Buchungsbestätigung</strong> " +
+        "als Verwendungszweck an (nicht die Angebotsnummer). " +
+        "Erfolgt die Anzahlung nicht fristgerecht, wird die Reservierung systemseitig wieder freigegeben. " +
+        "Der Restbetrag ist vor Mietbeginn fällig." + depositText,
       rentpair_vorkasse:
-        "Nach Ihrer Annahme senden wir Ihnen eine Buchungsbestätigung mit Zahlungslink (PayPal, Kredit-/Debitkarte oder Überweisung unter Angabe der Angebotsnummer " +
-        `<strong>${escapeHtml(offerNumber)}</strong>). Bitte begleichen Sie den Betrag innerhalb von <strong>48 Stunden</strong>, damit die Reservierung bestehen bleibt.`,
+        "Nach Ihrer Annahme senden wir Ihnen eine Buchungsbestätigung mit Ihrer persönlichen <strong>Buchungsreferenz</strong> " +
+        "und einem Zahlungslink (PayPal, Kredit-/Debitkarte oder Überweisung). Bitte verwenden Sie bei einer Überweisung " +
+        "ausschließlich die <strong>Buchungsreferenz aus der Buchungsbestätigung</strong> als Verwendungszweck (nicht die Angebotsnummer). " +
+        "Bitte begleichen Sie den Betrag innerhalb von <strong>48 Stunden</strong>, damit die Reservierung bestehen bleibt." + depositText,
     };
     const paymentEmailText = paymentTerms === "custom"
-      ? escapeHtml(paymentTermsCustom).replace(/\n/g, "<br>")
+      ? escapeHtml(paymentTermsCustom).replace(/\n/g, "<br>") + depositText
       : (PAYMENT_EMAIL[paymentTerms] ?? PAYMENT_EMAIL.net_14);
 
     const emailHtml = `<!doctype html><html><body style="margin:0;padding:24px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
@@ -363,10 +383,12 @@ Deno.serve(async (req: Request) => {
   <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;">
     <tr><th align="left" style="border-bottom:2px solid #00507d;padding-bottom:6px;">Position</th><th align="right" style="border-bottom:2px solid #00507d;">Menge</th><th align="right" style="border-bottom:2px solid #00507d;">Einzelpreis</th></tr>
     ${rowsHtml}
+    ${transportRowsHtml}
   </table>
   <p style="font-size:15px;"><strong>Gesamtsumme brutto: ${money(totals.grossAmount)}</strong><br>
-  <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span></p>
+  <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)}${transportTotal > 0 ? ` (inkl. Transportkosten ${money(transportTotal)})` : ""} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span>${deposit > 0 ? `<br><span style="color:#6b7280;font-size:13px;">zzgl. Kaution ${money(deposit)} (wird nach Rückgabe erstattet) – Gesamtüberweisung inkl. Kaution: ${money(totals.grossAmount + deposit)}</span>` : ""}</p>
   ${deliveryRequested && (deliveryAddress.street || deliveryAddress.city) ? `<p style="font-size:14px;"><strong>Lieferadresse:</strong><br>${escapeHtml(deliveryAddress.street)}<br>${escapeHtml([deliveryAddress.postal_code, deliveryAddress.city].filter(Boolean).join(" "))}</p>` : ""}
+
 
   <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>So nehmen Sie das Angebot an:</strong><br>
