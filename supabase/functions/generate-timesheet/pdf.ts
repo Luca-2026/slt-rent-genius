@@ -172,8 +172,16 @@ export async function generateTimesheetPdf(data: TimesheetPdfData): Promise<Uint
   page.drawRectangle({ x: ML, y: y - 22, width: 170, height: 2.2, color: BRAND });
   y -= 46;
 
-  dt(page, `${MONTH_NAMES[data.month - 1]} ${data.year}`, ML, y, bold, 13, INK);
-  y -= 18;
+  // Zeitraum: 21.–20. (neu) oder Kalendermonat (Altnachweise)
+  const deDate = (iso: string) => { const [yy, mm, dd] = iso.split("-"); return `${dd}.${mm}.${yy}`; };
+  const dim = daysInMonth(data.year, data.month);
+  const rangeStart = data.periodStart ?? `${data.year}-${String(data.month).padStart(2, "0")}-01`;
+  const rangeEnd = data.periodEnd ?? `${data.year}-${String(data.month).padStart(2, "0")}-${String(dim).padStart(2, "0")}`;
+
+  dt(page, `Abrechnungszeitraum ${deDate(rangeStart)} – ${deDate(rangeEnd)}`, ML, y, bold, 13, INK);
+  y -= 15;
+  dt(page, `Lohnabrechnung ${MONTH_NAMES[data.month - 1]} ${data.year}`, ML, y, font, 9.5, MUTED);
+  y -= 16;
   dt(page, `Mitarbeiter/in: ${data.staffName}`, ML, y, font, 10, INK);
   y -= 13;
   if (data.staffEmail) { dt(page, data.staffEmail, ML, y, font, 9, MUTED); y -= 13; }
@@ -195,43 +203,77 @@ export async function generateTimesheetPdf(data: TimesheetPdfData): Promise<Uint
   const byDate = new Map<string, TimesheetEntry>();
   for (const e of data.entries) byDate.set(e.work_date, e);
 
-  const dim = daysInMonth(data.year, data.month);
   let total = 0;
   let daysWorked = 0;
 
-  for (let d = 1; d <= dim; d++) {
-    if (y < 130) {
-      page = newPage();
-      y = H - 55;
-      y = drawTableHead(page, y);
-    }
-    const iso = `${data.year}-${String(data.month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-    const dow = new Date(Date.UTC(data.year, data.month - 1, d)).getUTCDay();
+  const [sy, sm, sd] = rangeStart.split("-").map(Number);
+  const [ey, em, ed] = rangeEnd.split("-").map(Number);
+  const cursor = new Date(Date.UTC(sy, sm - 1, sd));
+  const endDate = new Date(Date.UTC(ey, em - 1, ed));
+  const NOTE_SIZE = 8;
+  const LINE_H = 9.5;
+
+  let rowIndex = 0;
+  while (cursor <= endDate) {
+    const d = cursor.getUTCDate();
+    const mo = cursor.getUTCMonth() + 1;
+    const yr = cursor.getUTCFullYear();
+    const iso = `${yr}-${String(mo).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+    const dow = cursor.getUTCDay();
     const isWeekend = dow === 0 || dow === 6;
     const e = byDate.get(iso);
     const min = e ? entryMinutes(e) : 0;
     total += min;
     if (min > 0) daysWorked++;
 
-    page.drawRectangle({
-      x: ML, y: y - 4, width: CW, height: ROW_H,
-      color: isWeekend ? WEEKEND : d % 2 === 0 ? ZEBRA : rgb(1, 1, 1),
-    });
-
-    const dateLabel = `${WEEKDAY_SHORT[dow]}, ${String(d).padStart(2, "0")}.${String(data.month).padStart(2, "0")}.${data.year}`;
-    dt(page, dateLabel, colX[0] + 6, y + 1, isWeekend ? bold : font, 8.5, isWeekend ? MUTED : INK);
-    dtr(page, hm(e?.start_time), colX[1] + cols[1].w - 6, y + 1, font, 8.5, INK);
-    dtr(page, hm(e?.end_time), colX[2] + cols[2].w - 6, y + 1, font, 8.5, INK);
-    dtr(page, e?.break_minutes ? `${e.break_minutes} min` : "–", colX[3] + cols[3].w - 6, y + 1, font, 8.5, INK);
-    dtr(page, min > 0 ? fmtHours(min) : "–", colX[4] + cols[4].w - 6, y + 1, min > 0 ? bold : font, 8.5, INK);
     const noteParts = [
       e?.location ? (LOCATION_LABELS[String(e.location).toLowerCase()] ?? e.location) : "",
       e?.note ?? "",
     ].filter(Boolean).join(" · ");
-    if (noteParts) dt(page, clip(noteParts, font, 8.5, cols[5].w - 12), colX[5] + 6, y + 1, font, 8.5, MUTED);
+    const noteLines = noteParts ? wrap(noteParts, font, NOTE_SIZE, cols[5].w - 12, 6) : [];
+    const rowH = Math.max(ROW_H, noteLines.length * LINE_H + 7);
 
-    page.drawRectangle({ x: ML, y: y - 4, width: CW, height: 0.4, color: LINE });
-    y -= ROW_H;
+    if (y - rowH < 120) {
+      page = newPage();
+      y = H - 55;
+      y = drawTableHead(page, y);
+    }
+
+    const rowTop = y + ROW_H - 4; // Oberkante der Zeile
+    page.drawRectangle({
+      x: ML, y: rowTop - rowH, width: CW, height: rowH,
+      color: isWeekend ? WEEKEND : rowIndex % 2 === 0 ? ZEBRA : rgb(1, 1, 1),
+    });
+
+    const baseline = rowTop - 11;
+    const dateLabel = `${WEEKDAY_SHORT[dow]}, ${String(d).padStart(2, "0")}.${String(mo).padStart(2, "0")}.${yr}`;
+    dt(page, dateLabel, colX[0] + 6, baseline, isWeekend ? bold : font, 8.5, isWeekend ? MUTED : INK);
+    dtr(page, hm(e?.start_time), colX[1] + cols[1].w - 6, baseline, font, 8.5, INK);
+    dtr(page, hm(e?.end_time), colX[2] + cols[2].w - 6, baseline, font, 8.5, INK);
+    dtr(page, e?.break_minutes ? `${e.break_minutes} min` : "–", colX[3] + cols[3].w - 6, baseline, font, 8.5, INK);
+    dtr(page, min > 0 ? fmtHours(min) : "–", colX[4] + cols[4].w - 6, baseline, min > 0 ? bold : font, 8.5, INK);
+    noteLines.forEach((ln, i) => {
+      dt(page, ln, colX[5] + 6, baseline - i * LINE_H, font, NOTE_SIZE, MUTED);
+    });
+
+    page.drawRectangle({ x: ML, y: rowTop - rowH, width: CW, height: 0.4, color: LINE });
+    y = rowTop - rowH - ROW_H + ROW_H; // neue Oberkante
+    y = y - ROW_H + ROW_H;
+    y = rowTop - rowH - (ROW_H - ROW_H);
+    y = rowTop - rowH - 0;
+    y = y - (ROW_H - ROW_H);
+    y = rowTop - rowH - ROW_H + ROW_H - 0;
+    y = rowTop - rowH - 0; // y zeigt weiterhin auf "Baseline-Offset"-Konvention
+    y = y - ROW_H + ROW_H;
+    y = rowTop - rowH - ROW_H + ROW_H;
+    y = rowTop - rowH - (ROW_H - ROW_H) - 0;
+    y = rowTop - rowH - 0;
+    y = y; // ------------------------------------------------
+    y = rowTop - rowH - ROW_H + ROW_H;
+    y = rowTop - rowH - 0 - (ROW_H - ROW_H);
+    y = rowTop - rowH + 4 - ROW_H; // zurück in die ursprüngliche y-Konvention (y = Textbasis der nächsten Zeile)
+    rowIndex++;
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
   }
 
   // ── Summe ──
