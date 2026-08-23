@@ -14,11 +14,20 @@ import {
   pickCatalogImage,
 } from "./InquiryProductCombobox";
 
+export interface OfferDeliveryAddress {
+  requested: boolean;
+  street: string;
+  postal_code: string;
+  city: string;
+}
+
 interface Props {
   inquiryType: "rental" | "sales";
   inquiryId: string;
   location: string | null;
   defaultItems: OfferLine[];
+  /** Vom Kunden im Anfrageformular angegebene Lieferadresse (im Portal änderbar). */
+  defaultDelivery?: OfferDeliveryAddress;
   staffName: string;
   disabled?: boolean;
   onSent?: () => void;
@@ -29,6 +38,7 @@ export function InquiryOfferForm({
   inquiryId,
   location,
   defaultItems,
+  defaultDelivery,
   staffName,
   disabled,
   onSent,
@@ -37,6 +47,8 @@ export function InquiryOfferForm({
   const [items, setItems] = useState<OfferLine[]>(
     defaultItems.length ? defaultItems : [{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0 }],
   );
+  const emptyDelivery: OfferDeliveryAddress = { requested: false, street: "", postal_code: "", city: "" };
+  const [delivery, setDelivery] = useState<OfferDeliveryAddress>(defaultDelivery ?? emptyDelivery);
   const [deliveryCostDelivery, setDeliveryCostDelivery] = useState(0);
   const [deliveryCostReturn, setDeliveryCostReturn] = useState(0);
   const [deposit, setDeposit] = useState(0);
@@ -44,10 +56,17 @@ export function InquiryOfferForm({
   const [notes, setNotes] = useState("");
   const [sending, setSending] = useState(false);
 
+  // Bei Wechsel der Anfrage die Lieferadresse aus dem Anfrageformular übernehmen.
+  useEffect(() => {
+    setDelivery(defaultDelivery ?? emptyDelivery);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inquiryId, defaultDelivery?.requested, defaultDelivery?.street, defaultDelivery?.postal_code, defaultDelivery?.city]);
+
   const totals = useMemo(
     () => buildOfferTotals(items, deliveryCostDelivery + deliveryCostReturn),
     [items, deliveryCostDelivery, deliveryCostReturn],
   );
+
 
   const patchItem = (index: number, patch: Partial<OfferLine>) =>
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, ...patch } : item)));
