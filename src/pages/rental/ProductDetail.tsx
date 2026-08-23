@@ -43,7 +43,7 @@ import { getLocalCategoryContent } from "@/data/localCategoryContent";
 import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
 import { REAL_LOCATION_REVIEWS } from "@/data/realGoogleReviews";
-import { ProductPriceBlock, hasAnyPrice } from "@/components/rental/ProductPriceBlock";
+import { ProductPriceBlock, hasAnyPrice, formatPriceValue } from "@/components/rental/ProductPriceBlock";
 
 const LEGACY_PRODUCT_ID_REDIRECTS: Record<string, string> = {
   "bonn-stampfer-gs72": "/mieten/bonn/verdichtung/stampfer-gs72-xh/",
