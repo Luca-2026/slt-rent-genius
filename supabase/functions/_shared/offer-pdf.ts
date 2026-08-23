@@ -381,6 +381,7 @@ export async function generateOfferPdf(data: {
 
   pg.drawRectangle({ x: ML, y, width: CW, height: 0.5, color: LINE });
   y -= 26;
+  tableClosed = true;
 
   // ── Summenblock (rechtsbündig, wie Rechnung) ──
   need(130);
