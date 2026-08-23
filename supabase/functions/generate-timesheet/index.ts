@@ -21,6 +21,8 @@ const PORTAL_URL = "https://www.slt-rental.de/b2b/aufgaben/?tab=zeiten";
 const ADMIN_EMAIL = "info@slt-rental.de";
 /** Geschäftsführung / Super-Admins erhalten jeden bestätigten Monatsnachweis. */
 const SUPER_ADMIN_EMAILS = ["l.sandhoff@slt-rental.de", "b.noechel@slt-rental.de"];
+// Lohnbuchhaltung Steuerbüro – erhält Stundenzettel in CC
+const PAYROLL_EMAIL = "y.luetke-wiesmann@altmann-steuerberater.de";
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -162,8 +164,12 @@ Deno.serve(async (req: Request) => {
       const resendApiKey = Deno.env.get("RESEND_API_KEY");
       const resendDomain = Deno.env.get("RESEND_DOMAIN") ?? "slt-rental.de";
       if (resendApiKey) {
-        const recipients = Array.from(
-          new Set([staffEmail, ADMIN_EMAIL, ...SUPER_ADMIN_EMAILS].filter(Boolean) as string[]),
+        const primary = (staffEmail || ADMIN_EMAIL) as string;
+        const ccList = Array.from(
+          new Set(
+            ([ADMIN_EMAIL, ...SUPER_ADMIN_EMAILS, PAYROLL_EMAIL].filter(Boolean) as string[])
+              .filter((e) => e.toLowerCase() !== primary.toLowerCase()),
+          ),
         );
         const html = `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f4f5f7;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
   <div style="max-width:640px;margin:0 auto;background:#ffffff;">
@@ -192,7 +198,8 @@ Deno.serve(async (req: Request) => {
           headers: { Authorization: `Bearer ${resendApiKey}`, "Content-Type": "application/json" },
           body: JSON.stringify({
             from: `SLT-Rental Zeiterfassung <aufgaben@${resendDomain}>`,
-            to: recipients,
+            to: [primary],
+            cc: ccList,
             subject: `Arbeitszeitnachweis ${periodRangeLabel({ start: first, end: last })} – ${staffName}`,
             html,
             attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
