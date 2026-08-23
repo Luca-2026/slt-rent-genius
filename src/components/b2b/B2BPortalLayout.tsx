@@ -207,7 +207,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                     const Icon = item.icon;
                     const badge = navBadge(item.href, openTodoCount, inquiryCounts);
                     return (
-                      <Link key={item.href} to={item.href}>
+                      <Link key={item.href} to={item.href} className="shrink-0">
                         <Button
                           variant={isActive ? "default" : "ghost"}
                           size="sm"
