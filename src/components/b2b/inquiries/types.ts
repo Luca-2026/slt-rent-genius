@@ -23,6 +23,8 @@ export interface RentalInquiry {
   customer_street: string | null;
   customer_postal_code: string | null;
   customer_city: string | null;
+  company_name: string | null;
+  vat_id: string | null;
   message: string | null;
   attachments: unknown;
   status: string;
