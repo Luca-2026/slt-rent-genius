@@ -25,7 +25,7 @@ async def main():
         page.on("request", lambda r: mpp_hits.append(r.url) if "managed_products_public" in r.url else None)
 
         # 1. Public product page
-        await page.goto(f"{BASE}/mieten/krefeld/erdbewegung/bobcat-e50z", wait_until="domcontentloaded")
+        await page.goto(f"{BASE}/mieten/krefeld/erdbewegung/minibagger-5t", wait_until="domcontentloaded")
         await page.wait_for_load_state("networkidle", timeout=20000)
         h1 = ((await page.locator("h1").first.text_content()) or "").strip()
         rec("1) Public product renders (H1 present, 'mieten in')", "mieten in" in h1.lower() and len(h1) > 5, f"h1={h1!r}")
