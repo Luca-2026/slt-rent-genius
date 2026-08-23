@@ -110,7 +110,14 @@ export default function SalesInquiries() {
         </div>
       )}
 
-      <NewSalesInquiryDialog open={manualOpen} onOpenChange={setManualOpen} onCreated={reload} />
+      <NewSalesInquiryDialog
+        open={manualOpen}
+        onOpenChange={setManualOpen}
+        onCreated={async (id) => {
+          await reload();
+          if (id) setSelectedId(id);
+        }}
+      />
 
       <Sheet open={!!selected} onOpenChange={(open) => !open && setSelectedId(null)}>
         <SheetContent side="right" className="w-full sm:max-w-xl overflow-y-auto">

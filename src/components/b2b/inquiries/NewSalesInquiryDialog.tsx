@@ -19,7 +19,8 @@ import { useStaffAccess } from "@/hooks/useStaffAccess";
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreated: () => void;
+  /** Liefert die ID der neuen Anfrage, damit sie direkt geöffnet werden kann. */
+  onCreated: (inquiryId?: string) => void;
 }
 
 /** CRM speichert b2c/b2b, sales_inquiries erwartet private/business. */
@@ -151,7 +152,7 @@ export function NewSalesInquiryDialog({ open, onOpenChange, onCreated }: Props) 
 
       const hasDelivery = Boolean(form.delivery_street.trim() || form.delivery_city.trim());
 
-      const { error } = await supabase.from("sales_inquiries").insert({
+      const { data: inserted, error } = await supabase.from("sales_inquiries").insert({
         source: "manual",
         kind: form.kind,
         location: form.location,
@@ -186,13 +187,13 @@ export function NewSalesInquiryDialog({ open, onOpenChange, onCreated }: Props) 
         assigned_name: displayName || null,
         assigned_at: new Date().toISOString(),
         crm_customer_id: customerId,
-      } as never);
+      } as never).select("id").maybeSingle();
       if (error) throw error;
 
       toast.success("Verkaufsanfrage angelegt – Angebot kann jetzt erstellt werden.");
       reset();
       onOpenChange(false);
-      onCreated();
+      onCreated((inserted as { id?: string } | null)?.id);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Anlegen fehlgeschlagen.");
     } finally {
