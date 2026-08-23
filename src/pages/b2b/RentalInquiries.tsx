@@ -62,7 +62,16 @@ export default function RentalInquiries() {
         <Button variant={onlyOpen ? "default" : "outline"} onClick={() => setOnlyOpen((v) => !v)}>
           {onlyOpen ? "Nur offene" : "Alle Anfragen"}
         </Button>
+        <Button className="sm:ml-auto" onClick={() => setNewOpen(true)}>
+          <Plus className="h-4 w-4 mr-1" /> Anfrage manuell anlegen
+        </Button>
       </div>
+
+      <NewRentalInquiryDialog
+        open={newOpen}
+        onOpenChange={setNewOpen}
+        onCreated={reload}
+      />
 
       {loading ? (
         <p className="text-muted-foreground">Wird geladen …</p>
