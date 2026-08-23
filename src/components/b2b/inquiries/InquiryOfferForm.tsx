@@ -8,13 +8,32 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Send, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { buildOfferTotals, formatEuro, type OfferLine } from "./offerMath";
+import { parseAddonOptions, suggestAddonAmount, type AddonOption } from "@/lib/offerAddons";
 import {
   InquiryProductCombobox,
   findCatalogProductByName,
   parsePrice,
   pickCatalogImage,
 } from "./InquiryProductCombobox";
+
+/** Angebotsposition inkl. der im CMS erlaubten Zusatzoptionen (nur lokal). */
+type FormLine = OfferLine & { available_addons?: AddonOption[] };
+
+const PAYMENT_OPTIONS: Record<"business" | "private", { value: string; label: string }[]> = {
+  business: [
+    { value: "net_14", label: "Rechnung – 14 Tage netto" },
+    { value: "net_7", label: "Rechnung – 7 Tage netto" },
+    { value: "net_30", label: "Rechnung – 30 Tage netto" },
+    { value: "vorkasse", label: "Vorkasse per Banküberweisung" },
+  ],
+  private: [
+    { value: "anzahlung_30", label: "30 % Anzahlung binnen 48 Std. (Zahlungslink)" },
+    { value: "rentpair_vorkasse", label: "Vorkasse komplett über Zahlungslink" },
+    { value: "vorkasse", label: "Vorkasse per Banküberweisung" },
+  ],
+};
 
 export interface OfferDeliveryAddress {
   requested: boolean;
@@ -30,6 +49,8 @@ interface Props {
   defaultItems: OfferLine[];
   /** Vom Kunden im Anfrageformular angegebene Lieferadresse (im Portal änderbar). */
   defaultDelivery?: OfferDeliveryAddress;
+  /** Privat- oder Geschäftskunde – steuert die Zahlungsbedingungen. */
+  customerKind?: "business" | "private";
   staffName: string;
   disabled?: boolean;
   onSent?: () => void;
@@ -41,12 +62,13 @@ export function InquiryOfferForm({
   location,
   defaultItems,
   defaultDelivery,
+  customerKind = "private",
   staffName,
   disabled,
   onSent,
 }: Props) {
   const { toast } = useToast();
-  const [items, setItems] = useState<OfferLine[]>(
+  const [items, setItems] = useState<FormLine[]>(
     defaultItems.length ? defaultItems : [{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0 }],
   );
   const emptyDelivery: OfferDeliveryAddress = { requested: false, street: "", postal_code: "", city: "" };
@@ -55,6 +77,13 @@ export function InquiryOfferForm({
   const [deliveryCostReturn, setDeliveryCostReturn] = useState(0);
   const [deposit, setDeposit] = useState(0);
   const [validDays, setValidDays] = useState(14);
+  const [paymentTerms, setPaymentTerms] = useState(
+    customerKind === "business" ? "net_14" : "anzahlung_30",
+  );
+
+  useEffect(() => {
+    setPaymentTerms(customerKind === "business" ? "net_14" : "anzahlung_30");
+  }, [customerKind]);
   const [notes, setNotes] = useState("");
   const [sending, setSending] = useState(false);
 
@@ -70,7 +99,7 @@ export function InquiryOfferForm({
   );
 
 
-  const patchItem = (index: number, patch: Partial<OfferLine>) =>
+  const patchItem = (index: number, patch: Partial<FormLine>) =>
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, ...patch } : item)));
 
   // Vorbelegte Positionen automatisch mit Bild (und ggf. Preis) aus dem CMS anreichern.
@@ -79,12 +108,12 @@ export function InquiryOfferForm({
     (async () => {
       const enriched = await Promise.all(
         items.map(async (item) => {
-          if (item.image_url || !item.product_name.trim()) return item;
+          if (item.available_addons || !item.product_name.trim()) return item;
           const match = await findCatalogProductByName(item.product_name);
           if (!match) return item;
           const image = pickCatalogImage(match.images);
           const price = item.unit_price > 0 ? item.unit_price : parsePrice(match.price_per_day) ?? 0;
-          return image || price !== item.unit_price ? { ...item, image_url: image, unit_price: price } : item;
+          return { ...item, image_url: item.image_url ?? image, unit_price: price, available_addons: parseAddonOptions(match.addon_options) };
         }),
       );
       if (!cancelled && enriched.some((item, i) => item !== items[i])) setItems(enriched);
@@ -115,7 +144,11 @@ export function InquiryOfferForm({
         inquiry_type: inquiryType,
         inquiry_id: inquiryId,
         location,
-        items,
+        items: items.map(({ available_addons: _unused, ...rest }) => ({
+          ...rest,
+          addons: (rest.addons ?? []).filter((a) => a.amount > 0),
+        })),
+        payment_terms: paymentTerms,
         delivery_cost_delivery: deliveryCostDelivery,
         delivery_cost_return: deliveryCostReturn,
         delivery_requested: delivery.requested,
@@ -177,6 +210,8 @@ export function InquiryOfferForm({
                         product && item.unit_price === 0
                           ? parsePrice(product.price_per_day) ?? 0
                           : item.unit_price,
+                      available_addons: product ? parseAddonOptions(product.addon_options) : [],
+                      addons: [],
                     })
                   }
                 />
@@ -235,6 +270,80 @@ export function InquiryOfferForm({
                 {formatEuro(item.quantity * item.unit_price * (1 - (item.discount_percent || 0) / 100))}
               </div>
             </div>
+
+            {/* Zusatzoptionen dieser Position (aus dem CMS-Artikel) */}
+            {(item.available_addons?.length ?? 0) > 0 && (
+              <div className="rounded-md bg-muted/50 p-2 space-y-2">
+                <Select
+                  value=""
+                  disabled={disabled}
+                  onValueChange={(key) => {
+                    const option = item.available_addons?.find((o) => o.key === key);
+                    if (!option) return;
+                    if ((item.addons ?? []).some((a) => a.key === option.key)) return;
+                    patchItem(index, {
+                      addons: [
+                        ...(item.addons ?? []),
+                        {
+                          key: option.key,
+                          label: option.label,
+                          amount: suggestAddonAmount(option, item),
+                          note: option.deductible ? `Selbstbehalt ${option.deductible} €` : option.note,
+                        },
+                      ],
+                    });
+                  }}
+                >
+                  <SelectTrigger className="h-9 text-sm">
+                    <SelectValue placeholder="Zusatzoption hinzufügen …" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(item.available_addons ?? [])
+                      .filter((o) => !(item.addons ?? []).some((a) => a.key === o.key))
+                      .map((o) => (
+                        <SelectItem key={o.key} value={o.key}>{o.label}</SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+
+                {(item.addons ?? []).map((addon, ai) => (
+                  <div key={addon.key} className="flex items-end gap-2">
+                    <div className="min-w-0 flex-1">
+                      <Label className="text-xs break-words">
+                        {addon.label}
+                        {addon.note ? <span className="block text-muted-foreground font-normal">{addon.note}</span> : null}
+                      </Label>
+                      <Input
+                        type="number"
+                        min={0}
+                        step="0.01"
+                        value={addon.amount}
+                        onChange={(e) =>
+                          patchItem(index, {
+                            addons: (item.addons ?? []).map((a, j) =>
+                              j === ai ? { ...a, amount: Number(e.target.value) || 0 } : a,
+                            ),
+                          })
+                        }
+                        disabled={disabled}
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      aria-label="Zusatzoption entfernen"
+                      disabled={disabled}
+                      onClick={() =>
+                        patchItem(index, { addons: (item.addons ?? []).filter((_, j) => j !== ai) })
+                      }
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
         <Button
@@ -324,16 +433,44 @@ export function InquiryOfferForm({
         </div>
       </div>
 
+      <div className="rounded-lg border border-border p-3 space-y-2">
+        <Label className="text-xs">
+          Zahlungsbedingungen ({customerKind === "business" ? "Geschäftskunde" : "Privatkunde"})
+        </Label>
+        <Select value={paymentTerms} onValueChange={setPaymentTerms} disabled={disabled}>
+          <SelectTrigger><SelectValue /></SelectTrigger>
+          <SelectContent>
+            {PAYMENT_OPTIONS[customerKind].map((o) => (
+              <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <p className="text-xs text-muted-foreground">
+          {paymentTerms === "anzahlung_30"
+            ? "Der Kunde erhält nach Annahme eine Buchungsbestätigung mit Zahlungslink; mindestens 30 % Anzahlung innerhalb von 48 Stunden, sonst wird die Reservierung freigegeben."
+            : paymentTerms === "rentpair_vorkasse"
+              ? "Vollständige Vorkasse über den Zahlungslink in der Buchungsbestätigung (48 Stunden)."
+              : paymentTerms === "vorkasse"
+                ? "Vorkasse per Banküberweisung – Bankdaten stehen im Angebots-PDF, Frist ist die Angebotsgültigkeit."
+                : "Rechnungszahlung nach Mietende innerhalb der gewählten Frist; es gilt die Angebotsgültigkeit."}
+        </p>
+      </div>
+
       <div>
         <Label className="text-xs">Hinweis für den Kunden (optional)</Label>
         <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} disabled={disabled} />
       </div>
 
       <div className="rounded-lg bg-muted p-3 text-sm space-y-1">
+        <div className="flex justify-between"><span>Mietartikel</span><span>{formatEuro(totals.itemsNet)}</span></div>
+        {totals.addonsNet > 0 && (
+          <div className="flex justify-between"><span>Zusatzoptionen</span><span>{formatEuro(totals.addonsNet)}</span></div>
+        )}
         <div className="flex justify-between"><span>Netto</span><span>{formatEuro(totals.netAmount)}</span></div>
         <div className="flex justify-between"><span>MwSt. {totals.vatRate}%</span><span>{formatEuro(totals.vatAmount)}</span></div>
         <div className="flex justify-between font-bold text-base"><span>Brutto</span><span>{formatEuro(totals.grossAmount)}</span></div>
       </div>
+
 
       <Button onClick={send} disabled={disabled || sending} className="w-full">
         <Send className="h-4 w-4 mr-2" />

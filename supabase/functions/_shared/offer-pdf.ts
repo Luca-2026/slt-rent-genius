@@ -442,6 +442,14 @@ export async function generateOfferPdf(data: {
     net_30: "Zahlungsbedingungen: Zahlung innerhalb von 30 Tagen nach Rechnungsstellung (netto).",
     net_60: "Zahlungsbedingungen: Zahlung innerhalb von 60 Tagen nach Rechnungsstellung (netto).",
     "50_50_14": "Zahlungsbedingungen: 50 % Vorkasse vor Mietbeginn, 50 % Restzahlung innerhalb von 14 Tagen nach Rechnungsstellung.",
+    anzahlung_30:
+      "Zahlungsbedingungen: Vorkasse. Nach Annahme dieses Angebots erhalten Sie eine Buchungsbest\u00E4tigung mit Zahlungslink. " +
+      "Innerhalb von 48 Stunden sind mindestens 30 % des Bruttobetrages als Anzahlung zu leisten \u2013 bequem per PayPal, Kredit- oder Debitkarte " +
+      "oder per \u00DCberweisung unter Angabe der Angebotsnummer. Der Restbetrag ist vor Mietbeginn f\u00E4llig. " +
+      "Ohne fristgerechten Zahlungseingang wird die Reservierung systemseitig wieder freigegeben.",
+    rentpair_vorkasse:
+      "Zahlungsbedingungen: Vorkasse \u00FCber unser Buchungssystem. Nach Annahme dieses Angebots erhalten Sie eine Buchungsbest\u00E4tigung " +
+      "mit Zahlungslink (PayPal, Kredit-/Debitkarte oder \u00DCberweisung unter Angabe der Angebotsnummer). Die Zahlung ist vor Mietbeginn f\u00E4llig.",
   };
   const paymentText = (data.paymentTerms && PAYMENT_TEXTS[data.paymentTerms])
     ? PAYMENT_TEXTS[data.paymentTerms]
@@ -474,14 +482,17 @@ export async function generateOfferPdf(data: {
     dt(pg, "Mit Zahlungseingang ist Ihre Buchung verbindlich best\u00E4tigt; nach Mietende erhalten Sie die Rechnung per E-Mail.", ML + 16, by, font, 8, MUTED);
     y -= boxH + 12;
   } else {
-    need(50);
-    const boxH = 34;
+    // Mehrzeiliger Hinweiskasten – Höhe wächst mit dem Text
+    const bodyLines = wt(paymentText.replace("Zahlungsbedingungen: ", ""), font, 9, CW - 32);
+    const boxH = 26 + bodyLines.length * 12;
+    need(boxH + 16);
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.995, 0.97, 0.93) });
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
     dt(pg, "Zahlungshinweis", ML + 16, y - 2, bold, 10, INK);
-    dt(pg, paymentText.replace("Zahlungsbedingungen: ", ""), ML + 16, y - 18, font, 9, INK);
+    bodyLines.forEach((ln, li) => dt(pg, ln, ML + 16, y - 18 - li * 12, font, 9, INK));
     y -= boxH + 12;
   }
+
 
   // ── Reverse-Charge-Hinweis ──
   if (data.isReverseCharge) {

@@ -17,6 +17,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { productCategories } from "@/data/rentalData";
 import { resolveSubcategory, useAdminManagedProducts, type AdminManagedProductRow } from "@/hooks/useManagedProducts";
+import { AddonOptionsEditor } from "./AddonOptionsEditor";
+import { parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 
 const LOCATIONS = [
   { id: "krefeld", label: "Krefeld" },
@@ -75,6 +77,7 @@ interface FormState {
   seo_draft_generated_at: string | null;
   quantities: Record<LocId, string>;
   quantity_notes: Record<LocId, string>;
+  addon_options: AddonOption[];
   is_published: boolean;
 }
 
@@ -110,6 +113,7 @@ const emptyForm = (): FormState => ({
   seo_draft_generated_at: null,
   quantities: { krefeld: "", bonn: "", muelheim: "" },
   quantity_notes: { krefeld: "", bonn: "", muelheim: "" },
+  addon_options: [],
   is_published: false,
 });
 
@@ -163,6 +167,7 @@ function fromRow(row: AdminManagedProductRow): FormState {
       bonn: row.quantity_notes?.bonn ?? "",
       muelheim: row.quantity_notes?.muelheim ?? "",
     },
+    addon_options: parseAddonOptions((row as unknown as { addon_options?: unknown }).addon_options),
     is_published: row.is_published,
   };
 }
@@ -405,6 +410,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         seo_draft_generated_at: form.seo_draft_generated_at,
         quantities,
         quantity_notes: quantityNotes,
+        addon_options: form.addon_options,
         is_published: form.is_published,
         updated_by: user?.id ?? null,
       };
@@ -640,6 +646,12 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div><Label>Mindestmietdauer (Monate)</Label><Input type="number" value={form.min_rental_months} onChange={(e) => setForm({ ...form, min_rental_months: e.target.value })} /></div>
                 <div><Label>Video-URL</Label><Input value={form.video_url} onChange={(e) => setForm({ ...form, video_url: e.target.value })} /></div>
+              </div>
+              <div className="rounded-lg border border-border p-3">
+                <AddonOptionsEditor
+                  value={form.addon_options}
+                  onChange={(next) => setForm((f) => ({ ...f, addon_options: next }))}
+                />
               </div>
             </TabsContent>
 

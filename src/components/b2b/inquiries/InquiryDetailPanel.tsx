@@ -197,6 +197,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           location={inquiry.location}
           defaultItems={defaultItems}
           defaultDelivery={defaultDelivery}
+          customerKind={inquiry.customer_kind === "business" ? "business" : "private"}
+
 
           staffName={actorName}
           disabled={busy}

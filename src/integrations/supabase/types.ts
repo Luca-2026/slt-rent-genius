@@ -807,6 +807,7 @@ export type Database = {
       }
       b2b_managed_products: {
         Row: {
+          addon_options: Json
           available_locations: string[]
           category: string
           created_at: string
@@ -855,6 +856,7 @@ export type Database = {
           weight_kg: number | null
         }
         Insert: {
+          addon_options?: Json
           available_locations?: string[]
           category: string
           created_at?: string
@@ -903,6 +905,7 @@ export type Database = {
           weight_kg?: number | null
         }
         Update: {
+          addon_options?: Json
           available_locations?: string[]
           category?: string
           created_at?: string
@@ -2917,6 +2920,7 @@ export type Database = {
       }
       managed_products_public: {
         Row: {
+          addon_options: Json | null
           available_locations: string[] | null
           category: string | null
           created_at: string | null
@@ -2953,6 +2957,7 @@ export type Database = {
           weight_kg: number | null
         }
         Insert: {
+          addon_options?: Json | null
           available_locations?: string[] | null
           category?: string | null
           created_at?: string | null
@@ -2989,6 +2994,7 @@ export type Database = {
           weight_kg?: number | null
         }
         Update: {
+          addon_options?: Json | null
           available_locations?: string[] | null
           category?: string | null
           created_at?: string | null
