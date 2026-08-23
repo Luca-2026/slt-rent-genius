@@ -190,6 +190,21 @@ Deno.serve(async (req: Request) => {
       .createSignedUrl(filePath, 60 * 60 * 24 * 365);
     const fileUrl = signed?.signedUrl || "";
 
+    // ── passende AGB als zweiter Anhang (B2C für Privat-, B2B für Geschäftskunden) ──
+    const customerKind = inquiry.customer_kind === "business" ? "business" : "private";
+    const agbPath = customerKind === "business" ? "legal/agb-b2b.pdf" : "legal/agb-b2c.pdf";
+    const agbFileName = customerKind === "business"
+      ? "AGB_SLT-Rental_Geschaeftskunden.pdf"
+      : "AGB_SLT-Rental_Privatkunden.pdf";
+    let agbBytes: Uint8Array | null = null;
+    try {
+      const { data: agbFile, error: agbErr } = await service.storage.from("brand-assets").download(agbPath);
+      if (agbErr || !agbFile) throw agbErr ?? new Error("AGB nicht gefunden");
+      agbBytes = new Uint8Array(await agbFile.arrayBuffer());
+    } catch (err) {
+      console.error("AGB-Anhang konnte nicht geladen werden:", agbPath, err);
+    }
+
     // ── E-Mail an den Kunden ──
     const resendKey = Deno.env.get("RESEND_API_KEY");
     let emailSent = false;
@@ -219,6 +234,7 @@ Deno.serve(async (req: Request) => {
     Wir reservieren die Artikel anschließend verbindlich für Sie und melden uns mit allen Details zur Abholung bzw. Lieferung.
   </div>
   <p style="color:#6b7280;font-size:13px;">Dieses Angebot ist gültig bis ${escapeHtml(fmt(validUntil))}.</p>
+  ${agbBytes ? `<p style="color:#6b7280;font-size:13px;">Es gelten unsere beigefügten ${customerKind === "business" ? "AGB für Unternehmer (B2B)" : "AGB für Verbraucher (B2C)"}.</p>` : ""}
   ${notes ? `<p style="white-space:pre-wrap;">${escapeHtml(notes)}</p>` : ""}
   <p style="margin-top:24px;">Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}<br>
   Tel. ${escapeHtml(loc.phone)} · <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a></p>
@@ -236,7 +252,10 @@ Deno.serve(async (req: Request) => {
             reply_to: loc.email,
             subject: `Ihr Angebot von SLT Rental – ${offerNumber}`,
             html: emailHtml,
-            attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
+            attachments: [
+              { filename: fileName, content: encodeBase64(pdfBytes) },
+              ...(agbBytes ? [{ filename: agbFileName, content: encodeBase64(agbBytes) }] : []),
+            ],
           }),
         });
         if (res.ok) emailSent = true;

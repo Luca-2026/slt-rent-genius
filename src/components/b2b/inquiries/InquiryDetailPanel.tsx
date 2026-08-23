@@ -11,6 +11,7 @@ import { INQUIRY_STATUSES, canTransition, type InquiryStatus } from "@/lib/inqui
 import { InquiryStatusBadge } from "./InquiryStatusBadge";
 import { InquiryOfferForm } from "./InquiryOfferForm";
 import { useInquiryActions } from "./useInquiryActions";
+import { InquiryCustomerCard, type CustomerKind } from "./InquiryCustomerCard";
 import type { OfferLine } from "./offerMath";
 import { formatEuro } from "./offerMath";
 import { useAuth } from "@/hooks/useAuth";
@@ -29,6 +30,12 @@ interface Props {
     offer_file_url: string | null;
     offer_total_gross: number | null;
     offer_sent_at: string | null;
+    customer_kind?: string | null;
+    customer_email?: string | null;
+    customer_phone?: string | null;
+    customer_name?: string | null;
+    first_name?: string | null;
+    last_name?: string | null;
   };
   defaultItems: OfferLine[];
   details: ReactNode;
@@ -37,7 +44,7 @@ interface Props {
 
 export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, details, onChanged }: Props) {
   const { user } = useAuth();
-  const { busy, actorName, claim, release, setStatus, saveNotes } = useInquiryActions(table, onChanged);
+  const { busy, actorName, claim, release, setStatus, saveNotes, update } = useInquiryActions(table, onChanged);
   const [notes, setNotes] = useState(inquiry.internal_notes ?? "");
 
   useEffect(() => setNotes(inquiry.internal_notes ?? ""), [inquiry.id, inquiry.internal_notes]);
@@ -84,6 +91,34 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           </SelectContent>
         </Select>
       </div>
+
+      <InquiryCustomerCard
+        inquiryType={inquiryType}
+        customerKind={inquiry.customer_kind ?? null}
+        customerName={
+          inquiryType === "rental"
+            ? inquiry.customer_name ?? ""
+            : [inquiry.first_name, inquiry.last_name].filter(Boolean).join(" ")
+        }
+        customerEmail={inquiry.customer_email ?? null}
+        customerPhone={inquiry.customer_phone ?? null}
+        busy={busy}
+        onSave={async (values) => {
+          const patch: Record<string, unknown> = {
+            customer_kind: values.customer_kind as CustomerKind,
+            customer_email: values.email.trim() || null,
+            customer_phone: values.phone.trim() || null,
+          };
+          if (inquiryType === "rental") {
+            patch.customer_name = values.name.trim() || null;
+          } else {
+            const parts = values.name.trim().split(/\s+/);
+            patch.first_name = parts.slice(0, -1).join(" ") || parts[0] || null;
+            patch.last_name = parts.length > 1 ? parts[parts.length - 1] : null;
+          }
+          return await update(inquiry.id, patch);
+        }}
+      />
 
       {details}
 

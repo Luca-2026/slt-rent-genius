@@ -18,6 +18,7 @@ export interface RentalInquiry {
   setup_service_requested: boolean;
   customer_name: string | null;
   customer_email: string | null;
+  customer_kind: string | null;
   customer_phone: string | null;
   customer_street: string | null;
   customer_postal_code: string | null;
@@ -66,6 +67,7 @@ export interface SalesInquiry {
   first_name: string | null;
   last_name: string | null;
   customer_email: string | null;
+  customer_kind: string | null;
   customer_phone: string | null;
   billing_identical: boolean | null;
   billing_company: string | null;

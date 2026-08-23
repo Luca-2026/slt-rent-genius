@@ -66,6 +66,7 @@ export interface RentalInquiryInput {
   customer_street?: string | null;
   customer_postal_code?: string | null;
   customer_city?: string | null;
+  customer_kind?: "private" | "business" | null;
   message?: string | null;
   attachments?: unknown[];
   raw_payload?: unknown;
@@ -95,6 +96,7 @@ export async function saveRentalInquiry(input: RentalInquiryInput): Promise<stri
     customer_street: input.customer_street ?? null,
     customer_postal_code: input.customer_postal_code ?? null,
     customer_city: input.customer_city ?? null,
+    customer_kind: input.customer_kind === "business" ? "business" : "private",
     message: input.message ?? null,
     attachments: input.attachments ?? [],
     raw_payload: input.raw_payload ?? null,
@@ -125,6 +127,7 @@ export interface SalesInquiryInput {
   delivery_city?: string | null;
   delivery_note?: string | null;
   customer_type?: string | null;
+  customer_kind?: "private" | "business" | null;
   company_name?: string | null;
   vat_id?: string | null;
   salutation?: string | null;
@@ -146,9 +149,20 @@ export interface SalesInquiryInput {
   raw_payload?: unknown;
 }
 
+/** Ableitung der Kundenart, falls das Formular sie nicht explizit mitliefert. */
+function deriveCustomerKind(input: SalesInquiryInput): "private" | "business" {
+  if (input.customer_kind === "business" || input.customer_kind === "private") return input.customer_kind;
+  const type = (input.customer_type ?? "").toLowerCase();
+  if (/gewerb|business|firm|unternehm|geschäft|geschaeft|b2b/.test(type)) return "business";
+  if (/privat|b2c/.test(type)) return "private";
+  if ((input.company_name ?? "").trim() || (input.vat_id ?? "").trim()) return "business";
+  return "private";
+}
+
 export async function saveSalesInquiry(input: SalesInquiryInput): Promise<string | null> {
   return await insert("sales_inquiries", {
     ...input,
+    customer_kind: deriveCustomerKind(input),
     addons: input.addons ?? [],
     raw_payload: input.raw_payload ?? null,
     email_sent: true,

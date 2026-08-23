@@ -214,6 +214,8 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
           locationPhone: target.phone,
           locationAddress: target.address,
           name: form.name,
+          // Hochzeitsanfragen sind praktisch immer Privatkunden -> B2C-AGB
+          customerKind: "private" as const,
           email: form.email,
           phone: form.phone,
           street: `${form.street} ${form.houseNumber}`.trim(),
