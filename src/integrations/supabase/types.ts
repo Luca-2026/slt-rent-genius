@@ -1336,6 +1336,7 @@ export type Database = {
           end_date: string | null
           end_time: string | null
           id: string
+          inquiry_id: string | null
           location: string
           notes: string | null
           original_price: number | null
@@ -1359,6 +1360,7 @@ export type Database = {
           end_date?: string | null
           end_time?: string | null
           id?: string
+          inquiry_id?: string | null
           location: string
           notes?: string | null
           original_price?: number | null
@@ -1382,6 +1384,7 @@ export type Database = {
           end_date?: string | null
           end_time?: string | null
           id?: string
+          inquiry_id?: string | null
           location?: string
           notes?: string | null
           original_price?: number | null
@@ -1408,6 +1411,13 @@ export type Database = {
             columns: ["b2b_profile_id"]
             isOneToOne: false
             referencedRelation: "b2b_profiles_customer"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_reservations_inquiry_id_fkey"
+            columns: ["inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "rental_inquiries"
             referencedColumns: ["id"]
           },
         ]
@@ -1580,6 +1590,7 @@ export type Database = {
       }
       crm_customers: {
         Row: {
+          b2b_profile_id: string | null
           city: string | null
           company_name: string | null
           country: string | null
@@ -1600,6 +1611,7 @@ export type Database = {
           vat_id: string | null
         }
         Insert: {
+          b2b_profile_id?: string | null
           city?: string | null
           company_name?: string | null
           country?: string | null
@@ -1620,6 +1632,7 @@ export type Database = {
           vat_id?: string | null
         }
         Update: {
+          b2b_profile_id?: string | null
           city?: string | null
           company_name?: string | null
           country?: string | null
@@ -1639,7 +1652,22 @@ export type Database = {
           updated_at?: string
           vat_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "crm_customers_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_customers_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles_customer"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       customer_feedback: {
         Row: {
@@ -2102,6 +2130,8 @@ export type Database = {
           assigned_name: string | null
           assigned_to: string | null
           attachments: Json
+          b2b_profile_id: string | null
+          b2b_reservation_id: string | null
           category_slug: string | null
           company_name: string | null
           created_at: string
@@ -2133,6 +2163,7 @@ export type Database = {
           product_name: string | null
           quantity: number | null
           raw_payload: Json | null
+          rental_group_id: string | null
           setup_service_requested: boolean
           source: string
           start_date: string | null
@@ -2146,6 +2177,8 @@ export type Database = {
           assigned_name?: string | null
           assigned_to?: string | null
           attachments?: Json
+          b2b_profile_id?: string | null
+          b2b_reservation_id?: string | null
           category_slug?: string | null
           company_name?: string | null
           created_at?: string
@@ -2177,6 +2210,7 @@ export type Database = {
           product_name?: string | null
           quantity?: number | null
           raw_payload?: Json | null
+          rental_group_id?: string | null
           setup_service_requested?: boolean
           source?: string
           start_date?: string | null
@@ -2190,6 +2224,8 @@ export type Database = {
           assigned_name?: string | null
           assigned_to?: string | null
           attachments?: Json
+          b2b_profile_id?: string | null
+          b2b_reservation_id?: string | null
           category_slug?: string | null
           company_name?: string | null
           created_at?: string
@@ -2221,6 +2257,7 @@ export type Database = {
           product_name?: string | null
           quantity?: number | null
           raw_payload?: Json | null
+          rental_group_id?: string | null
           setup_service_requested?: boolean
           source?: string
           start_date?: string | null
@@ -2230,6 +2267,20 @@ export type Database = {
           vat_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "rental_inquiries_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rental_inquiries_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles_customer"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "rental_inquiries_crm_customer_id_fkey"
             columns: ["crm_customer_id"]
