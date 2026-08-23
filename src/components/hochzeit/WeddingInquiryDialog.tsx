@@ -77,6 +77,8 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
     email: "",
     phone: "",
     eventDate: "",
+    startTime: "",
+    endTime: "",
     venueName: "",
     street: "",
     houseNumber: "",
@@ -142,6 +144,8 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
       email: "",
       phone: "",
       eventDate: "",
+      startTime: "",
+      endTime: "",
       venueName: "",
       street: "",
       houseNumber: "",
@@ -222,7 +226,9 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
           postalCode: form.postalCode,
           city: form.city,
           startDate: form.eventDate,
+          startTime: form.startTime,
           endDate: form.eventDate,
+          endTime: form.endTime,
           message: messageBlock,
           deliveryRequested: form.deliveryNeeded,
           deliveryStreet: form.deliveryNeeded ? `${form.street} ${form.houseNumber}`.trim() : "",
@@ -336,6 +342,26 @@ export function WeddingInquiryDialog({ open, onOpenChange }: Props) {
                     required
                     value={form.eventDate}
                     onChange={(e) => setForm({ ...form, eventDate: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="w-start-time">Abholung / Anlieferung Uhrzeit *</Label>
+                  <Input
+                    id="w-start-time"
+                    type="time"
+                    required
+                    value={form.startTime}
+                    onChange={(e) => setForm({ ...form, startTime: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="w-end-time">Rückgabe Uhrzeit *</Label>
+                  <Input
+                    id="w-end-time"
+                    type="time"
+                    required
+                    value={form.endTime}
+                    onChange={(e) => setForm({ ...form, endTime: e.target.value })}
                   />
                 </div>
               </div>
