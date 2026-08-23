@@ -123,8 +123,10 @@ export async function generateOfferPdf(data: {
 
   // ── Kopf Seite 1: Absenderzeile, Empfängeradresse, Logo rechts, Infoblock, Titel ──
   const renderHeader = (pg: any): number => {
-    dt(pg, `${SLT_COMPANY.name} \u00B7 ${SLT_COMPANY.street} \u00B7 ${SLT_COMPANY.city}`, ADDR_X, ADDR_Y_TOP + 12, font, 7, MUTED);
-    pg.drawRectangle({ x: ADDR_X, y: ADDR_Y_TOP + 10, width: 220, height: 0.4, color: LINE });
+    // Absenderzeile mit deutlichem Abstand zum Anschriftfeld (DIN 5008)
+    dt(pg, `${SLT_COMPANY.name} \u00B7 ${SLT_COMPANY.street} \u00B7 ${SLT_COMPANY.city}`, ADDR_X, ADDR_Y_TOP + 30, font, 7, MUTED);
+    pg.drawRectangle({ x: ADDR_X, y: ADDR_Y_TOP + 27, width: 220, height: 0.4, color: LINE });
+
 
     let ay = ADDR_Y_TOP;
     const companyLine = data.profile.legal_form
@@ -146,19 +148,27 @@ export async function generateOfferPdf(data: {
       ay -= 11;
     }
 
-    // Logo oben rechts (~60 mm)
-    let logoBottomY = H - MT;
+    // Logo oben rechts – die PNG-Datei hat viel transparenten Rand, deshalb
+    // rechnen wir mit dem sichtbaren Bildausschnitt, damit der SLT-Kreis
+    // exakt auf Höhe der Absenderzeile sitzt.
+    const LOGO_BOX = { left: 0.1474, top: 0.3536, right: 0.8516, bottom: 0.6318 };
+    const visibleTopY = ADDR_Y_TOP + 44;
+    let logoBottomY = visibleTopY - 60;
     if (logoImg) {
-      const targetW = 170;
-      const scale = targetW / logoImg.width;
-      const drawH = logoImg.height * scale;
-      logoBottomY = H - MT - drawH;
-      pg.drawImage(logoImg, { x: W - MR - targetW, y: logoBottomY, width: targetW, height: drawH });
+      const visibleW = 150;
+      const fullW = visibleW / (LOGO_BOX.right - LOGO_BOX.left);
+      const fullH = (logoImg.height / logoImg.width) * fullW;
+      const imgTopY = visibleTopY + LOGO_BOX.top * fullH;
+      const imgY = imgTopY - fullH;
+      const imgX = W - MR - LOGO_BOX.right * fullW;
+      pg.drawImage(logoImg, { x: imgX, y: imgY, width: fullW, height: fullH });
+      logoBottomY = visibleTopY - (LOGO_BOX.bottom - LOGO_BOX.top) * fullH;
     }
 
     // Infoblock rechts, zweispaltig
     const infoX = W - MR - 200;
-    let iy = Math.min(ADDR_Y_TOP, logoBottomY - 26);
+    let iy = logoBottomY - 24;
+
     const infoRow = (label: string, value: string, c = INK) => {
       dt(pg, label, infoX, iy, font, 8.5, MUTED);
       dt(pg, value, infoX + 95, iy, font, 9, c);
@@ -182,12 +192,13 @@ export async function generateOfferPdf(data: {
     if (data.isReverseCharge) infoRow("Verfahren:", "Reverse-Charge", BRAND);
 
     // Titelblock
-    const contentTopY = Math.min(ay, iy) - 40;
+    const contentTopY = Math.min(ay, iy) - 26;
     let ty = contentTopY;
     dt(pg, TITLE, ML, ty, bold, 30, BRAND);
     ty -= 26;
     dt(pg, `Nr. ${data.offerNumber}`, ML, ty, font, 10.5, MUTED);
-    ty -= 26;
+    ty -= 22;
+
 
     // Lieferadresse (angebotsspezifisch)
     if (data.deliveryAddress && (data.deliveryAddress.street || data.deliveryAddress.city)) {
@@ -216,6 +227,8 @@ export async function generateOfferPdf(data: {
     return yy - 16;
   };
 
+  let tableClosed = false;
+
   const newPage = (isFirst: boolean): { pg: any; y: number } => {
     const pg = doc.addPage([W, H]);
     pages.push(pg);
@@ -232,8 +245,10 @@ export async function generateOfferPdf(data: {
     }
     dt(pg, `${TITLE} \u00B7 ${data.offerNumber}`, ML, yy - 46, bold, 10, BRAND);
     yy -= 74;
-    return { pg, y: renderTableHeader(pg, yy) };
+    // Fortsetzungsseiten nach der Positionstabelle brauchen keinen Tabellenkopf
+    return { pg, y: tableClosed ? yy : renderTableHeader(pg, yy) };
   };
+
 
   let { pg, y } = newPage(true);
 
@@ -366,6 +381,7 @@ export async function generateOfferPdf(data: {
 
   pg.drawRectangle({ x: ML, y, width: CW, height: 0.5, color: LINE });
   y -= 26;
+  tableClosed = true;
 
   // ── Summenblock (rechtsbündig, wie Rechnung) ──
   need(130);
@@ -487,7 +503,7 @@ export async function generateOfferPdf(data: {
   }
 
   // ── Grußformel ──
-  need(70);
+  need(56);
   dt(pg, "Wir freuen uns auf Ihre R\u00FCckmeldung und stehen Ihnen f\u00FCr R\u00FCckfragen gerne zur Verf\u00FCgung.", ML, y, font, 9); y -= 22;
   dt(pg, "Mit freundlichen Gr\u00FC\u00DFen", ML, y, font, 9); y -= 15;
   dt(pg, data.staffName || SLT_COMPANY.managingDirector, ML, y, bold, 9); y -= 11;
