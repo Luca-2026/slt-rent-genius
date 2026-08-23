@@ -58,7 +58,7 @@ export default function StaffTasks() {
     () => [
       "tasks",
       "material",
-      ...(canViewInventory ? ["inventory"] : []),
+      ...(canViewInventory ? ["inventory", "verkauf"] : []),
       "zeiten",
       ...(isAdmin ? ["feedback", "staff"] : []),
     ],
@@ -216,7 +216,7 @@ export default function StaffTasks() {
           )}
           {canViewInventory && (
             <TabsTrigger value="verkauf" className="text-xs sm:text-sm py-2 sm:flex-1">
-              <ShoppingCart className="h-4 w-4 mr-1.5 shrink-0" /> Verkauf
+              <ShoppingCart className="h-4 w-4 mr-1.5 shrink-0" /> Verkaufsartikel-CMS
             </TabsTrigger>
           )}
           <TabsTrigger value="zeiten" className="text-xs sm:text-sm py-2 sm:flex-1">
