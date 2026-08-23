@@ -99,6 +99,14 @@ export function InquiryOfferForm({
       toast({ title: "Bitte alle Positionen ausfüllen", description: "Bezeichnung, Menge und Preis werden benötigt.", variant: "destructive" });
       return;
     }
+    if (delivery.requested && !delivery.street.trim() && !delivery.city.trim()) {
+      toast({
+        title: "Lieferadresse fehlt",
+        description: "Bitte Straße und Ort der Lieferadresse ergänzen oder „Lieferung“ deaktivieren.",
+        variant: "destructive",
+      });
+      return;
+    }
     setSending(true);
     const { data, error } = await supabase.functions.invoke("send-inquiry-offer", {
       body: {
@@ -108,12 +116,21 @@ export function InquiryOfferForm({
         items,
         delivery_cost_delivery: deliveryCostDelivery,
         delivery_cost_return: deliveryCostReturn,
+        delivery_requested: delivery.requested,
+        delivery_address: delivery.requested
+          ? {
+              street: delivery.street.trim(),
+              postal_code: delivery.postal_code.trim(),
+              city: delivery.city.trim(),
+            }
+          : null,
         deposit,
         valid_days: validDays,
         notes,
         staff_name: staffName,
       },
     });
+
     setSending(false);
 
     if (error || (data as any)?.error) {
