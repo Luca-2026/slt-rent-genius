@@ -3,6 +3,13 @@
  * tested both from Deno and from the frontend test suite.
  */
 
+export interface InquiryOfferAddon {
+  key: string;
+  label: string;
+  amount: number;
+  note?: string;
+}
+
 export interface InquiryOfferItem {
   product_name: string;
   description?: string;
@@ -13,6 +20,8 @@ export interface InquiryOfferItem {
   rental_end?: string;
   /** Öffentliche Bild-URL des CMS-Artikels (wird im PDF eingebettet). */
   image_url?: string;
+  /** Zusatzoptionen (Versicherungen etc.) dieser Position */
+  addons?: InquiryOfferAddon[];
 }
 
 export const VAT_RATE = 19;
@@ -40,12 +49,40 @@ export function lineTotal(item: Pick<InquiryOfferItem, "quantity" | "unit_price"
   return round2(discounted);
 }
 
+export function addonsTotal(items: InquiryOfferItem[]): number {
+  return round2(
+    items.reduce((sum, i) => sum + (i.addons ?? []).reduce((s, a) => s + (Number(a.amount) || 0), 0), 0),
+  );
+}
+
 export function buildOfferTotals(items: InquiryOfferItem[], deliveryCost = 0) {
   const itemsNet = round2(items.reduce((sum, i) => sum + lineTotal(i), 0));
-  const netAmount = round2(itemsNet + (deliveryCost || 0));
+  const addonsNet = addonsTotal(items);
+  const netAmount = round2(itemsNet + addonsNet + (deliveryCost || 0));
   const vatAmount = round2(netAmount * (VAT_RATE / 100));
   const grossAmount = round2(netAmount + vatAmount);
-  return { itemsNet, netAmount, vatRate: VAT_RATE, vatAmount, grossAmount };
+  return { itemsNet, addonsNet, netAmount, vatRate: VAT_RATE, vatAmount, grossAmount };
+}
+
+function normalizeAddons(raw: unknown, itemIndex: number): InquiryOfferAddon[] | undefined {
+  if (!Array.isArray(raw) || raw.length === 0) return undefined;
+  if (raw.length > 10) throw new Error(`Position ${itemIndex + 1}: zu viele Zusatzoptionen (max. 10)`);
+  const list = raw.map((entry) => {
+    const a = (entry ?? {}) as Record<string, unknown>;
+    const label = String(a.label ?? "").trim();
+    if (!label) throw new Error(`Position ${itemIndex + 1}: Zusatzoption ohne Bezeichnung`);
+    const amount = Number(a.amount);
+    if (!Number.isFinite(amount) || amount < 0 || amount > 1_000_000) {
+      throw new Error(`Position ${itemIndex + 1}: ungültiger Betrag bei "${label}"`);
+    }
+    return {
+      key: String(a.key ?? label).slice(0, 60),
+      label: label.slice(0, 120),
+      amount: round2(amount),
+      note: a.note ? String(a.note).slice(0, 200) : undefined,
+    };
+  });
+  return list;
 }
 
 /** Validates + normalizes untrusted item input coming from the portal UI. */
@@ -84,6 +121,7 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       rental_start: item.rental_start ? String(item.rental_start).slice(0, 40) : undefined,
       rental_end: item.rental_end ? String(item.rental_end).slice(0, 40) : undefined,
       image_url: item.image_url ? String(item.image_url).slice(0, 500) : undefined,
+      addons: normalizeAddons(item.addons, index),
     };
   });
 }
