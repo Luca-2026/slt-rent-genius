@@ -58,7 +58,7 @@ export default function StaffTasks() {
     () => [
       "tasks",
       "material",
-      ...(canViewInventory ? ["inventory"] : []),
+      ...(canViewInventory ? ["inventory", "verkauf"] : []),
       "zeiten",
       ...(isAdmin ? ["feedback", "staff"] : []),
     ],
