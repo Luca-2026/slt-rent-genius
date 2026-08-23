@@ -360,7 +360,13 @@ Deno.serve(async (req: Request) => {
           body: JSON.stringify({
             from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
             to: [customerEmail],
-            cc: [loc.email],
+            // Standort-Postfach immer in Kopie (inkl. abweichender Anfrage-Mailbox)
+            cc: Array.from(
+              new Set(
+                [loc.email, str(inquiry.location_email)]
+                  .filter((e) => e && e !== customerEmail),
+              ),
+            ),
             reply_to: loc.email,
             subject: `Ihr Angebot von SLT Rental – ${offerNumber}`,
             html: emailHtml,
