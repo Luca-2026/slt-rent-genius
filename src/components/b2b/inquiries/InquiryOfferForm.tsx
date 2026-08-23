@@ -108,7 +108,7 @@ export function InquiryOfferForm({
     (async () => {
       const enriched = await Promise.all(
         items.map(async (item) => {
-          if (item.image_url || !item.product_name.trim()) return item;
+          if (item.available_addons || !item.product_name.trim()) return item;
           const match = await findCatalogProductByName(item.product_name);
           if (!match) return item;
           const image = pickCatalogImage(match.images);
