@@ -93,9 +93,9 @@ import imgPlattform3500Absenkbar_5 from "@/assets/products/anhaenger/plattform-3
 import imgXcmgXe20e_1 from "@/assets/products/erdbewegung/xcmg-xe20e-1.jpg";
 import imgXcmgXe20e_2 from "@/assets/products/erdbewegung/xcmg-xe20e-2.jpg";
 import imgXcmgXe20e_3 from "@/assets/products/erdbewegung/xcmg-xe20e-3.jpg";
-import imgXcmgXe27e_1 from "@/assets/products/erdbewegung/xcmg-xe27e-1.jpg";
-import imgXcmgXe27e_2 from "@/assets/products/erdbewegung/xcmg-xe27e-2.jpg";
-import imgXcmgXe27e_3 from "@/assets/products/erdbewegung/xcmg-xe27e-3.jpg";
+import imgXcmgXe27e_1 from "@/assets/products/erdbewegung/minibagger-2-7t-1.jpg";
+import imgXcmgXe27e_2 from "@/assets/products/erdbewegung/minibagger-2-7t-2.jpg";
+import imgXcmgXe27e_3 from "@/assets/products/erdbewegung/minibagger-2-7t-3.jpg";
 import imgBobcatE10z_1 from "@/assets/products/erdbewegung/bobcat-e10z-1.jpg";
 import imgBobcatE10z_2 from "@/assets/products/erdbewegung/bobcat-e10z-2.jpg";
 import imgBobcatE10z_3 from "@/assets/products/erdbewegung/bobcat-e10z-3.jpg";
@@ -572,7 +572,7 @@ const trailerProducts: Product[] = [
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"],
     specifications: { "Eigengewicht": "ca. 645 kg", "Nutzlast": "ca. 1.155 kg" },
-    compatibleMachines: ["bobcat-e10z", "xcmg-xe20e", "xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
+    compatibleMachines: ["bobcat-e10z", "xcmg-xe20e", "minibagger-2-7t", "bobcat-e35z", "bobcat-e50z"],
     rentwareCode: { krefeld: "EDE97K", bonn: "3F11ZC" } 
   },
   { 
@@ -594,7 +594,7 @@ const trailerProducts: Product[] = [
       "Führerschein": "Klasse 3 oder BE",
       "100 km/h-Zulassung": "Zugfahrzeug-Leergewicht min. 3.182 kg"
     },
-    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
+    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "bobcat-e50z"],
     rentwareCode: { krefeld: "7WW3IY", bonn: "WFQBAR", muelheim: "GWO6D9" } 
   },
 
@@ -848,7 +848,7 @@ const erdbewegungProductsUnsorted: Product[] = [
     ],
   },
   {
-    id: "xcmg-xe27e",
+    id: "minibagger-2-7t",
     name: "2,7t Minibagger",
     modelName: "XCMG XE27E",
     description: "Einsatzgewicht: 2.700 kg | Grabtiefe: 2.800 mm | Breite: 1.500 mm",

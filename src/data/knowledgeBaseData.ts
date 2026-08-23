@@ -505,7 +505,7 @@ export const kbArticles: KBArticle[] = [
     title: "Minibagger sicher bedienen – Anleitung für Privatnutzer",
     description: "Sicherheitshinweise, Einweisung und Grundfunktionen: So arbeiten Sie sicher mit einem Miet-Minibagger.",
     categoryId: "erdbewegung",
-    productIds: ["bobcat-e10z", "xcmg-xe20e", "xcmg-xe27e", "bonn-bobcat-e10", "bonn-xcmg-xe20e", "bonn-xcmg-xe27e"],
+    productIds: ["bobcat-e10z", "xcmg-xe20e", "minibagger-2-7t", "bonn-bobcat-e10", "bonn-xcmg-xe20e", "bonn-minibagger-2-7t"],
     type: "sicherheit",
     tags: ["minibagger", "einweisung", "sicherheit", "bedienung", "joystick", "psa", "graben", "bagger"],
     updatedAt: "2026-03-02",

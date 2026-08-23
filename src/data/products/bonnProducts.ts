@@ -198,9 +198,9 @@ import imgBobcatE10z4 from "@/assets/products/erdbewegung/bobcat-e10z-4.jpg";
 import imgXcmgXe20e1 from "@/assets/products/erdbewegung/xcmg-xe20e-1.jpg";
 import imgXcmgXe20e2 from "@/assets/products/erdbewegung/xcmg-xe20e-2.jpg";
 import imgXcmgXe20e3 from "@/assets/products/erdbewegung/xcmg-xe20e-3.jpg";
-import imgXcmgXe27e1 from "@/assets/products/erdbewegung/xcmg-xe27e-1.jpg";
-import imgXcmgXe27e2 from "@/assets/products/erdbewegung/xcmg-xe27e-2.jpg";
-import imgXcmgXe27e3 from "@/assets/products/erdbewegung/xcmg-xe27e-3.jpg";
+import imgXcmgXe27e1 from "@/assets/products/erdbewegung/minibagger-2-7t-1.jpg";
+import imgXcmgXe27e2 from "@/assets/products/erdbewegung/minibagger-2-7t-2.jpg";
+import imgXcmgXe27e3 from "@/assets/products/erdbewegung/minibagger-2-7t-3.jpg";
 import imgKramer1 from "@/assets/products/erdbewegung/kramer-5045-1.png";
 import imgKramer2 from "@/assets/products/erdbewegung/kramer-5045-2.png";
 import imgCormidi1 from "@/assets/products/erdbewegung/cormidi-c60-1.jpg";
@@ -461,7 +461,7 @@ export const bonnErdbewegungProducts = [
     ],
   },
   {
-    id: "bonn-xcmg-xe27e",
+    id: "bonn-minibagger-2-7t",
     name: "2,7t Minibagger",
     modelName: "XCMG XE27E",
     description: "Einsatzgewicht: 2.700 kg | Grabtiefe: 2.800 mm | Breite: 1.500 mm",
@@ -673,7 +673,7 @@ export const bonnErdbewegungZusatzProducts = [
     image: imgSortiergreiferSsg150_1,
     images: [imgSortiergreiferSsg150_1, imgSortiergreiferSsg150_2, imgSortiergreiferSsg150_3],
     category: "sortiergreifer",
-    compatibleMachines: ["xcmg-xe27e", "bobcat-e35z", "bobcat-e50z"],
+    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "bobcat-e50z"],
     videoUrls: ["https://www.youtube.com/watch?v=NxHLwYjWVA8"],
     specifications: {
       "Arbeitsbreite": "400 mm",
