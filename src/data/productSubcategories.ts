@@ -369,7 +369,7 @@ export const PRODUCT_SUBCATEGORIES: Record<string, string> = {
   "willi-becher-0-2l-40er": "glaeser",
   "winterdienst-set-kramer-5045": "radlader",
   "xcmg-xe20e": "minibagger",
-  "xcmg-xe27e": "minibagger",
+  "minibagger-2-7t": "minibagger",
   "yamaha-dm3": "mischpult",
   "zeltboden-anthrazit": "zelt",
   "zwangsmischer-140l": "zwangsmischer",

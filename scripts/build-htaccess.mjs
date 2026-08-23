@@ -97,6 +97,12 @@ lines.push(
   "RewriteRule ^mieten/bonn/verdichtung/bonn-ruettelplatte-hvp50/?$ /mieten/bonn/verdichtung/ruettelplatte-hvp50-60/ [L,R=301]",
   "RewriteRule ^mieten/bonn/verdichtung/bonn-grabenwalze-bmp8500/?$ /mieten/bonn/verdichtung/grabenwalze-bmp8500/ [L,R=301]",
   "",
+
+  "# === 2c. Modellwechsel 2,7t Minibagger (XCMG XE27E -> LiuGong 9027F ZTS) ===",
+  "RewriteRule ^mieten/krefeld/erdbewegung/xcmg-xe27e/?$ /mieten/krefeld/erdbewegung/minibagger-2-7t/ [L,R=301]",
+  "RewriteRule ^mieten/bonn/erdbewegung/xcmg-xe27e/?$ /mieten/bonn/erdbewegung/minibagger-2-7t/ [L,R=301]",
+  "RewriteRule ^mieten/muelheim/erdbewegung/xcmg-xe27e/?$ /mieten/muelheim/erdbewegung/minibagger-2-7t/ [L,R=301]",
+  "",
   `# === 3. Legacy-URL-Redirects (aus GSC-404-Liste, ${mapping.total} URLs) ===`,
   "# Generiert aus 404-mapping.json — sortiert nach Confidence absteigend.",
   "# Confidence:",

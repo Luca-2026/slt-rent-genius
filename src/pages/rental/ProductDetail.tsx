@@ -374,8 +374,16 @@ export default function ProductDetail() {
               },
             };
           }
-          if (typeof productSEO?.dailyPriceFrom === "number") {
-            const priceFrom = productSEO.dailyPriceFrom as number;
+          const parsedDailyPrice = (() => {
+            if (typeof productSEO?.dailyPriceFrom === "number") return productSEO.dailyPriceFrom as number;
+            if (!product.pricePerDay) return undefined;
+            const n = parseFloat(
+              String(product.pricePerDay).replace(/[^\d,.-]/g, "").replace(/\./g, "").replace(",", "."),
+            );
+            return isFinite(n) && n > 0 ? n : undefined;
+          })();
+          if (typeof parsedDailyPrice === "number") {
+            const priceFrom = parsedDailyPrice;
             const validUntil = new Date();
             validUntil.setFullYear(validUntil.getFullYear() + 1);
             const availability = getProductAvailability(product, location.id, { categoryId });
