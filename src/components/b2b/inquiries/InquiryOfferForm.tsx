@@ -17,6 +17,9 @@ import {
   parsePrice,
   pickCatalogImage,
 } from "./InquiryProductCombobox";
+import { SalesProductCombobox } from "./SalesProductCombobox";
+import { SALES_ADDON_PRESETS, isSalesAddonNegative } from "@/lib/salesAddons";
+import { loadSalesCatalog } from "@/hooks/useSalesCatalog";
 
 /** Angebotsposition inkl. der im CMS erlaubten Zusatzoptionen (nur lokal). */
 type FormLine = OfferLine & { available_addons?: AddonOption[] };
@@ -26,14 +29,17 @@ type FormLine = OfferLine & { available_addons?: AddonOption[] };
  * plus die Standard-Presets (Versicherungen etc.), damit auch bei Artikeln ohne
  * CMS-Pflege immer Zusatzoptionen angeboten werden.
  */
-function addonOptionsFor(item: FormLine): AddonOption[] {
+function addonOptionsFor(item: FormLine, isSales = false): AddonOption[] {
   const fromCms = item.available_addons ?? [];
-  const presets: AddonOption[] = ADDON_PRESETS.filter((p) => p.key !== "custom").map((p) => ({
+  const source = isSales
+    ? SALES_ADDON_PRESETS
+    : ADDON_PRESETS.filter((p) => p.key !== "custom");
+  const presets: AddonOption[] = source.map((p) => ({
     key: p.key,
     label: p.label,
     price_type: p.price_type,
     price: p.price,
-    deductible: p.deductible ?? null,
+    deductible: (p as { deductible?: number | null }).deductible ?? null,
   }));
   const merged = [...fromCms];
   for (const p of presets) if (!merged.some((o) => o.key === p.key)) merged.push(p);
@@ -125,9 +131,22 @@ export function InquiryOfferForm({
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      const salesCatalog = inquiryType === "sales" ? await loadSalesCatalog() : [];
       const enriched = await Promise.all(
         items.map(async (item) => {
           if (item.available_addons || !item.product_name.trim()) return item;
+          if (inquiryType === "sales") {
+            const hit = salesCatalog.find(
+              (c) => c.name.toLowerCase() === item.product_name.trim().toLowerCase(),
+            );
+            if (!hit) return { ...item, available_addons: [] };
+            return {
+              ...item,
+              image_url: item.image_url ?? hit.image ?? undefined,
+              unit_price: item.unit_price > 0 ? item.unit_price : hit.net_price ?? 0,
+              available_addons: [],
+            };
+          }
           const match = await findCatalogProductByName(item.product_name);
           if (!match) return item;
           const image = pickCatalogImage(match.images);
@@ -165,7 +184,7 @@ export function InquiryOfferForm({
         location,
         items: items.map(({ available_addons: _unused, ...rest }) => ({
           ...rest,
-          addons: (rest.addons ?? []).filter((a) => a.amount > 0),
+          addons: (rest.addons ?? []).filter((a) => Number(a.amount) !== 0),
         })),
         payment_terms: paymentTerms,
         delivery_cost_delivery: deliveryCostDelivery,
@@ -217,6 +236,22 @@ export function InquiryOfferForm({
                 />
               ) : null}
               <div className="min-w-0 flex-1">
+                {inquiryType === "sales" ? (
+                <SalesProductCombobox
+                  value={item.product_name}
+                  disabled={disabled}
+                  onSelect={(product, freeText) =>
+                    patchItem(index, {
+                      product_name: freeText,
+                      image_url: product?.image ?? undefined,
+                      unit_price:
+                        product && item.unit_price === 0 ? product.net_price ?? 0 : item.unit_price,
+                      available_addons: [],
+                      addons: [],
+                    })
+                  }
+                />
+                ) : (
                 <InquiryProductCombobox
                   value={item.product_name}
                   location={location}
@@ -234,6 +269,7 @@ export function InquiryOfferForm({
                     })
                   }
                 />
+                )}
               </div>
               <Button
                 type="button"
@@ -292,7 +328,7 @@ export function InquiryOfferForm({
 
             {/* Zusatzoptionen dieser Position (CMS-Optionen + Standardauswahl + Freifeld) */}
             {(() => {
-              const options = addonOptionsFor(item);
+              const options = addonOptionsFor(item, inquiryType === "sales");
               return (
               <div className="rounded-md bg-muted/50 p-2 space-y-2">
                 <div className="flex gap-2">
@@ -309,7 +345,9 @@ export function InquiryOfferForm({
                         {
                           key: option.key,
                           label: option.label,
-                          amount: suggestAddonAmount(option, item),
+                          amount: isSalesAddonNegative(option.key)
+                            ? -Math.abs(suggestAddonAmount(option, item))
+                            : suggestAddonAmount(option, item),
                           note: option.deductible ? `Selbstbehalt ${option.deductible} €` : option.note,
                         },
                       ],
@@ -371,7 +409,6 @@ export function InquiryOfferForm({
                       <Input
 
                         type="number"
-                        min={0}
                         step="0.01"
                         value={addon.amount}
                         onChange={(e) =>
