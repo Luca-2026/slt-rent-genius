@@ -16,6 +16,8 @@ import {
   type SalesInquiry,
 } from "@/components/b2b/inquiries/types";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
+import { NewSalesInquiryDialog } from "@/components/b2b/inquiries/NewSalesInquiryDialog";
+import { Plus } from "lucide-react";
 
 export default function SalesInquiries() {
   const { isStaff, loading: accessLoading } = useStaffAccess();
@@ -24,6 +26,7 @@ export default function SalesInquiries() {
   const [onlyOpen, setOnlyOpen] = useState(true);
   const [kind, setKind] = useState<string>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [manualOpen, setManualOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -58,6 +61,9 @@ export default function SalesInquiries() {
         />
         <Button variant={onlyOpen ? "default" : "outline"} onClick={() => setOnlyOpen((v) => !v)}>
           {onlyOpen ? "Nur offene" : "Alle Anfragen"}
+        </Button>
+        <Button className="w-full sm:w-auto sm:ml-auto" onClick={() => setManualOpen(true)}>
+          <Plus className="h-4 w-4 mr-1" /> Anfrage manuell anlegen
         </Button>
         <div className="flex gap-1 flex-wrap">
           {["all", "new_machine", "used_machine", "rental_purchase"].map((k) => (
@@ -103,6 +109,8 @@ export default function SalesInquiries() {
           ))}
         </div>
       )}
+
+      <NewSalesInquiryDialog open={manualOpen} onOpenChange={setManualOpen} onCreated={reload} />
 
       <Sheet open={!!selected} onOpenChange={(open) => !open && setSelectedId(null)}>
         <SheetContent side="right" className="w-full sm:max-w-xl overflow-y-auto">

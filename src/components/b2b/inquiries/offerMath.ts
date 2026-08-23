@@ -54,6 +54,11 @@ export function buildOfferTotals(items: OfferLine[], deliveryCost = 0) {
 }
 
 
+/** Abzüge (z. B. Inzahlungnahme) dürfen die Angebotssumme nicht negativ machen. */
+export function isValidOfferTotal(netAmount: number): boolean {
+  return Number.isFinite(netAmount) && netAmount > 0;
+}
+
 export function formatEuro(value: number): string {
   return new Intl.NumberFormat("de-DE", {
     style: "currency",

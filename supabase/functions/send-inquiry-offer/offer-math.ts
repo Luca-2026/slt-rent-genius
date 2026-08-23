@@ -64,6 +64,13 @@ export function buildOfferTotals(items: InquiryOfferItem[], deliveryCost = 0) {
   return { itemsNet, addonsNet, netAmount, vatRate: VAT_RATE, vatAmount, grossAmount };
 }
 
+/** Abzüge (z. B. Inzahlungnahme) dürfen die Angebotssumme nicht negativ machen. */
+export function assertPositiveTotal(netAmount: number) {
+  if (!(netAmount > 0)) {
+    throw new Error("Angebotssumme muss größer als 0 € sein – bitte Abzüge prüfen.");
+  }
+}
+
 function normalizeAddons(raw: unknown, itemIndex: number): InquiryOfferAddon[] | undefined {
   if (!Array.isArray(raw) || raw.length === 0) return undefined;
   if (raw.length > 10) throw new Error(`Position ${itemIndex + 1}: zu viele Zusatzoptionen (max. 10)`);
@@ -71,8 +78,9 @@ function normalizeAddons(raw: unknown, itemIndex: number): InquiryOfferAddon[] |
     const a = (entry ?? {}) as Record<string, unknown>;
     const label = String(a.label ?? "").trim();
     if (!label) throw new Error(`Position ${itemIndex + 1}: Zusatzoption ohne Bezeichnung`);
+    // Negative Beträge sind erlaubt (z. B. Inzahlungnahme eines Altgeräts).
     const amount = Number(a.amount);
-    if (!Number.isFinite(amount) || amount < 0 || amount > 1_000_000) {
+    if (!Number.isFinite(amount) || amount < -1_000_000 || amount > 1_000_000) {
       throw new Error(`Position ${itemIndex + 1}: ungültiger Betrag bei "${label}"`);
     }
     return {
