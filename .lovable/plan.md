@@ -1,114 +1,61 @@
+# Anfragen-Management im B2B-Portal
 
-# Mietartikel-CMS im B2B-Admin-Portal
+Ziel: Alle Miet- und Kaufanfragen laufen künftig nicht mehr nur per E-Mail ein, sondern landen zusätzlich als bearbeitbarer Vorgang im Portal. Zwei neue Reiter zwischen „B2B-Vermietung“ und „Interne Verwaltung“: **Mietanfragen** und **Verkaufsanfragen**.
 
-Neuer Reiter **„Inventar"** im `/b2b/admin`-Bereich. Admins können bestehende Artikel bearbeiten und neue anlegen, inkl. KI-generiertem SEO-Content, Bildern, technischen Daten, Rentware-Codes und internen Bestandsmengen pro Standort. Änderungen werden im öffentlichen Frontend und im B2B-Portal wirksam.
+## Was der Nutzer sieht
 
-## 1. Datenmodell (Supabase)
+**Navigation**
+- Neuer Reiter „Mietanfragen“ (`/b2b/mietanfragen`) mit Badge für offene Anfragen.
+- Neuer Reiter „Verkaufsanfragen“ (`/b2b/verkaufsanfragen`) mit Badge.
+- Sichtbar für Admins und Standortmitarbeitende (beide dürfen bearbeiten).
 
-### Neue Tabelle `b2b_managed_products`
-Hält alle CMS-gepflegten Artikel. Feldstruktur spiegelt das bestehende `Product`-Interface aus `src/data/rentalData.ts`:
+**Mietanfragen-Liste**
+- Tabelle/Karten mit: Eingang, Status, Standort, Artikel, Zeitraum, Kunde, Bearbeiter.
+- Filter: Status (Neu / In Bearbeitung / Angebot gesendet / Angenommen / Abgelehnt / Erledigt), Standort, Suche.
+- Live-Aktualisierung (Realtime), damit sofort sichtbar ist, wenn ein Kollege eine Anfrage übernimmt.
 
-- `id` uuid
-- `slug` text unique – identisch zur URL im Frontend, dient als Merge-Key gegen TS-Daten
-- `name`, `model_name`, `description`, `detailed_description` text
-- `category` text (z. B. `erdbewegung`, `geschirr`), FK per String zu `productCategories`
-- `available_locations` text[] – `["krefeld","bonn","muelheim"]`
-- `images` text[] – Storage-URLs
-- `specifications` jsonb (Key/Value)
-- `features`, `tags`, `rental_notes` text[]
-- `price_per_day`, `price_weekend`, `price_per_month`, `min_rental_months`, `weight_kg`, `drive_type`
-- `rentware_code` jsonb – `{ "krefeld": "…", "bonn": "…" }` (Memory-Regel greift automatisch)
-- `pdf_url`, `external_manual_url`, `video_url`, `video_urls`
-- `sort_order` int
-- **Intern (nie ans Frontend):** `quantities` jsonb `{ "krefeld": 3, "bonn": 1, "muelheim": 0 }`, `quantity_notes` jsonb `{ "krefeld": "1 St. in Werkstatt", … }`
-- `seo_meta_description`, `seo_faqs` jsonb (Array `{ question, answer }`), `seo_local_content` jsonb pro Standort
-- `is_published` boolean default false
-- `created_by`, `updated_by` uuid, `created_at`, `updated_at`
+**Detail-Dialog einer Mietanfrage**
+- Alle Kundendaten, Zeitraum, Lieferwunsch, Nachricht, Anhänge – schreibgeschützt.
+- „Übernehmen“-Button (setzt Bearbeiter + Status „In Bearbeitung“, verhindert Doppelbearbeitung).
+- Interne Notizen und Statusverlauf.
+- Angebotsbereich: Positionen (aus der Anfrage vorbelegt) mit Menge, Preis, Rabatt, Liefer-/Rückgabekosten, Kaution, Zusatzleistungen, Gültigkeit.
+- Button „Angebot senden“: erzeugt PDF über die bestehende Angebots-Pipeline und mailt es an den Kunden. Text enthält den Hinweis: Annahme durch kurze Bestätigung per E-Mail an die Standortadresse (krefeld@ / bonn@ / muelheim@slt-rental.de) – Job wird danach manuell in Rentware angelegt.
+- Buttons „Angenommen“ / „Abgelehnt“ / „Erledigt“ zum Abschluss.
 
-### Neue Tabelle `b2b_managed_product_overrides` (optional, siehe unten)
-Nicht nötig – wir nutzen `slug` als Merge-Key: Existiert in DB ein Datensatz mit gleicher Slug wie ein TS-Artikel, überschreibt DB im Frontend die TS-Version.
+**Verkaufsanfragen-Liste**
+- Gleiche Struktur, Quellen: Neuartikel-Kaufanfragen, Gebraucht-Anfragen (inkl. Suchanfragen) und Kaufanfragen aus Mietartikeln.
+- Detail-Dialog mit allen Formularfeldern, Übernehmen, Notizen, Statuspflege und „Angebot senden“ (freie Positionen, da kein Mietzeitraum).
 
-### RLS & Grants
-- SELECT `is_published=true` für `anon` + `authenticated` (nur veröffentlichte Artikel öffentlich sichtbar; interne Felder `quantities`/`quantity_notes` bleiben trotzdem lesbar – deshalb kommt ein **View** `public.managed_products_public` ohne die internen Felder + Base-Table SELECT nur für Admins).
-- Admin (`has_role(auth.uid(),'admin')`): full access auf Base-Table.
-- `service_role`: full access.
+**E-Mails bleiben**
+- Alle bestehenden Benachrichtigungen an die Standort-Postfächer laufen unverändert weiter. Zusätzlich enthält die interne Mail einen Direktlink zum Vorgang im Portal.
 
-### Neuer Storage-Bucket `product-images` (public read, admin write).
+## Technische Umsetzung
 
-## 2. Frontend-Merge (Hybrid: DB überschreibt TS)
+**Datenbank (eine Migration)**
+- `public.rental_inquiries`: Herkunft (`source`: product_booking, wedding, category, contact), Standort, Artikel (Name, ID, Kategorie), Zeitraum inkl. Uhrzeiten, Lieferdaten, Kundendaten, Nachricht, Anhang-Pfade, `status`, `assigned_to`, `assigned_name`, `assigned_at`, `internal_notes`, `offer_id`, `email_sent`, Timestamps + updated_at-Trigger.
+- `public.sales_inquiries`: `kind` (neu / gebraucht / mietartikel-kauf), Produktdaten (Marke, Modell, Artikelnummer, Menge, Zubehör), Liefer-/Rechnungsdaten, Finanzierungswunsch, Kundendaten, gleiche Workflow-Felder.
+- GRANTs: `authenticated` (SELECT/INSERT/UPDATE), `service_role` ALL, kein `anon`-Zugriff.
+- RLS: Lesen/Ändern nur für `has_role(auth.uid(),'admin')` oder `is_staff_member(auth.uid())`. Insert erfolgt ausschließlich über Edge Functions mit Service-Role.
+- Audit-Trigger (`audit_row_change`) für beide Tabellen, damit nachvollziehbar bleibt, wer was geändert hat.
 
-`src/data/rentalData.ts` bekommt einen asynchronen Loader:
-- Bei Initialisierung (via React Query in einem neuen `useRentalData`-Hook) werden alle veröffentlichten Einträge aus `managed_products_public` geladen.
-- Merge-Logik: pro Standort werden Kategorien/Produkte aus TS-Dateien geholt und Einträge mit gleicher Slug durch DB-Version ersetzt; komplett neue DB-Einträge werden je nach `available_locations` in die entsprechende Kategorie eingefügt.
-- Alle Consumer (`CategoryProducts`, `ProductDetail`, `RentwareSearch`, `HeroSearch`, `B2BProducts`, `B2BProductDetail`) rufen den Hook statt der direkten TS-Exports.
-- Bestehende Helper (`getProductsForLocationCategory`, `getAllProductsForLocation`, `getProductById`, `generateProductSlug`) bekommen jeweils eine „mit merged data"-Variante; die statischen Exports bleiben als Fallback (SSR/Prerendering, siehe unten).
+**Edge Functions**
+- `send-inquiry-email`, `send-purchase-inquiry`, `send-used-inquiry` schreiben vor dem Mailversand per Service-Role-Client einen Datensatz und hängen den Portal-Link in die interne Mail. Der Insert läuft als eigener try/catch: schlägt er fehl, geht die Mail trotzdem raus (und umgekehrt), damit keine Anfrage verloren geht.
+- Neue Function `send-inquiry-offer`: validiert Eingaben (Zod), prüft Admin-/Staff-Rolle über das JWT, erzeugt das Angebots-PDF mit der bestehenden `generate-offer`-PDF-Logik, versendet es an den Kunden (CC Standortpostfach), speichert Datei-URL/Angebotsnummer am Vorgang und setzt den Status auf „Angebot gesendet“.
 
-**Prerendering (`scripts/prerender-rental.mjs`)**: erweitert um DB-Fetch via anon-Key vor dem Build, damit CMS-Artikel auch in HTML/Sitemap landen.
+**Frontend**
+- `src/pages/b2b/RentalInquiries.tsx` und `src/pages/b2b/SalesInquiries.tsx` + Detail-Dialoge unter `src/components/b2b/inquiries/`.
+- Routen in `App.tsx`, Nav-Einträge in `B2BPortalLayout.tsx` (admin- und staff-Navigation), Zähler analog `useStaffWork` über neuen Hook `useOpenInquiries`.
+- Statuslogik und Labels zentral in `src/lib/inquiryStatus.ts`.
 
-## 3. Admin-UI – neuer Tab „Inventar"
+**Tests / Validierung**
+- Unit-Tests (Vitest) für Statusübergänge, Positions-/Summenberechnung inkl. MwSt. und die Mapping-Funktion Formular → Datensatz.
+- Deno-Test für die PDF-Erzeugung der neuen Angebots-Function (analog `pdf_test.ts`).
+- End-to-End-Check mit Playwright: Anfrage über das Produktformular absenden → Datensatz erscheint im Portal → Übernehmen → Preis eintragen → Angebot senden → Status korrekt.
+- Anschließend Security-Linter auf die neuen Tabellen.
 
-`src/pages/b2b/AdminDashboard.tsx` bekommt Tab **Inventar** mit:
-
-**Listenansicht** (`AdminInventoryTab.tsx`)
-- Filter: Standort, Kategorie, Suche, Status (veröffentlicht/Entwurf), Quelle (DB/TS).
-- Tabelle: Bild, Name, Kategorie, Standorte, Bestand Krefeld/Bonn/Mülheim, Rentware-Codes, Status.
-- Aktionen: Neu, Bearbeiten, Duplizieren, Veröffentlichen/Verstecken, Löschen.
-- TS-Artikel erscheinen als „TS (schreibgeschützt)" – Klick „Bearbeiten" legt automatisch einen DB-Override mit vorbefüllten Feldern an.
-
-**Bearbeitungsdialog** (`InventoryEditorDialog.tsx`) mit Tabs:
-1. **Basis** – Name, Kategorie, Standorte, Slug (auto), Kurzbeschreibung, Sortierung
-2. **Bilder** – Upload in `product-images` mit Reorder + Alt-Text
-3. **Technische Daten** – Spec-Editor (Key/Value Rows), Features, Gewicht, Antriebsart
-4. **Preise & Buchung** – Preise, Rentware-Code je Standort (Memory-Regel: sobald Code gesetzt → automatisch `onRequest=false`, „auf Anfrage"-Sätze werden aus Content-Feldern gestrippt und der Nutzer sieht dies als Hinweis)
-5. **SEO & Content** – Meta-Description, Long-Description, FAQs, lokaler Content pro Standort. Jedes Feld hat **„KI generieren"** und **„Neu generieren"**.
-6. **Intern (Bestand)** – Menge + Notiz je Standort. Rot markiert „Nur intern – nicht im Frontend sichtbar." Leere Felder bleiben leer und werden bei bestehenden Artikeln nicht angefasst.
-
-## 4. Edge Functions
-
-**`admin-generate-product-content`** (verify_jwt=false, manueller Admin-Check)
-- Input: `{ field: "meta_description" | "detailed_description" | "faqs" | "local_content", product: {...}, location?: "krefeld"|"bonn"|"muelheim" }`
-- Prüft Admin-Rolle, ruft Lovable AI Gateway (`google/gemini-2.5-flash`) mit Prompts pro Feldtyp. Nutzt bestehende SLT-Tone-of-Voice-Regeln (Du-Ansprache, SLT CI, keine erfundenen Specs).
-- Output: strukturierter Text/JSON, kein automatisches Speichern – Admin sieht Preview und übernimmt per Klick.
-- Rate-Limit-Handling für 402/429.
-
-**`admin-manage-product`** (verify_jwt=false, Admin-Check)
-- Insert/Update/Delete Wrapper für `b2b_managed_products` (mit Slug-Validierung, Auto-Slug aus Name, Konsistenz-Check „Rentware-Code ⇒ keine 'auf Anfrage'-Sätze").
-
-## 5. Sicherheit
-
-- Alle Edge Functions verifizieren JWT + Admin-Rolle via `user_roles`.
-- RLS wie oben; interner View für Public verhindert Leak von Bestand/Notizen.
-- Zod-Validierung serverseitig für alle Inputs (Länge, Typen, erlaubte Standorte).
-- Storage-Bucket-Policies: nur Admins upload/delete, public read.
-- Sanitization aller HTML-Ausgaben (Meta/Description werden als Text gerendert, keine `dangerouslySetInnerHTML`).
-
-## 6. Tests
-
-- **DB**: Migration-Dry-Run + RLS-Check (Admin darf alles, anon sieht nur `managed_products_public`, Bestandsfelder nicht abrufbar).
-- **Edge Functions**: manuelle Testaufrufe für beide Functions (Auth-Fehlerfall, Rollenfehlerfall, Success).
-- **Frontend Merge**: Playwright-Skript unter `/tmp/browser/inventory/`:
-  - Login als Admin → Inventar-Tab → neuen Artikel „E2E-Testbagger" in Kategorie Erdbewegung/Krefeld anlegen → Rentware-Code setzen → veröffentlichen.
-  - Screenshot `Mietartikel/Krefeld/Erdbewegung` → prüft, dass Artikel auftaucht.
-  - Screenshot `B2B/Produkte` → prüft Buchbarkeit.
-  - Screenshot Detailseite → prüft SEO-Meta, FAQs, Bilder, keine Bestandsmengen sichtbar.
-  - Anschließend Bestand ändern (5 Krefeld, Notiz „intern") → Public-Seite darf sich nicht ändern, DB-Query als anon darf `quantities` nicht zurückgeben.
-- **Konsistenz-Check**: Bei Rentware-Code-Set greift die Memory-Regel (`onRequest` weg, „auf Anfrage" aus Text entfernt) → Test verifiziert das.
-
-## 7. Nicht im Scope (bewusst)
-- Auto-Sync statischer TS-Artikel in DB (bleibt manueller Erstimport per „Bearbeiten"-Klick).
-- Versions-/Änderungshistorie einzelner Felder.
-- Übersetzungen (bestehendes i18n-System bleibt für TS-Artikel; DB-Artikel werden zunächst nur auf Deutsch gepflegt).
-- Automatische Bild-Optimierung/CDN (Bilder werden 1:1 aus Storage geladen).
-
-## Technische Notizen
-- Neue Files: `supabase/functions/admin-generate-product-content/`, `supabase/functions/admin-manage-product/`, `src/hooks/useManagedProducts.ts`, `src/components/b2b/admin/AdminInventoryTab.tsx`, `src/components/b2b/admin/InventoryEditorDialog.tsx` (+ Sub-Komponenten pro Tab), `src/lib/mergeManagedProducts.ts`.
-- Änderungen in: `src/pages/b2b/AdminDashboard.tsx` (Tab-Registrierung), `src/data/rentalData.ts` (async Helper), `src/pages/rental/*`, `src/pages/b2b/B2BProducts.tsx`, `src/pages/b2b/B2BProductDetail.tsx`, `scripts/prerender-rental.mjs`, `supabase/config.toml`.
-- Model für KI: `google/gemini-2.5-flash` (schnell, günstig, ausreichend für SEO-Texte). Bei Bedarf pro Feld auf `google/gemini-2.5-pro` upgradebar.
-
-## Umsetzungsreihenfolge
-1. Migration + Storage-Bucket + View
-2. Edge Functions (`admin-manage-product`, `admin-generate-product-content`)
-3. Merge-Layer im Frontend
-4. Admin-UI (Listenansicht → Editor-Dialog → KI-Buttons → Bestandsseite)
-5. Prerendering-Anpassung
-6. Playwright-Tests + manuelle Verifikation
+## Reihenfolge
+1. Migration (Tabellen, GRANTs, RLS, Trigger).
+2. Edge Functions erweitern (Insert + Portal-Link), Deploy.
+3. Portal-Reiter mit Liste, Filter, Realtime, Detail-Dialog.
+4. Angebots-Versand-Function inkl. PDF.
+5. Tests, E2E-Durchlauf, Linter-Check, Reporting.
