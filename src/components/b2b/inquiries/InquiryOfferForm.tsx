@@ -380,7 +380,8 @@ export function InquiryOfferForm({
                   </div>
                 ))}
               </div>
-            )}
+              );
+            })()}
           </div>
         ))}
         <Button
