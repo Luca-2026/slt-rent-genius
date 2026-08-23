@@ -104,10 +104,13 @@ import imgBobcatE35z_1 from "@/assets/products/erdbewegung/bobcat-e35z-1.webp";
 import imgBobcatE35z_2 from "@/assets/products/erdbewegung/bobcat-e35z-2.webp";
 import imgBobcatE35z_3 from "@/assets/products/erdbewegung/bobcat-e35z-3.webp";
 import imgBobcatE35z_4 from "@/assets/products/erdbewegung/bobcat-e35z-4.webp";
-import imgBobcatE50z_1 from "@/assets/products/erdbewegung/bobcat-e50z-1.webp";
-import imgBobcatE50z_2 from "@/assets/products/erdbewegung/bobcat-e50z-2.webp";
-import imgBobcatE50z_3 from "@/assets/products/erdbewegung/bobcat-e50z-3.webp";
-import imgBobcatE50z_4 from "@/assets/products/erdbewegung/bobcat-e50z-4.webp";
+const imgMinibagger5t_1 = "/product-images/erdbewegung/minibagger-5t-1.webp";
+const imgMinibagger5t_2 = "/product-images/erdbewegung/minibagger-5t-2.webp";
+const imgMinibagger5t_3 = "/product-images/erdbewegung/minibagger-5t-3.webp";
+const imgMinibagger5t_4 = "/product-images/erdbewegung/minibagger-5t-4.webp";
+const imgMinibagger5t_5 = "/product-images/erdbewegung/minibagger-5t-5.webp";
+const imgMinibagger5t_6 = "/product-images/erdbewegung/minibagger-5t-6.webp";
+
 import imgKettendumperRmd800_1 from "@/assets/products/erdbewegung/kettendumper-rmd800-1.jpeg";
 import imgKnickdumperKde550_1 from "@/assets/products/erdbewegung/raddumper-kde550p-1.jpg";
 import imgCormidiC60_1 from "@/assets/products/erdbewegung/cormidi-c60-1.jpg";
