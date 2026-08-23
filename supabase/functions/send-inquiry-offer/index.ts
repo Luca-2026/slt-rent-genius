@@ -107,9 +107,15 @@ Deno.serve(async (req: Request) => {
     const addrIn = body.delivery_address && typeof body.delivery_address === "object"
       ? body.delivery_address as Record<string, unknown>
       : null;
-    const deliveryRequested = body.delivery_requested === undefined
-      ? Boolean(inquiry_placeholder_unused)
-      : body.delivery_requested === true;
+    const deliveryAddress = {
+      street: addrIn ? str(addrIn.street) : str(inquiry.delivery_street),
+      postal_code: addrIn ? str(addrIn.postal_code) : str(inquiry.delivery_postal_code),
+      city: addrIn ? str(addrIn.city) : str(inquiry.delivery_city),
+    };
+    const deliveryRequested = body.delivery_requested === false
+      ? false
+      : Boolean(deliveryAddress.street || deliveryAddress.city);
+
 
 
     const totals = buildOfferTotals(items, deliveryCostDelivery + deliveryCostReturn);
