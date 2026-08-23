@@ -190,6 +190,21 @@ Deno.serve(async (req: Request) => {
       .createSignedUrl(filePath, 60 * 60 * 24 * 365);
     const fileUrl = signed?.signedUrl || "";
 
+    // ── passende AGB als zweiter Anhang (B2C für Privat-, B2B für Geschäftskunden) ──
+    const customerKind = inquiry.customer_kind === "business" ? "business" : "private";
+    const agbPath = customerKind === "business" ? "legal/agb-b2b.pdf" : "legal/agb-b2c.pdf";
+    const agbFileName = customerKind === "business"
+      ? "AGB_SLT-Rental_Geschaeftskunden.pdf"
+      : "AGB_SLT-Rental_Privatkunden.pdf";
+    let agbBytes: Uint8Array | null = null;
+    try {
+      const { data: agbFile, error: agbErr } = await service.storage.from("brand-assets").download(agbPath);
+      if (agbErr || !agbFile) throw agbErr ?? new Error("AGB nicht gefunden");
+      agbBytes = new Uint8Array(await agbFile.arrayBuffer());
+    } catch (err) {
+      console.error("AGB-Anhang konnte nicht geladen werden:", agbPath, err);
+    }
+
     // ── E-Mail an den Kunden ──
     const resendKey = Deno.env.get("RESEND_API_KEY");
     let emailSent = false;
