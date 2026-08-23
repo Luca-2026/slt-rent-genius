@@ -147,6 +147,7 @@ export function InquiryOfferForm({
   );
   /** Freitext für „Individuelle Zahlungsbedingungen“ (nur Geschäftskunden). */
   const [paymentTermsCustom, setPaymentTermsCustom] = useState("");
+  const sendLock = useRef(false);
 
   useEffect(() => {
     setPaymentTerms(customerKind === "business" ? "net_14" : "anzahlung_30");
@@ -248,6 +249,10 @@ export function InquiryOfferForm({
       });
       return;
     }
+    // Zusätzlicher Klick-Lock: State-Updates greifen erst im nächsten Render,
+    // ein sehr schneller Doppelklick würde sonst zwei Requests auslösen.
+    if (sendLock.current) return;
+    sendLock.current = true;
     setSending(true);
     const { data, error } = await supabase.functions.invoke("send-inquiry-offer", {
       body: {
@@ -294,6 +299,7 @@ export function InquiryOfferForm({
     });
 
     setSending(false);
+    sendLock.current = false;
 
     if (error || (data as any)?.error) {
       toast({
