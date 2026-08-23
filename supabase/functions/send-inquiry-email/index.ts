@@ -166,6 +166,7 @@ serve(async (req) => {
       <tr><td style="padding: 4px 0; color: #6b7280; width: 100px;">Name:</td><td style="padding: 4px 0; font-weight: 500;">${e.name}</td></tr>
       <tr><td style="padding: 4px 0; color: #6b7280;">E-Mail:</td><td style="padding: 4px 0;"><a href="mailto:${e.email}" style="color: #f97316;">${e.email}</a></td></tr>
       <tr><td style="padding: 4px 0; color: #6b7280;">Telefon:</td><td style="padding: 4px 0;">${e.phone}</td></tr>
+      <tr><td style="padding: 4px 0; color: #6b7280;">Kundenart:</td><td style="padding: 4px 0;">${customerKind === "business" ? "Geschäftskunde (B2B)" : "Privatkunde (B2C)"}</td></tr>
       ${customerAddress ? `<tr><td style="padding: 4px 0; color: #6b7280;">Adresse:</td><td style="padding: 4px 0;">${e.customerAddress}</td></tr>` : ""}
       <tr><td style="padding: 4px 0; color: #6b7280;">Zeitraum:</td><td style="padding: 4px 0;">${e.dateRange}</td></tr>
       ${timeRange ? `<tr><td style="padding: 4px 0; color: #6b7280;">Uhrzeiten:</td><td style="padding: 4px 0;">${e.timeRange}</td></tr>` : ""}
