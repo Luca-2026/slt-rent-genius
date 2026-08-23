@@ -12,7 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Sparkles, Loader2, Trash2, Plus } from "lucide-react";
+import { Sparkles, Loader2, Trash2, Plus, Upload, ImageOff } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import type { NewMachineRow, SalesArticleKind, UsedMachineRow } from "@/hooks/useSalesCatalog";
@@ -71,7 +72,7 @@ interface FormState {
   hours: string;
   location: string;
   showroom_locations: string[];
-  images: string;
+  images: string[];
   specifications: { key: string; value: string }[];
   highlights: string[];
   faqs: Faq[];
@@ -84,7 +85,7 @@ const emptyForm: FormState = {
   short_description: "", description: "", price: "", compare_at_price: "",
   price_on_request: false, vat_rate: "19", is_active: true, is_featured: false,
   sort_order: "0", status: "available", year: "", hours: "", location: "krefeld",
-  showroom_locations: [], images: "", specifications: [], highlights: [], faqs: [],
+  showroom_locations: [], images: [], specifications: [], highlights: [], faqs: [],
   seo_title: "", seo_description: "",
 };
 
@@ -115,6 +116,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
   const [form, setForm] = useState<FormState>({ ...emptyForm });
   const [saving, setSaving] = useState(false);
   const [aiField, setAiField] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   const isNew = kind === "new";
 
@@ -145,7 +147,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         is_featured: Boolean(r.is_featured),
         sort_order: String(r.sort_order ?? 0),
         showroom_locations: r.showroom_locations ?? [],
-        images: (r.images ?? []).join("\n"),
+        images: (r.images ?? []).filter(Boolean),
         specifications: toSpecList(r.specifications),
         highlights: Array.isArray(content.highlights) ? (content.highlights as string[]) : [],
         faqs: toFaqList(content.faq),
@@ -170,7 +172,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         year: r.year != null ? String(r.year) : "",
         hours: r.hours != null ? String(r.hours) : "",
         location: r.location ?? "krefeld",
-        images: (r.images ?? []).join("\n"),
+        images: (r.images ?? []).filter(Boolean),
         specifications: toSpecList(r.specifications),
         highlights: Array.isArray(content.highlights) ? (content.highlights as string[]) : [],
         faqs: toFaqList(content.faq),
@@ -228,6 +230,35 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
     }
   };
 
+  async function handleUpload(files: FileList | null) {
+    if (!files?.length) return;
+    setUploading(true);
+    try {
+      const uploaded: string[] = [];
+      for (const file of Array.from(files)) {
+        const rawExt = file.name.includes(".") ? file.name.split(".").pop()! : "";
+        const ext = (rawExt || (file.type.split("/")[1] ?? "bin")).toLowerCase().replace(/[^a-z0-9]/g, "");
+        const folder = form.slug.trim() || slugify(displayName) || "verkauf";
+        const path = `sales-images/${kind}/${folder}/${crypto.randomUUID()}.${ext}`;
+        const { error } = await supabase.storage.from("brand-assets").upload(path, file, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: file.type || undefined,
+        });
+        if (error) throw error;
+        const { data: pub } = supabase.storage.from("brand-assets").getPublicUrl(path);
+        uploaded.push(pub.publicUrl);
+      }
+      setForm((f) => ({ ...f, images: [...f.images, ...uploaded] }));
+      toast.success(`${uploaded.length} Bild(er) hochgeladen`);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Upload fehlgeschlagen");
+      console.error("[SalesArticleEditorDialog] upload error", e);
+    } finally {
+      setUploading(false);
+    }
+  }
+
   const save = async () => {
     if (!form.brand.trim() || !form.model.trim()) {
       toast.error("Hersteller und Modell sind Pflichtfelder.");
@@ -238,7 +269,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
       return;
     }
     const slug = form.slug.trim() || slugify(displayName);
-    const images = form.images.split("\n").map((i) => i.trim()).filter(Boolean);
+    const images = form.images.map((i) => i.trim()).filter(Boolean);
     const content = {
       ...((row?.content as Record<string, unknown>) ?? {}),
       highlights: form.highlights.filter(Boolean),
@@ -488,8 +519,71 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
 
             <TabsContent value="technik" className="space-y-4 pt-4">
               <div>
-                <Label htmlFor="sa-images">Bild-URLs (eine pro Zeile)</Label>
-                <Textarea id="sa-images" rows={4} value={form.images} disabled={readOnly} onChange={(e) => set("images", e.target.value)} />
+                <div className="flex flex-wrap items-center gap-3">
+                  <Label>Bilder</Label>
+                  {!readOnly && (
+                    <Button asChild variant="outline" size="sm" disabled={uploading}>
+                      <label className="cursor-pointer">
+                        {uploading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Upload className="h-4 w-4 mr-2" />}
+                        Bilder hochladen
+                        <input
+                          type="file"
+                          multiple
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            void handleUpload(e.target.files);
+                            e.currentTarget.value = "";
+                          }}
+                        />
+                      </label>
+                    </Button>
+                  )}
+                  <span className="text-sm text-muted-foreground">{form.images.length} Bild(er)</span>
+                </div>
+                {form.images.length === 0 ? (
+                  <div className="flex items-center gap-2 rounded-lg border border-dashed border-border p-6 text-sm text-muted-foreground">
+                    <ImageOff className="h-4 w-4" /> Noch keine Bilder hinterlegt.
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    {form.images.map((url, i) => (
+                      <div key={`${url}-${i}`} className="group relative overflow-hidden rounded-lg border border-border">
+                        <img src={url} alt={`Produktbild ${i + 1}`} loading="lazy" className="h-32 w-full bg-muted object-cover" />
+                        {i === 0 && <Badge className="absolute left-1 top-1">Titelbild</Badge>}
+                        {!readOnly && (
+                          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-black/50 opacity-0 transition group-hover:opacity-100">
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="destructive"
+                              aria-label="Bild entfernen"
+                              onClick={() => setForm((f) => ({ ...f, images: f.images.filter((_, j) => j !== i) }))}
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </Button>
+                            {i > 0 && (
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="secondary"
+                                onClick={() =>
+                                  setForm((f) => {
+                                    const imgs = [...f.images];
+                                    [imgs[i - 1], imgs[i]] = [imgs[i], imgs[i - 1]];
+                                    return { ...f, images: imgs };
+                                  })
+                                }
+                              >
+                                ← nach vorn
+                              </Button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">
