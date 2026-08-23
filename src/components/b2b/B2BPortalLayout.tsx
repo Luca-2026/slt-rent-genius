@@ -12,7 +12,20 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import {
   LayoutDashboard, Package, FileText, Receipt,
   LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen, Building2, Download, Menu, CheckSquare,
+  Inbox, ShoppingCart,
 } from "lucide-react";
+import { useOpenInquiryCounts } from "@/hooks/useInquiries";
+
+function navBadge(
+  href: string,
+  openTodoCount: number,
+  inquiryCounts: { rental: number; sales: number },
+): number | null {
+  if (href === "/b2b/aufgaben") return openTodoCount > 0 ? openTodoCount : null;
+  if (href === "/b2b/mietanfragen") return inquiryCounts.rental > 0 ? inquiryCounts.rental : null;
+  if (href === "/b2b/verkaufsanfragen") return inquiryCounts.sales > 0 ? inquiryCounts.sales : null;
+  return null;
+}
 
 interface B2BPortalLayoutProps {
   children: ReactNode;
@@ -38,11 +51,15 @@ const customerNavItems = [
 const adminNavItems = [
   { href: "/", label: "Startseite", icon: Home },
   { href: "/b2b/admin", label: "B2B-Vermietung", icon: Settings },
+  { href: "/b2b/mietanfragen", label: "Mietanfragen", icon: Inbox },
+  { href: "/b2b/verkaufsanfragen", label: "Verkaufsanfragen", icon: ShoppingCart },
   { href: "/b2b/aufgaben", label: "Interne Verwaltung", icon: CheckSquare },
 ];
 
 const staffNavItems = [
   { href: "/", label: "Startseite", icon: Home },
+  { href: "/b2b/mietanfragen", label: "Mietanfragen", icon: Inbox },
+  { href: "/b2b/verkaufsanfragen", label: "Verkaufsanfragen", icon: ShoppingCart },
   { href: "/b2b/aufgaben", label: "Interne Verwaltung", icon: CheckSquare },
   { href: "/hilfe", label: "Hilfe & Anleitungen", icon: BookOpen },
 ];
@@ -52,6 +69,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
   const { user, b2bProfile, loading, signOut, isAdmin } = useAuth();
   const { isStaff } = useStaffAccess();
   const { count: openTodoCount } = useStaffWork();
+  const inquiryCounts = useOpenInquiryCounts();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -147,7 +165,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                         {navItems.map((item) => {
                           const isActive = location.pathname === item.href;
                           const Icon = item.icon;
-                          const badge = item.href === "/b2b/aufgaben" && openTodoCount > 0 ? openTodoCount : null;
+                          const badge = navBadge(item.href, openTodoCount, inquiryCounts);
                           return (
                             <Link key={item.href} to={item.href}>
                               <Button
@@ -184,7 +202,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                   {navItems.map((item) => {
                     const isActive = location.pathname === item.href;
                     const Icon = item.icon;
-                    const badge = item.href === "/b2b/aufgaben" && openTodoCount > 0 ? openTodoCount : null;
+                    const badge = navBadge(item.href, openTodoCount, inquiryCounts);
                     return (
                       <Link key={item.href} to={item.href}>
                         <Button
