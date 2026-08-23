@@ -46,9 +46,12 @@ interface Props {
     billing_city?: string | null;
   };
   defaultItems: OfferLine[];
+  /** Lieferadresse aus dem öffentlichen Anfrageformular (im Angebot änderbar). */
+  defaultDelivery?: OfferDeliveryAddress;
   details: ReactNode;
   onChanged: () => void;
 }
+
 
 export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, details, onChanged }: Props) {
   const { user } = useAuth();
