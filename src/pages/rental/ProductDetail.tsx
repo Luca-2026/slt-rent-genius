@@ -99,6 +99,16 @@ export default function ProductDetail() {
 
   const rawRelatedProducts = useMemo(() => {
     if (!location || !categoryId || !rawProduct) return [];
+
+    // 1) Manuell im CMS gepflegte Artikel haben immer Vorrang (Reihenfolge = CMS-Reihenfolge)
+    if (rawProduct.relatedSlugs?.length) {
+      const pool = getAllProductsForLocation(location.id);
+      const picked = rawProduct.relatedSlugs
+        .map((slug) => pool.find((p) => p.id === slug))
+        .filter((p): p is NonNullable<typeof p> => !!p && p.id !== rawProduct.id);
+      if (picked.length) return picked.slice(0, 8);
+    }
+
     const allProducts = getProductsForLocationCategory(location.id, categoryId);
     const candidates = allProducts.filter((p) => p.id !== rawProduct.id && !p.compatibleMachines);
 
