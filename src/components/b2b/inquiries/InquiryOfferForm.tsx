@@ -9,17 +9,18 @@ import { Plus, Send, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { buildOfferTotals, formatEuro, isValidOfferTotal, type OfferLine } from "./offerMath";
+import { buildOfferTotals, formatEuro, isValidOfferTotal, lineTotal, type OfferLine } from "./offerMath";
 import { ADDON_PRESETS, parseAddonOptions, suggestAddonAmount, type AddonOption } from "@/lib/offerAddons";
 import {
   InquiryProductCombobox,
   findCatalogProductByName,
-  parsePrice,
   pickCatalogImage,
 } from "./InquiryProductCombobox";
 import { SalesProductCombobox } from "./SalesProductCombobox";
 import { SALES_ADDON_PRESETS, isSalesAddonNegative } from "@/lib/salesAddons";
 import { loadSalesCatalog } from "@/hooks/useSalesCatalog";
+import { OFFER_UNITS, unitLabel, type OfferUnit } from "@/lib/offerUnits";
+import { resolveCatalogPrice } from "@/lib/catalogPricing";
 
 /** Angebotsposition inkl. der im CMS erlaubten Zusatzoptionen (nur lokal). */
 type FormLine = OfferLine & {
@@ -55,12 +56,34 @@ function addonOptionsFor(item: FormLine, isSales = false): AddonOption[] {
  * und der Preis nicht manuell überschrieben wurde. Ohne CMS-Preis bleibt das Feld
  * leer (bzw. der manuell gesetzte Preis erhalten).
  */
-function resolvePricePatch(item: FormLine, cmsPrice: number | undefined): Partial<FormLine> {
+function resolvePricePatch(
+  item: FormLine,
+  resolved: { price: number; unit?: OfferUnit } | undefined,
+): Partial<FormLine> {
   if (item.price_source === "manual" && item.unit_price > 0) return {};
-  if (cmsPrice !== undefined) return { unit_price: cmsPrice, price_source: "cms" };
+  if (resolved) {
+    return {
+      unit_price: resolved.price,
+      price_source: "cms",
+      unit: item.unit ?? resolved.unit ?? "kalendertage",
+      duration: item.duration && item.duration > 0 ? item.duration : 1,
+    };
+  }
   return { unit_price: 0, price_source: undefined };
 }
 
+
+function emptyLine(): FormLine {
+  return {
+    product_name: "",
+    description: "",
+    quantity: 1,
+    duration: 1,
+    unit: "kalendertage",
+    unit_price: 0,
+    discount_percent: 0,
+  };
+}
 
 const PAYMENT_OPTIONS: Record<"business" | "private", { value: string; label: string }[]> = {
   business: [
@@ -110,7 +133,7 @@ export function InquiryOfferForm({
 }: Props) {
   const { toast } = useToast();
   const [items, setItems] = useState<FormLine[]>(
-    defaultItems.length ? defaultItems : [{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0 }],
+    defaultItems.length ? defaultItems : [emptyLine()],
   );
   const emptyDelivery: OfferDeliveryAddress = { requested: false, street: "", postal_code: "", city: "" };
   const [delivery, setDelivery] = useState<OfferDeliveryAddress>(defaultDelivery ?? emptyDelivery);
@@ -163,19 +186,23 @@ export function InquiryOfferForm({
               image_url: item.image_url ?? hit.image ?? undefined,
               unit_price: useSalesCms ? salesPrice! : item.unit_price,
               price_source: useSalesCms ? ("cms" as const) : item.price_source,
+              unit: item.unit ?? "stueck",
+              duration: item.duration && item.duration > 0 ? item.duration : 1,
               available_addons: [],
             };
           }
           const match = await findCatalogProductByName(item.product_name);
           if (!match) return item;
           const image = pickCatalogImage(match.images);
-          const cmsPrice = parsePrice(match.price_per_day);
-          const useCms = item.unit_price <= 0 && cmsPrice !== undefined;
+          const resolved = await resolveCatalogPrice(match);
+          const useCms = item.unit_price <= 0 && resolved !== undefined;
           return {
             ...item,
             image_url: item.image_url ?? image,
-            unit_price: useCms ? cmsPrice! : item.unit_price,
+            unit_price: useCms ? resolved!.price : item.unit_price,
             price_source: useCms ? ("cms" as const) : item.price_source,
+            unit: item.unit ?? resolved?.unit ?? "kalendertage",
+            duration: item.duration && item.duration > 0 ? item.duration : 1,
             available_addons: parseAddonOptions(match.addon_options),
           };
         }),
@@ -216,10 +243,26 @@ export function InquiryOfferForm({
         inquiry_type: inquiryType,
         inquiry_id: inquiryId,
         location,
-        items: items.map(({ available_addons: _unused, price_source: _src, ...rest }) => ({
-          ...rest,
-          addons: (rest.addons ?? []).filter((a) => Number(a.amount) !== 0),
-        })),
+        items: items.map(({ available_addons: _unused, price_source: _src, ...rest }) => {
+          const duration = rest.duration && rest.duration > 0 ? rest.duration : 1;
+          const unit = (rest.unit ?? "kalendertage") as OfferUnit;
+          const articles = rest.quantity || 1;
+          // Die PDF-Zeile zeigt Menge × Einheit; mehrere Artikel werden in der
+          // Beschreibung ausgewiesen, damit die Summe nachvollziehbar bleibt.
+          const description =
+            articles > 1
+              ? [rest.description, `${articles} Artikel × ${duration} ${unitLabel(duration, unit)}`]
+                  .filter(Boolean)
+                  .join(" · ")
+              : rest.description;
+          return {
+            ...rest,
+            description,
+            quantity: articles * duration,
+            unit: unitLabel(articles * duration, unit),
+            addons: (rest.addons ?? []).filter((a) => Number(a.amount) !== 0),
+          };
+        }),
         payment_terms: paymentTerms,
         delivery_cost_delivery: deliveryCostDelivery,
         delivery_cost_return: deliveryCostReturn,
@@ -275,11 +318,14 @@ export function InquiryOfferForm({
                   value={item.product_name}
                   disabled={disabled}
                   onSelect={(product, freeText) => {
-                    const cmsPrice = product?.net_price ?? undefined;
+                    const netPrice = product?.net_price ?? undefined;
                     patchItem(index, {
                       product_name: freeText,
                       image_url: product?.image ?? undefined,
-                      ...resolvePricePatch(item, cmsPrice),
+                      ...resolvePricePatch(
+                        item,
+                        netPrice !== undefined ? { price: netPrice, unit: "stueck" } : undefined,
+                      ),
                       available_addons: [],
                       addons: [],
                     });
@@ -290,12 +336,12 @@ export function InquiryOfferForm({
                   value={item.product_name}
                   location={location}
                   disabled={disabled}
-                  onSelect={(product, freeText) => {
-                    const cmsPrice = product ? parsePrice(product.price_per_day) : undefined;
+                  onSelect={async (product, freeText) => {
+                    const resolved = product ? await resolveCatalogPrice(product) : undefined;
                     patchItem(index, {
                       product_name: freeText,
                       image_url: product ? pickCatalogImage(product.images) : undefined,
-                      ...resolvePricePatch(item, cmsPrice),
+                      ...resolvePricePatch(item, resolved),
                       available_addons: product ? parseAddonOptions(product.addon_options) : [],
                       addons: [],
                     });
@@ -320,9 +366,9 @@ export function InquiryOfferForm({
               placeholder="Beschreibung / Zeitraum (optional)"
               disabled={disabled}
             />
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               <div>
-                <Label className="text-xs">Menge</Label>
+                <Label className="text-xs">Menge (Artikel)</Label>
                 <Input
                   type="number"
                   min={1}
@@ -330,6 +376,37 @@ export function InquiryOfferForm({
                   onChange={(e) => patchItem(index, { quantity: Number(e.target.value) || 0 })}
                   disabled={disabled}
                 />
+              </div>
+              <div>
+                <Label className="text-xs">Menge (Dauer)</Label>
+                <Input
+                  type="number"
+                  min={1}
+                  value={item.duration ?? 1}
+                  onChange={(e) => patchItem(index, { duration: Number(e.target.value) || 0 })}
+                  disabled={disabled}
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Einheit</Label>
+                <Select
+                  value={item.unit ?? "kalendertage"}
+                  disabled={disabled}
+                  onValueChange={(v) => patchItem(index, { unit: v as OfferUnit })}
+                >
+                  <SelectTrigger className="h-10">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {OFFER_UNITS.map((u) => (
+                      <SelectItem key={u.value} value={u.value}>{u.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  {item.quantity || 0} × {item.duration ?? 1}{" "}
+                  {unitLabel(item.duration ?? 1, (item.unit ?? "kalendertage") as OfferUnit)}
+                </p>
               </div>
               <div>
                 <Label className="text-xs">Einzelpreis netto</Label>
@@ -360,7 +437,7 @@ export function InquiryOfferForm({
                 />
               </div>
               <div className="flex items-end text-sm font-semibold">
-                {formatEuro(item.quantity * item.unit_price * (1 - (item.discount_percent || 0) / 100))}
+                {formatEuro(lineTotal(item))}
               </div>
             </div>
 
@@ -483,7 +560,7 @@ export function InquiryOfferForm({
           variant="outline"
           size="sm"
           onClick={() =>
-            setItems((prev) => [...prev, { product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0 }])
+            setItems((prev) => [...prev, emptyLine()])
           }
           disabled={disabled}
         >
