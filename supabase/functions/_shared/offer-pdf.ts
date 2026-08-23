@@ -529,7 +529,7 @@ export async function generateOfferPdf(data: {
     drawCol(footerCol1, ML);
     drawCol(footerCol2, ML + colW);
     drawCol(footerCol3, ML + 2 * colW);
-    if (total > 1 && i >= 1) {
+    if (total > 1) {
       try {
         const t = `Seite ${i + 1} von ${total}`;
         const tw = font.widthOfTextAtSize(t, 7.5);
