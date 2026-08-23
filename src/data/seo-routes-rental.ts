@@ -931,6 +931,8 @@ const KARRIERE_ROUTES: SeoRoute[] = jobListings.map((job) => {
     ],
     changefreq: "weekly",
     priority: 0.6,
+    // Authoritative page-specific timestamp: Datum der (Neu-)Veröffentlichung der Stelle.
+    lastmod: job.datePosted,
     inlineSchemas,
   };
 });
