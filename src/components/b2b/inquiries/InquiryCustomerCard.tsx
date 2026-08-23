@@ -16,6 +16,11 @@ interface Props {
   customerName: string;
   customerEmail: string | null;
   customerPhone: string | null;
+  companyName?: string | null;
+  vatId?: string | null;
+  street?: string | null;
+  postalCode?: string | null;
+  city?: string | null;
   busy?: boolean;
   /**
    * Persists the edited values. Field mapping (rental vs. sales) is handled by
@@ -26,6 +31,11 @@ interface Props {
     name: string;
     email: string;
     phone: string;
+    company_name: string;
+    vat_id: string;
+    street: string;
+    postal_code: string;
+    city: string;
   }) => Promise<boolean | void>;
 }
 
@@ -35,6 +45,11 @@ export function InquiryCustomerCard({
   customerName,
   customerEmail,
   customerPhone,
+  companyName,
+  vatId,
+  street,
+  postalCode,
+  city,
   busy,
   onSave,
 }: Props) {
@@ -43,6 +58,11 @@ export function InquiryCustomerCard({
     name: customerName ?? "",
     email: customerEmail ?? "",
     phone: customerPhone ?? "",
+    company_name: companyName ?? "",
+    vat_id: vatId ?? "",
+    street: street ?? "",
+    postal_code: postalCode ?? "",
+    city: city ?? "",
   };
   const [editing, setEditing] = useState(false);
   const [values, setValues] = useState(initial);
@@ -51,7 +71,7 @@ export function InquiryCustomerCard({
     setValues(initial);
     setEditing(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [customerKind, customerName, customerEmail, customerPhone]);
+  }, [customerKind, customerName, customerEmail, customerPhone, companyName, vatId, street, postalCode, city]);
 
   const isBusiness = initial.customer_kind === "business";
 
@@ -69,10 +89,23 @@ export function InquiryCustomerCard({
             <Pencil className="h-3.5 w-3.5 mr-1" /> Bearbeiten
           </Button>
         </div>
-        <div className="text-sm text-muted-foreground break-words">
-          {initial.name || "—"}
-          {initial.email ? ` · ${initial.email}` : ""}
-          {initial.phone ? ` · ${initial.phone}` : ""}
+        <div className="text-sm text-muted-foreground break-words space-y-0.5">
+          {isBusiness && initial.company_name ? (
+            <div className="font-medium text-foreground">{initial.company_name}</div>
+          ) : null}
+          <div>
+            {initial.name || "—"}
+            {initial.email ? ` · ${initial.email}` : ""}
+            {initial.phone ? ` · ${initial.phone}` : ""}
+          </div>
+          {(initial.street || initial.postal_code || initial.city) && (
+            <div>
+              {[initial.street, [initial.postal_code, initial.city].filter(Boolean).join(" ")]
+                .filter(Boolean)
+                .join(", ")}
+            </div>
+          )}
+          {isBusiness && initial.vat_id ? <div>USt-IdNr.: {initial.vat_id}</div> : null}
         </div>
       </div>
     );
@@ -111,6 +144,38 @@ export function InquiryCustomerCard({
         <div className="space-y-1.5">
           <Label className="text-xs">Telefon</Label>
           <Input value={values.phone} onChange={(e) => setValues({ ...values, phone: e.target.value })} />
+        </div>
+        {values.customer_kind === "business" && (
+          <>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Firma</Label>
+              <Input
+                value={values.company_name}
+                onChange={(e) => setValues({ ...values, company_name: e.target.value })}
+                placeholder="Firmenname"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">USt-IdNr.</Label>
+              <Input
+                value={values.vat_id}
+                onChange={(e) => setValues({ ...values, vat_id: e.target.value })}
+                placeholder="DE123456789"
+              />
+            </div>
+          </>
+        )}
+        <div className="space-y-1.5 sm:col-span-2">
+          <Label className="text-xs">Straße und Hausnummer</Label>
+          <Input value={values.street} onChange={(e) => setValues({ ...values, street: e.target.value })} />
+        </div>
+        <div className="space-y-1.5">
+          <Label className="text-xs">PLZ</Label>
+          <Input value={values.postal_code} onChange={(e) => setValues({ ...values, postal_code: e.target.value })} />
+        </div>
+        <div className="space-y-1.5">
+          <Label className="text-xs">Ort</Label>
+          <Input value={values.city} onChange={(e) => setValues({ ...values, city: e.target.value })} />
         </div>
       </div>
       <div className="flex gap-2">
