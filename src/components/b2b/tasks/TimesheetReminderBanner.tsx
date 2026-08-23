@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { Button } from "@/components/ui/button";
-import { currentPeriod, isReminderWindow, periodRangeLabel, previousPeriodOverdue } from "@/lib/payrollPeriod";
+import { currentPeriod, isReminderWindow, periodRangeLabel } from "@/lib/payrollPeriod";
 
 interface Props {
   /** Wenn gesetzt, wird statt eines Links direkt der Zeiten-Tab geöffnet. */
@@ -24,7 +24,6 @@ export function TimesheetReminderBanner({ onOpenTimeTracking, className }: Props
   const [pending, setPending] = useState(false);
 
   const period = currentPeriod();
-  const overduePeriod = previousPeriodOverdue();
   const showWindow = isReminderWindow();
 
   useEffect(() => {
@@ -61,7 +60,6 @@ export function TimesheetReminderBanner({ onOpenTimeTracking, className }: Props
           <p className="text-muted-foreground">
             Bitte trage deine Zeiten für den Abrechnungszeitraum {periodRangeLabel(period)} ein und bestätige ihn. Am
             20. wird die Lohnabrechnung erstellt – danach ist der Zeitraum gesperrt.
-            {overduePeriod ? ` Auch ${periodRangeLabel(overduePeriod)} ist noch nicht bestätigt.` : ""}
           </p>
         </div>
       </div>
