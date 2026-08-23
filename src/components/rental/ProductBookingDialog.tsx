@@ -26,6 +26,7 @@ interface ProductBookingDialogProps {
 }
 
 interface InquiryForm {
+  customerKind: "private" | "business";
   name: string;
   email: string;
   phone: string;
@@ -79,6 +80,7 @@ export function ProductBookingDialog({
   const showSetupService = categoryId ? SETUP_SERVICE_CATEGORIES.includes(categoryId) : false;
   const productExtras = product?.id ? PRODUCT_EXTRAS[product.id] : undefined;
   const defaultForm: InquiryForm = {
+    customerKind: "private",
     name: "", email: "", phone: "",
     street: "", postalCode: "", city: "",
     startDate: "", startTime: "", endDate: "", endTime: "",
@@ -218,6 +220,7 @@ export function ProductBookingDialog({
           locationPhone: location.phone,
           locationAddress: location.address,
           ...form,
+          customerKind: form.customerKind,
           message: messageWithExtras,
         },
       });
@@ -311,6 +314,34 @@ export function ProductBookingDialog({
                   </p>
 
                   <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-1.5">
+                      <Label>Ich frage an als *</Label>
+                      <div className="grid grid-cols-2 gap-2">
+                        {([
+                          { value: "private", label: "Privatkunde" },
+                          { value: "business", label: "Geschäftskunde" },
+                        ] as const).map((option) => (
+                          <button
+                            key={option.value}
+                            type="button"
+                            onClick={() => setForm({ ...form, customerKind: option.value })}
+                            aria-pressed={form.customerKind === option.value}
+                            className={cn(
+                              "rounded-lg border px-3 py-2.5 text-sm font-medium transition-colors",
+                              form.customerKind === option.value
+                                ? "border-primary bg-primary/10 text-primary"
+                                : "border-border bg-background text-muted-foreground hover:border-primary/40"
+                            )}
+                          >
+                            {option.label}
+                          </button>
+                        ))}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Danach richten sich die AGB, die wir dem Angebot beilegen.
+                      </p>
+                    </div>
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
                         <Label htmlFor="inq-name">Name *</Label>
