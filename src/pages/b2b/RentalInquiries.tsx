@@ -131,6 +131,7 @@ export default function RentalInquiries() {
                 inquiryType="rental"
                 inquiry={selected}
                 onChanged={reload}
+                onDeleted={() => setSelectedId(null)}
                 defaultItems={[
                   {
                     product_name: selected.product_name || "Mietartikel",

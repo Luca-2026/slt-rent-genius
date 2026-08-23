@@ -6,7 +6,15 @@ import { Separator } from "@/components/ui/separator";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { ExternalLink, UserCheck, UserMinus } from "lucide-react";
+import { ExternalLink, Trash2, UserCheck, UserMinus } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { isSuperAdminEmail } from "@/lib/superAdmins";
 import { INQUIRY_STATUSES, canTransition, type InquiryStatus } from "@/lib/inquiryStatus";
 import { InquiryStatusBadge } from "./InquiryStatusBadge";
 import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm";
@@ -50,11 +58,34 @@ interface Props {
   defaultDelivery?: OfferDeliveryAddress;
   details: ReactNode;
   onChanged: () => void;
+  /** Wird nach dem endgültigen Löschen aufgerufen (nur Super-Admins). */
+  onDeleted?: () => void;
 }
 
 
-export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, defaultDelivery, details, onChanged }: Props) {
+export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, defaultDelivery, details, onChanged, onDeleted }: Props) {
   const { user } = useAuth();
+  const { toast } = useToast();
+  const canDelete = isSuperAdminEmail(user?.email);
+  const [deleting, setDeleting] = useState(false);
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    const { error } = await supabase.from(table).delete().eq("id", inquiry.id);
+    setDeleting(false);
+    if (error) {
+      toast({
+        title: "Löschen nicht möglich",
+        description: error.message,
+        variant: "destructive",
+      });
+      return;
+    }
+    toast({ title: "Anfrage gelöscht" });
+    onDeleted?.();
+    onChanged();
+  };
+
   const { busy, actorName, claim, release, setStatus, saveNotes, update } = useInquiryActions(table, onChanged);
   const [notes, setNotes] = useState(inquiry.internal_notes ?? "");
 
@@ -101,6 +132,33 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             ))}
           </SelectContent>
         </Select>
+        {canDelete && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button size="sm" variant="destructive" className="sm:ml-auto" disabled={busy || deleting}>
+                <Trash2 className="h-3.5 w-3.5 mr-1" /> Löschen
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Anfrage endgültig löschen?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Die Anfrage wird unwiderruflich entfernt. Bereits erstellte Angebots-PDFs bleiben im
+                  Speicher erhalten. Diese Aktion ist nur für Super-Admins möglich.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDelete}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Endgültig löschen
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
       </div>
 
       <InquiryCustomerCard
