@@ -433,16 +433,44 @@ export function InquiryOfferForm({
         </div>
       </div>
 
+      <div className="rounded-lg border border-border p-3 space-y-2">
+        <Label className="text-xs">
+          Zahlungsbedingungen ({customerKind === "business" ? "Geschäftskunde" : "Privatkunde"})
+        </Label>
+        <Select value={paymentTerms} onValueChange={setPaymentTerms} disabled={disabled}>
+          <SelectTrigger><SelectValue /></SelectTrigger>
+          <SelectContent>
+            {PAYMENT_OPTIONS[customerKind].map((o) => (
+              <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <p className="text-xs text-muted-foreground">
+          {paymentTerms === "anzahlung_30"
+            ? "Der Kunde erhält nach Annahme eine Buchungsbestätigung mit Zahlungslink; mindestens 30 % Anzahlung innerhalb von 48 Stunden, sonst wird die Reservierung freigegeben."
+            : paymentTerms === "rentpair_vorkasse"
+              ? "Vollständige Vorkasse über den Zahlungslink in der Buchungsbestätigung (48 Stunden)."
+              : paymentTerms === "vorkasse"
+                ? "Vorkasse per Banküberweisung – Bankdaten stehen im Angebots-PDF, Frist ist die Angebotsgültigkeit."
+                : "Rechnungszahlung nach Mietende innerhalb der gewählten Frist; es gilt die Angebotsgültigkeit."}
+        </p>
+      </div>
+
       <div>
         <Label className="text-xs">Hinweis für den Kunden (optional)</Label>
         <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} disabled={disabled} />
       </div>
 
       <div className="rounded-lg bg-muted p-3 text-sm space-y-1">
+        <div className="flex justify-between"><span>Mietartikel</span><span>{formatEuro(totals.itemsNet)}</span></div>
+        {totals.addonsNet > 0 && (
+          <div className="flex justify-between"><span>Zusatzoptionen</span><span>{formatEuro(totals.addonsNet)}</span></div>
+        )}
         <div className="flex justify-between"><span>Netto</span><span>{formatEuro(totals.netAmount)}</span></div>
         <div className="flex justify-between"><span>MwSt. {totals.vatRate}%</span><span>{formatEuro(totals.vatAmount)}</span></div>
         <div className="flex justify-between font-bold text-base"><span>Brutto</span><span>{formatEuro(totals.grossAmount)}</span></div>
       </div>
+
 
       <Button onClick={send} disabled={disabled || sending} className="w-full">
         <Send className="h-4 w-4 mr-2" />
