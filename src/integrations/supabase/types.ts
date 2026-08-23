@@ -2627,12 +2627,41 @@ export type Database = {
         }
         Relationships: []
       }
+      staff_timesheet_reminders: {
+        Row: {
+          channel: string
+          created_at: string
+          id: string
+          period_end: string
+          sent_at: string
+          user_id: string
+        }
+        Insert: {
+          channel?: string
+          created_at?: string
+          id?: string
+          period_end: string
+          sent_at?: string
+          user_id: string
+        }
+        Update: {
+          channel?: string
+          created_at?: string
+          id?: string
+          period_end?: string
+          sent_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       staff_timesheets: {
         Row: {
           created_at: string
           id: string
           month: number
           pdf_path: string | null
+          period_end: string | null
+          period_start: string | null
           staff_email: string | null
           staff_name: string | null
           status: string
@@ -2647,6 +2676,8 @@ export type Database = {
           id?: string
           month: number
           pdf_path?: string | null
+          period_end?: string | null
+          period_start?: string | null
           staff_email?: string | null
           staff_name?: string | null
           status?: string
@@ -2661,6 +2692,8 @@ export type Database = {
           id?: string
           month?: number
           pdf_path?: string | null
+          period_end?: string | null
+          period_start?: string | null
           staff_email?: string | null
           staff_name?: string | null
           status?: string
@@ -3267,6 +3300,7 @@ export type Database = {
         Args: { _protocol_id: string; _signature_data: string }
         Returns: undefined
       }
+      timesheet_locked_through: { Args: never; Returns: string }
       update_b2b_profile_with_pending: {
         Args: {
           _assigned_location: string
