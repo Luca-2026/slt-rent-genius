@@ -18,7 +18,6 @@ const esc = (s: string) =>
 const BRAND_BLUE = "#00507d";
 const BRAND_ORANGE = "#ff8e02";
 const PORTAL_URL = "https://www.slt-rental.de/b2b/aufgaben/?tab=zeiten";
-const ADMIN_EMAIL = "info@slt-rental.de";
 /** Geschäftsführung / Super-Admins erhalten jeden bestätigten Monatsnachweis. */
 const SUPER_ADMIN_EMAILS = ["l.sandhoff@slt-rental.de", "b.noechel@slt-rental.de"];
 // Lohnbuchhaltung Steuerbüro – erhält Stundenzettel in CC
@@ -160,15 +159,14 @@ Deno.serve(async (req: Request) => {
         { onConflict: "user_id,year,month" },
       );
 
-      // E-Mail an Mitarbeitende/n + Admin-Postfach
+      // E-Mail an Mitarbeitende/n + Geschäftsführung und Lohnbuchhaltung
       const resendApiKey = Deno.env.get("RESEND_API_KEY");
       const resendDomain = Deno.env.get("RESEND_DOMAIN") ?? "slt-rental.de";
-      if (resendApiKey) {
-        const primary = (staffEmail || ADMIN_EMAIL) as string;
+      if (resendApiKey && staffEmail) {
+        const primary = staffEmail;
         const ccList = Array.from(
           new Set(
-            ([ADMIN_EMAIL, ...SUPER_ADMIN_EMAILS, PAYROLL_EMAIL].filter(Boolean) as string[])
-              .filter((e) => e.toLowerCase() !== primary.toLowerCase()),
+            [...SUPER_ADMIN_EMAILS, PAYROLL_EMAIL].filter((e) => e.toLowerCase() !== primary.toLowerCase()),
           ),
         );
         const html = `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f4f5f7;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
