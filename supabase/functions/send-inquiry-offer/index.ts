@@ -10,6 +10,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
+import { normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 import {
   LOCATION_CONTACTS,
   buildOfferTotals,
@@ -116,21 +117,63 @@ Deno.serve(async (req: Request) => {
       ? (inquiry.customer_name || "")
       : [inquiry.first_name, inquiry.last_name].filter(Boolean).join(" ");
 
+    const companyName: string | null = inquiry.company_name || null;
+    const isBusiness = inquiry.customer_kind === "business";
+
     const profile = {
       id: inquiry.id,
-      company_name: inquiry.company_name || customerName || "Kunde",
+      company_name: companyName || customerName || "Kunde",
       legal_form: null,
-      contact_first_name: inquiryType === "rental" ? customerName : (inquiry.first_name || ""),
-      contact_last_name: inquiryType === "rental" ? "" : (inquiry.last_name || ""),
+      // Kontaktzeile nur, wenn sie sich vom Firmennamen unterscheidet
+      contact_first_name:
+        companyName && companyName.trim() === (customerName || "").trim()
+          ? ""
+          : inquiryType === "rental"
+            ? customerName
+            : (inquiry.first_name || ""),
+      contact_last_name:
+        companyName && companyName.trim() === (customerName || "").trim()
+          ? ""
+          : inquiryType === "rental"
+            ? ""
+            : (inquiry.last_name || ""),
       street: inquiryType === "rental" ? (inquiry.customer_street || "") : (inquiry.billing_street || inquiry.delivery_street || ""),
       house_number: "",
       postal_code: inquiryType === "rental" ? (inquiry.customer_postal_code || "") : (inquiry.billing_postal_code || inquiry.delivery_postal_code || ""),
       city: inquiryType === "rental" ? (inquiry.customer_city || "") : (inquiry.billing_city || inquiry.delivery_city || ""),
       country: "Deutschland",
       tax_id: inquiry.vat_id || null,
+      show_tax_id: isBusiness && Boolean(inquiry.vat_id),
+      contact_email: customerEmail,
+      contact_phone: inquiry.customer_phone || null,
       credit_limit: 0,
       payment_due_days: 14,
     };
+
+    // ── Produktbilder: explizit übergeben oder per Artikelname aus dem CMS ──
+    const pdfItems = items.map((i) => ({
+      product_name: i.product_name,
+      description: i.description,
+      quantity: i.quantity,
+      unit_price: i.unit_price,
+      discount_percent: i.discount_percent,
+      total_price: Math.round(i.quantity * i.unit_price * (1 - (i.discount_percent || 0) / 100) * 100) / 100,
+      rental_start: i.rental_start,
+      rental_end: i.rental_end,
+      image_url: normalizeImageUrl(i.image_url) as string | null,
+    }));
+    const missingImages = pdfItems.filter((i) => !i.image_url).map((i) => i.product_name);
+    if (missingImages.length) {
+      try {
+        const resolved = await resolveImagesByName(service, missingImages);
+        for (const item of pdfItems) {
+          if (item.image_url) continue;
+          item.image_url = resolved.get((item.product_name || "").trim().toLowerCase()) || null;
+        }
+      } catch (err) {
+        console.error("Bildauflösung fehlgeschlagen:", err);
+      }
+    }
 
     const today = new Date();
     const validUntil = new Date(today.getTime() + validDays * 86400000);
@@ -143,15 +186,7 @@ Deno.serve(async (req: Request) => {
       offerDate: fmt(today),
       validUntil: fmt(validUntil),
       profile,
-      items: items.map((i) => ({
-        product_name: i.product_name,
-        description: i.description,
-        quantity: i.quantity,
-        unit_price: i.unit_price,
-        discount_percent: i.discount_percent,
-        rental_start: i.rental_start,
-        rental_end: i.rental_end,
-      })),
+      items: pdfItems,
       deliveryCost: deliveryCostDelivery + deliveryCostReturn,
       deliveryCostDelivery,
       deliveryCostReturn,

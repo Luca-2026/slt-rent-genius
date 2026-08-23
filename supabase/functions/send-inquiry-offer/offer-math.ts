@@ -11,6 +11,8 @@ export interface InquiryOfferItem {
   discount_percent: number;
   rental_start?: string;
   rental_end?: string;
+  /** Öffentliche Bild-URL des CMS-Artikels (wird im PDF eingebettet). */
+  image_url?: string;
 }
 
 export const VAT_RATE = 19;
@@ -81,6 +83,7 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       discount_percent: round2(discount),
       rental_start: item.rental_start ? String(item.rental_start).slice(0, 40) : undefined,
       rental_end: item.rental_end ? String(item.rental_end).slice(0, 40) : undefined,
+      image_url: item.image_url ? String(item.image_url).slice(0, 500) : undefined,
     };
   });
 }

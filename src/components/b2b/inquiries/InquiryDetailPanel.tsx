@@ -36,6 +36,14 @@ interface Props {
     customer_name?: string | null;
     first_name?: string | null;
     last_name?: string | null;
+    company_name?: string | null;
+    vat_id?: string | null;
+    customer_street?: string | null;
+    customer_postal_code?: string | null;
+    customer_city?: string | null;
+    billing_street?: string | null;
+    billing_postal_code?: string | null;
+    billing_city?: string | null;
   };
   defaultItems: OfferLine[];
   details: ReactNode;
@@ -102,13 +110,29 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         }
         customerEmail={inquiry.customer_email ?? null}
         customerPhone={inquiry.customer_phone ?? null}
+        companyName={inquiry.company_name ?? null}
+        vatId={inquiry.vat_id ?? null}
+        street={(inquiryType === "rental" ? inquiry.customer_street : inquiry.billing_street) ?? null}
+        postalCode={(inquiryType === "rental" ? inquiry.customer_postal_code : inquiry.billing_postal_code) ?? null}
+        city={(inquiryType === "rental" ? inquiry.customer_city : inquiry.billing_city) ?? null}
         busy={busy}
         onSave={async (values) => {
           const patch: Record<string, unknown> = {
             customer_kind: values.customer_kind as CustomerKind,
             customer_email: values.email.trim() || null,
             customer_phone: values.phone.trim() || null,
+            company_name: values.customer_kind === "business" ? values.company_name.trim() || null : null,
+            vat_id: values.customer_kind === "business" ? values.vat_id.trim() || null : null,
           };
+          if (inquiryType === "rental") {
+            patch.customer_street = values.street.trim() || null;
+            patch.customer_postal_code = values.postal_code.trim() || null;
+            patch.customer_city = values.city.trim() || null;
+          } else {
+            patch.billing_street = values.street.trim() || null;
+            patch.billing_postal_code = values.postal_code.trim() || null;
+            patch.billing_city = values.city.trim() || null;
+          }
           if (inquiryType === "rental") {
             patch.customer_name = values.name.trim() || null;
           } else {

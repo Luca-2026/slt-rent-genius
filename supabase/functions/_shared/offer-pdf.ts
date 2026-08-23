@@ -136,8 +136,11 @@ export async function generateOfferPdf(data: {
     dt(pg, `${data.profile.street || ""}${data.profile.house_number ? " " + data.profile.house_number : ""}`, ADDR_X, ay, font, 9.5); ay -= 11;
     dt(pg, `${data.profile.postal_code || ""} ${data.profile.city || ""}`, ADDR_X, ay, font, 9.5); ay -= 11;
     dt(pg, data.profile.country || "Deutschland", ADDR_X, ay, font, 9.5); ay -= 11;
-    // USt-IdNr. nur bei Reverse Charge (wie in der Rechnung)
-    if (data.isReverseCharge && data.profile.tax_id) {
+    // Kontaktdaten (nur wenn übergeben, z. B. bei Anfrage-Angeboten)
+    if (data.profile.contact_email) { dt(pg, String(data.profile.contact_email), ADDR_X, ay, font, 8.5, MUTED); ay -= 10; }
+    if (data.profile.contact_phone) { dt(pg, String(data.profile.contact_phone), ADDR_X, ay, font, 8.5, MUTED); ay -= 10; }
+    // USt-IdNr. bei Reverse Charge oder wenn explizit gewünscht (Geschäftskunde)
+    if ((data.isReverseCharge || data.profile.show_tax_id) && data.profile.tax_id) {
       ay -= 2;
       dt(pg, `USt-IdNr.: ${data.profile.tax_id}`, ADDR_X, ay, font, 9, MUTED);
       ay -= 11;

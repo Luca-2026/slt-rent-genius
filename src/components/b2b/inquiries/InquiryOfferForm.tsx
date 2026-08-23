@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,6 +7,12 @@ import { Plus, Send, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { buildOfferTotals, formatEuro, type OfferLine } from "./offerMath";
+import {
+  InquiryProductCombobox,
+  findCatalogProductByName,
+  parsePrice,
+  pickCatalogImage,
+} from "./InquiryProductCombobox";
 
 interface Props {
   inquiryType: "rental" | "sales";
@@ -45,6 +51,28 @@ export function InquiryOfferForm({
 
   const patchItem = (index: number, patch: Partial<OfferLine>) =>
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, ...patch } : item)));
+
+  // Vorbelegte Positionen automatisch mit Bild (und ggf. Preis) aus dem CMS anreichern.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const enriched = await Promise.all(
+        items.map(async (item) => {
+          if (item.image_url || !item.product_name.trim()) return item;
+          const match = await findCatalogProductByName(item.product_name);
+          if (!match) return item;
+          const image = pickCatalogImage(match.images);
+          const price = item.unit_price > 0 ? item.unit_price : parsePrice(match.price_per_day) ?? 0;
+          return image || price !== item.unit_price ? { ...item, image_url: image, unit_price: price } : item;
+        }),
+      );
+      if (!cancelled && enriched.some((item, i) => item !== items[i])) setItems(enriched);
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inquiryId]);
 
   const send = async () => {
     const invalid = items.some((i) => !i.product_name.trim() || i.quantity <= 0 || i.unit_price < 0);
@@ -89,13 +117,32 @@ export function InquiryOfferForm({
       <div className="space-y-3">
         {items.map((item, index) => (
           <div key={index} className="rounded-lg border border-border p-3 space-y-2">
-            <div className="flex gap-2">
-              <Input
-                value={item.product_name}
-                onChange={(e) => patchItem(index, { product_name: e.target.value })}
-                placeholder="Artikel / Leistung"
-                disabled={disabled}
-              />
+            <div className="flex gap-2 items-start">
+              {item.image_url ? (
+                <img
+                  src={item.image_url}
+                  alt=""
+                  loading="lazy"
+                  className="h-10 w-10 rounded object-cover border border-border shrink-0"
+                />
+              ) : null}
+              <div className="min-w-0 flex-1">
+                <InquiryProductCombobox
+                  value={item.product_name}
+                  location={location}
+                  disabled={disabled}
+                  onSelect={(product, freeText) =>
+                    patchItem(index, {
+                      product_name: freeText,
+                      image_url: product ? pickCatalogImage(product.images) : undefined,
+                      unit_price:
+                        product && item.unit_price === 0
+                          ? parsePrice(product.price_per_day) ?? 0
+                          : item.unit_price,
+                    })
+                  }
+                />
+              </div>
               <Button
                 type="button"
                 variant="ghost"

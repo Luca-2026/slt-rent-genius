@@ -12,6 +12,8 @@ export interface OfferLine {
   discount_percent: number;
   rental_start?: string;
   rental_end?: string;
+  /** Bild-URL aus dem CMS – wird im Angebots-PDF eingebettet. */
+  image_url?: string;
 }
 
 export const VAT_RATE = 19;
