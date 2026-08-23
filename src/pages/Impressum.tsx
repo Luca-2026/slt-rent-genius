@@ -51,12 +51,12 @@ export default function Impressum() {
                       <Phone className="h-5 w-5 text-primary shrink-0" />
                       <div>
                         <p className="text-foreground">Fon: +49 (0) 2151 - 417 99 02</p>
-                        <p className="text-muted-foreground">Fax: +49 (0) 2151 - 417 99 04</p>
+                        <p className="text-foreground">Fon: +49 (0) 2151 - 417 99 04</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
                       <Mail className="h-5 w-5 text-primary shrink-0" />
-                      <a href="mailto:info@slt-rental.de" className="text-primary hover:underline break-all">info@slt-rental.de</a>
+                      <a href="mailto:mieten@slt-rental.de" className="text-primary hover:underline break-all">mieten@slt-rental.de</a>
                     </div>
                   </div>
                 </div>
