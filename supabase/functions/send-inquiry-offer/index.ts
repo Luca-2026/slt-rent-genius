@@ -101,6 +101,10 @@ Deno.serve(async (req: Request) => {
     const validDays = Number(body.valid_days) > 0 ? Math.min(Number(body.valid_days), 180) : 14;
     const notes: string | null = typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
 
+    // ── Zahlungsbedingungen ──
+    const ALLOWED_PAYMENT_TERMS = ["net_7", "net_14", "net_30", "vorkasse", "anzahlung_30", "rentpair_vorkasse"];
+    const requestedTerms = typeof body.payment_terms === "string" ? body.payment_terms : "";
+
     // ── Lieferadresse: aus dem Portal übergeben (Vorbelegung stammt aus dem
     //    öffentlichen Anfrageformular) – Fallback auf die gespeicherten Felder.
     const str = (v: unknown) => (typeof v === "string" ? v.trim().slice(0, 200) : "");
@@ -137,6 +141,11 @@ Deno.serve(async (req: Request) => {
     const companyName: string | null = inquiry.company_name || null;
     const isBusiness = inquiry.customer_kind === "business";
 
+    const paymentTerms = ALLOWED_PAYMENT_TERMS.includes(requestedTerms)
+      ? requestedTerms
+      : (isBusiness ? "net_14" : "anzahlung_30");
+    const paymentDueDays = paymentTerms === "net_7" ? 7 : paymentTerms === "net_30" ? 30 : 14;
+
     const profile = {
       id: "",
       company_name: companyName || customerName || "Kunde",
@@ -164,7 +173,7 @@ Deno.serve(async (req: Request) => {
       contact_email: customerEmail,
       contact_phone: inquiry.customer_phone || null,
       credit_limit: 0,
-      payment_due_days: 14,
+      payment_due_days: paymentDueDays,
     };
 
     // ── Produktbilder: explizit übergeben oder per Artikelname aus dem CMS ──
@@ -179,6 +188,21 @@ Deno.serve(async (req: Request) => {
       rental_end: i.rental_end,
       image_url: normalizeImageUrl(i.image_url) as string | null,
     }));
+    // ── Zusatzoptionen (Versicherungen etc.) als zugeordnete Zusatzposten ──
+    const servicesWithPrices = items.flatMap((item, idx) =>
+      (item.addons ?? [])
+        .filter((a) => a.amount > 0)
+        .map((a, ai) => ({
+          id: `${idx}-${a.key || ai}`,
+          name: a.note ? `${a.label} (${a.note})` : a.label,
+          description: undefined as string | undefined,
+          pricePercent: null,
+          amount: a.amount,
+          allocations: [{ itemIndex: idx, amount: a.amount }],
+        })),
+    );
+    const servicesSurcharge = servicesWithPrices.reduce((sum, s) => sum + s.amount, 0);
+
     const missingImages = pdfItems.filter((i) => !i.image_url).map((i) => i.product_name);
     if (missingImages.length) {
       try {
@@ -218,8 +242,8 @@ Deno.serve(async (req: Request) => {
       deliveryCost: deliveryCostDelivery + deliveryCostReturn,
       deliveryCostDelivery,
       deliveryCostReturn,
-      servicesSurcharge: 0,
-      servicesWithPrices: [],
+      servicesSurcharge,
+      servicesWithPrices,
       netAmount: totals.netAmount,
       vatRate: totals.vatRate,
       vatAmount: totals.vatAmount,
@@ -232,6 +256,7 @@ Deno.serve(async (req: Request) => {
       staffName,
       issuingLocation: locationKey,
       deliveryAddress: deliveryRequested ? deliveryAddress : undefined,
+      paymentTerms,
 
     });
 
