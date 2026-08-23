@@ -248,6 +248,57 @@ export function InquiryOfferForm({
         </Button>
       </div>
 
+      <div className="rounded-lg border border-border p-3 space-y-3">
+        <label className="flex items-start gap-2 text-sm font-medium cursor-pointer">
+          <Checkbox
+            checked={delivery.requested}
+            onCheckedChange={(v) => setDelivery({ ...delivery, requested: v === true })}
+            disabled={disabled}
+            className="mt-0.5"
+          />
+          <span>
+            Lieferadresse im Angebot ausweisen
+            {defaultDelivery?.requested ? (
+              <span className="block text-xs font-normal text-muted-foreground">
+                Vom Kunden im Anfrageformular angegeben – hier änderbar.
+              </span>
+            ) : null}
+          </span>
+        </label>
+        {delivery.requested && (
+          <div className="grid gap-2 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <Label className="text-xs">Straße und Hausnummer</Label>
+              <Input
+                value={delivery.street}
+                onChange={(e) => setDelivery({ ...delivery, street: e.target.value })}
+                placeholder="Baustelle Nord 4"
+                disabled={disabled}
+              />
+            </div>
+            <div>
+              <Label className="text-xs">PLZ</Label>
+              <Input
+                value={delivery.postal_code}
+                onChange={(e) => setDelivery({ ...delivery, postal_code: e.target.value })}
+                inputMode="numeric"
+                disabled={disabled}
+              />
+            </div>
+            <div>
+              <Label className="text-xs">Ort</Label>
+              <Input
+                value={delivery.city}
+                onChange={(e) => setDelivery({ ...delivery, city: e.target.value })}
+                disabled={disabled}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+
+
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <div>
           <Label className="text-xs">Lieferkosten</Label>
