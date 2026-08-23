@@ -15,6 +15,13 @@ import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 const fmtDate = (value: string | null) =>
   value ? new Date(value).toLocaleDateString("de-DE") : "—";
 
+/** Datum inkl. Uhrzeit – wir rechnen zeitgenau, nicht nur tageweise. */
+const fmtDateTime = (date: string | null, time: string | null) => {
+  const d = fmtDate(date);
+  if (d === "—") return "—";
+  return time ? `${d}, ${time.slice(0, 5)} Uhr` : d;
+};
+
 export default function RentalInquiries() {
   const { isStaff, loading: accessLoading } = useStaffAccess();
   const { rows, loading, reload } = useRentalInquiries();
