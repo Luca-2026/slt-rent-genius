@@ -88,7 +88,7 @@ export default function RentalInquiries() {
                   </p>
                 </div>
                 <div className="text-sm text-muted-foreground sm:text-right shrink-0">
-                  <div>{fmtDate(r.start_date)} – {fmtDate(r.end_date)}</div>
+                  <div>{fmtDateTime(r.start_date, r.start_time)} – {fmtDateTime(r.end_date, r.end_time)}</div>
                   <div>{r.assigned_name ? `→ ${r.assigned_name}` : "offen"}</div>
                 </div>
 
@@ -113,7 +113,10 @@ export default function RentalInquiries() {
                 defaultItems={[
                   {
                     product_name: selected.product_name || "Mietartikel",
-                    description: [fmtDate(selected.start_date), fmtDate(selected.end_date)]
+                    description: [
+                      fmtDateTime(selected.start_date, selected.start_time),
+                      fmtDateTime(selected.end_date, selected.end_time),
+                    ]
                       .filter((v) => v !== "—")
                       .join(" – "),
                     quantity: selected.quantity && selected.quantity > 0 ? selected.quantity : 1,
