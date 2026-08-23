@@ -13,6 +13,7 @@ import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 import {
   LOCATION_CONTACTS,
+  assertPositiveTotal,
   buildOfferTotals,
   normalizeInquiryOfferItems,
   resolveLocationKey,
@@ -123,6 +124,11 @@ Deno.serve(async (req: Request) => {
 
 
     const totals = buildOfferTotals(items, deliveryCostDelivery + deliveryCostReturn);
+    try {
+      assertPositiveTotal(totals.netAmount);
+    } catch (e) {
+      return json({ error: e instanceof Error ? e.message : "Ungültige Angebotssumme" }, 400);
+    }
 
     const locationKey = resolveLocationKey(body.location || inquiry.location);
     const loc = LOCATION_CONTACTS[locationKey];
