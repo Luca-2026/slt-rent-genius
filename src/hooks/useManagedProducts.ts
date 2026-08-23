@@ -41,6 +41,10 @@ export interface ManagedProductRow {
   seo_meta_description: string | null;
   seo_faqs: Array<{ question: string; answer: string }>;
   seo_local_content: Record<string, string>;
+  seo_use_case_bau?: string | null;
+  seo_use_case_event?: string | null;
+  seo_use_case_privat?: string | null;
+  related_slugs?: string[] | null;
   image_alts?: string[] | null;
 }
 
