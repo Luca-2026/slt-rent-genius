@@ -18,7 +18,8 @@ import { useStaffAccess } from "@/hooks/useStaffAccess";
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreated: () => void;
+  /** Liefert die ID der neuen Anfrage, damit sie direkt geöffnet werden kann. */
+  onCreated: (inquiryId?: string) => void;
 }
 
 /** CRM speichert b2c/b2b, rental_inquiries erwartet private/business. */
@@ -42,6 +43,9 @@ const emptyForm = {
   customer_street: "",
   customer_postal_code: "",
   customer_city: "",
+  delivery_street: "",
+  delivery_postal_code: "",
+  delivery_city: "",
   vat_id: "",
   message: "",
 };
@@ -129,37 +133,47 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
         );
       }
 
-      const { error } = await supabase.from("rental_inquiries").insert({
-        source: "manual",
-        location: form.location,
-        product_name: form.product_name.trim(),
-        quantity: Number(form.quantity) > 0 ? Number(form.quantity) : 1,
-        start_date: form.start_date,
-        start_time: form.start_time || null,
-        end_date: form.end_date || null,
-        end_time: form.end_time || null,
-        customer_kind: form.customer_kind,
-        company_name: form.company_name.trim() || null,
-        vat_id: form.vat_id.trim() || null,
-        customer_name: form.customer_name.trim() || form.company_name.trim(),
-        customer_email: form.customer_email.trim(),
-        customer_phone: form.customer_phone.trim() || null,
-        customer_street: form.customer_street.trim() || null,
-        customer_postal_code: form.customer_postal_code.trim() || null,
-        customer_city: form.customer_city.trim() || null,
-        message: form.message.trim() || null,
-        status: "in_progress",
-        assigned_to: staffProfile?.user_id ?? null,
-        assigned_name: displayName || null,
-        assigned_at: new Date().toISOString(),
-        crm_customer_id: customerId,
-      } as never);
+      const hasDelivery = Boolean(form.delivery_street.trim() || form.delivery_city.trim());
+
+      const { data: inserted, error } = await supabase
+        .from("rental_inquiries")
+        .insert({
+          source: "manual",
+          location: form.location,
+          product_name: form.product_name.trim(),
+          quantity: Number(form.quantity) > 0 ? Number(form.quantity) : 1,
+          start_date: form.start_date,
+          start_time: form.start_time || null,
+          end_date: form.end_date || null,
+          end_time: form.end_time || null,
+          customer_kind: form.customer_kind,
+          company_name: form.company_name.trim() || null,
+          vat_id: form.vat_id.trim() || null,
+          customer_name: form.customer_name.trim() || form.company_name.trim(),
+          customer_email: form.customer_email.trim(),
+          customer_phone: form.customer_phone.trim() || null,
+          customer_street: form.customer_street.trim() || null,
+          customer_postal_code: form.customer_postal_code.trim() || null,
+          customer_city: form.customer_city.trim() || null,
+          delivery_requested: hasDelivery,
+          delivery_street: form.delivery_street.trim() || null,
+          delivery_postal_code: form.delivery_postal_code.trim() || null,
+          delivery_city: form.delivery_city.trim() || null,
+          message: form.message.trim() || null,
+          status: "in_progress",
+          assigned_to: staffProfile?.user_id ?? null,
+          assigned_name: displayName || null,
+          assigned_at: new Date().toISOString(),
+          crm_customer_id: customerId,
+        } as never)
+        .select("id")
+        .maybeSingle();
       if (error) throw error;
 
       toast.success("Mietanfrage angelegt – Angebot kann jetzt erstellt werden.");
       reset();
       onOpenChange(false);
-      onCreated();
+      onCreated((inserted as { id?: string } | null)?.id);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Anlegen fehlgeschlagen.");
     } finally {
@@ -189,7 +203,11 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
               <PopoverContent className="p-0 w-[--radix-popover-trigger-width]" align="start">
                 <Command>
                   <CommandInput placeholder="Kunde suchen …" />
-                  <CommandList>
+                  <CommandList
+                    className="max-h-72 overflow-y-auto overscroll-contain"
+                    onWheel={(e) => e.stopPropagation()}
+                    onTouchMove={(e) => e.stopPropagation()}
+                  >
                     <CommandEmpty>Kein Kunde gefunden.</CommandEmpty>
                     <CommandGroup>
                       {customers.map((c) => (
@@ -290,6 +308,23 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
             <div>
               <Label htmlFor="nri-city">Ort</Label>
               <Input id="nri-city" value={form.customer_city} onChange={(e) => set("customer_city", e.target.value)} maxLength={100} />
+            </div>
+            <div className="sm:col-span-2 rounded-lg border border-border p-3 space-y-3">
+              <p className="text-sm font-medium">Lieferadresse (optional – leer lassen bei Abholung)</p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="sm:col-span-2">
+                  <Label htmlFor="nri-dstreet">Straße &amp; Hausnummer</Label>
+                  <Input id="nri-dstreet" value={form.delivery_street} onChange={(e) => set("delivery_street", e.target.value)} maxLength={160} />
+                </div>
+                <div>
+                  <Label htmlFor="nri-dzip">PLZ</Label>
+                  <Input id="nri-dzip" value={form.delivery_postal_code} onChange={(e) => set("delivery_postal_code", e.target.value)} maxLength={10} />
+                </div>
+                <div>
+                  <Label htmlFor="nri-dcity">Ort</Label>
+                  <Input id="nri-dcity" value={form.delivery_city} onChange={(e) => set("delivery_city", e.target.value)} maxLength={100} />
+                </div>
+              </div>
             </div>
             <div className="sm:col-span-2">
               <Label htmlFor="nri-note">Notiz zur Anfrage</Label>

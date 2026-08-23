@@ -103,8 +103,12 @@ Deno.serve(async (req: Request) => {
     const notes: string | null = typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
 
     // ── Zahlungsbedingungen ──
-    const ALLOWED_PAYMENT_TERMS = ["net_7", "net_14", "net_30", "vorkasse", "anzahlung_30", "rentpair_vorkasse"];
+    const ALLOWED_PAYMENT_TERMS = ["net_7", "net_14", "net_30", "vorkasse", "anzahlung_30", "rentpair_vorkasse", "custom"];
     const requestedTerms = typeof body.payment_terms === "string" ? body.payment_terms : "";
+    // Individuelle Zahlungsbedingungen (Freitext, i. d. R. Geschäftskunden)
+    const paymentTermsCustom = typeof body.payment_terms_custom === "string"
+      ? body.payment_terms_custom.trim().slice(0, 600)
+      : "";
 
     // ── Lieferadresse: aus dem Portal übergeben (Vorbelegung stammt aus dem
     //    öffentlichen Anfrageformular) – Fallback auf die gespeicherten Felder.
@@ -147,9 +151,13 @@ Deno.serve(async (req: Request) => {
     const companyName: string | null = inquiry.company_name || null;
     const isBusiness = inquiry.customer_kind === "business";
 
-    const paymentTerms = ALLOWED_PAYMENT_TERMS.includes(requestedTerms)
+    let paymentTerms = ALLOWED_PAYMENT_TERMS.includes(requestedTerms)
       ? requestedTerms
       : (isBusiness ? "net_14" : "anzahlung_30");
+    // Ohne Freitext ist "custom" nicht darstellbar – dann Standardkondition.
+    if (paymentTerms === "custom" && !paymentTermsCustom) {
+      paymentTerms = isBusiness ? "net_14" : "anzahlung_30";
+    }
     const paymentDueDays = paymentTerms === "net_7" ? 7 : paymentTerms === "net_30" ? 30 : 14;
 
     const profile = {
@@ -264,6 +272,7 @@ Deno.serve(async (req: Request) => {
       issuingLocation: locationKey,
       deliveryAddress: deliveryRequested ? deliveryAddress : undefined,
       paymentTerms,
+      paymentTermsCustom: paymentTerms === "custom" ? paymentTermsCustom : undefined,
 
     });
 
@@ -328,7 +337,9 @@ Deno.serve(async (req: Request) => {
         "Nach Ihrer Annahme senden wir Ihnen eine Buchungsbestätigung mit Zahlungslink (PayPal, Kredit-/Debitkarte oder Überweisung unter Angabe der Angebotsnummer " +
         `<strong>${escapeHtml(offerNumber)}</strong>). Bitte begleichen Sie den Betrag innerhalb von <strong>48 Stunden</strong>, damit die Reservierung bestehen bleibt.`,
     };
-    const paymentEmailText = PAYMENT_EMAIL[paymentTerms] ?? PAYMENT_EMAIL.net_14;
+    const paymentEmailText = paymentTerms === "custom"
+      ? escapeHtml(paymentTermsCustom).replace(/\n/g, "<br>")
+      : (PAYMENT_EMAIL[paymentTerms] ?? PAYMENT_EMAIL.net_14);
 
     const emailHtml = `<!doctype html><html><body style="margin:0;padding:24px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
 <div style="max-width:600px;margin:0 auto;">

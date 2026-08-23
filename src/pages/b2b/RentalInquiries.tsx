@@ -31,6 +31,13 @@ const fmtDateTime = (date: string | null, time: string | null) => {
   return time ? `${d}, ${time.slice(0, 5)} Uhr` : d;
 };
 
+/** Mietdauer in Kalendertagen (mindestens 1 Tag). */
+const rentalDays = (start: string | null, end: string | null) => {
+  if (!start || !end) return 1;
+  const diff = Math.round((new Date(end).getTime() - new Date(start).getTime()) / 86400000);
+  return diff > 0 ? diff : 1;
+};
+
 export default function RentalInquiries() {
   const { isStaff, loading: accessLoading } = useStaffAccess();
   const { rows, loading, reload } = useRentalInquiries();
@@ -80,7 +87,11 @@ export default function RentalInquiries() {
       <NewRentalInquiryDialog
         open={newOpen}
         onOpenChange={setNewOpen}
-        onCreated={reload}
+        onCreated={async (id) => {
+          await reload();
+          // Direkt in die Angebotserstellung springen – identisch zu eingegangenen Anfragen.
+          if (id) setSelectedId(id);
+        }}
       />
 
       {loading ? (
@@ -142,6 +153,8 @@ export default function RentalInquiries() {
                       .filter((v) => v !== "—")
                       .join(" – "),
                     quantity: selected.quantity && selected.quantity > 0 ? selected.quantity : 1,
+                    duration: rentalDays(selected.start_date, selected.end_date),
+                    unit: "kalendertage",
                     unit_price: 0,
                     discount_percent: 0,
                   },

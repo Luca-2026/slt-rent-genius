@@ -28,6 +28,8 @@ export async function generateOfferPdf(data: {
   returnLocation?: string;
   deliveryAddress?: { street?: string; postal_code?: string; city?: string };
   paymentTerms?: string;
+  /** Freitext bei individuellen Zahlungsbedingungen (paymentTerms === "custom"). */
+  paymentTermsCustom?: string;
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
@@ -451,11 +453,14 @@ export async function generateOfferPdf(data: {
       "Zahlungsbedingungen: Vorkasse \u00FCber unser Buchungssystem. Nach Annahme dieses Angebots erhalten Sie eine Buchungsbest\u00E4tigung " +
       "mit Zahlungslink (PayPal, Kredit-/Debitkarte oder \u00DCberweisung unter Angabe der Angebotsnummer). Die Zahlung ist vor Mietbeginn f\u00E4llig.",
   };
-  const paymentText = (data.paymentTerms && PAYMENT_TEXTS[data.paymentTerms])
+  const customPaymentText = data.paymentTerms === "custom" && data.paymentTermsCustom?.trim()
+    ? `Zahlungsbedingungen: ${data.paymentTermsCustom.trim()}`
+    : null;
+  const paymentText = customPaymentText ?? ((data.paymentTerms && PAYMENT_TEXTS[data.paymentTerms])
     ? PAYMENT_TEXTS[data.paymentTerms]
     : (hasCreditLimit
         ? `Zahlungsbedingungen: Zahlung innerhalb von ${paymentDueDays} Tagen nach Rechnungsstellung (Kreditlimit: ${fm(data.profile.credit_limit)}).`
-        : "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten.");
+        : "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten."));
 
   if (data.paymentTerms === "vorkasse") {
     // Zahlungskasten mit Bankdaten – Stil identisch zum Rechnungs-Zahlungshinweis

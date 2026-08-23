@@ -91,6 +91,7 @@ const PAYMENT_OPTIONS: Record<"business" | "private", { value: string; label: st
     { value: "net_7", label: "Rechnung – 7 Tage netto" },
     { value: "net_30", label: "Rechnung – 30 Tage netto" },
     { value: "vorkasse", label: "Vorkasse per Banküberweisung" },
+    { value: "custom", label: "Individuelle Zahlungsbedingungen …" },
   ],
   private: [
     { value: "anzahlung_30", label: "30 % Anzahlung binnen 48 Std. (Zahlungslink)" },
@@ -144,6 +145,8 @@ export function InquiryOfferForm({
   const [paymentTerms, setPaymentTerms] = useState(
     customerKind === "business" ? "net_14" : "anzahlung_30",
   );
+  /** Freitext für „Individuelle Zahlungsbedingungen“ (nur Geschäftskunden). */
+  const [paymentTermsCustom, setPaymentTermsCustom] = useState("");
 
   useEffect(() => {
     setPaymentTerms(customerKind === "business" ? "net_14" : "anzahlung_30");
@@ -229,6 +232,14 @@ export function InquiryOfferForm({
       });
       return;
     }
+    if (paymentTerms === "custom" && paymentTermsCustom.trim().length < 5) {
+      toast({
+        title: "Zahlungsbedingungen fehlen",
+        description: "Bitte die individuellen Zahlungsbedingungen ausformulieren.",
+        variant: "destructive",
+      });
+      return;
+    }
     if (!isValidOfferTotal(totals.netAmount)) {
       toast({
         title: "Angebotssumme ungültig",
@@ -264,6 +275,7 @@ export function InquiryOfferForm({
           };
         }),
         payment_terms: paymentTerms,
+        payment_terms_custom: paymentTerms === "custom" ? paymentTermsCustom.trim() : null,
         delivery_cost_delivery: deliveryCostDelivery,
         delivery_cost_return: deliveryCostReturn,
         delivery_requested: delivery.requested,
@@ -654,8 +666,20 @@ export function InquiryOfferForm({
             ))}
           </SelectContent>
         </Select>
+        {paymentTerms === "custom" && (
+          <Textarea
+            value={paymentTermsCustom}
+            onChange={(e) => setPaymentTermsCustom(e.target.value)}
+            rows={3}
+            maxLength={600}
+            disabled={disabled}
+            placeholder="z. B. 50 % Anzahlung bei Auftragserteilung, Rest 30 Tage netto nach Rechnungsstellung."
+          />
+        )}
         <p className="text-xs text-muted-foreground">
-          {paymentTerms === "anzahlung_30"
+          {paymentTerms === "custom"
+            ? "Dieser Text erscheint wortgleich im Angebots-PDF und in der E-Mail an den Kunden."
+            : paymentTerms === "anzahlung_30"
             ? "Der Kunde erhält nach Annahme eine Buchungsbestätigung mit Zahlungslink; mindestens 30 % Anzahlung innerhalb von 48 Stunden, sonst wird die Reservierung freigegeben."
             : paymentTerms === "rentpair_vorkasse"
               ? "Vollständige Vorkasse über den Zahlungslink in der Buchungsbestätigung (48 Stunden)."
