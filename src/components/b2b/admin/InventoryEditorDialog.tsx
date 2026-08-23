@@ -43,6 +43,13 @@ function slugify(s: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+/** Preis-Eingabe normalisieren: reine Zahl → "89 €". Text bleibt unverändert. */
+function normalizePriceInput(value: string): string | null {
+  const v = value.trim().replace(/\s*€\s*$/, "").trim();
+  if (!v) return null;
+  return /^[\d.,]+$/.test(v) ? `${v} €` : value.trim();
+}
+
 interface Faq { question: string; answer: string }
 
 interface FormState {
