@@ -18,6 +18,9 @@ export interface TimesheetPdfData {
   entries: TimesheetEntry[];
   submittedAt?: string | null; // ISO
   confirmed?: boolean;
+  /** Abrechnungszeitraum (21.–20.). Fehlt er, wird der Kalendermonat verwendet (Altnachweise). */
+  periodStart?: string | null;
+  periodEnd?: string | null;
 }
 
 export const MONTH_NAMES = [
@@ -102,6 +105,36 @@ export async function generateTimesheetPdf(data: TimesheetPdfData): Promise<Uint
   const dtr = (pg: any, t: string, xRight: number, y: number, f = font, s = 9, c = INK) => {
     const tw = f.widthOfTextAtSize(String(t ?? ""), s);
     dt(pg, t, xRight - tw, y, f, s, c);
+  };
+  /** Text in mehrere Zeilen umbrechen (Wortgrenzen, harte Trennung bei langen Wörtern). */
+  const wrap = (t: string, f: any, s: number, maxW: number, maxLines = 4): string[] => {
+    const text = String(t ?? "").replace(/\s+/g, " ").trim();
+    if (!text) return [];
+    const lines: string[] = [];
+    let line = "";
+    const push = () => { if (line) { lines.push(line); line = ""; } };
+    for (const word of text.split(" ")) {
+      let w = word;
+      // Sehr langes Einzelwort hart trennen
+      while (f.widthOfTextAtSize(w, s) > maxW) {
+        let cut = w;
+        while (cut.length > 1 && f.widthOfTextAtSize(cut, s) > maxW) cut = cut.slice(0, -1);
+        if (line) push();
+        lines.push(cut);
+        w = w.slice(cut.length);
+        if (lines.length >= maxLines) return lines;
+      }
+      const candidate = line ? `${line} ${w}` : w;
+      if (f.widthOfTextAtSize(candidate, s) <= maxW) {
+        line = candidate;
+      } else {
+        push();
+        line = w;
+        if (lines.length >= maxLines) break;
+      }
+    }
+    push();
+    return lines.slice(0, maxLines);
   };
   const clip = (t: string, f: any, s: number, maxW: number) => {
     let out = String(t ?? "");
