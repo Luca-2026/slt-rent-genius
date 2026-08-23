@@ -17,6 +17,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { productCategories } from "@/data/rentalData";
 import { resolveSubcategory, useAdminManagedProducts, type AdminManagedProductRow } from "@/hooks/useManagedProducts";
+import { AddonOptionsEditor } from "./AddonOptionsEditor";
+import { parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 
 const LOCATIONS = [
   { id: "krefeld", label: "Krefeld" },
@@ -75,6 +77,7 @@ interface FormState {
   seo_draft_generated_at: string | null;
   quantities: Record<LocId, string>;
   quantity_notes: Record<LocId, string>;
+  addon_options: AddonOption[];
   is_published: boolean;
 }
 
@@ -110,6 +113,7 @@ const emptyForm = (): FormState => ({
   seo_draft_generated_at: null,
   quantities: { krefeld: "", bonn: "", muelheim: "" },
   quantity_notes: { krefeld: "", bonn: "", muelheim: "" },
+  addon_options: [],
   is_published: false,
 });
 
@@ -405,6 +409,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         seo_draft_generated_at: form.seo_draft_generated_at,
         quantities,
         quantity_notes: quantityNotes,
+        addon_options: form.addon_options,
         is_published: form.is_published,
         updated_by: user?.id ?? null,
       };
