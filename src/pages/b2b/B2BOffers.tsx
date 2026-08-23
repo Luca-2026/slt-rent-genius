@@ -165,6 +165,8 @@ function B2BOffers() {
         </Card>
       </div>
 
+      <BonnPriorityHotline location={b2bProfile?.assigned_location} className="mb-6" />
+
       <div className="flex justify-end mb-4">
         <Button variant="outline" size="sm" onClick={fetchData} disabled={loading}>
           <RefreshCw className={`h-3.5 w-3.5 mr-1.5 ${loading ? "animate-spin" : ""}`} />
