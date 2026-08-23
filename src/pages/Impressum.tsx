@@ -50,7 +50,6 @@ export default function Impressum() {
                     <div className="flex items-center gap-3">
                       <Phone className="h-5 w-5 text-primary shrink-0" />
                       <div>
-                        <p className="text-foreground">Fon: +49 (0) 2151 - 417 99 02</p>
                         <p className="text-foreground">Fon: +49 (0) 2151 - 417 99 04</p>
                       </div>
                     </div>
@@ -94,7 +93,6 @@ export default function Impressum() {
                       <Phone className="h-5 w-5 text-primary shrink-0" />
                       <div>
                         <p className="text-foreground">Fon: +49 (0) 2151 - 417 99 03</p>
-                        <p className="text-foreground">Fon: +49 (0) 2151 - 417 99 04</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
