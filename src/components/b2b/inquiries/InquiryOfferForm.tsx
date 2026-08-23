@@ -338,9 +338,15 @@ export function InquiryOfferForm({
                   min={0}
                   step="0.01"
                   value={item.unit_price}
-                  onChange={(e) => patchItem(index, { unit_price: Number(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    patchItem(index, { unit_price: Number(e.target.value) || 0, price_source: "manual" })
+                  }
                   disabled={disabled}
                 />
+                {item.price_source === "cms" ? (
+                  <p className="mt-1 text-[11px] text-muted-foreground">Preis aus CMS – anpassbar</p>
+                ) : null}
+
               </div>
               <div>
                 <Label className="text-xs">Rabatt %</Label>
