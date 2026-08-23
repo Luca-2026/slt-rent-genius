@@ -195,7 +195,7 @@ export async function generateOfferPdf(data: {
     const contentTopY = Math.min(ay, iy) - 26;
     let ty = contentTopY;
     dt(pg, TITLE, ML, ty, bold, 30, BRAND);
-    ty -= 18;
+    ty -= 26;
     dt(pg, `Nr. ${data.offerNumber}`, ML, ty, font, 10.5, MUTED);
     ty -= 22;
 
