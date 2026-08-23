@@ -50,6 +50,18 @@ function addonOptionsFor(item: FormLine, isSales = false): AddonOption[] {
   return merged;
 }
 
+/**
+ * Preis-Vorbelegung beim Artikelwechsel: CMS-Preis übernehmen, sofern hinterlegt
+ * und der Preis nicht manuell überschrieben wurde. Ohne CMS-Preis bleibt das Feld
+ * leer (bzw. der manuell gesetzte Preis erhalten).
+ */
+function resolvePricePatch(item: FormLine, cmsPrice: number | undefined): Partial<FormLine> {
+  if (item.price_source === "manual" && item.unit_price > 0) return {};
+  if (cmsPrice !== undefined) return { unit_price: cmsPrice, price_source: "cms" };
+  return { unit_price: 0, price_source: undefined };
+}
+
+
 const PAYMENT_OPTIONS: Record<"business" | "private", { value: string; label: string }[]> = {
   business: [
     { value: "net_14", label: "Rechnung – 14 Tage netto" },
