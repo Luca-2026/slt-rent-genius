@@ -167,6 +167,7 @@ function fromRow(row: AdminManagedProductRow): FormState {
       bonn: row.quantity_notes?.bonn ?? "",
       muelheim: row.quantity_notes?.muelheim ?? "",
     },
+    addon_options: parseAddonOptions((row as unknown as { addon_options?: unknown }).addon_options),
     is_published: row.is_published,
   };
 }
