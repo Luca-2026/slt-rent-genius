@@ -9,7 +9,7 @@ import { Plus, Send, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { buildOfferTotals, formatEuro, type OfferLine } from "./offerMath";
+import { buildOfferTotals, formatEuro, isValidOfferTotal, type OfferLine } from "./offerMath";
 import { ADDON_PRESETS, parseAddonOptions, suggestAddonAmount, type AddonOption } from "@/lib/offerAddons";
 import {
   InquiryProductCombobox,
@@ -172,6 +172,14 @@ export function InquiryOfferForm({
       toast({
         title: "Lieferadresse fehlt",
         description: "Bitte Straße und Ort der Lieferadresse ergänzen oder „Lieferung“ deaktivieren.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!isValidOfferTotal(totals.netAmount)) {
+      toast({
+        title: "Angebotssumme ungültig",
+        description: "Die Summe muss größer als 0 € sein – bitte Abzüge (z. B. Inzahlungnahme) prüfen.",
         variant: "destructive",
       });
       return;
