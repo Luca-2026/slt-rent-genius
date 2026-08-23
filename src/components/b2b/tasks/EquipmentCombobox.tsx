@@ -71,7 +71,7 @@ export function EquipmentCombobox({ value, onChange, location, placeholder, id }
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full max-w-full justify-between font-normal overflow-hidden h-auto min-h-10 py-2"
+          className="w-full max-w-full justify-between font-normal overflow-hidden h-auto min-h-10 py-2 border-input text-foreground hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/40"
         >
           <span className={cn("min-w-0 flex-1 truncate text-left", !value && "text-muted-foreground")}>
             {value || placeholder || "Artikel wählen oder eintragen"}
@@ -89,7 +89,11 @@ export function EquipmentCombobox({ value, onChange, location, placeholder, id }
             value={search}
             onValueChange={setSearch}
           />
-          <CommandList className="max-h-64">
+          <CommandList
+            className="max-h-64 overflow-y-auto overscroll-contain"
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+          >
             {isNewFreeText && (
               <CommandGroup heading="Freier Eintrag">
                 <CommandItem
