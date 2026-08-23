@@ -1627,15 +1627,15 @@ export const productSEOData: Record<string, ProductSEOData> = {
     ],
   },
   "bobcat-e35z": {
-    seoTitle: "Miete Bobcat E35z: 3,6t Minibagger mit Nullheck",
+    seoTitle: "Miete Bobcat E35z: 3,5t Minibagger mit Nullheck",
     metaDescription: "Mieten Sie den Bobcat E35z Minibagger mit 3,5t Einsatzgewicht, 3,12m Grabtiefe und Stage V Motor. Ideal für beengte Baustellen durch Nullheck-Design.",
-    h1: "3,6t Minibagger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
+    h1: "3,5t Minibagger mieten in Krefeld – Jetzt verfügbar bei SLT Rental",
     h2s: ["Technische Merkmale und Leistungsdaten", "Einsatzgebiete und Bauweise", "Verfügbare Ausstattungsoptionen"],
     useCaseBau: "Professionelle Anwender nutzen den Bagger für den Aushub von Streifenfundamenten, das Anlegen von Versorgungsleitungsgräben sowie für den Rückbau auf engen Baustellen. Zudem eignet er sich für die Vorbereitung von Pflasterarbeiten und den Kanalbau.",
     useCaseEvent: "",
     useCasePrivat: "Im privaten Bereich unterstützt die Maschine beim Anlegen eines Gartenteichs, der Wurzelentfernung sowie bei Erdarbeiten für Terrassen- und Pflasterarbeiten.",
     faqs: [
-      { q: "Wie tief kann der Bobcat E35z graben?", a: "Die maximale Grabtiefe des 3,6t Minibaggers beträgt 3.120 mm bei einer Reichweite von 5,26 m am Boden." },
+      { q: "Wie tief kann der Bobcat E35z graben?", a: "Die maximale Grabtiefe des 3,5t Minibaggers beträgt 3.120 mm bei einer Reichweite von 5,26 m am Boden." },
       { q: "Welche Vorteile bietet das Nullheck-Design?", a: "Durch das Nullheck-Design schwenkt das Heck innerhalb der Kettenbreite, was den Einsatz an besonders beengten Orten ermöglicht." },
       { q: "Welche Anbaugeräte sind für den E35z verfügbar?", a: "Es stehen Hydraulikhammer, Schlegelmäher, Räum- und Tieflöffel sowie Laserausrüstung für exakte Nivellierung zur Verfügung." },
     ],

@@ -419,7 +419,7 @@ const minibaggerSlugs = [
   { label: "1t Minibagger (Bobcat E10Z)", slug: "bobcat-e10z", exact: /(^|\D)(1|1[,.]0)\s*t|1\s*tonnen?|ein\s*tonnen?/i },
   { label: "2t Minibagger (XCMG XE20E)", slug: "xcmg-xe20e", exact: /(^|\D)2\s*t|2\s*tonnen?/i },
   { label: "2,7t Minibagger (XCMG XE27E)", slug: "xcmg-xe27e", exact: /2[,.]7\s*t|2[,.]7\s*tonnen?/i },
-  { label: "3,6t Minibagger (Bobcat E35z)", slug: "bobcat-e35z", exact: /3[,.]5\s*t|3[,.]5\s*tonnen?/i },
+  { label: "3,5t Minibagger (Bobcat E35z)", slug: "bobcat-e35z", exact: /3[,.]5\s*t|3[,.]5\s*tonnen?/i },
   { label: "6t Minibagger (Bobcat E50z)", slug: "bobcat-e50z", exact: /(^|\D)5\s*t|5\s*tonnen?/i },
 ];
 

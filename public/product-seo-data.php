@@ -5508,7 +5508,7 @@ $productDetails = [
     ],
   ],
   'bobcat-e35z' => [
-    'name' => '3,6t Minibagger',
+    'name' => '3,5t Minibagger',
     'modelName' => 'Bobcat E35z',
     'description' => 'Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V',
     'weightKg' => '3500',
@@ -5880,7 +5880,7 @@ $productDetails = [
     ],
   ],
   'bonn-bobcat-e35z' => [
-    'name' => '3,6t Minibagger',
+    'name' => '3,5t Minibagger',
     'modelName' => 'Bobcat E35z',
     'description' => 'Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V',
     'weightKg' => '3500',
