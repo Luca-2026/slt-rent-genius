@@ -503,7 +503,7 @@ export async function generateOfferPdf(data: {
   }
 
   // ── Grußformel ──
-  need(70);
+  need(56);
   dt(pg, "Wir freuen uns auf Ihre R\u00FCckmeldung und stehen Ihnen f\u00FCr R\u00FCckfragen gerne zur Verf\u00FCgung.", ML, y, font, 9); y -= 22;
   dt(pg, "Mit freundlichen Gr\u00FC\u00DFen", ML, y, font, 9); y -= 15;
   dt(pg, data.staffName || SLT_COMPANY.managingDirector, ML, y, bold, 9); y -= 11;
