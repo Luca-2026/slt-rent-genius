@@ -301,10 +301,27 @@ Deno.serve(async (req: Request) => {
 
     const rowsHtml = items.map((i) => `
       <tr>
-        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;">${escapeHtml(i.product_name)}${i.description ? `<br><span style="color:#6b7280;font-size:12px;">${escapeHtml(i.description)}</span>` : ""}</td>
+        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;">${escapeHtml(i.product_name)}${i.description ? `<br><span style="color:#6b7280;font-size:12px;">${escapeHtml(i.description)}</span>` : ""}${(i.addons ?? []).filter((a) => a.amount > 0).map((a) => `<br><span style="color:#6b7280;font-size:12px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}</span>`).join("")}</td>
         <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${i.quantity}</td>
         <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${money(i.unit_price)}</td>
       </tr>`).join("");
+
+    // ── Zahlungshinweis für die E-Mail ──
+    const PAYMENT_EMAIL: Record<string, string> = {
+      net_7: "Zahlung innerhalb von 7 Tagen nach Rechnungsstellung (netto).",
+      net_14: "Zahlung innerhalb von 14 Tagen nach Rechnungsstellung (netto).",
+      net_30: "Zahlung innerhalb von 30 Tagen nach Rechnungsstellung (netto).",
+      vorkasse: "Vorkasse per Banküberweisung. Die Zahlung ist vor Mietbeginn zu leisten – die Bankdaten finden Sie im Angebots-PDF.",
+      anzahlung_30:
+        "Nach Ihrer Annahme senden wir Ihnen eine Buchungsbestätigung mit Zahlungslink. Innerhalb von <strong>48 Stunden</strong> " +
+        "sind mindestens <strong>30 % Anzahlung</strong> zu leisten – per PayPal, Kredit-/Debitkarte oder Überweisung unter Angabe der Angebotsnummer " +
+        `<strong>${escapeHtml(offerNumber)}</strong>. Erfolgt die Anzahlung nicht fristgerecht, wird die Reservierung systemseitig wieder freigegeben. ` +
+        "Der Restbetrag ist vor Mietbeginn fällig.",
+      rentpair_vorkasse:
+        "Nach Ihrer Annahme senden wir Ihnen eine Buchungsbestätigung mit Zahlungslink (PayPal, Kredit-/Debitkarte oder Überweisung unter Angabe der Angebotsnummer " +
+        `<strong>${escapeHtml(offerNumber)}</strong>). Bitte begleichen Sie den Betrag innerhalb von <strong>48 Stunden</strong>, damit die Reservierung bestehen bleibt.`,
+    };
+    const paymentEmailText = PAYMENT_EMAIL[paymentTerms] ?? PAYMENT_EMAIL.net_14;
 
     const emailHtml = `<!doctype html><html><body style="margin:0;padding:24px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
 <div style="max-width:600px;margin:0 auto;">
@@ -324,6 +341,9 @@ Deno.serve(async (req: Request) => {
     Bitte bestätigen Sie uns die Annahme kurz per E-Mail an
     <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a>.
     Wir reservieren die Artikel anschließend verbindlich für Sie und melden uns mit allen Details zur Abholung bzw. Lieferung.
+  </div>
+  <div style="background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
+    <strong>Zahlungsbedingungen:</strong><br>${paymentEmailText}
   </div>
   <p style="color:#6b7280;font-size:13px;">Dieses Angebot ist gültig bis ${escapeHtml(fmt(validUntil))}.</p>
   ${agbBytes ? `<p style="color:#6b7280;font-size:13px;">Es gelten unsere beigefügten ${customerKind === "business" ? "AGB für Unternehmer (B2B)" : "AGB für Verbraucher (B2C)"}.</p>` : ""}
