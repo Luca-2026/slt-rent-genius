@@ -123,8 +123,10 @@ export async function generateOfferPdf(data: {
 
   // ── Kopf Seite 1: Absenderzeile, Empfängeradresse, Logo rechts, Infoblock, Titel ──
   const renderHeader = (pg: any): number => {
-    dt(pg, `${SLT_COMPANY.name} \u00B7 ${SLT_COMPANY.street} \u00B7 ${SLT_COMPANY.city}`, ADDR_X, ADDR_Y_TOP + 12, font, 7, MUTED);
-    pg.drawRectangle({ x: ADDR_X, y: ADDR_Y_TOP + 10, width: 220, height: 0.4, color: LINE });
+    // Absenderzeile mit deutlichem Abstand zum Anschriftfeld (DIN 5008)
+    dt(pg, `${SLT_COMPANY.name} \u00B7 ${SLT_COMPANY.street} \u00B7 ${SLT_COMPANY.city}`, ADDR_X, ADDR_Y_TOP + 30, font, 7, MUTED);
+    pg.drawRectangle({ x: ADDR_X, y: ADDR_Y_TOP + 27, width: 220, height: 0.4, color: LINE });
+
 
     let ay = ADDR_Y_TOP;
     const companyLine = data.profile.legal_form
