@@ -187,12 +187,13 @@ export async function generateOfferPdf(data: {
     if (data.isReverseCharge) infoRow("Verfahren:", "Reverse-Charge", BRAND);
 
     // Titelblock
-    const contentTopY = Math.min(ay, iy) - 40;
+    const contentTopY = Math.min(ay, iy) - 26;
     let ty = contentTopY;
-    dt(pg, TITLE, ML, ty, bold, 30, BRAND);
-    ty -= 26;
+    dt(pg, TITLE, ML, ty, bold, 26, BRAND);
+    ty -= 18;
     dt(pg, `Nr. ${data.offerNumber}`, ML, ty, font, 10.5, MUTED);
-    ty -= 26;
+    ty -= 22;
+
 
     // Lieferadresse (angebotsspezifisch)
     if (data.deliveryAddress && (data.deliveryAddress.street || data.deliveryAddress.city)) {
