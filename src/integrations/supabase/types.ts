@@ -2037,6 +2037,7 @@ export type Database = {
           created_at: string
           customer_city: string | null
           customer_email: string | null
+          customer_kind: string
           customer_name: string | null
           customer_phone: string | null
           customer_postal_code: string | null
@@ -2077,6 +2078,7 @@ export type Database = {
           created_at?: string
           customer_city?: string | null
           customer_email?: string | null
+          customer_kind?: string
           customer_name?: string | null
           customer_phone?: string | null
           customer_postal_code?: string | null
@@ -2117,6 +2119,7 @@ export type Database = {
           created_at?: string
           customer_city?: string | null
           customer_email?: string | null
+          customer_kind?: string
           customer_name?: string | null
           customer_phone?: string | null
           customer_postal_code?: string | null
@@ -2167,6 +2170,7 @@ export type Database = {
           company_name: string | null
           created_at: string
           customer_email: string | null
+          customer_kind: string
           customer_phone: string | null
           customer_type: string | null
           delivery_city: string | null
@@ -2223,6 +2227,7 @@ export type Database = {
           company_name?: string | null
           created_at?: string
           customer_email?: string | null
+          customer_kind?: string
           customer_phone?: string | null
           customer_type?: string | null
           delivery_city?: string | null
@@ -2279,6 +2284,7 @@ export type Database = {
           company_name?: string | null
           created_at?: string
           customer_email?: string | null
+          customer_kind?: string
           customer_phone?: string | null
           customer_type?: string | null
           delivery_city?: string | null
