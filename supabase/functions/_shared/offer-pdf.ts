@@ -181,7 +181,12 @@ export async function generateOfferPdf(data: {
     infoRow("Angebotsnummer:", data.offerNumber);
     infoRow("Angebotsdatum:", fd(data.offerDate));
     infoRow("G\u00FCltig bis:", fd(data.validUntil), rgb(0.7, 0.26, 0.04));
-    infoRow("Kundennummer:", String(data.profile.id).substring(0, 8).toUpperCase());
+    // Anfragen aus dem öffentlichen Formular haben keine Kundennummer –
+    // dann die Zeile weglassen statt eine UUID auszuweisen.
+    if (String(data.profile.id || "").trim()) {
+      infoRow("Kundennummer:", String(data.profile.id).substring(0, 8).toUpperCase());
+    }
+
     infoRow("Ansprechpartner:", data.staffName || SLT_COMPANY.managingDirector);
     infoRow("Ausgabestandort:", issuingLoc.name);
     infoSub(`${issuingLoc.address}, ${issuingLoc.city}`);

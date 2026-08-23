@@ -138,7 +138,7 @@ Deno.serve(async (req: Request) => {
     const isBusiness = inquiry.customer_kind === "business";
 
     const profile = {
-      id: inquiry.id,
+      id: "",
       company_name: companyName || customerName || "Kunde",
       legal_form: null,
       // Kontaktzeile nur, wenn sie sich vom Firmennamen unterscheidet
