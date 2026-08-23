@@ -220,6 +220,8 @@ Deno.serve(async (req: Request) => {
       additionalServices: [],
       staffName,
       issuingLocation: locationKey,
+      deliveryAddress: deliveryRequested ? deliveryAddress : undefined,
+
     });
 
     const safeName = (profile.company_name || "Kunde")
@@ -327,7 +329,13 @@ Deno.serve(async (req: Request) => {
         offer_file_url: fileUrl,
         offer_total_gross: totals.grossAmount,
         offer_sent_at: new Date().toISOString(),
+        // im Portal geänderte Lieferadresse zurückschreiben
+        delivery_street: deliveryRequested ? deliveryAddress.street || null : null,
+        delivery_postal_code: deliveryRequested ? deliveryAddress.postal_code || null : null,
+        delivery_city: deliveryRequested ? deliveryAddress.city || null : null,
+        ...(inquiryType === "rental" ? { delivery_requested: deliveryRequested } : {}),
       })
+
       .eq("id", inquiry.id);
     if (updErr) console.error("Status-Update fehlgeschlagen:", updErr.message);
 
