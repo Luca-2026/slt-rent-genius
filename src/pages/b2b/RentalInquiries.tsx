@@ -30,6 +30,7 @@ export default function RentalInquiries() {
   const [search, setSearch] = useState("");
   const [onlyOpen, setOnlyOpen] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [newOpen, setNewOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
