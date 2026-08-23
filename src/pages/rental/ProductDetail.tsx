@@ -99,6 +99,16 @@ export default function ProductDetail() {
 
   const rawRelatedProducts = useMemo(() => {
     if (!location || !categoryId || !rawProduct) return [];
+
+    // 1) Manuell im CMS gepflegte Artikel haben immer Vorrang (Reihenfolge = CMS-Reihenfolge)
+    if (rawProduct.relatedSlugs?.length) {
+      const pool = getAllProductsForLocation(location.id);
+      const picked = rawProduct.relatedSlugs
+        .map((slug) => pool.find((p) => p.id === slug))
+        .filter((p): p is NonNullable<typeof p> => !!p && p.id !== rawProduct.id);
+      if (picked.length) return picked.slice(0, 8);
+    }
+
     const allProducts = getProductsForLocationCategory(location.id, categoryId);
     const candidates = allProducts.filter((p) => p.id !== rawProduct.id && !p.compatibleMachines);
 
@@ -164,10 +174,18 @@ export default function ProductDetail() {
     const cmsFaqs = product.seoFaqs?.length
       ? product.seoFaqs.map((f) => ({ q: f.question, a: f.answer }))
       : null;
-    if (!cmsFaqs && !product.seoMetaDescription) return base;
+    // CMS-Einsatzbereiche (Bau / Event / Privat) überschreiben die Kategorie-Fallbacks
+    const cmsUseCases = {
+      ...(product.seoUseCaseBau ? { useCaseBau: product.seoUseCaseBau } : {}),
+      ...(product.seoUseCaseEvent ? { useCaseEvent: product.seoUseCaseEvent } : {}),
+      ...(product.seoUseCasePrivat ? { useCasePrivat: product.seoUseCasePrivat } : {}),
+    };
+    const hasCmsUseCases = Object.keys(cmsUseCases).length > 0;
+    if (!cmsFaqs && !product.seoMetaDescription && !hasCmsUseCases) return base;
     const useCmsMeta = !!product.seoMetaDescription && !(hasLocalizedSEO && base?.metaDescription);
     return {
       ...(base ?? {}),
+      ...cmsUseCases,
       ...(cmsFaqs && !(hasLocalizedSEO && base?.faqs?.length) ? { faqs: cmsFaqs } : {}),
       ...(useCmsMeta ? { metaDescription: product.seoMetaDescription } : {}),
     } as typeof base;

@@ -227,6 +227,10 @@ export interface Product {
   rentalNotes?: string[]; // Additional rental condition notes (e.g. operating hours, fuel)
   seoMetaDescription?: string; // CMS override for meta description
   seoFaqs?: { question: string; answer: string }[]; // CMS override for product FAQs
+  seoUseCaseBau?: string; // CMS: Einsatzbereich Bau/Handwerk
+  seoUseCaseEvent?: string; // CMS: Einsatzbereich Event/Veranstaltung
+  seoUseCasePrivat?: string; // CMS: Einsatzbereich Privat
+  relatedSlugs?: string[]; // CMS: manuell gepflegtes Zubehör / ähnliche Artikel (Slugs)
 
 }
 

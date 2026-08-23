@@ -832,6 +832,7 @@ export type Database = {
           price_weekend: string | null
           quantities: Json
           quantity_notes: Json
+          related_slugs: string[]
           rental_notes: string[]
           rentware_code: Json
           seo_draft_faqs: Json | null
@@ -881,6 +882,7 @@ export type Database = {
           price_weekend?: string | null
           quantities?: Json
           quantity_notes?: Json
+          related_slugs?: string[]
           rental_notes?: string[]
           rentware_code?: Json
           seo_draft_faqs?: Json | null
@@ -930,6 +932,7 @@ export type Database = {
           price_weekend?: string | null
           quantities?: Json
           quantity_notes?: Json
+          related_slugs?: string[]
           rental_notes?: string[]
           rentware_code?: Json
           seo_draft_faqs?: Json | null
@@ -3032,11 +3035,16 @@ export type Database = {
           price_per_month: string | null
           price_unit_label: string | null
           price_weekend: string | null
+          related_slugs: string[] | null
           rental_notes: string[] | null
           rentware_code: Json | null
           seo_faqs: Json | null
           seo_local_content: Json | null
           seo_meta_description: string | null
+          seo_title: string | null
+          seo_use_case_bau: string | null
+          seo_use_case_event: string | null
+          seo_use_case_privat: string | null
           slug: string | null
           sort_order: number | null
           specifications: Json | null
@@ -3069,11 +3077,16 @@ export type Database = {
           price_per_month?: string | null
           price_unit_label?: string | null
           price_weekend?: string | null
+          related_slugs?: string[] | null
           rental_notes?: string[] | null
           rentware_code?: Json | null
           seo_faqs?: Json | null
           seo_local_content?: Json | null
           seo_meta_description?: string | null
+          seo_title?: string | null
+          seo_use_case_bau?: string | null
+          seo_use_case_event?: string | null
+          seo_use_case_privat?: string | null
           slug?: string | null
           sort_order?: number | null
           specifications?: Json | null
@@ -3106,11 +3119,16 @@ export type Database = {
           price_per_month?: string | null
           price_unit_label?: string | null
           price_weekend?: string | null
+          related_slugs?: string[] | null
           rental_notes?: string[] | null
           rentware_code?: Json | null
           seo_faqs?: Json | null
           seo_local_content?: Json | null
           seo_meta_description?: string | null
+          seo_title?: string | null
+          seo_use_case_bau?: string | null
+          seo_use_case_event?: string | null
+          seo_use_case_privat?: string | null
           slug?: string | null
           sort_order?: number | null
           specifications?: Json | null

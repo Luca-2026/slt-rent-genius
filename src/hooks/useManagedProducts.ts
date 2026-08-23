@@ -41,6 +41,10 @@ export interface ManagedProductRow {
   seo_meta_description: string | null;
   seo_faqs: Array<{ question: string; answer: string }>;
   seo_local_content: Record<string, string>;
+  seo_use_case_bau?: string | null;
+  seo_use_case_event?: string | null;
+  seo_use_case_privat?: string | null;
+  related_slugs?: string[] | null;
   image_alts?: string[] | null;
 }
 
@@ -100,6 +104,10 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
           }))
           .filter((f) => f.question && f.answer)
       : undefined,
+    seoUseCaseBau: row.seo_use_case_bau?.trim() || undefined,
+    seoUseCaseEvent: row.seo_use_case_event?.trim() || undefined,
+    seoUseCasePrivat: row.seo_use_case_privat?.trim() || undefined,
+    relatedSlugs: row.related_slugs?.length ? row.related_slugs : undefined,
   };
 
 }
