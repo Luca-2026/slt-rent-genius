@@ -2252,6 +2252,7 @@ export type Database = {
           brand: string | null
           company_name: string | null
           created_at: string
+          crm_customer_id: string | null
           customer_email: string | null
           customer_kind: string
           customer_phone: string | null
@@ -2282,6 +2283,8 @@ export type Database = {
           offer_sent_at: string | null
           offer_total_gross: number | null
           product_category: string | null
+          product_kind: string | null
+          product_slug: string | null
           quantity: string | null
           raw_payload: Json | null
           requirements: string | null
@@ -2309,6 +2312,7 @@ export type Database = {
           brand?: string | null
           company_name?: string | null
           created_at?: string
+          crm_customer_id?: string | null
           customer_email?: string | null
           customer_kind?: string
           customer_phone?: string | null
@@ -2339,6 +2343,8 @@ export type Database = {
           offer_sent_at?: string | null
           offer_total_gross?: number | null
           product_category?: string | null
+          product_kind?: string | null
+          product_slug?: string | null
           quantity?: string | null
           raw_payload?: Json | null
           requirements?: string | null
@@ -2366,6 +2372,7 @@ export type Database = {
           brand?: string | null
           company_name?: string | null
           created_at?: string
+          crm_customer_id?: string | null
           customer_email?: string | null
           customer_kind?: string
           customer_phone?: string | null
@@ -2396,6 +2403,8 @@ export type Database = {
           offer_sent_at?: string | null
           offer_total_gross?: number | null
           product_category?: string | null
+          product_kind?: string | null
+          product_slug?: string | null
           quantity?: string | null
           raw_payload?: Json | null
           requirements?: string | null
@@ -2408,7 +2417,15 @@ export type Database = {
           wish_date?: string | null
           year?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "sales_inquiries_crm_customer_id_fkey"
+            columns: ["crm_customer_id"]
+            isOneToOne: false
+            referencedRelation: "crm_customers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       staff_material_transfers: {
         Row: {
