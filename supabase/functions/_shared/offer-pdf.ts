@@ -149,18 +149,21 @@ export async function generateOfferPdf(data: {
     }
 
     // Logo oben rechts (~60 mm)
-    let logoBottomY = H - MT;
+    // Logo oben rechts – Oberkante auf Höhe der Absenderzeile ausgerichtet
+    let logoBottomY = ADDR_Y_TOP + 34;
     if (logoImg) {
       const targetW = 170;
       const scale = targetW / logoImg.width;
       const drawH = logoImg.height * scale;
-      logoBottomY = H - MT - drawH;
+      const logoTopY = ADDR_Y_TOP + 40;
+      logoBottomY = logoTopY - drawH;
       pg.drawImage(logoImg, { x: W - MR - targetW, y: logoBottomY, width: targetW, height: drawH });
     }
 
     // Infoblock rechts, zweispaltig
     const infoX = W - MR - 200;
-    let iy = Math.min(ADDR_Y_TOP, logoBottomY - 26);
+    let iy = logoBottomY - 22;
+
     const infoRow = (label: string, value: string, c = INK) => {
       dt(pg, label, infoX, iy, font, 8.5, MUTED);
       dt(pg, value, infoX + 95, iy, font, 9, c);
