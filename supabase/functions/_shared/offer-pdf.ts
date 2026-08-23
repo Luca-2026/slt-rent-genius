@@ -148,21 +148,26 @@ export async function generateOfferPdf(data: {
       ay -= 11;
     }
 
-    // Logo oben rechts (~60 mm)
-    // Logo oben rechts – Oberkante auf Höhe der Absenderzeile ausgerichtet
-    let logoBottomY = ADDR_Y_TOP + 34;
+    // Logo oben rechts – die PNG-Datei hat viel transparenten Rand, deshalb
+    // rechnen wir mit dem sichtbaren Bildausschnitt, damit der SLT-Kreis
+    // exakt auf Höhe der Absenderzeile sitzt.
+    const LOGO_BOX = { left: 0.1474, top: 0.3536, right: 0.8516, bottom: 0.6318 };
+    const visibleTopY = ADDR_Y_TOP + 44;
+    let logoBottomY = visibleTopY - 60;
     if (logoImg) {
-      const targetW = 170;
-      const scale = targetW / logoImg.width;
-      const drawH = logoImg.height * scale;
-      const logoTopY = ADDR_Y_TOP + 40;
-      logoBottomY = logoTopY - drawH;
-      pg.drawImage(logoImg, { x: W - MR - targetW, y: logoBottomY, width: targetW, height: drawH });
+      const visibleW = 150;
+      const fullW = visibleW / (LOGO_BOX.right - LOGO_BOX.left);
+      const fullH = (logoImg.height / logoImg.width) * fullW;
+      const imgTopY = visibleTopY + LOGO_BOX.top * fullH;
+      const imgY = imgTopY - fullH;
+      const imgX = W - MR - LOGO_BOX.right * fullW;
+      pg.drawImage(logoImg, { x: imgX, y: imgY, width: fullW, height: fullH });
+      logoBottomY = visibleTopY - (LOGO_BOX.bottom - LOGO_BOX.top) * fullH;
     }
 
     // Infoblock rechts, zweispaltig
     const infoX = W - MR - 200;
-    let iy = logoBottomY - 22;
+    let iy = logoBottomY - 24;
 
     const infoRow = (label: string, value: string, c = INK) => {
       dt(pg, label, infoX, iy, font, 8.5, MUTED);
