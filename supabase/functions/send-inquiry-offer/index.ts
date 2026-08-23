@@ -196,7 +196,18 @@ Deno.serve(async (req: Request) => {
     const validUntil = new Date(today.getTime() + validDays * 86400000);
     const fmt = (d: Date) => d.toLocaleDateString("de-DE");
 
-    const staffName = String(body.staff_name || "").slice(0, 120) || (user.email ?? "SLT Rental");
+    // Ansprechpartner: übergebener Name → Name aus dem Mitarbeiterprofil → Fallback
+    let staffName = String(body.staff_name || "").trim().slice(0, 120);
+    if (!staffName) {
+      const { data: sp } = await service
+        .from("staff_profiles")
+        .select("first_name, last_name")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      staffName = [sp?.first_name, sp?.last_name].filter(Boolean).join(" ").trim();
+    }
+    if (!staffName) staffName = "SLT Rental";
+
 
     const pdfBytes = await generateOfferPdf({
       offerNumber,
