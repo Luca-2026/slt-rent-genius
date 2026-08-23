@@ -507,12 +507,20 @@ export const bonnErdbewegungProducts = [
     ],
   },
   {
-    id: "bonn-bobcat-e50z",
+    id: "bonn-minibagger-5t",
     name: "5t Minibagger",
-    modelName: "Bobcat E50z",
-    description: "Einsatzgewicht: 4.800 kg | Grabtiefe: 3.520 mm | Motorleistung: 36,4 kW | Abgasnorm Stufe V",
-    image: "/placeholder.svg",
-    weightKg: 4800,
+    modelName: "LiuGong 9057F ZTS",
+    description: "Betriebsgewicht: 5.700 kg | Grabtiefe: 3.600 mm | 35,5 kW (48 PS) Yanmar Stufe V | Null-Heckschwenk (ZTS)",
+    image: "/product-images/erdbewegung/minibagger-5t-1.webp",
+    images: [
+      "/product-images/erdbewegung/minibagger-5t-1.webp",
+      "/product-images/erdbewegung/minibagger-5t-2.webp",
+      "/product-images/erdbewegung/minibagger-5t-3.webp",
+      "/product-images/erdbewegung/minibagger-5t-4.webp",
+      "/product-images/erdbewegung/minibagger-5t-5.webp",
+      "/product-images/erdbewegung/minibagger-5t-6.webp",
+    ],
+    weightKg: 5700,
     category: "minibagger",
     tags: ["maschine"],
     driveType: "diesel",
@@ -522,6 +530,7 @@ export const bonnErdbewegungProducts = [
       "Zzgl. Verbrauch – Rückgabe mit vollem Tank. Diesel: brutto 2,85 €/l.",
     ],
   },
+
   // === RADLADER ===
   {
     id: "bonn-radlader-kramer-5050",
@@ -677,7 +686,7 @@ export const bonnErdbewegungZusatzProducts = [
     image: imgSortiergreiferSsg150_1,
     images: [imgSortiergreiferSsg150_1, imgSortiergreiferSsg150_2, imgSortiergreiferSsg150_3],
     category: "sortiergreifer",
-    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "bobcat-e50z"],
+    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-5t"],
     videoUrls: ["https://www.youtube.com/watch?v=NxHLwYjWVA8"],
     specifications: {
       "Arbeitsbreite": "400 mm",

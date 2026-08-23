@@ -375,6 +375,8 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "bobcat-e19": { name: "1.8t Bobcat E19 Mini Excavator", description: "Operating weight: 1,800 kg | Dig depth: 2,385 mm | Width: 980 mm" },
   "xcmg-xe20e": { name: "2t XCMG XE20E Mini Excavator", description: "Operating weight: 2,000 kg | Dig depth: 2,385 mm | Width: 980 mm" },
   "minibagger-2-7t": { name: "2.7t Mini Excavator", description: "Operating weight: 2,750 kg | Transport width: 1,550 mm | Zero tail swing (ZTS) | 21 hp Yanmar Stage V" },
+  "minibagger-5t": { name: "5t Mini Excavator", description: "Operating weight: 5,700 kg | Dig depth: 3,600 mm | Zero tail swing (ZTS) | 48 hp Yanmar Stage V" },
+
   "knickdumper-kde550": { name: "Wheeled Dumper / Swivel Dumper KDe550 4x4 Electric", description: "Payload: 550 kg | Electric drive | Runtime: 8-10h | 4x4 All-wheel drive" },
   "cormidi-c60-hitip": { name: "Cormidi C60 HI TIP Dumper with High-Tip Function", description: "Payload: 600 kg | Diesel engine | High-tip function | Track drive | Compact & agile" },
   "kramer-5045": { name: "3t Wheel Loader Kramer 5045", description: "Operating weight: 3,000 kg | Diesel engine | Bucket incl. | Compact & versatile" },
@@ -730,6 +732,8 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "bonn-bobcat-e10": { name: "1t Bobcat E10", description: "Compact mini excavator for tight construction sites." },
   "bonn-xcmg-xe20e": { description: "Operating weight: 2,000 kg | Dig depth: 2,385 mm | Width: 980 mm" },
   "bonn-minibagger-2-7t": { description: "Operating weight: 2,750 kg | Transport width: 1,550 mm | Zero tail swing (ZTS) | 21 hp Yanmar Stage V" },
+  "bonn-minibagger-5t": { description: "Operating weight: 5,700 kg | Dig depth: 3,600 mm | Zero tail swing (ZTS) | 48 hp Yanmar Stage V" },
+
   "bonn-radlader-kramer-5050": { name: "Wheel Loader 3t Kramer 5050", description: "Compact wheel loader for versatile applications." },
   "bonn-cormidi-dumper": { name: "Track Dumper", description: "Compact tracked dumper for difficult terrain." },
   "bonn-knickdumper-kde550": { name: "Wheeled Dumper / Swivel Dumper KDe550", description: "Electric swivel dumper with 4x4 drive - 8-10h runtime." },
