@@ -72,6 +72,10 @@ interface FormState {
   seo_meta_description: string;
   seo_faqs: Faq[];
   seo_local_content: Record<LocId, string>;
+  seo_use_case_bau: string;
+  seo_use_case_event: string;
+  seo_use_case_privat: string;
+  related_slugs: string[];
   seo_draft_meta_description: string;
   seo_draft_faqs: Faq[];
   seo_draft_generated_at: string | null;
@@ -108,6 +112,10 @@ const emptyForm = (): FormState => ({
   seo_meta_description: "",
   seo_faqs: [],
   seo_local_content: { krefeld: "", bonn: "", muelheim: "" },
+  seo_use_case_bau: "",
+  seo_use_case_event: "",
+  seo_use_case_privat: "",
+  related_slugs: [],
   seo_draft_meta_description: "",
   seo_draft_faqs: [],
   seo_draft_generated_at: null,
@@ -154,6 +162,10 @@ function fromRow(row: AdminManagedProductRow): FormState {
       bonn: row.seo_local_content?.bonn ?? "",
       muelheim: row.seo_local_content?.muelheim ?? "",
     },
+    seo_use_case_bau: (row as unknown as { seo_use_case_bau?: string | null }).seo_use_case_bau ?? "",
+    seo_use_case_event: (row as unknown as { seo_use_case_event?: string | null }).seo_use_case_event ?? "",
+    seo_use_case_privat: (row as unknown as { seo_use_case_privat?: string | null }).seo_use_case_privat ?? "",
+    related_slugs: (row as unknown as { related_slugs?: string[] | null }).related_slugs ?? [],
     seo_draft_meta_description: row.seo_draft_meta_description ?? "",
     seo_draft_faqs: row.seo_draft_faqs ?? [],
     seo_draft_generated_at: row.seo_draft_generated_at ?? null,
@@ -405,6 +417,10 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         seo_meta_description: metaDesc || null,
         seo_faqs: form.seo_faqs,
         seo_local_content: localContent,
+        seo_use_case_bau: form.seo_use_case_bau.trim() || null,
+        seo_use_case_event: form.seo_use_case_event.trim() || null,
+        seo_use_case_privat: form.seo_use_case_privat.trim() || null,
+        related_slugs: form.related_slugs,
         seo_draft_meta_description: form.seo_draft_meta_description || null,
         seo_draft_faqs: form.seo_draft_faqs,
         seo_draft_generated_at: form.seo_draft_generated_at,
@@ -771,6 +787,72 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                     </div>
                   ))}
                 </div>
+              </div>
+
+              <div className="space-y-3">
+                <div>
+                  <Label>Einsatzbereiche (Block „Wofür … mieten?" auf der Artikelseite)</Label>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Leer lassen = es greift der allgemeine Kategorie-Text. Sobald hier etwas steht, wird dieser Text angezeigt.
+                  </p>
+                </div>
+                <div>
+                  <Label className="text-xs">Bau &amp; Handwerk</Label>
+                  <Textarea rows={2} value={form.seo_use_case_bau} onChange={(e) => setForm({ ...form, seo_use_case_bau: e.target.value })} />
+                </div>
+                <div>
+                  <Label className="text-xs">Event &amp; Veranstaltung</Label>
+                  <Textarea rows={2} value={form.seo_use_case_event} onChange={(e) => setForm({ ...form, seo_use_case_event: e.target.value })} />
+                </div>
+                <div>
+                  <Label className="text-xs">Privat</Label>
+                  <Textarea rows={2} value={form.seo_use_case_privat} onChange={(e) => setForm({ ...form, seo_use_case_privat: e.target.value })} />
+                </div>
+              </div>
+
+              <div>
+                <Label>Empfohlenes Zubehör / ähnliche Artikel</Label>
+                <p className="text-xs text-muted-foreground mt-0.5 mb-2">
+                  Auswahl überschreibt die automatische Vorschlagsliste auf der Artikelseite (max. 8, Reihenfolge = Auswahlreihenfolge).
+                </p>
+                {form.related_slugs.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {form.related_slugs.map((slug) => {
+                      const p = allProducts.find((x) => x.slug === slug);
+                      return (
+                        <span key={slug} className="inline-flex items-center gap-1 rounded-full border border-border bg-muted px-2 py-1 text-xs">
+                          {p?.name ?? slug}
+                          <button
+                            type="button"
+                            onClick={() => setForm((f) => ({ ...f, related_slugs: f.related_slugs.filter((s) => s !== slug) }))}
+                            aria-label={`${p?.name ?? slug} entfernen`}
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
+                <select
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+                  value=""
+                  disabled={form.related_slugs.length >= 8}
+                  onChange={(e) => {
+                    const slug = e.target.value;
+                    if (!slug) return;
+                    setForm((f) => (f.related_slugs.includes(slug) ? f : { ...f, related_slugs: [...f.related_slugs, slug] }));
+                  }}
+                >
+                  <option value="">{form.related_slugs.length >= 8 ? "Maximum erreicht (8)" : "Artikel hinzufügen …"}</option>
+                  {allProducts
+                    .filter((p) => p.slug !== form.slug && !form.related_slugs.includes(p.slug))
+                    .slice()
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map((p) => (
+                      <option key={p.slug} value={p.slug}>{p.name}</option>
+                    ))}
+                </select>
               </div>
 
               <div>
