@@ -234,6 +234,7 @@ Deno.serve(async (req: Request) => {
     Wir reservieren die Artikel anschließend verbindlich für Sie und melden uns mit allen Details zur Abholung bzw. Lieferung.
   </div>
   <p style="color:#6b7280;font-size:13px;">Dieses Angebot ist gültig bis ${escapeHtml(fmt(validUntil))}.</p>
+  ${agbBytes ? `<p style="color:#6b7280;font-size:13px;">Es gelten unsere beigefügten ${customerKind === "business" ? "AGB für Unternehmer (B2B)" : "AGB für Verbraucher (B2C)"}.</p>` : ""}
   ${notes ? `<p style="white-space:pre-wrap;">${escapeHtml(notes)}</p>` : ""}
   <p style="margin-top:24px;">Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}<br>
   Tel. ${escapeHtml(loc.phone)} · <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a></p>
