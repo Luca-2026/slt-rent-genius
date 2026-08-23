@@ -174,10 +174,18 @@ export default function ProductDetail() {
     const cmsFaqs = product.seoFaqs?.length
       ? product.seoFaqs.map((f) => ({ q: f.question, a: f.answer }))
       : null;
-    if (!cmsFaqs && !product.seoMetaDescription) return base;
+    // CMS-Einsatzbereiche (Bau / Event / Privat) überschreiben die Kategorie-Fallbacks
+    const cmsUseCases = {
+      ...(product.seoUseCaseBau ? { useCaseBau: product.seoUseCaseBau } : {}),
+      ...(product.seoUseCaseEvent ? { useCaseEvent: product.seoUseCaseEvent } : {}),
+      ...(product.seoUseCasePrivat ? { useCasePrivat: product.seoUseCasePrivat } : {}),
+    };
+    const hasCmsUseCases = Object.keys(cmsUseCases).length > 0;
+    if (!cmsFaqs && !product.seoMetaDescription && !hasCmsUseCases) return base;
     const useCmsMeta = !!product.seoMetaDescription && !(hasLocalizedSEO && base?.metaDescription);
     return {
       ...(base ?? {}),
+      ...cmsUseCases,
       ...(cmsFaqs && !(hasLocalizedSEO && base?.faqs?.length) ? { faqs: cmsFaqs } : {}),
       ...(useCmsMeta ? { metaDescription: product.seoMetaDescription } : {}),
     } as typeof base;
