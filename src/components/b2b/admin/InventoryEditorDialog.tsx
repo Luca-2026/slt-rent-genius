@@ -797,16 +797,16 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                   </p>
                 </div>
                 <div>
-                  <Label className="text-xs">Bau &amp; Handwerk</Label>
-                  <Textarea rows={2} value={form.seo_use_case_bau} onChange={(e) => setForm({ ...form, seo_use_case_bau: e.target.value })} />
+                  <Label className="text-xs" htmlFor="uc-bau">Bau &amp; Handwerk</Label>
+                  <Textarea id="uc-bau" rows={2} value={form.seo_use_case_bau} onChange={(e) => setForm({ ...form, seo_use_case_bau: e.target.value })} />
                 </div>
                 <div>
-                  <Label className="text-xs">Event &amp; Veranstaltung</Label>
-                  <Textarea rows={2} value={form.seo_use_case_event} onChange={(e) => setForm({ ...form, seo_use_case_event: e.target.value })} />
+                  <Label className="text-xs" htmlFor="uc-event">Event &amp; Veranstaltung</Label>
+                  <Textarea id="uc-event" rows={2} value={form.seo_use_case_event} onChange={(e) => setForm({ ...form, seo_use_case_event: e.target.value })} />
                 </div>
                 <div>
-                  <Label className="text-xs">Privat</Label>
-                  <Textarea rows={2} value={form.seo_use_case_privat} onChange={(e) => setForm({ ...form, seo_use_case_privat: e.target.value })} />
+                  <Label className="text-xs" htmlFor="uc-privat">Privat</Label>
+                  <Textarea id="uc-privat" rows={2} value={form.seo_use_case_privat} onChange={(e) => setForm({ ...form, seo_use_case_privat: e.target.value })} />
                 </div>
               </div>
 
