@@ -257,21 +257,7 @@ export async function generateTimesheetPdf(data: TimesheetPdfData): Promise<Uint
     });
 
     page.drawRectangle({ x: ML, y: rowTop - rowH, width: CW, height: 0.4, color: LINE });
-    y = rowTop - rowH - ROW_H + ROW_H; // neue Oberkante
-    y = y - ROW_H + ROW_H;
-    y = rowTop - rowH - (ROW_H - ROW_H);
-    y = rowTop - rowH - 0;
-    y = y - (ROW_H - ROW_H);
-    y = rowTop - rowH - ROW_H + ROW_H - 0;
-    y = rowTop - rowH - 0; // y zeigt weiterhin auf "Baseline-Offset"-Konvention
-    y = y - ROW_H + ROW_H;
-    y = rowTop - rowH - ROW_H + ROW_H;
-    y = rowTop - rowH - (ROW_H - ROW_H) - 0;
-    y = rowTop - rowH - 0;
-    y = y; // ------------------------------------------------
-    y = rowTop - rowH - ROW_H + ROW_H;
-    y = rowTop - rowH - 0 - (ROW_H - ROW_H);
-    y = rowTop - rowH + 4 - ROW_H; // zurück in die ursprüngliche y-Konvention (y = Textbasis der nächsten Zeile)
+    y = rowTop - rowH + 4 - ROW_H; // Basis-y der nächsten Zeile (Konvention: Rechteck bei y-4)
     rowIndex++;
     cursor.setUTCDate(cursor.getUTCDate() + 1);
   }
