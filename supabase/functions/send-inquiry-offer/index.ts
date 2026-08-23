@@ -187,6 +187,7 @@ Deno.serve(async (req: Request) => {
       product_name: i.product_name,
       description: i.description,
       quantity: i.quantity,
+      unit: i.unit,
       unit_price: i.unit_price,
       discount_percent: i.discount_percent,
       total_price: Math.round(i.quantity * i.unit_price * (1 - (i.discount_percent || 0) / 100) * 100) / 100,
@@ -308,7 +309,7 @@ Deno.serve(async (req: Request) => {
     const rowsHtml = items.map((i) => `
       <tr>
         <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;">${escapeHtml(i.product_name)}${i.description ? `<br><span style="color:#6b7280;font-size:12px;">${escapeHtml(i.description)}</span>` : ""}${(i.addons ?? []).filter((a) => a.amount > 0).map((a) => `<br><span style="color:#6b7280;font-size:12px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}</span>`).join("")}</td>
-        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${i.quantity}</td>
+        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${i.quantity}${i.unit ? ` ${escapeHtml(i.unit)}` : ""}</td>
         <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${money(i.unit_price)}</td>
       </tr>`).join("");
 

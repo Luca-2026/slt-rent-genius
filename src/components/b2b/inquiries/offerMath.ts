@@ -1,3 +1,5 @@
+import type { OfferUnit } from "@/lib/offerUnits";
+
 /**
  * Frontend mirror of the offer math used by the `send-inquiry-offer`
  * edge function. Kept pure and dependency free so it is unit testable and
@@ -16,7 +18,12 @@ export interface OfferLineAddon {
 export interface OfferLine {
   product_name: string;
   description?: string;
+  /** Anzahl der Artikel */
   quantity: number;
+  /** Mietdauer/Menge in der gewählten Einheit (Tage, Wochen, Monate …) */
+  duration?: number;
+  /** Mengeneinheit der Position */
+  unit?: OfferUnit;
   unit_price: number;
   discount_percent: number;
   rental_start?: string;
@@ -29,10 +36,14 @@ export interface OfferLine {
 
 export const VAT_RATE = 19;
 
+
 const round2 = (n: number) => Math.round((n + Number.EPSILON) * 100) / 100;
 
-export function lineTotal(item: Pick<OfferLine, "quantity" | "unit_price" | "discount_percent">): number {
-  return round2(item.quantity * item.unit_price * (1 - (item.discount_percent || 0) / 100));
+export function lineTotal(
+  item: Pick<OfferLine, "quantity" | "unit_price" | "discount_percent" | "duration">,
+): number {
+  const duration = item.duration && item.duration > 0 ? item.duration : 1;
+  return round2(item.quantity * duration * item.unit_price * (1 - (item.discount_percent || 0) / 100));
 }
 
 export function addonsTotal(items: OfferLine[]): number {

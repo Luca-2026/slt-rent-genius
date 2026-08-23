@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Check, ChevronsUpDown, PencilLine } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { parsePriceValue } from "@/lib/catalogPricing";
 
 export interface CatalogProduct {
   slug: string;
@@ -12,6 +13,8 @@ export interface CatalogProduct {
   category: string;
   images: string[] | null;
   price_per_day: string | null;
+  price_weekend?: string | null;
+  price_per_month?: string | null;
   available_locations: string[] | null;
   addon_options?: unknown;
 }
@@ -25,7 +28,7 @@ async function loadCatalog(): Promise<CatalogProduct[]> {
     catalogPromise = (async () => {
       const { data } = await supabase
         .from("managed_products_public")
-        .select("slug,name,category,images,price_per_day,available_locations,addon_options")
+        .select("slug,name,category,images,price_per_day,price_weekend,price_per_month,available_locations,addon_options")
         .order("name");
       catalogCache = (data ?? []) as CatalogProduct[];
       return catalogCache;
@@ -42,13 +45,7 @@ export function pickCatalogImage(images: string[] | null | undefined): string | 
 }
 
 /** "89,00 €/Tag" -> 89 ; gibt undefined zurück, wenn kein Betrag erkennbar ist. */
-export function parsePrice(raw: string | null | undefined): number | undefined {
-  if (!raw) return undefined;
-  const match = String(raw).replace(/\s/g, "").match(/(\d+(?:[.,]\d{1,2})?)/);
-  if (!match) return undefined;
-  const value = Number(match[1].replace(".", "").replace(",", "."));
-  return Number.isFinite(value) ? value : undefined;
-}
+export const parsePrice = parsePriceValue;
 
 interface Props {
   value: string;

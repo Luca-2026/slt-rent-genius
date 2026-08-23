@@ -14,6 +14,8 @@ export interface InquiryOfferItem {
   product_name: string;
   description?: string;
   quantity: number;
+  /** Mengeneinheit (z. B. "Kalendertage", "Monat") – wird im PDF angezeigt. */
+  unit?: string;
   unit_price: number;
   discount_percent: number;
   rental_start?: string;
@@ -124,6 +126,7 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       product_name: name.slice(0, 200),
       description: item.description ? String(item.description).slice(0, 500) : undefined,
       quantity: Math.round(quantity),
+      unit: item.unit ? String(item.unit).slice(0, 40) : undefined,
       unit_price: round2(unitPrice),
       discount_percent: round2(discount),
       rental_start: item.rental_start ? String(item.rental_start).slice(0, 40) : undefined,
