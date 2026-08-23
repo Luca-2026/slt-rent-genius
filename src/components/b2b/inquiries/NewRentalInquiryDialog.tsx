@@ -21,6 +21,11 @@ interface Props {
   onCreated: () => void;
 }
 
+/** CRM speichert b2c/b2b, rental_inquiries erwartet private/business. */
+const toInquiryKind = (v: string | null | undefined) =>
+  v === "b2b" || v === "business" ? "business" : "private";
+const toCrmKind = (v: string) => (v === "business" ? "b2b" : "b2c");
+
 const emptyForm = {
   location: "krefeld",
   product_name: "",
@@ -29,7 +34,7 @@ const emptyForm = {
   start_time: "08:00",
   end_date: "",
   end_time: "17:00",
-  customer_kind: "b2c",
+  customer_kind: "private",
   company_name: "",
   customer_name: "",
   customer_email: "",
@@ -59,7 +64,7 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
     setStoreCustomer(false);
     setForm((prev) => ({
       ...prev,
-      customer_kind: c.customer_kind || prev.customer_kind,
+      customer_kind: toInquiryKind(c.customer_kind) || prev.customer_kind,
       company_name: c.company_name ?? "",
       customer_name: [c.first_name, c.last_name].filter(Boolean).join(" "),
       customer_email: c.email ?? "",
@@ -108,7 +113,7 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
         const [firstName, ...rest] = form.customer_name.trim().split(" ");
         customerId = await saveCustomer(
           {
-            customer_kind: form.customer_kind,
+            customer_kind: toCrmKind(form.customer_kind),
             company_name: form.company_name.trim() || null,
             first_name: firstName || null,
             last_name: rest.join(" ") || null,
@@ -217,8 +222,8 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
               <Select value={form.customer_kind} onValueChange={(v) => set("customer_kind", v)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="b2c">Privatkunde</SelectItem>
-                  <SelectItem value="b2b">Firmenkunde</SelectItem>
+                  <SelectItem value="private">Privatkunde</SelectItem>
+                  <SelectItem value="business">Firmenkunde</SelectItem>
                 </SelectContent>
               </Select>
             </div>
