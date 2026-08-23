@@ -103,6 +103,13 @@ lines.push(
   "RewriteRule ^mieten/bonn/erdbewegung/xcmg-xe27e/?$ /mieten/bonn/erdbewegung/minibagger-2-7t/ [L,R=301]",
   "RewriteRule ^mieten/muelheim/erdbewegung/xcmg-xe27e/?$ /mieten/muelheim/erdbewegung/minibagger-2-7t/ [L,R=301]",
   "",
+
+  "# === 2e. Modellwechsel 5t Minibagger (Bobcat E50z -> LiuGong 9057F ZTS) ===",
+  "RewriteRule ^mieten/krefeld/erdbewegung/bobcat-e50z/?$ /mieten/krefeld/erdbewegung/minibagger-5t/ [L,R=301]",
+  "RewriteRule ^mieten/bonn/erdbewegung/bobcat-e50z/?$ /mieten/bonn/erdbewegung/minibagger-5t/ [L,R=301]",
+  "RewriteRule ^mieten/muelheim/erdbewegung/bobcat-e50z/?$ /mieten/muelheim/erdbewegung/minibagger-5t/ [L,R=301]",
+  "",
+
   `# === 3. Legacy-URL-Redirects (aus GSC-404-Liste, ${mapping.total} URLs) ===`,
   "# Generiert aus 404-mapping.json — sortiert nach Confidence absteigend.",
   "# Confidence:",
