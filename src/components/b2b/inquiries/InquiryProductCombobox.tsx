@@ -13,6 +13,7 @@ export interface CatalogProduct {
   images: string[] | null;
   price_per_day: string | null;
   available_locations: string[] | null;
+  addon_options?: unknown;
 }
 
 let catalogCache: CatalogProduct[] | null = null;
@@ -24,7 +25,7 @@ async function loadCatalog(): Promise<CatalogProduct[]> {
     catalogPromise = (async () => {
       const { data } = await supabase
         .from("managed_products_public")
-        .select("slug,name,category,images,price_per_day,available_locations")
+        .select("slug,name,category,images,price_per_day,available_locations,addon_options")
         .order("name");
       catalogCache = (data ?? []) as CatalogProduct[];
       return catalogCache;
