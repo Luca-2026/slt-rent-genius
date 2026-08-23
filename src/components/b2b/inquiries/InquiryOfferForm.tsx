@@ -144,18 +144,28 @@ export function InquiryOfferForm({
               (c) => c.name.toLowerCase() === item.product_name.trim().toLowerCase(),
             );
             if (!hit) return { ...item, available_addons: [] };
+            const salesPrice = hit.net_price ?? undefined;
+            const useSalesCms = item.unit_price <= 0 && salesPrice !== undefined;
             return {
               ...item,
               image_url: item.image_url ?? hit.image ?? undefined,
-              unit_price: item.unit_price > 0 ? item.unit_price : hit.net_price ?? 0,
+              unit_price: useSalesCms ? salesPrice! : item.unit_price,
+              price_source: useSalesCms ? ("cms" as const) : item.price_source,
               available_addons: [],
             };
           }
           const match = await findCatalogProductByName(item.product_name);
           if (!match) return item;
           const image = pickCatalogImage(match.images);
-          const price = item.unit_price > 0 ? item.unit_price : parsePrice(match.price_per_day) ?? 0;
-          return { ...item, image_url: item.image_url ?? image, unit_price: price, available_addons: parseAddonOptions(match.addon_options) };
+          const cmsPrice = parsePrice(match.price_per_day);
+          const useCms = item.unit_price <= 0 && cmsPrice !== undefined;
+          return {
+            ...item,
+            image_url: item.image_url ?? image,
+            unit_price: useCms ? cmsPrice! : item.unit_price,
+            price_source: useCms ? ("cms" as const) : item.price_source,
+            available_addons: parseAddonOptions(match.addon_options),
+          };
         }),
       );
       if (!cancelled && enriched.some((item, i) => item !== items[i])) setItems(enriched);
