@@ -217,7 +217,7 @@ export default function StaffTasks() {
           {canViewInventory && (
             <TabsTrigger value="verkauf" className="min-w-0 text-xs sm:text-sm py-2 sm:flex-1">
               <ShoppingCart className="h-4 w-4 mr-1.5 shrink-0" />
-              <span className="truncate sm:hidden">Verkauf-CMS</span>
+              <span className="sm:hidden">Verkauf</span>
               <span className="hidden sm:inline">Verkaufsartikel-CMS</span>
             </TabsTrigger>
           )}
