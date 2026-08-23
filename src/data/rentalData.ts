@@ -104,12 +104,12 @@ import imgBobcatE35z_1 from "@/assets/products/erdbewegung/bobcat-e35z-1.webp";
 import imgBobcatE35z_2 from "@/assets/products/erdbewegung/bobcat-e35z-2.webp";
 import imgBobcatE35z_3 from "@/assets/products/erdbewegung/bobcat-e35z-3.webp";
 import imgBobcatE35z_4 from "@/assets/products/erdbewegung/bobcat-e35z-4.webp";
-const imgMinibagger5t_1 = "/product-images/erdbewegung/minibagger-5t-1.webp";
-const imgMinibagger5t_2 = "/product-images/erdbewegung/minibagger-5t-2.webp";
-const imgMinibagger5t_3 = "/product-images/erdbewegung/minibagger-5t-3.webp";
-const imgMinibagger5t_4 = "/product-images/erdbewegung/minibagger-5t-4.webp";
-const imgMinibagger5t_5 = "/product-images/erdbewegung/minibagger-5t-5.webp";
-const imgMinibagger5t_6 = "/product-images/erdbewegung/minibagger-5t-6.webp";
+const imgMinibagger6t_1 = "/product-images/erdbewegung/minibagger-6t-1.webp";
+const imgMinibagger6t_2 = "/product-images/erdbewegung/minibagger-6t-2.webp";
+const imgMinibagger6t_3 = "/product-images/erdbewegung/minibagger-6t-3.webp";
+const imgMinibagger6t_4 = "/product-images/erdbewegung/minibagger-6t-4.webp";
+const imgMinibagger6t_5 = "/product-images/erdbewegung/minibagger-6t-5.webp";
+const imgMinibagger6t_6 = "/product-images/erdbewegung/minibagger-6t-6.webp";
 
 import imgKettendumperRmd800_1 from "@/assets/products/erdbewegung/kettendumper-rmd800-1.jpeg";
 import imgKnickdumperKde550_1 from "@/assets/products/erdbewegung/raddumper-kde550p-1.jpg";
@@ -575,7 +575,7 @@ const trailerProducts: Product[] = [
     category: "baumaschine",
     tags: ["baumaschine", "gebremst", "zweiachser"],
     specifications: { "Eigengewicht": "ca. 645 kg", "Nutzlast": "ca. 1.155 kg" },
-    compatibleMachines: ["bobcat-e10z", "xcmg-xe20e", "minibagger-2-7t", "bobcat-e35z", "minibagger-5t"],
+    compatibleMachines: ["bobcat-e10z", "xcmg-xe20e", "minibagger-2-7t", "bobcat-e35z", "minibagger-6t"],
     rentwareCode: { krefeld: "EDE97K", bonn: "3F11ZC" } 
   },
   { 
@@ -597,7 +597,7 @@ const trailerProducts: Product[] = [
       "Führerschein": "Klasse 3 oder BE",
       "100 km/h-Zulassung": "Zugfahrzeug-Leergewicht min. 3.182 kg"
     },
-    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-5t"],
+    compatibleMachines: ["minibagger-2-7t", "bobcat-e35z", "minibagger-6t"],
     rentwareCode: { krefeld: "7WW3IY", bonn: "WFQBAR", muelheim: "GWO6D9" } 
   },
 
@@ -881,7 +881,7 @@ const erdbewegungProductsUnsorted: Product[] = [
   },
   {
     id: "bobcat-e35z",
-    name: "3,5t Minibagger",
+    name: "3,6t Minibagger",
     modelName: "Bobcat E35z",
     description: "Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V",
     detailedDescription: "Der Bobcat E35z ist ein leistungsstarker Minibagger der 3,5-Tonnen-Klasse mit Nullheck-Design für beengte Einsatzorte. Mit einer Grabtiefe von bis zu 3,12 m und einer maximalen Reichweite von 5,26 m am Boden eignet er sich hervorragend für Aushub-, Kanal- und Landschaftsbauarbeiten. Der Stage V Motor mit 24,8 kW (33,4 PS) sorgt für kraftvollen und emissionsarmen Betrieb. Das Laufwerk ist serienmäßig mit Gummiketten ausgestattet, Stahlketten sind optional verfügbar.\n\nVerfügbare Anbaugeräte (Auswahl): Hydraulikhammer für Abbrucharbeiten, Schlegelmäher für Landschaftsgärten, Räumlöffel für Aushubarbeiten, Tieflöffel für Aushubarbeiten, Laserausrüstung für exakte Nivellierung.",
@@ -907,13 +907,13 @@ const erdbewegungProductsUnsorted: Product[] = [
     ],
   },
   {
-    id: "minibagger-5t",
-    name: "5t Minibagger",
+    id: "minibagger-6t",
+    name: "6t Minibagger",
     modelName: "LiuGong 9057F ZTS",
     description: "Betriebsgewicht: 5.700 kg | Grabtiefe: 3.600 mm | 35,5 kW (48 PS) Yanmar Stufe V | Null-Heckschwenk (ZTS)",
-    detailedDescription: "Der 5t Minibagger LiuGong 9057F ZTS ist unsere kräftigste Minibagger-Klasse für Erd-, Kanal- und Abbrucharbeiten. Mit 3.600 mm maximaler Grabtiefe, 6.170 mm Grabreichweite und 4.000 mm Ausschütthöhe deckt er Baugruben, Leitungsgräben und Ladearbeiten ab. Das Null-Heckschwenk-Konzept (ZTS) mit 980 mm Heckschwenkradius erlaubt Arbeiten dicht an Wand, Zaun und Bordstein.\n\nAngetrieben wird die Maschine von einem turboaufgeladenen Yanmar 4TNV86CT-PLY mit 35,5 kW (48 PS) bei 2.400 min-1 und Abgasstufe EU Stufe V / EPA Tier 4 Final. Die Verstellpumpe liefert bis zu 149,6 l/min; der erste Zusatzkreis stellt bis zu 75 l/min bei 20 MPa bereit, der zweite bis zu 37 l/min – ausreichend für Hydraulikhammer, Sortiergreifer oder Schwenklöffel.\n\nSerienmäßig läuft der Bagger auf 400 mm breiten Gummiketten, der Zwei-Gang-Fahrantrieb erreicht 4,2 km/h, die Steigfähigkeit liegt bei 30° (58 %). Mit 5.650 mm Transportlänge, 1.960 mm Unterwagenbreite und 5.700 kg typischem Betriebsgewicht wird für den Transport ein entsprechend zugelassener Tieflader benötigt.",
-    image: imgMinibagger5t_1,
-    images: [imgMinibagger5t_1, imgMinibagger5t_2, imgMinibagger5t_3, imgMinibagger5t_4, imgMinibagger5t_5, imgMinibagger5t_6],
+    detailedDescription: "Der 6t Minibagger LiuGong 9057F ZTS ist unsere kräftigste Minibagger-Klasse für Erd-, Kanal- und Abbrucharbeiten. Mit 3.600 mm maximaler Grabtiefe, 6.170 mm Grabreichweite und 4.000 mm Ausschütthöhe deckt er Baugruben, Leitungsgräben und Ladearbeiten ab. Das Null-Heckschwenk-Konzept (ZTS) mit 980 mm Heckschwenkradius erlaubt Arbeiten dicht an Wand, Zaun und Bordstein.\n\nAngetrieben wird die Maschine von einem turboaufgeladenen Yanmar 4TNV86CT-PLY mit 35,5 kW (48 PS) bei 2.400 min-1 und Abgasstufe EU Stufe V / EPA Tier 4 Final. Die Verstellpumpe liefert bis zu 149,6 l/min; der erste Zusatzkreis stellt bis zu 75 l/min bei 20 MPa bereit, der zweite bis zu 37 l/min – ausreichend für Hydraulikhammer, Sortiergreifer oder Schwenklöffel.\n\nSerienmäßig läuft der Bagger auf 400 mm breiten Gummiketten, der Zwei-Gang-Fahrantrieb erreicht 4,2 km/h, die Steigfähigkeit liegt bei 30° (58 %). Mit 5.650 mm Transportlänge, 1.960 mm Unterwagenbreite und 5.700 kg typischem Betriebsgewicht wird für den Transport ein entsprechend zugelassener Tieflader benötigt.",
+    image: imgMinibagger6t_1,
+    images: [imgMinibagger6t_1, imgMinibagger6t_2, imgMinibagger6t_3, imgMinibagger6t_4, imgMinibagger6t_5, imgMinibagger6t_6],
     weightKg: 5700,
     category: "minibagger",
     tags: ["minibagger", "diesel", "ab-2500", "maschine"],

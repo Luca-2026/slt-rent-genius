@@ -5508,7 +5508,7 @@ $productDetails = [
     ],
   ],
   'bobcat-e35z' => [
-    'name' => '3,5t Minibagger',
+    'name' => '3,6t Minibagger',
     'modelName' => 'Bobcat E35z',
     'description' => 'Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V',
     'weightKg' => '3500',
@@ -5523,8 +5523,8 @@ $productDetails = [
       'Laufwerk' => 'Gummiketten (Stahlketten optional)',
     ],
   ],
-  'minibagger-5t' => [
-    'name' => '5t Minibagger',
+  'minibagger-6t' => [
+    'name' => '6t Minibagger',
     'modelName' => 'LiuGong 9057F ZTS',
     'description' => 'Betriebsgewicht: 5.700 kg | Grabtiefe: 3.600 mm | 35,5 kW (48 PS) Yanmar Stufe V | Null-Heckschwenk (ZTS)',
     'weightKg' => '5700',
@@ -5880,13 +5880,13 @@ $productDetails = [
     ],
   ],
   'bonn-bobcat-e35z' => [
-    'name' => '3,5t Minibagger',
+    'name' => '3,6t Minibagger',
     'modelName' => 'Bobcat E35z',
     'description' => 'Einsatzgewicht: 3.500 kg | Grabtiefe: 3.120 mm | Motorleistung: 24,8 kW | Abgasnorm Stufe V',
     'weightKg' => '3500',
   ],
-  'bonn-minibagger-5t' => [
-    'name' => '5t Minibagger',
+  'bonn-minibagger-6t' => [
+    'name' => '6t Minibagger',
     'modelName' => 'LiuGong 9057F ZTS',
     'description' => 'Betriebsgewicht: 5.700 kg | Grabtiefe: 3.600 mm | 35,5 kW (48 PS) Yanmar Stufe V | Null-Heckschwenk (ZTS)',
     'weightKg' => '5700',

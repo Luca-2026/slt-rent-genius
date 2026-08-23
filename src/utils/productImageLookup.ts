@@ -22,7 +22,7 @@ const IMAGE_DIR_MAP: Record<string, string> = {};
   "bobcat-l28-1",
   "xcmg-xe20e-1", "xcmg-xe20e-2", "xcmg-xe20e-3",
   "minibagger-2-7t-1", "minibagger-2-7t-2", "minibagger-2-7t-3", "minibagger-2-7t-4", "minibagger-2-7t-5", "minibagger-2-7t-6",
-  "minibagger-5t-1", "minibagger-5t-2", "minibagger-5t-3", "minibagger-5t-4", "minibagger-5t-5", "minibagger-5t-6",
+  "minibagger-6t-1", "minibagger-6t-2", "minibagger-6t-3", "minibagger-6t-4", "minibagger-6t-5", "minibagger-6t-6",
 
 ].forEach((f) => (IMAGE_DIR_MAP[f] = "erdbewegung"));
 
