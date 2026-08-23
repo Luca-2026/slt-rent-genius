@@ -270,6 +270,80 @@ export function InquiryOfferForm({
                 {formatEuro(item.quantity * item.unit_price * (1 - (item.discount_percent || 0) / 100))}
               </div>
             </div>
+
+            {/* Zusatzoptionen dieser Position (aus dem CMS-Artikel) */}
+            {(item.available_addons?.length ?? 0) > 0 && (
+              <div className="rounded-md bg-muted/50 p-2 space-y-2">
+                <Select
+                  value=""
+                  disabled={disabled}
+                  onValueChange={(key) => {
+                    const option = item.available_addons?.find((o) => o.key === key);
+                    if (!option) return;
+                    if ((item.addons ?? []).some((a) => a.key === option.key)) return;
+                    patchItem(index, {
+                      addons: [
+                        ...(item.addons ?? []),
+                        {
+                          key: option.key,
+                          label: option.label,
+                          amount: suggestAddonAmount(option, item),
+                          note: option.deductible ? `Selbstbehalt ${option.deductible} €` : option.note,
+                        },
+                      ],
+                    });
+                  }}
+                >
+                  <SelectTrigger className="h-9 text-sm">
+                    <SelectValue placeholder="Zusatzoption hinzufügen …" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(item.available_addons ?? [])
+                      .filter((o) => !(item.addons ?? []).some((a) => a.key === o.key))
+                      .map((o) => (
+                        <SelectItem key={o.key} value={o.key}>{o.label}</SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+
+                {(item.addons ?? []).map((addon, ai) => (
+                  <div key={addon.key} className="flex items-end gap-2">
+                    <div className="min-w-0 flex-1">
+                      <Label className="text-xs break-words">
+                        {addon.label}
+                        {addon.note ? <span className="block text-muted-foreground font-normal">{addon.note}</span> : null}
+                      </Label>
+                      <Input
+                        type="number"
+                        min={0}
+                        step="0.01"
+                        value={addon.amount}
+                        onChange={(e) =>
+                          patchItem(index, {
+                            addons: (item.addons ?? []).map((a, j) =>
+                              j === ai ? { ...a, amount: Number(e.target.value) || 0 } : a,
+                            ),
+                          })
+                        }
+                        disabled={disabled}
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      aria-label="Zusatzoption entfernen"
+                      disabled={disabled}
+                      onClick={() =>
+                        patchItem(index, { addons: (item.addons ?? []).filter((_, j) => j !== ai) })
+                      }
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
         <Button
