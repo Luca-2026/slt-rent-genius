@@ -251,7 +251,10 @@ Deno.serve(async (req: Request) => {
             reply_to: loc.email,
             subject: `Ihr Angebot von SLT Rental – ${offerNumber}`,
             html: emailHtml,
-            attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
+            attachments: [
+              { filename: fileName, content: encodeBase64(pdfBytes) },
+              ...(agbBytes ? [{ filename: agbFileName, content: encodeBase64(agbBytes) }] : []),
+            ],
           }),
         });
         if (res.ok) emailSent = true;
