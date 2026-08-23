@@ -19,8 +19,22 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { CheckCircle2, ChevronLeft, ChevronRight, Download, Lock } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { AlertTriangle, CheckCircle2, ChevronLeft, ChevronRight, Download, Lock } from "lucide-react";
 import { LOCATIONS } from "./types";
+import {
+  NOTE_MAX_LENGTH,
+  currentPeriod,
+  isPeriodLocked,
+  isReminderWindow,
+  lockedThrough,
+  periodDays,
+  periodFor,
+  periodRangeLabel,
+  periodTitle,
+  shiftPeriod,
+  type PayrollPeriod,
+} from "@/lib/payrollPeriod";
 
 const MONTH_NAMES = [
   "Januar", "Februar", "März", "April", "Mai", "Juni",
@@ -46,6 +60,8 @@ interface Timesheet {
   status: string;
   total_minutes: number;
   submitted_at: string | null;
+  period_start?: string | null;
+  period_end?: string | null;
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -75,8 +91,10 @@ export function TimeTrackingTab() {
   const { toast } = useToast();
 
   const today = new Date();
-  const [year, setYear] = useState(today.getFullYear());
-  const [month, setMonth] = useState(today.getMonth() + 1);
+  const [period, setPeriod] = useState<PayrollPeriod>(() => currentPeriod());
+  const year = period.year;
+  const month = period.month;
+  const lockDate = useMemo(() => lockedThrough(), []);
   const [viewUserId, setViewUserId] = useState<string>(user?.id ?? "");
   const [entries, setEntries] = useState<Record<string, TimeEntry>>({});
   const [sheet, setSheet] = useState<Timesheet | null>(null);
@@ -92,13 +110,19 @@ export function TimeTrackingTab() {
   }, [user?.id, viewUserId]);
 
   const isOwnSheet = viewUserId === user?.id;
-  const locked = sheet?.status === "submitted" || !isOwnSheet;
+  const periodClosed = isPeriodLocked(period) && !isAdmin;
+  const locked = sheet?.status === "submitted" || !isOwnSheet || periodClosed;
+  /** Einzelner Tag gesperrt (abgerechneter Zeitraum) – Admins dürfen korrigieren. */
+  const isDayLocked = useCallback(
+    (iso: string) => locked || (!isAdmin && iso <= lockDate),
+    [locked, isAdmin, lockDate],
+  );
 
   const load = useCallback(async () => {
     if (!viewUserId) return;
     setLoading(true);
-    const first = `${year}-${pad(month)}-01`;
-    const last = `${year}-${pad(month)}-${pad(daysInMonth(year, month))}`;
+    const first = period.start;
+    const last = period.end;
 
     const [{ data: rows }, { data: sheetRow }] = await Promise.all([
       supabase
@@ -121,7 +145,7 @@ export function TimeTrackingTab() {
     setEntries(map);
     setSheet((sheetRow as Timesheet | null) ?? null);
     setLoading(false);
-  }, [viewUserId, year, month]);
+  }, [viewUserId, period, year, month]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -139,14 +163,7 @@ export function TimeTrackingTab() {
 
   useEffect(() => { loadSheets(); }, [loadSheets]);
 
-  const days = useMemo(() => {
-    const out: { iso: string; day: number; dow: number; weekend: boolean }[] = [];
-    for (let d = 1; d <= daysInMonth(year, month); d++) {
-      const dow = new Date(year, month - 1, d).getDay();
-      out.push({ iso: `${year}-${pad(month)}-${pad(d)}`, day: d, dow, weekend: dow === 0 || dow === 6 });
-    }
-    return out;
-  }, [year, month]);
+  const days = useMemo(() => periodDays(period), [period]);
 
   const total = useMemo(
     () => days.reduce((sum, d) => sum + entryMinutes(entries[d.iso] ?? {}), 0),
@@ -174,7 +191,7 @@ export function TimeTrackingTab() {
   };
 
   const persist = async (iso: string) => {
-    if (locked || !user) return;
+    if (isDayLocked(iso) || !user) return;
     const e = entries[iso];
     if (!e) return;
     setSaving(iso);
@@ -199,14 +216,7 @@ export function TimeTrackingTab() {
     setSaving(null);
   };
 
-  const shiftMonth = (delta: number) => {
-    let m = month + delta;
-    let y = year;
-    if (m < 1) { m = 12; y -= 1; }
-    if (m > 12) { m = 1; y += 1; }
-    setMonth(m);
-    setYear(y);
-  };
+  const shiftMonth = (delta: number) => setPeriod((p) => shiftPeriod(p, delta));
 
   const callFunction = async (payload: Record<string, unknown>) => {
     const { data, error } = await supabase.functions.invoke("generate-timesheet", { body: payload });
@@ -241,7 +251,7 @@ export function TimeTrackingTab() {
       await callFunction({ year, month, action: "submit" });
       toast({
         title: "Monat bestätigt",
-        description: `Der Arbeitszeitnachweis für ${MONTH_NAMES[month - 1]} ${year} wurde per E-Mail versendet.`,
+        description: `Der Arbeitszeitnachweis für ${periodRangeLabel(period)} wurde per E-Mail versendet.`,
       });
       setConfirmOpen(false);
       await Promise.all([load(), loadSheets()]);
@@ -257,13 +267,14 @@ export function TimeTrackingTab() {
       {/* Kopfzeile: Monat + ggf. Mitarbeiterauswahl */}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="icon" onClick={() => shiftMonth(-1)} aria-label="Vorheriger Monat">
+          <Button variant="outline" size="icon" onClick={() => shiftMonth(-1)} aria-label="Vorheriger Abrechnungszeitraum">
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <div className="min-w-[170px] text-center font-semibold">
-            {MONTH_NAMES[month - 1]} {year}
+          <div className="min-w-[210px] text-center">
+            <div className="font-semibold leading-tight">{periodRangeLabel(period)}</div>
+            <div className="text-xs text-muted-foreground">{periodTitle(period)}</div>
           </div>
-          <Button variant="outline" size="icon" onClick={() => shiftMonth(1)} aria-label="Nächster Monat">
+          <Button variant="outline" size="icon" onClick={() => shiftMonth(1)} aria-label="Nächster Abrechnungszeitraum">
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
@@ -289,8 +300,10 @@ export function TimeTrackingTab() {
         <div className="flex items-center gap-2 rounded-md border bg-muted/50 px-3 py-2 text-sm text-muted-foreground">
           <Lock className="h-4 w-4 shrink-0" />
           {sheet?.status === "submitted"
-            ? `Monat wurde am ${sheet.submitted_at ? new Date(sheet.submitted_at).toLocaleDateString("de-DE") : ""} bestätigt und ist gesperrt.`
-            : "Ansicht eines anderen Mitarbeitenden – nur lesbar."}
+            ? `Zeitraum wurde am ${sheet.submitted_at ? new Date(sheet.submitted_at).toLocaleDateString("de-DE") : ""} bestätigt und ist gesperrt.`
+            : !isOwnSheet
+              ? "Ansicht eines anderen Mitarbeitenden – nur lesbar."
+              : `Abgerechnet: Zeiten bis zum ${lockDate.split("-").reverse().join(".")} sind gesperrt.`}
         </div>
       )}
 
@@ -348,7 +361,7 @@ export function TimeTrackingTab() {
                           type="time"
                           className="w-full px-2 text-sm"
                           value={e?.start_time?.slice(0, 5) ?? ""}
-                          disabled={locked}
+                          disabled={isDayLocked(d.iso)}
                           onChange={(ev) => patchLocal(d.iso, { start_time: ev.target.value || null })}
                           onBlur={() => persist(d.iso)}
                           aria-label={`Beginn ${d.iso}`}
@@ -363,7 +376,7 @@ export function TimeTrackingTab() {
                           type="time"
                           className="w-full px-2 text-sm"
                           value={e?.end_time?.slice(0, 5) ?? ""}
-                          disabled={locked}
+                          disabled={isDayLocked(d.iso)}
                           onChange={(ev) => patchLocal(d.iso, { end_time: ev.target.value || null })}
                           onBlur={() => persist(d.iso)}
                           aria-label={`Ende ${d.iso}`}
@@ -382,7 +395,7 @@ export function TimeTrackingTab() {
                           placeholder="0"
                           className="w-full"
                           value={e?.break_minutes ?? ""}
-                          disabled={locked}
+                          disabled={isDayLocked(d.iso)}
                           onChange={(ev) =>
                             patchLocal(d.iso, { break_minutes: ev.target.value === "" ? 0 : Number(ev.target.value) })
                           }
@@ -407,21 +420,38 @@ export function TimeTrackingTab() {
                         <label className="block text-[11px] font-medium text-muted-foreground lg:hidden" htmlFor={`note-${d.iso}`}>
                           Tätigkeit / Notiz
                         </label>
-                        <Input
+                        <Textarea
                           id={`note-${d.iso}`}
-                          placeholder="Tätigkeit / Notiz"
+                          placeholder="Tätigkeit / Notiz (max. 300 Zeichen)"
+                          rows={2}
+                          maxLength={NOTE_MAX_LENGTH}
+                          className="min-h-[52px] resize-y text-sm leading-snug"
                           value={e?.note ?? ""}
-                          disabled={locked}
-                          onChange={(ev) => patchLocal(d.iso, { note: ev.target.value })}
+                          disabled={isDayLocked(d.iso)}
+                          onChange={(ev) =>
+                            patchLocal(d.iso, { note: ev.target.value.slice(0, NOTE_MAX_LENGTH) })
+                          }
                           onBlur={() => persist(d.iso)}
                           aria-label={`Notiz ${d.iso}`}
                         />
+                        {(e?.note?.length ?? 0) > 0 && (
+                          <p
+                            className={`text-right text-[11px] ${
+                              (e?.note?.length ?? 0) >= NOTE_MAX_LENGTH
+                                ? "font-medium text-destructive"
+                                : "text-muted-foreground"
+                            }`}
+                          >
+                            {e?.note?.length ?? 0}/{NOTE_MAX_LENGTH} Zeichen
+                            {(e?.note?.length ?? 0) >= NOTE_MAX_LENGTH ? " – Maximum erreicht" : ""}
+                          </p>
+                        )}
                       </div>
                       <div className="space-y-1 lg:space-y-0">
                         <label className="block text-[11px] font-medium text-muted-foreground lg:hidden">Standort</label>
                         <Select
                           value={e?.location ?? "none"}
-                          disabled={locked}
+                          disabled={isDayLocked(d.iso)}
                           onValueChange={(v) => {
                             patchLocal(d.iso, { location: v === "none" ? null : v });
                             setTimeout(() => persist(d.iso), 0);
@@ -452,7 +482,7 @@ export function TimeTrackingTab() {
       <Card>
         <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm text-muted-foreground">Gesamt {MONTH_NAMES[month - 1]} {year}</p>
+            <p className="text-sm text-muted-foreground">Gesamt {periodRangeLabel(period)}</p>
             <p className="text-2xl font-bold text-primary">
               {fmtHours(total)} <span className="text-base font-medium text-muted-foreground">({fmtDecimal(total)} Std.)</span>
             </p>
@@ -492,7 +522,11 @@ export function TimeTrackingTab() {
           <Card key={s.id}>
             <CardContent className="flex flex-col gap-2 p-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="text-sm">
-                <span className="font-medium">{MONTH_NAMES[s.month - 1]} {s.year}</span>
+                <span className="font-medium">
+                  {s.period_start && s.period_end
+                    ? periodRangeLabel({ year: s.year, month: s.month, start: s.period_start, end: s.period_end })
+                    : `${MONTH_NAMES[s.month - 1]} ${s.year}`}
+                </span>
                 {isAdmin && s.staff_name && <span className="text-muted-foreground"> · {s.staff_name}</span>}
                 <span className="text-muted-foreground"> · {fmtHours(s.total_minutes)}</span>
               </div>
@@ -507,7 +541,7 @@ export function TimeTrackingTab() {
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{MONTH_NAMES[month - 1]} {year} bestätigen?</AlertDialogTitle>
+            <AlertDialogTitle>Zeitraum {periodRangeLabel(period)} bestätigen?</AlertDialogTitle>
             <AlertDialogDescription>
               Du bestätigst {fmtHours(total)} ({fmtDecimal(total)} Std.) geleistete Arbeitszeit. Der Monat wird
               danach für Änderungen gesperrt, als PDF archiviert und per E-Mail an dich und die Verwaltung gesendet.
