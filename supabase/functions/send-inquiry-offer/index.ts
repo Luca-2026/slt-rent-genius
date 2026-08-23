@@ -101,6 +101,23 @@ Deno.serve(async (req: Request) => {
     const validDays = Number(body.valid_days) > 0 ? Math.min(Number(body.valid_days), 180) : 14;
     const notes: string | null = typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
 
+    // ── Lieferadresse: aus dem Portal übergeben (Vorbelegung stammt aus dem
+    //    öffentlichen Anfrageformular) – Fallback auf die gespeicherten Felder.
+    const str = (v: unknown) => (typeof v === "string" ? v.trim().slice(0, 200) : "");
+    const addrIn = body.delivery_address && typeof body.delivery_address === "object"
+      ? body.delivery_address as Record<string, unknown>
+      : null;
+    const deliveryAddress = {
+      street: addrIn ? str(addrIn.street) : str(inquiry.delivery_street),
+      postal_code: addrIn ? str(addrIn.postal_code) : str(inquiry.delivery_postal_code),
+      city: addrIn ? str(addrIn.city) : str(inquiry.delivery_city),
+    };
+    const deliveryRequested = body.delivery_requested === false
+      ? false
+      : Boolean(deliveryAddress.street || deliveryAddress.city);
+
+
+
     const totals = buildOfferTotals(items, deliveryCostDelivery + deliveryCostReturn);
 
     const locationKey = resolveLocationKey(body.location || inquiry.location);
@@ -121,7 +138,7 @@ Deno.serve(async (req: Request) => {
     const isBusiness = inquiry.customer_kind === "business";
 
     const profile = {
-      id: inquiry.id,
+      id: "",
       company_name: companyName || customerName || "Kunde",
       legal_form: null,
       // Kontaktzeile nur, wenn sie sich vom Firmennamen unterscheidet
@@ -179,7 +196,18 @@ Deno.serve(async (req: Request) => {
     const validUntil = new Date(today.getTime() + validDays * 86400000);
     const fmt = (d: Date) => d.toLocaleDateString("de-DE");
 
-    const staffName = String(body.staff_name || "").slice(0, 120) || (user.email ?? "SLT Rental");
+    // Ansprechpartner: übergebener Name → Name aus dem Mitarbeiterprofil → Fallback
+    let staffName = String(body.staff_name || "").trim().slice(0, 120);
+    if (!staffName) {
+      const { data: sp } = await service
+        .from("staff_profiles")
+        .select("first_name, last_name")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      staffName = [sp?.first_name, sp?.last_name].filter(Boolean).join(" ").trim();
+    }
+    if (!staffName) staffName = "SLT Rental";
+
 
     const pdfBytes = await generateOfferPdf({
       offerNumber,
@@ -203,6 +231,8 @@ Deno.serve(async (req: Request) => {
       additionalServices: [],
       staffName,
       issuingLocation: locationKey,
+      deliveryAddress: deliveryRequested ? deliveryAddress : undefined,
+
     });
 
     const safeName = (profile.company_name || "Kunde")
@@ -262,6 +292,8 @@ Deno.serve(async (req: Request) => {
   </table>
   <p style="font-size:15px;"><strong>Gesamtsumme brutto: ${money(totals.grossAmount)}</strong><br>
   <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span></p>
+  ${deliveryRequested && (deliveryAddress.street || deliveryAddress.city) ? `<p style="font-size:14px;"><strong>Lieferadresse:</strong><br>${escapeHtml(deliveryAddress.street)}<br>${escapeHtml([deliveryAddress.postal_code, deliveryAddress.city].filter(Boolean).join(" "))}</p>` : ""}
+
   <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>So nehmen Sie das Angebot an:</strong><br>
     Bitte bestätigen Sie uns die Annahme kurz per E-Mail an
@@ -310,7 +342,13 @@ Deno.serve(async (req: Request) => {
         offer_file_url: fileUrl,
         offer_total_gross: totals.grossAmount,
         offer_sent_at: new Date().toISOString(),
+        // im Portal geänderte Lieferadresse zurückschreiben
+        delivery_street: deliveryRequested ? deliveryAddress.street || null : null,
+        delivery_postal_code: deliveryRequested ? deliveryAddress.postal_code || null : null,
+        delivery_city: deliveryRequested ? deliveryAddress.city || null : null,
+        ...(inquiryType === "rental" ? { delivery_requested: deliveryRequested } : {}),
       })
+
       .eq("id", inquiry.id);
     if (updErr) console.error("Status-Update fehlgeschlagen:", updErr.message);
 

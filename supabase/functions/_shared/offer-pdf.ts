@@ -134,7 +134,10 @@ export async function generateOfferPdf(data: {
       : data.profile.company_name;
     dt(pg, companyLine, ADDR_X, ay, bold, 10.5); ay -= 12;
     const cn = `${data.profile.contact_first_name || ""} ${data.profile.contact_last_name || ""}`.trim();
-    if (cn) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 11; }
+    const norm = (s: string) => s.toLowerCase().replace(/\s+/g, " ").trim();
+    // Ansprechpartner nur ausgeben, wenn er sich vom Firmennamen unterscheidet
+    if (cn && norm(cn) !== norm(String(companyLine || ""))) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 11; }
+
     dt(pg, `${data.profile.street || ""}${data.profile.house_number ? " " + data.profile.house_number : ""}`, ADDR_X, ay, font, 9.5); ay -= 11;
     dt(pg, `${data.profile.postal_code || ""} ${data.profile.city || ""}`, ADDR_X, ay, font, 9.5); ay -= 11;
     dt(pg, data.profile.country || "Deutschland", ADDR_X, ay, font, 9.5); ay -= 11;
@@ -181,7 +184,12 @@ export async function generateOfferPdf(data: {
     infoRow("Angebotsnummer:", data.offerNumber);
     infoRow("Angebotsdatum:", fd(data.offerDate));
     infoRow("G\u00FCltig bis:", fd(data.validUntil), rgb(0.7, 0.26, 0.04));
-    infoRow("Kundennummer:", String(data.profile.id).substring(0, 8).toUpperCase());
+    // Anfragen aus dem öffentlichen Formular haben keine Kundennummer –
+    // dann die Zeile weglassen statt eine UUID auszuweisen.
+    if (String(data.profile.id || "").trim()) {
+      infoRow("Kundennummer:", String(data.profile.id).substring(0, 8).toUpperCase());
+    }
+
     infoRow("Ansprechpartner:", data.staffName || SLT_COMPANY.managingDirector);
     infoRow("Ausgabestandort:", issuingLoc.name);
     infoSub(`${issuingLoc.address}, ${issuingLoc.city}`);

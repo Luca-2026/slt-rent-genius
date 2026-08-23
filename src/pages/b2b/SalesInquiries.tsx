@@ -83,13 +83,13 @@ export default function SalesInquiries() {
               <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-semibold truncate">{salesInquiryTitle(r)}</span>
+                    <span className="font-semibold break-words min-w-0">{salesInquiryTitle(r)}</span>
                     <InquiryStatusBadge status={r.status} />
                     <span className="text-xs text-muted-foreground">
                       {SALES_KIND_LABELS[r.kind] ?? r.kind}
                     </span>
                   </div>
-                  <p className="text-sm text-muted-foreground truncate">
+                  <p className="text-sm text-muted-foreground break-words">
                     {salesInquiryCustomer(r)}
                     {r.location && ` · ${getLocationDisplayName(r.location)}`}
                   </p>
@@ -125,6 +125,13 @@ export default function SalesInquiries() {
                     discount_percent: 0,
                   },
                 ]}
+                defaultDelivery={{
+                  requested: Boolean(selected.delivery_street || selected.delivery_city),
+                  street: selected.delivery_street ?? "",
+                  postal_code: selected.delivery_postal_code ?? "",
+                  city: selected.delivery_city ?? "",
+                }}
+
                 details={<SalesDetails inquiry={selected} />}
               />
             </div>

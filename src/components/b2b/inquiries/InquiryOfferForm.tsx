@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+
 import { Plus, Send, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -14,11 +16,20 @@ import {
   pickCatalogImage,
 } from "./InquiryProductCombobox";
 
+export interface OfferDeliveryAddress {
+  requested: boolean;
+  street: string;
+  postal_code: string;
+  city: string;
+}
+
 interface Props {
   inquiryType: "rental" | "sales";
   inquiryId: string;
   location: string | null;
   defaultItems: OfferLine[];
+  /** Vom Kunden im Anfrageformular angegebene Lieferadresse (im Portal änderbar). */
+  defaultDelivery?: OfferDeliveryAddress;
   staffName: string;
   disabled?: boolean;
   onSent?: () => void;
@@ -29,6 +40,7 @@ export function InquiryOfferForm({
   inquiryId,
   location,
   defaultItems,
+  defaultDelivery,
   staffName,
   disabled,
   onSent,
@@ -37,6 +49,8 @@ export function InquiryOfferForm({
   const [items, setItems] = useState<OfferLine[]>(
     defaultItems.length ? defaultItems : [{ product_name: "", description: "", quantity: 1, unit_price: 0, discount_percent: 0 }],
   );
+  const emptyDelivery: OfferDeliveryAddress = { requested: false, street: "", postal_code: "", city: "" };
+  const [delivery, setDelivery] = useState<OfferDeliveryAddress>(defaultDelivery ?? emptyDelivery);
   const [deliveryCostDelivery, setDeliveryCostDelivery] = useState(0);
   const [deliveryCostReturn, setDeliveryCostReturn] = useState(0);
   const [deposit, setDeposit] = useState(0);
@@ -44,10 +58,17 @@ export function InquiryOfferForm({
   const [notes, setNotes] = useState("");
   const [sending, setSending] = useState(false);
 
+  // Bei Wechsel der Anfrage die Lieferadresse aus dem Anfrageformular übernehmen.
+  useEffect(() => {
+    setDelivery(defaultDelivery ?? emptyDelivery);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inquiryId, defaultDelivery?.requested, defaultDelivery?.street, defaultDelivery?.postal_code, defaultDelivery?.city]);
+
   const totals = useMemo(
     () => buildOfferTotals(items, deliveryCostDelivery + deliveryCostReturn),
     [items, deliveryCostDelivery, deliveryCostReturn],
   );
+
 
   const patchItem = (index: number, patch: Partial<OfferLine>) =>
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, ...patch } : item)));
@@ -80,6 +101,14 @@ export function InquiryOfferForm({
       toast({ title: "Bitte alle Positionen ausfüllen", description: "Bezeichnung, Menge und Preis werden benötigt.", variant: "destructive" });
       return;
     }
+    if (delivery.requested && !delivery.street.trim() && !delivery.city.trim()) {
+      toast({
+        title: "Lieferadresse fehlt",
+        description: "Bitte Straße und Ort der Lieferadresse ergänzen oder „Lieferung“ deaktivieren.",
+        variant: "destructive",
+      });
+      return;
+    }
     setSending(true);
     const { data, error } = await supabase.functions.invoke("send-inquiry-offer", {
       body: {
@@ -89,12 +118,21 @@ export function InquiryOfferForm({
         items,
         delivery_cost_delivery: deliveryCostDelivery,
         delivery_cost_return: deliveryCostReturn,
+        delivery_requested: delivery.requested,
+        delivery_address: delivery.requested
+          ? {
+              street: delivery.street.trim(),
+              postal_code: delivery.postal_code.trim(),
+              city: delivery.city.trim(),
+            }
+          : null,
         deposit,
         valid_days: validDays,
         notes,
         staff_name: staffName,
       },
     });
+
     setSending(false);
 
     if (error || (data as any)?.error) {
@@ -211,6 +249,57 @@ export function InquiryOfferForm({
           <Plus className="h-4 w-4 mr-1" /> Position hinzufügen
         </Button>
       </div>
+
+      <div className="rounded-lg border border-border p-3 space-y-3">
+        <label className="flex items-start gap-2 text-sm font-medium cursor-pointer">
+          <Checkbox
+            checked={delivery.requested}
+            onCheckedChange={(v) => setDelivery({ ...delivery, requested: v === true })}
+            disabled={disabled}
+            className="mt-0.5"
+          />
+          <span>
+            Lieferadresse im Angebot ausweisen
+            {defaultDelivery?.requested ? (
+              <span className="block text-xs font-normal text-muted-foreground">
+                Vom Kunden im Anfrageformular angegeben – hier änderbar.
+              </span>
+            ) : null}
+          </span>
+        </label>
+        {delivery.requested && (
+          <div className="grid gap-2 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <Label className="text-xs">Straße und Hausnummer</Label>
+              <Input
+                value={delivery.street}
+                onChange={(e) => setDelivery({ ...delivery, street: e.target.value })}
+                placeholder="Baustelle Nord 4"
+                disabled={disabled}
+              />
+            </div>
+            <div>
+              <Label className="text-xs">PLZ</Label>
+              <Input
+                value={delivery.postal_code}
+                onChange={(e) => setDelivery({ ...delivery, postal_code: e.target.value })}
+                inputMode="numeric"
+                disabled={disabled}
+              />
+            </div>
+            <div>
+              <Label className="text-xs">Ort</Label>
+              <Input
+                value={delivery.city}
+                onChange={(e) => setDelivery({ ...delivery, city: e.target.value })}
+                disabled={disabled}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <div>
