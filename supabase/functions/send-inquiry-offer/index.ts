@@ -124,8 +124,19 @@ Deno.serve(async (req: Request) => {
       id: inquiry.id,
       company_name: companyName || customerName || "Kunde",
       legal_form: null,
-      contact_first_name: inquiryType === "rental" ? customerName : (inquiry.first_name || ""),
-      contact_last_name: inquiryType === "rental" ? "" : (inquiry.last_name || ""),
+      // Kontaktzeile nur, wenn sie sich vom Firmennamen unterscheidet
+      contact_first_name:
+        companyName && companyName.trim() === (customerName || "").trim()
+          ? ""
+          : inquiryType === "rental"
+            ? customerName
+            : (inquiry.first_name || ""),
+      contact_last_name:
+        companyName && companyName.trim() === (customerName || "").trim()
+          ? ""
+          : inquiryType === "rental"
+            ? ""
+            : (inquiry.last_name || ""),
       street: inquiryType === "rental" ? (inquiry.customer_street || "") : (inquiry.billing_street || inquiry.delivery_street || ""),
       house_number: "",
       postal_code: inquiryType === "rental" ? (inquiry.customer_postal_code || "") : (inquiry.billing_postal_code || inquiry.delivery_postal_code || ""),
@@ -146,6 +157,7 @@ Deno.serve(async (req: Request) => {
       quantity: i.quantity,
       unit_price: i.unit_price,
       discount_percent: i.discount_percent,
+      total_price: Math.round(i.quantity * i.unit_price * (1 - (i.discount_percent || 0) / 100) * 100) / 100,
       rental_start: i.rental_start,
       rental_end: i.rental_end,
       image_url: normalizeImageUrl(i.image_url) as string | null,
