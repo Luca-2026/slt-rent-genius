@@ -732,6 +732,8 @@ export const productTranslations: Record<string, { name?: string; description?: 
   "bonn-bobcat-e10": { name: "1t Bobcat E10", description: "Compact mini excavator for tight construction sites." },
   "bonn-xcmg-xe20e": { description: "Operating weight: 2,000 kg | Dig depth: 2,385 mm | Width: 980 mm" },
   "bonn-minibagger-2-7t": { description: "Operating weight: 2,750 kg | Transport width: 1,550 mm | Zero tail swing (ZTS) | 21 hp Yanmar Stage V" },
+  "bonn-minibagger-5t": { description: "Operating weight: 5,700 kg | Dig depth: 3,600 mm | Zero tail swing (ZTS) | 48 hp Yanmar Stage V" },
+
   "bonn-radlader-kramer-5050": { name: "Wheel Loader 3t Kramer 5050", description: "Compact wheel loader for versatile applications." },
   "bonn-cormidi-dumper": { name: "Track Dumper", description: "Compact tracked dumper for difficult terrain." },
   "bonn-knickdumper-kde550": { name: "Wheeled Dumper / Swivel Dumper KDe550", description: "Electric swivel dumper with 4x4 drive - 8-10h runtime." },
