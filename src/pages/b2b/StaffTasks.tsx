@@ -26,6 +26,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { TimeTrackingTab } from "@/components/b2b/tasks/TimeTrackingTab";
+import { TimesheetReminderBanner } from "@/components/b2b/tasks/TimesheetReminderBanner";
 import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
 import { AdminSalesCatalogTab } from "@/components/b2b/admin/AdminSalesCatalogTab";
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
@@ -206,6 +207,8 @@ export default function StaffTasks() {
       title="Interne Verwaltung"
       subtitle="Aufgaben, Materialdispo, Inventar, Verkaufsartikel, Zeiterfassung, Feedback, Mitarbeiter und Audit-Log"
     >
+      <TimesheetReminderBanner className="mb-4" onOpenTimeTracking={() => handleTabChange("zeiten")} />
+
       <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
         <TabsList className="grid grid-cols-3 gap-1 h-auto w-full p-1 sm:flex sm:h-11">
           <TabsTrigger value="tasks" className="text-xs sm:text-sm py-2 sm:flex-1">

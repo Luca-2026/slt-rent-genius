@@ -1,6 +1,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateTimesheetPdf, MONTH_NAMES, fmtHours, fmtDecimalHours } from "./pdf.ts";
+import { periodFor, periodRangeLabel, isPeriodLocked } from "../_shared/payroll-period.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -73,7 +74,7 @@ Deno.serve(async (req: Request) => {
     // Download nur für bereits bestätigte Monate (PDF entsteht erst mit der Bestätigung)
     const { data: existingSheet } = await service
       .from("staff_timesheets")
-      .select("status, submitted_at")
+      .select("status, submitted_at, period_start, period_end")
       .eq("user_id", targetUserId)
       .eq("year", year)
       .eq("month", month)
@@ -83,9 +84,16 @@ Deno.serve(async (req: Request) => {
       return json({ error: "Der Monat ist noch nicht bestätigt – erst danach steht das PDF bereit." }, 403);
     }
 
-    const first = `${year}-${String(month).padStart(2, "0")}-01`;
+    // Abrechnungszeitraum 21.–20.; Altnachweise (ohne period_start) bleiben Kalendermonat.
+    const period = periodFor(year, month);
+    const legacy = !!existingSheet && !existingSheet.period_start;
     const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
-    const last = `${year}-${String(month).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
+    const first = legacy
+      ? `${year}-${String(month).padStart(2, "0")}-01`
+      : (existingSheet?.period_start ?? period.start);
+    const last = legacy
+      ? `${year}-${String(month).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`
+      : (existingSheet?.period_end ?? period.end);
 
     const { data: entries } = await service
       .from("staff_time_entries")
@@ -105,6 +113,8 @@ Deno.serve(async (req: Request) => {
       entries: (entries ?? []) as any[],
       submittedAt,
       confirmed: true,
+      periodStart: legacy ? null : first,
+      periodEnd: legacy ? null : last,
     });
 
     // Gesamtminuten (identische Logik wie im PDF)
@@ -140,6 +150,8 @@ Deno.serve(async (req: Request) => {
           month,
           status: "submitted",
           total_minutes: total,
+          period_start: first,
+          period_end: last,
           submitted_at: submittedAt,
           pdf_path: path,
         },
@@ -158,9 +170,9 @@ Deno.serve(async (req: Request) => {
     <div style="background:${BRAND_BLUE};padding:20px 24px;color:#ffffff;font-size:18px;font-weight:bold;">SLT-Rental &ndash; Arbeitszeitnachweis</div>
     <div style="padding:24px;">
       <p style="font-size:15px;line-height:1.6;">Hallo ${esc(staffName)},<br>
-      dein Arbeitszeitnachweis für <strong>${MONTH_NAMES[month - 1]} ${year}</strong> wurde bestätigt und ist als PDF angehängt.</p>
+      dein Arbeitszeitnachweis für den Abrechnungszeitraum <strong>${periodRangeLabel({ start: first, end: last })}</strong> (Lohnabrechnung ${MONTH_NAMES[month - 1]} ${year}) wurde bestätigt und ist als PDF angehängt.</p>
       <table style="width:100%;border-collapse:collapse;margin:16px 0;">
-        <tr><td style="padding:6px 0;font-size:14px;color:#666;width:200px;">Monat</td><td style="padding:6px 0;font-size:14px;"><strong>${MONTH_NAMES[month - 1]} ${year}</strong></td></tr>
+        <tr><td style="padding:6px 0;font-size:14px;color:#666;width:200px;">Abrechnungszeitraum</td><td style="padding:6px 0;font-size:14px;"><strong>${periodRangeLabel({ start: first, end: last })}</strong></td></tr>
         <tr><td style="padding:6px 0;font-size:14px;color:#666;">Gesamte Arbeitszeit</td><td style="padding:6px 0;font-size:14px;"><strong>${fmtHours(total)}</strong> (${fmtDecimalHours(total)} Std.)</td></tr>
         <tr><td style="padding:6px 0;font-size:14px;color:#666;">Bestätigt am</td><td style="padding:6px 0;font-size:14px;">${new Date(submittedAt).toLocaleString("de-DE", { timeZone: "Europe/Berlin" })} Uhr</td></tr>
       </table>
@@ -181,7 +193,7 @@ Deno.serve(async (req: Request) => {
           body: JSON.stringify({
             from: `SLT-Rental Zeiterfassung <aufgaben@${resendDomain}>`,
             to: recipients,
-            subject: `Arbeitszeitnachweis ${MONTH_NAMES[month - 1]} ${year} – ${staffName}`,
+            subject: `Arbeitszeitnachweis ${periodRangeLabel({ start: first, end: last })} – ${staffName}`,
             html,
             attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
           }),

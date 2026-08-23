@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CreditLimitWidget } from "@/components/b2b/CreditLimitWidget";
 import { StaffWorkWidget } from "@/components/b2b/tasks/StaffWorkWidget";
+import { TimesheetReminderBanner } from "@/components/b2b/tasks/TimesheetReminderBanner";
 import { DashboardKpis } from "@/components/b2b/dashboard/DashboardKpis";
 import { AdminMessagesInbox } from "@/components/b2b/AdminMessagesInbox";
 import { BonnPriorityHotline } from "@/components/b2b/BonnPriorityHotline";
@@ -383,6 +384,7 @@ export default function B2BDashboard() {
             </div>
           )}
 
+          <TimesheetReminderBanner className="mb-4" />
           <StaffWorkWidget />
 
           {/* Phase B1 — KPI tiles + Nächste Schritte (only for approved profiles) */}
