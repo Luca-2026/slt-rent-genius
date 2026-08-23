@@ -104,6 +104,10 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
           }))
           .filter((f) => f.question && f.answer)
       : undefined,
+    seoUseCaseBau: row.seo_use_case_bau?.trim() || undefined,
+    seoUseCaseEvent: row.seo_use_case_event?.trim() || undefined,
+    seoUseCasePrivat: row.seo_use_case_privat?.trim() || undefined,
+    relatedSlugs: row.related_slugs?.length ? row.related_slugs : undefined,
   };
 
 }
