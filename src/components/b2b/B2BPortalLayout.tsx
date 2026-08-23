@@ -12,6 +12,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import {
   LayoutDashboard, Package, FileText, Receipt,
   LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen, Building2, Download, Menu, CheckSquare,
+  Users,
   Inbox, ShoppingCart,
 } from "lucide-react";
 import { useOpenInquiryCounts } from "@/hooks/useInquiries";
