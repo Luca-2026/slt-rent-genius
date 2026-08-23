@@ -358,7 +358,7 @@ export function TimeTrackingTab() {
                     {/* Datum + Stundenanzeige (mobil in einer Zeile) */}
                     <div className="mb-2 flex items-center justify-between gap-2 lg:mb-0 lg:block">
                       <div className="text-sm font-semibold">
-                        {WEEKDAY_SHORT[d.dow]}, {pad(d.day)}.{pad(month)}.{year}
+                        {WEEKDAY_SHORT[d.dow]}, {pad(d.day)}.{pad(d.month)}.{d.year}
                         {saving === d.iso && (
                           <span className="ml-2 text-xs font-normal text-muted-foreground">speichert…</span>
                         )}
