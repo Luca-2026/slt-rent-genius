@@ -296,6 +296,28 @@ export function TimeTrackingTab() {
         )}
       </div>
 
+      {/* Erinnerung ab dem 19.: Stundenzettel noch nicht bestätigt */}
+      {isOwnSheet && sheet?.status !== "submitted" && (
+        (isReminderWindow() && period.end === currentPeriod().end) ||
+        (isPeriodLocked(period) && period.end === lockDate)
+      ) && (
+        <div className="flex items-start gap-3 rounded-lg border-2 border-accent bg-accent/10 p-4">
+          <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
+          <div className="text-sm">
+            <p className="font-semibold">
+              {isPeriodLocked(period)
+                ? "Dein Stundenzettel wurde nicht rechtzeitig eingereicht"
+                : "Bitte trage jetzt deine Stunden ein"}
+            </p>
+            <p className="text-muted-foreground">
+              Der Abrechnungszeitraum {periodRangeLabel(period)} endet am{" "}
+              {period.end.split("-").reverse().join(".")}. Die Lohnabrechnung wird am 20. erstellt – danach ist der
+              Zeitraum gesperrt. Bitte vervollständige deine Zeiten und bestätige den Zeitraum.
+            </p>
+          </div>
+        </div>
+      )}
+
       {locked && (
         <div className="flex items-center gap-2 rounded-md border bg-muted/50 px-3 py-2 text-sm text-muted-foreground">
           <Lock className="h-4 w-4 shrink-0" />
