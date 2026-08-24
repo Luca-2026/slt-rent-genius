@@ -388,6 +388,7 @@ function buildHeadBlock(route, globalSchemas) {
     `<meta property="og:description" content="${escapeAttr(route.description)}">`,
     `<meta property="og:type" content="${ogType}">`,
     `<meta property="og:image" content="${escapeAttr(ogImage)}">`,
+    `<meta property="og:image:alt" content="${escapeAttr(route.h1 || route.title)}">`,
     `<meta property="og:url" content="${escapeAttr(canonical)}">`,
     `<meta property="og:site_name" content="SLT Rental">`,
     `<meta property="og:locale" content="de_DE">`,
