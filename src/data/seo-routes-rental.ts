@@ -763,6 +763,8 @@ for (const loc of locations as LocationData[]) {
         intro,
         // canonical bewusst undefined → self-canonical via route.path
         ogType: "product",
+        // OG-Image = erstes Artikelbild (absolut), sonst Default.
+        ogImage: absolutizeImage(typeof p.image === "string" ? p.image : undefined),
         // Alle Produktseiten sind indexierbar – jede Variante hat unique
         // Title, H1, Description, Intro und Breadcrumbs pro Standort.
         noindex: false,

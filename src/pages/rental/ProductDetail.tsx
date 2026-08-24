@@ -327,10 +327,14 @@ export default function ProductDetail() {
         "og:url": canonicalUrl,
         "og:site_name": "SLT Rental",
       };
-      if (images.length > 0) {
-        const imgUrl = images[0].startsWith("http") ? images[0] : `https://www.slt-rental.de${images[0].startsWith("/") ? "" : "/"}${images[0]}`;
-        ogTags["og:image"] = imgUrl;
-      }
+      const ogImageUrl = images.length > 0
+        ? (images[0].startsWith("http")
+            ? images[0]
+            : `https://www.slt-rental.de${images[0].startsWith("/") ? "" : "/"}${images[0]}`)
+        : "https://www.slt-rental.de/images/og/default-slt-rental.png";
+      ogTags["og:image"] = ogImageUrl;
+      ogTags["og:image:alt"] = `${genericName} mieten in ${cityName} – SLT Rental`;
+      ogTags["og:locale"] = "de_DE";
       const createdOgTags: HTMLMetaElement[] = [];
       for (const [prop, content] of Object.entries(ogTags)) {
         let tag = document.querySelector(`meta[property="${prop}"]`) as HTMLMetaElement;
@@ -342,6 +346,25 @@ export default function ProductDetail() {
         }
         tag.setAttribute("content", content);
       }
+
+      // Twitter-Card: gleiche Werte wie OG (sonst greift der generische Default).
+      const twitterTags: Record<string, string> = {
+        "twitter:card": "summary_large_image",
+        "twitter:title": seoTitle,
+        "twitter:description": descText,
+        "twitter:image": ogImageUrl,
+      };
+      for (const [name, content] of Object.entries(twitterTags)) {
+        let tag = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement;
+        if (!tag) {
+          tag = document.createElement("meta");
+          tag.setAttribute("name", name);
+          document.head.appendChild(tag);
+          createdOgTags.push(tag);
+        }
+        tag.setAttribute("content", content);
+      }
+
 
       const jsonLd: Record<string, unknown> = {
         "@context": "https://schema.org",
