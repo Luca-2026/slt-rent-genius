@@ -7,14 +7,32 @@
  * Datenmodul nicht im Portal-Bundle landet.
  */
 
-/** "89,00 €/Tag" -> 89 ; undefined, wenn kein Betrag erkennbar ist. */
+/**
+ * "89,00 €/Tag" -> 89 ; "1.499 €" -> 1499 ; "1,499.00 €" -> 1499.
+ * Erkennt deutsche und englische Tausender-/Dezimaltrennzeichen.
+ */
 export function parsePriceValue(raw: string | null | undefined): number | undefined {
   if (!raw) return undefined;
-  const match = String(raw).replace(/\s/g, "").match(/(\d+(?:[.,]\d{1,2})?)/);
+  const match = String(raw).replace(/\s/g, "").match(/(\d[\d.,]*)/);
   if (!match) return undefined;
-  const value = Number(match[1].replace(".", "").replace(",", "."));
+  let token = match[1].replace(/[.,]+$/, "");
+  const lastDot = token.lastIndexOf(".");
+  const lastComma = token.lastIndexOf(",");
+  const decimalSep = lastDot > lastComma ? "." : lastComma > lastDot ? "," : "";
+  if (decimalSep) {
+    const decimals = token.length - token.lastIndexOf(decimalSep) - 1;
+    if (decimals === 3) {
+      // Kein Dezimaltrenner, sondern Tausenderpunkt/-komma (z. B. "1.499")
+      token = token.replace(/[.,]/g, "");
+    } else {
+      const intPart = token.slice(0, token.lastIndexOf(decimalSep)).replace(/[.,]/g, "");
+      token = `${intPart}.${token.slice(token.lastIndexOf(decimalSep) + 1)}`;
+    }
+  }
+  const value = Number(token);
   return Number.isFinite(value) ? value : undefined;
 }
+
 
 let seoPriceMap: Record<string, number> | null = null;
 
