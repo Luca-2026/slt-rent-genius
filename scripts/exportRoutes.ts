@@ -191,6 +191,12 @@ if (managedProducts.length) {
         // Kein Meta gepflegt: bestehende statische route.description NICHT durch generisches
         // description ersetzen — Description bleibt aus seo-routes-rental (besser als generisch).
       }
+      // OG-Image: erstes CMS-Artikelbild (absolut) – nie das generische Default-Bild.
+      if (image) {
+        route.ogImage = image.startsWith("http")
+          ? image
+          : `https://www.slt-rental.de${image.startsWith("/") ? "" : "/"}${image}`;
+      }
       if (route.breadcrumbs && route.breadcrumbs.length) {
         route.breadcrumbs[route.breadcrumbs.length - 1] = {
           name: m.name,
