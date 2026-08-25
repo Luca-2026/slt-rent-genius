@@ -26,7 +26,7 @@ import { LOCATIONS } from "./types";
 import {
   NOTE_MAX_LENGTH,
   currentPeriod,
-  isPeriodLocked,
+  
   isReminderWindow,
   lockedThrough,
   periodDays,
