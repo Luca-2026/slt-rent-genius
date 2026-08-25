@@ -231,6 +231,11 @@ export default function StaffTasks() {
           )}
           <TabsTrigger value="zeiten" className="text-xs sm:text-sm py-2 sm:flex-1">
             <CalendarClock className="h-4 w-4 mr-1.5 shrink-0" /> Zeiten
+            {pendingTimesheets > 0 && (
+              <span className="ml-1.5 rounded-full bg-accent px-1.5 py-0.5 text-[10px] font-bold text-accent-foreground">
+                {pendingTimesheets}
+              </span>
+            )}
           </TabsTrigger>
           {isAdmin && (
             <TabsTrigger value="feedback" className="text-xs sm:text-sm py-2 sm:flex-1">
