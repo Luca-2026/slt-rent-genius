@@ -63,7 +63,13 @@ interface Timesheet {
   submitted_at: string | null;
   period_start?: string | null;
   period_end?: string | null;
+  approved_at?: string | null;
+  approved_by_name?: string | null;
+  payroll_sent_at?: string | null;
 }
+
+/** Bestätigt = eingereicht (wartet auf Freigabe) oder bereits freigegeben. */
+const isConfirmedStatus = (status?: string | null) => status === "submitted" || status === "approved";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 const daysInMonth = (y: number, m: number) => new Date(y, m, 0).getDate();
