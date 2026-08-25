@@ -439,8 +439,13 @@ export async function generateOfferPdf(data: {
     dt(pg, "Zwischensumme Logistik", tx, y, font, 9, MUTED);
     dtr(pg, fm(deliverySubtotal), vx, y, font, 9); y -= 13;
   }
+  if (discountTotal > 0) {
+    dt(pg, "Ihr Rabattvorteil (bereits abgezogen)", tx, y, bold, 9, ORANGE);
+    dtr(pg, `\u2212 ${fm(discountTotal)}`, vx, y, bold, 9, ORANGE); y -= 13;
+  }
 
   dt(pg, "Nettobetrag", tx, y, font, 9.5); dtr(pg, fm(data.netAmount), vx, y, font, 9.5); y -= 13;
+
   if (data.isReverseCharge) {
     dt(pg, "USt. (Reverse Charge)", tx, y, font, 9, MUTED); dtr(pg, "0,00 \u20AC", vx, y, font, 9); y -= 13;
   } else {
