@@ -598,25 +598,47 @@ export function TimeTrackingTab() {
             </p>
             <p className="text-xs text-muted-foreground">{workedDays} Tage mit erfasster Arbeitszeit</p>
           </div>
-          <div className="flex flex-col gap-2 sm:flex-row">
-            {sheet?.status === "submitted" ? (
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            {sheetConfirmed ? (
               <Button variant="outline" disabled={downloading} onClick={() => downloadPdf(year, month, viewUserId)}>
                 <Download className="mr-2 h-4 w-4" /> PDF herunterladen
               </Button>
             ) : (
               <p className="max-w-[240px] text-xs text-muted-foreground">
-                Das PDF steht zum Download bereit, sobald der Monat bestätigt und versendet wurde.
+                Das PDF steht zum Download bereit, sobald der Zeitraum bestätigt und zur Freigabe gesendet wurde.
               </p>
             )}
-            {isOwnSheet && sheet?.status !== "submitted" && (
+            {isOwnSheet && !sheetConfirmed && (
               <Button disabled={total === 0} onClick={() => setConfirmOpen(true)}>
-                <CheckCircle2 className="mr-2 h-4 w-4" /> Monat bestätigen &amp; senden
+                <CheckCircle2 className="mr-2 h-4 w-4" /> Bestätigen &amp; an Vorgesetzten senden
               </Button>
             )}
             {sheet?.status === "submitted" && (
-              <Badge variant="secondary" className="justify-center py-2">
-                <CheckCircle2 className="mr-1 h-4 w-4" /> Bestätigt
+              <Badge variant="outline" className="justify-center py-2">
+                <ShieldCheck className="mr-1 h-4 w-4" /> Wartet auf Freigabe
               </Badge>
+            )}
+            {sheet?.status === "approved" && (
+              <Badge variant="secondary" className="justify-center py-2">
+                <CheckCircle2 className="mr-1 h-4 w-4" /> Freigegeben &amp; an Steuerbüro gesendet
+              </Badge>
+            )}
+            {canApprove && !isOwnSheet && sheet?.status === "submitted" && (
+              <Button
+                disabled={approving === sheet.id}
+                onClick={() =>
+                  approveSheet({
+                    id: sheet.id,
+                    year: sheet.year,
+                    month: sheet.month,
+                    user_id: sheet.user_id,
+                    staff_name: sheet.staff_name,
+                  })
+                }
+              >
+                <Send className="mr-2 h-4 w-4" />
+                {approving === sheet.id ? "Wird gesendet…" : "An das Steuerbüro senden"}
+              </Button>
             )}
           </div>
         </CardContent>
@@ -639,10 +661,25 @@ export function TimeTrackingTab() {
                 </span>
                 {isAdmin && s.staff_name && <span className="text-muted-foreground"> · {s.staff_name}</span>}
                 <span className="text-muted-foreground"> · {fmtHours(s.total_minutes)}</span>
+                <p className="text-xs text-muted-foreground">
+                  {s.status === "approved"
+                    ? `Freigegeben${s.approved_by_name ? ` von ${s.approved_by_name}` : ""}${
+                        s.payroll_sent_at ? ` · an Steuerbüro am ${new Date(s.payroll_sent_at).toLocaleDateString("de-DE")}` : ""
+                      }`
+                    : "Wartet auf Freigabe der Geschäftsführung"}
+                </p>
               </div>
-              <Button size="sm" variant="outline" disabled={downloading} onClick={() => downloadPdf(s.year, s.month, s.user_id)}>
-                <Download className="mr-2 h-4 w-4" /> PDF
-              </Button>
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Button size="sm" variant="outline" disabled={downloading} onClick={() => downloadPdf(s.year, s.month, s.user_id)}>
+                  <Download className="mr-2 h-4 w-4" /> PDF
+                </Button>
+                {canApprove && s.status === "submitted" && (
+                  <Button size="sm" disabled={approving === s.id} onClick={() => approveSheet(s)}>
+                    <Send className="mr-2 h-4 w-4" />
+                    {approving === s.id ? "Wird gesendet…" : "An das Steuerbüro senden"}
+                  </Button>
+                )}
+              </div>
             </CardContent>
           </Card>
         ))}
