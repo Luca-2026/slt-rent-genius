@@ -449,6 +449,29 @@ export function TimeTrackingTab() {
         </div>
       )}
 
+      {/* Zurückgegeben: Kommentar der Geschäftsführung */}
+      {sheet?.status === "rejected" && (
+        <div className="flex items-start gap-3 rounded-lg border-2 border-destructive/40 bg-destructive/5 p-4">
+          <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" />
+          <div className="text-sm">
+            <p className="font-semibold text-destructive">
+              {isOwnSheet
+                ? "Dein Stundenzettel wurde zur Korrektur zurückgegeben"
+                : "Stundenzettel wurde zur Korrektur zurückgegeben"}
+            </p>
+            {sheet.rejection_reason && (
+              <p className="mt-1 whitespace-pre-wrap">„{sheet.rejection_reason}“</p>
+            )}
+            <p className="mt-1 text-xs text-muted-foreground">
+              {sheet.rejected_by_name ? `${sheet.rejected_by_name} · ` : ""}
+              {sheet.rejected_at ? `${new Date(sheet.rejected_at).toLocaleString("de-DE")} Uhr · ` : ""}
+              Bitte die Zeiten korrigieren und erneut bestätigen.
+            </p>
+          </div>
+        </div>
+      )}
+
+
       {locked && (
         <div className="flex items-center gap-2 rounded-md border bg-muted/50 px-3 py-2 text-sm text-muted-foreground">
           <Lock className="h-4 w-4 shrink-0" />
