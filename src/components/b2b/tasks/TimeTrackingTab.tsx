@@ -116,6 +116,9 @@ export function TimeTrackingTab() {
   const [submitting, setSubmitting] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [approving, setApproving] = useState<string | null>(null);
+  const [rejectTarget, setRejectTarget] = useState<Timesheet | null>(null);
+  const [rejectReason, setRejectReason] = useState("");
+  const [rejecting, setRejecting] = useState(false);
 
 
   useEffect(() => {
