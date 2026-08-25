@@ -690,14 +690,15 @@ export function TimeTrackingTab() {
           <AlertDialogHeader>
             <AlertDialogTitle>Zeitraum {periodRangeLabel(period)} bestätigen?</AlertDialogTitle>
             <AlertDialogDescription>
-              Du bestätigst {fmtHours(total)} ({fmtDecimal(total)} Std.) geleistete Arbeitszeit. Der Monat wird
-              danach für Änderungen gesperrt, als PDF archiviert und per E-Mail an dich und die Verwaltung gesendet.
+              Du bestätigst {fmtHours(total)} ({fmtDecimal(total)} Std.) geleistete Arbeitszeit. Der Zeitraum wird
+              danach für Änderungen gesperrt, als PDF archiviert und zur Prüfung an die Geschäftsführung gesendet.
+              Erst nach deren Freigabe geht der Nachweis an das Steuerbüro.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={submitting}>Abbrechen</AlertDialogCancel>
             <AlertDialogAction disabled={submitting} onClick={(ev) => { ev.preventDefault(); submitMonth(); }}>
-              {submitting ? "Wird gesendet…" : "Bestätigen & senden"}
+              {submitting ? "Wird gesendet…" : "Bestätigen & an Vorgesetzten senden"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
