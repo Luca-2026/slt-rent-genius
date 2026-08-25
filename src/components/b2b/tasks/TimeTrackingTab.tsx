@@ -105,7 +105,17 @@ export function TimeTrackingTab() {
   const [period, setPeriod] = useState<PayrollPeriod>(() => currentPeriod());
   const year = period.year;
   const month = period.month;
-  const lockDate = useMemo(() => lockedThrough(), []);
+  // Sperrdatum kommt aus der Datenbank (berücksichtigt einmalige Freigaben durch Admins).
+  const [lockDate, setLockDate] = useState<string>(() => lockedThrough());
+  useEffect(() => {
+    let active = true;
+    supabase.rpc("timesheet_locked_through").then(({ data }) => {
+      if (active && typeof data === "string") setLockDate(data);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
   const [viewUserId, setViewUserId] = useState<string>(user?.id ?? "");
   const [entries, setEntries] = useState<Record<string, TimeEntry>>({});
   const [sheet, setSheet] = useState<Timesheet | null>(null);
