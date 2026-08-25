@@ -329,12 +329,26 @@ Deno.serve(async (req: Request) => {
     const resendKey = Deno.env.get("RESEND_API_KEY");
     let emailSent = false;
 
-    const rowsHtml = items.map((i) => `
+    const pctFmt = (n: number) => (Number.isInteger(n) ? String(n) : String(n).replace(".", ","));
+    let discountSum = 0;
+    const rowsHtml = items.map((i) => {
+      const pct = Number(i.discount_percent) || 0;
+      const gross = Math.round(i.quantity * i.unit_price * 100) / 100;
+      const savings = Math.round(gross * (pct / 100) * 100) / 100;
+      const net = Math.round((gross - savings) * 100) / 100;
+      discountSum += savings;
+      const discountHtml = pct > 0
+        ? `<br><span style="color:#ff8e02;font-size:12px;font-weight:bold;">Listenpreis ${money(gross)} – Rabatt ${pctFmt(pct)} % = − ${money(savings)}</span>`
+        : "";
+      return `
       <tr>
-        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;">${escapeHtml(i.product_name)}${i.description ? `<br><span style="color:#6b7280;font-size:12px;">${escapeHtml(i.description)}</span>` : ""}${(i.addons ?? []).filter((a) => a.amount > 0).map((a) => `<br><span style="color:#6b7280;font-size:12px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}</span>`).join("")}</td>
+        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;">${escapeHtml(i.product_name)}${i.description ? `<br><span style="color:#6b7280;font-size:12px;">${escapeHtml(i.description)}</span>` : ""}${discountHtml}${(i.addons ?? []).filter((a) => a.amount > 0).map((a) => `<br><span style="color:#6b7280;font-size:12px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}</span>`).join("")}</td>
         <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${i.quantity}${i.unit ? ` ${escapeHtml(i.unit)}` : ""}</td>
         <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${money(i.unit_price)}</td>
-      </tr>`).join("");
+        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;"><strong>${money(net)}</strong></td>
+      </tr>`;
+    }).join("");
+
 
     // ── Transportkosten & Kaution als eigene Zeilen ──
     const extraRow = (label: string, value: string) => `
