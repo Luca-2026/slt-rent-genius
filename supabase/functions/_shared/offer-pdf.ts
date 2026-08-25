@@ -337,7 +337,7 @@ export async function generateOfferPdf(data: {
     const grossLine = Math.round((item.quantity || 0) * (item.unit_price || 0) * 100) / 100;
     const savings = Math.round(grossLine * (pct / 100) * 100) / 100;
     const discountLines = pct > 0
-      ? wt(`Listenpreis ${fm(grossLine)} \u2013 Rabatt ${fm2(pct)} % = \u2212 ${fm(savings)}`, bold, 8, nameColW)
+      ? wt(`Listenpreis ${fm(grossLine)} \u2013 Rabatt ${fm2(pct)} % = -${fm(savings)}`, bold, 8, nameColW)
       : [];
     if (pct > 0) discountTotal += savings;
     let rowH = 10 + nameLines.length * 12 + (subLines.length ? 4 + subLines.length * 10 : 0) +
@@ -360,7 +360,7 @@ export async function generateOfferPdf(data: {
       dtr(pg, String(item.quantity), qtyColRight, top - 10, font, 9.5);
       dt(pg, deriveUnit(item), unitColX, top - 10, font, 9.5, MUTED);
       dtr(pg, fm(item.unit_price), unitPriceRight, top - 10, font, 9.5);
-      if (pct > 0) dtr(pg, `\u2212 ${fm2(pct)} %`, unitPriceRight, top - 22, bold, 8, ORANGE);
+      if (pct > 0) dtr(pg, `-${fm2(pct)} %`, unitPriceRight, top - 22, bold, 8, ORANGE);
       dtr(pg, fm(item.total_price), totalRight, top - 10, bold, 9.5);
     });
     posNum++;
@@ -441,7 +441,7 @@ export async function generateOfferPdf(data: {
   }
   if (discountTotal > 0) {
     dt(pg, "Ihr Rabattvorteil (bereits abgezogen)", tx, y, bold, 9, ORANGE);
-    dtr(pg, `\u2212 ${fm(discountTotal)}`, vx, y, bold, 9, ORANGE); y -= 13;
+    dtr(pg, `-${fm(discountTotal)}`, vx, y, bold, 9, ORANGE); y -= 13;
   }
 
   dt(pg, "Nettobetrag", tx, y, font, 9.5); dtr(pg, fm(data.netAmount), vx, y, font, 9.5); y -= 13;
