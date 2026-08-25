@@ -355,8 +355,10 @@ Deno.serve(async (req: Request) => {
       <tr>
         <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;">${label}</td>
         <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;"></td>
-        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${value}</td>
+        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;"></td>
+        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;"><strong>${value}</strong></td>
       </tr>`;
+
     const transportRowsHtml =
       (deliveryCostDelivery > 0 ? extraRow("Transportkosten Anlieferung", money(deliveryCostDelivery)) : "") +
       (deliveryCostReturn > 0 ? extraRow("Transportkosten Abholung/Rückholung", money(deliveryCostReturn)) : "");
