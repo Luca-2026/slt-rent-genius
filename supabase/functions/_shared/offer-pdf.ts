@@ -418,7 +418,7 @@ export async function generateOfferPdf(data: {
   // ── Summenblock (rechtsbündig, wie Rechnung) ──
   // Höhe konservativ reservieren: 3 Zwischensummen + Netto + USt. + Kaution
   // + Gesamtbetrag-Kasten, damit der Block nie in die Fußzeile läuft.
-  need(180);
+  need(195);
 
   const tx = ML + CW * 0.55;
   const vx = W - MR - 4;
