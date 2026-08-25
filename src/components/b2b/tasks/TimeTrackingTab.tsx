@@ -790,6 +790,42 @@ export function TimeTrackingTab() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Ablehnen mit Kommentar */}
+      <AlertDialog open={!!rejectTarget} onOpenChange={(o) => { if (!o && !rejecting) { setRejectTarget(null); setRejectReason(""); } }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Stundenzettel ablehnen</AlertDialogTitle>
+            <AlertDialogDescription>
+              {rejectTarget?.staff_name ?? "Der/die Mitarbeitende"} erhält deinen Kommentar per E-Mail und im Portal.
+              Der Zeitraum wird zur Korrektur wieder freigegeben.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="space-y-2">
+            <label htmlFor="reject-reason" className="text-sm font-medium">
+              Kommentar / Grund der Ablehnung
+            </label>
+            <Textarea
+              id="reject-reason"
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value.slice(0, 1000))}
+              rows={5}
+              placeholder="z. B. Am 14.08. fehlt die Pause – bitte korrigieren und erneut senden."
+              autoFocus
+            />
+            <p className="text-xs text-muted-foreground">{rejectReason.length}/1000 Zeichen</p>
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={rejecting}>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              disabled={rejecting || rejectReason.trim().length < 3}
+              onClick={(ev) => { ev.preventDefault(); rejectSheet(); }}
+            >
+              {rejecting ? "Wird gesendet…" : "Ablehnen & zurück an Mitarbeiter"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
