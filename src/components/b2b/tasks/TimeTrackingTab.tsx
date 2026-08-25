@@ -20,7 +20,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { AlertTriangle, CheckCircle2, ChevronLeft, ChevronRight, Download, Lock, Send, ShieldCheck } from "lucide-react";
+import { AlertTriangle, CheckCircle2, ChevronLeft, ChevronRight, Download, Lock, Send, ShieldCheck, XCircle } from "lucide-react";
 import { usePendingTimesheets } from "@/hooks/usePendingTimesheets";
 import { LOCATIONS } from "./types";
 import {
@@ -66,6 +66,9 @@ interface Timesheet {
   approved_at?: string | null;
   approved_by_name?: string | null;
   payroll_sent_at?: string | null;
+  rejected_at?: string | null;
+  rejected_by_name?: string | null;
+  rejection_reason?: string | null;
 }
 
 /** Bestätigt = eingereicht (wartet auf Freigabe) oder bereits freigegeben. */
@@ -113,6 +116,9 @@ export function TimeTrackingTab() {
   const [submitting, setSubmitting] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [approving, setApproving] = useState<string | null>(null);
+  const [rejectTarget, setRejectTarget] = useState<Timesheet | null>(null);
+  const [rejectReason, setRejectReason] = useState("");
+  const [rejecting, setRejecting] = useState(false);
 
 
   useEffect(() => {
@@ -290,6 +296,37 @@ export function TimeTrackingTab() {
     }
   };
 
+  /** Geschäftsführung lehnt ab → Kommentar geht zurück an den Mitarbeitenden. */
+  const rejectSheet = async () => {
+    if (!rejectTarget) return;
+    const reason = rejectReason.trim();
+    if (reason.length < 3) {
+      toast({ title: "Kommentar fehlt", description: "Bitte gib an, was korrigiert werden soll.", variant: "destructive" });
+      return;
+    }
+    setRejecting(true);
+    try {
+      await callFunction({
+        year: rejectTarget.year,
+        month: rejectTarget.month,
+        user_id: rejectTarget.user_id,
+        action: "reject",
+        reason,
+      });
+      toast({
+        title: "Zur Korrektur zurückgegeben",
+        description: `${rejectTarget.staff_name ?? "Der Mitarbeitende"} wurde per E-Mail über die nötige Korrektur informiert.`,
+      });
+      setRejectTarget(null);
+      setRejectReason("");
+      await Promise.all([load(), loadSheets(), reloadPending()]);
+    } catch (err) {
+      toast({ title: "Ablehnung fehlgeschlagen", description: (err as Error).message, variant: "destructive" });
+    } finally {
+      setRejecting(false);
+    }
+  };
+
 
   return (
     <div className="space-y-4">
@@ -370,6 +407,14 @@ export function TimeTrackingTab() {
                     >
                       <Download className="mr-2 h-4 w-4" /> Prüfen (PDF)
                     </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() => { setRejectReason(""); setRejectTarget(p as unknown as Timesheet); }}
+                    >
+                      <XCircle className="mr-2 h-4 w-4" /> Ablehnen
+                    </Button>
                     <Button size="sm" disabled={approving === p.id} onClick={() => approveSheet(p)}>
                       <Send className="mr-2 h-4 w-4" />
                       {approving === p.id ? "Wird gesendet…" : "An das Steuerbüro senden"}
@@ -403,6 +448,29 @@ export function TimeTrackingTab() {
           </div>
         </div>
       )}
+
+      {/* Zurückgegeben: Kommentar der Geschäftsführung */}
+      {sheet?.status === "rejected" && (
+        <div className="flex items-start gap-3 rounded-lg border-2 border-destructive/40 bg-destructive/5 p-4">
+          <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" />
+          <div className="text-sm">
+            <p className="font-semibold text-destructive">
+              {isOwnSheet
+                ? "Dein Stundenzettel wurde zur Korrektur zurückgegeben"
+                : "Stundenzettel wurde zur Korrektur zurückgegeben"}
+            </p>
+            {sheet.rejection_reason && (
+              <p className="mt-1 whitespace-pre-wrap">„{sheet.rejection_reason}“</p>
+            )}
+            <p className="mt-1 text-xs text-muted-foreground">
+              {sheet.rejected_by_name ? `${sheet.rejected_by_name} · ` : ""}
+              {sheet.rejected_at ? `${new Date(sheet.rejected_at).toLocaleString("de-DE")} Uhr · ` : ""}
+              Bitte die Zeiten korrigieren und erneut bestätigen.
+            </p>
+          </div>
+        </div>
+      )}
+
 
       {locked && (
         <div className="flex items-center gap-2 rounded-md border bg-muted/50 px-3 py-2 text-sm text-muted-foreground">
@@ -625,6 +693,15 @@ export function TimeTrackingTab() {
             )}
             {canApprove && !isOwnSheet && sheet?.status === "submitted" && (
               <Button
+                variant="outline"
+                className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                onClick={() => { setRejectReason(""); setRejectTarget(sheet); }}
+              >
+                <XCircle className="mr-2 h-4 w-4" /> Ablehnen
+              </Button>
+            )}
+            {canApprove && !isOwnSheet && sheet?.status === "submitted" && (
+              <Button
                 disabled={approving === sheet.id}
                 onClick={() =>
                   approveSheet({
@@ -674,10 +751,20 @@ export function TimeTrackingTab() {
                   <Download className="mr-2 h-4 w-4" /> PDF
                 </Button>
                 {canApprove && s.status === "submitted" && (
-                  <Button size="sm" disabled={approving === s.id} onClick={() => approveSheet(s)}>
-                    <Send className="mr-2 h-4 w-4" />
-                    {approving === s.id ? "Wird gesendet…" : "An das Steuerbüro senden"}
-                  </Button>
+                  <>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() => { setRejectReason(""); setRejectTarget(s); }}
+                    >
+                      <XCircle className="mr-2 h-4 w-4" /> Ablehnen
+                    </Button>
+                    <Button size="sm" disabled={approving === s.id} onClick={() => approveSheet(s)}>
+                      <Send className="mr-2 h-4 w-4" />
+                      {approving === s.id ? "Wird gesendet…" : "An das Steuerbüro senden"}
+                    </Button>
+                  </>
                 )}
               </div>
             </CardContent>
@@ -699,6 +786,42 @@ export function TimeTrackingTab() {
             <AlertDialogCancel disabled={submitting}>Abbrechen</AlertDialogCancel>
             <AlertDialogAction disabled={submitting} onClick={(ev) => { ev.preventDefault(); submitMonth(); }}>
               {submitting ? "Wird gesendet…" : "Bestätigen & an Vorgesetzten senden"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Ablehnen mit Kommentar */}
+      <AlertDialog open={!!rejectTarget} onOpenChange={(o) => { if (!o && !rejecting) { setRejectTarget(null); setRejectReason(""); } }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Stundenzettel ablehnen</AlertDialogTitle>
+            <AlertDialogDescription>
+              {rejectTarget?.staff_name ?? "Der/die Mitarbeitende"} erhält deinen Kommentar per E-Mail und im Portal.
+              Der Zeitraum wird zur Korrektur wieder freigegeben.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="space-y-2">
+            <label htmlFor="reject-reason" className="text-sm font-medium">
+              Kommentar / Grund der Ablehnung
+            </label>
+            <Textarea
+              id="reject-reason"
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value.slice(0, 1000))}
+              rows={5}
+              placeholder="z. B. Am 14.08. fehlt die Pause – bitte korrigieren und erneut senden."
+              autoFocus
+            />
+            <p className="text-xs text-muted-foreground">{rejectReason.length}/1000 Zeichen</p>
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={rejecting}>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction
+              disabled={rejecting || rejectReason.trim().length < 3}
+              onClick={(ev) => { ev.preventDefault(); rejectSheet(); }}
+            >
+              {rejecting ? "Wird gesendet…" : "Ablehnen & zurück an Mitarbeiter"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

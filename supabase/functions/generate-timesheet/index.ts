@@ -89,8 +89,15 @@ Deno.serve(async (req: Request) => {
     const body = await req.json().catch(() => ({}));
     const year = Number(body.year);
     const month = Number(body.month);
-    const action: "preview" | "submit" | "approve" =
-      body.action === "submit" ? "submit" : body.action === "approve" ? "approve" : "preview";
+    const action: "preview" | "submit" | "approve" | "reject" =
+      body.action === "submit"
+        ? "submit"
+        : body.action === "approve"
+          ? "approve"
+          : body.action === "reject"
+            ? "reject"
+            : "preview";
+    const rejectionReason = typeof body.reason === "string" ? body.reason.trim().slice(0, 1000) : "";
     const targetUserId =
       typeof body.user_id === "string" && /^[0-9a-f-]{36}$/i.test(body.user_id) && isAdmin
         ? body.user_id
@@ -101,8 +108,11 @@ Deno.serve(async (req: Request) => {
     if (action === "submit" && targetUserId !== user.id) {
       return json({ error: "Nur der Mitarbeitende kann den Monat bestätigen" }, 403);
     }
-    if (action === "approve" && !isSuperAdmin) {
-      return json({ error: "Nur die Geschäftsführung darf Stundenzettel freigeben" }, 403);
+    if ((action === "approve" || action === "reject") && !isSuperAdmin) {
+      return json({ error: "Nur die Geschäftsführung darf Stundenzettel freigeben oder ablehnen" }, 403);
+    }
+    if (action === "reject" && rejectionReason.length < 3) {
+      return json({ error: "Bitte gib einen Grund für die Ablehnung an" }, 400);
     }
 
     const { data: staff } = await service
@@ -131,10 +141,10 @@ Deno.serve(async (req: Request) => {
     if (action === "preview" && !isConfirmed) {
       return json({ error: "Der Monat ist noch nicht bestätigt – erst danach steht das PDF bereit." }, 403);
     }
-    if (action === "approve") {
+    if (action === "approve" || action === "reject") {
       if (!existingSheet) return json({ error: "Kein Stundenzettel für diesen Zeitraum vorhanden" }, 404);
       if (existingSheet.status !== "submitted") {
-        return json({ error: "Dieser Stundenzettel wartet nicht auf Freigabe (bereits freigegeben?)" }, 409);
+        return json({ error: "Dieser Stundenzettel wartet nicht auf Freigabe (bereits bearbeitet?)" }, 409);
       }
     }
     if (action === "submit" && existingSheet && isConfirmed) {
@@ -264,6 +274,65 @@ Deno.serve(async (req: Request) => {
         path,
         total_minutes: total,
         pdf_base64: encodeBase64(pdfBytes),
+      });
+    }
+
+    // ---------- Schritt 2a: Geschäftsführung lehnt ab → zurück an die Mitarbeitenden ----------
+    if (action === "reject") {
+      const rejectedAt = new Date().toISOString();
+      const reviewerName =
+        (user.user_metadata?.first_name
+          ? `${user.user_metadata.first_name} ${user.user_metadata.last_name ?? ""}`.trim()
+          : null) ?? user.email ?? "Geschäftsführung";
+      const rejectedLabel = `${new Date(rejectedAt).toLocaleString("de-DE", { timeZone: "Europe/Berlin" })} Uhr`;
+
+      const { error: rejErr } = await service
+        .from("staff_timesheets")
+        .update({
+          status: "rejected",
+          rejected_at: rejectedAt,
+          rejected_by: user.id,
+          rejected_by_name: reviewerName,
+          rejection_reason: rejectionReason,
+        })
+        .eq("user_id", targetUserId)
+        .eq("year", year)
+        .eq("month", month);
+      if (rejErr) {
+        console.error("[generate-timesheet] reject update", rejErr);
+        return json({ error: "Ablehnung konnte nicht gespeichert werden" }, 500);
+      }
+
+      const reasonHtml = `<div style="margin:16px 0;padding:14px 16px;border-left:4px solid #ff8e02;background:#fff7ed;border-radius:6px;">
+        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#00507d;">Anmerkung der Geschäftsführung</p>
+        <p style="margin:0;font-size:15px;line-height:1.6;white-space:pre-wrap;">${esc(rejectionReason)}</p>
+      </div>`;
+
+      if (staffEmail) {
+        await sendMail(
+          {
+            to: [staffEmail],
+            cc: SUPER_ADMIN_EMAILS.filter((e) => e.toLowerCase() !== staffEmail.toLowerCase()),
+            subject: `Korrektur erforderlich: Arbeitszeitnachweis ${rangeLabel}`,
+            html: shell(
+              "Arbeitszeitnachweis zur Korrektur zurückgegeben",
+              `<p style="font-size:15px;line-height:1.6;">Hallo ${esc(staffName)},<br>
+      dein Arbeitszeitnachweis für den Abrechnungszeitraum <strong>${rangeLabel}</strong> wurde von ${esc(reviewerName)} <strong>nicht freigegeben</strong> und zur Korrektur an dich zurückgegeben.</p>
+      ${reasonHtml}
+      ${summaryRows(rangeLabel, total, "Zurückgegeben am", `${rejectedLabel} durch ${esc(reviewerName)}`)}
+      <p style="font-size:15px;line-height:1.6;">Der Zeitraum ist für dich wieder freigeschaltet. Bitte korrigiere deine Zeiten im Portal und sende den Nachweis erneut zur Freigabe.</p>
+      ${ctaButton}`,
+            ),
+          },
+          "reject/staff",
+        );
+      }
+
+      return json({
+        success: true,
+        status: "rejected",
+        rejected_at: rejectedAt,
+        rejection_reason: rejectionReason,
       });
     }
 
