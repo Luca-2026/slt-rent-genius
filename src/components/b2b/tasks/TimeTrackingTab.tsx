@@ -693,6 +693,15 @@ export function TimeTrackingTab() {
             )}
             {canApprove && !isOwnSheet && sheet?.status === "submitted" && (
               <Button
+                variant="outline"
+                className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                onClick={() => { setRejectReason(""); setRejectTarget(sheet); }}
+              >
+                <XCircle className="mr-2 h-4 w-4" /> Ablehnen
+              </Button>
+            )}
+            {canApprove && !isOwnSheet && sheet?.status === "submitted" && (
+              <Button
                 disabled={approving === sheet.id}
                 onClick={() =>
                   approveSheet({
