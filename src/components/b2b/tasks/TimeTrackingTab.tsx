@@ -751,10 +751,20 @@ export function TimeTrackingTab() {
                   <Download className="mr-2 h-4 w-4" /> PDF
                 </Button>
                 {canApprove && s.status === "submitted" && (
-                  <Button size="sm" disabled={approving === s.id} onClick={() => approveSheet(s)}>
-                    <Send className="mr-2 h-4 w-4" />
-                    {approving === s.id ? "Wird gesendet…" : "An das Steuerbüro senden"}
-                  </Button>
+                  <>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() => { setRejectReason(""); setRejectTarget(s); }}
+                    >
+                      <XCircle className="mr-2 h-4 w-4" /> Ablehnen
+                    </Button>
+                    <Button size="sm" disabled={approving === s.id} onClick={() => approveSheet(s)}>
+                      <Send className="mr-2 h-4 w-4" />
+                      {approving === s.id ? "Wird gesendet…" : "An das Steuerbüro senden"}
+                    </Button>
+                  </>
                 )}
               </div>
             </CardContent>
