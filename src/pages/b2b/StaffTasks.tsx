@@ -43,6 +43,7 @@ export default function StaffTasks() {
   // Audit-Log ist bewusst auf Super-Admins beschränkt (zuvor im Reiter B2B-Vermietung)
   const canViewAudit = isSuperAdminEmail(user?.email);
   const { toast } = useToast();
+  const { count: pendingTimesheets } = usePendingTimesheets();
 
 
   const [lists, setLists] = useState<TodoList[]>([]);
