@@ -261,17 +261,35 @@ export function TimeTrackingTab() {
     try {
       await callFunction({ year, month, action: "submit" });
       toast({
-        title: "Monat bestätigt",
-        description: `Der Arbeitszeitnachweis für ${periodRangeLabel(period)} wurde per E-Mail versendet.`,
+        title: "Zur Freigabe gesendet",
+        description: `Der Arbeitszeitnachweis für ${periodRangeLabel(period)} wurde an die Geschäftsführung zur Freigabe gesendet.`,
       });
       setConfirmOpen(false);
-      await Promise.all([load(), loadSheets()]);
+      await Promise.all([load(), loadSheets(), reloadPending()]);
     } catch (err) {
       toast({ title: "Bestätigung fehlgeschlagen", description: (err as Error).message, variant: "destructive" });
     } finally {
       setSubmitting(false);
     }
   };
+
+  /** Geschäftsführung gibt frei → Versand an das Steuerbüro. */
+  const approveSheet = async (s: { id: string; year: number; month: number; user_id: string; staff_name: string | null }) => {
+    setApproving(s.id);
+    try {
+      await callFunction({ year: s.year, month: s.month, user_id: s.user_id, action: "approve" });
+      toast({
+        title: "Freigegeben & an das Steuerbüro gesendet",
+        description: `Der Nachweis von ${s.staff_name ?? "dem Mitarbeitenden"} wurde an die Lohnbuchhaltung übermittelt.`,
+      });
+      await Promise.all([load(), loadSheets(), reloadPending()]);
+    } catch (err) {
+      toast({ title: "Freigabe fehlgeschlagen", description: (err as Error).message, variant: "destructive" });
+    } finally {
+      setApproving(null);
+    }
+  };
+
 
   return (
     <div className="space-y-4">
