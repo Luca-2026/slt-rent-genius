@@ -277,6 +277,65 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    // ---------- Schritt 2a: Geschäftsführung lehnt ab → zurück an die Mitarbeitenden ----------
+    if (action === "reject") {
+      const rejectedAt = new Date().toISOString();
+      const reviewerName =
+        (user.user_metadata?.first_name
+          ? `${user.user_metadata.first_name} ${user.user_metadata.last_name ?? ""}`.trim()
+          : null) ?? user.email ?? "Geschäftsführung";
+      const rejectedLabel = `${new Date(rejectedAt).toLocaleString("de-DE", { timeZone: "Europe/Berlin" })} Uhr`;
+
+      const { error: rejErr } = await service
+        .from("staff_timesheets")
+        .update({
+          status: "rejected",
+          rejected_at: rejectedAt,
+          rejected_by: user.id,
+          rejected_by_name: reviewerName,
+          rejection_reason: rejectionReason,
+        })
+        .eq("user_id", targetUserId)
+        .eq("year", year)
+        .eq("month", month);
+      if (rejErr) {
+        console.error("[generate-timesheet] reject update", rejErr);
+        return json({ error: "Ablehnung konnte nicht gespeichert werden" }, 500);
+      }
+
+      const reasonHtml = `<div style="margin:16px 0;padding:14px 16px;border-left:4px solid #ff8e02;background:#fff7ed;border-radius:6px;">
+        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#00507d;">Anmerkung der Geschäftsführung</p>
+        <p style="margin:0;font-size:15px;line-height:1.6;white-space:pre-wrap;">${esc(rejectionReason)}</p>
+      </div>`;
+
+      if (staffEmail) {
+        await sendMail(
+          {
+            to: [staffEmail],
+            cc: SUPER_ADMIN_EMAILS.filter((e) => e.toLowerCase() !== staffEmail.toLowerCase()),
+            subject: `Korrektur erforderlich: Arbeitszeitnachweis ${rangeLabel}`,
+            html: shell(
+              "Arbeitszeitnachweis zur Korrektur zurückgegeben",
+              `<p style="font-size:15px;line-height:1.6;">Hallo ${esc(staffName)},<br>
+      dein Arbeitszeitnachweis für den Abrechnungszeitraum <strong>${rangeLabel}</strong> wurde von ${esc(reviewerName)} <strong>nicht freigegeben</strong> und zur Korrektur an dich zurückgegeben.</p>
+      ${reasonHtml}
+      ${summaryRows(rangeLabel, total, "Zurückgegeben am", `${rejectedLabel} durch ${esc(reviewerName)}`)}
+      <p style="font-size:15px;line-height:1.6;">Der Zeitraum ist für dich wieder freigeschaltet. Bitte korrigiere deine Zeiten im Portal und sende den Nachweis erneut zur Freigabe.</p>
+      ${ctaButton}`,
+            ),
+          },
+          "reject/staff",
+        );
+      }
+
+      return json({
+        success: true,
+        status: "rejected",
+        rejected_at: rejectedAt,
+        rejection_reason: rejectionReason,
+      });
+    }
+
     // ---------- Schritt 2: Geschäftsführung gibt frei → Versand an das Steuerbüro ----------
     if (action === "approve") {
       const approvedAt = new Date().toISOString();
