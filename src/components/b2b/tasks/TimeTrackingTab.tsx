@@ -441,13 +441,13 @@ export function TimeTrackingTab() {
       {/* Erinnerung ab dem 19.: Stundenzettel noch nicht bestätigt */}
       {isOwnSheet && !sheetConfirmed && (
         (isReminderWindow() && period.end === currentPeriod().end) ||
-        (isPeriodLocked(period) && period.end === lockDate)
+        (periodLocked && period.end === lockDate)
       ) && (
         <div className="flex items-start gap-3 rounded-lg border-2 border-accent bg-accent/10 p-4">
           <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
           <div className="text-sm">
             <p className="font-semibold">
-              {isPeriodLocked(period)
+              {periodLocked
                 ? "Dein Stundenzettel wurde nicht rechtzeitig eingereicht"
                 : "Bitte trage jetzt deine Stunden ein"}
             </p>
