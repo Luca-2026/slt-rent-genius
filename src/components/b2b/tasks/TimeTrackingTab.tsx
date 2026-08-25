@@ -164,7 +164,7 @@ export function TimeTrackingTab() {
     const query = supabase
       .from("staff_timesheets")
       .select("*")
-      .eq("status", "submitted")
+      .in("status", ["submitted", "approved"])
       .order("year", { ascending: false })
       .order("month", { ascending: false })
       .limit(36);
