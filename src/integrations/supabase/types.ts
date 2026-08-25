@@ -2656,9 +2656,14 @@ export type Database = {
       }
       staff_timesheets: {
         Row: {
+          approved_at: string | null
+          approved_by: string | null
+          approved_by_name: string | null
           created_at: string
           id: string
           month: number
+          payroll_sent_at: string | null
+          payroll_sent_to: string | null
           pdf_path: string | null
           period_end: string | null
           period_start: string | null
@@ -2672,9 +2677,14 @@ export type Database = {
           year: number
         }
         Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          approved_by_name?: string | null
           created_at?: string
           id?: string
           month: number
+          payroll_sent_at?: string | null
+          payroll_sent_to?: string | null
           pdf_path?: string | null
           period_end?: string | null
           period_start?: string | null
@@ -2688,9 +2698,14 @@ export type Database = {
           year: number
         }
         Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          approved_by_name?: string | null
           created_at?: string
           id?: string
           month?: number
+          payroll_sent_at?: string | null
+          payroll_sent_to?: string | null
           pdf_path?: string | null
           period_end?: string | null
           period_start?: string | null
