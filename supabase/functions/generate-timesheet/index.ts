@@ -108,8 +108,11 @@ Deno.serve(async (req: Request) => {
     if (action === "submit" && targetUserId !== user.id) {
       return json({ error: "Nur der Mitarbeitende kann den Monat bestätigen" }, 403);
     }
-    if (action === "approve" && !isSuperAdmin) {
-      return json({ error: "Nur die Geschäftsführung darf Stundenzettel freigeben" }, 403);
+    if ((action === "approve" || action === "reject") && !isSuperAdmin) {
+      return json({ error: "Nur die Geschäftsführung darf Stundenzettel freigeben oder ablehnen" }, 403);
+    }
+    if (action === "reject" && rejectionReason.length < 3) {
+      return json({ error: "Bitte gib einen Grund für die Ablehnung an" }, 400);
     }
 
     const { data: staff } = await service
