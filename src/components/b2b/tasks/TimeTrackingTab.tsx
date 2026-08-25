@@ -325,8 +325,65 @@ export function TimeTrackingTab() {
         )}
       </div>
 
+      {/* Freigabe-Instanz: Geschäftsführung sieht wartende Stundenzettel */}
+      {canApprove && pending.length > 0 && (
+        <Card className="border-2 border-accent">
+          <CardContent className="space-y-3 p-4">
+            <div className="flex items-start gap-3">
+              <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
+              <div className="text-sm">
+                <p className="font-semibold">
+                  {pending.length} Stundenzettel {pending.length === 1 ? "wartet" : "warten"} auf deine Freigabe
+                </p>
+                <p className="text-muted-foreground">
+                  Bitte prüfe den Nachweis (PDF) und sende ihn anschließend an das Steuerbüro.
+                </p>
+              </div>
+            </div>
+            <div className="space-y-2">
+              {pending.map((p) => (
+                <div
+                  key={p.id}
+                  className="flex flex-col gap-2 rounded-md border bg-muted/40 p-3 sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div className="text-sm">
+                    <span className="font-medium">{p.staff_name ?? "Mitarbeiter/in"}</span>
+                    <span className="text-muted-foreground">
+                      {" "}·{" "}
+                      {p.period_start && p.period_end
+                        ? periodRangeLabel({ year: p.year, month: p.month, start: p.period_start, end: p.period_end })
+                        : `${MONTH_NAMES[p.month - 1]} ${p.year}`}
+                    </span>
+                    <span className="text-muted-foreground"> · {fmtHours(p.total_minutes)}</span>
+                    {p.submitted_at && (
+                      <p className="text-xs text-muted-foreground">
+                        Eingereicht am {new Date(p.submitted_at).toLocaleString("de-DE")} Uhr
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={downloading}
+                      onClick={() => downloadPdf(p.year, p.month, p.user_id)}
+                    >
+                      <Download className="mr-2 h-4 w-4" /> Prüfen (PDF)
+                    </Button>
+                    <Button size="sm" disabled={approving === p.id} onClick={() => approveSheet(p)}>
+                      <Send className="mr-2 h-4 w-4" />
+                      {approving === p.id ? "Wird gesendet…" : "An das Steuerbüro senden"}
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Erinnerung ab dem 19.: Stundenzettel noch nicht bestätigt */}
-      {isOwnSheet && sheet?.status !== "submitted" && (
+      {isOwnSheet && !sheetConfirmed && (
         (isReminderWindow() && period.end === currentPeriod().end) ||
         (isPeriodLocked(period) && period.end === lockDate)
       ) && (
@@ -350,11 +407,13 @@ export function TimeTrackingTab() {
       {locked && (
         <div className="flex items-center gap-2 rounded-md border bg-muted/50 px-3 py-2 text-sm text-muted-foreground">
           <Lock className="h-4 w-4 shrink-0" />
-          {sheet?.status === "submitted"
-            ? `Zeitraum wurde am ${sheet.submitted_at ? new Date(sheet.submitted_at).toLocaleDateString("de-DE") : ""} bestätigt und ist gesperrt.`
-            : !isOwnSheet
-              ? "Ansicht eines anderen Mitarbeitenden – nur lesbar."
-              : `Abgerechnet: Zeiten bis zum ${lockDate.split("-").reverse().join(".")} sind gesperrt.`}
+          {sheet?.status === "approved"
+            ? `Freigegeben${sheet.approved_by_name ? ` von ${sheet.approved_by_name}` : ""} und an das Steuerbüro gesendet.`
+            : sheet?.status === "submitted"
+              ? `Am ${sheet.submitted_at ? new Date(sheet.submitted_at).toLocaleDateString("de-DE") : ""} eingereicht – wartet auf die Freigabe der Geschäftsführung.`
+              : !isOwnSheet
+                ? "Ansicht eines anderen Mitarbeitenden – nur lesbar."
+                : `Abgerechnet: Zeiten bis zum ${lockDate.split("-").reverse().join(".")} sind gesperrt.`}
         </div>
       )}
 
