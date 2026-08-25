@@ -93,7 +93,8 @@ const fmtDecimal = (min: number) => (min / 60).toFixed(2).replace(".", ",");
 
 export function TimeTrackingTab() {
   const { user } = useAuth();
-  const { isAdmin, displayName } = useStaffAccess();
+  const { isAdmin, isSuperAdmin, displayName } = useStaffAccess();
+  const { pending, reload: reloadPending, canApprove } = usePendingTimesheets();
   const staffMembers = useStaffMembers();
   const { toast } = useToast();
 
