@@ -2667,6 +2667,10 @@ export type Database = {
           pdf_path: string | null
           period_end: string | null
           period_start: string | null
+          rejected_at: string | null
+          rejected_by: string | null
+          rejected_by_name: string | null
+          rejection_reason: string | null
           staff_email: string | null
           staff_name: string | null
           status: string
@@ -2688,6 +2692,10 @@ export type Database = {
           pdf_path?: string | null
           period_end?: string | null
           period_start?: string | null
+          rejected_at?: string | null
+          rejected_by?: string | null
+          rejected_by_name?: string | null
+          rejection_reason?: string | null
           staff_email?: string | null
           staff_name?: string | null
           status?: string
@@ -2709,6 +2717,10 @@ export type Database = {
           pdf_path?: string | null
           period_end?: string | null
           period_start?: string | null
+          rejected_at?: string | null
+          rejected_by?: string | null
+          rejected_by_name?: string | null
+          rejection_reason?: string | null
           staff_email?: string | null
           staff_name?: string | null
           status?: string
