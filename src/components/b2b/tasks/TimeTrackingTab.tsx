@@ -121,7 +121,8 @@ export function TimeTrackingTab() {
 
   const isOwnSheet = viewUserId === user?.id;
   const periodClosed = isPeriodLocked(period) && !isAdmin;
-  const locked = sheet?.status === "submitted" || !isOwnSheet || periodClosed;
+  const sheetConfirmed = isConfirmedStatus(sheet?.status);
+  const locked = sheetConfirmed || !isOwnSheet || periodClosed;
   /** Einzelner Tag gesperrt (abgerechneter Zeitraum) – Admins dürfen korrigieren. */
   const isDayLocked = useCallback(
     (iso: string) => locked || (!isAdmin && iso <= lockDate),
