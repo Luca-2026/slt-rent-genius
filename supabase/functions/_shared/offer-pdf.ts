@@ -316,17 +316,26 @@ export async function generateOfferPdf(data: {
   };
 
   // ── Positionen ──
+  let discountTotal = 0;
   data.items.forEach((item: any, idx: number) => {
     const img = item.image_url ? imageCache.get(item.image_url) : null;
-    let nameText = safe(item.product_name);
-    if (item.discount_percent > 0) nameText += ` (${item.discount_percent}% Rabatt)`;
+    const nameText = safe(item.product_name);
     const nameLines = wt(nameText, bold, 9.5, nameColW);
     const subLines: string[] = [];
     if (item.description) subLines.push(...wt(item.description, font, 8, nameColW));
     if (item.rental_start) {
       subLines.push(...wt(`Mietzeitraum: ${fd(item.rental_start)}${item.rental_end ? " - " + fd(item.rental_end) : ""}`, font, 8, nameColW));
     }
-    let rowH = 10 + nameLines.length * 12 + (subLines.length ? 4 + subLines.length * 10 : 0);
+    // Rabattzeile: Listenpreis, Rabattsatz und Ersparnis transparent ausweisen
+    const pct = Number(item.discount_percent) || 0;
+    const grossLine = Math.round((item.quantity || 0) * (item.unit_price || 0) * 100) / 100;
+    const savings = Math.round(grossLine * (pct / 100) * 100) / 100;
+    const discountLines = pct > 0
+      ? wt(`Listenpreis ${fm(grossLine)} \u2013 Rabatt ${fm2(pct)} % = \u2212 ${fm(savings)}`, bold, 8, nameColW)
+      : [];
+    if (pct > 0) discountTotal += savings;
+    let rowH = 10 + nameLines.length * 12 + (subLines.length ? 4 + subLines.length * 10 : 0) +
+      (discountLines.length ? 3 + discountLines.length * 10 : 0);
     if (img) rowH = Math.max(rowH, IMG + 14);
 
     renderRow(rowH, (top) => {
@@ -336,13 +345,18 @@ export async function generateOfferPdf(data: {
         pg.drawImage(img, { x: nameColX, y: top - 8 - img.height * sc, width: img.width * sc, height: img.height * sc });
       }
       nameLines.forEach((ln, li) => dt(pg, ln, textColX, top - 10 - li * 12, bold, 9.5));
-      subLines.forEach((ln, li) => dt(pg, ln, textColX, top - 10 - nameLines.length * 12 - 4 - li * 10, font, 8, MUTED));
+      const subTop = top - 10 - nameLines.length * 12 - 4;
+      subLines.forEach((ln, li) => dt(pg, ln, textColX, subTop - li * 10, font, 8, MUTED));
+      const discTop = subTop - subLines.length * 10 - (subLines.length ? 3 : 0);
+      discountLines.forEach((ln, li) => dt(pg, ln, textColX, discTop - li * 10, bold, 8, ORANGE));
       dtr(pg, String(item.quantity), qtyColRight, top - 10, font, 9.5);
       dt(pg, deriveUnit(item), unitColX, top - 10, font, 9.5, MUTED);
       dtr(pg, fm(item.unit_price), unitPriceRight, top - 10, font, 9.5);
+      if (pct > 0) dtr(pg, `\u2212 ${fm2(pct)} %`, unitPriceRight, top - 22, bold, 8, ORANGE);
       dtr(pg, fm(item.total_price), totalRight, top - 10, bold, 9.5);
     });
     posNum++;
+
 
     // Zusatzoptionen direkt unter der Position
     for (const svc of servicesByItem.get(idx) || []) {
