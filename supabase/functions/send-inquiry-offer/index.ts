@@ -329,20 +329,36 @@ Deno.serve(async (req: Request) => {
     const resendKey = Deno.env.get("RESEND_API_KEY");
     let emailSent = false;
 
-    const rowsHtml = items.map((i) => `
+    const pctFmt = (n: number) => (Number.isInteger(n) ? String(n) : String(n).replace(".", ","));
+    let discountSum = 0;
+    const rowsHtml = items.map((i) => {
+      const pct = Number(i.discount_percent) || 0;
+      const gross = Math.round(i.quantity * i.unit_price * 100) / 100;
+      const savings = Math.round(gross * (pct / 100) * 100) / 100;
+      const net = Math.round((gross - savings) * 100) / 100;
+      discountSum += savings;
+      const discountHtml = pct > 0
+        ? `<br><span style="color:#ff8e02;font-size:12px;font-weight:bold;">Listenpreis ${money(gross)} – Rabatt ${pctFmt(pct)} % = − ${money(savings)}</span>`
+        : "";
+      return `
       <tr>
-        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;">${escapeHtml(i.product_name)}${i.description ? `<br><span style="color:#6b7280;font-size:12px;">${escapeHtml(i.description)}</span>` : ""}${(i.addons ?? []).filter((a) => a.amount > 0).map((a) => `<br><span style="color:#6b7280;font-size:12px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}</span>`).join("")}</td>
+        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;">${escapeHtml(i.product_name)}${i.description ? `<br><span style="color:#6b7280;font-size:12px;">${escapeHtml(i.description)}</span>` : ""}${discountHtml}${(i.addons ?? []).filter((a) => a.amount > 0).map((a) => `<br><span style="color:#6b7280;font-size:12px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}</span>`).join("")}</td>
         <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${i.quantity}${i.unit ? ` ${escapeHtml(i.unit)}` : ""}</td>
         <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${money(i.unit_price)}</td>
-      </tr>`).join("");
+        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;"><strong>${money(net)}</strong></td>
+      </tr>`;
+    }).join("");
+
 
     // ── Transportkosten & Kaution als eigene Zeilen ──
     const extraRow = (label: string, value: string) => `
       <tr>
         <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;">${label}</td>
         <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;"></td>
-        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${value}</td>
+        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;"></td>
+        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;"><strong>${value}</strong></td>
       </tr>`;
+
     const transportRowsHtml =
       (deliveryCostDelivery > 0 ? extraRow("Transportkosten Anlieferung", money(deliveryCostDelivery)) : "") +
       (deliveryCostReturn > 0 ? extraRow("Transportkosten Abholung/Rückholung", money(deliveryCostReturn)) : "");
@@ -381,12 +397,14 @@ Deno.serve(async (req: Request) => {
   <p>Hallo ${escapeHtml(customerName || "")},</p>
   <p>vielen Dank für Ihre Anfrage. Anbei erhalten Sie unser Angebot als PDF.</p>
   <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;">
-    <tr><th align="left" style="border-bottom:2px solid #00507d;padding-bottom:6px;">Position</th><th align="right" style="border-bottom:2px solid #00507d;">Menge</th><th align="right" style="border-bottom:2px solid #00507d;">Einzelpreis</th></tr>
+    <tr><th align="left" style="border-bottom:2px solid #00507d;padding-bottom:6px;">Position</th><th align="right" style="border-bottom:2px solid #00507d;">Menge</th><th align="right" style="border-bottom:2px solid #00507d;">Einzelpreis</th><th align="right" style="border-bottom:2px solid #00507d;">Gesamt</th></tr>
     ${rowsHtml}
     ${transportRowsHtml}
   </table>
+  ${discountSum > 0 ? `<p style="background:#fff7ed;border-left:4px solid #ff8e02;padding:10px 14px;margin:16px 0;border-radius:4px;font-size:14px;"><strong style="color:#ff8e02;">Ihr Rabattvorteil: − ${money(discountSum)}</strong><br><span style="color:#6b7280;font-size:13px;">Der Rabatt ist in den oben genannten Positionspreisen bereits abgezogen.</span></p>` : ""}
   <p style="font-size:15px;"><strong>Gesamtsumme brutto: ${money(totals.grossAmount)}</strong><br>
   <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)}${transportTotal > 0 ? ` (inkl. Transportkosten ${money(transportTotal)})` : ""} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span>${deposit > 0 ? `<br><span style="color:#6b7280;font-size:13px;">zzgl. Kaution ${money(deposit)} (wird nach Rückgabe erstattet) – Gesamtüberweisung inkl. Kaution: ${money(totals.grossAmount + deposit)}</span>` : ""}</p>
+
   ${deliveryRequested && (deliveryAddress.street || deliveryAddress.city) ? `<p style="font-size:14px;"><strong>Lieferadresse:</strong><br>${escapeHtml(deliveryAddress.street)}<br>${escapeHtml([deliveryAddress.postal_code, deliveryAddress.city].filter(Boolean).join(" "))}</p>` : ""}
 
 
