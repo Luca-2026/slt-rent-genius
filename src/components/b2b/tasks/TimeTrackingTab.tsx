@@ -296,6 +296,37 @@ export function TimeTrackingTab() {
     }
   };
 
+  /** Geschäftsführung lehnt ab → Kommentar geht zurück an den Mitarbeitenden. */
+  const rejectSheet = async () => {
+    if (!rejectTarget) return;
+    const reason = rejectReason.trim();
+    if (reason.length < 3) {
+      toast({ title: "Kommentar fehlt", description: "Bitte gib an, was korrigiert werden soll.", variant: "destructive" });
+      return;
+    }
+    setRejecting(true);
+    try {
+      await callFunction({
+        year: rejectTarget.year,
+        month: rejectTarget.month,
+        user_id: rejectTarget.user_id,
+        action: "reject",
+        reason,
+      });
+      toast({
+        title: "Zur Korrektur zurückgegeben",
+        description: `${rejectTarget.staff_name ?? "Der Mitarbeitende"} wurde per E-Mail über die nötige Korrektur informiert.`,
+      });
+      setRejectTarget(null);
+      setRejectReason("");
+      await Promise.all([load(), loadSheets(), reloadPending()]);
+    } catch (err) {
+      toast({ title: "Ablehnung fehlgeschlagen", description: (err as Error).message, variant: "destructive" });
+    } finally {
+      setRejecting(false);
+    }
+  };
+
 
   return (
     <div className="space-y-4">
