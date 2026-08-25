@@ -20,7 +20,8 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { AlertTriangle, CheckCircle2, ChevronLeft, ChevronRight, Download, Lock } from "lucide-react";
+import { AlertTriangle, CheckCircle2, ChevronLeft, ChevronRight, Download, Lock, Send, ShieldCheck } from "lucide-react";
+import { usePendingTimesheets } from "@/hooks/usePendingTimesheets";
 import { LOCATIONS } from "./types";
 import {
   NOTE_MAX_LENGTH,
@@ -62,7 +63,13 @@ interface Timesheet {
   submitted_at: string | null;
   period_start?: string | null;
   period_end?: string | null;
+  approved_at?: string | null;
+  approved_by_name?: string | null;
+  payroll_sent_at?: string | null;
 }
+
+/** Bestätigt = eingereicht (wartet auf Freigabe) oder bereits freigegeben. */
+const isConfirmedStatus = (status?: string | null) => status === "submitted" || status === "approved";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 const daysInMonth = (y: number, m: number) => new Date(y, m, 0).getDate();
@@ -87,6 +94,7 @@ const fmtDecimal = (min: number) => (min / 60).toFixed(2).replace(".", ",");
 export function TimeTrackingTab() {
   const { user } = useAuth();
   const { isAdmin, displayName } = useStaffAccess();
+  const { pending, reload: reloadPending, canApprove } = usePendingTimesheets();
   const staffMembers = useStaffMembers();
   const { toast } = useToast();
 
@@ -104,6 +112,8 @@ export function TimeTrackingTab() {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [approving, setApproving] = useState<string | null>(null);
+
 
   useEffect(() => {
     if (user?.id && !viewUserId) setViewUserId(user.id);
@@ -111,7 +121,8 @@ export function TimeTrackingTab() {
 
   const isOwnSheet = viewUserId === user?.id;
   const periodClosed = isPeriodLocked(period) && !isAdmin;
-  const locked = sheet?.status === "submitted" || !isOwnSheet || periodClosed;
+  const sheetConfirmed = isConfirmedStatus(sheet?.status);
+  const locked = sheetConfirmed || !isOwnSheet || periodClosed;
   /** Einzelner Tag gesperrt (abgerechneter Zeitraum) – Admins dürfen korrigieren. */
   const isDayLocked = useCallback(
     (iso: string) => locked || (!isAdmin && iso <= lockDate),
@@ -153,7 +164,7 @@ export function TimeTrackingTab() {
     const query = supabase
       .from("staff_timesheets")
       .select("*")
-      .eq("status", "submitted")
+      .in("status", ["submitted", "approved"])
       .order("year", { ascending: false })
       .order("month", { ascending: false })
       .limit(36);
@@ -250,17 +261,35 @@ export function TimeTrackingTab() {
     try {
       await callFunction({ year, month, action: "submit" });
       toast({
-        title: "Monat bestätigt",
-        description: `Der Arbeitszeitnachweis für ${periodRangeLabel(period)} wurde per E-Mail versendet.`,
+        title: "Zur Freigabe gesendet",
+        description: `Der Arbeitszeitnachweis für ${periodRangeLabel(period)} wurde an die Geschäftsführung zur Freigabe gesendet.`,
       });
       setConfirmOpen(false);
-      await Promise.all([load(), loadSheets()]);
+      await Promise.all([load(), loadSheets(), reloadPending()]);
     } catch (err) {
       toast({ title: "Bestätigung fehlgeschlagen", description: (err as Error).message, variant: "destructive" });
     } finally {
       setSubmitting(false);
     }
   };
+
+  /** Geschäftsführung gibt frei → Versand an das Steuerbüro. */
+  const approveSheet = async (s: { id: string; year: number; month: number; user_id: string; staff_name: string | null }) => {
+    setApproving(s.id);
+    try {
+      await callFunction({ year: s.year, month: s.month, user_id: s.user_id, action: "approve" });
+      toast({
+        title: "Freigegeben & an das Steuerbüro gesendet",
+        description: `Der Nachweis von ${s.staff_name ?? "dem Mitarbeitenden"} wurde an die Lohnbuchhaltung übermittelt.`,
+      });
+      await Promise.all([load(), loadSheets(), reloadPending()]);
+    } catch (err) {
+      toast({ title: "Freigabe fehlgeschlagen", description: (err as Error).message, variant: "destructive" });
+    } finally {
+      setApproving(null);
+    }
+  };
+
 
   return (
     <div className="space-y-4">
@@ -296,8 +325,65 @@ export function TimeTrackingTab() {
         )}
       </div>
 
+      {/* Freigabe-Instanz: Geschäftsführung sieht wartende Stundenzettel */}
+      {canApprove && pending.length > 0 && (
+        <Card className="border-2 border-accent">
+          <CardContent className="space-y-3 p-4">
+            <div className="flex items-start gap-3">
+              <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
+              <div className="text-sm">
+                <p className="font-semibold">
+                  {pending.length} Stundenzettel {pending.length === 1 ? "wartet" : "warten"} auf deine Freigabe
+                </p>
+                <p className="text-muted-foreground">
+                  Bitte prüfe den Nachweis (PDF) und sende ihn anschließend an das Steuerbüro.
+                </p>
+              </div>
+            </div>
+            <div className="space-y-2">
+              {pending.map((p) => (
+                <div
+                  key={p.id}
+                  className="flex flex-col gap-2 rounded-md border bg-muted/40 p-3 sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div className="text-sm">
+                    <span className="font-medium">{p.staff_name ?? "Mitarbeiter/in"}</span>
+                    <span className="text-muted-foreground">
+                      {" "}·{" "}
+                      {p.period_start && p.period_end
+                        ? periodRangeLabel({ year: p.year, month: p.month, start: p.period_start, end: p.period_end })
+                        : `${MONTH_NAMES[p.month - 1]} ${p.year}`}
+                    </span>
+                    <span className="text-muted-foreground"> · {fmtHours(p.total_minutes)}</span>
+                    {p.submitted_at && (
+                      <p className="text-xs text-muted-foreground">
+                        Eingereicht am {new Date(p.submitted_at).toLocaleString("de-DE")} Uhr
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={downloading}
+                      onClick={() => downloadPdf(p.year, p.month, p.user_id)}
+                    >
+                      <Download className="mr-2 h-4 w-4" /> Prüfen (PDF)
+                    </Button>
+                    <Button size="sm" disabled={approving === p.id} onClick={() => approveSheet(p)}>
+                      <Send className="mr-2 h-4 w-4" />
+                      {approving === p.id ? "Wird gesendet…" : "An das Steuerbüro senden"}
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Erinnerung ab dem 19.: Stundenzettel noch nicht bestätigt */}
-      {isOwnSheet && sheet?.status !== "submitted" && (
+      {isOwnSheet && !sheetConfirmed && (
         (isReminderWindow() && period.end === currentPeriod().end) ||
         (isPeriodLocked(period) && period.end === lockDate)
       ) && (
@@ -321,11 +407,13 @@ export function TimeTrackingTab() {
       {locked && (
         <div className="flex items-center gap-2 rounded-md border bg-muted/50 px-3 py-2 text-sm text-muted-foreground">
           <Lock className="h-4 w-4 shrink-0" />
-          {sheet?.status === "submitted"
-            ? `Zeitraum wurde am ${sheet.submitted_at ? new Date(sheet.submitted_at).toLocaleDateString("de-DE") : ""} bestätigt und ist gesperrt.`
-            : !isOwnSheet
-              ? "Ansicht eines anderen Mitarbeitenden – nur lesbar."
-              : `Abgerechnet: Zeiten bis zum ${lockDate.split("-").reverse().join(".")} sind gesperrt.`}
+          {sheet?.status === "approved"
+            ? `Freigegeben${sheet.approved_by_name ? ` von ${sheet.approved_by_name}` : ""} und an das Steuerbüro gesendet.`
+            : sheet?.status === "submitted"
+              ? `Am ${sheet.submitted_at ? new Date(sheet.submitted_at).toLocaleDateString("de-DE") : ""} eingereicht – wartet auf die Freigabe der Geschäftsführung.`
+              : !isOwnSheet
+                ? "Ansicht eines anderen Mitarbeitenden – nur lesbar."
+                : `Abgerechnet: Zeiten bis zum ${lockDate.split("-").reverse().join(".")} sind gesperrt.`}
         </div>
       )}
 
@@ -510,25 +598,47 @@ export function TimeTrackingTab() {
             </p>
             <p className="text-xs text-muted-foreground">{workedDays} Tage mit erfasster Arbeitszeit</p>
           </div>
-          <div className="flex flex-col gap-2 sm:flex-row">
-            {sheet?.status === "submitted" ? (
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            {sheetConfirmed ? (
               <Button variant="outline" disabled={downloading} onClick={() => downloadPdf(year, month, viewUserId)}>
                 <Download className="mr-2 h-4 w-4" /> PDF herunterladen
               </Button>
             ) : (
               <p className="max-w-[240px] text-xs text-muted-foreground">
-                Das PDF steht zum Download bereit, sobald der Monat bestätigt und versendet wurde.
+                Das PDF steht zum Download bereit, sobald der Zeitraum bestätigt und zur Freigabe gesendet wurde.
               </p>
             )}
-            {isOwnSheet && sheet?.status !== "submitted" && (
+            {isOwnSheet && !sheetConfirmed && (
               <Button disabled={total === 0} onClick={() => setConfirmOpen(true)}>
-                <CheckCircle2 className="mr-2 h-4 w-4" /> Monat bestätigen &amp; senden
+                <CheckCircle2 className="mr-2 h-4 w-4" /> Bestätigen &amp; an Vorgesetzten senden
               </Button>
             )}
             {sheet?.status === "submitted" && (
-              <Badge variant="secondary" className="justify-center py-2">
-                <CheckCircle2 className="mr-1 h-4 w-4" /> Bestätigt
+              <Badge variant="outline" className="justify-center py-2">
+                <ShieldCheck className="mr-1 h-4 w-4" /> Wartet auf Freigabe
               </Badge>
+            )}
+            {sheet?.status === "approved" && (
+              <Badge variant="secondary" className="justify-center py-2">
+                <CheckCircle2 className="mr-1 h-4 w-4" /> Freigegeben &amp; an Steuerbüro gesendet
+              </Badge>
+            )}
+            {canApprove && !isOwnSheet && sheet?.status === "submitted" && (
+              <Button
+                disabled={approving === sheet.id}
+                onClick={() =>
+                  approveSheet({
+                    id: sheet.id,
+                    year: sheet.year,
+                    month: sheet.month,
+                    user_id: sheet.user_id,
+                    staff_name: sheet.staff_name,
+                  })
+                }
+              >
+                <Send className="mr-2 h-4 w-4" />
+                {approving === sheet.id ? "Wird gesendet…" : "An das Steuerbüro senden"}
+              </Button>
             )}
           </div>
         </CardContent>
@@ -551,10 +661,25 @@ export function TimeTrackingTab() {
                 </span>
                 {isAdmin && s.staff_name && <span className="text-muted-foreground"> · {s.staff_name}</span>}
                 <span className="text-muted-foreground"> · {fmtHours(s.total_minutes)}</span>
+                <p className="text-xs text-muted-foreground">
+                  {s.status === "approved"
+                    ? `Freigegeben${s.approved_by_name ? ` von ${s.approved_by_name}` : ""}${
+                        s.payroll_sent_at ? ` · an Steuerbüro am ${new Date(s.payroll_sent_at).toLocaleDateString("de-DE")}` : ""
+                      }`
+                    : "Wartet auf Freigabe der Geschäftsführung"}
+                </p>
               </div>
-              <Button size="sm" variant="outline" disabled={downloading} onClick={() => downloadPdf(s.year, s.month, s.user_id)}>
-                <Download className="mr-2 h-4 w-4" /> PDF
-              </Button>
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Button size="sm" variant="outline" disabled={downloading} onClick={() => downloadPdf(s.year, s.month, s.user_id)}>
+                  <Download className="mr-2 h-4 w-4" /> PDF
+                </Button>
+                {canApprove && s.status === "submitted" && (
+                  <Button size="sm" disabled={approving === s.id} onClick={() => approveSheet(s)}>
+                    <Send className="mr-2 h-4 w-4" />
+                    {approving === s.id ? "Wird gesendet…" : "An das Steuerbüro senden"}
+                  </Button>
+                )}
+              </div>
             </CardContent>
           </Card>
         ))}
@@ -565,14 +690,15 @@ export function TimeTrackingTab() {
           <AlertDialogHeader>
             <AlertDialogTitle>Zeitraum {periodRangeLabel(period)} bestätigen?</AlertDialogTitle>
             <AlertDialogDescription>
-              Du bestätigst {fmtHours(total)} ({fmtDecimal(total)} Std.) geleistete Arbeitszeit. Der Monat wird
-              danach für Änderungen gesperrt, als PDF archiviert und per E-Mail an dich und die Verwaltung gesendet.
+              Du bestätigst {fmtHours(total)} ({fmtDecimal(total)} Std.) geleistete Arbeitszeit. Der Zeitraum wird
+              danach für Änderungen gesperrt, als PDF archiviert und zur Prüfung an die Geschäftsführung gesendet.
+              Erst nach deren Freigabe geht der Nachweis an das Steuerbüro.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={submitting}>Abbrechen</AlertDialogCancel>
             <AlertDialogAction disabled={submitting} onClick={(ev) => { ev.preventDefault(); submitMonth(); }}>
-              {submitting ? "Wird gesendet…" : "Bestätigen & senden"}
+              {submitting ? "Wird gesendet…" : "Bestätigen & an Vorgesetzten senden"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -1,7 +1,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateTimesheetPdf, MONTH_NAMES, fmtHours, fmtDecimalHours } from "./pdf.ts";
-import { periodFor, periodRangeLabel, isPeriodLocked } from "../_shared/payroll-period.ts";
+import { periodFor, periodRangeLabel } from "../_shared/payroll-period.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -18,10 +18,51 @@ const esc = (s: string) =>
 const BRAND_BLUE = "#00507d";
 const BRAND_ORANGE = "#ff8e02";
 const PORTAL_URL = "https://www.slt-rental.de/b2b/aufgaben/?tab=zeiten";
-/** Geschäftsführung / Super-Admins erhalten jeden bestätigten Monatsnachweis. */
+/** Geschäftsführung / Super-Admins: Freigabeinstanz für alle Stundenzettel. */
 const SUPER_ADMIN_EMAILS = ["l.sandhoff@slt-rental.de", "b.noechel@slt-rental.de"];
-// Lohnbuchhaltung Steuerbüro – erhält Stundenzettel in CC
+// Lohnbuchhaltung Steuerbüro Altmann – erhält den Stundenzettel erst nach Freigabe
 const PAYROLL_EMAIL = "y.luetke-wiesmann@altmann-steuerberater.de";
+const PAYROLL_NAME = "Jannik Lütke-Wiesmann";
+
+const shell = (title: string, inner: string) => `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f4f5f7;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
+  <div style="max-width:640px;margin:0 auto;background:#ffffff;">
+    <div style="background:${BRAND_BLUE};padding:20px 24px;color:#ffffff;font-size:18px;font-weight:bold;">SLT-Rental &ndash; ${title}</div>
+    <div style="padding:24px;">${inner}</div>
+    <div style="background:#f4f5f7;padding:16px 24px;font-size:11px;color:#777;">
+      SLT Technology Group GmbH &amp; Co. KG &middot; Anrather Straße 291 &middot; 47807 Krefeld
+    </div>
+  </div>
+</body></html>`;
+
+const summaryRows = (rangeLabel: string, total: number, dateLabel: string, dateValue: string) => `
+      <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+        <tr><td style="padding:6px 0;font-size:14px;color:#666;width:200px;">Abrechnungszeitraum</td><td style="padding:6px 0;font-size:14px;"><strong>${rangeLabel}</strong></td></tr>
+        <tr><td style="padding:6px 0;font-size:14px;color:#666;">Gesamte Arbeitszeit</td><td style="padding:6px 0;font-size:14px;"><strong>${fmtHours(total)}</strong> (${fmtDecimalHours(total)} Std.)</td></tr>
+        <tr><td style="padding:6px 0;font-size:14px;color:#666;">${dateLabel}</td><td style="padding:6px 0;font-size:14px;">${dateValue}</td></tr>
+      </table>`;
+
+const ctaButton = `<p style="margin:24px 0;">
+        <a href="${PORTAL_URL}" style="background:${BRAND_ORANGE};color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:6px;font-size:15px;font-weight:bold;display:inline-block;">Im Portal öffnen</a>
+      </p>`;
+
+async function sendMail(payload: Record<string, unknown>, tag: string) {
+  const resendApiKey = Deno.env.get("RESEND_API_KEY");
+  const resendDomain = Deno.env.get("RESEND_DOMAIN") ?? "slt-rental.de";
+  if (!resendApiKey) {
+    console.warn(`[generate-timesheet] ${tag}: RESEND_API_KEY fehlt`);
+    return false;
+  }
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${resendApiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ from: `SLT-Rental Zeiterfassung <aufgaben@${resendDomain}>`, ...payload }),
+  });
+  if (!res.ok) {
+    console.error(`[generate-timesheet] ${tag} resend`, res.status, await res.text());
+    return false;
+  }
+  return true;
+}
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -42,12 +83,14 @@ Deno.serve(async (req: Request) => {
     const service = createClient(supabaseUrl, serviceRoleKey);
     const { data: isStaff } = await service.rpc("is_staff_member", { _user_id: user.id });
     const { data: isAdmin } = await service.rpc("has_role", { _user_id: user.id, _role: "admin" });
+    const { data: isSuperAdmin } = await service.rpc("is_super_admin", { _user_id: user.id });
     if (!isStaff && !isAdmin) return json({ error: "Keine Berechtigung" }, 403);
 
     const body = await req.json().catch(() => ({}));
     const year = Number(body.year);
     const month = Number(body.month);
-    const action = body.action === "submit" ? "submit" : "preview";
+    const action: "preview" | "submit" | "approve" =
+      body.action === "submit" ? "submit" : body.action === "approve" ? "approve" : "preview";
     const targetUserId =
       typeof body.user_id === "string" && /^[0-9a-f-]{36}$/i.test(body.user_id) && isAdmin
         ? body.user_id
@@ -57,6 +100,9 @@ Deno.serve(async (req: Request) => {
     if (!Number.isInteger(month) || month < 1 || month > 12) return json({ error: "Ungültiger Monat" }, 400);
     if (action === "submit" && targetUserId !== user.id) {
       return json({ error: "Nur der Mitarbeitende kann den Monat bestätigen" }, 403);
+    }
+    if (action === "approve" && !isSuperAdmin) {
+      return json({ error: "Nur die Geschäftsführung darf Stundenzettel freigeben" }, 403);
     }
 
     const { data: staff } = await service
@@ -75,14 +121,24 @@ Deno.serve(async (req: Request) => {
     // Download nur für bereits bestätigte Monate (PDF entsteht erst mit der Bestätigung)
     const { data: existingSheet } = await service
       .from("staff_timesheets")
-      .select("status, submitted_at, period_start, period_end")
+      .select("status, submitted_at, period_start, period_end, approved_at, payroll_sent_at, total_minutes")
       .eq("user_id", targetUserId)
       .eq("year", year)
       .eq("month", month)
       .maybeSingle();
 
-    if (action === "preview" && existingSheet?.status !== "submitted") {
+    const isConfirmed = existingSheet?.status === "submitted" || existingSheet?.status === "approved";
+    if (action === "preview" && !isConfirmed) {
       return json({ error: "Der Monat ist noch nicht bestätigt – erst danach steht das PDF bereit." }, 403);
+    }
+    if (action === "approve") {
+      if (!existingSheet) return json({ error: "Kein Stundenzettel für diesen Zeitraum vorhanden" }, 404);
+      if (existingSheet.status !== "submitted") {
+        return json({ error: "Dieser Stundenzettel wartet nicht auf Freigabe (bereits freigegeben?)" }, 409);
+      }
+    }
+    if (action === "submit" && existingSheet && isConfirmed) {
+      return json({ error: "Dieser Zeitraum wurde bereits bestätigt" }, 409);
     }
 
     // Abrechnungszeitraum 21.–20.; Altnachweise (ohne period_start) bleiben Kalendermonat.
@@ -95,6 +151,7 @@ Deno.serve(async (req: Request) => {
     const last = legacy
       ? `${year}-${String(month).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`
       : (existingSheet?.period_end ?? period.end);
+    const rangeLabel = periodRangeLabel({ start: first, end: last });
 
     const { data: entries } = await service
       .from("staff_time_entries")
@@ -135,7 +192,9 @@ Deno.serve(async (req: Request) => {
 
     const fileName = `Arbeitszeitnachweis_${year}-${String(month).padStart(2, "0")}_${staffName.replace(/[^A-Za-z0-9]+/g, "-")}.pdf`;
     const path = `${targetUserId}/${year}-${String(month).padStart(2, "0")}.pdf`;
+    const attachments = [{ filename: fileName, content: encodeBase64(pdfBytes) }];
 
+    // ---------- Schritt 1: Mitarbeitende/r bestätigt → Freigabe durch Geschäftsführung ----------
     if (action === "submit") {
       const { error: upErr } = await service.storage
         .from("timesheets")
@@ -159,58 +218,138 @@ Deno.serve(async (req: Request) => {
         { onConflict: "user_id,year,month" },
       );
 
-      // E-Mail an Mitarbeitende/n + Geschäftsführung und Lohnbuchhaltung
-      const resendApiKey = Deno.env.get("RESEND_API_KEY");
-      const resendDomain = Deno.env.get("RESEND_DOMAIN") ?? "slt-rental.de";
-      if (resendApiKey && staffEmail) {
-        const primary = staffEmail;
-        const ccList = Array.from(
-          new Set(
-            [...SUPER_ADMIN_EMAILS, PAYROLL_EMAIL].filter((e) => e.toLowerCase() !== primary.toLowerCase()),
-          ),
-        );
-        const html = `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f4f5f7;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
-  <div style="max-width:640px;margin:0 auto;background:#ffffff;">
-    <div style="background:${BRAND_BLUE};padding:20px 24px;color:#ffffff;font-size:18px;font-weight:bold;">SLT-Rental &ndash; Arbeitszeitnachweis</div>
-    <div style="padding:24px;">
-      <p style="font-size:15px;line-height:1.6;">Hallo ${esc(staffName)},<br>
-      dein Arbeitszeitnachweis für den Abrechnungszeitraum <strong>${periodRangeLabel({ start: first, end: last })}</strong> (Lohnabrechnung ${MONTH_NAMES[month - 1]} ${year}) wurde bestätigt und ist als PDF angehängt.</p>
-      <table style="width:100%;border-collapse:collapse;margin:16px 0;">
-        <tr><td style="padding:6px 0;font-size:14px;color:#666;width:200px;">Abrechnungszeitraum</td><td style="padding:6px 0;font-size:14px;"><strong>${periodRangeLabel({ start: first, end: last })}</strong></td></tr>
-        <tr><td style="padding:6px 0;font-size:14px;color:#666;">Gesamte Arbeitszeit</td><td style="padding:6px 0;font-size:14px;"><strong>${fmtHours(total)}</strong> (${fmtDecimalHours(total)} Std.)</td></tr>
-        <tr><td style="padding:6px 0;font-size:14px;color:#666;">Bestätigt am</td><td style="padding:6px 0;font-size:14px;">${new Date(submittedAt).toLocaleString("de-DE", { timeZone: "Europe/Berlin" })} Uhr</td></tr>
-      </table>
-      <p style="margin:24px 0;">
-        <a href="${PORTAL_URL}" style="background:${BRAND_ORANGE};color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:6px;font-size:15px;font-weight:bold;display:inline-block;">Im Portal öffnen</a>
-      </p>
-      <p style="font-size:12px;color:#777;line-height:1.5;">Das PDF steht dir jederzeit im B2B-Portal unter „Interne Verwaltung &rarr; Zeiterfassung“ zum Download bereit.</p>
-    </div>
-    <div style="background:#f4f5f7;padding:16px 24px;font-size:11px;color:#777;">
-      SLT Technology Group GmbH &amp; Co. KG &middot; Anrather Straße 291 &middot; 47807 Krefeld
-    </div>
-  </div>
-</body></html>`;
+      const submittedLabel = `${new Date(submittedAt).toLocaleString("de-DE", { timeZone: "Europe/Berlin" })} Uhr`;
 
-        const res = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${resendApiKey}`, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            from: `SLT-Rental Zeiterfassung <aufgaben@${resendDomain}>`,
-            to: [primary],
-            cc: ccList,
-            subject: `Arbeitszeitnachweis ${periodRangeLabel({ start: first, end: last })} – ${staffName}`,
-            html,
-            attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
-          }),
-        });
-        if (!res.ok) console.error("[generate-timesheet] resend", res.status, await res.text());
+      // a) Freigabe-Anforderung an die Geschäftsführung
+      await sendMail(
+        {
+          to: SUPER_ADMIN_EMAILS,
+          subject: `Freigabe erforderlich: Arbeitszeitnachweis ${rangeLabel} – ${staffName}`,
+          html: shell(
+            "Stundenzettel zur Freigabe",
+            `<p style="font-size:15px;line-height:1.6;"><strong>${esc(staffName)}</strong> hat den Arbeitszeitnachweis für den Abrechnungszeitraum <strong>${rangeLabel}</strong> (Lohnabrechnung ${MONTH_NAMES[month - 1]} ${year}) bestätigt und zur Freigabe eingereicht.</p>
+      ${summaryRows(rangeLabel, total, "Eingereicht am", submittedLabel)}
+      <p style="font-size:15px;line-height:1.6;">Bitte prüfe den angehängten Nachweis und gib ihn im Portal frei. Erst danach geht der Stundenzettel an das Steuerbüro (${esc(PAYROLL_NAME)}).</p>
+      ${ctaButton}`,
+          ),
+          attachments,
+        },
+        "submit/approval-request",
+      );
+
+      // b) Eingangsbestätigung an die Mitarbeitenden
+      if (staffEmail) {
+        await sendMail(
+          {
+            to: [staffEmail],
+            subject: `Arbeitszeitnachweis ${rangeLabel} eingereicht – ${staffName}`,
+            html: shell(
+              "Arbeitszeitnachweis eingereicht",
+              `<p style="font-size:15px;line-height:1.6;">Hallo ${esc(staffName)},<br>
+      dein Arbeitszeitnachweis für den Abrechnungszeitraum <strong>${rangeLabel}</strong> wurde bestätigt und an die Geschäftsführung zur Freigabe gesendet. Nach der Freigabe geht er automatisch an das Steuerbüro.</p>
+      ${summaryRows(rangeLabel, total, "Eingereicht am", submittedLabel)}
+      ${ctaButton}
+      <p style="font-size:12px;color:#777;line-height:1.5;">Das PDF steht dir jederzeit im Portal unter „Interne Verwaltung &rarr; Zeiterfassung“ zum Download bereit.</p>`,
+            ),
+            attachments,
+          },
+          "submit/staff-copy",
+        );
       }
+
+      return json({
+        success: true,
+        status: "submitted",
+        file_name: fileName,
+        path,
+        total_minutes: total,
+        pdf_base64: encodeBase64(pdfBytes),
+      });
     }
 
+    // ---------- Schritt 2: Geschäftsführung gibt frei → Versand an das Steuerbüro ----------
+    if (action === "approve") {
+      const approvedAt = new Date().toISOString();
+      const approverName =
+        (user.user_metadata?.first_name
+          ? `${user.user_metadata.first_name} ${user.user_metadata.last_name ?? ""}`.trim()
+          : null) ?? user.email ?? "Geschäftsführung";
+      const approvedLabel = `${new Date(approvedAt).toLocaleString("de-DE", { timeZone: "Europe/Berlin" })} Uhr`;
+
+      const cc = Array.from(
+        new Set([...SUPER_ADMIN_EMAILS, ...(staffEmail ? [staffEmail] : [])].filter(
+          (e) => e.toLowerCase() !== PAYROLL_EMAIL.toLowerCase(),
+        )),
+      );
+
+      const sent = await sendMail(
+        {
+          to: [PAYROLL_EMAIL],
+          cc,
+          subject: `Arbeitszeitnachweis ${rangeLabel} – ${staffName} (freigegeben)`,
+          html: shell(
+            "Arbeitszeitnachweis (freigegeben)",
+            `<p style="font-size:15px;line-height:1.6;">Hallo ${esc(PAYROLL_NAME)},<br>
+      anbei der von der Geschäftsführung freigegebene Arbeitszeitnachweis für <strong>${esc(staffName)}</strong>, Abrechnungszeitraum <strong>${rangeLabel}</strong> (Lohnabrechnung ${MONTH_NAMES[month - 1]} ${year}).</p>
+      ${summaryRows(rangeLabel, total, "Freigegeben am", `${approvedLabel} durch ${esc(approverName)}`)}
+      <p style="font-size:12px;color:#777;line-height:1.5;">Diese E-Mail wurde automatisch aus dem SLT-Rental Portal versendet.</p>`,
+          ),
+          attachments,
+        },
+        "approve/payroll",
+      );
+
+      if (!sent) return json({ error: "E-Mail an das Steuerbüro konnte nicht versendet werden" }, 502);
+
+      const { error: updErr } = await service
+        .from("staff_timesheets")
+        .update({
+          status: "approved",
+          approved_at: approvedAt,
+          approved_by: user.id,
+          approved_by_name: approverName,
+          payroll_sent_at: approvedAt,
+          payroll_sent_to: PAYROLL_EMAIL,
+        })
+        .eq("user_id", targetUserId)
+        .eq("year", year)
+        .eq("month", month);
+      if (updErr) console.error("[generate-timesheet] approve update", updErr);
+
+      // Info an die Mitarbeitenden
+      if (staffEmail) {
+        await sendMail(
+          {
+            to: [staffEmail],
+            subject: `Arbeitszeitnachweis ${rangeLabel} freigegeben`,
+            html: shell(
+              "Arbeitszeitnachweis freigegeben",
+              `<p style="font-size:15px;line-height:1.6;">Hallo ${esc(staffName)},<br>
+      dein Arbeitszeitnachweis für <strong>${rangeLabel}</strong> wurde von der Geschäftsführung freigegeben und an das Steuerbüro zur Lohnabrechnung übermittelt.</p>
+      ${summaryRows(rangeLabel, total, "Freigegeben am", `${approvedLabel} durch ${esc(approverName)}`)}
+      ${ctaButton}`,
+            ),
+          },
+          "approve/staff-info",
+        );
+      }
+
+      return json({
+        success: true,
+        status: "approved",
+        approved_at: approvedAt,
+        payroll_sent_to: PAYROLL_EMAIL,
+        file_name: fileName,
+        total_minutes: total,
+      });
+    }
+
+    // ---------- Preview / Download ----------
     return json({
       success: true,
+      status: existingSheet?.status ?? "submitted",
       file_name: fileName,
-      path: action === "submit" ? path : null,
+      path: null,
       total_minutes: total,
       pdf_base64: encodeBase64(pdfBytes),
     });

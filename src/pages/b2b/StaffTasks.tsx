@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { TimeTrackingTab } from "@/components/b2b/tasks/TimeTrackingTab";
 import { TimesheetReminderBanner } from "@/components/b2b/tasks/TimesheetReminderBanner";
+import { usePendingTimesheets } from "@/hooks/usePendingTimesheets";
 import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
 import { AdminSalesCatalogTab } from "@/components/b2b/admin/AdminSalesCatalogTab";
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
@@ -43,6 +44,7 @@ export default function StaffTasks() {
   // Audit-Log ist bewusst auf Super-Admins beschränkt (zuvor im Reiter B2B-Vermietung)
   const canViewAudit = isSuperAdminEmail(user?.email);
   const { toast } = useToast();
+  const { count: pendingTimesheets } = usePendingTimesheets();
 
 
   const [lists, setLists] = useState<TodoList[]>([]);
@@ -231,6 +233,11 @@ export default function StaffTasks() {
           )}
           <TabsTrigger value="zeiten" className="text-xs sm:text-sm py-2 sm:flex-1">
             <CalendarClock className="h-4 w-4 mr-1.5 shrink-0" /> Zeiten
+            {pendingTimesheets > 0 && (
+              <span className="ml-1.5 rounded-full bg-accent px-1.5 py-0.5 text-[10px] font-bold text-accent-foreground">
+                {pendingTimesheets}
+              </span>
+            )}
           </TabsTrigger>
           {isAdmin && (
             <TabsTrigger value="feedback" className="text-xs sm:text-sm py-2 sm:flex-1">

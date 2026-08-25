@@ -40,7 +40,7 @@ export function TimesheetReminderBanner({ onOpenTimeTracking, className }: Props
         .eq("year", period.year)
         .eq("month", period.month)
         .maybeSingle();
-      if (active) setPending(data?.status !== "submitted");
+      if (active) setPending(data?.status !== "submitted" && data?.status !== "approved");
     })();
     return () => {
       active = false;
