@@ -2889,6 +2889,36 @@ export type Database = {
         }
         Relationships: []
       }
+      timesheet_lock_overrides: {
+        Row: {
+          active_until: string
+          created_at: string
+          created_by: string | null
+          id: string
+          locked_period_end: string
+          reason: string | null
+          updated_at: string
+        }
+        Insert: {
+          active_until: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          locked_period_end: string
+          reason?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active_until?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          locked_period_end?: string
+          reason?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       used_machines: {
         Row: {
           category: string

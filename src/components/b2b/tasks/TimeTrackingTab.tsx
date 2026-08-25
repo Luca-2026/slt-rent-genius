@@ -26,7 +26,7 @@ import { LOCATIONS } from "./types";
 import {
   NOTE_MAX_LENGTH,
   currentPeriod,
-  isPeriodLocked,
+  
   isReminderWindow,
   lockedThrough,
   periodDays,
@@ -105,7 +105,17 @@ export function TimeTrackingTab() {
   const [period, setPeriod] = useState<PayrollPeriod>(() => currentPeriod());
   const year = period.year;
   const month = period.month;
-  const lockDate = useMemo(() => lockedThrough(), []);
+  // Sperrdatum kommt aus der Datenbank (berücksichtigt einmalige Freigaben durch Admins).
+  const [lockDate, setLockDate] = useState<string>(() => lockedThrough());
+  useEffect(() => {
+    let active = true;
+    supabase.rpc("timesheet_locked_through").then(({ data }) => {
+      if (active && typeof data === "string") setLockDate(data);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
   const [viewUserId, setViewUserId] = useState<string>(user?.id ?? "");
   const [entries, setEntries] = useState<Record<string, TimeEntry>>({});
   const [sheet, setSheet] = useState<Timesheet | null>(null);
@@ -126,7 +136,8 @@ export function TimeTrackingTab() {
   }, [user?.id, viewUserId]);
 
   const isOwnSheet = viewUserId === user?.id;
-  const periodClosed = isPeriodLocked(period) && !isAdmin;
+  const periodLocked = period.end <= lockDate;
+  const periodClosed = periodLocked && !isAdmin;
   const sheetConfirmed = isConfirmedStatus(sheet?.status);
   const locked = sheetConfirmed || !isOwnSheet || periodClosed;
   /** Einzelner Tag gesperrt (abgerechneter Zeitraum) – Admins dürfen korrigieren. */
@@ -430,13 +441,13 @@ export function TimeTrackingTab() {
       {/* Erinnerung ab dem 19.: Stundenzettel noch nicht bestätigt */}
       {isOwnSheet && !sheetConfirmed && (
         (isReminderWindow() && period.end === currentPeriod().end) ||
-        (isPeriodLocked(period) && period.end === lockDate)
+        (periodLocked && period.end === lockDate)
       ) && (
         <div className="flex items-start gap-3 rounded-lg border-2 border-accent bg-accent/10 p-4">
           <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
           <div className="text-sm">
             <p className="font-semibold">
-              {isPeriodLocked(period)
+              {periodLocked
                 ? "Dein Stundenzettel wurde nicht rechtzeitig eingereicht"
                 : "Bitte trage jetzt deine Stunden ein"}
             </p>
