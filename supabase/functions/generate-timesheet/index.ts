@@ -141,10 +141,10 @@ Deno.serve(async (req: Request) => {
     if (action === "preview" && !isConfirmed) {
       return json({ error: "Der Monat ist noch nicht bestätigt – erst danach steht das PDF bereit." }, 403);
     }
-    if (action === "approve") {
+    if (action === "approve" || action === "reject") {
       if (!existingSheet) return json({ error: "Kein Stundenzettel für diesen Zeitraum vorhanden" }, 404);
       if (existingSheet.status !== "submitted") {
-        return json({ error: "Dieser Stundenzettel wartet nicht auf Freigabe (bereits freigegeben?)" }, 409);
+        return json({ error: "Dieser Stundenzettel wartet nicht auf Freigabe (bereits bearbeitet?)" }, 409);
       }
     }
     if (action === "submit" && existingSheet && isConfirmed) {
