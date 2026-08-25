@@ -397,12 +397,14 @@ Deno.serve(async (req: Request) => {
   <p>Hallo ${escapeHtml(customerName || "")},</p>
   <p>vielen Dank für Ihre Anfrage. Anbei erhalten Sie unser Angebot als PDF.</p>
   <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;">
-    <tr><th align="left" style="border-bottom:2px solid #00507d;padding-bottom:6px;">Position</th><th align="right" style="border-bottom:2px solid #00507d;">Menge</th><th align="right" style="border-bottom:2px solid #00507d;">Einzelpreis</th></tr>
+    <tr><th align="left" style="border-bottom:2px solid #00507d;padding-bottom:6px;">Position</th><th align="right" style="border-bottom:2px solid #00507d;">Menge</th><th align="right" style="border-bottom:2px solid #00507d;">Einzelpreis</th><th align="right" style="border-bottom:2px solid #00507d;">Gesamt</th></tr>
     ${rowsHtml}
     ${transportRowsHtml}
   </table>
+  ${discountSum > 0 ? `<p style="background:#fff7ed;border-left:4px solid #ff8e02;padding:10px 14px;margin:16px 0;border-radius:4px;font-size:14px;"><strong style="color:#ff8e02;">Ihr Rabattvorteil: − ${money(discountSum)}</strong><br><span style="color:#6b7280;font-size:13px;">Der Rabatt ist in den oben genannten Positionspreisen bereits abgezogen.</span></p>` : ""}
   <p style="font-size:15px;"><strong>Gesamtsumme brutto: ${money(totals.grossAmount)}</strong><br>
   <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)}${transportTotal > 0 ? ` (inkl. Transportkosten ${money(transportTotal)})` : ""} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span>${deposit > 0 ? `<br><span style="color:#6b7280;font-size:13px;">zzgl. Kaution ${money(deposit)} (wird nach Rückgabe erstattet) – Gesamtüberweisung inkl. Kaution: ${money(totals.grossAmount + deposit)}</span>` : ""}</p>
+
   ${deliveryRequested && (deliveryAddress.street || deliveryAddress.city) ? `<p style="font-size:14px;"><strong>Lieferadresse:</strong><br>${escapeHtml(deliveryAddress.street)}<br>${escapeHtml([deliveryAddress.postal_code, deliveryAddress.city].filter(Boolean).join(" "))}</p>` : ""}
 
 
