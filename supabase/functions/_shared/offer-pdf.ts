@@ -343,6 +343,8 @@ export async function generateOfferPdf(data: {
     let rowH = 10 + nameLines.length * 12 + (subLines.length ? 4 + subLines.length * 10 : 0) +
       (discountLines.length ? 3 + discountLines.length * 10 : 0);
     if (img) rowH = Math.max(rowH, IMG + 14);
+    if (pct > 0) rowH = Math.max(rowH, 34);
+
 
     renderRow(rowH, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 10, font, 9);
