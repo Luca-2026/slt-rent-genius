@@ -66,6 +66,9 @@ interface Timesheet {
   approved_at?: string | null;
   approved_by_name?: string | null;
   payroll_sent_at?: string | null;
+  rejected_at?: string | null;
+  rejected_by_name?: string | null;
+  rejection_reason?: string | null;
 }
 
 /** Bestätigt = eingereicht (wartet auf Freigabe) oder bereits freigegeben. */
