@@ -89,8 +89,15 @@ Deno.serve(async (req: Request) => {
     const body = await req.json().catch(() => ({}));
     const year = Number(body.year);
     const month = Number(body.month);
-    const action: "preview" | "submit" | "approve" =
-      body.action === "submit" ? "submit" : body.action === "approve" ? "approve" : "preview";
+    const action: "preview" | "submit" | "approve" | "reject" =
+      body.action === "submit"
+        ? "submit"
+        : body.action === "approve"
+          ? "approve"
+          : body.action === "reject"
+            ? "reject"
+            : "preview";
+    const rejectionReason = typeof body.reason === "string" ? body.reason.trim().slice(0, 1000) : "";
     const targetUserId =
       typeof body.user_id === "string" && /^[0-9a-f-]{36}$/i.test(body.user_id) && isAdmin
         ? body.user_id
