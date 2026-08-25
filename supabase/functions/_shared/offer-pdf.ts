@@ -69,6 +69,12 @@ export async function generateOfferPdf(data: {
     const intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     return (n < 0 ? "-" : "") + intPart + "," + parts[1] + " \u20AC";
   };
+  /** Prozentwert deutsch, ohne unnötige Nullen: 10 → "10", 12,5 → "12,5" */
+  const fm2 = (n: number) => {
+    const v = Math.round((Number(n) || 0) * 100) / 100;
+    return (Number.isInteger(v) ? String(v) : v.toFixed(2).replace(/0$/, "")).replace(".", ",");
+  };
+
   const fmtDate = (d: string) => {
     if (!d) return "";
     const parts = String(d).split(" ");
