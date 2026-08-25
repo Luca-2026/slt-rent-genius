@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { TimeTrackingTab } from "@/components/b2b/tasks/TimeTrackingTab";
 import { TimesheetReminderBanner } from "@/components/b2b/tasks/TimesheetReminderBanner";
+import { usePendingTimesheets } from "@/hooks/usePendingTimesheets";
 import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
 import { AdminSalesCatalogTab } from "@/components/b2b/admin/AdminSalesCatalogTab";
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
