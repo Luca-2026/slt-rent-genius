@@ -112,6 +112,8 @@ export function TimeTrackingTab() {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [approving, setApproving] = useState<string | null>(null);
+
 
   useEffect(() => {
     if (user?.id && !viewUserId) setViewUserId(user.id);
