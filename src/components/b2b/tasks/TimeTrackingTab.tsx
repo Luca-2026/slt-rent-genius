@@ -407,6 +407,14 @@ export function TimeTrackingTab() {
                     >
                       <Download className="mr-2 h-4 w-4" /> Prüfen (PDF)
                     </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() => { setRejectReason(""); setRejectTarget(p as unknown as Timesheet); }}
+                    >
+                      <XCircle className="mr-2 h-4 w-4" /> Ablehnen
+                    </Button>
                     <Button size="sm" disabled={approving === p.id} onClick={() => approveSheet(p)}>
                       <Send className="mr-2 h-4 w-4" />
                       {approving === p.id ? "Wird gesendet…" : "An das Steuerbüro senden"}
