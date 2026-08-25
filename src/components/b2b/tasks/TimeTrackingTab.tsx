@@ -137,13 +137,14 @@ export function TimeTrackingTab() {
 
   const isOwnSheet = viewUserId === user?.id;
   const periodLocked = period.end <= lockDate;
-  const periodClosed = periodLocked && !isAdmin;
+  const rejectedForCorrection = sheet?.status === "rejected" && isOwnSheet;
+  const periodClosed = periodLocked && !isAdmin && !rejectedForCorrection;
   const sheetConfirmed = isConfirmedStatus(sheet?.status);
   const locked = sheetConfirmed || !isOwnSheet || periodClosed;
-  /** Einzelner Tag gesperrt (abgerechneter Zeitraum) – Admins dürfen korrigieren. */
+  /** Abgelehnte eigene Nachweise sind trotz Abrechnungssperre zur Korrektur geöffnet. */
   const isDayLocked = useCallback(
-    (iso: string) => locked || (!isAdmin && iso <= lockDate),
-    [locked, isAdmin, lockDate],
+    (iso: string) => locked || (!isAdmin && !rejectedForCorrection && iso <= lockDate),
+    [locked, isAdmin, rejectedForCorrection, lockDate],
   );
 
   const load = useCallback(async () => {
