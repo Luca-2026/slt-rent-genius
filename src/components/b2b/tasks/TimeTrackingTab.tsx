@@ -20,7 +20,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { AlertTriangle, CheckCircle2, ChevronLeft, ChevronRight, Download, Lock, Send, ShieldCheck } from "lucide-react";
+import { AlertTriangle, CheckCircle2, ChevronLeft, ChevronRight, Download, Lock, Send, ShieldCheck, XCircle } from "lucide-react";
 import { usePendingTimesheets } from "@/hooks/usePendingTimesheets";
 import { LOCATIONS } from "./types";
 import {
