@@ -395,16 +395,15 @@ Deno.serve(async (req: Request) => {
       ? escapeHtml(paymentTermsCustom).replace(/\n/g, "<br>") + depositText
       : (PAYMENT_EMAIL[paymentTerms] ?? PAYMENT_EMAIL.net_14);
 
-    const emailHtml = `<!doctype html><html><body style="margin:0;padding:24px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
+    const emailHtml = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:16px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
 <div style="max-width:600px;margin:0 auto;">
   <h2 style="color:#00507d;margin:0 0 16px;">Ihr Angebot ${escapeHtml(offerNumber)}</h2>
   <p>Hallo ${escapeHtml(customerName || "")},</p>
   <p>vielen Dank für Ihre Anfrage. Anbei erhalten Sie unser Angebot als PDF.</p>
-  <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;">
-    <tr><th align="left" style="border-bottom:2px solid #00507d;padding-bottom:6px;">Position</th><th align="right" style="border-bottom:2px solid #00507d;">Menge</th><th align="right" style="border-bottom:2px solid #00507d;">Einzelpreis</th><th align="right" style="border-bottom:2px solid #00507d;">Gesamt</th></tr>
+  <div style="margin:16px 0;border-top:2px solid #00507d;">
     ${rowsHtml}
     ${transportRowsHtml}
-  </table>
+  </div>
   ${discountSum > 0 ? `<p style="background:#fff7ed;border-left:4px solid #ff8e02;padding:10px 14px;margin:16px 0;border-radius:4px;font-size:14px;"><strong style="color:#ff8e02;">Ihr Rabattvorteil: − ${money(discountSum)}</strong><br><span style="color:#6b7280;font-size:13px;">Der Rabatt ist in den oben genannten Positionspreisen bereits abgezogen.</span></p>` : ""}
   <p style="font-size:15px;"><strong>Gesamtsumme brutto: ${money(totals.grossAmount)}</strong><br>
   <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)}${transportTotal > 0 ? ` (inkl. Transportkosten ${money(transportTotal)})` : ""} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span>${deposit > 0 ? `<br><span style="color:#6b7280;font-size:13px;">zzgl. Kaution ${money(deposit)} (wird nach Rückgabe erstattet) – Gesamtüberweisung inkl. Kaution: ${money(totals.grossAmount + deposit)}</span>` : ""}</p>
