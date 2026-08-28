@@ -922,8 +922,164 @@ Fahrzeug und Ladung dürfen zusammen maximal 2,55 m breit und 4 m hoch sein.
 Nicht unbedingt. Für Schäden durch unzureichend gesicherte Ladung muss die Kaskoversicherung nicht aufkommen. Verantwortlich für die Sicherung ist der Fahrer.
 
 *Hinweis: Dieser Beitrag gibt den Stand Juli 2026 wieder und ersetzt keine Rechtsberatung. Maßgeblich sind die jeweils aktuellen Fassungen von StVO, StVZO und Bußgeldkatalog.*`
+  },
+  {
+    slug: "wohnwagen-mieten-kosten-fuehrerschein-checkliste",
+    title: "Wohnwagen mieten: Kosten, Führerschein und Checkliste für die erste Fahrt",
+    metaTitle: "Wohnwagen mieten: Kosten, Führerschein & Checkliste | SLT",
+    metaDescription: "Wohnwagen mieten: Was kostet es, welcher Führerschein reicht und was gehört auf die Checkliste? Der Praxis-Ratgeber mit Tempo-100-Regeln und Kautionsinfo.",
+    teaser: "Wohnwagen mieten statt kaufen: Was der Urlaub im Caravan wirklich kostet, welcher Führerschein reicht und welche Checkliste vor der ersten Fahrt hilft.",
+    date: "2026-08-28",
+    updatedAt: "2026-08-28",
+    author: "SLT Rental",
+    category: "Camping & Freizeit",
+    keyword: "wohnwagen mieten",
+    image: "/images/ratgeber/blog_thumbnail_wohnwagen_mieten.svg",
+    imageAlt: "Illustration: Pkw mit Wohnwagen-Gespann und Tempo-Schildern - Ratgeber von SLT Rental",
+    ogImage: "/images/ratgeber/og/blog_thumbnail_wohnwagen_mieten.png",
+    quickFacts: [
+      "Wohnwagen mieten ist der günstigste Einstieg ins Camping: Du nutzt Dein eigenes Auto als Zugfahrzeug und sparst Dir die Anschaffung",
+      "Führerschein: Klasse B reicht, solange Auto und Wohnwagen zusammen maximal 3.500 kg zulässige Gesamtmasse haben, sonst B96 oder BE",
+      "Dein Auto braucht eine Anhängerkupplung und ausreichend Anhängelast (Feld O.1 in der Zulassungsbescheinigung)",
+      "Tempolimit mit Wohnwagen: innerorts 50 km/h, außerorts und auf der Autobahn 80 km/h, mit Tempo-100-Plakette 100 km/h auf Autobahnen und Kraftfahrstraßen",
+      "Neben dem Tagespreis einplanen: Servicepauschale, Kaution, gegebenenfalls Endreinigung sowie Campingplatz- und Spritkosten"
+    ],
+    relatedSlugs: ["anhaenger-fuehrerschein-b-b96-be", "anhaenger-richtig-beladen-ladung-sichern", "wochenendtarif-vs-tagesmiete"],
+    faqs: [
+      {
+        question: "Kann ich mit einem normalen Autoführerschein einen Wohnwagen ziehen?",
+        answer: "Ja, wenn Auto und Wohnwagen zusammen nicht mehr als 3.500 kg zulässige Gesamtmasse haben. Der Mietwohnwagen von SLT Rental hat 1.500 kg zGG, mit einem Auto bis 2.000 kg zGM reicht also Klasse B. Bei schwereren Autos ist B96 oder BE nötig."
+      },
+      {
+        question: "Was kostet ein Mietwohnwagen bei SLT Rental?",
+        answer: "Der Weinsberg CaraOne 480 QDK kostet ab 30 € pro Tag inklusive Teil- und Vollkasko, bei einer Mindestmietdauer von 5 Tagen. Einmalig kommen 99 € Servicepauschale dazu, optional 99 € Endreinigung. Die Kaution beträgt 1.000 €."
+      },
+      {
+        question: "Ist eine Versicherung in der Wohnwagen-Miete enthalten?",
+        answer: "Ja, Teil- und Vollkasko sind im Mietpreis enthalten. Im Schadenfall gilt eine Selbstbeteiligung von 2.500 €."
+      },
+      {
+        question: "Wird der Wohnwagen geliefert?",
+        answer: "Nein, Wohnwagen werden mit dem eigenen Zugfahrzeug abgeholt. Das Auto braucht mindestens 1.500 kg Anhängelast. Bei der Übergabe gibt es eine persönliche Einweisung."
+      },
+      {
+        question: "Wie schnell darf ich mit dem Wohnwagen auf der Autobahn fahren?",
+        answer: "Grundsätzlich 80 km/h. Mit gültiger Tempo-100-Plakette und passendem Zugfahrzeug (unter anderem ABS, maximal 3,5 t zGM) sind auf Autobahnen und Kraftfahrstraßen 100 km/h erlaubt."
+      },
+      {
+        question: "Für wie viele Personen ist der Mietwohnwagen geeignet?",
+        answer: "Der CaraOne 480 QDK ist für bis zu 5 Personen ausgelegt, konkret 2 Erwachsene und 3 Kinder, mit Dusche, WC und Truma-Heizung."
+      }
+    ],
+    content: `## Warum einen Wohnwagen mieten statt kaufen?
+
+Camping boomt, aber ein eigener Wohnwagen ist eine große Investition: Schon ein neues Einsteigermodell kostet einen fünfstelligen Betrag, dazu kommen Stellplatz, Versicherung, Wartung und Wertverlust. Wer erst einmal testen will, ob Urlaub auf dem Campingplatz zur Familie passt, fährt mit einem Mietwohnwagen deutlich entspannter. Der zweite große Vorteil gegenüber dem Wohnmobil: Du brauchst kein fremdes Fahrzeug zu fahren, sondern hängst den Wohnwagen einfach an Dein eigenes Auto. Am Ziel angekommen, stellst Du ihn ab und bist mit dem Pkw flexibel unterwegs, zum Bäcker, zum Ausflug, zum Strand.
+
+Bei SLT Rental mietest Du den [Weinsberg CaraOne 480 QDK](/mieten/bonn/wohnwagen-camping/weinsberg-caraone-480-qdk/), einen familientauglichen Wohnwagen für bis zu 5 Personen (2 Erwachsene und 3 Kinder) mit Dusche, WC, Truma-Heizung und Rangier-Mover.
+
+## Welchen Führerschein brauchst Du für einen Wohnwagen?
+
+Die wichtigste Frage zuerst, denn hier scheitern die meisten Planungen. Entscheidend ist die zulässige Gesamtmasse (zGM) von Auto und Wohnwagen zusammen:
+
+- **Klasse B:** Gespann bis 3.500 kg zulässiger Gesamtmasse. Ein Wohnwagen bis 750 kg ist immer erlaubt, ein schwererer nur, solange Auto plus Wohnwagen zusammen unter 3.500 kg bleiben.
+- **B96:** Erweiterung der Klasse B für Gespanne über 3.500 bis 4.250 kg. Nur eine Schulung, keine Prüfung.
+- **BE:** Eigene Klasse für Anhänger über 750 kg bis 3.500 kg hinter einem Pkw bis 3.500 kg. Das Gespann darf bis 7.000 kg wiegen.
+
+Ein Rechenbeispiel mit unserem Mietwohnwagen: Der CaraOne 480 QDK hat 1.500 kg zulässiges Gesamtgewicht. Hat Dein Auto eine zGM von 2.000 kg, liegt das Gespann bei genau 3.500 kg, und Klasse B reicht. Ist Dein Auto schwerer, etwa ein größerer SUV mit 2.400 kg zGM, landest Du bei 3.900 kg und brauchst mindestens B96. Die komplette Rechnung mit allen Details findest Du in unserem [Anhänger-Führerschein-Ratgeber](/ratgeber/anhaenger-fuehrerschein-b-b96-be/).
+
+Der Führerschein ist aber nur die halbe Miete. Dein Zugfahrzeug muss den Wohnwagen auch ziehen dürfen. Maßgeblich ist die zulässige Anhängelast Deines Autos, die Du in der Zulassungsbescheinigung Teil I im Feld O.1 (gebremst) findest. Für unseren CaraOne brauchst Du ein Zugfahrzeug mit mindestens 1.500 kg Anhängelast. Dazu kommt die Stützlast, also das Gewicht, das senkrecht auf der Anhängerkupplung lasten darf. Führerschein, Anhängelast und Stützlast müssen alle drei passen.
+
+## Was kostet es, einen Wohnwagen zu mieten?
+
+Der Tagespreis ist nur ein Teil der Rechnung. Damit Du am Ende nicht überrascht wirst, hier die typischen Kostenblöcke am Beispiel unseres Mietwohnwagens:
+
+| Kostenpunkt | Bei SLT Rental |
+| --- | --- |
+| Miete | ab 30 €/Tag inkl. Teil- und Vollkasko |
+| Mindestmietdauer | 5 Tage |
+| Servicepauschale (einmalig) | 99 € |
+| Endreinigung (optional) | 99 € |
+| Kaution | 1.000 € |
+| Selbstbeteiligung im Schadenfall | 2.500 € |
+
+In der Servicepauschale stecken bei uns die Einweisung, eine 11-kg-Gasflasche, Spiegelverlängerungen für Dein Auto, ein Strom-Adapterkabel, Sanitärchemie und zwei Rollen Toilettenpapier für die Campingtoilette. Du startest also komplett ausgerüstet und musst Dir kein Zubehör zusammensuchen.
+
+Nicht vergessen: Dazu kommen die laufenden Urlaubskosten wie Campingplatzgebühren, Strom auf dem Platz und der Mehrverbrauch Deines Autos. Mit Wohnwagen im Schlepptau steigt der Spritverbrauch spürbar, plane hier großzügig.
+
+## Tempolimit: Wie schnell darfst Du mit Wohnwagen fahren?
+
+Mit Wohnwagen gelten andere Tempolimits als ohne. Innerorts sind maximal 50 km/h erlaubt, außerorts und auf der Autobahn grundsätzlich 80 km/h. Das regelt die Straßenverkehrs-Ordnung, und Verstöße kosten Bußgeld und je nach Ausmaß Punkte.
+
+Die Ausnahme ist die **Tempo-100-Plakette**: Trägt der Wohnwagen die 100er-Zulassung, darfst Du auf Autobahnen und Kraftfahrstraßen bis 100 km/h fahren. Wichtig dabei:
+
+- Die Zulassung gilt nur, wenn auch das Zugfahrzeug die Voraussetzungen erfüllt, unter anderem ABS und maximal 3,5 t zulässige Gesamtmasse. Passt die Kombination nicht, gilt wieder Tempo 80.
+- Auf Landstraßen bleiben es auch mit Plakette 80 km/h.
+- Die deutsche 100er-Zulassung gilt nur in Deutschland. Im Ausland gelten die dortigen Regeln, informiere Dich vor der Fahrt.
+
+Unabhängig vom erlaubten Tempo gilt: Ein Gespann reagiert anders als ein Pkw. Längerer Bremsweg, Seitenwind, Schlingergefahr bei zu hoher Geschwindigkeit. Gerade auf der ersten Fahrt ist entspanntes Fahren die beste Versicherung.
+
+## Checkliste: So läuft die erste Wohnwagen-Miete entspannt
+
+**Vor der Buchung**
+
+1. Zulassungsbescheinigung Deines Autos prüfen: Anhängelast (Feld O.1) und zGM
+2. Führerscheinklasse checken: Reicht B für Dein Gespann oder brauchst Du B96/BE?
+3. Anhängerkupplung vorhanden? Inklusive 13-poliger Steckdose für die Beleuchtung
+4. Reisezeitraum festlegen und früh anfragen, in den Ferien ist die Nachfrage hoch
+
+**Bei der Übergabe**
+
+5. Einweisung aktiv mitmachen: Gas, Wasser, Strom, Toilette, Heizung und Mover erklären lassen
+6. Ankuppeln üben: Stützlast, Abreißseil, Beleuchtungscheck, Spiegelverlängerungen montieren
+7. Vorschäden gemeinsam dokumentieren
+
+**Unterwegs und auf dem Platz**
+
+8. Schwere Ladung nach unten und über die Achse, nichts lose im Innenraum lassen
+9. Tempolimits einhalten, Pausen einplanen, bei Seitenwind runter vom Gas
+10. Auf dem Campingplatz: Wohnwagen ausrichten, Stützen herunterkurbeln, Strom und Wasser anschließen
+
+**Bei der Rückgabe**
+
+11. Toilettenkassette entleeren und Wohnwagen besenrein übergeben, oder die Endreinigung dazubuchen
+12. Gemeinsame Endkontrolle, danach wird die Kaution abgerechnet
+
+## Häufige Fragen zum Wohnwagen mieten
+
+**Kann ich mit einem normalen Autoführerschein einen Wohnwagen ziehen?**
+
+Ja, wenn Auto und Wohnwagen zusammen nicht mehr als 3.500 kg zulässige Gesamtmasse haben. Unser Mietwohnwagen hat 1.500 kg zGG, mit einem Auto bis 2.000 kg zGM reicht also Klasse B. Bei schwereren Autos brauchst Du B96 oder BE.
+
+**Was kostet ein Mietwohnwagen bei SLT Rental?**
+
+Der Weinsberg CaraOne 480 QDK kostet ab 30 € pro Tag inklusive Teil- und Vollkasko, bei einer Mindestmietdauer von 5 Tagen. Einmalig kommen 99 € Servicepauschale dazu, optional 99 € Endreinigung. Die Kaution beträgt 1.000 €.
+
+**Ist eine Versicherung in der Wohnwagen-Miete enthalten?**
+
+Ja, Teil- und Vollkasko sind bei uns im Mietpreis enthalten. Im Schadenfall gilt eine Selbstbeteiligung von 2.500 €.
+
+**Wird der Wohnwagen geliefert?**
+
+Nein, Wohnwagen holst Du mit Deinem eigenen Zugfahrzeug ab. Dein Auto braucht dafür mindestens 1.500 kg Anhängelast. Bei der Übergabe bekommst Du eine persönliche Einweisung in das komplette Fahrzeug.
+
+**Wie schnell darf ich mit dem Wohnwagen auf der Autobahn fahren?**
+
+Grundsätzlich 80 km/h. Mit gültiger Tempo-100-Plakette und passendem Zugfahrzeug (unter anderem ABS, maximal 3,5 t zGM) sind auf Autobahnen und Kraftfahrstraßen 100 km/h erlaubt.
+
+**Für wie viele Personen ist der Mietwohnwagen geeignet?**
+
+Der CaraOne 480 QDK ist familientauglich ausgelegt für bis zu 5 Personen, konkret 2 Erwachsene und 3 Kinder. An Bord sind Dusche, WC und eine Truma-Heizung, damit klappt Camping auch in der kühleren Jahreszeit.
+
+## Jetzt Wohnwagen bei SLT mieten
+
+Ob erster Campingurlaub, Herbstferien-Trip oder verlängertes Wochenende: Unseren familientauglichen Wohnwagen mietest Du auf Anfrage an unseren Standorten, mit persönlicher Einweisung, kompletter Grundausstattung und Teil- und Vollkasko inklusive.
+
+[→ Wohnwagen mieten in Bonn](/mieten/bonn/wohnwagen-camping/) · [→ Weinsberg CaraOne 480 QDK ansehen](/mieten/bonn/wohnwagen-camping/weinsberg-caraone-480-qdk/) · [→ Wohnwagen mieten in Krefeld](/mieten/krefeld/wohnwagen-camping/)
+
+Von **SLT Rental**, veröffentlicht am 28. August 2026`
   }
 ];
+
 
 export const getArticleBySlug = (slug: string): BlogArticle | undefined =>
   blogArticles.find((a) => a.slug === slug);
