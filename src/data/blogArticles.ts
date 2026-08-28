@@ -1143,7 +1143,7 @@ Entscheidend ist nicht die Gästezahl allein, sondern was Deine Gäste im Zelt t
 
 Dazu kommt der Punkt, den fast alle vergessen: Laufwege, Buffet, Theke und Servicebereiche. Plane deshalb 20 bis 30 Prozent Fläche auf das reine Rechenergebnis obendrauf. Wer nur die Sitzplätze rechnet, steht am Festtag mit dem Buffettisch im Durchgang.
 
-**Rechenbeispiel:** 40 Gäste sollen an Bierzeltgarnituren sitzen. 40 x 0,8 m² = 32 m². Plus 25 Prozent Puffer für Buffet und Laufwege sind das rund 40 m², also zum Beispiel ein Zelt mit 5 x 8 m oder zwei kombinierte kleinere Zelte. Sollen dieselben 40 Gäste nur stehen und trinken, reichen rechnerisch 20 m² plus Puffer, da genügt schon ein kompaktes Zelt wie unser [Partyzelt 4x6m](/mieten/bonn/moebel-zelte/bonn-partyzelt-4x6/) mit 24 m².
+**Rechenbeispiel:** 40 Gäste sollen an Bierzeltgarnituren sitzen. 40 x 0,8 m² = 32 m². Plus 25 Prozent Puffer für Buffet und Laufwege sind das rund 40 m², also zum Beispiel ein Zelt mit 5 x 8 m oder zwei kombinierte kleinere Zelte. Sollen dieselben 40 Gäste nur stehen und trinken, reichen rechnerisch 20 m² plus Puffer, da genügt schon ein kompaktes Zelt wie unser [Partyzelt 4x6m](/mieten/bonn/moebel-zelte/partyzelt-4x6m/) mit 24 m².
 
 Übrigens lassen sich mehrere Zelte mit Regenrinnen wasserdicht aneinanderreihen. Das ist oft flexibler und günstiger als ein einzelnes Großzelt, gerade wenn der Garten verwinkelt ist.
 
@@ -1206,7 +1206,7 @@ Das hängt von Größe, Mietdauer und Ausstattung ab. Kompakte Partyzelte wie un
 
 Vom kompakten Partyzelt für die Gartenfeier bis zur kompletten Eventausstattung mit Bierzeltgarnituren, Stehtischen, Loungemöbeln und Technik: Bei SLT Rental bekommst Du alles aus einer Hand, mit persönlicher Beratung und Lieferung in der Region.
 
-[→ Möbel & Zelte mieten in Bonn](/mieten/bonn/moebel-zelte/) · [→ Partyzelt 4x6m in Bonn ansehen](/mieten/bonn/moebel-zelte/bonn-partyzelt-4x6/) · [→ Partyzelt 4x6m in Krefeld ansehen](/mieten/krefeld/moebel-zelte/partyzelt-4x6m/)
+[→ Möbel & Zelte mieten in Bonn](/mieten/bonn/moebel-zelte/) · [→ Partyzelt 4x6m in Bonn ansehen](/mieten/bonn/moebel-zelte/partyzelt-4x6m/) · [→ Partyzelt 4x6m in Krefeld ansehen](/mieten/krefeld/moebel-zelte/partyzelt-4x6m/)
 
 Von **SLT Rental**, veröffentlicht am 28. August 2026`
   }
