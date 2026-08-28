@@ -142,6 +142,20 @@ function clampTitle(s: string, max = 60) {
   const last = cut.lastIndexOf(" ");
   return (last > 30 ? cut.slice(0, last) : cut).trim();
 }
+// Standort darf beim Kürzen nie verloren gehen (sonst identische Titles je Standort).
+function localizedTitle(name: string, locName: string, max = 60) {
+  const tail = ` mieten in ${locName}`;
+  const full = `${name}${tail} | SLT Rental`;
+  if (full.length <= max) return full;
+  const withoutSuffix = `${name}${tail}`;
+  if (withoutSuffix.length <= max) return withoutSuffix;
+  const budget = max - tail.length;
+  let short = name.slice(0, Math.max(budget, 0));
+  const sp = short.lastIndexOf(" ");
+  if (sp > 12) short = short.slice(0, sp);
+  return `${short.trim()}${tail}`;
+}
+
 function clampDescription(s: string, max = 158) {
   if (s.length <= max) return s;
   const cut = s.slice(0, max);
@@ -181,7 +195,7 @@ if (managedProducts.length) {
       // Authoritative per-page timestamp aus dem CMS (letzte Inhaltsänderung).
       if (m.updated_at) route.lastmod = m.updated_at.slice(0, 10);
       const locName = LOCATION_DISPLAY_FOR_OVERRIDE[loc] || loc;
-      route.title = clampTitle(`${m.name} mieten in ${locName} | SLT Rental`);
+      route.title = localizedTitle(m.name, locName);
       route.h1 = `${m.name} mieten in ${locName}`;
       // Meta-Description: DB Live-Feld hat Vorrang; sonst bleibt statischer Text (bereits gesetzt).
       if (m.seo_meta_description && m.seo_meta_description.trim()) {
@@ -220,6 +234,39 @@ if (managedProducts.length) {
   console.log(`[exportRoutes] CMS override applied on ${overridden} product routes (${managedProducts.length} rows). meta=${metaOverridden}, faqs=${faqOverridden}.`);
 }
 
+// Duplicate-Title-Dedupe: Verschiedene Produkte mit identischem generischen Namen
+// (z.B. "Akku Bauleuchte" von Bosch und Einhell) erzeugen sonst identische Titles
+// am selben Standort → Google wertet das als Duplicate Content. Wir ergänzen ein
+// Unterscheidungsmerkmal aus dem Slug (Marke/Modell), das nicht im Namen steckt.
+{
+  const groups = new Map<string, SeoRoute[]>();
+  for (const r of allRoutes) {
+    if (!r.title) continue;
+    const g = groups.get(r.title) ?? [];
+    g.push(r);
+    groups.set(r.title, g);
+  }
+  let deduped = 0;
+  for (const [title, group] of groups) {
+    if (group.length < 2) continue;
+    for (const r of group) {
+      const slug = r.path.split("/").filter(Boolean).pop() || "";
+      const known = new Set(
+        title.toLowerCase().replace(/[^a-z0-9äöüß]+/g, " ").split(" ").filter(Boolean),
+      );
+      const extra = slug
+        .split("-")
+        .filter((t) => t && !known.has(t.toLowerCase()));
+      if (!extra.length) continue;
+      let token = extra.join(" ").toUpperCase();
+      if (token.length > 24) token = token.slice(0, 24).trim();
+      const base = title.replace(" | SLT Rental", "");
+      r.title = `${base} (${token})`;
+      deduped++;
+    }
+  }
+  if (deduped) console.log(`[exportRoutes] Title-Dedupe: ${deduped} Routen präzisiert.`);
+}
 
 
 const enriched = allRoutes.map((route) => {
