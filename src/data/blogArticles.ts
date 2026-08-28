@@ -250,7 +250,7 @@ Der Wochenendtarif gilt für die meisten Mietprodukte bei SLT Rental, darunter:
 
 - **Baumaschinen**: [Minibagger](/mieten/krefeld/erdbewegung/), Radlader, Rüttelplatten, Stampfer
 - **Anhänger**: [Kastenanhänger](/mieten/krefeld/anhaenger/), Kippanhänger, Autotransporter
-- **Event-Equipment**: [PA-Anlagen](/mieten/bonn/pa-anlagen-veranstaltungstechnik/), Lichtanlagen, Geschirr
+- **Event-Equipment**: [PA-Anlagen](/mieten/bonn/beschallung/), Lichtanlagen, Geschirr
 - **Arbeitsbühnen**: Scherenarbeitsbühnen, Teleskoplader
 
 Ausgenommen sind lediglich einige Spezialgeräte mit hoher Wochenend-Nachfrage. Fragen Sie im Zweifel bei der Buchung nach.
