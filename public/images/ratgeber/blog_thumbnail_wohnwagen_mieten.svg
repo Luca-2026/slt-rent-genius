@@ -46,11 +46,11 @@
 
 <!-- Tempo-Schilder -->
 <g font-family="sans-serif" text-anchor="middle">
-  <circle cx="1790" cy="480" r="88" fill="#ffffff" stroke="#ff8e02" stroke-width="18"/>
-  <text x="1790" y="512" font-size="74" font-weight="700" fill="#0f172a">80</text>
+  <circle cx="1900" cy="565" r="88" fill="#ffffff" stroke="#ff8e02" stroke-width="18"/>
+  <text x="1900" y="597" font-size="74" font-weight="700" fill="#0f172a">80</text>
 
-  <circle cx="1990" cy="640" r="88" fill="#ffffff" stroke="#00507d" stroke-width="18"/>
-  <text x="1990" y="672" font-size="74" font-weight="700" fill="#0f172a">100</text>
+  <circle cx="2110" cy="745" r="88" fill="#ffffff" stroke="#00507d" stroke-width="18"/>
+  <text x="2110" y="777" font-size="74" font-weight="700" fill="#0f172a">100</text>
 </g>
 
 <rect x="0" y="1290" width="2400" height="210" fill="#cbd5e1"/>

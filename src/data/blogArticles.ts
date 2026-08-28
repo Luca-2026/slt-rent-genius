@@ -1106,6 +1106,7 @@ const CATEGORY_TO_RATGEBER: Record<string, string[]> = {
   buehne: ["Event & Veranstaltung"],
   "traversen-rigging": ["Event & Veranstaltung"],
   huepfburgen: ["Event & Veranstaltung"],
+  "wohnwagen-camping": ["Camping & Freizeit"],
   spezialeffekte: ["Event & Veranstaltung"],
 };
 
