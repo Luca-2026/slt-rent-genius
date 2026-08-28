@@ -1077,6 +1077,138 @@ Ob erster Campingurlaub, Herbstferien-Trip oder verlängertes Wochenende: Unsere
 [→ Wohnwagen mieten in Bonn](/mieten/bonn/wohnwagen-camping/) · [→ Weinsberg CaraOne 480 QDK ansehen](/mieten/bonn/wohnwagen-camping/weinsberg-caraone-480-qdk/) · [→ Wohnwagen mieten in Krefeld](/mieten/krefeld/wohnwagen-camping/)
 
 Von **SLT Rental**, veröffentlicht am 28. August 2026`
+  },
+  {
+    slug: "partyzelt-mieten-groesse-genehmigung",
+    title: "Partyzelt mieten: Welche Größe für wie viele Gäste, und wann brauchst Du eine Genehmigung?",
+    metaTitle: "Partyzelt mieten: Größe, Genehmigung & Checkliste | SLT Rental",
+    metaDescription: "Partyzelt mieten: Welche Zeltgröße für wie viele Gäste, wann Du eine Genehmigung brauchst und wie das Zelt sicher steht. Mit Faustformel und Checkliste.",
+    teaser: "Wie groß muss das Partyzelt für Deine Gäste sein, wann brauchst Du eine Genehmigung und wie steht das Zelt sicher? Mit Faustformel und Checkliste.",
+    date: "2026-08-28",
+    updatedAt: "2026-08-28",
+    author: "SLT Rental",
+    category: "Event & Veranstaltung",
+    keyword: "partyzelt mieten",
+    image: "/images/ratgeber/blog_thumbnail_partyzelt_mieten.svg",
+    imageAlt: "Illustration: Weißes Partyzelt mit Bierzeltgarnitur und Faustformel zur Zeltgröße – Ratgeber von SLT Rental",
+    ogImage: "/images/ratgeber/og/blog_thumbnail_partyzelt_mieten.png",
+    quickFacts: [
+      "Faustformel für die Zeltgröße: rund 0,5 m² pro stehendem Gast, rund 0,8 m² pro Sitzplatz an der Bierzeltgarnitur, 1,2 m² und mehr beim Bankett mit Tischen und Stühlen",
+      "Plane 20 bis 30 Prozent Fläche zusätzlich für Laufwege, Buffet und Theke, eine Tanzfläche kommt mit etwa 1 m² pro tanzender Person obendrauf",
+      "Zelte sind rechtlich Fliegende Bauten: Bis 75 m² Grundfläche, unter 5 m Höhe und maximal 3 Monate Standzeit ist in der Regel keine Ausführungsgenehmigung nötig",
+      "Auf öffentlichem Grund (Straße, Park, Parkplatz) brauchst Du unabhängig von der Zeltgröße eine Erlaubnis der Kommune",
+      "Sicherheit zuerst: Zelt immer ballastieren oder verankern, Seitenwände bei Wind schließen oder öffnen je nach Herstellervorgabe, Heizung nie unbeaufsichtigt betreiben"
+    ],
+    relatedSlugs: ["geschirr-mieten-hochzeit-mengen-checkliste", "wochenendtarif-vs-tagesmiete"],
+    faqs: [
+      {
+        question: "Wie groß muss ein Partyzelt für 30 Personen sein?",
+        answer: "Sitzen alle 30 Gäste an Bierzeltgarnituren, brauchst Du rund 24 m² reine Sitzfläche (30 x 0,8 m²) plus Puffer für Laufwege und Buffet, also etwa 30 m². Ein Zelt ab circa 5 x 6 m passt. Beim reinen Stehempfang reicht rechnerisch schon ein 4 x 6 m Zelt mit 24 m²."
+      },
+      {
+        question: "Brauche ich für ein Partyzelt im Garten eine Genehmigung?",
+        answer: "In der Regel nein: Ein erdgeschossiges Zelt bis 75 m² Grundfläche und unter 5 m Höhe, das maximal 3 Monate steht, braucht üblicherweise keine Ausführungsgenehmigung. Auf öffentlichem Grund ist dagegen immer eine Erlaubnis der Kommune nötig. Die Details regeln die Landesbauordnungen."
+      },
+      {
+        question: "Ab wann muss ein Zelt vom Amt abgenommen werden?",
+        answer: "Zelte mit mehr als 75 m² Grundfläche gelten als genehmigungspflichtige Fliegende Bauten. Sie brauchen eine Ausführungsgenehmigung mit Prüfbuch und nach dem Aufbau eine Gebrauchsabnahme durch die Bauaufsichtsbehörde."
+      },
+      {
+        question: "Wie befestige ich ein Partyzelt auf der Terrasse?",
+        answer: "Auf befestigtem Untergrund, wo keine Erdnägel möglich sind, wird das Zelt an jedem Standfuß mit Ballastgewichten gesichert. Wichtig ist, dass wirklich jeder Fuß beschwert ist und die Gewichte zur Zeltgröße passen."
+      },
+      {
+        question: "Kann ich ein Partyzelt auch im Herbst oder Winter nutzen?",
+        answer: "Ja, mit geschlossenen Seitenwänden und einer passenden Zeltheizung sind Feiern auch in der kühlen Jahreszeit gut machbar. Heizgeräte immer mit Abstand zu Wänden und Deko betreiben, für Frischluft sorgen und nie unbeaufsichtigt laufen lassen."
+      },
+      {
+        question: "Was kostet es, ein Partyzelt zu mieten?",
+        answer: "Das hängt von Größe, Mietdauer und Ausstattung ab. Kompakte Partyzelte wie unser 4x6m Modell sind schon für kleines Geld zu haben, den aktuellen Preis und die Verfügbarkeit siehst Du direkt auf der Produktseite. Größere Zelte und Komplettpakete mit Möbeln kalkulieren wir Dir gern individuell."
+      }
+    ],
+    content: `## Warum die Zeltgröße über Deine Feier entscheidet
+
+Runder Geburtstag im Garten, Taufe, Vereinsfest oder die Hochzeit im kleinen Kreis: Ein Partyzelt macht Deine Feier wetterfest. Der häufigste Planungsfehler passiert aber ganz am Anfang, nämlich bei der Größe. Ein zu kleines Zelt bedeutet Gedränge, sobald es regnet und wirklich alle unters Dach wollen. Ein zu großes Zelt kostet unnötig Geld und wirkt schnell leer und ungemütlich. Die gute Nachricht: Mit einer einfachen Faustformel rechnest Du die passende Größe in zwei Minuten selbst aus.
+
+## Die Faustformel: So viel Platz braucht ein Gast
+
+Entscheidend ist nicht die Gästezahl allein, sondern was Deine Gäste im Zelt tun. Verleiher und Eventplaner arbeiten mit diesen Richtwerten pro Person:
+
+| Nutzung | Platzbedarf pro Person |
+| --- | --- |
+| Stehempfang, Stehtische | ca. 0,5 m² |
+| Sitzplatz an der Bierzeltgarnitur | ca. 0,8 m² |
+| Bankett mit Tischen und Stühlen | ca. 1,2 bis 1,5 m² |
+| Tanzfläche (zusätzlich) | ca. 1 m² pro tanzender Person |
+
+Dazu kommt der Punkt, den fast alle vergessen: Laufwege, Buffet, Theke und Servicebereiche. Plane deshalb 20 bis 30 Prozent Fläche auf das reine Rechenergebnis obendrauf. Wer nur die Sitzplätze rechnet, steht am Festtag mit dem Buffettisch im Durchgang.
+
+**Rechenbeispiel:** 40 Gäste sollen an Bierzeltgarnituren sitzen. 40 x 0,8 m² = 32 m². Plus 25 Prozent Puffer für Buffet und Laufwege sind das rund 40 m², also zum Beispiel ein Zelt mit 5 x 8 m oder zwei kombinierte kleinere Zelte. Sollen dieselben 40 Gäste nur stehen und trinken, reichen rechnerisch 20 m² plus Puffer, da genügt schon ein kompaktes Zelt wie unser [Partyzelt 4x6m](/mieten/bonn/moebel-zelte/bonn-partyzelt-4x6/) mit 24 m².
+
+Übrigens lassen sich mehrere Zelte mit Regenrinnen wasserdicht aneinanderreihen. Das ist oft flexibler und günstiger als ein einzelnes Großzelt, gerade wenn der Garten verwinkelt ist.
+
+## Genehmigung: Wann Du das Amt brauchst und wann nicht
+
+Partyzelte und Festzelte gelten baurechtlich als sogenannte Fliegende Bauten, also als Anlagen, die dafür gebaut sind, wiederholt auf- und abgebaut zu werden. Die gute Nachricht für die private Gartenparty: In der Regel brauchst Du keine Genehmigung, wenn drei Bedingungen erfüllt sind:
+
+1. Das Zelt (oder der Zeltverbund) hat **bis zu 75 m² Grundfläche**. In einzelnen Bundesländern liegt die Schwelle höher.
+2. Das Zelt ist **nicht höher als 5 m** und erdgeschossig.
+3. Es steht **maximal 3 Monate** am selben Ort.
+
+Ein typisches Partyzelt für die Familienfeier, etwa 4 x 6 m oder 5 x 8 m, liegt weit unter diesen Schwellen. Anders sieht es aus, sobald es größer wird: Zelte mit mehr als 75 m² Grundfläche brauchen eine Ausführungsgenehmigung mit Prüfbuch, und nach dem Aufbau eine Gebrauchsabnahme durch die Bauaufsichtsbehörde. Das betrifft zum Beispiel große Festzelte für Vereins- oder Firmenfeste. Kläre das in dem Fall frühzeitig mit dem örtlichen Bauamt, denn die Abnahme muss vor der Veranstaltung stattfinden.
+
+Zwei Punkte gelten unabhängig von der Größe:
+
+- **Öffentlicher Grund:** Steht das Zelt auf Straße, Gehweg, Parkplatz oder im Park, brauchst Du immer eine Erlaubnis der Stadt oder Gemeinde (Sondernutzung), egal wie klein das Zelt ist.
+- **Sicherheitsregeln gelten immer:** Auch ein genehmigungsfreies Zelt muss standsicher aufgebaut und ordentlich befestigt sein. Die Verantwortung dafür liegt beim Aufsteller.
+
+Hinweis: Die Details regeln die Landesbauordnungen der Bundesländer und die örtlichen Behörden. Dieser Ratgeber ersetzt keine Rechtsberatung. Im Zweifel hilft ein kurzer Anruf beim Bauamt Deiner Kommune.
+
+## Sicher aufbauen: die drei Klassiker, die schiefgehen
+
+**1. Zelt nicht befestigt.** Ein Partyzelt hat eine große Angriffsfläche für Wind. Auf Rasen wird mit Erdnägeln oder Heringen verankert, auf Pflaster oder Terrasse mit Ballastgewichten an jedem Standfuß. Ein unbefestigtes Zelt ist keine Bagatelle, bei einer Böe wird es zum Risiko für Gäste, Autos und Nachbargrundstücke.
+
+**2. Wetterbericht ignoriert.** Prüfe vor dem Fest die Vorhersage. Bei angekündigtem Sturm gehört das Zelt abgebaut oder gar nicht erst aufgebaut, die Herstellervorgaben zur maximalen Windlast sind verbindlich. Seitenwände nach Vorgabe des Herstellers schließen oder öffnen, damit der Wind nicht unter das Dach greift.
+
+**3. Heizen ohne Nachdenken.** Bei Feiern im Frühjahr und Herbst gehört eine Zeltheizung fast immer dazu. Wichtig: Heizgeräte nur mit ausreichend Abstand zu Zeltwänden und Dekoration betreiben, für Frischluftzufuhr sorgen und nie unbeaufsichtigt laufen lassen. Brennstoffbetriebene Geräte gehören grundsätzlich nicht in geschlossene Zelte ohne geeignete Abluftführung, im Zweifel gehört die Heizung nach draußen und nur die Warmluft ins Zelt.
+
+## Was gehört noch zur Zeltplanung?
+
+Denke die Feier vom Gast aus, dann ergibt sich die Ausstattung fast von selbst: Bierzeltgarnituren oder Tische und Stühle passend zur Gästezahl, Stehtische für den Empfang, Licht für den Abend, Strom für Musik und Kühlschrank, und bei kühlem Wetter die Heizung. Bei SLT Rental bekommst Du das komplette Paket aus einer Hand, von [Zelten, Bierzeltgarnituren und Stehtischen](/mieten/bonn/moebel-zelte/) über Beschallung bis zum Stromaggregat. Und wenn es eine Feier mit Menü wird: Wie viel Geschirr Du für 50, 100 oder 150 Gäste brauchst, rechnet Dir [unser Geschirr-Ratgeber](/ratgeber/geschirr-mieten-hochzeit-mengen-checkliste/) vor.
+
+## Häufige Fragen zum Partyzelt mieten
+
+**Wie groß muss ein Partyzelt für 30 Personen sein?**
+
+Sitzen alle 30 Gäste an Bierzeltgarnituren, brauchst Du rund 24 m² reine Sitzfläche (30 x 0,8 m²) plus Puffer für Laufwege und Buffet, also etwa 30 m². Ein Zelt ab circa 5 x 6 m passt. Beim reinen Stehempfang reicht rechnerisch schon ein 4 x 6 m Zelt mit 24 m².
+
+**Brauche ich für ein Partyzelt im Garten eine Genehmigung?**
+
+In der Regel nein: Ein erdgeschossiges Zelt bis 75 m² Grundfläche und unter 5 m Höhe, das maximal 3 Monate steht, braucht üblicherweise keine Ausführungsgenehmigung. Auf öffentlichem Grund ist dagegen immer eine Erlaubnis der Kommune nötig. Die Details regeln die Landesbauordnungen.
+
+**Ab wann muss ein Zelt vom Amt abgenommen werden?**
+
+Zelte mit mehr als 75 m² Grundfläche gelten als genehmigungspflichtige Fliegende Bauten. Sie brauchen eine Ausführungsgenehmigung mit Prüfbuch und nach dem Aufbau eine Gebrauchsabnahme durch die Bauaufsichtsbehörde.
+
+**Wie befestige ich ein Partyzelt auf der Terrasse?**
+
+Auf befestigtem Untergrund, wo keine Erdnägel möglich sind, wird das Zelt an jedem Standfuß mit Ballastgewichten gesichert. Wichtig ist, dass wirklich jeder Fuß beschwert ist und die Gewichte zur Zeltgröße passen.
+
+**Kann ich ein Partyzelt auch im Herbst oder Winter nutzen?**
+
+Ja, mit geschlossenen Seitenwänden und einer passenden Zeltheizung sind Feiern auch in der kühlen Jahreszeit gut machbar. Heizgeräte immer mit Abstand zu Wänden und Deko betreiben, für Frischluft sorgen und nie unbeaufsichtigt laufen lassen.
+
+**Was kostet es, ein Partyzelt zu mieten?**
+
+Das hängt von Größe, Mietdauer und Ausstattung ab. Kompakte Partyzelte wie unser 4x6m Modell sind schon für kleines Geld zu haben, den aktuellen Preis und die Verfügbarkeit siehst Du direkt auf der Produktseite. Größere Zelte und Komplettpakete mit Möbeln kalkulieren wir Dir gern individuell.
+
+## Jetzt Partyzelt und Eventausstattung bei SLT mieten
+
+Vom kompakten Partyzelt für die Gartenfeier bis zur kompletten Eventausstattung mit Bierzeltgarnituren, Stehtischen, Loungemöbeln und Technik: Bei SLT Rental bekommst Du alles aus einer Hand, mit persönlicher Beratung und Lieferung in der Region.
+
+[→ Möbel & Zelte mieten in Bonn](/mieten/bonn/moebel-zelte/) · [→ Partyzelt 4x6m in Bonn ansehen](/mieten/bonn/moebel-zelte/bonn-partyzelt-4x6/) · [→ Partyzelt 4x6m in Krefeld ansehen](/mieten/krefeld/moebel-zelte/partyzelt-4x6m/)
+
+Von **SLT Rental**, veröffentlicht am 28. August 2026`
   }
 ];
 

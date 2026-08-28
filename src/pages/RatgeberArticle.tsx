@@ -21,6 +21,8 @@ const SLUG_TO_CATEGORY: Record<string, { categoryId: string; label: string }> = 
   "anhaenger-fuehrerschein-b-b96-be": { categoryId: "anhaenger", label: "Passenden Anhänger mieten" },
   "anhaenger-richtig-beladen-ladung-sichern": { categoryId: "anhaenger", label: "Passenden Anhänger mieten" },
   "arbeitsbuehne-mieten-typ-arbeitshoehe": { categoryId: "arbeitsbuehnen", label: "Arbeitsbühne mieten" },
+  "wohnwagen-mieten-kosten-fuehrerschein-checkliste": { categoryId: "wohnwagen-camping", label: "Wohnwagen & Camping mieten" },
+  "partyzelt-mieten-groesse-genehmigung": { categoryId: "moebel-zelte", label: "Zelte, Möbel & Eventausstattung mieten" },
 };
 
 
