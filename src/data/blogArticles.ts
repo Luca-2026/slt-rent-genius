@@ -926,7 +926,7 @@ Nicht unbedingt. Für Schäden durch unzureichend gesicherte Ladung muss die Kas
   {
     slug: "wohnwagen-mieten-kosten-fuehrerschein-checkliste",
     title: "Wohnwagen mieten: Kosten, Führerschein und Checkliste für die erste Fahrt",
-    metaTitle: "Wohnwagen mieten: Kosten, Führerschein & Checkliste | SLT",
+    metaTitle: "Wohnwagen mieten: Kosten, Führerschein & Checkliste | SLT Rental",
     metaDescription: "Wohnwagen mieten: Was kostet es, welcher Führerschein reicht und was gehört auf die Checkliste? Der Praxis-Ratgeber mit Tempo-100-Regeln und Kautionsinfo.",
     teaser: "Wohnwagen mieten statt kaufen: Was der Urlaub im Caravan wirklich kostet, welcher Führerschein reicht und welche Checkliste vor der ersten Fahrt hilft.",
     date: "2026-08-28",
