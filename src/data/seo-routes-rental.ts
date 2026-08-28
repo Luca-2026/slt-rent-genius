@@ -34,6 +34,23 @@ function clampDesc(str: string, max = 158): string {
   return ((last > 80 ? cut.slice(0, last) : cut).trim()) + "…";
 }
 
+// Title mit Standort: Der Standort darf NIEMALS wegge-clamped werden, sonst
+// entstehen identische Titles ("… mieten in | SLT Rental") über alle Standorte
+// → Google wertet das als Duplicate Content. Deshalb wird nur der Name gekürzt.
+function localizedTitle(name: string, locName: string, max = 60): string {
+  const tail = ` mieten in ${locName}`;
+  const full = `${name}${tail} | SLT Rental`;
+  if (full.length <= max) return full;
+  const withoutSuffix = `${name}${tail}`;
+  if (withoutSuffix.length <= max) return withoutSuffix;
+  const budget = max - tail.length;
+  let short = name.slice(0, Math.max(budget, 0));
+  const sp = short.lastIndexOf(" ");
+  if (sp > 12) short = short.slice(0, sp);
+  return `${short.trim()}${tail}`;
+}
+
+
 const LOCATION_DISPLAY: Record<string, string> = {
   krefeld: "Krefeld",
   bonn: "Bonn",
@@ -671,7 +688,7 @@ for (const loc of locations as LocationData[]) {
         productCount: products.length,
         productSummaries,
       },
-      title: clamp(`${catTitle} mieten in ${locName} | SLT Rental`, 60),
+      title: localizedTitle(catTitle, locName),
       description: clampDesc(
         `${catTitle} mieten in ${locName} bei SLT Rental. ${products.length} Geräte verfügbar – Beratung, Lieferung und Werkstattservice vor Ort.`,
       ),
@@ -702,8 +719,12 @@ for (const loc of locations as LocationData[]) {
       const localize = (s: string | undefined) =>
         s ? s.replace(/\bin Krefeld\b/g, `in ${locName}`).replace(/\bKrefeld\b/g, locName) : s;
 
-      const fallbackTitle = `${p.name} mieten in ${locName} | SLT Rental`;
-      const title = clamp(localize(seo?.seoTitle) || fallbackTitle, 60);
+      const fallbackTitle = localizedTitle(p.name, locName);
+      const customTitle = localize(seo?.seoTitle);
+      const clampedCustom = customTitle ? clamp(customTitle, 60) : "";
+      // Custom-Title nur nutzen, wenn der Standort nach dem Clampen erhalten bleibt.
+      const title = clampedCustom && clampedCustom.includes(locName) ? clampedCustom : fallbackTitle;
+
       const description = clampDesc(
         localize(seo?.metaDescription) ||
           p.description ||
