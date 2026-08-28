@@ -662,7 +662,7 @@ Kurz gesagt: Führerschein, Anhängelast und Stützlast müssen alle drei passen
 
 Wir haben Anhänger in unterschiedlichen Gewichtsklassen, vom leichten Kastenanhänger bis zum Maschinentransporter. Viele lassen sich mit dem normalen Pkw-Führerschein der Klasse B fahren, schwerere Modelle setzen je nach Zugfahrzeug B96 oder BE voraus. Weil es immer auf die Kombination aus Deinem Auto und dem konkreten Anhänger ankommt, lohnt sich vor der Buchung ein kurzer Blick in Deinen Fahrzeugschein. Wenn Du unsicher bist, welcher Anhänger zu Deinem Führerschein und Deinem Zugfahrzeug passt, hilft Dir unser Team weiter, und unser KI-Assistent Renty beantwortet die ersten Fragen rund um die Uhr.
 
-Unsere Anhänger findest Du an allen drei Standorten: [Krefeld](/mieten/krefeld/anhaenger/), [Bonn](/mieten/bonn/anhaenger/) und [Mülheim an der Ruhr](/mieten/muelheim/anhaenger/). Jedes Modell zeigt die zulässige Gesamtmasse direkt in den Produktdaten, so siehst Du auf einen Blick, ob Dein Führerschein passt.
+Unsere Anhänger findest Du an allen drei Standorten: [Krefeld](/mieten/krefeld/anhaenger/), [Bonn](/mieten/bonn/anhaenger/) und [Mülheim an der Ruhr](/mieten/muelheim/anhaenger/). Jedes Modell zeigt die zulässige Gesamtmasse direkt in den Produktdaten, so siehst Du auf einen Blick, ob Dein Führerschein passt. Wenn Du statt eines Anhängers einen Caravan ziehen möchtest, findest Du alle Details dazu in unserem Ratgeber [Wohnwagen mieten: Kosten, Führerschein und Checkliste](/ratgeber/wohnwagen-mieten-kosten-fuehrerschein-checkliste/).
 
 ## Häufige Fragen zum Anhänger-Führerschein
 
