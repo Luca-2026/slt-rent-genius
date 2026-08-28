@@ -258,8 +258,7 @@ if (managedProducts.length) {
         .split("-")
         .filter((t) => t && !known.has(t.toLowerCase()));
       if (!extra.length) continue;
-      let token = extra.join(" ").toUpperCase();
-      if (token.length > 24) token = token.slice(0, 24).trim();
+      const token = extra.join(" ").toUpperCase();
       const base = title.replace(" | SLT Rental", "");
       r.title = `${base} (${token})`;
       deduped++;
