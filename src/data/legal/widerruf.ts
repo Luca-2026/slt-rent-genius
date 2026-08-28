@@ -6,7 +6,7 @@ import type { LegalSection } from "./agb-b2b";
 export const WIDERRUF_META = {
   title:
     "Widerrufsbelehrung für den Verkauf von Neu- und Gebrauchtmaschinen an Verbraucher im Fernabsatz",
-  subtitle: "der SLT Technology GmbH & Co. KG und der eingetragenen Marke SLT Rental",
+  subtitle: "der SLT Technology Group GmbH & Co. KG und der eingetragenen Marke SLT Rental",
   stand: "Stand: Mai 2026",
 };
 
@@ -23,7 +23,7 @@ export const WIDERRUF_SECTIONS: LegalSection[] = [
         body: [
           {
             type: "p",
-            text: "Diese Widerrufsbelehrung gilt ausschließlich für Verbraucher im Sinne des § 13 BGB, die mit der SLT Technology GmbH & Co. KG („SLT Rental“) einen Kaufvertrag über eine Neu- oder Gebrauchtmaschine (z.B. Bagger, Radlader, Arbeitsbühne, Stromaggregat, Anhänger, Kraftfahrzeug, sonstige Geräte) unter ausschließlicher Verwendung von Fernkommunikationsmitteln (insbesondere E-Mail, Post, Telefon) oder außerhalb der Geschäftsräume von SLT Rental abschließen.",
+            text: "Diese Widerrufsbelehrung gilt ausschließlich für Verbraucher im Sinne des § 13 BGB, die mit der SLT Technology Group GmbH & Co. KG („SLT Rental“) einen Kaufvertrag über eine Neu- oder Gebrauchtmaschine (z.B. Bagger, Radlader, Arbeitsbühne, Stromaggregat, Anhänger, Kraftfahrzeug, sonstige Geräte) unter ausschließlicher Verwendung von Fernkommunikationsmitteln (insbesondere E-Mail, Post, Telefon) oder außerhalb der Geschäftsräume von SLT Rental abschließen.",
           },
           {
             type: "p",
@@ -92,7 +92,7 @@ export const WIDERRUF_SECTIONS: LegalSection[] = [
           {
             type: "list",
             items: [
-              "SLT Technology GmbH & Co. KG, Anrather Str. 291, 47807 Krefeld",
+              "SLT Technology Group GmbH & Co. KG, Anrather Str. 291, 47807 Krefeld",
               "E-Mail: widerruf@slt-rental.de",
               "Telefon: 02151 4179904",
             ],
@@ -238,7 +238,7 @@ export const WIDERRUF_SECTIONS: LegalSection[] = [
           {
             type: "list",
             items: [
-              "SLT Technology GmbH & Co. KG",
+              "SLT Technology Group GmbH & Co. KG",
               "Anrather Str. 291, 47807 Krefeld",
               "E-Mail: widerruf@slt-rental.de",
             ],
