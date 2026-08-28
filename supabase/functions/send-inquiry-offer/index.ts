@@ -341,23 +341,27 @@ Deno.serve(async (req: Request) => {
         ? `<br><span style="color:#ff8e02;font-size:12px;font-weight:bold;">Listenpreis ${money(gross)} – Rabatt ${pctFmt(pct)} % = − ${money(savings)}</span>`
         : "";
       return `
-      <tr>
-        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;">${escapeHtml(i.product_name)}${i.description ? `<br><span style="color:#6b7280;font-size:12px;">${escapeHtml(i.description)}</span>` : ""}${discountHtml}${(i.addons ?? []).filter((a) => a.amount > 0).map((a) => `<br><span style="color:#6b7280;font-size:12px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}</span>`).join("")}</td>
-        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${i.quantity}${i.unit ? ` ${escapeHtml(i.unit)}` : ""}</td>
-        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;">${money(i.unit_price)}</td>
-        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;"><strong>${money(net)}</strong></td>
-      </tr>`;
+      <div style="padding:10px 0;border-bottom:1px solid #e5e7eb;">
+        <div style="font-weight:bold;font-size:14px;">${escapeHtml(i.product_name)}</div>
+        ${i.description ? `<div style="color:#6b7280;font-size:12px;margin-top:2px;">${escapeHtml(i.description)}</div>` : ""}
+        ${(i.addons ?? []).filter((a) => a.amount > 0).map((a) => `<div style="color:#6b7280;font-size:12px;margin-top:2px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}</div>`).join("")}
+        ${discountHtml ? `<div style="margin-top:2px;">${discountHtml.replace(/^<br>/, "")}</div>` : ""}
+        <table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:13px;"><tr>
+          <td style="color:#6b7280;padding:0;">${i.quantity}${i.unit ? ` ${escapeHtml(i.unit)}` : ""} &times; ${money(i.unit_price)}</td>
+          <td style="text-align:right;padding:0;"><strong>${money(net)}</strong></td>
+        </tr></table>
+      </div>`;
     }).join("");
 
 
     // ── Transportkosten & Kaution als eigene Zeilen ──
     const extraRow = (label: string, value: string) => `
-      <tr>
-        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;">${label}</td>
-        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;"></td>
-        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;"></td>
-        <td style="padding:6px 0;border-bottom:1px solid #e5e7eb;text-align:right;"><strong>${value}</strong></td>
-      </tr>`;
+      <div style="padding:10px 0;border-bottom:1px solid #e5e7eb;">
+        <table style="width:100%;border-collapse:collapse;font-size:14px;"><tr>
+          <td style="padding:0;">${label}</td>
+          <td style="text-align:right;padding:0;"><strong>${value}</strong></td>
+        </tr></table>
+      </div>`;
 
     const transportRowsHtml =
       (deliveryCostDelivery > 0 ? extraRow("Transportkosten Anlieferung", money(deliveryCostDelivery)) : "") +
