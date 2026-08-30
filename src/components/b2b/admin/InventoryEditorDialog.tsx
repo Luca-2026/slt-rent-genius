@@ -43,6 +43,18 @@ function slugify(s: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+/**
+ * Wie slugify, aber ohne Trimmen der Bindestriche am Ende – sonst lässt sich
+ * beim Tippen kein "-" setzen (wird sofort wieder entfernt).
+ */
+function slugifyTyping(s: string) {
+  return s
+    .toLowerCase()
+    .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
+    .replace(/[^a-z0-9-]+/g, "-")
+    .replace(/^-+/, "");
+}
+
 /** Preis-Eingabe normalisieren: reine Zahl → "89 €". Text bleibt unverändert. */
 function normalizePriceInput(value: string): string | null {
   const v = value.trim().replace(/\s*€\s*$/, "").trim();
