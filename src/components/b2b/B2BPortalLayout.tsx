@@ -93,6 +93,14 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
     return () => { metaTag?.remove(); };
   }, []);
 
+  // Browser-Tab-Titel für Portalseiten (B2B-Seiten haben keine SEO-Komponente)
+  useEffect(() => {
+    const previous = document.title;
+    document.title = title ? `${title} | SLT Kundenportal` : "SLT Kundenportal";
+    return () => { document.title = previous; };
+  }, [title]);
+
+
   useEffect(() => {
     if (!loading && !user) {
       navigate("/b2b/login");
