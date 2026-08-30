@@ -499,7 +499,11 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                 </div>
                 <div>
                   <Label>Slug (URL) *</Label>
-                  <Input value={form.slug} onChange={(e) => setForm({ ...form, slug: slugify(e.target.value) })} />
+                  <Input
+                    value={form.slug}
+                    onChange={(e) => setForm({ ...form, slug: slugifyTyping(e.target.value) })}
+                    onBlur={(e) => setForm((f) => ({ ...f, slug: slugify(e.target.value) }))}
+                  />
                 </div>
                 <div>
                   <Label>Kategorie *</Label>
