@@ -13,7 +13,7 @@ import type { CarouselApi } from "@/components/ui/carousel";
 
 // Team images
 import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
-import imgErsel from "@/assets/team/ersel-uzun.jpg";
+
 import imgMaibrit from "@/assets/team/maibrit-breuer.jpg";
 import imgJuno from "@/assets/team/juno.png";
 import imgTeamPhoto from "@/assets/team/team-photo.jpg";
@@ -88,7 +88,7 @@ export default function About() {
 
   const teamMembers = [
     { name: "Benedikt Nöchel", role: t("about.teamBenedikt"), image: imgBenedikt, email: "b.noechel@slt-rental.de" },
-    { name: "Ersel Uzun", role: t("about.teamErsel"), image: imgErsel, email: "e.uzun@slt-rental.de" },
+    
     { name: "Andreas Mühlenhof", role: t("about.teamAndreas"), image: null, email: "muelheim@slt-rental.de" },
     { name: "Maibrit Breuer", role: t("about.teamMaibrit"), image: imgMaibrit, email: "m.breuer@slt-rental.de" },
     { name: "Juno", role: t("about.teamJuno"), image: imgJuno, email: null },

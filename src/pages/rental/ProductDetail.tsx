@@ -36,6 +36,7 @@ import { SalesPagesBanner } from "@/components/rental/SalesPagesBanner";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
 import { StandortVerfuegbarkeit } from "@/components/rental/StandortVerfuegbarkeit";
 import { LocalCategoryContentBlock } from "@/components/rental/LocalCategoryContentBlock";
+import { BonnServiceHinweis } from "@/components/rental/BonnServiceHinweis";
 import { ProductSEOContent } from "@/components/rental/ProductSEOContent";
 import { HalteverbotsSeoSection } from "@/components/rental/HalteverbotsSeoSection";
 import { getProductAvailability } from "@/lib/productAvailability";
@@ -708,6 +709,13 @@ export default function ProductDetail() {
           </Breadcrumb>
         </div>
       </div>
+
+      {/* Bonn: eingeschränkte Abhol-/Rückgabezeiten – deutlicher Hinweis auf jeder Artikelseite */}
+      {location.id === "bonn" && (
+        <div className="section-container pt-4 md:pt-6">
+          <BonnServiceHinweis />
+        </div>
+      )}
 
       {/* Main Content */}
       <section className="py-6 md:py-8 lg:py-10">
