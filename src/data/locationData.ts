@@ -7,7 +7,6 @@ import imgMuelheim from "@/assets/locations/muelheim.webp";
 
 // Team images
 import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
-import imgErsel from "@/assets/team/ersel-uzun.jpg";
 
 export interface LocationManager {
   name: string;
