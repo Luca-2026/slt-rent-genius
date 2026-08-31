@@ -197,7 +197,7 @@ export default function About() {
           </AnimatedSection>
 
           {/* Desktop: grid */}
-          <div className="hidden md:grid md:grid-cols-5 gap-4 lg:gap-8">
+          <div className="hidden md:grid md:grid-cols-4 gap-4 lg:gap-8 max-w-5xl mx-auto justify-items-center">
             {teamMembers.map((member, index) => (
               <AnimatedSection key={member.name} animation="fade-in-up" delay={index * 120}>
                 <TeamMemberCard member={member} />
