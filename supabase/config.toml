@@ -69,3 +69,5 @@ project_id = "ccmxitxgyznethanixlg"
     verify_jwt = false
   [functions.send-super-admin-report]
     verify_jwt = false
+  [functions.purge-orphan-user]
+    verify_jwt = false
