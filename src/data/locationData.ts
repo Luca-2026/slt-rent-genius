@@ -113,6 +113,8 @@ export const locationData: LocationInfo[] = [
       { day: "Sa.", time: "08:00 - 17:30 Uhr" },
       { day: "So.", time: "Geschlossen" },
     ],
+    hoursNote: "*Abholung/Rückgabe von Mietgeräten: Mo–Fr 06–09 Uhr & 17:30–18 Uhr. Anhänger 24/7. Samstag regulär geöffnet.",
+    
     
     features: ["Große Auswahl", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
     mapUrl: "https://maps.google.com/?q=Drachenburgstraße+8+53179+Bonn",
