@@ -35,7 +35,7 @@ export function BonnServiceHinweis() {
       role="dialog"
       aria-modal="true"
       aria-label="Hinweis zu Buchung und Übergabe in Bonn"
-      className="fixed inset-0 z-50 flex items-end justify-center sm:items-end sm:justify-end pointer-events-none"
+      className="fixed inset-0 z-[10000] flex items-end justify-center sm:items-end sm:justify-end pointer-events-none"
     >
       <div
         className="w-full sm:w-[26rem] bg-background/95 backdrop-blur-sm border-t sm:border sm:rounded-2xl border-accent/30 shadow-2xl p-4 sm:p-5 pointer-events-auto transform transition-transform duration-300 ease-out translate-y-0"
