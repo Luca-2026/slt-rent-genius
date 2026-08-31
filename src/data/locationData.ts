@@ -7,7 +7,6 @@ import imgMuelheim from "@/assets/locations/muelheim.webp";
 
 // Team images
 import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
-import imgErsel from "@/assets/team/ersel-uzun.jpg";
 
 export interface LocationManager {
   name: string;
@@ -108,7 +107,7 @@ export const locationData: LocationInfo[] = [
     phone: "0228 504 660 61",
     email: "bonn@slt-rental.de",
     image: imgBonn,
-    manager: { name: "Ersel Uzun", role: "locations.locationManager", image: imgErsel, email: "e.uzun@slt-rental.de" },
+    manager: { name: "Ihr SLT-Team Bonn", role: "locations.locationManager", image: null, email: "bonn@slt-rental.de" },
     hours: [
       { day: "Mo. - Fr.", time: "07:00 - 18:00 Uhr" },
       { day: "Sa.", time: "08:00 - 17:30 Uhr" },
