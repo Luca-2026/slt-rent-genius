@@ -30,7 +30,7 @@ export const VAT_RATE = 19;
 
 export const LOCATION_CONTACTS: Record<string, { name: string; email: string; phone: string }> = {
   krefeld: { name: "Krefeld", email: "krefeld@slt-rental.de", phone: "02151 417 99 04" },
-  bonn: { name: "Bonn", email: "bonn@slt-rental.de", phone: "0228 92 68 92 20" },
+  bonn: { name: "Bonn", email: "bonn@slt-rental.de", phone: "0228 504 660 61" },
   muelheim: { name: "Mülheim an der Ruhr", email: "muelheim@slt-rental.de", phone: "02151 417 99 04" },
 };
 
