@@ -21,7 +21,7 @@ const json = (body: unknown, status = 200) =>
 
 const LOCATION_CONTACTS: Record<string, { name: string; email: string; phone: string }> = {
   krefeld: { name: "Krefeld", email: "krefeld@slt-rental.de", phone: "02151 417 99 04" },
-  bonn: { name: "Bonn", email: "bonn@slt-rental.de", phone: "0228 92 68 92 20" },
+  bonn: { name: "Bonn", email: "bonn@slt-rental.de", phone: "0228 504 660 61" },
   muelheim: { name: "Mülheim an der Ruhr", email: "muelheim@slt-rental.de", phone: "02151 417 99 04" },
 };
 
@@ -101,21 +101,32 @@ Deno.serve(async (req: Request) => {
     const resendKey = Deno.env.get("RESEND_API_KEY");
 
     if (notifyCustomer && customerEmail && resendKey) {
-      const period = inquiryType === "rental" && inquiry.start_date
-        ? `${inquiry.start_date}${inquiry.end_date ? ` bis ${inquiry.end_date}` : ""}`
-        : "";
+      const fmtDate = (raw: unknown) => {
+        const value = typeof raw === "string" ? raw.slice(0, 10) : "";
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return "";
+        const [y, m, d] = value.split("-");
+        return `${d}.${m}.${y}`;
+      };
+      const startDe = inquiryType === "rental" ? fmtDate(inquiry.start_date) : "";
+      const endDe = inquiryType === "rental" ? fmtDate(inquiry.end_date) : "";
+      const period = startDe ? `${startDe}${endDe ? ` bis ${endDe}` : ""}` : "";
+
+      // Miet- und Verkaufsanfragen brauchen unterschiedliche Formulierungen.
+      const rejectionText = inquiryType === "rental"
+        ? `Leider müssen wir Ihnen mitteilen, dass der gewünschte Mietgegenstand im angefragten Zeitraum bereits ausgebucht und daher nicht verfügbar ist. Das bedauern wir sehr.`
+        : `Leider müssen wir Ihnen mitteilen, dass der angefragte Artikel aktuell nicht verfügbar ist. Das bedauern wir sehr.`;
+      const closingText = inquiryType === "rental"
+        ? `Sehr gerne prüfen wir für Sie eine Alternative oder einen anderen Zeitraum – melden Sie sich einfach kurz bei uns. Wir unterstützen Sie beim nächsten Projekt sehr gerne wieder und freuen uns jederzeit über Ihre Anfrage.`
+        : `Sehr gerne prüfen wir für Sie eine Alternative aus unserem Bestand – melden Sie sich einfach kurz bei uns. Wir unterstützen Sie beim nächsten Projekt sehr gerne wieder und freuen uns jederzeit über Ihre Anfrage.`;
 
       const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:16px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
 <div style="max-width:600px;margin:0 auto;">
   <h2 style="color:#00507d;margin:0 0 16px;">Ihre Anfrage bei SLT Rental</h2>
   <p>Hallo ${escapeHtml(customerName || "")},</p>
   <p>vielen Dank für Ihre Anfrage${productName ? ` zu <strong>${escapeHtml(productName)}</strong>` : ""}${period ? ` für den Zeitraum ${escapeHtml(period)}` : ""} und Ihr Interesse an SLT&nbsp;Rental.</p>
-  <p>Leider müssen wir Ihnen mitteilen, dass der gewünschte Mietgegenstand im angefragten Zeitraum
-  bereits ausgebucht und daher nicht verfügbar ist. Das bedauern wir sehr.</p>
+  <p>${rejectionText}</p>
   ${extraNote ? `<p style="white-space:pre-wrap;background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;border-radius:4px;">${escapeHtml(extraNote)}</p>` : ""}
-  <p>Sehr gerne prüfen wir für Sie eine Alternative oder einen anderen Zeitraum – melden Sie sich
-  einfach kurz bei uns. Wir unterstützen Sie beim nächsten Projekt sehr gerne wieder und freuen uns
-  jederzeit über Ihre Anfrage.</p>
+  <p>${closingText}</p>
   <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>Ihr Kontakt am Standort ${escapeHtml(loc.name)}:</strong><br>
     Tel. ${escapeHtml(loc.phone)} · <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a>

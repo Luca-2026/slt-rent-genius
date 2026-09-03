@@ -43,7 +43,7 @@ const LOCATIONS: Record<LocationKey, LocationConfig> = {
     phoneDisplay: "+49 228 504 660 61",
     phoneTel: "+4922850466061",
     hours: "Mo.–Fr. 07:00–18:00 Uhr\nSa. 08:00–17:30 Uhr\nSo. geschlossen",
-    managerName: "Ersel Uzun",
+    managerName: "Ihr SLT-Team Bonn",
   },
 };
 
