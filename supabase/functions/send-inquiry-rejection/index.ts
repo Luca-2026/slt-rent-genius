@@ -79,6 +79,28 @@ Deno.serve(async (req: Request) => {
     const extraNote = typeof body.note === "string" ? body.note.trim().slice(0, 800) : "";
     const notifyCustomer = body.notify_customer !== false;
 
+    // Begründung: Standardtext ("nicht verfügbar") oder eigene Formulierung.
+    const reasonMode = body.reason_mode === "custom" ? "custom" : "unavailable";
+    const customReason = typeof body.custom_reason === "string" ? body.custom_reason.trim().slice(0, 800) : "";
+    if (reasonMode === "custom" && customReason.length < 10) {
+      return json({ error: "Bitte eine Begründung mit mindestens 10 Zeichen angeben." }, 400);
+    }
+
+    // Optionaler Alternativvorschlag aus dem CMS-Katalog.
+    const altRaw = body.alternative && typeof body.alternative === "object" ? body.alternative : null;
+    const clean = (v: unknown, max = 200) => (typeof v === "string" && v.trim() ? v.trim().slice(0, max) : "");
+    const alternative = altRaw && clean(altRaw.name)
+      ? {
+          name: clean(altRaw.name),
+          slug: clean(altRaw.slug, 120),
+          category: clean(altRaw.category, 120),
+          image: clean(altRaw.image, 500),
+          price: clean(altRaw.price, 80),
+          location: clean(altRaw.location, 80),
+          note: clean(altRaw.note, 300),
+        }
+      : null;
+
     const table = inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries";
     const { data: inquiry, error: inqErr } = await service
       .from(table)
