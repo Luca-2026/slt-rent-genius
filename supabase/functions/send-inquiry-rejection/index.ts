@@ -156,7 +156,7 @@ Deno.serve(async (req: Request) => {
       ${alternative.image ? `<td style="width:96px;vertical-align:top;padding-right:12px;"><img src="${escapeHtml(alternative.image)}" alt="${escapeHtml(alternative.name)}" width="96" style="width:96px;max-width:96px;border-radius:6px;display:block;"></td>` : ""}
       <td style="vertical-align:top;">
         <div style="font-size:16px;font-weight:bold;">${escapeHtml(alternative.name)}</div>
-        ${alternative.price ? `<div style="color:#475569;margin-top:4px;">ab ${escapeHtml(alternative.price)}</div>` : ""}
+        ${alternative.price ? `<div style="color:#475569;margin-top:4px;">${escapeHtml(alternative.price)}</div>` : ""}
         ${alternative.note ? `<div style="margin-top:8px;white-space:pre-wrap;">${escapeHtml(alternative.note)}</div>` : ""}
         ${altUrl ? `<div style="margin-top:12px;"><a href="${escapeHtml(altUrl)}" style="background:#ff8e02;color:#ffffff;text-decoration:none;padding:10px 16px;border-radius:6px;display:inline-block;">Artikel ansehen</a></div>` : ""}
       </td>
