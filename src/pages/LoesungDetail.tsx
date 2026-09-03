@@ -9,6 +9,8 @@ import { ArrowLeft, ArrowRight, CheckCircle2, MapPin, Construction, ShieldCheck,
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { solutionData } from "./Loesungen";
 import { productCategories } from "@/data/rentalData";
+import { solutionLinking } from "@/data/solutionLinking";
+import { blogArticles } from "@/data/blogArticles";
 import { LocationSelectDialog } from "@/components/solutions/LocationSelectDialog";
 import { useTranslation } from "react-i18next";
 import { useTranslatedCategories } from "@/hooks/useTranslatedProduct";
@@ -35,6 +37,7 @@ export default function LoesungDetail() {
   const solution = solutionData.find(s => s.id === solutionId);
   const [locationDialogOpen, setLocationDialogOpen] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>();
+  const [selectedProductSlug, setSelectedProductSlug] = useState<string | undefined>();
 
   if (!solution) {
     return <Navigate to="/loesungen/" replace />;
@@ -46,7 +49,14 @@ export default function LoesungDetail() {
   );
   const relatedCategories = useTranslatedCategories(rawRelatedCategories);
 
-  const otherSolutions = solutionData.filter(s => s.id !== solution.id).slice(0, 3);
+  const linking = solutionLinking[solution.id];
+  const relatedGuides = (linking?.guides ?? [])
+    .map((slug) => blogArticles.find((a) => a.slug === slug))
+    .filter((a): a is (typeof blogArticles)[number] => Boolean(a));
+  const otherSolutions = (linking?.relatedSolutions ?? [])
+    .map((id) => solutionData.find((s) => s.id === id))
+    .filter((s): s is (typeof solutionData)[number] => Boolean(s) && s!.id !== solution.id)
+    .slice(0, 3);
 
   const title = t(`solutions.items.${solution.id}.title`);
   const subtitle = t(`solutions.items.${solution.id}.subtitle`);
@@ -57,12 +67,20 @@ export default function LoesungDetail() {
   const faq = t(`solutions.items.${solution.id}.faq`, { returnObjects: true }) as { q: string; a: string }[];
 
   const handleCategoryClick = (categoryId: string) => {
+    setSelectedProductSlug(undefined);
     setSelectedCategoryId(categoryId);
+    setLocationDialogOpen(true);
+  };
+
+  const handleProductClick = (categoryId: string, slug: string) => {
+    setSelectedCategoryId(categoryId);
+    setSelectedProductSlug(slug);
     setLocationDialogOpen(true);
   };
 
   const handleImageClick = (imageIndex: number) => {
     const categoryId = solution.imageCategories?.[imageIndex] || solution.categories[0];
+    setSelectedProductSlug(undefined);
     setSelectedCategoryId(categoryId);
     setLocationDialogOpen(true);
   };
@@ -109,8 +127,8 @@ export default function LoesungDetail() {
   return (
     <Layout>
       <SEO
-        title={`${title} – Mietlösungen | SLT Rental`}
-        description={solutionMetaDescriptions[solution.id] || `${subtitle} – ${description.slice(0, 120)}...`}
+        title={linking?.seoTitle || `${title} – Mietlösungen | SLT Rental`}
+        description={linking?.metaDescription || solutionMetaDescriptions[solution.id] || `${subtitle} – ${description.slice(0, 120)}...`}
         canonical={`/loesungen/${solution.id}`}
         jsonLd={allJsonLd as any}
       />
@@ -118,6 +136,7 @@ export default function LoesungDetail() {
         open={locationDialogOpen}
         onOpenChange={setLocationDialogOpen}
         targetCategoryId={selectedCategoryId}
+        targetProductSlug={selectedProductSlug}
         title={t("solutions.selectLocation")}
         description={t("solutions.selectLocationDesc")}
       />
@@ -241,6 +260,72 @@ export default function LoesungDetail() {
           </div>
         </div>
       </section>
+
+      {/* Beliebte Mietartikel dieser Lösung */}
+      {linking && linking.productLinks.length > 0 && (
+        <section className="py-8 lg:py-12 bg-surface-light">
+          <div className="section-container">
+            <AnimatedSection animation="fade-in-up">
+              <h2 className="text-2xl font-bold text-headline mb-2">
+                Beliebte Mietartikel für {title}
+              </h2>
+              <p className="text-muted-foreground mb-6">
+                Wähle einen Artikel – wir fragen dich anschließend nach deinem Wunschstandort (Krefeld, Bonn oder Mülheim an der Ruhr).
+              </p>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {linking.productLinks.map((link) => (
+                  <button
+                    key={`${link.categoryId}-${link.slug}`}
+                    onClick={() => handleProductClick(link.categoryId, link.slug)}
+                    className="group text-left"
+                  >
+                    <Card className="h-full border-2 hover:border-primary/30 hover:shadow-md transition-all">
+                      <CardContent className="p-4 flex items-center gap-3">
+                        <span className="flex-1 font-medium text-headline group-hover:text-primary transition-colors">
+                          {link.label}
+                        </span>
+                        <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
+                      </CardContent>
+                    </Card>
+                  </button>
+                ))}
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+      )}
+
+      {/* Passende Ratgeber */}
+      {relatedGuides.length > 0 && (
+        <section className="py-8 lg:py-12">
+          <div className="section-container">
+            <AnimatedSection animation="fade-in-up">
+              <h2 className="text-2xl font-bold text-headline mb-2">
+                Ratgeber zu {title}
+              </h2>
+              <p className="text-muted-foreground mb-6">
+                Praxiswissen aus unserem Mietpark – vor der Buchung lesen.
+              </p>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {relatedGuides.map((guide) => (
+                  <Link key={guide.slug} to={`/ratgeber/${guide.slug}/`} className="group">
+                    <Card className="h-full border-2 hover:border-primary/20 hover:shadow-md transition-all">
+                      <CardContent className="p-5">
+                        <h3 className="font-semibold text-headline group-hover:text-primary transition-colors mb-1">
+                          {guide.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground line-clamp-2">
+                          {guide.teaser}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+      )}
 
       {/* Deep Content Sections */}
       {Array.isArray(contentSections) && contentSections.length > 0 && (
