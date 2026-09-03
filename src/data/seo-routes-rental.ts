@@ -544,26 +544,45 @@ const LOCALAREA_ROUTES: SeoRoute[] = localAreas.map((area) => {
 // Solution-Routen
 // ---------------------------------------------------------------
 
-const SOLUTION_ROUTES: SeoRoute[] = (solutionData as Solution[]).map((sol) => ({
-  path: `/loesungen/${sol.id}`,
-  routeType: "solution",
-  solutionData: sol,
-  title: clamp(`${sol.id.replace(/-/g, " ")} – Lösung von SLT Rental`, 60),
-  description: clampDesc(
-    `Komplettlösung von SLT Rental für ${sol.id.replace(/-/g, " ")}. Geräte, Anhänger und Zubehör aus einer Hand mieten in Krefeld, Bonn und Mülheim.`,
-  ),
-  h1: `Lösung: ${sol.id.replace(/-/g, " ")}`,
-  intro: [
-    `Komplettlösung von SLT Rental für ${sol.id.replace(/-/g, " ")} – passende Geräte, Anhänger und Zubehör aus einer Hand. An allen drei Standorten in NRW verfügbar.`,
-  ],
-  breadcrumbs: [
-    { name: "Start", path: "/" },
-    { name: "Lösungen", path: "/loesungen" },
-    { name: sol.id, path: `/loesungen/${sol.id}` },
-  ],
-  changefreq: "monthly",
-  priority: 0.7,
-}));
+/** Deutsche Anzeigenamen (Quelle: src/i18n/locales/de.json → solutions.items). */
+const SOLUTION_NAMES_DE: Record<string, string> = {
+  "garten-landschaftsbau": "Garten- & Landschaftsbau",
+  "tiefbau-erdbewegung": "Tiefbau & Erdbewegung",
+  "hochbau-renovierung": "Hochbau & Renovierung",
+  "events-veranstaltungen": "Events & Veranstaltungen",
+  "umzug-transport": "Umzug & Transport",
+  "handwerk-gewerbe": "Handwerk & Gewerbe",
+  "private-projekte": "Private Projekte",
+  "kindergeburtstage": "Kindergeburtstage & Feste",
+};
+
+const SOLUTION_ROUTES: SeoRoute[] = (solutionData as Solution[]).map((sol) => {
+  // Titel/Description kommen aus der zentralen, Semrush-gestützten Linkstruktur,
+  // damit Prerender-HTML und Runtime-SEO identisch sind.
+  const linking = solutionLinking[sol.id];
+  const nameDe = SOLUTION_NAMES_DE[sol.id] || sol.id.replace(/-/g, " ");
+  return {
+    path: `/loesungen/${sol.id}`,
+    routeType: "solution",
+    solutionData: sol,
+    title: clamp(linking?.seoTitle || `${nameDe} – Lösung von SLT Rental`, 65),
+    description: clampDesc(
+      linking?.metaDescription ||
+        `Komplettlösung von SLT Rental für ${nameDe}. Geräte, Anhänger und Zubehör aus einer Hand mieten in Krefeld, Bonn und Mülheim an der Ruhr.`,
+    ),
+    h1: `${nameDe} – Mietlösungen von SLT Rental`,
+    intro: [
+      `Komplettlösung von SLT Rental für ${nameDe} – passende Geräte, Anhänger und Zubehör aus einer Hand. An allen drei Standorten in Krefeld, Bonn und Mülheim an der Ruhr verfügbar.`,
+    ],
+    breadcrumbs: [
+      { name: "Start", path: "/" },
+      { name: "Lösungen", path: "/loesungen" },
+      { name: nameDe, path: `/loesungen/${sol.id}` },
+    ],
+    changefreq: "monthly",
+    priority: 0.7,
+  };
+});
 
 // ---------------------------------------------------------------
 // Category & Product Routen (3 Standorte × N Kategorien × M Produkte)
