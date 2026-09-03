@@ -315,7 +315,7 @@ export default function LoesungDetail() {
                           {guide.title}
                         </h3>
                         <p className="text-sm text-muted-foreground line-clamp-2">
-                          {guide.excerpt}
+                          {guide.teaser}
                         </p>
                       </CardContent>
                     </Card>
