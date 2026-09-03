@@ -10,6 +10,7 @@ import { locations, type LocationData, type Product } from "./rentalData";
 import { productSEOData, type ProductSEOData } from "./productSEOData";
 import { blogArticles, type BlogArticle } from "./blogArticles";
 import { solutionData, type Solution } from "@/pages/Loesungen";
+import { solutionLinking } from "@/data/solutionLinking";
 import { jobListings } from "@/components/karriere/jobData";
 import { getLocalCategoryContent } from "./localCategoryContent";
 import { getProductAvailability } from "@/lib/productAvailability";
