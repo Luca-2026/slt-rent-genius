@@ -275,6 +275,7 @@ export default function ProductDetail() {
       } else {
         seoTitle = titleBase;
       }
+      seoTitle = localizeText(seoTitle);
       document.title = seoTitle;
 
       // SEO: Meta description - CMS override wins, else generated
