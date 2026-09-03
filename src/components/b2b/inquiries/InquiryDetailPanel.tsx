@@ -138,6 +138,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             inquiryType={inquiryType}
             inquiryId={inquiry.id}
             customerEmail={inquiry.customer_email ?? null}
+            location={(inquiry as any).location ?? null}
             disabled={busy}
             onDone={onChanged}
           />
