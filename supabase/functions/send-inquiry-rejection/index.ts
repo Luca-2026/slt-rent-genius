@@ -79,6 +79,28 @@ Deno.serve(async (req: Request) => {
     const extraNote = typeof body.note === "string" ? body.note.trim().slice(0, 800) : "";
     const notifyCustomer = body.notify_customer !== false;
 
+    // Begründung: Standardtext ("nicht verfügbar") oder eigene Formulierung.
+    const reasonMode = body.reason_mode === "custom" ? "custom" : "unavailable";
+    const customReason = typeof body.custom_reason === "string" ? body.custom_reason.trim().slice(0, 800) : "";
+    if (reasonMode === "custom" && customReason.length < 10) {
+      return json({ error: "Bitte eine Begründung mit mindestens 10 Zeichen angeben." }, 400);
+    }
+
+    // Optionaler Alternativvorschlag aus dem CMS-Katalog.
+    const altRaw = body.alternative && typeof body.alternative === "object" ? body.alternative : null;
+    const clean = (v: unknown, max = 200) => (typeof v === "string" && v.trim() ? v.trim().slice(0, max) : "");
+    const alternative = altRaw && clean(altRaw.name)
+      ? {
+          name: clean(altRaw.name),
+          slug: clean(altRaw.slug, 120),
+          category: clean(altRaw.category, 120),
+          image: clean(altRaw.image, 500),
+          price: clean(altRaw.price, 80),
+          location: clean(altRaw.location, 80),
+          note: clean(altRaw.note, 300),
+        }
+      : null;
+
     const table = inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries";
     const { data: inquiry, error: inqErr } = await service
       .from(table)
@@ -112,20 +134,44 @@ Deno.serve(async (req: Request) => {
       const period = startDe ? `${startDe}${endDe ? ` bis ${endDe}` : ""}` : "";
 
       // Miet- und Verkaufsanfragen brauchen unterschiedliche Formulierungen.
-      const rejectionText = inquiryType === "rental"
+      const standardText = inquiryType === "rental"
         ? `Leider müssen wir Ihnen mitteilen, dass der gewünschte Mietgegenstand im angefragten Zeitraum bereits ausgebucht und daher nicht verfügbar ist. Das bedauern wir sehr.`
         : `Leider müssen wir Ihnen mitteilen, dass der angefragte Artikel aktuell nicht verfügbar ist. Das bedauern wir sehr.`;
-      const closingText = inquiryType === "rental"
-        ? `Sehr gerne prüfen wir für Sie eine Alternative oder einen anderen Zeitraum – melden Sie sich einfach kurz bei uns. Wir unterstützen Sie beim nächsten Projekt sehr gerne wieder und freuen uns jederzeit über Ihre Anfrage.`
-        : `Sehr gerne prüfen wir für Sie eine Alternative aus unserem Bestand – melden Sie sich einfach kurz bei uns. Wir unterstützen Sie beim nächsten Projekt sehr gerne wieder und freuen uns jederzeit über Ihre Anfrage.`;
+      const rejectionText = reasonMode === "custom" ? escapeHtml(customReason) : standardText;
+      const closingText = alternative
+        ? `Gerne erstellen wir Ihnen zu diesem Vorschlag ein Angebot – antworten Sie einfach kurz auf diese E-Mail oder rufen Sie uns an. Wir unterstützen Sie beim nächsten Projekt sehr gerne wieder.`
+        : inquiryType === "rental"
+          ? `Sehr gerne prüfen wir für Sie eine Alternative oder einen anderen Zeitraum – melden Sie sich einfach kurz bei uns. Wir unterstützen Sie beim nächsten Projekt sehr gerne wieder und freuen uns jederzeit über Ihre Anfrage.`
+          : `Sehr gerne prüfen wir für Sie eine Alternative aus unserem Bestand – melden Sie sich einfach kurz bei uns. Wir unterstützen Sie beim nächsten Projekt sehr gerne wieder und freuen uns jederzeit über Ihre Anfrage.`;
+
+      // Alternativvorschlag als Karte inkl. Link auf die Artikelseite (nur wenn Slug + Kategorie bekannt).
+      const altLocation = alternative?.location || (typeof inquiry.location === "string" ? inquiry.location : "");
+      const altUrl = alternative?.slug && alternative.category && altLocation
+        ? `https://www.slt-rental.de/mieten/${resolveLocationKey(altLocation)}/${alternative.category}/${alternative.slug}/`
+        : "";
+      const altBlock = alternative
+        ? `<div style="border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:20px 0;">
+    <strong style="color:#00507d;">Unser Alternativvorschlag</strong>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin-top:12px;"><tr>
+      ${alternative.image ? `<td style="width:96px;vertical-align:top;padding-right:12px;"><img src="${escapeHtml(alternative.image)}" alt="${escapeHtml(alternative.name)}" width="96" style="width:96px;max-width:96px;border-radius:6px;display:block;"></td>` : ""}
+      <td style="vertical-align:top;">
+        <div style="font-size:16px;font-weight:bold;">${escapeHtml(alternative.name)}</div>
+        ${alternative.price ? `<div style="color:#475569;margin-top:4px;">${escapeHtml(alternative.price)}</div>` : ""}
+        ${alternative.note ? `<div style="margin-top:8px;white-space:pre-wrap;">${escapeHtml(alternative.note)}</div>` : ""}
+        ${altUrl ? `<div style="margin-top:12px;"><a href="${escapeHtml(altUrl)}" style="background:#ff8e02;color:#ffffff;text-decoration:none;padding:10px 16px;border-radius:6px;display:inline-block;">Artikel ansehen</a></div>` : ""}
+      </td>
+    </tr></table>
+  </div>`
+        : "";
 
       const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:16px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
 <div style="max-width:600px;margin:0 auto;">
   <h2 style="color:#00507d;margin:0 0 16px;">Ihre Anfrage bei SLT Rental</h2>
   <p>Hallo ${escapeHtml(customerName || "")},</p>
   <p>vielen Dank für Ihre Anfrage${productName ? ` zu <strong>${escapeHtml(productName)}</strong>` : ""}${period ? ` für den Zeitraum ${escapeHtml(period)}` : ""} und Ihr Interesse an SLT&nbsp;Rental.</p>
-  <p>${rejectionText}</p>
+  <p style="white-space:pre-wrap;">${rejectionText}</p>
   ${extraNote ? `<p style="white-space:pre-wrap;background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;border-radius:4px;">${escapeHtml(extraNote)}</p>` : ""}
+  ${altBlock}
   <p>${closingText}</p>
   <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>Ihr Kontakt am Standort ${escapeHtml(loc.name)}:</strong><br>
@@ -162,7 +208,11 @@ Deno.serve(async (req: Request) => {
       }
     }
 
-    const noteLine = `[${new Date().toLocaleString("de-DE")}] Absage versendet${emailSent ? "" : " (ohne E-Mail)"}${extraNote ? `: ${extraNote}` : ""}`;
+    const reasonLabel = reasonMode === "custom" ? `Grund: ${customReason}` : "Grund: Artikel nicht verfügbar (Standardtext)";
+    const altLabel = alternative
+      ? ` | Alternativvorschlag: ${alternative.name}${alternative.note ? ` (${alternative.note})` : ""}`
+      : "";
+    const noteLine = `[${new Date().toLocaleString("de-DE")}] Absage versendet${emailSent ? "" : " (ohne E-Mail)"} – ${reasonLabel}${altLabel}${extraNote ? ` | Zusatz: ${extraNote}` : ""}`;
     const internalNotes = [inquiry.internal_notes, noteLine].filter(Boolean).join("\n");
 
     const { error: updErr } = await service
