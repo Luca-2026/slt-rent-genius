@@ -163,6 +163,25 @@ function clampDescription(s: string, max = 158) {
   return ((last > 80 ? cut.slice(0, last) : cut).trim()) + "…";
 }
 
+// CMS-SEO-Texte nennen häufig nur einen Standort ("… mieten in Krefeld").
+// Auf den Seiten der anderen Standorte ist das falsch und erzeugt zudem
+// Duplicate Content. Deshalb Ortsnamen immer auf den aktuellen Standort ziehen.
+function localizeToLocation(text: string, locName: string): string {
+  let out = text
+    .replace(/Krefeld\s*[&,/]\s*Bonn\s*[&,/]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locName)
+    .replace(/Bonn\s*[&,/]\s*Krefeld\s*[&,/]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locName)
+    .replace(/Krefeld\s*[&,/]\s*Bonn/gi, locName)
+    .replace(/Bonn\s*[&,/]\s*Krefeld/gi, locName)
+    .replace(/Krefeld\s*[&,/]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locName)
+    .replace(/Bonn\s*[&,/]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locName);
+  if (locName !== "Krefeld") out = out.replace(/\bKrefeld\b/g, locName);
+  if (locName !== "Bonn") out = out.replace(/\bBonn\b/g, locName);
+  if (!locName.startsWith("Mülheim")) {
+    out = out.replace(/\bMülheim(?:\s*an\s*der\s*Ruhr)?\b/g, locName);
+  }
+  return out;
+}
+
 const [usedMachineRoutes, newMachineRoutes, managedProducts] = await Promise.all([
   fetchUsedMachineRoutes(),
   fetchNewMachineRoutes(),
