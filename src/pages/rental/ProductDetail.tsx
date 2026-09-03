@@ -296,6 +296,10 @@ export default function ProductDetail() {
         descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
       }
 
+      // Wichtig: Gepflegte SEO-Texte nennen oft nur einen Standort (z. B. "in Krefeld").
+      // Auf den Seiten der anderen Standorte wäre das schlicht falsch → immer lokalisieren.
+      descText = localizeText(descText);
+
       let metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription) {
         metaDescription.setAttribute("content", descText);
