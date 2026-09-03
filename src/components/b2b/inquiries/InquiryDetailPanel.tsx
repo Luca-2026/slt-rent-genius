@@ -20,6 +20,7 @@ import { InquiryStatusBadge } from "./InquiryStatusBadge";
 import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm";
 import { useInquiryActions } from "./useInquiryActions";
 import { InquiryCustomerCard, type CustomerKind } from "./InquiryCustomerCard";
+import { RejectInquiryDialog } from "./RejectInquiryDialog";
 import type { OfferLine } from "./offerMath";
 import { formatEuro } from "./offerMath";
 import { useAuth } from "@/hooks/useAuth";
@@ -132,6 +133,15 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             ))}
           </SelectContent>
         </Select>
+        {inquiry.status !== "rejected" && (
+          <RejectInquiryDialog
+            inquiryType={inquiryType}
+            inquiryId={inquiry.id}
+            customerEmail={inquiry.customer_email ?? null}
+            disabled={busy}
+            onDone={onChanged}
+          />
+        )}
         {canDelete && (
           <AlertDialog>
             <AlertDialogTrigger asChild>
