@@ -112,6 +112,9 @@ Deno.serve(async (req: Request) => {
 
     const deliveryCostDelivery = Number(body.delivery_cost_delivery) || 0;
     const deliveryCostReturn = Number(body.delivery_cost_return) || 0;
+    // Pauschalen für Auf-/Abbau (Montage & Demontage vor Ort)
+    const setupCost = Math.max(0, Number(body.setup_cost) || 0);
+    const dismantleCost = Math.max(0, Number(body.dismantle_cost) || 0);
     const deposit = Number(body.deposit) || 0;
     const validDays = Number(body.valid_days) > 0 ? Math.min(Number(body.valid_days), 180) : 14;
     const notes: string | null = typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
@@ -141,7 +144,10 @@ Deno.serve(async (req: Request) => {
 
 
 
-    const totals = buildOfferTotals(items, deliveryCostDelivery + deliveryCostReturn);
+    const totals = buildOfferTotals(
+      items,
+      deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost,
+    );
     try {
       assertPositiveTotal(totals.netAmount);
     } catch (e) {
@@ -230,6 +236,27 @@ Deno.serve(async (req: Request) => {
           allocations: [{ itemIndex: idx, amount: a.amount }],
         })),
     );
+    // Auf-/Abbau werden als eigene Pauschalpositionen im PDF ausgewiesen.
+    if (setupCost > 0) {
+      servicesWithPrices.push({
+        id: "setup",
+        name: "Aufbau / Montage vor Ort",
+        description: undefined,
+        pricePercent: null,
+        amount: setupCost,
+        allocations: [],
+      });
+    }
+    if (dismantleCost > 0) {
+      servicesWithPrices.push({
+        id: "dismantle",
+        name: "Abbau / Demontage vor Ort",
+        description: undefined,
+        pricePercent: null,
+        amount: dismantleCost,
+        allocations: [],
+      });
+    }
     const servicesSurcharge = servicesWithPrices.reduce((sum, s) => sum + s.amount, 0);
 
     const missingImages = pdfItems.filter((i) => !i.image_url).map((i) => i.product_name);
@@ -365,7 +392,9 @@ Deno.serve(async (req: Request) => {
 
     const transportRowsHtml =
       (deliveryCostDelivery > 0 ? extraRow("Transportkosten Anlieferung", money(deliveryCostDelivery)) : "") +
-      (deliveryCostReturn > 0 ? extraRow("Transportkosten Abholung/Rückholung", money(deliveryCostReturn)) : "");
+      (deliveryCostReturn > 0 ? extraRow("Transportkosten Abholung/Rückholung", money(deliveryCostReturn)) : "") +
+      (setupCost > 0 ? extraRow("Aufbau / Montage vor Ort", money(setupCost)) : "") +
+      (dismantleCost > 0 ? extraRow("Abbau / Demontage vor Ort", money(dismantleCost)) : "");
     const transportTotal = deliveryCostDelivery + deliveryCostReturn;
 
     // ── Zahlungshinweis für die E-Mail ──
