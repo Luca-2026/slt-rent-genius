@@ -218,7 +218,7 @@ if (managedProducts.length) {
       route.h1 = `${m.name} mieten in ${locName}`;
       // Meta-Description: DB Live-Feld hat Vorrang; sonst bleibt statischer Text (bereits gesetzt).
       if (m.seo_meta_description && m.seo_meta_description.trim()) {
-        route.description = clampDescription(m.seo_meta_description.trim());
+        route.description = clampDescription(localizeToLocation(m.seo_meta_description.trim(), locName));
         metaOverridden++;
       } else if (m.description) {
         // Kein Meta gepflegt: bestehende statische route.description NICHT durch generisches
@@ -238,12 +238,15 @@ if (managedProducts.length) {
       }
       if (route.productData) {
         route.productData.name = m.name;
-        if (m.description) route.productData.description = m.description;
+        if (m.description) route.productData.description = localizeToLocation(m.description, locName);
         if (image) route.productData.image = image;
         if (m.model_name) route.productData.modelName = m.model_name;
         // FAQs: DB Live-Feld ersetzt statische FAQs vollständig (kein Mischen).
         if (normalizedFaqs.length) {
-          route.productData.faqs = normalizedFaqs;
+          route.productData.faqs = normalizedFaqs.map((f) => ({
+            q: localizeToLocation(f.q, locName),
+            a: localizeToLocation(f.a, locName),
+          }));
           faqOverridden++;
         }
       }
