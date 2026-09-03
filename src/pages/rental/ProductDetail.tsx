@@ -275,6 +275,7 @@ export default function ProductDetail() {
       } else {
         seoTitle = titleBase;
       }
+      seoTitle = localizeText(seoTitle);
       document.title = seoTitle;
 
       // SEO: Meta description - CMS override wins, else generated
@@ -295,6 +296,10 @@ export default function ProductDetail() {
         const candidate = `${genericName} mieten in ${cityName} bei SLT Rental.${modelInfo} Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.`;
         descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
       }
+
+      // Wichtig: Gepflegte SEO-Texte nennen oft nur einen Standort (z. B. "in Krefeld").
+      // Auf den Seiten der anderen Standorte wäre das schlicht falsch → immer lokalisieren.
+      descText = localizeText(descText);
 
       let metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription) {

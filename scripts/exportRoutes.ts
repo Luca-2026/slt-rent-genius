@@ -163,6 +163,25 @@ function clampDescription(s: string, max = 158) {
   return ((last > 80 ? cut.slice(0, last) : cut).trim()) + "…";
 }
 
+// CMS-SEO-Texte nennen häufig nur einen Standort ("… mieten in Krefeld").
+// Auf den Seiten der anderen Standorte ist das falsch und erzeugt zudem
+// Duplicate Content. Deshalb Ortsnamen immer auf den aktuellen Standort ziehen.
+function localizeToLocation(text: string, locName: string): string {
+  let out = text
+    .replace(/Krefeld\s*[&,/]\s*Bonn\s*[&,/]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locName)
+    .replace(/Bonn\s*[&,/]\s*Krefeld\s*[&,/]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locName)
+    .replace(/Krefeld\s*[&,/]\s*Bonn/gi, locName)
+    .replace(/Bonn\s*[&,/]\s*Krefeld/gi, locName)
+    .replace(/Krefeld\s*[&,/]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locName)
+    .replace(/Bonn\s*[&,/]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locName);
+  if (locName !== "Krefeld") out = out.replace(/\bKrefeld\b/g, locName);
+  if (locName !== "Bonn") out = out.replace(/\bBonn\b/g, locName);
+  if (!locName.startsWith("Mülheim")) {
+    out = out.replace(/\bMülheim(?:\s*an\s*der\s*Ruhr)?\b/g, locName);
+  }
+  return out;
+}
+
 const [usedMachineRoutes, newMachineRoutes, managedProducts] = await Promise.all([
   fetchUsedMachineRoutes(),
   fetchNewMachineRoutes(),
@@ -199,7 +218,7 @@ if (managedProducts.length) {
       route.h1 = `${m.name} mieten in ${locName}`;
       // Meta-Description: DB Live-Feld hat Vorrang; sonst bleibt statischer Text (bereits gesetzt).
       if (m.seo_meta_description && m.seo_meta_description.trim()) {
-        route.description = clampDescription(m.seo_meta_description.trim());
+        route.description = clampDescription(localizeToLocation(m.seo_meta_description.trim(), locName));
         metaOverridden++;
       } else if (m.description) {
         // Kein Meta gepflegt: bestehende statische route.description NICHT durch generisches
@@ -219,12 +238,15 @@ if (managedProducts.length) {
       }
       if (route.productData) {
         route.productData.name = m.name;
-        if (m.description) route.productData.description = m.description;
+        if (m.description) route.productData.description = localizeToLocation(m.description, locName);
         if (image) route.productData.image = image;
         if (m.model_name) route.productData.modelName = m.model_name;
         // FAQs: DB Live-Feld ersetzt statische FAQs vollständig (kein Mischen).
         if (normalizedFaqs.length) {
-          route.productData.faqs = normalizedFaqs;
+          route.productData.faqs = normalizedFaqs.map((f) => ({
+            q: localizeToLocation(f.q, locName),
+            a: localizeToLocation(f.a, locName),
+          }));
           faqOverridden++;
         }
       }
