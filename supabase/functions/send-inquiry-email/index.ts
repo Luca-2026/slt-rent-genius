@@ -51,6 +51,20 @@ serve(async (req) => {
       attachments,
     } = await req.json();
 
+    // Pflichtfelder: Name, E-Mail und Telefonnummer müssen vorhanden sein.
+    const missing: string[] = [];
+    if (!String(name ?? "").trim()) missing.push("name");
+    if (!/.+@.+\..+/.test(String(email ?? "").trim())) missing.push("email");
+    // Telefon: mindestens 6 Ziffern, damit keine Fantasieeingaben durchgehen.
+    const phoneDigits = String(phone ?? "").replace(/\D/g, "");
+    if (phoneDigits.length < 6) missing.push("phone");
+    if (missing.length > 0) {
+      return new Response(
+        JSON.stringify({ error: `Pflichtfelder fehlen oder sind ungültig: ${missing.join(", ")}` }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
     // Validate attachments: max 3, max 5MB each, images only
     const safeAttachments: { filename: string; content: string }[] = [];
     if (Array.isArray(attachments)) {
