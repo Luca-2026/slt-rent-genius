@@ -140,6 +140,9 @@ export function InquiryOfferForm({
   const [delivery, setDelivery] = useState<OfferDeliveryAddress>(defaultDelivery ?? emptyDelivery);
   const [deliveryCostDelivery, setDeliveryCostDelivery] = useState(0);
   const [deliveryCostReturn, setDeliveryCostReturn] = useState(0);
+  /** Pauschalen für Auf- und Abbau (Montage/Demontage vor Ort). */
+  const [setupCost, setSetupCost] = useState(0);
+  const [dismantleCost, setDismantleCost] = useState(0);
   const [deposit, setDeposit] = useState(0);
   const [validDays, setValidDays] = useState(14);
   const [paymentTerms, setPaymentTerms] = useState(
@@ -162,8 +165,8 @@ export function InquiryOfferForm({
   }, [inquiryId, defaultDelivery?.requested, defaultDelivery?.street, defaultDelivery?.postal_code, defaultDelivery?.city]);
 
   const totals = useMemo(
-    () => buildOfferTotals(items, deliveryCostDelivery + deliveryCostReturn),
-    [items, deliveryCostDelivery, deliveryCostReturn],
+    () => buildOfferTotals(items, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost),
+    [items, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost],
   );
 
 
@@ -283,6 +286,8 @@ export function InquiryOfferForm({
         payment_terms_custom: paymentTerms === "custom" ? paymentTermsCustom.trim() : null,
         delivery_cost_delivery: deliveryCostDelivery,
         delivery_cost_return: deliveryCostReturn,
+        setup_cost: setupCost,
+        dismantle_cost: dismantleCost,
         delivery_requested: delivery.requested,
         delivery_address: delivery.requested
           ? {
@@ -637,7 +642,7 @@ export function InquiryOfferForm({
 
 
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
         <div>
           <Label className="text-xs">Lieferkosten</Label>
           <Input type="number" min={0} step="0.01" value={deliveryCostDelivery}
@@ -647,6 +652,16 @@ export function InquiryOfferForm({
           <Label className="text-xs">Abholkosten</Label>
           <Input type="number" min={0} step="0.01" value={deliveryCostReturn}
             onChange={(e) => setDeliveryCostReturn(Number(e.target.value) || 0)} disabled={disabled} />
+        </div>
+        <div>
+          <Label className="text-xs">Aufbau</Label>
+          <Input type="number" min={0} step="0.01" value={setupCost}
+            onChange={(e) => setSetupCost(Number(e.target.value) || 0)} disabled={disabled} />
+        </div>
+        <div>
+          <Label className="text-xs">Abbau</Label>
+          <Input type="number" min={0} step="0.01" value={dismantleCost}
+            onChange={(e) => setDismantleCost(Number(e.target.value) || 0)} disabled={disabled} />
         </div>
         <div>
           <Label className="text-xs">Kaution</Label>
