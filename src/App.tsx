@@ -23,6 +23,7 @@ import NotFound from "./pages/NotFound";
 const RentalStart = lazy(() => import("./pages/rental/RentalStart"));
 const LocationCategories = lazy(() => import("./pages/rental/LocationCategories"));
 const CategoryProducts = lazy(() => import("./pages/rental/CategoryProducts"));
+import DevRejectPreview from "./pages/DevRejectPreview";
 const ProductDetail = lazy(() => import("./pages/rental/ProductDetail"));
 const Products = lazy(() => import("./pages/Products"));
 const Mietartikel = lazy(() => import("./pages/Mietartikel"));
@@ -119,6 +120,7 @@ const App = () => (
               {/* Legacy product/category routes - redirects for SEO */}
               <Route path="/produkte" element={<RentalStart />} />
               <Route path="/mietartikel" element={<Mietartikel />} />
+              <Route path="/__reject-preview" element={<DevRejectPreview />} />
               <Route path="/produkte/:productSlug" element={<LegacyProductRedirect />} />
               <Route path="/produkte-krefeld" element={<LegacyLocationProductRedirect locationId="krefeld" />} />
               <Route path="/produkte-krefeld/:productSlug" element={<LegacyLocationProductRedirect locationId="krefeld" />} />
