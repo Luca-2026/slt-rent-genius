@@ -208,7 +208,11 @@ Deno.serve(async (req: Request) => {
       }
     }
 
-    const noteLine = `[${new Date().toLocaleString("de-DE")}] Absage versendet${emailSent ? "" : " (ohne E-Mail)"}${extraNote ? `: ${extraNote}` : ""}`;
+    const reasonLabel = reasonMode === "custom" ? `Grund: ${customReason}` : "Grund: Artikel nicht verfügbar (Standardtext)";
+    const altLabel = alternative
+      ? ` | Alternativvorschlag: ${alternative.name}${alternative.note ? ` (${alternative.note})` : ""}`
+      : "";
+    const noteLine = `[${new Date().toLocaleString("de-DE")}] Absage versendet${emailSent ? "" : " (ohne E-Mail)"} – ${reasonLabel}${altLabel}${extraNote ? ` | Zusatz: ${extraNote}` : ""}`;
     const internalNotes = [inquiry.internal_notes, noteLine].filter(Boolean).join("\n");
 
     const { error: updErr } = await service
