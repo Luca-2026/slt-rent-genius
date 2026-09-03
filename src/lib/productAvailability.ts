@@ -69,11 +69,14 @@ export function getProductAvailability(
   }
   const isServiceStandort = loc?.serviceCharacter === "service-handover";
   const hasLocalCode = !!product?.rentwareCode?.[locationId];
+  const hasAnyCode = !!product?.rentwareCode && Object.keys(product.rentwareCode).length > 0;
   const isPickupOnlyCategory =
     options?.categoryId === "anhaenger" || options?.categoryId === "nutzfahrzeuge";
 
-  // 1) Krefeld = Hauptlager – immer vor Ort
-  if (isHauptlager) {
+  // 1) Krefeld = Hauptlager – vor Ort, solange kein abweichender Bestand gepflegt ist.
+  //    Hat ein Artikel Codes NUR für andere Standorte (z. B. reiner Bonner Bestand),
+  //    ist er in Krefeld NICHT vor Ort, sondern läuft auf Anfrage.
+  if (isHauptlager && (!hasAnyCode || hasLocalCode)) {
     return {
       status: "available-warehouse",
       badgeLabel: `Verfügbar in ${locName}`,
@@ -83,6 +86,19 @@ export function getProductAvailability(
         : `Dieses Gerät ist Teil unseres Krefelder Mietsortiments. Abholung am Hauptsitz oder Lieferung im Einzugsgebiet in der Regel innerhalb eines Werktags.`,
       schemaAvailability: "https://schema.org/InStock",
       isBookable: true,
+    };
+  }
+
+  // 1b) Krefeld ohne eigenen Code, aber Bestand an anderen Standorten → auf Anfrage
+  if (isHauptlager) {
+    return {
+      status: "on-request",
+      badgeLabel: `Auf Anfrage in ${locName}`,
+      headline: `Auf Anfrage in ${locName}`,
+      body: `Dieses Gerät führen wir am Hauptsitz Krefeld nicht als Stamm-Sortiment – wir disponieren es auf Anfrage aus einer unserer Filialen, in der Regel innerhalb von 24 Stunden.`,
+      schemaAvailability: "https://schema.org/PreOrder",
+      deliveryLeadTime: "PT24H",
+      isBookable: false,
     };
   }
 

@@ -3574,7 +3574,8 @@ export const spezialeffekteProducts: Product[] = [
       "Besonderheit": "Maschine vom Wagen abnehmbar",
     },
     pdfUrl: "/manuals/popcornmaschine-bedienungsanleitung.pdf",
-    rentwareCode: { krefeld: "SPA843" }
+    // Bestand steht in Bonn (SPA843) – in Krefeld nur auf Anfrage
+    rentwareCode: { bonn: "SPA843" }
   },
 ];
 
