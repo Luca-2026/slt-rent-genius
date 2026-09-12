@@ -164,7 +164,7 @@ const isCovered = (m) => legacyFroms.has(m.from.replace(/\/+$/, "").toLowerCase(
 const seen = new Set();
 
 for (const b of buckets) {
-  const items = concrete.filter(b.filter);
+  const items = concrete.filter(b.filter).filter((m) => !isCovered(m));
   if (!items.length) continue;
   lines.push(`# --- ${b.label} (${items.length}) ---`);
   for (const m of items) {
@@ -178,9 +178,10 @@ for (const b of buckets) {
   lines.push("");
 }
 
-if (fallbacks.length) {
-  lines.push(`# --- Pauschal-Fallbacks (${fallbacks.length}, Confidence < 0.3) ---`);
-  for (const m of fallbacks) {
+const remainingFallbacks = fallbacks.filter((m) => !isCovered(m));
+if (remainingFallbacks.length) {
+  lines.push(`# --- Pauschal-Fallbacks (${remainingFallbacks.length}, Confidence < 0.3) ---`);
+  for (const m of remainingFallbacks) {
     const fromPath = m.from.replace(/^\//, "");
     lines.push(`RewriteRule ^${escapeRe(fromPath)}$ ${m.to} [L,R=301]`);
   }
