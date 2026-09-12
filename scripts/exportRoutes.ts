@@ -148,6 +148,15 @@ function clampTitle(s: string, max = 60) {
   return (last > 30 ? cut.slice(0, last) : cut).trim();
 }
 // Standort darf beim Kürzen nie verloren gehen (sonst identische Titles je Standort).
+function tidyCutText(str: string): string {
+  let s = str.trim().replace(/[…]+$/u, "").trim();
+  const open = (s.match(/\(/g) || []).length;
+  const close = (s.match(/\)/g) || []).length;
+  if (open > close) s = s.slice(0, s.lastIndexOf("(")).trim();
+  s = s.replace(/\s+(?:ab|Ab|ca\.|bis|für)?\s*\d+(?:[.,]\d+)?\s*[×x/]?$/u, "");
+  return s.replace(/[\s–—\-,;:|/&·]+$/u, "").trim();
+}
+
 function localizedTitle(name: string, locName: string, max = 60) {
   const tail = ` mieten in ${locName}`;
   const full = `${name}${tail} | SLT Rental`;
@@ -155,28 +164,34 @@ function localizedTitle(name: string, locName: string, max = 60) {
   const withoutSuffix = `${name}${tail}`;
   if (withoutSuffix.length <= max) return withoutSuffix;
   const budget = max - tail.length;
+  const candidates = [
+    name.replace(/\s*\([^)]*\)\s*$/u, ""),
+    name.split(/\s+[–—]\s+/u)[0],
+    name.split(/\s*\(/u)[0],
+    name.split(",")[0],
+  ]
+    .map((c) => tidyCutText(c))
+    .filter((c) => c.length > 3);
+  for (const c of candidates) {
+    if (c.length <= budget) return `${c}${tail}`;
+  }
   let short = name.slice(0, Math.max(budget, 0));
   const sp = short.lastIndexOf(" ");
   if (sp > 12) short = short.slice(0, sp);
-  return `${short.trim()}${tail}`;
+  return `${tidyCutText(short)}${tail}`;
 }
 
 function clampDescription(s: string, max = 158) {
-  if (s.length <= max) return s;
+  if (s.length <= max) {
+    const cleaned = /[…]$/u.test(s) ? tidyCutText(s) + "…" : s;
+    return cleaned;
+  }
   const cut = s.slice(0, max);
   const last = cut.lastIndexOf(" ");
-  let base = (last > 80 ? cut.slice(0, last) : cut).trim();
-  // Keine abgeschnittenen Preis-/Maßangaben ("… Ab 9", "… 2,00 ×") und
-  // keine offenen Klammern am Schnittrand.
-  const open = (base.match(/\(/g) || []).length;
-  const close = (base.match(/\)/g) || []).length;
-  if (open > close) base = base.slice(0, base.lastIndexOf("(")).trim();
-  base = base
-    .replace(/\s+(?:ab|Ab|ca\.|bis|für)?\s*\d+(?:[.,]\d+)?\s*[×x/]?$/u, "")
-    .replace(/[\s–—\-,;:|/&·]+$/u, "")
-    .trim();
+  const base = tidyCutText(last > 80 ? cut.slice(0, last) : cut);
   return base.endsWith(".") ? base : base + "…";
 }
+
 
 
 // CMS-SEO-Texte nennen häufig nur einen Standort ("… mieten in Krefeld").
