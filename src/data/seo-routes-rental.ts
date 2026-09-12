@@ -168,6 +168,15 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: [
       "Wählen Sie Ihren SLT-Standort, um den Mietkatalog mit allen vor Ort verfügbaren Geräten zu öffnen.",
     ],
+    linkSections: [
+      {
+        heading: "Standorte",
+        links: (locations as LocationData[]).map((loc) => ({
+          name: `Mieten in ${LOCATION_DISPLAY[loc.id] || loc.name}`,
+          path: `/mieten/${loc.id}`,
+        })),
+      },
+    ],
     changefreq: "weekly",
     priority: 0.9,
   },
