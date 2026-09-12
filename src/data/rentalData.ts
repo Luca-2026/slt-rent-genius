@@ -1656,7 +1656,7 @@ const manKipperMeillerD205: Product = {
     // Mietkonditionen
     "Frei-Kilometer": "100 km/Tag inklusive",
     "Mehrkilometer": "0,40 € brutto/km",
-    "Kraftstoff": "Diesel – Rückgabe vollgetankt (sonst 2,85 €/l zzgl. MwSt.)",
+    "Kraftstoff": "Diesel – Rückgabe vollgetankt (sonst 2,85 €/l brutto)",
     "AdBlue": "Rückgabe vollgetankt (sonst 2,20 €/l brutto.)",
     "Maut": "Weiterberechnung per Einzelfahrtnachweis",
     // Versicherung & Kaution

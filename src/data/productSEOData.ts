@@ -10,7 +10,7 @@ export interface ProductSEOData {
   useCaseEvent: string;
   useCasePrivat: string;
   faqs: { q: string; a: string }[];
-  /** Tagespreis ab (EUR netto) für JSON-LD Offer.priceSpecification */
+  /** Tagespreis ab (EUR brutto, inkl. 19 % USt.) für JSON-LD Offer.priceSpecification */
   dailyPriceFrom?: number;
 }
 
@@ -626,7 +626,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "Was kostet die Miete der Doppelfritteuse in Krefeld?",
-        a: "Die Miete startet ab 10 € pro Tag netto. Für Wochenend- oder Wochenpreise und die Verfügbarkeit im gewünschten Zeitraum meldest du dich kurz über das Anfrageformular oder telefonisch bei unserem Standort Krefeld.",
+        a: "Die Miete startet ab 10 € brutto pro Tag (inkl. 19 % USt.). Für Wochenend- oder Wochenpreise und die Verfügbarkeit im gewünschten Zeitraum meldest du dich kurz über das Anfrageformular oder telefonisch bei unserem Standort Krefeld.",
       },
     ],
   },

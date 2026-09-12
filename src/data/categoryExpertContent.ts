@@ -1456,7 +1456,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Was kostet Aufbau und Abbau einer Trusskonstruktion?",
           answer:
-            "Stundensatz unseres Veranstaltungstechnik-Teams bzw. vermittelter lokaler Partner im Raum Krefeld liegt typisch bei 71,40–134,53 € brutto pro Stunde, je nach Qualifikation (Helfer / Sachkundiger / Meister). Eine Standard-Trusskonstruktion 6 × 4 m mit 4 Towern und Mid-Beam baut ein 2-Personen-Team in ca. 90 Minuten auf. Bei Großevents kalkulieren wir Material-, Personal- und Anfahrtskosten transparent in einem Komplettangebot.",
+            "Stundensatz unseres Veranstaltungstechnik-Teams bzw. vermittelter lokaler Partner im Raum Krefeld liegt typisch bei 60–95 € brutto pro Stunde, je nach Qualifikation (Helfer / Sachkundiger / Meister). Eine Standard-Trusskonstruktion 6 × 4 m mit 4 Towern und Mid-Beam baut ein 2-Personen-Team in ca. 90 Minuten auf. Bei Großevents kalkulieren wir Material-, Personal- und Anfahrtskosten transparent in einem Komplettangebot.",
         },
         {
           question: "Gibt es eine Versicherung für hängendes Material?",
@@ -3713,7 +3713,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Was kostet Aufbau und Abbau einer Trusskonstruktion?",
           answer:
-            "Stundensatz unseres Veranstaltungstechnik-Teams bzw. vermittelter lokaler Partner im Raum Bonn liegt typisch bei 71,40–134,53 € brutto pro Stunde, je nach Qualifikation (Helfer / Sachkundiger / Meister). Eine Standardkonstruktion 6 × 4 m mit 4 Towern und Mid-Beam baut ein 2-Personen-Team in ca. 90 Minuten auf. Bei Großevents kalkulieren wir Material-, Personal- und Anfahrtskosten transparent in einem Komplettangebot.",
+            "Stundensatz unseres Veranstaltungstechnik-Teams bzw. vermittelter lokaler Partner im Raum Bonn liegt typisch bei 60–95 € brutto pro Stunde, je nach Qualifikation (Helfer / Sachkundiger / Meister). Eine Standardkonstruktion 6 × 4 m mit 4 Towern und Mid-Beam baut ein 2-Personen-Team in ca. 90 Minuten auf. Bei Großevents kalkulieren wir Material-, Personal- und Anfahrtskosten transparent in einem Komplettangebot.",
         },
         {
           question: "Gibt es eine Versicherung für hängendes Material?",

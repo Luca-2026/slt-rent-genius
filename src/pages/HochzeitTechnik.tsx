@@ -38,7 +38,7 @@ const faqs = [
   {
     question: "Was kostet Hochzeitstechnik zum Mieten in Bonn, Krefeld oder Mülheim?",
     answer:
-      "Für eine typische Hochzeit mit 60–100 Gästen liegt das Technikpaket aus DJ-Beschallung (D.A.S. Audio Aktiv-PA + Sennheiser-Funkmikrofon), Effektlicht und Nebelmaschine erfahrungsgemäß zwischen 214,20 € und535,50 € brutto pro Tag. Über das Wochenende (Fr 14:00 bis Mo 09:00) zahlst du bei SLT Rental nur eine Tagesmiete. Sparkular-Kaltfunken-Sets (2er/4er) liegen je nach Set zwischen 69 € und 99 €/Tag inkl. Granulat.",
+      "Für eine typische Hochzeit mit 60–100 Gästen liegt das Technikpaket aus DJ-Beschallung (D.A.S. Audio Aktiv-PA + Sennheiser-Funkmikrofon), Effektlicht und Nebelmaschine erfahrungsgemäß zwischen 180 € und 450 € brutto (inkl. 19 % USt.) pro Tag. Über das Wochenende (Fr 14:00 bis Mo 09:00) zahlst du bei SLT Rental nur eine Tagesmiete. Sparkular-Kaltfunken-Sets (2er/4er) liegen je nach Set zwischen 69 € und 99 €/Tag inkl. Granulat.",
   },
   {
     question: "Welche Marken/Geräte vermietet SLT Rental für Hochzeiten?",
