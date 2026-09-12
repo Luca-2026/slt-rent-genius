@@ -18,13 +18,28 @@ import { getProductAvailability } from "@/lib/productAvailability";
 const BASE_URL = "https://www.slt-rental.de";
 const DEFAULT_OG_IMAGE = `${BASE_URL}/images/og/default-slt-rental.png`;
 
-// Helper: clamp title under 60 chars (soft – never strip mid-word)
+// Schnittkanten aufräumen: keine offenen Klammern, keine hängenden Trenner
+// und keine abgeschnittenen Preis-/Maßangaben ("… ab 9", "… 2,00 ×").
+function tidyCut(str: string): string {
+  let s = str.trim();
+  // offene Klammer ohne Gegenstück → Klammerteil komplett entfernen
+  const open = (s.match(/\(/g) || []).length;
+  const close = (s.match(/\)/g) || []).length;
+  if (open > close) s = s.slice(0, s.lastIndexOf("(")).trim();
+  // hängende Zahl/Einheit ohne Bezug am Ende (z. B. "ab 9", "2,00 ×", "50 l/")
+  s = s.replace(/\s+(?:ab|Ab|ca\.|bis|für)?\s*\d+(?:[.,]\d+)?\s*[×x/]?$/u, "");
+  // hängende Trenner/Satzzeichen
+  s = s.replace(/[\s–—\-,;:|/&·]+$/u, "");
+  return s.trim();
+}
+
+// Weicher Clamp: nie mitten im Wort, Ergebnis wird aufgeräumt.
 function clamp(str: string, max = 60): string {
   if (!str) return str;
   if (str.length <= max) return str;
   const cut = str.slice(0, max);
   const last = cut.lastIndexOf(" ");
-  return (last > 30 ? cut.slice(0, last) : cut).trim();
+  return tidyCut(last > 30 ? cut.slice(0, last) : cut);
 }
 
 function clampDesc(str: string, max = 158): string {
@@ -32,7 +47,8 @@ function clampDesc(str: string, max = 158): string {
   if (str.length <= max) return str;
   const cut = str.slice(0, max);
   const last = cut.lastIndexOf(" ");
-  return ((last > 80 ? cut.slice(0, last) : cut).trim()) + "…";
+  const base = tidyCut(last > 80 ? cut.slice(0, last) : cut);
+  return base.endsWith(".") ? base : base + "…";
 }
 
 // Title mit Standort: Der Standort darf NIEMALS wegge-clamped werden, sonst
@@ -44,12 +60,27 @@ function localizedTitle(name: string, locName: string, max = 60): string {
   if (full.length <= max) return full;
   const withoutSuffix = `${name}${tail}`;
   if (withoutSuffix.length <= max) return withoutSuffix;
+
   const budget = max - tail.length;
+  // Zuerst sinnvolle Kürzungen des Namens versuchen (statt hartem Abschneiden):
+  // Klammerzusatz weg → Detail nach „–“/„,“ weg → erst dann harter Cut.
+  const candidates = [
+    name.replace(/\s*\([^)]*\)\s*$/u, ""),
+    name.split(/\s+[–—]\s+/u)[0],
+    name.split(/\s*\(/u)[0],
+    name.split(",")[0],
+  ]
+    .map((c) => tidyCut(c))
+    .filter((c) => c.length > 3);
+  for (const c of candidates) {
+    if (c.length <= budget) return `${c}${tail}`;
+  }
   let short = name.slice(0, Math.max(budget, 0));
   const sp = short.lastIndexOf(" ");
   if (sp > 12) short = short.slice(0, sp);
-  return `${short.trim()}${tail}`;
+  return `${tidyCut(short)}${tail}`;
 }
+
 
 
 const LOCATION_DISPLAY: Record<string, string> = {
@@ -672,6 +703,7 @@ function joinCities(cities: string[] | undefined, max = 5): string {
 function buildLocationIntro(
   loc: LocationInfo,
   subject: string, // z.B. „Minibagger 2,5t mieten" oder „Aggregate"
+  opts: { compact?: boolean } = {},
 ): string[] {
   const radius = joinCities(loc.deliveryRadius, 6);
   const out: string[] = [];
@@ -705,8 +737,17 @@ function buildLocationIntro(
       );
     }
   }
+
+  // Produktseiten bekommen nur EINEN Standortabsatz (Doorway-Vermeidung):
+  // Adresse/Übergabe + Liefergebiet in einem Satzblock, ohne Wiederholung.
+  if (opts.compact) {
+    const first = out[0];
+    const delivery = radius ? ` Liefergebiet ab ${loc.name}: ${radius}.` : "";
+    return [`${first}${delivery}`];
+  }
   return out;
 }
+
 
 for (const loc of locations as LocationData[]) {
   const locName = LOCATION_DISPLAY[loc.id] || loc.name;
@@ -790,13 +831,12 @@ for (const loc of locations as LocationData[]) {
       if (seo?.useCaseBau) intro.push(`Einsatz Bau: ${seo.useCaseBau}`);
 
 
-      // Plan A: Self-Canonical pro Standort. Jede Standort-Variante ist
-      // durch eindeutige H1, Title und lokal-spezifische Intro-Absätze
-      // (siehe buildLocationIntro) ausreichend differenziert. Damit
-      // entfällt das frühere Krefeld-First-Mapping; Bonn/Mülheim werden
-      // jetzt eigenständig indexiert für lokale Suchanfragen.
+      // Plan A: Self-Canonical pro Standort. Genau EIN Standortabsatz je
+      // Produktseite (kompakt: Adresse/Übergabe + Liefergebiet). Mehrere
+      // Standortblöcke plus Kategorie-Boilerplate erzeugten sonst über
+      // 350 Produkte × 3 Standorte ein Doorway-Muster.
       if (locInfo) {
-        intro.push(...buildLocationIntro(locInfo, `${p.name} mieten`));
+        intro.push(...buildLocationIntro(locInfo, `${p.name} mieten`, { compact: true }));
       }
 
       // Sprint 1 – Verfügbarkeits-Automatik in SSR-Hero
@@ -805,12 +845,18 @@ for (const loc of locations as LocationData[]) {
       const availability = getProductAvailability(p, loc.id, { categoryId: catId });
       intro.push(`${availability.headline}. ${availability.body}`);
 
-      // Standort × Kategorie spezifischer Content (echt lokal,
-      // nur Aussagen die in Krefeld so nicht stimmen würden).
-      const localContent = getLocalCategoryContent(loc.id, catId);
-      if (localContent) {
-        intro.push(`Lieferung ab ${locName}: ${localContent.hookline} ${localContent.standortFakten}`);
+      // Produktspezifisch statt Boilerplate: echte Nachbargeräte derselben
+      // Kategorie am selben Standort (Alternativen / nächste Größe).
+      const siblings = products
+        .filter((s) => s.id !== p.id)
+        .slice(0, 4)
+        .map((s) => s.name);
+      if (siblings.length) {
+        intro.push(
+          `Alternativen in der Kategorie ${catTitle} am Standort ${locName}: ${siblings.join(", ")}. Wir beraten dich, welche Größe zu deinem Einsatz passt.`,
+        );
       }
+
 
       PRODUCT_ROUTES.push({
         path: `/mieten/${loc.id}/${catId}/${p.id}`,

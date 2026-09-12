@@ -1275,7 +1275,7 @@ export const verdichtungProducts: Product[] = [
 export const werkzeugeProducts: Product[] = [
   {
     id: "bosch-bohrhammer-gbh18v-26f",
-    name: "Akku Bohrhammer",
+    name: "Akku Bohrhammer GBH 18V-26 F",
     modelName: "Bosch GBH 18V-26 F",
     description: "Akku-Bohrhammer mit SDS-Plus Aufnahme",
     specifications: {
@@ -1300,7 +1300,7 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-bohrhammer-gbh18v-45c",
-    name: "Akku Bohrhammer",
+    name: "Akku Bohrhammer GBH 18V-45C",
     modelName: "Bosch GBH 18V-45C",
     description: "Schwerer Akku-Bohrhammer mit Bluetooth",
     specifications: {
@@ -1373,7 +1373,7 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-bohrschrauber-gsr12v-15",
-    name: "Akku Bohrschrauber",
+    name: "Akku Bohrschrauber GSR 12V-15",
     modelName: "Bosch GSR 12V-15",
     description: "Kompakter Akku-Bohrschrauber",
     image: imgBohrschrauber12v,
@@ -1383,7 +1383,7 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-bohrschrauber-gsr18v-60c",
-    name: "Akku Bohrschrauber",
+    name: "Akku Bohrschrauber GSR 18V-60C",
     modelName: "Bosch GSR 18V-60C",
     description: "Leistungsstarker Akku-Bohrschrauber mit Bluetooth",
     image: imgBohrschrauber60c,
@@ -1393,7 +1393,7 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bohrschrauber-gsr18v55",
-    name: "Akku Bohrschrauber",
+    name: "Akku Bohrschrauber GSR 18V-55",
     modelName: "Bosch GSR 18V-55",
     description: "Leistungsstarker Akku-Bohrschrauber mit 55 Nm Drehmoment und EC-Motor.",
     detailedDescription: "Professioneller Bosch Akku-Bohrschrauber GSR 18V-55 mit bürstenlosem EC-Motor für maximale Leistung und Lebensdauer. Mit 20+1 Drehmomentstufen und 2-Gang-Getriebe ideal für vielfältige Schraub- und Bohrarbeiten in Holz, Stahl und anderen Materialien.",
@@ -1609,7 +1609,7 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-ortungsgeraet-dtect200c",
-    name: "Ortungsgerät",
+    name: "Ortungsgerät D-TECT 200 C",
     modelName: "Bosch D-TECT 200 C",
     description: "Universalortungsgerät für Metall, Holz und Leitungen",
     image: imgOrtungsgeraet,
@@ -1619,7 +1619,7 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-ortungsgeraet-gms120",
-    name: "Ortungsgerät",
+    name: "Ortungsgerät GMS 120",
     modelName: "Bosch GMS 120",
     description: "Multidetektor für Metall und Leitungen",
     image: "/placeholder.svg",
@@ -1629,7 +1629,7 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-bauleuchte-gli18v-2200c",
-    name: "Akku Bauleuchte",
+    name: "Akku Bauleuchte Bosch GLI 18V-2200 C",
     modelName: "Bosch GLI 18V-2200 C",
     description: "Akku-Bauleuchte mit 2200 Lumen",
     specifications: {
@@ -1649,7 +1649,7 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "einhell-bauleuchte-te-cl18-2000",
-    name: "Akku Bauleuchte",
+    name: "Akku Bauleuchte Einhell TE-CL 18/2000",
     modelName: "Einhell TE-CL 18/2000",
     description: "LED-Bauleuchte mit 2000 Lumen",
     specifications: {
@@ -1679,7 +1679,7 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "eibenstock-diamantbohrer-ehd1500",
-    name: "Diamantbohrer",
+    name: "Diamantbohrer Eibenstock EHD 1500",
     modelName: "Eibenstock EHD 1500",
     description: "Kernbohrgerät für Beton und Mauerwerk",
     image: imgDiamantbohrer,
@@ -1689,7 +1689,7 @@ export const werkzeugeProducts: Product[] = [
   },
   {
     id: "bosch-diamantbohrer-gdb180we",
-    name: "Diamantbohrer",
+    name: "Diamantbohrer Bosch GDB 180 WE",
     modelName: "Bosch GDB 180 WE",
     description: "Diamantbohrmaschine für Kernbohrungen bis 180 mm in Beton und Mauerwerk.",
     detailedDescription: "Die Bosch GDB 180 WE ist eine leistungsstarke Diamantbohrmaschine mit 2.000 W Nenneingangsleistung für Nassbohrungen in Beton und Mauerwerk bis 180 mm. Mit zwei Drehzahlstufen (900/2.800 min⁻¹) und einem Gewicht von nur 5,2 kg eignet sie sich hervorragend für professionelle Kernbohrungen. Die passenden Diamantbohrkronen können im nächsten Schritt ausgewählt werden.",

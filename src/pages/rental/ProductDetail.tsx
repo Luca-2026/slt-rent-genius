@@ -1362,7 +1362,9 @@ export default function ProductDetail() {
                   product={product}
                   categoryId={categoryId}
                   deviceLabel={product.id === "weinsberg-caraone-480-qdk" ? "Wohnwagen" : "Gerät"}
+                  hideDeliveryCities={!!(locationId && categoryId && getLocalCategoryContent(locationId, categoryId))}
                 />
+
 
               )}
 

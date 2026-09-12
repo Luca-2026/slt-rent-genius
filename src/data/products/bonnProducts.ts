@@ -535,7 +535,7 @@ export const bonnErdbewegungProducts = [
   // === RADLADER ===
   {
     id: "bonn-radlader-kramer-5050",
-    name: "3t Radlader",
+    name: "3t Radlader Kramer 5050",
     modelName: "Kramer 5050",
     description: "Einsatzgewicht: 3.000 kg | Dieselmotor | Schaufel inkl. | Kompakt & vielseitig",
     image: imgKramer1,
@@ -1398,7 +1398,7 @@ export const bonnWerkzeugProducts = [
   },
   {
     id: "bonn-bohrschrauber-gsr18v55",
-    name: "Akku Bohrschrauber",
+    name: "Akku Bohrschrauber GSR 18V-55",
     modelName: "Bosch GSR 18V-55",
     description: "Leistungsstarker Akku-Bohrschrauber mit 55 Nm Drehmoment und EC-Motor.",
     detailedDescription: "Professioneller Bosch Akku-Bohrschrauber GSR 18V-55 mit bürstenlosem EC-Motor für maximale Leistung und Lebensdauer. Mit 20+1 Drehmomentstufen und 2-Gang-Getriebe ideal für vielfältige Schraub- und Bohrarbeiten in Holz, Stahl und anderen Materialien.",
