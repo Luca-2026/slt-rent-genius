@@ -103,6 +103,15 @@ export interface SeoRoute {
   ratgeberData?: BlogArticle;
   /** Extra JSON-LD blocks rendered verbatim (in addition to type-derived ones). */
   inlineSchemas?: Record<string, unknown>[];
+  /**
+   * Statisch vorgerenderte interne Linklisten (Hub-Seiten).
+   * Ohne diese Blöcke sehen Crawler auf /mieten/ und /mieten/:loc/ nur H1 + Intro,
+   * weil die Kacheln rein clientseitig gerendert werden.
+   */
+  linkSections?: Array<{
+    heading: string;
+    links: Array<{ name: string; path: string }>;
+  }>;
 }
 
 export interface PrerenderProduct {
