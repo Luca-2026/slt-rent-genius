@@ -715,7 +715,9 @@ for (const loc of locations as LocationData[]) {
     if (!products || products.length === 0) continue;
     const catTitle = categoryTitleDe(catId);
 
-    const productSummaries = products.slice(0, 20).map((p) => ({
+    // Alle Geräte prerendern (kein slice): sonst haben Produkte ab Position 21
+    // keinen internen Link aus ihrer Kategorie.
+    const productSummaries = products.map((p) => ({
       id: p.id,
       name: p.name,
       path: `/mieten/${loc.id}/${catId}/${p.id}`,
