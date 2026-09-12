@@ -33,12 +33,16 @@ export function StandortVerfuegbarkeit({
   categoryId,
   warehouseLocationName = "Krefeld",
   deviceLabel = "Gerät",
-}: StandortVerfuegbarkeitProps) {
+  hideDeliveryCities = false,
+}: StandortVerfuegbarkeitProps & { hideDeliveryCities?: boolean }) {
   const location = getLocationInfoById(locationId);
   if (!location) return null;
 
   const { name, deliveryRadius, futurePromise, serviceCharacter } = location;
-  const cities = (deliveryRadius ?? []).slice(0, 5);
+  // Das Liefergebiet steht auf Produktseiten bereits im Standortblock darunter –
+  // doppelte Aufzählung vermeiden (Doorway-/Boilerplate-Risiko).
+  const cities = hideDeliveryCities ? [] : (deliveryRadius ?? []).slice(0, 5);
+
   const isPickupOnly = categoryId === "anhaenger" || categoryId === "nutzfahrzeuge";
 
   // Produktspezifische Variante (Sprint 1)
