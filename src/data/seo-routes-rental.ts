@@ -103,6 +103,15 @@ export interface SeoRoute {
   ratgeberData?: BlogArticle;
   /** Extra JSON-LD blocks rendered verbatim (in addition to type-derived ones). */
   inlineSchemas?: Record<string, unknown>[];
+  /**
+   * Statisch vorgerenderte interne Linklisten (Hub-Seiten).
+   * Ohne diese Blöcke sehen Crawler auf /mieten/ und /mieten/:loc/ nur H1 + Intro,
+   * weil die Kacheln rein clientseitig gerendert werden.
+   */
+  linkSections?: Array<{
+    heading: string;
+    links: Array<{ name: string; path: string }>;
+  }>;
 }
 
 export interface PrerenderProduct {
@@ -158,6 +167,15 @@ const STATIC_ROUTES: SeoRoute[] = [
     h1: "Mieten bei SLT Rental",
     intro: [
       "Wählen Sie Ihren SLT-Standort, um den Mietkatalog mit allen vor Ort verfügbaren Geräten zu öffnen.",
+    ],
+    linkSections: [
+      {
+        heading: "Standorte",
+        links: (locations as LocationData[]).map((loc) => ({
+          name: `Mieten in ${LOCATION_DISPLAY[loc.id] || loc.name}`,
+          path: `/mieten/${loc.id}`,
+        })),
+      },
     ],
     changefreq: "weekly",
     priority: 0.9,
@@ -503,6 +521,17 @@ const MIETEN_LOCATION_ROUTES: SeoRoute[] = (locations as LocationData[]).map((lo
       { name: "Start", path: "/" },
       { name: locName, path: `/mieten/${loc.id}` },
     ],
+    linkSections: [
+      {
+        heading: `Kategorien in ${locName}`,
+        links: Object.entries(loc.products || {})
+          .filter(([, products]) => Array.isArray(products) && products.length > 0)
+          .map(([catId]) => ({
+            name: `${categoryTitleDe(catId)} mieten in ${locName}`,
+            path: `/mieten/${loc.id}/${catId}`,
+          })),
+      },
+    ],
     changefreq: "weekly",
     priority: 0.85,
   };
@@ -686,7 +715,9 @@ for (const loc of locations as LocationData[]) {
     if (!products || products.length === 0) continue;
     const catTitle = categoryTitleDe(catId);
 
-    const productSummaries = products.slice(0, 20).map((p) => ({
+    // Alle Geräte prerendern (kein slice): sonst haben Produkte ab Position 21
+    // keinen internen Link aus ihrer Kategorie.
+    const productSummaries = products.map((p) => ({
       id: p.id,
       name: p.name,
       path: `/mieten/${loc.id}/${catId}/${p.id}`,

@@ -357,6 +357,20 @@ function buildHeroBlock(route) {
     parts.push(buildCategoryListBlock(route));
   }
 
+  // Hub-Linklisten (z. B. /mieten/ → Standorte, /mieten/:loc/ → Kategorien).
+  for (const sec of route.linkSections || []) {
+    if (!sec || !sec.links || !sec.links.length) continue;
+    const items = sec.links
+      .map(
+        (l) =>
+          `<li style="margin-bottom:6px;"><a href="${escapeAttr(withTrailingSlash(l.path))}" style="color:#00507d;text-decoration:none;">${escapeHtml(l.name)}</a></li>`,
+      )
+      .join("");
+    parts.push(
+      `<nav data-prerender-links style="margin:32px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">${escapeHtml(sec.heading)}</h2><ul style="margin:0;padding-left:20px;">${items}</ul></nav>`,
+    );
+  }
+
   parts.push(`</div>`);
   return parts.join("");
 }

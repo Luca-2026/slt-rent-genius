@@ -362,6 +362,7 @@ const enriched = allRoutes.map((route) => {
     ratgeber,
     productData,
     categoryData,
+    linkSections: route.linkSections,
   };
 });
 
