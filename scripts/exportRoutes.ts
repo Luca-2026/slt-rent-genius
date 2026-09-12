@@ -20,6 +20,7 @@ import {
   resolveRouteSchemas,
   buildGlobalSchemas,
 } from "../src/data/schemas-rental";
+import { buildLegacyRedirectRules } from "../src/data/legacyRedirects";
 
 const distDir = resolve(process.cwd(), "dist");
 if (!existsSync(distDir)) mkdirSync(distDir, { recursive: true });
