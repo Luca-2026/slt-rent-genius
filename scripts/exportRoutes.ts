@@ -165,8 +165,19 @@ function clampDescription(s: string, max = 158) {
   if (s.length <= max) return s;
   const cut = s.slice(0, max);
   const last = cut.lastIndexOf(" ");
-  return ((last > 80 ? cut.slice(0, last) : cut).trim()) + "…";
+  let base = (last > 80 ? cut.slice(0, last) : cut).trim();
+  // Keine abgeschnittenen Preis-/Maßangaben ("… Ab 9", "… 2,00 ×") und
+  // keine offenen Klammern am Schnittrand.
+  const open = (base.match(/\(/g) || []).length;
+  const close = (base.match(/\)/g) || []).length;
+  if (open > close) base = base.slice(0, base.lastIndexOf("(")).trim();
+  base = base
+    .replace(/\s+(?:ab|Ab|ca\.|bis|für)?\s*\d+(?:[.,]\d+)?\s*[×x/]?$/u, "")
+    .replace(/[\s–—\-,;:|/&·]+$/u, "")
+    .trim();
+  return base.endsWith(".") ? base : base + "…";
 }
+
 
 // CMS-SEO-Texte nennen häufig nur einen Standort ("… mieten in Krefeld").
 // Auf den Seiten der anderen Standorte ist das falsch und erzeugt zudem
