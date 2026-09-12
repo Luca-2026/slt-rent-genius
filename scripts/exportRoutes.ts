@@ -376,6 +376,20 @@ const payload = {
 const outPath = resolve(distDir, ".prerender-routes.json");
 writeFileSync(outPath, JSON.stringify(payload), "utf-8");
 
+// Legacy-301-Mappings (Alt-URLs → konkrete Produkt-/Kategorieseiten)
+const legacyRules = buildLegacyRedirectRules();
+const legacyPath = resolve(distDir, ".legacy-redirects.json");
+writeFileSync(
+  legacyPath,
+  JSON.stringify({ generatedAt: new Date().toISOString(), rules: legacyRules }),
+  "utf-8",
+);
+console.log(
+  `[exportRoutes] Wrote ${legacyRules.length} legacy redirects to ${legacyPath} ` +
+    `(product=${legacyRules.filter((r) => r.kind === "product").length} ` +
+    `category=${legacyRules.filter((r) => r.kind === "category").length})`,
+);
+
 console.log(
   `[exportRoutes] Wrote ${enriched.length} routes to ${outPath} ` +
     `(static=${ROUTE_STATS.static} standort=${ROUTE_STATS.standort} ` +
