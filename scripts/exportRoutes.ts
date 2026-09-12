@@ -5,7 +5,7 @@
 // dist/.prerender-routes.json so the pure-Node prerender script can
 // consume it without needing TypeScript or vite asset resolution.
 
-import { writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { writeFileSync, readFileSync, mkdirSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import {
   ALL_ROUTES,
@@ -20,7 +20,11 @@ import {
   resolveRouteSchemas,
   buildGlobalSchemas,
 } from "../src/data/schemas-rental";
-import { buildLegacyRedirectRules } from "../src/data/legacyRedirects";
+import {
+  buildLegacyRedirectRules,
+  resolveLegacyProduct,
+  resolveLegacyCategory,
+} from "../src/data/legacyRedirects";
 
 const distDir = resolve(process.cwd(), "dist");
 if (!existsSync(distDir)) mkdirSync(distDir, { recursive: true });
