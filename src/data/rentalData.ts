@@ -1655,7 +1655,7 @@ const manKipperMeillerD205: Product = {
     "Material Boden": "Stahl",
     // Mietkonditionen
     "Frei-Kilometer": "100 km/Tag inklusive",
-    "Mehrkilometer": "0,48 € brutto/km",
+    "Mehrkilometer": "0,40 € brutto/km",
     "Kraftstoff": "Diesel – Rückgabe vollgetankt (sonst 2,85 €/l zzgl. MwSt.)",
     "AdBlue": "Rückgabe vollgetankt (sonst 2,20 €/l brutto.)",
     "Maut": "Weiterberechnung per Einzelfahrtnachweis",
@@ -1704,7 +1704,7 @@ const pritschenkipper35t: Product = {
     "Sicherheitsfeatures": "moderne Assistenzsysteme",
     // Mietkonditionen
     "Frei-Kilometer": "100 km/Tag inklusive",
-    "Mehrkilometer": "0,27 € brutto/km",
+    "Mehrkilometer": "0,23 € brutto/km",
     "Kraftstoff": "Diesel – Rückgabe vollgetankt (sonst 2,85 €/l brutto)",
     // Versicherung & Kaution
     "Vollkasko Selbstbeteiligung": "2.500 €",

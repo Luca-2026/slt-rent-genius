@@ -37,7 +37,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     faqs: [
       {
         q: "Was kostet es, einen DJM-A9 in Krefeld zu mieten?",
-        a: "Die Miete startet ab 70,21 € brutto je Wochenende. Für Komplett-Setups mit zwei CDJ-3000X sowie für längere Mietzeiträume nennen wir dir auf Anfrage einen Preis.",
+        a: "Die Miete startet ab 59 € brutto je Wochenende. Für Komplett-Setups mit zwei CDJ-3000X sowie für längere Mietzeiträume nennen wir dir auf Anfrage einen Preis.",
       },
       {
         q: "Ist der DJM-A9 in Krefeld sofort verfügbar?",
@@ -86,7 +86,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     faqs: [
       {
         q: "Was kostet die Miete des DJM-A9 in Bonn?",
-        a: "Die Miete startet ab 70,21 € brutto je Wochenende. Für Setups mit zwei CDJ-3000X oder längere Zeiträume erstellen wir dir auf Anfrage ein Angebot.",
+        a: "Die Miete startet ab 59 € brutto je Wochenende. Für Setups mit zwei CDJ-3000X oder längere Zeiträume erstellen wir dir auf Anfrage ein Angebot.",
       },
       {
         q: "Kann ich den DJM-A9 in Bonn abholen?",
@@ -135,7 +135,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     faqs: [
       {
         q: "Was kostet der DJM-A9 in Mülheim an der Ruhr?",
-        a: "Der Mietpreis startet ab 70,21 € brutto je Wochenende. Preise für komplette Setups mit zwei CDJ-3000X nennen wir dir auf Anfrage.",
+        a: "Der Mietpreis startet ab 59 € brutto je Wochenende. Preise für komplette Setups mit zwei CDJ-3000X nennen wir dir auf Anfrage.",
       },
       {
         q: "Wie komme ich in Mülheim an der Ruhr an den DJM-A9?",
@@ -184,7 +184,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     faqs: [
       {
         q: "Was kostet es, einen CDJ-3000X in Krefeld zu mieten?",
-        a: "Die Miete startet ab 70,21 € brutto je Wochenende und Player. Für 2er-Setups mit Mixer sowie Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage einen Preis für deinen Zeitraum.",
+        a: "Die Miete startet ab 59 € brutto je Wochenende und Player. Für 2er-Setups mit Mixer sowie Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage einen Preis für deinen Zeitraum.",
       },
       {
         q: "Ist der CDJ-3000X in Krefeld sofort verfügbar?",
@@ -233,7 +233,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     faqs: [
       {
         q: "Was kostet der CDJ-3000X in Bonn pro Tag?",
-        a: "Die Miete startet ab 70,21 € brutto je Wochenende und Player. Für 2er-Setups mit Mixer sowie Wochenend- und Wochenpreise erstellen wir dir auf Anfrage ein Angebot.",
+        a: "Die Miete startet ab 59 € brutto je Wochenende und Player. Für 2er-Setups mit Mixer sowie Wochenend- und Wochenpreise erstellen wir dir auf Anfrage ein Angebot.",
       },
       {
         q: "Ist der CDJ-3000X in Bonn direkt buchbar?",
@@ -282,7 +282,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     faqs: [
       {
         q: "Was kostet der CDJ-3000X in Mülheim an der Ruhr?",
-        a: "Der Mietpreis startet ab 70,21 € brutto je Wochenende und Player. Preise für 2er-Setups, Wochenenden und ganze Wochen nennen wir dir auf Anfrage.",
+        a: "Der Mietpreis startet ab 59 € brutto je Wochenende und Player. Preise für 2er-Setups, Wochenenden und ganze Wochen nennen wir dir auf Anfrage.",
       },
       {
         q: "Ist der CDJ-3000X in Mülheim an der Ruhr verfügbar?",
@@ -351,7 +351,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "Was kostet der Currywurstschneider in Krefeld pro Tag?",
-        a: "Die Miete startet ab 11,90 € brutto pro Tag. Wochenend- und Wochenpreise sowie die Verfügbarkeit in deinem Zeitraum nennen wir dir über das Anfrageformular oder telefonisch am Standort Krefeld.",
+        a: "Die Miete startet ab 10 € brutto pro Tag. Wochenend- und Wochenpreise sowie die Verfügbarkeit in deinem Zeitraum nennen wir dir über das Anfrageformular oder telefonisch am Standort Krefeld.",
       },
     ],
   },
@@ -396,7 +396,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "Was kostet die Miete in Bonn pro Tag?",
-        a: "Der Mietpreis startet ab 11,90 € brutto pro Tag. Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage für deinen Zeitraum.",
+        a: "Der Mietpreis startet ab 10 € brutto pro Tag. Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage für deinen Zeitraum.",
       },
     ],
   },
@@ -441,7 +441,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "Was kostet die Miete pro Tag?",
-        a: "Ab 11,90 € brutto pro Tag. Für längere Mietzeiträume und Wochenendpauschalen erhältst du auf Anfrage ein individuelles Angebot.",
+        a: "Ab 10 € brutto pro Tag. Für längere Mietzeiträume und Wochenendpauschalen erhältst du auf Anfrage ein individuelles Angebot.",
       },
     ],
   },
@@ -490,7 +490,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "Was kostet die Miete der Einzelfritteuse in Krefeld?",
-        a: "Die Miete startet ab 11,90 € brutto pro Tag. Für Wochenend- und Wochenpauschalen meldest du dich kurz über das Anfrageformular oder telefonisch bei unserem Standort Krefeld.",
+        a: "Die Miete startet ab 10 € brutto pro Tag. Für Wochenend- und Wochenpauschalen meldest du dich kurz über das Anfrageformular oder telefonisch bei unserem Standort Krefeld.",
       },
     ],
   },
@@ -535,7 +535,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "Was kostet die Einzelfritteuse in Bonn pro Tag?",
-        a: "Der Mietpreis startet ab 11,90 € brutto pro Tag. Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage für deinen Zeitraum.",
+        a: "Der Mietpreis startet ab 10 € brutto pro Tag. Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage für deinen Zeitraum.",
       },
     ],
   },
@@ -580,7 +580,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "Was kostet die Miete pro Tag?",
-        a: "Ab 11,90 € brutto pro Tag. Für längere Mietzeiträume und Wochenendpauschalen erhältst du auf Anfrage ein individuelles Angebot.",
+        a: "Ab 10 € brutto pro Tag. Für längere Mietzeiträume und Wochenendpauschalen erhältst du auf Anfrage ein individuelles Angebot.",
       },
     ],
   },
@@ -671,7 +671,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "Was kostet die Doppelfritteuse in Bonn pro Tag?",
-        a: "Der Mietpreis startet ab 11,90 € brutto pro Tag. Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage für deinen Zeitraum.",
+        a: "Der Mietpreis startet ab 10 € brutto pro Tag. Wochenend- und Wochenpauschalen nennen wir dir auf Anfrage für deinen Zeitraum.",
       },
     ],
   },
@@ -720,7 +720,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "Was kostet die Miete pro Tag?",
-        a: "Die Miete startet ab 107,10 € brutto pro Tag. Für Wochenend- und Mehrtagespauschalen erhältst du auf Anfrage ein individuelles Angebot.",
+        a: "Die Miete startet ab 90 € brutto pro Tag. Für Wochenend- und Mehrtagespauschalen erhältst du auf Anfrage ein individuelles Angebot.",
       },
       {
         q: "Wie muss der Schwenkgrill zurückgegeben werden?",
@@ -769,7 +769,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "Was kostet die Miete in Bonn?",
-        a: "Ab 107,10 € brutto pro Tag. Für Wochenend- und Mehrtagespauschalen melden wir uns mit einem individuellen Angebot für deinen Zeitraum zurück.",
+        a: "Ab 90 € brutto pro Tag. Für Wochenend- und Mehrtagespauschalen melden wir uns mit einem individuellen Angebot für deinen Zeitraum zurück.",
       },
       {
         q: "Worauf muss ich beim Aufstellen achten?",
@@ -818,7 +818,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "Was kostet die Miete pro Tag?",
-        a: "Ab 107,10 € brutto pro Tag. Für längere Mietzeiträume und Wochenendpauschalen erhältst du auf Anfrage ein individuelles Angebot.",
+        a: "Ab 90 € brutto pro Tag. Für längere Mietzeiträume und Wochenendpauschalen erhältst du auf Anfrage ein individuelles Angebot.",
       },
     ],
   },
@@ -863,7 +863,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       },
       {
         q: "Was kostet die Miete pro Tag?",
-        a: "Ab 11,90 € brutto pro Tag. Für längere Mietzeiträume und Wochenendpauschalen erhältst du auf Anfrage ein individuelles Angebot.",
+        a: "Ab 10 € brutto pro Tag. Für längere Mietzeiträume und Wochenendpauschalen erhältst du auf Anfrage ein individuelles Angebot.",
       },
     ],
   },
@@ -1122,7 +1122,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
   },
   "anschlussverteilerschrank-44kva": {
     seoTitle: "Anschlussverteilerschrank 44 kVA mieten ab 39 €/Tag | SLT Rental",
-    metaDescription: "Anschlussverteilerschrank 44 kVA mit Zählerfeld mieten – ab 46,41 €/Tag brutto. Verzinktes Stahlblechgehäuse, 49 kg, stückgeprüft. Ideal für Baustromanschluss in NRW.",
+    metaDescription: "Anschlussverteilerschrank 44 kVA mit Zählerfeld mieten – ab 39 €/Tag brutto. Verzinktes Stahlblechgehäuse, 49 kg, stückgeprüft. Ideal für Baustromanschluss in NRW.",
     h1: "Anschlussverteilerschrank 44 kVA mieten in Krefeld – ab 39 €/Tag bei SLT Rental",
     h2s: ["Anschlussverteilerschrank 44 kVA – Einsatz & Funktion", "Technische Spezifikationen", "Material, Bauweise & Prüfung", "Baustromanschluss inkl. Antragsservice"],
     useCaseBau: "Zentraler Anschlussschrank mit Zählerfeld für Baustromanschlüsse über den Netzbetreiber – versorgt Baustellen, Container, Krane und Verbraucher mit bis zu 44 kVA (≈ 63 A 400 V).",
@@ -1130,7 +1130,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "",
     dailyPriceFrom: 39,
     faqs: [
-      { q: "Was kostet der Anschlussverteilerschrank 44 kVA pro Tag?", a: "Die Tagesmiete für den Anschlussverteilerschrank 44 kVA startet bei 46,41 €/Tag brutto. Wochen- und Langzeit-Tarife reduzieren den Tagessatz zusätzlich – den finalen Preis siehst du im Buchungsprozess." },
+      { q: "Was kostet der Anschlussverteilerschrank 44 kVA pro Tag?", a: "Die Tagesmiete für den Anschlussverteilerschrank 44 kVA startet bei 39 €/Tag brutto. Wochen- und Langzeit-Tarife reduzieren den Tagessatz zusätzlich – den finalen Preis siehst du im Buchungsprozess." },
       { q: "Über wie viele Zählerplätze verfügt der Anschlussverteilerschrank?", a: "Der Anschlussverteilerschrank ist mit einem Zählerfeld ausgestattet. Damit kann ein vom Netzbetreiber gesetzter Zähler eingebaut werden – Grundlage für die offizielle Baustromabrechnung." },
       { q: "Wie hoch ist die maximale Anschlussleistung?", a: "Die Anschlussleistung dieses Modells beträgt 44 kVA (entspricht etwa 63 A bei 400 V Drehstrom)." },
       { q: "Wie sind die Gehäuseeigenschaften des Verteilerschranks?", a: "Das Gehäuse besteht aus verzinktem und orange pulverbeschichtetem Stahlblech mit einem feuerverzinkten Standgestell – korrosionsbeständig und für den dauerhaften Baustelleneinsatz konzipiert. Die Maße betragen 1.270 × 710 × 360 mm bei 49 kg." },
@@ -1148,7 +1148,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Sicherer Endverteiler für größere Privatbaustellen, Umbauten und Gartenarbeiten mit Hochleistungsmaschinen.",
     dailyPriceFrom: 19,
     faqs: [
-      { q: "Was kostet der Endverteilerschrank EV32 mit 22 kVA pro Tag?", a: "Die Tagesmiete für den Endverteilerschrank EV32 (22 kVA / 32 A) startet bei 22,61 €/Tag brutto. Bei mehrtägiger oder wöchentlicher Miete reduziert sich der Tagessatz – den finalen Preis siehst du im Buchungsprozess." },
+      { q: "Was kostet der Endverteilerschrank EV32 mit 22 kVA pro Tag?", a: "Die Tagesmiete für den Endverteilerschrank EV32 (22 kVA / 32 A) startet bei 19 €/Tag brutto. Bei mehrtägiger oder wöchentlicher Miete reduziert sich der Tagessatz – den finalen Preis siehst du im Buchungsprozess." },
       { q: "Wofür wird der Endverteilerschrank EV32 mit 22 kVA eingesetzt?", a: "Der EV32 ist ein klassischer mobiler Baustromverteiler / Endverteiler. Er wird auf Baustellen als Unterverteilung hinter dem Hauptanschluss eingesetzt, dient auf Events als zentrale Stromverteilung für Bühnen, Catering und Stände und versorgt Industrie- und Handwerksbetriebe temporär mit 400 V und 230 V." },
       { q: "Welche Steckdosen stehen am EV32 zur Verfügung?", a: "Der Verteiler bietet 1× CEE 32 A und 2× CEE 16 A (jeweils 5-polig, 400 V/6h) sowie 6× Schutzkontakt-Steckdosen mit 230 V/16 A. Die Zuleitung erfolgt über einen 32 A CEE-Phasenwender." },
       { q: "Was bedeutet FI-Schutzschalter Typ B und warum ist das wichtig?", a: "Der EV32 verfügt über zwei allstromsensitive FI-Schutzschalter Typ B (40 A / 0,03 A). Diese erkennen auch glatte Gleichfehlerströme – zwingend erforderlich, wenn frequenzumrichtergesteuerte Maschinen, Ladestationen oder Wechselrichter angeschlossen werden." },
@@ -1166,7 +1166,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Temporärer Baustromkasten für größere Privatbaustellen und Sanierungen im Bonner Raum.",
     dailyPriceFrom: 19,
     faqs: [
-      { q: "Was kostet der EV32 mit 22 kVA in Bonn pro Tag?", a: "Die Tagesmiete für den Endverteilerschrank EV32 (22 kVA / 32 A) startet bei 22,61 €/Tag brutto – zzgl. optionaler Lieferung in den Großraum Bonn." },
+      { q: "Was kostet der EV32 mit 22 kVA in Bonn pro Tag?", a: "Die Tagesmiete für den Endverteilerschrank EV32 (22 kVA / 32 A) startet bei 19 €/Tag brutto – zzgl. optionaler Lieferung in den Großraum Bonn." },
       { q: "Ist der EV32 Endverteilerschrank in Bonn direkt verfügbar?", a: "Ja – wir halten den EV32 mit 22 kVA am Standort Bonn vor. Bitte sende uns Anfrage mit Mietzeitraum und Lieferort, damit wir die Verfügbarkeit bestätigen können." },
       { q: "Liefert SLT Rental den Baustromverteiler nach Bonn und Umgebung?", a: "Ja, wir liefern in den gesamten Großraum Bonn inklusive Bornheim, Meckenheim, Sankt Augustin, Siegburg, Troisdorf und Königswinter. Die Lieferkosten kalkulieren wir individuell anhand der Entfernung." },
       { q: "Welche Absicherung bringt der EV32 mit?", a: "Der Verteiler ist mit 2× allstromsensitiven FI-Schutzschaltern Typ B (40 A / 0,03 A) ausgestattet und damit auch für moderne Verbraucher mit Frequenzumrichtern (z. B. E-Ladegeräte, Wechselrichter) geeignet." },
@@ -1595,7 +1595,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Für Terrassen-Aushub, Pflaster- und Wegebau, Teichbau, Wurzelentfernung nach Baumfällungen und kleinere Erdarbeiten im Privatgarten – bewusst schmal gehalten für Zugang zum Hinterhof ohne Zaunabbau.",
     dailyPriceFrom: 65,
     faqs: [
-      { q: "Was kostet der 1t Minibagger Bobcat E10Z in Krefeld pro Tag?", a: "Der Tagespreis startet bei 77,35 € brutto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Dazu kommt der Dieselverbrauch (Rückgabe mit vollem Tank, aktuell 2,85 € brutto/l)." },
+      { q: "Was kostet der 1t Minibagger Bobcat E10Z in Krefeld pro Tag?", a: "Der Tagespreis startet bei 65 € brutto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Dazu kommt der Dieselverbrauch (Rückgabe mit vollem Tank, aktuell 2,85 € brutto/l)." },
       { q: "Passt der Bagger durch ein Standard-Gartentor?", a: "Ja. Die Gesamtbreite von 1.100 mm lässt sich auf 710 mm einfahren – schmal genug für die meisten Gartentore und Hauseingangstüren im Krefelder Bestand. Vor Ort ausfahrbar auf volle Standbreite für mehr Stabilität." },
       { q: "Welche Grabtiefe erreicht der Bobcat E10Z?", a: "Die maximale Grabtiefe beträgt 1.820 mm – ausreichend für Streifenfundamente, Frostschürzen und die meisten Rohr- und Kabelgräben im Ein- und Zweifamilienhausbau." },
       { q: "Welchen Kraftstoff braucht der Minibagger?", a: "Diesel, Tankvolumen 16 Liter. Der Bagger wird vollgetankt übergeben und mit vollem Tank zurückerwartet – Diesel aktuell 2,85 € brutto/l." },
@@ -1655,7 +1655,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       { q: "Kann ich einen Hydraulikhammer betreiben?", a: "Ja. Der erste Zusatzkreis liefert bis zu 75 l/min bei 20 MPa, der zweite bis zu 37 l/min. Passende Anbaugeräte kannst du bei uns mitmieten." },
       { q: "Wie breit ist der 6t Minibagger?", a: "Die Unterwagenbreite beträgt 1.960 mm, die Transportlänge 5.650 mm und die Transporthöhe über Ausleger 2.570 mm." },
       { q: "Welchen Transport benötige ich?", a: "Mit 5.700 kg typischem Betriebsgewicht (max. 6.350 kg) brauchst du einen entsprechend zugelassenen Tieflader. Passende Transportlösungen bieten wir an allen Standorten an." },
-      { q: "Was kostet die Miete des 6t Minibaggers?", a: "Die Miete startet ab 160,65 € brutto pro Tag. Der finale Preis hängt von Standort, Mietdauer und Anbaugeräten ab." },
+      { q: "Was kostet die Miete des 6t Minibaggers?", a: "Die Miete startet ab 135 € brutto pro Tag. Der finale Preis hängt von Standort, Mietdauer und Anbaugeräten ab." },
     ],
   },
 
@@ -2304,7 +2304,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Für großflächige Hofumgestaltung, Verteilen von Mutterboden vor Rasenneuanlage, Nivellieren von Grundstücken sowie den saisonalen Winterdienst am Privatgrundstück in Bonn und im Rhein-Sieg-Kreis.",
     dailyPriceFrom: 75,
     faqs: [
-      { q: "Was kostet der Kramer 5050 in Bonn pro Tag?", a: "Der Tagespreis startet bei 89,25 € brutto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Dazu kommt der Dieselverbrauch (Rückgabe mit vollem Tank, aktuell 2,85 € brutto/l)." },
+      { q: "Was kostet der Kramer 5050 in Bonn pro Tag?", a: "Der Tagespreis startet bei 75 € brutto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Dazu kommt der Dieselverbrauch (Rückgabe mit vollem Tank, aktuell 2,85 € brutto/l)." },
       { q: "Wo hole ich den Radlader in Bonn ab?", a: "An unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem) – Mo–Fr 07:00–18:00 Uhr und Sa 08:00–17:30 Uhr, samstags ohne Voranmeldung. Auf Anfrage liefern wir per Tieflader ins Bonner Stadtgebiet, in den Rhein-Sieg-Kreis und ins Ahrtal." },
       { q: "Ist eine Schaufel im Preis enthalten?", a: "Ja, eine 0,45 m³ Standardschaufel ist im Grundpreis enthalten. Für Winterdienst-Einsätze in Bonn empfehlen wir unser Komplett-Set „Winterdienst-Set Kramer 5045“ mit hydraulischem Adler-Schneeschild und Bluetooth-Salzstreuer (1.499 € brutto/Monat, ab 3 Monaten)." },
       { q: "Wie transportiere ich den 3t Radlader zur Baustelle im Rhein-Sieg-Kreis?", a: "Mit ca. 3.000 kg Betriebsgewicht ist ein Anhänger ab 3,5 t Nutzlast oder ein Tieflader nötig. Von unserem Standort Bonn erreichen wir Wachtberg, Königswinter, Bad Honnef und das Ahrtal in unter 45 Minuten über A555, A565 und B9 – wir liefern auf Anfrage." },
@@ -4268,7 +4268,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Ideal für Terrassen- und Wegebau, Verteilen von Mutterboden und Rindenmulch im Hausgarten, Transport von Bauschutt beim Umbau sowie sperrigen Gütern wie Holz oder Steinplatten dank serienmäßiger Rungen. Als Alternative zur klassischen Motorschubkarre – deutlich mehr Last, aber gleiche Zugangsbreite.",
     dailyPriceFrom: 35,
     faqs: [
-      { q: "Was kostet der Kettendumper RMD-800 in Krefeld pro Tag?", a: "Der Tagespreis startet bei 41,65 € brutto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Benzin zusätzlich (Rückgabe mit vollem Tank, aktuell 2,95 € brutto/l Super)." },
+      { q: "Was kostet der Kettendumper RMD-800 in Krefeld pro Tag?", a: "Der Tagespreis startet bei 35 € brutto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Benzin zusätzlich (Rückgabe mit vollem Tank, aktuell 2,95 € brutto/l Super)." },
       { q: "Passt der RMD-800 durch ein Standard-Gartentor?", a: "Ja. Gesamtbreite 80 cm mit Bordwänden, ohne seitliche Bordwände nur 75 cm – passt durch die meisten Krefelder Gartentore und Hauseingänge (Standard ab 80 cm)." },
       { q: "Wie viel Material kann ich pro Fahrt transportieren?", a: "Bis 800 kg Nutzlast und 400 l Muldenvolumen (gehäuft) bzw. 305 l gestrichen. Damit ersetzt eine Fahrt rund 6–8 klassische Baustellen-Radschubkarren." },
       { q: "Kann ich auch Holz, Pflastersteine oder Steinplatten transportieren?", a: "Ja, der RMD-800 verfügt serienmäßig über Rungen, die sperrige Güter wie Kanthölzer, Pflastersteine oder Steinplatten sicher fixieren." },
@@ -4293,7 +4293,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     faqs: [
       { q: "Wo hole ich den Kettendumper RMD-800 in Bonn ab?", a: "An unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem) – Mo–Fr 07:00–18:00 Uhr und Sa 08:00–17:30 Uhr, samstags ohne Voranmeldung. Auf Anfrage liefern wir ins Rhein-Sieg-Kreis und ins Ahrtal." },
       { q: "Passt der RMD-800 durch die schmale Zufahrt eines Bonner Altbaus?", a: "Ja. Mit 80 cm Gesamtbreite (75 cm ohne Bordwände) passt der Raupendumper durch die meisten Altbau-Hausflure und Gartentore in Bad Godesberg, Poppelsdorf und Beuel – dort, wo ein klassischer Radschubkarren-Zug an sein Limit stößt." },
-      { q: "Was kostet der Kettendumper in Bonn pro Tag?", a: "Der Tagespreis startet bei 41,65 € brutto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Benzin zusätzlich (Rückgabe mit vollem Tank, aktuell 2,95 € brutto/l Super)." },
+      { q: "Was kostet der Kettendumper in Bonn pro Tag?", a: "Der Tagespreis startet bei 35 € brutto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Benzin zusätzlich (Rückgabe mit vollem Tank, aktuell 2,95 € brutto/l Super)." },
       { q: "Ist der Dumper auch für Hanggärten am Venusberg oder Siebengebirge geeignet?", a: "Ja. Das Raupenlaufwerk bietet deutlich mehr Traktion als ein Radschubkarren – der RMD-800 nimmt moderate Steigungen sicher, auch beladen mit bis zu 800 kg. Bei sehr steilen Hanglagen und Nässe empfehlen wir dennoch stets vorsichtiges Beladen und ggf. Reduzierung der Ladung." },
       { q: "Kann ich mit dem RMD-800 auch Pflastersteine oder Holz transportieren?", a: "Ja, dank serienmäßiger Rungen können auch sperrige Güter wie Pflastersteine, Kanthölzer oder Steinplatten sicher fixiert und auf beengten Bonner Baustellen transportiert werden." },
       { q: "Wie transportiere ich den 450 kg schweren Dumper zur Baustelle?", a: "Mit 450 kg Maschinengewicht passt der RMD-800 auf einen einfachen Pkw-Anhänger ab 750 kg zulässiger Gesamtmasse – deutlich einfacher zu transportieren als ein 2t-Minibagger. Auf Anfrage liefern wir per Fahrer direkt zur Einsatzstelle in Bonn oder ins Rhein-Sieg-Kreis." },
@@ -4580,7 +4580,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
     useCasePrivat: "Für großflächige Materialbewegung bei Hofumgestaltung, Verteilen von Mutterboden und Kies, Räumen und Nivellieren größerer Grundstücke sowie den saisonalen Winterdienst am Ein- oder Mehrfamilienhaus.",
     dailyPriceFrom: 75,
     faqs: [
-      { q: "Was kostet der Kramer 5050 in Krefeld pro Tag?", a: "Der Tagespreis startet bei 89,25 € brutto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Diesel zusätzlich (Rückgabe mit vollem Tank, aktuell 2,85 € brutto/l)." },
+      { q: "Was kostet der Kramer 5050 in Krefeld pro Tag?", a: "Der Tagespreis startet bei 75 € brutto für 8 Betriebsstunden. Mehrstunden werden gesondert berechnet. Diesel zusätzlich (Rückgabe mit vollem Tank, aktuell 2,85 € brutto/l)." },
       { q: "Wie unterscheidet sich der Kramer 5050 vom Kramer 5045?", a: "Beide sind 3t-Radlader mit Standardschaufel und Dieselantrieb. Der 5050 ist bei uns i. d. R. auf Anfrage disponierbar und die etwas modernere Baureihe; der 5045 ist die feste Miet-Maschine im täglichen Betrieb – gerade für Anlieferung im Rahmen des Winterdienst-Sets. Wenn dir das konkrete Modell egal ist, wählen wir das aktuell verfügbare für Krefeld." },
       { q: "Ist eine Schaufel im Mietpreis enthalten?", a: "Ja, eine 0,45 m³ Standardschaufel ist im Grundpreis enthalten. Palettengabel, Adler-Schneeschild oder Bluetooth-Salzstreuer sind separat oder als komplettes Winterdienst-Set (1.499 € brutto/Monat) buchbar." },
       { q: "Für welche Materialien ist der 3t Radlader geeignet?", a: "Kies, Sand, Mutterboden, Rindenmulch, Split, Recyclingschotter, Bauschutt und leichtes Grüngut. Für schweren Fels oder große Betonbrocken empfehlen wir eine größere Klasse (auf Anfrage)." },
@@ -5702,7 +5702,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Hochzeit, Abiparty oder runder Geburtstag in Krefeld: Musik kommt vom USB-Stick, von SD-Karte oder direkt von der CD.",
     dailyPriceFrom: 29,
     faqs: [
-      { q: "Was kostet der CDJ 2000 NXS in Krefeld?", a: "Die Miete startet ab 34,51 € brutto je Wochenende und Player. Für 2er-Setups mit Mixer nennen wir dir auf Anfrage einen Gesamtpreis." },
+      { q: "Was kostet der CDJ 2000 NXS in Krefeld?", a: "Die Miete startet ab 29 € brutto je Wochenende und Player. Für 2er-Setups mit Mixer nennen wir dir auf Anfrage einen Gesamtpreis." },
       { q: "Welche Medien spielt der CDJ 2000 NXS ab?", a: "Smartphone über USB oder Wi-Fi, USB-Speichermedien, SD-Karten, Audio-CDs sowie CD-R/RW und DVD. Unterstützte Dateiformate sind MP3, AAC, WAV und AIFF." },
       { q: "Welche Anschlüsse hat der Player?", a: "1× Stereo-Cinch-Ausgang, 1× koaxialer Digitalausgang, 2× USB, 1× LAN sowie ein Control-Anschluss (3,5-mm-Minibuchse)." },
       { q: "Wie gut ist die Audioqualität?", a: "Der Frequenzgang reicht von 4 Hz bis 20 kHz, der Rauschabstand liegt bei 115 dB oder größer, der Klirrfaktor bei 0,0018 % oder kleiner." },
@@ -5728,7 +5728,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Hochzeit, Abiparty oder runder Geburtstag in Bonn: Musik kommt vom USB-Stick, von SD-Karte oder direkt von der CD.",
     dailyPriceFrom: 29,
     faqs: [
-      { q: "Was kostet der CDJ 2000 NXS in Bonn?", a: "Die Miete startet ab 34,51 € brutto je Wochenende und Player. Für 2er-Setups mit Mixer nennen wir dir auf Anfrage einen Gesamtpreis." },
+      { q: "Was kostet der CDJ 2000 NXS in Bonn?", a: "Die Miete startet ab 29 € brutto je Wochenende und Player. Für 2er-Setups mit Mixer nennen wir dir auf Anfrage einen Gesamtpreis." },
       { q: "Welche Medien spielt der CDJ 2000 NXS ab?", a: "Smartphone über USB oder Wi-Fi, USB-Speichermedien, SD-Karten, Audio-CDs sowie CD-R/RW und DVD. Unterstützte Dateiformate sind MP3, AAC, WAV und AIFF." },
       { q: "Welche Anschlüsse hat der Player?", a: "1× Stereo-Cinch-Ausgang, 1× koaxialer Digitalausgang, 2× USB, 1× LAN sowie ein Control-Anschluss (3,5-mm-Minibuchse)." },
       { q: "Wie gut ist die Audioqualität?", a: "Der Frequenzgang reicht von 4 Hz bis 20 kHz, der Rauschabstand liegt bei 115 dB oder größer, der Klirrfaktor bei 0,0018 % oder kleiner." },
@@ -5754,7 +5754,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Hochzeit, Abiparty oder runder Geburtstag in Mülheim an der Ruhr: Musik kommt vom USB-Stick, von SD-Karte oder direkt von der CD.",
     dailyPriceFrom: 29,
     faqs: [
-      { q: "Was kostet der CDJ 2000 NXS in Mülheim an der Ruhr?", a: "Die Miete startet ab 34,51 € brutto je Wochenende und Player. Für 2er-Setups mit Mixer nennen wir dir auf Anfrage einen Gesamtpreis." },
+      { q: "Was kostet der CDJ 2000 NXS in Mülheim an der Ruhr?", a: "Die Miete startet ab 29 € brutto je Wochenende und Player. Für 2er-Setups mit Mixer nennen wir dir auf Anfrage einen Gesamtpreis." },
       { q: "Welche Medien spielt der CDJ 2000 NXS ab?", a: "Smartphone über USB oder Wi-Fi, USB-Speichermedien, SD-Karten, Audio-CDs sowie CD-R/RW und DVD. Unterstützte Dateiformate sind MP3, AAC, WAV und AIFF." },
       { q: "Welche Anschlüsse hat der Player?", a: "1× Stereo-Cinch-Ausgang, 1× koaxialer Digitalausgang, 2× USB, 1× LAN sowie ein Control-Anschluss (3,5-mm-Minibuchse)." },
       { q: "Wie gut ist die Audioqualität?", a: "Der Frequenzgang reicht von 4 Hz bis 20 kHz, der Rauschabstand liegt bei 115 dB oder größer, der Klirrfaktor bei 0,0018 % oder kleiner." },
@@ -5780,7 +5780,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Hochzeit oder Geburtstag in Krefeld: Auch ohne eigenes Equipment legt dein DJ mit vertrauter Technik auf.",
     dailyPriceFrom: 69,
     faqs: [
-      { q: "Was kostet der DJM 900 NXS2 in Krefeld?", a: "Die Miete startet ab 82,11 € brutto je Wochenende. Für Komplett-Setups mit CDJ-Playern erstellen wir dir auf Anfrage ein Angebot." },
+      { q: "Was kostet der DJM 900 NXS2 in Krefeld?", a: "Die Miete startet ab 69 € brutto je Wochenende. Für Komplett-Setups mit CDJ-Playern erstellen wir dir auf Anfrage ein Angebot." },
       { q: "Über wie viele Kanäle verfügt der DJM 900 NXS2?", a: "Der Mixer hat 4 Audiokanäle und 2 Mikrofonkanäle, dazu unabhängige Send/Return-Wege über 6,3-mm-Klinke." },
       { q: "Welche digitalen Anschlüsse gibt es?", a: "2× USB-B für zwei Laptops sowie 1× Link-Anschluss für den Verbund mit CDJ-Playern." },
       { q: "Wie arbeitet die Signalverarbeitung?", a: "Der 64-Bit-Mixing-Prozessor arbeitet mit 32-Bit-D/A- und 24-Bit-A/D-Wandlern, Frequenzgang 20 Hz–40 kHz, Klirrfaktor 0,005 % oder niedriger." },
@@ -5807,7 +5807,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Hochzeit oder Geburtstag in Bonn: Auch ohne eigenes Equipment legt dein DJ mit vertrauter Technik auf.",
     dailyPriceFrom: 69,
     faqs: [
-      { q: "Was kostet der DJM 900 NXS2 in Bonn?", a: "Die Miete startet ab 82,11 € brutto je Wochenende. Für Komplett-Setups mit CDJ-Playern erstellen wir dir auf Anfrage ein Angebot." },
+      { q: "Was kostet der DJM 900 NXS2 in Bonn?", a: "Die Miete startet ab 69 € brutto je Wochenende. Für Komplett-Setups mit CDJ-Playern erstellen wir dir auf Anfrage ein Angebot." },
       { q: "Über wie viele Kanäle verfügt der DJM 900 NXS2?", a: "Der Mixer hat 4 Audiokanäle und 2 Mikrofonkanäle, dazu unabhängige Send/Return-Wege über 6,3-mm-Klinke." },
       { q: "Welche digitalen Anschlüsse gibt es?", a: "2× USB-B für zwei Laptops sowie 1× Link-Anschluss für den Verbund mit CDJ-Playern." },
       { q: "Wie arbeitet die Signalverarbeitung?", a: "Der 64-Bit-Mixing-Prozessor arbeitet mit 32-Bit-D/A- und 24-Bit-A/D-Wandlern, Frequenzgang 20 Hz–40 kHz, Klirrfaktor 0,005 % oder niedriger." },
@@ -5834,7 +5834,7 @@ export const productSEOData: Record<string, ProductSEOData> = {
       "Hochzeit oder Geburtstag in Mülheim an der Ruhr: Auch ohne eigenes Equipment legt dein DJ mit vertrauter Technik auf.",
     dailyPriceFrom: 69,
     faqs: [
-      { q: "Was kostet der DJM 900 NXS2 in Mülheim an der Ruhr?", a: "Die Miete startet ab 82,11 € brutto je Wochenende. Für Komplett-Setups mit CDJ-Playern erstellen wir dir auf Anfrage ein Angebot." },
+      { q: "Was kostet der DJM 900 NXS2 in Mülheim an der Ruhr?", a: "Die Miete startet ab 69 € brutto je Wochenende. Für Komplett-Setups mit CDJ-Playern erstellen wir dir auf Anfrage ein Angebot." },
       { q: "Über wie viele Kanäle verfügt der DJM 900 NXS2?", a: "Der Mixer hat 4 Audiokanäle und 2 Mikrofonkanäle, dazu unabhängige Send/Return-Wege über 6,3-mm-Klinke." },
       { q: "Welche digitalen Anschlüsse gibt es?", a: "2× USB-B für zwei Laptops sowie 1× Link-Anschluss für den Verbund mit CDJ-Playern." },
       { q: "Wie arbeitet die Signalverarbeitung?", a: "Der 64-Bit-Mixing-Prozessor arbeitet mit 32-Bit-D/A- und 24-Bit-A/D-Wandlern, Frequenzgang 20 Hz–40 kHz, Klirrfaktor 0,005 % oder niedriger." },

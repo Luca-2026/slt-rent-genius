@@ -226,8 +226,8 @@ Nehmen wir einen typischen **Minibagger 1,7 t** als Beispiel:
 
 | Variante | Zeitraum | Kosten |
 |---|---|---|
-| 3 × Tagesmiete (Fr, Sa, So) | Freitag 8 Uhr – Montag 8 Uhr | 3 × 195 € = **696,15 € brutto** |
-| Wochenendtarif | Freitag 16 Uhr – Montag 8 Uhr | 1 × 195 € = **232,05 € brutto** |
+| 3 × Tagesmiete (Fr, Sa, So) | Freitag 8 Uhr – Montag 8 Uhr | 3 × 195 € = **585 € brutto** |
+| Wochenendtarif | Freitag 16 Uhr – Montag 8 Uhr | 1 × 195 € = **195 € brutto** |
 | **Ersparnis** | | **390 € (66 %)** |
 
 Selbst wenn Sie den Bagger erst Samstagmorgen abholen und am Sonntag zurückbringen, zahlen Sie bei der Einzelbuchung 2 Tagesmieten (390 €). Der Wochenendtarif ist also in jedem Fall günstiger, wenn Sie am Wochenende arbeiten.
