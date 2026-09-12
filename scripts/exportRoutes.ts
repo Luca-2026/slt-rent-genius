@@ -397,8 +397,10 @@ try {
     for (const m of mapping.mappings || []) {
       const from = m.from.replace(/\/+$/, "");
       if (legacyFrom.has(from)) continue;
-      const isHubTarget = /^\/mieten(\/[a-z-]+)?\/?$/.test(m.to);
+      // Hub- oder Kategorie-Ziel: darf durch eine konkretere Produktseite ersetzt werden.
+      const isHubTarget = /^\/mieten(\/[a-z-]+){0,2}\/?$/.test(m.to);
       if (!isHubTarget && m.method !== "fallback") continue;
+      const targetDepth = m.to.replace(/^\/|\/$/g, "").split("/").length;
 
       const productMatch = from.match(/^\/produkte(?:-(krefeld|bonn|muelheim|duisburg))?\/(.+)$/);
       const categoryMatch = from.match(
@@ -415,6 +417,9 @@ try {
       }
       if (!target) continue;
       if (target.kind !== "product" && target.kind !== "category") continue;
+      // Nur übernehmen, wenn das neue Ziel spezifischer ist als das bisherige.
+      const newDepth = target.path.replace(/^\/|\/$/g, "").split("/").length;
+      if (newDepth <= targetDepth) continue;
       legacyRules.push({ from, to: `${target.path.replace(/\/$/, "")}/`, kind: target.kind });
       legacyFrom.add(from);
       upgraded += 1;
