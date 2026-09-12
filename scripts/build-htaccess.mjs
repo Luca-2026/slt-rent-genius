@@ -123,6 +123,33 @@ for (const [k, v] of Object.entries(mapping.byConfidence)) {
 }
 lines.push("");
 
+// === 3a. Punktgenaue Legacy-Redirects aus den Produktdaten ===
+// Quelle: src/data/legacyRedirects.ts → dist/.legacy-redirects.json
+const LEGACY_PATH = resolve(DIST_DIR, ".legacy-redirects.json");
+const legacyRules = existsSync(LEGACY_PATH)
+  ? JSON.parse(readFileSync(LEGACY_PATH, "utf-8")).rules || []
+  : [];
+if (!legacyRules.length) {
+  console.warn(
+    "[build-htaccess] WARNUNG: dist/.legacy-redirects.json fehlt – Alt-URLs fallen auf Standort-Hubs zurück.",
+  );
+}
+const legacyFroms = new Set(
+  legacyRules.map((r) => r.from.replace(/\/+$/, "").toLowerCase()),
+);
+if (legacyRules.length) {
+  lines.push(
+    `# --- Alt-URLs → konkrete Ziel-Seiten (${legacyRules.length}, aus Produktdaten generiert) ---`,
+    `# product=${legacyRules.filter((r) => r.kind === "product").length} ` +
+      `category=${legacyRules.filter((r) => r.kind === "category").length}`,
+  );
+  for (const r of legacyRules) {
+    const fromPath = r.from.replace(/^\//, "").replace(/\/+$/, "");
+    lines.push(`RewriteRule ^${escapeRe(fromPath)}/?$ ${r.to} [L,R=301]`);
+  }
+  lines.push("");
+}
+
 // Konkrete Mappings nach Confidence-Buckets gruppieren
 const buckets = [
   { label: "Direct/High-Confidence (>= 0.7)", filter: (m) => m.confidence >= 0.7 },
@@ -131,7 +158,11 @@ const buckets = [
   { label: "Sehr niedrig (< 0.3) — Sicherheitsnetz", filter: (m) => m.confidence > 0 && m.confidence < 0.3 },
 ];
 
+// Alles, was schon punktgenau abgedeckt ist, nicht doppelt (und ggf. schlechter) mappen.
+const isCovered = (m) => legacyFroms.has(m.from.replace(/\/+$/, "").toLowerCase());
+
 const seen = new Set();
+
 for (const b of buckets) {
   const items = concrete.filter(b.filter);
   if (!items.length) continue;
