@@ -511,7 +511,7 @@ export const localCategoryContent: LocalContentMap = {
         },
         {
           q: "Was kostet die Miete inkl. Kilometer und Diesel?",
-          a: "Bei beiden Kippern sind 100 km/Tag im Mietpreis enthalten. Mehrkilometer kosten beim 7,5-Tonner 0,40 €/km netto und beim 3,5-Tonner 0,23 €/km netto. Die Rückgabe erfolgt vollgetankt mit Diesel (sonst 2,85 €/l); beim 7,5-Tonner zusätzlich AdBlue vollgetankt (sonst 1,85 €/l). Kaution 1.000 €, Vollkasko-Selbstbeteiligung 2.500 €.",
+          a: "Bei beiden Kippern sind 100 km/Tag im Mietpreis enthalten. Mehrkilometer kosten beim 7,5-Tonner 0,48 €/km brutto und beim 3,5-Tonner 0,27 €/km brutto. Die Rückgabe erfolgt vollgetankt mit Diesel (sonst 2,85 €/l); beim 7,5-Tonner zusätzlich AdBlue vollgetankt (sonst 1,85 €/l). Kaution 1.000 €, Vollkasko-Selbstbeteiligung 2.500 €.",
         },
       ],
     }
@@ -1177,7 +1177,7 @@ export const localCategoryContent: LocalContentMap = {
         },
         {
           q: "Was kostet die Miete inkl. Kilometer und Diesel?",
-          a: "Bei beiden Kippern sind 100 km/Tag im Mietpreis enthalten. Mehrkilometer kosten beim 7,5-Tonner 0,40 €/km netto und beim 3,5-Tonner 0,23 €/km netto. Die Rückgabe erfolgt vollgetankt mit Diesel (sonst 2,85 €/l); beim 7,5-Tonner zusätzlich AdBlue vollgetankt (sonst 1,85 €/l). Kaution 1.000 €, Vollkasko-Selbstbeteiligung 2.500 €.",
+          a: "Bei beiden Kippern sind 100 km/Tag im Mietpreis enthalten. Mehrkilometer kosten beim 7,5-Tonner 0,48 €/km brutto und beim 3,5-Tonner 0,27 €/km brutto. Die Rückgabe erfolgt vollgetankt mit Diesel (sonst 2,85 €/l); beim 7,5-Tonner zusätzlich AdBlue vollgetankt (sonst 1,85 €/l). Kaution 1.000 €, Vollkasko-Selbstbeteiligung 2.500 €.",
         },
       ],
     },
