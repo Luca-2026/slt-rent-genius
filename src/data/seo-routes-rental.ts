@@ -703,6 +703,7 @@ function joinCities(cities: string[] | undefined, max = 5): string {
 function buildLocationIntro(
   loc: LocationInfo,
   subject: string, // z.B. „Minibagger 2,5t mieten" oder „Aggregate"
+  opts: { compact?: boolean } = {},
 ): string[] {
   const radius = joinCities(loc.deliveryRadius, 6);
   const out: string[] = [];
@@ -736,8 +737,17 @@ function buildLocationIntro(
       );
     }
   }
+
+  // Produktseiten bekommen nur EINEN Standortabsatz (Doorway-Vermeidung):
+  // Adresse/Übergabe + Liefergebiet in einem Satzblock, ohne Wiederholung.
+  if (opts.compact) {
+    const first = out[0];
+    const delivery = radius ? ` Liefergebiet ab ${loc.name}: ${radius}.` : "";
+    return [`${first}${delivery}`];
+  }
   return out;
 }
+
 
 for (const loc of locations as LocationData[]) {
   const locName = LOCATION_DISPLAY[loc.id] || loc.name;
