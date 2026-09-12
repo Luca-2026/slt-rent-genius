@@ -521,6 +521,17 @@ const MIETEN_LOCATION_ROUTES: SeoRoute[] = (locations as LocationData[]).map((lo
       { name: "Start", path: "/" },
       { name: locName, path: `/mieten/${loc.id}` },
     ],
+    linkSections: [
+      {
+        heading: `Kategorien in ${locName}`,
+        links: Object.entries(loc.products || {})
+          .filter(([, products]) => Array.isArray(products) && products.length > 0)
+          .map(([catId]) => ({
+            name: `${categoryTitleDe(catId)} mieten in ${locName}`,
+            path: `/mieten/${loc.id}/${catId}`,
+          })),
+      },
+    ],
     changefreq: "weekly",
     priority: 0.85,
   };
