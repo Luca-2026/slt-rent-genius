@@ -831,13 +831,12 @@ for (const loc of locations as LocationData[]) {
       if (seo?.useCaseBau) intro.push(`Einsatz Bau: ${seo.useCaseBau}`);
 
 
-      // Plan A: Self-Canonical pro Standort. Jede Standort-Variante ist
-      // durch eindeutige H1, Title und lokal-spezifische Intro-Absätze
-      // (siehe buildLocationIntro) ausreichend differenziert. Damit
-      // entfällt das frühere Krefeld-First-Mapping; Bonn/Mülheim werden
-      // jetzt eigenständig indexiert für lokale Suchanfragen.
+      // Plan A: Self-Canonical pro Standort. Genau EIN Standortabsatz je
+      // Produktseite (kompakt: Adresse/Übergabe + Liefergebiet). Mehrere
+      // Standortblöcke plus Kategorie-Boilerplate erzeugten sonst über
+      // 350 Produkte × 3 Standorte ein Doorway-Muster.
       if (locInfo) {
-        intro.push(...buildLocationIntro(locInfo, `${p.name} mieten`));
+        intro.push(...buildLocationIntro(locInfo, `${p.name} mieten`, { compact: true }));
       }
 
       // Sprint 1 – Verfügbarkeits-Automatik in SSR-Hero
@@ -846,12 +845,18 @@ for (const loc of locations as LocationData[]) {
       const availability = getProductAvailability(p, loc.id, { categoryId: catId });
       intro.push(`${availability.headline}. ${availability.body}`);
 
-      // Standort × Kategorie spezifischer Content (echt lokal,
-      // nur Aussagen die in Krefeld so nicht stimmen würden).
-      const localContent = getLocalCategoryContent(loc.id, catId);
-      if (localContent) {
-        intro.push(`Lieferung ab ${locName}: ${localContent.hookline} ${localContent.standortFakten}`);
+      // Produktspezifisch statt Boilerplate: echte Nachbargeräte derselben
+      // Kategorie am selben Standort (Alternativen / nächste Größe).
+      const siblings = products
+        .filter((s) => s.id !== p.id)
+        .slice(0, 4)
+        .map((s) => s.name);
+      if (siblings.length) {
+        intro.push(
+          `Alternativen in der Kategorie ${catTitle} am Standort ${locName}: ${siblings.join(", ")}. Wir beraten dich, welche Größe zu deinem Einsatz passt.`,
+        );
       }
+
 
       PRODUCT_ROUTES.push({
         path: `/mieten/${loc.id}/${catId}/${p.id}`,
