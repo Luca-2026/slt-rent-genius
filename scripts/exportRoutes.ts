@@ -5,7 +5,7 @@
 // dist/.prerender-routes.json so the pure-Node prerender script can
 // consume it without needing TypeScript or vite asset resolution.
 
-import { writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { writeFileSync, readFileSync, mkdirSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import {
   ALL_ROUTES,
@@ -20,6 +20,11 @@ import {
   resolveRouteSchemas,
   buildGlobalSchemas,
 } from "../src/data/schemas-rental";
+import {
+  buildLegacyRedirectRules,
+  resolveLegacyProduct,
+  resolveLegacyCategory,
+} from "../src/data/legacyRedirects";
 
 const distDir = resolve(process.cwd(), "dist");
 if (!existsSync(distDir)) mkdirSync(distDir, { recursive: true });
@@ -375,6 +380,67 @@ const payload = {
 
 const outPath = resolve(distDir, ".prerender-routes.json");
 writeFileSync(outPath, JSON.stringify(payload), "utf-8");
+
+// Legacy-301-Mappings (Alt-URLs → konkrete Produkt-/Kategorieseiten)
+const legacyRules = buildLegacyRedirectRules();
+const legacyFrom = new Set(legacyRules.map((r) => r.from));
+
+// Zusätzlich: alle Alt-URLs aus der GSC-404-Liste, die bisher nur pauschal auf
+// einen Standort-Hub zeigen, neu auflösen (Produkt > Kategorie > Hub).
+let upgraded = 0;
+try {
+  const mappingPath = resolve(process.cwd(), "scripts/.cache/404-mapping.json");
+  if (existsSync(mappingPath)) {
+    const mapping = JSON.parse(readFileSync(mappingPath, "utf-8")) as {
+      mappings: { from: string; to: string; method?: string }[];
+    };
+    for (const m of mapping.mappings || []) {
+      const from = m.from.replace(/\/+$/, "");
+      if (legacyFrom.has(from)) continue;
+      // Hub- oder Kategorie-Ziel: darf durch eine konkretere Produktseite ersetzt werden.
+      const isHubTarget = /^\/mieten(\/[a-z-]+){0,2}\/?$/.test(m.to);
+      if (!isHubTarget && m.method !== "fallback") continue;
+      const targetDepth = m.to.replace(/^\/|\/$/g, "").split("/").length;
+
+      const productMatch = from.match(/^\/produkte(?:-(krefeld|bonn|muelheim|duisburg))?\/(.+)$/);
+      const categoryMatch = from.match(
+        /^\/(?:kategorien?|kategroien)(?:-(krefeld|bonn|muelheim|duisburg))?\/(.+)$/,
+      );
+      const locAlias: Record<string, string> = { duisburg: "muelheim" };
+      let target: { path: string; kind: "product" | "category" | "location" | "root" } | undefined;
+      if (productMatch) {
+        const loc = productMatch[1] ? locAlias[productMatch[1]] || productMatch[1] : undefined;
+        target = resolveLegacyProduct(productMatch[2], loc);
+      } else if (categoryMatch) {
+        const loc = categoryMatch[1] ? locAlias[categoryMatch[1]] || categoryMatch[1] : "krefeld";
+        target = resolveLegacyCategory(categoryMatch[2], loc);
+      }
+      if (!target) continue;
+      if (target.kind !== "product" && target.kind !== "category") continue;
+      // Nur übernehmen, wenn das neue Ziel spezifischer ist als das bisherige.
+      const newDepth = target.path.replace(/^\/|\/$/g, "").split("/").length;
+      if (newDepth <= targetDepth) continue;
+      legacyRules.push({ from, to: `${target.path.replace(/\/$/, "")}/`, kind: target.kind });
+      legacyFrom.add(from);
+      upgraded += 1;
+    }
+  }
+} catch (err) {
+  console.warn(`[exportRoutes] 404-Mapping-Upgrade übersprungen: ${(err as Error).message}`);
+}
+
+const legacyPath = resolve(distDir, ".legacy-redirects.json");
+writeFileSync(
+  legacyPath,
+  JSON.stringify({ generatedAt: new Date().toISOString(), rules: legacyRules }),
+  "utf-8",
+);
+console.log(
+  `[exportRoutes] Wrote ${legacyRules.length} legacy redirects to ${legacyPath} ` +
+    `(product=${legacyRules.filter((r) => r.kind === "product").length} ` +
+    `category=${legacyRules.filter((r) => r.kind === "category").length}, ` +
+    `GSC-Upgrades=${upgraded})`,
+);
 
 console.log(
   `[exportRoutes] Wrote ${enriched.length} routes to ${outPath} ` +
