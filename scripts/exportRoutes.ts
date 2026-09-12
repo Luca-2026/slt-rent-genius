@@ -274,6 +274,27 @@ if (managedProducts.length) {
     groups.set(r.title, g);
   }
   let deduped = 0;
+  // Title-Hygiene: nie mitten im Wort/Preis abschneiden, keine offenen Klammern.
+  const tidy = (s: string): string => {
+    let out = s.trim();
+    const open = (out.match(/\(/g) || []).length;
+    const close = (out.match(/\)/g) || []).length;
+    if (open > close) out = out.slice(0, out.lastIndexOf("(")).trim();
+    out = out.replace(/\s+(?:ab|Ab|ca\.|bis|für)?\s*\d+(?:[.,]\d+)?\s*[×x/]?$/u, "");
+    return out.replace(/[\s–—\-,;:|/&·]+$/u, "").trim();
+  };
+  const fitTitle = (base: string, token: string, max = 60): string => {
+    const suffix = token ? ` ${token}` : "";
+    if (base.length + suffix.length <= max) return `${base}${suffix}`;
+    // Standort im Base erhalten: Nur den Teil VOR „ mieten in “ kürzen.
+    const m = base.match(/^(.*?)( mieten in .*)$/u);
+    if (m) {
+      const budget = max - m[2].length - suffix.length;
+      if (budget > 8) return `${tidy(m[1].slice(0, budget))}${m[2]}${suffix}`;
+      return tidy(`${m[1]}${m[2]}`.slice(0, max));
+    }
+    return tidy(`${base}${suffix}`.slice(0, max));
+  };
   for (const [title, group] of groups) {
     if (group.length < 2) continue;
     for (const r of group) {
@@ -285,13 +306,27 @@ if (managedProducts.length) {
         .split("-")
         .filter((t) => t && !known.has(t.toLowerCase()));
       if (!extra.length) continue;
-      const token = extra.join(" ").toUpperCase();
-      const base = title.replace(" | SLT Rental", "");
-      r.title = `${base} (${token})`;
+      // Kürzestes aussagekräftiges Merkmal (Modell/Marke), sauber gesetzt.
+      const token = `(${extra.slice(-2).join(" ").toUpperCase()})`;
+      const base = tidy(title.replace(" | SLT Rental", ""));
+      r.title = fitTitle(base, token);
       deduped++;
     }
   }
-  if (deduped) console.log(`[exportRoutes] Title-Dedupe: ${deduped} Routen präzisiert.`);
+  // Restliche Overlong-Titles (ohne Dedupe) ebenfalls sauber auf 60 kürzen.
+  let trimmed = 0;
+  for (const r of allRoutes) {
+    if (r.title && r.title.length > 60) {
+      const next = fitTitle(tidy(r.title.replace(" | SLT Rental", "")), "");
+      if (next && next !== r.title) {
+        r.title = next;
+        trimmed++;
+      }
+    }
+  }
+  if (deduped || trimmed)
+    console.log(`[exportRoutes] Title-Dedupe: ${deduped} präzisiert, ${trimmed} gekürzt.`);
+
 }
 
 
