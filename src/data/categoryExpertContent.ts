@@ -867,7 +867,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Strom, Diesel, Gas: die Heizart entscheidet die Kosten",
           paragraphs: [
-            "Im Rohbau-Wintereinsatz auf der Krefelder Baustelle stellt sich oft die Frage nach der wirtschaftlichsten Wärmequelle. Strom ist die einfachste, aber teuerste Lösung – 0,30–0,40 €/kWh netto. Diesel-Indirekt-Heizung liegt bei ca. 0,11 €/kWh (Heizöl-Äquivalent), Propan-Gas bei 0,12 €/kWh – beide brauchen aber Abgasführung bzw. Aufstellung außerhalb des Trocknungs-Raums.",
+            "Im Rohbau-Wintereinsatz auf der Krefelder Baustelle stellt sich oft die Frage nach der wirtschaftlichsten Wärmequelle. Strom ist die einfachste, aber teuerste Lösung – 0,30–0,40 €/kWh brutto. Diesel-Indirekt-Heizung liegt bei ca. 0,11 €/kWh (Heizöl-Äquivalent), Propan-Gas bei 0,12 €/kWh – beide brauchen aber Abgasführung bzw. Aufstellung außerhalb des Trocknungs-Raums.",
             "Praxis-Faustregel: Räume bis 30 m³ und kurze Einsätze (Tage) ⇒ Elektro-Heizgebläse oder Kondenstrockner; Hallen, Rohbauten und mehrwöchige Trocknung ⇒ Diesel-Indirektheizung. Für Innenausbau-Baustellen mit empfindlichen Materialien und hohen Anforderungen an saubere Luft empfehlen wir Wärmepumpentrockner – sie kombinieren Trocknung und milde Heizung in einem Gerät und sind elektrisch genügsam.",
           ],
         },
@@ -1456,7 +1456,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Was kostet Aufbau und Abbau einer Trusskonstruktion?",
           answer:
-            "Stundensatz unseres Veranstaltungstechnik-Teams bzw. vermittelter lokaler Partner im Raum Krefeld liegt typisch bei 60–95 € netto pro Stunde, je nach Qualifikation (Helfer / Sachkundiger / Meister). Eine Standard-Trusskonstruktion 6 × 4 m mit 4 Towern und Mid-Beam baut ein 2-Personen-Team in ca. 90 Minuten auf. Bei Großevents kalkulieren wir Material-, Personal- und Anfahrtskosten transparent in einem Komplettangebot.",
+            "Stundensatz unseres Veranstaltungstechnik-Teams bzw. vermittelter lokaler Partner im Raum Krefeld liegt typisch bei 60–95 € brutto pro Stunde, je nach Qualifikation (Helfer / Sachkundiger / Meister). Eine Standard-Trusskonstruktion 6 × 4 m mit 4 Towern und Mid-Beam baut ein 2-Personen-Team in ca. 90 Minuten auf. Bei Großevents kalkulieren wir Material-, Personal- und Anfahrtskosten transparent in einem Komplettangebot.",
         },
         {
           question: "Gibt es eine Versicherung für hängendes Material?",
@@ -3132,7 +3132,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Strom, Diesel, Gas: die Heizart entscheidet die Kosten",
           paragraphs: [
-            "Im Rohbau-Wintereinsatz auf der Bonner Baustelle stellt sich oft die Frage nach der wirtschaftlichsten Wärmequelle. Strom ist die einfachste, aber teuerste Lösung – 0,30–0,40 €/kWh netto. Diesel-Indirekt-Heizung liegt bei ca. 0,11 €/kWh (Heizöl-Äquivalent), Propan bei 0,12 €/kWh – beide brauchen Abgasführung bzw. Aufstellung außerhalb des Trocknungsraums.",
+            "Im Rohbau-Wintereinsatz auf der Bonner Baustelle stellt sich oft die Frage nach der wirtschaftlichsten Wärmequelle. Strom ist die einfachste, aber teuerste Lösung – 0,30–0,40 €/kWh brutto. Diesel-Indirekt-Heizung liegt bei ca. 0,11 €/kWh (Heizöl-Äquivalent), Propan bei 0,12 €/kWh – beide brauchen Abgasführung bzw. Aufstellung außerhalb des Trocknungsraums.",
             "Praxisregel: Räume bis 30 m³ und kurze Einsätze ⇒ Elektro-Heizgebläse oder Kondenstrockner; Hallen, Rohbauten und mehrwöchige Trocknung ⇒ Diesel-Indirektheizung. Für Innenausbau-Baustellen mit empfindlichen Materialien (Bonner Villenviertel, denkmalgeschützte Altbauten) empfehlen wir Wärmepumpentrockner – Trocknung und milde Heizung in einem Gerät, elektrisch genügsam.",
           ],
         },
@@ -3713,7 +3713,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Was kostet Aufbau und Abbau einer Trusskonstruktion?",
           answer:
-            "Stundensatz unseres Veranstaltungstechnik-Teams bzw. vermittelter lokaler Partner im Raum Bonn liegt typisch bei 60–95 € netto pro Stunde, je nach Qualifikation (Helfer / Sachkundiger / Meister). Eine Standardkonstruktion 6 × 4 m mit 4 Towern und Mid-Beam baut ein 2-Personen-Team in ca. 90 Minuten auf. Bei Großevents kalkulieren wir Material-, Personal- und Anfahrtskosten transparent in einem Komplettangebot.",
+            "Stundensatz unseres Veranstaltungstechnik-Teams bzw. vermittelter lokaler Partner im Raum Bonn liegt typisch bei 60–95 € brutto pro Stunde, je nach Qualifikation (Helfer / Sachkundiger / Meister). Eine Standardkonstruktion 6 × 4 m mit 4 Towern und Mid-Beam baut ein 2-Personen-Team in ca. 90 Minuten auf. Bei Großevents kalkulieren wir Material-, Personal- und Anfahrtskosten transparent in einem Komplettangebot.",
         },
         {
           question: "Gibt es eine Versicherung für hängendes Material?",
