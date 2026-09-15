@@ -1010,8 +1010,23 @@ for (const loc of locations as LocationData[]) {
       // den aktuellen Standort umschreiben. Ohne diesen Replace bekämen
       // Bonn/Mülheim-URLs identische Title/Description wie Krefeld und
       // würden von Google als Duplicate Content deindexiert.
+      // Etappe 4.4: Nach dem Umschreiben entstehen sonst Dopplungen wie
+      // „Krefeld und Krefeld" – Standortnamen danach deduplizieren.
+      const dedupeLoc = (s: string) => {
+        const n = locName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const re = new RegExp(`\\b${n}\\s*(?:,|und|&|/)\\s*${n}\\b`, "gi");
+        let out = s;
+        let prev: string;
+        do {
+          prev = out;
+          out = out.replace(re, locName);
+        } while (out !== prev);
+        return out;
+      };
       const localize = (s: string | undefined) =>
-        s ? s.replace(/\bin Krefeld\b/g, `in ${locName}`).replace(/\bKrefeld\b/g, locName) : s;
+        s
+          ? dedupeLoc(s.replace(/\bin Krefeld\b/g, `in ${locName}`).replace(/\bKrefeld\b/g, locName))
+          : s;
 
       // Etappe 3.9: Verkaufsartikel bekommen nie „mieten" in Title/H1.
       const isSale = isSaleItem(p);
