@@ -357,19 +357,34 @@ function buildHeroBlock(route) {
     parts.push(buildCategoryListBlock(route));
   }
 
+  // Statische Textblöcke (z. B. Standort-Details, Über-uns-Volltext).
+  for (const sec of route.textSections || []) {
+    if (!sec || !sec.paragraphs || !sec.paragraphs.length) continue;
+    const body = sec.paragraphs
+      .filter(Boolean)
+      .map((p) => `<p style="margin:0 0 10px;font-size:16px;">${escapeHtml(p)}</p>`)
+      .join("");
+    parts.push(
+      `<section data-prerender-text style="margin:28px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">${escapeHtml(sec.heading)}</h2>${body}</section>`,
+    );
+  }
+
   // Hub-Linklisten (z. B. /mieten/ → Standorte, /mieten/:loc/ → Kategorien).
   for (const sec of route.linkSections || []) {
     if (!sec || !sec.links || !sec.links.length) continue;
     const items = sec.links
       .map(
         (l) =>
-          `<li style="margin-bottom:6px;"><a href="${escapeAttr(withTrailingSlash(l.path))}" style="color:#00507d;text-decoration:none;">${escapeHtml(l.name)}</a></li>`,
+          `<li style="margin-bottom:6px;"><a href="${escapeAttr(withTrailingSlash(l.path))}" style="color:#00507d;text-decoration:none;">${escapeHtml(l.name)}</a>${
+            l.note ? `<span style="color:#555;"> – ${escapeHtml(l.note)}</span>` : ""
+          }</li>`,
       )
       .join("");
     parts.push(
       `<nav data-prerender-links style="margin:32px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">${escapeHtml(sec.heading)}</h2><ul style="margin:0;padding-left:20px;">${items}</ul></nav>`,
     );
   }
+
 
   parts.push(`</div>`);
   return parts.join("");
@@ -476,6 +491,8 @@ const t0 = Date.now();
 let written = 0;
 let skipped = 0;
 let errors = 0;
+const failedRoutes = [];
+const byType = new Map();
 
 for (let i = 0; i < routes.length; i++) {
   const route = routes[i];
@@ -496,8 +513,11 @@ for (let i = 0; i < routes.length; i++) {
     mkdirSync(dirname(filePath), { recursive: true });
     writeFileSync(filePath, html, "utf-8");
     written++;
+    const t = route.routeType || "unknown";
+    byType.set(t, (byType.get(t) || 0) + 1);
   } catch (err) {
     errors++;
+    failedRoutes.push(`${route.path} → ${err.message}`);
     console.error(`[prerender] ERR ${route.path}: ${err.message}`);
   }
 
@@ -507,6 +527,7 @@ for (let i = 0; i < routes.length; i++) {
     );
   }
 }
+
 
 // ---------------------------------------------------------------
 // sitemap.xml
@@ -538,5 +559,21 @@ console.log(
     routes.filter((r) => !r.noindex).length
   } urls`,
 );
+console.log(
+  `[prerender] Routen je Typ: ${[...byType.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([t, n]) => `${t}=${n}`)
+    .join(", ")}`,
+);
+console.log(
+  `[prerender] noindex (nicht in Sitemap): ${routes.filter((r) => r.noindex).length}`,
+);
+if (failedRoutes.length) {
+  console.error(`[prerender] FEHLGESCHLAGENE ROUTEN (${failedRoutes.length}):`);
+  for (const f of failedRoutes) console.error(`  - ${f}`);
+} else {
+  console.log("[prerender] Fehlgeschlagene Routen: keine");
+}
+
 
 if (errors > 0) process.exit(1);
