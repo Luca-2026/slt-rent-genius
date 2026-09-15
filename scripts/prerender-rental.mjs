@@ -345,6 +345,13 @@ function buildProductFaqBlock(route) {
   return `<section data-prerender-faq style="margin:32px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 16px;font-weight:600;">Häufige Fragen</h2>${items}</section>`;
 }
 
+function buildProductGuideBlock(route) {
+  const guides = route.productData?.guides;
+  if (!guides || !guides.length) return "";
+  const items = guides.map((guide) => `<li><a href="${escapeAttr(withTrailingSlash(guide.path))}" style="color:#00507d;text-decoration:underline;">${escapeHtml(guide.name)}</a></li>`).join("");
+  return `<section data-prerender-guides style="margin:32px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 16px;font-weight:600;">Passende Ratgeber</h2><ul style="margin:0;padding-left:20px;">${items}</ul></section>`;
+}
+
 function buildCategoryListBlock(route) {
   const cat = route.categoryData;
   if (!cat || !cat.productSummaries || !cat.productSummaries.length) return "";
@@ -387,6 +394,7 @@ function buildHeroBlock(route) {
   if (route.routeType === "product") {
     parts.push(buildProductSpecsBlock(route));
     parts.push(buildProductFaqBlock(route));
+    parts.push(buildProductGuideBlock(route));
   } else if (route.routeType === "category") {
     parts.push(buildCategoryListBlock(route));
   }

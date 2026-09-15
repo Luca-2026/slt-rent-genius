@@ -23,7 +23,7 @@ import {
   isAccessoryItem,
   isSaleItem,
 } from "./categoryModel";
-import { blogArticles, type BlogArticle } from "./blogArticles";
+import { blogArticles, getArticlesForCategory, type BlogArticle } from "./blogArticles";
 import { kbArticles, kbCategories, type KBArticle, type KBCategory } from "./knowledgeBaseData";
 
 import { solutionData, type Solution } from "@/pages/Loesungen";
@@ -201,6 +201,7 @@ export interface PrerenderProduct {
   locationText?: string;
   alternatives?: Array<{ name: string; path: string }>;
   accessories?: Array<{ name: string; path: string }>;
+  guides?: Array<{ name: string; path: string }>;
 }
 
 export interface PrerenderCategory {
@@ -1131,6 +1132,10 @@ for (const loc of locations as LocationData[]) {
             locationText,
             alternatives,
             accessories,
+            guides: getArticlesForCategory(catId, 3).map((article) => ({
+              name: article.title,
+              path: `/ratgeber/${article.slug}`,
+            })),
         },
         title,
         description,

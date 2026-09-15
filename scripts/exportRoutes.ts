@@ -435,6 +435,7 @@ const enriched = allRoutes.map((route) => {
         locationText: route.productData.locationText,
         alternatives: route.productData.alternatives,
         accessories: route.productData.accessories,
+        guides: route.productData.guides,
       }
     : undefined;
   const categoryData = route.routeType === "category" && route.categoryData

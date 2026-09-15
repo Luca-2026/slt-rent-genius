@@ -45,6 +45,8 @@ import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
 import { REAL_LOCATION_REVIEWS } from "@/data/realGoogleReviews";
 import { ProductPriceBlock, hasAnyPrice, formatPriceValue } from "@/components/rental/ProductPriceBlock";
+import { RatgeberTeaserBlock } from "@/components/ratgeber/RatgeberTeaserBlock";
+import { getArticlesForCategory } from "@/data/blogArticles";
 
 const LEGACY_PRODUCT_ID_REDIRECTS: Record<string, string> = {
   "bonn-stampfer-gs72": "/mieten/bonn/verdichtung/stampfer-gs72-xh/",
@@ -948,7 +950,7 @@ export default function ProductDetail() {
                 )}
 
                 {/* Detailed Description */}
-                {product.detailedDescription && (() => {
+                {product.detailedDescription && product.detailedDescription.trim() !== product.description?.trim() && (() => {
                   const isWeinsberg = product.id === "weinsberg-caraone-480-qdk";
                   const cityNameMap: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
                   const cityName = cityNameMap[location.id] || location.name;
@@ -1370,10 +1372,34 @@ export default function ProductDetail() {
 
               )}
 
-              {/* Standortspezifischer Block (Hookline + Standort-Fakten).
-                  FAQs werden weiter unten in den bestehenden FAQ-Block eingehängt. */}
-              {locationId && categoryId && (
-                <LocalCategoryContentBlock locationId={locationId} categoryId={categoryId} />
+              {relatedProducts.length > 0 && (
+                <section className="bg-card rounded-xl border border-border p-5">
+                  <h2 className="text-base font-semibold text-headline mb-3">Alternativen in der Kategorie</h2>
+                  <ul className="space-y-2">
+                    {relatedProducts.slice(0, 4).map((relatedProduct) => (
+                      <li key={relatedProduct.id}>
+                        <Link className="text-sm font-medium text-primary hover:underline" to={`/mieten/${location.id}/${categoryId}/${relatedProduct.id}/`}>
+                          {relatedProduct.name}{relatedProduct.modelName ? ` – ${relatedProduct.modelName}` : ""}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+
+              {accessories.length > 0 && (
+                <section className="bg-card rounded-xl border border-border p-5">
+                  <h2 className="text-base font-semibold text-headline mb-3">Zubehör und Dazubuchbares</h2>
+                  <ul className="space-y-2">
+                    {accessories.map((accessory) => (
+                      <li key={accessory.id}>
+                        <Link className="text-sm font-medium text-primary hover:underline" to={`/mieten/${location.id}/${categoryId}/${accessory.id}/`}>
+                          {accessory.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
               )}
 
               {/* SEO Content Block (Use-Cases + FAQ – inkl. lokaler FAQs) */}
@@ -1384,6 +1410,12 @@ export default function ProductDetail() {
                 categoryTitle={category.title}
                 productSEO={productSEO}
                 additionalFaqs={locationId && categoryId ? getLocalCategoryContent(locationId, categoryId)?.faqs : undefined}
+              />
+
+              <RatgeberTeaserBlock
+                articles={getArticlesForCategory(categoryId || "", 3)}
+                heading="Passende Ratgeber"
+                subheading="Weitere Informationen für Auswahl und Einsatz."
               />
 
               {/* HalteverbotsSeoSection wurde für Halteverbotsschilder-Sets nach oben
@@ -1471,85 +1503,6 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* Optional Accessories for Excavators */}
-          {accessories.length > 0 && (
-            <div className="mt-10 pt-8 border-t border-border">
-              <div className="flex items-center gap-2 mb-5">
-                <HardHat className="h-5 w-5 text-primary" />
-                <h2 className="text-lg font-bold text-headline">{t("rental.optionalAccessories", "Optionales Zubehör")}</h2>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4">
-                {t("rental.accessoriesHint", "Passende Anbaugeräte für diese Maschine – einfach dazu buchen.")}
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {accessories.map((acc) => (
-                  <Link key={acc.id} to={`/mieten/${location.id}/${acc.tags?.includes("baumaschine") || acc.tags?.includes("autotransport") || acc.tags?.includes("gebremst") ? "anhaenger" : categoryId}/${acc.id}`}>
-                    <Card className="h-full hover:shadow-md transition-shadow group overflow-hidden border-primary/20">
-                      <div className="aspect-[4/3] bg-muted">
-                        {acc.image && acc.image !== "/placeholder.svg" ? (
-                          <img
-                            src={acc.image}
-                            alt={`${acc.name} – Anbaugerät für ${product.name}`}
-                            className="w-full h-full object-contain group-hover:scale-105 transition-transform"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <Package className="h-8 w-8 text-muted-foreground/30" />
-                          </div>
-                        )}
-                      </div>
-                      <CardContent className="p-3">
-                        <h3 className="font-medium text-sm text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                          {acc.name}
-                        </h3>
-                        {acc.description && (
-                          <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{acc.description}</p>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Related Products */}
-          {relatedProducts.length > 0 && (
-            <div className="mt-10 pt-8 border-t border-border">
-              <h2 className="text-lg font-bold text-headline mb-5">{t("rental.relatedProducts")}</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {relatedProducts.map((relatedProduct) => (
-                  <Link key={relatedProduct.id} to={`/mieten/${location.id}/${categoryId}/${relatedProduct.id}/`}>
-                    <Card className="h-full hover:shadow-md transition-shadow group overflow-hidden">
-                      <div className="aspect-[4/3] bg-muted">
-                        {relatedProduct.image ? (
-                          <img
-                            src={relatedProduct.image}
-                            alt={relatedProduct.name}
-                            className="w-full h-full object-contain group-hover:scale-105 transition-transform"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <Package className="h-8 w-8 text-muted-foreground/30" />
-                          </div>
-                        )}
-                      </div>
-                      <CardContent className="p-3">
-                        <h3 className="font-medium text-sm text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                          {relatedProduct.name}
-                        </h3>
-                        {relatedProduct.pricePerDay && (
-                          <p className="text-sm font-semibold text-primary mt-1">
-                            {formatPriceValue(relatedProduct.pricePerDay)}{relatedProduct.priceUnitLabel ?? t("rental.perDay")}
-                          </p>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </section>
 
