@@ -211,6 +211,21 @@ function localizeToLocation(text: string, locName: string): string {
   if (!locName.startsWith("Mülheim")) {
     out = out.replace(/\bMülheim(?:\s*an\s*der\s*Ruhr)?\b/g, locName);
   }
+  return dedupeLocationName(out, locName);
+}
+
+/**
+ * Etappe 4.4: Nach dem Umschreiben können Aufzählungen wie „Ab Krefeld und
+ * Mülheim" zu „Krefeld und Krefeld" werden. Doppelnennungen einsammeln.
+ */
+function dedupeLocationName(text: string, locName: string): string {
+  const n = locName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  let out = text;
+  let prev: string;
+  do {
+    prev = out;
+    out = out.replace(new RegExp(`\\b${n}\\s*(?:,|und|&|/)\\s*${n}\\b`, "gi"), locName);
+  } while (out !== prev);
   return out;
 }
 
