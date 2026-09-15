@@ -59,17 +59,17 @@ export function ProductPriceBlock({
   // Hauptpreis bestimmen
   let mainValue: string;
   let mainUnit: string;
-  if (hasDay) {
-    mainValue = formatPriceValue(product.pricePerDay!);
+  if (product.pricePerDay) {
+    mainValue = formatPriceValue(product.pricePerDay);
     mainUnit = product.priceUnitLabel ?? perDayLabel;
-  } else if (hasSeoFrom) {
-    mainValue = formatFrom(dailyPriceFrom!);
+  } else if (typeof dailyPriceFrom === "number") {
+    mainValue = formatFrom(dailyPriceFrom);
     mainUnit = product.priceUnitLabel ?? perDayLabel;
-  } else if (hasMonth) {
-    mainValue = formatPriceValue(product.pricePerMonth!);
+  } else if (product.pricePerMonth) {
+    mainValue = formatPriceValue(product.pricePerMonth);
     mainUnit = product.priceUnitLabel ?? "/ Monat";
-  } else if (hasWeekend) {
-    mainValue = formatPriceValue(product.priceWeekend!);
+  } else if (product.priceWeekend) {
+    mainValue = formatPriceValue(product.priceWeekend);
     mainUnit = "/ Wochenende";
   } else {
     mainValue = "Preis auf Anfrage";
@@ -80,15 +80,15 @@ export function ProductPriceBlock({
 
   // Zusatztarife (nur, was nicht schon Hauptpreis ist)
   const extras: Array<{ label: string; value: string }> = [];
-  if (hasWeekend && mainValue !== formatPriceValue(product.priceWeekend!)) {
-    extras.push({ label: "Wochenende", value: formatPriceValue(product.priceWeekend!) });
+  if (product.priceWeekend && mainValue !== formatPriceValue(product.priceWeekend)) {
+    extras.push({ label: "Wochenende", value: formatPriceValue(product.priceWeekend) });
   }
-  if (hasMonth && mainValue !== formatPriceValue(product.pricePerMonth!)) {
+  if (product.pricePerMonth && mainValue !== formatPriceValue(product.pricePerMonth)) {
     extras.push({
       label: product.minRentalMonths
         ? `Monat (ab ${product.minRentalMonths} Mon.)`
         : "Monat",
-      value: formatPriceValue(product.pricePerMonth!),
+      value: formatPriceValue(product.pricePerMonth),
     });
   }
 

@@ -316,6 +316,14 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
     : DEFAULT_IMG;
 
   const locRating = LOCATION_RATINGS[p.locationId];
+  const priceSource = p.pricePerDay || p.pricePerMonth || p.priceWeekend;
+  const parsedPrice = priceSource
+    ? Number(priceSource.match(/\d[\d.]*([,.]\d+)?/)?.[0].replace(/\./g, "").replace(",", "."))
+    : undefined;
+  const validPrice = typeof parsedPrice === "number" && Number.isFinite(parsedPrice) && parsedPrice > 0
+    ? parsedPrice
+    : undefined;
+  const unitCode = p.pricePerDay ? "DAY" : p.pricePerMonth ? "MON" : "C62";
 
   const product: JsonLd = {
     "@context": "https://schema.org",
@@ -326,6 +334,39 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
     url: productUrl,
     brand: p.modelName ? { "@type": "Brand", name: p.modelName.split(" ")[0] } : undefined,
     model: p.modelName,
+    sku: p.id,
+    ...(p.specifications && Object.keys(p.specifications).length > 0
+      ? {
+          additionalProperty: Object.entries(p.specifications).map(([name, value]) => ({
+            "@type": "PropertyValue",
+            name,
+            value,
+          })),
+        }
+      : {}),
+    ...(validPrice
+      ? {
+          offers: {
+            "@type": "Offer",
+            url: productUrl,
+            price: validPrice.toFixed(2),
+            priceCurrency: "EUR",
+            availability: p.availabilityText?.includes("auf Anfrage")
+              ? "https://schema.org/LimitedAvailability"
+              : "https://schema.org/InStock",
+            businessFunction: "http://purl.org/goodrelations/v1#LeaseOut",
+            areaServed: { "@type": "City", name: loc?.cityFull || p.locationId },
+            seller: { "@id": LOCATION_BUSINESS_ID(p.locationId) },
+            priceSpecification: {
+              "@type": "UnitPriceSpecification",
+              price: validPrice.toFixed(2),
+              priceCurrency: "EUR",
+              unitCode,
+              valueAddedTaxIncluded: true,
+            },
+          },
+        }
+      : {}),
     aggregateRating: locRating
       ? {
           "@type": "AggregateRating",

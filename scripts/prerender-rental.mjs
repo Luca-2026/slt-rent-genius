@@ -271,11 +271,31 @@ function buildProductSpecsBlock(route) {
   if (!p) return "";
   const parts = [];
 
-  // Beschreibender Fließtext (description aus rentalData, falls vorhanden).
+  // Etappe 5: dieselbe Pflichtreihenfolge wie auf der interaktiven Artikelseite.
   if (p.description) {
     parts.push(
-      `<section data-prerender-description style="margin:32px 0 24px;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">Produktbeschreibung</h2><p style="margin:0;line-height:1.65;">${escapeHtml(p.description)}</p></section>`,
+      `<section data-prerender-description style="margin:24px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">Kurzbeschreibung</h2><p style="margin:0;line-height:1.65;">${escapeHtml(p.description)}</p>${p.longName && p.longName !== p.name ? `<p style="margin:8px 0 0;font-weight:600;">${escapeHtml(p.longName)}</p>` : ""}</section>`,
     );
+  }
+
+  const priceSource = p.pricePerDay || p.pricePerMonth || p.priceWeekend;
+  const priceUnit = p.pricePerDay
+    ? (p.priceUnitLabel || "pro Tag")
+    : p.pricePerMonth
+      ? (p.priceUnitLabel || "pro Monat")
+      : "pro Wochenende";
+  const priceMatch = priceSource?.match(/\d[\d.]*([,.]\d+)?/);
+  const gross = priceMatch ? Number(priceMatch[0].replace(/\./g, "").replace(",", ".")) : null;
+  const net = gross && Number.isFinite(gross)
+    ? new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 2 }).format(gross / 1.19)
+    : null;
+  parts.push(`<section data-prerender-price-availability style="margin:24px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">Preis und Verfügbarkeit</h2><p style="margin:0 0 8px;font-weight:700;">${priceSource ? `${escapeHtml(priceSource)} ${escapeHtml(priceUnit)}${net ? ` – brutto inkl. 19 % USt. (${escapeHtml(net)} netto)` : ""}` : "Preis auf Anfrage"}</p>${p.availabilityText ? `<p style="margin:0 0 8px;">${escapeHtml(p.availabilityText)}</p>` : ""}${p.bookingHint ? `<p style="margin:0;">${escapeHtml(p.bookingHint)}</p>` : ""}</section>`);
+
+  if (p.specifications && Object.keys(p.specifications).length) {
+    const rows = Object.entries(p.specifications)
+      .map(([key, value]) => `<tr><th style="text-align:left;border:1px solid #e2e8f0;padding:8px 10px;">${escapeHtml(key)}</th><td style="border:1px solid #e2e8f0;padding:8px 10px;">${escapeHtml(value)}</td></tr>`)
+      .join("");
+    parts.push(`<section data-prerender-specifications style="margin:24px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">Technische Daten</h2><div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;"><tbody>${rows}</tbody></table></div></section>`);
   }
 
   // Einsatzbereiche (Bau / Event / Privat) – echte SEO-Daten, kein Erfundenes.
@@ -290,6 +310,18 @@ function buildProductSpecsBlock(route) {
     }
     parts.push(`</dl></section>`);
   }
+
+  if (p.locationText) {
+    parts.push(`<section data-prerender-location style="margin:24px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">Standort und Übergabe</h2><p style="margin:0;">${escapeHtml(p.locationText)}</p></section>`);
+  }
+
+  const renderLinks = (heading, attr, links) => {
+    if (!links || !links.length) return;
+    const items = links.map((link) => `<li><a href="${escapeAttr(withTrailingSlash(link.path))}" style="color:#00507d;text-decoration:underline;">${escapeHtml(link.name)}</a></li>`).join("");
+    parts.push(`<section ${attr} style="margin:24px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">${heading}</h2><ul style="margin:0;padding-left:20px;">${items}</ul></section>`);
+  };
+  renderLinks("Alternativen in der Kategorie", "data-prerender-alternatives", p.alternatives);
+  renderLinks("Zubehör und Dazubuchbares", "data-prerender-accessories", p.accessories);
 
   // H2-Themenliste (Inhaltsverzeichnis aus SEO-Daten).
   if (p.h2s && p.h2s.length) {
@@ -346,8 +378,10 @@ function buildHeroBlock(route) {
     parts.push(`</ol></nav>`);
   }
   parts.push(`<h1 style="font-size:clamp(28px,4vw,42px);color:#00507d;margin:0 0 16px;font-weight:700;">${escapeHtml(route.h1)}</h1>`);
-  for (const p of route.intro || []) {
-    if (p) parts.push(`<p style="margin:0 0 12px;font-size:17px;">${escapeHtml(p)}</p>`);
+  if (route.routeType !== "product") {
+    for (const p of route.intro || []) {
+      if (p) parts.push(`<p style="margin:0 0 12px;font-size:17px;">${escapeHtml(p)}</p>`);
+    }
   }
 
   if (route.routeType === "product") {
