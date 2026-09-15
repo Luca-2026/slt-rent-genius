@@ -31,6 +31,7 @@ import { solutionLinking } from "@/data/solutionLinking";
 import { jobListings } from "@/components/karriere/jobData";
 import { getLocalCategoryContent } from "./localCategoryContent";
 import { getProductAvailability } from "@/lib/productAvailability";
+import { getDrivingLicenseInfo, resolveProductFaqs } from "./productPageContent";
 
 const BASE_URL = "https://www.slt-rental.de";
 const DEFAULT_OG_IMAGE = `${BASE_URL}/images/og/default-slt-rental.png`;
@@ -202,6 +203,7 @@ export interface PrerenderProduct {
   alternatives?: Array<{ name: string; path: string }>;
   accessories?: Array<{ name: string; path: string }>;
   guides?: Array<{ name: string; path: string }>;
+  drivingLicense?: { heading: string; text: string };
 }
 
 export interface PrerenderCategory {
@@ -1071,6 +1073,13 @@ for (const loc of locations as LocationData[]) {
       const availStatus = resolveAvailabilityStatus(p, loc.id, { categoryId: catId });
       const availabilityText = availabilityParagraph(availStatus, loc.id);
       const availabilityBookingHint = bookingHint(availStatus);
+      const localFaqs = getLocalCategoryContent(loc.id, catId)?.faqs ?? [];
+      const resolvedFaqs = resolveProductFaqs({
+        product: p,
+        categoryId: catId,
+        productFaqs: seo?.faqs,
+        localFaqs,
+      });
       const intro = [
         localize(seo?.metaDescription) ||
           p.description ||
@@ -1118,7 +1127,7 @@ for (const loc of locations as LocationData[]) {
           seoTitle: seo?.seoTitle,
           metaDescription: seo?.metaDescription,
           h1: seo?.h1,
-          faqs: seo?.faqs,
+          faqs: resolvedFaqs,
           modelName: p.modelName,
             longName: p.longName,
             specifications: p.specifications,
@@ -1136,6 +1145,7 @@ for (const loc of locations as LocationData[]) {
               name: article.title,
               path: `/ratgeber/${article.slug}`,
             })),
+            drivingLicense: getDrivingLicenseInfo(p, catId),
         },
         title,
         description,

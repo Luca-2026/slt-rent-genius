@@ -47,6 +47,7 @@ import { REAL_LOCATION_REVIEWS } from "@/data/realGoogleReviews";
 import { ProductPriceBlock, hasAnyPrice, formatPriceValue } from "@/components/rental/ProductPriceBlock";
 import { RatgeberTeaserBlock } from "@/components/ratgeber/RatgeberTeaserBlock";
 import { getArticlesForCategory } from "@/data/blogArticles";
+import { getDrivingLicenseInfo, localizeProductText, resolveProductFaqs } from "@/data/productPageContent";
 
 const LEGACY_PRODUCT_ID_REDIRECTS: Record<string, string> = {
   "bonn-stampfer-gs72": "/mieten/bonn/verdichtung/stampfer-gs72-xh/",
@@ -221,31 +222,7 @@ export default function ProductDetail() {
     if (!location) return (text: string) => text;
     const name = location.name;
     const locationEmail = location.email;
-    return (text: string): string => {
-      let result = text
-        .replace(/Genehmigungs-Kopie an die jeweilige Standort-E-Mail senden \(krefeld@\/bonn@\/muelheim@slt-rental\.de\)/gi, `Genehmigungs-Kopie an ${locationEmail} senden`)
-        .replace(/Genehmigungs-Kopie an mieten@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
-        .replace(/Genehmigungs-Kopie an (?:krefeld|bonn|muelheim)@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
-        .replace(/an mieten@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`)
-        .replace(/an (?:krefeld|bonn|muelheim)@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`)
-        // First replace multi-location combinations
-        .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, name)
-        .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, name)
-        .replace(/Mülheim(?:\s*an\s*der\s*Ruhr)?\s*[&,]\s*Bonn\s*[&,]\s*Krefeld/gi, name)
-        .replace(/Bonn\s*[&,]\s*Krefeld/gi, name)
-        .replace(/Krefeld\s*[&,]\s*Bonn/gi, name)
-        .replace(/Bonn\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, name)
-        .replace(/Krefeld\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, name)
-        .replace(/Mülheim(?:\s*an\s*der\s*Ruhr)?\s*[&,]\s*Krefeld/gi, name)
-        .replace(/Mülheim(?:\s*an\s*der\s*Ruhr)?\s*[&,]\s*Bonn/gi, name);
-      // Then replace standalone location names (but only as whole words)
-      if (name !== "Krefeld") result = result.replace(/\bKrefeld\b/g, name);
-      if (name !== "Bonn") result = result.replace(/\bBonn\b/g, name);
-      if (name !== "Mülheim" && name !== "Mülheim an der Ruhr") {
-        result = result.replace(/\bMülheim(?:\s*an\s*der\s*Ruhr)?\b/g, name);
-      }
-      return result;
-    };
+    return (text: string): string => localizeProductText(text, { name, email: locationEmail });
   }, [location]);
 
   useEffect(() => {
@@ -539,8 +516,13 @@ export default function ProductDetail() {
       const categoryFaqs = categoryId ? seoCategoryContent[categoryId]?.faqs : null;
       const localContent = getLocalCategoryContent(locationId, categoryId);
       const localFaqs = localContent?.faqs ?? [];
-      const baseFaqs = productFaqs?.length ? productFaqs : (categoryFaqs ?? []);
-      const faqItems = [...baseFaqs, ...localFaqs];
+      const faqItems = resolveProductFaqs({
+        product,
+        categoryId: categoryId || "",
+        productFaqs,
+        categoryFaqs,
+        localFaqs,
+      });
 
       if (faqItems.length) {
         jsonLdArray.push({
@@ -1001,6 +983,20 @@ export default function ProductDetail() {
                   </div>
                 </div>
               )}
+
+              {(() => {
+                const driving = getDrivingLicenseInfo(product, categoryId || "");
+                if (!driving) return null;
+                return (
+                  <section className="bg-card rounded-xl border border-border p-5">
+                    <h2 className="text-base font-semibold text-headline mb-2 flex items-center gap-2">
+                      <Car className="h-4 w-4 text-primary flex-shrink-0" />
+                      {driving.heading}
+                    </h2>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{driving.text}</p>
+                  </section>
+                );
+              })()}
 
               {/* Halteverbotsschilder: ausführlicher Ratgeber direkt nach den technischen Daten,
                   damit Aufstellprotokoll & One-Pager sofort sichtbar sind. */}
