@@ -8,6 +8,15 @@ import { localAreas, type LocalArea } from "./localSeoData";
 import { locationData, type LocationInfo } from "./locationData";
 import { locations, type LocationData, type Product } from "./rentalData";
 import { productSEOData, type ProductSEOData } from "./productSEOData";
+import {
+  categoryDisplayName,
+  categorySeoName,
+  categoryPlural,
+  categoryIntro,
+  deviceCountLabel,
+  isAccessoryItem,
+  isSaleItem,
+} from "./categoryModel";
 import { blogArticles, type BlogArticle } from "./blogArticles";
 import { kbArticles, kbCategories, type KBArticle, type KBCategory } from "./knowledgeBaseData";
 
@@ -845,31 +854,9 @@ const SOLUTION_ROUTES: SeoRoute[] = (solutionData as Solution[]).map((sol) => {
 // Category & Product Routen (3 Standorte × N Kategorien × M Produkte)
 // ---------------------------------------------------------------
 
+// Anzeigenamen kommen zentral aus dem Kategorie-Datenmodell (Etappe 3.1).
 function categoryTitleDe(catId: string): string {
-  const map: Record<string, string> = {
-    "anhaenger": "Anhänger",
-    "erdbewegung": "Erdbewegung",
-    "werkzeuge": "Werkzeuge",
-    "gartenpflege": "Gartenpflege",
-    "aggregate": "Aggregate",
-    "arbeitsbuehnen": "Arbeitsbühnen",
-    "verdichtung": "Verdichtung",
-    "kabel-stromverteiler": "Kabel & Stromverteiler",
-    "leitern-gerueste": "Leitern & Gerüste",
-    "heizung-trocknung": "Heizung & Trocknung",
-    "absperrtechnik": "Absperrtechnik",
-    "beschallung": "Beschallung",
-    "kommunikation": "Kommunikation",
-    "beleuchtung": "Beleuchtung",
-    "buehne": "Bühne",
-    "traversen-rigging": "Traversen & Rigging",
-    "moebel-zelte": "Möbel & Zelte",
-    "geschirr-glaeser-besteck": "Geschirr, Gläser & Besteck",
-    "gastro-equipment": "Gastro Equipment",
-    "spezialeffekte": "Spezialeffekte",
-    "huepfburgen": "Hüpfburgen",
-  };
-  return map[catId] || catId;
+  return categoryDisplayName(catId);
 }
 
 const CATEGORY_ROUTES: SeoRoute[] = [];
@@ -951,6 +938,9 @@ for (const loc of locations as LocationData[]) {
   for (const [catId, products] of Object.entries(loc.products)) {
     if (!products || products.length === 0) continue;
     const catTitle = categoryTitleDe(catId);
+    // Title/H1 nutzen den SEO-Namen (z. B. „Wohnwagen" statt „Wohnwagen & Camping"),
+    // Breadcrumb und Listen bleiben beim Anzeigenamen.
+    const catSeoName = categorySeoName(catId);
 
     // Alle Geräte prerendern (kein slice): sonst haben Produkte ab Position 21
     // keinen internen Link aus ihrer Kategorie.
@@ -960,11 +950,16 @@ for (const loc of locations as LocationData[]) {
       path: `/mieten/${loc.id}/${catId}/${p.id}`,
     }));
 
+    // Etappe 3.2/3.3: korrekte Grammatik (1 Gerät / n Geräte, Pluralform der
+    // Kategorie) plus eigener Einleitungstext je Kategorie statt Boilerplate.
+    const countLabel = deviceCountLabel(products.length);
+    const ownIntro = categoryIntro(catId, locName);
     const categoryIntroBase = [
-      `Mietpark für ${catTitle} am SLT-Standort ${locName}. ${products.length} Geräte sofort wählbar – mit Lieferung in der Region und persönlicher Beratung.`,
+      `Mietpark für ${categoryPlural(catId)} am SLT-Standort ${locName}. ${countLabel} sofort wählbar – mit Lieferung in der Region und persönlicher Beratung.`,
+      ...(ownIntro ? [ownIntro] : []),
     ];
     const categoryLocalIntro = locInfo
-      ? buildLocationIntro(locInfo, `${catTitle.toLowerCase()} mieten`)
+      ? buildLocationIntro(locInfo, `${catSeoName.toLowerCase()} mieten`)
       : [];
 
     CATEGORY_ROUTES.push({
@@ -976,11 +971,15 @@ for (const loc of locations as LocationData[]) {
         productCount: products.length,
         productSummaries,
       },
-      title: localizedTitle(catTitle, locName),
+      title: localizedTitle(catSeoName, locName),
       description: clampDesc(
-        `${catTitle} mieten in ${locName} bei SLT Rental. ${products.length} Geräte verfügbar – Beratung, Lieferung und Werkstattservice vor Ort.`,
+        `${catSeoName} mieten in ${locName} bei SLT Rental. ${countLabel} verfügbar – ${
+          loc.id === "bonn"
+            ? "Anhänger rund um die Uhr per Code, übrige Geräte auf Anfrage."
+            : "Beratung, Lieferung und Service vor Ort."
+        }`,
       ),
-      h1: `${catTitle} mieten in ${locName}`,
+      h1: `${catSeoName} mieten in ${locName}`,
       intro: [...categoryIntroBase, ...categoryLocalIntro],
       breadcrumbs: [
         { name: "Start", path: "/" },
@@ -1007,18 +1006,28 @@ for (const loc of locations as LocationData[]) {
       const localize = (s: string | undefined) =>
         s ? s.replace(/\bin Krefeld\b/g, `in ${locName}`).replace(/\bKrefeld\b/g, locName) : s;
 
-      const fallbackTitle = localizedTitle(p.name, locName);
+      // Etappe 3.9: Verkaufsartikel bekommen nie „mieten" in Title/H1.
+      const isSale = isSaleItem(p);
+      const saleName = p.name.replace(/\s*\(Verkauf\)\s*$/i, "").trim();
+      const fallbackTitle = isSale
+        ? clamp(`${saleName} kaufen in ${locName} | SLT Rental`, 60)
+        : localizedTitle(p.name, locName);
       const customTitle = localize(seo?.seoTitle);
       const clampedCustom = customTitle ? clamp(customTitle, 60) : "";
       // Custom-Title nur nutzen, wenn der Standort nach dem Clampen erhalten bleibt.
-      const title = clampedCustom && clampedCustom.includes(locName) ? clampedCustom : fallbackTitle;
+      const title =
+        !isSale && clampedCustom && clampedCustom.includes(locName)
+          ? clampedCustom
+          : fallbackTitle;
 
       const description = clampDesc(
         localize(seo?.metaDescription) ||
           p.description ||
           `${p.name} mieten in ${locName} bei SLT Rental. Faire Mietpreise, Beratung und Lieferung in der Region.`,
       );
-      const h1 = localize(seo?.h1) || `${p.name} mieten in ${locName}`;
+      const h1 = isSale
+        ? `${saleName} kaufen in ${locName}`
+        : localize(seo?.h1) || `${p.name} mieten in ${locName}`;
       const intro = [
         localize(seo?.metaDescription) ||
           p.description ||
@@ -1079,9 +1088,11 @@ for (const loc of locations as LocationData[]) {
         ogType: "product",
         // OG-Image = erstes Artikelbild (absolut), sonst Default.
         ogImage: absolutizeImage(typeof p.image === "string" ? p.image : undefined),
-        // Alle Produktseiten sind indexierbar – jede Variante hat unique
-        // Title, H1, Description, Intro und Breadcrumbs pro Standort.
-        noindex: false,
+        // Produktseiten sind indexierbar – jede Variante hat unique Title, H1,
+        // Description, Intro und Breadcrumbs pro Standort. Ausnahme (Etappe 3.8):
+        // reine Zubehörartikel bleiben buchbar und in der Kategorieliste,
+        // ihre Einzelseiten gehen aber auf „noindex, follow".
+        noindex: isAccessoryItem(p),
         breadcrumbs: [
           { name: "Start", path: "/" },
           { name: "Mieten", path: "/mieten" },

@@ -7,6 +7,11 @@
 // Client- und Server-Redirects identisch sind.
 
 import { locations, productCategories, type Product } from "@/data/rentalData";
+import {
+  CATEGORY_REASSIGNMENT_SOURCES,
+  DUPLICATE_PRODUCT_CANONICAL,
+  DUPLICATE_SOURCE_CATEGORY,
+} from "@/data/categoryModel";
 
 export const LEGACY_LOCATION_IDS = ["krefeld", "bonn", "muelheim"] as const;
 
@@ -288,6 +293,41 @@ export function buildLegacyRedirectRules(): LegacyRedirectRule[] {
     bonn: ["bonn"],
     muelheim: ["muelheim", "duisburg"],
   };
+
+  // Etappe 3.5/3.6: umgehängte Artikel und entfallene Duplikat-Zweitseiten
+  // behalten ihre alte URL als 301 auf die gültige Produktseite.
+  // Ziel bevorzugt am selben Standort, sonst am nächsten verfügbaren.
+  const productPath = (productId: string, preferredLocationId?: string): string | undefined => {
+    const ordered = preferredLocationId
+      ? [...locations].sort((a, b) =>
+          a.id === preferredLocationId ? -1 : b.id === preferredLocationId ? 1 : 0,
+        )
+      : locations;
+    for (const location of ordered) {
+      for (const [categoryId, products] of Object.entries(location.products)) {
+        if (products.some((p) => p.id === productId)) {
+          return `/mieten/${location.id}/${categoryId}/${productId}`;
+        }
+      }
+    }
+    return undefined;
+  };
+
+  for (const location of locations) {
+    for (const [productId, fromCategory] of Object.entries(CATEGORY_REASSIGNMENT_SOURCES)) {
+      const path = productPath(productId, location.id);
+      if (!path) continue;
+      add(`/mieten/${location.id}/${fromCategory}/${productId}`, { path, kind: "product" });
+    }
+    for (const [duplicateId, canonicalId] of Object.entries(DUPLICATE_PRODUCT_CANONICAL)) {
+      const path = productPath(canonicalId, location.id);
+      if (!path) continue;
+      add(`/mieten/${location.id}/${DUPLICATE_SOURCE_CATEGORY}/${duplicateId}`, {
+        path,
+        kind: "product",
+      });
+    }
+  }
 
   for (const location of locations) {
     const slugs = legacyLocationSlugs[location.id] || [location.id];

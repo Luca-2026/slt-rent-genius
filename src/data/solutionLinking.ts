@@ -198,7 +198,7 @@ export const solutionLinking: Record<string, SolutionLinking> = {
       { categoryId: "huepfburgen", slug: "huepfburg-rollercoaster-1", label: "Hüpfburg Rollercoaster mieten" },
       { categoryId: "huepfburgen", slug: "huepfburg-wasserpark", label: "Wasserrutsche mieten" },
       { categoryId: "moebel-zelte", slug: "partyzelt-4x6m", label: "Partyzelt 4x6 m mieten" },
-      { categoryId: "spezialeffekte", slug: "popcornmaschine-xl-profi", label: "Popcornmaschine mieten" },
+      { categoryId: "gastro-equipment", slug: "popcornmaschine-xl-profi", label: "Popcornmaschine mieten" },
       { categoryId: "beschallung", slug: "soundsystem-2-1-1400w", label: "Musikanlage mieten" },
     ],
     guides: ["partyzelt-mieten-groesse-genehmigung", "geschirr-mieten-hochzeit-mengen-checkliste"],

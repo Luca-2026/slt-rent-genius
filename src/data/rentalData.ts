@@ -1,6 +1,12 @@
 // Location and category data structure for the rental system
 
 // Category Icons
+import {
+  CATEGORY_REASSIGNMENTS,
+  DUPLICATE_PRODUCT_CANONICAL,
+  SORT_BY_SIZE_CATEGORIES,
+  compareProductsInCategory,
+} from "@/data/categoryModel";
 import iconBagger from "@/assets/icons/category-bagger.png";
 import iconVerdichtung from "@/assets/icons/category-verdichtung.png";
 import iconWerkzeug from "@/assets/icons/werkzeug.png";
@@ -1716,7 +1722,7 @@ const nutzfahrzeugeProducts: Product[] = [manKipperMeillerD205, pritschenkipper3
 
 
 // Locations with their available categories and products
-export const locations: LocationData[] = [
+const rawLocations: LocationData[] = [
   {
     id: "krefeld",
     name: "Krefeld",
@@ -2160,6 +2166,37 @@ export const locations: LocationData[] = [
     },
   },
 ];
+
+// ---------------------------------------------------------------
+// Etappe 3 – zentrales Kategorie-Datenmodell anwenden:
+//  • falsch einsortierte Artikel in die richtige Kategorie umhängen (3.5)
+//  • doppelte Zweitseiten entfernen, es bleibt eine Artikel-URL (3.6)
+//  • Sortierung nach Größe in ausgewählten Kategorien (3.4)
+// ---------------------------------------------------------------
+function applyCategoryModel(input: LocationData[]): LocationData[] {
+  return input.map((loc) => {
+    const buckets: Record<string, Product[]> = {};
+    for (const catId of Object.keys(loc.products)) buckets[catId] = [];
+
+    for (const [catId, list] of Object.entries(loc.products)) {
+      for (const product of list || []) {
+        if (DUPLICATE_PRODUCT_CANONICAL[product.id]) continue; // Zweitseite entfällt
+        const target = CATEGORY_REASSIGNMENTS[product.id] ?? catId;
+        (buckets[target] ||= []).push(product);
+      }
+    }
+
+    for (const catId of Object.keys(buckets)) {
+      if (SORT_BY_SIZE_CATEGORIES.has(catId)) {
+        buckets[catId] = [...buckets[catId]].sort(compareProductsInCategory);
+      }
+    }
+
+    return { ...loc, products: buckets };
+  });
+}
+
+export const locations: LocationData[] = applyCategoryModel(rawLocations);
 
 // Helper functions
 export function getLocationById(id: string): LocationData | undefined {
