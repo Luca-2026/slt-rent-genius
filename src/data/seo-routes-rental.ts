@@ -964,9 +964,10 @@ for (const loc of locations as LocationData[]) {
       `Mietpark für ${categoryPlural(catId)} am SLT-Standort ${locName}. ${countLabel} sofort wählbar – mit Lieferung in der Region und persönlicher Beratung.`,
       ...(ownIntro ? [ownIntro] : []),
     ];
-    const categoryLocalIntro = locInfo
-      ? buildLocationIntro(locInfo, `${catSeoName.toLowerCase()} mieten`)
-      : [];
+    // Etappe 4: ein einziger, zentral gepflegter Standortabsatz je Kategorie.
+    const categoryLocalIntro = [
+      locationParagraph(loc.id, `${catSeoName.toLowerCase()} mieten`, { categoryId: catId }),
+    ].filter(Boolean);
 
     CATEGORY_ROUTES.push({
       path: `/mieten/${loc.id}/${catId}`,
