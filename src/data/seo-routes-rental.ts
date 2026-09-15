@@ -1036,19 +1036,17 @@ for (const loc of locations as LocationData[]) {
       if (seo?.useCaseBau) intro.push(`Einsatz Bau: ${seo.useCaseBau}`);
 
 
-      // Plan A: Self-Canonical pro Standort. Genau EIN Standortabsatz je
-      // Produktseite (kompakt: Adresse/Übergabe + Liefergebiet). Mehrere
-      // Standortblöcke plus Kategorie-Boilerplate erzeugten sonst über
-      // 350 Produkte × 3 Standorte ein Doorway-Muster.
-      if (locInfo) {
-        intro.push(...buildLocationIntro(locInfo, `${p.name} mieten`, { compact: true }));
-      }
+      // Etappe 4: Genau EIN zentraler Standortabsatz je Produktseite
+      // (Adresse, Übergabemodus, Öffnungszeiten bzw. Abholregel) – aus
+      // src/data/locationBlocks.ts, damit Bonn keine Werkstatt-/Übergabe-
+      // Aussage und Krefeld keinen doppelten Lieferabsatz bekommt.
+      intro.push(locationParagraph(loc.id, `${p.name} mieten`, { categoryId: catId }));
 
-      // Sprint 1 – Verfügbarkeits-Automatik in SSR-Hero
-      // Damit Google sofort erkennt, ob das Produkt am Standort
-      // verfügbar oder auf Anfrage ist (echter Content-Unterschied).
-      const availability = getProductAvailability(p, loc.id, { categoryId: catId });
-      intro.push(`${availability.headline}. ${availability.body}`);
+      // Genau EIN Verfügbarkeitsabsatz, gesteuert vom Status des Produkts
+      // an diesem Standort (sofortVorOrt / selbstabholung24_7 / aufAnfrage).
+      const availStatus = resolveAvailabilityStatus(p, loc.id, { categoryId: catId });
+      intro.push(availabilityParagraph(availStatus, loc.id));
+      intro.push(bookingHint(availStatus));
 
       // Produktspezifisch statt Boilerplate: echte Nachbargeräte derselben
       // Kategorie am selben Standort (Alternativen / nächste Größe).
