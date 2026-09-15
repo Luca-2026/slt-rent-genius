@@ -32,7 +32,6 @@ import { jobListings } from "@/components/karriere/jobData";
 import { getLocalCategoryContent } from "./localCategoryContent";
 import { getProductAvailability } from "@/lib/productAvailability";
 import { getDrivingLicenseInfo, resolveProductFaqs } from "./productPageContent";
-import { categoryContent as productCategoryContent } from "@/components/rental/ProductSEOContent";
 
 const BASE_URL = "https://www.slt-rental.de";
 const DEFAULT_OG_IMAGE = `${BASE_URL}/images/og/default-slt-rental.png`;
@@ -1079,7 +1078,6 @@ for (const loc of locations as LocationData[]) {
         product: p,
         categoryId: catId,
         productFaqs: seo?.faqs,
-        categoryFaqs: productCategoryContent[catId]?.faqs,
         localFaqs,
       });
       const intro = [
