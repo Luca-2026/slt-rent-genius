@@ -25,6 +25,7 @@ import {
   resolveLegacyProduct,
   resolveLegacyCategory,
 } from "../src/data/legacyRedirects";
+import { isSaleItem } from "../src/data/categoryModel";
 
 const distDir = resolve(process.cwd(), "dist");
 if (!existsSync(distDir)) mkdirSync(distDir, { recursive: true });
