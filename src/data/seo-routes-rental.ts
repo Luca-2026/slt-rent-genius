@@ -9,6 +9,8 @@ import { locationData, type LocationInfo } from "./locationData";
 import { locations, type LocationData, type Product } from "./rentalData";
 import { productSEOData, type ProductSEOData } from "./productSEOData";
 import { blogArticles, type BlogArticle } from "./blogArticles";
+import { kbArticles, kbCategories, type KBArticle, type KBCategory } from "./knowledgeBaseData";
+
 import { solutionData, type Solution } from "@/pages/Loesungen";
 import { solutionLinking } from "@/data/solutionLinking";
 import { jobListings } from "@/components/karriere/jobData";
@@ -141,9 +143,15 @@ export interface SeoRoute {
    */
   linkSections?: Array<{
     heading: string;
-    links: Array<{ name: string; path: string }>;
+    links: Array<{ name: string; path: string; note?: string }>;
   }>;
+  /**
+   * Statisch vorgerenderte Textblöcke (z. B. Standort-Details auf /standorte/,
+   * Über-uns-Volltext). Reiner Text, damit Crawler ihn ohne JS sehen.
+   */
+  textSections?: Array<{ heading: string; paragraphs: string[] }>;
 }
+
 
 export interface PrerenderProduct {
   id: string;
@@ -175,6 +183,69 @@ export interface PrerenderCategory {
 // Static & top-level pages
 // ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
+// Hilfsdaten für vorgerenderte Hub-Inhalte (Etappe 2)
+// Quelle ausschließlich locationData.ts / blogArticles.ts – nichts erfunden.
+// ---------------------------------------------------------------
+
+const LOC_INFO: Record<string, LocationInfo> = Object.fromEntries(
+  (locationData as LocationInfo[]).map((l) => [l.id, l]),
+);
+
+/** Öffnungszeiten als Fließtext, geschlossene Tage werden weggelassen. */
+function hoursLine(loc: LocationInfo | undefined): string {
+  if (!loc) return "";
+  return loc.hours
+    .filter((h) => !/geschlossen/i.test(h.time))
+    .map((h) => `${h.day} ${h.time.replace(/\*/g, "")}`)
+    .join(", ");
+}
+
+/** Übergabemodus je Standort (Stammdaten-Formulierung, Etappe 2.4). */
+const HANDOVER_MODE: Record<string, string> = {
+  krefeld:
+    "Übergabe vor Ort zu den Öffnungszeiten, Anhänger zusätzlich rund um die Uhr per Code",
+  bonn: "Anhänger rund um die Uhr per Code, übrige Geräte auf Anfrage",
+  muelheim: "Beratung und Übergabe vor Ort zu den Öffnungszeiten",
+};
+
+const LOCATION_IDS_ORDERED = ["krefeld", "bonn", "muelheim"];
+
+const POPULAR_CATEGORY_IDS = [
+  "anhaenger",
+  "erdbewegung",
+  "werkzeuge",
+  "gartenpflege",
+  "arbeitsbuehnen",
+  "aggregate",
+  "moebel-zelte",
+  "huepfburgen",
+];
+
+const NEWEST_ARTICLES = [...(blogArticles as BlogArticle[])]
+  .sort((a, b) => (b.updatedAt || b.date).localeCompare(a.updatedAt || a.date))
+  .slice(0, 3);
+
+function locationCardNote(locId: string): string {
+  const loc = LOC_INFO[locId];
+  if (!loc) return "";
+  const hours = hoursLine(loc);
+  return [`${loc.address}, ${loc.city}`, hours, HANDOVER_MODE[locId]]
+    .filter(Boolean)
+    .join(" · ");
+}
+
+function categoryLinksFor(locId: string) {
+  const loc = (locations as LocationData[]).find((l) => l.id === locId);
+  if (!loc) return [];
+  return Object.entries(loc.products || {})
+    .filter(([, products]) => Array.isArray(products) && products.length > 0)
+    .map(([catId]) => ({
+      name: `${categoryTitleDe(catId)} mieten in ${LOCATION_DISPLAY[locId]}`,
+      path: `/mieten/${locId}/${catId}`,
+    }));
+}
+
 const STATIC_ROUTES: SeoRoute[] = [
   {
     path: "/",
@@ -187,9 +258,45 @@ const STATIC_ROUTES: SeoRoute[] = [
       "SLT Rental vermietet Baumaschinen, Anhänger, Aggregate und Event-Equipment an drei Standorten in Nordrhein-Westfalen: Krefeld (Hauptsitz), Bonn und Mülheim an der Ruhr.",
       "Über 350 Geräte für Bau, Garten- und Landschaftsbau, Industrie und Veranstaltungen – mit Lieferung in der gesamten Region und 24/7-Buchung für Anhänger.",
     ],
+    linkSections: [
+      {
+        heading: "Unsere Standorte",
+        links: LOCATION_IDS_ORDERED.map((id) => ({
+          name: `Mieten in ${LOCATION_DISPLAY[id]}`,
+          path: `/mieten/${id}`,
+          note: locationCardNote(id),
+        })),
+      },
+      {
+        heading: "Beliebte Kategorien",
+        links: POPULAR_CATEGORY_IDS.map((catId) => ({
+          name: `${categoryTitleDe(catId)} mieten`,
+          path: `/mieten/krefeld/${catId}`,
+        })),
+      },
+      {
+        heading: "Ratgeber",
+        links: NEWEST_ARTICLES.map((a) => ({
+          name: a.title,
+          path: `/ratgeber/${a.slug}`,
+        })),
+      },
+    ],
+    textSections: [
+      {
+        heading: "Warum SLT Rental",
+        paragraphs: [
+          "Anhänger rund um die Uhr per Code abholen – ohne Wartezeit und unabhängig von den Öffnungszeiten.",
+          "Über 350 Geräte für Bau, Garten- und Landschaftsbau, Industrie und Veranstaltungen.",
+          "Lieferung in der Region rund um Krefeld, Bonn und Mülheim an der Ruhr.",
+          "Eigene Werkstatt am Hauptsitz Krefeld: gewartete, einsatzbereite Technik.",
+        ],
+      },
+    ],
     changefreq: "daily",
     priority: 1.0,
   },
+
   {
     path: "/mieten",
     routeType: "page",
@@ -202,12 +309,18 @@ const STATIC_ROUTES: SeoRoute[] = [
     linkSections: [
       {
         heading: "Standorte",
-        links: (locations as LocationData[]).map((loc) => ({
-          name: `Mieten in ${LOCATION_DISPLAY[loc.id] || loc.name}`,
-          path: `/mieten/${loc.id}`,
+        links: LOCATION_IDS_ORDERED.map((id) => ({
+          name: `Mieten in ${LOCATION_DISPLAY[id]}`,
+          path: `/mieten/${id}`,
+          note: locationCardNote(id),
         })),
       },
+      ...LOCATION_IDS_ORDERED.map((id) => ({
+        heading: `Kategorien in ${LOCATION_DISPLAY[id]}`,
+        links: categoryLinksFor(id),
+      })),
     ],
+
     changefreq: "weekly",
     priority: 0.9,
   },
@@ -230,6 +343,46 @@ const STATIC_ROUTES: SeoRoute[] = [
     intro: [
       "SLT Rental ist mit drei Standorten in Nordrhein-Westfalen vertreten: Krefeld am Niederrhein, Bonn im Rheinland und Mülheim an der Ruhr im Ruhrgebiet.",
     ],
+    textSections: LOCATION_IDS_ORDERED.map((id) => {
+      const loc = LOC_INFO[id];
+      return {
+        heading: `${LOCATION_DISPLAY[id]} – ${loc?.subtitle || "Standort"}`,
+        paragraphs: [
+          `Adresse: ${loc?.address}, ${loc?.city}`,
+          `Öffnungszeiten: ${hoursLine(loc)}`,
+          loc?.hoursNote ? `Hinweis: ${loc.hoursNote.replace(/^\*/, "")}` : "",
+          `Übergabe: ${HANDOVER_MODE[id]}`,
+          loc?.deliveryRadius?.length
+            ? `Liefergebiet: ${joinCities(loc.deliveryRadius, 6)}`
+            : "",
+          `Anfahrt: ${loc?.mapUrl}`,
+        ].filter(Boolean),
+      };
+    }),
+    linkSections: [
+      {
+        heading: "Mietkatalog je Standort",
+        links: LOCATION_IDS_ORDERED.map((id) => ({
+          name: `Mietkatalog ${LOCATION_DISPLAY[id]}`,
+          path: `/mieten/${id}`,
+        })),
+      },
+      {
+        heading: "Standortseiten",
+        links: LOCATION_IDS_ORDERED.map((id) => ({
+          name: `Standort ${LOCATION_DISPLAY[id]}`,
+          path: `/standorte/${id}`,
+        })),
+      },
+      {
+        heading: "Orte, die wir beliefern",
+        links: (localAreas as LocalArea[]).map((a) => ({
+          name: `Mieten in ${a.name}`,
+          path: `/mieten-in/${a.slug}`,
+        })),
+      },
+    ],
+
     changefreq: "monthly",
     priority: 0.8,
   },
@@ -302,6 +455,26 @@ const STATIC_ROUTES: SeoRoute[] = [
     description: "SLT Rental – seit 2016 Mietpartner für Baumaschinen, Anhänger und Event-Equipment in Nordrhein-Westfalen. Drei Standorte, Werkstatt vor Ort.",
     h1: "Über SLT Rental",
     intro: ["Seit 2016 Ihr Mietpartner in NRW – mit eigenem Maschinenpark, Werkstatt und Service-Team."],
+    textSections: [
+      {
+        heading: "SLT Rental seit 2016",
+        paragraphs: [
+          "SLT Rental vermietet seit 2016 Baumaschinen, Anhänger, Aggregate und Event-Equipment in Nordrhein-Westfalen. Aus dem Start am Niederrhein sind drei Standorte geworden: Krefeld als Hauptsitz, Bonn und Mülheim an der Ruhr.",
+          "Am Hauptsitz Krefeld-Fichtenhain liegt unser Zentrallager mit über 350 Geräten sowie unsere eigene Werkstatt. Dort werden alle Maschinen gewartet, geprüft und repariert, bevor sie wieder in die Vermietung gehen.",
+          "Unser Team berät persönlich, weist vor Ort in die Geräte ein und organisiert Lieferung und Abholung in der Region. Anhänger sind zusätzlich rund um die Uhr per Code abholbar.",
+        ],
+      },
+    ],
+    linkSections: [
+      {
+        heading: "Weiter zu",
+        links: [
+          { name: "Unsere Standorte", path: "/standorte" },
+          { name: "Zum Mietkatalog", path: "/mieten" },
+        ],
+      },
+    ],
+
     changefreq: "yearly",
     priority: 0.5,
   },
@@ -365,6 +538,16 @@ const STATIC_ROUTES: SeoRoute[] = [
     description: "Anleitungen, Tipps und Hilfetexte rund um die Anmietung bei SLT Rental – Anhänger, Bagger, Aggregate und mehr.",
     h1: "Hilfe & Wissen",
     intro: ["Anleitungen und Tipps zur Anmietung und zum Betrieb der Geräte."],
+    textSections: (kbCategories as KBCategory[]).map((cat) => ({
+      heading: cat.title,
+      paragraphs: [
+        cat.description,
+        ...(kbArticles as KBArticle[])
+          .filter((a) => a.categoryId === cat.id)
+          .map((a) => `${a.title} – ${a.description}`),
+      ].filter(Boolean),
+    })),
+
     changefreq: "monthly",
     priority: 0.5,
   },
@@ -375,6 +558,19 @@ const STATIC_ROUTES: SeoRoute[] = [
     description: "Praxis-Tipps, Checklisten und Wissenswertes rund ums Mieten von Baumaschinen, Anhängern und Event-Equipment in NRW.",
     h1: "Ratgeber & Magazin",
     intro: ["Praxis-Tipps und Checklisten rund ums Mieten – aktuell und aus der täglichen Praxis."],
+    linkSections: [
+      {
+        heading: "Alle Ratgeber-Artikel",
+        links: [...(blogArticles as BlogArticle[])]
+          .sort((a, b) => (b.updatedAt || b.date).localeCompare(a.updatedAt || a.date))
+          .map((a) => ({
+            name: a.title,
+            path: `/ratgeber/${a.slug}`,
+            note: `${a.date} · ${a.teaser}`,
+          })),
+      },
+    ],
+
     changefreq: "weekly",
     priority: 0.7,
   },
