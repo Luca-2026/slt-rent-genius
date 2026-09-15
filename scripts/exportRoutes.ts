@@ -182,15 +182,16 @@ function localizedTitle(name: string, locName: string, max = 60) {
   return `${tidyCutText(short)}${tail}`;
 }
 
-function clampDescription(s: string, max = 158) {
-  if (s.length <= max) {
-    const cleaned = /[…]$/u.test(s) ? tidyCutText(s) + "…" : s;
-    return cleaned;
-  }
-  const cut = s.slice(0, max);
+function clampDescription(s: string, max = 155) {
+  const clean = s.replace(/[✓✔☑]/g, "").replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return /[.!?]$/.test(clean) ? clean : `${clean}.`;
+  const sentenceEnds = [...clean.matchAll(/[.!?](?:\s|$)/g)]
+    .map((match) => (match.index ?? 0) + 1)
+    .filter((index) => index >= 120 && index <= max);
+  if (sentenceEnds.length) return clean.slice(0, sentenceEnds[sentenceEnds.length - 1]).trim();
+  const cut = clean.slice(0, max - 1);
   const last = cut.lastIndexOf(" ");
-  const base = tidyCutText(last > 80 ? cut.slice(0, last) : cut);
-  return base.endsWith(".") ? base : base + "…";
+  return `${tidyCutText(last > 80 ? cut.slice(0, last) : cut)}.`;
 }
 
 
@@ -422,6 +423,19 @@ const enriched = allRoutes.map((route) => {
         useCasePrivat: route.productData.useCasePrivat,
         faqs: route.productData.faqs,
         modelName: route.productData.modelName,
+        longName: route.productData.longName,
+        specifications: route.productData.specifications,
+        pricePerDay: route.productData.pricePerDay,
+        pricePerMonth: route.productData.pricePerMonth,
+        priceWeekend: route.productData.priceWeekend,
+        priceUnitLabel: route.productData.priceUnitLabel,
+        minRentalMonths: route.productData.minRentalMonths,
+        availabilityText: route.productData.availabilityText,
+        bookingHint: route.productData.bookingHint,
+        locationText: route.productData.locationText,
+        alternatives: route.productData.alternatives,
+        accessories: route.productData.accessories,
+        guides: route.productData.guides,
       }
     : undefined;
   const categoryData = route.routeType === "category" && route.categoryData

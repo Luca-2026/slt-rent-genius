@@ -205,6 +205,7 @@ import {
 export interface Product {
   id: string;
   name: string;
+  longName?: string; // Optionaler Marketingname; Listen und Title verwenden weiterhin name
   modelName?: string; // Manufacturer + model designation shown below the name
   description?: string;
   detailedDescription?: string; // Longer description for product detail page

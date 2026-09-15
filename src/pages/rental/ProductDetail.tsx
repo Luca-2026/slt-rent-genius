@@ -45,6 +45,8 @@ import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
 import { REAL_LOCATION_REVIEWS } from "@/data/realGoogleReviews";
 import { ProductPriceBlock, hasAnyPrice, formatPriceValue } from "@/components/rental/ProductPriceBlock";
+import { RatgeberTeaserBlock } from "@/components/ratgeber/RatgeberTeaserBlock";
+import { getArticlesForCategory } from "@/data/blogArticles";
 
 const LEGACY_PRODUCT_ID_REDIRECTS: Record<string, string> = {
   "bonn-stampfer-gs72": "/mieten/bonn/verdichtung/stampfer-gs72-xh/",
@@ -267,15 +269,18 @@ export default function ProductDetail() {
                 : undefined)
         : undefined;
       const localizedSeoTitle = localizedEntry?.seoTitle;
-      let seoTitle: string;
-      if (localizedSeoTitle) {
-        seoTitle = localizedSeoTitle;
-      } else if (titleBase.length + ' | SLT Rental'.length <= 60) {
-        seoTitle = `${titleBase} | SLT Rental`;
-      } else {
-        seoTitle = titleBase;
-      }
-      seoTitle = localizeText(seoTitle);
+      const titleSuffix = " | SLT Rental";
+      const fitTitle = (value: string): string => {
+        const localized = localizeText(value).replace(/\s*\|\s*SLT Rental\s*$/i, "").trim();
+        const budget = 60 - titleSuffix.length;
+        if (localized.length <= budget) return `${localized}${titleSuffix}`;
+        const locationTail = ` mieten in ${cityName}`;
+        const nameBudget = budget - locationTail.length;
+        const cut = genericName.slice(0, Math.max(1, nameBudget));
+        const cleanName = cut.slice(0, Math.max(cut.lastIndexOf(" "), 1)).trim();
+        return `${cleanName}${locationTail}${titleSuffix}`;
+      };
+      let seoTitle = fitTitle(localizedSeoTitle || titleBase);
       document.title = seoTitle;
 
       // SEO: Meta description - CMS override wins, else generated
@@ -286,15 +291,14 @@ export default function ProductDetail() {
       } else if (product.seoMetaDescription && product.seoMetaDescription.trim()) {
         descText = product.seoMetaDescription.trim();
       } else if (product.description) {
-        const localizedDesc = localizeText(product.description);
-        const descSnippet = localizedDesc.length > 80 
-          ? localizedDesc.substring(0, 80).replace(/\s+\S*$/, '') 
-          : localizedDesc;
-        const candidate = `${genericName} mieten in ${cityName} bei SLT Rental.${modelInfo ? ` ${descSnippet}` : ` ${descSnippet}`}. Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.`;
-        descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
+        const localizedDesc = localizeText(product.description).replace(/[✓✔☑]/g, "").trim();
+        const sentences = localizedDesc.match(/[^.!?]+[.!?]/g) || [];
+        const complete = sentences.find((sentence) => sentence.trim().length >= 70) || sentences[0];
+        const candidate = complete?.trim() || `${genericName} mieten in ${cityName} bei SLT Rental. Preis und Verfügbarkeit direkt online prüfen.`;
+        descText = candidate.length <= 155 ? candidate : `${candidate.slice(0, 154).replace(/\s+\S*$/, "").replace(/[,:;\s]+$/, "")}.`;
       } else {
         const candidate = `${genericName} mieten in ${cityName} bei SLT Rental.${modelInfo} Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.`;
-        descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
+        descText = candidate.length <= 155 ? candidate : `${candidate.slice(0, 154).replace(/\s+\S*$/, "").replace(/[,:;\s]+$/, "")}.`;
       }
 
       // Wichtig: Gepflegte SEO-Texte nennen oft nur einen Standort (z. B. "in Krefeld").
@@ -946,7 +950,7 @@ export default function ProductDetail() {
                 )}
 
                 {/* Detailed Description */}
-                {product.detailedDescription && (() => {
+                {product.detailedDescription && product.detailedDescription.trim() !== product.description?.trim() && (() => {
                   const isWeinsberg = product.id === "weinsberg-caraone-480-qdk";
                   const cityNameMap: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
                   const cityName = cityNameMap[location.id] || location.name;
@@ -1368,10 +1372,34 @@ export default function ProductDetail() {
 
               )}
 
-              {/* Standortspezifischer Block (Hookline + Standort-Fakten).
-                  FAQs werden weiter unten in den bestehenden FAQ-Block eingehängt. */}
-              {locationId && categoryId && (
-                <LocalCategoryContentBlock locationId={locationId} categoryId={categoryId} />
+              {relatedProducts.length > 0 && (
+                <section className="bg-card rounded-xl border border-border p-5">
+                  <h2 className="text-base font-semibold text-headline mb-3">Alternativen in der Kategorie</h2>
+                  <ul className="space-y-2">
+                    {relatedProducts.slice(0, 4).map((relatedProduct) => (
+                      <li key={relatedProduct.id}>
+                        <Link className="text-sm font-medium text-primary hover:underline" to={`/mieten/${location.id}/${categoryId}/${relatedProduct.id}/`}>
+                          {relatedProduct.name}{relatedProduct.modelName ? ` – ${relatedProduct.modelName}` : ""}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+
+              {accessories.length > 0 && (
+                <section className="bg-card rounded-xl border border-border p-5">
+                  <h2 className="text-base font-semibold text-headline mb-3">Zubehör und Dazubuchbares</h2>
+                  <ul className="space-y-2">
+                    {accessories.map((accessory) => (
+                      <li key={accessory.id}>
+                        <Link className="text-sm font-medium text-primary hover:underline" to={`/mieten/${location.id}/${categoryId}/${accessory.id}/`}>
+                          {accessory.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
               )}
 
               {/* SEO Content Block (Use-Cases + FAQ – inkl. lokaler FAQs) */}
@@ -1382,6 +1410,12 @@ export default function ProductDetail() {
                 categoryTitle={category.title}
                 productSEO={productSEO}
                 additionalFaqs={locationId && categoryId ? getLocalCategoryContent(locationId, categoryId)?.faqs : undefined}
+              />
+
+              <RatgeberTeaserBlock
+                articles={getArticlesForCategory(categoryId || "", 3)}
+                heading="Passende Ratgeber"
+                subheading="Weitere Informationen für Auswahl und Einsatz."
               />
 
               {/* HalteverbotsSeoSection wurde für Halteverbotsschilder-Sets nach oben
@@ -1395,21 +1429,19 @@ export default function ProductDetail() {
               <div className="sticky top-4 space-y-4 md:space-y-3 lg:space-y-5">
                 {/* Booking Card – desktop/tablet only */}
                 <div className="hidden md:block bg-card rounded-xl border border-border p-4 md:p-3 lg:p-5">
-                  {hasAnyPrice(product, productSEO?.dailyPriceFrom) && (
-                    <div className="mb-3 md:mb-2 lg:mb-4 pb-3 md:pb-2 lg:pb-4 border-b border-border">
+                  <div className="mb-3 md:mb-2 lg:mb-4 pb-3 md:pb-2 lg:pb-4 border-b border-border">
                       <ProductPriceBlock
                         product={product}
                         dailyPriceFrom={typeof productSEO?.dailyPriceFrom === "number" ? productSEO.dailyPriceFrom : undefined}
                         perDayLabel={t("rental.perDay")}
                       />
-                      <p className="text-[11px] text-muted-foreground mt-1">
-                        Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
-                      </p>
-                      <p className="text-[11px] leading-snug text-muted-foreground mt-1">
-                        *Unverbindlicher Ab-Preis{!product.pricePerMonth && !product.pricePerDay ? ", gerechnet auf Monatsmiete" : ""}. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
-                      </p>
+                      {hasAnyPrice(product, productSEO?.dailyPriceFrom) && <p className="text-[11px] text-muted-foreground mt-1">{product.pricePerMonth && product.minRentalMonths ? `Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}</p>}
+                      {hasAnyPrice(product, productSEO?.dailyPriceFrom) && (
+                        <p className="text-[11px] leading-snug text-muted-foreground mt-1">
+                          *Unverbindlicher Ab-Preis{!product.pricePerMonth && !product.pricePerDay ? ", gerechnet auf Monatsmiete" : ""}. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
+                        </p>
+                      )}
                     </div>
-                  )}
 
                   <div className="space-y-2 md:space-y-1.5 lg:space-y-2 mb-3 md:mb-2 lg:mb-4">
                     <Button
@@ -1473,85 +1505,6 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* Optional Accessories for Excavators */}
-          {accessories.length > 0 && (
-            <div className="mt-10 pt-8 border-t border-border">
-              <div className="flex items-center gap-2 mb-5">
-                <HardHat className="h-5 w-5 text-primary" />
-                <h2 className="text-lg font-bold text-headline">{t("rental.optionalAccessories", "Optionales Zubehör")}</h2>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4">
-                {t("rental.accessoriesHint", "Passende Anbaugeräte für diese Maschine – einfach dazu buchen.")}
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {accessories.map((acc) => (
-                  <Link key={acc.id} to={`/mieten/${location.id}/${acc.tags?.includes("baumaschine") || acc.tags?.includes("autotransport") || acc.tags?.includes("gebremst") ? "anhaenger" : categoryId}/${acc.id}`}>
-                    <Card className="h-full hover:shadow-md transition-shadow group overflow-hidden border-primary/20">
-                      <div className="aspect-[4/3] bg-muted">
-                        {acc.image && acc.image !== "/placeholder.svg" ? (
-                          <img
-                            src={acc.image}
-                            alt={`${acc.name} – Anbaugerät für ${product.name}`}
-                            className="w-full h-full object-contain group-hover:scale-105 transition-transform"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <Package className="h-8 w-8 text-muted-foreground/30" />
-                          </div>
-                        )}
-                      </div>
-                      <CardContent className="p-3">
-                        <h3 className="font-medium text-sm text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                          {acc.name}
-                        </h3>
-                        {acc.description && (
-                          <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{acc.description}</p>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Related Products */}
-          {relatedProducts.length > 0 && (
-            <div className="mt-10 pt-8 border-t border-border">
-              <h2 className="text-lg font-bold text-headline mb-5">{t("rental.relatedProducts")}</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {relatedProducts.map((relatedProduct) => (
-                  <Link key={relatedProduct.id} to={`/mieten/${location.id}/${categoryId}/${relatedProduct.id}/`}>
-                    <Card className="h-full hover:shadow-md transition-shadow group overflow-hidden">
-                      <div className="aspect-[4/3] bg-muted">
-                        {relatedProduct.image ? (
-                          <img
-                            src={relatedProduct.image}
-                            alt={relatedProduct.name}
-                            className="w-full h-full object-contain group-hover:scale-105 transition-transform"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <Package className="h-8 w-8 text-muted-foreground/30" />
-                          </div>
-                        )}
-                      </div>
-                      <CardContent className="p-3">
-                        <h3 className="font-medium text-sm text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                          {relatedProduct.name}
-                        </h3>
-                        {relatedProduct.pricePerDay && (
-                          <p className="text-sm font-semibold text-primary mt-1">
-                            {formatPriceValue(relatedProduct.pricePerDay)}{relatedProduct.priceUnitLabel ?? t("rental.perDay")}
-                          </p>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </section>
 
@@ -1587,22 +1540,20 @@ function MobileBookingCard({
   const showPrice = hasAnyPrice(product, dailyPriceFrom);
   return (
     <div className="bg-card rounded-xl border border-border p-4">
-      {showPrice && (
-        <div className="mb-3 pb-3 border-b border-border">
+      <div className="mb-3 pb-3 border-b border-border">
           <ProductPriceBlock
             product={product}
             dailyPriceFrom={dailyPriceFrom}
             perDayLabel={t("rental.perDay")}
           />
 
-          <p className="text-[11px] text-muted-foreground mt-1">
-            Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
-          </p>
-          <p className="text-[11px] leading-snug text-muted-foreground mt-1">
-            *Unverbindlicher Ab-Preis{!product.pricePerMonth && !product.pricePerDay ? ", gerechnet auf Monatsmiete" : ""}. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
-          </p>
+          {showPrice && <p className="text-[11px] text-muted-foreground mt-1">{product.pricePerMonth && product.minRentalMonths ? `Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}</p>}
+          {showPrice && (
+            <p className="text-[11px] leading-snug text-muted-foreground mt-1">
+              *Unverbindlicher Ab-Preis{!product.pricePerMonth && !product.pricePerDay ? ", gerechnet auf Monatsmiete" : ""}. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
+            </p>
+          )}
         </div>
-      )}
       <div className="flex flex-col gap-2">
         <Button
           size="default"

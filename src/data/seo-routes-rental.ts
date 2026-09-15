@@ -23,7 +23,7 @@ import {
   isAccessoryItem,
   isSaleItem,
 } from "./categoryModel";
-import { blogArticles, type BlogArticle } from "./blogArticles";
+import { blogArticles, getArticlesForCategory, type BlogArticle } from "./blogArticles";
 import { kbArticles, kbCategories, type KBArticle, type KBCategory } from "./knowledgeBaseData";
 
 import { solutionData, type Solution } from "@/pages/Loesungen";
@@ -59,13 +59,17 @@ function clamp(str: string, max = 60): string {
   return tidyCut(last > 30 ? cut.slice(0, last) : cut);
 }
 
-function clampDesc(str: string, max = 158): string {
+function clampDesc(str: string, max = 155): string {
   if (!str) return str;
-  if (str.length <= max) return str;
-  const cut = str.slice(0, max);
+  const clean = str.replace(/[✓✔☑]/g, "").replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return /[.!?]$/.test(clean) ? clean : `${clean}.`;
+  const sentenceEnds = [...clean.matchAll(/[.!?](?:\s|$)/g)]
+    .map((match) => (match.index ?? 0) + 1)
+    .filter((index) => index >= 120 && index <= max);
+  if (sentenceEnds.length) return clean.slice(0, sentenceEnds[sentenceEnds.length - 1]).trim();
+  const cut = clean.slice(0, max - 1);
   const last = cut.lastIndexOf(" ");
-  const base = tidyCut(last > 80 ? cut.slice(0, last) : cut);
-  return base.endsWith(".") ? base : base + "…";
+  return `${tidyCut(last > 80 ? cut.slice(0, last) : cut)}.`;
 }
 
 // Title mit Standort: Der Standort darf NIEMALS wegge-clamped werden, sonst
@@ -185,6 +189,19 @@ export interface PrerenderProduct {
   useCasePrivat?: string;
   faqs?: { q: string; a: string }[];
   modelName?: string;
+  longName?: string;
+  specifications?: Record<string, string>;
+  pricePerDay?: string;
+  pricePerMonth?: string;
+  priceWeekend?: string;
+  priceUnitLabel?: string;
+  minRentalMonths?: number;
+  availabilityText?: string;
+  bookingHint?: string;
+  locationText?: string;
+  alternatives?: Array<{ name: string; path: string }>;
+  accessories?: Array<{ name: string; path: string }>;
+  guides?: Array<{ name: string; path: string }>;
 }
 
 export interface PrerenderCategory {
@@ -1050,37 +1067,41 @@ for (const loc of locations as LocationData[]) {
       const h1 = isSale
         ? `${saleName} kaufen in ${locName}`
         : localize(seo?.h1) || `${p.name} mieten in ${locName}`;
+      const locationText = locationParagraph(loc.id, `${p.name} mieten`, { categoryId: catId });
+      const availStatus = resolveAvailabilityStatus(p, loc.id, { categoryId: catId });
+      const availabilityText = availabilityParagraph(availStatus, loc.id);
+      const availabilityBookingHint = bookingHint(availStatus);
       const intro = [
         localize(seo?.metaDescription) ||
           p.description ||
           `${p.name} mieten am Standort ${locName} – Beratung, Übergabe und Lieferung durch SLT Rental.`,
       ];
-      if (seo?.useCaseBau) intro.push(`Einsatz Bau: ${seo.useCaseBau}`);
-
-
-      // Etappe 4: Genau EIN zentraler Standortabsatz je Produktseite
-      // (Adresse, Übergabemodus, Öffnungszeiten bzw. Abholregel) – aus
-      // src/data/locationBlocks.ts, damit Bonn keine Werkstatt-/Übergabe-
-      // Aussage und Krefeld keinen doppelten Lieferabsatz bekommt.
-      intro.push(locationParagraph(loc.id, `${p.name} mieten`, { categoryId: catId }));
-
-      // Genau EIN Verfügbarkeitsabsatz, gesteuert vom Status des Produkts
-      // an diesem Standort (sofortVorOrt / selbstabholung24_7 / aufAnfrage).
-      const availStatus = resolveAvailabilityStatus(p, loc.id, { categoryId: catId });
-      intro.push(availabilityParagraph(availStatus, loc.id));
-      intro.push(bookingHint(availStatus));
-
-      // Produktspezifisch statt Boilerplate: echte Nachbargeräte derselben
-      // Kategorie am selben Standort (Alternativen / nächste Größe).
-      const siblings = products
-        .filter((s) => s.id !== p.id)
+      const ownIndex = products.findIndex((candidate) => candidate.id === p.id);
+      const neighbors = products
+        .map((candidate, index) => ({ candidate, distance: Math.abs(index - ownIndex), index }))
+        .filter(({ candidate }) => candidate.id !== p.id && !candidate.compatibleMachines)
+        .sort((a, b) => a.distance - b.distance || a.index - b.index)
+        .map(({ candidate }) => candidate);
+      const manualAlternatives = (p.relatedSlugs || [])
+        .map((slug) => products.find((candidate) => candidate.id === slug))
+        .filter((candidate): candidate is Product => Boolean(candidate) && candidate.id !== p.id);
+      const alternatives = [...manualAlternatives, ...neighbors]
+        .filter((candidate, index, all) => all.findIndex((item) => item.id === candidate.id) === index)
         .slice(0, 4)
-        .map((s) => s.name);
-      if (siblings.length) {
-        intro.push(
-          `Alternativen in der Kategorie ${catTitle} am Standort ${locName}: ${siblings.join(", ")}. Wir beraten dich, welche Größe zu deinem Einsatz passt.`,
-        );
-      }
+        .map((candidate) => ({
+          name: candidate.modelName ? `${candidate.name} – ${candidate.modelName}` : candidate.name,
+          path: `/mieten/${loc.id}/${catId}/${candidate.id}`,
+        }));
+      const accessories = Object.entries(loc.products)
+        .flatMap(([accessoryCategory, categoryProducts]) =>
+          categoryProducts
+            .filter((candidate) => candidate.compatibleMachines?.includes(p.id))
+            .map((candidate) => ({
+              name: candidate.name,
+              path: `/mieten/${loc.id}/${accessoryCategory}/${candidate.id}`,
+            })),
+        )
+        .slice(0, 12);
 
 
       PRODUCT_ROUTES.push({
@@ -1099,6 +1120,22 @@ for (const loc of locations as LocationData[]) {
           h1: seo?.h1,
           faqs: seo?.faqs,
           modelName: p.modelName,
+            longName: p.longName,
+            specifications: p.specifications,
+            pricePerDay: p.pricePerDay,
+            pricePerMonth: p.pricePerMonth,
+            priceWeekend: p.priceWeekend,
+            priceUnitLabel: p.priceUnitLabel,
+            minRentalMonths: p.minRentalMonths,
+            availabilityText,
+            bookingHint: availabilityBookingHint,
+            locationText,
+            alternatives,
+            accessories,
+            guides: getArticlesForCategory(catId, 3).map((article) => ({
+              name: article.title,
+              path: `/ratgeber/${article.slug}`,
+            })),
         },
         title,
         description,

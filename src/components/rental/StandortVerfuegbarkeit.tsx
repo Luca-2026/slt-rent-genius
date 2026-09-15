@@ -1,12 +1,16 @@
 import { MapPin, Truck, Clock, Sparkles, CheckCircle2, MailQuestion } from "lucide-react";
 import { getLocationInfoById } from "@/data/locationData";
-import { getProductAvailability } from "@/lib/productAvailability";
+import {
+  availabilityParagraph,
+  locationParagraph,
+  resolveAvailabilityStatus,
+} from "@/data/locationBlocks";
 import type { Product } from "@/data/rentalData";
 
 interface StandortVerfuegbarkeitProps {
   locationId: string;
   /** Wenn gesetzt, wird die produktspezifische Verfügbarkeit (rentwareCode) ausgewertet */
-  product?: Pick<Product, "rentwareCode">;
+  product?: Pick<Product, "rentwareCode" | "onRequest" | "name">;
   /** Top-Level Kategorie (z. B. "anhaenger") – steuert "keine Lieferung"-Hinweise */
   categoryId?: string;
   /** Name des Zentrallagers für service-handover-Standorte */
@@ -47,8 +51,8 @@ export function StandortVerfuegbarkeit({
 
   // Produktspezifische Variante (Sprint 1)
   if (product) {
-    const avail = getProductAvailability(product, locationId, { categoryId });
-    const isLocal = avail.status === "available-local" || avail.status === "available-warehouse";
+    const status = resolveAvailabilityStatus(product, locationId, { categoryId });
+    const isLocal = status !== "aufAnfrageDispoKrefeld";
     const Icon = isLocal ? CheckCircle2 : MailQuestion;
     const accentClass = isLocal
       ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-300 dark:border-emerald-900"
@@ -67,15 +71,20 @@ export function StandortVerfuegbarkeit({
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2 mb-1.5">
                 <h3 className="text-sm md:text-base font-semibold text-headline">
-                  {avail.headline}
+                  Verfügbarkeit am Standort {name}
                 </h3>
                 <span
                   className={`inline-flex items-center text-[11px] md:text-xs px-2 py-0.5 rounded-full border font-medium ${accentClass}`}
                 >
-                  {avail.badgeLabel}
+                  {status === "selbstabholung24_7" ? "24/7 Selbstabholung" : status === "sofortVorOrt" ? "Sofort vor Ort" : "Auf Anfrage"}
                 </span>
               </div>
-              <p className="text-xs md:text-sm text-body leading-relaxed">{avail.body}</p>
+              <p className="text-xs md:text-sm text-body leading-relaxed">
+                {availabilityParagraph(status, locationId)}
+              </p>
+              <p className="mt-2 text-xs md:text-sm text-body leading-relaxed">
+                {locationParagraph(locationId, `${product.name} mieten`, { categoryId })}
+              </p>
 
               {cities.length > 0 && !isPickupOnly && (
                 <div className="mt-3 flex flex-wrap items-center gap-1.5">
@@ -94,7 +103,7 @@ export function StandortVerfuegbarkeit({
                 </div>
               )}
 
-              {avail.status === "on-request" && serviceCharacter === "service-handover" && futurePromise && (
+              {status === "aufAnfrageDispoKrefeld" && serviceCharacter === "service-handover" && futurePromise && (
                 <div className="mt-3 flex items-start gap-2 text-xs md:text-sm text-body bg-accent/10 border border-accent/30 rounded-md p-3">
                   <Sparkles className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                   <p>
