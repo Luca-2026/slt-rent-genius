@@ -22,6 +22,18 @@ export function formatPriceValue(value: string): string {
   return /^[\d.,]+$/.test(v) ? `${v} €` : v;
 }
 
+function netPriceLabel(value: string): string | null {
+  const match = value.match(/\d[\d.]*([,.]\d+)?/);
+  if (!match) return null;
+  const gross = Number(match[0].replace(/\./g, "").replace(",", "."));
+  if (!Number.isFinite(gross) || gross <= 0) return null;
+  return new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: 2,
+  }).format(gross / 1.19);
+}
+
 function formatFrom(value: number) {
   return `ab ${Number.isInteger(value) ? value : value.toFixed(2).replace(".", ",")} €`;
 }
@@ -44,8 +56,6 @@ export function ProductPriceBlock({
   const hasWeekend = Boolean(product.priceWeekend);
   const hasSeoFrom = typeof dailyPriceFrom === "number";
 
-  if (!hasDay && !hasMonth && !hasWeekend && !hasSeoFrom) return null;
-
   // Hauptpreis bestimmen
   let mainValue: string;
   let mainUnit: string;
@@ -58,10 +68,15 @@ export function ProductPriceBlock({
   } else if (hasMonth) {
     mainValue = formatPriceValue(product.pricePerMonth!);
     mainUnit = product.priceUnitLabel ?? "/ Monat";
-  } else {
+  } else if (hasWeekend) {
     mainValue = formatPriceValue(product.priceWeekend!);
     mainUnit = "/ Wochenende";
+  } else {
+    mainValue = "Preis auf Anfrage";
+    mainUnit = "";
   }
+
+  const netLabel = netPriceLabel(mainValue);
 
   // Zusatztarife (nur, was nicht schon Hauptpreis ist)
   const extras: Array<{ label: string; value: string }> = [];
@@ -87,6 +102,11 @@ export function ProductPriceBlock({
         <span className="text-primary">*</span>
         <span className={`${unitSize} font-normal text-muted-foreground`}> {mainUnit}</span>
       </div>
+      {netLabel && (
+        <p className="mt-1 text-xs text-muted-foreground">
+          Brutto inkl. 19 % USt. ({netLabel} netto)
+        </p>
+      )}
 
       {extras.length > 0 && (
         <ul className="mt-1.5 space-y-0.5">

@@ -59,13 +59,17 @@ function clamp(str: string, max = 60): string {
   return tidyCut(last > 30 ? cut.slice(0, last) : cut);
 }
 
-function clampDesc(str: string, max = 158): string {
+function clampDesc(str: string, max = 155): string {
   if (!str) return str;
-  if (str.length <= max) return str;
-  const cut = str.slice(0, max);
+  const clean = str.replace(/[✓✔☑]/g, "").replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return /[.!?]$/.test(clean) ? clean : `${clean}.`;
+  const sentenceEnds = [...clean.matchAll(/[.!?](?:\s|$)/g)]
+    .map((match) => (match.index ?? 0) + 1)
+    .filter((index) => index >= 120 && index <= max);
+  if (sentenceEnds.length) return clean.slice(0, sentenceEnds[sentenceEnds.length - 1]).trim();
+  const cut = clean.slice(0, max - 1);
   const last = cut.lastIndexOf(" ");
-  const base = tidyCut(last > 80 ? cut.slice(0, last) : cut);
-  return base.endsWith(".") ? base : base + "…";
+  return `${tidyCut(last > 80 ? cut.slice(0, last) : cut)}.`;
 }
 
 // Title mit Standort: Der Standort darf NIEMALS wegge-clamped werden, sonst
@@ -185,6 +189,18 @@ export interface PrerenderProduct {
   useCasePrivat?: string;
   faqs?: { q: string; a: string }[];
   modelName?: string;
+  longName?: string;
+  specifications?: Record<string, string>;
+  pricePerDay?: string;
+  pricePerMonth?: string;
+  priceWeekend?: string;
+  priceUnitLabel?: string;
+  minRentalMonths?: number;
+  availabilityText?: string;
+  bookingHint?: string;
+  locationText?: string;
+  alternatives?: Array<{ name: string; path: string }>;
+  accessories?: Array<{ name: string; path: string }>;
 }
 
 export interface PrerenderCategory {
