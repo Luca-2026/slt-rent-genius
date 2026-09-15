@@ -7,6 +7,11 @@
 // Client- und Server-Redirects identisch sind.
 
 import { locations, productCategories, type Product } from "@/data/rentalData";
+import {
+  CATEGORY_REASSIGNMENT_SOURCES,
+  DUPLICATE_PRODUCT_CANONICAL,
+  DUPLICATE_SOURCE_CATEGORY,
+} from "@/data/categoryModel";
 
 export const LEGACY_LOCATION_IDS = ["krefeld", "bonn", "muelheim"] as const;
 
@@ -288,6 +293,35 @@ export function buildLegacyRedirectRules(): LegacyRedirectRule[] {
     bonn: ["bonn"],
     muelheim: ["muelheim", "duisburg"],
   };
+
+  // Etappe 3.5/3.6: umgehängte Artikel und entfallene Duplikat-Zweitseiten
+  // behalten ihre alte URL als 301 auf die gültige Produktseite.
+  const productPath = (productId: string): string | undefined => {
+    for (const location of locations) {
+      for (const [categoryId, products] of Object.entries(location.products)) {
+        if (products.some((p) => p.id === productId)) {
+          return `/mieten/${location.id}/${categoryId}/${productId}`;
+        }
+      }
+    }
+    return undefined;
+  };
+
+  for (const location of locations) {
+    for (const [productId, fromCategory] of Object.entries(CATEGORY_REASSIGNMENT_SOURCES)) {
+      const path = productPath(productId);
+      if (!path) continue;
+      add(`/mieten/${location.id}/${fromCategory}/${productId}`, { path, kind: "product" });
+    }
+    for (const [duplicateId, canonicalId] of Object.entries(DUPLICATE_PRODUCT_CANONICAL)) {
+      const path = productPath(canonicalId);
+      if (!path) continue;
+      add(`/mieten/${location.id}/${DUPLICATE_SOURCE_CATEGORY}/${duplicateId}`, {
+        path,
+        kind: "product",
+      });
+    }
+  }
 
   for (const location of locations) {
     const slugs = legacyLocationSlugs[location.id] || [location.id];
