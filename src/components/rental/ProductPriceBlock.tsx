@@ -99,7 +99,7 @@ export function ProductPriceBlock({
     <div className={className}>
       <div className={`${mainSize} font-bold text-primary leading-tight`}>
         <span className="break-words">{mainValue}</span>
-        <span className="text-primary">*</span>
+        {netLabel && <span className="text-primary">*</span>}
         <span className={`${unitSize} font-normal text-muted-foreground`}> {mainUnit}</span>
       </div>
       {netLabel && (
