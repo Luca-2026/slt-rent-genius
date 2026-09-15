@@ -14,8 +14,9 @@
 - [x] displayName/seoName/Plural, Singular-Grammatik, eigene Einleitungen
 - [x] Sortierung, falsch einsortierte Produkte, Duplikate 301, Kommunikation = Funkgeräte, Zubehör noindex, Verkaufsartikel „kaufen"
 
-## Phase 4 – Standortbausteine & Verfügbarkeit
-- [ ] 3 Textbausteine, Statusfeld je Produkt/Standort, ein Standortabsatz, Dedupe-Bug, Nutzfahrzeuge/Wohnwagen
+## Phase 4 – Standortbausteine & Verfügbarkeit (erledigt)
+- [x] 3 zentrale Textbausteine (src/data/locationBlocks.ts), Status je Produkt/Standort, genau ein Standort- und ein Verfügbarkeitsabsatz, Dedupe „Krefeld und Krefeld", Abholregel für Anhänger/Nutzfahrzeuge/Wohnwagen
+- [ ] Offen: echte Öffnungszeiten für Mülheim fehlen in den Stammdaten
 
 ## Phase 5 – Produkt-Template
 - [ ] name/longName/model, Title ≤60, Meta 120–155, Preiszeile brutto (netto in Klammern), Pflichtblöcke, Alternativen als Links, Führerschein-Logik, JSON-LD
