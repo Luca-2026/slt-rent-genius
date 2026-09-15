@@ -10,9 +10,9 @@
 - [x] /, /mieten/, /mieten/bonn/, /standorte/, /hilfe/, /ratgeber/, /ueber-uns/ mit Links/Texten im HTML
 - [ ] Offen: /hilfe/<artikel>/ existiert als URL nicht (Hilfe ist eine Seite) – eigene Artikel-URLs wären neue Routen
 
-## Phase 3 – Kategorie-Datenmodell
-- [ ] displayName/seoName/Plural, Singular-Grammatik, eigene Einleitungen
-- [ ] sortOrder, falsch einsortierte Produkte, Duplikate 301, Kommunikation, isAccessory/noindex, Verkaufsartikel
+## Phase 3 – Kategorie-Datenmodell (erledigt)
+- [x] displayName/seoName/Plural, Singular-Grammatik, eigene Einleitungen
+- [x] Sortierung, falsch einsortierte Produkte, Duplikate 301, Kommunikation = Funkgeräte, Zubehör noindex, Verkaufsartikel „kaufen"
 
 ## Phase 4 – Standortbausteine & Verfügbarkeit
 - [ ] 3 Textbausteine, Statusfeld je Produkt/Standort, ein Standortabsatz, Dedupe-Bug, Nutzfahrzeuge/Wohnwagen
