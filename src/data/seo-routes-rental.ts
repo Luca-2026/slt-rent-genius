@@ -9,6 +9,12 @@ import { locationData, type LocationInfo } from "./locationData";
 import { locations, type LocationData, type Product } from "./rentalData";
 import { productSEOData, type ProductSEOData } from "./productSEOData";
 import {
+  locationParagraph,
+  resolveAvailabilityStatus,
+  availabilityParagraph,
+  bookingHint,
+} from "@/data/locationBlocks";
+import {
   categoryDisplayName,
   categorySeoName,
   categoryPlural,
