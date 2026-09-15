@@ -267,15 +267,18 @@ export default function ProductDetail() {
                 : undefined)
         : undefined;
       const localizedSeoTitle = localizedEntry?.seoTitle;
-      let seoTitle: string;
-      if (localizedSeoTitle) {
-        seoTitle = localizedSeoTitle;
-      } else if (titleBase.length + ' | SLT Rental'.length <= 60) {
-        seoTitle = `${titleBase} | SLT Rental`;
-      } else {
-        seoTitle = titleBase;
-      }
-      seoTitle = localizeText(seoTitle);
+      const titleSuffix = " | SLT Rental";
+      const fitTitle = (value: string): string => {
+        const localized = localizeText(value).replace(/\s*\|\s*SLT Rental\s*$/i, "").trim();
+        const budget = 60 - titleSuffix.length;
+        if (localized.length <= budget) return `${localized}${titleSuffix}`;
+        const locationTail = ` mieten in ${cityName}`;
+        const nameBudget = budget - locationTail.length;
+        const cut = genericName.slice(0, Math.max(1, nameBudget));
+        const cleanName = cut.slice(0, Math.max(cut.lastIndexOf(" "), 1)).trim();
+        return `${cleanName}${locationTail}${titleSuffix}`;
+      };
+      let seoTitle = fitTitle(localizedSeoTitle || titleBase);
       document.title = seoTitle;
 
       // SEO: Meta description - CMS override wins, else generated
@@ -286,15 +289,14 @@ export default function ProductDetail() {
       } else if (product.seoMetaDescription && product.seoMetaDescription.trim()) {
         descText = product.seoMetaDescription.trim();
       } else if (product.description) {
-        const localizedDesc = localizeText(product.description);
-        const descSnippet = localizedDesc.length > 80 
-          ? localizedDesc.substring(0, 80).replace(/\s+\S*$/, '') 
-          : localizedDesc;
-        const candidate = `${genericName} mieten in ${cityName} bei SLT Rental.${modelInfo ? ` ${descSnippet}` : ` ${descSnippet}`}. Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.`;
-        descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
+        const localizedDesc = localizeText(product.description).replace(/[✓✔☑]/g, "").trim();
+        const sentences = localizedDesc.match(/[^.!?]+[.!?]/g) || [];
+        const complete = sentences.find((sentence) => sentence.trim().length >= 70) || sentences[0];
+        const candidate = complete?.trim() || `${genericName} mieten in ${cityName} bei SLT Rental. Preis und Verfügbarkeit direkt online prüfen.`;
+        descText = candidate.length <= 155 ? candidate : `${candidate.slice(0, 154).replace(/\s+\S*$/, "").replace(/[,:;\s]+$/, "")}.`;
       } else {
         const candidate = `${genericName} mieten in ${cityName} bei SLT Rental.${modelInfo} Tiefpreisgarantie, flexible Mietzeiten, Lieferung möglich.`;
-        descText = candidate.length <= 155 ? candidate : candidate.substring(0, 152) + "...";
+        descText = candidate.length <= 155 ? candidate : `${candidate.slice(0, 154).replace(/\s+\S*$/, "").replace(/[,:;\s]+$/, "")}.`;
       }
 
       // Wichtig: Gepflegte SEO-Texte nennen oft nur einen Standort (z. B. "in Krefeld").
@@ -1395,21 +1397,18 @@ export default function ProductDetail() {
               <div className="sticky top-4 space-y-4 md:space-y-3 lg:space-y-5">
                 {/* Booking Card – desktop/tablet only */}
                 <div className="hidden md:block bg-card rounded-xl border border-border p-4 md:p-3 lg:p-5">
-                  {hasAnyPrice(product, productSEO?.dailyPriceFrom) && (
-                    <div className="mb-3 md:mb-2 lg:mb-4 pb-3 md:pb-2 lg:pb-4 border-b border-border">
+                  <div className="mb-3 md:mb-2 lg:mb-4 pb-3 md:pb-2 lg:pb-4 border-b border-border">
                       <ProductPriceBlock
                         product={product}
                         dailyPriceFrom={typeof productSEO?.dailyPriceFrom === "number" ? productSEO.dailyPriceFrom : undefined}
                         perDayLabel={t("rental.perDay")}
                       />
-                      <p className="text-[11px] text-muted-foreground mt-1">
-                        Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
-                      </p>
+                      {hasAnyPrice(product, productSEO?.dailyPriceFrom) && <p className="text-[11px] text-muted-foreground mt-1">{product.pricePerMonth && product.minRentalMonths ? `Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}</p>}
                       <p className="text-[11px] leading-snug text-muted-foreground mt-1">
                         *Unverbindlicher Ab-Preis{!product.pricePerMonth && !product.pricePerDay ? ", gerechnet auf Monatsmiete" : ""}. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
                       </p>
                     </div>
-                  )}
+                  </div>
 
                   <div className="space-y-2 md:space-y-1.5 lg:space-y-2 mb-3 md:mb-2 lg:mb-4">
                     <Button
@@ -1587,22 +1586,18 @@ function MobileBookingCard({
   const showPrice = hasAnyPrice(product, dailyPriceFrom);
   return (
     <div className="bg-card rounded-xl border border-border p-4">
-      {showPrice && (
-        <div className="mb-3 pb-3 border-b border-border">
+      <div className="mb-3 pb-3 border-b border-border">
           <ProductPriceBlock
             product={product}
             dailyPriceFrom={dailyPriceFrom}
             perDayLabel={t("rental.perDay")}
           />
 
-          <p className="text-[11px] text-muted-foreground mt-1">
-            Inkl. 19 % USt.{product.pricePerMonth && product.minRentalMonths ? ` · Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}
-          </p>
+          {showPrice && <p className="text-[11px] text-muted-foreground mt-1">{product.pricePerMonth && product.minRentalMonths ? `Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}</p>}
           <p className="text-[11px] leading-snug text-muted-foreground mt-1">
             *Unverbindlicher Ab-Preis{!product.pricePerMonth && !product.pricePerDay ? ", gerechnet auf Monatsmiete" : ""}. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
           </p>
         </div>
-      )}
       <div className="flex flex-col gap-2">
         <Button
           size="default"
