@@ -18,8 +18,9 @@
 - [x] 3 zentrale Textbausteine (src/data/locationBlocks.ts), Status je Produkt/Standort, genau ein Standort- und ein Verfügbarkeitsabsatz, Dedupe „Krefeld und Krefeld", Abholregel für Anhänger/Nutzfahrzeuge/Wohnwagen
 - [ ] Offen: echte Öffnungszeiten für Mülheim fehlen in den Stammdaten
 
-## Phase 5 – Produkt-Template
-- [ ] name/longName/model, Title ≤60, Meta 120–155, Preiszeile brutto (netto in Klammern), Pflichtblöcke, Alternativen als Links, Führerschein-Logik, JSON-LD
+## Phase 5 – Produkt-Template (erledigt)
+- [x] name/longName/model, Title ≤60, vollständige Meta-Descriptions ohne Auslassungspunkte, Preiszeile brutto (netto in Klammern), Pflichtblöcke im Prerender-HTML, Alternativen/Zubehör/Ratgeber als Links, Product/Offer/FAQ/Breadcrumb-JSON-LD
+- [ ] Offen: Mindestens drei produktspezifische FAQ und Führerschein-Hinweise nur dort ergänzen, wo belastbare Stammdaten vorhanden sind (Teil von Phase 6)
 
 ## Phase 6 – Einzelne Produktseiten
 - [ ] Kipper, Pritschenkipper, Wohnwagen, Bobcat, Slug/Name-Abgleich, Verkehrszeichen, Beschallung, FAQ-Ergänzungen
