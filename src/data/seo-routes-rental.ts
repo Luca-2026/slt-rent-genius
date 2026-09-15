@@ -9,6 +9,12 @@ import { locationData, type LocationInfo } from "./locationData";
 import { locations, type LocationData, type Product } from "./rentalData";
 import { productSEOData, type ProductSEOData } from "./productSEOData";
 import {
+  locationParagraph,
+  resolveAvailabilityStatus,
+  availabilityParagraph,
+  bookingHint,
+} from "@/data/locationBlocks";
+import {
   categoryDisplayName,
   categorySeoName,
   categoryPlural,
@@ -958,9 +964,10 @@ for (const loc of locations as LocationData[]) {
       `Mietpark für ${categoryPlural(catId)} am SLT-Standort ${locName}. ${countLabel} sofort wählbar – mit Lieferung in der Region und persönlicher Beratung.`,
       ...(ownIntro ? [ownIntro] : []),
     ];
-    const categoryLocalIntro = locInfo
-      ? buildLocationIntro(locInfo, `${catSeoName.toLowerCase()} mieten`)
-      : [];
+    // Etappe 4: ein einziger, zentral gepflegter Standortabsatz je Kategorie.
+    const categoryLocalIntro = [
+      locationParagraph(loc.id, `${catSeoName.toLowerCase()} mieten`, { categoryId: catId }),
+    ].filter(Boolean);
 
     CATEGORY_ROUTES.push({
       path: `/mieten/${loc.id}/${catId}`,
@@ -1003,8 +1010,23 @@ for (const loc of locations as LocationData[]) {
       // den aktuellen Standort umschreiben. Ohne diesen Replace bekämen
       // Bonn/Mülheim-URLs identische Title/Description wie Krefeld und
       // würden von Google als Duplicate Content deindexiert.
+      // Etappe 4.4: Nach dem Umschreiben entstehen sonst Dopplungen wie
+      // „Krefeld und Krefeld" – Standortnamen danach deduplizieren.
+      const dedupeLoc = (s: string) => {
+        const n = locName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const re = new RegExp(`\\b${n}\\s*(?:,|und|&|/)\\s*${n}\\b`, "gi");
+        let out = s;
+        let prev: string;
+        do {
+          prev = out;
+          out = out.replace(re, locName);
+        } while (out !== prev);
+        return out;
+      };
       const localize = (s: string | undefined) =>
-        s ? s.replace(/\bin Krefeld\b/g, `in ${locName}`).replace(/\bKrefeld\b/g, locName) : s;
+        s
+          ? dedupeLoc(s.replace(/\bin Krefeld\b/g, `in ${locName}`).replace(/\bKrefeld\b/g, locName))
+          : s;
 
       // Etappe 3.9: Verkaufsartikel bekommen nie „mieten" in Title/H1.
       const isSale = isSaleItem(p);
@@ -1036,19 +1058,17 @@ for (const loc of locations as LocationData[]) {
       if (seo?.useCaseBau) intro.push(`Einsatz Bau: ${seo.useCaseBau}`);
 
 
-      // Plan A: Self-Canonical pro Standort. Genau EIN Standortabsatz je
-      // Produktseite (kompakt: Adresse/Übergabe + Liefergebiet). Mehrere
-      // Standortblöcke plus Kategorie-Boilerplate erzeugten sonst über
-      // 350 Produkte × 3 Standorte ein Doorway-Muster.
-      if (locInfo) {
-        intro.push(...buildLocationIntro(locInfo, `${p.name} mieten`, { compact: true }));
-      }
+      // Etappe 4: Genau EIN zentraler Standortabsatz je Produktseite
+      // (Adresse, Übergabemodus, Öffnungszeiten bzw. Abholregel) – aus
+      // src/data/locationBlocks.ts, damit Bonn keine Werkstatt-/Übergabe-
+      // Aussage und Krefeld keinen doppelten Lieferabsatz bekommt.
+      intro.push(locationParagraph(loc.id, `${p.name} mieten`, { categoryId: catId }));
 
-      // Sprint 1 – Verfügbarkeits-Automatik in SSR-Hero
-      // Damit Google sofort erkennt, ob das Produkt am Standort
-      // verfügbar oder auf Anfrage ist (echter Content-Unterschied).
-      const availability = getProductAvailability(p, loc.id, { categoryId: catId });
-      intro.push(`${availability.headline}. ${availability.body}`);
+      // Genau EIN Verfügbarkeitsabsatz, gesteuert vom Status des Produkts
+      // an diesem Standort (sofortVorOrt / selbstabholung24_7 / aufAnfrage).
+      const availStatus = resolveAvailabilityStatus(p, loc.id, { categoryId: catId });
+      intro.push(availabilityParagraph(availStatus, loc.id));
+      intro.push(bookingHint(availStatus));
 
       // Produktspezifisch statt Boilerplate: echte Nachbargeräte derselben
       // Kategorie am selben Standort (Alternativen / nächste Größe).
