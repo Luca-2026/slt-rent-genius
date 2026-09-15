@@ -1408,7 +1408,6 @@ export default function ProductDetail() {
                         *Unverbindlicher Ab-Preis{!product.pricePerMonth && !product.pricePerDay ? ", gerechnet auf Monatsmiete" : ""}. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
                       </p>
                     </div>
-                  </div>
 
                   <div className="space-y-2 md:space-y-1.5 lg:space-y-2 mb-3 md:mb-2 lg:mb-4">
                     <Button
