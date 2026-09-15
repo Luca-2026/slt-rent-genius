@@ -74,10 +74,12 @@ export function locationParagraph(
 
   if (locationId === "bonn") {
     // Bewusst ohne Werkstatt- und ohne persönliche Übergabe-Aussage.
+    const isTrailer = opts.categoryId === "anhaenger";
     return [
       `Standort Bonn: ${subject} holst du an der ${loc.address}, ${loc.city} ab.`,
-      "Anhänger kannst du rund um die Uhr selbst abholen – das Zahlenschloss öffnest du mit dem E-Mail-Code, die Einweisung bekommst du digital (Schritt-für-Schritt-Anleitung auf unserer Hilfe-Seite).",
-      "Übrige Geräte disponieren wir auf Anfrage aus Krefeld.",
+      isTrailer
+        ? "Die Abholung läuft rund um die Uhr in Selbstabholung – das Zahlenschloss öffnest du mit dem E-Mail-Code, die Einweisung bekommst du digital (Schritt-für-Schritt-Anleitung auf unserer Hilfe-Seite)."
+        : "Anhänger sind in Bonn rund um die Uhr per E-Mail-Code selbst abholbar, übrige Geräte disponieren wir auf Anfrage aus Krefeld.",
       logistics,
     ]
       .filter(Boolean)
