@@ -1,13 +1,14 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
-## Phase 1 – Prerender-Vollständigkeit
-- [ ] Alle Routen datengetrieben erzeugen (3 Standorte × 23 Kategorien × alle Produkte, Ratgeber, Hilfe, Ortsseiten, statische Seiten)
-- [ ] Build-Log: Anzahl gerenderter Routen + fehlgeschlagene Routen
-- [ ] Bonn-Hub mit 23 Kategorie-Links, Werkzeuge Krefeld 40 Einträge, Bobcat neues Template
-- [ ] sitemap.xml aus denselben Daten, lastmod, keine noindex-Seiten
+## Phase 1 – Prerender-Vollständigkeit (erledigt)
+- [x] Alle Routen datengetrieben (1.285 Routen, keine handgepflegte Liste)
+- [x] Build-Log: Routen je Typ, noindex-Zahl, Liste fehlgeschlagener Routen
+- [x] Bonn-Hub mit 23 Kategorie-Links
+- [x] sitemap.xml (1.281 URLs, lastmod wo vorhanden, ohne noindex), robots.txt verweist darauf
 
-## Phase 2 – Hub-/Listenseiten serverseitig
-- [ ] /, /mieten/, /mieten/bonn/, /standorte/, /hilfe/, /ratgeber/, /ueber-uns/
+## Phase 2 – Hub-/Listenseiten serverseitig (erledigt)
+- [x] /, /mieten/, /mieten/bonn/, /standorte/, /hilfe/, /ratgeber/, /ueber-uns/ mit Links/Texten im HTML
+- [ ] Offen: /hilfe/<artikel>/ existiert als URL nicht (Hilfe ist eine Seite) – eigene Artikel-URLs wären neue Routen
 
 ## Phase 3 – Kategorie-Datenmodell
 - [ ] displayName/seoName/Plural, Singular-Grammatik, eigene Einleitungen
