@@ -245,8 +245,15 @@ if (managedProducts.length) {
       // Authoritative per-page timestamp aus dem CMS (letzte Inhaltsänderung).
       if (m.updated_at) route.lastmod = m.updated_at.slice(0, 10);
       const locName = LOCATION_DISPLAY_FOR_OVERRIDE[loc] || loc;
-      route.title = localizedTitle(m.name, locName);
-      route.h1 = `${m.name} mieten in ${locName}`;
+      // Etappe 3.9: Verkaufsartikel nie mit „mieten" betiteln.
+      if (isSaleItem({ id: m.slug, name: m.name })) {
+        const saleName = m.name.replace(/\s*\(Verkauf\)\s*$/i, "").trim();
+        route.title = clampTitle(`${saleName} kaufen in ${locName} | SLT Rental`);
+        route.h1 = `${saleName} kaufen in ${locName}`;
+      } else {
+        route.title = localizedTitle(m.name, locName);
+        route.h1 = `${m.name} mieten in ${locName}`;
+      }
       // Meta-Description: DB Live-Feld hat Vorrang; sonst bleibt statischer Text (bereits gesetzt).
       if (m.seo_meta_description && m.seo_meta_description.trim()) {
         route.description = clampDescription(localizeToLocation(m.seo_meta_description.trim(), locName));
