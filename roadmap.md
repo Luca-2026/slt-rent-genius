@@ -20,6 +20,7 @@
 
 ## Phase 5 – Produkt-Template (erledigt)
 - [x] name/longName/model, Title ≤60, vollständige Meta-Descriptions ohne Auslassungspunkte, Preiszeile brutto (netto in Klammern), Pflichtblöcke im Prerender-HTML, Alternativen/Zubehör/Ratgeber als Links, Product/Offer/FAQ/Breadcrumb-JSON-LD
+- [x] Neu vorgerendert: 1.085 Produkt-, 69 Kategorie- und 119 weitere Routen; insgesamt 1.273 Routen, 0 Fehler, 1.069 Sitemap-URLs
 - [ ] Offen: Mindestens drei produktspezifische FAQ und Führerschein-Hinweise nur dort ergänzen, wo belastbare Stammdaten vorhanden sind (Teil von Phase 6)
 
 ## Phase 6 – Einzelne Produktseiten
