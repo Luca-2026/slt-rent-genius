@@ -23,8 +23,10 @@
 - [x] Neu vorgerendert: 1.085 Produkt-, 69 Kategorie- und 119 weitere Routen; insgesamt 1.273 Routen, 0 Fehler, 1.069 Sitemap-URLs
 - [ ] Offen: Mindestens drei produktspezifische FAQ und Führerschein-Hinweise nur dort ergänzen, wo belastbare Stammdaten vorhanden sind (Teil von Phase 6)
 
-## Phase 6 – Einzelne Produktseiten
-- [ ] Kipper, Pritschenkipper, Wohnwagen, Bobcat, Slug/Name-Abgleich, Verkehrszeichen, Beschallung, FAQ-Ergänzungen
+## Phase 6 – Einzelne Produktseiten (teilweise erledigt)
+- [x] Führerschein-Hinweise für Anhänger, 7,5-t-Kipper, 3,5-t-Pritschenkipper und Wohnwagen zentral gepflegt
+- [x] FAQ-Kaskade für sichtbare Seite, Prerender-HTML und FAQPage-JSON-LD vereinheitlicht; belegte Stammdaten ergänzen fehlende Fragen
+- [ ] Offen: weitere Einzelkorrekturen aus dem Gesamtauftrag (Bobcat, Slug/Name-Abgleich, Verkehrszeichen, Beschallung)
 
 ## Phase 7 – Redirects & URL-Hygiene
 - [ ] Regelbasierte 301, Trailing Slash, Ortsseiten, Microsite-Ziel

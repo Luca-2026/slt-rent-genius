@@ -296,12 +296,23 @@ if (managedProducts.length) {
         if (m.description) route.productData.description = localizeToLocation(m.description, locName);
         if (image) route.productData.image = image;
         if (m.model_name) route.productData.modelName = m.model_name;
-        // FAQs: DB Live-Feld ersetzt statische FAQs vollständig (kein Mischen).
+        // CMS-FAQs gewinnen; belegte Fallbacks sichern weiterhin mindestens drei Antworten.
         if (normalizedFaqs.length) {
-          route.productData.faqs = normalizedFaqs.map((f) => ({
+          const cmsFaqs = normalizedFaqs.map((f) => ({
             q: localizeToLocation(f.q, locName),
             a: localizeToLocation(f.a, locName),
           }));
+          const fallbackFaqs = route.productData.faqs ?? [];
+          const seen = new Set(cmsFaqs.map((faq) => faq.q.toLocaleLowerCase("de-DE")));
+          route.productData.faqs = [...cmsFaqs];
+          for (const faq of fallbackFaqs) {
+            if (route.productData.faqs.length >= 3) break;
+            const key = faq.q.toLocaleLowerCase("de-DE");
+            if (!seen.has(key)) {
+              route.productData.faqs.push(faq);
+              seen.add(key);
+            }
+          }
           faqOverridden++;
         }
       }
@@ -436,6 +447,7 @@ const enriched = allRoutes.map((route) => {
         alternatives: route.productData.alternatives,
         accessories: route.productData.accessories,
         guides: route.productData.guides,
+        drivingLicense: route.productData.drivingLicense,
       }
     : undefined;
   const categoryData = route.routeType === "category" && route.categoryData

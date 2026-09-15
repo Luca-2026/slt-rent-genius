@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { CheckCircle, MapPin, Clock, Truck, ShieldCheck, HelpCircle, HardHat, Sparkles, Home } from "lucide-react";
 import type { Product, LocationData } from "@/data/rentalData";
 import type { ProductSEOData } from "@/data/productSEOData";
+import { localizeProductText, resolveProductFaqs } from "@/data/productPageContent";
 
 interface ProductSEOContentProps {
   product: Product;
@@ -377,33 +378,8 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
   const locationEmail = location.email;
 
   // Helper: replace multi-location strings with current location only
-  const loc = (text: string | undefined | null): string => {
-    if (!text) return "";
-    let result = text
-
-      .replace(/Genehmigungs-Kopie an die jeweilige Standort-E-Mail senden \(krefeld@\/bonn@\/muelheim@slt-rental\.de\)/gi, `Genehmigungs-Kopie an ${locationEmail} senden`)
-      .replace(/Genehmigungs-Kopie an mieten@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
-      .replace(/Genehmigungs-Kopie an (?:krefeld|bonn|muelheim)@slt-rental\.de/gi, `Genehmigungs-Kopie an ${locationEmail}`)
-      .replace(/an mieten@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`)
-      .replace(/an (?:krefeld|bonn|muelheim)@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`)
-      .replace(/Bonn\s*[&,]\s*Krefeld\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locationName)
-      .replace(/Krefeld\s*[&,]\s*Bonn\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locationName)
-      .replace(/Mülheim(?:\s*an\s*der\s*Ruhr)?\s*[&,]\s*Bonn\s*[&,]\s*Krefeld/gi, locationName)
-      .replace(/Bonn\s*[&,]\s*Krefeld/gi, locationName)
-      .replace(/Krefeld\s*[&,]\s*Bonn/gi, locationName)
-      .replace(/Bonn\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locationName)
-      .replace(/Krefeld\s*[&,]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locationName)
-      .replace(/Mülheim(?:\s*an\s*der\s*Ruhr)?\s*[&,]\s*Krefeld/gi, locationName)
-      .replace(/Mülheim(?:\s*an\s*der\s*Ruhr)?\s*[&,]\s*Bonn/gi, locationName);
-    // Then replace any remaining standalone city names with the current location
-    // so that base (Krefeld) SEO entries never leak the wrong city on Bonn/Mülheim pages.
-    if (locationName !== "Krefeld") result = result.replace(/\bKrefeld\b/g, locationName);
-    if (locationName !== "Bonn") result = result.replace(/\bBonn\b/g, locationName);
-    if (locationName !== "Mülheim" && locationName !== "Mülheim an der Ruhr") {
-      result = result.replace(/\bMülheim(?:\s*an\s*der\s*Ruhr)?\b/g, locationName);
-    }
-    return result;
-  };
+  const loc = (text: string | undefined | null): string =>
+    text ? localizeProductText(text, { name: locationName, email: locationEmail }) : "";
 
   // Use product-specific use cases if available, else category fallback
   const hasProductUseCases = productSEO && (productSEO.useCaseBau || productSEO.useCaseEvent || productSEO.useCasePrivat);
@@ -411,8 +387,13 @@ export function ProductSEOContent({ product, location, categoryId, categoryTitle
 
   // Produkt- bzw. Kategorie-FAQs PLUS standortspezifische FAQs.
   // Eine einzige FAQ-Sektion auf der Seite – kein zweiter Block.
-  const baseFaqs = productSEO?.faqs?.length ? productSEO.faqs : (categoryData?.faqs || []);
-  const faqs = [...baseFaqs, ...(additionalFaqs ?? [])];
+  const faqs = resolveProductFaqs({
+    product,
+    categoryId,
+    productFaqs: productSEO?.faqs,
+    categoryFaqs: categoryData?.faqs,
+    localFaqs: additionalFaqs,
+  });
 
   // H2 headings from Excel
   const h2s = productSEO?.h2s || [];

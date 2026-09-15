@@ -298,6 +298,10 @@ function buildProductSpecsBlock(route) {
     parts.push(`<section data-prerender-specifications style="margin:24px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">Technische Daten</h2><div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;"><tbody>${rows}</tbody></table></div></section>`);
   }
 
+  if (p.drivingLicense?.text) {
+    parts.push(`<section data-prerender-driving-license style="margin:24px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">${escapeHtml(p.drivingLicense.heading || "Führerschein und Zugfahrzeug")}</h2><p style="margin:0;">${escapeHtml(p.drivingLicense.text)}</p></section>`);
+  }
+
   // Einsatzbereiche (Bau / Event / Privat) – echte SEO-Daten, kein Erfundenes.
   const useCases = [];
   if (p.useCaseBau && p.useCaseBau.trim()) useCases.push(["Einsatz Bau", p.useCaseBau]);
