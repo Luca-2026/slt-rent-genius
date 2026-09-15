@@ -429,6 +429,8 @@ const enriched = allRoutes.map((route) => {
     productData,
     categoryData,
     linkSections: route.linkSections,
+    textSections: route.textSections,
+
   };
 });
 
