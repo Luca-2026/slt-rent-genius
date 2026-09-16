@@ -768,7 +768,8 @@ export async function generateOfferPdf(data: {
   }
 
   // ── Grußformel ──
-  need(56);
+  // Die kurze Korrektur-Grußformel passt kompakter über den reservierten Footer.
+  need(isCreditNote ? 44 : 56);
   dt(
     pg,
     isCreditNote
