@@ -242,6 +242,13 @@ export function InquiryOfferForm({
     [effectiveItems, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost],
   );
 
+  /** Summe der erfassten Teilzahlungen und daraus der offene Restbetrag. */
+  const amountPaid = useMemo(
+    () => Math.round(payments.reduce((s, p) => s + (Number(p.amount) || 0), 0) * 100) / 100,
+    [payments],
+  );
+  const balanceDue = Math.round((totals.grossAmount - amountPaid) * 100) / 100;
+
 
   const patchItem = (index: number, patch: Partial<FormLine>) =>
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, ...patch } : item)));
