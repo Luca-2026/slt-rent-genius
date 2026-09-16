@@ -375,6 +375,15 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         </div>
       )}
 
+      <InquiryPaymentsCard
+        table={table}
+        inquiryId={inquiry.id}
+        payments={(inquiry as { payments?: unknown }).payments}
+        offerTotalGross={inquiry.offer_total_gross}
+        disabled={busy}
+        onChanged={onChanged}
+      />
+
       {invoices.length > 0 && (
         <div className="rounded-lg border border-border p-3 text-sm space-y-2">
           <div className="font-semibold">Rechnungen zu dieser Anfrage</div>
