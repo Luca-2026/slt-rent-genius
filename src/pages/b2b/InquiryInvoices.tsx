@@ -79,13 +79,19 @@ export default function InquiryInvoices() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [busyId, setBusyId] = useState<string | null>(null);
+  /** Dialog zum Erfassen einer eingegangenen (Teil-)Zahlung. */
+  const [payFor, setPayFor] = useState<InvoiceRow | null>(null);
+  const [payAmount, setPayAmount] = useState("");
+  const [payDate, setPayDate] = useState(new Date().toISOString().slice(0, 10));
+  const [payLabel, setPayLabel] = useState("Banküberweisung");
+  const [payReference, setPayReference] = useState("");
 
   const load = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("inquiry_invoices")
       .select(
-        "id, invoice_number, invoice_kind, inquiry_type, parent_invoice_id, offer_number, company_name, customer_name, customer_email, location, invoice_date, due_date, service_period_start, service_period_end, gross_amount, net_amount, status, file_url, email_sent, created_at",
+        "id, invoice_number, invoice_kind, inquiry_type, parent_invoice_id, offer_number, company_name, customer_name, customer_email, location, invoice_date, due_date, service_period_start, service_period_end, gross_amount, net_amount, status, file_url, email_sent, paid_amount, payments, created_at",
       )
       .order("created_at", { ascending: false });
     setLoading(false);
@@ -93,7 +99,7 @@ export default function InquiryInvoices() {
       toast({ title: "Rechnungen konnten nicht geladen werden", description: error.message, variant: "destructive" });
       return;
     }
-    setRows((data ?? []) as InvoiceRow[]);
+    setRows((data ?? []) as unknown as InvoiceRow[]);
   }, [toast]);
 
   useEffect(() => {
@@ -111,11 +117,54 @@ export default function InquiryInvoices() {
     });
   }, [rows, search, statusFilter]);
 
+  /** Noch offener Restbetrag einer Rechnung (brutto abzüglich erfasster Zahlungen). */
+  const balanceOf = (row: InvoiceRow) =>
+    Math.round((Number(row.gross_amount) - Number(row.paid_amount ?? 0)) * 100) / 100;
+
   const openSum = useMemo(
     () => filtered.filter((r) => r.status === "open" || r.status === "overdue")
-      .reduce((sum, r) => sum + Number(r.gross_amount), 0),
+      .reduce((sum, r) => sum + Math.max(0, balanceOf(r)), 0),
     [filtered],
   );
+
+  /** Zahlungseingang erfassen: Zahlung anhängen, Summe fortschreiben, ggf. auf „Bezahlt“ setzen. */
+  const savePayment = async () => {
+    if (!payFor) return;
+    const amount = Math.round((Number(payAmount.replace(",", ".")) || 0) * 100) / 100;
+    if (amount <= 0) {
+      toast({ title: "Betrag fehlt", description: "Bitte einen Betrag größer 0 € eintragen.", variant: "destructive" });
+      return;
+    }
+    setBusyId(payFor.id);
+    const nextPayments: PaymentEntry[] = [
+      ...(payFor.payments ?? []),
+      { date: payDate, amount, label: payLabel.trim() || "Zahlungseingang", reference: payReference.trim() },
+    ];
+    const paidAmount = Math.round(nextPayments.reduce((s, p) => s + Number(p.amount || 0), 0) * 100) / 100;
+    const fullyPaid = paidAmount >= Number(payFor.gross_amount) - 0.009;
+    const patch: Record<string, unknown> = { payments: nextPayments, paid_amount: paidAmount };
+    if (fullyPaid && payFor.status !== "cancelled") {
+      patch.status = "paid";
+      patch.paid_at = new Date().toISOString();
+    }
+    const { error } = await supabase.from("inquiry_invoices").update(patch).eq("id", payFor.id);
+    setBusyId(null);
+    if (error) {
+      toast({ title: "Zahlung konnte nicht gespeichert werden", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({
+      title: "Zahlung erfasst",
+      description: fullyPaid
+        ? "Die Rechnung ist vollständig bezahlt."
+        : `Offener Restbetrag: ${formatEuro(Number(payFor.gross_amount) - paidAmount)}`,
+    });
+    setPayFor(null);
+    setPayAmount("");
+    setPayReference("");
+    load();
+  };
+
 
   const setStatus = async (row: InvoiceRow, status: "paid" | "cancelled") => {
     setBusyId(row.id);
