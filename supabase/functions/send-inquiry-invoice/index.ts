@@ -511,7 +511,9 @@ Deno.serve(async (req: Request) => {
         dismantle_cost: dismantleCost,
         deposit,
         notes,
-        status: "open",
+        // Zuerst als Entwurf anlegen, damit die Positionen noch gespeichert werden dürfen
+        // (GoBD-Trigger sperrt Positionen finalisierter Rechnungen). Direkt danach finalisieren.
+        status: "draft",
         file_url: fileUrl,
         file_name: fileName,
         file_path: filePath,
@@ -544,7 +546,21 @@ Deno.serve(async (req: Request) => {
       image_url: pdfItems[index]?.image_url ?? null,
     }));
     const { error: itemErr } = await service.from("inquiry_invoice_items").insert(itemRows);
-    if (itemErr) console.error("Positionen konnten nicht gespeichert werden:", itemErr.message);
+    if (itemErr) {
+      console.error("Positionen konnten nicht gespeichert werden:", itemErr.message);
+      return json({ error: "Rechnungspositionen konnten nicht gespeichert werden" }, 500);
+    }
+
+    // Erst jetzt finalisieren – ab hier sind Rechnung und Positionen unveränderlich.
+    const { error: finalErr } = await service
+      .from("inquiry_invoices")
+      .update({ status: "open" })
+      .eq("id", inserted.id);
+    if (finalErr) {
+      console.error("Rechnung konnte nicht finalisiert werden:", finalErr.message);
+      return json({ error: "Rechnung konnte nicht finalisiert werden" }, 500);
+    }
+
 
     return json({
       success: true,
