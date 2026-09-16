@@ -465,7 +465,7 @@ export async function generateOfferPdf(data: {
   // ── Summenblock (rechtsbündig, wie Rechnung) ──
   // Höhe konservativ reservieren: 3 Zwischensummen + Netto + USt. + Kaution
   // + Gesamtbetrag-Kasten, damit der Block nie in die Fußzeile läuft.
-  need(195);
+  need(195 + ((data.payments || []).filter((p) => Number(p.amount) > 0).length ? 60 + (data.payments || []).length * 12 : 0));
 
   const tx = ML + CW * 0.55;
   const vx = W - MR - 4;
@@ -572,18 +572,36 @@ export async function generateOfferPdf(data: {
       CW - 32,
     ).filter((l) => l.trim());
     const offerRefExtra = data.sourceOfferNumber ? 11 : 0;
-    const boxH = 92 + termLines.length * 11 + offerRefExtra;
+    const paidExtra = amountPaid > 0 ? 13 : 0;
+    const boxH = 92 + termLines.length * 11 + offerRefExtra + paidExtra;
     need(boxH + 16);
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.995, 0.97, 0.93) });
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
     let by = y - 2;
     dt(pg, "Zahlungshinweis", ML + 16, by, bold, 10, INK); by -= 15;
-    dt(
-      pg,
-      `Bitte \u00FCberweisen Sie ${fm(data.grossAmount)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
-      ML + 16, by, font, 9, INK,
-    );
-    by -= 14;
+    if (amountPaid > 0 && balanceDue <= 0.009) {
+      dt(
+        pg,
+        `Der Rechnungsbetrag ist durch Ihre Zahlung${payments.length > 1 ? "en" : ""} von ${fm(amountPaid)} vollst\u00E4ndig ausgeglichen. Vielen Dank!`,
+        ML + 16, by, font, 9, INK,
+      );
+      by -= 14;
+    } else if (amountPaid > 0) {
+      dt(
+        pg,
+        `Bereits gezahlt ${fm(amountPaid)}. Bitte \u00FCberweisen Sie den Restbetrag von ${fm(balanceDue)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
+        ML + 16, by, font, 9, INK,
+      );
+      by -= 14;
+    } else {
+      dt(
+        pg,
+        `Bitte \u00FCberweisen Sie ${fm(data.grossAmount)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
+        ML + 16, by, font, 9, INK,
+      );
+      by -= 14;
+    }
+
     const rows: [string, string][] = [
       ["Kontoinhaber:", SLT_COMPANY.name],
       ["Bank:", SLT_COMPANY.bankName],
