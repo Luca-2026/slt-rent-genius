@@ -448,8 +448,16 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           inquiryType={inquiryType}
           inquiryId={inquiry.id}
           location={inquiry.location}
-          defaultItems={docMode === "supplement" ? [] : defaultItems}
+          defaultItems={
+            docMode === "supplement"
+              ? []
+              : docMode === "invoice" && offerSnapshot
+                ? offerSnapshot.items
+                : defaultItems
+          }
+          defaultCosts={docMode === "invoice" ? offerSnapshot?.costs : undefined}
           defaultDelivery={defaultDelivery}
+
           customerKind={inquiry.customer_kind === "business" ? "business" : "private"}
           mode={docMode === "offer" ? "offer" : "invoice"}
           invoiceKind={docMode === "supplement" ? "supplement" : "invoice"}
