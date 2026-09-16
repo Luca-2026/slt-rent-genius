@@ -51,7 +51,7 @@ const locationDescriptions: Record<string, { de: string; en: string }> = {
 // SEO-optimized meta descriptions (different from visible text for better CTR)
 const locationSeoDescriptions: Record<string, { de: string; en: string }> = {
   krefeld: {
-    de: "Baumaschinen & Anhänger mieten in Krefeld ✓ Minibagger, Arbeitsbühnen, Event-Equipment ✓ 24/7 Anhänger-Abholung ✓ Tiefpreisgarantie ✓ Faire Mietpreise ab 15 €/Tag",
+    de: "Baumaschinen & Anhänger mieten in Krefeld ✓ Minibagger, Arbeitsbühnen, Event-Equipment ✓ 24/7 Anhänger-Abholung ✓ Tiefpreisgarantie",
     en: "Rent construction equipment & trailers in Krefeld ✓ Mini excavators, aerial platforms, event equipment ✓ 24/7 trailer pickup ✓ Fair rental prices",
   },
   bonn: {
@@ -67,15 +67,15 @@ const locationSeoDescriptions: Record<string, { de: string; en: string }> = {
 // SEO-optimized title tags
 const locationSeoTitles: Record<string, { de: string; en: string }> = {
   krefeld: {
-    de: "Baumaschinen & Anhänger mieten Krefeld – ab 15 €/Tag",
+    de: "Baumaschinen & Anhänger mieten in Krefeld",
     en: "Rent Equipment & Trailers in Krefeld",
   },
   bonn: {
-    de: "Baumaschinen & Equipment mieten Bonn – Tiefpreisgarantie",
+    de: "Baumaschinen & Equipment mieten in Bonn",
     en: "Rent Equipment in Bonn – Best Price Guarantee",
   },
   muelheim: {
-    de: "Baumaschinen mieten Mülheim a.d. Ruhr – Bobcat & mehr",
+    de: "Baumaschinen mieten in Mülheim an der Ruhr",
     en: "Rent Construction Equipment in Mülheim an der Ruhr",
   },
 };
