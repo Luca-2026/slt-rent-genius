@@ -175,7 +175,13 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
 
   /** Bereits erfasste Zahlungen zur Anfrage (z. B. Vorkasse auf das Angebot). */
   const inquiryPayments = useMemo(
-    () => parseInquiryPayments((inquiry as { payments?: unknown }).payments),
+    () =>
+      parseInquiryPayments((inquiry as { payments?: unknown }).payments).map((p) => ({
+        date: p.date ?? new Date().toISOString().slice(0, 10),
+        amount: p.amount,
+        label: p.label ?? "Zahlungseingang",
+        reference: p.reference,
+      })),
     [inquiry],
   );
 
