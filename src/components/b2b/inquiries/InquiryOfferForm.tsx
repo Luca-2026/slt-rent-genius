@@ -151,7 +151,26 @@ interface Props {
   parentInvoiceNumber?: string | null;
   /** Vorbelegter Leistungszeitraum (YYYY-MM-DD). */
   defaultServicePeriod?: { start?: string | null; end?: string | null };
+  /** Vorbelegte Nebenkosten (z. B. aus dem angenommenen Angebot). */
+  defaultCosts?: {
+    delivery_cost_delivery?: number;
+    delivery_cost_return?: number;
+    setup_cost?: number;
+    dismantle_cost?: number;
+    deposit?: number;
+  };
+  /** Bereits geleistete Zahlungen (z. B. Vorkasse auf das Angebot) – nur Rechnungen. */
+  defaultPayments?: OfferPayment[];
 }
+
+/** Erfasste (Teil-)Zahlung, die auf der Rechnung abgezogen wird. */
+export interface OfferPayment {
+  date: string;
+  amount: number;
+  label: string;
+  reference?: string;
+}
+
 
 export function InquiryOfferForm({
   inquiryType,
