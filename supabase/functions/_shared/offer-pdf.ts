@@ -225,7 +225,19 @@ export async function generateOfferPdf(data: {
       dt(pg, value, infoX + 95, iy + 3, font, 7, MUTED);
       iy -= 10;
     };
-    if (isInvoice) {
+    if (isCreditNote) {
+      infoRow("Gutschriftnummer:", data.offerNumber);
+      infoRow("Gutschriftdatum:", fd(data.offerDate));
+      if (data.parentInvoiceNumber) infoRow("Zu Rechnung:", data.parentInvoiceNumber, BRAND);
+      if (data.parentInvoiceDate) infoRow("Rechnung vom:", fd(data.parentInvoiceDate));
+      if (data.servicePeriodStart) {
+        infoRow(
+          "Leistungszeitraum:",
+          `${fd(data.servicePeriodStart)}${data.servicePeriodEnd ? " - " + fd(data.servicePeriodEnd) : ""}`,
+        );
+      }
+      infoRow("Art:", data.creditIsPartial ? "Teilgutschrift" : "Vollst\u00E4ndige Stornierung", BRAND);
+    } else if (isInvoice) {
       infoRow("Rechnungsnummer:", data.offerNumber);
       infoRow("Rechnungsdatum:", fd(data.offerDate));
       if (data.dueDate) infoRow("F\u00E4llig am:", fd(data.dueDate), rgb(0.7, 0.26, 0.04));
