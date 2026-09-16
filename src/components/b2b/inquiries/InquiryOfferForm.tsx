@@ -27,7 +27,23 @@ type FormLine = OfferLine & {
   available_addons?: AddonOption[];
   /** Woher der Einzelpreis stammt: aus dem CMS vorbelegt oder manuell überschrieben. */
   price_source?: "cms" | "manual";
+  /** true = eigener Zeitraum, sonst wird der Zeitraum der ersten Position übernommen. */
+  custom_period?: boolean;
 };
+
+/**
+ * Zeitraum-Übernahme: Positionen ohne eigenen Zeitraum erben Dauer, Einheit und
+ * Zeitraumtext der ersten Position, damit nichts kopiert werden muss.
+ */
+function applyInheritedPeriod(item: FormLine, index: number, base: FormLine | undefined): FormLine {
+  if (index === 0 || item.custom_period || !base) return item;
+  return {
+    ...item,
+    duration: base.duration,
+    unit: base.unit,
+    description: item.description?.trim() ? item.description : base.description,
+  };
+}
 
 /**
  * Auswahlliste der Zusatzoptionen einer Position: die im CMS gepflegten Optionen
@@ -164,9 +180,15 @@ export function InquiryOfferForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inquiryId, defaultDelivery?.requested, defaultDelivery?.street, defaultDelivery?.postal_code, defaultDelivery?.city]);
 
+  /** Positionen inkl. übernommenem Zeitraum – Basis für Summen, Anzeige und Versand. */
+  const effectiveItems = useMemo(
+    () => items.map((item, i) => applyInheritedPeriod(item, i, items[0])),
+    [items],
+  );
+
   const totals = useMemo(
-    () => buildOfferTotals(items, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost),
-    [items, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost],
+    () => buildOfferTotals(effectiveItems, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost),
+    [effectiveItems, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost],
   );
 
 
@@ -262,7 +284,7 @@ export function InquiryOfferForm({
         inquiry_type: inquiryType,
         inquiry_id: inquiryId,
         location,
-        items: items.map(({ available_addons: _unused, price_source: _src, ...rest }) => {
+        items: effectiveItems.map(({ available_addons: _unused, price_source: _src, custom_period: _cp, ...rest }) => {
           const duration = rest.duration && rest.duration > 0 ? rest.duration : 1;
           const unit = (rest.unit ?? "kalendertage") as OfferUnit;
           const articles = rest.quantity || 1;
@@ -324,7 +346,10 @@ export function InquiryOfferForm({
   return (
     <div className="space-y-4">
       <div className="space-y-3">
-        {items.map((item, index) => (
+        {items.map((item, index) => {
+          const eff = effectiveItems[index] ?? item;
+          const inherited = index > 0 && !item.custom_period;
+          return (
           <div key={index} className="rounded-lg border border-border p-3 space-y-2">
             <div className="flex gap-2 items-start">
               {item.image_url ? (
@@ -384,11 +409,40 @@ export function InquiryOfferForm({
               </Button>
             </div>
             <Input
-              value={item.description ?? ""}
+              value={inherited ? (eff.description ?? "") : (item.description ?? "")}
               onChange={(e) => patchItem(index, { description: e.target.value })}
               placeholder="Beschreibung / Zeitraum (optional)"
-              disabled={disabled}
+              disabled={disabled || inherited}
             />
+            {index > 0 && (
+              <label className="flex items-center gap-2 text-xs cursor-pointer">
+                <Checkbox
+                  checked={!!item.custom_period}
+                  disabled={disabled}
+                  onCheckedChange={(v) =>
+                    patchItem(index, {
+                      custom_period: v === true,
+                      ...(v === true
+                        ? {
+                            duration: eff.duration,
+                            unit: eff.unit,
+                            description: eff.description,
+                          }
+                        : {}),
+                    })
+                  }
+                />
+                <span>
+                  Abweichender Zeitraum
+                  {inherited ? (
+                    <span className="ml-1 text-muted-foreground">
+                      (aktuell wie Position 1: {eff.duration ?? 1}{" "}
+                      {unitLabel(eff.duration ?? 1, (eff.unit ?? "kalendertage") as OfferUnit)})
+                    </span>
+                  ) : null}
+                </span>
+              </label>
+            )}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               <div>
                 <Label className="text-xs">Menge (Artikel)</Label>
@@ -405,16 +459,16 @@ export function InquiryOfferForm({
                 <Input
                   type="number"
                   min={1}
-                  value={item.duration ?? 1}
+                  value={eff.duration ?? 1}
                   onChange={(e) => patchItem(index, { duration: Number(e.target.value) || 0 })}
-                  disabled={disabled}
+                  disabled={disabled || inherited}
                 />
               </div>
               <div>
                 <Label className="text-xs">Einheit</Label>
                 <Select
-                  value={item.unit ?? "kalendertage"}
-                  disabled={disabled}
+                  value={eff.unit ?? "kalendertage"}
+                  disabled={disabled || inherited}
                   onValueChange={(v) => patchItem(index, { unit: v as OfferUnit })}
                 >
                   <SelectTrigger className="h-10">
@@ -427,8 +481,8 @@ export function InquiryOfferForm({
                   </SelectContent>
                 </Select>
                 <p className="mt-1 text-[11px] text-muted-foreground">
-                  {item.quantity || 0} × {item.duration ?? 1}{" "}
-                  {unitLabel(item.duration ?? 1, (item.unit ?? "kalendertage") as OfferUnit)}
+                  {item.quantity || 0} × {eff.duration ?? 1}{" "}
+                  {unitLabel(eff.duration ?? 1, (eff.unit ?? "kalendertage") as OfferUnit)}
                 </p>
               </div>
               <div>
@@ -460,7 +514,7 @@ export function InquiryOfferForm({
                 />
               </div>
               <div className="flex items-end text-sm font-semibold">
-                {formatEuro(lineTotal(item))}
+                {formatEuro(lineTotal(eff))}
               </div>
             </div>
 
@@ -577,7 +631,8 @@ export function InquiryOfferForm({
               );
             })()}
           </div>
-        ))}
+          );
+        })}
         <Button
           type="button"
           variant="outline"
