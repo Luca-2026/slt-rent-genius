@@ -219,6 +219,13 @@ Deno.serve(async (req: Request) => {
     const locationKey = resolveLocationKey(body.location || inquiry.location);
     const loc = LOCATION_CONTACTS[locationKey];
 
+    // Angebotsnummer der Anfrage übernehmen, damit Vorkasse-Zahlungen zum
+    // Angebot zugeordnet werden können (Steuerberater).
+    const sourceOfferNumber: string | null =
+      typeof inquiry.offer_number === "string" && inquiry.offer_number.trim()
+        ? inquiry.offer_number.trim()
+        : null;
+
     const customerName = inquiryType === "rental"
       ? (inquiry.customer_name || "")
       : [inquiry.first_name, inquiry.last_name].filter(Boolean).join(" ");
@@ -350,6 +357,7 @@ Deno.serve(async (req: Request) => {
       servicePeriodStart: servicePeriodStart ?? undefined,
       servicePeriodEnd: servicePeriodEnd ?? undefined,
       parentInvoiceNumber: parentInvoiceNumber ?? undefined,
+      sourceOfferNumber: sourceOfferNumber ?? undefined,
       profile,
       items: pdfItems,
       deliveryCost: deliveryCostDelivery + deliveryCostReturn,
