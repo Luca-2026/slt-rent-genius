@@ -583,6 +583,9 @@ Deno.serve(async (req: Request) => {
         dismantle_cost: dismantleCost,
         deposit,
         notes,
+        paid_amount: amountPaid,
+        payments,
+
         // Zuerst als Entwurf anlegen, damit die Positionen noch gespeichert werden dürfen
         // (GoBD-Trigger sperrt Positionen finalisierter Rechnungen). Direkt danach finalisieren.
         status: "draft",
@@ -626,9 +629,14 @@ Deno.serve(async (req: Request) => {
     // Erst jetzt finalisieren – ab hier sind Rechnung und Positionen unveränderlich.
     const { error: finalErr } = await service
       .from("inquiry_invoices")
-      .update({ status: "open" })
+      .update(
+        fullyPaid
+          ? { status: "paid", paid_at: new Date().toISOString() }
+          : { status: "open" },
+      )
       .eq("id", inserted.id);
     if (finalErr) {
+
       console.error("Rechnung konnte nicht finalisiert werden:", finalErr.message);
       return json({ error: "Rechnung konnte nicht finalisiert werden" }, 500);
     }
