@@ -116,7 +116,7 @@ export default function Karriere() {
     <Layout>
       <SEO
         title="Karriere bei SLT Rental – Jobs in Krefeld, Bonn & Mülheim"
-        description="Aktuelle Stellenangebote bei SLT Rental in NRW: Lieferfahrer, Servicetechniker, Vertrieb, Disposition und Ausbildung. In 30 Sekunden bewerben – Antwort in 5 Werktagen."
+        description="Stellenangebote bei SLT Rental in NRW: Lieferfahrer, Servicetechniker, Vertrieb, Disposition und Ausbildung. In 30 Sekunden bewerben."
         canonical="/karriere"
         keywords="Jobs SLT Rental, Karriere Baumaschinen, Stellenangebote NRW, Krefeld Jobs, Bonn Jobs, Ausbildung Büromanagement"
         jsonLd={[itemListJsonLd, breadcrumb]}

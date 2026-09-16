@@ -35,7 +35,7 @@ export default function VergleichIndex() {
     <Layout>
       <SEO
         title="Anbietervergleich: SLT Rental im Vergleich zu HKL, Boels und Beyer"
-        description="Sachlicher Vergleich von SLT Rental mit HKL, Boels Rental und Beyer-Mietservice. Standorte, Online-Buchung, Tiefpreisgarantie, Lieferung und Sortiment im Überblick."
+        description="SLT Rental im Vergleich mit HKL, Boels Rental und Beyer-Mietservice: Standorte, Online-Buchung, Tiefpreisgarantie und Lieferung im Überblick."
         canonical="/vergleich"
         keywords="SLT Rental Vergleich, Baumaschinen mieten NRW, HKL Alternative, Boels Alternative, Beyer Alternative"
         jsonLd={SLT_BREADCRUMB_JSONLD([

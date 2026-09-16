@@ -152,7 +152,7 @@ export default function BaumaxService() {
     <Layout>
       <SEO
         title="BAUMAX Reparatur & Servicebetrieb NRW – Krefeld & Bonn"
-        description="Autorisierter BAUMAX Fachhändler in NRW: Reparatur, Wartung, Inspektion und Original-Ersatzteile für Raddumper, Minidumper, Rüttelplatten und Stampfer in Krefeld und Bonn."
+        description="Autorisierter BAUMAX Fachhändler in NRW: Reparatur, Wartung und Original-Ersatzteile für Raddumper, Rüttelplatten und Stampfer in Krefeld und Bonn."
         canonical={PAGE_PATH}
         keywords="BAUMAX Reparatur, BAUMAX Service, BAUMAX Werkstatt NRW, BAUMAX Servicebetrieb, BAUMAX Ersatzteile, BAUMAX Fachhändler Krefeld, BAUMAX Fachhändler Bonn, Raddumper Reparatur, Minidumper Reparatur"
         jsonLd={[breadcrumb, faqSchema, serviceSchema]}
