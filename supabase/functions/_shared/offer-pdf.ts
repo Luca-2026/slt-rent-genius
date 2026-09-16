@@ -31,18 +31,27 @@ export async function generateOfferPdf(data: {
   /** Freitext bei individuellen Zahlungsbedingungen (paymentTerms === "custom"). */
   paymentTermsCustom?: string;
   /**
-   * Dokumentart. "offer" (Standard) erzeugt das Angebot, "invoice" die Rechnung
-   * und "supplement" den Nachtrag zu einer bereits gestellten Rechnung –
-   * identisches Layout, nur Beschriftungen und Hinweistexte unterscheiden sich.
+   * Dokumentart. "offer" (Standard) erzeugt das Angebot, "invoice" die Rechnung,
+   * "supplement" den Nachtrag und "credit_note" die Rechnungskorrektur
+   * (Gutschrift) zu einer bereits gestellten Rechnung – identisches Layout,
+   * nur Beschriftungen und Hinweistexte unterscheiden sich.
    */
-  documentType?: "offer" | "invoice" | "supplement";
+  documentType?: "offer" | "invoice" | "supplement" | "credit_note";
   /** Fälligkeitsdatum der Rechnung (YYYY-MM-DD oder bereits formatiert). */
   dueDate?: string;
   /** Leistungszeitraum der Rechnung. */
   servicePeriodStart?: string;
   servicePeriodEnd?: string;
-  /** Nummer der Ursprungsrechnung bei Nachträgen. */
+  /** Nummer der Ursprungsrechnung bei Nachträgen und Gutschriften. */
   parentInvoiceNumber?: string;
+  /** Rechnungsdatum der korrigierten Ursprungsrechnung (Pflichtangabe bei Gutschriften). */
+  parentInvoiceDate?: string;
+  /** Grund der Rechnungskorrektur (z. B. „Mietzeit verkürzt“). */
+  creditReason?: string;
+  /** true = Teilgutschrift, false/undefined = vollständige Stornierung der Rechnung. */
+  creditIsPartial?: boolean;
+  /** Bereits gezahlter Betrag der Ursprungsrechnung – bestimmt Erstattung oder Verrechnung. */
+  creditAlreadyPaid?: number;
   /** Nummer des ursprünglichen Angebots, auf das sich die Rechnung bezieht (Vorkasse-Zuordnung). */
   sourceOfferNumber?: string;
   /**
