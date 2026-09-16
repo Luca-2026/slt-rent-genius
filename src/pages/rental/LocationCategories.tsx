@@ -55,11 +55,11 @@ const locationSeoDescriptions: Record<string, { de: string; en: string }> = {
     en: "Rent construction equipment & trailers in Krefeld ✓ Mini excavators, aerial platforms, event equipment ✓ 24/7 trailer pickup ✓ Fair rental prices",
   },
   bonn: {
-    de: "Baumaschinen & Equipment mieten in Bonn ✓ Minibagger, Anhänger, Arbeitsbühnen, Hüpfburgen ✓ Lieferung auf die Baustelle ✓ Tiefpreisgarantie ✓ Wochenend-Tarife",
+    de: "Baumaschinen & Equipment mieten in Bonn ✓ Minibagger, Anhänger, Arbeitsbühnen, Hüpfburgen ✓ Lieferung auf die Baustelle ✓ Tiefpreisgarantie",
     en: "Rent construction equipment in Bonn ✓ Mini excavators, trailers, aerial platforms ✓ Delivery to your site ✓ Weekend rates available",
   },
   muelheim: {
-    de: "Baumaschinen mieten in Mülheim an der Ruhr ✓ Bobcat-Bagger, Dumper, Radlader ✓ Professionelle Erdbewegung ✓ Tiefpreisgarantie ✓ Lieferung im Ruhrgebiet",
+    de: "Baumaschinen mieten in Mülheim an der Ruhr ✓ Bobcat-Bagger, Dumper, Radlader ✓ Erdbewegung ✓ Tiefpreisgarantie ✓ Lieferung im Ruhrgebiet",
     en: "Rent construction equipment in Mülheim an der Ruhr ✓ Bobcat excavators, dumpers, wheel loaders ✓ Professional earthmoving ✓ Delivery in the Ruhr area",
   },
 };
