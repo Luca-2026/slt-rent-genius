@@ -367,9 +367,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           <div className="font-semibold">Rechnungen zu dieser Anfrage</div>
           {invoices.map((inv) => (
             <div key={inv.id} className="flex flex-wrap items-center gap-2">
-              <span className="font-medium">
-                {inv.invoice_kind === "supplement" ? "Nachtrag" : "Rechnung"} {inv.invoice_number}
-              </span>
+              <span className="font-medium">Rechnung {inv.invoice_number}</span>
               <span className="text-muted-foreground">
                 {inv.invoice_date ? new Date(inv.invoice_date).toLocaleDateString("de-DE") : "—"}
                 {inv.gross_amount != null && ` · ${formatEuro(Number(inv.gross_amount))} brutto`}
