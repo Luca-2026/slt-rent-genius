@@ -2452,6 +2452,8 @@ export type Database = {
           offer_payload: Json | null
           offer_sent_at: string | null
           offer_total_gross: number | null
+          paid_amount: number
+          payments: Json
           product_id: string | null
           product_name: string | null
           quantity: number | null
@@ -2500,6 +2502,8 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          paid_amount?: number
+          payments?: Json
           product_id?: string | null
           product_name?: string | null
           quantity?: number | null
@@ -2548,6 +2552,8 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          paid_amount?: number
+          payments?: Json
           product_id?: string | null
           product_name?: string | null
           quantity?: number | null
@@ -2632,6 +2638,8 @@ export type Database = {
           offer_payload: Json | null
           offer_sent_at: string | null
           offer_total_gross: number | null
+          paid_amount: number
+          payments: Json
           product_category: string | null
           product_kind: string | null
           product_slug: string | null
@@ -2693,6 +2701,8 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          paid_amount?: number
+          payments?: Json
           product_category?: string | null
           product_kind?: string | null
           product_slug?: string | null
@@ -2754,6 +2764,8 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          paid_amount?: number
+          payments?: Json
           product_category?: string | null
           product_kind?: string | null
           product_slug?: string | null
