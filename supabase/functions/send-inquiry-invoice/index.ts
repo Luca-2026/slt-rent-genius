@@ -58,6 +58,13 @@ const PAYMENT_DAYS: Record<string, number> = {
 };
 const ALLOWED_PAYMENT_TERMS = ["net_7", "net_14", "net_30", "vorkasse", "custom"];
 
+interface RecordedPayment {
+  date: string;
+  amount: number;
+  label: string;
+  reference: string;
+}
+
 const PAYMENT_EMAIL: Record<string, string> = {
   vorkasse: "Der Rechnungsbetrag ist sofort ohne Abzug zur Zahlung fällig.",
   net_7: "Bitte begleichen Sie den Rechnungsbetrag innerhalb von 7 Tagen ohne Abzug.",
@@ -254,7 +261,7 @@ Deno.serve(async (req: Request) => {
 
     // ── Bereits geleistete (Teil-)Zahlungen, z. B. Vorkasse auf das Angebot ──
     const rawPayments = Array.isArray(body.payments) ? body.payments.slice(0, 20) : [];
-    const payments = rawPayments
+    const payments: RecordedPayment[] = rawPayments
       .map((entry: unknown) => {
         const p = (entry ?? {}) as Record<string, unknown>;
         const amount = Math.round((Number(p.amount) || 0) * 100) / 100;
@@ -265,8 +272,8 @@ Deno.serve(async (req: Request) => {
           reference: str(p.reference, 80) || "",
         };
       })
-      .filter((p) => p.amount > 0);
-    const amountPaid = Math.round(payments.reduce((s, p) => s + p.amount, 0) * 100) / 100;
+      .filter((p: RecordedPayment) => p.amount > 0);
+    const amountPaid = Math.round(payments.reduce((s: number, p: RecordedPayment) => s + p.amount, 0) * 100) / 100;
 
 
     const addrIn = body.delivery_address && typeof body.delivery_address === "object"
@@ -455,7 +462,7 @@ Deno.serve(async (req: Request) => {
 
     const paymentsHtml = payments
       .map(
-        (p) =>
+        (p: RecordedPayment) =>
           `<div style="font-size:13px;color:#6b7280;">${escapeHtml(p.label)} vom ${escapeHtml(new Date(p.date).toLocaleDateString("de-DE"))}${p.reference ? ` (${escapeHtml(p.reference)})` : ""}: − ${money(p.amount)}</div>`,
       )
       .join("");
