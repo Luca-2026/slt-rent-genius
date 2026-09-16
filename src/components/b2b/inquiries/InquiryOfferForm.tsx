@@ -347,8 +347,17 @@ export function InquiryOfferForm({
               parent_invoice_id: parentInvoiceId,
               service_period_start: servicePeriodStart || null,
               service_period_end: servicePeriodEnd || null,
+              payments: payments
+                .filter((p) => Number(p.amount) > 0)
+                .map((p) => ({
+                  date: p.date,
+                  amount: Number(p.amount),
+                  label: p.label?.trim() || "Zahlungseingang",
+                  reference: p.reference?.trim() || "",
+                })),
             }
           : {}),
+
         inquiry_type: inquiryType,
         inquiry_id: inquiryId,
         location,
