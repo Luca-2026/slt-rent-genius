@@ -307,6 +307,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               <span className="text-muted-foreground">
                 {inv.invoice_date ? new Date(inv.invoice_date).toLocaleDateString("de-DE") : "—"}
                 {inv.gross_amount != null && ` · ${formatEuro(Number(inv.gross_amount))} brutto`}
+                {inv.offer_number && ` · zu Angebot ${inv.offer_number}`}
               </span>
               <InquiryStatusBadge status={inv.status} />
               {inv.file_url && (
