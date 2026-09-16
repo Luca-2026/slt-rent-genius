@@ -41,6 +41,8 @@ interface InvoiceRow {
   email_sent: boolean;
   paid_amount: number | null;
   payments: PaymentEntry[] | null;
+  credited_amount: number | null;
+  credit_reason: string | null;
   created_at: string;
 }
 
