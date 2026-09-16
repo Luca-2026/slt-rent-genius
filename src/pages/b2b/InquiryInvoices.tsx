@@ -6,13 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { ExternalLink, RefreshCw, Search, Send, CheckCircle2, Ban, Banknote } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -439,6 +436,53 @@ export default function InquiryInvoices() {
             <DialogFooter>
               <Button variant="outline" onClick={() => setPayFor(null)}>Abbrechen</Button>
               <Button onClick={savePayment} disabled={busyId === payFor?.id}>Zahlung speichern</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={!!creditFor} onOpenChange={(open) => !open && setCreditFor(null)}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Rechnungskorrektur (Gutschrift)</DialogTitle>
+              <DialogDescription>
+                {creditFor
+                  ? `Zu Rechnung ${creditFor.invoice_number ?? ""} über ${formatEuro(Number(creditFor.gross_amount))}. Die Rechnung selbst bleibt unverändert – der Kunde erhält ein eigenes Korrekturdokument mit eigener Nummer.`
+                  : ""}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-3">
+              <div>
+                <Label className="text-xs">Art der Korrektur</Label>
+                <Select value={creditMode} onValueChange={(v) => setCreditMode(v as "full" | "partial")}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="full">Vollständige Stornierung</SelectItem>
+                    <SelectItem value="partial">Teilgutschrift</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              {creditMode === "partial" && (
+                <>
+                  <div>
+                    <Label className="text-xs">Gutzuschreibender Betrag brutto (€)</Label>
+                    <Input type="number" step="0.01" min="0" value={creditAmount} onChange={(e) => setCreditAmount(e.target.value)} />
+                  </div>
+                  <div>
+                    <Label className="text-xs">Bezeichnung der Gutschriftposition</Label>
+                    <Input value={creditLabel} onChange={(e) => setCreditLabel(e.target.value)} placeholder="z. B. Mietzeit verkürzt" />
+                  </div>
+                </>
+              )}
+              <div>
+                <Label className="text-xs">Grund der Korrektur (erscheint auf dem Dokument)</Label>
+                <Textarea rows={3} value={creditReason} onChange={(e) => setCreditReason(e.target.value)} placeholder="z. B. Maschine wurde zwei Tage früher zurückgegeben" />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setCreditFor(null)}>Abbrechen</Button>
+              <Button onClick={createCreditNote} disabled={busyId === creditFor?.id}>
+                Gutschrift erstellen und senden
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
