@@ -619,7 +619,7 @@ export async function generateOfferPdf(data: {
         ? `Zahlungsbedingungen: Zahlung innerhalb von ${paymentDueDays} Tagen nach Rechnungsstellung (Kreditlimit: ${fm(data.profile.credit_limit)}).`
         : "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten."));
 
-  if (isInvoice) {
+  if (isInvoice && !isCreditNote) {
     // Rechnung: Zahlungshinweis mit Bankdaten und Fälligkeit – Kastenstil wie beim Angebot
     const termLines = wt(
       (customPaymentText ?? PAYMENT_TEXTS[data.paymentTerms || "net_14"] ?? "").replace("Zahlungsbedingungen: ", ""),
