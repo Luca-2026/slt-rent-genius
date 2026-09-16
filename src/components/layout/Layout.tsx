@@ -16,7 +16,7 @@ export function Layout({ children }: LayoutProps) {
   const isPortal = isPortalPath(location.pathname) || isPortalHost();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />

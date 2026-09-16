@@ -216,7 +216,7 @@ export default function Mietartikel() {
     <Layout>
       <SEO
         title="Baumaschinen, Event-Equipment, Wohnwagen & Anhänger mieten in NRW | SLT Rental"
-        description="Alle Mietkategorien von SLT Rental: Bagger, Anhänger, Arbeitsbühnen, PA-Anlagen, Geschirr, Hüpfburgen und Wohnwagen für Camping & Urlaub. Über 1.700 Mietprodukte an 3 Standorten in NRW."
+        description="Alle Mietkategorien: Bagger, Anhänger, Arbeitsbühnen, PA-Anlagen, Geschirr, Hüpfburgen und Wohnwagen. Über 1.700 Mietprodukte an 3 Standorten in NRW."
         canonical="/mietartikel"
         jsonLd={faqJsonLd}
       />
