@@ -52,6 +52,10 @@ export async function generateOfferPdf(data: {
   creditIsPartial?: boolean;
   /** Bereits gezahlter Betrag der Ursprungsrechnung – bestimmt Erstattung oder Verrechnung. */
   creditAlreadyPaid?: number;
+  /** Nur der durch diese Korrektur tatsächlich zu erstattende Teilbetrag. */
+  creditRefundAmount?: number;
+  /** Nach dieser Korrektur noch offene Forderung aus der Ursprungsrechnung. */
+  creditRemainingBalance?: number;
   /** Nummer des ursprünglichen Angebots, auf das sich die Rechnung bezieht (Vorkasse-Zuordnung). */
   sourceOfferNumber?: string;
   /**
@@ -276,8 +280,9 @@ export async function generateOfferPdf(data: {
     // Titelblock
     const contentTopY = Math.min(ay, iy) - 26;
     let ty = contentTopY;
-    dt(pg, TITLE, ML, ty, bold, 30, BRAND);
-    ty -= 26;
+    const titleSize = isCreditNote ? 20 : isInvoice ? 24 : 30;
+    dt(pg, TITLE, ML, ty, bold, titleSize, BRAND);
+    ty -= isCreditNote ? 22 : isInvoice ? 24 : 26;
     dt(pg, `Nr. ${data.offerNumber}`, ML, ty, font, 10.5, MUTED);
     ty -= 22;
 
@@ -544,12 +549,17 @@ export async function generateOfferPdf(data: {
   const balanceDue = Math.round((data.grossAmount - amountPaid) * 100) / 100;
   if (isCreditNote) {
     // Rechnungskorrektur: Hinweis zur Erstattung bzw. Verrechnung statt Zahlungsaufforderung
-    const alreadyPaid = Math.max(0, Number(data.creditAlreadyPaid) || 0);
-    const refundText = alreadyPaid > 0
-      ? `Der Betrag von ${fm(data.grossAmount)} wird Ihnen auf das uns bekannte Konto erstattet. ` +
-        `Eine gesonderte Zahlung Ihrerseits ist nicht erforderlich.`
-      : `Der Betrag von ${fm(data.grossAmount)} wird mit der Rechnung ${data.parentInvoiceNumber || ""} verrechnet. ` +
-        `${data.creditIsPartial ? "Bitte \u00FCberweisen Sie nur den verbleibenden Rechnungsbetrag." : "Die Rechnung ist damit vollst\u00E4ndig ausgeglichen."}`;
+    const refundAmount = Math.max(0, Number(data.creditRefundAmount) || 0);
+    const remainingBalance = Math.max(0, Number(data.creditRemainingBalance) || 0);
+    const refundText = refundAmount > 0
+      ? `${fm(refundAmount)} werden Ihnen auf das uns bekannte Konto erstattet. ` +
+        (remainingBalance > 0
+          ? `Nach Verrechnung verbleibt aus der Rechnung ${data.parentInvoiceNumber || ""} noch ein offener Betrag von ${fm(remainingBalance)}.`
+          : "Eine gesonderte Zahlung Ihrerseits ist nicht erforderlich.")
+      : `Der Gutschriftbetrag von ${fm(data.grossAmount)} wird mit der Rechnung ${data.parentInvoiceNumber || ""} verrechnet. ` +
+        (remainingBalance > 0
+          ? `Bitte \u00FCberweisen Sie nur noch den verbleibenden Betrag von ${fm(remainingBalance)}.`
+          : "Die Rechnung ist damit vollst\u00E4ndig ausgeglichen.");
     const refundLines = wt(refundText, font, 9, CW - 32);
     const boxH = 46 + refundLines.length * 11 + (data.creditReason ? 13 : 0);
     need(boxH + 16);
@@ -563,7 +573,9 @@ export async function generateOfferPdf(data: {
     }
     dt(
       pg,
-      "Diese Rechnungskorrektur ist Bestandteil der urspr\u00FCnglichen Rechnung und ersetzt diese anteilig.",
+      data.creditIsPartial
+        ? "Diese Rechnungskorrektur ist Bestandteil der urspr\u00FCnglichen Rechnung und korrigiert diese anteilig."
+        : "Diese Rechnungskorrektur ist Bestandteil der urspr\u00FCnglichen Rechnung und hebt diese vollst\u00E4ndig auf.",
       ML + 16, cy, font, 8.5, MUTED,
     );
     y -= boxH + 12;
@@ -676,7 +688,7 @@ export async function generateOfferPdf(data: {
     by -= 2;
     termLines.forEach((ln) => { dt(pg, ln, ML + 16, by, font, 8.5, MUTED); by -= 11; });
     y -= boxH + 12;
-  } else if (data.paymentTerms === "vorkasse") {
+  } else if (!isCreditNote && data.paymentTerms === "vorkasse") {
     // Zahlungskasten mit Bankdaten – Stil identisch zum Rechnungs-Zahlungshinweis
     need(120);
     const boxH = 106;
@@ -700,7 +712,7 @@ export async function generateOfferPdf(data: {
     by -= 2;
     dt(pg, "Mit Zahlungseingang ist Ihre Buchung verbindlich best\u00E4tigt; nach Mietende erhalten Sie die Rechnung per E-Mail.", ML + 16, by, font, 8, MUTED);
     y -= boxH + 12;
-  } else {
+  } else if (!isCreditNote) {
     // Mehrzeiliger Hinweiskasten – Höhe wächst mit dem Text
     const bodyLines = wt(paymentText.replace("Zahlungsbedingungen: ", ""), font, 9, CW - 32);
     const boxH = 26 + bodyLines.length * 12;
@@ -725,7 +737,7 @@ export async function generateOfferPdf(data: {
 
   // ── Gültigkeit bzw. Leistungszeitraum ──
   need(40);
-  if (isInvoice) {
+  if (isInvoice && !isCreditNote) {
     if (data.servicePeriodStart) {
       dt(pg, "Leistungszeitraum:", ML, y, bold, 9);
       dt(
@@ -735,7 +747,7 @@ export async function generateOfferPdf(data: {
       );
       y -= 22;
     }
-  } else {
+  } else if (!isCreditNote) {
     dt(pg, "G\u00FCltigkeit:", ML, y, bold, 9);
     dt(pg, `Dieses Angebot ist g\u00FCltig bis zum ${fd(data.validUntil)} (${data.validDays} Tage).`, ML + 58, y, font, 9, INK);
     y -= 22;
@@ -756,10 +768,13 @@ export async function generateOfferPdf(data: {
   }
 
   // ── Grußformel ──
-  need(56);
+  // Die kurze Korrektur-Grußformel passt kompakter über den reservierten Footer.
+  need(isCreditNote ? 44 : 56);
   dt(
     pg,
-    isInvoice
+    isCreditNote
+      ? "F\u00FCr R\u00FCckfragen zu dieser Rechnungskorrektur stehen wir Ihnen gerne zur Verf\u00FCgung."
+      : isInvoice
       ? "Vielen Dank f\u00FCr Ihren Auftrag. F\u00FCr R\u00FCckfragen zu dieser Rechnung stehen wir Ihnen gerne zur Verf\u00FCgung."
       : "Wir freuen uns auf Ihre R\u00FCckmeldung und stehen Ihnen f\u00FCr R\u00FCckfragen gerne zur Verf\u00FCgung.",
     ML, y, font, 9,

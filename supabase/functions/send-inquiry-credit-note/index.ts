@@ -15,7 +15,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
-import { LOCATION_CONTACTS, VAT_RATE, resolveLocationKey } from "../_shared/inquiry-offer-math.ts";
+import { LOCATION_CONTACTS, resolveLocationKey } from "../_shared/inquiry-offer-math.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -79,6 +79,41 @@ Deno.serve(async (req: Request) => {
     if (!body || typeof body !== "object") return json({ error: "Ungültige Anfrage" }, 400);
 
     const str = (v: unknown, max = 200) => (typeof v === "string" ? v.trim().slice(0, max) : "");
+    const resendCreditId = str(body.resend_credit_note_id, 60);
+    if (resendCreditId) {
+      const { data: credit } = await service
+        .from("inquiry_invoices")
+        .select("*")
+        .eq("id", resendCreditId)
+        .eq("invoice_kind", "credit_note")
+        .maybeSingle();
+      if (!credit) return json({ error: "Gutschrift nicht gefunden" }, 404);
+      if (!credit.file_path) return json({ error: "Zu dieser Gutschrift existiert kein PDF" }, 400);
+
+      const { data: file } = await service.storage.from("b2b-invoices").download(credit.file_path);
+      if (!file) return json({ error: "Gutschrift-PDF konnte nicht geladen werden" }, 500);
+      const resendKey = Deno.env.get("RESEND_API_KEY");
+      if (!resendKey) return json({ error: "E-Mail-Versand ist nicht konfiguriert" }, 500);
+      const loc = LOCATION_CONTACTS[resolveLocationKey(credit.location)];
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
+          to: [credit.customer_email],
+          cc: Array.from(new Set([loc.email, credit.location_email].filter((e) => e && e !== credit.customer_email))),
+          reply_to: loc.email,
+          subject: `Rechnungskorrektur ${credit.invoice_number}`,
+          html: `<p>Hallo ${escapeHtml(credit.customer_name || "")},</p><p>anbei erhalten Sie erneut unsere Rechnungskorrektur <strong>${escapeHtml(credit.invoice_number)}</strong>.</p><p>Bei Fragen melden Sie sich gerne bei uns.</p><p>Herzliche Grüße<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}</p>`,
+          attachments: [{ filename: credit.file_name || `${credit.invoice_number}.pdf`, content: encodeBase64(bytes) }],
+        }),
+      });
+      if (!res.ok) return json({ error: "E-Mail konnte nicht gesendet werden" }, 500);
+      await service.from("inquiry_invoices").update({ email_sent: true, email_sent_at: new Date().toISOString() }).eq("id", credit.id);
+      return json({ success: true, email_sent: true });
+    }
+
     const invoiceId = str(body.invoice_id, 60);
     if (!invoiceId) return json({ error: "invoice_id fehlt" }, 400);
     const mode = body.mode === "partial" ? "partial" : "full";
@@ -110,65 +145,48 @@ Deno.serve(async (req: Request) => {
     let lines: CreditLine[] = [];
     let grossCredit = 0;
 
+    const vatRate = Math.max(0, Number(invoice.vat_rate) || 0);
+    const taxFactor = 1 + vatRate / 100;
+
     if (mode === "full") {
-      const { data: items } = await service
-        .from("inquiry_invoice_items")
-        .select("position, product_name, description, quantity, unit, unit_price, discount_percent, total_price, image_url")
-        .eq("invoice_id", invoiceId)
-        .order("position", { ascending: true });
-      lines = (items ?? []).map((i: Record<string, unknown>) => ({
-        product_name: String(i.product_name ?? "Position"),
-        description: (i.description as string) ?? null,
-        quantity: Number(i.quantity) || 1,
-        unit: (i.unit as string) ?? null,
-        unit_price: round2(i.unit_price as number),
-        total_price: round2(i.total_price as number),
-      }));
-      if (!lines.length) {
-        lines = [{
-          product_name: `Stornierung Rechnung ${invoice.invoice_number}`,
-          description: null,
-          quantity: 1,
-          unit: "Pauschale",
-          unit_price: round2(creditable / (1 + VAT_RATE / 100)),
-          total_price: round2(creditable / (1 + VAT_RATE / 100)),
-        }];
-      }
+      const remainingNet = round2(creditable / taxFactor);
+      lines = [{
+        product_name: `Vollständige Stornierung Rechnung ${invoice.invoice_number}`,
+        description: "Korrektur sämtlicher noch nicht gutgeschriebener Positionen und Nebenleistungen der Ursprungsrechnung.",
+        quantity: 1,
+        unit: "Pauschale",
+        unit_price: remainingNet,
+        total_price: remainingNet,
+      }];
       grossCredit = creditable;
     } else {
-      const rawLines = Array.isArray(body.items) ? body.items.slice(0, 40) : [];
-      lines = rawLines
-        .map((entry: unknown) => {
-          const l = (entry ?? {}) as Record<string, unknown>;
-          const quantity = Math.abs(Number(l.quantity) || 1);
-          const unitPrice = Math.abs(round2(l.unit_price as number));
-          return {
-            product_name: str(l.product_name, 160) || "Gutschriftposition",
-            description: str(l.description, 400) || null,
-            quantity,
-            unit: str(l.unit, 40) || null,
-            unit_price: unitPrice,
-            total_price: round2(quantity * unitPrice),
-          };
-        })
-        .filter((l) => l.total_price > 0);
-      if (!lines.length) return json({ error: "Bitte mindestens eine Gutschriftposition angeben" }, 400);
-
-      const netCredit = round2(lines.reduce((s, l) => s + l.total_price, 0));
-      grossCredit = round2(netCredit * (1 + VAT_RATE / 100));
+      grossCredit = Math.abs(round2(body.gross_amount));
+      if (grossCredit <= 0) return json({ error: "Bitte einen Gutschriftbetrag größer 0 € angeben" }, 400);
       if (grossCredit - creditable > 0.01) {
         return json(
           { error: `Die Gutschrift (${money(grossCredit)}) übersteigt den noch offenen Rechnungsbetrag von ${money(creditable)}.` },
           400,
         );
       }
+      const netCredit = round2(grossCredit / taxFactor);
+      lines = [{
+        product_name: str(body.product_name, 160) || "Teilgutschrift",
+        description: reason,
+        quantity: 1,
+        unit: "Pauschale",
+        unit_price: netCredit,
+        total_price: netCredit,
+      }];
     }
 
-    const netAmount = mode === "full"
-      ? round2(invoice.net_amount) - round2(alreadyCredited / (1 + VAT_RATE / 100))
-      : round2(lines.reduce((s, l) => s + l.total_price, 0));
-    const netFinal = round2(mode === "full" ? round2(grossCredit / (1 + VAT_RATE / 100)) : netAmount);
+    const netFinal = round2(grossCredit / taxFactor);
     const vatAmount = round2(grossCredit - netFinal);
+    const remainingAfterCredit = Math.max(0, round2(creditable - grossCredit));
+    const paidAmount = Math.max(0, round2(invoice.paid_amount));
+    const excessBeforeCredit = Math.max(0, round2(paidAmount - creditable));
+    const excessAfterCredit = Math.max(0, round2(paidAmount - remainingAfterCredit));
+    const refundAmount = Math.min(grossCredit, Math.max(0, round2(excessAfterCredit - excessBeforeCredit)));
+    const remainingBalance = Math.max(0, round2(remainingAfterCredit - paidAmount));
 
     // ── Doppelklick-Schutz ──
     const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000).toISOString();
@@ -242,7 +260,9 @@ Deno.serve(async (req: Request) => {
       parentInvoiceDate: invoice.invoice_date ?? undefined,
       creditReason: reason,
       creditIsPartial: mode === "partial",
-      creditAlreadyPaid: round2(invoice.paid_amount),
+      creditAlreadyPaid: paidAmount,
+      creditRefundAmount: refundAmount,
+      creditRemainingBalance: remainingBalance,
       servicePeriodStart: invoice.service_period_start ?? undefined,
       servicePeriodEnd: invoice.service_period_end ?? undefined,
       sourceOfferNumber: invoice.offer_number ?? undefined,
@@ -265,7 +285,7 @@ Deno.serve(async (req: Request) => {
       servicesSurcharge: 0,
       servicesWithPrices: [],
       netAmount: netFinal,
-      vatRate: VAT_RATE,
+      vatRate,
       vatAmount,
       grossAmount: grossCredit,
       isReverseCharge: false,
@@ -297,12 +317,14 @@ Deno.serve(async (req: Request) => {
     const fileUrl = signed?.signedUrl || "";
 
     // ── E-Mail an den Kunden ──
-    const amountPaidInvoice = round2(invoice.paid_amount);
-    const refundText = amountPaidInvoice > 0
-      ? `Den Betrag von <strong>${money(grossCredit)}</strong> erstatten wir Ihnen auf das uns bekannte Konto zurück. Sie müssen nichts weiter veranlassen.`
+    const refundText = refundAmount > 0
+      ? `<strong>${money(refundAmount)}</strong> erstatten wir Ihnen auf das uns bekannte Konto.` +
+        (remainingBalance > 0
+          ? ` Nach Verrechnung verbleibt ein offener Rechnungsbetrag von <strong>${money(remainingBalance)}</strong>.`
+          : " Eine weitere Zahlung ist nicht erforderlich.")
       : `Der Betrag von <strong>${money(grossCredit)}</strong> wird mit der Rechnung ${escapeHtml(invoice.invoice_number ?? "")} verrechnet.` +
-        (mode === "partial"
-          ? ` Bitte überweisen Sie nur noch den verbleibenden Betrag von <strong>${money(Math.max(0, round2(creditable - grossCredit)))}</strong>.`
+        (remainingBalance > 0
+          ? ` Bitte überweisen Sie nur noch <strong>${money(remainingBalance)}</strong>.`
           : " Die Rechnung ist damit vollständig ausgeglichen – eine Zahlung ist nicht mehr erforderlich.");
 
     const rowsHtml = lines
@@ -323,7 +345,7 @@ Deno.serve(async (req: Request) => {
   <p style="font-size:14px;"><strong>Grund:</strong> ${escapeHtml(reason)}</p>
   <div style="margin:16px 0;border-top:2px solid #00507d;">${rowsHtml}</div>
   <p style="font-size:15px;"><strong>Gutschriftbetrag brutto: − ${money(grossCredit)}</strong><br>
-  <span style="color:#6b7280;font-size:13px;">Netto ${money(netFinal)} zzgl. ${VAT_RATE}% MwSt. (${money(vatAmount)})</span></p>
+  <span style="color:#6b7280;font-size:13px;">Netto ${money(netFinal)} zzgl. ${vatRate}% MwSt. (${money(vatAmount)})</span></p>
   <div style="background:#f0fdf4;border-left:4px solid #0b7a42;padding:12px 16px;margin:20px 0;border-radius:4px;font-size:14px;">${refundText}</div>
   <p>Bei Fragen zur Korrektur melden Sie sich gerne jederzeit bei uns.</p>
   <p style="margin-top:24px;">Herzliche Grüße<br>${escapeHtml(staffName)}<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}<br>
@@ -332,28 +354,6 @@ Deno.serve(async (req: Request) => {
 </div></body></html>`;
 
     let emailSent = false;
-    const resendKey = Deno.env.get("RESEND_API_KEY");
-    if (resendKey) {
-      try {
-        const res = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
-            to: [invoice.customer_email],
-            cc: Array.from(new Set([loc.email, invoice.location_email].filter((e) => e && e !== invoice.customer_email))),
-            reply_to: loc.email,
-            subject: `Rechnungskorrektur ${creditNumber} zu Rechnung ${invoice.invoice_number}`,
-            html: emailHtml,
-            attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
-          }),
-        });
-        if (res.ok) emailSent = true;
-        else console.error("Resend error:", res.status, await res.text());
-      } catch (err) {
-        console.error("Resend exception:", err);
-      }
-    }
 
     // ── Gutschrift speichern (Entwurf → Positionen → finalisieren) ──
     const { data: inserted, error: insErr } = await service
@@ -385,7 +385,7 @@ Deno.serve(async (req: Request) => {
         payment_terms: invoice.payment_terms,
         payment_due_days: 0,
         net_amount: -netFinal,
-        vat_rate: VAT_RATE,
+        vat_rate: vatRate,
         vat_amount: -vatAmount,
         gross_amount: -grossCredit,
         credit_reason: reason,
@@ -394,8 +394,8 @@ Deno.serve(async (req: Request) => {
         file_url: fileUrl,
         file_name: fileName,
         file_path: filePath,
-        email_sent: emailSent,
-        email_sent_at: emailSent ? new Date().toISOString() : null,
+        email_sent: false,
+        email_sent_at: null,
         created_by: user.id,
         created_by_name: staffName,
       })
@@ -434,16 +434,45 @@ Deno.serve(async (req: Request) => {
       return json({ error: "Gutschrift konnte nicht finalisiert werden" }, 500);
     }
 
-    // ── Ursprungsrechnung fortschreiben ──
-    const newCredited = round2(alreadyCredited + grossCredit);
-    const fullyCredited = newCredited >= grossInvoice - 0.009;
-    const patch: Record<string, unknown> = { credited_amount: newCredited, credit_reason: reason };
-    if (fullyCredited && invoice.status !== "cancelled") {
-      patch.status = "cancelled";
-      patch.cancelled_at = new Date().toISOString();
+    // ── Ursprungsrechnung atomar fortschreiben ──
+    // Die Datenbank sperrt die Rechnung während der Buchung und verhindert Über-Gutschriften.
+    const { error: parentErr } = await service.rpc("apply_inquiry_invoice_credit", {
+      p_invoice_id: invoice.id,
+      p_credit_amount: grossCredit,
+      p_reason: reason,
+    });
+    if (parentErr) {
+      console.error("Ursprungsrechnung konnte nicht aktualisiert werden:", parentErr.message);
+      return json({ error: "Gutschrift wurde gespeichert, aber die Ursprungsrechnung konnte nicht aktualisiert werden" }, 500);
     }
-    const { error: parentErr } = await service.from("inquiry_invoices").update(patch).eq("id", invoice.id);
-    if (parentErr) console.error("Ursprungsrechnung konnte nicht aktualisiert werden:", parentErr.message);
+
+    // Erst nach vollständiger Speicherung und Finalisierung an den Kunden senden.
+    const resendKey = Deno.env.get("RESEND_API_KEY");
+    if (resendKey) {
+      try {
+        const res = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
+            to: [invoice.customer_email],
+            cc: Array.from(new Set([loc.email, invoice.location_email].filter((e) => e && e !== invoice.customer_email))),
+            reply_to: loc.email,
+            subject: `Rechnungskorrektur ${creditNumber} zu Rechnung ${invoice.invoice_number}`,
+            html: emailHtml,
+            attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
+          }),
+        });
+        if (res.ok) {
+          emailSent = true;
+          await service.from("inquiry_invoices").update({ email_sent: true, email_sent_at: new Date().toISOString() }).eq("id", inserted.id);
+        } else {
+          console.error("Resend error:", res.status, await res.text());
+        }
+      } catch (err) {
+        console.error("Resend exception:", err);
+      }
+    }
 
     return json({
       success: true,
@@ -451,7 +480,7 @@ Deno.serve(async (req: Request) => {
       invoice_number: creditNumber,
       file_url: fileUrl,
       gross_amount: grossCredit,
-      fully_credited: fullyCredited,
+      fully_credited: remainingAfterCredit <= 0.009,
       email_sent: emailSent,
     });
   } catch (err) {

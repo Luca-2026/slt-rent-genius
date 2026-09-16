@@ -58,6 +58,13 @@ const PAYMENT_DAYS: Record<string, number> = {
 };
 const ALLOWED_PAYMENT_TERMS = ["net_7", "net_14", "net_30", "vorkasse", "custom"];
 
+interface RecordedPayment {
+  date: string;
+  amount: number;
+  label: string;
+  reference: string;
+}
+
 const PAYMENT_EMAIL: Record<string, string> = {
   vorkasse: "Der Rechnungsbetrag ist sofort ohne Abzug zur Zahlung fällig.",
   net_7: "Bitte begleichen Sie den Rechnungsbetrag innerhalb von 7 Tagen ohne Abzug.",
@@ -120,8 +127,10 @@ Deno.serve(async (req: Request) => {
           html:
             `<p>Hallo ${escapeHtml(inv.customer_name || "")},</p>` +
             `<p>anbei erhalten Sie erneut unsere Rechnung ${escapeHtml(inv.invoice_number)} über ${money(Number(inv.gross_amount))} brutto.</p>` +
-            (Number(inv.paid_amount) > 0
-              ? `<p>Bereits erhalten: ${money(Number(inv.paid_amount))} – offener Restbetrag: <strong>${money(Math.max(0, Number(inv.gross_amount) - Number(inv.paid_amount)))}</strong>.</p>`
+             (Number(inv.paid_amount) > 0 || Number(inv.credited_amount) > 0
+               ? `<p>Bereits erhalten: ${money(Number(inv.paid_amount))}` +
+                 (Number(inv.credited_amount) > 0 ? ` – gutgeschrieben: ${money(Number(inv.credited_amount))}` : "") +
+                 ` – offener Restbetrag: <strong>${money(Math.max(0, Number(inv.gross_amount) - Number(inv.paid_amount) - Number(inv.credited_amount)))}</strong>.</p>`
               : "") +
 
             `<p>Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}</p>`,
@@ -254,7 +263,7 @@ Deno.serve(async (req: Request) => {
 
     // ── Bereits geleistete (Teil-)Zahlungen, z. B. Vorkasse auf das Angebot ──
     const rawPayments = Array.isArray(body.payments) ? body.payments.slice(0, 20) : [];
-    const payments = rawPayments
+    const payments: RecordedPayment[] = rawPayments
       .map((entry: unknown) => {
         const p = (entry ?? {}) as Record<string, unknown>;
         const amount = Math.round((Number(p.amount) || 0) * 100) / 100;
@@ -265,8 +274,8 @@ Deno.serve(async (req: Request) => {
           reference: str(p.reference, 80) || "",
         };
       })
-      .filter((p) => p.amount > 0);
-    const amountPaid = Math.round(payments.reduce((s, p) => s + p.amount, 0) * 100) / 100;
+      .filter((p: RecordedPayment) => p.amount > 0);
+    const amountPaid = Math.round(payments.reduce((s: number, p: RecordedPayment) => s + p.amount, 0) * 100) / 100;
 
 
     const addrIn = body.delivery_address && typeof body.delivery_address === "object"
@@ -455,7 +464,7 @@ Deno.serve(async (req: Request) => {
 
     const paymentsHtml = payments
       .map(
-        (p) =>
+        (p: RecordedPayment) =>
           `<div style="font-size:13px;color:#6b7280;">${escapeHtml(p.label)} vom ${escapeHtml(new Date(p.date).toLocaleDateString("de-DE"))}${p.reference ? ` (${escapeHtml(p.reference)})` : ""}: − ${money(p.amount)}</div>`,
       )
       .join("");
@@ -519,29 +528,6 @@ Deno.serve(async (req: Request) => {
 
 
     let emailSent = false;
-    if (resendKey) {
-      try {
-        const res = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
-            to: [customerEmail],
-            cc: Array.from(new Set([loc.email, str(inquiry.location_email)].filter((e) => e && e !== customerEmail))),
-            reply_to: loc.email,
-            subject: `${invoiceKind === "supplement" ? "Nachtragsrechnung" : "Rechnung"} von SLT Rental – ${invoiceNumber}`,
-            html: emailHtml,
-            attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
-          }),
-        });
-        if (res.ok) emailSent = true;
-        else console.error("Resend error:", res.status, await res.text());
-      } catch (err) {
-        console.error("Resend exception:", err);
-      }
-    } else {
-      console.log("RESEND_API_KEY fehlt – Rechnung wurde nur erzeugt, nicht versendet");
-    }
 
     // ── Rechnung speichern (direkt finalisiert) ──
     const { data: inserted, error: insErr } = await service
@@ -596,8 +582,8 @@ Deno.serve(async (req: Request) => {
         file_url: fileUrl,
         file_name: fileName,
         file_path: filePath,
-        email_sent: emailSent,
-        email_sent_at: emailSent ? new Date().toISOString() : null,
+        email_sent: false,
+        email_sent_at: null,
         created_by: user.id,
         created_by_name: staffName,
       })
@@ -643,6 +629,35 @@ Deno.serve(async (req: Request) => {
 
       console.error("Rechnung konnte nicht finalisiert werden:", finalErr.message);
       return json({ error: "Rechnung konnte nicht finalisiert werden" }, 500);
+    }
+
+    // Erst nach vollständig gespeicherten und finalisierten Positionen versenden.
+    if (resendKey) {
+      try {
+        const res = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
+            to: [customerEmail],
+            cc: Array.from(new Set([loc.email, str(inquiry.location_email)].filter((e) => e && e !== customerEmail))),
+            reply_to: loc.email,
+            subject: `${invoiceKind === "supplement" ? "Nachtragsrechnung" : "Rechnung"} von SLT Rental – ${invoiceNumber}`,
+            html: emailHtml,
+            attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
+          }),
+        });
+        if (res.ok) {
+          emailSent = true;
+          await service.from("inquiry_invoices").update({ email_sent: true, email_sent_at: new Date().toISOString() }).eq("id", inserted.id);
+        } else {
+          console.error("Resend error:", res.status, await res.text());
+        }
+      } catch (err) {
+        console.error("Resend exception:", err);
+      }
+    } else {
+      console.log("RESEND_API_KEY fehlt – Rechnung wurde nur erzeugt, nicht versendet");
     }
 
 

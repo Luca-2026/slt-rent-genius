@@ -132,7 +132,7 @@ export default function InquiryInvoices() {
     [filtered],
   );
 
-  /** Zahlungseingang erfassen: Zahlung anhängen, Summe fortschreiben, ggf. auf „Bezahlt“ setzen. */
+  /** Zahlungseingang atomar erfassen, damit parallele Buchungen nicht überschrieben werden. */
   const savePayment = async () => {
     if (!payFor) return;
     const amount = Math.round((Number(payAmount.replace(",", ".")) || 0) * 100) / 100;
@@ -141,23 +141,21 @@ export default function InquiryInvoices() {
       return;
     }
     setBusyId(payFor.id);
-    const nextPayments: PaymentEntry[] = [
-      ...(payFor.payments ?? []),
-      { date: payDate, amount, label: payLabel.trim() || "Zahlungseingang", reference: payReference.trim() },
-    ];
-    const paidAmount = Math.round(nextPayments.reduce((s, p) => s + Number(p.amount || 0), 0) * 100) / 100;
-    const fullyPaid = paidAmount >= Number(payFor.gross_amount) - 0.009;
-    const patch: Record<string, unknown> = { payments: nextPayments, paid_amount: paidAmount };
-    if (fullyPaid && payFor.status !== "cancelled") {
-      patch.status = "paid";
-      patch.paid_at = new Date().toISOString();
-    }
-    const { error } = await supabase.from("inquiry_invoices").update(patch).eq("id", payFor.id);
+    const { data, error } = await supabase.rpc("record_inquiry_invoice_payment", {
+      p_invoice_id: payFor.id,
+      p_amount: amount,
+      p_payment_date: payDate,
+      p_label: payLabel.trim() || "Zahlungseingang",
+      p_reference: payReference.trim(),
+    });
     setBusyId(null);
     if (error) {
       toast({ title: "Zahlung konnte nicht gespeichert werden", description: error.message, variant: "destructive" });
       return;
     }
+    const updated = Array.isArray(data) ? data[0] : data;
+    const paidAmount = Number(updated?.paid_amount ?? Number(payFor.paid_amount ?? 0) + amount);
+    const fullyPaid = paidAmount >= Number(payFor.gross_amount) - 0.009;
     toast({
       title: "Zahlung erfasst",
       description: fullyPaid
@@ -209,15 +207,8 @@ export default function InquiryInvoices() {
         invoice_id: creditFor.id,
         mode: creditMode,
         reason,
-        items: creditMode === "partial"
-          ? [{
-              product_name: creditLabel.trim() || "Gutschrift",
-              description: reason,
-              quantity: 1,
-              unit: "Pauschale",
-              unit_price: Math.round((grossCredit / 1.19) * 100) / 100,
-            }]
-          : undefined,
+        gross_amount: creditMode === "partial" ? grossCredit : undefined,
+        product_name: creditMode === "partial" ? creditLabel.trim() || "Teilgutschrift" : undefined,
       },
     });
     setBusyId(null);
@@ -231,9 +222,11 @@ export default function InquiryInvoices() {
     }
     toast({
       title: `Gutschrift ${(data as any)?.invoice_number ?? ""} erstellt`,
-      description: (data as any)?.fully_credited
-        ? "Die Rechnung wurde vollständig storniert und der Kunde informiert."
-        : "Die Teilgutschrift wurde erstellt und dem Kunden per E-Mail gesendet.",
+      description: !(data as any)?.email_sent
+        ? "Das Dokument wurde gespeichert, konnte aber nicht per E-Mail versendet werden."
+        : (data as any)?.fully_credited
+          ? "Die Rechnung wurde vollständig storniert und der Kunde informiert."
+          : "Die Teilgutschrift wurde erstellt und dem Kunden per E-Mail gesendet.",
     });
     setCreditFor(null);
     setCreditReason("");
@@ -243,8 +236,9 @@ export default function InquiryInvoices() {
 
   const resend = async (row: InvoiceRow) => {
     setBusyId(row.id);
-    const { data, error } = await supabase.functions.invoke("send-inquiry-invoice", {
-      body: { resend_invoice_id: row.id },
+    const isCredit = row.invoice_kind === "credit_note";
+    const { data, error } = await supabase.functions.invoke(isCredit ? "send-inquiry-credit-note" : "send-inquiry-invoice", {
+      body: isCredit ? { resend_credit_note_id: row.id } : { resend_invoice_id: row.id },
     });
     setBusyId(null);
     if (error || (data as any)?.error) {
@@ -262,7 +256,7 @@ export default function InquiryInvoices() {
   return (
     <B2BPortalLayout
       title="Rechnungen"
-      subtitle="Rechnungen und Nachträge aus Miet- und Verkaufsanfragen"
+      subtitle="Rechnungen und Gutschriften aus Miet- und Verkaufsanfragen"
     >
       <div className="space-y-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -314,7 +308,9 @@ export default function InquiryInvoices() {
                       <Badge variant="secondary">Gutschrift</Badge>
                     )}
                     <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>
-                      {STATUS_LABEL[row.status] ?? row.status}
+                      {row.invoice_kind === "credit_note" && row.status === "paid"
+                        ? "Erstellt"
+                        : STATUS_LABEL[row.status] ?? row.status}
                     </Badge>
                     <Badge variant="outline">
                       {row.inquiry_type === "rental" ? "Mietanfrage" : "Verkaufsanfrage"}
@@ -357,10 +353,12 @@ export default function InquiryInvoices() {
                         </a>
                       </Button>
                     )}
-                    <Button size="sm" variant="outline" disabled={busyId === row.id} onClick={() => resend(row)}>
-                      <Send className="h-3.5 w-3.5 mr-1" /> Erneut senden
-                    </Button>
-                    {row.status !== "cancelled" && (
+                    {(row.invoice_kind !== "credit_note" || !row.email_sent) && (
+                      <Button size="sm" variant="outline" disabled={busyId === row.id} onClick={() => resend(row)}>
+                        <Send className="h-3.5 w-3.5 mr-1" /> {row.email_sent ? "Erneut senden" : "E-Mail senden"}
+                      </Button>
+                    )}
+                    {row.status !== "cancelled" && row.invoice_kind !== "credit_note" && (
                       <Button
                         size="sm"
                         variant="outline"
@@ -376,7 +374,7 @@ export default function InquiryInvoices() {
                         <Banknote className="h-3.5 w-3.5 mr-1" /> Zahlung erfassen
                       </Button>
                     )}
-                    {row.status !== "paid" && row.status !== "cancelled" && (
+                    {row.status !== "paid" && row.status !== "cancelled" && row.invoice_kind !== "credit_note" && (
 
                       <Button size="sm" variant="outline" disabled={busyId === row.id} onClick={() => setStatus(row, "paid")}>
                         <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Als bezahlt markieren

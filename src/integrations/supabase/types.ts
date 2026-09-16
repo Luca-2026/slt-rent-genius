@@ -3621,6 +3621,80 @@ export type Database = {
       }
     }
     Functions: {
+      apply_inquiry_invoice_credit: {
+        Args: {
+          p_credit_amount: number
+          p_invoice_id: string
+          p_reason: string
+        }
+        Returns: {
+          cancelled_at: string | null
+          company_name: string | null
+          created_at: string
+          created_by: string | null
+          created_by_name: string | null
+          credit_reason: string | null
+          credited_amount: number
+          crm_customer_id: string | null
+          customer_city: string | null
+          customer_country: string
+          customer_email: string
+          customer_kind: string
+          customer_name: string | null
+          customer_phone: string | null
+          customer_postal_code: string | null
+          customer_street: string | null
+          delivery_city: string | null
+          delivery_cost_delivery: number
+          delivery_cost_return: number
+          delivery_postal_code: string | null
+          delivery_requested: boolean
+          delivery_street: string | null
+          deposit: number
+          dismantle_cost: number
+          due_date: string | null
+          email_sent: boolean
+          email_sent_at: string | null
+          file_name: string | null
+          file_path: string | null
+          file_url: string | null
+          gross_amount: number
+          id: string
+          inquiry_type: string
+          internal_notes: string | null
+          invoice_date: string
+          invoice_kind: string
+          invoice_number: string | null
+          location: string | null
+          location_email: string | null
+          net_amount: number
+          notes: string | null
+          offer_number: string | null
+          paid_amount: number
+          paid_at: string | null
+          parent_invoice_id: string | null
+          payment_due_days: number
+          payment_terms: string
+          payment_terms_custom: string | null
+          payments: Json
+          rental_inquiry_id: string | null
+          sales_inquiry_id: string | null
+          service_period_end: string | null
+          service_period_start: string | null
+          setup_cost: number
+          status: string
+          updated_at: string
+          vat_amount: number
+          vat_id: string | null
+          vat_rate: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "inquiry_invoices"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       can_access_todo_list: {
         Args: { _list_id: string; _user_id: string }
         Returns: boolean
@@ -3684,6 +3758,82 @@ export type Database = {
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
       log_admin_login: { Args: never; Returns: undefined }
       mark_overdue_invoices: { Args: never; Returns: number }
+      record_inquiry_invoice_payment: {
+        Args: {
+          p_amount: number
+          p_invoice_id: string
+          p_label?: string
+          p_payment_date: string
+          p_reference?: string
+        }
+        Returns: {
+          cancelled_at: string | null
+          company_name: string | null
+          created_at: string
+          created_by: string | null
+          created_by_name: string | null
+          credit_reason: string | null
+          credited_amount: number
+          crm_customer_id: string | null
+          customer_city: string | null
+          customer_country: string
+          customer_email: string
+          customer_kind: string
+          customer_name: string | null
+          customer_phone: string | null
+          customer_postal_code: string | null
+          customer_street: string | null
+          delivery_city: string | null
+          delivery_cost_delivery: number
+          delivery_cost_return: number
+          delivery_postal_code: string | null
+          delivery_requested: boolean
+          delivery_street: string | null
+          deposit: number
+          dismantle_cost: number
+          due_date: string | null
+          email_sent: boolean
+          email_sent_at: string | null
+          file_name: string | null
+          file_path: string | null
+          file_url: string | null
+          gross_amount: number
+          id: string
+          inquiry_type: string
+          internal_notes: string | null
+          invoice_date: string
+          invoice_kind: string
+          invoice_number: string | null
+          location: string | null
+          location_email: string | null
+          net_amount: number
+          notes: string | null
+          offer_number: string | null
+          paid_amount: number
+          paid_at: string | null
+          parent_invoice_id: string | null
+          payment_due_days: number
+          payment_terms: string
+          payment_terms_custom: string | null
+          payments: Json
+          rental_inquiry_id: string | null
+          sales_inquiry_id: string | null
+          service_period_end: string | null
+          service_period_start: string | null
+          setup_cost: number
+          status: string
+          updated_at: string
+          vat_amount: number
+          vat_id: string | null
+          vat_rate: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "inquiry_invoices"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       sign_delivery_note: {
         Args: {
           _agb_accepted?: boolean
