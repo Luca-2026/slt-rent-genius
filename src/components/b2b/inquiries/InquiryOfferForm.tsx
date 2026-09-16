@@ -861,6 +861,103 @@ export function InquiryOfferForm({
         <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} disabled={disabled} />
       </div>
 
+      {isInvoice && (
+        <div className="rounded-lg border border-border p-3 space-y-2">
+          <div className="flex items-center justify-between gap-2">
+            <Label className="text-xs">Bereits erhaltene Zahlungen (z. B. Vorkasse auf das Angebot)</Label>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              disabled={disabled}
+              onClick={() =>
+                setPayments((prev) => [
+                  ...prev,
+                  {
+                    date: new Date().toISOString().slice(0, 10),
+                    amount: 0,
+                    label: "Zahlungseingang",
+                    reference: "",
+                  },
+                ])
+              }
+            >
+              <Plus className="h-4 w-4 mr-1" /> Zahlung
+            </Button>
+          </div>
+          {payments.length === 0 && (
+            <p className="text-xs text-muted-foreground">
+              Keine Zahlung erfasst – der volle Rechnungsbetrag wird als offen ausgewiesen.
+            </p>
+          )}
+          {payments.map((p, index) => (
+            <div key={index} className="grid grid-cols-2 sm:grid-cols-4 gap-2 items-end">
+              <div>
+                <Label className="text-[11px]">Datum</Label>
+                <Input
+                  type="date"
+                  value={p.date}
+                  disabled={disabled}
+                  onChange={(e) =>
+                    setPayments((prev) => prev.map((x, i) => (i === index ? { ...x, date: e.target.value } : x)))
+                  }
+                />
+              </div>
+              <div>
+                <Label className="text-[11px]">Betrag brutto (€)</Label>
+                <Input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={p.amount || ""}
+                  disabled={disabled}
+                  onChange={(e) =>
+                    setPayments((prev) =>
+                      prev.map((x, i) => (i === index ? { ...x, amount: Number(e.target.value) || 0 } : x)),
+                    )
+                  }
+                />
+              </div>
+              <div>
+                <Label className="text-[11px]">Bezeichnung</Label>
+                <Input
+                  value={p.label}
+                  placeholder="Vorkasse Angebot"
+                  disabled={disabled}
+                  onChange={(e) =>
+                    setPayments((prev) => prev.map((x, i) => (i === index ? { ...x, label: e.target.value } : x)))
+                  }
+                />
+              </div>
+              <div className="flex gap-2 items-end">
+                <div className="flex-1">
+                  <Label className="text-[11px]">Verwendungszweck</Label>
+                  <Input
+                    value={p.reference ?? ""}
+                    placeholder="ANG-2026-…"
+                    disabled={disabled}
+                    onChange={(e) =>
+                      setPayments((prev) =>
+                        prev.map((x, i) => (i === index ? { ...x, reference: e.target.value } : x)),
+                      )
+                    }
+                  />
+                </div>
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="ghost"
+                  disabled={disabled}
+                  onClick={() => setPayments((prev) => prev.filter((_, i) => i !== index))}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className="rounded-lg bg-muted p-3 text-sm space-y-1">
         <div className="flex justify-between"><span>Mietartikel</span><span>{formatEuro(totals.itemsNet)}</span></div>
         {totals.addonsNet > 0 && (
@@ -869,7 +966,19 @@ export function InquiryOfferForm({
         <div className="flex justify-between"><span>Netto</span><span>{formatEuro(totals.netAmount)}</span></div>
         <div className="flex justify-between"><span>MwSt. {totals.vatRate}%</span><span>{formatEuro(totals.vatAmount)}</span></div>
         <div className="flex justify-between font-bold text-base"><span>Brutto</span><span>{formatEuro(totals.grossAmount)}</span></div>
+        {isInvoice && amountPaid > 0 && (
+          <>
+            <div className="flex justify-between text-muted-foreground">
+              <span>Bereits gezahlt</span><span>− {formatEuro(amountPaid)}</span>
+            </div>
+            <div className="flex justify-between font-bold text-base">
+              <span>{balanceDue <= 0 ? "Vollständig bezahlt" : "Noch zu zahlen"}</span>
+              <span>{formatEuro(Math.max(0, balanceDue))}</span>
+            </div>
+          </>
+        )}
       </div>
+
 
 
       <Button onClick={send} disabled={disabled || sending} className="w-full">
