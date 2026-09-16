@@ -419,22 +419,40 @@ Deno.serve(async (req: Request) => {
       .createSignedUrl(filePath, 60 * 60 * 24 * 365);
     const fileUrl = signed?.signedUrl || "";
 
-    // ── E-Mail an den Kunden ──
+    // ── E-Mail an den Kunden (persönlich formuliert, mit Bankdaten und Restbetrag) ──
+    const balanceDue = Math.round((totals.grossAmount - amountPaid) * 100) / 100;
+    const fullyPaid = balanceDue <= 0.009;
+
     const rowsHtml = items.map((i) => {
       const pct = Number(i.discount_percent) || 0;
       const gross = Math.round(i.quantity * i.unit_price * 100) / 100;
       const savings = Math.round(gross * (pct / 100) * 100) / 100;
       const net = Math.round((gross - savings) * 100) / 100;
+      const addonsHtml = (i.addons ?? [])
+        .filter((a) => Number(a.amount) !== 0)
+        .map(
+          (a) =>
+            `<div style="color:#6b7280;font-size:12px;margin-top:2px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(Number(a.amount))}</div>`,
+        )
+        .join("");
       return `
       <div style="padding:10px 0;border-bottom:1px solid #e5e7eb;">
         <div style="font-weight:bold;font-size:14px;">${escapeHtml(i.product_name)}</div>
         ${i.description ? `<div style="color:#6b7280;font-size:12px;margin-top:2px;">${escapeHtml(i.description)}</div>` : ""}
+        ${addonsHtml}
         <table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:13px;"><tr>
           <td style="color:#6b7280;padding:0;">${i.quantity}${i.unit ? ` ${escapeHtml(i.unit)}` : ""} &times; ${money(i.unit_price)}</td>
           <td style="text-align:right;padding:0;"><strong>${money(net)}</strong></td>
         </tr></table>
       </div>`;
     }).join("");
+
+    const paymentsHtml = payments
+      .map(
+        (p) =>
+          `<div style="font-size:13px;color:#6b7280;">${escapeHtml(p.label)} vom ${escapeHtml(new Date(p.date).toLocaleDateString("de-DE"))}${p.reference ? ` (${escapeHtml(p.reference)})` : ""}: − ${money(p.amount)}</div>`,
+      )
+      .join("");
 
     const paymentEmailText = paymentTerms === "custom"
       ? escapeHtml(paymentTermsCustom).replace(/\n/g, "<br>")
@@ -444,13 +462,31 @@ Deno.serve(async (req: Request) => {
       ? `Ihre Nachtragsrechnung ${invoiceNumber}`
       : `Ihre Rechnung ${invoiceNumber}`;
 
+    const greetingName = (customerName || "").trim();
+    const intro = invoiceKind === "supplement"
+      ? `vielen Dank, dass Sie die Miete bei uns verlängert haben. Anbei erhalten Sie den Nachtrag${parentInvoiceNumber ? ` zur Rechnung ${escapeHtml(parentInvoiceNumber)}` : ""} mit den zusätzlichen Leistungen.`
+      : "herzlichen Dank für Ihren Auftrag und das Vertrauen in SLT Rental – es hat uns gefreut, Sie mit unserer Technik zu unterstützen. Anbei finden Sie Ihre Rechnung als PDF.";
+
+    const bankBlock = `
+    <div style="background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;font-size:14px;">
+      ${fullyPaid
+        ? `<strong>Nichts mehr zu tun:</strong><br>Ihre Zahlung${payments.length > 1 ? "en" : ""} über ${money(amountPaid)} ${payments.length > 1 ? "haben" : "hat"} den Rechnungsbetrag vollständig ausgeglichen. Vielen Dank!`
+        : `<strong>Offener Betrag: ${money(balanceDue)}</strong><br>${paymentEmailText}<br>
+      Fällig am <strong>${escapeHtml(fmtDE(dueDate))}</strong><br><br>
+      <strong>Unsere Bankverbindung</strong><br>
+      Kontoinhaber: ${escapeHtml(SLT_COMPANY.name)}<br>
+      Bank: ${escapeHtml(SLT_COMPANY.bankName)}<br>
+      IBAN: <strong>${escapeHtml(SLT_COMPANY.iban)}</strong><br>
+      BIC: ${escapeHtml(SLT_COMPANY.bic)}<br>
+      Verwendungszweck: <strong>${escapeHtml(invoiceNumber)}</strong>`}
+      ${sourceOfferNumber ? `<br><span style="color:#6b7280;font-size:13px;">Diese Rechnung gehört zu unserem Angebot ${escapeHtml(sourceOfferNumber)}.</span>` : ""}
+    </div>`;
+
     const emailHtml = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:16px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
 <div style="max-width:600px;margin:0 auto;">
   <h2 style="color:#00507d;margin:0 0 16px;">${escapeHtml(headline)}</h2>
-  <p>Hallo ${escapeHtml(customerName || "")},</p>
-  <p>${invoiceKind === "supplement"
-      ? `vielen Dank für die Verlängerung. Anbei erhalten Sie unseren Nachtrag${parentInvoiceNumber ? ` zur Rechnung ${escapeHtml(parentInvoiceNumber)}` : ""} als PDF.`
-      : "vielen Dank für Ihren Auftrag. Anbei erhalten Sie unsere Rechnung als PDF."}</p>
+  <p>Hallo${greetingName ? ` ${escapeHtml(greetingName)}` : ""},</p>
+  <p>${intro}</p>
   ${servicePeriodStart ? `<p style="font-size:14px;"><strong>Leistungszeitraum:</strong> ${escapeHtml(new Date(servicePeriodStart).toLocaleDateString("de-DE"))}${servicePeriodEnd ? ` – ${escapeHtml(new Date(servicePeriodEnd).toLocaleDateString("de-DE"))}` : ""}</p>` : ""}
   <div style="margin:16px 0;border-top:2px solid #00507d;">
     ${rowsHtml}
@@ -461,15 +497,20 @@ Deno.serve(async (req: Request) => {
   </div>
   <p style="font-size:15px;"><strong>Rechnungsbetrag brutto: ${money(totals.grossAmount)}</strong><br>
   <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span></p>
-  <div style="background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
-    <strong>Zahlung:</strong><br>${paymentEmailText}<br>
-    Fällig am <strong>${escapeHtml(fmtDE(dueDate))}</strong> · Verwendungszweck <strong>${escapeHtml(invoiceNumber)}</strong>
-    ${sourceOfferNumber ? `<br>Diese Rechnung bezieht sich auf unser Angebot <strong>${escapeHtml(sourceOfferNumber)}</strong>.` : ""}
-  </div>
+  ${amountPaid > 0 ? `<div style="margin:12px 0;padding:10px 14px;background:#f8fafc;border-radius:4px;">
+    <div style="font-size:14px;font-weight:bold;">Bereits erhaltene Zahlungen: − ${money(amountPaid)}</div>
+    ${paymentsHtml}
+    <div style="margin-top:6px;font-size:15px;font-weight:bold;color:${fullyPaid ? "#0b7a42" : "#b45309"};">
+      ${fullyPaid ? "Rechnung vollständig ausgeglichen" : `Noch zu zahlen: ${money(balanceDue)}`}
+    </div>
+  </div>` : ""}
+  ${bankBlock}
   ${notes ? `<p style="white-space:pre-wrap;">${escapeHtml(notes)}</p>` : ""}
-  <p style="margin-top:24px;">Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}<br>
+  <p>Wenn Sie Fragen zur Rechnung haben oder wieder Technik benötigen, melden Sie sich einfach – wir sind gerne für Sie da.</p>
+  <p style="margin-top:24px;">Herzliche Grüße<br>${escapeHtml(staffName)}<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}<br>
   Tel. ${escapeHtml(loc.phone)} · <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a></p>
 </div></body></html>`;
+
 
     let emailSent = false;
     if (resendKey) {
