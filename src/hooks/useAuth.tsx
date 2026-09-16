@@ -53,6 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [b2bProfile, setB2BProfile] = useState<B2BProfile | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const [rolesChecked, setRolesChecked] = useState(false);
   const [authorizedPersonInfo, setAuthorizedPersonInfo] = useState<AuthorizedPersonInfo | null>(null);
   const loggedLoginTokens = useRef<Set<string>>(new Set());
 
@@ -94,6 +95,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const checkAdminRole = async (userId: string) => {
+    try {
     const { data } = await supabase
       .from("user_roles")
       .select("role")
@@ -105,6 +107,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const { data: superData } = await supabase.rpc("is_super_admin" as any, { _user_id: userId });
     setIsSuperAdmin(!!superData);
+    } finally {
+      setRolesChecked(true);
+    }
   };
 
   const refreshB2BProfile = async () => {
@@ -141,6 +146,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setIsAdmin(false);
           setIsSuperAdmin(false);
           setAuthorizedPersonInfo(null);
+          setRolesChecked(true);
         }
       }
     );
@@ -153,6 +159,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (session?.user) {
         fetchB2BProfile(session.user.id);
         checkAdminRole(session.user.id);
+      } else {
+        setRolesChecked(true);
       }
     });
 
@@ -188,6 +196,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsAdmin(false);
     setIsSuperAdmin(false);
     setAuthorizedPersonInfo(null);
+    setRolesChecked(true);
     await supabase.auth.signOut();
   };
 
@@ -201,7 +210,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         session,
-        loading,
+        loading: loading || (!!user && !rolesChecked),
         b2bProfile,
         isAdmin,
         isSuperAdmin,
