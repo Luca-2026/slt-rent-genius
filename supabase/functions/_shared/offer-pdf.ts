@@ -83,7 +83,10 @@ export async function generateOfferPdf(data: {
   const docType = data.documentType ?? "offer";
   const isInvoice = docType !== "offer";
   const isSupplement = docType === "supplement";
-  const TITLE = isSupplement ? "NACHTRAGSRECHNUNG" : isInvoice ? "RECHNUNG" : "ANGEBOT";
+  const isCreditNote = docType === "credit_note";
+  const TITLE = isCreditNote
+    ? "RECHNUNGSKORREKTUR"
+    : isSupplement ? "NACHTRAGSRECHNUNG" : isInvoice ? "RECHNUNG" : "ANGEBOT";
 
   // WinAnsi-sichere Normalisierung: typografische Zeichen auf darstellbare mappen,
   // Euro-Zeichen bleibt erhalten (WinAnsi kann 0x20AC).
