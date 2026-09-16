@@ -445,7 +445,7 @@ Deno.serve(async (req: Request) => {
       invoice_number: creditNumber,
       file_url: fileUrl,
       gross_amount: grossCredit,
-      fully_credited: fullyCredited,
+      fully_credited: remainingAfterCredit <= 0.009,
       email_sent: emailSent,
     });
   } catch (err) {
