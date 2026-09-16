@@ -325,7 +325,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         </div>
       )}
 
-      <div>
+      <div ref={docSectionRef}>
         <div className="flex flex-wrap gap-2 mb-3">
           <Button size="sm" variant={docMode === "offer" ? "default" : "outline"} onClick={() => setDocMode("offer")}>
             {inquiry.offer_number ? "Neues Angebot" : "Angebot erstellen"}
