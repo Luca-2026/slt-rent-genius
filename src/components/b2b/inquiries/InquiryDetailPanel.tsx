@@ -349,6 +349,18 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             </Button>
           )}
         </div>
+        <div className="mb-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
+          <div className="font-semibold text-sm">
+            {docMode === "offer" ? "Angebot erstellen" : docMode === "invoice" ? "Rechnung erstellen" : "Nachtrag erstellen"}
+          </div>
+          <p className="text-xs text-muted-foreground">
+            {docMode === "offer"
+              ? "Positionen prüfen und das Angebot per E-Mail senden."
+              : docMode === "invoice"
+                ? "Positionen und Leistungszeitraum prüfen, dann die Rechnung per E-Mail senden. Die Rechnungsnummer wird beim Versand vergeben."
+                : "Nur die zusätzlichen Leistungen erfassen – der Nachtrag verweist auf die gewählte Rechnung."}
+          </p>
+        </div>
         {docMode === "supplement" && (
           <div className="mb-3">
             <Label className="text-xs">Nachtrag zu Rechnung</Label>
