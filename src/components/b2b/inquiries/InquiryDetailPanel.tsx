@@ -195,16 +195,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
 
   useEffect(() => {
     setDocMode("offer");
-    setParentInvoiceId(null);
     loadInvoices();
   }, [inquiry.id, loadInvoices]);
-
-  // Nachtrag standardmäßig auf die jüngste echte Rechnung beziehen.
-  useEffect(() => {
-    if (docMode !== "supplement" || parentInvoiceId) return;
-    const first = invoices.find((i) => i.invoice_kind !== "supplement" && i.invoice_number);
-    if (first) setParentInvoiceId(first.id);
-  }, [docMode, invoices, parentInvoiceId]);
 
   const mine = inquiry.assigned_to === user?.id;
 
