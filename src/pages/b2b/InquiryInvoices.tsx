@@ -20,6 +20,7 @@ interface InvoiceRow {
   invoice_kind: string;
   inquiry_type: string;
   parent_invoice_id: string | null;
+  offer_number: string | null;
   company_name: string | null;
   customer_name: string | null;
   customer_email: string;
@@ -68,7 +69,7 @@ export default function InquiryInvoices() {
     const { data, error } = await supabase
       .from("inquiry_invoices")
       .select(
-        "id, invoice_number, invoice_kind, inquiry_type, parent_invoice_id, company_name, customer_name, customer_email, location, invoice_date, due_date, service_period_start, service_period_end, gross_amount, net_amount, status, file_url, email_sent, created_at",
+        "id, invoice_number, invoice_kind, inquiry_type, parent_invoice_id, offer_number, company_name, customer_name, customer_email, location, invoice_date, due_date, service_period_start, service_period_end, gross_amount, net_amount, status, file_url, email_sent, created_at",
       )
       .order("created_at", { ascending: false });
     setLoading(false);
@@ -88,7 +89,7 @@ export default function InquiryInvoices() {
     return rows.filter((row) => {
       if (statusFilter !== "all" && row.status !== statusFilter) return false;
       if (!q) return true;
-      return [row.invoice_number, row.company_name, row.customer_name, row.customer_email, row.location]
+      return [row.invoice_number, row.offer_number, row.company_name, row.customer_name, row.customer_email, row.location]
         .filter(Boolean)
         .some((v) => String(v).toLowerCase().includes(q));
     });
@@ -180,6 +181,9 @@ export default function InquiryInvoices() {
                 <CardContent className="p-4 space-y-2">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-semibold">{row.invoice_number ?? "Entwurf"}</span>
+                    {row.offer_number && (
+                      <span className="ml-2 text-xs text-muted-foreground">zu Angebot {row.offer_number}</span>
+                    )}
                     {row.invoice_kind === "supplement" && <Badge variant="outline">Nachtrag</Badge>}
                     <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>
                       {STATUS_LABEL[row.status] ?? row.status}
