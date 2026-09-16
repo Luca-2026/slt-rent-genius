@@ -508,6 +508,33 @@ export async function generateOfferPdf(data: {
   dtr(pg, fm(data.grossAmount), vx, y + 4, bold, 12, BRAND);
   y -= 38;
 
+  // ── Bereits geleistete (Teil-)Zahlungen und Restbetrag ──
+  const payments = (data.payments || []).filter((p) => Number(p.amount) > 0);
+  const amountPaid = Math.round(payments.reduce((sum, p) => sum + Number(p.amount || 0), 0) * 100) / 100;
+  const balanceDue = Math.round((data.grossAmount - amountPaid) * 100) / 100;
+  if (amountPaid > 0) {
+    need(40 + payments.length * 12);
+    for (const p of payments) {
+      const label = [p.label || "Zahlungseingang", p.date ? fd(p.date) : "", p.reference ? `(${p.reference})` : ""]
+        .filter(Boolean)
+        .join(" ");
+      dt(pg, label, tx - 60, y, font, 9, MUTED);
+      dtr(pg, `-${fm(Number(p.amount))}`, vx, y, font, 9, MUTED);
+      y -= 12;
+    }
+    dt(pg, "Bereits gezahlt", tx, y, bold, 9, MUTED);
+    dtr(pg, `-${fm(amountPaid)}`, vx, y, bold, 9, MUTED);
+    y -= 16;
+    const fullyPaid = balanceDue <= 0.009;
+    const accent = fullyPaid ? rgb(0.05, 0.45, 0.25) : ORANGE;
+    pg.drawRectangle({ x: tx - 6, y: y - 4, width: vx - tx + 10, height: 22, color: fullyPaid ? rgb(0.93, 0.98, 0.94) : rgb(1, 0.96, 0.9) });
+    pg.drawRectangle({ x: tx - 6, y: y + 17, width: vx - tx + 10, height: 1, color: accent });
+    dt(pg, fullyPaid ? "Bereits vollst\u00E4ndig bezahlt" : "Noch zu zahlen", tx, y + 4, bold, 10.5, accent);
+    dtr(pg, fm(Math.max(0, balanceDue)), vx, y + 4, bold, 12, accent);
+    y -= 38;
+  }
+
+
   // ── Zahlungsbedingungen ──
   const hasCreditLimit = data.profile.credit_limit && data.profile.credit_limit > 0;
   const paymentDueDays = data.profile.payment_due_days || 14;
