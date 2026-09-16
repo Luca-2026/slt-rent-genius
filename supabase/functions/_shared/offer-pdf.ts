@@ -292,12 +292,18 @@ export async function generateOfferPdf(data: {
 
     // Anschreiben
     dt(pg, "Sehr geehrte Damen und Herren,", ML, ty, font, 9.5); ty -= 13;
-    const intro = isSupplement
-      ? `vielen Dank f\u00FCr die Verl\u00E4ngerung. Wir berechnen Ihnen nachtr\u00E4glich zur Rechnung ${data.parentInvoiceNumber || ""} folgende Leistungen:`.replace("  ", " ")
-      : isInvoice
-        ? "vielen Dank f\u00FCr Ihren Auftrag. Wir erlauben uns, Ihnen folgende Leistungen in Rechnung zu stellen:"
-        : "vielen Dank f\u00FCr Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:";
-    dt(pg, intro, ML, ty, font, 9.5);
+    const intro = isCreditNote
+      ? `hiermit korrigieren wir unsere Rechnung ${data.parentInvoiceNumber || ""}${data.parentInvoiceDate ? ` vom ${fd(data.parentInvoiceDate)}` : ""}. ` +
+        `Wir schreiben Ihnen ${data.creditIsPartial ? "die folgenden Positionen anteilig" : "die folgenden Positionen vollst\u00E4ndig"} gut` +
+        `${data.creditReason ? ` (Grund: ${data.creditReason})` : ""}:`
+      : isSupplement
+        ? `vielen Dank f\u00FCr die Verl\u00E4ngerung. Wir berechnen Ihnen nachtr\u00E4glich zur Rechnung ${data.parentInvoiceNumber || ""} folgende Leistungen:`.replace("  ", " ")
+        : isInvoice
+          ? "vielen Dank f\u00FCr Ihren Auftrag. Wir erlauben uns, Ihnen folgende Leistungen in Rechnung zu stellen:"
+          : "vielen Dank f\u00FCr Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:";
+    const introLines = wt(intro, font, 9.5, CW);
+    introLines.forEach((ln, li) => dt(pg, ln, ML, ty - li * 12, font, 9.5));
+    ty -= (introLines.length - 1) * 12;
 
     return ty - 30;
   };
