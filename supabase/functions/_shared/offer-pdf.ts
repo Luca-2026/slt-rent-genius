@@ -43,6 +43,8 @@ export async function generateOfferPdf(data: {
   servicePeriodEnd?: string;
   /** Nummer der Ursprungsrechnung bei Nachträgen. */
   parentInvoiceNumber?: string;
+  /** Nummer des ursprünglichen Angebots, auf das sich die Rechnung bezieht (Vorkasse-Zuordnung). */
+  sourceOfferNumber?: string;
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
@@ -214,6 +216,9 @@ export async function generateOfferPdf(data: {
           "Leistungszeitraum:",
           `${fd(data.servicePeriodStart)}${data.servicePeriodEnd ? " - " + fd(data.servicePeriodEnd) : ""}`,
         );
+      }
+      if (data.sourceOfferNumber) {
+        infoRow("Angebot:", data.sourceOfferNumber, BRAND);
       }
       if (isSupplement && data.parentInvoiceNumber) {
         infoRow("Nachtrag zu:", data.parentInvoiceNumber, BRAND);
