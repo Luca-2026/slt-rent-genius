@@ -291,7 +291,24 @@ export default function InquiryInvoices() {
                     <Button size="sm" variant="outline" disabled={busyId === row.id} onClick={() => resend(row)}>
                       <Send className="h-3.5 w-3.5 mr-1" /> Erneut senden
                     </Button>
+                    {row.status !== "cancelled" && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled={busyId === row.id}
+                        onClick={() => {
+                          setPayFor(row);
+                          setPayAmount(String(Math.max(0, balanceOf(row)).toFixed(2)));
+                          setPayDate(new Date().toISOString().slice(0, 10));
+                          setPayLabel("Banküberweisung");
+                          setPayReference(row.invoice_number ?? "");
+                        }}
+                      >
+                        <Banknote className="h-3.5 w-3.5 mr-1" /> Zahlung erfassen
+                      </Button>
+                    )}
                     {row.status !== "paid" && row.status !== "cancelled" && (
+
                       <Button size="sm" variant="outline" disabled={busyId === row.id} onClick={() => setStatus(row, "paid")}>
                         <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Als bezahlt markieren
                       </Button>
