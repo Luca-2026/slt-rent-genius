@@ -234,6 +234,7 @@ const App = () => (
               <Route path="/b2b/aufgaben" element={<StaffTasks />} />
               <Route path="/b2b/mietanfragen" element={<RentalInquiries />} />
               <Route path="/b2b/verkaufsanfragen" element={<SalesInquiries />} />
+              <Route path="/b2b/anfrage-rechnungen" element={<InquiryInvoices />} />
               <Route path="/b2b/kundendaten" element={<B2BCustomers />} />
               <Route path="/b2b" element={<B2BLogin />} />
               
