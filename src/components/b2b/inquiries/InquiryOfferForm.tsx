@@ -151,7 +151,26 @@ interface Props {
   parentInvoiceNumber?: string | null;
   /** Vorbelegter Leistungszeitraum (YYYY-MM-DD). */
   defaultServicePeriod?: { start?: string | null; end?: string | null };
+  /** Vorbelegte Nebenkosten (z. B. aus dem angenommenen Angebot). */
+  defaultCosts?: {
+    delivery_cost_delivery?: number;
+    delivery_cost_return?: number;
+    setup_cost?: number;
+    dismantle_cost?: number;
+    deposit?: number;
+  };
+  /** Bereits geleistete Zahlungen (z. B. Vorkasse auf das Angebot) – nur Rechnungen. */
+  defaultPayments?: OfferPayment[];
 }
+
+/** Erfasste (Teil-)Zahlung, die auf der Rechnung abgezogen wird. */
+export interface OfferPayment {
+  date: string;
+  amount: number;
+  label: string;
+  reference?: string;
+}
+
 
 export function InquiryOfferForm({
   inquiryType,
@@ -168,6 +187,8 @@ export function InquiryOfferForm({
   parentInvoiceId = null,
   parentInvoiceNumber = null,
   defaultServicePeriod,
+  defaultCosts,
+  defaultPayments,
 }: Props) {
   const isInvoice = mode === "invoice";
   const isSupplement = isInvoice && invoiceKind === "supplement";
@@ -177,16 +198,19 @@ export function InquiryOfferForm({
   );
   const emptyDelivery: OfferDeliveryAddress = { requested: false, street: "", postal_code: "", city: "" };
   const [delivery, setDelivery] = useState<OfferDeliveryAddress>(defaultDelivery ?? emptyDelivery);
-  const [deliveryCostDelivery, setDeliveryCostDelivery] = useState(0);
-  const [deliveryCostReturn, setDeliveryCostReturn] = useState(0);
+  const [deliveryCostDelivery, setDeliveryCostDelivery] = useState(defaultCosts?.delivery_cost_delivery ?? 0);
+  const [deliveryCostReturn, setDeliveryCostReturn] = useState(defaultCosts?.delivery_cost_return ?? 0);
   /** Pauschalen für Auf- und Abbau (Montage/Demontage vor Ort). */
-  const [setupCost, setSetupCost] = useState(0);
-  const [dismantleCost, setDismantleCost] = useState(0);
-  const [deposit, setDeposit] = useState(0);
+  const [setupCost, setSetupCost] = useState(defaultCosts?.setup_cost ?? 0);
+  const [dismantleCost, setDismantleCost] = useState(defaultCosts?.dismantle_cost ?? 0);
+  const [deposit, setDeposit] = useState(defaultCosts?.deposit ?? 0);
   const [validDays, setValidDays] = useState(14);
+  /** Bereits erhaltene (Teil-)Zahlungen – werden auf der Rechnung abgezogen. */
+  const [payments, setPayments] = useState<OfferPayment[]>(defaultPayments ?? []);
   /** Leistungszeitraum der Rechnung (nur im Rechnungsmodus sichtbar). */
   const [servicePeriodStart, setServicePeriodStart] = useState(defaultServicePeriod?.start ?? "");
   const [servicePeriodEnd, setServicePeriodEnd] = useState(defaultServicePeriod?.end ?? "");
+
   const defaultTerms = () =>
     isInvoice ? (customerKind === "business" ? "net_14" : "vorkasse") : customerKind === "business" ? "net_14" : "anzahlung_30";
   const [paymentTerms, setPaymentTerms] = useState(defaultTerms);
@@ -217,6 +241,13 @@ export function InquiryOfferForm({
     () => buildOfferTotals(effectiveItems, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost),
     [effectiveItems, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost],
   );
+
+  /** Summe der erfassten Teilzahlungen und daraus der offene Restbetrag. */
+  const amountPaid = useMemo(
+    () => Math.round(payments.reduce((s, p) => s + (Number(p.amount) || 0), 0) * 100) / 100,
+    [payments],
+  );
+  const balanceDue = Math.round((totals.grossAmount - amountPaid) * 100) / 100;
 
 
   const patchItem = (index: number, patch: Partial<FormLine>) =>
@@ -316,8 +347,17 @@ export function InquiryOfferForm({
               parent_invoice_id: parentInvoiceId,
               service_period_start: servicePeriodStart || null,
               service_period_end: servicePeriodEnd || null,
+              payments: payments
+                .filter((p) => Number(p.amount) > 0)
+                .map((p) => ({
+                  date: p.date,
+                  amount: Number(p.amount),
+                  label: p.label?.trim() || "Zahlungseingang",
+                  reference: p.reference?.trim() || "",
+                })),
             }
           : {}),
+
         inquiry_type: inquiryType,
         inquiry_id: inquiryId,
         location,
@@ -837,6 +877,103 @@ export function InquiryOfferForm({
         <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} disabled={disabled} />
       </div>
 
+      {isInvoice && (
+        <div className="rounded-lg border border-border p-3 space-y-2">
+          <div className="flex items-center justify-between gap-2">
+            <Label className="text-xs">Bereits erhaltene Zahlungen (z. B. Vorkasse auf das Angebot)</Label>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              disabled={disabled}
+              onClick={() =>
+                setPayments((prev) => [
+                  ...prev,
+                  {
+                    date: new Date().toISOString().slice(0, 10),
+                    amount: 0,
+                    label: "Zahlungseingang",
+                    reference: "",
+                  },
+                ])
+              }
+            >
+              <Plus className="h-4 w-4 mr-1" /> Zahlung
+            </Button>
+          </div>
+          {payments.length === 0 && (
+            <p className="text-xs text-muted-foreground">
+              Keine Zahlung erfasst – der volle Rechnungsbetrag wird als offen ausgewiesen.
+            </p>
+          )}
+          {payments.map((p, index) => (
+            <div key={index} className="grid grid-cols-2 sm:grid-cols-4 gap-2 items-end">
+              <div>
+                <Label className="text-[11px]">Datum</Label>
+                <Input
+                  type="date"
+                  value={p.date}
+                  disabled={disabled}
+                  onChange={(e) =>
+                    setPayments((prev) => prev.map((x, i) => (i === index ? { ...x, date: e.target.value } : x)))
+                  }
+                />
+              </div>
+              <div>
+                <Label className="text-[11px]">Betrag brutto (€)</Label>
+                <Input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={p.amount || ""}
+                  disabled={disabled}
+                  onChange={(e) =>
+                    setPayments((prev) =>
+                      prev.map((x, i) => (i === index ? { ...x, amount: Number(e.target.value) || 0 } : x)),
+                    )
+                  }
+                />
+              </div>
+              <div>
+                <Label className="text-[11px]">Bezeichnung</Label>
+                <Input
+                  value={p.label}
+                  placeholder="Vorkasse Angebot"
+                  disabled={disabled}
+                  onChange={(e) =>
+                    setPayments((prev) => prev.map((x, i) => (i === index ? { ...x, label: e.target.value } : x)))
+                  }
+                />
+              </div>
+              <div className="flex gap-2 items-end">
+                <div className="flex-1">
+                  <Label className="text-[11px]">Verwendungszweck</Label>
+                  <Input
+                    value={p.reference ?? ""}
+                    placeholder="ANG-2026-…"
+                    disabled={disabled}
+                    onChange={(e) =>
+                      setPayments((prev) =>
+                        prev.map((x, i) => (i === index ? { ...x, reference: e.target.value } : x)),
+                      )
+                    }
+                  />
+                </div>
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="ghost"
+                  disabled={disabled}
+                  onClick={() => setPayments((prev) => prev.filter((_, i) => i !== index))}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className="rounded-lg bg-muted p-3 text-sm space-y-1">
         <div className="flex justify-between"><span>Mietartikel</span><span>{formatEuro(totals.itemsNet)}</span></div>
         {totals.addonsNet > 0 && (
@@ -845,7 +982,19 @@ export function InquiryOfferForm({
         <div className="flex justify-between"><span>Netto</span><span>{formatEuro(totals.netAmount)}</span></div>
         <div className="flex justify-between"><span>MwSt. {totals.vatRate}%</span><span>{formatEuro(totals.vatAmount)}</span></div>
         <div className="flex justify-between font-bold text-base"><span>Brutto</span><span>{formatEuro(totals.grossAmount)}</span></div>
+        {isInvoice && amountPaid > 0 && (
+          <>
+            <div className="flex justify-between text-muted-foreground">
+              <span>Bereits gezahlt</span><span>− {formatEuro(amountPaid)}</span>
+            </div>
+            <div className="flex justify-between font-bold text-base">
+              <span>{balanceDue <= 0 ? "Vollständig bezahlt" : "Noch zu zahlen"}</span>
+              <span>{formatEuro(Math.max(0, balanceDue))}</span>
+            </div>
+          </>
+        )}
       </div>
+
 
 
       <Button onClick={send} disabled={disabled || sending} className="w-full">

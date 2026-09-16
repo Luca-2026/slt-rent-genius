@@ -9,10 +9,15 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ExternalLink, RefreshCw, Search, Send, CheckCircle2, Ban } from "lucide-react";
+import {
+  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { ExternalLink, RefreshCw, Search, Send, CheckCircle2, Ban, Banknote } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { formatEuro } from "@/components/b2b/inquiries/offerMath";
+
 
 interface InvoiceRow {
   id: string;
@@ -34,8 +39,19 @@ interface InvoiceRow {
   status: string;
   file_url: string | null;
   email_sent: boolean;
+  paid_amount: number | null;
+  payments: PaymentEntry[] | null;
   created_at: string;
 }
+
+/** Erfasste (Teil-)Zahlung zu einer Rechnung. */
+interface PaymentEntry {
+  date?: string;
+  amount: number;
+  label?: string;
+  reference?: string;
+}
+
 
 const STATUS_LABEL: Record<string, string> = {
   draft: "Entwurf",
@@ -63,13 +79,19 @@ export default function InquiryInvoices() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [busyId, setBusyId] = useState<string | null>(null);
+  /** Dialog zum Erfassen einer eingegangenen (Teil-)Zahlung. */
+  const [payFor, setPayFor] = useState<InvoiceRow | null>(null);
+  const [payAmount, setPayAmount] = useState("");
+  const [payDate, setPayDate] = useState(new Date().toISOString().slice(0, 10));
+  const [payLabel, setPayLabel] = useState("Banküberweisung");
+  const [payReference, setPayReference] = useState("");
 
   const load = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("inquiry_invoices")
       .select(
-        "id, invoice_number, invoice_kind, inquiry_type, parent_invoice_id, offer_number, company_name, customer_name, customer_email, location, invoice_date, due_date, service_period_start, service_period_end, gross_amount, net_amount, status, file_url, email_sent, created_at",
+        "id, invoice_number, invoice_kind, inquiry_type, parent_invoice_id, offer_number, company_name, customer_name, customer_email, location, invoice_date, due_date, service_period_start, service_period_end, gross_amount, net_amount, status, file_url, email_sent, paid_amount, payments, created_at",
       )
       .order("created_at", { ascending: false });
     setLoading(false);
@@ -77,7 +99,7 @@ export default function InquiryInvoices() {
       toast({ title: "Rechnungen konnten nicht geladen werden", description: error.message, variant: "destructive" });
       return;
     }
-    setRows((data ?? []) as InvoiceRow[]);
+    setRows((data ?? []) as unknown as InvoiceRow[]);
   }, [toast]);
 
   useEffect(() => {
@@ -95,11 +117,54 @@ export default function InquiryInvoices() {
     });
   }, [rows, search, statusFilter]);
 
+  /** Noch offener Restbetrag einer Rechnung (brutto abzüglich erfasster Zahlungen). */
+  const balanceOf = (row: InvoiceRow) =>
+    Math.round((Number(row.gross_amount) - Number(row.paid_amount ?? 0)) * 100) / 100;
+
   const openSum = useMemo(
     () => filtered.filter((r) => r.status === "open" || r.status === "overdue")
-      .reduce((sum, r) => sum + Number(r.gross_amount), 0),
+      .reduce((sum, r) => sum + Math.max(0, balanceOf(r)), 0),
     [filtered],
   );
+
+  /** Zahlungseingang erfassen: Zahlung anhängen, Summe fortschreiben, ggf. auf „Bezahlt“ setzen. */
+  const savePayment = async () => {
+    if (!payFor) return;
+    const amount = Math.round((Number(payAmount.replace(",", ".")) || 0) * 100) / 100;
+    if (amount <= 0) {
+      toast({ title: "Betrag fehlt", description: "Bitte einen Betrag größer 0 € eintragen.", variant: "destructive" });
+      return;
+    }
+    setBusyId(payFor.id);
+    const nextPayments: PaymentEntry[] = [
+      ...(payFor.payments ?? []),
+      { date: payDate, amount, label: payLabel.trim() || "Zahlungseingang", reference: payReference.trim() },
+    ];
+    const paidAmount = Math.round(nextPayments.reduce((s, p) => s + Number(p.amount || 0), 0) * 100) / 100;
+    const fullyPaid = paidAmount >= Number(payFor.gross_amount) - 0.009;
+    const patch: Record<string, unknown> = { payments: nextPayments, paid_amount: paidAmount };
+    if (fullyPaid && payFor.status !== "cancelled") {
+      patch.status = "paid";
+      patch.paid_at = new Date().toISOString();
+    }
+    const { error } = await supabase.from("inquiry_invoices").update(patch).eq("id", payFor.id);
+    setBusyId(null);
+    if (error) {
+      toast({ title: "Zahlung konnte nicht gespeichert werden", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({
+      title: "Zahlung erfasst",
+      description: fullyPaid
+        ? "Die Rechnung ist vollständig bezahlt."
+        : `Offener Restbetrag: ${formatEuro(Number(payFor.gross_amount) - paidAmount)}`,
+    });
+    setPayFor(null);
+    setPayAmount("");
+    setPayReference("");
+    load();
+  };
+
 
   const setStatus = async (row: InvoiceRow, status: "paid" | "cancelled") => {
     setBusyId(row.id);
@@ -193,10 +258,21 @@ export default function InquiryInvoices() {
                     </Badge>
                     <span className="ml-auto font-semibold">{formatEuro(Number(row.gross_amount))}</span>
                   </div>
+                  {Number(row.paid_amount ?? 0) > 0 && (
+                    <div className="text-xs">
+                      <span className="text-muted-foreground">
+                        Bereits gezahlt {formatEuro(Number(row.paid_amount))}
+                      </span>
+                      <span className={balanceOf(row) > 0 ? "ml-2 font-semibold text-destructive" : "ml-2 font-semibold text-primary"}>
+                        {balanceOf(row) > 0 ? `offen ${formatEuro(balanceOf(row))}` : "vollständig bezahlt"}
+                      </span>
+                    </div>
+                  )}
                   <div className="text-sm">
                     {row.company_name || row.customer_name || row.customer_email}
                     <span className="text-muted-foreground"> · {row.customer_email}</span>
                   </div>
+
                   <div className="text-xs text-muted-foreground">
                     Rechnungsdatum {dateDE(row.invoice_date)} · fällig {dateDE(row.due_date)}
                     {row.service_period_start
@@ -215,7 +291,24 @@ export default function InquiryInvoices() {
                     <Button size="sm" variant="outline" disabled={busyId === row.id} onClick={() => resend(row)}>
                       <Send className="h-3.5 w-3.5 mr-1" /> Erneut senden
                     </Button>
+                    {row.status !== "cancelled" && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled={busyId === row.id}
+                        onClick={() => {
+                          setPayFor(row);
+                          setPayAmount(String(Math.max(0, balanceOf(row)).toFixed(2)));
+                          setPayDate(new Date().toISOString().slice(0, 10));
+                          setPayLabel("Banküberweisung");
+                          setPayReference(row.invoice_number ?? "");
+                        }}
+                      >
+                        <Banknote className="h-3.5 w-3.5 mr-1" /> Zahlung erfassen
+                      </Button>
+                    )}
                     {row.status !== "paid" && row.status !== "cancelled" && (
+
                       <Button size="sm" variant="outline" disabled={busyId === row.id} onClick={() => setStatus(row, "paid")}>
                         <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Als bezahlt markieren
                       </Button>
@@ -250,7 +343,43 @@ export default function InquiryInvoices() {
             ))}
           </div>
         )}
+
+        <Dialog open={!!payFor} onOpenChange={(open) => !open && setPayFor(null)}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Zahlung erfassen</DialogTitle>
+              <DialogDescription>
+                {payFor
+                  ? `Rechnung ${payFor.invoice_number ?? ""} über ${formatEuro(Number(payFor.gross_amount))} · offen ${formatEuro(Math.max(0, balanceOf(payFor)))}`
+                  : ""}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-3">
+              <div>
+                <Label className="text-xs">Eingegangener Betrag (€)</Label>
+                <Input type="number" step="0.01" min="0" value={payAmount} onChange={(e) => setPayAmount(e.target.value)} />
+              </div>
+              <div>
+                <Label className="text-xs">Zahlungsdatum</Label>
+                <Input type="date" value={payDate} onChange={(e) => setPayDate(e.target.value)} />
+              </div>
+              <div>
+                <Label className="text-xs">Zahlungsweg</Label>
+                <Input value={payLabel} onChange={(e) => setPayLabel(e.target.value)} placeholder="Banküberweisung" />
+              </div>
+              <div>
+                <Label className="text-xs">Verwendungszweck (optional)</Label>
+                <Input value={payReference} onChange={(e) => setPayReference(e.target.value)} />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setPayFor(null)}>Abbrechen</Button>
+              <Button onClick={savePayment} disabled={busyId === payFor?.id}>Zahlung speichern</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
+
     </B2BPortalLayout>
   );
 }

@@ -45,6 +45,12 @@ export async function generateOfferPdf(data: {
   parentInvoiceNumber?: string;
   /** Nummer des ursprünglichen Angebots, auf das sich die Rechnung bezieht (Vorkasse-Zuordnung). */
   sourceOfferNumber?: string;
+  /**
+   * Bereits geleistete (Teil-)Zahlungen, z. B. Vorkasse auf das Angebot.
+   * Werden im Summenblock ausgewiesen und vom Rechnungsbetrag abgezogen.
+   */
+  payments?: { date?: string; amount: number; label?: string; reference?: string }[];
+
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
@@ -459,7 +465,7 @@ export async function generateOfferPdf(data: {
   // ── Summenblock (rechtsbündig, wie Rechnung) ──
   // Höhe konservativ reservieren: 3 Zwischensummen + Netto + USt. + Kaution
   // + Gesamtbetrag-Kasten, damit der Block nie in die Fußzeile läuft.
-  need(195);
+  need(195 + ((data.payments || []).filter((p) => Number(p.amount) > 0).length ? 60 + (data.payments || []).length * 12 : 0));
 
   const tx = ML + CW * 0.55;
   const vx = W - MR - 4;
@@ -502,6 +508,34 @@ export async function generateOfferPdf(data: {
   dtr(pg, fm(data.grossAmount), vx, y + 4, bold, 12, BRAND);
   y -= 38;
 
+  // ── Bereits geleistete (Teil-)Zahlungen und Restbetrag ──
+  const payments = (data.payments || []).filter((p) => Number(p.amount) > 0);
+  const amountPaid = Math.round(payments.reduce((sum, p) => sum + Number(p.amount || 0), 0) * 100) / 100;
+  const balanceDue = Math.round((data.grossAmount - amountPaid) * 100) / 100;
+  if (amountPaid > 0) {
+    need(40 + payments.length * 12);
+    for (const p of payments) {
+      const label = [p.label || "Zahlungseingang", p.date ? fd(p.date) : "", p.reference ? `(${p.reference})` : ""]
+        .filter(Boolean)
+        .join(" ");
+      dt(pg, label, tx - 60, y, font, 9, MUTED);
+      dtr(pg, `-${fm(Number(p.amount))}`, vx, y, font, 9, MUTED);
+      y -= 12;
+    }
+    dt(pg, "Bereits gezahlt", tx, y, bold, 9, MUTED);
+    dtr(pg, `-${fm(amountPaid)}`, vx, y, bold, 9, MUTED);
+    y -= 26;
+
+    const fullyPaid = balanceDue <= 0.009;
+    const accent = fullyPaid ? rgb(0.05, 0.45, 0.25) : ORANGE;
+    pg.drawRectangle({ x: tx - 6, y: y - 4, width: vx - tx + 10, height: 22, color: fullyPaid ? rgb(0.93, 0.98, 0.94) : rgb(1, 0.96, 0.9) });
+    pg.drawRectangle({ x: tx - 6, y: y + 17, width: vx - tx + 10, height: 1, color: accent });
+    dt(pg, fullyPaid ? "Bereits vollst\u00E4ndig bezahlt" : "Noch zu zahlen", tx, y + 4, bold, 10.5, accent);
+    dtr(pg, fm(Math.max(0, balanceDue)), vx, y + 4, bold, 12, accent);
+    y -= 38;
+  }
+
+
   // ── Zahlungsbedingungen ──
   const hasCreditLimit = data.profile.credit_limit && data.profile.credit_limit > 0;
   const paymentDueDays = data.profile.payment_due_days || 14;
@@ -539,18 +573,36 @@ export async function generateOfferPdf(data: {
       CW - 32,
     ).filter((l) => l.trim());
     const offerRefExtra = data.sourceOfferNumber ? 11 : 0;
-    const boxH = 92 + termLines.length * 11 + offerRefExtra;
+    const paidExtra = amountPaid > 0 ? 13 : 0;
+    const boxH = 92 + termLines.length * 11 + offerRefExtra + paidExtra;
     need(boxH + 16);
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.995, 0.97, 0.93) });
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
     let by = y - 2;
     dt(pg, "Zahlungshinweis", ML + 16, by, bold, 10, INK); by -= 15;
-    dt(
-      pg,
-      `Bitte \u00FCberweisen Sie ${fm(data.grossAmount)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
-      ML + 16, by, font, 9, INK,
-    );
-    by -= 14;
+    if (amountPaid > 0 && balanceDue <= 0.009) {
+      dt(
+        pg,
+        `Der Rechnungsbetrag ist durch Ihre Zahlung${payments.length > 1 ? "en" : ""} von ${fm(amountPaid)} vollst\u00E4ndig ausgeglichen. Vielen Dank!`,
+        ML + 16, by, font, 9, INK,
+      );
+      by -= 14;
+    } else if (amountPaid > 0) {
+      dt(
+        pg,
+        `Bereits gezahlt ${fm(amountPaid)}. Bitte \u00FCberweisen Sie den Restbetrag von ${fm(balanceDue)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
+        ML + 16, by, font, 9, INK,
+      );
+      by -= 14;
+    } else {
+      dt(
+        pg,
+        `Bitte \u00FCberweisen Sie ${fm(data.grossAmount)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
+        ML + 16, by, font, 9, INK,
+      );
+      by -= 14;
+    }
+
     const rows: [string, string][] = [
       ["Kontoinhaber:", SLT_COMPANY.name],
       ["Bank:", SLT_COMPANY.bankName],

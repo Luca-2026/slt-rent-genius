@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -25,7 +25,69 @@ import type { OfferLine } from "./offerMath";
 import { formatEuro } from "./offerMath";
 import { useAuth } from "@/hooks/useAuth";
 
+import type { OfferUnit } from "@/lib/offerUnits";
+
+/** Einheitenbezeichnung aus dem Angebots-Snapshot zurück auf den Schlüssel mappen. */
+const UNIT_BY_LABEL: Record<string, OfferUnit> = {
+  "stück": "stueck",
+  arbeitstag: "arbeitstage",
+  arbeitstage: "arbeitstage",
+  kalendertag: "kalendertage",
+  kalendertage: "kalendertage",
+  woche: "wochen",
+  wochen: "wochen",
+  monat: "monate",
+  monate: "monate",
+};
+
+/** Angebots-Snapshot in Formular-Positionen übersetzen (inkl. Zusatzoptionen). */
+function offerPayloadToLines(payload: unknown): { items: OfferLine[]; costs?: Record<string, number> } | null {
+  const p = payload as
+    | {
+        items?: Array<Record<string, unknown>>;
+        delivery_cost_delivery?: number;
+        delivery_cost_return?: number;
+        setup_cost?: number;
+        dismantle_cost?: number;
+        deposit?: number;
+      }
+    | null
+    | undefined;
+  if (!p || !Array.isArray(p.items) || p.items.length === 0) return null;
+  const items: OfferLine[] = p.items.map((raw) => ({
+    product_name: String(raw.product_name ?? ""),
+    description: typeof raw.description === "string" ? raw.description : "",
+    quantity: Number(raw.quantity) || 1,
+    duration: 1,
+    unit: UNIT_BY_LABEL[String(raw.unit ?? "").trim().toLowerCase()] ?? "stueck",
+    unit_price: Number(raw.unit_price) || 0,
+    discount_percent: Number(raw.discount_percent) || 0,
+    rental_start: typeof raw.rental_start === "string" ? raw.rental_start : undefined,
+    rental_end: typeof raw.rental_end === "string" ? raw.rental_end : undefined,
+    image_url: typeof raw.image_url === "string" ? raw.image_url : undefined,
+    addons: Array.isArray(raw.addons)
+      ? (raw.addons as Array<Record<string, unknown>>).map((a) => ({
+          key: String(a.key ?? "addon"),
+          label: String(a.label ?? "Zusatzoption"),
+          amount: Number(a.amount) || 0,
+          note: typeof a.note === "string" ? a.note : undefined,
+        }))
+      : undefined,
+  }));
+  return {
+    items,
+    costs: {
+      delivery_cost_delivery: Number(p.delivery_cost_delivery) || 0,
+      delivery_cost_return: Number(p.delivery_cost_return) || 0,
+      setup_cost: Number(p.setup_cost) || 0,
+      dismantle_cost: Number(p.dismantle_cost) || 0,
+      deposit: Number(p.deposit) || 0,
+    },
+  };
+}
+
 /** Kurzform einer Rechnung für die Übersicht im Anfragen-Detail. */
+
 interface InvoiceRow {
   id: string;
   invoice_number: string | null;
@@ -48,6 +110,9 @@ interface Props {
     assigned_name: string | null;
     internal_notes: string | null;
     offer_number: string | null;
+    /** Snapshot des versendeten Angebots – Grundlage für die Rechnung. */
+    offer_payload?: unknown;
+
     offer_file_url: string | null;
     offer_total_gross: number | null;
     offer_sent_at: string | null;
@@ -103,6 +168,10 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const [notes, setNotes] = useState(inquiry.internal_notes ?? "");
 
   useEffect(() => setNotes(inquiry.internal_notes ?? ""), [inquiry.id, inquiry.internal_notes]);
+
+  /** Positionen und Nebenkosten aus dem versendeten Angebot (inkl. Zusatzoptionen). */
+  const offerSnapshot = useMemo(() => offerPayloadToLines(inquiry.offer_payload), [inquiry.offer_payload]);
+
 
   /** Angebot, Rechnung oder Nachtrag – steuert das Formular unten. */
   const [docMode, setDocMode] = useState<"offer" | "invoice" | "supplement">("offer");
@@ -383,8 +452,16 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           inquiryType={inquiryType}
           inquiryId={inquiry.id}
           location={inquiry.location}
-          defaultItems={docMode === "supplement" ? [] : defaultItems}
+          defaultItems={
+            docMode === "supplement"
+              ? []
+              : docMode === "invoice" && offerSnapshot
+                ? offerSnapshot.items
+                : defaultItems
+          }
+          defaultCosts={docMode === "invoice" ? offerSnapshot?.costs : undefined}
           defaultDelivery={defaultDelivery}
+
           customerKind={inquiry.customer_kind === "business" ? "business" : "private"}
           mode={docMode === "offer" ? "offer" : "invoice"}
           invoiceKind={docMode === "supplement" ? "supplement" : "invoice"}
