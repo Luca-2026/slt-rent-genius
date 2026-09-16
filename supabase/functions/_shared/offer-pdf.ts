@@ -45,6 +45,12 @@ export async function generateOfferPdf(data: {
   parentInvoiceNumber?: string;
   /** Nummer des ursprünglichen Angebots, auf das sich die Rechnung bezieht (Vorkasse-Zuordnung). */
   sourceOfferNumber?: string;
+  /**
+   * Bereits geleistete (Teil-)Zahlungen, z. B. Vorkasse auf das Angebot.
+   * Werden im Summenblock ausgewiesen und vom Rechnungsbetrag abgezogen.
+   */
+  payments?: { date?: string; amount: number; label?: string; reference?: string }[];
+
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
