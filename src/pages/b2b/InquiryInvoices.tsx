@@ -313,6 +313,9 @@ export default function InquiryInvoices() {
                       <span className="ml-2 text-xs text-muted-foreground">zu Angebot {row.offer_number}</span>
                     )}
                     
+                    {row.invoice_kind === "credit_note" && (
+                      <Badge variant="secondary">Gutschrift</Badge>
+                    )}
                     <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>
                       {STATUS_LABEL[row.status] ?? row.status}
                     </Badge>
@@ -321,6 +324,12 @@ export default function InquiryInvoices() {
                     </Badge>
                     <span className="ml-auto font-semibold">{formatEuro(Number(row.gross_amount))}</span>
                   </div>
+                  {Number(row.credited_amount ?? 0) > 0 && (
+                    <div className="text-xs text-muted-foreground">
+                      Gutgeschrieben {formatEuro(Number(row.credited_amount))}
+                      {row.credit_reason ? ` · ${row.credit_reason}` : ""}
+                    </div>
+                  )}
                   {Number(row.paid_amount ?? 0) > 0 && (
                     <div className="text-xs">
                       <span className="text-muted-foreground">
@@ -376,29 +385,21 @@ export default function InquiryInvoices() {
                         <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Als bezahlt markieren
                       </Button>
                     )}
-                    {row.status !== "cancelled" && (
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button size="sm" variant="outline" disabled={busyId === row.id}>
-                            <Ban className="h-3.5 w-3.5 mr-1" /> Stornieren
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Rechnung stornieren?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Die Rechnung {row.invoice_number} bleibt als Beleg erhalten und wird als storniert
-                              gekennzeichnet. Eine Löschung ist aus steuerrechtlichen Gründen nicht möglich.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => setStatus(row, "cancelled")}>
-                              Stornieren
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                    {row.status !== "cancelled" && row.invoice_kind !== "credit_note" && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled={busyId === row.id}
+                        onClick={() => {
+                          setCreditFor(row);
+                          setCreditMode("full");
+                          setCreditReason("");
+                          setCreditAmount(String(Math.max(0, balanceOf(row)).toFixed(2)));
+                          setCreditLabel("Gutschrift");
+                        }}
+                      >
+                        <Ban className="h-3.5 w-3.5 mr-1" /> Stornieren / Gutschrift
+                      </Button>
                     )}
                   </div>
                 </CardContent>
