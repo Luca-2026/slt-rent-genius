@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -108,6 +108,12 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const [docMode, setDocMode] = useState<"offer" | "invoice" | "supplement">("offer");
   const [parentInvoiceId, setParentInvoiceId] = useState<string | null>(null);
   const [invoices, setInvoices] = useState<InvoiceRow[]>([]);
+  const docSectionRef = useRef<HTMLDivElement | null>(null);
+
+  // Nach dem Wechsel der Dokumentart zum Formular springen, damit der Klick sichtbar wirkt.
+  useEffect(() => {
+    docSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [docMode]);
 
   const loadInvoices = useCallback(async () => {
     const column = inquiryType === "rental" ? "rental_inquiry_id" : "sales_inquiry_id";
@@ -325,7 +331,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         </div>
       )}
 
-      <div>
+      <div ref={docSectionRef}>
         <div className="flex flex-wrap gap-2 mb-3">
           <Button size="sm" variant={docMode === "offer" ? "default" : "outline"} onClick={() => setDocMode("offer")}>
             {inquiry.offer_number ? "Neues Angebot" : "Angebot erstellen"}
@@ -342,6 +348,18 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               Nachtrag erstellen
             </Button>
           )}
+        </div>
+        <div className="mb-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
+          <div className="font-semibold text-sm">
+            {docMode === "offer" ? "Angebot erstellen" : docMode === "invoice" ? "Rechnung erstellen" : "Nachtrag erstellen"}
+          </div>
+          <p className="text-xs text-muted-foreground">
+            {docMode === "offer"
+              ? "Positionen prüfen und das Angebot per E-Mail senden."
+              : docMode === "invoice"
+                ? "Positionen und Leistungszeitraum prüfen, dann die Rechnung per E-Mail senden. Die Rechnungsnummer wird beim Versand vergeben."
+                : "Nur die zusätzlichen Leistungen erfassen – der Nachtrag verweist auf die gewählte Rechnung."}
+          </p>
         </div>
         {docMode === "supplement" && (
           <div className="mb-3">
