@@ -6,13 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { ExternalLink, RefreshCw, Search, Send, CheckCircle2, Ban, Banknote } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -41,6 +38,8 @@ interface InvoiceRow {
   email_sent: boolean;
   paid_amount: number | null;
   payments: PaymentEntry[] | null;
+  credited_amount: number | null;
+  credit_reason: string | null;
   created_at: string;
 }
 
@@ -85,13 +84,19 @@ export default function InquiryInvoices() {
   const [payDate, setPayDate] = useState(new Date().toISOString().slice(0, 10));
   const [payLabel, setPayLabel] = useState("Banküberweisung");
   const [payReference, setPayReference] = useState("");
+  /** Dialog für eine Rechnungskorrektur (Gutschrift). */
+  const [creditFor, setCreditFor] = useState<InvoiceRow | null>(null);
+  const [creditMode, setCreditMode] = useState<"full" | "partial">("full");
+  const [creditReason, setCreditReason] = useState("");
+  const [creditAmount, setCreditAmount] = useState("");
+  const [creditLabel, setCreditLabel] = useState("Gutschrift");
 
   const load = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("inquiry_invoices")
       .select(
-        "id, invoice_number, invoice_kind, inquiry_type, parent_invoice_id, offer_number, company_name, customer_name, customer_email, location, invoice_date, due_date, service_period_start, service_period_end, gross_amount, net_amount, status, file_url, email_sent, paid_amount, payments, created_at",
+        "id, invoice_number, invoice_kind, inquiry_type, parent_invoice_id, offer_number, company_name, customer_name, customer_email, location, invoice_date, due_date, service_period_start, service_period_end, gross_amount, net_amount, status, file_url, email_sent, paid_amount, payments, credited_amount, credit_reason, created_at",
       )
       .order("created_at", { ascending: false });
     setLoading(false);
@@ -119,7 +124,7 @@ export default function InquiryInvoices() {
 
   /** Noch offener Restbetrag einer Rechnung (brutto abzüglich erfasster Zahlungen). */
   const balanceOf = (row: InvoiceRow) =>
-    Math.round((Number(row.gross_amount) - Number(row.paid_amount ?? 0)) * 100) / 100;
+    Math.round((Number(row.gross_amount) - Number(row.paid_amount ?? 0) - Number(row.credited_amount ?? 0)) * 100) / 100;
 
   const openSum = useMemo(
     () => filtered.filter((r) => r.status === "open" || r.status === "overdue")
@@ -178,6 +183,61 @@ export default function InquiryInvoices() {
       return;
     }
     toast({ title: status === "paid" ? "Als bezahlt markiert" : "Rechnung storniert" });
+    load();
+  };
+
+  /**
+   * Erstellt eine Rechnungskorrektur (Gutschrift). Eine versendete Rechnung darf
+   * nach GoBD nicht geändert werden – storniert wird über ein eigenes Dokument
+   * mit eigener Nummer (GS-JJJJ-MM-0001) und Bezug zur Ursprungsrechnung.
+   */
+  const createCreditNote = async () => {
+    if (!creditFor) return;
+    const reason = creditReason.trim();
+    if (!reason) {
+      toast({ title: "Grund fehlt", description: "Bitte einen Grund für die Korrektur angeben.", variant: "destructive" });
+      return;
+    }
+    const grossCredit = Math.round((Number(creditAmount.replace(",", ".")) || 0) * 100) / 100;
+    if (creditMode === "partial" && grossCredit <= 0) {
+      toast({ title: "Betrag fehlt", description: "Bitte den gutzuschreibenden Bruttobetrag angeben.", variant: "destructive" });
+      return;
+    }
+    setBusyId(creditFor.id);
+    const { data, error } = await supabase.functions.invoke("send-inquiry-credit-note", {
+      body: {
+        invoice_id: creditFor.id,
+        mode: creditMode,
+        reason,
+        items: creditMode === "partial"
+          ? [{
+              product_name: creditLabel.trim() || "Gutschrift",
+              description: reason,
+              quantity: 1,
+              unit: "Pauschale",
+              unit_price: Math.round((grossCredit / 1.19) * 100) / 100,
+            }]
+          : undefined,
+      },
+    });
+    setBusyId(null);
+    if (error || (data as any)?.error) {
+      toast({
+        title: "Gutschrift fehlgeschlagen",
+        description: (data as any)?.error ?? error?.message ?? "Unbekannter Fehler",
+        variant: "destructive",
+      });
+      return;
+    }
+    toast({
+      title: `Gutschrift ${(data as any)?.invoice_number ?? ""} erstellt`,
+      description: (data as any)?.fully_credited
+        ? "Die Rechnung wurde vollständig storniert und der Kunde informiert."
+        : "Die Teilgutschrift wurde erstellt und dem Kunden per E-Mail gesendet.",
+    });
+    setCreditFor(null);
+    setCreditReason("");
+    setCreditAmount("");
     load();
   };
 
@@ -250,6 +310,9 @@ export default function InquiryInvoices() {
                       <span className="ml-2 text-xs text-muted-foreground">zu Angebot {row.offer_number}</span>
                     )}
                     
+                    {row.invoice_kind === "credit_note" && (
+                      <Badge variant="secondary">Gutschrift</Badge>
+                    )}
                     <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>
                       {STATUS_LABEL[row.status] ?? row.status}
                     </Badge>
@@ -258,6 +321,12 @@ export default function InquiryInvoices() {
                     </Badge>
                     <span className="ml-auto font-semibold">{formatEuro(Number(row.gross_amount))}</span>
                   </div>
+                  {Number(row.credited_amount ?? 0) > 0 && (
+                    <div className="text-xs text-muted-foreground">
+                      Gutgeschrieben {formatEuro(Number(row.credited_amount))}
+                      {row.credit_reason ? ` · ${row.credit_reason}` : ""}
+                    </div>
+                  )}
                   {Number(row.paid_amount ?? 0) > 0 && (
                     <div className="text-xs">
                       <span className="text-muted-foreground">
@@ -313,29 +382,21 @@ export default function InquiryInvoices() {
                         <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Als bezahlt markieren
                       </Button>
                     )}
-                    {row.status !== "cancelled" && (
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button size="sm" variant="outline" disabled={busyId === row.id}>
-                            <Ban className="h-3.5 w-3.5 mr-1" /> Stornieren
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Rechnung stornieren?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Die Rechnung {row.invoice_number} bleibt als Beleg erhalten und wird als storniert
-                              gekennzeichnet. Eine Löschung ist aus steuerrechtlichen Gründen nicht möglich.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => setStatus(row, "cancelled")}>
-                              Stornieren
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                    {row.status !== "cancelled" && row.invoice_kind !== "credit_note" && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled={busyId === row.id}
+                        onClick={() => {
+                          setCreditFor(row);
+                          setCreditMode("full");
+                          setCreditReason("");
+                          setCreditAmount(String(Math.max(0, balanceOf(row)).toFixed(2)));
+                          setCreditLabel("Gutschrift");
+                        }}
+                      >
+                        <Ban className="h-3.5 w-3.5 mr-1" /> Stornieren / Gutschrift
+                      </Button>
                     )}
                   </div>
                 </CardContent>
@@ -375,6 +436,53 @@ export default function InquiryInvoices() {
             <DialogFooter>
               <Button variant="outline" onClick={() => setPayFor(null)}>Abbrechen</Button>
               <Button onClick={savePayment} disabled={busyId === payFor?.id}>Zahlung speichern</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={!!creditFor} onOpenChange={(open) => !open && setCreditFor(null)}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Rechnungskorrektur (Gutschrift)</DialogTitle>
+              <DialogDescription>
+                {creditFor
+                  ? `Zu Rechnung ${creditFor.invoice_number ?? ""} über ${formatEuro(Number(creditFor.gross_amount))}. Die Rechnung selbst bleibt unverändert – der Kunde erhält ein eigenes Korrekturdokument mit eigener Nummer.`
+                  : ""}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-3">
+              <div>
+                <Label className="text-xs">Art der Korrektur</Label>
+                <Select value={creditMode} onValueChange={(v) => setCreditMode(v as "full" | "partial")}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="full">Vollständige Stornierung</SelectItem>
+                    <SelectItem value="partial">Teilgutschrift</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              {creditMode === "partial" && (
+                <>
+                  <div>
+                    <Label className="text-xs">Gutzuschreibender Betrag brutto (€)</Label>
+                    <Input type="number" step="0.01" min="0" value={creditAmount} onChange={(e) => setCreditAmount(e.target.value)} />
+                  </div>
+                  <div>
+                    <Label className="text-xs">Bezeichnung der Gutschriftposition</Label>
+                    <Input value={creditLabel} onChange={(e) => setCreditLabel(e.target.value)} placeholder="z. B. Mietzeit verkürzt" />
+                  </div>
+                </>
+              )}
+              <div>
+                <Label className="text-xs">Grund der Korrektur (erscheint auf dem Dokument)</Label>
+                <Textarea rows={3} value={creditReason} onChange={(e) => setCreditReason(e.target.value)} placeholder="z. B. Maschine wurde zwei Tage früher zurückgegeben" />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setCreditFor(null)}>Abbrechen</Button>
+              <Button onClick={createCreditNote} disabled={busyId === creditFor?.id}>
+                Gutschrift erstellen und senden
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

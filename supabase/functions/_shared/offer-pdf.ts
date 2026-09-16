@@ -31,18 +31,27 @@ export async function generateOfferPdf(data: {
   /** Freitext bei individuellen Zahlungsbedingungen (paymentTerms === "custom"). */
   paymentTermsCustom?: string;
   /**
-   * Dokumentart. "offer" (Standard) erzeugt das Angebot, "invoice" die Rechnung
-   * und "supplement" den Nachtrag zu einer bereits gestellten Rechnung –
-   * identisches Layout, nur Beschriftungen und Hinweistexte unterscheiden sich.
+   * Dokumentart. "offer" (Standard) erzeugt das Angebot, "invoice" die Rechnung,
+   * "supplement" den Nachtrag und "credit_note" die Rechnungskorrektur
+   * (Gutschrift) zu einer bereits gestellten Rechnung – identisches Layout,
+   * nur Beschriftungen und Hinweistexte unterscheiden sich.
    */
-  documentType?: "offer" | "invoice" | "supplement";
+  documentType?: "offer" | "invoice" | "supplement" | "credit_note";
   /** Fälligkeitsdatum der Rechnung (YYYY-MM-DD oder bereits formatiert). */
   dueDate?: string;
   /** Leistungszeitraum der Rechnung. */
   servicePeriodStart?: string;
   servicePeriodEnd?: string;
-  /** Nummer der Ursprungsrechnung bei Nachträgen. */
+  /** Nummer der Ursprungsrechnung bei Nachträgen und Gutschriften. */
   parentInvoiceNumber?: string;
+  /** Rechnungsdatum der korrigierten Ursprungsrechnung (Pflichtangabe bei Gutschriften). */
+  parentInvoiceDate?: string;
+  /** Grund der Rechnungskorrektur (z. B. „Mietzeit verkürzt“). */
+  creditReason?: string;
+  /** true = Teilgutschrift, false/undefined = vollständige Stornierung der Rechnung. */
+  creditIsPartial?: boolean;
+  /** Bereits gezahlter Betrag der Ursprungsrechnung – bestimmt Erstattung oder Verrechnung. */
+  creditAlreadyPaid?: number;
   /** Nummer des ursprünglichen Angebots, auf das sich die Rechnung bezieht (Vorkasse-Zuordnung). */
   sourceOfferNumber?: string;
   /**
@@ -74,7 +83,10 @@ export async function generateOfferPdf(data: {
   const docType = data.documentType ?? "offer";
   const isInvoice = docType !== "offer";
   const isSupplement = docType === "supplement";
-  const TITLE = isSupplement ? "NACHTRAGSRECHNUNG" : isInvoice ? "RECHNUNG" : "ANGEBOT";
+  const isCreditNote = docType === "credit_note";
+  const TITLE = isCreditNote
+    ? "RECHNUNGSKORREKTUR"
+    : isSupplement ? "NACHTRAGSRECHNUNG" : isInvoice ? "RECHNUNG" : "ANGEBOT";
 
   // WinAnsi-sichere Normalisierung: typografische Zeichen auf darstellbare mappen,
   // Euro-Zeichen bleibt erhalten (WinAnsi kann 0x20AC).
@@ -213,7 +225,19 @@ export async function generateOfferPdf(data: {
       dt(pg, value, infoX + 95, iy + 3, font, 7, MUTED);
       iy -= 10;
     };
-    if (isInvoice) {
+    if (isCreditNote) {
+      infoRow("Gutschriftnummer:", data.offerNumber);
+      infoRow("Gutschriftdatum:", fd(data.offerDate));
+      if (data.parentInvoiceNumber) infoRow("Zu Rechnung:", data.parentInvoiceNumber, BRAND);
+      if (data.parentInvoiceDate) infoRow("Rechnung vom:", fd(data.parentInvoiceDate));
+      if (data.servicePeriodStart) {
+        infoRow(
+          "Leistungszeitraum:",
+          `${fd(data.servicePeriodStart)}${data.servicePeriodEnd ? " - " + fd(data.servicePeriodEnd) : ""}`,
+        );
+      }
+      infoRow("Art:", data.creditIsPartial ? "Teilgutschrift" : "Vollst\u00E4ndige Stornierung", BRAND);
+    } else if (isInvoice) {
       infoRow("Rechnungsnummer:", data.offerNumber);
       infoRow("Rechnungsdatum:", fd(data.offerDate));
       if (data.dueDate) infoRow("F\u00E4llig am:", fd(data.dueDate), rgb(0.7, 0.26, 0.04));
@@ -268,12 +292,18 @@ export async function generateOfferPdf(data: {
 
     // Anschreiben
     dt(pg, "Sehr geehrte Damen und Herren,", ML, ty, font, 9.5); ty -= 13;
-    const intro = isSupplement
-      ? `vielen Dank f\u00FCr die Verl\u00E4ngerung. Wir berechnen Ihnen nachtr\u00E4glich zur Rechnung ${data.parentInvoiceNumber || ""} folgende Leistungen:`.replace("  ", " ")
-      : isInvoice
-        ? "vielen Dank f\u00FCr Ihren Auftrag. Wir erlauben uns, Ihnen folgende Leistungen in Rechnung zu stellen:"
-        : "vielen Dank f\u00FCr Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:";
-    dt(pg, intro, ML, ty, font, 9.5);
+    const intro = isCreditNote
+      ? `hiermit korrigieren wir unsere Rechnung ${data.parentInvoiceNumber || ""}${data.parentInvoiceDate ? ` vom ${fd(data.parentInvoiceDate)}` : ""}. ` +
+        `Wir schreiben Ihnen ${data.creditIsPartial ? "die folgenden Positionen anteilig" : "die folgenden Positionen vollst\u00E4ndig"} gut` +
+        `${data.creditReason ? ` (Grund: ${data.creditReason})` : ""}:`
+      : isSupplement
+        ? `vielen Dank f\u00FCr die Verl\u00E4ngerung. Wir berechnen Ihnen nachtr\u00E4glich zur Rechnung ${data.parentInvoiceNumber || ""} folgende Leistungen:`.replace("  ", " ")
+        : isInvoice
+          ? "vielen Dank f\u00FCr Ihren Auftrag. Wir erlauben uns, Ihnen folgende Leistungen in Rechnung zu stellen:"
+          : "vielen Dank f\u00FCr Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:";
+    const introLines = wt(intro, font, 9.5, CW);
+    introLines.forEach((ln, li) => dt(pg, ln, ML, ty - li * 12, font, 9.5));
+    ty -= (introLines.length - 1) * 12;
 
     return ty - 30;
   };
@@ -504,15 +534,40 @@ export async function generateOfferPdf(data: {
   y -= 6;
   pg.drawRectangle({ x: tx - 6, y: y - 4, width: vx - tx + 10, height: 22, color: rgb(0.94, 0.96, 0.98) });
   pg.drawRectangle({ x: tx - 6, y: y + 17, width: vx - tx + 10, height: 1, color: BRAND });
-  dt(pg, "Gesamtbetrag", tx, y + 4, bold, 11, BRAND);
-  dtr(pg, fm(data.grossAmount), vx, y + 4, bold, 12, BRAND);
+  dt(pg, isCreditNote ? "Gutschriftbetrag" : "Gesamtbetrag", tx, y + 4, bold, 11, BRAND);
+  dtr(pg, isCreditNote ? `-${fm(data.grossAmount)}` : fm(data.grossAmount), vx, y + 4, bold, 12, BRAND);
   y -= 38;
 
   // ── Bereits geleistete (Teil-)Zahlungen und Restbetrag ──
   const payments = (data.payments || []).filter((p) => Number(p.amount) > 0);
   const amountPaid = Math.round(payments.reduce((sum, p) => sum + Number(p.amount || 0), 0) * 100) / 100;
   const balanceDue = Math.round((data.grossAmount - amountPaid) * 100) / 100;
-  if (amountPaid > 0) {
+  if (isCreditNote) {
+    // Rechnungskorrektur: Hinweis zur Erstattung bzw. Verrechnung statt Zahlungsaufforderung
+    const alreadyPaid = Math.max(0, Number(data.creditAlreadyPaid) || 0);
+    const refundText = alreadyPaid > 0
+      ? `Der Betrag von ${fm(data.grossAmount)} wird Ihnen auf das uns bekannte Konto erstattet. ` +
+        `Eine gesonderte Zahlung Ihrerseits ist nicht erforderlich.`
+      : `Der Betrag von ${fm(data.grossAmount)} wird mit der Rechnung ${data.parentInvoiceNumber || ""} verrechnet. ` +
+        `${data.creditIsPartial ? "Bitte \u00FCberweisen Sie nur den verbleibenden Rechnungsbetrag." : "Die Rechnung ist damit vollst\u00E4ndig ausgeglichen."}`;
+    const refundLines = wt(refundText, font, 9, CW - 32);
+    const boxH = 46 + refundLines.length * 11 + (data.creditReason ? 13 : 0);
+    need(boxH + 16);
+    pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.93, 0.98, 0.94) });
+    pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: rgb(0.05, 0.45, 0.25) });
+    let cy = y - 2;
+    dt(pg, "Hinweis zur Rechnungskorrektur", ML + 16, cy, bold, 10, INK); cy -= 15;
+    refundLines.forEach((ln) => { dt(pg, ln, ML + 16, cy, font, 9, INK); cy -= 11; });
+    if (data.creditReason) {
+      dt(pg, `Grund: ${data.creditReason}`, ML + 16, cy, font, 8.5, MUTED); cy -= 13;
+    }
+    dt(
+      pg,
+      "Diese Rechnungskorrektur ist Bestandteil der urspr\u00FCnglichen Rechnung und ersetzt diese anteilig.",
+      ML + 16, cy, font, 8.5, MUTED,
+    );
+    y -= boxH + 12;
+  } else if (amountPaid > 0) {
     need(40 + payments.length * 12);
     for (const p of payments) {
       const label = [p.label || "Zahlungseingang", p.date ? fd(p.date) : "", p.reference ? `(${p.reference})` : ""]
@@ -564,7 +619,7 @@ export async function generateOfferPdf(data: {
         ? `Zahlungsbedingungen: Zahlung innerhalb von ${paymentDueDays} Tagen nach Rechnungsstellung (Kreditlimit: ${fm(data.profile.credit_limit)}).`
         : "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten."));
 
-  if (isInvoice) {
+  if (isInvoice && !isCreditNote) {
     // Rechnung: Zahlungshinweis mit Bankdaten und Fälligkeit – Kastenstil wie beim Angebot
     const termLines = wt(
       (customPaymentText ?? PAYMENT_TEXTS[data.paymentTerms || "net_14"] ?? "").replace("Zahlungsbedingungen: ", ""),

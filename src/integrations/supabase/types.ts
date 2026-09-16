@@ -1588,6 +1588,27 @@ export type Database = {
           },
         ]
       }
+      credit_note_number_counters: {
+        Row: {
+          last_value: number
+          month: number
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          last_value?: number
+          month: number
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          last_value?: number
+          month?: number
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
       crm_customers: {
         Row: {
           b2b_profile_id: string | null
@@ -1840,6 +1861,8 @@ export type Database = {
           created_at: string
           created_by: string | null
           created_by_name: string | null
+          credit_reason: string | null
+          credited_amount: number
           crm_customer_id: string | null
           customer_city: string | null
           customer_country: string
@@ -1899,6 +1922,8 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           created_by_name?: string | null
+          credit_reason?: string | null
+          credited_amount?: number
           crm_customer_id?: string | null
           customer_city?: string | null
           customer_country?: string
@@ -1958,6 +1983,8 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           created_by_name?: string | null
+          credit_reason?: string | null
+          credited_amount?: number
           crm_customer_id?: string | null
           customer_city?: string | null
           customer_country?: string
@@ -3612,6 +3639,7 @@ export type Database = {
       }
       confirm_b2b_email: { Args: { _user_id: string }; Returns: undefined }
       generate_delivery_note_number: { Args: never; Returns: string }
+      generate_inquiry_credit_note_number: { Args: never; Returns: string }
       generate_inquiry_invoice_number: { Args: never; Returns: string }
       generate_inquiry_offer_number: { Args: never; Returns: string }
       generate_invoice_number: { Args: never; Returns: string }
