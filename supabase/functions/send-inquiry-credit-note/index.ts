@@ -15,7 +15,6 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
-import { normalizeImageUrl } from "../_shared/product-images.ts";
 import { LOCATION_CONTACTS, VAT_RATE, resolveLocationKey } from "../_shared/inquiry-offer-math.ts";
 
 const corsHeaders = {
@@ -258,7 +257,7 @@ Deno.serve(async (req: Request) => {
         total_price: l.total_price,
         rental_start: null,
         rental_end: null,
-        image_url: normalizeImageUrl(null) as string | null,
+        image_url: null,
       })),
       deliveryCost: 0,
       deliveryCostDelivery: 0,
