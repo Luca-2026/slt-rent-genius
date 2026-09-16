@@ -573,7 +573,9 @@ export async function generateOfferPdf(data: {
     }
     dt(
       pg,
-      "Diese Rechnungskorrektur ist Bestandteil der urspr\u00FCnglichen Rechnung und ersetzt diese anteilig.",
+      data.creditIsPartial
+        ? "Diese Rechnungskorrektur ist Bestandteil der urspr\u00FCnglichen Rechnung und korrigiert diese anteilig."
+        : "Diese Rechnungskorrektur ist Bestandteil der urspr\u00FCnglichen Rechnung und hebt diese vollst\u00E4ndig auf.",
       ML + 16, cy, font, 8.5, MUTED,
     );
     y -= boxH + 12;
@@ -686,7 +688,7 @@ export async function generateOfferPdf(data: {
     by -= 2;
     termLines.forEach((ln) => { dt(pg, ln, ML + 16, by, font, 8.5, MUTED); by -= 11; });
     y -= boxH + 12;
-  } else if (data.paymentTerms === "vorkasse") {
+  } else if (!isCreditNote && data.paymentTerms === "vorkasse") {
     // Zahlungskasten mit Bankdaten – Stil identisch zum Rechnungs-Zahlungshinweis
     need(120);
     const boxH = 106;
@@ -710,7 +712,7 @@ export async function generateOfferPdf(data: {
     by -= 2;
     dt(pg, "Mit Zahlungseingang ist Ihre Buchung verbindlich best\u00E4tigt; nach Mietende erhalten Sie die Rechnung per E-Mail.", ML + 16, by, font, 8, MUTED);
     y -= boxH + 12;
-  } else {
+  } else if (!isCreditNote) {
     // Mehrzeiliger Hinweiskasten – Höhe wächst mit dem Text
     const bodyLines = wt(paymentText.replace("Zahlungsbedingungen: ", ""), font, 9, CW - 32);
     const boxH = 26 + bodyLines.length * 12;
@@ -769,7 +771,9 @@ export async function generateOfferPdf(data: {
   need(56);
   dt(
     pg,
-    isInvoice
+    isCreditNote
+      ? "F\u00FCr R\u00FCckfragen zu dieser Rechnungskorrektur stehen wir Ihnen gerne zur Verf\u00FCgung."
+      : isInvoice
       ? "Vielen Dank f\u00FCr Ihren Auftrag. F\u00FCr R\u00FCckfragen zu dieser Rechnung stehen wir Ihnen gerne zur Verf\u00FCgung."
       : "Wir freuen uns auf Ihre R\u00FCckmeldung und stehen Ihnen f\u00FCr R\u00FCckfragen gerne zur Verf\u00FCgung.",
     ML, y, font, 9,
