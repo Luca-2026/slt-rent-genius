@@ -30,6 +30,19 @@ export async function generateOfferPdf(data: {
   paymentTerms?: string;
   /** Freitext bei individuellen Zahlungsbedingungen (paymentTerms === "custom"). */
   paymentTermsCustom?: string;
+  /**
+   * Dokumentart. "offer" (Standard) erzeugt das Angebot, "invoice" die Rechnung
+   * und "supplement" den Nachtrag zu einer bereits gestellten Rechnung –
+   * identisches Layout, nur Beschriftungen und Hinweistexte unterscheiden sich.
+   */
+  documentType?: "offer" | "invoice" | "supplement";
+  /** Fälligkeitsdatum der Rechnung (YYYY-MM-DD oder bereits formatiert). */
+  dueDate?: string;
+  /** Leistungszeitraum der Rechnung. */
+  servicePeriodStart?: string;
+  servicePeriodEnd?: string;
+  /** Nummer der Ursprungsrechnung bei Nachträgen. */
+  parentInvoiceNumber?: string;
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
@@ -50,7 +63,10 @@ export async function generateOfferPdf(data: {
   const ADDR_X = ML;
   const ADDR_Y_TOP = H - 105;
 
-  const TITLE = "ANGEBOT";
+  const docType = data.documentType ?? "offer";
+  const isInvoice = docType !== "offer";
+  const isSupplement = docType === "supplement";
+  const TITLE = isSupplement ? "NACHTRAGSRECHNUNG" : isInvoice ? "RECHNUNG" : "ANGEBOT";
 
   // WinAnsi-sichere Normalisierung: typografische Zeichen auf darstellbare mappen,
   // Euro-Zeichen bleibt erhalten (WinAnsi kann 0x20AC).
@@ -189,9 +205,24 @@ export async function generateOfferPdf(data: {
       dt(pg, value, infoX + 95, iy + 3, font, 7, MUTED);
       iy -= 10;
     };
-    infoRow("Angebotsnummer:", data.offerNumber);
-    infoRow("Angebotsdatum:", fd(data.offerDate));
-    infoRow("G\u00FCltig bis:", fd(data.validUntil), rgb(0.7, 0.26, 0.04));
+    if (isInvoice) {
+      infoRow("Rechnungsnummer:", data.offerNumber);
+      infoRow("Rechnungsdatum:", fd(data.offerDate));
+      if (data.dueDate) infoRow("F\u00E4llig am:", fd(data.dueDate), rgb(0.7, 0.26, 0.04));
+      if (data.servicePeriodStart) {
+        infoRow(
+          "Leistungszeitraum:",
+          `${fd(data.servicePeriodStart)}${data.servicePeriodEnd ? " - " + fd(data.servicePeriodEnd) : ""}`,
+        );
+      }
+      if (isSupplement && data.parentInvoiceNumber) {
+        infoRow("Nachtrag zu:", data.parentInvoiceNumber, BRAND);
+      }
+    } else {
+      infoRow("Angebotsnummer:", data.offerNumber);
+      infoRow("Angebotsdatum:", fd(data.offerDate));
+      infoRow("G\u00FCltig bis:", fd(data.validUntil), rgb(0.7, 0.26, 0.04));
+    }
     // Anfragen aus dem öffentlichen Formular haben keine Kundennummer –
     // dann die Zeile weglassen statt eine UUID auszuweisen.
     if (String(data.profile.id || "").trim()) {
@@ -226,7 +257,12 @@ export async function generateOfferPdf(data: {
 
     // Anschreiben
     dt(pg, "Sehr geehrte Damen und Herren,", ML, ty, font, 9.5); ty -= 13;
-    dt(pg, "vielen Dank f\u00FCr Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:", ML, ty, font, 9.5);
+    const intro = isSupplement
+      ? `vielen Dank f\u00FCr die Verl\u00E4ngerung. Wir berechnen Ihnen nachtr\u00E4glich zur Rechnung ${data.parentInvoiceNumber || ""} folgende Leistungen:`.replace("  ", " ")
+      : isInvoice
+        ? "vielen Dank f\u00FCr Ihren Auftrag. Wir erlauben uns, Ihnen folgende Leistungen in Rechnung zu stellen:"
+        : "vielen Dank f\u00FCr Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:";
+    dt(pg, intro, ML, ty, font, 9.5);
 
     return ty - 30;
   };
@@ -489,7 +525,41 @@ export async function generateOfferPdf(data: {
         ? `Zahlungsbedingungen: Zahlung innerhalb von ${paymentDueDays} Tagen nach Rechnungsstellung (Kreditlimit: ${fm(data.profile.credit_limit)}).`
         : "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten."));
 
-  if (data.paymentTerms === "vorkasse") {
+  if (isInvoice) {
+    // Rechnung: Zahlungshinweis mit Bankdaten und Fälligkeit – Kastenstil wie beim Angebot
+    const termLines = wt(
+      (customPaymentText ?? PAYMENT_TEXTS[data.paymentTerms || "net_14"] ?? "").replace("Zahlungsbedingungen: ", ""),
+      font,
+      9,
+      CW - 32,
+    ).filter((l) => l.trim());
+    const boxH = 92 + termLines.length * 11;
+    need(boxH + 16);
+    pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.995, 0.97, 0.93) });
+    pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
+    let by = y - 2;
+    dt(pg, "Zahlungshinweis", ML + 16, by, bold, 10, INK); by -= 15;
+    dt(
+      pg,
+      `Bitte \u00FCberweisen Sie ${fm(data.grossAmount)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
+      ML + 16, by, font, 9, INK,
+    );
+    by -= 14;
+    const rows: [string, string][] = [
+      ["Kontoinhaber:", SLT_COMPANY.name],
+      ["Bank:", SLT_COMPANY.bankName],
+      ["IBAN / BIC:", `${SLT_COMPANY.iban} | ${SLT_COMPANY.bic}`],
+      ["Verwendungszweck:", data.offerNumber],
+    ];
+    for (const [label, value] of rows) {
+      dt(pg, label, ML + 16, by, font, 8.5, MUTED);
+      dt(pg, value, ML + 120, by, bold, 8.5, INK);
+      by -= 11;
+    }
+    by -= 2;
+    termLines.forEach((ln) => { dt(pg, ln, ML + 16, by, font, 8.5, MUTED); by -= 11; });
+    y -= boxH + 12;
+  } else if (data.paymentTerms === "vorkasse") {
     // Zahlungskasten mit Bankdaten – Stil identisch zum Rechnungs-Zahlungshinweis
     need(120);
     const boxH = 106;
@@ -536,11 +606,23 @@ export async function generateOfferPdf(data: {
     y -= 46;
   }
 
-  // ── Gültigkeit ──
+  // ── Gültigkeit bzw. Leistungszeitraum ──
   need(40);
-  dt(pg, "G\u00FCltigkeit:", ML, y, bold, 9);
-  dt(pg, `Dieses Angebot ist g\u00FCltig bis zum ${fd(data.validUntil)} (${data.validDays} Tage).`, ML + 58, y, font, 9, INK);
-  y -= 22;
+  if (isInvoice) {
+    if (data.servicePeriodStart) {
+      dt(pg, "Leistungszeitraum:", ML, y, bold, 9);
+      dt(
+        pg,
+        `${fd(data.servicePeriodStart)}${data.servicePeriodEnd ? " - " + fd(data.servicePeriodEnd) : ""}`,
+        ML + 98, y, font, 9, INK,
+      );
+      y -= 22;
+    }
+  } else {
+    dt(pg, "G\u00FCltigkeit:", ML, y, bold, 9);
+    dt(pg, `Dieses Angebot ist g\u00FCltig bis zum ${fd(data.validUntil)} (${data.validDays} Tage).`, ML + 58, y, font, 9, INK);
+    y -= 22;
+  }
 
   // ── Anmerkungen ──
   const visibleNotes = data.notes
@@ -558,7 +640,13 @@ export async function generateOfferPdf(data: {
 
   // ── Grußformel ──
   need(56);
-  dt(pg, "Wir freuen uns auf Ihre R\u00FCckmeldung und stehen Ihnen f\u00FCr R\u00FCckfragen gerne zur Verf\u00FCgung.", ML, y, font, 9); y -= 22;
+  dt(
+    pg,
+    isInvoice
+      ? "Vielen Dank f\u00FCr Ihren Auftrag. F\u00FCr R\u00FCckfragen zu dieser Rechnung stehen wir Ihnen gerne zur Verf\u00FCgung."
+      : "Wir freuen uns auf Ihre R\u00FCckmeldung und stehen Ihnen f\u00FCr R\u00FCckfragen gerne zur Verf\u00FCgung.",
+    ML, y, font, 9,
+  ); y -= 22;
   dt(pg, "Mit freundlichen Gr\u00FC\u00DFen", ML, y, font, 9); y -= 15;
   dt(pg, data.staffName || SLT_COMPANY.managingDirector, ML, y, bold, 9); y -= 11;
   dt(pg, SLT_COMPANY.brand, ML, y, font, 8, MUTED);

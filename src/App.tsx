@@ -46,6 +46,7 @@ const AdminDashboard = lazy(() => import("./pages/b2b/AdminDashboard"));
 const StaffTasks = lazy(() => import("./pages/b2b/StaffTasks"));
 const RentalInquiries = lazy(() => import("./pages/b2b/RentalInquiries"));
 const SalesInquiries = lazy(() => import("./pages/b2b/SalesInquiries"));
+const InquiryInvoices = lazy(() => import("./pages/b2b/InquiryInvoices"));
 const B2BCustomers = lazy(() => import("./pages/b2b/Customers"));
 const ForgotPassword = lazy(() => import("./pages/b2b/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/b2b/ResetPassword"));
@@ -233,6 +234,7 @@ const App = () => (
               <Route path="/b2b/aufgaben" element={<StaffTasks />} />
               <Route path="/b2b/mietanfragen" element={<RentalInquiries />} />
               <Route path="/b2b/verkaufsanfragen" element={<SalesInquiries />} />
+              <Route path="/b2b/anfrage-rechnungen" element={<InquiryInvoices />} />
               <Route path="/b2b/kundendaten" element={<B2BCustomers />} />
               <Route path="/b2b" element={<B2BLogin />} />
               
