@@ -409,11 +409,40 @@ export function InquiryOfferForm({
               </Button>
             </div>
             <Input
-              value={item.description ?? ""}
+              value={inherited ? (eff.description ?? "") : (item.description ?? "")}
               onChange={(e) => patchItem(index, { description: e.target.value })}
               placeholder="Beschreibung / Zeitraum (optional)"
-              disabled={disabled}
+              disabled={disabled || inherited}
             />
+            {index > 0 && (
+              <label className="flex items-center gap-2 text-xs cursor-pointer">
+                <Checkbox
+                  checked={!!item.custom_period}
+                  disabled={disabled}
+                  onCheckedChange={(v) =>
+                    patchItem(index, {
+                      custom_period: v === true,
+                      ...(v === true
+                        ? {
+                            duration: eff.duration,
+                            unit: eff.unit,
+                            description: eff.description,
+                          }
+                        : {}),
+                    })
+                  }
+                />
+                <span>
+                  Abweichender Zeitraum
+                  {inherited ? (
+                    <span className="ml-1 text-muted-foreground">
+                      (aktuell wie Position 1: {eff.duration ?? 1}{" "}
+                      {unitLabel(eff.duration ?? 1, (eff.unit ?? "kalendertage") as OfferUnit)})
+                    </span>
+                  ) : null}
+                </span>
+              </label>
+            )}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               <div>
                 <Label className="text-xs">Menge (Artikel)</Label>
