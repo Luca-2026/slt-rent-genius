@@ -27,7 +27,23 @@ type FormLine = OfferLine & {
   available_addons?: AddonOption[];
   /** Woher der Einzelpreis stammt: aus dem CMS vorbelegt oder manuell überschrieben. */
   price_source?: "cms" | "manual";
+  /** true = eigener Zeitraum, sonst wird der Zeitraum der ersten Position übernommen. */
+  custom_period?: boolean;
 };
+
+/**
+ * Zeitraum-Übernahme: Positionen ohne eigenen Zeitraum erben Dauer, Einheit und
+ * Zeitraumtext der ersten Position, damit nichts kopiert werden muss.
+ */
+function applyInheritedPeriod(item: FormLine, index: number, base: FormLine | undefined): FormLine {
+  if (index === 0 || item.custom_period || !base) return item;
+  return {
+    ...item,
+    duration: base.duration,
+    unit: base.unit,
+    description: item.description?.trim() ? item.description : base.description,
+  };
+}
 
 /**
  * Auswahlliste der Zusatzoptionen einer Position: die im CMS gepflegten Optionen
