@@ -137,6 +137,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
 
         if (session?.user) {
+          if (event === "SIGNED_IN") setRolesChecked(false);
           setTimeout(() => {
             fetchB2BProfile(session.user.id);
             checkAdminRole(session.user.id);
