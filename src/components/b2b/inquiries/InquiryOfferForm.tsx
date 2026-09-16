@@ -187,6 +187,8 @@ export function InquiryOfferForm({
   parentInvoiceId = null,
   parentInvoiceNumber = null,
   defaultServicePeriod,
+  defaultCosts,
+  defaultPayments,
 }: Props) {
   const isInvoice = mode === "invoice";
   const isSupplement = isInvoice && invoiceKind === "supplement";
@@ -196,16 +198,19 @@ export function InquiryOfferForm({
   );
   const emptyDelivery: OfferDeliveryAddress = { requested: false, street: "", postal_code: "", city: "" };
   const [delivery, setDelivery] = useState<OfferDeliveryAddress>(defaultDelivery ?? emptyDelivery);
-  const [deliveryCostDelivery, setDeliveryCostDelivery] = useState(0);
-  const [deliveryCostReturn, setDeliveryCostReturn] = useState(0);
+  const [deliveryCostDelivery, setDeliveryCostDelivery] = useState(defaultCosts?.delivery_cost_delivery ?? 0);
+  const [deliveryCostReturn, setDeliveryCostReturn] = useState(defaultCosts?.delivery_cost_return ?? 0);
   /** Pauschalen für Auf- und Abbau (Montage/Demontage vor Ort). */
-  const [setupCost, setSetupCost] = useState(0);
-  const [dismantleCost, setDismantleCost] = useState(0);
-  const [deposit, setDeposit] = useState(0);
+  const [setupCost, setSetupCost] = useState(defaultCosts?.setup_cost ?? 0);
+  const [dismantleCost, setDismantleCost] = useState(defaultCosts?.dismantle_cost ?? 0);
+  const [deposit, setDeposit] = useState(defaultCosts?.deposit ?? 0);
   const [validDays, setValidDays] = useState(14);
+  /** Bereits erhaltene (Teil-)Zahlungen – werden auf der Rechnung abgezogen. */
+  const [payments, setPayments] = useState<OfferPayment[]>(defaultPayments ?? []);
   /** Leistungszeitraum der Rechnung (nur im Rechnungsmodus sichtbar). */
   const [servicePeriodStart, setServicePeriodStart] = useState(defaultServicePeriod?.start ?? "");
   const [servicePeriodEnd, setServicePeriodEnd] = useState(defaultServicePeriod?.end ?? "");
+
   const defaultTerms = () =>
     isInvoice ? (customerKind === "business" ? "net_14" : "vorkasse") : customerKind === "business" ? "net_14" : "anzahlung_30";
   const [paymentTerms, setPaymentTerms] = useState(defaultTerms);
