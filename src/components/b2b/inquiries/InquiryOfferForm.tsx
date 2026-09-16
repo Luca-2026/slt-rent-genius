@@ -284,7 +284,7 @@ export function InquiryOfferForm({
         inquiry_type: inquiryType,
         inquiry_id: inquiryId,
         location,
-        items: items.map(({ available_addons: _unused, price_source: _src, ...rest }) => {
+        items: effectiveItems.map(({ available_addons: _unused, price_source: _src, custom_period: _cp, ...rest }) => {
           const duration = rest.duration && rest.duration > 0 ? rest.duration : 1;
           const unit = (rest.unit ?? "kalendertage") as OfferUnit;
           const articles = rest.quantity || 1;
