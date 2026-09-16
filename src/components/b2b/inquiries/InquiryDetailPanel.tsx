@@ -48,6 +48,9 @@ interface Props {
     assigned_name: string | null;
     internal_notes: string | null;
     offer_number: string | null;
+    /** Snapshot des versendeten Angebots – Grundlage für die Rechnung. */
+    offer_payload?: unknown;
+
     offer_file_url: string | null;
     offer_total_gross: number | null;
     offer_sent_at: string | null;
