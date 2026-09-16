@@ -399,15 +399,13 @@ Deno.serve(async (req: Request) => {
       return json({ error: "Gutschrift konnte nicht finalisiert werden" }, 500);
     }
 
-    // ── Ursprungsrechnung fortschreiben ──
-    const newCredited = round2(alreadyCredited + grossCredit);
-    const fullyCredited = newCredited >= grossInvoice - 0.009;
-    const patch: Record<string, unknown> = { credited_amount: newCredited, credit_reason: reason };
-    if (fullyCredited && invoice.status !== "cancelled") {
-      patch.status = "cancelled";
-      patch.cancelled_at = new Date().toISOString();
-    }
-    const { error: parentErr } = await service.from("inquiry_invoices").update(patch).eq("id", invoice.id);
+    // ── Ursprungsrechnung atomar fortschreiben ──
+    // Die Datenbank sperrt die Rechnung während der Buchung und verhindert Über-Gutschriften.
+    const { error: parentErr } = await service.rpc("apply_inquiry_invoice_credit", {
+      p_invoice_id: invoice.id,
+      p_credit_amount: grossCredit,
+      p_reason: reason,
+    });
     if (parentErr) {
       console.error("Ursprungsrechnung konnte nicht aktualisiert werden:", parentErr.message);
       return json({ error: "Gutschrift wurde gespeichert, aber die Ursprungsrechnung konnte nicht aktualisiert werden" }, 500);

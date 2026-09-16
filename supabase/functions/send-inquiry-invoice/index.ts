@@ -127,8 +127,10 @@ Deno.serve(async (req: Request) => {
           html:
             `<p>Hallo ${escapeHtml(inv.customer_name || "")},</p>` +
             `<p>anbei erhalten Sie erneut unsere Rechnung ${escapeHtml(inv.invoice_number)} über ${money(Number(inv.gross_amount))} brutto.</p>` +
-            (Number(inv.paid_amount) > 0
-              ? `<p>Bereits erhalten: ${money(Number(inv.paid_amount))} – offener Restbetrag: <strong>${money(Math.max(0, Number(inv.gross_amount) - Number(inv.paid_amount)))}</strong>.</p>`
+             (Number(inv.paid_amount) > 0 || Number(inv.credited_amount) > 0
+               ? `<p>Bereits erhalten: ${money(Number(inv.paid_amount))}` +
+                 (Number(inv.credited_amount) > 0 ? ` – gutgeschrieben: ${money(Number(inv.credited_amount))}` : "") +
+                 ` – offener Restbetrag: <strong>${money(Math.max(0, Number(inv.gross_amount) - Number(inv.paid_amount) - Number(inv.credited_amount)))}</strong>.</p>`
               : "") +
 
             `<p>Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}</p>`,

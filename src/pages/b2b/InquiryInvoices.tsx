@@ -132,7 +132,7 @@ export default function InquiryInvoices() {
     [filtered],
   );
 
-  /** Zahlungseingang erfassen: Zahlung anhängen, Summe fortschreiben, ggf. auf „Bezahlt“ setzen. */
+  /** Zahlungseingang atomar erfassen, damit parallele Buchungen nicht überschrieben werden. */
   const savePayment = async () => {
     if (!payFor) return;
     const amount = Math.round((Number(payAmount.replace(",", ".")) || 0) * 100) / 100;
@@ -141,23 +141,21 @@ export default function InquiryInvoices() {
       return;
     }
     setBusyId(payFor.id);
-    const nextPayments: PaymentEntry[] = [
-      ...(payFor.payments ?? []),
-      { date: payDate, amount, label: payLabel.trim() || "Zahlungseingang", reference: payReference.trim() },
-    ];
-    const paidAmount = Math.round(nextPayments.reduce((s, p) => s + Number(p.amount || 0), 0) * 100) / 100;
-    const fullyPaid = paidAmount >= Number(payFor.gross_amount) - 0.009;
-    const patch: Record<string, unknown> = { payments: nextPayments, paid_amount: paidAmount };
-    if (fullyPaid && payFor.status !== "cancelled") {
-      patch.status = "paid";
-      patch.paid_at = new Date().toISOString();
-    }
-    const { error } = await supabase.from("inquiry_invoices").update(patch).eq("id", payFor.id);
+    const { data, error } = await supabase.rpc("record_inquiry_invoice_payment", {
+      p_invoice_id: payFor.id,
+      p_amount: amount,
+      p_payment_date: payDate,
+      p_label: payLabel.trim() || "Zahlungseingang",
+      p_reference: payReference.trim(),
+    });
     setBusyId(null);
     if (error) {
       toast({ title: "Zahlung konnte nicht gespeichert werden", description: error.message, variant: "destructive" });
       return;
     }
+    const updated = Array.isArray(data) ? data[0] : data;
+    const paidAmount = Number(updated?.paid_amount ?? Number(payFor.paid_amount ?? 0) + amount);
+    const fullyPaid = paidAmount >= Number(payFor.gross_amount) - 0.009;
     toast({
       title: "Zahlung erfasst",
       description: fullyPaid
@@ -309,7 +307,9 @@ export default function InquiryInvoices() {
                       <Badge variant="secondary">Gutschrift</Badge>
                     )}
                     <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>
-                      {STATUS_LABEL[row.status] ?? row.status}
+                      {row.invoice_kind === "credit_note" && row.status === "paid"
+                        ? "Erstellt"
+                        : STATUS_LABEL[row.status] ?? row.status}
                     </Badge>
                     <Badge variant="outline">
                       {row.inquiry_type === "rental" ? "Mietanfrage" : "Verkaufsanfrage"}

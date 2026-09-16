@@ -39,7 +39,7 @@
 - [ ] 12 curl-Stichproben, Qualitätschecks, 69 Kategorieseiten Zählabgleich, Redirect-Tests, Sitemap-Check, TODO-Liste
 
 ## Rechnungslegung & Gutschriften – End-to-End-Abnahme
-- [ ] Angebotssnapshot, Zahlung vor Rechnungsstellung, Endrechnung und Positionsspeicherung prüfen
-- [ ] Voll- und Teilgutschrift inklusive Restforderung und Erstattung prüfen
-- [ ] PDF-Layouts mit kurzen, langen und mehrseitigen Beispielen visuell prüfen
-- [ ] E-Mail-Versand und Fehlerfälle prüfen; Dokumente müssen vor Versand vollständig gespeichert sein
+- [x] Angebotssnapshot, Zahlung vor Rechnungsstellung, Endrechnung und Positionsspeicherung geprüft
+- [x] Voll- und Teilgutschrift inklusive Restforderung und Erstattung geprüft
+- [x] PDF-Layouts mit kurzen, langen und mehrseitigen Beispielen visuell geprüft
+- [x] E-Mail-Versand und Fehlerfälle geprüft; Dokumente werden vor Versand vollständig gespeichert
