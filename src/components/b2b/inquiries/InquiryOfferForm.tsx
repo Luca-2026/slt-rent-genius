@@ -180,9 +180,15 @@ export function InquiryOfferForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inquiryId, defaultDelivery?.requested, defaultDelivery?.street, defaultDelivery?.postal_code, defaultDelivery?.city]);
 
+  /** Positionen inkl. übernommenem Zeitraum – Basis für Summen, Anzeige und Versand. */
+  const effectiveItems = useMemo(
+    () => items.map((item, i) => applyInheritedPeriod(item, i, items[0])),
+    [items],
+  );
+
   const totals = useMemo(
-    () => buildOfferTotals(items, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost),
-    [items, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost],
+    () => buildOfferTotals(effectiveItems, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost),
+    [effectiveItems, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost],
   );
 
 
