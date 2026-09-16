@@ -459,16 +459,16 @@ export function InquiryOfferForm({
                 <Input
                   type="number"
                   min={1}
-                  value={item.duration ?? 1}
+                  value={eff.duration ?? 1}
                   onChange={(e) => patchItem(index, { duration: Number(e.target.value) || 0 })}
-                  disabled={disabled}
+                  disabled={disabled || inherited}
                 />
               </div>
               <div>
                 <Label className="text-xs">Einheit</Label>
                 <Select
-                  value={item.unit ?? "kalendertage"}
-                  disabled={disabled}
+                  value={eff.unit ?? "kalendertage"}
+                  disabled={disabled || inherited}
                   onValueChange={(v) => patchItem(index, { unit: v as OfferUnit })}
                 >
                   <SelectTrigger className="h-10">
@@ -481,8 +481,8 @@ export function InquiryOfferForm({
                   </SelectContent>
                 </Select>
                 <p className="mt-1 text-[11px] text-muted-foreground">
-                  {item.quantity || 0} × {item.duration ?? 1}{" "}
-                  {unitLabel(item.duration ?? 1, (item.unit ?? "kalendertage") as OfferUnit)}
+                  {item.quantity || 0} × {eff.duration ?? 1}{" "}
+                  {unitLabel(eff.duration ?? 1, (eff.unit ?? "kalendertage") as OfferUnit)}
                 </p>
               </div>
               <div>
@@ -514,7 +514,7 @@ export function InquiryOfferForm({
                 />
               </div>
               <div className="flex items-end text-sm font-semibold">
-                {formatEuro(lineTotal(item))}
+                {formatEuro(lineTotal(eff))}
               </div>
             </div>
 
