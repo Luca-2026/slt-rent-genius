@@ -87,6 +87,12 @@ export default function InquiryInvoices() {
   const [payDate, setPayDate] = useState(new Date().toISOString().slice(0, 10));
   const [payLabel, setPayLabel] = useState("Banküberweisung");
   const [payReference, setPayReference] = useState("");
+  /** Dialog für eine Rechnungskorrektur (Gutschrift). */
+  const [creditFor, setCreditFor] = useState<InvoiceRow | null>(null);
+  const [creditMode, setCreditMode] = useState<"full" | "partial">("full");
+  const [creditReason, setCreditReason] = useState("");
+  const [creditAmount, setCreditAmount] = useState("");
+  const [creditLabel, setCreditLabel] = useState("Gutschrift");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -121,7 +127,7 @@ export default function InquiryInvoices() {
 
   /** Noch offener Restbetrag einer Rechnung (brutto abzüglich erfasster Zahlungen). */
   const balanceOf = (row: InvoiceRow) =>
-    Math.round((Number(row.gross_amount) - Number(row.paid_amount ?? 0)) * 100) / 100;
+    Math.round((Number(row.gross_amount) - Number(row.paid_amount ?? 0) - Number(row.credited_amount ?? 0)) * 100) / 100;
 
   const openSum = useMemo(
     () => filtered.filter((r) => r.status === "open" || r.status === "overdue")
@@ -180,6 +186,61 @@ export default function InquiryInvoices() {
       return;
     }
     toast({ title: status === "paid" ? "Als bezahlt markiert" : "Rechnung storniert" });
+    load();
+  };
+
+  /**
+   * Erstellt eine Rechnungskorrektur (Gutschrift). Eine versendete Rechnung darf
+   * nach GoBD nicht geändert werden – storniert wird über ein eigenes Dokument
+   * mit eigener Nummer (GS-JJJJ-MM-0001) und Bezug zur Ursprungsrechnung.
+   */
+  const createCreditNote = async () => {
+    if (!creditFor) return;
+    const reason = creditReason.trim();
+    if (!reason) {
+      toast({ title: "Grund fehlt", description: "Bitte einen Grund für die Korrektur angeben.", variant: "destructive" });
+      return;
+    }
+    const grossCredit = Math.round((Number(creditAmount.replace(",", ".")) || 0) * 100) / 100;
+    if (creditMode === "partial" && grossCredit <= 0) {
+      toast({ title: "Betrag fehlt", description: "Bitte den gutzuschreibenden Bruttobetrag angeben.", variant: "destructive" });
+      return;
+    }
+    setBusyId(creditFor.id);
+    const { data, error } = await supabase.functions.invoke("send-inquiry-credit-note", {
+      body: {
+        invoice_id: creditFor.id,
+        mode: creditMode,
+        reason,
+        items: creditMode === "partial"
+          ? [{
+              product_name: creditLabel.trim() || "Gutschrift",
+              description: reason,
+              quantity: 1,
+              unit: "Pauschale",
+              unit_price: Math.round((grossCredit / 1.19) * 100) / 100,
+            }]
+          : undefined,
+      },
+    });
+    setBusyId(null);
+    if (error || (data as any)?.error) {
+      toast({
+        title: "Gutschrift fehlgeschlagen",
+        description: (data as any)?.error ?? error?.message ?? "Unbekannter Fehler",
+        variant: "destructive",
+      });
+      return;
+    }
+    toast({
+      title: `Gutschrift ${(data as any)?.invoice_number ?? ""} erstellt`,
+      description: (data as any)?.fully_credited
+        ? "Die Rechnung wurde vollständig storniert und der Kunde informiert."
+        : "Die Teilgutschrift wurde erstellt und dem Kunden per E-Mail gesendet.",
+    });
+    setCreditFor(null);
+    setCreditReason("");
+    setCreditAmount("");
     load();
   };
 
