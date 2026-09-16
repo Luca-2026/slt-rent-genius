@@ -534,15 +534,40 @@ export async function generateOfferPdf(data: {
   y -= 6;
   pg.drawRectangle({ x: tx - 6, y: y - 4, width: vx - tx + 10, height: 22, color: rgb(0.94, 0.96, 0.98) });
   pg.drawRectangle({ x: tx - 6, y: y + 17, width: vx - tx + 10, height: 1, color: BRAND });
-  dt(pg, "Gesamtbetrag", tx, y + 4, bold, 11, BRAND);
-  dtr(pg, fm(data.grossAmount), vx, y + 4, bold, 12, BRAND);
+  dt(pg, isCreditNote ? "Gutschriftbetrag" : "Gesamtbetrag", tx, y + 4, bold, 11, BRAND);
+  dtr(pg, isCreditNote ? `-${fm(data.grossAmount)}` : fm(data.grossAmount), vx, y + 4, bold, 12, BRAND);
   y -= 38;
 
   // ── Bereits geleistete (Teil-)Zahlungen und Restbetrag ──
   const payments = (data.payments || []).filter((p) => Number(p.amount) > 0);
   const amountPaid = Math.round(payments.reduce((sum, p) => sum + Number(p.amount || 0), 0) * 100) / 100;
   const balanceDue = Math.round((data.grossAmount - amountPaid) * 100) / 100;
-  if (amountPaid > 0) {
+  if (isCreditNote) {
+    // Rechnungskorrektur: Hinweis zur Erstattung bzw. Verrechnung statt Zahlungsaufforderung
+    const alreadyPaid = Math.max(0, Number(data.creditAlreadyPaid) || 0);
+    const refundText = alreadyPaid > 0
+      ? `Der Betrag von ${fm(data.grossAmount)} wird Ihnen auf das uns bekannte Konto erstattet. ` +
+        `Eine gesonderte Zahlung Ihrerseits ist nicht erforderlich.`
+      : `Der Betrag von ${fm(data.grossAmount)} wird mit der Rechnung ${data.parentInvoiceNumber || ""} verrechnet. ` +
+        `${data.creditIsPartial ? "Bitte \u00FCberweisen Sie nur den verbleibenden Rechnungsbetrag." : "Die Rechnung ist damit vollst\u00E4ndig ausgeglichen."}`;
+    const refundLines = wt(refundText, font, 9, CW - 32);
+    const boxH = 46 + refundLines.length * 11 + (data.creditReason ? 13 : 0);
+    need(boxH + 16);
+    pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.93, 0.98, 0.94) });
+    pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: rgb(0.05, 0.45, 0.25) });
+    let cy = y - 2;
+    dt(pg, "Hinweis zur Rechnungskorrektur", ML + 16, cy, bold, 10, INK); cy -= 15;
+    refundLines.forEach((ln) => { dt(pg, ln, ML + 16, cy, font, 9, INK); cy -= 11; });
+    if (data.creditReason) {
+      dt(pg, `Grund: ${data.creditReason}`, ML + 16, cy, font, 8.5, MUTED); cy -= 13;
+    }
+    dt(
+      pg,
+      "Diese Rechnungskorrektur ist Bestandteil der urspr\u00FCnglichen Rechnung und ersetzt diese anteilig.",
+      ML + 16, cy, font, 8.5, MUTED,
+    );
+    y -= boxH + 12;
+  } else if (amountPaid > 0) {
     need(40 + payments.length * 12);
     for (const p of payments) {
       const label = [p.label || "Zahlungseingang", p.date ? fd(p.date) : "", p.reference ? `(${p.reference})` : ""]
