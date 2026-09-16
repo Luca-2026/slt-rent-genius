@@ -172,6 +172,12 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   /** Positionen und Nebenkosten aus dem versendeten Angebot (inkl. Zusatzoptionen). */
   const offerSnapshot = useMemo(() => offerPayloadToLines(inquiry.offer_payload), [inquiry.offer_payload]);
 
+  /** Bereits erfasste Zahlungen zur Anfrage (z. B. Vorkasse auf das Angebot). */
+  const inquiryPayments = useMemo(
+    () => parseInquiryPayments((inquiry as { payments?: unknown }).payments),
+    [inquiry],
+  );
+
 
   /** Angebot oder Rechnung – steuert das Formular unten. */
   const [docMode, setDocMode] = useState<"offer" | "invoice">("offer");
