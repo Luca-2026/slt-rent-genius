@@ -258,10 +258,21 @@ export default function InquiryInvoices() {
                     </Badge>
                     <span className="ml-auto font-semibold">{formatEuro(Number(row.gross_amount))}</span>
                   </div>
+                  {Number(row.paid_amount ?? 0) > 0 && (
+                    <div className="text-xs">
+                      <span className="text-muted-foreground">
+                        Bereits gezahlt {formatEuro(Number(row.paid_amount))}
+                      </span>
+                      <span className={balanceOf(row) > 0 ? "ml-2 font-semibold text-destructive" : "ml-2 font-semibold text-primary"}>
+                        {balanceOf(row) > 0 ? `offen ${formatEuro(balanceOf(row))}` : "vollständig bezahlt"}
+                      </span>
+                    </div>
+                  )}
                   <div className="text-sm">
                     {row.company_name || row.customer_name || row.customer_email}
                     <span className="text-muted-foreground"> · {row.customer_email}</span>
                   </div>
+
                   <div className="text-xs text-muted-foreground">
                     Rechnungsdatum {dateDE(row.invoice_date)} · fällig {dateDE(row.due_date)}
                     {row.service_period_start
