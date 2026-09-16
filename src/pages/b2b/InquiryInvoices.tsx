@@ -249,7 +249,7 @@ export default function InquiryInvoices() {
                     {row.offer_number && (
                       <span className="ml-2 text-xs text-muted-foreground">zu Angebot {row.offer_number}</span>
                     )}
-                    {row.invoice_kind === "supplement" && <Badge variant="outline">Nachtrag</Badge>}
+                    
                     <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>
                       {STATUS_LABEL[row.status] ?? row.status}
                     </Badge>
