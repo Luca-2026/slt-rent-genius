@@ -21,6 +21,7 @@ import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm"
 import { useInquiryActions } from "./useInquiryActions";
 import { InquiryCustomerCard, type CustomerKind } from "./InquiryCustomerCard";
 import { RejectInquiryDialog } from "./RejectInquiryDialog";
+import { InquiryPaymentsCard, parseInquiryPayments } from "./InquiryPaymentsCard";
 import type { OfferLine } from "./offerMath";
 import { formatEuro } from "./offerMath";
 import { useAuth } from "@/hooks/useAuth";
@@ -172,10 +173,21 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   /** Positionen und Nebenkosten aus dem versendeten Angebot (inkl. Zusatzoptionen). */
   const offerSnapshot = useMemo(() => offerPayloadToLines(inquiry.offer_payload), [inquiry.offer_payload]);
 
+  /** Bereits erfasste Zahlungen zur Anfrage (z. B. Vorkasse auf das Angebot). */
+  const inquiryPayments = useMemo(
+    () =>
+      parseInquiryPayments((inquiry as { payments?: unknown }).payments).map((p) => ({
+        date: p.date ?? new Date().toISOString().slice(0, 10),
+        amount: p.amount,
+        label: p.label ?? "Zahlungseingang",
+        reference: p.reference,
+      })),
+    [inquiry],
+  );
 
-  /** Angebot, Rechnung oder Nachtrag – steuert das Formular unten. */
-  const [docMode, setDocMode] = useState<"offer" | "invoice" | "supplement">("offer");
-  const [parentInvoiceId, setParentInvoiceId] = useState<string | null>(null);
+
+  /** Angebot oder Rechnung – steuert das Formular unten. */
+  const [docMode, setDocMode] = useState<"offer" | "invoice">("offer");
   const [invoices, setInvoices] = useState<InvoiceRow[]>([]);
   const docSectionRef = useRef<HTMLDivElement | null>(null);
 
@@ -196,16 +208,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
 
   useEffect(() => {
     setDocMode("offer");
-    setParentInvoiceId(null);
     loadInvoices();
   }, [inquiry.id, loadInvoices]);
-
-  // Nachtrag standardmäßig auf die jüngste echte Rechnung beziehen.
-  useEffect(() => {
-    if (docMode !== "supplement" || parentInvoiceId) return;
-    const first = invoices.find((i) => i.invoice_kind !== "supplement" && i.invoice_number);
-    if (first) setParentInvoiceId(first.id);
-  }, [docMode, invoices, parentInvoiceId]);
 
   const mine = inquiry.assigned_to === user?.id;
 
@@ -371,14 +375,21 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         </div>
       )}
 
+      <InquiryPaymentsCard
+        table={table}
+        inquiryId={inquiry.id}
+        payments={(inquiry as { payments?: unknown }).payments}
+        offerTotalGross={inquiry.offer_total_gross}
+        disabled={busy}
+        onChanged={onChanged}
+      />
+
       {invoices.length > 0 && (
         <div className="rounded-lg border border-border p-3 text-sm space-y-2">
           <div className="font-semibold">Rechnungen zu dieser Anfrage</div>
           {invoices.map((inv) => (
             <div key={inv.id} className="flex flex-wrap items-center gap-2">
-              <span className="font-medium">
-                {inv.invoice_kind === "supplement" ? "Nachtrag" : "Rechnung"} {inv.invoice_number}
-              </span>
+              <span className="font-medium">Rechnung {inv.invoice_number}</span>
               <span className="text-muted-foreground">
                 {inv.invoice_date ? new Date(inv.invoice_date).toLocaleDateString("de-DE") : "—"}
                 {inv.gross_amount != null && ` · ${formatEuro(Number(inv.gross_amount))} brutto`}
@@ -408,71 +419,31 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           <Button size="sm" variant={docMode === "invoice" ? "default" : "outline"} onClick={() => setDocMode("invoice")}>
             <Receipt className="h-3.5 w-3.5 mr-1" /> Rechnung erstellen
           </Button>
-          {invoices.length > 0 && (
-            <Button
-              size="sm"
-              variant={docMode === "supplement" ? "default" : "outline"}
-              onClick={() => setDocMode("supplement")}
-            >
-              Nachtrag erstellen
-            </Button>
-          )}
         </div>
         <div className="mb-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
           <div className="font-semibold text-sm">
-            {docMode === "offer" ? "Angebot erstellen" : docMode === "invoice" ? "Rechnung erstellen" : "Nachtrag erstellen"}
+            {docMode === "offer" ? "Angebot erstellen" : "Rechnung erstellen"}
           </div>
           <p className="text-xs text-muted-foreground">
             {docMode === "offer"
               ? "Positionen prüfen und das Angebot per E-Mail senden."
-              : docMode === "invoice"
-                ? "Positionen und Leistungszeitraum prüfen, dann die Rechnung per E-Mail senden. Die Rechnungsnummer wird beim Versand vergeben."
-                : "Nur die zusätzlichen Leistungen erfassen – der Nachtrag verweist auf die gewählte Rechnung."}
+              : "Endabrechnung: Positionen und Leistungszeitraum an die tatsächliche Miete anpassen (z. B. Verlängerung). Bereits erfasste Zahlungen werden abgezogen, die Rechnungsnummer wird beim Versand vergeben."}
           </p>
         </div>
-        {docMode === "supplement" && (
-          <div className="mb-3">
-            <Label className="text-xs">Nachtrag zu Rechnung</Label>
-            <Select value={parentInvoiceId ?? ""} onValueChange={setParentInvoiceId}>
-              <SelectTrigger className="h-9"><SelectValue placeholder="Rechnung wählen" /></SelectTrigger>
-              <SelectContent>
-                {invoices
-                  .filter((inv) => inv.invoice_kind !== "supplement" && inv.invoice_number)
-                  .map((inv) => (
-                    <SelectItem key={inv.id} value={inv.id}>
-                      {inv.invoice_number} · {formatEuro(Number(inv.gross_amount))}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-          </div>
-        )}
         <InquiryOfferForm
           key={docMode}
           inquiryType={inquiryType}
           inquiryId={inquiry.id}
           location={inquiry.location}
-          defaultItems={
-            docMode === "supplement"
-              ? []
-              : docMode === "invoice" && offerSnapshot
-                ? offerSnapshot.items
-                : defaultItems
-          }
+          defaultItems={docMode === "invoice" && offerSnapshot ? offerSnapshot.items : defaultItems}
           defaultCosts={docMode === "invoice" ? offerSnapshot?.costs : undefined}
+          defaultPayments={docMode === "invoice" ? inquiryPayments : undefined}
           defaultDelivery={defaultDelivery}
 
           customerKind={inquiry.customer_kind === "business" ? "business" : "private"}
           mode={docMode === "offer" ? "offer" : "invoice"}
-          invoiceKind={docMode === "supplement" ? "supplement" : "invoice"}
-          parentInvoiceId={docMode === "supplement" ? parentInvoiceId : null}
-          parentInvoiceNumber={
-            docMode === "supplement"
-              ? invoices.find((i) => i.id === parentInvoiceId)?.invoice_number ?? null
-              : null
-          }
           staffName={actorName}
-          disabled={busy || (docMode === "supplement" && !parentInvoiceId)}
+          disabled={busy}
           onSent={() => {
             loadInvoices();
             onChanged();
