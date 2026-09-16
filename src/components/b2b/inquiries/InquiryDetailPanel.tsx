@@ -108,6 +108,12 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const [docMode, setDocMode] = useState<"offer" | "invoice" | "supplement">("offer");
   const [parentInvoiceId, setParentInvoiceId] = useState<string | null>(null);
   const [invoices, setInvoices] = useState<InvoiceRow[]>([]);
+  const docSectionRef = useRef<HTMLDivElement | null>(null);
+
+  // Nach dem Wechsel der Dokumentart zum Formular springen, damit der Klick sichtbar wirkt.
+  useEffect(() => {
+    docSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [docMode]);
 
   const loadInvoices = useCallback(async () => {
     const column = inquiryType === "rental" ? "rental_inquiry_id" : "sales_inquiry_id";
