@@ -343,7 +343,43 @@ export default function InquiryInvoices() {
             ))}
           </div>
         )}
+
+        <Dialog open={!!payFor} onOpenChange={(open) => !open && setPayFor(null)}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Zahlung erfassen</DialogTitle>
+              <DialogDescription>
+                {payFor
+                  ? `Rechnung ${payFor.invoice_number ?? ""} über ${formatEuro(Number(payFor.gross_amount))} · offen ${formatEuro(Math.max(0, balanceOf(payFor)))}`
+                  : ""}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-3">
+              <div>
+                <Label className="text-xs">Eingegangener Betrag (€)</Label>
+                <Input type="number" step="0.01" min="0" value={payAmount} onChange={(e) => setPayAmount(e.target.value)} />
+              </div>
+              <div>
+                <Label className="text-xs">Zahlungsdatum</Label>
+                <Input type="date" value={payDate} onChange={(e) => setPayDate(e.target.value)} />
+              </div>
+              <div>
+                <Label className="text-xs">Zahlungsweg</Label>
+                <Input value={payLabel} onChange={(e) => setPayLabel(e.target.value)} placeholder="Banküberweisung" />
+              </div>
+              <div>
+                <Label className="text-xs">Verwendungszweck (optional)</Label>
+                <Input value={payReference} onChange={(e) => setPayReference(e.target.value)} />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setPayFor(null)}>Abbrechen</Button>
+              <Button onClick={savePayment} disabled={busyId === payFor?.id}>Zahlung speichern</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
+
     </B2BPortalLayout>
   );
 }
