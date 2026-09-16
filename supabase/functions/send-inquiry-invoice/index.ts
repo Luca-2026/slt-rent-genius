@@ -511,7 +511,9 @@ Deno.serve(async (req: Request) => {
         dismantle_cost: dismantleCost,
         deposit,
         notes,
-        status: "open",
+        // Zuerst als Entwurf anlegen, damit die Positionen noch gespeichert werden dürfen
+        // (GoBD-Trigger sperrt Positionen finalisierter Rechnungen). Direkt danach finalisieren.
+        status: "draft",
         file_url: fileUrl,
         file_name: fileName,
         file_path: filePath,
