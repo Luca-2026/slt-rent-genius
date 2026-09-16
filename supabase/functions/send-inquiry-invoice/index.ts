@@ -519,29 +519,6 @@ Deno.serve(async (req: Request) => {
 
 
     let emailSent = false;
-    if (resendKey) {
-      try {
-        const res = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
-            to: [customerEmail],
-            cc: Array.from(new Set([loc.email, str(inquiry.location_email)].filter((e) => e && e !== customerEmail))),
-            reply_to: loc.email,
-            subject: `${invoiceKind === "supplement" ? "Nachtragsrechnung" : "Rechnung"} von SLT Rental – ${invoiceNumber}`,
-            html: emailHtml,
-            attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
-          }),
-        });
-        if (res.ok) emailSent = true;
-        else console.error("Resend error:", res.status, await res.text());
-      } catch (err) {
-        console.error("Resend exception:", err);
-      }
-    } else {
-      console.log("RESEND_API_KEY fehlt – Rechnung wurde nur erzeugt, nicht versendet");
-    }
 
     // ── Rechnung speichern (direkt finalisiert) ──
     const { data: inserted, error: insErr } = await service
@@ -596,8 +573,8 @@ Deno.serve(async (req: Request) => {
         file_url: fileUrl,
         file_name: fileName,
         file_path: filePath,
-        email_sent: emailSent,
-        email_sent_at: emailSent ? new Date().toISOString() : null,
+        email_sent: false,
+        email_sent_at: null,
         created_by: user.id,
         created_by_name: staffName,
       })
@@ -643,6 +620,35 @@ Deno.serve(async (req: Request) => {
 
       console.error("Rechnung konnte nicht finalisiert werden:", finalErr.message);
       return json({ error: "Rechnung konnte nicht finalisiert werden" }, 500);
+    }
+
+    // Erst nach vollständig gespeicherten und finalisierten Positionen versenden.
+    if (resendKey) {
+      try {
+        const res = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
+            to: [customerEmail],
+            cc: Array.from(new Set([loc.email, str(inquiry.location_email)].filter((e) => e && e !== customerEmail))),
+            reply_to: loc.email,
+            subject: `${invoiceKind === "supplement" ? "Nachtragsrechnung" : "Rechnung"} von SLT Rental – ${invoiceNumber}`,
+            html: emailHtml,
+            attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
+          }),
+        });
+        if (res.ok) {
+          emailSent = true;
+          await service.from("inquiry_invoices").update({ email_sent: true, email_sent_at: new Date().toISOString() }).eq("id", inserted.id);
+        } else {
+          console.error("Resend error:", res.status, await res.text());
+        }
+      } catch (err) {
+        console.error("Resend exception:", err);
+      }
+    } else {
+      console.log("RESEND_API_KEY fehlt – Rechnung wurde nur erzeugt, nicht versendet");
     }
 
 

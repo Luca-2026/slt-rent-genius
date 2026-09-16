@@ -15,7 +15,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
-import { LOCATION_CONTACTS, VAT_RATE, resolveLocationKey } from "../_shared/inquiry-offer-math.ts";
+import { LOCATION_CONTACTS, resolveLocationKey } from "../_shared/inquiry-offer-math.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
