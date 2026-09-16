@@ -9,10 +9,15 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ExternalLink, RefreshCw, Search, Send, CheckCircle2, Ban } from "lucide-react";
+import {
+  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { ExternalLink, RefreshCw, Search, Send, CheckCircle2, Ban, Banknote } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { formatEuro } from "@/components/b2b/inquiries/offerMath";
+
 
 interface InvoiceRow {
   id: string;
@@ -34,8 +39,19 @@ interface InvoiceRow {
   status: string;
   file_url: string | null;
   email_sent: boolean;
+  paid_amount: number | null;
+  payments: PaymentEntry[] | null;
   created_at: string;
 }
+
+/** Erfasste (Teil-)Zahlung zu einer Rechnung. */
+interface PaymentEntry {
+  date?: string;
+  amount: number;
+  label?: string;
+  reference?: string;
+}
+
 
 const STATUS_LABEL: Record<string, string> = {
   draft: "Entwurf",
