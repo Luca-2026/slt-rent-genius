@@ -1874,6 +1874,7 @@ export type Database = {
           location_email: string | null
           net_amount: number
           notes: string | null
+          offer_number: string | null
           paid_at: string | null
           parent_invoice_id: string | null
           payment_due_days: number
@@ -1930,6 +1931,7 @@ export type Database = {
           location_email?: string | null
           net_amount?: number
           notes?: string | null
+          offer_number?: string | null
           paid_at?: string | null
           parent_invoice_id?: string | null
           payment_due_days?: number
@@ -1986,6 +1988,7 @@ export type Database = {
           location_email?: string | null
           net_amount?: number
           notes?: string | null
+          offer_number?: string | null
           paid_at?: string | null
           parent_invoice_id?: string | null
           payment_due_days?: number

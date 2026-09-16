@@ -29,6 +29,7 @@ import { useAuth } from "@/hooks/useAuth";
 interface InvoiceRow {
   id: string;
   invoice_number: string | null;
+  offer_number?: string | null;
   invoice_kind: string;
   invoice_date: string | null;
   gross_amount: number | null;
@@ -112,7 +113,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
     const column = inquiryType === "rental" ? "rental_inquiry_id" : "sales_inquiry_id";
     const { data } = await supabase
       .from("inquiry_invoices")
-      .select("id, invoice_number, invoice_kind, invoice_date, gross_amount, status, file_url")
+      .select("id, invoice_number, invoice_kind, invoice_date, gross_amount, status, file_url, offer_number")
       .eq(column, inquiry.id)
       .order("created_at", { ascending: false });
     setInvoices((data ?? []) as InvoiceRow[]);
@@ -306,6 +307,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               <span className="text-muted-foreground">
                 {inv.invoice_date ? new Date(inv.invoice_date).toLocaleDateString("de-DE") : "—"}
                 {inv.gross_amount != null && ` · ${formatEuro(Number(inv.gross_amount))} brutto`}
+                {inv.offer_number && ` · zu Angebot ${inv.offer_number}`}
               </span>
               <InquiryStatusBadge status={inv.status} />
               {inv.file_url && (

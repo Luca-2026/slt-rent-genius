@@ -43,6 +43,8 @@ export async function generateOfferPdf(data: {
   servicePeriodEnd?: string;
   /** Nummer der Ursprungsrechnung bei Nachträgen. */
   parentInvoiceNumber?: string;
+  /** Nummer des ursprünglichen Angebots, auf das sich die Rechnung bezieht (Vorkasse-Zuordnung). */
+  sourceOfferNumber?: string;
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
@@ -214,6 +216,9 @@ export async function generateOfferPdf(data: {
           "Leistungszeitraum:",
           `${fd(data.servicePeriodStart)}${data.servicePeriodEnd ? " - " + fd(data.servicePeriodEnd) : ""}`,
         );
+      }
+      if (data.sourceOfferNumber) {
+        infoRow("Angebot:", data.sourceOfferNumber, BRAND);
       }
       if (isSupplement && data.parentInvoiceNumber) {
         infoRow("Nachtrag zu:", data.parentInvoiceNumber, BRAND);
@@ -533,7 +538,8 @@ export async function generateOfferPdf(data: {
       9,
       CW - 32,
     ).filter((l) => l.trim());
-    const boxH = 92 + termLines.length * 11;
+    const offerRefExtra = data.sourceOfferNumber ? 11 : 0;
+    const boxH = 92 + termLines.length * 11 + offerRefExtra;
     need(boxH + 16);
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.995, 0.97, 0.93) });
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
@@ -554,6 +560,10 @@ export async function generateOfferPdf(data: {
     for (const [label, value] of rows) {
       dt(pg, label, ML + 16, by, font, 8.5, MUTED);
       dt(pg, value, ML + 120, by, bold, 8.5, INK);
+      by -= 11;
+    }
+    if (data.sourceOfferNumber) {
+      dt(pg, `Bezug: unser Angebot ${data.sourceOfferNumber} (bei Vorkasse bitte ebenfalls angeben)`, ML + 16, by, font, 8.5, MUTED);
       by -= 11;
     }
     by -= 2;
