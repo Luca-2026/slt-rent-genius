@@ -93,7 +93,7 @@ export default function InquiryInvoices() {
     const { data, error } = await supabase
       .from("inquiry_invoices")
       .select(
-        "id, invoice_number, invoice_kind, inquiry_type, parent_invoice_id, offer_number, company_name, customer_name, customer_email, location, invoice_date, due_date, service_period_start, service_period_end, gross_amount, net_amount, status, file_url, email_sent, paid_amount, payments, created_at",
+        "id, invoice_number, invoice_kind, inquiry_type, parent_invoice_id, offer_number, company_name, customer_name, customer_email, location, invoice_date, due_date, service_period_start, service_period_end, gross_amount, net_amount, status, file_url, email_sent, paid_amount, payments, credited_amount, credit_reason, created_at",
       )
       .order("created_at", { ascending: false });
     setLoading(false);
