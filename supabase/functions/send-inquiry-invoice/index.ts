@@ -396,6 +396,8 @@ Deno.serve(async (req: Request) => {
       deliveryAddress: deliveryRequested ? deliveryAddress : undefined,
       paymentTerms,
       paymentTermsCustom: paymentTerms === "custom" ? paymentTermsCustom : undefined,
+      payments,
+
     });
 
     const safeName = (profile.company_name || "Kunde")
