@@ -21,6 +21,7 @@ import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm"
 import { useInquiryActions } from "./useInquiryActions";
 import { InquiryCustomerCard, type CustomerKind } from "./InquiryCustomerCard";
 import { RejectInquiryDialog } from "./RejectInquiryDialog";
+import { InquiryPaymentsCard, parseInquiryPayments } from "./InquiryPaymentsCard";
 import type { OfferLine } from "./offerMath";
 import { formatEuro } from "./offerMath";
 import { useAuth } from "@/hooks/useAuth";
