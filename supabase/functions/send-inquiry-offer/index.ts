@@ -502,6 +502,23 @@ Deno.serve(async (req: Request) => {
         delivery_postal_code: deliveryRequested ? deliveryAddress.postal_code || null : null,
         delivery_city: deliveryRequested ? deliveryAddress.city || null : null,
         ...(inquiryType === "rental" ? { delivery_requested: deliveryRequested } : {}),
+        // Snapshot des Angebots – Grundlage für die spätere Rechnung (inkl. Zusatzoptionen)
+        offer_payload: {
+          offer_number: offerNumber,
+          created_at: new Date().toISOString(),
+          items,
+          delivery_cost_delivery: deliveryCostDelivery,
+          delivery_cost_return: deliveryCostReturn,
+          setup_cost: setupCost,
+          dismantle_cost: dismantleCost,
+          deposit,
+          payment_terms: paymentTerms,
+          payment_terms_custom: paymentTermsCustom || null,
+          valid_days: validDays,
+          notes,
+          totals,
+        },
+
       })
 
       .eq("id", inquiry.id);
