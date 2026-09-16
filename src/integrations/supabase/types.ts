@@ -1771,6 +1771,289 @@ export type Database = {
         }
         Relationships: []
       }
+      inquiry_invoice_items: {
+        Row: {
+          addons: Json
+          created_at: string
+          description: string | null
+          discount_percent: number
+          id: string
+          image_url: string | null
+          invoice_id: string
+          position: number
+          product_name: string
+          quantity: number
+          rental_end: string | null
+          rental_start: string | null
+          total_price: number
+          unit: string | null
+          unit_price: number
+        }
+        Insert: {
+          addons?: Json
+          created_at?: string
+          description?: string | null
+          discount_percent?: number
+          id?: string
+          image_url?: string | null
+          invoice_id: string
+          position?: number
+          product_name: string
+          quantity?: number
+          rental_end?: string | null
+          rental_start?: string | null
+          total_price?: number
+          unit?: string | null
+          unit_price?: number
+        }
+        Update: {
+          addons?: Json
+          created_at?: string
+          description?: string | null
+          discount_percent?: number
+          id?: string
+          image_url?: string | null
+          invoice_id?: string
+          position?: number
+          product_name?: string
+          quantity?: number
+          rental_end?: string | null
+          rental_start?: string | null
+          total_price?: number
+          unit?: string | null
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inquiry_invoice_items_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "inquiry_invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inquiry_invoices: {
+        Row: {
+          cancelled_at: string | null
+          company_name: string | null
+          created_at: string
+          created_by: string | null
+          created_by_name: string | null
+          crm_customer_id: string | null
+          customer_city: string | null
+          customer_country: string
+          customer_email: string
+          customer_kind: string
+          customer_name: string | null
+          customer_phone: string | null
+          customer_postal_code: string | null
+          customer_street: string | null
+          delivery_city: string | null
+          delivery_cost_delivery: number
+          delivery_cost_return: number
+          delivery_postal_code: string | null
+          delivery_requested: boolean
+          delivery_street: string | null
+          deposit: number
+          dismantle_cost: number
+          due_date: string | null
+          email_sent: boolean
+          email_sent_at: string | null
+          file_name: string | null
+          file_path: string | null
+          file_url: string | null
+          gross_amount: number
+          id: string
+          inquiry_type: string
+          internal_notes: string | null
+          invoice_date: string
+          invoice_kind: string
+          invoice_number: string | null
+          location: string | null
+          location_email: string | null
+          net_amount: number
+          notes: string | null
+          paid_at: string | null
+          parent_invoice_id: string | null
+          payment_due_days: number
+          payment_terms: string
+          payment_terms_custom: string | null
+          rental_inquiry_id: string | null
+          sales_inquiry_id: string | null
+          service_period_end: string | null
+          service_period_start: string | null
+          setup_cost: number
+          status: string
+          updated_at: string
+          vat_amount: number
+          vat_id: string | null
+          vat_rate: number
+        }
+        Insert: {
+          cancelled_at?: string | null
+          company_name?: string | null
+          created_at?: string
+          created_by?: string | null
+          created_by_name?: string | null
+          crm_customer_id?: string | null
+          customer_city?: string | null
+          customer_country?: string
+          customer_email: string
+          customer_kind?: string
+          customer_name?: string | null
+          customer_phone?: string | null
+          customer_postal_code?: string | null
+          customer_street?: string | null
+          delivery_city?: string | null
+          delivery_cost_delivery?: number
+          delivery_cost_return?: number
+          delivery_postal_code?: string | null
+          delivery_requested?: boolean
+          delivery_street?: string | null
+          deposit?: number
+          dismantle_cost?: number
+          due_date?: string | null
+          email_sent?: boolean
+          email_sent_at?: string | null
+          file_name?: string | null
+          file_path?: string | null
+          file_url?: string | null
+          gross_amount?: number
+          id?: string
+          inquiry_type: string
+          internal_notes?: string | null
+          invoice_date?: string
+          invoice_kind?: string
+          invoice_number?: string | null
+          location?: string | null
+          location_email?: string | null
+          net_amount?: number
+          notes?: string | null
+          paid_at?: string | null
+          parent_invoice_id?: string | null
+          payment_due_days?: number
+          payment_terms?: string
+          payment_terms_custom?: string | null
+          rental_inquiry_id?: string | null
+          sales_inquiry_id?: string | null
+          service_period_end?: string | null
+          service_period_start?: string | null
+          setup_cost?: number
+          status?: string
+          updated_at?: string
+          vat_amount?: number
+          vat_id?: string | null
+          vat_rate?: number
+        }
+        Update: {
+          cancelled_at?: string | null
+          company_name?: string | null
+          created_at?: string
+          created_by?: string | null
+          created_by_name?: string | null
+          crm_customer_id?: string | null
+          customer_city?: string | null
+          customer_country?: string
+          customer_email?: string
+          customer_kind?: string
+          customer_name?: string | null
+          customer_phone?: string | null
+          customer_postal_code?: string | null
+          customer_street?: string | null
+          delivery_city?: string | null
+          delivery_cost_delivery?: number
+          delivery_cost_return?: number
+          delivery_postal_code?: string | null
+          delivery_requested?: boolean
+          delivery_street?: string | null
+          deposit?: number
+          dismantle_cost?: number
+          due_date?: string | null
+          email_sent?: boolean
+          email_sent_at?: string | null
+          file_name?: string | null
+          file_path?: string | null
+          file_url?: string | null
+          gross_amount?: number
+          id?: string
+          inquiry_type?: string
+          internal_notes?: string | null
+          invoice_date?: string
+          invoice_kind?: string
+          invoice_number?: string | null
+          location?: string | null
+          location_email?: string | null
+          net_amount?: number
+          notes?: string | null
+          paid_at?: string | null
+          parent_invoice_id?: string | null
+          payment_due_days?: number
+          payment_terms?: string
+          payment_terms_custom?: string | null
+          rental_inquiry_id?: string | null
+          sales_inquiry_id?: string | null
+          service_period_end?: string | null
+          service_period_start?: string | null
+          setup_cost?: number
+          status?: string
+          updated_at?: string
+          vat_amount?: number
+          vat_id?: string | null
+          vat_rate?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inquiry_invoices_crm_customer_id_fkey"
+            columns: ["crm_customer_id"]
+            isOneToOne: false
+            referencedRelation: "crm_customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inquiry_invoices_parent_invoice_id_fkey"
+            columns: ["parent_invoice_id"]
+            isOneToOne: false
+            referencedRelation: "inquiry_invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inquiry_invoices_rental_inquiry_id_fkey"
+            columns: ["rental_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "rental_inquiries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inquiry_invoices_sales_inquiry_id_fkey"
+            columns: ["sales_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "sales_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invoice_number_counters: {
+        Row: {
+          last_value: number
+          month: number
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          last_value?: number
+          month: number
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          last_value?: number
+          month?: number
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
       job_applications: {
         Row: {
           city: string | null
@@ -2157,6 +2440,7 @@ export type Database = {
           message: string | null
           offer_file_url: string | null
           offer_number: string | null
+          offer_payload: Json | null
           offer_sent_at: string | null
           offer_total_gross: number | null
           product_id: string | null
@@ -2204,6 +2488,7 @@ export type Database = {
           message?: string | null
           offer_file_url?: string | null
           offer_number?: string | null
+          offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
           product_id?: string | null
@@ -2251,6 +2536,7 @@ export type Database = {
           message?: string | null
           offer_file_url?: string | null
           offer_number?: string | null
+          offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
           product_id?: string | null
@@ -2334,6 +2620,7 @@ export type Database = {
           model: string | null
           offer_file_url: string | null
           offer_number: string | null
+          offer_payload: Json | null
           offer_sent_at: string | null
           offer_total_gross: number | null
           product_category: string | null
@@ -2394,6 +2681,7 @@ export type Database = {
           model?: string | null
           offer_file_url?: string | null
           offer_number?: string | null
+          offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
           product_category?: string | null
@@ -2454,6 +2742,7 @@ export type Database = {
           model?: string | null
           offer_file_url?: string | null
           offer_number?: string | null
+          offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
           product_category?: string | null
@@ -3302,6 +3591,7 @@ export type Database = {
       }
       confirm_b2b_email: { Args: { _user_id: string }; Returns: undefined }
       generate_delivery_note_number: { Args: never; Returns: string }
+      generate_inquiry_invoice_number: { Args: never; Returns: string }
       generate_inquiry_offer_number: { Args: never; Returns: string }
       generate_invoice_number: { Args: never; Returns: string }
       generate_offer_number: { Args: never; Returns: string }

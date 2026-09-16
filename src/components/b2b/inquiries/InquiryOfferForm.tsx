@@ -116,6 +116,15 @@ const PAYMENT_OPTIONS: Record<"business" | "private", { value: string; label: st
   ],
 };
 
+/** Zahlungsziele für Rechnungen – Zahlungslink-Varianten gelten nur für Angebote. */
+const INVOICE_PAYMENT_OPTIONS = [
+  { value: "net_14", label: "Zahlbar innerhalb von 14 Tagen" },
+  { value: "net_7", label: "Zahlbar innerhalb von 7 Tagen" },
+  { value: "net_30", label: "Zahlbar innerhalb von 30 Tagen" },
+  { value: "vorkasse", label: "Sofort fällig ohne Abzug" },
+  { value: "custom", label: "Individuelle Zahlungsbedingungen …" },
+];
+
 export interface OfferDeliveryAddress {
   requested: boolean;
   street: string;
@@ -135,6 +144,13 @@ interface Props {
   staffName: string;
   disabled?: boolean;
   onSent?: () => void;
+  /** "offer" (Standard) erzeugt ein Angebot, "invoice" eine Rechnung bzw. einen Nachtrag. */
+  mode?: "offer" | "invoice";
+  invoiceKind?: "invoice" | "supplement";
+  parentInvoiceId?: string | null;
+  parentInvoiceNumber?: string | null;
+  /** Vorbelegter Leistungszeitraum (YYYY-MM-DD). */
+  defaultServicePeriod?: { start?: string | null; end?: string | null };
 }
 
 export function InquiryOfferForm({
@@ -147,7 +163,14 @@ export function InquiryOfferForm({
   staffName,
   disabled,
   onSent,
+  mode = "offer",
+  invoiceKind = "invoice",
+  parentInvoiceId = null,
+  parentInvoiceNumber = null,
+  defaultServicePeriod,
 }: Props) {
+  const isInvoice = mode === "invoice";
+  const isSupplement = isInvoice && invoiceKind === "supplement";
   const { toast } = useToast();
   const [items, setItems] = useState<FormLine[]>(
     defaultItems.length ? defaultItems : [emptyLine()],
@@ -161,16 +184,20 @@ export function InquiryOfferForm({
   const [dismantleCost, setDismantleCost] = useState(0);
   const [deposit, setDeposit] = useState(0);
   const [validDays, setValidDays] = useState(14);
-  const [paymentTerms, setPaymentTerms] = useState(
-    customerKind === "business" ? "net_14" : "anzahlung_30",
-  );
+  /** Leistungszeitraum der Rechnung (nur im Rechnungsmodus sichtbar). */
+  const [servicePeriodStart, setServicePeriodStart] = useState(defaultServicePeriod?.start ?? "");
+  const [servicePeriodEnd, setServicePeriodEnd] = useState(defaultServicePeriod?.end ?? "");
+  const defaultTerms = () =>
+    isInvoice ? (customerKind === "business" ? "net_14" : "vorkasse") : customerKind === "business" ? "net_14" : "anzahlung_30";
+  const [paymentTerms, setPaymentTerms] = useState(defaultTerms);
   /** Freitext für „Individuelle Zahlungsbedingungen“ (nur Geschäftskunden). */
   const [paymentTermsCustom, setPaymentTermsCustom] = useState("");
   const sendLock = useRef(false);
 
   useEffect(() => {
-    setPaymentTerms(customerKind === "business" ? "net_14" : "anzahlung_30");
-  }, [customerKind]);
+    setPaymentTerms(defaultTerms());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [customerKind, isInvoice]);
   const [notes, setNotes] = useState("");
   const [sending, setSending] = useState(false);
 
@@ -279,8 +306,18 @@ export function InquiryOfferForm({
     if (sendLock.current) return;
     sendLock.current = true;
     setSending(true);
-    const { data, error } = await supabase.functions.invoke("send-inquiry-offer", {
+    const { data, error } = await supabase.functions.invoke(
+      isInvoice ? "send-inquiry-invoice" : "send-inquiry-offer",
+      {
       body: {
+        ...(isInvoice
+          ? {
+              invoice_kind: invoiceKind,
+              parent_invoice_id: parentInvoiceId,
+              service_period_start: servicePeriodStart || null,
+              service_period_end: servicePeriodEnd || null,
+            }
+          : {}),
         inquiry_type: inquiryType,
         inquiry_id: inquiryId,
         location,
@@ -323,22 +360,24 @@ export function InquiryOfferForm({
         notes,
         staff_name: staffName,
       },
-    });
+    },
+    );
 
     setSending(false);
     sendLock.current = false;
 
+    const docLabel = isSupplement ? "Nachtrag" : isInvoice ? "Rechnung" : "Angebot";
     if (error || (data as any)?.error) {
       toast({
-        title: "Angebot konnte nicht gesendet werden",
+        title: `${docLabel} konnte nicht gesendet werden`,
         description: (data as any)?.error ?? error?.message ?? "Unbekannter Fehler",
         variant: "destructive",
       });
       return;
     }
     toast({
-      title: "Angebot gesendet",
-      description: `${(data as any)?.offer_number} · ${formatEuro(totals.grossAmount)} brutto`,
+      title: `${docLabel} gesendet`,
+      description: `${(data as any)?.invoice_number ?? (data as any)?.offer_number} · ${formatEuro(totals.grossAmount)} brutto`,
     });
     onSent?.();
   };
@@ -723,12 +762,40 @@ export function InquiryOfferForm({
           <Input type="number" min={0} step="0.01" value={deposit}
             onChange={(e) => setDeposit(Number(e.target.value) || 0)} disabled={disabled} />
         </div>
-        <div>
-          <Label className="text-xs">Gültig (Tage)</Label>
-          <Input type="number" min={1} max={180} value={validDays}
-            onChange={(e) => setValidDays(Number(e.target.value) || 14)} disabled={disabled} />
-        </div>
+        {!isInvoice && (
+          <div>
+            <Label className="text-xs">Gültig (Tage)</Label>
+            <Input type="number" min={1} max={180} value={validDays}
+              onChange={(e) => setValidDays(Number(e.target.value) || 14)} disabled={disabled} />
+          </div>
+        )}
       </div>
+
+      {isInvoice && (
+        <div className="rounded-lg border border-border p-3 space-y-2">
+          <Label className="text-xs">Leistungszeitraum (erscheint auf der Rechnung)</Label>
+          <div className="grid gap-2 sm:grid-cols-2">
+            <Input
+              type="date"
+              value={servicePeriodStart}
+              onChange={(e) => setServicePeriodStart(e.target.value)}
+              disabled={disabled}
+            />
+            <Input
+              type="date"
+              value={servicePeriodEnd}
+              onChange={(e) => setServicePeriodEnd(e.target.value)}
+              disabled={disabled}
+            />
+          </div>
+          {isSupplement && parentInvoiceNumber ? (
+            <p className="text-xs text-muted-foreground">
+              Nachtrag zu Rechnung {parentInvoiceNumber} – nur die zusätzlichen Leistungen erfassen.
+            </p>
+          ) : null}
+        </div>
+      )}
+
 
       <div className="rounded-lg border border-border p-3 space-y-2">
         <Label className="text-xs">
@@ -737,7 +804,7 @@ export function InquiryOfferForm({
         <Select value={paymentTerms} onValueChange={setPaymentTerms} disabled={disabled}>
           <SelectTrigger><SelectValue /></SelectTrigger>
           <SelectContent>
-            {PAYMENT_OPTIONS[customerKind].map((o) => (
+            {(isInvoice ? INVOICE_PAYMENT_OPTIONS : PAYMENT_OPTIONS[customerKind]).map((o) => (
               <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
             ))}
           </SelectContent>
@@ -783,11 +850,18 @@ export function InquiryOfferForm({
 
       <Button onClick={send} disabled={disabled || sending} className="w-full">
         <Send className="h-4 w-4 mr-2" />
-        {sending ? "Angebot wird gesendet …" : "Angebot per E-Mail senden"}
+        {isInvoice
+          ? sending
+            ? `${isSupplement ? "Nachtrag" : "Rechnung"} wird gesendet …`
+            : `${isSupplement ? "Nachtrag" : "Rechnung"} per E-Mail senden`
+          : sending
+            ? "Angebot wird gesendet …"
+            : "Angebot per E-Mail senden"}
       </Button>
       <p className="text-xs text-muted-foreground">
-        Der Kunde wird in der E-Mail gebeten, die Annahme per Antwort an das Standort-Postfach zu bestätigen.
-        Danach den Job manuell in Rentware anlegen.
+        {isInvoice
+          ? "Die Rechnungsnummer wird beim Versand vergeben. Danach ist die Rechnung unveränderlich und kann nur noch storniert werden."
+          : "Der Kunde wird in der E-Mail gebeten, die Annahme per Antwort an das Standort-Postfach zu bestätigen. Danach den Job manuell in Rentware anlegen."}
       </p>
     </div>
   );

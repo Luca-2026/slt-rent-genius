@@ -18,7 +18,7 @@ import {
   normalizeInquiryOfferItems,
   resolveLocationKey,
   type InquiryOfferItem,
-} from "./offer-math.ts";
+} from "../_shared/inquiry-offer-math.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { ExternalLink, Trash2, UserCheck, UserMinus } from "lucide-react";
+import { ExternalLink, Receipt, Trash2, UserCheck, UserMinus } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -24,6 +24,17 @@ import { RejectInquiryDialog } from "./RejectInquiryDialog";
 import type { OfferLine } from "./offerMath";
 import { formatEuro } from "./offerMath";
 import { useAuth } from "@/hooks/useAuth";
+
+/** Kurzform einer Rechnung für die Übersicht im Anfragen-Detail. */
+interface InvoiceRow {
+  id: string;
+  invoice_number: string | null;
+  invoice_kind: string;
+  invoice_date: string | null;
+  gross_amount: number | null;
+  status: string;
+  file_url: string | null;
+}
 
 interface Props {
   table: "rental_inquiries" | "sales_inquiries";
@@ -91,6 +102,34 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const [notes, setNotes] = useState(inquiry.internal_notes ?? "");
 
   useEffect(() => setNotes(inquiry.internal_notes ?? ""), [inquiry.id, inquiry.internal_notes]);
+
+  /** Angebot, Rechnung oder Nachtrag – steuert das Formular unten. */
+  const [docMode, setDocMode] = useState<"offer" | "invoice" | "supplement">("offer");
+  const [parentInvoiceId, setParentInvoiceId] = useState<string | null>(null);
+  const [invoices, setInvoices] = useState<InvoiceRow[]>([]);
+
+  const loadInvoices = useCallback(async () => {
+    const column = inquiryType === "rental" ? "rental_inquiry_id" : "sales_inquiry_id";
+    const { data } = await supabase
+      .from("inquiry_invoices")
+      .select("id, invoice_number, invoice_kind, invoice_date, gross_amount, status, file_url")
+      .eq(column, inquiry.id)
+      .order("created_at", { ascending: false });
+    setInvoices((data ?? []) as InvoiceRow[]);
+  }, [inquiry.id, inquiryType]);
+
+  useEffect(() => {
+    setDocMode("offer");
+    setParentInvoiceId(null);
+    loadInvoices();
+  }, [inquiry.id, loadInvoices]);
+
+  // Nachtrag standardmäßig auf die jüngste echte Rechnung beziehen.
+  useEffect(() => {
+    if (docMode !== "supplement" || parentInvoiceId) return;
+    const first = invoices.find((i) => i.invoice_kind !== "supplement" && i.invoice_number);
+    if (first) setParentInvoiceId(first.id);
+  }, [docMode, invoices, parentInvoiceId]);
 
   const mine = inquiry.assigned_to === user?.id;
 
@@ -256,22 +295,91 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         </div>
       )}
 
+      {invoices.length > 0 && (
+        <div className="rounded-lg border border-border p-3 text-sm space-y-2">
+          <div className="font-semibold">Rechnungen zu dieser Anfrage</div>
+          {invoices.map((inv) => (
+            <div key={inv.id} className="flex flex-wrap items-center gap-2">
+              <span className="font-medium">
+                {inv.invoice_kind === "supplement" ? "Nachtrag" : "Rechnung"} {inv.invoice_number}
+              </span>
+              <span className="text-muted-foreground">
+                {inv.invoice_date ? new Date(inv.invoice_date).toLocaleDateString("de-DE") : "—"}
+                {inv.gross_amount != null && ` · ${formatEuro(Number(inv.gross_amount))} brutto`}
+              </span>
+              <InquiryStatusBadge status={inv.status} />
+              {inv.file_url && (
+                <a
+                  href={inv.file_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 text-primary underline"
+                >
+                  PDF öffnen <ExternalLink className="h-3.5 w-3.5" />
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
       <div>
-        <h3 className="font-semibold mb-2">
-          {inquiry.offer_number ? "Neues Angebot senden" : "Angebot erstellen"}
-        </h3>
+        <div className="flex flex-wrap gap-2 mb-3">
+          <Button size="sm" variant={docMode === "offer" ? "default" : "outline"} onClick={() => setDocMode("offer")}>
+            {inquiry.offer_number ? "Neues Angebot" : "Angebot erstellen"}
+          </Button>
+          <Button size="sm" variant={docMode === "invoice" ? "default" : "outline"} onClick={() => setDocMode("invoice")}>
+            <Receipt className="h-3.5 w-3.5 mr-1" /> Rechnung erstellen
+          </Button>
+          {invoices.length > 0 && (
+            <Button
+              size="sm"
+              variant={docMode === "supplement" ? "default" : "outline"}
+              onClick={() => setDocMode("supplement")}
+            >
+              Nachtrag erstellen
+            </Button>
+          )}
+        </div>
+        {docMode === "supplement" && (
+          <div className="mb-3">
+            <Label className="text-xs">Nachtrag zu Rechnung</Label>
+            <Select value={parentInvoiceId ?? ""} onValueChange={setParentInvoiceId}>
+              <SelectTrigger className="h-9"><SelectValue placeholder="Rechnung wählen" /></SelectTrigger>
+              <SelectContent>
+                {invoices
+                  .filter((inv) => inv.invoice_kind !== "supplement" && inv.invoice_number)
+                  .map((inv) => (
+                    <SelectItem key={inv.id} value={inv.id}>
+                      {inv.invoice_number} · {formatEuro(Number(inv.gross_amount))}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
         <InquiryOfferForm
+          key={docMode}
           inquiryType={inquiryType}
           inquiryId={inquiry.id}
           location={inquiry.location}
-          defaultItems={defaultItems}
+          defaultItems={docMode === "supplement" ? [] : defaultItems}
           defaultDelivery={defaultDelivery}
           customerKind={inquiry.customer_kind === "business" ? "business" : "private"}
-
-
+          mode={docMode === "offer" ? "offer" : "invoice"}
+          invoiceKind={docMode === "supplement" ? "supplement" : "invoice"}
+          parentInvoiceId={docMode === "supplement" ? parentInvoiceId : null}
+          parentInvoiceNumber={
+            docMode === "supplement"
+              ? invoices.find((i) => i.id === parentInvoiceId)?.invoice_number ?? null
+              : null
+          }
           staffName={actorName}
-          disabled={busy}
-          onSent={onChanged}
+          disabled={busy || (docMode === "supplement" && !parentInvoiceId)}
+          onSent={() => {
+            loadInvoices();
+            onChanged();
+          }}
         />
       </div>
     </div>
