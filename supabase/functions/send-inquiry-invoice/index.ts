@@ -246,6 +246,23 @@ Deno.serve(async (req: Request) => {
     const servicePeriodStart = str(body.service_period_start, 10) || null;
     const servicePeriodEnd = str(body.service_period_end, 10) || null;
 
+    // ── Bereits geleistete (Teil-)Zahlungen, z. B. Vorkasse auf das Angebot ──
+    const rawPayments = Array.isArray(body.payments) ? body.payments.slice(0, 20) : [];
+    const payments = rawPayments
+      .map((entry: unknown) => {
+        const p = (entry ?? {}) as Record<string, unknown>;
+        const amount = Math.round((Number(p.amount) || 0) * 100) / 100;
+        return {
+          date: str(p.date, 10) || isoDate(new Date()),
+          amount,
+          label: str(p.label, 80) || "Zahlungseingang",
+          reference: str(p.reference, 80) || "",
+        };
+      })
+      .filter((p) => p.amount > 0);
+    const amountPaid = Math.round(payments.reduce((s, p) => s + p.amount, 0) * 100) / 100;
+
+
     const addrIn = body.delivery_address && typeof body.delivery_address === "object"
       ? body.delivery_address as Record<string, unknown>
       : null;
