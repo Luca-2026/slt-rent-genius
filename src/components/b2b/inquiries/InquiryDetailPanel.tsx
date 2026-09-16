@@ -169,6 +169,10 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
 
   useEffect(() => setNotes(inquiry.internal_notes ?? ""), [inquiry.id, inquiry.internal_notes]);
 
+  /** Positionen und Nebenkosten aus dem versendeten Angebot (inkl. Zusatzoptionen). */
+  const offerSnapshot = useMemo(() => offerPayloadToLines(inquiry.offer_payload), [inquiry.offer_payload]);
+
+
   /** Angebot, Rechnung oder Nachtrag – steuert das Formular unten. */
   const [docMode, setDocMode] = useState<"offer" | "invoice" | "supplement">("offer");
   const [parentInvoiceId, setParentInvoiceId] = useState<string | null>(null);
