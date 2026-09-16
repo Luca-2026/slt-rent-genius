@@ -209,15 +209,8 @@ export default function InquiryInvoices() {
         invoice_id: creditFor.id,
         mode: creditMode,
         reason,
-        items: creditMode === "partial"
-          ? [{
-              product_name: creditLabel.trim() || "Gutschrift",
-              description: reason,
-              quantity: 1,
-              unit: "Pauschale",
-              unit_price: Math.round((grossCredit / 1.19) * 100) / 100,
-            }]
-          : undefined,
+        gross_amount: creditMode === "partial" ? grossCredit : undefined,
+        product_name: creditMode === "partial" ? creditLabel.trim() || "Teilgutschrift" : undefined,
       },
     });
     setBusyId(null);
@@ -231,9 +224,11 @@ export default function InquiryInvoices() {
     }
     toast({
       title: `Gutschrift ${(data as any)?.invoice_number ?? ""} erstellt`,
-      description: (data as any)?.fully_credited
-        ? "Die Rechnung wurde vollständig storniert und der Kunde informiert."
-        : "Die Teilgutschrift wurde erstellt und dem Kunden per E-Mail gesendet.",
+      description: !(data as any)?.email_sent
+        ? "Das Dokument wurde gespeichert, konnte aber nicht per E-Mail versendet werden."
+        : (data as any)?.fully_credited
+          ? "Die Rechnung wurde vollständig storniert und der Kunde informiert."
+          : "Die Teilgutschrift wurde erstellt und dem Kunden per E-Mail gesendet.",
     });
     setCreditFor(null);
     setCreditReason("");
@@ -262,7 +257,7 @@ export default function InquiryInvoices() {
   return (
     <B2BPortalLayout
       title="Rechnungen"
-      subtitle="Rechnungen und Nachträge aus Miet- und Verkaufsanfragen"
+      subtitle="Rechnungen und Gutschriften aus Miet- und Verkaufsanfragen"
     >
       <div className="space-y-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -357,10 +352,12 @@ export default function InquiryInvoices() {
                         </a>
                       </Button>
                     )}
-                    <Button size="sm" variant="outline" disabled={busyId === row.id} onClick={() => resend(row)}>
-                      <Send className="h-3.5 w-3.5 mr-1" /> Erneut senden
-                    </Button>
-                    {row.status !== "cancelled" && (
+                    {row.invoice_kind !== "credit_note" && (
+                      <Button size="sm" variant="outline" disabled={busyId === row.id} onClick={() => resend(row)}>
+                        <Send className="h-3.5 w-3.5 mr-1" /> Erneut senden
+                      </Button>
+                    )}
+                    {row.status !== "cancelled" && row.invoice_kind !== "credit_note" && (
                       <Button
                         size="sm"
                         variant="outline"
@@ -376,7 +373,7 @@ export default function InquiryInvoices() {
                         <Banknote className="h-3.5 w-3.5 mr-1" /> Zahlung erfassen
                       </Button>
                     )}
-                    {row.status !== "paid" && row.status !== "cancelled" && (
+                    {row.status !== "paid" && row.status !== "cancelled" && row.invoice_kind !== "credit_note" && (
 
                       <Button size="sm" variant="outline" disabled={busyId === row.id} onClick={() => setStatus(row, "paid")}>
                         <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Als bezahlt markieren

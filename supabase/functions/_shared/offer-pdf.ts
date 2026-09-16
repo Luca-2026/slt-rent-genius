@@ -52,6 +52,10 @@ export async function generateOfferPdf(data: {
   creditIsPartial?: boolean;
   /** Bereits gezahlter Betrag der Ursprungsrechnung – bestimmt Erstattung oder Verrechnung. */
   creditAlreadyPaid?: number;
+  /** Nur der durch diese Korrektur tatsächlich zu erstattende Teilbetrag. */
+  creditRefundAmount?: number;
+  /** Nach dieser Korrektur noch offene Forderung aus der Ursprungsrechnung. */
+  creditRemainingBalance?: number;
   /** Nummer des ursprünglichen Angebots, auf das sich die Rechnung bezieht (Vorkasse-Zuordnung). */
   sourceOfferNumber?: string;
   /**
@@ -276,8 +280,9 @@ export async function generateOfferPdf(data: {
     // Titelblock
     const contentTopY = Math.min(ay, iy) - 26;
     let ty = contentTopY;
-    dt(pg, TITLE, ML, ty, bold, 30, BRAND);
-    ty -= 26;
+    const titleSize = isCreditNote ? 20 : isInvoice ? 24 : 30;
+    dt(pg, TITLE, ML, ty, bold, titleSize, BRAND);
+    ty -= isCreditNote ? 22 : isInvoice ? 24 : 26;
     dt(pg, `Nr. ${data.offerNumber}`, ML, ty, font, 10.5, MUTED);
     ty -= 22;
 
@@ -544,12 +549,17 @@ export async function generateOfferPdf(data: {
   const balanceDue = Math.round((data.grossAmount - amountPaid) * 100) / 100;
   if (isCreditNote) {
     // Rechnungskorrektur: Hinweis zur Erstattung bzw. Verrechnung statt Zahlungsaufforderung
-    const alreadyPaid = Math.max(0, Number(data.creditAlreadyPaid) || 0);
-    const refundText = alreadyPaid > 0
-      ? `Der Betrag von ${fm(data.grossAmount)} wird Ihnen auf das uns bekannte Konto erstattet. ` +
-        `Eine gesonderte Zahlung Ihrerseits ist nicht erforderlich.`
-      : `Der Betrag von ${fm(data.grossAmount)} wird mit der Rechnung ${data.parentInvoiceNumber || ""} verrechnet. ` +
-        `${data.creditIsPartial ? "Bitte \u00FCberweisen Sie nur den verbleibenden Rechnungsbetrag." : "Die Rechnung ist damit vollst\u00E4ndig ausgeglichen."}`;
+    const refundAmount = Math.max(0, Number(data.creditRefundAmount) || 0);
+    const remainingBalance = Math.max(0, Number(data.creditRemainingBalance) || 0);
+    const refundText = refundAmount > 0
+      ? `${fm(refundAmount)} werden Ihnen auf das uns bekannte Konto erstattet. ` +
+        (remainingBalance > 0
+          ? `Nach Verrechnung verbleibt aus der Rechnung ${data.parentInvoiceNumber || ""} noch ein offener Betrag von ${fm(remainingBalance)}.`
+          : "Eine gesonderte Zahlung Ihrerseits ist nicht erforderlich.")
+      : `Der Gutschriftbetrag von ${fm(data.grossAmount)} wird mit der Rechnung ${data.parentInvoiceNumber || ""} verrechnet. ` +
+        (remainingBalance > 0
+          ? `Bitte \u00FCberweisen Sie nur noch den verbleibenden Betrag von ${fm(remainingBalance)}.`
+          : "Die Rechnung ist damit vollst\u00E4ndig ausgeglichen.");
     const refundLines = wt(refundText, font, 9, CW - 32);
     const boxH = 46 + refundLines.length * 11 + (data.creditReason ? 13 : 0);
     need(boxH + 16);
