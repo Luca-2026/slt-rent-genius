@@ -445,6 +445,7 @@ Deno.serve(async (req: Request) => {
   <div style="background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>Zahlung:</strong><br>${paymentEmailText}<br>
     Fällig am <strong>${escapeHtml(fmtDE(dueDate))}</strong> · Verwendungszweck <strong>${escapeHtml(invoiceNumber)}</strong>
+    ${sourceOfferNumber ? `<br>Diese Rechnung bezieht sich auf unser Angebot <strong>${escapeHtml(sourceOfferNumber)}</strong>.` : ""}
   </div>
   ${notes ? `<p style="white-space:pre-wrap;">${escapeHtml(notes)}</p>` : ""}
   <p style="margin-top:24px;">Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}<br>
@@ -483,6 +484,7 @@ Deno.serve(async (req: Request) => {
         invoice_number: invoiceNumber,
         invoice_kind: invoiceKind,
         parent_invoice_id: parentInvoiceId,
+        offer_number: sourceOfferNumber,
         inquiry_type: inquiryType,
         rental_inquiry_id: inquiryType === "rental" ? inquiry.id : null,
         sales_inquiry_id: inquiryType === "sales" ? inquiry.id : null,
