@@ -631,7 +631,8 @@ export function InquiryOfferForm({
               );
             })()}
           </div>
-        ))}
+          );
+        })}
         <Button
           type="button"
           variant="outline"
