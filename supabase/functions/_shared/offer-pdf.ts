@@ -524,7 +524,8 @@ export async function generateOfferPdf(data: {
     }
     dt(pg, "Bereits gezahlt", tx, y, bold, 9, MUTED);
     dtr(pg, `-${fm(amountPaid)}`, vx, y, bold, 9, MUTED);
-    y -= 16;
+    y -= 26;
+
     const fullyPaid = balanceDue <= 0.009;
     const accent = fullyPaid ? rgb(0.05, 0.45, 0.25) : ORANGE;
     pg.drawRectangle({ x: tx - 6, y: y - 4, width: vx - tx + 10, height: 22, color: fullyPaid ? rgb(0.93, 0.98, 0.94) : rgb(1, 0.96, 0.9) });
