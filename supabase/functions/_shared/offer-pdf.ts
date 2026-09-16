@@ -737,7 +737,7 @@ export async function generateOfferPdf(data: {
 
   // ── Gültigkeit bzw. Leistungszeitraum ──
   need(40);
-  if (isInvoice) {
+  if (isInvoice && !isCreditNote) {
     if (data.servicePeriodStart) {
       dt(pg, "Leistungszeitraum:", ML, y, bold, 9);
       dt(
@@ -747,7 +747,7 @@ export async function generateOfferPdf(data: {
       );
       y -= 22;
     }
-  } else {
+  } else if (!isCreditNote) {
     dt(pg, "G\u00FCltigkeit:", ML, y, bold, 9);
     dt(pg, `Dieses Angebot ist g\u00FCltig bis zum ${fd(data.validUntil)} (${data.validDays} Tage).`, ML + 58, y, font, 9, INK);
     y -= 22;

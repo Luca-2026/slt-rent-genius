@@ -236,8 +236,9 @@ export default function InquiryInvoices() {
 
   const resend = async (row: InvoiceRow) => {
     setBusyId(row.id);
-    const { data, error } = await supabase.functions.invoke("send-inquiry-invoice", {
-      body: { resend_invoice_id: row.id },
+    const isCredit = row.invoice_kind === "credit_note";
+    const { data, error } = await supabase.functions.invoke(isCredit ? "send-inquiry-credit-note" : "send-inquiry-invoice", {
+      body: isCredit ? { resend_credit_note_id: row.id } : { resend_invoice_id: row.id },
     });
     setBusyId(null);
     if (error || (data as any)?.error) {
@@ -352,9 +353,9 @@ export default function InquiryInvoices() {
                         </a>
                       </Button>
                     )}
-                    {row.invoice_kind !== "credit_note" && (
+                    {(row.invoice_kind !== "credit_note" || !row.email_sent) && (
                       <Button size="sm" variant="outline" disabled={busyId === row.id} onClick={() => resend(row)}>
-                        <Send className="h-3.5 w-3.5 mr-1" /> Erneut senden
+                        <Send className="h-3.5 w-3.5 mr-1" /> {row.email_sent ? "Erneut senden" : "E-Mail senden"}
                       </Button>
                     )}
                     {row.status !== "cancelled" && row.invoice_kind !== "credit_note" && (

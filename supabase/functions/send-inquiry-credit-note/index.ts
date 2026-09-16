@@ -79,6 +79,41 @@ Deno.serve(async (req: Request) => {
     if (!body || typeof body !== "object") return json({ error: "Ungültige Anfrage" }, 400);
 
     const str = (v: unknown, max = 200) => (typeof v === "string" ? v.trim().slice(0, max) : "");
+    const resendCreditId = str(body.resend_credit_note_id, 60);
+    if (resendCreditId) {
+      const { data: credit } = await service
+        .from("inquiry_invoices")
+        .select("*")
+        .eq("id", resendCreditId)
+        .eq("invoice_kind", "credit_note")
+        .maybeSingle();
+      if (!credit) return json({ error: "Gutschrift nicht gefunden" }, 404);
+      if (!credit.file_path) return json({ error: "Zu dieser Gutschrift existiert kein PDF" }, 400);
+
+      const { data: file } = await service.storage.from("b2b-invoices").download(credit.file_path);
+      if (!file) return json({ error: "Gutschrift-PDF konnte nicht geladen werden" }, 500);
+      const resendKey = Deno.env.get("RESEND_API_KEY");
+      if (!resendKey) return json({ error: "E-Mail-Versand ist nicht konfiguriert" }, 500);
+      const loc = LOCATION_CONTACTS[resolveLocationKey(credit.location)];
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
+          to: [credit.customer_email],
+          cc: Array.from(new Set([loc.email, credit.location_email].filter((e) => e && e !== credit.customer_email))),
+          reply_to: loc.email,
+          subject: `Rechnungskorrektur ${credit.invoice_number}`,
+          html: `<p>Hallo ${escapeHtml(credit.customer_name || "")},</p><p>anbei erhalten Sie erneut unsere Rechnungskorrektur <strong>${escapeHtml(credit.invoice_number)}</strong>.</p><p>Bei Fragen melden Sie sich gerne bei uns.</p><p>Herzliche Grüße<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}</p>`,
+          attachments: [{ filename: credit.file_name || `${credit.invoice_number}.pdf`, content: encodeBase64(bytes) }],
+        }),
+      });
+      if (!res.ok) return json({ error: "E-Mail konnte nicht gesendet werden" }, 500);
+      await service.from("inquiry_invoices").update({ email_sent: true, email_sent_at: new Date().toISOString() }).eq("id", credit.id);
+      return json({ success: true, email_sent: true });
+    }
+
     const invoiceId = str(body.invoice_id, 60);
     if (!invoiceId) return json({ error: "invoice_id fehlt" }, 400);
     const mode = body.mode === "partial" ? "partial" : "full";
