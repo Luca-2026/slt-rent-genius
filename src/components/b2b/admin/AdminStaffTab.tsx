@@ -118,6 +118,30 @@ export function AdminStaffTab() {
 
   const [newRole, setNewRole] = useState("");
 
+  // Bearbeiten-Formular (Stammdaten + Rolle)
+  const [editForm, setEditForm] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
+    position: "",
+  });
+  const [passwordOpen, setPasswordOpen] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+
+  const openEditDialog = (s: StaffProfile, role: string) => {
+    setSelectedStaff(s);
+    setNewRole(role);
+    setEditForm({
+      first_name: s.first_name ?? "",
+      last_name: s.last_name ?? "",
+      email: s.email ?? "",
+      phone: s.phone ?? "",
+      position: s.position ?? "",
+    });
+    setEditRoleOpen(true);
+  };
+
   const fetchStaff = async () => {
     setLoading(true);
     const [staffRes, rolesRes] = await Promise.all([
