@@ -543,6 +543,8 @@ export function InquiryOfferForm({
         {items.map((item, index) => {
           const eff = effectiveItems[index] ?? item;
           const inherited = index > 0 && !item.custom_period;
+          /** Pauschalposition: fester Preis, keine Mietdauer-Multiplikation. */
+          const isFlatRate = (eff.unit ?? "kalendertage") === "pauschal";
           return (
           <div key={index} className="rounded-lg border border-border p-3 space-y-2">
             <div className="flex gap-2 items-start">
