@@ -745,46 +745,126 @@ export function AdminStaffTab() {
         </DialogContent>
       </Dialog>
 
-      {/* Edit Role Dialog */}
+      {/* Edit Staff Dialog */}
       <Dialog open={editRoleOpen} onOpenChange={setEditRoleOpen}>
+        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Mitarbeiter bearbeiten</DialogTitle>
+            <DialogDescription>
+              Stammdaten, Login-E-Mail und Rolle von {selectedStaff?.first_name}{" "}
+              {selectedStaff?.last_name} anpassen.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <Label>Vorname *</Label>
+              <Input
+                value={editForm.first_name}
+                onChange={(e) => setEditForm({ ...editForm, first_name: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label>Nachname *</Label>
+              <Input
+                value={editForm.last_name}
+                onChange={(e) => setEditForm({ ...editForm, last_name: e.target.value })}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <Label>E-Mail (Login) *</Label>
+              <Input
+                type="email"
+                value={editForm.email}
+                onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Wird sofort als neue Login-Adresse aktiv.
+              </p>
+            </div>
+            <div>
+              <Label>Telefon</Label>
+              <Input
+                value={editForm.phone}
+                onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label>Position</Label>
+              <Input
+                value={editForm.position}
+                onChange={(e) => setEditForm({ ...editForm, position: e.target.value })}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <Label>Rolle *</Label>
+              <Select value={newRole} onValueChange={setNewRole}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.entries(ROLE_MAP).map(([key, val]) => (
+                    <SelectItem key={key} value={key}>
+                      <span className="flex items-center gap-2">
+                        {val.icon}
+                        {val.label}
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="flex gap-3 justify-end pt-4">
+            <Button variant="outline" onClick={() => setEditRoleOpen(false)}>
+              Abbrechen
+            </Button>
+            <Button
+              onClick={handleSaveStaff}
+              disabled={saving}
+              className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+            >
+              {saving ? "Wird gespeichert..." : "Änderungen speichern"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Passwort setzen */}
+      <Dialog open={passwordOpen} onOpenChange={setPasswordOpen}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle>Rolle ändern</DialogTitle>
+            <DialogTitle>Passwort setzen</DialogTitle>
             <DialogDescription>
-              Weise {selectedStaff?.first_name} {selectedStaff?.last_name} eine neue Rolle zu.
+              Neues Initialpasswort für {selectedStaff?.first_name} {selectedStaff?.last_name}. Die
+              Person kann es anschließend im Portal selbst ändern.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <Select value={newRole} onValueChange={setNewRole}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.entries(ROLE_MAP).map(([key, val]) => (
-                  <SelectItem key={key} value={key}>
-                    <span className="flex items-center gap-2">
-                      {val.icon}
-                      {val.label}
-                    </span>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div>
+              <Label>Neues Passwort *</Label>
+              <Input
+                type="text"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Min. 8 Zeichen"
+              />
+            </div>
             <div className="flex gap-3 justify-end">
-              <Button variant="outline" onClick={() => setEditRoleOpen(false)}>
+              <Button variant="outline" onClick={() => setPasswordOpen(false)}>
                 Abbrechen
               </Button>
               <Button
-                onClick={handleUpdateRole}
+                onClick={handleSetPassword}
                 disabled={saving}
                 className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
               >
-                {saving ? "Wird gespeichert..." : "Rolle speichern"}
+                {saving ? "Wird gesetzt..." : "Passwort setzen"}
               </Button>
             </div>
           </div>
         </DialogContent>
       </Dialog>
+
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
