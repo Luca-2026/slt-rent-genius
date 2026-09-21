@@ -98,8 +98,11 @@ export default function B2BDashboard() {
       navigate("/b2b/login");
     } else if (!loading && user && isAdmin) {
       navigate("/b2b/admin", { replace: true });
+    } else if (!loading && !staffLoading && user && staffProfile && !b2bProfile) {
+      // Interne Mitarbeitende landen im Mitarbeiterbereich, nicht im Kundenportal
+      navigate("/b2b/aufgaben", { replace: true });
     }
-  }, [user, loading, isAdmin, navigate]);
+  }, [user, loading, isAdmin, staffLoading, staffProfile, b2bProfile, navigate]);
 
   if (loading) {
     return (
