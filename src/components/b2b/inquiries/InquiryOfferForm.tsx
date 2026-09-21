@@ -847,7 +847,7 @@ export function InquiryOfferForm({
             className="mt-0.5"
           />
           <span>
-            Lieferadresse im Angebot ausweisen
+            Lieferadresse im {isInvoice ? "Rechnungsdokument" : "Angebot"} ausweisen
             {defaultDelivery?.requested ? (
               <span className="block text-xs font-normal text-muted-foreground">
                 Vom Kunden im Anfrageformular angegeben – hier änderbar.
