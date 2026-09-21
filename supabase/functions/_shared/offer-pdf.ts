@@ -646,61 +646,66 @@ export async function generateOfferPdf(data: {
         : "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten."));
 
   if (isInvoice && !isCreditNote) {
-    // Rechnung: Zahlungshinweis mit Bankdaten und Fälligkeit – Kastenstil wie beim Angebot
-    const termLines = wt(
-      (customPaymentText ?? PAYMENT_TEXTS[data.paymentTerms || "net_14"] ?? "").replace("Zahlungsbedingungen: ", ""),
-      font,
-      9,
-      CW - 32,
-    ).filter((l) => l.trim());
-    const offerRefExtra = data.sourceOfferNumber ? 11 : 0;
-    const paidExtra = amountPaid > 0 ? 13 : 0;
-    const boxH = 92 + termLines.length * 11 + offerRefExtra + paidExtra;
+    // Rechnung: Zahlungshinweis mit Bankdaten und Fälligkeit – Kastenstil wie beim Angebot.
+    // Ist die Rechnung bereits vollständig bezahlt, entfallen Bankdaten und
+    // Zahlungsfrist, damit kein widersprüchlicher Zahlungsaufruf entsteht.
+    const settled = amountPaid > 0 && balanceDue <= 0.009;
+    const termLines = settled
+      ? []
+      : wt(
+          (customPaymentText ?? PAYMENT_TEXTS[data.paymentTerms || "net_14"] ?? "").replace("Zahlungsbedingungen: ", ""),
+          font,
+          9,
+          CW - 32,
+        ).filter((l) => l.trim());
+    const offerRefExtra = data.sourceOfferNumber && !settled ? 11 : 0;
+    const boxH = settled ? 52 : 105 + termLines.length * 11 + offerRefExtra;
     need(boxH + 16);
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.995, 0.97, 0.93) });
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
     let by = y - 2;
     dt(pg, "Zahlungshinweis", ML + 16, by, bold, 10, INK); by -= 15;
-    if (amountPaid > 0 && balanceDue <= 0.009) {
+    if (settled) {
       dt(
         pg,
         `Der Rechnungsbetrag ist durch Ihre Zahlung${payments.length > 1 ? "en" : ""} von ${fm(amountPaid)} vollst\u00E4ndig ausgeglichen. Vielen Dank!`,
         ML + 16, by, font, 9, INK,
       );
       by -= 14;
-    } else if (amountPaid > 0) {
-      dt(
-        pg,
-        `Bereits gezahlt ${fm(amountPaid)}. Bitte \u00FCberweisen Sie den Restbetrag von ${fm(balanceDue)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
-        ML + 16, by, font, 9, INK,
-      );
-      by -= 14;
     } else {
-      dt(
-        pg,
-        `Bitte \u00FCberweisen Sie ${fm(data.grossAmount)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
-        ML + 16, by, font, 9, INK,
-      );
+      if (amountPaid > 0) {
+        dt(
+          pg,
+          `Bereits gezahlt ${fm(amountPaid)}. Bitte \u00FCberweisen Sie den Restbetrag von ${fm(balanceDue)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
+          ML + 16, by, font, 9, INK,
+        );
+      } else {
+        dt(
+          pg,
+          `Bitte \u00FCberweisen Sie ${fm(data.grossAmount)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
+          ML + 16, by, font, 9, INK,
+        );
+      }
       by -= 14;
-    }
 
-    const rows: [string, string][] = [
-      ["Kontoinhaber:", SLT_COMPANY.name],
-      ["Bank:", SLT_COMPANY.bankName],
-      ["IBAN / BIC:", `${SLT_COMPANY.iban} | ${SLT_COMPANY.bic}`],
-      ["Verwendungszweck:", data.offerNumber],
-    ];
-    for (const [label, value] of rows) {
-      dt(pg, label, ML + 16, by, font, 8.5, MUTED);
-      dt(pg, value, ML + 120, by, bold, 8.5, INK);
-      by -= 11;
+      const rows: [string, string][] = [
+        ["Kontoinhaber:", SLT_COMPANY.name],
+        ["Bank:", SLT_COMPANY.bankName],
+        ["IBAN / BIC:", `${SLT_COMPANY.iban} | ${SLT_COMPANY.bic}`],
+        ["Verwendungszweck:", data.offerNumber],
+      ];
+      for (const [label, value] of rows) {
+        dt(pg, label, ML + 16, by, font, 8.5, MUTED);
+        dt(pg, value, ML + 120, by, bold, 8.5, INK);
+        by -= 11;
+      }
+      if (data.sourceOfferNumber) {
+        dt(pg, `Bezug: unser Angebot ${data.sourceOfferNumber} (bei Vorkasse bitte ebenfalls angeben)`, ML + 16, by, font, 8.5, MUTED);
+        by -= 11;
+      }
+      by -= 2;
+      termLines.forEach((ln) => { dt(pg, ln, ML + 16, by, font, 8.5, MUTED); by -= 11; });
     }
-    if (data.sourceOfferNumber) {
-      dt(pg, `Bezug: unser Angebot ${data.sourceOfferNumber} (bei Vorkasse bitte ebenfalls angeben)`, ML + 16, by, font, 8.5, MUTED);
-      by -= 11;
-    }
-    by -= 2;
-    termLines.forEach((ln) => { dt(pg, ln, ML + 16, by, font, 8.5, MUTED); by -= 11; });
     y -= boxH + 12;
   } else if (!isCreditNote && data.paymentTerms === "vorkasse") {
     // Zahlungskasten mit Bankdaten – Stil identisch zum Rechnungs-Zahlungshinweis
