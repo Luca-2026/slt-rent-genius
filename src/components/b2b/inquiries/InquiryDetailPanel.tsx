@@ -67,7 +67,13 @@ function splitQuantity(
       description: description.replace(PERIOD_SUFFIX, "").trim(),
     };
   }
-  return { quantity: quantity || 1, duration: 1, unit: fallbackUnit, description };
+  // Ohne Suffix enthielt das Angebot genau einen Artikel; `quantity` ist dann
+  // bei Zeiteinheiten die Mietdauer (z. B. 5 Kalendertage), nicht die Stückzahl.
+  const qty = quantity || 1;
+  if (fallbackUnit !== "stueck") {
+    return { quantity: 1, duration: qty, unit: fallbackUnit, description };
+  }
+  return { quantity: qty, duration: 1, unit: fallbackUnit, description };
 }
 
 /** Angebots-Snapshot in Formular-Positionen übersetzen (inkl. Zusatzoptionen). */
