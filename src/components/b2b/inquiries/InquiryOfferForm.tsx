@@ -517,11 +517,26 @@ export function InquiryOfferForm({
       title: `${docLabel} gesendet`,
       description: `${(data as any)?.invoice_number ?? (data as any)?.offer_number} · ${formatEuro(totals.grossAmount)} brutto`,
     });
+    // Entwurf ist abgearbeitet – Zwischenspeicher leeren.
+    clearInquiryDraft(draftKey);
+    draftRef.current = null;
+    setDraftRestored(false);
     onSent?.();
   };
 
   return (
     <div className="space-y-4">
+      {draftRestored && !disabled && (
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-muted/50 p-3 text-sm">
+          <span>
+            Nicht gesendeter Entwurf wiederhergestellt
+            {draft?.savedAt ? ` (${new Date(draft.savedAt).toLocaleString("de-DE")})` : ""}.
+          </span>
+          <Button type="button" variant="outline" size="sm" onClick={discardDraft}>
+            Entwurf verwerfen
+          </Button>
+        </div>
+      )}
       <div className="space-y-3">
         {items.map((item, index) => {
           const eff = effectiveItems[index] ?? item;
