@@ -114,7 +114,8 @@ function offerPayloadToLines(payload: unknown): {
           note: typeof a.note === "string" ? a.note : undefined,
         }))
       : undefined,
-  }));
+    });
+  });
   return {
     items,
     costs: {
