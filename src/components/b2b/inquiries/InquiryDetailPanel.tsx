@@ -31,6 +31,7 @@ import type { OfferUnit } from "@/lib/offerUnits";
 /** Einheitenbezeichnung aus dem Angebots-Snapshot zurück auf den Schlüssel mappen. */
 const UNIT_BY_LABEL: Record<string, OfferUnit> = {
   "stück": "stueck",
+  pauschal: "pauschal",
   arbeitstag: "arbeitstage",
   arbeitstage: "arbeitstage",
   kalendertag: "kalendertage",

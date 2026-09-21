@@ -1,8 +1,9 @@
 /** Mengeneinheiten für Angebotspositionen (Singular/Plural-korrekt). */
-export type OfferUnit = "stueck" | "arbeitstage" | "kalendertage" | "wochen" | "monate";
+export type OfferUnit = "stueck" | "pauschal" | "arbeitstage" | "kalendertage" | "wochen" | "monate";
 
 const LABELS: Record<OfferUnit, { one: string; many: string }> = {
   stueck: { one: "Stück", many: "Stück" },
+  pauschal: { one: "Pauschal", many: "Pauschal" },
   arbeitstage: { one: "Arbeitstag", many: "Arbeitstage" },
   kalendertage: { one: "Kalendertag", many: "Kalendertage" },
   wochen: { one: "Woche", many: "Wochen" },
@@ -11,6 +12,7 @@ const LABELS: Record<OfferUnit, { one: string; many: string }> = {
 
 export const OFFER_UNITS: { value: OfferUnit; label: string }[] = [
   { value: "stueck", label: "Stück" },
+  { value: "pauschal", label: "Pauschalpreis" },
   { value: "arbeitstage", label: "Arbeitstage" },
   { value: "kalendertage", label: "Kalendertage" },
   { value: "wochen", label: "Wochen" },
