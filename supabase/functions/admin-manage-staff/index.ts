@@ -7,7 +7,14 @@ const corsHeaders = {
 };
 
 interface CreateStaffRequest {
-  action: "create" | "update_role" | "deactivate" | "reactivate" | "delete";
+  action:
+    | "create"
+    | "update_profile"
+    | "set_password"
+    | "update_role"
+    | "deactivate"
+    | "reactivate"
+    | "delete";
   // For create
   email?: string;
   password?: string;
@@ -16,10 +23,18 @@ interface CreateStaffRequest {
   phone?: string;
   position?: string;
   role?: string;
-  // For update_role / deactivate / reactivate
+  // For update_role / update_profile / deactivate / reactivate
   staff_user_id?: string;
   new_role?: string;
 }
+
+const VALID_ROLES = ["admin", "standort_mitarbeiter", "buchhaltung", "readonly"];
+
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
