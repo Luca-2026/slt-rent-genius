@@ -768,6 +768,7 @@ export async function generateOfferPdf(data: {
       y -= 22;
     }
   } else if (!isCreditNote) {
+    need(40);
     dt(pg, "G\u00FCltigkeit:", ML, y, bold, 9);
     dt(pg, `Dieses Angebot ist g\u00FCltig bis zum ${fd(data.validUntil)} (${data.validDays} Tage).`, ML + 58, y, font, 9, INK);
     y -= 22;
