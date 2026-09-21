@@ -220,14 +220,27 @@ export function AdminStaffTab() {
     }
   };
 
-  const handleUpdateRole = async () => {
+  const handleSaveStaff = async () => {
     if (!selectedStaff || !newRole) return;
+    if (!editForm.first_name.trim() || !editForm.last_name.trim() || !editForm.email.trim()) {
+      toast({
+        title: "Fehler",
+        description: "Vorname, Nachname und E-Mail sind Pflichtfelder.",
+        variant: "destructive",
+      });
+      return;
+    }
     setSaving(true);
     try {
       const { data, error } = await supabase.functions.invoke("admin-manage-staff", {
         body: {
-          action: "update_role",
+          action: "update_profile",
           staff_user_id: selectedStaff.user_id,
+          first_name: editForm.first_name.trim(),
+          last_name: editForm.last_name.trim(),
+          email: editForm.email.trim(),
+          phone: editForm.phone.trim(),
+          position: editForm.position.trim(),
           new_role: newRole,
         },
       });
@@ -235,8 +248,8 @@ export function AdminStaffTab() {
       if (data?.error) throw new Error(data.error);
 
       toast({
-        title: "Rolle aktualisiert!",
-        description: `${selectedStaff.first_name} ${selectedStaff.last_name} hat jetzt die Rolle "${ROLE_MAP[newRole]?.label || newRole}".`,
+        title: "Mitarbeiterdaten gespeichert",
+        description: `${editForm.first_name} ${editForm.last_name} wurde aktualisiert.`,
       });
       setEditRoleOpen(false);
       setSelectedStaff(null);
@@ -244,7 +257,47 @@ export function AdminStaffTab() {
     } catch (error: any) {
       toast({
         title: "Fehler",
-        description: error.message || "Rolle konnte nicht aktualisiert werden.",
+        description: error.message || "Daten konnten nicht gespeichert werden.",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSetPassword = async () => {
+    if (!selectedStaff) return;
+    if (newPassword.length < 8) {
+      toast({
+        title: "Fehler",
+        description: "Das Passwort muss mindestens 8 Zeichen lang sein.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setSaving(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("admin-manage-staff", {
+        body: {
+          action: "set_password",
+          staff_user_id: selectedStaff.user_id,
+          password: newPassword,
+        },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      toast({
+        title: "Passwort gesetzt",
+        description: `${selectedStaff.first_name} ${selectedStaff.last_name} kann sich jetzt mit dem neuen Passwort anmelden und es selbst ändern.`,
+      });
+      setPasswordOpen(false);
+      setNewPassword("");
+      setSelectedStaff(null);
+    } catch (error: any) {
+      toast({
+        title: "Fehler",
+        description: error.message || "Passwort konnte nicht gesetzt werden.",
         variant: "destructive",
       });
     } finally {
