@@ -565,14 +565,23 @@ export function AdminStaffTab() {
                         variant="outline"
                         size="sm"
                         className="h-9 px-3 text-xs shrink-0 justify-center"
-                        onClick={() => {
-                          setSelectedStaff(s);
-                          setNewRole(getStaffRole(s.user_id));
-                          setEditRoleOpen(true);
-                        }}
+                        onClick={() => openEditDialog(s, getStaffRole(s.user_id))}
                       >
                         <Pencil className="h-3.5 w-3.5 mr-1.5 shrink-0" />
-                        <span className="truncate">Rolle</span>
+                        <span className="truncate">Bearbeiten</span>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-9 w-9 p-0 shrink-0 justify-center"
+                        title="Passwort setzen"
+                        onClick={() => {
+                          setSelectedStaff(s);
+                          setNewPassword("");
+                          setPasswordOpen(true);
+                        }}
+                      >
+                        <KeyRound className="h-3.5 w-3.5" />
                       </Button>
                       <Button
                         variant="outline"
