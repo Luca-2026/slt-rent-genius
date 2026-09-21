@@ -21,6 +21,12 @@ import { SALES_ADDON_PRESETS, isSalesAddonNegative } from "@/lib/salesAddons";
 import { loadSalesCatalog } from "@/hooks/useSalesCatalog";
 import { OFFER_UNITS, unitLabel, type OfferUnit } from "@/lib/offerUnits";
 import { resolveCatalogPrice } from "@/lib/catalogPricing";
+import {
+  clearInquiryDraft,
+  inquiryDraftKey,
+  readInquiryDraft,
+  writeInquiryDraft,
+} from "./offerDraftStorage";
 
 /** Angebotsposition inkl. der im CMS erlaubten Zusatzoptionen (nur lokal). */
 type FormLine = OfferLine & {
