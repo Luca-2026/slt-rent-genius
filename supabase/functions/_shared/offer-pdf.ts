@@ -755,9 +755,10 @@ export async function generateOfferPdf(data: {
   }
 
   // ── Gültigkeit bzw. Leistungszeitraum ──
-  need(40);
+  // Platz nur reservieren, wenn tatsächlich eine Zeile gedruckt wird.
   if (isInvoice && !isCreditNote) {
     if (data.servicePeriodStart) {
+      need(40);
       dt(pg, "Leistungszeitraum:", ML, y, bold, 9);
       dt(
         pg,
