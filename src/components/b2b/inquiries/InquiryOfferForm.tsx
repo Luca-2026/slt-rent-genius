@@ -136,7 +136,7 @@ interface Props {
   inquiryType: "rental" | "sales";
   inquiryId: string;
   location: string | null;
-  defaultItems: OfferLine[];
+  defaultItems: (OfferLine & { custom_period?: boolean })[];
   /** Vom Kunden im Anfrageformular angegebene Lieferadresse (im Portal änderbar). */
   defaultDelivery?: OfferDeliveryAddress;
   /** Privat- oder Geschäftskunde – steuert die Zahlungsbedingungen. */

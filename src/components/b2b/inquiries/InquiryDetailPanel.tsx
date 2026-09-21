@@ -41,8 +41,40 @@ const UNIT_BY_LABEL: Record<string, OfferUnit> = {
   monate: "monate",
 };
 
+/**
+ * Im Angebots-Snapshot steht `quantity` bereits als Artikel × Dauer und die Dauer
+ * nur noch als Text ("3 Artikel × 5 Kalendertage") in der Beschreibung.
+ * Daraus Artikelzahl, Dauer und Einheit zurückgewinnen, damit die Rechnung
+ * dieselben Positionstexte zeigt wie das Angebot.
+ */
+const PERIOD_SUFFIX = /\s*(\d+)\s*Artikel\s*[×x]\s*(\d+)\s*([A-Za-zÄÖÜäöüß]+)\s*$/;
+
+function splitQuantity(
+  description: string,
+  quantity: number,
+  unitLabelText: string,
+): { quantity: number; duration: number; unit: OfferUnit; description: string } {
+  const fallbackUnit = UNIT_BY_LABEL[unitLabelText.trim().toLowerCase()] ?? "stueck";
+  const match = description.match(PERIOD_SUFFIX);
+  if (match) {
+    const articles = Number(match[1]) || 1;
+    const duration = Number(match[2]) || 1;
+    const unit = UNIT_BY_LABEL[match[3].trim().toLowerCase()] ?? fallbackUnit;
+    return {
+      quantity: articles,
+      duration,
+      unit,
+      description: description.replace(PERIOD_SUFFIX, "").trim(),
+    };
+  }
+  return { quantity: quantity || 1, duration: 1, unit: fallbackUnit, description };
+}
+
 /** Angebots-Snapshot in Formular-Positionen übersetzen (inkl. Zusatzoptionen). */
-function offerPayloadToLines(payload: unknown): { items: OfferLine[]; costs?: Record<string, number> } | null {
+function offerPayloadToLines(payload: unknown): {
+  items: (OfferLine & { custom_period?: boolean })[];
+  costs?: Record<string, number>;
+} | null {
   const p = payload as
     | {
         items?: Array<Record<string, unknown>>;
@@ -55,12 +87,20 @@ function offerPayloadToLines(payload: unknown): { items: OfferLine[]; costs?: Re
     | null
     | undefined;
   if (!p || !Array.isArray(p.items) || p.items.length === 0) return null;
-  const items: OfferLine[] = p.items.map((raw) => ({
+  const items: (OfferLine & { custom_period?: boolean })[] = p.items.map((raw) => {
+    const split = splitQuantity(
+      typeof raw.description === "string" ? raw.description : "",
+      Number(raw.quantity) || 1,
+      String(raw.unit ?? ""),
+    );
+    return ({
     product_name: String(raw.product_name ?? ""),
-    description: typeof raw.description === "string" ? raw.description : "",
-    quantity: Number(raw.quantity) || 1,
-    duration: 1,
-    unit: UNIT_BY_LABEL[String(raw.unit ?? "").trim().toLowerCase()] ?? "stueck",
+    description: split.description,
+    quantity: split.quantity,
+    duration: split.duration,
+    unit: split.unit,
+    // Jede Position behält ihre eigene Einheit/Dauer aus dem Angebot.
+    custom_period: true,
     unit_price: Number(raw.unit_price) || 0,
     discount_percent: Number(raw.discount_percent) || 0,
     rental_start: typeof raw.rental_start === "string" ? raw.rental_start : undefined,
@@ -74,7 +114,8 @@ function offerPayloadToLines(payload: unknown): { items: OfferLine[]; costs?: Re
           note: typeof a.note === "string" ? a.note : undefined,
         }))
       : undefined,
-  }));
+    });
+  });
   return {
     items,
     costs: {
