@@ -48,6 +48,7 @@ import {
   UserX,
   UserCheck,
   Pencil,
+  KeyRound,
   Trash2,
 } from "lucide-react";
 import { format } from "date-fns";
@@ -117,6 +118,30 @@ export function AdminStaffTab() {
   });
 
   const [newRole, setNewRole] = useState("");
+
+  // Bearbeiten-Formular (Stammdaten + Rolle)
+  const [editForm, setEditForm] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
+    position: "",
+  });
+  const [passwordOpen, setPasswordOpen] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+
+  const openEditDialog = (s: StaffProfile, role: string) => {
+    setSelectedStaff(s);
+    setNewRole(role);
+    setEditForm({
+      first_name: s.first_name ?? "",
+      last_name: s.last_name ?? "",
+      email: s.email ?? "",
+      phone: s.phone ?? "",
+      position: s.position ?? "",
+    });
+    setEditRoleOpen(true);
+  };
 
   const fetchStaff = async () => {
     setLoading(true);
@@ -196,14 +221,27 @@ export function AdminStaffTab() {
     }
   };
 
-  const handleUpdateRole = async () => {
+  const handleSaveStaff = async () => {
     if (!selectedStaff || !newRole) return;
+    if (!editForm.first_name.trim() || !editForm.last_name.trim() || !editForm.email.trim()) {
+      toast({
+        title: "Fehler",
+        description: "Vorname, Nachname und E-Mail sind Pflichtfelder.",
+        variant: "destructive",
+      });
+      return;
+    }
     setSaving(true);
     try {
       const { data, error } = await supabase.functions.invoke("admin-manage-staff", {
         body: {
-          action: "update_role",
+          action: "update_profile",
           staff_user_id: selectedStaff.user_id,
+          first_name: editForm.first_name.trim(),
+          last_name: editForm.last_name.trim(),
+          email: editForm.email.trim(),
+          phone: editForm.phone.trim(),
+          position: editForm.position.trim(),
           new_role: newRole,
         },
       });
@@ -211,8 +249,8 @@ export function AdminStaffTab() {
       if (data?.error) throw new Error(data.error);
 
       toast({
-        title: "Rolle aktualisiert!",
-        description: `${selectedStaff.first_name} ${selectedStaff.last_name} hat jetzt die Rolle "${ROLE_MAP[newRole]?.label || newRole}".`,
+        title: "Mitarbeiterdaten gespeichert",
+        description: `${editForm.first_name} ${editForm.last_name} wurde aktualisiert.`,
       });
       setEditRoleOpen(false);
       setSelectedStaff(null);
@@ -220,7 +258,47 @@ export function AdminStaffTab() {
     } catch (error: any) {
       toast({
         title: "Fehler",
-        description: error.message || "Rolle konnte nicht aktualisiert werden.",
+        description: error.message || "Daten konnten nicht gespeichert werden.",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSetPassword = async () => {
+    if (!selectedStaff) return;
+    if (newPassword.length < 8) {
+      toast({
+        title: "Fehler",
+        description: "Das Passwort muss mindestens 8 Zeichen lang sein.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setSaving(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("admin-manage-staff", {
+        body: {
+          action: "set_password",
+          staff_user_id: selectedStaff.user_id,
+          password: newPassword,
+        },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      toast({
+        title: "Passwort gesetzt",
+        description: `${selectedStaff.first_name} ${selectedStaff.last_name} kann sich jetzt mit dem neuen Passwort anmelden und es selbst ändern.`,
+      });
+      setPasswordOpen(false);
+      setNewPassword("");
+      setSelectedStaff(null);
+    } catch (error: any) {
+      toast({
+        title: "Fehler",
+        description: error.message || "Passwort konnte nicht gesetzt werden.",
         variant: "destructive",
       });
     } finally {
@@ -387,14 +465,22 @@ export function AdminStaffTab() {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => {
-                                setSelectedStaff(s);
-                                setNewRole(getStaffRole(s.user_id));
-                                setEditRoleOpen(true);
-                              }}
-                              title="Rolle ändern"
+                              onClick={() => openEditDialog(s, getStaffRole(s.user_id))}
+                              title="Daten & Rolle bearbeiten"
                             >
                               <Pencil className="h-3.5 w-3.5" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                setSelectedStaff(s);
+                                setNewPassword("");
+                                setPasswordOpen(true);
+                              }}
+                              title="Passwort setzen"
+                            >
+                              <KeyRound className="h-3.5 w-3.5" />
                             </Button>
                             <Button
                               variant="outline"
@@ -479,14 +565,23 @@ export function AdminStaffTab() {
                         variant="outline"
                         size="sm"
                         className="h-9 px-3 text-xs shrink-0 justify-center"
-                        onClick={() => {
-                          setSelectedStaff(s);
-                          setNewRole(getStaffRole(s.user_id));
-                          setEditRoleOpen(true);
-                        }}
+                        onClick={() => openEditDialog(s, getStaffRole(s.user_id))}
                       >
                         <Pencil className="h-3.5 w-3.5 mr-1.5 shrink-0" />
-                        <span className="truncate">Rolle</span>
+                        <span className="truncate">Bearbeiten</span>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-9 w-9 p-0 shrink-0 justify-center"
+                        title="Passwort setzen"
+                        onClick={() => {
+                          setSelectedStaff(s);
+                          setNewPassword("");
+                          setPasswordOpen(true);
+                        }}
+                      >
+                        <KeyRound className="h-3.5 w-3.5" />
                       </Button>
                       <Button
                         variant="outline"
@@ -650,46 +745,126 @@ export function AdminStaffTab() {
         </DialogContent>
       </Dialog>
 
-      {/* Edit Role Dialog */}
+      {/* Edit Staff Dialog */}
       <Dialog open={editRoleOpen} onOpenChange={setEditRoleOpen}>
+        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Mitarbeiter bearbeiten</DialogTitle>
+            <DialogDescription>
+              Stammdaten, Login-E-Mail und Rolle von {selectedStaff?.first_name}{" "}
+              {selectedStaff?.last_name} anpassen.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <Label>Vorname *</Label>
+              <Input
+                value={editForm.first_name}
+                onChange={(e) => setEditForm({ ...editForm, first_name: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label>Nachname *</Label>
+              <Input
+                value={editForm.last_name}
+                onChange={(e) => setEditForm({ ...editForm, last_name: e.target.value })}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <Label>E-Mail (Login) *</Label>
+              <Input
+                type="email"
+                value={editForm.email}
+                onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Wird sofort als neue Login-Adresse aktiv.
+              </p>
+            </div>
+            <div>
+              <Label>Telefon</Label>
+              <Input
+                value={editForm.phone}
+                onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label>Position</Label>
+              <Input
+                value={editForm.position}
+                onChange={(e) => setEditForm({ ...editForm, position: e.target.value })}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <Label>Rolle *</Label>
+              <Select value={newRole} onValueChange={setNewRole}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.entries(ROLE_MAP).map(([key, val]) => (
+                    <SelectItem key={key} value={key}>
+                      <span className="flex items-center gap-2">
+                        {val.icon}
+                        {val.label}
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="flex gap-3 justify-end pt-4">
+            <Button variant="outline" onClick={() => setEditRoleOpen(false)}>
+              Abbrechen
+            </Button>
+            <Button
+              onClick={handleSaveStaff}
+              disabled={saving}
+              className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+            >
+              {saving ? "Wird gespeichert..." : "Änderungen speichern"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Passwort setzen */}
+      <Dialog open={passwordOpen} onOpenChange={setPasswordOpen}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle>Rolle ändern</DialogTitle>
+            <DialogTitle>Passwort setzen</DialogTitle>
             <DialogDescription>
-              Weise {selectedStaff?.first_name} {selectedStaff?.last_name} eine neue Rolle zu.
+              Neues Initialpasswort für {selectedStaff?.first_name} {selectedStaff?.last_name}. Die
+              Person kann es anschließend im Portal selbst ändern.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <Select value={newRole} onValueChange={setNewRole}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.entries(ROLE_MAP).map(([key, val]) => (
-                  <SelectItem key={key} value={key}>
-                    <span className="flex items-center gap-2">
-                      {val.icon}
-                      {val.label}
-                    </span>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div>
+              <Label>Neues Passwort *</Label>
+              <Input
+                type="text"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Min. 8 Zeichen"
+              />
+            </div>
             <div className="flex gap-3 justify-end">
-              <Button variant="outline" onClick={() => setEditRoleOpen(false)}>
+              <Button variant="outline" onClick={() => setPasswordOpen(false)}>
                 Abbrechen
               </Button>
               <Button
-                onClick={handleUpdateRole}
+                onClick={handleSetPassword}
                 disabled={saving}
                 className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
               >
-                {saving ? "Wird gespeichert..." : "Rolle speichern"}
+                {saving ? "Wird gesetzt..." : "Passwort setzen"}
               </Button>
             </div>
           </div>
         </DialogContent>
       </Dialog>
+
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
