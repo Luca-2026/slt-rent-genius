@@ -295,8 +295,115 @@ Deno.serve(async (req: Request) => {
       );
     }
 
+    // ─── UPDATE PROFILE (Name, E-Mail, Telefon, Position, Rolle) ───
+    if (body.action === "update_profile") {
+      if (!body.staff_user_id) return json({ error: "Missing staff_user_id" }, 400);
+      if (body.new_role && !VALID_ROLES.includes(body.new_role)) {
+        return json({ error: "Invalid role" }, 400);
+      }
+      if (
+        body.new_role &&
+        body.new_role !== "admin" &&
+        body.staff_user_id === authUser.id
+      ) {
+        return json(
+          { error: "Du kannst dir nicht selbst die Admin-Rechte entziehen." },
+          400
+        );
+      }
+
+      const email = body.email?.trim().toLowerCase();
+      if (email && !/^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$/.test(email)) {
+        return json({ error: "Ungültige E-Mail-Adresse." }, 400);
+      }
+
+      // 1) E-Mail im Auth-Konto ändern
+      if (email) {
+        const { error: authUpdateError } =
+          await serviceClient.auth.admin.updateUserById(body.staff_user_id, {
+            email,
+            email_confirm: true,
+          });
+        if (authUpdateError) {
+          return json(
+            { error: "E-Mail konnte nicht geändert werden: " + authUpdateError.message },
+            400
+          );
+        }
+      }
+
+      // 2) Stammdaten im Mitarbeiterprofil
+      const profileUpdate: Record<string, unknown> = { updated_at: new Date().toISOString() };
+      if (body.first_name !== undefined) profileUpdate.first_name = body.first_name;
+      if (body.last_name !== undefined) profileUpdate.last_name = body.last_name;
+      if (body.phone !== undefined) profileUpdate.phone = body.phone || null;
+      if (body.position !== undefined) profileUpdate.position = body.position || null;
+      if (email) profileUpdate.email = email;
+
+      const { error: profileError } = await serviceClient
+        .from("staff_profiles")
+        .update(profileUpdate)
+        .eq("user_id", body.staff_user_id);
+
+      if (profileError) {
+        return json(
+          { error: "Mitarbeiterdaten konnten nicht gespeichert werden: " + profileError.message },
+          500
+        );
+      }
+
+      // 3) Rolle (optional)
+      if (body.new_role) {
+        await serviceClient
+          .from("user_roles")
+          .delete()
+          .eq("user_id", body.staff_user_id)
+          .neq("role", "user");
+
+        const { error: roleError } = await serviceClient
+          .from("user_roles")
+          .insert({ user_id: body.staff_user_id, role: body.new_role });
+
+        if (roleError) {
+          return json({ error: "Rolle konnte nicht gesetzt werden: " + roleError.message }, 500);
+        }
+      }
+
+      return json({ success: true });
+    }
+
+    // ─── SET PASSWORD (Initialpasswort / Zurücksetzen) ───
+    if (body.action === "set_password") {
+      if (!body.staff_user_id || !body.password) {
+        return json({ error: "Missing staff_user_id or password" }, 400);
+      }
+      if (body.password.length < 8) {
+        return json({ error: "Das Passwort muss mindestens 8 Zeichen lang sein." }, 400);
+      }
+
+      const { error: pwError } = await serviceClient.auth.admin.updateUserById(
+        body.staff_user_id,
+        { password: body.password }
+      );
+      if (pwError) {
+        return json({ error: "Passwort konnte nicht gesetzt werden: " + pwError.message }, 400);
+      }
+
+      return json({ success: true });
+    }
+
     // ─── UPDATE ROLE ────────────────────────────────────
     if (body.action === "update_role") {
+      if (
+        body.new_role &&
+        body.new_role !== "admin" &&
+        body.staff_user_id === authUser.id
+      ) {
+        return json(
+          { error: "Du kannst dir nicht selbst die Admin-Rechte entziehen." },
+          400
+        );
+      }
       if (!body.staff_user_id || !body.new_role) {
         return new Response(
           JSON.stringify({ error: "Missing staff_user_id or new_role" }),
