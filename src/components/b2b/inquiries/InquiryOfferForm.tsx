@@ -460,13 +460,15 @@ export function InquiryOfferForm({
         inquiry_id: inquiryId,
         location,
         items: effectiveItems.map(({ available_addons: _unused, price_source: _src, custom_period: _cp, ...rest }) => {
-          const duration = rest.duration && rest.duration > 0 ? rest.duration : 1;
           const unit = (rest.unit ?? "kalendertage") as OfferUnit;
+          // Pauschalpositionen haben keine Dauer – der Preis gilt für den
+          // gesamten Auftrag, unabhängig von der Mietzeit.
+          const duration = unit === "pauschal" ? 1 : rest.duration && rest.duration > 0 ? rest.duration : 1;
           const articles = rest.quantity || 1;
           // Die PDF-Zeile zeigt Menge × Einheit; mehrere Artikel werden in der
           // Beschreibung ausgewiesen, damit die Summe nachvollziehbar bleibt.
           const description =
-            articles > 1
+            articles > 1 && unit !== "pauschal"
               ? [rest.description, `${articles} Artikel × ${duration} ${unitLabel(duration, unit)}`]
                   .filter(Boolean)
                   .join(" · ")
