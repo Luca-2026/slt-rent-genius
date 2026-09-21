@@ -87,12 +87,20 @@ function offerPayloadToLines(payload: unknown): {
     | null
     | undefined;
   if (!p || !Array.isArray(p.items) || p.items.length === 0) return null;
-  const items: OfferLine[] = p.items.map((raw) => ({
+  const items: (OfferLine & { custom_period?: boolean })[] = p.items.map((raw) => {
+    const split = splitQuantity(
+      typeof raw.description === "string" ? raw.description : "",
+      Number(raw.quantity) || 1,
+      String(raw.unit ?? ""),
+    );
+    return ({
     product_name: String(raw.product_name ?? ""),
-    description: typeof raw.description === "string" ? raw.description : "",
-    quantity: Number(raw.quantity) || 1,
-    duration: 1,
-    unit: UNIT_BY_LABEL[String(raw.unit ?? "").trim().toLowerCase()] ?? "stueck",
+    description: split.description,
+    quantity: split.quantity,
+    duration: split.duration,
+    unit: split.unit,
+    // Jede Position behält ihre eigene Einheit/Dauer aus dem Angebot.
+    custom_period: true,
     unit_price: Number(raw.unit_price) || 0,
     discount_percent: Number(raw.discount_percent) || 0,
     rental_start: typeof raw.rental_start === "string" ? raw.rental_start : undefined,
