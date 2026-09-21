@@ -15,15 +15,19 @@ export default function B2BLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { signIn, user, isAdmin, loading: authLoading } = useAuth();
+  const { staffProfile, loading: staffLoading } = useStaffAccess();
   const { toast } = useToast();
   const navigate = useNavigate();
 
   // Redirect already-authenticated users based on role
   useEffect(() => {
-    if (!authLoading && user) {
-      navigate(isAdmin ? "/b2b/admin" : "/b2b/dashboard", { replace: true });
+    if (!authLoading && !staffLoading && user) {
+      navigate(
+        isAdmin ? "/b2b/admin" : staffProfile ? "/b2b/aufgaben" : "/b2b/dashboard",
+        { replace: true }
+      );
     }
-  }, [user, authLoading, isAdmin, navigate]);
+  }, [user, authLoading, staffLoading, staffProfile, isAdmin, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
