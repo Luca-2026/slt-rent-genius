@@ -9,6 +9,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useAuth } from "@/hooks/useAuth";
+import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CreditLimitWidget } from "@/components/b2b/CreditLimitWidget";
@@ -47,6 +48,7 @@ import {
 
 export default function B2BDashboard() {
   const { user, b2bProfile, loading, signOut, isAdmin, refreshB2BProfile, authorizedPersonInfo } = useAuth();
+  const { staffProfile, loading: staffLoading } = useStaffAccess();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
