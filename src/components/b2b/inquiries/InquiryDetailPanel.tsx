@@ -478,7 +478,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           </p>
         </div>
         <InquiryOfferForm
-          key={docMode}
+          key={`${inquiry.id}:${docMode}`}
           inquiryType={inquiryType}
           inquiryId={inquiry.id}
           location={inquiry.location}

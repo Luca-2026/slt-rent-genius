@@ -21,6 +21,12 @@ import { SALES_ADDON_PRESETS, isSalesAddonNegative } from "@/lib/salesAddons";
 import { loadSalesCatalog } from "@/hooks/useSalesCatalog";
 import { OFFER_UNITS, unitLabel, type OfferUnit } from "@/lib/offerUnits";
 import { resolveCatalogPrice } from "@/lib/catalogPricing";
+import {
+  clearInquiryDraft,
+  inquiryDraftKey,
+  readInquiryDraft,
+  writeInquiryDraft,
+} from "./offerDraftStorage";
 
 /** Angebotsposition inkl. der im CMS erlaubten Zusatzoptionen (nur lokal). */
 type FormLine = OfferLine & {
@@ -193,43 +199,135 @@ export function InquiryOfferForm({
   const isInvoice = mode === "invoice";
   const isSupplement = isInvoice && invoiceKind === "supplement";
   const { toast } = useToast();
+
+  // Zwischengespeicherter Entwurf (Tabwechsel / Reload) – einmalig beim Mount gelesen.
+  const draftKey = inquiryDraftKey(mode, inquiryType, inquiryId);
+  const draftRef = useRef(readInquiryDraft<Record<string, any>>(draftKey));
+  const draft = draftRef.current;
+  const [draftRestored, setDraftRestored] = useState(!!draft);
+
   const [items, setItems] = useState<FormLine[]>(
-    defaultItems.length ? defaultItems : [emptyLine()],
+    Array.isArray(draft?.items) && draft!.items.length
+      ? (draft!.items as FormLine[])
+      : defaultItems.length
+        ? defaultItems
+        : [emptyLine()],
   );
   const emptyDelivery: OfferDeliveryAddress = { requested: false, street: "", postal_code: "", city: "" };
-  const [delivery, setDelivery] = useState<OfferDeliveryAddress>(defaultDelivery ?? emptyDelivery);
-  const [deliveryCostDelivery, setDeliveryCostDelivery] = useState(defaultCosts?.delivery_cost_delivery ?? 0);
-  const [deliveryCostReturn, setDeliveryCostReturn] = useState(defaultCosts?.delivery_cost_return ?? 0);
+  const [delivery, setDelivery] = useState<OfferDeliveryAddress>(
+    (draft?.delivery as OfferDeliveryAddress) ?? defaultDelivery ?? emptyDelivery,
+  );
+  const [deliveryCostDelivery, setDeliveryCostDelivery] = useState(
+    draft?.deliveryCostDelivery ?? defaultCosts?.delivery_cost_delivery ?? 0,
+  );
+  const [deliveryCostReturn, setDeliveryCostReturn] = useState(
+    draft?.deliveryCostReturn ?? defaultCosts?.delivery_cost_return ?? 0,
+  );
   /** Pauschalen für Auf- und Abbau (Montage/Demontage vor Ort). */
-  const [setupCost, setSetupCost] = useState(defaultCosts?.setup_cost ?? 0);
-  const [dismantleCost, setDismantleCost] = useState(defaultCosts?.dismantle_cost ?? 0);
-  const [deposit, setDeposit] = useState(defaultCosts?.deposit ?? 0);
-  const [validDays, setValidDays] = useState(14);
+  const [setupCost, setSetupCost] = useState(draft?.setupCost ?? defaultCosts?.setup_cost ?? 0);
+  const [dismantleCost, setDismantleCost] = useState(draft?.dismantleCost ?? defaultCosts?.dismantle_cost ?? 0);
+  const [deposit, setDeposit] = useState(draft?.deposit ?? defaultCosts?.deposit ?? 0);
+  const [validDays, setValidDays] = useState(draft?.validDays ?? 14);
   /** Bereits erhaltene (Teil-)Zahlungen – werden auf der Rechnung abgezogen. */
-  const [payments, setPayments] = useState<OfferPayment[]>(defaultPayments ?? []);
+  const [payments, setPayments] = useState<OfferPayment[]>(
+    (draft?.payments as OfferPayment[]) ?? defaultPayments ?? [],
+  );
   /** Leistungszeitraum der Rechnung (nur im Rechnungsmodus sichtbar). */
-  const [servicePeriodStart, setServicePeriodStart] = useState(defaultServicePeriod?.start ?? "");
-  const [servicePeriodEnd, setServicePeriodEnd] = useState(defaultServicePeriod?.end ?? "");
+  const [servicePeriodStart, setServicePeriodStart] = useState(
+    draft?.servicePeriodStart ?? defaultServicePeriod?.start ?? "",
+  );
+  const [servicePeriodEnd, setServicePeriodEnd] = useState(
+    draft?.servicePeriodEnd ?? defaultServicePeriod?.end ?? "",
+  );
 
   const defaultTerms = () =>
     isInvoice ? (customerKind === "business" ? "net_14" : "vorkasse") : customerKind === "business" ? "net_14" : "anzahlung_30";
-  const [paymentTerms, setPaymentTerms] = useState(defaultTerms);
+  const [paymentTerms, setPaymentTerms] = useState<string>(draft?.paymentTerms ?? defaultTerms());
   /** Freitext für „Individuelle Zahlungsbedingungen“ (nur Geschäftskunden). */
-  const [paymentTermsCustom, setPaymentTermsCustom] = useState("");
+  const [paymentTermsCustom, setPaymentTermsCustom] = useState<string>(draft?.paymentTermsCustom ?? "");
   const sendLock = useRef(false);
+  /** Entwurfs-Werte dürfen von den „Standardwerte setzen“-Effekten nicht überschrieben werden. */
+  const skipDefaults = useRef(!!draft);
 
   useEffect(() => {
+    if (skipDefaults.current) return;
     setPaymentTerms(defaultTerms());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerKind, isInvoice]);
-  const [notes, setNotes] = useState("");
+  const [notes, setNotes] = useState<string>(draft?.notes ?? "");
   const [sending, setSending] = useState(false);
 
   // Bei Wechsel der Anfrage die Lieferadresse aus dem Anfrageformular übernehmen.
   useEffect(() => {
+    if (skipDefaults.current) {
+      skipDefaults.current = false;
+      return;
+    }
     setDelivery(defaultDelivery ?? emptyDelivery);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inquiryId, defaultDelivery?.requested, defaultDelivery?.street, defaultDelivery?.postal_code, defaultDelivery?.city]);
+
+  /** Entwurf laufend sichern (leicht verzögert, damit Tippen nicht bremst). */
+  useEffect(() => {
+    if (disabled) return;
+    const timer = window.setTimeout(() => {
+      writeInquiryDraft(draftKey, {
+        items,
+        delivery,
+        deliveryCostDelivery,
+        deliveryCostReturn,
+        setupCost,
+        dismantleCost,
+        deposit,
+        validDays,
+        payments,
+        servicePeriodStart,
+        servicePeriodEnd,
+        paymentTerms,
+        paymentTermsCustom,
+        notes,
+      });
+    }, 400);
+    return () => window.clearTimeout(timer);
+  }, [
+    draftKey,
+    disabled,
+    items,
+    delivery,
+    deliveryCostDelivery,
+    deliveryCostReturn,
+    setupCost,
+    dismantleCost,
+    deposit,
+    validDays,
+    payments,
+    servicePeriodStart,
+    servicePeriodEnd,
+    paymentTerms,
+    paymentTermsCustom,
+    notes,
+  ]);
+
+  /** Entwurf verwerfen und Formular auf die Ausgangswerte zurücksetzen. */
+  const discardDraft = () => {
+    clearInquiryDraft(draftKey);
+    draftRef.current = null;
+    setDraftRestored(false);
+    setItems(defaultItems.length ? defaultItems : [emptyLine()]);
+    setDelivery(defaultDelivery ?? emptyDelivery);
+    setDeliveryCostDelivery(defaultCosts?.delivery_cost_delivery ?? 0);
+    setDeliveryCostReturn(defaultCosts?.delivery_cost_return ?? 0);
+    setSetupCost(defaultCosts?.setup_cost ?? 0);
+    setDismantleCost(defaultCosts?.dismantle_cost ?? 0);
+    setDeposit(defaultCosts?.deposit ?? 0);
+    setValidDays(14);
+    setPayments(defaultPayments ?? []);
+    setServicePeriodStart(defaultServicePeriod?.start ?? "");
+    setServicePeriodEnd(defaultServicePeriod?.end ?? "");
+    setPaymentTerms(defaultTerms());
+    setPaymentTermsCustom("");
+    setNotes("");
+  };
 
   /** Positionen inkl. übernommenem Zeitraum – Basis für Summen, Anzeige und Versand. */
   const effectiveItems = useMemo(
@@ -419,11 +517,26 @@ export function InquiryOfferForm({
       title: `${docLabel} gesendet`,
       description: `${(data as any)?.invoice_number ?? (data as any)?.offer_number} · ${formatEuro(totals.grossAmount)} brutto`,
     });
+    // Entwurf ist abgearbeitet – Zwischenspeicher leeren.
+    clearInquiryDraft(draftKey);
+    draftRef.current = null;
+    setDraftRestored(false);
     onSent?.();
   };
 
   return (
     <div className="space-y-4">
+      {draftRestored && !disabled && (
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-muted/50 p-3 text-sm">
+          <span>
+            Nicht gesendeter Entwurf wiederhergestellt
+            {draft?.savedAt ? ` (${new Date(draft.savedAt).toLocaleString("de-DE")})` : ""}.
+          </span>
+          <Button type="button" variant="outline" size="sm" onClick={discardDraft}>
+            Entwurf verwerfen
+          </Button>
+        </div>
+      )}
       <div className="space-y-3">
         {items.map((item, index) => {
           const eff = effectiveItems[index] ?? item;
