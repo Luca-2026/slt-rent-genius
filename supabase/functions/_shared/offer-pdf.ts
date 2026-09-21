@@ -498,9 +498,23 @@ export async function generateOfferPdf(data: {
   tableClosed = true;
 
   // ── Summenblock (rechtsbündig, wie Rechnung) ──
-  // Höhe konservativ reservieren: 3 Zwischensummen + Netto + USt. + Kaution
-  // + Gesamtbetrag-Kasten, damit der Block nie in die Fußzeile läuft.
-  need(195 + ((data.payments || []).filter((p) => Number(p.amount) > 0).length ? 60 + (data.payments || []).length * 12 : 0));
+  // Höhe exakt aus den tatsächlich gedruckten Zeilen berechnen, damit der Block
+  // weder in die Fußzeile läuft noch unnötig auf eine neue Seite rutscht.
+  const paidRows = (data.payments || []).filter((p) => Number(p.amount) > 0);
+  const summaryRows =
+    ((data.servicesWithPrices || []).some((s) => (s.amount || 0) > 0) ||
+      (data.deliveryCostDelivery || 0) + (data.deliveryCostReturn || 0) + (data.deliveryCost || 0) > 0
+      ? 1
+      : 0) +
+    ((data.servicesWithPrices || []).some((s) => (s.amount || 0) > 0) ? 1 : 0) +
+    ((data.deliveryCostDelivery || 0) + (data.deliveryCostReturn || 0) + (data.deliveryCost || 0) > 0 ? 1 : 0) +
+    (discountTotal > 0 ? 1 : 0) +
+    2 +
+    (data.deposit && data.deposit > 0 ? 1 : 0);
+  const summaryHeight =
+    summaryRows * 13 + 44 +
+    (!isCreditNote && paidRows.length ? paidRows.length * 12 + 64 : 0);
+  need(summaryHeight);
 
   const tx = ML + CW * 0.55;
   const vx = W - MR - 4;
