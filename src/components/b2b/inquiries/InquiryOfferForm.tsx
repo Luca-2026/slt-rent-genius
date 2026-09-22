@@ -221,6 +221,7 @@ export function InquiryOfferForm({
   defaultCosts,
   defaultPayments,
   rentalPeriod,
+  reservationId = null,
 }: Props) {
   const isInvoice = mode === "invoice";
   const isSupplement = isInvoice && invoiceKind === "supplement";
