@@ -70,8 +70,9 @@ function splitQuantity(
   }
   // Ohne Suffix enthielt das Angebot genau einen Artikel; `quantity` ist dann
   // bei Zeiteinheiten die Mietdauer (z. B. 5 Kalendertage), nicht die Stückzahl.
+  // Pauschalpositionen haben immer Dauer 1 – dort ist `quantity` die Stückzahl.
   const qty = quantity || 1;
-  if (fallbackUnit !== "stueck") {
+  if (fallbackUnit !== "stueck" && fallbackUnit !== "pauschal") {
     return { quantity: 1, duration: qty, unit: fallbackUnit, description };
   }
   return { quantity: qty, duration: 1, unit: fallbackUnit, description };
