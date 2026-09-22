@@ -349,6 +349,96 @@ export function InquiryOfferForm({
     [items],
   );
 
+  // ----------------------------------------------------------------
+  // Bestandsprüfung je Position (nur Mietgeschäft, nur mit Zeitraum)
+  // ----------------------------------------------------------------
+  /** Für die Prüfung maßgeblicher Zeitraum: Leistungszeitraum schlägt Anfragezeitraum. */
+  const checkStart = toIsoDate(
+    (isInvoice ? servicePeriodStart : "") || rentalPeriod?.start || servicePeriodStart || "",
+  );
+  const checkEnd =
+    toIsoDate((isInvoice ? servicePeriodEnd : "") || rentalPeriod?.end || servicePeriodEnd || "") || checkStart;
+
+  const [availability, setAvailability] = useState<Record<number, InventoryResult | null>>({});
+  const [checking, setChecking] = useState(false);
+  const [warningOpen, setWarningOpen] = useState(false);
+  const inventoryAckRef = useRef(false);
+
+  /** Prüfsteckbrief: ändert sich nur, wenn Artikel, Menge oder Zeitraum wechseln. */
+  const checkSignature = useMemo(
+    () =>
+      JSON.stringify(
+        items.map((i) => [i.product_slug ?? "", i.product_name.trim().toLowerCase(), i.quantity]),
+      ) + `|${location ?? ""}|${checkStart ?? ""}|${checkEnd ?? ""}`,
+    [items, location, checkStart, checkEnd],
+  );
+
+  useEffect(() => {
+    if (inquiryType !== "rental" || !checkStart) {
+      setAvailability({});
+      return;
+    }
+    let cancelled = false;
+    const timer = window.setTimeout(async () => {
+      setChecking(true);
+      const next: Record<number, InventoryResult | null> = {};
+      await Promise.all(
+        items.map(async (item, index) => {
+          const name = item.product_name.trim();
+          if (!name) return;
+          let slug = item.product_slug;
+          if (!slug) {
+            const match = await findCatalogProductByName(name);
+            slug = match?.slug;
+          }
+          if (!slug) {
+            // Freitext-Position ohne CMS-Artikel: Bestand ist nicht prüfbar.
+            next[index] = { stock: null, stockSource: "none", booked: 0, conflicts: [] };
+            return;
+          }
+          try {
+            next[index] = await fetchAvailability({
+              slug,
+              location,
+              start: checkStart,
+              end: checkEnd,
+              excludeInquiryId: inquiryId,
+            });
+          } catch {
+            next[index] = null;
+          }
+        }),
+      );
+      if (!cancelled) {
+        setAvailability(next);
+        setChecking(false);
+      }
+    }, 400);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checkSignature, inquiryType, inquiryId]);
+
+  /** Alle offenen Bestandsprobleme – Grundlage für den Bestätigungsdialog. */
+  const inventoryIssues = useMemo<InventoryIssue[]>(() => {
+    if (inquiryType !== "rental") return [];
+    const list: InventoryIssue[] = [];
+    items.forEach((item, index) => {
+      const result = availability[index];
+      if (!result || !item.product_name.trim()) return;
+      const issue = evaluateLine(item.product_name.trim(), item.quantity || 1, location, result);
+      if (issue) list.push(issue);
+    });
+    return list;
+  }, [items, availability, location, inquiryType]);
+
+  // Ändert sich etwas an der Lage, muss erneut bestätigt werden.
+  useEffect(() => {
+    inventoryAckRef.current = false;
+  }, [checkSignature]);
+
   const totals = useMemo(
     () => buildOfferTotals(effectiveItems, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost),
     [effectiveItems, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost],
