@@ -843,6 +843,44 @@ export function InquiryOfferForm({
               </div>
             </div>
 
+            {/* Bestandslage am Standort im gewählten Zeitraum */}
+            {inquiryType === "rental" && item.product_name.trim() && availability[index] ? (
+              (() => {
+                const result = availability[index]!;
+                const issue = evaluateLine(item.product_name.trim(), item.quantity || 1, location, result);
+                const tone =
+                  issue?.severity === "over"
+                    ? "text-destructive"
+                    : issue?.severity === "unknown"
+                      ? "text-amber-600"
+                      : "text-muted-foreground";
+                const Icon = issue ? (issue.severity === "over" ? AlertTriangle : Info) : CheckCircle2;
+                return (
+                  <p className={`flex items-start gap-1.5 text-[11px] ${tone}`}>
+                    <Icon className="h-3.5 w-3.5 shrink-0 mt-px" />
+                    <span className="min-w-0 break-words">
+                      {badgeText(result, item.quantity || 1, location)}
+                      {checkStart ? (
+                        <span className="text-muted-foreground">
+                          {" "}
+                          ({new Date(checkStart).toLocaleDateString("de-DE")}
+                          {checkEnd && checkEnd !== checkStart
+                            ? ` – ${new Date(checkEnd).toLocaleDateString("de-DE")}`
+                            : ""}
+                          )
+                        </span>
+                      ) : null}
+                    </span>
+                  </p>
+                );
+              })()
+            ) : inquiryType === "rental" && item.product_name.trim() && !checkStart ? (
+              <p className="flex items-start gap-1.5 text-[11px] text-muted-foreground">
+                <Info className="h-3.5 w-3.5 shrink-0 mt-px" />
+                <span>Ohne Mietzeitraum ist keine Bestandsprüfung möglich.</span>
+              </p>
+            ) : null}
+
             {/* Zusatzoptionen dieser Position (CMS-Optionen + Standardauswahl + Freifeld) */}
             {(() => {
               const options = addonOptionsFor(item, inquiryType === "sales");
