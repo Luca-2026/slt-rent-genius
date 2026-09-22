@@ -724,6 +724,18 @@ export function InquiryOfferForm({
       title: `${docLabel} gesendet`,
       description: `${(data as any)?.invoice_number ?? (data as any)?.offer_number} · ${formatEuro(totals.grossAmount)} brutto`,
     });
+    // Übernommene Protokollposten als abgerechnet markieren.
+    if (isInvoice && takenChargesRef.current.length) {
+      const damageIds = takenChargesRef.current.filter((c) => c.source === "damage").map((c) => c.id);
+      const chargeIds = takenChargesRef.current.filter((c) => c.source === "extra_charge").map((c) => c.id);
+      if (damageIds.length) {
+        await supabase.from("b2b_protocol_damages").update({ billed: true }).in("id", damageIds);
+      }
+      if (chargeIds.length) {
+        await supabase.from("b2b_return_extra_charges").update({ billed: true }).in("id", chargeIds);
+      }
+      takenChargesRef.current = [];
+    }
     // Entwurf ist abgearbeitet – Zwischenspeicher leeren.
     clearInquiryDraft(draftKey);
     draftRef.current = null;
