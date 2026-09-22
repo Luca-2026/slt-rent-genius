@@ -3699,6 +3699,22 @@ export type Database = {
         Args: { _list_id: string; _user_id: string }
         Returns: boolean
       }
+      check_inventory_availability: {
+        Args: {
+          _end: string
+          _exclude_inquiry_id?: string
+          _exclude_reservation_id?: string
+          _location: string
+          _slug: string
+          _start: string
+        }
+        Returns: {
+          booked: number
+          conflicts: Json
+          stock: number
+          stock_source: string
+        }[]
+      }
       complete_maintenance: {
         Args: {
           _cost: number
@@ -3846,6 +3862,8 @@ export type Database = {
         Args: { _protocol_id: string; _signature_data: string }
         Returns: undefined
       }
+      slt_normalize_location: { Args: { _raw: string }; Returns: string }
+      slt_try_date: { Args: { _raw: string }; Returns: string }
       timesheet_locked_through: { Args: never; Returns: string }
       update_b2b_profile_with_pending: {
         Args: {
