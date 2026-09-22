@@ -43,3 +43,8 @@
 - [x] Voll- und Teilgutschrift inklusive Restforderung und Erstattung geprüft
 - [x] PDF-Layouts mit kurzen, langen und mehrseitigen Beispielen visuell geprüft
 - [x] E-Mail-Versand und Fehlerfälle geprüft; Dokumente werden vor Versand vollständig gespeichert
+
+## Bestandsprüfung im Angebotsprozess (erledigt)
+- Bestand je Standort (CMS-Menge, sonst Einzelartikel) gegen Belegungen im Zeitraum
+- Hinweis pro Position + Bestätigungsdialog vor Versand, Versand bleibt möglich
+- Getestet im Portal: Überbuchung, Bestätigung, Versand (ANG-A-2026-0036), Testdaten entfernt
