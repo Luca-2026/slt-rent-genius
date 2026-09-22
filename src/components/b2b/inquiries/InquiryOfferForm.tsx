@@ -5,7 +5,16 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { Plus, Send, Trash2 } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Info, Plus, Send, Trash2 } from "lucide-react";
+import {
+  badgeText,
+  evaluateLine,
+  fetchAvailability,
+  toIsoDate,
+  type InventoryIssue,
+  type InventoryResult,
+} from "@/lib/inventoryAvailability";
+import { InventoryWarningDialog } from "./InventoryWarningDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -30,6 +39,8 @@ import {
 
 /** Angebotsposition inkl. der im CMS erlaubten Zusatzoptionen (nur lokal). */
 type FormLine = OfferLine & {
+  /** CMS-Slug des Artikels – Basis für die Bestandsprüfung. */
+  product_slug?: string;
   available_addons?: AddonOption[];
   /** Woher der Einzelpreis stammt: aus dem CMS vorbelegt oder manuell überschrieben. */
   price_source?: "cms" | "manual";
