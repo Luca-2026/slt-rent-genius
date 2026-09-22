@@ -664,7 +664,84 @@ function generateReturnProtocolHtml(data: {
   notes: string | null;
   deliveryNoteNumber: string | null;
   deliveryAddress: { street: string; postal_code: string; city: string } | null;
+  idChecked: boolean;
+  idCheckType: string | null;
+  damages: { item_name: string | null; category: string; description: string | null; amount: number | null; photo_urls: string[] }[];
+  extraCharges: { label: string; quantity: number; unit_price: number; notes: string | null }[];
+  damagesTotal: number;
+  extraChargesTotal: number;
 }): string {
+  const damageSection = data.damages.length > 0 ? `
+    <div style="border:1px solid #e5e7eb;border-radius:6px;padding:14px;margin-bottom:8mm;">
+      <p style="font-weight:600;margin-bottom:8px;">Erfasste Schäden bei Rückgabe</p>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:#f3f4f6;">
+            <th style="padding:6px 8px;text-align:left;">Artikel</th>
+            <th style="padding:6px 8px;text-align:left;">Kategorie</th>
+            <th style="padding:6px 8px;text-align:left;">Beschreibung</th>
+            <th style="padding:6px 8px;text-align:right;">Betrag</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.damages.map((d) => `
+          <tr>
+            <td style="padding:6px 8px;border-bottom:1px solid #e5e7eb;">${escapeHtml(d.item_name || "–")}</td>
+            <td style="padding:6px 8px;border-bottom:1px solid #e5e7eb;">${escapeHtml(DAMAGE_LABELS[d.category] || d.category)}</td>
+            <td style="padding:6px 8px;border-bottom:1px solid #e5e7eb;">${escapeHtml(d.description || "–")}</td>
+            <td style="padding:6px 8px;border-bottom:1px solid #e5e7eb;text-align:right;">${d.amount != null ? euro(d.amount) : "–"}</td>
+          </tr>`).join("")}
+          ${data.damagesTotal > 0 ? `
+          <tr>
+            <td colspan="3" style="padding:6px 8px;text-align:right;font-weight:600;">Summe Schäden</td>
+            <td style="padding:6px 8px;text-align:right;font-weight:600;">${euro(data.damagesTotal)}</td>
+          </tr>` : ""}
+        </tbody>
+      </table>
+      ${data.damages.some((d) => d.photo_urls.length > 0) ? `
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">
+        ${data.damages.flatMap((d) => d.photo_urls).map((url, i) => `
+        <a href="${url}" target="_blank"><img class="photo-img" src="${url}" alt="Schadensfoto ${i + 1}" style="width:150px;height:112px;object-fit:cover;border:1px solid #e5e7eb;border-radius:6px;display:block;" /></a>`).join("")}
+      </div>` : ""}
+    </div>` : "";
+
+  const extraChargesSection = data.extraCharges.length > 0 ? `
+    <div style="border:1px solid #e5e7eb;border-radius:6px;padding:14px;margin-bottom:8mm;">
+      <p style="font-weight:600;margin-bottom:8px;">Zusatzkosten bei Rücknahme</p>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:#f3f4f6;">
+            <th style="padding:6px 8px;text-align:left;">Position</th>
+            <th style="padding:6px 8px;text-align:right;">Menge</th>
+            <th style="padding:6px 8px;text-align:right;">Einzelpreis</th>
+            <th style="padding:6px 8px;text-align:right;">Gesamt</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.extraCharges.map((c) => `
+          <tr>
+            <td style="padding:6px 8px;border-bottom:1px solid #e5e7eb;">${escapeHtml(c.label)}${c.notes ? `<br><span style="color:#595959;font-size:11px;">${escapeHtml(c.notes)}</span>` : ""}</td>
+            <td style="padding:6px 8px;border-bottom:1px solid #e5e7eb;text-align:right;">${c.quantity}</td>
+            <td style="padding:6px 8px;border-bottom:1px solid #e5e7eb;text-align:right;">${euro(c.unit_price)}</td>
+            <td style="padding:6px 8px;border-bottom:1px solid #e5e7eb;text-align:right;">${euro(c.quantity * c.unit_price)}</td>
+          </tr>`).join("")}
+          <tr>
+            <td colspan="3" style="padding:6px 8px;text-align:right;font-weight:600;">Summe Zusatzkosten</td>
+            <td style="padding:6px 8px;text-align:right;font-weight:600;">${euro(data.extraChargesTotal)}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:11px;color:#595959;margin-top:8px;">
+        Die aufgeführten Beträge werden in der Schlussrechnung ausgewiesen.
+      </p>
+    </div>` : "";
+
+  const idSection = data.idChecked ? `
+    <div style="background:#f0f7fb;border:1px solid #b3d4e8;border-radius:6px;padding:12px 14px;margin-bottom:8mm;font-size:12px;">
+      <strong>Identitätsprüfung:</strong> Der Ausweis des Mieters
+      ${data.idCheckType ? `(${escapeHtml(data.idCheckType)})` : ""} wurde durch
+      ${escapeHtml(data.staffName)} eingesehen und mit den Kundendaten abgeglichen. Eine Ausweiskopie wurde nicht gespeichert.
+    </div>` : "";
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr + "T00:00:00");
     return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
