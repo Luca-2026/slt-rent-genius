@@ -19,6 +19,7 @@ import { AdminOffersTab, type Offer, type OfferItem } from "@/components/b2b/adm
 import { AdminDeliveryNotesTab } from "@/components/b2b/admin/AdminDeliveryNotesTab";
 import { AdminReturnProtocolsTab } from "@/components/b2b/admin/AdminReturnProtocolsTab";
 import { AdminDamageOverview } from "@/components/b2b/admin/AdminDamageOverview";
+import { InventoryDamageManager } from "@/components/b2b/admin/InventoryDamageManager";
 
 
 
@@ -1255,6 +1256,7 @@ export default function AdminDashboard() {
         </TabsContent>
 
         <TabsContent value="damages" forceMount className="data-[state=inactive]:hidden">
+          <InventoryDamageManager />
           <AdminDamageOverview profiles={profiles} />
         </TabsContent>
 

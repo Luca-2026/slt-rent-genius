@@ -467,6 +467,129 @@ export type Database = {
           },
         ]
       }
+      b2b_inventory_damages: {
+        Row: {
+          amount: number | null
+          applied_quantity: number
+          b2b_profile_id: string | null
+          category: string
+          created_at: string
+          created_by: string | null
+          created_by_name: string | null
+          description: string | null
+          id: string
+          location: string
+          needs_repair: boolean
+          photo_urls: string[]
+          product_name: string
+          product_slug: string | null
+          protocol_damage_id: string | null
+          protocol_number: string | null
+          protocol_type: string | null
+          quantity: number
+          reduces_stock: boolean
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+          stock_applied: boolean
+          todo_item_id: string | null
+          todo_list_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount?: number | null
+          applied_quantity?: number
+          b2b_profile_id?: string | null
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          created_by_name?: string | null
+          description?: string | null
+          id?: string
+          location?: string
+          needs_repair?: boolean
+          photo_urls?: string[]
+          product_name: string
+          product_slug?: string | null
+          protocol_damage_id?: string | null
+          protocol_number?: string | null
+          protocol_type?: string | null
+          quantity?: number
+          reduces_stock?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          stock_applied?: boolean
+          todo_item_id?: string | null
+          todo_list_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount?: number | null
+          applied_quantity?: number
+          b2b_profile_id?: string | null
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          created_by_name?: string | null
+          description?: string | null
+          id?: string
+          location?: string
+          needs_repair?: boolean
+          photo_urls?: string[]
+          product_name?: string
+          product_slug?: string | null
+          protocol_damage_id?: string | null
+          protocol_number?: string | null
+          protocol_type?: string | null
+          quantity?: number
+          reduces_stock?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          stock_applied?: boolean
+          todo_item_id?: string | null
+          todo_list_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_inventory_damages_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_inventory_damages_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles_customer"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_inventory_damages_protocol_damage_id_fkey"
+            columns: ["protocol_damage_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_protocol_damages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_inventory_damages_todo_item_id_fkey"
+            columns: ["todo_item_id"]
+            isOneToOne: false
+            referencedRelation: "staff_todo_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_inventory_damages_todo_list_id_fkey"
+            columns: ["todo_list_id"]
+            isOneToOne: false
+            referencedRelation: "staff_todo_lists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       b2b_invoice_items: {
         Row: {
           created_at: string
@@ -2999,6 +3122,8 @@ export type Database = {
       }
       staff_material_transfers: {
         Row: {
+          applied_from_quantity: number
+          applied_to_quantity: number
           assigned_at: string | null
           assigned_name: string | null
           assigned_to: string | null
@@ -3010,14 +3135,19 @@ export type Database = {
           id: string
           item_name: string
           notes: string | null
+          product_slug: string | null
           quantity: number
           status: string
+          stock_applied: boolean
+          stock_applied_at: string | null
           to_location: string
           todo_list_id: string | null
           tour_date: string | null
           updated_at: string
         }
         Insert: {
+          applied_from_quantity?: number
+          applied_to_quantity?: number
           assigned_at?: string | null
           assigned_name?: string | null
           assigned_to?: string | null
@@ -3029,14 +3159,19 @@ export type Database = {
           id?: string
           item_name: string
           notes?: string | null
+          product_slug?: string | null
           quantity?: number
           status?: string
+          stock_applied?: boolean
+          stock_applied_at?: string | null
           to_location: string
           todo_list_id?: string | null
           tour_date?: string | null
           updated_at?: string
         }
         Update: {
+          applied_from_quantity?: number
+          applied_to_quantity?: number
           assigned_at?: string | null
           assigned_name?: string | null
           assigned_to?: string | null
@@ -3048,8 +3183,11 @@ export type Database = {
           id?: string
           item_name?: string
           notes?: string | null
+          product_slug?: string | null
           quantity?: number
           status?: string
+          stock_applied?: boolean
+          stock_applied_at?: string | null
           to_location?: string
           todo_list_id?: string | null
           tour_date?: string | null
@@ -3800,6 +3938,14 @@ export type Database = {
       }
     }
     Functions: {
+      adjust_product_stock: {
+        Args: { _delta: number; _location: string; _slug: string }
+        Returns: undefined
+      }
+      adjust_product_stock_delta: {
+        Args: { _delta: number; _location: string; _slug: string }
+        Returns: number
+      }
       apply_inquiry_invoice_credit: {
         Args: {
           p_credit_amount: number
@@ -3907,6 +4053,7 @@ export type Database = {
         Returns: string
       }
       confirm_b2b_email: { Args: { _user_id: string }; Returns: undefined }
+      ensure_repair_list: { Args: { _location: string }; Returns: string }
       generate_delivery_note_number: { Args: never; Returns: string }
       generate_inquiry_credit_note_number: { Args: never; Returns: string }
       generate_inquiry_invoice_number: { Args: never; Returns: string }

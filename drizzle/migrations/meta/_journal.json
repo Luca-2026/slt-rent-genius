@@ -29,6 +29,27 @@
       "when": 1790056436502,
       "tag": "0003_link_protocols_to_inquiries",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790060200769,
+      "tag": "0004_inventory_damages_and_transfer_stock",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790060227566,
+      "tag": "0005_repair_list_status_sent",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790060540868,
+      "tag": "0006_exact_stock_adjustments",
+      "breakpoints": true
     }
   ]
 }

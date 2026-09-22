@@ -31,6 +31,12 @@ export interface ProtocolDamage {
   amount: string;
   photos: { file: File; preview: string }[];
   uploadedPaths?: string[];
+  /** Muss der Artikel repariert werden? Legt automatisch eine Reparaturaufgabe an. */
+  needsRepair: boolean;
+  /** Reduziert der Schaden den Bestand am Standort (z. B. Glasbruch)? */
+  reducesStock: boolean;
+  /** Betroffene Stückzahl (für den Bestandsabzug) */
+  quantity: string;
 }
 
 export const emptyDamage = (itemName = ""): ProtocolDamage => ({
@@ -40,6 +46,9 @@ export const emptyDamage = (itemName = ""): ProtocolDamage => ({
   description: "",
   amount: "",
   photos: [],
+  needsRepair: false,
+  reducesStock: false,
+  quantity: "1",
 });
 
 export interface ExtraCharge {
@@ -175,6 +184,9 @@ export async function serializeDamages(profileId: string, damages: ProtocolDamag
     description: string | null;
     amount: number | null;
     photo_urls: string[];
+    needs_repair: boolean;
+    reduces_stock: boolean;
+    quantity: number;
   }[] = [];
   for (const d of damages) {
     const uploaded = await uploadDamagePhotos(profileId, d.photos);
@@ -184,6 +196,9 @@ export async function serializeDamages(profileId: string, damages: ProtocolDamag
       description: d.description || null,
       amount: d.amount ? toNumber(d.amount) : null,
       photo_urls: uploaded,
+      needs_repair: !!d.needsRepair,
+      reduces_stock: !!d.reducesStock,
+      quantity: Math.max(1, Math.round(toNumber(d.quantity) || 1)),
     });
   }
   return result;

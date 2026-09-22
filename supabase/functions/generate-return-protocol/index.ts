@@ -66,6 +66,9 @@ interface ReturnProtocolRequest {
     description?: string | null;
     amount?: number | null;
     photo_urls?: string[];
+    needs_repair?: boolean;
+    reduces_stock?: boolean;
+    quantity?: number;
   }[];
   extra_charges?: {
     label: string;
@@ -74,6 +77,8 @@ interface ReturnProtocolRequest {
     notes?: string | null;
   }[];
 }
+
+import { mirrorDamagesToInventory } from "../_shared/inventory-damages.ts";
 
 const DAMAGE_LABELS: Record<string, string> = {
   kratzer: "Kratzer",
@@ -274,6 +279,9 @@ Deno.serve(async (req: Request) => {
       description: string | null;
       amount: number | null;
       photo_urls: string[];
+      needs_repair: boolean;
+      reduces_stock: boolean;
+      quantity: number;
     }[] = [];
     for (const damage of damages) {
       const signed: string[] = [];
@@ -290,6 +298,9 @@ Deno.serve(async (req: Request) => {
         description: damage.description || null,
         amount: damage.amount ?? null,
         photo_urls: signed,
+        needs_repair: !!damage.needs_repair,
+        reduces_stock: !!damage.reduces_stock,
+        quantity: Math.max(1, Math.round(Number(damage.quantity) || 1)),
       });
     }
 
@@ -431,6 +442,16 @@ Deno.serve(async (req: Request) => {
         })));
       if (damageError) console.error("Damage insert error:", damageError);
     }
+
+    // Schäden zusätzlich in die zentrale Schadensverwaltung spiegeln
+    // (erzeugt dort Reparaturaufgaben und Bestandsabzüge).
+    await mirrorDamagesToInventory(serviceClient, {
+      damages: resolvedDamages,
+      location: reservation?.location ?? profile.assigned_location ?? null,
+      protocolType: "return_protocol",
+      protocolNumber: returnProtocolNumber,
+      profileId: profile.id,
+    });
 
     if (normalizedExtraCharges.length > 0) {
       const { error: chargeError } = await serviceClient
