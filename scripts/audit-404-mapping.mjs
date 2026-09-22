@@ -525,6 +525,30 @@ const MANUAL_OVERRIDES = {
   "/produkte/ruttelplatte-100-kg": { to: "/mieten/krefeld/verdichtung", note: "Manueller Override – Kategorie-Fallback (Gewicht weicht ab)" },
   "/produkte/zelt-4x12m": { to: "/mieten/krefeld/moebel-zelte", note: "Manueller Override – Kategorie-Fallback (Maß weicht ab)" },
   // led-scheinwerfer + bautrockner-bis-20-m2 → Auto-Mapping bleibt (übernehmen wie vorgeschlagen)
+
+  // Gruppe C (2026-09-22): bisherige Pauschal-Fallbacks auf den Standort-Hub
+  // auf die thematisch passende Kategorieseite umgelenkt.
+  "/produkte/100-kva-stromaggregatTarife:1": { to: "/mieten/krefeld/aggregate", note: "Kategorie-Fallback – Stromaggregate" },
+  "/produkte/45-kva-stromaggregat": { to: "/mieten/krefeld/aggregate", note: "Kategorie-Fallback – Stromaggregate" },
+  "/produkte/7-kva-stromaggregat": { to: "/mieten/krefeld/aggregate", note: "Kategorie-Fallback – Stromaggregate" },
+  "/produkte/tragbare-powerstation-268-wh": { to: "/mieten/krefeld/aggregate", note: "Kategorie-Fallback – mobile Stromversorgung" },
+  "/produkte/mobile-diesel-adblue-tankstelle-400l-50l": { to: "/mieten/krefeld/aggregate", note: "Kategorie-Fallback – Kraftstoffversorgung" },
+  "/produkte/2000-kg-planenanhanger": { to: "/mieten/krefeld/anhaenger", note: "Kategorie-Fallback – Planenanhänger" },
+  "/produkte/akku-baustrahler-gli-18v-2200-c": { to: "/mieten/krefeld/beleuchtung", note: "Kategorie-Fallback – Baustrahler" },
+  "/produkte/etc-source-four-750-zoom": { to: "/mieten/krefeld/beleuchtung", note: "Kategorie-Fallback – Veranstaltungslicht" },
+  "/produkte/akku-fur-soundbox": { to: "/mieten/krefeld/beschallung", note: "Kategorie-Fallback – Beschallungszubehör" },
+  "/produkte/club-audio-soundsystem": { to: "/mieten/krefeld/beschallung", note: "Kategorie-Fallback – Soundsysteme" },
+  "/produkte/meyer-sound-ultra-x40": { to: "/mieten/krefeld/beschallung", note: "Kategorie-Fallback – Lautsprecher" },
+  "/produkte/meyer-sound-upm-1p": { to: "/mieten/krefeld/beschallung", note: "Kategorie-Fallback – Lautsprecher" },
+  "/produkte/midas-m32r-digital-mischpult": { to: "/mieten/krefeld/beschallung", note: "Kategorie-Fallback – Mischpulte" },
+  "/produkte/elektrische-warmhalteplatte": { to: "/mieten/krefeld/gastro-equipment", note: "Kategorie-Fallback – Gastro-Equipment" },
+  "/produkte/erdungsspies-mit-3m-leitung": { to: "/mieten/krefeld/kabel-stromverteiler", note: "Kategorie-Fallback – Stromverteilung" },
+  "/produkte/major-dmx-xlr-kabel-3-pol-3m": { to: "/mieten/krefeld/kabel-stromverteiler", note: "Kategorie-Fallback – Kabel" },
+  "/produkte/major-dmx-xlr-kabel-3-pol-5m": { to: "/mieten/krefeld/kabel-stromverteiler", note: "Kategorie-Fallback – Kabel" },
+  "/produkte/major-lastkabel-10m": { to: "/mieten/krefeld/kabel-stromverteiler", note: "Kategorie-Fallback – Kabel" },
+  "/produkte/major-lastkabel-30m": { to: "/mieten/krefeld/kabel-stromverteiler", note: "Kategorie-Fallback – Kabel" },
+  "/produkte/treppenturm-6-3-m": { to: "/mieten/krefeld/leitern-gerueste", note: "Kategorie-Fallback – Gerüste/Treppentürme" },
+  // /produkte/gutschein bleibt bewusst auf dem Standort-Hub (keine passende Kategorie)
 };
 
 const seen = new Set();
