@@ -68,6 +68,7 @@ export function MaterialDispoTab() {
   const [filter, setFilter] = useState<string>("open");
 
   const [itemName, setItemName] = useState("");
+  const [productSlug, setProductSlug] = useState<string | null>(null);
   const [quantity, setQuantity] = useState("1");
   const [fromLocation, setFromLocation] = useState("krefeld");
   const [toLocation, setToLocation] = useState("bonn");
@@ -92,6 +93,7 @@ export function MaterialDispoTab() {
 
   const resetForm = () => {
     setItemName("");
+    setProductSlug(null);
     setQuantity("1");
     setFromLocation("krefeld");
     setToLocation("bonn");
@@ -102,6 +104,7 @@ export function MaterialDispoTab() {
   /** Dialog öffnen und optional mit Route/Datum einer bestehenden Tour vorbelegen. */
   const openDialog = (prefill?: { from: string; to: string; date?: string | null }) => {
     setItemName("");
+    setProductSlug(null);
     setQuantity("1");
     setNotes("");
     setFromLocation(prefill?.from ?? "krefeld");
@@ -123,6 +126,7 @@ export function MaterialDispoTab() {
     setSaving(true);
     const { error } = await supabase.from("staff_material_transfers").insert({
       item_name: itemName.trim(),
+      product_slug: productSlug,
       quantity: Math.max(1, Number(quantity) || 1),
       from_location: fromLocation,
       to_location: toLocation,
@@ -137,7 +141,12 @@ export function MaterialDispoTab() {
       toast({ title: "Fehler", description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "Eingetragen", description: "Der Materialtransfer wurde angelegt." });
+    toast({
+      title: "Eingetragen",
+      description: productSlug
+        ? "Der Transfer wurde angelegt. Der Bestand wird gebucht, sobald er auf „erledigt“ steht."
+        : "Der Transfer wurde angelegt. Ohne Katalogartikel wird kein Bestand umgebucht.",
+    });
     resetForm();
     setDialogOpen(false);
     load();
@@ -293,12 +302,17 @@ export function MaterialDispoTab() {
               <EquipmentCombobox
                 id="mat-name"
                 value={itemName}
-                onChange={setItemName}
+                onChange={(name, slug) => {
+                  setItemName(name);
+                  setProductSlug(slug);
+                }}
                 location={fromLocation}
                 placeholder="z. B. Rüttelplatte VP 25-50"
               />
               <p className="text-xs text-muted-foreground">
-                Aus dem Mietartikel-Katalog wählen oder freien Text eintragen.
+                {itemName && !productSlug
+                  ? "Freier Eintrag – für diesen Artikel wird kein Bestand umgebucht."
+                  : "Aus dem Katalog gewählte Artikel werden beim Status „erledigt“ automatisch umgebucht."}
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
@@ -413,6 +427,16 @@ export function MaterialDispoTab() {
                                 {t.tour_date ? ` · ${new Date(t.tour_date).toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit" })}` : ""}
                                 {t.created_by_name ? ` · ${t.created_by_name}` : ""}
                               </div>
+                              {t.stock_applied ? (
+                                <div className="text-xs text-emerald-600 dark:text-emerald-400">
+                                  Bestand umgebucht: {locationLabel(t.from_location)} −{t.quantity},{" "}
+                                  {locationLabel(t.to_location)} +{t.quantity}
+                                </div>
+                              ) : !t.product_slug ? (
+                                <div className="text-xs text-muted-foreground">
+                                  Freier Eintrag – kein automatischer Bestandsabgleich
+                                </div>
+                              ) : null}
                             </div>
                             <Badge
                               variant={t.status === "erledigt" ? "secondary" : "default"}

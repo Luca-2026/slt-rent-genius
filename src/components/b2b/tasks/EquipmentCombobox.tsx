@@ -18,7 +18,8 @@ let cache: CatalogItem[] | null = null;
 
 interface Props {
   value: string;
-  onChange: (value: string) => void;
+  /** slug ist gesetzt, wenn ein Katalogartikel gewählt wurde – sonst null (freier Text). */
+  onChange: (value: string, slug: string | null) => void;
   /** Optionaler Standort-Filter (z. B. Von-Standort) */
   location?: string;
   placeholder?: string;
@@ -99,7 +100,7 @@ export function EquipmentCombobox({ value, onChange, location, placeholder, id }
                 <CommandItem
                   value={`__free__${trimmed}`}
                   onSelect={() => {
-                    onChange(trimmed);
+                    onChange(trimmed, null);
                     setOpen(false);
                   }}
                 >
@@ -115,7 +116,7 @@ export function EquipmentCombobox({ value, onChange, location, placeholder, id }
                   key={item.slug}
                   value={`${item.name} ${item.category}`}
                   onSelect={() => {
-                    onChange(item.name);
+                    onChange(item.name, item.slug);
                     setOpen(false);
                   }}
                 >

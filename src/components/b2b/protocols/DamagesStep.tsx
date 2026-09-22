@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { Camera, Plus, Trash2, Upload, X } from "lucide-react";
 import {
   DAMAGE_CATEGORIES, emptyDamage, formatEuro, sumDamages, type ProtocolDamage,
@@ -129,6 +130,44 @@ export function DamagesStep({ damages, onChange, itemNames, context, showAmounts
                 </p>
               </div>
             )}
+
+            <div className="rounded-md border bg-muted/40 p-3 space-y-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <Label className="text-xs font-semibold">Reparatur nötig</Label>
+                  <p className="text-[11px] text-muted-foreground">
+                    Legt automatisch eine Aufgabe in der Reparaturliste des Standorts an.
+                  </p>
+                </div>
+                <Switch
+                  checked={damage.needsRepair}
+                  onCheckedChange={(v) => update(damage.id, { needsRepair: v })}
+                />
+              </div>
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <Label className="text-xs font-semibold">Bestand reduzieren</Label>
+                  <p className="text-[11px] text-muted-foreground">
+                    Für unbrauchbare Artikel (z. B. Glasbruch) – die Menge am Standort sinkt.
+                  </p>
+                </div>
+                <Switch
+                  checked={damage.reducesStock}
+                  onCheckedChange={(v) => update(damage.id, { reducesStock: v })}
+                />
+              </div>
+              {damage.reducesStock && (
+                <div className="max-w-[140px]">
+                  <Label className="text-xs">Betroffene Stückzahl</Label>
+                  <Input
+                    inputMode="numeric"
+                    value={damage.quantity}
+                    onChange={(e) => update(damage.id, { quantity: e.target.value })}
+                    className="text-sm"
+                  />
+                </div>
+              )}
+            </div>
 
             <div>
               <Label className="text-xs flex items-center gap-1">

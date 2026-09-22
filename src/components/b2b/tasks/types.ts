@@ -45,6 +45,10 @@ export interface TodoComment {
 export interface MaterialTransfer {
   id: string;
   item_name: string;
+  /** Slug des Katalogartikels – nur damit wird Bestand automatisch umgebucht. */
+  product_slug?: string | null;
+  /** true, sobald der Bestand für diesen Transfer gebucht wurde. */
+  stock_applied?: boolean | null;
   quantity: number;
   from_location: string;
   to_location: string;
