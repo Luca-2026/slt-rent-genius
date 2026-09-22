@@ -179,6 +179,9 @@ interface Props {
     billing_street?: string | null;
     billing_postal_code?: string | null;
     billing_city?: string | null;
+    /** Mietzeitraum der Anfrage – Basis für die Bestandsprüfung im Angebot. */
+    start_date?: string | null;
+    end_date?: string | null;
   };
   defaultItems: OfferLine[];
   /** Lieferadresse aus dem öffentlichen Anfrageformular (im Angebot änderbar). */
@@ -487,6 +490,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           defaultCosts={docMode === "invoice" ? offerSnapshot?.costs : undefined}
           defaultPayments={docMode === "invoice" ? inquiryPayments : undefined}
           defaultDelivery={defaultDelivery}
+          rentalPeriod={{ start: inquiry.start_date ?? null, end: inquiry.end_date ?? null }}
 
           customerKind={inquiry.customer_kind === "business" ? "business" : "private"}
           mode={docMode === "offer" ? "offer" : "invoice"}
