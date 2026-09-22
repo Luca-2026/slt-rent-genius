@@ -284,6 +284,82 @@ export function InquiryOfferForm({
   const [notes, setNotes] = useState<string>(draft?.notes ?? "");
   const [sending, setSending] = useState(false);
 
+  /** Offene Schäden/Zusatzkosten aus dem Rücknahmeprotokoll dieser Anfrage. */
+  const [pendingCharges, setPendingCharges] = useState<PendingProtocolCharge[]>([]);
+  /** Bereits in die Rechnung übernommene Protokollposten (werden nach Versand als abgerechnet markiert). */
+  const takenChargesRef = useRef<PendingProtocolCharge[]>([]);
+
+  useEffect(() => {
+    if (!isInvoice || !reservationId) {
+      setPendingCharges([]);
+      return;
+    }
+    let active = true;
+    (async () => {
+      const { data: protocols } = await supabase
+        .from("b2b_return_protocols")
+        .select("id")
+        .eq("reservation_id", reservationId);
+      const ids = (protocols ?? []).map((p) => p.id);
+      if (!ids.length) {
+        if (active) setPendingCharges([]);
+        return;
+      }
+      const [{ data: damages }, { data: charges }] = await Promise.all([
+        supabase
+          .from("b2b_protocol_damages")
+          .select("id, item_name, category, description, amount")
+          .in("return_protocol_id", ids)
+          .eq("billed", false),
+        supabase
+          .from("b2b_return_extra_charges")
+          .select("id, label, quantity, unit_price, notes")
+          .in("return_protocol_id", ids)
+          .eq("billed", false),
+      ]);
+      if (!active) return;
+      const list: PendingProtocolCharge[] = [
+        ...(damages ?? [])
+          .filter((d) => Number(d.amount) > 0)
+          .map((d) => ({
+            id: d.id,
+            source: "damage" as const,
+            label: `Schadensersatz${d.item_name ? ` – ${d.item_name}` : ""}`,
+            description: [d.category, d.description].filter(Boolean).join(": "),
+            gross: Number(d.amount),
+          })),
+        ...(charges ?? []).map((c) => ({
+          id: c.id,
+          source: "extra_charge" as const,
+          label: c.label,
+          description: c.notes || undefined,
+          gross: Number(c.quantity) * Number(c.unit_price),
+        })),
+      ];
+      const takenIds = new Set(takenChargesRef.current.map((t) => t.id));
+      setPendingCharges(list.filter((c) => !takenIds.has(c.id)));
+    })();
+    return () => { active = false; };
+  }, [isInvoice, reservationId]);
+
+  /** Protokollposten als Rechnungsposition übernehmen (Brutto → Netto). */
+  const takeProtocolCharge = (charge: PendingProtocolCharge) => {
+    takenChargesRef.current = [...takenChargesRef.current, charge];
+    setPendingCharges((prev) => prev.filter((c) => c.id !== charge.id));
+    setItems((prev) => [
+      ...prev,
+      {
+        product_name: charge.label,
+        description: charge.description ?? "",
+        quantity: 1,
+        duration: 1,
+        unit: "pauschal",
+        unit_price: Math.round((charge.gross / 1.19) * 100) / 100,
+        discount_percent: 0,
+      } as FormLine,
+    ]);
+  };
+
   // Bei Wechsel der Anfrage die Lieferadresse aus dem Anfrageformular übernehmen.
   useEffect(() => {
     if (skipDefaults.current) {
