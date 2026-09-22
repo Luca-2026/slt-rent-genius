@@ -1281,7 +1281,54 @@ export function InquiryOfferForm({
 
 
 
-      <Button onClick={send} disabled={disabled || sending} className="w-full">
+      {inquiryType === "rental" && inventoryIssues.length > 0 && (
+        <div
+          className={
+            "rounded-lg border p-3 text-sm " +
+            (inventoryIssues.some((i) => i.severity === "over")
+              ? "border-destructive/40 bg-destructive/5"
+              : "border-amber-500/40 bg-amber-500/5")
+          }
+        >
+          <div className="flex items-start gap-2">
+            <AlertTriangle
+              className={
+                "h-4 w-4 shrink-0 mt-0.5 " +
+                (inventoryIssues.some((i) => i.severity === "over") ? "text-destructive" : "text-amber-600")
+              }
+            />
+            <div className="min-w-0 space-y-1">
+              <p className="font-medium">
+                {inventoryIssues.some((i) => i.severity === "over")
+                  ? "Bestand reicht im Zeitraum nicht aus"
+                  : "Bestand nicht gepflegt"}
+              </p>
+              {inventoryIssues.map((issue, i) => (
+                <p key={i} className="text-xs break-words text-muted-foreground">
+                  {issue.message}
+                </p>
+              ))}
+              <p className="text-xs text-muted-foreground">
+                Der Versand ist weiterhin möglich – er muss nur einmal bestätigt werden.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <InventoryWarningDialog
+        open={warningOpen}
+        onOpenChange={setWarningOpen}
+        issues={inventoryIssues}
+        documentLabel={isInvoice ? "Rechnung" : "Angebot"}
+        onConfirm={() => {
+          inventoryAckRef.current = true;
+          setWarningOpen(false);
+          void send();
+        }}
+      />
+
+      <Button onClick={send} disabled={disabled || sending || checking} className="w-full">
         <Send className="h-4 w-4 mr-2" />
         {isInvoice
           ? sending
