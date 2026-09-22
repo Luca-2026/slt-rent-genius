@@ -983,6 +983,10 @@ function generateReturnProtocolHtml(data: {
       </div>
     </div>` : ""}
 
+    ${damageSection}
+    ${extraChargesSection}
+    ${idSection}
+
     ${(() => {
       const cleanNotes = data.notes ? stripNoteTags(data.notes) : null;
       return cleanNotes ? `
