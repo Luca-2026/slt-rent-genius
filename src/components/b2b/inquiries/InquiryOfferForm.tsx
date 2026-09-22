@@ -178,6 +178,8 @@ interface Props {
   };
   /** Bereits geleistete Zahlungen (z. B. Vorkasse auf das Angebot) – nur Rechnungen. */
   defaultPayments?: OfferPayment[];
+  /** Mietzeitraum der Anfrage (YYYY-MM-DD) – Basis für die Bestandsprüfung. */
+  rentalPeriod?: { start?: string | null; end?: string | null };
 }
 
 /** Erfasste (Teil-)Zahlung, die auf der Rechnung abgezogen wird. */
@@ -206,6 +208,7 @@ export function InquiryOfferForm({
   defaultServicePeriod,
   defaultCosts,
   defaultPayments,
+  rentalPeriod,
 }: Props) {
   const isInvoice = mode === "invoice";
   const isSupplement = isInvoice && invoiceKind === "supplement";
