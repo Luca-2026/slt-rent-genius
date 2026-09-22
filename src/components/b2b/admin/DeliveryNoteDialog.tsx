@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
@@ -8,7 +7,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,7 +15,13 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { SignaturePad } from "@/components/b2b/SignaturePad";
-import { ClipboardCheck, RefreshCw, Package, Clock, ShieldCheck, UserCheck, PenTool, AlertTriangle, Camera, Upload, X, Gauge } from "lucide-react";
+import { ProtocolWizard, type WizardStep } from "@/components/b2b/protocols/ProtocolWizard";
+import { DamagesStep } from "@/components/b2b/protocols/DamagesStep";
+import { IdCheckStep } from "@/components/b2b/protocols/IdCheckStep";
+import {
+  CLEANLINESS_HINT, FUEL_LEVELS, isMachineLike, serializeDamages, type ProtocolDamage,
+} from "@/components/b2b/protocols/protocolShared";
+import { ClipboardCheck, RefreshCw, Clock, ShieldCheck, CheckCircle2, Download, Mail } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import type { Offer, OfferItem } from "@/components/b2b/admin/AdminOffersTab";
@@ -28,11 +32,12 @@ interface DeliveryNoteDraft {
   staffName: string;
   notes: string;
   knownDefects: string;
-  additionalDefects: string;
   customerNotPresent: boolean;
   agbAccepted: boolean;
   offerAccepted: boolean;
   itemsReceived: boolean;
+  idChecked: boolean;
+  idDocType: string;
   operatingHours: string;
   fuelLevel: string;
   cleanlinessRating: number;
@@ -77,7 +82,6 @@ export function DeliveryNoteDialog({
   onCreated,
 }: Props) {
   const { toast } = useToast();
-  const { user } = useAuth();
   const [saving, setSaving] = useState(false);
   const [customerSignature, setCustomerSignature] = useState<string | null>(null);
   const [customerNotPresent, setCustomerNotPresent] = useState(false);
@@ -85,17 +89,19 @@ export function DeliveryNoteDialog({
   const [staffName, setStaffName] = useState("");
   const [notes, setNotes] = useState("");
   const [knownDefects, setKnownDefects] = useState("");
-  const [additionalDefects, setAdditionalDefects] = useState("");
-  const [defectPhotos, setDefectPhotos] = useState<{ file: File; preview: string }[]>([]);
-  const [uploadingPhotos, setUploadingPhotos] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [damages, setDamages] = useState<ProtocolDamage[]>([]);
   const [agbAccepted, setAgbAccepted] = useState(false);
   const [offerAccepted, setOfferAccepted] = useState(false);
   const [itemsReceived, setItemsReceived] = useState(false);
+  const [idChecked, setIdChecked] = useState(false);
+  const [idDocType, setIdDocType] = useState("");
   const [currentTime, setCurrentTime] = useState(new Date());
   const [operatingHours, setOperatingHours] = useState("");
   const [fuelLevel, setFuelLevel] = useState("");
   const [cleanlinessRating, setCleanlinessRating] = useState<number>(0);
+  const [result, setResult] = useState<{ number: string; fileUrl: string | null; emailSent: boolean } | null>(null);
+  const [resending, setResending] = useState(false);
+  const [createdId, setCreatedId] = useState<string | null>(null);
 
   const lastInitKey = useRef<string | null>(null);
 
@@ -106,45 +112,37 @@ export function DeliveryNoteDialog({
     setStaffName("");
     setNotes("");
     setKnownDefects("");
-    setAdditionalDefects("");
-    setDefectPhotos([]);
+    setDamages([]);
     setAgbAccepted(false);
     setOfferAccepted(false);
     setItemsReceived(false);
+    setIdChecked(false);
+    setIdDocType("");
     setOperatingHours("");
     setFuelLevel("");
     setCleanlinessRating(0);
   }, []);
 
-  // Save draft on every relevant state change
   const saveDraft = useCallback(() => {
     if (!open || !offer) return;
-    const contextKey = offer.id;
-    deliveryNoteDraftStore.key = contextKey;
+    deliveryNoteDraftStore.key = offer.id;
     deliveryNoteDraftStore.data = {
-      customerSignature,
-      staffSignature,
-      staffName,
-      notes,
-      knownDefects,
-      additionalDefects,
-      customerNotPresent,
-      agbAccepted,
-      offerAccepted,
-      itemsReceived,
-      operatingHours,
-      fuelLevel,
-      cleanlinessRating,
+      customerSignature, staffSignature, staffName, notes, knownDefects,
+      customerNotPresent, agbAccepted, offerAccepted, itemsReceived,
+      idChecked, idDocType, operatingHours, fuelLevel, cleanlinessRating,
     };
-  }, [open, offer, customerSignature, staffSignature, staffName, notes, knownDefects, additionalDefects, customerNotPresent, agbAccepted, offerAccepted, itemsReceived, operatingHours, fuelLevel, cleanlinessRating]);
+  }, [open, offer, customerSignature, staffSignature, staffName, notes, knownDefects, customerNotPresent, agbAccepted, offerAccepted, itemsReceived, idChecked, idDocType, operatingHours, fuelLevel, cleanlinessRating]);
 
   useEffect(() => { saveDraft(); }, [saveDraft]);
 
   useEffect(() => {
-    if (!open) lastInitKey.current = null;
+    if (!open) {
+      lastInitKey.current = null;
+      setResult(null);
+      setCreatedId(null);
+    }
   }, [open]);
 
-  // Restore draft when dialog opens
   useEffect(() => {
     if (!open || !offer) return;
     const contextKey = offer.id;
@@ -158,11 +156,12 @@ export function DeliveryNoteDialog({
       setStaffName(d.staffName);
       setNotes(d.notes);
       setKnownDefects(d.knownDefects);
-      setAdditionalDefects(d.additionalDefects);
       setCustomerNotPresent(d.customerNotPresent);
       setAgbAccepted(d.agbAccepted);
       setOfferAccepted(d.offerAccepted);
       setItemsReceived(d.itemsReceived);
+      setIdChecked(d.idChecked);
+      setIdDocType(d.idDocType);
       setOperatingHours(d.operatingHours);
       setFuelLevel(d.fuelLevel);
       setCleanlinessRating(d.cleanlinessRating);
@@ -172,81 +171,19 @@ export function DeliveryNoteDialog({
     resetForm();
   }, [open, offer, resetForm]);
 
-  // Update timestamp every second while dialog is open
-  useState(() => {
+  useEffect(() => {
+    if (!open) return;
     const interval = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(interval);
-  });
+  }, [open]);
 
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
 
-  const handlePhotoAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    const newPhotos = files.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }));
-    setDefectPhotos((prev) => [...prev, ...newPhotos]);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
-
-  const removePhoto = (index: number) => {
-    setDefectPhotos((prev) => {
-      URL.revokeObjectURL(prev[index].preview);
-      return prev.filter((_, i) => i !== index);
-    });
-  };
-
-  const uploadPhotos = async (profileId: string): Promise<string[]> => {
-    if (defectPhotos.length === 0) return [];
-    setUploadingPhotos(true);
-    const paths: string[] = [];
-    try {
-      for (const photo of defectPhotos) {
-        const ext = photo.file.name.split(".").pop() || "jpg";
-        const path = `defect-photos/${profileId}/${Date.now()}-${Math.random().toString(36).slice(2, 6)}.${ext}`;
-        const { error: uploadError } = await supabase.storage
-          .from("b2b-documents")
-          .upload(path, photo.file, { upsert: true });
-        if (uploadError) {
-          console.error("Photo upload error:", uploadError);
-          continue;
-        }
-        paths.push(path);
-      }
-    } finally {
-      setUploadingPhotos(false);
-    }
-    return paths;
-  };
-
   const handleGenerate = async () => {
-    if (!offer) return;
-    if (!customerNotPresent && !customerSignature) {
-      toast({ title: "Kundenunterschrift fehlt", description: "Bitte lassen Sie den Kunden unterschreiben oder aktivieren Sie 'Kunde nicht vor Ort'.", variant: "destructive" });
-      return;
-    }
-    if (!staffSignature) {
-      toast({ title: "Mitarbeiter-Unterschrift fehlt", description: "Bitte unterschreiben Sie als SLT-Mitarbeiter.", variant: "destructive" });
-      return;
-    }
-    if (!staffName.trim()) {
-      toast({ title: "Mitarbeitername fehlt", description: "Bitte geben Sie Ihren Namen ein.", variant: "destructive" });
-      return;
-    }
-    if (!customerNotPresent && !agbAccepted) {
-      toast({ title: "AGB nicht akzeptiert", description: "Der Kunde muss die AGB akzeptieren.", variant: "destructive" });
-      return;
-    }
-    if (!customerNotPresent && !offerAccepted) {
-      toast({ title: "Angebotsannahme fehlt", description: "Der Kunde muss das Angebot bestätigen.", variant: "destructive" });
-      return;
-    }
-
+    if (!offer || !profile) return;
     setSaving(true);
     try {
-      // Upload photos first
-      const photoUrls = await uploadPhotos(profile!.id);
+      const damagePayload = await serializeDamages(profile.id, damages);
 
       const { data, error } = await supabase.functions.invoke("generate-delivery-note", {
         body: {
@@ -256,10 +193,11 @@ export function DeliveryNoteDialog({
           staff_name: staffName.trim(),
           notes: notes || undefined,
           known_defects: knownDefects || undefined,
-          additional_defects: additionalDefects || undefined,
-          photo_urls: photoUrls.length > 0 ? photoUrls : undefined,
-          send_email: !customerNotPresent, // Only send email if customer signed on-site
+          damages: damagePayload,
+          send_email: !customerNotPresent,
           agb_accepted: customerNotPresent ? false : true,
+          id_checked: idChecked,
+          id_check_type: idDocType || undefined,
           operating_hours: operatingHours || undefined,
           fuel_level: fuelLevel || undefined,
           cleanliness_rating: cleanlinessRating > 0 ? cleanlinessRating : undefined,
@@ -269,27 +207,16 @@ export function DeliveryNoteDialog({
 
       if (error) throw error;
 
-      const dnNumber = data.delivery_note?.delivery_note_number;
-      if (customerNotPresent) {
-        toast({
-          title: "Übergabeprotokoll erstellt!",
-          description: `${dnNumber} wurde erstellt und wartet auf die Kundenunterschrift im Portal. Sie können es jetzt herunterladen.`,
-        });
-      } else {
-        toast({
-          title: "Übergabeprotokoll erstellt!",
-          description: data.email_sent
-            ? `${dnNumber} wurde erstellt und per E-Mail versendet.`
-            : `${dnNumber} wurde erstellt. (E-Mail nicht konfiguriert)`,
-        });
-      }
+      setResult({
+        number: data.delivery_note?.delivery_note_number,
+        fileUrl: data.delivery_note?.file_url || null,
+        emailSent: !!data.email_sent,
+      });
+      setCreatedId(data.delivery_note?.id || null);
 
-      resetForm();
       deliveryNoteDraftStore.key = null;
       deliveryNoteDraftStore.data = null;
-      lastInitKey.current = null;
       onCreated();
-      onOpenChange(false);
     } catch (error: any) {
       toast({
         title: "Fehler",
@@ -301,390 +228,334 @@ export function DeliveryNoteDialog({
     }
   };
 
+  const sendToCustomer = async () => {
+    if (!createdId) return;
+    setResending(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("resend-protocol-email", {
+        body: { type: "delivery_note", id: createdId },
+      });
+      if (error) throw error;
+      toast({ title: "Protokoll versendet", description: `E-Mail an ${data?.recipient || "den Kunden"} gesendet.` });
+      setResult((r) => (r ? { ...r, emailSent: true } : r));
+    } catch (err: any) {
+      toast({ title: "Fehler", description: err.message || "E-Mail konnte nicht gesendet werden.", variant: "destructive" });
+    } finally {
+      setResending(false);
+    }
+  };
+
   if (!offer || !profile) return null;
 
   const items = offerItems.filter((i) => i.offer_id === offer.id);
-  const EQUIPMENT_KEYWORDS = ['bagger', 'dumper', 'aggregat', 'radlader', 'minibagger'];
-  const needsEquipmentFields = items.some(item =>
-    EQUIPMENT_KEYWORDS.some(kw => item.product_name.toLowerCase().includes(kw))
-  );
-  const allValid = !!staffSignature && !!staffName.trim() && (customerNotPresent || (!!customerSignature && agbAccepted && offerAccepted && itemsReceived));
+  const itemNames = items.map((i) => i.product_name);
+  const needsEquipmentFields = isMachineLike(itemNames);
+  const customerName = `${profile.contact_first_name} ${profile.contact_last_name}`.trim();
 
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100vw-1.5rem)] max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <ClipboardCheck className="h-5 w-5" />
-            Übergabeprotokoll erstellen
-          </DialogTitle>
-          <DialogDescription>
-            Rechtssichere Übergabebestätigung mit AGB-Akzeptanz, Angebotsannahme und beidseitiger Unterschrift.
-          </DialogDescription>
-        </DialogHeader>
+  const legalDone = customerNotPresent || (agbAccepted && offerAccepted && itemsReceived);
+  const signaturesDone = !!staffSignature && !!staffName.trim() && (customerNotPresent || !!customerSignature);
+  const equipmentDone = !needsEquipmentFields ? cleanlinessRating > 0 : (!!operatingHours && !!fuelLevel && cleanlinessRating > 0);
+  const allValid = legalDone && signaturesDone && idChecked;
 
-        {/* Customer & Offer Info */}
-        <Card>
-          <CardContent className="p-4 space-y-2">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div className="min-w-0">
-                <p className="font-semibold text-foreground truncate">{profile.company_name}</p>
-                <p className="text-sm text-muted-foreground truncate">
-                  {profile.contact_first_name} {profile.contact_last_name}
-                </p>
-              </div>
-              <div className="sm:text-right flex sm:flex-col items-center sm:items-end gap-2 sm:gap-1">
-                <Badge variant="outline" className="text-primary border-primary shrink-0">
-                  {offer.offer_number}
-                </Badge>
-                {reservation && (
-                  <p className="text-xs text-muted-foreground">
-                    Standort: <span className="capitalize">{reservation.location}</span>
-                  </p>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+  const missing: string[] = [];
+  if (!idChecked) missing.push("Personalausweis abgleichen");
+  if (!legalDone) missing.push("rechtliche Bestätigungen");
+  if (!signaturesDone) missing.push("Unterschriften und Mitarbeitername");
 
-        <Separator />
-
-        {/* Items */}
+  const steps: WizardStep[] = [
+    {
+      id: "items",
+      title: "Artikel prüfen",
+      summary: `${items.length} Position${items.length === 1 ? "" : "en"}`,
+      done: true,
+      content: (
         <div className="space-y-2">
-          <Label className="text-base font-semibold flex items-center gap-2">
-            <Package className="h-4 w-4" />
-            Mietartikel zur Übergabe
-          </Label>
           {items.map((item) => (
             <Card key={item.id}>
-              <CardContent className="p-3 flex items-center justify-between">
-                <div>
+              <CardContent className="p-3 flex items-center justify-between gap-3">
+                <div className="min-w-0">
                   <p className="font-medium text-sm">{item.product_name}</p>
-                  {item.description && (
-                    <p className="text-xs text-muted-foreground">{item.description}</p>
-                  )}
+                  {item.description && <p className="text-xs text-muted-foreground">{item.description}</p>}
                   {item.rental_start && (
                     <p className="text-xs text-muted-foreground">
-                      {formatDate(item.rental_start)}
-                      {item.rental_end ? ` – ${formatDate(item.rental_end)}` : ""}
+                      {formatDate(item.rental_start)}{item.rental_end ? ` – ${formatDate(item.rental_end)}` : ""}
                     </p>
                   )}
                 </div>
-                <Badge variant="secondary" className="text-xs">
-                  {item.quantity}x
-                </Badge>
+                <Badge variant="secondary" className="text-xs shrink-0">{item.quantity}x</Badge>
               </CardContent>
             </Card>
           ))}
-        </div>
-
-        <Separator />
-
-        {/* Timestamp */}
-        <Card className="bg-muted/50">
-          <CardContent className="p-3 flex items-center gap-3">
-            <Clock className="h-4 w-4 text-muted-foreground" />
-            <div>
-              <p className="text-xs text-muted-foreground">Übergabe-Zeitstempel</p>
-              <p className="text-sm font-medium">
-                {format(currentTime, "dd.MM.yyyy, HH:mm:ss", { locale: de })} Uhr
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Known Defects */}
-        <div className="space-y-2">
-          <Label className="text-base font-semibold flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4" />
-            Mängeldokumentation
-          </Label>
+          <Card className="bg-muted/50">
+            <CardContent className="p-3 flex items-center gap-3">
+              <Clock className="h-4 w-4 text-muted-foreground" />
+              <div>
+                <p className="text-xs text-muted-foreground">Übergabe-Zeitstempel</p>
+                <p className="text-sm font-medium">{format(currentTime, "dd.MM.yyyy, HH:mm:ss", { locale: de })} Uhr</p>
+              </div>
+            </CardContent>
+          </Card>
           <div>
-            <Label className="text-xs">Bekannte Mängel (vor Übergabe)</Label>
+            <Label className="text-xs">Bekannte Mängel vor Übergabe (optional)</Label>
             <Textarea
               value={knownDefects}
               onChange={(e) => setKnownDefects(e.target.value)}
-              placeholder="z.B. Kratzer am Gehäuse, leichte Gebrauchsspuren am Hydraulikarm..."
+              placeholder="z. B. Kratzer am Gehäuse, Gebrauchsspuren am Hydraulikarm"
               rows={2}
               className="text-sm"
             />
           </div>
           <div>
-            <Label className="text-xs">Weitere Mängel bei Übergabe</Label>
+            <Label className="text-xs">Anmerkungen (optional)</Label>
             <Textarea
-              value={additionalDefects}
-              onChange={(e) => setAdditionalDefects(e.target.value)}
-              placeholder="z.B. Bei Übergabe festgestellte zusätzliche Mängel..."
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="z. B. besondere Hinweise, Absprachen"
               rows={2}
               className="text-sm"
             />
-          </div>
-
-          {/* Photo Upload */}
-          <div>
-            <Label className="text-xs flex items-center gap-1">
-              <Camera className="h-3 w-3" />
-              Fotos (Schadensdokumentation)
-            </Label>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handlePhotoAdd}
-              className="hidden"
-            />
-            <div className="flex flex-wrap gap-2 mt-1">
-              {defectPhotos.map((photo, idx) => (
-                <div key={idx} className="relative group">
-                  <img
-                    src={photo.preview}
-                    alt={`Mangel ${idx + 1}`}
-                    className="h-20 w-20 object-cover rounded-md border"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removePhoto(idx)}
-                    className="absolute -top-1.5 -right-1.5 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="h-20 w-20 border-2 border-dashed border-muted-foreground/30 rounded-md flex flex-col items-center justify-center gap-1 text-muted-foreground hover:border-primary hover:text-primary transition-colors"
-              >
-                <Upload className="h-4 w-4" />
-                <span className="text-[10px]">Foto</span>
-              </button>
-            </div>
           </div>
         </div>
-
-        {/* Equipment Details (Bagger/Dumper/Aggregate) */}
-        {needsEquipmentFields && (
-          <>
-            <Separator />
-            <div className="space-y-3">
-              <Label className="text-base font-semibold flex items-center gap-2">
-                <Gauge className="h-4 w-4" />
-                Gerätedaten bei Übergabe
-              </Label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <Label className="text-xs">Betriebsstunden</Label>
-                  <Input
-                    value={operatingHours}
-                    onChange={(e) => setOperatingHours(e.target.value)}
-                    placeholder="z.B. 1.250 Bh"
-                    className="text-sm"
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs">Tankfüllstand</Label>
-                  <Select value={fuelLevel} onValueChange={setFuelLevel}>
-                    <SelectTrigger className="text-sm h-9">
-                      <SelectValue placeholder="Auswählen" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="voll">Voll (100%)</SelectItem>
-                      <SelectItem value="dreiviertel">¾ (75%)</SelectItem>
-                      <SelectItem value="halb">½ (50%)</SelectItem>
-                      <SelectItem value="viertel">¼ (25%)</SelectItem>
-                      <SelectItem value="leer">Leer</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+      ),
+    },
+    {
+      id: "equipment",
+      title: "Gerätedaten",
+      summary: needsEquipmentFields
+        ? `Betriebsstunden, Tank, Sauberkeit${cleanlinessRating ? ` ${cleanlinessRating}/5` : ""}`
+        : `Sauberkeit${cleanlinessRating ? ` ${cleanlinessRating}/5` : " 1–5"}`,
+      done: equipmentDone,
+      content: (
+        <div className="space-y-3">
+          {needsEquipmentFields && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <Label className="text-xs">Betriebsstunden</Label>
+                <Input
+                  value={operatingHours}
+                  onChange={(e) => setOperatingHours(e.target.value)}
+                  placeholder="z. B. 1.250 Bh"
+                  inputMode="decimal"
+                  className="text-sm"
+                />
               </div>
               <div>
-                <Label className="text-xs">Sauberkeit des Mietgerätes</Label>
-                <div className="flex gap-2 mt-1">
-                  {[1, 2, 3, 4, 5].map((n) => (
-                    <button
-                      key={n}
-                      type="button"
-                      onClick={() => setCleanlinessRating(n)}
-                      className={`w-10 h-10 rounded-lg border-2 font-semibold text-sm transition-colors ${
-                        cleanlinessRating === n
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-border hover:border-primary/50"
-                      }`}
-                    >
-                      {n}
-                    </button>
-                  ))}
-                </div>
-                <p className="text-[10px] text-muted-foreground mt-1">
-                  1 = Sehr verschmutzt · 5 = Sauber
-                </p>
+                <Label className="text-xs">Tankfüllstand</Label>
+                <Select value={fuelLevel} onValueChange={setFuelLevel}>
+                  <SelectTrigger className="text-sm h-10"><SelectValue placeholder="Auswählen" /></SelectTrigger>
+                  <SelectContent>
+                    {FUEL_LEVELS.map((f) => <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>)}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
-          </>
-        )}
-
-        <Separator />
-
-        {/* Notes */}
-        <div>
-          <Label className="text-xs">Anmerkungen (optional)</Label>
-          <Textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="z.B. besondere Hinweise, Absprachen..."
-            rows={2}
-            className="text-sm"
-          />
+          )}
+          <div>
+            <Label className="text-xs">Sauberkeit des Mietgerätes</Label>
+            <div className="flex gap-2 mt-1">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  onClick={() => setCleanlinessRating(n)}
+                  className={`h-11 w-11 rounded-lg border-2 font-semibold text-sm transition-colors ${
+                    cleanlinessRating === n ? "border-primary bg-primary text-primary-foreground" : "border-border hover:border-primary/50"
+                  }`}
+                >
+                  {n}
+                </button>
+              ))}
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-1">{CLEANLINESS_HINT}</p>
+          </div>
+          {!needsEquipmentFields && (
+            <p className="text-xs text-muted-foreground">
+              Betriebsstunden und Tankfüllstand erscheinen nur bei Maschinen mit Motor.
+            </p>
+          )}
         </div>
+      ),
+    },
+    {
+      id: "damages",
+      title: "Schäden",
+      optional: true,
+      summary: damages.length ? `${damages.length} erfasst` : "Neuen Schaden hinzufügen",
+      done: damages.length > 0,
+      content: (
+        <DamagesStep
+          damages={damages}
+          onChange={setDamages}
+          itemNames={itemNames}
+          context="die bei der Übergabe bereits vorhanden sind"
+        />
+      ),
+    },
+    {
+      id: "id",
+      title: "Personalausweis abgleichen",
+      summary: idChecked ? "Abgeglichen" : "Pflichtschritt",
+      done: idChecked,
+      content: (
+        <IdCheckStep
+          checked={idChecked}
+          onCheckedChange={setIdChecked}
+          docType={idDocType}
+          onDocTypeChange={setIdDocType}
+          customerName={customerName}
+        />
+      ),
+    },
+    {
+      id: "legal",
+      title: "Bestätigungen",
+      summary: customerNotPresent ? "Kunde nicht vor Ort" : legalDone ? "Vollständig" : "AGB, Angebot, Empfang",
+      done: legalDone,
+      content: (
+        <div className="space-y-3">
+          <div className="flex items-start space-x-3 p-3 border-2 border-amber-300 rounded-lg bg-amber-50">
+            <Checkbox
+              id="customer-not-present"
+              checked={customerNotPresent}
+              onCheckedChange={(checked) => {
+                setCustomerNotPresent(checked === true);
+                if (checked) {
+                  setCustomerSignature(null);
+                  setAgbAccepted(false);
+                  setOfferAccepted(false);
+                  setItemsReceived(false);
+                }
+              }}
+            />
+            <label htmlFor="customer-not-present" className="text-sm leading-relaxed cursor-pointer">
+              <strong>Kunde ist nicht vor Ort</strong> – Das Protokoll wird ohne Kundenunterschrift erstellt und dem
+              Kunden im Portal zur digitalen Unterschrift bereitgestellt.
+            </label>
+          </div>
 
-        <Separator />
-
-        {/* Customer presence toggle */}
-        <div className="flex items-start space-x-3 p-4 border-2 border-amber-300 rounded-lg bg-amber-50">
-          <Checkbox
-            id="customer-not-present"
-            checked={customerNotPresent}
-            onCheckedChange={(checked) => {
-              setCustomerNotPresent(checked === true);
-              if (checked) {
-                setCustomerSignature(null);
-                setAgbAccepted(false);
-                setOfferAccepted(false);
-                setItemsReceived(false);
-              }
-            }}
-          />
-          <label htmlFor="customer-not-present" className="text-sm leading-relaxed cursor-pointer">
-            <strong>Kunde ist nicht vor Ort</strong> – Das Protokoll wird ohne Kundenunterschrift erstellt und dem Kunden im Portal zur digitalen Unterschrift bereitgestellt. Sie können das Protokoll trotzdem sofort herunterladen.
-          </label>
-        </div>
-
-        {/* Legal Confirmations - only when customer is present */}
-        {!customerNotPresent && (
-          <>
-            <div className="space-y-3">
-              <Label className="text-base font-semibold flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4" />
-                Rechtliche Bestätigungen
-              </Label>
-
-              {/* Items received confirmation */}
+          {!customerNotPresent && (
+            <>
               <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
-                <Checkbox
-                  id="items-received"
-                  checked={itemsReceived}
-                  onCheckedChange={(checked) => setItemsReceived(checked === true)}
-                />
+                <Checkbox id="items-received" checked={itemsReceived} onCheckedChange={(c) => setItemsReceived(c === true)} />
                 <label htmlFor="items-received" className="text-sm leading-relaxed cursor-pointer">
-                  Der Kunde bestätigt hiermit den <strong>vollständigen und ordnungsgemäßen Empfang</strong> aller 
-                  oben aufgeführten Mietgegenstände. Etwaige Mängel sind in der Mängeldokumentation vermerkt.
+                  Der Kunde bestätigt den <strong>vollständigen und ordnungsgemäßen Empfang</strong> aller aufgeführten
+                  Mietgegenstände. Etwaige Mängel sind dokumentiert.
                 </label>
               </div>
-
-              {/* Offer acceptance */}
               <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
-                <Checkbox
-                  id="offer-accept"
-                  checked={offerAccepted}
-                  onCheckedChange={(checked) => setOfferAccepted(checked === true)}
-                />
+                <Checkbox id="offer-accept" checked={offerAccepted} onCheckedChange={(c) => setOfferAccepted(c === true)} />
                 <label htmlFor="offer-accept" className="text-sm leading-relaxed cursor-pointer">
-                  Der Kunde bestätigt hiermit die Annahme des Angebots{" "}
-                  <strong>{offer.offer_number}</strong> der SLT Technology Group GmbH & Co. KG 
-                  und erkennt die darin enthaltenen Konditionen, Preise und Mietbedingungen als verbindlich an 
+                  Der Kunde bestätigt die Annahme des Angebots <strong>{offer.offer_number}</strong> der
+                  SLT Technology Group GmbH & Co. KG und erkennt die enthaltenen Konditionen als verbindlich an
                   (§§ 145 ff. BGB).
                 </label>
               </div>
-
-              {/* AGB acceptance */}
               <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
-                <Checkbox
-                  id="agb-accept"
-                  checked={agbAccepted}
-                  onCheckedChange={(checked) => setAgbAccepted(checked === true)}
-                />
+                <Checkbox id="agb-accept" checked={agbAccepted} onCheckedChange={(c) => setAgbAccepted(c === true)} />
                 <label htmlFor="agb-accept" className="text-sm leading-relaxed cursor-pointer">
-                  Der Kunde erklärt hiermit, die{" "}
-                  <a href="/agb" target="_blank" className="text-primary underline hover:text-primary/80">
-                    Allgemeinen Geschäftsbedingungen (AGB)
-                  </a>{" "}
-                  der SLT Technology Group GmbH & Co. KG vor Vertragsschluss zur Kenntnis genommen 
-                  und deren Geltung ausdrücklich anerkannt zu haben.
+                  Der Kunde erklärt, die{" "}
+                  <a href="/agb" target="_blank" className="text-primary underline">Allgemeinen Geschäftsbedingungen</a>{" "}
+                  zur Kenntnis genommen und anerkannt zu haben. Der Mietgegenstand ist pfleglich zu behandeln und im
+                  übernommenen Zustand zurückzugeben.
                 </label>
               </div>
-            </div>
-
-            <Separator />
-
-            {/* Customer Signature */}
+            </>
+          )}
+        </div>
+      ),
+    },
+    {
+      id: "signature",
+      title: "Unterschrift",
+      summary: signaturesDone ? "Erfasst" : "Kunde und Mitarbeiter",
+      done: signaturesDone,
+      content: (
+        <div className="space-y-4">
+          {!customerNotPresent && (
             <div className="space-y-2">
-              <Label className="text-base font-semibold flex items-center gap-2">
-                <UserCheck className="h-4 w-4" />
-                Unterschrift Mieter (Kunde)
-              </Label>
-              <p className="text-xs text-muted-foreground">
-                {profile.contact_first_name} {profile.contact_last_name} – {profile.company_name}
-              </p>
-              <SignaturePad onSignatureChange={setCustomerSignature} />
+              <Label className="text-sm font-semibold">Unterschrift Mieter</Label>
+              <p className="text-xs text-muted-foreground">{customerName} – {profile.company_name}</p>
+              <SignaturePad onSignatureChange={setCustomerSignature} height={180} />
             </div>
-          </>
-        )}
-
-        {customerNotPresent && (
-          <div className="p-4 bg-muted/50 rounded-lg border border-dashed">
-            <p className="text-sm text-muted-foreground text-center">
-              📋 Das Protokoll wird dem Kunden <strong>{profile.contact_first_name} {profile.contact_last_name}</strong> im B2B-Portal zur digitalen Unterschrift bereitgestellt.
-              Die AGB-Akzeptanz und Bestätigungen erfolgen dann durch den Kunden im Portal.
-            </p>
-          </div>
-        )}
-
-        <Separator />
-
-        {/* Staff Signature */}
-        <div className="space-y-2">
-          <Label className="text-base font-semibold flex items-center gap-2">
-            <PenTool className="h-4 w-4" />
-            Unterschrift SLT-Mitarbeiter
-          </Label>
-          <div>
+          )}
+          <div className="space-y-2">
             <Label className="text-xs">Name des Mitarbeiters *</Label>
             <Input
               value={staffName}
               onChange={(e) => setStaffName(e.target.value)}
-              placeholder="Vor- und Nachname des SLT-Mitarbeiters"
+              placeholder="Vor- und Nachname"
               className="text-sm"
             />
+            <SignaturePad onSignatureChange={setStaffSignature} height={180} label="Unterschrift SLT-Mitarbeiter" />
           </div>
-          <SignaturePad onSignatureChange={setStaffSignature} label="Unterschrift SLT-Mitarbeiter" />
         </div>
+      ),
+    },
+  ];
 
-        <Separator />
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="w-[calc(100vw-1.5rem)] max-w-3xl max-h-[92vh] overflow-y-auto p-4 sm:p-6">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <ClipboardCheck className="h-5 w-5" />
+            Übergabe handhaben
+          </DialogTitle>
+          <DialogDescription>
+            {profile.company_name} · {offer.offer_number}
+            {reservation ? ` · Standort ${reservation.location}` : ""}
+          </DialogDescription>
+        </DialogHeader>
 
-        {/* Actions */}
-        <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 sm:justify-end pt-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto">
-            Abbrechen
-          </Button>
-          <Button
-            onClick={handleGenerate}
-            disabled={saving || !allValid}
-            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover w-full sm:w-auto"
-          >
-            {saving ? (
-              <>
-                <RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />
-                Wird erstellt...
-              </>
-            ) : (
-              <>
-                <ShieldCheck className="h-4 w-4 mr-1.5" />
-                <span className="truncate">{customerNotPresent ? "Protokoll erstellen" : "Erstellen & senden"}</span>
-              </>
-            )}
-          </Button>
-        </div>
+        {result ? (
+          <div className="space-y-4 text-center py-4">
+            <CheckCircle2 className="h-10 w-10 text-primary mx-auto" />
+            <div>
+              <p className="font-semibold">Übergabeprotokoll {result.number} erstellt</p>
+              <p className="text-sm text-muted-foreground">
+                {result.emailSent ? "Das Protokoll wurde an den Kunden gesendet." : "Das Protokoll wurde noch nicht versendet."}
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2 sm:justify-center">
+              {result.fileUrl && (
+                <Button variant="outline" asChild>
+                  <a href={result.fileUrl} target="_blank" rel="noopener noreferrer">
+                    <Download className="h-4 w-4 mr-1.5" />
+                    Protokoll herunterladen
+                  </a>
+                </Button>
+              )}
+              <Button onClick={sendToCustomer} disabled={resending || !createdId}>
+                {resending ? <RefreshCw className="h-4 w-4 mr-1.5 animate-spin" /> : <Mail className="h-4 w-4 mr-1.5" />}
+                {result.emailSent ? "Erneut an Kunden senden" : "An Kunden senden"}
+              </Button>
+              <Button variant="ghost" onClick={() => { resetForm(); onOpenChange(false); }}>Schließen</Button>
+            </div>
+          </div>
+        ) : (
+          <ProtocolWizard
+            steps={steps}
+            missingHint={missing.length ? missing.join(", ") : null}
+            footer={
+              <div className="flex flex-col-reverse sm:flex-row gap-2 sm:justify-end">
+                <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto">
+                  Abbrechen
+                </Button>
+                <Button
+                  onClick={handleGenerate}
+                  disabled={saving || !allValid}
+                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover w-full sm:w-auto"
+                >
+                  {saving ? (
+                    <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird erstellt...</>
+                  ) : (
+                    <><ShieldCheck className="h-4 w-4 mr-1.5" />Übergabe abschließen</>
+                  )}
+                </Button>
+              </div>
+            }
+          />
+        )}
       </DialogContent>
     </Dialog>
   );

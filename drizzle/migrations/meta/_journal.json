@@ -15,6 +15,20 @@
       "when": 1790054828854,
       "tag": "0001_fix_inventory_range_bounds",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790056380328,
+      "tag": "0002_protocol_damages_and_extra_charges",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790056436502,
+      "tag": "0003_link_protocols_to_inquiries",
+      "breakpoints": true
     }
   ]
 }

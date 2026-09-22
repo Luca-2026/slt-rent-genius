@@ -312,10 +312,14 @@ export type Database = {
           file_name: string | null
           file_url: string | null
           id: string
+          id_check_type: string | null
+          id_checked: boolean
+          id_checked_at: string | null
           known_defects: string | null
           notes: string | null
           offer_id: string | null
           photo_urls: string[] | null
+          rental_inquiry_id: string | null
           reservation_id: string | null
           signature_data: string | null
           signed_at: string | null
@@ -336,10 +340,14 @@ export type Database = {
           file_name?: string | null
           file_url?: string | null
           id?: string
+          id_check_type?: string | null
+          id_checked?: boolean
+          id_checked_at?: string | null
           known_defects?: string | null
           notes?: string | null
           offer_id?: string | null
           photo_urls?: string[] | null
+          rental_inquiry_id?: string | null
           reservation_id?: string | null
           signature_data?: string | null
           signed_at?: string | null
@@ -360,10 +368,14 @@ export type Database = {
           file_name?: string | null
           file_url?: string | null
           id?: string
+          id_check_type?: string | null
+          id_checked?: boolean
+          id_checked_at?: string | null
           known_defects?: string | null
           notes?: string | null
           offer_id?: string | null
           photo_urls?: string[] | null
+          rental_inquiry_id?: string | null
           reservation_id?: string | null
           signature_data?: string | null
           signed_at?: string | null
@@ -392,6 +404,13 @@ export type Database = {
             columns: ["offer_id"]
             isOneToOne: false
             referencedRelation: "b2b_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_delivery_notes_rental_inquiry_id_fkey"
+            columns: ["rental_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "rental_inquiries"
             referencedColumns: ["id"]
           },
           {
@@ -1325,6 +1344,83 @@ export type Database = {
         }
         Relationships: []
       }
+      b2b_protocol_damages: {
+        Row: {
+          amount: number | null
+          b2b_profile_id: string | null
+          billed: boolean
+          category: string
+          created_at: string
+          created_by: string | null
+          delivery_note_id: string | null
+          description: string | null
+          id: string
+          item_name: string | null
+          photo_urls: string[]
+          protocol_type: string
+          return_protocol_id: string | null
+        }
+        Insert: {
+          amount?: number | null
+          b2b_profile_id?: string | null
+          billed?: boolean
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          delivery_note_id?: string | null
+          description?: string | null
+          id?: string
+          item_name?: string | null
+          photo_urls?: string[]
+          protocol_type: string
+          return_protocol_id?: string | null
+        }
+        Update: {
+          amount?: number | null
+          b2b_profile_id?: string | null
+          billed?: boolean
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          delivery_note_id?: string | null
+          description?: string | null
+          id?: string
+          item_name?: string | null
+          photo_urls?: string[]
+          protocol_type?: string
+          return_protocol_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_protocol_damages_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_protocol_damages_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles_customer"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_protocol_damages_delivery_note_id_fkey"
+            columns: ["delivery_note_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_delivery_notes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_protocol_damages_return_protocol_id_fkey"
+            columns: ["return_protocol_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_return_protocols"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       b2b_reservations: {
         Row: {
           additional_services: Json | null
@@ -1422,6 +1518,64 @@ export type Database = {
           },
         ]
       }
+      b2b_return_extra_charges: {
+        Row: {
+          b2b_profile_id: string | null
+          billed: boolean
+          created_at: string
+          id: string
+          label: string
+          notes: string | null
+          quantity: number
+          return_protocol_id: string
+          unit_price: number
+        }
+        Insert: {
+          b2b_profile_id?: string | null
+          billed?: boolean
+          created_at?: string
+          id?: string
+          label: string
+          notes?: string | null
+          quantity?: number
+          return_protocol_id: string
+          unit_price?: number
+        }
+        Update: {
+          b2b_profile_id?: string | null
+          billed?: boolean
+          created_at?: string
+          id?: string
+          label?: string
+          notes?: string | null
+          quantity?: number
+          return_protocol_id?: string
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_return_extra_charges_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_return_extra_charges_b2b_profile_id_fkey"
+            columns: ["b2b_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles_customer"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_return_extra_charges_return_protocol_id_fkey"
+            columns: ["return_protocol_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_return_protocols"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       b2b_return_protocol_items: {
         Row: {
           condition: string
@@ -1476,12 +1630,17 @@ export type Database = {
           created_at: string
           customer_signature_data: string | null
           damage_description: string | null
+          damages_total: number
           delivery_note_id: string | null
           email_sent: boolean
           email_sent_at: string | null
+          extra_charges_total: number
           file_name: string | null
           file_url: string | null
           id: string
+          id_check_type: string | null
+          id_checked: boolean
+          id_checked_at: string | null
           known_defects_from_delivery: string | null
           meter_reading_end: string | null
           meter_reading_start: string | null
@@ -1489,6 +1648,7 @@ export type Database = {
           notes: string | null
           overall_condition: string
           photo_urls: string[] | null
+          rental_inquiry_id: string | null
           reservation_id: string | null
           return_protocol_number: string
           signed_at: string | null
@@ -1506,12 +1666,17 @@ export type Database = {
           created_at?: string
           customer_signature_data?: string | null
           damage_description?: string | null
+          damages_total?: number
           delivery_note_id?: string | null
           email_sent?: boolean
           email_sent_at?: string | null
+          extra_charges_total?: number
           file_name?: string | null
           file_url?: string | null
           id?: string
+          id_check_type?: string | null
+          id_checked?: boolean
+          id_checked_at?: string | null
           known_defects_from_delivery?: string | null
           meter_reading_end?: string | null
           meter_reading_start?: string | null
@@ -1519,6 +1684,7 @@ export type Database = {
           notes?: string | null
           overall_condition?: string
           photo_urls?: string[] | null
+          rental_inquiry_id?: string | null
           reservation_id?: string | null
           return_protocol_number: string
           signed_at?: string | null
@@ -1536,12 +1702,17 @@ export type Database = {
           created_at?: string
           customer_signature_data?: string | null
           damage_description?: string | null
+          damages_total?: number
           delivery_note_id?: string | null
           email_sent?: boolean
           email_sent_at?: string | null
+          extra_charges_total?: number
           file_name?: string | null
           file_url?: string | null
           id?: string
+          id_check_type?: string | null
+          id_checked?: boolean
+          id_checked_at?: string | null
           known_defects_from_delivery?: string | null
           meter_reading_end?: string | null
           meter_reading_start?: string | null
@@ -1549,6 +1720,7 @@ export type Database = {
           notes?: string | null
           overall_condition?: string
           photo_urls?: string[] | null
+          rental_inquiry_id?: string | null
           reservation_id?: string | null
           return_protocol_number?: string
           signed_at?: string | null
@@ -1577,6 +1749,13 @@ export type Database = {
             columns: ["delivery_note_id"]
             isOneToOne: false
             referencedRelation: "b2b_delivery_notes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_return_protocols_rental_inquiry_id_fkey"
+            columns: ["rental_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "rental_inquiries"
             referencedColumns: ["id"]
           },
           {

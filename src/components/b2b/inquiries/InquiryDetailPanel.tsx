@@ -491,6 +491,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           defaultPayments={docMode === "invoice" ? inquiryPayments : undefined}
           defaultDelivery={defaultDelivery}
           rentalPeriod={{ start: inquiry.start_date ?? null, end: inquiry.end_date ?? null }}
+          reservationId={(inquiry as any).b2b_reservation_id ?? null}
 
           customerKind={inquiry.customer_kind === "business" ? "business" : "private"}
           mode={docMode === "offer" ? "offer" : "invoice"}
