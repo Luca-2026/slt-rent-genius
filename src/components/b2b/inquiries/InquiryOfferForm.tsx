@@ -1221,6 +1221,40 @@ export function InquiryOfferForm({
         </div>
       )}
 
+      {isInvoice && pendingCharges.length > 0 && (
+        <div className="rounded-lg border border-accent/40 bg-accent/5 p-3 space-y-2">
+          <Label className="text-xs">Offene Posten aus dem Rücknahmeprotokoll</Label>
+          <p className="text-xs text-muted-foreground">
+            Beträge sind im Protokoll brutto erfasst und werden als Nettoposition übernommen.
+          </p>
+          {pendingCharges.map((charge) => (
+            <div
+              key={charge.id}
+              className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border bg-background p-2 text-sm"
+            >
+              <div className="min-w-0">
+                <p className="font-medium">{charge.label}</p>
+                {charge.description && (
+                  <p className="text-xs text-muted-foreground">{charge.description}</p>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold">{formatEuro(charge.gross)}</span>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  disabled={disabled}
+                  onClick={() => takeProtocolCharge(charge)}
+                >
+                  Übernehmen
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
 
       <div className="rounded-lg border border-border p-3 space-y-2">
         <Label className="text-xs">
