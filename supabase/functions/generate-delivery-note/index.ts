@@ -92,7 +92,29 @@ interface DeliveryNoteRequest {
   fuel_level?: string;
   cleanliness_rating?: number;
   customer_not_present?: boolean;
+  id_checked?: boolean;
+  id_check_type?: string;
+  damages?: {
+    item_name?: string | null;
+    category: string;
+    description?: string | null;
+    amount?: number | null;
+    photo_urls?: string[];
+  }[];
 }
+
+const DAMAGE_LABELS: Record<string, string> = {
+  kratzer: "Kratzer",
+  delle: "Delle",
+  schlag: "Schlag / Bruch",
+  lack: "Lack",
+  glas: "Glas / Scheibe",
+  reifen: "Reifen / Fahrwerk",
+  verschmutzung: "Verschmutzung",
+  technischer_defekt: "Technischer Defekt",
+  fehlendes_zubehoer: "Fehlendes Zubehör",
+  sonstiges: "Sonstiges",
+};
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
@@ -139,7 +161,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: DeliveryNoteRequest = await req.json();
-    const { offer_id, signature_data, staff_signature_data, staff_name, notes, known_defects, additional_defects, photo_urls, send_email = true, agb_accepted = false, operating_hours, fuel_level, cleanliness_rating, customer_not_present = false } = body;
+    const { offer_id, signature_data, staff_signature_data, staff_name, notes, known_defects, additional_defects, photo_urls, send_email = true, agb_accepted = false, operating_hours, fuel_level, cleanliness_rating, customer_not_present = false, id_checked = false, id_check_type, damages = [] } = body;
 
     if (!offer_id || !staff_signature_data || !staff_name) {
       return new Response(
@@ -284,6 +306,32 @@ Deno.serve(async (req: Request) => {
     // Parse delivery address from offer notes
     const deliveryAddress = parseDeliveryAddress(offer.notes);
 
+    // Schadensfotos in signierte Links umwandeln
+    const resolvedDamages: {
+      item_name: string | null;
+      category: string;
+      description: string | null;
+      amount: number | null;
+      photo_urls: string[];
+    }[] = [];
+    for (const damage of damages) {
+      const signed: string[] = [];
+      for (const path of damage.photo_urls || []) {
+        if (path.startsWith("http")) { signed.push(path); continue; }
+        const { data: signedData } = await serviceClient.storage
+          .from("b2b-documents")
+          .createSignedUrl(path, 60 * 60 * 24 * 365);
+        if (signedData?.signedUrl) signed.push(signedData.signedUrl);
+      }
+      resolvedDamages.push({
+        item_name: damage.item_name || null,
+        category: damage.category || "sonstiges",
+        description: damage.description || null,
+        amount: damage.amount ?? null,
+        photo_urls: signed,
+      });
+    }
+
     const html = generateDeliveryNoteHtml({
       deliveryNoteNumber,
       date: germanDate,
@@ -304,6 +352,9 @@ Deno.serve(async (req: Request) => {
       fuelLevel: fuel_level || null,
       cleanlinessRating: cleanliness_rating || null,
       deliveryAddress,
+      idChecked: id_checked,
+      idCheckType: id_check_type || null,
+      damages: resolvedDamages,
     });
 
     // File name updated to Übergabeprotokoll
@@ -355,6 +406,9 @@ Deno.serve(async (req: Request) => {
         signed_at: customer_not_present ? null : now,
         agb_accepted: customer_not_present ? false : agb_accepted,
         agb_accepted_at: (!customer_not_present && agb_accepted) ? now : null,
+        id_checked: id_checked,
+        id_check_type: id_check_type || null,
+        id_checked_at: id_checked ? now : null,
       })
       .select()
       .single();
@@ -365,6 +419,22 @@ Deno.serve(async (req: Request) => {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    }
+
+    if (resolvedDamages.length > 0) {
+      const { error: damageError } = await serviceClient
+        .from("b2b_protocol_damages")
+        .insert(resolvedDamages.map((d) => ({
+          protocol_type: "delivery_note",
+          delivery_note_id: deliveryNote.id,
+          b2b_profile_id: profile.id,
+          item_name: d.item_name,
+          category: d.category,
+          description: d.description,
+          amount: d.amount,
+          photo_urls: d.photo_urls,
+        })));
+      if (damageError) console.error("Damage insert error:", damageError);
     }
 
     if (offerItems && offerItems.length > 0) {
@@ -585,7 +655,43 @@ function generateDeliveryNoteHtml(data: {
   fuelLevel: string | null;
   cleanlinessRating: number | null;
   deliveryAddress: { street: string; postal_code: string; city: string } | null;
+  idChecked: boolean;
+  idCheckType: string | null;
+  damages: { item_name: string | null; category: string; description: string | null; amount: number | null; photo_urls: string[] }[];
 }): string {
+  const damageSection = data.damages.length > 0 ? `
+    <div style="border:1px solid #e5e7eb;border-radius:6px;padding:14px;margin-bottom:8mm;">
+      <p style="font-weight:600;margin-bottom:8px;">Erfasste Schäden bei Übergabe</p>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:#f3f4f6;">
+            <th style="padding:6px 8px;text-align:left;">Artikel</th>
+            <th style="padding:6px 8px;text-align:left;">Kategorie</th>
+            <th style="padding:6px 8px;text-align:left;">Beschreibung</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.damages.map((d) => `
+          <tr>
+            <td style="padding:6px 8px;border-bottom:1px solid #e5e7eb;">${escapeHtml(d.item_name || "–")}</td>
+            <td style="padding:6px 8px;border-bottom:1px solid #e5e7eb;">${escapeHtml(DAMAGE_LABELS[d.category] || d.category)}</td>
+            <td style="padding:6px 8px;border-bottom:1px solid #e5e7eb;">${escapeHtml(d.description || "–")}</td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+      ${data.damages.some((d) => d.photo_urls.length > 0) ? `
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">
+        ${data.damages.flatMap((d) => d.photo_urls).map((url, i) => `
+        <a href="${url}" target="_blank"><img class="photo-img" src="${url}" alt="Schadensfoto ${i + 1}" style="width:150px;height:112px;object-fit:cover;border:1px solid #e5e7eb;border-radius:6px;display:block;" /></a>`).join("")}
+      </div>` : ""}
+    </div>` : "";
+
+  const idSection = data.idChecked ? `
+    <div style="background:#f0f7fb;border:1px solid #b3d4e8;border-radius:6px;padding:12px 14px;margin-bottom:8mm;font-size:12px;">
+      <strong>Identitätsprüfung:</strong> Der Ausweis des Mieters
+      ${data.idCheckType ? `(${escapeHtml(data.idCheckType)})` : ""} wurde am ${data.dateTime} durch
+      ${escapeHtml(data.staffName)} eingesehen und mit den Kundendaten abgeglichen. Eine Ausweiskopie wurde nicht gespeichert.
+    </div>` : "";
   const itemRows = data.items
     .map(
       (item: any, i: number) => `
@@ -725,6 +831,9 @@ function generateDeliveryNoteHtml(data: {
         ${escapeHtml(data.additionalDefects)}
       </p>` : ""}
     </div>` : ""}
+
+    ${damageSection}
+    ${idSection}
 
     ${data.photoUrls && data.photoUrls.length > 0 ? `
     <div style="margin-bottom:8mm;">

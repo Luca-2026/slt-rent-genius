@@ -58,7 +58,38 @@ interface ReturnProtocolRequest {
   }[];
   notes?: string;
   send_email?: boolean;
+  id_checked?: boolean;
+  id_check_type?: string;
+  damages?: {
+    item_name?: string | null;
+    category: string;
+    description?: string | null;
+    amount?: number | null;
+    photo_urls?: string[];
+  }[];
+  extra_charges?: {
+    label: string;
+    quantity: number;
+    unit_price: number;
+    notes?: string | null;
+  }[];
 }
+
+const DAMAGE_LABELS: Record<string, string> = {
+  kratzer: "Kratzer",
+  delle: "Delle",
+  schlag: "Schlag / Bruch",
+  lack: "Lack",
+  glas: "Glas / Scheibe",
+  reifen: "Reifen / Fahrwerk",
+  verschmutzung: "Verschmutzung",
+  technischer_defekt: "Technischer Defekt",
+  fehlendes_zubehoer: "Fehlendes Zubehör",
+  sonstiges: "Sonstiges",
+};
+
+const euro = (n: number) =>
+  n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
@@ -128,6 +159,10 @@ Deno.serve(async (req: Request) => {
       items,
       notes,
       send_email = true,
+      id_checked = false,
+      id_check_type,
+      damages = [],
+      extra_charges = [],
     } = body;
 
     if (!reservation_id || !staff_signature_data || !staff_name) {
@@ -232,8 +267,54 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    // Schadensfotos in signierte Links umwandeln
+    const resolvedDamages: {
+      item_name: string | null;
+      category: string;
+      description: string | null;
+      amount: number | null;
+      photo_urls: string[];
+    }[] = [];
+    for (const damage of damages) {
+      const signed: string[] = [];
+      for (const path of damage.photo_urls || []) {
+        if (path.startsWith("http")) { signed.push(path); continue; }
+        const { data: signedData } = await serviceClient.storage
+          .from("b2b-documents")
+          .createSignedUrl(path, 60 * 60 * 24 * 365);
+        if (signedData?.signedUrl) signed.push(signedData.signedUrl);
+      }
+      resolvedDamages.push({
+        item_name: damage.item_name || null,
+        category: damage.category || "sonstiges",
+        description: damage.description || null,
+        amount: damage.amount ?? null,
+        photo_urls: signed,
+      });
+    }
+
+    const normalizedExtraCharges = (extra_charges || [])
+      .filter((c) => c.label?.trim())
+      .map((c) => ({
+        label: c.label.trim(),
+        quantity: Number(c.quantity) || 1,
+        unit_price: Number(c.unit_price) || 0,
+        notes: c.notes || null,
+      }));
+
+    const damagesTotal = resolvedDamages.reduce((s, d) => s + (d.amount || 0), 0);
+    const extraChargesTotal = normalizedExtraCharges.reduce(
+      (s, c) => s + c.quantity * c.unit_price, 0,
+    );
+
     // Generate HTML document
     const html = generateReturnProtocolHtml({
+      idChecked: id_checked,
+      idCheckType: id_check_type || null,
+      damages: resolvedDamages,
+      extraCharges: normalizedExtraCharges,
+      damagesTotal,
+      extraChargesTotal,
       returnProtocolNumber,
       date: new Date().toISOString().split("T")[0],
       profile,
@@ -318,6 +399,11 @@ Deno.serve(async (req: Request) => {
         file_url: fileUrl,
         file_name: fileName,
         notes: notes || null,
+        id_checked: id_checked,
+        id_check_type: id_check_type || null,
+        id_checked_at: id_checked ? now : null,
+        damages_total: damagesTotal,
+        extra_charges_total: extraChargesTotal,
       })
       .select()
       .single();
@@ -328,6 +414,36 @@ Deno.serve(async (req: Request) => {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    }
+
+    if (resolvedDamages.length > 0) {
+      const { error: damageError } = await serviceClient
+        .from("b2b_protocol_damages")
+        .insert(resolvedDamages.map((d) => ({
+          protocol_type: "return_protocol",
+          return_protocol_id: returnProtocol.id,
+          b2b_profile_id: profile.id,
+          item_name: d.item_name,
+          category: d.category,
+          description: d.description,
+          amount: d.amount,
+          photo_urls: d.photo_urls,
+        })));
+      if (damageError) console.error("Damage insert error:", damageError);
+    }
+
+    if (normalizedExtraCharges.length > 0) {
+      const { error: chargeError } = await serviceClient
+        .from("b2b_return_extra_charges")
+        .insert(normalizedExtraCharges.map((c) => ({
+          return_protocol_id: returnProtocol.id,
+          b2b_profile_id: profile.id,
+          label: c.label,
+          quantity: c.quantity,
+          unit_price: c.unit_price,
+          notes: c.notes,
+        })));
+      if (chargeError) console.error("Extra charge insert error:", chargeError);
     }
 
     // Insert return protocol items

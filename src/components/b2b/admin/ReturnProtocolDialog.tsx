@@ -7,7 +7,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,11 +15,28 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { SignaturePad } from "@/components/b2b/SignaturePad";
+import { ProtocolWizard, type WizardStep } from "@/components/b2b/protocols/ProtocolWizard";
+import { DamagesStep } from "@/components/b2b/protocols/DamagesStep";
+import { ExtraChargesStep } from "@/components/b2b/protocols/ExtraChargesStep";
+import { IdCheckStep } from "@/components/b2b/protocols/IdCheckStep";
 import {
-  ClipboardCheck, RefreshCw, Package, Clock, ShieldCheck,
-  UserCheck, PenTool, AlertTriangle, CheckCircle2, XCircle, Camera, X, Upload, Gauge,
+  CLEANLINESS_HINT, FUEL_LEVELS, formatEuro, isMachineLike, serializeDamages,
+  serializeExtraCharges, sumDamages, sumExtraCharges,
+  type ExtraCharge, type ProtocolDamage,
+} from "@/components/b2b/protocols/protocolShared";
+import {
+  ClipboardCheck, RefreshCw, Clock, ShieldCheck, CheckCircle2, Download, Mail,
 } from "lucide-react";
 import { format } from "date-fns";
+import { de } from "date-fns/locale";
+
+interface ItemCondition {
+  product_name: string;
+  description?: string;
+  quantity: number;
+  condition: "good" | "minor_damage" | "major_damage" | "missing";
+  condition_notes: string;
+}
 
 interface ReturnProtocolDraft {
   customerSignature: string | null;
@@ -28,11 +44,9 @@ interface ReturnProtocolDraft {
   staffName: string;
   notes: string;
   knownDefectsFromDelivery: string;
-  additionalDefectsAtReturn: string;
   customerNotPresent: boolean;
   overallCondition: "good" | "minor_damage" | "major_damage";
   conditionNotes: string;
-  damageDescription: string;
   cleaningRequired: boolean;
   allItemsReturned: boolean;
   missingItemsNotes: string;
@@ -41,6 +55,8 @@ interface ReturnProtocolDraft {
   fuelLevelStart: string;
   fuelLevelEnd: string;
   cleanlinessRating: number;
+  idChecked: boolean;
+  idDocType: string;
   itemConditions: ItemCondition[];
 }
 
@@ -48,7 +64,6 @@ const returnProtocolDraftStore: { key: string | null; data: ReturnProtocolDraft 
   key: null,
   data: null,
 };
-import { de } from "date-fns/locale";
 
 interface Reservation {
   id: string;
@@ -69,14 +84,6 @@ interface B2BProfile {
   contact_last_name: string;
 }
 
-interface ItemCondition {
-  product_name: string;
-  description?: string;
-  quantity: number;
-  condition: "good" | "minor_damage" | "major_damage" | "missing";
-  condition_notes: string;
-}
-
 interface Props {
   reservation: Reservation | null;
   profile: B2BProfile | null;
@@ -84,12 +91,6 @@ interface Props {
   onOpenChange: (open: boolean) => void;
   onCreated: () => void;
 }
-
-const conditionOptions = [
-  { value: "good", label: "Gut – Keine Beanstandungen", icon: CheckCircle2, color: "text-green-600" },
-  { value: "minor_damage", label: "Leichte Mängel / Gebrauchsspuren", icon: AlertTriangle, color: "text-amber-600" },
-  { value: "major_damage", label: "Erhebliche Schäden", icon: XCircle, color: "text-destructive" },
-] as const;
 
 export function ReturnProtocolDialog({
   reservation,
@@ -106,13 +107,10 @@ export function ReturnProtocolDialog({
   const [staffName, setStaffName] = useState("");
   const [notes, setNotes] = useState("");
   const [knownDefectsFromDelivery, setKnownDefectsFromDelivery] = useState("");
-  const [additionalDefectsAtReturn, setAdditionalDefectsAtReturn] = useState("");
-  const [defectPhotos, setDefectPhotos] = useState<{ file: File; preview: string }[]>([]);
-  const [uploadingPhotos, setUploadingPhotos] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [damages, setDamages] = useState<ProtocolDamage[]>([]);
+  const [extraCharges, setExtraCharges] = useState<ExtraCharge[]>([]);
   const [overallCondition, setOverallCondition] = useState<"good" | "minor_damage" | "major_damage">("good");
   const [conditionNotes, setConditionNotes] = useState("");
-  const [damageDescription, setDamageDescription] = useState("");
   const [cleaningRequired, setCleaningRequired] = useState(false);
   const [allItemsReturned, setAllItemsReturned] = useState(true);
   const [missingItemsNotes, setMissingItemsNotes] = useState("");
@@ -121,24 +119,26 @@ export function ReturnProtocolDialog({
   const [fuelLevelStart, setFuelLevelStart] = useState("");
   const [fuelLevelEnd, setFuelLevelEnd] = useState("");
   const [cleanlinessRating, setCleanlinessRating] = useState<number>(0);
-  const [currentTime] = useState(new Date());
+  const [idChecked, setIdChecked] = useState(false);
+  const [idDocType, setIdDocType] = useState("");
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [itemConditions, setItemConditions] = useState<ItemCondition[]>([]);
+  const [result, setResult] = useState<{ number: string; fileUrl: string | null; emailSent: boolean } | null>(null);
+  const [createdId, setCreatedId] = useState<string | null>(null);
+  const [resending, setResending] = useState(false);
+
   const lastInitKey = useRef<string | null>(null);
 
-  // Build items list from reservation
-  const items: ItemCondition[] = reservation
-    ? [
-        {
-          product_name: reservation.product_name || reservation.product_id,
-          quantity: reservation.quantity,
-          condition: "good" as const,
-          condition_notes: "",
-        },
-      ]
-    : [];
+  const baseItems = useCallback((): ItemCondition[] => {
+    if (!reservation) return [];
+    return [{
+      product_name: reservation.product_name || reservation.product_id,
+      quantity: reservation.quantity || 1,
+      condition: "good",
+      condition_notes: "",
+    }];
+  }, [reservation]);
 
-  const [itemConditions, setItemConditions] = useState<ItemCondition[]>(items);
-
-  // Reset form for current reservation context
   const resetForm = useCallback(() => {
     setCustomerNotPresent(false);
     setCustomerSignature(null);
@@ -146,11 +146,10 @@ export function ReturnProtocolDialog({
     setStaffName("");
     setNotes("");
     setKnownDefectsFromDelivery("");
-    setAdditionalDefectsAtReturn("");
-    setDefectPhotos([]);
+    setDamages([]);
+    setExtraCharges([]);
     setOverallCondition("good");
     setConditionNotes("");
-    setDamageDescription("");
     setCleaningRequired(false);
     setAllItemsReturned(true);
     setMissingItemsNotes("");
@@ -159,57 +158,32 @@ export function ReturnProtocolDialog({
     setFuelLevelStart("");
     setFuelLevelEnd("");
     setCleanlinessRating(0);
+    setIdChecked(false);
+    setIdDocType("");
+    setItemConditions(baseItems());
+  }, [baseItems]);
 
-    if (reservation) {
-      setItemConditions([
-        {
-          product_name: reservation.product_name || reservation.product_id,
-          quantity: reservation.quantity,
-          condition: "good",
-          condition_notes: "",
-        },
-      ]);
-      return;
-    }
-
-    setItemConditions([]);
-  }, [reservation]);
-
-  // Save draft on every relevant state change
   const saveDraft = useCallback(() => {
     if (!open || !reservation) return;
-    const contextKey = reservation.id;
-    returnProtocolDraftStore.key = contextKey;
+    returnProtocolDraftStore.key = reservation.id;
     returnProtocolDraftStore.data = {
-      customerSignature,
-      staffSignature,
-      staffName,
-      notes,
-      knownDefectsFromDelivery,
-      additionalDefectsAtReturn,
-      customerNotPresent,
-      overallCondition,
-      conditionNotes,
-      damageDescription,
-      cleaningRequired,
-      allItemsReturned,
-      missingItemsNotes,
-      meterReadingStart,
-      meterReadingEnd,
-      fuelLevelStart,
-      fuelLevelEnd,
-      cleanlinessRating,
-      itemConditions,
+      customerSignature, staffSignature, staffName, notes, knownDefectsFromDelivery,
+      customerNotPresent, overallCondition, conditionNotes, cleaningRequired,
+      allItemsReturned, missingItemsNotes, meterReadingStart, meterReadingEnd,
+      fuelLevelStart, fuelLevelEnd, cleanlinessRating, idChecked, idDocType, itemConditions,
     };
-  }, [open, reservation, customerSignature, staffSignature, staffName, notes, knownDefectsFromDelivery, additionalDefectsAtReturn, customerNotPresent, overallCondition, conditionNotes, damageDescription, cleaningRequired, allItemsReturned, missingItemsNotes, meterReadingStart, meterReadingEnd, fuelLevelStart, fuelLevelEnd, cleanlinessRating, itemConditions]);
+  }, [open, reservation, customerSignature, staffSignature, staffName, notes, knownDefectsFromDelivery, customerNotPresent, overallCondition, conditionNotes, cleaningRequired, allItemsReturned, missingItemsNotes, meterReadingStart, meterReadingEnd, fuelLevelStart, fuelLevelEnd, cleanlinessRating, idChecked, idDocType, itemConditions]);
 
   useEffect(() => { saveDraft(); }, [saveDraft]);
 
   useEffect(() => {
-    if (!open) lastInitKey.current = null;
+    if (!open) {
+      lastInitKey.current = null;
+      setResult(null);
+      setCreatedId(null);
+    }
   }, [open]);
 
-  // Restore draft when dialog opens
   useEffect(() => {
     if (!open || !reservation) return;
     const contextKey = reservation.id;
@@ -223,11 +197,9 @@ export function ReturnProtocolDialog({
       setStaffName(d.staffName);
       setNotes(d.notes);
       setKnownDefectsFromDelivery(d.knownDefectsFromDelivery);
-      setAdditionalDefectsAtReturn(d.additionalDefectsAtReturn);
       setCustomerNotPresent(d.customerNotPresent);
       setOverallCondition(d.overallCondition);
       setConditionNotes(d.conditionNotes);
-      setDamageDescription(d.damageDescription);
       setCleaningRequired(d.cleaningRequired);
       setAllItemsReturned(d.allItemsReturned);
       setMissingItemsNotes(d.missingItemsNotes);
@@ -236,84 +208,35 @@ export function ReturnProtocolDialog({
       setFuelLevelStart(d.fuelLevelStart);
       setFuelLevelEnd(d.fuelLevelEnd);
       setCleanlinessRating(d.cleanlinessRating);
-      setItemConditions(d.itemConditions);
+      setIdChecked(d.idChecked);
+      setIdDocType(d.idDocType);
+      setItemConditions(d.itemConditions?.length ? d.itemConditions : baseItems());
       return;
     }
 
     resetForm();
-  }, [open, reservation, resetForm]);
+  }, [open, reservation, resetForm, baseItems]);
+
+  useEffect(() => {
+    if (!open) return;
+    const interval = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, [open]);
 
   const updateItemCondition = (index: number, field: keyof ItemCondition, value: string) => {
     setItemConditions((prev) => {
       const updated = [...prev];
-      updated[index] = { ...updated[index], [field]: value };
+      updated[index] = { ...updated[index], [field]: value } as ItemCondition;
       return updated;
     });
   };
 
-  const handlePhotoAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files) return;
-    const newPhotos = Array.from(files).map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }));
-    setDefectPhotos((prev) => [...prev, ...newPhotos]);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
-
-  const removePhoto = (index: number) => {
-    setDefectPhotos((prev) => {
-      URL.revokeObjectURL(prev[index].preview);
-      return prev.filter((_, i) => i !== index);
-    });
-  };
-
-  const uploadPhotos = async (): Promise<string[]> => {
-    if (defectPhotos.length === 0) return [];
-    setUploadingPhotos(true);
-    const urls: string[] = [];
-    try {
-      for (const photo of defectPhotos) {
-        const ext = photo.file.name.split(".").pop() || "jpg";
-        const path = `defect-photos/${reservation!.b2b_profile_id}/${Date.now()}-${Math.random().toString(36).slice(2, 6)}.${ext}`;
-        const { error: uploadError } = await supabase.storage
-          .from("b2b-documents")
-          .upload(path, photo.file, { upsert: true });
-        if (uploadError) {
-          console.error("Photo upload error:", uploadError);
-          continue;
-        }
-        const { data: signedData } = await supabase.storage
-          .from("b2b-documents")
-          .createSignedUrl(path, 60 * 60 * 24 * 365);
-        if (signedData?.signedUrl) urls.push(signedData.signedUrl);
-      }
-    } finally {
-      setUploadingPhotos(false);
-    }
-    return urls;
-  };
-
   const handleGenerate = async () => {
-    if (!reservation) return;
-    if (!customerNotPresent && !customerSignature) {
-      toast({ title: "Kundenunterschrift fehlt", description: "Bitte lassen Sie den Kunden unterschreiben oder aktivieren Sie 'Kunde nicht vor Ort'.", variant: "destructive" });
-      return;
-    }
-    if (!staffSignature) {
-      toast({ title: "Mitarbeiter-Unterschrift fehlt", description: "Bitte unterschreiben Sie als SLT-Mitarbeiter.", variant: "destructive" });
-      return;
-    }
-    if (!staffName.trim()) {
-      toast({ title: "Mitarbeitername fehlt", description: "Bitte geben Sie Ihren Namen ein.", variant: "destructive" });
-      return;
-    }
-
+    if (!reservation || !profile) return;
     setSaving(true);
     try {
-      // Upload photos first
-      const photoUrls = await uploadPhotos();
+      const damagePayload = await serializeDamages(profile.id, damages);
+      const chargePayload = serializeExtraCharges(extraCharges);
 
       const { data, error } = await supabase.functions.invoke("generate-return-protocol", {
         body: {
@@ -324,7 +247,6 @@ export function ReturnProtocolDialog({
           staff_name: staffName.trim(),
           overall_condition: overallCondition,
           condition_notes: conditionNotes || undefined,
-          damage_description: damageDescription || undefined,
           cleaning_required: cleaningRequired,
           all_items_returned: allItemsReturned,
           missing_items_notes: missingItemsNotes || undefined,
@@ -334,8 +256,10 @@ export function ReturnProtocolDialog({
           fuel_level_end: fuelLevelEnd || undefined,
           cleanliness_rating: cleanlinessRating > 0 ? cleanlinessRating : undefined,
           known_defects_from_delivery: knownDefectsFromDelivery || undefined,
-          additional_defects_at_return: additionalDefectsAtReturn || undefined,
-          photo_urls: photoUrls.length > 0 ? photoUrls : undefined,
+          id_checked: idChecked,
+          id_check_type: idDocType || undefined,
+          damages: damagePayload,
+          extra_charges: chargePayload,
           items: itemConditions.map((item) => ({
             product_name: item.product_name,
             description: item.description,
@@ -344,32 +268,22 @@ export function ReturnProtocolDialog({
             condition_notes: item.condition_notes || undefined,
           })),
           notes: notes || undefined,
-          send_email: true,
+          send_email: !customerNotPresent,
         },
       });
 
       if (error) throw error;
 
-      if (customerNotPresent) {
-        toast({
-          title: "Rückgabeprotokoll erstellt!",
-          description: `${data.return_protocol?.return_protocol_number} wurde erstellt und wartet auf die Kundenunterschrift im Portal. Sie können es jetzt herunterladen.`,
-        });
-      } else {
-        toast({
-          title: "Rückgabeprotokoll erstellt!",
-          description: data.email_sent
-            ? `Protokoll ${data.return_protocol?.return_protocol_number} wurde erstellt und per E-Mail versendet.`
-            : `Protokoll ${data.return_protocol?.return_protocol_number} wurde erstellt. (E-Mail nicht konfiguriert)`,
-        });
-      }
+      setResult({
+        number: data.return_protocol?.return_protocol_number,
+        fileUrl: data.return_protocol?.file_url || null,
+        emailSent: !!data.email_sent,
+      });
+      setCreatedId(data.return_protocol?.id || null);
 
-      resetForm();
       returnProtocolDraftStore.key = null;
       returnProtocolDraftStore.data = null;
-      lastInitKey.current = null;
       onCreated();
-      onOpenChange(false);
     } catch (error: any) {
       toast({
         title: "Fehler",
@@ -381,454 +295,367 @@ export function ReturnProtocolDialog({
     }
   };
 
+  const sendToCustomer = async () => {
+    if (!createdId) return;
+    setResending(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("resend-protocol-email", {
+        body: { type: "return_protocol", id: createdId },
+      });
+      if (error) throw error;
+      toast({ title: "Protokoll versendet", description: `E-Mail an ${data?.recipient || "den Kunden"} gesendet.` });
+      setResult((r) => (r ? { ...r, emailSent: true } : r));
+    } catch (err: any) {
+      toast({ title: "Fehler", description: err.message || "E-Mail konnte nicht gesendet werden.", variant: "destructive" });
+    } finally {
+      setResending(false);
+    }
+  };
+
   if (!reservation || !profile) return null;
 
-  const EQUIPMENT_KEYWORDS = ['bagger', 'dumper', 'aggregat', 'radlader', 'minibagger'];
-  const needsEquipmentFields = EQUIPMENT_KEYWORDS.some(kw =>
-    (reservation.product_name || '').toLowerCase().includes(kw)
-  );
+  const productName = reservation.product_name || reservation.product_id;
+  const needsEquipmentFields = isMachineLike([productName]);
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
-  const allValid = (customerNotPresent || !!customerSignature) && !!staffSignature && !!staffName.trim();
+  const customerName = `${profile.contact_first_name} ${profile.contact_last_name}`.trim();
 
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100vw-1.5rem)] max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <ClipboardCheck className="h-5 w-5" />
-            Rückgabeprotokoll erstellen
-          </DialogTitle>
-          <DialogDescription>
-            Rechtssichere Rückgabedokumentation mit Zustandsbewertung und beidseitiger Unterschrift.
-          </DialogDescription>
-        </DialogHeader>
+  const signaturesDone = !!staffSignature && !!staffName.trim() && (customerNotPresent || !!customerSignature);
+  const equipmentDone = needsEquipmentFields
+    ? !!meterReadingEnd && !!fuelLevelEnd && cleanlinessRating > 0
+    : cleanlinessRating > 0;
+  const allValid = signaturesDone && idChecked;
 
-        {/* Customer & Reservation Info */}
-        <Card>
-          <CardContent className="p-4 space-y-2">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div className="min-w-0">
-                <p className="font-semibold text-foreground truncate">{profile.company_name}</p>
-                <p className="text-sm text-muted-foreground truncate">
-                  {profile.contact_first_name} {profile.contact_last_name}
-                </p>
-              </div>
-              <div className="sm:text-right flex sm:flex-col items-center sm:items-end gap-2 sm:gap-1">
-                <Badge variant="outline" className="text-primary border-primary capitalize shrink-0">
-                  {reservation.location}
-                </Badge>
+  const missing: string[] = [];
+  if (!idChecked) missing.push("Personalausweis abgleichen");
+  if (!signaturesDone) missing.push("Unterschriften und Mitarbeitername");
+
+  const chargesSum = sumExtraCharges(extraCharges);
+  const damagesSum = sumDamages(damages);
+
+  const steps: WizardStep[] = [
+    {
+      id: "items",
+      title: "Artikel prüfen",
+      summary: `${itemConditions.length} Position${itemConditions.length === 1 ? "" : "en"}`,
+      done: true,
+      content: (
+        <div className="space-y-3">
+          <Card className="bg-muted/50">
+            <CardContent className="p-3 flex items-center gap-3">
+              <Clock className="h-4 w-4 text-muted-foreground" />
+              <div>
                 <p className="text-xs text-muted-foreground">
-                  {formatDate(reservation.start_date)}
+                  Mietzeitraum: {formatDate(reservation.start_date)}
                   {reservation.end_date ? ` – ${formatDate(reservation.end_date)}` : ""}
                 </p>
+                <p className="text-sm font-medium">
+                  Rückgabe: {format(currentTime, "dd.MM.yyyy, HH:mm", { locale: de })} Uhr
+                </p>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Separator />
-
-        {/* Items condition assessment */}
-        <div className="space-y-3">
-          <Label className="text-base font-semibold flex items-center gap-2">
-            <Package className="h-4 w-4" />
-            Zustandsbewertung je Artikel
-          </Label>
-          {itemConditions.map((item, index) => (
-            <Card key={index}>
+          {itemConditions.map((item, idx) => (
+            <Card key={idx}>
               <CardContent className="p-3 space-y-2">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-3">
                   <p className="font-medium text-sm">{item.product_name}</p>
-                  <Badge variant="secondary" className="text-xs">{item.quantity}x</Badge>
+                  <Badge variant="secondary" className="text-xs shrink-0">{item.quantity}x</Badge>
                 </div>
-                <Select
-                  value={item.condition}
-                  onValueChange={(v) => updateItemCondition(index, "condition", v)}
-                >
-                  <SelectTrigger className="text-sm h-9">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="good">✓ Gut – Keine Beanstandungen</SelectItem>
-                    <SelectItem value="minor_damage">⚠ Leichte Mängel / Gebrauchsspuren</SelectItem>
-                    <SelectItem value="major_damage">✗ Erhebliche Schäden</SelectItem>
-                    <SelectItem value="missing">✗ Fehlend / Nicht zurückgegeben</SelectItem>
-                  </SelectContent>
-                </Select>
-                {item.condition !== "good" && (
+                <div>
+                  <Label className="text-xs">Zustand</Label>
+                  <Select value={item.condition} onValueChange={(v) => updateItemCondition(idx, "condition", v)}>
+                    <SelectTrigger className="h-10 text-sm"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="good">Gut – keine Beanstandungen</SelectItem>
+                      <SelectItem value="minor_damage">Leichte Mängel / Gebrauchsspuren</SelectItem>
+                      <SelectItem value="major_damage">Erhebliche Schäden</SelectItem>
+                      <SelectItem value="missing">Fehlt</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="text-xs">Anmerkung (optional)</Label>
                   <Input
                     value={item.condition_notes}
-                    onChange={(e) => updateItemCondition(index, "condition_notes", e.target.value)}
-                    placeholder="Beschreibung des Zustands / der Mängel..."
+                    onChange={(e) => updateItemCondition(idx, "condition_notes", e.target.value)}
                     className="text-sm"
                   />
-                )}
+                </div>
               </CardContent>
             </Card>
           ))}
-        </div>
-
-        <Separator />
-
-        {/* Defect Documentation */}
-        <div className="space-y-3">
-          <Label className="text-base font-semibold flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4" />
-            Mängeldokumentation
-          </Label>
 
           <div>
-            <Label className="text-xs">Bekannte Mängel (aus Übergabeprotokoll)</Label>
-            <Textarea
-              value={knownDefectsFromDelivery}
-              onChange={(e) => setKnownDefectsFromDelivery(e.target.value)}
-              placeholder="z.B. Kratzer am Gehäuse (bei Übergabe dokumentiert)..."
-              rows={2}
-              className="text-sm"
-            />
-          </div>
-
-          <div>
-            <Label className="text-xs">Neue / zusätzliche Mängel bei Rückgabe</Label>
-            <Textarea
-              value={additionalDefectsAtReturn}
-              onChange={(e) => setAdditionalDefectsAtReturn(e.target.value)}
-              placeholder="z.B. Neue Kratzer, fehlende Teile, Funktionsstörungen..."
-              rows={2}
-              className="text-sm"
-            />
-          </div>
-
-          {/* Photo Upload */}
-          <div>
-            <Label className="text-xs flex items-center gap-1">
-              <Camera className="h-3 w-3" />
-              Fotos (Mängeldokumentation)
-            </Label>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handlePhotoAdd}
-              className="hidden"
-            />
-            <div className="flex flex-wrap gap-2 mt-1">
-              {defectPhotos.map((photo, idx) => (
-                <div key={idx} className="relative group">
-                  <img
-                    src={photo.preview}
-                    alt={`Mangel ${idx + 1}`}
-                    className="h-20 w-20 object-cover rounded-md border"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removePhoto(idx)}
-                    className="absolute -top-1.5 -right-1.5 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="h-20 w-20 border-2 border-dashed border-muted-foreground/30 rounded-md flex flex-col items-center justify-center gap-1 text-muted-foreground hover:border-primary hover:text-primary transition-colors"
-              >
-                <Upload className="h-4 w-4" />
-                <span className="text-[10px]">Foto</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <Separator />
-
-        {/* Overall Condition */}
-        <div className="space-y-3">
-          <Label className="text-base font-semibold flex items-center gap-2">
-            <ShieldCheck className="h-4 w-4" />
-            Gesamtbewertung
-          </Label>
-
-          <div className="grid grid-cols-1 gap-2">
-            {conditionOptions.map((opt) => {
-              const Icon = opt.icon;
-              return (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => setOverallCondition(opt.value)}
-                  className={`flex items-center gap-3 p-3 border rounded-lg text-left transition-colors ${
-                    overallCondition === opt.value
-                      ? "border-primary bg-primary/5"
-                      : "border-border hover:border-muted-foreground/40"
-                  }`}
-                >
-                  <Icon className={`h-5 w-5 ${opt.color}`} />
-                  <span className="text-sm font-medium">{opt.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {overallCondition !== "good" && (
-            <div>
-              <Label className="text-xs">Zustandsbemerkungen</Label>
-              <Textarea
-                value={conditionNotes}
-                onChange={(e) => setConditionNotes(e.target.value)}
-                placeholder="Allgemeine Bemerkungen zum Zustand..."
-                rows={2}
-                className="text-sm"
-              />
-            </div>
-          )}
-
-          {(overallCondition === "major_damage" || overallCondition === "minor_damage") && (
-            <div>
-              <Label className="text-xs text-destructive">Schadensbeschreibung</Label>
-              <Textarea
-                value={damageDescription}
-                onChange={(e) => setDamageDescription(e.target.value)}
-                placeholder="Detaillierte Beschreibung der Schäden..."
-                rows={2}
-                className="text-sm"
-              />
-            </div>
-          )}
-        </div>
-
-        <Separator />
-
-        {/* Additional checks */}
-        <div className="space-y-3">
-          <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
-            <Checkbox
-              id="cleaning"
-              checked={cleaningRequired}
-              onCheckedChange={(checked) => setCleaningRequired(checked === true)}
-            />
-            <label htmlFor="cleaning" className="text-sm leading-relaxed cursor-pointer">
-              <strong>Reinigung erforderlich</strong> – Die Mietgegenstände müssen über die normale Nutzung hinaus gereinigt werden.
-            </label>
+            <Label className="text-xs">Gesamtzustand</Label>
+            <Select value={overallCondition} onValueChange={(v: any) => setOverallCondition(v)}>
+              <SelectTrigger className="h-10 text-sm"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="good">Gut – keine Beanstandungen</SelectItem>
+                <SelectItem value="minor_damage">Leichte Mängel / Gebrauchsspuren</SelectItem>
+                <SelectItem value="major_damage">Erhebliche Schäden</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
             <Checkbox
               id="all-returned"
               checked={allItemsReturned}
-              onCheckedChange={(checked) => setAllItemsReturned(checked === true)}
+              onCheckedChange={(c) => setAllItemsReturned(c === true)}
             />
-            <label htmlFor="all-returned" className="text-sm leading-relaxed cursor-pointer">
-              <strong>Alle Artikel vollständig zurückgegeben</strong> – Sämtliche Mietgegenstände und Zubehör wurden retourniert.
+            <label htmlFor="all-returned" className="text-sm cursor-pointer">
+              Alle Mietgegenstände inklusive Zubehör wurden vollständig zurückgegeben.
             </label>
           </div>
 
           {!allItemsReturned && (
             <div>
-              <Label className="text-xs text-destructive">Fehlende Artikel</Label>
+              <Label className="text-xs">Fehlende Gegenstände</Label>
               <Textarea
                 value={missingItemsNotes}
                 onChange={(e) => setMissingItemsNotes(e.target.value)}
-                placeholder="Welche Artikel / Teile fehlen?"
                 rows={2}
                 className="text-sm"
               />
             </div>
           )}
-        </div>
 
-        <Separator />
-
-        {/* Equipment Details (Bagger/Dumper/Aggregate) */}
-        {needsEquipmentFields && (
-          <div className="space-y-3">
-            <Label className="text-base font-semibold flex items-center gap-2">
-              <Gauge className="h-4 w-4" />
-              Gerätedaten
-            </Label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <Label className="text-xs">Betriebsstunden (Übergabe)</Label>
-                <Input
-                  value={meterReadingStart}
-                  onChange={(e) => setMeterReadingStart(e.target.value)}
-                  placeholder="z.B. 1.250 Bh"
-                  className="text-sm"
-                />
-              </div>
-              <div>
-                <Label className="text-xs">Betriebsstunden (Rückgabe)</Label>
-                <Input
-                  value={meterReadingEnd}
-                  onChange={(e) => setMeterReadingEnd(e.target.value)}
-                  placeholder="z.B. 1.312 Bh"
-                  className="text-sm"
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <Label className="text-xs">Tankfüllstand (Übergabe)</Label>
-                <Select value={fuelLevelStart} onValueChange={setFuelLevelStart}>
-                  <SelectTrigger className="text-sm h-9">
-                    <SelectValue placeholder="Auswählen" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="voll">Voll (100%)</SelectItem>
-                    <SelectItem value="dreiviertel">¾ (75%)</SelectItem>
-                    <SelectItem value="halb">½ (50%)</SelectItem>
-                    <SelectItem value="viertel">¼ (25%)</SelectItem>
-                    <SelectItem value="leer">Leer</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label className="text-xs">Tankfüllstand (Rückgabe)</Label>
-                <Select value={fuelLevelEnd} onValueChange={setFuelLevelEnd}>
-                  <SelectTrigger className="text-sm h-9">
-                    <SelectValue placeholder="Auswählen" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="voll">Voll (100%)</SelectItem>
-                    <SelectItem value="dreiviertel">¾ (75%)</SelectItem>
-                    <SelectItem value="halb">½ (50%)</SelectItem>
-                    <SelectItem value="viertel">¼ (25%)</SelectItem>
-                    <SelectItem value="leer">Leer</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <div>
-              <Label className="text-xs">Sauberkeit des Mietgerätes</Label>
-              <div className="flex gap-2 mt-1">
-                {[1, 2, 3, 4, 5].map((n) => (
-                  <button
-                    key={n}
-                    type="button"
-                    onClick={() => setCleanlinessRating(n)}
-                    className={`w-10 h-10 rounded-lg border-2 font-semibold text-sm transition-colors ${
-                      cleanlinessRating === n
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border hover:border-primary/50"
-                    }`}
-                  >
-                    {n}
-                  </button>
-                ))}
-              </div>
-              <p className="text-[10px] text-muted-foreground mt-1">
-                1 = Sehr verschmutzt · 5 = Sauber
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Timestamp */}
-        <Card className="bg-muted/50">
-          <CardContent className="p-3 flex items-center gap-3">
-            <Clock className="h-4 w-4 text-muted-foreground" />
-            <div>
-              <p className="text-xs text-muted-foreground">Rückgabe-Zeitstempel</p>
-              <p className="text-sm font-medium">
-                {format(currentTime, "dd.MM.yyyy, HH:mm:ss", { locale: de })} Uhr
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Notes */}
-        <div>
-          <Label className="text-xs">Anmerkungen (optional)</Label>
-          <Textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="z.B. Absprachen zur Schlussrechnung, besondere Vereinbarungen..."
-            rows={2}
-            className="text-sm"
-          />
-        </div>
-
-        <Separator />
-
-        {/* Customer Not Present Toggle */}
-        <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
-          <Checkbox
-            id="customer-not-present-rp"
-            checked={customerNotPresent}
-            onCheckedChange={(checked) => setCustomerNotPresent(checked === true)}
-          />
-          <label htmlFor="customer-not-present-rp" className="text-sm leading-relaxed cursor-pointer">
-            <strong>Kunde ist nicht vor Ort</strong> – Das Protokoll wird ohne Kundenunterschrift erstellt und dem Kunden im Portal zur digitalen Unterschrift bereitgestellt. Sie können das Protokoll trotzdem sofort herunterladen.
-          </label>
-        </div>
-
-        {/* Customer Signature */}
-        {!customerNotPresent ? (
-          <div className="space-y-2">
-            <Label className="text-base font-semibold flex items-center gap-2">
-              <UserCheck className="h-4 w-4" />
-              Unterschrift Mieter (Kunde)
-            </Label>
-            <p className="text-xs text-muted-foreground">
-              {profile.contact_first_name} {profile.contact_last_name} – {profile.company_name}
-            </p>
-            <SignaturePad onSignatureChange={setCustomerSignature} />
-          </div>
-        ) : (
-          <div className="p-4 bg-muted/50 rounded-lg border border-dashed">
-            <p className="text-sm text-muted-foreground text-center">
-              📋 Das Protokoll wird dem Kunden <strong>{profile.contact_first_name} {profile.contact_last_name}</strong> im B2B-Portal zur digitalen Unterschrift bereitgestellt.
-            </p>
-          </div>
-        )}
-
-        <Separator />
-
-        {/* Staff Signature */}
-        <div className="space-y-2">
-          <Label className="text-base font-semibold flex items-center gap-2">
-            <PenTool className="h-4 w-4" />
-            Unterschrift SLT-Mitarbeiter
-          </Label>
           <div>
-            <Label className="text-xs">Name des Mitarbeiters *</Label>
-            <Input
-              value={staffName}
-              onChange={(e) => setStaffName(e.target.value)}
-              placeholder="Vor- und Nachname des SLT-Mitarbeiters"
+            <Label className="text-xs">Bekannte Mängel aus der Übergabe (optional)</Label>
+            <Textarea
+              value={knownDefectsFromDelivery}
+              onChange={(e) => setKnownDefectsFromDelivery(e.target.value)}
+              rows={2}
               className="text-sm"
             />
           </div>
-          <SignaturePad onSignatureChange={setStaffSignature} label="Unterschrift SLT-Mitarbeiter" />
-        </div>
 
-        <Separator />
-
-        {/* Actions */}
-        <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 sm:justify-end pt-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto">
-            Abbrechen
-          </Button>
-          <Button
-            onClick={handleGenerate}
-            disabled={saving || !allValid}
-            className="bg-accent text-accent-foreground hover:bg-cta-orange-hover w-full sm:w-auto"
-          >
-            {saving ? (
-              <>
-                <RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />
-                Wird erstellt...
-              </>
-            ) : (
-              <>
-                <ClipboardCheck className="h-4 w-4 mr-1.5" />
-                <span className="truncate">{customerNotPresent ? "Protokoll erstellen" : "Erstellen & senden"}</span>
-              </>
-            )}
-          </Button>
+          <div>
+            <Label className="text-xs">Anmerkungen (optional)</Label>
+            <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} className="text-sm" />
+          </div>
         </div>
+      ),
+    },
+    {
+      id: "equipment",
+      title: "Gerätedaten",
+      summary: needsEquipmentFields
+        ? `Betriebsstunden und Tank bei Rückgabe${cleanlinessRating ? ` · Sauberkeit ${cleanlinessRating}/5` : ""}`
+        : `Sauberkeit${cleanlinessRating ? ` ${cleanlinessRating}/5` : " 1–5"}`,
+      done: equipmentDone,
+      content: (
+        <div className="space-y-3">
+          {needsEquipmentFields && (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <Label className="text-xs">Betriebsstunden bei Übergabe</Label>
+                  <Input value={meterReadingStart} onChange={(e) => setMeterReadingStart(e.target.value)} inputMode="decimal" className="text-sm" />
+                </div>
+                <div>
+                  <Label className="text-xs">Betriebsstunden bei Rückgabe</Label>
+                  <Input value={meterReadingEnd} onChange={(e) => setMeterReadingEnd(e.target.value)} inputMode="decimal" className="text-sm" />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <Label className="text-xs">Tank bei Übergabe</Label>
+                  <Select value={fuelLevelStart} onValueChange={setFuelLevelStart}>
+                    <SelectTrigger className="h-10 text-sm"><SelectValue placeholder="Auswählen" /></SelectTrigger>
+                    <SelectContent>
+                      {FUEL_LEVELS.map((f) => <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="text-xs">Tank bei Rückgabe</Label>
+                  <Select value={fuelLevelEnd} onValueChange={setFuelLevelEnd}>
+                    <SelectTrigger className="h-10 text-sm"><SelectValue placeholder="Auswählen" /></SelectTrigger>
+                    <SelectContent>
+                      {FUEL_LEVELS.map((f) => <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </>
+          )}
+          <div>
+            <Label className="text-xs">Sauberkeit bei Rückgabe</Label>
+            <div className="flex gap-2 mt-1">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  onClick={() => setCleanlinessRating(n)}
+                  className={`h-11 w-11 rounded-lg border-2 font-semibold text-sm transition-colors ${
+                    cleanlinessRating === n ? "border-primary bg-primary text-primary-foreground" : "border-border hover:border-primary/50"
+                  }`}
+                >
+                  {n}
+                </button>
+              ))}
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-1">{CLEANLINESS_HINT}</p>
+          </div>
+          <div className="flex items-start space-x-3 p-3 border rounded-lg bg-muted/30">
+            <Checkbox id="cleaning" checked={cleaningRequired} onCheckedChange={(c) => setCleaningRequired(c === true)} />
+            <label htmlFor="cleaning" className="text-sm cursor-pointer">
+              Reinigung erforderlich – wird als Zusatzkosten berechnet.
+            </label>
+          </div>
+          <div>
+            <Label className="text-xs">Zustandsanmerkungen (optional)</Label>
+            <Textarea value={conditionNotes} onChange={(e) => setConditionNotes(e.target.value)} rows={2} className="text-sm" />
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "damages",
+      title: "Schäden",
+      optional: true,
+      summary: damages.length ? `${damages.length} erfasst · ${formatEuro(damagesSum)}` : "Neuen Schaden hinzufügen",
+      done: damages.length > 0,
+      content: (
+        <DamagesStep
+          damages={damages}
+          onChange={setDamages}
+          itemNames={itemConditions.map((i) => i.product_name)}
+          context="die bei der Rückgabe neu festgestellt wurden"
+          showAmounts
+        />
+      ),
+    },
+    {
+      id: "charges",
+      title: "Zusatzkosten",
+      optional: true,
+      summary: extraCharges.length ? formatEuro(chargesSum) : "Reinigung, Kraftstoff, Verspätung …",
+      done: extraCharges.length > 0,
+      content: <ExtraChargesStep charges={extraCharges} onChange={setExtraCharges} />,
+    },
+    {
+      id: "id",
+      title: "Personalausweis abgleichen",
+      summary: idChecked ? "Abgeglichen" : "Pflichtschritt",
+      done: idChecked,
+      content: (
+        <IdCheckStep
+          checked={idChecked}
+          onCheckedChange={setIdChecked}
+          docType={idDocType}
+          onDocTypeChange={setIdDocType}
+          customerName={customerName}
+        />
+      ),
+    },
+    {
+      id: "signature",
+      title: "Unterschrift",
+      summary: signaturesDone ? "Erfasst" : "Kunde und Mitarbeiter",
+      done: signaturesDone,
+      content: (
+        <div className="space-y-4">
+          <div className="flex items-start space-x-3 p-3 border-2 border-amber-300 rounded-lg bg-amber-50">
+            <Checkbox
+              id="return-customer-not-present"
+              checked={customerNotPresent}
+              onCheckedChange={(c) => {
+                setCustomerNotPresent(c === true);
+                if (c) setCustomerSignature(null);
+              }}
+            />
+            <label htmlFor="return-customer-not-present" className="text-sm leading-relaxed cursor-pointer">
+              <strong>Kunde ist nicht vor Ort</strong> – das Protokoll wird zur digitalen Unterschrift im Portal
+              bereitgestellt.
+            </label>
+          </div>
+          {!customerNotPresent && (
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold">Unterschrift Mieter</Label>
+              <p className="text-xs text-muted-foreground">{customerName} – {profile.company_name}</p>
+              <SignaturePad onSignatureChange={setCustomerSignature} height={180} />
+            </div>
+          )}
+          <div className="space-y-2">
+            <Label className="text-xs">Name des Mitarbeiters *</Label>
+            <Input value={staffName} onChange={(e) => setStaffName(e.target.value)} placeholder="Vor- und Nachname" className="text-sm" />
+            <SignaturePad onSignatureChange={setStaffSignature} height={180} label="Unterschrift SLT-Mitarbeiter" />
+          </div>
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="w-[calc(100vw-1.5rem)] max-w-3xl max-h-[92vh] overflow-y-auto p-4 sm:p-6">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <ClipboardCheck className="h-5 w-5" />
+            Rückgabe handhaben
+          </DialogTitle>
+          <DialogDescription>
+            {profile.company_name} · {productName} · Standort {reservation.location}
+          </DialogDescription>
+        </DialogHeader>
+
+        {result ? (
+          <div className="space-y-4 text-center py-4">
+            <CheckCircle2 className="h-10 w-10 text-primary mx-auto" />
+            <div>
+              <p className="font-semibold">Rückgabeprotokoll {result.number} erstellt</p>
+              <p className="text-sm text-muted-foreground">
+                {result.emailSent ? "Das Protokoll wurde an den Kunden gesendet." : "Das Protokoll wurde noch nicht versendet."}
+              </p>
+              {(chargesSum > 0 || damagesSum > 0) && (
+                <p className="text-sm mt-2">
+                  Für die Rechnung vorgemerkt: {formatEuro(chargesSum + damagesSum)}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2 sm:justify-center">
+              {result.fileUrl && (
+                <Button variant="outline" asChild>
+                  <a href={result.fileUrl} target="_blank" rel="noopener noreferrer">
+                    <Download className="h-4 w-4 mr-1.5" />
+                    Protokoll herunterladen
+                  </a>
+                </Button>
+              )}
+              <Button onClick={sendToCustomer} disabled={resending || !createdId}>
+                {resending ? <RefreshCw className="h-4 w-4 mr-1.5 animate-spin" /> : <Mail className="h-4 w-4 mr-1.5" />}
+                {result.emailSent ? "Erneut an Kunden senden" : "An Kunden senden"}
+              </Button>
+              <Button variant="ghost" onClick={() => { resetForm(); onOpenChange(false); }}>Schließen</Button>
+            </div>
+          </div>
+        ) : (
+          <ProtocolWizard
+            steps={steps}
+            missingHint={missing.length ? missing.join(", ") : null}
+            footer={
+              <div className="flex flex-col-reverse sm:flex-row gap-2 sm:justify-end">
+                <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto">
+                  Abbrechen
+                </Button>
+                <Button
+                  onClick={handleGenerate}
+                  disabled={saving || !allValid}
+                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover w-full sm:w-auto"
+                >
+                  {saving ? (
+                    <><RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />Wird erstellt...</>
+                  ) : (
+                    <><ShieldCheck className="h-4 w-4 mr-1.5" />Rückgabe abschließen</>
+                  )}
+                </Button>
+              </div>
+            }
+          />
+        )}
       </DialogContent>
     </Dialog>
   );
