@@ -180,6 +180,18 @@ interface Props {
   defaultPayments?: OfferPayment[];
   /** Mietzeitraum der Anfrage (YYYY-MM-DD) – Basis für die Bestandsprüfung. */
   rentalPeriod?: { start?: string | null; end?: string | null };
+  /** Verknüpfte B2B-Reservierung – Quelle für offene Schäden/Zusatzkosten aus dem Rücknahmeprotokoll. */
+  reservationId?: string | null;
+}
+
+/** Offene Position aus einem Rücknahmeprotokoll, die noch nicht abgerechnet wurde. */
+interface PendingProtocolCharge {
+  id: string;
+  source: "damage" | "extra_charge";
+  label: string;
+  description?: string;
+  /** Bruttobetrag laut Protokoll */
+  gross: number;
 }
 
 /** Erfasste (Teil-)Zahlung, die auf der Rechnung abgezogen wird. */
