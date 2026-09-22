@@ -492,6 +492,7 @@ export function InquiryOfferForm({
             price_source: useCms ? ("cms" as const) : item.price_source,
             unit: item.unit ?? resolved?.unit ?? "kalendertage",
             duration: item.duration && item.duration > 0 ? item.duration : 1,
+            product_slug: item.product_slug ?? match.slug,
             available_addons: parseAddonOptions(match.addon_options),
           };
         }),
@@ -532,6 +533,12 @@ export function InquiryOfferForm({
         description: "Die Summe muss größer als 0 € sein – bitte Abzüge (z. B. Inzahlungnahme) prüfen.",
         variant: "destructive",
       });
+      return;
+    }
+    // Bestandsprüfung: nicht ausreichende oder ungepflegte Mengen müssen
+    // bewusst bestätigt werden – der Versand bleibt danach möglich.
+    if (inventoryIssues.length > 0 && !inventoryAckRef.current) {
+      setWarningOpen(true);
       return;
     }
     // Zusätzlicher Klick-Lock: State-Updates greifen erst im nächsten Render,
@@ -580,6 +587,11 @@ export function InquiryOfferForm({
           return {
             ...rest,
             description,
+            // Für die spätere Bestandsprüfung: echte Stückzahl und Zeitraum
+            // getrennt mitschreiben (quantity ist Artikel × Dauer).
+            articles,
+            rental_start: rest.rental_start ?? checkStart ?? undefined,
+            rental_end: rest.rental_end ?? checkEnd ?? undefined,
             quantity: articles * duration,
             unit: unitLabel(articles * duration, unit),
             addons: (rest.addons ?? []).filter((a) => Number(a.amount) !== 0),
@@ -690,6 +702,7 @@ export function InquiryOfferForm({
                       product_name: freeText,
                       image_url: product ? pickCatalogImage(product.images) : undefined,
                       ...resolvePricePatch(item, resolved),
+                      product_slug: product?.slug,
                       available_addons: product ? parseAddonOptions(product.addon_options) : [],
                       addons: [],
                     });
