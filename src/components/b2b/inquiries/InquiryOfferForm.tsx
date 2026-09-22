@@ -5,7 +5,16 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { Plus, Send, Trash2 } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Info, Plus, Send, Trash2 } from "lucide-react";
+import {
+  badgeText,
+  evaluateLine,
+  fetchAvailability,
+  toIsoDate,
+  type InventoryIssue,
+  type InventoryResult,
+} from "@/lib/inventoryAvailability";
+import { InventoryWarningDialog } from "./InventoryWarningDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -30,6 +39,8 @@ import {
 
 /** Angebotsposition inkl. der im CMS erlaubten Zusatzoptionen (nur lokal). */
 type FormLine = OfferLine & {
+  /** CMS-Slug des Artikels – Basis für die Bestandsprüfung. */
+  product_slug?: string;
   available_addons?: AddonOption[];
   /** Woher der Einzelpreis stammt: aus dem CMS vorbelegt oder manuell überschrieben. */
   price_source?: "cms" | "manual";
@@ -167,6 +178,8 @@ interface Props {
   };
   /** Bereits geleistete Zahlungen (z. B. Vorkasse auf das Angebot) – nur Rechnungen. */
   defaultPayments?: OfferPayment[];
+  /** Mietzeitraum der Anfrage (YYYY-MM-DD) – Basis für die Bestandsprüfung. */
+  rentalPeriod?: { start?: string | null; end?: string | null };
 }
 
 /** Erfasste (Teil-)Zahlung, die auf der Rechnung abgezogen wird. */
@@ -195,6 +208,7 @@ export function InquiryOfferForm({
   defaultServicePeriod,
   defaultCosts,
   defaultPayments,
+  rentalPeriod,
 }: Props) {
   const isInvoice = mode === "invoice";
   const isSupplement = isInvoice && invoiceKind === "supplement";
@@ -335,6 +349,96 @@ export function InquiryOfferForm({
     [items],
   );
 
+  // ----------------------------------------------------------------
+  // Bestandsprüfung je Position (nur Mietgeschäft, nur mit Zeitraum)
+  // ----------------------------------------------------------------
+  /** Für die Prüfung maßgeblicher Zeitraum: Leistungszeitraum schlägt Anfragezeitraum. */
+  const checkStart = toIsoDate(
+    (isInvoice ? servicePeriodStart : "") || rentalPeriod?.start || servicePeriodStart || "",
+  );
+  const checkEnd =
+    toIsoDate((isInvoice ? servicePeriodEnd : "") || rentalPeriod?.end || servicePeriodEnd || "") || checkStart;
+
+  const [availability, setAvailability] = useState<Record<number, InventoryResult | null>>({});
+  const [checking, setChecking] = useState(false);
+  const [warningOpen, setWarningOpen] = useState(false);
+  const inventoryAckRef = useRef(false);
+
+  /** Prüfsteckbrief: ändert sich nur, wenn Artikel, Menge oder Zeitraum wechseln. */
+  const checkSignature = useMemo(
+    () =>
+      JSON.stringify(
+        items.map((i) => [i.product_slug ?? "", i.product_name.trim().toLowerCase(), i.quantity]),
+      ) + `|${location ?? ""}|${checkStart ?? ""}|${checkEnd ?? ""}`,
+    [items, location, checkStart, checkEnd],
+  );
+
+  useEffect(() => {
+    if (inquiryType !== "rental" || !checkStart) {
+      setAvailability({});
+      return;
+    }
+    let cancelled = false;
+    const timer = window.setTimeout(async () => {
+      setChecking(true);
+      const next: Record<number, InventoryResult | null> = {};
+      await Promise.all(
+        items.map(async (item, index) => {
+          const name = item.product_name.trim();
+          if (!name) return;
+          let slug = item.product_slug;
+          if (!slug) {
+            const match = await findCatalogProductByName(name);
+            slug = match?.slug;
+          }
+          if (!slug) {
+            // Freitext-Position ohne CMS-Artikel: Bestand ist nicht prüfbar.
+            next[index] = { stock: null, stockSource: "none", booked: 0, conflicts: [] };
+            return;
+          }
+          try {
+            next[index] = await fetchAvailability({
+              slug,
+              location,
+              start: checkStart,
+              end: checkEnd,
+              excludeInquiryId: inquiryId,
+            });
+          } catch {
+            next[index] = null;
+          }
+        }),
+      );
+      if (!cancelled) {
+        setAvailability(next);
+        setChecking(false);
+      }
+    }, 400);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checkSignature, inquiryType, inquiryId]);
+
+  /** Alle offenen Bestandsprobleme – Grundlage für den Bestätigungsdialog. */
+  const inventoryIssues = useMemo<InventoryIssue[]>(() => {
+    if (inquiryType !== "rental") return [];
+    const list: InventoryIssue[] = [];
+    items.forEach((item, index) => {
+      const result = availability[index];
+      if (!result || !item.product_name.trim()) return;
+      const issue = evaluateLine(item.product_name.trim(), item.quantity || 1, location, result);
+      if (issue) list.push(issue);
+    });
+    return list;
+  }, [items, availability, location, inquiryType]);
+
+  // Ändert sich etwas an der Lage, muss erneut bestätigt werden.
+  useEffect(() => {
+    inventoryAckRef.current = false;
+  }, [checkSignature]);
+
   const totals = useMemo(
     () => buildOfferTotals(effectiveItems, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost),
     [effectiveItems, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost],
@@ -388,6 +492,7 @@ export function InquiryOfferForm({
             price_source: useCms ? ("cms" as const) : item.price_source,
             unit: item.unit ?? resolved?.unit ?? "kalendertage",
             duration: item.duration && item.duration > 0 ? item.duration : 1,
+            product_slug: item.product_slug ?? match.slug,
             available_addons: parseAddonOptions(match.addon_options),
           };
         }),
@@ -428,6 +533,12 @@ export function InquiryOfferForm({
         description: "Die Summe muss größer als 0 € sein – bitte Abzüge (z. B. Inzahlungnahme) prüfen.",
         variant: "destructive",
       });
+      return;
+    }
+    // Bestandsprüfung: nicht ausreichende oder ungepflegte Mengen müssen
+    // bewusst bestätigt werden – der Versand bleibt danach möglich.
+    if (inventoryIssues.length > 0 && !inventoryAckRef.current) {
+      setWarningOpen(true);
       return;
     }
     // Zusätzlicher Klick-Lock: State-Updates greifen erst im nächsten Render,
@@ -476,6 +587,11 @@ export function InquiryOfferForm({
           return {
             ...rest,
             description,
+            // Für die spätere Bestandsprüfung: echte Stückzahl und Zeitraum
+            // getrennt mitschreiben (quantity ist Artikel × Dauer).
+            articles,
+            rental_start: rest.rental_start ?? checkStart ?? undefined,
+            rental_end: rest.rental_end ?? checkEnd ?? undefined,
             quantity: articles * duration,
             unit: unitLabel(articles * duration, unit),
             addons: (rest.addons ?? []).filter((a) => Number(a.amount) !== 0),
@@ -586,6 +702,7 @@ export function InquiryOfferForm({
                       product_name: freeText,
                       image_url: product ? pickCatalogImage(product.images) : undefined,
                       ...resolvePricePatch(item, resolved),
+                      product_slug: product?.slug,
                       available_addons: product ? parseAddonOptions(product.addon_options) : [],
                       addons: [],
                     });
@@ -725,6 +842,44 @@ export function InquiryOfferForm({
                 {formatEuro(lineTotal(eff))}
               </div>
             </div>
+
+            {/* Bestandslage am Standort im gewählten Zeitraum */}
+            {inquiryType === "rental" && item.product_name.trim() && availability[index] ? (
+              (() => {
+                const result = availability[index]!;
+                const issue = evaluateLine(item.product_name.trim(), item.quantity || 1, location, result);
+                const tone =
+                  issue?.severity === "over"
+                    ? "text-destructive"
+                    : issue?.severity === "unknown"
+                      ? "text-amber-600"
+                      : "text-muted-foreground";
+                const Icon = issue ? (issue.severity === "over" ? AlertTriangle : Info) : CheckCircle2;
+                return (
+                  <p className={`flex items-start gap-1.5 text-[11px] ${tone}`}>
+                    <Icon className="h-3.5 w-3.5 shrink-0 mt-px" />
+                    <span className="min-w-0 break-words">
+                      {badgeText(result, item.quantity || 1, location)}
+                      {checkStart ? (
+                        <span className="text-muted-foreground">
+                          {" "}
+                          ({new Date(checkStart).toLocaleDateString("de-DE")}
+                          {checkEnd && checkEnd !== checkStart
+                            ? ` – ${new Date(checkEnd).toLocaleDateString("de-DE")}`
+                            : ""}
+                          )
+                        </span>
+                      ) : null}
+                    </span>
+                  </p>
+                );
+              })()
+            ) : inquiryType === "rental" && item.product_name.trim() && !checkStart ? (
+              <p className="flex items-start gap-1.5 text-[11px] text-muted-foreground">
+                <Info className="h-3.5 w-3.5 shrink-0 mt-px" />
+                <span>Ohne Mietzeitraum ist keine Bestandsprüfung möglich.</span>
+              </p>
+            ) : null}
 
             {/* Zusatzoptionen dieser Position (CMS-Optionen + Standardauswahl + Freifeld) */}
             {(() => {
@@ -1126,7 +1281,54 @@ export function InquiryOfferForm({
 
 
 
-      <Button onClick={send} disabled={disabled || sending} className="w-full">
+      {inquiryType === "rental" && inventoryIssues.length > 0 && (
+        <div
+          className={
+            "rounded-lg border p-3 text-sm " +
+            (inventoryIssues.some((i) => i.severity === "over")
+              ? "border-destructive/40 bg-destructive/5"
+              : "border-amber-500/40 bg-amber-500/5")
+          }
+        >
+          <div className="flex items-start gap-2">
+            <AlertTriangle
+              className={
+                "h-4 w-4 shrink-0 mt-0.5 " +
+                (inventoryIssues.some((i) => i.severity === "over") ? "text-destructive" : "text-amber-600")
+              }
+            />
+            <div className="min-w-0 space-y-1">
+              <p className="font-medium">
+                {inventoryIssues.some((i) => i.severity === "over")
+                  ? "Bestand reicht im Zeitraum nicht aus"
+                  : "Bestand nicht gepflegt"}
+              </p>
+              {inventoryIssues.map((issue, i) => (
+                <p key={i} className="text-xs break-words text-muted-foreground">
+                  {issue.message}
+                </p>
+              ))}
+              <p className="text-xs text-muted-foreground">
+                Der Versand ist weiterhin möglich – er muss nur einmal bestätigt werden.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <InventoryWarningDialog
+        open={warningOpen}
+        onOpenChange={setWarningOpen}
+        issues={inventoryIssues}
+        documentLabel={isInvoice ? "Rechnung" : "Angebot"}
+        onConfirm={() => {
+          inventoryAckRef.current = true;
+          setWarningOpen(false);
+          void send();
+        }}
+      />
+
+      <Button onClick={send} disabled={disabled || sending || checking} className="w-full">
         <Send className="h-4 w-4 mr-2" />
         {isInvoice
           ? sending

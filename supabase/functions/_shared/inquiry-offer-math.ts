@@ -12,6 +12,10 @@ export interface InquiryOfferAddon {
 
 export interface InquiryOfferItem {
   product_name: string;
+  /** CMS-Slug des Artikels – Grundlage der Bestandsprüfung. */
+  product_slug?: string;
+  /** Tatsächliche Stückzahl (quantity = Stückzahl × Dauer). */
+  articles?: number;
   description?: string;
   quantity: number;
   /** Mengeneinheit (z. B. "Kalendertage", "Monat") – wird im PDF angezeigt. */
@@ -124,6 +128,11 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
 
     return {
       product_name: name.slice(0, 200),
+      product_slug: item.product_slug ? String(item.product_slug).slice(0, 200) : undefined,
+      articles:
+        Number.isFinite(Number(item.articles)) && Number(item.articles) > 0
+          ? Math.round(Number(item.articles))
+          : undefined,
       description: item.description ? String(item.description).slice(0, 500) : undefined,
       quantity: Math.round(quantity),
       unit: item.unit ? String(item.unit).slice(0, 40) : undefined,
