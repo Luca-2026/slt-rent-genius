@@ -257,6 +257,11 @@ export function AdminInventoryTab() {
                       <TableCell>
                         <div className="font-medium">{row.name}</div>
                         <div className="text-xs text-muted-foreground">{row.slug}</div>
+                        {(row as { tracks_operating_hours?: boolean }).tracks_operating_hours && (
+                          <Badge variant="outline" className="text-[10px] mt-1" title="Letzter erfasster Betriebsstundenstand">
+                            {row.id in lastHours ? `${lastHours[row.id].toLocaleString("de-DE", { maximumFractionDigits: 1 })} Betriebsstd.` : "Betriebsstd. –"}
+                          </Badge>
+                        )}
                       </TableCell>
                       <TableCell><Badge variant="outline">{cat?.title ?? row.category}</Badge></TableCell>
                       <TableCell>
