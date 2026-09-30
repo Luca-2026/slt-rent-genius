@@ -439,7 +439,7 @@ Deno.serve(async (req: Request) => {
       net_7: "Zahlung innerhalb von 7 Tagen nach Rechnungsstellung (netto)." + depositText,
       net_14: "Zahlung innerhalb von 14 Tagen nach Rechnungsstellung (netto)." + depositText,
       net_30: "Zahlung innerhalb von 30 Tagen nach Rechnungsstellung (netto)." + depositText,
-      vorkasse: "Vorkasse per Banküberweisung. Die Zahlung ist vor Mietbeginn zu leisten – die Bankdaten finden Sie im Angebots-PDF. Nach Zahlungseingang erhalten Sie von uns eine Auftragsbestätigung; erst mit deren Zugang kommt der Auftrag verbindlich zustande." + depositText,
+      vorkasse: "Vorkasse per Banküberweisung. Die Zahlung ist vor Mietbeginn zu leisten – die Bankdaten finden Sie im Angebots-PDF." + depositText,
       anzahlung_30:
         "Nach Ihrer Annahme senden wir Ihnen eine Buchungsbestätigung. Darin erhalten Sie Ihre persönliche " +
         "<strong>Buchungsreferenz</strong> sowie einen Zahlungslink. Innerhalb von <strong>48 Stunden</strong> " +
@@ -477,8 +477,12 @@ Deno.serve(async (req: Request) => {
   <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>So nehmen Sie das Angebot an:</strong><br>
     Bitte bestätigen Sie uns die Annahme kurz per E-Mail an
-    <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a>.
-    Wir reservieren die Artikel anschließend verbindlich für Sie und melden uns mit allen Details zur Abholung bzw. Lieferung.
+    <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a>${["net_7", "net_14", "net_30"].includes(paymentTerms) ? "." : " und leisten Sie die Zahlung gemäß den unten stehenden Zahlungsbedingungen."}
+  </div>
+  <div style="background:#eef4f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
+    <strong>Wann ist Ihr Auftrag verbindlich?</strong><br>
+    ${["net_7", "net_14", "net_30"].includes(paymentTerms) ? "Nach Ihrer Annahme erhalten Sie unsere Auftragsbestätigung." : "Sobald Ihre Zahlung bei uns eingegangen ist, erhalten Sie unsere Auftragsbestätigung."}
+    Erst mit der Auftragsbestätigung wird die Miete verbindlich und Ihr Auftrag gilt als angenommen. Maßgeblich ist allein die Auftragsbestätigung – sie dient Ihnen als Nachweis, dass wir Ihren Auftrag angenommen haben.
   </div>
   <div style="background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>Zahlungsbedingungen:</strong><br>${paymentEmailText}

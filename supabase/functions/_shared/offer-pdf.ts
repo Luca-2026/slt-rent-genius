@@ -36,7 +36,9 @@ export async function generateOfferPdf(data: {
    * (Gutschrift) zu einer bereits gestellten Rechnung – identisches Layout,
    * nur Beschriftungen und Hinweistexte unterscheiden sich.
    */
-  documentType?: "offer" | "invoice" | "supplement" | "credit_note";
+  documentType?: "offer" | "invoice" | "supplement" | "credit_note" | "order_confirmation";
+  /** Auftragsbestätigung: Datum des zugrunde liegenden Angebots. */
+  sourceOfferDate?: string;
   /** Fälligkeitsdatum der Rechnung (YYYY-MM-DD oder bereits formatiert). */
   dueDate?: string;
   /** Leistungszeitraum der Rechnung. */
@@ -85,10 +87,11 @@ export async function generateOfferPdf(data: {
   const ADDR_Y_TOP = H - 105;
 
   const docType = data.documentType ?? "offer";
-  const isInvoice = docType !== "offer";
+  const isOC = docType === "order_confirmation";
+  const isInvoice = docType !== "offer" && !isOC;
   const isSupplement = docType === "supplement";
   const isCreditNote = docType === "credit_note";
-  const TITLE = isCreditNote
+  const TITLE = isOC ? "AUFTRAGSBEST\u00C4TIGUNG" : isCreditNote
     ? "RECHNUNGSKORREKTUR"
     : isSupplement ? "NACHTRAGSRECHNUNG" : isInvoice ? "RECHNUNG" : "ANGEBOT";
 
@@ -229,7 +232,16 @@ export async function generateOfferPdf(data: {
       dt(pg, value, infoX + 95, iy + 3, font, 7, MUTED);
       iy -= 10;
     };
-    if (isCreditNote) {
+    if (isOC) {
+      infoRow("Best\u00E4tigungs-Nr.:", data.offerNumber);
+      infoRow("Datum:", fd(data.offerDate));
+      if (data.sourceOfferNumber) infoRow("Zu Angebot:", data.sourceOfferNumber, BRAND);
+      if (data.sourceOfferDate) infoRow("Angebot vom:", fd(data.sourceOfferDate));
+      if (data.servicePeriodStart) {
+        infoRow("Mietbeginn:", fd(data.servicePeriodStart));
+        if (data.servicePeriodEnd) infoRow("Mietende:", fd(data.servicePeriodEnd));
+      }
+    } else if (isCreditNote) {
       infoRow("Gutschriftnummer:", data.offerNumber);
       infoRow("Gutschriftdatum:", fd(data.offerDate));
       if (data.parentInvoiceNumber) infoRow("Zu Rechnung:", data.parentInvoiceNumber, BRAND);
@@ -280,9 +292,9 @@ export async function generateOfferPdf(data: {
     // Titelblock
     const contentTopY = Math.min(ay, iy) - 26;
     let ty = contentTopY;
-    const titleSize = isCreditNote ? 20 : isInvoice ? 24 : 30;
+    const titleSize = isCreditNote || isOC ? 20 : isInvoice ? 24 : 30;
     dt(pg, TITLE, ML, ty, bold, titleSize, BRAND);
-    ty -= isCreditNote ? 22 : isInvoice ? 24 : 26;
+    ty -= isCreditNote || isOC ? 22 : isInvoice ? 24 : 26;
     dt(pg, `Nr. ${data.offerNumber}`, ML, ty, font, 10.5, MUTED);
     ty -= 22;
 
@@ -297,7 +309,9 @@ export async function generateOfferPdf(data: {
 
     // Anschreiben
     dt(pg, "Sehr geehrte Damen und Herren,", ML, ty, font, 9.5); ty -= 13;
-    const intro = isCreditNote
+    const intro = isOC
+      ? `vielen Dank f\u00FCr Ihren Auftrag. Hiermit best\u00E4tigen wir verbindlich die Annahme Ihres Auftrags auf Grundlage unseres Angebots ${data.sourceOfferNumber || ""}${data.sourceOfferDate ? ` vom ${fd(data.sourceOfferDate)}` : ""} \u00FCber folgende Leistungen:`
+      : isCreditNote
       ? `hiermit korrigieren wir unsere Rechnung ${data.parentInvoiceNumber || ""}${data.parentInvoiceDate ? ` vom ${fd(data.parentInvoiceDate)}` : ""}. ` +
         `Wir schreiben Ihnen ${data.creditIsPartial ? "die folgenden Positionen anteilig" : "die folgenden Positionen vollst\u00E4ndig"} gut` +
         `${data.creditReason ? ` (Grund: ${data.creditReason})` : ""}:`
@@ -560,7 +574,8 @@ export async function generateOfferPdf(data: {
   // ── Bereits geleistete (Teil-)Zahlungen und Restbetrag ──
   const payments = (data.payments || []).filter((p) => Number(p.amount) > 0);
   const amountPaid = Math.round(payments.reduce((sum, p) => sum + Number(p.amount || 0), 0) * 100) / 100;
-  const balanceDue = Math.round((data.grossAmount - amountPaid) * 100) / 100;
+  const requiredTotal = Math.round((data.grossAmount + (isOC ? Number(data.deposit) || 0 : 0)) * 100) / 100;
+  const balanceDue = Math.round((requiredTotal - amountPaid) * 100) / 100;
   if (isCreditNote) {
     // Rechnungskorrektur: Hinweis zur Erstattung bzw. Verrechnung statt Zahlungsaufforderung
     const refundAmount = Math.max(0, Number(data.creditRefundAmount) || 0);
@@ -594,7 +609,12 @@ export async function generateOfferPdf(data: {
     );
     y -= boxH + 12;
   } else if (amountPaid > 0) {
-    need(40 + payments.length * 12);
+    need(54 + payments.length * 12);
+    if (isOC && Number(data.deposit) > 0) {
+      dt(pg, "Gesamt zu zahlen inkl. Kaution", tx, y, bold, 9, INK);
+      dtr(pg, fm(requiredTotal), vx, y, bold, 9, INK);
+      y -= 16;
+    }
     for (const p of payments) {
       const label = [p.label || "Zahlungseingang", p.date ? fd(p.date) : "", p.reference ? `(${p.reference})` : ""]
         .filter(Boolean)
@@ -611,7 +631,7 @@ export async function generateOfferPdf(data: {
     const accent = fullyPaid ? rgb(0.05, 0.45, 0.25) : ORANGE;
     pg.drawRectangle({ x: tx - 6, y: y - 4, width: vx - tx + 10, height: 22, color: fullyPaid ? rgb(0.93, 0.98, 0.94) : rgb(1, 0.96, 0.9) });
     pg.drawRectangle({ x: tx - 6, y: y + 17, width: vx - tx + 10, height: 1, color: accent });
-    dt(pg, fullyPaid ? "Bereits vollst\u00E4ndig bezahlt" : "Noch zu zahlen", tx, y + 4, bold, 10.5, accent);
+    dt(pg, fullyPaid ? (isOC ? "Vollst\u00E4ndig bezahlt" : "Bereits vollst\u00E4ndig bezahlt") : (isOC ? "Noch offen" : "Noch zu zahlen"), tx, y + 4, bold, 10.5, accent);
     dtr(pg, fm(Math.max(0, balanceDue)), vx, y + 4, bold, 12, accent);
     y -= 38;
   }
@@ -645,7 +665,66 @@ export async function generateOfferPdf(data: {
         ? `Zahlungsbedingungen: Zahlung innerhalb von ${paymentDueDays} Tagen nach Rechnungsstellung (Kreditlimit: ${fm(data.profile.credit_limit)}).`
         : "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten."));
 
-  if (isInvoice && !isCreditNote) {
+  const drawInfoBox = (title: string, text: string, fill: any, accent: any, extraRows: [string, string][] = []) => {
+    const lines = wt(text, font, 9, CW - 32);
+    const boxH = 30 + lines.length * 12 + (extraRows.length ? extraRows.length * 11 + 6 : 0);
+    need(boxH + 16);
+    pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: fill });
+    pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: accent });
+    let by = y - 2;
+    dt(pg, title, ML + 16, by, bold, 10, INK); by -= 16;
+    lines.forEach((ln) => { dt(pg, ln, ML + 16, by, font, 9, INK); by -= 12; });
+    if (extraRows.length) {
+      by -= 4;
+      for (const [label, value] of extraRows) {
+        dt(pg, label, ML + 16, by, font, 8.5, MUTED);
+        dt(pg, value, ML + 120, by, bold, 8.5, INK);
+        by -= 11;
+      }
+    }
+    y -= boxH + 12;
+  };
+  const bankRows = (ref: string): [string, string][] => [
+    ["Kontoinhaber:", SLT_COMPANY.name],
+    ["Bank:", SLT_COMPANY.bankName],
+    ["IBAN / BIC:", `${SLT_COMPANY.iban} | ${SLT_COMPANY.bic}`],
+    ["Verwendungszweck:", ref],
+  ];
+  const paysOnInvoice = ["net_7", "net_14", "net_30", "net_60"].includes(String(data.paymentTerms || ""));
+
+  if (isOC) {
+    const GREEN = rgb(0.05, 0.45, 0.25);
+    const ref = data.sourceOfferNumber || data.offerNumber;
+    if (amountPaid > 0 && balanceDue <= 0.009) {
+      drawInfoBox(
+        "Zahlungseingang",
+        `Ihre Zahlung${payments.length > 1 ? "en" : ""} \u00FCber ${fm(amountPaid)} ist vollst\u00E4ndig bei uns eingegangen. Vielen Dank!`,
+        rgb(0.93, 0.98, 0.94), GREEN,
+      );
+    } else if (amountPaid > 0) {
+      drawInfoBox(
+        "Zahlungshinweis \u2013 offener Restbetrag",
+        `Ihre Teilzahlung \u00FCber ${fm(amountPaid)} ist bei uns eingegangen. Offen ist noch ein Restbetrag von ${fm(balanceDue)}. ` +
+          (paysOnInvoice
+            ? "Dieser ist gem\u00E4\u00DF den vereinbarten Zahlungsbedingungen f\u00E4llig."
+            : "Bitte \u00FCberweisen Sie diesen sp\u00E4testens vor Mietbeginn auf folgendes Konto:"),
+        rgb(0.995, 0.97, 0.93), ORANGE,
+        paysOnInvoice ? [] : bankRows(ref),
+      );
+    } else {
+      drawInfoBox(
+        "Zahlungshinweis",
+        `Die Zahlung von ${fm(requiredTotal)} erfolgt gem\u00E4\u00DF den vereinbarten Zahlungsbedingungen nach Rechnungsstellung. Bisher ist noch keine Zahlung eingegangen.`,
+        rgb(0.995, 0.97, 0.93), ORANGE,
+      );
+    }
+    drawInfoBox(
+      "Verbindliche Auftragsannahme",
+      "Mit dieser Auftragsbest\u00E4tigung haben wir Ihren Auftrag angenommen. Die Miete ist damit verbindlich vereinbart. " +
+        "Diese Auftragsbest\u00E4tigung dient Ihnen als Nachweis der Auftragsannahme. Es gelten unsere Allgemeinen Gesch\u00E4ftsbedingungen.",
+      rgb(0.94, 0.96, 0.98), BRAND,
+    );
+  } else if (isInvoice && !isCreditNote) {
     // Rechnung: Zahlungshinweis mit Bankdaten und Fälligkeit – Kastenstil wie beim Angebot.
     // Ist die Rechnung bereits vollständig bezahlt, entfallen Bankdaten und
     // Zahlungsfrist, damit kein widersprüchlicher Zahlungsaufruf entsteht.
@@ -729,7 +808,7 @@ export async function generateOfferPdf(data: {
       by -= 11;
     }
     by -= 2;
-    dt(pg, "Mit Zahlungseingang ist Ihre Buchung verbindlich best\u00E4tigt; nach Mietende erhalten Sie die Rechnung per E-Mail.", ML + 16, by, font, 8, MUTED);
+    dt(pg, "Nach Zahlungseingang erhalten Sie unsere Auftragsbest\u00E4tigung; nach Mietende erhalten Sie die Rechnung per E-Mail.", ML + 16, by, font, 8, MUTED);
     y -= boxH + 12;
   } else if (!isCreditNote) {
     // Mehrzeiliger Hinweiskasten – Höhe wächst mit dem Text
@@ -743,6 +822,18 @@ export async function generateOfferPdf(data: {
     y -= boxH + 12;
   }
 
+
+  if (docType === "offer") {
+    drawInfoBox(
+      "Zustandekommen des Auftrags",
+      (paysOnInvoice
+        ? "Nach Ihrer Annahme dieses Angebots erhalten Sie unsere Auftragsbest\u00E4tigung. "
+        : "Bitte leisten Sie die Zahlung gem\u00E4\u00DF den Zahlungsbedingungen. Nach Zahlungseingang erhalten Sie unsere Auftragsbest\u00E4tigung. ") +
+        "Erst mit Zugang der Auftragsbest\u00E4tigung wird die Miete verbindlich und der Auftrag gilt als angenommen. " +
+        "Ma\u00DFgeblich ist allein die Auftragsbest\u00E4tigung; sie dient als Nachweis, dass wir Ihren Auftrag angenommen haben.",
+      rgb(0.94, 0.96, 0.98), BRAND,
+    );
+  }
 
   // ── Reverse-Charge-Hinweis ──
   if (data.isReverseCharge) {
@@ -767,7 +858,7 @@ export async function generateOfferPdf(data: {
       );
       y -= 22;
     }
-  } else if (!isCreditNote) {
+  } else if (!isCreditNote && !isOC) {
     need(40);
     dt(pg, "G\u00FCltigkeit:", ML, y, bold, 9);
     dt(pg, `Dieses Angebot ist g\u00FCltig bis zum ${fd(data.validUntil)} (${data.validDays} Tage).`, ML + 58, y, font, 9, INK);
@@ -793,7 +884,9 @@ export async function generateOfferPdf(data: {
   need(isCreditNote ? 44 : 56);
   dt(
     pg,
-    isCreditNote
+    isOC
+      ? "Vielen Dank f\u00FCr Ihr Vertrauen. Wir freuen uns auf die Zusammenarbeit."
+      : isCreditNote
       ? "F\u00FCr R\u00FCckfragen zu dieser Rechnungskorrektur stehen wir Ihnen gerne zur Verf\u00FCgung."
       : isInvoice
       ? "Vielen Dank f\u00FCr Ihren Auftrag. F\u00FCr R\u00FCckfragen zu dieser Rechnung stehen wir Ihnen gerne zur Verf\u00FCgung."
