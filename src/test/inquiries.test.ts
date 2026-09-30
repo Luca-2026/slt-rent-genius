@@ -57,4 +57,13 @@ describe("offene Anfragen", () => {
     expect(matchesInquiryListFilter({ status: "rejected", assigned_to: null }, "rejected")).toBe(true);
     expect(matchesInquiryListFilter({ status: "offer_sent", assigned_to: "u" }, "unprocessed")).toBe(false);
   });
+  it("laufend = angenommen + Auftragsbestätigung, abgeschlossen = abgerechnet", () => {
+    const ab = "2026-09-30T10:00:00Z";
+    expect(matchesInquiryListFilter({ status: "accepted", order_confirmed_at: null }, "running")).toBe(false);
+    expect(matchesInquiryListFilter({ status: "accepted", order_confirmed_at: null }, "accepted")).toBe(true);
+    expect(matchesInquiryListFilter({ status: "accepted", order_confirmed_at: ab }, "running")).toBe(true);
+    expect(matchesInquiryListFilter({ status: "accepted", order_confirmed_at: ab }, "accepted")).toBe(false);
+    expect(matchesInquiryListFilter({ status: "done", order_confirmed_at: ab }, "running")).toBe(false);
+    expect(matchesInquiryListFilter({ status: "done", order_confirmed_at: ab }, "completed")).toBe(true);
+  });
 });
