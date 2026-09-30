@@ -56,7 +56,7 @@ export function periodStarts(today: Date) {
   };
 }
 
-function countsAsRevenue(row: InquiryInvoiceRow | PortalInvoiceRow, portal: boolean): boolean {
+export function countsAsRevenue(row: InquiryInvoiceRow | PortalInvoiceRow, portal: boolean): boolean {
   if (!row.invoice_date || row.status === "draft") return false;
   if (portal && row.status === "cancelled") return false;
   return true;
