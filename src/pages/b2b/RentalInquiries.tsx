@@ -13,6 +13,8 @@ import { isOpenInquiry } from "@/lib/inquiryStatus";
 import type { RentalInquiry } from "@/components/b2b/inquiries/types";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { NewRentalInquiryDialog } from "@/components/b2b/inquiries/NewRentalInquiryDialog";
+import { AiInquiryImportDialog } from "@/components/b2b/inquiries/AiInquiryImportDialog";
+import { Wand2 } from "lucide-react";
 import { Building2, Plus } from "lucide-react";
 
 const SOURCE_LABELS: Record<string, string> = {
@@ -45,6 +47,7 @@ export default function RentalInquiries() {
   const [onlyOpen, setOnlyOpen] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [newOpen, setNewOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -79,10 +82,15 @@ export default function RentalInquiries() {
         <Button variant={onlyOpen ? "default" : "outline"} onClick={() => setOnlyOpen((v) => !v)}>
           {onlyOpen ? "Nur offene" : "Alle Anfragen"}
         </Button>
-        <Button className="sm:ml-auto" onClick={() => setNewOpen(true)}>
+        <Button variant="outline" className="sm:ml-auto" onClick={() => setAiOpen(true)}>
+          <Wand2 className="h-4 w-4 mr-1" /> Aus Text erstellen (KI)
+        </Button>
+        <Button onClick={() => setNewOpen(true)}>
           <Plus className="h-4 w-4 mr-1" /> Anfrage manuell anlegen
         </Button>
       </div>
+
+      <AiInquiryImportDialog open={aiOpen} onOpenChange={setAiOpen} />
 
       <NewRentalInquiryDialog
         open={newOpen}
