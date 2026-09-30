@@ -3,7 +3,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   Home, LayoutDashboard, Inbox, FileText, Package, ShoppingCart, Receipt, Users,
   ClipboardCheck, Undo2, AlertTriangle, CheckSquare, Truck, Boxes, CalendarClock,
-  Store, UserCog, Shield, MessageSquare, BookOpen,
+  Store, UserCog, Shield, MessageSquare, BookOpen, BarChart3,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -39,6 +39,7 @@ export const STAFF_NAV: StaffNavGroup[] = [
     label: "Abrechnung",
     items: [
       { label: "Rechnungen & Gutschriften", path: "/b2b/anfrage-rechnungen", icon: Receipt, access: "staff" },
+      { label: "Umsatzauswertung", path: "/b2b/auswertungen", icon: BarChart3, access: "admin" },
     ],
   },
   {
