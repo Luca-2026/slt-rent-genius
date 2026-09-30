@@ -30,6 +30,7 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [ack, setAck] = useState(false);
+  const [attachPdf, setAttachPdf] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   if (inquiry.status !== "accepted" || !inquiry.offer_number) return null;
 
@@ -51,6 +52,7 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
         note,
         sender_name: senderName,
         acknowledge_open: ev.needsAcknowledgement ? ack : false,
+        attach_pdf: attachPdf,
         expected_paid_cents: ev.paidCents,
         expected_required_cents: ev.requiredCents,
       },
@@ -95,6 +97,14 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
         <p className="text-primary">
           Bereits gesendet am {new Date(sentAt).toLocaleString("de-DE")}
           {inquiry.order_confirmed_by_name ? ` von ${inquiry.order_confirmed_by_name}` : ""}.
+          {inquiry.order_confirmation_file_url && (
+            <>
+              {" "}
+              <a href={inquiry.order_confirmation_file_url} target="_blank" rel="noreferrer" className="underline">
+                PDF {inquiry.order_confirmation_number} öffnen
+              </a>
+            </>
+          )}
         </p>
       )}
 
@@ -111,6 +121,10 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
             rows={2}
             maxLength={800}
           />
+          <label className="flex items-center gap-2">
+            <Checkbox checked={attachPdf} onCheckedChange={(v) => setAttachPdf(Boolean(v))} />
+            <span>Auftragsbestätigung zusätzlich als PDF beifügen</span>
+          </label>
           <AlertDialog open={dialogOpen} onOpenChange={(o) => { setDialogOpen(o); if (!o) setAck(false); }}>
             <AlertDialogTrigger asChild>
               <Button size="sm" disabled={busy}>
@@ -122,7 +136,7 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
                 <AlertDialogTitle>Auftragsbestätigung senden?</AlertDialogTitle>
                 <AlertDialogDescription asChild>
                   <div className="space-y-2">
-                    <p>Geht an {inquiry.customer_email}. Mit Zugang dieser E-Mail kommt der Auftrag verbindlich zustande.</p>
+                    <p>Geht an {inquiry.customer_email}{attachPdf ? " – mit PDF im Anhang" : " – ohne PDF"}. Mit Zugang dieser E-Mail kommt der Auftrag verbindlich zustande.</p>
                     {ev.state === "full" && <p>Zahlung vollständig eingegangen ({eur(ev.paidCents)}).</p>}
                     {ev.state === "partial" && (
                       <p className="font-semibold text-destructive">
