@@ -34,6 +34,33 @@ const fmtDate = (raw: unknown) => {
   return `${d}.${m}.${y}`;
 };
 
+/** Spiegel von src/lib/orderConfirmation.ts (dort mit Tests). */
+const toCents = (v: unknown) => {
+  const n = Number(v);
+  return Number.isFinite(n) && n > 0 ? Math.round(n * 100) : 0;
+};
+const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30"]);
+function evaluateOrderPayment(input: { gross: unknown; deposit?: unknown; payments: { amount: unknown }[]; paymentTerms?: unknown }) {
+  const grossCents = toCents(input.gross);
+  const depositCents = toCents(input.deposit);
+  const requiredCents = grossCents + depositCents;
+  const paidCents = input.payments.reduce((s: number, p) => s + toCents(p?.amount), 0);
+  const openCents = Math.max(0, requiredCents - paidCents);
+  const overpaidCents = Math.max(0, paidCents - requiredCents);
+  const paysOnInvoice = INVOICE_TERMS.has(String(input.paymentTerms ?? ""));
+  const state = grossCents <= 0 ? "no_total" : paidCents <= 0 ? "none" : openCents > 0 ? "partial" : "full";
+  let blockReason: string | null = null;
+  if (state === "no_total") blockReason = "Zu diesem Angebot ist keine Angebotssumme gespeichert.";
+  else if (state === "none" && !paysOnInvoice)
+    blockReason = "Es ist noch kein Zahlungseingang erfasst. Die Auftragsbestätigung kann erst nach Zahlungseingang versendet werden.";
+  return {
+    state, grossCents, depositCents, requiredCents, paidCents, openCents, overpaidCents, paysOnInvoice,
+    canSend: blockReason === null,
+    needsAcknowledgement: state === "partial" || (state === "none" && paysOnInvoice),
+    blockReason,
+  };
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
@@ -68,10 +95,31 @@ Deno.serve(async (req) => {
 
     const payload = (inq.offer_payload ?? {}) as Record<string, any>;
     const items: any[] = Array.isArray(payload.items) ? payload.items : [];
-    const gross = Number(inq.offer_total_gross ?? payload?.totals?.grossAmount ?? 0);
-    const payments: any[] = Array.isArray(inq.payments) ? inq.payments : [];
-    const paid = Math.round(payments.reduce((s, p) => s + (Number(p?.amount) || 0), 0) * 100) / 100;
-    const open = Math.max(0, Math.round((gross - paid) * 100) / 100);
+    const payments: any[] = (Array.isArray(inq.payments) ? inq.payments : []).filter((p) => toCents(p?.amount) > 0);
+    const ev = evaluateOrderPayment({
+      gross: inq.offer_total_gross ?? payload?.totals?.grossAmount,
+      deposit: payload?.deposit,
+      payments,
+      paymentTerms: payload?.payment_terms,
+    });
+
+    // Server rechnet selbst – Anzeige im Portal darf nicht veraltet sein.
+    if (
+      Number(body?.expected_paid_cents) !== ev.paidCents ||
+      Number(body?.expected_required_cents) !== ev.requiredCents
+    ) {
+      return json({ error: "Die Zahlungen oder die Angebotssumme wurden inzwischen geändert. Bitte die Anfrage neu laden und erneut prüfen." }, 409);
+    }
+    if (!ev.canSend) return json({ error: ev.blockReason }, 400);
+    if (ev.needsAcknowledgement && body?.acknowledge_open !== true) {
+      return json({ error: "Offener Betrag muss vor dem Versand ausdrücklich bestätigt werden." }, 400);
+    }
+
+    const gross = ev.grossCents / 100;
+    const deposit = ev.depositCents / 100;
+    const required = ev.requiredCents / 100;
+    const paid = ev.paidCents / 100;
+    const open = ev.openCents / 100;
 
     const customerName = inquiryType === "rental"
       ? inq.customer_name || ""
@@ -83,25 +131,46 @@ Deno.serve(async (req) => {
 
     const rows = items.map((i) => {
       const qty = Number(i.quantity) || 1;
-      const dur = Number(i.duration) || 0;
       const range = i.rental_start ? ` (${fmtDate(i.rental_start)}${i.rental_end ? ` – ${fmtDate(i.rental_end)}` : ""})` : "";
-      return `<tr><td style="padding:6px 0;border-bottom:1px solid #e2e8f0;">${esc(i.product_name)}${esc(range)}</td><td style="padding:6px 0;border-bottom:1px solid #e2e8f0;text-align:right;white-space:nowrap;">${qty}×${dur > 1 ? ` · ${dur}` : ""}</td></tr>`;
+      return `<tr><td style="padding:6px 0;border-bottom:1px solid #e2e8f0;">${esc(i.product_name)}${esc(range)}</td><td style="padding:6px 0;border-bottom:1px solid #e2e8f0;text-align:right;white-space:nowrap;">${qty} ×</td></tr>`;
     }).join("");
-    const paymentsHtml = payments.length
-      ? `<p style="margin:4px 0;">Zahlungseingang: <strong>${money(paid)}</strong>${payments.map((p) => p?.date ? ` (${esc(fmtDate(p.date))})` : "").join("")}</p>`
+
+    const dueWhen = inquiryType === "rental" ? "spätestens vor Mietbeginn" : "spätestens vor Übergabe";
+    const ref = `Verwendungszweck: ${esc(inq.offer_number)}`;
+    let intro: string;
+    let statusLine: string;
+    if (ev.state === "full") {
+      intro = `vielen Dank – Ihre Zahlung ist vollständig bei uns eingegangen.`;
+      statusLine = `<p style="margin:4px 0;"><strong>Der Betrag ist vollständig beglichen.</strong></p>`;
+    } else if (ev.state === "partial") {
+      intro = `vielen Dank – Ihre Teilzahlung über ${money(paid)} ist bei uns eingegangen.`;
+      statusLine = ev.paysOnInvoice
+        ? `<p style="margin:4px 0;">Offener Restbetrag: <strong>${money(open)}</strong> – fällig gemäß den vereinbarten Zahlungsbedingungen.</p>`
+        : `<p style="margin:4px 0;">Offener Restbetrag: <strong>${money(open)}</strong> – bitte ${dueWhen} überweisen (${ref}).</p>`;
+    } else {
+      intro = `vielen Dank für Ihren Auftrag.`;
+      statusLine = `<p style="margin:4px 0;">Zahlung: <strong>${money(required)}</strong> – fällig gemäß den vereinbarten Zahlungsbedingungen nach Rechnungsstellung. Bisher ist noch keine Zahlung eingegangen.</p>`;
+    }
+    const paymentList = payments.length
+      ? `<p style="margin:4px 0;">Eingegangene Zahlungen: <strong>${money(paid)}</strong></p><ul style="margin:4px 0 4px 18px;padding:0;">${payments.map((p) => `<li>${p?.date ? `${esc(fmtDate(p.date))}: ` : ""}${money(toCents(p.amount) / 100)}</li>`).join("")}</ul>`
+      : "";
+    const overLine = ev.overpaidCents > 0
+      ? `<p style="margin:4px 0;">Sie haben ${money(ev.overpaidCents / 100)} mehr überwiesen als vereinbart. Wir melden uns dazu bei Ihnen.</p>`
       : "";
 
     const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:16px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
 <div style="max-width:600px;margin:0 auto;">
   <h2 style="color:#00507d;margin:0 0 16px;">Auftragsbestätigung zu Angebot ${esc(inq.offer_number)}</h2>
   <p>Hallo ${esc(customerName)},</p>
-  <p>vielen Dank – Ihre Zahlung ist bei uns eingegangen. Hiermit bestätigen wir Ihnen verbindlich den Auftrag auf Grundlage unseres Angebots <strong>${esc(inq.offer_number)}</strong>.</p>
+  <p>${intro} Hiermit bestätigen wir Ihnen verbindlich den Auftrag auf Grundlage unseres Angebots <strong>${esc(inq.offer_number)}</strong>.</p>
   ${period ? `<p><strong>Mietzeitraum:</strong> ${esc(period)}<br><strong>Standort:</strong> ${esc(loc.name)}</p>` : ""}
   ${rows ? `<table role="presentation" style="width:100%;border-collapse:collapse;font-size:14px;margin:12px 0;">${rows}</table>` : ""}
   <div style="background:#f1f5f9;border-radius:6px;padding:12px 16px;margin:16px 0;">
     <p style="margin:4px 0;">Auftragssumme brutto: <strong>${money(gross)}</strong></p>
-    ${paymentsHtml}
-    ${open > 0 ? `<p style="margin:4px 0;">Offener Restbetrag: <strong>${money(open)}</strong></p>` : `<p style="margin:4px 0;">Der Betrag ist vollständig beglichen.</p>`}
+    ${deposit > 0 ? `<p style="margin:4px 0;">Kaution: <strong>${money(deposit)}</strong> (wird nach ordnungsgemäßer Rückgabe erstattet)</p><p style="margin:4px 0;">Gesamt zu zahlen: <strong>${money(required)}</strong></p>` : ""}
+    ${paymentList}
+    ${statusLine}
+    ${overLine}
   </div>
   ${note ? `<p style="white-space:pre-wrap;border-left:4px solid #00507d;padding:8px 16px;">${esc(note)}</p>` : ""}
   <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;font-size:14px;">
