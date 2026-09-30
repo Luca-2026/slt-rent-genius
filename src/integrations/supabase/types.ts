@@ -2935,6 +2935,39 @@ export type Database = {
           },
         ]
       }
+      sales_article_costs: {
+        Row: {
+          article_id: string
+          article_kind: string
+          created_at: string
+          id: string
+          overhead_percent: number
+          purchase_price_net: number | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          article_id: string
+          article_kind: string
+          created_at?: string
+          id?: string
+          overhead_percent?: number
+          purchase_price_net?: number | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          article_id?: string
+          article_kind?: string
+          created_at?: string
+          id?: string
+          overhead_percent?: number
+          purchase_price_net?: number | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       sales_inquiries: {
         Row: {
           addons: Json

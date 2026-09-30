@@ -17,7 +17,8 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import type { NewMachineRow, SalesArticleKind, UsedMachineRow } from "@/hooks/useSalesCatalog";
-import { invalidateSalesCatalog } from "@/hooks/useSalesCatalog";
+import { grossToNet, invalidateSalesCatalog } from "@/hooks/useSalesCatalog";
+import { DEFAULT_OVERHEAD_PERCENT, minimumPrice } from "@/lib/salesPricing";
 
 interface Props {
   open: boolean;
@@ -182,6 +183,37 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
     }
   }, [open, row, isNew]);
 
+  // Interne Kalkulation (Einkaufspreis, Gemeinkosten) – separat und nicht öffentlich gespeichert.
+  const [purchase, setPurchase] = useState("");
+  const [overhead, setOverhead] = useState(String(DEFAULT_OVERHEAD_PERCENT));
+  useEffect(() => {
+    if (!open) return;
+    setPurchase("");
+    setOverhead(String(DEFAULT_OVERHEAD_PERCENT));
+    if (!row) return;
+    let cancelled = false;
+    supabase
+      .from("sales_article_costs")
+      .select("purchase_price_net, overhead_percent")
+      .eq("article_kind", kind)
+      .eq("article_id", row.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (cancelled || !data) return;
+        setPurchase(data.purchase_price_net != null ? String(data.purchase_price_net) : "");
+        setOverhead(String(data.overhead_percent ?? DEFAULT_OVERHEAD_PERCENT));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [open, row, kind]);
+
+  const targetNet = form.price && !form.price_on_request
+    ? (isNew ? grossToNet(Number(form.price), Number(form.vat_rate) || 19) : Number(form.price))
+    : null;
+  const minNet = purchase.trim() ? minimumPrice(Number(purchase), overhead.trim() ? Number(overhead) : DEFAULT_OVERHEAD_PERCENT) : null;
+  const eur = (n: number) => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(n);
+
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
@@ -279,6 +311,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
     };
 
     setSaving(true);
+    let savedId: string | null = null;
     try {
       if (isNew) {
         const payload = {
@@ -303,10 +336,11 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
           content,
         };
         const q = supabase.from("new_machines");
-        const { error } = row
-          ? await (q.update(payload as never).eq("id", row.id))
-          : await (q.insert(payload as never));
+        const { data: saved, error } = row
+          ? await (q.update(payload as never).eq("id", row.id).select("id").single())
+          : await (q.insert(payload as never).select("id").single());
         if (error) throw error;
+        savedId = (saved as { id: string } | null)?.id ?? row?.id ?? null;
       } else {
         const payload = {
           slug,
@@ -327,10 +361,23 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
           content,
         };
         const q = supabase.from("used_machines");
-        const { error } = row
-          ? await (q.update(payload as never).eq("id", row.id))
-          : await (q.insert(payload as never));
+        const { data: saved, error } = row
+          ? await (q.update(payload as never).eq("id", row.id).select("id").single())
+          : await (q.insert(payload as never).select("id").single());
         if (error) throw error;
+        savedId = (saved as { id: string } | null)?.id ?? row?.id ?? null;
+      }
+      if (savedId) {
+        const { error: costError } = await supabase.from("sales_article_costs").upsert(
+          {
+            article_kind: kind,
+            article_id: savedId,
+            purchase_price_net: purchase.trim() ? Number(purchase) : null,
+            overhead_percent: overhead.trim() ? Number(overhead) : DEFAULT_OVERHEAD_PERCENT,
+          },
+          { onConflict: "article_kind,article_id" },
+        );
+        if (costError) throw costError;
       }
       invalidateSalesCatalog();
       toast.success(row ? "Artikel gespeichert" : "Artikel angelegt");
@@ -454,6 +501,30 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
                     </div>
                   </>
                 )}
+              </div>
+
+              <div className="rounded-lg border border-border bg-muted/40 p-3 space-y-2">
+                <p className="text-sm font-semibold">Interne Kalkulation (nicht auf der Website)</p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <Label htmlFor="sa-purchase">Einkaufspreis netto (€)</Label>
+                    <Input id="sa-purchase" type="number" step="0.01" min={0} value={purchase} disabled={readOnly} onChange={(e) => setPurchase(e.target.value)} />
+                  </div>
+                  <div>
+                    <Label htmlFor="sa-overhead">Gemeinkosten (%)</Label>
+                    <Input id="sa-overhead" type="number" step="0.5" min={0} value={overhead} disabled={readOnly} onChange={(e) => setOverhead(e.target.value)} />
+                  </div>
+                </div>
+                <div className="grid gap-1 text-sm sm:grid-cols-3">
+                  <span>Soll-VK netto: <strong>{targetNet != null ? eur(targetNet) : "–"}</strong></span>
+                  <span>Mindestpreis netto: <strong>{minNet != null ? eur(minNet) : "–"}</strong></span>
+                  <span className={targetNet != null && minNet != null && targetNet < minNet ? "text-destructive font-semibold" : ""}>
+                    Spielraum: {targetNet != null && minNet != null ? eur(targetNet - minNet) : "–"}
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Mindestpreis = Einkaufspreis + Gemeinkosten. Die Differenz zwischen Verkaufspreis und Mindestpreis ist die Bonusbasis für Vertriebsmitarbeiter.
+                </p>
               </div>
 
               <label className="flex items-center gap-2 text-sm">

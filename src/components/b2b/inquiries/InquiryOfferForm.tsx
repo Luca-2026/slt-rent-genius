@@ -29,7 +29,8 @@ import {
 } from "./InquiryProductCombobox";
 import { SalesProductCombobox } from "./SalesProductCombobox";
 import { SALES_ADDON_PRESETS } from "@/lib/salesAddons";
-import { loadSalesCatalog } from "@/hooks/useSalesCatalog";
+import { loadSalesCatalog, loadSalesCosts, type SalesCatalogItem, type SalesCostRow } from "@/hooks/useSalesCatalog";
+import { checkSalesPrice, findSalesArticle, minimumPrice } from "@/lib/salesPricing";
 import { OFFER_UNITS, unitLabel, type OfferUnit } from "@/lib/offerUnits";
 import { resolveCatalogPrice } from "@/lib/catalogPricing";
 import {
@@ -155,7 +156,7 @@ interface Props {
   inquiryType: "rental" | "sales";
   inquiryId: string;
   location: string | null;
-  defaultItems: (OfferLine & { custom_period?: boolean })[];
+  defaultItems: (OfferLine & { custom_period?: boolean; product_slug?: string })[];
   /** Vom Kunden im Anfrageformular angegebene Lieferadresse (im Portal änderbar). */
   defaultDelivery?: OfferDeliveryAddress;
   /** Privat- oder Geschäftskunde – steuert die Zahlungsbedingungen. */
@@ -557,6 +558,31 @@ export function InquiryOfferForm({
   const patchItem = (index: number, patch: Partial<FormLine>) =>
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, ...patch } : item)));
 
+  // Verkauf: Katalog + interne Einkaufspreise für Soll-/Mindestpreis-Hinweise.
+  const [salesCatalogList, setSalesCatalogList] = useState<SalesCatalogItem[]>([]);
+  const [salesCosts, setSalesCosts] = useState<Map<string, SalesCostRow>>(new Map());
+  useEffect(() => {
+    if (inquiryType !== "sales") return;
+    let cancelled = false;
+    Promise.all([loadSalesCatalog(), loadSalesCosts()]).then(([cat, costs]) => {
+      if (cancelled) return;
+      setSalesCatalogList(cat);
+      setSalesCosts(costs);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [inquiryType]);
+  const salesPriceRefFor = (item: FormLine) => {
+    const hit = findSalesArticle(salesCatalogList, { slug: item.product_slug, name: item.product_name });
+    if (!hit) return null;
+    const cost = salesCosts.get(`${hit.kind}:${hit.id}`);
+    return {
+      target: hit.net_price,
+      minimum: minimumPrice(cost?.purchase_price_net, cost?.overhead_percent),
+    };
+  };
+
   // Vorbelegte Positionen automatisch mit Bild (und ggf. Preis) aus dem CMS anreichern.
   useEffect(() => {
     let cancelled = false;
@@ -566,14 +592,17 @@ export function InquiryOfferForm({
         items.map(async (item) => {
           if (item.available_addons || !item.product_name.trim()) return item;
           if (inquiryType === "sales") {
-            const hit = salesCatalog.find(
-              (c) => c.name.toLowerCase() === item.product_name.trim().toLowerCase(),
-            );
+            const hit = findSalesArticle(salesCatalog, {
+              slug: item.product_slug,
+              articleNumber: item.description?.split(" · ")[0] ?? null,
+              name: item.product_name,
+            });
             if (!hit) return { ...item, available_addons: [] };
             const salesPrice = hit.net_price ?? undefined;
             const useSalesCms = item.unit_price <= 0 && salesPrice !== undefined;
             return {
               ...item,
+              product_slug: item.product_slug ?? hit.slug,
               image_url: item.image_url ?? hit.image ?? undefined,
               unit_price: useSalesCms ? salesPrice! : item.unit_price,
               price_source: useSalesCms ? ("cms" as const) : item.price_source,
@@ -796,6 +825,7 @@ export function InquiryOfferForm({
                     const netPrice = product?.net_price ?? undefined;
                     patchItem(index, {
                       product_name: freeText,
+                      product_slug: product?.slug,
                       image_url: product?.image ?? undefined,
                       ...resolvePricePatch(
                         item,
@@ -957,6 +987,45 @@ export function InquiryOfferForm({
                 {formatEuro(lineTotal(eff))}
               </div>
             </div>
+
+            {/* Interner Preisrahmen (nur Mitarbeiter, erscheint nicht im Angebot) */}
+            {inquiryType === "sales" && item.product_name.trim() ? (
+              (() => {
+                const ref = salesPriceRefFor(item);
+                if (!ref) return null;
+                const c = checkSalesPrice({
+                  unitPrice: item.unit_price,
+                  discountPercent: item.discount_percent,
+                  quantity: item.quantity,
+                  minimum: ref.minimum,
+                  target: ref.target,
+                });
+                return (
+                  <div
+                    className={`rounded-md border px-2 py-1.5 text-xs ${
+                      c.belowMinimum ? "border-destructive bg-destructive/10 text-destructive" : "border-border bg-muted/40 text-muted-foreground"
+                    }`}
+                  >
+                    <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+                      <span>Intern – nicht im Angebot:</span>
+                      <span>Soll-VK {ref.target != null ? formatEuro(ref.target) : "–"}</span>
+                      <span>Mindestpreis {ref.minimum != null ? formatEuro(ref.minimum) : "kein EK gepflegt"}</span>
+                      {c.marginTotal != null ? (
+                        <span className="font-semibold">
+                          Bonusbasis (über Mindestpreis): {formatEuro(c.marginTotal)}
+                        </span>
+                      ) : null}
+                    </div>
+                    {c.belowMinimum ? (
+                      <p className="mt-1 font-semibold">
+                        Achtung: Preis liegt {formatEuro(Math.abs(c.marginPerUnit ?? 0))} je Stück unter dem Mindestpreis.
+                      </p>
+                    ) : null}
+                  </div>
+                );
+              })()
+            ) : null}
+
 
             {/* Bestandslage am Standort im gewählten Zeitraum */}
             {inquiryType === "rental" && item.product_name.trim() && availability[index] ? (

@@ -195,3 +195,23 @@ export function useSalesCatalog() {
 
   return { items, loading };
 }
+
+/** Interne Einkaufspreise (nur Mitarbeiter/Admins lesbar). Schlüssel: `${kind}:${id}`. */
+export interface SalesCostRow {
+  purchase_price_net: number | null;
+  overhead_percent: number;
+}
+
+export async function loadSalesCosts(): Promise<Map<string, SalesCostRow>> {
+  const { data } = await supabase
+    .from("sales_article_costs")
+    .select("article_kind, article_id, purchase_price_net, overhead_percent");
+  const map = new Map<string, SalesCostRow>();
+  for (const r of data ?? []) {
+    map.set(`${r.article_kind}:${r.article_id}`, {
+      purchase_price_net: r.purchase_price_net != null ? Number(r.purchase_price_net) : null,
+      overhead_percent: Number(r.overhead_percent ?? 10),
+    });
+  }
+  return map;
+}
