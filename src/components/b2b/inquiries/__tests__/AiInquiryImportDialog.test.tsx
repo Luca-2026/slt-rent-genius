@@ -86,9 +86,12 @@ describe("Pflichtprüfung & Kundenabgleich", () => {
     lines: [{ key: "1", original_text: "x", confidence: "high", reason: null, options: [], product_name: "Stehtisch", product_slug: "stehtisch", quantity: 2, unit_price: 5, unit: "kalendertage", price_source: "cms" }],
   };
   it("vollständige Daten = keine Probleme", () => expect(reviewProblems(base)).toEqual([]));
-  it("fehlender Preis, Standort, E-Mail und falscher Zeitraum werden gemeldet", () => {
+  it("Standort, E-Mail und falscher Zeitraum werden gemeldet", () => {
     const p = reviewProblems({ ...base, location: "", customer_email: "kaputt", end_date: "2026-10-01", lines: [{ ...base.lines[0], unit_price: null }] });
-    expect(p).toEqual(["Standort wählen", "gültige E-Mail", "Mietende liegt vor Mietbeginn", "Preis in Zeile 1"]);
+    expect(p).toEqual(["Standort wählen", "gültige E-Mail", "Mietende liegt vor Mietbeginn"]);
+  });
+  it("fehlende Telefonnummer und fehlender Preis blockieren nicht", () => {
+    expect(reviewProblems({ ...base, customer_phone: "", lines: [{ ...base.lines[0], unit_price: null }] })).toEqual([]);
   });
   it("Kundenabgleich per Telefon ignoriert Formatierung und +49", () => {
     const c = [{ id: "x", phone: "+49 228 987654", email: null }] as never;

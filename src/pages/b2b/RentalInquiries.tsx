@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import { useSearchParams } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SEGMENT_FILTER_OPTIONS, matchesSegment, parseSegmentFilter, segmentOf, type SegmentFilter } from "@/lib/customerSegment";
@@ -26,6 +28,7 @@ const SOURCE_LABELS: Record<string, string> = {
   b2b_portal: "B2B-Portal (Firmenkunde)",
   manual: "Manuell angelegt",
   website: "Website",
+  ai_import: "E-Mail/Telefon (KI-Import)",
 };
 
 const fmtDate = (value: string | null) =>
@@ -128,7 +131,59 @@ export default function RentalInquiries() {
 
       <p className="mb-3 text-sm text-muted-foreground">{filtered.length} {filtered.length === 1 ? "Anfrage" : "Anfragen"}</p>
 
-      <AiInquiryImportDialog open={aiOpen} onOpenChange={setAiOpen} />
+      <AiInquiryImportDialog
+        open={aiOpen}
+        onOpenChange={setAiOpen}
+        onConfirm={async (r) => {
+          const lines = r.lines.filter((l) => l.product_name.trim());
+          const message = [
+            r.notes.trim(),
+            r.open_questions.length ? `Offene Fragen:\n- ${r.open_questions.join("\n- ")}` : "",
+            `Originaltext (KI-Import):\n${r.source_text.trim()}`,
+          ].filter(Boolean).join("\n\n");
+          const { data: auth } = await supabase.auth.getUser();
+          const { data, error } = await supabase
+            .from("rental_inquiries")
+            .insert({
+              source: "ai_import",
+              location: r.location,
+              product_name: lines[0].product_name.trim(),
+              quantity: lines[0].quantity > 0 ? lines[0].quantity : 1,
+              requested_items: lines.map((l) => ({
+                product_name: l.product_name.trim(),
+                product_slug: l.product_slug,
+                quantity: l.quantity > 0 ? l.quantity : 1,
+                unit_price: l.unit_price && l.unit_price > 0 ? l.unit_price : null,
+              })),
+              start_date: r.start_date,
+              end_date: r.end_date || null,
+              customer_kind: r.customer_kind || "private",
+              company_name: r.company_name.trim() || null,
+              customer_name: r.customer_name.trim() || r.company_name.trim(),
+              customer_email: r.customer_email.trim(),
+              customer_phone: r.customer_phone.trim() || null,
+              customer_street: r.customer_street.trim() || null,
+              customer_postal_code: r.customer_postal_code.trim() || null,
+              customer_city: r.customer_city.trim() || null,
+              delivery_requested: Boolean(r.delivery),
+              delivery_street: r.delivery ? r.delivery_street.trim() || null : null,
+              delivery_postal_code: r.delivery ? r.delivery_postal_code.trim() || null : null,
+              delivery_city: r.delivery ? r.delivery_city.trim() || null : null,
+              message,
+              status: "in_progress",
+              assigned_to: auth.user?.id ?? null,
+              assigned_at: new Date().toISOString(),
+              crm_customer_id: r.crm_customer_id,
+            } as never)
+            .select("id")
+            .maybeSingle();
+          if (error) throw error;
+          toast.success("Mietanfrage angelegt – Angebot jetzt bearbeiten.");
+          await reload();
+          const id = (data as { id?: string } | null)?.id;
+          if (id) setSelectedId(id);
+        }}
+      />
 
       <NewRentalInquiryDialog
         open={newOpen}
@@ -206,7 +261,7 @@ export default function RentalInquiries() {
                   quantity: it.quantity,
                   duration: rentalDays(selected.start_date, selected.end_date),
                   unit: "kalendertage",
-                  unit_price: 0,
+                  unit_price: it.unit_price ?? 0,
                   discount_percent: 0,
                 }))}
                 defaultDelivery={{

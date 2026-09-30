@@ -148,9 +148,9 @@ export function reviewProblems(r: ReviewState): string[] {
   if (!r.start_date) p.push("Mietbeginn");
   if (r.end_date && r.start_date && r.end_date < r.start_date) p.push("Mietende liegt vor Mietbeginn");
   if (r.lines.length === 0) p.push("mindestens ein Artikel");
+  // Telefon und Preise sind keine Pflicht: Preise werden im Angebot ergänzt.
   r.lines.forEach((l, i) => {
     if (!l.product_name.trim()) p.push(`Artikel in Zeile ${i + 1}`);
-    if (l.unit_price === null || l.unit_price <= 0) p.push(`Preis in Zeile ${i + 1}`);
   });
   return p;
 }

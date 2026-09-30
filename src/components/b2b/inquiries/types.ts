@@ -136,6 +136,8 @@ export interface RequestedItem {
   product_slug?: string | null;
   quantity: number;
   set_size?: number | null;
+  /** Vom Mitarbeiter vorgegebener Einzelpreis (z. B. KI-Import); fehlt = CMS-Preis. */
+  unit_price?: number | null;
 }
 
 /** Untrusted JSON → Artikelliste; Fallback: Einzelartikel der Anfrage. */
@@ -147,6 +149,7 @@ export function requestedItemsOf(inquiry: Pick<RentalInquiry, "requested_items" 
       product_slug: r?.product_slug ? String(r.product_slug) : null,
       quantity: Math.max(1, Math.round(Number(r?.quantity) || 1)),
       set_size: Number(r?.set_size) > 1 ? Math.round(Number(r.set_size)) : null,
+      unit_price: Number(r?.unit_price) > 0 ? Number(r.unit_price) : null,
     }))
     .filter((r) => r.product_name);
   if (list.length) return list;
