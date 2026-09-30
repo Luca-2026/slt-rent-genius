@@ -10,8 +10,7 @@ export type SegmentFilter = "all" | CustomerSegment;
 export const SEGMENT_FILTER_OPTIONS: { value: SegmentFilter; label: string }[] = [
   { value: "all", label: "Alle Kunden" },
   { value: "private", label: "Privatkunden" },
-  { value: "business", label: "Geschäftskunden" },
-  { value: "portal", label: "B2B-Portalkunden" },
+  { value: "business", label: "Geschäftskunden (inkl. B2B-Portal)" },
 ];
 
 export const SEGMENT_LABELS: Record<CustomerSegment, string> = {
@@ -31,10 +30,14 @@ export function segmentOf(row: {
 }
 
 export function matchesSegment(segment: CustomerSegment, filter: SegmentFilter): boolean {
-  return filter === "all" || filter === segment;
+  if (filter === "all") return true;
+  // Geschäfts- und B2B-Portalkunden werden gleich behandelt.
+  if (filter === "business" || filter === "portal") return segment === "business" || segment === "portal";
+  return filter === segment;
 }
 
 /** Filter aus der URL lesen (?kunden=private|business|portal). */
 export function parseSegmentFilter(value: string | null): SegmentFilter {
-  return value === "private" || value === "business" || value === "portal" ? value : "all";
+  if (value === "portal" || value === "business") return "business";
+  return value === "private" ? "private" : "all";
 }

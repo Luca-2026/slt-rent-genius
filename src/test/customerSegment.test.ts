@@ -14,11 +14,12 @@ describe("customerSegment", () => {
   });
   it("filtert korrekt", () => {
     expect(matchesSegment("portal", "all")).toBe(true);
-    expect(matchesSegment("portal", "business")).toBe(false);
+    expect(matchesSegment("portal", "business")).toBe(true);
+    expect(matchesSegment("portal", "private")).toBe(false);
     expect(matchesSegment("business", "business")).toBe(true);
   });
   it("liest nur gültige URL-Werte", () => {
-    expect(parseSegmentFilter("portal")).toBe("portal");
+    expect(parseSegmentFilter("portal")).toBe("business");
     expect(parseSegmentFilter("quatsch")).toBe("all");
     expect(parseSegmentFilter(null)).toBe("all");
   });
