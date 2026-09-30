@@ -24,6 +24,7 @@ import {
   Percent, Receipt, RefreshCw, Save, Shield, Trash2, TrendingUp, Users,
 } from "lucide-react";
 import { AdminAuthorizedPersonsTab } from "./AdminAuthorizedPersonsTab";
+import { SendMessageDialog } from "./SendMessageDialog";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
