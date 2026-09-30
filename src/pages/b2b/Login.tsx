@@ -9,6 +9,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, LogIn, Building2, ShieldCheck } from "lucide-react";
+import { isPortalHost } from "@/lib/portalDomain";
 
 export default function B2BLogin() {
   const [email, setEmail] = useState("");
@@ -57,24 +58,30 @@ export default function B2BLogin() {
     } else {
       toast({
         title: "Erfolgreich angemeldet",
-        description: "Willkommen im B2B-Portal!",
+        description: isPortalHost() ? "Willkommen im Vermietportal!" : "Willkommen im B2B-Portal!",
       });
       // Redirect happens via useEffect based on isAdmin state
     }
   };
 
+  const onPortal = isPortalHost();
+
   return (
     <Layout>
-      <Helmet><title>Login Kundenportal | SLT Rental</title><meta name="robots" content="noindex, nofollow" /></Helmet>
+      <Helmet><title>{onPortal ? "Vermietportal | SLT Rental" : "Login Kundenportal | SLT Rental"}</title><meta name="robots" content="noindex, nofollow" /></Helmet>
       <section className="py-12 lg:py-20 bg-surface-light min-h-[calc(100vh-200px)]">
         <div className="section-container">
           <div className="max-w-md mx-auto">
             <Card>
               <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Building2 className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle className="text-2xl">B2B-Portal Login</CardTitle>
+                {onPortal ? (
+                  <img src="/images/slt-portal-logo.png" alt="SLT Rental" width={64} height={64} className="w-16 h-16 mx-auto mb-4" />
+                ) : (
+                  <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <Building2 className="h-8 w-8 text-primary" />
+                  </div>
+                )}
+                <CardTitle className="text-2xl">{onPortal ? "Vermietportal" : "B2B-Portal Login"}</CardTitle>
                 <CardDescription>
                   Melde dich an, um auf dein Firmenkonto zuzugreifen.
                 </CardDescription>
