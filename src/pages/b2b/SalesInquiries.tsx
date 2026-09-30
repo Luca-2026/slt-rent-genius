@@ -23,7 +23,7 @@ export default function SalesInquiries() {
   const { isStaff, loading: accessLoading } = useStaffAccess();
   const { rows, loading, reload } = useSalesInquiries();
   const [search, setSearch] = useState("");
-  const [onlyOpen, setOnlyOpen] = useState(true);
+  const [onlyOpen, setOnlyOpen] = useState(false);
   const [kind, setKind] = useState<string>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [manualOpen, setManualOpen] = useState(false);
