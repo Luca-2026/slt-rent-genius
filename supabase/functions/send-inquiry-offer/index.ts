@@ -439,7 +439,7 @@ Deno.serve(async (req: Request) => {
       net_7: "Zahlung innerhalb von 7 Tagen nach Rechnungsstellung (netto)." + depositText,
       net_14: "Zahlung innerhalb von 14 Tagen nach Rechnungsstellung (netto)." + depositText,
       net_30: "Zahlung innerhalb von 30 Tagen nach Rechnungsstellung (netto)." + depositText,
-      vorkasse: "Vorkasse per Banküberweisung. Die Zahlung ist vor Mietbeginn zu leisten – die Bankdaten finden Sie im Angebots-PDF." + depositText,
+      vorkasse: "Vorkasse per Banküberweisung. Die Zahlung ist vor Mietbeginn zu leisten – die Bankdaten finden Sie im Angebots-PDF. Nach Zahlungseingang erhalten Sie von uns eine Auftragsbestätigung; erst mit deren Zugang kommt der Auftrag verbindlich zustande." + depositText,
       anzahlung_30:
         "Nach Ihrer Annahme senden wir Ihnen eine Buchungsbestätigung. Darin erhalten Sie Ihre persönliche " +
         "<strong>Buchungsreferenz</strong> sowie einen Zahlungslink. Innerhalb von <strong>48 Stunden</strong> " +

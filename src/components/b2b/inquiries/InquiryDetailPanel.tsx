@@ -21,6 +21,7 @@ import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm"
 import { useInquiryActions } from "./useInquiryActions";
 import { InquiryCustomerCard, type CustomerKind } from "./InquiryCustomerCard";
 import { RejectInquiryDialog } from "./RejectInquiryDialog";
+import { OrderConfirmationCard } from "./OrderConfirmationCard";
 import { InquiryPaymentsCard, parseInquiryPayments } from "./InquiryPaymentsCard";
 import type { OfferLine } from "./offerMath";
 import { formatEuro } from "./offerMath";
@@ -457,6 +458,13 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         offerTotalGross={inquiry.offer_total_gross}
         disabled={busy}
         onChanged={onChanged}
+      />
+
+      <OrderConfirmationCard
+        inquiryType={inquiryType}
+        inquiry={inquiry as Record<string, any>}
+        senderName={actorName}
+        onDone={onChanged}
       />
 
       {invoices.length > 0 && (

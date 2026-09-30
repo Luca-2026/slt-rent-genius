@@ -1,0 +1,145 @@
+/**
+ * Sendet nach Zahlungseingang die Auftragsbestätigung zu einem angenommenen
+ * Angebot (Miet- oder Verkaufsanfrage). Erst mit Zugang dieser Bestätigung
+ * kommt der Auftrag verbindlich zustande.
+ */
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+};
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
+const LOCATION_CONTACTS: Record<string, { name: string; email: string; phone: string }> = {
+  krefeld: { name: "Krefeld", email: "krefeld@slt-rental.de", phone: "02151 417 99 04" },
+  bonn: { name: "Bonn", email: "bonn@slt-rental.de", phone: "0228 504 660 61" },
+  muelheim: { name: "Mülheim an der Ruhr", email: "muelheim@slt-rental.de", phone: "02151 417 99 04" },
+};
+function locKey(raw: unknown): string {
+  const v = String(raw ?? "").toLowerCase();
+  if (v.includes("bonn")) return "bonn";
+  if (v.includes("mülheim") || v.includes("muelheim") || v.includes("mulheim")) return "muelheim";
+  return "krefeld";
+}
+const esc = (s: unknown) =>
+  s === null || s === undefined ? "" : String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+const money = (n: number) => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(n || 0);
+const fmtDate = (raw: unknown) => {
+  const v = typeof raw === "string" ? raw.slice(0, 10) : "";
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return "";
+  const [y, m, d] = v.split("-");
+  return `${d}.${m}.${y}`;
+};
+
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  try {
+    const auth = req.headers.get("Authorization");
+    if (!auth?.startsWith("Bearer ")) return json({ error: "Unauthorized" }, 401);
+    const service = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, {
+      auth: { persistSession: false },
+    });
+    const { data: u } = await service.auth.getUser(auth.replace("Bearer ", ""));
+    const user = u?.user;
+    if (!user) return json({ error: "Unauthorized" }, 401);
+    const { data: isStaff } = await service.rpc("is_staff_member", { _user_id: user.id });
+    if (!isStaff) return json({ error: "Forbidden" }, 403);
+
+    const body = await req.json().catch(() => null);
+    const inquiryType = body?.inquiry_type;
+    const inquiryId = body?.inquiry_id;
+    if (inquiryType !== "rental" && inquiryType !== "sales") return json({ error: "inquiry_type ungültig" }, 400);
+    if (typeof inquiryId !== "string" || inquiryId.length < 10) return json({ error: "inquiry_id fehlt" }, 400);
+    const note = typeof body?.note === "string" ? body.note.trim().slice(0, 800) : "";
+    const senderName = typeof body?.sender_name === "string" ? body.sender_name.trim().slice(0, 120) : "";
+
+    const table = inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries";
+    const { data: inq } = await service.from(table).select("*").eq("id", inquiryId).maybeSingle();
+    if (!inq) return json({ error: "Anfrage nicht gefunden" }, 404);
+    if (inq.status !== "accepted") return json({ error: "Nur angenommene Angebote können bestätigt werden." }, 400);
+    if (!inq.offer_number) return json({ error: "Zu dieser Anfrage gibt es kein Angebot." }, 400);
+    if (!inq.customer_email) return json({ error: "Keine Kunden-E-Mail hinterlegt." }, 400);
+
+    const resendKey = Deno.env.get("RESEND_API_KEY");
+    if (!resendKey) return json({ error: "E-Mail-Versand nicht konfiguriert" }, 500);
+
+    const payload = (inq.offer_payload ?? {}) as Record<string, any>;
+    const items: any[] = Array.isArray(payload.items) ? payload.items : [];
+    const gross = Number(inq.offer_total_gross ?? payload?.totals?.grossAmount ?? 0);
+    const payments: any[] = Array.isArray(inq.payments) ? inq.payments : [];
+    const paid = Math.round(payments.reduce((s, p) => s + (Number(p?.amount) || 0), 0) * 100) / 100;
+    const open = Math.max(0, Math.round((gross - paid) * 100) / 100);
+
+    const customerName = inquiryType === "rental"
+      ? inq.customer_name || ""
+      : [inq.first_name, inq.last_name].filter(Boolean).join(" ");
+    const loc = LOCATION_CONTACTS[locKey(inq.location)];
+    const period = inquiryType === "rental" && inq.start_date
+      ? `${fmtDate(inq.start_date)}${inq.start_time ? `, ${String(inq.start_time).slice(0, 5)} Uhr` : ""}${inq.end_date ? ` bis ${fmtDate(inq.end_date)}${inq.end_time ? `, ${String(inq.end_time).slice(0, 5)} Uhr` : ""}` : ""}`
+      : "";
+
+    const rows = items.map((i) => {
+      const qty = Number(i.quantity) || 1;
+      const dur = Number(i.duration) || 0;
+      const range = i.rental_start ? ` (${fmtDate(i.rental_start)}${i.rental_end ? ` – ${fmtDate(i.rental_end)}` : ""})` : "";
+      return `<tr><td style="padding:6px 0;border-bottom:1px solid #e2e8f0;">${esc(i.product_name)}${esc(range)}</td><td style="padding:6px 0;border-bottom:1px solid #e2e8f0;text-align:right;white-space:nowrap;">${qty}×${dur > 1 ? ` · ${dur}` : ""}</td></tr>`;
+    }).join("");
+    const paymentsHtml = payments.length
+      ? `<p style="margin:4px 0;">Zahlungseingang: <strong>${money(paid)}</strong>${payments.map((p) => p?.date ? ` (${esc(fmtDate(p.date))})` : "").join("")}</p>`
+      : "";
+
+    const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:16px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
+<div style="max-width:600px;margin:0 auto;">
+  <h2 style="color:#00507d;margin:0 0 16px;">Auftragsbestätigung zu Angebot ${esc(inq.offer_number)}</h2>
+  <p>Hallo ${esc(customerName)},</p>
+  <p>vielen Dank – Ihre Zahlung ist bei uns eingegangen. Hiermit bestätigen wir Ihnen verbindlich den Auftrag auf Grundlage unseres Angebots <strong>${esc(inq.offer_number)}</strong>.</p>
+  ${period ? `<p><strong>Mietzeitraum:</strong> ${esc(period)}<br><strong>Standort:</strong> ${esc(loc.name)}</p>` : ""}
+  ${rows ? `<table role="presentation" style="width:100%;border-collapse:collapse;font-size:14px;margin:12px 0;">${rows}</table>` : ""}
+  <div style="background:#f1f5f9;border-radius:6px;padding:12px 16px;margin:16px 0;">
+    <p style="margin:4px 0;">Auftragssumme brutto: <strong>${money(gross)}</strong></p>
+    ${paymentsHtml}
+    ${open > 0 ? `<p style="margin:4px 0;">Offener Restbetrag: <strong>${money(open)}</strong></p>` : `<p style="margin:4px 0;">Der Betrag ist vollständig beglichen.</p>`}
+  </div>
+  ${note ? `<p style="white-space:pre-wrap;border-left:4px solid #00507d;padding:8px 16px;">${esc(note)}</p>` : ""}
+  <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;font-size:14px;">
+    <strong>Wichtiger Hinweis:</strong> Der Auftrag kommt erst mit Zugang dieser Auftragsbestätigung bei Ihnen verbindlich zustande. Es gelten unsere Allgemeinen Geschäftsbedingungen.
+  </div>
+  <p>Bei Fragen erreichen Sie uns am Standort ${esc(loc.name)} unter Tel. ${esc(loc.phone)} oder <a href="mailto:${esc(loc.email)}" style="color:#00507d;">${esc(loc.email)}</a>.</p>
+  <p style="margin-top:24px;">Freundliche Grüße<br>${senderName ? `${esc(senderName)}<br>` : ""}Ihr SLT Rental Team – Standort ${esc(loc.name)}</p>
+</div></body></html>`;
+
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
+        to: [inq.customer_email],
+        cc: Array.from(new Set([loc.email, inq.location_email].filter((e) => e && e !== inq.customer_email))),
+        reply_to: loc.email,
+        subject: `Auftragsbestätigung zu Ihrem Angebot ${inq.offer_number}`,
+        html,
+      }),
+    });
+    if (!res.ok) {
+      const t = await res.text();
+      console.error("Resend error", res.status, t);
+      return json({ error: "E-Mail-Versand fehlgeschlagen", status: res.status, details: t }, 502);
+    }
+
+    const now = new Date();
+    const line = `[${now.toLocaleString("de-DE")}] Auftragsbestätigung zu ${inq.offer_number} versendet${senderName ? ` von ${senderName}` : ""}`;
+    await service.from(table).update({
+      order_confirmed_at: now.toISOString(),
+      order_confirmed_by_name: senderName || null,
+      internal_notes: [inq.internal_notes, line].filter(Boolean).join("\n"),
+    }).eq("id", inquiryId);
+
+    return json({ success: true });
+  } catch (err) {
+    console.error("send-order-confirmation error", err);
+    return json({ error: err instanceof Error ? err.message : "Unbekannter Fehler" }, 500);
+  }
+});
