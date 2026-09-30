@@ -9,12 +9,11 @@ import { useCrmCustomers, crmCustomerLabel, type CrmCustomer } from "@/hooks/use
 import { CustomerFormDialog } from "@/components/b2b/customers/CustomerFormDialog";
 import { AdminCustomerDetailDialog } from "@/components/b2b/admin/AdminCustomerDetailDialog";
 import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
-import { AdminCreateCustomerDialog } from "@/components/b2b/admin/AdminCreateCustomerDialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Pencil, Trash2, Mail, Phone, MapPin, CreditCard, CalendarDays, Building2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Mail, Phone, MapPin, CreditCard, CalendarDays } from "lucide-react";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { toast } from "sonner";
 import { ACTION_FILTER_OPTIONS, needsAction, parseActionFilter, registrationDate, type ActionFilter, type PortalProfileLite } from "@/lib/customerActions";
@@ -26,7 +25,7 @@ const euro = (n: number) => n.toLocaleString("de-DE", { style: "currency", curre
 
 export default function Customers() {
   const { isStaff, isAdmin, loading: accessLoading } = useStaffAccess();
-  const { rows, loading, save, remove } = useCrmCustomers();
+  const { rows, loading, save, remove, reload } = useCrmCustomers();
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<CrmCustomer | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -41,7 +40,6 @@ export default function Customers() {
   const [selectedProfile, setSelectedProfile] = useState<Row | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [editPortalOpen, setEditPortalOpen] = useState(false);
-  const [createPortalOpen, setCreatePortalOpen] = useState(false);
 
   const loadPortal = useCallback(async () => {
     const [p, inv, res] = await Promise.all([
@@ -171,13 +169,8 @@ export default function Customers() {
           </SelectContent>
         </Select>
         <div className="flex gap-2 sm:ml-auto">
-          {isAdmin && (
-            <Button variant="outline" onClick={() => setCreatePortalOpen(true)}>
-              <Building2 className="h-4 w-4 mr-1" /> Firmenkunde mit Portalkonto
-            </Button>
-          )}
           <Button onClick={() => { setEditing(null); setDialogOpen(true); }}>
-            <Plus className="h-4 w-4 mr-1" /> Neuer Kunde
+            <Plus className="h-4 w-4 mr-1" /> Neuen Kunden anlegen
           </Button>
         </div>
       </div>
@@ -259,7 +252,14 @@ export default function Customers() {
         </div>
       )}
 
-      <CustomerFormDialog open={dialogOpen} onOpenChange={setDialogOpen} customer={editing} onSave={save} />
+      <CustomerFormDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        customer={editing}
+        onSave={save}
+        allowPortal={isAdmin}
+        onPortalCreated={async () => { await loadPortal(); await reload(); }}
+      />
 
       {isAdmin && (
         <>
@@ -278,7 +278,6 @@ export default function Customers() {
             onOpenChange={setEditPortalOpen}
             onSaved={loadPortal}
           />
-          <AdminCreateCustomerDialog open={createPortalOpen} onOpenChange={setCreatePortalOpen} onCreated={loadPortal} />
         </>
       )}
     </B2BPortalLayout>
