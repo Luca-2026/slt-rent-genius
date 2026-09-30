@@ -89,16 +89,16 @@ export function InquiryItemsPicker({ items, onChange }: Props) {
                 </Button>
               )}
             </div>
-            <div className="mt-2 flex items-center justify-between gap-2">
-              <span className="text-xs text-muted-foreground">
-                {it.set_size ? `Anzahl Sets (1 Set = ${it.set_size} Stück)` : "Anzahl"}
-              </span>
-              <div className="flex items-center gap-2">
+            <div className="mt-2 flex items-center justify-between gap-3">
+              <div className="min-w-0 text-xs leading-tight">
+                <p className="font-medium text-foreground">{it.set_size ? "Anzahl Sets" : "Anzahl"}</p>
                 {it.set_size ? (
-                  <span className="text-xs font-medium text-foreground whitespace-nowrap">= {it.quantity * it.set_size} Stück</span>
+                  <p className="text-muted-foreground">
+                    1 Set = {it.set_size} Stück · <span className="font-semibold text-foreground">gesamt {it.quantity * it.set_size} Stück</span>
+                  </p>
                 ) : null}
-                <QuantityStepper value={it.quantity} onChange={(q) => patch(i, q)} label={`Menge ${it.product_name}`} />
               </div>
+              <QuantityStepper value={it.quantity} onChange={(q) => patch(i, q)} label={`Menge ${it.product_name}`} />
             </div>
           </li>
         ))}
