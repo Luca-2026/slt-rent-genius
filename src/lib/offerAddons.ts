@@ -19,10 +19,12 @@ export interface AddonOption {
   /** Selbstbehalt in EUR (nur informativ, z. B. 1.000 €) */
   deductible?: number | null;
   note?: string;
+  /** Im Angebot standardmäßig über die gesamte Mietdauer (Kalendertage) berechnen */
+  full_period_default?: boolean;
 }
 
-export const ADDON_PRESETS: { key: string; label: string; price_type: AddonPriceType; price: number; deductible?: number }[] = [
-  { key: "maschinenbruch", label: "Maschinenbruchversicherung", price_type: "percent", price: 12, deductible: 1000 },
+export const ADDON_PRESETS: { key: string; label: string; price_type: AddonPriceType; price: number; deductible?: number; full_period_default?: boolean }[] = [
+  { key: "maschinenbruch", label: "Maschinenbruchversicherung", price_type: "percent", price: 12, deductible: 1000, full_period_default: true },
   { key: "elektronik", label: "Elektronikversicherung", price_type: "percent", price: 10, deductible: 500 },
   { key: "vollkasko", label: "Vollkaskoversicherung (Anhänger)", price_type: "percent", price: 15, deductible: 1000 },
   { key: "sb_reduktion", label: "Reduzierung Selbstbehalt", price_type: "flat", price: 0, deductible: 250 },
@@ -56,6 +58,7 @@ export function parseAddonOptions(raw: unknown): AddonOption[] {
         price: Number.isFinite(price) && price >= 0 ? price : 0,
         deductible: Number.isFinite(deductible) && deductible > 0 ? deductible : null,
         note: o.note ? String(o.note).slice(0, 200) : undefined,
+        full_period_default: o.full_period_default === true,
       };
     })
     .filter((o): o is AddonOption => o !== null);
@@ -64,14 +67,15 @@ export function parseAddonOptions(raw: unknown): AddonOption[] {
 /** Vorschlagsbetrag (netto) einer Zusatzoption für eine Angebotsposition. */
 export function suggestAddonAmount(
   option: Pick<AddonOption, "price_type" | "price">,
-  item: { quantity: number; unit_price: number; discount_percent?: number },
+  item: { quantity: number; unit_price: number; discount_percent?: number; duration?: number },
 ): number {
-  const lineNet = item.quantity * item.unit_price * (1 - (item.discount_percent || 0) / 100);
+  const duration = item.duration && item.duration > 0 ? item.duration : 1;
+  const lineNet = item.quantity * duration * item.unit_price * (1 - (item.discount_percent || 0) / 100);
   const raw =
     option.price_type === "percent"
       ? (lineNet * option.price) / 100
       : option.price_type === "per_unit"
-        ? option.price * Math.max(1, item.quantity)
+        ? option.price * Math.max(1, item.quantity) * duration
         : option.price;
   return Math.round((raw + Number.EPSILON) * 100) / 100;
 }
