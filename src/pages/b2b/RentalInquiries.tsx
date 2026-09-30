@@ -123,7 +123,7 @@ export default function RentalInquiries() {
         </Button>
       </div>
 
-      {(segment === "all" || segment === "portal") && <LegacyB2BRequestsNotice />}
+      {(segment === "all" || segment === "business") && <LegacyB2BRequestsNotice />}
 
       <p className="mb-3 text-sm text-muted-foreground">{filtered.length} {filtered.length === 1 ? "Anfrage" : "Anfragen"}</p>
 

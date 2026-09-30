@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import type { LucideIcon } from "lucide-react";
 import {
-  Home, Inbox, FileText, Package, Send, ShoppingCart, Receipt, Users,
+  Home, Inbox, FileText, Package, ShoppingCart, Receipt, Users,
   ClipboardCheck, Undo2, AlertTriangle, CheckSquare, Truck, Boxes, CalendarClock,
   Store, UserCog, Shield, MessageSquare, BookOpen,
 } from "lucide-react";
