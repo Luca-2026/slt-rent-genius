@@ -66,3 +66,42 @@ export function canTransition(from: unknown, to: InquiryStatus): boolean {
 export function isOpenInquiry(status: unknown): boolean {
   return OPEN_INQUIRY_STATUSES.includes(normalizeInquiryStatus(status));
 }
+
+/**
+ * „Offen“ im Sinne der Anfragenliste: noch von niemandem übernommen
+ * und noch kein Angebot erstellt.
+ */
+export function isUnprocessedInquiry(row: { status: unknown; assigned_to?: string | null }): boolean {
+  const s = normalizeInquiryStatus(row.status);
+  return !row.assigned_to && (s === "new" || s === "in_progress");
+}
+
+export type InquiryListFilter = "unprocessed" | "working" | "offer_sent" | "accepted" | "closed" | "all";
+
+export const INQUIRY_LIST_FILTERS: { value: InquiryListFilter; label: string }[] = [
+  { value: "unprocessed", label: "Offen (nicht übernommen)" },
+  { value: "working", label: "In Bearbeitung" },
+  { value: "offer_sent", label: "Angebot gesendet" },
+  { value: "accepted", label: "Angenommen" },
+  { value: "closed", label: "Abgelehnt / erledigt" },
+  { value: "all", label: "Alle Anfragen" },
+];
+
+export function matchesInquiryListFilter(
+  row: { status: unknown; assigned_to?: string | null },
+  filter: InquiryListFilter,
+): boolean {
+  const s = normalizeInquiryStatus(row.status);
+  switch (filter) {
+    case "all": return true;
+    case "unprocessed": return isUnprocessedInquiry(row);
+    case "working": return !isUnprocessedInquiry(row) && (s === "new" || s === "in_progress");
+    case "offer_sent": return s === "offer_sent";
+    case "accepted": return s === "accepted";
+    case "closed": return s === "rejected" || s === "done";
+  }
+}
+
+export function parseInquiryListFilter(v: string | null): InquiryListFilter {
+  return INQUIRY_LIST_FILTERS.some((f) => f.value === v) ? (v as InquiryListFilter) : "unprocessed";
+}
