@@ -49,7 +49,7 @@ export default function RentalInquiries() {
   const { isStaff, loading: accessLoading } = useStaffAccess();
   const { rows, loading, reload } = useRentalInquiries();
   const [search, setSearch] = useState("");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(() => new URLSearchParams(window.location.search).get("anfrage"));
   const [newOpen, setNewOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();

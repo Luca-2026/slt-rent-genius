@@ -25,7 +25,7 @@ export default function B2BLogin() {
   useEffect(() => {
     if (!authLoading && !staffLoading && user) {
       navigate(
-        isAdmin || staffProfile ? "/b2b/mietanfragen" : "/b2b/dashboard",
+        isAdmin || staffProfile ? "/b2b/start" : "/b2b/dashboard",
         { replace: true }
       );
     }

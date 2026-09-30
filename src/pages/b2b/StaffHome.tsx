@@ -5,13 +5,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
-import { useInquiryCounts } from "@/hooks/useInquiries";
 import { visibleGroups, itemHref } from "@/components/b2b/StaffNav";
 import {
   formatEuro, isoDay, pipeline, receivables, revenueSummary,
   type InquiryInvoiceRow, type PortalInvoiceRow,
 } from "@/lib/dashboardMetrics";
-import { isUnprocessedInquiry } from "@/lib/inquiryStatus";
+import { isOpenInquiry, isUnprocessedInquiry } from "@/lib/inquiryStatus";
 
 interface InquiryRow {
   id: string;
@@ -63,7 +62,7 @@ function TodayList({ title, icon: Icon, rows, empty }: { title: string; icon: ty
 
 export default function StaffHome() {
   const { isStaff, isAdmin, canViewInventory, displayName, loading: accessLoading } = useStaffAccess();
-  const counts = useInquiryCounts();
+  const [openSales, setOpenSales] = useState(0);
   const [inquiries, setInquiries] = useState<InquiryRow[]>([]);
   const [todos, setTodos] = useState<TodoRow[]>([]);
   const [invoices, setInvoices] = useState<InquiryInvoiceRow[]>([]);
@@ -73,12 +72,14 @@ export default function StaffHome() {
   useEffect(() => {
     if (accessLoading || !isStaff) return;
     (async () => {
-      const [inq, td, inv, pinv] = await Promise.all([
+      const [inq, td, inv, pinv, sales] = await Promise.all([
         supabase.from("rental_inquiries").select("id,status,assigned_to,offer_total_gross,order_confirmed_at,start_date,end_date,customer_name,company_name,product_name,location"),
         supabase.from("staff_todo_lists").select("id,title,due_date,status,location").neq("status", "done"),
         isAdmin ? supabase.from("inquiry_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,paid_amount,credited_amount,due_date") : Promise.resolve({ data: [] }),
         isAdmin ? supabase.from("b2b_invoices").select("status,invoice_date,net_amount,gross_amount,due_date") : Promise.resolve({ data: [] }),
+        supabase.from("sales_inquiries").select("status"),
       ]);
+      setOpenSales(((sales.data as { status: string }[] | null) ?? []).filter((r) => isOpenInquiry(r.status)).length);
       setInquiries((inq.data as InquiryRow[] | null) ?? []);
       setTodos((td.data as TodoRow[] | null) ?? []);
       setInvoices((inv.data as InquiryInvoiceRow[] | null) ?? []);
@@ -140,7 +141,7 @@ export default function StaffHome() {
               <Kpi label="Offene Mietanfragen" value={String(unprocessed)} hint="noch nicht übernommen" to="/b2b/mietanfragen" />
               <Kpi label="Auftragsbestätigung offen" value={String(awaitingConfirmation)} hint="angenommen, Zahlung prüfen" to="/b2b/mietanfragen?status=accepted" />
               <Kpi label="Laufende Mietvorgänge" value={String(running)} to="/b2b/mietanfragen?status=running" />
-              <Kpi label="Offene Verkaufsanfragen" value={String(counts.sales)} to="/b2b/verkaufsanfragen" />
+              <Kpi label="Offene Verkaufsanfragen" value={String(openSales)} to="/b2b/verkaufsanfragen" />
             </div>
             <div className="grid gap-3 lg:grid-cols-3">
               <TodayList title="Übergaben heute" icon={CalendarCheck} rows={pickups} empty="Keine Übergaben heute." />
