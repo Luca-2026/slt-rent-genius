@@ -1,7 +1,7 @@
 /**
  * Admin-Tab: Übersicht aller CMS-Mietartikel. Neu anlegen, filtern, editieren, löschen, veröffentlichen.
  */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,6 +39,17 @@ export function AdminInventoryTab() {
   const [instancesFor, setInstancesFor] = useState<AdminManagedProductRow | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<AdminManagedProductRow | null>(null);
   const [sortOpen, setSortOpen] = useState(false);
+  const [lastHours, setLastHours] = useState<Record<string, number>>({});
+  useEffect(() => {
+    supabase.from("b2b_operating_hours_readings").select("managed_product_id,operating_hours,recorded_at")
+      .not("managed_product_id", "is", null).not("operating_hours", "is", null)
+      .order("recorded_at", { ascending: false }).limit(1000)
+      .then(({ data }) => {
+        const m: Record<string, number> = {};
+        for (const r of data ?? []) if (r.managed_product_id && !(r.managed_product_id in m)) m[r.managed_product_id] = Number(r.operating_hours);
+        setLastHours(m);
+      });
+  }, []);
   const { data: instanceCounts = {} } = useInstanceCounts();
   const { canManageInventory } = useStaffAccess();
 
@@ -175,6 +186,7 @@ export function AdminInventoryTab() {
                         {row.is_published
                           ? <Badge className="bg-green-600 hover:bg-green-700 text-xs">Live</Badge>
                           : <Badge variant="outline" className="text-xs">Entwurf</Badge>}
+                        {(row as { tracks_operating_hours?: boolean }).tracks_operating_hours && <Badge variant="outline" className="text-xs" title="Letzter erfasster Betriebsstundenstand">{row.id in lastHours ? `${lastHours[row.id].toLocaleString("de-DE", { maximumFractionDigits: 1 })} h` : "Std. –"}</Badge>}
                         {hasDraft(row) && <Badge className="bg-amber-500 hover:bg-amber-600 text-white text-xs">SEO-Entwurf</Badge>}
                       </div>
                     </div>

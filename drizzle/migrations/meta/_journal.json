@@ -120,6 +120,13 @@
       "when": 1790794004629,
       "tag": "0016_fix_audit_delivery_note_number",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1790794864686,
+      "tag": "0017_product_operating_hours",
+      "breakpoints": true
     }
   ]
 }

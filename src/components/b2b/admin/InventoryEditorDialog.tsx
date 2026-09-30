@@ -4,6 +4,7 @@
  */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { OperatingHoursPanel } from "@/components/b2b/admin/OperatingHoursPanel";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -102,6 +103,8 @@ interface FormState {
   quantity_notes: Record<LocId, string>;
   addon_options: AddonOption[];
   is_published: boolean;
+  tracks_operating_hours: boolean;
+  has_fuel_tank: boolean;
 }
 
 const emptyForm = (): FormState => ({
@@ -142,6 +145,8 @@ const emptyForm = (): FormState => ({
   quantity_notes: { krefeld: "", bonn: "", muelheim: "" },
   addon_options: [],
   is_published: false,
+  tracks_operating_hours: false,
+  has_fuel_tank: false,
 });
 
 function fromRow(row: AdminManagedProductRow): FormState {
@@ -200,6 +205,8 @@ function fromRow(row: AdminManagedProductRow): FormState {
     },
     addon_options: parseAddonOptions((row as unknown as { addon_options?: unknown }).addon_options),
     is_published: row.is_published,
+    tracks_operating_hours: !!(row as { tracks_operating_hours?: boolean }).tracks_operating_hours,
+    has_fuel_tank: !!(row as { has_fuel_tank?: boolean }).has_fuel_tank,
   };
 }
 
@@ -447,6 +454,8 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         quantity_notes: quantityNotes,
         addon_options: form.addon_options,
         is_published: form.is_published,
+        tracks_operating_hours: form.tracks_operating_hours,
+        has_fuel_tank: form.tracks_operating_hours && form.has_fuel_tank,
         updated_by: user?.id ?? null,
       };
 
@@ -616,6 +625,20 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
             </TabsContent>
 
             <TabsContent value="technik" className="space-y-4">
+              <div className="rounded-lg border border-border p-3 space-y-3">
+                <Label>Maschine / Betriebsstunden</Label>
+                <div className="flex items-start gap-2">
+                  <Checkbox id="tracks-hours" checked={form.tracks_operating_hours} onCheckedChange={(v) => setForm((f) => ({ ...f, tracks_operating_hours: !!v, has_fuel_tank: v ? f.has_fuel_tank : false }))} />
+                  <Label htmlFor="tracks-hours" className="font-normal">Betriebsstunden in Übergabe-/Rückgabeprotokollen erfassen <span className="block text-xs text-muted-foreground">Für Maschinen mit Stundenzähler (Bagger, Aggregate, Rüttelplatten …). Bei z. B. Soundanlagen aus lassen.</span></Label>
+                </div>
+                {form.tracks_operating_hours && (
+                  <div className="flex items-start gap-2">
+                    <Checkbox id="fuel-tank" checked={form.has_fuel_tank} onCheckedChange={(v) => setForm((f) => ({ ...f, has_fuel_tank: !!v }))} />
+                    <Label htmlFor="fuel-tank" className="font-normal">Hat einen Tank – Tankfüllstand abfragen <span className="block text-xs text-muted-foreground">Bei Elektro-/Akkugeräten aus lassen.</span></Label>
+                  </div>
+                )}
+                {initial?.id && form.tracks_operating_hours && <OperatingHoursPanel productId={initial.id} />}
+              </div>
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <Label>Technische Daten</Label>
