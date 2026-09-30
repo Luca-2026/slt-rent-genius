@@ -171,13 +171,8 @@ export default function Customers() {
           </SelectContent>
         </Select>
         <div className="flex gap-2 sm:ml-auto">
-          {isAdmin && (
-            <Button variant="outline" onClick={() => setCreatePortalOpen(true)}>
-              <Building2 className="h-4 w-4 mr-1" /> Firmenkunde mit Portalkonto
-            </Button>
-          )}
           <Button onClick={() => { setEditing(null); setDialogOpen(true); }}>
-            <Plus className="h-4 w-4 mr-1" /> Neuer Kunde
+            <Plus className="h-4 w-4 mr-1" /> Neuen Kunden anlegen
           </Button>
         </div>
       </div>
@@ -259,7 +254,14 @@ export default function Customers() {
         </div>
       )}
 
-      <CustomerFormDialog open={dialogOpen} onOpenChange={setDialogOpen} customer={editing} onSave={save} />
+      <CustomerFormDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        customer={editing}
+        onSave={save}
+        allowPortal={isAdmin}
+        onPortalCreated={async () => { await loadPortal(); await reload?.(); }}
+      />
 
       {isAdmin && (
         <>
@@ -278,7 +280,6 @@ export default function Customers() {
             onOpenChange={setEditPortalOpen}
             onSaved={loadPortal}
           />
-          <AdminCreateCustomerDialog open={createPortalOpen} onOpenChange={setCreatePortalOpen} onCreated={loadPortal} />
         </>
       )}
     </B2BPortalLayout>
