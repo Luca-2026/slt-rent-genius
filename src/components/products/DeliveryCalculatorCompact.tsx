@@ -295,8 +295,7 @@ export function DeliveryCalculatorCompact({
                 {result.total.toFixed(0)} €
                 <span className="text-sm font-normal text-muted-foreground ml-1">{t("rental.gross")}</span>
               </p>
-        </div>
-        )}
+            </div>
             <Calculator className="h-8 w-8 text-accent" />
           </div>
           {twoMachines && tariff.multiplier2Maschinen > 1 && (
@@ -305,6 +304,7 @@ export function DeliveryCalculatorCompact({
             </p>
           )}
         </div>
+        )}
 
         <div className="pt-3 mt-3 border-t border-border">
           <Link to="/lieferung">
