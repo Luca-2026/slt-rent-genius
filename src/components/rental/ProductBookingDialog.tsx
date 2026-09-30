@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Phone, Mail, Loader2, Send, CheckCircle2, Calendar, Truck, Wrench, Info } from "lucide-react";
+import { Phone, Mail, Loader2, Send, CheckCircle2, Calendar, Truck, Wrench, Info, ArrowUpRight } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { Product, LocationData } from "@/data/rentalData";
 import { supabase } from "@/integrations/supabase/client";
@@ -388,6 +388,21 @@ export function ProductBookingDialog({
                       <p className="text-xs text-muted-foreground">
                         Danach richten sich die AGB, die wir dem Angebot beilegen.
                       </p>
+                      {form.customerKind === "business" && (
+                        <div role="note" className="flex gap-3 rounded-md border border-primary/30 bg-primary/5 p-3 sm:p-4">
+                          <Info aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                          <div className="min-w-0 space-y-2 text-sm">
+                            <p className="font-semibold text-foreground">Deine Anfrage kannst du direkt hier abschicken.</p>
+                            <p className="text-muted-foreground">
+                              Für langfristige Mietverhältnisse und künftig einfachere Anfragen kannst du dich zusätzlich im B2B-Portal registrieren. Bei längerer Zusammenarbeit kannst du dort individuelle Rabattstufen und Zahlung auf Rechnung beantragen.
+                            </p>
+                            <a href="/b2b/registrieren" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary underline underline-offset-4 hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                              Zum B2B-Portal <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
+                              <span className="sr-only">(öffnet in neuem Tab)</span>
+                            </a>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
