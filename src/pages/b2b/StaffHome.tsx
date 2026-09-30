@@ -143,7 +143,7 @@ export default function StaffHome() {
               <Kpi label="Laufende Mietvorgänge" value={String(running)} to="/b2b/mietanfragen?status=running" />
               <Kpi label="Offene Verkaufsanfragen" value={String(openSales)} to="/b2b/verkaufsanfragen" />
             </div>
-            <div className="grid gap-3 lg:grid-cols-3">
+            <div className="grid gap-3 lg:grid-cols-3 [&>*]:min-w-0">
               <TodayList title="Übergaben heute" icon={CalendarCheck} rows={pickups} empty="Keine Übergaben heute." />
               <TodayList title="Rückgaben heute" icon={CalendarX} rows={returns} empty="Keine Rückgaben heute." />
               <Card>
