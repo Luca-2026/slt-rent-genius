@@ -34,6 +34,33 @@ const fmtDate = (raw: unknown) => {
   return `${d}.${m}.${y}`;
 };
 
+/** Spiegel von src/lib/orderConfirmation.ts (dort mit Tests). */
+const toCents = (v: unknown) => {
+  const n = Number(v);
+  return Number.isFinite(n) && n > 0 ? Math.round(n * 100) : 0;
+};
+const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30"]);
+function evaluateOrderPayment(input: { gross: unknown; deposit?: unknown; payments: { amount: unknown }[]; paymentTerms?: unknown }) {
+  const grossCents = toCents(input.gross);
+  const depositCents = toCents(input.deposit);
+  const requiredCents = grossCents + depositCents;
+  const paidCents = input.payments.reduce((s: number, p) => s + toCents(p?.amount), 0);
+  const openCents = Math.max(0, requiredCents - paidCents);
+  const overpaidCents = Math.max(0, paidCents - requiredCents);
+  const paysOnInvoice = INVOICE_TERMS.has(String(input.paymentTerms ?? ""));
+  const state = grossCents <= 0 ? "no_total" : paidCents <= 0 ? "none" : openCents > 0 ? "partial" : "full";
+  let blockReason: string | null = null;
+  if (state === "no_total") blockReason = "Zu diesem Angebot ist keine Angebotssumme gespeichert.";
+  else if (state === "none" && !paysOnInvoice)
+    blockReason = "Es ist noch kein Zahlungseingang erfasst. Die Auftragsbestätigung kann erst nach Zahlungseingang versendet werden.";
+  return {
+    state, grossCents, depositCents, requiredCents, paidCents, openCents, overpaidCents, paysOnInvoice,
+    canSend: blockReason === null,
+    needsAcknowledgement: state === "partial" || (state === "none" && paysOnInvoice),
+    blockReason,
+  };
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
