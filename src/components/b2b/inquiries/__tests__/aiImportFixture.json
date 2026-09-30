@@ -1,0 +1,219 @@
+{
+ "lena": {
+  "result": {
+   "customer": {
+    "first_name": "Sabine",
+    "last_name": "Müller",
+    "company": null,
+    "email": "sabine.m@gmx.de",
+    "phone": "0228 987654",
+    "street": null,
+    "postal_code": null,
+    "city": null,
+    "customer_type": null
+   },
+   "location": "bonn",
+   "rental": {
+    "start_date": "2026-10-03",
+    "end_date": "2026-10-03",
+    "duration_days": 1,
+    "date_text": "nächsten Samstag; nur für einen Tag"
+   },
+   "delivery": {
+    "requested": null,
+    "street": null,
+    "postal_code": null,
+    "city": null
+   },
+   "items": [
+    {
+     "original_text": "einen Autoanhänger, so einen Kofferanhänger",
+     "search_terms": [
+      "Kofferanhänger",
+      "Autoanhänger"
+     ],
+     "quantity": 1
+    }
+   ],
+   "notes": "Kofferanhänger für einen Umzug.",
+   "open_questions": [
+    "Welche Größe und Nutzlast soll der Kofferanhänger haben?",
+    "Ist Selbstabholung oder Lieferung gewünscht?",
+    "Welche Führerscheinklasse und welche Anhängelast des Zugfahrzeugs sind vorhanden?"
+   ]
+  },
+  "matches": [
+   {
+    "index": 0,
+    "original_text": "einen Autoanhänger, so einen Kofferanhänger",
+    "quantity": 1,
+    "confidence": "medium",
+    "reason": "Kofferanhänger passt zum konkretisierten Wunsch und ist in Bonn buchbar; die Gewichtsklasse ist nicht genannt.",
+    "product": {
+     "slug": "koffer-750",
+     "name": "750 kg Kofferanhänger",
+     "model_name": null,
+     "category": "anhaenger",
+     "bookable_locations": [
+      "bonn",
+      "krefeld"
+     ],
+     "bookable_here": true,
+     "price_per_day": null,
+     "price_weekend": null,
+     "price_per_month": null,
+     "price_unit_label": null,
+     "image": "/product-images/anhaenger/koffer-750-1.jpg"
+    },
+    "alternatives": [
+     {
+      "slug": "koffer-1500",
+      "name": "1500 kg Kofferanhänger",
+      "model_name": null,
+      "category": "anhaenger",
+      "bookable_locations": [
+       "krefeld"
+      ],
+      "bookable_here": false,
+      "price_per_day": null,
+      "price_weekend": null,
+      "price_per_month": null,
+      "price_unit_label": null,
+      "image": "/product-images/anhaenger/koffer-1500-1.jpg"
+     },
+     {
+      "slug": "koffer-2000",
+      "name": "2000 kg Kofferanhänger",
+      "model_name": null,
+      "category": "anhaenger",
+      "bookable_locations": [
+       "krefeld"
+      ],
+      "bookable_here": false,
+      "price_per_day": null,
+      "price_weekend": null,
+      "price_per_month": null,
+      "price_unit_label": null,
+      "image": "/product-images/anhaenger/koffer-2000-1.jpg"
+     }
+    ]
+   }
+  ]
+ },
+ "multi_matches": [
+  {
+   "index": 0,
+   "original_text": "2 Stehtische",
+   "quantity": 2,
+   "confidence": "high",
+   "reason": "Der Stehtisch entspricht der angefragten Position.",
+   "product": {
+    "slug": "stehtisch",
+    "name": "Stehtisch",
+    "model_name": null,
+    "category": "moebel-zelte",
+    "bookable_locations": [
+     "bonn",
+     "krefeld"
+    ],
+    "bookable_here": null,
+    "price_per_day": "ab 5 €",
+    "price_weekend": null,
+    "price_per_month": null,
+    "price_unit_label": null,
+    "image": "/product-images/stehtisch-rund-1.jpeg"
+   },
+   "alternatives": []
+  },
+  {
+   "index": 1,
+   "original_text": "20 Bierzeltgarnituren",
+   "quantity": 20,
+   "confidence": "high",
+   "reason": "Das Bierzeltgarnitur-Set entspricht der angefragten Position.",
+   "product": {
+    "slug": "bierzeltgarnitur-set",
+    "name": "Bierzeltgarnitur-Set",
+    "model_name": null,
+    "category": "moebel-zelte",
+    "bookable_locations": [
+     "bonn",
+     "krefeld"
+    ],
+    "bookable_here": null,
+    "price_per_day": "ab 8 €",
+    "price_weekend": null,
+    "price_per_month": null,
+    "price_unit_label": null,
+    "image": "/product-images/bierzeltgarnitur-set-1.jpeg"
+   },
+   "alternatives": []
+  },
+  {
+   "index": 2,
+   "original_text": "1 Kühlanhänger",
+   "quantity": 1,
+   "confidence": "none",
+   "reason": "Ein Kühlanhänger ist im Katalog nicht enthalten.",
+   "product": null,
+   "alternatives": []
+  },
+  {
+   "index": 3,
+   "original_text": "eine Musikanlage",
+   "quantity": 1,
+   "confidence": "medium",
+   "reason": "Das komplette Soundsystem passt als Musikanlage; benötigte Leistung und Veranstaltungsgröße sind nicht genannt.",
+   "product": {
+    "slug": "soundsystem-2-1-1400w",
+    "name": "2.1 Soundsystem 1400W RMS – mit eingebautem Mischpult und Bluetooth-Empfänger – bis zu 75 Personen",
+    "model_name": null,
+    "category": "beschallung",
+    "bookable_locations": [
+     "bonn",
+     "krefeld"
+    ],
+    "bookable_here": null,
+    "price_per_day": null,
+    "price_weekend": null,
+    "price_per_month": null,
+    "price_unit_label": null,
+    "image": "/product-images/soundsystem-1400w-1.jpeg"
+   },
+   "alternatives": [
+    {
+     "slug": "das-soundsystem-3500w",
+     "name": "D.A.S. Soundsystem 3500W RMS – bis zu 250 Personen",
+     "model_name": null,
+     "category": "beschallung",
+     "bookable_locations": [
+      "bonn",
+      "krefeld"
+     ],
+     "bookable_here": null,
+     "price_per_day": null,
+     "price_weekend": null,
+     "price_per_month": null,
+     "price_unit_label": null,
+     "image": "/product-images/das-soundsystem-3500w-1.jpeg"
+    },
+    {
+     "slug": "soundboks-gen3",
+     "name": "Soundboks Gen.3",
+     "model_name": null,
+     "category": "beschallung",
+     "bookable_locations": [
+      "bonn",
+      "krefeld"
+     ],
+     "bookable_here": null,
+     "price_per_day": null,
+     "price_weekend": null,
+     "price_per_month": null,
+     "price_unit_label": null,
+     "image": "/product-images/soundboks-gen3-1.jpeg"
+    }
+   ]
+  }
+ ]
+}
