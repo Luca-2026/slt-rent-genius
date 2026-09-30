@@ -358,12 +358,21 @@ export default function Lieferung() {
                     <CardTitle className="text-lg text-primary-foreground">Deine Lieferkosten</CardTitle>
                   </CardHeader>
                   <CardContent className="pt-6 space-y-4">
+                    {activeSubtype?.onRequest ? (
+                      <div className="text-center space-y-2">
+                        <p className="text-2xl font-bold text-primary">Auf Anfrage</p>
+                        <p className="text-sm text-muted-foreground">
+                          Geräte über 3 t transportieren wir per Tieflader. Die Lieferkosten berechnen wir individuell.
+                        </p>
+                      </div>
+                    ) : (
                     <div className="text-center">
                       <p className="text-4xl lg:text-5xl font-bold text-primary">
                         {result.total.toFixed(2).replace(".", ",")} €
                       </p>
                       <p className="text-sm text-muted-foreground mt-1">inkl. MwSt.</p>
                     </div>
+                    )}
 
                     <div className="border-t pt-4 space-y-2 text-sm">
                       {(activeSubtype || config.label) && (
