@@ -31,7 +31,7 @@ const Body = z.object({
   items_confirmed: z.boolean(),
   operating_hours: z.string().max(40).nullable(),
   fuel_level: z.string().max(20).nullable(),
-  machine_readings: z.array(z.object({ item_name: z.string().max(200), operating_hours: z.string().max(20), fuel_level: z.string().max(20) })).max(30).optional().default([]),
+  machine_readings: z.array(z.object({ item_name: z.string().max(200), operating_hours: z.string().max(20), fuel_level: z.string().max(20), managed_product_id: z.string().uuid().nullable().optional() })).max(30).optional().default([]),
   instructed: z.boolean().optional().default(false),
   cleanliness_rating: z.number().int().min(1).max(5).nullable(),
   known_defects: z.string().max(2000).nullable(),
@@ -231,6 +231,25 @@ Deno.serve(async (req) => {
       if (error) throw error;
       protocolId = row.id;
       await svc.from("b2b_return_protocol_items").insert(b.items.map((it) => ({ return_protocol_id: protocolId, product_name: it.name, quantity: it.quantity, description: it.detail })));
+    }
+
+    // Betriebsstunden zentral je Artikel speichern (für CMS-Anzeige und Rückgabevergleich)
+    if (b.machine_readings.length) {
+      const names = b.machine_readings.filter((m) => !m.managed_product_id).map((m) => m.item_name);
+      const byName: Record<string, string> = {};
+      if (names.length) {
+        const { data: prods } = await svc.from("b2b_managed_products").select("id,name").in("name", names);
+        for (const p of prods ?? []) byName[p.name.trim().toLowerCase()] = p.id;
+      }
+      const { error: rErr } = await svc.from("b2b_operating_hours_readings").insert(b.machine_readings.map((m) => ({
+        managed_product_id: m.managed_product_id ?? byName[m.item_name.trim().toLowerCase()] ?? null,
+        product_name: m.item_name, location: lk, kind: isReturn ? "return" : "delivery",
+        operating_hours: Number(m.operating_hours.replace(/\./g, "").replace(",", ".")) || null,
+        fuel_level: m.fuel_level || null, rental_inquiry_id: inq.id,
+        delivery_note_id: isReturn ? null : protocolId, return_protocol_id: isReturn ? protocolId : null,
+        protocol_number: number, recorded_by: user.id,
+      })));
+      if (rErr) console.error("operating hours insert", rErr);
     }
 
     if (damageRows.length) {

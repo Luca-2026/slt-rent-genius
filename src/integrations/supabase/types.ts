@@ -962,6 +962,7 @@ export type Database = {
           drive_type: string | null
           external_manual_url: string | null
           features: string[]
+          has_fuel_tank: boolean
           id: string
           image_alts: string[]
           images: string[]
@@ -995,6 +996,7 @@ export type Database = {
           specifications: Json
           subcategory: string | null
           tags: string[]
+          tracks_operating_hours: boolean
           updated_at: string
           updated_by: string | null
           video_url: string | null
@@ -1012,6 +1014,7 @@ export type Database = {
           drive_type?: string | null
           external_manual_url?: string | null
           features?: string[]
+          has_fuel_tank?: boolean
           id?: string
           image_alts?: string[]
           images?: string[]
@@ -1045,6 +1048,7 @@ export type Database = {
           specifications?: Json
           subcategory?: string | null
           tags?: string[]
+          tracks_operating_hours?: boolean
           updated_at?: string
           updated_by?: string | null
           video_url?: string | null
@@ -1062,6 +1066,7 @@ export type Database = {
           drive_type?: string | null
           external_manual_url?: string | null
           features?: string[]
+          has_fuel_tank?: boolean
           id?: string
           image_alts?: string[]
           images?: string[]
@@ -1095,6 +1100,7 @@ export type Database = {
           specifications?: Json
           subcategory?: string | null
           tags?: string[]
+          tracks_operating_hours?: boolean
           updated_at?: string
           updated_by?: string | null
           video_url?: string | null
@@ -1264,6 +1270,96 @@ export type Database = {
             columns: ["reservation_id"]
             isOneToOne: false
             referencedRelation: "b2b_reservations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      b2b_operating_hours_readings: {
+        Row: {
+          created_at: string
+          delivery_note_id: string | null
+          fuel_level: string | null
+          id: string
+          instance_id: string | null
+          kind: string
+          location: string | null
+          managed_product_id: string | null
+          operating_hours: number | null
+          product_name: string
+          protocol_number: string | null
+          recorded_at: string
+          recorded_by: string | null
+          rental_inquiry_id: string | null
+          return_protocol_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          delivery_note_id?: string | null
+          fuel_level?: string | null
+          id?: string
+          instance_id?: string | null
+          kind: string
+          location?: string | null
+          managed_product_id?: string | null
+          operating_hours?: number | null
+          product_name: string
+          protocol_number?: string | null
+          recorded_at?: string
+          recorded_by?: string | null
+          rental_inquiry_id?: string | null
+          return_protocol_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          delivery_note_id?: string | null
+          fuel_level?: string | null
+          id?: string
+          instance_id?: string | null
+          kind?: string
+          location?: string | null
+          managed_product_id?: string | null
+          operating_hours?: number | null
+          product_name?: string
+          protocol_number?: string | null
+          recorded_at?: string
+          recorded_by?: string | null
+          rental_inquiry_id?: string | null
+          return_protocol_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_operating_hours_readings_instance_id_fkey"
+            columns: ["instance_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_product_instances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_operating_hours_readings_instance_id_fkey"
+            columns: ["instance_id"]
+            isOneToOne: false
+            referencedRelation: "maintenance_due_overview"
+            referencedColumns: ["instance_id"]
+          },
+          {
+            foreignKeyName: "b2b_operating_hours_readings_managed_product_id_fkey"
+            columns: ["managed_product_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_managed_products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_operating_hours_readings_managed_product_id_fkey"
+            columns: ["managed_product_id"]
+            isOneToOne: false
+            referencedRelation: "maintenance_due_overview"
+            referencedColumns: ["managed_product_id"]
+          },
+          {
+            foreignKeyName: "b2b_operating_hours_readings_managed_product_id_fkey"
+            columns: ["managed_product_id"]
+            isOneToOne: false
+            referencedRelation: "managed_products_public"
             referencedColumns: ["id"]
           },
         ]
