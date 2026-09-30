@@ -92,6 +92,13 @@
       "when": 1790787492122,
       "tag": "0012_auto_crm_from_rental_inquiries",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1790788296839,
+      "tag": "0013_close_rental_inquiry_on_invoice",
+      "breakpoints": true
     }
   ]
 }

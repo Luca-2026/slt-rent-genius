@@ -76,19 +76,31 @@ export function isUnprocessedInquiry(row: { status: unknown; assigned_to?: strin
   return !row.assigned_to && (s === "new" || s === "in_progress");
 }
 
-export type InquiryListFilter = "unprocessed" | "working" | "offer_sent" | "accepted" | "closed" | "all";
+export type InquiryListFilter = "unprocessed" | "working" | "offer_sent" | "accepted" | "running" | "completed" | "rejected" | "all";
+
+type ListRow = { status: unknown; assigned_to?: string | null; order_confirmed_at?: string | null };
+
+/**
+ * Laufender Mietvorgang: Angebot angenommen UND Auftragsbestätigung versendet,
+ * aber noch keine Rechnung (mit Rechnung wird die Anfrage automatisch „Erledigt“).
+ */
+export function isRunningRental(row: ListRow): boolean {
+  return normalizeInquiryStatus(row.status) === "accepted" && !!row.order_confirmed_at;
+}
 
 export const INQUIRY_LIST_FILTERS: { value: InquiryListFilter; label: string }[] = [
   { value: "unprocessed", label: "Offen (nicht übernommen)" },
   { value: "working", label: "In Bearbeitung" },
   { value: "offer_sent", label: "Angebot gesendet" },
-  { value: "accepted", label: "Angenommen" },
-  { value: "closed", label: "Abgelehnt / erledigt" },
+  { value: "accepted", label: "Angenommen (Auftragsbestätigung offen)" },
+  { value: "running", label: "Laufende Mietvorgänge" },
+  { value: "completed", label: "Abgeschlossen (abgerechnet)" },
+  { value: "rejected", label: "Abgelehnt" },
   { value: "all", label: "Alle Anfragen" },
 ];
 
 export function matchesInquiryListFilter(
-  row: { status: unknown; assigned_to?: string | null },
+  row: ListRow,
   filter: InquiryListFilter,
 ): boolean {
   const s = normalizeInquiryStatus(row.status);
@@ -97,8 +109,10 @@ export function matchesInquiryListFilter(
     case "unprocessed": return isUnprocessedInquiry(row);
     case "working": return !isUnprocessedInquiry(row) && (s === "new" || s === "in_progress");
     case "offer_sent": return s === "offer_sent";
-    case "accepted": return s === "accepted";
-    case "closed": return s === "rejected" || s === "done";
+    case "accepted": return s === "accepted" && !row.order_confirmed_at;
+    case "running": return isRunningRental(row);
+    case "completed": return s === "done";
+    case "rejected": return s === "rejected";
   }
 }
 
