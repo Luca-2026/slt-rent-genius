@@ -58,7 +58,8 @@ export default function RentalInquiries() {
   const statusFilter = parseInquiryListFilter(searchParams.get("status"));
   const setParam = (key: string, value: string) => {
     const next = new URLSearchParams(searchParams);
-    if (value === "all" && key !== "status") next.delete(key); else if (key === "status" && value === "unprocessed") next.delete(key); else next.set(key, value);
+    // „all“ (Standort, Kundengruppe, Bearbeitungsstand) ist der Standard und steht nicht in der Adresse.
+    if (value === "all") next.delete(key); else next.set(key, value);
     setSearchParams(next, { replace: true });
   };
 

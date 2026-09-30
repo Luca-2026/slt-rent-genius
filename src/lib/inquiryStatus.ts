@@ -89,6 +89,7 @@ export function isRunningRental(row: ListRow): boolean {
 }
 
 export const INQUIRY_LIST_FILTERS: { value: InquiryListFilter; label: string }[] = [
+  { value: "all", label: "Alle Anfragen" },
   { value: "unprocessed", label: "Offen (nicht übernommen)" },
   { value: "working", label: "In Bearbeitung" },
   { value: "offer_sent", label: "Angebot gesendet" },
@@ -96,7 +97,6 @@ export const INQUIRY_LIST_FILTERS: { value: InquiryListFilter; label: string }[]
   { value: "running", label: "Laufende Mietvorgänge" },
   { value: "completed", label: "Abgeschlossen (abgerechnet)" },
   { value: "rejected", label: "Abgelehnt" },
-  { value: "all", label: "Alle Anfragen" },
 ];
 
 export function matchesInquiryListFilter(
@@ -116,6 +116,7 @@ export function matchesInquiryListFilter(
   }
 }
 
+/** Standard-Filter der Mietanfragen-Liste: „Alle Anfragen“, neueste zuerst. */
 export function parseInquiryListFilter(v: string | null): InquiryListFilter {
-  return INQUIRY_LIST_FILTERS.some((f) => f.value === v) ? (v as InquiryListFilter) : "unprocessed";
+  return INQUIRY_LIST_FILTERS.some((f) => f.value === v) ? (v as InquiryListFilter) : "all";
 }
