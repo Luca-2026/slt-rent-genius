@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import type { LucideIcon } from "lucide-react";
 import {
-  Home, Inbox, FileText, Package, Send, ShoppingCart, Receipt, Users,
+  Home, Inbox, FileText, Package, ShoppingCart, Receipt, Users,
   ClipboardCheck, Undo2, AlertTriangle, CheckSquare, Truck, Boxes, CalendarClock,
   Store, UserCog, Shield, MessageSquare, BookOpen,
 } from "lucide-react";
@@ -30,7 +30,6 @@ export const STAFF_NAV: StaffNavGroup[] = [
     items: [
       { label: "Mietanfragen", path: "/b2b/mietanfragen", icon: Inbox, access: "staff", badgeKey: "rental" },
       { label: "Laufende Mietvorgänge", path: "/b2b/mietanfragen", status: "running", icon: Package, access: "staff" },
-      { label: "Angebote (B2B-Portal)", path: "/b2b/admin", tab: "offers", icon: Send, access: "admin" },
       { label: "Verkaufsanfragen", path: "/b2b/verkaufsanfragen", icon: ShoppingCart, access: "staff", badgeKey: "sales" },
     ],
   },
