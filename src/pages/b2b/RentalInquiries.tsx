@@ -87,12 +87,12 @@ export default function RentalInquiries() {
 
   return (
     <B2BPortalLayout title="Mietanfragen" subtitle="Alle Mietanfragen – Privat-, Geschäfts- und B2B-Portalkunden">
-      <div className="flex flex-col sm:flex-row gap-2 mb-4">
+      <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 mb-4">
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Suche nach Artikel, Kunde, Standort …"
-          className="sm:max-w-sm"
+          className="sm:w-72"
         />
         <Select value={segment} onValueChange={(v) => setParam("kunden", v as SegmentFilter)}>
           <SelectTrigger className="sm:w-48" aria-label="Kundengruppe"><SelectValue /></SelectTrigger>
