@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, CalendarCheck, CalendarX, AlertTriangle, Inbox, ListTodo, TrendingUp, Receipt, FileCheck2, Package, ShoppingCart, ChevronRight } from "lucide-react";
+import { ArrowRight, CalendarCheck, CalendarX, AlertTriangle, Inbox, ListTodo, TrendingUp, Receipt, FileCheck2, Package, ShoppingCart, ChevronRight, LayoutGrid } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
@@ -47,7 +47,7 @@ function Panel({ title, icon: Icon, action, children, className }: { title: stri
 function ActionStat({ label, value, to, icon: Icon, highlight }: { label: string; value: number; to: string; icon: LucideIcon; highlight?: boolean }) {
   return (
     <Link to={to} className={cn(
-      "group flex items-center gap-3 rounded-xl border bg-card p-3 transition-colors hover:border-primary sm:p-4",
+      "group flex min-w-0 items-center gap-3 rounded-xl border bg-card p-3 transition-colors hover:border-primary sm:p-4",
       highlight && value > 0 ? "border-accent" : "border-border",
     )}>
       <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-lg", highlight && value > 0 ? "bg-accent text-accent-foreground" : "bg-muted text-primary")}>
@@ -55,7 +55,7 @@ function ActionStat({ label, value, to, icon: Icon, highlight }: { label: string
       </span>
       <span className="min-w-0">
         <span className="block text-2xl font-bold leading-none text-foreground">{value}</span>
-        <span className="mt-1 block text-xs leading-tight text-muted-foreground">{label}</span>
+        <span className="mt-1 block break-words text-xs leading-tight text-muted-foreground">{label}</span>
       </span>
     </Link>
   );
@@ -158,7 +158,7 @@ export default function StaffHome() {
           {/* 1. Handlungsbedarf */}
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             <ActionStat label="Neue Mietanfragen" value={unprocessed} to="/b2b/mietanfragen" icon={Inbox} highlight />
-            <ActionStat label="Auftragsbestätigung offen" value={awaitingConfirmation} to="/b2b/mietanfragen?status=accepted" icon={FileCheck2} highlight />
+            <ActionStat label="Bestätigung offen" value={awaitingConfirmation} to="/b2b/mietanfragen?status=accepted" icon={FileCheck2} highlight />
             <ActionStat label="Laufende Mietvorgänge" value={running} to="/b2b/mietanfragen?status=running" icon={Package} />
             <ActionStat label="Offene Verkaufsanfragen" value={openSales} to="/b2b/verkaufsanfragen" icon={ShoppingCart} />
           </div>
@@ -172,7 +172,7 @@ export default function StaffHome() {
           )}
 
           {/* 2. Heute + Finanzen */}
-          <div className={cn("grid gap-5", isAdmin && "lg:grid-cols-5")}>
+          <div className={cn("grid gap-5 [&>*]:min-w-0", isAdmin && "lg:grid-cols-5")}>
             <Panel title="Heute" icon={CalendarCheck} className={cn(isAdmin && "lg:col-span-3")}>
               <div className="divide-y divide-border">
                 <DayList title="Übergaben" icon={CalendarCheck} rows={pickups} empty="Keine Übergaben geplant." />
@@ -223,7 +223,7 @@ export default function StaffHome() {
           </div>
 
           {/* 3. Alle Funktionen */}
-          <Panel title="Alle Funktionen" icon={ChevronRight}>
+          <Panel title="Alle Funktionen" icon={LayoutGrid}>
             <div className="grid gap-x-6 gap-y-4 p-4 sm:grid-cols-2 lg:grid-cols-5">
               {groups.map((g) => (
                 <div key={g.label}>
