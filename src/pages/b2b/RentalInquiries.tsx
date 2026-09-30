@@ -10,7 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { isOpenInquiry } from "@/lib/inquiryStatus";
-import type { RentalInquiry } from "@/components/b2b/inquiries/types";
+import { requestedItemsOf, type RentalInquiry } from "@/components/b2b/inquiries/types";
+import { quantityLabel } from "@/lib/setSize";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { NewRentalInquiryDialog } from "@/components/b2b/inquiries/NewRentalInquiryDialog";
 import { AiInquiryImportDialog } from "@/components/b2b/inquiries/AiInquiryImportDialog";
@@ -151,22 +152,26 @@ export default function RentalInquiries() {
                 inquiry={selected}
                 onChanged={reload}
                 onDeleted={() => setSelectedId(null)}
-                defaultItems={[
-                  {
-                    product_name: selected.product_name || "Mietartikel",
-                    description: [
-                      fmtDateTime(selected.start_date, selected.start_time),
-                      fmtDateTime(selected.end_date, selected.end_time),
-                    ]
-                      .filter((v) => v !== "—")
-                      .join(" – "),
-                    quantity: selected.quantity && selected.quantity > 0 ? selected.quantity : 1,
-                    duration: rentalDays(selected.start_date, selected.end_date),
-                    unit: "kalendertage",
-                    unit_price: 0,
-                    discount_percent: 0,
-                  },
-                ]}
+                defaultItems={(requestedItemsOf(selected).length
+                  ? requestedItemsOf(selected)
+                  : [{ product_name: "Mietartikel", quantity: 1 }]
+                ).map((it, idx) => ({
+                  product_name: it.product_name,
+                  product_slug: it.product_slug ?? undefined,
+                  description: [
+                    idx === 0
+                      ? [fmtDateTime(selected.start_date, selected.start_time), fmtDateTime(selected.end_date, selected.end_time)]
+                          .filter((v) => v !== "—")
+                          .join(" – ")
+                      : "",
+                    it.set_size ? `${it.quantity} × ${it.set_size}er Set = ${it.quantity * it.set_size} Stück` : "",
+                  ].filter(Boolean).join(" · "),
+                  quantity: it.quantity,
+                  duration: rentalDays(selected.start_date, selected.end_date),
+                  unit: "kalendertage",
+                  unit_price: 0,
+                  discount_percent: 0,
+                }))}
                 defaultDelivery={{
                   requested: Boolean(
                     selected.delivery_requested ||
@@ -219,8 +224,30 @@ function RentalDetails({ inquiry }: { inquiry: RentalInquiry }) {
     <div className="space-y-1 rounded-lg border border-border p-3">
       <Row label="Eingegangen" value={new Date(inquiry.created_at).toLocaleString("de-DE")} />
       <Row label="Standort" value={inquiry.location ? getLocationDisplayName(inquiry.location) : null} />
-      <Row label="Artikel" value={inquiry.product_name} />
-      <Row label="Menge" value={inquiry.quantity ? String(inquiry.quantity) : null} />
+      {(() => {
+        const list = requestedItemsOf(inquiry);
+        if (list.length <= 1) {
+          return (
+            <>
+              <Row label="Artikel" value={inquiry.product_name} />
+              <Row label="Menge" value={list[0] ? quantityLabel(list[0].quantity, list[0].set_size ?? null) : null} />
+            </>
+          );
+        }
+        return (
+          <div className="py-1">
+            <p className="text-xs text-muted-foreground mb-1">Artikel ({list.length})</p>
+            <ul className="divide-y divide-border rounded-md border border-border text-sm">
+              {list.map((it, i) => (
+                <li key={i} className="flex items-start justify-between gap-3 px-2 py-1.5">
+                  <span className="min-w-0 break-words">{it.product_name}</span>
+                  <span className="shrink-0 font-medium text-right">{quantityLabel(it.quantity, it.set_size ?? null)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })()}
       <Row
         label="Zeitraum"
         value={`${fmtDate(inquiry.start_date)}${inquiry.start_time ? ` ${inquiry.start_time}` : ""} – ${fmtDate(inquiry.end_date)}${inquiry.end_time ? ` ${inquiry.end_time}` : ""}`}

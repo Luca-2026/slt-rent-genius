@@ -16,6 +16,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import type { Product, LocationData } from "@/data/rentalData";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { InquiryItemsPicker, type RequestItem } from "./InquiryItemsPicker";
+import { parseSetSize } from "@/lib/setSize";
 
 interface ProductBookingDialogProps {
   product: Product | null;
@@ -92,6 +94,15 @@ export function ProductBookingDialog({
   const [form, setForm] = useState<InquiryForm>(defaultForm);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const mainItem = (): RequestItem[] =>
+    product
+      ? [{ product_name: product.name, product_slug: product.id, quantity: 1, set_size: parseSetSize(product.name), image: product.image }]
+      : [];
+  const [requestItems, setRequestItems] = useState<RequestItem[]>([]);
+  useEffect(() => {
+    if (isOpen) setRequestItems(mainItem());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, product?.id]);
 
   // Inject Rentware widget when dialog opens
   useEffect(() => {
@@ -222,6 +233,12 @@ export function ProductBookingDialog({
           ...form,
           customerKind: form.customerKind,
           message: messageWithExtras,
+          items: requestItems.map((it) => ({
+            product_name: it.product_name,
+            product_slug: it.product_slug ?? null,
+            quantity: it.quantity > 0 ? it.quantity : 1,
+            set_size: it.set_size,
+          })),
         },
       });
 
@@ -303,7 +320,7 @@ export function ProductBookingDialog({
                 </div>
                 <h3 className="text-xl font-bold text-foreground">Anfrage gesendet!</h3>
                 <p className="text-muted-foreground max-w-sm mx-auto">
-                  Wir prüfen die Verfügbarkeit von <strong>{product.name}</strong> in {location.name} und melden uns schnellstmöglich bei dir.
+                  Wir prüfen die Verfügbarkeit {requestItems.length > 1 ? <>deiner <strong>{requestItems.length} Artikel</strong></> : <>von <strong>{product.name}</strong></>} in {location.name} und melden uns schnellstmöglich bei dir.
                 </p>
                   <Button variant="outline" onClick={onClose} className="mt-2">Schließen</Button>
                 </div>
@@ -314,6 +331,16 @@ export function ProductBookingDialog({
                   </p>
 
                   <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-2 rounded-lg border border-border bg-muted/30 p-3">
+                      <div>
+                        <Label className="text-sm font-semibold">Artikel in deiner Anfrage</Label>
+                        <p className="text-xs text-muted-foreground">
+                          Du brauchst mehr? Füge weitere Mietartikel hinzu – alles kommt gebündelt in einer Anfrage bei uns an.
+                        </p>
+                      </div>
+                      <InquiryItemsPicker items={requestItems} onChange={setRequestItems} />
+                    </div>
+
                     <div className="space-y-1.5">
                       <Label>Ich frage an als *</Label>
                       <div className="grid grid-cols-2 gap-2">
@@ -459,11 +486,11 @@ export function ProductBookingDialog({
                     </div>
 
                     <div className="space-y-1.5">
-                      <Label htmlFor="inq-message">Nachricht / weitere Angaben</Label>
+                      <Label htmlFor="inq-message">Kommentar / weitere Wünsche</Label>
                       <Textarea
                         id="inq-message"
                         rows={3}
-                        placeholder="z. B. Menge, besondere Anforderungen..."
+                        placeholder="z. B. Einsatzort, besondere Anforderungen, Artikel, die du nicht gefunden hast …"
                         value={form.message}
                         onChange={(e) => setForm({ ...form, message: e.target.value })}
                       />

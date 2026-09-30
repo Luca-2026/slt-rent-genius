@@ -22,7 +22,7 @@ export interface CatalogProduct {
 let catalogCache: CatalogProduct[] | null = null;
 let catalogPromise: Promise<CatalogProduct[]> | null = null;
 
-async function loadCatalog(): Promise<CatalogProduct[]> {
+export async function loadCatalog(): Promise<CatalogProduct[]> {
   if (catalogCache) return catalogCache;
   if (!catalogPromise) {
     catalogPromise = (async () => {

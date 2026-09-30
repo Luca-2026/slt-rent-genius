@@ -1,0 +1,2 @@
+ALTER TABLE public.rental_inquiries ADD COLUMN IF NOT EXISTS requested_items jsonb NOT NULL DEFAULT '[]'::jsonb;
+COMMENT ON COLUMN public.rental_inquiries.requested_items IS 'Gebündelte Artikel einer Kundenanfrage: [{product_name, product_slug, quantity, set_size}]';

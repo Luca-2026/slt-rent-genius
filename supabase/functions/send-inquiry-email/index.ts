@@ -49,7 +49,28 @@ serve(async (req) => {
       setupServiceRequested,
       customerKind,
       attachments,
+      items,
     } = await req.json();
+
+    // Gebündelte Artikel (max. 30), Menge 1–9999. Hauptartikel steht an erster Stelle.
+    const requestedItems: { product_name: string; product_slug: string | null; quantity: number; set_size: number | null }[] =
+      (Array.isArray(items) ? items : [])
+        .slice(0, 30)
+        .map((it: any) => ({
+          product_name: String(it?.product_name ?? "").trim().slice(0, 200),
+          product_slug: it?.product_slug ? String(it.product_slug).slice(0, 200) : null,
+          quantity: Math.min(9999, Math.max(1, Math.round(Number(it?.quantity) || 1))),
+          set_size: Number.isFinite(Number(it?.set_size)) && Number(it.set_size) > 1 ? Math.round(Number(it.set_size)) : null,
+        }))
+        .filter((it) => it.product_name);
+    const qtyText = (it: { quantity: number; set_size: number | null }) =>
+      it.set_size ? `${it.quantity} ${it.quantity === 1 ? "Set" : "Sets"} (= ${it.quantity * it.set_size} Stück)` : `${it.quantity} Stück`;
+    const itemsTableHtml = requestedItems.length
+      ? `<table style="width:100%;border-collapse:collapse;margin:8px 0 16px;font-size:14px;">
+          <tr><th style="text-align:left;padding:6px 4px;border-bottom:2px solid #e5e7eb;color:#6b7280;">Artikel</th><th style="text-align:right;padding:6px 4px;border-bottom:2px solid #e5e7eb;color:#6b7280;">Menge</th></tr>
+          ${requestedItems.map((it) => `<tr><td style="padding:6px 4px;border-bottom:1px solid #f3f4f6;">${escapeHtml(it.product_name)}</td><td style="padding:6px 4px;border-bottom:1px solid #f3f4f6;text-align:right;white-space:nowrap;">${escapeHtml(qtyText(it))}</td></tr>`).join("")}
+        </table>`
+      : "";
 
     // Pflichtfelder: Name, E-Mail und Telefonnummer müssen vorhanden sein.
     const missing: string[] = [];
@@ -87,7 +108,9 @@ serve(async (req) => {
       source: "product_booking",
       location: locationName ?? null,
       location_email: locationEmail ?? null,
-      product_name: productName ?? null,
+      product_name: requestedItems[0]?.product_name ?? productName ?? null,
+      quantity: requestedItems[0]?.quantity ?? null,
+      requested_items: requestedItems,
       start_date: startDate ?? null,
       start_time: startTime ?? null,
       end_date: endDate ?? null,
@@ -172,9 +195,10 @@ serve(async (req) => {
     <p style="margin: 0 0 12px;"><a href="${portalLink}" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;padding:10px 16px;border-radius:6px;font-weight:bold;">Im B2B-Portal bearbeiten</a></p>
     <p style="color:#6b7280;font-size:12px;margin:0 0 12px;">Bitte die Anfrage im Portal übernehmen, damit klar ist, wer sie bearbeitet.</p>
     <div style="background: #fff7ed; border-left: 4px solid #f97316; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
-      <strong style="color: #ea580c;">Artikel:</strong> ${e.productName}<br>
+      <strong style="color: #ea580c;">${requestedItems.length > 1 ? `${requestedItems.length} Artikel` : "Artikel:"}</strong> ${requestedItems.length > 1 ? "" : e.productName}<br>
       <strong style="color: #ea580c;">Standort:</strong> ${e.locationName}
     </div>
+    ${itemsTableHtml}
     <h3 style="color: #374151;">Kontaktdaten</h3>
     <table style="width: 100%; border-collapse: collapse;">
       <tr><td style="padding: 4px 0; color: #6b7280; width: 100px;">Name:</td><td style="padding: 4px 0; font-weight: 500;">${e.name}</td></tr>
@@ -206,13 +230,14 @@ serve(async (req) => {
       wir haben Ihre Mietanfrage erhalten und werden uns schnellstmöglich bei Ihnen melden – in der Regel innerhalb eines Werktages.
     </p>
     <div style="background: #fff7ed; border-left: 4px solid #f97316; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
-      <strong style="color: #ea580c;">Artikel:</strong> ${e.productName}<br>
+      <strong style="color: #ea580c;">${requestedItems.length > 1 ? "Ihre Artikel:" : "Artikel:"}</strong> ${requestedItems.length > 1 ? "" : e.productName}<br>
       <strong style="color: #ea580c;">Standort:</strong> ${e.locationName}<br>
       <strong style="color: #ea580c;">Zeitraum:</strong> ${e.dateRange}
       ${timeRange ? `<br><strong style="color: #ea580c;">Uhrzeiten:</strong> ${e.timeRange}` : ""}
       ${deliveryRequested ? `<br><strong style="color: #ea580c;">Lieferung an:</strong> ${e.deliveryStreet}, ${e.deliveryPostalCode} ${e.deliveryCity}` : ""}
       ${setupServiceRequested ? `<br><strong style="color: #ea580c;">Betreuung / Auf- & Abbau:</strong> Gewünscht` : ""}
     </div>
+    ${itemsTableHtml}
     <p style="color: #374151; line-height: 1.6;">
       Falls Sie in der Zwischenzeit Fragen haben, erreichen Sie uns unter <a href="tel:${escapeHtml(locPhone.replace(/\s/g, ''))}" style="color: #f97316;">${e.locPhone}</a> oder per E-Mail an <a href="mailto:${e.locEmail}" style="color: #f97316;">${e.locEmail}</a>.
     </p>
@@ -236,7 +261,7 @@ serve(async (req) => {
           from: "Anfragen <anfragen@slt-rental.de>",
           to: [locEmail],
           reply_to: email,
-          subject: `Mietanfrage: ${productName} – ${locationName}`,
+          subject: `Mietanfrage: ${productName}${requestedItems.length > 1 ? ` + ${requestedItems.length - 1} weitere` : ""} – ${locationName}`,
           html: internalHtml,
           ...(safeAttachments.length ? { attachments: safeAttachments } : {}),
         }),
