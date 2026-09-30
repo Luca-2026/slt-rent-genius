@@ -1,4 +1,8 @@
 import { useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SEGMENT_FILTER_OPTIONS, matchesSegment, parseSegmentFilter, segmentOf, type SegmentFilter } from "@/lib/customerSegment";
+import { LegacyB2BRequestsNotice } from "@/components/b2b/inquiries/LegacyB2BRequestsNotice";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useRentalInquiries } from "@/hooks/useInquiries";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
@@ -49,17 +53,27 @@ export default function RentalInquiries() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [newOpen, setNewOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const segment = parseSegmentFilter(searchParams.get("kunden"));
+  const locationFilter = searchParams.get("standort") ?? "all";
+  const setParam = (key: string, value: string) => {
+    const next = new URLSearchParams(searchParams);
+    if (value === "all") next.delete(key); else next.set(key, value);
+    setSearchParams(next, { replace: true });
+  };
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return rows.filter((r) => {
       if (onlyOpen && !isOpenInquiry(r.status)) return false;
+      if (!matchesSegment(segmentOf(r), segment)) return false;
+      if (locationFilter !== "all" && r.location !== locationFilter) return false;
       if (!q) return true;
       return [r.product_name, r.customer_name, r.customer_email, r.company_name, r.location, r.customer_city]
         .filter(Boolean)
         .some((v) => String(v).toLowerCase().includes(q));
     });
-  }, [rows, search, onlyOpen]);
+  }, [rows, search, onlyOpen, segment, locationFilter]);
 
   const selected = rows.find((r) => r.id === selectedId) ?? null;
 
@@ -72,7 +86,7 @@ export default function RentalInquiries() {
   }
 
   return (
-    <B2BPortalLayout title="Mietanfragen" subtitle="Anfragen zu Artikeln „auf Anfrage“">
+    <B2BPortalLayout title="Mietanfragen" subtitle="Alle Mietanfragen – Privat-, Geschäfts- und B2B-Portalkunden">
       <div className="flex flex-col sm:flex-row gap-2 mb-4">
         <Input
           value={search}
@@ -80,6 +94,21 @@ export default function RentalInquiries() {
           placeholder="Suche nach Artikel, Kunde, Standort …"
           className="sm:max-w-sm"
         />
+        <Select value={segment} onValueChange={(v) => setParam("kunden", v as SegmentFilter)}>
+          <SelectTrigger className="sm:w-48" aria-label="Kundengruppe"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            {SEGMENT_FILTER_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+          </SelectContent>
+        </Select>
+        <Select value={locationFilter} onValueChange={(v) => setParam("standort", v)}>
+          <SelectTrigger className="sm:w-48" aria-label="Standort"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Alle Standorte</SelectItem>
+            <SelectItem value="krefeld">Krefeld</SelectItem>
+            <SelectItem value="bonn">Bonn</SelectItem>
+            <SelectItem value="muelheim">Mülheim an der Ruhr</SelectItem>
+          </SelectContent>
+        </Select>
         <Button variant={onlyOpen ? "default" : "outline"} onClick={() => setOnlyOpen((v) => !v)}>
           {onlyOpen ? "Nur offene" : "Alle Anfragen"}
         </Button>
@@ -90,6 +119,10 @@ export default function RentalInquiries() {
           <Plus className="h-4 w-4 mr-1" /> Anfrage manuell anlegen
         </Button>
       </div>
+
+      {(segment === "all" || segment === "portal") && <LegacyB2BRequestsNotice />}
+
+      <p className="mb-3 text-sm text-muted-foreground">{filtered.length} {filtered.length === 1 ? "Anfrage" : "Anfragen"}</p>
 
       <AiInquiryImportDialog open={aiOpen} onOpenChange={setAiOpen} />
 
@@ -205,6 +238,7 @@ function InquirySourceBadges({ inquiry }: { inquiry: RentalInquiry }) {
         </Badge>
       )}
       {isPortal && <Badge variant="secondary">B2B-Portal</Badge>}
+      {!isBusiness && <Badge variant="outline">Privat</Badge>}
     </>
   );
 }

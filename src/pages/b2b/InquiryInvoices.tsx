@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { SEGMENT_FILTER_OPTIONS, matchesSegment, parseSegmentFilter, segmentOf, type CustomerSegment, type SegmentFilter } from "@/lib/customerSegment";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -41,7 +43,28 @@ interface InvoiceRow {
   credited_amount: number | null;
   credit_reason: string | null;
   created_at: string;
+  customer_kind: string | null;
 }
+
+/** Rechnung aus dem B2B-Portal (eigene Tabelle, eigener Bearbeitungsbereich). */
+interface PortalInvoiceRow {
+  id: string;
+  invoice_number: string | null;
+  invoice_date: string | null;
+  due_date: string | null;
+  gross_amount: number | null;
+  amount: number | null;
+  status: string;
+  file_url: string | null;
+  email_sent: boolean | null;
+  customer_company: string | null;
+  created_at: string;
+  b2b_profiles: { company_name: string | null; contact_email: string | null } | null;
+}
+
+type ListItem =
+  | { kind: "inquiry"; segment: CustomerSegment; sortDate: string; row: InvoiceRow }
+  | { kind: "portal"; segment: CustomerSegment; sortDate: string; row: PortalInvoiceRow };
 
 /** Erfasste (Teil-)Zahlung zu einer Rechnung. */
 interface PaymentEntry {
@@ -74,6 +97,14 @@ const dateDE = (value: string | null) => (value ? new Date(value).toLocaleDateSt
 export default function InquiryInvoices() {
   const { toast } = useToast();
   const [rows, setRows] = useState<InvoiceRow[]>([]);
+  const [portalRows, setPortalRows] = useState<PortalInvoiceRow[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const segment = parseSegmentFilter(searchParams.get("kunden"));
+  const setSegment = (v: SegmentFilter) => {
+    const next = new URLSearchParams(searchParams);
+    if (v === "all") next.delete("kunden"); else next.set("kunden", v);
+    setSearchParams(next, { replace: true });
+  };
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -96,41 +127,65 @@ export default function InquiryInvoices() {
     const { data, error } = await supabase
       .from("inquiry_invoices")
       .select(
-        "id, invoice_number, invoice_kind, inquiry_type, parent_invoice_id, offer_number, company_name, customer_name, customer_email, location, invoice_date, due_date, service_period_start, service_period_end, gross_amount, net_amount, status, file_url, email_sent, paid_amount, payments, credited_amount, credit_reason, created_at",
+        "id, invoice_number, invoice_kind, inquiry_type, parent_invoice_id, offer_number, company_name, customer_name, customer_email, location, invoice_date, due_date, service_period_start, service_period_end, gross_amount, net_amount, status, file_url, email_sent, paid_amount, payments, credited_amount, credit_reason, created_at, customer_kind",
       )
       .order("created_at", { ascending: false });
+    const portal = await supabase
+      .from("b2b_invoices")
+      .select("id, invoice_number, invoice_date, due_date, gross_amount, amount, status, file_url, email_sent, customer_company, created_at, b2b_profiles(company_name, contact_email)")
+      .order("created_at", { ascending: false });
     setLoading(false);
-    if (error) {
-      toast({ title: "Rechnungen konnten nicht geladen werden", description: error.message, variant: "destructive" });
-      return;
+    if (error || portal.error) {
+      toast({ title: "Rechnungen konnten nicht geladen werden", description: (error ?? portal.error)?.message, variant: "destructive" });
     }
-    setRows((data ?? []) as unknown as InvoiceRow[]);
+    if (!error) setRows((data ?? []) as unknown as InvoiceRow[]);
+    if (!portal.error) setPortalRows((portal.data ?? []) as unknown as PortalInvoiceRow[]);
   }, [toast]);
 
   useEffect(() => {
     load();
   }, [load]);
 
-  const filtered = useMemo(() => {
+  const items = useMemo<ListItem[]>(() => {
     const q = search.trim().toLowerCase();
-    return rows.filter((row) => {
-      if (statusFilter !== "all" && row.status !== statusFilter) return false;
-      if (!q) return true;
-      return [row.invoice_number, row.offer_number, row.company_name, row.customer_name, row.customer_email, row.location]
-        .filter(Boolean)
-        .some((v) => String(v).toLowerCase().includes(q));
-    });
-  }, [rows, search, statusFilter]);
+    const hit = (values: (string | null | undefined)[]) =>
+      !q || values.filter(Boolean).some((v) => String(v).toLowerCase().includes(q));
+    const list: ListItem[] = [];
+    for (const row of rows) {
+      const seg = segmentOf({ customer_kind: row.customer_kind });
+      if (!matchesSegment(seg, segment)) continue;
+      if (statusFilter !== "all" && row.status !== statusFilter) continue;
+      if (!hit([row.invoice_number, row.offer_number, row.company_name, row.customer_name, row.customer_email, row.location])) continue;
+      list.push({ kind: "inquiry", segment: seg, sortDate: row.created_at, row });
+    }
+    for (const row of portalRows) {
+      if (!matchesSegment("portal", segment)) continue;
+      if (statusFilter !== "all" && row.status !== statusFilter) continue;
+      if (!hit([row.invoice_number, row.customer_company, row.b2b_profiles?.company_name, row.b2b_profiles?.contact_email])) continue;
+      list.push({ kind: "portal", segment: "portal", sortDate: row.created_at, row });
+    }
+    return list.sort((a, b) => b.sortDate.localeCompare(a.sortDate));
+  }, [rows, portalRows, search, statusFilter, segment]);
+
+  const filtered = useMemo(
+    () => items.flatMap((i) => (i.kind === "inquiry" ? [i.row] : [])),
+    [items],
+  );
 
   /** Noch offener Restbetrag einer Rechnung (brutto abzüglich erfasster Zahlungen). */
   const balanceOf = (row: InvoiceRow) =>
     Math.round((Number(row.gross_amount) - Number(row.paid_amount ?? 0) - Number(row.credited_amount ?? 0)) * 100) / 100;
 
-  const openSum = useMemo(
-    () => filtered.filter((r) => r.status === "open" || r.status === "overdue")
-      .reduce((sum, r) => sum + Math.max(0, balanceOf(r)), 0),
-    [filtered],
-  );
+  const openSum = useMemo(() => {
+    let sum = 0;
+    for (const i of items) {
+      if (i.row.status !== "open" && i.row.status !== "overdue") continue;
+      sum += i.kind === "inquiry"
+        ? Math.max(0, balanceOf(i.row))
+        : Number(i.row.gross_amount ?? i.row.amount ?? 0);
+    }
+    return Math.round(sum * 100) / 100;
+  }, [items]);
 
   /** Zahlungseingang atomar erfassen, damit parallele Buchungen nicht überschrieben werden. */
   const savePayment = async () => {
@@ -256,7 +311,7 @@ export default function InquiryInvoices() {
   return (
     <B2BPortalLayout
       title="Rechnungen"
-      subtitle="Rechnungen und Gutschriften aus Miet- und Verkaufsanfragen"
+      subtitle="Alle Rechnungen und Gutschriften – Privat-, Geschäfts- und B2B-Portalkunden"
     >
       <div className="space-y-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -269,6 +324,12 @@ export default function InquiryInvoices() {
               className="pl-9"
             />
           </div>
+          <Select value={segment} onValueChange={(v) => setSegment(v as SegmentFilter)}>
+            <SelectTrigger className="sm:w-48" aria-label="Kundengruppe"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              {SEGMENT_FILTER_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+            </SelectContent>
+          </Select>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="sm:w-48"><SelectValue /></SelectTrigger>
             <SelectContent>
@@ -284,18 +345,20 @@ export default function InquiryInvoices() {
         </div>
 
         <div className="text-sm text-muted-foreground">
-          {filtered.length} Rechnungen · offener Betrag {formatEuro(openSum)}
+          {items.length} {items.length === 1 ? "Rechnung" : "Rechnungen"} · offener Betrag {formatEuro(openSum)}
         </div>
 
         {loading ? (
           <p className="text-sm text-muted-foreground">Rechnungen werden geladen …</p>
-        ) : filtered.length === 0 ? (
+        ) : items.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             Noch keine Rechnungen. Rechnungen entstehen in der Miet- oder Verkaufsanfrage über „Rechnung erstellen“.
           </p>
         ) : (
           <div className="space-y-3">
-            {filtered.map((row) => (
+            {items.map((item) => item.kind === "portal" ? (
+              <PortalInvoiceCard key={`p-${item.row.id}`} row={item.row} />
+            ) : ((row) => (
               <Card key={row.id}>
                 <CardContent className="p-4 space-y-2">
                   <div className="flex flex-wrap items-center gap-2">
@@ -312,6 +375,7 @@ export default function InquiryInvoices() {
                         ? "Erstellt"
                         : STATUS_LABEL[row.status] ?? row.status}
                     </Badge>
+                    <Badge variant="outline">{row.customer_kind === "business" ? "Geschäftskunde" : "Privat"}</Badge>
                     <Badge variant="outline">
                       {row.inquiry_type === "rental" ? "Mietanfrage" : "Verkaufsanfrage"}
                     </Badge>
@@ -399,7 +463,7 @@ export default function InquiryInvoices() {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            ))(item.row))}
           </div>
         )}
 
@@ -487,5 +551,43 @@ export default function InquiryInvoices() {
       </div>
 
     </B2BPortalLayout>
+  );
+}
+
+/** Rechnung aus dem B2B-Portal – Bearbeitung weiterhin im B2B-Rechnungsbereich. */
+function PortalInvoiceCard({ row }: { row: PortalInvoiceRow }) {
+  const gross = Number(row.gross_amount ?? row.amount ?? 0);
+  const company = row.customer_company || row.b2b_profiles?.company_name || "Firmenkunde";
+  return (
+    <Card>
+      <CardContent className="p-4 space-y-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="font-semibold">{row.invoice_number ?? "Entwurf"}</span>
+          <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>{STATUS_LABEL[row.status] ?? row.status}</Badge>
+          <Badge variant="secondary">B2B-Portal</Badge>
+          <span className="ml-auto font-semibold">{formatEuro(gross)}</span>
+        </div>
+        <div className="text-sm">
+          {company}
+          {row.b2b_profiles?.contact_email && <span className="text-muted-foreground"> · {row.b2b_profiles.contact_email}</span>}
+        </div>
+        <div className="text-xs text-muted-foreground">
+          Rechnungsdatum {dateDE(row.invoice_date)} · fällig {dateDE(row.due_date)}
+          {row.email_sent ? " · per E-Mail versendet" : " · noch nicht versendet"}
+        </div>
+        <div className="flex flex-wrap gap-2 pt-1">
+          {row.file_url && (
+            <Button size="sm" variant="outline" asChild>
+              <a href={row.file_url} target="_blank" rel="noreferrer">
+                PDF öffnen <ExternalLink className="h-3.5 w-3.5 ml-1" />
+              </a>
+            </Button>
+          )}
+          <Button size="sm" variant="outline" asChild>
+            <Link to="/b2b/admin?tab=invoices">Bearbeiten (Zahlung, Status, Versand)</Link>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
