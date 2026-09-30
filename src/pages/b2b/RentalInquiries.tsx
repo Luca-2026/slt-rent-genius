@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SEGMENT_FILTER_OPTIONS, SEGMENT_LABELS, matchesSegment, parseSegmentFilter, segmentOf, type SegmentFilter } from "@/lib/customerSegment";
+import { SEGMENT_FILTER_OPTIONS, matchesSegment, parseSegmentFilter, segmentOf, type SegmentFilter } from "@/lib/customerSegment";
 import { LegacyB2BRequestsNotice } from "@/components/b2b/inquiries/LegacyB2BRequestsNotice";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useRentalInquiries } from "@/hooks/useInquiries";
@@ -153,7 +153,6 @@ export default function RentalInquiries() {
                   <div className="flex flex-wrap items-center gap-2 min-w-0">
                     <span className="font-semibold break-words min-w-0">{r.product_name || "Mietanfrage"}</span>
                     <InquiryStatusBadge status={r.status} />
-                    <Badge variant="outline" className="text-xs">{SEGMENT_LABELS[segmentOf(r)]}</Badge>
                     <InquirySourceBadges inquiry={r} />
                   </div>
                   <p className="text-sm text-muted-foreground break-words">
@@ -239,6 +238,7 @@ function InquirySourceBadges({ inquiry }: { inquiry: RentalInquiry }) {
         </Badge>
       )}
       {isPortal && <Badge variant="secondary">B2B-Portal</Badge>}
+      {!isBusiness && <Badge variant="outline">Privat</Badge>}
     </>
   );
 }
