@@ -9,7 +9,6 @@ import { useCrmCustomers, crmCustomerLabel, type CrmCustomer } from "@/hooks/use
 import { CustomerFormDialog } from "@/components/b2b/customers/CustomerFormDialog";
 import { AdminCustomerDetailDialog } from "@/components/b2b/admin/AdminCustomerDetailDialog";
 import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
-import { AdminCreateCustomerDialog } from "@/components/b2b/admin/AdminCreateCustomerDialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -41,7 +40,6 @@ export default function Customers() {
   const [selectedProfile, setSelectedProfile] = useState<Row | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [editPortalOpen, setEditPortalOpen] = useState(false);
-  const [createPortalOpen, setCreatePortalOpen] = useState(false);
 
   const loadPortal = useCallback(async () => {
     const [p, inv, res] = await Promise.all([
