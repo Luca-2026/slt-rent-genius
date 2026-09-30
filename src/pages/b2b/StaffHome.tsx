@@ -12,6 +12,10 @@ import {
   type InquiryInvoiceRow, type PortalInvoiceRow,
 } from "@/lib/dashboardMetrics";
 import { isOpenInquiry, isUnprocessedInquiry } from "@/lib/inquiryStatus";
+import { needsAction, type PortalProfileLite } from "@/lib/customerActions";
+import { UserCheck } from "lucide-react";
+
+type ProfileRow = PortalProfileLite & { id: string; company_name: string; credit_limit: number };
 
 interface InquiryRow {
   id: string;
@@ -103,18 +107,21 @@ export default function StaffHome() {
   const [todos, setTodos] = useState<TodoRow[]>([]);
   const [invoices, setInvoices] = useState<InquiryInvoiceRow[]>([]);
   const [portalInvoices, setPortalInvoices] = useState<PortalInvoiceRow[]>([]);
+  const [profiles, setProfiles] = useState<ProfileRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (accessLoading || !isStaff) return;
     (async () => {
-      const [inq, td, inv, pinv, sales] = await Promise.all([
+      const [inq, td, inv, pinv, sales, prof] = await Promise.all([
         supabase.from("rental_inquiries").select("id,status,assigned_to,offer_total_gross,order_confirmed_at,start_date,end_date,customer_name,company_name,product_name,location"),
         supabase.from("staff_todo_lists").select("id,title,due_date,status,location").neq("status", "done"),
         isAdmin ? supabase.from("inquiry_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,paid_amount,credited_amount,due_date") : Promise.resolve({ data: [] }),
         isAdmin ? supabase.from("b2b_invoices").select("status,invoice_date,net_amount,gross_amount,due_date") : Promise.resolve({ data: [] }),
         supabase.from("sales_inquiries").select("status"),
+        supabase.from("b2b_profiles").select("id,company_name,status,credit_limit,credit_limit_requested_at,deletion_requested_at,created_at").order("created_at", { ascending: false }),
       ]);
+      setProfiles((prof.data as ProfileRow[] | null) ?? []);
       setOpenSales(((sales.data as { status: string }[] | null) ?? []).filter((r) => isOpenInquiry(r.status)).length);
       setInquiries((inq.data as InquiryRow[] | null) ?? []);
       setTodos((td.data as TodoRow[] | null) ?? []);
@@ -136,6 +143,11 @@ export default function StaffHome() {
   const running = inquiries.filter((r) => r.status === "accepted" && r.order_confirmed_at).length;
   const awaitingConfirmation = inquiries.filter((r) => r.status === "accepted" && !r.order_confirmed_at).length;
   const unprocessed = inquiries.filter(isUnprocessedInquiry).length;
+  const customerRequests = profiles.flatMap((p) => ([
+    needsAction(p, "freigabe") && { p, kind: "freigabe", label: "Freischaltung durchführen" },
+    needsAction(p, "kreditlimit") && { p, kind: "kreditlimit", label: "Kreditlimit angefragt" },
+    needsAction(p, "loeschung") && { p, kind: "loeschung", label: "Löschung beantragt" },
+  ].filter(Boolean) as { p: ProfileRow; kind: string; label: string }[]));
   const dueTodos = todos.filter((t) => t.due_date && t.due_date.slice(0, 10) <= today);
 
   const monthName = now.toLocaleDateString("de-DE", { month: "long" });
@@ -162,6 +174,29 @@ export default function StaffHome() {
             <ActionStat label="Laufende Mieten" value={running} to="/b2b/mietanfragen?status=running" icon={Package} />
             <ActionStat label="Verkaufsanfragen" value={openSales} to="/b2b/verkaufsanfragen" icon={ShoppingCart} />
           </div>
+
+          {customerRequests.length > 0 && (
+            <section className="rounded-xl border-2 border-accent bg-card" aria-label="Offene Kundenanfragen">
+              <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
+                <h2 className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <UserCheck className="h-4 w-4 text-accent" aria-hidden="true" />Offene Kundenanfragen
+                  <span className="rounded-full bg-accent px-2 py-0.5 text-xs text-accent-foreground">{customerRequests.length}</span>
+                </h2>
+                <Link to="/b2b/kundendaten?handlung=alle" className="text-xs font-medium text-primary hover:underline">Alle anzeigen</Link>
+              </header>
+              <ul className="divide-y divide-border">
+                {customerRequests.slice(0, 8).map(({ p, kind, label }) => (
+                  <li key={p.id + kind}>
+                    <Link to={isAdmin ? `/b2b/kundendaten?handlung=alle&profil=${p.id}` : `/b2b/kundendaten?handlung=${kind}`} className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-muted">
+                      <span className="min-w-0 flex-1 truncate font-medium text-foreground">{p.company_name}</span>
+                      <span className={cn("shrink-0 rounded-full px-2 py-0.5 text-xs", kind === "loeschung" ? "bg-destructive/10 text-destructive" : "bg-accent/15 text-foreground")}>{label}</span>
+                      <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           {isAdmin && rec.overdueCount > 0 && (
             <Link to="/b2b/anfrage-rechnungen" className="flex items-center gap-3 rounded-xl border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive">

@@ -24,6 +24,7 @@ import {
   Percent, Receipt, RefreshCw, Save, Shield, Trash2, TrendingUp, Users,
 } from "lucide-react";
 import { AdminAuthorizedPersonsTab } from "./AdminAuthorizedPersonsTab";
+import { SendMessageDialog } from "./SendMessageDialog";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 
@@ -331,11 +332,21 @@ export function AdminCustomerDetailDialog({
         <div className="flex flex-wrap items-center gap-2">
           <Button
             size="sm"
-            variant="outline"
             onClick={() => { onOpenChange(false); onEditCustomer(profile); }}
           >
-            <Edit className="h-3.5 w-3.5 mr-1" /> Stammdaten bearbeiten
+            <Edit className="h-3.5 w-3.5 mr-1" /> Bearbeiten (Daten, Freigabe, Kreditlimit)
           </Button>
+          <SendMessageDialog profileId={profile.id} companyName={profile.company_name} contactEmail={profile.contact_email} />
+          {(profile as { document_url?: string | null }).document_url && (
+            <Button size="sm" variant="outline" asChild>
+              <a href={(profile as { document_url?: string }).document_url} target="_blank" rel="noreferrer">Gewerbenachweis</a>
+            </Button>
+          )}
+          {(profile as { sepa_mandate_url?: string | null }).sepa_mandate_url && (
+            <Button size="sm" variant="outline" asChild>
+              <a href={(profile as { sepa_mandate_url?: string }).sepa_mandate_url} target="_blank" rel="noreferrer">SEPA-Mandat</a>
+            </Button>
+          )}
           <Button
             size="sm"
             variant="outline"
