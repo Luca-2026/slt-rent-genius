@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { ExternalLink, Receipt, Trash2, UserCheck, UserMinus } from "lucide-react";
+import { ExternalLink, Pencil, Receipt, Trash2, UserCheck, UserMinus } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -82,6 +82,8 @@ function splitQuantity(
 function offerPayloadToLines(payload: unknown): {
   items: (OfferLine & { custom_period?: boolean })[];
   costs?: Record<string, number>;
+  meta: { payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null };
+  delivery: OfferDeliveryAddress | null;
 } | null {
   const p = payload as
     | {
@@ -91,6 +93,12 @@ function offerPayloadToLines(payload: unknown): {
         setup_cost?: number;
         dismantle_cost?: number;
         deposit?: number;
+        payment_terms?: string;
+        payment_terms_custom?: string | null;
+        valid_days?: number;
+        notes?: string | null;
+        delivery_requested?: boolean;
+        delivery_address?: { street?: string; postal_code?: string; city?: string };
       }
     | null
     | undefined;
@@ -133,6 +141,21 @@ function offerPayloadToLines(payload: unknown): {
       dismantle_cost: Number(p.dismantle_cost) || 0,
       deposit: Number(p.deposit) || 0,
     },
+    meta: {
+      payment_terms: typeof p.payment_terms === "string" ? p.payment_terms : null,
+      payment_terms_custom: typeof p.payment_terms_custom === "string" ? p.payment_terms_custom : null,
+      valid_days: Number(p.valid_days) > 0 ? Number(p.valid_days) : null,
+      notes: typeof p.notes === "string" ? p.notes : null,
+    },
+    delivery:
+      typeof p.delivery_requested === "boolean"
+        ? {
+            requested: p.delivery_requested,
+            street: p.delivery_address?.street ?? "",
+            postal_code: p.delivery_address?.postal_code ?? "",
+            city: p.delivery_address?.city ?? "",
+          }
+        : null,
   };
 }
 
@@ -239,7 +262,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
 
 
   /** Angebot oder Rechnung – steuert das Formular unten. */
-  const [docMode, setDocMode] = useState<"offer" | "invoice">("offer");
+  const [docMode, setDocMode] = useState<"offer" | "revise" | "invoice">("offer");
   const [invoices, setInvoices] = useState<InvoiceRow[]>([]);
   const docSectionRef = useRef<HTMLDivElement | null>(null);
 
@@ -468,34 +491,43 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           <Button size="sm" variant={docMode === "offer" ? "default" : "outline"} onClick={() => setDocMode("offer")}>
             {inquiry.offer_number ? "Neues Angebot" : "Angebot erstellen"}
           </Button>
+          {offerSnapshot && inquiry.offer_number && (
+            <Button size="sm" variant={docMode === "revise" ? "default" : "outline"} onClick={() => setDocMode("revise")}>
+              <Pencil className="h-3.5 w-3.5 mr-1" /> Angebot überarbeiten
+            </Button>
+          )}
           <Button size="sm" variant={docMode === "invoice" ? "default" : "outline"} onClick={() => setDocMode("invoice")}>
             <Receipt className="h-3.5 w-3.5 mr-1" /> Rechnung erstellen
           </Button>
         </div>
         <div className="mb-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
           <div className="font-semibold text-sm">
-            {docMode === "offer" ? "Angebot erstellen" : "Rechnung erstellen"}
+            {docMode === "offer" ? "Angebot erstellen" : docMode === "revise" ? `Angebot ${inquiry.offer_number} überarbeiten` : "Rechnung erstellen"}
           </div>
           <p className="text-xs text-muted-foreground">
-            {docMode === "offer"
+            {docMode === "revise"
+              ? "Alle Angaben aus dem zuletzt versendeten Angebot sind übernommen. Anpassen und als neue Fassung senden – sie erhält die Stammnummer mit Fassungszusatz und den Hinweis, welches Angebot sie ersetzt."
+              : docMode === "offer"
               ? "Positionen prüfen und das Angebot per E-Mail senden."
               : "Endabrechnung: Positionen und Leistungszeitraum an die tatsächliche Miete anpassen (z. B. Verlängerung). Bereits erfasste Zahlungen werden abgezogen, die Rechnungsnummer wird beim Versand vergeben."}
           </p>
         </div>
         <InquiryOfferForm
-          key={`${inquiry.id}:${docMode}`}
+          key={`${inquiry.id}:${docMode}:${docMode === "revise" ? inquiry.offer_number : ""}`}
           inquiryType={inquiryType}
           inquiryId={inquiry.id}
           location={inquiry.location}
-          defaultItems={docMode === "invoice" && offerSnapshot ? offerSnapshot.items : defaultItems}
-          defaultCosts={docMode === "invoice" ? offerSnapshot?.costs : undefined}
+          defaultItems={docMode !== "offer" && offerSnapshot ? offerSnapshot.items : defaultItems}
+          defaultCosts={docMode !== "offer" ? offerSnapshot?.costs : undefined}
+          reviseOf={docMode === "revise" ? inquiry.offer_number : null}
+          defaultMeta={docMode === "revise" ? offerSnapshot?.meta : undefined}
           defaultPayments={docMode === "invoice" ? inquiryPayments : undefined}
-          defaultDelivery={defaultDelivery}
+          defaultDelivery={docMode === "revise" ? offerSnapshot?.delivery ?? defaultDelivery : defaultDelivery}
           rentalPeriod={{ start: inquiry.start_date ?? null, end: inquiry.end_date ?? null }}
           reservationId={(inquiry as any).b2b_reservation_id ?? null}
 
           customerKind={inquiry.customer_kind === "business" ? "business" : "private"}
-          mode={docMode === "offer" ? "offer" : "invoice"}
+          mode={docMode === "invoice" ? "invoice" : "offer"}
           staffName={actorName}
           disabled={busy}
           onSent={() => {
