@@ -5,6 +5,7 @@ export interface PortalProfileLite {
   status: string;
   credit_limit_requested_at: string | null;
   deletion_requested_at: string | null;
+  credit_limit?: number | null;
   created_at?: string | null;
 }
 
@@ -22,8 +23,8 @@ export function parseActionFilter(v: string | null): ActionFilter {
 
 export function needsAction(p: PortalProfileLite, kind: ActionFilter): boolean {
   const freigabe = p.status === "pending";
-  // Antrag bleibt offen, bis ein Admin ein Limit vergibt (Speichern setzt credit_limit_requested_at zurück)
-  const kredit = !!p.credit_limit_requested_at && p.status !== "rejected";
+  // Antrag offen, solange noch kein Limit vergeben ist (Speichern mit Limit > 0 setzt den Antrag zurück)
+  const kredit = !!p.credit_limit_requested_at && !(Number(p.credit_limit) > 0) && p.status !== "rejected";
   const loeschung = !!p.deletion_requested_at;
   switch (kind) {
     case "freigabe": return freigabe;
