@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import type { LucideIcon } from "lucide-react";
 import {
-  Home, Inbox, FileText, Package, ShoppingCart, Receipt, Users,
+  Home, LayoutDashboard, Inbox, FileText, Package, ShoppingCart, Receipt, Users,
   ClipboardCheck, Undo2, AlertTriangle, CheckSquare, Truck, Boxes, CalendarClock,
   Store, UserCog, Shield, MessageSquare, BookOpen,
 } from "lucide-react";
@@ -23,6 +23,8 @@ export interface StaffNavGroup {
   label: string;
   items: StaffNavItem[];
 }
+
+export const STAFF_NAV_HOME: StaffNavItem = { label: "Startseite", path: "/b2b/start", icon: LayoutDashboard, access: "staff" };
 
 export const STAFF_NAV: StaffNavGroup[] = [
   {
@@ -138,6 +140,7 @@ export function StaffNav({ isAdmin, canViewInventory, badges, onNavigate }: Prop
 
   return (
     <nav aria-label="Portal-Navigation" className="space-y-4">
+      <ul className="space-y-0.5">{renderItem(STAFF_NAV_HOME)}</ul>
       {groups.map((g) => (
         <div key={g.label}>
           <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{g.label}</p>

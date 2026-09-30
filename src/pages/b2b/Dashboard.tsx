@@ -99,10 +99,10 @@ export default function B2BDashboard() {
     if (!loading && !user) {
       navigate("/b2b/login");
     } else if (!loading && user && isAdmin) {
-      navigate("/b2b/mietanfragen", { replace: true });
+      navigate("/b2b/start", { replace: true });
     } else if (!loading && !staffLoading && user && staffProfile && !b2bProfile) {
       // Interne Mitarbeitende landen im Mitarbeiterbereich, nicht im Kundenportal
-      navigate("/b2b/aufgaben", { replace: true });
+      navigate("/b2b/start", { replace: true });
     }
   }, [user, loading, isAdmin, staffLoading, staffProfile, b2bProfile, navigate]);
 
