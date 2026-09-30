@@ -65,6 +65,9 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const [operatingHours, setOperatingHours] = useState("");
   const [fuelLevel, setFuelLevel] = useState("");
   const [cleanliness, setCleanliness] = useState(0);
+  const [readings, setReadings] = useState<Record<number, { hours: string; fuel: string }>>({});
+  const [machineIdx, setMachineIdx] = useState<number[]>([]);
+  const [instructed, setInstructed] = useState(false);
   const [knownDefects, setKnownDefects] = useState("");
   const [notes, setNotes] = useState("");
   const [allReturned, setAllReturned] = useState(true);
@@ -93,7 +96,8 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     const key = `${kind}:${inquiry.id}`;
     if (initFor.current === key) return;
     initFor.current = key;
-    setIdChecked(false); setIdDocType(""); setOperatingHours(""); setFuelLevel(""); setCleanliness(0);
+    setIdChecked(false); setIdDocType(""); setOperatingHours(""); setFuelLevel(""); setCleanliness(0); setReadings({}); setInstructed(false);
+    setMachineIdx(protocolItemsFromInquiry(inquiry as never).map((it, i) => (isMachineLike([it.name]) ? i : -1)).filter((i) => i >= 0));
     setKnownDefects(""); setNotes(""); setAllReturned(true); setMissingNotes(""); setPhotos([]); setDamages([]);
     setAgbAccepted(false); setItemsConfirmed(false); setCustomerNotPresent(false);
     setSignerName(inquiry.company_name ? inquiry.customer_name ?? "" : inquiry.customer_name ?? "");
@@ -109,7 +113,11 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
 
   const items = useMemo(() => (inquiry ? protocolItemsFromInquiry(inquiry as never) : []), [inquiry]);
   const itemNames = items.map((i) => i.name);
-  const machine = isMachineLike(itemNames);
+  void itemNames;
+  const machine = machineIdx.length > 0;
+  const setReading = (i: number, patch: Partial<{ hours: string; fuel: string }>) =>
+    setReadings((r) => ({ ...r, [i]: { hours: "", fuel: "", ...r[i], ...patch } }));
+  const toggleMachine = (i: number) => setMachineIdx((m) => (m.includes(i) ? m.filter((x) => x !== i) : [...m, i].sort((a, b) => a - b)));
   const usedPhotos = photos.length + damages.reduce((n, d) => n + d.photos.length, 0);
   const slotsLeft = remainingPhotoSlots(usedPhotos);
 
@@ -128,9 +136,10 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     setPhotos((p) => [...p, ...list.map((file) => ({ id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, file, preview: URL.createObjectURL(file), caption: "" }))]);
   };
 
-  const equipmentDone = cleanliness > 0 && (!machine || (!!operatingHours.trim() && !!fuelLevel));
+  const readingsDone = machineIdx.every((i) => !!readings[i]?.hours?.trim() && !!readings[i]?.fuel);
+  const equipmentDone = cleanliness > 0 && readingsDone;
   const itemsDone = isReturn ? (allReturned || !!missingNotes.trim()) : true;
-  const legalDone = customerNotPresent || (isReturn ? itemsConfirmed : agbAccepted && itemsConfirmed);
+  const legalDone = customerNotPresent || (isReturn ? itemsConfirmed : agbAccepted && itemsConfirmed && (!machine || instructed));
   const signaturesDone = !!staffSignature && !!staffName.trim() && (customerNotPresent || (!!customerSignature && !!signerName.trim()));
   const damagesDone = damages.every((d) => d.description.trim());
   const idDone = customerNotPresent || idChecked;
@@ -138,7 +147,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const missing: string[] = [];
   if (!itemsDone) missing.push("fehlende Artikel beschreiben");
   if (!idDone) missing.push("Ausweis abgleichen");
-  if (!equipmentDone) missing.push(machine ? "Betriebsstunden, Tank und Sauberkeit" : "Sauberkeit");
+  if (!equipmentDone) missing.push(machine ? "Betriebsstunden, Tankfüllstand und Sauberkeit" : "Sauberkeit");
   if (!damagesDone) missing.push("Beschreibung bei jedem Schaden");
   if (!legalDone) missing.push("Bestätigungen des Kunden");
   if (!signaturesDone) missing.push("Unterschriften und Namen");
@@ -162,6 +171,10 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
           quantity: Math.max(1, Math.round(toNumber(d.quantity) || 1)), photos: dp,
         });
       }
+      const machineReadings = machineIdx.map((i) => ({
+        item_name: items[i]?.name ?? `Position ${i + 1}`,
+        operating_hours: readings[i]?.hours?.trim() ?? "", fuel_level: readings[i]?.fuel ?? "",
+      }));
       setProgress("Protokoll und PDF werden erstellt …");
       const { data, error } = await supabase.functions.invoke("generate-rental-protocol", {
         body: {
@@ -173,7 +186,9 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
           id_checked: !customerNotPresent && idChecked, id_check_type: idDocType || null,
           agb_accepted: !customerNotPresent && !isReturn && agbAccepted,
           items_confirmed: !customerNotPresent && itemsConfirmed,
-          operating_hours: operatingHours.trim() || null, fuel_level: fuelLevel || null,
+          operating_hours: machineReadings.map((m) => `${m.item_name}: ${m.operating_hours}`).join("; ").slice(0, 40) || operatingHours.trim() || null,
+          fuel_level: machineReadings[0]?.fuel_level ?? (fuelLevel || null),
+          machine_readings: machineReadings, instructed: !customerNotPresent && !isReturn && instructed,
           cleanliness_rating: cleanliness || null,
           known_defects: knownDefects.trim() || null, notes: notes.trim() || null,
           all_items_returned: isReturn ? allReturned : null, missing_items_notes: isReturn && !allReturned ? missingNotes.trim() : null,
@@ -255,23 +270,42 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       done: equipmentDone,
       content: (
         <div className="space-y-4">
-          {machine && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <Label className="text-xs">Betriebsstunden</Label>
-                <Input value={operatingHours} onChange={(e) => setOperatingHours(e.target.value)} inputMode="decimal" placeholder="z. B. 1.250,5" className="h-11" />
-              </div>
-              <div>
-                <Label className="text-xs">Tankfüllstand</Label>
-                <Select value={fuelLevel} onValueChange={setFuelLevel}>
-                  <SelectTrigger className="h-11"><SelectValue placeholder="Auswählen" /></SelectTrigger>
-                  <SelectContent>{FUEL_LEVELS.map((f) => <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>)}</SelectContent>
-                </Select>
-              </div>
-            </div>
-          )}
+          <div className="space-y-3">
+            <p className="text-xs text-muted-foreground">Bei Maschinen und Motorgeräten Betriebsstunden (vom Zähler ablesen) und Tankfüllstand erfassen.</p>
+            {items.map((it, i) => {
+              const on = machineIdx.includes(i);
+              const r = readings[i] ?? { hours: "", fuel: "" };
+              return (
+                <div key={i} className={`rounded-lg border p-3 ${on ? "border-primary/40 bg-primary/5" : ""}`}>
+                  <div className="flex items-start gap-3">
+                    <Checkbox id={`mach-${i}`} checked={on} onCheckedChange={() => toggleMachine(i)} className="mt-0.5" />
+                    <label htmlFor={`mach-${i}`} className="text-sm cursor-pointer flex-1">
+                      <span className="font-medium">{it.name}</span>
+                      <span className="block text-[11px] text-muted-foreground">Maschine / Motorgerät mit Zähler oder Tank</span>
+                    </label>
+                  </div>
+                  {on && (
+                    <div className="mt-3 space-y-3">
+                      <div>
+                        <Label className="text-xs">Betriebsstunden (Zählerstand) *</Label>
+                        <Input value={r.hours} onChange={(e) => setReading(i, { hours: e.target.value.replace(/[^0-9.,]/g, "") })} inputMode="decimal" placeholder="z. B. 1250,5" className="h-12 text-lg" aria-label={`Betriebsstunden ${it.name}`} />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Tankfüllstand *</Label>
+                        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-1">
+                          {[...FUEL_LEVELS].reverse().concat([{ value: "kein_tank", label: "Elektro / kein Tank" }]).map((f) => (
+                            <Button key={f.value} type="button" variant={r.fuel === f.value ? "default" : "outline"} className="h-12 text-xs px-1 whitespace-normal leading-tight" onClick={() => setReading(i, { fuel: f.value })}>{f.label}</Button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
           <div>
-            <Label className="text-xs">Sauberkeit</Label>
+            <Label className="text-xs">Sauberkeit / Verschmutzung *</Label>
             <div className="grid grid-cols-5 gap-2 mt-1">
               {[1, 2, 3, 4, 5].map((n) => (
                 <Button key={n} type="button" variant={cleanliness === n ? "default" : "outline"} className="h-12 text-base" onClick={() => setCleanliness(n)}>{n}</Button>
@@ -361,15 +395,21 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
                 {!isReturn && (
                   <div className="flex items-start gap-3">
                     <Checkbox id="agb" checked={agbAccepted} onCheckedChange={(v) => setAgbAccepted(v === true)} />
-                    <label htmlFor="agb" className="text-sm cursor-pointer">Der Kunde hat die Allgemeinen Geschäftsbedingungen und die Auftragsbestätigung zur Kenntnis genommen.</label>
+                    <label htmlFor="agb" className="text-sm cursor-pointer">Der Mieter hat die Allgemeinen Geschäftsbedingungen und die Auftragsbestätigung erhalten und zur Kenntnis genommen.</label>
+                  </div>
+                )}
+                {!isReturn && machine && (
+                  <div className="flex items-start gap-3">
+                    <Checkbox id="instructed" checked={instructed} onCheckedChange={(v) => setInstructed(v === true)} />
+                    <label htmlFor="instructed" className="text-sm cursor-pointer">Der Mieter wurde in Bedienung, Betankung und sichere Handhabung der Maschinen eingewiesen und hat keine Fragen mehr.</label>
                   </div>
                 )}
                 <div className="flex items-start gap-3">
                   <Checkbox id="items-ok" checked={itemsConfirmed} onCheckedChange={(v) => setItemsConfirmed(v === true)} />
                   <label htmlFor="items-ok" className="text-sm cursor-pointer">
                     {isReturn
-                      ? "Der Kunde bestätigt die Rückgabe der Artikel im oben dokumentierten Zustand."
-                      : "Der Kunde bestätigt den Erhalt der Artikel im oben dokumentierten Zustand."}
+                      ? "Der Mieter bestätigt die Rückgabe der Mietgegenstände sowie die Richtigkeit der erfassten Betriebsstunden, Tankfüllstände, der Sauberkeit und der dokumentierten Schäden."
+                      : "Der Mieter bestätigt, die oben aufgeführten Mietgegenstände vollständig, funktionsfähig und in einwandfreiem, betriebssicherem Zustand übernommen zu haben – mit Ausnahme der in diesem Protokoll dokumentierten Schäden und Mängel. Die erfassten Betriebsstunden, Tankfüllstände und die Sauberkeit sind zutreffend."}
                   </label>
                 </div>
               </div>

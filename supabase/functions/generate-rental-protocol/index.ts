@@ -31,6 +31,8 @@ const Body = z.object({
   items_confirmed: z.boolean(),
   operating_hours: z.string().max(40).nullable(),
   fuel_level: z.string().max(20).nullable(),
+  machine_readings: z.array(z.object({ item_name: z.string().max(200), operating_hours: z.string().max(20), fuel_level: z.string().max(20) })).max(30).optional().default([]),
+  instructed: z.boolean().optional().default(false),
   cleanliness_rating: z.number().int().min(1).max(5).nullable(),
   known_defects: z.string().max(2000).nullable(),
   notes: z.string().max(2000).nullable(),
@@ -84,7 +86,10 @@ Deno.serve(async (req) => {
     const parsed = Body.safeParse(await req.json());
     if (!parsed.success) return json({ error: "Ung\u00FCltige Angaben.", details: parsed.error.flatten().fieldErrors }, 400);
     const b = parsed.data;
-    const isReturn = b.kind === "return";
+    for (const m of b.machine_readings) {
+      if (!m.operating_hours.trim() || !m.fuel_level) return json({ error: `Betriebsstunden und Tankfüllstand fehlen für ${m.item_name}.` }, 400);
+    }
+  const isReturn = b.kind === "return";
 
     const totalPhotos = b.photos.length + b.damages.reduce((n, d) => n + d.photos.length, 0);
     if (totalPhotos > MAX_PHOTOS) return json({ error: `Maximal ${MAX_PHOTOS} Fotos je Protokoll (gesendet: ${totalPhotos}).` }, 400);
@@ -158,11 +163,11 @@ Deno.serve(async (req) => {
       },
       items: b.items,
       condition: {
-        operatingHours: b.operating_hours, fuelLevel: b.fuel_level, cleanliness: b.cleanliness_rating,
+        operatingHours: b.operating_hours, fuelLevel: b.fuel_level, readings: b.machine_readings, cleanliness: b.cleanliness_rating,
         knownDefects: b.known_defects, notes: b.notes, allReturned: isReturn ? b.all_items_returned : null, missingNotes: b.missing_items_notes,
       },
       idCheck: { checked: b.id_checked, type: b.id_check_type },
-      confirmations: { agb: b.agb_accepted, items: b.items_confirmed, customerNotPresent: b.customer_not_present },
+      confirmations: { instructed: b.instructed, agb: b.agb_accepted, items: b.items_confirmed, customerNotPresent: b.customer_not_present },
       damages: damageRows.map((d) => ({
         no: d.no, itemName: d.item_name, category: d.category, description: d.description, amount: d.amount,
         needsRepair: d.needs_repair, reducesStock: d.reduces_stock, quantity: d.quantity, photoNos: d.photoNos,
