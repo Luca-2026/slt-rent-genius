@@ -260,7 +260,7 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
   }
 
   // ── Bestätigung & Unterschriften (bleiben zusammen auf einer Seite) ──
-  ensure(215);
+  ensure(260);
   section("Best\u00E4tigung und Unterschriften");
   if (data.confirmations.customerNotPresent) {
     para(`Der Kunde war bei der ${isReturn ? "R\u00FCckgabe" : "\u00DCbergabe"} nicht anwesend. Das Protokoll wurde vom Mitarbeiter allein erstellt.`, 9.5, RED);

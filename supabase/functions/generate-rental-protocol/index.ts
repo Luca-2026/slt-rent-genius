@@ -86,11 +86,9 @@ Deno.serve(async (req) => {
     const parsed = Body.safeParse(await req.json());
     if (!parsed.success) return json({ error: "Ung\u00FCltige Angaben.", details: parsed.error.flatten().fieldErrors }, 400);
     const b = parsed.data;
-    const isReturnPre = b.kind === "return";
-  if (!b.customer_not_present || true) {
-    for (const m of b.machine_readings) if (!m.operating_hours.trim() || !m.fuel_level) return json({ error: `Betriebsstunden und Tankfüllstand fehlen für ${m.item_name}.` }, 400);
-  }
-  void isReturnPre;
+    for (const m of b.machine_readings) {
+      if (!m.operating_hours.trim() || !m.fuel_level) return json({ error: `Betriebsstunden und Tankfüllstand fehlen für ${m.item_name}.` }, 400);
+    }
   const isReturn = b.kind === "return";
 
     const totalPhotos = b.photos.length + b.damages.reduce((n, d) => n + d.photos.length, 0);
