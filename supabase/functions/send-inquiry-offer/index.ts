@@ -93,10 +93,18 @@ Deno.serve(async (req: Request) => {
       .maybeSingle();
     if (inqErr || !inquiry) return json({ error: "Anfrage nicht gefunden" }, 404);
 
+    // Überarbeitung eines bereits versendeten Angebots: muss sich auf die
+    // aktuell gültige Fassung beziehen (verhindert Doppelversand/veraltete Stände).
+    const reviseOf: string | null = typeof body.revise_of === "string" && body.revise_of.trim()
+      ? body.revise_of.trim()
+      : null;
+    const isRevision = Boolean(reviseOf && reviseOf === inquiry.offer_number);
+
     // Doppelklick-/Retry-Schutz: wurde in den letzten 2 Minuten bereits ein
     // Angebot zu dieser Anfrage versendet, wird kein zweites erzeugt/gemailt.
+    // Eine bewusste Überarbeitung der aktuellen Fassung ist davon ausgenommen.
     const lastSentAt = inquiry.offer_sent_at ? Date.parse(inquiry.offer_sent_at) : 0;
-    if (lastSentAt && Date.now() - lastSentAt < 2 * 60 * 1000) {
+    if (!isRevision && lastSentAt && Date.now() - lastSentAt < 2 * 60 * 1000) {
       console.log("Duplicate send suppressed for inquiry", inquiryId);
       return json({
         success: true,
@@ -157,12 +165,38 @@ Deno.serve(async (req: Request) => {
     const locationKey = resolveLocationKey(body.location || inquiry.location);
     const loc = LOCATION_CONTACTS[locationKey];
 
-    const { data: numberData, error: numErr } = await service.rpc("generate_inquiry_offer_number");
-    if (numErr || !numberData) {
-      console.error("Nummernkreis fehlgeschlagen:", numErr?.message);
-      return json({ error: "Angebotsnummer konnte nicht erzeugt werden" }, 500);
+    // Überarbeitungen behalten die Stammnummer und erhalten eine Fassungsnummer
+    // (ANG-A-2026-0036 → ANG-A-2026-0036-2 → -3 …); der Nummernkreis bleibt lückenlos.
+    const prevPayload = (inquiry.offer_payload ?? {}) as Record<string, unknown>;
+    let offerNumber: string;
+    let baseOfferNumber: string;
+    let version = 1;
+    let supersedes: { offer_number: string; sent_at: string | null } | null = null;
+    if (isRevision) {
+      baseOfferNumber = typeof prevPayload.base_offer_number === "string"
+        ? prevPayload.base_offer_number
+        : String(inquiry.offer_number);
+      version = (Number(prevPayload.version) || 1) + 1;
+      offerNumber = `${baseOfferNumber}-${version}`;
+      supersedes = { offer_number: String(inquiry.offer_number), sent_at: inquiry.offer_sent_at ?? null };
+    } else {
+      if (reviseOf) {
+        return json({ error: "Das Angebot wurde inzwischen geändert. Bitte die Anfrage neu laden." }, 409);
+      }
+      const { data: numberData, error: numErr } = await service.rpc("generate_inquiry_offer_number");
+      if (numErr || !numberData) {
+        console.error("Nummernkreis fehlgeschlagen:", numErr?.message);
+        return json({ error: "Angebotsnummer konnte nicht erzeugt werden" }, 500);
+      }
+      offerNumber = String(numberData);
+      baseOfferNumber = offerNumber;
     }
-    const offerNumber = String(numberData);
+    const supersedesText = supersedes
+      ? `Dieses Angebot ersetzt unser Angebot ${supersedes.offer_number}${
+          supersedes.sent_at ? ` vom ${new Date(supersedes.sent_at).toLocaleDateString("de-DE", { timeZone: "Europe/Berlin" })}` : ""
+        }.`
+      : null;
+    const pdfNotes = [supersedesText, notes].filter(Boolean).join("\n\n") || null;
 
     const customerName = inquiryType === "rental"
       ? (inquiry.customer_name || "")
