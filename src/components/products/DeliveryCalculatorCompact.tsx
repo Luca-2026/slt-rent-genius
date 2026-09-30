@@ -12,6 +12,8 @@ import {
   categoryConfigs,
   calculatePrice,
   type TariffKey,
+  parseWeightKg,
+  TIEFLADER_AB_KG,
 } from "@/data/lieferkosten";
 import { AddressDistanceInput, type LocationOriginId } from "@/components/delivery/AddressDistanceInput";
 
@@ -61,6 +63,12 @@ export function DeliveryCalculatorCompact({
   const initialSubtype: string | null = (() => {
     if (!config.subtypes || config.subtypes.length === 0) return null;
     const lower = (productName ?? "").toLowerCase();
+    // Geräte über 3 t → Tieflader, Lieferkosten nur auf Anfrage
+    const weightKg = parseWeightKg(productName);
+    if (weightKg !== null && weightKg > TIEFLADER_AB_KG) {
+      const m = config.subtypes.find((s) => s.onRequest);
+      if (m) return m.key;
+    }
     // Spezifisches Matching pro Subtype-Key
     if (lower) {
       if (/xe27|2[.,]7\s*t|3\s*t|e35/i.test(lower)) {
