@@ -98,6 +98,25 @@ export interface SubtypeOption {
   key: string;
   label: string; // Kunden-sichtbar (z.B. "1t Bagger")
   tarif: TariffKey; // intern
+  /** Transport nur per Tieflader – Lieferkosten ausschließlich auf Anfrage (kein Pauschaltarif) */
+  onRequest?: boolean;
+}
+
+/** Geräte über dieser Grenze (kg) werden per Tieflader transportiert → Lieferkosten nur auf Anfrage. */
+export const TIEFLADER_AB_KG = 3000;
+
+/**
+ * Liest das Gerätegewicht in kg aus dem Produktnamen ("6t Minibagger", "3,5t …", "5.700 kg").
+ * Gibt null zurück, wenn kein Gewicht erkennbar ist.
+ */
+export function parseWeightKg(text?: string | null): number | null {
+  if (!text) return null;
+  const t = text.toLowerCase();
+  const tons = t.match(/(\d{1,2}(?:[.,]\d{1,2})?)\s*(?:t\b|tonnen)/);
+  if (tons) return parseFloat(tons[1].replace(",", ".")) * 1000;
+  const kg = t.match(/(\d{1,2}[.\s]?\d{3}|\d{3,5})\s*kg/);
+  if (kg) return parseInt(kg[1].replace(/[.\s]/g, ""), 10);
+  return null;
 }
 
 export interface CategoryConfig {
@@ -139,6 +158,7 @@ export const categoryConfigs: Record<string, CategoryConfig> = {
       { key: "3t-bagger", label: "2,7t Bagger", tarif: "C" },
       { key: "dumper", label: "Dumper", tarif: "B" },
       { key: "radlader", label: "Radlader / Knicklader", tarif: "C" },
+      { key: "tieflader", label: "Geräte über 3 t (Tieflader – auf Anfrage)", tarif: "C", onRequest: true },
     ],
   },
   arbeitsbuehnen: {

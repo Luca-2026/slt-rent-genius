@@ -12,6 +12,8 @@ import {
   categoryConfigs,
   calculatePrice,
   type TariffKey,
+  parseWeightKg,
+  TIEFLADER_AB_KG,
 } from "@/data/lieferkosten";
 import { AddressDistanceInput, type LocationOriginId } from "@/components/delivery/AddressDistanceInput";
 
@@ -61,6 +63,12 @@ export function DeliveryCalculatorCompact({
   const initialSubtype: string | null = (() => {
     if (!config.subtypes || config.subtypes.length === 0) return null;
     const lower = (productName ?? "").toLowerCase();
+    // Geräte über 3 t → Tieflader, Lieferkosten nur auf Anfrage
+    const weightKg = parseWeightKg(productName);
+    if (weightKg !== null && weightKg > TIEFLADER_AB_KG) {
+      const m = config.subtypes.find((s) => s.onRequest);
+      if (m) return m.key;
+    }
     // Spezifisches Matching pro Subtype-Key
     if (lower) {
       if (/xe27|2[.,]7\s*t|3\s*t|e35/i.test(lower)) {
@@ -125,6 +133,7 @@ export function DeliveryCalculatorCompact({
   const activeSubtype = config.subtypes?.find((s) => s.key === subtypeKey) ?? null;
   const activeTarif: TariffKey = activeSubtype?.tarif ?? (config.defaultTarif as TariffKey ?? "A");
   const tariff = tariffs[activeTarif];
+  const isOnRequest = Boolean(activeSubtype?.onRequest);
 
   const result = useMemo(
     () =>
@@ -247,7 +256,7 @@ export function DeliveryCalculatorCompact({
           />
         </div>
 
-        {tariff.multiplier2Maschinen > 1 && (
+        {!isOnRequest && tariff.multiplier2Maschinen > 1 && (
           <div className="flex items-center justify-between py-2 border-t border-border">
             <div>
               <Label htmlFor="two-machines-compact" className="text-sm cursor-pointer">
@@ -265,6 +274,17 @@ export function DeliveryCalculatorCompact({
           </div>
         )}
 
+        {isOnRequest ? (
+          <div role="note" className="bg-background rounded-lg p-4 border border-accent space-y-2">
+            <p className="text-lg font-bold text-headline">Lieferkosten auf Anfrage</p>
+            <p className="text-sm text-muted-foreground">
+              Geräte über 3 t transportieren wir per Tieflader. Die Lieferkosten berechnen wir individuell nach Einsatzort – bitte frage sie direkt bei uns an.
+            </p>
+            <Link to="/kontakt" className="inline-flex items-center gap-1 text-sm font-semibold text-primary underline underline-offset-4">
+              Lieferung anfragen <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        ) : (
         <div className="bg-background rounded-lg p-4 border border-border">
           <div className="flex items-center justify-between">
             <div>
@@ -284,6 +304,7 @@ export function DeliveryCalculatorCompact({
             </p>
           )}
         </div>
+        )}
 
         <div className="pt-3 mt-3 border-t border-border">
           <Link to="/lieferung">
