@@ -456,6 +456,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         inquiryId={inquiry.id}
         payments={(inquiry as { payments?: unknown }).payments}
         offerTotalGross={inquiry.offer_total_gross}
+        deposit={Number((inquiry.offer_payload as { deposit?: unknown } | null)?.deposit) || 0}
         disabled={busy}
         onChanged={onChanged}
       />

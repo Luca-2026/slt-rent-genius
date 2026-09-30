@@ -38,6 +38,8 @@ interface Props {
   payments: unknown;
   /** Angebotssumme brutto – zur Anzeige des offenen Betrags. */
   offerTotalGross?: number | null;
+  /** Kaution laut Angebot – wird mit überwiesen und zählt zum offenen Betrag. */
+  deposit?: number | null;
   disabled?: boolean;
   onChanged: () => void;
 }
@@ -46,7 +48,7 @@ interface Props {
  * Zahlungseingänge zu einer Anfrage erfassen – schon bevor die Rechnung erstellt wird
  * (z. B. Vorkasse auf das Angebot). Die Rechnung übernimmt diese Zahlungen später.
  */
-export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGross, disabled, onChanged }: Props) {
+export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGross, deposit, disabled, onChanged }: Props) {
   const { toast } = useToast();
   const [rows, setRows] = useState<InquiryPayment[]>(() => parseInquiryPayments(payments));
   const [saving, setSaving] = useState(false);
@@ -59,7 +61,10 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
     () => Math.round(rows.reduce((s, p) => s + (Number(p.amount) || 0), 0) * 100) / 100,
     [rows],
   );
-  const open = offerTotalGross != null ? Math.round((Number(offerTotalGross) - total) * 100) / 100 : null;
+  const required = offerTotalGross != null ? Math.round((Number(offerTotalGross) + (Number(deposit) || 0)) * 100) / 100 : null;
+  const open = required != null ? Math.round((required - total) * 100) / 100 : null;
+  const saved = useMemo(() => JSON.stringify(parseInquiryPayments(payments)), [payments]);
+  const dirty = JSON.stringify(parseInquiryPayments(rows)) !== saved;
 
   const patch = (index: number, values: Partial<InquiryPayment>) =>
     setRows((prev) => prev.map((row, i) => (i === index ? { ...row, ...values } : row)));
@@ -153,6 +158,12 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
         </div>
       ))}
 
+      {dirty && (
+        <p className="text-xs font-semibold text-destructive">
+          Nicht gespeichert – erst nach „Zahlungen speichern“ zählen die Beträge für Auftragsbestätigung und Rechnung.
+        </p>
+      )}
+
       <div className="flex flex-wrap items-center gap-2">
         <Button size="sm" variant="outline" onClick={add} disabled={disabled || saving}>
           <Plus className="h-3.5 w-3.5 mr-1" /> Zahlung hinzufügen
@@ -162,6 +173,9 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
         </Button>
         <span className="text-sm ml-auto">
           Erhalten <strong>{formatEuro(total)}</strong>
+          {required != null && Number(deposit) > 0 && (
+            <span className="ml-2 text-muted-foreground">von {formatEuro(required)} inkl. Kaution</span>
+          )}
           {open != null && (
             <span className={open > 0 ? "ml-2 text-destructive font-semibold" : "ml-2 text-primary font-semibold"}>
               {open > 0 ? `offen ${formatEuro(open)}` : "vollständig bezahlt"}
