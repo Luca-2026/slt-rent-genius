@@ -32,6 +32,7 @@ export function AddonOptionsEditor({ value, onChange }: Props) {
         price_type: preset.price_type,
         price: preset.price,
         deductible: preset.deductible ?? null,
+        full_period_default: preset.full_period_default === true,
       },
     ]);
   };
@@ -125,6 +126,22 @@ export function AddonOptionsEditor({ value, onChange }: Props) {
                 onChange={(e) => patch(i, { note: e.target.value })}
                 placeholder="Hinweis (optional), z. B. „gilt nur bei Selbstfahrbetrieb“"
               />
+              {opt.price_type !== "flat" && (
+                <label className="flex items-start gap-2 text-xs cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="mt-0.5 h-4 w-4 accent-primary"
+                    checked={!!opt.full_period_default}
+                    onChange={(e) => patch(i, { full_period_default: e.target.checked })}
+                  />
+                  <span>
+                    Im Angebot standardmäßig über die gesamte Mietdauer (Kalendertage) berechnen
+                    <span className="block text-muted-foreground">
+                      z. B. Versicherung beim Bagger, der nur nach Arbeitstagen abgerechnet wird
+                    </span>
+                  </span>
+                </label>
+              )}
             </div>
           ))}
         </div>
