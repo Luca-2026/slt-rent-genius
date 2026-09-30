@@ -37,6 +37,7 @@ export default function Customers() {
   const [profiles, setProfiles] = useState<Row[]>([]);
   const [invoices, setInvoices] = useState<Row[]>([]);
   const [reservations, setReservations] = useState<Row[]>([]);
+  const [firstInquiry, setFirstInquiry] = useState<Map<string, string>>(new Map());
   const [selectedProfile, setSelectedProfile] = useState<Row | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [editPortalOpen, setEditPortalOpen] = useState(false);
@@ -54,6 +55,21 @@ export default function Customers() {
   }, [isAdmin]);
 
   useEffect(() => { if (isStaff) loadPortal(); }, [isStaff, loadPortal]);
+
+  useEffect(() => {
+    if (!isStaff) return;
+    Promise.all([
+      supabase.from("rental_inquiries").select("crm_customer_id,created_at").not("crm_customer_id", "is", null),
+      supabase.from("sales_inquiries").select("crm_customer_id,created_at").not("crm_customer_id", "is", null),
+    ]).then((res) => {
+      const m = new Map<string, string>();
+      for (const r of res.flatMap((x) => (x.data ?? []) as { crm_customer_id: string; created_at: string }[])) {
+        const cur = m.get(r.crm_customer_id);
+        if (!cur || r.created_at < cur) m.set(r.crm_customer_id, r.created_at);
+      }
+      setFirstInquiry(m);
+    });
+  }, [isStaff]);
 
   const profileById = useMemo(() => {
     const m = new Map<string, Row>();
@@ -97,9 +113,9 @@ export default function Customers() {
           .filter(Boolean)
           .some((v) => String(v).toLowerCase().includes(q));
       })
-      .map((c) => ({ c, reg: registrationDate(c, c.b2b_profile_id ? profileById.get(c.b2b_profile_id) : null) }))
+      .map((c) => ({ c, reg: registrationDate(c, c.b2b_profile_id ? profileById.get(c.b2b_profile_id) : null, firstInquiry.get(c.id)) }))
       .sort((a, b) => b.reg.localeCompare(a.reg));
-  }, [rows, search, segment, action, profileById]);
+  }, [rows, search, segment, action, profileById, firstInquiry]);
 
   const setParam = (key: string, value: string | null) => {
     const next = new URLSearchParams(searchParams);
@@ -222,7 +238,7 @@ export default function Customers() {
                       )}
                       <span className="flex items-center gap-1.5">
                         <CalendarDays className="h-3.5 w-3.5 shrink-0" />
-                        {p ? "Registriert" : "Angelegt"} am {new Date(reg).toLocaleDateString("de-DE")}
+                        {p ? "Registriert" : "Kunde seit"} {new Date(reg).toLocaleDateString("de-DE")}
                       </span>
                     </div>
                   </div>

@@ -35,7 +35,10 @@ export function needsAction(p: PortalProfileLite, kind: ActionFilter): boolean {
   }
 }
 
-/** Registrierungsdatum: Portal-Registrierung, sonst Anlage in der Kundenkartei. */
-export function registrationDate(c: { created_at: string }, p?: { created_at?: string | null } | null): string {
-  return (p?.created_at || c.created_at || "");
+/** Registrierungsdatum: Portal-Registrierung, sonst erste Anfrage bzw. Anlage in der Kundenkartei. */
+export function registrationDate(c: { created_at: string }, p?: { created_at?: string | null } | null, firstInquiryAt?: string | null): string {
+  if (p?.created_at) return p.created_at;
+  // Nachträglich übernommene Kunden: Datum der ersten Anfrage statt des Übernahmetags
+  if (firstInquiryAt && firstInquiryAt < (c.created_at || "9999")) return firstInquiryAt;
+  return c.created_at || "";
 }

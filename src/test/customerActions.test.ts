@@ -26,3 +26,9 @@ describe("customerActions", () => {
     expect(registrationDate({ created_at: "2026-09-10" }, null)).toBe("2026-09-10");
   });
 });
+describe("registrationDate für übernommene Kunden", () => {
+  it("nimmt die erste Anfrage, wenn sie vor der Anlage liegt", () => {
+    expect(registrationDate({ created_at: "2026-09-30" }, null, "2026-04-02")).toBe("2026-04-02");
+    expect(registrationDate({ created_at: "2026-01-01" }, null, "2026-04-02")).toBe("2026-01-01");
+  });
+});
