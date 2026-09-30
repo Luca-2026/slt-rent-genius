@@ -339,7 +339,7 @@ Deno.serve(async (req: Request) => {
       vatAmount: totals.vatAmount,
       grossAmount: totals.grossAmount,
       isReverseCharge: false,
-      notes,
+      notes: pdfNotes,
       validDays,
       deposit,
       additionalServices: [],
@@ -485,7 +485,7 @@ Deno.serve(async (req: Request) => {
   </div>
   <p style="color:#6b7280;font-size:13px;">Dieses Angebot ist gültig bis ${escapeHtml(fmt(validUntil))}.</p>
   ${agbBytes ? `<p style="color:#6b7280;font-size:13px;">Es gelten unsere beigefügten ${customerKind === "business" ? "AGB für Unternehmer (B2B)" : "AGB für Verbraucher (B2C)"}.</p>` : ""}
-  ${notes ? `<p style="white-space:pre-wrap;">${escapeHtml(notes)}</p>` : ""}
+  ${pdfNotes ? `<p style="white-space:pre-wrap;">${escapeHtml(pdfNotes)}</p>` : ""}
   <p style="margin-top:24px;">Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}<br>
   Tel. ${escapeHtml(loc.phone)} · <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a></p>
 </div></body></html>`;
@@ -539,6 +539,11 @@ Deno.serve(async (req: Request) => {
         // Snapshot des Angebots – Grundlage für die spätere Rechnung (inkl. Zusatzoptionen)
         offer_payload: {
           offer_number: offerNumber,
+          base_offer_number: baseOfferNumber,
+          version,
+          supersedes,
+          delivery_requested: deliveryRequested,
+          delivery_address: deliveryAddress,
           created_at: new Date().toISOString(),
           items,
           delivery_cost_delivery: deliveryCostDelivery,
