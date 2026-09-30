@@ -1,2 +1,2 @@
 # Agent rules
-- Kundengruppen-Filter (Privat/Geschäftskunde/B2B-Portal) nur über src/lib/customerSegment.ts – einheitliche Logik in allen Portal-Listen.
+- Kundengruppen-Filter nur über src/lib/customerSegment.ts (Filter: Privat vs. Geschäftskunden inkl. B2B-Portal) – einheitliche Logik in allen Portal-Listen.
