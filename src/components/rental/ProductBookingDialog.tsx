@@ -99,10 +99,31 @@ export function ProductBookingDialog({
       ? [{ product_name: product.name, product_slug: product.id, quantity: 1, set_size: parseSetSize(product.name), image: product.image }]
       : [];
   const [requestItems, setRequestItems] = useState<RequestItem[]>([]);
+  // Entwurf der Kundenanfrage: übersteht Tabwechsel, Schließen und Neuladen (7 Tage).
+  const draftKey = `slt.customer-inquiry-draft.v1:${product?.id ?? "x"}:${location?.id ?? "x"}`;
+  const [draftReady, setDraftReady] = useState(false);
   useEffect(() => {
-    if (isOpen) setRequestItems(mainItem());
+    if (!isOpen) { setDraftReady(false); return; }
+    let restored = false;
+    try {
+      const raw = window.localStorage.getItem(draftKey);
+      const d = raw ? JSON.parse(raw) : null;
+      if (d && Date.now() - (d.savedAt ?? 0) < 7 * 864e5 && d.form) {
+        setForm({ ...defaultForm, ...d.form });
+        setRequestItems(Array.isArray(d.items) && d.items.length ? d.items : mainItem());
+        restored = true;
+      }
+    } catch { /* ignorieren */ }
+    if (!restored) { setForm(defaultForm); setRequestItems(mainItem()); }
+    setDraftReady(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, product?.id]);
+  }, [isOpen, draftKey]);
+  useEffect(() => {
+    if (!isOpen || !draftReady || sent) return;
+    try {
+      window.localStorage.setItem(draftKey, JSON.stringify({ form, items: requestItems, savedAt: Date.now() }));
+    } catch { /* Speicher gesperrt */ }
+  }, [form, requestItems, isOpen, draftReady, sent, draftKey]);
 
   // Inject Rentware widget when dialog opens
   useEffect(() => {
@@ -204,7 +225,6 @@ export function ProductBookingDialog({
       if (container) container.innerHTML = '';
       setWidgetLoading(true);
       setSent(false);
-      setForm(defaultForm);
     }
   }, [isOpen, containerId]);
 
@@ -244,6 +264,7 @@ export function ProductBookingDialog({
 
       if (error) throw error;
       setSent(true);
+      try { window.localStorage.removeItem(draftKey); } catch { /* ignorieren */ }
       toast.success("Anfrage erfolgreich gesendet!");
     } catch (err) {
       console.error("Inquiry error:", err);
