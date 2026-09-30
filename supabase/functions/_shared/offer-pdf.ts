@@ -238,8 +238,8 @@ export async function generateOfferPdf(data: {
       if (data.sourceOfferNumber) infoRow("Zu Angebot:", data.sourceOfferNumber, BRAND);
       if (data.sourceOfferDate) infoRow("Angebot vom:", fd(data.sourceOfferDate));
       if (data.servicePeriodStart) {
-        infoRow("Mietzeitraum:", fd(data.servicePeriodStart));
-        if (data.servicePeriodEnd) infoSub(`bis ${fd(data.servicePeriodEnd)}`);
+        infoRow("Mietbeginn:", fd(data.servicePeriodStart));
+        if (data.servicePeriodEnd) infoRow("Mietende:", fd(data.servicePeriodEnd));
       }
     } else if (isCreditNote) {
       infoRow("Gutschriftnummer:", data.offerNumber);
