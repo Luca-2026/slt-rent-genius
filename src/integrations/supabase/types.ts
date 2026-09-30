@@ -2792,6 +2792,7 @@ export type Database = {
           quantity: number | null
           raw_payload: Json | null
           rental_group_id: string | null
+          requested_items: Json
           setup_service_requested: boolean
           source: string
           start_date: string | null
@@ -2846,6 +2847,7 @@ export type Database = {
           quantity?: number | null
           raw_payload?: Json | null
           rental_group_id?: string | null
+          requested_items?: Json
           setup_service_requested?: boolean
           source?: string
           start_date?: string | null
@@ -2900,6 +2902,7 @@ export type Database = {
           quantity?: number | null
           raw_payload?: Json | null
           rental_group_id?: string | null
+          requested_items?: Json
           setup_service_requested?: boolean
           source?: string
           start_date?: string | null
