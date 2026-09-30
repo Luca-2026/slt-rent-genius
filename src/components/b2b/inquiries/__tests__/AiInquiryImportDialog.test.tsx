@@ -34,7 +34,8 @@ describe("KI-Anfrage-Import – Prüfansicht", () => {
     expect(invoke).toHaveBeenCalledWith("parse-inquiry-text", { body: { text: TEXT } });
     expect(screen.getByDisplayValue("Sabine Müller")).toBeInTheDocument();
     expect(screen.getByDisplayValue("sabine.m@gmx.de")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("2026-10-03")).toHaveValue("2026-10-03");
+    expect(screen.getAllByDisplayValue("2026-10-03")).toHaveLength(2); // Beginn = Ende (1 Tag)
+    expect(screen.getByText("1 Kalendertag")).toBeInTheDocument();
     expect(screen.getByText(/Offene Fragen/)).toBeInTheDocument();
     // Kofferanhänger 750 kg: Preis 25 € kommt aus den Systemdaten
     await waitFor(() => expect(screen.getByDisplayValue("25")).toBeInTheDocument());
