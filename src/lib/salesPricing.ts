@@ -75,7 +75,8 @@ export function findSalesArticle<T extends SalesMatchable>(
     const hits = catalog.filter((c) => norm(c.article_number) === art);
     if (hits.length === 1) return hits[0];
   }
-  const name = norm(q.name);
+  // "BAUMAX BAUMAX SST350 – …" (Marke doppelt aus Anfrageformular) bereinigen.
+  const name = norm(q.name).replace(/^(\S+) \1 /, "$1 ");
   if (!name) return null;
   const exact = catalog.find((c) => norm(c.name) === name);
   if (exact) return exact;

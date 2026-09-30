@@ -50,6 +50,9 @@ describe("findSalesArticle", () => {
     expect(findSalesArticle(catalog, { name: "BAUMAX SST350 – Steinsäge BAUMAX SST350 inkl. Diamanttrennscheibe" })?.slug).toBe("baumax-sst350");
     expect(findSalesArticle(catalog, { name: "Hercu HP45 T – Erdrakete [Konfiguration: Solo]" })?.slug).toBe("hercu-hp45");
   });
+  it("ignores a duplicated brand prefix from the inquiry form", () => {
+    expect(findSalesArticle(catalog, { name: "BAUMAX BAUMAX SST350 – Steinsäge" })?.slug).toBe("baumax-sst350");
+  });
   it("returns null when nothing fits", () => {
     expect(findSalesArticle(catalog, { name: "Unbekannt" })).toBeNull();
   });
