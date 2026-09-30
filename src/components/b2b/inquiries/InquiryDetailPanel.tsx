@@ -220,7 +220,7 @@ interface Props {
     start_date?: string | null;
     end_date?: string | null;
   };
-  defaultItems: OfferLine[];
+  defaultItems: (OfferLine & { product_slug?: string })[];
   /** Lieferadresse aus dem öffentlichen Anfrageformular (im Angebot änderbar). */
   defaultDelivery?: OfferDeliveryAddress;
   details: ReactNode;

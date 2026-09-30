@@ -135,6 +135,7 @@ export default function SalesInquiries() {
                 defaultItems={[
                   {
                     product_name: salesInquiryTitle(selected),
+                    product_slug: selected.product_slug ?? undefined,
                     description: [selected.article_number, selected.product_category].filter(Boolean).join(" · "),
                     quantity: Number(selected.quantity) > 0 ? Number(selected.quantity) : 1,
                     unit_price: 0,
