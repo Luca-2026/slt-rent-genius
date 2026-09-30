@@ -466,8 +466,12 @@ export async function generateOfferPdf(data: {
     for (const svc of servicesByItem.get(idx) || []) {
       if (!svc.amount || svc.amount <= 0) continue;
       const svcLines = wt(`- ${svc.name}`, font, 8.5, nameColW);
-      renderRow(4 + svcLines.length * 10, (top) => {
+      // Erläuterung der Berechnung (z. B. gesamte Mietdauer in Kalendertagen)
+      const expLines = svc.description ? wt(svc.description, font, 7.5, nameColW - 10) : [];
+      renderRow(4 + svcLines.length * 10 + expLines.length * 9, (top) => {
         svcLines.forEach((ln, li) => dt(pg, ln, textColX + 8, top - 8 - li * 10, font, 8.5, MUTED));
+        const expTop = top - 8 - svcLines.length * 10;
+        expLines.forEach((ln, li) => dt(pg, ln, textColX + 16, expTop - li * 9, font, 7.5, MUTED));
         dt(pg, "Pauschale", unitColX, top - 8, font, 8.5, MUTED);
         dtr(pg, fm(svc.amount), totalRight, top - 8, font, 8.5, MUTED);
       });

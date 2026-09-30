@@ -10,6 +10,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
+import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
 
 import { normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
@@ -342,7 +343,7 @@ Deno.serve(async (req: Request) => {
         .map((a, ai) => ({
           id: `${idx}-${a.key || ai}`,
           name: a.note ? `${a.label} (${a.note})` : a.label,
-          description: undefined as string | undefined,
+          description: (addonExplanation(a, item) || undefined) as string | undefined,
           pricePercent: null,
           amount: a.amount,
           allocations: [{ itemIndex: idx, amount: a.amount }],
@@ -447,7 +448,7 @@ Deno.serve(async (req: Request) => {
         .filter((a) => Number(a.amount) !== 0)
         .map(
           (a) =>
-            `<div style="color:#6b7280;font-size:12px;margin-top:2px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(Number(a.amount))}</div>`,
+            `<div style="color:#6b7280;font-size:12px;margin-top:2px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(Number(a.amount))}${addonExplanation(a, i) ? `<br><span style="font-size:11px;">${escapeHtml(addonExplanation(a, i))}</span>` : ""}</div>`,
         )
         .join("");
       return `

@@ -129,6 +129,18 @@ function offerPayloadToLines(payload: unknown): {
           label: String(a.label ?? "Zusatzoption"),
           amount: Number(a.amount) || 0,
           note: typeof a.note === "string" ? a.note : undefined,
+          ...(typeof a.price_type === "string" && typeof a.basis === "string"
+            ? {
+                price_type: a.price_type as "flat" | "per_unit" | "percent",
+                basis: a.basis as "line" | "full_period" | "once",
+                rate: Number(a.rate) || 0,
+                days: a.days != null ? Number(a.days) : null,
+                period_start: typeof a.period_start === "string" ? a.period_start : null,
+                period_end: typeof a.period_end === "string" ? a.period_end : null,
+                // Übernommene Beträge bleiben exakt wie im Angebot.
+                manual: a.manual === true,
+              }
+            : {}),
         }))
       : undefined,
     });

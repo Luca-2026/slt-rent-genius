@@ -6,6 +6,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
+import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
 import { normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 
 const corsHeaders = {
@@ -99,7 +100,7 @@ Deno.serve(async (req) => {
 
     const payload = (inq.offer_payload ?? {}) as Record<string, any>;
     const items: any[] = Array.isArray(payload.items) ? payload.items : [];
-    const payments: any[] = (Array.isArray(inq.payments) ? inq.payments : []).filter((p) => toCents(p?.amount) > 0);
+    const payments: any[] = (Array.isArray(inq.payments) ? inq.payments : []).filter((p: any) => toCents(p?.amount) > 0);
     const ev = evaluateOrderPayment({
       gross: inq.offer_total_gross ?? payload?.totals?.grossAmount,
       deposit: payload?.deposit,
@@ -236,6 +237,7 @@ Deno.serve(async (req) => {
           .map((a: any, ai: number) => ({
             id: `${idx}-${a.key || ai}`,
             name: a.note ? `${a.label} (${a.note})` : a.label,
+            description: addonExplanation(a, item) || undefined,
             pricePercent: null,
             amount: num(a.amount),
             allocations: [{ itemIndex: idx, amount: num(a.amount) }],

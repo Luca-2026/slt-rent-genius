@@ -10,6 +10,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
+import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
 import { normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 import {
   LOCATION_CONTACTS,
@@ -264,7 +265,7 @@ Deno.serve(async (req: Request) => {
         .map((a, ai) => ({
           id: `${idx}-${a.key || ai}`,
           name: a.note ? `${a.label} (${a.note})` : a.label,
-          description: undefined as string | undefined,
+          description: (addonExplanation(a, item) || undefined) as string | undefined,
           pricePercent: null,
           amount: a.amount,
           allocations: [{ itemIndex: idx, amount: a.amount }],
@@ -405,7 +406,7 @@ Deno.serve(async (req: Request) => {
       <div style="padding:10px 0;border-bottom:1px solid #e5e7eb;">
         <div style="font-weight:bold;font-size:14px;">${escapeHtml(i.product_name)}</div>
         ${i.description ? `<div style="color:#6b7280;font-size:12px;margin-top:2px;">${escapeHtml(i.description)}</div>` : ""}
-        ${(i.addons ?? []).filter((a) => a.amount > 0).map((a) => `<div style="color:#6b7280;font-size:12px;margin-top:2px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}</div>`).join("")}
+        ${(i.addons ?? []).filter((a) => a.amount > 0).map((a) => `<div style="color:#6b7280;font-size:12px;margin-top:2px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}${addonExplanation(a, i) ? `<br><span style="font-size:11px;">${escapeHtml(addonExplanation(a, i))}</span>` : ""}</div>`).join("")}
         ${discountHtml ? `<div style="margin-top:2px;">${discountHtml.replace(/^<br>/, "")}</div>` : ""}
         <table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:13px;"><tr>
           <td style="color:#6b7280;padding:0;">${i.quantity}${i.unit ? ` ${escapeHtml(i.unit)}` : ""} &times; ${money(i.unit_price)}</td>

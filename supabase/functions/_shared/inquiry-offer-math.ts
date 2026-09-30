@@ -3,11 +3,35 @@
  * tested both from Deno and from the frontend test suite.
  */
 
+import { computeAddonAmount, daysPerUnit, describeAddon, type AddonBasis, type AddonPriceType } from "./addon-calc.ts";
+
 export interface InquiryOfferAddon {
   key: string;
   label: string;
   amount: number;
   note?: string;
+  price_type?: AddonPriceType;
+  rate?: number;
+  basis?: AddonBasis;
+  days?: number | null;
+  period_start?: string | null;
+  period_end?: string | null;
+  manual?: boolean;
+}
+
+/** Kundenverständliche Erläuterung einer Zusatzoption (für PDF/E-Mail/Rechnung). */
+export function addonExplanation(addon: InquiryOfferAddon, item: Pick<InquiryOfferItem, "unit">): string {
+  const unit = (item.unit ?? "").replace(/e$|en$/i, "");
+  return describeAddon({ ...addon, line_unit: singularUnit(item.unit) || unit });
+}
+
+function singularUnit(unit?: string): string {
+  const u = (unit ?? "").toLowerCase();
+  if (u.startsWith("arbeitstag")) return "Arbeitstag";
+  if (u.startsWith("kalendertag")) return "Kalendertag";
+  if (u.startsWith("woche")) return "Woche";
+  if (u.startsWith("monat")) return "Monat";
+  return "";
 }
 
 export interface InquiryOfferItem {
@@ -77,7 +101,13 @@ export function assertPositiveTotal(netAmount: number) {
   }
 }
 
-function normalizeAddons(raw: unknown, itemIndex: number): InquiryOfferAddon[] | undefined {
+const ISO = /^\d{4}-\d{2}-\d{2}$/;
+
+function normalizeAddons(
+  raw: unknown,
+  itemIndex: number,
+  line?: { articles: number; quantity: number; unit?: string; unit_price: number; discount_percent: number },
+): InquiryOfferAddon[] | undefined {
   if (!Array.isArray(raw) || raw.length === 0) return undefined;
   if (raw.length > 10) throw new Error(`Position ${itemIndex + 1}: zu viele Zusatzoptionen (max. 10)`);
   const list = raw.map((entry) => {
@@ -89,12 +119,54 @@ function normalizeAddons(raw: unknown, itemIndex: number): InquiryOfferAddon[] |
     if (!Number.isFinite(amount) || amount < -1_000_000 || amount > 1_000_000) {
       throw new Error(`Position ${itemIndex + 1}: ungültiger Betrag bei "${label}"`);
     }
-    return {
+    const out: InquiryOfferAddon = {
       key: String(a.key ?? label).slice(0, 60),
       label: label.slice(0, 120),
       amount: round2(amount),
       note: a.note ? String(a.note).slice(0, 200) : undefined,
     };
+    const priceType = a.price_type as AddonPriceType;
+    const basis = a.basis as AddonBasis;
+    const rate = Number(a.rate);
+    if (
+      ["flat", "per_unit", "percent"].includes(priceType) &&
+      ["line", "full_period", "once"].includes(basis) &&
+      Number.isFinite(rate) && rate >= 0 && rate <= 1_000_000
+    ) {
+      out.price_type = priceType;
+      out.basis = basis;
+      out.rate = round2(rate);
+      out.manual = a.manual === true;
+      if (basis === "full_period") {
+        const days = Math.round(Number(a.days));
+        if (!Number.isFinite(days) || days < 1 || days > 3660) {
+          throw new Error(`Position ${itemIndex + 1}: "${label}" – Kalendertage der Mietdauer fehlen`);
+        }
+        out.days = days;
+        out.period_start = typeof a.period_start === "string" && ISO.test(a.period_start) ? a.period_start : null;
+        out.period_end = typeof a.period_end === "string" && ISO.test(a.period_end) ? a.period_end : null;
+      }
+      // Serverprüfung: automatisch berechnete Beträge müssen zur Angabe passen.
+      if (!out.manual && line) {
+        const articles = Math.max(1, line.articles || 1);
+        const expected = computeAddonAmount(
+          { price_type: priceType, rate: out.rate, basis, days: out.days },
+          {
+            articles,
+            duration: Math.max(1, line.quantity / articles),
+            days_per_unit: daysPerUnit(line.unit),
+            unit_price: line.unit_price,
+            discount_percent: line.discount_percent,
+          },
+        );
+        if (expected !== null && Math.abs(Math.abs(expected) - Math.abs(out.amount)) > 0.011) {
+          throw new Error(
+            `Position ${itemIndex + 1}: Betrag bei "${label}" passt nicht zur Berechnung (erwartet ${expected.toFixed(2)} €) – bitte „Neu berechnen“`,
+          );
+        }
+      }
+    }
+    return out;
   });
   return list;
 }
@@ -126,6 +198,9 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       throw new Error(`Position ${index + 1}: ungültiger Rabatt`);
     }
 
+    const articles =
+      Number.isFinite(Number(item.articles)) && Number(item.articles) > 0 ? Math.round(Number(item.articles)) : 1;
+    const unitStr = item.unit ? String(item.unit).slice(0, 40) : undefined;
     return {
       product_name: name.slice(0, 200),
       product_slug: item.product_slug ? String(item.product_slug).slice(0, 200) : undefined,
@@ -141,7 +216,13 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       rental_start: item.rental_start ? String(item.rental_start).slice(0, 40) : undefined,
       rental_end: item.rental_end ? String(item.rental_end).slice(0, 40) : undefined,
       image_url: item.image_url ? String(item.image_url).slice(0, 500) : undefined,
-      addons: normalizeAddons(item.addons, index),
+      addons: normalizeAddons(item.addons, index, {
+        articles,
+        quantity: Math.round(quantity),
+        unit: unitStr,
+        unit_price: round2(unitPrice),
+        discount_percent: round2(discount),
+      }),
     };
   });
 }

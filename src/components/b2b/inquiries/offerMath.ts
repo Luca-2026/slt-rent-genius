@@ -1,4 +1,5 @@
 import type { OfferUnit } from "@/lib/offerUnits";
+import type { AddonBasis, AddonPriceType } from "@/lib/addonCalc";
 
 /**
  * Frontend mirror of the offer math used by the `send-inquiry-offer`
@@ -13,6 +14,16 @@ export interface OfferLineAddon {
   amount: number;
   /** informativer Zusatz, z. B. "Selbstbehalt 500 €" */
   note?: string;
+  /** Berechnungsangaben (fehlen bei alten Angeboten) */
+  price_type?: AddonPriceType;
+  rate?: number;
+  basis?: AddonBasis;
+  /** Kalendertage der gesamten Mietdauer (basis = full_period) */
+  days?: number | null;
+  period_start?: string | null;
+  period_end?: string | null;
+  /** Betrag wurde von Hand überschrieben – keine automatische Neuberechnung */
+  manual?: boolean;
 }
 
 export interface OfferLine {
