@@ -27,9 +27,8 @@ export const STAFF_NAV: StaffNavGroup[] = [
     label: "Vorgänge",
     items: [
       { label: "Mietanfragen", path: "/b2b/mietanfragen", icon: Inbox, access: "staff", badgeKey: "rental" },
-      { label: "B2B-Anfragen", path: "/b2b/admin", icon: FileText, access: "admin" },
-      { label: "Mietvorgänge B2B", path: "/b2b/admin", tab: "rentals", icon: Package, access: "admin" },
-      { label: "Angebote B2B", path: "/b2b/admin", tab: "offers", icon: Send, access: "admin" },
+      { label: "Laufende Mietvorgänge", path: "/b2b/admin", tab: "rentals", icon: Package, access: "admin" },
+      { label: "Angebote (B2B-Portal)", path: "/b2b/admin", tab: "offers", icon: Send, access: "admin" },
       { label: "Verkaufsanfragen", path: "/b2b/verkaufsanfragen", icon: ShoppingCart, access: "staff", badgeKey: "sales" },
     ],
   },
@@ -37,7 +36,6 @@ export const STAFF_NAV: StaffNavGroup[] = [
     label: "Abrechnung",
     items: [
       { label: "Rechnungen & Gutschriften", path: "/b2b/anfrage-rechnungen", icon: Receipt, access: "staff" },
-      { label: "Rechnungen B2B", path: "/b2b/admin", tab: "invoices", icon: Receipt, access: "admin" },
     ],
   },
   {
