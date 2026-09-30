@@ -85,6 +85,13 @@
       "when": 1790780666048,
       "tag": "0011_rental_inquiries_requested_items",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1790787492122,
+      "tag": "0012_auto_crm_from_rental_inquiries",
+      "breakpoints": true
     }
   ]
 }

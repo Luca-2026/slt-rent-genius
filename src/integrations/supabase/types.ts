@@ -4080,6 +4080,21 @@ export type Database = {
         Returns: string
       }
       confirm_b2b_email: { Args: { _user_id: string }; Returns: undefined }
+      crm_find_or_create_from_inquiry: {
+        Args: {
+          _city: string
+          _company: string
+          _email: string
+          _kind: string
+          _location: string
+          _name: string
+          _phone: string
+          _postal: string
+          _street: string
+          _vat: string
+        }
+        Returns: string
+      }
       ensure_repair_list: { Args: { _location: string }; Returns: string }
       generate_delivery_note_number: { Args: never; Returns: string }
       generate_inquiry_credit_note_number: { Args: never; Returns: string }
