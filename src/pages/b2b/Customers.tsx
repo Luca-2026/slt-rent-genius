@@ -139,9 +139,14 @@ export default function Customers() {
                 </div>
                 <div className="flex flex-wrap gap-2 shrink-0">
                   {isAdmin && c.b2b_profile_id && (
-                    <Button size="sm" variant="outline" asChild>
-                      <Link to="/b2b/admin?tab=customers">Portalkonto</Link>
-                    </Button>
+                    <>
+                      <Button size="sm" variant="outline" asChild>
+                        <Link to={`/b2b/admin?tab=customers&profil=${c.b2b_profile_id}&aktion=details`}>Portalkonto ansehen</Link>
+                      </Button>
+                      <Button size="sm" variant="outline" asChild>
+                        <Link to={`/b2b/admin?tab=customers&profil=${c.b2b_profile_id}&aktion=bearbeiten`}>Portalkonto bearbeiten</Link>
+                      </Button>
+                    </>
                   )}
                   <Button size="sm" variant="outline" onClick={() => { setEditing(c); setDialogOpen(true); }}>
                     <Pencil className="h-3.5 w-3.5 mr-1" /> Bearbeiten

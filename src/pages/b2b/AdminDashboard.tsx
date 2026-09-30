@@ -201,6 +201,21 @@ export default function AdminDashboard() {
   }, [user, isAdmin, authLoading, navigate]);
 
   // Data fetching
+  // Direktlink aus der Kundenkartei: ?tab=customers&profil=<id>&aktion=details|bearbeiten
+  useEffect(() => {
+    const profileId = searchParams.get("profil");
+    if (!profileId || profiles.length === 0) return;
+    const profile = profiles.find((p) => p.id === profileId);
+    if (!profile) return;
+    setSelectedProfile(profile);
+    if (searchParams.get("aktion") === "bearbeiten") setEditCustomerOpen(true);
+    else setDetailCustomerOpen(true);
+    const next = new URLSearchParams(searchParams);
+    next.delete("profil");
+    next.delete("aktion");
+    setSearchParams(next, { replace: true });
+  }, [profiles, searchParams, setSearchParams]);
+
   const fetchData = async () => {
     setLoading(true);
     const [profilesRes, invoicesRes, reservationsRes, offersRes, offerItemsRes, returnProtocolsRes] = await Promise.all([
