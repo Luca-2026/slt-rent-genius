@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, CalendarCheck, CalendarX, AlertTriangle, Inbox, ListTodo, TrendingUp, Wallet, Receipt } from "lucide-react";
+import { ArrowRight, CalendarCheck, CalendarX, AlertTriangle, Inbox, ListTodo, TrendingUp, Receipt, FileCheck2, Package, ShoppingCart, ChevronRight, LayoutGrid } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { visibleGroups, itemHref } from "@/components/b2b/StaffNav";
 import {
@@ -29,34 +30,69 @@ interface TodoRow { id: string; title: string; due_date: string | null; status: 
 
 const LOCATION_LABEL: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
 
-function Kpi({ label, value, hint, to }: { label: string; value: string; hint?: string; to?: string }) {
-  const body = (
-    <Card className="h-full transition-colors hover:border-primary">
-      <CardContent className="p-4">
-        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
-        <p className="mt-1 text-2xl font-bold text-foreground">{value}</p>
-        {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
-      </CardContent>
-    </Card>
+/** Einheitlicher Rahmen für alle Bereiche der Startseite. */
+function Panel({ title, icon: Icon, action, children, className }: { title: string; icon: LucideIcon; action?: React.ReactNode; children: React.ReactNode; className?: string }) {
+  return (
+    <section className={cn("rounded-xl border border-border bg-card", className)}>
+      <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
+        <h2 className="flex items-center gap-2 text-sm font-semibold text-foreground"><Icon className="h-4 w-4 text-primary" aria-hidden="true" />{title}</h2>
+        {action}
+      </header>
+      {children}
+    </section>
   );
-  return to ? <Link to={to} className="block h-full">{body}</Link> : body;
 }
 
-function TodayList({ title, icon: Icon, rows, empty }: { title: string; icon: typeof Inbox; rows: InquiryRow[]; empty: string }) {
+/** Kompakte Kennzahl mit Handlungsbedarf. */
+function ActionStat({ label, value, to, icon: Icon, highlight }: { label: string; value: number; to: string; icon: LucideIcon; highlight?: boolean }) {
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2 text-base"><Icon className="h-4 w-4 text-primary" /> {title} <span className="text-muted-foreground font-normal">({rows.length})</span></CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-1">
-        {rows.length === 0 ? <p className="text-sm text-muted-foreground">{empty}</p> : rows.map((r) => (
-          <Link key={r.id} to={`/b2b/mietanfragen?status=all&anfrage=${r.id}`} className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted">
-            <span className="min-w-0 truncate"><strong>{r.company_name || r.customer_name}</strong> · {r.product_name}</span>
-            <span className="shrink-0 text-xs text-muted-foreground">{LOCATION_LABEL[r.location ?? ""] ?? r.location}</span>
-          </Link>
-        ))}
-      </CardContent>
-    </Card>
+    <Link to={to} className={cn(
+      "group flex min-w-0 items-center gap-3 rounded-xl border bg-card p-3 transition-colors hover:border-primary sm:p-4",
+      highlight && value > 0 ? "border-accent" : "border-border",
+    )}>
+      <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-lg", highlight && value > 0 ? "bg-accent text-accent-foreground" : "bg-muted text-primary")}>
+        <Icon className="h-5 w-5" aria-hidden="true" />
+      </span>
+      <span className="min-w-0">
+        <span className="block text-2xl font-bold leading-none text-foreground">{value}</span>
+        <span className="mt-1 block break-words text-xs leading-tight text-muted-foreground">{label}</span>
+      </span>
+    </Link>
+  );
+}
+
+function MoneyRow({ label, value, hint, to, tone }: { label: string; value: string; hint?: string; to: string; tone?: "danger" }) {
+  return (
+    <Link to={to} className="flex items-baseline justify-between gap-3 px-4 py-2.5 transition-colors hover:bg-muted">
+      <span className="min-w-0">
+        <span className="block text-sm text-foreground">{label}</span>
+        {hint && <span className="block text-xs text-muted-foreground">{hint}</span>}
+      </span>
+      <span className={cn("shrink-0 text-base font-semibold tabular-nums", tone === "danger" ? "text-destructive" : "text-foreground")}>{value}</span>
+    </Link>
+  );
+}
+
+function DayList({ title, icon: Icon, rows, empty }: { title: string; icon: LucideIcon; rows: InquiryRow[]; empty: string }) {
+  return (
+    <div className="px-4 py-3">
+      <p className="mb-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        <Icon className="h-3.5 w-3.5" aria-hidden="true" />{title}<span className="ml-auto rounded-full bg-muted px-2 py-0.5 text-[11px] text-foreground">{rows.length}</span>
+      </p>
+      {rows.length === 0 ? <p className="py-1 text-sm text-muted-foreground">{empty}</p> : (
+        <ul className="-mx-2">
+          {rows.map((r) => (
+            <li key={r.id}>
+              <Link to={`/b2b/mietanfragen?status=all&anfrage=${r.id}`} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted">
+                <span className="min-w-0 flex-1 truncate"><strong className="font-medium">{r.company_name || r.customer_name}</strong><span className="text-muted-foreground"> · {r.product_name}</span></span>
+                <span className="hidden shrink-0 text-xs text-muted-foreground sm:inline">{LOCATION_LABEL[r.location ?? ""] ?? r.location}</span>
+                <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 
@@ -103,90 +139,111 @@ export default function StaffHome() {
   const dueTodos = todos.filter((t) => t.due_date && t.due_date.slice(0, 10) <= today);
 
   const monthName = now.toLocaleDateString("de-DE", { month: "long" });
+  const firstName = displayName && !displayName.includes("@") ? displayName.split(" ")[0] : "";
   const greeting = now.getHours() < 11 ? "Guten Morgen" : now.getHours() < 18 ? "Hallo" : "Guten Abend";
 
   if (!accessLoading && !isStaff) {
     return <B2BPortalLayout title="Startseite"><p className="text-muted-foreground">Kein Zugriff auf diesen Bereich.</p></B2BPortalLayout>;
   }
 
+  const groups = visibleGroups(isAdmin, canViewInventory);
+
   return (
     <B2BPortalLayout
-      title={`${greeting}${displayName ? `, ${displayName.split(" ")[0]}` : ""}`}
+      title={`${greeting}${firstName ? `, ${firstName}` : ""}`}
       subtitle={now.toLocaleDateString("de-DE", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
     >
       {loading ? <p className="text-muted-foreground">Wird geladen …</p> : (
-        <div className="space-y-8">
-          {isAdmin && (
-            <section aria-labelledby="umsatz">
-              <h2 id="umsatz" className="mb-3 flex items-center gap-2 text-lg font-semibold"><TrendingUp className="h-5 w-5 text-primary" /> Umsatz (fakturiert, netto)</h2>
-              <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-                <Kpi label="Heute" value={formatEuro(rev.day)} to="/b2b/anfrage-rechnungen" />
-                <Kpi label="Diese Woche" value={formatEuro(rev.week)} hint="ab Montag" to="/b2b/anfrage-rechnungen" />
-                <Kpi label={`Monat ${monthName}`} value={formatEuro(rev.month)} to="/b2b/anfrage-rechnungen" />
-                <Kpi label={`Jahr ${now.getFullYear()}`} value={formatEuro(rev.year)} to="/b2b/anfrage-rechnungen" />
-              </div>
-              <h2 className="mb-3 mt-6 flex items-center gap-2 text-lg font-semibold"><Wallet className="h-5 w-5 text-primary" /> Pipeline & offene Posten (brutto)</h2>
-              <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-                <Kpi label="Angebote offen" value={formatEuro(pipe.offered)} hint={`${pipe.offeredCount} gesendete Angebote`} to="/b2b/mietanfragen?status=offer_sent" />
-                <Kpi label="Beauftragt, nicht abgerechnet" value={formatEuro(pipe.accepted)} hint={`${pipe.acceptedCount} angenommene Aufträge`} to="/b2b/mietanfragen?status=running" />
-                <Kpi label="Offene Forderungen" value={formatEuro(rec.open)} hint="Rechnungen minus Zahlungen" to="/b2b/anfrage-rechnungen" />
-                <Kpi label="Davon überfällig" value={formatEuro(rec.overdue)} hint={`${rec.overdueCount} Rechnungen`} to="/b2b/anfrage-rechnungen" />
-              </div>
-            </section>
+        <div className="space-y-5">
+          {/* 1. Handlungsbedarf */}
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+            <ActionStat label="Neue Mietanfragen" value={unprocessed} to="/b2b/mietanfragen" icon={Inbox} highlight />
+            <ActionStat label="Bestätigung offen" value={awaitingConfirmation} to="/b2b/mietanfragen?status=accepted" icon={FileCheck2} highlight />
+            <ActionStat label="Laufende Mieten" value={running} to="/b2b/mietanfragen?status=running" icon={Package} />
+            <ActionStat label="Verkaufsanfragen" value={openSales} to="/b2b/verkaufsanfragen" icon={ShoppingCart} />
+          </div>
+
+          {isAdmin && rec.overdueCount > 0 && (
+            <Link to="/b2b/anfrage-rechnungen" className="flex items-center gap-3 rounded-xl border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+              <Receipt className="h-4 w-4 shrink-0" aria-hidden="true" />
+              <span className="min-w-0 flex-1">{rec.overdueCount} überfällige Rechnungen · {formatEuro(rec.overdue)}</span>
+              <span className="hidden font-medium sm:inline">Prüfen</span><ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+            </Link>
           )}
 
-          <section aria-labelledby="heute">
-            <h2 id="heute" className="mb-3 flex items-center gap-2 text-lg font-semibold"><CalendarCheck className="h-5 w-5 text-primary" /> Heute wichtig</h2>
-            <div className="mb-3 grid grid-cols-2 gap-3 lg:grid-cols-4">
-              <Kpi label="Offene Mietanfragen" value={String(unprocessed)} hint="noch nicht übernommen" to="/b2b/mietanfragen" />
-              <Kpi label="Auftragsbestätigung offen" value={String(awaitingConfirmation)} hint="angenommen, Zahlung prüfen" to="/b2b/mietanfragen?status=accepted" />
-              <Kpi label="Laufende Mietvorgänge" value={String(running)} to="/b2b/mietanfragen?status=running" />
-              <Kpi label="Offene Verkaufsanfragen" value={String(openSales)} to="/b2b/verkaufsanfragen" />
-            </div>
-            <div className="grid gap-3 lg:grid-cols-3 [&>*]:min-w-0">
-              <TodayList title="Übergaben heute" icon={CalendarCheck} rows={pickups} empty="Keine Übergaben heute." />
-              <TodayList title="Rückgaben heute" icon={CalendarX} rows={returns} empty="Keine Rückgaben heute." />
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="flex items-center gap-2 text-base"><ListTodo className="h-4 w-4 text-primary" /> Fällige Aufgaben <span className="text-muted-foreground font-normal">({dueTodos.length})</span></CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-1">
-                  {dueTodos.length === 0 ? <p className="text-sm text-muted-foreground">Keine fälligen Aufgaben.</p> : dueTodos.map((t) => (
-                    <Link key={t.id} to="/b2b/aufgaben" className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted">
-                      <span className="min-w-0 truncate">{t.title}</span>
-                      {t.due_date!.slice(0, 10) < today && <span className="flex shrink-0 items-center gap-1 text-xs text-destructive"><AlertTriangle className="h-3 w-3" /> überfällig</span>}
+          {/* 2. Heute + Finanzen */}
+          <div className={cn("grid gap-5 [&>*]:min-w-0", isAdmin && "lg:grid-cols-5")}>
+            <Panel title="Heute" icon={CalendarCheck} className={cn(isAdmin && "lg:col-span-3")}>
+              <div className="divide-y divide-border">
+                <DayList title="Übergaben" icon={CalendarCheck} rows={pickups} empty="Keine Übergaben geplant." />
+                <DayList title="Rückgaben" icon={CalendarX} rows={returns} empty="Keine Rückgaben geplant." />
+                <div className="px-4 py-3">
+                  <p className="mb-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <ListTodo className="h-3.5 w-3.5" aria-hidden="true" />Fällige Aufgaben<span className="ml-auto rounded-full bg-muted px-2 py-0.5 text-[11px] text-foreground">{dueTodos.length}</span>
+                  </p>
+                  {dueTodos.length === 0 ? <p className="py-1 text-sm text-muted-foreground">Keine fälligen Aufgaben.</p> : (
+                    <ul className="-mx-2">
+                      {dueTodos.map((t) => (
+                        <li key={t.id}>
+                          <Link to="/b2b/aufgaben" className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted">
+                            <span className="min-w-0 flex-1 truncate">{t.title}</span>
+                            {t.due_date!.slice(0, 10) < today && <span className="flex shrink-0 items-center gap-1 text-xs text-destructive"><AlertTriangle className="h-3 w-3" aria-hidden="true" />überfällig</span>}
+                            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            </Panel>
+
+            {isAdmin && (
+              <Panel title="Finanzen" icon={TrendingUp} className="lg:col-span-2">
+                <p className="px-4 pt-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Umsatz fakturiert · netto</p>
+                <div className="grid grid-cols-2 gap-px bg-border sm:grid-cols-4 lg:grid-cols-2 m-4 mt-2 overflow-hidden rounded-lg border border-border">
+                  {[
+                    ["Heute", rev.day], ["Woche", rev.week], [monthName, rev.month], [String(now.getFullYear()), rev.year],
+                  ].map(([l, v]) => (
+                    <Link key={String(l)} to="/b2b/anfrage-rechnungen" className="bg-card px-3 py-2.5 hover:bg-muted">
+                      <span className="block text-xs capitalize text-muted-foreground">{l}</span>
+                      <span className="block text-lg font-bold tabular-nums text-foreground">{formatEuro(Number(v))}</span>
                     </Link>
                   ))}
-                </CardContent>
-              </Card>
-            </div>
-            {isAdmin && rec.overdueCount > 0 && (
-              <Link to="/b2b/anfrage-rechnungen" className="mt-3 flex items-center gap-2 rounded-md border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
-                <Receipt className="h-4 w-4" /> {rec.overdueCount} überfällige Rechnungen über {formatEuro(rec.overdue)} – jetzt prüfen <ArrowRight className="ml-auto h-4 w-4" />
-              </Link>
+                </div>
+                <p className="border-t border-border px-4 pt-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Pipeline & Forderungen · brutto</p>
+                <div className="py-1">
+                  <MoneyRow label="Angebote offen" hint={`${pipe.offeredCount} gesendet`} value={formatEuro(pipe.offered)} to="/b2b/mietanfragen?status=offer_sent" />
+                  <MoneyRow label="Beauftragt, nicht abgerechnet" hint={`${pipe.acceptedCount} Aufträge`} value={formatEuro(pipe.accepted)} to="/b2b/mietanfragen?status=accepted" />
+                  <MoneyRow label="Offene Forderungen" value={formatEuro(rec.open)} to="/b2b/anfrage-rechnungen" />
+                  <MoneyRow label="davon überfällig" hint={`${rec.overdueCount} Rechnungen`} value={formatEuro(rec.overdue)} to="/b2b/anfrage-rechnungen" tone={rec.overdue > 0 ? "danger" : undefined} />
+                </div>
+              </Panel>
             )}
-          </section>
+          </div>
 
-          <section aria-labelledby="funktionen">
-            <h2 id="funktionen" className="mb-3 text-lg font-semibold">Alle Funktionen</h2>
-            <div className="space-y-5">
-              {visibleGroups(isAdmin, canViewInventory).map((g) => (
+          {/* 3. Alle Funktionen */}
+          <Panel title="Alle Funktionen" icon={LayoutGrid}>
+            <div className="grid gap-x-6 gap-y-4 p-4 sm:grid-cols-2 lg:grid-cols-5">
+              {groups.map((g) => (
                 <div key={g.label}>
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{g.label}</p>
-                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+                  <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{g.label}</p>
+                  <ul className="-mx-2">
                     {g.items.map((item) => {
                       const Icon = item.icon;
                       return (
-                        <Link key={itemHref(item)} to={itemHref(item)} className="flex items-center gap-2 rounded-lg border border-border bg-card p-3 text-sm font-medium transition-colors hover:border-primary hover:bg-muted">
-                          <Icon className="h-4 w-4 shrink-0 text-primary" /> <span className="min-w-0 truncate">{item.label}</span>
-                        </Link>
+                        <li key={itemHref(item)}>
+                          <Link to={itemHref(item)} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-foreground hover:bg-muted">
+                            <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" /><span className="min-w-0 truncate">{item.label}</span>
+                          </Link>
+                        </li>
                       );
                     })}
-                  </div>
+                  </ul>
                 </div>
               ))}
             </div>
-          </section>
+          </Panel>
         </div>
       )}
     </B2BPortalLayout>
