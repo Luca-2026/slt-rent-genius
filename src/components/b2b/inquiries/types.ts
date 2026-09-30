@@ -54,6 +54,8 @@ export interface SalesInquiry {
   location: string | null;
   brand: string | null;
   product_category: string | null;
+  product_slug?: string | null;
+  product_kind?: string | null;
   model: string | null;
   article_number: string | null;
   quantity: string | null;
