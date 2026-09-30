@@ -1,0 +1,2 @@
+ALTER TABLE public.rental_inquiries ADD COLUMN IF NOT EXISTS order_confirmed_at timestamptz, ADD COLUMN IF NOT EXISTS order_confirmed_by_name text;
+ALTER TABLE public.sales_inquiries ADD COLUMN IF NOT EXISTS order_confirmed_at timestamptz, ADD COLUMN IF NOT EXISTS order_confirmed_by_name text;

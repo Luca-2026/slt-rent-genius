@@ -1,3 +1,4 @@
+import { NumberInput } from "@/components/ui/number-input";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -872,7 +873,7 @@ export function InquiryOfferForm({
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               <div>
                 <Label className="text-xs">Menge (Artikel)</Label>
-                <Input
+                <NumberInput
                   type="number"
                   min={1}
                   value={item.quantity}
@@ -882,7 +883,7 @@ export function InquiryOfferForm({
               </div>
               <div>
                 <Label className="text-xs">Menge (Dauer)</Label>
-                <Input
+                <NumberInput
                   type="number"
                   min={1}
                   value={isFlatRate ? 1 : eff.duration ?? 1}
@@ -925,7 +926,7 @@ export function InquiryOfferForm({
               </div>
               <div>
                 <Label className="text-xs">{isFlatRate ? "Pauschalpreis netto" : "Einzelpreis netto"}</Label>
-                <Input
+                <NumberInput
                   type="number"
                   min={0}
                   step="0.01"
@@ -942,7 +943,7 @@ export function InquiryOfferForm({
               </div>
               <div>
                 <Label className="text-xs">Rabatt %</Label>
-                <Input
+                <NumberInput
                   type="number"
                   min={0}
                   max={100}
@@ -1074,7 +1075,7 @@ export function InquiryOfferForm({
                           {addon.note ? <span className="block text-muted-foreground font-normal">{addon.note}</span> : null}
                         </Label>
                       )}
-                      <Input
+                      <NumberInput
 
                         type="number"
                         step="0.01"
@@ -1176,33 +1177,33 @@ export function InquiryOfferForm({
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
         <div>
           <Label className="text-xs">Lieferkosten</Label>
-          <Input type="number" min={0} step="0.01" value={deliveryCostDelivery}
+          <NumberInput type="number" min={0} step="0.01" value={deliveryCostDelivery}
             onChange={(e) => setDeliveryCostDelivery(Number(e.target.value) || 0)} disabled={disabled} />
         </div>
         <div>
           <Label className="text-xs">Abholkosten</Label>
-          <Input type="number" min={0} step="0.01" value={deliveryCostReturn}
+          <NumberInput type="number" min={0} step="0.01" value={deliveryCostReturn}
             onChange={(e) => setDeliveryCostReturn(Number(e.target.value) || 0)} disabled={disabled} />
         </div>
         <div>
           <Label className="text-xs">Aufbau</Label>
-          <Input type="number" min={0} step="0.01" value={setupCost}
+          <NumberInput type="number" min={0} step="0.01" value={setupCost}
             onChange={(e) => setSetupCost(Number(e.target.value) || 0)} disabled={disabled} />
         </div>
         <div>
           <Label className="text-xs">Abbau</Label>
-          <Input type="number" min={0} step="0.01" value={dismantleCost}
+          <NumberInput type="number" min={0} step="0.01" value={dismantleCost}
             onChange={(e) => setDismantleCost(Number(e.target.value) || 0)} disabled={disabled} />
         </div>
         <div>
           <Label className="text-xs">Kaution</Label>
-          <Input type="number" min={0} step="0.01" value={deposit}
+          <NumberInput type="number" min={0} step="0.01" value={deposit}
             onChange={(e) => setDeposit(Number(e.target.value) || 0)} disabled={disabled} />
         </div>
         {!isInvoice && (
           <div>
             <Label className="text-xs">Gültig (Tage)</Label>
-            <Input type="number" min={1} max={180} value={validDays}
+            <NumberInput type="number" min={1} max={180} value={validDays}
               onChange={(e) => setValidDays(Number(e.target.value) || 14)} disabled={disabled} />
           </div>
         )}
@@ -1352,7 +1353,7 @@ export function InquiryOfferForm({
               </div>
               <div>
                 <Label className="text-[11px]">Betrag brutto (€)</Label>
-                <Input
+                <NumberInput
                   type="number"
                   step="0.01"
                   min="0"

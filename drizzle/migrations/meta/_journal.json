@@ -64,6 +64,13 @@
       "when": 1790102550696,
       "tag": "0008_fix_damage_delete_trigger_timing",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1790775798687,
+      "tag": "0009_order_confirmation_columns",
+      "breakpoints": true
     }
   ]
 }
