@@ -93,10 +93,18 @@ Deno.serve(async (req: Request) => {
       .maybeSingle();
     if (inqErr || !inquiry) return json({ error: "Anfrage nicht gefunden" }, 404);
 
+    // Überarbeitung eines bereits versendeten Angebots: muss sich auf die
+    // aktuell gültige Fassung beziehen (verhindert Doppelversand/veraltete Stände).
+    const reviseOf: string | null = typeof body.revise_of === "string" && body.revise_of.trim()
+      ? body.revise_of.trim()
+      : null;
+    const isRevision = Boolean(reviseOf && reviseOf === inquiry.offer_number);
+
     // Doppelklick-/Retry-Schutz: wurde in den letzten 2 Minuten bereits ein
     // Angebot zu dieser Anfrage versendet, wird kein zweites erzeugt/gemailt.
+    // Eine bewusste Überarbeitung der aktuellen Fassung ist davon ausgenommen.
     const lastSentAt = inquiry.offer_sent_at ? Date.parse(inquiry.offer_sent_at) : 0;
-    if (lastSentAt && Date.now() - lastSentAt < 2 * 60 * 1000) {
+    if (!isRevision && lastSentAt && Date.now() - lastSentAt < 2 * 60 * 1000) {
       console.log("Duplicate send suppressed for inquiry", inquiryId);
       return json({
         success: true,
@@ -157,12 +165,38 @@ Deno.serve(async (req: Request) => {
     const locationKey = resolveLocationKey(body.location || inquiry.location);
     const loc = LOCATION_CONTACTS[locationKey];
 
-    const { data: numberData, error: numErr } = await service.rpc("generate_inquiry_offer_number");
-    if (numErr || !numberData) {
-      console.error("Nummernkreis fehlgeschlagen:", numErr?.message);
-      return json({ error: "Angebotsnummer konnte nicht erzeugt werden" }, 500);
+    // Überarbeitungen behalten die Stammnummer und erhalten eine Fassungsnummer
+    // (ANG-A-2026-0036 → ANG-A-2026-0036-2 → -3 …); der Nummernkreis bleibt lückenlos.
+    const prevPayload = (inquiry.offer_payload ?? {}) as Record<string, unknown>;
+    let offerNumber: string;
+    let baseOfferNumber: string;
+    let version = 1;
+    let supersedes: { offer_number: string; sent_at: string | null } | null = null;
+    if (isRevision) {
+      baseOfferNumber = typeof prevPayload.base_offer_number === "string"
+        ? prevPayload.base_offer_number
+        : String(inquiry.offer_number);
+      version = (Number(prevPayload.version) || 1) + 1;
+      offerNumber = `${baseOfferNumber}-${version}`;
+      supersedes = { offer_number: String(inquiry.offer_number), sent_at: inquiry.offer_sent_at ?? null };
+    } else {
+      if (reviseOf) {
+        return json({ error: "Das Angebot wurde inzwischen geändert. Bitte die Anfrage neu laden." }, 409);
+      }
+      const { data: numberData, error: numErr } = await service.rpc("generate_inquiry_offer_number");
+      if (numErr || !numberData) {
+        console.error("Nummernkreis fehlgeschlagen:", numErr?.message);
+        return json({ error: "Angebotsnummer konnte nicht erzeugt werden" }, 500);
+      }
+      offerNumber = String(numberData);
+      baseOfferNumber = offerNumber;
     }
-    const offerNumber = String(numberData);
+    const supersedesText = supersedes
+      ? `Dieses Angebot ersetzt unser Angebot ${supersedes.offer_number}${
+          supersedes.sent_at ? ` vom ${new Date(supersedes.sent_at).toLocaleDateString("de-DE", { timeZone: "Europe/Berlin" })}` : ""
+        }.`
+      : null;
+    const pdfNotes = [supersedesText, notes].filter(Boolean).join("\n\n") || null;
 
     const customerName = inquiryType === "rental"
       ? (inquiry.customer_name || "")
@@ -305,7 +339,7 @@ Deno.serve(async (req: Request) => {
       vatAmount: totals.vatAmount,
       grossAmount: totals.grossAmount,
       isReverseCharge: false,
-      notes,
+      notes: pdfNotes,
       validDays,
       deposit,
       additionalServices: [],
@@ -451,7 +485,7 @@ Deno.serve(async (req: Request) => {
   </div>
   <p style="color:#6b7280;font-size:13px;">Dieses Angebot ist gültig bis ${escapeHtml(fmt(validUntil))}.</p>
   ${agbBytes ? `<p style="color:#6b7280;font-size:13px;">Es gelten unsere beigefügten ${customerKind === "business" ? "AGB für Unternehmer (B2B)" : "AGB für Verbraucher (B2C)"}.</p>` : ""}
-  ${notes ? `<p style="white-space:pre-wrap;">${escapeHtml(notes)}</p>` : ""}
+  ${pdfNotes ? `<p style="white-space:pre-wrap;">${escapeHtml(pdfNotes)}</p>` : ""}
   <p style="margin-top:24px;">Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}<br>
   Tel. ${escapeHtml(loc.phone)} · <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a></p>
 </div></body></html>`;
@@ -472,7 +506,7 @@ Deno.serve(async (req: Request) => {
               ),
             ),
             reply_to: loc.email,
-            subject: `Ihr Angebot von SLT Rental – ${offerNumber}`,
+            subject: `${isRevision ? "Ihr überarbeitetes Angebot" : "Ihr Angebot"} von SLT Rental – ${offerNumber}`,
             html: emailHtml,
             attachments: [
               { filename: fileName, content: encodeBase64(pdfBytes) },
@@ -505,6 +539,11 @@ Deno.serve(async (req: Request) => {
         // Snapshot des Angebots – Grundlage für die spätere Rechnung (inkl. Zusatzoptionen)
         offer_payload: {
           offer_number: offerNumber,
+          base_offer_number: baseOfferNumber,
+          version,
+          supersedes,
+          delivery_requested: deliveryRequested,
+          delivery_address: deliveryAddress,
           created_at: new Date().toISOString(),
           items,
           delivery_cost_delivery: deliveryCostDelivery,

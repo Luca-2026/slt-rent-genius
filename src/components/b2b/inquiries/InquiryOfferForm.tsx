@@ -182,6 +182,15 @@ interface Props {
   rentalPeriod?: { start?: string | null; end?: string | null };
   /** Verknüpfte B2B-Reservierung – Quelle für offene Schäden/Zusatzkosten aus dem Rücknahmeprotokoll. */
   reservationId?: string | null;
+  /** Angebotsnummer der Fassung, die überarbeitet wird (nur Angebotsmodus). */
+  reviseOf?: string | null;
+  /** Vorbelegung aus dem überarbeiteten Angebot. */
+  defaultMeta?: {
+    payment_terms?: string | null;
+    payment_terms_custom?: string | null;
+    valid_days?: number | null;
+    notes?: string | null;
+  };
 }
 
 /** Offene Position aus einem Rücknahmeprotokoll, die noch nicht abgerechnet wurde. */
@@ -222,13 +231,15 @@ export function InquiryOfferForm({
   defaultPayments,
   rentalPeriod,
   reservationId = null,
+  reviseOf = null,
+  defaultMeta,
 }: Props) {
   const isInvoice = mode === "invoice";
   const isSupplement = isInvoice && invoiceKind === "supplement";
   const { toast } = useToast();
 
   // Zwischengespeicherter Entwurf (Tabwechsel / Reload) – einmalig beim Mount gelesen.
-  const draftKey = inquiryDraftKey(mode, inquiryType, inquiryId);
+  const draftKey = inquiryDraftKey(reviseOf && !isInvoice ? `revise-${reviseOf}` : mode, inquiryType, inquiryId);
   const draftRef = useRef(readInquiryDraft<Record<string, any>>(draftKey));
   const draft = draftRef.current;
   const [draftRestored, setDraftRestored] = useState(!!draft);
@@ -254,7 +265,7 @@ export function InquiryOfferForm({
   const [setupCost, setSetupCost] = useState(draft?.setupCost ?? defaultCosts?.setup_cost ?? 0);
   const [dismantleCost, setDismantleCost] = useState(draft?.dismantleCost ?? defaultCosts?.dismantle_cost ?? 0);
   const [deposit, setDeposit] = useState(draft?.deposit ?? defaultCosts?.deposit ?? 0);
-  const [validDays, setValidDays] = useState(draft?.validDays ?? 14);
+  const [validDays, setValidDays] = useState(draft?.validDays ?? defaultMeta?.valid_days ?? 14);
   /** Bereits erhaltene (Teil-)Zahlungen – werden auf der Rechnung abgezogen. */
   const [payments, setPayments] = useState<OfferPayment[]>(
     (draft?.payments as OfferPayment[]) ?? defaultPayments ?? [],
@@ -269,19 +280,19 @@ export function InquiryOfferForm({
 
   const defaultTerms = () =>
     isInvoice ? (customerKind === "business" ? "net_14" : "vorkasse") : customerKind === "business" ? "net_14" : "anzahlung_30";
-  const [paymentTerms, setPaymentTerms] = useState<string>(draft?.paymentTerms ?? defaultTerms());
+  const [paymentTerms, setPaymentTerms] = useState<string>(draft?.paymentTerms ?? defaultMeta?.payment_terms ?? defaultTerms());
   /** Freitext für „Individuelle Zahlungsbedingungen“ (nur Geschäftskunden). */
-  const [paymentTermsCustom, setPaymentTermsCustom] = useState<string>(draft?.paymentTermsCustom ?? "");
+  const [paymentTermsCustom, setPaymentTermsCustom] = useState<string>(draft?.paymentTermsCustom ?? defaultMeta?.payment_terms_custom ?? "");
   const sendLock = useRef(false);
   /** Entwurfs-Werte dürfen von den „Standardwerte setzen“-Effekten nicht überschrieben werden. */
-  const skipDefaults = useRef(!!draft);
+  const skipDefaults = useRef(!!draft || !!defaultMeta?.payment_terms);
 
   useEffect(() => {
     if (skipDefaults.current) return;
     setPaymentTerms(defaultTerms());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerKind, isInvoice]);
-  const [notes, setNotes] = useState<string>(draft?.notes ?? "");
+  const [notes, setNotes] = useState<string>(draft?.notes ?? defaultMeta?.notes ?? "");
   const [sending, setSending] = useState(false);
 
   /** Offene Schäden/Zusatzkosten aus dem Rücknahmeprotokoll dieser Anfrage. */
@@ -423,13 +434,13 @@ export function InquiryOfferForm({
     setSetupCost(defaultCosts?.setup_cost ?? 0);
     setDismantleCost(defaultCosts?.dismantle_cost ?? 0);
     setDeposit(defaultCosts?.deposit ?? 0);
-    setValidDays(14);
+    setValidDays(defaultMeta?.valid_days ?? 14);
     setPayments(defaultPayments ?? []);
     setServicePeriodStart(defaultServicePeriod?.start ?? "");
     setServicePeriodEnd(defaultServicePeriod?.end ?? "");
-    setPaymentTerms(defaultTerms());
-    setPaymentTermsCustom("");
-    setNotes("");
+    setPaymentTerms(defaultMeta?.payment_terms ?? defaultTerms());
+    setPaymentTermsCustom(defaultMeta?.payment_terms_custom ?? "");
+    setNotes(defaultMeta?.notes ?? "");
   };
 
   /** Positionen inkl. übernommenem Zeitraum – Basis für Summen, Anzeige und Versand. */
@@ -658,6 +669,7 @@ export function InquiryOfferForm({
 
         inquiry_type: inquiryType,
         inquiry_id: inquiryId,
+        ...(!isInvoice && reviseOf ? { revise_of: reviseOf } : {}),
         location,
         items: effectiveItems.map(({ available_addons: _unused, price_source: _src, custom_period: _cp, ...rest }) => {
           const unit = (rest.unit ?? "kalendertage") as OfferUnit;
