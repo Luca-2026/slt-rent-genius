@@ -25,7 +25,7 @@ const euro = (n: number) => n.toLocaleString("de-DE", { style: "currency", curre
 
 export default function Customers() {
   const { isStaff, isAdmin, loading: accessLoading } = useStaffAccess();
-  const { rows, loading, save, remove } = useCrmCustomers();
+  const { rows, loading, save, remove, reload } = useCrmCustomers();
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<CrmCustomer | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -258,7 +258,7 @@ export default function Customers() {
         customer={editing}
         onSave={save}
         allowPortal={isAdmin}
-        onPortalCreated={async () => { await loadPortal(); await reload?.(); }}
+        onPortalCreated={async () => { await loadPortal(); await reload(); }}
       />
 
       {isAdmin && (
