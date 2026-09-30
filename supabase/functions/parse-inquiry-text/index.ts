@@ -5,6 +5,7 @@
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { extractInquiry, GatewayError, MAX_INPUT_CHARS } from "./extract.ts";
+import { matchItems, type CatalogRow } from "./match.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -57,7 +58,21 @@ Deno.serve(async (req) => {
       signal: req.signal,
       runId: req.headers.get("X-Lovable-AIG-Run-ID") ?? undefined,
     });
-    return json({ result: data }, 200, runId ? { "X-Lovable-AIG-Run-ID": runId } : {});
+
+    // Schritt 2: echten, veröffentlichten CMS-Katalog laden und zuordnen
+    const { data: catalog, error: catErr } = await service
+      .from("b2b_managed_products")
+      .select("id,slug,name,model_name,category,subcategory,rentware_code,on_request,price_per_day,price_weekend,price_per_month,price_unit_label,images,addon_options")
+      .eq("is_published", true)
+      .order("sort_order", { ascending: true });
+    if (catErr) throw catErr;
+    const { matches, runId: runId2 } = await matchItems(data, (catalog ?? []) as CatalogRow[], {
+      apiKey,
+      signal: req.signal,
+      runId: runId ?? undefined,
+    });
+    const rid = runId2 ?? runId;
+    return json({ result: data, matches }, 200, rid ? { "X-Lovable-AIG-Run-ID": rid } : {});
   } catch (e) {
     if (req.signal.aborted) return new Response(null, { status: 499, headers: corsHeaders });
     if (e instanceof GatewayError) {

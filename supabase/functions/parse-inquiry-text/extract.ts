@@ -103,7 +103,7 @@ Regeln – strikt einhalten:
 - delivery.requested true nur bei ausdrücklichem Liefer-/Transportwunsch, false bei ausdrücklicher Selbstabholung, sonst null.
 - items: jeder gewünschte Artikel einzeln. original_text = Wortlaut aus dem Text. search_terms = 1–4 kurze deutsche Suchbegriffe für einen Produktkatalog (z. B. "Minibagger", "1,8 t"). quantity = genannte Menge, sonst 1. Zubehör, das ausdrücklich gewünscht wird, als eigene Position.
 - KEINE Preise ausgeben.
-- notes: kurze sachliche Zusammenfassung sonstiger relevanter Wünsche (z. B. Einsatzzweck, Führerschein, Rückruf), sonst null.
+- notes: kurze sachliche Zusammenfassung sonstiger relevanter Wünsche (z. B. Einsatzzweck, Führerschein, Rückruf), nur was wörtlich so im Text steht – nichts hineindeuten. Umgangssprache wörtlich nehmen ("Wann ist offen" = Zeitpunkt noch offen). Sonst null.
 - open_questions: was für ein Angebot noch fehlt oder unklar ist (auf Deutsch, knapp).
 - E-Mail und Telefon exakt wie im Text, Telefon ohne Umformatierung außer Leerzeichen-Bereinigung.`;
 }
