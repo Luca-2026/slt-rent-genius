@@ -159,8 +159,8 @@ export default function StaffHome() {
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             <ActionStat label="Neue Mietanfragen" value={unprocessed} to="/b2b/mietanfragen" icon={Inbox} highlight />
             <ActionStat label="Bestätigung offen" value={awaitingConfirmation} to="/b2b/mietanfragen?status=accepted" icon={FileCheck2} highlight />
-            <ActionStat label="Laufende Mietvorgänge" value={running} to="/b2b/mietanfragen?status=running" icon={Package} />
-            <ActionStat label="Offene Verkaufsanfragen" value={openSales} to="/b2b/verkaufsanfragen" icon={ShoppingCart} />
+            <ActionStat label="Laufende Mieten" value={running} to="/b2b/mietanfragen?status=running" icon={Package} />
+            <ActionStat label="Verkaufsanfragen" value={openSales} to="/b2b/verkaufsanfragen" icon={ShoppingCart} />
           </div>
 
           {isAdmin && rec.overdueCount > 0 && (
