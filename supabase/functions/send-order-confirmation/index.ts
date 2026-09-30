@@ -178,7 +178,7 @@ Deno.serve(async (req) => {
   </div>
   ${note ? `<p style="white-space:pre-wrap;border-left:4px solid #00507d;padding:8px 16px;">${esc(note)}</p>` : ""}
   <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;font-size:14px;">
-    <strong>Wichtiger Hinweis:</strong> Der Auftrag kommt erst mit Zugang dieser Auftragsbestätigung bei Ihnen verbindlich zustande. Es gelten unsere Allgemeinen Geschäftsbedingungen.
+    <strong>Verbindliche Auftragsannahme:</strong> Mit dieser Auftragsbestätigung haben wir Ihren Auftrag angenommen – die Miete ist damit verbindlich vereinbart. Diese Auftragsbestätigung dient Ihnen als Nachweis der Auftragsannahme. Es gelten unsere Allgemeinen Geschäftsbedingungen.
   </div>
   <p>Bei Fragen erreichen Sie uns am Standort ${esc(loc.name)} unter Tel. ${esc(loc.phone)} oder <a href="mailto:${esc(loc.email)}" style="color:#00507d;">${esc(loc.email)}</a>.</p>
   <p style="margin-top:24px;">Freundliche Grüße<br>${senderName ? `${esc(senderName)}<br>` : ""}Ihr SLT Rental Team – Standort ${esc(loc.name)}</p>
