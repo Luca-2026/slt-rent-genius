@@ -99,6 +99,13 @@
       "when": 1790788296839,
       "tag": "0013_close_rental_inquiry_on_invoice",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1790791732982,
+      "tag": "0014_sales_article_costs",
+      "breakpoints": true
     }
   ]
 }
