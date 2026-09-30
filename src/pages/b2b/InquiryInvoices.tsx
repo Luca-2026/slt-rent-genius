@@ -375,6 +375,7 @@ export default function InquiryInvoices() {
                         ? "Erstellt"
                         : STATUS_LABEL[row.status] ?? row.status}
                     </Badge>
+                    <Badge variant="outline">{row.customer_kind === "business" ? "Geschäftskunde" : "Privat"}</Badge>
                     <Badge variant="outline">
                       {row.inquiry_type === "rental" ? "Mietanfrage" : "Verkaufsanfrage"}
                     </Badge>
@@ -462,7 +463,7 @@ export default function InquiryInvoices() {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            ))(item.row))}
           </div>
         )}
 
@@ -550,5 +551,43 @@ export default function InquiryInvoices() {
       </div>
 
     </B2BPortalLayout>
+  );
+}
+
+/** Rechnung aus dem B2B-Portal – Bearbeitung weiterhin im B2B-Rechnungsbereich. */
+function PortalInvoiceCard({ row }: { row: PortalInvoiceRow }) {
+  const gross = Number(row.gross_amount ?? row.amount ?? 0);
+  const company = row.customer_company || row.b2b_profiles?.company_name || "Firmenkunde";
+  return (
+    <Card>
+      <CardContent className="p-4 space-y-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="font-semibold">{row.invoice_number ?? "Entwurf"}</span>
+          <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>{STATUS_LABEL[row.status] ?? row.status}</Badge>
+          <Badge variant="secondary">B2B-Portal</Badge>
+          <span className="ml-auto font-semibold">{formatEuro(gross)}</span>
+        </div>
+        <div className="text-sm">
+          {company}
+          {row.b2b_profiles?.contact_email && <span className="text-muted-foreground"> · {row.b2b_profiles.contact_email}</span>}
+        </div>
+        <div className="text-xs text-muted-foreground">
+          Rechnungsdatum {dateDE(row.invoice_date)} · fällig {dateDE(row.due_date)}
+          {row.email_sent ? " · per E-Mail versendet" : " · noch nicht versendet"}
+        </div>
+        <div className="flex flex-wrap gap-2 pt-1">
+          {row.file_url && (
+            <Button size="sm" variant="outline" asChild>
+              <a href={row.file_url} target="_blank" rel="noreferrer">
+                PDF öffnen <ExternalLink className="h-3.5 w-3.5 ml-1" />
+              </a>
+            </Button>
+          )}
+          <Button size="sm" variant="outline" asChild>
+            <Link to="/b2b/admin?tab=invoices">Bearbeiten (Zahlung, Status, Versand)</Link>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
