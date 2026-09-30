@@ -16,6 +16,7 @@ import {
   Inbox, ShoppingCart,
 } from "lucide-react";
 import { useOpenInquiryCounts } from "@/hooks/useInquiries";
+import { StaffNav, visibleGroups, isItemActive } from "@/components/b2b/StaffNav";
 
 function navBadge(
   href: string,
@@ -72,7 +73,7 @@ const staffNavItems = [
 
 export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutProps) {
   const { user, b2bProfile, loading, signOut, isAdmin } = useAuth();
-  const { isStaff } = useStaffAccess();
+  const { isStaff, canViewInventory } = useStaffAccess();
   const { count: openTodoCount } = useStaffWork();
   const inquiryCounts = useOpenInquiryCounts();
   const navigate = useNavigate();
@@ -121,6 +122,11 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
 
   if (!user) return null;
 
+  const staffBadges = { rental: inquiryCounts.rental, sales: inquiryCounts.sales, todos: openTodoCount };
+  const staffActiveLabel = visibleGroups(isAdmin, canViewInventory)
+    .flatMap((g) => g.items)
+    .find((i) => isItemActive(i, location.pathname, location.search))?.label;
+
   return (
     <Layout>
       {/* Header bar */}
@@ -152,11 +158,55 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
         </div>
       </section>
 
+      {isStaff ? (
+        <>
+          {/* Mobile/Tablet: Menü-Button */}
+          <div className="lg:hidden bg-background border-b border-border sticky top-16 z-30">
+            <div className="section-container flex items-center justify-between py-2">
+              <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-2">
+                    <Menu className="h-4 w-4" />
+                    <span>{staffActiveLabel ?? "Menü"}</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-[290px] overflow-y-auto p-0">
+                  <SheetHeader className="p-4 border-b border-border">
+                    <SheetTitle className="text-left">Vermietportal</SheetTitle>
+                  </SheetHeader>
+                  <div className="p-3">
+                    <StaffNav isAdmin={isAdmin} canViewInventory={canViewInventory} badges={staffBadges} onNavigate={() => setMobileNavOpen(false)} />
+                  </div>
+                </SheetContent>
+              </Sheet>
+              {openTodoCount > 0 && location.pathname !== "/b2b/aufgaben" && (
+                <Link to="/b2b/aufgaben">
+                  <Button size="sm" className="gap-1.5">
+                    <CheckSquare className="h-4 w-4" />
+                    <span>{openTodoCount} To-do{openTodoCount === 1 ? "" : "s"}</span>
+                  </Button>
+                </Link>
+              )}
+            </div>
+          </div>
+          <main className="py-6 lg:py-8 min-h-[60vh]">
+            <div className="section-container lg:grid lg:grid-cols-[230px_minmax(0,1fr)] lg:gap-8">
+              <aside className="hidden lg:block">
+                <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-1">
+                  <StaffNav isAdmin={isAdmin} canViewInventory={canViewInventory} badges={staffBadges} />
+                </div>
+              </aside>
+              <div className="min-w-0">{children}</div>
+            </div>
+          </main>
+        </>
+      ) : (
+      <>
       {/* Navigation */}
       <div className="bg-background border-b border-border sticky top-16 z-30">
         <div className="section-container">
           {(() => {
-            const navItems = isAdmin ? adminNavItems : isStaff ? staffNavItems : customerNavItems;
+            const navItems = customerNavItems;
             const activeItem = navItems.find((i) => i.href === location.pathname);
 
             return (
@@ -249,6 +299,8 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
         </div>
       </main>
 
+      </>
+      )}
     </Layout>
   );
 }
