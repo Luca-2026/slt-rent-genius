@@ -506,7 +506,7 @@ Deno.serve(async (req: Request) => {
               ),
             ),
             reply_to: loc.email,
-            subject: `Ihr Angebot von SLT Rental – ${offerNumber}`,
+            subject: `${isRevision ? "Ihr überarbeitetes Angebot" : "Ihr Angebot"} von SLT Rental – ${offerNumber}`,
             html: emailHtml,
             attachments: [
               { filename: fileName, content: encodeBase64(pdfBytes) },
