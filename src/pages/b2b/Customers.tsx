@@ -13,7 +13,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Pencil, Trash2, Mail, Phone, MapPin, CreditCard, CalendarDays, Building2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Mail, Phone, MapPin, CreditCard, CalendarDays } from "lucide-react";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { toast } from "sonner";
 import { ACTION_FILTER_OPTIONS, needsAction, parseActionFilter, registrationDate, type ActionFilter, type PortalProfileLite } from "@/lib/customerActions";
