@@ -32,6 +32,8 @@ export interface RentalInquiry {
   b2b_reservation_id?: string | null;
   rental_group_id?: string | null;
   crm_customer_id?: string | null;
+  /** Gebündelte Artikel einer Website-Anfrage */
+  requested_items?: RequestedItem[] | unknown;
   status: string;
   assigned_to: string | null;
   assigned_name: string | null;
@@ -125,4 +127,28 @@ export function salesInquiryCustomer(inquiry: SalesInquiry): string {
     inquiry.customer_email ||
     "-"
   );
+}
+
+export interface RequestedItem {
+  product_name: string;
+  product_slug?: string | null;
+  quantity: number;
+  set_size?: number | null;
+}
+
+/** Untrusted JSON → Artikelliste; Fallback: Einzelartikel der Anfrage. */
+export function requestedItemsOf(inquiry: Pick<RentalInquiry, "requested_items" | "product_name" | "quantity">): RequestedItem[] {
+  const raw = Array.isArray(inquiry.requested_items) ? (inquiry.requested_items as Record<string, unknown>[]) : [];
+  const list = raw
+    .map((r) => ({
+      product_name: String(r?.product_name ?? "").trim(),
+      product_slug: r?.product_slug ? String(r.product_slug) : null,
+      quantity: Math.max(1, Math.round(Number(r?.quantity) || 1)),
+      set_size: Number(r?.set_size) > 1 ? Math.round(Number(r.set_size)) : null,
+    }))
+    .filter((r) => r.product_name);
+  if (list.length) return list;
+  return inquiry.product_name
+    ? [{ product_name: inquiry.product_name, quantity: inquiry.quantity && inquiry.quantity > 0 ? inquiry.quantity : 1 }]
+    : [];
 }
