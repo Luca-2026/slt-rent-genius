@@ -125,6 +125,17 @@ interface InvoiceSurcharge {
 }
 
 // ─── Component ────────────────────────────────────────────
+const ADMIN_TAB_TITLES: Record<string, { title: string; subtitle?: string }> = {
+  reservations: { title: "B2B-Anfragen (Altfälle)", subtitle: "Anfragen aus dem bisherigen Portal-System – neue Portal-Anfragen erscheinen unter Mietanfragen" },
+  rentals: { title: "Laufende Mietvorgänge", subtitle: "Bestätigte und aktive Mieten von Firmenkunden" },
+  offers: { title: "Angebote (B2B-Portal)", subtitle: "Angebote an Firmenkunden mit Portalkonto" },
+  "delivery-notes": { title: "Übergabeprotokolle" },
+  "return-protocols": { title: "Rücknahmeprotokolle" },
+  invoices: { title: "Rechnungen (B2B-Portal)", subtitle: "Bearbeitung von Portal-Rechnungen – Gesamtübersicht unter Rechnungen" },
+  customers: { title: "Firmenkunden (Portal)", subtitle: "Registrierungen, Freigaben und Kreditlimits" },
+  damages: { title: "Schäden" },
+};
+
 export default function AdminDashboard() {
   const { user, isAdmin, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -871,183 +882,8 @@ export default function AdminDashboard() {
   }
 
   return (
-    <B2BPortalLayout title="B2B-Vermietung" subtitle="Anfragen, Angebote & Rechnungen">
-      <StaffWorkWidget />
-      {/* KPI Overview (Phase B2) */}
-      <AdminStatsOverview
-        revenueThisMonth={revenueThisMonth}
-        openReceivables={openReceivables}
-        openInvoicesCount={openInvoices.length}
-        overdueInvoicesCount={overdueInvoices.length}
-        pipelineRentals={pipelineRentals}
-        pendingReservations={pendingReservations.length}
-        newRegistrationsLast30Days={newRegistrationsLast30Days}
-        pendingCustomers={pendingCustomers.length}
-      />
-      <MaintenanceDueWidget />
-
-
-
-      {/* Phase B3 — Global search across loaded customers / invoices / offers / reservations */}
-      <AdminGlobalSearch
-        customers={profiles}
-        invoices={invoices}
-        offers={offers}
-        reservations={reservations}
-        onSelect={(hit) => {
-          // Kunde → direkt Detail-Dialog öffnen (sonst landet man nur in der langen Liste,
-          // und bei gleichnamigen Konten lässt sich nicht erkennen, welches geklickt wurde).
-          if (hit.type === "customer") {
-            const profile = profiles.find((p) => p.id === hit.id);
-            if (profile) {
-              setSelectedProfile(profile);
-              setDetailCustomerOpen(true);
-              return;
-            }
-          }
-          // Andere Treffer-Typen: in den passenden Tab springen.
-          setActiveTab(hit.tab);
-        }}
-      />
-
-      {/* Quick Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-4 sm:mb-6">
-        <Button
-          variant="outline"
-          className="flex-1 justify-between h-auto py-3 px-4"
-          onClick={() => setActiveTab("rentals")}
-        >
-          <span className="flex items-center gap-2">
-            <Package className="h-4 w-4 text-primary" />
-            <span className="font-medium">Laufende Mietvorgänge</span>
-          </span>
-          <span className="flex items-center gap-2">
-            <Badge variant="secondary" className="text-xs">
-              {reservations.filter((r) => r.status === "active").length}
-            </Badge>
-            <ArrowRight className="h-4 w-4 text-muted-foreground" />
-          </span>
-        </Button>
-        <Button
-          variant="outline"
-          className="flex-1 justify-between h-auto py-3 px-4"
-          onClick={() => setActiveTab("customers")}
-        >
-          <span className="flex items-center gap-2">
-            <Users className="h-4 w-4 text-accent" />
-            <span className="font-medium">Offene Registrierungen</span>
-          </span>
-          <span className="flex items-center gap-2">
-            <Badge variant={pendingCustomers.length > 0 ? "destructive" : "secondary"} className="text-xs">
-              {pendingCustomers.length}
-            </Badge>
-            <ArrowRight className="h-4 w-4 text-muted-foreground" />
-          </span>
-        </Button>
-        <Button
-          variant="outline"
-          className="flex-1 justify-between h-auto py-3 px-4"
-          onClick={() => setActiveTab("reservations")}
-        >
-          <span className="flex items-center gap-2">
-            <FileText className="h-4 w-4 text-primary" />
-            <span className="font-medium">Offene Angebotsanfragen</span>
-          </span>
-          <span className="flex items-center gap-2">
-            <Badge variant={pendingReservations.length > 0 ? "destructive" : "secondary"} className="text-xs">
-              {pendingReservations.length}
-            </Badge>
-            <ArrowRight className="h-4 w-4 text-muted-foreground" />
-          </span>
-        </Button>
-      </div>
-
-      {/* Tab Navigation */}
+    <B2BPortalLayout title={ADMIN_TAB_TITLES[activeTab]?.title ?? "B2B-Vermietung"} subtitle={ADMIN_TAB_TITLES[activeTab]?.subtitle}>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
-        {/* Mobile: horizontally scrollable tabs with labels */}
-        <div className="sm:hidden -mx-4 px-4 overflow-hidden">
-          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory">
-            {[
-              { value: "reservations", label: "Anfragen", icon: FileText, badge: pendingReservations.length },
-              { value: "rentals", label: "Mietvorgänge", icon: Package },
-              { value: "offers", label: "Angebote", icon: Send, badge: offers.length },
-              { value: "delivery-notes", label: "Übergabe", icon: ClipboardCheck },
-              { value: "return-protocols", label: "Rückgabe", icon: ClipboardCheck },
-              { value: "invoices", label: "Rechnungen", icon: Receipt },
-              { value: "customers", label: "Kunden", icon: Users },
-              { value: "damages", label: "Schäden", icon: AlertTriangle },
-
-
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.value;
-              return (
-                <button
-                  key={tab.value}
-                  onClick={() => setActiveTab(tab.value)}
-                  className={`flex-shrink-0 snap-start flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${
-                    isActive
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "bg-muted/60 text-muted-foreground hover:bg-muted"
-                  }`}
-                >
-                  <Icon className="h-4 w-4" />
-                  {tab.label}
-                  {tab.badge && tab.badge > 0 ? (
-                    <Badge variant={isActive ? "secondary" : "outline"} className="h-5 min-w-[20px] px-1 flex items-center justify-center text-[10px]">
-                      {tab.badge}
-                    </Badge>
-                  ) : null}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-        {/* Desktop: original grid tabs */}
-        <TabsList className="hidden sm:grid w-full h-12 grid-cols-8">
-          <TabsTrigger value="reservations" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <FileText className="h-4 w-4" />
-            <span className="hidden sm:inline">Anfragen</span>
-            {pendingReservations.length > 0 && (
-              <Badge variant="secondary" className="h-5 w-5 p-0 flex items-center justify-center text-[10px]">
-                {pendingReservations.length}
-              </Badge>
-            )}
-          </TabsTrigger>
-          <TabsTrigger value="rentals" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <Package className="h-4 w-4" />
-            <span className="hidden sm:inline">Mietvorgänge</span>
-          </TabsTrigger>
-          <TabsTrigger value="offers" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <Send className="h-4 w-4" />
-            <span className="hidden sm:inline">Angebote</span>
-            {offers.length > 0 && (
-              <Badge variant="secondary" className="h-5 w-5 p-0 flex items-center justify-center text-[10px]">
-                {offers.length}
-              </Badge>
-            )}
-          </TabsTrigger>
-          <TabsTrigger value="delivery-notes" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <ClipboardCheck className="h-4 w-4" />
-            <span className="hidden sm:inline">Übergabe</span>
-          </TabsTrigger>
-          <TabsTrigger value="return-protocols" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <ClipboardCheck className="h-4 w-4" />
-            <span className="hidden sm:inline">Rückgabe</span>
-          </TabsTrigger>
-          <TabsTrigger value="invoices" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <Receipt className="h-4 w-4" />
-            <span className="hidden sm:inline">Rechnungen</span>
-          </TabsTrigger>
-          <TabsTrigger value="customers" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <Users className="h-4 w-4" />
-            <span className="hidden sm:inline">Kunden</span>
-          </TabsTrigger>
-          <TabsTrigger value="damages" className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <AlertTriangle className="h-4 w-4" />
-            <span className="hidden sm:inline">Schäden</span>
-          </TabsTrigger>
-        </TabsList>
 
 
         {/* Tabs Content */}
