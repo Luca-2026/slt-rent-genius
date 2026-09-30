@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { NewRentalProtocolButton } from "@/components/b2b/protocols/NewRentalProtocolButton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX, Send, Trash2, FileSignature } from "lucide-react";
@@ -158,10 +159,13 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
             <ClipboardCheck className="h-5 w-5 shrink-0" />
             Rückgabeprotokolle ({protocols.length})
           </CardTitle>
-          <Button variant="outline" size="sm" onClick={fetchProtocols} className="self-start h-10 sm:h-9">
+          <div className="flex flex-wrap gap-2">
+            <NewRentalProtocolButton kind="return" onCreated={fetchProtocols} />
+            <Button variant="outline" size="sm" onClick={fetchProtocols} className="self-start h-10 sm:h-9">
             <RefreshCw className="h-4 w-4 mr-1.5" />
             Aktualisieren
           </Button>
+            </div>
         </div>
       </CardHeader>
       <CardContent>
@@ -204,7 +208,10 @@ export function AdminReturnProtocolsTab({ profiles, onRefresh }: Props) {
                             </Badge>
                           )}
                         </div>
-                        {profile && (
+                        {!profile && (rp as any).protocol_data?.customer_label && (
+                            <p className="text-sm text-muted-foreground">{(rp as any).protocol_data.customer_label}{(rp as any).protocol_data.order_confirmation_number ? ` · AB ${(rp as any).protocol_data.order_confirmation_number}` : ""}</p>
+                          )}
+                          {profile && (
                           <p className="text-sm text-muted-foreground">
                             {profile.company_name} · {profile.contact_first_name} {profile.contact_last_name}
                           </p>

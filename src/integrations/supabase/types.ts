@@ -304,7 +304,7 @@ export type Database = {
           additional_defects: string | null
           agb_accepted: boolean
           agb_accepted_at: string | null
-          b2b_profile_id: string
+          b2b_profile_id: string | null
           created_at: string
           delivery_note_number: string
           email_sent: boolean
@@ -319,6 +319,7 @@ export type Database = {
           notes: string | null
           offer_id: string | null
           photo_urls: string[] | null
+          protocol_data: Json
           rental_inquiry_id: string | null
           reservation_id: string | null
           signature_data: string | null
@@ -332,7 +333,7 @@ export type Database = {
           additional_defects?: string | null
           agb_accepted?: boolean
           agb_accepted_at?: string | null
-          b2b_profile_id: string
+          b2b_profile_id?: string | null
           created_at?: string
           delivery_note_number: string
           email_sent?: boolean
@@ -347,6 +348,7 @@ export type Database = {
           notes?: string | null
           offer_id?: string | null
           photo_urls?: string[] | null
+          protocol_data?: Json
           rental_inquiry_id?: string | null
           reservation_id?: string | null
           signature_data?: string | null
@@ -360,7 +362,7 @@ export type Database = {
           additional_defects?: string | null
           agb_accepted?: boolean
           agb_accepted_at?: string | null
-          b2b_profile_id?: string
+          b2b_profile_id?: string | null
           created_at?: string
           delivery_note_number?: string
           email_sent?: boolean
@@ -375,6 +377,7 @@ export type Database = {
           notes?: string | null
           offer_id?: string | null
           photo_urls?: string[] | null
+          protocol_data?: Json
           rental_inquiry_id?: string | null
           reservation_id?: string | null
           signature_data?: string | null
@@ -1747,7 +1750,7 @@ export type Database = {
         Row: {
           additional_defects_at_return: string | null
           all_items_returned: boolean
-          b2b_profile_id: string
+          b2b_profile_id: string | null
           cleaning_required: boolean
           condition_notes: string | null
           created_at: string
@@ -1771,6 +1774,7 @@ export type Database = {
           notes: string | null
           overall_condition: string
           photo_urls: string[] | null
+          protocol_data: Json
           rental_inquiry_id: string | null
           reservation_id: string | null
           return_protocol_number: string
@@ -1783,7 +1787,7 @@ export type Database = {
         Insert: {
           additional_defects_at_return?: string | null
           all_items_returned?: boolean
-          b2b_profile_id: string
+          b2b_profile_id?: string | null
           cleaning_required?: boolean
           condition_notes?: string | null
           created_at?: string
@@ -1807,6 +1811,7 @@ export type Database = {
           notes?: string | null
           overall_condition?: string
           photo_urls?: string[] | null
+          protocol_data?: Json
           rental_inquiry_id?: string | null
           reservation_id?: string | null
           return_protocol_number: string
@@ -1819,7 +1824,7 @@ export type Database = {
         Update: {
           additional_defects_at_return?: string | null
           all_items_returned?: boolean
-          b2b_profile_id?: string
+          b2b_profile_id?: string | null
           cleaning_required?: boolean
           condition_notes?: string | null
           created_at?: string
@@ -1843,6 +1848,7 @@ export type Database = {
           notes?: string | null
           overall_condition?: string
           photo_urls?: string[] | null
+          protocol_data?: Json
           rental_inquiry_id?: string | null
           reservation_id?: string | null
           return_protocol_number?: string
