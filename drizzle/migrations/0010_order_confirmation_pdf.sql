@@ -1,0 +1,2 @@
+ALTER TABLE public.rental_inquiries ADD COLUMN IF NOT EXISTS order_confirmation_number text, ADD COLUMN IF NOT EXISTS order_confirmation_file_url text;
+ALTER TABLE public.sales_inquiries ADD COLUMN IF NOT EXISTS order_confirmation_number text, ADD COLUMN IF NOT EXISTS order_confirmation_file_url text;

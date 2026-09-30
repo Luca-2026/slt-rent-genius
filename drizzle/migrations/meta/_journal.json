@@ -71,6 +71,13 @@
       "when": 1790775798687,
       "tag": "0009_order_confirmation_columns",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1790777461680,
+      "tag": "0010_order_confirmation_pdf",
+      "breakpoints": true
     }
   ]
 }

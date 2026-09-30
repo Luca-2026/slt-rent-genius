@@ -2781,6 +2781,8 @@ export type Database = {
           offer_payload: Json | null
           offer_sent_at: string | null
           offer_total_gross: number | null
+          order_confirmation_file_url: string | null
+          order_confirmation_number: string | null
           order_confirmed_at: string | null
           order_confirmed_by_name: string | null
           paid_amount: number
@@ -2833,6 +2835,8 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          order_confirmation_file_url?: string | null
+          order_confirmation_number?: string | null
           order_confirmed_at?: string | null
           order_confirmed_by_name?: string | null
           paid_amount?: number
@@ -2885,6 +2889,8 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          order_confirmation_file_url?: string | null
+          order_confirmation_number?: string | null
           order_confirmed_at?: string | null
           order_confirmed_by_name?: string | null
           paid_amount?: number
@@ -2973,6 +2979,8 @@ export type Database = {
           offer_payload: Json | null
           offer_sent_at: string | null
           offer_total_gross: number | null
+          order_confirmation_file_url: string | null
+          order_confirmation_number: string | null
           order_confirmed_at: string | null
           order_confirmed_by_name: string | null
           paid_amount: number
@@ -3038,6 +3046,8 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          order_confirmation_file_url?: string | null
+          order_confirmation_number?: string | null
           order_confirmed_at?: string | null
           order_confirmed_by_name?: string | null
           paid_amount?: number
@@ -3103,6 +3113,8 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          order_confirmation_file_url?: string | null
+          order_confirmation_number?: string | null
           order_confirmed_at?: string | null
           order_confirmed_by_name?: string | null
           paid_amount?: number
