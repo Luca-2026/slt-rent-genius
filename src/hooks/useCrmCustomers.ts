@@ -18,6 +18,7 @@ export interface CrmCustomer {
   vat_id: string | null;
   location: string | null;
   notes: string | null;
+  b2b_profile_id?: string | null;
   created_at: string;
   updated_at: string;
 }
