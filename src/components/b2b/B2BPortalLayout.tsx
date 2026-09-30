@@ -190,7 +190,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
             </div>
           </div>
           <main className="py-6 lg:py-8 min-h-[60vh]">
-            <div className="section-container lg:grid lg:grid-cols-[230px_minmax(0,1fr)] lg:gap-8">
+            <div className="section-container lg:grid lg:grid-cols-[250px_minmax(0,1fr)] lg:gap-8">
               <aside className="hidden lg:block">
                 <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-1">
                   <StaffNav isAdmin={isAdmin} canViewInventory={canViewInventory} badges={staffBadges} />
