@@ -20,14 +20,15 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { buildOfferTotals, formatEuro, isValidOfferTotal, lineTotal, type OfferLine } from "./offerMath";
-import { ADDON_PRESETS, parseAddonOptions, suggestAddonAmount, type AddonOption } from "@/lib/offerAddons";
+import { ADDON_PRESETS, parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
+import { AddonSection, recalcAddons } from "./OfferAddonSection";
 import {
   InquiryProductCombobox,
   findCatalogProductByName,
   pickCatalogImage,
 } from "./InquiryProductCombobox";
 import { SalesProductCombobox } from "./SalesProductCombobox";
-import { SALES_ADDON_PRESETS, isSalesAddonNegative } from "@/lib/salesAddons";
+import { SALES_ADDON_PRESETS } from "@/lib/salesAddons";
 import { loadSalesCatalog } from "@/hooks/useSalesCatalog";
 import { OFFER_UNITS, unitLabel, type OfferUnit } from "@/lib/offerUnits";
 import { resolveCatalogPrice } from "@/lib/catalogPricing";
@@ -446,7 +447,7 @@ export function InquiryOfferForm({
 
   /** Positionen inkl. übernommenem Zeitraum – Basis für Summen, Anzeige und Versand. */
   const effectiveItems = useMemo(
-    () => items.map((item, i) => applyInheritedPeriod(item, i, items[0])),
+    () => items.map((item, i) => recalcAddons(applyInheritedPeriod(item, i, items[0]))),
     [items],
   );
 
@@ -996,117 +997,15 @@ export function InquiryOfferForm({
             ) : null}
 
             {/* Zusatzoptionen dieser Position (CMS-Optionen + Standardauswahl + Freifeld) */}
-            {(() => {
-              const options = addonOptionsFor(item, inquiryType === "sales");
-              return (
-              <div className="rounded-md bg-muted/50 p-2 space-y-2">
-                <div className="flex gap-2">
-                <Select
-                  value=""
-                  disabled={disabled}
-                  onValueChange={(key) => {
-                    const option = options.find((o) => o.key === key);
-                    if (!option) return;
-                    if ((item.addons ?? []).some((a) => a.key === option.key)) return;
-                    patchItem(index, {
-                      addons: [
-                        ...(item.addons ?? []),
-                        {
-                          key: option.key,
-                          label: option.label,
-                          amount: isSalesAddonNegative(option.key)
-                            ? -Math.abs(suggestAddonAmount(option, item))
-                            : suggestAddonAmount(option, item),
-                          note: option.deductible ? `Selbstbehalt ${option.deductible} €` : option.note,
-                        },
-                      ],
-                    });
-                  }}
-                >
-                  <SelectTrigger className="h-9 text-sm">
-                    <SelectValue placeholder="Zusatzoption hinzufügen …" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {options
-                      .filter((o) => !(item.addons ?? []).some((a) => a.key === o.key))
-                      .map((o) => (
-                        <SelectItem key={o.key} value={o.key}>{o.label}</SelectItem>
-                      ))}
-                  </SelectContent>
-                </Select>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="h-9 shrink-0"
-                  disabled={disabled}
-                  onClick={() =>
-                    patchItem(index, {
-                      addons: [
-                        ...(item.addons ?? []),
-                        { key: `custom-${Date.now()}`, label: "", amount: 0 },
-                      ],
-                    })
-                  }
-                >
-                  <Plus className="h-4 w-4 mr-1" /> Freie Option
-                </Button>
-                </div>
-
-                {(item.addons ?? []).map((addon, ai) => (
-                  <div key={addon.key} className="flex items-end gap-2">
-                    <div className="min-w-0 flex-1 space-y-1">
-                      {addon.key.startsWith("custom") ? (
-                        <Input
-                          value={addon.label}
-                          placeholder="Bezeichnung der Zusatzoption"
-                          disabled={disabled}
-                          onChange={(e) =>
-                            patchItem(index, {
-                              addons: (item.addons ?? []).map((a, j) =>
-                                j === ai ? { ...a, label: e.target.value } : a,
-                              ),
-                            })
-                          }
-                        />
-                      ) : (
-                        <Label className="text-xs break-words">
-                          {addon.label}
-                          {addon.note ? <span className="block text-muted-foreground font-normal">{addon.note}</span> : null}
-                        </Label>
-                      )}
-                      <NumberInput
-
-                        type="number"
-                        step="0.01"
-                        value={addon.amount}
-                        onChange={(e) =>
-                          patchItem(index, {
-                            addons: (item.addons ?? []).map((a, j) =>
-                              j === ai ? { ...a, amount: Number(e.target.value) || 0 } : a,
-                            ),
-                          })
-                        }
-                        disabled={disabled}
-                      />
-                    </div>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      aria-label="Zusatzoption entfernen"
-                      disabled={disabled}
-                      onClick={() =>
-                        patchItem(index, { addons: (item.addons ?? []).filter((_, j) => j !== ai) })
-                      }
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-              );
-            })()}
+            <AddonSection
+              item={eff}
+              options={addonOptionsFor(item, inquiryType === "sales")}
+              isSales={inquiryType === "sales"}
+              disabled={disabled}
+              periodStart={eff.rental_start ?? checkStart ?? undefined}
+              periodEnd={eff.rental_end ?? checkEnd ?? undefined}
+              onChange={(addons) => patchItem(index, { addons })}
+            />
           </div>
           );
         })}
