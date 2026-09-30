@@ -100,7 +100,7 @@ Deno.serve(async (req) => {
 
     const payload = (inq.offer_payload ?? {}) as Record<string, any>;
     const items: any[] = Array.isArray(payload.items) ? payload.items : [];
-    const payments: any[] = (Array.isArray(inq.payments) ? inq.payments : []).filter((p) => toCents(p?.amount) > 0);
+    const payments: any[] = (Array.isArray(inq.payments) ? inq.payments : []).filter((p: any) => toCents(p?.amount) > 0);
     const ev = evaluateOrderPayment({
       gross: inq.offer_total_gross ?? payload?.totals?.grossAmount,
       deposit: payload?.deposit,
