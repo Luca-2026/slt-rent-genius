@@ -1,5 +1,8 @@
 export interface RentalInquiry {
   id: string;
+  order_confirmed_at?: string | null;
+  order_confirmation_number?: string | null;
+  offer_payload?: unknown;
   source: string;
   location: string | null;
   location_email: string | null;

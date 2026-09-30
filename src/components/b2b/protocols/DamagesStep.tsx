@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Camera, Plus, Trash2, Upload, X } from "lucide-react";
+import { toast } from "sonner";
+import { MAX_PROTOCOL_PHOTOS, formatPhotoTimestamp, photoTakenAt } from "@/lib/rentalProtocol";
 import {
   DAMAGE_CATEGORIES, emptyDamage, formatEuro, sumDamages, type ProtocolDamage,
 } from "./protocolShared";
@@ -24,9 +26,11 @@ interface Props {
   /** Überschrift-Zusatz, z. B. „bei Übergabe" oder „bei Rückgabe" */
   context: string;
   showAmounts?: boolean;
+  /** Noch freie Foto-Plätze im gesamten Protokoll (undefined = unbegrenzt). */
+  photoSlotsLeft?: number;
 }
 
-export function DamagesStep({ damages, onChange, itemNames, context, showAmounts = false }: Props) {
+export function DamagesStep({ damages, onChange, itemNames, context, showAmounts = false, photoSlotsLeft }: Props) {
   const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const update = (id: string, patch: Partial<ProtocolDamage>) =>
@@ -35,7 +39,13 @@ export function DamagesStep({ damages, onChange, itemNames, context, showAmounts
   const remove = (id: string) => onChange(damages.filter((d) => d.id !== id));
 
   const addPhotos = (id: string, files: FileList | null) => {
-    const list = Array.from(files || []);
+    let list = Array.from(files || []);
+    if (photoSlotsLeft !== undefined && list.length > photoSlotsLeft) {
+      toast.warning(photoSlotsLeft === 0
+        ? `Maximal ${MAX_PROTOCOL_PHOTOS} Fotos je Protokoll – es ist kein Platz mehr frei.`
+        : `Maximal ${MAX_PROTOCOL_PHOTOS} Fotos je Protokoll – nur ${photoSlotsLeft} weitere übernommen.`);
+      list = list.slice(0, photoSlotsLeft);
+    }
     if (!list.length) return;
     const damage = damages.find((d) => d.id === id);
     if (!damage) return;
@@ -186,6 +196,7 @@ export function DamagesStep({ damages, onChange, itemNames, context, showAmounts
                 {damage.photos.map((photo, i) => (
                   <div key={i} className="relative">
                     <img src={photo.preview} alt={`Schaden ${idx + 1} Foto ${i + 1}`} className="h-20 w-20 object-cover rounded-md border" />
+                    <span className="block w-20 text-[9px] leading-tight text-muted-foreground mt-0.5">{formatPhotoTimestamp(photoTakenAt(photo.file.lastModified))}</span>
                     <button
                       type="button"
                       onClick={() => removePhoto(damage.id, i)}
@@ -197,6 +208,7 @@ export function DamagesStep({ damages, onChange, itemNames, context, showAmounts
                 ))}
                 <button
                   type="button"
+                  disabled={photoSlotsLeft === 0}
                   onClick={() => fileRefs.current[damage.id]?.click()}
                   className="h-20 w-20 border-2 border-dashed border-muted-foreground/30 rounded-md flex flex-col items-center justify-center gap-1 text-muted-foreground hover:border-primary hover:text-primary"
                 >

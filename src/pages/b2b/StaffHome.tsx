@@ -1,3 +1,5 @@
+import { isRunningRental } from "@/lib/inquiryStatus";
+import { useRentalProtocolStatus } from "@/hooks/useRentalProtocolStatus";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, CalendarCheck, CalendarX, AlertTriangle, Inbox, ListTodo, TrendingUp, Receipt, FileCheck2, Package, ShoppingCart, ChevronRight, LayoutGrid } from "lucide-react";
@@ -109,6 +111,7 @@ export default function StaffHome() {
   const [portalInvoices, setPortalInvoices] = useState<PortalInvoiceRow[]>([]);
   const [profiles, setProfiles] = useState<ProfileRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const protocols = useRentalProtocolStatus();
 
   useEffect(() => {
     if (accessLoading || !isStaff) return;
@@ -140,7 +143,7 @@ export default function StaffHome() {
   const active = inquiries.filter((r) => r.status === "accepted" || r.status === "done");
   const pickups = active.filter((r) => r.status === "accepted" && r.start_date?.slice(0, 10) === today);
   const returns = active.filter((r) => r.end_date?.slice(0, 10) === today);
-  const running = inquiries.filter((r) => r.status === "accepted" && r.order_confirmed_at).length;
+  const running = inquiries.filter((r) => isRunningRental({ ...r, handed_over: protocols.byInquiry.has(r.id) && !!protocols.byInquiry.get(r.id)?.delivery }, today)).length;
   const awaitingConfirmation = inquiries.filter((r) => r.status === "accepted" && !r.order_confirmed_at).length;
   const unprocessed = inquiries.filter(isUnprocessedInquiry).length;
   const customerRequests = profiles.flatMap((p) => ([

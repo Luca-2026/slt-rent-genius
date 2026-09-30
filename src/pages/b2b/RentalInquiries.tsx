@@ -15,7 +15,9 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { INQUIRY_LIST_FILTERS, matchesInquiryListFilter, parseInquiryListFilter } from "@/lib/inquiryStatus";
+import { INQUIRY_LIST_FILTERS, isReturnOverdue, isRunningRental, isUpcomingRental, matchesInquiryListFilter, parseInquiryListFilter, todayIso } from "@/lib/inquiryStatus";
+import { useRentalProtocolStatus } from "@/hooks/useRentalProtocolStatus";
+import { RentalProtocolSection } from "@/components/b2b/protocols/RentalProtocolSection";
 import { requestedItemsOf, type RentalInquiry } from "@/components/b2b/inquiries/types";
 import { quantityLabel } from "@/lib/setSize";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
@@ -51,6 +53,9 @@ const rentalDays = (start: string | null, end: string | null) => {
 export default function RentalInquiries() {
   const { isStaff, loading: accessLoading } = useStaffAccess();
   const { rows, loading, reload } = useRentalInquiries();
+  const protocols = useRentalProtocolStatus();
+  const today = todayIso();
+  const withProtocol = (r: RentalInquiry) => ({ ...r, handed_over: !!protocols.byInquiry.get(r.id)?.delivery });
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(() => new URLSearchParams(window.location.search).get("anfrage"));
   const [newOpen, setNewOpen] = useState(false);
@@ -69,7 +74,7 @@ export default function RentalInquiries() {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return rows.filter((r) => {
-      if (!matchesInquiryListFilter(r, statusFilter)) return false;
+      if (!matchesInquiryListFilter(withProtocol(r), statusFilter, today)) return false;
       if (!matchesSegment(segmentOf(r), segment)) return false;
       if (locationFilter !== "all" && r.location !== locationFilter) return false;
       if (!q) return true;
@@ -77,7 +82,7 @@ export default function RentalInquiries() {
         .filter(Boolean)
         .some((v) => String(v).toLowerCase().includes(q));
     });
-  }, [rows, search, statusFilter, segment, locationFilter]);
+  }, [rows, search, statusFilter, segment, locationFilter, protocols.byInquiry]);
 
   const selected = rows.find((r) => r.id === selectedId) ?? null;
 
@@ -213,6 +218,7 @@ export default function RentalInquiries() {
                     <span className="font-semibold break-words min-w-0">{r.product_name || "Mietanfrage"}</span>
                     <InquiryStatusBadge status={r.status} />
                     <InquirySourceBadges inquiry={r} />
+                    <RentalPhaseBadge inquiry={withProtocol(r)} returned={!!protocols.byInquiry.get(r.id)?.ret} today={today} />
                   </div>
                   <p className="text-sm text-muted-foreground break-words">
                     {r.company_name ? `${r.company_name} · ` : ""}
@@ -277,12 +283,26 @@ export default function RentalInquiries() {
 
                 details={<RentalDetails inquiry={selected} />}
               />
+              <RentalProtocolSection
+                inquiry={selected}
+                state={protocols.byInquiry.get(selected.id) ?? { delivery: null, ret: null }}
+                onChanged={() => { void protocols.reload(); void reload(); }}
+              />
             </div>
           )}
         </SheetContent>
       </Sheet>
     </B2BPortalLayout>
   );
+}
+
+/** Mietphase eines bestätigten Auftrags: bevorstehend, laufend, überfällig, zurück. */
+function RentalPhaseBadge({ inquiry, returned, today }: { inquiry: RentalInquiry & { handed_over: boolean }; returned: boolean; today: string }) {
+  if (returned && inquiry.status === "accepted") return <Badge variant="secondary">Zurückgegeben – Rechnung offen</Badge>;
+  if (isReturnOverdue(inquiry, today) && !returned) return <Badge variant="destructive">Rückgabe überfällig</Badge>;
+  if (isRunningRental(inquiry, today)) return <Badge className="bg-primary text-primary-foreground">{inquiry.handed_over ? "Läuft – übergeben" : "Läuft – Übergabe offen"}</Badge>;
+  if (isUpcomingRental(inquiry, today)) return <Badge variant="outline">Mietbeginn steht bevor</Badge>;
+  return null;
 }
 
 /** Kennzeichnet Firmenkunden bzw. Anfragen aus dem B2B-Portal. */

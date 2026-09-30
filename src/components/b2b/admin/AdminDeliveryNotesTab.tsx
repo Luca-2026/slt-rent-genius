@@ -4,6 +4,7 @@ import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { generateBlankDeliveryNotePdf, type DeviceConditionData } from "@/utils/deliveryNoteBlankPdf";
 import { DeviceConditionDialog } from "./DeviceConditionDialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { NewRentalProtocolButton } from "@/components/b2b/protocols/NewRentalProtocolButton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ClipboardCheck, Eye, RefreshCw, ShieldCheck, Mail, MailX, Send, Trash2, Download, FileSignature } from "lucide-react";
@@ -237,10 +238,13 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
               <ClipboardCheck className="h-5 w-5 shrink-0" />
               Übergabeprotokolle ({deliveryNotes.length})
             </CardTitle>
+            <div className="flex flex-wrap gap-2">
+            <NewRentalProtocolButton kind="delivery" onCreated={fetchDeliveryNotes} />
             <Button variant="outline" size="sm" onClick={fetchDeliveryNotes} className="self-start h-10 sm:h-9">
               <RefreshCw className="h-4 w-4 mr-1.5" />
               Aktualisieren
             </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
@@ -278,6 +282,9 @@ export function AdminDeliveryNotesTab({ profiles, onRefresh }: Props) {
                               </Badge>
                             )}
                           </div>
+                          {!profile && (dn as any).protocol_data?.customer_label && (
+                            <p className="text-sm text-muted-foreground">{(dn as any).protocol_data.customer_label}{(dn as any).protocol_data.order_confirmation_number ? ` · AB ${(dn as any).protocol_data.order_confirmation_number}` : ""}</p>
+                          )}
                           {profile && (
                             <p className="text-sm text-muted-foreground">
                               {profile.company_name} · {profile.contact_first_name} {profile.contact_last_name}
