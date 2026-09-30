@@ -2781,6 +2781,8 @@ export type Database = {
           offer_payload: Json | null
           offer_sent_at: string | null
           offer_total_gross: number | null
+          order_confirmed_at: string | null
+          order_confirmed_by_name: string | null
           paid_amount: number
           payments: Json
           product_id: string | null
@@ -2831,6 +2833,8 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          order_confirmed_at?: string | null
+          order_confirmed_by_name?: string | null
           paid_amount?: number
           payments?: Json
           product_id?: string | null
@@ -2881,6 +2885,8 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          order_confirmed_at?: string | null
+          order_confirmed_by_name?: string | null
           paid_amount?: number
           payments?: Json
           product_id?: string | null
@@ -2967,6 +2973,8 @@ export type Database = {
           offer_payload: Json | null
           offer_sent_at: string | null
           offer_total_gross: number | null
+          order_confirmed_at: string | null
+          order_confirmed_by_name: string | null
           paid_amount: number
           payments: Json
           product_category: string | null
@@ -3030,6 +3038,8 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          order_confirmed_at?: string | null
+          order_confirmed_by_name?: string | null
           paid_amount?: number
           payments?: Json
           product_category?: string | null
@@ -3093,6 +3103,8 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          order_confirmed_at?: string | null
+          order_confirmed_by_name?: string | null
           paid_amount?: number
           payments?: Json
           product_category?: string | null

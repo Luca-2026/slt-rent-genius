@@ -1,3 +1,4 @@
+import { NumberInput } from "@/components/ui/number-input";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -121,7 +122,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
           </div>
           <div>
             <Label className="text-[11px]">Betrag (€)</Label>
-            <Input
+            <NumberInput
               type="number"
               step="0.01"
               min="0"
