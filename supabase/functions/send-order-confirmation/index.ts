@@ -6,6 +6,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
+import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
 import { normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 
 const corsHeaders = {
@@ -236,6 +237,7 @@ Deno.serve(async (req) => {
           .map((a: any, ai: number) => ({
             id: `${idx}-${a.key || ai}`,
             name: a.note ? `${a.label} (${a.note})` : a.label,
+            description: addonExplanation(a, item) || undefined,
             pricePercent: null,
             amount: num(a.amount),
             allocations: [{ itemIndex: idx, amount: num(a.amount) }],
