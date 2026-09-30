@@ -76,16 +76,53 @@ export function isUnprocessedInquiry(row: { status: unknown; assigned_to?: strin
   return !row.assigned_to && (s === "new" || s === "in_progress");
 }
 
-export type InquiryListFilter = "unprocessed" | "working" | "offer_sent" | "accepted" | "running" | "completed" | "rejected" | "all";
+export type InquiryListFilter = "unprocessed" | "working" | "offer_sent" | "accepted" | "upcoming" | "running" | "completed" | "rejected" | "all";
 
-type ListRow = { status: unknown; assigned_to?: string | null; order_confirmed_at?: string | null };
+type ListRow = {
+  status: unknown;
+  assigned_to?: string | null;
+  order_confirmed_at?: string | null;
+  start_date?: string | null;
+  end_date?: string | null;
+  /** Übergabeprotokoll existiert bereits (Gerät ist beim Kunden). */
+  handed_over?: boolean;
+};
+
+/** Heutiges Datum als YYYY-MM-DD in lokaler Zeit (Berlin im Portal). */
+export function todayIso(now: Date = new Date()): string {
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+function isConfirmedOrder(row: ListRow): boolean {
+  return normalizeInquiryStatus(row.status) === "accepted" && !!row.order_confirmed_at;
+}
 
 /**
- * Laufender Mietvorgang: Angebot angenommen UND Auftragsbestätigung versendet,
- * aber noch keine Rechnung (mit Rechnung wird die Anfrage automatisch „Erledigt“).
+ * Laufender Mietvorgang: Auftragsbestätigung versendet, noch keine Rechnung
+ * UND der Mietzeitraum hat begonnen (oder die Übergabe ist schon erfolgt).
+ * Aufträge mit Mietbeginn in der Zukunft sind „bevorstehend“, nicht laufend.
  */
-export function isRunningRental(row: ListRow): boolean {
-  return normalizeInquiryStatus(row.status) === "accepted" && !!row.order_confirmed_at;
+export function isRunningRental(row: ListRow, today: string = todayIso()): boolean {
+  if (!isConfirmedOrder(row)) return false;
+  if (row.handed_over) return true;
+  const start = (row.start_date ?? "").slice(0, 10);
+  if (!start) return true; // ohne Mietbeginn nicht verstecken
+  return start <= today;
+}
+
+/** Bestätigter Auftrag, Mietbeginn liegt noch in der Zukunft. */
+export function isUpcomingRental(row: ListRow, today: string = todayIso()): boolean {
+  return isConfirmedOrder(row) && !isRunningRental(row, today);
+}
+
+/** Laufend, aber Mietende überschritten → Rückgabe überfällig. */
+export function isReturnOverdue(row: ListRow, today: string = todayIso()): boolean {
+  if (!isRunningRental(row, today)) return false;
+  const end = (row.end_date ?? "").slice(0, 10);
+  return !!end && end < today;
 }
 
 export const INQUIRY_LIST_FILTERS: { value: InquiryListFilter; label: string }[] = [
@@ -94,6 +131,7 @@ export const INQUIRY_LIST_FILTERS: { value: InquiryListFilter; label: string }[]
   { value: "working", label: "In Bearbeitung" },
   { value: "offer_sent", label: "Angebot gesendet" },
   { value: "accepted", label: "Angenommen (Auftragsbestätigung offen)" },
+  { value: "upcoming", label: "Bestätigt – Mietbeginn steht bevor" },
   { value: "running", label: "Laufende Mietvorgänge" },
   { value: "completed", label: "Abgeschlossen (abgerechnet)" },
   { value: "rejected", label: "Abgelehnt" },
@@ -102,6 +140,7 @@ export const INQUIRY_LIST_FILTERS: { value: InquiryListFilter; label: string }[]
 export function matchesInquiryListFilter(
   row: ListRow,
   filter: InquiryListFilter,
+  today: string = todayIso(),
 ): boolean {
   const s = normalizeInquiryStatus(row.status);
   switch (filter) {
@@ -110,7 +149,8 @@ export function matchesInquiryListFilter(
     case "working": return !isUnprocessedInquiry(row) && (s === "new" || s === "in_progress");
     case "offer_sent": return s === "offer_sent";
     case "accepted": return s === "accepted" && !row.order_confirmed_at;
-    case "running": return isRunningRental(row);
+    case "upcoming": return isUpcomingRental(row, today);
+    case "running": return isRunningRental(row, today);
     case "completed": return s === "done";
     case "rejected": return s === "rejected";
   }
