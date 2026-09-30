@@ -4,3 +4,4 @@
 - Umsatzauswertung /b2b/auswertungen nur über src/lib/revenueAnalytics.ts (getestet, nutzt countsAsRevenue aus dashboardMetrics) – Standort-, Kategorie- und Artikelsummen ergeben immer denselben Gesamtumsatz.
 - Offene Kundenanfragen (Freischaltung, Kreditlimit, Löschung) nur über src/lib/customerActions.ts (getestet) – gleiche Regel in Kundenkartei und Startseite; Portalkunden werden in der Kundenkartei über die Kundenakte bearbeitet.
 - Verkaufspreisrahmen nur über src/lib/salesPricing.ts (getestet): Mindestpreis = EK netto × (1 + Gemeinkosten, Standard 10 %), Bonusbasis = Verkaufspreis − Mindestpreis; EK liegt in sales_article_costs (nur Mitarbeiter lesbar), nie in den öffentlichen Artikeltabellen.
+- Betriebsstunden/Tank je Artikel: CMS-Schalter tracks_operating_hours/has_fuel_tank steuern die Protokollabfrage; Messwerte nur in b2b_operating_hours_readings (Schreiben nur per Edge-Function) – eine zentrale Quelle für CMS-Anzeige und Rückgabevergleich.
