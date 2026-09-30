@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { isOpenInquiry } from "@/lib/inquiryStatus";
+import { INQUIRY_LIST_FILTERS, matchesInquiryListFilter, parseInquiryListFilter } from "@/lib/inquiryStatus";
 import { requestedItemsOf, type RentalInquiry } from "@/components/b2b/inquiries/types";
 import { quantityLabel } from "@/lib/setSize";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
@@ -49,23 +49,23 @@ export default function RentalInquiries() {
   const { isStaff, loading: accessLoading } = useStaffAccess();
   const { rows, loading, reload } = useRentalInquiries();
   const [search, setSearch] = useState("");
-  const [onlyOpen, setOnlyOpen] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [newOpen, setNewOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const segment = parseSegmentFilter(searchParams.get("kunden"));
   const locationFilter = searchParams.get("standort") ?? "all";
+  const statusFilter = parseInquiryListFilter(searchParams.get("status"));
   const setParam = (key: string, value: string) => {
     const next = new URLSearchParams(searchParams);
-    if (value === "all") next.delete(key); else next.set(key, value);
+    if (value === "all" && key !== "status") next.delete(key); else if (key === "status" && value === "unprocessed") next.delete(key); else next.set(key, value);
     setSearchParams(next, { replace: true });
   };
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return rows.filter((r) => {
-      if (onlyOpen && !isOpenInquiry(r.status)) return false;
+      if (!matchesInquiryListFilter(r, statusFilter)) return false;
       if (!matchesSegment(segmentOf(r), segment)) return false;
       if (locationFilter !== "all" && r.location !== locationFilter) return false;
       if (!q) return true;
@@ -73,7 +73,7 @@ export default function RentalInquiries() {
         .filter(Boolean)
         .some((v) => String(v).toLowerCase().includes(q));
     });
-  }, [rows, search, onlyOpen, segment, locationFilter]);
+  }, [rows, search, statusFilter, segment, locationFilter]);
 
   const selected = rows.find((r) => r.id === selectedId) ?? null;
 
@@ -109,9 +109,12 @@ export default function RentalInquiries() {
             <SelectItem value="muelheim">Mülheim an der Ruhr</SelectItem>
           </SelectContent>
         </Select>
-        <Button variant={onlyOpen ? "default" : "outline"} onClick={() => setOnlyOpen((v) => !v)}>
-          {onlyOpen ? "Nur offene" : "Alle Anfragen"}
-        </Button>
+        <Select value={statusFilter} onValueChange={(v) => setParam("status", v)}>
+          <SelectTrigger className="sm:w-56" aria-label="Bearbeitungsstand"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            {INQUIRY_LIST_FILTERS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+          </SelectContent>
+        </Select>
         <Button variant="outline" className="sm:ml-auto" onClick={() => setAiOpen(true)}>
           <Wand2 className="h-4 w-4 mr-1" /> Aus Text erstellen (KI)
         </Button>

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
-import { isOpenInquiry } from "@/lib/inquiryStatus";
+import { isOpenInquiry, isUnprocessedInquiry } from "@/lib/inquiryStatus";
 import type { RentalInquiry, SalesInquiry } from "@/components/b2b/inquiries/types";
 
 type TableName = "rental_inquiries" | "sales_inquiries";
@@ -70,11 +70,11 @@ export function useOpenInquiryCounts() {
       return;
     }
     const [rental, sales] = await Promise.all([
-      supabase.from("rental_inquiries").select("status"),
+      supabase.from("rental_inquiries").select("status, assigned_to"),
       supabase.from("sales_inquiries").select("status"),
     ]);
     setCounts({
-      rental: ((rental.data as { status: string }[] | null) ?? []).filter((r) => isOpenInquiry(r.status)).length,
+      rental: ((rental.data as { status: string; assigned_to: string | null }[] | null) ?? []).filter((r) => isUnprocessedInquiry(r)).length,
       sales: ((sales.data as { status: string }[] | null) ?? []).filter((r) => isOpenInquiry(r.status)).length,
     });
   }, [isStaff]);

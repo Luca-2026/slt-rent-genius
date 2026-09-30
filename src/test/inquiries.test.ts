@@ -43,3 +43,18 @@ describe("inquiryStatus", () => {
     expect(isOpenInquiry("done")).toBe(false);
   });
 });
+
+import { isUnprocessedInquiry, matchesInquiryListFilter } from "@/lib/inquiryStatus";
+describe("offene Anfragen", () => {
+  it("offen = nicht übernommen und kein Angebot", () => {
+    expect(isUnprocessedInquiry({ status: "new", assigned_to: null })).toBe(true);
+    expect(isUnprocessedInquiry({ status: "new", assigned_to: "u1" })).toBe(false);
+    expect(isUnprocessedInquiry({ status: "offer_sent", assigned_to: null })).toBe(false);
+    expect(isUnprocessedInquiry({ status: "accepted", assigned_to: null })).toBe(false);
+  });
+  it("Filter trennen sauber", () => {
+    expect(matchesInquiryListFilter({ status: "in_progress", assigned_to: "u1" }, "working")).toBe(true);
+    expect(matchesInquiryListFilter({ status: "rejected", assigned_to: null }, "closed")).toBe(true);
+    expect(matchesInquiryListFilter({ status: "offer_sent", assigned_to: "u" }, "unprocessed")).toBe(false);
+  });
+});
