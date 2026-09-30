@@ -54,7 +54,7 @@ describe("offene Anfragen", () => {
   });
   it("Filter trennen sauber", () => {
     expect(matchesInquiryListFilter({ status: "in_progress", assigned_to: "u1" }, "working")).toBe(true);
-    expect(matchesInquiryListFilter({ status: "rejected", assigned_to: null }, "closed")).toBe(true);
+    expect(matchesInquiryListFilter({ status: "rejected", assigned_to: null }, "rejected")).toBe(true);
     expect(matchesInquiryListFilter({ status: "offer_sent", assigned_to: "u" }, "unprocessed")).toBe(false);
   });
 });

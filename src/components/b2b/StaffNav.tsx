@@ -11,6 +11,8 @@ export interface StaffNavItem {
   label: string;
   path: string;
   tab?: string;
+  /** optionaler Bearbeitungsstand-Filter (?status=) */
+  status?: string;
   icon: LucideIcon;
   /** wer den Eintrag sieht */
   access: "staff" | "admin" | "inventory";
@@ -27,7 +29,7 @@ export const STAFF_NAV: StaffNavGroup[] = [
     label: "Vorgänge",
     items: [
       { label: "Mietanfragen", path: "/b2b/mietanfragen", icon: Inbox, access: "staff", badgeKey: "rental" },
-      { label: "Laufende Mietvorgänge", path: "/b2b/mietanfragen?status=running", icon: Package, access: "admin" },
+      { label: "Laufende Mietvorgänge", path: "/b2b/mietanfragen", status: "running", icon: Package, access: "staff" },
       { label: "Angebote (B2B-Portal)", path: "/b2b/admin", tab: "offers", icon: Send, access: "admin" },
       { label: "Verkaufsanfragen", path: "/b2b/verkaufsanfragen", icon: ShoppingCart, access: "staff", badgeKey: "sales" },
     ],
@@ -73,12 +75,21 @@ export const STAFF_NAV_FOOTER: StaffNavItem[] = [
 ];
 
 export function itemHref(item: StaffNavItem) {
-  return item.tab ? `${item.path}?tab=${item.tab}` : item.path;
+  if (item.tab) return `${item.path}?tab=${item.tab}`;
+  if (item.status) return `${item.path}?status=${item.status}`;
+  return item.path;
 }
+
+/** Status-Filter, die einen eigenen Menüeintrag haben. */
+const NAV_STATUSES = new Set(["running"]);
 
 export function isItemActive(item: StaffNavItem, pathname: string, search: string) {
   if (pathname !== item.path) return false;
-  const tab = new URLSearchParams(search).get("tab");
+  const params = new URLSearchParams(search);
+  const status = params.get("status");
+  if (item.status) return status === item.status;
+  if (status && NAV_STATUSES.has(status)) return false;
+  const tab = params.get("tab");
   return (item.tab ?? null) === (tab || null);
 }
 
