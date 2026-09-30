@@ -4,6 +4,9 @@
  * kommt der Auftrag verbindlich zustande.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
+import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
+import { generateOfferPdf } from "../_shared/offer-pdf.ts";
+import { normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -82,6 +85,7 @@ Deno.serve(async (req) => {
     if (typeof inquiryId !== "string" || inquiryId.length < 10) return json({ error: "inquiry_id fehlt" }, 400);
     const note = typeof body?.note === "string" ? body.note.trim().slice(0, 800) : "";
     const senderName = typeof body?.sender_name === "string" ? body.sender_name.trim().slice(0, 120) : "";
+    const attachPdf = body?.attach_pdf === true;
 
     const table = inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries";
     const { data: inq } = await service.from(table).select("*").eq("id", inquiryId).maybeSingle();
@@ -180,6 +184,115 @@ Deno.serve(async (req) => {
   <p style="margin-top:24px;">Freundliche Grüße<br>${senderName ? `${esc(senderName)}<br>` : ""}Ihr SLT Rental Team – Standort ${esc(loc.name)}</p>
 </div></body></html>`;
 
+    // ── Optional: Auftragsbestätigung als PDF (gleiches Layout wie Angebot/Rechnung) ──
+    const confirmationNumber = String(inq.offer_number).replace(/^ANG-/, "AB-");
+    let pdfAttachment: { filename: string; content: string } | null = null;
+    let fileUrl: string | null = null;
+    if (attachPdf) {
+      const isBusiness = inq.customer_kind === "business";
+      const companyName = inq.company_name || "";
+      const street = inquiryType === "rental" ? inq.customer_street : (inq.billing_street || inq.delivery_street);
+      const zip = inquiryType === "rental" ? inq.customer_postal_code : (inq.billing_postal_code || inq.delivery_postal_code);
+      const city = inquiryType === "rental" ? inq.customer_city : (inq.billing_city || inq.delivery_city);
+      const sameName = companyName && companyName.trim() === customerName.trim();
+      const profile = {
+        id: "",
+        company_name: companyName || customerName || "Kunde",
+        legal_form: null,
+        contact_first_name: sameName ? "" : customerName,
+        contact_last_name: "",
+        street: street || "", house_number: "", postal_code: zip || "", city: city || "",
+        country: "Deutschland",
+        tax_id: inq.vat_id || null,
+        show_tax_id: isBusiness && Boolean(inq.vat_id),
+        contact_email: inq.customer_email,
+        contact_phone: inq.customer_phone || null,
+        credit_limit: 0,
+        payment_due_days: 14,
+      };
+      const pdfItems = items.map((i) => ({
+        product_name: i.product_name,
+        description: i.description,
+        quantity: Number(i.quantity) || 0,
+        unit: i.unit,
+        unit_price: Number(i.unit_price) || 0,
+        discount_percent: Number(i.discount_percent) || 0,
+        total_price: Math.round((Number(i.quantity) || 0) * (Number(i.unit_price) || 0) * (1 - (Number(i.discount_percent) || 0) / 100) * 100) / 100,
+        rental_start: i.rental_start,
+        rental_end: i.rental_end,
+        image_url: normalizeImageUrl(i.image_url) as string | null,
+      }));
+      const missing = pdfItems.filter((i) => !i.image_url).map((i) => i.product_name);
+      if (missing.length) {
+        try {
+          const resolved = await resolveImagesByName(service, missing);
+          for (const it of pdfItems) if (!it.image_url) it.image_url = resolved.get((it.product_name || "").trim().toLowerCase()) || null;
+        } catch (e) { console.error("Bildauflösung fehlgeschlagen:", e); }
+      }
+      const num = (v: unknown) => Number(v) || 0;
+      const servicesWithPrices: any[] = items.flatMap((item, idx) =>
+        (Array.isArray(item.addons) ? item.addons : [])
+          .filter((a: any) => num(a?.amount) > 0)
+          .map((a: any, ai: number) => ({
+            id: `${idx}-${a.key || ai}`,
+            name: a.note ? `${a.label} (${a.note})` : a.label,
+            pricePercent: null,
+            amount: num(a.amount),
+            allocations: [{ itemIndex: idx, amount: num(a.amount) }],
+          })),
+      );
+      if (num(payload.setup_cost) > 0) servicesWithPrices.push({ id: "setup", name: "Aufbau / Montage vor Ort", pricePercent: null, amount: num(payload.setup_cost), allocations: [] });
+      if (num(payload.dismantle_cost) > 0) servicesWithPrices.push({ id: "dismantle", name: "Abbau / Demontage vor Ort", pricePercent: null, amount: num(payload.dismantle_cost), allocations: [] });
+      const totals = payload.totals ?? {};
+      const deliveryAddress = payload.delivery_requested ? payload.delivery_address : undefined;
+      const today = new Date();
+      const pdfBytes = await generateOfferPdf({
+        documentType: "order_confirmation",
+        offerNumber: confirmationNumber,
+        offerDate: today.toISOString().slice(0, 10),
+        validUntil: "",
+        profile,
+        items: pdfItems,
+        deliveryCost: num(payload.delivery_cost_delivery) + num(payload.delivery_cost_return),
+        deliveryCostDelivery: num(payload.delivery_cost_delivery),
+        deliveryCostReturn: num(payload.delivery_cost_return),
+        servicesSurcharge: servicesWithPrices.reduce((s, x) => s + x.amount, 0),
+        servicesWithPrices,
+        netAmount: num(totals.netAmount),
+        vatRate: num(totals.vatRate) || 19,
+        vatAmount: num(totals.vatAmount),
+        grossAmount: gross,
+        isReverseCharge: false,
+        notes: note || null,
+        validDays: 0,
+        deposit,
+        staffName: senderName || "SLT Rental",
+        issuingLocation: locKey(inq.location),
+        deliveryAddress,
+        paymentTerms: payload.payment_terms,
+        paymentTermsCustom: payload.payment_terms_custom || undefined,
+        sourceOfferNumber: inq.offer_number,
+        sourceOfferDate: typeof inq.offer_sent_at === "string" ? inq.offer_sent_at.slice(0, 10) : undefined,
+        servicePeriodStart: inquiryType === "rental" && inq.start_date ? `${inq.start_date}${inq.start_time ? " " + String(inq.start_time).slice(0, 5) : ""}` : undefined,
+        servicePeriodEnd: inquiryType === "rental" && inq.end_date ? `${inq.end_date}${inq.end_time ? " " + String(inq.end_time).slice(0, 5) : ""}` : undefined,
+        payments: payments.map((p) => ({ date: p?.date, amount: toCents(p?.amount) / 100, label: p?.label, reference: p?.reference })),
+      });
+      const safeName = String(profile.company_name)
+        .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/Ä/g, "Ae").replace(/Ö/g, "Oe").replace(/Ü/g, "Ue").replace(/ß/g, "ss")
+        .replace(/[^a-zA-Z0-9_\- ]/g, "_").replace(/\s+/g, "_");
+      const fileName = `Auftragsbestaetigung_SLTRental_${confirmationNumber}_${safeName}.pdf`;
+      const filePath = `inquiry-order-confirmations/${inquiryType}/${inquiryId}/${fileName}`;
+      const { error: upErr } = await service.storage.from("b2b-invoices")
+        .upload(filePath, pdfBytes, { contentType: "application/pdf", upsert: true });
+      if (upErr) {
+        console.error("Upload error:", upErr.message);
+        return json({ error: "PDF der Auftragsbestätigung konnte nicht gespeichert werden." }, 500);
+      }
+      const { data: signed } = await service.storage.from("b2b-invoices").createSignedUrl(filePath, 60 * 60 * 24 * 365);
+      fileUrl = signed?.signedUrl || null;
+      pdfAttachment = { filename: fileName, content: encodeBase64(pdfBytes) };
+    }
+
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
@@ -189,7 +302,10 @@ Deno.serve(async (req) => {
         cc: Array.from(new Set([loc.email, inq.location_email].filter((e) => e && e !== inq.customer_email))),
         reply_to: loc.email,
         subject: `Auftragsbestätigung zu Ihrem Angebot ${inq.offer_number}`,
-        html,
+        html: pdfAttachment
+          ? html.replace("</h2>", `</h2><p style="color:#6b7280;font-size:13px;margin-top:-8px;">Die Auftragsbestätigung ${esc(confirmationNumber)} finden Sie zusätzlich als PDF im Anhang.</p>`)
+          : html,
+        ...(pdfAttachment ? { attachments: [pdfAttachment] } : {}),
       }),
     });
     if (!res.ok) {
@@ -203,10 +319,11 @@ Deno.serve(async (req) => {
     await service.from(table).update({
       order_confirmed_at: now.toISOString(),
       order_confirmed_by_name: senderName || null,
+      ...(fileUrl ? { order_confirmation_number: confirmationNumber, order_confirmation_file_url: fileUrl } : {}),
       internal_notes: [inq.internal_notes, line].filter(Boolean).join("\n"),
     }).eq("id", inquiryId);
 
-    return json({ success: true });
+    return json({ success: true, file_url: fileUrl });
   } catch (err) {
     console.error("send-order-confirmation error", err);
     return json({ error: err instanceof Error ? err.message : "Unbekannter Fehler" }, 500);
