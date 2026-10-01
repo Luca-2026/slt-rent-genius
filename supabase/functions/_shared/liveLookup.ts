@@ -14,7 +14,7 @@ const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u
 const STOP = new Set(["ein", "eine", "einen", "der", "die", "das", "mit", "fur", "und", "oder", "mieten", "miete", "bitte", "ich", "brauche", "suche"]);
 
 export function searchProducts(rows: LookupProduct[], query: string, location: string | null, limit = 5) {
-  const tokens = norm(query).split(" ").filter((t) => t.length > 1 && !STOP.has(t));
+  const tokens = norm(query).split(" ").filter((t) => (t.length > 1 || /\d/.test(t)) && !STOP.has(t));
   if (!tokens.length) return [];
   const scored = rows.map((r) => {
     const name = norm(`${r.name} ${r.model_name ?? ""}`);
