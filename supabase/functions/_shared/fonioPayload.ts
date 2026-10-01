@@ -95,7 +95,7 @@ export function safeEqual(a: string, b: string): boolean {
   return diff === 0;
 }
 
-/** Schlüssel aus Header (Bearber / x-fonio-secret) oder ?key= lesen. */
+/** Schlüssel aus Header (Bearer / x-fonio-secret) oder ?key= lesen. */
 export function providedSecret(req: Request): string | null {
   const auth = req.headers.get("authorization");
   if (auth?.toLowerCase().startsWith("bearer ")) return auth.slice(7).trim();
