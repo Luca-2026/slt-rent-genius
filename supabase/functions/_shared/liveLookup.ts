@@ -1,7 +1,10 @@
 /**
  * Reine Logik für die Live-Abfrage der Telefonassistenz: Artikelsuche ohne KI
- * (schnell, < 5 s) und Bewertung der Verfügbarkeit ohne interne Stückzahlen.
+ * (schnell, < 5 s), Bewertung der Verfügbarkeit ohne interne Stückzahlen und
+ * Anrufererkennung für den Inbound-Webhook beim Klingeln.
  */
+import { normalizePhone } from "./callPriority.ts";
+
 export interface LookupProduct {
   slug: string; name: string; model_name: string | null; category: string | null; subcategory: string | null;
   rentware_code: Record<string, string> | null; price_per_day: string | null; price_weekend: string | null;
@@ -65,3 +68,36 @@ export const AVAILABILITY_TEXT: Record<AvailabilityStatus, string> = {
   ausgebucht: "Im Zeitraum voraussichtlich ausgebucht. Das Team prüft gern Alternativen.",
   unbekannt: "Verfügbarkeit kann gerade nicht automatisch geprüft werden. Das Team meldet sich.",
 };
+
+export interface CallerRow {
+  first_name: string | null; last_name: string | null; company_name: string | null;
+  location: string | null; phone: string | null;
+}
+
+export interface CallerInfo {
+  bekannt: boolean;
+  name?: string; firma?: string; standort?: string;
+  hinweis: string;
+}
+
+const LOCATION_LABELS: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
+
+/** Erkennt anhand der Rufnummer, ob der Anrufer in der Kundenkartei bekannt ist. */
+export function matchCaller(rows: CallerRow[], rawNumber: string | null | undefined): CallerInfo {
+  const num = normalizePhone(rawNumber);
+  if (!num) return { bekannt: false, hinweis: "Keine Rufnummer übermittelt. Frage freundlich nach Name und Firma." };
+  const hit = rows.find((r) => {
+    const c = normalizePhone(r.phone);
+    return !!c && (c === num || c.endsWith(num) || num.endsWith(c));
+  });
+  if (!hit) return { bekannt: false, hinweis: "Rufnummer ist nicht in der Kundenkartei. Frage freundlich nach Name und Firma." };
+  const name = [hit.first_name, hit.last_name].filter(Boolean).join(" ").trim() || undefined;
+  const location = hit.location?.trim().toLowerCase();
+  return {
+    bekannt: true,
+    name,
+    firma: hit.company_name?.trim() || undefined,
+    standort: location ? LOCATION_LABELS[location] ?? hit.location!.trim() : undefined,
+    hinweis: "Bekannter Kunde aus der Kundenkartei. Grüße den Anrufer gerne namentlich.",
+  };
+}

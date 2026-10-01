@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { finalPriority, normalizePhone, priorityRank } from "@/lib/callPriority";
 import { normalizeFonioPayload, safeEqual } from "../../supabase/functions/_shared/fonioPayload";
-import { availabilityStatus, searchProducts, type LookupProduct } from "../../supabase/functions/_shared/liveLookup";
+import { availabilityStatus, searchProducts, matchCaller, type LookupProduct, type CallerRow } from "../../supabase/functions/_shared/liveLookup";
 
 describe("callPriority", () => {
   const base = { callDate: "2026-10-01" };
@@ -58,5 +58,22 @@ describe("live lookup", () => {
     expect(availabilityStatus(5, 5, 1)).toBe("ausgebucht");
     expect(availabilityStatus(5, 4, 1)).toBe("knapp");
     expect(availabilityStatus(10, 0, 1)).toBe("verfuegbar");
+  });
+});
+
+describe("Anrufererkennung (Inbound Webhook)", () => {
+  const rows: CallerRow[] = [
+    { first_name: "Luca", last_name: "Sandhoff", company_name: "SLT", location: "krefeld", phone: "02151 / 417 990 4" },
+  ];
+  it("erkennt bekannten Kunden trotz Formatierung", () => {
+    const c = matchCaller(rows, "+49 2151 4179904");
+    expect(c.bekannt).toBe(true);
+    expect(c.name).toBe("Luca Sandhoff");
+    expect(c.firma).toBe("SLT");
+    expect(c.standort).toBe("Krefeld");
+  });
+  it("unbekannte Nummer bleibt unbekannt", () => {
+    expect(matchCaller(rows, "+49 151 99999999").bekannt).toBe(false);
+    expect(matchCaller(rows, null).bekannt).toBe(false);
   });
 });
