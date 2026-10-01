@@ -4208,6 +4208,7 @@ export type Database = {
           seo_use_case_privat: string | null
           slug: string | null
           sort_order: number | null
+          spec_order: string[] | null
           specifications: Json | null
           subcategory: string | null
           tags: string[] | null
@@ -4250,6 +4251,7 @@ export type Database = {
           seo_use_case_privat?: string | null
           slug?: string | null
           sort_order?: number | null
+          spec_order?: string[] | null
           specifications?: Json | null
           subcategory?: string | null
           tags?: string[] | null
@@ -4292,6 +4294,7 @@ export type Database = {
           seo_use_case_privat?: string | null
           slug?: string | null
           sort_order?: number | null
+          spec_order?: string[] | null
           specifications?: Json | null
           subcategory?: string | null
           tags?: string[] | null
