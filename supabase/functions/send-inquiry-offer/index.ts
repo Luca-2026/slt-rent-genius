@@ -164,6 +164,7 @@ Deno.serve(async (req: Request) => {
       return json({ error: e instanceof Error ? e.message : "Ungültige Angebotssumme" }, 400);
     }
 
+    const isPreview = body.preview === true;
     const locationKey = resolveLocationKey(body.location || inquiry.location);
     const loc = LOCATION_CONTACTS[locationKey];
 
@@ -181,6 +182,10 @@ Deno.serve(async (req: Request) => {
       version = (Number(prevPayload.version) || 1) + 1;
       offerNumber = `${baseOfferNumber}-${version}`;
       supersedes = { offer_number: String(inquiry.offer_number), sent_at: inquiry.offer_sent_at ?? null };
+    } else if (isPreview) {
+      // Vorschau: keine Nummer verbrauchen (Nummernkreis bleibt lückenlos).
+      offerNumber = "ENTWURF";
+      baseOfferNumber = offerNumber;
     } else {
       if (reviseOf) {
         return json({ error: "Das Angebot wurde inzwischen geändert. Bitte die Anfrage neu laden." }, 409);
@@ -354,6 +359,14 @@ Deno.serve(async (req: Request) => {
       paymentTermsCustom: paymentTerms === "custom" ? paymentTermsCustom : undefined,
 
     });
+
+    // PDF-Vorschau: nichts speichern, nichts senden, keinen Status ändern.
+    if (isPreview) {
+      let bin = "";
+      const bytes = new Uint8Array(pdfBytes);
+      for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+      return json({ preview: true, pdf_base64: btoa(bin), offer_number: offerNumber });
+    }
 
     const safeName = (profile.company_name || "Kunde")
       .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue")

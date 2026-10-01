@@ -6,7 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { AlertTriangle, CheckCircle2, Info, Plus, Send, Trash2 } from "lucide-react";
+import { AlertTriangle, ArrowDown, ArrowUp, CheckCircle2, Eye, GripVertical, Info, Loader2, Plus, Send, Trash2 } from "lucide-react";
+import { moveItem } from "@/components/b2b/admin/SortableRows";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   badgeText,
   evaluateLine,
@@ -652,51 +654,7 @@ export function InquiryOfferForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inquiryId]);
 
-  const send = async () => {
-    const invalid = items.some((i) => !i.product_name.trim() || i.quantity <= 0 || i.unit_price < 0);
-    if (invalid) {
-      toast({ title: "Bitte alle Positionen ausfüllen", description: "Bezeichnung, Menge und Preis werden benötigt.", variant: "destructive" });
-      return;
-    }
-    if (delivery.requested && !delivery.street.trim() && !delivery.city.trim()) {
-      toast({
-        title: "Lieferadresse fehlt",
-        description: "Bitte Straße und Ort der Lieferadresse ergänzen oder „Lieferung“ deaktivieren.",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (paymentTerms === "custom" && paymentTermsCustom.trim().length < 5) {
-      toast({
-        title: "Zahlungsbedingungen fehlen",
-        description: "Bitte die individuellen Zahlungsbedingungen ausformulieren.",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (!isValidOfferTotal(totals.netAmount)) {
-      toast({
-        title: "Angebotssumme ungültig",
-        description: "Die Summe muss größer als 0 € sein – bitte Abzüge (z. B. Inzahlungnahme) prüfen.",
-        variant: "destructive",
-      });
-      return;
-    }
-    // Bestandsprüfung: nicht ausreichende oder ungepflegte Mengen müssen
-    // bewusst bestätigt werden – der Versand bleibt danach möglich.
-    if (inventoryIssues.length > 0 && !inventoryAckRef.current) {
-      setWarningOpen(true);
-      return;
-    }
-    // Zusätzlicher Klick-Lock: State-Updates greifen erst im nächsten Render,
-    // ein sehr schneller Doppelklick würde sonst zwei Requests auslösen.
-    if (sendLock.current) return;
-    sendLock.current = true;
-    setSending(true);
-    const { data, error } = await supabase.functions.invoke(
-      isInvoice ? "send-inquiry-invoice" : "send-inquiry-offer",
-      {
-      body: {
+  const buildBody = () => ({
         ...(isInvoice
           ? {
               invoice_kind: invoiceKind,
@@ -764,7 +722,90 @@ export function InquiryOfferForm({
         ...(canOpenEnded ? { open_ended: openEnded } : {}),
         notes,
         staff_name: staffName,
-      },
+      });
+
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
+  const [overIdx, setOverIdx] = useState<number | null>(null);
+  const reorder = (from: number, to: number) => setItems((prev) => moveItem(prev, from, to));
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewing, setPreviewing] = useState(false);
+  const [previewedKey, setPreviewedKey] = useState<string | null>(null);
+  useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
+
+  const preview = async () => {
+    if (items.some((i) => !i.product_name.trim() || i.quantity <= 0 || i.unit_price < 0)) {
+      toast({ title: "Bitte alle Positionen ausfüllen", description: "Bezeichnung, Menge und Preis werden für die Vorschau benötigt.", variant: "destructive" });
+      return;
+    }
+    if (!isValidOfferTotal(totals.netAmount)) {
+      toast({ title: "Angebotssumme ungültig", description: "Die Summe muss größer als 0 € sein.", variant: "destructive" });
+      return;
+    }
+    setPreviewing(true);
+    const previewBody = buildBody();
+    const { data, error } = await supabase.functions.invoke("send-inquiry-offer", { body: { ...previewBody, preview: true } });
+    setPreviewing(false);
+    const b64 = (data as any)?.pdf_base64 as string | undefined;
+    if (error || !b64) {
+      toast({ title: "Vorschau nicht möglich", description: (data as any)?.error ?? error?.message ?? "Unbekannter Fehler", variant: "destructive" });
+      return;
+    }
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(URL.createObjectURL(new Blob([bytes], { type: "application/pdf" })));
+    setPreviewedKey(JSON.stringify(previewBody));
+  };
+  // Versand erst nach Vorschau des aktuellen Stands (jede Änderung verlangt eine neue Vorschau).
+  const previewOk = isInvoice || previewedKey === JSON.stringify(buildBody());
+
+  const send = async () => {
+    if (!isInvoice && previewedKey !== JSON.stringify(buildBody())) return;
+    const invalid = items.some((i) => !i.product_name.trim() || i.quantity <= 0 || i.unit_price < 0);
+    if (invalid) {
+      toast({ title: "Bitte alle Positionen ausfüllen", description: "Bezeichnung, Menge und Preis werden benötigt.", variant: "destructive" });
+      return;
+    }
+    if (delivery.requested && !delivery.street.trim() && !delivery.city.trim()) {
+      toast({
+        title: "Lieferadresse fehlt",
+        description: "Bitte Straße und Ort der Lieferadresse ergänzen oder „Lieferung“ deaktivieren.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (paymentTerms === "custom" && paymentTermsCustom.trim().length < 5) {
+      toast({
+        title: "Zahlungsbedingungen fehlen",
+        description: "Bitte die individuellen Zahlungsbedingungen ausformulieren.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!isValidOfferTotal(totals.netAmount)) {
+      toast({
+        title: "Angebotssumme ungültig",
+        description: "Die Summe muss größer als 0 € sein – bitte Abzüge (z. B. Inzahlungnahme) prüfen.",
+        variant: "destructive",
+      });
+      return;
+    }
+    // Bestandsprüfung: nicht ausreichende oder ungepflegte Mengen müssen
+    // bewusst bestätigt werden – der Versand bleibt danach möglich.
+    if (inventoryIssues.length > 0 && !inventoryAckRef.current) {
+      setWarningOpen(true);
+      return;
+    }
+    // Zusätzlicher Klick-Lock: State-Updates greifen erst im nächsten Render,
+    // ein sehr schneller Doppelklick würde sonst zwei Requests auslösen.
+    if (sendLock.current) return;
+    sendLock.current = true;
+    setSending(true);
+    const { data, error } = await supabase.functions.invoke(
+      isInvoice ? "send-inquiry-invoice" : "send-inquiry-offer",
+      {
+      body: buildBody(),
     },
     );
 
@@ -835,8 +876,47 @@ export function InquiryOfferForm({
           /** Pauschalposition: fester Preis, keine Mietdauer-Multiplikation. */
           const isFlatRate = (eff.unit ?? "kalendertage") === "pauschal";
           return (
-          <div key={index} className="rounded-lg border border-border p-3 space-y-2">
+          <div
+            key={index}
+            data-testid="offer-position"
+            onDragOver={(e) => { if (dragIdx === null) return; e.preventDefault(); if (overIdx !== index) setOverIdx(index); }}
+            onDrop={(e) => { e.preventDefault(); if (dragIdx !== null) reorder(dragIdx, index); setDragIdx(null); setOverIdx(null); }}
+            onDragEnd={() => { setDragIdx(null); setOverIdx(null); }}
+            className={`rounded-lg border border-border p-3 space-y-2 transition-colors ${dragIdx === index ? "opacity-40" : ""} ${overIdx === index && dragIdx !== null && dragIdx !== index ? "ring-2 ring-primary/50" : ""}`}
+          >
             <div className="flex gap-2 items-start">
+              {!isInvoice && (
+                <div className="flex shrink-0 flex-col items-center">
+                  <button
+                    type="button"
+                    draggable={!disabled}
+                    disabled={disabled}
+                    aria-label={`Position ${index + 1} verschieben`}
+                    title="Ziehen zum Verschieben"
+                    className="hidden md:block cursor-grab active:cursor-grabbing rounded p-1 text-muted-foreground hover:text-foreground disabled:opacity-40"
+                    onDragStart={(e) => {
+                      setDragIdx(index);
+                      e.dataTransfer.effectAllowed = "move";
+                      e.dataTransfer.setData("text/plain", String(index));
+                      const card = (e.currentTarget as HTMLElement).closest('[data-testid="offer-position"]');
+                      if (card) e.dataTransfer.setDragImage(card as Element, 16, 16);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "ArrowUp" && index > 0) { e.preventDefault(); reorder(index, index - 1); }
+                      if (e.key === "ArrowDown" && index < items.length - 1) { e.preventDefault(); reorder(index, index + 1); }
+                    }}
+                  >
+                    <GripVertical className="h-4 w-4" />
+                  </button>
+                  <span className="text-xs font-semibold text-muted-foreground">{index + 1}</span>
+                  <button type="button" aria-label={`Position ${index + 1} nach oben`} disabled={disabled || index === 0} onClick={() => reorder(index, index - 1)} className="rounded p-1.5 text-muted-foreground hover:text-foreground disabled:opacity-30">
+                    <ArrowUp className="h-4 w-4" />
+                  </button>
+                  <button type="button" aria-label={`Position ${index + 1} nach unten`} disabled={disabled || index === items.length - 1} onClick={() => reorder(index, index + 1)} className="rounded p-1.5 text-muted-foreground hover:text-foreground disabled:opacity-30">
+                    <ArrowDown className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
               {item.image_url ? (
                 <img
                   src={item.image_url}
@@ -1473,7 +1553,34 @@ export function InquiryOfferForm({
         }}
       />
 
-      <Button onClick={send} disabled={disabled || sending || checking} className="w-full">
+      {!isInvoice && (
+        <Button type="button" variant="outline" onClick={preview} disabled={disabled || previewing || sending} className="w-full">
+          {previewing ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Eye className="h-4 w-4 mr-2" />}
+          {previewing ? "Vorschau wird erstellt …" : "PDF-Vorschau anzeigen"}
+        </Button>
+      )}
+      <Dialog open={!!previewUrl} onOpenChange={(o) => { if (!o) setPreviewUrl(null); }}>
+        <DialogContent className="max-w-4xl w-[calc(100vw-1rem)] h-[90vh] flex flex-col gap-3 p-3 sm:p-6">
+          <DialogHeader>
+            <DialogTitle>PDF-Vorschau</DialogTitle>
+            <DialogDescription>So sieht das Angebot für den Kunden aus. Die Angebotsnummer wird erst beim Senden vergeben – nichts wurde verschickt.</DialogDescription>
+          </DialogHeader>
+          {previewUrl && <iframe src={previewUrl} title="Angebotsvorschau" className="min-h-0 flex-1 w-full rounded border border-border bg-muted" />}
+          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            {previewUrl && (
+              <Button variant="outline" asChild>
+                <a href={previewUrl} target="_blank" rel="noopener noreferrer">In neuem Tab öffnen</a>
+              </Button>
+            )}
+            <Button variant="outline" onClick={() => setPreviewUrl(null)}>Zurück zum Bearbeiten</Button>
+            <Button onClick={() => { setPreviewUrl(null); void send(); }} disabled={disabled || sending || checking}>
+              <Send className="h-4 w-4 mr-2" />Angebot jetzt senden
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      {!previewOk && <p className="text-xs text-muted-foreground">Vor dem Senden bitte die PDF-Vorschau des aktuellen Stands ansehen.</p>}
+      <Button onClick={send} disabled={disabled || sending || checking || !previewOk} className="w-full">
         <Send className="h-4 w-4 mr-2" />
         {isInvoice
           ? sending

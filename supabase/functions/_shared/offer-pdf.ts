@@ -431,7 +431,7 @@ export async function generateOfferPdf(data: {
     const subLines: string[] = [];
     if (item.description) subLines.push(...wt(item.description, font, 8, nameColW));
     // Zeitraum steht bereits in der Beschreibung → nicht doppelt als "Mietzeitraum" ausgeben
-    const descHasPeriod = typeof item.description === "string" && /\d{2}\.\d{2}\.\d{4}/.test(item.description);
+    const descHasPeriod = typeof item.description === "string" && /\d{1,2}\.\d{1,2}\.\d{4}/.test(item.description);
     // "3 Artikel × 9 Kalendertage" → Menge als "3 × 9" statt hochgerechnet "27" anzeigen
     const periodMatch = typeof item.description === "string"
       ? item.description.match(/(\d+)\s*Artikel\s*[\u00D7x]\s*(\d+)\s*[A-Za-z\u00C4\u00D6\u00DC\u00E4\u00F6\u00FC\u00DF]+\s*$/)
