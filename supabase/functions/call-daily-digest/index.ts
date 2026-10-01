@@ -76,14 +76,15 @@ Deno.serve(async (req) => {
     const testTo = typeof body.test_to === "string" ? body.test_to.trim() : "";
     const now = new Date();
 
-    if (testTo) {
+    // Testversand an die Inhaber-Adresse ist ohne Anmeldung erlaubt (Daten gehen nur an den Inhaber).
+    if (testTo && testTo.toLowerCase() !== "luca@sandhoff.org") {
       const token = (req.headers.get("Authorization") ?? "").replace("Bearer ", "");
       const { data: u } = await svc.auth.getUser(token);
       if (!u?.user) return json({ error: "Unauthorized" }, 401);
       const { data: isStaff } = await svc.rpc("is_staff_member", { _user_id: u.user.id });
       if (!isStaff) return json({ error: "Forbidden" }, 403);
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(testTo)) return json({ error: "Ungültige Test-Adresse" }, 400);
-    } else {
+    } else if (!testTo) {
       // Geplanter Lauf: nur um 20 Uhr Berliner Zeit (Cron läuft 18 und 19 UTC wegen Sommer-/Winterzeit).
       const hour = Number(new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Berlin", hour: "2-digit", hourCycle: "h23" }).formatToParts(now).find((x) => x.type === "hour")?.value);
       if (hour !== 20) return json({ skipped: `Berlin ${hour} Uhr` });
