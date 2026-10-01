@@ -183,10 +183,16 @@ function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => voi
         <div><span className="text-muted-foreground">Telefon: </span>{call.caller_phone ? <a className="text-primary underline" href={`tel:${call.caller_phone}`}>{call.caller_phone}</a> : "—"}</div>
         <div><span className="text-muted-foreground">E-Mail: </span>{call.email ?? "—"}</div>
         <div><span className="text-muted-foreground">Mietbeginn: </span>{call.rental_start ? new Date(call.rental_start).toLocaleDateString("de-DE") : "—"}</div>
+        <div><span className="text-muted-foreground">Mietende: </span>{call.details?.rental_end ? new Date(call.details.rental_end).toLocaleDateString("de-DE") : "—"}</div>
+        <div><span className="text-muted-foreground">Adresse: </span>{[call.details?.address?.street, [call.details?.address?.postal_code, call.details?.address?.city].filter(Boolean).join(" ")].filter(Boolean).join(", ") || "—"}</div>
+        <div><span className="text-muted-foreground">Lieferung: </span>{call.details?.delivery?.wanted === true ? `Ja${call.details.delivery.address ? ` – ${call.details.delivery.address}` : ""}` : call.details?.delivery?.wanted === false ? "Selbstabholung" : "—"}</div>
+        <div><span className="text-muted-foreground">Rückruf: </span>{[call.details?.callback_time, call.details?.callback_phone].filter(Boolean).join(" · ") || "—"}</div>
         <div><span className="text-muted-foreground">Kundenkartei: </span>{call.crm_customer_id ? <a className="text-primary underline" href="/b2b/kundendaten">bekannter Kunde</a> : "nicht gefunden"}</div>
       </section>
 
-      {call.mentioned_items.length > 0 && (
+      {(call.details?.items?.length ?? 0) > 0 ? (
+        <section><h3 className="mb-1 text-sm font-semibold">Artikel und Menge</h3><ul className="list-disc pl-5 text-sm">{call.details!.items!.map((x, i) => <li key={i}>{x.quantity ? `${x.quantity} × ` : ""}{x.name}{x.note ? ` (${x.note})` : ""}</li>)}</ul></section>
+      ) : call.mentioned_items.length > 0 && (
         <section><h3 className="mb-1 text-sm font-semibold">Genannte Artikel</h3><ul className="list-disc pl-5 text-sm">{call.mentioned_items.map((x, i) => <li key={i}>{x}</li>)}</ul></section>
       )}
       {call.open_points.length > 0 && (

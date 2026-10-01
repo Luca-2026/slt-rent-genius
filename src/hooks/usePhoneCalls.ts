@@ -3,6 +3,15 @@ import { supabase } from "@/integrations/supabase/client";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { priorityRank, type CallIntent, type CallPriority } from "@/lib/callPriority";
 
+export interface CallDetails {
+  rental_end?: string | null;
+  items?: { name: string; quantity: number | null; note: string | null }[];
+  address?: { street: string | null; postal_code: string | null; city: string | null };
+  delivery?: { wanted: boolean | null; address: string | null; note: string | null };
+  callback_time?: string | null;
+  callback_phone?: string | null;
+}
+
 export interface PhoneCall {
   id: string;
   external_id: string;
@@ -33,6 +42,7 @@ export interface PhoneCall {
   assigned_to: string | null;
   notes: string | null;
   priority_overridden: boolean;
+  details: CallDetails | null;
   created_at: string;
 }
 
@@ -65,7 +75,15 @@ export function usePhoneCalls() {
     const ch = supabase.channel(`phone-calls-${Math.random().toString(36).slice(2)}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "phone_calls" }, () => load())
       .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    // Rückfall, falls die Live-Verbindung abreißt (z. B. Handy im Standby)
+    const iv = window.setInterval(() => { if (document.visibilityState === "visible") load(); }, 30000);
+    const onVis = () => { if (document.visibilityState === "visible") load(); };
+    document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("focus", onVis);
+    return () => {
+      supabase.removeChannel(ch); window.clearInterval(iv);
+      document.removeEventListener("visibilitychange", onVis); window.removeEventListener("focus", onVis);
+    };
   }, [isStaff, load]);
 
   return { rows, loading: loading || accessLoading, reload: load };
