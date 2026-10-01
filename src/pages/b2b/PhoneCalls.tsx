@@ -13,6 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { AiInquiryImportDialog } from "@/components/b2b/inquiries/AiInquiryImportDialog";
+import { createInquiryFromImport } from "@/lib/createInquiryFromImport";
 
 const LOC: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
 const STATUS: Record<PhoneCall["status"], string> = { open: "Offen", in_progress: "In Bearbeitung", done: "Erledigt" };
@@ -120,6 +122,7 @@ function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => voi
   const navigate = useNavigate();
   const [notes, setNotes] = useState(call.notes ?? "");
   const [busy, setBusy] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
 
   const update = async (patch: Record<string, unknown>) => {
     setBusy(true);
@@ -140,11 +143,21 @@ function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => voi
     if (msg) toast({ title: "Auswertung fehlgeschlagen", description: msg, variant: "destructive" });
     else { toast({ title: "Neu ausgewertet" }); onChanged(); }
   };
-  const toInquiry = async () => {
-    const text = [call.caller_phone ? `Anrufernummer: ${call.caller_phone}` : null, call.transcript ?? call.provider_summary ?? call.summary].filter(Boolean).join("\n\n");
-    try { sessionStorage.setItem("slt-ai-import-prefill", text); } catch { /* ignore */ }
-    if (call.status === "open") await take();
-    navigate("/b2b/mietanfragen");
+  const importText = [
+    call.caller_phone ? `Anrufernummer: ${call.caller_phone}` : null,
+    call.company_name ? `Firma: ${call.company_name}` : null,
+    call.customer_name ?? call.caller_name ? `Name: ${call.customer_name ?? call.caller_name}` : null,
+    call.email ? `E-Mail: ${call.email}` : null,
+    call.transcript ?? call.provider_summary ?? call.summary,
+  ].filter(Boolean).join("\n");
+  const createInquiry = async (r: Parameters<typeof createInquiryFromImport>[0]) => {
+    const id = await createInquiryFromImport(r);
+    if (id) {
+      await supabase.from("phone_calls" as never).update({ rental_inquiry_id: id, status: "done" } as never).eq("id", call.id);
+    }
+    toast({ title: "Mietanfrage angelegt", description: "Der Anruf ist mit der Anfrage verknüpft und als erledigt markiert." });
+    onChanged();
+    if (id) navigate(`/b2b/mietanfragen?status=all&anfrage=${id}`);
   };
 
   return (
@@ -193,10 +206,13 @@ function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => voi
 
       <div className="flex flex-wrap gap-2">
         {call.status === "open" && <Button onClick={take} disabled={busy}>Übernehmen</Button>}
-        <Button variant="secondary" onClick={toInquiry} disabled={busy || !(call.transcript || call.summary)}><Inbox className="mr-1 h-4 w-4" />Als Mietanfrage übernehmen</Button>
+        {call.rental_inquiry_id && <Button variant="secondary" onClick={() => navigate(`/b2b/mietanfragen?status=all&anfrage=${call.rental_inquiry_id}`)}><ExternalLink className="mr-1 h-4 w-4" />Mietanfrage öffnen</Button>}
+        <Button variant={call.rental_inquiry_id ? "outline" : "default"} onClick={() => setImportOpen(true)} disabled={busy || !importText.trim()}><Inbox className="mr-1 h-4 w-4" />{call.rental_inquiry_id ? "Weitere Mietanfrage anlegen" : "Mietanfrage anlegen"}</Button>
         <Button variant="outline" onClick={reanalyze} disabled={busy}><RefreshCw className="mr-1 h-4 w-4" />Erneut auswerten</Button>
         {call.recording_url && <Button variant="outline" asChild><a href={call.recording_url} target="_blank" rel="noopener noreferrer"><ExternalLink className="mr-1 h-4 w-4" />Aufnahme</a></Button>}
       </div>
+
+      <AiInquiryImportDialog open={importOpen} onOpenChange={setImportOpen} initialText={importText} onConfirm={createInquiry} />
 
       <section>
         <h3 className="mb-1 text-sm font-semibold">Notiz</h3>
