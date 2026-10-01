@@ -181,14 +181,6 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                   </div>
                 </SheetContent>
               </Sheet>
-              {openTodoCount > 0 && location.pathname !== "/b2b/aufgaben" && (
-                <Link to="/b2b/aufgaben">
-                  <Button size="sm" className="gap-1.5">
-                    <CheckSquare className="h-4 w-4" />
-                    <span>{openTodoCount} To-do{openTodoCount === 1 ? "" : "s"}</span>
-                  </Button>
-                </Link>
-              )}
             </div>
           </div>
           <main className="py-6 lg:py-8 min-h-[60vh]">
@@ -252,14 +244,6 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                       </nav>
                     </SheetContent>
                   </Sheet>
-                  {openTodoCount > 0 && location.pathname !== "/b2b/aufgaben" && (
-                    <Link to="/b2b/aufgaben">
-                      <Button size="sm" className="gap-1.5">
-                        <CheckSquare className="h-4 w-4" />
-                        <span>{openTodoCount} To-do{openTodoCount === 1 ? "" : "s"}</span>
-                      </Button>
-                    </Link>
-                  )}
                 </div>
 
                 {/* Desktop: horizontale Leiste */}

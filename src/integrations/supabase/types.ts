@@ -1995,6 +1995,30 @@ export type Database = {
           },
         ]
       }
+      call_digest_log: {
+        Row: {
+          call_count: number
+          digest_date: string
+          id: string
+          mailbox: string
+          sent_at: string
+        }
+        Insert: {
+          call_count?: number
+          digest_date: string
+          id?: string
+          mailbox: string
+          sent_at?: string
+        }
+        Update: {
+          call_count?: number
+          digest_date?: string
+          id?: string
+          mailbox?: string
+          sent_at?: string
+        }
+        Relationships: []
+      }
       credit_note_number_counters: {
         Row: {
           last_value: number
