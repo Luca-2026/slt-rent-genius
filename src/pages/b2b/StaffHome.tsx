@@ -16,6 +16,9 @@ import {
 import { isOpenInquiry, isUnprocessedInquiry } from "@/lib/inquiryStatus";
 import { needsAction, type PortalProfileLite } from "@/lib/customerActions";
 import { UserCheck } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { AdminGlobalSearch, type AdminSearchHit } from "@/components/b2b/admin/AdminGlobalSearch";
+import { MaintenanceDueWidget } from "@/components/b2b/admin/MaintenanceDueWidget";
 
 type ProfileRow = PortalProfileLite & { id: string; company_name: string; credit_limit: number };
 
@@ -112,6 +115,35 @@ export default function StaffHome() {
   const [profiles, setProfiles] = useState<ProfileRow[]>([]);
   const [loading, setLoading] = useState(true);
   const protocols = useRentalProtocolStatus();
+  const navigate = useNavigate();
+  const [searchCustomers, setSearchCustomers] = useState<{ id: string; company_name: string; contact_first_name?: string; contact_last_name?: string; contact_email?: string; tax_id?: string | null; city?: string | null; b2b_profile_id: string | null }[]>([]);
+  const [searchInvoices, setSearchInvoices] = useState<{ id: string; invoice_number: string; customer_company?: string | null; status: string }[]>([]);
+
+  useEffect(() => {
+    if (accessLoading || !isStaff) return;
+    (async () => {
+      const [crm, inv] = await Promise.all([
+        supabase.from("crm_customers").select("id,company_name,first_name,last_name,email,vat_id,city,b2b_profile_id").order("created_at", { ascending: false }).limit(2000),
+        isAdmin ? supabase.from("inquiry_invoices").select("id,invoice_number,company_name,customer_name,status").order("created_at", { ascending: false }).limit(2000) : Promise.resolve({ data: [] }),
+      ]);
+      setSearchCustomers(((crm.data ?? []) as any[]).map((c) => ({
+        id: c.id, company_name: c.company_name || `${c.first_name ?? ""} ${c.last_name ?? ""}`.trim() || c.email || "Kunde",
+        contact_first_name: c.first_name ?? undefined, contact_last_name: c.last_name ?? undefined,
+        contact_email: c.email ?? undefined, tax_id: c.vat_id, city: c.city, b2b_profile_id: c.b2b_profile_id,
+      })));
+      setSearchInvoices(((inv.data ?? []) as any[]).map((i) => ({
+        id: i.id, invoice_number: i.invoice_number, customer_company: i.company_name || i.customer_name, status: i.status,
+      })));
+    })();
+  }, [accessLoading, isStaff, isAdmin]);
+
+  const onSearchSelect = (hit: AdminSearchHit) => {
+    if (hit.type === "customer") {
+      const c = searchCustomers.find((x) => x.id === hit.id);
+      navigate(c?.b2b_profile_id && isAdmin ? `/b2b/kundendaten?handlung=alle&profil=${c.b2b_profile_id}` : "/b2b/kundendaten");
+    } else if (hit.type === "invoice") navigate("/b2b/anfrage-rechnungen");
+    else if (hit.type === "reservation") navigate(`/b2b/mietanfragen?status=all&anfrage=${hit.id}`);
+  };
 
   useEffect(() => {
     if (accessLoading || !isStaff) return;
@@ -170,6 +202,13 @@ export default function StaffHome() {
     >
       {loading ? <p className="text-muted-foreground">Wird geladen …</p> : (
         <div className="space-y-5">
+          <AdminGlobalSearch
+            customers={searchCustomers}
+            invoices={searchInvoices}
+            offers={[]}
+            reservations={inquiries.map((r) => ({ id: r.id, product_name: `${r.company_name || r.customer_name || ""} · ${r.product_name ?? ""}`, status: r.status }))}
+            onSelect={onSearchSelect}
+          />
           {/* 1. Handlungsbedarf */}
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             <ActionStat label="Neue Mietanfragen" value={unprocessed} to="/b2b/mietanfragen" icon={Inbox} highlight />
@@ -259,6 +298,8 @@ export default function StaffHome() {
               </Panel>
             )}
           </div>
+
+          {canViewInventory && <MaintenanceDueWidget />}
 
           {/* 3. Alle Funktionen */}
           <Panel title="Alle Funktionen" icon={LayoutGrid}>
