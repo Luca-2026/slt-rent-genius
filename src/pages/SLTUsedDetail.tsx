@@ -1,3 +1,4 @@
+import { orderSpecs } from "@/lib/specOrder";
 import { useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { Layout } from "@/components/layout";
@@ -78,7 +79,7 @@ export default function SLTUsedDetail() {
   };
 
   const images: string[] = (machine.images && machine.images.length > 0) ? machine.images : [];
-  const specs: Record<string, string> = (machine.specifications as any) || {};
+  const specs: Record<string, string> = orderSpecs((machine.specifications as any) || {}, (machine as { spec_order?: string[] | null }).spec_order);
   const highlights: string[] = Array.isArray(content.highlights) ? content.highlights : [];
   const whyItems: { title: string; desc: string }[] = Array.isArray(content.whyItems) ? content.whyItems : [];
   const showroomLocs: string[] = showroomLocsForData;

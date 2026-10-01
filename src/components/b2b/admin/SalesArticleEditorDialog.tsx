@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SortableRows } from "./SortableRows";
+import { orderSpecs } from "@/lib/specOrder";
 import { Sparkles, Loader2, Trash2, Plus, Upload, ImageOff } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -149,7 +151,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         sort_order: String(r.sort_order ?? 0),
         showroom_locations: r.showroom_locations ?? [],
         images: (r.images ?? []).filter(Boolean),
-        specifications: toSpecList(r.specifications),
+        specifications: toSpecList(orderSpecs((r.specifications ?? {}) as Record<string, unknown>, (r as { spec_order?: string[] | null }).spec_order)),
         highlights: Array.isArray(content.highlights) ? (content.highlights as string[]) : [],
         faqs: toFaqList(content.faq),
         seo_title: String(content.seoTitle ?? ""),
@@ -174,7 +176,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         hours: r.hours != null ? String(r.hours) : "",
         location: r.location ?? "krefeld",
         images: (r.images ?? []).filter(Boolean),
-        specifications: toSpecList(r.specifications),
+        specifications: toSpecList(orderSpecs((r.specifications ?? {}) as Record<string, unknown>, (r as { spec_order?: string[] | null }).spec_order)),
         highlights: Array.isArray(content.highlights) ? (content.highlights as string[]) : [],
         faqs: toFaqList(content.faq),
         seo_title: String(content.seoTitle ?? ""),
@@ -333,6 +335,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
           showroom_locations: form.showroom_locations,
           images,
           specifications: fromSpecList(form.specifications),
+          spec_order: form.specifications.map((x) => x.key.trim()).filter(Boolean),
           content,
         };
         const q = supabase.from("new_machines");
@@ -358,6 +361,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
           location: form.location,
           images,
           specifications: fromSpecList(form.specifications),
+          spec_order: form.specifications.map((x) => x.key.trim()).filter(Boolean),
           content,
         };
         const q = supabase.from("used_machines");
@@ -659,8 +663,12 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
 
               <div className="space-y-2">
                 <Label>Technische Daten</Label>
-                {form.specifications.map((spec, i) => (
-                  <div key={i} className="flex gap-2">
+                <SortableRows
+                  items={form.specifications}
+                  disabled={readOnly}
+                  onReorder={(next) => set("specifications", next)}
+                  renderRow={(spec, i) => (
+                    <>
                     <Input
                       value={spec.key}
                       placeholder="Bezeichnung"
@@ -681,8 +689,9 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
                       onClick={() => set("specifications", form.specifications.filter((_, j) => j !== i))}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
-                  </div>
-                ))}
+                  </>
+                  )}
+                />
                 <Button type="button" variant="outline" size="sm" disabled={readOnly}
                   onClick={() => set("specifications", [...form.specifications, { key: "", value: "" }])}>
                   <Plus className="h-4 w-4 mr-1" /> Zeile hinzufügen
