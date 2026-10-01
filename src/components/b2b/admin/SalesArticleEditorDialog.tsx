@@ -242,7 +242,6 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
             category: form.category,
             description: form.description || form.short_description,
             specifications: fromSpecList(form.specifications),
-          spec_order: form.specifications.map((x) => x.key.trim()).filter(Boolean),
             price: form.price_on_request ? "auf Anfrage" : form.price,
             year: form.year ? Number(form.year) : undefined,
             hours: form.hours ? Number(form.hours) : undefined,
