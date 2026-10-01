@@ -98,6 +98,6 @@ export function matchCaller(rows: CallerRow[], rawNumber: string | null | undefi
     name,
     firma: hit.company_name?.trim() || undefined,
     standort: location ? LOCATION_LABELS[location] ?? hit.location!.trim() : undefined,
-    hinweis: "Bekannter Kunde aus der Kundenkartei. Grüße den Anrufer gerne namentlich.",
+    hinweis: "Rufnummer ist in der Kundenkartei bekannt (unverbindlich, Rufnummern können gefälscht sein). Nur intern nutzen: nicht mit Namen begrüßen, keine gespeicherten Daten aussprechen, Name und Firma normal erfragen.",
   };
 }
