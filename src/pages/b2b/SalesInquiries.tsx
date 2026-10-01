@@ -25,7 +25,7 @@ export default function SalesInquiries() {
   const [search, setSearch] = useState("");
   const [onlyOpen, setOnlyOpen] = useState(false);
   const [kind, setKind] = useState<string>("all");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(() => new URLSearchParams(window.location.search).get("anfrage"));
   const [manualOpen, setManualOpen] = useState(false);
 
   const filtered = useMemo(() => {

@@ -2276,6 +2276,7 @@ export type Database = {
           customer_phone: string | null
           customer_postal_code: string | null
           customer_street: string | null
+          deducted_installments: Json
           delivery_city: string | null
           delivery_cost_delivery: number
           delivery_cost_return: number
@@ -2293,6 +2294,7 @@ export type Database = {
           gross_amount: number
           id: string
           inquiry_type: string
+          installment_number: number | null
           internal_notes: string | null
           invoice_date: string
           invoice_kind: string
@@ -2337,6 +2339,7 @@ export type Database = {
           customer_phone?: string | null
           customer_postal_code?: string | null
           customer_street?: string | null
+          deducted_installments?: Json
           delivery_city?: string | null
           delivery_cost_delivery?: number
           delivery_cost_return?: number
@@ -2354,6 +2357,7 @@ export type Database = {
           gross_amount?: number
           id?: string
           inquiry_type: string
+          installment_number?: number | null
           internal_notes?: string | null
           invoice_date?: string
           invoice_kind?: string
@@ -2398,6 +2402,7 @@ export type Database = {
           customer_phone?: string | null
           customer_postal_code?: string | null
           customer_street?: string | null
+          deducted_installments?: Json
           delivery_city?: string | null
           delivery_cost_delivery?: number
           delivery_cost_return?: number
@@ -2415,6 +2420,7 @@ export type Database = {
           gross_amount?: number
           id?: string
           inquiry_type?: string
+          installment_number?: number | null
           internal_notes?: string | null
           invoice_date?: string
           invoice_kind?: string
@@ -2489,6 +2495,30 @@ export type Database = {
         Update: {
           last_value?: number
           month?: number
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
+      invoice_series_counters: {
+        Row: {
+          last_value: number
+          month: number
+          series: string
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          last_value?: number
+          month: number
+          series: string
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          last_value?: number
+          month?: number
+          series?: string
           updated_at?: string
           year?: number
         }
@@ -3000,6 +3030,12 @@ export type Database = {
           end_date: string | null
           end_time: string | null
           id: string
+          installment_amount_net: number | null
+          installment_enabled: boolean
+          installment_interval_months: number
+          installment_next_due: string | null
+          installment_open_ended: boolean
+          installment_reminded_on: string | null
           internal_notes: string | null
           location: string | null
           location_email: string | null
@@ -3055,6 +3091,12 @@ export type Database = {
           end_date?: string | null
           end_time?: string | null
           id?: string
+          installment_amount_net?: number | null
+          installment_enabled?: boolean
+          installment_interval_months?: number
+          installment_next_due?: string | null
+          installment_open_ended?: boolean
+          installment_reminded_on?: string | null
           internal_notes?: string | null
           location?: string | null
           location_email?: string | null
@@ -3110,6 +3152,12 @@ export type Database = {
           end_date?: string | null
           end_time?: string | null
           id?: string
+          installment_amount_net?: number | null
+          installment_enabled?: boolean
+          installment_interval_months?: number
+          installment_next_due?: string | null
+          installment_open_ended?: boolean
+          installment_reminded_on?: string | null
           internal_notes?: string | null
           location?: string | null
           location_email?: string | null
@@ -3229,6 +3277,12 @@ export type Database = {
           first_name: string | null
           found_via: string | null
           id: string
+          installment_amount_net: number | null
+          installment_enabled: boolean
+          installment_interval_months: number
+          installment_next_due: string | null
+          installment_open_ended: boolean
+          installment_reminded_on: string | null
           interest: string | null
           internal_notes: string | null
           kind: string
@@ -3296,6 +3350,12 @@ export type Database = {
           first_name?: string | null
           found_via?: string | null
           id?: string
+          installment_amount_net?: number | null
+          installment_enabled?: boolean
+          installment_interval_months?: number
+          installment_next_due?: string | null
+          installment_open_ended?: boolean
+          installment_reminded_on?: string | null
           interest?: string | null
           internal_notes?: string | null
           kind?: string
@@ -3363,6 +3423,12 @@ export type Database = {
           first_name?: string | null
           found_via?: string | null
           id?: string
+          installment_amount_net?: number | null
+          installment_enabled?: boolean
+          installment_interval_months?: number
+          installment_next_due?: string | null
+          installment_open_ended?: boolean
+          installment_reminded_on?: string | null
           interest?: string | null
           internal_notes?: string | null
           kind?: string
@@ -4257,6 +4323,7 @@ export type Database = {
           customer_phone: string | null
           customer_postal_code: string | null
           customer_street: string | null
+          deducted_installments: Json
           delivery_city: string | null
           delivery_cost_delivery: number
           delivery_cost_return: number
@@ -4274,6 +4341,7 @@ export type Database = {
           gross_amount: number
           id: string
           inquiry_type: string
+          installment_number: number | null
           internal_notes: string | null
           invoice_date: string
           invoice_kind: string
@@ -4360,6 +4428,10 @@ export type Database = {
       generate_delivery_note_number: { Args: never; Returns: string }
       generate_inquiry_credit_note_number: { Args: never; Returns: string }
       generate_inquiry_invoice_number: { Args: never; Returns: string }
+      generate_inquiry_invoice_number_for: {
+        Args: { _series: string }
+        Returns: string
+      }
       generate_inquiry_offer_number: { Args: never; Returns: string }
       generate_invoice_number: { Args: never; Returns: string }
       generate_offer_number: { Args: never; Returns: string }
@@ -4428,6 +4500,7 @@ export type Database = {
           customer_phone: string | null
           customer_postal_code: string | null
           customer_street: string | null
+          deducted_installments: Json
           delivery_city: string | null
           delivery_cost_delivery: number
           delivery_cost_return: number
@@ -4445,6 +4518,7 @@ export type Database = {
           gross_amount: number
           id: string
           inquiry_type: string
+          installment_number: number | null
           internal_notes: string | null
           invoice_date: string
           invoice_kind: string

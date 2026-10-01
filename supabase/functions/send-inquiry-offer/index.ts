@@ -7,6 +7,7 @@
  * - The customer is asked to confirm acceptance by replying to the location mailbox;
  *   the job is then created manually in Rentware.
  */
+import { OPEN_ENDED_NOTE, monthlyNetFromOffer } from "../_shared/installments.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
@@ -197,7 +198,9 @@ Deno.serve(async (req: Request) => {
           supersedes.sent_at ? ` vom ${new Date(supersedes.sent_at).toLocaleDateString("de-DE", { timeZone: "Europe/Berlin" })}` : ""
         }.`
       : null;
-    const pdfNotes = [supersedesText, notes].filter(Boolean).join("\n\n") || null;
+    // Unbefristete Monatsmiete: Preise gelten pro Monat, kein Enddatum, monatliche Abschläge.
+    const openEnded = inquiryType === "rental" && body.open_ended === true;
+    const pdfNotes = [supersedesText, openEnded ? OPEN_ENDED_NOTE : null, notes].filter(Boolean).join("\n\n") || null;
 
     const customerName = inquiryType === "rental"
       ? (inquiry.customer_name || "")
@@ -561,7 +564,14 @@ Deno.serve(async (req: Request) => {
           valid_days: validDays,
           notes,
           totals,
+          open_ended: openEnded,
         },
+        ...(inquiryType === "rental"
+          ? {
+              installment_open_ended: openEnded,
+              ...(openEnded ? { installment_amount_net: monthlyNetFromOffer(items as unknown as Array<Record<string, unknown>>) || null } : {}),
+            }
+          : {}),
 
       })
 

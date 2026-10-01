@@ -26,6 +26,7 @@ import { InquiryPaymentsCard, parseInquiryPayments } from "./InquiryPaymentsCard
 import type { OfferLine } from "./offerMath";
 import { formatEuro } from "./offerMath";
 import { useAuth } from "@/hooks/useAuth";
+import { InstallmentCard } from "./InstallmentCard";
 
 import type { OfferUnit } from "@/lib/offerUnits";
 
@@ -83,7 +84,7 @@ function splitQuantity(
 function offerPayloadToLines(payload: unknown): {
   items: (OfferLine & { custom_period?: boolean })[];
   costs?: Record<string, number>;
-  meta: { payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null };
+  meta: { payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null; open_ended: boolean };
   delivery: OfferDeliveryAddress | null;
 } | null {
   const p = payload as
@@ -98,6 +99,7 @@ function offerPayloadToLines(payload: unknown): {
         payment_terms_custom?: string | null;
         valid_days?: number;
         notes?: string | null;
+        open_ended?: boolean;
         delivery_requested?: boolean;
         delivery_address?: { street?: string; postal_code?: string; city?: string };
       }
@@ -159,6 +161,7 @@ function offerPayloadToLines(payload: unknown): {
       payment_terms_custom: typeof p.payment_terms_custom === "string" ? p.payment_terms_custom : null,
       valid_days: Number(p.valid_days) > 0 ? Number(p.valid_days) : null,
       notes: typeof p.notes === "string" ? p.notes : null,
+      open_ended: p.open_ended === true,
     },
     delivery:
       typeof p.delivery_requested === "boolean"
@@ -183,7 +186,19 @@ interface InvoiceRow {
   gross_amount: number | null;
   status: string;
   file_url: string | null;
+  net_amount: number | null;
+  vat_amount: number | null;
+  credited_amount: number | null;
+  installment_number: number | null;
 }
+
+const KIND_LABEL: Record<string, string> = {
+  invoice: "Rechnung",
+  supplement: "Nachtrag",
+  credit_note: "Gutschrift",
+  installment: "Abschlagsrechnung",
+  final: "Schlussrechnung",
+};
 
 interface Props {
   table: "rental_inquiries" | "sales_inquiries";
@@ -275,7 +290,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
 
 
   /** Angebot oder Rechnung – steuert das Formular unten. */
-  const [docMode, setDocMode] = useState<"offer" | "revise" | "invoice">("offer");
+  const [docMode, setDocMode] = useState<"offer" | "revise" | "invoice" | "final">("offer");
   const [invoices, setInvoices] = useState<InvoiceRow[]>([]);
   const docSectionRef = useRef<HTMLDivElement | null>(null);
 
@@ -288,7 +303,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
     const column = inquiryType === "rental" ? "rental_inquiry_id" : "sales_inquiry_id";
     const { data } = await supabase
       .from("inquiry_invoices")
-      .select("id, invoice_number, invoice_kind, invoice_date, gross_amount, status, file_url, offer_number")
+      .select("id, invoice_number, invoice_kind, invoice_date, gross_amount, net_amount, vat_amount, credited_amount, installment_number, status, file_url, offer_number")
       .eq(column, inquiry.id)
       .order("created_at", { ascending: false });
     setInvoices((data ?? []) as InvoiceRow[]);
@@ -480,12 +495,26 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         onDone={onChanged}
       />
 
+      <InstallmentCard
+        key={`${inquiry.id}:${(inquiry as any).installment_next_due ?? ""}:${(inquiry as any).installment_enabled ? 1 : 0}`}
+        table={table}
+        inquiryType={inquiryType}
+        inquiry={inquiry as Record<string, any>}
+        invoices={invoices}
+        staffName={actorName}
+        onChanged={() => {
+          loadInvoices();
+          onChanged();
+        }}
+        onFinalInvoice={() => setDocMode("final")}
+      />
+
       {invoices.length > 0 && (
         <div className="rounded-lg border border-border p-3 text-sm space-y-2">
           <div className="font-semibold">Rechnungen zu dieser Anfrage</div>
           {invoices.map((inv) => (
             <div key={inv.id} className="flex flex-wrap items-center gap-2">
-              <span className="font-medium">Rechnung {inv.invoice_number}</span>
+              <span className="font-medium">{KIND_LABEL[inv.invoice_kind] ?? "Rechnung"} {inv.invoice_number}</span>
               <span className="text-muted-foreground">
                 {inv.invoice_date ? new Date(inv.invoice_date).toLocaleDateString("de-DE") : "—"}
                 {inv.gross_amount != null && ` · ${formatEuro(Number(inv.gross_amount))} brutto`}
@@ -523,11 +552,13 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         </div>
         <div className="mb-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
           <div className="font-semibold text-sm">
-            {docMode === "offer" ? "Angebot erstellen" : docMode === "revise" ? `Angebot ${inquiry.offer_number} überarbeiten` : "Rechnung erstellen"}
+            {docMode === "offer" ? "Angebot erstellen" : docMode === "revise" ? `Angebot ${inquiry.offer_number} überarbeiten` : docMode === "final" ? "Schlussrechnung erstellen" : "Rechnung erstellen"}
           </div>
           <p className="text-xs text-muted-foreground">
             {docMode === "revise"
               ? "Alle Angaben aus dem zuletzt versendeten Angebot sind übernommen. Anpassen und als neue Fassung senden – sie erhält die Stammnummer mit Fassungszusatz und den Hinweis, welches Angebot sie ersetzt."
+              : docMode === "final"
+              ? "Gesamtabrechnung des Auftrags: Positionen und Leistungszeitraum an die tatsächliche Miete anpassen. Alle nicht stornierten Abschlagsrechnungen werden beim Versand automatisch mit Netto, USt. und Brutto abgezogen."
               : docMode === "offer"
               ? "Positionen prüfen und das Angebot per E-Mail senden."
               : "Endabrechnung: Positionen und Leistungszeitraum an die tatsächliche Miete anpassen (z. B. Verlängerung). Bereits erfasste Zahlungen werden abgezogen, die Rechnungsnummer wird beim Versand vergeben."}
@@ -542,13 +573,14 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           defaultCosts={docMode !== "offer" ? offerSnapshot?.costs : undefined}
           reviseOf={docMode === "revise" ? inquiry.offer_number : null}
           defaultMeta={docMode === "revise" ? offerSnapshot?.meta : undefined}
-          defaultPayments={docMode === "invoice" ? inquiryPayments : undefined}
+          defaultPayments={docMode === "invoice" || docMode === "final" ? inquiryPayments : undefined}
           defaultDelivery={docMode === "revise" ? offerSnapshot?.delivery ?? defaultDelivery : defaultDelivery}
           rentalPeriod={{ start: inquiry.start_date ?? null, end: inquiry.end_date ?? null }}
           reservationId={(inquiry as any).b2b_reservation_id ?? null}
 
           customerKind={inquiry.customer_kind === "business" ? "business" : "private"}
-          mode={docMode === "invoice" ? "invoice" : "offer"}
+          mode={docMode === "invoice" || docMode === "final" ? "invoice" : "offer"}
+          invoiceKind={docMode === "final" ? "final" : "invoice"}
           staffName={actorName}
           disabled={busy}
           onSent={() => {

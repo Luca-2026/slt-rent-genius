@@ -36,7 +36,7 @@ export async function generateOfferPdf(data: {
    * (Gutschrift) zu einer bereits gestellten Rechnung – identisches Layout,
    * nur Beschriftungen und Hinweistexte unterscheiden sich.
    */
-  documentType?: "offer" | "invoice" | "supplement" | "credit_note" | "order_confirmation";
+  documentType?: "offer" | "invoice" | "supplement" | "credit_note" | "order_confirmation" | "installment" | "final";
   /** Auftragsbestätigung: Datum des zugrunde liegenden Angebots. */
   sourceOfferDate?: string;
   /** Fälligkeitsdatum der Rechnung (YYYY-MM-DD oder bereits formatiert). */
@@ -93,7 +93,8 @@ export async function generateOfferPdf(data: {
   const isCreditNote = docType === "credit_note";
   const TITLE = isOC ? "AUFTRAGSBEST\u00C4TIGUNG" : isCreditNote
     ? "RECHNUNGSKORREKTUR"
-    : isSupplement ? "NACHTRAGSRECHNUNG" : isInvoice ? "RECHNUNG" : "ANGEBOT";
+    : isSupplement ? "NACHTRAGSRECHNUNG" : docType === "installment" ? "ABSCHLAGSRECHNUNG"
+    : docType === "final" ? "SCHLUSSRECHNUNG" : isInvoice ? "RECHNUNG" : "ANGEBOT";
 
   // WinAnsi-sichere Normalisierung: typografische Zeichen auf darstellbare mappen,
   // Euro-Zeichen bleibt erhalten (WinAnsi kann 0x20AC).
@@ -317,6 +318,10 @@ export async function generateOfferPdf(data: {
         `${data.creditReason ? ` (Grund: ${data.creditReason})` : ""}:`
       : isSupplement
         ? `vielen Dank f\u00FCr die Verl\u00E4ngerung. Wir berechnen Ihnen nachtr\u00E4glich zur Rechnung ${data.parentInvoiceNumber || ""} folgende Leistungen:`.replace("  ", " ")
+        : docType === "installment"
+          ? "gem\u00E4\u00DF unserem Auftrag berechnen wir Ihnen folgende Abschlagszahlung. Der Abschlag wird in der Schlussrechnung verrechnet:"
+        : docType === "final"
+          ? "vielen Dank f\u00FCr Ihren Auftrag. Wir erlauben uns, Ihnen folgende Leistungen abschlie\u00DFend in Rechnung zu stellen; bereits berechnete Abschl\u00E4ge sind abgezogen:"
         : isInvoice
           ? "vielen Dank f\u00FCr Ihren Auftrag. Wir erlauben uns, Ihnen folgende Leistungen in Rechnung zu stellen:"
           : "vielen Dank f\u00FCr Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:";

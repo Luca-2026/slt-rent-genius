@@ -148,6 +148,13 @@
       "when": 1790863201533,
       "tag": "0020_phone_calls_link_rental_inquiry",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1790864144752,
+      "tag": "0021_invoice_series_and_installments",
+      "breakpoints": true
     }
   ]
 }
