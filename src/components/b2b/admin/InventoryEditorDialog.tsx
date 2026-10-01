@@ -662,8 +662,6 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                     </>
                   )}
                 />
-                  ))}
-                </div>
               </div>
               <div>
                 <div className="flex items-center justify-between mb-2">
