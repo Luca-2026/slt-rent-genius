@@ -47,7 +47,7 @@ export default function PhoneCalls() {
 
   const filtered = useMemo(() => rows.filter((c) =>
     (prio === "all" || c.priority === prio) && (intent === "all" || c.intent === intent) &&
-    (loc === "all" || c.location === loc) && (asst === "all" || c.assistant === asst) &&
+    (loc === "all" || (c.location ?? (c.assistant === "bonn" ? "bonn" : null)) === loc) && (asst === "all" || c.assistant === asst) &&
     (status === "all" || (status === "active" ? c.status !== "done" : c.status === status))), [rows, prio, intent, loc, asst, status]);
   const sel = rows.find((r) => r.id === selId) ?? null;
 
