@@ -430,7 +430,16 @@ export async function generateOfferPdf(data: {
     const nameLines = wt(nameText, bold, 9.5, nameColW);
     const subLines: string[] = [];
     if (item.description) subLines.push(...wt(item.description, font, 8, nameColW));
-    if (item.rental_start) {
+    // Zeitraum steht bereits in der Beschreibung → nicht doppelt als "Mietzeitraum" ausgeben
+    const descHasPeriod = typeof item.description === "string" && /\d{2}\.\d{2}\.\d{4}/.test(item.description);
+    // "3 Artikel × 9 Kalendertage" → Menge als "3 × 9" statt hochgerechnet "27" anzeigen
+    const periodMatch = typeof item.description === "string"
+      ? item.description.match(/(\d+)\s*Artikel\s*[\u00D7x]\s*(\d+)\s*[A-Za-z\u00C4\u00D6\u00DC\u00E4\u00F6\u00FC\u00DF]+\s*$/)
+      : null;
+    const qtyText = periodMatch && Number(periodMatch[1]) * Number(periodMatch[2]) === Number(item.quantity)
+      ? `${periodMatch[1]} \u00D7 ${periodMatch[2]}`
+      : String(item.quantity);
+    if (item.rental_start && !descHasPeriod) {
       subLines.push(...wt(`Mietzeitraum: ${fd(item.rental_start)}${item.rental_end ? " - " + fd(item.rental_end) : ""}`, font, 8, nameColW));
     }
     // Rabattzeile: Listenpreis, Rabattsatz und Ersparnis transparent ausweisen
@@ -458,7 +467,7 @@ export async function generateOfferPdf(data: {
       subLines.forEach((ln, li) => dt(pg, ln, textColX, subTop - li * 10, font, 8, MUTED));
       const discTop = subTop - subLines.length * 10 - (subLines.length ? 3 : 0);
       discountLines.forEach((ln, li) => dt(pg, ln, textColX, discTop - li * 10, bold, 8, ORANGE));
-      dtr(pg, String(item.quantity), qtyColRight, top - 10, font, 9.5);
+      dtr(pg, qtyText, qtyColRight, top - 10, font, 9.5);
       dt(pg, deriveUnit(item), unitColX, top - 10, font, 9.5, MUTED);
       dtr(pg, fm(item.unit_price), unitPriceRight, top - 10, font, 9.5);
       if (pct > 0) dtr(pg, `-${fm2(pct)} %`, unitPriceRight, top - 22, bold, 8, ORANGE);
