@@ -26,6 +26,7 @@ export interface PhoneCall {
   open_points: string[];
   rental_start: string | null;
   crm_customer_id: string | null;
+  rental_inquiry_id: string | null;
   analysis_status: "pending" | "done" | "failed";
   analysis_error: string | null;
   status: "open" | "in_progress" | "done";
