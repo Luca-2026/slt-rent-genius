@@ -31,26 +31,29 @@ export function PriorityBadge({ p }: { p: CallPriority | null }) {
   return <span className={cn("inline-flex rounded-full px-2 py-0.5 text-xs font-semibold", PRIO_CLASS[p])}>{PRIORITY_LABEL[p]}</span>;
 }
 
+const ASSISTANT: Record<string, string> = { krefeld: "Lena Krefeld/Mülheim", bonn: "Lena Bonn" };
+
 export default function PhoneCalls() {
   const { isStaff, loading: accessLoading } = useStaffAccess();
   const { rows, loading, reload } = usePhoneCalls();
   const [prio, setPrio] = useState("all");
   const [intent, setIntent] = useState("all");
   const [loc, setLoc] = useState("all");
+  const [asst, setAsst] = useState("all");
   const [status, setStatus] = useState("active");
   const [selId, setSelId] = useState<string | null>(null);
 
   const filtered = useMemo(() => rows.filter((c) =>
     (prio === "all" || c.priority === prio) && (intent === "all" || c.intent === intent) &&
-    (loc === "all" || c.location === loc) &&
-    (status === "all" || (status === "active" ? c.status !== "done" : c.status === status))), [rows, prio, intent, loc, status]);
+    (loc === "all" || c.location === loc) && (asst === "all" || c.assistant === asst) &&
+    (status === "all" || (status === "active" ? c.status !== "done" : c.status === status))), [rows, prio, intent, loc, asst, status]);
   const sel = rows.find((r) => r.id === selId) ?? null;
 
   if (!accessLoading && !isStaff) return <B2BPortalLayout title="Anrufe"><p className="text-muted-foreground">Nur für Mitarbeiter.</p></B2BPortalLayout>;
 
   return (
     <B2BPortalLayout title="Anrufe" subtitle="Telefonate der Telefonassistenz mit KI-Vorauswertung, nach Priorität sortiert">
-      <div className="mb-4 grid grid-cols-2 gap-2 md:grid-cols-4">
+      <div className="mb-4 grid grid-cols-2 gap-2 md:grid-cols-5">
         <Select value={status} onValueChange={setStatus}><SelectTrigger aria-label="Status"><SelectValue /></SelectTrigger><SelectContent>
           <SelectItem value="active">Offen & in Bearbeitung</SelectItem><SelectItem value="open">Offen</SelectItem>
           <SelectItem value="in_progress">In Bearbeitung</SelectItem><SelectItem value="done">Erledigt</SelectItem><SelectItem value="all">Alle</SelectItem>
@@ -60,6 +63,9 @@ export default function PhoneCalls() {
         </SelectContent></Select>
         <Select value={intent} onValueChange={setIntent}><SelectTrigger aria-label="Anliegen"><SelectValue /></SelectTrigger><SelectContent>
           <SelectItem value="all">Alle Anliegen</SelectItem>{(Object.keys(INTENT_LABEL) as CallIntent[]).map((k) => <SelectItem key={k} value={k}>{INTENT_LABEL[k]}</SelectItem>)}
+        </SelectContent></Select>
+        <Select value={asst} onValueChange={setAsst}><SelectTrigger aria-label="Assistent"><SelectValue /></SelectTrigger><SelectContent>
+          <SelectItem value="all">Beide Assistenten</SelectItem>{Object.entries(ASSISTANT).map(([k, v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}
         </SelectContent></Select>
         <Select value={loc} onValueChange={setLoc}><SelectTrigger aria-label="Standort"><SelectValue /></SelectTrigger><SelectContent>
           <SelectItem value="all">Alle Standorte</SelectItem>{Object.entries(LOC).map(([k, v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}
@@ -90,6 +96,7 @@ export default function PhoneCalls() {
                 </div>
                 <div className="flex shrink-0 flex-wrap gap-1 text-xs">
                   {c.intent && <Badge variant="secondary">{INTENT_LABEL[c.intent]}</Badge>}
+                  {c.assistant && <Badge>{ASSISTANT[c.assistant]}</Badge>}
                   {c.location && <Badge variant="outline">{LOC[c.location]}</Badge>}
                   <Badge variant="outline">{STATUS[c.status]}</Badge>
                 </div>
@@ -146,6 +153,7 @@ function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => voi
       <div className="flex flex-wrap items-center gap-2 text-sm">
         <PriorityBadge p={call.priority} />
         {call.intent && <Badge variant="secondary">{INTENT_LABEL[call.intent]}</Badge>}
+        {call.assistant && <Badge>{ASSISTANT[call.assistant]}</Badge>}
         {call.location && <Badge variant="outline">{LOC[call.location]}</Badge>}
         <span className="inline-flex items-center gap-1 text-muted-foreground"><Clock className="h-3.5 w-3.5" aria-hidden="true" />{fmt(call)}{call.duration_seconds != null && ` · ${Math.round(call.duration_seconds / 60)} Min.`}</span>
       </div>

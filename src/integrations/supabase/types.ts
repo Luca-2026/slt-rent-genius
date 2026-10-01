@@ -2683,6 +2683,7 @@ export type Database = {
           analysis_error: string | null
           analysis_status: string
           assigned_to: string | null
+          assistant: string | null
           call_started_at: string | null
           caller_name: string | null
           caller_phone: string | null
@@ -2718,6 +2719,7 @@ export type Database = {
           analysis_error?: string | null
           analysis_status?: string
           assigned_to?: string | null
+          assistant?: string | null
           call_started_at?: string | null
           caller_name?: string | null
           caller_phone?: string | null
@@ -2753,6 +2755,7 @@ export type Database = {
           analysis_error?: string | null
           analysis_status?: string
           assigned_to?: string | null
+          assistant?: string | null
           call_started_at?: string | null
           caller_name?: string | null
           caller_phone?: string | null
