@@ -253,6 +253,12 @@
           "size": 8.5
         },
         {
+          "t": "Selbstbeteiligung 500 ",
+          "x": 105,
+          "y": 379.63,
+          "size": 7.5
+        },
+        {
           "t": "Pauschale",
           "x": 353.77,
           "y": 389.63,
@@ -267,151 +273,151 @@
         {
           "t": "2",
           "x": 59,
-          "y": 373.63,
+          "y": 364.63,
           "size": 9
         },
         {
           "t": "Bautrockner 70 l/Tag",
           "x": 89,
-          "y": 373.63,
+          "y": 364.63,
           "size": 9.5
         },
         {
           "t": "Kondenstrockner für Estrich- und Wasserschäden",
           "x": 89,
-          "y": 357.63,
+          "y": 348.63,
           "size": 8
         },
         {
           "t": "Mietzeitraum: 10.08.2026 · 08:00 Uhr - 17.08.2026 · 08:00 Uhr",
           "x": 89,
-          "y": 347.63,
+          "y": 338.63,
           "size": 8
         },
         {
           "t": "3",
           "x": 340.49,
-          "y": 373.63,
+          "y": 364.63,
           "size": 9.5
         },
         {
           "t": "Tage",
           "x": 353.77,
-          "y": 373.63,
+          "y": 364.63,
           "size": 9.5
         },
         {
           "t": "24,50 ",
           "x": 434.4,
-          "y": 373.63,
+          "y": 364.63,
           "size": 9.5
         },
         {
           "t": "0,00 ",
           "x": 507.87,
-          "y": 373.63,
+          "y": 364.63,
           "size": 9.5
         },
         {
           "t": "3",
           "x": 59,
-          "y": 327.63,
+          "y": 318.63,
           "size": 9
         },
         {
           "t": "Anlieferung / Transport",
           "x": 89,
-          "y": 327.63,
+          "y": 318.63,
           "size": 9.5
         },
         {
           "t": "1",
           "x": 340.49,
-          "y": 327.63,
+          "y": 318.63,
           "size": 9.5
         },
         {
           "t": "Pauschale",
           "x": 353.77,
-          "y": 327.63,
+          "y": 318.63,
           "size": 9.5
         },
         {
           "t": "60,00 ",
           "x": 434.4,
-          "y": 327.63,
+          "y": 318.63,
           "size": 9.5
         },
         {
           "t": "60,00 ",
           "x": 502.59,
-          "y": 327.63,
+          "y": 318.63,
           "size": 9.5
         },
         {
           "t": "4",
           "x": 59,
-          "y": 301.63,
+          "y": 292.63,
           "size": 9
         },
         {
           "t": "Rücklieferung / Abholung",
           "x": 89,
-          "y": 301.63,
+          "y": 292.63,
           "size": 9.5
         },
         {
           "t": "1",
           "x": 340.49,
-          "y": 301.63,
+          "y": 292.63,
           "size": 9.5
         },
         {
           "t": "Pauschale",
           "x": 353.77,
-          "y": 301.63,
+          "y": 292.63,
           "size": 9.5
         },
         {
           "t": "60,00 ",
           "x": 434.4,
-          "y": 301.63,
+          "y": 292.63,
           "size": 9.5
         },
         {
           "t": "60,00 ",
           "x": 502.59,
-          "y": 301.63,
+          "y": 292.63,
           "size": 9.5
         },
         {
           "t": "5",
           "x": 59,
-          "y": 277.63,
+          "y": 268.63,
           "size": 9
         },
         {
           "t": "Endreinigung",
           "x": 89,
-          "y": 277.63,
+          "y": 268.63,
           "size": 9.5
         },
         {
           "t": "1",
           "x": 340.49,
-          "y": 277.63,
+          "y": 268.63,
           "size": 9.5
         },
         {
           "t": "Pauschale",
           "x": 353.77,
-          "y": 277.63,
+          "y": 268.63,
           "size": 9.5
         },
         {
           "t": "35,00 ",
           "x": 502.59,
-          "y": 277.63,
+          "y": 268.63,
           "size": 9.5
         },
         {
@@ -651,57 +657,87 @@
           "size": 8.5
         },
         {
-          "t": "Mit Zahlungseingang ist Ihre Buchung verbindlich bestätigt; nach Mietende erhalten Sie die Rechnung per E-Mail.",
+          "t": "Nach Zahlungseingang erhalten Sie unsere Auftragsbestätigung; nach Mietende erhalten Sie die Rechnung per E-Mail.",
           "x": 73,
           "y": 497.89,
           "size": 8
         },
         {
+          "t": "Zustandekommen des Auftrags",
+          "x": 73,
+          "y": 467.89,
+          "size": 10
+        },
+        {
+          "t": "Bitte leisten Sie die Zahlung gemäß den Zahlungsbedingungen. Nach Zahlungseingang erhalten Sie unsere",
+          "x": 73,
+          "y": 451.89,
+          "size": 9
+        },
+        {
+          "t": "Auftragsbestätigung. Erst mit Zugang der Auftragsbestätigung wird die Miete verbindlich und der Auftrag gilt als",
+          "x": 73,
+          "y": 439.89,
+          "size": 9
+        },
+        {
+          "t": "angenommen. Maßgeblich ist allein die Auftragsbestätigung; sie dient als Nachweis, dass wir Ihren Auftrag",
+          "x": 73,
+          "y": 427.89,
+          "size": 9
+        },
+        {
+          "t": "angenommen haben.",
+          "x": 73,
+          "y": 415.89,
+          "size": 9
+        },
+        {
           "t": "Gültigkeit:",
           "x": 57,
-          "y": 469.89,
+          "y": 379.89,
           "size": 9
         },
         {
           "t": "Dieses Angebot ist gültig bis zum 15.08.2026 (14 Tage).",
           "x": 115,
-          "y": 469.89,
+          "y": 379.89,
           "size": 9
         },
         {
           "t": "Anmerkungen:",
           "x": 57,
-          "y": 447.89,
+          "y": 357.89,
           "size": 9
         },
         {
           "t": "Abholung nach telefonischer Absprache.",
           "x": 57,
-          "y": 435.89,
+          "y": 345.89,
           "size": 8.5
         },
         {
           "t": "Wir freuen uns auf Ihre Rückmeldung und stehen Ihnen für Rückfragen gerne zur Verfügung.",
           "x": 57,
-          "y": 418.89,
+          "y": 328.89,
           "size": 9
         },
         {
           "t": "Mit freundlichen Grüßen",
           "x": 57,
-          "y": 396.89,
+          "y": 306.89,
           "size": 9
         },
         {
           "t": "Max Mustermann",
           "x": 57,
-          "y": 381.89,
+          "y": 291.89,
           "size": 9
         },
         {
           "t": "SLT-Rental",
           "x": 57,
-          "y": 370.89,
+          "y": 280.89,
           "size": 8
         },
         {
