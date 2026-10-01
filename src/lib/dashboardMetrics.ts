@@ -106,7 +106,7 @@ export function receivables(inquiry: InquiryInvoiceRow[], portal: PortalInvoiceR
     if (status === "overdue" || (due && due.slice(0, 10) < t)) { overdue += rest; overdueCount++; }
   };
   for (const r of inquiry) {
-    if ((r.invoice_kind ?? "invoice") !== "invoice") continue;
+    if (!["invoice", "installment", "final"].includes(r.invoice_kind ?? "invoice")) continue;
     if (r.status !== "open" && r.status !== "overdue") continue;
     handle(n(r.gross_amount) - n(r.paid_amount) - n(r.credited_amount), r.status, r.due_date);
   }
