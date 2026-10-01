@@ -1,11 +1,12 @@
 /**
- * Live-Abfrage für die fonio-Telefonassistenz ("API Request"-Werkzeug).
+ * Live-Abfrage für die fonio-Telefonassistenz.
+ * Inbound-Webhook (fromNumber/toNumber beim Klingeln): erkennt den Anrufer in der Kundenkartei.
  * action=search: Artikel mit CMS-Preisen. action=availability: Status im Zeitraum.
- * Keine Buchung, keine Reservierung, keine Einkaufspreise, keine Kundendaten.
+ * Keine Buchung, keine Reservierung, keine Einkaufspreise.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { providedSecret, safeEqual } from "../_shared/fonioPayload.ts";
-import { availabilityStatus, AVAILABILITY_TEXT, searchProducts, type LookupProduct } from "../_shared/liveLookup.ts";
+import { availabilityStatus, AVAILABILITY_TEXT, searchProducts, matchCaller, type LookupProduct, type CallerRow } from "../_shared/liveLookup.ts";
 
 const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, x-fonio-secret, content-type" };
 const json = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { ...cors, "Content-Type": "application/json" } });
@@ -28,12 +29,24 @@ Deno.serve(async (req) => {
     const b = await req.json().catch(() => null);
     if (b && typeof b === "object") p = { ...p, ...b };
   }
-  const action = String(p.action ?? "search");
+  const action = String(p.action ?? "");
   const query = typeof p.query === "string" ? p.query.slice(0, 200) : typeof p.artikel === "string" ? String(p.artikel).slice(0, 200) : "";
   const location = loc(p.location ?? p.standort);
-  if (query.trim().length < 2) return json({ ergebnis: "Bitte den gewünschten Artikel nennen." });
 
   const svc = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
+
+  // Inbound-Webhook beim Klingeln (fromNumber statt action/query): Anrufererkennung.
+  const fromRaw = typeof p.fromNumber === "string" && p.fromNumber.trim() ? p.fromNumber.trim()
+    : typeof p.from === "string" && p.from.trim() ? p.from.trim() : null;
+  if (fromRaw && !action) {
+    const { data } = await svc.from("crm_customers")
+      .select("first_name,last_name,company_name,location,phone")
+      .not("phone", "is", null)
+      .limit(2000);
+    return json({ anrufer: matchCaller((data ?? []) as CallerRow[], fromRaw) });
+  }
+
+  if (query.trim().length < 2) return json({ ergebnis: "Bitte den gewünschten Artikel nennen." });
   if (!cache || Date.now() - cache.at > 60_000) {
     const { data, error } = await svc.from("b2b_managed_products")
       .select("slug,name,model_name,category,subcategory,rentware_code,price_per_day,price_weekend,price_per_month,price_unit_label")
