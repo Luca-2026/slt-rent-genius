@@ -20,6 +20,7 @@ import { productCategories } from "@/data/rentalData";
 import { resolveSubcategory, useAdminManagedProducts, type AdminManagedProductRow } from "@/hooks/useManagedProducts";
 import { AddonOptionsEditor } from "./AddonOptionsEditor";
 import { SortableRows } from "./SortableRows";
+import { orderSpecs } from "@/lib/specOrder";
 import { parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 
 const LOCATIONS = [
@@ -151,7 +152,7 @@ const emptyForm = (): FormState => ({
 });
 
 function fromRow(row: AdminManagedProductRow): FormState {
-  const specs = row.specifications ?? {};
+  const specs = orderSpecs(row.specifications ?? {}, (row as { spec_order?: string[] | null }).spec_order);
   return {
     slug: row.slug,
     name: row.name,
@@ -425,6 +426,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         available_locations: form.available_locations,
         images: form.images,
         specifications: specsObj,
+        spec_order: Object.keys(specsObj),
         features: form.features.filter((f) => f.trim()),
         tags: [],
         rental_notes: [],

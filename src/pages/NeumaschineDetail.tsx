@@ -1,3 +1,4 @@
+import { orderSpecs } from "@/lib/specOrder";
 import { useState, useEffect, useRef } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -180,7 +181,7 @@ export default function NeumaschineDetail() {
   const discountPercent = hasDiscount ? Math.round((1 - (priceGross as number) / (compareAtPrice as number)) * 100) : 0;
 
   const content: any = (machine as any).content || {};
-  const specs: Record<string, string> = (machine.specifications as any) || {};
+  const specs: Record<string, string> = orderSpecs((machine.specifications as any) || {}, (machine as { spec_order?: string[] | null }).spec_order);
   const images: string[] = Array.isArray(machine.images) ? machine.images : [];
   const highlights: string[] = Array.isArray(content.highlights) ? content.highlights : [];
   const suitableFor: string[] = Array.isArray(content.suitableFor) ? content.suitableFor : [];

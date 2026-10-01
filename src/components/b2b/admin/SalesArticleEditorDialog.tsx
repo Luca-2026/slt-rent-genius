@@ -13,6 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SortableRows } from "./SortableRows";
+import { orderSpecs } from "@/lib/specOrder";
 import { Sparkles, Loader2, Trash2, Plus, Upload, ImageOff } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -150,7 +151,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         sort_order: String(r.sort_order ?? 0),
         showroom_locations: r.showroom_locations ?? [],
         images: (r.images ?? []).filter(Boolean),
-        specifications: toSpecList(r.specifications),
+        specifications: toSpecList(orderSpecs((r.specifications ?? {}) as Record<string, unknown>, (r as { spec_order?: string[] | null }).spec_order)),
         highlights: Array.isArray(content.highlights) ? (content.highlights as string[]) : [],
         faqs: toFaqList(content.faq),
         seo_title: String(content.seoTitle ?? ""),
@@ -175,7 +176,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         hours: r.hours != null ? String(r.hours) : "",
         location: r.location ?? "krefeld",
         images: (r.images ?? []).filter(Boolean),
-        specifications: toSpecList(r.specifications),
+        specifications: toSpecList(orderSpecs((r.specifications ?? {}) as Record<string, unknown>, (r as { spec_order?: string[] | null }).spec_order)),
         highlights: Array.isArray(content.highlights) ? (content.highlights as string[]) : [],
         faqs: toFaqList(content.faq),
         seo_title: String(content.seoTitle ?? ""),
@@ -241,6 +242,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
             category: form.category,
             description: form.description || form.short_description,
             specifications: fromSpecList(form.specifications),
+          spec_order: form.specifications.map((x) => x.key.trim()).filter(Boolean),
             price: form.price_on_request ? "auf Anfrage" : form.price,
             year: form.year ? Number(form.year) : undefined,
             hours: form.hours ? Number(form.hours) : undefined,
@@ -334,6 +336,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
           showroom_locations: form.showroom_locations,
           images,
           specifications: fromSpecList(form.specifications),
+          spec_order: form.specifications.map((x) => x.key.trim()).filter(Boolean),
           content,
         };
         const q = supabase.from("new_machines");
@@ -359,6 +362,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
           location: form.location,
           images,
           specifications: fromSpecList(form.specifications),
+          spec_order: form.specifications.map((x) => x.key.trim()).filter(Boolean),
           content,
         };
         const q = supabase.from("used_machines");

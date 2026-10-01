@@ -2,6 +2,7 @@
  * Hook: veröffentlichte CMS-Mietartikel aus DB laden (via View ohne interne Felder).
  * Der Merge-Layer in `mergeManagedProducts.ts` verschmilzt sie mit den statischen TS-Daten.
  */
+import { orderSpecs } from "@/lib/specOrder";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Product } from "@/data/rentalData";
@@ -77,7 +78,7 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
     minRentalMonths: row.min_rental_months ?? undefined,
     features: row.features?.length ? row.features : undefined,
     specifications: row.specifications && Object.keys(row.specifications).length
-      ? row.specifications
+      ? orderSpecs(row.specifications, (row as { spec_order?: string[] | null }).spec_order)
       : undefined,
     pdfUrl: row.pdf_url ?? undefined,
     externalManualUrl: row.external_manual_url ?? undefined,
