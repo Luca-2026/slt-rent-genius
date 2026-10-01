@@ -85,7 +85,7 @@ Deno.serve(async (req) => {
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(testTo)) return json({ error: "Ungültige Test-Adresse" }, 400);
     } else {
       // Geplanter Lauf: nur um 20 Uhr Berliner Zeit (Cron läuft 18 und 19 UTC wegen Sommer-/Winterzeit).
-      const hour = Number(berlin(now, { hour: "2-digit", hourCycle: "h23" }));
+      const hour = Number(new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Berlin", hour: "2-digit", hourCycle: "h23" }).formatToParts(now).find((x) => x.type === "hour")?.value);
       if (hour !== 20) return json({ skipped: `Berlin ${hour} Uhr` });
     }
 
