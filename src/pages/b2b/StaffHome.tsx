@@ -1,7 +1,7 @@
 import { isRunningRental } from "@/lib/inquiryStatus";
 import { useRentalProtocolStatus } from "@/hooks/useRentalProtocolStatus";
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, CalendarCheck, CalendarX, AlertTriangle, Inbox, ListTodo, TrendingUp, Receipt, FileCheck2, Package, ShoppingCart, ChevronRight, LayoutGrid } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,7 +16,6 @@ import {
 import { isOpenInquiry, isUnprocessedInquiry } from "@/lib/inquiryStatus";
 import { needsAction, type PortalProfileLite } from "@/lib/customerActions";
 import { UserCheck } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { AdminGlobalSearch, type AdminSearchHit } from "@/components/b2b/admin/AdminGlobalSearch";
 import { MaintenanceDueWidget } from "@/components/b2b/admin/MaintenanceDueWidget";
 
