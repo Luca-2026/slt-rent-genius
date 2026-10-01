@@ -1,17 +1,36 @@
 /**
- * Erstellt und versendet eine Rechnung (oder einen Nachtrag) zu einer Miet-
- * oder Verkaufsanfrage aus dem internen Portal.
+ * Erstellt und versendet eine Rechnung, einen Nachtrag, eine Abschlags- oder
+ * Schlussrechnung zu einer Miet- oder Verkaufsanfrage aus dem internen Portal.
  *
  * - Aufrufer muss Admin oder aktiver Mitarbeiter sein (JWT-Prüfung).
  * - Das PDF entsteht mit dem gemeinsamen Angebots-/Rechnungsgenerator,
  *   damit Layout und Aufbau identisch zum Angebot sind.
- * - Rechnungsnummern kommen aus der Datenbank: RE-JJJJ-MM-0001.
+ * - Rechnungsnummern kommen aus der Datenbank, getrennt nach Geschäftsart:
+ *   Miete RE-M-JJJJ-MM-0001, Verkauf RE-V-JJJJ-MM-0001.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
+import {
+  addMonths,
+  billedInstallmentNet,
+  deductionNote,
+  installmentDeductions,
+  invoiceSeries,
+  nextInstallmentNumber,
+  validateInstallment,
+  type InstallmentDeduction,
+  type InstallmentInvoiceRow,
+} from "../_shared/installments.ts";
+
+const DOC_LABEL = {
+  invoice: "Rechnung",
+  supplement: "Nachtragsrechnung",
+  installment: "Abschlagsrechnung",
+  final: "Schlussrechnung",
+} as const;
 
 import { normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 import {
@@ -353,7 +372,10 @@ Deno.serve(async (req: Request) => {
       : Boolean(deliveryAddress.street || deliveryAddress.city);
 
     // ── Rechnungsnummer erst jetzt ziehen ──
-    const { data: numberData, error: numErr } = await service.rpc("generate_inquiry_invoice_number");
+    // Getrennte Nummernkreise: Miete RE-M-JJJJ-MM-0001, Verkauf RE-V-JJJJ-MM-0001
+    const { data: numberData, error: numErr } = await service.rpc("generate_inquiry_invoice_number_for", {
+      _series: invoiceSeries(inquiryType),
+    });
     if (numErr || !numberData) {
       console.error("Nummernkreis fehlgeschlagen:", numErr?.message);
       return json({ error: "Rechnungsnummer konnte nicht erzeugt werden" }, 500);
@@ -443,7 +465,7 @@ Deno.serve(async (req: Request) => {
     if (!staffName) staffName = "SLT Rental";
 
     const pdfBytes = await generateOfferPdf({
-      documentType: invoiceKind === "supplement" ? "supplement" : "invoice",
+      documentType: invoiceKind,
       offerNumber: invoiceNumber,
       offerDate: isoDate(invoiceDate),
       validUntil: isoDate(dueDate),
@@ -481,7 +503,7 @@ Deno.serve(async (req: Request) => {
       .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue")
       .replace(/Ä/g, "Ae").replace(/Ö/g, "Oe").replace(/Ü/g, "Ue").replace(/ß/g, "ss")
       .replace(/[^a-zA-Z0-9_\- ]/g, "_").replace(/\s+/g, "_");
-    const fileName = `${invoiceKind === "supplement" ? "Nachtragsrechnung" : "Rechnung"}_SLTRental_${invoiceNumber}_${safeName}.pdf`;
+    const fileName = `${DOC_LABEL[invoiceKind]}_SLTRental_${invoiceNumber}_${safeName}.pdf`;
     const filePath = `inquiry-invoices/${inquiryType}/${inquiry.id}/${fileName}`;
 
     const { error: uploadError } = await service.storage
@@ -535,13 +557,15 @@ Deno.serve(async (req: Request) => {
       ? escapeHtml(paymentTermsCustom).replace(/\n/g, "<br>")
       : (PAYMENT_EMAIL[paymentTerms] ?? PAYMENT_EMAIL.net_14);
 
-    const headline = invoiceKind === "supplement"
-      ? `Ihre Nachtragsrechnung ${invoiceNumber}`
-      : `Ihre Rechnung ${invoiceNumber}`;
+    const headline = `Ihre ${DOC_LABEL[invoiceKind]} ${invoiceNumber}`;
 
     const greetingName = (customerName || "").trim();
     const intro = invoiceKind === "supplement"
       ? `vielen Dank, dass Sie die Miete bei uns verlängert haben. Anbei erhalten Sie den Nachtrag${parentInvoiceNumber ? ` zur Rechnung ${escapeHtml(parentInvoiceNumber)}` : ""} mit den zusätzlichen Leistungen.`
+      : invoiceKind === "installment"
+      ? `vielen Dank für die laufende Zusammenarbeit. Anbei erhalten Sie die ${installmentNumber}. Abschlagsrechnung zu unserem Auftrag${sourceOfferNumber ? ` ${escapeHtml(sourceOfferNumber)}` : ""}. Der Abschlag wird später in der Schlussrechnung verrechnet.`
+      : invoiceKind === "final"
+      ? `herzlichen Dank für Ihren Auftrag. Anbei erhalten Sie die Schlussrechnung${sourceOfferNumber ? ` zu unserem Auftrag ${escapeHtml(sourceOfferNumber)}` : ""}.${deductions.length ? ` Ihre ${deductions.length === 1 ? "Abschlagsrechnung ist" : `${deductions.length} Abschlagsrechnungen sind`} darin bereits abgezogen.` : ""}`
       : "herzlichen Dank für Ihren Auftrag und das Vertrauen in SLT Rental – es hat uns gefreut, Sie mit unserer Technik zu unterstützen. Anbei finden Sie Ihre Rechnung als PDF.";
 
     const bankBlock = `
@@ -637,6 +661,8 @@ Deno.serve(async (req: Request) => {
         notes,
         paid_amount: amountPaid,
         payments,
+        installment_number: installmentNumber,
+        deducted_installments: deductions,
 
         // Zuerst als Entwurf anlegen, damit die Positionen noch gespeichert werden dürfen
         // (GoBD-Trigger sperrt Positionen finalisierter Rechnungen). Direkt danach finalisieren.
@@ -693,6 +719,20 @@ Deno.serve(async (req: Request) => {
       return json({ error: "Rechnung konnte nicht finalisiert werden" }, 500);
     }
 
+    // Abschlag gestellt → nächste Fälligkeit im Abschlagsplan weiterschieben.
+    if (invoiceKind === "installment" && inquiry.installment_enabled) {
+      const interval = Math.max(1, Number(inquiry.installment_interval_months) || 1);
+      const today = isoDate(new Date());
+      const base = inquiry.installment_next_due && inquiry.installment_next_due > today ? inquiry.installment_next_due : (inquiry.installment_next_due || today);
+      let next = addMonths(base, interval);
+      while (next <= today) next = addMonths(next, interval);
+      const { error: planErr } = await service
+        .from(table)
+        .update({ installment_next_due: next, installment_reminded_on: null })
+        .eq("id", inquiry.id);
+      if (planErr) console.error("Abschlagsplan konnte nicht fortgeschrieben werden:", planErr.message);
+    }
+
     // Erst nach vollständig gespeicherten und finalisierten Positionen versenden.
     if (resendKey) {
       try {
@@ -704,7 +744,7 @@ Deno.serve(async (req: Request) => {
             to: [customerEmail],
             cc: Array.from(new Set([loc.email, str(inquiry.location_email)].filter((e) => e && e !== customerEmail))),
             reply_to: loc.email,
-            subject: `${invoiceKind === "supplement" ? "Nachtragsrechnung" : "Rechnung"} von SLT Rental – ${invoiceNumber}`,
+            subject: `${DOC_LABEL[invoiceKind]} von SLT Rental – ${invoiceNumber}`,
             html: emailHtml,
             attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
           }),
