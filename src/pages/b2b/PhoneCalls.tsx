@@ -1,0 +1,207 @@
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Phone, RefreshCw, Inbox, Clock, ExternalLink } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
+import { useStaffAccess } from "@/hooks/useStaffAccess";
+import { usePhoneCalls, type PhoneCall } from "@/hooks/usePhoneCalls";
+import { INTENT_LABEL, PRIORITY_LABEL, PRIORITY_ORDER, type CallIntent, type CallPriority } from "@/lib/callPriority";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
+
+const LOC: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
+const STATUS: Record<PhoneCall["status"], string> = { open: "Offen", in_progress: "In Bearbeitung", done: "Erledigt" };
+const PRIO_CLASS: Record<CallPriority, string> = {
+  sofort: "bg-destructive text-destructive-foreground",
+  heute: "bg-accent text-accent-foreground",
+  woche: "bg-primary/15 text-primary",
+  info: "bg-muted text-muted-foreground",
+};
+
+const fmt = (c: PhoneCall) => new Date(c.call_started_at ?? c.created_at).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" });
+const who = (c: PhoneCall) => [c.company_name, c.customer_name ?? c.caller_name].filter(Boolean).join(" · ") || c.caller_phone || "Unbekannter Anrufer";
+
+export function PriorityBadge({ p }: { p: CallPriority | null }) {
+  if (!p) return <Badge variant="outline">Wird ausgewertet</Badge>;
+  return <span className={cn("inline-flex rounded-full px-2 py-0.5 text-xs font-semibold", PRIO_CLASS[p])}>{PRIORITY_LABEL[p]}</span>;
+}
+
+export default function PhoneCalls() {
+  const { isStaff, loading: accessLoading } = useStaffAccess();
+  const { rows, loading, reload } = usePhoneCalls();
+  const [prio, setPrio] = useState("all");
+  const [intent, setIntent] = useState("all");
+  const [loc, setLoc] = useState("all");
+  const [status, setStatus] = useState("active");
+  const [selId, setSelId] = useState<string | null>(null);
+
+  const filtered = useMemo(() => rows.filter((c) =>
+    (prio === "all" || c.priority === prio) && (intent === "all" || c.intent === intent) &&
+    (loc === "all" || c.location === loc) &&
+    (status === "all" || (status === "active" ? c.status !== "done" : c.status === status))), [rows, prio, intent, loc, status]);
+  const sel = rows.find((r) => r.id === selId) ?? null;
+
+  if (!accessLoading && !isStaff) return <B2BPortalLayout title="Anrufe"><p className="text-muted-foreground">Nur für Mitarbeiter.</p></B2BPortalLayout>;
+
+  return (
+    <B2BPortalLayout title="Anrufe" subtitle="Telefonate der Telefonassistenz mit KI-Vorauswertung, nach Priorität sortiert">
+      <div className="mb-4 grid grid-cols-2 gap-2 md:grid-cols-4">
+        <Select value={status} onValueChange={setStatus}><SelectTrigger aria-label="Status"><SelectValue /></SelectTrigger><SelectContent>
+          <SelectItem value="active">Offen & in Bearbeitung</SelectItem><SelectItem value="open">Offen</SelectItem>
+          <SelectItem value="in_progress">In Bearbeitung</SelectItem><SelectItem value="done">Erledigt</SelectItem><SelectItem value="all">Alle</SelectItem>
+        </SelectContent></Select>
+        <Select value={prio} onValueChange={setPrio}><SelectTrigger aria-label="Priorität"><SelectValue /></SelectTrigger><SelectContent>
+          <SelectItem value="all">Alle Prioritäten</SelectItem>{PRIORITY_ORDER.map((p) => <SelectItem key={p} value={p}>{PRIORITY_LABEL[p]}</SelectItem>)}
+        </SelectContent></Select>
+        <Select value={intent} onValueChange={setIntent}><SelectTrigger aria-label="Anliegen"><SelectValue /></SelectTrigger><SelectContent>
+          <SelectItem value="all">Alle Anliegen</SelectItem>{(Object.keys(INTENT_LABEL) as CallIntent[]).map((k) => <SelectItem key={k} value={k}>{INTENT_LABEL[k]}</SelectItem>)}
+        </SelectContent></Select>
+        <Select value={loc} onValueChange={setLoc}><SelectTrigger aria-label="Standort"><SelectValue /></SelectTrigger><SelectContent>
+          <SelectItem value="all">Alle Standorte</SelectItem>{Object.entries(LOC).map(([k, v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}
+        </SelectContent></Select>
+      </div>
+
+      <p className="mb-3 text-sm text-muted-foreground">{filtered.length} {filtered.length === 1 ? "Anruf" : "Anrufe"}</p>
+
+      {loading ? <p className="text-muted-foreground">Lädt …</p> : filtered.length === 0 ? (
+        <div className="rounded-lg border border-dashed border-border p-8 text-center text-muted-foreground">
+          <Phone className="mx-auto mb-2 h-6 w-6" aria-hidden="true" />
+          Noch keine Anrufe. Sobald fonio nach einem Gespräch Daten schickt, erscheinen sie hier.
+        </div>
+      ) : (
+        <ul className="divide-y divide-border rounded-lg border border-border bg-card">
+          {filtered.map((c) => (
+            <li key={c.id}>
+              <button type="button" onClick={() => setSelId(c.id)} className="flex w-full flex-col gap-1 p-3 text-left hover:bg-muted sm:flex-row sm:items-start sm:gap-4">
+                <div className="flex shrink-0 items-center gap-2 sm:w-40 sm:flex-col sm:items-start">
+                  <PriorityBadge p={c.priority} />
+                  <span className="text-xs text-muted-foreground">{fmt(c)}</span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium">{who(c)}</p>
+                  <p className="line-clamp-2 text-sm text-muted-foreground">
+                    {c.analysis_status === "failed" ? `Nicht ausgewertet: ${c.analysis_error ?? ""}` : c.summary ?? c.provider_summary ?? "Wird ausgewertet …"}
+                  </p>
+                </div>
+                <div className="flex shrink-0 flex-wrap gap-1 text-xs">
+                  {c.intent && <Badge variant="secondary">{INTENT_LABEL[c.intent]}</Badge>}
+                  {c.location && <Badge variant="outline">{LOC[c.location]}</Badge>}
+                  <Badge variant="outline">{STATUS[c.status]}</Badge>
+                </div>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <Sheet open={!!sel} onOpenChange={(o) => !o && setSelId(null)}>
+        <SheetContent className="w-full overflow-y-auto sm:max-w-xl">
+          {sel && <CallDetail call={sel} onChanged={reload} />}
+        </SheetContent>
+      </Sheet>
+    </B2BPortalLayout>
+  );
+}
+
+function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => void }) {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [notes, setNotes] = useState(call.notes ?? "");
+  const [busy, setBusy] = useState(false);
+
+  const update = async (patch: Record<string, unknown>) => {
+    setBusy(true);
+    const { error } = await supabase.from("phone_calls" as never).update(patch as never).eq("id", call.id);
+    setBusy(false);
+    if (error) toast({ title: "Speichern fehlgeschlagen", description: error.message, variant: "destructive" });
+    else onChanged();
+  };
+  const take = async () => {
+    const { data } = await supabase.auth.getUser();
+    await update({ status: "in_progress", assigned_to: data.user?.id ?? null });
+  };
+  const reanalyze = async () => {
+    setBusy(true);
+    const { data, error } = await supabase.functions.invoke("analyze-phone-call", { body: { id: call.id } });
+    setBusy(false);
+    const msg = (data as { error?: string } | null)?.error ?? (error ? "Auswertung fehlgeschlagen." : null);
+    if (msg) toast({ title: "Auswertung fehlgeschlagen", description: msg, variant: "destructive" });
+    else { toast({ title: "Neu ausgewertet" }); onChanged(); }
+  };
+  const toInquiry = async () => {
+    const text = [call.caller_phone ? `Anrufernummer: ${call.caller_phone}` : null, call.transcript ?? call.provider_summary ?? call.summary].filter(Boolean).join("\n\n");
+    try { sessionStorage.setItem("slt-ai-import-prefill", text); } catch { /* ignore */ }
+    if (call.status === "open") await take();
+    navigate("/b2b/mietanfragen");
+  };
+
+  return (
+    <div className="space-y-5">
+      <SheetHeader><SheetTitle>{who(call)}</SheetTitle></SheetHeader>
+      <div className="flex flex-wrap items-center gap-2 text-sm">
+        <PriorityBadge p={call.priority} />
+        {call.intent && <Badge variant="secondary">{INTENT_LABEL[call.intent]}</Badge>}
+        {call.location && <Badge variant="outline">{LOC[call.location]}</Badge>}
+        <span className="inline-flex items-center gap-1 text-muted-foreground"><Clock className="h-3.5 w-3.5" aria-hidden="true" />{fmt(call)}{call.duration_seconds != null && ` · ${Math.round(call.duration_seconds / 60)} Min.`}</span>
+      </div>
+
+      {call.priority_reason && <p className="text-sm text-muted-foreground">Begründung: {call.priority_reason}</p>}
+      {call.analysis_status === "failed" && <p className="rounded-md border border-destructive/40 bg-destructive/10 p-2 text-sm">Nicht ausgewertet: {call.analysis_error}</p>}
+
+      <section>
+        <h3 className="mb-1 text-sm font-semibold">Zusammenfassung</h3>
+        <p className="text-sm">{call.summary ?? call.provider_summary ?? "—"}</p>
+      </section>
+
+      <section className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
+        <div><span className="text-muted-foreground">Telefon: </span>{call.caller_phone ? <a className="text-primary underline" href={`tel:${call.caller_phone}`}>{call.caller_phone}</a> : "—"}</div>
+        <div><span className="text-muted-foreground">E-Mail: </span>{call.email ?? "—"}</div>
+        <div><span className="text-muted-foreground">Mietbeginn: </span>{call.rental_start ? new Date(call.rental_start).toLocaleDateString("de-DE") : "—"}</div>
+        <div><span className="text-muted-foreground">Kundenkartei: </span>{call.crm_customer_id ? <a className="text-primary underline" href={`/b2b/kundendaten?kunde=${call.crm_customer_id}`}>bekannter Kunde</a> : "nicht gefunden"}</div>
+      </section>
+
+      {call.mentioned_items.length > 0 && (
+        <section><h3 className="mb-1 text-sm font-semibold">Genannte Artikel</h3><ul className="list-disc pl-5 text-sm">{call.mentioned_items.map((x, i) => <li key={i}>{x}</li>)}</ul></section>
+      )}
+      {call.open_points.length > 0 && (
+        <section><h3 className="mb-1 text-sm font-semibold">Offene Punkte</h3><ul className="list-disc pl-5 text-sm">{call.open_points.map((x, i) => <li key={i}>{x}</li>)}</ul></section>
+      )}
+
+      <section className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <Select value={call.priority ?? ""} onValueChange={(v) => update({ priority: v, priority_overridden: true })}>
+          <SelectTrigger aria-label="Priorität ändern"><SelectValue placeholder="Priorität" /></SelectTrigger>
+          <SelectContent>{PRIORITY_ORDER.map((p) => <SelectItem key={p} value={p}>{PRIORITY_LABEL[p]}</SelectItem>)}</SelectContent>
+        </Select>
+        <Select value={call.status} onValueChange={(v) => update({ status: v })}>
+          <SelectTrigger aria-label="Status ändern"><SelectValue /></SelectTrigger>
+          <SelectContent>{Object.entries(STATUS).map(([k, v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}</SelectContent>
+        </Select>
+      </section>
+
+      <div className="flex flex-wrap gap-2">
+        {call.status === "open" && <Button onClick={take} disabled={busy}>Übernehmen</Button>}
+        <Button variant="secondary" onClick={toInquiry} disabled={busy || !(call.transcript || call.summary)}><Inbox className="mr-1 h-4 w-4" />Als Mietanfrage übernehmen</Button>
+        <Button variant="outline" onClick={reanalyze} disabled={busy}><RefreshCw className="mr-1 h-4 w-4" />Erneut auswerten</Button>
+        {call.recording_url && <Button variant="outline" asChild><a href={call.recording_url} target="_blank" rel="noopener noreferrer"><ExternalLink className="mr-1 h-4 w-4" />Aufnahme</a></Button>}
+      </div>
+
+      <section>
+        <h3 className="mb-1 text-sm font-semibold">Notiz</h3>
+        <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} />
+        <Button size="sm" className="mt-2" variant="outline" disabled={busy || notes === (call.notes ?? "")} onClick={() => update({ notes: notes.trim() || null })}>Notiz speichern</Button>
+      </section>
+
+      {call.transcript && (
+        <section>
+          <h3 className="mb-1 text-sm font-semibold">Transkript</h3>
+          <pre className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-md bg-muted p-3 text-xs">{call.transcript}</pre>
+        </section>
+      )}
+    </div>
+  );
+}
