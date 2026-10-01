@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { productCategories } from "@/data/rentalData";
 import { resolveSubcategory, useAdminManagedProducts, type AdminManagedProductRow } from "@/hooks/useManagedProducts";
 import { AddonOptionsEditor } from "./AddonOptionsEditor";
+import { SortableRows } from "./SortableRows";
 import { parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 
 const LOCATIONS = [
@@ -646,17 +647,21 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                     <Plus className="h-4 w-4 mr-1" /> Zeile
                   </Button>
                 </div>
-                <div className="space-y-2">
-                  {form.specifications.map((s, i) => (
-                    <div key={i} className="flex gap-2">
+                <SortableRows
+                  items={form.specifications}
+                  onReorder={(next) => setForm((f) => ({ ...f, specifications: next }))}
+                  renderRow={(s, i) => (
+                    <>
                       <Input placeholder="Bezeichnung" value={s.key} onChange={(e) => setForm((f) => {
                         const arr = [...f.specifications]; arr[i] = { ...arr[i], key: e.target.value }; return { ...f, specifications: arr };
                       })} />
                       <Input placeholder="Wert" value={s.value} onChange={(e) => setForm((f) => {
                         const arr = [...f.specifications]; arr[i] = { ...arr[i], value: e.target.value }; return { ...f, specifications: arr };
                       })} />
-                      <Button size="icon" variant="ghost" onClick={() => setForm((f) => ({ ...f, specifications: f.specifications.filter((_, j) => j !== i) }))}><X className="h-4 w-4" /></Button>
-                    </div>
+                      <Button size="icon" variant="ghost" aria-label="Zeile entfernen" onClick={() => setForm((f) => ({ ...f, specifications: f.specifications.filter((_, j) => j !== i) }))}><X className="h-4 w-4" /></Button>
+                    </>
+                  )}
+                />
                   ))}
                 </div>
               </div>

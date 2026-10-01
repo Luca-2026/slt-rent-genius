@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SortableRows } from "./SortableRows";
 import { Sparkles, Loader2, Trash2, Plus, Upload, ImageOff } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -659,8 +660,12 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
 
               <div className="space-y-2">
                 <Label>Technische Daten</Label>
-                {form.specifications.map((spec, i) => (
-                  <div key={i} className="flex gap-2">
+                <SortableRows
+                  items={form.specifications}
+                  disabled={readOnly}
+                  onReorder={(next) => set("specifications", next)}
+                  renderRow={(spec, i) => (
+                    <>
                     <Input
                       value={spec.key}
                       placeholder="Bezeichnung"
@@ -681,8 +686,9 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
                       onClick={() => set("specifications", form.specifications.filter((_, j) => j !== i))}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
-                  </div>
-                ))}
+                  </>
+                  )}
+                />
                 <Button type="button" variant="outline" size="sm" disabled={readOnly}
                   onClick={() => set("specifications", [...form.specifications, { key: "", value: "" }])}>
                   <Plus className="h-4 w-4 mr-1" /> Zeile hinzufügen
