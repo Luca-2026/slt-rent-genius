@@ -568,6 +568,16 @@ Deno.serve(async (req: Request) => {
       .eq("id", inquiry.id);
     if (updErr) console.error("Status-Update fehlgeschlagen:", updErr.message);
 
+    // Verknüpfte Telefonate gelten als erledigt, sobald das Angebot gesendet wurde
+    if (!updErr && inquiryType === "rental") {
+      const { error: callErr } = await service
+        .from("phone_calls")
+        .update({ status: "done" })
+        .eq("rental_inquiry_id", inquiry.id)
+        .neq("status", "done");
+      if (callErr) console.error("Anruf-Status-Update fehlgeschlagen:", callErr.message);
+    }
+
     return json({
       success: true,
       offer_number: offerNumber,
