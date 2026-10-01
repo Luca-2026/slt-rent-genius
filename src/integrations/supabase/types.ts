@@ -993,6 +993,7 @@ export type Database = {
           seo_use_case_privat: string | null
           slug: string
           sort_order: number | null
+          spec_order: string[] | null
           specifications: Json
           subcategory: string | null
           tags: string[]
@@ -1045,6 +1046,7 @@ export type Database = {
           seo_use_case_privat?: string | null
           slug: string
           sort_order?: number | null
+          spec_order?: string[] | null
           specifications?: Json
           subcategory?: string | null
           tags?: string[]
@@ -1097,6 +1099,7 @@ export type Database = {
           seo_use_case_privat?: string | null
           slug?: string
           sort_order?: number | null
+          spec_order?: string[] | null
           specifications?: Json
           subcategory?: string | null
           tags?: string[]
@@ -2621,6 +2624,7 @@ export type Database = {
           showroom_locations: string[] | null
           slug: string
           sort_order: number
+          spec_order: string[] | null
           specifications: Json | null
           updated_at: string
           vat_rate: number
@@ -2646,6 +2650,7 @@ export type Database = {
           showroom_locations?: string[] | null
           slug: string
           sort_order?: number
+          spec_order?: string[] | null
           specifications?: Json | null
           updated_at?: string
           vat_rate?: number
@@ -2671,6 +2676,7 @@ export type Database = {
           showroom_locations?: string[] | null
           slug?: string
           sort_order?: number
+          spec_order?: string[] | null
           specifications?: Json | null
           updated_at?: string
           vat_rate?: number
@@ -3947,6 +3953,7 @@ export type Database = {
           price_on_request: boolean | null
           reference_number: string | null
           slug: string | null
+          spec_order: string[] | null
           specifications: Json | null
           status: string
           updated_at: string
@@ -3968,6 +3975,7 @@ export type Database = {
           price_on_request?: boolean | null
           reference_number?: string | null
           slug?: string | null
+          spec_order?: string[] | null
           specifications?: Json | null
           status?: string
           updated_at?: string
@@ -3989,6 +3997,7 @@ export type Database = {
           price_on_request?: boolean | null
           reference_number?: string | null
           slug?: string | null
+          spec_order?: string[] | null
           specifications?: Json | null
           status?: string
           updated_at?: string
