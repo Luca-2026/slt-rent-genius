@@ -36,8 +36,11 @@ Deno.serve(async (req) => {
   const { data: existing } = await svc.from("phone_calls").select("id").eq("source", "fonio").eq("external_id", externalId).maybeSingle();
   if (existing) return json({ ok: true, id: existing.id, duplicate: true });
 
+  const a = (new URL(req.url).searchParams.get("assistant") ?? "").toLowerCase();
+  const assistant = a === "krefeld" || a === "bonn" ? a : null;
+
   const { data: row, error } = await svc.from("phone_calls").insert({
-    source: "fonio", external_id: externalId, raw_payload: body,
+    source: "fonio", external_id: externalId, raw_payload: body, assistant,
     caller_phone: c.callerPhone, caller_name: c.callerName, call_started_at: c.startedAt,
     duration_seconds: c.durationSeconds, recording_url: c.recordingUrl,
     transcript: c.transcript, provider_summary: c.providerSummary,
