@@ -729,6 +729,7 @@ export function InquiryOfferForm({
   const reorder = (from: number, to: number) => setItems((prev) => moveItem(prev, from, to));
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewing, setPreviewing] = useState(false);
+  const [previewedKey, setPreviewedKey] = useState<string | null>(null);
   useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
 
   const preview = async () => {
@@ -741,7 +742,8 @@ export function InquiryOfferForm({
       return;
     }
     setPreviewing(true);
-    const { data, error } = await supabase.functions.invoke("send-inquiry-offer", { body: { ...buildBody(), preview: true } });
+    const previewBody = buildBody();
+    const { data, error } = await supabase.functions.invoke("send-inquiry-offer", { body: { ...previewBody, preview: true } });
     setPreviewing(false);
     const b64 = (data as any)?.pdf_base64 as string | undefined;
     if (error || !b64) {
@@ -753,9 +755,13 @@ export function InquiryOfferForm({
     for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     setPreviewUrl(URL.createObjectURL(new Blob([bytes], { type: "application/pdf" })));
+    setPreviewedKey(JSON.stringify(previewBody));
   };
+  // Versand erst nach Vorschau des aktuellen Stands (jede Änderung verlangt eine neue Vorschau).
+  const previewOk = isInvoice || previewedKey === JSON.stringify(buildBody());
 
   const send = async () => {
+    if (!isInvoice && previewedKey !== JSON.stringify(buildBody())) return;
     const invalid = items.some((i) => !i.product_name.trim() || i.quantity <= 0 || i.unit_price < 0);
     if (invalid) {
       toast({ title: "Bitte alle Positionen ausfüllen", description: "Bezeichnung, Menge und Preis werden benötigt.", variant: "destructive" });
@@ -1573,7 +1579,8 @@ export function InquiryOfferForm({
           </div>
         </DialogContent>
       </Dialog>
-      <Button onClick={send} disabled={disabled || sending || checking} className="w-full">
+      {!previewOk && <p className="text-xs text-muted-foreground">Vor dem Senden bitte die PDF-Vorschau des aktuellen Stands ansehen.</p>}
+      <Button onClick={send} disabled={disabled || sending || checking || !previewOk} className="w-full">
         <Send className="h-4 w-4 mr-2" />
         {isInvoice
           ? sending
