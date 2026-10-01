@@ -153,9 +153,9 @@ function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => voi
   const createInquiry = async (r: Parameters<typeof createInquiryFromImport>[0]) => {
     const id = await createInquiryFromImport(r);
     if (id) {
-      await supabase.from("phone_calls" as never).update({ rental_inquiry_id: id, status: "done" } as never).eq("id", call.id);
+      await supabase.from("phone_calls" as never).update({ rental_inquiry_id: id, status: "in_progress" } as never).eq("id", call.id);
     }
-    toast({ title: "Mietanfrage angelegt", description: "Der Anruf ist mit der Anfrage verknüpft und als erledigt markiert." });
+    toast({ title: "Mietanfrage angelegt", description: "Der Anruf ist verknüpft und gilt als erledigt, sobald das Angebot gesendet wurde." });
     onChanged();
     if (id) navigate(`/b2b/mietanfragen?status=all&anfrage=${id}`);
   };
