@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useSearchParams } from "react-router-dom";
@@ -60,8 +60,9 @@ export default function RentalInquiries() {
   const [selectedId, setSelectedId] = useState<string | null>(() => new URLSearchParams(window.location.search).get("anfrage"));
   const [newOpen, setNewOpen] = useState(false);
   const [aiPrefill] = useState<string | null>(() => {
-    try { const v = sessionStorage.getItem("slt-ai-import-prefill"); sessionStorage.removeItem("slt-ai-import-prefill"); return v; } catch { return null; }
+    try { return sessionStorage.getItem("slt-ai-import-prefill"); } catch { return null; }
   });
+  useEffect(() => { try { sessionStorage.removeItem("slt-ai-import-prefill"); } catch { /* ignore */ } }, []);
   const [aiOpen, setAiOpen] = useState(!!aiPrefill);
   const [searchParams, setSearchParams] = useSearchParams();
   const segment = parseSegmentFilter(searchParams.get("kunden"));
