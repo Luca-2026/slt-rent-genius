@@ -17,6 +17,7 @@ import { isOpenInquiry, isUnprocessedInquiry } from "@/lib/inquiryStatus";
 import { needsAction, type PortalProfileLite } from "@/lib/customerActions";
 import { UserCheck } from "lucide-react";
 import { AdminGlobalSearch, type AdminSearchHit } from "@/components/b2b/admin/AdminGlobalSearch";
+import { isInstallmentDue } from "@/lib/installments";
 import { MaintenanceDueWidget } from "@/components/b2b/admin/MaintenanceDueWidget";
 import { usePhoneCalls, isUrgentCall } from "@/hooks/usePhoneCalls";
 import { PRIORITY_LABEL } from "@/lib/callPriority";
@@ -302,6 +303,8 @@ export default function StaffHome() {
             )}
           </div>
 
+          <DueInstallments today={today} />
+
           {canViewInventory && <MaintenanceDueWidget />}
 
           {/* 3. Alle Funktionen */}
@@ -329,6 +332,44 @@ export default function StaffHome() {
         </div>
       )}
     </B2BPortalLayout>
+  );
+}
+
+/** Fällige Abschlagsrechnungen aus Miet- und Verkaufsaufträgen. */
+function DueInstallments({ today }: { today: string }) {
+  const [rows, setRows] = useState<{ id: string; kind: "rental" | "sales"; name: string; offer: string | null; due: string; amount: number | null }[]>([]);
+  useEffect(() => {
+    (async () => {
+      const cols = "id,status,offer_number,company_name,installment_enabled,installment_next_due,installment_amount_net";
+      const [r, s] = await Promise.all([
+        supabase.from("rental_inquiries").select(`${cols},customer_name`).eq("installment_enabled", true).lte("installment_next_due", today),
+        supabase.from("sales_inquiries").select(`${cols},first_name,last_name`).eq("installment_enabled", true).lte("installment_next_due", today),
+      ]);
+      const map = (kind: "rental" | "sales") => (x: any) => ({
+        id: x.id, kind, offer: x.offer_number, due: x.installment_next_due, amount: x.installment_amount_net,
+        name: x.company_name || x.customer_name || [x.first_name, x.last_name].filter(Boolean).join(" ") || "Kunde",
+        ok: isInstallmentDue(x, today),
+      });
+      setRows([...(r.data ?? []).map(map("rental")), ...(s.data ?? []).map(map("sales"))].filter((x) => x.ok).sort((a, b) => a.due.localeCompare(b.due)));
+    })();
+  }, [today]);
+  if (!rows.length) return null;
+  return (
+    <section className="rounded-xl border-2 border-accent/60 bg-card" aria-label="Fällige Abschlagsrechnungen">
+      <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
+        <h2 className="text-sm font-semibold text-foreground">Fällige Abschlagsrechnungen <span className="ml-1 rounded-full bg-accent px-2 py-0.5 text-xs text-accent-foreground">{rows.length}</span></h2>
+      </header>
+      <ul className="divide-y divide-border">
+        {rows.map((r) => (
+          <li key={r.id}>
+            <Link to={`/b2b/${r.kind === "rental" ? "mietanfragen" : "verkaufsanfragen"}?status=all&anfrage=${r.id}`} className="flex flex-wrap items-center justify-between gap-2 px-4 py-2 text-sm hover:bg-muted">
+              <span className="min-w-0"><span className="font-medium">{r.name}</span> <span className="text-muted-foreground">· {r.kind === "rental" ? "Miete" : "Verkauf"} · Angebot {r.offer ?? "—"}</span></span>
+              <span className="text-muted-foreground">fällig seit {new Date(r.due).toLocaleDateString("de-DE")}{r.amount ? ` · ${formatEuro(Number(r.amount))} netto` : ""}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
