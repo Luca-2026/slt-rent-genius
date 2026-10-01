@@ -18,6 +18,8 @@ import { needsAction, type PortalProfileLite } from "@/lib/customerActions";
 import { UserCheck } from "lucide-react";
 import { AdminGlobalSearch, type AdminSearchHit } from "@/components/b2b/admin/AdminGlobalSearch";
 import { MaintenanceDueWidget } from "@/components/b2b/admin/MaintenanceDueWidget";
+import { usePhoneCalls, isUrgentCall } from "@/hooks/usePhoneCalls";
+import { PRIORITY_LABEL } from "@/lib/callPriority";
 
 type ProfileRow = PortalProfileLite & { id: string; company_name: string; credit_limit: number };
 
@@ -216,6 +218,8 @@ export default function StaffHome() {
             <ActionStat label="Verkaufsanfragen" value={openSales} to="/b2b/verkaufsanfragen" icon={ShoppingCart} />
           </div>
 
+          <UrgentCalls />
+
           {customerRequests.length > 0 && (
             <section className="rounded-xl border-2 border-accent bg-card" aria-label="Offene Kundenanfragen">
               <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
@@ -325,5 +329,30 @@ export default function StaffHome() {
         </div>
       )}
     </B2BPortalLayout>
+  );
+}
+
+function UrgentCalls() {
+  const { rows } = usePhoneCalls();
+  const urgent = rows.filter(isUrgentCall);
+  if (!urgent.length) return null;
+  return (
+    <section className="rounded-xl border-2 border-destructive/60 bg-card" aria-label="Dringende Anrufe">
+      <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
+        <h2 className="text-sm font-semibold text-foreground">Anrufe mit Handlungsbedarf <span className="ml-1 rounded-full bg-destructive px-2 py-0.5 text-xs text-destructive-foreground">{urgent.length}</span></h2>
+        <Link to="/b2b/anrufe" className="text-xs font-medium text-primary hover:underline">Alle anzeigen</Link>
+      </header>
+      <ul className="divide-y divide-border">
+        {urgent.slice(0, 6).map((c) => (
+          <li key={c.id}>
+            <Link to="/b2b/anrufe" className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-muted">
+              <span className={cn("shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold", c.priority === "sofort" ? "bg-destructive text-destructive-foreground" : "bg-accent text-accent-foreground")}>{c.priority ? PRIORITY_LABEL[c.priority] : ""}</span>
+              <span className="min-w-0 flex-1 truncate text-foreground">{[c.company_name, c.customer_name].filter(Boolean).join(" · ") || c.caller_phone || "Unbekannt"}: {c.summary ?? ""}</span>
+              <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
