@@ -49,6 +49,7 @@ const StaffHome = lazy(() => import("./pages/b2b/StaffHome"));
 const SalesInquiries = lazy(() => import("./pages/b2b/SalesInquiries"));
 const InquiryInvoices = lazy(() => import("./pages/b2b/InquiryInvoices"));
 const RevenueAnalytics = lazy(() => import("./pages/b2b/RevenueAnalytics"));
+const PhoneCalls = lazy(() => import("./pages/b2b/PhoneCalls"));
 const B2BCustomers = lazy(() => import("./pages/b2b/Customers"));
 const ForgotPassword = lazy(() => import("./pages/b2b/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/b2b/ResetPassword"));
@@ -239,6 +240,7 @@ const App = () => (
               <Route path="/b2b/verkaufsanfragen" element={<SalesInquiries />} />
               <Route path="/b2b/anfrage-rechnungen" element={<InquiryInvoices />} />
               <Route path="/b2b/auswertungen" element={<RevenueAnalytics />} />
+              <Route path="/b2b/anrufe" element={<PhoneCalls />} />
               <Route path="/b2b/kundendaten" element={<B2BCustomers />} />
               <Route path="/b2b" element={<B2BLogin />} />
               

@@ -3,7 +3,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   Home, LayoutDashboard, Inbox, FileText, Package, ShoppingCart, Receipt, Users,
   ClipboardCheck, Undo2, AlertTriangle, CheckSquare, Truck, Boxes, CalendarClock,
-  Store, UserCog, Shield, MessageSquare, BookOpen, BarChart3,
+  Store, UserCog, Shield, MessageSquare, BookOpen, BarChart3, PhoneCall,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ export interface StaffNavItem {
   icon: LucideIcon;
   /** wer den Eintrag sieht */
   access: "staff" | "admin" | "inventory";
-  badgeKey?: "rental" | "sales" | "todos";
+  badgeKey?: "rental" | "sales" | "todos" | "calls";
 }
 
 export interface StaffNavGroup {
@@ -30,6 +30,7 @@ export const STAFF_NAV: StaffNavGroup[] = [
   {
     label: "Vorgänge",
     items: [
+      { label: "Anrufe", path: "/b2b/anrufe", icon: PhoneCall, access: "staff", badgeKey: "calls" },
       { label: "Mietanfragen", path: "/b2b/mietanfragen", icon: Inbox, access: "staff", badgeKey: "rental" },
       { label: "Laufende Mietvorgänge", path: "/b2b/mietanfragen", status: "running", icon: Package, access: "staff" },
       { label: "Verkaufsanfragen", path: "/b2b/verkaufsanfragen", icon: ShoppingCart, access: "staff", badgeKey: "sales" },
@@ -98,7 +99,7 @@ export function isItemActive(item: StaffNavItem, pathname: string, search: strin
 interface Props {
   isAdmin: boolean;
   canViewInventory: boolean;
-  badges: { rental: number; sales: number; todos: number };
+  badges: { rental: number; sales: number; todos: number; calls?: number };
   onNavigate?: () => void;
 }
 
@@ -115,7 +116,7 @@ export function StaffNav({ isAdmin, canViewInventory, badges, onNavigate }: Prop
   const renderItem = (item: StaffNavItem) => {
     const active = isItemActive(item, pathname, search);
     const Icon = item.icon;
-    const badge = item.badgeKey ? badges[item.badgeKey] : 0;
+    const badge = item.badgeKey ? badges[item.badgeKey] ?? 0 : 0;
     return (
       <li key={itemHref(item)}>
         <Link

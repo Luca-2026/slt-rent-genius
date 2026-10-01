@@ -162,7 +162,7 @@ function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => voi
         <div><span className="text-muted-foreground">Telefon: </span>{call.caller_phone ? <a className="text-primary underline" href={`tel:${call.caller_phone}`}>{call.caller_phone}</a> : "—"}</div>
         <div><span className="text-muted-foreground">E-Mail: </span>{call.email ?? "—"}</div>
         <div><span className="text-muted-foreground">Mietbeginn: </span>{call.rental_start ? new Date(call.rental_start).toLocaleDateString("de-DE") : "—"}</div>
-        <div><span className="text-muted-foreground">Kundenkartei: </span>{call.crm_customer_id ? <a className="text-primary underline" href={`/b2b/kundendaten?kunde=${call.crm_customer_id}`}>bekannter Kunde</a> : "nicht gefunden"}</div>
+        <div><span className="text-muted-foreground">Kundenkartei: </span>{call.crm_customer_id ? <a className="text-primary underline" href="/b2b/kundendaten">bekannter Kunde</a> : "nicht gefunden"}</div>
       </section>
 
       {call.mentioned_items.length > 0 && (
