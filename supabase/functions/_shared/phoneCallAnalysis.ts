@@ -54,7 +54,7 @@ Regeln – strikt:
 - E-Mail und Telefon exakt wie genannt.`;
 }
 
-async function readSse(body: ReadableStream<Uint8Array>): Promise<string> {
+export async function readSse(body: ReadableStream<Uint8Array>): Promise<string> {
   const reader = body.getReader(); const dec = new TextDecoder();
   let buf = "", out = "", refusal = ""; let failure: string | null = null;
   for (;;) {
