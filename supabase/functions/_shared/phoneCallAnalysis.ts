@@ -14,7 +14,7 @@ export class AiError extends Error {
 const n = (t: string) => ({ type: [t, "null"] });
 const SCHEMA = {
   type: "object", additionalProperties: false,
-  required: ["summary", "intent", "priority", "priority_reason", "location", "customer_name", "company_name", "email", "callback_phone", "rental_start", "mentioned_items", "open_points"],
+  required: ["summary", "intent", "priority", "priority_reason", "location", "customer_name", "company_name", "email", "callback_phone", "rental_start", "rental_end", "items", "address", "delivery", "callback_time", "mentioned_items", "open_points"],
   properties: {
     summary: { type: "string" },
     intent: { type: "string", enum: ["rental_inquiry", "offer_change", "complaint_damage", "callback", "info", "other"] },
@@ -23,6 +23,11 @@ const SCHEMA = {
     location: { type: ["string", "null"], enum: ["krefeld", "bonn", "muelheim", null] },
     customer_name: n("string"), company_name: n("string"), email: n("string"), callback_phone: n("string"),
     rental_start: { type: ["string", "null"], description: "YYYY-MM-DD" },
+    rental_end: { type: ["string", "null"], description: "YYYY-MM-DD" },
+    items: { type: "array", items: { type: "object", additionalProperties: false, required: ["name", "quantity", "note"], properties: { name: { type: "string" }, quantity: { type: ["integer", "null"] }, note: n("string") } } },
+    address: { type: "object", additionalProperties: false, required: ["street", "postal_code", "city"], properties: { street: n("string"), postal_code: n("string"), city: n("string") } },
+    delivery: { type: "object", additionalProperties: false, required: ["wanted", "address", "note"], properties: { wanted: { type: ["boolean", "null"] }, address: n("string"), note: n("string") } },
+    callback_time: n("string"),
     mentioned_items: { type: "array", items: { type: "string" } },
     open_points: { type: "array", items: { type: "string" } },
   },
@@ -40,6 +45,12 @@ Regeln – strikt:
 - location nur bei ausdrücklicher Nennung eines Standorts.
 - rental_start nur bei eindeutigem Datum, relative Angaben anhand von heute umrechnen.
 - mentioned_items: genannte Geräte im Wortlaut. open_points: was für die Bearbeitung noch fehlt.
+- rental_end nur bei eindeutigem Enddatum oder eindeutiger Dauer ab rental_start (z. B. "3 Tage" ab Start), sonst null.
+- items: je Gerät Name im Wortlaut, quantity nur bei genannter Menge (sonst null), note für Details wie Größe/Ausstattung.
+- address: Rechnungs-/Firmenadresse des Kunden, nur wenn genannt.
+- delivery.wanted: true bei Liefer-/Transportwunsch, false bei Selbstabholung, sonst null; delivery.address: Baustellen-/Lieferadresse im Wortlaut.
+- callback_time: gewünschte Rückrufzeit im Wortlaut (z. B. "morgen ab 14 Uhr"), sonst null.
+- Buchstabierte E-Mails/Namen zusammensetzen ("m-a-x at firma punkt de" -> max@firma.de).
 - E-Mail und Telefon exakt wie genannt.`;
 }
 
@@ -131,6 +142,14 @@ export async function analyzePhoneCall(svc: any, callId: string, apiKey: string)
       rental_start: rentalStart && /^\d{4}-\d{2}-\d{2}$/.test(rentalStart) ? rentalStart : null,
       mentioned_items: (Array.isArray(r.mentioned_items) ? r.mentioned_items : []).map((s: unknown) => t(s, 200)).filter(Boolean).slice(0, 20),
       open_points: (Array.isArray(r.open_points) ? r.open_points : []).map((s: unknown) => t(s, 300)).filter(Boolean).slice(0, 15),
+      details: {
+        rental_end: (() => { const e = t(r.rental_end, 10); return e && /^\d{4}-\d{2}-\d{2}$/.test(e) ? e : null; })(),
+        items: (Array.isArray(r.items) ? r.items : []).slice(0, 30).map((i: any) => ({ name: t(i?.name, 200), quantity: Number.isInteger(i?.quantity) && i.quantity > 0 ? i.quantity : null, note: t(i?.note, 300) })).filter((i: any) => i.name),
+        address: { street: t(r.address?.street, 200), postal_code: t(r.address?.postal_code, 10), city: t(r.address?.city, 100) },
+        delivery: { wanted: typeof r.delivery?.wanted === "boolean" ? r.delivery.wanted : null, address: t(r.delivery?.address, 300), note: t(r.delivery?.note, 300) },
+        callback_time: t(r.callback_time, 120),
+        callback_phone: callback,
+      },
       crm_customer_id: crmId,
       analysis_status: "done", analysis_error: null,
     };

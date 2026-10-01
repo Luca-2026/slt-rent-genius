@@ -2721,6 +2721,7 @@ export type Database = {
           created_at: string
           crm_customer_id: string | null
           customer_name: string | null
+          details: Json
           duration_seconds: number | null
           email: string | null
           external_id: string
@@ -2757,6 +2758,7 @@ export type Database = {
           created_at?: string
           crm_customer_id?: string | null
           customer_name?: string | null
+          details?: Json
           duration_seconds?: number | null
           email?: string | null
           external_id: string
@@ -2793,6 +2795,7 @@ export type Database = {
           created_at?: string
           crm_customer_id?: string | null
           customer_name?: string | null
+          details?: Json
           duration_seconds?: number | null
           email?: string | null
           external_id?: string
