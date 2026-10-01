@@ -13,7 +13,7 @@ export function moveItem<T>(arr: T[], from: number, to: number): T[] {
 
 /**
  * Zeilenliste mit Drag & Drop über einen Griff links (Desktop, natives HTML5-DnD).
- * Gezogen wird nur über den Griff, damit Texteingaben normal markierbar bleiben.
+ * Gezogen wird nur über den Griff (draggable), damit Texteingaben normal markierbar bleiben.
  */
 export function SortableRows<T>({
   items,
@@ -26,11 +26,10 @@ export function SortableRows<T>({
   disabled?: boolean;
   renderRow: (item: T, index: number) => ReactNode;
 }) {
-  const [armed, setArmed] = useState<number | null>(null);
   const [dragIdx, setDragIdx] = useState<number | null>(null);
   const [overIdx, setOverIdx] = useState<number | null>(null);
 
-  const reset = () => { setArmed(null); setDragIdx(null); setOverIdx(null); };
+  const reset = () => { setDragIdx(null); setOverIdx(null); };
 
   return (
     <div className="space-y-2">
@@ -38,12 +37,6 @@ export function SortableRows<T>({
         <div
           key={i}
           data-testid="sortable-row"
-          draggable={!disabled && armed === i}
-          onDragStart={(e) => {
-            setDragIdx(i);
-            e.dataTransfer.effectAllowed = "move";
-            e.dataTransfer.setData("text/plain", String(i));
-          }}
           onDragOver={(e) => {
             if (dragIdx === null) return;
             e.preventDefault();
@@ -67,8 +60,14 @@ export function SortableRows<T>({
             aria-label={`Zeile ${i + 1} verschieben`}
             disabled={disabled}
             className="shrink-0 cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40 p-1"
-            onMouseDown={() => setArmed(i)}
-            onMouseUp={() => { if (dragIdx === null) setArmed(null); }}
+            draggable={!disabled}
+            onDragStart={(e) => {
+              setDragIdx(i);
+              e.dataTransfer.effectAllowed = "move";
+              e.dataTransfer.setData("text/plain", String(i));
+              const row = (e.currentTarget as HTMLElement).parentElement;
+              if (row) e.dataTransfer.setDragImage(row, 12, 12);
+            }}
             onKeyDown={(e) => {
               if (e.key === "ArrowUp" && i > 0) { e.preventDefault(); onReorder(moveItem(items, i, i - 1)); }
               if (e.key === "ArrowDown" && i < items.length - 1) { e.preventDefault(); onReorder(moveItem(items, i, i + 1)); }

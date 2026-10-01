@@ -20,9 +20,7 @@ describe("SortableRows", () => {
   it("verschiebt per Drag & Drop über den Griff", () => {
     render(<Harness />);
     const rows = screen.getAllByTestId("sortable-row");
-    fireEvent.mouseDown(screen.getByLabelText("Zeile 3 verschieben"));
-    expect(rows[2].getAttribute("draggable")).toBe("true");
-    fireEvent.dragStart(rows[2], { dataTransfer: dt() });
+    fireEvent.dragStart(screen.getByLabelText("Zeile 3 verschieben"), { dataTransfer: { ...dt(), setDragImage: () => {} } });
     fireEvent.dragOver(rows[0], { dataTransfer: dt() });
     fireEvent.drop(rows[0], { dataTransfer: dt() });
     expect(screen.getByTestId("order").textContent).toBe("C,A,B");
@@ -30,7 +28,8 @@ describe("SortableRows", () => {
 
   it("Zeilen sind ohne Griff nicht ziehbar (Texteingaben bleiben bedienbar)", () => {
     render(<Harness />);
-    expect(screen.getAllByTestId("sortable-row")[0].getAttribute("draggable")).toBe("false");
+    expect(screen.getAllByTestId("sortable-row")[0].getAttribute("draggable")).toBeNull();
+    expect(screen.getByLabelText("Zeile 1 verschieben").getAttribute("draggable")).toBe("true");
   });
 
   it("Pfeiltasten am Griff verschieben ebenfalls", () => {
