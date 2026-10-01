@@ -2677,6 +2677,129 @@ export type Database = {
         }
         Relationships: []
       }
+      phone_calls: {
+        Row: {
+          ai_priority: string | null
+          analysis_error: string | null
+          analysis_status: string
+          assigned_to: string | null
+          call_started_at: string | null
+          caller_name: string | null
+          caller_phone: string | null
+          company_name: string | null
+          created_at: string
+          crm_customer_id: string | null
+          customer_name: string | null
+          duration_seconds: number | null
+          email: string | null
+          external_id: string
+          id: string
+          intent: string | null
+          location: string | null
+          mentioned_items: Json
+          notes: string | null
+          open_points: Json
+          priority: string | null
+          priority_overridden: boolean
+          priority_reason: string | null
+          provider_summary: string | null
+          raw_payload: Json
+          recording_url: string | null
+          rental_inquiry_id: string | null
+          rental_start: string | null
+          source: string
+          status: string
+          summary: string | null
+          transcript: string | null
+          updated_at: string
+        }
+        Insert: {
+          ai_priority?: string | null
+          analysis_error?: string | null
+          analysis_status?: string
+          assigned_to?: string | null
+          call_started_at?: string | null
+          caller_name?: string | null
+          caller_phone?: string | null
+          company_name?: string | null
+          created_at?: string
+          crm_customer_id?: string | null
+          customer_name?: string | null
+          duration_seconds?: number | null
+          email?: string | null
+          external_id: string
+          id?: string
+          intent?: string | null
+          location?: string | null
+          mentioned_items?: Json
+          notes?: string | null
+          open_points?: Json
+          priority?: string | null
+          priority_overridden?: boolean
+          priority_reason?: string | null
+          provider_summary?: string | null
+          raw_payload: Json
+          recording_url?: string | null
+          rental_inquiry_id?: string | null
+          rental_start?: string | null
+          source?: string
+          status?: string
+          summary?: string | null
+          transcript?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ai_priority?: string | null
+          analysis_error?: string | null
+          analysis_status?: string
+          assigned_to?: string | null
+          call_started_at?: string | null
+          caller_name?: string | null
+          caller_phone?: string | null
+          company_name?: string | null
+          created_at?: string
+          crm_customer_id?: string | null
+          customer_name?: string | null
+          duration_seconds?: number | null
+          email?: string | null
+          external_id?: string
+          id?: string
+          intent?: string | null
+          location?: string | null
+          mentioned_items?: Json
+          notes?: string | null
+          open_points?: Json
+          priority?: string | null
+          priority_overridden?: boolean
+          priority_reason?: string | null
+          provider_summary?: string | null
+          raw_payload?: Json
+          recording_url?: string | null
+          rental_inquiry_id?: string | null
+          rental_start?: string | null
+          source?: string
+          status?: string
+          summary?: string | null
+          transcript?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "phone_calls_crm_customer_id_fkey"
+            columns: ["crm_customer_id"]
+            isOneToOne: false
+            referencedRelation: "crm_customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "phone_calls_rental_inquiry_id_fkey"
+            columns: ["rental_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "rental_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_categories: {
         Row: {
           created_at: string
