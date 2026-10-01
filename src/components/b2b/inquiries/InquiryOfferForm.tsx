@@ -652,51 +652,7 @@ export function InquiryOfferForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inquiryId]);
 
-  const send = async () => {
-    const invalid = items.some((i) => !i.product_name.trim() || i.quantity <= 0 || i.unit_price < 0);
-    if (invalid) {
-      toast({ title: "Bitte alle Positionen ausfüllen", description: "Bezeichnung, Menge und Preis werden benötigt.", variant: "destructive" });
-      return;
-    }
-    if (delivery.requested && !delivery.street.trim() && !delivery.city.trim()) {
-      toast({
-        title: "Lieferadresse fehlt",
-        description: "Bitte Straße und Ort der Lieferadresse ergänzen oder „Lieferung“ deaktivieren.",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (paymentTerms === "custom" && paymentTermsCustom.trim().length < 5) {
-      toast({
-        title: "Zahlungsbedingungen fehlen",
-        description: "Bitte die individuellen Zahlungsbedingungen ausformulieren.",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (!isValidOfferTotal(totals.netAmount)) {
-      toast({
-        title: "Angebotssumme ungültig",
-        description: "Die Summe muss größer als 0 € sein – bitte Abzüge (z. B. Inzahlungnahme) prüfen.",
-        variant: "destructive",
-      });
-      return;
-    }
-    // Bestandsprüfung: nicht ausreichende oder ungepflegte Mengen müssen
-    // bewusst bestätigt werden – der Versand bleibt danach möglich.
-    if (inventoryIssues.length > 0 && !inventoryAckRef.current) {
-      setWarningOpen(true);
-      return;
-    }
-    // Zusätzlicher Klick-Lock: State-Updates greifen erst im nächsten Render,
-    // ein sehr schneller Doppelklick würde sonst zwei Requests auslösen.
-    if (sendLock.current) return;
-    sendLock.current = true;
-    setSending(true);
-    const { data, error } = await supabase.functions.invoke(
-      isInvoice ? "send-inquiry-invoice" : "send-inquiry-offer",
-      {
-      body: {
+  const buildBody = () => ({
         ...(isInvoice
           ? {
               invoice_kind: invoiceKind,
@@ -764,7 +720,53 @@ export function InquiryOfferForm({
         ...(canOpenEnded ? { open_ended: openEnded } : {}),
         notes,
         staff_name: staffName,
-      },
+      });
+
+  const send = async () => {
+    const invalid = items.some((i) => !i.product_name.trim() || i.quantity <= 0 || i.unit_price < 0);
+    if (invalid) {
+      toast({ title: "Bitte alle Positionen ausfüllen", description: "Bezeichnung, Menge und Preis werden benötigt.", variant: "destructive" });
+      return;
+    }
+    if (delivery.requested && !delivery.street.trim() && !delivery.city.trim()) {
+      toast({
+        title: "Lieferadresse fehlt",
+        description: "Bitte Straße und Ort der Lieferadresse ergänzen oder „Lieferung“ deaktivieren.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (paymentTerms === "custom" && paymentTermsCustom.trim().length < 5) {
+      toast({
+        title: "Zahlungsbedingungen fehlen",
+        description: "Bitte die individuellen Zahlungsbedingungen ausformulieren.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!isValidOfferTotal(totals.netAmount)) {
+      toast({
+        title: "Angebotssumme ungültig",
+        description: "Die Summe muss größer als 0 € sein – bitte Abzüge (z. B. Inzahlungnahme) prüfen.",
+        variant: "destructive",
+      });
+      return;
+    }
+    // Bestandsprüfung: nicht ausreichende oder ungepflegte Mengen müssen
+    // bewusst bestätigt werden – der Versand bleibt danach möglich.
+    if (inventoryIssues.length > 0 && !inventoryAckRef.current) {
+      setWarningOpen(true);
+      return;
+    }
+    // Zusätzlicher Klick-Lock: State-Updates greifen erst im nächsten Render,
+    // ein sehr schneller Doppelklick würde sonst zwei Requests auslösen.
+    if (sendLock.current) return;
+    sendLock.current = true;
+    setSending(true);
+    const { data, error } = await supabase.functions.invoke(
+      isInvoice ? "send-inquiry-invoice" : "send-inquiry-offer",
+      {
+      body: buildBody(),
     },
     );
 
