@@ -18,6 +18,7 @@ export interface PhoneCall {
   priority: CallPriority | null;
   priority_reason: string | null;
   location: string | null;
+  assistant: "krefeld" | "bonn" | null;
   customer_name: string | null;
   company_name: string | null;
   email: string | null;
