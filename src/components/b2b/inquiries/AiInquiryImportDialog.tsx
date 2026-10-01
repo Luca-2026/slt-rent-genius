@@ -160,9 +160,11 @@ interface Props {
   onOpenChange: (open: boolean) => void;
   /** Schritt 4: legt Anfrage an und öffnet das vorbefüllte Angebot. */
   onConfirm?: (review: ReviewState) => Promise<void>;
+  /** Vorbefüllter Text (z. B. Transkript aus „Anrufe“), ersetzt einen gespeicherten Entwurf. */
+  initialText?: string;
 }
 
-export function AiInquiryImportDialog({ open, onOpenChange, onConfirm }: Props) {
+export function AiInquiryImportDialog({ open, onOpenChange, onConfirm, initialText }: Props) {
   const { rows: customers } = useCrmCustomers();
   const [text, setText] = useState("");
   const [review, setReview] = useState<ReviewState | null>(null);
@@ -173,6 +175,7 @@ export function AiInquiryImportDialog({ open, onOpenChange, onConfirm }: Props) 
   // Entwurf wiederherstellen / sichern (Schutz vor Reload / Tabwechsel)
   useEffect(() => {
     if (!open) return;
+    if (initialText) { setText(initialText); setReview(null); return; }
     try {
       const raw = localStorage.getItem(DRAFT_KEY);
       if (raw) {
@@ -181,7 +184,7 @@ export function AiInquiryImportDialog({ open, onOpenChange, onConfirm }: Props) 
         if (d.review) setReview(d.review);
       }
     } catch { /* ignore */ }
-  }, [open]);
+  }, [open, initialText]);
   useEffect(() => {
     if (!open) return;
     try {

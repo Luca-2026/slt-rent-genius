@@ -59,7 +59,10 @@ export default function RentalInquiries() {
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(() => new URLSearchParams(window.location.search).get("anfrage"));
   const [newOpen, setNewOpen] = useState(false);
-  const [aiOpen, setAiOpen] = useState(false);
+  const [aiPrefill] = useState<string | null>(() => {
+    try { const v = sessionStorage.getItem("slt-ai-import-prefill"); sessionStorage.removeItem("slt-ai-import-prefill"); return v; } catch { return null; }
+  });
+  const [aiOpen, setAiOpen] = useState(!!aiPrefill);
   const [searchParams, setSearchParams] = useSearchParams();
   const segment = parseSegmentFilter(searchParams.get("kunden"));
   const locationFilter = searchParams.get("standort") ?? "all";
@@ -138,6 +141,7 @@ export default function RentalInquiries() {
 
       <AiInquiryImportDialog
         open={aiOpen}
+        initialText={aiPrefill ?? undefined}
         onOpenChange={setAiOpen}
         onConfirm={async (r) => {
           const lines = r.lines.filter((l) => l.product_name.trim());

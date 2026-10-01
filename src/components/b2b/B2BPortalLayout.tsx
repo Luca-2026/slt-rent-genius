@@ -16,6 +16,7 @@ import {
   Inbox, ShoppingCart,
 } from "lucide-react";
 import { useOpenInquiryCounts } from "@/hooks/useInquiries";
+import { usePhoneCalls, isUrgentCall } from "@/hooks/usePhoneCalls";
 import { StaffNav, visibleGroups, isItemActive } from "@/components/b2b/StaffNav";
 
 function navBadge(
@@ -76,6 +77,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
   const { isStaff, canViewInventory } = useStaffAccess();
   const { count: openTodoCount } = useStaffWork();
   const inquiryCounts = useOpenInquiryCounts();
+  const { rows: phoneCalls } = usePhoneCalls();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -122,7 +124,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
 
   if (!user) return null;
 
-  const staffBadges = { rental: inquiryCounts.rental, sales: inquiryCounts.sales, todos: openTodoCount };
+  const staffBadges = { rental: inquiryCounts.rental, sales: inquiryCounts.sales, todos: openTodoCount, calls: phoneCalls.filter(isUrgentCall).length };
   const staffActiveLabel = visibleGroups(isAdmin, canViewInventory)
     .flatMap((g) => g.items)
     .find((i) => isItemActive(i, location.pathname, location.search))?.label;

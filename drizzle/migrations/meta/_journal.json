@@ -127,6 +127,13 @@
       "when": 1790794864686,
       "tag": "0017_product_operating_hours",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1790861439128,
+      "tag": "0018_migration",
+      "breakpoints": true
     }
   ]
 }
