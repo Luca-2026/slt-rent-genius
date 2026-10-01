@@ -166,7 +166,7 @@ interface Props {
   onSent?: () => void;
   /** "offer" (Standard) erzeugt ein Angebot, "invoice" eine Rechnung bzw. einen Nachtrag. */
   mode?: "offer" | "invoice";
-  invoiceKind?: "invoice" | "supplement";
+  invoiceKind?: "invoice" | "supplement" | "final";
   parentInvoiceId?: string | null;
   parentInvoiceNumber?: string | null;
   /** Vorbelegter Leistungszeitraum (YYYY-MM-DD). */
@@ -193,6 +193,7 @@ interface Props {
     payment_terms_custom?: string | null;
     valid_days?: number | null;
     notes?: string | null;
+    open_ended?: boolean | null;
   };
 }
 
@@ -269,6 +270,9 @@ export function InquiryOfferForm({
   const [dismantleCost, setDismantleCost] = useState(draft?.dismantleCost ?? defaultCosts?.dismantle_cost ?? 0);
   const [deposit, setDeposit] = useState(draft?.deposit ?? defaultCosts?.deposit ?? 0);
   const [validDays, setValidDays] = useState(draft?.validDays ?? defaultMeta?.valid_days ?? 14);
+  /** Unbefristete Monatsmiete: Mietpositionen gelten pro Monat, kein Enddatum (nur Mietangebote). */
+  const canOpenEnded = !isInvoice && inquiryType === "rental";
+  const [openEnded, setOpenEnded] = useState<boolean>(canOpenEnded && !!(draft?.openEnded ?? defaultMeta?.open_ended));
   /** Bereits erhaltene (Teil-)Zahlungen – werden auf der Rechnung abgezogen. */
   const [payments, setPayments] = useState<OfferPayment[]>(
     (draft?.payments as OfferPayment[]) ?? defaultPayments ?? [],
@@ -403,6 +407,7 @@ export function InquiryOfferForm({
         paymentTerms,
         paymentTermsCustom,
         notes,
+        openEnded,
       });
     }, 400);
     return () => window.clearTimeout(timer);
@@ -423,6 +428,7 @@ export function InquiryOfferForm({
     paymentTerms,
     paymentTermsCustom,
     notes,
+    openEnded,
   ]);
 
   /** Entwurf verwerfen und Formular auf die Ausgangswerte zurücksetzen. */
@@ -444,12 +450,22 @@ export function InquiryOfferForm({
     setPaymentTerms(defaultMeta?.payment_terms ?? defaultTerms());
     setPaymentTermsCustom(defaultMeta?.payment_terms_custom ?? "");
     setNotes(defaultMeta?.notes ?? "");
+    setOpenEnded(canOpenEnded && !!defaultMeta?.open_ended);
   };
 
   /** Positionen inkl. übernommenem Zeitraum – Basis für Summen, Anzeige und Versand. */
   const effectiveItems = useMemo(
-    () => items.map((item, i) => recalcAddons(applyInheritedPeriod(item, i, items[0]))),
-    [items],
+    () =>
+      items.map((item, i) => {
+        const inherited = applyInheritedPeriod(item, i, items[0]);
+        const unit = inherited.unit ?? "kalendertage";
+        // Unbefristet: zeitabhängige Positionen werden als Preis pro Monat geführt.
+        const monthly = openEnded && unit !== "pauschal" && unit !== "stueck"
+          ? { ...inherited, unit: "monate" as OfferUnit, duration: 1, rental_end: undefined }
+          : inherited;
+        return recalcAddons(monthly);
+      }),
+    [items, openEnded],
   );
 
   // ----------------------------------------------------------------
@@ -723,7 +739,7 @@ export function InquiryOfferForm({
             // getrennt mitschreiben (quantity ist Artikel × Dauer).
             articles,
             rental_start: rest.rental_start ?? checkStart ?? undefined,
-            rental_end: rest.rental_end ?? checkEnd ?? undefined,
+            rental_end: openEnded ? undefined : rest.rental_end ?? checkEnd ?? undefined,
             quantity: articles * duration,
             unit: unitLabel(articles * duration, unit),
             addons: (rest.addons ?? []).filter((a) => Number(a.amount) !== 0),
@@ -745,6 +761,7 @@ export function InquiryOfferForm({
           : null,
         deposit,
         valid_days: validDays,
+        ...(canOpenEnded ? { open_ended: openEnded } : {}),
         notes,
         staff_name: staffName,
       },
@@ -754,7 +771,7 @@ export function InquiryOfferForm({
     setSending(false);
     sendLock.current = false;
 
-    const docLabel = isSupplement ? "Nachtrag" : isInvoice ? "Rechnung" : "Angebot";
+    const docLabel = isSupplement ? "Nachtrag" : invoiceKind === "final" && isInvoice ? "Schlussrechnung" : isInvoice ? "Rechnung" : "Angebot";
     if (error || (data as any)?.error) {
       toast({
         title: `${docLabel} konnte nicht gesendet werden`,
@@ -798,6 +815,18 @@ export function InquiryOfferForm({
             Entwurf verwerfen
           </Button>
         </div>
+      )}
+      {canOpenEnded && (
+        <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm cursor-pointer">
+          <Checkbox checked={openEnded} disabled={disabled} onCheckedChange={(v) => setOpenEnded(v === true)} className="mt-0.5" />
+          <span>
+            <span className="font-medium">Unbefristete Monatsmiete</span>
+            <span className="block text-xs text-muted-foreground">
+              Mietpositionen gelten als Preis pro Monat, ohne Enddatum. Das Angebot weist den Monatsbetrag aus und
+              enthält den Hinweis auf monatliche Abschlagsrechnungen und eine Schlussrechnung nach Rückgabe.
+            </span>
+          </span>
+        </label>
       )}
       <div className="space-y-3">
         {items.map((item, index) => {
