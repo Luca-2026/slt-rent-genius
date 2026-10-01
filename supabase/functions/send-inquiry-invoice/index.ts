@@ -158,17 +158,11 @@ Deno.serve(async (req: Request) => {
       return json({ error: "inquiry_id fehlt" }, 400);
     }
 
-    const invoiceKind = body.invoice_kind === "supplement" ? "supplement" : "invoice";
+    const invoiceKind: "invoice" | "supplement" | "installment" | "final" =
+      ["supplement", "installment", "final"].includes(body.invoice_kind) ? body.invoice_kind : "invoice";
     const parentInvoiceId = typeof body.parent_invoice_id === "string" ? body.parent_invoice_id : null;
     if (invoiceKind === "supplement" && !parentInvoiceId) {
       return json({ error: "Für einen Nachtrag wird die Ursprungsrechnung benötigt" }, 400);
-    }
-
-    let items: InquiryOfferItem[];
-    try {
-      items = normalizeInquiryOfferItems(body.items);
-    } catch (e) {
-      return json({ error: (e as Error).message }, 400);
     }
 
     const table = inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries";
@@ -182,21 +176,88 @@ Deno.serve(async (req: Request) => {
     const customerEmail: string | null = inquiry.customer_email;
     if (!customerEmail) return json({ error: "Anfrage hat keine E-Mail-Adresse" }, 400);
 
+    // Bisherige Rechnungen zum Auftrag – Grundlage für Abschlagsnummer und Schlussrechnung
+    const linkColumn = inquiryType === "rental" ? "rental_inquiry_id" : "sales_inquiry_id";
+    let installmentNumber: number | null = null;
+    let deductions: InstallmentDeduction[] = [];
+    if (invoiceKind === "installment" || invoiceKind === "final") {
+      const { data: prior } = await service
+        .from("inquiry_invoices")
+        .select("id, invoice_number, invoice_kind, invoice_date, status, net_amount, vat_amount, gross_amount, credited_amount, installment_number")
+        .eq(linkColumn, inquiryId);
+      const priorRows = (prior ?? []) as InstallmentInvoiceRow[];
+      if (invoiceKind === "installment") {
+        installmentNumber = nextInstallmentNumber(priorRows);
+        const net = Math.round((Number(body.installment_net) || 0) * 100) / 100;
+        const offerNet = Number((inquiry.offer_payload as { totals?: { netAmount?: number } } | null)?.totals?.netAmount) || null;
+        const problem = validateInstallment(net, {
+          openEnded: Boolean(inquiry.installment_open_ended),
+          orderNet: offerNet,
+          alreadyBilledNet: billedInstallmentNet(priorRows),
+        });
+        if (problem) return json({ error: problem }, 400);
+        if (!inquiry.offer_number) return json({ error: "Abschlagsrechnungen setzen ein Angebot voraus" }, 400);
+        const ps = str(body.service_period_start, 10);
+        const pe = str(body.service_period_end, 10);
+        body.items = [{
+          product_name: `${installmentNumber}. Abschlag auf Angebot ${inquiry.offer_number}`,
+          description: ps
+            ? `Abschlagszahlung für den Leistungszeitraum ${new Date(ps).toLocaleDateString("de-DE")}${pe ? ` – ${new Date(pe).toLocaleDateString("de-DE")}` : ""}`
+            : "Abschlagszahlung gemäß Auftrag",
+          quantity: 1,
+          unit: "Pauschal",
+          unit_price: net,
+          discount_percent: 0,
+        }];
+        // Abschläge enthalten keine Nebenkosten – diese stehen in der Schlussrechnung.
+        for (const k of ["delivery_cost_delivery", "delivery_cost_return", "setup_cost", "dismantle_cost", "deposit"]) body[k] = 0;
+      } else {
+        deductions = installmentDeductions(priorRows);
+      }
+    }
+
+    let items: InquiryOfferItem[];
+    try {
+      items = normalizeInquiryOfferItems(body.items);
+    } catch (e) {
+      return json({ error: (e as Error).message }, 400);
+    }
+    // Schlussrechnung: bereits berechnete Abschläge als Minuspositionen (Netto) abziehen.
+    for (const d of deductions) {
+      items.push({
+        product_name: `Abzüglich Abschlagsrechnung ${d.invoice_number}`,
+        description: d.invoice_date ? `vom ${new Date(d.invoice_date).toLocaleDateString("de-DE")} – netto ${money(d.net)}, USt. ${money(d.vat)}` : undefined,
+        quantity: 1,
+        unit: "Pauschal",
+        unit_price: -d.net,
+        discount_percent: 0,
+      });
+    }
+
     const deliveryCostDelivery = Math.max(0, Number(body.delivery_cost_delivery) || 0);
     const deliveryCostReturn = Math.max(0, Number(body.delivery_cost_return) || 0);
     const setupCost = Math.max(0, Number(body.setup_cost) || 0);
     const dismantleCost = Math.max(0, Number(body.dismantle_cost) || 0);
     const deposit = Math.max(0, Number(body.deposit) || 0);
-    const notes: string | null = typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
+    const userNotes: string | null = typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
+    const notes: string | null =
+      [userNotes, deductionNote(deductions, (iso) => new Date(iso).toLocaleDateString("de-DE"))].filter(Boolean).join("\n\n") || null;
 
     const totals = buildOfferTotals(
       items,
       deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost,
     );
-    try {
-      assertPositiveTotal(totals.netAmount);
-    } catch (e) {
-      return json({ error: e instanceof Error ? e.message : "Ungültige Rechnungssumme" }, 400);
+    if (invoiceKind === "final") {
+      // Sind alle Leistungen schon per Abschlag bezahlt, darf die Schlussrechnung 0 € betragen.
+      if (totals.netAmount < 0) {
+        return json({ error: "Die Abschläge übersteigen den Gesamtbetrag – bitte Positionen prüfen oder einen Abschlag per Gutschrift korrigieren." }, 400);
+      }
+    } else {
+      try {
+        assertPositiveTotal(totals.netAmount);
+      } catch (e) {
+        return json({ error: e instanceof Error ? e.message : "Ungültige Rechnungssumme" }, 400);
+      }
     }
 
     // ── Doppelklick-/Retry-Schutz ──
