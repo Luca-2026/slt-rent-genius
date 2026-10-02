@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
 import { Link } from "react-router-dom";
+import { portalUrl } from "@/lib/portalDomain";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedSection } from "@/components/ui/animated-section";
@@ -305,11 +306,9 @@ export default function HowItWorks() {
                   ))}
                 </div>
                 <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                  <Link to="/b2b/registrierung">
-                    <Button className="bg-accent text-accent-foreground hover:bg-cta-orange-hover w-full sm:w-auto">
-                      {t("howItWorks.b2bCreateAccount")}
-                    </Button>
-                  </Link>
+                  <Button asChild className="bg-accent text-accent-foreground hover:bg-cta-orange-hover w-full sm:w-auto">
+                    <a href={portalUrl("/b2b/registrieren")}>{t("howItWorks.b2bCreateAccount")}</a>
+                  </Button>
                   <Link to="/kontakt">
                     <Button variant="outline" className="border-2 hover:border-primary w-full sm:w-auto">
                       {t("howItWorks.b2bRequestAdvice")}
