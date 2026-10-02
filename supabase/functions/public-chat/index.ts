@@ -1399,7 +1399,6 @@ Plausibilität: Offensichtlich ungültige E-Mail (ohne @/Domain) oder Telefonnum
 - Keine Tabellen, keine #-Überschriften, keine nackten URLs.
 - Maximal ca. 150 Wörter pro Antwort, außer bei der Zusammenfassung.`;
 
-const INQUIRY_INTENT = /(angebot|anfrage|anfragen|reservier|anbieten|kostenvoranschlag|offerte|lieferung|liefern|termin|zeitraum|vom\s+\d|ab\s+\d|bis\s+\d|\d{1,2}\.\d{1,2}\.|e-?mail|@|firma|projekt|gmbh|mehrere|kostet|preis)/i;
 
 function berlinToday() {
   return new Intl.DateTimeFormat("de-DE", { timeZone: "Europe/Berlin", weekday: "long", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());

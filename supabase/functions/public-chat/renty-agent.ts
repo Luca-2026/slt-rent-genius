@@ -59,7 +59,7 @@ const TOOLS = [
         company_name: nullableString,
         customer_name: { type: "string" },
         customer_email: { type: "string" },
-        customer_phone: { type: "string" },
+        customer_phone: { type: "string", description: "Leerer String, wenn der Kunde keine Nummer angeben möchte" },
         customer_street: nullableString,
         customer_postal_code: nullableString,
         customer_city: nullableString,
