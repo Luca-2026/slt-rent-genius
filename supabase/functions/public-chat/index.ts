@@ -1,5 +1,5 @@
 import { RENTAL_LINK_PATHS } from "./rental-link-catalog.ts";
-import { runRenty, GatewayError, searchProducts } from "./renty-agent.ts";
+import { runRenty, GatewayError, catalogPaths } from "./renty-agent.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -1431,7 +1431,7 @@ Deno.serve(async (req: Request) => {
     }
 
     // Produkt-Links aus dem CMS gelten als verifiziert.
-    await searchProducts("", null).catch(() => []);
+    for (const path of await catalogPaths().catch(() => [] as string[])) verifiedRentalPathSet.add(path);
     const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
     try {
       const stream = await runRenty({

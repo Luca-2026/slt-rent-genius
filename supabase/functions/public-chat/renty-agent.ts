@@ -90,6 +90,11 @@ async function catalog() {
   return catalogCache.rows;
 }
 
+export async function catalogPaths(): Promise<string[]> {
+  const rows = await catalog();
+  return rows.flatMap((r) => (r.available_locations ?? []).map((l: string) => `/mieten/${l}/${r.category}/${r.slug}/`));
+}
+
 export async function searchProducts(query: string, location: string | null) {
   const tokens = norm(query).match(/[a-z0-9]+/g)?.filter((t) => t.length > 1 && !STOP.has(t)) ?? [];
   const rows = await catalog();
