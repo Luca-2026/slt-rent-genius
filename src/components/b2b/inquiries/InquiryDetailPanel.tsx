@@ -245,7 +245,7 @@ interface Props {
 
 
 export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, defaultDelivery, details, onChanged, onDeleted }: Props) {
-  const { isAdmin } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { toast } = useToast();
   const canDelete = isAdmin;
   const [deleting, setDeleting] = useState(false);
