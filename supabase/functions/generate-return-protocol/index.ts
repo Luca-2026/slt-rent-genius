@@ -404,7 +404,7 @@ Deno.serve(async (req: Request) => {
         meter_reading_end: meter_reading_end || null,
         known_defects_from_delivery: known_defects_from_delivery || null,
         additional_defects_at_return: additional_defects_at_return || null,
-        photo_urls: resolvedPhotoUrls.length > 0 ? resolvedPhotoUrls : (photo_urls || []),
+        photo_urls: resolvedPhotoUrls.length > 0 ? resolvedPhotoUrls : (photo_urls || []).filter((p: unknown) => isAllowedPhotoPath(p, reservation.b2b_profile_id)),
         customer_signature_data: customer_not_present ? null : customer_signature_data,
         staff_signature_data,
         staff_name,
