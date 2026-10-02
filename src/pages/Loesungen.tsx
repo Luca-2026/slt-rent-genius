@@ -182,7 +182,7 @@ function SolutionCard({ solution }: { solution: Solution }) {
           </div>
           
           <div className="flex items-center text-primary font-medium text-sm md:text-xs lg:text-sm group-hover:text-accent transition-colors">
-            {t("solutions.learnMore")} <ArrowRight className="ml-1 h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 group-hover:translate-x-1 transition-transform" />
+            {t("solutions.learnMore")}<span className="sr-only">: {title}</span> <ArrowRight className="ml-1 h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 group-hover:translate-x-1 transition-transform" />
           </div>
         </CardContent>
       </Card>

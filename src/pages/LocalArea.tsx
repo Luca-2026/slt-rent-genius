@@ -217,7 +217,7 @@ export default function LocalAreaPage() {
                     <benefit.icon className="h-6 w-6 text-accent" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-headline text-sm">{benefit.title}</h3>
+                    <h2 className="font-semibold text-headline text-sm">{benefit.title}</h2>
                     <p className="text-xs text-muted-foreground">{benefit.text}</p>
                   </div>
                 </div>
