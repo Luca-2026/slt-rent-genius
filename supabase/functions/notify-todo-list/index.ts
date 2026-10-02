@@ -64,6 +64,8 @@ Deno.serve(async (req: Request) => {
     const itemTitle = typeof body.item_title === "string" ? body.item_title.slice(0, 300) : "";
     const commentBody = typeof body.comment === "string" ? body.comment.slice(0, 2000) : "";
     if (!/^[0-9a-f-]{36}$/i.test(listId)) return json({ error: "list_id ist erforderlich" }, 400);
+    const { data: canAccess } = await service.rpc("can_access_todo_list", { _list_id: listId, _user_id: user.id });
+    if (!canAccess) return json({ error: "Liste nicht gefunden" }, 404);
 
     const { data: list, error: listError } = await service
       .from("staff_todo_lists")

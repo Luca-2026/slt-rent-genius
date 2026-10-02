@@ -157,7 +157,7 @@ serve(async (req) => {
       deliveryStreet: escapeHtml(deliveryStreet),
       deliveryPostalCode: escapeHtml(deliveryPostalCode),
       deliveryCity: escapeHtml(deliveryCity),
-      locEmail: escapeHtml(locationEmail || "mieten@slt-rental.de"),
+      locEmail: escapeHtml(["krefeld@slt-rental.de", "bonn@slt-rental.de", "muelheim@slt-rental.de", "mieten@slt-rental.de", "info@slt-rental.de"].includes(String(locationEmail ?? "").trim().toLowerCase()) ? String(locationEmail).trim().toLowerCase() : "mieten@slt-rental.de"),
       locPhone: escapeHtml(locationPhone || "02151 417 99 04"),
       locAddress: escapeHtml(locationAddress || "Anrather Straße 291, 47807 Krefeld"),
     };
@@ -173,7 +173,10 @@ serve(async (req) => {
       : '';
 
     // Raw values still needed for non-HTML contexts (mail headers, telephone link)
-    const locEmail = locationEmail || "mieten@slt-rental.de";
+    const ALLOWED_LOC_EMAILS = ["krefeld@slt-rental.de", "bonn@slt-rental.de", "muelheim@slt-rental.de", "mieten@slt-rental.de", "info@slt-rental.de"];
+    const locEmail = ALLOWED_LOC_EMAILS.includes(String(locationEmail ?? "").trim().toLowerCase())
+      ? String(locationEmail).trim().toLowerCase()
+      : "mieten@slt-rental.de";
     const locPhone = locationPhone || "02151 417 99 04";
 
     const footerHtml = `
