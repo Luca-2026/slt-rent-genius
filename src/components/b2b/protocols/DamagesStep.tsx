@@ -2,7 +2,7 @@
  * Schritt „Schäden erfassen" – strukturierte Schäden mit Kategorie, Artikelbezug,
  * Beschreibung, Fotos und optionalem Betrag.
  */
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -33,6 +33,7 @@ interface Props {
 
 export function DamagesStep({ damages, onChange, itemNames, context, showAmounts = false, photoSlotsLeft }: Props) {
   const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
+  const [photoBusy, setPhotoBusy] = useState(false);
 
   const update = (id: string, patch: Partial<ProtocolDamage>) =>
     onChange(damages.map((d) => (d.id === id ? { ...d, ...patch } : d)));
@@ -50,6 +51,7 @@ export function DamagesStep({ damages, onChange, itemNames, context, showAmounts
     if (!list.length) return;
     const damage = damages.find((d) => d.id === id);
     if (!damage) return;
+    setPhotoBusy(true);
     try {
       const prepared = [];
       for (const original of list) {
@@ -60,6 +62,7 @@ export function DamagesStep({ damages, onChange, itemNames, context, showAmounts
       }
       update(id, { photos: [...damage.photos, ...prepared] });
     } catch (error) { toast.error((error as Error).message || "Foto konnte nicht verarbeitet werden. Bitte JPEG auswählen."); }
+    finally { setPhotoBusy(false); }
   };
 
   const removePhoto = (id: string, index: number) => {
@@ -220,7 +223,7 @@ export function DamagesStep({ damages, onChange, itemNames, context, showAmounts
                  <Button
                   type="button"
                   variant="outline"
-                  disabled={photoSlotsLeft === 0}
+                   disabled={photoSlotsLeft === 0 || photoBusy}
                   onClick={() => fileRefs.current[damage.id]?.click()}
                   className="h-20 w-20 border-2 border-dashed flex flex-col items-center justify-center gap-1"
                 >

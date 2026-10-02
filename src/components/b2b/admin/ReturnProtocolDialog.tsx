@@ -652,7 +652,7 @@ export function ReturnProtocolDialog({
                 </Button>
                 <Button
                   onClick={handleGenerate}
-                  disabled={saving || !allValid}
+                  disabled={saving || !allValid || readyFor !== draftKey}
                   className="bg-accent text-accent-foreground hover:bg-cta-orange-hover w-full sm:w-auto"
                 >
                   {saving ? (
