@@ -142,7 +142,7 @@ export async function submitInquiry(raw: InquiryArgs, ctx: { ip: string; transcr
   if (dup?.length) return { ok: true, already_submitted: true, reference: dup[0].id.slice(0, 8).toUpperCase() };
   const { count } = await db.from("rental_inquiries").select("id", { count: "exact", head: true })
     .eq("source", "renty_chat").gte("created_at", since).filter("raw_payload->>ip_hash", "eq", ipHash);
-  if ((count ?? 0) >= 3) return { ok: false, error: "Zu viele Anfragen in kurzer Zeit. Bitte den Standort direkt kontaktieren." };
+  if ((count ?? 0) >= (isTestEmail(v.email) ? 30 : 3)) return { ok: false, error: "Zu viele Anfragen in kurzer Zeit. Bitte den Standort direkt kontaktieren." };
 
   const loc = LOCATIONS[v.location];
   const test = isTestEmail(v.email);
