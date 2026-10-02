@@ -541,7 +541,7 @@ export default function NeumaschineDetail() {
 
             <div className="flex flex-col sm:flex-row gap-3 mb-6">
               <Button size="lg" className="w-full sm:flex-1" onClick={() => setInquiryOpen(true)}>
-                Anfrage senden <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="mr-2 h-4 w-4" /> Anfrage senden
               </Button>
               <Button size="lg" variant="outline" className="w-full sm:w-auto" asChild>
                 <a href="tel:021514179904" className="inline-flex items-center justify-center gap-2">
@@ -550,7 +550,6 @@ export default function NeumaschineDetail() {
               </Button>
             </div>
 
-            <QuickCallbackForm brand={machine.brand} model={machine.model} category={machine.category} />
 
 
             <div className="grid grid-cols-2 gap-3 text-sm">
