@@ -239,7 +239,7 @@ export default function Neumaschinen() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   // ?anfrage=LiuGong (z. B. vom Startseiten-Banner) wählt die Marke im Kaufanfrage-Formular vor.
   const [selectedMarke, setSelectedMarke] = useState(() => {
-    const pre = searchParams.get("anfrage");
+    const pre = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("anfrage") : null;
     return pre && pre in kategorienByMarke ? pre : "";
   });
   const [selectedKategorie, setSelectedKategorie] = useState("");
