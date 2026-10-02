@@ -4419,6 +4419,7 @@ export type Database = {
         Args: { _list_id: string; _user_id: string }
         Returns: boolean
       }
+      can_edit_operations: { Args: { _user_id: string }; Returns: boolean }
       check_inventory_availability: {
         Args: {
           _end: string
@@ -4635,6 +4636,7 @@ export type Database = {
         | "standort_mitarbeiter"
         | "buchhaltung"
         | "readonly"
+        | "niederlassungsleiter"
       b2b_status: "pending" | "approved" | "rejected"
       instance_status:
         | "available"
@@ -4782,6 +4784,7 @@ export const Constants = {
         "standort_mitarbeiter",
         "buchhaltung",
         "readonly",
+        "niederlassungsleiter",
       ],
       b2b_status: ["pending", "approved", "rejected"],
       instance_status: [
