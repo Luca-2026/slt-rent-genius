@@ -39,13 +39,13 @@ export function LiuGongPromoBanner({ onTestInFleet }: { onTestInFleet: () => voi
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Button asChild size="lg" className="bg-accent font-bold text-accent-foreground hover:bg-accent/90">
+              <Button asChild size="lg" className="h-auto min-h-11 whitespace-normal bg-accent py-2 font-bold text-accent-foreground hover:bg-accent/90">
                 <Link to="/verkauf/neumaschinen/?anfrage=LiuGong">
                   <Tag className="mr-2 h-4 w-4" />
                   {t("liugongPromo.ctaInquiry")}
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" onClick={onTestInFleet} className="font-semibold">
+              <Button size="lg" variant="outline" onClick={onTestInFleet} className="h-auto min-h-11 whitespace-normal py-2 font-semibold">
                 <Wrench className="mr-2 h-4 w-4" />
                 {t("liugongPromo.ctaRent")}
                 <ArrowRight className="ml-2 h-4 w-4" />

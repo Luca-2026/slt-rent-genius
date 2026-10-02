@@ -34,7 +34,7 @@ export function HomePromoSlider({ slides, labels }: { slides: ReactNode[]; label
       onBlurCapture={() => setHovered(false)}
       className="bg-background"
     >
-      <div className="grid">
+      <div className="grid grid-cols-[minmax(0,1fr)]">
         {slides.map((slide, i) => (
           <div
             key={i}
@@ -44,7 +44,7 @@ export function HomePromoSlider({ slides, labels }: { slides: ReactNode[]; label
             aria-hidden={i !== index}
             {...(i !== index ? ({ inert: "" } as Record<string, string>) : {})}
             className={cn(
-              "[grid-area:1/1] transition-opacity duration-700 ease-in-out",
+              "min-w-0 [grid-area:1/1] transition-opacity duration-700 ease-in-out",
               i === index ? "opacity-100" : "pointer-events-none opacity-0",
             )}
           >
