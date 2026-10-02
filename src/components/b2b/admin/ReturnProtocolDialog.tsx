@@ -178,7 +178,7 @@ export function ReturnProtocolDialog({
       allItemsReturned, missingItemsNotes, meterReadingStart, meterReadingEnd,
       fuelLevelStart, fuelLevelEnd, cleanlinessRating, idChecked, idDocType, itemConditions,
       damages: damages.map(({ photos, ...damage }) => ({ ...damage, photos: photos.map(({ file }) => ({ file })) })),
-      extraCharges,
+      extraCharges, measurements,
     };
     void writeProtocolDraft(draftKey, value).catch(() => toast({ title: "Entwurf nicht gespeichert", description: "Bitte Gerätespeicher prüfen.", variant: "destructive" }));
   }, [open, draftKey, readyFor, result, customerSignature, staffSignature, staffName, notes, knownDefectsFromDelivery, customerNotPresent, overallCondition, conditionNotes, cleaningRequired, allItemsReturned, missingItemsNotes, meterReadingStart, meterReadingEnd, fuelLevelStart, fuelLevelEnd, cleanlinessRating, idChecked, idDocType, itemConditions, measurements, damages, extraCharges, toast]);
@@ -264,10 +264,10 @@ export function ReturnProtocolDialog({
           cleaning_required: cleaningRequired,
           all_items_returned: allItemsReturned,
           missing_items_notes: missingItemsNotes || undefined,
-          meter_reading_start: meterReadingStart || undefined,
-          meter_reading_end: meterReadingEnd || undefined,
-          fuel_level_start: fuelLevelStart || undefined,
-          fuel_level_end: fuelLevelEnd || undefined,
+           measurements: itemConditions.flatMap((item, index) => {
+             const m = { ...emptyMeasurement(), ...measurements[index] };
+             return m.useHours || m.useFuel || m.useMileage ? [{ item_name: item.product_name, ...selectedMeasurement(m) }] : [];
+           }),
           cleanliness_rating: cleanlinessRating > 0 ? cleanlinessRating : undefined,
           known_defects_from_delivery: knownDefectsFromDelivery || undefined,
           id_checked: idChecked,
@@ -334,14 +334,13 @@ export function ReturnProtocolDialog({
   const customerName = `${profile.contact_first_name} ${profile.contact_last_name}`.trim();
 
   const signaturesDone = !!staffSignature && !!staffName.trim() && (customerNotPresent || !!customerSignature);
-  const equipmentDone = needsEquipmentFields
-    ? !!meterReadingEnd && !!fuelLevelEnd && cleanlinessRating > 0
-    : cleanlinessRating > 0;
-  const allValid = signaturesDone && idChecked;
+  const equipmentDone = cleanlinessRating > 0 && itemConditions.every((_, i) => validMeasurement({ ...emptyMeasurement(), ...measurements[i] }));
+  const allValid = signaturesDone && idChecked && equipmentDone;
 
   const missing: string[] = [];
   if (!idChecked) missing.push("Personalausweis abgleichen");
   if (!signaturesDone) missing.push("Unterschriften und Mitarbeitername");
+  if (!equipmentDone) missing.push("Sauberkeit und ausgewählte Messwerte");
 
   const chargesSum = sumExtraCharges(extraCharges);
   const damagesSum = sumDamages(damages);
@@ -455,9 +454,7 @@ export function ReturnProtocolDialog({
     {
       id: "equipment",
       title: "Gerätedaten",
-      summary: needsEquipmentFields
-        ? `Betriebsstunden und Tank bei Rückgabe${cleanlinessRating ? ` · Sauberkeit ${cleanlinessRating}/5` : ""}`
-        : `Sauberkeit${cleanlinessRating ? ` ${cleanlinessRating}/5` : " 1–5"}`,
+      summary: `Sauberkeit${cleanlinessRating ? ` ${cleanlinessRating}/5` : " 1–5"}`,
       done: equipmentDone,
       content: (
         <div className="space-y-3">
@@ -466,7 +463,7 @@ export function ReturnProtocolDialog({
             <Label className="text-xs">Sauberkeit bei Rückgabe</Label>
             <div className="flex gap-2 mt-1">
               {[1, 2, 3, 4, 5].map((n) => (
-                <button
+                <Button
                   key={n}
                   type="button"
                   onClick={() => setCleanlinessRating(n)}
@@ -475,7 +472,7 @@ export function ReturnProtocolDialog({
                   }`}
                 >
                   {n}
-                </button>
+                </Button>
               ))}
             </div>
             <p className="text-[11px] text-muted-foreground mt-1">{CLEANLINESS_HINT}</p>

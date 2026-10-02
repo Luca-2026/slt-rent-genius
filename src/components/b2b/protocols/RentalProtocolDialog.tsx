@@ -188,7 +188,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const items = useMemo(() => (inquiry ? protocolItemsFromInquiry(inquiry as never) : []), [inquiry]);
   const itemNames = items.map((i) => i.name);
   void itemNames;
-  const machine = machineIdx.length > 0;
+  const machine = items.some((it) => isMachineLike([it.name]) || cms[it.name.trim().toLowerCase()]?.hours);
   const setReading = (i: number, reading: Measurement) =>
     setReadings((r) => ({ ...r, [i]: reading }));
   const cmsFor = (i: number) => (items[i] ? cms[items[i].name.trim().toLowerCase()] : undefined);
