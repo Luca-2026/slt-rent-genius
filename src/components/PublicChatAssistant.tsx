@@ -12,17 +12,17 @@ const SUGGESTED_QUESTIONS = [
   "Welches Gerät passt zu meinem Projekt?",
   "Wie läuft die Miete ab?",
   "Brauche ich einen Führerschein?",
-  "Was kostet die Lieferung?",
+  "Ich möchte ein Angebot anfragen",
 ];
 
 const TEASER_DISMISSED_KEY = "renty_teaser_dismissed_v1";
-const CHAT_MESSAGES_KEY = "renty_messages_v1";
+const CHAT_MESSAGES_KEY = "renty_messages_v2";
 const HERO_SCROLL_THRESHOLD = 400;
 
 const INITIAL_ASSISTANT_MESSAGE: Message = {
   role: "assistant",
   content:
-    "Hi, ich bin **Renty** – die digitale Assistentin von SLT Rental.\n\nFrag mich kurz nach Artikel, Standort oder Mietablauf – ich schicke dir passende Links, wenn ich sie sicher zuordnen kann.",
+    "Hi, ich bin **Renty** – die digitale Assistentin von SLT Rental.\n\nIch berate dich zu Geräten, Standorten und zum Mietablauf – und nehme auf Wunsch direkt deine **Mietanfrage für ein Angebot** auf.",
 };
 
 export function PublicChatAssistant() {
