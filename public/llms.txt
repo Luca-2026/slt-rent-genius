@@ -4,38 +4,41 @@
 
 ## Standorte
 
-- [Krefeld – Mietpark & Kategorien](https://www.slt-rental.de/mieten/krefeld): Hauptstandort am Niederrhein, gesamtes Sortiment.
-- [Bonn – Mietpark & Kategorien](https://www.slt-rental.de/mieten/bonn): Standort für Bonn, Rhein-Sieg-Kreis und Vorgebirge.
-- [Mülheim an der Ruhr – Mietpark & Kategorien](https://www.slt-rental.de/mieten/muelheim): Standort für Ruhrgebiet, Duisburg, Essen, Oberhausen.
+- [Krefeld – Mietpark & Kategorien](https://www.slt-rental.de/mieten/krefeld/): Hauptstandort am Niederrhein, gesamtes Sortiment.
+- [Bonn – Mietpark & Kategorien](https://www.slt-rental.de/mieten/bonn/): Standort für Bonn, Rhein-Sieg-Kreis und Vorgebirge.
+- [Mülheim an der Ruhr – Mietpark & Kategorien](https://www.slt-rental.de/mieten/muelheim/): Standort für Ruhrgebiet, Duisburg, Essen, Oberhausen.
 
 ## Hauptkategorien (pro Standort verfügbar)
 
-- [Baumaschinen mieten](https://www.slt-rental.de/mieten/krefeld/baumaschinen): Minibagger, Radlader, Rüttelplatten, Stampfer, Trennschneider.
-- [Anhänger mieten](https://www.slt-rental.de/mieten/krefeld/anhaenger): PKW-Anhänger, Plateau-, Kasten-, Kipp-, Baumaschinenanhänger – meist führerscheinfrei (B/BE).
-- [Möbel & Zelte mieten](https://www.slt-rental.de/mieten/krefeld/moebel-zelte): Bierzeltgarnituren, Stehtische, Pagodenzelte, Party- / Eventzelte.
-- [Geschirr mieten](https://www.slt-rental.de/mieten/krefeld/geschirr): Teller, Gläser, Besteck, Buffet-Equipment.
-- [Stromversorgung](https://www.slt-rental.de/mieten/krefeld/stromversorgung): Stromerzeuger, Verteiler, Kabeltrommeln.
-- [Transport & Logistik](https://www.slt-rental.de/mieten/krefeld/transport-logistik): Sackkarren, Hubwagen, Möbelroller.
+- [Erdbewegung mieten](https://www.slt-rental.de/mieten/krefeld/erdbewegung/): Minibagger, Radlader, Dumper.
+- [Verdichtung mieten](https://www.slt-rental.de/mieten/krefeld/verdichtung/): Rüttelplatten, Stampfer, Grabenwalzen.
+- [Arbeitsbühnen mieten](https://www.slt-rental.de/mieten/krefeld/arbeitsbuehnen/): Hubarbeitsbühnen und Steiger.
+- [Anhänger mieten](https://www.slt-rental.de/mieten/krefeld/anhaenger/): PKW-Anhänger, Plateau-, Kasten-, Kipp-, Baumaschinenanhänger.
+- [Möbel & Zelte mieten](https://www.slt-rental.de/mieten/krefeld/moebel-zelte/): Bierzeltgarnituren, Stehtische, Pagodenzelte, Party- / Eventzelte.
+- [Geschirr, Gläser & Besteck mieten](https://www.slt-rental.de/mieten/krefeld/geschirr-glaeser-besteck/): Teller, Gläser, Besteck, Buffet-Equipment.
+- [Stromerzeuger mieten](https://www.slt-rental.de/mieten/krefeld/aggregate/): Stromaggregate.
+- [Kabel & Stromverteiler mieten](https://www.slt-rental.de/mieten/krefeld/kabel-stromverteiler/): Verteiler, Kabeltrommeln.
+- [Heizung & Trocknung mieten](https://www.slt-rental.de/mieten/krefeld/heizung-trocknung/): Bautrockner, Heizgeräte.
 
 ## Lösungen nach Branche
 
-- [Hochbau & Renovierung](https://www.slt-rental.de/loesungen/hochbau-renovierung)
-- [Tiefbau & Erdbewegung](https://www.slt-rental.de/loesungen/tiefbau-erdbewegung)
-- [Garten- & Landschaftsbau](https://www.slt-rental.de/loesungen/garten-landschaftsbau)
-- [Events & Veranstaltungen](https://www.slt-rental.de/loesungen/events-veranstaltungen)
-- [Handwerk & Gewerbe](https://www.slt-rental.de/loesungen/handwerk-gewerbe)
-- [Umzug & Transport](https://www.slt-rental.de/loesungen/umzug-transport)
-- [Kindergeburtstage](https://www.slt-rental.de/loesungen/kindergeburtstage)
+- [Hochbau & Renovierung](https://www.slt-rental.de/loesungen/hochbau-renovierung/)
+- [Tiefbau & Erdbewegung](https://www.slt-rental.de/loesungen/tiefbau-erdbewegung/)
+- [Garten- & Landschaftsbau](https://www.slt-rental.de/loesungen/garten-landschaftsbau/)
+- [Events & Veranstaltungen](https://www.slt-rental.de/loesungen/events-veranstaltungen/)
+- [Handwerk & Gewerbe](https://www.slt-rental.de/loesungen/handwerk-gewerbe/)
+- [Umzug & Transport](https://www.slt-rental.de/loesungen/umzug-transport/)
+- [Kindergeburtstage](https://www.slt-rental.de/loesungen/kindergeburtstage/)
 
 ## Service & Information
 
-- [So funktioniert die Miete](https://www.slt-rental.de/so-funktionierts)
-- [Lieferung & Abholung](https://www.slt-rental.de/lieferung)
-- [Tiefpreisgarantie](https://www.slt-rental.de/tiefpreisgarantie)
-- [Hilfe & Wissensbasis](https://www.slt-rental.de/hilfe)
-- [Ratgeber-Blog](https://www.slt-rental.de/ratgeber)
-- [Kontakt](https://www.slt-rental.de/kontakt)
-- [Karriere](https://www.slt-rental.de/karriere)
+- [So funktioniert die Miete](https://www.slt-rental.de/so-funktionierts/)
+- [Lieferung & Abholung](https://www.slt-rental.de/lieferung/)
+- [Tiefpreisgarantie](https://www.slt-rental.de/tiefpreisgarantie/)
+- [Hilfe & Wissensbasis](https://www.slt-rental.de/hilfe/)
+- [Ratgeber-Blog](https://www.slt-rental.de/ratgeber/)
+- [Kontakt](https://www.slt-rental.de/kontakt/)
+- [Karriere](https://www.slt-rental.de/karriere/)
 
 ## Kontakt
 
@@ -52,6 +55,6 @@
 
 ## Rechtliches
 
-- [Impressum](https://www.slt-rental.de/impressum)
-- [Datenschutz](https://www.slt-rental.de/datenschutz)
-- [AGB](https://www.slt-rental.de/agb)
+- [Impressum](https://www.slt-rental.de/impressum/)
+- [Datenschutz](https://www.slt-rental.de/datenschutz/)
+- [AGB](https://www.slt-rental.de/agb/)
