@@ -4,62 +4,37 @@ const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+const json = (b: unknown, status = 200) =>
+  new Response(JSON.stringify(b), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, serviceKey);
+    const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
-    const { profileId, companyName, contactName } = await req.json();
+    const token = (req.headers.get("Authorization") ?? "").replace(/^Bearer\s+/i, "");
+    const { data: u } = token ? await supabase.auth.getUser(token) : { data: null };
+    if (!u?.user) return json({ error: "Unauthorized" }, 401);
 
-    // Get all admin users
-    const { data: adminRoles } = await supabase
+    // Nur das eigene Profil darf eine Änderungsmeldung auslösen.
+    const { data: profile } = await supabase
+      .from("b2b_profiles")
+      .select("id, company_name")
+      .eq("user_id", u.user.id)
+      .maybeSingle();
+    if (!profile) return json({ error: "Forbidden" }, 403);
+
+    const { count } = await supabase
       .from("user_roles")
-      .select("user_id")
+      .select("user_id", { count: "exact", head: true })
       .eq("role", "admin");
 
-    if (!adminRoles || adminRoles.length === 0) {
-      return new Response(
-        JSON.stringify({ message: "No admins found" }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
+    console.log(`Profile change notification for profile ${profile.id}; admins: ${count ?? 0}`);
 
-    // Get admin emails from auth
-    const adminEmails: string[] = [];
-    for (const role of adminRoles) {
-      const { data: userData } = await supabase.auth.admin.getUserById(role.user_id);
-      if (userData?.user?.email) {
-        adminEmails.push(userData.user.email);
-      }
-    }
-
-    console.log(
-      `Profile change notification: ${companyName} (${contactName}) updated their profile. ` +
-      `Admins to notify: ${adminEmails.join(", ")}`
-    );
-
-    // For now, log the notification. Email sending can be added later.
-    // The admin dashboard already shows pending profiles prominently.
-
-    return new Response(
-      JSON.stringify({ 
-        success: true, 
-        message: `Notification logged for ${adminEmails.length} admin(s)`,
-        admins: adminEmails,
-      }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return json({ success: true });
   } catch (error) {
-    console.error("Error:", error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    console.error("notify-profile-change error:", error);
+    return json({ error: "Interner Fehler" }, 500);
   }
 });
