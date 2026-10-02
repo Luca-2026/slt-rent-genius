@@ -17,6 +17,7 @@ import bonnImage from "@/assets/locations/bonn.webp";
 
 // Team images
 import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
+import imgRalf from "@/assets/team/ralf-doehler.jpg";
 
 
 // Location images mapping
@@ -28,7 +29,7 @@ const locationImages: Record<string, string> = {
 // Location managers
 const locationManagers: Record<string, { name: string; roleKey: string; image: string | null; email: string }> = {
   krefeld: { name: "Benedikt Nöchel", roleKey: "rental.locationManager", image: imgBenedikt, email: "b.noechel@slt-rental.de" },
-  bonn: { name: "Ihr SLT-Team Bonn", roleKey: "rental.locationManager", image: null, email: "bonn@slt-rental.de" },
+  bonn: { name: "Ralf Döhler", roleKey: "rental.locationManager", image: imgRalf, email: "r.doehler@slt-rental.de" },
   muelheim: { name: "Andreas Mühlenhof", roleKey: "rental.locationManager", image: null, email: "muelheim@slt-rental.de" },
 };
 
