@@ -16,7 +16,7 @@ export async function staffUserId(req: Request, service: any, requireAdmin = fal
   const { data: u } = await service.auth.getUser(token);
   if (!u?.user) return null;
   const { data: ok } = requireAdmin
-    ? await service.rpc("is_super_admin", { _user_id: u.user.id })
+    ? await service.rpc("has_role", { _user_id: u.user.id, _role: "admin" })
     : await service.rpc("is_staff_member", { _user_id: u.user.id });
   return ok ? u.user.id : null;
 }
