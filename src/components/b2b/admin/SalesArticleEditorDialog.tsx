@@ -17,6 +17,7 @@ import { orderSpecs } from "@/lib/specOrder";
 import { Sparkles, Loader2, Trash2, Plus, Upload, ImageOff } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { supabase } from "@/integrations/supabase/client";
 import type { NewMachineRow, SalesArticleKind, UsedMachineRow } from "@/hooks/useSalesCatalog";
 import { grossToNet, invalidateSalesCatalog } from "@/hooks/useSalesCatalog";
@@ -116,6 +117,8 @@ function toFaqList(raw: unknown): Faq[] {
 }
 
 export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChange, onSaved }: Props) {
+  const { canEditCosts } = useStaffAccess();
+  const costsLocked = readOnly || !canEditCosts;
   const [form, setForm] = useState<FormState>({ ...emptyForm });
   const [saving, setSaving] = useState(false);
   const [aiField, setAiField] = useState<string | null>(null);
@@ -371,7 +374,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         if (error) throw error;
         savedId = (saved as { id: string } | null)?.id ?? row?.id ?? null;
       }
-      if (savedId) {
+      if (savedId && canEditCosts) {
         const { error: costError } = await supabase.from("sales_article_costs").upsert(
           {
             article_kind: kind,
@@ -509,14 +512,17 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
 
               <div className="rounded-lg border border-border bg-muted/40 p-3 space-y-2">
                 <p className="text-sm font-semibold">Interne Kalkulation (nicht auf der Website)</p>
+                {!canEditCosts && !readOnly && (
+                  <p className="text-xs text-muted-foreground">Einkaufspreis und Gemeinkosten kann nur ein Admin ändern.</p>
+                )}
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="sa-purchase">Einkaufspreis netto (€)</Label>
-                    <Input id="sa-purchase" type="number" step="0.01" min={0} value={purchase} disabled={readOnly} onChange={(e) => setPurchase(e.target.value)} />
+                    <Input id="sa-purchase" type="number" step="0.01" min={0} value={purchase} disabled={costsLocked} onChange={(e) => setPurchase(e.target.value)} />
                   </div>
                   <div>
                     <Label htmlFor="sa-overhead">Gemeinkosten (%)</Label>
-                    <Input id="sa-overhead" type="number" step="0.5" min={0} value={overhead} disabled={readOnly} onChange={(e) => setOverhead(e.target.value)} />
+                    <Input id="sa-overhead" type="number" step="0.5" min={0} value={overhead} disabled={costsLocked} onChange={(e) => setOverhead(e.target.value)} />
                   </div>
                 </div>
                 <div className="grid gap-1 text-sm sm:grid-cols-3">

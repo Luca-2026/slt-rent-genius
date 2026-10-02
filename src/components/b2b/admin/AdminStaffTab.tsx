@@ -77,6 +77,11 @@ const ROLE_MAP: Record<string, { label: string; icon: React.ReactNode; color: st
     icon: <Shield className="h-3.5 w-3.5" />,
     color: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
   },
+  niederlassungsleiter: {
+    label: "Niederlassungsleiter",
+    icon: <Building2 className="h-3.5 w-3.5" />,
+    color: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200",
+  },
   standort_mitarbeiter: {
     label: "Standortmitarbeiter",
     icon: <Warehouse className="h-3.5 w-3.5" />,
@@ -721,8 +726,8 @@ export function AdminStaffTab() {
               </Select>
               <p className="text-xs text-muted-foreground mt-1">
                 {form.role === "admin" && "Vollzugriff auf alle Funktionen."}
-                {form.role === "standort_mitarbeiter" &&
-                  "Kann Reservierungen, Übergabeprotokolle und Rückgaben verwalten."}
+                {(form.role === "standort_mitarbeiter" || form.role === "niederlassungsleiter") &&
+                  "Alles außer Einkaufspreisen, Gemeinkosten, Umsatzauswertung, Audit-Log und Mitarbeiterverwaltung."}
                 {form.role === "buchhaltung" &&
                   "Kann Rechnungen, Angebote und Zahlungsstatus einsehen und bearbeiten."}
                 {form.role === "readonly" && "Kann alle Daten einsehen, aber nichts bearbeiten."}

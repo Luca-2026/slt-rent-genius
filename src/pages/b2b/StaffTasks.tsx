@@ -33,7 +33,6 @@ import { AdminSalesCatalogTab } from "@/components/b2b/admin/AdminSalesCatalogTa
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
 import AdminFeedbackTab from "@/components/b2b/admin/AdminFeedbackTab";
 import AdminAuditLogTab from "@/components/b2b/admin/AdminAuditLogTab";
-import { isSuperAdminEmail } from "@/lib/superAdmins";
 import { LOCATIONS, STATUS_LABELS, formatMinutes, locationLabel, type TodoList } from "@/components/b2b/tasks/types";
 
 const PRIORITY_LABELS: Record<string, string> = { low: "Niedrig", normal: "Normal", high: "Hoch" };
@@ -41,8 +40,8 @@ const PRIORITY_LABELS: Record<string, string> = { low: "Niedrig", normal: "Norma
 export default function StaffTasks() {
   const { user } = useAuth();
   const { isStaff, isAdmin, canViewInventory, displayName, loading: accessLoading } = useStaffAccess();
-  // Audit-Log ist bewusst auf Super-Admins beschränkt (zuvor im Reiter B2B-Vermietung)
-  const canViewAudit = isSuperAdminEmail(user?.email);
+  // Audit-Log nur für Admins mit Vollzugriff
+  const canViewAudit = isAdmin;
   const { toast } = useToast();
   const { count: pendingTimesheets } = usePendingTimesheets();
 
