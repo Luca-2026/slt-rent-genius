@@ -139,6 +139,8 @@ export interface SeoRoute {
   intro: string[];
   canonical?: string;
   ogImage?: string;
+  /** Bilder für die Image-Sitemap (absolute URL + Bildtitel). */
+  sitemapImages?: { loc: string; title: string }[];
   ogType?: "website" | "article" | "product";
   noindex?: boolean;
   changefreq?: string;
@@ -1498,6 +1500,13 @@ export function buildNewMachineRoute(m: NewMachineSeoInput): SeoRoute {
     canonical: path,
     ogType: "product",
     ogImage,
+    sitemapImages: (Array.isArray(m.images) ? m.images : [])
+      .filter((img): img is string => typeof img === "string" && img.length > 0)
+      .slice(0, 20)
+      .map((img, idx) => ({
+        loc: absolutizeImage(img),
+        title: `${m.brand} ${m.model} kaufen – Neumaschine bei SLT Rental${idx ? ` (Ansicht ${idx + 1})` : ""}`,
+      })),
     breadcrumbs: [
       { name: "Start", path: "/" },
       { name: "Verkauf", path: "/verkauf" },
