@@ -1028,7 +1028,7 @@
     "b2bTitle": "How the B2B Portal Works",
     "b2bDesc": "Register as a business customer and benefit from individual conditions, framework agreements and simplified billing.",
     "b2bStep1Title": "Registration & Activation",
-    "b2bStep1Desc": "Create a B2B account with your company details, VAT ID and accept the terms. After review by our team, your account will be activated.",
+    "b2bStep1Desc": "Create a B2B account with your company details and VAT ID and accept the terms. You also upload your commercial register extract or business registration and the signed SEPA business direct debit mandate – the template is available right in the form. After review by our team, your account will be activated. Invoices are then conveniently collected from your account; payment by invoice is also possible.",
     "b2bStep2Title": "Products & Individual Prices",
     "b2bStep2Desc": "In the B2B portal, you'll see your individual conditions, category discounts and customer-specific prices – automatically calculated.",
     "b2bStep3Title": "Inquiry & Quote",
@@ -1045,6 +1045,7 @@
       "Personal contact person at your nearest location"
     ],
     "b2bCreateAccount": "Create B2B Account Now",
+    "b2bLogin": "B2B Login",
     "b2bRequestAdvice": "Request Advice",
     "requirementsTitle": "What You Need for Pickup",
     "reqDepositTitle": "Deposit",

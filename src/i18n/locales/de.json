@@ -1028,7 +1028,7 @@
     "b2bTitle": "So funktioniert das B2B-Portal",
     "b2bDesc": "Registriere dich als Geschäftskunde und profitiere von individuellen Konditionen, Rahmenverträgen und einer vereinfachten Abrechnung.",
     "b2bStep1Title": "Registrierung & Freischaltung",
-    "b2bStep1Desc": "Erstelle ein B2B-Konto mit deinen Firmendaten, USt-IdNr. und akzeptiere die AGB. Nach Prüfung durch unser Team wird dein Konto freigeschaltet.",
+    "b2bStep1Desc": "Erstelle ein B2B-Konto mit deinen Firmendaten und USt-IdNr. und akzeptiere die AGB. Lade außerdem den Handelsregisterauszug oder die Gewerbeanmeldung sowie das unterschriebene SEPA-Firmenlastschrift-Mandat hoch – die Vorlage findest du direkt im Formular. Nach Prüfung durch unser Team wird dein Konto freigeschaltet. Danach werden Rechnungen komfortabel von deinem Konto eingezogen; Rechnungszahlung ist ebenfalls möglich.",
     "b2bStep2Title": "Produkte & individuelle Preise",
     "b2bStep2Desc": "Im B2B-Portal siehst du deine individuellen Konditionen, Kategorierabatte und kundenspezifische Preise – automatisch berechnet.",
     "b2bStep3Title": "Anfrage & Angebot",
@@ -1045,6 +1045,7 @@
       "Persönlicher Ansprechpartner an deinem nächsten Standort"
     ],
     "b2bCreateAccount": "Jetzt B2B-Konto erstellen",
+    "b2bLogin": "Zum B2B-Login",
     "b2bRequestAdvice": "Beratung anfordern",
     "requirementsTitle": "Was du für die Abholung brauchst",
     "reqDepositTitle": "Kaution",

@@ -4,6 +4,7 @@ import { ArrowRight, MapPin, Search, Calendar, CreditCard, Package, Building2, U
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { portalUrl } from "@/lib/portalDomain";
 
 interface Step {
   number: string;
@@ -12,6 +13,8 @@ interface Step {
   description: string;
   action?: "location" | "search";
   cta?: string;
+  /** Portal-Pfad: Karte ist klickbar und führt (ggf. auf die Portal-Subdomain) dorthin. */
+  portalPath?: string;
 }
 
 interface HowItWorksTimelineProps {
@@ -35,7 +38,7 @@ export function HowItWorksTimeline({ onLocationClick, onSearchClick }: HowItWork
   ];
 
   const b2bSteps: Step[] = [
-    { number: "1", icon: Building2, title: t("howItWorks.b2bStep1Title"), description: t("howItWorks.b2bStep1Desc") },
+    { number: "1", icon: Building2, title: t("howItWorks.b2bStep1Title"), description: t("howItWorks.b2bStep1Desc"), cta: t("howItWorks.b2bCreateAccount"), portalPath: "/b2b/registrieren" },
     { number: "2", icon: Search, title: t("howItWorks.b2bStep2Title"), description: t("howItWorks.b2bStep2Desc") },
     { number: "3", icon: Calendar, title: t("howItWorks.b2bStep3Title"), description: t("howItWorks.b2bStep3Desc") },
     { number: "4", icon: CreditCard, title: t("howItWorks.b2bStep4Title"), description: t("howItWorks.b2bStep4Desc") },
@@ -65,7 +68,8 @@ export function HowItWorksTimeline({ onLocationClick, onSearchClick }: HowItWork
   }, [howItWorksTab]);
 
   const handleStepClick = (step: Step) => {
-    if (step.action === "location") onLocationClick();
+    if (step.portalPath) window.location.assign(portalUrl(step.portalPath));
+    else if (step.action === "location") onLocationClick();
     else if (step.action === "search") onSearchClick();
   };
 
@@ -130,7 +134,7 @@ export function HowItWorksTimeline({ onLocationClick, onSearchClick }: HowItWork
               const isActive = index <= activeStep;
               const isRight = index % 2 !== 0;
               const Icon = step.icon;
-              const isClickable = !!step.action;
+              const isClickable = !!step.action || !!step.portalPath;
 
               return (
                 <div
@@ -185,10 +189,21 @@ export function HowItWorksTimeline({ onLocationClick, onSearchClick }: HowItWork
                         <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
 
                         {step.cta && (
-                          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:text-accent transition-colors mt-3">
-                            {step.cta}
-                            <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-                          </span>
+                          step.portalPath ? (
+                            <a
+                              href={portalUrl(step.portalPath)}
+                              onClick={(e) => e.stopPropagation()}
+                              className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:text-accent transition-colors mt-3 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+                            >
+                              {step.cta}
+                              <ArrowRight aria-hidden="true" className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                            </a>
+                          ) : (
+                            <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:text-accent transition-colors mt-3">
+                              {step.cta}
+                              <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                            </span>
+                          )
                         )}
                       </div>
                     </AnimatedSection>
@@ -204,12 +219,29 @@ export function HowItWorksTimeline({ onLocationClick, onSearchClick }: HowItWork
 
         {/* CTA */}
         <AnimatedSection className="text-center mt-12" delay={500}>
-          <Link to="/so-funktionierts">
-            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 group">
-              {t("steps.learnMore")}
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </Link>
+          {howItWorksTab === "b2b" ? (
+            <div className="flex flex-col sm:flex-row items-stretch justify-center gap-3">
+              <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-cta-orange-hover shadow-lg group">
+                <a href={portalUrl("/b2b/registrieren")}>
+                  {t("howItWorks.b2bCreateAccount")}
+                  <ArrowRight aria-hidden="true" className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-2 hover:border-primary">
+                <a href={portalUrl("/b2b/login")}>{t("howItWorks.b2bLogin")}</a>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-2 hover:border-primary">
+                <Link to="/so-funktionierts">{t("steps.learnMore")}</Link>
+              </Button>
+            </div>
+          ) : (
+            <Link to="/so-funktionierts">
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                {t("steps.learnMore")}
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          )}
         </AnimatedSection>
       </div>
     </section>
