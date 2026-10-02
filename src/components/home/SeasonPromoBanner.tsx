@@ -17,7 +17,7 @@ const PROMO_CODE = "BAUMASCHINE10";
 const POPUP_STORAGE_KEY = "slt_season_promo_popup_seen_v1";
 const POPUP_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 Tage
 const POPUP_DELAY_MS = 4500;
-const MACHINE_LINK = "/mietartikel#baumaschinen";
+const MACHINE_LINK = "/mietartikel?promo=erdbewegung";
 
 function CodeChip({ code, onDark = false }: { code: string; onDark?: boolean }) {
   const { t } = useTranslation();

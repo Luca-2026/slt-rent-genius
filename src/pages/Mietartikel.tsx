@@ -75,6 +75,14 @@ export default function Mietartikel() {
   const [selectedCategoryQuery, setSelectedCategoryQuery] = useState<string | undefined>();
 
   useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("promo") === "erdbewegung") {
+      setSelectedCategoryId("erdbewegung");
+      setDialogOpen(true);
+      window.history.replaceState(window.history.state, "", window.location.pathname);
+    }
+  }, []);
+
+  useEffect(() => {
     if (window.location.hash === "#event") {
       const timer = setTimeout(() => {
         const el = document.getElementById(window.location.hash.slice(1));
