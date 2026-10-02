@@ -213,7 +213,7 @@ serve(async (req) => {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${RESEND_API_KEY}` },
         body: JSON.stringify({
           from: "SLT Rental <anfragen@slt-rental.de>",
-          to: [contactEmail],
+          to: [authData.user.email || contactEmailRaw],
           subject: `Ihre B2B-Anfrage – Bestätigung`,
           html: confirmationHtml,
         }),
