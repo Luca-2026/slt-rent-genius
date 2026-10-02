@@ -1,5 +1,9 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – mobile Übergabe- und Rückgabeprotokolle
+- [ ] Entwürfe je Auftrag und Protokollart einschließlich Fotos sicher nach Browserwechsel wiederherstellen
+- [ ] Fotoaufnahme/-auswahl und Abschluss mit Fotos mobil und am Desktop prüfen; Fehler sichtbar machen
+
 ## Phase 1 – Prerender-Vollständigkeit (erledigt)
 - [x] Alle Routen datengetrieben (1.285 Routen, keine handgepflegte Liste)
 - [x] Build-Log: Routen je Typ, noindex-Zahl, Liste fehlgeschlagener Routen
