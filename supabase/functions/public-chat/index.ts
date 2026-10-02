@@ -194,7 +194,7 @@ Aktuell offene Stellen:
 • Aushilfe / Lieferfahrer Krefeld und Bonn → /karriere/lieferfahrer-vermietung-krefeld-bonn
 • Ausbildung Kaufmann/-frau für Büromanagement (Krefeld & Bonn) → /karriere/ausbildung-kaufmann-bueromanagement-krefeld-bonn
 • Baumaschinentechniker / Servicetechniker Krefeld und Bonn (Vollzeit oder Minijob) → /karriere/baumaschinentechniker-servicetechniker-krefeld-bonn
-• Vertriebsmitarbeiter Baumaschinen & Zoomlion (NRW) → /karriere/vertriebsmitarbeiter-baumaschinen-zoomlion-nrw
+• Vertriebsmitarbeiter Baumaschinen & LiuGong (NRW) → /karriere/vertriebsmitarbeiter-baumaschinen-zoomlion-nrw
 • Kundenberater / Disponent Miete & Verkauf (Krefeld & Bonn) → /karriere/kundenberater-disponent-miete-verkauf-krefeld-bonn
 Bewerbungen direkt über das Online-Formular auf der jeweiligen Stellenseite oder per E-Mail an bewerbung@slt-rental.de.
 
