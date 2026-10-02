@@ -10,6 +10,7 @@ import { LocationSelectDialog } from "@/components/solutions/LocationSelectDialo
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { useTranslation } from "react-i18next";
 import { MietartikelSearch } from "@/components/rental/MietartikelSearch";
+import { Button } from "@/components/ui/button";
 import { HardHat, PartyPopper, Truck } from "lucide-react";
 
 type TeaserProduct = {
@@ -74,9 +75,9 @@ export default function Mietartikel() {
   const [selectedCategoryQuery, setSelectedCategoryQuery] = useState<string | undefined>();
 
   useEffect(() => {
-    if (window.location.hash === "#event") {
+    if (["#event", "#baumaschinen"].includes(window.location.hash)) {
       const timer = setTimeout(() => {
-        const el = document.getElementById("event");
+        const el = document.getElementById(window.location.hash.slice(1));
         if (el) {
           const headerOffset = 100;
           const elementPosition = el.getBoundingClientRect().top + window.scrollY;
@@ -237,6 +238,14 @@ export default function Mietartikel() {
 
       {/* Kategoriegruppen: BAU / EVENT / TRANSPORT & OUTDOOR */}
       <section className="section-container py-10 md:py-14 space-y-10 md:space-y-12">
+        <div id="baumaschinen" className="scroll-mt-28 border-l-4 border-accent bg-primary/5 p-5 md:p-7">
+          <h2 className="text-xl md:text-2xl font-bold text-headline mb-2">10 % Saisonrabatt auf mobile Baumaschinen</h2>
+          <p className="text-muted-foreground mb-4">Bagger, Radlader und Arbeitsbühnen – Code BAUMASCHINE10 bei der Buchung angeben.</p>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => handleCategoryClick("erdbewegung")}>Bagger & Radlader</Button>
+            <Button variant="outline" onClick={() => handleCategoryClick("arbeitsbuehnen")}>Arbeitsbühnen</Button>
+          </div>
+        </div>
         {groupedSections.map((group) => {
           const Icon = group.icon;
           const teaser =
