@@ -12,17 +12,17 @@ const SUGGESTED_QUESTIONS = [
   "Welches Gerät passt zu meinem Projekt?",
   "Wie läuft die Miete ab?",
   "Brauche ich einen Führerschein?",
-  "Was kostet die Lieferung?",
+  "Ich möchte ein Angebot anfragen",
 ];
 
 const TEASER_DISMISSED_KEY = "renty_teaser_dismissed_v1";
-const CHAT_MESSAGES_KEY = "renty_messages_v1";
+const CHAT_MESSAGES_KEY = "renty_messages_v2";
 const HERO_SCROLL_THRESHOLD = 400;
 
 const INITIAL_ASSISTANT_MESSAGE: Message = {
   role: "assistant",
   content:
-    "Hi, ich bin **Renty** – die digitale Assistentin von SLT Rental.\n\nFrag mich kurz nach Artikel, Standort oder Mietablauf – ich schicke dir passende Links, wenn ich sie sicher zuordnen kann.",
+    "Hi, ich bin **Renty** – die digitale Assistentin von SLT Rental.\n\nIch berate dich zu Geräten, Standorten und zum Mietablauf – und nehme auf Wunsch direkt deine **Mietanfrage für ein Angebot** auf.",
 };
 
 export function PublicChatAssistant() {
@@ -252,6 +252,41 @@ export function PublicChatAssistant() {
     });
   };
 
+  // Zeilenweise Darstellung: Zwischenüberschriften, Aufzählungen, nummerierte Listen, Absätze.
+  const renderBlocks = (text: string) => {
+    const lines = text.replace(/\r/g, "").split("\n");
+    const blocks: JSX.Element[] = [];
+    let list: { ordered: boolean; items: string[] } | null = null;
+    const flush = () => {
+      if (!list) return;
+      const Tag = list.ordered ? "ol" : "ul";
+      blocks.push(
+        <Tag key={`l${blocks.length}`} className={`${list.ordered ? "list-decimal" : "list-disc"} pl-4 space-y-0.5 my-1`}>
+          {list.items.map((item, idx) => <li key={idx}>{renderInlineMarkdown(item)}</li>)}
+        </Tag>,
+      );
+      list = null;
+    };
+    for (const raw of lines) {
+      const line = raw.trim();
+      const bullet = line.match(/^(?:[-•*])\s+(.*)$/);
+      const numbered = line.match(/^\d+[.)]\s+(.*)$/);
+      if (bullet || numbered) {
+        const ordered = !!numbered;
+        if (!list || list.ordered !== ordered) { flush(); list = { ordered, items: [] }; }
+        list.items.push((bullet ?? numbered)![1]);
+        continue;
+      }
+      flush();
+      if (!line) continue;
+      const heading = line.match(/^#{1,4}\s+(.*)$/);
+      const content = heading ? `**${heading[1].replace(/\*\*/g, "")}**` : line;
+      blocks.push(<p key={`p${blocks.length}`} className={blocks.length ? "mt-1.5" : ""}>{renderInlineMarkdown(content)}</p>);
+    }
+    flush();
+    return blocks;
+  };
+
   return (
     <>
       {/* Teaser pop-up (above the button) — first visit only */}
@@ -381,12 +416,12 @@ export function PublicChatAssistant() {
                 }`}>
                   {msg.role === "user" ? <User className="h-3.5 w-3.5" /> : <Bot className="h-3.5 w-3.5" />}
                 </div>
-                <div className={`max-w-[82%] rounded-xl px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap break-words ${
+                <div className={`max-w-[82%] rounded-xl px-3 py-2 text-sm leading-relaxed break-words ${
                   msg.role === "user"
-                    ? "bg-primary text-primary-foreground rounded-tr-sm"
+                    ? "bg-primary text-primary-foreground rounded-tr-sm whitespace-pre-wrap"
                     : "bg-muted text-foreground rounded-tl-sm"
                 }`}>
-                  {msg.content ? renderInlineMarkdown(msg.content) : (loading && i === messages.length - 1 ? (
+                  {msg.content ? (msg.role === "user" ? msg.content : renderBlocks(msg.content)) : (loading && i === messages.length - 1 ? (
                     <span className="flex gap-1 py-1">
                       <span className="w-1.5 h-1.5 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
                       <span className="w-1.5 h-1.5 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />

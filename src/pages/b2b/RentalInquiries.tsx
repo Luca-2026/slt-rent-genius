@@ -32,6 +32,8 @@ const SOURCE_LABELS: Record<string, string> = {
   manual: "Manuell angelegt",
   website: "Website",
   ai_import: "E-Mail/Telefon (KI-Import)",
+  renty_chat: "Website-Chat (Renty)",
+  product_booking: "Website (Artikelseite)",
 };
 
 const fmtDate = (value: string | null) =>

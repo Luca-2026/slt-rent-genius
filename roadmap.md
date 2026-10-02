@@ -54,3 +54,6 @@
 - Bestand je Standort (CMS-Menge, sonst Einzelartikel) gegen Belegungen im Zeitraum
 - Hinweis pro Position + Bestätigungsdialog vor Versand, Versand bleibt möglich
 - Getestet im Portal: Überbuchung, Bestätigung, Versand (ANG-A-2026-0036), Testdaten entfernt
+
+- [x] Renty: Mietanfragen im Chat aufnehmen, ins Portal + Standort-Mail, 22 Use Cases getestet
+- [ ] Renty: echten Live-Test mit echter Kundenadresse durch das Team (Mail im Standortpostfach prüfen)
