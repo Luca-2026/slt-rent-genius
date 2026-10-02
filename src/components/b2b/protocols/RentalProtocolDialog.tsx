@@ -177,10 +177,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature,
       staffName, staffSignature, sendEmail,
     };
-    const timer = window.setTimeout(() => {
-      void writeProtocolDraft(draftKey, value).catch(() => toast.error("Entwurf konnte auf diesem Gerät nicht gespeichert werden. Bitte Speicherplatz prüfen."));
-    }, 250);
-    return () => window.clearTimeout(timer);
+    void writeProtocolDraft(draftKey, value).catch(() => toast.error("Entwurf konnte auf diesem Gerät nicht gespeichert werden. Bitte Speicherplatz prüfen."));
   }, [draftKey, readyFor, result, idChecked, idDocType, cleanliness, readings, machineIdx, instructed, knownDefects, notes, allReturned, missingNotes, photos, damages, agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature, staffName, staffSignature, sendEmail]);
 
   useEffect(() => {
