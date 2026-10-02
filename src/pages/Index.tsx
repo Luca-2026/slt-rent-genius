@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_ORGANIZATION_JSONLD } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import LocationCards from "@/components/home/LocationCards";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { CountUpBadge } from "@/components/ui/count-up-badge";
 import { ServicesSection } from "@/components/home/ServicesSection";
@@ -23,19 +23,14 @@ import { Loader2 } from "lucide-react";
 const HeroSearch = lazy(() => import("@/components/home/HeroSearch").then(m => ({ default: m.HeroSearch })));
 const ProductSearchDialog = lazy(() => import("@/components/home/ProductSearchDialog").then(m => ({ default: m.ProductSearchDialog })));
 const LocationSelectDialog = lazy(() => import("@/components/solutions/LocationSelectDialog").then(m => ({ default: m.LocationSelectDialog })));
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
 import { useTranslation } from "react-i18next";
 import { 
   Truck, 
   CheckCircle2,
-  ArrowRight,
-  MapPin,
   Clock,
   Phone,
-  User,
-  Mail,
-  Building2
+  Mail
 } from "lucide-react";
 
 // Shared location data
