@@ -37,8 +37,8 @@ describe("KI-Anfrage-Import – Prüfansicht", () => {
     expect(screen.getAllByDisplayValue("2026-10-03")).toHaveLength(2); // Beginn = Ende (1 Tag)
     expect(screen.getByText("1 Kalendertag")).toBeInTheDocument();
     expect(screen.getByText(/Offene Fragen/)).toBeInTheDocument();
-    // Kofferanhänger 750 kg: Preis 25 € kommt aus den Systemdaten
-    await waitFor(() => expect(screen.getByDisplayValue("25")).toBeInTheDocument());
+    // Kofferanhänger 750 kg: 25 € brutto aus den Systemdaten → 21,01 € netto
+    await waitFor(() => expect(screen.getByDisplayValue("21.01")).toBeInTheDocument());
     expect(screen.getByText("Preis aus dem CMS")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Übernehmen" }));

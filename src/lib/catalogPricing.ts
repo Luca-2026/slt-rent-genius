@@ -71,8 +71,26 @@ export interface ResolvedPrice {
   unit: "kalendertage" | "wochen" | "monate" | "stueck";
 }
 
-/** Netto-Einzelpreis eines CMS-Artikels inkl. passender Mengeneinheit. */
+/** Mietpreise im CMS/auf der Website sind Bruttopreise (inkl. 19 % MwSt.). */
+export const RENTAL_VAT_RATE = 0.19;
+
+/** Brutto → netto, auf Cent gerundet. */
+export function rentalGrossToNet(gross: number): number {
+  return Math.round((gross / (1 + RENTAL_VAT_RATE)) * 100) / 100;
+}
+
+/**
+ * Netto-Einzelpreis eines CMS-Artikels inkl. passender Mengeneinheit.
+ * CMS- und SEO-Preise sind brutto hinterlegt; Angebote rechnen netto.
+ */
 export async function resolveCatalogPrice(
+  row: PricedCatalogRow | null | undefined,
+): Promise<ResolvedPrice | undefined> {
+  const gross = await resolveGrossCatalogPrice(row);
+  return gross ? { ...gross, price: rentalGrossToNet(gross.price) } : undefined;
+}
+
+async function resolveGrossCatalogPrice(
   row: PricedCatalogRow | null | undefined,
 ): Promise<ResolvedPrice | undefined> {
   if (!row) return undefined;
