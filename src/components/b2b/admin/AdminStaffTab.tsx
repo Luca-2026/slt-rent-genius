@@ -43,6 +43,7 @@ import {
   Shield,
   Eye,
   Warehouse,
+  Building2,
   Calculator,
   RefreshCw,
   UserX,
