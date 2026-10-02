@@ -5,7 +5,7 @@ import { MapPin, Phone, Mail, Clock, ArrowRight, Building2, User } from "lucide-
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import AnimatedSection from "@/components/AnimatedSection";
+import { AnimatedSection } from "@/components/ui/animated-section";
 import { locationData } from "@/data/locationData";
 import { useTranslation } from "react-i18next";
 
