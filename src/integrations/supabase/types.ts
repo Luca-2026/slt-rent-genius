@@ -2506,6 +2506,21 @@ export type Database = {
           },
         ]
       }
+      internal_cron_secret: {
+        Row: {
+          id: number
+          secret: string
+        }
+        Insert: {
+          id?: number
+          secret?: string
+        }
+        Update: {
+          id?: number
+          secret?: string
+        }
+        Relationships: []
+      }
       invoice_number_counters: {
         Row: {
           last_value: number
