@@ -244,7 +244,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (user && (isAdmin || canManageInventory)) {
       // Mark overdue invoices once per session load (server-side date compare)
-      void supabase.rpc("mark_overdue_invoices").then(() => {}, () => {});
+      if (isAdmin) void supabase.rpc("mark_overdue_invoices").then(() => {}, () => {});
       fetchData();
     }
   }, [user, isAdmin, canManageInventory]);

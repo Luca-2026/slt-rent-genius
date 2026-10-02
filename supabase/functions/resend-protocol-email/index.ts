@@ -47,12 +47,7 @@ serve(async (req) => {
     const serviceClient = createClient(supabaseUrl, serviceRoleKey);
 
     // Check admin role
-    const { data: roleData } = await serviceClient
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .eq("role", "admin")
-      .maybeSingle();
+    const { data: roleData } = await serviceClient.rpc("can_edit_operations", { _user_id: userId });
 
     if (!roleData) {
       return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: corsHeaders });

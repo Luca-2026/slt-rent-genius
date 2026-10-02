@@ -141,10 +141,7 @@ Deno.serve(async (req: Request) => {
     const userId = await getUserIdFromAuthHeader(authHeader);
     if (!userId) return json({ error: "Unauthorized" }, 401);
 
-    const { data: isAdmin, error: roleError } = await supabase.rpc("has_role", {
-      _user_id: userId,
-      _role: "admin",
-    });
+    const { data: isAdmin, error: roleError } = await supabase.rpc("can_edit_operations", { _user_id: userId });
     if (roleError || !isAdmin) return json({ error: "Forbidden" }, 403);
 
     const body = (await req.json()) as Body;
