@@ -2768,5 +2768,10 @@
     "ctaRent": "Im Mietpark testen",
     "logoAlt": "LiuGong Logo",
     "imageAlt": "LiuGong Minibagger im Mietpark von SLT Rental"
+  },
+  "promoSlider": {
+    "label": "Aktuelle Aktionen",
+    "pause": "Automatischen Wechsel anhalten",
+    "play": "Automatischen Wechsel fortsetzen"
   }
 }

@@ -11,7 +11,7 @@ import liugongLogo from "@/assets/logos/liugong-sm.webp";
 export function LiuGongPromoBanner({ onTestInFleet }: { onTestInFleet: () => void }) {
   const { t } = useTranslation();
   return (
-    <section className="relative z-10 pt-4 pb-2 bg-background" aria-label={t("liugongPromo.title")}>
+    <section className="relative z-10 pt-6 pb-2 lg:pt-8 bg-background" aria-label={t("liugongPromo.title")}>
       <div className="section-container">
         <div className="overflow-hidden rounded-md border border-border bg-card shadow-lg md:flex md:flex-row-reverse">
           <div className="relative h-44 overflow-hidden bg-muted sm:h-52 md:h-auto md:w-[38%] md:shrink-0">
@@ -39,13 +39,13 @@ export function LiuGongPromoBanner({ onTestInFleet }: { onTestInFleet: () => voi
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Button asChild size="lg" className="bg-accent font-bold text-accent-foreground hover:bg-accent/90">
-                <Link to="/verkauf/neumaschinen/?anfrage=LiuGong#kaufanfrage">
+              <Button asChild size="lg" className="h-auto min-h-11 whitespace-normal bg-accent py-2 font-bold text-accent-foreground hover:bg-accent/90">
+                <Link to="/verkauf/neumaschinen/?anfrage=LiuGong">
                   <Tag className="mr-2 h-4 w-4" />
                   {t("liugongPromo.ctaInquiry")}
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" onClick={onTestInFleet} className="font-semibold">
+              <Button size="lg" variant="outline" onClick={onTestInFleet} className="h-auto min-h-11 whitespace-normal py-2 font-semibold">
                 <Wrench className="mr-2 h-4 w-4" />
                 {t("liugongPromo.ctaRent")}
                 <ArrowRight className="ml-2 h-4 w-4" />
