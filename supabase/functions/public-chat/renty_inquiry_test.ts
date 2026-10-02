@@ -14,6 +14,7 @@ Deno.test("valid inquiry passes", () => assertEquals(validateInquiry(base, "2026
 Deno.test("missing pieces are listed", () => {
   const r = validateInquiry({ ...base, customer_email: "max", customer_phone: "12", delivery: true, customer_kind: "business", customer_confirmed_summary: false }, "2026-10-02");
   assertEquals(r.errors.length, 5);
+  assertEquals(validateInquiry({ ...base, customer_phone: "" }, "2026-10-02").errors, []);
 });
 Deno.test("past and inverted dates rejected", () => {
   assert(validateInquiry({ ...base, start_date: "2026-09-01" }, "2026-10-02").errors.some((e) => e.includes("Vergangenheit")));

@@ -98,7 +98,7 @@ export function validateInquiry(raw: InquiryArgs, today = berlinToday()) {
   const email = clean(raw?.customer_email, 254).toLowerCase();
   if (!EMAIL_RE.test(email)) errors.push("Gültige E-Mail-Adresse fehlt.");
   const phone = clean(raw?.customer_phone, 40);
-  if (phone.replace(/\D/g, "").length < 6 || !/^[+\d][\d\s/()-]+$/.test(phone)) errors.push("Gültige Telefonnummer fehlt.");
+  if (phone && (phone.replace(/\D/g, "").length < 6 || !/^[+\d][\d\s/()-]+$/.test(phone))) errors.push("Telefonnummer ungültig (leer lassen, wenn der Kunde keine angeben möchte).");
   if (raw?.customer_confirmed_summary !== true) errors.push("Der Kunde hat die Zusammenfassung noch nicht ausdrücklich bestätigt.");
 
   return {
@@ -162,7 +162,7 @@ export async function submitInquiry(raw: InquiryArgs, ctx: { ip: string; transcr
     requested_items: items,
     start_date: v.start, start_time: v.startTime, end_date: v.end, end_time: v.endTime,
     delivery_requested: v.delivery, delivery_street: v.dStreet, delivery_postal_code: v.dZip, delivery_city: v.dCity,
-    customer_name: v.name, customer_email: v.email, customer_phone: v.phone,
+    customer_name: v.name, customer_email: v.email, customer_phone: v.phone || null,
     customer_street: v.cStreet, customer_postal_code: v.cZip, customer_city: v.cCity,
     customer_kind: v.kind,
     message,
@@ -184,7 +184,7 @@ async function notify(v: ReturnType<typeof validateInquiry>["value"], loc: typeo
     ["Standort", loc.name], ["Zeitraum", period],
     ["Übergabe", v.delivery ? `Lieferung: ${v.dStreet}, ${v.dZip} ${v.dCity}` : "Selbstabholung"],
     ["Kundenart", v.kind === "business" ? `Geschäftskunde${v.company ? ` – ${v.company}` : ""}` : "Privatkunde"],
-    ["Name", v.name], ["E-Mail", v.email], ["Telefon", v.phone],
+    ["Name", v.name], ["E-Mail", v.email], ["Telefon", v.phone || "– (nicht angegeben, per E-Mail antworten)"],
     ["Adresse", [v.cStreet, [v.cZip, v.cCity].filter(Boolean).join(" ")].filter(Boolean).join(", ") || "–"],
     ["Projekt", v.project ?? "–"],
   ];

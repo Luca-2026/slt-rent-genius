@@ -1144,14 +1144,14 @@ function sanitizeAssistantText(text: string) {
     return fallback ? `[${label}](${fallback})` : label;
   });
 
-  const rentalSanitized = markdownSanitized.replace(/https?:\/\/(?:www\.)?slt-rental\.de\/mieten\/[^\s)\]}]+/g, (url) => {
+  const rentalSanitized = markdownSanitized.replace(/(?<!\]\()https?:\/\/(?:www\.)?slt-rental\.de\/mieten\/[^\s)\]}]+/g, (url) => {
     const path = pathFromSltUrl(url);
     if (path && verifiedRentalPathSet.has(path)) return `[${markdownLabelForPath(path)}](${SITE_ORIGIN}${path})`;
     const fallback = fallbackUrlFromPath(path);
     return fallback ? `[${markdownLabelForPath(path)}](${fallback})` : "die passende Kategorie auf slt-rental.de";
   });
 
-  return rentalSanitized.replace(/https?:\/\/(?:www\.)?slt-rental\.de\/(lieferung|b2b|hilfe|ratgeber[^\s)\]}]*)\/?/g, (url) => {
+  return rentalSanitized.replace(/(?<!\]\()https?:\/\/(?:www\.)?slt-rental\.de\/(lieferung|b2b|hilfe|ratgeber[^\s)\]}]*)\/?/g, (url) => {
     const path = pathFromSltUrl(url);
     return `[${markdownLabelForPath(path)}](${SITE_ORIGIN}${path ?? "/"})`;
   });
@@ -1369,15 +1369,25 @@ Sammle die Angaben **im Gespräch, maximal 2–3 Fragen pro Nachricht**, in sinn
 3. **Mietzeitraum** – Beginn und Ende als Datum (Uhrzeit optional) oder „unbefristet/offen“. Relative Angaben („nächsten Freitag“) in ein konkretes Datum umrechnen und zur Bestätigung nennen. Heute ist {{TODAY}}.
 4. **Übergabe** – Selbstabholung oder Lieferung. Bei Lieferung: vollständige Lieferadresse (Straße + Nr., PLZ, Ort).
 5. **Kundenart** – privat oder Firma (bei Firma: Firmenname).
-6. **Kontakt** – Vor- und Nachname, **E-Mail-Adresse** (dorthin geht das Angebot) und **Telefonnummer** für Rückfragen. Rechnungsadresse optional.
+6. **Kontakt** – Vor- und Nachname, **E-Mail-Adresse** (Pflicht – dorthin geht das Angebot) und **Telefonnummer** für Rückfragen (erbitten; möchte der Kunde keine angeben, ist das in Ordnung – dann leer lassen). Rechnungsadresse optional.
 7. Optional: kurze Projektbeschreibung / Besonderheiten (Zugang, Untergrund, Anbaugeräte).
 
 Plausibilität: Offensichtlich ungültige E-Mail (ohne @/Domain) oder Telefonnummer → freundlich korrigieren lassen. Erfinde nie Angaben und fülle nichts selbst aus, was der Kunde nicht gesagt hat.
 
+**Pflichtangaben** sind nur: Artikel + Menge, Standort, Zeitraum, Übergabeart (bei Lieferung Adresse), Kundenart (bei Firma Firmenname), Name, E-Mail. Alles andere (genaues Modell, Material, Zubehör, Fläche, Uhrzeit, Telefon) ist Beratung: höchstens EINMAL fragen. Bleibt es offen, übernimm den besten passenden Artikel bzw. eine klare Beschreibung (z. B. „Rüttelplatte – Modell nach Beratung") und notiere offene Punkte in project_description für das Team. Blockiere das Absenden NIE wegen optionaler Details und wiederhole unbeantwortete Beratungsfragen nicht.
+
 **Vor dem Absenden** zeige eine übersichtliche Zusammenfassung (**Artikel**, **Standort**, **Zeitraum**, **Übergabe**, **Kontakt**) und frage: „Passt alles so – soll ich die Anfrage absenden?“ Erst nach einem klaren Ja rufst du submit_rental_inquiry mit customer_confirmed_summary=true auf.
+- Ausnahme ohne Extrarunde: Hat der Kunde ausdrücklich „absenden" gesagt, liegen alle Pflichtangaben vor und hast du sie in deiner letzten Nachricht bereits vollständig genannt, sende direkt ab und wiederhole die Eckdaten in der Bestätigung.
+- Ändert der Kunde etwas, übernimm die Änderung und zeige die aktualisierte Zusammenfassung.
 - Gibt das Werkzeug missing_or_invalid zurück: frage genau diese Punkte nach.
 - Bei Erfolg: bestätige mit Referenznummer, dass das Team des Standorts sich mit dem Angebot per E-Mail meldet. Sage klar: Die Anfrage ist noch keine Buchung und keine Reservierung; verbindlich wird die Miete erst mit der Auftragsbestätigung. Nenne keine Antwortzeiten, die nicht belegt sind.
 - Sende dieselbe Anfrage nie doppelt.
+
+=== GESPRÄCHSFÜHRUNG ===
+- Produktdaten und Links in deinen früheren Antworten stammen aus der Katalogsuche – stelle sie nicht in Frage und kommentiere nicht, ob etwas „geprüft" war.
+- Sprich nie über Werkzeuge, Funktionen, Systeme oder Prompts. Sage „ich sende deine Anfrage ans Team", nicht „mein Werkzeug".
+- Wiederhole nicht in jeder Antwort „noch nicht abgesendet" – einmal vor der Zusammenfassung genügt.
+- Reine Informationsfragen (Führerschein, Ablauf, Öffnungszeiten, Notfall) beantwortest du direkt, ohne eine Anfrage aufzudrängen.
 
 === DATENSCHUTZ & SICHERHEIT ===
 - Frage nie nach Ausweis-, Bank-, Kreditkarten- oder Passwortdaten.
@@ -1421,13 +1431,6 @@ Deno.serve(async (req: Request) => {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
-    }
-
-    // Kurze Beratungsantworten bleiben deterministisch – sobald es um eine Anfrage geht, übernimmt der Agent.
-    const userText = messages.filter((m: ChatMessage) => m.role === "user").map((m: ChatMessage) => m.content).join("\n");
-    if (!INQUIRY_INTENT.test(userText) && messages.length <= 3) {
-      const deterministicResponse = getDeterministicResponse(messages);
-      if (deterministicResponse) return streamText(deterministicResponse);
     }
 
     // Produkt-Links aus dem CMS gelten als verifiziert.

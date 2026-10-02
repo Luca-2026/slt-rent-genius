@@ -101,12 +101,15 @@ export async function searchProducts(query: string, location: string | null) {
   const scored = rows
     .filter((r) => !location || (r.available_locations ?? []).includes(location))
     .map((r) => {
-      const hay = norm([r.name, r.model_name, r.category, r.subcategory, (r.tags ?? []).join(" ")].join(" "));
+      const hayRaw = norm([r.name, r.model_name, r.slug, r.category, r.subcategory, (r.tags ?? []).join(" ")].join(" "));
+      const hay = `${hayRaw} ${hayRaw.replace(/[^a-z0-9]/g, "")}`;
+      const words = new Set(hayRaw.split(/[^a-z0-9]+/).filter((w) => w.length >= 4));
       const body = norm(`${r.description ?? ""} ${JSON.stringify(r.specifications ?? {})}`);
       let score = 0;
       for (const t of tokens) {
         const stem = t.length > 5 ? t.replace(/(en|er|n|e|s)$/, "") : t;
         if (hay.includes(stem)) score += 3 + stem.length / 4;
+        else if ([...words].some((w) => t.includes(w))) score += 3; // Komposita: "Vibrationsstampfer" → "Stampfer"
         else if (body.includes(stem)) score += 1;
       }
       return { r, score };
