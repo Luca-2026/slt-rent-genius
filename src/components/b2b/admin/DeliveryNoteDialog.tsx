@@ -44,6 +44,7 @@ interface DeliveryNoteDraft {
   operatingHours: string;
   fuelLevel: string;
   cleanlinessRating: number;
+  measurements?: Record<number, Measurement>;
   damages: (Omit<ProtocolDamage, "photos"> & { photos: { file: File }[] })[];
 }
 
@@ -133,7 +134,7 @@ export function DeliveryNoteDialog({
     const value: DeliveryNoteDraft = {
       customerSignature, staffSignature, staffName, notes, knownDefects,
       customerNotPresent, agbAccepted, offerAccepted, itemsReceived,
-      idChecked, idDocType, operatingHours, fuelLevel, cleanlinessRating,
+      idChecked, idDocType, operatingHours, fuelLevel, cleanlinessRating, measurements,
       damages: damages.map(({ photos, ...damage }) => ({ ...damage, photos: photos.map(({ file }) => ({ file })) })),
     };
     void writeProtocolDraft(draftKey, value).catch(() => toast({ title: "Entwurf nicht gespeichert", description: "Bitte Gerätespeicher prüfen.", variant: "destructive" }));
@@ -208,8 +209,10 @@ export function DeliveryNoteDialog({
           agb_accepted: customerNotPresent ? false : true,
           id_checked: idChecked,
           id_check_type: idDocType || undefined,
-          operating_hours: operatingHours || undefined,
-          fuel_level: fuelLevel || undefined,
+           measurements: offerItems.filter((i) => i.offer_id === offer.id).flatMap((item, index) => {
+             const m = { ...emptyMeasurement(), ...measurements[index] };
+             return m.useHours || m.useFuel || m.useMileage ? [{ item_name: item.product_name, ...selectedMeasurement(m) }] : [];
+           }),
           cleanliness_rating: cleanlinessRating > 0 ? cleanlinessRating : undefined,
           customer_not_present: customerNotPresent,
         },
@@ -264,13 +267,14 @@ export function DeliveryNoteDialog({
 
   const legalDone = customerNotPresent || (agbAccepted && offerAccepted && itemsReceived);
   const signaturesDone = !!staffSignature && !!staffName.trim() && (customerNotPresent || !!customerSignature);
-  const equipmentDone = !needsEquipmentFields ? cleanlinessRating > 0 : (!!operatingHours && !!fuelLevel && cleanlinessRating > 0);
-  const allValid = legalDone && signaturesDone && idChecked;
+  const equipmentDone = cleanlinessRating > 0 && items.every((_, i) => validMeasurement({ ...emptyMeasurement(), ...measurements[i] }));
+  const allValid = legalDone && signaturesDone && idChecked && equipmentDone;
 
   const missing: string[] = [];
   if (!idChecked) missing.push("Personalausweis abgleichen");
   if (!legalDone) missing.push("rechtliche Bestätigungen");
   if (!signaturesDone) missing.push("Unterschriften und Mitarbeitername");
+  if (!equipmentDone) missing.push("Sauberkeit und ausgewählte Messwerte");
 
   const steps: WizardStep[] = [
     {
@@ -331,9 +335,7 @@ export function DeliveryNoteDialog({
     {
       id: "equipment",
       title: "Gerätedaten",
-      summary: needsEquipmentFields
-        ? `Betriebsstunden, Tank, Sauberkeit${cleanlinessRating ? ` ${cleanlinessRating}/5` : ""}`
-        : `Sauberkeit${cleanlinessRating ? ` ${cleanlinessRating}/5` : " 1–5"}`,
+      summary: `Sauberkeit${cleanlinessRating ? ` ${cleanlinessRating}/5` : " 1–5"}`,
       done: equipmentDone,
       content: (
         <div className="space-y-3">
@@ -342,7 +344,7 @@ export function DeliveryNoteDialog({
             <Label className="text-xs">Sauberkeit des Mietgerätes</Label>
             <div className="flex gap-2 mt-1">
               {[1, 2, 3, 4, 5].map((n) => (
-                <button
+                <Button
                   key={n}
                   type="button"
                   onClick={() => setCleanlinessRating(n)}
@@ -351,7 +353,7 @@ export function DeliveryNoteDialog({
                   }`}
                 >
                   {n}
-                </button>
+                </Button>
               ))}
             </div>
             <p className="text-[11px] text-muted-foreground mt-1">{CLEANLINESS_HINT}</p>
