@@ -16,6 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import { MeasurementFields, emptyMeasurement, validMeasurement, selectedMeasurement, type Measurement } from "@/components/b2b/protocols/MeasurementFields";
 import { SignaturePad } from "@/components/b2b/SignaturePad";
 import { ProtocolWizard, type WizardStep } from "@/components/b2b/protocols/ProtocolWizard";
 import { DamagesStep } from "@/components/b2b/protocols/DamagesStep";
@@ -89,6 +90,7 @@ export function DeliveryNoteDialog({
   const [notes, setNotes] = useState("");
   const [knownDefects, setKnownDefects] = useState("");
   const [damages, setDamages] = useState<ProtocolDamage[]>([]);
+  const [measurements, setMeasurements] = useState<Record<number, Measurement>>({});
   const [agbAccepted, setAgbAccepted] = useState(false);
   const [offerAccepted, setOfferAccepted] = useState(false);
   const [itemsReceived, setItemsReceived] = useState(false);
@@ -115,6 +117,7 @@ export function DeliveryNoteDialog({
     setNotes("");
     setKnownDefects("");
     setDamages([]);
+    setMeasurements({});
     setAgbAccepted(false);
     setOfferAccepted(false);
     setItemsReceived(false);
@@ -134,7 +137,7 @@ export function DeliveryNoteDialog({
       damages: damages.map(({ photos, ...damage }) => ({ ...damage, photos: photos.map(({ file }) => ({ file })) })),
     };
     void writeProtocolDraft(draftKey, value).catch(() => toast({ title: "Entwurf nicht gespeichert", description: "Bitte Gerätespeicher prüfen.", variant: "destructive" }));
-  }, [open, draftKey, readyFor, result, customerSignature, staffSignature, staffName, notes, knownDefects, customerNotPresent, agbAccepted, offerAccepted, itemsReceived, idChecked, idDocType, operatingHours, fuelLevel, cleanlinessRating, damages, toast]);
+  }, [open, draftKey, readyFor, result, customerSignature, staffSignature, staffName, notes, knownDefects, customerNotPresent, agbAccepted, offerAccepted, itemsReceived, idChecked, idDocType, operatingHours, fuelLevel, cleanlinessRating, measurements, damages, toast]);
 
   useEffect(() => {
     if (!open) {
@@ -170,6 +173,7 @@ export function DeliveryNoteDialog({
       setOperatingHours(d.operatingHours);
       setFuelLevel(d.fuelLevel);
       setCleanlinessRating(d.cleanlinessRating);
+       setMeasurements(d.measurements ?? {});
       setDamages((d.damages || []).map((damage) => ({ ...damage, photos: damage.photos.map(({ file }) => ({ file, preview: URL.createObjectURL(file) })) })));
       toast({ title: "Protokollentwurf wiederhergestellt" });
     }).catch(() => toast({ title: "Entwurf konnte nicht geladen werden", variant: "destructive" }))
@@ -333,29 +337,7 @@ export function DeliveryNoteDialog({
       done: equipmentDone,
       content: (
         <div className="space-y-3">
-          {needsEquipmentFields && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <Label className="text-xs">Betriebsstunden</Label>
-                <Input
-                  value={operatingHours}
-                  onChange={(e) => setOperatingHours(e.target.value)}
-                  placeholder="z. B. 1.250 Bh"
-                  inputMode="decimal"
-                  className="text-sm"
-                />
-              </div>
-              <div>
-                <Label className="text-xs">Tankfüllstand</Label>
-                <Select value={fuelLevel} onValueChange={setFuelLevel}>
-                  <SelectTrigger className="text-sm h-10"><SelectValue placeholder="Auswählen" /></SelectTrigger>
-                  <SelectContent>
-                    {FUEL_LEVELS.map((f) => <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          )}
+          {items.map((item, i) => <MeasurementFields key={item.id} name={item.product_name} value={{ ...emptyMeasurement(), ...measurements[i] }} onChange={(m) => setMeasurements((prev) => ({ ...prev, [i]: m }))} />)}
           <div>
             <Label className="text-xs">Sauberkeit des Mietgerätes</Label>
             <div className="flex gap-2 mt-1">
@@ -374,11 +356,6 @@ export function DeliveryNoteDialog({
             </div>
             <p className="text-[11px] text-muted-foreground mt-1">{CLEANLINESS_HINT}</p>
           </div>
-          {!needsEquipmentFields && (
-            <p className="text-xs text-muted-foreground">
-              Betriebsstunden und Tankfüllstand erscheinen nur bei Maschinen mit Motor.
-            </p>
-          )}
         </div>
       ),
     },
