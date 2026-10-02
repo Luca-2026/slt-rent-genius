@@ -28,9 +28,9 @@ async function fetchAttachment(
   filename: string | null | undefined,
 ): Promise<{ filename: string; content: string } | null> {
   if (!path) return null;
-  // Only freshly uploaded files from the application forms (timestamped name, max 30 min old).
+  // Only freshly uploaded files from the application forms (timestamped name, max 2 h old).
   const m = /^(?:[A-Za-z0-9_-]{1,80}\/)?(\d{13})-[A-Za-z0-9._-]{1,120}$/.exec(path);
-  if (!m || path.includes("..") || Math.abs(Date.now() - Number(m[1])) > 30 * 60 * 1000) {
+  if (!m || path.includes("..") || Math.abs(Date.now() - Number(m[1])) > 2 * 60 * 60 * 1000) {
     console.warn("Attachment path rejected:", path);
     return null;
   }
