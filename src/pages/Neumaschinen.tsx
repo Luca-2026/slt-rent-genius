@@ -529,7 +529,7 @@ export default function Neumaschinen() {
   return (
     <Layout>
       <SEO
-        title="Minibagger, Bagger & Radlader kaufen | LiuGong-Händler NRW"
+        title="Minibagger, Bagger & Radlader kaufen | LiuGong NRW"
         description="LiuGong-Bagger, Minibagger und Radlader, BAUMAX-Minidumper, Rüttelplatten, Temared-Anhänger und Hercu-Erdraketen kaufen – Fachhändler in NRW mit Garantie, Service und Mietpark-Test."
         canonical="/verkauf/neumaschinen"
         keywords="Neumaschinen kaufen NRW, Baumaschinen kaufen, Rüttelplatte kaufen, Vibrationsstampfer kaufen, Minidumper kaufen, Steinsäge kaufen, Fugenschneider kaufen, Erdrakete kaufen, Hercu Erdrakete kaufen, Bodendurchschlagsgerät kaufen, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen, Zubehör Baumaschinen"
