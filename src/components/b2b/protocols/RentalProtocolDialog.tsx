@@ -130,7 +130,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
         const map: Record<string, { id: string; hours: boolean; tank: boolean }> = {};
         for (const r of data ?? []) map[r.name.trim().toLowerCase()] = { id: r.id, hours: !!r.tracks_operating_hours, tank: !!r.has_fuel_tank };
         setCms(map);
-        setMachineIdx(its.map((it, i) => {
+        setMachineIdx((current) => current.length ? current : its.map((it, i) => {
           const c = map[it.name.trim().toLowerCase()];
           return (c ? c.hours : isMachineLike([it.name])) ? i : -1;
         }).filter((i) => i >= 0));
@@ -165,7 +165,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     }).catch(() => toast.error("Gespeicherter Entwurf konnte nicht geladen werden.")).finally(() => {
       if (!cancelled) setReadyFor(key);
     });
-    return () => { cancelled = true; };
+    return () => { cancelled = true; initFor.current = null; setReadyFor(null); };
   }, [open, inquiry?.id, kind, draftKey, displayName]);
 
   useEffect(() => {

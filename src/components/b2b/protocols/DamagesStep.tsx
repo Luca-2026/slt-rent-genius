@@ -15,6 +15,7 @@ import { Switch } from "@/components/ui/switch";
 import { Camera, Plus, Trash2, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import { MAX_PROTOCOL_PHOTOS, formatPhotoTimestamp, photoTakenAt } from "@/lib/rentalProtocol";
+import { compressImageToBase64 } from "@/lib/imageCompress";
 import {
   DAMAGE_CATEGORIES, emptyDamage, formatEuro, sumDamages, type ProtocolDamage,
 } from "./protocolShared";
@@ -38,7 +39,7 @@ export function DamagesStep({ damages, onChange, itemNames, context, showAmounts
 
   const remove = (id: string) => onChange(damages.filter((d) => d.id !== id));
 
-  const addPhotos = (id: string, files: FileList | null) => {
+  const addPhotos = async (id: string, files: FileList | null) => {
     let list = Array.from(files || []);
     if (photoSlotsLeft !== undefined && list.length > photoSlotsLeft) {
       toast.warning(photoSlotsLeft === 0
@@ -49,9 +50,16 @@ export function DamagesStep({ damages, onChange, itemNames, context, showAmounts
     if (!list.length) return;
     const damage = damages.find((d) => d.id === id);
     if (!damage) return;
-    update(id, {
-      photos: [...damage.photos, ...list.map((file) => ({ file, preview: URL.createObjectURL(file) }))],
-    });
+    try {
+      const prepared = [];
+      for (const original of list) {
+        const base64 = await compressImageToBase64(original, 1100, 0.68);
+        const bytes = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+        const file = new File([bytes], `${original.name.replace(/\.[^.]+$/, "")}.jpg`, { type: "image/jpeg", lastModified: original.lastModified });
+        prepared.push({ file, preview: URL.createObjectURL(file) });
+      }
+      update(id, { photos: [...damage.photos, ...prepared] });
+    } catch (error) { toast.error((error as Error).message || "Foto konnte nicht verarbeitet werden. Bitte JPEG auswählen."); }
   };
 
   const removePhoto = (id: string, index: number) => {
@@ -190,31 +198,35 @@ export function DamagesStep({ damages, onChange, itemNames, context, showAmounts
                 accept="image/*"
                 multiple
                 className="hidden"
-                onChange={(e) => { addPhotos(damage.id, e.target.files); e.target.value = ""; }}
+                 onChange={(e) => { void addPhotos(damage.id, e.target.files); e.target.value = ""; }}
               />
               <div className="flex flex-wrap gap-2 mt-1">
                 {damage.photos.map((photo, i) => (
                   <div key={i} className="relative">
                     <img src={photo.preview} alt={`Schaden ${idx + 1} Foto ${i + 1}`} className="h-20 w-20 object-cover rounded-md border" />
                     <span className="block w-20 text-[9px] leading-tight text-muted-foreground mt-0.5">{formatPhotoTimestamp(photoTakenAt(photo.file.lastModified))}</span>
-                    <button
+                    <Button
                       type="button"
+                      size="icon"
+                      variant="destructive"
+                      aria-label="Schadensfoto entfernen"
                       onClick={() => removePhoto(damage.id, i)}
-                      className="absolute -top-1.5 -right-1.5 bg-destructive text-destructive-foreground rounded-full p-0.5"
+                      className="absolute -top-1.5 -right-1.5 h-6 w-6"
                     >
                       <X className="h-3 w-3" />
-                    </button>
+                    </Button>
                   </div>
                 ))}
-                <button
+                 <Button
                   type="button"
+                  variant="outline"
                   disabled={photoSlotsLeft === 0}
                   onClick={() => fileRefs.current[damage.id]?.click()}
-                  className="h-20 w-20 border-2 border-dashed border-muted-foreground/30 rounded-md flex flex-col items-center justify-center gap-1 text-muted-foreground hover:border-primary hover:text-primary"
+                  className="h-20 w-20 border-2 border-dashed flex flex-col items-center justify-center gap-1"
                 >
                   <Upload className="h-4 w-4" />
                   <span className="text-[10px]">Foto</span>
-                </button>
+                 </Button>
               </div>
             </div>
           </CardContent>
