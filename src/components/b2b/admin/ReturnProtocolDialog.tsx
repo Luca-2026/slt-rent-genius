@@ -16,6 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import { MeasurementFields, emptyMeasurement, validMeasurement, selectedMeasurement, type Measurement } from "@/components/b2b/protocols/MeasurementFields";
 import { SignaturePad } from "@/components/b2b/SignaturePad";
 import { ProtocolWizard, type WizardStep } from "@/components/b2b/protocols/ProtocolWizard";
 import { DamagesStep } from "@/components/b2b/protocols/DamagesStep";
@@ -62,6 +63,7 @@ interface ReturnProtocolDraft {
   itemConditions: ItemCondition[];
   damages: (Omit<ProtocolDamage, "photos"> & { photos: { file: File }[] })[];
   extraCharges: ExtraCharge[];
+  measurements?: Record<number, Measurement>;
 }
 
 interface Reservation {
@@ -108,6 +110,7 @@ export function ReturnProtocolDialog({
   const [notes, setNotes] = useState("");
   const [knownDefectsFromDelivery, setKnownDefectsFromDelivery] = useState("");
   const [damages, setDamages] = useState<ProtocolDamage[]>([]);
+  const [measurements, setMeasurements] = useState<Record<number, Measurement>>({});
   const [extraCharges, setExtraCharges] = useState<ExtraCharge[]>([]);
   const [overallCondition, setOverallCondition] = useState<"good" | "minor_damage" | "major_damage">("good");
   const [conditionNotes, setConditionNotes] = useState("");
@@ -150,6 +153,7 @@ export function ReturnProtocolDialog({
     setNotes("");
     setKnownDefectsFromDelivery("");
     setDamages([]);
+    setMeasurements({});
     setExtraCharges([]);
     setOverallCondition("good");
     setConditionNotes("");
@@ -177,7 +181,7 @@ export function ReturnProtocolDialog({
       extraCharges,
     };
     void writeProtocolDraft(draftKey, value).catch(() => toast({ title: "Entwurf nicht gespeichert", description: "Bitte Gerätespeicher prüfen.", variant: "destructive" }));
-  }, [open, draftKey, readyFor, result, customerSignature, staffSignature, staffName, notes, knownDefectsFromDelivery, customerNotPresent, overallCondition, conditionNotes, cleaningRequired, allItemsReturned, missingItemsNotes, meterReadingStart, meterReadingEnd, fuelLevelStart, fuelLevelEnd, cleanlinessRating, idChecked, idDocType, itemConditions, damages, extraCharges, toast]);
+  }, [open, draftKey, readyFor, result, customerSignature, staffSignature, staffName, notes, knownDefectsFromDelivery, customerNotPresent, overallCondition, conditionNotes, cleaningRequired, allItemsReturned, missingItemsNotes, meterReadingStart, meterReadingEnd, fuelLevelStart, fuelLevelEnd, cleanlinessRating, idChecked, idDocType, itemConditions, measurements, damages, extraCharges, toast]);
 
   useEffect(() => {
     if (!open) {
@@ -215,6 +219,7 @@ export function ReturnProtocolDialog({
       setFuelLevelStart(d.fuelLevelStart);
       setFuelLevelEnd(d.fuelLevelEnd);
       setCleanlinessRating(d.cleanlinessRating);
+       setMeasurements(d.measurements ?? {});
       setIdChecked(d.idChecked);
       setIdDocType(d.idDocType);
       setItemConditions(d.itemConditions?.length ? d.itemConditions : baseItems());
@@ -456,40 +461,7 @@ export function ReturnProtocolDialog({
       done: equipmentDone,
       content: (
         <div className="space-y-3">
-          {needsEquipmentFields && (
-            <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <Label className="text-xs">Betriebsstunden bei Übergabe</Label>
-                  <Input value={meterReadingStart} onChange={(e) => setMeterReadingStart(e.target.value)} inputMode="decimal" className="text-sm" />
-                </div>
-                <div>
-                  <Label className="text-xs">Betriebsstunden bei Rückgabe</Label>
-                  <Input value={meterReadingEnd} onChange={(e) => setMeterReadingEnd(e.target.value)} inputMode="decimal" className="text-sm" />
-                </div>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <Label className="text-xs">Tank bei Übergabe</Label>
-                  <Select value={fuelLevelStart} onValueChange={setFuelLevelStart}>
-                    <SelectTrigger className="h-10 text-sm"><SelectValue placeholder="Auswählen" /></SelectTrigger>
-                    <SelectContent>
-                      {FUEL_LEVELS.map((f) => <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>)}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label className="text-xs">Tank bei Rückgabe</Label>
-                  <Select value={fuelLevelEnd} onValueChange={setFuelLevelEnd}>
-                    <SelectTrigger className="h-10 text-sm"><SelectValue placeholder="Auswählen" /></SelectTrigger>
-                    <SelectContent>
-                      {FUEL_LEVELS.map((f) => <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>)}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </>
-          )}
+          {itemConditions.map((item, i) => <MeasurementFields key={i} name={item.product_name} value={{ ...emptyMeasurement(), ...measurements[i] }} onChange={(m) => setMeasurements((prev) => ({ ...prev, [i]: m }))} />)}
           <div>
             <Label className="text-xs">Sauberkeit bei Rückgabe</Label>
             <div className="flex gap-2 mt-1">
