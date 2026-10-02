@@ -105,7 +105,7 @@ export function validateInquiry(raw: InquiryArgs, today = berlinToday()) {
     errors,
     value: {
       location: location as LocationId, items, start, end: openEnded ? null : end, openEnded, startTime, endTime,
-      delivery, dStreet, dZip, dCity, kind: kind ?? "private", company, name, email, phone,
+      delivery, dStreet, dZip, dCity, kind: (kind ?? "private") as "private" | "business", company, name, email, phone,
       cStreet: optional(raw?.customer_street), cZip: optional(raw?.customer_postal_code, 10), cCity: optional(raw?.customer_city, 80),
       project: optional(raw?.project_description, 1500),
     },
