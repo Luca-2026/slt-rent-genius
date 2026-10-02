@@ -68,13 +68,6 @@ const categoryInfoConfig: Record<string, {
       { icon: <Zap className="h-5 w-5 text-accent" />, titleKey: "infoBanner.arbeitsbuehnen.item2", subtitleKey: "infoBanner.arbeitsbuehnen.item2sub" },
       { icon: <CheckCircle2 className="h-5 w-5 text-accent" />, titleKey: "infoBanner.arbeitsbuehnen.item3", subtitleKey: "infoBanner.arbeitsbuehnen.item3sub" },
     ],
-    highlight: {
-      icon: <Zap className="h-6 w-6 text-primary" />,
-      titleKey: "infoBanner.arbeitsbuehnen.highlightTitle",
-      textKey: "infoBanner.arbeitsbuehnen.highlightText",
-      link: "https://www.zoomlion-nrw.de",
-      linkLabelKey: "infoBanner.arbeitsbuehnen.highlightLink",
-    },
   },
   "verdichtung": {
     descriptionKey: "infoBanner.verdichtung.desc",

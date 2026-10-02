@@ -3,12 +3,12 @@ import { AnimatedSection } from "@/components/ui/animated-section";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ShoppingCart, PackageSearch } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import zoomlionLogo from "@/assets/logos/zoomlion-sm.webp";
+import liugongLogo from "@/assets/logos/liugong-sm.webp";
 import temaredLogo from "@/assets/logos/temared-sm.webp";
 import baumaxLogo from "@/assets/logos/baumax-sm.webp";
 
 const brands = [
-  { name: "Zoomlion", logo: zoomlionLogo, alt: "Zoomlion – Offizieller Händler NRW" },
+  { name: "LiuGong", logo: liugongLogo, alt: "LiuGong Baumaschinen – Händler NRW" },
   { name: "BAUMAX", logo: baumaxLogo, alt: "BAUMAX Baumaschinen – Fachhändler NRW" },
   { name: "Temared", logo: temaredLogo, alt: "Temared Anhänger – Autorisierter Händler NRW" },
 ];

@@ -124,7 +124,7 @@ export const jobListings: JobListing[] = [
       "Attraktives Gehalt: 45.000 € – 60.000 € p. a. (je nach Erfahrung), faires Festgehalt mit leistungsbezogenen Komponenten",
       "Attraktive Bonusregelung: Du partizipierst direkt am Erfolg des Standorts – überdurchschnittlicher Einsatz wird überdurchschnittlich vergütet",
       "Echte Standortverantwortung mit unternehmerischem Gestaltungsspielraum – keine Sachbearbeitungsrolle mit Titel",
-      "Gezielte Weiterentwicklung durch externe Schulungen und Herstellerzertifizierungen (Zoomlion, Niftylift u. a.)",
+      "Gezielte Weiterentwicklung durch externe Schulungen und Herstellerzertifizierungen",
       "Arbeit mit modernsten KI-Tools der Branche – von KI-gestützter Disposition über automatisierte Angebotserstellung bis zur KI-Kundenkommunikation",
       "Junges, modernes Team mit flachen Hierarchien und direktem Draht zur Geschäftsführung",
       "Wachstumsunternehmen mit aktiver Mitgestaltung statt starrer Konzernstrukturen",
@@ -330,7 +330,7 @@ export const jobListings: JobListing[] = [
     seoTitle: "Baumaschinentechniker / Servicetechniker (m/w/d) Krefeld – SLT Rental",
     seoDescription: "Baumaschinentechniker (m/w/d) in Krefeld gesucht. Wartung & Reparatur in moderner Werkstatt, faire Vergütung. Jetzt bei SLT Rental bewerben.",
     faqs: [
-      { question: "Welche Hersteller bedient ihr?", answer: "Schwerpunkt Zoomlion, Bobcat, Yanmar sowie diverse Anhänger- und Eventtechnik-Hersteller." },
+      { question: "Welche Hersteller bedient ihr?", answer: "Schwerpunkt LiuGong, Bobcat, Yanmar sowie diverse Anhänger- und Eventtechnik-Hersteller." },
       { question: "Gibt es Bereitschaftsdienste?", answer: "Nein. Wir arbeiten in geregelten Werkstattzeiten – planbar und familienfreundlich." },
     ],
     title: "Baumaschinentechniker / Servicetechniker (m/w/d)",
@@ -384,7 +384,7 @@ export const jobListings: JobListing[] = [
   {
     id: "vertrieb",
     slug: "vertriebsmitarbeiter-baumaschinen-zoomlion-nrw",
-    shortPitch: "Verkaufe als offizieller Zoomlion-Vertragshändler in NRW – mit Firmenwagen, Homeoffice-Option und KI-gestützten Vertriebstools.",
+    shortPitch: "Verkaufe als LiuGong-Händler in NRW – mit Firmenwagen, Homeoffice-Option und KI-gestützten Vertriebstools.",
     locations: [DEFAULT_LOC_KREFELD, DEFAULT_LOC_BONN],
     employmentType: ["FULL_TIME"],
     datePosted: "2026-08-23",
@@ -395,13 +395,13 @@ export const jobListings: JobListing[] = [
     salaryUnit: "YEAR",
     remote: true,
     tasks: [
-      "Beratung und Verkauf von Baumaschinen und Zubehör (Schwerpunkt Zoomlion)",
+      "Beratung und Verkauf von Baumaschinen und Zubehör (Schwerpunkt LiuGong)",
       "Eigenständige Bearbeitung des gesamten Verkaufsprozesses inkl. Angebot, Abschluss & Übergabe",
       "Aufbau und Pflege von Kundenbeziehungen in NRW",
       "Nutzung von CRM und KI-gestützten Vertriebstools",
     ],
     seoTitle: "Vertriebsmitarbeiter Baumaschinen (m/w/d) NRW – SLT Rental",
-    seoDescription: "Vertriebsmitarbeiter (m/w/d) für Zoomlion-Baumaschinen in NRW gesucht. Firmenwagen, Homeoffice, KI-gestützte Tools. Jetzt bei SLT Rental bewerben.",
+    seoDescription: "Vertriebsmitarbeiter (m/w/d) für LiuGong-Baumaschinen in NRW gesucht. Firmenwagen, Homeoffice, KI-gestützte Tools. Jetzt bei SLT Rental bewerben.",
     faqs: [
       { question: "Wo ist mein Einsatzgebiet?", answer: "Schwerpunkt Nordrhein-Westfalen mit den Standorten Krefeld und Bonn als Basis." },
       { question: "Gibt es einen Firmenwagen?", answer: "Ja, inklusive privater Nutzung." },
@@ -410,7 +410,7 @@ export const jobListings: JobListing[] = [
     location: "Homeoffice oder Büro in Bonn / Krefeld",
     type: "Vollzeit",
     startDate: "01.02.2026",
-    description: "Zur Erweiterung unseres Vertriebsteams suchen wir einen engagierten Vertriebsmitarbeiter (m/w/d) für den Verkauf von Baumaschinen und Zubehör. Als offizieller Zoomlion-Vertragshändler in NRW bieten wir ein starkes Produktportfolio mit hervorragendem Preis-Leistungs-Verhältnis. Sie nutzen KI-gestützte Vertriebstools und moderne CRM-Systeme, um Kunden kompetent zu beraten, datenbasierte Lösungen zu entwickeln und den gesamten Verkaufsprozess effizient zu begleiten. Durch den Einsatz von Künstlicher Intelligenz und digitalen Prozessen heben wir uns klar vom Wettbewerb ab.",
+    description: "Zur Erweiterung unseres Vertriebsteams suchen wir einen engagierten Vertriebsmitarbeiter (m/w/d) für den Verkauf von Baumaschinen und Zubehör. Als LiuGong-Händler in NRW bieten wir ein starkes Produktportfolio mit hervorragendem Preis-Leistungs-Verhältnis. Sie nutzen KI-gestützte Vertriebstools und moderne CRM-Systeme, um Kunden kompetent zu beraten, datenbasierte Lösungen zu entwickeln und den gesamten Verkaufsprozess effizient zu begleiten. Durch den Einsatz von Künstlicher Intelligenz und digitalen Prozessen heben wir uns klar vom Wettbewerb ab.",
     requirements: [
       "Erfahrung im technischen Vertrieb, idealerweise im Bereich Baumaschinen, Industrieprodukte oder Vermietung",
       "Sicheres Auftreten und Verhandlungsgeschick",

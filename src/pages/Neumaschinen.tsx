@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import zoomlionLogo from "@/assets/logos/zoomlion-sm.webp";
+import liugongLogo from "@/assets/logos/liugong-sm.webp";
 import temaredLogo from "@/assets/logos/temared-sm.webp";
 import baumaxLogo from "@/assets/logos/baumax-sm.webp";
 import iconBagger from "@/assets/icons/category-bagger.png";
@@ -34,13 +34,11 @@ import {
 } from "@/components/ui/accordion";
 
 const kategorienByMarke: Record<string, string[]> = {
-  Zoomlion: [
-    "Elektrobagger / Minibagger",
+  LiuGong: [
+    "Minibagger / Kompaktbagger",
+    "Bagger",
     "Radlader",
-    "Teleskoplader",
-    "Scherenbühne (Zoomlion Access)",
-    "Gelenkteleskopsteiger",
-    "Sonstiges Zoomlion-Produkt",
+    "Sonstiges LiuGong-Produkt",
   ],
   "BAUMAX Baumaschinen": [
     "Rüttelplatte (VP-Serie – vorwärtslaufend)",
@@ -76,22 +74,22 @@ const kategorienByMarke: Record<string, string[]> = {
 };
 
 const brandIcons = {
-  zoomlion: [iconBagger, iconBagger, iconBagger, iconHebebuehne, iconHebebuehne],
+  liugong: [iconBagger, iconBagger, iconBagger],
   baumax: [iconVerdichtung, iconVerdichtung, iconVerdichtung, iconBagger, iconWerkzeug, iconWerkzeug],
   temared: [iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger, iconAnhaenger],
   slt: [iconKabel, iconKabel, iconKabel, iconKabel, iconKabel, iconKabel, iconWerkzeug],
 };
 
-const brandLogos = { zoomlion: zoomlionLogo, baumax: baumaxLogo, temared: temaredLogo };
+const brandLogos = { liugong: liugongLogo, baumax: baumaxLogo, temared: temaredLogo };
 const brandWebsites = {
-  zoomlion: "https://www.zoomlion-nrw.de",
+  liugong: "https://www.liugong.com",
   baumax: "https://www.baumax-baumaschinen.de",
   temared: "https://temared.com/de",
 };
-const brandNames = { zoomlion: "ZOOMLION", baumax: "BAUMAX", temared: "TEMARED", slt: "Hercu" };
+const brandNames = { liugong: "LIUGONG", baumax: "BAUMAX", temared: "TEMARED", slt: "Hercu" };
 // Marken-Logo-Strip zeigt nur externe Partner. Hercu-Erdraketen werden im Marken-Abschnitt separat dargestellt (Direktimport, Vertrieb & Service über SLT Rental in NRW).
-const externalBrandKeys = ["zoomlion", "baumax", "temared"] as const;
-const brandKeys = ["zoomlion", "baumax", "temared", "slt"] as const;
+const externalBrandKeys = ["liugong", "baumax", "temared"] as const;
+const brandKeys = ["liugong", "baumax", "temared", "slt"] as const;
 
 const uspIcons = [Trophy, Wrench, Truck, MessageSquare, RefreshCw, Package];
 const uspKeys = ["dealer", "service", "delivery", "consulting", "rentToBuy", "spareParts"];
@@ -101,13 +99,13 @@ const jsonLdAutoDealer = {
   "@type": "AutoDealer",
   name: "SLT Rental – Fachhändler für Baumaschinen & Anhänger",
   url: "https://www.slt-rental.de/verkauf/neumaschinen",
-  description: "Autorisierter Fachhändler und Servicestützpunkt für Zoomlion, BAUMAX Baumaschinen und Temared in Nordrhein-Westfalen.",
+  description: "Autorisierter Fachhändler und Servicestützpunkt für LiuGong, BAUMAX Baumaschinen und Temared in Nordrhein-Westfalen.",
   telephone: "+49 2151 4179904",
   email: "kaufanfrage@slt-rental.de",
   image: "https://www.slt-rental.de/og-image.jpg",
   priceRange: "€€€",
   brand: [
-    { "@type": "Brand", name: "Zoomlion", url: "https://www.zoomlion-nrw.de" },
+    { "@type": "Brand", name: "LiuGong", url: "https://www.liugong.com" },
     { "@type": "Brand", name: "BAUMAX Baumaschinen", url: "https://www.baumax-baumaschinen.de" },
     { "@type": "Brand", name: "Temared", url: "https://temared.com/de" },
     { "@type": "Brand", name: "Hercu", url: "https://www.slt-rental.de/verkauf/neumaschinen" },
@@ -129,14 +127,14 @@ const jsonLdAutoDealer = {
     "@type": "OfferCatalog",
     name: "Baumaschinen & Anhänger zum Kauf",
     itemListElement: [
-      { "@type": "OfferCatalog", name: "Zoomlion Baumaschinen", description: "Minibagger, Radlader, Teleskoplader, Scherenbühnen, Gelenkteleskopsteiger" },
+      { "@type": "OfferCatalog", name: "LiuGong Baumaschinen", description: "Bagger und Radlader für die Erdbewegung" },
       { "@type": "OfferCatalog", name: "BAUMAX Baumaschinen", description: "Rüttelplatten, Vibrationsstampfer, Minidumper, Steinsägen, Betonrüttler" },
       { "@type": "OfferCatalog", name: "Temared Anhänger", description: "Kastenanhänger, Planenanhänger, Autotransportanhänger, Baumaschinenanhänger" },
       { "@type": "OfferCatalog", name: "Hercu-Erdraketen", description: "Pneumatische Bodendurchschlagsgeräte (Erdraketen) von Hercu Pneumatic – SLT Rental ist autorisierter Vertriebs- und Servicepartner in NRW" },
     ],
   },
   makesOffer: [
-    { "@type": "Offer", itemOffered: { "@type": "Product", name: "Zoomlion Minibagger", category: "Baumaschinen" } },
+    { "@type": "Offer", itemOffered: { "@type": "Product", name: "LiuGong Bagger", category: "Baumaschinen" } },
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "BAUMAX Rüttelplatten", category: "Verdichtungstechnik" } },
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "Temared PKW-Anhänger", category: "Anhänger" } },
     { "@type": "Offer", itemOffered: { "@type": "Product", name: "Hercu-Erdraketen", brand: "Hercu", category: "Erdrakete / Bodendurchschlagsgerät" } },
@@ -144,7 +142,7 @@ const jsonLdAutoDealer = {
 };
 
 const brandDbNames: Record<string, string> = {
-  zoomlion: "Zoomlion",
+  liugong: "LiuGong",
   baumax: "BAUMAX",
   temared: "Temared",
   slt: "Hercu",
@@ -239,7 +237,11 @@ export default function Neumaschinen() {
   const navigate = useNavigate();
   const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedMarke, setSelectedMarke] = useState("");
+  // ?anfrage=LiuGong (z. B. vom Startseiten-Banner) wählt die Marke im Kaufanfrage-Formular vor.
+  const [selectedMarke, setSelectedMarke] = useState(() => {
+    const pre = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("anfrage") : null;
+    return pre && pre in kategorienByMarke ? pre : "";
+  });
   const [selectedKategorie, setSelectedKategorie] = useState("");
   const [lieferOption, setLieferOption] = useState("");
   const [kundentyp, setKundentyp] = useState("");
@@ -845,7 +847,7 @@ export default function Neumaschinen() {
                   <div className="p-6 lg:p-8 space-y-6">
                     <h2 className="text-xl lg:text-2xl font-bold text-foreground">{t(`verkauf.brands.${key}.h2`)}</h2>
                     <p className="text-muted-foreground leading-relaxed">{t(`verkauf.brands.${key}.intro`)}</p>
-                    {key === "zoomlion" && <p className="text-muted-foreground leading-relaxed">{t(`verkauf.brands.${key}.detail`)}</p>}
+                    {key === "liugong" && <p className="text-muted-foreground leading-relaxed">{t(`verkauf.brands.${key}.detail`)}</p>}
 
                     <h3 className="text-lg font-bold text-foreground">{t(`verkauf.brands.${key}.h3`)}</h3>
                     <ul className="space-y-3">
@@ -935,7 +937,7 @@ export default function Neumaschinen() {
                     <Select value={selectedMarke} onValueChange={(v) => { setSelectedMarke(v); setSelectedKategorie(""); }}>
                       <SelectTrigger><SelectValue placeholder={t("verkauf.form.pleaseSelect")} /></SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Zoomlion">Zoomlion</SelectItem>
+                        <SelectItem value="LiuGong">LiuGong</SelectItem>
                         <SelectItem value="BAUMAX Baumaschinen">BAUMAX Baumaschinen</SelectItem>
                         <SelectItem value="Temared">Temared</SelectItem>
                         <SelectItem value="Hercu">Hercu (Erdraketen &amp; Zubehör)</SelectItem>

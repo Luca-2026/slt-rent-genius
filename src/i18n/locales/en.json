@@ -31,7 +31,7 @@
     "buyNow": "Buy Now",
     "salePage": "Sales Page",
     "newMachines": "New Machines",
-    "newMachinesDesc": "Zoomlion, BAUMAX & Temared",
+    "newMachinesDesc": "LiuGong, BAUMAX & Temared",
     "usedMachines": "Used Machines",
     "usedMachinesDesc": "Inspected machines from our rental fleet",
     "career": "Careers"
@@ -168,7 +168,7 @@
     "rentalItems": "Rental Items",
     "salesAndBrands": "Sales & Brands",
     "buyMachines": "Buy Construction Equipment",
-    "zoomlionDealer": "Zoomlion Dealer NRW",
+    "zoomlionDealer": "LiuGong Dealer NRW",
     "baumaxDealer": "BAUMAX Dealer",
     "temaredBuy": "Buy Temared Trailers",
     "purchaseInquiry": "Submit Purchase Inquiry →",
@@ -969,7 +969,7 @@
       "Online booking around the clock"
     ],
     "partnersTitle": "Our Partners & Brands",
-    "partnerDealerNote": "SLT Rental is an authorized dealer for Zoomlion excavators and aerial work platforms in NRW, as well as a sales partner for Baumax construction machinery – including sales, spare parts, and repairs.",
+    "partnerDealerNote": "SLT Rental is a dealer for LiuGong excavators and wheel loaders in NRW, as well as a sales partner for Baumax construction machinery – including sales, spare parts, and repairs.",
     "ctaTitle": "Ready to get started?",
     "ctaDesc": "Explore our equipment range or contact us for personal advice.",
     "ctaProducts": "Discover Products",
@@ -978,9 +978,9 @@
   "salesTeaser": {
     "badge": "Authorized Dealer & Service Center",
     "title": "Construction Equipment & Trailers Also Available for Purchase",
-    "subtitle": "Whether brand-new machines from Zoomlion, BAUMAX and Temared or well-maintained used machinery – we offer personal advice and deliver across NRW.",
+    "subtitle": "Whether brand-new machines from LiuGong, BAUMAX and Temared or well-maintained used machinery – we offer personal advice and deliver across NRW.",
     "newMachines": "New Machines",
-    "newMachinesDesc": "Zoomlion, BAUMAX & Temared – directly from an authorized dealer",
+    "newMachinesDesc": "LiuGong, BAUMAX & Temared – directly from the dealer",
     "newMachinesCta": "Discover New Machines",
     "usedMachines": "Used Machines",
     "usedMachinesDesc": "Well-maintained used machinery – inspected, immediately available",
@@ -1927,7 +1927,6 @@
     "grills_sub": "Swivel grill",
     "schneidgeraete": "Slicers",
     "schneidgeraete_sub": "Currywurst slicer",
-
     "kuechengeraet": "Kitchen appliances",
     "kuechengeraet_sub": "Ice maker, dishwasher, warmer",
     "zubehoer_geschirr": "Accessories",
@@ -2186,10 +2185,7 @@
       "item2": "Electric",
       "item2sub": "Emission-free & quiet",
       "item3": "Training Included",
-      "item3sub": "Safe operation",
-      "highlightTitle": "Zoomlion Authorised Dealer",
-      "highlightText": "As an official Zoomlion authorised dealer, we offer first-class aerial platforms with full service.",
-      "highlightLink": "Visit sales site zoomlion-nrw.de"
+      "item3sub": "Safe operation"
     },
     "verdichtung": {
       "desc": "Professional soil compaction with rammers and plate compactors for paving, trenches and foundation preparation.",
@@ -2359,11 +2355,11 @@
   "verkauf": {
     "seo": {
       "title": "Buy Construction Equipment & Trailers in NRW | SLT Rental",
-      "description": "Buy construction equipment & trailers from an authorized dealer in NRW ✓ Zoomlion excavators & loaders ✓ BAUMAX compactors ✓ Temared trailers ✓ Service in Bonn & Krefeld"
+      "description": "Buy construction equipment & trailers from a dealer in NRW ✓ LiuGong excavators & wheel loaders ✓ BAUMAX compactors ✓ Temared trailers ✓ Service in Bonn & Krefeld"
     },
     "hero": {
       "title": "Buy Construction Equipment & Trailers in NRW – SLT Rental",
-      "subtitle": "Authorized dealer and service center for Zoomlion, BAUMAX construction equipment and Temared in North Rhine-Westphalia. Buy, get expert advice, pick up directly or have it delivered – all from one source.",
+      "subtitle": "Dealer and service center for LiuGong, BAUMAX construction equipment and Temared in North Rhine-Westphalia. Buy, get expert advice, test in our rental fleet or have it delivered – all from one source.",
       "ctaInquiry": "Submit Purchase Inquiry",
       "ctaBrands": "Discover Our Brands"
     },
@@ -2396,16 +2392,6 @@
       }
     },
     "brands": {
-      "zoomlion": {
-        "tagline": "Mini Excavators · Wheel Loaders · Telehandlers · Aerial Work Platforms",
-        "h2": "Zoomlion – Official Dealer & Service Center in NRW",
-        "intro": "Zoomlion Heavy Industry Science & Technology Co., Ltd. is one of the world's leading manufacturers of construction machinery and aerial work platforms with over 715 models in 15 product categories. SLT Rental is an authorized Zoomlion dealer and certified service center for North Rhine-Westphalia.",
-        "detail": "We offer the Zoomlion product line for earthmoving and aerial work platforms – from compact electric mini excavators for tight urban construction sites to powerful wheel loaders and telehandlers for construction, industry and logistics.",
-        "h3": "Zoomlion Product Categories at SLT Rental",
-        "websiteLabel": "Visit Zoomlion NRW Website",
-        "ctaText": "Zoomlion Purchase Inquiry",
-        "ctaDesc": "Would you like personal advice or a quote for a Zoomlion product?"
-      },
       "baumax": {
         "tagline": "Compactors · Dumpers · Rammers · Stone Saws · Concrete Vibrators",
         "h2": "BAUMAX Construction Equipment – Dealer & Service Center in NRW",
@@ -2434,16 +2420,19 @@
         "ctaDesc": "Need an earth rocket for trenchless cable or pipe installation? We advise you on the right size."
       },
       "inquiryBtn": "Submit Purchase Inquiry",
-      "submitInquiry": "Submit Inquiry Now"
+      "submitInquiry": "Submit Inquiry Now",
+      "liugong": {
+        "tagline": "Excavators & wheel loaders for earthmoving",
+        "h2": "LiuGong – Dealer for Excavators & Wheel Loaders in NRW",
+        "intro": "LiuGong is an international manufacturer of construction machinery. SLT Rental is now a LiuGong dealer for North Rhine-Westphalia – with personal advice, service and spare parts at our locations.",
+        "detail": "Our focus is earthmoving: LiuGong excavators and wheel loaders. LiuGong mini excavators are already part of our rental fleet – so you can test the machine on the job before buying.",
+        "h3": "LiuGong Product Categories at SLT Rental",
+        "websiteLabel": "Visit LiuGong Website",
+        "ctaText": "LiuGong Purchase Inquiry",
+        "ctaDesc": "Would you like personal advice or a quote for a LiuGong machine?"
+      }
     },
     "products": {
-      "zoomlion": [
-        "Mini Excavators & Excavators: 2 t to 50 t, for earthmoving, demolition and civil engineering",
-        "Wheel Loaders: Compact wheel loaders 1.5 t to 5 t for construction, recycling and agriculture",
-        "Telehandlers: Reach up to 18 m, for construction, industry and event logistics",
-        "Scissor Lifts (Zoomlion Access): Electric & diesel, 8–32 m working height",
-        "Articulating Boom Lifts: Up to 28 m working height, for outdoor and indoor use"
-      ],
       "baumax": [
         "Forward Plate Compactors (VP Series): 70–170 kg, for paving & pathways",
         "Reversible Plate Compactors (HVP/RVP Series): Hydraulic & mechanical, for professional compaction",
@@ -2474,14 +2463,19 @@
         "Hercu Earth Rocket HP65 KRT – Turbo, Ø 65 mm, 920 mm, 15.5 kg – compact with movable stepped head",
         "Additional sizes on request (Ø 45–145 mm)",
         "Accessories: air hoses, bio earth rocket oil, mist lubricator 1.3 L"
+      ],
+      "liugong": [
+        "Mini & compact excavators: for landscaping, civil engineering and urban sites",
+        "Excavators: for earthmoving, demolition and civil engineering",
+        "Wheel loaders: for construction, recycling and agriculture"
       ]
     },
     "faq": {
       "title": "Frequently Asked Questions About Purchasing",
       "items": [
         {
-          "q": "Where can I find a Zoomlion dealer in NRW?",
-          "a": "SLT Rental in Bonn and Krefeld is an authorized Zoomlion dealer and service center for North Rhine-Westphalia. We carry excavators, wheel loaders, telehandlers and aerial work platforms from the Zoomlion line and offer personal consultation, demonstrations and factory service."
+          "q": "Where can I find a LiuGong dealer in NRW?",
+          "a": "SLT Rental, with locations in Krefeld, Bonn and Mülheim an der Ruhr, is a LiuGong dealer for North Rhine-Westphalia. We advise on LiuGong excavators and wheel loaders, prepare quotes and provide service and spare parts. You can test LiuGong mini excavators in our rental fleet."
         },
         {
           "q": "Where can I buy BAUMAX construction equipment?",
@@ -2493,7 +2487,7 @@
         },
         {
           "q": "Does SLT Rental also offer service and repairs for purchased machines?",
-          "a": "Yes – as a certified service center for Zoomlion, BAUMAX and Temared, we handle maintenance, inspection, repair and spare parts supply for all machines and trailers sold by us."
+          "a": "Yes – as a service center for LiuGong, BAUMAX and Temared, we handle maintenance, inspection, repair and spare parts supply for all machines and trailers sold by us."
         },
         {
           "q": "Can I rent a construction machine first and then buy it?",
@@ -2601,7 +2595,7 @@
   "newMachinesSlider": {
     "badge": "New machines",
     "title": "Brand-new construction machinery direct from the authorised dealer",
-    "subtitle": "Factory-new machines from BAUMAX, Zoomlion, Temared & Co. – with manufacturer warranty and personal advice.",
+    "subtitle": "Factory-new machines from LiuGong, BAUMAX, Temared & Co. – with manufacturer warranty and personal advice.",
     "badgeNew": "New",
     "badgeTop": "Top",
     "viewDetails": "View details",
@@ -2765,5 +2759,14 @@
       "highlightsHeading": "Highlights",
       "dealerHeading": "Authorised sales & service partner"
     }
+  },
+  "liugongPromo": {
+    "badge": "New",
+    "title": "Earthmoving machinery from LiuGong",
+    "text": "SLT Rental is now a LiuGong dealer in NRW. Request the portfolio and secure a special price – or test LiuGong mini excavators in our rental fleet first.",
+    "ctaInquiry": "Request portfolio & special price",
+    "ctaRent": "Test in our rental fleet",
+    "logoAlt": "LiuGong logo",
+    "imageAlt": "LiuGong mini excavator in the SLT Rental fleet"
   }
 }

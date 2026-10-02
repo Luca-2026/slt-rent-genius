@@ -173,7 +173,7 @@ export const SLT_LOCATION_JSONLD = (locationId: string) => {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "@id": "https://www.slt-rental.de/mieten/bonn#localbusiness",
-      name: "SLT Rental Bonn | Anhänger - Arbeitsbühnen - Baumaschinen - Eventausstattung | Zoomlion Händler NRW",
+      name: "SLT Rental Bonn | Anhänger - Arbeitsbühnen - Baumaschinen - Eventausstattung | LiuGong Händler NRW",
       legalName: "SLT Technology Group GmbH & Co. KG",
       url: "https://www.slt-rental.de/mieten/bonn/",
       logo: DEFAULT_OG_IMAGE,

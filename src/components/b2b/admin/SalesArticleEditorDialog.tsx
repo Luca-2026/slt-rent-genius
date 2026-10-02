@@ -426,7 +426,8 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
                   <Label htmlFor="sa-brand">Hersteller / Marke</Label>
-                  <Input id="sa-brand" value={form.brand} disabled={readOnly} onChange={(e) => set("brand", e.target.value)} maxLength={120} />
+                  <Input id="sa-brand" value={form.brand} disabled={readOnly} onChange={(e) => set("brand", e.target.value)} maxLength={120} list="sa-brand-suggestions" />
+                  <datalist id="sa-brand-suggestions">{["LiuGong", "BAUMAX", "Temared", "Hercu"].map((b) => <option key={b} value={b} />)}</datalist>
                 </div>
                 <div>
                   <Label htmlFor="sa-model">Modell</Label>
@@ -434,7 +435,8 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
                 </div>
                 <div>
                   <Label htmlFor="sa-category">Kategorie</Label>
-                  <Input id="sa-category" value={form.category} disabled={readOnly} onChange={(e) => set("category", e.target.value)} maxLength={80} />
+                  <Input id="sa-category" value={form.category} disabled={readOnly} onChange={(e) => set("category", e.target.value)} maxLength={80} list="sa-category-suggestions" />
+                  <datalist id="sa-category-suggestions">{["Bagger", "Minibagger", "Radlader"].map((c) => <option key={c} value={c} />)}</datalist>
                 </div>
                 <div>
                   <Label htmlFor="sa-article">Artikel-/Referenznummer</Label>
