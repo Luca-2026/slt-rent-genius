@@ -38,21 +38,39 @@ serve(async (req) => {
   }
 
   try {
-    const {
-      companyName,
-      contactName,
-      contactEmail,
-      contactPhone,
-      locationId,
-      items, // Array of { productName, quantity, startDate, endDate, startTime, endTime }
-      deliveryRequested,
-      deliveryStreet,
-      deliveryPostalCode,
-      deliveryCity,
-      additionalServices, // Array of { name }
-      notes,
-      isBatch, // true for Sammelanfrage
-    } = await req.json();
+    // Signed-in portal users only.
+    const authHeader = req.headers.get("Authorization") ?? "";
+    const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2.57.4");
+    const userClient = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: authData } = await userClient.auth.getUser();
+    if (!authData?.user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const esc = (v: unknown) => String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    const raw = await req.json();
+    const companyName = esc(raw.companyName);
+    const contactName = esc(raw.contactName);
+    const contactEmailRaw = String(raw.contactEmail ?? "").trim();
+    const contactEmail = esc(contactEmailRaw);
+    const contactPhone = raw.contactPhone ? esc(raw.contactPhone) : "";
+    const locationId = String(raw.locationId ?? "");
+    const items = (Array.isArray(raw.items) ? raw.items : []).slice(0, 100).map((i: any) => ({
+      productName: esc(i?.productName), quantity: Number(i?.quantity) || 1,
+      startDate: i?.startDate ? esc(i.startDate) : "", endDate: i?.endDate ? esc(i.endDate) : "",
+      startTime: i?.startTime ? esc(i.startTime) : "", endTime: i?.endTime ? esc(i.endTime) : "",
+    }));
+    const deliveryRequested = !!raw.deliveryRequested;
+    const deliveryStreet = esc(raw.deliveryStreet);
+    const deliveryPostalCode = esc(raw.deliveryPostalCode);
+    const deliveryCity = esc(raw.deliveryCity);
+    const additionalServices = (Array.isArray(raw.additionalServices) ? raw.additionalServices : []).map((a: any) => ({ name: esc(a?.name) }));
+    const notes = raw.notes ? esc(raw.notes) : "";
+    const isBatch = !!raw.isBatch;
 
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
