@@ -60,7 +60,7 @@ export function SeasonPromoBanner() {
                 <HardHat className="h-4 w-4" />
                 {t("seasonPromo.badge")}
               </div>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-2">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-2 text-primary-foreground">
                 {t("seasonPromo.headline")}
               </h2>
               <p className="text-primary-foreground/90 md:text-lg max-w-2xl">
