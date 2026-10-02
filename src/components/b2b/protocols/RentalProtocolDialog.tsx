@@ -23,13 +23,26 @@ import { CLEANLINESS_HINT, FUEL_LEVELS, isMachineLike, toNumber, type ProtocolDa
 import {
   MAX_PROTOCOL_PHOTOS, formatPhotoTimestamp, photoTakenAt, protocolItemsFromInquiry, remainingPhotoSlots, type ProtocolKind,
 } from "@/lib/rentalProtocol";
-import { compressImageToBase64 } from "@/lib/imageCompress";
+import { prepareProtocolPhoto, protocolPhotoBase64 } from "@/lib/imageCompress";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
+import { useAuth } from "@/hooks/useAuth";
+import { deleteProtocolDraft, readProtocolDraft, writeProtocolDraft } from "@/lib/protocolDraft";
 import type { RentalInquiry } from "@/components/b2b/inquiries/types";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { Camera, CheckCircle2, Clock, Download, Loader2, Upload, X } from "lucide-react";
 
 interface GeneralPhoto { id: string; file: File; preview: string; caption: string }
+type SavedPhoto = Omit<GeneralPhoto, "preview">;
+interface SavedProtocol {
+  idChecked: boolean; idDocType: string; cleanliness: number;
+  readings: Record<number, { hours: string; fuel: string }>;
+  machineIdx: number[]; instructed: boolean; knownDefects: string; notes: string;
+  allReturned: boolean; missingNotes: string; photos: SavedPhoto[];
+  damages: (Omit<ProtocolDamage, "photos"> & { photos: { file: File }[] })[];
+  agbAccepted: boolean; itemsConfirmed: boolean; customerNotPresent: boolean;
+  signerName: string; customerSignature: string | null; staffName: string;
+  staffSignature: string | null; sendEmail: boolean;
+}
 
 interface Props {
   kind: ProtocolKind;
@@ -57,6 +70,7 @@ function SignatureBlock({ title, value, onChange }: { title: string; value: stri
 
 export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCreated }: Props) {
   const { displayName } = useStaffAccess();
+  const { user } = useAuth();
   const isReturn = kind === "return";
   const label = isReturn ? "Rückgabeprotokoll" : "Übergabeprotokoll";
 
@@ -91,13 +105,20 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const fileRef = useRef<HTMLInputElement | null>(null);
   const cameraRef = useRef<HTMLInputElement | null>(null);
   const initFor = useRef<string | null>(null);
+  const [readyFor, setReadyFor] = useState<string | null>(null);
+  const [photoBusy, setPhotoBusy] = useState(false);
+  const completed = useRef(false);
+  const draftKey = user && inquiry ? `protocol:v1:${user.id}:${kind}:${inquiry.id}` : null;
 
-  // Formular je Auftrag neu starten
+  // Formular je Auftrag wiederherstellen. Fotos bleiben als echte Dateien im lokalen IndexedDB.
   useEffect(() => {
-    if (!open || !inquiry) return;
-    const key = `${kind}:${inquiry.id}`;
+    if (!open || !inquiry || !draftKey) return;
+    const key = draftKey;
     if (initFor.current === key) return;
     initFor.current = key;
+    completed.current = false;
+    setReadyFor(null);
+    let cancelled = false;
     setIdChecked(false); setIdDocType(""); setOperatingHours(""); setFuelLevel(""); setCleanliness(0); setReadings({}); setInstructed(false);
     const its = protocolItemsFromInquiry(inquiry as never);
     setMachineIdx(its.map((it, i) => (isMachineLike([it.name]) ? i : -1)).filter((i) => i >= 0));
@@ -109,7 +130,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
         const map: Record<string, { id: string; hours: boolean; tank: boolean }> = {};
         for (const r of data ?? []) map[r.name.trim().toLowerCase()] = { id: r.id, hours: !!r.tracks_operating_hours, tank: !!r.has_fuel_tank };
         setCms(map);
-        setMachineIdx(its.map((it, i) => {
+        setMachineIdx((current) => current.length ? current : its.map((it, i) => {
           const c = map[it.name.trim().toLowerCase()];
           return (c ? c.hours : isMachineLike([it.name])) ? i : -1;
         }).filter((i) => i >= 0));
@@ -127,7 +148,37 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     setSignerName(inquiry.company_name ? inquiry.customer_name ?? "" : inquiry.customer_name ?? "");
     setCustomerSignature(null); setStaffSignature(null); setStaffName(displayName && !displayName.includes("@") ? displayName : "");
     setSendEmail(true); setResult(null); setProgress("");
-  }, [open, inquiry, kind, displayName]);
+    void readProtocolDraft<SavedProtocol>(key).then((draft) => {
+      if (cancelled || !draft || !draft.value) return;
+      const d = draft.value;
+      setIdChecked(d.idChecked); setIdDocType(d.idDocType); setCleanliness(d.cleanliness);
+      setReadings(d.readings); setMachineIdx(d.machineIdx); setInstructed(d.instructed);
+      setKnownDefects(d.knownDefects); setNotes(d.notes); setAllReturned(d.allReturned);
+      setMissingNotes(d.missingNotes);
+      setPhotos(d.photos.map((p) => ({ ...p, preview: URL.createObjectURL(p.file) })));
+      setDamages(d.damages.map((damage) => ({ ...damage, photos: damage.photos.map((p) => ({ file: p.file, preview: URL.createObjectURL(p.file) })) })));
+      setAgbAccepted(d.agbAccepted); setItemsConfirmed(d.itemsConfirmed);
+      setCustomerNotPresent(d.customerNotPresent); setSignerName(d.signerName);
+      setCustomerSignature(d.customerSignature); setStaffName(d.staffName);
+      setStaffSignature(d.staffSignature); setSendEmail(d.sendEmail);
+      toast.info("Protokollentwurf wiederhergestellt.");
+    }).catch(() => toast.error("Gespeicherter Entwurf konnte nicht geladen werden.")).finally(() => {
+      if (!cancelled) setReadyFor(key);
+    });
+    return () => { cancelled = true; initFor.current = null; setReadyFor(null); };
+  }, [open, inquiry?.id, kind, draftKey, displayName]);
+
+  useEffect(() => {
+    if (!draftKey || readyFor !== draftKey || completed.current || result) return;
+    const value: SavedProtocol = {
+      idChecked, idDocType, cleanliness, readings, machineIdx, instructed, knownDefects, notes,
+      allReturned, missingNotes, photos: photos.map(({ id, file, caption }) => ({ id, file, caption })),
+      damages: damages.map(({ photos: damagePhotos, ...damage }) => ({ ...damage, photos: damagePhotos.map(({ file }) => ({ file })) })),
+      agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature,
+      staffName, staffSignature, sendEmail,
+    };
+    void writeProtocolDraft(draftKey, value).catch(() => toast.error("Entwurf konnte auf diesem Gerät nicht gespeichert werden. Bitte Speicherplatz prüfen."));
+  }, [draftKey, readyFor, result, idChecked, idDocType, cleanliness, readings, machineIdx, instructed, knownDefects, notes, allReturned, missingNotes, photos, damages, agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature, staffName, staffSignature, sendEmail]);
 
   useEffect(() => {
     if (!open) return;
@@ -150,7 +201,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   if (!inquiry) return null;
   const customerLabel = [inquiry.company_name, inquiry.customer_name].filter(Boolean).join(" · ") || inquiry.customer_email;
 
-  const addPhotos = (files: FileList | null) => {
+  const addPhotos = async (files: FileList | null) => {
     let list = Array.from(files ?? []).filter((f) => f.type.startsWith("image/") || /\.(jpe?g|png|heic|webp)$/i.test(f.name));
     if (!list.length) return;
     if (list.length > slotsLeft) {
@@ -159,7 +210,15 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
         : `Maximal ${MAX_PROTOCOL_PHOTOS} Fotos je Protokoll – nur ${slotsLeft} weitere übernommen.`);
       list = list.slice(0, slotsLeft);
     }
-    setPhotos((p) => [...p, ...list.map((file) => ({ id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, file, preview: URL.createObjectURL(file), caption: "" }))]);
+    setPhotoBusy(true);
+    try {
+      for (const original of list) {
+        const file = await prepareProtocolPhoto(original);
+        setPhotos((p) => [...p, { id: crypto.randomUUID(), file, preview: URL.createObjectURL(file), caption: "" }]);
+      }
+    } catch (error) {
+      toast.error((error as Error).message || "Foto konnte nicht verarbeitet werden. Bitte JPEG auswählen.");
+    } finally { setPhotoBusy(false); }
   };
 
   const readingsDone = machineIdx.every((i) => !!readings[i]?.hours?.trim() && (!needsFuel(i) || !!readings[i]?.fuel));
@@ -180,17 +239,18 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const allValid = missing.length === 0;
 
   const submit = async () => {
+    if (photoBusy || readyFor !== draftKey) return;
     setSaving(true);
     try {
       setProgress("Fotos werden vorbereitet …");
       const photoPayload = [];
       for (const p of photos) {
-        photoPayload.push({ data: await compressImageToBase64(p.file), taken_at: photoTakenAt(p.file.lastModified), caption: p.caption.trim() || null });
+        photoPayload.push({ data: await protocolPhotoBase64(p.file), taken_at: photoTakenAt(p.file.lastModified), caption: p.caption.trim() || null });
       }
       const damagePayload = [];
       for (const d of damages) {
         const dp = [];
-        for (const ph of d.photos) dp.push({ data: await compressImageToBase64(ph.file), taken_at: photoTakenAt(ph.file.lastModified) });
+        for (const ph of d.photos) dp.push({ data: await protocolPhotoBase64(ph.file), taken_at: photoTakenAt(ph.file.lastModified) });
         damagePayload.push({
           item_name: d.itemName || null, category: d.category, description: d.description.trim() || null,
           amount: d.amount ? toNumber(d.amount) : null, needs_repair: !!d.needsRepair, reduces_stock: !!d.reducesStock,
@@ -229,6 +289,8 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       }
       if (data?.error) throw new Error(data.error);
       setResult({ number: data.number, fileUrl: data.file_url ?? null, emailSent: !!data.email_sent, recipient: data.recipient ?? null });
+      completed.current = true;
+      if (draftKey) await deleteProtocolDraft(draftKey).catch(() => toast.warning("Lokaler Entwurf konnte nicht entfernt werden."));
       onCreated();
     } catch (e) {
       toast.error((e as Error).message || `${label} konnte nicht erstellt werden.`);
@@ -370,13 +432,13 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
           <div className="flex items-center justify-between">
             <Badge variant={slotsLeft === 0 ? "destructive" : "secondary"}>{usedPhotos} / {MAX_PROTOCOL_PHOTOS} Fotos</Badge>
           </div>
-          <input ref={cameraRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => { addPhotos(e.target.files); e.target.value = ""; }} />
-          <input ref={fileRef} type="file" accept="image/*" multiple className="hidden" data-testid="protocol-photo-input" onChange={(e) => { addPhotos(e.target.files); e.target.value = ""; }} />
+          <input ref={cameraRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => { void addPhotos(e.target.files); e.target.value = ""; }} />
+          <input ref={fileRef} type="file" accept="image/*" multiple className="hidden" data-testid="protocol-photo-input" onChange={(e) => { void addPhotos(e.target.files); e.target.value = ""; }} />
           <div className="grid grid-cols-2 gap-2">
-            <Button type="button" variant="outline" className="h-12" disabled={slotsLeft === 0} onClick={() => cameraRef.current?.click()}>
+            <Button type="button" variant="outline" className="h-12" disabled={slotsLeft === 0 || photoBusy} onClick={() => cameraRef.current?.click()}>
               <Camera className="h-4 w-4 mr-2" /> Foto aufnehmen
             </Button>
-            <Button type="button" variant="outline" className="h-12" disabled={slotsLeft === 0} onClick={() => fileRef.current?.click()}>
+            <Button type="button" variant="outline" className="h-12" disabled={slotsLeft === 0 || photoBusy} onClick={() => fileRef.current?.click()}>
               <Upload className="h-4 w-4 mr-2" /> Aus Galerie
             </Button>
           </div>
@@ -385,10 +447,10 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
               <div key={p.id} className="rounded-lg border overflow-hidden bg-card">
                 <div className="relative">
                   <img src={p.preview} alt={`Foto ${i + 1}`} className="w-full aspect-[4/3] object-cover" />
-                  <button type="button" aria-label="Foto entfernen" className="absolute top-1 right-1 rounded-full bg-destructive text-destructive-foreground p-1"
+                  <Button type="button" size="icon" variant="destructive" aria-label="Foto entfernen" className="absolute top-1 right-1 h-7 w-7"
                     onClick={() => { URL.revokeObjectURL(p.preview); setPhotos((l) => l.filter((x) => x.id !== p.id)); }}>
                     <X className="h-3.5 w-3.5" />
-                  </button>
+                  </Button>
                 </div>
                 <div className="p-1.5 space-y-1">
                   <p className="text-[10px] text-muted-foreground">{formatPhotoTimestamp(photoTakenAt(p.file.lastModified))}</p>
@@ -498,7 +560,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
             steps={steps}
             missingHint={missing.length ? missing.join(", ") : null}
             footer={
-              <Button className="w-full h-12" disabled={!allValid || saving} onClick={submit}>
+              <Button className="w-full h-12" disabled={!allValid || saving || photoBusy || readyFor !== draftKey} onClick={submit}>
                 {saving ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> {progress || "Wird erstellt …"}</> : `${label} abschließen & PDF erstellen`}
               </Button>
             }

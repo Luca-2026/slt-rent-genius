@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { deleteProtocolDraft, readProtocolDraft, writeProtocolDraft } from "@/lib/protocolDraft";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -58,12 +60,9 @@ interface ReturnProtocolDraft {
   idChecked: boolean;
   idDocType: string;
   itemConditions: ItemCondition[];
+  damages: (Omit<ProtocolDamage, "photos"> & { photos: { file: File }[] })[];
+  extraCharges: ExtraCharge[];
 }
-
-const returnProtocolDraftStore: { key: string | null; data: ReturnProtocolDraft | null } = {
-  key: null,
-  data: null,
-};
 
 interface Reservation {
   id: string;
@@ -100,6 +99,7 @@ export function ReturnProtocolDialog({
   onCreated,
 }: Props) {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [saving, setSaving] = useState(false);
   const [customerNotPresent, setCustomerNotPresent] = useState(false);
   const [customerSignature, setCustomerSignature] = useState<string | null>(null);
@@ -128,6 +128,9 @@ export function ReturnProtocolDialog({
   const [resending, setResending] = useState(false);
 
   const lastInitKey = useRef<string | null>(null);
+  const [readyFor, setReadyFor] = useState<string | null>(null);
+  const completed = useRef(false);
+  const draftKey = user && reservation ? `protocol:v1:${user.id}:legacy-return:${reservation.id}` : null;
 
   const baseItems = useCallback((): ItemCondition[] => {
     if (!reservation) return [];
@@ -163,18 +166,18 @@ export function ReturnProtocolDialog({
     setItemConditions(baseItems());
   }, [baseItems]);
 
-  const saveDraft = useCallback(() => {
-    if (!open || !reservation) return;
-    returnProtocolDraftStore.key = reservation.id;
-    returnProtocolDraftStore.data = {
+  useEffect(() => {
+    if (!open || !draftKey || readyFor !== draftKey || result || completed.current) return;
+    const value: ReturnProtocolDraft = {
       customerSignature, staffSignature, staffName, notes, knownDefectsFromDelivery,
       customerNotPresent, overallCondition, conditionNotes, cleaningRequired,
       allItemsReturned, missingItemsNotes, meterReadingStart, meterReadingEnd,
       fuelLevelStart, fuelLevelEnd, cleanlinessRating, idChecked, idDocType, itemConditions,
+      damages: damages.map(({ photos, ...damage }) => ({ ...damage, photos: photos.map(({ file }) => ({ file })) })),
+      extraCharges,
     };
-  }, [open, reservation, customerSignature, staffSignature, staffName, notes, knownDefectsFromDelivery, customerNotPresent, overallCondition, conditionNotes, cleaningRequired, allItemsReturned, missingItemsNotes, meterReadingStart, meterReadingEnd, fuelLevelStart, fuelLevelEnd, cleanlinessRating, idChecked, idDocType, itemConditions]);
-
-  useEffect(() => { saveDraft(); }, [saveDraft]);
+    void writeProtocolDraft(draftKey, value).catch(() => toast({ title: "Entwurf nicht gespeichert", description: "Bitte Gerätespeicher prüfen.", variant: "destructive" }));
+  }, [open, draftKey, readyFor, result, customerSignature, staffSignature, staffName, notes, knownDefectsFromDelivery, customerNotPresent, overallCondition, conditionNotes, cleaningRequired, allItemsReturned, missingItemsNotes, meterReadingStart, meterReadingEnd, fuelLevelStart, fuelLevelEnd, cleanlinessRating, idChecked, idDocType, itemConditions, damages, extraCharges, toast]);
 
   useEffect(() => {
     if (!open) {
@@ -185,13 +188,17 @@ export function ReturnProtocolDialog({
   }, [open]);
 
   useEffect(() => {
-    if (!open || !reservation) return;
-    const contextKey = reservation.id;
+    if (!open || !reservation || !draftKey) return;
+    const contextKey = draftKey;
     if (lastInitKey.current === contextKey) return;
     lastInitKey.current = contextKey;
-
-    if (returnProtocolDraftStore.key === contextKey && returnProtocolDraftStore.data) {
-      const d = returnProtocolDraftStore.data;
+    completed.current = false;
+    setReadyFor(null);
+    resetForm();
+    let cancelled = false;
+    void readProtocolDraft<ReturnProtocolDraft>(contextKey).then((draft) => {
+      if (cancelled || !draft?.value) return;
+      const d = draft.value;
       setCustomerSignature(d.customerSignature);
       setStaffSignature(d.staffSignature);
       setStaffName(d.staffName);
@@ -211,11 +218,13 @@ export function ReturnProtocolDialog({
       setIdChecked(d.idChecked);
       setIdDocType(d.idDocType);
       setItemConditions(d.itemConditions?.length ? d.itemConditions : baseItems());
-      return;
-    }
-
-    resetForm();
-  }, [open, reservation, resetForm, baseItems]);
+      setDamages((d.damages || []).map((damage) => ({ ...damage, photos: damage.photos.map(({ file }) => ({ file, preview: URL.createObjectURL(file) })) })));
+      setExtraCharges(d.extraCharges || []);
+      toast({ title: "Protokollentwurf wiederhergestellt" });
+    }).catch(() => toast({ title: "Entwurf konnte nicht geladen werden", variant: "destructive" }))
+      .finally(() => { if (!cancelled) setReadyFor(contextKey); });
+    return () => { cancelled = true; lastInitKey.current = null; setReadyFor(null); };
+  }, [open, reservation?.id, draftKey, resetForm, baseItems]);
 
   useEffect(() => {
     if (!open) return;
@@ -232,7 +241,7 @@ export function ReturnProtocolDialog({
   };
 
   const handleGenerate = async () => {
-    if (!reservation || !profile) return;
+    if (!reservation || !profile || readyFor !== draftKey) return;
     setSaving(true);
     try {
       const damagePayload = await serializeDamages(profile.id, damages);
@@ -281,8 +290,8 @@ export function ReturnProtocolDialog({
       });
       setCreatedId(data.return_protocol?.id || null);
 
-      returnProtocolDraftStore.key = null;
-      returnProtocolDraftStore.data = null;
+       completed.current = true;
+       if (draftKey) await deleteProtocolDraft(draftKey).catch(() => toast({ title: "Lokaler Entwurf konnte nicht entfernt werden" }));
       onCreated();
     } catch (error: any) {
       toast({
@@ -576,13 +585,13 @@ export function ReturnProtocolDialog({
             <div className="space-y-2">
               <Label className="text-sm font-semibold">Unterschrift Mieter</Label>
               <p className="text-xs text-muted-foreground">{customerName} – {profile.company_name}</p>
-              <SignaturePad onSignatureChange={setCustomerSignature} height={180} />
+              {customerSignature ? <div className="space-y-2"><img src={customerSignature} alt="Unterschrift Mieter" className="h-20 bg-white rounded border" /><Button type="button" variant="outline" onClick={() => setCustomerSignature(null)}>Neu unterschreiben</Button></div> : <SignaturePad onSignatureChange={setCustomerSignature} height={180} />}
             </div>
           )}
           <div className="space-y-2">
             <Label className="text-xs">Name des Mitarbeiters *</Label>
             <Input value={staffName} onChange={(e) => setStaffName(e.target.value)} placeholder="Vor- und Nachname" className="text-sm" />
-            <SignaturePad onSignatureChange={setStaffSignature} height={180} label="Unterschrift SLT-Mitarbeiter" />
+            {staffSignature ? <div className="space-y-2"><img src={staffSignature} alt="Unterschrift Mitarbeiter" className="h-20 bg-white rounded border" /><Button type="button" variant="outline" onClick={() => setStaffSignature(null)}>Neu unterschreiben</Button></div> : <SignaturePad onSignatureChange={setStaffSignature} height={180} label="Unterschrift SLT-Mitarbeiter" />}
           </div>
         </div>
       ),
@@ -643,7 +652,7 @@ export function ReturnProtocolDialog({
                 </Button>
                 <Button
                   onClick={handleGenerate}
-                  disabled={saving || !allValid}
+                  disabled={saving || !allValid || readyFor !== draftKey}
                   className="bg-accent text-accent-foreground hover:bg-cta-orange-hover w-full sm:w-auto"
                 >
                   {saving ? (

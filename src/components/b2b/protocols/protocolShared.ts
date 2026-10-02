@@ -165,11 +165,10 @@ export async function uploadDamagePhotos(
   const paths: string[] = [];
   for (const photo of photos) {
     const ext = photo.file.name.split(".").pop() || "jpg";
-    const path = `protocol-damages/${profileId}/${Date.now()}-${Math.random().toString(36).slice(2, 6)}.${ext}`;
-    const { error } = await supabase.storage.from("b2b-documents").upload(path, photo.file, { upsert: true });
+    const path = `protocol-damages/${profileId}/${crypto.randomUUID()}.${ext}`;
+    const { error } = await supabase.storage.from("b2b-documents").upload(path, photo.file, { upsert: false });
     if (error) {
-      console.error("Foto-Upload fehlgeschlagen:", error);
-      continue;
+      throw new Error(`Schadensfoto konnte nicht hochgeladen werden: ${error.message}`);
     }
     paths.push(path);
   }

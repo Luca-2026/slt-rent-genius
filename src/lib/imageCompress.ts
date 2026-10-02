@@ -28,3 +28,24 @@ export async function compressImageToBase64(file: File, maxSide = 1600, quality 
     URL.revokeObjectURL(url);
   }
 }
+
+/** Limit individual protocol photos so 15 images fit into a single PDF request. */
+export async function prepareProtocolPhoto(original: File): Promise<File> {
+  let encoded = "";
+  for (const side of [1100, 900, 700]) {
+    encoded = await compressImageToBase64(original, side, 0.65);
+    if (encoded.length <= 480_000) break; // <= 360 KB binary, <= 7.2 MB for 15 photos
+  }
+  if (encoded.length > 480_000) throw new Error("Foto ist zu groß. Bitte ein kleineres JPEG-Bild auswählen.");
+  const bytes = Uint8Array.from(atob(encoded), (c) => c.charCodeAt(0));
+  return new File([bytes], `${original.name.replace(/\.[^.]+$/, "")}.jpg`, { type: "image/jpeg", lastModified: original.lastModified });
+}
+
+export async function protocolPhotoBase64(file: File): Promise<string> {
+  return (await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(",")[1] || "");
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  }));
+}
