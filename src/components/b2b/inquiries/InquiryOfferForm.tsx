@@ -1077,7 +1077,11 @@ export function InquiryOfferForm({
                   disabled={disabled}
                 />
                 {item.price_source === "cms" ? (
-                  <p className="mt-1 text-[11px] text-muted-foreground">Preis aus CMS – anpassbar</p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    {inquiryType === "sales"
+                      ? "Preis aus CMS (netto) – anpassbar"
+                      : `Aus CMS: ${formatEuro(Math.round(item.unit_price * 119) / 100)} brutto → netto – anpassbar`}
+                  </p>
                 ) : null}
 
               </div>
