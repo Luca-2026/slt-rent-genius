@@ -209,6 +209,9 @@ Deno.serve(async (req: Request) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+    if (measurements.some((m) => m.item_name !== (reservation.product_name || reservation.product_id))) {
+      return new Response(JSON.stringify({ error: "Messwert gehört nicht zu dieser Reservierung." }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
 
     // Fetch profile
     const { data: profile, error: profileError } = await serviceClient

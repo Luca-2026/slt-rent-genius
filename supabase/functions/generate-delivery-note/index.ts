@@ -217,6 +217,9 @@ Deno.serve(async (req: Request) => {
     if (itemsError) {
       console.error("Error fetching offer items:", itemsError);
     }
+    if (measurements.some((m) => !(offerItems ?? []).some((item: { product_name: string }) => item.product_name === m.item_name))) {
+      return new Response(JSON.stringify({ error: "Messwert gehört nicht zu diesem Angebot." }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
 
     const { data: profile, error: profileError } = await serviceClient
       .from("b2b_profiles")
