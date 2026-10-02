@@ -81,7 +81,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const [readings, setReadings] = useState<Record<number, Measurement>>({});
   const [machineIdx, setMachineIdx] = useState<number[]>([]);
   const [cms, setCms] = useState<Record<string, { id: string; hours: boolean; tank: boolean }>>({});
-  const [prevReadings, setPrevReadings] = useState<Record<string, { hours: number | null; fuel: string | null }>>({});
+  const [prevReadings, setPrevReadings] = useState<Record<string, { hours: number | null; fuel: string | null; mileage: number | null }>>({});
   const [instructed, setInstructed] = useState(false);
   const [knownDefects, setKnownDefects] = useState("");
   const [notes, setNotes] = useState("");
@@ -136,9 +136,9 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       });
     }
     if (kind === "return") {
-      supabase.from("b2b_operating_hours_readings").select("product_name,operating_hours,fuel_level").eq("rental_inquiry_id", inquiry.id).eq("kind", "delivery").then(({ data }) => {
+      supabase.from("b2b_operating_hours_readings").select("product_name,operating_hours,fuel_level,mileage_km").eq("rental_inquiry_id", inquiry.id).eq("kind", "delivery").then(({ data }) => {
         const m: Record<string, { hours: number | null; fuel: string | null }> = {};
-        for (const r of data ?? []) m[r.product_name.trim().toLowerCase()] = { hours: r.operating_hours, fuel: r.fuel_level };
+        for (const r of data ?? []) m[r.product_name.trim().toLowerCase()] = { hours: r.operating_hours, fuel: r.fuel_level, mileage: r.mileage_km };
         setPrevReadings(m);
       });
     }
@@ -362,7 +362,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
               const prev = prevReadings[it.name.trim().toLowerCase()];
               return <div key={i} className="space-y-1">
                 <MeasurementFields name={it.name} value={{ ...emptyMeasurement(), ...readings[i] }} onChange={(m) => setReading(i, m)} />
-                {isReturn && prev && <p className="text-xs text-muted-foreground pl-2">Bei Übergabe: {prev.hours != null ? `${prev.hours} h` : "keine Betriebsstunden erfasst"}{prev.fuel ? ` · Tank ${FUEL_LEVELS.find((f) => f.value === prev.fuel)?.label ?? prev.fuel}` : ""}</p>}
+                {isReturn && prev && (prev.mileage != null || prev.hours != null || !!prev.fuel) && <p className="text-xs text-muted-foreground pl-2">Bei Übergabe: {[prev.mileage != null ? `${prev.mileage} km` : "", prev.hours != null ? `${prev.hours} h` : "", prev.fuel ? `Tank ${FUEL_LEVELS.find((f) => f.value === prev.fuel)?.label ?? prev.fuel}` : ""].filter(Boolean).join(" · ")}</p>}
               </div>;
             })}
           </div>
