@@ -961,7 +961,7 @@ function generateReturnProtocolHtml(data: {
           <td style="padding:6px 0;color:#595959;">Tankfüllstand (Rückgabe):</td>
           <td style="padding:6px 0;font-weight:500;">${data.fuelLevelEnd || "–"}</td>
         </tr>` : ""}
-        ${data.measurements.map((m) => measurementRows(m).map((row) => `<tr><td style="padding:4px 0;color:#595959;">${escapeHtml(m.item_name)} · ${row.label}:</td><td style="padding:4px 0;font-weight:600;">${escapeHtml(row.value)}</td></tr>`).join("")).join("")}
+        ${data.measurements.map((m) => `<tr><td colspan="2" style="padding:8px 0 2px;font-weight:600;border-top:1px solid #b3d4e8;">${escapeHtml(m.item_name)}</td></tr>${measurementRows(m).map((row) => `<tr><td style="padding:4px 0;color:#595959;">${row.label}:</td><td style="padding:4px 0;font-weight:600;">${escapeHtml(row.value)}</td></tr>`).join("")}`).join("")}
         ${data.cleanlinessRating ? `
         <tr>
           <td style="padding:6px 0;color:#595959;">Sauberkeit (1-5):</td>
