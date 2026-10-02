@@ -7,6 +7,7 @@
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { isCronCall } from "../_shared/cronAuth.ts";
 import { LOCATION_CONTACTS } from "../_shared/inquiry-offer-math.ts";
 import { CALL_MODEL, readSse } from "../_shared/phoneCallAnalysis.ts";
 import { PRIORITY_LABEL, priorityRank, type CallPriority } from "../_shared/callPriority.ts";
@@ -85,6 +86,7 @@ Deno.serve(async (req) => {
       if (!isStaff) return json({ error: "Forbidden" }, 403);
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(testTo)) return json({ error: "Ungültige Test-Adresse" }, 400);
     } else if (!testTo) {
+      if (!(await isCronCall(req, svc))) return json({ error: "Unauthorized" }, 401);
       // Geplanter Lauf: nur um 20 Uhr Berliner Zeit (Cron läuft 18 und 19 UTC wegen Sommer-/Winterzeit).
       const hour = Number(new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Berlin", hour: "2-digit", hourCycle: "h23" }).formatToParts(now).find((x) => x.type === "hour")?.value);
       if (hour !== 20) return json({ skipped: `Berlin ${hour} Uhr` });
