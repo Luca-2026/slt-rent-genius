@@ -295,9 +295,9 @@ Deno.serve(async (req: Request) => {
     if (photo_urls && photo_urls.length > 0) {
       for (const photoPath of photo_urls) {
         // If it's already a full URL (legacy), keep it
-        if (photoPath.startsWith("http")) {
-          resolvedPhotoUrls.push(photoPath);
-        } else {
+        if (typeof photoPath === "string" && photoPath.startsWith("http")) {
+          if (isAllowedPhotoUrl(photoPath)) resolvedPhotoUrls.push(photoPath);
+        } else if (isAllowedPhotoPath(photoPath, offer.b2b_profile_id)) {
           // Generate signed URL from storage path using service client
           const { data: signedData } = await serviceClient.storage
             .from("b2b-documents")
@@ -326,7 +326,8 @@ Deno.serve(async (req: Request) => {
     for (const damage of damages) {
       const signed: string[] = [];
       for (const path of damage.photo_urls || []) {
-        if (path.startsWith("http")) { signed.push(path); continue; }
+        if (typeof path === "string" && path.startsWith("http")) { if (isAllowedPhotoUrl(path)) signed.push(path); continue; }
+        if (!isAllowedPhotoPath(path, offer.b2b_profile_id)) continue;
         const { data: signedData } = await serviceClient.storage
           .from("b2b-documents")
           .createSignedUrl(path, 60 * 60 * 24 * 365);
