@@ -2624,8 +2624,8 @@
   },
   "sales": {
     "new": {
-      "pageTitle": "Buy new construction machinery and accessories",
-      "pageSubtitle": "New construction machinery, trailers, earth rockets and accessories directly from your authorised dealer in NRW – with manufacturer warranty, service, advice and delivery.",
+      "pageTitle": "Buy mini excavators, excavators & wheel loaders – LiuGong dealer in NRW",
+      "pageSubtitle": "New construction machines from LiuGong and BAUMAX, Temared trailers and Hercu soil displacement hammers directly from the dealer – with manufacturer warranty, personal advice and delivery.",
       "ctaShowAll": "View all new machines",
       "ctaToUsed": "Browse used machines",
       "ctaSubmitInquiry": "Submit purchase inquiry",
@@ -2661,7 +2661,13 @@
       "rrp": "RRP",
       "brandNewMachinesHeading": "Available new machines",
       "details": "Details",
-      "grossIncVat": "gross incl. VAT"
+      "grossIncVat": "gross incl. VAT",
+      "usps": [
+        "Test first in our rental fleet",
+        "Service & advice in Krefeld and Bonn",
+        "Delivery across NRW",
+        "Manufacturer warranty on new machines"
+      ]
     },
     "used": {
       "pageTitle": "Inspected used machinery",

@@ -607,9 +607,17 @@ export default function Neumaschinen() {
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6 leading-tight">
               {t("sales.new.pageTitle")}
             </h1>
-            <p className="text-lg text-primary-foreground/80 max-w-3xl mb-8">
+            <p className="text-lg text-primary-foreground/80 max-w-3xl mb-6">
               {t("sales.new.pageSubtitle")}
             </p>
+            <ul className="mb-8 grid max-w-3xl grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2">
+              {(t("sales.new.usps", { returnObjects: true }) as string[]).map((usp) => (
+                <li key={usp} className="flex items-start gap-2 text-primary-foreground">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
+                  <span className="font-medium">{usp}</span>
+                </li>
+              ))}
+            </ul>
             <div className="flex flex-wrap gap-4 mb-8">
               <a href="#angebote">
                 <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
