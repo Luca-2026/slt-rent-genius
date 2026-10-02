@@ -98,6 +98,16 @@ lines.push(
   "RewriteRule ^mieten/bonn/verdichtung/bonn-grabenwalze-bmp8500/?$ /mieten/bonn/verdichtung/grabenwalze-bmp8500/ [L,R=301]",
   "",
 
+  "# === 2b-2. Umzug Gastro Equipment / Modellwechsel Eiswürfelmaschine / Tippfehler-Routen ===",
+  "RewriteRule ^mieten/(bonn|krefeld|muelheim)/moebel-zelte/getraenkekuehlschrank-236l/?$ /mieten/$1/gastro-equipment/getraenkekuehlschrank-236l/ [L,R=301]",
+  "RewriteRule ^mieten/(bonn|krefeld|muelheim)/geschirr-glaeser-besteck/slt-eiswuerfelbereiter/?$ /mieten/$1/gastro-equipment/slt-eiswuerfelbereiter/ [L,R=301]",
+  "RewriteRule ^mieten/(bonn|krefeld|muelheim)/(geschirr-glaeser-besteck|gastro-equipment)/slt-eiswuerfelmaschine-profi-35kg/?$ /mieten/$1/gastro-equipment/slt-eiswuerfelmaschine-profi-45kg/ [L,R=301]",
+  "RewriteRule ^mieten/bonn/(geschirr-glaeser-besteck|gastro-equipment)/bonn-getraenkekuehlschrank-236l/?$ /mieten/bonn/gastro-equipment/getraenkekuehlschrank-236l/ [L,R=301]",
+  "RewriteRule ^mieten/(bonn|krefeld|muelheim)/anhanger/?$ /mieten/$1/anhaenger/ [L,R=301]",
+  "RewriteRule ^mieten/(bonn|krefeld|muelheim)/anhanger/(.+)$ /mieten/$1/anhaenger/$2 [L,R=301]",
+  "RewriteRule ^mieten/(bonn|krefeld|muelheim)/alle/?$ /mieten/$1/ [L,R=301]",
+  "",
+
   "# === 2c. Modellwechsel 2,7t Minibagger (XCMG XE27E -> LiuGong 9027F ZTS) ===",
   "RewriteRule ^mieten/krefeld/erdbewegung/xcmg-xe27e/?$ /mieten/krefeld/erdbewegung/minibagger-2-7t/ [L,R=301]",
   "RewriteRule ^mieten/bonn/erdbewegung/xcmg-xe27e/?$ /mieten/bonn/erdbewegung/minibagger-2-7t/ [L,R=301]",
