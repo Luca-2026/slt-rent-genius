@@ -154,12 +154,10 @@ export default function LocationCards() {
     const stop = () => clearInterval(id);
     emblaApi.on("pointerDown", stop);
     emblaApi.on("pointerUp", start);
-    emblaApi.on("pointerCancel", start);
     return () => {
       clearInterval(id);
       emblaApi.off("pointerDown", stop);
       emblaApi.off("pointerUp", start);
-      emblaApi.off("pointerCancel", start);
     };
   }, [emblaApi]);
 
