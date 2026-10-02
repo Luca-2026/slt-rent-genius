@@ -13,6 +13,7 @@ const ProductInspirationSlider = lazy(() => import("@/components/home/ProductIns
 const UsedMachinesSlider = lazy(() => import("@/components/home/UsedMachinesSlider").then(m => ({ default: m.UsedMachinesSlider })));
 const NewMachinesSlider = lazy(() => import("@/components/home/NewMachinesSlider").then(m => ({ default: m.NewMachinesSlider })));
 import { SalesTeaser } from "@/components/home/SalesTeaser";
+import { LiuGongPromoBanner } from "@/components/home/LiuGongPromoBanner";
 import { RatgeberTeaserBlock } from "@/components/ratgeber/RatgeberTeaserBlock";
 import { getLatestArticles } from "@/data/blogArticles";
 import { Loader2 } from "lucide-react";
@@ -141,6 +142,9 @@ export default function Index() {
 
       {/* Seasonal construction machine promotion */}
       <SeasonPromoBanner onExplore={() => { setSeoLocationTarget("erdbewegung"); setLocationDialogOpen(true); }} />
+
+      {/* LiuGong-Händler: Kauf anfragen oder im Mietpark testen */}
+      <LiuGongPromoBanner onTestInFleet={() => { setSeoLocationTarget("erdbewegung"); setLocationDialogOpen(true); }} />
 
 
       {/* Locations / Standorte */}
