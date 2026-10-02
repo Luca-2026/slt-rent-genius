@@ -1,4 +1,5 @@
 import { isAllowedPhotoPath, isAllowedPhotoUrl, escAttr } from "../_shared/protocolPhotos.ts";
+import { parseProtocolMeasurements, measurementRows, type ProtocolMeasurement } from "../_shared/protocolMeasurements.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
@@ -80,6 +81,7 @@ function parseDeliveryAddress(notes: string | null): { street: string; postal_co
 }
 
 interface DeliveryNoteRequest {
+  measurements?: unknown;
   signature_data: string | null;
   staff_signature_data: string;
   staff_name: string;
@@ -167,6 +169,8 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: DeliveryNoteRequest = await req.json();
+    let measurements: ProtocolMeasurement[];
+    try { measurements = parseProtocolMeasurements(body.measurements); } catch { return new Response(JSON.stringify({ error: "Ungültige Messwerte." }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }); }
     const { offer_id, signature_data, staff_signature_data, staff_name, notes, known_defects, additional_defects, photo_urls, send_email = true, agb_accepted = false, operating_hours, fuel_level, cleanliness_rating, customer_not_present = false, id_checked = false, id_check_type, damages = [] } = body;
 
     if (!offer_id || !staff_signature_data || !staff_name) {
@@ -363,6 +367,7 @@ Deno.serve(async (req: Request) => {
       photoUrls: resolvedPhotoUrls,
       operatingHours: operating_hours || null,
       fuelLevel: fuel_level || null,
+      measurements,
       cleanlinessRating: cleanliness_rating || null,
       deliveryAddress,
       idChecked: id_checked,
@@ -422,6 +427,7 @@ Deno.serve(async (req: Request) => {
         id_checked: id_checked,
         id_check_type: id_check_type || null,
         id_checked_at: id_checked ? now : null,
+        protocol_data: { measurements },
       })
       .select()
       .single();
@@ -536,6 +542,7 @@ Deno.serve(async (req: Request) => {
             ...(additional_defects ? [{ label: "Zusaetzliche Maengel", value: additional_defects }] : []),
             ...(operating_hours ? [{ label: "Betriebsstunden", value: operating_hours }] : []),
             ...(fuel_level ? [{ label: "Tankfuellstand", value: fuel_level }] : []),
+            ...measurements.flatMap((m) => measurementRows(m).map((row) => ({ label: `${m.item_name}: ${row.label}`, value: row.value }))),
             ...(cleanliness_rating ? [{ label: "Sauberkeit (1-5)", value: String(cleanliness_rating) }] : []),
             ...(stripNoteTags(notes || offer.notes || '') ? [{ label: "Bemerkungen", value: stripNoteTags(notes || offer.notes || '') }] : []),
             ...(agb_accepted ? [{ label: "AGB", value: "Wurden akzeptiert" }] : []),
@@ -676,6 +683,7 @@ function generateDeliveryNoteHtml(data: {
   photoUrls: string[];
   operatingHours: string | null;
   fuelLevel: string | null;
+  measurements: ProtocolMeasurement[];
   cleanlinessRating: number | null;
   deliveryAddress: { street: string; postal_code: string; city: string } | null;
   idChecked: boolean;
@@ -830,12 +838,13 @@ function generateDeliveryNoteHtml(data: {
       </tbody>
     </table>
 
-    ${(data.operatingHours || data.fuelLevel || data.cleanlinessRating) ? `
+    ${(data.operatingHours || data.fuelLevel || data.measurements.length || data.cleanlinessRating) ? `
     <div style="background:#f0f7fb;border:1px solid #b3d4e8;border-radius:8px;padding:16px;margin-bottom:8mm;">
       <p style="font-weight:600;font-size:14px;margin-bottom:10px;">⚙ Gerätedaten bei Übergabe</p>
       <table style="width:100%;font-size:13px;">
         ${data.operatingHours ? `<tr><td style="padding:6px 0;color:#595959;width:40%;">Betriebsstunden:</td><td style="padding:6px 0;font-weight:600;">${escapeHtml(data.operatingHours)}</td></tr>` : ""}
         ${data.fuelLevel ? `<tr><td style="padding:6px 0;color:#595959;">Tankfüllstand:</td><td style="padding:6px 0;font-weight:500;">${escapeHtml(data.fuelLevel)}</td></tr>` : ""}
+        ${data.measurements.map((m) => measurementRows(m).map((row) => `<tr><td colspan="2" style="padding:8px 0 2px;font-weight:600;border-top:1px solid #b3d4e8;">${escapeHtml(m.item_name)}</td></tr><tr><td style="padding:3px 0;color:#595959;">${row.label}:</td><td style="padding:3px 0;font-weight:600;">${escapeHtml(row.value)}</td></tr>`).join("")).join("")}
         ${data.cleanlinessRating ? `<tr><td style="padding:6px 0;color:#595959;">Sauberkeit (1-5):</td><td style="padding:6px 0;font-weight:600;">${data.cleanlinessRating} / 5</td></tr>` : ""}
       </table>
     </div>` : ""}
