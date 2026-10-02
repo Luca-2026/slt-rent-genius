@@ -357,6 +357,13 @@ export const jobListings: JobListing[] = [
     ],
     specificFields: [
       {
+        id: "preferredLocation",
+        label: "Für welchen Standort bewirbst du dich?",
+        type: "select",
+        options: ["Krefeld", "Bonn", "Krefeld oder Bonn", "Homeoffice"],
+        required: true
+      },
+      {
         id: "salesExperience",
         label: "Erfahrung im technischen Vertrieb",
         type: "select",
