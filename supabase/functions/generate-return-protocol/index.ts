@@ -435,6 +435,17 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    if (measurements.length) {
+      const { error: readingError } = await serviceClient.from("b2b_operating_hours_readings").insert(measurements.map((m) => ({
+        product_name: m.item_name, location: reservation?.location ?? profile.assigned_location ?? null,
+        kind: "return", operating_hours: m.operating_hours ? Number(m.operating_hours.replace(",", ".")) : null,
+        mileage_km: m.mileage ? Number(m.mileage.replace(",", ".")) : null,
+        fuel_level: m.fuel_level || null, return_protocol_id: returnProtocol.id,
+        protocol_number: returnProtocolNumber, recorded_by: user.id,
+      })));
+      if (readingError) console.error("Return readings insert failed", readingError);
+    }
+
     if (resolvedDamages.length > 0) {
       const { error: damageError } = await serviceClient
         .from("b2b_protocol_damages")
