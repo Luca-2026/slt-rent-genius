@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { deleteProtocolDraft, readProtocolDraft, writeProtocolDraft } from "@/lib/protocolDraft";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -41,12 +43,8 @@ interface DeliveryNoteDraft {
   operatingHours: string;
   fuelLevel: string;
   cleanlinessRating: number;
+  damages: (Omit<ProtocolDamage, "photos"> & { photos: { file: File }[] })[];
 }
-
-const deliveryNoteDraftStore: { key: string | null; data: DeliveryNoteDraft | null } = {
-  key: null,
-  data: null,
-};
 
 interface B2BProfile {
   id: string;
@@ -82,6 +80,7 @@ export function DeliveryNoteDialog({
   onCreated,
 }: Props) {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [saving, setSaving] = useState(false);
   const [customerSignature, setCustomerSignature] = useState<string | null>(null);
   const [customerNotPresent, setCustomerNotPresent] = useState(false);
@@ -104,6 +103,9 @@ export function DeliveryNoteDialog({
   const [createdId, setCreatedId] = useState<string | null>(null);
 
   const lastInitKey = useRef<string | null>(null);
+  const [readyFor, setReadyFor] = useState<string | null>(null);
+  const completed = useRef(false);
+  const draftKey = user && offer ? `protocol:v1:${user.id}:legacy-delivery:${offer.id}` : null;
 
   const resetForm = useCallback(() => {
     setCustomerSignature(null);
@@ -123,17 +125,16 @@ export function DeliveryNoteDialog({
     setCleanlinessRating(0);
   }, []);
 
-  const saveDraft = useCallback(() => {
-    if (!open || !offer) return;
-    deliveryNoteDraftStore.key = offer.id;
-    deliveryNoteDraftStore.data = {
+  useEffect(() => {
+    if (!open || !draftKey || readyFor !== draftKey || result || completed.current) return;
+    const value: DeliveryNoteDraft = {
       customerSignature, staffSignature, staffName, notes, knownDefects,
       customerNotPresent, agbAccepted, offerAccepted, itemsReceived,
       idChecked, idDocType, operatingHours, fuelLevel, cleanlinessRating,
+      damages: damages.map(({ photos, ...damage }) => ({ ...damage, photos: photos.map(({ file }) => ({ file })) })),
     };
-  }, [open, offer, customerSignature, staffSignature, staffName, notes, knownDefects, customerNotPresent, agbAccepted, offerAccepted, itemsReceived, idChecked, idDocType, operatingHours, fuelLevel, cleanlinessRating]);
-
-  useEffect(() => { saveDraft(); }, [saveDraft]);
+    void writeProtocolDraft(draftKey, value).catch(() => toast({ title: "Entwurf nicht gespeichert", description: "Bitte Gerätespeicher prüfen.", variant: "destructive" }));
+  }, [open, draftKey, readyFor, result, customerSignature, staffSignature, staffName, notes, knownDefects, customerNotPresent, agbAccepted, offerAccepted, itemsReceived, idChecked, idDocType, operatingHours, fuelLevel, cleanlinessRating, damages, toast]);
 
   useEffect(() => {
     if (!open) {
@@ -144,13 +145,17 @@ export function DeliveryNoteDialog({
   }, [open]);
 
   useEffect(() => {
-    if (!open || !offer) return;
-    const contextKey = offer.id;
+    if (!open || !offer || !draftKey) return;
+    const contextKey = draftKey;
     if (lastInitKey.current === contextKey) return;
     lastInitKey.current = contextKey;
-
-    if (deliveryNoteDraftStore.key === contextKey && deliveryNoteDraftStore.data) {
-      const d = deliveryNoteDraftStore.data;
+    completed.current = false;
+    setReadyFor(null);
+    resetForm();
+    let cancelled = false;
+    void readProtocolDraft<DeliveryNoteDraft>(contextKey).then((draft) => {
+      if (cancelled || !draft?.value) return;
+      const d = draft.value;
       setCustomerSignature(d.customerSignature);
       setStaffSignature(d.staffSignature);
       setStaffName(d.staffName);
@@ -165,11 +170,12 @@ export function DeliveryNoteDialog({
       setOperatingHours(d.operatingHours);
       setFuelLevel(d.fuelLevel);
       setCleanlinessRating(d.cleanlinessRating);
-      return;
-    }
-
-    resetForm();
-  }, [open, offer, resetForm]);
+      setDamages((d.damages || []).map((damage) => ({ ...damage, photos: damage.photos.map(({ file }) => ({ file, preview: URL.createObjectURL(file) })) })));
+      toast({ title: "Protokollentwurf wiederhergestellt" });
+    }).catch(() => toast({ title: "Entwurf konnte nicht geladen werden", variant: "destructive" }))
+      .finally(() => { if (!cancelled) setReadyFor(contextKey); });
+    return () => { cancelled = true; lastInitKey.current = null; setReadyFor(null); };
+  }, [open, offer?.id, draftKey, resetForm]);
 
   useEffect(() => {
     if (!open) return;
@@ -180,7 +186,7 @@ export function DeliveryNoteDialog({
   const formatDate = (d: string) => format(new Date(d), "dd.MM.yyyy", { locale: de });
 
   const handleGenerate = async () => {
-    if (!offer || !profile) return;
+    if (!offer || !profile || readyFor !== draftKey) return;
     setSaving(true);
     try {
       const damagePayload = await serializeDamages(profile.id, damages);
@@ -214,8 +220,8 @@ export function DeliveryNoteDialog({
       });
       setCreatedId(data.delivery_note?.id || null);
 
-      deliveryNoteDraftStore.key = null;
-      deliveryNoteDraftStore.data = null;
+       completed.current = true;
+       if (draftKey) await deleteProtocolDraft(draftKey).catch(() => toast({ title: "Lokaler Entwurf konnte nicht entfernt werden" }));
       onCreated();
     } catch (error: any) {
       toast({
@@ -543,7 +549,7 @@ export function DeliveryNoteDialog({
                 </Button>
                 <Button
                   onClick={handleGenerate}
-                  disabled={saving || !allValid}
+                  disabled={saving || !allValid || readyFor !== draftKey}
                   className="bg-accent text-accent-foreground hover:bg-cta-orange-hover w-full sm:w-auto"
                 >
                   {saving ? (
