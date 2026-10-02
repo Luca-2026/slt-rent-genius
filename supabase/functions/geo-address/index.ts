@@ -23,13 +23,22 @@ serve(async (req) => {
       return json({ error: "GOOGLE_PLACES_API_KEY is not configured" }, 500);
     }
 
-    const body = await req.json();
+    // Only the own website (and previews) may use this paid lookup.
+    const origin = req.headers.get("origin") ?? req.headers.get("referer") ?? "";
+    let host = "";
+    try { host = new URL(origin).hostname; } catch { host = ""; }
+    const allowedHost = host === "slt-rental.de" || host.endsWith(".slt-rental.de") ||
+      host.endsWith(".lovable.app") || host.endsWith(".lovableproject.com") || host === "localhost";
+    if (!allowedHost) return json({ error: "Forbidden" }, 403);
+
+    const body = await req.json().catch(() => ({}));
     const action = body?.action as string | undefined;
 
     if (action === "autocomplete") {
       const input = String(body.input ?? "").trim();
       const sessionToken = String(body.sessionToken ?? "");
       if (input.length < 3) return json({ suggestions: [] });
+      if (input.length > 200 || sessionToken.length > 100) return json({ error: "Ungültige Eingabe" }, 400);
 
       const res = await fetch(
         "https://places.googleapis.com/v1/places:autocomplete",
@@ -53,7 +62,7 @@ serve(async (req) => {
       if (!res.ok) {
         const t = await res.text();
         console.error("Autocomplete failed", res.status, t);
-        return json({ error: "Autocomplete failed", details: t }, 502);
+        return json({ error: "Autocomplete failed" }, 502);
       }
 
       const data = await res.json();
@@ -73,6 +82,9 @@ serve(async (req) => {
     if (action === "distance" || action === "distanceAll") {
       const placeId = body.placeId ? String(body.placeId) : undefined;
       const address = body.address ? String(body.address).trim() : undefined;
+      if ((placeId && placeId.length > 300) || (address && address.length > 300)) {
+        return json({ error: "Ungültige Eingabe" }, 400);
+      }
       if (!placeId && !address) {
         return json({ error: "placeId or address is required" }, 400);
       }
