@@ -174,7 +174,7 @@ export function DeliveryNoteDialog({
       setOperatingHours(d.operatingHours);
       setFuelLevel(d.fuelLevel);
       setCleanlinessRating(d.cleanlinessRating);
-       setMeasurements(d.measurements ?? {});
+      setMeasurements(d.measurements ?? {});
       setDamages((d.damages || []).map((damage) => ({ ...damage, photos: damage.photos.map(({ file }) => ({ file, preview: URL.createObjectURL(file) })) })));
       toast({ title: "Protokollentwurf wiederhergestellt" });
     }).catch(() => toast({ title: "Entwurf konnte nicht geladen werden", variant: "destructive" }))
@@ -209,10 +209,10 @@ export function DeliveryNoteDialog({
           agb_accepted: customerNotPresent ? false : true,
           id_checked: idChecked,
           id_check_type: idDocType || undefined,
-           measurements: offerItems.filter((i) => i.offer_id === offer.id).flatMap((item, index) => {
-             const m = { ...emptyMeasurement(), ...measurements[index] };
-             return m.useHours || m.useFuel || m.useMileage ? [{ item_name: item.product_name, ...selectedMeasurement(m) }] : [];
-           }),
+          measurements: offerItems.filter((i) => i.offer_id === offer.id).flatMap((item, index) => {
+            const m = { ...emptyMeasurement(), ...measurements[index] };
+            return m.useHours || m.useFuel || m.useMileage ? [{ item_name: item.product_name, ...selectedMeasurement(m) }] : [];
+          }),
           cleanliness_rating: cleanlinessRating > 0 ? cleanlinessRating : undefined,
           customer_not_present: customerNotPresent,
         },
@@ -227,7 +227,7 @@ export function DeliveryNoteDialog({
       });
       setCreatedId(data.delivery_note?.id || null);
 
-       completed.current = true;
+      completed.current = true;
        if (draftKey) await deleteProtocolDraft(draftKey).catch(() => toast({ title: "Lokaler Entwurf konnte nicht entfernt werden" }));
       onCreated();
     } catch (error: any) {

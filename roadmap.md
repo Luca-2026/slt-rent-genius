@@ -2,7 +2,8 @@
 
 ## Aktuell – mobile Übergabe- und Rückgabeprotokolle
 - [x] Entwürfe je Auftrag und Protokollart einschließlich Fotos nach Browserwechsel wiederherstellen
-- [ ] Optionalen Kilometerstand, Betriebsstunden und Tankfüllstand je Artikel in Übergabe/Rückgabe und PDF prüfen
+- [x] Optionalen Kilometerstand, Betriebsstunden und Tankfüllstand je Artikel in Übergabe/Rückgabe und PDF-Datenpfad integriert; automatische Validierung geprüft
+- [ ] PDF-Layout mit echten Testdaten visuell auf Desktop und Handy prüfen
 - [ ] Fotoaufnahme/-auswahl und Abschluss mit Fotos auf echtem Gerät prüfen; Fehler sichtbar machen
 
 ## Phase 1 – Prerender-Vollständigkeit (erledigt)

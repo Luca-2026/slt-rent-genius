@@ -219,7 +219,7 @@ export function ReturnProtocolDialog({
       setFuelLevelStart(d.fuelLevelStart);
       setFuelLevelEnd(d.fuelLevelEnd);
       setCleanlinessRating(d.cleanlinessRating);
-       setMeasurements(d.measurements ?? {});
+      setMeasurements(d.measurements ?? {});
       setIdChecked(d.idChecked);
       setIdDocType(d.idDocType);
       setItemConditions(d.itemConditions?.length ? d.itemConditions : baseItems());
