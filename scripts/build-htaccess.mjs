@@ -108,6 +108,12 @@ lines.push(
   "RewriteRule ^mieten/(bonn|krefeld|muelheim)/alle/?$ /mieten/$1/ [L,R=301]",
   "",
 
+  "# === 2b-3. Karriere: besetzte/umbenannte Stellen ===",
+  "RewriteRule ^karriere/standortleiter-niederlassungsleiter-vermietung-bonn/?$ /karriere/ [L,R=301]",
+  "RewriteRule ^karriere/lieferfahrer-baumaschinen-krefeld/?$ /karriere/lieferfahrer-vermietung-krefeld-bonn/ [L,R=301]",
+  "RewriteRule ^karriere/baumaschinentechniker-servicetechniker-krefeld/?$ /karriere/baumaschinentechniker-servicetechniker-krefeld-bonn/ [L,R=301]",
+  "",
+
   "# === 2c. Modellwechsel 2,7t Minibagger (XCMG XE27E -> LiuGong 9027F ZTS) ===",
   "RewriteRule ^mieten/krefeld/erdbewegung/xcmg-xe27e/?$ /mieten/krefeld/erdbewegung/minibagger-2-7t/ [L,R=301]",
   "RewriteRule ^mieten/bonn/erdbewegung/xcmg-xe27e/?$ /mieten/bonn/erdbewegung/minibagger-2-7t/ [L,R=301]",
