@@ -1,3 +1,4 @@
+import { csvCell } from "@/lib/csvCell";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -293,9 +294,9 @@ export function AdminInvoicesTab({
       const rows = filtered.map((inv) => {
         const taxId = (inv as any).vat_id_at_creation || taxMap[inv.b2b_profile_id] || "";
         return [
-          inv.invoice_number,
-          `"${(inv.customer_company || "").replace(/"/g, '""')}"`,
-          taxId,
+          csvCell(inv.invoice_number),
+          csvCell(inv.customer_company || ""),
+          csvCell(taxId),
           inv.invoice_date,
           inv.due_date || "",
           inv.net_amount.toFixed(2).replace(".", ","),
