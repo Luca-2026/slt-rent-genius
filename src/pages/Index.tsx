@@ -140,13 +140,13 @@ export default function Index() {
       </section>
 
       {/* Seasonal construction machine promotion */}
-      <SeasonPromoBanner />
+      <SeasonPromoBanner onExplore={() => { setSeoLocationTarget("erdbewegung"); setLocationDialogOpen(true); }} />
 
 
       {/* Locations / Standorte */}
-      <section className="py-16 lg:py-20">
+      <section className="pt-8 pb-16 lg:pt-10 lg:pb-20">
         <div className="section-container">
-          <AnimatedSection className="text-center mb-12">
+          <AnimatedSection className="text-center mb-8 lg:mb-10">
             <h2 className="text-2xl lg:text-3xl font-bold text-headline mb-3">
               {t("locations.title")}
             </h2>

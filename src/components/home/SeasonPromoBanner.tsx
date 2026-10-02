@@ -50,10 +50,10 @@ function CodeChip({ code, onDark = false }: { code: string; onDark?: boolean }) 
   );
 }
 
-export function SeasonPromoBanner() {
+export function SeasonPromoBanner({ onExplore }: { onExplore: () => void }) {
   const { t } = useTranslation();
   return (
-    <section className="relative z-10 py-6 lg:py-8 bg-background" aria-label={t("seasonPromo.headline")}>
+    <section className="relative z-10 pt-6 pb-2 lg:pt-8 lg:pb-2 bg-background" aria-label={t("seasonPromo.headline")}>
       <div className="section-container">
         <div className="overflow-hidden rounded-md border border-promo-border bg-promo text-promo-foreground shadow-lg md:flex">
           <div className="flex flex-col bg-accent text-promo-accent-foreground md:w-[34%] md:shrink-0">
@@ -88,11 +88,9 @@ export function SeasonPromoBanner() {
                 <span className="text-xs font-semibold uppercase text-promo-muted">{t("seasonPromo.yourCode")}</span>
                 <CodeChip code={PROMO_CODE} onDark />
               </div>
-              <Button asChild size="lg" className="bg-accent font-bold text-promo-accent-foreground hover:bg-cta-orange-hover hover:text-promo-accent-foreground">
-                <Link to={MACHINE_LINK}>
+              <Button size="lg" onClick={onExplore} className="bg-accent font-bold text-promo-accent-foreground hover:bg-cta-orange-hover hover:text-promo-accent-foreground">
                   {t("seasonPromo.cta")}
                   <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
               </Button>
             </div>
           </div>
