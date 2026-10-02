@@ -69,6 +69,13 @@
     /* Surface colors */
     --surface-light: 220 14% 98%;
     --surface-medium: 220 14% 96%;
+    /* Seasonal promotion surface, independent of the current page theme */
+    --promo-surface: 218 10% 11%;
+    --promo-foreground: 0 0% 100%;
+    --promo-muted: 0 0% 78%;
+    --promo-border: 218 10% 27%;
+    --promo-code: 218 10% 19%;
+    --promo-accent-foreground: 218 10% 11%;
 
     /* Sidebar */
     --sidebar-background: 201 100% 25%;
@@ -121,6 +128,12 @@
     
     --surface-light: 218 10% 15%;
     --surface-medium: 218 10% 18%;
+    --promo-surface: 218 10% 11%;
+    --promo-foreground: 0 0% 100%;
+    --promo-muted: 0 0% 78%;
+    --promo-border: 218 10% 27%;
+    --promo-code: 218 10% 19%;
+    --promo-accent-foreground: 218 10% 11%;
 
     --sidebar-background: 218 10% 10%;
     --sidebar-foreground: 0 0% 95%;

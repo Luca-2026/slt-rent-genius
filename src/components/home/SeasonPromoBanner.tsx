@@ -19,7 +19,7 @@ const POPUP_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 Tage
 const POPUP_DELAY_MS = 4500;
 const MACHINE_LINK = "/mietartikel#baumaschinen";
 
-function CodeChip({ code }: { code: string }) {
+function CodeChip({ code, onDark = false }: { code: string; onDark?: boolean }) {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const copy = async (e: React.MouseEvent) => {
@@ -36,10 +36,12 @@ function CodeChip({ code }: { code: string }) {
   };
   return (
     <Button
-      variant="secondary"
+      variant={onDark ? "outline" : "secondary"}
       type="button"
       onClick={copy}
-      className="inline-flex items-center gap-2 font-mono text-lg font-bold text-primary"
+      className={onDark
+        ? "inline-flex h-auto min-h-12 items-center gap-2 border-dashed border-promo-border bg-promo-code px-4 py-2 font-mono text-sm sm:text-base font-bold text-accent hover:bg-promo-border hover:text-accent break-all"
+        : "inline-flex items-center gap-2 font-mono text-lg font-bold text-primary"}
       aria-label={t("seasonPromo.ariaCopyCode", { code })}
     >
       <span>{code}</span>
@@ -51,37 +53,45 @@ function CodeChip({ code }: { code: string }) {
 export function SeasonPromoBanner() {
   const { t } = useTranslation();
   return (
-    <section className="relative z-10 py-6 lg:py-8 bg-background">
+    <section className="relative z-10 py-6 lg:py-8 bg-background" aria-label={t("seasonPromo.headline")}>
       <div className="section-container">
-        <div className="relative overflow-hidden rounded-md border-l-4 border-accent bg-primary text-primary-foreground shadow-lg">
-          <div className="relative grid gap-6 p-6 md:grid-cols-[1fr_auto] md:items-center md:gap-8 md:p-8 lg:p-10">
-            <div>
-              <div className="inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-wider mb-3">
-                <HardHat className="h-4 w-4" />
+        <div className="overflow-hidden rounded-md border border-promo-border bg-promo text-promo-foreground shadow-lg md:flex">
+          <div className="flex flex-col bg-accent text-promo-accent-foreground md:w-[34%] md:shrink-0">
+            <div className="relative h-40 overflow-hidden bg-background sm:h-48 md:h-full md:min-h-[290px]">
+              <img
+                src="/product-images/erdbewegung/minibagger-6t-2.webp"
+                alt={t("seasonPromo.imageAlt")}
+                loading="lazy"
+                className="h-full w-full object-cover object-center"
+              />
+              <div className="absolute bottom-0 left-0 bg-accent px-5 py-2 text-xs font-bold uppercase sm:px-7">
                 {t("seasonPromo.badge")}
               </div>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-2 text-primary-foreground">
-                {t("seasonPromo.headline")}
+            </div>
+          </div>
+
+          <div className="flex min-w-0 flex-1 flex-col justify-center gap-5 p-6 sm:p-8 lg:p-10">
+            <div>
+              <div className="mb-2 flex items-baseline gap-3 text-accent">
+                <span className="text-5xl font-black leading-none sm:text-6xl">10 %</span>
+                <span className="text-sm font-bold uppercase">{t("seasonPromo.discount")}</span>
+              </div>
+              <h2 className="text-2xl font-bold leading-tight text-promo-foreground sm:text-3xl">
+                {t("seasonPromo.bannerTitle")}
               </h2>
-              <p className="text-primary-foreground/90 md:text-lg max-w-2xl">
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-promo-muted sm:text-base">
                 {t("seasonPromo.details")}
               </p>
             </div>
-
-            <div className="flex flex-col items-start md:items-end gap-3">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="text-sm font-semibold text-primary-foreground/90">{t("seasonPromo.codeLabel")}</span>
-                <CodeChip code={PROMO_CODE} />
+            <div className="flex flex-wrap items-end gap-4 sm:gap-6">
+              <div className="flex flex-col items-start gap-1">
+                <span className="text-xs font-semibold uppercase text-promo-muted">{t("seasonPromo.yourCode")}</span>
+                <CodeChip code={PROMO_CODE} onDark />
               </div>
-              <Button
-                asChild
-                size="lg"
-                variant="secondary"
-                className="font-bold"
-              >
+              <Button asChild size="lg" className="bg-accent font-bold text-promo-accent-foreground hover:bg-cta-orange-hover hover:text-promo-accent-foreground">
                 <Link to={MACHINE_LINK}>
-                  <ArrowRight className="mr-2 h-4 w-4" />
                   {t("seasonPromo.cta")}
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </div>
