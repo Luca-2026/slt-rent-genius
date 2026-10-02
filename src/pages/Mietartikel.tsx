@@ -75,7 +75,15 @@ export default function Mietartikel() {
   const [selectedCategoryQuery, setSelectedCategoryQuery] = useState<string | undefined>();
 
   useEffect(() => {
-    if (["#event", "#baumaschinen"].includes(window.location.hash)) {
+    if (new URLSearchParams(window.location.search).get("promo") === "erdbewegung") {
+      setSelectedCategoryId("erdbewegung");
+      setDialogOpen(true);
+      window.history.replaceState(window.history.state, "", window.location.pathname);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (window.location.hash === "#event") {
       const timer = setTimeout(() => {
         const el = document.getElementById(window.location.hash.slice(1));
         if (el) {
@@ -238,14 +246,6 @@ export default function Mietartikel() {
 
       {/* Kategoriegruppen: BAU / EVENT / TRANSPORT & OUTDOOR */}
       <section className="section-container py-10 md:py-14 space-y-10 md:space-y-12">
-        <div id="baumaschinen" className="scroll-mt-28 border-l-4 border-accent bg-primary/5 p-5 md:p-7">
-          <h2 className="text-xl md:text-2xl font-bold text-headline mb-2">10 % Saisonrabatt auf mobile Baumaschinen</h2>
-          <p className="text-muted-foreground mb-4">Bagger, Radlader und Arbeitsbühnen – Code BAUMASCHINE10 bei der Buchung angeben.</p>
-          <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={() => handleCategoryClick("erdbewegung")}>Bagger & Radlader</Button>
-            <Button variant="outline" onClick={() => handleCategoryClick("arbeitsbuehnen")}>Arbeitsbühnen</Button>
-          </div>
-        </div>
         {groupedSections.map((group) => {
           const Icon = group.icon;
           const teaser =
