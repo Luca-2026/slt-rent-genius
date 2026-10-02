@@ -31,7 +31,7 @@
     "buyNow": "Jetzt kaufen",
     "salePage": "Verkaufsseite",
     "newMachines": "Neumaschinen",
-    "newMachinesDesc": "Zoomlion, BAUMAX & Temared",
+    "newMachinesDesc": "LiuGong, BAUMAX & Temared",
     "usedMachines": "Gebrauchtmaschinen",
     "usedMachinesDesc": "Geprüfte Maschinen aus unserem Mietpark",
     "career": "Karriere"
@@ -168,7 +168,7 @@
     "rentalItems": "Mietartikel",
     "salesAndBrands": "Verkauf & Marken",
     "buyMachines": "Baumaschinen kaufen",
-    "zoomlionDealer": "Zoomlion Händler NRW",
+    "zoomlionDealer": "LiuGong Händler NRW",
     "baumaxDealer": "BAUMAX Fachhändler",
     "temaredBuy": "Temared Anhänger kaufen",
     "purchaseInquiry": "Kaufanfrage stellen →",
@@ -969,7 +969,7 @@
       "Online-Buchung rund um die Uhr"
     ],
     "partnersTitle": "Unsere Partner & Marken",
-    "partnerDealerNote": "SLT Rental ist autorisierter Fachhändler für Zoomlion Bagger und Arbeitsbühnen in NRW sowie Vertriebspartner für Baumax Baumaschinen – inklusive Verkauf, Ersatzteile und Reparatur.",
+    "partnerDealerNote": "SLT Rental ist Händler für LiuGong Bagger und Radlader in NRW sowie Vertriebspartner für Baumax Baumaschinen – inklusive Verkauf, Ersatzteile und Reparatur.",
     "ctaTitle": "Bereit, loszulegen?",
     "ctaDesc": "Entdecke unser Equipment-Sortiment oder kontaktiere uns für eine persönliche Beratung.",
     "ctaProducts": "Produkte entdecken",
@@ -978,9 +978,9 @@
   "salesTeaser": {
     "badge": "Autorisierter Fachhändler & Servicestützpunkt",
     "title": "Baumaschinen & Anhänger auch zum Kauf verfügbar",
-    "subtitle": "Ob fabrikneue Maschinen von Zoomlion, BAUMAX und Temared oder gepflegte Gebrauchtmaschinen – wir beraten Sie persönlich und liefern in ganz NRW.",
+    "subtitle": "Ob fabrikneue Maschinen von LiuGong, BAUMAX und Temared oder gepflegte Gebrauchtmaschinen – wir beraten Sie persönlich und liefern in ganz NRW.",
     "newMachines": "Neumaschinen",
-    "newMachinesDesc": "Zoomlion, BAUMAX & Temared – direkt vom autorisierten Fachhändler",
+    "newMachinesDesc": "LiuGong, BAUMAX & Temared – direkt vom Fachhändler",
     "newMachinesCta": "Neumaschinen entdecken",
     "usedMachines": "Gebrauchtmaschinen",
     "usedMachinesDesc": "Gepflegte Gebrauchtmaschinen – geprüft, sofort verfügbar",
@@ -1927,7 +1927,6 @@
     "grills_sub": "Schwenkgrill",
     "schneidgeraete": "Schneidgeräte",
     "schneidgeraete_sub": "Currywurstschneider",
-
     "kuechengeraet": "Küchengeräte",
     "kuechengeraet_sub": "Eiswürfelmaschine, Spülmaschine, Wärmer",
     "zubehoer_geschirr": "Zubehör",
@@ -2186,10 +2185,7 @@
       "item2": "Elektrisch",
       "item2sub": "Emissionsfrei & leise",
       "item3": "Einweisung inkl.",
-      "item3sub": "Sichere Bedienung",
-      "highlightTitle": "Zoomlion Fachhändler",
-      "highlightText": "Als offizieller Zoomlion-Fachhändler bieten wir erstklassige Arbeitsbühnen mit vollem Service.",
-      "highlightLink": "Zur Verkaufsseite zoomlion-nrw.de"
+      "item3sub": "Sichere Bedienung"
     },
     "verdichtung": {
       "desc": "Professionelle Bodenverdichtung mit Stampfern und Rüttelplatten für Pflasterarbeiten, Gräben und Fundamentvorbereitung.",
@@ -2359,11 +2355,11 @@
   "verkauf": {
     "seo": {
       "title": "Baumaschinen & Anhänger kaufen in NRW | SLT Rental",
-      "description": "Baumaschinen & Anhänger kaufen beim autorisierten Fachhändler in NRW ✓ Zoomlion Bagger & Radlader ✓ BAUMAX Rüttelplatten ✓ Temared Anhänger ✓ Service in Bonn & Krefeld"
+      "description": "Baumaschinen & Anhänger kaufen beim Fachhändler in NRW ✓ LiuGong Bagger & Radlader ✓ BAUMAX Rüttelplatten ✓ Temared Anhänger ✓ Service in Bonn & Krefeld"
     },
     "hero": {
       "title": "Baumaschinen & Anhänger kaufen in NRW – SLT Rental",
-      "subtitle": "Autorisierter Fachhändler und Servicestützpunkt für Zoomlion, BAUMAX Baumaschinen und Temared in Nordrhein-Westfalen. Kaufen, beraten lassen, direkt abholen oder liefern lassen – alles aus einer Hand.",
+      "subtitle": "Fachhändler und Servicestützpunkt für LiuGong, BAUMAX Baumaschinen und Temared in Nordrhein-Westfalen. Kaufen, beraten lassen, im Mietpark testen oder liefern lassen – alles aus einer Hand.",
       "ctaInquiry": "Jetzt Kaufanfrage stellen",
       "ctaBrands": "Unsere Marken entdecken"
     },
@@ -2396,16 +2392,6 @@
       }
     },
     "brands": {
-      "zoomlion": {
-        "tagline": "Minibagger · Radlader · Teleskoplader · Arbeitsbühnen",
-        "h2": "Zoomlion – Offizieller Händler & Servicestützpunkt in NRW",
-        "intro": "Zoomlion Heavy Industry Science & Technology Co., Ltd. ist einer der weltweit führenden Hersteller von Baumaschinen und Arbeitsbühnen mit über 715 Modellen in 15 Produktkategorien. SLT Rental ist autorisierter Zoomlion-Fachhändler und zertifizierter Servicestützpunkt für Nordrhein-Westfalen.",
-        "detail": "Wir bieten die Zoomlion-Produktlinie für Erdbewegung und Arbeitsbühnen – von kompakten Elektro-Minibaggern für beengte Innenstadtbaustellen bis hin zu leistungsstarken Radladern und Teleskopladern für Bau, Industrie und Logistik.",
-        "h3": "Produktkategorien Zoomlion bei SLT Rental",
-        "websiteLabel": "Zur Zoomlion NRW Website",
-        "ctaText": "Kaufanfrage Zoomlion",
-        "ctaDesc": "Wünschen Sie eine persönliche Beratung oder ein Angebot für ein Zoomlion-Produkt?"
-      },
       "baumax": {
         "tagline": "Rüttelplatten · Dumper · Stampfer · Steinsägen · Betonrüttler",
         "h2": "BAUMAX Baumaschinen – Fachhändler & Servicestützpunkt in NRW",
@@ -2434,16 +2420,19 @@
         "ctaDesc": "Du benötigst eine Erdrakete für grabenlose Kabel- oder Rohrverlegung? Wir beraten Dich zur passenden Baugröße."
       },
       "inquiryBtn": "Kaufanfrage stellen",
-      "submitInquiry": "Jetzt Anfrage stellen"
+      "submitInquiry": "Jetzt Anfrage stellen",
+      "liugong": {
+        "tagline": "Bagger & Radlader für die Erdbewegung",
+        "h2": "LiuGong – Händler für Bagger & Radlader in NRW",
+        "intro": "LiuGong ist ein international tätiger Hersteller von Baumaschinen. SLT Rental ist jetzt LiuGong-Händler für Nordrhein-Westfalen – mit persönlicher Beratung, Service und Ersatzteilversorgung an unseren Standorten.",
+        "detail": "Unser Schwerpunkt liegt auf der Erdbewegung: Bagger und Radlader von LiuGong. LiuGong-Minibagger stehen bereits in unserem Mietpark – so kannst du die Maschine vor dem Kauf im Einsatz testen.",
+        "h3": "Produktkategorien LiuGong bei SLT Rental",
+        "websiteLabel": "Zur LiuGong Website",
+        "ctaText": "Kaufanfrage LiuGong",
+        "ctaDesc": "Wünschen Sie eine persönliche Beratung oder ein Angebot für eine LiuGong-Maschine?"
+      }
     },
     "products": {
-      "zoomlion": [
-        "Minibagger & Bagger: 2 t bis 50 t, für Erdbewegung, Abbruch und Tiefbau",
-        "Radlader: Kompaktradlader 1,5 t bis 5 t für Bau, Recycling und Landwirtschaft",
-        "Teleskoplader: Reichweiten bis 18 m, für Bau, Industrie und Veranstaltungslogistik",
-        "Scherenbühnen (Zoomlion Access): Elektrisch & Diesel, 8–32 m Arbeitshöhe",
-        "Gelenkteleskopsteiger: Bis 28 m Arbeitshöhe, für Außen- und Innenbereich"
-      ],
       "baumax": [
         "Vorwärtslaufende Rüttelplatten (VP-Serie): 70–170 kg, für Pflaster & Wege",
         "Reversierbare Rüttelplatten (HVP/RVP-Serie): Hydraulisch & mechanisch, für Profi-Verdichtung",
@@ -2474,14 +2463,19 @@
         "Hercu-Erdrakete HP65 KRT – Turbo, Ø 65 mm, 920 mm, 15,5 kg – kompakt mit beweglichem Stufenkopf",
         "Weitere Baugrößen auf Anfrage (Ø 45–145 mm)",
         "Zubehör: Druckluftschläuche, Bio-Erdraketenöl, Nebelöler 1,3 L"
+      ],
+      "liugong": [
+        "Minibagger & Kompaktbagger: für Garten- und Landschaftsbau, Tiefbau und Innenstadtbaustellen",
+        "Bagger: für Erdbewegung, Abbruch und Tiefbau",
+        "Radlader: für Bau, Recycling und Landwirtschaft"
       ]
     },
     "faq": {
       "title": "Häufig gestellte Fragen zum Kauf",
       "items": [
         {
-          "q": "Wo finde ich einen Zoomlion Händler in NRW?",
-          "a": "SLT Rental in Bonn und Krefeld ist autorisierter Zoomlion-Fachhändler und Servicestützpunkt für Nordrhein-Westfalen. Wir führen Bagger, Radlader, Teleskoplader und Arbeitsbühnen der Zoomlion-Linie und bieten persönliche Beratung, Vorführung und Werksdienst."
+          "q": "Wo finde ich einen LiuGong Händler in NRW?",
+          "a": "SLT Rental mit Standorten in Krefeld, Bonn und Mülheim an der Ruhr ist LiuGong-Händler für Nordrhein-Westfalen. Wir beraten zu Baggern und Radladern von LiuGong, erstellen Angebote und bieten Service und Ersatzteile. LiuGong-Minibagger kannst du in unserem Mietpark testen."
         },
         {
           "q": "Wo kann ich BAUMAX Baumaschinen kaufen?",
@@ -2601,7 +2595,7 @@
   "newMachinesSlider": {
     "badge": "Neumaschinen",
     "title": "Neue Baumaschinen direkt vom Fachhändler",
-    "subtitle": "Originalverpackte Neumaschinen von BAUMAX, Zoomlion, Temared & Co. – mit Herstellergarantie und persönlicher Beratung.",
+    "subtitle": "Originalverpackte Neumaschinen von LiuGong, BAUMAX, Temared & Co. – mit Herstellergarantie und persönlicher Beratung.",
     "badgeNew": "Neu",
     "badgeTop": "Top",
     "viewDetails": "Details ansehen",
@@ -2765,5 +2759,14 @@
       "highlightsHeading": "Highlights",
       "dealerHeading": "Autorisierter Vertriebs- & Servicepartner"
     }
+  },
+  "liugongPromo": {
+    "badge": "Jetzt neu",
+    "title": "Baumaschinen für die Erdbewegung von LiuGong",
+    "text": "SLT Rental ist jetzt LiuGong-Händler in NRW. Fordere das Portfolio an und sichere dir einen Sonderpreis – oder teste LiuGong-Minibagger vorab in unserem Mietpark.",
+    "ctaInquiry": "Portfolio anfragen & Sonderpreis sichern",
+    "ctaRent": "Im Mietpark testen",
+    "logoAlt": "LiuGong Logo",
+    "imageAlt": "LiuGong Minibagger im Mietpark von SLT Rental"
   }
 }

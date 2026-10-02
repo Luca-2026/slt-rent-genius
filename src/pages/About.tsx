@@ -24,7 +24,7 @@ import logoEibenstock from "@/assets/partners/eibenstock.jpg";
 import logoBosch from "@/assets/partners/bosch.png";
 import logoDoosan from "@/assets/partners/doosan.png";
 import logoBaumax from "@/assets/partners/baumax.png";
-import logoZoomlion from "@/assets/partners/zoomlion.png";
+import logoLiugong from "@/assets/logos/liugong-sm.webp";
 
 const partners = [
   { name: "Bosch", logo: logoBosch, url: "https://www.bosch-professional.com/de/de/" },
@@ -32,7 +32,7 @@ const partners = [
   { name: "Eibenstock", logo: logoEibenstock, url: "https://www.eibenstock.de/" },
   { name: "Doosan", logo: logoDoosan, url: "https://www.doosanportablepower.eu/" },
   { name: "Baumax", logo: logoBaumax, url: "https://baumax-baumaschinen.de/" },
-  { name: "Zoomlion", logo: logoZoomlion, url: "https://www.zoomlion-nrw.de/" },
+  { name: "LiuGong", logo: logoLiugong, url: "https://www.liugong.com/" },
 ];
 
 function TeamMemberCard({ member, showEmail }: { member: { name: string; role: string; image: string | null; email: string | null }; showEmail?: boolean }) {
@@ -294,9 +294,9 @@ export default function About() {
             <div className="mt-4 md:mt-6 lg:mt-8 p-3 md:p-4 bg-accent/10 border border-accent/20 rounded-lg text-center max-w-4xl mx-auto">
               <p className="text-[10px] md:text-xs lg:text-sm text-body leading-relaxed">
                 <strong className="text-headline">{t("about.partnersTitle")}:</strong>{" "}
-                {t("about.partnerDealerNote").split("Zoomlion")[0]}
-                <a href="https://www.zoomlion-nrw.de/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium">Zoomlion</a>
-                {t("about.partnerDealerNote").split("Zoomlion")[1]?.split("Baumax")[0]}
+                {t("about.partnerDealerNote").split("LiuGong")[0]}
+                <a href="https://www.liugong.com/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium">LiuGong</a>
+                {t("about.partnerDealerNote").split("LiuGong")[1]?.split("Baumax")[0]}
                 <a href="https://baumax-baumaschinen.de/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium">Baumax</a>
                 {t("about.partnerDealerNote").split("Baumax")[1]}
               </p>
