@@ -2768,5 +2768,10 @@
     "ctaRent": "Test in our rental fleet",
     "logoAlt": "LiuGong logo",
     "imageAlt": "LiuGong mini excavator in the SLT Rental fleet"
+  },
+  "promoSlider": {
+    "label": "Current promotions",
+    "pause": "Pause automatic rotation",
+    "play": "Resume automatic rotation"
   }
 }

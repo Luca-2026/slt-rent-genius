@@ -14,6 +14,7 @@ const UsedMachinesSlider = lazy(() => import("@/components/home/UsedMachinesSlid
 const NewMachinesSlider = lazy(() => import("@/components/home/NewMachinesSlider").then(m => ({ default: m.NewMachinesSlider })));
 import { SalesTeaser } from "@/components/home/SalesTeaser";
 import { LiuGongPromoBanner } from "@/components/home/LiuGongPromoBanner";
+import { HomePromoSlider } from "@/components/home/HomePromoSlider";
 import { RatgeberTeaserBlock } from "@/components/ratgeber/RatgeberTeaserBlock";
 import { getLatestArticles } from "@/data/blogArticles";
 import { Loader2 } from "lucide-react";
@@ -140,12 +141,14 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Seasonal construction machine promotion */}
-      <SeasonPromoBanner onExplore={() => { setSeoLocationTarget("erdbewegung"); setLocationDialogOpen(true); }} />
-
-      {/* LiuGong-Händler: Kauf anfragen oder im Mietpark testen */}
-      <LiuGongPromoBanner onTestInFleet={() => { setSeoLocationTarget("erdbewegung"); setLocationDialogOpen(true); }} />
-
+      {/* Aktionen im Wechsel: Saisonrabatt + LiuGong-Händler */}
+      <HomePromoSlider
+        labels={[t("seasonPromo.headline"), t("liugongPromo.title")]}
+        slides={[
+          <SeasonPromoBanner key="season" onExplore={() => { setSeoLocationTarget("erdbewegung"); setLocationDialogOpen(true); }} />,
+          <LiuGongPromoBanner key="liugong" onTestInFleet={() => { setSeoLocationTarget("erdbewegung"); setLocationDialogOpen(true); }} />,
+        ]}
+      />
 
       {/* Locations / Standorte */}
       <section className="pt-8 pb-16 lg:pt-10 lg:pb-20">

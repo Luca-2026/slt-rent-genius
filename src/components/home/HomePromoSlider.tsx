@@ -42,7 +42,7 @@ export function HomePromoSlider({ slides, labels }: { slides: ReactNode[]; label
             aria-roledescription="slide"
             aria-label={`${i + 1} / ${slides.length}: ${labels[i]}`}
             aria-hidden={i !== index}
-            inert={i !== index ? true : undefined}
+            {...(i !== index ? ({ inert: "" } as Record<string, string>) : {})}
             className={cn(
               "[grid-area:1/1] transition-opacity duration-700 ease-in-out",
               i === index ? "opacity-100" : "pointer-events-none opacity-0",
