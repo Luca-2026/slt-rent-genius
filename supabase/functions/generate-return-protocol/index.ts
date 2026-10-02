@@ -1,3 +1,4 @@
+import { isAllowedPhotoPath, isAllowedPhotoUrl, escAttr } from "../_shared/protocolPhotos.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
@@ -259,9 +260,9 @@ Deno.serve(async (req: Request) => {
     const resolvedPhotoUrls: string[] = [];
     if (photo_urls && photo_urls.length > 0) {
       for (const photoPath of photo_urls) {
-        if (photoPath.startsWith("http")) {
-          resolvedPhotoUrls.push(photoPath);
-        } else {
+        if (typeof photoPath === "string" && photoPath.startsWith("http")) {
+          if (isAllowedPhotoUrl(photoPath)) resolvedPhotoUrls.push(photoPath);
+        } else if (isAllowedPhotoPath(photoPath, reservation.b2b_profile_id)) {
           const { data: signedData } = await serviceClient.storage
             .from("b2b-documents")
             .createSignedUrl(photoPath, 60 * 60 * 24 * 365);
@@ -286,7 +287,8 @@ Deno.serve(async (req: Request) => {
     for (const damage of damages) {
       const signed: string[] = [];
       for (const path of damage.photo_urls || []) {
-        if (path.startsWith("http")) { signed.push(path); continue; }
+        if (typeof path === "string" && path.startsWith("http")) { if (isAllowedPhotoUrl(path)) signed.push(path); continue; }
+        if (!isAllowedPhotoPath(path, reservation.b2b_profile_id)) continue;
         const { data: signedData } = await serviceClient.storage
           .from("b2b-documents")
           .createSignedUrl(path, 60 * 60 * 24 * 365);
@@ -402,7 +404,7 @@ Deno.serve(async (req: Request) => {
         meter_reading_end: meter_reading_end || null,
         known_defects_from_delivery: known_defects_from_delivery || null,
         additional_defects_at_return: additional_defects_at_return || null,
-        photo_urls: resolvedPhotoUrls.length > 0 ? resolvedPhotoUrls : (photo_urls || []),
+        photo_urls: resolvedPhotoUrls.length > 0 ? resolvedPhotoUrls : (photo_urls || []).filter((p: unknown) => isAllowedPhotoPath(p, reservation.b2b_profile_id)),
         customer_signature_data: customer_not_present ? null : customer_signature_data,
         staff_signature_data,
         staff_name,
@@ -722,7 +724,7 @@ function generateReturnProtocolHtml(data: {
       ${data.damages.some((d) => d.photo_urls.length > 0) ? `
       <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">
         ${data.damages.flatMap((d) => d.photo_urls).map((url, i) => `
-        <a href="${url}" target="_blank"><img class="photo-img" src="${url}" alt="Schadensfoto ${i + 1}" style="width:150px;height:112px;object-fit:cover;border:1px solid #e5e7eb;border-radius:6px;display:block;" /></a>`).join("")}
+        <a href="${escAttr(url)}" target="_blank"><img class="photo-img" src="${escAttr(url)}" alt="Schadensfoto ${i + 1}" style="width:150px;height:112px;object-fit:cover;border:1px solid #e5e7eb;border-radius:6px;display:block;" /></a>`).join("")}
       </div>` : ""}
     </div>` : "";
 
@@ -997,8 +999,8 @@ function generateReturnProtocolHtml(data: {
       <p style="font-weight:600;margin-bottom:8px;">📷 Fotodokumentation (${data.photoUrls.length} ${data.photoUrls.length === 1 ? 'Foto' : 'Fotos'}):</p>
       <div style="display:flex;flex-wrap:wrap;gap:8px;">
         ${data.photoUrls.map((url: string, i: number) => `
-          <a href="${url}" target="_blank" style="display:inline-block;">
-            <img class="photo-img" src="${url}" alt="Mangel-Foto ${i + 1}" style="max-height:120px;max-width:180px;border:1px solid #e5e7eb;border-radius:4px;object-fit:cover;" loading="eager" />
+          <a href="${escAttr(url)}" target="_blank" style="display:inline-block;">
+            <img class="photo-img" src="${escAttr(url)}" alt="Mangel-Foto ${i + 1}" style="max-height:120px;max-width:180px;border:1px solid #e5e7eb;border-radius:4px;object-fit:cover;" loading="eager" />
           </a>
         `).join("")}
       </div>

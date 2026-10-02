@@ -195,6 +195,16 @@ serve(async (req) => {
     if (!type || !id) {
       return new Response(JSON.stringify({ error: "type and id required" }), { status: 400, headers: corsHeaders });
     }
+    if (type !== "delivery_note" && type !== "return_protocol") {
+      return new Response(JSON.stringify({ error: "invalid type" }), { status: 400, headers: corsHeaders });
+    }
+    // Authorization: the caller must be able to see the protocol under their own access rules
+    // (owning customer or staff). RLS on the user client enforces this.
+    const accessTable = type === "delivery_note" ? "b2b_delivery_notes" : "b2b_return_protocols";
+    const { data: visible } = await userClient.from(accessTable).select("id").eq("id", id).maybeSingle();
+    if (!visible) {
+      return new Response(JSON.stringify({ error: "Not found" }), { status: 404, headers: corsHeaders });
+    }
 
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
     if (!resendApiKey) {

@@ -1,3 +1,4 @@
+import { csvCell } from "./csvCell";
 /**
  * Umsatzauswertung nach Standort, Kategorie und Artikel. Rein und testbar.
  *
@@ -186,7 +187,7 @@ export function analyze(
 }
 
 export function toCsv(rows: Bucket[], total: number, withCategory: boolean): string {
-  const esc = (s: string) => `"${s.replace(/"/g, '""')}"`;
+  const esc = (s: string) => csvCell(s);
   const head = ["Bezeichnung", ...(withCategory ? ["Kategorie"] : []), "Umsatz netto (EUR)", "Anteil (%)", "Rechnungen"];
   const body = rows.map((r) => [
     esc(r.label), ...(withCategory ? [esc(r.category ?? "")] : []),

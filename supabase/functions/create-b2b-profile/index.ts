@@ -215,6 +215,30 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+    // Signed-in caller: the session must belong to this account.
+    const bearer = (req.headers.get("Authorization") ?? "").replace(/^Bearer\s+/i, "");
+    const { data: caller } = bearer ? await serviceClient.auth.getUser(bearer) : { data: null };
+    if (caller?.user) {
+      if (caller.user.id !== authUser.id) {
+        return new Response(JSON.stringify({ error: "Forbidden" }), {
+          status: 403,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+    } else if (authUser.email_confirmed_at || authUser.last_sign_in_at) {
+      // Without a session this path is only for brand-new, never-confirmed signups.
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const { data: hasStaffRole } = await serviceClient.rpc("is_staff_member", { _user_id: authUser.id });
+    if (hasStaffRole) {
+      return new Response(JSON.stringify({ error: "Forbidden" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     const userId = authUser.id;
 
     // Check if profile already exists

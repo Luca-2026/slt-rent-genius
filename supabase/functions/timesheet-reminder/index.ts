@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { isCronCall, staffUserId } from "../_shared/cronAuth.ts";
 import { berlinToday, currentPeriod, periodRangeLabel, REMINDER_DAY } from "../_shared/payroll-period.ts";
 
 const corsHeaders = {
@@ -24,6 +25,10 @@ Deno.serve(async (req: Request) => {
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
+
+    if (!(await isCronCall(req, service)) && !(await staffUserId(req, service, true))) {
+      return json({ error: "Unauthorized" }, 401);
+    }
 
     const body = await req.json().catch(() => ({} as Record<string, unknown>));
     const force = body?.force === true; // manueller Test-Trigger

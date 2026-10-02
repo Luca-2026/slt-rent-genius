@@ -329,10 +329,12 @@ Deno.serve(async (req: Request) => {
     if (RESEND_API_KEY && RESEND_DOMAIN) {
       const location = offer.issuing_location || profile?.assigned_location || "krefeld";
       const locationEmail = locationEmails[location] || locationEmails["krefeld"];
-      const signerName = profile
+      const escHtml = (v: unknown) => String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+      const signerName = escHtml(profile
         ? `${profile.contact_first_name} ${profile.contact_last_name}`
-        : "Kunde";
-      const companyName = profile?.company_name || "Unbekannt";
+        : "Kunde");
+      const companyName = escHtml(profile?.company_name || "Unbekannt");
+      const subjectCompany = String(profile?.company_name || "Unbekannt").replace(/[\r\n]+/g, " ").slice(0, 120);
       const acceptDate = new Date().toLocaleDateString("de-DE", {
         day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit",
       });
@@ -346,14 +348,14 @@ Deno.serve(async (req: Request) => {
         body: JSON.stringify({
           from: `SLT-Rental <mieten@${RESEND_DOMAIN}>`,
           to: [locationEmail],
-          subject: `✅ Angebot ${offer.offer_number} angenommen – ${companyName}`,
+          subject: `✅ Angebot ${offer.offer_number} angenommen – ${subjectCompany}`,
           html: `
             <div style="font-family: 'Montserrat', Arial, sans-serif; max-width: 600px; margin: 0 auto;">
               <div style="background: #00507d; padding: 20px; text-align: center;">
                 <h1 style="color: #ffffff; margin: 0; font-size: 20px;">Angebot angenommen</h1>
               </div>
               <div style="padding: 24px; background: #ffffff;">
-                <p style="font-size: 15px; color: #333;">Das Angebot <strong>${offer.offer_number}</strong> wurde soeben vom Kunden digital unterschrieben und angenommen.</p>
+                <p style="font-size: 15px; color: #333;">Das Angebot <strong>${escHtml(offer.offer_number)}</strong> wurde soeben vom Kunden digital unterschrieben und angenommen.</p>
                 <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
                   <tr><td style="padding: 8px 0; color: #666; width: 140px;">Firma:</td><td style="padding: 8px 0; font-weight: bold;">${companyName}</td></tr>
                   <tr><td style="padding: 8px 0; color: #666;">Unterzeichner:</td><td style="padding: 8px 0;">${signerName}</td></tr>

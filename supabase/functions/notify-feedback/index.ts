@@ -58,6 +58,11 @@ Deno.serve(async (req: Request) => {
       .eq("id", feedbackId)
       .maybeSingle();
     if (error || !fb) return json({ error: "Feedback nicht gefunden" }, 404);
+    // Nur frisch abgegebenes Feedback darf die Benachrichtigung auslösen (Formular ruft direkt nach dem Speichern auf).
+    const ageMs = Date.now() - new Date(fb.created_at).getTime();
+    if (!(ageMs >= 0 && ageMs < 10 * 60 * 1000) || fb.status !== "new") {
+      return json({ error: "Feedback nicht gefunden" }, 404);
+    }
 
     const locKey = (fb.location ?? "").toLowerCase();
     const to = LOCATION_EMAILS[locKey] ?? "info@slt-rental.de";
@@ -126,10 +131,11 @@ Deno.serve(async (req: Request) => {
     if (!res.ok) {
       const errText = await res.text();
       console.error(`Resend failed [${res.status}]: ${errText}`);
-      return json({ error: "E-Mail-Versand fehlgeschlagen", status: res.status, details: errText }, res.status);
+      console.error("Resend", res.status, errText);
+      return json({ error: "E-Mail-Versand fehlgeschlagen" }, 502);
     }
 
-    return json({ success: true, sent_to: to });
+    return json({ success: true });
   } catch (e) {
     console.error("notify-feedback error:", e);
     return json({ error: e instanceof Error ? e.message : "Unbekannter Fehler" }, 500);
