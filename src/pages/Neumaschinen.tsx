@@ -629,8 +629,8 @@ export default function Neumaschinen() {
             </div>
             <div className="flex flex-wrap items-center gap-4">
               {externalBrandKeys.map((key) => (
-                <a key={key} href={brandWebsites[key]} target="_blank" rel="noopener noreferrer" className="bg-white hover:bg-white/90 transition-colors rounded-lg px-4 py-2 flex items-center">
-                  <img src={brandLogos[key]} alt={brandNames[key]} className="h-7 w-auto" />
+                <a key={key} href={brandWebsites[key]} target="_blank" rel="noopener noreferrer" className="bg-white hover:bg-white/90 transition-colors rounded-lg px-4 py-2 flex h-12 w-40 items-center justify-center">
+                  <img src={brandLogos[key]} alt={brandNames[key]} className="max-h-7 max-w-full w-auto object-contain" />
                 </a>
               ))}
             </div>
@@ -833,8 +833,8 @@ export default function Neumaschinen() {
                 <div className="bg-background rounded-2xl border border-border overflow-hidden">
                   <div className="bg-primary p-6 lg:p-8 flex items-center gap-4">
                     {logo ? (
-                      <div className="bg-white rounded-lg p-1.5">
-                        <img src={logo} alt={brandNames[key]} className="h-8 lg:h-10 w-auto max-w-[180px] object-contain" />
+                      <div className="bg-white rounded-lg px-4 py-2 flex h-14 w-44 lg:h-16 lg:w-52 shrink-0 items-center justify-center">
+                        <img src={logo} alt={brandNames[key]} className="max-h-8 lg:max-h-9 max-w-full w-auto object-contain" />
                       </div>
                     ) : (
                       <div className="bg-white rounded-lg px-4 py-2">
