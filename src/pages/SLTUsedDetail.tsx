@@ -242,7 +242,7 @@ export default function SLTUsedDetail() {
                       idx === activeImage ? "border-primary" : "border-transparent hover:border-primary/40"
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <img src={img} alt={`${machine.manufacturer} ${machine.model} gebraucht kaufen – Ansicht ${idx + 1}`} loading="lazy" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>

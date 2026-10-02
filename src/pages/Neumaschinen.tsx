@@ -195,7 +195,7 @@ function BrandNewMachines({ brandKey }: { brandKey: string }) {
             >
               <div className="w-20 h-20 rounded bg-muted flex items-center justify-center shrink-0 overflow-hidden">
                 {img ? (
-                  <img src={img} alt={m.name} className="w-full h-full object-contain" loading="lazy" />
+                  <img src={img} alt={`${m.name} – Neumaschine kaufen bei SLT Rental`} className="w-full h-full object-contain" loading="lazy" />
                 ) : (
                   <Package className="h-8 w-8 text-muted-foreground/40" />
                 )}
@@ -742,7 +742,7 @@ export default function Neumaschinen() {
                       {img ? (
                         <img
                           src={img}
-                          alt={m.name}
+                          alt={`${m.name} – Neumaschine kaufen bei SLT Rental`}
                           className="w-full h-full object-contain group-hover:scale-105 transition-transform"
                           loading="lazy"
                         />

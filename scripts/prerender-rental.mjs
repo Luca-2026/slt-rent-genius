@@ -587,13 +587,23 @@ const sitemapEntries = routes
     if (r.lastmod) parts.push(`    <lastmod>${escapeHtml(r.lastmod)}</lastmod>`);
     if (r.changefreq) parts.push(`    <changefreq>${escapeHtml(r.changefreq)}</changefreq>`);
     if (typeof r.priority === "number") parts.push(`    <priority>${r.priority.toFixed(1)}</priority>`);
+    // Image-Sitemap: Artikelbilder für die Google-Bildersuche.
+    const imgs = Array.isArray(r.sitemapImages) && r.sitemapImages.length
+      ? r.sitemapImages
+      : r.ogImage && !r.ogImage.includes("/images/og/default-") && r.routeType !== "category"
+        ? [{ loc: r.ogImage, title: r.h1 || r.title }]
+        : [];
+    for (const im of imgs) {
+      if (!im?.loc || !/^https?:\/\//.test(im.loc)) continue;
+      parts.push(`    <image:image><image:loc>${escapeHtml(im.loc)}</image:loc><image:title>${escapeHtml(im.title || "")}</image:title></image:image>`);
+    }
     parts.push(`  </url>`);
     return parts.join("\n");
   })
   .join("\n");
 
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${sitemapEntries}
 </urlset>
 `;

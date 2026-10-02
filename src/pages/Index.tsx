@@ -171,7 +171,7 @@ export default function Index() {
                     {loc.image ? (
                       <img
                         src={loc.image}
-                        alt={loc.name}
+                        alt={`SLT Rental Mietstation ${loc.name} – Baumaschinen und Eventartikel mieten`}
                         width={640}
                         height={360}
                         loading="lazy"
