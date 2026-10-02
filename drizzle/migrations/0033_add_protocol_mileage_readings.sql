@@ -1,0 +1,2 @@
+ALTER TABLE public.b2b_operating_hours_readings ADD COLUMN mileage_km numeric NULL;
+COMMENT ON COLUMN public.b2b_operating_hours_readings.mileage_km IS 'Optionaler Kilometerstand bei Übergabe oder Rückgabe, je Artikel.';
