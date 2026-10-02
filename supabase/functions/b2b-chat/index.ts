@@ -120,7 +120,12 @@ ${reservations.length === 0 ? "Keine Mietvorgänge" : reservations.slice(0, 5).m
 - Nenne IMMER den korrekten Firmennamen "SLT Rental" – niemals "SLT Rent"
 - Fragen zu Preisen für neue Produkte kannst du nicht beantworten`;
 
-    const { messages } = await req.json();
+    const rawBody = await req.json().catch(() => ({}));
+    // Only user/assistant turns with plain text are accepted; system/tool roles are dropped.
+    const messages = (Array.isArray(rawBody?.messages) ? rawBody.messages : [])
+      .filter((m: any) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
+      .slice(-30)
+      .map((m: any) => ({ role: m.role as "user" | "assistant", content: String(m.content).slice(0, 4000) }));
 
     // Call Lovable AI Gateway with streaming
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {

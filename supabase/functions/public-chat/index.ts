@@ -1367,7 +1367,12 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    const { messages } = await req.json();
+    const rawBody = await req.json().catch(() => ({}));
+    // Only user/assistant turns with plain text are accepted; system/tool roles are dropped.
+    const messages = (Array.isArray(rawBody?.messages) ? rawBody.messages : [])
+      .filter((m: any) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
+      .slice(-30)
+      .map((m: any) => ({ role: m.role as "user" | "assistant", content: String(m.content).slice(0, 4000) }));
 
     if (!messages || !Array.isArray(messages)) {
       return new Response(JSON.stringify({ error: "Invalid request" }), {
