@@ -2582,17 +2582,14 @@
       "toHome": "Zur Startseite"
     }
   },
-  "summerPromo": {
-    "badge": "Sommer-Aktion · gültig bis {{date}}",
-    "badgeShort": "Sommer-Aktion · bis {{date}}",
-    "headline": "Wir feiern den Sommer",
-    "titleSuffix": "– sichere dir jetzt 10% Rabatt auf alle Mietartikel aus dem Bereich Event!",
-    "dialogTitleSuffix": "– 10% Rabatt auf alle Event-Mietartikel!",
-    "details": "Gültig an allen Standorten (Krefeld, Bonn, Mülheim an der Ruhr) auf alle Event-Kategorien: Möbel & Zelte, Beleuchtung, Beschallung, Bühne, Traversen & Rigging, Geschirr, Hüpfburgen und mehr.",
+  "seasonPromo": {
+    "badge": "Saisonwechsel · Baumaschinen",
+    "headline": "10 % auf mobile Baumaschinen",
+    "details": "Bagger, Radlader und Arbeitsbühnen mieten – an unseren Standorten in Krefeld, Bonn und Mülheim an der Ruhr. Code bei der Buchung angeben; gilt nur für diese Maschinen, nicht für Anbaugeräte oder Zubehör.",
     "codeLabel": "Code:",
     "yourCode": "Dein Gutscheincode",
-    "cta": "Zu den Event-Mietartikeln",
-    "ctaDialog": "Jetzt Event-Artikel mieten",
+    "cta": "Baumaschinen entdecken",
+    "ctaDialog": "Baumaschinen ansehen",
     "later": "Später",
     "toastCopied": "Gutscheincode kopiert",
     "toastError": "Kopieren nicht möglich",

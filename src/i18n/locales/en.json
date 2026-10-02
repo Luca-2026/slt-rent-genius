@@ -2582,17 +2582,14 @@
       "toHome": "Back to Home"
     }
   },
-  "summerPromo": {
-    "badge": "Summer promo · valid until {{date}}",
-    "badgeShort": "Summer promo · until {{date}}",
-    "headline": "Celebrating summer with you",
-    "titleSuffix": "– save 10% now on all event rental items!",
-    "dialogTitleSuffix": "– 10% off on all event rental items!",
-    "details": "Valid at all locations (Krefeld, Bonn, Mülheim an der Ruhr) for all event categories: furniture & tents, lighting, PA systems, stage, truss & rigging, tableware, bouncy castles and more.",
+  "seasonPromo": {
+    "badge": "Season change · construction machines",
+    "headline": "10% off mobile construction machines",
+    "details": "Rent excavators, wheel loaders and work platforms at our Krefeld, Bonn and Mülheim an der Ruhr locations. Quote the code when booking; only these machines qualify, not attachments or accessories.",
     "codeLabel": "Code:",
     "yourCode": "Your voucher code",
-    "cta": "Browse event rentals",
-    "ctaDialog": "Rent event items now",
+    "cta": "Explore construction machines",
+    "ctaDialog": "Browse machines",
     "later": "Later",
     "toastCopied": "Voucher code copied",
     "toastError": "Unable to copy",
