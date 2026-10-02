@@ -137,7 +137,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     }
     if (kind === "return") {
       supabase.from("b2b_operating_hours_readings").select("product_name,operating_hours,fuel_level,mileage_km").eq("rental_inquiry_id", inquiry.id).eq("kind", "delivery").then(({ data }) => {
-        const m: Record<string, { hours: number | null; fuel: string | null }> = {};
+        const m: Record<string, { hours: number | null; fuel: string | null; mileage: number | null }> = {};
         for (const r of data ?? []) m[r.product_name.trim().toLowerCase()] = { hours: r.operating_hours, fuel: r.fuel_level, mileage: r.mileage_km };
         setPrevReadings(m);
       });
