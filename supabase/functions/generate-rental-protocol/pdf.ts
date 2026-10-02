@@ -15,7 +15,7 @@ export interface ProtocolPdfData {
   customer: { company: string | null; name: string | null; street: string | null; postalCity: string | null; email: string | null; phone: string | null };
   order: { confirmationNumber: string | null; offerNumber: string | null; location: string; locationAddress: string; start: string | null; end: string | null; deliveryAddress: string | null; deliveryNoteNumber: string | null };
   items: { name: string; quantity: number; detail: string | null }[];
-  condition: { readings?: { item_name: string; operating_hours: string; fuel_level: string }[]; operatingHours: string | null; fuelLevel: string | null; cleanliness: number | null; knownDefects: string | null; notes: string | null; allReturned: boolean | null; missingNotes: string | null };
+  condition: { readings?: { item_name: string; operating_hours: string; fuel_level: string; mileage?: string }[]; operatingHours: string | null; fuelLevel: string | null; cleanliness: number | null; knownDefects: string | null; notes: string | null; allReturned: boolean | null; missingNotes: string | null };
   idCheck: { checked: boolean; type: string | null };
   confirmations: { instructed?: boolean; agb: boolean; items: boolean; customerNotPresent: boolean };
   damages: ProtocolPdfDamage[];
@@ -216,7 +216,10 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
   section("Zustand");
   const rd = data.condition.readings ?? [];
   if (rd.length) {
-    for (const m of rd) kv(m.item_name.length > 34 ? m.item_name.slice(0, 33) + "\u2026" : m.item_name, `Betriebsstunden ${m.operating_hours} h \u00B7 Tank ${FUEL[m.fuel_level] ?? (m.fuel_level === "kein_tank" ? "Elektro / kein Tank" : m.fuel_level)}`);
+     for (const m of rd) {
+       const values = [m.mileage ? `Kilometerstand: ${m.mileage} km` : "", m.operating_hours ? `Betriebsstunden: ${m.operating_hours} h` : "", m.fuel_level && m.fuel_level !== "kein_tank" ? `Tank: ${FUEL[m.fuel_level] ?? m.fuel_level}` : ""].filter(Boolean);
+       if (values.length) kv(m.item_name, values.join(" \u00B7 "));
+     }
   } else {
     if (data.condition.operatingHours) kv("Betriebsstunden", data.condition.operatingHours);
     if (data.condition.fuelLevel) kv("Tankf\u00FCllstand", FUEL[data.condition.fuelLevel] ?? data.condition.fuelLevel);
@@ -266,10 +269,10 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
     para(`Der Kunde war bei der ${isReturn ? "R\u00FCckgabe" : "\u00DCbergabe"} nicht anwesend. Das Protokoll wurde vom Mitarbeiter allein erstellt.`, 9.5, RED);
   } else {
     if (!isReturn) para(`${data.confirmations.agb ? "[x]" : "[ ]"} Der Mieter hat die Allgemeinen Gesch\u00E4ftsbedingungen und die Auftragsbest\u00E4tigung erhalten und zur Kenntnis genommen.`);
-    if (!isReturn && rd.length) para(`${data.confirmations.instructed ? "[x]" : "[ ]"} Der Mieter wurde in Bedienung, Betankung und sichere Handhabung der Maschinen eingewiesen.`);
+     if (!isReturn && data.confirmations.instructed) para("[x] Der Mieter wurde in Bedienung und sichere Handhabung der Maschinen eingewiesen.");
     para(`${data.confirmations.items ? "[x]" : "[ ]"} ${isReturn
-      ? "Der Mieter best\u00E4tigt die R\u00FCckgabe der Mietgegenst\u00E4nde sowie die Richtigkeit der erfassten Betriebsstunden, Tankf\u00FCllst\u00E4nde, der Sauberkeit und der dokumentierten Sch\u00E4den."
-      : "Der Mieter best\u00E4tigt, die oben aufgef\u00FChrten Mietgegenst\u00E4nde vollst\u00E4ndig, funktionsf\u00E4hig und in einwandfreiem, betriebssicherem Zustand \u00FCbernommen zu haben - mit Ausnahme der in diesem Protokoll dokumentierten Sch\u00E4den und M\u00E4ngel. Die erfassten Betriebsstunden, Tankf\u00FCllst\u00E4nde und die Sauberkeit sind zutreffend."}`);
+       ? "Der Mieter best\u00E4tigt die R\u00FCckgabe der Mietgegenst\u00E4nde sowie die Richtigkeit der oben dokumentierten Zustands- und Messwerte."
+       : "Der Mieter best\u00E4tigt die \u00DCbernahme der oben aufgef\u00FChrten Mietgegenst\u00E4nde mit den dokumentierten M\u00E4ngeln und Zustands- und Messwerten."}`);
   }
   y -= 6;
   ensure(120);

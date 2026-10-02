@@ -1287,6 +1287,7 @@ export type Database = {
           kind: string
           location: string | null
           managed_product_id: string | null
+          mileage_km: number | null
           operating_hours: number | null
           product_name: string
           protocol_number: string | null
@@ -1304,6 +1305,7 @@ export type Database = {
           kind: string
           location?: string | null
           managed_product_id?: string | null
+          mileage_km?: number | null
           operating_hours?: number | null
           product_name: string
           protocol_number?: string | null
@@ -1321,6 +1323,7 @@ export type Database = {
           kind?: string
           location?: string | null
           managed_product_id?: string | null
+          mileage_km?: number | null
           operating_hours?: number | null
           product_name?: string
           protocol_number?: string | null

@@ -1,4 +1,5 @@
 import { isAllowedPhotoPath, isAllowedPhotoUrl, escAttr } from "../_shared/protocolPhotos.ts";
+import { parseProtocolMeasurements, measurementRows, type ProtocolMeasurement } from "../_shared/protocolMeasurements.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
@@ -31,6 +32,7 @@ const SLT_COMPANY = {
 };
 
 interface ReturnProtocolRequest {
+  measurements?: unknown;
   reservation_id: string;
   customer_signature_data: string | null;
   customer_not_present?: boolean;
@@ -142,6 +144,8 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: ReturnProtocolRequest = await req.json();
+    let measurements: ProtocolMeasurement[];
+    try { measurements = parseProtocolMeasurements(body.measurements); } catch { return new Response(JSON.stringify({ error: "Ungültige Messwerte." }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }); }
     const {
       reservation_id,
       customer_signature_data,
@@ -204,6 +208,9 @@ Deno.serve(async (req: Request) => {
         status: 404,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    }
+    if (measurements.some((m) => m.item_name !== (reservation.product_name || reservation.product_id))) {
+      return new Response(JSON.stringify({ error: "Messwert gehört nicht zu dieser Reservierung." }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
     // Fetch profile
@@ -346,6 +353,7 @@ Deno.serve(async (req: Request) => {
       meterReadingEnd: meter_reading_end || null,
       fuelLevelStart: fuel_level_start || null,
       fuelLevelEnd: fuel_level_end || null,
+      measurements,
       cleanlinessRating: cleanliness_rating || null,
       knownDefectsFromDelivery: known_defects_from_delivery || null,
       additionalDefectsAtReturn: additional_defects_at_return || null,
@@ -402,6 +410,7 @@ Deno.serve(async (req: Request) => {
         missing_items_notes: missing_items_notes || null,
         meter_reading_start: meter_reading_start || null,
         meter_reading_end: meter_reading_end || null,
+        protocol_data: { measurements },
         known_defects_from_delivery: known_defects_from_delivery || null,
         additional_defects_at_return: additional_defects_at_return || null,
         photo_urls: resolvedPhotoUrls.length > 0 ? resolvedPhotoUrls : (photo_urls || []).filter((p: unknown) => isAllowedPhotoPath(p, reservation.b2b_profile_id)),
@@ -427,6 +436,17 @@ Deno.serve(async (req: Request) => {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    }
+
+    if (measurements.length) {
+      const { error: readingError } = await serviceClient.from("b2b_operating_hours_readings").insert(measurements.map((m) => ({
+        product_name: m.item_name, location: reservation?.location ?? profile.assigned_location ?? null,
+        kind: "return", operating_hours: m.operating_hours ? Number(m.operating_hours.replace(",", ".")) : null,
+        mileage_km: m.mileage ? Number(m.mileage.replace(",", ".")) : null,
+        fuel_level: m.fuel_level || null, return_protocol_id: returnProtocol.id,
+        protocol_number: returnProtocolNumber, recorded_by: user.id,
+      })));
+      if (readingError) console.error("Return readings insert failed", readingError);
     }
 
     if (resolvedDamages.length > 0) {
@@ -546,6 +566,7 @@ Deno.serve(async (req: Request) => {
             ...(!all_items_returned ? [{ label: "Fehlende Gegenstaende", value: missing_items_notes || "Nicht alle Artikel zurueckgegeben" }] : []),
             ...(meter_reading_start || meter_reading_end ? [{ label: "Betriebsstunden", value: `Start: ${meter_reading_start || '-'} / Ende: ${meter_reading_end || '-'}` }] : []),
             ...(fuel_level_start || fuel_level_end ? [{ label: "Tankfuellstand", value: `Start: ${fuel_level_start || '-'} / Ende: ${fuel_level_end || '-'}` }] : []),
+            ...measurements.flatMap((m) => measurementRows(m).map((row) => ({ label: `${m.item_name}: ${row.label}`, value: row.value }))),
             ...(cleanliness_rating ? [{ label: "Sauberkeit (1-5)", value: String(cleanliness_rating) }] : []),
             ...(known_defects_from_delivery ? [{ label: "Bekannte Maengel aus Uebergabe", value: known_defects_from_delivery }] : []),
             ...(additional_defects_at_return ? [{ label: "Neue Maengel bei Rueckgabe", value: additional_defects_at_return }] : []),
@@ -680,6 +701,7 @@ function generateReturnProtocolHtml(data: {
   meterReadingEnd: string | null;
   fuelLevelStart: string | null;
   fuelLevelEnd: string | null;
+  measurements: ProtocolMeasurement[];
   cleanlinessRating: number | null;
   knownDefectsFromDelivery: string | null;
   additionalDefectsAtReturn: string | null;
@@ -953,6 +975,7 @@ function generateReturnProtocolHtml(data: {
           <td style="padding:6px 0;color:#595959;">Tankfüllstand (Rückgabe):</td>
           <td style="padding:6px 0;font-weight:500;">${data.fuelLevelEnd || "–"}</td>
         </tr>` : ""}
+        ${data.measurements.map((m) => `<tr><td colspan="2" style="padding:8px 0 2px;font-weight:600;border-top:1px solid #b3d4e8;">${escapeHtml(m.item_name)}</td></tr>${measurementRows(m).map((row) => `<tr><td style="padding:4px 0;color:#595959;">${row.label}:</td><td style="padding:4px 0;font-weight:600;">${escapeHtml(row.value)}</td></tr>`).join("")}`).join("")}
         ${data.cleanlinessRating ? `
         <tr>
           <td style="padding:6px 0;color:#595959;">Sauberkeit (1-5):</td>

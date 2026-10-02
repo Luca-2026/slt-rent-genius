@@ -232,6 +232,13 @@
       "when": 1790925644314,
       "tag": "0032_allow_staff_protocol_damage_photo_upload",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1790925968372,
+      "tag": "0033_add_protocol_mileage_readings",
+      "breakpoints": true
     }
   ]
 }

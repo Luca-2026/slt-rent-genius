@@ -31,7 +31,7 @@ const Body = z.object({
   items_confirmed: z.boolean(),
   operating_hours: z.string().max(40).nullable(),
   fuel_level: z.string().max(20).nullable(),
-  machine_readings: z.array(z.object({ item_name: z.string().max(200), operating_hours: z.string().max(20), fuel_level: z.string().max(20), managed_product_id: z.string().uuid().nullable().optional() })).max(30).optional().default([]),
+  machine_readings: z.array(z.object({ item_name: z.string().max(200), operating_hours: z.string().max(20), fuel_level: z.string().max(20), mileage: z.string().max(20).optional().default(""), managed_product_id: z.string().uuid().nullable().optional() })).max(30).optional().default([]),
   instructed: z.boolean().optional().default(false),
   cleanliness_rating: z.number().int().min(1).max(5).nullable(),
   known_defects: z.string().max(2000).nullable(),
@@ -87,7 +87,10 @@ Deno.serve(async (req) => {
     if (!parsed.success) return json({ error: "Ung\u00FCltige Angaben.", details: parsed.error.flatten().fieldErrors }, 400);
     const b = parsed.data;
     for (const m of b.machine_readings) {
-      if (!m.operating_hours.trim() || !m.fuel_level) return json({ error: `Betriebsstunden und Tankfüllstand fehlen für ${m.item_name}.` }, 400);
+      if (!m.item_name.trim() || ![m.operating_hours, m.fuel_level, m.mileage].some(Boolean) ||
+          [m.operating_hours, m.mileage].some((v) => v && (!/^\d{1,9}(?:[,.]\d{1,2})?$/.test(v) || Number(v.replace(",", ".")) > 999999999)) ||
+          (m.fuel_level && !["voll", "dreiviertel", "halb", "viertel", "leer", "kein_tank"].includes(m.fuel_level)))
+        return json({ error: `Ungültiger Messwert für ${m.item_name}.` }, 400);
     }
   const isReturn = b.kind === "return";
 
@@ -194,7 +197,7 @@ Deno.serve(async (req) => {
       pdf_path: pdfPath,
       items: b.items,
       photos: storedPhotos,
-      operating_hours: b.operating_hours, fuel_level: b.fuel_level, cleanliness_rating: b.cleanliness_rating,
+       operating_hours: b.operating_hours, fuel_level: b.fuel_level, machine_readings: b.machine_readings, cleanliness_rating: b.cleanliness_rating,
       customer_not_present: b.customer_not_present, customer_signer_name: b.customer_signer_name,
       items_confirmed: b.items_confirmed, created_by: user.id,
     };
@@ -244,7 +247,8 @@ Deno.serve(async (req) => {
       const { error: rErr } = await svc.from("b2b_operating_hours_readings").insert(b.machine_readings.map((m) => ({
         managed_product_id: m.managed_product_id ?? byName[m.item_name.trim().toLowerCase()] ?? null,
         product_name: m.item_name, location: lk, kind: isReturn ? "return" : "delivery",
-        operating_hours: Number(m.operating_hours.replace(/\./g, "").replace(",", ".")) || null,
+         operating_hours: m.operating_hours ? Number(m.operating_hours.replace(",", ".")) : null,
+         mileage_km: m.mileage ? Number(m.mileage.replace(",", ".")) : null,
         fuel_level: m.fuel_level || null, rental_inquiry_id: inq.id,
         delivery_note_id: isReturn ? null : protocolId, return_protocol_id: isReturn ? protocolId : null,
         protocol_number: number, recorded_by: user.id,

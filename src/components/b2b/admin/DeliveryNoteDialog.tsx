@@ -16,6 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import { MeasurementFields, emptyMeasurement, validMeasurement, selectedMeasurement, type Measurement } from "@/components/b2b/protocols/MeasurementFields";
 import { SignaturePad } from "@/components/b2b/SignaturePad";
 import { ProtocolWizard, type WizardStep } from "@/components/b2b/protocols/ProtocolWizard";
 import { DamagesStep } from "@/components/b2b/protocols/DamagesStep";
@@ -43,6 +44,7 @@ interface DeliveryNoteDraft {
   operatingHours: string;
   fuelLevel: string;
   cleanlinessRating: number;
+  measurements?: Record<number, Measurement>;
   damages: (Omit<ProtocolDamage, "photos"> & { photos: { file: File }[] })[];
 }
 
@@ -89,6 +91,7 @@ export function DeliveryNoteDialog({
   const [notes, setNotes] = useState("");
   const [knownDefects, setKnownDefects] = useState("");
   const [damages, setDamages] = useState<ProtocolDamage[]>([]);
+  const [measurements, setMeasurements] = useState<Record<number, Measurement>>({});
   const [agbAccepted, setAgbAccepted] = useState(false);
   const [offerAccepted, setOfferAccepted] = useState(false);
   const [itemsReceived, setItemsReceived] = useState(false);
@@ -115,6 +118,7 @@ export function DeliveryNoteDialog({
     setNotes("");
     setKnownDefects("");
     setDamages([]);
+    setMeasurements({});
     setAgbAccepted(false);
     setOfferAccepted(false);
     setItemsReceived(false);
@@ -130,11 +134,11 @@ export function DeliveryNoteDialog({
     const value: DeliveryNoteDraft = {
       customerSignature, staffSignature, staffName, notes, knownDefects,
       customerNotPresent, agbAccepted, offerAccepted, itemsReceived,
-      idChecked, idDocType, operatingHours, fuelLevel, cleanlinessRating,
+      idChecked, idDocType, operatingHours, fuelLevel, cleanlinessRating, measurements,
       damages: damages.map(({ photos, ...damage }) => ({ ...damage, photos: photos.map(({ file }) => ({ file })) })),
     };
     void writeProtocolDraft(draftKey, value).catch(() => toast({ title: "Entwurf nicht gespeichert", description: "Bitte Gerätespeicher prüfen.", variant: "destructive" }));
-  }, [open, draftKey, readyFor, result, customerSignature, staffSignature, staffName, notes, knownDefects, customerNotPresent, agbAccepted, offerAccepted, itemsReceived, idChecked, idDocType, operatingHours, fuelLevel, cleanlinessRating, damages, toast]);
+  }, [open, draftKey, readyFor, result, customerSignature, staffSignature, staffName, notes, knownDefects, customerNotPresent, agbAccepted, offerAccepted, itemsReceived, idChecked, idDocType, operatingHours, fuelLevel, cleanlinessRating, measurements, damages, toast]);
 
   useEffect(() => {
     if (!open) {
@@ -170,6 +174,7 @@ export function DeliveryNoteDialog({
       setOperatingHours(d.operatingHours);
       setFuelLevel(d.fuelLevel);
       setCleanlinessRating(d.cleanlinessRating);
+      setMeasurements(d.measurements ?? {});
       setDamages((d.damages || []).map((damage) => ({ ...damage, photos: damage.photos.map(({ file }) => ({ file, preview: URL.createObjectURL(file) })) })));
       toast({ title: "Protokollentwurf wiederhergestellt" });
     }).catch(() => toast({ title: "Entwurf konnte nicht geladen werden", variant: "destructive" }))
@@ -204,8 +209,10 @@ export function DeliveryNoteDialog({
           agb_accepted: customerNotPresent ? false : true,
           id_checked: idChecked,
           id_check_type: idDocType || undefined,
-          operating_hours: operatingHours || undefined,
-          fuel_level: fuelLevel || undefined,
+          measurements: offerItems.filter((i) => i.offer_id === offer.id).flatMap((item, index) => {
+            const m = { ...emptyMeasurement(), ...measurements[index] };
+            return m.useHours || m.useFuel || m.useMileage ? [{ item_name: item.product_name, ...selectedMeasurement(m) }] : [];
+          }),
           cleanliness_rating: cleanlinessRating > 0 ? cleanlinessRating : undefined,
           customer_not_present: customerNotPresent,
         },
@@ -220,7 +227,7 @@ export function DeliveryNoteDialog({
       });
       setCreatedId(data.delivery_note?.id || null);
 
-       completed.current = true;
+      completed.current = true;
        if (draftKey) await deleteProtocolDraft(draftKey).catch(() => toast({ title: "Lokaler Entwurf konnte nicht entfernt werden" }));
       onCreated();
     } catch (error: any) {
@@ -260,13 +267,14 @@ export function DeliveryNoteDialog({
 
   const legalDone = customerNotPresent || (agbAccepted && offerAccepted && itemsReceived);
   const signaturesDone = !!staffSignature && !!staffName.trim() && (customerNotPresent || !!customerSignature);
-  const equipmentDone = !needsEquipmentFields ? cleanlinessRating > 0 : (!!operatingHours && !!fuelLevel && cleanlinessRating > 0);
-  const allValid = legalDone && signaturesDone && idChecked;
+  const equipmentDone = cleanlinessRating > 0 && items.every((_, i) => validMeasurement({ ...emptyMeasurement(), ...measurements[i] }));
+  const allValid = legalDone && signaturesDone && idChecked && equipmentDone;
 
   const missing: string[] = [];
   if (!idChecked) missing.push("Personalausweis abgleichen");
   if (!legalDone) missing.push("rechtliche Bestätigungen");
   if (!signaturesDone) missing.push("Unterschriften und Mitarbeitername");
+  if (!equipmentDone) missing.push("Sauberkeit und ausgewählte Messwerte");
 
   const steps: WizardStep[] = [
     {
@@ -327,40 +335,16 @@ export function DeliveryNoteDialog({
     {
       id: "equipment",
       title: "Gerätedaten",
-      summary: needsEquipmentFields
-        ? `Betriebsstunden, Tank, Sauberkeit${cleanlinessRating ? ` ${cleanlinessRating}/5` : ""}`
-        : `Sauberkeit${cleanlinessRating ? ` ${cleanlinessRating}/5` : " 1–5"}`,
+      summary: `Sauberkeit${cleanlinessRating ? ` ${cleanlinessRating}/5` : " 1–5"}`,
       done: equipmentDone,
       content: (
         <div className="space-y-3">
-          {needsEquipmentFields && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <Label className="text-xs">Betriebsstunden</Label>
-                <Input
-                  value={operatingHours}
-                  onChange={(e) => setOperatingHours(e.target.value)}
-                  placeholder="z. B. 1.250 Bh"
-                  inputMode="decimal"
-                  className="text-sm"
-                />
-              </div>
-              <div>
-                <Label className="text-xs">Tankfüllstand</Label>
-                <Select value={fuelLevel} onValueChange={setFuelLevel}>
-                  <SelectTrigger className="text-sm h-10"><SelectValue placeholder="Auswählen" /></SelectTrigger>
-                  <SelectContent>
-                    {FUEL_LEVELS.map((f) => <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          )}
+          {items.map((item, i) => <MeasurementFields key={item.id} name={item.product_name} value={{ ...emptyMeasurement(), ...measurements[i] }} onChange={(m) => setMeasurements((prev) => ({ ...prev, [i]: m }))} />)}
           <div>
             <Label className="text-xs">Sauberkeit des Mietgerätes</Label>
             <div className="flex gap-2 mt-1">
               {[1, 2, 3, 4, 5].map((n) => (
-                <button
+                <Button
                   key={n}
                   type="button"
                   onClick={() => setCleanlinessRating(n)}
@@ -369,16 +353,11 @@ export function DeliveryNoteDialog({
                   }`}
                 >
                   {n}
-                </button>
+                </Button>
               ))}
             </div>
             <p className="text-[11px] text-muted-foreground mt-1">{CLEANLINESS_HINT}</p>
           </div>
-          {!needsEquipmentFields && (
-            <p className="text-xs text-muted-foreground">
-              Betriebsstunden und Tankfüllstand erscheinen nur bei Maschinen mit Motor.
-            </p>
-          )}
         </div>
       ),
     },

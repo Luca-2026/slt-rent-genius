@@ -23,6 +23,7 @@ import { CLEANLINESS_HINT, FUEL_LEVELS, isMachineLike, toNumber, type ProtocolDa
 import {
   MAX_PROTOCOL_PHOTOS, formatPhotoTimestamp, photoTakenAt, protocolItemsFromInquiry, remainingPhotoSlots, type ProtocolKind,
 } from "@/lib/rentalProtocol";
+import { MeasurementFields, emptyMeasurement, validMeasurement, selectedMeasurement, type Measurement } from "@/components/b2b/protocols/MeasurementFields";
 import { prepareProtocolPhoto, protocolPhotoBase64 } from "@/lib/imageCompress";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { useAuth } from "@/hooks/useAuth";
@@ -35,7 +36,7 @@ interface GeneralPhoto { id: string; file: File; preview: string; caption: strin
 type SavedPhoto = Omit<GeneralPhoto, "preview">;
 interface SavedProtocol {
   idChecked: boolean; idDocType: string; cleanliness: number;
-  readings: Record<number, { hours: string; fuel: string }>;
+  readings: Record<number, Measurement>;
   machineIdx: number[]; instructed: boolean; knownDefects: string; notes: string;
   allReturned: boolean; missingNotes: string; photos: SavedPhoto[];
   damages: (Omit<ProtocolDamage, "photos"> & { photos: { file: File }[] })[];
@@ -76,13 +77,11 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
 
   const [idChecked, setIdChecked] = useState(false);
   const [idDocType, setIdDocType] = useState("");
-  const [operatingHours, setOperatingHours] = useState("");
-  const [fuelLevel, setFuelLevel] = useState("");
   const [cleanliness, setCleanliness] = useState(0);
-  const [readings, setReadings] = useState<Record<number, { hours: string; fuel: string }>>({});
+  const [readings, setReadings] = useState<Record<number, Measurement>>({});
   const [machineIdx, setMachineIdx] = useState<number[]>([]);
   const [cms, setCms] = useState<Record<string, { id: string; hours: boolean; tank: boolean }>>({});
-  const [prevReadings, setPrevReadings] = useState<Record<string, { hours: number | null; fuel: string | null }>>({});
+  const [prevReadings, setPrevReadings] = useState<Record<string, { hours: number | null; fuel: string | null; mileage: number | null }>>({});
   const [instructed, setInstructed] = useState(false);
   const [knownDefects, setKnownDefects] = useState("");
   const [notes, setNotes] = useState("");
@@ -119,7 +118,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     completed.current = false;
     setReadyFor(null);
     let cancelled = false;
-    setIdChecked(false); setIdDocType(""); setOperatingHours(""); setFuelLevel(""); setCleanliness(0); setReadings({}); setInstructed(false);
+    setIdChecked(false); setIdDocType(""); setCleanliness(0); setReadings({}); setInstructed(false);
     const its = protocolItemsFromInquiry(inquiry as never);
     setMachineIdx(its.map((it, i) => (isMachineLike([it.name]) ? i : -1)).filter((i) => i >= 0));
     setCms({}); setPrevReadings({});
@@ -137,9 +136,9 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       });
     }
     if (kind === "return") {
-      supabase.from("b2b_operating_hours_readings").select("product_name,operating_hours,fuel_level").eq("rental_inquiry_id", inquiry.id).eq("kind", "delivery").then(({ data }) => {
-        const m: Record<string, { hours: number | null; fuel: string | null }> = {};
-        for (const r of data ?? []) m[r.product_name.trim().toLowerCase()] = { hours: r.operating_hours, fuel: r.fuel_level };
+      supabase.from("b2b_operating_hours_readings").select("product_name,operating_hours,fuel_level,mileage_km").eq("rental_inquiry_id", inquiry.id).eq("kind", "delivery").then(({ data }) => {
+        const m: Record<string, { hours: number | null; fuel: string | null; mileage: number | null }> = {};
+        for (const r of data ?? []) m[r.product_name.trim().toLowerCase()] = { hours: r.operating_hours, fuel: r.fuel_level, mileage: r.mileage_km };
         setPrevReadings(m);
       });
     }
@@ -152,7 +151,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       if (cancelled || !draft || !draft.value) return;
       const d = draft.value;
       setIdChecked(d.idChecked); setIdDocType(d.idDocType); setCleanliness(d.cleanliness);
-      setReadings(d.readings); setMachineIdx(d.machineIdx); setInstructed(d.instructed);
+      setReadings(d.readings ?? {}); setMachineIdx(d.machineIdx ?? []); setInstructed(d.instructed);
       setKnownDefects(d.knownDefects); setNotes(d.notes); setAllReturned(d.allReturned);
       setMissingNotes(d.missingNotes);
       setPhotos(d.photos.map((p) => ({ ...p, preview: URL.createObjectURL(p.file) })));
@@ -189,12 +188,10 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const items = useMemo(() => (inquiry ? protocolItemsFromInquiry(inquiry as never) : []), [inquiry]);
   const itemNames = items.map((i) => i.name);
   void itemNames;
-  const machine = machineIdx.length > 0;
-  const setReading = (i: number, patch: Partial<{ hours: string; fuel: string }>) =>
-    setReadings((r) => ({ ...r, [i]: { hours: "", fuel: "", ...r[i], ...patch } }));
+  const machine = items.some((it) => isMachineLike([it.name]) || cms[it.name.trim().toLowerCase()]?.hours);
+  const setReading = (i: number, reading: Measurement) =>
+    setReadings((r) => ({ ...r, [i]: reading }));
   const cmsFor = (i: number) => (items[i] ? cms[items[i].name.trim().toLowerCase()] : undefined);
-  const needsFuel = (i: number) => { const c = cmsFor(i); return c ? c.tank : true; };
-  const toggleMachine = (i: number) => setMachineIdx((m) => (m.includes(i) ? m.filter((x) => x !== i) : [...m, i].sort((a, b) => a - b)));
   const usedPhotos = photos.length + damages.reduce((n, d) => n + d.photos.length, 0);
   const slotsLeft = remainingPhotoSlots(usedPhotos);
 
@@ -221,7 +218,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     } finally { setPhotoBusy(false); }
   };
 
-  const readingsDone = machineIdx.every((i) => !!readings[i]?.hours?.trim() && (!needsFuel(i) || !!readings[i]?.fuel));
+  const readingsDone = items.every((_, i) => validMeasurement({ ...emptyMeasurement(), ...readings[i] }));
   const equipmentDone = cleanliness > 0 && readingsDone;
   const itemsDone = isReturn ? (allReturned || !!missingNotes.trim()) : true;
   const legalDone = customerNotPresent || (isReturn ? itemsConfirmed : agbAccepted && itemsConfirmed && (!machine || instructed));
@@ -232,7 +229,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const missing: string[] = [];
   if (!itemsDone) missing.push("fehlende Artikel beschreiben");
   if (!idDone) missing.push("Ausweis abgleichen");
-  if (!equipmentDone) missing.push(machine ? "Betriebsstunden, Tankfüllstand und Sauberkeit" : "Sauberkeit");
+  if (!equipmentDone) missing.push("ausgewählte Messwerte und Sauberkeit");
   if (!damagesDone) missing.push("Beschreibung bei jedem Schaden");
   if (!legalDone) missing.push("Bestätigungen des Kunden");
   if (!signaturesDone) missing.push("Unterschriften und Namen");
@@ -257,11 +254,12 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
           quantity: Math.max(1, Math.round(toNumber(d.quantity) || 1)), photos: dp,
         });
       }
-      const machineReadings = machineIdx.map((i) => ({
-        item_name: items[i]?.name ?? `Position ${i + 1}`,
-        operating_hours: readings[i]?.hours?.trim() ?? "", fuel_level: needsFuel(i) ? readings[i]?.fuel ?? "" : "kein_tank",
-        managed_product_id: cmsFor(i)?.id ?? null,
-      }));
+      const machineReadings = items.flatMap((it, i) => {
+        const reading = { ...emptyMeasurement(), ...readings[i] };
+        return reading.useHours || reading.useFuel || reading.useMileage
+          ? [{ item_name: it.name, ...selectedMeasurement(reading), managed_product_id: cmsFor(i)?.id ?? null }]
+          : [];
+      });
       setProgress("Protokoll und PDF werden erstellt …");
       const { data, error } = await supabase.functions.invoke("generate-rental-protocol", {
         body: {
@@ -273,8 +271,8 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
           id_checked: !customerNotPresent && idChecked, id_check_type: idDocType || null,
           agb_accepted: !customerNotPresent && !isReturn && agbAccepted,
           items_confirmed: !customerNotPresent && itemsConfirmed,
-          operating_hours: machineReadings.map((m) => `${m.item_name}: ${m.operating_hours}`).join("; ").slice(0, 40) || operatingHours.trim() || null,
-          fuel_level: machineReadings[0]?.fuel_level ?? (fuelLevel || null),
+          operating_hours: machineReadings.filter((m) => m.operating_hours).map((m) => `${m.item_name}: ${m.operating_hours}`).join("; ").slice(0, 40) || null,
+          fuel_level: machineReadings.find((m) => m.fuel_level)?.fuel_level ?? null,
           machine_readings: machineReadings, instructed: !customerNotPresent && !isReturn && instructed,
           cleanliness_rating: cleanliness || null,
           known_defects: knownDefects.trim() || null, notes: notes.trim() || null,
@@ -355,47 +353,17 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     {
       id: "equipment",
       title: "Zustand",
-      summary: machine ? "Betriebsstunden, Tank, Sauberkeit" : `Sauberkeit${cleanliness ? ` ${cleanliness}/5` : ""}`,
+      summary: `Sauberkeit${cleanliness ? ` ${cleanliness}/5` : ""}`,
       done: equipmentDone,
       content: (
         <div className="space-y-4">
           <div className="space-y-3">
-            <p className="text-xs text-muted-foreground">Bei Maschinen und Motorgeräten Betriebsstunden (vom Zähler ablesen) und Tankfüllstand erfassen.</p>
             {items.map((it, i) => {
-              const on = machineIdx.includes(i);
-              const c = cmsFor(i);
               const prev = prevReadings[it.name.trim().toLowerCase()];
-              // Im CMS als Nicht-Maschine gepflegt (z. B. Soundanlage): keine Abfrage
-              if (c && !c.hours && !on) return null;
-              const r = readings[i] ?? { hours: "", fuel: "" };
-              return (
-                <div key={i} className={`rounded-lg border p-3 ${on ? "border-primary/40 bg-primary/5" : ""}`}>
-                  <div className="flex items-start gap-3">
-                    <Checkbox id={`mach-${i}`} checked={on} onCheckedChange={() => toggleMachine(i)} className="mt-0.5" />
-                    <label htmlFor={`mach-${i}`} className="text-sm cursor-pointer flex-1">
-                      <span className="font-medium">{it.name}</span>
-                      <span className="block text-[11px] text-muted-foreground">{c ? "Betriebsstunden laut CMS erfassen" : "Nicht im CMS gefunden – bei Motorgerät anhaken"}</span>
-                    </label>
-                  </div>
-                  {on && (
-                    <div className="mt-3 space-y-3">
-                      <div>
-                        <Label className="text-xs">Betriebsstunden (Zählerstand) *</Label>
-                        <Input value={r.hours} onChange={(e) => setReading(i, { hours: e.target.value.replace(/[^0-9.,]/g, "") })} inputMode="decimal" placeholder="z. B. 1250,5" className="h-12 text-lg" aria-label={`Betriebsstunden ${it.name}`} />
-                      </div>
-                      {prev && <p className="text-[11px] text-muted-foreground">Bei Übergabe: {prev.hours ?? "–"} h · Tank {FUEL_LEVELS.find((f) => f.value === prev.fuel)?.label ?? (prev.fuel === "kein_tank" ? "kein Tank" : prev.fuel ?? "–")}</p>}
-                      {needsFuel(i) && <div>
-                        <Label className="text-xs">Tankfüllstand *</Label>
-                        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-1">
-                          {[...FUEL_LEVELS].reverse().concat([{ value: "kein_tank", label: "Elektro / kein Tank" }]).map((f) => (
-                            <Button key={f.value} type="button" variant={r.fuel === f.value ? "default" : "outline"} className="h-12 text-xs px-1 whitespace-normal leading-tight" onClick={() => setReading(i, { fuel: f.value })}>{f.label}</Button>
-                          ))}
-                        </div>
-                      </div>}
-                    </div>
-                  )}
-                </div>
-              );
+              return <div key={i} className="space-y-1">
+                <MeasurementFields name={it.name} value={{ ...emptyMeasurement(), ...readings[i] }} onChange={(m) => setReading(i, m)} />
+                {isReturn && prev && (prev.mileage != null || prev.hours != null || !!prev.fuel) && <p className="text-xs text-muted-foreground pl-2">Bei Übergabe: {[prev.mileage != null ? `${prev.mileage} km` : "", prev.hours != null ? `${prev.hours} h` : "", prev.fuel ? `Tank ${FUEL_LEVELS.find((f) => f.value === prev.fuel)?.label ?? prev.fuel}` : ""].filter(Boolean).join(" · ")}</p>}
+              </div>;
             })}
           </div>
           <div>
