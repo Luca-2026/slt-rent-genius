@@ -2585,6 +2585,9 @@
   "seasonPromo": {
     "badge": "Season change · construction machines",
     "headline": "10% off mobile construction machines",
+    "bannerTitle": "Excavators, wheel loaders & work platforms",
+    "discount": "discount",
+    "imageAlt": "Excavator working on a construction site",
     "details": "Rent excavators, wheel loaders and work platforms at our Krefeld, Bonn and Mülheim an der Ruhr locations. Quote the code when booking; only these machines qualify, not attachments or accessories.",
     "codeLabel": "Code:",
     "yourCode": "Your voucher code",

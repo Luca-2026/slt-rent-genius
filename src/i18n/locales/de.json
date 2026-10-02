@@ -2585,6 +2585,9 @@
   "seasonPromo": {
     "badge": "Saisonwechsel · Baumaschinen",
     "headline": "10 % auf mobile Baumaschinen",
+    "bannerTitle": "Bagger, Radlader & Arbeitsbühnen",
+    "discount": "Rabatt",
+    "imageAlt": "Bagger im Einsatz auf einer Baustelle",
     "details": "Bagger, Radlader und Arbeitsbühnen mieten – an unseren Standorten in Krefeld, Bonn und Mülheim an der Ruhr. Code bei der Buchung angeben; gilt nur für diese Maschinen, nicht für Anbaugeräte oder Zubehör.",
     "codeLabel": "Code:",
     "yourCode": "Dein Gutscheincode",

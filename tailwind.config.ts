@@ -80,6 +80,14 @@ export default {
           light: "hsl(var(--surface-light))",
           medium: "hsl(var(--surface-medium))",
         },
+        promo: {
+          DEFAULT: "hsl(var(--promo-surface))",
+          foreground: "hsl(var(--promo-foreground))",
+          muted: "hsl(var(--promo-muted))",
+          border: "hsl(var(--promo-border))",
+          code: "hsl(var(--promo-code))",
+          "accent-foreground": "hsl(var(--promo-accent-foreground))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
