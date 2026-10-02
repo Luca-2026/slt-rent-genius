@@ -585,13 +585,13 @@ export function ReturnProtocolDialog({
             <div className="space-y-2">
               <Label className="text-sm font-semibold">Unterschrift Mieter</Label>
               <p className="text-xs text-muted-foreground">{customerName} – {profile.company_name}</p>
-              <SignaturePad onSignatureChange={setCustomerSignature} height={180} />
+              {customerSignature ? <div className="space-y-2"><img src={customerSignature} alt="Unterschrift Mieter" className="h-20 bg-white rounded border" /><Button type="button" variant="outline" onClick={() => setCustomerSignature(null)}>Neu unterschreiben</Button></div> : <SignaturePad onSignatureChange={setCustomerSignature} height={180} />}
             </div>
           )}
           <div className="space-y-2">
             <Label className="text-xs">Name des Mitarbeiters *</Label>
             <Input value={staffName} onChange={(e) => setStaffName(e.target.value)} placeholder="Vor- und Nachname" className="text-sm" />
-            <SignaturePad onSignatureChange={setStaffSignature} height={180} label="Unterschrift SLT-Mitarbeiter" />
+            {staffSignature ? <div className="space-y-2"><img src={staffSignature} alt="Unterschrift Mitarbeiter" className="h-20 bg-white rounded border" /><Button type="button" variant="outline" onClick={() => setStaffSignature(null)}>Neu unterschreiben</Button></div> : <SignaturePad onSignatureChange={setStaffSignature} height={180} label="Unterschrift SLT-Mitarbeiter" />}
           </div>
         </div>
       ),
