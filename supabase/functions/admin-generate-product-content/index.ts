@@ -166,10 +166,7 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    const { data: isAdmin, error: roleError } = await supabase.rpc("has_role", {
-      _user_id: userId,
-      _role: "admin",
-    });
+    const { data: isAdmin, error: roleError } = await supabase.rpc("can_edit_operations", { _user_id: userId });
     if (roleError) console.error("Admin role check failed", roleError);
     if (roleError || !isAdmin) {
       return new Response(JSON.stringify({ error: "Forbidden" }), {

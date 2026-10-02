@@ -28,7 +28,7 @@ interface CreateStaffRequest {
   new_role?: string;
 }
 
-const VALID_ROLES = ["admin", "standort_mitarbeiter", "buchhaltung", "readonly"];
+const VALID_ROLES = ["admin", "niederlassungsleiter", "standort_mitarbeiter", "buchhaltung", "readonly"];
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -109,6 +109,7 @@ Deno.serve(async (req: Request) => {
       // Validate role
       const validRoles = [
         "admin",
+        "niederlassungsleiter",
         "standort_mitarbeiter",
         "buchhaltung",
         "readonly",
@@ -215,6 +216,7 @@ Deno.serve(async (req: Request) => {
         if (resendApiKey) {
           const roleLabel =
             body.role === "admin" ? "Administrator" :
+            body.role === "niederlassungsleiter" ? "Niederlassungsleiter" :
             body.role === "standort_mitarbeiter" ? "Standortmitarbeiter" :
             body.role === "buchhaltung" ? "Buchhaltung" :
             "Lesezugriff";
@@ -416,6 +418,7 @@ Deno.serve(async (req: Request) => {
 
       const validRoles = [
         "admin",
+        "niederlassungsleiter",
         "standort_mitarbeiter",
         "buchhaltung",
         "readonly",

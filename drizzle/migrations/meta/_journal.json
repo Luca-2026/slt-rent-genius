@@ -190,6 +190,20 @@
       "when": 1790883223304,
       "tag": "0026_call_digest_log",
       "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1790916786795,
+      "tag": "0027_role_niederlassungsleiter",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1790916868972,
+      "tag": "0028_storage_operative_staff_uploads",
+      "breakpoints": true
     }
   ]
 }

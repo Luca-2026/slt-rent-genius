@@ -18,6 +18,7 @@ export interface StaffMember {
 export function useStaffAccess() {
   const { user, isAdmin, isSuperAdmin, loading: authLoading } = useAuth();
   const [staffProfile, setStaffProfile] = useState<StaffMember | null>(null);
+  const [canEditOps, setCanEditOps] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,18 +27,24 @@ export function useStaffAccess() {
     const load = async () => {
       if (!user) {
         setStaffProfile(null);
+        setCanEditOps(false);
         setLoading(false);
         return;
       }
-      const { data } = await supabase
-        .from("staff_profiles")
-        .select("id, user_id, first_name, last_name, email, is_active")
-        .eq("user_id", user.id)
-        .eq("is_active", true)
-        .maybeSingle();
+      const [{ data }, { data: ops }] = await Promise.all([
+        supabase
+          .from("staff_profiles")
+          .select("id, user_id, first_name, last_name, email, is_active")
+          .eq("user_id", user.id)
+          .eq("is_active", true)
+          .maybeSingle(),
+        // Admin, Niederlassungsleiter, Standortmitarbeiter (serverseitige Prüfung)
+        supabase.rpc("can_edit_operations" as any, { _user_id: user.id }),
+      ]);
 
       if (!cancelled) {
         setStaffProfile((data as StaffMember | null) ?? null);
+        setCanEditOps(!!ops);
         setLoading(false);
       }
     };
@@ -60,10 +67,11 @@ export function useStaffAccess() {
     isSuperAdmin,
     /** Inventar/CMS ansehen: alle Mitarbeitenden mit Portalzugang. */
     canViewInventory: isAdmin || !!staffProfile,
-    /** Inventar-/CMS-Pflege (schreiben): nur Geschäftsführung. */
-    canManageInventory: isSuperAdmin,
-    /** Mietartikel-CMS: nur Geschäftsführung (Super-Admins). */
-    canManageCMS: isSuperAdmin,
+    /** Inventar-/CMS-/Verkaufsartikel-Pflege: Admin, Niederlassungsleiter, Standortmitarbeiter. */
+    canManageInventory: isAdmin || canEditOps,
+    canManageCMS: isAdmin || canEditOps,
+    /** Einkaufspreise & Gemeinkosten, Umsatzauswertung, Team, Audit-Log: nur Admin (Vollzugriff). */
+    canEditCosts: isAdmin,
     staffProfile,
     displayName,
     loading: authLoading || loading,

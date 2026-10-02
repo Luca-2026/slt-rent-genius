@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { StaffWorkWidget } from "@/components/b2b/tasks/StaffWorkWidget";
 import { useAuth } from "@/hooks/useAuth";
+import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { supabase } from "@/integrations/supabase/client";
 import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { useToast } from "@/hooks/use-toast";
@@ -193,12 +194,15 @@ export default function AdminDashboard() {
   const [editingOffer, setEditingOffer] = useState<ExistingOffer | null>(null);
   const [editingOfferItems, setEditingOfferItems] = useState<ExistingOfferItem[]>([]);
 
-  // Auth guard
+  // Auth guard: Admins alles; Mitarbeitende (Niederlassungsleiter/Standort) nur Protokolle & Schäden
+  const { canManageInventory, loading: staffLoading } = useStaffAccess();
+  const STAFF_TABS = ["delivery-notes", "return-protocols", "damages"];
+  const hasAccess = isAdmin || (canManageInventory && STAFF_TABS.includes(activeTab));
   useEffect(() => {
-    if (!authLoading && (!user || !isAdmin)) {
-      navigate("/b2b/dashboard");
-    }
-  }, [user, isAdmin, authLoading, navigate]);
+    if (authLoading || staffLoading) return;
+    if (!user) navigate("/b2b/login");
+    else if (!hasAccess) navigate(canManageInventory ? "/b2b/start" : "/b2b/dashboard");
+  }, [user, hasAccess, canManageInventory, authLoading, staffLoading, navigate]);
 
   // Data fetching
   // Direktlink aus der Kundenkartei: ?tab=customers&profil=<id>&aktion=details|bearbeiten
@@ -238,12 +242,12 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
-    if (user && isAdmin) {
+    if (user && (isAdmin || canManageInventory)) {
       // Mark overdue invoices once per session load (server-side date compare)
-      void supabase.rpc("mark_overdue_invoices").then(() => {}, () => {});
+      if (isAdmin) void supabase.rpc("mark_overdue_invoices").then(() => {}, () => {});
       fetchData();
     }
-  }, [user, isAdmin]);
+  }, [user, isAdmin, canManageInventory]);
 
 
   // ─── Actions ──────────────────────────────────────────
@@ -886,7 +890,7 @@ export default function AdminDashboard() {
   ).length;
 
   // ─── Loading ──────────────────────────────────────────
-  if (authLoading || loading) {
+  if (authLoading || staffLoading || loading || !hasAccess) {
     return (
       <B2BPortalLayout title="B2B-Vermietung" subtitle="Vermietgeschäft">
         <div className="flex items-center justify-center py-16">

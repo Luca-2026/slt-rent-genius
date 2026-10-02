@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { isSuperAdminEmail } from "@/lib/superAdmins";
 import { INQUIRY_STATUSES, canTransition, type InquiryStatus } from "@/lib/inquiryStatus";
 import { InquiryStatusBadge } from "./InquiryStatusBadge";
 import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm";
@@ -246,9 +245,9 @@ interface Props {
 
 
 export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, defaultDelivery, details, onChanged, onDeleted }: Props) {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { toast } = useToast();
-  const canDelete = isSuperAdminEmail(user?.email);
+  const canDelete = isAdmin;
   const [deleting, setDeleting] = useState(false);
 
   const handleDelete = async () => {
