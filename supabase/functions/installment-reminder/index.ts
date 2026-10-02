@@ -4,6 +4,7 @@
  * Testlauf: POST { "dry_run": true } mit Mitarbeiter-Anmeldung – liefert nur die Liste.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
+import { isCronCall, staffUserId } from "../_shared/cronAuth.ts";
 import { LOCATION_CONTACTS, resolveLocationKey } from "../_shared/inquiry-offer-math.ts";
 
 const corsHeaders = {
@@ -38,12 +39,8 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({} as Record<string, unknown>));
     const dryRun = body?.dry_run === true;
 
-    if (dryRun) {
-      const token = (req.headers.get("Authorization") ?? "").replace("Bearer ", "");
-      const { data: u } = await service.auth.getUser(token);
-      if (!u?.user) return json({ error: "Unauthorized" }, 401);
-      const { data: isStaff } = await service.rpc("is_staff_member", { _user_id: u.user.id });
-      if (!isStaff) return json({ error: "Forbidden" }, 403);
+    if (!(await isCronCall(req, service)) && !(await staffUserId(req, service))) {
+      return json({ error: "Unauthorized" }, 401);
     }
 
     const today = berlinToday();
