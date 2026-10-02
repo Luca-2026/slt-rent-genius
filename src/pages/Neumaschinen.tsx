@@ -28,6 +28,7 @@ import {
   Trophy, Wrench, Truck, MessageSquare, RefreshCw, Package,
   ArrowRight, Phone, Shield, Clock, Handshake, Loader2,
   ExternalLink, ChevronDown, Tag, Search, X, SlidersHorizontal,
+  CheckCircle2,
 } from "lucide-react";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
@@ -528,7 +529,7 @@ export default function Neumaschinen() {
   return (
     <Layout>
       <SEO
-        title="Neue Baumaschinen und Zubehör kaufen | SLT Rental"
+        title="Minibagger, Bagger & Radlader kaufen | LiuGong-Händler NRW"
         description="Neue Baumaschinen, Anhänger und Erdraketen kaufen in NRW: Minidumper, Rüttelplatten, Stampfer, Fugenschneider – vom Fachhändler mit Garantie und Service."
         canonical="/verkauf/neumaschinen"
         keywords="Neumaschinen kaufen NRW, Baumaschinen kaufen, Rüttelplatte kaufen, Vibrationsstampfer kaufen, Minidumper kaufen, Steinsäge kaufen, Fugenschneider kaufen, Erdrakete kaufen, Hercu Erdrakete kaufen, Bodendurchschlagsgerät kaufen, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen, Zubehör Baumaschinen"
