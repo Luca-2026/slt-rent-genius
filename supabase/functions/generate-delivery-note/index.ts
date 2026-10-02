@@ -1,3 +1,4 @@
+import { isAllowedPhotoPath, isAllowedPhotoUrl, escAttr } from "../_shared/protocolPhotos.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
@@ -703,7 +704,7 @@ function generateDeliveryNoteHtml(data: {
       ${data.damages.some((d) => d.photo_urls.length > 0) ? `
       <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">
         ${data.damages.flatMap((d) => d.photo_urls).map((url, i) => `
-        <a href="${url}" target="_blank"><img class="photo-img" src="${url}" alt="Schadensfoto ${i + 1}" style="width:150px;height:112px;object-fit:cover;border:1px solid #e5e7eb;border-radius:6px;display:block;" /></a>`).join("")}
+        <a href="${escAttr(url)}" target="_blank"><img class="photo-img" src="${escAttr(url)}" alt="Schadensfoto ${i + 1}" style="width:150px;height:112px;object-fit:cover;border:1px solid #e5e7eb;border-radius:6px;display:block;" /></a>`).join("")}
       </div>` : ""}
     </div>` : "";
 
@@ -862,7 +863,7 @@ function generateDeliveryNoteHtml(data: {
       <div style="display:flex;flex-wrap:wrap;gap:8px;">
         ${data.photoUrls.map((url: string, i: number) => `
         <div style="border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;">
-          <a href="${url}" target="_blank"><img class="photo-img" src="${url}" alt="Schadensfoto ${i + 1}" style="width:180px;height:135px;object-fit:cover;display:block;" loading="eager" /></a>
+          <a href="${escAttr(url)}" target="_blank"><img class="photo-img" src="${escAttr(url)}" alt="Schadensfoto ${i + 1}" style="width:180px;height:135px;object-fit:cover;display:block;" loading="eager" /></a>
           <p style="font-size:10px;color:#595959;text-align:center;padding:4px;">Foto ${i + 1}</p>
         </div>`).join("")}
       </div>
