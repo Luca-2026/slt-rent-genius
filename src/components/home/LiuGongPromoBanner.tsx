@@ -14,12 +14,12 @@ export function LiuGongPromoBanner({ onTestInFleet }: { onTestInFleet: () => voi
     <section className="relative z-10 pt-6 pb-2 lg:pt-8 bg-background" aria-label={t("liugongPromo.title")}>
       <div className="section-container">
         <div className="overflow-hidden rounded-md border border-border bg-card shadow-lg md:flex md:flex-row-reverse">
-          <div className="relative h-44 overflow-hidden bg-muted sm:h-52 md:h-auto md:w-[38%] md:shrink-0">
+          <div className="relative flex h-52 items-center justify-center overflow-hidden bg-card px-4 pt-4 sm:h-64 md:h-auto md:w-[38%] md:shrink-0 md:p-6">
             <img
               src="/product-images/erdbewegung/minibagger-2-7t-1.webp"
               alt={t("liugongPromo.imageAlt")}
               loading="lazy"
-              className="h-full w-full object-cover object-center"
+              className="h-full w-full object-contain object-center md:max-h-80"
             />
           </div>
 
@@ -38,14 +38,14 @@ export function LiuGongPromoBanner({ onTestInFleet }: { onTestInFleet: () => voi
                 {t("liugongPromo.text")}
               </p>
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Button asChild size="lg" className="h-auto min-h-11 whitespace-normal bg-accent py-2 font-bold text-accent-foreground hover:bg-accent/90">
+            <div className="grid w-full max-w-xl grid-cols-1 gap-3 sm:grid-cols-2">
+              <Button asChild size="lg" className="h-auto min-h-12 w-full whitespace-normal bg-accent py-2 font-bold text-accent-foreground hover:bg-accent/90">
                 <Link to="/verkauf/neumaschinen/?anfrage=LiuGong">
                   <Tag className="mr-2 h-4 w-4" />
                   {t("liugongPromo.ctaInquiry")}
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" onClick={onTestInFleet} className="h-auto min-h-11 whitespace-normal py-2 font-semibold">
+              <Button size="lg" variant="outline" onClick={onTestInFleet} className="h-auto min-h-12 w-full whitespace-normal py-2 font-semibold">
                 <Wrench className="mr-2 h-4 w-4" />
                 {t("liugongPromo.ctaRent")}
                 <ArrowRight className="ml-2 h-4 w-4" />
