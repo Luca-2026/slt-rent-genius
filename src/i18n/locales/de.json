@@ -2624,8 +2624,8 @@
   },
   "sales": {
     "new": {
-      "pageTitle": "Neue Baumaschinen und Zubehör kaufen",
-      "pageSubtitle": "Neue Baumaschinen, Anhänger, Erdraketen und Zubehör direkt vom Fachhändler in NRW – mit Herstellergarantie, Service, Beratung und Lieferung.",
+      "pageTitle": "Minibagger, Bagger & Radlader kaufen – LiuGong-Händler in NRW",
+      "pageSubtitle": "Neue Baumaschinen von LiuGong und BAUMAX, Temared-Anhänger und Hercu-Erdraketen direkt vom Fachhändler – mit Herstellergarantie, persönlicher Beratung und Lieferung.",
       "ctaShowAll": "Alle Neumaschinen ansehen",
       "ctaToUsed": "Zu den Gebrauchtmaschinen",
       "ctaSubmitInquiry": "Kaufanfrage stellen",
@@ -2661,7 +2661,13 @@
       "rrp": "UVP",
       "brandNewMachinesHeading": "Verfügbare Neumaschinen",
       "details": "Details",
-      "grossIncVat": "brutto inkl. MwSt."
+      "grossIncVat": "brutto inkl. MwSt.",
+      "usps": [
+        "Vorher im Mietpark testen",
+        "Service & Beratung in Krefeld und Bonn",
+        "Lieferung in NRW",
+        "Herstellergarantie auf Neumaschinen"
+      ]
     },
     "used": {
       "pageTitle": "Geprüfte Gebrauchtmaschinen",

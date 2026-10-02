@@ -28,6 +28,7 @@ import {
   Trophy, Wrench, Truck, MessageSquare, RefreshCw, Package,
   ArrowRight, Phone, Shield, Clock, Handshake, Loader2,
   ExternalLink, ChevronDown, Tag, Search, X, SlidersHorizontal,
+  CheckCircle2,
 } from "lucide-react";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
@@ -528,8 +529,8 @@ export default function Neumaschinen() {
   return (
     <Layout>
       <SEO
-        title="Neue Baumaschinen und Zubehör kaufen | SLT Rental"
-        description="Neue Baumaschinen, Anhänger und Erdraketen kaufen in NRW: Minidumper, Rüttelplatten, Stampfer, Fugenschneider – vom Fachhändler mit Garantie und Service."
+        title="Minibagger, Bagger & Radlader kaufen | LiuGong NRW"
+        description="LiuGong-Bagger, Minibagger und Radlader, BAUMAX-Minidumper, Rüttelplatten, Temared-Anhänger und Hercu-Erdraketen kaufen – Fachhändler in NRW mit Garantie, Service und Mietpark-Test."
         canonical="/verkauf/neumaschinen"
         keywords="Neumaschinen kaufen NRW, Baumaschinen kaufen, Rüttelplatte kaufen, Vibrationsstampfer kaufen, Minidumper kaufen, Steinsäge kaufen, Fugenschneider kaufen, Erdrakete kaufen, Hercu Erdrakete kaufen, Bodendurchschlagsgerät kaufen, Anhänger kaufen NRW, Baumaschinen Fachhändler Nordrhein-Westfalen, Scherenbühne kaufen, Zubehör Baumaschinen"
         ogType="website"
@@ -607,9 +608,17 @@ export default function Neumaschinen() {
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6 leading-tight">
               {t("sales.new.pageTitle")}
             </h1>
-            <p className="text-lg text-primary-foreground/80 max-w-3xl mb-8">
+            <p className="text-lg text-primary-foreground/80 max-w-3xl mb-6">
               {t("sales.new.pageSubtitle")}
             </p>
+            <ul className="mb-8 grid max-w-3xl grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2">
+              {(t("sales.new.usps", { returnObjects: true }) as string[]).map((usp) => (
+                <li key={usp} className="flex items-start gap-2 text-primary-foreground">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
+                  <span className="font-medium">{usp}</span>
+                </li>
+              ))}
+            </ul>
             <div className="flex flex-wrap gap-4 mb-8">
               <a href="#angebote">
                 <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">

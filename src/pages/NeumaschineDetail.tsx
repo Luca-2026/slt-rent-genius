@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { NewMachineInquiryModal } from "@/components/new-machines/NewMachineInquiryModal";
+import { QuickCallbackForm } from "@/components/new-machines/QuickCallbackForm";
 import {
   ArrowLeft, ArrowRight, Phone, MapPin, Shield, Wrench, Truck, CheckCircle2,
   Package, Mail, Clock,
@@ -548,6 +549,8 @@ export default function NeumaschineDetail() {
                 </a>
               </Button>
             </div>
+
+            <QuickCallbackForm brand={machine.brand} model={machine.model} category={machine.category} />
 
 
             <div className="grid grid-cols-2 gap-3 text-sm">
