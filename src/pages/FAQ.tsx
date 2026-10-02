@@ -156,7 +156,7 @@ const faqCategories: FAQCategory[] = [
       },
       {
         q: "Wie registriere ich mich als B2B-Kunde?",
-        a: "Über das B2B-Portal das Registrierungsformular ausfüllen und Gewerbeanmeldung bzw. Handelsregisterauszug hochladen. Wir prüfen deine Angaben und schalten dein Konto in der Regel innerhalb von 1–2 Werktagen frei.",
+        a: "Über das B2B-Portal das Registrierungsformular ausfüllen, AGB akzeptieren und Gewerbeanmeldung bzw. Handelsregisterauszug sowie das unterschriebene SEPA-Firmenlastschrift-Mandat (Vorlage im Formular) hochladen. Wir prüfen deine Angaben und schalten dein Konto in der Regel innerhalb von 1–2 Werktagen frei.",
       },
       {
         q: "Kann ich Projekt- oder Sammelanfragen stellen?",

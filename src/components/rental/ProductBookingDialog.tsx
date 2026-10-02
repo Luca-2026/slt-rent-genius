@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { portalUrl } from "@/lib/portalDomain";
 import { cn } from "@/lib/utils";
 import {
   Dialog,
@@ -396,7 +397,7 @@ export function ProductBookingDialog({
                             <p className="text-muted-foreground">
                               Für langfristige Mietverhältnisse und künftig einfachere Anfragen kannst du dich zusätzlich im B2B-Portal registrieren. Bei längerer Zusammenarbeit kannst du dort individuelle Rabattstufen und Zahlung auf Rechnung beantragen.
                             </p>
-                            <a href="/b2b/registrieren" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary underline underline-offset-4 hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                            <a href={portalUrl("/b2b/registrieren")} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary underline underline-offset-4 hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                               Zum B2B-Portal <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
                               <span className="sr-only">(öffnet in neuem Tab)</span>
                             </a>
