@@ -35,6 +35,9 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
   const formId = useId();
   const resumeInputId = `${formId}-cv`;
   const consentInputId = `${formId}-consent`;
+  const locationField = job.specificFields.find((f) => f.id === "preferredLocation");
+  const [location, setLocation] = useState("");
+  const [locationError, setLocationError] = useState<string | null>(null);
   const [resume, setResume] = useState<File | null>(null);
   const [resumeError, setResumeError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -91,6 +94,10 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
       setDone(true);
       return;
     }
+    if (locationField && !location) {
+      setLocationError("Bitte Standort auswählen");
+      return;
+    }
     if (!resume) {
       setResumeError("Bitte Lebenslauf hochladen");
       return;
@@ -123,6 +130,7 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
         resume_url: resumeUrl,
         resume_filename: resumeFilename,
         motivation: "Schnellbewerbung über Stellendetailseite",
+        job_specific_answers: locationField ? { [locationField.id]: location } : {},
       });
       if (insErr) throw insErr;
 
@@ -133,6 +141,7 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
           lastName: values.lastName,
           email: values.email,
           phone: values.phone,
+          preferredLocation: locationField ? location : null,
           resumeFilename,
           resumePath: resumeUrl,
         },
@@ -203,6 +212,27 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
           {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone.message}</p>}
         </div>
       </div>
+      {locationField && (
+        <div>
+          <Label htmlFor="qa-location">Für welchen Standort bewirbst du dich? *</Label>
+          <select
+            id="qa-location"
+            value={location}
+            onChange={(e) => {
+              setLocation(e.target.value);
+              setLocationError(null);
+            }}
+            aria-invalid={!!locationError}
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:text-sm"
+          >
+            <option value="" disabled>Bitte auswählen</option>
+            {(locationField.options ?? []).map((o) => (
+              <option key={o} value={o}>{o}</option>
+            ))}
+          </select>
+          {locationError && <p className="text-xs text-destructive mt-1">{locationError}</p>}
+        </div>
+      )}
       <div>
         <Label htmlFor={resumeInputId} className="block mb-1">Lebenslauf (PDF/DOC) *</Label>
         {resume ? (

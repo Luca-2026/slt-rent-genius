@@ -71,7 +71,7 @@ serve(async (req) => {
       street, postalCode, city,
       earliestStartDate, salaryExpectation, motivation,
       resumeFilename, coverLetterFilename,
-      resumePath, coverLetterPath,
+      resumePath, coverLetterPath, preferredLocation,
     } = await req.json();
 
     if (!jobTitle || !firstName || !lastName || !email) {
@@ -105,6 +105,7 @@ serve(async (req) => {
       earliestStartDate: escapeHtml(earliestStartDate),
       salaryExpectation: escapeHtml(salaryExpectation),
       motivation: escapeHtml(motivation),
+      preferredLocation: escapeHtml(preferredLocation),
       resumeFilename: escapeHtml(resumeFilename || "nicht hochgeladen"),
       coverLetterFilename: escapeHtml(coverLetterFilename),
     };
@@ -130,6 +131,7 @@ serve(async (req) => {
     <h2 style="color: #1a1a1a; margin-top: 0;">Neue Bewerbung eingegangen</h2>
     <div style="background: #fff7ed; border-left: 4px solid #f97316; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
       <strong style="color: #ea580c;">Stelle:</strong> ${e.jobTitle}
+      ${preferredLocation ? `<br><strong style="color: #ea580c;">Gewünschter Standort:</strong> ${e.preferredLocation}` : ""}
     </div>
     <h3 style="color: #374151;">Persönliche Daten</h3>
     <table style="width: 100%; border-collapse: collapse;">

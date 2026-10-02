@@ -269,6 +269,7 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
             earliestStartDate: data.earliestStartDate || null,
             salaryExpectation: data.salaryExpectation || null,
             motivation: data.motivation || null,
+            preferredLocation: jobSpecificAnswers["preferredLocation"] || null,
             resumeFilename: resumeData?.filename || null,
             resumePath: resumeData?.url || null,
             coverLetterFilename: coverLetterData?.filename || null,
