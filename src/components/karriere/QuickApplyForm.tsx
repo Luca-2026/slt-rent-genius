@@ -214,9 +214,9 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
       </div>
       {locationField && (
         <div>
-          <Label htmlFor="qa-location">Für welchen Standort bewirbst du dich? *</Label>
+          <Label htmlFor={`${formId}-location`}>Für welchen Standort bewirbst du dich? *</Label>
           <select
-            id="qa-location"
+            id={`${formId}-location`}
             value={location}
             onChange={(e) => {
               setLocation(e.target.value);
