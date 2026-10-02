@@ -15,7 +15,7 @@ import { Switch } from "@/components/ui/switch";
 import { Camera, Plus, Trash2, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import { MAX_PROTOCOL_PHOTOS, formatPhotoTimestamp, photoTakenAt } from "@/lib/rentalProtocol";
-import { compressImageToBase64 } from "@/lib/imageCompress";
+import { prepareProtocolPhoto } from "@/lib/imageCompress";
 import {
   DAMAGE_CATEGORIES, emptyDamage, formatEuro, sumDamages, type ProtocolDamage,
 } from "./protocolShared";
@@ -55,9 +55,7 @@ export function DamagesStep({ damages, onChange, itemNames, context, showAmounts
     try {
       const prepared = [];
       for (const original of list) {
-        const base64 = await compressImageToBase64(original, 1100, 0.68);
-        const bytes = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
-        const file = new File([bytes], `${original.name.replace(/\.[^.]+$/, "")}.jpg`, { type: "image/jpeg", lastModified: original.lastModified });
+        const file = await prepareProtocolPhoto(original);
         prepared.push({ file, preview: URL.createObjectURL(file) });
       }
       update(id, { photos: [...damage.photos, ...prepared] });

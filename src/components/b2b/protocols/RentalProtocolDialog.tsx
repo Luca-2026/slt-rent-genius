@@ -23,7 +23,7 @@ import { CLEANLINESS_HINT, FUEL_LEVELS, isMachineLike, toNumber, type ProtocolDa
 import {
   MAX_PROTOCOL_PHOTOS, formatPhotoTimestamp, photoTakenAt, protocolItemsFromInquiry, remainingPhotoSlots, type ProtocolKind,
 } from "@/lib/rentalProtocol";
-import { compressImageToBase64 } from "@/lib/imageCompress";
+import { prepareProtocolPhoto, protocolPhotoBase64 } from "@/lib/imageCompress";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { useAuth } from "@/hooks/useAuth";
 import { deleteProtocolDraft, readProtocolDraft, writeProtocolDraft } from "@/lib/protocolDraft";
@@ -213,9 +213,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     setPhotoBusy(true);
     try {
       for (const original of list) {
-        const base64 = await compressImageToBase64(original, 1100, 0.68);
-        const bytes = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
-        const file = new File([bytes], `${original.name.replace(/\.[^.]+$/, "")}.jpg`, { type: "image/jpeg", lastModified: original.lastModified });
+        const file = await prepareProtocolPhoto(original);
         setPhotos((p) => [...p, { id: crypto.randomUUID(), file, preview: URL.createObjectURL(file), caption: "" }]);
       }
     } catch (error) {
@@ -247,12 +245,12 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       setProgress("Fotos werden vorbereitet …");
       const photoPayload = [];
       for (const p of photos) {
-        photoPayload.push({ data: await compressImageToBase64(p.file), taken_at: photoTakenAt(p.file.lastModified), caption: p.caption.trim() || null });
+        photoPayload.push({ data: await protocolPhotoBase64(p.file), taken_at: photoTakenAt(p.file.lastModified), caption: p.caption.trim() || null });
       }
       const damagePayload = [];
       for (const d of damages) {
         const dp = [];
-        for (const ph of d.photos) dp.push({ data: await compressImageToBase64(ph.file), taken_at: photoTakenAt(ph.file.lastModified) });
+        for (const ph of d.photos) dp.push({ data: await protocolPhotoBase64(ph.file), taken_at: photoTakenAt(ph.file.lastModified) });
         damagePayload.push({
           item_name: d.itemName || null, category: d.category, description: d.description.trim() || null,
           amount: d.amount ? toNumber(d.amount) : null, needs_repair: !!d.needsRepair, reduces_stock: !!d.reducesStock,
