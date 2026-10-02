@@ -225,6 +225,13 @@
       "when": 1790918738491,
       "tag": "0031_reservation_price_guard",
       "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1790925644314,
+      "tag": "0032_allow_staff_protocol_damage_photo_upload",
+      "breakpoints": true
     }
   ]
 }
