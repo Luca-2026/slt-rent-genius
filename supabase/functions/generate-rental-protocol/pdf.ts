@@ -23,7 +23,9 @@ export interface ProtocolPdfData {
   signatures: { customer: Uint8Array | null; customerName: string | null; staff: Uint8Array | null; staffName: string };
 }
 
-const W = 595.28, H = 841.89, ML = 50, MR = 50, MB = 62;
+// Gleicher Satzspiegel wie Angebot/Rechnung (DIN 5008): links 25 mm, rechts 20 mm
+const MMU = 72 / 25.4;
+const W = 595.28, H = 841.89, ML = 25 * MMU, MR = 20 * MMU, MB = 62;
 const CW = W - ML - MR;
 const BRAND = rgb(0, 80 / 255, 125 / 255);
 const ORANGE = rgb(1, 142 / 255, 2 / 255);
@@ -144,18 +146,18 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
 
   // ── Seite 1: Kopf ──
   newPage(true);
-  text(`${SLT_COMPANY.name} \u00B7 ${SLT_COMPANY.street} \u00B7 ${SLT_COMPANY.city}`, ML, H - 62, font, 7, MUTED);
-  page.drawRectangle({ x: ML, y: H - 66, width: 230, height: 0.4, color: LINE });
+  text(`${SLT_COMPANY.name} \u00B7 ${SLT_COMPANY.street} \u00B7 ${SLT_COMPANY.city}`, ML, H - 57 * MMU, font, 6.5, MUTED);
+  page.drawRectangle({ x: ML, y: H - 57 * MMU - 3, width: 85 * MMU, height: 0.4, color: LINE });
   if (logo) {
     const LOGO_BOX = { left: 0.1474, top: 0.3536, right: 0.8516, bottom: 0.6318 };
-    const visibleW = 140;
+    const visibleW = 46 * MMU;
     const fullW = visibleW / (LOGO_BOX.right - LOGO_BOX.left);
     const fullH = (logo.height / logo.width) * fullW;
-    const topY = H - 40;
+    const topY = H - 15 * MMU;
     page.drawImage(logo, { x: W - MR - LOGO_BOX.right * fullW, y: topY + LOGO_BOX.top * fullH - fullH, width: fullW, height: fullH });
   }
   // Kundenanschrift links
-  let ay = H - 84;
+  let ay = H - 67 * MMU;
   const c = data.customer;
   if (c.company) { text(c.company, ML, ay, bold, 10.5); ay -= 13; }
   if (c.name) { text(c.name, ML, ay, c.company ? font : bold, c.company ? 9.5 : 10.5); ay -= 12; }
@@ -164,16 +166,20 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
   if (c.email) { text(c.email, ML, ay, font, 8.5, MUTED); ay -= 11; }
   if (c.phone) { text(c.phone, ML, ay, font, 8.5, MUTED); ay -= 11; }
   // Infoblock rechts
-  const ix = W - MR - 210;
-  let iy = H - 118;
-  const info = (l: string, v: string, col = INK) => { text(l, ix, iy, font, 8.5, MUTED); text(v, ix + 88, iy, font, 9, col); iy -= 13; };
+  const ix = 125 * MMU;
+  let iy = H - 67 * MMU;
+  const info = (l: string, v: string, col = INK) => {
+    let s = 9;
+    while (s > 7 && font.widthOfTextAtSize(v, s) > W - MR - ix - 30 * MMU) s -= 0.25;
+    text(l, ix, iy, font, 8.5, MUTED); text(v, ix + 30 * MMU, iy, font, s, col); iy -= 12;
+  };
   info("Protokoll-Nr.:", data.number, BRAND);
   info("Erstellt am:", berlin(data.createdAt));
   if (data.order.confirmationNumber) info("Auftragsbest.:", data.order.confirmationNumber);
   if (data.order.offerNumber) info("Angebot:", data.order.offerNumber);
   if (isReturn && data.order.deliveryNoteNumber) info("\u00DCbergabe:", data.order.deliveryNoteNumber);
   info("Standort:", data.order.location);
-  y = Math.min(ay, iy) - 22;
+  y = Math.min(ay, iy) - 30;
   text(TITLE, ML, y, bold, 22, BRAND);
   y -= 18;
   text(`Nr. ${data.number}`, ML, y, font, 10, MUTED);
@@ -333,7 +339,7 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
     text(`${SLT_COMPANY.name} \u00B7 ${SLT_COMPANY.street}, ${SLT_COMPANY.city} \u00B7 ${SLT_COMPANY.phone} \u00B7 ${SLT_COMPANY.email}`, ML, 32, font, 7, MUTED);
     text(`${SLT_COMPANY.registry} \u00B7 USt-IdNr. ${SLT_COMPANY.ustId}`, ML, 22, font, 7, MUTED);
     const pgTxt = `Seite ${idx + 1} von ${total}`;
-    text(pgTxt, W - MR - font.widthOfTextAtSize(pgTxt, 7.5), 32, font, 7.5, MUTED);
+    text(pgTxt, W - MR - font.widthOfTextAtSize(pgTxt, 7.5), 50, font, 7.5, MUTED);
   });
 
   return await doc.save();

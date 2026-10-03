@@ -73,7 +73,10 @@ export async function generateOfferPdf(data: {
 
   // ── Layout-Konstanten: identisch zum Rechnungs-PDF (DIN 5008) ──
   const W = 595.28, H = 841.89;
-  const ML = 57, MR = 57;
+  // Satzspiegel DIN 5008: links 25 mm (= Anschriftfeld), rechts 20 mm.
+  // Logo, Infoblock, Titel, Tabelle und Fußzeile richten sich an genau diesen Kanten aus.
+  const MM0 = 72 / 25.4;
+  const ML = 25 * MM0, MR = 20 * MM0;
   const MT = 45, MB = 60;
   const CW = W - ML - MR;
   const BRAND = rgb(0 / 255, 80 / 255, 125 / 255);
@@ -91,7 +94,9 @@ export async function generateOfferPdf(data: {
   const ADDR_SENDER_Y = H - 57 * MM;      // Grundlinie Absenderzeile
   const ADDR_Y_TOP = H - 67 * MM;         // Grundlinie erste Anschriftzeile
   const ADDR_Y_BOTTOM = H - 89 * MM;      // letzte Zeile muss oberhalb davon bleiben
-  const LOGO_TOP_Y = H - 61;              // Logo bleibt unabhängig vom Anschriftfeld oben rechts
+  const LOGO_TOP_Y = H - 15 * MM;         // sichtbare Logo-Oberkante 15 mm, rechtsbündig am Satzspiegel
+  const INFO_X = 125 * MM;                // DIN 5008 Informationsblock ab 125 mm
+  const INFO_VAL_X = INFO_X + 30 * MM;
 
   const docType = data.documentType ?? "offer";
   const isOC = docType === "order_confirmation";
@@ -240,7 +245,7 @@ export async function generateOfferPdf(data: {
     const visibleTopY = LOGO_TOP_Y;
     let logoBottomY = visibleTopY - 60;
     if (logoImg) {
-      const visibleW = 150;
+      const visibleW = 46 * MM;
       const fullW = visibleW / (LOGO_BOX.right - LOGO_BOX.left);
       const fullH = (logoImg.height / logoImg.width) * fullW;
       const imgTopY = visibleTopY + LOGO_BOX.top * fullH;
@@ -251,16 +256,22 @@ export async function generateOfferPdf(data: {
     }
 
     // Infoblock rechts, zweispaltig
-    const infoX = W - MR - 200;
-    let iy = logoBottomY - 24;
-
+    // Erste Zeile auf Höhe der ersten Anschriftzeile; Werte enden spätestens am rechten Rand.
+    void logoBottomY;
+    let iy = ADDR_Y_TOP;
+    const VAL_W = W - MR - INFO_VAL_X;
+    const fitVal = (v: string, f: any, s: number) => {
+      let size = s;
+      while (size > 7 && f.widthOfTextAtSize(safe(v), size) > VAL_W) size -= 0.25;
+      return size;
+    };
     const infoRow = (label: string, value: string, c = INK) => {
-      dt(pg, label, infoX, iy, font, 8.5, MUTED);
-      dt(pg, value, infoX + 95, iy, font, 9, c);
-      iy -= 13;
+      dt(pg, label, INFO_X, iy, font, 8.5, MUTED);
+      dt(pg, value, INFO_VAL_X, iy, font, fitVal(value, font, 9), c);
+      iy -= 12;
     };
     const infoSub = (value: string) => {
-      dt(pg, value, infoX + 95, iy + 3, font, 7, MUTED);
+      dt(pg, value, INFO_VAL_X, iy + 2, font, fitVal(value, font, 7), MUTED);
       iy -= 10;
     };
     if (isOC) {
@@ -323,9 +334,11 @@ export async function generateOfferPdf(data: {
     // Titelblock
     const contentTopY = Math.min(ay, iy) - 26;
     let ty = contentTopY;
-    const titleSize = isCreditNote || isOC ? 20 : isInvoice ? 24 : 30;
+    // Einheitliche Titelgröße; lange Titel (z. B. AUFTRAGSBESTÄTIGUNG) werden auf Satzbreite begrenzt
+    let titleSize = isCreditNote ? 20 : 24; // Korrektur bleibt kompakt einseitig
+    while (titleSize > 18 && bold.widthOfTextAtSize(safe(TITLE), titleSize) > CW) titleSize -= 1;
     dt(pg, TITLE, ML, ty, bold, titleSize, BRAND);
-    ty -= isCreditNote || isOC ? 22 : isInvoice ? 24 : 26;
+    ty -= isCreditNote ? 22 : 24;
     dt(pg, `Nr. ${data.offerNumber}`, ML, ty, font, 10.5, MUTED);
     ty -= 22;
 
@@ -385,10 +398,11 @@ export async function generateOfferPdf(data: {
     }
     let yy = H - MT;
     if (logoImg) {
-      const targetW = 90;
-      const scale = targetW / logoImg.width;
-      const drawH = logoImg.height * scale;
-      pg.drawImage(logoImg, { x: W - MR - targetW, y: yy - drawH, width: targetW, height: drawH });
+      // Folgeseiten: kleineres Logo, sichtbarer Ausschnitt ebenfalls rechtsbündig am Satzspiegel
+      const LB = { left: 0.1474, top: 0.3536, right: 0.8516 };
+      const fullW = (30 * MM) / (LB.right - LB.left);
+      const fullH = (logoImg.height / logoImg.width) * fullW;
+      pg.drawImage(logoImg, { x: W - MR - LB.right * fullW, y: LOGO_TOP_Y + LB.top * fullH - fullH, width: fullW, height: fullH });
     }
     dt(pg, `${TITLE} \u00B7 ${data.offerNumber}`, ML, yy - 46, bold, 10, BRAND);
     yy -= 74;
@@ -952,19 +966,22 @@ export async function generateOfferPdf(data: {
   const total = doc.getPageCount();
   const colW = CW / 3;
   const footerCol1 = [SLT_COMPANY.name, `GF ${SLT_COMPANY.managingDirector}`, `${SLT_COMPANY.registry}`];
-  const footerCol2 = [`${SLT_COMPANY.street} | ${SLT_COMPANY.city}`, `Tel: ${SLT_COMPANY.phone}`, `${SLT_COMPANY.email} | ${SLT_COMPANY.web}`];
-  const footerCol3 = [`Steuer-Nr. ${SLT_COMPANY.steuerNr}`, `USt-IdNr. ${SLT_COMPANY.ustId}`, `${SLT_COMPANY.bankName} | IBAN ${SLT_COMPANY.iban}`];
+  const footerCol2 = [`${SLT_COMPANY.street}, ${SLT_COMPANY.city}`, `Tel. ${SLT_COMPANY.phone}`, SLT_COMPANY.email, SLT_COMPANY.web];
+  const footerCol3 = [`Steuer-Nr. ${SLT_COMPANY.steuerNr}`, `USt-IdNr. ${SLT_COMPANY.ustId}`, SLT_COMPANY.bankName, `IBAN ${SLT_COMPANY.iban}`];
   for (let i = 0; i < total; i++) {
     const p = doc.getPage(i);
     p.drawRectangle({ x: ML, y: MB + 42, width: CW, height: 0.5, color: LINE });
     const drawCol = (lines: string[], x: number) => {
       lines.forEach((ln, li) => {
-        try { p.drawText(safe(ln), { x, y: MB + 32 - li * 9, size: 6.8, font, color: MUTED }); } catch {}
+        try { p.drawText(safe(ln), { x, y: MB + 32 - li * 8.5, size: 6.6, font, color: MUTED }); } catch {}
       });
     };
     drawCol(footerCol1, ML);
     drawCol(footerCol2, ML + colW);
-    drawCol(footerCol3, ML + 2 * colW);
+    // dritte Spalte rechtsbündig, damit sie exakt am Satzspiegel endet
+    footerCol3.forEach((ln, li) => {
+      try { const t = safe(ln); p.drawText(t, { x: W - MR - font.widthOfTextAtSize(t, 6.6), y: MB + 32 - li * 8.5, size: 6.6, font, color: MUTED }); } catch {}
+    });
     if (total > 1) {
       try {
         const t = `Seite ${i + 1} von ${total}`;

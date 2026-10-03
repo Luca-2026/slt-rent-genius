@@ -29,7 +29,8 @@ export async function generateDocumentPdf(data: {
 
   // ── Layout constants (A4, DIN 5008 fensterkuverttauglich) ──
   const W = 595.28, H = 841.89;
-  const ML = 57, MR = 57;          // ~20 mm links/rechts
+  // Satzspiegel DIN 5008: links 25 mm (= Anschriftfeld), rechts 20 mm – gleich wie Angebot
+  const ML = 25 * (72 / 25.4), MR = 20 * (72 / 25.4);
   const MT = 45, MB = 60;          // Ränder oben/unten
   const CW = W - ML - MR;
   const BRAND = rgb(0/255, 80/255, 125/255);   // #00507d
@@ -47,6 +48,17 @@ export async function generateDocumentPdf(data: {
   const ADDR_SENDER_Y = H - 57 * MM;
   const ADDR_Y_TOP = H - 67 * MM;
   const ADDR_Y_BOTTOM = H - 89 * MM;
+  const LOGO_TOP_Y = H - 15 * MM;
+  const INFO_X = 125 * MM;
+  const INFO_VAL_X = INFO_X + 30 * MM;
+  // Logo-PNG hat transparenten Rand: sichtbarer Ausschnitt (Anteile der Bildgröße)
+  const LOGO_BOX = { left: 0.1474, top: 0.3536, right: 0.8516 };
+  const drawLogo = (pg: any, visibleW: number) => {
+    if (!logoImg) return;
+    const fullW = visibleW / (LOGO_BOX.right - LOGO_BOX.left);
+    const fullH = (logoImg.height / logoImg.width) * fullW;
+    pg.drawImage(logoImg, { x: W - MR - LOGO_BOX.right * fullW, y: LOGO_TOP_Y + LOGO_BOX.top * fullH - fullH, width: fullW, height: fullH });
+  };
 
   let pageIdx = 0;
   const pages: any[] = [];
@@ -131,22 +143,16 @@ export async function generateDocumentPdf(data: {
     }
 
     // Logo oben RECHTS (~60 mm breit ≈ 170 pt), mit Luft zum Seitenrand und zum Inhalt
-    let logoBottomY = H - MT;
-    if (logoImg) {
-      const targetW = 170; // ~60 mm
-      const scale = targetW / logoImg.width;
-      const drawH = logoImg.height * scale;
-      logoBottomY = H - MT - drawH;
-      pg.drawImage(logoImg, { x: W - MR - targetW, y: logoBottomY, width: targetW, height: drawH });
-    }
+    drawLogo(pg, 46 * MM);
 
-    // Info-Block rechts, zweispaltig (Label grau / Wert schwarz) – deutlich UNTER dem Logo
-    const infoX = W - MR - 200;
-    let iy = Math.min(ADDR_Y_TOP, logoBottomY - 26);
+    // Info-Block ab 125 mm, erste Zeile auf Höhe der ersten Anschriftzeile
+    let iy = ADDR_Y_TOP;
     const infoRow = (label: string, value: string) => {
-      dt(pg, label, infoX, iy, font, 8.5, MUTED);
-      dt(pg, value, infoX + 95, iy, font, 9, INK);
-      iy -= 13;
+      let size = 9;
+      try { while (size > 7 && font.widthOfTextAtSize(value, size) > W - MR - INFO_VAL_X) size -= 0.25; } catch {}
+      dt(pg, label, INFO_X, iy, font, 8.5, MUTED);
+      dt(pg, value, INFO_VAL_X, iy, font, size, INK);
+      iy -= 12;
     };
     infoRow("Rechnungsnummer:", data.documentNumber);
     infoRow("Rechnungsdatum:", fd(data.date));
@@ -169,10 +175,10 @@ export async function generateDocumentPdf(data: {
 
     // Titelblock (dominant in linker Spalte, spürbar Luft zwischen Adresse und Titel,
     // sowie zwischen Titel und Nummer)
-    const contentTopY = Math.min(ay, iy) - 40;
+    const contentTopY = Math.min(ay, iy) - 26;
     let ty = contentTopY;
-    dt(pg, data.title, ML, ty, bold, 30, BRAND);
-    ty -= 26;
+    dt(pg, data.title, ML, ty, bold, 24, BRAND);
+    ty -= 24;
     dt(pg, `Nr. ${data.documentNumber}`, ML, ty, font, 10.5, MUTED);
 
     return ty - 34; // deutlich mehr Abstand zum nächsten Block (Tabellenkopf)
@@ -202,12 +208,7 @@ export async function generateDocumentPdf(data: {
     }
     // Folgeseiten: nur schlanker Tabellenkopf (Titel + Nr. dünn)
     let y = H - MT;
-    if (logoImg) {
-      const targetW = 90;
-      const scale = targetW / logoImg.width;
-      const drawH = logoImg.height * scale;
-      pg.drawImage(logoImg, { x: W - MR - targetW, y: y - drawH, width: targetW, height: drawH });
-    }
+    drawLogo(pg, 30 * MM);
     dt(pg, `${data.title} · ${data.documentNumber}`, ML, y - 46, bold, 10, BRAND);
     y -= 74;
     return { pg, y: renderTableHeader(pg, y) };
@@ -488,14 +489,16 @@ export async function generateDocumentPdf(data: {
     `${SLT_COMPANY.registry}`,
   ];
   const footerCol2 = [
-    `${SLT_COMPANY.street} | ${SLT_COMPANY.city}`,
-    `Tel: ${SLT_COMPANY.phone}`,
-    `${SLT_COMPANY.email} | ${SLT_COMPANY.web}`,
+    `${SLT_COMPANY.street}, ${SLT_COMPANY.city}`,
+    `Tel. ${SLT_COMPANY.phone}`,
+    SLT_COMPANY.email,
+    SLT_COMPANY.web,
   ];
   const footerCol3 = [
     `Steuer-Nr. ${SLT_COMPANY.steuerNr}`,
     `USt-IdNr. ${SLT_COMPANY.ustId}`,
-    `${SLT_COMPANY.bankName} | IBAN ${SLT_COMPANY.iban}`,
+    SLT_COMPANY.bankName,
+    `IBAN ${SLT_COMPANY.iban}`,
   ];
   for (let i = 0; i < total; i++) {
     const p = doc.getPage(i);
@@ -503,12 +506,14 @@ export async function generateDocumentPdf(data: {
     p.drawRectangle({ x: ML, y: MB + 42, width: CW, height: 0.5, color: LINE });
     const drawCol = (lines: string[], x: number) => {
       lines.forEach((ln, li) => {
-        try { p.drawText(ln, { x, y: MB + 32 - li * 9, size: 6.8, font, color: MUTED }); } catch {}
+        try { p.drawText(ln, { x, y: MB + 32 - li * 8.5, size: 6.6, font, color: MUTED }); } catch {}
       });
     };
     drawCol(footerCol1, ML);
     drawCol(footerCol2, ML + colW);
-    drawCol(footerCol3, ML + 2 * colW);
+    footerCol3.forEach((ln, li) => {
+      try { p.drawText(ln, { x: W - MR - font.widthOfTextAtSize(ln, 6.6), y: MB + 32 - li * 8.5, size: 6.6, font, color: MUTED }); } catch {}
+    });
     // Seite X von Y ab Seite 2
     if (total > 1 && i >= 1) {
       try {
