@@ -24,6 +24,20 @@ describe("dashboardMetrics", () => {
     );
     expect(r).toEqual({ day: 0, week: 680, month: 1040, year: 1140 });
   });
+  it("Portal-Testrechnung und Vollgutschrift saldieren centgenau in allen Zeiträumen", () => {
+    expect(revenueSummary([], [
+      { invoice_kind: "invoice", status: "cancelled", invoice_date: "2026-10-03", net_amount: 16.81, gross_amount: 20 },
+      { invoice_kind: "credit_note", status: "paid", invoice_date: "2026-10-03", net_amount: -16.81, gross_amount: -20 },
+      { invoice_kind: "invoice", status: "draft", invoice_date: "2026-10-03", net_amount: 100, gross_amount: 119 },
+    ], new Date(2026, 9, 3))).toEqual({ day: 0, week: 0, month: 0, year: 0 });
+  });
+  it("Portal-Teilgutschrift reduziert Umsatz nur einmal und bleibt im Belegzeitraum", () => {
+    const rows = [
+      { invoice_kind: "invoice", status: "open", invoice_date: "2026-09-30", net_amount: 100, gross_amount: 119 },
+      { invoice_kind: "credit_note", status: "paid", invoice_date: "2026-10-03", net_amount: -25, gross_amount: -29.75 },
+    ];
+    expect(revenueSummary([], rows, new Date(2026, 9, 3))).toEqual({ day: -25, week: 75, month: -25, year: 75 });
+  });
   it("Forderungen ziehen Zahlungen und Gutschriften ab", () => {
     const r = receivables(
       [

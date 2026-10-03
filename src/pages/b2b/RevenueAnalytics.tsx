@@ -77,7 +77,7 @@ export default function RevenueAnalytics() {
       const [inq, inqItems, portal, portalItems, products, sales, newM, usedM] = await Promise.all([
         supabase.from("inquiry_invoices").select("id,inquiry_type,invoice_kind,status,invoice_date,net_amount,location,customer_kind,sales_inquiry_id,delivery_cost_delivery,delivery_cost_return,setup_cost,dismantle_cost"),
         supabase.from("inquiry_invoice_items").select("invoice_id,product_name,total_price"),
-        supabase.from("b2b_invoices").select("id,status,invoice_date,net_amount,reservation_id,b2b_profile_id,delivery_cost,source_offer_id"),
+        supabase.from("b2b_invoices").select("id,invoice_kind,status,invoice_date,net_amount,reservation_id,b2b_profile_id,delivery_cost,source_offer_id"),
         supabase.from("b2b_invoice_items").select("invoice_id,product_name,total_price"),
         supabase.from("b2b_managed_products").select("name,category"),
         supabase.from("sales_inquiries").select("id,product_category"),
@@ -87,7 +87,7 @@ export default function RevenueAnalytics() {
       const firstErr = [inq, inqItems, portal, portalItems, products].find((r) => r.error)?.error;
       if (firstErr) { setError(firstErr.message); setLoading(false); return; }
 
-      const portalRows = (portal.data ?? []) as { id: string; status: string; invoice_date: string | null; net_amount: number | null; reservation_id: string | null; b2b_profile_id: string | null; delivery_cost: number | null; source_offer_id: string | null }[];
+      const portalRows = (portal.data ?? []) as { id: string; invoice_kind: string | null; status: string; invoice_date: string | null; net_amount: number | null; reservation_id: string | null; b2b_profile_id: string | null; delivery_cost: number | null; source_offer_id: string | null }[];
       const resIds = portalRows.map((r) => r.reservation_id).filter(Boolean) as string[];
       const profIds = portalRows.map((r) => r.b2b_profile_id).filter(Boolean) as string[];
       const offerIds = portalRows.map((r) => r.source_offer_id).filter(Boolean) as string[];
@@ -123,7 +123,7 @@ export default function RevenueAnalytics() {
           items: iItems.get(r.id) ?? [],
         })),
         ...portalRows.map((r) => ({
-          id: r.id, source: "portal" as const, business: "rental" as Business, invoice_kind: "invoice",
+          id: r.id, source: "portal" as const, business: "rental" as Business, invoice_kind: r.invoice_kind,
           status: r.status, invoice_date: r.invoice_date, net_amount: n(r.net_amount),
           location: (r.reservation_id && resLoc.get(r.reservation_id)) || (r.b2b_profile_id && profLoc.get(r.b2b_profile_id)) || null,
           segment: "portal" as const,

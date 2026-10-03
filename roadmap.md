@@ -1,5 +1,9 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – Umsatzsaldo und Kundensuche
+- [x] Portalrechnung +16,81 netto und Gutschrift −16,81 saldieren: Startseite und Auswertung zeigen 0; 12 Fachtests bestanden, Admin-Anmeldung geprüft
+- [x] Startseitensuche öffnet Harald Sassen und Portal-Testfirma direkt in Kundenbearbeitung; bestehende Admin-Rechte bleiben, keine Daten gespeichert
+
 ## Aktuell – konsistente Protokoll-Fußzeilen
 - [x] B2B-Übergabe/Rückgabe: PDF-Anhang und HTML-Ansicht auf gemeinsame Angebotsfußzeile mit Auftragsstandort umgestellt; beide Funktionen deployed
 - [x] 18 PDF-Muster (42 Seiten) und 6 HTML-Druckmuster (12 Seiten) geprüft; 6 neue Fußzeilentests und 7 PDF-Regressionstests bestanden; Kunden-Protokolllisten mit Login geprüft; Bericht ohne Versand erstellt
