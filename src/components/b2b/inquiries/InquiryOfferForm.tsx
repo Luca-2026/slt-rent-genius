@@ -1,3 +1,4 @@
+import { PdfPagesPreview } from "@/components/b2b/PdfPagesPreview";
 import { applyCategoryDiscount, loadCategoryDiscounts, loadInquiryProfileId, type DiscountMap } from "@/lib/customerDiscounts";
 import { NumberInput } from "@/components/ui/number-input";
 import { useEffect, useMemo, useRef, useState } from "react";
