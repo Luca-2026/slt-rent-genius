@@ -21,6 +21,9 @@ const LOCATION_PHONE: Record<string, string> = {
   muelheim: "02151 417 99 04",
 };
 
+const MAX_BRANCH_LIMIT = 2000;
+const fmtEur = (n: number) => n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
+
 const escapeHtml = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -72,10 +75,20 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    const { profileId } = await req.json();
-    if (!profileId) {
-      return new Response(JSON.stringify({ error: "profileId required" }), {
+    const { profileId, amount } = await req.json();
+    const roles = roleRows.map((r: { role: string }) => r.role);
+    const isAdminRole = roles.includes("admin");
+    const limit = Number(amount);
+    if (!profileId || !Number.isFinite(limit) || limit <= 0 || Math.round(limit * 100) !== limit * 100) {
+      return new Response(JSON.stringify({ error: "profileId und Betrag > 0 € erforderlich" }), {
         status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    // Niederlassungsleiter dürfen höchstens 2.000 € vergeben
+    if (!isAdminRole && limit > MAX_BRANCH_LIMIT) {
+      return new Response(JSON.stringify({ error: `Niederlassungsleiter dürfen höchstens ${MAX_BRANCH_LIMIT.toLocaleString("de-DE")} € vergeben.` }), {
+        status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -84,7 +97,7 @@ Deno.serve(async (req: Request) => {
     const { data: profile, error: profileError } = await admin
       .from("b2b_profiles")
       .select(
-        "id, company_name, contact_first_name, contact_last_name, contact_email, assigned_location"
+        "id, company_name, contact_first_name, contact_last_name, contact_email, assigned_location, credit_limit"
       )
       .eq("id", profileId)
       .single();
@@ -116,23 +129,29 @@ Deno.serve(async (req: Request) => {
     const locationPhone = LOCATION_PHONE[locKey] || LOCATION_PHONE.krefeld;
 
     const customerFirstName = profile.contact_first_name || "";
-    const subject = `Deine Kreditlimit-Anfrage – ${profile.company_name}`;
+    if (!isAdminRole && Number(profile.credit_limit) > MAX_BRANCH_LIMIT) {
+      return new Response(JSON.stringify({ error: "Dieses Kreditlimit liegt über 2.000 € und kann nur ein Admin ändern." }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const subject = `Dein Kreditlimit ist freigeschaltet – ${profile.company_name}`;
 
     // Plain-text body — stored in b2b_admin_messages and rendered in dashboard
     const messageBody =
       `Hallo ${customerFirstName},\n\n` +
-      `vielen Dank für deine Anfrage nach einem Kreditlimit für ${profile.company_name}. Aktuell können wir leider noch kein Kreditlimit vergeben.\n\n` +
-      `Bitte hab Verständnis dafür, dass die erste Miete bei uns grundsätzlich per Vorkasse erfolgt. Wir prüfen dein Kundenkonto proaktiv und melden uns, sobald ein Kreditlimit möglich ist. Du kannst das Kreditlimit natürlich auch jederzeit gerne erneut im B2B-Portal anfragen.\n\n` +
+      `gute Nachrichten: Für ${profile.company_name} ist ab sofort ein Kreditlimit von ${fmtEur(limit)} freigeschaltet. Du kannst jetzt bis zu ${fmtEur(limit)} auf Rechnung bei uns mieten.\n\n` +
+      `Wir freuen uns auf die weitere Zusammenarbeit.\n\n` +
       `Bei Fragen stehe ich dir am Standort ${locationLabel} gerne per E-Mail oder telefonisch zur Verfügung.\n\n` +
       `Viele Grüße\n${senderFullName}\nSLT Rental – Standort ${locationLabel}\nE-Mail: ${senderEmail}\nTelefon: ${locationPhone}`;
 
-    // Antrag abschließen – Kunde kann später erneut anfragen
+    // Limit setzen und Antrag abschließen
     const { error: clearErr } = await admin
       .from("b2b_profiles")
-      .update({ credit_limit_requested_at: null })
+      .update({ credit_limit: limit, credit_limit_requested_at: null })
       .eq("id", profile.id);
     if (clearErr) {
-      return new Response(JSON.stringify({ error: "Antrag konnte nicht abgeschlossen werden" }), {
+      return new Response(JSON.stringify({ error: "Kreditlimit konnte nicht gespeichert werden" }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -174,10 +193,10 @@ Deno.serve(async (req: Request) => {
       <img src="${SLT_LOGO}" alt="SLT-Rental" style="height:60px;width:auto;" />
     </div>
     <div style="background:#00507d;padding:14px 40px;text-align:center;">
-      <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">Rückmeldung zu deiner Kreditlimit-Anfrage</p>
+      <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">Dein Kreditlimit ist freigeschaltet</p>
     </div>
     <div style="padding:32px 40px;">
-      <h2 style="color:#1a1a1a;margin:0 0 18px;font-size:20px;">Deine Kreditlimit-Anfrage</h2>
+      <h2 style="color:#1a1a1a;margin:0 0 18px;font-size:20px;">Kreditlimit freigeschaltet</h2>
       <div style="color:#374151;line-height:1.7;font-size:14px;background:#f9fafb;border-left:4px solid #ff8e02;padding:16px 18px;border-radius:4px;">
         ${bodyHtml}
       </div>
@@ -248,11 +267,12 @@ Deno.serve(async (req: Request) => {
         message_id: inserted?.id ?? null,
         sender: senderFullName,
         location: locationLabel,
+        credit_limit: limit,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error: any) {
-    console.error("decline-credit-limit error:", error);
+    console.error("grant-credit-limit error:", error);
     return new Response(JSON.stringify({ error: error?.message ?? "Internal" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },

@@ -130,7 +130,6 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
       postal_code: form.postal_code,
       city: form.city,
       country: form.country || "Deutschland",
-      credit_limit: creditLimit,
       payment_due_days: form.payment_due_days,
       assigned_location: form.assigned_location || null,
       default_payment_terms: form.default_payment_terms,
@@ -141,7 +140,10 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
       rejection_reason: form.status === "rejected" ? form.rejection_reason || null : null,
     };
     // Kreditlimit-Antrag gilt als erledigt, sobald ein Limit vergeben ist
-    if (creditLimit > 0 && profile.credit_limit_requested_at) update.credit_limit_requested_at = null;
+    // Neues/erhöhtes Limit > 0 läuft über grant-credit-limit (Bestätigungs-E-Mail an den Kunden)
+    const creditChanged = creditLimit !== Number(profile.credit_limit || 0);
+    const grantWithEmail = creditChanged && creditLimit > 0;
+    if (creditChanged && creditLimit === 0) update.credit_limit = 0;
     if (statusChanged) {
       update.status_changed_at = new Date().toISOString();
       update.status_changed_by = userId;
@@ -149,8 +151,15 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
 
     const { error } = await supabase.from("b2b_profiles").update(update as never).eq("id", profile.id);
 
-    if (error) {
-      toast({ title: "Fehler", description: error.message, variant: "destructive" });
+    let grantError: string | null = null;
+    if (!error && grantWithEmail) {
+      const { data, error: gErr } = await supabase.functions.invoke("grant-credit-limit", { body: { profileId: profile.id, amount: creditLimit } });
+      if (gErr || data?.error) grantError = data?.error || gErr?.message || "Unbekannter Fehler";
+      else toast({ title: "Kreditlimit vergeben", description: data?.email_sent ? `Bestätigung an ${data.email_sent_to} gesendet.` : "E-Mail konnte nicht gesendet werden." });
+    }
+
+    if (error || grantError) {
+      toast({ title: "Fehler", description: error?.message || `Kreditlimit: ${grantError}`, variant: "destructive" });
     } else {
       toast({ title: "Kundendaten gespeichert", description: `${form.company_name} wurde aktualisiert.` });
       if (statusChanged && form.status === "approved") {
@@ -191,6 +200,7 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
             <Label htmlFor="ce-credit">Kreditlimit (€)</Label>
             <Input id="ce-credit" type="number" inputMode="decimal" min={0} step={100} placeholder="0"
               value={form.credit_limit} onChange={(e) => set("credit_limit", e.target.value === "" ? "" : Number(e.target.value))} />
+            <p className="text-xs text-muted-foreground mt-1">Bei neuem Limit über 0 € erhält der Kunde eine Bestätigungs-E-Mail.</p>
             {profile?.credit_limit_requested_at && (
               <p className="text-xs text-accent mt-1">Kunde hat ein Kreditlimit beantragt. Mit einem Betrag über 0 € gilt der Antrag als erledigt.</p>
             )}
