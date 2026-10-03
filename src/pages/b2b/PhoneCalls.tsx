@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Phone, RefreshCw, Inbox, Clock, ExternalLink } from "lucide-react";
+import { Phone, RefreshCw, Inbox, Clock, ExternalLink, Check, Undo2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
@@ -84,14 +84,14 @@ export default function PhoneCalls() {
       ) : (
         <ul className="divide-y divide-border rounded-lg border border-border bg-card">
           {filtered.map((c) => (
-            <li key={c.id}>
-              <button type="button" onClick={() => setSelId(c.id)} className="flex w-full flex-col gap-1 p-3 text-left hover:bg-muted sm:flex-row sm:items-start sm:gap-4">
+            <li key={c.id} className="flex items-stretch gap-1">
+              <button type="button" onClick={() => setSelId(c.id)} className="flex min-w-0 flex-1 flex-col gap-1 p-3 text-left hover:bg-muted sm:flex-row sm:items-start sm:gap-4">
                 <div className="flex shrink-0 items-center gap-2 sm:w-40 sm:flex-col sm:items-start">
                   <PriorityBadge p={c.priority} />
                   <span className="text-xs text-muted-foreground">{fmt(c)}</span>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="font-medium">{who(c)}</p>
+                  <p className={cn("font-medium", c.status === "done" && "text-muted-foreground line-through")}>{who(c)}</p>
                   <p className="line-clamp-2 text-sm text-muted-foreground">
                     {c.analysis_status === "failed" ? `Nicht ausgewertet: ${c.analysis_error ?? ""}` : c.summary ?? c.provider_summary ?? "Wird ausgewertet …"}
                   </p>
@@ -103,6 +103,9 @@ export default function PhoneCalls() {
                   <Badge variant="outline">{STATUS[c.status]}</Badge>
                 </div>
               </button>
+              <div className="flex shrink-0 items-center pr-2">
+                <QuickDoneToggle call={c} onDone={reload} />
+              </div>
             </li>
           ))}
         </ul>
@@ -114,6 +117,45 @@ export default function PhoneCalls() {
         </SheetContent>
       </Sheet>
     </B2BPortalLayout>
+  );
+}
+
+function QuickDoneToggle({ call, onDone }: { call: PhoneCall; onDone: () => void }) {
+  const { toast } = useToast();
+  const [busy, setBusy] = useState(false);
+  const done = call.status === "done";
+
+  const toggle = async () => {
+    setBusy(true);
+    const patch = done
+      ? { status: "open" }
+      : { status: "done" };
+    const { error } = await supabase.from("phone_calls" as never).update(patch as never).eq("id", call.id);
+    setBusy(false);
+    if (error) {
+      toast({ title: "Speichern fehlgeschlagen", description: error.message, variant: "destructive" });
+    } else {
+      onDone();
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      disabled={busy}
+      title={done ? "Als offen markieren" : "Als erledigt markieren"}
+      aria-label={done ? "Als offen markieren" : "Als erledigt markieren"}
+      className={cn(
+        "inline-flex h-8 items-center gap-1 rounded-md border px-2 text-xs font-medium transition-colors",
+        done
+          ? "border-border text-muted-foreground hover:bg-muted"
+          : "border-primary/40 text-primary hover:bg-primary/10",
+      )}
+    >
+      {done ? <Undo2 className="h-3.5 w-3.5" aria-hidden="true" /> : <Check className="h-3.5 w-3.5" aria-hidden="true" />}
+      <span className="hidden sm:inline">{done ? "Offen" : "Erledigt"}</span>
+    </button>
   );
 }
 
