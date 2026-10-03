@@ -351,7 +351,7 @@ Deno.serve(async (req: Request) => {
     if (offer_id) {
       const { data: existingOffer, error: existingError } = await serviceClient
         .from("b2b_offers")
-        .select("offer_number")
+        .select("offer_number, status")
         .eq("id", offer_id)
         .single();
 
@@ -362,23 +362,34 @@ Deno.serve(async (req: Request) => {
         });
       }
 
-      offerNumber = existingOffer.offer_number;
+      // Der lokal gespeicherte Entwurf hat keine endgültige Angebotsnummer.
+      if (existingOffer.status === "draft" && !save_as_draft && existingOffer.offer_number.startsWith("ENTWURF-")) {
+        const { data: numberData, error: numberError } = await serviceClient.rpc("generate_offer_number_for", { _series: "M" });
+        if (numberError || !numberData) {
+          return new Response(JSON.stringify({ error: "Failed to generate offer number" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        }
+        offerNumber = String(numberData);
+      } else {
+        offerNumber = existingOffer.offer_number;
+      }
       offerDate = new Date().toISOString().split("T")[0];
       validUntil = new Date(Date.now() + valid_days * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
       console.log("Updating existing offer:", offerNumber);
     } else {
       // Portalbuchungen sind Mietvorgänge; gleicher Kreis wie private Mietanfragen.
-      const { data: offerNumData, error: offerNumError } = await serviceClient.rpc("generate_offer_number_for", { _series: "M" });
-
-      if (offerNumError) {
-        console.error("Error generating offer number:", offerNumError);
-        return new Response(JSON.stringify({ error: "Failed to generate offer number" }), {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+      if (save_as_draft) {
+        offerNumber = `ENTWURF-${crypto.randomUUID()}`;
+      } else {
+        const { data: offerNumData, error: offerNumError } = await serviceClient.rpc("generate_offer_number_for", { _series: "M" });
+        if (offerNumError || !offerNumData) {
+          console.error("Error generating offer number:", offerNumError);
+          return new Response(JSON.stringify({ error: "Failed to generate offer number" }), {
+            status: 500,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        offerNumber = String(offerNumData);
       }
-
-      offerNumber = offerNumData as string;
       offerDate = new Date().toISOString().split("T")[0];
       validUntil = new Date(Date.now() + valid_days * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
       console.log("Offer number generated:", offerNumber);
@@ -460,6 +471,7 @@ Deno.serve(async (req: Request) => {
       const { data: updatedOffer, error: offerError } = await serviceClient
         .from("b2b_offers")
         .update({
+          offer_number: offerNumber,
           offer_date: offerDate,
           valid_until: validUntil,
           status: updateStatus,
