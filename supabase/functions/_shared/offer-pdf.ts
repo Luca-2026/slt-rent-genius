@@ -137,13 +137,23 @@ export async function generateOfferPdf(data: {
 
   const wt = (t: string, f: any, s: number, mw: number): string[] => {
     if (!t) return [""];
-    const words = safe(t).split(/\s+/);
+    const words = safe(t).split(/\s+/).filter(Boolean);
     const lines: string[] = [];
     let cur = "";
+    const push = (w: string) => {
+      // Überlange Wörter (z. B. Modellnummern) zeichenweise umbrechen, damit nichts überläuft
+      while (f.widthOfTextAtSize(w, s) > mw && w.length > 1) {
+        let i = w.length - 1;
+        while (i > 1 && f.widthOfTextAtSize(w.slice(0, i), s) > mw) i--;
+        lines.push(w.slice(0, i));
+        w = w.slice(i);
+      }
+      return w;
+    };
     for (const w of words) {
       const test = cur ? `${cur} ${w}` : w;
       if (f.widthOfTextAtSize(test, s) <= mw) cur = test;
-      else { if (cur) lines.push(cur); cur = w; }
+      else { if (cur) lines.push(cur); cur = push(w); }
     }
     if (cur) lines.push(cur);
     return lines.length ? lines : [""];
@@ -447,11 +457,6 @@ export async function generateOfferPdf(data: {
   data.items.forEach((item: any, idx: number) => {
     const img = item.image_url ? imageCache.get(item.image_url) : null;
     const nameText = safe(item.product_name);
-    const nameLines = wt(nameText, bold, 9.5, nameColW);
-    const subLines: string[] = [];
-    if (item.description) subLines.push(...wt(item.description, font, 8, nameColW));
-    // Zeitraum steht bereits in der Beschreibung → nicht doppelt als "Mietzeitraum" ausgeben
-    const descHasPeriod = typeof item.description === "string" && /\d{1,2}\.\d{1,2}\.\d{4}/.test(item.description);
     // "3 Artikel × 9 Kalendertage" → Menge als "3 × 9" statt hochgerechnet "27" anzeigen
     const periodMatch = typeof item.description === "string"
       ? item.description.match(/(\d+)\s*Artikel\s*[\u00D7x]\s*(\d+)\s*[A-Za-z\u00C4\u00D6\u00DC\u00E4\u00F6\u00FC\u00DF]+\s*$/)
@@ -459,6 +464,13 @@ export async function generateOfferPdf(data: {
     const qtyText = periodMatch && Number(periodMatch[1]) * Number(periodMatch[2]) === Number(item.quantity)
       ? `${periodMatch[1]} \u00D7 ${periodMatch[2]}`
       : String(item.quantity);
+    // Bezeichnung endet immer mit Abstand vor der (rechtsbündigen) Mengenangabe
+    const rowNameW = Math.min(nameColW, qtyColRight - font.widthOfTextAtSize(safe(qtyText), 9.5) - 10 - textColX);
+    const nameLines = wt(nameText, bold, 9.5, rowNameW);
+    const subLines: string[] = [];
+    if (item.description) subLines.push(...wt(item.description, font, 8, nameColW));
+    // Zeitraum steht bereits in der Beschreibung → nicht doppelt als "Mietzeitraum" ausgeben
+    const descHasPeriod = typeof item.description === "string" && /\d{1,2}\.\d{1,2}\.\d{4}/.test(item.description);
     if (item.rental_start && !descHasPeriod) {
       subLines.push(...wt(`Mietzeitraum: ${fd(item.rental_start)}${item.rental_end ? " - " + fd(item.rental_end) : ""}`, font, 8, nameColW));
     }
