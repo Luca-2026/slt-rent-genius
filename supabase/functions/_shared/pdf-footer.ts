@@ -37,6 +37,23 @@ export function resolvePdfLocation(raw: string | null | undefined): PdfLocation 
 
 type Company = { name: string; street: string; city: string; registry: string; liablePartner: string; partnerRegistry: string; managingDirector: string; steuerNr: string; ustId: string; bankName: string; iban: string; bic: string; web: string };
 
+/** Same contents and column order for legacy protocol HTML downloads. */
+export function unifiedFooterHtml(c: Company, l: PdfLocation): string {
+  const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const columns = footerColumns(c, l);
+  return `<div class="unified-footer" style="border-top:0.5pt solid #d9dee6;padding-top:9pt;margin-top:18pt;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:5pt;color:#6b7380;font-family:Arial,sans-serif;font-size:${FOOTER_SIZE}pt;line-height:${FOOTER_LEAD}pt;break-inside:avoid;">${columns.map((lines, i) => `<div style="min-width:0;${i === 2 ? "text-align:right;" : ""}">${lines.map((line) => `<div style="overflow-wrap:anywhere;">${esc(line)}</div>`).join("")}</div>`).join("")}</div>`;
+}
+
+function footerColumns(c: Company, l: PdfLocation): string[][] {
+  return [
+    [c.name, `Sitz: ${c.street}, ${c.city}`, c.registry,
+      "Persönlich haftende Gesellschafterin:", c.liablePartner, "Sitz: Krefeld",
+      c.partnerRegistry, `Geschäftsführer (GmbH): ${c.managingDirector}`],
+    [`Standort ${l.name}`, `${l.street}, ${l.city}`, `Tel. ${l.phone}`, `${l.email} · ${c.web}`],
+    [`Steuer-Nr. ${c.steuerNr} · USt-IdNr. ${c.ustId}`, c.bankName, `IBAN ${c.iban}`, `BIC ${c.bic}`],
+  ];
+}
+
 /** Zeichnet die Fußzeile auf allen Seiten. `showPageNo(i,total)` steuert die Seitenzahl. */
 export function drawUnifiedFooter(opts: {
   doc: any; font: any; company: Company; location: PdfLocation;
@@ -52,18 +69,7 @@ export function drawUnifiedFooter(opts: {
   const colW = CW / 3;
   // Die KG bleibt Vertragspartnerin; die GmbH wird ausschließlich in ihrer
   // Funktion als persönlich haftende Gesellschafterin der KG ausgewiesen.
-  const col1 = [
-    c.name,
-    `Sitz: ${c.street}, ${c.city}`,
-    c.registry,
-    "Pers\u00F6nlich haftende Gesellschafterin:",
-    c.liablePartner,
-    "Sitz: Krefeld",
-    c.partnerRegistry,
-    `Gesch\u00E4ftsf\u00FChrer (GmbH): ${c.managingDirector}`,
-  ];
-  const col2 = [`Standort ${l.name}`, `${l.street}, ${l.city}`, `Tel. ${l.phone}`, `${l.email} \u00B7 ${c.web}`];
-  const col3 = [`Steuer-Nr. ${c.steuerNr} \u00B7 USt-IdNr. ${c.ustId}`, c.bankName, `IBAN ${c.iban}`, `BIC ${c.bic}`];
+  const [col1, col2, col3] = footerColumns(c, l);
   const total = doc.getPageCount();
   const show = opts.showPageNo ?? ((_i: number, t: number) => t > 1);
   for (let i = 0; i < total; i++) {
