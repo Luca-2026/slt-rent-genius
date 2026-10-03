@@ -45,6 +45,8 @@ interface Invoice {
   payment_terms?: string | null;
   created_at: string;
   notes: string | null;
+  invoice_kind?: string;
+  credited_amount?: number;
 }
 
 
@@ -168,7 +170,7 @@ export function AdminInvoicesTab({
         product_name: `Gutschrift zu ${invoice.invoice_number}`,
         description: `Vollständige Gutschrift der Rechnung ${invoice.invoice_number}`,
         quantity: 1,
-        unit_price: -invoice.net_amount,
+        unit_price: -Math.round(invoice.net_amount * Math.max(0, invoice.gross_amount - (invoice.credited_amount ?? 0)) / invoice.gross_amount * 100) / 100,
       }]);
     } else {
       setCorrectionItems([{ product_name: "", description: "", quantity: 1, unit_price: 0 }]);
@@ -207,6 +209,7 @@ export function AdminInvoicesTab({
       const { data, error } = await supabase.functions.invoke("generate-invoice", {
         body: {
           reservation_id: selectedInvoice.reservation_id,
+          b2b_profile_id: selectedInvoice.b2b_profile_id,
           custom_items: validItems.map((item) => ({
             product_name: item.product_name,
             description: item.description || undefined,
@@ -223,6 +226,7 @@ export function AdminInvoicesTab({
           ].filter(Boolean).join("\n"),
           is_correction: true,
           original_invoice_number: selectedInvoice.invoice_number,
+          send_email: false,
         },
       });
 
@@ -232,11 +236,6 @@ export function AdminInvoicesTab({
         title: correctionType === "correction" ? "Rechnungskorrektur erstellt!" : "Gutschrift erstellt!",
         description: `${data.invoice?.invoice_number} wurde erfolgreich generiert.`,
       });
-
-      // If credit note, mark original invoice as cancelled
-      if (correctionType === "credit") {
-        await onStatusChange(selectedInvoice.id, "cancelled");
-      }
 
       setCorrectionDialogOpen(false);
       onRefresh();
@@ -420,17 +419,17 @@ export function AdminInvoicesTab({
                         <Select
                           value={inv.status}
                           onValueChange={(v) => onStatusChange(inv.id, v)}
-                          disabled={inv.status === 'draft'}
+                          disabled={inv.status === 'draft' || inv.status === 'cancelled' || inv.notes?.includes('GUTSCHRIFT')}
                         >
                           <SelectTrigger className={`w-[130px] h-8 text-xs border ${statusColor(inv.status)}`}>
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="draft">Entwurf</SelectItem>
+                            {inv.status === "draft" && <SelectItem value="draft">Entwurf</SelectItem>}
                             <SelectItem value="open">Offen</SelectItem>
                             <SelectItem value="paid">Bezahlt</SelectItem>
                             <SelectItem value="overdue">Überfällig</SelectItem>
-                            <SelectItem value="cancelled">Storniert</SelectItem>
+                            {inv.status === "cancelled" && <SelectItem value="cancelled">Storniert</SelectItem>}
                           </SelectContent>
                         </Select>
                       </TableCell>
@@ -455,7 +454,7 @@ export function AdminInvoicesTab({
                             <Button
                               size="sm"
                               variant="ghost"
-                              onClick={() => onViewInvoice(inv.file_url!, inv.invoice_number || 'Entwurf')}
+                              onClick={() => { if (inv.file_url) onViewInvoice(inv.file_url, inv.invoice_number || 'Entwurf'); }}
                             >
                               <Eye className="h-4 w-4 mr-1" />
                               <span className="text-xs">PDF</span>
@@ -481,7 +480,7 @@ export function AdminInvoicesTab({
                               <span className="hidden lg:inline text-xs">{inv.email_sent ? "Gesendet" : "Senden"}</span>
                             </Button>
                           )}
-                          {inv.status !== "cancelled" && !inv.notes?.includes("GUTSCHRIFT") && (
+                          {inv.status !== "draft" && inv.status !== "cancelled" && !inv.notes?.includes("GUTSCHRIFT") && (
                             <>
                               <Button
                                 size="sm"
@@ -504,7 +503,7 @@ export function AdminInvoicesTab({
                               </Button>
                             </>
                           )}
-                          <Button
+                          {inv.status === "draft" && <Button
                             size="sm"
                             variant="ghost"
                             className="text-destructive"
@@ -512,7 +511,7 @@ export function AdminInvoicesTab({
                             title="Rechnung löschen"
                           >
                             <Trash2 className="h-3.5 w-3.5" />
-                          </Button>
+                          </Button>}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -550,23 +549,24 @@ export function AdminInvoicesTab({
                   </div>
 
                   <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                    <span>Datum: {formatDate(inv.invoice_date)}</span>
+                    <span>Datum: {inv.invoice_date ? formatDate(inv.invoice_date) : "–"}</span>
                     <span>Fällig: {inv.due_date ? formatDate(inv.due_date) : "–"}</span>
                   </div>
 
                   <Select
                     value={inv.status}
                     onValueChange={(v) => onStatusChange(inv.id, v)}
+                    disabled={inv.status === 'draft' || inv.status === 'cancelled' || inv.notes?.includes('GUTSCHRIFT')}
                   >
                     <SelectTrigger className={`w-full h-10 text-sm border ${statusColor(inv.status)}`}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="draft">Entwurf</SelectItem>
+                      {inv.status === "draft" && <SelectItem value="draft">Entwurf</SelectItem>}
                       <SelectItem value="open">Offen</SelectItem>
                       <SelectItem value="paid">Bezahlt</SelectItem>
                       <SelectItem value="overdue">Überfällig</SelectItem>
-                      <SelectItem value="cancelled">Storniert</SelectItem>
+                      {inv.status === "cancelled" && <SelectItem value="cancelled">Storniert</SelectItem>}
                     </SelectContent>
                   </Select>
 
@@ -575,7 +575,7 @@ export function AdminInvoicesTab({
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => onViewInvoice(inv.file_url!, inv.invoice_number)}
+                        onClick={() => { if (inv.file_url) onViewInvoice(inv.file_url, inv.invoice_number || 'Entwurf'); }}
                         className="h-10"
                       >
                         <Eye className="h-4 w-4 mr-1.5" />
@@ -600,7 +600,7 @@ export function AdminInvoicesTab({
                         {inv.email_sent ? "Erneut senden" : "E-Mail senden"}
                       </Button>
                     )}
-                    {inv.status !== "cancelled" && !inv.notes?.includes("GUTSCHRIFT") && (
+                    {inv.status !== "draft" && inv.status !== "cancelled" && !inv.notes?.includes("GUTSCHRIFT") && (
                       <>
                         <Button
                           size="sm"
@@ -622,14 +622,14 @@ export function AdminInvoicesTab({
                         </Button>
                       </>
                     )}
-                    <Button
+                    {inv.status === "draft" && <Button
                       size="sm"
                       variant="outline"
                       className="text-destructive h-10"
                       onClick={() => setDeleteConfirmInvoice(inv)}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
+                    </Button>}
                   </div>
                 </CardContent>
               </Card>

@@ -4,12 +4,34 @@ import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
 import { embedProductImages, normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 import { SLT_COMPANY } from "./company.ts";
 import { generateDocumentPdf } from "./pdf.ts";
+import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { z } from 'npm:zod@3';
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+const InvoiceBodySchema = z.object({
+  reservation_id: z.string().uuid().nullish(),
+  b2b_profile_id: z.string().uuid().nullish(),
+  finalize_invoice_id: z.string().uuid().optional(),
+  source_offer_id: z.string().uuid().nullish(),
+  custom_items: z.array(z.object({
+    product_name: z.string().trim().min(1).max(500),
+    description: z.string().max(10000).optional(),
+    quantity: z.number().finite().positive(),
+    unit_price: z.number().finite(),
+    discount_percent: z.number().min(0).max(100).optional(),
+    rental_start: z.string().optional(), rental_end: z.string().optional(),
+    image_url: z.string().max(4000).optional(),
+    item_type: z.enum(['product','service','surcharge','deposit']).optional(),
+    parent_item_index: z.number().int().nonnegative().optional(),
+  })).max(250).optional(),
+  delivery_cost: z.number().finite().nonnegative().optional(),
+  payment_due_days: z.number().int().min(0).max(365).optional(),
+  payment_terms: z.enum(['vorkasse','net_7','net_14','net_30']).optional(),
+  notes: z.string().max(20000).optional(), image_url: z.string().max(4000).optional(),
+  original_invoice_number: z.string().max(100).nullish(),
+  is_correction: z.boolean().optional(), send_email: z.boolean().optional(),
+  is_proforma: z.boolean().optional(), save_as_draft: z.boolean().optional(),
+  delivery_address: z.object({street:z.string().max(500).optional(),postal_code:z.string().max(30).optional(),city:z.string().max(300).optional()}).optional(),
+});
 
 // SLT Corporate Design constants
 
@@ -103,7 +125,9 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    const body: InvoiceRequest = await req.json();
+    const parsed = InvoiceBodySchema.safeParse(await req.json().catch(() => null));
+    if (!parsed.success) return new Response(JSON.stringify({ error: "Ungültige Rechnungsdaten", details: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    const body = parsed.data;
     const { reservation_id, b2b_profile_id: directProfileId, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, payment_terms: bodyPaymentTerms, source_offer_id, finalize_invoice_id, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number, send_email = true, is_proforma = false, save_as_draft = false, delivery_address: deliveryAddress } = body;
 
     // ─── FINALIZE MODE: turn an existing draft into a real invoice ───
@@ -260,6 +284,18 @@ Deno.serve(async (req: Request) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
+    let originalInvoice: any = null;
+    if (is_correction) {
+      if (save_as_draft || is_proforma || !original_invoice_number) {
+        return new Response(JSON.stringify({ error: "Gutschriften benötigen eine ausgestellte Ursprungsrechnung" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      const { data } = await serviceClient.from("b2b_invoices").select("*").eq("invoice_number", original_invoice_number).maybeSingle();
+      if (!data || data.status === "draft" || data.status === "cancelled" || data.invoice_kind === "credit_note" || (directProfileId && data.b2b_profile_id !== directProfileId) || (reservation_id && data.reservation_id !== reservation_id)) {
+        return new Response(JSON.stringify({ error: "Ursprungsrechnung kann nicht korrigiert werden" }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      originalInvoice = data;
+    }
+
     if (reservation_id) {
       // Fetch reservation
       const { data: resData, error: resError } = await supabase
@@ -311,23 +347,33 @@ Deno.serve(async (req: Request) => {
     }
 
     // Proforma invoices are always prepayment (Vorkasse) with 0 days
+    if (originalInvoice) profile = {
+      ...profile,
+      company_name: originalInvoice.customer_company ?? profile.company_name,
+      street: originalInvoice.customer_address ?? profile.street,
+      house_number: "",
+      postal_code: originalInvoice.customer_postal_code ?? profile.postal_code,
+      city: originalInvoice.customer_city ?? profile.city,
+      country: originalInvoice.customer_country ?? profile.country,
+    };
     const payment_due_days = is_proforma ? 0 : (bodyPaymentDueDays ?? profile.payment_due_days ?? 14);
 
     // Determine reverse charge status
-    const isReverseCharge = !!(profile.tax_id && profile.vat_id_verified);
-    const vatRate = isReverseCharge ? 0 : 19;
+    const isReverseCharge = originalInvoice ? originalInvoice.is_reverse_charge : !!(profile.tax_id && profile.vat_id_verified);
+    const vatRate = originalInvoice ? Number(originalInvoice.vat_rate) : isReverseCharge ? 0 : 19;
 
     // Build invoice items
     let items;
     if (custom_items && custom_items.length > 0) {
       items = custom_items.map((item) => {
-        const discountedPrice = item.unit_price * (1 - (item.discount_percent || 0) / 100);
+        const signedPrice = is_correction ? -Math.abs(item.unit_price) : item.unit_price;
+        const discountedPrice = signedPrice * (1 - (item.discount_percent || 0) / 100);
         const totalPrice = discountedPrice * item.quantity;
         return {
           product_name: item.product_name,
           description: item.description || null,
           quantity: item.quantity,
-          unit_price: item.unit_price,
+          unit_price: signedPrice,
           discount_percent: item.discount_percent || 0,
           total_price: Math.round(totalPrice * 100) / 100,
           rental_start: item.rental_start || reservation?.start_date || null,
@@ -392,6 +438,9 @@ Deno.serve(async (req: Request) => {
     const netAmount = Math.round((itemsTotal + delivery_cost) * 100) / 100;
     const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * (vatRate / 100) * 100) / 100;
     const grossAmount = Math.round((netAmount + vatAmount + depositTotal) * 100) / 100;
+    if (is_correction && (grossAmount >= 0 || Math.abs(grossAmount) > Math.round((Number(originalInvoice.gross_amount) - Number(originalInvoice.credited_amount)) * 100) / 100)) {
+      return new Response(JSON.stringify({ error: "Gutschrift übersteigt den noch korrigierbaren Rechnungsbetrag" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
 
     // serviceClient already created above
 
@@ -401,6 +450,7 @@ Deno.serve(async (req: Request) => {
     let dueDate: string | null = null;
     let fileUrl = "";
     let fileName: string | null = null;
+    let pdfBytes: Uint8Array | null = null;
 
     if (!save_as_draft) {
       if (is_proforma) {
@@ -412,7 +462,7 @@ Deno.serve(async (req: Request) => {
         invoiceNumber = `PRO-${y}-${stamp}`;
       } else {
         // Portalrechnungen sind Miete; kein gesonderter B2B-Kreis.
-        const { data: invoiceNumData, error: invoiceNumError } = await serviceClient.rpc("generate_inquiry_invoice_number_for", { _series: "M" });
+        const { data: invoiceNumData, error: invoiceNumError } = await serviceClient.rpc(is_correction ? "generate_inquiry_credit_note_number_for" : "generate_inquiry_invoice_number_for", { _series: "M" });
         if (invoiceNumError) {
           console.error("Error generating invoice number:", invoiceNumError);
           return new Response(JSON.stringify({ error: "Failed to generate invoice number" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -429,7 +479,7 @@ Deno.serve(async (req: Request) => {
       const surchargeItems = items.filter(i => i.item_type === 'surcharge');
 
       // Generate PDF document
-      const pdfBytes = await generateDocumentPdf({
+      pdfBytes = await generateDocumentPdf({
         title: is_correction ? "Rechnungskorrektur" : (is_proforma ? "Proforma" : "Rechnung"),
         documentNumber: invoiceNumber,
         date: invoiceDate,
@@ -458,6 +508,7 @@ Deno.serve(async (req: Request) => {
           amount: item.total_price,
         })),
         sections: [
+          ...(is_correction ? [{ label: "Bezug", value: `Gutschrift zu Rechnung ${original_invoice_number} vom ${originalInvoice.invoice_date}` }] : []),
           ...(notes && !is_proforma ? [{ label: "Bemerkungen", value: notes }] : []),
         ],
         totals: {
@@ -519,10 +570,12 @@ Deno.serve(async (req: Request) => {
         delivery_cost: delivery_cost,
         is_reverse_charge: isReverseCharge,
         vat_id_at_creation: profile.tax_id || null,
-        status: save_as_draft ? "draft" : "open",
+        status: "draft",
+        invoice_kind: is_correction ? "credit_note" : "invoice",
+        parent_invoice_id: originalInvoice?.id ?? null,
         file_url: fileUrl || null,
         file_name: fileName,
-        notes: notes || null,
+        notes: is_correction ? `GUTSCHRIFT zu Rechnung ${original_invoice_number}\n${notes || ""}` : notes || null,
         customer_company: profile.company_name,
         customer_address: `${profile.street}${profile.house_number ? " " + profile.house_number : ""}`,
         customer_postal_code: profile.postal_code,
@@ -556,6 +609,9 @@ Deno.serve(async (req: Request) => {
       total_price: item.total_price,
       rental_start: item.rental_start,
       rental_end: item.rental_end,
+      item_type: item.item_type || "product",
+      parent_item_index: item.parent_item_index ?? null,
+      image_url: item.image_url ?? null,
     }));
 
     const { error: itemsError } = await serviceClient
@@ -564,10 +620,23 @@ Deno.serve(async (req: Request) => {
 
     if (itemsError) {
       console.error("Invoice items error:", itemsError);
+      await serviceClient.from("b2b_invoices").delete().eq("id", invoice.id).eq("status", "draft");
+      return new Response(JSON.stringify({ error: "Rechnungspositionen konnten nicht gespeichert werden" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
+    if (!save_as_draft) {
+      const finalResult = is_correction
+        ? await serviceClient.rpc("finalize_portal_credit_note", { p_credit_id: invoice.id })
+        : await serviceClient.from("b2b_invoices").update({ status: "open" }).eq("id", invoice.id).eq("status", "draft");
+      if (finalResult.error) {
+        await serviceClient.from("b2b_invoices").delete().eq("id", invoice.id).eq("status", "draft");
+        return new Response(JSON.stringify({ error: finalResult.error.message }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      invoice.status = is_correction ? "paid" : "open";
     }
 
     // Update reservation status to reflect invoicing
-    await serviceClient
+    if (!is_correction && reservation_id) await serviceClient
       .from("b2b_reservations")
       .update({ status: "confirmed" })
       .eq("id", reservation_id);
@@ -577,7 +646,7 @@ Deno.serve(async (req: Request) => {
     // Send email to customer
     let emailSent = false;
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
-    if (resendApiKey && send_email && !save_as_draft) {
+    if (resendApiKey && send_email && !save_as_draft && pdfBytes) {
       try {
         const customerEmail = profile.billing_email || profile.contact_email;
         const customerName = `${profile.contact_first_name} ${profile.contact_last_name}`;

@@ -260,6 +260,41 @@
       "when": 1791024024282,
       "tag": "0036_unify_rental_sales_document_series",
       "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1791029248295,
+      "tag": "0037_rental_sales_credit_note_series",
+      "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1791029380722,
+      "tag": "0038_one_time_authorized_test_invoice_cleanup",
+      "breakpoints": true
+    },
+    {
+      "idx": 39,
+      "version": "7",
+      "when": 1791029408303,
+      "tag": "0039_remove_one_time_invoice_cleanup",
+      "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1791029432764,
+      "tag": "0040_portal_credit_note_integrity",
+      "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1791029504031,
+      "tag": "0041_portal_invoice_item_pdf_metadata",
+      "breakpoints": true
     }
   ]
 }

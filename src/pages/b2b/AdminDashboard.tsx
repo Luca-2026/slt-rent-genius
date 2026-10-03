@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { StaffWorkWidget } from "@/components/b2b/tasks/StaffWorkWidget";
 import { useAuth } from "@/hooks/useAuth";
@@ -201,7 +201,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (authLoading || staffLoading) return;
     if (!user) navigate("/b2b/login");
-    else if (!hasAccess) navigate(canManageInventory ? "/b2b/start" : "/b2b/dashboard");
+    else if (!hasAccess && activeTab !== "invoices") navigate(canManageInventory ? "/b2b/start" : "/b2b/dashboard");
   }, [user, hasAccess, canManageInventory, authLoading, staffLoading, navigate]);
 
   // Data fetching
@@ -900,6 +900,8 @@ export default function AdminDashboard() {
   ).length;
 
   // ─── Loading ──────────────────────────────────────────
+  if (activeTab === "invoices") return <Navigate to="/b2b/anfrage-rechnungen" replace />;
+
   if (authLoading || staffLoading || loading || !hasAccess) {
     return (
       <B2BPortalLayout title="B2B-Vermietung" subtitle="Vermietgeschäft">

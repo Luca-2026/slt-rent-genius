@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
+import { useStaffAccess } from "@/hooks/useStaffAccess";
+import { AdminInvoicesTab } from "@/components/b2b/admin/AdminInvoicesTab";
+import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
 import { SEGMENT_FILTER_OPTIONS, matchesSegment, parseSegmentFilter, segmentOf, type CustomerSegment, type SegmentFilter } from "@/lib/customerSegment";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { Input } from "@/components/ui/input";
@@ -60,6 +63,14 @@ interface PortalInvoiceRow {
   customer_company: string | null;
   created_at: string;
   b2b_profiles: { company_name: string | null; contact_email: string | null } | null;
+  net_amount: number;
+  vat_amount: number;
+  is_reverse_charge: boolean;
+  b2b_profile_id: string;
+  reservation_id: string | null;
+  notes: string | null;
+  invoice_kind: string;
+  credited_amount: number;
 }
 
 type ListItem =
@@ -96,6 +107,7 @@ const dateDE = (value: string | null) => (value ? new Date(value).toLocaleDateSt
 /** Übersicht aller Rechnungen, die aus Miet- und Verkaufsanfragen entstanden sind. */
 export default function InquiryInvoices() {
   const { toast } = useToast();
+  const { isStaff, isAdmin, loading: accessLoading } = useStaffAccess();
   const [rows, setRows] = useState<InvoiceRow[]>([]);
   const [portalRows, setPortalRows] = useState<PortalInvoiceRow[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -132,7 +144,7 @@ export default function InquiryInvoices() {
       .order("created_at", { ascending: false });
     const portal = await supabase
       .from("b2b_invoices")
-      .select("id, invoice_number, invoice_date, due_date, gross_amount, amount, status, file_url, email_sent, customer_company, created_at, b2b_profiles(company_name, contact_email)")
+      .select("*, b2b_profiles(company_name, contact_email)")
       .order("created_at", { ascending: false });
     setLoading(false);
     if (error || portal.error) {
@@ -143,8 +155,8 @@ export default function InquiryInvoices() {
   }, [toast]);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    if (!accessLoading && isStaff) load();
+  }, [load, accessLoading, isStaff]);
 
   const items = useMemo<ListItem[]>(() => {
     const q = search.trim().toLowerCase();
@@ -182,7 +194,7 @@ export default function InquiryInvoices() {
       if (i.row.status !== "open" && i.row.status !== "overdue") continue;
       sum += i.kind === "inquiry"
         ? Math.max(0, balanceOf(i.row))
-        : Number(i.row.gross_amount ?? i.row.amount ?? 0);
+        : Math.max(0, Number(i.row.gross_amount ?? i.row.amount ?? 0) - Number(i.row.credited_amount ?? 0));
     }
     return Math.round(sum * 100) / 100;
   }, [items]);
@@ -308,6 +320,9 @@ export default function InquiryInvoices() {
     load();
   };
 
+  if (accessLoading) return null;
+  if (!isStaff) return <Navigate to="/b2b/dashboard" replace />;
+
   return (
     <B2BPortalLayout
       title="Rechnungen"
@@ -357,7 +372,15 @@ export default function InquiryInvoices() {
         ) : (
           <div className="space-y-3">
             {items.map((item) => item.kind === "portal" ? (
-              <PortalInvoiceCard key={`p-${item.row.id}`} row={item.row} />
+              <PortalInvoiceCard key={`p-${item.row.id}`} row={item.row} canManage={isAdmin} onRefresh={load} onStatusChange={async (id, status) => {
+                const { error } = await supabase.from("b2b_invoices").update({ status }).eq("id", id);
+                if (error) toast({ title: "Änderung nicht möglich", description: error.message, variant: "destructive" });
+                else await load();
+              }} onDelete={async (id) => {
+                const { error } = await supabase.from("b2b_invoices").delete().eq("id", id).eq("status", "draft");
+                if (error) toast({ title: "Löschen nicht möglich", description: error.message, variant: "destructive" });
+                else await load();
+              }} />
             ) : ((row) => (
               <Card key={row.id}>
                 <CardContent className="p-4 space-y-2">
@@ -555,7 +578,14 @@ export default function InquiryInvoices() {
 }
 
 /** Rechnung aus dem B2B-Portal – Bearbeitung weiterhin im B2B-Rechnungsbereich. */
-function PortalInvoiceCard({ row }: { row: PortalInvoiceRow }) {
+function PortalInvoiceCard({ row, canManage, onRefresh, onStatusChange, onDelete }: {
+  row: PortalInvoiceRow;
+  canManage: boolean;
+  onRefresh: () => void;
+  onStatusChange: (id: string, status: string) => void;
+  onDelete: (id: string) => void;
+}) {
+  const [manageOpen, setManageOpen] = useState(false);
   const gross = Number(row.gross_amount ?? row.amount ?? 0);
   const company = row.customer_company || row.b2b_profiles?.company_name || "Firmenkunde";
   return (
@@ -563,6 +593,7 @@ function PortalInvoiceCard({ row }: { row: PortalInvoiceRow }) {
       <CardContent className="p-4 space-y-2">
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-semibold">{row.invoice_number ?? "Entwurf"}</span>
+          {row.invoice_kind === "credit_note" && <Badge variant="outline">Gutschrift</Badge>}
           <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>{STATUS_LABEL[row.status] ?? row.status}</Badge>
           <Badge variant="secondary">B2B-Portal</Badge>
           <span className="ml-auto font-semibold">{formatEuro(gross)}</span>
@@ -583,10 +614,14 @@ function PortalInvoiceCard({ row }: { row: PortalInvoiceRow }) {
               </a>
             </Button>
           )}
-          <Button size="sm" variant="outline" asChild>
-            <Link to="/b2b/admin?tab=invoices">Bearbeiten (Zahlung, Status, Versand)</Link>
-          </Button>
+          {canManage && <Button size="sm" variant="outline" onClick={() => setManageOpen(true)}>Rechnung verwalten</Button>}
         </div>
+        <Dialog open={manageOpen} onOpenChange={setManageOpen}>
+          <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader><DialogTitle>Rechnung {row.invoice_number ?? "Entwurf"}</DialogTitle><DialogDescription>{company}</DialogDescription></DialogHeader>
+            <AdminInvoicesTab invoices={[{ ...row, gross_amount: gross, email_sent: !!row.email_sent }]} onStatusChange={onStatusChange} onViewInvoice={openInvoiceInNewWindow} onDelete={onDelete} onRefresh={onRefresh} />
+          </DialogContent>
+        </Dialog>
       </CardContent>
     </Card>
   );

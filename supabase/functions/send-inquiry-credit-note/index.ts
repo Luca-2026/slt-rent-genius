@@ -213,7 +213,7 @@ Deno.serve(async (req: Request) => {
     const loc = LOCATION_CONTACTS[locationKey];
 
     // ── Gutschriftnummer ziehen ──
-    const { data: numberData, error: numErr } = await service.rpc("generate_inquiry_credit_note_number");
+    const { data: numberData, error: numErr } = await service.rpc("generate_inquiry_credit_note_number_for", { _series: invoice.inquiry_type === "sales" ? "V" : "M" });
     if (numErr || !numberData) {
       console.error("Nummernkreis fehlgeschlagen:", numErr?.message);
       return json({ error: "Gutschriftnummer konnte nicht erzeugt werden" }, 500);
