@@ -295,6 +295,11 @@ export async function generateDocumentPdf(data: {
     const img = item.imageUrl ? imageCache.get(item.imageUrl) : null;
     let rowH = 10 + nameLines.length * 12 + (subLines.length ? 4 + subLines.length * 10 : 0);
     if (img) rowH = Math.max(rowH, IMG + 14);
+    // Position + zugehörige Zusatzoptionen immer zusammen auf einer Seite
+    const linkedH = data.serviceItems
+      .filter(s => s.parentItemIndex === productIndex)
+      .reduce((a, svc) => a + 4 + wt(`- ${svc.name}`, font, 8.5, nameColW).length * 10, 0);
+    ensureSpace(rowH + linkedH);
     renderRow(rowH, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 10, font, 9);
       if (img) {
