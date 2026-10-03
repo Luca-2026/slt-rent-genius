@@ -1,5 +1,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { PDFDocument, StandardFonts, rgb } from "https://esm.sh/pdf-lib@1.17.1";
+import { drawUnifiedFooter, resolvePdfLocation, FOOTER_TOP } from "../_shared/pdf-footer.ts";
+import { SLT_COMPANY as FOOTER_COMPANY } from "../_shared/offer-company.ts";
 import { embedProductImages, normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 import { SLT_COMPANY } from "./company.ts";
 
@@ -21,6 +23,7 @@ export async function generateDocumentPdf(data: {
   totals?: { net: number; vatRate: number; vat: number; gross: number; deliveryCost?: number; isReverseCharge?: boolean; paymentDueDays?: number; dueDate?: string; depositTotal?: number };
   isProforma?: boolean;
   deliveryAddress?: { street?: string; postal_code?: string; city?: string };
+  location?: string | null;
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
@@ -217,7 +220,7 @@ export async function generateDocumentPdf(data: {
   let { pg, y } = newPage(true);
 
   // Reserve space at bottom for summary/payment/footer so we don't crash into them
-  const RESERVE_BOTTOM = MB + 60;
+  const RESERVE_BOTTOM = FOOTER_TOP + 6;
   const need = (h: number) => {
     if (y - h < RESERVE_BOTTOM) {
       ({ pg, y } = newPage(false));
@@ -485,49 +488,12 @@ export async function generateDocumentPdf(data: {
     dt(pg, `Mitarbeiter: ${data.signatures.staffName || ''}`, ML + CW / 2 + 10, y, font, 8, MUTED);
   }
 
-  // ── Footer auf ALLEN Seiten (3-spaltig, Trenner = Pipe) ──
-  const total = doc.getPageCount();
-  const colW = CW / 3;
-  const footerCol1 = [
-    SLT_COMPANY.name,
-    `GF ${SLT_COMPANY.managingDirector}`,
-    `${SLT_COMPANY.registry}`,
-  ];
-  const footerCol2 = [
-    `${SLT_COMPANY.street}, ${SLT_COMPANY.city}`,
-    `Tel. ${SLT_COMPANY.phone}`,
-    SLT_COMPANY.email,
-    SLT_COMPANY.web,
-  ];
-  const footerCol3 = [
-    `Steuer-Nr. ${SLT_COMPANY.steuerNr}`,
-    `USt-IdNr. ${SLT_COMPANY.ustId}`,
-    SLT_COMPANY.bankName,
-    `IBAN ${SLT_COMPANY.iban}`,
-  ];
-  for (let i = 0; i < total; i++) {
-    const p = doc.getPage(i);
-    // Trennlinie
-    p.drawRectangle({ x: ML, y: MB + 42, width: CW, height: 0.5, color: LINE });
-    const drawCol = (lines: string[], x: number) => {
-      lines.forEach((ln, li) => {
-        try { p.drawText(ln, { x, y: MB + 32 - li * 8.5, size: 6.6, font, color: MUTED }); } catch {}
-      });
-    };
-    drawCol(footerCol1, ML);
-    drawCol(footerCol2, ML + colW);
-    footerCol3.forEach((ln, li) => {
-      try { p.drawText(ln, { x: W - MR - font.widthOfTextAtSize(ln, 6.6), y: MB + 32 - li * 8.5, size: 6.6, font, color: MUTED }); } catch {}
-    });
-    // Seite X von Y ab Seite 2
-    if (total > 1 && i >= 1) {
-      try {
-        const t = `Seite ${i + 1} von ${total}`;
-        const tw = font.widthOfTextAtSize(t, 7.5);
-        p.drawText(t, { x: W - MR - tw, y: MB + 55, size: 7.5, font, color: MUTED });
-      } catch {}
-    }
-  }
+  // ── Einheitliche Fußzeile (Standort des Kunden bzw. der Abwicklung) ──
+  drawUnifiedFooter({
+    doc, font, company: FOOTER_COMPANY, W, ML, MR,
+    location: resolvePdfLocation(data.location ?? data.profile?.assigned_location),
+    showPageNo: (i, t) => t > 1 && i >= 1,
+  });
 
   return await doc.save();
 }

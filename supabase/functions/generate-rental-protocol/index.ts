@@ -160,7 +160,7 @@ Deno.serve(async (req) => {
       },
       order: {
         confirmationNumber: inq.order_confirmation_number, offerNumber: inq.offer_number ?? payload.offer_number ?? null,
-        location: `SLT-Rental ${loc.name}`, locationAddress: loc.address, start: inq.start_date ? `${String(inq.start_date).slice(0, 10)}${inq.start_time ? " " + inq.start_time : ""}` : null,
+        location: `SLT-Rental ${loc.name}`, locationAddress: loc.address, locationKey: lk, start: inq.start_date ? `${String(inq.start_date).slice(0, 10)}${inq.start_time ? " " + inq.start_time : ""}` : null,
         end: inq.end_date ? `${String(inq.end_date).slice(0, 10)}${inq.end_time ? " " + inq.end_time : ""}` : null,
         deliveryAddress, deliveryNoteNumber: existingDn?.delivery_note_number ?? null,
       },
