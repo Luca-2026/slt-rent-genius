@@ -4,12 +4,34 @@ import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
 import { embedProductImages, normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 import { SLT_COMPANY } from "./company.ts";
 import { generateDocumentPdf } from "./pdf.ts";
+import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { z } from 'npm:zod@3';
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+const InvoiceBodySchema = z.object({
+  reservation_id: z.string().uuid().nullish(),
+  b2b_profile_id: z.string().uuid().nullish(),
+  finalize_invoice_id: z.string().uuid().optional(),
+  source_offer_id: z.string().uuid().nullish(),
+  custom_items: z.array(z.object({
+    product_name: z.string().trim().min(1).max(500),
+    description: z.string().max(10000).optional(),
+    quantity: z.number().finite().positive(),
+    unit_price: z.number().finite(),
+    discount_percent: z.number().min(0).max(100).optional(),
+    rental_start: z.string().optional(), rental_end: z.string().optional(),
+    image_url: z.string().max(4000).optional(),
+    item_type: z.enum(['product','service','surcharge','deposit']).optional(),
+    parent_item_index: z.number().int().nonnegative().optional(),
+  })).max(250).optional(),
+  delivery_cost: z.number().finite().nonnegative().optional(),
+  payment_due_days: z.number().int().min(0).max(365).optional(),
+  payment_terms: z.enum(['vorkasse','net_7','net_14','net_30']).optional(),
+  notes: z.string().max(20000).optional(), image_url: z.string().max(4000).optional(),
+  original_invoice_number: z.string().max(100).nullish(),
+  is_correction: z.boolean().optional(), send_email: z.boolean().optional(),
+  is_proforma: z.boolean().optional(), save_as_draft: z.boolean().optional(),
+  delivery_address: z.object({street:z.string().max(500).optional(),postal_code:z.string().max(30).optional(),city:z.string().max(300).optional()}).optional(),
+});
 
 // SLT Corporate Design constants
 
@@ -103,7 +125,9 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    const body: InvoiceRequest = await req.json();
+    const parsed = InvoiceBodySchema.safeParse(await req.json().catch(() => null));
+    if (!parsed.success) return new Response(JSON.stringify({ error: "Ungültige Rechnungsdaten", details: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    const body = parsed.data;
     const { reservation_id, b2b_profile_id: directProfileId, custom_items, delivery_cost = 0, payment_due_days: bodyPaymentDueDays, payment_terms: bodyPaymentTerms, source_offer_id, finalize_invoice_id, notes, image_url: fallbackImageUrl, is_correction = false, original_invoice_number, send_email = true, is_proforma = false, save_as_draft = false, delivery_address: deliveryAddress } = body;
 
     // ─── FINALIZE MODE: turn an existing draft into a real invoice ───
@@ -417,6 +441,7 @@ Deno.serve(async (req: Request) => {
     let dueDate: string | null = null;
     let fileUrl = "";
     let fileName: string | null = null;
+    let pdfBytes: Uint8Array | null = null;
 
     if (!save_as_draft) {
       if (is_proforma) {
@@ -445,7 +470,7 @@ Deno.serve(async (req: Request) => {
       const surchargeItems = items.filter(i => i.item_type === 'surcharge');
 
       // Generate PDF document
-      const pdfBytes = await generateDocumentPdf({
+      pdfBytes = await generateDocumentPdf({
         title: is_correction ? "Rechnungskorrektur" : (is_proforma ? "Proforma" : "Rechnung"),
         documentNumber: invoiceNumber,
         date: invoiceDate,
@@ -611,7 +636,7 @@ Deno.serve(async (req: Request) => {
     // Send email to customer
     let emailSent = false;
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
-    if (resendApiKey && send_email && !save_as_draft) {
+    if (resendApiKey && send_email && !save_as_draft && pdfBytes) {
       try {
         const customerEmail = profile.billing_email || profile.contact_email;
         const customerName = `${profile.contact_first_name} ${profile.contact_last_name}`;
