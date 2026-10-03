@@ -1,5 +1,11 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Vor Veröffentlichung – Nummernkreise und Rechnungsbestand
+- [ ] Angebote und Rechnungen nach Vermietung/Verkauf in je zwei gemeinsamen Kreisen für Portal- und Privatkunden nummerieren
+- [ ] Admin- und Kundenansichten samt Nummernvergabe ohne produktive Versände prüfen
+- [ ] Alle vorhandenen Rechnungen auf Versand, Zahlung und GoBD-Schutz prüfen; nur eindeutig löschbare Entwürfe bereinigen und unzulässige Löschungen melden
+- [ ] Abschlussbericht mit Schritten, Testergebnissen und offenen Veröffentlichungsrisiken erstellen
+
 ## Aktuell – mobile Übergabe- und Rückgabeprotokolle
 - [x] Entwürfe je Auftrag und Protokollart einschließlich Fotos nach Browserwechsel wiederherstellen
 - [x] Optionalen Kilometerstand, Betriebsstunden und Tankfüllstand je Artikel in Übergabe/Rückgabe und PDF-Datenpfad integriert; automatische Validierung geprüft
