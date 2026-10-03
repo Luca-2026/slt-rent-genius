@@ -122,6 +122,24 @@ export function AdminCustomerDetailDialog({
   onRefresh,
 }: Props) {
   const { toast } = useToast();
+  const [declineOpen, setDeclineOpen] = useState(false);
+  const [declining, setDeclining] = useState(false);
+  const declineCreditLimit = async () => {
+    if (!profile) return;
+    setDeclining(true);
+    const { data, error } = await supabase.functions.invoke("decline-credit-limit", { body: { profileId: profile.id } });
+    setDeclining(false);
+    if (error || data?.error) {
+      toast({ title: "Absage fehlgeschlagen", description: data?.error || error?.message, variant: "destructive" });
+      return;
+    }
+    toast({
+      title: "Kreditlimit-Anfrage abgeschlossen",
+      description: data?.email_sent ? `E-Mail an ${data.email_sent_to} gesendet.` : "Anfrage abgeschlossen, E-Mail konnte nicht gesendet werden.",
+    });
+    onRefresh();
+    onOpenChange(false);
+  };
   const [categories, setCategories] = useState<Category[]>([]);
   const [discounts, setDiscounts] = useState<CategoryDiscount[]>([]);
   const [editingDiscounts, setEditingDiscounts] = useState<Record<string, number>>({});
@@ -519,9 +537,6 @@ export function AdminCustomerDetailDialog({
           </AlertDialogContent>
         </AlertDialog>
 
-        {false && (
-          <div>
-        )}
 
         {/* ─── Tabs ─────────────────────────────────────────── */}
         <Tabs defaultValue="discounts" className="mt-2">
