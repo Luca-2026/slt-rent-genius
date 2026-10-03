@@ -900,6 +900,8 @@ export default function AdminDashboard() {
   ).length;
 
   // ─── Loading ──────────────────────────────────────────
+  if (activeTab === "invoices") return <Navigate to="/b2b/anfrage-rechnungen" replace />;
+
   if (authLoading || staffLoading || loading || !hasAccess) {
     return (
       <B2BPortalLayout title="B2B-Vermietung" subtitle="Vermietgeschäft">
@@ -909,8 +911,6 @@ export default function AdminDashboard() {
       </B2BPortalLayout>
     );
   }
-
-  if (activeTab === "invoices") return <Navigate to="/b2b/anfrage-rechnungen" replace />;
 
   return (
     <B2BPortalLayout title={ADMIN_TAB_TITLES[activeTab]?.title ?? "B2B-Vermietung"} subtitle={ADMIN_TAB_TITLES[activeTab]?.subtitle}>
