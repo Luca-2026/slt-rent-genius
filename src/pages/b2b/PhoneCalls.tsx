@@ -55,7 +55,7 @@ export default function PhoneCalls() {
 
   return (
     <B2BPortalLayout title="Anrufe" subtitle="Telefonate der Telefonassistenz mit KI-Vorauswertung, nach Priorität sortiert">
-      <div className="mb-4 grid grid-cols-2 gap-2 md:grid-cols-5">
+      <div className="mb-4 grid grid-cols-2 gap-2 lg:grid-cols-3 2xl:grid-cols-5">
         <Select value={status} onValueChange={setStatus}><SelectTrigger aria-label="Status"><SelectValue /></SelectTrigger><SelectContent>
           <SelectItem value="active">Offen & in Bearbeitung</SelectItem><SelectItem value="open">Offen</SelectItem>
           <SelectItem value="in_progress">In Bearbeitung</SelectItem><SelectItem value="done">Erledigt</SelectItem><SelectItem value="all">Alle</SelectItem>
