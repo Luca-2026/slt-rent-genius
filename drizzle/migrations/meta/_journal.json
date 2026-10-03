@@ -239,6 +239,13 @@
       "when": 1790925968372,
       "tag": "0033_add_protocol_mileage_readings",
       "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1791017845608,
+      "tag": "0034_migration",
+      "breakpoints": true
     }
   ]
 }
