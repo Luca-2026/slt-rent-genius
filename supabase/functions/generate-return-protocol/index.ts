@@ -1101,8 +1101,10 @@ function generateReturnProtocolHtml(data: {
 
     <!-- Footer -->
     <div style="border-top:2px solid #00507d;padding-top:10px;font-size:9px;color:#595959;text-align:center;line-height:1.8;">
-      <p>${SLT_COMPANY.name} - Geschäftsführer: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone} - FAX: ${SLT_COMPANY.fax} - Mobil: ${SLT_COMPANY.mobil}</p>
+      <p>${SLT_COMPANY.name} - Tel: ${SLT_COMPANY.phone}</p>
       <p>${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}</p>
+      <p>Persönlich haftende Gesellschafterin: SLT Management GmbH - Sitz: Krefeld</p>
+      <p>Amtsgericht Krefeld - HRB 18191 - Geschäftsführer (GmbH): ${SLT_COMPANY.managingDirector}</p>
       <p>${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}</p>
       <p>${SLT_COMPANY.web} - ${SLT_COMPANY.email} - ${SLT_COMPANY.facebook}</p>
     </div>
