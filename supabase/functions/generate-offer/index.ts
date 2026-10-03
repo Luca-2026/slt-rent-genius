@@ -4,6 +4,7 @@ import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { embedProductImages, normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 import { SLT_COMPANY } from "./company.ts";
 import { generateOfferPdf } from "./pdf.ts";
+import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -749,7 +750,7 @@ Deno.serve(async (req: Request) => {
         </p>
       </div>
       <div style="text-align:center;margin:30px 0;">
-        <a href="https://www.slt-rental.de/b2b/reservations"
+        <a href="https://www.slt-rental.de/b2b/angebote"
            style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">
           Zum B2B-Portal →
         </a>
@@ -810,8 +811,7 @@ Deno.serve(async (req: Request) => {
           },
           body: JSON.stringify({
             from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
-            to: [customerEmail],
-            cc: [loc.email],
+            ...documentEmailRecipients(customerEmail, [loc.email]),
             subject: `Ihr Angebot von SLT Rental - ${offerNumber} ${offerItems.map((i: any) => i.product_name).join(", ")}`,
             html: emailHtml,
             attachments,

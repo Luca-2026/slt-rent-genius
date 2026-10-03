@@ -1,6 +1,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { PDFDocument, StandardFonts, rgb } from "https://esm.sh/pdf-lib@1.17.1";
 import { decodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
+import { operationalEmailRecipient } from "../_shared/test-email-routing.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -63,7 +64,7 @@ Deno.serve(async (req: Request) => {
     // Fetch the offer with profile
     const { data: offer, error: offerError } = await serviceClient
       .from("b2b_offers")
-      .select("*, b2b_profiles!inner(user_id, company_name, contact_first_name, contact_last_name)")
+      .select("*, b2b_profiles!inner(user_id, company_name, contact_first_name, contact_last_name, contact_email, assigned_location)")
       .eq("id", offer_id)
       .single();
 
@@ -347,7 +348,7 @@ Deno.serve(async (req: Request) => {
         },
         body: JSON.stringify({
           from: `SLT-Rental <mieten@${RESEND_DOMAIN}>`,
-          to: [locationEmail],
+          to: [operationalEmailRecipient(profile?.contact_email, locationEmail)],
           subject: `✅ Angebot ${offer.offer_number} angenommen – ${subjectCompany}`,
           html: `
             <div style="font-family: 'Montserrat', Arial, sans-serif; max-width: 600px; margin: 0 auto;">
