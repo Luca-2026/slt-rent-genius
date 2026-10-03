@@ -260,6 +260,18 @@ Deno.serve(async (req: Request) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
+    let originalInvoice: any = null;
+    if (is_correction) {
+      if (save_as_draft || is_proforma || !original_invoice_number) {
+        return new Response(JSON.stringify({ error: "Gutschriften benötigen eine ausgestellte Ursprungsrechnung" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      const { data } = await serviceClient.from("b2b_invoices").select("*").eq("invoice_number", original_invoice_number).maybeSingle();
+      if (!data || data.status === "draft" || data.status === "cancelled" || data.invoice_kind === "credit_note" || (directProfileId && data.b2b_profile_id !== directProfileId) || (reservation_id && data.reservation_id !== reservation_id)) {
+        return new Response(JSON.stringify({ error: "Ursprungsrechnung kann nicht korrigiert werden" }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      originalInvoice = data;
+    }
+
     if (reservation_id) {
       // Fetch reservation
       const { data: resData, error: resError } = await supabase
@@ -314,20 +326,21 @@ Deno.serve(async (req: Request) => {
     const payment_due_days = is_proforma ? 0 : (bodyPaymentDueDays ?? profile.payment_due_days ?? 14);
 
     // Determine reverse charge status
-    const isReverseCharge = !!(profile.tax_id && profile.vat_id_verified);
-    const vatRate = isReverseCharge ? 0 : 19;
+    const isReverseCharge = originalInvoice ? originalInvoice.is_reverse_charge : !!(profile.tax_id && profile.vat_id_verified);
+    const vatRate = originalInvoice ? Number(originalInvoice.vat_rate) : isReverseCharge ? 0 : 19;
 
     // Build invoice items
     let items;
     if (custom_items && custom_items.length > 0) {
       items = custom_items.map((item) => {
-        const discountedPrice = item.unit_price * (1 - (item.discount_percent || 0) / 100);
+        const signedPrice = is_correction ? -Math.abs(item.unit_price) : item.unit_price;
+        const discountedPrice = signedPrice * (1 - (item.discount_percent || 0) / 100);
         const totalPrice = discountedPrice * item.quantity;
         return {
           product_name: item.product_name,
           description: item.description || null,
           quantity: item.quantity,
-          unit_price: item.unit_price,
+          unit_price: signedPrice,
           discount_percent: item.discount_percent || 0,
           total_price: Math.round(totalPrice * 100) / 100,
           rental_start: item.rental_start || reservation?.start_date || null,
@@ -392,6 +405,9 @@ Deno.serve(async (req: Request) => {
     const netAmount = Math.round((itemsTotal + delivery_cost) * 100) / 100;
     const vatAmount = isReverseCharge ? 0 : Math.round(netAmount * (vatRate / 100) * 100) / 100;
     const grossAmount = Math.round((netAmount + vatAmount + depositTotal) * 100) / 100;
+    if (is_correction && (grossAmount >= 0 || Math.abs(grossAmount) > Math.round((Number(originalInvoice.gross_amount) - Number(originalInvoice.credited_amount)) * 100) / 100)) {
+      return new Response(JSON.stringify({ error: "Gutschrift übersteigt den noch korrigierbaren Rechnungsbetrag" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
 
     // serviceClient already created above
 
@@ -412,7 +428,7 @@ Deno.serve(async (req: Request) => {
         invoiceNumber = `PRO-${y}-${stamp}`;
       } else {
         // Portalrechnungen sind Miete; kein gesonderter B2B-Kreis.
-        const { data: invoiceNumData, error: invoiceNumError } = await serviceClient.rpc("generate_inquiry_invoice_number_for", { _series: "M" });
+        const { data: invoiceNumData, error: invoiceNumError } = await serviceClient.rpc(is_correction ? "generate_inquiry_credit_note_number_for" : "generate_inquiry_invoice_number_for", { _series: "M" });
         if (invoiceNumError) {
           console.error("Error generating invoice number:", invoiceNumError);
           return new Response(JSON.stringify({ error: "Failed to generate invoice number" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -519,10 +535,12 @@ Deno.serve(async (req: Request) => {
         delivery_cost: delivery_cost,
         is_reverse_charge: isReverseCharge,
         vat_id_at_creation: profile.tax_id || null,
-        status: save_as_draft ? "draft" : "open",
+        status: "draft",
+        invoice_kind: is_correction ? "credit_note" : "invoice",
+        parent_invoice_id: originalInvoice?.id ?? null,
         file_url: fileUrl || null,
         file_name: fileName,
-        notes: notes || null,
+        notes: is_correction ? `GUTSCHRIFT zu Rechnung ${original_invoice_number}\n${notes || ""}` : notes || null,
         customer_company: profile.company_name,
         customer_address: `${profile.street}${profile.house_number ? " " + profile.house_number : ""}`,
         customer_postal_code: profile.postal_code,
@@ -556,6 +574,9 @@ Deno.serve(async (req: Request) => {
       total_price: item.total_price,
       rental_start: item.rental_start,
       rental_end: item.rental_end,
+      item_type: item.item_type || "product",
+      parent_item_index: item.parent_item_index ?? null,
+      image_url: item.image_url ?? null,
     }));
 
     const { error: itemsError } = await serviceClient
@@ -564,10 +585,23 @@ Deno.serve(async (req: Request) => {
 
     if (itemsError) {
       console.error("Invoice items error:", itemsError);
+      await serviceClient.from("b2b_invoices").delete().eq("id", invoice.id).eq("status", "draft");
+      return new Response(JSON.stringify({ error: "Rechnungspositionen konnten nicht gespeichert werden" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
+    if (!save_as_draft) {
+      const finalResult = is_correction
+        ? await serviceClient.rpc("finalize_portal_credit_note", { p_credit_id: invoice.id })
+        : await serviceClient.from("b2b_invoices").update({ status: "open" }).eq("id", invoice.id).eq("status", "draft");
+      if (finalResult.error) {
+        await serviceClient.from("b2b_invoices").delete().eq("id", invoice.id).eq("status", "draft");
+        return new Response(JSON.stringify({ error: finalResult.error.message }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      invoice.status = is_correction ? "paid" : "open";
     }
 
     // Update reservation status to reflect invoicing
-    await serviceClient
+    if (!is_correction && reservation_id) await serviceClient
       .from("b2b_reservations")
       .update({ status: "confirmed" })
       .eq("id", reservation_id);
