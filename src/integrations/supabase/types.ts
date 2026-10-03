@@ -2043,6 +2043,30 @@ export type Database = {
         }
         Relationships: []
       }
+      credit_note_series_counters: {
+        Row: {
+          last_value: number
+          month: number
+          series: string
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          last_value?: number
+          month: number
+          series: string
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          last_value?: number
+          month?: number
+          series?: string
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
       crm_customers: {
         Row: {
           b2b_profile_id: string | null
@@ -4510,6 +4534,10 @@ export type Database = {
       ensure_repair_list: { Args: { _location: string }; Returns: string }
       generate_delivery_note_number: { Args: never; Returns: string }
       generate_inquiry_credit_note_number: { Args: never; Returns: string }
+      generate_inquiry_credit_note_number_for: {
+        Args: { _series: string }
+        Returns: string
+      }
       generate_inquiry_invoice_number: { Args: never; Returns: string }
       generate_inquiry_invoice_number_for: {
         Args: { _series: string }
