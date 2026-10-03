@@ -8,6 +8,7 @@ import { LegacyB2BRequestsNotice } from "@/components/b2b/inquiries/LegacyB2BReq
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useRentalInquiries } from "@/hooks/useInquiries";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
+import { useAuth } from "@/hooks/useAuth";
 import { InquiryStatusBadge } from "@/components/b2b/inquiries/InquiryStatusBadge";
 import { InquiryDetailPanel } from "@/components/b2b/inquiries/InquiryDetailPanel";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { INQUIRY_LIST_FILTERS, isReturnOverdue, isRunningRental, isUpcomingRental, matchesInquiryListFilter, parseInquiryListFilter, DEFAULT_INQUIRY_LIST_FILTER, todayIso } from "@/lib/inquiryStatus";
+import { INQUIRY_LIST_FILTERS, isReturnOverdue, isRunningRental, isUpcomingRental, matchesInquiryListFilter, parseInquiryListFilter, DEFAULT_INQUIRY_LIST_FILTER, isMyPendingInquiry, todayIso } from "@/lib/inquiryStatus";
 import { useRentalProtocolStatus } from "@/hooks/useRentalProtocolStatus";
 import { RentalProtocolSection } from "@/components/b2b/protocols/RentalProtocolSection";
 import { requestedItemsOf, type RentalInquiry } from "@/components/b2b/inquiries/types";
@@ -25,7 +26,7 @@ import { NewRentalInquiryDialog } from "@/components/b2b/inquiries/NewRentalInqu
 import { AiInquiryImportDialog } from "@/components/b2b/inquiries/AiInquiryImportDialog";
 import { createInquiryFromImport } from "@/lib/createInquiryFromImport";
 import { Wand2 } from "lucide-react";
-import { Building2, Plus } from "lucide-react";
+import { Building2, Plus, UserCheck } from "lucide-react";
 
 const SOURCE_LABELS: Record<string, string> = {
   b2b_portal: "B2B-Portal (Firmenkunde)",
@@ -55,6 +56,7 @@ const rentalDays = (start: string | null, end: string | null) => {
 
 export default function RentalInquiries() {
   const { isStaff, loading: accessLoading } = useStaffAccess();
+  const { user } = useAuth();
   const { rows, loading, reload } = useRentalInquiries();
   const protocols = useRentalProtocolStatus();
   const today = todayIso();
@@ -71,8 +73,11 @@ export default function RentalInquiries() {
   const segment = parseSegmentFilter(searchParams.get("kunden"));
   const locationFilter = searchParams.get("standort") ?? "all";
   const statusFilter = parseInquiryListFilter(searchParams.get("status"));
+  const mineOnly = searchParams.get("meine") === "1";
   const setParam = (key: string, value: string) => {
     const next = new URLSearchParams(searchParams);
+    // Wer den Bearbeitungsstand wählt, verlässt die Ansicht „Meine Anfragen“.
+    if (key === "status") next.delete("meine");
     // Standardwerte stehen nicht in der Adresse: „all“ bei Standort/Kundengruppe, „Offen“ beim Bearbeitungsstand.
     const isDefault = key === "status" ? value === DEFAULT_INQUIRY_LIST_FILTER : value === "all";
     if (isDefault) next.delete(key); else next.set(key, value);
@@ -82,7 +87,9 @@ export default function RentalInquiries() {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return rows.filter((r) => {
-      if (!matchesInquiryListFilter(withProtocol(r), statusFilter, today)) return false;
+      if (mineOnly) {
+        if (!isMyPendingInquiry(r, user?.id)) return false;
+      } else if (!matchesInquiryListFilter(withProtocol(r), statusFilter, today)) return false;
       if (!matchesSegment(segmentOf(r), segment)) return false;
       if (locationFilter !== "all" && r.location !== locationFilter) return false;
       if (!q) return true;
@@ -90,7 +97,13 @@ export default function RentalInquiries() {
         .filter(Boolean)
         .some((v) => String(v).toLowerCase().includes(q));
     });
-  }, [rows, search, statusFilter, segment, locationFilter, protocols.byInquiry]);
+  }, [rows, search, statusFilter, segment, locationFilter, protocols.byInquiry, mineOnly, user?.id]);
+  const myPendingCount = useMemo(() => rows.filter((r) => isMyPendingInquiry(r, user?.id)).length, [rows, user?.id]);
+  const toggleMine = () => {
+    const next = new URLSearchParams(searchParams);
+    if (mineOnly) next.delete("meine"); else next.set("meine", "1");
+    setSearchParams(next, { replace: true });
+  };
 
   const selected = rows.find((r) => r.id === selectedId) ?? null;
 
@@ -105,6 +118,15 @@ export default function RentalInquiries() {
   return (
     <B2BPortalLayout title="Mietanfragen" subtitle="Alle Mietanfragen – Privat-, Geschäfts- und B2B-Portalkunden">
       <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 mb-4">
+        <Button
+          variant={mineOnly ? "default" : "outline"}
+          onClick={toggleMine}
+          aria-pressed={mineOnly}
+          title="Von mir übernommene Anfragen und Angebote, die noch nicht versendet sind"
+        >
+          <UserCheck className="h-4 w-4 mr-1.5" /> Meine Anfragen
+          <Badge variant={mineOnly ? "secondary" : "outline"} className="ml-2 px-1.5">{myPendingCount}</Badge>
+        </Button>
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -126,8 +148,8 @@ export default function RentalInquiries() {
             <SelectItem value="muelheim">Mülheim an der Ruhr</SelectItem>
           </SelectContent>
         </Select>
-        <Select value={statusFilter} onValueChange={(v) => setParam("status", v)}>
-          <SelectTrigger className="sm:w-56" aria-label="Bearbeitungsstand"><SelectValue /></SelectTrigger>
+        <Select value={mineOnly ? "" : statusFilter} onValueChange={(v) => setParam("status", v)}>
+          <SelectTrigger className="sm:w-56" aria-label="Bearbeitungsstand"><SelectValue placeholder="Bearbeitungsstand" /></SelectTrigger>
           <SelectContent>
             {INQUIRY_LIST_FILTERS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
           </SelectContent>
