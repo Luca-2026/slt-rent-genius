@@ -156,7 +156,8 @@ export function matchesInquiryListFilter(
   }
 }
 
-/** Standard-Filter der Mietanfragen-Liste: „Alle Anfragen“, neueste zuerst. */
+/** Standard-Filter der Mietanfragen-Liste: „Offen (nicht übernommen)“. */
+export const DEFAULT_INQUIRY_LIST_FILTER: InquiryListFilter = "unprocessed";
 export function parseInquiryListFilter(v: string | null): InquiryListFilter {
-  return INQUIRY_LIST_FILTERS.some((f) => f.value === v) ? (v as InquiryListFilter) : "all";
+  return INQUIRY_LIST_FILTERS.some((f) => f.value === v) ? (v as InquiryListFilter) : DEFAULT_INQUIRY_LIST_FILTER;
 }

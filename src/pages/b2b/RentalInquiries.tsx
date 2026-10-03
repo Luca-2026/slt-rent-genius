@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { INQUIRY_LIST_FILTERS, isReturnOverdue, isRunningRental, isUpcomingRental, matchesInquiryListFilter, parseInquiryListFilter, todayIso } from "@/lib/inquiryStatus";
+import { INQUIRY_LIST_FILTERS, isReturnOverdue, isRunningRental, isUpcomingRental, matchesInquiryListFilter, parseInquiryListFilter, DEFAULT_INQUIRY_LIST_FILTER, todayIso } from "@/lib/inquiryStatus";
 import { useRentalProtocolStatus } from "@/hooks/useRentalProtocolStatus";
 import { RentalProtocolSection } from "@/components/b2b/protocols/RentalProtocolSection";
 import { requestedItemsOf, type RentalInquiry } from "@/components/b2b/inquiries/types";
@@ -73,8 +73,9 @@ export default function RentalInquiries() {
   const statusFilter = parseInquiryListFilter(searchParams.get("status"));
   const setParam = (key: string, value: string) => {
     const next = new URLSearchParams(searchParams);
-    // „all“ (Standort, Kundengruppe, Bearbeitungsstand) ist der Standard und steht nicht in der Adresse.
-    if (value === "all") next.delete(key); else next.set(key, value);
+    // Standardwerte stehen nicht in der Adresse: „all“ bei Standort/Kundengruppe, „Offen“ beim Bearbeitungsstand.
+    const isDefault = key === "status" ? value === DEFAULT_INQUIRY_LIST_FILTER : value === "all";
+    if (isDefault) next.delete(key); else next.set(key, value);
     setSearchParams(next, { replace: true });
   };
 
