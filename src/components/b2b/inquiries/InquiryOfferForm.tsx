@@ -1,3 +1,4 @@
+import { applyCategoryDiscount, loadCategoryDiscounts, loadInquiryProfileId, type DiscountMap } from "@/lib/customerDiscounts";
 import { NumberInput } from "@/components/ui/number-input";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -51,6 +52,8 @@ type FormLine = OfferLine & {
   price_source?: "cms" | "manual";
   /** true = eigener Zeitraum, sonst wird der Zeitraum der ersten Position übernommen. */
   custom_period?: boolean;
+  /** true = Rabatt automatisch aus den Kundenrabatten vorbelegt. */
+  discount_auto?: boolean;
 };
 
 /**
@@ -601,11 +604,30 @@ export function InquiryOfferForm({
     };
   };
 
+  // Kundenrabatte (Portal-Kategorierabatte) nur für neue Mietangebote vorbelegen –
+  // überarbeitete Angebote und Rechnungen übernehmen die Werte der Vorlage.
+  const discountsRef = useRef<Promise<DiscountMap> | null>(null);
+  const autoDiscounts = inquiryType === "rental" && mode === "offer" && !reviseOf;
+  const ensureDiscounts = (): Promise<DiscountMap> => {
+    if (!autoDiscounts) return Promise.resolve({});
+    if (!discountsRef.current) {
+      discountsRef.current = loadInquiryProfileId(inquiryId)
+        .then(loadCategoryDiscounts)
+        .catch(() => ({}));
+    }
+    return discountsRef.current;
+  };
+  const withCustomerDiscount = (item: FormLine, category: string | undefined | null, discounts: DiscountMap): Partial<FormLine> => {
+    const next = applyCategoryDiscount(item, category, discounts);
+    return next === item ? {} : { discount_percent: next.discount_percent, discount_auto: true };
+  };
+
   // Vorbelegte Positionen automatisch mit Bild (und ggf. Preis) aus dem CMS anreichern.
   useEffect(() => {
     let cancelled = false;
     (async () => {
       const salesCatalog = inquiryType === "sales" ? await loadSalesCatalog() : [];
+      const discounts = await ensureDiscounts();
       const enriched = await Promise.all(
         items.map(async (item) => {
           if (item.available_addons || !item.product_name.trim()) return item;
@@ -643,6 +665,7 @@ export function InquiryOfferForm({
             duration: item.duration && item.duration > 0 ? item.duration : 1,
             product_slug: item.product_slug ?? match.slug,
             available_addons: parseAddonOptions(match.addon_options),
+            ...withCustomerDiscount(item, match.category, discounts),
           };
         }),
       );
@@ -952,7 +975,12 @@ export function InquiryOfferForm({
                   disabled={disabled}
                   onSelect={async (product, freeText) => {
                     const resolved = product ? await resolveCatalogPrice(product) : undefined;
+                    const discounts = await ensureDiscounts();
+                    const base = item.discount_auto ? { ...item, discount_percent: 0, discount_auto: false } : item;
                     patchItem(index, {
+                      discount_percent: base.discount_percent,
+                      discount_auto: base.discount_auto,
+                      ...withCustomerDiscount(base, product?.category, discounts),
                       product_name: freeText,
                       image_url: product ? pickCatalogImage(product.images) : undefined,
                       ...resolvePricePatch(item, resolved),
@@ -1092,7 +1120,7 @@ export function InquiryOfferForm({
                   min={0}
                   max={100}
                   value={item.discount_percent}
-                  onChange={(e) => patchItem(index, { discount_percent: Number(e.target.value) || 0 })}
+                  onChange={(e) => patchItem(index, { discount_percent: Number(e.target.value) || 0, discount_auto: false })}
                   disabled={disabled}
                 />
               </div>
