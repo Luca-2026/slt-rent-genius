@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { openStorageDocument } from "@/lib/openStorageDocument";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
