@@ -181,7 +181,7 @@ Deno.serve(async (req: Request) => {
     </div>
     <div style="background:#f1f5f9;padding:25px 40px;border-top:1px solid #e2e8f0;">
       <p style="font-size:12px;color:#64748b;margin:0 0 4px;font-weight:600;">SLT Technology Group GmbH & Co. KG</p>
-      <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">Tel: +49 (0) 2151 - 417 99 02 · E-Mail: info@slt-rental.de</p>
+      <p style="font-size:11px;color:#94a3b8;margin:0 0 2px;">Tel: +49 (0) 2151 - 417 99 04 · E-Mail: info@slt-rental.de</p>
       <p style="font-size:11px;color:#94a3b8;margin:0;">www.slt-rental.de</p>
     </div>
   </div>

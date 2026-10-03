@@ -59,7 +59,7 @@ export default function Impressum() {
                     </div>
                   </div>
                 </div>
-                <p className="text-muted-foreground pt-4">HRA 7075 Amtsgericht Krefeld</p>
+                <p className="text-muted-foreground pt-4">Amtsgericht Krefeld · HRA 7075</p>
               </div>
             </div>
           </AnimatedSection>
@@ -92,7 +92,7 @@ export default function Impressum() {
                     <div className="flex items-center gap-3">
                       <Phone className="h-5 w-5 text-primary shrink-0" />
                       <div>
-                        <p className="text-foreground">Fon: +49 (0) 2151 - 417 99 03</p>
+                        <p className="text-foreground">Fon: +49 (0) 2151 - 417 99 04</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -102,7 +102,7 @@ export default function Impressum() {
                   </div>
                 </div>
                 <div className="pt-4 space-y-1">
-                  <p className="text-muted-foreground">HRB 18191 Amtsgericht Krefeld</p>
+                  <p className="text-muted-foreground">Amtsgericht Krefeld · HRB 18191</p>
                   <p className="text-muted-foreground">{t("impressum.courtOf")}</p>
                 </div>
               </div>

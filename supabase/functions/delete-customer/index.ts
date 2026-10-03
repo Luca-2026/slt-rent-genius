@@ -9,7 +9,7 @@ const corsHeaders = {
 const SLT_COMPANY = {
   name: "SLT Technology Group GmbH & Co. KG",
   brand: "SLT-Rental",
-  phone: "+49 (0) 2151 - 417 99 02",
+  phone: "+49 (0) 2151 - 417 99 04",
   email: "info@slt-rental.de",
   web: "www.slt-rental.de",
 };

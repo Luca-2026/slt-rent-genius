@@ -55,7 +55,7 @@ export default function Datenschutz() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-3">
                       <Phone className="h-5 w-5 text-primary shrink-0" />
-                      <a href="tel:+4921514179902" className="text-primary hover:underline text-sm md:text-base">+49 (0) 2151 - 417 99 02</a>
+                      <a href="tel:+4921514179904" className="text-primary hover:underline text-sm md:text-base">+49 (0) 2151 - 417 99 04</a>
                     </div>
                     <div className="flex items-center gap-3">
                       <Mail className="h-5 w-5 text-primary shrink-0" />
