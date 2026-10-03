@@ -1271,7 +1271,7 @@ async function generateDocumentPdf(data: {
       try {
         const size = Math.min(5.5, 5.5 * CW / Math.max(font.widthOfTextAtSize(line, 5.5), 1));
         const tw = font.widthOfTextAtSize(line, size);
-        p.drawText(line, { x: (W - tw) / 2, y: MG + 14 - li * 7, size, font, color: rgb(0.5, 0.5, 0.5) });
+        p.drawText(line, { x: (W - tw) / 2, y: MG + 21 - li * 7, size, font, color: rgb(0.5, 0.5, 0.5) });
       } catch {}
     });
   }
