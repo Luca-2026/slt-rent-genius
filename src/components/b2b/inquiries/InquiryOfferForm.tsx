@@ -1,3 +1,4 @@
+import { PdfPagesPreview } from "@/components/b2b/PdfPagesPreview";
 import { applyCategoryDiscount, loadCategoryDiscounts, loadInquiryProfileId, type DiscountMap } from "@/lib/customerDiscounts";
 import { NumberInput } from "@/components/ui/number-input";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -1597,7 +1598,7 @@ export function InquiryOfferForm({
             <DialogTitle>PDF-Vorschau</DialogTitle>
             <DialogDescription>So sieht das Angebot für den Kunden aus. Die Angebotsnummer wird erst beim Senden vergeben – nichts wurde verschickt.</DialogDescription>
           </DialogHeader>
-          {previewUrl && <iframe src={previewUrl} title="Angebotsvorschau" className="min-h-0 flex-1 w-full rounded border border-border bg-muted" />}
+          {previewUrl && <PdfPagesPreview url={previewUrl} className="min-h-0 flex-1 w-full overflow-y-auto rounded border border-border bg-muted p-3" />}
           <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
             {previewUrl && (
               <Button variant="outline" asChild>
