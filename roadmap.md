@@ -3,7 +3,7 @@
 ## Vor Veröffentlichung – Nummernkreise und Rechnungsbestand
 - [x] Angebote und Rechnungen nach Vermietung/Verkauf in je zwei gemeinsamen Kreisen für Portal- und Privatkunden nummerieren; historische Nummern nicht umnummeriert
 - [ ] Admin- und Kundenansichten samt Nummernvergabe ohne produktive Versände prüfen: Ansichten Desktop/Mobil und PDF-/Fachtests bestanden; produktive Nummernvergabe/Versand bewusst nicht ausgelöst
-- [ ] Alle vorhandenen Rechnungen auf Versand, Zahlung und GoBD-Schutz prüfen; 17/17 nummeriert, keine Entwürfe – Löschung zum Schutz der ausgestellten Belege nicht durchgeführt
+- [x] Alle vorhandenen Rechnungen auf Versand, Zahlung und GoBD-Schutz geprüft; 17/17 nummeriert, keine Entwürfe – auf Nutzerentscheidung unverändert behalten
 - [x] Abschlussbericht mit Schritten, Testergebnissen und offenen Veröffentlichungsrisiken erstellen
 
 ## Aktuell – mobile Übergabe- und Rückgabeprotokolle
