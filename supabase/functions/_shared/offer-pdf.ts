@@ -511,10 +511,11 @@ export async function generateOfferPdf(data: {
     // Zusatzoptionen direkt unter der Position
     for (const svc of servicesByItem.get(idx) || []) {
       if (!svc.amount || svc.amount <= 0) continue;
-      const svcLines = wt(`- ${svc.name}`, font, 8.5, nameColW);
+      const svcW = unitColX - 10 - (textColX + 8);
+      const svcLines = wt(`- ${svc.name}`, font, 8.5, svcW);
       // Erläuterung der Berechnung (z. B. gesamte Mietdauer in Kalendertagen)
-      const expLines = svc.description ? wt(svc.description, font, 7.5, nameColW - 10) : [];
-      renderRow(4 + svcLines.length * 10 + expLines.length * 9, (top) => {
+      const expLines = svc.description ? wt(svc.description, font, 7.5, svcW - 8) : [];
+      renderRow(10 + svcLines.length * 10 + expLines.length * 9, (top) => {
         svcLines.forEach((ln, li) => dt(pg, ln, textColX + 8, top - 8 - li * 10, font, 8.5, MUTED));
         const expTop = top - 8 - svcLines.length * 10;
         expLines.forEach((ln, li) => dt(pg, ln, textColX + 16, expTop - li * 9, font, 7.5, MUTED));
