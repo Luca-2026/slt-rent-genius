@@ -167,7 +167,7 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
   if (c.phone) { text(c.phone, ML, ay, font, 8.5, MUTED); ay -= 11; }
   // Infoblock rechts
   const ix = 125 * MMU;
-  let iy = H - 67 * MMU;
+  let iy = H - 57 * MMU;
   const info = (l: string, v: string, col = INK) => {
     let s = 9;
     while (s > 7 && font.widthOfTextAtSize(v, s) > W - MR - ix - 30 * MMU) s -= 0.25;

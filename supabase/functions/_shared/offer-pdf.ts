@@ -232,8 +232,7 @@ export async function generateOfferPdf(data: {
     ay = Math.min(ay, ADDR_Y_BOTTOM);
     // Kontaktdaten und USt-IdNr. unterhalb des Fensters (nicht Teil der Anschrift)
     ay -= 8;
-    if (data.profile.contact_email) { dt(pg, String(data.profile.contact_email), ADDR_X, ay, font, 8.5, MUTED); ay -= 10; }
-    if (data.profile.contact_phone) { dt(pg, String(data.profile.contact_phone), ADDR_X, ay, font, 8.5, MUTED); ay -= 10; }
+    // E-Mail/Telefon des Kunden bewusst nicht im Briefkopf (gehören nicht zur Anschrift)
     if ((data.isReverseCharge || data.profile.show_tax_id) && data.profile.tax_id) {
       dt(pg, `USt-IdNr.: ${data.profile.tax_id}`, ADDR_X, ay, font, 9, MUTED);
       ay -= 11;
@@ -258,7 +257,7 @@ export async function generateOfferPdf(data: {
     // Infoblock rechts, zweispaltig
     // Erste Zeile auf Höhe der ersten Anschriftzeile; Werte enden spätestens am rechten Rand.
     void logoBottomY;
-    let iy = ADDR_Y_TOP;
+    let iy = ADDR_SENDER_Y;
     const VAL_W = W - MR - INFO_VAL_X;
     const fitVal = (v: string, f: any, s: number) => {
       let size = s;
@@ -501,6 +500,17 @@ export async function generateOfferPdf(data: {
     if (img) rowH = Math.max(rowH, IMG + 14);
     if (pct > 0) rowH = Math.max(rowH, 34);
 
+    // Position und ihre Zusatzoptionen (z. B. Maschinenbruchversicherung) bilden einen Block:
+    // passt er nicht mehr komplett auf die Seite, wandert er geschlossen auf die nächste.
+    const svcW = unitColX - 10 - (textColX + 8);
+    const svcRows = (servicesByItem.get(idx) || [])
+      .filter((svc) => svc.amount && svc.amount > 0)
+      .map((svc) => {
+        const svcLines = wt(`- ${svc.name}`, font, 8.5, svcW);
+        const expLines = svc.description ? wt(svc.description, font, 7.5, svcW - 8) : [];
+        return { svc, svcLines, expLines, h: 10 + svcLines.length * 10 + expLines.length * 9 };
+      });
+    need(rowH + svcRows.reduce((a, r) => a + r.h, 0));
 
     renderRow(rowH, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 10, font, 9);
@@ -523,13 +533,8 @@ export async function generateOfferPdf(data: {
 
 
     // Zusatzoptionen direkt unter der Position
-    for (const svc of servicesByItem.get(idx) || []) {
-      if (!svc.amount || svc.amount <= 0) continue;
-      const svcW = unitColX - 10 - (textColX + 8);
-      const svcLines = wt(`- ${svc.name}`, font, 8.5, svcW);
-      // Erläuterung der Berechnung (z. B. gesamte Mietdauer in Kalendertagen)
-      const expLines = svc.description ? wt(svc.description, font, 7.5, svcW - 8) : [];
-      renderRow(10 + svcLines.length * 10 + expLines.length * 9, (top) => {
+    for (const { svc, svcLines, expLines, h } of svcRows) {
+      renderRow(h, (top) => {
         svcLines.forEach((ln, li) => dt(pg, ln, textColX + 8, top - 8 - li * 10, font, 8.5, MUTED));
         const expTop = top - 8 - svcLines.length * 10;
         expLines.forEach((ln, li) => dt(pg, ln, textColX + 16, expTop - li * 9, font, 7.5, MUTED));

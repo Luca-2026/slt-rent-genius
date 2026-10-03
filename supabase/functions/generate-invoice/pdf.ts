@@ -145,8 +145,8 @@ export async function generateDocumentPdf(data: {
     // Logo oben RECHTS (~60 mm breit ≈ 170 pt), mit Luft zum Seitenrand und zum Inhalt
     drawLogo(pg, 46 * MM);
 
-    // Info-Block ab 125 mm, erste Zeile auf Höhe der ersten Anschriftzeile
-    let iy = ADDR_Y_TOP;
+    // Info-Block ab 125 mm, erste Zeile auf Höhe der Absenderzeile
+    let iy = ADDR_SENDER_Y;
     const infoRow = (label: string, value: string) => {
       let size = 9;
       try { while (size > 7 && font.widthOfTextAtSize(value, size) > W - MR - INFO_VAL_X) size -= 0.25; } catch {}
@@ -295,6 +295,11 @@ export async function generateDocumentPdf(data: {
     const img = item.imageUrl ? imageCache.get(item.imageUrl) : null;
     let rowH = 10 + nameLines.length * 12 + (subLines.length ? 4 + subLines.length * 10 : 0);
     if (img) rowH = Math.max(rowH, IMG + 14);
+    // Position + zugehörige Zusatzoptionen immer zusammen auf einer Seite
+    const linkedH = data.serviceItems
+      .filter(s => s.parentItemIndex === productIndex)
+      .reduce((a, svc) => a + 4 + wt(`- ${svc.name}`, font, 8.5, nameColW).length * 10, 0);
+    need(rowH + linkedH);
     renderRow(rowH, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 10, font, 9);
       if (img) {
