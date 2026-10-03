@@ -15,3 +15,4 @@
 - Mietpreise im CMS sind brutto; Angebotspositionen übernehmen sie nur über resolveCatalogPrice in src/lib/catalogPricing.ts (getestet) netto – sonst würden Bruttowerte als Netto verschickt.
 - Kundenrabatte (Kategorie) in Angeboten nur über src/lib/customerDiscounts.ts (getestet): Vorbelegung nur bei neuen Mietangeboten, Sonderpreis hat Vorrang, manuelle Rabatte bleiben – gleiche Regel in Mietanfragen und Portalbuchungen.
 - Mietanfragen ohne bestätigten Auftrag (neu, in Bearbeitung, Angebot gesendet) mit abgelaufenem Mietzeitraum setzt die DB-Funktion close_expired_rental_inquiries täglich per pg_cron auf erledigt – gespeicherter Status, damit Liste, Zähler und Startseite übereinstimmen.
+- Fußzeile aller Geschäfts-PDFs (Angebot, Auftragsbestätigung, Rechnung, Rechnungskorrektur, Protokolle) nur über supabase/functions/_shared/pdf-footer.ts inkl. Standort der Auftragsabwicklung – eine Fußzeile, kein Auseinanderlaufen je Dokumentart.
