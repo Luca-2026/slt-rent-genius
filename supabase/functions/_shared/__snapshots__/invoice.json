@@ -8,32 +8,26 @@
       "texts": [
         {
           "t": "SLT Technology Group GmbH & Co. KG · Anrather Straße 291 · 47807 Krefeld",
-          "x": 57,
-          "y": 748.89,
-          "size": 7
+          "x": 70.87,
+          "y": 680.32,
+          "size": 6.75
         },
         {
           "t": "Musterbau GmbH",
-          "x": 57,
-          "y": 736.89,
-          "size": 10.5
+          "x": 70.87,
+          "y": 651.97,
+          "size": 10
         },
         {
           "t": "Teststraße 12",
-          "x": 57,
-          "y": 724.89,
+          "x": 70.87,
+          "y": 639.97,
           "size": 9.5
         },
         {
           "t": "40213 Düsseldorf",
-          "x": 57,
-          "y": 713.89,
-          "size": 9.5
-        },
-        {
-          "t": "Deutschland",
-          "x": 57,
-          "y": 702.89,
+          "x": 70.87,
+          "y": 627.97,
           "size": 9.5
         },
         {

@@ -83,8 +83,15 @@ export async function generateOfferPdf(data: {
   const LINE = rgb(0.82, 0.84, 0.87);
   const ZEBRA = rgb(0.972, 0.976, 0.982);
 
-  const ADDR_X = ML;
-  const ADDR_Y_TOP = H - 105;
+  // DIN 5008 Form B / DIN 676 (Fensterumschlag DL/C5/C4, Fenster 20 mm links, 45 mm oben, 90 × 45 mm):
+  // Anschriftfeld 25 mm links, 85 mm breit; Rücksendeangabe ~50–58 mm, Anschrift ab 63,5 mm bis 90 mm von oben.
+  const MM = 72 / 25.4;
+  const ADDR_X = 25 * MM;
+  const ADDR_W = 85 * MM;
+  const ADDR_SENDER_Y = H - 57 * MM;      // Grundlinie Absenderzeile
+  const ADDR_Y_TOP = H - 67 * MM;         // Grundlinie erste Anschriftzeile
+  const ADDR_Y_BOTTOM = H - 89 * MM;      // letzte Zeile muss oberhalb davon bleiben
+  const LOGO_TOP_Y = H - 61;              // Logo bleibt unabhängig vom Anschriftfeld oben rechts
 
   const docType = data.documentType ?? "offer";
   const isOC = docType === "order_confirmation";
@@ -130,13 +137,23 @@ export async function generateOfferPdf(data: {
 
   const wt = (t: string, f: any, s: number, mw: number): string[] => {
     if (!t) return [""];
-    const words = safe(t).split(/\s+/);
+    const words = safe(t).split(/\s+/).filter(Boolean);
     const lines: string[] = [];
     let cur = "";
+    const push = (w: string) => {
+      // Überlange Wörter (z. B. Modellnummern) zeichenweise umbrechen, damit nichts überläuft
+      while (f.widthOfTextAtSize(w, s) > mw && w.length > 1) {
+        let i = w.length - 1;
+        while (i > 1 && f.widthOfTextAtSize(w.slice(0, i), s) > mw) i--;
+        lines.push(w.slice(0, i));
+        w = w.slice(i);
+      }
+      return w;
+    };
     for (const w of words) {
       const test = cur ? `${cur} ${w}` : w;
       if (f.widthOfTextAtSize(test, s) <= mw) cur = test;
-      else { if (cur) lines.push(cur); cur = w; }
+      else { if (cur) lines.push(cur); cur = push(w); }
     }
     if (cur) lines.push(cur);
     return lines.length ? lines : [""];
@@ -175,39 +192,52 @@ export async function generateOfferPdf(data: {
 
   // ── Kopf Seite 1: Absenderzeile, Empfängeradresse, Logo rechts, Infoblock, Titel ──
   const renderHeader = (pg: any): number => {
-    // Absenderzeile mit deutlichem Abstand zum Anschriftfeld (DIN 5008)
-    dt(pg, `${SLT_COMPANY.name} \u00B7 ${SLT_COMPANY.street} \u00B7 ${SLT_COMPANY.city}`, ADDR_X, ADDR_Y_TOP + 30, font, 7, MUTED);
-    pg.drawRectangle({ x: ADDR_X, y: ADDR_Y_TOP + 27, width: 220, height: 0.4, color: LINE });
+    // Falz- und Lochmarken (DIN 5008 Form B: 105 mm, 210 mm; Lochmarke 148,5 mm)
+    for (const mmY of [105, 210]) pg.drawRectangle({ x: 0, y: H - mmY * MM, width: 14, height: 0.4, color: LINE });
+    pg.drawRectangle({ x: 0, y: H - 148.5 * MM, width: 20, height: 0.4, color: LINE });
 
+    // Rücksendeangabe einzeilig in der Vermerkzone, auf Feldbreite gekürzt
+    let senderLine = safe(`${SLT_COMPANY.name} \u00B7 ${SLT_COMPANY.street} \u00B7 ${SLT_COMPANY.city}`);
+    let senderSize = 7;
+    while (senderSize > 5.5 && font.widthOfTextAtSize(senderLine, senderSize) > ADDR_W) senderSize -= 0.25;
+    dt(pg, senderLine, ADDR_X, ADDR_SENDER_Y, font, senderSize, MUTED);
+    pg.drawRectangle({ x: ADDR_X, y: ADDR_SENDER_Y - 3, width: ADDR_W, height: 0.4, color: LINE });
 
-    let ay = ADDR_Y_TOP;
+    // Anschrift: nur gefüllte Zeilen, Inland ohne Länderangabe, alles innerhalb des Fensters
     const companyLine = data.profile.legal_form
       ? `${data.profile.company_name} ${data.profile.legal_form}`
       : data.profile.company_name;
-    dt(pg, companyLine, ADDR_X, ay, bold, 10.5); ay -= 12;
     const cn = `${data.profile.contact_first_name || ""} ${data.profile.contact_last_name || ""}`.trim();
     const norm = (s: string) => s.toLowerCase().replace(/\s+/g, " ").trim();
-    // Ansprechpartner nur ausgeben, wenn er sich vom Firmennamen unterscheidet
-    if (cn && norm(cn) !== norm(String(companyLine || ""))) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 11; }
-
-    dt(pg, `${data.profile.street || ""}${data.profile.house_number ? " " + data.profile.house_number : ""}`, ADDR_X, ay, font, 9.5); ay -= 11;
-    dt(pg, `${data.profile.postal_code || ""} ${data.profile.city || ""}`, ADDR_X, ay, font, 9.5); ay -= 11;
-    dt(pg, data.profile.country || "Deutschland", ADDR_X, ay, font, 9.5); ay -= 11;
-    // Kontaktdaten (nur wenn übergeben, z. B. bei Anfrage-Angeboten)
+    const street = `${data.profile.street || ""}${data.profile.house_number ? " " + data.profile.house_number : ""}`.trim();
+    const cityLine = `${data.profile.postal_code || ""} ${data.profile.city || ""}`.trim();
+    const country = String(data.profile.country || "").trim();
+    const addrLines: { t: string; f: any; s: number }[] = [];
+    if (companyLine) for (const l of wt(String(companyLine), bold, 10, ADDR_W)) addrLines.push({ t: l, f: bold, s: 10 });
+    if (cn && norm(cn) !== norm(String(companyLine || ""))) addrLines.push({ t: cn, f: companyLine ? font : bold, s: companyLine ? 9.5 : 10 });
+    if (street) addrLines.push({ t: street, f: font, s: 9.5 });
+    if (cityLine) addrLines.push({ t: cityLine, f: font, s: 9.5 });
+    if (country && !/^(deutschland|germany|de)$/i.test(country)) addrLines.push({ t: country.toUpperCase(), f: font, s: 9.5 });
+    let ay = ADDR_Y_TOP;
+    const lineH = addrLines.length > 5 ? 10.5 : 12;
+    for (const l of addrLines.slice(0, 6)) {
+      dt(pg, l.t, ADDR_X, ay, l.f, l.s);
+      ay -= lineH;
+    }
+    ay = Math.min(ay, ADDR_Y_BOTTOM);
+    // Kontaktdaten und USt-IdNr. unterhalb des Fensters (nicht Teil der Anschrift)
+    ay -= 8;
     if (data.profile.contact_email) { dt(pg, String(data.profile.contact_email), ADDR_X, ay, font, 8.5, MUTED); ay -= 10; }
     if (data.profile.contact_phone) { dt(pg, String(data.profile.contact_phone), ADDR_X, ay, font, 8.5, MUTED); ay -= 10; }
-    // USt-IdNr. bei Reverse Charge oder wenn explizit gewünscht (Geschäftskunde)
     if ((data.isReverseCharge || data.profile.show_tax_id) && data.profile.tax_id) {
-      ay -= 2;
       dt(pg, `USt-IdNr.: ${data.profile.tax_id}`, ADDR_X, ay, font, 9, MUTED);
       ay -= 11;
     }
 
     // Logo oben rechts – die PNG-Datei hat viel transparenten Rand, deshalb
-    // rechnen wir mit dem sichtbaren Bildausschnitt, damit der SLT-Kreis
-    // exakt auf Höhe der Absenderzeile sitzt.
+    // rechnen wir mit dem sichtbaren Bildausschnitt.
     const LOGO_BOX = { left: 0.1474, top: 0.3536, right: 0.8516, bottom: 0.6318 };
-    const visibleTopY = ADDR_Y_TOP + 44;
+    const visibleTopY = LOGO_TOP_Y;
     let logoBottomY = visibleTopY - 60;
     if (logoImg) {
       const visibleW = 150;
@@ -427,11 +457,6 @@ export async function generateOfferPdf(data: {
   data.items.forEach((item: any, idx: number) => {
     const img = item.image_url ? imageCache.get(item.image_url) : null;
     const nameText = safe(item.product_name);
-    const nameLines = wt(nameText, bold, 9.5, nameColW);
-    const subLines: string[] = [];
-    if (item.description) subLines.push(...wt(item.description, font, 8, nameColW));
-    // Zeitraum steht bereits in der Beschreibung → nicht doppelt als "Mietzeitraum" ausgeben
-    const descHasPeriod = typeof item.description === "string" && /\d{1,2}\.\d{1,2}\.\d{4}/.test(item.description);
     // "3 Artikel × 9 Kalendertage" → Menge als "3 × 9" statt hochgerechnet "27" anzeigen
     const periodMatch = typeof item.description === "string"
       ? item.description.match(/(\d+)\s*Artikel\s*[\u00D7x]\s*(\d+)\s*[A-Za-z\u00C4\u00D6\u00DC\u00E4\u00F6\u00FC\u00DF]+\s*$/)
@@ -439,6 +464,13 @@ export async function generateOfferPdf(data: {
     const qtyText = periodMatch && Number(periodMatch[1]) * Number(periodMatch[2]) === Number(item.quantity)
       ? `${periodMatch[1]} \u00D7 ${periodMatch[2]}`
       : String(item.quantity);
+    // Bezeichnung endet immer mit Abstand vor der (rechtsbündigen) Mengenangabe
+    const rowNameW = Math.min(nameColW, qtyColRight - font.widthOfTextAtSize(safe(qtyText), 9.5) - 10 - textColX);
+    const nameLines = wt(nameText, bold, 9.5, rowNameW);
+    const subLines: string[] = [];
+    if (item.description) subLines.push(...wt(item.description, font, 8, nameColW));
+    // Zeitraum steht bereits in der Beschreibung → nicht doppelt als "Mietzeitraum" ausgeben
+    const descHasPeriod = typeof item.description === "string" && /\d{1,2}\.\d{1,2}\.\d{4}/.test(item.description);
     if (item.rental_start && !descHasPeriod) {
       subLines.push(...wt(`Mietzeitraum: ${fd(item.rental_start)}${item.rental_end ? " - " + fd(item.rental_end) : ""}`, font, 8, nameColW));
     }
@@ -479,10 +511,11 @@ export async function generateOfferPdf(data: {
     // Zusatzoptionen direkt unter der Position
     for (const svc of servicesByItem.get(idx) || []) {
       if (!svc.amount || svc.amount <= 0) continue;
-      const svcLines = wt(`- ${svc.name}`, font, 8.5, nameColW);
+      const svcW = unitColX - 10 - (textColX + 8);
+      const svcLines = wt(`- ${svc.name}`, font, 8.5, svcW);
       // Erläuterung der Berechnung (z. B. gesamte Mietdauer in Kalendertagen)
-      const expLines = svc.description ? wt(svc.description, font, 7.5, nameColW - 10) : [];
-      renderRow(4 + svcLines.length * 10 + expLines.length * 9, (top) => {
+      const expLines = svc.description ? wt(svc.description, font, 7.5, svcW - 8) : [];
+      renderRow(10 + svcLines.length * 10 + expLines.length * 9, (top) => {
         svcLines.forEach((ln, li) => dt(pg, ln, textColX + 8, top - 8 - li * 10, font, 8.5, MUTED));
         const expTop = top - 8 - svcLines.length * 10;
         expLines.forEach((ln, li) => dt(pg, ln, textColX + 16, expTop - li * 9, font, 7.5, MUTED));
