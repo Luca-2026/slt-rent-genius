@@ -4502,6 +4502,7 @@ export type Database = {
           stock_source: string
         }[]
       }
+      cleanup_authorized_test_invoices_20261003: { Args: never; Returns: Json }
       close_expired_rental_inquiries: { Args: never; Returns: number }
       complete_maintenance: {
         Args: {

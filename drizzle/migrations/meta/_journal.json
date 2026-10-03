@@ -267,6 +267,13 @@
       "when": 1791029248295,
       "tag": "0037_rental_sales_credit_note_series",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1791029380722,
+      "tag": "0038_one_time_authorized_test_invoice_cleanup",
+      "breakpoints": true
     }
   ]
 }
