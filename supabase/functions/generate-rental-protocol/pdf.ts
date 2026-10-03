@@ -179,7 +179,7 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
   if (data.order.offerNumber) info("Angebot:", data.order.offerNumber);
   if (isReturn && data.order.deliveryNoteNumber) info("\u00DCbergabe:", data.order.deliveryNoteNumber);
   info("Standort:", data.order.location);
-  y = Math.min(ay, iy) - 22;
+  y = Math.min(ay, iy) - 30;
   text(TITLE, ML, y, bold, 22, BRAND);
   y -= 18;
   text(`Nr. ${data.number}`, ML, y, font, 10, MUTED);
