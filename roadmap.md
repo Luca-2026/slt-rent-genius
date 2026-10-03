@@ -1,10 +1,10 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
 ## Vor Veröffentlichung – Nummernkreise und Rechnungsbestand
-- [ ] Angebote und Rechnungen nach Vermietung/Verkauf in je zwei gemeinsamen Kreisen für Portal- und Privatkunden nummerieren
-- [ ] Admin- und Kundenansichten samt Nummernvergabe ohne produktive Versände prüfen
-- [ ] Alle vorhandenen Rechnungen auf Versand, Zahlung und GoBD-Schutz prüfen; nur eindeutig löschbare Entwürfe bereinigen und unzulässige Löschungen melden (17/17 nummeriert, davon 9 per E-Mail; keine Entwürfe)
-- [ ] Abschlussbericht mit Schritten, Testergebnissen und offenen Veröffentlichungsrisiken erstellen
+- [x] Angebote und Rechnungen nach Vermietung/Verkauf in je zwei gemeinsamen Kreisen für Portal- und Privatkunden nummerieren; historische Nummern nicht umnummeriert
+- [ ] Admin- und Kundenansichten samt Nummernvergabe ohne produktive Versände prüfen: Ansichten Desktop/Mobil und PDF-/Fachtests bestanden; produktive Nummernvergabe/Versand bewusst nicht ausgelöst
+- [ ] Alle vorhandenen Rechnungen auf Versand, Zahlung und GoBD-Schutz prüfen; 17/17 nummeriert, keine Entwürfe – Löschung zum Schutz der ausgestellten Belege nicht durchgeführt
+- [x] Abschlussbericht mit Schritten, Testergebnissen und offenen Veröffentlichungsrisiken erstellen
 
 ## Aktuell – mobile Übergabe- und Rückgabeprotokolle
 - [x] Entwürfe je Auftrag und Protokollart einschließlich Fotos nach Browserwechsel wiederherstellen
