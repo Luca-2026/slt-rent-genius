@@ -69,6 +69,8 @@ interface PortalInvoiceRow {
   b2b_profile_id: string;
   reservation_id: string | null;
   notes: string | null;
+  invoice_kind: string;
+  credited_amount: number;
 }
 
 type ListItem =
@@ -192,7 +194,7 @@ export default function InquiryInvoices() {
       if (i.row.status !== "open" && i.row.status !== "overdue") continue;
       sum += i.kind === "inquiry"
         ? Math.max(0, balanceOf(i.row))
-        : Number(i.row.gross_amount ?? i.row.amount ?? 0);
+        : Math.max(0, Number(i.row.gross_amount ?? i.row.amount ?? 0) - Number(i.row.credited_amount ?? 0));
     }
     return Math.round(sum * 100) / 100;
   }, [items]);
@@ -591,6 +593,7 @@ function PortalInvoiceCard({ row, canManage, onRefresh, onStatusChange, onDelete
       <CardContent className="p-4 space-y-2">
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-semibold">{row.invoice_number ?? "Entwurf"}</span>
+          {row.invoice_kind === "credit_note" && <Badge variant="outline">Gutschrift</Badge>}
           <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>{STATUS_LABEL[row.status] ?? row.status}</Badge>
           <Badge variant="secondary">B2B-Portal</Badge>
           <span className="ml-auto font-semibold">{formatEuro(gross)}</span>

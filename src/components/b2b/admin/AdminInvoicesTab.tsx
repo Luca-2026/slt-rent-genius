@@ -45,6 +45,8 @@ interface Invoice {
   payment_terms?: string | null;
   created_at: string;
   notes: string | null;
+  invoice_kind?: string;
+  credited_amount?: number;
 }
 
 
@@ -168,7 +170,7 @@ export function AdminInvoicesTab({
         product_name: `Gutschrift zu ${invoice.invoice_number}`,
         description: `Vollständige Gutschrift der Rechnung ${invoice.invoice_number}`,
         quantity: 1,
-        unit_price: -invoice.net_amount,
+        unit_price: -Math.round(invoice.net_amount * Math.max(0, invoice.gross_amount - (invoice.credited_amount ?? 0)) / invoice.gross_amount * 100) / 100,
       }]);
     } else {
       setCorrectionItems([{ product_name: "", description: "", quantity: 1, unit_price: 0 }]);

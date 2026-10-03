@@ -347,6 +347,15 @@ Deno.serve(async (req: Request) => {
     }
 
     // Proforma invoices are always prepayment (Vorkasse) with 0 days
+    if (originalInvoice) profile = {
+      ...profile,
+      company_name: originalInvoice.customer_company ?? profile.company_name,
+      street: originalInvoice.customer_address ?? profile.street,
+      house_number: "",
+      postal_code: originalInvoice.customer_postal_code ?? profile.postal_code,
+      city: originalInvoice.customer_city ?? profile.city,
+      country: originalInvoice.customer_country ?? profile.country,
+    };
     const payment_due_days = is_proforma ? 0 : (bodyPaymentDueDays ?? profile.payment_due_days ?? 14);
 
     // Determine reverse charge status
@@ -499,6 +508,7 @@ Deno.serve(async (req: Request) => {
           amount: item.total_price,
         })),
         sections: [
+          ...(is_correction ? [{ label: "Bezug", value: `Gutschrift zu Rechnung ${original_invoice_number} vom ${originalInvoice.invoice_date}` }] : []),
           ...(notes && !is_proforma ? [{ label: "Bemerkungen", value: notes }] : []),
         ],
         totals: {
