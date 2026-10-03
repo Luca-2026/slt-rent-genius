@@ -334,9 +334,11 @@ export async function generateOfferPdf(data: {
     // Titelblock
     const contentTopY = Math.min(ay, iy) - 26;
     let ty = contentTopY;
-    const titleSize = isCreditNote || isOC ? 20 : isInvoice ? 24 : 30;
+    // Einheitliche Titelgröße; lange Titel (z. B. AUFTRAGSBESTÄTIGUNG) werden auf Satzbreite begrenzt
+    let titleSize = 24;
+    while (titleSize > 18 && bold.widthOfTextAtSize(safe(TITLE), titleSize) > CW) titleSize -= 1;
     dt(pg, TITLE, ML, ty, bold, titleSize, BRAND);
-    ty -= isCreditNote || isOC ? 22 : isInvoice ? 24 : 26;
+    ty -= 24;
     dt(pg, `Nr. ${data.offerNumber}`, ML, ty, font, 10.5, MUTED);
     ty -= 22;
 
