@@ -1,0 +1,1 @@
+CREATE POLICY "Staff can view customer discounts" ON public.b2b_category_discounts FOR SELECT TO authenticated USING (public.is_staff_member(auth.uid()));
