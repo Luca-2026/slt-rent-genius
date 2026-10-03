@@ -40,8 +40,13 @@ export async function generateDocumentPdf(data: {
   const ZEBRA = rgb(0.972, 0.976, 0.982);
 
   // DIN 5008 Sichtfenster: Adresse links bei ca. 25mm/45mm
-  const ADDR_X = ML;
-  const ADDR_Y_TOP = H - 105;     // ~37 mm von oben (Fensterbereich)
+  // DIN 5008 Form B / DIN 676: Anschriftfeld 25 mm links, 85 mm breit, Anschrift 63,5–90 mm von oben
+  const MM = 72 / 25.4;
+  const ADDR_X = 25 * MM;
+  const ADDR_W = 85 * MM;
+  const ADDR_SENDER_Y = H - 57 * MM;
+  const ADDR_Y_TOP = H - 67 * MM;
+  const ADDR_Y_BOTTOM = H - 89 * MM;
 
   let pageIdx = 0;
   const pages: any[] = [];
@@ -94,24 +99,34 @@ export async function generateDocumentPdf(data: {
 
   // Renders sender line, address block, info block, title. Only on page 1.
   const renderHeader = (pg: any): number => {
-    // Absenderzeile (7pt) direkt über Adressfeld
-    dt(pg, `${SLT_COMPANY.name} · ${SLT_COMPANY.street} · ${SLT_COMPANY.city}`, ADDR_X, ADDR_Y_TOP + 12, font, 7, MUTED);
-    pg.drawRectangle({ x: ADDR_X, y: ADDR_Y_TOP + 10, width: 220, height: 0.4, color: LINE });
+    // Falz- und Lochmarken (DIN 5008 Form B)
+    for (const mmY of [105, 210]) pg.drawRectangle({ x: 0, y: H - mmY * MM, width: 14, height: 0.4, color: LINE });
+    pg.drawRectangle({ x: 0, y: H - 148.5 * MM, width: 20, height: 0.4, color: LINE });
+    const senderLine = `${SLT_COMPANY.name} · ${SLT_COMPANY.street} · ${SLT_COMPANY.city}`;
+    let senderSize = 7;
+    try { while (senderSize > 5.5 && font.widthOfTextAtSize(senderLine, senderSize) > ADDR_W) senderSize -= 0.25; } catch {}
+    dt(pg, senderLine, ADDR_X, ADDR_SENDER_Y, font, senderSize, MUTED);
+    pg.drawRectangle({ x: ADDR_X, y: ADDR_SENDER_Y - 3, width: ADDR_W, height: 0.4, color: LINE });
 
-    // Empfängeradresse (DIN 5008 Fensterbereich, max ~85mm × 40mm)
-    let ay = ADDR_Y_TOP;
     const companyLine = data.profile.legal_form
       ? `${data.profile.company_name} ${data.profile.legal_form}`
       : data.profile.company_name;
-    dt(pg, companyLine, ADDR_X, ay, bold, 10.5); ay -= 12;
     const cn = `${data.profile.contact_first_name || ''} ${data.profile.contact_last_name || ''}`.trim();
-    if (cn) { dt(pg, cn, ADDR_X, ay, font, 9.5); ay -= 11; }
-    dt(pg, `${data.profile.street}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`, ADDR_X, ay, font, 9.5); ay -= 11;
-    dt(pg, `${data.profile.postal_code} ${data.profile.city}`, ADDR_X, ay, font, 9.5); ay -= 11;
-    dt(pg, data.profile.country || 'Deutschland', ADDR_X, ay, font, 9.5); ay -= 11;
-    // USt-IdNr NUR bei Reverse-Charge (innergemeinschaftliche Leistung) im Adressblock
+    const street = `${data.profile.street || ''}${data.profile.house_number ? ' ' + data.profile.house_number : ''}`.trim();
+    const cityLine = `${data.profile.postal_code || ''} ${data.profile.city || ''}`.trim();
+    const country = String(data.profile.country || '').trim();
+    const lines: { t: string; f: any; s: number }[] = [];
+    if (companyLine) lines.push({ t: companyLine, f: bold, s: 10 });
+    if (cn && cn.toLowerCase() !== String(companyLine || '').toLowerCase()) lines.push({ t: cn, f: font, s: 9.5 });
+    if (street) lines.push({ t: street, f: font, s: 9.5 });
+    if (cityLine) lines.push({ t: cityLine, f: font, s: 9.5 });
+    if (country && !/^(deutschland|germany|de)$/i.test(country)) lines.push({ t: country.toUpperCase(), f: font, s: 9.5 });
+    let ay = ADDR_Y_TOP;
+    const lineH = lines.length > 5 ? 10.5 : 12;
+    for (const l of lines.slice(0, 6)) { dt(pg, l.t, ADDR_X, ay, l.f, l.s); ay -= lineH; }
+    ay = Math.min(ay, ADDR_Y_BOTTOM) - 8;
+    // USt-IdNr NUR bei Reverse-Charge, unterhalb des Sichtfensters
     if (data.totals?.isReverseCharge && data.profile.tax_id) {
-      ay -= 2;
       dt(pg, `USt-IdNr.: ${data.profile.tax_id}`, ADDR_X, ay, font, 9, MUTED);
     }
 
