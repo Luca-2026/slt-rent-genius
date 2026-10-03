@@ -3,6 +3,8 @@ import { parseProtocolMeasurements, measurementRows, type ProtocolMeasurement } 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
+import { SLT_COMPANY } from "../_shared/company.ts";
+import { drawUnifiedFooter, unifiedFooterHtml, resolvePdfLocation, FOOTER_TOP } from "../_shared/pdf-footer.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -10,26 +12,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const SLT_COMPANY = {
-  name: "SLT Technology Group GmbH & Co. KG",
-  brand: "SLT-Rental",
-  street: "Anrather Straße 291",
-  city: "47807 Krefeld",
-  country: "Deutschland",
-  phone: "+49 2151 417 99 04",
-  fax: "+49 2151 417 99 04",
-  mobil: "+49 1578 915 08 72",
-  email: "mieten@slt-rental.de",
-  web: "www.slt-rental.de",
-  facebook: "www.facebook.com/slt-rental",
-  registry: "Amtsgericht Krefeld · HRA 7075",
-  managingDirector: "Benedikt Nöchel",
-  steuerNr: "117/5717/1398",
-  ustId: "DE340481717",
-  bankName: "Sparkasse Krefeld",
-  iban: "DE65 3205 0000 0000 4784 46",
-  bic: "SPKRDE33XXX",
-};
+
 
 const DE_TIMEZONE = "Europe/Berlin";
 
@@ -545,6 +528,7 @@ Deno.serve(async (req: Request) => {
           documentNumber: deliveryNoteNumber,
           date: germanDate,
           profile,
+          issuingLocation: reservation?.location ?? profile.assigned_location,
           items: (offerItems || []).map((item: any) => ({
             name: item.product_name,
             description: item.description || undefined,
@@ -768,7 +752,9 @@ function generateDeliveryNoteHtml(data: {
     @media print {
       body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       .no-print { display: none !important; }
-      @page { margin: 15mm; size: A4; }
+      @page { margin: 15mm 20mm 45mm 25mm; size: A4; }
+      .doc-container { padding: 0 !important; max-width: none !important; }
+      .unified-footer { position: fixed !important; bottom: -33mm; left: 0; right: 0; }
     }
     @media screen and (max-width: 768px) {
       body { font-size: 12px; }
@@ -963,13 +949,8 @@ function generateDeliveryNoteHtml(data: {
       Unterschrift im Original gültig, sofern die digitale Signatur korrekt erfasst wurde (vgl. § 126a BGB, elektronische Form).
     </div>
 
-    <!-- Footer -->
-    <div style="border-top:2px solid #00507d;padding-top:10px;font-size:9px;color:#595959;text-align:center;line-height:1.8;">
-      <p>${SLT_COMPANY.name} - Geschäftsführer: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone} - FAX: ${SLT_COMPANY.fax} - Mobil: ${SLT_COMPANY.mobil}</p>
-      <p>${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}</p>
-      <p>${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}</p>
-      <p>${SLT_COMPANY.web} - ${SLT_COMPANY.email} - ${SLT_COMPANY.facebook}</p>
-    </div>
+    <!-- Same legal identity, columns and print spacing as the offer PDF. -->
+    ${unifiedFooterHtml(SLT_COMPANY, resolvePdfLocation(data.reservation?.location ?? data.profile.assigned_location))}
   </div>
 </body>
 </html>`;
@@ -987,6 +968,7 @@ function escapeHtml(str: string): string {
 // ─── PDF Generator for Email Attachment ─────────────────────
 async function generateDocumentPdf(data: {
   title: string;
+  issuingLocation?: string | null;
   documentNumber: string;
   date: string;
   profile: any;
@@ -998,11 +980,11 @@ async function generateDocumentPdf(data: {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
-  const W = 595.28, H = 841.89, MG = 50, CW = W - 2 * MG;
+  const W = 595.28, H = 841.89, MM = 72 / 25.4, MG = 25 * MM, MR = 20 * MM, CW = W - MR - MR;
   let page = doc.addPage([W, H]);
   let y = H - MG;
 
-  const checkPage = (need: number) => { if (y - need < MG + 40) { page = doc.addPage([W, H]); y = H - MG; } };
+  const checkPage = (need: number) => { if (y - need < FOOTER_TOP + 4) { page = doc.addPage([W, H]); y = H - MG; } };
   const dt = (t: string, x: number, yy: number, f = font, s = 10, c = rgb(0.2, 0.2, 0.2)) => {
     try { page.drawText(t || '', { x, y: yy, size: s, font: f, color: c }); } catch {}
   };
@@ -1023,14 +1005,14 @@ async function generateDocumentPdf(data: {
   } catch {}
 
   [SLT_COMPANY.name, `${SLT_COMPANY.street}, ${SLT_COMPANY.city}`].forEach((l, i) => {
-    const tw = font.widthOfTextAtSize(l, 7); dt(l, W - MG - tw, y - 10 - i * 10, font, 7, rgb(0.5, 0.5, 0.5));
+    const tw = font.widthOfTextAtSize(l, 7); dt(l, W - MR - tw, y - 10 - i * 10, font, 7, rgb(0.5, 0.5, 0.5));
   });
   y -= 60;
   page.drawRectangle({ x: MG, y, width: CW, height: 2, color: rgb(0, 0.314, 0.49) });
   y -= 30;
   dt(data.title, MG, y, bold, 18, rgb(0, 0.314, 0.49)); y -= 22;
   dt(data.documentNumber, MG, y, bold, 11);
-  const ds = `Datum: ${fd(data.date)}`; dt(ds, W - MG - font.widthOfTextAtSize(ds, 10), y, font, 10); y -= 30;
+  const ds = `Datum: ${fd(data.date)}`; dt(ds, W - MR - font.widthOfTextAtSize(ds, 10), y, font, 10); y -= 30;
 
   dt("Kunde:", MG, y, bold, 9, rgb(0.5, 0.5, 0.5)); y -= 14;
   dt(data.profile.company_name, MG, y, bold, 10); y -= 14;
@@ -1049,10 +1031,11 @@ async function generateDocumentPdf(data: {
   y -= 5; page.drawRectangle({ x: MG, y, width: CW, height: 0.5, color: rgb(0.8, 0.8, 0.8) }); y -= 14;
 
   data.items.forEach((item, i) => {
-    checkPage(30); dt(`${i + 1}`, MG + 4, y, font, 9);
     let desc = item.name; if (item.description) desc += ` - ${item.description}`;
     if (item.discount && item.discount > 0) desc += ` (${item.discount}% Rabatt)`;
     const maxNW = CW * (hp ? 0.5 : 0.72); const nl = wt(desc, font, 9, maxNW);
+    checkPage(nl.length * 13 + 16); dt(`${i + 1}`, MG + 4, y, font, 9);
+
     nl.forEach((line, li) => {
       dt(line, MG + 30, y, font, 9);
       if (li === 0) { dt(`${item.quantity}`, MG + CW * (hp ? 0.57 : 0.82), y, font, 9);
@@ -1065,7 +1048,7 @@ async function generateDocumentPdf(data: {
 
   // Totals (for invoices)
   if (data.totals) {
-    checkPage(100); const tx = MG + CW * 0.6; const vx = W - MG - 5;
+    checkPage(100); const tx = MG + CW * 0.6; const vx = W - MR - 5;
     if (data.totals.deliveryCost && data.totals.deliveryCost > 0) {
       dt("Transportkosten:", tx, y, font, 9); const dcT = fm(data.totals.deliveryCost); dt(dcT, vx - font.widthOfTextAtSize(dcT, 9), y, font, 9); y -= 16;
     }
@@ -1091,7 +1074,7 @@ async function generateDocumentPdf(data: {
 
   // Signatures
   if (data.signatures) {
-    checkPage(90); y -= 10;
+    checkPage(110); y -= 10;
     page.drawRectangle({ x: MG, y: y + 5, width: CW, height: 0.5, color: rgb(0.8, 0.8, 0.8) }); y -= 55;
     for (const [sigData, xOff] of [[data.signatures.customerData, 0], [data.signatures.staffData, CW / 2 + 10]] as [string | undefined, number][]) {
       if (sigData) { try {
@@ -1109,22 +1092,7 @@ async function generateDocumentPdf(data: {
   }
 
   // Footer on all pages
-  const footerLines = [
-    `${SLT_COMPANY.name} - GF: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone} - FAX: ${SLT_COMPANY.fax} - Mobil: ${SLT_COMPANY.mobil}`,
-    `${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}`,
-    `${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}`,
-    `${SLT_COMPANY.web} - ${SLT_COMPANY.email} - ${SLT_COMPANY.facebook}`,
-  ];
-  for (let i = 0; i < doc.getPageCount(); i++) {
-    const p = doc.getPage(i);
-    p.drawRectangle({ x: MG, y: MG + 20, width: CW, height: 0.5, color: rgb(0, 0.314, 0.49) });
-    footerLines.forEach((line, li) => {
-      try {
-        const tw = font.widthOfTextAtSize(line, 5.5);
-        p.drawText(line, { x: (W - tw) / 2, y: MG + 14 - li * 7, size: 5.5, font, color: rgb(0.5, 0.5, 0.5) });
-      } catch {}
-    });
-  }
+  drawUnifiedFooter({ doc, font, company: SLT_COMPANY, location: resolvePdfLocation(data.issuingLocation ?? data.profile.assigned_location), W, ML: MG, MR });
 
   return await doc.save();
 }
