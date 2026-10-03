@@ -57,14 +57,14 @@ export const STAFF_NAV: StaffNavGroup[] = [
       { label: "Schäden", path: "/b2b/admin", tab: "damages", icon: AlertTriangle, access: "inventory" },
       { label: "Aufgaben", path: "/b2b/aufgaben", icon: CheckSquare, access: "staff", badgeKey: "todos" },
       { label: "Materialdispo", path: "/b2b/aufgaben", tab: "material", icon: Truck, access: "staff" },
-      { label: "Inventar", path: "/b2b/aufgaben", tab: "inventory", icon: Boxes, access: "inventory" },
-      { label: "Zeiterfassung", path: "/b2b/aufgaben", tab: "zeiten", icon: CalendarClock, access: "staff" },
     ],
   },
   {
     label: "Verwaltung",
     items: [
+      { label: "Mietartikel-CMS", path: "/b2b/aufgaben", tab: "inventory", icon: Boxes, access: "inventory" },
       { label: "Verkaufsartikel-CMS", path: "/b2b/aufgaben", tab: "verkauf", icon: Store, access: "inventory" },
+      { label: "Zeiterfassung", path: "/b2b/aufgaben", tab: "zeiten", icon: CalendarClock, access: "staff" },
       { label: "Team", path: "/b2b/aufgaben", tab: "staff", icon: UserCog, access: "admin" },
       { label: "Audit-Log", path: "/b2b/aufgaben", tab: "audit", icon: Shield, access: "admin" },
       { label: "Feedback", path: "/b2b/aufgaben", tab: "feedback", icon: MessageSquare, access: "admin" },

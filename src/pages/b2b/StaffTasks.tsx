@@ -206,7 +206,7 @@ export default function StaffTasks() {
   return (
     <B2BPortalLayout
       title="Interne Verwaltung"
-      subtitle="Aufgaben, Materialdispo, Inventar, Verkaufsartikel, Zeiterfassung, Feedback, Mitarbeiter und Audit-Log"
+      subtitle="Aufgaben, Materialdispo, Mietartikel-CMS, Verkaufsartikel, Zeiterfassung, Feedback, Mitarbeiter und Audit-Log"
     >
       <TimesheetReminderBanner className="mb-4" onOpenTimeTracking={() => handleTabChange("zeiten")} />
 
@@ -220,7 +220,7 @@ export default function StaffTasks() {
           </TabsTrigger>
           {canViewInventory && (
             <TabsTrigger value="inventory" className="text-xs sm:text-sm py-2 sm:flex-none sm:shrink-0 sm:whitespace-nowrap sm:px-3 sm:py-2.5">
-              <Boxes className="h-4 w-4 mr-2 shrink-0" /> Inventar
+              <Boxes className="h-4 w-4 mr-2 shrink-0" /> Mietartikel-CMS
             </TabsTrigger>
           )}
           {canViewInventory && (

@@ -85,8 +85,8 @@ export default function PhoneCalls() {
         <ul className="divide-y divide-border rounded-lg border border-border bg-card">
           {filtered.map((c) => (
             <li key={c.id} className="flex items-stretch gap-1">
-              <button type="button" onClick={() => setSelId(c.id)} className="flex min-w-0 flex-1 flex-col gap-1 p-3 text-left hover:bg-muted sm:flex-row sm:items-start sm:gap-4">
-                <div className="flex shrink-0 items-center gap-2 sm:w-40 sm:flex-col sm:items-start">
+              <button type="button" onClick={() => setSelId(c.id)} className="flex min-w-0 flex-1 flex-col gap-1 p-3 text-left hover:bg-muted md:flex-row md:items-start md:gap-4">
+                <div className="flex shrink-0 items-center gap-2 md:w-36 md:flex-col md:items-start md:gap-1">
                   <PriorityBadge p={c.priority} />
                   <span className="text-xs text-muted-foreground">{fmt(c)}</span>
                 </div>
@@ -96,14 +96,14 @@ export default function PhoneCalls() {
                     {c.analysis_status === "failed" ? `Nicht ausgewertet: ${c.analysis_error ?? ""}` : c.summary ?? c.provider_summary ?? "Wird ausgewertet …"}
                   </p>
                 </div>
-                <div className="flex shrink-0 flex-wrap gap-1 text-xs">
+                <div className="flex shrink-0 flex-wrap content-start gap-1 text-xs md:w-52 md:justify-end">
                   {c.intent && <Badge variant="secondary">{INTENT_LABEL[c.intent]}</Badge>}
                   {c.assistant && <Badge>{ASSISTANT[c.assistant]}</Badge>}
                   {c.location && <Badge variant="outline">{LOC[c.location]}</Badge>}
                   <Badge variant="outline">{STATUS[c.status]}</Badge>
                 </div>
               </button>
-              <div className="flex shrink-0 items-center pr-2">
+              <div className="flex shrink-0 items-start p-3 pl-0 sm:items-start md:w-28 md:justify-end md:pr-3">
                 <QuickDoneToggle call={c} onDone={reload} />
               </div>
             </li>
@@ -147,7 +147,7 @@ function QuickDoneToggle({ call, onDone }: { call: PhoneCall; onDone: () => void
       title={done ? "Als offen markieren" : "Als erledigt markieren"}
       aria-label={done ? "Als offen markieren" : "Als erledigt markieren"}
       className={cn(
-        "inline-flex h-11 w-11 items-center justify-center rounded-md border px-0 text-xs font-medium transition-colors sm:h-8 sm:w-auto sm:px-2",
+        "inline-flex h-11 w-11 items-center justify-center rounded-md border px-0 text-xs font-medium transition-colors sm:h-8 sm:w-auto sm:min-w-[6rem] sm:gap-1.5 sm:px-3",
         done
           ? "border-border text-muted-foreground hover:bg-muted"
           : "border-primary/40 text-primary hover:bg-primary/10",
