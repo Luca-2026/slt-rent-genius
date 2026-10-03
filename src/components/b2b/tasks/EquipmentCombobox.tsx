@@ -1,3 +1,4 @@
+import { normalizeLocation } from "@/lib/inventoryAvailability";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -53,8 +54,9 @@ export function EquipmentCombobox({ value, onChange, location, placeholder, id }
   }, []);
 
   const filtered = useMemo(() => {
-    const base = location
-      ? items.filter((i) => !i.available_locations?.length || i.available_locations.includes(location))
+    const loc = normalizeLocation(location);
+    const base = loc
+      ? items.filter((i) => !i.available_locations?.length || i.available_locations.includes(loc))
       : items;
     return base;
   }, [items, location]);
