@@ -1,17 +1,18 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
 ## Aktuell – ausdrückliche Ende-zu-Ende-Abnahme vom 03.10.2026
-- [ ] Kundenablauf mit echter Anmeldung und eindeutig abgegrenzten Testdaten Schritt für Schritt prüfen
-- [ ] Gleichzeitige Nummernvergabe für ANG/RE/GS jeweils M/V prüfen, ohne unkontrollierte Nummernverbräuche
-- [ ] Echten Versand ausschließlich an luca@sandhoff.org prüfen, PDF und gespeicherten Versandstatus abgleichen
-- [ ] Einzelbericht mit Belegen, Fehlern und klaren Prüfgrenzen erstellen
+- [x] B2B-Testablauf: Kundenformular, Angebotsannahme in Oberfläche, Übergabe/Rückgabe/Rechnung/Gutschrift über echte Funktionen; Ansichten als Kunde/Admin Desktop/Mobil geprüft
+- [x] ANG/RE/GS M/V: 240 eindeutige lückenlose Vergaben auf isolierter Kopie der aktuellen Zählerfunktionen; parallele komplette Live-Ausstellung nicht geprüft
+- [x] Sechs echte Testmails ausschließlich an luca@sandhoff.org zugestellt; Rechnung/Gutschrift gespeichert, Vollgutschrift gleicht Testforderung aus; Belege bleiben
+- [x] Einzelbericht in Files erstellt; 130 Tests bestanden; negative Gutschrift-USt./Status/bezahlt-Summe und Testmail-Kopien korrigiert
+- [ ] Vollständige Abnahme aller Verkaufs-/Privatkunden-/Zahlungs-/Kameraabläufe benötigt weitere ausdrücklich begrenzte Tests; Bericht benennt Prüfgrenzen
 
 ## Vor Veröffentlichung – Nummernkreise und Rechnungsbestand
 - [x] Rechnungsbearbeitung in gemeinsamer Übersicht; alter Admin-Link leitet dorthin, Verwaltung öffnet Dialog; Admin-Browsertest ohne Seitenfehler
 - [x] 15 Testrechnungen, 3 zugehörige Testgutschriften und 29 alte Rechnungsdateien entfernt; Angebote und Protokolle erhalten; Löschtrigger wieder aktiv, einmalige Bereinigungsfunktion entfernt
 - [x] Gemeinsame Gutschriftkreise GS-M/V ergänzt; Nummernpfade für ANG-M/V und RE-M/V geprüft, keine Nummer durch Tests verbraucht
 - [x] Angebote und Rechnungen nach Vermietung/Verkauf in je zwei gemeinsamen Kreisen für Portal- und Privatkunden nummerieren; historische Nummern nicht umnummeriert
-- [ ] Admin- und Kundenansichten samt Nummernvergabe ohne produktive Versände prüfen: Ansichten Desktop/Mobil und PDF-/Fachtests bestanden; produktive Nummernvergabe/Versand bewusst nicht ausgelöst
+- [x] Admin-/Kundenansichten Desktop/Mobil geprüft; später ausdrücklich freigegebene echte B2B-Testversände durchgeführt, siehe aktuelle Abnahme
 - [x] Vorhandene Rechnungen auf Versand, Zahlung und GoBD-Schutz geprüft; Nutzer hat am 03.10.2026 alle ausschließlich als Testbelege zur Löschung freigegeben
 - [x] Abschlussprüfung: 130 Frontendtests und 7 PDF-Tests bestanden; angemeldete ungültige Gutschrift liefert 409 ohne Belegerstellung. Offen: produktive Ausstellung/Versand, parallele Nummernvergabe und vollständiger Kunden-End-to-End-Test nicht ausgeführt.
 

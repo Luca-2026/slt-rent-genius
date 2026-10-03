@@ -519,7 +519,7 @@ Deno.serve(async (req: Request) => {
           deliveryCost: delivery_cost,
           isReverseCharge,
           paymentDueDays: payment_due_days,
-          dueDate,
+          dueDate: is_correction ? undefined : dueDate,
           depositTotal,
         },
         isProforma: is_proforma,
