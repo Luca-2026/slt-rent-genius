@@ -18,6 +18,9 @@ Deno.test("Rechnungs-PDF entspricht dem Referenz-Layout", async () => {
   assert(findText(snap, "RE-2026-0421"), "Rechnungsnummer fehlt");
   assert(findText(snap, "Musterbau GmbH"), "Empfängeranschrift fehlt");
   assert(findText(snap, "Minibagger"), "Position fehlt");
+  assert(findText(snap, "Persönlich haftende Gesellschafterin:"), "Rolle der Komplementärin fehlt");
+  assert(findText(snap, "SLT Management GmbH"), "Komplementärin fehlt");
+  assert(findText(snap, "Geschäftsführer (GmbH): Benedikt Nöchel"), "Geschäftsführung der GmbH fehlt");
 });
 
 Deno.test("Rechnungs-PDF nutzt DIN-5008-Ränder", async () => {

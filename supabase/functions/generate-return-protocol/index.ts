@@ -1101,8 +1101,10 @@ function generateReturnProtocolHtml(data: {
 
     <!-- Footer -->
     <div style="border-top:2px solid #00507d;padding-top:10px;font-size:9px;color:#595959;text-align:center;line-height:1.8;">
-      <p>${SLT_COMPANY.name} - Geschäftsführer: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone} - FAX: ${SLT_COMPANY.fax} - Mobil: ${SLT_COMPANY.mobil}</p>
+      <p>${SLT_COMPANY.name} - Tel: ${SLT_COMPANY.phone}</p>
       <p>${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}</p>
+      <p>Persönlich haftende Gesellschafterin: SLT Management GmbH - Sitz: Krefeld</p>
+      <p>Amtsgericht Krefeld - HRB 18191 - Geschäftsführer (GmbH): ${SLT_COMPANY.managingDirector}</p>
       <p>${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}</p>
       <p>${SLT_COMPANY.web} - ${SLT_COMPANY.email} - ${SLT_COMPANY.facebook}</p>
     </div>
@@ -1256,18 +1258,20 @@ async function generateDocumentPdf(data: {
   }
 
   const footerLines = [
-    `${SLT_COMPANY.name} - GF: ${SLT_COMPANY.managingDirector} - Tel: ${SLT_COMPANY.phone} - FAX: ${SLT_COMPANY.fax} - Mobil: ${SLT_COMPANY.mobil}`,
+    `${SLT_COMPANY.name} - Tel: ${SLT_COMPANY.phone}`,
     `${SLT_COMPANY.street} - ${SLT_COMPANY.city} - Steuer-Nr. ${SLT_COMPANY.steuerNr} - USt-ID ${SLT_COMPANY.ustId} - ${SLT_COMPANY.registry}`,
+    `Persönlich haftende Gesellschafterin: SLT Management GmbH - Sitz: Krefeld`,
+    `Amtsgericht Krefeld - HRB 18191 - Geschäftsführer (GmbH): ${SLT_COMPANY.managingDirector}`,
     `${SLT_COMPANY.bankName} - IBAN: ${SLT_COMPANY.iban} - BIC: ${SLT_COMPANY.bic} - Kontoinhaber: ${SLT_COMPANY.name}`,
-    `${SLT_COMPANY.web} - ${SLT_COMPANY.email} - ${SLT_COMPANY.facebook}`,
   ];
   for (let i = 0; i < doc.getPageCount(); i++) {
     const p = doc.getPage(i);
     p.drawRectangle({ x: MG, y: MG + 20, width: CW, height: 0.5, color: rgb(0, 0.314, 0.49) });
     footerLines.forEach((line, li) => {
       try {
-        const tw = font.widthOfTextAtSize(line, 5.5);
-        p.drawText(line, { x: (W - tw) / 2, y: MG + 14 - li * 7, size: 5.5, font, color: rgb(0.5, 0.5, 0.5) });
+        const size = Math.min(5.5, 5.5 * CW / Math.max(font.widthOfTextAtSize(line, 5.5), 1));
+        const tw = font.widthOfTextAtSize(line, size);
+        p.drawText(line, { x: (W - tw) / 2, y: MG + 21 - li * 7, size, font, color: rgb(0.5, 0.5, 0.5) });
       } catch {}
     });
   }

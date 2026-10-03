@@ -9,7 +9,7 @@ const MMU = 72 / 25.4;
 export const FOOTER_SIZE = 6.6;
 export const FOOTER_LEAD = 7.8;
 export const FOOTER_LAST_BASELINE = 12 * MMU;            // ~34 pt
-const FOOTER_LINES = 7;
+const FOOTER_LINES = 8;
 export const FOOTER_FIRST_BASELINE = FOOTER_LAST_BASELINE + (FOOTER_LINES - 1) * FOOTER_LEAD;
 export const FOOTER_RULE_Y = FOOTER_FIRST_BASELINE + 9;
 export const FOOTER_PAGE_Y = FOOTER_RULE_Y + 7;
@@ -50,7 +50,18 @@ export function drawUnifiedFooter(opts: {
   const LINE = rgb(0.85, 0.87, 0.9);
   const CW = W - ML - MR;
   const colW = CW / 3;
-  const col1 = [c.name, `Sitz: ${c.street}, ${c.city}`, c.registry, c.liablePartner, `Sitz: ${c.street}, ${c.city}`, c.partnerRegistry, `Gesch\u00E4ftsf\u00FChrer: ${c.managingDirector}`];
+  // Die KG bleibt Vertragspartnerin; die GmbH wird ausschließlich in ihrer
+  // Funktion als persönlich haftende Gesellschafterin der KG ausgewiesen.
+  const col1 = [
+    c.name,
+    `Sitz: ${c.street}, ${c.city}`,
+    c.registry,
+    "Pers\u00F6nlich haftende Gesellschafterin:",
+    c.liablePartner,
+    "Sitz: Krefeld",
+    c.partnerRegistry,
+    `Gesch\u00E4ftsf\u00FChrer (GmbH): ${c.managingDirector}`,
+  ];
   const col2 = [`Standort ${l.name}`, `${l.street}, ${l.city}`, `Tel. ${l.phone}`, `${l.email} \u00B7 ${c.web}`];
   const col3 = [`Steuer-Nr. ${c.steuerNr} \u00B7 USt-IdNr. ${c.ustId}`, c.bankName, `IBAN ${c.iban}`, `BIC ${c.bic}`];
   const total = doc.getPageCount();
