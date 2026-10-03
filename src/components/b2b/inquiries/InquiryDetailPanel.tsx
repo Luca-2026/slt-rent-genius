@@ -16,6 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { INQUIRY_STATUSES, canTransition, type InquiryStatus } from "@/lib/inquiryStatus";
 import { InquiryStatusBadge } from "./InquiryStatusBadge";
+import { inquiryDraftKey, readInquiryDraft } from "./offerDraftStorage";
 import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm";
 import { useInquiryActions } from "./useInquiryActions";
 import { InquiryCustomerCard, type CustomerKind } from "./InquiryCustomerCard";
@@ -244,6 +245,35 @@ interface Props {
 }
 
 
+type DocMode = "offer" | "revise" | "invoice" | "final";
+const DOC_MODE_PREFIX = "slt.inquiry-doc-mode.v1:";
+
+function rememberDocMode(inquiryId: string, mode: DocMode) {
+  try {
+    window.sessionStorage.setItem(DOC_MODE_PREFIX + inquiryId, mode);
+  } catch {
+    /* ignorieren */
+  }
+}
+
+/**
+ * Startansicht des Dokumentformulars: Gibt es einen angefangenen Entwurf zur Überarbeitung,
+ * öffnet sich dieser wieder – sonst die zuletzt gewählte Ansicht dieser Sitzung.
+ */
+function initialDocMode(inquiryType: string, inquiryId: string, offerNumber: string | null | undefined, hasSnapshot: boolean): DocMode {
+  try {
+    if (offerNumber && hasSnapshot && readInquiryDraft(inquiryDraftKey(`revise-${offerNumber}`, inquiryType, inquiryId))) {
+      return "revise";
+    }
+    const saved = window.sessionStorage.getItem(DOC_MODE_PREFIX + inquiryId);
+    if (saved === "revise") return offerNumber && hasSnapshot ? "revise" : "offer";
+    if (saved === "invoice" || saved === "final") return saved;
+  } catch {
+    /* ignorieren */
+  }
+  return "offer";
+}
+
 export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, defaultDelivery, details, onChanged, onDeleted }: Props) {
   const { user, isAdmin } = useAuth();
   const { toast } = useToast();
@@ -289,7 +319,17 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
 
 
   /** Angebot oder Rechnung – steuert das Formular unten. */
-  const [docMode, setDocMode] = useState<"offer" | "revise" | "invoice" | "final">("offer");
+  const [docMode, setDocModeState] = useState<"offer" | "revise" | "invoice" | "final">(() =>
+    initialDocMode(inquiryType, inquiry.id, inquiry.offer_number, !!offerSnapshot),
+  );
+  const setDocMode = useCallback(
+    (mode: "offer" | "revise" | "invoice" | "final") => {
+      setDocModeState(mode);
+      rememberDocMode(inquiry.id, mode);
+    },
+    [inquiry.id],
+  );
+  const lastInquiryId = useRef(inquiry.id);
   const [invoices, setInvoices] = useState<InvoiceRow[]>([]);
   const docSectionRef = useRef<HTMLDivElement | null>(null);
 
@@ -309,8 +349,14 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   }, [inquiry.id, inquiryType]);
 
   useEffect(() => {
-    setDocMode("offer");
+    // Nur beim Wechsel auf eine andere Anfrage zurücksetzen – nicht beim Neuladen derselben,
+    // sonst springt eine angefangene Überarbeitung zurück auf das leere Neu-Angebot.
+    if (lastInquiryId.current !== inquiry.id) {
+      lastInquiryId.current = inquiry.id;
+      setDocModeState(initialDocMode(inquiryType, inquiry.id, inquiry.offer_number, !!offerSnapshot));
+    }
     loadInvoices();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inquiry.id, loadInvoices]);
 
   const mine = inquiry.assigned_to === user?.id;
