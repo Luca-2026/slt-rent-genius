@@ -1,5 +1,9 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – konsistente Protokoll-Fußzeilen
+- [x] B2B-Übergabe/Rückgabe: PDF-Anhang und HTML-Ansicht auf gemeinsame Angebotsfußzeile mit Auftragsstandort umgestellt; beide Funktionen deployed
+- [x] 18 PDF-Muster (42 Seiten) und 6 HTML-Druckmuster (12 Seiten) geprüft; 6 neue Fußzeilentests und 7 PDF-Regressionstests bestanden; Kunden-Protokolllisten mit Login geprüft; Bericht ohne Versand erstellt
+
 ## Aktuell – ausdrückliche Ende-zu-Ende-Abnahme vom 03.10.2026
 - [x] B2B-Testablauf: Kundenformular, Angebotsannahme in Oberfläche, Übergabe/Rückgabe/Rechnung/Gutschrift über echte Funktionen; Ansichten als Kunde/Admin Desktop/Mobil geprüft
 - [x] ANG/RE/GS M/V: 240 eindeutige lückenlose Vergaben auf isolierter Kopie der aktuellen Zählerfunktionen; parallele komplette Live-Ausstellung nicht geprüft
