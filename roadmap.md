@@ -3,7 +3,7 @@
 ## Vor Veröffentlichung – Nummernkreise und Rechnungsbestand
 - [ ] Angebote und Rechnungen nach Vermietung/Verkauf in je zwei gemeinsamen Kreisen für Portal- und Privatkunden nummerieren
 - [ ] Admin- und Kundenansichten samt Nummernvergabe ohne produktive Versände prüfen
-- [ ] Alle vorhandenen Rechnungen auf Versand, Zahlung und GoBD-Schutz prüfen; nur eindeutig löschbare Entwürfe bereinigen und unzulässige Löschungen melden
+- [ ] Alle vorhandenen Rechnungen auf Versand, Zahlung und GoBD-Schutz prüfen; nur eindeutig löschbare Entwürfe bereinigen und unzulässige Löschungen melden (17/17 nummeriert, davon 9 per E-Mail; keine Entwürfe)
 - [ ] Abschlussbericht mit Schritten, Testergebnissen und offenen Veröffentlichungsrisiken erstellen
 
 ## Aktuell – mobile Übergabe- und Rückgabeprotokolle
