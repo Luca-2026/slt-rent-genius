@@ -1,5 +1,9 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – Umsatzsaldo und Kundensuche
+- [ ] Stornierte Portalrechnung und Gutschrift in Startseite und Umsatzauswertung korrekt saldieren; Regressionstests und angemeldete Anzeige prüfen
+- [ ] Kundentreffer der Startseite direkt im passenden Bearbeitungsdialog öffnen; CRM- und Portalzugriff ohne Speichern prüfen
+
 ## Aktuell – konsistente Protokoll-Fußzeilen
 - [x] B2B-Übergabe/Rückgabe: PDF-Anhang und HTML-Ansicht auf gemeinsame Angebotsfußzeile mit Auftragsstandort umgestellt; beide Funktionen deployed
 - [x] 18 PDF-Muster (42 Seiten) und 6 HTML-Druckmuster (12 Seiten) geprüft; 6 neue Fußzeilentests und 7 PDF-Regressionstests bestanden; Kunden-Protokolllisten mit Login geprüft; Bericht ohne Versand erstellt

@@ -4,7 +4,7 @@ import { csvCell } from "./csvCell";
  *
  * Umsatzdefinition identisch zu dashboardMetrics (countsAsRevenue):
  *  - Rechnungen aus Anfragen inkl. stornierter + Gutschriften (negativ) → Storno hebt sich auf
- *  - B2B-Portal-Rechnungen ohne Entwürfe/Stornos
+ *  - Portalbelege inkl. stornierter Rechnung + negativer Gutschrift; alte Stornos ohne Belegart ausgeschlossen
  * Beträge netto. Pro Rechnung wird der Netto-Rechnungsbetrag vollständig verteilt:
  *  Positionen (ohne Kaution) → Artikel; Differenz (Lieferung, Aufbau, Rundung) → „Lieferung & Service“.
  * So ergeben Standort-, Kategorie- und Artikelsumme immer exakt denselben Gesamtumsatz.
@@ -137,7 +137,8 @@ export function analyze(
   for (const inv of invoices) {
     if (inv.business !== f.business) continue;
     if (!countsAsRevenue({ ...inv, gross_amount: null }, inv.source === "portal")) continue;
-    const d = inv.invoice_date!.slice(0, 10);
+    if (!inv.invoice_date) continue;
+    const d = inv.invoice_date.slice(0, 10);
     if (f.from && d < f.from) continue;
     if (f.to && d > f.to) continue;
     const location = inv.location || UNKNOWN_LOCATION;

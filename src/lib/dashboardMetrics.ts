@@ -4,7 +4,8 @@
  * Umsatz = fakturierter Nettoumsatz nach Rechnungsdatum:
  *  - Rechnungen aus Mietanfragen (inkl. stornierter) + Gutschriften (negativ)
  *    → eine stornierte Rechnung und ihre Gutschrift heben sich auf.
- *  - B2B-Portal-Rechnungen ohne Entwürfe und stornierte.
+ *  - Portalbelege mit Belegart ebenfalls inkl. stornierter Rechnung + Gutschrift.
+ *    Alte Portalstornos ohne Belegart bleiben ausgeschlossen.
  */
 
 export interface InquiryInvoiceRow {
@@ -19,6 +20,7 @@ export interface InquiryInvoiceRow {
 }
 
 export interface PortalInvoiceRow {
+  invoice_kind?: string | null;
   status: string;
   invoice_date: string | null;
   net_amount: number | null;
@@ -58,7 +60,7 @@ export function periodStarts(today: Date) {
 
 export function countsAsRevenue(row: InquiryInvoiceRow | PortalInvoiceRow, portal: boolean): boolean {
   if (!row.invoice_date || row.status === "draft") return false;
-  if (portal && row.status === "cancelled") return false;
+  if (portal && row.status === "cancelled" && !row.invoice_kind) return false;
   return true;
 }
 
@@ -85,8 +87,8 @@ export function revenueSummary(
     if (d >= p.week) sum.week += net;
     if (d === p.day) sum.day += net;
   };
-  for (const r of inquiry) if (countsAsRevenue(r, false)) add(r.invoice_date!, n(r.net_amount));
-  for (const r of portal) if (countsAsRevenue(r, true)) add(r.invoice_date!, n(r.net_amount));
+  for (const r of inquiry) if (r.invoice_date && countsAsRevenue(r, false)) add(r.invoice_date, n(r.net_amount));
+  for (const r of portal) if (r.invoice_date && countsAsRevenue(r, true)) add(r.invoice_date, n(r.net_amount));
   return { day: round2(sum.day), week: round2(sum.week), month: round2(sum.month), year: round2(sum.year) };
 }
 

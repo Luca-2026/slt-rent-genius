@@ -42,8 +42,10 @@ export default function Customers() {
   const [selectedProfile, setSelectedProfile] = useState<Row | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [editPortalOpen, setEditPortalOpen] = useState(false);
+  const [portalLoading, setPortalLoading] = useState(true);
 
   const loadPortal = useCallback(async () => {
+    setPortalLoading(true);
     const [p, inv, res] = await Promise.all([
       supabase.from("b2b_profiles").select("*"),
       isAdmin ? supabase.from("b2b_invoices").select("*") : Promise.resolve({ data: [] }),
@@ -52,6 +54,7 @@ export default function Customers() {
     setProfiles((p.data as Row[]) ?? []);
     setInvoices((inv.data as Row[]) ?? []);
     setReservations((res.data as Row[]) ?? []);
+    setPortalLoading(false);
   }, [isAdmin]);
 
   useEffect(() => { if (isStaff) loadPortal(); }, [isStaff, loadPortal]);
@@ -89,6 +92,28 @@ export default function Customers() {
     next.delete("profil"); next.delete("aktion");
     setSearchParams(next, { replace: true });
   }, [searchParams, profileById, isAdmin, setSearchParams]);
+
+  // CRM-Direktlink öffnet die Bearbeitung, unabhängig von Listenfiltern.
+  useEffect(() => {
+    const id = searchParams.get("kunde");
+    if (!id || !isStaff || accessLoading || loading || portalLoading) return;
+    const customer = rows.find((c) => c.id === id);
+    if (!customer) {
+      toast.error("Der Kunde konnte nicht geöffnet werden.");
+    } else {
+      const profile = customer.b2b_profile_id ? profileById.get(customer.b2b_profile_id) : null;
+      if (profile && isAdmin) {
+        setSelectedProfile(profile);
+        setEditPortalOpen(true);
+      } else {
+        setEditing(customer);
+        setDialogOpen(true);
+      }
+    }
+    const next = new URLSearchParams(searchParams);
+    next.delete("kunde"); next.delete("aktion");
+    setSearchParams(next, { replace: true });
+  }, [searchParams, isStaff, isAdmin, accessLoading, loading, portalLoading, rows, profileById, setSearchParams]);
 
   const counts = useMemo(() => {
     const c: Record<ActionFilter, number> = { none: 0, alle: 0, freigabe: 0, kreditlimit: 0, loeschung: 0 };

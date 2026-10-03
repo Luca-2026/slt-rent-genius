@@ -176,8 +176,7 @@ export default function StaffHome() {
 
   const onSearchSelect = (hit: AdminSearchHit) => {
     if (hit.type === "customer") {
-      const c = searchCustomers.find((x) => x.id === hit.id);
-      navigate(c?.b2b_profile_id && isAdmin ? `/b2b/kundendaten?handlung=alle&profil=${c.b2b_profile_id}` : "/b2b/kundendaten");
+      navigate(`/b2b/kundendaten?kunde=${encodeURIComponent(hit.id)}&aktion=bearbeiten`);
     } else if (hit.type === "invoice") navigate("/b2b/anfrage-rechnungen");
     else if (hit.type === "reservation") navigate(`/b2b/mietanfragen?status=all&anfrage=${hit.id}`);
   };
@@ -189,7 +188,7 @@ export default function StaffHome() {
         supabase.from("rental_inquiries").select("id,status,assigned_to,offer_total_gross,order_confirmed_at,start_date,end_date,customer_name,company_name,product_name,location"),
         supabase.from("staff_todo_lists").select("id,title,due_date,status,location").neq("status", "done"),
         isAdmin ? supabase.from("inquiry_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,paid_amount,credited_amount,due_date") : Promise.resolve({ data: [] }),
-        isAdmin ? supabase.from("b2b_invoices").select("status,invoice_date,net_amount,gross_amount,due_date") : Promise.resolve({ data: [] }),
+        isAdmin ? supabase.from("b2b_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,due_date") : Promise.resolve({ data: [] }),
         supabase.from("sales_inquiries").select("status"),
         supabase.from("b2b_profiles").select("id,company_name,status,credit_limit,credit_limit_requested_at,deletion_requested_at,created_at").order("created_at", { ascending: false }),
       ]);

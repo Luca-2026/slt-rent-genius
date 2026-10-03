@@ -21,7 +21,7 @@ describe("analyze", () => {
     inv({ invoice_kind: "credit_note", status: "paid", net_amount: -65, items: [{ product_name: "1t Minibagger", total_price: -65 }] }),
     // Portal: Kaution zählt nicht, storniert/Entwurf zählt nicht
     inv({ source: "portal", segment: "portal", net_amount: 1120, items: [{ product_name: "Kaution", total_price: 150 }, { product_name: "3500 kg Planenanhänger XXL", total_price: 1120 }] }),
-    inv({ source: "portal", status: "cancelled", net_amount: 999, items: [] }),
+    inv({ source: "portal", invoice_kind: null, status: "cancelled", net_amount: 999, items: [] }),
     inv({ status: "draft", net_amount: 500, items: [] }),
     inv({ business: "sales", net_amount: 10000, fallbackCategory: "Neumaschinen", items: [{ product_name: "Radlader X", total_price: 10000 }] }),
   ];
@@ -35,6 +35,17 @@ describe("analyze", () => {
     expect(s(r.byArticle)).toBe(2160);
   });
 
+  it("Portal-Vollgutschrift saldiert Original auch mit positiv gespeicherten Gutschriftpositionen", () => {
+    const r = analyze([
+      inv({ source: "portal", segment: "portal", status: "cancelled", net_amount: 16.81, items: [{ product_name: "Minibagger 1,8t", total_price: 16.81 }] }),
+      inv({ source: "portal", segment: "portal", invoice_kind: "credit_note", status: "paid", net_amount: -16.81, items: [{ product_name: "Minibagger 1,8t", total_price: 16.81 }] }),
+    ], idx, base);
+    expect(r.total).toBe(0);
+    expect(r.invoiceCount).toBe(2);
+    expect(r.byLocation).toEqual([]);
+    expect(r.byCategory).toEqual([]);
+    expect(r.byArticle).toEqual([]);
+  });
   it("Lieferkosten landen in Lieferung & Service, Kategorien aus dem CMS", () => {
     const r = analyze(data, idx, base);
     expect(r.byCategory.find((c) => c.key === SERVICE_LABEL)?.revenue).toBe(80);
