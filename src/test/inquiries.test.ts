@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildOfferTotals, formatEuro, lineTotal } from "@/components/b2b/inquiries/offerMath";
-import { canTransition, isOpenInquiry, normalizeInquiryStatus } from "@/lib/inquiryStatus";
+import { canTransition, isMyPendingInquiry, isOpenInquiry, normalizeInquiryStatus } from "@/lib/inquiryStatus";
 
 describe("offerMath", () => {
   it("rechnet Rabatte pro Position korrekt", () => {
@@ -65,5 +65,16 @@ describe("offene Anfragen", () => {
     expect(matchesInquiryListFilter({ status: "accepted", order_confirmed_at: ab }, "accepted")).toBe(false);
     expect(matchesInquiryListFilter({ status: "done", order_confirmed_at: ab }, "running")).toBe(false);
     expect(matchesInquiryListFilter({ status: "done", order_confirmed_at: ab }, "completed")).toBe(true);
+  });
+});
+
+describe("isMyPendingInquiry", () => {
+  it("zeigt nur eigene, noch nicht versendete Anfragen", () => {
+    expect(isMyPendingInquiry({ status: "in_progress", assigned_to: "u1" }, "u1")).toBe(true);
+    expect(isMyPendingInquiry({ status: "new", assigned_to: "u1" }, "u1")).toBe(true);
+    expect(isMyPendingInquiry({ status: "offer_sent", assigned_to: "u1" }, "u1")).toBe(false);
+    expect(isMyPendingInquiry({ status: "in_progress", assigned_to: "u2" }, "u1")).toBe(false);
+    expect(isMyPendingInquiry({ status: "in_progress", assigned_to: null }, "u1")).toBe(false);
+    expect(isMyPendingInquiry({ status: "in_progress", assigned_to: "u1" }, null)).toBe(false);
   });
 });
