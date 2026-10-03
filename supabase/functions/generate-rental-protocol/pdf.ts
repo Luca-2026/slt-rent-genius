@@ -339,7 +339,7 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
     text(`${SLT_COMPANY.name} \u00B7 ${SLT_COMPANY.street}, ${SLT_COMPANY.city} \u00B7 ${SLT_COMPANY.phone} \u00B7 ${SLT_COMPANY.email}`, ML, 32, font, 7, MUTED);
     text(`${SLT_COMPANY.registry} \u00B7 USt-IdNr. ${SLT_COMPANY.ustId}`, ML, 22, font, 7, MUTED);
     const pgTxt = `Seite ${idx + 1} von ${total}`;
-    text(pgTxt, W - MR - font.widthOfTextAtSize(pgTxt, 7.5), 32, font, 7.5, MUTED);
+    text(pgTxt, W - MR - font.widthOfTextAtSize(pgTxt, 7.5), 50, font, 7.5, MUTED);
   });
 
   return await doc.save();
