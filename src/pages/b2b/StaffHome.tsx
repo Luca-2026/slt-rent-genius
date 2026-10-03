@@ -285,14 +285,6 @@ export default function StaffHome() {
             </section>
           )}
 
-          {overdueReturns.length > 0 && (
-            <Link to="/b2b/mietanfragen?status=running" className="flex items-center gap-3 rounded-xl border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive">
-              <AlertTriangle className="h-4 w-4 shrink-0" aria-hidden="true" />
-              <span className="min-w-0 flex-1">{overdueReturns.length} überfällige {overdueReturns.length === 1 ? "Rückgabe" : "Rückgaben"} – Rückgabeprotokoll erstellen</span>
-              <span className="hidden font-medium sm:inline">Prüfen</span><ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
-            </Link>
-          )}
-
           {isAdmin && rec.overdueCount > 0 && (
             <Link to="/b2b/anfrage-rechnungen" className="flex items-center gap-3 rounded-xl border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive">
               <Receipt className="h-4 w-4 shrink-0" aria-hidden="true" />
