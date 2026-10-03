@@ -6,6 +6,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Check, ChevronsUpDown, PencilLine } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { parsePriceValue } from "@/lib/catalogPricing";
+import { normalizeLocation } from "@/lib/inventoryAvailability";
 
 export interface CatalogProduct {
   slug: string;
@@ -26,12 +27,15 @@ export async function loadCatalog(): Promise<CatalogProduct[]> {
   if (catalogCache) return catalogCache;
   if (!catalogPromise) {
     catalogPromise = (async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("managed_products_public")
         .select("slug,name,category,images,price_per_day,price_weekend,price_per_month,available_locations,addon_options")
         .order("name");
-      catalogCache = (data ?? []) as CatalogProduct[];
-      return catalogCache;
+      const list = (data ?? []) as CatalogProduct[];
+      // Fehler/leere Antwort nicht dauerhaft merken, sonst bleibt die Auswahl bis zum Neuladen leer.
+      if (!error && list.length) catalogCache = list;
+      catalogPromise = null;
+      return list;
     })();
   }
   return catalogPromise;
@@ -75,7 +79,8 @@ export function InquiryProductCombobox({ value, location, disabled, onSelect }: 
 
   const filtered = useMemo(() => {
     if (!location) return items;
-    const loc = location.toLowerCase();
+    const loc = normalizeLocation(location);
+    if (!loc) return items;
     return items.filter((i) => !i.available_locations?.length || i.available_locations.includes(loc));
   }, [items, location]);
 
