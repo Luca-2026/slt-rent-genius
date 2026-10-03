@@ -396,10 +396,11 @@ export async function generateOfferPdf(data: {
     }
     let yy = H - MT;
     if (logoImg) {
-      const targetW = 90;
-      const scale = targetW / logoImg.width;
-      const drawH = logoImg.height * scale;
-      pg.drawImage(logoImg, { x: W - MR - targetW, y: yy - drawH, width: targetW, height: drawH });
+      // Folgeseiten: kleineres Logo, sichtbarer Ausschnitt ebenfalls rechtsbündig am Satzspiegel
+      const LB = { left: 0.1474, top: 0.3536, right: 0.8516 };
+      const fullW = (30 * MM) / (LB.right - LB.left);
+      const fullH = (logoImg.height / logoImg.width) * fullW;
+      pg.drawImage(logoImg, { x: W - MR - LB.right * fullW, y: LOGO_TOP_Y + LB.top * fullH - fullH, width: fullW, height: fullH });
     }
     dt(pg, `${TITLE} \u00B7 ${data.offerNumber}`, ML, yy - 46, bold, 10, BRAND);
     yy -= 74;
