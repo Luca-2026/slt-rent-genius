@@ -145,8 +145,8 @@ export async function generateDocumentPdf(data: {
     // Logo oben RECHTS (~60 mm breit ≈ 170 pt), mit Luft zum Seitenrand und zum Inhalt
     drawLogo(pg, 46 * MM);
 
-    // Info-Block ab 125 mm, erste Zeile auf Höhe der ersten Anschriftzeile
-    let iy = ADDR_Y_TOP;
+    // Info-Block ab 125 mm, erste Zeile auf Höhe der Absenderzeile
+    let iy = ADDR_SENDER_Y;
     const infoRow = (label: string, value: string) => {
       let size = 9;
       try { while (size > 7 && font.widthOfTextAtSize(value, size) > W - MR - INFO_VAL_X) size -= 0.25; } catch {}
