@@ -355,16 +355,15 @@ export function AdminCustomerDetailDialog({
             <Edit className="h-3.5 w-3.5 mr-1" /> Bearbeiten (Daten, Freigabe, Kreditlimit)
           </Button>
           <SendMessageDialog profileId={profile.id} companyName={profile.company_name} contactEmail={profile.contact_email} />
-          {(profile as { document_url?: string | null }).document_url && (
-            <Button size="sm" variant="outline" asChild>
-              <a href={(profile as { document_url?: string }).document_url} target="_blank" rel="noreferrer">Gewerbenachweis</a>
-            </Button>
-          )}
-          {(profile as { sepa_mandate_url?: string | null }).sepa_mandate_url && (
-            <Button size="sm" variant="outline" asChild>
-              <a href={(profile as { sepa_mandate_url?: string }).sepa_mandate_url} target="_blank" rel="noreferrer">SEPA-Mandat</a>
-            </Button>
-          )}
+          {([
+            ["Gewerbenachweis", (profile as { document_url?: string | null }).document_url],
+            ["SEPA-Mandat", (profile as { sepa_mandate_url?: string | null }).sepa_mandate_url],
+          ] as const).filter(([, url]) => !!url).map(([label, url]) => (
+            <Button key={label} size="sm" variant="outline" onClick={() => {
+              openStorageDocument(url as string).catch((e) =>
+                toast({ title: `${label} konnte nicht geöffnet werden`, description: e instanceof Error ? e.message : String(e), variant: "destructive" }));
+            }}>{label}</Button>
+          ))}
           <Button
             size="sm"
             variant="outline"
