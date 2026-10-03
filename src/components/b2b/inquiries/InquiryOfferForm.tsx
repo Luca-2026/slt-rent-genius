@@ -1,3 +1,4 @@
+import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { PdfPagesPreview } from "@/components/b2b/PdfPagesPreview";
 import { applyCategoryDiscount, loadCategoryDiscounts, loadInquiryProfileId, type DiscountMap } from "@/lib/customerDiscounts";
 import { NumberInput } from "@/components/ui/number-input";
@@ -767,7 +768,7 @@ export function InquiryOfferForm({
     }
     setPreviewing(true);
     const previewBody = buildBody();
-    const { data, error } = await supabase.functions.invoke("send-inquiry-offer", { body: { ...previewBody, preview: true } });
+    const { data, error } = await invokeWithAuth("send-inquiry-offer", { ...previewBody, preview: true });
     setPreviewing(false);
     const b64 = (data as any)?.pdf_base64 as string | undefined;
     if (error || !b64) {
@@ -826,11 +827,9 @@ export function InquiryOfferForm({
     if (sendLock.current) return;
     sendLock.current = true;
     setSending(true);
-    const { data, error } = await supabase.functions.invoke(
+    const { data, error } = await invokeWithAuth(
       isInvoice ? "send-inquiry-invoice" : "send-inquiry-offer",
-      {
-      body: buildBody(),
-    },
+      buildBody(),
     );
 
     setSending(false);
