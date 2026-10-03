@@ -56,6 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [rolesChecked, setRolesChecked] = useState(false);
   const [authorizedPersonInfo, setAuthorizedPersonInfo] = useState<AuthorizedPersonInfo | null>(null);
   const loggedLoginTokens = useRef<Set<string>>(new Set());
+  const currentUserId = useRef<string | null>(null);
 
   const fetchB2BProfile = async (userId: string) => {
     // First try direct profile ownership
@@ -128,16 +129,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        // Beim Zurückwechseln auf den Tab meldet die Auth-Bibliothek erneut SIGNED_IN
+        // für dieselbe Person. Dann darf nichts auf "lädt" springen und das Benutzerobjekt
+        // nicht ausgetauscht werden – sonst wird die ganze Seite samt offenen Editoren
+        // neu aufgebaut und Eingaben gehen verloren.
+        const sameUser = !!session?.user && session.user.id === currentUserId.current;
+        currentUserId.current = session?.user?.id ?? null;
         setSession(session);
-        setUser(session?.user ?? null);
+        setUser((prev) => (sameUser && prev && event !== "USER_UPDATED" ? prev : session?.user ?? null));
         setLoading(false);
 
-        if (event === "SIGNED_IN") {
+        if (event === "SIGNED_IN" && !sameUser) {
           logLoginEvent(session);
         }
 
         if (session?.user) {
-          if (event === "SIGNED_IN") setRolesChecked(false);
+          if (event === "SIGNED_IN" && !sameUser) setRolesChecked(false);
           setTimeout(() => {
             fetchB2BProfile(session.user.id);
             checkAdminRole(session.user.id);
@@ -153,6 +160,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 
     supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user && !currentUserId.current) currentUserId.current = session.user.id;
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
