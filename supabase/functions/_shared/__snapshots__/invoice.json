@@ -435,17 +435,23 @@
         {
           "t": "SLT Technology Group GmbH & Co. KG",
           "x": 70.87,
-          "y": 80.82,
+          "y": 88.62,
           "size": 6.6
         },
         {
           "t": "Sitz: Anrather Straße 291, 47807 Krefeld",
           "x": 70.87,
-          "y": 73.02,
+          "y": 80.82,
           "size": 6.6
         },
         {
           "t": "Amtsgericht Krefeld · HRA 7075",
+          "x": 70.87,
+          "y": 73.02,
+          "size": 6.6
+        },
+        {
+          "t": "Persönlich haftende Gesellschafterin:",
           "x": 70.87,
           "y": 65.22,
           "size": 6.6
@@ -457,7 +463,7 @@
           "size": 6.6
         },
         {
-          "t": "Sitz: Anrather Straße 291, 47807 Krefeld",
+          "t": "Sitz: Krefeld",
           "x": 70.87,
           "y": 49.62,
           "size": 6.6
@@ -469,7 +475,7 @@
           "size": 6.6
         },
         {
-          "t": "Geschäftsführer: Benedikt Nöchel",
+          "t": "Geschäftsführer (GmbH): Benedikt Nöchel",
           "x": 70.87,
           "y": 34.02,
           "size": 6.6
@@ -477,49 +483,49 @@
         {
           "t": "Standort Krefeld",
           "x": 226.77,
-          "y": 80.82,
+          "y": 88.62,
           "size": 6.6
         },
         {
           "t": "Anrather Straße 291, 47807 Krefeld",
           "x": 226.77,
-          "y": 73.02,
+          "y": 80.82,
           "size": 6.6
         },
         {
           "t": "Tel. 02151 417 990 4",
           "x": 226.77,
-          "y": 65.22,
+          "y": 73.02,
           "size": 6.6
         },
         {
           "t": "krefeld@slt-rental.de · www.slt-rental.de",
           "x": 226.77,
-          "y": 57.42,
+          "y": 65.22,
           "size": 6.6
         },
         {
           "t": "Steuer-Nr. 117/5717/1398 · USt-IdNr. DE340481717",
           "x": 387.68,
-          "y": 80.82,
+          "y": 88.62,
           "size": 6.56
         },
         {
           "t": "Sparkasse Krefeld",
           "x": 484.76,
-          "y": 73.02,
+          "y": 80.82,
           "size": 6.6
         },
         {
           "t": "IBAN DE65 3205 0000 0000 4784 46",
           "x": 429.61,
-          "y": 65.22,
+          "y": 73.02,
           "size": 6.6
         },
         {
           "t": "BIC SPKRDE33XXX",
           "x": 478.07,
-          "y": 57.42,
+          "y": 65.22,
           "size": 6.6
         }
       ],
@@ -611,17 +617,23 @@
         {
           "t": "SLT Technology Group GmbH & Co. KG",
           "x": 70.87,
-          "y": 80.82,
+          "y": 88.62,
           "size": 6.6
         },
         {
           "t": "Sitz: Anrather Straße 291, 47807 Krefeld",
           "x": 70.87,
-          "y": 73.02,
+          "y": 80.82,
           "size": 6.6
         },
         {
           "t": "Amtsgericht Krefeld · HRA 7075",
+          "x": 70.87,
+          "y": 73.02,
+          "size": 6.6
+        },
+        {
+          "t": "Persönlich haftende Gesellschafterin:",
           "x": 70.87,
           "y": 65.22,
           "size": 6.6
@@ -633,7 +645,7 @@
           "size": 6.6
         },
         {
-          "t": "Sitz: Anrather Straße 291, 47807 Krefeld",
+          "t": "Sitz: Krefeld",
           "x": 70.87,
           "y": 49.62,
           "size": 6.6
@@ -645,7 +657,7 @@
           "size": 6.6
         },
         {
-          "t": "Geschäftsführer: Benedikt Nöchel",
+          "t": "Geschäftsführer (GmbH): Benedikt Nöchel",
           "x": 70.87,
           "y": 34.02,
           "size": 6.6
@@ -653,55 +665,55 @@
         {
           "t": "Standort Krefeld",
           "x": 226.77,
-          "y": 80.82,
+          "y": 88.62,
           "size": 6.6
         },
         {
           "t": "Anrather Straße 291, 47807 Krefeld",
           "x": 226.77,
-          "y": 73.02,
+          "y": 80.82,
           "size": 6.6
         },
         {
           "t": "Tel. 02151 417 990 4",
           "x": 226.77,
-          "y": 65.22,
+          "y": 73.02,
           "size": 6.6
         },
         {
           "t": "krefeld@slt-rental.de · www.slt-rental.de",
           "x": 226.77,
-          "y": 57.42,
+          "y": 65.22,
           "size": 6.6
         },
         {
           "t": "Steuer-Nr. 117/5717/1398 · USt-IdNr. DE340481717",
           "x": 387.68,
-          "y": 80.82,
+          "y": 88.62,
           "size": 6.56
         },
         {
           "t": "Sparkasse Krefeld",
           "x": 484.76,
-          "y": 73.02,
+          "y": 80.82,
           "size": 6.6
         },
         {
           "t": "IBAN DE65 3205 0000 0000 4784 46",
           "x": 429.61,
-          "y": 65.22,
+          "y": 73.02,
           "size": 6.6
         },
         {
           "t": "BIC SPKRDE33XXX",
           "x": 478.07,
-          "y": 57.42,
+          "y": 65.22,
           "size": 6.6
         },
         {
           "t": "Seite 2 von 2",
           "x": 495,
-          "y": 96.82,
+          "y": 104.62,
           "size": 7.5
         }
       ],
