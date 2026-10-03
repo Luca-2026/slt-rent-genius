@@ -20,6 +20,9 @@ Deno.test("Angebot-PDF entspricht dem Referenz-Layout", async () => {
   assert(findText(snap, "ANG-2026-0815"), "Angebotsnummer fehlt");
   assert(findText(snap, "Musterbau GmbH"), "Empfängeranschrift fehlt");
   assert(findText(snap, "Minibagger"), "Position fehlt");
+  assert(findText(snap, "Persönlich haftende Gesellschafterin:"), "Rolle der Komplementärin fehlt");
+  assert(findText(snap, "SLT Management GmbH"), "Komplementärin fehlt");
+  assert(findText(snap, "Geschäftsführer (GmbH): Benedikt Nöchel"), "Geschäftsführung der GmbH fehlt");
 });
 
 Deno.test("Angebot-PDF nutzt DIN-5008-Ränder", async () => {
