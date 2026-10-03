@@ -1,4 +1,5 @@
 import { PDFDocument, StandardFonts, rgb } from "https://esm.sh/pdf-lib@1.17.1";
+import { drawUnifiedFooter, resolvePdfLocation, FOOTER_TOP } from "./pdf-footer.ts";
 import { embedProductImages } from "./product-images.ts";
 import { SLT_COMPANY } from "./offer-company.ts";
 
@@ -412,7 +413,7 @@ export async function generateOfferPdf(data: {
 
   let { pg, y } = newPage(true);
 
-  const RESERVE_BOTTOM = MB + 60;
+  const RESERVE_BOTTOM = FOOTER_TOP + 6;
   const need = (h: number) => {
     if (y - h < RESERVE_BOTTOM) ({ pg, y } = newPage(false));
   };
@@ -967,34 +968,8 @@ export async function generateOfferPdf(data: {
   dt(pg, data.staffName || SLT_COMPANY.managingDirector, ML, y, bold, 9); y -= 11;
   dt(pg, SLT_COMPANY.brand, ML, y, font, 8, MUTED);
 
-  // ── Footer auf allen Seiten (3-spaltig, identisch zur Rechnung) ──
-  const total = doc.getPageCount();
-  const colW = CW / 3;
-  const footerCol1 = [SLT_COMPANY.name, `GF ${SLT_COMPANY.managingDirector}`, `${SLT_COMPANY.registry}`];
-  const footerCol2 = [`${SLT_COMPANY.street}, ${SLT_COMPANY.city}`, `Tel. ${SLT_COMPANY.phone}`, SLT_COMPANY.email, SLT_COMPANY.web];
-  const footerCol3 = [`Steuer-Nr. ${SLT_COMPANY.steuerNr}`, `USt-IdNr. ${SLT_COMPANY.ustId}`, SLT_COMPANY.bankName, `IBAN ${SLT_COMPANY.iban}`];
-  for (let i = 0; i < total; i++) {
-    const p = doc.getPage(i);
-    p.drawRectangle({ x: ML, y: MB + 42, width: CW, height: 0.5, color: LINE });
-    const drawCol = (lines: string[], x: number) => {
-      lines.forEach((ln, li) => {
-        try { p.drawText(safe(ln), { x, y: MB + 32 - li * 8.5, size: 6.6, font, color: MUTED }); } catch {}
-      });
-    };
-    drawCol(footerCol1, ML);
-    drawCol(footerCol2, ML + colW);
-    // dritte Spalte rechtsbündig, damit sie exakt am Satzspiegel endet
-    footerCol3.forEach((ln, li) => {
-      try { const t = safe(ln); p.drawText(t, { x: W - MR - font.widthOfTextAtSize(t, 6.6), y: MB + 32 - li * 8.5, size: 6.6, font, color: MUTED }); } catch {}
-    });
-    if (total > 1) {
-      try {
-        const t = `Seite ${i + 1} von ${total}`;
-        const tw = font.widthOfTextAtSize(t, 7.5);
-        p.drawText(t, { x: W - MR - tw, y: MB + 55, size: 7.5, font, color: MUTED });
-      } catch {}
-    }
-  }
+  // ── Einheitliche Fußzeile (Standort der Auftragsabwicklung) ──
+  drawUnifiedFooter({ doc, font, company: SLT_COMPANY, location: resolvePdfLocation(data.issuingLocation), W, ML, MR, safe });
 
   return await doc.save();
 }

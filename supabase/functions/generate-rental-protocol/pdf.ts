@@ -1,6 +1,7 @@
 // PDF für Übergabe- und Rückgabeprotokolle zu Mietaufträgen.
 // Layout angelehnt an Angebot/Auftragsbestätigung (DIN-A4, Logo rechts, Markenblau).
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFImage, type PDFPage } from "https://esm.sh/pdf-lib@1.17.1";
+import { drawUnifiedFooter, resolvePdfLocation, FOOTER_TOP } from "../_shared/pdf-footer.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
 
 export interface ProtocolPdfPhoto { bytes: Uint8Array; takenAt: string; caption: string | null; damageNo: number | null }
@@ -13,7 +14,7 @@ export interface ProtocolPdfData {
   number: string;
   createdAt: Date;
   customer: { company: string | null; name: string | null; street: string | null; postalCity: string | null; email: string | null; phone: string | null };
-  order: { confirmationNumber: string | null; offerNumber: string | null; location: string; locationAddress: string; start: string | null; end: string | null; deliveryAddress: string | null; deliveryNoteNumber: string | null };
+  order: { confirmationNumber: string | null; offerNumber: string | null; location: string; locationAddress: string; locationKey?: string; start: string | null; end: string | null; deliveryAddress: string | null; deliveryNoteNumber: string | null };
   items: { name: string; quantity: number; detail: string | null }[];
   condition: { readings?: { item_name: string; operating_hours: string; fuel_level: string; mileage?: string }[]; operatingHours: string | null; fuelLevel: string | null; cleanliness: number | null; knownDefects: string | null; notes: string | null; allReturned: boolean | null; missingNotes: string | null };
   idCheck: { checked: boolean; type: string | null };
@@ -25,7 +26,7 @@ export interface ProtocolPdfData {
 
 // Gleicher Satzspiegel wie Angebot/Rechnung (DIN 5008): links 25 mm, rechts 20 mm
 const MMU = 72 / 25.4;
-const W = 595.28, H = 841.89, ML = 25 * MMU, MR = 20 * MMU, MB = 62;
+const W = 595.28, H = 841.89, ML = 25 * MMU, MR = 20 * MMU, MB = FOOTER_TOP + 4;
 const CW = W - ML - MR;
 const BRAND = rgb(0, 80 / 255, 125 / 255);
 const ORANGE = rgb(1, 142 / 255, 2 / 255);
@@ -331,16 +332,8 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
     para("Zeitstempel = Aufnahmezeitpunkt laut Kamera, sonst Zeitpunkt des Hochladens.", 7.5, MUTED);
   }
 
-  // ── Fußzeile auf jeder Seite ──
-  const total = pages.length;
-  pages.forEach((pg, idx) => {
-    page = pg;
-    pg.drawRectangle({ x: ML, y: 44, width: CW, height: 0.5, color: LINE });
-    text(`${SLT_COMPANY.name} \u00B7 ${SLT_COMPANY.street}, ${SLT_COMPANY.city} \u00B7 ${SLT_COMPANY.phone} \u00B7 ${SLT_COMPANY.email}`, ML, 32, font, 7, MUTED);
-    text(`${SLT_COMPANY.registry} \u00B7 USt-IdNr. ${SLT_COMPANY.ustId}`, ML, 22, font, 7, MUTED);
-    const pgTxt = `Seite ${idx + 1} von ${total}`;
-    text(pgTxt, W - MR - font.widthOfTextAtSize(pgTxt, 7.5), 50, font, 7.5, MUTED);
-  });
+  // ── Einheitliche Fußzeile (identisch zu Angebot/Rechnung) ──
+  drawUnifiedFooter({ doc, font, company: SLT_COMPANY, location: resolvePdfLocation(data.order.locationKey ?? data.order.location), W, ML, MR, showPageNo: () => true });
 
   return await doc.save();
 }
