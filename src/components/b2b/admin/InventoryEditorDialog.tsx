@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Plus, Trash2, Sparkles, Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { cmsDraftKey, clearCmsDraft, readCmsDraft, writeCmsDraft } from "@/lib/cmsDraftStorage";
 import { productCategories } from "@/data/rentalData";
 import { resolveSubcategory, useAdminManagedProducts, type AdminManagedProductRow } from "@/hooks/useManagedProducts";
 import { AddonOptionsEditor } from "./AddonOptionsEditor";
@@ -220,6 +221,8 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   const [uploading, setUploading] = useState(false);
   const [dirty, setDirty] = useState(false);
   const loadedIdRef = useRef<string | null>(null);
+  const pendingFormRef = useRef<FormState | null>(null);
+  const [restoredAt, setRestoredAt] = useState<number | null>(null);
 
   // Nur beim Öffnen oder beim Wechsel auf einen ANDEREN Artikel neu befüllen.
   // Kein Reset bei Realtime-Refetch (identity-change von `initial`), sonst
@@ -227,18 +230,25 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   useEffect(() => {
     if (!open) {
       loadedIdRef.current = null;
+      pendingFormRef.current = null;
       dirtyBaselineRef.current = "";
       setDirty(false);
+      setRestoredAt(null);
       return;
     }
     const nextId = initial?.id ?? "__new__";
     if (loadedIdRef.current !== nextId) {
-      const nextForm = initial ? fromRow(initial) : emptyForm();
+      const baseForm = initial ? fromRow(initial) : emptyForm();
+      // Gesicherten Entwurf (Tab verworfen, Browser neu geladen, Tablet gesperrt) wiederherstellen
+      const draft = readCmsDraft<FormState>(cmsDraftKey("inventory", nextId));
+      const nextForm: FormState = draft ? { ...baseForm, ...draft.form } : baseForm;
+      pendingFormRef.current = nextForm;
       setForm(nextForm);
+      setRestoredAt(draft?.savedAt ?? null);
       setTab("basis");
       setDirty(false);
       loadedIdRef.current = nextId;
-      dirtyBaselineRef.current = JSON.stringify(nextForm);
+      dirtyBaselineRef.current = JSON.stringify(baseForm);
     }
   }, [open, initial]);
 
@@ -250,6 +260,51 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
     setDirty(snap !== dirtyBaselineRef.current);
   }, [form, open]);
 
+  // Entwurf laufend sichern (entprellt); bei unverändertem Stand Entwurf entfernen
+  useEffect(() => {
+    if (!open || !loadedIdRef.current || !dirtyBaselineRef.current) return;
+    if (pendingFormRef.current) {
+      if (form !== pendingFormRef.current) return; // Zustand noch nicht übernommen
+      pendingFormRef.current = null;
+      return;
+    }
+    const key = cmsDraftKey("inventory", loadedIdRef.current);
+    if (JSON.stringify(form) === dirtyBaselineRef.current) {
+      clearCmsDraft(key);
+      return;
+    }
+    const t = setTimeout(() => writeCmsDraft(key, form), 400);
+    return () => clearTimeout(t);
+  }, [form, open]);
+
+  // Beim Ausblenden des Tabs sofort sichern (Mobilgeräte verwerfen Hintergrund-Tabs ohne Vorwarnung)
+  const formRef = useRef(form);
+  formRef.current = form;
+  useEffect(() => {
+    if (!open) return;
+    const flush = () => {
+      if (!loadedIdRef.current || pendingFormRef.current) return;
+      if (JSON.stringify(formRef.current) === dirtyBaselineRef.current) return;
+      writeCmsDraft(cmsDraftKey("inventory", loadedIdRef.current), formRef.current);
+    };
+    const onVis = () => { if (document.visibilityState === "hidden") flush(); };
+    document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("pagehide", flush);
+    return () => {
+      document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("pagehide", flush);
+    };
+  }, [open]);
+
+  const discardDraft = () => {
+    const id = loadedIdRef.current ?? "__new__";
+    clearCmsDraft(cmsDraftKey("inventory", id));
+    const baseForm = initial ? fromRow(initial) : emptyForm();
+    pendingFormRef.current = baseForm;
+    setForm(baseForm);
+    setRestoredAt(null);
+  };
+
   const requestClose = () => {
     if (dirty) {
       const ok = window.confirm(
@@ -257,6 +312,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
       );
       if (!ok) return;
     }
+    if (loadedIdRef.current) clearCmsDraft(cmsDraftKey("inventory", loadedIdRef.current));
     setDirty(false);
     onOpenChange(false);
   };
@@ -474,6 +530,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
       }
 
       toast.success(initial ? "Artikel aktualisiert" : "Artikel angelegt");
+      if (loadedIdRef.current) clearCmsDraft(cmsDraftKey("inventory", loadedIdRef.current));
       setDirty(false);
       onSaved();
       onOpenChange(false);
@@ -499,6 +556,15 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
             {initial ? `Artikel bearbeiten: ${initial.name}` : "Neuen Mietartikel anlegen"}
           </DialogTitle>
         </DialogHeader>
+
+        {restoredAt && (
+          <div className="flex flex-col gap-2 rounded-md border border-accent/40 bg-accent/10 px-3 py-2 text-sm sm:flex-row sm:items-center sm:justify-between">
+            <span>
+              Ungespeicherter Entwurf vom {new Date(restoredAt).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" })} Uhr wiederhergestellt. Bitte prüfen und speichern.
+            </span>
+            <Button type="button" variant="outline" size="sm" onClick={discardDraft}>Entwurf verwerfen</Button>
+          </div>
+        )}
 
         <Tabs value={tab} onValueChange={setTab} className="flex-1 overflow-hidden flex flex-col">
           <TabsList className="grid grid-cols-3 sm:grid-cols-6 gap-1 h-auto w-full p-1">
