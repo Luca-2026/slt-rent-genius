@@ -147,7 +147,7 @@ function QuickDoneToggle({ call, onDone }: { call: PhoneCall; onDone: () => void
       title={done ? "Als offen markieren" : "Als erledigt markieren"}
       aria-label={done ? "Als offen markieren" : "Als erledigt markieren"}
       className={cn(
-        "inline-flex h-8 items-center gap-1 rounded-md border px-2 text-xs font-medium transition-colors",
+        "inline-flex h-11 w-11 items-center justify-center rounded-md border px-0 text-xs font-medium transition-colors sm:h-8 sm:w-auto sm:px-2",
         done
           ? "border-border text-muted-foreground hover:bg-muted"
           : "border-primary/40 text-primary hover:bg-primary/10",
