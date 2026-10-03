@@ -513,8 +513,12 @@ export default function AdminDashboard() {
   // ─── Delete handlers ──────────────────────────────────
   const deleteInvoice = async (invoiceId: string) => {
     try {
-      // Delete invoice items first
-      await supabase.from("b2b_invoice_items").delete().eq("invoice_id", invoiceId);
+      // Erst den Beleg löschen: Die DB schützt ausgestellte Rechnungen. Vorzeitiges
+      // Löschen von Positionen würde trotz geschütztem Beleg den Nachweis beschädigen.
+      const invoice = invoices.find((item) => item.id === invoiceId);
+      if (!invoice || invoice.status !== "draft") {
+        throw new Error("Ausgestellte Rechnungen können nicht gelöscht werden. Bitte eine Gutschrift erstellen.");
+      }
       const { error } = await supabase.from("b2b_invoices").delete().eq("id", invoiceId);
       if (error) throw error;
       toast({ title: "Rechnung gelöscht" });
