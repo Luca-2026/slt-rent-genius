@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { SEGMENT_FILTER_OPTIONS, SEGMENT_LABELS, matchesSegment, parseSegmentFilter, segmentOf, type SegmentFilter } from "@/lib/customerSegment";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
+import { DeclineCreditLimitButton } from "@/components/b2b/DeclineCreditLimitButton";
 import { useCrmCustomers, crmCustomerLabel, type CrmCustomer } from "@/hooks/useCrmCustomers";
 import { CustomerFormDialog } from "@/components/b2b/customers/CustomerFormDialog";
 import { AdminCustomerDetailDialog } from "@/components/b2b/admin/AdminCustomerDetailDialog";
@@ -24,7 +25,7 @@ type Row = any;
 const euro = (n: number) => n.toLocaleString("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
 
 export default function Customers() {
-  const { isStaff, isAdmin, loading: accessLoading } = useStaffAccess();
+  const { isStaff, isAdmin, canManageInventory, loading: accessLoading } = useStaffAccess();
   const { rows, loading, save, remove, reload } = useCrmCustomers();
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<CrmCustomer | null>(null);
@@ -236,6 +237,9 @@ export default function Customers() {
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2 shrink-0">
+                    {p && canManageInventory && !isAdmin && needsAction(p, "kreditlimit") && (
+                      <DeclineCreditLimitButton profileId={p.id} companyName={p.company_name || crmCustomerLabel(c)} onDone={loadPortal} />
+                    )}
                     <Button size="sm" variant="outline" onClick={() => openEdit(c)} aria-label={`${crmCustomerLabel(c)} bearbeiten`}>
                       <Pencil className="h-3.5 w-3.5 mr-1" /> Bearbeiten
                     </Button>
