@@ -58,16 +58,15 @@ Deno.serve(async (req: Request) => {
 
     const admin = createClient(SUPABASE_URL, SERVICE_KEY);
 
-    // Verify admin role
-    const { data: roleData } = await admin
+    // Verify role: Admin, Niederlassungsleiter, Standortmitarbeiter (Vertrieb)
+    const { data: roleRows } = await admin
       .from("user_roles")
       .select("role")
       .eq("user_id", authUser.id)
-      .eq("role", "admin")
-      .maybeSingle();
+      .in("role", ["admin", "niederlassungsleiter", "standort_mitarbeiter"]);
 
-    if (!roleData) {
-      return new Response(JSON.stringify({ error: "Admin access required" }), {
+    if (!roleRows || roleRows.length === 0) {
+      return new Response(JSON.stringify({ error: "Keine Berechtigung" }), {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
