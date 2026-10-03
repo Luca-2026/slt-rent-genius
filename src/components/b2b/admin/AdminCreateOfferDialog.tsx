@@ -1,3 +1,4 @@
+import { applyCategoryDiscount, loadCategoryDiscounts } from "@/lib/customerDiscounts";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -335,19 +336,24 @@ export function AdminCreateOfferDialog({
     existingPrices?.forEach((p) => {
       priceMap.set(p.product_name, p.unit_price);
     });
+    const discounts = await loadCategoryDiscounts(profile.id);
 
     setItems(
       targetReservations.map((res) => {
         const productName = res.product_name || res.product_id;
         const productDesc = getProductDescription(productName);
-        return {
+        const categorySlug = res.category_slug || getProductCategorySlug(res.product_name) || undefined;
+        const specialPrice = priceMap.get(productName);
+        const line = {
           product_name: productName,
           description: productDesc || "",
           quantity: res.quantity || 1,
-          unit_price: priceMap.get(productName) || res.original_price || 0,
+          unit_price: specialPrice || res.original_price || 0,
           discount_percent: 0,
-          category_slug: res.category_slug || getProductCategorySlug(res.product_name) || undefined,
+          category_slug: categorySlug,
         };
+        // Sonderpreis hat Vorrang; sonst Kategorie-Rabatt des Kunden vorbelegen
+        return specialPrice ? line : applyCategoryDiscount(line, categorySlug, discounts);
       })
     );
     setDeliveryCostDelivery(0);
