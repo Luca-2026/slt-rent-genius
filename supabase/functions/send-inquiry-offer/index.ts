@@ -169,7 +169,7 @@ Deno.serve(async (req: Request) => {
     const loc = LOCATION_CONTACTS[locationKey];
 
     // Überarbeitungen behalten die Stammnummer und erhalten eine Fassungsnummer
-    // (ANG-A-2026-0036 → ANG-A-2026-0036-2 → -3 …); der Nummernkreis bleibt lückenlos.
+    // (ANG-M-2026-10-0001 → ANG-M-2026-10-0001-2 → -3 …); der Nummernkreis bleibt je Geschäftsart getrennt.
     const prevPayload = (inquiry.offer_payload ?? {}) as Record<string, unknown>;
     let offerNumber: string;
     let baseOfferNumber: string;
@@ -190,7 +190,9 @@ Deno.serve(async (req: Request) => {
       if (reviseOf) {
         return json({ error: "Das Angebot wurde inzwischen geändert. Bitte die Anfrage neu laden." }, 409);
       }
-      const { data: numberData, error: numErr } = await service.rpc("generate_inquiry_offer_number");
+      const { data: numberData, error: numErr } = await service.rpc("generate_offer_number_for", {
+        _series: inquiryType === "sales" ? "V" : "M",
+      });
       if (numErr || !numberData) {
         console.error("Nummernkreis fehlgeschlagen:", numErr?.message);
         return json({ error: "Angebotsnummer konnte nicht erzeugt werden" }, 500);

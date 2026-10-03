@@ -367,7 +367,8 @@ Deno.serve(async (req: Request) => {
       validUntil = new Date(Date.now() + valid_days * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
       console.log("Updating existing offer:", offerNumber);
     } else {
-      const { data: offerNumData, error: offerNumError } = await serviceClient.rpc("generate_offer_number");
+      // Portalbuchungen sind Mietvorgänge; gleicher Kreis wie private Mietanfragen.
+      const { data: offerNumData, error: offerNumError } = await serviceClient.rpc("generate_offer_number_for", { _series: "M" });
 
       if (offerNumError) {
         console.error("Error generating offer number:", offerNumError);
