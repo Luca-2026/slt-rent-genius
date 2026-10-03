@@ -482,15 +482,45 @@ export function AdminCustomerDetailDialog({
                 Der Kunde hat am {formatDate(profile.credit_limit_requested_at)} ein Kreditlimit beantragt. Bitte über „Stammdaten bearbeiten" ein Limit vergeben.
               </p>
             </div>
-            <Button
-              size="sm"
-              variant="outline"
-              className="shrink-0 border-amber-300 text-amber-700 hover:bg-amber-100"
-              onClick={() => { onOpenChange(false); onEditCustomer(profile); }}
-            >
-              <Edit className="h-3.5 w-3.5 mr-1" /> Limit vergeben
-            </Button>
+            <div className="flex shrink-0 flex-col gap-1.5 sm:flex-row">
+              <Button
+                size="sm"
+                variant="outline"
+                className="border-amber-300 text-amber-700 hover:bg-amber-100"
+                disabled={declining}
+                onClick={() => setDeclineOpen(true)}
+              >
+                Kein Kreditlimit vergeben
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="border-amber-300 text-amber-700 hover:bg-amber-100"
+                onClick={() => { onOpenChange(false); onEditCustomer(profile); }}
+              >
+                <Edit className="h-3.5 w-3.5 mr-1" /> Limit vergeben
+              </Button>
+            </div>
           </div>
+        )}
+
+        <AlertDialog open={declineOpen} onOpenChange={setDeclineOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Kein Kreditlimit vergeben?</AlertDialogTitle>
+              <AlertDialogDescription>
+                {profile.company_name} erhält eine freundliche E-Mail: Aktuell kann noch kein Kreditlimit vergeben werden, die erste Miete erfolgt per Vorkasse, das Konto wird proaktiv geprüft und eine erneute Anfrage ist jederzeit möglich. Die Anfrage verschwindet danach aus den offenen Kundenanfragen.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+              <AlertDialogAction onClick={declineCreditLimit}>Absagen & E-Mail senden</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {false && (
+          <div>
         )}
 
         {/* ─── Tabs ─────────────────────────────────────────── */}
