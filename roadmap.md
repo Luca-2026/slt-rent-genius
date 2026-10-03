@@ -1,9 +1,12 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
 ## Vor Veröffentlichung – Nummernkreise und Rechnungsbestand
+- [ ] Rechnungsbearbeitung ohne Sprung in Kundenansichten konsolidieren und angemeldet prüfen
+- [ ] Einmalig alle freigegebenen Testrechnungen entfernen; Angebote, Auftragsbestätigungen und Protokolle unverändert erhalten; GoBD-Schutz danach nachweisen
+- [ ] Genau zwei gemeinsame Gutschriftkreise (Miete/Verkauf) ergänzen und alle sechs Nummernkreise prüfen
 - [x] Angebote und Rechnungen nach Vermietung/Verkauf in je zwei gemeinsamen Kreisen für Portal- und Privatkunden nummerieren; historische Nummern nicht umnummeriert
 - [ ] Admin- und Kundenansichten samt Nummernvergabe ohne produktive Versände prüfen: Ansichten Desktop/Mobil und PDF-/Fachtests bestanden; produktive Nummernvergabe/Versand bewusst nicht ausgelöst
-- [x] Alle vorhandenen Rechnungen auf Versand, Zahlung und GoBD-Schutz geprüft; 17/17 nummeriert, keine Entwürfe – auf Nutzerentscheidung unverändert behalten
+- [x] Vorhandene Rechnungen auf Versand, Zahlung und GoBD-Schutz geprüft; Nutzer hat am 03.10.2026 alle ausschließlich als Testbelege zur Löschung freigegeben
 - [x] Abschlussbericht mit Schritten, Testergebnissen und offenen Veröffentlichungsrisiken erstellen
 
 ## Aktuell – mobile Übergabe- und Rückgabeprotokolle
