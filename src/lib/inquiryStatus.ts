@@ -161,3 +161,16 @@ export const DEFAULT_INQUIRY_LIST_FILTER: InquiryListFilter = "unprocessed";
 export function parseInquiryListFilter(v: string | null): InquiryListFilter {
   return INQUIRY_LIST_FILTERS.some((f) => f.value === v) ? (v as InquiryListFilter) : DEFAULT_INQUIRY_LIST_FILTER;
 }
+
+/**
+ * „Meine Anfragen“: von mir übernommen, aber noch nicht an den Kunden
+ * versendet (Status neu / in Bearbeitung) – hier steht noch Arbeit an.
+ */
+export function isMyPendingInquiry(
+  row: { status: unknown; assigned_to?: string | null },
+  userId: string | null | undefined,
+): boolean {
+  if (!userId || row.assigned_to !== userId) return false;
+  const s = normalizeInquiryStatus(row.status);
+  return s === "new" || s === "in_progress";
+}
