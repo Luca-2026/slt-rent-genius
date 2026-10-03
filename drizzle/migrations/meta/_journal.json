@@ -281,6 +281,13 @@
       "when": 1791029408303,
       "tag": "0039_remove_one_time_invoice_cleanup",
       "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1791029432764,
+      "tag": "0040_portal_credit_note_integrity",
+      "breakpoints": true
     }
   ]
 }

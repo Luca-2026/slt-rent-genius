@@ -648,6 +648,7 @@ export type Database = {
           amount: number
           b2b_profile_id: string
           created_at: string
+          credited_amount: number
           customer_address: string | null
           customer_city: string | null
           customer_company: string | null
@@ -662,10 +663,12 @@ export type Database = {
           gross_amount: number
           id: string
           invoice_date: string | null
+          invoice_kind: string
           invoice_number: string | null
           is_reverse_charge: boolean
           net_amount: number
           notes: string | null
+          parent_invoice_id: string | null
           payment_due_days: number
           payment_terms: string
           reservation_id: string | null
@@ -680,6 +683,7 @@ export type Database = {
           amount: number
           b2b_profile_id: string
           created_at?: string
+          credited_amount?: number
           customer_address?: string | null
           customer_city?: string | null
           customer_company?: string | null
@@ -694,10 +698,12 @@ export type Database = {
           gross_amount?: number
           id?: string
           invoice_date?: string | null
+          invoice_kind?: string
           invoice_number?: string | null
           is_reverse_charge?: boolean
           net_amount?: number
           notes?: string | null
+          parent_invoice_id?: string | null
           payment_due_days?: number
           payment_terms?: string
           reservation_id?: string | null
@@ -712,6 +718,7 @@ export type Database = {
           amount?: number
           b2b_profile_id?: string
           created_at?: string
+          credited_amount?: number
           customer_address?: string | null
           customer_city?: string | null
           customer_company?: string | null
@@ -726,10 +733,12 @@ export type Database = {
           gross_amount?: number
           id?: string
           invoice_date?: string | null
+          invoice_kind?: string
           invoice_number?: string | null
           is_reverse_charge?: boolean
           net_amount?: number
           notes?: string | null
+          parent_invoice_id?: string | null
           payment_due_days?: number
           payment_terms?: string
           reservation_id?: string | null
@@ -753,6 +762,13 @@ export type Database = {
             columns: ["b2b_profile_id"]
             isOneToOne: false
             referencedRelation: "b2b_profiles_customer"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_invoices_parent_invoice_id_fkey"
+            columns: ["parent_invoice_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_invoices"
             referencedColumns: ["id"]
           },
           {
@@ -4532,6 +4548,10 @@ export type Database = {
         Returns: string
       }
       ensure_repair_list: { Args: { _location: string }; Returns: string }
+      finalize_portal_credit_note: {
+        Args: { p_credit_id: string }
+        Returns: undefined
+      }
       generate_delivery_note_number: { Args: never; Returns: string }
       generate_inquiry_credit_note_number: { Args: never; Returns: string }
       generate_inquiry_credit_note_number_for: {
