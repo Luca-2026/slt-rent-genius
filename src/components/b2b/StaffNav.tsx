@@ -93,6 +93,7 @@ export function isItemActive(item: StaffNavItem, pathname: string, search: strin
   if (item.status) return status === item.status;
   if (status && NAV_STATUSES.has(status)) return false;
   const tab = params.get("tab");
+  if (item.path === "/b2b/anfrage-rechnungen") return true;
   return (item.tab ?? null) === (tab || null);
 }
 
