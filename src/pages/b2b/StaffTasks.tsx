@@ -211,27 +211,27 @@ export default function StaffTasks() {
       <TimesheetReminderBanner className="mb-4" onOpenTimeTracking={() => handleTabChange("zeiten")} />
 
       <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
-        <TabsList className="grid grid-cols-3 gap-1 h-auto w-full p-1 sm:flex sm:h-11">
-          <TabsTrigger value="tasks" className="text-xs sm:text-sm py-2 sm:flex-1">
-            <CheckSquare className="h-4 w-4 mr-1.5 shrink-0" /> Aufgaben
+        <TabsList className="grid grid-cols-3 gap-1 h-auto w-full p-1 sm:flex sm:justify-start sm:flex-wrap sm:gap-1 sm:p-1.5">
+          <TabsTrigger value="tasks" className="text-xs sm:text-sm py-2 sm:flex-none sm:shrink-0 sm:whitespace-nowrap sm:px-3 sm:py-2.5">
+            <CheckSquare className="h-4 w-4 mr-2 shrink-0" /> Aufgaben
           </TabsTrigger>
-          <TabsTrigger value="material" className="text-xs sm:text-sm py-2 sm:flex-1">
-            <Truck className="h-4 w-4 mr-1.5 shrink-0" /> Dispo
+          <TabsTrigger value="material" className="text-xs sm:text-sm py-2 sm:flex-none sm:shrink-0 sm:whitespace-nowrap sm:px-3 sm:py-2.5">
+            <Truck className="h-4 w-4 mr-2 shrink-0" /> Dispo
           </TabsTrigger>
           {canViewInventory && (
-            <TabsTrigger value="inventory" className="text-xs sm:text-sm py-2 sm:flex-1">
-              <Boxes className="h-4 w-4 mr-1.5 shrink-0" /> Inventar
+            <TabsTrigger value="inventory" className="text-xs sm:text-sm py-2 sm:flex-none sm:shrink-0 sm:whitespace-nowrap sm:px-3 sm:py-2.5">
+              <Boxes className="h-4 w-4 mr-2 shrink-0" /> Inventar
             </TabsTrigger>
           )}
           {canViewInventory && (
-            <TabsTrigger value="verkauf" className="min-w-0 text-xs sm:text-sm py-2 sm:flex-1">
-              <ShoppingCart className="h-4 w-4 mr-1.5 shrink-0" />
+            <TabsTrigger value="verkauf" className="min-w-0 text-xs sm:text-sm py-2 sm:flex-none sm:shrink-0 sm:whitespace-nowrap sm:px-3 sm:py-2.5">
+              <ShoppingCart className="h-4 w-4 mr-2 shrink-0" />
               <span className="sm:hidden">Verkauf</span>
-              <span className="hidden sm:inline">Verkaufsartikel-CMS</span>
+              <span className="hidden sm:inline">Verkaufs-CMS</span>
             </TabsTrigger>
           )}
-          <TabsTrigger value="zeiten" className="text-xs sm:text-sm py-2 sm:flex-1">
-            <CalendarClock className="h-4 w-4 mr-1.5 shrink-0" /> Zeiten
+          <TabsTrigger value="zeiten" className="text-xs sm:text-sm py-2 sm:flex-none sm:shrink-0 sm:whitespace-nowrap sm:px-3 sm:py-2.5">
+            <CalendarClock className="h-4 w-4 mr-2 shrink-0" /> Zeiten
             {pendingTimesheets > 0 && (
               <span className="ml-1.5 rounded-full bg-accent px-1.5 py-0.5 text-[10px] font-bold text-accent-foreground">
                 {pendingTimesheets}
@@ -239,18 +239,18 @@ export default function StaffTasks() {
             )}
           </TabsTrigger>
           {isAdmin && (
-            <TabsTrigger value="feedback" className="text-xs sm:text-sm py-2 sm:flex-1">
-              <MessageSquare className="h-4 w-4 mr-1.5 shrink-0" /> Feedback
+            <TabsTrigger value="feedback" className="text-xs sm:text-sm py-2 sm:flex-none sm:shrink-0 sm:whitespace-nowrap sm:px-3 sm:py-2.5">
+              <MessageSquare className="h-4 w-4 mr-2 shrink-0" /> Feedback
             </TabsTrigger>
           )}
           {canViewAudit && (
-            <TabsTrigger value="audit" className="text-xs sm:text-sm py-2 sm:flex-1">
-              <Shield className="h-4 w-4 mr-1.5 shrink-0" /> Audit-Log
+            <TabsTrigger value="audit" className="text-xs sm:text-sm py-2 sm:flex-none sm:shrink-0 sm:whitespace-nowrap sm:px-3 sm:py-2.5">
+              <Shield className="h-4 w-4 mr-2 shrink-0" /> Audit-Log
             </TabsTrigger>
           )}
           {isAdmin && (
-            <TabsTrigger value="staff" className="text-xs sm:text-sm py-2 sm:flex-1">
-              <UserCog className="h-4 w-4 mr-1.5 shrink-0" /> Team
+            <TabsTrigger value="staff" className="text-xs sm:text-sm py-2 sm:flex-none sm:shrink-0 sm:whitespace-nowrap sm:px-3 sm:py-2.5">
+              <UserCog className="h-4 w-4 mr-2 shrink-0" /> Team
             </TabsTrigger>
           )}
         </TabsList>
