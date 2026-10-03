@@ -92,12 +92,6 @@ Deno.serve(async (req: Request) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    if (false) {
-      return new Response(JSON.stringify({ error: "profileId required" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
 
     // Fetch profile
     const { data: profile, error: profileError } = await admin

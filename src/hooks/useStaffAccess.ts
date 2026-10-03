@@ -19,6 +19,7 @@ export function useStaffAccess() {
   const { user, isAdmin, isSuperAdmin, loading: authLoading } = useAuth();
   const [staffProfile, setStaffProfile] = useState<StaffMember | null>(null);
   const [canEditOps, setCanEditOps] = useState(false);
+  const [isBranchManager, setIsBranchManager] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export function useStaffAccess() {
         setLoading(false);
         return;
       }
-      const [{ data }, { data: ops }] = await Promise.all([
+      const [{ data }, { data: ops }, { data: nl }] = await Promise.all([
         supabase
           .from("staff_profiles")
           .select("id, user_id, first_name, last_name, email, is_active")
@@ -40,11 +41,13 @@ export function useStaffAccess() {
           .maybeSingle(),
         // Admin, Niederlassungsleiter, Standortmitarbeiter (serverseitige Prüfung)
         supabase.rpc("can_edit_operations" as any, { _user_id: user.id }),
+        supabase.rpc("has_role", { _user_id: user.id, _role: "niederlassungsleiter" }),
       ]);
 
       if (!cancelled) {
         setStaffProfile((data as StaffMember | null) ?? null);
         setCanEditOps(!!ops);
+        setIsBranchManager(!!nl);
         setLoading(false);
       }
     };
@@ -72,6 +75,8 @@ export function useStaffAccess() {
     canManageCMS: isAdmin || canEditOps,
     /** Einkaufspreise & Gemeinkosten, Umsatzauswertung, Team, Audit-Log: nur Admin (Vollzugriff). */
     canEditCosts: isAdmin,
+    /** Niederlassungsleiter: Kreditlimit bis 2.000 € vergeben / ablehnen. */
+    isBranchManager,
     staffProfile,
     displayName,
     loading: authLoading || loading,
