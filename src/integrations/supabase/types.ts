@@ -4454,6 +4454,7 @@ export type Database = {
           stock_source: string
         }[]
       }
+      close_expired_rental_inquiries: { Args: never; Returns: number }
       complete_maintenance: {
         Args: {
           _cost: number

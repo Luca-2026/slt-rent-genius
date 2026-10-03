@@ -246,6 +246,13 @@
       "when": 1791017845608,
       "tag": "0034_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1791018007310,
+      "tag": "0035_close_expired_rental_inquiries",
+      "breakpoints": true
     }
   ]
 }
