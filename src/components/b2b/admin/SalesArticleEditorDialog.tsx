@@ -3,7 +3,7 @@
  * Pflegt Stammdaten, Preise, Bilder, technische Daten sowie SEO-Inhalte
  * (mit optionaler KI-Unterstützung über das Lovable AI Gateway).
  */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,6 +17,7 @@ import { orderSpecs } from "@/lib/specOrder";
 import { Sparkles, Loader2, Trash2, Plus, Upload, ImageOff } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { cmsDraftKey, clearCmsDraft, readCmsDraft, writeCmsDraft } from "@/lib/cmsDraftStorage";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { supabase } from "@/integrations/supabase/client";
 import type { NewMachineRow, SalesArticleKind, UsedMachineRow } from "@/hooks/useSalesCatalog";
@@ -126,16 +127,14 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
 
   const isNew = kind === "new";
 
-  useEffect(() => {
-    if (!open) return;
+  const buildForm = (): FormState => {
     if (!row) {
-      setForm({ ...emptyForm });
-      return;
+      return { ...emptyForm };
     }
     if (isNew) {
       const r = row as NewMachineRow;
       const content = (r.content ?? {}) as Record<string, unknown>;
-      setForm({
+      return {
         ...emptyForm,
         slug: r.slug ?? "",
         brand: r.brand ?? "",
@@ -159,11 +158,11 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         faqs: toFaqList(content.faq),
         seo_title: String(content.seoTitle ?? ""),
         seo_description: String(content.seoDescription ?? ""),
-      });
+      };
     } else {
       const r = row as UsedMachineRow;
       const content = (r.content ?? {}) as Record<string, unknown>;
-      setForm({
+      return {
         ...emptyForm,
         slug: r.slug ?? "",
         brand: r.manufacturer ?? "",
@@ -184,9 +183,94 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         faqs: toFaqList(content.faq),
         seo_title: String(content.seoTitle ?? ""),
         seo_description: String(content.seoDescription ?? ""),
-      });
+      };
     }
-  }, [open, row, isNew]);
+  };
+
+  const draftId = `${row?.id ?? "new"}`;
+  const draftEditor = isNew ? "sales-new" : "sales-used";
+  const draftKey = cmsDraftKey(draftEditor, draftId);
+  const baselineRef = useRef("");
+  const pendingFormRef = useRef<FormState | null>(null);
+  const loadedKeyRef = useRef<string | null>(null);
+  const [restoredAt, setRestoredAt] = useState<number | null>(null);
+  const [dirty, setDirty] = useState(false);
+
+  // Nur beim Öffnen oder Wechsel auf einen anderen Artikel befüllen – nicht bei jedem Refetch.
+  useEffect(() => {
+    if (!open) {
+      loadedKeyRef.current = null;
+      pendingFormRef.current = null;
+      baselineRef.current = "";
+      setDirty(false);
+      setRestoredAt(null);
+      return;
+    }
+    if (loadedKeyRef.current === draftKey) return;
+    const base = buildForm();
+    const draft = readCmsDraft<FormState>(draftKey);
+    const next: FormState = draft ? { ...base, ...draft.form } : base;
+    pendingFormRef.current = next;
+    baselineRef.current = JSON.stringify(base);
+    loadedKeyRef.current = draftKey;
+    setForm(next);
+    setRestoredAt(draft?.savedAt ?? null);
+    setDirty(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, draftKey]);
+
+  useEffect(() => {
+    if (!open || readOnly || !baselineRef.current) return;
+    if (pendingFormRef.current) {
+      if (form !== pendingFormRef.current) return;
+      pendingFormRef.current = null;
+    }
+    const changed = JSON.stringify(form) !== baselineRef.current;
+    setDirty(changed);
+    if (!changed) {
+      clearCmsDraft(draftKey);
+      return;
+    }
+    const t = setTimeout(() => writeCmsDraft(draftKey, form), 400);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form, open]);
+
+  // Mobile Browser verwerfen Hintergrund-Tabs ohne Vorwarnung: beim Ausblenden sofort sichern
+  const formRef = useRef(form);
+  formRef.current = form;
+  useEffect(() => {
+    if (!open || readOnly) return;
+    const flush = () => {
+      if (pendingFormRef.current || !baselineRef.current) return;
+      if (JSON.stringify(formRef.current) === baselineRef.current) return;
+      writeCmsDraft(draftKey, formRef.current);
+    };
+    const onVis = () => { if (document.visibilityState === "hidden") flush(); };
+    document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("pagehide", flush);
+    return () => {
+      document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("pagehide", flush);
+    };
+  }, [open, readOnly, draftKey]);
+
+  const discardDraft = () => {
+    clearCmsDraft(draftKey);
+    const base = buildForm();
+    pendingFormRef.current = base;
+    setForm(base);
+    setRestoredAt(null);
+  };
+
+  const requestClose = () => {
+    if (dirty && !readOnly) {
+      const ok = window.confirm("Es gibt ungespeicherte Änderungen. Wirklich schließen und Änderungen verwerfen?");
+      if (!ok) return;
+      clearCmsDraft(draftKey);
+    }
+    onOpenChange(false);
+  };
 
   // Interne Kalkulation (Einkaufspreis, Gemeinkosten) – separat und nicht öffentlich gespeichert.
   const [purchase, setPurchase] = useState("");
@@ -388,6 +472,8 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
       }
       invalidateSalesCatalog();
       toast.success(row ? "Artikel gespeichert" : "Artikel angelegt");
+      clearCmsDraft(draftKey);
+      setDirty(false);
       onOpenChange(false);
       onSaved();
     } catch (e) {
@@ -405,14 +491,27 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
   );
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="flex h-[100dvh] max-h-[100dvh] w-full max-w-none flex-col gap-0 overflow-hidden rounded-none p-0 sm:h-auto sm:max-h-[90vh] sm:w-[calc(100%-2rem)] sm:max-w-3xl sm:rounded-lg">
+    <Dialog open={open} onOpenChange={(v) => { if (!v) requestClose(); else onOpenChange(true); }}>
+      <DialogContent
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => { if (dirty) e.preventDefault(); }}
+        className="flex h-[100dvh] max-h-[100dvh] w-full max-w-none flex-col gap-0 overflow-hidden rounded-none p-0 sm:h-auto sm:max-h-[90vh] sm:w-[calc(100%-2rem)] sm:max-w-3xl sm:rounded-lg">
         <DialogHeader className="shrink-0 border-b px-4 py-4 sm:px-6">
           <DialogTitle>
             {row ? "Verkaufsartikel bearbeiten" : "Verkaufsartikel anlegen"} ·{" "}
             {isNew ? "Neuartikel" : "Gebrauchtartikel"}
           </DialogTitle>
         </DialogHeader>
+
+        {restoredAt && (
+          <div className="mx-4 mt-3 flex shrink-0 flex-col gap-2 rounded-md border border-accent/40 bg-accent/10 px-3 py-2 text-sm sm:mx-6 sm:flex-row sm:items-center sm:justify-between">
+            <span>
+              Ungespeicherter Entwurf vom {new Date(restoredAt).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" })} Uhr wiederhergestellt. Bitte prüfen und speichern.
+            </span>
+            <Button type="button" variant="outline" size="sm" onClick={discardDraft}>Entwurf verwerfen</Button>
+          </div>
+        )}
 
         <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6">
           <Tabs defaultValue="basis">
@@ -773,7 +872,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         </div>
 
         <DialogFooter className="shrink-0 gap-3 border-t bg-background px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:gap-2 sm:px-6">
-          <Button variant="outline" className="w-full sm:w-auto" onClick={() => onOpenChange(false)} disabled={saving}>
+          <Button variant="outline" className="w-full sm:w-auto" onClick={requestClose} disabled={saving}>
             {readOnly ? "Schließen" : "Abbrechen"}
           </Button>
           {!readOnly && (
