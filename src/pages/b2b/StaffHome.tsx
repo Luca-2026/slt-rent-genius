@@ -1,4 +1,4 @@
-import { isRunningRental } from "@/lib/inquiryStatus";
+import { isRunningRental, isReturnOverdue } from "@/lib/inquiryStatus";
 import { useRentalProtocolStatus } from "@/hooks/useRentalProtocolStatus";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -107,6 +107,41 @@ function DayList({ title, icon: Icon, rows, empty }: { title: string; icon: Luci
   );
 }
 
+function daysBetween(fromIso: string, toIso: string) {
+  const a = new Date(`${fromIso}T00:00:00`).getTime();
+  const b = new Date(`${toIso}T00:00:00`).getTime();
+  return Math.max(1, Math.round((b - a) / 86400000));
+}
+
+/** Überfällige Rückgaben: Mietende vorbei, noch kein Rückgabeprotokoll. Visuell hervorgehoben. */
+function OverdueReturns({ rows, today }: { rows: InquiryRow[]; today: string }) {
+  if (!rows.length) return null;
+  return (
+    <div className="border-l-4 border-destructive bg-destructive/5 px-4 py-3" role="alert">
+      <p className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-destructive">
+        <AlertTriangle className="h-3.5 w-3.5" aria-hidden="true" />Überfällige Rückgaben
+        <span className="ml-auto rounded-full bg-destructive px-2 py-0.5 text-[11px] text-destructive-foreground">{rows.length}</span>
+      </p>
+      <p className="mb-2 text-xs text-foreground">Mietende überschritten – bitte Rückgabe klären und ein Rückgabeprotokoll erstellen.</p>
+      <ul className="-mx-2">
+        {rows.map((r) => {
+          const days = daysBetween(r.end_date!.slice(0, 10), today);
+          return (
+            <li key={r.id}>
+              <Link to={`/b2b/mietanfragen?status=all&anfrage=${r.id}`} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-destructive/10">
+                <span className="min-w-0 flex-1 truncate"><strong className="font-medium">{r.company_name || r.customer_name}</strong><span className="text-muted-foreground"> · {r.product_name}</span></span>
+                <span className="shrink-0 rounded-full bg-destructive px-2 py-0.5 text-[11px] font-medium text-destructive-foreground">{days} {days === 1 ? "Tag" : "Tage"} überfällig</span>
+                <span className="hidden shrink-0 text-xs text-muted-foreground md:inline">Protokoll fehlt</span>
+                <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
 export default function StaffHome() {
   const { isStaff, isAdmin, canViewInventory, displayName, loading: accessLoading } = useStaffAccess();
   const [openSales, setOpenSales] = useState(0);
@@ -177,6 +212,12 @@ export default function StaffHome() {
   const active = inquiries.filter((r) => r.status === "accepted" || r.status === "done");
   const pickups = active.filter((r) => r.status === "accepted" && r.start_date?.slice(0, 10) === today);
   const returns = active.filter((r) => r.end_date?.slice(0, 10) === today);
+  const overdueReturns = inquiries
+    .filter((r) => {
+      const st = protocols.byInquiry.get(r.id);
+      return !st?.ret && isReturnOverdue({ ...r, handed_over: !!st?.delivery }, today);
+    })
+    .sort((a, b) => (a.end_date ?? "").localeCompare(b.end_date ?? ""));
   const running = inquiries.filter((r) => isRunningRental({ ...r, handed_over: protocols.byInquiry.has(r.id) && !!protocols.byInquiry.get(r.id)?.delivery }, today)).length;
   const awaitingConfirmation = inquiries.filter((r) => r.status === "accepted" && !r.order_confirmed_at).length;
   const unprocessed = inquiries.filter(isUnprocessedInquiry).length;
@@ -244,6 +285,14 @@ export default function StaffHome() {
             </section>
           )}
 
+          {overdueReturns.length > 0 && (
+            <Link to="/b2b/mietanfragen?status=running" className="flex items-center gap-3 rounded-xl border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+              <AlertTriangle className="h-4 w-4 shrink-0" aria-hidden="true" />
+              <span className="min-w-0 flex-1">{overdueReturns.length} überfällige {overdueReturns.length === 1 ? "Rückgabe" : "Rückgaben"} – Rückgabeprotokoll erstellen</span>
+              <span className="hidden font-medium sm:inline">Prüfen</span><ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+            </Link>
+          )}
+
           {isAdmin && rec.overdueCount > 0 && (
             <Link to="/b2b/anfrage-rechnungen" className="flex items-center gap-3 rounded-xl border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive">
               <Receipt className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -257,6 +306,7 @@ export default function StaffHome() {
             <Panel title="Heute" icon={CalendarCheck} className={cn(isAdmin && "lg:col-span-3")}>
               <div className="divide-y divide-border">
                 <DayList title="Übergaben" icon={CalendarCheck} rows={pickups} empty="Keine Übergaben geplant." />
+                <OverdueReturns rows={overdueReturns} today={today} />
                 <DayList title="Rückgaben" icon={CalendarX} rows={returns} empty="Keine Rückgaben geplant." />
                 <div className="px-4 py-3">
                   <p className="mb-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
