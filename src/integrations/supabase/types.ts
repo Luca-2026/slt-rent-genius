@@ -599,7 +599,10 @@ export type Database = {
           description: string | null
           discount_percent: number
           id: string
+          image_url: string | null
           invoice_id: string
+          item_type: string
+          parent_item_index: number | null
           product_name: string
           quantity: number
           rental_end: string | null
@@ -612,7 +615,10 @@ export type Database = {
           description?: string | null
           discount_percent?: number
           id?: string
+          image_url?: string | null
           invoice_id: string
+          item_type?: string
+          parent_item_index?: number | null
           product_name: string
           quantity?: number
           rental_end?: string | null
@@ -625,7 +631,10 @@ export type Database = {
           description?: string | null
           discount_percent?: number
           id?: string
+          image_url?: string | null
           invoice_id?: string
+          item_type?: string
+          parent_item_index?: number | null
           product_name?: string
           quantity?: number
           rental_end?: string | null

@@ -1,0 +1,1 @@
+ALTER TABLE public.b2b_invoice_items ADD COLUMN item_type text NOT NULL DEFAULT 'product', ADD COLUMN parent_item_index integer, ADD COLUMN image_url text;

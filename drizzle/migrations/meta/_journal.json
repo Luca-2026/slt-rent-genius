@@ -288,6 +288,13 @@
       "when": 1791029432764,
       "tag": "0040_portal_credit_note_integrity",
       "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1791029504031,
+      "tag": "0041_portal_invoice_item_pdf_metadata",
+      "breakpoints": true
     }
   ]
 }
