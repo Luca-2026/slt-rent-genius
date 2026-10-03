@@ -37,6 +37,7 @@ interface Invoice {
   notes: string | null;
   payment_terms: string | null;
   created_at: string;
+  invoice_kind: string;
 
 }
 
@@ -71,7 +72,7 @@ export default function B2BInvoices() {
     
     const { data, error } = await supabase
       .from("b2b_invoices")
-      .select("id, invoice_number, invoice_date, due_date, amount, net_amount, vat_rate, vat_amount, gross_amount, is_reverse_charge, status, file_url, file_name, notes, payment_terms, created_at")
+      .select("id, invoice_number, invoice_date, due_date, amount, net_amount, vat_rate, vat_amount, gross_amount, is_reverse_charge, status, file_url, file_name, notes, payment_terms, created_at, invoice_kind")
       .neq("status", "draft")
       .order("invoice_date", { ascending: false });
 
@@ -101,7 +102,10 @@ export default function B2BInvoices() {
     amount.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
   const totalOpen = invoices.filter((i) => i.status === "open").reduce((s, i) => s + i.gross_amount, 0);
-  const totalPaid = invoices.filter((i) => i.status === "paid").reduce((s, i) => s + i.gross_amount, 0);
+  const totalPaid = invoices.filter((i) => i.status === "paid" && i.invoice_kind !== "credit_note").reduce((s, i) => s + i.gross_amount, 0);
+  const displayStatus = (inv: Invoice) => inv.invoice_kind === "credit_note"
+    ? { label: "Gutschrift", variant: "outline" as const, icon: FileText }
+    : statusConfig[inv.status] || statusConfig.open;
 
   return (
     <B2BPortalLayout title="Rechnungen" subtitle={`${invoices.length} Rechnungen`}>
@@ -207,7 +211,7 @@ export default function B2BInvoices() {
           {/* Mobile cards */}
           <div className="md:hidden space-y-3">
             {filtered.map((inv) => {
-              const cfg = statusConfig[inv.status] || statusConfig.open;
+              const cfg = displayStatus(inv);
               const StatusIcon = cfg.icon;
               return (
                 <Card key={inv.id}>
@@ -235,7 +239,7 @@ export default function B2BInvoices() {
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => openInvoiceInNewWindow(inv.file_url!, inv.invoice_number)}
+                          onClick={() => { if (inv.file_url) openInvoiceInNewWindow(inv.file_url, inv.invoice_number); }}
                         >
                           <Download className="h-3.5 w-3.5 mr-1" />
                           PDF
@@ -265,7 +269,7 @@ export default function B2BInvoices() {
               </TableHeader>
               <TableBody>
                 {filtered.map((inv) => {
-                  const cfg = statusConfig[inv.status] || statusConfig.open;
+                  const cfg = displayStatus(inv);
                   const StatusIcon = cfg.icon;
                   return (
                     <TableRow key={inv.id}>
@@ -279,7 +283,7 @@ export default function B2BInvoices() {
                       </TableCell>
                       <TableCell>{formatDate(inv.invoice_date)}</TableCell>
                       <TableCell>
-                        {inv.due_date ? (
+                        {inv.invoice_kind !== "credit_note" && inv.due_date ? (
                           <div>
                             <p>{formatDate(inv.due_date)}</p>
                             {inv.payment_terms && (
@@ -291,7 +295,7 @@ export default function B2BInvoices() {
 
                       <TableCell className="text-right">{formatCurrency(inv.net_amount)}</TableCell>
                       <TableCell className="text-right">
-                        {inv.vat_amount > 0 ? formatCurrency(inv.vat_amount) : "0,00 €"}
+                        {formatCurrency(inv.vat_amount)}
                       </TableCell>
                       <TableCell className="text-right font-semibold">
                         {formatCurrency(inv.gross_amount)}
@@ -307,7 +311,7 @@ export default function B2BInvoices() {
                           <Button
                             size="sm"
                             variant="ghost"
-                            onClick={() => openInvoiceInNewWindow(inv.file_url!, inv.invoice_number)}
+                            onClick={() => { if (inv.file_url) openInvoiceInNewWindow(inv.file_url, inv.invoice_number); }}
                           >
                             <ExternalLink className="h-4 w-4" />
                           </Button>
