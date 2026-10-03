@@ -253,6 +253,13 @@
       "when": 1791018007310,
       "tag": "0035_close_expired_rental_inquiries",
       "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1791024024282,
+      "tag": "0036_unify_rental_sales_document_series",
+      "breakpoints": true
     }
   ]
 }
