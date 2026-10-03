@@ -1,0 +1,1 @@
+DROP FUNCTION public.cleanup_authorized_test_invoices_20261003();
