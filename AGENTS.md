@@ -2,7 +2,7 @@
 - Protokollentwürfe je Mitarbeiter, Auftrag und Art mit Foto-Dateien in IndexedDB sichern und erst nach erfolgreichem Abschluss löschen – mobile Kamera und Browser-Neustart dürfen keine Erfassung vernichten.
 - Kundengruppen-Filter nur über src/lib/customerSegment.ts (Filter: Privat vs. Geschäftskunden inkl. B2B-Portal) – einheitliche Logik in allen Portal-Listen.
 - Portal-Startseite /b2b/start (StaffHome) ist Landeseite für Admin/Mitarbeiter; Kennzahlen nur über src/lib/dashboardMetrics.ts (getestet) – eine Umsatzdefinition für alle Ansichten.
-- Umsatzauswertung /b2b/auswertungen nur über src/lib/revenueAnalytics.ts (getestet, nutzt countsAsRevenue aus dashboardMetrics) – Standort-, Kategorie- und Artikelsummen ergeben immer denselben Gesamtumsatz.
+- Revenue uses src/lib/dashboardMetrics.ts and revenueAnalytics.ts: countsAsRevenue includes typed cancelled originals and credits in both sources so they offset; location/category/article totals must agree.
 - Offene Kundenanfragen (Freischaltung, Kreditlimit, Löschung) nur über src/lib/customerActions.ts (getestet) – gleiche Regel in Kundenkartei und Startseite; Portalkunden werden in der Kundenkartei über die Kundenakte bearbeitet.
 - Verkaufspreisrahmen nur über src/lib/salesPricing.ts (getestet): Mindestpreis = EK netto × (1 + Gemeinkosten, Standard 10 %), Bonusbasis = Verkaufspreis − Mindestpreis; EK liegt in sales_article_costs (nur Mitarbeiter lesbar), nie in den öffentlichen Artikeltabellen.
 - Messwerte je Artikel: Kilometerstand, Betriebsstunden und Tank sind einzeln auswählbar; erfasste Werte nur über Edge Functions in b2b_operating_hours_readings (ältere B2B-Protokolle zusätzlich im unveränderlichen protocol_data-Snapshot) – keine erfundenen Werte oder leeren PDF-Zeilen.
