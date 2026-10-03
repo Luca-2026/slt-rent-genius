@@ -513,8 +513,12 @@ export default function AdminDashboard() {
   // ─── Delete handlers ──────────────────────────────────
   const deleteInvoice = async (invoiceId: string) => {
     try {
-      // Delete invoice items first
-      await supabase.from("b2b_invoice_items").delete().eq("invoice_id", invoiceId);
+      // Erst den Beleg löschen: Die DB schützt ausgestellte Rechnungen. Vorzeitiges
+      // Löschen von Positionen würde trotz geschütztem Beleg den Nachweis beschädigen.
+      const invoice = invoices.find((item) => item.id === invoiceId);
+      if (!invoice || invoice.status !== "draft") {
+        throw new Error("Ausgestellte Rechnungen können nicht gelöscht werden. Bitte eine Gutschrift erstellen.");
+      }
       const { error } = await supabase.from("b2b_invoices").delete().eq("id", invoiceId);
       if (error) throw error;
       toast({ title: "Rechnung gelöscht" });
@@ -797,6 +801,16 @@ export default function AdminDashboard() {
     if (!confirm(`Anfrage "${res.product_name || res.product_id}" wirklich löschen?`)) return;
     setDeletingReservationId(res.id);
     try {
+      // Vor jeglichen Änderungen prüfen: Ausgestellte Rechnungen und ihre Positionen
+      // dürfen durch das Löschen einer verknüpften Anfrage nicht verschwinden.
+      const { data: linkedInvoices, error: linkedError } = await supabase
+        .from("b2b_invoices")
+        .select("id, status")
+        .eq("reservation_id", res.id);
+      if (linkedError) throw linkedError;
+      if (linkedInvoices?.some((invoice) => invoice.status !== "draft")) {
+        throw new Error("Die Anfrage hat ausgestellte Rechnungen und kann nicht gelöscht werden.");
+      }
       // Nullify FK references from delivery notes & return protocols
       await supabase.from("b2b_delivery_notes").update({ reservation_id: null, offer_id: null }).eq("reservation_id", res.id);
       await supabase.from("b2b_return_protocols").update({ reservation_id: null }).eq("reservation_id", res.id);
@@ -815,14 +829,10 @@ export default function AdminDashboard() {
       }
 
       // Delete invoices referencing this reservation
-      const { data: relatedInvoices } = await supabase
-        .from("b2b_invoices")
-        .select("id")
-        .eq("reservation_id", res.id);
-      if (relatedInvoices && relatedInvoices.length > 0) {
-        const invoiceIds = relatedInvoices.map((i: any) => i.id);
-        await supabase.from("b2b_invoice_items").delete().in("invoice_id", invoiceIds);
-        await supabase.from("b2b_invoices").delete().in("id", invoiceIds);
+      if (linkedInvoices && linkedInvoices.length > 0) {
+        const invoiceIds = linkedInvoices.map((invoice) => invoice.id);
+        const { error: deleteDraftError } = await supabase.from("b2b_invoices").delete().in("id", invoiceIds).eq("status", "draft");
+        if (deleteDraftError) throw deleteDraftError;
       }
 
       const { error } = await supabase.from("b2b_reservations").delete().eq("id", res.id);

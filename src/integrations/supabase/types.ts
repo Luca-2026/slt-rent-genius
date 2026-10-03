@@ -2755,6 +2755,30 @@ export type Database = {
         }
         Relationships: []
       }
+      offer_series_counters: {
+        Row: {
+          last_value: number
+          month: number
+          series: string
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          last_value?: number
+          month: number
+          series: string
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          last_value?: number
+          month?: number
+          series?: string
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
       phone_calls: {
         Row: {
           ai_priority: string | null
@@ -4494,6 +4518,7 @@ export type Database = {
       generate_inquiry_offer_number: { Args: never; Returns: string }
       generate_invoice_number: { Args: never; Returns: string }
       generate_offer_number: { Args: never; Returns: string }
+      generate_offer_number_for: { Args: { _series: string }; Returns: string }
       generate_return_protocol_number: { Args: never; Returns: string }
       get_authorized_person_limit: {
         Args: { _user_id: string }

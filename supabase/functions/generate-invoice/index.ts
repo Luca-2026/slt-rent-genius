@@ -132,7 +132,7 @@ Deno.serve(async (req: Request) => {
       }
 
       // Assign invoice number
-      const { data: numData, error: numErr } = await serviceClient2.rpc("generate_invoice_number");
+      const { data: numData, error: numErr } = await serviceClient2.rpc("generate_inquiry_invoice_number_for", { _series: "M" });
       if (numErr) {
         console.error("Number gen error:", numErr);
         return new Response(JSON.stringify({ error: "Failed to generate invoice number" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -404,14 +404,15 @@ Deno.serve(async (req: Request) => {
 
     if (!save_as_draft) {
       if (is_proforma) {
-        // Proforma verbraucht KEINE Nummer aus dem GoBD-Rechnungskreis SLT-B2B-RNT-YYYY-####.
+        // Proforma verbraucht KEINE Nummer aus dem gemeinsamen Miet-Rechnungskreis RE-M-YYYY-MM-####.
         // Eigene, nicht fortlaufende Kennung (Zeitstempel), rein informell.
         const now = new Date();
         const y = now.getFullYear();
         const stamp = `${now.getMonth()+1}`.padStart(2,'0') + `${now.getDate()}`.padStart(2,'0') + `${now.getHours()}`.padStart(2,'0') + `${now.getMinutes()}`.padStart(2,'0');
         invoiceNumber = `PRO-${y}-${stamp}`;
       } else {
-        const { data: invoiceNumData, error: invoiceNumError } = await serviceClient.rpc("generate_invoice_number");
+        // Portalrechnungen sind Miete; kein gesonderter B2B-Kreis.
+        const { data: invoiceNumData, error: invoiceNumError } = await serviceClient.rpc("generate_inquiry_invoice_number_for", { _series: "M" });
         if (invoiceNumError) {
           console.error("Error generating invoice number:", invoiceNumError);
           return new Response(JSON.stringify({ error: "Failed to generate invoice number" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
