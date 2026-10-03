@@ -1,5 +1,11 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – ausdrückliche Ende-zu-Ende-Abnahme vom 03.10.2026
+- [ ] Kundenablauf mit echter Anmeldung und eindeutig abgegrenzten Testdaten Schritt für Schritt prüfen
+- [ ] Gleichzeitige Nummernvergabe für ANG/RE/GS jeweils M/V prüfen, ohne unkontrollierte Nummernverbräuche
+- [ ] Echten Versand ausschließlich an luca@sandhoff.org prüfen, PDF und gespeicherten Versandstatus abgleichen
+- [ ] Einzelbericht mit Belegen, Fehlern und klaren Prüfgrenzen erstellen
+
 ## Vor Veröffentlichung – Nummernkreise und Rechnungsbestand
 - [x] Rechnungsbearbeitung in gemeinsamer Übersicht; alter Admin-Link leitet dorthin, Verwaltung öffnet Dialog; Admin-Browsertest ohne Seitenfehler
 - [x] 15 Testrechnungen, 3 zugehörige Testgutschriften und 29 alte Rechnungsdateien entfernt; Angebote und Protokolle erhalten; Löschtrigger wieder aktiv, einmalige Bereinigungsfunktion entfernt
