@@ -335,10 +335,10 @@ export async function generateOfferPdf(data: {
     const contentTopY = Math.min(ay, iy) - 26;
     let ty = contentTopY;
     // Einheitliche Titelgröße; lange Titel (z. B. AUFTRAGSBESTÄTIGUNG) werden auf Satzbreite begrenzt
-    let titleSize = 24;
+    let titleSize = isCreditNote ? 20 : 24; // Korrektur bleibt kompakt einseitig
     while (titleSize > 18 && bold.widthOfTextAtSize(safe(TITLE), titleSize) > CW) titleSize -= 1;
     dt(pg, TITLE, ML, ty, bold, titleSize, BRAND);
-    ty -= 24;
+    ty -= isCreditNote ? 22 : 24;
     dt(pg, `Nr. ${data.offerNumber}`, ML, ty, font, 10.5, MUTED);
     ty -= 22;
 
