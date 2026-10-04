@@ -330,6 +330,13 @@
       "when": 1791110819519,
       "tag": "0046_protect_stripe_payments_and_credit_refunds",
       "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "7",
+      "when": 1791119190573,
+      "tag": "0047_credit_refund_overpay_guard",
+      "breakpoints": true
     }
   ]
 }
