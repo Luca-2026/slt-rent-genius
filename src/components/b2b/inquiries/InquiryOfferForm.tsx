@@ -294,7 +294,11 @@ export function InquiryOfferForm({
 
   const defaultTerms = () =>
     isInvoice ? (customerKind === "business" ? "net_14" : "vorkasse") : customerKind === "business" ? "net_14" : "anzahlung_30";
-  const [paymentTerms, setPaymentTerms] = useState<string>(draft?.paymentTerms ?? defaultMeta?.payment_terms ?? defaultTerms());
+  const [paymentTerms, setPaymentTerms] = useState<string>(() => {
+    const t = draft?.paymentTerms ?? defaultMeta?.payment_terms ?? defaultTerms();
+    // Alte Variante „Vorkasse über Zahlungslink“ ist jetzt Teil von „Vorkasse komplett“.
+    return t === "rentpair_vorkasse" ? "vorkasse" : t;
+  });
   /** Freitext für „Individuelle Zahlungsbedingungen“ (nur Geschäftskunden). */
   const [paymentTermsCustom, setPaymentTermsCustom] = useState<string>(draft?.paymentTermsCustom ?? defaultMeta?.payment_terms_custom ?? "");
   const sendLock = useRef(false);
