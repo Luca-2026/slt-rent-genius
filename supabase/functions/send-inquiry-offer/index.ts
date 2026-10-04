@@ -496,20 +496,18 @@ Deno.serve(async (req: Request) => {
       net_7: "Zahlung innerhalb von 7 Tagen nach Rechnungsstellung (netto)." + depositText,
       net_14: "Zahlung innerhalb von 14 Tagen nach Rechnungsstellung (netto)." + depositText,
       net_30: "Zahlung innerhalb von 30 Tagen nach Rechnungsstellung (netto)." + depositText,
-      vorkasse: "Vorkasse per Banküberweisung. Die Zahlung ist vor Mietbeginn zu leisten – die Bankdaten finden Sie im Angebots-PDF." + depositText,
+      vorkasse:
+        "<strong>Vorkasse komplett.</strong> Der Gesamtbetrag ist vor Mietbeginn zu leisten. Sie wählen selbst: " +
+        "per <strong>Banküberweisung</strong> (Bankdaten im Angebots-PDF, Verwendungszweck: Angebotsnummer) oder " +
+        "<strong>online</strong> über Ihren persönlichen Zahlungslink." + depositText,
       anzahlung_30:
-        "Nach Ihrer Annahme senden wir Ihnen eine Buchungsbestätigung. Darin erhalten Sie Ihre persönliche " +
-        "<strong>Buchungsreferenz</strong> sowie einen Zahlungslink. Innerhalb von <strong>48 Stunden</strong> " +
-        "sind mindestens <strong>30 % Anzahlung</strong> zu leisten – per PayPal, Kredit-/Debitkarte oder Überweisung. " +
-        "Bitte geben Sie bei einer Überweisung ausschließlich die <strong>Buchungsreferenz aus der Buchungsbestätigung</strong> " +
-        "als Verwendungszweck an (nicht die Angebotsnummer). " +
-        "Erfolgt die Anzahlung nicht fristgerecht, wird die Reservierung systemseitig wieder freigegeben. " +
-        "Der Restbetrag ist vor Mietbeginn fällig." + depositText,
+        "<strong>30 % Anzahlung.</strong> Mindestens 30 % der Bruttomiete sind als Anzahlung zu leisten, der Restbetrag " +
+        "ist vor Mietbeginn fällig. Sie wählen selbst: per <strong>Banküberweisung</strong> (Bankdaten im Angebots-PDF, " +
+        "Verwendungszweck: Angebotsnummer) oder <strong>online</strong> über Ihren persönlichen Zahlungslink – dort " +
+        "können Sie auch direkt den Gesamtbetrag zahlen." + depositText,
       rentpair_vorkasse:
-        "Nach Ihrer Annahme senden wir Ihnen eine Buchungsbestätigung mit Ihrer persönlichen <strong>Buchungsreferenz</strong> " +
-        "und einem Zahlungslink (PayPal, Kredit-/Debitkarte oder Überweisung). Bitte verwenden Sie bei einer Überweisung " +
-        "ausschließlich die <strong>Buchungsreferenz aus der Buchungsbestätigung</strong> als Verwendungszweck (nicht die Angebotsnummer). " +
-        "Bitte begleichen Sie den Betrag innerhalb von <strong>48 Stunden</strong>, damit die Reservierung bestehen bleibt." + depositText,
+        "<strong>Vorkasse komplett.</strong> Der Gesamtbetrag ist vor Mietbeginn zu leisten – per Banküberweisung " +
+        "(Verwendungszweck: Angebotsnummer) oder online über Ihren persönlichen Zahlungslink." + depositText,
     };
     const paymentEmailText = paymentTerms === "custom"
       ? escapeHtml(paymentTermsCustom).replace(/\n/g, "<br>") + depositText
@@ -538,8 +536,8 @@ Deno.serve(async (req: Request) => {
   </div>
   ${paymentLinkUrl ? `<div style="background:#eef4f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>Bequem online bezahlen:</strong><br>
-    Über Ihren persönlichen Zahlungslink können Sie den Betrag von <strong>${money(paymentLinkAmount)}</strong>${deposit > 0 ? ` (inkl. Kaution ${money(deposit)}, wird nach Rückgabe erstattet)` : ""} direkt online begleichen. Der Link gilt nur für dieses Angebot.
-    <p style="margin:12px 0 0;"><a href="${escapeHtml(paymentLinkUrl)}" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;font-weight:bold;padding:10px 18px;border-radius:4px;">Jetzt online bezahlen</a></p>
+    ${paymentTerms === "anzahlung_30" ? `Über Ihren persönlichen Zahlungslink zahlen Sie wahlweise die <strong>30 % Anzahlung</strong> oder direkt den Gesamtbetrag von <strong>${money(paymentLinkAmount)}</strong>` : `Über Ihren persönlichen Zahlungslink können Sie den Betrag von <strong>${money(paymentLinkAmount)}</strong>`}${deposit > 0 ? ` (inkl. Kaution ${money(deposit)}, wird nach Rückgabe erstattet)` : ""} direkt online begleichen. Der Link gilt nur für dieses Angebot.
+    <p style="margin:12px 0 0;"><a href="${escapeHtml(paymentLinkUrl)}" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;font-weight:bold;padding:10px 18px;border-radius:4px;">Zahlungsart wählen &amp; bezahlen</a></p>
     <span style="color:#6b7280;font-size:12px;">Alternativ ist die Banküberweisung gemäß den Zahlungsbedingungen weiterhin möglich.</span>
   </div>` : ""}
   <div style="background:#eef4f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
