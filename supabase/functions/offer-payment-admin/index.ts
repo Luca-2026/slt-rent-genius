@@ -109,8 +109,16 @@ Deno.serve(async (req: Request) => {
       try {
         return json(await creditRefund(service, body.credit_note_id, user.id, body.action === "refund_credit_note"));
       } catch (error) {
+        const msg = error instanceof Error ? error.message : "";
         console.error("Gutschrifterstattung konnte nicht abgeschlossen werden");
-        return json({ error: error instanceof Error ? error.message : "Erstattung nicht möglich." }, 409);
+        // Fachliche Ablehnung als 200 + success:false, damit die Oberfläche eine Meldung zeigt statt abzubrechen.
+        const permission = /permission|does not have the required permissions|charge_write|rak_/i.test(msg);
+        return json({
+          success: false,
+          error: permission
+            ? "Der Stripe-Schlüssel darf keine Erstattungen ausführen. Bitte im Stripe-Dashboard beim eingeschränkten Schlüssel „Charges and Refunds“ auf „Write“ stellen. Es wurde nichts erstattet."
+            : (msg && !/rk_(live|test)_|sk_(live|test)_/.test(msg) ? msg : "Erstattung nicht möglich. Es wurde nichts erstattet."),
+        });
       }
     }
 
