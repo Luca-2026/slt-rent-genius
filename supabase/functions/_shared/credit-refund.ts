@@ -61,7 +61,7 @@ export async function creditRefund(service: any, creditId: string, userId: strin
     }
     if (remaining > 0 || eligible <= 0) throw new Error("Kein vollständig zuordenbarer Stripe-Erstattungsbetrag verfügbar. Bereits erfolgte Erstattungen und Verrechnungen werden berücksichtigt.");
   }
-  if (!execute) return { success: true, amount_cents: existing?.amount_cents ?? eligible, status: existing?.status ?? "available" };
+  if (!execute) return { success: true, amount_cents: existing?.amount_cents ?? eligible, status: existing && allocations.some((a: any) => !a.refund_id) ? "creating" : existing?.status ?? "available" };
   if (!existing) {
     const { error } = await service.from("credit_note_refunds").insert({ credit_note_id: creditId, amount_cents: eligible, allocations, created_by: userId });
     if (error) throw new Error("Die Erstattung wird bereits vorbereitet. Bitte Status neu laden.");
