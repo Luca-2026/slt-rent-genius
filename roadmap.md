@@ -1,10 +1,11 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
 ## Aktuell – mobile Zahlungen und Stripe-Gutschrifterstattung
-- [ ] Zahlungsfelder mobil ohne Überschneidung; bestätigte Stripe-Zahlungen unveränderlich
-- [ ] Zahlungscodes im gemeinsamen Geschäfts-PDF begrenzen und umbrechen
-- [ ] Gutschriften mit sicherer, expliziter Stripe-Erstattung und Statusanzeige verbinden
-- [ ] Automatische und angemeldete mobile Prüfungen; keine echte Zahlung/Erstattung ohne gesonderte Freigabe
+- [x] Zahlungsfelder mobil ohne Überschneidung; Stripe-Zeile mit verkürzter Referenz und ohne Eingabefelder im angemeldeten Admin-Test bei 390 px geprüft; DB schützt Originaleinträge
+- [x] Zahlungscodes im gemeinsamen Geschäfts-PDF begrenzen und umbrechen; Angebot/Rechnung/Auftragsbestätigung mit 148-Zeichen-Referenz lokal erzeugt, alle 5 Seiten visuell geprüft
+- [x] Gutschriften mit expliziter Stripe-Erstattung, persistenter Aufteilung, stabilen Idempotenzschlüsseln und Webhook-Status verbunden; Miet-/Kautions-Erstattungen getrennt berücksichtigt
+- [x] 12 Tests für Referenzen, Erstattungsverrechnung, Wiederholung und Bestätigungsdialog bestanden; keine echte Zahlung, Erstattung oder E-Mail ausgelöst
+- [ ] Echte Stripe-Erstattung inklusive Live-Webhook-Rückmeldung erst nach gesonderter Freigabe prüfen
 
 ## Aktuell – Umsatzsaldo und Kundensuche
 - [x] Portalrechnung +16,81 netto und Gutschrift −16,81 saldieren: Startseite und Auswertung zeigen 0; 12 Fachtests bestanden, Admin-Anmeldung geprüft
