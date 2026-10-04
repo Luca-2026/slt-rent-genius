@@ -5,6 +5,7 @@ Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 Disallow: /feedback
+Disallow: /zahlung/
 
 User-agent: Bingbot
 Allow: /
@@ -12,6 +13,7 @@ Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 Disallow: /feedback
+Disallow: /zahlung/
 
 User-agent: DuckDuckBot
 Allow: /
@@ -19,6 +21,7 @@ Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 Disallow: /feedback
+Disallow: /zahlung/
 
 # === Social Crawlers (für Link-Previews) ===
 User-agent: Twitterbot
@@ -38,6 +41,7 @@ Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 Disallow: /feedback
+Disallow: /zahlung/
 
 User-agent: OAI-SearchBot
 Allow: /
@@ -45,6 +49,7 @@ Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 Disallow: /feedback
+Disallow: /zahlung/
 
 User-agent: ChatGPT-User
 Allow: /
@@ -56,6 +61,7 @@ Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 Disallow: /feedback
+Disallow: /zahlung/
 
 User-agent: Claude-Web
 Allow: /
@@ -71,6 +77,7 @@ Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 Disallow: /feedback
+Disallow: /zahlung/
 
 User-agent: Perplexity-User
 Allow: /
@@ -82,6 +89,7 @@ Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 Disallow: /feedback
+Disallow: /zahlung/
 
 User-agent: Applebot
 Allow: /
@@ -89,6 +97,7 @@ Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 Disallow: /feedback
+Disallow: /zahlung/
 
 User-agent: Applebot-Extended
 Allow: /
@@ -100,6 +109,7 @@ Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 Disallow: /feedback
+Disallow: /zahlung/
 
 User-agent: Amazonbot
 Allow: /
@@ -107,6 +117,7 @@ Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 Disallow: /feedback
+Disallow: /zahlung/
 
 User-agent: CCBot
 Allow: /
@@ -114,6 +125,7 @@ Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 Disallow: /feedback
+Disallow: /zahlung/
 
 User-agent: Meta-ExternalAgent
 Allow: /
@@ -138,6 +150,7 @@ Disallow: /b2b/
 Disallow: /b2b-register
 Disallow: /manuals/
 Disallow: /feedback
+Disallow: /zahlung/
 
 # === Sitemaps & LLM Index ===
 Sitemap: https://www.slt-rental.de/sitemap.xml
