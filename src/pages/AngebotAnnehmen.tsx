@@ -76,7 +76,9 @@ export default function AngebotAnnehmen() {
       load();
       return;
     }
-    load();
+    await load();
+    // Am Handy steht man nach dem Annehmen weit unten – Bestätigung sichtbar machen.
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
