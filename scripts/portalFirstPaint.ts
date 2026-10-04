@@ -1,5 +1,5 @@
 import type { Plugin } from "vite";
-import { PORTAL_HOST } from "../src/lib/portalDomain";
+import { PORTAL_HOST } from "../src/lib/portalHosts";
 
 /** Runs in the head before either the fallback body or React can paint. */
 export function portalFirstPaintHead(): string {
