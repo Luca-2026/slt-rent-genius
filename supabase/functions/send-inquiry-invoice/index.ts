@@ -343,8 +343,10 @@ Deno.serve(async (req: Request) => {
     const servicePeriodEnd = str(body.service_period_end, 10) || null;
 
     // ── Bereits geleistete (Teil-)Zahlungen, z. B. Vorkasse auf das Angebot ──
+    const stripePayment = (p: any) => /^(cs_|pi_)/.test(String(p?.reference ?? "")) || /stripe/i.test(String(p?.label ?? ""));
+    const confirmedPayments = (Array.isArray(inquiry.payments) ? inquiry.payments : []).filter(stripePayment);
     const rawPayments = Array.isArray(body.payments) ? body.payments.slice(0, 20) : [];
-    const payments: RecordedPayment[] = rawPayments
+    const payments: RecordedPayment[] = [...rawPayments.filter((p: any) => !stripePayment(p)), ...confirmedPayments]
       .map((entry: unknown) => {
         const p = (entry ?? {}) as Record<string, unknown>;
         const amount = Math.round((Number(p.amount) || 0) * 100) / 100;
@@ -352,7 +354,7 @@ Deno.serve(async (req: Request) => {
           date: str(p.date, 10) || isoDate(new Date()),
           amount,
           label: str(p.label, 80) || "Zahlungseingang",
-          reference: str(p.reference, 80) || "",
+          reference: str(p.reference, 255) || "",
         };
       })
       .filter((p: RecordedPayment) => p.amount > 0);
@@ -549,7 +551,7 @@ Deno.serve(async (req: Request) => {
     const paymentsHtml = payments
       .map(
         (p: RecordedPayment) =>
-          `<div style="font-size:13px;color:#6b7280;">${escapeHtml(p.label)} vom ${escapeHtml(new Date(p.date).toLocaleDateString("de-DE"))}${p.reference ? ` (${escapeHtml(p.reference)})` : ""}: − ${money(p.amount)}</div>`,
+          `<div style="font-size:13px;color:#6b7280;overflow-wrap:anywhere;">${escapeHtml(p.label)} vom ${escapeHtml(new Date(p.date).toLocaleDateString("de-DE"))}${p.reference ? ` (${escapeHtml(p.reference.length > 24 ? `${p.reference.slice(0, 12)}...${p.reference.slice(-8)}` : p.reference)})` : ""}: − ${money(p.amount)}</div>`,
       )
       .join("");
 

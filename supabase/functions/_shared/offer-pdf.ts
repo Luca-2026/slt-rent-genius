@@ -652,7 +652,7 @@ export async function generateOfferPdf(data: {
     const refundAmount = Math.max(0, Number(data.creditRefundAmount) || 0);
     const remainingBalance = Math.max(0, Number(data.creditRemainingBalance) || 0);
     const refundText = refundAmount > 0
-      ? `${fm(refundAmount)} werden Ihnen auf das uns bekannte Konto erstattet. ` +
+      ? `${fm(refundAmount)} werden Ihnen auf das ursprüngliche Zahlungsmittel bzw. das uns bekannte Konto erstattet. ` +
         (remainingBalance > 0
           ? `Nach Verrechnung verbleibt aus der Rechnung ${data.parentInvoiceNumber || ""} noch ein offener Betrag von ${fm(remainingBalance)}.`
           : "Eine gesonderte Zahlung Ihrerseits ist nicht erforderlich.")

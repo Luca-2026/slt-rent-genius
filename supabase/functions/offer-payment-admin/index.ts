@@ -8,6 +8,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { z } from "https://esm.sh/zod@3.23.8";
 import { LOCATION_CONTACTS, resolveLocationKey } from "../_shared/inquiry-offer-math.ts";
 import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
+import { creditRefund } from "../_shared/credit-refund.ts";
 import {
   ensurePaymentLink,
   isStripeConfigured,
@@ -30,6 +31,8 @@ const money = (cents: number) =>
 const esc = (s: unknown) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 const Body = z.discriminatedUnion("action", [
+  z.object({ action: z.literal("credit_refund_info"), credit_note_id: z.string().uuid() }),
+  z.object({ action: z.literal("refund_credit_note"), credit_note_id: z.string().uuid() }),
   z.object({
     action: z.literal("create_link"),
     inquiry_type: z.enum(["rental", "sales"]),
@@ -101,6 +104,15 @@ Deno.serve(async (req: Request) => {
       .eq("user_id", user.id)
       .in("role", ["admin", "niederlassungsleiter"]);
     if (!roleRows || roleRows.length === 0) return json({ error: "Keine Berechtigung für Kautionserstattungen" }, 403);
+
+    if (body.action === "refund_credit_note" || body.action === "credit_refund_info") {
+      try {
+        return json(await creditRefund(service, body.credit_note_id, user.id, body.action === "refund_credit_note"));
+      } catch (error) {
+        console.error("Gutschrifterstattung konnte nicht abgeschlossen werden");
+        return json({ error: error instanceof Error ? error.message : "Erstattung nicht möglich." }, 409);
+      }
+    }
 
     const { data: link } = await service.from("offer_payment_links").select("*").eq("id", body.link_id).maybeSingle();
     if (!link || link.status !== "paid" || !link.payment_intent_id) {

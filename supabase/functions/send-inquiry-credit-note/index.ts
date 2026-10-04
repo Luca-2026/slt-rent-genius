@@ -318,7 +318,7 @@ Deno.serve(async (req: Request) => {
 
     // ── E-Mail an den Kunden ──
     const refundText = refundAmount > 0
-      ? `<strong>${money(refundAmount)}</strong> erstatten wir Ihnen auf das uns bekannte Konto.` +
+      ? `<strong>${money(refundAmount)}</strong> erstatten wir Ihnen auf das ursprüngliche Zahlungsmittel bzw. das uns bekannte Konto.` +
         (remainingBalance > 0
           ? ` Nach Verrechnung verbleibt ein offener Rechnungsbetrag von <strong>${money(remainingBalance)}</strong>.`
           : " Eine weitere Zahlung ist nicht erforderlich.")
@@ -389,6 +389,7 @@ Deno.serve(async (req: Request) => {
         vat_amount: -vatAmount,
         gross_amount: -grossCredit,
         credit_reason: reason,
+        credit_refund_amount: refundAmount,
         notes: null,
         status: "draft",
         file_url: fileUrl,
