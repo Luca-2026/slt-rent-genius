@@ -107,7 +107,7 @@ Deno.serve(async (req: Request) => {
       return json({ error: "Zu diesem Angebot liegt keine bezahlte Online-Zahlung vor." }, 409);
     }
     if (link.deposit_cents <= 0) return json({ error: "Mit dieser Zahlung wurde keine Kaution bezahlt." }, 409);
-    if (isStripeTestMode() === link.livemode) {
+    if (link.livemode !== !isStripeTestMode()) {
       return json({ error: "Die Zahlung stammt aus einem anderen Stripe-Modus (Test/Live)." }, 409);
     }
 
