@@ -25,8 +25,13 @@ const PRIO_CLASS: Record<CallPriority, string> = {
   info: "bg-muted text-muted-foreground",
 };
 
-const fmt = (c: PhoneCall) => new Date(c.call_started_at ?? c.created_at).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" });
+const fmt = (c: PhoneCall) => new Date(c.call_started_at ?? c.created_at).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short", timeZone: "Europe/Berlin" });
 const who = (c: PhoneCall) => [c.company_name, c.customer_name ?? c.caller_name].filter(Boolean).join(" · ") || c.caller_phone || "Unbekannter Anrufer";
+const callTime = (c: PhoneCall) => c.call_started_at ?? c.created_at;
+const NEW_WINDOW_MS = 3 * 60 * 60 * 1000;
+/** Eingegangen in den letzten 3 Stunden – wird markiert, damit neue Anrufe nicht zwischen älteren dringenden untergehen. */
+export const isNewCall = (c: PhoneCall, now = Date.now()) => now - new Date(callTime(c)).getTime() < NEW_WINDOW_MS;
+const SORT_KEY = "slt_calls_sort";
 
 export function PriorityBadge({ p }: { p: CallPriority | null }) {
   if (!p) return <Badge variant="outline">Wird ausgewertet</Badge>;
@@ -44,11 +49,25 @@ export default function PhoneCalls() {
   const [asst, setAsst] = useState("all");
   const [status, setStatus] = useState("active");
   const [selId, setSelId] = useState<string | null>(null);
+  const [sort, setSortState] = useState<"priority" | "newest">(() => {
+    try { return localStorage.getItem(SORT_KEY) === "newest" ? "newest" : "priority"; } catch { return "priority"; }
+  });
+  const setSort = (v: string) => {
+    const next = v === "newest" ? "newest" : "priority";
+    setSortState(next);
+    try { localStorage.setItem(SORT_KEY, next); } catch { /* ignore */ }
+  };
 
-  const filtered = useMemo(() => rows.filter((c) =>
-    (prio === "all" || c.priority === prio) && (intent === "all" || c.intent === intent) &&
-    (loc === "all" || (c.location ?? (c.assistant === "bonn" ? "bonn" : null)) === loc) && (asst === "all" || c.assistant === asst) &&
-    (status === "all" || (status === "active" ? c.status !== "done" : c.status === status))), [rows, prio, intent, loc, asst, status]);
+  const filtered = useMemo(() => {
+    const list = rows.filter((c) =>
+      (prio === "all" || c.priority === prio) && (intent === "all" || c.intent === intent) &&
+      (loc === "all" || (c.location ?? (c.assistant === "bonn" ? "bonn" : null)) === loc) && (asst === "all" || c.assistant === asst) &&
+      (status === "all" || (status === "active" ? c.status !== "done" : c.status === status)));
+    if (sort === "newest") return [...list].sort((a, b) => callTime(b).localeCompare(callTime(a)));
+    // Priorität: neue Anrufe (letzte 3 h) stehen oben, damit sie sofort sichtbar sind
+    const now = Date.now();
+    return [...list].sort((a, b) => Number(isNewCall(b, now) && b.status !== "done") - Number(isNewCall(a, now) && a.status !== "done"));
+  }, [rows, prio, intent, loc, asst, status, sort]);
   const sel = rows.find((r) => r.id === selId) ?? null;
 
   if (!accessLoading && !isStaff) return <B2BPortalLayout title="Anrufe"><p className="text-muted-foreground">Nur für Mitarbeiter.</p></B2BPortalLayout>;
