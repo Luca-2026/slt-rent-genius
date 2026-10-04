@@ -8,6 +8,14 @@
  *   the job is then created manually in Rentware.
  */
 import { OPEN_ENDED_NOTE, monthlyNetFromOffer } from "../_shared/installments.ts";
+import {
+  ensurePaymentLink,
+  isStripeConfigured,
+  isStripeTestMode,
+  planPaymentAmounts,
+  shouldOfferPaymentLink,
+  toCents,
+} from "../_shared/stripe-pay.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
@@ -405,6 +413,36 @@ Deno.serve(async (req: Request) => {
       console.error("AGB-Anhang konnte nicht geladen werden:", agbPath, err);
     }
 
+    // ── Online-Zahlungslink (Stripe) für Vorkasse-Angebote ──
+    // Im Stripe-Testmodus erhält nur die Testadresse einen Link – nie echte Kunden.
+    let paymentLinkUrl: string | null = null;
+    let paymentLinkAmount = 0;
+    try {
+      if (isStripeConfigured()) {
+        const paidCents = (Array.isArray(inquiry.payments) ? inquiry.payments : []).reduce(
+          (sum: number, p: { amount?: unknown }) => sum + toCents(p?.amount),
+          0,
+        );
+        const plan = planPaymentAmounts({ gross: totals.grossAmount, deposit, paidCents });
+        if (shouldOfferPaymentLink({ paymentTerms, customerEmail, testMode: isStripeTestMode(), openCents: plan.openCents })) {
+          const link = await ensurePaymentLink(service, {
+            table: table as "rental_inquiries" | "sales_inquiries",
+            inquiryId: inquiry.id,
+            customerEmail,
+            offerNumber,
+            plan,
+            createdBy: user.id,
+          });
+          if (link) {
+            paymentLinkUrl = link.url;
+            paymentLinkAmount = plan.openCents / 100;
+          }
+        }
+      }
+    } catch (e) {
+      console.error("Zahlungslink konnte nicht erstellt werden:", (e as Error).message);
+    }
+
     // ── E-Mail an den Kunden ──
     const resendKey = Deno.env.get("RESEND_API_KEY");
     let emailSent = false;
@@ -498,6 +536,12 @@ Deno.serve(async (req: Request) => {
     Bitte bestätigen Sie uns die Annahme kurz per E-Mail an
     <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a>${["net_7", "net_14", "net_30"].includes(paymentTerms) ? "." : " und leisten Sie die Zahlung gemäß den unten stehenden Zahlungsbedingungen."}
   </div>
+  ${paymentLinkUrl ? `<div style="background:#eef4f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
+    <strong>Bequem online bezahlen:</strong><br>
+    Über Ihren persönlichen Zahlungslink können Sie den Betrag von <strong>${money(paymentLinkAmount)}</strong>${deposit > 0 ? ` (inkl. Kaution ${money(deposit)}, wird nach Rückgabe erstattet)` : ""} direkt online begleichen. Der Link gilt nur für dieses Angebot.
+    <p style="margin:12px 0 0;"><a href="${escapeHtml(paymentLinkUrl)}" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;font-weight:bold;padding:10px 18px;border-radius:4px;">Jetzt online bezahlen</a></p>
+    <span style="color:#6b7280;font-size:12px;">Alternativ ist die Banküberweisung gemäß den Zahlungsbedingungen weiterhin möglich.</span>
+  </div>` : ""}
   <div style="background:#eef4f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>Wann ist Ihr Auftrag verbindlich?</strong><br>
     ${["net_7", "net_14", "net_30"].includes(paymentTerms) ? "Nach Ihrer Annahme erhalten Sie unsere Auftragsbestätigung." : "Sobald Ihre Zahlung bei uns eingegangen ist, erhalten Sie unsere Auftragsbestätigung."}
