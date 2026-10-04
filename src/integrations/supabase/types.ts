@@ -4685,6 +4685,15 @@ export type Database = {
           stock_source: string
         }[]
       }
+      check_public_rate_limit: {
+        Args: {
+          _bucket: string
+          _client_key: string
+          _max_hits: number
+          _window_seconds: number
+        }
+        Returns: boolean
+      }
       close_expired_rental_inquiries: { Args: never; Returns: number }
       complete_maintenance: {
         Args: {

@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { allowPublicRequest } from "../_shared/publicRateLimit.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -39,6 +40,9 @@ serve(async (req) => {
       const sessionToken = String(body.sessionToken ?? "");
       if (input.length < 3) return json({ suggestions: [] });
       if (input.length > 200 || sessionToken.length > 100) return json({ error: "Ungültige Eingabe" }, 400);
+      if (!(await allowPublicRequest(req, "geo-autocomplete", 300, 3600))) {
+        return json({ error: "Zu viele Anfragen. Bitte versuche es später erneut." }, 429);
+      }
 
       const res = await fetch(
         "https://places.googleapis.com/v1/places:autocomplete",
@@ -89,6 +93,9 @@ serve(async (req) => {
         return json({ error: "placeId or address is required" }, 400);
       }
       const destination = placeId ? { placeId } : { address };
+      if (!(await allowPublicRequest(req, "geo-distance", 60, 3600))) {
+        return json({ error: "Zu viele Anfragen. Bitte versuche es später erneut." }, 429);
+      }
 
       async function computeFor(locationId: string) {
         const origin = LOCATION_ORIGINS[locationId];
