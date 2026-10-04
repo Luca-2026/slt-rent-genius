@@ -1,5 +1,11 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – mobile Zahlungen und Stripe-Gutschrifterstattung
+- [ ] Zahlungsfelder mobil ohne Überschneidung; bestätigte Stripe-Zahlungen unveränderlich
+- [ ] Zahlungscodes im gemeinsamen Geschäfts-PDF begrenzen und umbrechen
+- [ ] Gutschriften mit sicherer, expliziter Stripe-Erstattung und Statusanzeige verbinden
+- [ ] Automatische und angemeldete mobile Prüfungen; keine echte Zahlung/Erstattung ohne gesonderte Freigabe
+
 ## Aktuell – Umsatzsaldo und Kundensuche
 - [x] Portalrechnung +16,81 netto und Gutschrift −16,81 saldieren: Startseite und Auswertung zeigen 0; 12 Fachtests bestanden, Admin-Anmeldung geprüft
 - [x] Startseitensuche öffnet Harald Sassen und Portal-Testfirma direkt in Kundenbearbeitung; bestehende Admin-Rechte bleiben, keine Daten gespeichert
