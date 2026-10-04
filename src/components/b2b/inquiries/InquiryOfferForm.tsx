@@ -1636,7 +1636,7 @@ export function InquiryOfferForm({
       <p className="text-xs text-muted-foreground">
         {isInvoice
           ? "Die Rechnungsnummer wird beim Versand vergeben. Danach ist die Rechnung unveränderlich und kann nur noch storniert werden."
-          : "Der Kunde wird in der E-Mail gebeten, die Annahme per Antwort an das Standort-Postfach zu bestätigen. Danach den Job manuell in Rentware anlegen."}
+          : "Der Kunde kann das Angebot über den Button in der E-Mail online annehmen und unterschreiben – ihr bekommt dann einen Hinweis hier in der Anfrage. Danach den Job manuell in Rentware anlegen."}
       </p>
     </div>
   );
