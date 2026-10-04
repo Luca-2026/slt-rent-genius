@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 const { stripe } = vi.hoisted(() => ({ stripe: { checkout: { sessions: { retrieve: vi.fn() } }, paymentIntents: { retrieve: vi.fn() }, refunds: { list: vi.fn(), create: vi.fn() } } }));
-vi.mock("../../supabase/functions/_shared/stripe-pay.ts", () => ({ stripeClient: () => stripe, toCents: (n: unknown) => Math.max(0, Math.round(Number(n) * 100) || 0) }));
-import { creditRefund } from "../../supabase/functions/_shared/credit-refund";
+vi.mock("../supabase/functions/_shared/stripe-pay.ts", () => ({ stripeClient: () => stripe, toCents: (n: unknown) => Math.max(0, Math.round(Number(n) * 100) || 0) }));
+import { creditRefund } from "../supabase/functions/_shared/credit-refund";
 
 function fixture(paid = 100, creditAmount = 40, used = 0, existing: any = null) {
   const credit = { id: "credit", invoice_kind: "credit_note", status: "paid", parent_invoice_id: "parent", gross_amount: -creditAmount, created_at: "2026-10-04", invoice_number: "GS-M" };
