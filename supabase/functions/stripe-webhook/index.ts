@@ -10,7 +10,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { LOCATION_CONTACTS, resolveLocationKey } from "../_shared/inquiry-offer-math.ts";
 import { operationalEmailRecipient } from "../_shared/test-email-routing.ts";
-import { appendPayment, paymentMatches, stripeClient } from "../_shared/stripe-pay.ts";
+import { appendPayment, paymentMatches, stripeClient, toCents } from "../_shared/stripe-pay.ts";
 
 const money = (cents: number) =>
   new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(cents / 100);
@@ -87,7 +87,7 @@ Deno.serve(async (req: Request) => {
 
       const { data: inquiry } = await service
         .from(link.inquiry_table)
-        .select("id, payments, customer_email, location, offer_number")
+        .select("id, payments, customer_email, location, offer_number, offer_total_gross, offer_payload")
         .eq("id", link.inquiry_id)
         .maybeSingle();
       if (!inquiry) {
@@ -104,11 +104,17 @@ Deno.serve(async (req: Request) => {
         const { error } = await service.from(link.inquiry_table).update({ payments, paid_amount: paidAmount }).eq("id", inquiry.id);
         if (error) throw new Error(`Zahlung konnte nicht gebucht werden: ${error.message}`);
       }
+      // Rest offen (z. B. nach 30 % Anzahlung)? Dann bleibt der Link für den Restbetrag aktiv.
+      const depositEuro = Number((inquiry.offer_payload as { deposit?: unknown } | null)?.deposit) || 0;
+      const remainingCents = Math.max(0, toCents(inquiry.offer_total_gross) + toCents(depositEuro) - Math.round(paidAmount * 100));
+      const metaDeposit = Number(session.metadata?.deposit_cents);
+      const isAnzahlung = session.metadata?.choice === "anzahlung";
       await service.from("offer_payment_links").update({
-        status: "paid",
+        status: remainingCents > 0 ? "active" : "paid",
         stripe_session_id: session.id,
         payment_intent_id: piId,
-        paid_cents: expected,
+        ...(Number.isFinite(metaDeposit) ? { deposit_cents: metaDeposit } : {}),
+        paid_cents: (added ? (link.paid_cents ?? 0) + expected : (link.paid_cents ?? expected)),
         paid_at: new Date().toISOString(),
         warning: null,
         updated_at: new Date().toISOString(),
@@ -127,7 +133,7 @@ Deno.serve(async (req: Request) => {
               from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
               to: [to],
               subject: `Zahlung eingegangen – Angebot ${link.offer_number}`,
-              html: `<p>Online-Zahlung per Stripe eingegangen: <strong>${money(expected)}</strong> (davon Kaution ${money(link.deposit_cents)}) zu Angebot <strong>${esc(link.offer_number)}</strong>.</p><p>Die Zahlung ist in der Mietanfrage unter „Zahlungseingänge“ gebucht. Die Auftragsbestätigung kann jetzt versendet werden.</p>`,
+              html: `<p>Online-Zahlung per Stripe eingegangen: <strong>${money(expected)}</strong> ${isAnzahlung ? "(30 % Anzahlung)" : `(davon Kaution ${money(Number.isFinite(metaDeposit) ? metaDeposit : link.deposit_cents)})`} zu Angebot <strong>${esc(link.offer_number)}</strong>.</p><p>Die Zahlung ist in der Mietanfrage unter „Zahlungseingänge“ gebucht.${remainingCents > 0 ? ` Noch offen: <strong>${money(remainingCents)}</strong> (Restbetrag inkl. Kaution vor Mietbeginn).` : ""} Die Auftragsbestätigung kann jetzt versendet werden.</p>`,
             }),
           });
         } catch (e) {
