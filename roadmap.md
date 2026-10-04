@@ -1,5 +1,9 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – falscher Portal-Starttext
+- [ ] Vorab-Text ausschließlich auf app.slt-rental.de vor der ersten Anzeige unterdrücken; Website-SEO und Portal-Anmeldung unverändert lassen
+- [ ] Portal-Erstanzeige und öffentliche Seiten auf Desktop/Mobil prüfen; Veröffentlichung bleibt gesondert
+
 ## Aktuell – mobile Zahlungen und Stripe-Gutschrifterstattung
 - [x] Zahlungsfelder mobil ohne Überschneidung; Stripe-Zeile mit verkürzter Referenz und ohne Eingabefelder im angemeldeten Admin-Test bei 390 px geprüft; DB schützt Originaleinträge
 - [x] Zahlungscodes im gemeinsamen Geschäfts-PDF begrenzen und umbrechen; Angebot/Rechnung/Auftragsbestätigung mit 148-Zeichen-Referenz lokal erzeugt, alle 5 Seiten visuell geprüft

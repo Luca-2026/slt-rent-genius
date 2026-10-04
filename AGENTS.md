@@ -1,4 +1,7 @@
 # Agent rules
+<!-- LOVABLE:BEGIN -->
+- Inject the portal first-paint guard through the Vite HTML plugin before body parsing; hide only prerender fallback content on the exact portal host to preserve public SEO and the React portal.
+<!-- LOVABLE:END -->
 - Protokollentwürfe je Mitarbeiter, Auftrag und Art mit Foto-Dateien in IndexedDB sichern und erst nach erfolgreichem Abschluss löschen – mobile Kamera und Browser-Neustart dürfen keine Erfassung vernichten.
 - Kundengruppen-Filter nur über src/lib/customerSegment.ts (Filter: Privat vs. Geschäftskunden inkl. B2B-Portal) – einheitliche Logik in allen Portal-Listen.
 - Portal-Startseite /b2b/start (StaffHome) ist Landeseite für Admin/Mitarbeiter; Kennzahlen nur über src/lib/dashboardMetrics.ts (getestet) – eine Umsatzdefinition für alle Ansichten.

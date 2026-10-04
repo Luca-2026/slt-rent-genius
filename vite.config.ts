@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { componentTagger } from "lovable-tagger";
 import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/supabase/vite";
+import { portalFirstPaintPlugin } from "./scripts/portalFirstPaint";
 
 const srcDir = fileURLToPath(new URL("./src", import.meta.url));
 
@@ -90,6 +91,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   plugins: [
+    portalFirstPaintPlugin(),
     react(),
     mcpPlugin(),
     mode === "development" && componentTagger(),
