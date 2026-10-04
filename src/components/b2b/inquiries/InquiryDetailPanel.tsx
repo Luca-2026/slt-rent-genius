@@ -268,11 +268,12 @@ function initialDocMode(inquiryType: string, inquiryId: string, offerNumber: str
     }
     const saved = window.sessionStorage.getItem(DOC_MODE_PREFIX + inquiryId);
     if (saved === "revise") return offerNumber && hasSnapshot ? "revise" : "offer";
-    if (saved === "invoice" || saved === "final") return saved;
+    if (saved === "invoice" || saved === "final" || saved === "offer") return saved as DocMode;
   } catch {
     /* ignorieren */
   }
-  return "offer";
+  // Mit versendetem Angebot startet die Ansicht beim Auftrag (Überarbeiten), nicht bei einem leeren Neuangebot.
+  return offerNumber && hasSnapshot ? "revise" : "offer";
 }
 
 export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, defaultDelivery, details, onChanged, onDeleted }: Props) {
@@ -622,12 +623,13 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           inquiryType={inquiryType}
           inquiryId={inquiry.id}
           location={inquiry.location}
-          defaultItems={docMode !== "offer" && offerSnapshot ? offerSnapshot.items : defaultItems}
-          defaultCosts={docMode !== "offer" ? offerSnapshot?.costs : undefined}
+          // Bestehender Auftrag: immer mit den zuletzt angebotenen Positionen/Beträgen starten, nie bei 0 €.
+          defaultItems={offerSnapshot?.items?.length ? offerSnapshot.items : defaultItems}
+          defaultCosts={offerSnapshot?.costs}
           reviseOf={docMode === "revise" ? inquiry.offer_number : null}
           defaultMeta={docMode === "revise" ? offerSnapshot?.meta : undefined}
           defaultPayments={docMode === "invoice" || docMode === "final" ? inquiryPayments : undefined}
-          defaultDelivery={docMode === "revise" ? offerSnapshot?.delivery ?? defaultDelivery : defaultDelivery}
+          defaultDelivery={offerSnapshot?.delivery ?? defaultDelivery}
           rentalPeriod={{ start: inquiry.start_date ?? null, end: inquiry.end_date ?? null }}
           reservationId={(inquiry as any).b2b_reservation_id ?? null}
 
