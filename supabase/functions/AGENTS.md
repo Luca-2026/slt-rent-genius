@@ -2,3 +2,8 @@
 
 - Legacy B2B protocol HTML footers must use `unifiedFooterHtml` from `_shared/pdf-footer.ts`; their email PDFs use `drawUnifiedFooter` with the reservation location so both outputs match business documents.
 - Online payments (Stripe) only via `_shared/stripe-pay.ts` (tested): amount = offer gross + deposit − recorded payments; the webhook books a payment into `inquiry.payments` only on an exact cent match, idempotently, so the order confirmation stays tied to full payment. Deposit refunds only via `offer-payment-admin` (admin and branch manager); in Stripe test mode only the test customer address receives a payment link.
+- Fußzeile aller Geschäfts-PDFs (Angebot, Auftragsbestätigung, Rechnung, Rechnungskorrektur, Protokolle) nur über supabase/functions/_shared/pdf-footer.ts inkl. Standort der Auftragsabwicklung – eine Fußzeile, kein Auseinanderlaufen je Dokumentart.
+- PDF company details come from `_shared/offer-company.ts` and `_shared/company.ts` so legal identities stay consistent.
+- Route designated test-customer copies and acceptance notifications through `_shared/test-email-routing.ts` to avoid operational mailboxes.
+- Stripe payment snapshots are immutable; invoices rehydrate provider receipts server-side to prevent draft edits. Credit refunds use _shared/credit-refund.ts through offer-payment-admin with persisted allocations, stable idempotency and webhook sync to prevent duplicate refunds.
+- Online-Angebotsannahme nur über offer_acceptance_links + öffentliche Function offer-accept (/angebot/<token>): ein Link je Angebotsfassung, neue Fassung macht alte ungültig, Annahme atomar einmalig mit Name, Unterschrift und AGB-Bestätigung – damit keine doppelte oder veraltete Annahme entsteht.
