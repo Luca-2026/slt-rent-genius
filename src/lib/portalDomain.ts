@@ -5,8 +5,8 @@
  * Ausgeliefert wird derselbe Build – die Weiche läuft über den Hostnamen.
  */
 
-export const PORTAL_HOST = "app.slt-rental.de";
-export const PUBLIC_HOST = "www.slt-rental.de";
+import { PORTAL_HOST, PUBLIC_HOST } from "./portalHosts";
+export { PORTAL_HOST, PUBLIC_HOST } from "./portalHosts";
 
 export const PORTAL_ORIGIN = `https://${PORTAL_HOST}`;
 export const PUBLIC_ORIGIN = `https://${PUBLIC_HOST}`;
