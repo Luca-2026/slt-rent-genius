@@ -19,6 +19,7 @@ import { ExternalLink, RefreshCw, Search, Send, CheckCircle2, Ban, Banknote } fr
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { formatEuro } from "@/components/b2b/inquiries/offerMath";
+import { CreditNoteRefund } from "@/components/b2b/inquiries/CreditNoteRefund";
 
 
 interface InvoiceRow {
@@ -107,7 +108,7 @@ const dateDE = (value: string | null) => (value ? new Date(value).toLocaleDateSt
 /** Übersicht aller Rechnungen, die aus Miet- und Verkaufsanfragen entstanden sind. */
 export default function InquiryInvoices() {
   const { toast } = useToast();
-  const { isStaff, isAdmin, loading: accessLoading } = useStaffAccess();
+  const { isStaff, isAdmin, isBranchManager, loading: accessLoading } = useStaffAccess();
   const [rows, setRows] = useState<InvoiceRow[]>([]);
   const [portalRows, setPortalRows] = useState<PortalInvoiceRow[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -433,6 +434,7 @@ export default function InquiryInvoices() {
                     {row.email_sent ? " · per E-Mail versendet" : " · noch nicht versendet"}
                   </div>
                   <div className="flex flex-wrap gap-2 pt-1">
+                    {row.invoice_kind === "credit_note" && row.status !== "draft" && row.status !== "cancelled" && (isAdmin || isBranchManager) && <CreditNoteRefund creditId={row.id} onChanged={load} />}
                     {row.file_url && (
                       <Button size="sm" variant="outline" asChild>
                         <a href={row.file_url} target="_blank" rel="noreferrer">
