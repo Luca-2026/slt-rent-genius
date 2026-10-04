@@ -8,6 +8,7 @@ import { MagicLinkEmail } from '../_shared/email-templates/magic-link.tsx'
 import { RecoveryEmail } from '../_shared/email-templates/recovery.tsx'
 import { EmailChangeEmail } from '../_shared/email-templates/email-change.tsx'
 import { ReauthenticationEmail } from '../_shared/email-templates/reauthentication.tsx'
+import { ownDomainAuthLink } from '../_shared/auth-links.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -38,7 +39,7 @@ const ROOT_DOMAIN = 'slt-rental.de'
 const RESEND_DOMAIN = Deno.env.get('RESEND_DOMAIN') || ROOT_DOMAIN
 const FROM_ADDRESS = `${SITE_NAME} <noreply@${RESEND_DOMAIN}>`
 
-const SAMPLE_PROJECT_URL = 'https://slt-rent-genius.lovable.app'
+const SAMPLE_PROJECT_URL = 'https://app.slt-rental.de'
 const SAMPLE_EMAIL = 'user@example.test'
 const SAMPLE_DATA: Record<string, object> = {
   signup: { siteName: SITE_NAME, siteUrl: SAMPLE_PROJECT_URL, recipient: SAMPLE_EMAIL, confirmationUrl: SAMPLE_PROJECT_URL },
@@ -178,9 +179,9 @@ async function handleWebhook(req: Request): Promise<Response> {
 
   const props = {
     siteName: SITE_NAME,
-    siteUrl: `https://${ROOT_DOMAIN}`,
+    siteUrl: 'https://app.slt-rental.de',
     recipient,
-    confirmationUrl: payload.data.url,
+    confirmationUrl: payload.data.url ? ownDomainAuthLink(payload.data.url) : undefined,
     token: payload.data.token,
     email: payload.data.email,
     newEmail: payload.data.new_email,

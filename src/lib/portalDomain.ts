@@ -36,10 +36,7 @@ export function authRedirectOrigin(): string {
  * Wichtig: beide Origins müssen in der Redirect-Allow-List des Backends stehen.
  */
 export function authRedirectUrl(path = "/"): string {
-  if (typeof window !== "undefined" && window.location.hostname.toLowerCase() === PORTAL_HOST) {
-    return `${PORTAL_ORIGIN}${path}`;
-  }
-  return `${PUBLIC_ORIGIN}${path}`;
+  return `${PORTAL_ORIGIN}${path}`;
 }
 
 

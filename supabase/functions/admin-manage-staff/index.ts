@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { PASSWORD_RESET_URL, recoveryLink } from "../_shared/auth-links.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -205,13 +206,14 @@ Deno.serve(async (req: Request) => {
         const { data: linkData, error: linkError } =
           await serviceClient.auth.admin.generateLink({
             type: "recovery",
-            email: body.email!,
+            email: body.email,
             options: {
-              redirectTo: "https://slt-rent-genius.lovable.app/b2b/passwort-zuruecksetzen",
+              redirectTo: PASSWORD_RESET_URL,
             },
           });
 
-        const resetLink = linkData?.properties?.action_link || "";
+        if (linkError || !linkData?.properties) throw new Error("Password recovery link could not be generated");
+        const resetLink = recoveryLink(linkData.properties);
 
         if (resendApiKey) {
           const roleLabel =

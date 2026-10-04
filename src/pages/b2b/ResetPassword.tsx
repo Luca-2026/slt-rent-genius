@@ -15,6 +15,7 @@ export default function ResetPassword() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [sessionReady, setSessionReady] = useState(false);
+  const [linkError, setLinkError] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -26,12 +27,27 @@ export default function ResetPassword() {
       }
     });
 
-    // Also check if we already have a session (user clicked the link)
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setSessionReady(true);
-    });
+    let active = true;
+    const tokenHash = new URLSearchParams(window.location.search).get("token_hash");
+    if (tokenHash) {
+      // Remove the single-use token from history before verifying; never log it.
+      const cleanUrl = new URL(window.location.href);
+      cleanUrl.searchParams.delete("token_hash");
+      cleanUrl.searchParams.delete("type");
+      window.history.replaceState(window.history.state, "", cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
+      supabase.auth.verifyOtp({ token_hash: tokenHash, type: "recovery" }).then(({ error }) => {
+        if (!active) return;
+        if (error) { setLinkError(true); setSessionReady(false); }
+        else setSessionReady(true);
+      }).catch(() => { if (active) setLinkError(true); });
+    } else {
+      // Existing provider links deliver their session through the URL hash.
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (active && session) setSessionReady(true);
+      });
+    }
 
-    return () => subscription.unsubscribe();
+    return () => { active = false; subscription.unsubscribe(); };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -86,8 +102,9 @@ export default function ResetPassword() {
           ) : !sessionReady ? (
             <div className="text-center space-y-4">
               <p className="text-sm text-muted-foreground">
-                Bitte klicken Sie auf den Link in Ihrer E-Mail, um Ihr Passwort zurückzusetzen.
+                {linkError ? "Dieser Link ist ungültig oder abgelaufen. Bitte fordern Sie einen neuen Passwortlink an." : "Bitte klicken Sie auf den Link in Ihrer E-Mail, um Ihr Passwort zurückzusetzen."}
               </p>
+              {linkError && <Button variant="outline" onClick={() => navigate("/b2b/passwort-vergessen/")}>Neuen Link anfordern</Button>}
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">

@@ -904,7 +904,7 @@ function generateDeliveryNoteHtml(data: {
       ${data.agbAccepted 
         ? `<span style="color:#00507d;">✓</span> Der Mieter erklärt hiermit, die <strong>Allgemeinen Geschäftsbedingungen (AGB)</strong> 
            der ${SLT_COMPANY.name} (Marke: ${SLT_COMPANY.brand}), einsehbar unter 
-           <a href="https://slt-rent-genius.lovable.app/agb" style="color:#00507d;">www.slt-rental.de/agb</a>, 
+           <a href="https://www.slt-rental.de/agb" style="color:#00507d;">www.slt-rental.de/agb</a>, 
            vor Vertragsschluss zur Kenntnis genommen und deren Geltung ausdrücklich anerkannt zu haben. 
            Die AGB wurden am <strong>${data.dateTime}</strong> akzeptiert.` 
         : `Die Allgemeinen Geschäftsbedingungen der ${SLT_COMPANY.name} sind Vertragsbestandteil. 
