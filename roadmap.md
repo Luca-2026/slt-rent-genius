@@ -88,3 +88,4 @@
 - [ ] Testzahlung (Testkarte) Ende zu Ende prüfen, sobald Webhook-Secret da ist
 - [ ] Neuer Build auf Serverprofis hochladen (Seite /zahlung/ ist sonst auf www nicht erreichbar)
 - [ ] PayPal-Direktanbindung: aktuell nicht umgesetzt (Stripe kann PayPal als Zahlart im Stripe-Dashboard aktivieren)
+- [ ] Portal-Subdomain app.slt-rental.de in Lovable verbinden (DNS bei Serverprofis setzen, SSL abwarten, Publish), damit das Vermietportal über Lovable läuft
