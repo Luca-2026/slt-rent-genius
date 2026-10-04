@@ -1,5 +1,11 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – eigene Domains und Mitarbeiter-Passwortlinks
+- [x] Mitarbeiter-Einladungen, Admin-Passwortlinks, Auth-Mail-Links und weitere ausgehende technische Website-/Portal-Links auf eigene Domains umgestellt; sechs betroffene Funktionen deployed
+- [x] Weiterleitung der exakten technischen veröffentlichten Domain vor der ersten Anzeige auf passende eigene Domain implementiert; Vorschau unverändert; benötigt Publish → Update, keine vollständige Abschaltung der Hosting-Adresse
+- [x] 20 Tests bestanden; Browser: ungültiger Token abgewiesen/aus URL entfernt, neue Linkanforderung geöffnet, neue HTML-Ausgabe auf altem Host zu eigener Website/Portal weitergeleitet; keine Mitarbeiter-E-Mail oder Passwortänderung ausgelöst
+- [ ] Frontend-Änderungen über Publish → Update veröffentlichen; anschließend gültigen Mitarbeiterlink durch den Mitarbeiter prüfen. Alte E-Mail bleibt unverändert; Auth-Site-URL/Allowlist nicht auslesbar und nicht verändert.
+
 ## Aktuell – falscher Portal-Starttext
 - [x] Vorab-Text ausschließlich auf app.slt-rental.de vor der ersten Anzeige unterdrücken; Website-SEO und Portal-Anmeldung unverändert lassen
 - [x] 7 Tests sowie erste Anzeige mit verzögertem App-Start auf Desktop/Mobil geprüft: Portal-Vorabtext unsichtbar, Website-Text sichtbar, Anmeldung unverändert; Veröffentlichung bleibt gesondert

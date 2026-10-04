@@ -249,7 +249,7 @@ Deno.serve(async (req: Request) => {
 
       <!-- CTA -->
       <div style="text-align:center;margin:30px 0;">
-        <a href="https://slt-rent-genius.lovable.app/b2b/dashboard" 
+        <a href="https://app.slt-rental.de/b2b/dashboard" 
            style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">
           Zum B2B-Portal →
         </a>

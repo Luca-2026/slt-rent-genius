@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { PASSWORD_RESET_URL, recoveryLink } from "../_shared/auth-links.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -71,7 +72,7 @@ Deno.serve(async (req) => {
       type: "recovery",
       email,
       options: {
-        redirectTo: "https://www.slt-rental.de/b2b/passwort-zuruecksetzen",
+        redirectTo: PASSWORD_RESET_URL,
       },
     });
 
@@ -88,7 +89,7 @@ Deno.serve(async (req) => {
     const resendDomain = Deno.env.get("RESEND_DOMAIN") || "slt-rental.de";
 
     if (resendApiKey && data?.properties?.action_link) {
-      const resetUrl = data.properties.action_link;
+      const resetUrl = recoveryLink(data.properties);
 
       const htmlBody = `<!DOCTYPE html>
 <html lang="de">
