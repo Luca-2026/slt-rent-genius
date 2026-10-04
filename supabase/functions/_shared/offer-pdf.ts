@@ -652,7 +652,7 @@ export async function generateOfferPdf(data: {
     const refundAmount = Math.max(0, Number(data.creditRefundAmount) || 0);
     const remainingBalance = Math.max(0, Number(data.creditRemainingBalance) || 0);
     const refundText = refundAmount > 0
-      ? `${fm(refundAmount)} werden Ihnen auf das uns bekannte Konto erstattet. ` +
+      ? `${fm(refundAmount)} werden Ihnen auf das ursprüngliche Zahlungsmittel bzw. das uns bekannte Konto erstattet. ` +
         (remainingBalance > 0
           ? `Nach Verrechnung verbleibt aus der Rechnung ${data.parentInvoiceNumber || ""} noch ein offener Betrag von ${fm(remainingBalance)}.`
           : "Eine gesonderte Zahlung Ihrerseits ist nicht erforderlich.")
@@ -687,12 +687,17 @@ export async function generateOfferPdf(data: {
       y -= 16;
     }
     for (const p of payments) {
-      const label = [p.label || "Zahlungseingang", p.date ? fd(p.date) : "", p.reference ? `(${p.reference})` : ""]
+      const reference = p.reference && p.reference.length > 24
+        ? `${p.reference.slice(0, 12)}...${p.reference.slice(-8)}` : p.reference;
+      const label = [p.label || "Zahlungseingang", p.date ? fd(p.date) : "", reference ? `(${reference})` : ""]
         .filter(Boolean)
         .join(" ");
-      dt(pg, label, tx - 60, y, font, 9, MUTED);
+      const amountText = `-${fm(Number(p.amount))}`;
+      const labelLines = wt(label, font, 9, CW - font.widthOfTextAtSize(amountText, 9) - 16);
+      need(labelLines.length * 12 + 52);
+      labelLines.forEach((line, i) => dt(pg, line, ML, y - i * 12, font, 9, MUTED));
       dtr(pg, `-${fm(Number(p.amount))}`, vx, y, font, 9, MUTED);
-      y -= 12;
+      y -= labelLines.length * 12;
     }
     dt(pg, "Bereits gezahlt", tx, y, bold, 9, MUTED);
     dtr(pg, `-${fm(amountPaid)}`, vx, y, bold, 9, MUTED);

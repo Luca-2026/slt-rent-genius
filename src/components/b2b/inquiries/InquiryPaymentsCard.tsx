@@ -7,6 +7,7 @@ import { Banknote, Plus, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { formatEuro } from "./offerMath";
+import { isStripePayment, shortPaymentReference } from "@/lib/paymentPresentation";
 
 /** Erfasste (Teil-)Zahlung zu einer Anfrage. */
 export interface InquiryPayment {
@@ -120,10 +121,16 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
       )}
 
       {rows.map((row, index) => (
-        <div key={index} className="grid gap-2 sm:grid-cols-[130px_120px_1fr_1fr_auto] items-end">
-          <div>
+        isStripePayment(row) ? (
+          <div key={index} className="min-w-0 border-b border-border pb-3 space-y-1 text-sm">
+            <div className="flex flex-wrap justify-between gap-2"><span className="font-medium">Online-Zahlung (Stripe)</span><strong>{formatEuro(row.amount)}</strong></div>
+            <p className="text-xs text-muted-foreground">{row.date} · Bestätigt</p>
+            <p className="break-all text-xs text-muted-foreground" title={row.reference}>{shortPaymentReference(row.reference)}</p>
+          </div>
+        ) : <div key={index} className="grid min-w-0 gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-[130px_120px_minmax(0,1fr)_minmax(0,1fr)_auto] items-end">
+          <div className="min-w-0">
             <Label className="text-[11px]">Datum</Label>
-            <Input type="date" value={row.date ?? ""} onChange={(e) => patch(index, { date: e.target.value })} />
+            <Input className="min-w-0 w-full max-w-full" type="date" disabled={disabled || saving} value={row.date ?? ""} onChange={(e) => patch(index, { date: e.target.value })} />
           </div>
           <div>
             <Label className="text-[11px]">Betrag (€)</Label>
@@ -132,17 +139,19 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
               step="0.01"
               min="0"
               value={row.amount}
+              disabled={disabled || saving}
               onChange={(e) => patch(index, { amount: Number(e.target.value) })}
             />
           </div>
           <div>
             <Label className="text-[11px]">Zahlungsweg</Label>
-            <Input value={row.label ?? ""} onChange={(e) => patch(index, { label: e.target.value })} placeholder="Banküberweisung" />
+            <Input disabled={disabled || saving} value={row.label ?? ""} onChange={(e) => patch(index, { label: e.target.value })} placeholder="Banküberweisung" />
           </div>
-          <div>
+          <div className="min-w-0">
             <Label className="text-[11px]">Verwendungszweck</Label>
             <Input
               value={row.reference ?? ""}
+              disabled={disabled || saving}
               onChange={(e) => patch(index, { reference: e.target.value })}
               placeholder="z. B. Angebotsnummer"
             />
@@ -152,6 +161,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
             variant="ghost"
             onClick={() => setRows((prev) => prev.filter((_, i) => i !== index))}
             aria-label="Zahlung entfernen"
+            disabled={disabled || saving}
           >
             <Trash2 className="h-4 w-4" />
           </Button>
@@ -168,7 +178,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
         <Button size="sm" variant="outline" onClick={add} disabled={disabled || saving}>
           <Plus className="h-3.5 w-3.5 mr-1" /> Zahlung hinzufügen
         </Button>
-        <Button size="sm" onClick={save} disabled={disabled || saving}>
+        <Button size="sm" onClick={save} disabled={disabled || saving || !dirty}>
           Zahlungen speichern
         </Button>
         <span className="text-sm ml-auto">

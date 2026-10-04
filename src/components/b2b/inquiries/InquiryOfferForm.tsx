@@ -1,4 +1,5 @@
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
+import { isStripePayment, shortPaymentReference } from "@/lib/paymentPresentation";
 import { PdfPagesPreview } from "@/components/b2b/PdfPagesPreview";
 import { applyCategoryDiscount, loadCategoryDiscounts, loadInquiryProfileId, type DiscountMap } from "@/lib/customerDiscounts";
 import { NumberInput } from "@/components/ui/number-input";
@@ -282,7 +283,8 @@ export function InquiryOfferForm({
   const [openEnded, setOpenEnded] = useState<boolean>(canOpenEnded && !!(draft?.openEnded ?? defaultMeta?.open_ended));
   /** Bereits erhaltene (Teil-)Zahlungen – werden auf der Rechnung abgezogen. */
   const [payments, setPayments] = useState<OfferPayment[]>(
-    (draft?.payments as OfferPayment[]) ?? defaultPayments ?? [],
+    [...((draft?.payments as OfferPayment[]) ?? defaultPayments ?? []).filter((p) => !isStripePayment(p)),
+      ...(defaultPayments ?? []).filter(isStripePayment)],
   );
   /** Leistungszeitraum der Rechnung (nur im Rechnungsmodus sichtbar). */
   const [servicePeriodStart, setServicePeriodStart] = useState(
@@ -1422,7 +1424,7 @@ export function InquiryOfferForm({
 
       {isInvoice && (
         <div className="rounded-lg border border-border p-3 space-y-2">
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <Label className="text-xs">Bereits erhaltene Zahlungen (z. B. Vorkasse auf das Angebot)</Label>
             <Button
               type="button"
@@ -1450,11 +1452,18 @@ export function InquiryOfferForm({
             </p>
           )}
           {payments.map((p, index) => (
-            <div key={index} className="grid grid-cols-2 sm:grid-cols-4 gap-2 items-end">
-              <div>
+            isStripePayment(p) ? (
+              <div key={index} className="min-w-0 border-b border-border pb-3 space-y-1 text-sm">
+                <div className="flex flex-wrap justify-between gap-2"><span className="font-medium">Online-Zahlung (Stripe)</span><strong>{formatEuro(p.amount)}</strong></div>
+                <p className="text-xs text-muted-foreground">{p.date} · Bestätigt</p>
+                <p className="break-all text-xs text-muted-foreground" title={p.reference}>{shortPaymentReference(p.reference)}</p>
+              </div>
+            ) : <div key={index} className="grid min-w-0 grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2 items-end">
+              <div className="min-w-0">
                 <Label className="text-[11px]">Datum</Label>
                 <Input
                   type="date"
+                  className="min-w-0 w-full max-w-full"
                   value={p.date}
                   disabled={disabled}
                   onChange={(e) =>
@@ -1488,8 +1497,8 @@ export function InquiryOfferForm({
                   }
                 />
               </div>
-              <div className="flex gap-2 items-end">
-                <div className="flex-1">
+              <div className="flex min-w-0 gap-2 items-end">
+                <div className="flex-1 min-w-0">
                   <Label className="text-[11px]">Verwendungszweck</Label>
                   <Input
                     value={p.reference ?? ""}

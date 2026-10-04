@@ -2068,6 +2068,47 @@ export type Database = {
         }
         Relationships: []
       }
+      credit_note_refunds: {
+        Row: {
+          allocations: Json
+          amount_cents: number
+          created_at: string
+          created_by: string
+          credit_note_id: string
+          id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          allocations?: Json
+          amount_cents: number
+          created_at?: string
+          created_by: string
+          credit_note_id: string
+          id?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          allocations?: Json
+          amount_cents?: number
+          created_at?: string
+          created_by?: string
+          credit_note_id?: string
+          id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credit_note_refunds_credit_note_id_fkey"
+            columns: ["credit_note_id"]
+            isOneToOne: true
+            referencedRelation: "inquiry_invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       credit_note_series_counters: {
         Row: {
           last_value: number
@@ -2395,6 +2436,7 @@ export type Database = {
           created_by: string | null
           created_by_name: string | null
           credit_reason: string | null
+          credit_refund_amount: number | null
           credited_amount: number
           crm_customer_id: string | null
           customer_city: string | null
@@ -2458,6 +2500,7 @@ export type Database = {
           created_by?: string | null
           created_by_name?: string | null
           credit_reason?: string | null
+          credit_refund_amount?: number | null
           credited_amount?: number
           crm_customer_id?: string | null
           customer_city?: string | null
@@ -2521,6 +2564,7 @@ export type Database = {
           created_by?: string | null
           created_by_name?: string | null
           credit_reason?: string | null
+          credit_refund_amount?: number | null
           credited_amount?: number
           crm_customer_id?: string | null
           customer_city?: string | null
@@ -4601,6 +4645,7 @@ export type Database = {
           created_by: string | null
           created_by_name: string | null
           credit_reason: string | null
+          credit_refund_amount: number | null
           credited_amount: number
           crm_customer_id: string | null
           customer_city: string | null
@@ -4798,6 +4843,7 @@ export type Database = {
           created_by: string | null
           created_by_name: string | null
           credit_reason: string | null
+          credit_refund_amount: number | null
           credited_amount: number
           crm_customer_id: string | null
           customer_city: string | null
@@ -4875,6 +4921,15 @@ export type Database = {
       }
       slt_normalize_location: { Args: { _raw: string }; Returns: string }
       slt_try_date: { Args: { _raw: string }; Returns: string }
+      sync_credit_note_refund: {
+        Args: {
+          _credit_id: string
+          _intent: string
+          _refund_id: string
+          _status: string
+        }
+        Returns: undefined
+      }
       timesheet_locked_through: { Args: never; Returns: string }
       update_b2b_profile_with_pending: {
         Args: {

@@ -146,6 +146,13 @@ Deno.serve(async (req: Request) => {
 
     if (event.type === "refund.created" || event.type === "refund.updated") {
       const refund = event.data.object as Stripe.Refund;
+      if (refund.metadata?.credit_note_id) {
+        const intent = typeof refund.payment_intent === "string" ? refund.payment_intent : refund.payment_intent?.id;
+        if (intent) {
+          const { error } = await service.rpc("sync_credit_note_refund", { _credit_id: refund.metadata.credit_note_id, _intent: intent, _refund_id: refund.id, _status: refund.status ?? "pending" });
+          if (error) throw new Error("Erstattungsstatus konnte nicht gespeichert werden");
+        }
+      }
       await service.from("deposit_refunds").update({ status: refund.status ?? "pending", updated_at: new Date().toISOString() })
         .eq("stripe_refund_id", refund.id);
       await finish(`refund_${refund.status}`);
