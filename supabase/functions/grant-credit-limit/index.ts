@@ -97,7 +97,7 @@ Deno.serve(async (req: Request) => {
     const { data: profile, error: profileError } = await admin
       .from("b2b_profiles")
       .select(
-        "id, company_name, contact_first_name, contact_last_name, contact_email, assigned_location, credit_limit"
+        "id, company_name, contact_first_name, contact_last_name, contact_email, assigned_location, credit_limit, credit_limit_requested_at, status"
       )
       .eq("id", profileId)
       .single();
@@ -129,6 +129,13 @@ Deno.serve(async (req: Request) => {
     const locationPhone = LOCATION_PHONE[locKey] || LOCATION_PHONE.krefeld;
 
     const customerFirstName = profile.contact_first_name || "";
+    // Niederlassungsleiter dürfen nur offene Kreditlimit-Anfragen freigegebener Kunden bearbeiten
+    if (!isAdminRole && (!profile.credit_limit_requested_at || profile.status !== "approved")) {
+      return new Response(JSON.stringify({ error: "Für diesen Kunden liegt keine offene Kreditlimit-Anfrage vor. Nur ein Admin kann das Limit ändern." }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     if (!isAdminRole && Number(profile.credit_limit) > MAX_BRANCH_LIMIT) {
       return new Response(JSON.stringify({ error: "Dieses Kreditlimit liegt über 2.000 € und kann nur ein Admin ändern." }), {
         status: 403,
