@@ -16,6 +16,7 @@ import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
 import { LOCATION_CONTACTS, resolveLocationKey } from "../_shared/inquiry-offer-math.ts";
+import { refundMethod, refundMethodText } from "../_shared/refund-method.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -318,7 +319,7 @@ Deno.serve(async (req: Request) => {
 
     // ── E-Mail an den Kunden ──
     const refundText = refundAmount > 0
-      ? `<strong>${money(refundAmount)}</strong> erstatten wir Ihnen auf das ursprüngliche Zahlungsmittel bzw. das uns bekannte Konto.` +
+      ? `<strong>${money(refundAmount)}</strong> erstatten wir Ihnen ${refundMethodText(refundMethod(invoice.payments))}. Es wird nie mehr erstattet, als Sie bezahlt haben.` +
         (remainingBalance > 0
           ? ` Nach Verrechnung verbleibt ein offener Rechnungsbetrag von <strong>${money(remainingBalance)}</strong>.`
           : " Eine weitere Zahlung ist nicht erforderlich.")
