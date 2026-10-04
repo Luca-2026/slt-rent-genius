@@ -16,5 +16,17 @@ export async function invokeWithAuth<T = any>(name: string, body: unknown) {
     }
     res = await call();
   }
+  // Fehlerantworten (z. B. 409) lesbar machen statt nur „non-2xx“ – die Oberfläche zeigt data.error an.
+  if (res.error && !res.data) {
+    let message: string | undefined;
+    try {
+      const body = await (res.error as any)?.context?.clone?.().json?.();
+      if (body && typeof body.error === "string") message = body.error;
+    } catch { /* kein JSON */ }
+    if (message && /rk_(live|test)_|sk_(live|test)_|charge_write/.test(message)) {
+      message = "Der Stripe-Schlüssel hat nicht die nötige Berechtigung. Es wurde nichts ausgeführt.";
+    }
+    return { data: { error: message ?? "Die Aktion konnte nicht ausgeführt werden. Bitte erneut versuchen." } as any, error: res.error };
+  }
   return res;
 }
