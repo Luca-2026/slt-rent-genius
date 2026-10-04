@@ -1,5 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { ownDomainAuthLink } from "../_shared/auth-links.ts";
+import { PORTAL_AUTH_ORIGIN, ownDomainAuthLink } from "../_shared/auth-links.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -72,7 +72,7 @@ Deno.serve(async (req) => {
       type: "magiclink",
       email,
       options: {
-        redirectTo: "https://app.slt-rental.de/",
+        redirectTo: `${PORTAL_AUTH_ORIGIN}/b2b/login/`,
       },
     });
 
