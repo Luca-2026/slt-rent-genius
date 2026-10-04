@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useSigningOverlaysSuppressed } from "@/lib/signingOverlays";
 import { Cookie, Settings, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -40,6 +41,8 @@ export function openCookieSettings() {
 }
 
 export function CookieConsentBanner() {
+  const { pathname } = useLocation();
+  const signing = useSigningOverlaysSuppressed(pathname);
   const [visible, setVisible] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [analytics, setAnalytics] = useState(false);
@@ -86,10 +89,10 @@ export function CookieConsentBanner() {
     setShowDetails(false);
   };
 
-  if (!visible) return null;
+  if (!visible || signing) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-end justify-center pointer-events-none">
+    <div data-slt-cookie-banner className="fixed inset-0 z-[9999] flex items-end justify-center pointer-events-none">
       {/* Backdrop when details open */}
       {showDetails && (
         <div
