@@ -18,6 +18,7 @@ import { INQUIRY_STATUSES, canTransition, type InquiryStatus } from "@/lib/inqui
 import { InquiryStatusBadge } from "./InquiryStatusBadge";
 import { inquiryDraftKey, readInquiryDraft } from "./offerDraftStorage";
 import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm";
+import { OfferAcceptanceNotice } from "./OfferAcceptanceNotice";
 import { useInquiryActions } from "./useInquiryActions";
 import { InquiryCustomerCard, type CustomerKind } from "./InquiryCustomerCard";
 import { RejectInquiryDialog } from "./RejectInquiryDialog";
@@ -365,6 +366,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
 
   return (
     <div className="space-y-5">
+      <OfferAcceptanceNotice inquiryId={inquiry.id} />
       <div className="flex flex-wrap items-center gap-2">
         <InquiryStatusBadge status={inquiry.status} />
         {inquiry.assigned_name ? (
