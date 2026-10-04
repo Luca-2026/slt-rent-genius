@@ -2898,6 +2898,66 @@ export type Database = {
         }
         Relationships: []
       }
+      offer_acceptance_links: {
+        Row: {
+          accepted_at: string | null
+          accepted_ip: string | null
+          accepted_user_agent: string | null
+          agb_accepted: boolean
+          created_at: string
+          created_by: string | null
+          customer_email: string | null
+          gross_amount: number
+          id: string
+          inquiry_id: string
+          inquiry_table: string
+          offer_number: string
+          signature_data: string | null
+          signer_name: string | null
+          status: string
+          token: string
+          valid_until: string | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_ip?: string | null
+          accepted_user_agent?: string | null
+          agb_accepted?: boolean
+          created_at?: string
+          created_by?: string | null
+          customer_email?: string | null
+          gross_amount?: number
+          id?: string
+          inquiry_id: string
+          inquiry_table: string
+          offer_number: string
+          signature_data?: string | null
+          signer_name?: string | null
+          status?: string
+          token: string
+          valid_until?: string | null
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_ip?: string | null
+          accepted_user_agent?: string | null
+          agb_accepted?: boolean
+          created_at?: string
+          created_by?: string | null
+          customer_email?: string | null
+          gross_amount?: number
+          id?: string
+          inquiry_id?: string
+          inquiry_table?: string
+          offer_number?: string
+          signature_data?: string | null
+          signer_name?: string | null
+          status?: string
+          token?: string
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
       offer_payment_links: {
         Row: {
           amount_cents: number
