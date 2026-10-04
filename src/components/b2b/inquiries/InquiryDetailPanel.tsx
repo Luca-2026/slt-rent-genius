@@ -23,6 +23,7 @@ import { InquiryCustomerCard, type CustomerKind } from "./InquiryCustomerCard";
 import { RejectInquiryDialog } from "./RejectInquiryDialog";
 import { OrderConfirmationCard } from "./OrderConfirmationCard";
 import { InquiryPaymentsCard, parseInquiryPayments } from "./InquiryPaymentsCard";
+import { StripePaymentCard } from "./StripePaymentCard";
 import type { OfferLine } from "./offerMath";
 import { formatEuro } from "./offerMath";
 import { useAuth } from "@/hooks/useAuth";
@@ -530,6 +531,13 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         offerTotalGross={inquiry.offer_total_gross}
         deposit={Number((inquiry.offer_payload as { deposit?: unknown } | null)?.deposit) || 0}
         disabled={busy}
+        onChanged={onChanged}
+      />
+
+      <StripePaymentCard
+        table={table}
+        inquiryId={inquiry.id}
+        offerNumber={inquiry.offer_number}
         onChanged={onChanged}
       />
 
