@@ -107,7 +107,33 @@ Deno.serve(async (req: Request) => {
 
     if (body.action === "refund_credit_note" || body.action === "credit_refund_info") {
       try {
-        return json(await creditRefund(service, body.credit_note_id, user.id, body.action === "refund_credit_note"));
+        const execute = body.action === "refund_credit_note";
+        const result: any = await creditRefund(service, body.credit_note_id, user.id, execute);
+        // Bestätigung nur einmal: bei frischer, von Stripe angenommener Erstattung.
+        if (execute && !result.already_requested && ["succeeded", "pending"].includes(result.status)) {
+          const resendKey = Deno.env.get("RESEND_API_KEY");
+          const { data: credit } = await service.from("inquiry_invoices").select("invoice_number, customer_email, customer_name, location, parent_invoice_id").eq("id", body.credit_note_id).maybeSingle();
+          const { data: parent } = credit?.parent_invoice_id ? await service.from("inquiry_invoices").select("invoice_number").eq("id", credit.parent_invoice_id).maybeSingle() : { data: null };
+          if (resendKey && credit?.customer_email) {
+            const loc = LOCATION_CONTACTS[resolveLocationKey(credit.location)];
+            const rcpt = documentEmailRecipients(credit.customer_email, [loc.email]);
+            const res = await fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+              body: JSON.stringify({
+                from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
+                to: rcpt.to,
+                ...(rcpt.cc.length ? { cc: rcpt.cc } : {}),
+                reply_to: loc.email,
+                subject: `Erstattung über Stripe – Rechnungskorrektur ${credit.invoice_number}`,
+                html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><p>Guten Tag${credit.customer_name ? ` ${esc(credit.customer_name)}` : ""},</p><p>zu unserer Rechnungskorrektur <strong>${esc(credit.invoice_number)}</strong>${parent?.invoice_number ? ` (Rechnung ${esc(parent.invoice_number)})` : ""} haben wir Ihnen <strong>${money(result.amount_cents)}</strong> vollständig über Stripe erstattet – auf dasselbe Zahlungsmittel (z. B. Karte), mit dem Sie online bezahlt haben.</p><p>Die Gutschrift erscheint je nach Bank in der Regel innerhalb von 5–10 Werktagen. Sie müssen nichts weiter tun.</p><p>Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${esc(loc.name)}<br>Tel. ${esc(loc.phone)} · ${esc(loc.email)}</p></div>`,
+              }),
+            });
+            result.customer_mailed = res.ok;
+            if (!res.ok) console.error("Erstattungsbestätigung fehlgeschlagen:", res.status);
+          }
+        }
+        return json(result);
       } catch (error) {
         const msg = error instanceof Error ? error.message : "";
         console.error("Gutschrifterstattung konnte nicht abgeschlossen werden");
