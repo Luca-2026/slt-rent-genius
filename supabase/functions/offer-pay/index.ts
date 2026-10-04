@@ -9,10 +9,12 @@ import {
   ALLOWED_RETURN_ORIGINS,
   PAY_BASE,
   isStripeConfigured,
+  paymentOptions,
   planPaymentAmounts,
   stripeClient,
   toCents,
 } from "../_shared/stripe-pay.ts";
+import { SLT_COMPANY } from "../_shared/company.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -51,37 +53,40 @@ Deno.serve(async (req: Request) => {
       (s: number, p: { amount?: unknown }) => s + toCents(p?.amount),
       0,
     );
-    const deposit = Number((inquiry.offer_payload as { deposit?: unknown } | null)?.deposit) || 0;
+    const payload = (inquiry.offer_payload ?? {}) as { deposit?: unknown; payment_terms?: unknown };
+    const deposit = Number(payload.deposit) || 0;
+    const terms = typeof payload.payment_terms === "string" ? payload.payment_terms : "vorkasse";
     const plan = planPaymentAmounts({ gross: inquiry.offer_total_gross, deposit, paidCents });
+    const options = paymentOptions({ gross: inquiry.offer_total_gross, deposit, paidCents, terms });
     if (status === "active" && plan.openCents <= 0) status = "paid";
+    // Nach einer Anzahlung bleibt der Link für den Restbetrag gültig.
+    if (status === "paid" && plan.openCents > 0 && inquiry.offer_number === link.offer_number) status = "active";
 
     const view = {
       status,
       offer_number: link.offer_number,
+      payment_terms: terms,
+      paid_cents: paidCents,
       rent_cents: status === "active" ? plan.rentCents : link.rent_cents,
       deposit_cents: status === "active" ? plan.depositCents : link.deposit_cents,
       amount_cents: status === "active" ? plan.openCents : link.amount_cents,
+      options: status === "active" ? options : [],
+      bank: status === "active"
+        ? { holder: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, bank: SLT_COMPANY.bankName, reference: link.offer_number }
+        : null,
     };
     if (action === "info") return json(view);
 
     if (status !== "active") return json({ error: "Dieser Zahlungslink ist nicht mehr gültig", ...view }, 409);
     if (!isStripeConfigured()) return json({ error: "Online-Zahlung ist derzeit nicht verfügbar" }, 503);
 
+    const choice = body?.choice === "anzahlung" ? "anzahlung" : "full";
+    const option = options.find((o) => o.choice === choice) ?? options.find((o) => o.choice === "full");
+    if (!option) return json({ error: "Es ist kein Betrag mehr offen", ...view }, 409);
+
     const origin = ALLOWED_RETURN_ORIGINS.includes(String(body?.origin)) ? String(body.origin) : PAY_BASE;
     const stripe = stripeClient();
 
-    // Betrag ggf. an zwischenzeitlich erfasste Zahlungen anpassen
-    if (plan.openCents !== link.amount_cents) {
-      await service
-        .from("offer_payment_links")
-        .update({
-          rent_cents: plan.rentCents,
-          deposit_cents: plan.depositCents,
-          amount_cents: plan.openCents,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", link.id);
-    }
     // frühere, noch offene Session beenden (verhindert Doppelzahlung)
     if (link.stripe_session_id) {
       try {
@@ -90,22 +95,24 @@ Deno.serve(async (req: Request) => {
     }
 
     const lineItems = [
-      ...(plan.rentCents > 0
+      ...(option.rentCents > 0
         ? [{
           quantity: 1,
           price_data: {
             currency: "eur",
-            unit_amount: plan.rentCents,
-            product_data: { name: `Miete laut Angebot ${link.offer_number}`, description: "Bruttobetrag inkl. MwSt." },
+            unit_amount: option.rentCents,
+            product_data: option.choice === "anzahlung"
+              ? { name: `Anzahlung 30 % laut Angebot ${link.offer_number}`, description: "Restbetrag und Kaution vor Mietbeginn" }
+              : { name: `Miete laut Angebot ${link.offer_number}`, description: "Bruttobetrag inkl. MwSt." },
           },
         }]
         : []),
-      ...(plan.depositCents > 0
+      ...(option.depositCents > 0
         ? [{
           quantity: 1,
           price_data: {
             currency: "eur",
-            unit_amount: plan.depositCents,
+            unit_amount: option.depositCents,
             product_data: { name: "Kaution", description: "Wird nach Rückgabe des Mietgegenstands erstattet" },
           },
         }]
@@ -116,7 +123,10 @@ Deno.serve(async (req: Request) => {
       inquiry_table: link.inquiry_table,
       inquiry_id: link.inquiry_id,
       offer_number: link.offer_number,
-      amount_cents: String(plan.openCents),
+      amount_cents: String(option.amountCents),
+      rent_cents: String(option.rentCents),
+      deposit_cents: String(option.depositCents),
+      choice: option.choice,
     };
     const session = await stripe.checkout.sessions.create({
       mode: "payment",

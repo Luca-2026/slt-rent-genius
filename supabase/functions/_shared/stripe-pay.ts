@@ -42,6 +42,35 @@ export function planPaymentAmounts(input: { gross: unknown; deposit?: unknown; p
   return { openCents, rentCents, depositCents };
 }
 
+/** Vorkasse-Konditionen, bei denen der Kunde zwischen Überweisung und Online-Zahlung wählt. */
+export const PREPAY_TERMS = new Set(["vorkasse", "anzahlung_30", "rentpair_vorkasse"]);
+export const ANZAHLUNG_RATE = 0.3;
+export type PayChoice = "anzahlung" | "full";
+export interface PayOption {
+  choice: PayChoice;
+  rentCents: number;
+  depositCents: number;
+  amountCents: number;
+}
+
+/**
+ * Zahlungsvarianten für die Zahlungsseite.
+ *  - Vorkasse komplett: nur Gesamtbetrag (Miete + Kaution − bereits gezahlt).
+ *  - 30 % Anzahlung: Anzahlung = 30 % der Bruttomiete abzüglich bisheriger Zahlungen;
+ *    der Kunde darf stattdessen auch direkt alles zahlen. Ist die Anzahlung gedeckt,
+ *    bleibt nur der Restbetrag (inkl. Kaution).
+ */
+export function paymentOptions(input: { gross: unknown; deposit?: unknown; paidCents?: number; terms?: string | null }): PayOption[] {
+  const plan = planPaymentAmounts(input);
+  if (plan.openCents <= 0) return [];
+  const full: PayOption = { choice: "full", rentCents: plan.rentCents, depositCents: plan.depositCents, amountCents: plan.openCents };
+  if (input.terms !== "anzahlung_30") return [full];
+  const paid = Math.max(0, Math.round(input.paidCents ?? 0));
+  const due = Math.round(toCents(input.gross) * ANZAHLUNG_RATE) - paid;
+  if (due <= 0 || due >= plan.openCents) return [full];
+  return [{ choice: "anzahlung", rentCents: due, depositCents: 0, amountCents: due }, full];
+}
+
 /** Link nur für Vorkasse-Konditionen; im Testmodus nur für die Testadresse. */
 export function shouldOfferPaymentLink(input: {
   paymentTerms: string;

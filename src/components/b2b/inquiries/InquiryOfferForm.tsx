@@ -133,13 +133,13 @@ const PAYMENT_OPTIONS: Record<"business" | "private", { value: string; label: st
     { value: "net_14", label: "Rechnung – 14 Tage netto" },
     { value: "net_7", label: "Rechnung – 7 Tage netto" },
     { value: "net_30", label: "Rechnung – 30 Tage netto" },
-    { value: "vorkasse", label: "Vorkasse per Banküberweisung" },
+    { value: "anzahlung_30", label: "30 % Anzahlung – Überweisung oder online" },
+    { value: "vorkasse", label: "Vorkasse komplett – Überweisung oder online" },
     { value: "custom", label: "Individuelle Zahlungsbedingungen …" },
   ],
   private: [
-    { value: "anzahlung_30", label: "30 % Anzahlung binnen 48 Std. (Zahlungslink)" },
-    { value: "rentpair_vorkasse", label: "Vorkasse komplett über Zahlungslink" },
-    { value: "vorkasse", label: "Vorkasse per Banküberweisung" },
+    { value: "anzahlung_30", label: "30 % Anzahlung – Überweisung oder online" },
+    { value: "vorkasse", label: "Vorkasse komplett – Überweisung oder online" },
   ],
 };
 
@@ -294,7 +294,11 @@ export function InquiryOfferForm({
 
   const defaultTerms = () =>
     isInvoice ? (customerKind === "business" ? "net_14" : "vorkasse") : customerKind === "business" ? "net_14" : "anzahlung_30";
-  const [paymentTerms, setPaymentTerms] = useState<string>(draft?.paymentTerms ?? defaultMeta?.payment_terms ?? defaultTerms());
+  const [paymentTerms, setPaymentTerms] = useState<string>(() => {
+    const t = draft?.paymentTerms ?? defaultMeta?.payment_terms ?? defaultTerms();
+    // Alte Variante „Vorkasse über Zahlungslink“ ist jetzt Teil von „Vorkasse komplett“.
+    return t === "rentpair_vorkasse" ? "vorkasse" : t;
+  });
   /** Freitext für „Individuelle Zahlungsbedingungen“ (nur Geschäftskunden). */
   const [paymentTermsCustom, setPaymentTermsCustom] = useState<string>(draft?.paymentTermsCustom ?? defaultMeta?.payment_terms_custom ?? "");
   const sendLock = useRef(false);
@@ -1404,11 +1408,9 @@ export function InquiryOfferForm({
           {paymentTerms === "custom"
             ? "Dieser Text erscheint wortgleich im Angebots-PDF und in der E-Mail an den Kunden."
             : paymentTerms === "anzahlung_30"
-            ? "Der Kunde erhält nach Annahme eine Buchungsbestätigung mit Zahlungslink; mindestens 30 % Anzahlung innerhalb von 48 Stunden, sonst wird die Reservierung freigegeben."
-            : paymentTerms === "rentpair_vorkasse"
-              ? "Vollständige Vorkasse über den Zahlungslink in der Buchungsbestätigung (48 Stunden)."
-              : paymentTerms === "vorkasse"
-                ? "Vorkasse per Banküberweisung – Bankdaten stehen im Angebots-PDF, Frist ist die Angebotsgültigkeit."
+            ? "Kunde zahlt mindestens 30 % der Bruttomiete vorab, Rest inkl. Kaution vor Mietbeginn. Er wählt selbst: Überweisung oder online über den Zahlungslink in der Angebotsmail."
+            : paymentTerms === "vorkasse" || paymentTerms === "rentpair_vorkasse"
+                ? "Vorkasse komplett vor Mietbeginn. Der Kunde wählt selbst: Überweisung oder online über den Zahlungslink in der Angebotsmail."
                 : "Rechnungszahlung nach Mietende innerhalb der gewählten Frist; es gilt die Angebotsgültigkeit."}
         </p>
       </div>

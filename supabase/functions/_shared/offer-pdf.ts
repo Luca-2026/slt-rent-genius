@@ -712,20 +712,17 @@ export async function generateOfferPdf(data: {
   const hasCreditLimit = data.profile.credit_limit && data.profile.credit_limit > 0;
   const paymentDueDays = data.profile.payment_due_days || 14;
   const PAYMENT_TEXTS: Record<string, string> = {
-    vorkasse: "Zahlungsbedingungen: Vorkasse. Der Rechnungsbetrag ist vor Mietbeginn zu entrichten.",
+    vorkasse: "Zahlungsbedingungen: Vorkasse komplett vor Mietbeginn \u2013 wahlweise per \u00DCberweisung unter Angabe der Angebotsnummer oder online \u00FCber den pers\u00F6nlichen Zahlungslink aus der Angebots-E-Mail.",
     net_7: "Zahlungsbedingungen: Zahlung innerhalb von 7 Tagen nach Rechnungsstellung (netto).",
     net_14: "Zahlungsbedingungen: Zahlung innerhalb von 14 Tagen nach Rechnungsstellung (netto).",
     net_30: "Zahlungsbedingungen: Zahlung innerhalb von 30 Tagen nach Rechnungsstellung (netto).",
     net_60: "Zahlungsbedingungen: Zahlung innerhalb von 60 Tagen nach Rechnungsstellung (netto).",
     "50_50_14": "Zahlungsbedingungen: 50 % Vorkasse vor Mietbeginn, 50 % Restzahlung innerhalb von 14 Tagen nach Rechnungsstellung.",
     anzahlung_30:
-      "Zahlungsbedingungen: Vorkasse. Nach Annahme dieses Angebots erhalten Sie eine Buchungsbest\u00E4tigung mit Zahlungslink. " +
-      "Innerhalb von 48 Stunden sind mindestens 30 % des Bruttobetrages als Anzahlung zu leisten \u2013 bequem per PayPal, Kredit- oder Debitkarte " +
-      "oder per \u00DCberweisung unter Angabe der Angebotsnummer. Der Restbetrag ist vor Mietbeginn f\u00E4llig. " +
-      "Ohne fristgerechten Zahlungseingang wird die Reservierung systemseitig wieder freigegeben.",
+      "Zahlungsbedingungen: 30 % Anzahlung auf die Bruttomiete, Restbetrag vor Mietbeginn \u2013 wahlweise per \u00DCberweisung " +
+      "unter Angabe der Angebotsnummer oder online \u00FCber den pers\u00F6nlichen Zahlungslink aus der Angebots-E-Mail.",
     rentpair_vorkasse:
-      "Zahlungsbedingungen: Vorkasse \u00FCber unser Buchungssystem. Nach Annahme dieses Angebots erhalten Sie eine Buchungsbest\u00E4tigung " +
-      "mit Zahlungslink (PayPal, Kredit-/Debitkarte oder \u00DCberweisung unter Angabe der Angebotsnummer). Die Zahlung ist vor Mietbeginn f\u00E4llig.",
+      "Zahlungsbedingungen: Vorkasse komplett vor Mietbeginn \u2013 wahlweise per \u00DCberweisung unter Angabe der Angebotsnummer oder online \u00FCber den pers\u00F6nlichen Zahlungslink.",
   };
   const customPaymentText = data.paymentTerms === "custom" && data.paymentTermsCustom?.trim()
     ? `Zahlungsbedingungen: ${data.paymentTermsCustom.trim()}`

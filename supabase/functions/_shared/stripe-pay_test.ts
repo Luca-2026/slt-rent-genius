@@ -50,3 +50,17 @@ Deno.test("Kaution: nur noch offener Anteil erstattbar", () => {
   assertEquals(refundableDepositCents(20000, [{ amount_cents: 5000, status: "failed" }]), 20000);
   assertEquals(refundableDepositCents(20000, [{ amount_cents: 20000, status: "succeeded" }]), 0);
 });
+
+import { paymentOptions } from "./stripe-pay.ts";
+
+Deno.test("Vorkasse komplett: nur Gesamtbetrag", () => {
+  assertEquals(paymentOptions({ gross: 100, deposit: 50, terms: "vorkasse" }).map((o) => [o.choice, o.amountCents]), [["full", 15000]]);
+});
+
+Deno.test("30 % Anzahlung: Anzahlung oder alles, danach Rest inkl. Kaution", () => {
+  const first = paymentOptions({ gross: 333.33, deposit: 200, terms: "anzahlung_30" });
+  assertEquals(first.map((o) => [o.choice, o.amountCents, o.depositCents]), [["anzahlung", 10000, 0], ["full", 53333, 20000]]);
+  const after = paymentOptions({ gross: 333.33, deposit: 200, paidCents: 10000, terms: "anzahlung_30" });
+  assertEquals(after.map((o) => [o.choice, o.amountCents]), [["full", 43333]]);
+  assertEquals(paymentOptions({ gross: 100, deposit: 0, paidCents: 10000, terms: "anzahlung_30" }), []);
+});
