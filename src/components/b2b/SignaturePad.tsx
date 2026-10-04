@@ -1,5 +1,6 @@
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useLayoutEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
+import { registerSigningSurface } from "@/lib/signingOverlays";
 import { Eraser, Check, Save, RotateCcw } from "lucide-react";
 
 interface SignaturePadProps {
@@ -13,6 +14,7 @@ interface SignaturePadProps {
  * Lifting the finger never saves; saved signatures can be cleared and redone.
  */
 export function SignaturePad({ onSignatureChange, height = 150, label = "Unterschrift des Kunden" }: SignaturePadProps) {
+  useLayoutEffect(() => registerSigningSurface(), []);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const widthRef = useRef(0);

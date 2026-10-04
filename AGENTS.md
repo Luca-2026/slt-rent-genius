@@ -1,4 +1,5 @@
 # Agent rules
+- Coordinate signing overlay suppression through signingOverlays and the shared SignaturePad lifecycle; reference counting prevents one of multiple pads from restoring overlays prematurely, while route gating covers offer loading and completion.
 <!-- LOVABLE:BEGIN -->
 - Inject the portal first-paint guard through the Vite HTML plugin before body parsing; hide only prerender fallback content on the exact portal host to preserve public SEO and the React portal.
 <!-- LOVABLE:END -->

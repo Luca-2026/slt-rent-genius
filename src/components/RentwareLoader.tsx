@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
+import { useSigningOverlaysSuppressed } from "@/lib/signingOverlays";
 
 const RTR_ACCESS_TOKEN = "W74e1e543828256d3b730a73f09c72c2d";
 const RTR_WIDGET_SRC = "https://cdn.rtr-io.com/widgets.js";
@@ -24,7 +25,8 @@ export function RentwareLoader() {
   const location = useLocation();
   const isB2B = location.pathname.startsWith("/b2b");
   const isSales = location.pathname.startsWith("/verkauf");
-  const shouldHideCart = isB2B || isSales;
+  const signing = useSigningOverlaysSuppressed(location.pathname);
+  const shouldHideCart = isB2B || isSales || signing;
   // Homepage hat kein echtes rtr-Element im initialen Render. Wir sparen
   // dort 3s Hauptthread-Blockade, indem wir Rentware NUR bei expliziter
   // Interaktion (Click/Scroll/Touch/Tastatur) oder via rtr:load-Event laden.

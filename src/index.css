@@ -287,6 +287,14 @@ rtr-checkout {
   }
 }
 
+/* Signing is distraction-free at every viewport, including multiple pads. */
+html[data-slt-signing] rtr-checkout,
+html[data-slt-signing] [data-slt-cookie-banner] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 /* Overlay coordination: on mobile hide the floating Rentware cart when a
    modal/dialog or promotional overlay is open, so the user isn't stacked
    with multiple floating UI elements during a booking flow. */

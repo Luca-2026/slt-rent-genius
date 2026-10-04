@@ -1,5 +1,9 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – ungestörte Unterschriften
+- [x] Warenkorb und Cookie-Hinweis auf Angebotsannahmeseiten und bei allen gemeinsamen Unterschriftsflächen ausblenden, ohne Cookie-Zustimmung zu setzen.
+- [x] Vier Regressionstests bestanden; Angebotsseite Desktop/Handysimulation mit gespeicherter Touch-Unterschrift geprüft, echte Übergabe-/Rückgabe-Dialoge isoliert geöffnet/geschlossen; Hinweise verschwinden und kehren danach zurück. Keine Annahme, E-Mail oder Auftragsänderung ausgelöst; Veröffentlichung gesondert.
+
 ## Aktuell – Webseiten-Button im Vermietportal
 - [x] Mitarbeiter- und Kundenlink direkt auf die öffentliche Website gesetzt; 24 Tests bestanden und angemeldeter Kunden-Klick öffnet https://www.slt-rental.de/; Veröffentlichung über Publish → Update bleibt gesondert.
 
