@@ -1417,6 +1417,7 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+
     const rawBody = await req.json().catch(() => ({}));
     // Only user/assistant turns with plain text are accepted; system/tool roles are dropped.
     const messages = (Array.isArray(rawBody?.messages) ? rawBody.messages : [])

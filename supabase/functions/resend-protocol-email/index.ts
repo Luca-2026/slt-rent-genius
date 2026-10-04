@@ -136,6 +136,10 @@ serve(async (req) => {
       recipientName = `${profile.contact_first_name} ${profile.contact_last_name}`;
 
       // Fetch PDF from storage
+      const expectedPath = `${dn.b2b_profile_id}/${dn.delivery_note_number}-blanko.pdf`;
+      if (pdf_storage_path && pdf_storage_path !== expectedPath) {
+        return new Response(JSON.stringify({ error: "Ungültiger Dokumentpfad" }), { status: 400, headers: corsHeaders });
+      }
       if (pdf_storage_path) {
         const { data: fileData, error: dlError } = await serviceClient.storage
           .from("b2b-documents")

@@ -64,6 +64,16 @@ Deno.serve(async (req: Request) => {
       return json({ error: "Feedback nicht gefunden" }, 404);
     }
 
+    // Einmalig: nur der erste Aufruf darf die Mail auslösen (verhindert erneutes Versenden durch Dritte).
+    const { data: claimed } = await service
+      .from("customer_feedback")
+      .update({ staff_notified_at: new Date().toISOString() })
+      .eq("id", feedbackId)
+      .is("staff_notified_at", null)
+      .select("id")
+      .maybeSingle();
+    if (!claimed) return json({ error: "Feedback nicht gefunden" }, 404);
+
     const locKey = (fb.location ?? "").toLowerCase();
     const to = LOCATION_EMAILS[locKey] ?? "info@slt-rental.de";
     const locLabel = LOCATION_LABELS[locKey] ?? (fb.location || "unbekannt");

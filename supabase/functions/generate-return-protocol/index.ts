@@ -164,6 +164,13 @@ Deno.serve(async (req: Request) => {
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+    const SIG_RE = /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/;
+    if (!SIG_RE.test(String(staff_signature_data)) || (customer_signature_data && !SIG_RE.test(String(customer_signature_data)))) {
+      return new Response(
+        JSON.stringify({ error: "Ungültige Unterschrift" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
     if (!customer_not_present && !customer_signature_data) {
       return new Response(
         JSON.stringify({ error: "customer_signature_data is required when customer is present" }),

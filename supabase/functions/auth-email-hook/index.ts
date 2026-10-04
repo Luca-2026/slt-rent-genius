@@ -203,7 +203,7 @@ async function handleWebhook(req: Request): Promise<Response> {
     })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to send email'
-    console.error('Resend send error', { error: message, run_id, recipient, emailType })
+    console.error('Resend send error', { error: message, run_id, emailType })
     return new Response(JSON.stringify({ error: 'Failed to send email' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

@@ -302,6 +302,20 @@
       "when": 1791104166454,
       "tag": "0042_stripe_offer_payments",
       "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1791109076974,
+      "tag": "0043_public_rate_limits_and_feedback_notified",
+      "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "7",
+      "when": 1791109126100,
+      "tag": "0044_deprecate_unused_rate_limit",
+      "breakpoints": true
     }
   ]
 }
