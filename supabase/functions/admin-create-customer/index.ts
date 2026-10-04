@@ -25,6 +25,8 @@ interface CreateCustomerRequest {
   assigned_location?: string;
 }
 
+const esc = (v: unknown) => String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -159,14 +161,14 @@ Deno.serve(async (req: Request) => {
       <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">Willkommen im B2B-Portal</p>
     </div>
     <div style="padding:35px 40px;">
-      <p style="font-size:15px;color:#333;">Guten Tag ${customerName},</p>
+      <p style="font-size:15px;color:#333;">Guten Tag ${esc(customerName)},</p>
       <p style="font-size:14px;color:#555;line-height:1.6;">
-        Ihr B2B-Kundenkonto für <strong>${body.company_name}</strong> wurde erfolgreich eingerichtet und freigeschaltet.
+        Ihr B2B-Kundenkonto für <strong>${esc(body.company_name)}</strong> wurde erfolgreich eingerichtet und freigeschaltet.
       </p>
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:20px 0;">
         <p style="font-size:13px;font-weight:600;margin:0 0 8px;color:#333;">Ihre Zugangsdaten:</p>
-        <p style="font-size:14px;color:#555;margin:4px 0;">E-Mail: <strong>${body.email}</strong></p>
-        <p style="font-size:14px;color:#555;margin:4px 0;">Passwort: <strong>${body.password}</strong></p>
+        <p style="font-size:14px;color:#555;margin:4px 0;">E-Mail: <strong>${esc(body.email)}</strong></p>
+        <p style="font-size:14px;color:#555;margin:4px 0;">Passwort: <strong>${esc(body.password)}</strong></p>
         <p style="font-size:12px;color:#94a3b8;margin:8px 0 0;">Bitte ändern Sie Ihr Passwort nach dem ersten Login.</p>
       </div>
       <p style="font-size:14px;color:#555;line-height:1.6;">
