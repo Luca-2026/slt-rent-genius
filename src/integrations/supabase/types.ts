@@ -2190,6 +2190,7 @@ export type Database = {
           recommend_score: number | null
           rented_items: string | null
           source: string | null
+          staff_notified_at: string | null
           status: string
           updated_at: string
           voucher_code: string | null
@@ -2212,6 +2213,7 @@ export type Database = {
           recommend_score?: number | null
           rented_items?: string | null
           source?: string | null
+          staff_notified_at?: string | null
           status?: string
           updated_at?: string
           voucher_code?: string | null
@@ -2234,6 +2236,7 @@ export type Database = {
           recommend_score?: number | null
           rented_items?: string | null
           source?: string | null
+          staff_notified_at?: string | null
           status?: string
           updated_at?: string
           voucher_code?: string | null
@@ -3237,6 +3240,27 @@ export type Database = {
           status?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      public_rate_limits: {
+        Row: {
+          bucket: string
+          client_key: string
+          hits: number
+          window_start: string
+        }
+        Insert: {
+          bucket: string
+          client_key: string
+          hits?: number
+          window_start: string
+        }
+        Update: {
+          bucket?: string
+          client_key?: string
+          hits?: number
+          window_start?: string
         }
         Relationships: []
       }
@@ -4741,6 +4765,15 @@ export type Database = {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
+        }
+        Returns: boolean
+      }
+      hit_rate_limit: {
+        Args: {
+          _bucket: string
+          _key: string
+          _limit: number
+          _window_seconds: number
         }
         Returns: boolean
       }
