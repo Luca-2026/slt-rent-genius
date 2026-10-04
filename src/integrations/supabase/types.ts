@@ -2242,6 +2242,53 @@ export type Database = {
         }
         Relationships: []
       }
+      deposit_refunds: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          created_by: string | null
+          created_by_name: string | null
+          id: string
+          link_id: string
+          reason: string | null
+          status: string
+          stripe_refund_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          created_by?: string | null
+          created_by_name?: string | null
+          id?: string
+          link_id: string
+          reason?: string | null
+          status?: string
+          stripe_refund_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          created_by?: string | null
+          created_by_name?: string | null
+          id?: string
+          link_id?: string
+          reason?: string | null
+          status?: string
+          stripe_refund_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deposit_refunds_link_id_fkey"
+            columns: ["link_id"]
+            isOneToOne: false
+            referencedRelation: "offer_payment_links"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       google_reviews_cache: {
         Row: {
           created_at: string
@@ -2801,6 +2848,72 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           source?: string | null
+        }
+        Relationships: []
+      }
+      offer_payment_links: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          created_by: string | null
+          customer_email: string | null
+          deposit_cents: number
+          id: string
+          inquiry_id: string
+          inquiry_table: string
+          livemode: boolean
+          offer_number: string
+          paid_at: string | null
+          paid_cents: number | null
+          payment_intent_id: string | null
+          rent_cents: number
+          status: string
+          stripe_session_id: string | null
+          token: string
+          updated_at: string
+          warning: string | null
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          created_by?: string | null
+          customer_email?: string | null
+          deposit_cents: number
+          id?: string
+          inquiry_id: string
+          inquiry_table: string
+          livemode?: boolean
+          offer_number: string
+          paid_at?: string | null
+          paid_cents?: number | null
+          payment_intent_id?: string | null
+          rent_cents: number
+          status?: string
+          stripe_session_id?: string | null
+          token: string
+          updated_at?: string
+          warning?: string | null
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          created_by?: string | null
+          customer_email?: string | null
+          deposit_cents?: number
+          id?: string
+          inquiry_id?: string
+          inquiry_table?: string
+          livemode?: boolean
+          offer_number?: string
+          paid_at?: string | null
+          paid_cents?: number | null
+          payment_intent_id?: string | null
+          rent_cents?: number
+          status?: string
+          stripe_session_id?: string | null
+          token?: string
+          updated_at?: string
+          warning?: string | null
         }
         Relationships: []
       }
@@ -4018,6 +4131,27 @@ export type Database = {
           status?: string
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      stripe_webhook_events: {
+        Row: {
+          event_id: string
+          received_at: string
+          result: string | null
+          type: string
+        }
+        Insert: {
+          event_id: string
+          received_at?: string
+          result?: string | null
+          type: string
+        }
+        Update: {
+          event_id?: string
+          received_at?: string
+          result?: string | null
+          type?: string
         }
         Relationships: []
       }

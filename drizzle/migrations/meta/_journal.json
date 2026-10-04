@@ -295,6 +295,13 @@
       "when": 1791029504031,
       "tag": "0041_portal_invoice_item_pdf_metadata",
       "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1791104166454,
+      "tag": "0042_stripe_offer_payments",
+      "breakpoints": true
     }
   ]
 }
