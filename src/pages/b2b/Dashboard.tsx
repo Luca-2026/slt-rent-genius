@@ -9,6 +9,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useAuth } from "@/hooks/useAuth";
+import { PUBLIC_ORIGIN } from "@/lib/portalDomain";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -186,7 +187,7 @@ export default function B2BDashboard() {
               </p>
             </div>
             <div className="flex gap-2 flex-wrap">
-              <Link to="/">
+              <Link to={`${PUBLIC_ORIGIN}/`} reloadDocument>
                 <Button 
                   variant="outline" 
                   size="sm"

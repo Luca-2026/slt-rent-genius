@@ -1,5 +1,8 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – Webseiten-Button im Vermietportal
+- [ ] Mitarbeiter- und Kundenlink direkt auf die öffentliche Website setzen und prüfen; Veröffentlichung über Publish → Update bleibt gesondert.
+
 ## Aktuell – Kunden-Passwortlinks und technische Adresse
 - [x] Kunden-/B2B-Passwortwege, Einladungen und Bestätigungen geprüft; verbleibende falsche Ziele auf Portal korrigiert
 - [x] 22 Regressionstests bestanden; Kunden-Passwortformular im Browser mit abgefangenem Versand auf eigene Portal-Domain geprüft; Einladungs- und Bestätigungsfunktionen deployed; kein echter Versand/Passwortwechsel
