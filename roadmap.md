@@ -2,7 +2,8 @@
 
 ## Aktuell – Kunden-Passwortlinks und technische Adresse
 - [x] Kunden-/B2B-Passwortwege, Einladungen und Bestätigungen geprüft; verbleibende falsche Ziele auf Portal korrigiert
-- [ ] Regressionstests und Kunden-Passwortformular ohne echten Versand prüfen; betroffene Funktionen deployen
+- [x] 22 Regressionstests bestanden; Kunden-Passwortformular im Browser mit abgefangenem Versand auf eigene Portal-Domain geprüft; Einladungs- und Bestätigungsfunktionen deployed; kein echter Versand/Passwortwechsel
+- [ ] Kundenregistrierungs-Ziel über Publish → Update veröffentlichen; gültigen Kunden-Passwortlink nach Freigabe Ende zu Ende prüfen. Auth-Site-URL/Allowlist nicht direkt auslesbar.
 - [x] Offizielle Domain-FAQ: technische Projektadresse nicht entfernbar; Unpublish betrifft ganze Veröffentlichung. Auth-Site-URL/Allowlist ohne verfügbaren Einstellungszugriff unbestätigt.
 
 ## Aktuell – eigene Domains und Mitarbeiter-Passwortlinks
