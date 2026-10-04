@@ -42,11 +42,17 @@ export async function creditRefund(service: any, creditId: string, userId: strin
       const charge = intent.latest_charge;
       if (intent.status !== "succeeded" || intent.currency !== "eur" || !charge || typeof charge === "string") continue;
       let used = 0;
+      let rentRefunded = 0;
       for await (const refund of stripe.refunds.list({ payment_intent: intentId, limit: 100 })) {
-        if (!["failed", "canceled"].includes(refund.status ?? "pending")) used += refund.amount;
+        if (!["failed", "canceled"].includes(refund.status ?? "pending")) {
+          used += refund.amount;
+          // Known deposit refunds consume charge balance, not the rent allocation.
+          // Unknown/manual refunds are conservatively attributed to rent.
+          if (refund.metadata?.kind !== "deposit") rentRefunded += refund.amount;
+        }
       }
       // Invoice payment snapshot caps the amount attributable to this invoice (not deposit).
-      const available = Math.max(0, Math.min(toCents(p.amount), charge.amount - used));
+      const available = Math.max(0, Math.min(toCents(p.amount) - rentRefunded, charge.amount - used));
       const amount = Math.min(remaining, available);
       if (amount > 0) {
         allocations.push({ payment_intent: intentId, amount_cents: amount, status: "creating" });
