@@ -75,6 +75,7 @@ const Tiefpreisgarantie = lazy(() => import("./pages/Tiefpreisgarantie"));
 
 const VerkaufDanke = lazy(() => import("./pages/VerkaufDanke"));
 const ZahlungOnline = lazy(() => import("./pages/ZahlungOnline"));
+const AngebotAnnehmen = lazy(() => import("./pages/AngebotAnnehmen"));
 const SLTUsed = lazy(() => import("./pages/SLTUsed"));
 const SLTUsedDetail = lazy(() => import("./pages/SLTUsedDetail"));
 const Neumaschinen = lazy(() => import("./pages/Neumaschinen"));
@@ -174,6 +175,7 @@ const App = () => (
               <Route path="/verkauf/" element={<Navigate to="/verkauf/neumaschinen/" replace />} />
               <Route path="/verkauf/danke" element={<VerkaufDanke />} />
               <Route path="/zahlung/:token" element={<ZahlungOnline />} />
+              <Route path="/angebot/:token" element={<AngebotAnnehmen />} />
               <Route path="/verkauf/gebrauchtmaschinen" element={<SLTUsed />} />
               <Route path="/verkauf/gebrauchtmaschinen/:slug" element={<SLTUsedDetail />} />
               <Route path="/verkauf/neumaschinen" element={<Neumaschinen />} />
