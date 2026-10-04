@@ -6,6 +6,7 @@ import {
   Store, UserCog, Shield, MessageSquare, BookOpen, BarChart3, PhoneCall,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PUBLIC_ORIGIN } from "@/lib/portalDomain";
 
 export interface StaffNavItem {
   label: string;
@@ -74,7 +75,7 @@ export const STAFF_NAV: StaffNavGroup[] = [
 
 export const STAFF_NAV_FOOTER: StaffNavItem[] = [
   { label: "Hilfe & Anleitungen", path: "/hilfe", icon: BookOpen, access: "staff" },
-  { label: "Zur Website", path: "/", icon: Home, access: "staff" },
+  { label: "Zur Website", path: `${PUBLIC_ORIGIN}/`, icon: Home, access: "staff" },
 ];
 
 export function itemHref(item: StaffNavItem) {
@@ -122,6 +123,7 @@ export function StaffNav({ isAdmin, canViewInventory, badges, onNavigate }: Prop
       <li key={itemHref(item)}>
         <Link
           to={itemHref(item)}
+          reloadDocument={item.path.startsWith("https://")}
           onClick={onNavigate}
           aria-current={active ? "page" : undefined}
           className={cn(
