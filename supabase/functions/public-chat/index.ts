@@ -1,3 +1,4 @@
+import { allowRequest, isOwnSiteRequest } from "../_shared/rateLimit.ts";
 import { RENTAL_LINK_PATHS } from "./rental-link-catalog.ts";
 import { runRenty, GatewayError, catalogPaths } from "./renty-agent.ts";
 
@@ -1415,6 +1416,14 @@ Deno.serve(async (req: Request) => {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    }
+
+    // Nur die eigene Website, mit Begrenzung pro IP – schützt das kostenpflichtige KI-Kontingent.
+    if (!isOwnSiteRequest(req)) {
+      return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    if (!(await allowRequest(req, "public-chat", [{ limit: 20, windowSeconds: 600 }, { limit: 150, windowSeconds: 86400 }]))) {
+      return new Response(JSON.stringify({ error: "Renty ist gerade stark ausgelastet. Bitte versuche es in Kürze erneut." }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
     const rawBody = await req.json().catch(() => ({}));

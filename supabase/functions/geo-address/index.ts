@@ -1,3 +1,4 @@
+import { allowRequest } from "../_shared/rateLimit.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
@@ -30,6 +31,10 @@ serve(async (req) => {
     const allowedHost = host === "slt-rental.de" || host.endsWith(".slt-rental.de") ||
       host.endsWith(".lovable.app") || host.endsWith(".lovableproject.com") || host === "localhost";
     if (!allowedHost) return json({ error: "Forbidden" }, 403);
+    // Begrenzung pro IP, da der Header allein keinen Aufrufer authentifiziert.
+    if (!(await allowRequest(req, "geo-address", [{ limit: 60, windowSeconds: 600 }, { limit: 300, windowSeconds: 86400 }]))) {
+      return json({ error: "Zu viele Anfragen. Bitte später erneut versuchen." }, 429);
+    }
 
     const body = await req.json().catch(() => ({}));
     const action = body?.action as string | undefined;

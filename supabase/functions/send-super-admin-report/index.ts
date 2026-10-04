@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { isCronCall, staffUserId } from "../_shared/cronAuth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -32,6 +33,10 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
+    // Nur interner Zeitplan oder angemeldeter Admin
+    if (!(await isCronCall(req, supabase)) && !(await staffUserId(req, supabase, true))) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
 
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const { data: rows, error } = await supabase
