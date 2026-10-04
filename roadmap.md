@@ -1,7 +1,7 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
 ## Aktuell – Webseiten-Button im Vermietportal
-- [ ] Mitarbeiter- und Kundenlink direkt auf die öffentliche Website setzen und prüfen; Veröffentlichung über Publish → Update bleibt gesondert.
+- [x] Mitarbeiter- und Kundenlink direkt auf die öffentliche Website gesetzt; 24 Tests bestanden und angemeldeter Kunden-Klick öffnet https://www.slt-rental.de/; Veröffentlichung über Publish → Update bleibt gesondert.
 
 ## Aktuell – Kunden-Passwortlinks und technische Adresse
 - [x] Kunden-/B2B-Passwortwege, Einladungen und Bestätigungen geprüft; verbleibende falsche Ziele auf Portal korrigiert
