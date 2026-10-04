@@ -1,5 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { Resend } from "https://esm.sh/resend@4.0.0";
+import { ownDomainAuthLink } from "../_shared/auth-links.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -77,7 +78,7 @@ Deno.serve(async (req) => {
       type: "recovery",
       email: email.toLowerCase(),
       options: {
-        redirectTo: "https://www.slt-rental.de/",
+        redirectTo: "https://app.slt-rental.de/",
       },
     });
 
@@ -93,11 +94,11 @@ Deno.serve(async (req) => {
         type: "recovery",
         email: email.toLowerCase(),
         options: {
-          redirectTo: "https://www.slt-rental.de/",
+          redirectTo: "https://app.slt-rental.de/",
         },
       });
 
-      const recoveryLink = linkData?.properties?.action_link || "https://www.slt-rental.de/";
+      const recoveryLink = linkData?.properties?.action_link ? ownDomainAuthLink(linkData.properties.action_link) : "https://app.slt-rental.de/";
 
       await resend.emails.send({
         from: `SLT Rental <noreply@${resendDomain}>`,
@@ -133,7 +134,7 @@ Deno.serve(async (req) => {
         Passwort festlegen
       </a>
       <p style="font-size:14px;color:#595959;line-height:1.6;margin:0 0 20px;">
-        Nach der Aktivierung kannst du dich unter <a href="https://www.slt-rental.de/b2b/login" style="color:#00507d;">www.slt-rental.de/b2b/login</a> anmelden.
+        Nach der Aktivierung kannst du dich unter <a href="https://app.slt-rental.de/b2b/login" style="color:#00507d;">www.slt-rental.de/b2b/login</a> anmelden.
       </p>
       <p style="font-size:12px;color:#999999;margin:20px 0 0;">
         Falls du diese E-Mail nicht erwartet hast, wende dich bitte an deinen Arbeitgeber.
