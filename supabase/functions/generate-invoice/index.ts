@@ -18,7 +18,7 @@ const InvoiceBodySchema = z.object({
     quantity: z.number().finite().positive(),
     unit_price: z.number().finite(),
     discount_percent: z.number().min(0).max(100).optional(),
-    rental_start: z.string().optional(), rental_end: z.string().optional(),
+    rental_start: z.string().nullish(), rental_end: z.string().nullish(),
     image_url: z.string().max(4000).optional(),
     item_type: z.enum(['product','service','surcharge','deposit']).optional(),
     parent_item_index: z.number().int().nonnegative().optional(),
