@@ -854,16 +854,27 @@ export async function generateOfferPdf(data: {
       termLines.forEach((ln) => { dt(pg, ln, ML + 16, by, font, 8.5, MUTED); by -= 11; });
     }
     y -= boxH + 12;
-  } else if (!isCreditNote && data.paymentTerms === "vorkasse") {
-    // Zahlungskasten mit Bankdaten – Stil identisch zum Rechnungs-Zahlungshinweis
-    need(120);
-    const boxH = 106;
+  } else if (!isCreditNote && ["vorkasse", "anzahlung_30", "rentpair_vorkasse"].includes(String(data.paymentTerms))) {
+    // Vorkasse-Kasten: Kunde wählt Online-Zahlung (Zahlungslink) oder Überweisung.
+    const isAnz = data.paymentTerms === "anzahlung_30";
+    const dep = data.deposit && data.deposit > 0 ? data.deposit : 0;
+    const anzahlung = Math.round(data.grossAmount * 30) / 100;
+    need(150);
+    const boxH = 140;
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.995, 0.97, 0.93) });
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
     let by = y - 2;
-    dt(pg, "Zahlungshinweis \u2013 Vorkasse", ML + 16, by, bold, 10, INK); by -= 16;
-    dt(pg, `Bitte \u00FCberweisen Sie ${fm(data.grossAmount)}${data.deposit && data.deposit > 0 ? ` (zzgl. Kaution ${fm(data.deposit)})` : ""} bis sp\u00E4testens ${fd(data.validUntil)}`, ML + 16, by, font, 9, INK); by -= 12;
-    dt(pg, "\u2013 innerhalb der Angebotsg\u00FCltigkeit \u2013 auf folgendes Konto:", ML + 16, by, font, 9, INK); by -= 14;
+    dt(pg, isAnz ? "Zahlungshinweis \u2013 30 % Anzahlung" : "Zahlungshinweis \u2013 Vorkasse komplett", ML + 16, by, bold, 10, INK); by -= 16;
+    dt(
+      pg,
+      isAnz
+        ? `Anzahlung ${fm(anzahlung)} (30 % der Bruttomiete) bis ${fd(data.validUntil)}, Restbetrag${dep ? ` inkl. Kaution ${fm(dep)}` : ""} vor Mietbeginn.`
+        : `Zu zahlen: ${fm(data.grossAmount)}${dep ? ` zzgl. Kaution ${fm(dep)}` : ""} bis sp\u00E4testens ${fd(data.validUntil)} (Angebotsg\u00FCltigkeit).`,
+      ML + 16, by, font, 9, INK,
+    ); by -= 14;
+    dt(pg, "Sie w\u00E4hlen die Zahlungsart selbst:", ML + 16, by, bold, 9, INK); by -= 12;
+    dt(pg, "\u2022 Online: \u00FCber Ihren pers\u00F6nlichen Zahlungslink in der Angebots-E-Mail (z. B. Karte).", ML + 16, by, font, 9, INK); by -= 12;
+    dt(pg, "\u2022 Per \u00DCberweisung auf folgendes Konto:", ML + 16, by, font, 9, INK); by -= 13;
     const rows: [string, string][] = [
       ["Kontoinhaber:", SLT_COMPANY.name],
       ["Bank:", SLT_COMPANY.bankName],
@@ -871,8 +882,8 @@ export async function generateOfferPdf(data: {
       ["Verwendungszweck:", data.offerNumber],
     ];
     for (const [label, value] of rows) {
-      dt(pg, label, ML + 16, by, font, 8.5, MUTED);
-      dt(pg, value, ML + 120, by, bold, 8.5, INK);
+      dt(pg, label, ML + 26, by, font, 8.5, MUTED);
+      dt(pg, value, ML + 130, by, bold, 8.5, INK);
       by -= 11;
     }
     by -= 2;
