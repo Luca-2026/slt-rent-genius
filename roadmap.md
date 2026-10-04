@@ -81,3 +81,10 @@
 
 - [x] Renty: Mietanfragen im Chat aufnehmen, ins Portal + Standort-Mail, 22 Use Cases getestet
 - [ ] Renty: echten Live-Test mit echter Kundenadresse durch das Team (Mail im Standortpostfach prüfen)
+
+## Stripe-Zahlung (Zahlungslink + Kautionserstattung)
+- [x] Tabellen, Zahlungslink-Seite /zahlung/:token, Webhook, Kautionserstattung (voll/teilweise), Karte in Mietanfrage/Verkaufsanfrage
+- [ ] Webhook-Signaturschlüssel (STRIPE_WEBHOOK_SECRET) vom User eintragen + Endpunkt im Stripe-Dashboard anlegen
+- [ ] Testzahlung (Testkarte) Ende zu Ende prüfen, sobald Webhook-Secret da ist
+- [ ] Neuer Build auf Serverprofis hochladen (Seite /zahlung/ ist sonst auf www nicht erreichbar)
+- [ ] PayPal-Direktanbindung: aktuell nicht umgesetzt (Stripe kann PayPal als Zahlart im Stripe-Dashboard aktivieren)
