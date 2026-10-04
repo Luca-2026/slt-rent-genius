@@ -4768,15 +4768,6 @@ export type Database = {
         }
         Returns: boolean
       }
-      hit_rate_limit: {
-        Args: {
-          _bucket: string
-          _key: string
-          _limit: number
-          _window_seconds: number
-        }
-        Returns: boolean
-      }
       is_approved_b2b: { Args: { _user_id: string }; Returns: boolean }
       is_authorized_person: { Args: { _user_id: string }; Returns: boolean }
       is_staff_member: { Args: { _user_id: string }; Returns: boolean }
