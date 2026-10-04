@@ -18,7 +18,3 @@
 - Mietpreise im CMS sind brutto; Angebotspositionen übernehmen sie nur über resolveCatalogPrice in src/lib/catalogPricing.ts (getestet) netto – sonst würden Bruttowerte als Netto verschickt.
 - Kundenrabatte (Kategorie) in Angeboten nur über src/lib/customerDiscounts.ts (getestet): Vorbelegung nur bei neuen Mietangeboten, Sonderpreis hat Vorrang, manuelle Rabatte bleiben – gleiche Regel in Mietanfragen und Portalbuchungen.
 - Mietanfragen ohne bestätigten Auftrag (neu, in Bearbeitung, Angebot gesendet) mit abgelaufenem Mietzeitraum setzt die DB-Funktion close_expired_rental_inquiries täglich per pg_cron auf erledigt – gespeicherter Status, damit Liste, Zähler und Startseite übereinstimmen.
-- Fußzeile aller Geschäfts-PDFs (Angebot, Auftragsbestätigung, Rechnung, Rechnungskorrektur, Protokolle) nur über supabase/functions/_shared/pdf-footer.ts inkl. Standort der Auftragsabwicklung – eine Fußzeile, kein Auseinanderlaufen je Dokumentart.
-- PDF company details come from `_shared/offer-company.ts` and `_shared/company.ts` so legal identities stay consistent.
-- Route designated test-customer copies and acceptance notifications through `_shared/test-email-routing.ts` to avoid operational mailboxes.
-- Stripe payment snapshots are immutable; invoices rehydrate provider receipts server-side to prevent draft edits. Credit refunds use _shared/credit-refund.ts through offer-payment-admin with persisted allocations, stable idempotency and webhook sync to prevent duplicate refunds.

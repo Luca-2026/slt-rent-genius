@@ -443,6 +443,28 @@ Deno.serve(async (req: Request) => {
       console.error("Zahlungslink konnte nicht erstellt werden:", (e as Error).message);
     }
 
+    // ── Online-Annahme: unratbarer Link je Angebotsfassung; ältere Fassungen werden ungültig ──
+    let acceptUrl = "";
+    try {
+      await service.from("offer_acceptance_links").update({ status: "void" }).eq("inquiry_id", inquiry.id).eq("status", "active");
+      const raw = crypto.getRandomValues(new Uint8Array(24));
+      const token = btoa(String.fromCharCode(...raw)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+      const { error: accErr } = await service.from("offer_acceptance_links").insert({
+        token,
+        inquiry_table: table,
+        inquiry_id: inquiry.id,
+        offer_number: offerNumber,
+        gross_amount: totals.grossAmount,
+        valid_until: validUntil.toISOString().slice(0, 10),
+        customer_email: customerEmail,
+        created_by: user.id,
+      });
+      if (!accErr) acceptUrl = `https://www.slt-rental.de/angebot/${token}`;
+      else console.error("Annahmelink konnte nicht erstellt werden:", accErr.message);
+    } catch (e) {
+      console.error("Annahmelink fehlgeschlagen:", (e as Error).message);
+    }
+
     // ── E-Mail an den Kunden ──
     const resendKey = Deno.env.get("RESEND_API_KEY");
     let emailSent = false;
@@ -531,8 +553,11 @@ Deno.serve(async (req: Request) => {
 
   <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>So nehmen Sie das Angebot an:</strong><br>
-    Bitte bestätigen Sie uns die Annahme kurz per E-Mail an
-    <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a>${["net_7", "net_14", "net_30"].includes(paymentTerms) ? "." : " und leisten Sie die Zahlung gemäß den unten stehenden Zahlungsbedingungen."}
+    ${acceptUrl ? `Klicken Sie auf den Button und unterschreiben Sie digital – mit der Maus oder dem Finger auf dem Smartphone.
+    <p style="margin:12px 0 8px;"><a href="${escapeHtml(acceptUrl)}" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:4px;">Angebot online annehmen</a></p>
+    <span style="color:#6b7280;font-size:12px;">Mit der Annahme bestätigen Sie unsere ${customerKind === "business" ? "AGB für Unternehmer" : "AGB für Verbraucher"} und nehmen das Angebot ${escapeHtml(offerNumber)} rechtsverbindlich an.</span><br>
+    <span style="color:#6b7280;font-size:12px;">Alternativ können Sie die Annahme auch per E-Mail an <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a> bestätigen.</span>` : `Bitte bestätigen Sie uns die Annahme kurz per E-Mail an
+    <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a>.`}${["net_7", "net_14", "net_30"].includes(paymentTerms) ? "" : `<br><span style="font-size:13px;">Bitte leisten Sie danach die Zahlung gemäß den unten stehenden Zahlungsbedingungen.</span>`}
   </div>
   ${paymentLinkUrl ? `<div style="background:#eef4f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>Bequem online bezahlen:</strong><br>

@@ -337,6 +337,13 @@
       "when": 1791119190573,
       "tag": "0047_credit_refund_overpay_guard",
       "breakpoints": true
+    },
+    {
+      "idx": 48,
+      "version": "7",
+      "when": 1791131660109,
+      "tag": "0048_offer_acceptance_links",
+      "breakpoints": true
     }
   ]
 }
