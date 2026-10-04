@@ -91,6 +91,9 @@ export default function PhoneCalls() {
         <Select value={loc} onValueChange={setLoc}><SelectTrigger aria-label="Standort"><SelectValue /></SelectTrigger><SelectContent>
           <SelectItem value="all">Alle Standorte</SelectItem>{Object.entries(LOC).map(([k, v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}
         </SelectContent></Select>
+        <Select value={sort} onValueChange={setSort}><SelectTrigger aria-label="Sortierung"><SelectValue /></SelectTrigger><SelectContent>
+          <SelectItem value="priority">Nach Priorität (neue oben)</SelectItem><SelectItem value="newest">Neueste zuerst</SelectItem>
+        </SelectContent></Select>
       </div>
 
       <p className="mb-3 text-sm text-muted-foreground">{filtered.length} {filtered.length === 1 ? "Anruf" : "Anrufe"}</p>
@@ -103,10 +106,13 @@ export default function PhoneCalls() {
       ) : (
         <ul className="divide-y divide-border rounded-lg border border-border bg-card">
           {filtered.map((c) => (
-            <li key={c.id} className="flex items-stretch gap-1">
+            <li key={c.id} className={cn("flex items-stretch gap-1", isNewCall(c) && c.status !== "done" && "border-l-4 border-l-accent")}>
               <button type="button" onClick={() => setSelId(c.id)} className="flex min-w-0 flex-1 flex-col gap-1 p-3 text-left hover:bg-muted md:flex-row md:items-start md:gap-4">
                 <div className="flex shrink-0 items-center gap-2 md:w-36 md:flex-col md:items-start md:gap-1">
-                  <PriorityBadge p={c.priority} />
+                  <div className="flex items-center gap-1">
+                    <PriorityBadge p={c.priority} />
+                    {isNewCall(c) && <span className="inline-flex rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">Neu</span>}
+                  </div>
                   <span className="text-xs text-muted-foreground">{fmt(c)}</span>
                 </div>
                 <div className="min-w-0 flex-1">
