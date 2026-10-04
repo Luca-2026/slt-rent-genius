@@ -22,3 +22,4 @@
 - PDF company details come from `_shared/offer-company.ts` and `_shared/company.ts` so legal identities stay consistent.
 - Route designated test-customer copies and acceptance notifications through `_shared/test-email-routing.ts` to avoid operational mailboxes.
 - Stripe payment snapshots are immutable; invoices rehydrate provider receipts server-side to prevent draft edits. Credit refunds use _shared/credit-refund.ts through offer-payment-admin with persisted allocations, stable idempotency and webhook sync to prevent duplicate refunds.
+- Online-Angebotsannahme nur über offer_acceptance_links + öffentliche Function offer-accept (/angebot/<token>): ein Link je Angebotsfassung, neue Fassung macht alte ungültig, Annahme atomar einmalig mit Name, Unterschrift und AGB-Bestätigung – damit keine doppelte oder veraltete Annahme entsteht.
