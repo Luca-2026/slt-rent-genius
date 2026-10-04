@@ -1,5 +1,11 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – Kunden-Passwortlinks und technische Adresse
+- [x] Kunden-/B2B-Passwortwege, Einladungen und Bestätigungen geprüft; verbleibende falsche Ziele auf Portal korrigiert
+- [x] 22 Regressionstests bestanden; Kunden-Passwortformular im Browser mit abgefangenem Versand auf eigene Portal-Domain geprüft; Einladungs- und Bestätigungsfunktionen deployed; kein echter Versand/Passwortwechsel
+- [ ] Kundenregistrierungs-Ziel über Publish → Update veröffentlichen; gültigen Kunden-Passwortlink nach Freigabe Ende zu Ende prüfen. Auth-Site-URL/Allowlist nicht direkt auslesbar.
+- [x] Offizielle Domain-FAQ: technische Projektadresse nicht entfernbar; Unpublish betrifft ganze Veröffentlichung. Auth-Site-URL/Allowlist ohne verfügbaren Einstellungszugriff unbestätigt.
+
 ## Aktuell – eigene Domains und Mitarbeiter-Passwortlinks
 - [x] Mitarbeiter-Einladungen, Admin-Passwortlinks, Auth-Mail-Links und weitere ausgehende technische Website-/Portal-Links auf eigene Domains umgestellt; sechs betroffene Funktionen deployed
 - [x] Weiterleitung der exakten technischen veröffentlichten Domain vor der ersten Anzeige auf passende eigene Domain implementiert; Vorschau unverändert; benötigt Publish → Update, keine vollständige Abschaltung der Hosting-Adresse

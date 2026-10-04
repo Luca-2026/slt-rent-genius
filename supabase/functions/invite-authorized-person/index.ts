@@ -1,5 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { Resend } from "https://esm.sh/resend@4.0.0";
+import { PASSWORD_RESET_URL, PORTAL_AUTH_ORIGIN, recoveryLink } from "../_shared/auth-links.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -72,15 +73,6 @@ Deno.serve(async (req) => {
       .eq("id", person_id);
     if (updateError) throw updateError;
 
-    // Send password reset email so the person can set their password
-    const { error: resetError } = await supabaseAdmin.auth.admin.generateLink({
-      type: "recovery",
-      email: email.toLowerCase(),
-      options: {
-        redirectTo: "https://www.slt-rental.de/",
-      },
-    });
-
     // Also send a branded welcome/invitation email via Resend
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
     const resendDomain = Deno.env.get("RESEND_DOMAIN") || "slt-rental.de";
@@ -89,15 +81,16 @@ Deno.serve(async (req) => {
       const resend = new Resend(resendApiKey);
 
       // Generate a proper recovery link
-      const { data: linkData } = await supabaseAdmin.auth.admin.generateLink({
+      const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
         type: "recovery",
         email: email.toLowerCase(),
         options: {
-          redirectTo: "https://www.slt-rental.de/",
+          redirectTo: PASSWORD_RESET_URL,
         },
       });
 
-      const recoveryLink = linkData?.properties?.action_link || "https://www.slt-rental.de/";
+      if (linkError) throw linkError;
+      const passwordLink = recoveryLink(linkData?.properties ?? {});
 
       await resend.emails.send({
         from: `SLT Rental <noreply@${resendDomain}>`,
@@ -129,11 +122,11 @@ Deno.serve(async (req) => {
       <p style="font-size:14px;color:#595959;line-height:1.6;margin:0 0 20px;">
         Bitte klicke auf den folgenden Button, um dein Passwort festzulegen und dein Konto zu aktivieren:
       </p>
-      <a href="${recoveryLink}" style="background-color:#00507d;color:#ffffff;font-size:14px;border-radius:6px;padding:12px 24px;text-decoration:none;display:inline-block;margin:0 0 24px;">
+      <a href="${passwordLink}" style="background-color:#00507d;color:#ffffff;font-size:14px;border-radius:6px;padding:12px 24px;text-decoration:none;display:inline-block;margin:0 0 24px;">
         Passwort festlegen
       </a>
       <p style="font-size:14px;color:#595959;line-height:1.6;margin:0 0 20px;">
-        Nach der Aktivierung kannst du dich unter <a href="https://www.slt-rental.de/b2b/login" style="color:#00507d;">www.slt-rental.de/b2b/login</a> anmelden.
+        Nach der Aktivierung kannst du dich unter <a href="${PORTAL_AUTH_ORIGIN}/b2b/login" style="color:#00507d;">app.slt-rental.de/b2b/login</a> anmelden.
       </p>
       <p style="font-size:12px;color:#999999;margin:20px 0 0;">
         Falls du diese E-Mail nicht erwartet hast, wende dich bitte an deinen Arbeitgeber.

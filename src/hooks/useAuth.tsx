@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState, ReactNode } fro
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompleteRegistration } from "@/hooks/useCompleteRegistration";
+import { authRedirectUrl } from "@/lib/portalDomain";
 
 interface B2BProfile {
   id: string;
@@ -185,7 +186,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signUp = async (email: string, password: string, metadata?: Record<string, any>) => {
-    const redirectUrl = "https://www.slt-rental.de/";
+    const redirectUrl = authRedirectUrl("/b2b/login/");
     
     const { data, error } = await supabase.auth.signUp({
       email,

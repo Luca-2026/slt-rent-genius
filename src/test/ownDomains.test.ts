@@ -4,8 +4,24 @@ import { authRedirectUrl } from "../lib/portalDomain";
 import { recoveryLink, ownDomainAuthLink } from "../../supabase/functions/_shared/auth-links";
 import { portalFirstPaintHead } from "../../scripts/portalFirstPaint";
 import { JSDOM } from "jsdom";
+import { readFileSync } from "node:fs";
 
 describe("own public domains", () => {
+  it("routes customer signup and repeated confirmation to the portal login", () => {
+    const signup = readFileSync("src/hooks/useAuth.tsx", "utf8");
+    const confirmation = readFileSync("supabase/functions/resend-confirmation/index.ts", "utf8");
+    expect(signup).toContain('authRedirectUrl("/b2b/login/")');
+    expect(confirmation).toContain('redirectTo: `${PORTAL_AUTH_ORIGIN}/b2b/login/`');
+    expect(confirmation).toContain("ownDomainAuthLink(data.properties.action_link)");
+  });
+  it("uses one direct recovery token for authorized customer invitations without website fallbacks", () => {
+    const invitation = readFileSync("supabase/functions/invite-authorized-person/index.ts", "utf8");
+    expect(invitation.match(/auth\.admin\.generateLink\(/g)).toHaveLength(1);
+    expect(invitation).toContain("redirectTo: PASSWORD_RESET_URL");
+    expect(invitation).toContain("recoveryLink(linkData?.properties ?? {})");
+    expect(invitation).not.toContain("action_link");
+    expect(invitation).not.toContain("www.slt-rental.de");
+  });
   it.each([
     ["/", "https://www.slt-rental.de/"],
     ["/mieten/?ort=bonn", "https://www.slt-rental.de/mieten/?ort=bonn"],

@@ -152,7 +152,7 @@ Deno.serve(async (req: Request) => {
         `<br><span style="color:#00507d;font-weight:600;">Viele Grüße</span><br>`
       );
 
-    const portalUrl = "https://www.slt-rental.de/b2b/login";
+    const portalUrl = "https://app.slt-rental.de/b2b/login";
 
     const emailHtml = `<!DOCTYPE html>
 <html lang="de"><head><meta charset="UTF-8"><title>${escapeHtml(subject)}</title></head>

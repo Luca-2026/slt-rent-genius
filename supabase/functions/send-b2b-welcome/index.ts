@@ -143,7 +143,7 @@ Deno.serve(async (req) => {
 
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:28px auto;">
               <tr><td align="center" bgcolor="#ff8e02" style="border-radius:6px;">
-                <a href="https://www.slt-rental.de/b2b/dashboard"
+                <a href="https://app.slt-rental.de/b2b/dashboard"
                    style="display:inline-block;padding:14px 28px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#ffffff;text-decoration:none;border-radius:6px;">
                   Zum B2B-Dashboard
                 </a>
@@ -192,7 +192,7 @@ Deno.serve(async (req) => {
       `1. Unser Team prüft deine Unterlagen.\n` +
       `2. Sobald dein Konto freigeschaltet ist, erhältst du eine separate E-Mail mit deinem persönlichen Kreditrahmen.\n` +
       `3. Danach kannst du dich jederzeit im B2B-Portal einloggen und Maschinen, Anhänger & Fahrzeuge bequem auf Rechnung mieten.\n\n` +
-      `Zum B2B-Dashboard: https://www.slt-rental.de/b2b/dashboard\n\n` +
+      `Zum B2B-Dashboard: https://app.slt-rental.de/b2b/dashboard\n\n` +
       `Du hast Fragen oder möchtest direkt etwas reservieren? Antworte einfach auf diese E-Mail oder ruf uns an deinem zuständigen Standort an:\n\n` +
       `${loc.name}\n${loc.address}\nTel.: ${loc.phoneDisplay}\nÖffnungszeiten:\n${loc.hours}\n\n` +
       `Viele Grüße\n${loc.managerName}\n${loc.name} – SLT Rental\n\n` +
