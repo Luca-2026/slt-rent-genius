@@ -18,7 +18,7 @@ export async function creditRefund(service: any, creditId: string, userId: strin
   const eligible = credit.credit_refund_amount == null ? calculated : Math.min(calculated, toCents(credit.credit_refund_amount));
   const { data: existing, error: existingError } = await service.from("credit_note_refunds").select("*").eq("credit_note_id", creditId).maybeSingle();
   if (existingError) throw new Error("Erstattungsstatus konnte nicht geprüft werden.");
-  if (existing && ["succeeded", "pending"].includes(existing.status)) return { success: true, amount_cents: existing.amount_cents, status: existing.status, already_requested: true };
+  if (existing && ["succeeded", "pending"].includes(existing.status) && existing.allocations.every((a: any) => a.refund_id)) return { success: true, amount_cents: existing.amount_cents, status: existing.status, already_requested: true };
 
   const stripe = stripeClient();
   let allocations = existing?.allocations;
@@ -63,7 +63,11 @@ export async function creditRefund(service: any, creditId: string, userId: strin
   for (const allocation of allocations) {
     if (allocation.refund_id) continue;
     // Persisted plan + stable keys survive double clicks, timeouts and browser restarts.
-    const refund = await stripe.refunds.create({ payment_intent: allocation.payment_intent, amount: allocation.amount_cents, reason: "requested_by_customer", metadata: { credit_note_id: creditId, invoice_number: credit.invoice_number, kind: "credit_note" } }, { idempotencyKey: `credit-${creditId}-${allocation.payment_intent}` });
+    let knownRefund;
+    for await (const candidate of stripe.refunds.list({ payment_intent: allocation.payment_intent, limit: 100 })) {
+      if (candidate.metadata?.credit_note_id === creditId) { knownRefund = candidate; break; }
+    }
+    const refund = knownRefund ?? await stripe.refunds.create({ payment_intent: allocation.payment_intent, amount: allocation.amount_cents, reason: "requested_by_customer", metadata: { credit_note_id: creditId, invoice_number: credit.invoice_number, kind: "credit_note" } }, { idempotencyKey: `credit-${creditId}-${allocation.payment_intent}` });
     const { error } = await service.rpc("sync_credit_note_refund", { _credit_id: creditId, _intent: allocation.payment_intent, _refund_id: refund.id, _status: refund.status ?? "pending" });
     if (error) throw new Error("Stripe hat die Erstattung angenommen; der Status muss erneut abgefragt werden. Nicht manuell erneut erstatten.");
   }
