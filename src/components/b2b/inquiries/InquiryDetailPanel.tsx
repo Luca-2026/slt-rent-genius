@@ -16,6 +16,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { INQUIRY_STATUSES, canTransition, type InquiryStatus } from "@/lib/inquiryStatus";
 import { InquiryStatusBadge } from "./InquiryStatusBadge";
+import { InquiryLocationSection } from "./InquiryLocationSection";
+import { requestedItemsOf } from "./types";
 import { inquiryDraftKey, readInquiryDraft } from "./offerDraftStorage";
 import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm";
 import { OfferAcceptanceNotice } from "./OfferAcceptanceNotice";
