@@ -48,6 +48,24 @@ export function splitCheckableItems(items: RequestedItem[]): {
   return { checkable, uncheckable };
 }
 
+/**
+ * Vorschautext der Kunden-Mail im Dialog (die Mail selbst baut die Edge Function
+ * send-location-notice – Wortlaut hier bewusst parallel halten).
+ */
+export function buildLocationNoticePreview(opts: {
+  fromLabel: string;
+  toLabel: string;
+  allAvailable: boolean;
+  offerSent: boolean;
+}): string {
+  const base = opts.allAvailable
+    ? `An unserem Standort ${opts.fromLabel} ist der Artikel im gewünschten Zeitraum leider nicht verfügbar – an unserem Standort ${opts.toLabel} dagegen schon. Wir haben die Anfrage an ${opts.toLabel} übergeben.`
+    : `Wir haben die Anfrage an unseren Standort ${opts.toLabel} übergeben – die genaue Verfügbarkeit wird geprüft, der Kunde bekommt umgehend Rückmeldung.`;
+  return opts.offerSent
+    ? `${base} Das Angebot erhält der Kunde in einer neuen Fassung mit dem Abholstandort ${opts.toLabel}.`
+    : base;
+}
+
 interface LocationCheck {
   productName: string;
   issue: InventoryIssue | null;
@@ -63,6 +81,8 @@ interface Props {
   reservationId: string | null;
   /** true, wenn bereits ein Angebot versendet wurde (Snapshot bleibt unverändert). */
   offerSent: boolean;
+  /** Kunden-E-Mail für die optionale Standort-Info. */
+  customerEmail?: string | null;
   disabled?: boolean;
   onChanged: () => void;
   /** Nach Änderung mit versendetem Angebot: Überarbeitung öffnen. */
@@ -82,6 +102,7 @@ export function InquiryLocationSection({
   items,
   reservationId,
   offerSent,
+  customerEmail,
   disabled,
   onChanged,
   onReviseSuggested,
@@ -94,6 +115,8 @@ export function InquiryLocationSection({
   const [uncheckable, setUncheckable] = useState<string[]>([]);
   const [noPeriod, setNoPeriod] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [notify, setNotify] = useState(true);
+  const [customMessage, setCustomMessage] = useState("");
 
   const currentKey = normalizeLocation(location);
   const currentLabel = LOCATION_LABELS[currentKey ?? ""] ?? location ?? "Nicht zugeordnet";
@@ -149,6 +172,16 @@ export function InquiryLocationSection({
   }, [open, target, inquiryId, reservationId, startDate, endDate, items]);
 
   const hasOverbooked = useMemo(() => checks.some((c) => c.issue?.severity === "over"), [checks]);
+
+  // Nur wenn alle prüfbaren Artikel sauber verfügbar sind, versprechen wir das dem Kunden.
+  const allAvailable = useMemo(
+    () =>
+      !checking &&
+      checks.length > 0 &&
+      checks.every((c) => !c.failed && !c.issue) &&
+      uncheckable.length === 0,
+    [checking, checks, uncheckable],
+  );
 
   const save = async () => {
     if (saving || target === currentKey) return;
