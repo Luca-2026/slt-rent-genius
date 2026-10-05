@@ -123,3 +123,8 @@
 ## Standortwechsel bei Mietanfragen (erledigt 2026-10-05)
 - [x] Standort nachträglich ändern (auch nach Angebotsversand): DB-Funktion change_rental_inquiry_location + Karte im Anfrage-Panel mit Verfügbarkeitsprüfung am Zielstandort, Warnung bei versendetem Angebot, automatischer Sprung in die Angebotsüberarbeitung
 - [x] 16/16 E2E-Prüfpunkte + 12 Unit-Tests bestanden; Bericht: /mnt/documents/Pruefbericht_Standortaenderung_2026-10-05.md
+
+## Kunden-Info bei Standortwechsel (erledigt 2026-10-05)
+- [x] Edge Function send-location-notice (E-Mail „in X nicht verfügbar, in Y schon", Rechte wie Standortwechsel, Testkunden-Routing, Notiz-Nachweis)
+- [x] Dialog: Haken „Kunde per E-Mail informieren" + Vorschautext + persönliche Notiz
+- [x] E2E beide Varianten (verfügbar/unklar) + 401-Schutz geprüft; Bericht: /mnt/documents/Pruefbericht_Standort_Kundeninfo_2026-10-05.md

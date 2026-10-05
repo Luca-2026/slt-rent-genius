@@ -509,6 +509,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           items={rentalRequestedItems}
           reservationId={inquiry.b2b_reservation_id ?? null}
           offerSent={!!inquiry.offer_sent_at}
+          customerEmail={inquiry.customer_email ?? null}
           disabled={busy}
           onChanged={onChanged}
           onReviseSuggested={inquiry.offer_number ? () => {
