@@ -190,19 +190,38 @@ export function InquiryLocationSection({
       _inquiry_id: inquiryId,
       _new_location: target,
     });
-    setSaving(false);
     if (error) {
+      setSaving(false);
       toast({ title: "Standort konnte nicht geändert werden", description: error.message, variant: "destructive" });
       return;
     }
     const row = Array.isArray(data) ? data[0] : null;
     const newLabel = LOCATION_LABELS[(row?.new_location as string) ?? target] ?? target;
+
+    // Optional: Kunde per E-Mail über den Standortwechsel informieren
+    // (Text baut die Edge Function; bei Fehler bleibt die Umstellung trotzdem wirksam).
+    let noticeFailed = false;
+    if (notify && customerEmail) {
+      const { data: notice } = await invokeWithAuth<{ error?: string }>("send-location-notice", {
+        inquiry_id: inquiryId,
+        from_location: currentKey,
+        to_location: (row?.new_location as string) ?? target,
+        availability: allAvailable ? "available" : "unknown",
+        offer_sent: offerSent,
+        custom_message: customMessage.trim() || undefined,
+      });
+      noticeFailed = !!notice?.error;
+    }
+
+    setSaving(false);
     toast({
       title: `Standort geändert: ${newLabel}`,
       description:
-        (row?.reservations_updated ?? 0) > 0
+        ((row?.reservations_updated ?? 0) > 0
           ? "Anfrage, Postfach und Reservierung wurden umgestellt."
-          : "Anfrage und Standort-Postfach wurden umgestellt.",
+          : "Anfrage und Standort-Postfach wurden umgestellt.") +
+        (notify && customerEmail ? (noticeFailed ? " E-Mail an den Kunden ist fehlgeschlagen." : " Der Kunde wurde per E-Mail informiert.") : ""),
+      variant: noticeFailed ? "destructive" : "default",
     });
     setOpen(false);
     onChanged();
@@ -216,7 +235,7 @@ export function InquiryLocationSection({
         <span className="text-muted-foreground">Standort: </span>
         <span className="font-medium">{currentLabel}</span>
       </div>
-      <Button size="sm" variant="outline" disabled={disabled} onClick={() => { setTarget(initialTargetLocation(location)); setOpen(true); }}>
+      <Button size="sm" variant="outline" disabled={disabled} onClick={() => { setTarget(initialTargetLocation(location)); setNotify(true); setCustomMessage(""); setOpen(true); }}>
         Standort ändern
       </Button>
 
@@ -292,6 +311,45 @@ export function InquiryLocationSection({
                   anschließend eine <strong>neue Angebotsfassung</strong> mit dem neuen Abholstandort
                   (öffnet sich nach dem Speichern automatisch).
                 </span>
+              </div>
+            )}
+
+            {customerEmail && (
+              <div className="rounded-lg border border-border p-3 space-y-2.5">
+                <label className="flex items-start gap-2.5 cursor-pointer">
+                  <Checkbox
+                    checked={notify}
+                    onCheckedChange={(v) => setNotify(v === true)}
+                    className="mt-0.5"
+                    aria-label="Kunde per E-Mail informieren"
+                  />
+                  <span className="text-sm">
+                    <span className="font-medium flex items-center gap-1.5">
+                      <Mail className="h-3.5 w-3.5 text-primary" /> Kunde per E-Mail informieren
+                    </span>
+                    <span className="text-muted-foreground block mt-0.5">Geht an {customerEmail}</span>
+                  </span>
+                </label>
+                {notify && (
+                  <>
+                    <p className="text-xs text-muted-foreground rounded bg-muted/50 p-2 leading-relaxed">
+                      {buildLocationNoticePreview({
+                        fromLabel: currentLabel,
+                        toLabel: LOCATION_LABELS[target],
+                        allAvailable,
+                        offerSent,
+                      })}
+                    </p>
+                    <Textarea
+                      value={customMessage}
+                      onChange={(e) => setCustomMessage(e.target.value)}
+                      rows={2}
+                      maxLength={500}
+                      placeholder="Persönliche Notiz an den Kunden (optional)"
+                      aria-label="Persönliche Notiz an den Kunden"
+                    />
+                  </>
+                )}
               </div>
             )}
           </div>
