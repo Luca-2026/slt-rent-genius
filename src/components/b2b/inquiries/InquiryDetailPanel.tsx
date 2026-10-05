@@ -342,6 +342,12 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const [invoices, setInvoices] = useState<InvoiceRow[]>([]);
   const docSectionRef = useRef<HTMLDivElement | null>(null);
 
+  // Angefragte Artikel der Mietanfrage – Grundlage der Verfügbarkeitsprüfung beim Standortwechsel.
+  const rentalRequestedItems = useMemo(
+    () => (inquiryType === "rental" ? requestedItemsOf(inquiry as unknown as Parameters<typeof requestedItemsOf>[0]) : []),
+    [inquiryType, inquiry],
+  );
+
   // Nach dem Wechsel der Dokumentart zum Formular springen, damit der Klick sichtbar wirkt.
   useEffect(() => {
     docSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
