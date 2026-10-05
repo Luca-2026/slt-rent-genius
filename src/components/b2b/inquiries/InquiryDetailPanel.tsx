@@ -238,6 +238,10 @@ interface Props {
     /** Mietzeitraum der Anfrage – Basis für die Bestandsprüfung im Angebot. */
     start_date?: string | null;
     end_date?: string | null;
+    /** Mietanfragen: angefragte Positionen (für die Standort-Verfügbarkeitsprüfung). */
+    requested_items?: unknown;
+    /** Mietanfragen: verknüpfte B2B-Reservierung (wird beim Standortwechsel mitgezogen). */
+    b2b_reservation_id?: string | null;
   };
   defaultItems: (OfferLine & { product_slug?: string })[];
   /** Lieferadresse aus dem öffentlichen Anfrageformular (im Angebot änderbar). */
