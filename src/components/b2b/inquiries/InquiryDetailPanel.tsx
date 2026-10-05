@@ -511,7 +511,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           offerSent={!!inquiry.offer_sent_at}
           disabled={busy}
           onChanged={onChanged}
-          onReviseSuggested={offerSnapshot ? () => {
+          onReviseSuggested={inquiry.offer_number ? () => {
             setDocMode("revise");
             toast({
               title: "Neue Angebotsfassung senden",
