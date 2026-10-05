@@ -16,6 +16,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { INQUIRY_STATUSES, canTransition, type InquiryStatus } from "@/lib/inquiryStatus";
 import { InquiryStatusBadge } from "./InquiryStatusBadge";
+import { InquiryLocationSection } from "./InquiryLocationSection";
+import { requestedItemsOf } from "./types";
 import { inquiryDraftKey, readInquiryDraft } from "./offerDraftStorage";
 import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm";
 import { OfferAcceptanceNotice } from "./OfferAcceptanceNotice";
@@ -236,6 +238,10 @@ interface Props {
     /** Mietzeitraum der Anfrage – Basis für die Bestandsprüfung im Angebot. */
     start_date?: string | null;
     end_date?: string | null;
+    /** Mietanfragen: angefragte Positionen (für die Standort-Verfügbarkeitsprüfung). */
+    requested_items?: unknown;
+    /** Mietanfragen: verknüpfte B2B-Reservierung (wird beim Standortwechsel mitgezogen). */
+    b2b_reservation_id?: string | null;
   };
   defaultItems: (OfferLine & { product_slug?: string })[];
   /** Lieferadresse aus dem öffentlichen Anfrageformular (im Angebot änderbar). */
@@ -335,6 +341,12 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const lastInquiryId = useRef(inquiry.id);
   const [invoices, setInvoices] = useState<InvoiceRow[]>([]);
   const docSectionRef = useRef<HTMLDivElement | null>(null);
+
+  // Angefragte Artikel der Mietanfrage – Grundlage der Verfügbarkeitsprüfung beim Standortwechsel.
+  const rentalRequestedItems = useMemo(
+    () => (inquiryType === "rental" ? requestedItemsOf(inquiry as unknown as Parameters<typeof requestedItemsOf>[0]) : []),
+    [inquiryType, inquiry],
+  );
 
   // Nach dem Wechsel der Dokumentart zum Formular springen, damit der Klick sichtbar wirkt.
   useEffect(() => {
@@ -486,6 +498,28 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           return await update(inquiry.id, patch);
         }}
       />
+
+      {/* Standort der Mietanfrage – nachträglich änderbar, inkl. Verfügbarkeitsprüfung am Zielstandort. */}
+      {inquiryType === "rental" && (
+        <InquiryLocationSection
+          inquiryId={inquiry.id}
+          location={inquiry.location}
+          startDate={inquiry.start_date ?? null}
+          endDate={inquiry.end_date ?? null}
+          items={rentalRequestedItems}
+          reservationId={inquiry.b2b_reservation_id ?? null}
+          offerSent={!!inquiry.offer_sent_at}
+          disabled={busy}
+          onChanged={onChanged}
+          onReviseSuggested={inquiry.offer_number ? () => {
+            setDocMode("revise");
+            toast({
+              title: "Neue Angebotsfassung senden",
+              description: "Das versendete Angebot bleibt unverändert – bitte dem Kunden eine neue Fassung mit dem neuen Standort senden.",
+            });
+          } : undefined}
+        />
+      )}
 
       {details}
 

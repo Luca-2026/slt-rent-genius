@@ -4774,6 +4774,14 @@ export type Database = {
         Returns: boolean
       }
       can_edit_operations: { Args: { _user_id: string }; Returns: boolean }
+      change_rental_inquiry_location: {
+        Args: { _inquiry_id: string; _new_location: string }
+        Returns: {
+          new_location: string
+          old_location: string
+          reservations_updated: number
+        }[]
+      }
       check_inventory_availability: {
         Args: {
           _end: string

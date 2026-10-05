@@ -119,3 +119,7 @@
 - [ ] Neuer Build auf Serverprofis hochladen (Seite /zahlung/ ist sonst auf www nicht erreichbar)
 - [ ] PayPal-Direktanbindung: aktuell nicht umgesetzt (Stripe kann PayPal als Zahlart im Stripe-Dashboard aktivieren)
 - [ ] Portal-Subdomain app.slt-rental.de in Lovable verbinden (DNS bei Serverprofis setzen, SSL abwarten, Publish), damit das Vermietportal über Lovable läuft
+
+## Standortwechsel bei Mietanfragen (erledigt 2026-10-05)
+- [x] Standort nachträglich ändern (auch nach Angebotsversand): DB-Funktion change_rental_inquiry_location + Karte im Anfrage-Panel mit Verfügbarkeitsprüfung am Zielstandort, Warnung bei versendetem Angebot, automatischer Sprung in die Angebotsüberarbeitung
+- [x] 16/16 E2E-Prüfpunkte + 12 Unit-Tests bestanden; Bericht: /mnt/documents/Pruefbericht_Standortaenderung_2026-10-05.md
