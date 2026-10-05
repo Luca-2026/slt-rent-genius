@@ -499,6 +499,28 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         }}
       />
 
+      {/* Standort der Mietanfrage – nachträglich änderbar, inkl. Verfügbarkeitsprüfung am Zielstandort. */}
+      {inquiryType === "rental" && (
+        <InquiryLocationSection
+          inquiryId={inquiry.id}
+          location={inquiry.location}
+          startDate={inquiry.start_date ?? null}
+          endDate={inquiry.end_date ?? null}
+          items={rentalRequestedItems}
+          reservationId={inquiry.b2b_reservation_id ?? null}
+          offerSent={!!inquiry.offer_sent_at}
+          disabled={busy}
+          onChanged={onChanged}
+          onReviseSuggested={offerSnapshot ? () => {
+            setDocMode("revise");
+            toast({
+              title: "Neue Angebotsfassung senden",
+              description: "Das versendete Angebot bleibt unverändert – bitte dem Kunden eine neue Fassung mit dem neuen Standort senden.",
+            });
+          } : undefined}
+        />
+      )}
+
       {details}
 
       <Separator />
