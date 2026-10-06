@@ -71,6 +71,26 @@ export function resolveLocationKey(raw: string | null | undefined): string {
   return LOCATION_CONTACTS[value] ? value : "krefeld";
 }
 
+/**
+ * Rückgabe an einem anderen Standort als der Abholung (One-Way-Miete).
+ * Gibt null zurück, wenn keine abweichende Rückgabe gewählt oder der Standort
+ * ungültig bzw. identisch mit dem Abholstandort ist. Der Aufpreis (netto)
+ * gilt nur zusammen mit einem gültigen abweichenden Rückgabestandort.
+ */
+export function resolveReturnLocation(
+  rawReturn: unknown,
+  pickup: string | null | undefined,
+  rawCost: unknown,
+): { key: string; name: string; cost: number } | null {
+  if (typeof rawReturn !== "string" || !rawReturn.trim()) return null;
+  const value = rawReturn.trim().toLowerCase();
+  const known = LOCATION_CONTACTS[value] ? value : null;
+  if (!known) return null;
+  if (known === resolveLocationKey(pickup)) return null;
+  const cost = Math.max(0, Math.round((Number(rawCost) || 0) * 100) / 100);
+  return { key: known, name: LOCATION_CONTACTS[known].name, cost };
+}
+
 const round2 = (n: number) => Math.round((n + Number.EPSILON) * 100) / 100;
 
 export function lineTotal(item: Pick<InquiryOfferItem, "quantity" | "unit_price" | "discount_percent">): number {
