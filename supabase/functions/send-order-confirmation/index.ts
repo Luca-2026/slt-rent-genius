@@ -245,6 +245,10 @@ Deno.serve(async (req) => {
       );
       if (num(payload.setup_cost) > 0) servicesWithPrices.push({ id: "setup", name: "Aufbau / Montage vor Ort", pricePercent: null, amount: num(payload.setup_cost), allocations: [] });
       if (num(payload.dismantle_cost) > 0) servicesWithPrices.push({ id: "dismantle", name: "Abbau / Demontage vor Ort", pricePercent: null, amount: num(payload.dismantle_cost), allocations: [] });
+      if (num(payload.return_location_cost) > 0 && typeof payload.return_location === "string") {
+        const rlName = ({ krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" } as Record<string, string>)[payload.return_location] ?? payload.return_location;
+        servicesWithPrices.push({ id: "return-location", name: `Rückgabe an anderem Standort (${rlName})`, pricePercent: null, amount: num(payload.return_location_cost), allocations: [] });
+      }
       const totals = payload.totals ?? {};
       const deliveryAddress = payload.delivery_requested ? payload.delivery_address : undefined;
       const today = new Date();

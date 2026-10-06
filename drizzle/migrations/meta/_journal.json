@@ -351,6 +351,13 @@
       "when": 1791233031883,
       "tag": "0049_add_change_rental_inquiry_location",
       "breakpoints": true
+    },
+    {
+      "idx": 50,
+      "version": "7",
+      "when": 1791264841455,
+      "tag": "0050_inquiry_invoices_return_location",
+      "breakpoints": true
     }
   ]
 }

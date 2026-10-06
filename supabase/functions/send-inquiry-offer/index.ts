@@ -27,6 +27,7 @@ import {
   buildOfferTotals,
   normalizeInquiryOfferItems,
   resolveLocationKey,
+  resolveReturnLocation,
   type InquiryOfferItem,
 } from "../_shared/inquiry-offer-math.ts";
 
@@ -133,6 +134,11 @@ Deno.serve(async (req: Request) => {
     // Pauschalen für Auf-/Abbau (Montage & Demontage vor Ort)
     const setupCost = Math.max(0, Number(body.setup_cost) || 0);
     const dismantleCost = Math.max(0, Number(body.dismantle_cost) || 0);
+    // Rückgabe an anderem Standort (One-Way) mit optionalem Netto-Aufpreis
+    const returnLoc = inquiryType === "rental"
+      ? resolveReturnLocation(body.return_location, body.location || inquiry.location, body.return_location_cost)
+      : null;
+    const returnLocationCost = returnLoc?.cost ?? 0;
     const deposit = Number(body.deposit) || 0;
     const validDays = Number(body.valid_days) > 0 ? Math.min(Number(body.valid_days), 180) : 14;
     const notes: string | null = typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
@@ -164,7 +170,7 @@ Deno.serve(async (req: Request) => {
 
     const totals = buildOfferTotals(
       items,
-      deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost,
+      deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + returnLocationCost,
     );
     try {
       assertPositiveTotal(totals.netAmount);
@@ -215,7 +221,11 @@ Deno.serve(async (req: Request) => {
       : null;
     // Unbefristete Monatsmiete: Preise gelten pro Monat, kein Enddatum, monatliche Abschläge.
     const openEnded = inquiryType === "rental" && body.open_ended === true;
-    const pdfNotes = [supersedesText, openEnded ? OPEN_ENDED_NOTE : null, notes].filter(Boolean).join("\n\n") || null;
+    const pickupName = LOCATION_CONTACTS[resolveLocationKey(body.location || inquiry.location)].name;
+    const returnLocationText = returnLoc
+      ? `Abholung am Standort ${pickupName}, Rückgabe abweichend am Standort ${returnLoc.name}${returnLoc.cost > 0 ? " (Aufpreis siehe Position „Rückgabe an anderem Standort“)" : " (ohne Aufpreis)"}.`
+      : null;
+    const pdfNotes = [supersedesText, returnLocationText, openEnded ? OPEN_ENDED_NOTE : null, notes].filter(Boolean).join("\n\n") || null;
 
     const customerName = inquiryType === "rental"
       ? (inquiry.customer_name || "")
@@ -307,6 +317,16 @@ Deno.serve(async (req: Request) => {
         description: undefined,
         pricePercent: null,
         amount: dismantleCost,
+        allocations: [],
+      });
+    }
+    if (returnLoc && returnLoc.cost > 0) {
+      servicesWithPrices.push({
+        id: "return-location",
+        name: `Rückgabe an anderem Standort (${returnLoc.name})`,
+        description: undefined,
+        pricePercent: null,
+        amount: returnLoc.cost,
         allocations: [],
       });
     }
@@ -507,7 +527,8 @@ Deno.serve(async (req: Request) => {
       (deliveryCostDelivery > 0 ? extraRow("Transportkosten Anlieferung", money(deliveryCostDelivery)) : "") +
       (deliveryCostReturn > 0 ? extraRow("Transportkosten Abholung/Rückholung", money(deliveryCostReturn)) : "") +
       (setupCost > 0 ? extraRow("Aufbau / Montage vor Ort", money(setupCost)) : "") +
-      (dismantleCost > 0 ? extraRow("Abbau / Demontage vor Ort", money(dismantleCost)) : "");
+      (dismantleCost > 0 ? extraRow("Abbau / Demontage vor Ort", money(dismantleCost)) : "") +
+      (returnLoc && returnLoc.cost > 0 ? extraRow(`Rückgabe an anderem Standort (${escapeHtml(returnLoc.name)})`, money(returnLoc.cost)) : "");
     const transportTotal = deliveryCostDelivery + deliveryCostReturn;
 
     // ── Zahlungshinweis für die E-Mail ──
@@ -548,6 +569,7 @@ Deno.serve(async (req: Request) => {
   <p style="font-size:15px;"><strong>Gesamtsumme brutto: ${money(totals.grossAmount)}</strong><br>
   <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)}${transportTotal > 0 ? ` (inkl. Transportkosten ${money(transportTotal)})` : ""} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span>${deposit > 0 ? `<br><span style="color:#6b7280;font-size:13px;">zzgl. Kaution ${money(deposit)} (wird nach Rückgabe erstattet) – Gesamtüberweisung inkl. Kaution: ${money(totals.grossAmount + deposit)}</span>` : ""}</p>
 
+  ${returnLoc ? `<p style="font-size:14px;"><strong>Rückgabe:</strong> Abholung am Standort ${escapeHtml(pickupName)}, Rückgabe am Standort ${escapeHtml(returnLoc.name)}${returnLoc.cost > 0 ? ` (Aufpreis ${money(returnLoc.cost)} netto)` : " (ohne Aufpreis)"}.</p>` : ""}
   ${deliveryRequested && (deliveryAddress.street || deliveryAddress.city) ? `<p style="font-size:14px;"><strong>Lieferadresse:</strong><br>${escapeHtml(deliveryAddress.street)}<br>${escapeHtml([deliveryAddress.postal_code, deliveryAddress.city].filter(Boolean).join(" "))}</p>` : ""}
 
 
@@ -640,6 +662,8 @@ Deno.serve(async (req: Request) => {
           delivery_cost_return: deliveryCostReturn,
           setup_cost: setupCost,
           dismantle_cost: dismantleCost,
+          return_location: returnLoc?.key ?? null,
+          return_location_cost: returnLocationCost,
           deposit,
           payment_terms: paymentTerms,
           payment_terms_custom: paymentTermsCustom || null,

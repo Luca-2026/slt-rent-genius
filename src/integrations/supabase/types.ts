@@ -2483,6 +2483,8 @@ export type Database = {
           payment_terms_custom: string | null
           payments: Json
           rental_inquiry_id: string | null
+          return_location: string | null
+          return_location_cost: number
           sales_inquiry_id: string | null
           service_period_end: string | null
           service_period_start: string | null
@@ -2547,6 +2549,8 @@ export type Database = {
           payment_terms_custom?: string | null
           payments?: Json
           rental_inquiry_id?: string | null
+          return_location?: string | null
+          return_location_cost?: number
           sales_inquiry_id?: string | null
           service_period_end?: string | null
           service_period_start?: string | null
@@ -2611,6 +2615,8 @@ export type Database = {
           payment_terms_custom?: string | null
           payments?: Json
           rental_inquiry_id?: string | null
+          return_location?: string | null
+          return_location_cost?: number
           sales_inquiry_id?: string | null
           service_period_end?: string | null
           service_period_start?: string | null
@@ -4752,6 +4758,8 @@ export type Database = {
           payment_terms_custom: string | null
           payments: Json
           rental_inquiry_id: string | null
+          return_location: string | null
+          return_location_cost: number
           sales_inquiry_id: string | null
           service_period_end: string | null
           service_period_start: string | null
@@ -4958,6 +4966,8 @@ export type Database = {
           payment_terms_custom: string | null
           payments: Json
           rental_inquiry_id: string | null
+          return_location: string | null
+          return_location_cost: number
           sales_inquiry_id: string | null
           service_period_end: string | null
           service_period_start: string | null

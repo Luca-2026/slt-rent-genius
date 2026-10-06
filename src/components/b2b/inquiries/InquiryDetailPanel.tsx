@@ -87,7 +87,15 @@ function splitQuantity(
 /** Angebots-Snapshot in Formular-Positionen übersetzen (inkl. Zusatzoptionen). */
 function offerPayloadToLines(payload: unknown): {
   items: (OfferLine & { custom_period?: boolean })[];
-  costs?: Record<string, number>;
+  costs?: {
+    delivery_cost_delivery: number;
+    delivery_cost_return: number;
+    setup_cost: number;
+    dismantle_cost: number;
+    return_location: string | null;
+    return_location_cost: number;
+    deposit: number;
+  };
   meta: { payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null; open_ended: boolean };
   delivery: OfferDeliveryAddress | null;
 } | null {
@@ -98,6 +106,8 @@ function offerPayloadToLines(payload: unknown): {
         delivery_cost_return?: number;
         setup_cost?: number;
         dismantle_cost?: number;
+        return_location?: string | null;
+        return_location_cost?: number;
         deposit?: number;
         payment_terms?: string;
         payment_terms_custom?: string | null;
@@ -158,6 +168,8 @@ function offerPayloadToLines(payload: unknown): {
       delivery_cost_return: Number(p.delivery_cost_return) || 0,
       setup_cost: Number(p.setup_cost) || 0,
       dismantle_cost: Number(p.dismantle_cost) || 0,
+      return_location: typeof p.return_location === "string" ? p.return_location : null,
+      return_location_cost: Number(p.return_location_cost) || 0,
       deposit: Number(p.deposit) || 0,
     },
     meta: {

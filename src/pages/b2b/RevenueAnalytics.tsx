@@ -75,7 +75,7 @@ export default function RevenueAnalytics() {
     if (accessLoading || !isAdmin) return;
     (async () => {
       const [inq, inqItems, portal, portalItems, products, sales, newM, usedM] = await Promise.all([
-        supabase.from("inquiry_invoices").select("id,inquiry_type,invoice_kind,status,invoice_date,net_amount,location,customer_kind,sales_inquiry_id,delivery_cost_delivery,delivery_cost_return,setup_cost,dismantle_cost"),
+        supabase.from("inquiry_invoices").select("id,inquiry_type,invoice_kind,status,invoice_date,net_amount,location,customer_kind,sales_inquiry_id,delivery_cost_delivery,delivery_cost_return,setup_cost,dismantle_cost,return_location_cost"),
         supabase.from("inquiry_invoice_items").select("invoice_id,product_name,total_price"),
         supabase.from("b2b_invoices").select("id,invoice_kind,status,invoice_date,net_amount,reservation_id,b2b_profile_id,delivery_cost,source_offer_id"),
         supabase.from("b2b_invoice_items").select("invoice_id,product_name,total_price"),
@@ -113,13 +113,13 @@ export default function RevenueAnalytics() {
       const pItems = group((portalItems.data ?? []) as { invoice_id: string; product_name: string | null; total_price: number | null }[]);
 
       const list: AnalyticsInvoice[] = [
-        ...((inq.data ?? []) as { id: string; inquiry_type: string | null; invoice_kind: string | null; status: string; invoice_date: string | null; net_amount: number | null; location: string | null; customer_kind: string | null; sales_inquiry_id: string | null; delivery_cost_delivery: number | null; delivery_cost_return: number | null; setup_cost: number | null; dismantle_cost: number | null }[]).map((r) => ({
+        ...((inq.data ?? []) as { id: string; inquiry_type: string | null; invoice_kind: string | null; status: string; invoice_date: string | null; net_amount: number | null; location: string | null; customer_kind: string | null; sales_inquiry_id: string | null; delivery_cost_delivery: number | null; delivery_cost_return: number | null; setup_cost: number | null; dismantle_cost: number | null; return_location_cost: number | null }[]).map((r) => ({
           id: r.id, source: "inquiry" as const,
           business: (r.inquiry_type === "sales" ? "sales" : "rental") as Business,
           invoice_kind: r.invoice_kind, status: r.status, invoice_date: r.invoice_date, net_amount: n(r.net_amount),
           location: r.location, segment: segmentOf({ customer_kind: r.customer_kind }),
           fallbackCategory: r.sales_inquiry_id ? salesCat.get(r.sales_inquiry_id) ?? null : null,
-          serviceAmount: n(r.delivery_cost_delivery) + n(r.delivery_cost_return) + n(r.setup_cost) + n(r.dismantle_cost),
+          serviceAmount: n(r.delivery_cost_delivery) + n(r.delivery_cost_return) + n(r.setup_cost) + n(r.dismantle_cost) + n(r.return_location_cost),
           items: iItems.get(r.id) ?? [],
         })),
         ...portalRows.map((r) => ({

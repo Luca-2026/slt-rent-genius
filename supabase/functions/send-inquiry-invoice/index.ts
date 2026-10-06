@@ -39,6 +39,7 @@ import {
   buildOfferTotals,
   normalizeInquiryOfferItems,
   resolveLocationKey,
+  resolveReturnLocation,
   type InquiryOfferItem,
 } from "../_shared/inquiry-offer-math.ts";
 
@@ -229,7 +230,8 @@ Deno.serve(async (req: Request) => {
           discount_percent: 0,
         }];
         // Abschläge enthalten keine Nebenkosten – diese stehen in der Schlussrechnung.
-        for (const k of ["delivery_cost_delivery", "delivery_cost_return", "setup_cost", "dismantle_cost", "deposit"]) body[k] = 0;
+        for (const k of ["delivery_cost_delivery", "delivery_cost_return", "setup_cost", "dismantle_cost", "deposit", "return_location_cost"]) body[k] = 0;
+        body.return_location = null;
       } else {
         deductions = installmentDeductions(priorRows);
       }
@@ -257,6 +259,10 @@ Deno.serve(async (req: Request) => {
     const deliveryCostReturn = Math.max(0, Number(body.delivery_cost_return) || 0);
     const setupCost = Math.max(0, Number(body.setup_cost) || 0);
     const dismantleCost = Math.max(0, Number(body.dismantle_cost) || 0);
+    const returnLoc = inquiryType === "rental"
+      ? resolveReturnLocation(body.return_location, body.location || inquiry.location, body.return_location_cost)
+      : null;
+    const returnLocationCost = returnLoc?.cost ?? 0;
     const deposit = Math.max(0, Number(body.deposit) || 0);
     const userNotes: string | null = typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
     const notes: string | null =
@@ -264,7 +270,7 @@ Deno.serve(async (req: Request) => {
 
     const totals = buildOfferTotals(
       items,
-      deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost,
+      deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + returnLocationCost,
     );
     if (invoiceKind === "final") {
       // Sind alle Leistungen schon per Abschlag bezahlt, darf die Schlussrechnung 0 € betragen.
@@ -440,6 +446,9 @@ Deno.serve(async (req: Request) => {
     if (dismantleCost > 0) {
       servicesWithPrices.push({ id: "dismantle", name: "Abbau / Demontage vor Ort", description: undefined, pricePercent: null, amount: dismantleCost, allocations: [] });
     }
+    if (returnLoc && returnLoc.cost > 0) {
+      servicesWithPrices.push({ id: "return-location", name: `Rückgabe an anderem Standort (${returnLoc.name})`, description: undefined, pricePercent: null, amount: returnLoc.cost, allocations: [] });
+    }
     const servicesSurcharge = servicesWithPrices.reduce((sum, s) => sum + s.amount, 0);
 
     const missingImages = pdfItems.filter((i) => !i.image_url).map((i) => i.product_name);
@@ -597,6 +606,7 @@ Deno.serve(async (req: Request) => {
     ${deliveryCostReturn > 0 ? `<div style="padding:10px 0;border-bottom:1px solid #e5e7eb;font-size:14px;">Transportkosten Abholung <strong style="float:right;">${money(deliveryCostReturn)}</strong></div>` : ""}
     ${setupCost > 0 ? `<div style="padding:10px 0;border-bottom:1px solid #e5e7eb;font-size:14px;">Aufbau / Montage <strong style="float:right;">${money(setupCost)}</strong></div>` : ""}
     ${dismantleCost > 0 ? `<div style="padding:10px 0;border-bottom:1px solid #e5e7eb;font-size:14px;">Abbau / Demontage <strong style="float:right;">${money(dismantleCost)}</strong></div>` : ""}
+    ${returnLoc && returnLoc.cost > 0 ? `<div style="padding:10px 0;border-bottom:1px solid #e5e7eb;font-size:14px;">Rückgabe an anderem Standort (${escapeHtml(returnLoc.name)}) <strong style="float:right;">${money(returnLoc.cost)}</strong></div>` : ""}
   </div>
   <p style="font-size:15px;"><strong>Rechnungsbetrag brutto: ${money(totals.grossAmount)}</strong><br>
   <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span></p>
@@ -659,6 +669,8 @@ Deno.serve(async (req: Request) => {
         delivery_cost_return: deliveryCostReturn,
         setup_cost: setupCost,
         dismantle_cost: dismantleCost,
+        return_location: returnLoc?.key ?? null,
+        return_location_cost: returnLocationCost,
         deposit,
         notes,
         paid_amount: amountPaid,
