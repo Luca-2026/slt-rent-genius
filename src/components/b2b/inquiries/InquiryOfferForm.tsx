@@ -14,9 +14,11 @@ import { AlertTriangle, ArrowDown, ArrowUp, CheckCircle2, Eye, GripVertical, Inf
 import { moveItem } from "@/components/b2b/admin/SortableRows";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
+  LOCATION_LABELS,
   badgeText,
   evaluateLine,
   fetchAvailability,
+  normalizeLocation,
   toIsoDate,
   type InventoryIssue,
   type InventoryResult,
@@ -185,6 +187,9 @@ interface Props {
     delivery_cost_return?: number;
     setup_cost?: number;
     dismantle_cost?: number;
+    /** Abweichender Rückgabestandort (One-Way) und Netto-Aufpreis. */
+    return_location?: string | null;
+    return_location_cost?: number;
     deposit?: number;
   };
   /** Bereits geleistete Zahlungen (z. B. Vorkasse auf das Angebot) – nur Rechnungen. */
@@ -276,6 +281,9 @@ export function InquiryOfferForm({
   /** Pauschalen für Auf- und Abbau (Montage/Demontage vor Ort). */
   const [setupCost, setSetupCost] = useState(draft?.setupCost ?? defaultCosts?.setup_cost ?? 0);
   const [dismantleCost, setDismantleCost] = useState(draft?.dismantleCost ?? defaultCosts?.dismantle_cost ?? 0);
+  /** Rückgabe an anderem Standort als die Abholung ("" = gleicher Standort) inkl. Netto-Aufpreis. */
+  const [returnLocation, setReturnLocation] = useState<string>(draft?.returnLocation ?? defaultCosts?.return_location ?? "");
+  const [returnLocationCost, setReturnLocationCost] = useState<number>(draft?.returnLocationCost ?? defaultCosts?.return_location_cost ?? 0);
   const [deposit, setDeposit] = useState(draft?.deposit ?? defaultCosts?.deposit ?? 0);
   const [validDays, setValidDays] = useState(draft?.validDays ?? defaultMeta?.valid_days ?? 14);
   /** Unbefristete Monatsmiete: Mietpositionen gelten pro Monat, kein Enddatum (nur Mietangebote). */
@@ -412,6 +420,8 @@ export function InquiryOfferForm({
         deliveryCostReturn,
         setupCost,
         dismantleCost,
+        returnLocation,
+        returnLocationCost,
         deposit,
         validDays,
         payments,
@@ -433,6 +443,8 @@ export function InquiryOfferForm({
     deliveryCostReturn,
     setupCost,
     dismantleCost,
+    returnLocation,
+    returnLocationCost,
     deposit,
     validDays,
     payments,
@@ -455,6 +467,8 @@ export function InquiryOfferForm({
     setDeliveryCostReturn(defaultCosts?.delivery_cost_return ?? 0);
     setSetupCost(defaultCosts?.setup_cost ?? 0);
     setDismantleCost(defaultCosts?.dismantle_cost ?? 0);
+    setReturnLocation(defaultCosts?.return_location ?? "");
+    setReturnLocationCost(defaultCosts?.return_location_cost ?? 0);
     setDeposit(defaultCosts?.deposit ?? 0);
     setValidDays(defaultMeta?.valid_days ?? 14);
     setPayments(defaultPayments ?? []);
@@ -571,9 +585,14 @@ export function InquiryOfferForm({
     inventoryAckRef.current = false;
   }, [checkSignature]);
 
+  /** Nur gültig, wenn abweichend vom Abholstandort (bei Standortwechsel fällt sie ggf. weg). */
+  const activeReturnLocation =
+    inquiryType === "rental" && returnLocation && returnLocation !== normalizeLocation(location) ? returnLocation : "";
+  const activeReturnCost = activeReturnLocation ? Math.max(0, Number(returnLocationCost) || 0) : 0;
+
   const totals = useMemo(
-    () => buildOfferTotals(effectiveItems, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost),
-    [effectiveItems, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost],
+    () => buildOfferTotals(effectiveItems, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + activeReturnCost),
+    [effectiveItems, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost, activeReturnCost],
   );
 
   /** Summe der erfassten Teilzahlungen und daraus der offene Restbetrag. */
@@ -740,6 +759,8 @@ export function InquiryOfferForm({
         delivery_cost_return: deliveryCostReturn,
         setup_cost: setupCost,
         dismantle_cost: dismantleCost,
+        return_location: activeReturnLocation || null,
+        return_location_cost: activeReturnCost,
         delivery_requested: delivery.requested,
         delivery_address: delivery.requested
           ? {
@@ -1288,6 +1309,44 @@ export function InquiryOfferForm({
       </div>
 
 
+
+      {inquiryType === "rental" && (
+        <div className="rounded-lg border border-border p-3 space-y-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div>
+              <Label className="text-xs">Rückgabe</Label>
+              <Select
+                value={activeReturnLocation || "same"}
+                onValueChange={(v) => setReturnLocation(v === "same" ? "" : v)}
+                disabled={disabled}
+              >
+                <SelectTrigger aria-label="Rückgabestandort"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="same">Am Abholstandort ({LOCATION_LABELS[normalizeLocation(location) ?? ""] ?? location ?? "–"})</SelectItem>
+                  {(["krefeld", "bonn", "muelheim"] as const)
+                    .filter((k) => k !== normalizeLocation(location))
+                    .map((k) => (
+                      <SelectItem key={k} value={k}>Rückgabe in {LOCATION_LABELS[k]}</SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            </div>
+            {activeReturnLocation && (
+              <div>
+                <Label className="text-xs">Aufpreis Rückgabe (netto, €)</Label>
+                <NumberInput type="number" min={0} step="0.01" value={returnLocationCost}
+                  onChange={(e) => setReturnLocationCost(Number(e.target.value) || 0)} disabled={disabled} />
+              </div>
+            )}
+          </div>
+          {activeReturnLocation && (
+            <p className="text-xs text-muted-foreground">
+              Abholung {LOCATION_LABELS[normalizeLocation(location) ?? ""] ?? location}, Rückgabe {LOCATION_LABELS[activeReturnLocation]}.
+              Der Aufpreis erscheint als eigene Position im Dokument (0 € = ohne Aufpreis, nur Hinweis).
+            </p>
+          )}
+        </div>
+      )}
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
         <div>
