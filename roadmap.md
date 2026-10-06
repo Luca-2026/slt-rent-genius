@@ -128,3 +128,5 @@
 - [x] Edge Function send-location-notice (E-Mail „in X nicht verfügbar, in Y schon", Rechte wie Standortwechsel, Testkunden-Routing, Notiz-Nachweis)
 - [x] Dialog: Haken „Kunde per E-Mail informieren" + Vorschautext + persönliche Notiz
 - [x] E2E beide Varianten (verfügbar/unklar) + 401-Schutz geprüft; Bericht: /mnt/documents/Pruefbericht_Standort_Kundeninfo_2026-10-05.md
+- [x] Rückgabe an anderem Standort mit optionalem Netto-Aufpreis (Angebot, Rechnung, Auftragsbestätigung, Umsatz) – Vorschau-PDF geprüft
+- [ ] Offen: Rückgabestandort im Übergabe-/Rückgabeprotokoll und Bestandsprüfung am Rückgabestandort (noch nicht umgesetzt)
