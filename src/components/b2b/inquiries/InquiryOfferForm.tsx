@@ -303,8 +303,9 @@ export function InquiryOfferForm({
     draft?.servicePeriodEnd ?? defaultServicePeriod?.end ?? "",
   );
 
+  // Standard immer Vorkasse (auch Geschäftskunden), damit nie versehentlich „auf Rechnung“ rausgeht.
   const defaultTerms = () =>
-    isInvoice ? (customerKind === "business" ? "net_14" : "vorkasse") : customerKind === "business" ? "net_14" : "anzahlung_30";
+    isInvoice || customerKind === "business" ? "vorkasse" : "anzahlung_30";
   const [paymentTerms, setPaymentTerms] = useState<string>(() => {
     const t = draft?.paymentTerms ?? defaultMeta?.payment_terms ?? defaultTerms();
     // Alte Variante „Vorkasse über Zahlungslink“ ist jetzt Teil von „Vorkasse komplett“.
