@@ -9,6 +9,7 @@
  *   Miete RE-M-JJJJ-MM-0001, Verkauf RE-V-JJJJ-MM-0001.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
+import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
@@ -192,6 +193,9 @@ Deno.serve(async (req: Request) => {
       .eq("id", inquiryId)
       .maybeSingle();
     if (inqErr || !inquiry) return json({ error: "Anfrage nicht gefunden" }, 404);
+    if (!allowsCustomerPaymentTerms(inquiry.customer_kind, body.payment_terms)) {
+      return json({ error: "Privatkunden zahlen nicht auf Rechnung. Bitte sofortige Zahlung wählen." }, 400);
+    }
 
     const customerEmail: string | null = inquiry.customer_email;
     if (!customerEmail) return json({ error: "Anfrage hat keine E-Mail-Adresse" }, 400);

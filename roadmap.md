@@ -1,5 +1,8 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – Privatkunden ohne Rechnungszahlung
+- [ ] Rechnungszahlung aus privaten Angeboten/Rechnungen und Startseitenanzeige entfernen, alte Entwürfe sicher vorbelegen und Versand serverseitig absichern; Tests und Portal-Prüfung ohne Versand.
+
 ## Aktuell – angenommene Angebote und mobile Zahlungsanzeige
 - [x] Alle 14 angenommenen Mietanfragen ohne Auftragsbestätigung sichtbar: 3 Online-Unterschriften und 11 im Portal erfasste Annahmen; kein Altersfilter. Angemeldeter Portal-Test bestätigt Anzahl, Anfrageöffnung und keinen Textüberlauf bei 320/390 px; 9 Tests bestanden, Build OK. Keine E-Mails/Zahlungen ausgelöst; Veröffentlichung bleibt gesondert.
 

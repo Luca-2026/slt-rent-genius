@@ -35,10 +35,10 @@ export function AcceptedOffersPayments() {
   useEffect(() => {
     let active = true;
     const load = async () => {
-      const cols = "id, status, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, customer_name, company_name";
+      const cols = "id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, customer_name, company_name";
       const [rent, sale] = await Promise.all([
         supabase.from("rental_inquiries").select(cols).eq("status", "accepted").is("order_confirmed_at", null),
-        supabase.from("sales_inquiries").select("id, status, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, first_name, last_name, company_name").eq("status", "accepted"),
+        supabase.from("sales_inquiries").select("id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, first_name, last_name, company_name").eq("status", "accepted"),
       ]);
       if (rent.error || sale.error) { if (active) setError(true); return; }
       const list = [
@@ -64,7 +64,7 @@ export function AcceptedOffersPayments() {
         const open = Math.max(0, Math.round((total - paid) * 100) / 100);
         const link = (links.data ?? []).find((l) => l.inquiry_id === i.id && l.offer_number === i.offer_number);
         const state: Row["state"] = open <= 0 ? "paid"
-          : INVOICE_TERMS.has(payload.payment_terms ?? "") ? "invoice"
+          : i.customer_kind === "business" && INVOICE_TERMS.has(payload.payment_terms ?? "") ? "invoice"
           : paid > 0 ? "partial"
           : link?.stripe_session_id ? "checkout" : "open";
         out.push({

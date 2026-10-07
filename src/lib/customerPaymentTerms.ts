@@ -1,0 +1,1 @@
+export { allowsCustomerPaymentTerms, safeCustomerPaymentTerms } from "../../supabase/functions/_shared/customer-payment-terms";
