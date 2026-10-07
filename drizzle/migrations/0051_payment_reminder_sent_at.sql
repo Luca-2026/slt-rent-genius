@@ -1,0 +1,1 @@
+ALTER TABLE public.rental_inquiries ADD COLUMN IF NOT EXISTS payment_reminder_sent_at timestamptz;

@@ -3421,6 +3421,7 @@ export type Database = {
           order_confirmed_at: string | null
           order_confirmed_by_name: string | null
           paid_amount: number
+          payment_reminder_sent_at: string | null
           payments: Json
           product_id: string | null
           product_name: string | null
@@ -3482,6 +3483,7 @@ export type Database = {
           order_confirmed_at?: string | null
           order_confirmed_by_name?: string | null
           paid_amount?: number
+          payment_reminder_sent_at?: string | null
           payments?: Json
           product_id?: string | null
           product_name?: string | null
@@ -3543,6 +3545,7 @@ export type Database = {
           order_confirmed_at?: string | null
           order_confirmed_by_name?: string | null
           paid_amount?: number
+          payment_reminder_sent_at?: string | null
           payments?: Json
           product_id?: string | null
           product_name?: string | null
