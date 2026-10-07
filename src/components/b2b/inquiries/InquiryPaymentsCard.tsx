@@ -107,7 +107,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
   };
 
   return (
-    <div className="rounded-lg border border-border p-3 space-y-3">
+    <div className="min-w-0 overflow-hidden rounded-lg border border-border p-3 space-y-3">
       <div className="flex flex-wrap items-center gap-2">
         <Banknote className="h-4 w-4 text-primary" />
         <span className="font-semibold text-sm">Zahlungseingänge</span>
@@ -130,9 +130,9 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
         ) : <div key={index} className="grid min-w-0 gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-[130px_120px_minmax(0,1fr)_minmax(0,1fr)_auto] items-end">
           <div className="min-w-0">
             <Label className="text-[11px]">Datum</Label>
-            <Input className="min-w-0 w-full max-w-full" type="date" disabled={disabled || saving} value={row.date ?? ""} onChange={(e) => patch(index, { date: e.target.value })} />
+            <Input className="block h-10 min-w-0 w-full max-w-full appearance-none text-left [&::-webkit-date-and-time-value]:min-w-0 [&::-webkit-date-and-time-value]:text-left" type="date" disabled={disabled || saving} value={row.date ?? ""} onChange={(e) => patch(index, { date: e.target.value })} />
           </div>
-          <div>
+          <div className="min-w-0">
             <Label className="text-[11px]">Betrag (€)</Label>
             <NumberInput
               type="number"
@@ -143,7 +143,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
               onChange={(e) => patch(index, { amount: Number(e.target.value) })}
             />
           </div>
-          <div>
+          <div className="min-w-0">
             <Label className="text-[11px]">Zahlungsweg</Label>
             <Input disabled={disabled || saving} value={row.label ?? ""} onChange={(e) => patch(index, { label: e.target.value })} placeholder="Banküberweisung" />
           </div>
@@ -159,6 +159,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
           <Button
             size="icon"
             variant="ghost"
+            className="justify-self-end"
             onClick={() => setRows((prev) => prev.filter((_, i) => i !== index))}
             aria-label="Zahlung entfernen"
             disabled={disabled || saving}
@@ -181,7 +182,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
         <Button size="sm" onClick={save} disabled={disabled || saving || !dirty}>
           Zahlungen speichern
         </Button>
-        <span className="text-sm ml-auto">
+        <span className="min-w-0 basis-full text-sm sm:ml-auto sm:basis-auto">
           Erhalten <strong>{formatEuro(total)}</strong>
           {required != null && Number(deposit) > 0 && (
             <span className="ml-2 text-muted-foreground">von {formatEuro(required)} inkl. Kaution</span>
