@@ -21,6 +21,7 @@ import { isInstallmentDue } from "@/lib/installments";
 import { MaintenanceDueWidget } from "@/components/b2b/admin/MaintenanceDueWidget";
 import { usePhoneCalls, isUrgentCall } from "@/hooks/usePhoneCalls";
 import { PRIORITY_LABEL } from "@/lib/callPriority";
+import { AcceptedOffersPayments } from "@/components/b2b/dashboard/AcceptedOffersPayments";
 
 type ProfileRow = PortalProfileLite & { id: string; company_name: string; credit_limit: number };
 
@@ -258,6 +259,8 @@ export default function StaffHome() {
             <ActionStat label="Laufende Mieten" value={running} to="/b2b/mietanfragen?status=running" icon={Package} />
             <ActionStat label="Verkaufsanfragen" value={openSales} to="/b2b/verkaufsanfragen" icon={ShoppingCart} />
           </div>
+
+          <AcceptedOffersPayments />
 
           <UrgentCalls />
 
