@@ -1,5 +1,8 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – angenommene Angebote und mobile Zahlungsanzeige
+- [ ] Alle angenommenen Anfragen ohne Auftragsbestätigung statt nur Online-Unterschriften anzeigen; mobile Texte ohne Überlauf prüfen und Anzahl mit Live-Daten abgleichen.
+
 ## Aktuell – ungestörte Unterschriften
 - [x] Warenkorb und Cookie-Hinweis auf Angebotsannahmeseiten und bei allen gemeinsamen Unterschriftsflächen ausblenden, ohne Cookie-Zustimmung zu setzen.
 - [x] Vier Regressionstests bestanden; Angebotsseite Desktop/Handysimulation mit gespeicherter Touch-Unterschrift geprüft, echte Übergabe-/Rückgabe-Dialoge isoliert geöffnet/geschlossen; Hinweise verschwinden und kehren danach zurück. Keine Annahme, E-Mail oder Auftragsänderung ausgelöst; Veröffentlichung gesondert.
