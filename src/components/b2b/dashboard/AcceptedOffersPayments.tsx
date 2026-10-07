@@ -38,7 +38,7 @@ export function AcceptedOffersPayments() {
       const cols = "id, status, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, customer_name, company_name";
       const [rent, sale] = await Promise.all([
         supabase.from("rental_inquiries").select(cols).eq("status", "accepted").is("order_confirmed_at", null),
-        supabase.from("sales_inquiries").select("id, status, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, first_name, last_name, company_name").eq("status", "accepted").is("order_confirmed_at", null),
+        supabase.from("sales_inquiries").select("id, status, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, first_name, last_name, company_name").eq("status", "accepted"),
       ]);
       if (rent.error || sale.error) { if (active) setError(true); return; }
       const list = [
@@ -57,7 +57,10 @@ export function AcceptedOffersPayments() {
         const a = acc.data?.find((a) => a.inquiry_id === i.id && a.offer_number === i.offer_number);
         const payload = (i.offer_payload ?? {}) as { deposit?: unknown; payment_terms?: string };
         const total = (Number(i.offer_total_gross) || 0) + (Number(payload.deposit) || 0);
-        const paid = (Array.isArray(i.payments) ? i.payments : []).reduce((s: number, p: any) => s + (Number(p?.amount) || 0), 0);
+        let paid = 0;
+        for (const p of Array.isArray(i.payments) ? i.payments : []) {
+          if (p && typeof p === "object" && !Array.isArray(p)) paid += Number(p.amount) || 0;
+        }
         const open = Math.max(0, Math.round((total - paid) * 100) / 100);
         const link = (links.data ?? []).find((l) => l.inquiry_id === i.id && l.offer_number === i.offer_number);
         const state: Row["state"] = open <= 0 ? "paid"
