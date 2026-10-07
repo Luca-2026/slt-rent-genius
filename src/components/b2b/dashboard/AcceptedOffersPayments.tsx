@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { CheckCircle2, ChevronRight } from "lucide-react";
+import { CheckCircle2, ChevronDown, ChevronRight, ChevronUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { isAwaitingOfferConfirmation } from "@/lib/dashboardMetrics";
@@ -31,6 +31,7 @@ const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30"]);
 export function AcceptedOffersPayments() {
   const [rows, setRows] = useState<Row[]>([]);
   const [error, setError] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -89,6 +90,9 @@ export function AcceptedOffersPayments() {
 
   if (error) return <p role="alert" className="text-sm text-destructive">Angenommene Angebote konnten nicht aktualisiert werden. Bitte lade die Seite erneut.</p>;
   if (!rows.length) return null;
+  const PREVIEW = 2;
+  const visible = expanded ? rows : rows.slice(0, PREVIEW);
+  const hidden = rows.length - PREVIEW;
   return (
     <section className="rounded-xl border-2 border-primary bg-card" aria-label="Angenommene Angebote">
       <header className="flex items-center gap-2 border-b border-border px-4 py-3">
@@ -97,7 +101,7 @@ export function AcceptedOffersPayments() {
         <span className="shrink-0 rounded-full bg-primary px-2 py-0.5 text-xs text-primary-foreground">{rows.length}</span>
       </header>
       <ul className="divide-y divide-border">
-        {rows.map((r) => (
+        {visible.map((r) => (
           <li key={r.inquiryId + r.offer}>
             <Link
               to={r.table === "sales_inquiries" ? `/b2b/verkaufsanfragen?anfrage=${r.inquiryId}` : `/b2b/mietanfragen?status=all&anfrage=${r.inquiryId}`}
@@ -121,6 +125,16 @@ export function AcceptedOffersPayments() {
           </li>
         ))}
       </ul>
+      {hidden > 0 && (
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
+          className="flex w-full items-center justify-center gap-1.5 border-t border-border px-4 py-2.5 text-sm font-medium text-primary hover:bg-muted"
+        >
+          {expanded ? <>Weniger anzeigen <ChevronUp className="h-4 w-4" aria-hidden="true" /></> : <>Alle {rows.length} anzeigen (+{hidden} weitere) <ChevronDown className="h-4 w-4" aria-hidden="true" /></>}
+        </button>
+      )}
     </section>
   );
 }
