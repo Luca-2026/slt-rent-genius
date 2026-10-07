@@ -1,5 +1,8 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – Privatkunden ohne Rechnungszahlung
+- [x] Rechnungszahlung aus privaten Angeboten/Rechnungen und Startseitenanzeige entfernt; alte Entwürfe auf Vorauszahlung vorbelegt, bestehende Belege unverändert. 10 Tests bestanden; angemeldeter Portal-Test: Privatkunden-Rechnung nur „Sofort fällig ohne Abzug“, beide bereitgestellten Versandfunktionen weisen net_14 mit 400 ab, ohne Nummernvergabe/Versand. Build OK; Oberfläche live nach Veröffentlichung.
+
 ## Aktuell – angenommene Angebote und mobile Zahlungsanzeige
 - [x] Alle 14 angenommenen Mietanfragen ohne Auftragsbestätigung sichtbar: 3 Online-Unterschriften und 11 im Portal erfasste Annahmen; kein Altersfilter. Angemeldeter Portal-Test bestätigt Anzahl, Anfrageöffnung und keinen Textüberlauf bei 320/390 px; 9 Tests bestanden, Build OK. Keine E-Mails/Zahlungen ausgelöst; Veröffentlichung bleibt gesondert.
 

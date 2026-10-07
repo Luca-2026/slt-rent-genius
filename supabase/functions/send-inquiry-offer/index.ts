@@ -8,6 +8,7 @@
  *   the job is then created manually in Rentware.
  */
 import { OPEN_ENDED_NOTE, monthlyNetFromOffer } from "../_shared/installments.ts";
+import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts";
 import {
   ensurePaymentLink,
   isStripeConfigured,
@@ -103,6 +104,9 @@ Deno.serve(async (req: Request) => {
       .eq("id", inquiryId)
       .maybeSingle();
     if (inqErr || !inquiry) return json({ error: "Anfrage nicht gefunden" }, 404);
+    if (!allowsCustomerPaymentTerms(inquiry.customer_kind, body.payment_terms)) {
+      return json({ error: "Privatkunden zahlen nicht auf Rechnung. Bitte Vorkasse oder Anzahlung wählen." }, 400);
+    }
 
     // Überarbeitung eines bereits versendeten Angebots: muss sich auf die
     // aktuell gültige Fassung beziehen (verhindert Doppelversand/veraltete Stände).

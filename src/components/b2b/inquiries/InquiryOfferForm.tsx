@@ -1,4 +1,5 @@
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
+import { safeCustomerPaymentTerms } from "@/lib/customerPaymentTerms";
 import { isStripePayment, shortPaymentReference } from "@/lib/paymentPresentation";
 import { PdfPagesPreview } from "@/components/b2b/PdfPagesPreview";
 import { applyCategoryDiscount, loadCategoryDiscounts, loadInquiryProfileId, type DiscountMap } from "@/lib/customerDiscounts";
@@ -307,7 +308,7 @@ export function InquiryOfferForm({
   const [paymentTerms, setPaymentTerms] = useState<string>(() => {
     const t = draft?.paymentTerms ?? defaultMeta?.payment_terms ?? defaultTerms();
     // Alte Variante „Vorkasse über Zahlungslink“ ist jetzt Teil von „Vorkasse komplett“.
-    return t === "rentpair_vorkasse" ? "vorkasse" : t;
+    return safeCustomerPaymentTerms(customerKind, t, isInvoice);
   });
   /** Freitext für „Individuelle Zahlungsbedingungen“ (nur Geschäftskunden). */
   const [paymentTermsCustom, setPaymentTermsCustom] = useState<string>(draft?.paymentTermsCustom ?? defaultMeta?.payment_terms_custom ?? "");
@@ -316,6 +317,10 @@ export function InquiryOfferForm({
   const skipDefaults = useRef(!!draft || !!defaultMeta?.payment_terms);
 
   useEffect(() => {
+    if (customerKind === "private") {
+      setPaymentTerms((terms) => safeCustomerPaymentTerms(customerKind, terms, isInvoice));
+      return;
+    }
     if (skipDefaults.current) return;
     setPaymentTerms(defaultTerms());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -474,7 +479,7 @@ export function InquiryOfferForm({
     setPayments(defaultPayments ?? []);
     setServicePeriodStart(defaultServicePeriod?.start ?? "");
     setServicePeriodEnd(defaultServicePeriod?.end ?? "");
-    setPaymentTerms(defaultMeta?.payment_terms ?? defaultTerms());
+    setPaymentTerms(safeCustomerPaymentTerms(customerKind, defaultMeta?.payment_terms ?? defaultTerms(), isInvoice));
     setPaymentTermsCustom(defaultMeta?.payment_terms_custom ?? "");
     setNotes(defaultMeta?.notes ?? "");
     setOpenEnded(canOpenEnded && !!defaultMeta?.open_ended);
@@ -753,8 +758,8 @@ export function InquiryOfferForm({
             addons: (rest.addons ?? []).filter((a) => Number(a.amount) !== 0),
           };
         }),
-        payment_terms: paymentTerms,
-        payment_terms_custom: paymentTerms === "custom" ? paymentTermsCustom.trim() : null,
+        payment_terms: safeCustomerPaymentTerms(customerKind, paymentTerms, isInvoice),
+        payment_terms_custom: customerKind === "business" && paymentTerms === "custom" ? paymentTermsCustom.trim() : null,
         delivery_cost_delivery: deliveryCostDelivery,
         delivery_cost_return: deliveryCostReturn,
         setup_cost: setupCost,
@@ -1450,7 +1455,7 @@ export function InquiryOfferForm({
         <Select value={paymentTerms} onValueChange={setPaymentTerms} disabled={disabled}>
           <SelectTrigger><SelectValue /></SelectTrigger>
           <SelectContent>
-            {(isInvoice ? INVOICE_PAYMENT_OPTIONS : PAYMENT_OPTIONS[customerKind]).map((o) => (
+            {(isInvoice ? INVOICE_PAYMENT_OPTIONS.filter((o) => customerKind === "business" || o.value === "vorkasse") : PAYMENT_OPTIONS[customerKind]).map((o) => (
               <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
             ))}
           </SelectContent>
