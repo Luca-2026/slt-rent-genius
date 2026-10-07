@@ -1,7 +1,7 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
 ## Aktuell – angenommene Angebote und mobile Zahlungsanzeige
-- [ ] Alle angenommenen Anfragen ohne Auftragsbestätigung statt nur Online-Unterschriften anzeigen; mobile Texte ohne Überlauf prüfen und Anzahl mit Live-Daten abgleichen.
+- [x] Alle 14 angenommenen Mietanfragen ohne Auftragsbestätigung sichtbar: 3 Online-Unterschriften und 11 im Portal erfasste Annahmen; kein Altersfilter. Angemeldeter Portal-Test bestätigt Anzahl, Anfrageöffnung und keinen Textüberlauf bei 320/390 px; 9 Tests bestanden, Build OK. Keine E-Mails/Zahlungen ausgelöst; Veröffentlichung bleibt gesondert.
 
 ## Aktuell – ungestörte Unterschriften
 - [x] Warenkorb und Cookie-Hinweis auf Angebotsannahmeseiten und bei allen gemeinsamen Unterschriftsflächen ausblenden, ohne Cookie-Zustimmung zu setzen.
