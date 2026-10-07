@@ -34,6 +34,11 @@ export interface PipelineInquiryRow {
   order_confirmed_at?: string | null;
 }
 
+/** All accepted inquiries awaiting confirmation, regardless of acceptance channel or age. */
+export function isAwaitingOfferConfirmation(row: PipelineInquiryRow): boolean {
+  return row.status === "accepted" && !row.order_confirmed_at;
+}
+
 const n = (v: number | null | undefined) => (typeof v === "number" && isFinite(v) ? v : Number(v) || 0);
 const round2 = (v: number) => Math.round(v * 100) / 100;
 
