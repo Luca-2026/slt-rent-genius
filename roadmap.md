@@ -2,6 +2,7 @@
 
 ## Aktuell – WhatsApp-Kontakt Bonn
 - [x] Ralf Döhler mit 01575 7151584 und direktem WhatsApp-Link bei Bonner Kontaktstellen ergänzt; Schreibweise projektweit korrigiert, Name zentral für alle Anzeigen.
+- [x] WhatsApp-Einstiege zeigen jetzt das echte WhatsApp-Markenzeichen (src/components/icons/WhatsAppIcon.tsx) statt des generischen Nachrichten-Symbols; Standortkarten, Kontaktseite, Fußzeile und Portale geprüft (393/1280 px, kein Überlauf, keine Laufzeitfehler).
 
 ## Aktuell – Privatkunden ohne Rechnungszahlung
 - [x] Rechnungszahlung aus privaten Angeboten/Rechnungen und Startseitenanzeige entfernt; alte Entwürfe auf Vorauszahlung vorbelegt, bestehende Belege unverändert. 10 Tests bestanden; angemeldeter Portal-Test: Privatkunden-Rechnung nur „Sofort fällig ohne Abzug“, beide bereitgestellten Versandfunktionen weisen net_14 mit 400 ab, ohne Nummernvergabe/Versand. Build OK; Oberfläche live nach Veröffentlichung.

@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, Mail, MapPin, Clock, MessageCircle, Send, CheckCircle, Loader2 } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Loader2 } from "lucide-react";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { locationData } from "@/data/locationData";
@@ -25,7 +26,7 @@ export default function Contact() {
   const contactInfo = [
     { icon: Phone, title: t("contact.phoneTitle"), primary: t("contact.phoneNumber"), secondary: t("contact.phoneHours"), href: "tel:+49021514179904" },
     { icon: Mail, title: t("contact.emailTitle"), primary: t("contact.emailAddress"), secondary: t("contact.emailResponse"), href: "mailto:mieten@slt-rental.de" },
-    { icon: MessageCircle, title: t("contact.whatsappTitle"), primary: "+49 1578 9150872", secondary: t("contact.whatsappDesc"), href: "https://wa.me/4915789150872" },
+    { icon: WhatsAppIcon, title: t("contact.whatsappTitle"), primary: "+49 1578 9150872", secondary: t("contact.whatsappDesc"), href: "https://wa.me/4915789150872" },
   ];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

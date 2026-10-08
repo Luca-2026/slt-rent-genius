@@ -42,10 +42,10 @@ import {
   RefreshCw,
   ClipboardCheck,
   Undo2,
-  MessageCircle,
   BookOpen,
   Send,
 } from "lucide-react";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 export default function B2BDashboard() {
   const { user, b2bProfile, loading, signOut, isAdmin, refreshB2BProfile, authorizedPersonInfo } = useAuth();
@@ -257,7 +257,7 @@ export default function B2BDashboard() {
                     </span>
                     {locationWhatsApp && (
                       <a href={`https://wa.me/${locationWhatsApp.replace(/\+/g, '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-green-600 hover:text-green-700 font-medium">
-                        <MessageCircle className="h-3.5 w-3.5" />
+                        <WhatsAppIcon className="h-3.5 w-3.5" />
                         WhatsApp
                       </a>
                     )}
@@ -586,7 +586,7 @@ export default function B2BDashboard() {
                 )}
                 {locationWhatsApp && (
                   <a href={`https://wa.me/${locationWhatsApp.replace('+', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-green-600 hover:text-green-700 transition-colors font-medium">
-                    <MessageCircle className="h-4 w-4 shrink-0" />
+                    <WhatsAppIcon className="h-4 w-4 shrink-0" />
                     WhatsApp schreiben
                   </a>
                 )}

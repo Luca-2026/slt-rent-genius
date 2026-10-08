@@ -1,5 +1,5 @@
 # Agent rules
-- Use locationWhatsAppContacts.ts with BonnWhatsAppContact (legacy name) for correct location links; iconOnly beside email keeps cards aligned.
+- Links via locationWhatsAppContacts.ts + BonnWhatsAppContact (legacy name); iconOnly beside email keeps cards aligned; WhatsAppIcon.tsx brand glyph, not a chat icon.
 - Customer payment-term eligibility is shared through _shared/customer-payment-terms.ts in forms and send functions; validate before number allocation to prevent UI bypasses without modifying issued snapshots.
 - Coordinate signing overlay suppression through signingOverlays and the shared SignaturePad lifecycle; reference counting prevents one of multiple pads from restoring overlays prematurely, while route gating covers offer loading and completion.
 <!-- LOVABLE:BEGIN -->
