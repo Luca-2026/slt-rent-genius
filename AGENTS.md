@@ -1,4 +1,5 @@
 # Agent rules
+- Share Bonn WhatsApp data via src/data/bonnContact.ts and BonnWhatsAppContact to keep all contact links consistent.
 - Customer payment-term eligibility is shared through _shared/customer-payment-terms.ts in forms and send functions; validate before number allocation to prevent UI bypasses without modifying issued snapshots.
 - Coordinate signing overlay suppression through signingOverlays and the shared SignaturePad lifecycle; reference counting prevents one of multiple pads from restoring overlays prematurely, while route gating covers offer loading and completion.
 <!-- LOVABLE:BEGIN -->
