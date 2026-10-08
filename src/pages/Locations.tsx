@@ -222,14 +222,10 @@ export default function Locations() {
                       </div>
                     </div>
 
-                    <BonnWhatsAppContact location={location.id} className="mb-3" />
-
                     {/* Manager */}
                     {location.manager && (
-                      <a
-                        href={`mailto:${location.manager.email}`}
-                        className="flex items-center gap-2 lg:gap-3 mb-3 lg:mb-6 p-2 lg:p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer group/mgr"
-                      >
+                      <div className="flex items-center gap-1 mb-3 lg:mb-6 p-2 lg:p-3 bg-surface-light rounded-lg">
+                      <a href={`mailto:${location.manager.email}`} className="flex flex-1 min-w-0 items-center gap-2 lg:gap-3 group/mgr">
                         <Avatar className="h-8 w-8 lg:h-12 lg:w-12 shrink-0">
                           {location.manager.image ? (
                             <AvatarImage src={location.manager.image} alt={location.manager.name} />
@@ -242,8 +238,12 @@ export default function Locations() {
                           <p className="font-semibold text-headline text-xs lg:text-sm group-hover/mgr:text-primary transition-colors truncate">{location.manager.name}</p>
                           <p className="text-[10px] lg:text-xs text-muted-foreground">{t(location.manager.role)}</p>
                         </div>
-                        <Mail className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground group-hover/mgr:text-primary transition-colors shrink-0" />
                       </a>
+                      <Button asChild variant="ghost" size="icon" className="shrink-0 text-primary">
+                        <a href={`mailto:${location.manager.email}`} aria-label={`E-Mail an ${location.manager.name}`}><Mail aria-hidden="true" /></a>
+                      </Button>
+                      <BonnWhatsAppContact location={location.id} iconOnly />
+                      </div>
                     )}
 
                     {/* Hours */}
