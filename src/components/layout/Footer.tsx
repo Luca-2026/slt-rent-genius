@@ -170,7 +170,10 @@ export function Footer() {
           </div>
         </div>
 
-        <BonnWhatsAppContact location="bonn" dark className="mb-4" />
+        <div className="flex flex-wrap gap-2 mb-4">
+          <BonnWhatsAppContact location="krefeld" dark />
+          <BonnWhatsAppContact location="bonn" dark />
+        </div>
 
         {/* Local SEO Links by Region */}
         <div className="mb-4">
