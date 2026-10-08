@@ -21,6 +21,8 @@ import { isInstallmentDue } from "@/lib/installments";
 import { MaintenanceDueWidget } from "@/components/b2b/admin/MaintenanceDueWidget";
 import { usePhoneCalls, isUrgentCall } from "@/hooks/usePhoneCalls";
 import { priorityDisplayLabel } from "@/lib/callPriority";
+import { DAY_LOCATION_OPTIONS, defaultDayLocation, filterByDayLocation, type DayLocationFilter } from "@/lib/dayLocationFilter";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AcceptedOffersPayments } from "@/components/b2b/dashboard/AcceptedOffersPayments";
 
 type ProfileRow = PortalProfileLite & { id: string; company_name: string; credit_limit: number };
@@ -144,7 +146,9 @@ function OverdueReturns({ rows, today }: { rows: InquiryRow[]; today: string }) 
 }
 
 export default function StaffHome() {
-  const { isStaff, isAdmin, canViewInventory, displayName, loading: accessLoading } = useStaffAccess();
+  const { isStaff, isAdmin, canViewInventory, displayName, staffProfile, loading: accessLoading } = useStaffAccess();
+  const [dayLocation, setDayLocation] = useState<DayLocationFilter | null>(null);
+  const activeDayLocation: DayLocationFilter = dayLocation ?? defaultDayLocation(staffProfile?.location);
   const [openSales, setOpenSales] = useState(0);
   const [inquiries, setInquiries] = useState<InquiryRow[]>([]);
   const [todos, setTodos] = useState<TodoRow[]>([]);
@@ -210,9 +214,9 @@ export default function StaffHome() {
   const pipe = useMemo(() => pipeline(inquiries), [inquiries]);
 
   const active = inquiries.filter((r) => r.status === "accepted" || r.status === "done");
-  const pickups = active.filter((r) => r.status === "accepted" && r.start_date?.slice(0, 10) === today);
-  const returns = active.filter((r) => r.end_date?.slice(0, 10) === today);
-  const overdueReturns = inquiries
+  const pickups = filterByDayLocation(active.filter((r) => r.status === "accepted" && r.start_date?.slice(0, 10) === today), activeDayLocation);
+  const returns = filterByDayLocation(active.filter((r) => r.end_date?.slice(0, 10) === today), activeDayLocation);
+  const overdueReturns = filterByDayLocation(inquiries, activeDayLocation)
     .filter((r) => {
       const st = protocols.byInquiry.get(r.id);
       return !st?.ret && isReturnOverdue({ ...r, handed_over: !!st?.delivery }, today);
@@ -226,7 +230,7 @@ export default function StaffHome() {
     needsAction(p, "kreditlimit") && { p, kind: "kreditlimit", label: "Kreditlimit angefragt" },
     needsAction(p, "loeschung") && { p, kind: "loeschung", label: "Löschung beantragt" },
   ].filter(Boolean) as { p: ProfileRow; kind: string; label: string }[]));
-  const dueTodos = todos.filter((t) => t.due_date && t.due_date.slice(0, 10) <= today);
+  const dueTodos = todos.filter((t) => t.due_date && t.due_date.slice(0, 10) <= today && (activeDayLocation === "all" || !t.location || filterByDayLocation([t], activeDayLocation).length > 0));
 
   const monthName = now.toLocaleDateString("de-DE", { month: "long" });
   const firstName = displayName && !displayName.includes("@") ? displayName.split(" ")[0] : "";
@@ -297,11 +301,25 @@ export default function StaffHome() {
 
           {/* 2. Heute + Finanzen */}
           <div className={cn("grid gap-5 [&>*]:min-w-0", isAdmin && "lg:grid-cols-5")}>
-            <Panel title="Heute" icon={CalendarCheck} className={cn(isAdmin && "lg:col-span-3")}>
+            <Panel
+              title="Heute"
+              icon={CalendarCheck}
+              className={cn(isAdmin && "lg:col-span-3")}
+              action={
+                <Select value={activeDayLocation} onValueChange={(v) => setDayLocation(v as DayLocationFilter)}>
+                  <SelectTrigger className="h-8 w-[11.5rem] max-w-[55%] text-xs" aria-label="Standort für Übergaben und Rückgaben">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {DAY_LOCATION_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              }
+            >
               <div className="divide-y divide-border">
-                <DayList title="Übergaben" icon={CalendarCheck} rows={pickups} empty="Keine Übergaben geplant." />
+                <DayList title="Übergaben" icon={CalendarCheck} rows={pickups} empty={activeDayLocation === "all" ? "Keine Übergaben geplant." : "Keine Übergaben an diesem Standort."} />
                 <OverdueReturns rows={overdueReturns} today={today} />
-                <DayList title="Rückgaben" icon={CalendarX} rows={returns} empty="Keine Rückgaben geplant." />
+                <DayList title="Rückgaben" icon={CalendarX} rows={returns} empty={activeDayLocation === "all" ? "Keine Rückgaben geplant." : "Keine Rückgaben an diesem Standort."} />
                 <div className="px-4 py-3">
                   <p className="mb-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     <ListTodo className="h-3.5 w-3.5" aria-hidden="true" />Fällige Aufgaben<span className="ml-auto rounded-full bg-muted px-2 py-0.5 text-[11px] text-foreground">{dueTodos.length}</span>

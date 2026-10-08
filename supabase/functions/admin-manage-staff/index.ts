@@ -23,12 +23,14 @@ interface CreateStaffRequest {
   last_name?: string;
   phone?: string;
   position?: string;
+  location?: string | null;
   role?: string;
   // For update_role / update_profile / deactivate / reactivate
   staff_user_id?: string;
   new_role?: string;
 }
 
+const VALID_LOCATIONS = ["krefeld", "bonn", "muelheim"];
 const VALID_ROLES = ["admin", "niederlassungsleiter", "standort_mitarbeiter", "buchhaltung", "readonly"];
 
 const json = (body: unknown, status = 200) =>
@@ -153,6 +155,7 @@ Deno.serve(async (req: Request) => {
           email: body.email,
           phone: body.phone || null,
           position: body.position || null,
+          location: body.location && VALID_LOCATIONS.includes(body.location) ? body.location : null,
         });
 
       if (profileError) {
@@ -342,6 +345,12 @@ Deno.serve(async (req: Request) => {
       if (body.last_name !== undefined) profileUpdate.last_name = body.last_name;
       if (body.phone !== undefined) profileUpdate.phone = body.phone || null;
       if (body.position !== undefined) profileUpdate.position = body.position || null;
+      if (body.location !== undefined) {
+        if (body.location && !VALID_LOCATIONS.includes(body.location)) {
+          return json({ error: "Ungültiger Standort." }, 400);
+        }
+        profileUpdate.location = body.location || null;
+      }
       if (email) profileUpdate.email = email;
 
       const { error: profileError } = await serviceClient

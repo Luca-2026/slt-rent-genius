@@ -63,6 +63,7 @@ interface StaffProfile {
   email: string;
   phone: string | null;
   position: string | null;
+  location?: string | null;
   is_active: boolean;
   created_at: string;
 }
@@ -120,6 +121,7 @@ export function AdminStaffTab() {
     last_name: "",
     phone: "",
     position: "",
+    location: "",
     role: "standort_mitarbeiter",
   });
 
@@ -132,6 +134,7 @@ export function AdminStaffTab() {
     email: "",
     phone: "",
     position: "",
+    location: "",
   });
   const [passwordOpen, setPasswordOpen] = useState(false);
   const [newPassword, setNewPassword] = useState("");
@@ -145,6 +148,7 @@ export function AdminStaffTab() {
       email: s.email ?? "",
       phone: s.phone ?? "",
       position: s.position ?? "",
+      location: s.location ?? "",
     });
     setEditRoleOpen(true);
   };
@@ -179,6 +183,7 @@ export function AdminStaffTab() {
       last_name: "",
       phone: "",
       position: "",
+      location: "",
       role: "standort_mitarbeiter",
     });
   };
@@ -248,6 +253,7 @@ export function AdminStaffTab() {
           email: editForm.email.trim(),
           phone: editForm.phone.trim(),
           position: editForm.position.trim(),
+          location: editForm.location || null,
           new_role: newRole,
         },
       });
@@ -704,6 +710,18 @@ export function AdminStaffTab() {
                 placeholder="z.B. Filialleiter"
               />
             </div>
+            <div>
+              <Label>Standort</Label>
+              <Select value={form.location || "none"} onValueChange={(v) => setForm({ ...form, location: v === "none" ? "" : v })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Kein fester Standort</SelectItem>
+                  <SelectItem value="krefeld">Krefeld</SelectItem>
+                  <SelectItem value="bonn">Bonn</SelectItem>
+                  <SelectItem value="muelheim">Mülheim an der Ruhr</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
             <div className="sm:col-span-2">
               <Label>Rolle *</Label>
@@ -800,6 +818,18 @@ export function AdminStaffTab() {
                 value={editForm.position}
                 onChange={(e) => setEditForm({ ...editForm, position: e.target.value })}
               />
+            </div>
+            <div>
+              <Label>Standort</Label>
+              <Select value={editForm.location || "none"} onValueChange={(v) => setEditForm({ ...editForm, location: v === "none" ? "" : v })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Kein fester Standort</SelectItem>
+                  <SelectItem value="krefeld">Krefeld</SelectItem>
+                  <SelectItem value="bonn">Bonn</SelectItem>
+                  <SelectItem value="muelheim">Mülheim an der Ruhr</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="sm:col-span-2">
               <Label>Rolle *</Label>
