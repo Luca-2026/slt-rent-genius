@@ -77,3 +77,16 @@ describe("Anrufererkennung (Inbound Webhook)", () => {
     expect(matchCaller(rows, null).bekannt).toBe(false);
   });
 });
+
+import { priorityDisplayLabel } from "@/lib/callPriority";
+describe("priorityDisplayLabel", () => {
+  const now = new Date("2026-10-18T08:00:00+02:00");
+  it("Heute am Anruftag", () => expect(priorityDisplayLabel("heute", "2026-10-18T06:30:00+02:00", now)).toBe("Heute"));
+  it("Gestern am Folgetag", () => expect(priorityDisplayLabel("heute", "2026-10-17T23:30:00+02:00", now)).toBe("Gestern"));
+  it("Datum danach", () => expect(priorityDisplayLabel("heute", "2026-10-15T10:00:00+02:00", now)).toBe("Seit 15.10."));
+  it("Diese Woche nur in der Anrufwoche", () => {
+    expect(priorityDisplayLabel("woche", "2026-10-13T10:00:00+02:00", new Date("2026-10-16T10:00:00+02:00"))).toBe("Diese Woche");
+    expect(priorityDisplayLabel("woche", "2026-10-13T10:00:00+02:00", now)).toBe("Woche vom 12.10.");
+  });
+  it("Sofort bleibt", () => expect(priorityDisplayLabel("sofort", "2026-10-01T10:00:00+02:00", now)).toBe("Sofort"));
+});

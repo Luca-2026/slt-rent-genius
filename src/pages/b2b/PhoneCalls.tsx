@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { usePhoneCalls, type PhoneCall } from "@/hooks/usePhoneCalls";
-import { INTENT_LABEL, PRIORITY_LABEL, PRIORITY_ORDER, type CallIntent, type CallPriority } from "@/lib/callPriority";
+import { INTENT_LABEL, PRIORITY_LABEL, priorityDisplayLabel, PRIORITY_ORDER, type CallIntent, type CallPriority } from "@/lib/callPriority";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -33,9 +33,9 @@ const NEW_WINDOW_MS = 3 * 60 * 60 * 1000;
 export const isNewCall = (c: PhoneCall, now = Date.now()) => now - new Date(callTime(c)).getTime() < NEW_WINDOW_MS;
 const SORT_KEY = "slt_calls_sort";
 
-export function PriorityBadge({ p }: { p: CallPriority | null }) {
+export function PriorityBadge({ p, at }: { p: CallPriority | null; at?: string }) {
   if (!p) return <Badge variant="outline">Wird ausgewertet</Badge>;
-  return <span className={cn("inline-flex rounded-full px-2 py-0.5 text-xs font-semibold", PRIO_CLASS[p])}>{PRIORITY_LABEL[p]}</span>;
+  return <span className={cn("inline-flex rounded-full px-2 py-0.5 text-xs font-semibold", PRIO_CLASS[p])}>{at ? priorityDisplayLabel(p, at) : PRIORITY_LABEL[p]}</span>;
 }
 
 const ASSISTANT: Record<string, string> = { krefeld: "Lena Krefeld/Mülheim", bonn: "Lena Bonn" };

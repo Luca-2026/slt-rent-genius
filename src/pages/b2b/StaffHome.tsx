@@ -20,7 +20,7 @@ import { AdminGlobalSearch, type AdminSearchHit } from "@/components/b2b/admin/A
 import { isInstallmentDue } from "@/lib/installments";
 import { MaintenanceDueWidget } from "@/components/b2b/admin/MaintenanceDueWidget";
 import { usePhoneCalls, isUrgentCall } from "@/hooks/usePhoneCalls";
-import { PRIORITY_LABEL } from "@/lib/callPriority";
+import { priorityDisplayLabel } from "@/lib/callPriority";
 import { AcceptedOffersPayments } from "@/components/b2b/dashboard/AcceptedOffersPayments";
 
 type ProfileRow = PortalProfileLite & { id: string; company_name: string; credit_limit: number };
@@ -431,7 +431,7 @@ function UrgentCalls() {
         {urgent.slice(0, 6).map((c) => (
           <li key={c.id}>
             <Link to="/b2b/anrufe" className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-muted">
-              <span className={cn("shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold", c.priority === "sofort" ? "bg-destructive text-destructive-foreground" : "bg-accent text-accent-foreground")}>{c.priority ? PRIORITY_LABEL[c.priority] : ""}</span>
+              <span className={cn("shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold", c.priority === "sofort" ? "bg-destructive text-destructive-foreground" : "bg-accent text-accent-foreground")}>{c.priority ? priorityDisplayLabel(c.priority, c.call_started_at ?? c.created_at) : ""}</span>
               <span className="min-w-0 flex-1 truncate text-foreground">{[c.company_name, c.customer_name].filter(Boolean).join(" · ") || c.caller_phone || "Unbekannt"}: {c.summary ?? ""}</span>
               <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
             </Link>

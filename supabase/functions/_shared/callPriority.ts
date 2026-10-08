@@ -54,3 +54,27 @@ export function normalizePhone(raw: string | null | undefined): string | null {
   d = d.replace(/^0+/, "");
   return d.length >= 6 ? d : null;
 }
+
+const berlinDay = (d: Date) => d.toLocaleDateString("en-CA", { timeZone: "Europe/Berlin" }); // YYYY-MM-DD
+const dayDiff = (a: string, b: string) => Math.round((Date.parse(b) - Date.parse(a)) / 86400000);
+const shortDate = (day: string) => `${day.slice(8, 10)}.${day.slice(5, 7)}.`;
+
+/**
+ * Anzeige-Text der Priorität relativ zum Anrufdatum (deutsche Zeit): „Heute" gilt nur am Anruftag,
+ * danach „Gestern" bzw. das Datum; „Diese Woche" nur in der Anrufwoche – sonst wäre die Liste irreführend.
+ */
+export function priorityDisplayLabel(p: CallPriority, callAt: string | Date, now: Date = new Date()): string {
+  const callDay = berlinDay(new Date(callAt));
+  const today = berlinDay(now);
+  const diff = dayDiff(callDay, today);
+  if (p === "heute") {
+    if (diff <= 0) return "Heute";
+    if (diff === 1) return "Gestern";
+    return `Seit ${shortDate(callDay)}`;
+  }
+  if (p === "woche") {
+    const monday = (day: string) => { const d = new Date(`${day}T12:00:00Z`); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return d.toISOString().slice(0, 10); };
+    return monday(callDay) === monday(today) ? "Diese Woche" : `Woche vom ${shortDate(monday(callDay))}`;
+  }
+  return PRIORITY_LABEL[p];
+}
