@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Phone, ArrowRight, Clock, Mail, User, Building2 } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { locationData } from "@/data/locationData";
+import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 import { useTranslation } from "react-i18next";
 
 export function LocationSelector() {
@@ -74,6 +75,8 @@ export function LocationSelector() {
                 <Mail className="h-3.5 w-3.5 md:h-4 md:w-4 shrink-0 text-primary" />
                 <span className="truncate">{location.email}</span>
               </a>
+
+              <BonnWhatsAppContact location={location.id} className="mb-3" />
 
               {/* Hours */}
               <div className="mb-2.5 md:mb-3 p-2.5 md:p-3 bg-surface-light rounded-lg">

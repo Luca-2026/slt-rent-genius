@@ -20,6 +20,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { getAreaBySlug, type LocalArea } from "@/data/localSeoData";
 import { getLocationInfoById } from "@/data/locationData";
+import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 import { useTranslation } from "react-i18next";
 
 // Display name mapping for area slugs
@@ -315,6 +316,8 @@ export default function LocalAreaPage() {
                             </a>
                           </div>
                         </div>
+
+                        <BonnWhatsAppContact location={location.id} className="mt-3" />
 
                         {/* Manager */}
                         <div className="flex items-center gap-3 mt-4 pt-4 border-t border-border">
