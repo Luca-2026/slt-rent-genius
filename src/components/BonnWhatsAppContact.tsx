@@ -17,7 +17,7 @@ export function BonnWhatsAppContact({ location, dark = false, className, iconOnl
       <Button asChild variant="ghost" size={iconOnly ? "icon" : "sm"} className={cn("shrink-0", !iconOnly && "max-w-full px-2 text-xs", dark ? "text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground" : "text-primary", className)}>
         <a href={bonnDirectContact.whatsappUrl} target="_blank" rel="noopener noreferrer" title={`WhatsApp an ${bonnDirectContact.name}: ${bonnDirectContact.phone}`} aria-label={`WhatsApp an ${bonnDirectContact.name}: ${bonnDirectContact.phone}`} onClick={(e) => e.stopPropagation()}>
           <MessageCircle aria-hidden="true" />
-          {!iconOnly && <span>WhatsApp · Ralf Dörler</span>}
+          {!iconOnly && <span>WhatsApp · {bonnDirectContact.name}</span>}
         </a>
       </Button>
   );
