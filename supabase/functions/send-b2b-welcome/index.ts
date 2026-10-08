@@ -83,7 +83,27 @@ Deno.serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
-    const { email, firstName, companyName, postalCode } = parsed.data;
+    const { email } = parsed.data;
+    // Nur an frisch registrierte Portalprofile, genau einmal; Inhalte aus der Datenbank.
+    const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2.57.4");
+    const svc = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
+    const since = new Date(Date.now() - 30 * 60 * 1000).toISOString();
+    const { data: claimed } = await svc.from("b2b_profiles")
+      .update({ welcome_sent_at: new Date().toISOString() })
+      .ilike("contact_email", email)
+      .is("welcome_sent_at", null)
+      .gte("created_at", since)
+      .select("contact_first_name, company_name, postal_code")
+      .limit(1);
+    const prof = claimed?.[0];
+    if (!prof) {
+      return new Response(JSON.stringify({ skipped: true }), {
+        status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const firstName = prof.contact_first_name ?? "";
+    const companyName = prof.company_name ?? "";
+    const postalCode = prof.postal_code ?? undefined;
     const resendDomain = Deno.env.get("RESEND_DOMAIN") || "slt-rental.de";
 
     const loc = LOCATIONS[resolveLocation(postalCode)];

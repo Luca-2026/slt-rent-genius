@@ -1512,6 +1512,7 @@ export type Database = {
           used_credit: number
           user_id: string
           vat_id_verified: boolean
+          welcome_sent_at: string | null
         }
         Insert: {
           assigned_contact_override?: Json | null
@@ -1553,6 +1554,7 @@ export type Database = {
           used_credit?: number
           user_id: string
           vat_id_verified?: boolean
+          welcome_sent_at?: string | null
         }
         Update: {
           assigned_contact_override?: Json | null
@@ -1594,6 +1596,7 @@ export type Database = {
           used_credit?: number
           user_id?: string
           vat_id_verified?: boolean
+          welcome_sent_at?: string | null
         }
         Relationships: []
       }
