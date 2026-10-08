@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { locationData } from "@/data/locationData";
+import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 import { useTranslation } from "react-i18next";
 
 function LocationCard({ loc }: { loc: (typeof locationData)[number] }) {
@@ -70,6 +71,8 @@ function LocationCard({ loc }: { loc: (typeof locationData)[number] }) {
           <Mail className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 shrink-0 text-primary" />
           <span className="truncate">{loc.email}</span>
         </a>
+
+        <BonnWhatsAppContact location={loc.id} className="mb-3" />
 
         {/* Hours - fixed height for consistency across all 3 cards */}
         <div className="mb-2 md:mb-2 lg:mb-3 p-3 md:p-2 lg:p-3 bg-surface-light rounded-lg min-h-[90px] md:min-h-[76px] lg:min-h-[108px]">

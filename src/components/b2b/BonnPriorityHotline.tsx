@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { PhoneCall } from "lucide-react";
+import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 
 const BONN_B2B_PHONE = "+49 228 52263327";
 const BONN_B2B_PHONE_HREF = "tel:+4922852263327";
@@ -39,6 +40,7 @@ export function BonnPriorityHotline({ location, className }: BonnPriorityHotline
               Persönliche Beratung ohne KI-Assistenz – für Rückfragen und Angebotsberatung.
               Deine Anliegen werden hier priorisiert bearbeitet.
             </p>
+            <BonnWhatsAppContact location={location} className="mt-3" />
           </div>
         </div>
       </CardContent>

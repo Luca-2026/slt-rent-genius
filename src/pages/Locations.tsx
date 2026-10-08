@@ -7,6 +7,7 @@ import { MapPin, Phone, Clock, Navigation, Truck, CheckCircle2, Mail, User } fro
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { locationData } from "@/data/locationData";
+import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 import { useTranslation } from "react-i18next";
 
 const locationSeoMeta: Record<string, { title: string; description: string }> = {
@@ -220,6 +221,8 @@ export default function Locations() {
                         </a>
                       </div>
                     </div>
+
+                    <BonnWhatsAppContact location={location.id} className="mb-3" />
 
                     {/* Manager */}
                     {location.manager && (

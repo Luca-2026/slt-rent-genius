@@ -3,6 +3,7 @@ import { Facebook, Instagram } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import sltLogo from "@/assets/slt-logo-sm.webp";
 import { getAreasForLocation } from "@/data/localSeoData";
+import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 
 const locations = [
   {
@@ -168,6 +169,8 @@ export function Footer() {
             ))}
           </div>
         </div>
+
+        <BonnWhatsAppContact location="bonn" dark className="mb-4" />
 
         {/* Local SEO Links by Region */}
         <div className="mb-4">

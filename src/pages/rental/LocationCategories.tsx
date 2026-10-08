@@ -18,6 +18,8 @@ import bonnImage from "@/assets/locations/bonn.webp";
 // Team images
 import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
 import imgRalf from "@/assets/team/ralf-doehler.jpg";
+import { bonnDirectContact } from "@/data/bonnContact";
+import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 
 
 // Location images mapping
@@ -29,7 +31,7 @@ const locationImages: Record<string, string> = {
 // Location managers
 const locationManagers: Record<string, { name: string; roleKey: string; image: string | null; email: string }> = {
   krefeld: { name: "Benedikt Nöchel", roleKey: "rental.locationManager", image: imgBenedikt, email: "b.noechel@slt-rental.de" },
-  bonn: { name: "Ralf Döhler", roleKey: "rental.locationManager", image: imgRalf, email: "r.doehler@slt-rental.de" },
+  bonn: { name: bonnDirectContact.name, roleKey: "rental.locationManager", image: imgRalf, email: "r.doehler@slt-rental.de" },
   muelheim: { name: "Andreas Mühlenhof", roleKey: "rental.locationManager", image: null, email: "muelheim@slt-rental.de" },
 };
 
@@ -192,6 +194,8 @@ export default function LocationCategories() {
                   </div>
                 </div>
               </div>
+
+              <BonnWhatsAppContact location={location.id} dark className="mb-5" />
 
               <div className="flex flex-wrap items-center gap-3 md:gap-4">
                 <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer">

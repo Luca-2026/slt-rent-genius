@@ -10,6 +10,7 @@ import { Phone, Mail, MapPin, Clock, MessageCircle, Send, CheckCircle, Loader2 }
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { locationData } from "@/data/locationData";
+import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -213,6 +214,7 @@ export default function Contact() {
                           <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
                           <a href={`mailto:${loc.email}`} className="text-primary hover:text-accent">{loc.email}</a>
                         </div>
+                        <BonnWhatsAppContact location={loc.id} className="mt-3" />
                       </CardContent>
                     </Card>
                   ))}

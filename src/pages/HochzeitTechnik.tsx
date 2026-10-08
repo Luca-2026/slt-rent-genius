@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { WeddingInquiryDialog } from "@/components/hochzeit/WeddingInquiryDialog";
 import { CategoryLocationDialog } from "@/components/hochzeit/CategoryLocationDialog";
+import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 import {
   Music,
   Lightbulb,
@@ -177,6 +178,7 @@ export default function HochzeitTechnik() {
                   <span><span className="block text-xs text-white/70">Mülheim</span>02151 417 99 04</span>
                 </a>
               </div>
+              <BonnWhatsAppContact location="bonn" dark className="mt-4" />
             </div>
 
             <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3] hidden md:block">

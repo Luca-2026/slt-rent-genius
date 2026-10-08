@@ -1,4 +1,5 @@
 import { ExternalLink, Construction, ShieldCheck, Truck, Headphones, Lightbulb, Sparkles, Zap, Wrench } from "lucide-react";
+import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 
 interface ServiceBannerProps {
   categoryId?: string;
@@ -223,6 +224,7 @@ export function ServiceBanner({ categoryId, locationId }: ServiceBannerProps) {
     <div className="space-y-3">
       {service && <ServiceBannerItem service={service} />}
       {showWorkshop && workshopServices[categoryId] && <ServiceBannerItem service={workshopServices[categoryId]} />}
+      <BonnWhatsAppContact location={locationId} />
     </div>
   );
 }

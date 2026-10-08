@@ -1,5 +1,8 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – WhatsApp-Kontakt Bonn
+- [ ] Ralf Dörler mit 01575 7151584 und direktem WhatsApp-Link bei Bonner Kontaktstellen ergänzen und Darstellung/Link prüfen.
+
 ## Aktuell – Privatkunden ohne Rechnungszahlung
 - [x] Rechnungszahlung aus privaten Angeboten/Rechnungen und Startseitenanzeige entfernt; alte Entwürfe auf Vorauszahlung vorbelegt, bestehende Belege unverändert. 10 Tests bestanden; angemeldeter Portal-Test: Privatkunden-Rechnung nur „Sofort fällig ohne Abzug“, beide bereitgestellten Versandfunktionen weisen net_14 mit 400 ab, ohne Nummernvergabe/Versand. Build OK; Oberfläche live nach Veröffentlichung.
 
