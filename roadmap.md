@@ -139,3 +139,7 @@
 - [x] E2E beide Varianten (verfügbar/unklar) + 401-Schutz geprüft; Bericht: /mnt/documents/Pruefbericht_Standort_Kundeninfo_2026-10-05.md
 - [x] Rückgabe an anderem Standort mit optionalem Netto-Aufpreis (Angebot, Rechnung, Auftragsbestätigung, Umsatz) – Vorschau-PDF geprüft
 - [ ] Offen: Rückgabestandort im Übergabe-/Rückgabeprotokoll und Bestandsprüfung am Rückgabestandort (noch nicht umgesetzt)
+
+## Dezente Bonner Kontaktgestaltung (2026-10-08)
+- [x] Lange WhatsApp-Hinweise durch kompakte Kontaktaktion ersetzt; in Standortkarten neben Mitarbeiter-E-Mail ohne zusätzliche Zeile.
+- [x] Startseitenkarten bei 320, 390, 768, 1117 und 1280 px geprüft: kein Seitenüberlauf, Desktop-Karten gleich hoch, korrekter WhatsApp-Link, keine Laufzeitfehler.
