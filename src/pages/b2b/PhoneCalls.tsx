@@ -110,7 +110,7 @@ export default function PhoneCalls() {
               <button type="button" onClick={() => setSelId(c.id)} className="flex min-w-0 flex-1 flex-col gap-1 p-3 text-left hover:bg-muted md:flex-row md:items-start md:gap-4">
                 <div className="flex shrink-0 items-center gap-2 md:w-36 md:flex-col md:items-start md:gap-1">
                   <div className="flex items-center gap-1">
-                    <PriorityBadge p={c.priority} />
+                    <PriorityBadge p={c.priority} at={callTime(c)} />
                     {isNewCall(c) && <span className="inline-flex rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">Neu</span>}
                   </div>
                   <span className="text-xs text-muted-foreground">{fmt(c)}</span>
@@ -231,7 +231,7 @@ function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => voi
     <div className="space-y-5">
       <SheetHeader><SheetTitle>{who(call)}</SheetTitle></SheetHeader>
       <div className="flex flex-wrap items-center gap-2 text-sm">
-        <PriorityBadge p={call.priority} />
+        <PriorityBadge p={call.priority} at={callTime(call)} />
         {call.intent && <Badge variant="secondary">{INTENT_LABEL[call.intent]}</Badge>}
         {call.assistant && <Badge>{ASSISTANT[call.assistant]}</Badge>}
         {call.location && <Badge variant="outline">{LOC[call.location]}</Badge>}
