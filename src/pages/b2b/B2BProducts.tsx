@@ -23,7 +23,8 @@ import {
   Product,
 } from "@/data/rentalData";
 import { locationData } from "@/data/locationData";
-import { Search, MapPin, Percent, CreditCard, Phone, Mail, Package, Send, X, MessageCircle, Filter } from "lucide-react";
+import { Search, MapPin, Percent, CreditCard, Phone, Mail, Package, Send, X, Filter } from "lucide-react";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { useTranslation } from "react-i18next";
 
 interface SelectedItem {
@@ -466,7 +467,7 @@ export default function B2BProducts() {
                 </a>
                 {assignedLoc && whatsappNumbers[assignedLoc.id] && (
                   <a href={`https://wa.me/${whatsappNumbers[assignedLoc.id]}`} target="_blank" rel="noopener noreferrer" className="text-xs text-green-600 hover:text-green-700 font-medium flex items-center gap-1">
-                    <MessageCircle className="h-3 w-3" />
+                    <WhatsAppIcon className="h-3 w-3" />
                     WhatsApp
                   </a>
                 )}
