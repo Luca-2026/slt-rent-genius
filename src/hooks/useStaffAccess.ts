@@ -9,6 +9,7 @@ export interface StaffMember {
   last_name: string;
   email: string;
   is_active: boolean;
+  location?: string | null;
 }
 
 /**
@@ -35,7 +36,7 @@ export function useStaffAccess() {
       const [{ data }, { data: ops }, { data: nl }] = await Promise.all([
         supabase
           .from("staff_profiles")
-          .select("id, user_id, first_name, last_name, email, is_active")
+          .select("id, user_id, first_name, last_name, email, is_active, location")
           .eq("user_id", user.id)
           .eq("is_active", true)
           .maybeSingle(),
