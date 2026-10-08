@@ -1,5 +1,5 @@
 # Agent rules
-- Use bonnContact.ts and BonnWhatsAppContact for consistent links; iconOnly beside manager email keeps location cards aligned.
+- Use locationWhatsAppContacts.ts with BonnWhatsAppContact (legacy name) for correct location links; iconOnly beside email keeps cards aligned.
 - Customer payment-term eligibility is shared through _shared/customer-payment-terms.ts in forms and send functions; validate before number allocation to prevent UI bypasses without modifying issued snapshots.
 - Coordinate signing overlay suppression through signingOverlays and the shared SignaturePad lifecycle; reference counting prevents one of multiple pads from restoring overlays prematurely, while route gating covers offer loading and completion.
 <!-- LOVABLE:BEGIN -->
