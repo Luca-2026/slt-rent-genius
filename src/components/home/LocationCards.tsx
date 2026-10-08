@@ -112,7 +112,7 @@ function LocationCard({ loc }: { loc: (typeof locationData)[number] }) {
 
         {/* CTA - pushed to bottom */}
         <Link to={`/mieten/${loc.id}/`} className="mt-auto">
-          <Button className="w-full bg-primary hover:bg-primary/90 md:text-[10px] md:h-9 md:px-2 lg:text-sm lg:h-10 lg:px-4">
+          <Button className="w-full min-h-10 h-auto whitespace-normal px-3 py-2 text-xs bg-primary hover:bg-primary/90 md:text-[10px] md:h-9 md:min-h-9 md:px-2 lg:text-sm lg:h-10 lg:px-4">
             {t("locations.viewCategories")}
             <ArrowRight className="ml-1 h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 shrink-0" />
           </Button>
