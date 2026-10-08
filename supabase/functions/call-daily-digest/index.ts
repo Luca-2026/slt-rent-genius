@@ -77,8 +77,8 @@ Deno.serve(async (req) => {
     const testTo = typeof body.test_to === "string" ? body.test_to.trim() : "";
     const now = new Date();
 
-    // Testversand an die Inhaber-Adresse ist ohne Anmeldung erlaubt (Daten gehen nur an den Inhaber).
-    if (testTo && testTo.toLowerCase() !== "luca@sandhoff.org") {
+    // Testversand nur für angemeldete Mitarbeiter.
+    if (testTo) {
       const token = (req.headers.get("Authorization") ?? "").replace("Bearer ", "");
       const { data: u } = await svc.auth.getUser(token);
       if (!u?.user) return json({ error: "Unauthorized" }, 401);
