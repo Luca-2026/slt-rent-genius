@@ -17,6 +17,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { locationData } from "@/data/locationData";
+import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 
 const BASE_URL = "https://www.slt-rental.de";
 const PAGE_PATH = "/service/baumax-reparatur-nrw";
@@ -190,6 +191,7 @@ export default function BaumaxService() {
                 </a>
               </Button>
             </div>
+            <BonnWhatsAppContact location="bonn" dark className="mt-4" />
           </AnimatedSection>
         </div>
       </section>
@@ -298,6 +300,7 @@ export default function BaumaxService() {
                         <Mail className="h-4 w-4" /> {loc.email}
                       </a>
                     </div>
+                    <BonnWhatsAppContact location={loc.id} className="mb-4" />
                     <div className="text-xs text-muted-foreground mb-4">
                       {loc.hours.map((h) => (
                         <div key={h.day}>

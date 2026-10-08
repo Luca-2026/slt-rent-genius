@@ -20,6 +20,7 @@ import {
   Percent,
 } from "lucide-react";
 import glasfaserHero from "@/assets/glasfaser-baumaschinen-nrw.jpg";
+import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 
 const BASE_URL = "https://www.slt-rental.de";
 const PAGE_PATH = "/glasfaserausbau-maschinen-mieten";
@@ -230,6 +231,7 @@ export default function GlasfaserMaschinen() {
                 </Button>
               </a>
             </div>
+            <BonnWhatsAppContact location="bonn" dark className="mt-4 text-left" />
           </AnimatedSection>
           <AnimatedSection animation="fade-in-up" delay={120}>
             <img
@@ -362,6 +364,7 @@ export default function GlasfaserMaschinen() {
                       <Phone className="h-3.5 w-3.5" />
                       {s.phone}
                     </a>
+                    <BonnWhatsAppContact location={s.name} className="mt-3" />
                   </div>
                 </CardContent>
               </Card>
@@ -423,6 +426,7 @@ export default function GlasfaserMaschinen() {
                 </Button>
               </a>
             </div>
+            <BonnWhatsAppContact location="bonn" dark className="mt-4 text-left" />
           </AnimatedSection>
         </div>
       </section>

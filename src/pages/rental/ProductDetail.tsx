@@ -34,6 +34,7 @@ import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalcula
 import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
 import { SalesPagesBanner } from "@/components/rental/SalesPagesBanner";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
+import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 import { StandortVerfuegbarkeit } from "@/components/rental/StandortVerfuegbarkeit";
 import { LocalCategoryContentBlock } from "@/components/rental/LocalCategoryContentBlock";
 import { ProductSEOContent } from "@/components/rental/ProductSEOContent";
@@ -1465,6 +1466,7 @@ export default function ProductDetail() {
                       <Mail className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 flex-shrink-0" />
                       <a href={`mailto:${location.email}`} className="hover:text-primary truncate">{location.email}</a>
                     </div>
+                    <BonnWhatsAppContact location={location.id} />
                   </div>
                 </div>
 
@@ -1564,6 +1566,7 @@ function MobileBookingCard({
         <MapPin className="h-3 w-3 flex-shrink-0" />
         <span className="truncate">{location.address}</span>
       </div>
+      <BonnWhatsAppContact location={location.id} className="mt-3" />
     </div>
   );
 }
