@@ -39,7 +39,7 @@ export function AcceptedOffersPayments() {
       const cols = "id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, customer_name, company_name";
       const [rent, sale] = await Promise.all([
         supabase.from("rental_inquiries").select(cols).eq("status", "accepted").is("order_confirmed_at", null),
-        supabase.from("sales_inquiries").select("id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, first_name, last_name, company_name").eq("status", "accepted"),
+        supabase.from("sales_inquiries").select("id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, first_name, last_name, company_name").eq("status", "accepted").is("order_confirmed_at", null),
       ]);
       if (rent.error || sale.error) { if (active) setError(true); return; }
       const list = [
