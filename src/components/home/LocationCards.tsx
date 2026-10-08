@@ -72,8 +72,6 @@ function LocationCard({ loc }: { loc: (typeof locationData)[number] }) {
           <span className="truncate">{loc.email}</span>
         </a>
 
-        <BonnWhatsAppContact location={loc.id} className="mb-3" />
-
         {/* Hours - fixed height for consistency across all 3 cards */}
         <div className="mb-2 md:mb-2 lg:mb-3 p-3 md:p-2 lg:p-3 bg-surface-light rounded-lg min-h-[90px] md:min-h-[76px] lg:min-h-[108px]">
           <div className="flex items-center gap-2 md:gap-1.5 text-sm md:text-xs lg:text-sm font-medium text-headline mb-2 md:mb-1 lg:mb-2">
@@ -91,11 +89,8 @@ function LocationCard({ loc }: { loc: (typeof locationData)[number] }) {
         </div>
 
         {/* Manager - fixed height for consistency */}
-        <a
-          href={`mailto:${loc.manager.email}`}
-          className="flex items-center gap-3 md:gap-2 lg:gap-3 mb-3 md:mb-2 lg:mb-4 p-3 md:p-2 lg:p-3 bg-surface-light rounded-lg hover:bg-accent/10 transition-colors cursor-pointer h-[64px] md:h-[52px] lg:h-[72px]"
-          onClick={(e) => e.stopPropagation()}
-        >
+        <div className="flex items-center gap-1 mb-3 md:mb-2 lg:mb-4 p-2 lg:p-3 bg-surface-light rounded-lg h-[64px] md:h-[52px] lg:h-[72px]">
+        <a href={`mailto:${loc.manager.email}`} className="flex flex-1 min-w-0 items-center gap-2 lg:gap-3 hover:text-primary" onClick={(e) => e.stopPropagation()}>
           <Avatar className="h-10 w-10 md:h-7 md:w-7 lg:h-10 lg:w-10 shrink-0">
             {loc.manager.image ? (
               <AvatarImage src={loc.manager.image} alt={loc.manager.name} />
@@ -108,8 +103,12 @@ function LocationCard({ loc }: { loc: (typeof locationData)[number] }) {
             <p className="font-semibold text-headline text-sm md:text-[11px] lg:text-sm truncate">{loc.manager.name}</p>
             <p className="text-xs md:text-[10px] lg:text-xs text-muted-foreground truncate">{t(loc.manager.role)}</p>
           </div>
-          <Mail className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 text-muted-foreground shrink-0" />
         </a>
+        <Button asChild variant="ghost" size="icon" className="shrink-0 text-primary">
+          <a href={`mailto:${loc.manager.email}`} aria-label={`E-Mail an ${loc.manager.name}`}><Mail aria-hidden="true" /></a>
+        </Button>
+        <BonnWhatsAppContact location={loc.id} iconOnly />
+        </div>
 
         {/* CTA - pushed to bottom */}
         <Link to={`/mieten/${loc.id}/`} className="mt-auto">
