@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { usePhoneCalls, type PhoneCall } from "@/hooks/usePhoneCalls";
-import { INTENT_LABEL, PRIORITY_LABEL, PRIORITY_ORDER, type CallIntent, type CallPriority } from "@/lib/callPriority";
+import { INTENT_LABEL, PRIORITY_LABEL, priorityDisplayLabel, PRIORITY_ORDER, type CallIntent, type CallPriority } from "@/lib/callPriority";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -33,9 +33,9 @@ const NEW_WINDOW_MS = 3 * 60 * 60 * 1000;
 export const isNewCall = (c: PhoneCall, now = Date.now()) => now - new Date(callTime(c)).getTime() < NEW_WINDOW_MS;
 const SORT_KEY = "slt_calls_sort";
 
-export function PriorityBadge({ p }: { p: CallPriority | null }) {
+export function PriorityBadge({ p, at }: { p: CallPriority | null; at?: string }) {
   if (!p) return <Badge variant="outline">Wird ausgewertet</Badge>;
-  return <span className={cn("inline-flex rounded-full px-2 py-0.5 text-xs font-semibold", PRIO_CLASS[p])}>{PRIORITY_LABEL[p]}</span>;
+  return <span className={cn("inline-flex rounded-full px-2 py-0.5 text-xs font-semibold", PRIO_CLASS[p])}>{at ? priorityDisplayLabel(p, at) : PRIORITY_LABEL[p]}</span>;
 }
 
 const ASSISTANT: Record<string, string> = { krefeld: "Lena Krefeld/Mülheim", bonn: "Lena Bonn" };
@@ -110,7 +110,7 @@ export default function PhoneCalls() {
               <button type="button" onClick={() => setSelId(c.id)} className="flex min-w-0 flex-1 flex-col gap-1 p-3 text-left hover:bg-muted md:flex-row md:items-start md:gap-4">
                 <div className="flex shrink-0 items-center gap-2 md:w-36 md:flex-col md:items-start md:gap-1">
                   <div className="flex items-center gap-1">
-                    <PriorityBadge p={c.priority} />
+                    <PriorityBadge p={c.priority} at={callTime(c)} />
                     {isNewCall(c) && <span className="inline-flex rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">Neu</span>}
                   </div>
                   <span className="text-xs text-muted-foreground">{fmt(c)}</span>
@@ -231,7 +231,7 @@ function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => voi
     <div className="space-y-5">
       <SheetHeader><SheetTitle>{who(call)}</SheetTitle></SheetHeader>
       <div className="flex flex-wrap items-center gap-2 text-sm">
-        <PriorityBadge p={call.priority} />
+        <PriorityBadge p={call.priority} at={callTime(call)} />
         {call.intent && <Badge variant="secondary">{INTENT_LABEL[call.intent]}</Badge>}
         {call.assistant && <Badge>{ASSISTANT[call.assistant]}</Badge>}
         {call.location && <Badge variant="outline">{LOC[call.location]}</Badge>}
