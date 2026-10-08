@@ -141,6 +141,6 @@
 - [ ] Offen: Rückgabestandort im Übergabe-/Rückgabeprotokoll und Bestandsprüfung am Rückgabestandort (noch nicht umgesetzt)
 
 ## Dezente Bonner Kontaktgestaltung (2026-10-08)
-- [ ] Benedikts WhatsApp für Krefeld wie Bonn integrieren und Link sowie Karten prüfen.
+- [x] Benedikts WhatsApp für Krefeld wie Bonn integriert; vier Tests bestanden, Links auf Startseite, Standorten und Kontaktseite geprüft, kompakte Kontaktzeile erhalten.
 - [x] Lange WhatsApp-Hinweise durch kompakte Kontaktaktion ersetzt; in Standortkarten neben Mitarbeiter-E-Mail ohne zusätzliche Zeile.
 - [x] Startseitenkarten bei 320, 390, 768, 1117 und 1280 px geprüft: kein Seitenüberlauf, Desktop-Karten gleich hoch, korrekter WhatsApp-Link, keine Laufzeitfehler.
