@@ -379,6 +379,13 @@
       "when": 1791454893693,
       "tag": "0053_guard_b2b_profile_insert",
       "breakpoints": true
+    },
+    {
+      "idx": 54,
+      "version": "7",
+      "when": 1791519722830,
+      "tag": "0054_allow_self_declared_google_review_feedback",
+      "breakpoints": true
     }
   ]
 }
