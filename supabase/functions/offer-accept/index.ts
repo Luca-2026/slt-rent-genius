@@ -6,7 +6,10 @@
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { z } from "https://esm.sh/zod@3.23.8";
+import { SLT_COMPANY } from "../_shared/company.ts";
 import { LOCATION_CONTACTS, resolveLocationKey } from "../_shared/inquiry-offer-math.ts";
+import { isPrepayTerms } from "../_shared/payment-followup.ts";
+import { ensurePaymentLink, isStripeTestMode, planPaymentAmounts, shouldOfferPaymentLink, toCents } from "../_shared/stripe-pay.ts";
 import { documentEmailRecipients, operationalEmailRecipient } from "../_shared/test-email-routing.ts";
 
 const corsHeaders = {
@@ -48,7 +51,7 @@ Deno.serve(async (req: Request) => {
     const { data: link } = await service.from("offer_acceptance_links").select("*").eq("token", body.token).maybeSingle();
     if (!link) return json({ error: "Dieser Link ist nicht gültig." }, 404);
     const { data: inquiry } = await service.from(link.inquiry_table)
-      .select("id, status, offer_number, offer_file_url, offer_payload, customer_name, company_name, customer_email, customer_kind, location, location_email")
+      .select("id, status, offer_number, offer_file_url, offer_payload, customer_name, company_name, customer_email, customer_kind, location, location_email, offer_total_gross, payments")
       .eq("id", link.inquiry_id).maybeSingle();
     if (!inquiry) return json({ error: "Dieser Link ist nicht gültig." }, 404);
 
@@ -76,6 +79,7 @@ Deno.serve(async (req: Request) => {
         accepted_at: link.accepted_at,
         signer_name: status === "accepted" ? link.signer_name : null,
         location: { name: loc.name, email: loc.email, phone: loc.phone },
+        prepay: isPrepayTerms(typeof (payload as { payment_terms?: unknown }).payment_terms === "string" ? String((payload as { payment_terms?: string }).payment_terms) : "vorkasse"),
       });
     }
 
@@ -102,9 +106,28 @@ Deno.serve(async (req: Request) => {
     }).eq("id", link.id).eq("status", "active").select("id").maybeSingle();
     if (updErr || !updated) return json({ error: "Dieses Angebot wurde bereits angenommen.", status: "accepted" }, 409);
 
-    if (["new", "in_progress", "offer_sent"].includes(inquiry.status)) {
-      const { error } = await service.from(link.inquiry_table).update({ status: "accepted" }).eq("id", inquiry.id).eq("offer_number", link.offer_number);
+    const statusPatch = ["new", "in_progress", "offer_sent"].includes(inquiry.status) ? { status: "accepted" } : {};
+    {
+      const { error } = await service.from(link.inquiry_table).update({ ...statusPatch, offer_accepted_at: acceptedAt, payment_followup_sent_at: null }).eq("id", inquiry.id).eq("offer_number", link.offer_number);
       if (error) console.error("Anfragestatus konnte nicht gesetzt werden:", error.message);
+    }
+
+    // Vorkasse/Anzahlung: direkt zur Zahlungsseite weiterleiten. Rechnungszahler: keine Zahlungsaufforderung.
+    const terms = typeof (payload as { payment_terms?: unknown }).payment_terms === "string" ? String((payload as { payment_terms?: string }).payment_terms) : "vorkasse";
+    const prepay = isPrepayTerms(terms);
+    let payUrl: string | null = null;
+    if (prepay) {
+      const paidCents = (Array.isArray(inquiry.payments) ? inquiry.payments : []).reduce((s: number, p: { amount?: unknown }) => s + toCents(p?.amount), 0);
+      const plan = planPaymentAmounts({ gross: inquiry.offer_total_gross, deposit: Number(payload.deposit) || 0, paidCents });
+      const email = inquiry.customer_email || link.customer_email;
+      if (shouldOfferPaymentLink({ paymentTerms: terms, customerEmail: email, testMode: isStripeTestMode(), openCents: plan.openCents })) {
+        const { data: existing } = await service.from("offer_payment_links").select("token")
+          .eq("inquiry_table", link.inquiry_table).eq("inquiry_id", inquiry.id).eq("status", "active")
+          .eq("offer_number", link.offer_number).order("created_at", { ascending: false }).limit(1).maybeSingle();
+        payUrl = existing?.token ? `https://www.slt-rental.de/zahlung/${existing.token}` : (await ensurePaymentLink(service, {
+          table: link.inquiry_table, inquiryId: inquiry.id, customerEmail: email, offerNumber: link.offer_number, plan,
+        }))?.url ?? null;
+      }
     }
 
     const resendKey = Deno.env.get("RESEND_API_KEY");
@@ -124,8 +147,8 @@ Deno.serve(async (req: Request) => {
           from,
           ...(() => { const r = documentEmailRecipients(inquiry.customer_email || link.customer_email || "", []); return { to: r.to }; })(),
           reply_to: loc.email,
-          subject: `Ihre Annahme von Angebot ${link.offer_number} ist eingegangen`,
-          html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><p>Hallo ${esc(inquiry.customer_name || "")},</p><p>vielen Dank! Ihre Annahme unseres Angebots <strong>${esc(link.offer_number)}</strong> über <strong>${money(Number(link.gross_amount))}</strong> brutto ist am ${esc(when)} Uhr bei uns eingegangen (unterschrieben von ${esc(body.signer_name)}). Sie haben dabei unsere ${isBusiness ? "AGB für Unternehmer" : "AGB für Verbraucher"} bestätigt.</p><p>Wir prüfen Ihren Auftrag und senden Ihnen in Kürze die Auftragsbestätigung.</p><p>Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${esc(loc.name)}<br>Tel. ${esc(loc.phone)} · ${esc(loc.email)}</p></div>`,
+          subject: prepay ? `Danke für deine Annahme – bitte jetzt bezahlen (Angebot ${link.offer_number})` : `Danke für deine Annahme von Angebot ${link.offer_number}`,
+          html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><p>Hallo ${esc(inquiry.customer_name || "")},</p><p><strong>Vielen Dank für das angenommene Angebot.</strong> ${prepay ? "Bitte leiste nun die Zahlung." : "Du erhältst in Kürze die Auftragsbestätigung, damit deine Miete bestätigt wird."}</p><p>Angebot <strong>${esc(link.offer_number)}</strong> über <strong>${money(Number(link.gross_amount))}</strong> brutto${Number(payload.deposit) > 0 ? ` zzgl. Kaution ${money(Number(payload.deposit))}` : ""}, angenommen am ${esc(when)} Uhr von ${esc(body.signer_name)}. Du hast dabei unsere ${isBusiness ? "AGB für Unternehmer" : "AGB für Verbraucher"} bestätigt.</p>${prepay && payUrl ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(payUrl)}" style="background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:bold;display:inline-block;">Jetzt bezahlen</a></p>` : ""}${prepay ? `<p style="font-size:13px;color:#4b5563;">Überweisung möglich an ${esc(SLT_COMPANY.name)}, IBAN ${esc(SLT_COMPANY.iban)}, BIC ${esc(SLT_COMPANY.bic)}, Verwendungszweck ${esc(link.offer_number)}.</p>` : ""}<p>Viele Grüße<br>Dein SLT Rental Team – Standort ${esc(loc.name)}<br>Tel. ${esc(loc.phone)} · ${esc(loc.email)}</p></div>`,
         },
       ];
       for (const mail of mails) {
@@ -136,7 +159,7 @@ Deno.serve(async (req: Request) => {
         } catch (e) { console.error("Annahme-Mail Fehler:", (e as Error).message); }
       }
     }
-    return json({ success: true, status: "accepted", accepted_at: acceptedAt, offer_number: link.offer_number });
+    return json({ success: true, status: "accepted", accepted_at: acceptedAt, offer_number: link.offer_number, prepay, pay_url: payUrl });
   } catch (err) {
     console.error("offer-accept error:", (err as Error).message);
     return json({ error: "Unerwarteter Fehler. Bitte später erneut versuchen." }, 500);
