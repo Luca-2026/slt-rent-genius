@@ -143,6 +143,30 @@ export async function generateBlankDeliveryNotePdf(data: DeliveryNoteData): Prom
   y -= 20;
 
   const dc = data.deviceCondition;
+  const wrapCondition = (value: string, width: number) => {
+    const lines: string[] = [];
+    for (const paragraph of value.split(/\r?\n/)) {
+      let current = "";
+      for (const word of paragraph.split(/\s+/)) {
+        const combined = current ? `${current} ${word}` : word;
+        if (font.widthOfTextAtSize(combined, 10) <= width) {
+          current = combined;
+          continue;
+        }
+        if (current) lines.push(current);
+        current = "";
+        for (const char of word) {
+          if (current && font.widthOfTextAtSize(current + char, 10) > width) {
+            lines.push(current);
+            current = "";
+          }
+          current += char;
+        }
+      }
+      lines.push(current);
+    }
+    return lines;
+  };
 
   const conditionFields: { label: string; value: string }[] = [
     { label: "Betriebsstunden:", value: dc?.meter_reading || "" },
@@ -152,16 +176,22 @@ export async function generateBlankDeliveryNotePdf(data: DeliveryNoteData): Prom
   ];
 
   for (const field of conditionFields) {
-    checkPage(22);
+    const lines = field.value ? wrapCondition(field.value, pageWidth - 2 * margin - 135) : [""];
+    const height = Math.max(22, lines.length * 14 + 8);
+    checkPage(Math.min(height, pageHeight - 2 * margin));
     drawText(field.label, margin, y, 10, fontBold);
     if (field.value) {
-      // Pre-filled value
-      drawText(field.value, margin + 135, y, 10, font, black);
+      for (const line of lines) {
+        checkPage(14);
+        drawText(line, margin + 135, y, 10, font, black);
+        y -= 14;
+      }
+      y -= 8;
     } else {
       // Empty line
       page.drawLine({ start: { x: margin + 130, y: y - 2 }, end: { x: pageWidth - margin, y: y - 2 }, thickness: 0.5, color: lineGray });
+      y -= 22;
     }
-    y -= 22;
   }
 
   // Signature field – only customer (blank for them to sign)
