@@ -1571,7 +1571,6 @@ function MobileBookingCard({
         <MapPin className="h-3 w-3 flex-shrink-0" />
         <span className="truncate">{location.address}</span>
       </div>
-      <BonnWhatsAppContact location={location.id} className="mt-3" />
     </div>
   );
 }
