@@ -1472,7 +1472,6 @@ export default function ProductDetail() {
                       <Mail className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 flex-shrink-0" />
                       <a href={`mailto:${location.email}`} className="hover:text-primary truncate">{location.email}</a>
                     </div>
-                    <BonnWhatsAppContact location={location.id} />
                   </div>
                 </div>
 
