@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { Building2, User } from "lucide-react";
+import { registerSigningSurface } from "@/lib/signingOverlays";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { setCustomerType, useCustomerType } from "@/hooks/useCustomerType";
@@ -8,6 +10,8 @@ import { vatNote } from "@/lib/priceDisplay";
 /** Einmalige Abfrage beim ersten Besuch von Artikel- und Kategorieseiten. */
 export function CustomerTypePrompt() {
   const { chosen } = useCustomerType();
+  // Warenkorb und Cookie-Hinweis ausblenden, solange die Frage offen ist (sonst verdecken sie die Auswahl).
+  useEffect(() => (chosen ? undefined : registerSigningSurface()), [chosen]);
   return (
     <Dialog open={!chosen} onOpenChange={(open) => { if (!open) setCustomerType("private"); }}>
       <DialogContent className="max-w-md w-[calc(100vw-2rem)] rounded-xl top-4 translate-y-0 sm:top-[50%] sm:translate-y-[-50%]">
