@@ -17,7 +17,7 @@ export function CustomerTypePrompt() {
   ];
   return (
     <Dialog open={!chosen} onOpenChange={(open) => { if (!open) setCustomerType("private"); }}>
-      <DialogContent className="w-[calc(100vw-2rem)] max-w-md gap-5 rounded-2xl p-5 sm:p-7">
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="w-[calc(100vw-2rem)] max-w-lg gap-5 rounded-2xl p-5 sm:p-7">
         <DialogHeader className="items-center space-y-2 text-center sm:text-center">
           <DialogTitle className="text-xl sm:text-2xl">Wie möchtest du mieten?</DialogTitle>
           <DialogDescription className="text-balance">
