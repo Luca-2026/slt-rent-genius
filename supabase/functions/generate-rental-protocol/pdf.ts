@@ -106,7 +106,17 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
       for (const w of para.split(/\s+/)) {
         const test = cur ? `${cur} ${w}` : w;
         if (f.widthOfTextAtSize(test, s) <= mw) cur = test;
-        else { if (cur) out.push(cur); cur = w; }
+        else {
+          if (cur) out.push(cur);
+          cur = "";
+          for (const char of w) {
+            if (cur && f.widthOfTextAtSize(cur + char, s) > mw) {
+              out.push(cur);
+              cur = "";
+            }
+            cur += char;
+          }
+        }
       }
       out.push(cur);
     }
@@ -134,11 +144,17 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
   };
   const kv = (label: string, value: string, opts: { color?: typeof INK; labelW?: number } = {}) => {
     const lw = opts.labelW ?? 150;
+    const labels = wrap(label, font, 9, lw - 12);
     const lines = wrap(value || "-", font, 9.5, CW - lw);
-    ensure(lines.length * 12 + 4);
-    text(label, ML, y, font, 9, MUTED);
-    lines.forEach((ln, i) => text(ln, ML + lw, y - i * 12, font, 9.5, opts.color ?? INK));
-    y -= lines.length * 12 + 4;
+    const count = Math.max(labels.length, lines.length);
+    ensure(Math.min(count * 12 + 4, H - 70 - MB));
+    for (let i = 0; i < count; i++) {
+      ensure(16);
+      if (labels[i]) text(labels[i], ML, y, font, 9, MUTED);
+      if (lines[i]) text(lines[i], ML + lw, y, font, 9.5, opts.color ?? INK);
+      y -= 12;
+    }
+    y -= 4;
   };
   const para = (t: string, s = 9.5, c = INK) => {
     const lines = wrap(t, font, s, CW);
