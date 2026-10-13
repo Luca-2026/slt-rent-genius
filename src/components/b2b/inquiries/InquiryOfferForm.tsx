@@ -1149,7 +1149,7 @@ export function InquiryOfferForm({
                   <p className="mt-1 text-[11px] text-muted-foreground">
                     {inquiryType === "sales"
                       ? "Preis aus CMS (netto) – anpassbar"
-                      : `Aus CMS: ${formatEuro(Math.round(item.unit_price * 119) / 100)} brutto → netto – anpassbar`}
+                      : `Aus CMS: ${formatEuro(item.unit_price)} netto – anpassbar`}
                   </p>
                 ) : null}
 
