@@ -1,3 +1,4 @@
+import { CustomerTypePrompt } from "@/components/rental/CustomerTypePrompt";
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { useParams, Link, useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -1530,6 +1531,7 @@ export default function CategoryProducts() {
 
   return (
     <Layout>
+      <CustomerTypePrompt />
       <SEO
         title={finalSeoTitle}
         description={finalSeoDescription}
