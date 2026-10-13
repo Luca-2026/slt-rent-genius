@@ -42,7 +42,7 @@ export function searchProducts(rows: LookupProduct[], query: string, location: s
       tag: priceOrNull(r.price_per_day), wochenende: priceOrNull(r.price_weekend), monat: priceOrNull(r.price_per_month),
       einheit: r.price_unit_label?.trim() || null,
     },
-    preis_hinweis: [r.price_per_day, r.price_weekend, r.price_per_month].some((p) => priceOrNull(p)) ? "Preise brutto laut Website, unverbindlich." : "Preis auf Anfrage",
+    preis_hinweis: [r.price_per_day, r.price_weekend, r.price_per_month].some((p) => priceOrNull(p)) ? "Preise netto zzgl. 19 % USt. (Privatkunden brutto ×1,19), unverbindlich." : "Preis auf Anfrage",
   }));
 }
 

@@ -1,3 +1,5 @@
+import { priceText } from "@/components/rental/ProductPriceBlock";
+import { useCustomerType } from "@/hooks/useCustomerType";
 import { useState, useRef, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, MapPin, ChevronRight, Package, X } from "lucide-react";
@@ -109,6 +111,7 @@ function getCategoryForProductAtLocation(productId: string, locationId: string):
 export function MietartikelSearch() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const { type: customerType } = useCustomerType();
   const isGerman = i18n.language === "de" || i18n.language?.startsWith("de");
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
@@ -263,7 +266,7 @@ export function MietartikelSearch() {
                       )}
                       {product.pricePerDay && (
                         <span className="text-sm font-semibold text-primary mt-0.5 block">
-                          {product.pricePerDay}{product.priceUnitLabel ?? t("rental.perDay")}
+                          {priceText(product.pricePerDay, customerType)}{product.priceUnitLabel ?? t("rental.perDay")}
                         </span>
                       )}
                     </div>

@@ -553,7 +553,7 @@ function B2BInquiryCard({
         <div className="pb-3 border-b border-border">
           <div className={`text-2xl font-bold ${hasDiscount ? "line-through text-muted-foreground" : "text-primary"}`}>
             {formatPriceValue(product.pricePerDay)}
-            <span className="text-sm font-normal"> / Tag</span>
+            <span className="text-sm font-normal"> / Tag netto</span>
           </div>
           {hasDiscount && (
             <div className="flex items-center gap-2 mt-1">
@@ -565,7 +565,7 @@ function B2BInquiryCard({
           )}
           {product.priceWeekend && (
             <p className="text-xs text-muted-foreground mt-1">
-              Weekend-Tarif: {formatPriceValue(product.priceWeekend)}
+              Weekend-Tarif: {formatPriceValue(product.priceWeekend)} netto
             </p>
           )}
         </div>

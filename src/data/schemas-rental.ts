@@ -321,7 +321,7 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
     ? Number(priceSource.match(/\d[\d.]*([,.]\d+)?/)?.[0].replace(/\./g, "").replace(",", "."))
     : undefined;
   const validPrice = typeof parsedPrice === "number" && Number.isFinite(parsedPrice) && parsedPrice > 0
-    ? parsedPrice
+    ? Math.round(parsedPrice * 1.19 * 100) / 100 // CMS netto → Google brutto (valueAddedTaxIncluded)
     : undefined;
   const unitCode = p.pricePerDay ? "DAY" : p.pricePerMonth ? "MON" : "C62";
 

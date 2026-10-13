@@ -98,7 +98,7 @@ export function B2BProductCard({
           {product.pricePerDay && (
             <div className="flex items-baseline gap-2">
               <span className={`text-sm font-medium ${hasDiscount ? "line-through text-muted-foreground" : "text-headline"}`}>
-                {product.pricePerDay}
+                {product.pricePerDay} <span className="text-xs font-normal text-muted-foreground">netto</span>
               </span>
               {hasDiscount && (
                 <span className="text-sm font-bold text-accent">
