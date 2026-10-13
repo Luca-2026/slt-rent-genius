@@ -34,7 +34,6 @@ import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalcula
 import { PurchaseInquiryBanner } from "@/components/rental/PurchaseInquiryBanner";
 import { SalesPagesBanner } from "@/components/rental/SalesPagesBanner";
 import { ServiceBanner } from "@/components/rental/ServiceBanner";
-import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 import { StandortVerfuegbarkeit } from "@/components/rental/StandortVerfuegbarkeit";
 import { LocalCategoryContentBlock } from "@/components/rental/LocalCategoryContentBlock";
 import { ProductSEOContent } from "@/components/rental/ProductSEOContent";
