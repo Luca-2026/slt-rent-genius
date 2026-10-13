@@ -1,7 +1,8 @@
 # Agent rules
 - Links via locationWhatsAppContacts.ts + BonnWhatsAppContact (legacy name); iconOnly beside email keeps cards aligned; WhatsAppIcon.tsx brand glyph, not a chat icon.
 - Customer payment-term eligibility is shared through _shared/customer-payment-terms.ts in forms and send functions; validate before number allocation to prevent UI bypasses without modifying issued snapshots.
-- Coordinate signing overlay suppression through signingOverlays and the shared SignaturePad lifecycle; reference counting prevents one of multiple pads from restoring overlays prematurely, while route gating covers offer loading and completion.
+- Signing overlays use signingOverlays/SignaturePad reference counting and route gating to suppress cart/cookies throughout signing.
+- Both rental offer forms use offerDeposit/OfferDepositWarning; require acknowledgement before finalizing without a deposit, not for drafts.
 <!-- LOVABLE:BEGIN -->
 - Inject the portal first-paint guard through the Vite HTML plugin before body parsing; hide only prerender fallback content on the exact portal host to preserve public SEO and the React portal.
 <!-- LOVABLE:END -->
