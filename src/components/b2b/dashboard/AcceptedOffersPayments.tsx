@@ -4,6 +4,7 @@ import { CheckCircle2, ChevronDown, ChevronRight, ChevronUp } from "lucide-react
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { isAwaitingOfferConfirmation } from "@/lib/dashboardMetrics";
+import { isPaymentOverdue, paymentDeadline } from "../../../../supabase/functions/_shared/payment-followup";
 
 type Row = {
   inquiryId: string;
@@ -15,6 +16,8 @@ type Row = {
   state: "paid" | "partial" | "checkout" | "open" | "invoice";
   paid: number;
   open: number;
+  overdue: boolean;
+  deadline: string | null;
 };
 
 const euro = (n: number) => n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
@@ -36,10 +39,10 @@ export function AcceptedOffersPayments() {
   useEffect(() => {
     let active = true;
     const load = async () => {
-      const cols = "id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, customer_name, company_name";
+      const cols = "id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, customer_name, company_name";
       const [rent, sale] = await Promise.all([
         supabase.from("rental_inquiries").select(cols).eq("status", "accepted").is("order_confirmed_at", null),
-        supabase.from("sales_inquiries").select("id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, first_name, last_name, company_name").eq("status", "accepted").is("order_confirmed_at", null),
+        supabase.from("sales_inquiries").select("id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, first_name, last_name, company_name").eq("status", "accepted").is("order_confirmed_at", null),
       ]);
       if (rent.error || sale.error) { if (active) setError(true); return; }
       const list = [
@@ -72,6 +75,8 @@ export function AcceptedOffersPayments() {
           inquiryId: i.id, table: i.table, offer: i.offer_number ?? "", acceptedAt: a?.accepted_at ?? null,
           signer: a?.signer_name ?? null, customer: i.company_name || ("customer_name" in i ? i.customer_name : [i.first_name, i.last_name].filter(Boolean).join(" ")) || "",
           state, paid, open,
+          overdue: isPaymentOverdue({ status: i.status, order_confirmed_at: i.order_confirmed_at, payment_followup_sent_at: i.payment_followup_sent_at, payment_terms: payload.payment_terms ?? "vorkasse", gross: i.offer_total_gross, deposit: payload.deposit, paid_cents: Math.round(paid * 100) }, new Date()),
+          deadline: paymentDeadline(i.payment_followup_sent_at)?.toISOString() ?? null,
         });
       }
       out.sort((a, b) => (b.acceptedAt ?? list.find((i) => i.id === b.inquiryId)?.offer_sent_at ?? "").localeCompare(a.acceptedAt ?? list.find((i) => i.id === a.inquiryId)?.offer_sent_at ?? ""));
@@ -117,6 +122,8 @@ export function AcceptedOffersPayments() {
                   : "bg-accent/15 text-foreground",
               )}>
                 <span className="block">{LABEL[r.state]}</span>
+                {r.overdue && <span className="block font-semibold text-destructive">Zahlung überfällig – Frist abgelaufen</span>}
+                {!r.overdue && r.deadline && r.state !== "paid" && <span className="block">Zahlungsfrist bis {new Date(r.deadline).toLocaleString("de-DE", { timeZone: "Europe/Berlin", dateStyle: "short", timeStyle: "short" })}</span>}
                 {r.state === "paid" ? <span className="block">{euro(r.paid)}</span> : r.state !== "invoice" ? <span className="block">Offen: {euro(r.open)}</span> : null}
               </span>
               </div>

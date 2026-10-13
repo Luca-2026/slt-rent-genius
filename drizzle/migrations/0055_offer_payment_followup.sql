@@ -1,0 +1,2 @@
+ALTER TABLE public.rental_inquiries ADD COLUMN IF NOT EXISTS offer_accepted_at timestamptz, ADD COLUMN IF NOT EXISTS payment_followup_sent_at timestamptz;
+ALTER TABLE public.sales_inquiries ADD COLUMN IF NOT EXISTS offer_accepted_at timestamptz, ADD COLUMN IF NOT EXISTS payment_followup_sent_at timestamptz;
