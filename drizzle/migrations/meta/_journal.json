@@ -386,6 +386,13 @@
       "when": 1791519722830,
       "tag": "0054_allow_self_declared_google_review_feedback",
       "breakpoints": true
+    },
+    {
+      "idx": 55,
+      "version": "7",
+      "when": 1791905764527,
+      "tag": "0055_offer_payment_followup",
+      "breakpoints": true
     }
   ]
 }

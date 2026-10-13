@@ -3414,6 +3414,7 @@ export type Database = {
           location: string | null
           location_email: string | null
           message: string | null
+          offer_accepted_at: string | null
           offer_file_url: string | null
           offer_number: string | null
           offer_payload: Json | null
@@ -3424,6 +3425,7 @@ export type Database = {
           order_confirmed_at: string | null
           order_confirmed_by_name: string | null
           paid_amount: number
+          payment_followup_sent_at: string | null
           payment_reminder_sent_at: string | null
           payments: Json
           product_id: string | null
@@ -3476,6 +3478,7 @@ export type Database = {
           location?: string | null
           location_email?: string | null
           message?: string | null
+          offer_accepted_at?: string | null
           offer_file_url?: string | null
           offer_number?: string | null
           offer_payload?: Json | null
@@ -3486,6 +3489,7 @@ export type Database = {
           order_confirmed_at?: string | null
           order_confirmed_by_name?: string | null
           paid_amount?: number
+          payment_followup_sent_at?: string | null
           payment_reminder_sent_at?: string | null
           payments?: Json
           product_id?: string | null
@@ -3538,6 +3542,7 @@ export type Database = {
           location?: string | null
           location_email?: string | null
           message?: string | null
+          offer_accepted_at?: string | null
           offer_file_url?: string | null
           offer_number?: string | null
           offer_payload?: Json | null
@@ -3548,6 +3553,7 @@ export type Database = {
           order_confirmed_at?: string | null
           order_confirmed_by_name?: string | null
           paid_amount?: number
+          payment_followup_sent_at?: string | null
           payment_reminder_sent_at?: string | null
           payments?: Json
           product_id?: string | null
@@ -3669,6 +3675,7 @@ export type Database = {
           location_email: string | null
           message: string | null
           model: string | null
+          offer_accepted_at: string | null
           offer_file_url: string | null
           offer_number: string | null
           offer_payload: Json | null
@@ -3679,6 +3686,7 @@ export type Database = {
           order_confirmed_at: string | null
           order_confirmed_by_name: string | null
           paid_amount: number
+          payment_followup_sent_at: string | null
           payments: Json
           product_category: string | null
           product_kind: string | null
@@ -3742,6 +3750,7 @@ export type Database = {
           location_email?: string | null
           message?: string | null
           model?: string | null
+          offer_accepted_at?: string | null
           offer_file_url?: string | null
           offer_number?: string | null
           offer_payload?: Json | null
@@ -3752,6 +3761,7 @@ export type Database = {
           order_confirmed_at?: string | null
           order_confirmed_by_name?: string | null
           paid_amount?: number
+          payment_followup_sent_at?: string | null
           payments?: Json
           product_category?: string | null
           product_kind?: string | null
@@ -3815,6 +3825,7 @@ export type Database = {
           location_email?: string | null
           message?: string | null
           model?: string | null
+          offer_accepted_at?: string | null
           offer_file_url?: string | null
           offer_number?: string | null
           offer_payload?: Json | null
@@ -3825,6 +3836,7 @@ export type Database = {
           order_confirmed_at?: string | null
           order_confirmed_by_name?: string | null
           paid_amount?: number
+          payment_followup_sent_at?: string | null
           payments?: Json
           product_category?: string | null
           product_kind?: string | null
