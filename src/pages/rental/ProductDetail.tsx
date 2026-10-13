@@ -44,7 +44,10 @@ import { getLocalCategoryContent } from "@/data/localCategoryContent";
 import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
 import { REAL_LOCATION_REVIEWS } from "@/data/realGoogleReviews";
-import { ProductPriceBlock, hasAnyPrice, formatPriceValue } from "@/components/rental/ProductPriceBlock";
+import { ProductPriceBlock, hasAnyPrice, priceText } from "@/components/rental/ProductPriceBlock";
+import { CustomerTypePrompt } from "@/components/rental/CustomerTypePrompt";
+import { useCustomerType } from "@/hooks/useCustomerType";
+import { netToGross } from "@/lib/priceDisplay";
 import { RatgeberTeaserBlock } from "@/components/ratgeber/RatgeberTeaserBlock";
 import { getArticlesForCategory } from "@/data/blogArticles";
 import { getDrivingLicenseInfo, localizeProductText, resolveProductFaqs } from "@/data/productPageContent";
@@ -365,8 +368,9 @@ export default function ProductDetail() {
         ...((() => {
           // Monthly offer (e.g. Winterdienst-Set) — has priority because it's a concrete price
           if (product.pricePerMonth) {
-            const numeric = parseFloat(product.pricePerMonth.replace(/[^\d,.-]/g, "").replace(/\./g, "").replace(",", "."));
-            if (!isFinite(numeric) || numeric <= 0) return {};
+            const netMonth = parseFloat(product.pricePerMonth.replace(/[^\d,.-]/g, "").replace(/\./g, "").replace(",", "."));
+            if (!isFinite(netMonth) || netMonth <= 0) return {};
+            const numeric = netToGross(netMonth); // CMS netto → Google brutto
             const validUntil = new Date();
             validUntil.setFullYear(validUntil.getFullYear() + 1);
             const availability = getProductAvailability(product, location.id, { categoryId });
@@ -411,7 +415,7 @@ export default function ProductDetail() {
             return isFinite(n) && n > 0 ? n : undefined;
           })();
           if (typeof parsedDailyPrice === "number") {
-            const priceFrom = parsedDailyPrice;
+            const priceFrom = netToGross(parsedDailyPrice); // CMS netto → Google brutto
             const validUntil = new Date();
             validUntil.setFullYear(validUntil.getFullYear() + 1);
             const availability = getProductAvailability(product, location.id, { categoryId });
@@ -650,7 +654,7 @@ export default function ProductDetail() {
                       <img src={p.image} alt={p.name} className="w-full h-32 object-contain mb-2" loading="lazy" />
                     )}
                     <p className="text-sm font-medium text-headline line-clamp-2">{p.name}</p>
-                    {p.pricePerDay && <p className="text-xs text-primary mt-1">{formatPriceValue(p.pricePerDay)}</p>}
+                    {p.pricePerDay && <p className="text-xs text-primary mt-1">{priceText(p.pricePerDay, customerType)}</p>}
                   </Link>
                 ))}
               </div>

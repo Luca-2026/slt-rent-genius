@@ -111,6 +111,7 @@ function getCategoryForProductAtLocation(productId: string, locationId: string):
 export function MietartikelSearch() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const { type: customerType } = useCustomerType();
   const isGerman = i18n.language === "de" || i18n.language?.startsWith("de");
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);

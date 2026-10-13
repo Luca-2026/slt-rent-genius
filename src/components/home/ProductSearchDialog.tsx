@@ -35,6 +35,7 @@ interface ProductSearchDialogProps {
 export function ProductSearchDialog({ open, onOpenChange }: ProductSearchDialogProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { type: customerType } = useCustomerType();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showLocationStep, setShowLocationStep] = useState(false);
