@@ -1,7 +1,7 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
 ## Aktuell – Protokoll-Zustandswerte (13.10.2026)
-- [ ] Überschneidung bei Tankfüllstand und Sauberkeit in Übergabe-/Rückgabe-PDFs korrigieren und beide Arten lokal visuell prüfen; keine Belege ändern oder E-Mails versenden.
+- [x] Lange Artikellabels überlagerten Messwerte: beide Spalten umbrechen und höhere Zeilenzahl reservieren; Blanko-Zustandswerte ebenfalls dynamisch umbrechen. Vier Mietprotokollmuster (8 Seiten) und Blanko-PDF visuell geprüft, 6 bestehende Fußzeilentests bestanden, Build OK; generate-rental-protocol deployed. Kein aktuelles Protokoll als Upload verfügbar; keine gespeicherten Belege geändert oder E-Mails versendet. Blanko-Frontend benötigt Veröffentlichung.
 
 ## Aktuell – WhatsApp-Kontakt Bonn
 - [x] Ralf Döhler mit 01575 7151584 und direktem WhatsApp-Link bei Bonner Kontaktstellen ergänzt; Schreibweise projektweit korrigiert, Name zentral für alle Anzeigen.
