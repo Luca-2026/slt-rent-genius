@@ -1,3 +1,5 @@
+import { priceText } from "@/components/rental/ProductPriceBlock";
+import { useCustomerType } from "@/hooks/useCustomerType";
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, MapPin, ChevronRight, Package, X } from "lucide-react";
@@ -166,7 +168,7 @@ export function ProductSearchDialog({ open, onOpenChange }: ProductSearchDialogP
                         )}
                         {product.pricePerDay && (
                           <span className="text-sm font-semibold text-primary mt-0.5 block">
-                            {product.pricePerDay}{product.priceUnitLabel ?? t("rental.perDay")}
+                            {priceText(product.pricePerDay, customerType)}{product.priceUnitLabel ?? t("rental.perDay")}
                           </span>
                         )}
                       </div>

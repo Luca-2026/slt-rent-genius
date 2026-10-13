@@ -8,7 +8,9 @@ import type { Product } from "@/data/rentalData";
 import { useTranslatedProduct } from "@/hooks/useTranslatedProduct";
 import { PriceGuaranteeBadge } from "@/components/PriceGuaranteeBadge";
 import { getProductSEO } from "@/data/productSEOData";
-import { formatPriceValue } from "@/components/rental/ProductPriceBlock";
+import { priceText } from "@/components/rental/ProductPriceBlock";
+import { useCustomerType } from "@/hooks/useCustomerType";
+import { vatNote } from "@/lib/priceDisplay";
 
 interface ProductCardProps {
   product: Product;
@@ -23,9 +25,11 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
   const hasMultipleImages = images.length > 1;
 
   // Fallback: hole "ab"-Preis aus productSEOData (dailyPriceFrom), falls kein pricePerDay gepflegt ist
+  const { type } = useCustomerType();
+  const formatPriceValue = (v: string) => priceText(v, type);
   const seo = getProductSEO(product.id);
   const seoPriceFrom = typeof seo?.dailyPriceFrom === "number"
-    ? `ab ${Number.isInteger(seo.dailyPriceFrom) ? seo.dailyPriceFrom : seo.dailyPriceFrom.toFixed(2).replace(".", ",")} €`
+    ? priceText(seo.dailyPriceFrom, type)
     : undefined;
   // Hauptpreis: Tagespreis > SEO-Ab-Preis > Monatspreis > Wochenendpreis
   const fallbackMain = !product.pricePerDay && !seoPriceFrom
@@ -158,6 +162,7 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
               <p className="text-lg font-bold text-primary mb-1 leading-tight break-words">
                 {displayPrice}
                 <span className="text-sm font-normal text-muted-foreground">{displayUnit}</span>
+                <span className="block text-[11px] font-normal text-muted-foreground">{vatNote(type)}</span>
               </p>
             )}
             {(showWeekendRow || showMonthRow) && (
