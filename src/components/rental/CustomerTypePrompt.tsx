@@ -10,7 +10,7 @@ export function CustomerTypePrompt() {
   const { chosen } = useCustomerType();
   return (
     <Dialog open={!chosen} onOpenChange={(open) => { if (!open) setCustomerType("private"); }}>
-      <DialogContent className="max-w-md w-[calc(100vw-2rem)] rounded-xl">
+      <DialogContent className="max-w-md w-[calc(100vw-2rem)] rounded-xl top-4 translate-y-0 sm:top-[50%] sm:translate-y-[-50%]">
         <DialogHeader>
           <DialogTitle>Wie möchtest du mieten?</DialogTitle>
           <DialogDescription>Damit wir dir die passenden Preise zeigen. Du kannst das jederzeit an den Preisen umstellen.</DialogDescription>
