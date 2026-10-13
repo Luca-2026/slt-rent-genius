@@ -64,6 +64,7 @@ const LEGACY_PRODUCT_ID_REDIRECTS: Record<string, string> = {
 
 export default function ProductDetail() {
   const { t } = useTranslation();
+  const { type: customerType } = useCustomerType();
   const { locationId, categoryId, productId } = useParams<{
     locationId: string;
     categoryId: string;
@@ -674,6 +675,7 @@ export default function ProductDetail() {
 
   return (
     <Layout>
+      <CustomerTypePrompt />
       {/* Breadcrumb */}
       <div className="bg-muted/50 border-b border-border">
         <div className="section-container py-3">
