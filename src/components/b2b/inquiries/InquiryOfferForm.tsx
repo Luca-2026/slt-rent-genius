@@ -1,4 +1,6 @@
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
+import { needsOfferDepositWarning } from "@/lib/offerDeposit";
+import { OfferDepositWarning } from "@/components/b2b/OfferDepositWarning";
 import { safeCustomerPaymentTerms } from "@/lib/customerPaymentTerms";
 import { isStripePayment, shortPaymentReference } from "@/lib/paymentPresentation";
 import { PdfPagesPreview } from "@/components/b2b/PdfPagesPreview";
@@ -286,6 +288,9 @@ export function InquiryOfferForm({
   const [returnLocation, setReturnLocation] = useState<string>(draft?.returnLocation ?? defaultCosts?.return_location ?? "");
   const [returnLocationCost, setReturnLocationCost] = useState<number>(draft?.returnLocationCost ?? defaultCosts?.return_location_cost ?? 0);
   const [deposit, setDeposit] = useState(draft?.deposit ?? defaultCosts?.deposit ?? 0);
+  const [depositAcknowledged, setDepositAcknowledged] = useState(false);
+  const depositWarning = needsOfferDepositWarning(deposit, !isInvoice && inquiryType === "rental");
+  useEffect(() => { setDepositAcknowledged(false); }, [deposit, inquiryId]);
   const [validDays, setValidDays] = useState(draft?.validDays ?? defaultMeta?.valid_days ?? 14);
   /** Unbefristete Monatsmiete: Mietpositionen gelten pro Monat, kein Enddatum (nur Mietangebote). */
   const canOpenEnded = !isInvoice && inquiryType === "rental";
@@ -856,6 +861,10 @@ export function InquiryOfferForm({
       return;
     }
     // Zusätzlicher Klick-Lock: State-Updates greifen erst im nächsten Render,
+    if (depositWarning && !depositAcknowledged) {
+      toast({ title: "Keine Kaution hinterlegt", description: "Bitte Kaution ergänzen oder im Kautionshinweis bewusst bestätigen, dass das Angebot ohne Kaution versendet werden soll.", variant: "destructive" });
+      return;
+    }
     // ein sehr schneller Doppelklick würde sonst zwei Requests auslösen.
     if (sendLock.current) return;
     sendLock.current = true;
