@@ -1,4 +1,7 @@
 import type { Product } from "@/data/rentalData";
+import { useCustomerType } from "@/hooks/useCustomerType";
+import { displayPrice, type CustomerType } from "@/lib/priceDisplay";
+import { CustomerTypeToggle } from "@/components/rental/CustomerTypePrompt";
 
 /**
  * Einheitliche Preisdarstellung für Mietartikel.
@@ -22,26 +25,16 @@ export function formatPriceValue(value: string): string {
   return /^[\d.,]+$/.test(v) ? `${v} €` : v;
 }
 
-function netPriceLabel(value: string): string | null {
-  const match = value.match(/\d[\d.]*([,.]\d+)?/);
-  if (!match) return null;
-  const gross = Number(match[0].replace(/\./g, "").replace(",", "."));
-  if (!Number.isFinite(gross) || gross <= 0) return null;
-  return new Intl.NumberFormat("de-DE", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-  }).format(gross / 1.19);
-}
-
-function formatFrom(value: number) {
-  return `ab ${Number.isInteger(value) ? value : value.toFixed(2).replace(".", ",")} €`;
-}
 
 export function hasAnyPrice(product: Product, dailyPriceFrom?: number) {
   return Boolean(
     product.pricePerDay || product.pricePerMonth || product.priceWeekend || typeof dailyPriceFrom === "number"
   );
+}
+
+/** CMS-Nettopreis in der Darstellung der gewählten Kundengruppe. */
+export function priceText(value: string | number, type: CustomerType): string {
+  return typeof value === "number" ? `ab ${displayPrice(value, type)}` : displayPrice(formatPriceValue(value), type);
 }
 
 export function ProductPriceBlock({
@@ -51,6 +44,7 @@ export function ProductPriceBlock({
   size = "md",
   className,
 }: ProductPriceBlockProps) {
+  const { type } = useCustomerType();
   const hasDay = Boolean(product.pricePerDay);
   const hasMonth = Boolean(product.pricePerMonth);
   const hasWeekend = Boolean(product.priceWeekend);
@@ -60,35 +54,35 @@ export function ProductPriceBlock({
   let mainValue: string;
   let mainUnit: string;
   if (product.pricePerDay) {
-    mainValue = formatPriceValue(product.pricePerDay);
+    mainValue = priceText(product.pricePerDay, type);
     mainUnit = product.priceUnitLabel ?? perDayLabel;
   } else if (typeof dailyPriceFrom === "number") {
-    mainValue = formatFrom(dailyPriceFrom);
+    mainValue = priceText(dailyPriceFrom, type);
     mainUnit = product.priceUnitLabel ?? perDayLabel;
   } else if (product.pricePerMonth) {
-    mainValue = formatPriceValue(product.pricePerMonth);
+    mainValue = priceText(product.pricePerMonth, type);
     mainUnit = product.priceUnitLabel ?? "/ Monat";
   } else if (product.priceWeekend) {
-    mainValue = formatPriceValue(product.priceWeekend);
+    mainValue = priceText(product.priceWeekend, type);
     mainUnit = "/ Wochenende";
   } else {
     mainValue = "Preis auf Anfrage";
     mainUnit = "";
   }
 
-  const netLabel = netPriceLabel(mainValue);
+  const hasPrice = mainValue !== "Preis auf Anfrage";
 
   // Zusatztarife (nur, was nicht schon Hauptpreis ist)
   const extras: Array<{ label: string; value: string }> = [];
-  if (product.priceWeekend && mainValue !== formatPriceValue(product.priceWeekend)) {
-    extras.push({ label: "Wochenende", value: formatPriceValue(product.priceWeekend) });
+  if (product.priceWeekend && mainValue !== priceText(product.priceWeekend, type)) {
+    extras.push({ label: "Wochenende", value: priceText(product.priceWeekend, type) });
   }
-  if (product.pricePerMonth && mainValue !== formatPriceValue(product.pricePerMonth)) {
+  if (product.pricePerMonth && mainValue !== priceText(product.pricePerMonth, type)) {
     extras.push({
       label: product.minRentalMonths
         ? `Monat (ab ${product.minRentalMonths} Mon.)`
         : "Monat",
-      value: formatPriceValue(product.pricePerMonth),
+      value: priceText(product.pricePerMonth, type),
     });
   }
 
@@ -99,14 +93,10 @@ export function ProductPriceBlock({
     <div className={className}>
       <div className={`${mainSize} font-bold text-primary leading-tight`}>
         <span className="break-words">{mainValue}</span>
-        {netLabel && <span className="text-primary">*</span>}
+        {hasPrice && <span className="text-primary">*</span>}
         <span className={`${unitSize} font-normal text-muted-foreground`}> {mainUnit}</span>
       </div>
-      {netLabel && (
-        <p className="mt-1 text-xs text-muted-foreground">
-          Brutto inkl. 19 % USt. ({netLabel} netto)
-        </p>
-      )}
+      {hasPrice && <CustomerTypeToggle className="mt-2" />}
 
       {extras.length > 0 && (
         <ul className="mt-1.5 space-y-0.5">
