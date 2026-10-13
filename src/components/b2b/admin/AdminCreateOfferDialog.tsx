@@ -1,4 +1,6 @@
 import { applyCategoryDiscount, loadCategoryDiscounts } from "@/lib/customerDiscounts";
+import { needsOfferDepositWarning } from "@/lib/offerDeposit";
+import { OfferDepositWarning } from "@/components/b2b/OfferDepositWarning";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -68,6 +70,9 @@ export function AdminCreateOfferDialog({
   const [notes, setNotes] = useState("");
   const [sendEmail, setSendEmail] = useState(true);
   const [deposit, setDeposit] = useState<string>("");
+  const [depositAcknowledged, setDepositAcknowledged] = useState(false);
+  const depositWarning = needsOfferDepositWarning(deposit);
+  useEffect(() => { setDepositAcknowledged(false); }, [deposit, open, reservation?.id, existingOffer?.id]);
   const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
   const [customServicePrices, setCustomServicePrices] = useState<Record<string, number>>({});
   // Editable percentage overrides per service (empty = use the default rate)
@@ -508,6 +513,10 @@ export function AdminCreateOfferDialog({
       if (!confirmed) return;
     }
 
+    if (mode === "finalize" && depositWarning && !depositAcknowledged) {
+      toast({ title: "Keine Kaution hinterlegt", description: "Bitte Kaution ergänzen oder im Kautionshinweis bewusst bestätigen, dass das Angebot ohne Kaution erstellt werden soll.", variant: "destructive" });
+      return;
+    }
     setSaving(true);
     setSaveMode(mode);
     try {
@@ -955,6 +964,9 @@ export function AdminCreateOfferDialog({
         </div>
 
         {/* Payment terms */}
+        {depositWarning && (
+          <OfferDepositWarning acknowledged={depositAcknowledged} onAcknowledge={setDepositAcknowledged} disabled={saving} />
+        )}
         <div>
           <Label className="text-xs">Zahlungsbedingungen</Label>
           <Select value={paymentTerms} onValueChange={setPaymentTerms}>

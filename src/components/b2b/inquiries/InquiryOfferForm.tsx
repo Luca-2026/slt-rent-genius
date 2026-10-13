@@ -860,12 +860,11 @@ export function InquiryOfferForm({
       setWarningOpen(true);
       return;
     }
-    // Zusätzlicher Klick-Lock: State-Updates greifen erst im nächsten Render,
     if (depositWarning && !depositAcknowledged) {
       toast({ title: "Keine Kaution hinterlegt", description: "Bitte Kaution ergänzen oder im Kautionshinweis bewusst bestätigen, dass das Angebot ohne Kaution versendet werden soll.", variant: "destructive" });
       return;
     }
-    // ein sehr schneller Doppelklick würde sonst zwei Requests auslösen.
+    // Zusätzlicher Klick-Lock verhindert doppelte Requests.
     if (sendLock.current) return;
     sendLock.current = true;
     setSending(true);
@@ -1397,6 +1396,10 @@ export function InquiryOfferForm({
           </div>
         )}
       </div>
+
+      {depositWarning && (
+        <OfferDepositWarning acknowledged={depositAcknowledged} onAcknowledge={setDepositAcknowledged} disabled={disabled} />
+      )}
 
       {isInvoice && (
         <div className="rounded-lg border border-border p-3 space-y-2">
