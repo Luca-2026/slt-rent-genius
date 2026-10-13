@@ -94,7 +94,9 @@ export function ProductPriceBlock({
       <div className={`${mainSize} font-bold text-primary leading-tight`}>
         <span className="break-words">{mainValue}</span>
         {hasPrice && <span className="text-primary">*</span>}
-        <span className={`${unitSize} font-normal text-muted-foreground`}> {mainUnit}</span>
+        {mainUnit && (
+          <span className={`${unitSize} font-normal text-muted-foreground ml-1.5 whitespace-nowrap`}>{mainUnit}</span>
+        )}
       </div>
       {hasPrice && <CustomerTypeToggle className="mt-2" />}
 
