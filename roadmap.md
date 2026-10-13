@@ -1,5 +1,8 @@
 # Roadmap – SEO-/Content-Überarbeitung (Prompt 14.09.2026)
 
+## Aktuell – Protokoll-Zustandswerte (13.10.2026)
+- [ ] Überschneidung bei Tankfüllstand und Sauberkeit in Übergabe-/Rückgabe-PDFs korrigieren und beide Arten lokal visuell prüfen; keine Belege ändern oder E-Mails versenden.
+
 ## Aktuell – WhatsApp-Kontakt Bonn
 - [x] Ralf Döhler mit 01575 7151584 und direktem WhatsApp-Link bei Bonner Kontaktstellen ergänzt; Schreibweise projektweit korrigiert, Name zentral für alle Anzeigen.
 - [x] WhatsApp-Einstiege zeigen jetzt das echte WhatsApp-Markenzeichen (src/components/icons/WhatsAppIcon.tsx) statt des generischen Nachrichten-Symbols; Standortkarten, Kontaktseite, Fußzeile und Portale geprüft (393/1280 px, kein Überlauf, keine Laufzeitfehler).
