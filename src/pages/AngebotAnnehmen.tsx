@@ -22,6 +22,7 @@ interface AcceptInfo {
   accepted_at: string | null;
   signer_name: string | null;
   location: { name: string; email: string; phone: string };
+  prepay?: boolean;
 }
 
 const eur = (n: number) => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(n || 0);
@@ -76,6 +77,13 @@ export default function AngebotAnnehmen() {
       load();
       return;
     }
+    const payUrl = (data as { pay_url?: string | null }).pay_url;
+    if (payUrl) {
+      // Vorkasse: direkt zur Zahlungsseite dieses Angebots weiterleiten.
+      const m = payUrl.match(/\/zahlung\/([A-Za-z0-9_-]+)$/);
+      window.location.assign(m ? `/zahlung/${m[1]}` : payUrl);
+      return;
+    }
     await load();
     // Am Handy steht man nach dem Annehmen weit unten – Bestätigung sichtbar machen.
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -97,7 +105,7 @@ export default function AngebotAnnehmen() {
                 <h1 className="text-2xl font-bold text-foreground">Vielen Dank – Angebot angenommen</h1>
                 <p className="text-muted-foreground">
                   Angebot {info.offer_number} wurde{info.accepted_at ? ` am ${new Date(info.accepted_at).toLocaleString("de-DE", { timeZone: "Europe/Berlin", dateStyle: "medium", timeStyle: "short" })} Uhr` : ""}{info.signer_name ? ` von ${info.signer_name}` : ""} verbindlich angenommen.
-                  Du bekommst eine Bestätigung per E-Mail und in Kürze unsere Auftragsbestätigung.
+                  {info.prepay ? " Bitte leiste nun die Zahlung – den Zahlungslink findest du auch in deiner E-Mail." : " Du erhältst in Kürze die Auftragsbestätigung, damit deine Miete bestätigt wird."}
                 </p>
               </div>
             ) : info.status !== "active" ? (
