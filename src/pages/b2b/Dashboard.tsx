@@ -49,7 +49,8 @@ import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 export default function B2BDashboard() {
   const { user, b2bProfile, loading, signOut, isAdmin, refreshB2BProfile, authorizedPersonInfo } = useAuth();
-  const { staffProfile, loading: staffLoading } = useStaffAccess();
+  const { isStaff: isStaffMember, canManageInventory, loading: staffLoading } = useStaffAccess();
+  const isStaff = isStaffMember || canManageInventory;
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
