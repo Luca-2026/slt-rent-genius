@@ -77,12 +77,28 @@ const BAU_FIELDS: { key: PriceField; label: string; hint?: string }[] = [
   { key: "price_from_20_rd", label: "ab 20 Miettagen" },
   { key: "price_weekend_num", label: "Wochenende (Fr. 16 Uhr – Mo. 09:30 Uhr)", hint: "Richtwert ca. Tagespreis × 1,5, frei eintragbar." },
 ];
-const EVENT_FIELDS: { key: PriceField; label: string; hint?: string; required?: boolean }[] = [
-  { key: "price_base_1_3_cd", label: "1–3 Kalendertage (Grundpreis)", required: true },
+const EVENT_FIELDS: { key: PriceField; label: string; hint?: string }[] = [
+  { key: "price_base_1_3_cd", label: "1–3 Kalendertage (Grundpreis)" },
   { key: "surcharge_per_cd_from_4", label: "Aufschlag je KT ab 4 KT", hint: "Leer = automatisch 50 % bzw. 20 % des Grundpreises." },
   { key: "surcharge_per_cd_from_8", label: "Aufschlag je KT ab 8 KT", hint: "Leer = automatisch 50 % bzw. 20 % des Grundpreises." },
   { key: "price_weekend_num", label: "Wochenende (Fr. 16 Uhr – Mo. 09:30 Uhr)" },
 ];
+
+/** Pflichtfeld des Schemas: Event = Grundpreis 1–3 KT, Bau = ab 1 Miettag. */
+export function basePriceField(scheme: PricingScheme): PriceField {
+  return scheme === "event" ? "price_base_1_3_cd" : "price_from_1_rd";
+}
+
+export function isBasePriceMissing(scheme: PricingScheme, set: PriceSet | null | undefined): boolean {
+  return !set || parsePriceInput(set[basePriceField(scheme)]) === null;
+}
+
+/** Grundpreis ist nur Pflicht, wenn der Artikel veröffentlicht ist und nicht „nur auf Anfrage". */
+export function basePriceRequired(a: { is_published: boolean; on_request: boolean }): boolean {
+  return a.is_published && !a.on_request;
+}
+
+export const NO_BASE_PRICE_HINT = "Ohne Grundpreis wird auf der Webseite kein Preis angezeigt.";
 
 export function schemeFields(scheme: PricingScheme) {
   return scheme === "event" ? EVENT_FIELDS : BAU_FIELDS;
@@ -105,7 +121,7 @@ export function ManagedPriceFields({
       {fields.map((f) => (
         <div key={f.key}>
           <Label htmlFor={`${idPrefix}-${f.key}`} className="text-xs">
-            {f.label} (€ netto{scheme === "bau" ? " je Miettag" : ""}){"required" in f && f.required ? " *" : ""}
+            {f.label} (€ netto{scheme === "bau" ? " je Miettag" : ""})
           </Label>
           <Input
             id={`${idPrefix}-${f.key}`}
@@ -117,6 +133,9 @@ export function ManagedPriceFields({
           {f.hint && <p className="text-[11px] text-muted-foreground mt-1">{f.hint}</p>}
         </div>
       ))}
+      {isBasePriceMissing(scheme, value) && (
+        <p className="col-span-full text-xs text-amber-600 dark:text-amber-400">{NO_BASE_PRICE_HINT}</p>
+      )}
     </div>
   );
 }

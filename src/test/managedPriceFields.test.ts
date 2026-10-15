@@ -30,3 +30,19 @@ describe("CMS-Preisschema", () => {
     expect(out.map((o) => [o.sort_order, o.is_default, o.surcharge_percent])).toEqual([[0, true, null], [1, false, 20]]);
   });
 });
+
+import { basePriceRequired, isBasePriceMissing } from "@/components/b2b/admin/ManagedPriceFields";
+
+describe("Grundpreis-Pflicht", () => {
+  it("nur veröffentlicht und nicht auf Anfrage", () => {
+    expect(basePriceRequired({ is_published: true, on_request: false })).toBe(true);
+    expect(basePriceRequired({ is_published: false, on_request: false })).toBe(false);
+    expect(basePriceRequired({ is_published: true, on_request: true })).toBe(false);
+  });
+  it("Event prüft 1–3 KT, Bau prüft ab 1 Miettag", () => {
+    const set = { ...emptyPriceSet(), price_from_1_rd: "10" };
+    expect(isBasePriceMissing("event", set)).toBe(true);
+    expect(isBasePriceMissing("bau", set)).toBe(false);
+    expect(isBasePriceMissing("event", { ...emptyPriceSet(), price_base_1_3_cd: "99" })).toBe(false);
+  });
+});
