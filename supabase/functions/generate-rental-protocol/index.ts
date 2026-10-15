@@ -51,6 +51,10 @@ const Body = z.object({
     photos: z.array(Photo).max(MAX_PHOTOS),
   })).max(30),
   send_email: z.boolean(),
+  extra_charges: z.array(z.object({
+    label: z.string().trim().min(1).max(200), quantity: z.number().min(0.01).max(100000),
+    unit_price: z.number().min(0).max(100000), notes: z.string().max(300).nullable().optional(),
+  })).max(20).optional().default([]),
 });
 
 const LOCATIONS: Record<string, { name: string; address: string; email: string; phone: string }> = {
@@ -140,6 +144,8 @@ Deno.serve(async (req) => {
       damageRows.push({ ...d, no: i + 1, photoNos: nos, paths: nos.map((n) => storedPhotos[n - 1].path) });
     }
 
+    const extraCharges = isReturn ? b.extra_charges : [];
+    const extraChargesTotal = Math.round(extraCharges.reduce((s, c) => s + c.quantity * c.unit_price, 0) * 100) / 100;
     const lk = locKey(inq.location);
     const loc = LOCATIONS[lk];
     const payload = (inq.offer_payload ?? {}) as Record<string, any>;
@@ -176,6 +182,7 @@ Deno.serve(async (req) => {
         needsRepair: d.needs_repair, reducesStock: d.reduces_stock, quantity: d.quantity, photoNos: d.photoNos,
       })),
       photos: pdfPhotos,
+      extraCharges: extraCharges.map((c) => ({ label: c.label, quantity: c.quantity, unitPrice: c.unit_price, notes: c.notes ?? null })),
       signatures: { customer: sigBytes(b.customer_signature), customerName: b.customer_signer_name, staff: sigBytes(b.staff_signature), staffName: b.staff_name },
     });
 
@@ -226,13 +233,20 @@ Deno.serve(async (req) => {
         ...common, return_protocol_number: number, delivery_note_id: existingDn!.id, customer_signature_data: b.customer_signature,
         condition_notes: b.known_defects, cleaning_required: (b.cleanliness_rating ?? 5) <= 2,
         all_items_returned: b.all_items_returned ?? true, missing_items_notes: b.missing_items_notes,
-        meter_reading_end: b.operating_hours, damages_total: damagesTotal,
+        meter_reading_end: b.operating_hours, damages_total: damagesTotal, extra_charges_total: extraChargesTotal,
         overall_condition: damageRows.length ? "damaged" : "good",
         damage_description: damageRows.length ? damageRows.map((d) => `Schaden ${d.no}: ${d.description}`).join("\n") : null,
         additional_defects_at_return: b.known_defects,
       }).select("id").single();
       if (error) throw error;
       protocolId = row.id;
+      if (extraCharges.length) {
+        const { error: cErr } = await svc.from("b2b_return_extra_charges").insert(extraCharges.map((c) => ({
+          return_protocol_id: protocolId, b2b_profile_id: inq.b2b_profile_id ?? null, label: c.label,
+          quantity: c.quantity, unit_price: c.unit_price, notes: c.notes ?? null,
+        })));
+        if (cErr) console.error("extra charges insert", cErr);
+      }
       await svc.from("b2b_return_protocol_items").insert(b.items.map((it) => ({ return_protocol_id: protocolId, product_name: it.name, quantity: it.quantity, description: it.detail })));
     }
 
@@ -285,6 +299,7 @@ Deno.serve(async (req) => {
 <p>${greeting}</p>
 <p>anbei erh\u00E4ltst du das ${title} <strong>${esc(number)}</strong> vom ${esc(berlin(now))} als PDF.</p>
 <ul style="padding-left:18px;">${b.items.map((it) => `<li>${it.quantity} \u00D7 ${esc(it.name)}</li>`).join("")}</ul>
+${extraCharges.length ? `<p><strong>Zusatzkosten laut Protokoll: ${extraChargesTotal.toFixed(2).replace(".", ",")} \u20AC brutto</strong> \u2013 sie werden in Rechnung gestellt und mit einer gezahlten Kaution verrechnet.</p>` : ""}
 ${damageRows.length ? `<p style="color:#b91c1c;"><strong>${damageRows.length} Schaden/Sch\u00E4den dokumentiert</strong> \u2013 Details und Fotos findest du im PDF.</p>` : ""}
 <p>Bei Fragen erreichst du uns unter ${esc(loc.phone)} oder ${esc(loc.email)}.</p>
 <p>Viele Gr\u00FC\u00DFe<br>dein Team von SLT-Rental ${esc(loc.name)}</p>
