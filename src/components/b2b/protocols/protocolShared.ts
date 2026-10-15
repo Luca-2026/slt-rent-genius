@@ -57,7 +57,7 @@ export interface ExtraCharge {
   quantity: string;
   unitPrice: string;
   notes: string;
-  /** „l“ = Liter (Kraftstoff), sonst Stück/Pauschal. */
+  /** „l“ = Liter (Kraftstoff), „15min“ = Reinigung je 15 Minuten, sonst Stück/Pauschal. */
   unit?: string;
 }
 
@@ -212,5 +212,5 @@ export const serializeExtraCharges = (list: ExtraCharge[]) =>
       label: c.label.trim(),
       quantity: toNumber(c.quantity) || 1,
       unit_price: toNumber(c.unitPrice),
-      notes: c.notes || (c.unit === "l" ? `${toNumber(c.quantity) || 1} l × ${toNumber(c.unitPrice).toFixed(2).replace(".", ",")} €/l` : null),
+      notes: c.notes || (c.unit === "15min" ? `${toNumber(c.quantity) || 1} × 15 Min (${Math.round((toNumber(c.quantity) || 1) * 15)} Min) × ${toNumber(c.unitPrice).toFixed(2).replace(".", ",")} € je 15 Min` : c.unit === "l" ? `${toNumber(c.quantity) || 1} l × ${toNumber(c.unitPrice).toFixed(2).replace(".", ",")} €/l` : null),
     }));

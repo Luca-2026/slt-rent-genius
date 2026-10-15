@@ -1,11 +1,15 @@
 import { describe, expect, it } from "vitest";
 import {
-  CLEANING_MIN_GROSS, FUEL_PRICES, cleaningSuggested, depositSettlementNote, fuelChargeGross, fuelSuggested, settleDeposit,
+  CLEANING_UNIT_GROSS, cleaningChargeGross, FUEL_PRICES, cleaningSuggested, depositSettlementNote, fuelChargeGross, fuelSuggested, settleDeposit,
 } from "@/lib/returnCharges";
 
 describe("Zusatzkosten bei Rücknahme", () => {
-  it("Reinigung ab 50 € netto = 59,50 € brutto, vorgeschlagen bei Sauberkeit unter 5", () => {
-    expect(CLEANING_MIN_GROSS).toBe(59.5);
+  it("Reinigung 40 € netto je 15 Min = 47,60 € brutto; 30 Min = 80 € netto = 95,20 € brutto", () => {
+    expect(CLEANING_UNIT_GROSS).toBe(47.6);
+    expect(cleaningChargeGross(2)).toBe(95.2);
+    expect(cleaningChargeGross(0)).toBe(0);
+  });
+  it("Reinigung wird bei Sauberkeit unter 5 vorgeschlagen", () => {
     expect(cleaningSuggested(5)).toBe(false);
     expect(cleaningSuggested(4)).toBe(true);
     expect(cleaningSuggested(1)).toBe(true);

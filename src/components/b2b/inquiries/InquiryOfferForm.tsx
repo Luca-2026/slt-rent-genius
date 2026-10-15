@@ -1,4 +1,4 @@
-import { CLEANING_MIN_GROSS, cleaningSuggested, depositSettlementNote, settleDeposit } from "@/lib/returnCharges";
+import { CLEANING_UNIT_GROSS, CLEANING_UNIT_MINUTES, cleaningChargeGross, cleaningSuggested, depositSettlementNote, settleDeposit } from "@/lib/returnCharges";
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { needsOfferDepositWarning } from "@/lib/offerDeposit";
 import { OfferDepositWarning } from "@/components/b2b/OfferDepositWarning";
@@ -222,6 +222,8 @@ interface PendingProtocolCharge {
   description?: string;
   /** Bruttobetrag laut Protokoll */
   gross: number;
+  /** Nur Reinigungsvorschlag: Anzahl 15-Minuten-Einheiten (anpassbar). */
+  cleaningUnits?: number;
 }
 
 /** Erfasste (Teil-)Zahlung, die auf der Rechnung abgezogen wird. */
@@ -400,8 +402,9 @@ export function InquiryOfferForm({
           list.push({
             id: `suggest-clean-${p.id}`, source: "suggestion",
             label: "Reinigung (Mehraufwand laut AGB)",
-            description: `Rückgabeprotokoll ${p.return_protocol_number}: Sauberkeit ${rating}/5 · Vorschlag ab 50,00 € netto`,
-            gross: CLEANING_MIN_GROSS,
+            description: `Rückgabeprotokoll ${p.return_protocol_number}: Sauberkeit ${rating}/5 · 40,00 € netto je 15 Min`,
+            gross: cleaningChargeGross(1),
+            cleaningUnits: 1,
           });
         }
       }
@@ -1476,6 +1479,24 @@ export function InquiryOfferForm({
                 {charge.description && (
                   <p className="text-xs text-muted-foreground">{charge.description}</p>
                 )}
+                {charge.cleaningUnits !== undefined && (
+                  <div className="mt-1 flex items-center gap-2">
+                    <Label className="text-xs">Einheiten à {CLEANING_UNIT_MINUTES} Min</Label>
+                    <Input
+                      type="number" inputMode="numeric" min={1} step={1} className="h-9 w-20 text-sm"
+                      value={charge.cleaningUnits || ""} disabled={disabled}
+                      onChange={(e) => {
+                        const units = Math.max(0, Math.floor(Number(e.target.value) || 0));
+                        setPendingCharges((prev) => prev.map((c) => c.id === charge.id
+                          ? { ...c, cleaningUnits: units, gross: cleaningChargeGross(units),
+                              label: "Reinigung (Mehraufwand laut AGB)",
+                              description: `${units} × ${CLEANING_UNIT_MINUTES} Min (${units * CLEANING_UNIT_MINUTES} Min) × ${formatEuro(CLEANING_UNIT_GROSS)}` }
+                          : c));
+                      }}
+                    />
+                    <span className="text-xs text-muted-foreground">= {charge.cleaningUnits * CLEANING_UNIT_MINUTES} Min</span>
+                  </div>
+                )}
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-sm font-semibold">{formatEuro(charge.gross)}</span>
@@ -1483,7 +1504,7 @@ export function InquiryOfferForm({
                   type="button"
                   size="sm"
                   variant="outline"
-                  disabled={disabled}
+                  disabled={disabled || charge.gross <= 0}
                   onClick={() => takeProtocolCharge(charge)}
                 >
                   Übernehmen

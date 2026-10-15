@@ -12,9 +12,19 @@ export const FUEL_PRICES = [
 ] as const;
 export type FuelType = (typeof FUEL_PRICES)[number]["value"];
 
-/** Reinigung laut AGB ab 50,00 € netto = 59,50 € brutto. */
-export const CLEANING_MIN_NET = 50;
-export const CLEANING_MIN_GROSS = Math.round(CLEANING_MIN_NET * 1.19 * 100) / 100;
+/** Reinigung: 40,00 € netto je angefangene 15 Minuten Aufwand = 47,60 € brutto. */
+export const CLEANING_UNIT_MINUTES = 15;
+export const CLEANING_UNIT_NET = 40;
+export const CLEANING_UNIT_GROSS = Math.round(CLEANING_UNIT_NET * 1.19 * 100) / 100;
+
+/** Reinigungskosten brutto = Anzahl 15-Minuten-Einheiten × 47,60 €. */
+export function cleaningChargeGross(units: number): number {
+  if (!(units > 0)) return 0;
+  return Math.round(units * CLEANING_UNIT_GROSS * 100) / 100;
+}
+
+/** Aufwand in Minuten als lesbarer Text, z. B. „30 Min“. */
+export const cleaningMinutesLabel = (units: number) => `${Math.round(units * CLEANING_UNIT_MINUTES)} Min`;
 
 const FUEL_RANK: Record<string, number> = { voll: 4, dreiviertel: 3, halb: 2, viertel: 1, leer: 0 };
 
