@@ -149,3 +149,25 @@ export function describeAddon(a: AddonDescribeInput): string {
   if (a.price_type === "per_unit") return `${fmtEuro(a.rate)} je Artikel und ${a.line_unit || "Einheit"}`;
   return "";
 }
+
+/**
+ * Gespeichertes Schema eines Eintrags in b2b_managed_products.addon_options.
+ * Nur Dokumentation – die Berechnung oben nutzt diese Zusatzfelder (noch) nicht.
+ */
+export interface ManagedAddonOptionSchema {
+  key: string;
+  label: string;
+  price_type: AddonPriceType;
+  /** Netto-Betrag bzw. Prozentsatz je nach price_type */
+  price: number;
+  note?: string;
+  full_period_default?: boolean;
+  /** Erste Versicherungsstufe des Artikels = Standard */
+  is_default: boolean;
+  /** Reihenfolge im CMS (0 = erste) */
+  sort_order: number;
+  /** Ab der zweiten Stufe: Aufschlag in % des Standardbetrags */
+  surcharge_percent: number | null;
+  /** Selbstbehalt in EUR */
+  deductible: number | null;
+}

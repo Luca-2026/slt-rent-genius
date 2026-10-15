@@ -47,6 +47,18 @@ export interface ManagedProductRow {
   seo_use_case_privat?: string | null;
   related_slugs?: string[] | null;
   image_alts?: string[] | null;
+  /** Event | Bau; Preisschema ist separat wählbar. */
+  main_category?: "event" | "bau";
+  pricing_scheme?: "event" | "bau";
+  price_from_1_rd?: number | null;
+  price_from_3_rd?: number | null;
+  price_from_10_rd?: number | null;
+  price_from_20_rd?: number | null;
+  price_weekend_num?: number | null;
+  price_base_1_3_cd?: number | null;
+  surcharge_per_cd_from_4?: number | null;
+  surcharge_per_cd_from_8?: number | null;
+  prices_same_all_locations?: boolean;
 }
 
 /**

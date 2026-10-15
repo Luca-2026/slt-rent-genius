@@ -975,6 +975,76 @@ export type Database = {
           },
         ]
       }
+      b2b_managed_product_location_prices: {
+        Row: {
+          created_at: string
+          id: string
+          location: string
+          managed_product_id: string
+          price_base_1_3_cd: number | null
+          price_from_1_rd: number | null
+          price_from_10_rd: number | null
+          price_from_20_rd: number | null
+          price_from_3_rd: number | null
+          price_weekend_num: number | null
+          surcharge_per_cd_from_4: number | null
+          surcharge_per_cd_from_8: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location: string
+          managed_product_id: string
+          price_base_1_3_cd?: number | null
+          price_from_1_rd?: number | null
+          price_from_10_rd?: number | null
+          price_from_20_rd?: number | null
+          price_from_3_rd?: number | null
+          price_weekend_num?: number | null
+          surcharge_per_cd_from_4?: number | null
+          surcharge_per_cd_from_8?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location?: string
+          managed_product_id?: string
+          price_base_1_3_cd?: number | null
+          price_from_1_rd?: number | null
+          price_from_10_rd?: number | null
+          price_from_20_rd?: number | null
+          price_from_3_rd?: number | null
+          price_weekend_num?: number | null
+          surcharge_per_cd_from_4?: number | null
+          surcharge_per_cd_from_8?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_managed_product_location_prices_managed_product_id_fkey"
+            columns: ["managed_product_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_managed_products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_managed_product_location_prices_managed_product_id_fkey"
+            columns: ["managed_product_id"]
+            isOneToOne: false
+            referencedRelation: "maintenance_due_overview"
+            referencedColumns: ["managed_product_id"]
+          },
+          {
+            foreignKeyName: "b2b_managed_product_location_prices_managed_product_id_fkey"
+            columns: ["managed_product_id"]
+            isOneToOne: false
+            referencedRelation: "managed_products_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       b2b_managed_products: {
         Row: {
           addon_options: Json
@@ -992,15 +1062,24 @@ export type Database = {
           image_alts: string[]
           images: string[]
           is_published: boolean
+          main_category: string
           min_rental_months: number | null
           model_name: string | null
           name: string
           on_request: boolean
           pdf_url: string | null
+          price_base_1_3_cd: number | null
+          price_from_1_rd: number | null
+          price_from_10_rd: number | null
+          price_from_20_rd: number | null
+          price_from_3_rd: number | null
           price_per_day: string | null
           price_per_month: string | null
           price_unit_label: string | null
           price_weekend: string | null
+          price_weekend_num: number | null
+          prices_same_all_locations: boolean
+          pricing_scheme: string
           quantities: Json
           quantity_notes: Json
           related_slugs: string[]
@@ -1021,6 +1100,8 @@ export type Database = {
           spec_order: string[] | null
           specifications: Json
           subcategory: string | null
+          surcharge_per_cd_from_4: number | null
+          surcharge_per_cd_from_8: number | null
           tags: string[]
           tracks_operating_hours: boolean
           updated_at: string
@@ -1045,15 +1126,24 @@ export type Database = {
           image_alts?: string[]
           images?: string[]
           is_published?: boolean
+          main_category?: string
           min_rental_months?: number | null
           model_name?: string | null
           name: string
           on_request?: boolean
           pdf_url?: string | null
+          price_base_1_3_cd?: number | null
+          price_from_1_rd?: number | null
+          price_from_10_rd?: number | null
+          price_from_20_rd?: number | null
+          price_from_3_rd?: number | null
           price_per_day?: string | null
           price_per_month?: string | null
           price_unit_label?: string | null
           price_weekend?: string | null
+          price_weekend_num?: number | null
+          prices_same_all_locations?: boolean
+          pricing_scheme?: string
           quantities?: Json
           quantity_notes?: Json
           related_slugs?: string[]
@@ -1074,6 +1164,8 @@ export type Database = {
           spec_order?: string[] | null
           specifications?: Json
           subcategory?: string | null
+          surcharge_per_cd_from_4?: number | null
+          surcharge_per_cd_from_8?: number | null
           tags?: string[]
           tracks_operating_hours?: boolean
           updated_at?: string
@@ -1098,15 +1190,24 @@ export type Database = {
           image_alts?: string[]
           images?: string[]
           is_published?: boolean
+          main_category?: string
           min_rental_months?: number | null
           model_name?: string | null
           name?: string
           on_request?: boolean
           pdf_url?: string | null
+          price_base_1_3_cd?: number | null
+          price_from_1_rd?: number | null
+          price_from_10_rd?: number | null
+          price_from_20_rd?: number | null
+          price_from_3_rd?: number | null
           price_per_day?: string | null
           price_per_month?: string | null
           price_unit_label?: string | null
           price_weekend?: string | null
+          price_weekend_num?: number | null
+          prices_same_all_locations?: boolean
+          pricing_scheme?: string
           quantities?: Json
           quantity_notes?: Json
           related_slugs?: string[]
@@ -1127,6 +1228,8 @@ export type Database = {
           spec_order?: string[] | null
           specifications?: Json
           subcategory?: string | null
+          surcharge_per_cd_from_4?: number | null
+          surcharge_per_cd_from_8?: number | null
           tags?: string[]
           tracks_operating_hours?: boolean
           updated_at?: string
@@ -2823,6 +2926,33 @@ export type Database = {
           status?: string
           street?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      migration_price_log: {
+        Row: {
+          created_at: string
+          id: string
+          managed_product_id: string
+          new_values: Json | null
+          old_values: Json | null
+          warning: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          managed_product_id: string
+          new_values?: Json | null
+          old_values?: Json | null
+          warning?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          managed_product_id?: string
+          new_values?: Json | null
+          old_values?: Json | null
+          warning?: string | null
         }
         Relationships: []
       }
@@ -4955,6 +5085,7 @@ export type Database = {
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
       log_admin_login: { Args: never; Returns: undefined }
       mark_overdue_invoices: { Args: never; Returns: number }
+      parse_price_text: { Args: { _raw: string }; Returns: number }
       record_inquiry_invoice_payment: {
         Args: {
           p_amount: number
