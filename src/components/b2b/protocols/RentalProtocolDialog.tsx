@@ -235,8 +235,8 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     ...items.flatMap((it, i) => {
       const r = readings[i];
       const prev = prevReadings[it.name.trim().toLowerCase()];
-      return r?.useFuel && fuelSuggested(prev?.fuel ?? null, r.fuel_level)
-        ? [{ kind: "fuel" as const, itemName: it.name, text: `${it.name}: Tank bei Rückgabe ${FUEL_LEVELS.find((f) => f.value === r.fuel_level)?.label ?? r.fuel_level}${prev?.fuel ? `, bei Übergabe ${FUEL_LEVELS.find((f) => f.value === prev.fuel)?.label ?? prev.fuel}` : ""} – nachgetankte Liter erfassen:` }]
+      return r?.useFuel && fuelSuggested(prev?.fuel ?? null, r.fuel)
+        ? [{ kind: "fuel" as const, itemName: it.name, text: `${it.name}: Tank bei Rückgabe ${FUEL_LEVELS.find((f) => f.value === r.fuel)?.label ?? r.fuel}${prev?.fuel ? `, bei Übergabe ${FUEL_LEVELS.find((f) => f.value === prev.fuel)?.label ?? prev.fuel}` : ""} – nachgetankte Liter erfassen:` }]
         : [];
     }),
   ];
@@ -506,7 +506,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
                   <Checkbox id="items-ok" checked={itemsConfirmed} onCheckedChange={(v) => setItemsConfirmed(v === true)} />
                   <label htmlFor="items-ok" className="text-sm cursor-pointer">
                     {isReturn
-                      ? "Der Mieter bestätigt die Rückgabe der Mietgegenstände sowie die Richtigkeit der erfassten Betriebsstunden, Tankfüllstände, der Sauberkeit und der dokumentierten Schäden.${charges.length ? ` Er erkennt die oben aufgeführten Zusatzkosten von ${formatEuro(chargesTotal)} brutto an; sie werden in Rechnung gestellt und mit einer gezahlten Kaution verrechnet.` : ""}`
+                      ? `Der Mieter bestätigt die Rückgabe der Mietgegenstände sowie die Richtigkeit der erfassten Betriebsstunden, Tankfüllstände, der Sauberkeit und der dokumentierten Schäden.${charges.length ? ` Er erkennt die oben aufgeführten Zusatzkosten von ${formatEuro(chargesTotal)} brutto an; sie werden in Rechnung gestellt und mit einer gezahlten Kaution verrechnet.` : ""}`
                       : "Der Mieter bestätigt, die oben aufgeführten Mietgegenstände vollständig, funktionsfähig und in einwandfreiem, betriebssicherem Zustand übernommen zu haben – mit Ausnahme der in diesem Protokoll dokumentierten Schäden und Mängel. Die erfassten Betriebsstunden, Tankfüllstände und die Sauberkeit sind zutreffend."}
                   </label>
                 </div>
