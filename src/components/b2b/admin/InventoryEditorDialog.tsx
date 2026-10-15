@@ -690,6 +690,20 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                   />
                 </div>
                 <div>
+                  <Label>Hauptkategorie *</Label>
+                  <Select
+                    value={form.main_category || undefined}
+                    onValueChange={(v) => setForm((f) => ({ ...f, main_category: v as PricingScheme, pricing_scheme: v as PricingScheme }))}
+                  >
+                    <SelectTrigger aria-label="Hauptkategorie"><SelectValue placeholder="Event oder Bau wählen" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="event">Event</SelectItem>
+                      <SelectItem value="bau">Bau</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-[11px] text-muted-foreground mt-1">Belegt das Preisschema vor; das Preisschema ist unter „Preise“ separat änderbar.</p>
+                </div>
+                <div>
                   <Label>Kategorie *</Label>
                   <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v })}>
                     <SelectTrigger><SelectValue placeholder="Kategorie wählen" /></SelectTrigger>
