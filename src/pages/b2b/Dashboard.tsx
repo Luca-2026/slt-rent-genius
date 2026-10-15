@@ -96,18 +96,20 @@ export default function B2BDashboard() {
     return locationData[0]; // Default: Krefeld
   }, [b2bProfile?.assigned_location]);
 
+  // Admins und Mitarbeitende sehen nie die Kundenansicht – auch wenn zusätzlich
+  // ein Kundenprofil (z. B. Testantrag) am Konto hängt.
+  const isInternal = isAdmin || isStaff;
   useEffect(() => {
     if (!loading && !user) {
       navigate("/b2b/login");
     } else if (!loading && user && isAdmin) {
       navigate("/b2b/start", { replace: true });
-    } else if (!loading && !staffLoading && user && staffProfile && !b2bProfile) {
-      // Interne Mitarbeitende landen im Mitarbeiterbereich, nicht im Kundenportal
+    } else if (!loading && !staffLoading && user && isInternal) {
       navigate("/b2b/start", { replace: true });
     }
-  }, [user, loading, isAdmin, staffLoading, staffProfile, b2bProfile, navigate]);
+  }, [user, loading, isAdmin, isInternal, staffLoading, navigate]);
 
-  if (loading) {
+  if (loading || (user && (staffLoading || isInternal))) {
     return (
       <Layout>
         <div className="min-h-[50vh] flex items-center justify-center">

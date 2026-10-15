@@ -97,20 +97,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const checkAdminRole = async (userId: string) => {
+    // Rollenprüfung mit Wiederholung: Ist das Backend kurz nicht erreichbar,
+    // darf ein Admin nicht als Kunde eingestuft werden (sonst Kundenansicht).
     try {
-    const { data } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .eq("role", "admin")
-      .maybeSingle();
-    
-    setIsAdmin(!!data);
-
-    const { data: superData } = await supabase.rpc("is_super_admin" as any, { _user_id: userId });
-    setIsSuperAdmin(!!superData);
+      for (let attempt = 0; attempt < 4; attempt++) {
+        const [roleRes, superRes] = await Promise.all([
+          supabase.from("user_roles").select("role").eq("user_id", userId).eq("role", "admin").maybeSingle(),
+          supabase.rpc("is_super_admin" as any, { _user_id: userId }),
+        ]);
+        if (!roleRes.error && !superRes.error) {
+          setIsAdmin(!!roleRes.data || !!superRes.data);
+          setIsSuperAdmin(!!superRes.data);
+          return;
+        }
+        if (roleRes.data || superRes.data) {
+          setIsAdmin(true);
+          setIsSuperAdmin(!!superRes.data);
+          return;
+        }
+        await new Promise((r) => setTimeout(r, 800 * (attempt + 1)));
+      }
     } finally {
-      setRolesChecked(true);
+      if (currentUserId.current === userId) setRolesChecked(true);
     }
   };
 

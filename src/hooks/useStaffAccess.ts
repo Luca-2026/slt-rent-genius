@@ -33,17 +33,27 @@ export function useStaffAccess() {
         setLoading(false);
         return;
       }
-      const [{ data }, { data: ops }, { data: nl }] = await Promise.all([
-        supabase
-          .from("staff_profiles")
-          .select("id, user_id, first_name, last_name, email, is_active, location")
-          .eq("user_id", user.id)
-          .eq("is_active", true)
-          .maybeSingle(),
-        // Admin, Niederlassungsleiter, Standortmitarbeiter (serverseitige Prüfung)
-        supabase.rpc("can_edit_operations" as any, { _user_id: user.id }),
-        supabase.rpc("has_role", { _user_id: user.id, _role: "niederlassungsleiter" }),
-      ]);
+      setLoading(true);
+      // Wiederholen, falls das Backend kurz nicht antwortet – sonst würden
+      // Mitarbeitende fälschlich in die Kundenansicht fallen.
+      let res: any[] = [];
+      for (let attempt = 0; attempt < 4; attempt++) {
+        res = await Promise.all([
+          supabase
+            .from("staff_profiles")
+            .select("id, user_id, first_name, last_name, email, is_active, location")
+            .eq("user_id", user.id)
+            .eq("is_active", true)
+            .maybeSingle(),
+          // Admin, Niederlassungsleiter, Standortmitarbeiter (serverseitige Prüfung)
+          supabase.rpc("can_edit_operations" as any, { _user_id: user.id }),
+          supabase.rpc("has_role", { _user_id: user.id, _role: "niederlassungsleiter" }),
+        ]);
+        if (cancelled) return;
+        if (!res.some((r) => r.error)) break;
+        await new Promise((r) => setTimeout(r, 800 * (attempt + 1)));
+      }
+      const [{ data }, { data: ops }, { data: nl }] = res;
 
       if (!cancelled) {
         setStaffProfile((data as StaffMember | null) ?? null);
