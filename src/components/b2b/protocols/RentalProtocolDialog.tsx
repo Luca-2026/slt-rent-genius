@@ -231,7 +231,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const chargesDone = charges.every((c) => c.label.trim() && toNumber(c.quantity) > 0 && toNumber(c.unitPrice) > 0);
   const offerDeposit = Number((inquiry.offer_payload as { deposit?: unknown } | null)?.deposit) || 0;
   const chargeSuggestions: ChargeSuggestion[] = !isReturn ? [] : [
-    ...(cleaningSuggested(cleanliness) ? [{ kind: "cleaning" as const, text: `Sauberkeit ${cleanliness}/5 – Reinigung laut AGB ab 50,00 € netto berechnen?` }] : []),
+    ...(cleaningSuggested(cleanliness) ? [{ kind: "cleaning" as const, text: `Sauberkeit ${cleanliness}/5 – Reinigung berechnen? 40,00 € netto je 15 Min (47,60 € brutto).` }] : []),
     ...items.flatMap((it, i) => {
       const r = readings[i];
       const prev = prevReadings[it.name.trim().toLowerCase()];

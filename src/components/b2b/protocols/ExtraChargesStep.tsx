@@ -12,7 +12,7 @@ import {
   EXTRA_CHARGE_TEMPLATES, emptyExtraCharge, extraChargeTotal, formatEuro,
   sumExtraCharges, type ExtraCharge,
 } from "./protocolShared";
-import { CLEANING_MIN_GROSS, FUEL_PRICES } from "@/lib/returnCharges";
+import { CLEANING_UNIT_GROSS, CLEANING_UNIT_MINUTES, CLEANING_UNIT_NET, FUEL_PRICES, cleaningMinutesLabel } from "@/lib/returnCharges";
 
 export interface ChargeSuggestion { kind: "cleaning" | "fuel"; text: string; itemName?: string }
 
@@ -28,7 +28,7 @@ interface Props {
 const price = (n: number) => n.toFixed(2).replace(".", ",");
 
 export const cleaningCharge = (): ExtraCharge => ({
-  ...emptyExtraCharge("Reinigung (Mehraufwand laut AGB)"), unitPrice: price(CLEANING_MIN_GROSS), unit: "pauschal",
+  ...emptyExtraCharge("Reinigung (Mehraufwand laut AGB)"), quantity: "1", unitPrice: price(CLEANING_UNIT_GROSS), unit: "15min",
 });
 export const fuelCharge = (fuel: (typeof FUEL_PRICES)[number], itemName?: string): ExtraCharge => ({
   ...emptyExtraCharge(`Kraftstoff ${fuel.label} nachgetankt${itemName ? ` – ${itemName}` : ""}`),
@@ -51,7 +51,7 @@ export function ExtraChargesStep({ charges, onChange, suggestions = [], depositH
           <p className="text-sm">{s.text}</p>
           {s.kind === "cleaning" ? (
             <Button type="button" size="sm" variant="outline" disabled={hasCleaning} onClick={() => onChange([...charges, cleaningCharge()])}>
-              <Sparkles className="h-3.5 w-3.5 mr-1" /> {hasCleaning ? "Reinigung erfasst" : `Reinigung ${formatEuro(CLEANING_MIN_GROSS)} hinzufügen`}
+              <Sparkles className="h-3.5 w-3.5 mr-1" /> {hasCleaning ? "Reinigung erfasst" : `Reinigung ${CLEANING_UNIT_MINUTES} Min · ${formatEuro(CLEANING_UNIT_GROSS)} hinzufügen`}
             </Button>
           ) : (
             <div className="flex flex-wrap gap-2">
@@ -84,6 +84,7 @@ export function ExtraChargesStep({ charges, onChange, suggestions = [], depositH
 
       {charges.map((charge) => {
         const liters = charge.unit === "l";
+        const cleaning = charge.unit === "15min";
         return (
           <Card key={charge.id}>
             <CardContent className="p-3 space-y-3">
@@ -99,18 +100,20 @@ export function ExtraChargesStep({ charges, onChange, suggestions = [], depositH
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label className="text-xs">{liters ? "Liter nachgetankt" : "Menge"}</Label>
+                  <Label className="text-xs">{liters ? "Liter nachgetankt" : cleaning ? `Einheiten à ${CLEANING_UNIT_MINUTES} Min` : "Menge"}</Label>
                   <Input inputMode="decimal" value={charge.quantity} placeholder={liters ? "z. B. 12,5" : "1"}
                     onChange={(e) => update(charge.id, { quantity: e.target.value })} className="h-11 text-sm" />
                 </div>
                 <div>
-                  <Label className="text-xs">{liters ? "Literpreis (brutto)" : "Einzelpreis (brutto)"}</Label>
+                  <Label className="text-xs">{liters ? "Literpreis (brutto)" : cleaning ? `Preis je ${CLEANING_UNIT_MINUTES} Min (brutto)` : "Einzelpreis (brutto)"}</Label>
                   <Input inputMode="decimal" value={charge.unitPrice} placeholder="0,00"
                     onChange={(e) => update(charge.id, { unitPrice: e.target.value })} className="h-11 text-sm" />
                 </div>
               </div>
               <p className="text-xs text-right text-muted-foreground">
-                {liters ? `${charge.quantity || "0"} l × ${charge.unitPrice || "0"} € = ` : "Zwischensumme: "}{formatEuro(extraChargeTotal(charge))}
+                {liters ? `${charge.quantity || "0"} l × ${charge.unitPrice || "0"} € = `
+                  : cleaning ? `${charge.quantity || "0"} × ${CLEANING_UNIT_MINUTES} Min (${cleaningMinutesLabel(Number(String(charge.quantity).replace(",", ".")) || 0)}) × ${charge.unitPrice || "0"} € = `
+                  : "Zwischensumme: "}{formatEuro(extraChargeTotal(charge))}
               </p>
             </CardContent>
           </Card>
