@@ -1,3 +1,4 @@
+import { CLEANING_MIN_GROSS, cleaningSuggested, depositSettlementNote, settleDeposit } from "@/lib/returnCharges";
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { needsOfferDepositWarning } from "@/lib/offerDeposit";
 import { OfferDepositWarning } from "@/components/b2b/OfferDepositWarning";
@@ -216,7 +217,7 @@ interface Props {
 /** Offene Position aus einem Rücknahmeprotokoll, die noch nicht abgerechnet wurde. */
 interface PendingProtocolCharge {
   id: string;
-  source: "damage" | "extra_charge";
+  source: "damage" | "extra_charge" | "suggestion";
   label: string;
   description?: string;
   /** Bruttobetrag laut Protokoll */
@@ -338,19 +339,24 @@ export function InquiryOfferForm({
   const [pendingCharges, setPendingCharges] = useState<PendingProtocolCharge[]>([]);
   /** Bereits in die Rechnung übernommene Protokollposten (werden nach Versand als abgerechnet markiert). */
   const takenChargesRef = useRef<PendingProtocolCharge[]>([]);
+  const [takenCharges, setTakenCharges] = useState<PendingProtocolCharge[]>([]);
+  const [protocolNumbers, setProtocolNumbers] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!isInvoice || !reservationId) {
+    const byInquiry = inquiryType === "rental" && !!inquiryId;
+    if (!isInvoice || (!reservationId && !byInquiry)) {
       setPendingCharges([]);
       return;
     }
     let active = true;
     (async () => {
-      const { data: protocols } = await supabase
-        .from("b2b_return_protocols")
-        .select("id")
-        .eq("reservation_id", reservationId);
+      let q = supabase.from("b2b_return_protocols").select("id, return_protocol_number, protocol_data, extra_charges_total");
+      q = reservationId && byInquiry
+        ? q.or(`reservation_id.eq.${reservationId},rental_inquiry_id.eq.${inquiryId}`)
+        : reservationId ? q.eq("reservation_id", reservationId) : q.eq("rental_inquiry_id", inquiryId);
+      const { data: protocols } = await q;
       const ids = (protocols ?? []).map((p) => p.id);
+      if (active) setProtocolNumbers((protocols ?? []).map((p) => p.return_protocol_number).filter(Boolean));
       if (!ids.length) {
         if (active) setPendingCharges([]);
         return;
@@ -383,18 +389,32 @@ export function InquiryOfferForm({
           source: "extra_charge" as const,
           label: c.label,
           description: c.notes || undefined,
-          gross: Number(c.quantity) * Number(c.unit_price),
+          gross: Math.round(Number(c.quantity) * Number(c.unit_price) * 100) / 100,
         })),
       ];
+      // Ältere Protokolle ohne erfasste Zusatzkosten: Reinigung aus der Sauberkeit vorschlagen.
+      for (const p of protocols ?? []) {
+        const rating = Number((p.protocol_data as { cleanliness_rating?: unknown } | null)?.cleanliness_rating) || 0;
+        const hasCharges = (charges ?? []).length > 0 || Number(p.extra_charges_total) > 0;
+        if (!hasCharges && cleaningSuggested(rating)) {
+          list.push({
+            id: `suggest-clean-${p.id}`, source: "suggestion",
+            label: "Reinigung (Mehraufwand laut AGB)",
+            description: `Rückgabeprotokoll ${p.return_protocol_number}: Sauberkeit ${rating}/5 · Vorschlag ab 50,00 € netto`,
+            gross: CLEANING_MIN_GROSS,
+          });
+        }
+      }
       const takenIds = new Set(takenChargesRef.current.map((t) => t.id));
       setPendingCharges(list.filter((c) => !takenIds.has(c.id)));
     })();
     return () => { active = false; };
-  }, [isInvoice, reservationId]);
+  }, [isInvoice, reservationId, inquiryId, inquiryType]);
 
   /** Protokollposten als Rechnungsposition übernehmen (Brutto → Netto). */
   const takeProtocolCharge = (charge: PendingProtocolCharge) => {
     takenChargesRef.current = [...takenChargesRef.current, charge];
+    setTakenCharges(takenChargesRef.current);
     setPendingCharges((prev) => prev.filter((c) => c.id !== charge.id));
     setItems((prev) => [
       ...prev,
@@ -612,6 +632,13 @@ export function InquiryOfferForm({
     [payments],
   );
   const balanceDue = Math.round((totals.grossAmount - amountPaid) * 100) / 100;
+  /** Zusatzkosten aus dem Rücknahmeprotokoll immer mit gezahlter Kaution verrechnen. */
+  const takenChargesGross = Math.round(takenCharges.reduce((s, c) => s + c.gross, 0) * 100) / 100;
+  const settlement = settleDeposit({
+    deposit: Math.max(deposit || 0, Number(defaultCosts?.deposit) || 0),
+    amountPaid, grossWithoutCharges: totals.grossAmount - takenChargesGross, chargesGross: takenChargesGross,
+  });
+  const settlementNote = isInvoice && takenChargesGross > 0 ? depositSettlementNote(settlement, takenChargesGross, protocolNumbers) : "";
 
 
   const patchItem = (index: number, patch: Partial<FormLine>) =>
@@ -783,7 +810,7 @@ export function InquiryOfferForm({
         deposit,
         valid_days: validDays,
         ...(canOpenEnded ? { open_ended: openEnded } : {}),
-        notes,
+        notes: [notes.trim(), settlementNote].filter(Boolean).join("\n\n"),
         staff_name: staffName,
       });
 
@@ -1429,9 +1456,16 @@ export function InquiryOfferForm({
       {isInvoice && pendingCharges.length > 0 && (
         <div className="rounded-lg border border-accent/40 bg-accent/5 p-3 space-y-2">
           <Label className="text-xs">Offene Posten aus dem Rücknahmeprotokoll</Label>
-          <p className="text-xs text-muted-foreground">
-            Beträge sind im Protokoll brutto erfasst und werden als Nettoposition übernommen.
-          </p>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-xs text-muted-foreground">
+              Beträge sind im Protokoll brutto erfasst und werden als Nettoposition übernommen.
+            </p>
+            {pendingCharges.length > 1 && (
+              <Button type="button" size="sm" variant="outline" disabled={disabled} onClick={() => pendingCharges.forEach(takeProtocolCharge)}>
+                Alle übernehmen
+              </Button>
+            )}
+          </div>
           {pendingCharges.map((charge) => (
             <div
               key={charge.id}
@@ -1460,6 +1494,23 @@ export function InquiryOfferForm({
         </div>
       )}
 
+
+      {isInvoice && takenChargesGross > 0 && (
+        <div className="rounded-lg border border-border p-3 space-y-1 text-sm">
+          <Label className="text-xs">Verrechnung mit der Kaution</Label>
+          <div className="flex justify-between gap-2"><span>Zusatzkosten brutto</span><span>{formatEuro(takenChargesGross)}</span></div>
+          <div className="flex justify-between gap-2"><span>Gezahlte Kaution</span><span>{formatEuro(settlement.depositHeld)}</span></div>
+          {settlement.offset > 0 ? (
+            <>
+              <div className="flex justify-between gap-2"><span>Verrechnet</span><span>− {formatEuro(settlement.offset)}</span></div>
+              <div className="flex justify-between gap-2 font-semibold"><span>Kaution zurück an Kunden</span><span>{formatEuro(settlement.refund)}</span></div>
+              <p className="text-xs text-muted-foreground break-words">Erscheint als Hinweis auf der Rechnung: „{settlementNote}“</p>
+            </>
+          ) : (
+            <p className="text-xs text-muted-foreground">Keine gezahlte Kaution erkannt – die Zusatzkosten werden als offener Betrag ausgewiesen. Ist die Kaution eingegangen, bitte unter „Bereits erhaltene Zahlungen“ erfassen.</p>
+          )}
+        </div>
+      )}
 
       <div className="rounded-lg border border-border p-3 space-y-2">
         <Label className="text-xs">
