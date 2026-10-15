@@ -20,6 +20,7 @@ import {
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
+import { computeRentalLinePrice, resolveProductPrices, type PricingUnit } from "../_shared/rental-pricing.ts";
 import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
 import { normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 import {
@@ -95,6 +96,42 @@ Deno.serve(async (req: Request) => {
       items = normalizeInquiryOfferItems(body.items);
     } catch (e) {
       return json({ error: (e as Error).message }, 400);
+    }
+
+    // Paket 2: Plausibilitätsprüfung der Einzelpreise gegen die Staffel (nur Warnung, kein Abbruch).
+    if (inquiryType === "rental") {
+      try {
+        const dayOpts = { use_saturday: body.use_saturday === true, use_sunday: body.use_sunday === true };
+        for (const [idx, it] of items.entries()) {
+          if (it.price_manual || it.price_basis === "customer" || !it.product_slug || !it.rental_start || !it.rental_end) continue;
+          const { data: prod } = await service
+            .from("b2b_managed_products")
+            .select("id,pricing_scheme,prices_same_all_locations,price_per_day,price_from_1_rd,price_from_3_rd,price_from_10_rd,price_from_20_rd,price_weekend_num,price_base_1_3_cd,surcharge_per_cd_from_4,surcharge_per_cd_from_8")
+            .eq("slug", it.product_slug)
+            .limit(1)
+            .maybeSingle();
+          if (!prod) continue;
+          let rows: Array<Record<string, unknown> & { location: string }> = [];
+          if (prod.prices_same_all_locations === false) {
+            const { data: loc } = await service.from("b2b_managed_product_location_prices").select("*").eq("managed_product_id", prod.id);
+            rows = (loc ?? []) as typeof rows;
+          }
+          const unit = it.price_basis === "weekend" ? null : ((it.unit_code ?? null) as PricingUnit | null);
+          const expected = computeRentalLinePrice({
+            prices: resolveProductPrices(prod, body.location ?? null, rows),
+            scheme: prod.pricing_scheme,
+            start: { date: it.rental_start, time: it.rental_start_time },
+            end: { date: it.rental_end, time: it.rental_end_time },
+            unit,
+            opts: dayOpts,
+          });
+          if (expected.kind !== "duration_only" && Math.abs(expected.unit_price - it.unit_price) > 0.01) {
+            console.warn(`Preisprüfung Position ${idx + 1} (${it.product_slug}): gesendet ${it.unit_price}, berechnet ${expected.unit_price} (${expected.label})`);
+          }
+        }
+      } catch (e) {
+        console.warn("Preisprüfung übersprungen:", (e as Error).message);
+      }
     }
 
     const table = inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries";
@@ -675,6 +712,8 @@ Deno.serve(async (req: Request) => {
           notes,
           totals,
           open_ended: openEnded,
+          use_saturday: body.use_saturday === true,
+          use_sunday: body.use_sunday === true,
         },
         ...(inquiryType === "rental"
           ? {

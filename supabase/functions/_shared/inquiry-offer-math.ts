@@ -48,6 +48,12 @@ export interface InquiryOfferItem {
   discount_percent: number;
   rental_start?: string;
   rental_end?: string;
+  /** Paket 2: Uhrzeiten, Einheitenschlüssel und Preisherkunft (für Plausibilitätsprüfung) */
+  rental_start_time?: string;
+  rental_end_time?: string;
+  unit_code?: string;
+  price_manual?: boolean;
+  price_basis?: "tier" | "weekend" | "customer";
   /** Öffentliche Bild-URL des CMS-Artikels (wird im PDF eingebettet). */
   image_url?: string;
   /** Zusatzoptionen (Versicherungen etc.) dieser Position */
@@ -235,6 +241,11 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       discount_percent: round2(discount),
       rental_start: item.rental_start ? String(item.rental_start).slice(0, 40) : undefined,
       rental_end: item.rental_end ? String(item.rental_end).slice(0, 40) : undefined,
+      rental_start_time: item.rental_start_time ? String(item.rental_start_time).slice(0, 5) : undefined,
+      rental_end_time: item.rental_end_time ? String(item.rental_end_time).slice(0, 5) : undefined,
+      unit_code: item.unit_code ? String(item.unit_code).slice(0, 20) : undefined,
+      price_manual: item.price_manual === true ? true : undefined,
+      price_basis: item.price_basis === "tier" || item.price_basis === "weekend" || item.price_basis === "customer" ? item.price_basis : undefined,
       image_url: item.image_url ? String(item.image_url).slice(0, 500) : undefined,
       addons: normalizeAddons(item.addons, index, {
         articles,
