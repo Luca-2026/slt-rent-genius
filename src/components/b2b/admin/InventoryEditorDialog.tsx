@@ -23,6 +23,11 @@ import { AddonOptionsEditor } from "./AddonOptionsEditor";
 import { SortableRows } from "./SortableRows";
 import { orderSpecs } from "@/lib/specOrder";
 import { parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
+import {
+  ManagedPriceFields, emptyPriceSet, rowToPriceSet, priceSetToColumns, legacyDayPrice,
+  formatDayPriceText, parsePriceInput, type PriceSet, type PricingScheme,
+} from "./ManagedPriceFields";
+import { InsuranceTiersEditor, serializeAddonOptions, type InsuranceMeta } from "./InsuranceTiersEditor";
 
 const LOCATIONS = [
   { id: "krefeld", label: "Krefeld" },
@@ -105,6 +110,12 @@ interface FormState {
   quantities: Record<LocId, string>;
   quantity_notes: Record<LocId, string>;
   addon_options: AddonOption[];
+  insurance_meta: Record<string, InsuranceMeta>;
+  main_category: PricingScheme | "";
+  pricing_scheme: PricingScheme;
+  prices: PriceSet;
+  prices_same_all_locations: boolean;
+  location_prices: Record<LocId, PriceSet>;
   is_published: boolean;
   tracks_operating_hours: boolean;
   has_fuel_tank: boolean;
@@ -147,10 +158,27 @@ const emptyForm = (): FormState => ({
   quantities: { krefeld: "", bonn: "", muelheim: "" },
   quantity_notes: { krefeld: "", bonn: "", muelheim: "" },
   addon_options: [],
+  insurance_meta: {},
+  main_category: "",
+  pricing_scheme: "bau",
+  prices: emptyPriceSet(),
+  prices_same_all_locations: true,
+  location_prices: { krefeld: emptyPriceSet(), bonn: emptyPriceSet(), muelheim: emptyPriceSet() },
   is_published: false,
   tracks_operating_hours: false,
   has_fuel_tank: false,
 });
+
+function insuranceMetaFromRaw(raw: unknown): Record<string, InsuranceMeta> {
+  const out: Record<string, InsuranceMeta> = {};
+  if (!Array.isArray(raw)) return out;
+  for (const o of raw as Array<{ key?: unknown; surcharge_percent?: unknown }>) {
+    if (o?.key && o.surcharge_percent != null && o.surcharge_percent !== "") {
+      out[String(o.key)] = { surcharge_percent: String(o.surcharge_percent).replace(".", ",") };
+    }
+  }
+  return out;
+}
 
 function fromRow(row: AdminManagedProductRow): FormState {
   const specs = orderSpecs(row.specifications ?? {}, (row as { spec_order?: string[] | null }).spec_order);
@@ -207,6 +235,12 @@ function fromRow(row: AdminManagedProductRow): FormState {
       muelheim: row.quantity_notes?.muelheim ?? "",
     },
     addon_options: parseAddonOptions((row as unknown as { addon_options?: unknown }).addon_options),
+    insurance_meta: insuranceMetaFromRaw((row as unknown as { addon_options?: unknown }).addon_options),
+    main_category: ((row as unknown as { main_category?: string }).main_category as PricingScheme) ?? "bau",
+    pricing_scheme: ((row as unknown as { pricing_scheme?: string }).pricing_scheme as PricingScheme) ?? "bau",
+    prices: rowToPriceSet(row as never),
+    prices_same_all_locations: (row as unknown as { prices_same_all_locations?: boolean }).prices_same_all_locations ?? true,
+    location_prices: { krefeld: emptyPriceSet(), bonn: emptyPriceSet(), muelheim: emptyPriceSet() },
     is_published: row.is_published,
     tracks_operating_hours: !!(row as { tracks_operating_hours?: boolean }).tracks_operating_hours,
     has_fuel_tank: !!(row as { has_fuel_tank?: boolean }).has_fuel_tank,
@@ -251,6 +285,31 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
       dirtyBaselineRef.current = JSON.stringify(baseForm);
     }
   }, [open, initial]);
+
+  // Standortpreise nachladen (eigene Tabelle) und in Formular + Baseline übernehmen
+  useEffect(() => {
+    if (!open || !initial?.id) return;
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await (supabase.from("b2b_managed_product_location_prices" as never) as any)
+        .select("*")
+        .eq("managed_product_id", initial.id);
+      if (cancelled || error || !data?.length) return;
+      const patch = { krefeld: emptyPriceSet(), bonn: emptyPriceSet(), muelheim: emptyPriceSet() } as Record<LocId, PriceSet>;
+      for (const r of data as Array<{ location: LocId }>) patch[r.location] = rowToPriceSet(r as never);
+      setForm((f) => {
+        const untouched = Object.values(f.location_prices).every((s) => Object.values(s).every((v) => !v));
+        return untouched ? { ...f, location_prices: patch } : f;
+      });
+      if (dirtyBaselineRef.current) {
+        try {
+          const base = JSON.parse(dirtyBaselineRef.current) as FormState;
+          dirtyBaselineRef.current = JSON.stringify({ ...base, location_prices: patch });
+        } catch { /* ignore */ }
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [open, initial?.id]);
 
   // Dirty-Tracking: vergleicht laufend gegen die beim Laden gesetzte Baseline
   const dirtyBaselineRef = useRef<string>("");
@@ -436,6 +495,21 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
       setTab("basis");
       return;
     }
+    if (!form.main_category) {
+      toast.error("Bitte Hauptkategorie (Event oder Bau) wählen");
+      setTab("basis");
+      return;
+    }
+    if (form.pricing_scheme === "event" && !form.on_request) {
+      const sets = form.prices_same_all_locations
+        ? [form.prices]
+        : form.available_locations.map((l) => form.location_prices[l]);
+      if (sets.some((s) => parsePriceInput(s.price_base_1_3_cd) === null)) {
+        toast.error("Preis-Event: Grundpreis „1–3 Kalendertage“ ist Pflicht");
+        setTab("preise");
+        return;
+      }
+    }
     setSaving(true);
     try {
       // Konsistenz-Check: bei gesetztem Rentware-Code "auf Anfrage"-Sätze aus Content strippen
@@ -486,7 +560,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         features: form.features.filter((f) => f.trim()),
         tags: [],
         rental_notes: [],
-        price_per_day: normalizePriceInput(form.price_per_day),
+        price_per_day: formatDayPriceText(legacyDayPrice(form.pricing_scheme, form.prices)),
         price_weekend: normalizePriceInput(form.price_weekend),
         price_per_month: normalizePriceInput(form.price_per_month),
         min_rental_months: form.min_rental_months ? Number(form.min_rental_months) : null,
@@ -511,21 +585,41 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         seo_draft_generated_at: form.seo_draft_generated_at,
         quantities,
         quantity_notes: quantityNotes,
-        addon_options: form.addon_options,
+        addon_options: serializeAddonOptions(form.addon_options, form.insurance_meta),
+        main_category: form.main_category,
+        pricing_scheme: form.pricing_scheme,
+        ...priceSetToColumns(form.prices),
+        prices_same_all_locations: form.prices_same_all_locations,
         is_published: form.is_published,
         tracks_operating_hours: form.tracks_operating_hours,
         has_fuel_tank: form.tracks_operating_hours && form.has_fuel_tank,
         updated_by: user?.id ?? null,
       };
 
+      let productId = initial?.id ?? null;
       if (initial) {
         const { error } = await (supabase.from("b2b_managed_products" as never) as any)
           .update(payload)
           .eq("id", initial.id);
         if (error) throw error;
       } else {
-        const { error } = await (supabase.from("b2b_managed_products" as never) as any)
-          .insert({ ...payload, created_by: user?.id ?? null });
+        const { data: created, error } = await (supabase.from("b2b_managed_products" as never) as any)
+          .insert({ ...payload, created_by: user?.id ?? null })
+          .select("id")
+          .single();
+        if (error) throw error;
+        productId = (created as { id: string } | null)?.id ?? null;
+      }
+
+      // Standortpreise: nur bei abweichenden Preisen schreiben; ausgeblendete Zeilen bleiben erhalten
+      if (productId && !form.prices_same_all_locations && form.available_locations.length) {
+        const rows = form.available_locations.map((loc) => ({
+          managed_product_id: productId,
+          location: loc,
+          ...priceSetToColumns(form.location_prices[loc]),
+        }));
+        const { error } = await (supabase.from("b2b_managed_product_location_prices" as never) as any)
+          .upsert(rows, { onConflict: "managed_product_id,location" });
         if (error) throw error;
       }
 
@@ -755,11 +849,65 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
             </TabsContent>
 
             <TabsContent value="preise" className="space-y-4">
-              <p className="text-xs text-muted-foreground">Nur die Zahl eingeben (z. B. <span className="font-mono">89</span>) – das €-Zeichen wird beim Speichern automatisch ergänzt.</p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div><Label>Preis / Tag (€)</Label><Input inputMode="decimal" placeholder="z. B. 89" value={form.price_per_day} onChange={(e) => setForm({ ...form, price_per_day: e.target.value })} /></div>
-                <div><Label>Preis / Wochenende (€)</Label><Input inputMode="decimal" placeholder="z. B. 149" value={form.price_weekend} onChange={(e) => setForm({ ...form, price_weekend: e.target.value })} /></div>
-                <div><Label>Preis / Monat (€)</Label><Input inputMode="decimal" placeholder="z. B. 990" value={form.price_per_month} onChange={(e) => setForm({ ...form, price_per_month: e.target.value })} /></div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <Label>Preisschema</Label>
+                  <Select value={form.pricing_scheme} onValueChange={(v) => setForm({ ...form, pricing_scheme: v as PricingScheme })}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="bau">Preis-Bau (je Miettag, gestaffelt)</SelectItem>
+                      <SelectItem value="event">Preis-Event (Kalendertage)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <p className="text-xs text-muted-foreground sm:self-end">Alle Preise netto. Nur die Zahl eingeben, z. B. <span className="font-mono">89,00</span>.</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  id="same-prices"
+                  checked={form.prices_same_all_locations}
+                  onCheckedChange={(v) => setForm((f) => {
+                    const same = !!v;
+                    if (same) return { ...f, prices_same_all_locations: true };
+                    const lp = { ...f.location_prices };
+                    for (const loc of f.available_locations) {
+                      const empty = Object.values(lp[loc]).every((x) => !x);
+                      if (empty) lp[loc] = { ...f.prices };
+                    }
+                    return { ...f, prices_same_all_locations: false, location_prices: lp };
+                  })}
+                />
+                <Label htmlFor="same-prices">Preis an allen Standorten gleich</Label>
+              </div>
+              {form.prices_same_all_locations ? (
+                <ManagedPriceFields scheme={form.pricing_scheme} value={form.prices} idPrefix="all" onChange={(next) => setForm((f) => ({ ...f, prices: next }))} />
+              ) : (
+                <div className="space-y-4">
+                  <div className="rounded-lg border border-border p-3">
+                    <div className="text-sm font-medium mb-2">Grundpreis (Webseite & Angebots-Editor)</div>
+                    <ManagedPriceFields scheme={form.pricing_scheme} value={form.prices} idPrefix="all" onChange={(next) => setForm((f) => ({ ...f, prices: next }))} />
+                  </div>
+                  {LOCATIONS.filter((l) => form.available_locations.includes(l.id)).map((loc) => (
+                    <div key={loc.id} className="rounded-lg border border-border p-3">
+                      <div className="text-sm font-medium mb-2">{loc.label}</div>
+                      <ManagedPriceFields
+                        scheme={form.pricing_scheme}
+                        value={form.location_prices[loc.id]}
+                        idPrefix={loc.id}
+                        onChange={(next) => setForm((f) => ({ ...f, location_prices: { ...f.location_prices, [loc.id]: next } }))}
+                      />
+                    </div>
+                  ))}
+                  {!form.available_locations.length && <p className="text-sm text-muted-foreground">Bitte zuerst Standorte im Basis-Tab wählen.</p>}
+                </div>
+              )}
+              <div className="rounded-lg border border-border p-3">
+                <div className="text-sm font-medium mb-2">Versicherungen</div>
+                <InsuranceTiersEditor
+                  options={form.addon_options}
+                  meta={form.insurance_meta}
+                  onChange={(options, meta) => setForm((f) => ({ ...f, addon_options: options, insurance_meta: meta }))}
+                />
               </div>
               <div>
                 <Label>Rentware-Codes je Standort</Label>
