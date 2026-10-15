@@ -42,6 +42,7 @@ import { getProductAvailability } from "@/lib/productAvailability";
 import { getLocalCategoryContent } from "@/data/localCategoryContent";
 import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
+import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 import { REAL_LOCATION_REVIEWS } from "@/data/realGoogleReviews";
 import { ProductPriceBlock, hasAnyPrice, priceText } from "@/components/rental/ProductPriceBlock";
 import { CustomerTypePrompt } from "@/components/rental/CustomerTypePrompt";
@@ -1466,6 +1467,7 @@ export default function ProductDetail() {
                     <div className="flex items-center gap-2 text-sm md:text-xs lg:text-sm text-muted-foreground">
                       <Phone className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 flex-shrink-0" />
                       <a href={`tel:${location.phone}`} className="hover:text-primary truncate">{location.phone}</a>
+                      <BonnWhatsAppContact location={location.id} iconOnly className="shrink-0" />
                     </div>
                     <div className="flex items-center gap-2 text-sm md:text-xs lg:text-sm text-muted-foreground">
                       <Mail className="h-4 w-4 md:h-3 md:w-3 lg:h-4 lg:w-4 flex-shrink-0" />
@@ -1569,6 +1571,11 @@ function MobileBookingCard({
       <div className="flex items-center gap-2 text-xs text-muted-foreground mt-3">
         <MapPin className="h-3 w-3 flex-shrink-0" />
         <span className="truncate">{location.address}</span>
+      </div>
+      <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1.5">
+        <Phone className="h-3 w-3 flex-shrink-0" />
+        <a href={`tel:${location.phone}`} className="truncate hover:text-primary">{location.phone}</a>
+        <BonnWhatsAppContact location={location.id} iconOnly className="shrink-0" />
       </div>
     </div>
   );
