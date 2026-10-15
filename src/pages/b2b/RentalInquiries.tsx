@@ -26,6 +26,7 @@ import { NewRentalInquiryDialog } from "@/components/b2b/inquiries/NewRentalInqu
 import { AiInquiryImportDialog } from "@/components/b2b/inquiries/AiInquiryImportDialog";
 import { createInquiryFromImport } from "@/lib/createInquiryFromImport";
 import { Wand2 } from "lucide-react";
+import { rentalDuration } from "@/lib/pricing/rentalPricing";
 import { Building2, Plus, UserCheck } from "lucide-react";
 
 const SOURCE_LABELS: Record<string, string> = {
@@ -47,12 +48,6 @@ const fmtDateTime = (date: string | null, time: string | null) => {
   return time ? `${d}, ${time.slice(0, 5)} Uhr` : d;
 };
 
-/** Mietdauer in Kalendertagen (mindestens 1 Tag). */
-const rentalDays = (start: string | null, end: string | null) => {
-  if (!start || !end) return 1;
-  const diff = Math.round((new Date(end).getTime() - new Date(start).getTime()) / 86400000);
-  return diff > 0 ? diff : 1;
-};
 
 export default function RentalInquiries() {
   const { isStaff, loading: accessLoading } = useStaffAccess();
@@ -253,8 +248,16 @@ export default function RentalInquiries() {
                     it.set_size ? `${it.quantity} × ${it.set_size}er Set = ${it.quantity * it.set_size} Stück` : "",
                   ].filter(Boolean).join(" · "),
                   quantity: it.quantity,
-                  duration: rentalDays(selected.start_date, selected.end_date),
+                  duration: rentalDuration(
+                    { date: selected.start_date, time: selected.start_time },
+                    { date: selected.end_date, time: selected.end_time },
+                    "kalendertage",
+                  ),
                   unit: "kalendertage",
+                  rental_start: selected.start_date ?? undefined,
+                  rental_end: selected.end_date ?? undefined,
+                  rental_start_time: selected.start_time?.slice(0, 5) ?? undefined,
+                  rental_end_time: selected.end_time?.slice(0, 5) ?? undefined,
                   unit_price: it.unit_price ?? 0,
                   discount_percent: 0,
                 }))}
