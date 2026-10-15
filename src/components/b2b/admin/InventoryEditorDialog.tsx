@@ -500,12 +500,16 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
       setTab("basis");
       return;
     }
-    if (form.pricing_scheme === "event" && !form.on_request) {
+    if (basePriceRequired({ is_published: form.is_published, on_request: !hasAnyRentware && form.on_request })) {
       const sets = form.prices_same_all_locations
         ? [form.prices]
         : form.available_locations.map((l) => form.location_prices[l]);
-      if (sets.some((s) => parsePriceInput(s.price_base_1_3_cd) === null)) {
-        toast.error("Preis-Event: Grundpreis „1–3 Kalendertage“ ist Pflicht");
+      if (sets.some((s) => isBasePriceMissing(form.pricing_scheme, s))) {
+        toast.error(
+          form.pricing_scheme === "event"
+            ? "Veröffentlichte Artikel brauchen den Grundpreis „1–3 Kalendertage“"
+            : "Veröffentlichte Artikel brauchen den Preis „ab 1 Miettag“",
+        );
         setTab("preise");
         return;
       }
