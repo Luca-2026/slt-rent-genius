@@ -25,7 +25,7 @@ import { orderSpecs } from "@/lib/specOrder";
 import { parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 import {
   ManagedPriceFields, emptyPriceSet, rowToPriceSet, priceSetToColumns, legacyDayPrice,
-  formatDayPriceText, parsePriceInput, type PriceSet, type PricingScheme,
+  formatDayPriceText, basePriceRequired, isBasePriceMissing, type PriceSet, type PricingScheme,
 } from "./ManagedPriceFields";
 import { InsuranceTiersEditor, serializeAddonOptions, type InsuranceMeta } from "./InsuranceTiersEditor";
 
