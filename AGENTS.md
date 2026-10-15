@@ -1,19 +1,18 @@
 # Agent rules
+- Subdirectories have their own AGENTS.md; read it before changing files there.
 - Links via locationWhatsAppContacts.ts + BonnWhatsAppContact (legacy name); iconOnly beside email keeps cards aligned; WhatsAppIcon.tsx brand glyph, not a chat icon.
 - Customer payment-term eligibility is shared through _shared/customer-payment-terms.ts in forms and send functions; validate before number allocation to prevent UI bypasses without modifying issued snapshots.
-- Signing overlays use signingOverlays/SignaturePad reference counting and route gating to suppress cart/cookies throughout signing.
+- Signing overlays: signingOverlays/SignaturePad ref counting + route gating hide cart/cookies while signing.
 - Both rental offer forms use offerDeposit/OfferDepositWarning; require acknowledgement before finalizing without a deposit, not for drafts.
 <!-- LOVABLE:BEGIN -->
 - Inject the portal first-paint guard through the Vite HTML plugin before body parsing; hide only prerender fallback content on the exact portal host to preserve public SEO and the React portal.
 <!-- LOVABLE:END -->
-- Protokollentwürfe je Mitarbeiter, Auftrag und Art mit Foto-Dateien in IndexedDB sichern und erst nach erfolgreichem Abschluss löschen – mobile Kamera und Browser-Neustart dürfen keine Erfassung vernichten.
 - Kundengruppen-Filter nur über src/lib/customerSegment.ts (Filter: Privat vs. Geschäftskunden inkl. B2B-Portal) – einheitliche Logik in allen Portal-Listen.
 - Portal-Startseite /b2b/start (StaffHome) ist Landeseite für Admin/Mitarbeiter; Kennzahlen nur über src/lib/dashboardMetrics.ts (getestet) – eine Umsatzdefinition für alle Ansichten.
 - Revenue uses src/lib/dashboardMetrics.ts and revenueAnalytics.ts: countsAsRevenue includes typed cancelled originals and credits in both sources so they offset; location/category/article totals must agree.
 - Accepted-offer monitoring uses isAwaitingOfferConfirmation in dashboardMetrics for every acceptance channel without an age cutoff; online signature details are optional evidence, not an inclusion filter.
 - Offene Kundenanfragen (Freischaltung, Kreditlimit, Löschung) nur über src/lib/customerActions.ts (getestet) – gleiche Regel in Kundenkartei und Startseite; Portalkunden werden in der Kundenkartei über die Kundenakte bearbeitet.
 - Verkaufspreisrahmen nur über src/lib/salesPricing.ts (getestet): Mindestpreis = EK netto × (1 + Gemeinkosten, Standard 10 %), Bonusbasis = Verkaufspreis − Mindestpreis; EK liegt in sales_article_costs (nur Mitarbeiter lesbar), nie in den öffentlichen Artikeltabellen.
-- Measurements are individually optional per item; functions persist them in b2b_operating_hours_readings (legacy protocols also in protocol_data). Omit unset PDF values; wrap labels and values to the taller column to prevent condition-row overlap.
 - Dokumentnummern unabhängig von Kundengruppe über generate_offer_number_for und generate_inquiry_invoice_number_for je Geschäftsart (Miete/Verkauf) vergeben; B2B-Portal nutzt den Mietkreis – damit nur zwei Kreise pro Dokumentart existieren. Abschlags- und Schlussrechnungen nur über supabase/functions/_shared/installments.ts (getestet) – Schlussrechnung zieht alle nicht stornierten Abschläge als Netto-Minuspositionen ab, damit Umsatzsummen nicht doppelt zählen.
 - Reihenfolge der Technischen Daten nur über spec_order (Spalte je Artikeltabelle) + src/lib/specOrder.ts – jsonb sortiert Schlüssel selbst, daher ginge die CMS-Drag-&-Drop-Reihenfolge sonst verloren.
 - Rollenrechte: Vollzugriff = Rolle admin (is_super_admin prüft nur noch die Rolle); Inventar/CMS/Verkaufsartikel/Protokolle per can_edit_operations (admin, niederlassungsleiter, standort_mitarbeiter) bzw. canManageInventory im Frontend; Einkaufspreise/Gemeinkosten, Umsatzauswertung, Team und Audit-Log nur admin – Rechte zentral in DB-Funktionen statt E-Mail-Listen.

@@ -57,6 +57,8 @@ export interface ExtraCharge {
   quantity: string;
   unitPrice: string;
   notes: string;
+  /** „l“ = Liter (Kraftstoff), sonst Stück/Pauschal. */
+  unit?: string;
 }
 
 export const EXTRA_CHARGE_TEMPLATES: { label: string; unitPrice: string }[] = [
@@ -210,5 +212,5 @@ export const serializeExtraCharges = (list: ExtraCharge[]) =>
       label: c.label.trim(),
       quantity: toNumber(c.quantity) || 1,
       unit_price: toNumber(c.unitPrice),
-      notes: c.notes || null,
+      notes: c.notes || (c.unit === "l" ? `${toNumber(c.quantity) || 1} l × ${toNumber(c.unitPrice).toFixed(2).replace(".", ",")} €/l` : null),
     }));

@@ -19,7 +19,9 @@ import { SignaturePad } from "@/components/b2b/SignaturePad";
 import { ProtocolWizard, type WizardStep } from "@/components/b2b/protocols/ProtocolWizard";
 import { DamagesStep } from "@/components/b2b/protocols/DamagesStep";
 import { IdCheckStep } from "@/components/b2b/protocols/IdCheckStep";
-import { CLEANLINESS_HINT, FUEL_LEVELS, isMachineLike, toNumber, type ProtocolDamage } from "@/components/b2b/protocols/protocolShared";
+import { ExtraChargesStep, type ChargeSuggestion } from "@/components/b2b/protocols/ExtraChargesStep";
+import { cleaningSuggested, fuelSuggested } from "@/lib/returnCharges";
+import { CLEANLINESS_HINT, FUEL_LEVELS, isMachineLike, toNumber, formatEuro, serializeExtraCharges, sumExtraCharges, type ExtraCharge, type ProtocolDamage } from "@/components/b2b/protocols/protocolShared";
 import {
   MAX_PROTOCOL_PHOTOS, formatPhotoTimestamp, photoTakenAt, protocolItemsFromInquiry, remainingPhotoSlots, type ProtocolKind,
 } from "@/lib/rentalProtocol";
@@ -42,7 +44,7 @@ interface SavedProtocol {
   damages: (Omit<ProtocolDamage, "photos"> & { photos: { file: File }[] })[];
   agbAccepted: boolean; itemsConfirmed: boolean; customerNotPresent: boolean;
   signerName: string; customerSignature: string | null; staffName: string;
-  staffSignature: string | null; sendEmail: boolean;
+  staffSignature: string | null; sendEmail: boolean; charges?: ExtraCharge[];
 }
 
 interface Props {
@@ -89,6 +91,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const [missingNotes, setMissingNotes] = useState("");
   const [photos, setPhotos] = useState<GeneralPhoto[]>([]);
   const [damages, setDamages] = useState<ProtocolDamage[]>([]);
+  const [charges, setCharges] = useState<ExtraCharge[]>([]);
   const [agbAccepted, setAgbAccepted] = useState(false);
   const [itemsConfirmed, setItemsConfirmed] = useState(false);
   const [customerNotPresent, setCustomerNotPresent] = useState(false);
@@ -142,7 +145,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
         setPrevReadings(m);
       });
     }
-    setKnownDefects(""); setNotes(""); setAllReturned(true); setMissingNotes(""); setPhotos([]); setDamages([]);
+    setKnownDefects(""); setNotes(""); setAllReturned(true); setMissingNotes(""); setPhotos([]); setDamages([]); setCharges([]);
     setAgbAccepted(false); setItemsConfirmed(false); setCustomerNotPresent(false);
     setSignerName(inquiry.company_name ? inquiry.customer_name ?? "" : inquiry.customer_name ?? "");
     setCustomerSignature(null); setStaffSignature(null); setStaffName(displayName && !displayName.includes("@") ? displayName : "");
@@ -159,7 +162,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       setAgbAccepted(d.agbAccepted); setItemsConfirmed(d.itemsConfirmed);
       setCustomerNotPresent(d.customerNotPresent); setSignerName(d.signerName);
       setCustomerSignature(d.customerSignature); setStaffName(d.staffName);
-      setStaffSignature(d.staffSignature); setSendEmail(d.sendEmail);
+      setStaffSignature(d.staffSignature); setSendEmail(d.sendEmail); setCharges(d.charges ?? []);
       toast.info("Protokollentwurf wiederhergestellt.");
     }).catch(() => toast.error("Gespeicherter Entwurf konnte nicht geladen werden.")).finally(() => {
       if (!cancelled) setReadyFor(key);
@@ -174,10 +177,10 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       allReturned, missingNotes, photos: photos.map(({ id, file, caption }) => ({ id, file, caption })),
       damages: damages.map(({ photos: damagePhotos, ...damage }) => ({ ...damage, photos: damagePhotos.map(({ file }) => ({ file })) })),
       agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature,
-      staffName, staffSignature, sendEmail,
+      staffName, staffSignature, sendEmail, charges,
     };
     void writeProtocolDraft(draftKey, value).catch(() => toast.error("Entwurf konnte auf diesem Gerät nicht gespeichert werden. Bitte Speicherplatz prüfen."));
-  }, [draftKey, readyFor, result, idChecked, idDocType, cleanliness, readings, machineIdx, instructed, knownDefects, notes, allReturned, missingNotes, photos, damages, agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature, staffName, staffSignature, sendEmail]);
+  }, [draftKey, readyFor, result, idChecked, idDocType, cleanliness, readings, machineIdx, instructed, knownDefects, notes, allReturned, missingNotes, photos, damages, agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature, staffName, staffSignature, sendEmail, charges]);
 
   useEffect(() => {
     if (!open) return;
@@ -224,6 +227,19 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const legalDone = customerNotPresent || (isReturn ? itemsConfirmed : agbAccepted && itemsConfirmed && (!machine || instructed));
   const signaturesDone = !!staffSignature && !!staffName.trim() && (customerNotPresent || (!!customerSignature && !!signerName.trim()));
   const damagesDone = damages.every((d) => d.description.trim());
+  const chargesTotal = sumExtraCharges(charges);
+  const chargesDone = charges.every((c) => c.label.trim() && toNumber(c.quantity) > 0 && toNumber(c.unitPrice) > 0);
+  const offerDeposit = Number((inquiry.offer_payload as { deposit?: unknown } | null)?.deposit) || 0;
+  const chargeSuggestions: ChargeSuggestion[] = !isReturn ? [] : [
+    ...(cleaningSuggested(cleanliness) ? [{ kind: "cleaning" as const, text: `Sauberkeit ${cleanliness}/5 – Reinigung laut AGB ab 50,00 € netto berechnen?` }] : []),
+    ...items.flatMap((it, i) => {
+      const r = readings[i];
+      const prev = prevReadings[it.name.trim().toLowerCase()];
+      return r?.useFuel && fuelSuggested(prev?.fuel ?? null, r.fuel)
+        ? [{ kind: "fuel" as const, itemName: it.name, text: `${it.name}: Tank bei Rückgabe ${FUEL_LEVELS.find((f) => f.value === r.fuel)?.label ?? r.fuel}${prev?.fuel ? `, bei Übergabe ${FUEL_LEVELS.find((f) => f.value === prev.fuel)?.label ?? prev.fuel}` : ""} – nachgetankte Liter erfassen:` }]
+        : [];
+    }),
+  ];
   const idDone = customerNotPresent || idChecked;
 
   const missing: string[] = [];
@@ -231,6 +247,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   if (!idDone) missing.push("Ausweis abgleichen");
   if (!equipmentDone) missing.push("ausgewählte Messwerte und Sauberkeit");
   if (!damagesDone) missing.push("Beschreibung bei jedem Schaden");
+  if (!chargesDone) missing.push("Menge und Preis bei jeder Zusatzkostenposition");
   if (!legalDone) missing.push("Bestätigungen des Kunden");
   if (!signaturesDone) missing.push("Unterschriften und Namen");
   const allValid = missing.length === 0;
@@ -278,6 +295,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
           known_defects: knownDefects.trim() || null, notes: notes.trim() || null,
           all_items_returned: isReturn ? allReturned : null, missing_items_notes: isReturn && !allReturned ? missingNotes.trim() : null,
           items, photos: photoPayload, damages: damagePayload, send_email: sendEmail,
+          extra_charges: isReturn ? serializeExtraCharges(charges) : [],
         },
       });
       if (error) {
@@ -440,6 +458,17 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
         <DamagesStep damages={damages} onChange={setDamages} itemNames={itemNames} context={isReturn ? "bei Rückgabe" : "bei Übergabe"} showAmounts={isReturn} photoSlotsLeft={slotsLeft} />
       ),
     },
+    ...(isReturn ? [{
+      id: "charges",
+      title: "Zusatzkosten",
+      optional: true,
+      summary: charges.length ? `${formatEuro(chargesTotal)} brutto` : chargeSuggestions.length ? "Vorschlag offen" : "Keine",
+      done: charges.length > 0 && chargesDone,
+      content: (
+        <ExtraChargesStep charges={charges} onChange={setCharges} suggestions={chargeSuggestions}
+          depositHint={offerDeposit > 0 ? `Wird mit der Kaution (${formatEuro(offerDeposit)}) verrechnet, sofern sie gezahlt wurde.` : null} />
+      ),
+    }] : []),
     {
       id: "signature",
       title: "Unterschriften",
@@ -466,11 +495,18 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
                     <label htmlFor="instructed" className="text-sm cursor-pointer">Der Mieter wurde in Bedienung, Betankung und sichere Handhabung der Maschinen eingewiesen und hat keine Fragen mehr.</label>
                   </div>
                 )}
+                {isReturn && charges.length > 0 && (
+                  <div className="rounded-md bg-muted/60 p-2 text-sm space-y-0.5">
+                    <p className="font-medium">Zusatzkosten</p>
+                    {charges.map((c) => <p key={c.id} className="flex justify-between gap-2"><span className="break-words">{c.label}{c.unit === "l" ? ` (${c.quantity} l)` : ""}</span><span className="shrink-0">{formatEuro(toNumber(c.quantity) * toNumber(c.unitPrice))}</span></p>)}
+                    <p className="flex justify-between gap-2 font-semibold border-t pt-1"><span>Summe brutto</span><span>{formatEuro(chargesTotal)}</span></p>
+                  </div>
+                )}
                 <div className="flex items-start gap-3">
                   <Checkbox id="items-ok" checked={itemsConfirmed} onCheckedChange={(v) => setItemsConfirmed(v === true)} />
                   <label htmlFor="items-ok" className="text-sm cursor-pointer">
                     {isReturn
-                      ? "Der Mieter bestätigt die Rückgabe der Mietgegenstände sowie die Richtigkeit der erfassten Betriebsstunden, Tankfüllstände, der Sauberkeit und der dokumentierten Schäden."
+                      ? `Der Mieter bestätigt die Rückgabe der Mietgegenstände sowie die Richtigkeit der erfassten Betriebsstunden, Tankfüllstände, der Sauberkeit und der dokumentierten Schäden.${charges.length ? ` Er erkennt die oben aufgeführten Zusatzkosten von ${formatEuro(chargesTotal)} brutto an; sie werden in Rechnung gestellt und mit einer gezahlten Kaution verrechnet.` : ""}`
                       : "Der Mieter bestätigt, die oben aufgeführten Mietgegenstände vollständig, funktionsfähig und in einwandfreiem, betriebssicherem Zustand übernommen zu haben – mit Ausnahme der in diesem Protokoll dokumentierten Schäden und Mängel. Die erfassten Betriebsstunden, Tankfüllstände und die Sauberkeit sind zutreffend."}
                   </label>
                 </div>

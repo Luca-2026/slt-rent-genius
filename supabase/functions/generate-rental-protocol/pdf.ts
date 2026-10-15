@@ -21,6 +21,7 @@ export interface ProtocolPdfData {
   confirmations: { instructed?: boolean; agb: boolean; items: boolean; customerNotPresent: boolean };
   damages: ProtocolPdfDamage[];
   photos: ProtocolPdfPhoto[];
+  extraCharges?: { label: string; quantity: number; unitPrice: number; notes: string | null }[];
   signatures: { customer: Uint8Array | null; customerName: string | null; staff: Uint8Array | null; staffName: string };
 }
 
@@ -285,6 +286,19 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
     y -= h + 6;
   }
 
+  // ── Zusatzkosten (Rückgabe) ──
+  const xc = data.extraCharges ?? [];
+  if (isReturn && xc.length) {
+    section("Zusatzkosten (brutto)");
+    let sum = 0;
+    for (const c of xc) {
+      const total = Math.round(c.quantity * c.unitPrice * 100) / 100; sum += total;
+      kv(c.label, `${c.notes ? c.notes + " = " : c.quantity !== 1 ? `${c.quantity} x ${euro(c.unitPrice)} = ` : ""}${euro(total)}`);
+    }
+    kv("Summe Zusatzkosten", euro(Math.round(sum * 100) / 100), { color: BRAND });
+    para("Die Zusatzkosten werden in Rechnung gestellt und mit einer gezahlten Kaution verrechnet; eine verbleibende Kaution wird erstattet.", 8.5, MUTED);
+  }
+
   // ── Bestätigung & Unterschriften (bleiben zusammen auf einer Seite) ──
   ensure(232);
   section("Best\u00E4tigung und Unterschriften");
@@ -294,7 +308,7 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
     if (!isReturn) para(`${data.confirmations.agb ? "[x]" : "[ ]"} Der Mieter hat die Allgemeinen Gesch\u00E4ftsbedingungen und die Auftragsbest\u00E4tigung erhalten und zur Kenntnis genommen.`);
      if (!isReturn && data.confirmations.instructed) para("[x] Der Mieter wurde in Bedienung und sichere Handhabung der Maschinen eingewiesen.");
     para(`${data.confirmations.items ? "[x]" : "[ ]"} ${isReturn
-       ? "Der Mieter best\u00E4tigt die R\u00FCckgabe der Mietgegenst\u00E4nde sowie die Richtigkeit der oben dokumentierten Zustands- und Messwerte."
+       ? "Der Mieter best\u00E4tigt die R\u00FCckgabe der Mietgegenst\u00E4nde sowie die Richtigkeit der oben dokumentierten Zustands- und Messwerte" + (xc.length ? " und erkennt die aufgef\u00FChrten Zusatzkosten an" : "") + "."
        : "Der Mieter best\u00E4tigt die \u00DCbernahme der oben aufgef\u00FChrten Mietgegenst\u00E4nde mit den dokumentierten M\u00E4ngeln und Zustands- und Messwerten."}`);
   }
   y -= 6;
