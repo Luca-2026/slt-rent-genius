@@ -39,6 +39,13 @@ export interface OfferLine {
   discount_percent: number;
   rental_start?: string;
   rental_end?: string;
+  /** Uhrzeiten des Positionszeitraums (HH:MM, Europe/Berlin) – Paket 2 */
+  rental_start_time?: string;
+  rental_end_time?: string;
+  /** Einzelpreis von Hand geändert – keine automatische Neuberechnung (Paket 2) */
+  price_manual?: boolean;
+  /** Herkunft des Einzelpreises: Staffel, Wochenendtarif oder Kundenpreis (Paket 2) */
+  price_basis?: "tier" | "weekend" | "customer";
   /** Bild-URL aus dem CMS – wird im Angebots-PDF eingebettet. */
   image_url?: string;
   /** Zusatzoptionen (Versicherungen etc.) dieser Position */

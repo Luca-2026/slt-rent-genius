@@ -1,7 +1,9 @@
 # CMS-Artikelmaske (Mietartikel)
 - Preisschema (bau/event) gilt je Artikel (`pricing_scheme`); Hauptkategorie (`main_category`: event/bau) steuert die Filterzuordnung der Website. Preise netto, Spalten `price_*` in b2b_managed_products, optional je Standort in b2b_managed_product_location_prices (gleiche RLS wie b2b_managed_products).
 - Migration alter Textpreise: Monatspreis ÷ 20 = `price_from_20_rd`; nicht lesbare Werte landen in migration_price_log, nichts wird geraten.
-- Leere Staffelstufen sollen auf die nächstniedrigere gefüllte Stufe zurückfallen (3 → 1, 10 → 3, 20 → 10), nie auf 0. Geplant, wird in Paket 2 (Preismodul src/lib/pricing) umgesetzt, heute noch nicht im Code.
+- Leere Staffelstufen fallen auf die nächstniedrigere gefüllte Stufe zurück (3 → 1, 10 → 3, 20 → 10), nie auf 0. Umgesetzt in Paket 2 in src/lib/pricing (`tierPriceBau`); Spiegelkopie supabase/functions/_shared/rental-pricing.ts, Änderungen immer in beiden Dateien.
+- Miettage (Paket 2): 1 Miettag = angefangener 24-Std.-Block ab Mietbeginn, fehlende Uhrzeit 08:00/17:00, Europe/Berlin. Sonntags-/Montagsregel isoliert in `isUncountedBlock` – Stand 15.10., Bestätigung durch Benedikt ausstehend: unter 5 Miettagen zählen Sonntagsblöcke nicht, ein Montagsblock zählt nicht bei Rückgabe am Montag bis 09:30; ab 5 Miettagen zählen Sa/So nur mit `use_saturday`/`use_sunday` im offer_payload.
+- Wochenendtarif (Paket 2, beide Preisschemata, Privat wie Firma): nur bei Abholung Freitag ab 16:00 UND Rückgabe Montag bis 09:30 → einmalig `price_weekend_num` als Pauschalposition; kein Mix mit Miet-/Kalendertagen, ohne Wert normale Berechnung.
 - Beim Speichern werden die Alt-Textfelder (`price_per_day` "89,00 €/Tag") aus dem Grundpreis zurückgeschrieben (`legacyDayPrice`/`formatDayPriceText`), damit Website und Angebots-Editor unverändert lesen.
 - Grundpreis (Event: 1–3 KT, Bau: ab 1 Miettag) ist nur Pflicht bei `is_published` UND NICHT `on_request` (`basePriceRequired`); sonst speichern ohne Preis, die Maske zeigt den Hinweis, dass die Webseite dann keinen Preis anzeigt.
 - Diese Datei ist für jedes Änderungspaket zur Maske freigegeben und wird mit den Regeln mitgepflegt.

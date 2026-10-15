@@ -1,26 +1,22 @@
 /** Mengeneinheiten für Angebotspositionen (Singular/Plural-korrekt). */
-export type OfferUnit = "stueck" | "pauschal" | "arbeitstage" | "kalendertage" | "wochen" | "monate";
+import { unitAbbreviation, unitLabel as pricingUnitLabel, type PricingUnit } from "@/lib/pricing/rentalPricing";
 
-const LABELS: Record<OfferUnit, { one: string; many: string }> = {
-  stueck: { one: "Stück", many: "Stück" },
-  pauschal: { one: "Pauschal", many: "Pauschal" },
-  arbeitstage: { one: "Arbeitstag", many: "Arbeitstage" },
-  kalendertage: { one: "Kalendertag", many: "Kalendertage" },
-  wochen: { one: "Woche", many: "Wochen" },
-  monate: { one: "Monat", many: "Monate" },
-};
+export type OfferUnit = PricingUnit;
 
-export const OFFER_UNITS: { value: OfferUnit; label: string }[] = [
-  { value: "stueck", label: "Stück" },
-  { value: "pauschal", label: "Pauschalpreis" },
-  { value: "arbeitstage", label: "Arbeitstage" },
-  { value: "kalendertage", label: "Kalendertage" },
-  { value: "wochen", label: "Wochen" },
-  { value: "monate", label: "Monate" },
+/** Auswahlliste im Editor. "arbeitstage" bleibt für alte Angebote wählbar, wird aber nicht mehr vorbelegt. */
+export const OFFER_UNITS: { value: OfferUnit; label: string; short: string }[] = [
+  { value: "miettage", label: "Miettage", short: unitAbbreviation("miettage") },
+  { value: "kalendertage", label: "Kalendertage", short: unitAbbreviation("kalendertage") },
+  { value: "wochen", label: "Wochen", short: unitAbbreviation("wochen") },
+  { value: "monate", label: "Monate", short: unitAbbreviation("monate") },
+  { value: "stueck", label: "Stück", short: unitAbbreviation("stueck") },
+  { value: "pauschal", label: "Pauschalpreis", short: unitAbbreviation("pauschal") },
+  { value: "arbeitstage", label: "Arbeitstage (alt)", short: unitAbbreviation("arbeitstage") },
 ];
 
-/** z. B. (1, "monate") -> "Monat", (3, "monate") -> "Monate" */
+/** z. B. (1, "monate") -> "Monat", (3, "monate") -> "Monate" – Quelle: src/lib/pricing. */
 export function unitLabel(count: number, unit: OfferUnit): string {
-  const entry = LABELS[unit] ?? LABELS.stueck;
-  return Math.abs(count) === 1 ? entry.one : entry.many;
+  return pricingUnitLabel(count, unit);
 }
+
+export { unitAbbreviation };
