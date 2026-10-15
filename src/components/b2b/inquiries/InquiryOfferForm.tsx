@@ -43,7 +43,17 @@ import { SalesProductCombobox } from "./SalesProductCombobox";
 import { SALES_ADDON_PRESETS } from "@/lib/salesAddons";
 import { loadSalesCatalog, loadSalesCosts, type SalesCatalogItem, type SalesCostRow } from "@/hooks/useSalesCatalog";
 import { checkSalesPrice, findSalesArticle, minimumPrice } from "@/lib/salesPricing";
-import { OFFER_UNITS, unitLabel, type OfferUnit } from "@/lib/offerUnits";
+import { OFFER_UNITS, unitAbbreviation, unitLabel, type OfferUnit } from "@/lib/offerUnits";
+import {
+  WEEKEND_SUFFIX,
+  computeRentalLinePrice,
+  rentalBlockCount,
+  resolveProductPrices,
+  type LocationPriceRow,
+  type ManagedPrices,
+  type PricedProduct,
+  type RentalDayOptions,
+} from "@/lib/pricing/rentalPricing";
 import { resolveCatalogPrice } from "@/lib/catalogPricing";
 import {
   clearInquiryDraft,
@@ -67,6 +77,12 @@ type FormLine = OfferLine & {
   custom_period?: boolean;
   /** true = Rabatt automatisch aus den Kundenrabatten vorbelegt. */
   discount_auto?: boolean;
+  /** Paket 2: CMS-Staffelpreise dieser Position (nur lokal). */
+  pricing?: LinePricing;
+  /** Einheit von Hand gewählt – sonst defaultUnit des Preisschemas. */
+  unit_manual?: boolean;
+  /** Anzeige der verwendeten Staffel, z. B. "ab 3 Miettagen". */
+  tier_label?: string;
 };
 
 /**
@@ -137,6 +153,83 @@ function emptyLine(): FormLine {
     unit_price: 0,
     discount_percent: 0,
   };
+}
+
+// ---------------------------------------------------------------- Paket 2: Staffelpreise
+
+/** CMS-Preisdaten einer Position (nur lokal, wird nicht gesendet). */
+interface LinePricing {
+  scheme: string | null;
+  prices: ManagedPrices;
+  /** Artikelname ohne Wochenendtarif-Zusatz */
+  base_name: string;
+  /** kundenspezifischer Einzelpreis (b2b_customer_prices) – ersetzt den Staffelsatz ganz */
+  customer_price?: number | null;
+}
+
+interface CustomerPriceRow {
+  product_id: string | null;
+  product_name: string;
+  unit_price: number;
+}
+
+const PRICE_COLUMNS =
+  "id,pricing_scheme,prices_same_all_locations,price_per_day,price_from_1_rd,price_from_3_rd,price_from_10_rd,price_from_20_rd,price_weekend_num,price_base_1_3_cd,surcharge_per_cd_from_4,surcharge_per_cd_from_8";
+
+async function loadRentalPricing(
+  slug: string | null | undefined,
+  location: string | null,
+): Promise<{ id: string; scheme: string | null; prices: ManagedPrices } | null> {
+  if (!slug) return null;
+  const { data } = await supabase.from("b2b_managed_products").select(PRICE_COLUMNS).eq("slug", slug).limit(1).maybeSingle();
+  const product = data as (PricedProduct & { id: string }) | null;
+  if (!product) return null;
+  let rows: LocationPriceRow[] = [];
+  if (product.prices_same_all_locations === false) {
+    const { data: loc } = await supabase
+      .from("b2b_managed_product_location_prices")
+      .select("*")
+      .eq("managed_product_id", product.id);
+    rows = (loc ?? []) as LocationPriceRow[];
+  }
+  return { id: product.id, scheme: product.pricing_scheme ?? null, prices: resolveProductPrices(product, location, rows) };
+}
+
+/**
+ * Dauer und Einzelpreis einer Position aus Zeitraum + Staffel neu setzen.
+ * Reihenfolge: Staffelsatz → Kundenpreis ersetzt ihn ganz ODER Kategorierabatt (discount_percent) darauf.
+ * Positionen mit price_manual bleiben unverändert.
+ */
+function applyRentalPricing(item: FormLine, dayOpts: RentalDayOptions): FormLine {
+  const p = item.pricing;
+  if (!p || item.price_manual || !item.rental_start || !item.rental_end) return item;
+  const r = computeRentalLinePrice({
+    prices: p.prices,
+    scheme: p.scheme,
+    start: { date: item.rental_start, time: item.rental_start_time },
+    end: { date: item.rental_end, time: item.rental_end_time },
+    unit: item.unit_manual ? ((item.unit ?? null) as OfferUnit | null) : null,
+    opts: dayOpts,
+  });
+  const base: FormLine = { ...item, custom_period: true, product_name: p.base_name };
+  if (r.kind === "weekend") {
+    return { ...base, product_name: p.base_name + WEEKEND_SUFFIX, unit: "pauschal", duration: 1, unit_price: r.unit_price, price_source: "cms", price_basis: "weekend", tier_label: r.label };
+  }
+  if (r.kind === "duration_only") return { ...base, unit: r.unit, duration: r.duration, price_basis: undefined, tier_label: undefined };
+  if (p.customer_price && p.customer_price > 0) {
+    return {
+      ...base,
+      unit: r.unit,
+      duration: r.duration,
+      unit_price: p.customer_price,
+      price_source: "cms",
+      price_basis: "customer",
+      tier_label: "Kundenpreis",
+      // Nie beides: ein automatisch vorbelegter Kategorierabatt entfällt beim Kundenpreis.
+      ...(item.discount_auto ? { discount_percent: 0, discount_auto: false } : {}),
+    };
+  }
+  return { ...base, unit: r.unit, duration: r.duration, unit_price: r.unit_price, price_source: "cms", price_basis: "tier", tier_label: r.label };
 }
 
 const PAYMENT_OPTIONS: Record<"business" | "private", { value: string; label: string }[]> = {
@@ -302,6 +395,12 @@ export function InquiryOfferForm({
   /** Unbefristete Monatsmiete: Mietpositionen gelten pro Monat, kein Enddatum (nur Mietangebote). */
   const canOpenEnded = !isInvoice && inquiryType === "rental";
   const [openEnded, setOpenEnded] = useState<boolean>(canOpenEnded && !!(draft?.openEnded ?? defaultMeta?.open_ended));
+  /** Paket 2: Staffel-/Dauerrechnung nur im Mietangebot (Rechnungen übernehmen die Angebotswerte). */
+  const pricingActive = inquiryType === "rental" && !isInvoice;
+  /** Einsatz am Samstag/Sonntag (Bau ab 5 Miettagen) – im offer_payload als use_saturday/use_sunday. */
+  const [useSaturday, setUseSaturday] = useState<boolean>(!!(draft?.useSaturday ?? (defaultMeta as { use_saturday?: boolean } | undefined)?.use_saturday));
+  const [useSunday, setUseSunday] = useState<boolean>(!!(draft?.useSunday ?? (defaultMeta as { use_sunday?: boolean } | undefined)?.use_sunday));
+  const dayOpts: RentalDayOptions = { use_saturday: useSaturday, use_sunday: useSunday };
   /** Bereits erhaltene (Teil-)Zahlungen – werden auf der Rechnung abgezogen. */
   const [payments, setPayments] = useState<OfferPayment[]>(
     [...((draft?.payments as OfferPayment[]) ?? defaultPayments ?? []).filter((p) => !isStripePayment(p)),
@@ -470,6 +569,8 @@ export function InquiryOfferForm({
     setPaymentTermsCustom(d.paymentTermsCustom ?? "");
     setNotes(d.notes ?? "");
     setOpenEnded(canOpenEnded && !!d.openEnded);
+    setUseSaturday(!!d.useSaturday);
+    setUseSunday(!!d.useSunday);
   };
 
   /** Beim Öffnen prüfen, ob auf dem Server ein Entwurf (ggf. von Kollegen) liegt. */
@@ -524,6 +625,8 @@ export function InquiryOfferForm({
         paymentTermsCustom,
         notes,
         openEnded,
+        useSaturday,
+        useSunday,
       };
       writeInquiryDraft(draftKey, snapshot);
       if (dirtyRef.current) {
@@ -552,6 +655,8 @@ export function InquiryOfferForm({
     paymentTermsCustom,
     notes,
     openEnded,
+    useSaturday,
+    useSunday,
   ]);
 
   /** Entwurf verwerfen und Formular auf die Ausgangswerte zurücksetzen. */
@@ -579,6 +684,8 @@ export function InquiryOfferForm({
     setPaymentTermsCustom(defaultMeta?.payment_terms_custom ?? "");
     setNotes(defaultMeta?.notes ?? "");
     setOpenEnded(canOpenEnded && !!defaultMeta?.open_ended);
+    setUseSaturday(false);
+    setUseSunday(false);
   };
 
   /** Positionen inkl. übernommenem Zeitraum – Basis für Summen, Anzeige und Versand. */
@@ -713,6 +820,24 @@ export function InquiryOfferForm({
 
   const patchItem = (index: number, patch: Partial<FormLine>) =>
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, ...patch } : item)));
+  /** Wie patchItem, rechnet danach Dauer/Staffelpreis neu (ohne Handpreis-Marker). */
+  const patchPriced = (index: number, patch: Partial<FormLine>) =>
+    setItems((prev) =>
+      prev.map((item, i) => (i === index ? (pricingActive ? applyRentalPricing({ ...item, ...patch }, dayOpts) : { ...item, ...patch }) : item)),
+    );
+  const changeDayOpts = (next: RentalDayOptions) => {
+    setUseSaturday(!!next.use_saturday);
+    setUseSunday(!!next.use_sunday);
+    setItems((prev) => prev.map((item) => applyRentalPricing(item, next)));
+  };
+  const showDayBoxes =
+    pricingActive &&
+    items.some(
+      (i) =>
+        i.pricing?.scheme === "bau" &&
+        (i.unit ?? "") === "miettage" &&
+        rentalBlockCount({ date: i.rental_start, time: i.rental_start_time }, { date: i.rental_end, time: i.rental_end_time }) >= 5,
+    );
 
   // Verkauf: Katalog + interne Einkaufspreise für Soll-/Mindestpreis-Hinweise.
   const [salesCatalogList, setSalesCatalogList] = useState<SalesCatalogItem[]>([]);
@@ -757,6 +882,51 @@ export function InquiryOfferForm({
     return next === item ? {} : { discount_percent: next.discount_percent, discount_auto: true };
   };
 
+  // Paket 2: kundenspezifische Preise (b2b_customer_prices) ersetzen den Staffelsatz ganz.
+  const customerPricesRef = useRef<Promise<CustomerPriceRow[]> | null>(null);
+  const ensureCustomerPrices = (): Promise<CustomerPriceRow[]> => {
+    if (!pricingActive || reviseOf) return Promise.resolve([]);
+    if (!customerPricesRef.current) {
+      customerPricesRef.current = loadInquiryProfileId(inquiryId)
+        .then(async (profileId) => {
+          if (!profileId) return [];
+          const { data } = await supabase
+            .from("b2b_customer_prices")
+            .select("product_id, product_name, unit_price")
+            .eq("b2b_profile_id", profileId);
+          return (data ?? []) as CustomerPriceRow[];
+        })
+        .catch(() => []);
+    }
+    return customerPricesRef.current;
+  };
+  const buildLinePricing = async (slug: string | null | undefined, name: string): Promise<LinePricing | null> => {
+    const loaded = await loadRentalPricing(slug, location);
+    if (!loaded) return null;
+    const baseName = name.endsWith(WEEKEND_SUFFIX) ? name.slice(0, -WEEKEND_SUFFIX.length) : name;
+    const cps = await ensureCustomerPrices();
+    const hit = cps.find((c) => (c.product_id && c.product_id === loaded.id) || c.product_name.trim().toLowerCase() === baseName.trim().toLowerCase());
+    return { scheme: loaded.scheme, prices: loaded.prices, base_name: baseName, customer_price: hit ? Number(hit.unit_price) : null };
+  };
+
+  const [recalculating, setRecalculating] = useState(false);
+  /** „Preise neu berechnen“: alle Positionen ohne Handpreis-Marker neu nach Staffel/Wochenendtarif. */
+  const recalcAllPrices = async () => {
+    setRecalculating(true);
+    try {
+      const withPricing = await Promise.all(
+        items.map(async (item) => {
+          if (item.price_manual || !item.product_name.trim()) return item;
+          const pricing = item.pricing ?? (await buildLinePricing(item.product_slug, item.product_name));
+          return pricing ? { ...item, pricing } : item;
+        }),
+      );
+      setItems(withPricing.map((it) => applyRentalPricing(it, dayOpts)));
+    } finally {
+      setRecalculating(false);
+    }
+  };
+
   // Vorbelegte Positionen automatisch mit Bild (und ggf. Preis) aus dem CMS anreichern.
   useEffect(() => {
     let cancelled = false;
@@ -791,7 +961,8 @@ export function InquiryOfferForm({
           const image = pickCatalogImage(match.images);
           const resolved = await resolveCatalogPrice(match);
           const useCms = item.unit_price <= 0 && resolved !== undefined;
-          return {
+          const pricing = pricingActive ? await buildLinePricing(item.product_slug ?? match.slug, item.product_name) : null;
+          const next: FormLine = {
             ...item,
             image_url: item.image_url ?? image,
             unit_price: useCms ? resolved!.price : item.unit_price,
@@ -801,7 +972,11 @@ export function InquiryOfferForm({
             product_slug: item.product_slug ?? match.slug,
             available_addons: parseAddonOptions(match.addon_options),
             ...withCustomerDiscount(item, match.category, discounts),
+            pricing: pricing ?? undefined,
           };
+          // Paket 2: nur neue Positionen (noch ohne Preis) automatisch nach Staffel rechnen;
+          // gespeicherte Preise bestehender Angebote bleiben bis „Preise neu berechnen“ stehen.
+          return item.unit_price <= 0 ? applyRentalPricing(next, dayOpts) : next;
         }),
       );
       if (!cancelled && enriched.some((item, i) => item !== items[i])) setItems(enriched);
@@ -834,7 +1009,7 @@ export function InquiryOfferForm({
         inquiry_id: inquiryId,
         ...(!isInvoice && reviseOf ? { revise_of: reviseOf } : {}),
         location,
-        items: effectiveItems.map(({ available_addons: _unused, price_source: _src, custom_period: _cp, ...rest }) => {
+        items: effectiveItems.map(({ available_addons: _unused, price_source: _src, custom_period: _cp, pricing: _pr, unit_manual: _um, tier_label: _tl, ...rest }) => {
           const unit = (rest.unit ?? "kalendertage") as OfferUnit;
           // Pauschalpositionen haben keine Dauer – der Preis gilt für den
           // gesamten Auftrag, unabhängig von der Mietzeit.
@@ -858,6 +1033,7 @@ export function InquiryOfferForm({
             rental_end: openEnded ? undefined : rest.rental_end ?? checkEnd ?? undefined,
             quantity: articles * duration,
             unit: unitLabel(articles * duration, unit),
+            unit_code: unit,
             addons: (rest.addons ?? []).filter((a) => Number(a.amount) !== 0),
           };
         }),
@@ -880,6 +1056,7 @@ export function InquiryOfferForm({
         deposit,
         valid_days: validDays,
         ...(canOpenEnded ? { open_ended: openEnded } : {}),
+        ...(pricingActive ? { use_saturday: useSaturday, use_sunday: useSunday } : {}),
         notes: [notes.trim(), settlementNote].filter(Boolean).join("\n\n"),
         staff_name: staffName,
       });
@@ -1045,6 +1222,19 @@ export function InquiryOfferForm({
           </span>
         </label>
       )}
+      {showDayBoxes && (
+        <div className="flex flex-wrap gap-4 rounded-lg border border-border p-3 text-sm" data-testid="weekend-use">
+          <span className="w-full text-xs text-muted-foreground">Bau-Artikel ab 5 Miettagen: Samstag und Sonntag zählen nur bei Einsatz.</span>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <Checkbox checked={useSaturday} disabled={disabled} onCheckedChange={(v) => changeDayOpts({ ...dayOpts, use_saturday: v === true })} />
+            Einsatz Samstag
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <Checkbox checked={useSunday} disabled={disabled} onCheckedChange={(v) => changeDayOpts({ ...dayOpts, use_sunday: v === true })} />
+            Einsatz Sonntag
+          </label>
+        </div>
+      )}
       <div className="space-y-3">
         {items.map((item, index) => {
           const eff = effectiveItems[index] ?? item;
@@ -1130,7 +1320,9 @@ export function InquiryOfferForm({
                     const resolved = product ? await resolveCatalogPrice(product) : undefined;
                     const discounts = await ensureDiscounts();
                     const base = item.discount_auto ? { ...item, discount_percent: 0, discount_auto: false } : item;
-                    patchItem(index, {
+                    const pricing = pricingActive && product ? await buildLinePricing(product.slug, freeText) : null;
+                    const next: FormLine = {
+                      ...item,
                       discount_percent: base.discount_percent,
                       discount_auto: base.discount_auto,
                       ...withCustomerDiscount(base, product?.category, discounts),
@@ -1140,7 +1332,16 @@ export function InquiryOfferForm({
                       product_slug: product?.slug,
                       available_addons: product ? parseAddonOptions(product.addon_options) : [],
                       addons: [],
-                    });
+                      pricing: pricing ?? undefined,
+                      unit_manual: false,
+                      price_basis: undefined,
+                      tier_label: undefined,
+                      rental_start: item.rental_start ?? items[0]?.rental_start ?? rentalPeriod?.start ?? undefined,
+                      rental_end: item.rental_end ?? items[0]?.rental_end ?? rentalPeriod?.end ?? undefined,
+                      rental_start_time: item.rental_start_time ?? items[0]?.rental_start_time,
+                      rental_end_time: item.rental_end_time ?? items[0]?.rental_end_time,
+                    };
+                    setItems((prev) => prev.map((it, i) => (i === index ? applyRentalPricing(next, dayOpts) : it)));
                   }}
                 />
                 )}
@@ -1162,6 +1363,30 @@ export function InquiryOfferForm({
               placeholder="Beschreibung / Zeitraum (optional)"
               disabled={disabled || inherited}
             />
+            {pricingActive && !openEnded && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2" data-testid="position-period">
+                <div>
+                  <Label className="text-xs">Mietbeginn</Label>
+                  <Input type="date" value={item.rental_start ?? ""} disabled={disabled}
+                    onChange={(e) => patchPriced(index, { rental_start: e.target.value || undefined, custom_period: true })} />
+                </div>
+                <div>
+                  <Label className="text-xs">Uhrzeit</Label>
+                  <Input type="time" value={item.rental_start_time ?? ""} placeholder="08:00" disabled={disabled}
+                    onChange={(e) => patchPriced(index, { rental_start_time: e.target.value || undefined, custom_period: true })} />
+                </div>
+                <div>
+                  <Label className="text-xs">Mietende</Label>
+                  <Input type="date" value={item.rental_end ?? ""} disabled={disabled}
+                    onChange={(e) => patchPriced(index, { rental_end: e.target.value || undefined, custom_period: true })} />
+                </div>
+                <div>
+                  <Label className="text-xs">Uhrzeit</Label>
+                  <Input type="time" value={item.rental_end_time ?? ""} placeholder="17:00" disabled={disabled}
+                    onChange={(e) => patchPriced(index, { rental_end_time: e.target.value || undefined, custom_period: true })} />
+                </div>
+              </div>
+            )}
             {index > 0 && (
               <label className="flex items-center gap-2 text-xs cursor-pointer">
                 <Checkbox
@@ -1218,8 +1443,9 @@ export function InquiryOfferForm({
                   value={eff.unit ?? "kalendertage"}
                   disabled={disabled || inherited}
                   onValueChange={(v) =>
-                    patchItem(index, {
+                    patchPriced(index, {
                       unit: v as OfferUnit,
+                      unit_manual: true,
                       // Pauschalpreis gilt für den gesamten Auftrag – Dauer entfällt.
                       ...(v === "pauschal" ? { duration: 1 } : {}),
                     })
@@ -1253,15 +1479,17 @@ export function InquiryOfferForm({
                   step="0.01"
                   value={item.unit_price}
                   onChange={(e) =>
-                    patchItem(index, { unit_price: Number(e.target.value) || 0, price_source: "manual" })
+                    patchItem(index, { unit_price: Number(e.target.value) || 0, price_source: "manual", price_manual: true })
                   }
                   disabled={disabled}
                 />
-                {item.price_source === "cms" ? (
+                {item.price_manual && pricingActive ? (
+                  <p className="mt-1 text-[11px] text-muted-foreground">Von Hand geändert – wird nicht neu berechnet</p>
+                ) : item.price_source === "cms" ? (
                   <p className="mt-1 text-[11px] text-muted-foreground">
                     {inquiryType === "sales"
                       ? "Preis aus CMS (netto) – anpassbar"
-                      : `Aus CMS: ${formatEuro(item.unit_price)} netto – anpassbar`}
+                      : `Aus CMS: ${formatEuro(item.unit_price)} netto${item.tier_label ? ` (${item.tier_label})` : ""} – anpassbar`}
                   </p>
                 ) : null}
 
@@ -1372,17 +1600,41 @@ export function InquiryOfferForm({
           </div>
           );
         })}
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={() =>
-            setItems((prev) => [...prev, emptyLine()])
-          }
-          disabled={disabled}
-        >
-          <Plus className="h-4 w-4 mr-1" /> Position hinzufügen
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              setItems((prev) => [...prev, {
+                ...emptyLine(),
+                rental_start: prev[0]?.rental_start ?? rentalPeriod?.start ?? undefined,
+                rental_end: prev[0]?.rental_end ?? rentalPeriod?.end ?? undefined,
+                rental_start_time: prev[0]?.rental_start_time,
+                rental_end_time: prev[0]?.rental_end_time,
+              }])
+            }
+            disabled={disabled}
+          >
+            <Plus className="h-4 w-4 mr-1" /> Position hinzufügen
+          </Button>
+          {pricingActive && (
+            <Button type="button" variant="outline" size="sm" onClick={() => void recalcAllPrices()} disabled={disabled || recalculating}>
+              {recalculating ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : null}
+              Preise neu berechnen
+            </Button>
+          )}
+        </div>
+        {(() => {
+          const used = Array.from(new Set(effectiveItems.map((i) => (i.unit ?? "kalendertage") as OfferUnit)));
+          if (!used.length) return null;
+          return (
+            <p className="text-[11px] text-muted-foreground" data-testid="unit-legend">
+              {used.map((u) => `${unitAbbreviation(u)} = ${unitLabel(2, u)}`).join(" · ")}
+              {used.includes("miettage") ? " · 1 Miettag = 24 Std. gem. AGB" : ""}
+            </p>
+          );
+        })()}
       </div>
 
       <div className="rounded-lg border border-border p-3 space-y-3">
