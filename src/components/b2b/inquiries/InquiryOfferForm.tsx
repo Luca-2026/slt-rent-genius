@@ -47,6 +47,10 @@ import { OFFER_UNITS, unitLabel, type OfferUnit } from "@/lib/offerUnits";
 import { resolveCatalogPrice } from "@/lib/catalogPricing";
 import {
   clearInquiryDraft,
+  deleteServerDraft,
+  fetchServerDraft,
+  saveServerDraft,
+  type ServerInquiryDraft,
   inquiryDraftKey,
   readInquiryDraft,
   writeInquiryDraft,
@@ -443,11 +447,66 @@ export function InquiryOfferForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inquiryId, defaultDelivery?.requested, defaultDelivery?.street, defaultDelivery?.postal_code, defaultDelivery?.city]);
 
+  /** Erster Autosave-Lauf beim Öffnen schreibt nicht auf den Server (nur echte Änderungen). */
+  const dirtyRef = useRef(false);
+  const [remoteDraft, setRemoteDraft] = useState<ServerInquiryDraft | null>(null);
+  const [myUserId, setMyUserId] = useState<string | null>(null);
+
+  const applyDraftData = (d: Record<string, any>) => {
+    if (Array.isArray(d.items) && d.items.length) setItems(d.items as FormLine[]);
+    if (d.delivery) setDelivery(d.delivery as OfferDeliveryAddress);
+    setDeliveryCostDelivery(d.deliveryCostDelivery ?? 0);
+    setDeliveryCostReturn(d.deliveryCostReturn ?? 0);
+    setSetupCost(d.setupCost ?? 0);
+    setDismantleCost(d.dismantleCost ?? 0);
+    setReturnLocation(d.returnLocation ?? "");
+    setReturnLocationCost(d.returnLocationCost ?? 0);
+    setDeposit(d.deposit ?? 0);
+    setValidDays(d.validDays ?? 14);
+    setPayments(((d.payments as OfferPayment[]) ?? []).filter((p) => !isStripePayment(p)));
+    setServicePeriodStart(d.servicePeriodStart ?? "");
+    setServicePeriodEnd(d.servicePeriodEnd ?? "");
+    if (d.paymentTerms) setPaymentTerms(safeCustomerPaymentTerms(customerKind, d.paymentTerms, isInvoice));
+    setPaymentTermsCustom(d.paymentTermsCustom ?? "");
+    setNotes(d.notes ?? "");
+    setOpenEnded(canOpenEnded && !!d.openEnded);
+  };
+
+  /** Beim Öffnen prüfen, ob auf dem Server ein Entwurf (ggf. von Kollegen) liegt. */
+  useEffect(() => {
+    if (disabled) return;
+    let cancelled = false;
+    (async () => {
+      const [{ data: u }, remote] = await Promise.all([supabase.auth.getUser(), fetchServerDraft(draftKey)]);
+      if (cancelled) return;
+      const uid = u.user?.id ?? null;
+      setMyUserId(uid);
+      if (!remote) return;
+      const localAt = draftRef.current?.savedAt ?? 0;
+      const remoteAt = new Date(remote.updatedAt).getTime();
+      if (remote.updatedBy === uid && localAt >= remoteAt) return;
+      if (remote.updatedBy === uid) {
+        applyDraftData(remote.data);
+        setDraftRestored(true);
+        return;
+      }
+      setRemoteDraft(remote);
+      // Ohne eigenen lokalen Stand: Kollegen-Entwurf direkt laden, damit nichts doppelt erfasst wird.
+      if (!draftRef.current) {
+        applyDraftData(remote.data);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [draftKey, disabled]);
+
   /** Entwurf laufend sichern (leicht verzögert, damit Tippen nicht bremst). */
   useEffect(() => {
     if (disabled) return;
     const timer = window.setTimeout(() => {
-      writeInquiryDraft(draftKey, {
+      const snapshot = {
         items,
         delivery,
         deliveryCostDelivery,
@@ -465,8 +524,13 @@ export function InquiryOfferForm({
         paymentTermsCustom,
         notes,
         openEnded,
-      });
-    }, 400);
+      };
+      writeInquiryDraft(draftKey, snapshot);
+      if (dirtyRef.current) {
+        void saveServerDraft(draftKey, inquiryType, inquiryId, snapshot);
+      }
+      dirtyRef.current = true;
+    }, 1200);
     return () => window.clearTimeout(timer);
   }, [
     draftKey,
@@ -493,6 +557,9 @@ export function InquiryOfferForm({
   /** Entwurf verwerfen und Formular auf die Ausgangswerte zurücksetzen. */
   const discardDraft = () => {
     clearInquiryDraft(draftKey);
+    void deleteServerDraft(draftKey);
+    dirtyRef.current = false;
+    setRemoteDraft(null);
     draftRef.current = null;
     setDraftRestored(false);
     setItems(defaultItems.length ? defaultItems : [emptyLine()]);
@@ -933,6 +1000,7 @@ export function InquiryOfferForm({
     }
     // Entwurf ist abgearbeitet – Zwischenspeicher leeren.
     clearInquiryDraft(draftKey);
+    void deleteServerDraft(draftKey);
     draftRef.current = null;
     setDraftRestored(false);
     onSent?.();
@@ -940,6 +1008,20 @@ export function InquiryOfferForm({
 
   return (
     <div className="space-y-4">
+      {remoteDraft && !disabled && remoteDraft.updatedBy !== myUserId && (
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-primary/40 bg-primary/5 p-3 text-sm">
+          <span>
+            <span className="font-medium">Entwurf von {remoteDraft.updatedByName ?? "einem Kollegen"}</span>
+            {` (zuletzt ${new Date(remoteDraft.updatedAt).toLocaleString("de-DE")})`}
+            {draftRef.current ? " – du hast zusätzlich einen eigenen Stand auf diesem Gerät geöffnet." : " wurde geladen. Änderungen speichern den gemeinsamen Entwurf."}
+          </span>
+          {draftRef.current && (
+            <Button type="button" variant="outline" size="sm" onClick={() => { applyDraftData(remoteDraft.data); dirtyRef.current = true; }}>
+              Entwurf des Kollegen laden
+            </Button>
+          )}
+        </div>
+      )}
       {draftRestored && !disabled && (
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-muted/50 p-3 text-sm">
           <span>

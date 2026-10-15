@@ -18,7 +18,7 @@ import { INQUIRY_STATUSES, canTransition, type InquiryStatus } from "@/lib/inqui
 import { InquiryStatusBadge } from "./InquiryStatusBadge";
 import { InquiryLocationSection } from "./InquiryLocationSection";
 import { requestedItemsOf } from "./types";
-import { inquiryDraftKey, readInquiryDraft } from "./offerDraftStorage";
+import { inquiryDraftKey, listServerDraftsForInquiry, readInquiryDraft } from "./offerDraftStorage";
 import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm";
 import { OfferAcceptanceNotice } from "./OfferAcceptanceNotice";
 import { useInquiryActions } from "./useInquiryActions";
@@ -300,6 +300,12 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const { toast } = useToast();
   const canDelete = isAdmin;
   const [deleting, setDeleting] = useState(false);
+  const [serverDrafts, setServerDrafts] = useState<{ draft_key: string; updated_by_name: string | null; updated_at: string }[]>([]);
+  useEffect(() => {
+    let off = false;
+    listServerDraftsForInquiry(inquiry.id).then((d) => !off && setServerDrafts(d));
+    return () => { off = true; };
+  }, [inquiry.id]);
 
   const handleDelete = async () => {
     setDeleting(true);
@@ -391,6 +397,15 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   return (
     <div className="space-y-5">
       <OfferAcceptanceNotice inquiryId={inquiry.id} />
+      {serverDrafts.map((d) => {
+        const kind = d.draft_key.includes(":invoice:") ? "Rechnung" : d.draft_key.includes(":revise-") ? "Angebotsüberarbeitung" : "Angebot";
+        return (
+          <div key={d.draft_key} className="rounded-lg border border-primary/40 bg-primary/5 p-3 text-sm">
+            <span className="font-medium">Offener Entwurf ({kind})</span> von {d.updated_by_name ?? "einem Kollegen"}, zuletzt{" "}
+            {new Date(d.updated_at).toLocaleString("de-DE")}. Bitte im Dokumentbereich weiterbearbeiten statt neu anzufangen.
+          </div>
+        );
+      })}
       <div className="flex flex-wrap items-center gap-2">
         <InquiryStatusBadge status={inquiry.status} />
         {inquiry.assigned_name ? (

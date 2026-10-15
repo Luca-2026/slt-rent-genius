@@ -2369,6 +2369,36 @@ export type Database = {
         }
         Relationships: []
       }
+      inquiry_doc_drafts: {
+        Row: {
+          data: Json
+          draft_key: string
+          inquiry_id: string
+          inquiry_type: string
+          updated_at: string
+          updated_by: string
+          updated_by_name: string | null
+        }
+        Insert: {
+          data?: Json
+          draft_key: string
+          inquiry_id: string
+          inquiry_type: string
+          updated_at?: string
+          updated_by?: string
+          updated_by_name?: string | null
+        }
+        Update: {
+          data?: Json
+          draft_key?: string
+          inquiry_id?: string
+          inquiry_type?: string
+          updated_at?: string
+          updated_by?: string
+          updated_by_name?: string | null
+        }
+        Relationships: []
+      }
       inquiry_invoice_items: {
         Row: {
           addons: Json
