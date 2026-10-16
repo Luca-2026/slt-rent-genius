@@ -421,6 +421,13 @@
       "when": 1792141252251,
       "tag": "0059_rental_inquiry_salutation",
       "breakpoints": true
+    },
+    {
+      "idx": 60,
+      "version": "7",
+      "when": 1792143473269,
+      "tag": "0060_manual_payment_reminder",
+      "breakpoints": true
     }
   ]
 }
