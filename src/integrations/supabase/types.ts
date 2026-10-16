@@ -1593,6 +1593,7 @@ export type Database = {
           created_at: string
           credit_limit: number
           credit_limit_requested_at: string | null
+          customer_kind: string
           default_payment_terms: string
           deletion_requested_at: string | null
           document_filename: string | null
@@ -1635,6 +1636,7 @@ export type Database = {
           created_at?: string
           credit_limit?: number
           credit_limit_requested_at?: string | null
+          customer_kind?: string
           default_payment_terms?: string
           deletion_requested_at?: string | null
           document_filename?: string | null
@@ -1677,6 +1679,7 @@ export type Database = {
           created_at?: string
           credit_limit?: number
           credit_limit_requested_at?: string | null
+          customer_kind?: string
           default_payment_terms?: string
           deletion_requested_at?: string | null
           document_filename?: string | null

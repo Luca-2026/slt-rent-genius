@@ -57,7 +57,7 @@ const faqData = [
   },
   {
     question: "Gibt es Rabatt für Geschäftskunden?",
-    answer: "Absolut. Über unser B2B-Portal erhalten Geschäftskunden individuelle Rahmenkonditionen, Mengenrabatte und ein eigenes Kreditlimit. Die Registrierung ist kostenlos – nach Freischaltung profitieren Sie sofort von vergünstigten Nettopreisen und vereinfachter Abrechnung.",
+    answer: "Absolut. Über unser Kundenportal erhalten Geschäftskunden individuelle Rahmenkonditionen, Mengenrabatte und ein eigenes Kreditlimit. Die Registrierung ist kostenlos – nach Freischaltung profitieren Sie sofort von vergünstigten Nettopreisen und vereinfachter Abrechnung.",
   },
   {
     question: "Was ist die Tiefpreisgarantie?",

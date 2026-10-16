@@ -158,6 +158,9 @@ export default function B2BLogin() {
                       Jetzt als Geschäftskunde registrieren
                     </Button>
                   </Link>
+                  <p className="mt-3 text-xs text-muted-foreground">
+                    Die Registrierung ist derzeit für Geschäftskunden möglich. Privatkunden stellen Anfragen direkt über die Artikelseiten.
+                  </p>
                 </div>
               </CardContent>
             </Card>
