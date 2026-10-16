@@ -50,7 +50,18 @@ serve(async (req) => {
       customerKind,
       attachments,
       items,
+      useSaturday,
+      useSunday,
+      priceEstimate,
     } = await req.json();
+
+    // W2: Rückgabedatum darf nicht vor dem Abholdatum liegen.
+    if (startDate && endDate && String(endDate) < String(startDate)) {
+      return new Response(
+        JSON.stringify({ error: "Das Rückgabedatum darf nicht vor dem Abholdatum liegen." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
 
     // Gebündelte Artikel (max. 30), Menge 1–9999. Hauptartikel steht an erster Stelle.
     const requestedItems: { product_name: string; product_slug: string | null; quantity: number; set_size: number | null }[] =
@@ -127,6 +138,8 @@ serve(async (req) => {
       customer_postal_code: postalCode ?? null,
       customer_city: city ?? null,
       customer_kind: customerKind === "business" ? "business" : "private",
+      use_saturday: useSaturday === true,
+      use_sunday: useSunday === true,
       message: message ?? null,
       attachments: safeAttachments.map((a) => ({ filename: a.filename })),
     });
