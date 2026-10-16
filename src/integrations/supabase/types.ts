@@ -1104,6 +1104,7 @@ export type Database = {
           specifications: Json
           stocked_locations: string[] | null
           subcategory: string | null
+          suggested_accessory_slugs: string[]
           surcharge_per_cd_from_4: number | null
           surcharge_per_cd_from_8: number | null
           tags: string[]
@@ -1169,6 +1170,7 @@ export type Database = {
           specifications?: Json
           stocked_locations?: string[] | null
           subcategory?: string | null
+          suggested_accessory_slugs?: string[]
           surcharge_per_cd_from_4?: number | null
           surcharge_per_cd_from_8?: number | null
           tags?: string[]
@@ -1234,6 +1236,7 @@ export type Database = {
           specifications?: Json
           stocked_locations?: string[] | null
           subcategory?: string | null
+          suggested_accessory_slugs?: string[]
           surcharge_per_cd_from_4?: number | null
           surcharge_per_cd_from_8?: number | null
           tags?: string[]
@@ -4878,6 +4881,7 @@ export type Database = {
           specifications: Json | null
           stocked_locations: string[] | null
           subcategory: string | null
+          suggested_accessory_slugs: string[] | null
           tags: string[] | null
           updated_at: string | null
           video_url: string | null
@@ -4922,6 +4926,7 @@ export type Database = {
           specifications?: Json | null
           stocked_locations?: string[] | null
           subcategory?: string | null
+          suggested_accessory_slugs?: string[] | null
           tags?: string[] | null
           updated_at?: string | null
           video_url?: string | null
@@ -4966,6 +4971,7 @@ export type Database = {
           specifications?: Json | null
           stocked_locations?: string[] | null
           subcategory?: string | null
+          suggested_accessory_slugs?: string[] | null
           tags?: string[] | null
           updated_at?: string | null
           video_url?: string | null

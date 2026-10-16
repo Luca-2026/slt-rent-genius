@@ -6,9 +6,10 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Minus, Plus, Search, Trash2 } from "lucide-react";
+import { Minus, Plus, Search, ShieldCheck, Trash2 } from "lucide-react";
 import { loadCatalog, pickCatalogImage, type CatalogProduct } from "@/components/b2b/inquiries/InquiryProductCombobox";
 import { parseSetSize } from "@/lib/setSize";
+import { parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface RequestItem {
@@ -17,6 +18,8 @@ export interface RequestItem {
   quantity: number;
   set_size: number | null;
   image?: string;
+  /** Vom Kunden gewählte Zusatzoptionen (Versicherungsstufen), Keys aus addon_options. */
+  selected_addons?: string[];
 }
 
 interface Props {
@@ -66,6 +69,42 @@ export function InquiryItemsPicker({ items, onChange }: Props) {
     () => catalog.filter((p) => !items.some((i) => (i.product_slug && i.product_slug === p.slug) || i.product_name === p.name)),
     [catalog, items],
   );
+
+  /** Passende Zusatzartikel: im CMS gepflegte Vorschläge aller angefragten Artikel, ohne bereits enthaltene. */
+  const suggestions = useMemo(() => {
+    const bySlug = new Map(catalog.map((p) => [p.slug, p]));
+    const seen = new Set<string>();
+    const out: CatalogProduct[] = [];
+    for (const it of items) {
+      const entry = it.product_slug ? bySlug.get(it.product_slug) : undefined;
+      for (const s of entry?.suggested_accessory_slugs ?? []) {
+        if (seen.has(s)) continue;
+        const p = bySlug.get(s);
+        if (!p) continue;
+        if (items.some((i) => i.product_slug === s || i.product_name === p.name)) continue;
+        seen.add(s);
+        out.push(p);
+      }
+    }
+    return out.slice(0, 8);
+  }, [catalog, items]);
+
+  /** Gepflegte Zusatzoptionen (Versicherungen) je Artikel-Slug. */
+  const addonsBySlug = useMemo(() => {
+    const m = new Map<string, AddonOption[]>();
+    for (const p of catalog) {
+      const opts = parseAddonOptions(p.addon_options);
+      if (opts.length) m.set(p.slug, opts);
+    }
+    return m;
+  }, [catalog]);
+
+  const toggleAddon = (index: number, key: string, checked: boolean) =>
+    onChange(items.map((it, j) => {
+      if (j !== index) return it;
+      const cur = it.selected_addons ?? [];
+      return { ...it, selected_addons: checked ? [...cur, key] : cur.filter((k) => k !== key) };
+    }));
   /** Nach Kategorie gruppiert (product_categories.sort_order), innerhalb alphabetisch. */
   const grouped = useMemo(() => {
     const meta = new Map(cats.map((c) => [c.slug, c]));
@@ -117,9 +156,63 @@ export function InquiryItemsPicker({ items, onChange }: Props) {
               </div>
               <QuantityStepper value={it.quantity} onChange={(q) => patch(i, q)} label={`Menge ${it.product_name}`} />
             </div>
+            {(() => {
+              const opts = it.product_slug ? addonsBySlug.get(it.product_slug) : undefined;
+              if (!opts?.length) return null;
+              const sorted = [...opts].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+              return (
+                <div className="mt-2 space-y-1.5 border-t border-border pt-2">
+                  <p className="flex items-center gap-1.5 text-xs font-medium text-foreground">
+                    <ShieldCheck className="h-3.5 w-3.5 text-primary" aria-hidden="true" /> Versicherung & Zusatzoptionen
+                  </p>
+                  {sorted.map((o) => {
+                    const mandatory = o.is_default === true;
+                    const checked = mandatory || (it.selected_addons ?? []).includes(o.key);
+                    const priceHint = o.price_type === "percent" ? `${o.price} % des Mietpreises` : o.price > 0 ? `${o.price.toFixed(2).replace(".", ",")} €` : null;
+                    return (
+                      <label key={o.key} className="flex items-start gap-2 text-xs cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="mt-0.5 h-3.5 w-3.5 accent-primary disabled:opacity-60"
+                          checked={checked}
+                          disabled={mandatory}
+                          onChange={(e) => toggleAddon(i, o.key, e.target.checked)}
+                        />
+                        <span className="min-w-0 leading-snug">
+                          <span className="font-medium">{o.label}</span>
+                          {mandatory ? <span className="text-muted-foreground"> (Pflicht)</span> : null}
+                          {o.deductible ? <span className="text-muted-foreground"> – Selbstbeteiligung {o.deductible.toLocaleString("de-DE")} €</span> : null}
+                          {priceHint ? <span className="text-muted-foreground"> · {priceHint}</span> : null}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              );
+            })()}
           </li>
         ))}
       </ul>
+
+      {suggestions.length > 0 && (
+        <div className="space-y-1.5 rounded-md border border-dashed border-primary/40 bg-primary/5 p-2.5">
+          <p className="text-xs font-medium text-foreground">Passende Zusatzartikel</p>
+          <ul className="space-y-1">
+            {suggestions.map((p) => (
+              <li key={p.slug} className="flex items-center gap-2">
+                {pickCatalogImage(p.images) ? (
+                  <img src={pickCatalogImage(p.images)} alt="" loading="lazy" className="h-8 w-8 shrink-0 rounded object-cover bg-muted" />
+                ) : null}
+                <span className="min-w-0 flex-1 truncate text-xs">{p.name}</span>
+                <Button type="button" variant="outline" size="sm" className="h-7 shrink-0 px-2 text-xs"
+                  onClick={() => add(p)} disabled={items.length >= MAX_ITEMS}>
+                  <Plus className="mr-1 h-3 w-3" /> Hinzufügen
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>

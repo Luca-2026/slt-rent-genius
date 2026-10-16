@@ -18,6 +18,7 @@ export interface CatalogProduct {
   price_per_month?: string | null;
   available_locations: string[] | null;
   addon_options?: unknown;
+  suggested_accessory_slugs?: string[] | null;
 }
 
 let catalogCache: CatalogProduct[] | null = null;
@@ -29,7 +30,7 @@ export async function loadCatalog(): Promise<CatalogProduct[]> {
     catalogPromise = (async () => {
       const { data, error } = await supabase
         .from("managed_products_public")
-        .select("slug,name,category,images,price_per_day,price_weekend,price_per_month,available_locations,addon_options")
+        .select("slug,name,category,images,price_per_day,price_weekend,price_per_month,available_locations,addon_options,suggested_accessory_slugs")
         .order("name");
       const list = (data ?? []) as CatalogProduct[];
       // Fehler/leere Antwort nicht dauerhaft merken, sonst bleibt die Auswahl bis zum Neuladen leer.

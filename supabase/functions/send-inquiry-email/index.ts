@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { saveRentalInquiry, rentalInquiryLink } from "../_shared/inquiry-store.ts";
+import { saveRentalInquiry, rentalInquiryLink, serviceClient } from "../_shared/inquiry-store.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -64,7 +64,7 @@ serve(async (req) => {
     }
 
     // Gebündelte Artikel (max. 30), Menge 1–9999. Hauptartikel steht an erster Stelle.
-    const requestedItems: { product_name: string; product_slug: string | null; quantity: number; set_size: number | null }[] =
+    const requestedItems: { product_name: string; product_slug: string | null; quantity: number; set_size: number | null; selected_addons: string[] }[] =
       (Array.isArray(items) ? items : [])
         .slice(0, 30)
         .map((it: any) => ({
@@ -72,14 +72,51 @@ serve(async (req) => {
           product_slug: it?.product_slug ? String(it.product_slug).slice(0, 200) : null,
           quantity: Math.min(9999, Math.max(1, Math.round(Number(it?.quantity) || 1))),
           set_size: Number.isFinite(Number(it?.set_size)) && Number(it.set_size) > 1 ? Math.round(Number(it.set_size)) : null,
+          selected_addons: (Array.isArray(it?.selected_addons) ? it.selected_addons : [])
+            .slice(0, 10)
+            .map((k: unknown) => String(k).slice(0, 60)),
         }))
         .filter((it) => it.product_name);
+
+    // Gewählte Zusatzoptionen gegen das CMS validieren: nur gepflegte addon_options-Keys
+    // des jeweiligen Artikels werden übernommen, inkl. Pflicht-Standardstufe.
+    const slugs = [...new Set(requestedItems.map((it) => it.product_slug).filter((s): s is string => !!s))];
+    const addonLabelsBySlug = new Map<string, Map<string, string>>();
+    const db = serviceClient();
+    if (slugs.length && db) {
+      const { data: prows } = await db
+        .from("b2b_managed_products")
+        .select("slug, addon_options")
+        .in("slug", slugs);
+      for (const row of prows ?? []) {
+        const opts = Array.isArray(row.addon_options) ? row.addon_options : [];
+        const labels = new Map<string, string>();
+        for (const o of opts) {
+          const key = String(o?.key ?? "");
+          const label = String(o?.label ?? "").trim();
+          if (key && label) labels.set(key, label);
+        }
+        addonLabelsBySlug.set(String(row.slug), labels);
+      }
+    }
+    for (const it of requestedItems) {
+      const allowed = it.product_slug ? addonLabelsBySlug.get(it.product_slug) : undefined;
+      it.selected_addons = allowed ? it.selected_addons.filter((k) => allowed.has(k)) : [];
+    }
+    const addonText = (it: { product_slug: string | null; selected_addons: string[] }) => {
+      const labels = it.product_slug ? addonLabelsBySlug.get(it.product_slug) : undefined;
+      if (!labels || !it.selected_addons.length) return "";
+      return it.selected_addons.map((k) => labels.get(k)).filter(Boolean).join(", ");
+    };
     const qtyText = (it: { quantity: number; set_size: number | null }) =>
       it.set_size ? `${it.quantity} ${it.quantity === 1 ? "Set" : "Sets"} (= ${it.quantity * it.set_size} Stück)` : `${it.quantity} Stück`;
     const itemsTableHtml = requestedItems.length
       ? `<table style="width:100%;border-collapse:collapse;margin:8px 0 16px;font-size:14px;">
           <tr><th style="text-align:left;padding:6px 4px;border-bottom:2px solid #e5e7eb;color:#6b7280;">Artikel</th><th style="text-align:right;padding:6px 4px;border-bottom:2px solid #e5e7eb;color:#6b7280;">Menge</th></tr>
-          ${requestedItems.map((it) => `<tr><td style="padding:6px 4px;border-bottom:1px solid #f3f4f6;">${escapeHtml(it.product_name)}</td><td style="padding:6px 4px;border-bottom:1px solid #f3f4f6;text-align:right;white-space:nowrap;">${escapeHtml(qtyText(it))}</td></tr>`).join("")}
+          ${requestedItems.map((it) => {
+            const addons = addonText(it);
+            return `<tr><td style="padding:6px 4px;border-bottom:1px solid #f3f4f6;">${escapeHtml(it.product_name)}${addons ? `<br><span style="color:#6b7280;font-size:12px;">Zusatzoptionen: ${escapeHtml(addons)}</span>` : ""}</td><td style="padding:6px 4px;border-bottom:1px solid #f3f4f6;text-align:right;white-space:nowrap;">${escapeHtml(qtyText(it))}</td></tr>`;
+          }).join("")}
         </table>`
       : "";
 
