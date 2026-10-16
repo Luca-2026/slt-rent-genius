@@ -262,6 +262,12 @@ interface Props {
   onChanged: () => void;
   /** Wird nach dem endgültigen Löschen aufgerufen (nur Super-Admins). */
   onDeleted?: () => void;
+  /** "page" = Vollseite mit zwei Spalten (Mietanfragen), Standard = gestapelt (Sheet/Verkauf). */
+  layout?: "stacked" | "page";
+  /** Vollseite: eingeklappte Kundenanfrage für schmale Bildschirme. */
+  mobileDetails?: ReactNode;
+  /** Vollseite: Protokollbereich als Karte in der linken Spalte. */
+  protocolSection?: ReactNode;
 }
 
 
@@ -295,7 +301,7 @@ function initialDocMode(inquiryType: string, inquiryId: string, offerNumber: str
   return offerNumber && hasSnapshot ? "revise" : "offer";
 }
 
-export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, defaultDelivery, details, onChanged, onDeleted }: Props) {
+export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, defaultDelivery, details, onChanged, onDeleted, layout = "stacked", mobileDetails, protocolSection }: Props) {
   const { user, isAdmin } = useAuth();
   const { toast } = useToast();
   const canDelete = isAdmin;
@@ -367,7 +373,10 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   );
 
   // Nach dem Wechsel der Dokumentart zum Formular springen, damit der Klick sichtbar wirkt.
+  const docModeMounted = useRef(false);
   useEffect(() => {
+    // Nicht beim ersten Anzeigen springen – nur bei einem echten Wechsel.
+    if (!docModeMounted.current) { docModeMounted.current = true; return; }
     docSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [docMode]);
 
@@ -394,9 +403,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
 
   const mine = inquiry.assigned_to === user?.id;
 
-  return (
-    <div className="space-y-5">
-      <OfferAcceptanceNotice inquiryId={inquiry.id} />
+  const draftsEl = (
+    <>
       {serverDrafts.map((d) => {
         const kind = d.draft_key.includes(":invoice:") ? "Rechnung" : d.draft_key.includes(":revise-") ? "Angebotsüberarbeitung" : "Angebot";
         return (
@@ -406,6 +414,10 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           </div>
         );
       })}
+    </>
+  );
+  const headerEl = (
+    <>
       <div className="flex flex-wrap items-center gap-2">
         <InquiryStatusBadge status={inquiry.status} />
         {inquiry.assigned_name ? (
@@ -481,7 +493,10 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           </AlertDialog>
         )}
       </div>
-
+    </>
+  );
+  const customerEl = (
+    <>
       <InquiryCustomerCard
         inquiryType={inquiryType}
         customerKind={inquiry.customer_kind ?? null}
@@ -525,7 +540,10 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           return await update(inquiry.id, patch);
         }}
       />
-
+    </>
+  );
+  const locationEl = (
+    <>
       {/* Standort der Mietanfrage – nachträglich änderbar, inkl. Verfügbarkeitsprüfung am Zielstandort. */}
       {inquiryType === "rental" && (
         <InquiryLocationSection
@@ -548,11 +566,10 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           } : undefined}
         />
       )}
-
-      {details}
-
-      <Separator />
-
+    </>
+  );
+  const notesEl = (
+    <>
       <div>
         <Label className="text-xs">Interne Notizen</Label>
         <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} />
@@ -566,9 +583,10 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           Notiz speichern
         </Button>
       </div>
-
-      <Separator />
-
+    </>
+  );
+  const offerEl = (
+    <>
       {inquiry.offer_number && (
         <div className="rounded-lg border border-border p-3 text-sm space-y-1">
           <div className="font-semibold">Angebot {inquiry.offer_number}</div>
@@ -588,7 +606,10 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           )}
         </div>
       )}
-
+    </>
+  );
+  const paymentsEl = (
+    <>
       <InquiryPaymentsCard
         table={table}
         inquiryId={inquiry.id}
@@ -598,21 +619,30 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         disabled={busy}
         onChanged={onChanged}
       />
-
+    </>
+  );
+  const stripeEl = (
+    <>
       <StripePaymentCard
         table={table}
         inquiryId={inquiry.id}
         offerNumber={inquiry.offer_number}
         onChanged={onChanged}
       />
-
+    </>
+  );
+  const orderEl = (
+    <>
       <OrderConfirmationCard
         inquiryType={inquiryType}
         inquiry={inquiry as Record<string, any>}
         senderName={actorName}
         onDone={onChanged}
       />
-
+    </>
+  );
+  const installmentEl = (
+    <>
       <InstallmentCard
         key={`${inquiry.id}:${(inquiry as any).installment_next_due ?? ""}:${(inquiry as any).installment_enabled ? 1 : 0}`}
         table={table}
@@ -626,7 +656,10 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         }}
         onFinalInvoice={() => setDocMode("final")}
       />
-
+    </>
+  );
+  const invoicesEl = (
+    <>
       {invoices.length > 0 && (
         <div className="rounded-lg border border-border p-3 text-sm space-y-2">
           <div className="font-semibold">Rechnungen zu dieser Anfrage</div>
@@ -653,7 +686,10 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           ))}
         </div>
       )}
-
+    </>
+  );
+  const docEl = (
+    <>
       <div ref={docSectionRef}>
         <div className="flex flex-wrap gap-2 mb-3">
           <Button size="sm" variant={docMode === "offer" ? "default" : "outline"} onClick={() => setDocMode("offer")}>
@@ -702,12 +738,62 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           invoiceKind={docMode === "final" ? "final" : "invoice"}
           staffName={actorName}
           disabled={busy}
+          stickyActions={layout === "page"}
           onSent={() => {
             loadInvoices();
             onChanged();
           }}
         />
       </div>
+    </>
+  );
+
+  if (layout === "page") {
+    return (
+      <div className="flex flex-col gap-5 lg:grid lg:grid-cols-3 lg:items-start">
+        {/* Unter 1024 px: Kundenanfrage eingeklappt ganz oben. */}
+        {mobileDetails && <div className="lg:hidden">{mobileDetails}</div>}
+        <aside className="order-last space-y-5 lg:order-none lg:col-span-1 lg:sticky lg:top-32 lg:max-h-[calc(100vh-9rem)] lg:overflow-y-auto lg:pr-1">
+          {customerEl}
+          {locationEl}
+          <div className="hidden lg:block">{details}</div>
+          <OfferAcceptanceNotice inquiryId={inquiry.id} />
+          {orderEl}
+          {paymentsEl}
+          {stripeEl}
+          {installmentEl}
+          {protocolSection}
+          {offerEl}
+          {invoicesEl}
+          {notesEl}
+        </aside>
+        <section className="min-w-0 space-y-5 lg:col-span-2">
+          {headerEl}
+          {draftsEl}
+          {docEl}
+        </section>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-5">
+      <OfferAcceptanceNotice inquiryId={inquiry.id} />
+      {draftsEl}
+      {headerEl}
+      {customerEl}
+      {locationEl}
+      {details}
+      <Separator />
+      {notesEl}
+      <Separator />
+      {offerEl}
+      {paymentsEl}
+      {stripeEl}
+      {orderEl}
+      {installmentEl}
+      {invoicesEl}
+      {docEl}
     </div>
   );
 }
