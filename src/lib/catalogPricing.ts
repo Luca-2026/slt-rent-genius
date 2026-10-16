@@ -72,7 +72,7 @@ export interface PricedCatalogRow {
 
 export interface ResolvedPrice {
   price: number;
-  unit: "kalendertage" | "wochen" | "monate" | "stueck";
+  unit: "kalendertage" | "miettage" | "wochen" | "monate" | "stueck";
 }
 
 /** Mietpreise im CMS sind Nettopreise; die Website rechnet für Privatkunden brutto (src/lib/priceDisplay.ts). */

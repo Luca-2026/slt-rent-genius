@@ -2,6 +2,7 @@ import type { Product } from "@/data/rentalData";
 import { useCustomerType } from "@/hooks/useCustomerType";
 import { displayPrice, type CustomerType } from "@/lib/priceDisplay";
 import { CustomerTypeToggle } from "@/components/rental/CustomerTypePrompt";
+import { resolveProductPrices, type LocationPriceRow, type ManagedPrices } from "@/lib/pricing/rentalPricing";
 
 /**
  * Einheitliche Preisdarstellung für Mietartikel.
