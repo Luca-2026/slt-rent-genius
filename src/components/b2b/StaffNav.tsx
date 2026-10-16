@@ -33,6 +33,7 @@ export const STAFF_NAV: StaffNavGroup[] = [
     items: [
       { label: "Anrufe", path: "/b2b/anrufe", icon: PhoneCall, access: "staff", badgeKey: "calls" },
       { label: "Mietanfragen", path: "/b2b/mietanfragen", icon: Inbox, access: "staff", badgeKey: "rental" },
+      { label: "Angebote (alle)", path: "/b2b/angebotsuebersicht", icon: FileText, access: "staff" },
       { label: "Laufende Mietvorgänge", path: "/b2b/mietanfragen", status: "running", icon: Package, access: "staff" },
       { label: "Verkaufsanfragen", path: "/b2b/verkaufsanfragen", icon: ShoppingCart, access: "staff", badgeKey: "sales" },
     ],

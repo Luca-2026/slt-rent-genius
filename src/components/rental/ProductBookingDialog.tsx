@@ -401,10 +401,10 @@ export function ProductBookingDialog({
                           <div className="min-w-0 space-y-2 text-sm">
                             <p className="font-semibold text-foreground">Deine Anfrage kannst du direkt hier abschicken.</p>
                             <p className="text-muted-foreground">
-                              Für langfristige Mietverhältnisse und künftig einfachere Anfragen kannst du dich zusätzlich im B2B-Portal registrieren. Bei längerer Zusammenarbeit kannst du dort individuelle Rabattstufen und Zahlung auf Rechnung beantragen.
+                              Für langfristige Mietverhältnisse und künftig einfachere Anfragen kannst du dich zusätzlich im Kundenportal registrieren. Bei längerer Zusammenarbeit kannst du dort individuelle Rabattstufen und Zahlung auf Rechnung beantragen.
                             </p>
                             <a href={portalUrl("/b2b/registrieren")} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary underline underline-offset-4 hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                              Zum B2B-Portal <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
+                              Zum Kundenportal <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
                               <span className="sr-only">(öffnet in neuem Tab)</span>
                             </a>
                           </div>

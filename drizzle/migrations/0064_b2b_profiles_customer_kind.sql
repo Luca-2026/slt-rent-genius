@@ -1,0 +1,2 @@
+ALTER TABLE public.b2b_profiles ADD COLUMN IF NOT EXISTS customer_kind text NOT NULL DEFAULT 'business' CHECK (customer_kind IN ('business','private'));
+COMMENT ON COLUMN public.b2b_profiles.customer_kind IS 'Vorbereitet für Privatkunden-Registrierung, noch nicht genutzt.';

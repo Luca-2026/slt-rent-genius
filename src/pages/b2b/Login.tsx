@@ -58,7 +58,7 @@ export default function B2BLogin() {
     } else {
       toast({
         title: "Erfolgreich angemeldet",
-        description: isPortalHost() ? "Willkommen im Vermietportal!" : "Willkommen im B2B-Portal!",
+        description: isPortalHost() ? "Willkommen im Vermietportal!" : "Willkommen im Kundenportal!",
       });
       // Redirect happens via useEffect based on isAdmin state
     }
@@ -81,7 +81,7 @@ export default function B2BLogin() {
                     <Building2 className="h-8 w-8 text-primary" />
                   </div>
                 )}
-                <CardTitle className="text-2xl">{onPortal ? "Vermietportal" : "B2B-Portal Login"}</CardTitle>
+                <CardTitle className="text-2xl">{onPortal ? "Vermietportal" : "Login"}</CardTitle>
                 <CardDescription>
                   Melde dich an, um auf dein Firmenkonto zuzugreifen.
                 </CardDescription>
@@ -151,13 +151,16 @@ export default function B2BLogin() {
 
                 <div className="mt-6 pt-6 border-t border-border text-center">
                   <p className="text-sm text-muted-foreground mb-3">
-                    Noch kein B2B-Konto?
+                    Noch kein Kundenkonto?
                   </p>
                   <Link to="/b2b/registrieren">
                     <Button variant="outline" className="w-full">
                       Jetzt als Geschäftskunde registrieren
                     </Button>
                   </Link>
+                  <p className="mt-3 text-xs text-muted-foreground">
+                    Die Registrierung ist derzeit für Geschäftskunden möglich. Privatkunden stellen Anfragen direkt über die Artikelseiten.
+                  </p>
                 </div>
               </CardContent>
             </Card>

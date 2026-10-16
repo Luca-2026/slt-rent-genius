@@ -144,10 +144,10 @@ const faqCategories: FAQCategory[] = [
   },
   {
     id: "b2b",
-    title: "Geschäftskunden (B2B)",
+    title: "Geschäftskunden",
     questions: [
       {
-        q: "Welche Vorteile habe ich als B2B-Kunde?",
+        q: "Welche Vorteile habe ich als Geschäftskunde?",
         a: "Als Geschäftskunde profitierst du von individuellen Konditionen, persönlichem Ansprechpartner, Sammelanfragen für Großprojekte, digitalen Übergabe- und Rückgabeprotokollen sowie – nach erfolgreicher Bonitätsprüfung – der Möglichkeit zur Rechnungszahlung.",
       },
       {
@@ -155,12 +155,12 @@ const faqCategories: FAQCategory[] = [
         a: "Die erste Miete ist als Geschäftskunde grundsätzlich in Vorkasse zu leisten. Nach Registrierung und positiver Bonitätsprüfung schalten wir dir die Zahlung auf Rechnung mit individuellem Zahlungsziel frei.",
       },
       {
-        q: "Wie registriere ich mich als B2B-Kunde?",
-        a: "Über das B2B-Portal das Registrierungsformular ausfüllen, AGB akzeptieren und Gewerbeanmeldung bzw. Handelsregisterauszug sowie das unterschriebene SEPA-Firmenlastschrift-Mandat (Vorlage im Formular) hochladen. Wir prüfen deine Angaben und schalten dein Konto in der Regel innerhalb von 1–2 Werktagen frei.",
+        q: "Wie registriere ich mich als Geschäftskunde?",
+        a: "Über das Kundenportal das Registrierungsformular ausfüllen, AGB akzeptieren und Gewerbeanmeldung bzw. Handelsregisterauszug sowie das unterschriebene SEPA-Firmenlastschrift-Mandat (Vorlage im Formular) hochladen. Wir prüfen deine Angaben und schalten dein Konto in der Regel innerhalb von 1–2 Werktagen frei.",
       },
       {
         q: "Kann ich Projekt- oder Sammelanfragen stellen?",
-        a: "Ja. Im B2B-Dashboard kannst du mehrere Geräte gesammelt für ein Projekt anfragen. Du erhältst innerhalb kurzer Zeit ein individuelles Angebot mit deinen Konditionen.",
+        a: "Ja. Im Kundenportal kannst du mehrere Geräte gesammelt für ein Projekt anfragen. Du erhältst innerhalb kurzer Zeit ein individuelles Angebot mit deinen Konditionen.",
       },
     ],
   },

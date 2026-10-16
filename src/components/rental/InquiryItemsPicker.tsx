@@ -9,6 +9,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Minus, Plus, Search, Trash2 } from "lucide-react";
 import { loadCatalog, pickCatalogImage, type CatalogProduct } from "@/components/b2b/inquiries/InquiryProductCombobox";
 import { parseSetSize } from "@/lib/setSize";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface RequestItem {
   product_name: string;
@@ -55,14 +56,30 @@ export function InquiryItemsPicker({ items, onChange }: Props) {
   const [catalog, setCatalog] = useState<CatalogProduct[]>([]);
   const [open, setOpen] = useState(false);
 
+  const [cats, setCats] = useState<{ slug: string; name: string; sort_order: number | null }[]>([]);
   useEffect(() => {
     loadCatalog().then(setCatalog).catch(() => setCatalog([]));
+    supabase.from("product_categories").select("slug,name,sort_order").then(({ data }) => setCats((data as never) ?? []));
   }, []);
 
   const available = useMemo(
     () => catalog.filter((p) => !items.some((i) => (i.product_slug && i.product_slug === p.slug) || i.product_name === p.name)),
     [catalog, items],
   );
+  /** Nach Kategorie gruppiert (product_categories.sort_order), innerhalb alphabetisch. */
+  const grouped = useMemo(() => {
+    const meta = new Map(cats.map((c) => [c.slug, c]));
+    const groups = new Map<string, { name: string; order: number; items: CatalogProduct[] }>();
+    for (const p of available) {
+      const c = meta.get(p.category);
+      const key = c?.slug ?? p.category ?? "sonstige";
+      if (!groups.has(key)) groups.set(key, { name: c?.name ?? "Weitere Artikel", order: c?.sort_order ?? 9999, items: [] });
+      groups.get(key)!.items.push(p);
+    }
+    return [...groups.values()]
+      .sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, "de"))
+      .map((g) => ({ ...g, items: g.items.sort((a, b) => a.name.localeCompare(b.name, "de")) }));
+  }, [available, cats]);
 
   const add = (p: CatalogProduct) => {
     if (items.length >= MAX_ITEMS) return;
@@ -107,7 +124,7 @@ export function InquiryItemsPicker({ items, onChange }: Props) {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button type="button" variant="outline" className="w-full justify-start gap-2 border-dashed" disabled={items.length >= MAX_ITEMS}>
-            <Plus className="h-4 w-4" /> Weiteren Mietartikel hinzufügen
+            <Plus className="h-4 w-4" /> {items.length > 1 ? "Weiterer Zusatzartikel" : "Zusatzartikel hinzufügen"}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="p-0 w-[--radix-popover-trigger-width]" align="start">
@@ -118,13 +135,15 @@ export function InquiryItemsPicker({ items, onChange }: Props) {
               <CommandEmpty>
                 <span className="flex items-center justify-center gap-2 text-sm"><Search className="h-4 w-4" /> Kein Artikel gefunden – gern im Kommentar beschreiben.</span>
               </CommandEmpty>
-              <CommandGroup>
-                {available.map((p) => (
-                  <CommandItem key={p.slug} value={`${p.name} ${p.category}`} onSelect={() => add(p)}>
-                    <span className="truncate">{p.name}</span>
-                  </CommandItem>
-                ))}
-              </CommandGroup>
+              {grouped.map((g) => (
+                <CommandGroup key={g.name} heading={g.name}>
+                  {g.items.map((p) => (
+                    <CommandItem key={p.slug} value={`${p.name} ${g.name}`} onSelect={() => add(p)}>
+                      <span className="truncate">{p.name}</span>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              ))}
             </CommandList>
           </Command>
         </PopoverContent>

@@ -103,7 +103,7 @@ export function AdminCustomersTab({
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold">B2B-Kunden</h2>
+          <h2 className="text-lg font-semibold">Geschäftskunden</h2>
           <p className="text-sm text-muted-foreground">
             {profiles.length} Kunden registriert
           </p>
@@ -142,7 +142,7 @@ export function AdminCustomersTab({
             <p className="text-sm text-muted-foreground mt-1">
               {searchQuery
                 ? "Versuche einen anderen Suchbegriff."
-                : "Lege den ersten B2B-Kunden an."}
+                : "Lege den ersten Geschäftskunden an."}
             </p>
           </CardContent>
         </Card>

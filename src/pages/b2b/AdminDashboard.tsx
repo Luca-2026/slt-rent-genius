@@ -127,12 +127,12 @@ interface InvoiceSurcharge {
 
 // ─── Component ────────────────────────────────────────────
 const ADMIN_TAB_TITLES: Record<string, { title: string; subtitle?: string }> = {
-  reservations: { title: "B2B-Anfragen (Altfälle)", subtitle: "Anfragen aus dem bisherigen Portal-System – neue Portal-Anfragen erscheinen unter Mietanfragen" },
+  reservations: { title: "Anfragen (Portal, Altfälle)", subtitle: "Anfragen aus dem bisherigen Portal-System – neue Portal-Anfragen erscheinen unter Mietanfragen" },
   rentals: { title: "Laufende Mietvorgänge", subtitle: "Bestätigte und aktive Mieten von Firmenkunden" },
-  offers: { title: "Angebote (B2B-Portal)", subtitle: "Angebote an Firmenkunden mit Portalkonto" },
+  offers: { title: "Angebote (Portal, Altfälle)", subtitle: "Angebote an Firmenkunden mit Portalkonto" },
   "delivery-notes": { title: "Übergabeprotokolle" },
   "return-protocols": { title: "Rücknahmeprotokolle" },
-  invoices: { title: "Rechnungen (B2B-Portal)", subtitle: "Bearbeitung von Portal-Rechnungen – Gesamtübersicht unter Rechnungen" },
+  invoices: { title: "Rechnungen (Portal)", subtitle: "Bearbeitung von Portal-Rechnungen – Gesamtübersicht unter Rechnungen" },
   customers: { title: "Firmenkunden (Portal)", subtitle: "Registrierungen, Freigaben und Kreditlimits" },
   damages: { title: "Schäden" },
 };
@@ -904,7 +904,7 @@ export default function AdminDashboard() {
 
   if (authLoading || staffLoading || loading || !hasAccess) {
     return (
-      <B2BPortalLayout title="B2B-Vermietung" subtitle="Vermietgeschäft">
+      <B2BPortalLayout title="Portal-Buchungen" subtitle="Vermietgeschäft">
         <div className="flex items-center justify-center py-16">
           <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" />
         </div>
@@ -913,14 +913,14 @@ export default function AdminDashboard() {
   }
 
   return (
-    <B2BPortalLayout title={ADMIN_TAB_TITLES[activeTab]?.title ?? "B2B-Vermietung"} subtitle={ADMIN_TAB_TITLES[activeTab]?.subtitle}>
+    <B2BPortalLayout title={ADMIN_TAB_TITLES[activeTab]?.title ?? "Portal-Buchungen"} subtitle={ADMIN_TAB_TITLES[activeTab]?.subtitle}>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
 
 
         {/* Tabs Content */}
          <TabsContent value="reservations" forceMount className="data-[state=inactive]:hidden">
           <div className="mb-4 rounded-lg border border-border bg-muted/40 p-3 text-sm text-muted-foreground">
-            Neue Anfragen aus dem B2B-Portal werden zentral unter{" "}
+            Neue Anfragen aus dem Kundenportal werden zentral unter{" "}
             <Link to="/b2b/mietanfragen" className="font-medium text-primary underline underline-offset-2">
               Mietanfragen
             </Link>{" "}

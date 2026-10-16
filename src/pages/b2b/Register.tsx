@@ -405,7 +405,7 @@ export default function B2BRegister() {
                 <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <Building2 className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle className="text-2xl">B2B-Registrierung</CardTitle>
+                <CardTitle className="text-2xl">Registrierung</CardTitle>
                 <CardDescription>
                   {step === 1 && "Schritt 1: Zugangsdaten erstellen"}
                   {step === 2 && "Schritt 2: Firmendaten angeben"}

@@ -21,3 +21,6 @@
 - Mietanfragen ohne bestätigten Auftrag (neu, in Bearbeitung, Angebot gesendet) mit abgelaufenem Mietzeitraum setzt die DB-Funktion close_expired_rental_inquiries täglich per pg_cron auf erledigt – gespeicherter Status, damit Liste, Zähler und Startseite übereinstimmen.
 - Standortwechsel nur über DB-Funktion change_rental_inquiry_location (can_edit_operations, zieht location_email und b2b_reservations atomar mit, Notiz in internal_notes); versendete Angebote bleiben Snapshot. Kundeninfo nur über Edge Function send-location-notice (Konsistenzprüfung, Testkunden-Routing) – kein Freitextversand.
 - Kunden werden standardmäßig geduzt; address_form am Kunden (crm_customers, Fallback rental_inquiries) schaltet auf Sie. Anrede nur über _shared/salutation.ts (PDF + E-Mail). Übrige Vorlagen folgen in Paket 10.
+- customer_kind vorbereitet für Privatkunden-Registrierung, noch nicht genutzt.
+- Anrufzeiten nur über src/lib/callDateLabel.ts (getestet) – Heute/Gestern nach Berliner Kalendertag statt UTC.
+- Listen-Filter (Mietanfragen, Angebotsübersicht, Anrufe) werden in localStorage gemerkt; interne Links öffnen Mietanfragen direkt über /b2b/mietanfragen/:id.
