@@ -58,7 +58,7 @@ export default function B2BLogin() {
     } else {
       toast({
         title: "Erfolgreich angemeldet",
-        description: isPortalHost() ? "Willkommen im B2B-Portal!" : "Willkommen im B2B-Portal!",
+        description: "Willkommen im B2B-Portal!",
       });
       // Redirect happens via useEffect based on isAdmin state
     }
