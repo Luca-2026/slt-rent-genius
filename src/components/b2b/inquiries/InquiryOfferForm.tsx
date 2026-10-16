@@ -357,6 +357,8 @@ export function InquiryOfferForm({
   reservationId = null,
   reviseOf = null,
   defaultMeta,
+  stickyActions = false,
+  stickyActionsLead,
 }: Props) {
   const isInvoice = mode === "invoice";
   const isSupplement = isInvoice && invoiceKind === "supplement";
