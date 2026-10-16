@@ -1,3 +1,4 @@
+import { useManagedProductsVersion } from "@/data/managedProductsCache";
 import { priceText } from "@/components/rental/ProductPriceBlock";
 import { useCustomerType } from "@/hooks/useCustomerType";
 import { useState, useMemo } from "react";
@@ -40,7 +41,9 @@ export function ProductSearchDialog({ open, onOpenChange }: ProductSearchDialogP
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showLocationStep, setShowLocationStep] = useState(false);
 
-  const allProducts = useMemo(() => getAllUniqueRentalProducts(), []);
+  // Nach dem Laden der CMS-Artikel neu berechnen, sonst bleiben veraltete Kennungen aus dem Startbestand stehen.
+  const cmsVersion = useManagedProductsVersion();
+  const allProducts = useMemo(() => getAllUniqueRentalProducts(), [cmsVersion]);
   const ambiguousNames = useMemo(() => getAmbiguousNameSet(allProducts), [allProducts]);
   const translatedProducts = useTranslatedProducts(allProducts);
 

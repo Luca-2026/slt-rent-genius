@@ -1,3 +1,4 @@
+import { useManagedProductsVersion } from "@/data/managedProductsCache";
 import { priceText } from "@/components/rental/ProductPriceBlock";
 import { useCustomerType } from "@/hooks/useCustomerType";
 import { useState, useRef, useEffect, useMemo } from "react";
@@ -42,7 +43,9 @@ export function HeroSearch() {
   const [showLocationDialog, setShowLocationDialog] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
 
-  const allProducts = useMemo(() => getAllUniqueRentalProducts(), []);
+  // Nach dem Laden der CMS-Artikel neu berechnen, sonst bleiben veraltete Kennungen aus dem Startbestand stehen.
+  const cmsVersion = useManagedProductsVersion();
+  const allProducts = useMemo(() => getAllUniqueRentalProducts(), [cmsVersion]);
   const ambiguousNames = useMemo(() => getAmbiguousNameSet(allProducts), [allProducts]);
   const translatedProducts = useTranslatedProducts(allProducts);
 
