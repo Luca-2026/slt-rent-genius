@@ -1,3 +1,4 @@
+import { isStockedAt } from "@/lib/productAvailability";
 import { CustomerTypePrompt } from "@/components/rental/CustomerTypePrompt";
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { useParams, Link, useSearchParams, useNavigate } from "react-router-dom";
@@ -197,13 +198,7 @@ export default function CategoryProducts() {
 
     // Filter by availability at current location (rentwareCode exists for this location)
     if (onlyAvailable && locationId) {
-      filtered = filtered.filter((p) => {
-        const code = p.rentwareCode;
-        if (!code) return false;
-        if (typeof code === "string") return true;
-        const loc = (code as Record<string, string | undefined>)[locationId];
-        return !!loc && loc.length > 0;
-      });
+      filtered = filtered.filter((p) => !p.onRequest && isStockedAt(p, locationId));
     }
 
     // Apply "alle" category filters (search and category filter)
@@ -1029,8 +1024,8 @@ export default function CategoryProducts() {
         const bB = bucketKey(b);
         // Only re-sort within the same bucket
         if (bA !== bB) return (stableIndexMap.get(a) ?? 0) - (stableIndexMap.get(b) ?? 0);
-        const hasCodeA = a.rentwareCode && a.rentwareCode[locationId] ? 0 : 1;
-        const hasCodeB = b.rentwareCode && b.rentwareCode[locationId] ? 0 : 1;
+        const hasCodeA = isStockedAt(a, locationId) ? 0 : 1;
+        const hasCodeB = isStockedAt(b, locationId) ? 0 : 1;
         if (hasCodeA !== hasCodeB) return hasCodeA - hasCodeB;
         return (stableIndexMap.get(a) ?? 0) - (stableIndexMap.get(b) ?? 0);
       });
