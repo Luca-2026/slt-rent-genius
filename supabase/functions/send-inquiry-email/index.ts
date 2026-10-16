@@ -234,6 +234,8 @@ serve(async (req) => {
       ${timeRange ? `<tr><td style="padding: 4px 0; color: #6b7280;">Uhrzeiten:</td><td style="padding: 4px 0;">${e.timeRange}</td></tr>` : ""}
       ${deliveryHtml}
       ${setupServiceHtml}
+      ${weekendHtml}
+      ${estimateHtml}
     </table>
     ${message ? `<h3 style="color: #374151;">Nachricht</h3><p style="color: #374151; white-space: pre-wrap; background: #f9fafb; padding: 12px; border-radius: 6px;">${e.message}</p>` : ""}
     ${safeAttachments.length ? `<p style="color: #374151; margin-top: 16px;"><strong>📎 ${safeAttachments.length} Bild(er) vom Aufstellort</strong> sind dieser E-Mail als Anhang beigefügt.</p>` : ""}
