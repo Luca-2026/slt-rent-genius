@@ -21,6 +21,8 @@ interface Props {
   street?: string | null;
   postalCode?: string | null;
   city?: string | null;
+  /** Paket 3b: Anrede (nur Mietanfragen; undefined = Feld ausblenden). */
+  salutation?: string | null;
   busy?: boolean;
   /**
    * Persists the edited values. Field mapping (rental vs. sales) is handled by
@@ -36,6 +38,7 @@ interface Props {
     street: string;
     postal_code: string;
     city: string;
+    salutation: "" | "herr" | "frau";
   }) => Promise<boolean | void>;
 }
 
@@ -50,9 +53,11 @@ export function InquiryCustomerCard({
   street,
   postalCode,
   city,
+  salutation,
   busy,
   onSave,
 }: Props) {
+  const showSalutation = salutation !== undefined;
   const initial = {
     customer_kind: (customerKind === "business" ? "business" : "private") as CustomerKind,
     name: customerName ?? "",
@@ -63,6 +68,7 @@ export function InquiryCustomerCard({
     street: street ?? "",
     postal_code: postalCode ?? "",
     city: city ?? "",
+    salutation: (salutation === "herr" || salutation === "frau" ? salutation : "") as "" | "herr" | "frau",
   };
   const [editing, setEditing] = useState(false);
   const [values, setValues] = useState(initial);
@@ -71,7 +77,7 @@ export function InquiryCustomerCard({
     setValues(initial);
     setEditing(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [customerKind, customerName, customerEmail, customerPhone, companyName, vatId, street, postalCode, city]);
+  }, [customerKind, customerName, customerEmail, customerPhone, companyName, vatId, street, postalCode, city, salutation]);
 
   const isBusiness = initial.customer_kind === "business";
 
@@ -94,6 +100,7 @@ export function InquiryCustomerCard({
             <div className="font-medium text-foreground">{initial.company_name}</div>
           ) : null}
           <div>
+            {initial.salutation ? `${initial.salutation === "herr" ? "Herr" : "Frau"} ` : ""}
             {initial.name || "—"}
             {initial.email ? ` · ${initial.email}` : ""}
             {initial.phone ? ` · ${initial.phone}` : ""}
@@ -131,7 +138,22 @@ export function InquiryCustomerCard({
         </div>
         <div className="space-y-1.5">
           <Label className="text-xs">{inquiryType === "sales" ? "Vor- und Nachname" : "Name"}</Label>
-          <Input value={values.name} onChange={(e) => setValues({ ...values, name: e.target.value })} />
+          <div className="flex gap-2">
+            {showSalutation && (
+              <Select
+                value={values.salutation || "none"}
+                onValueChange={(v) => setValues({ ...values, salutation: v === "herr" || v === "frau" ? v : "" })}
+              >
+                <SelectTrigger className="h-10 w-28 shrink-0" aria-label="Anrede"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Anrede</SelectItem>
+                  <SelectItem value="herr">Herr</SelectItem>
+                  <SelectItem value="frau">Frau</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+            <Input value={values.name} onChange={(e) => setValues({ ...values, name: e.target.value })} />
+          </div>
         </div>
         <div className="space-y-1.5">
           <Label className="text-xs">E-Mail</Label>

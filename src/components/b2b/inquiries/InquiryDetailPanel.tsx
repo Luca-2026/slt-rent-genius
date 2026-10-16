@@ -537,6 +537,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         street={(inquiryType === "rental" ? inquiry.customer_street : inquiry.billing_street) ?? null}
         postalCode={(inquiryType === "rental" ? inquiry.customer_postal_code : inquiry.billing_postal_code) ?? null}
         city={(inquiryType === "rental" ? inquiry.customer_city : inquiry.billing_city) ?? null}
+        salutation={inquiryType === "rental" ? ((inquiry as { customer_salutation?: string | null }).customer_salutation ?? null) : undefined}
         busy={busy}
         onSave={async (values) => {
           const patch: Record<string, unknown> = {
@@ -557,6 +558,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           }
           if (inquiryType === "rental") {
             patch.customer_name = values.name.trim() || null;
+            // Paket 3b: Anrede (Ausgabe folgt in Paket 4)
+            patch.customer_salutation = values.salutation === "herr" || values.salutation === "frau" ? values.salutation : null;
           } else {
             const parts = values.name.trim().split(/\s+/);
             patch.first_name = parts.slice(0, -1).join(" ") || parts[0] || null;
