@@ -128,11 +128,18 @@ export function offerPayloadToLines(payload: unknown): {
     | undefined;
   if (!p || !Array.isArray(p.items) || p.items.length === 0) return null;
   const items: (OfferLine & { custom_period?: boolean })[] = p.items.map((raw) => {
-    const split = splitQuantity(
+    const legacy = splitQuantity(
       typeof raw.description === "string" ? raw.description : "",
       Number(raw.quantity) || 1,
       String(raw.unit ?? ""),
     );
+    // Neuere Angebote speichern Stückzahl (articles), Dauer und Einheitencode getrennt –
+    // dann diese direkt nehmen, sonst würde quantity (= Stück × Dauer) als Stückzahl gelesen.
+    const articles = Number(raw.articles);
+    const dur = Number(raw.duration);
+    const split = articles > 0 && dur > 0 && typeof raw.unit_code === "string" && raw.unit_code
+      ? { ...legacy, quantity: articles, duration: dur, unit: raw.unit_code as typeof legacy.unit }
+      : legacy;
     return ({
     product_name: String(raw.product_name ?? ""),
     description: split.description,
@@ -145,6 +152,9 @@ export function offerPayloadToLines(payload: unknown): {
     discount_percent: Number(raw.discount_percent) || 0,
     rental_start: typeof raw.rental_start === "string" ? raw.rental_start : undefined,
     rental_end: typeof raw.rental_end === "string" ? raw.rental_end : undefined,
+    ...(typeof raw.rental_start_time === "string" ? { rental_start_time: raw.rental_start_time } : {}),
+    ...(typeof raw.rental_end_time === "string" ? { rental_end_time: raw.rental_end_time } : {}),
+    ...(typeof raw.product_slug === "string" ? { product_slug: raw.product_slug } : {}),
     image_url: typeof raw.image_url === "string" ? raw.image_url : undefined,
     // Paket 3b (fehlen bei alten Angeboten)
     ...(typeof raw.group_id === "string" ? { group_id: raw.group_id } : {}),
