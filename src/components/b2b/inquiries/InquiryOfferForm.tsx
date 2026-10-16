@@ -7,7 +7,7 @@ import { isStripePayment, shortPaymentReference } from "@/lib/paymentPresentatio
 import { PdfPagesPreview } from "@/components/b2b/PdfPagesPreview";
 import { applyCategoryDiscount, loadCategoryDiscounts, loadInquiryProfileId, type DiscountMap } from "@/lib/customerDiscounts";
 import { NumberInput } from "@/components/ui/number-input";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
