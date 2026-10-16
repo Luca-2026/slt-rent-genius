@@ -428,6 +428,64 @@ export type Database = {
           },
         ]
       }
+      b2b_instance_allocations: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          from_at: string
+          id: string
+          instance_id: string
+          kind: string
+          managed_product_id: string
+          rental_inquiry_id: string
+          to_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          from_at: string
+          id?: string
+          instance_id: string
+          kind?: string
+          managed_product_id: string
+          rental_inquiry_id: string
+          to_at: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          from_at?: string
+          id?: string
+          instance_id?: string
+          kind?: string
+          managed_product_id?: string
+          rental_inquiry_id?: string
+          to_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_instance_allocations_instance_id_fkey"
+            columns: ["instance_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_product_instances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_instance_allocations_instance_id_fkey"
+            columns: ["instance_id"]
+            isOneToOne: false
+            referencedRelation: "maintenance_due_overview"
+            referencedColumns: ["instance_id"]
+          },
+          {
+            foreignKeyName: "b2b_instance_allocations_rental_inquiry_id_fkey"
+            columns: ["rental_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "rental_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       b2b_instance_hours_log: {
         Row: {
           created_at: string
@@ -2147,6 +2205,79 @@ export type Database = {
           },
         ]
       }
+      b2b_transport_orders: {
+        Row: {
+          cost_charged: boolean
+          created_at: string
+          created_by: string | null
+          done_at: string | null
+          done_by: string | null
+          due_at: string
+          from_location: string
+          id: string
+          instance_id: string
+          managed_product_id: string
+          rental_inquiry_id: string | null
+          status: string
+          to_location: string
+          transport_cost: number | null
+        }
+        Insert: {
+          cost_charged?: boolean
+          created_at?: string
+          created_by?: string | null
+          done_at?: string | null
+          done_by?: string | null
+          due_at: string
+          from_location: string
+          id?: string
+          instance_id: string
+          managed_product_id: string
+          rental_inquiry_id?: string | null
+          status?: string
+          to_location: string
+          transport_cost?: number | null
+        }
+        Update: {
+          cost_charged?: boolean
+          created_at?: string
+          created_by?: string | null
+          done_at?: string | null
+          done_by?: string | null
+          due_at?: string
+          from_location?: string
+          id?: string
+          instance_id?: string
+          managed_product_id?: string
+          rental_inquiry_id?: string | null
+          status?: string
+          to_location?: string
+          transport_cost?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_transport_orders_instance_id_fkey"
+            columns: ["instance_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_product_instances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_transport_orders_instance_id_fkey"
+            columns: ["instance_id"]
+            isOneToOne: false
+            referencedRelation: "maintenance_due_overview"
+            referencedColumns: ["instance_id"]
+          },
+          {
+            foreignKeyName: "b2b_transport_orders_rental_inquiry_id_fkey"
+            columns: ["rental_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "rental_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       call_digest_log: {
         Row: {
           call_count: number
@@ -3607,6 +3738,7 @@ export type Database = {
           assigned_name: string | null
           assigned_to: string | null
           attachments: Json
+          availability_pending: boolean
           b2b_profile_id: string | null
           b2b_reservation_id: string | null
           category_slug: string | null
@@ -3677,6 +3809,7 @@ export type Database = {
           assigned_name?: string | null
           assigned_to?: string | null
           attachments?: Json
+          availability_pending?: boolean
           b2b_profile_id?: string | null
           b2b_reservation_id?: string | null
           category_slug?: string | null
@@ -3747,6 +3880,7 @@ export type Database = {
           assigned_name?: string | null
           assigned_to?: string | null
           attachments?: Json
+          availability_pending?: boolean
           b2b_profile_id?: string | null
           b2b_reservation_id?: string | null
           category_slug?: string | null
@@ -3831,6 +3965,41 @@ export type Database = {
             columns: ["crm_customer_id"]
             isOneToOne: false
             referencedRelation: "crm_customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rental_inquiry_events: {
+        Row: {
+          created_at: string
+          details: Json
+          event: string
+          id: string
+          rental_inquiry_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          details?: Json
+          event: string
+          id?: string
+          rental_inquiry_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          details?: Json
+          event?: string
+          id?: string
+          rental_inquiry_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_inquiry_events_rental_inquiry_id_fkey"
+            columns: ["rental_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "rental_inquiries"
             referencedColumns: ["id"]
           },
         ]
@@ -5106,6 +5275,7 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      backfill_allocations: { Args: { dry_run?: boolean }; Returns: Json }
       can_access_todo_list: {
         Args: { _list_id: string; _user_id: string }
         Returns: boolean
@@ -5119,6 +5289,7 @@ export type Database = {
           reservations_updated: number
         }[]
       }
+      check_availability: { Args: { inquiry_id: string }; Returns: Json }
       check_inventory_availability: {
         Args: {
           _end: string
@@ -5158,6 +5329,10 @@ export type Database = {
         Returns: string
       }
       confirm_b2b_email: { Args: { _user_id: string }; Returns: undefined }
+      confirm_order: {
+        Args: { decisions: Json; inquiry_id: string }
+        Returns: Json
+      }
       crm_find_or_create_from_inquiry: {
         Args: {
           _city: string
@@ -5326,6 +5501,23 @@ export type Database = {
       sign_return_protocol: {
         Args: { _protocol_id: string; _signature_data: string }
         Returns: undefined
+      }
+      slt_free_instances: {
+        Args: {
+          _exclude_inquiry: string
+          _from: string
+          _location: string
+          _product: string
+          _to: string
+        }
+        Returns: string[]
+      }
+      slt_item_period: {
+        Args: {
+          _inq: Database["public"]["Tables"]["rental_inquiries"]["Row"]
+          _item: Json
+        }
+        Returns: Record<string, unknown>
       }
       slt_normalize_location: { Args: { _raw: string }; Returns: string }
       slt_try_date: { Args: { _raw: string }; Returns: string }

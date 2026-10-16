@@ -1,3 +1,4 @@
+import { formatRentalMoment, rentalPeriodOf } from "@/lib/rentalPeriod";
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ChevronDown } from "lucide-react";
@@ -31,11 +32,7 @@ const UNSTRUCTURED_SOURCES = new Set(["fonio", "ai_import", "manual"]);
 const fmtDate = (value: string | null) => (value ? new Date(value).toLocaleDateString("de-DE") : "—");
 
 /** Datum inkl. Uhrzeit – wir rechnen zeitgenau, nicht nur tageweise. */
-export const fmtDateTime = (date: string | null, time: string | null) => {
-  const d = fmtDate(date);
-  if (d === "—") return "—";
-  return time ? `${d}, ${time.slice(0, 5)} Uhr` : d;
-};
+export const fmtDateTime = (date: string | null, time: string | null) => formatRentalMoment(date, time);
 
 export default function RentalInquiryDetail() {
   const { id } = useParams<{ id: string }>();
@@ -153,8 +150,7 @@ function Row({ label, value }: { label: string; value: string | null | undefined
 
 function RentalDetails({ inquiry }: { inquiry: RentalInquiry }) {
   const list = requestedItemsOf(inquiry);
-  const start = fmtDateTime(inquiry.start_date, inquiry.start_time);
-  const end = fmtDateTime(inquiry.end_date, inquiry.end_time);
+  const { start, end } = rentalPeriodOf(inquiry);
   const period = start === "—" && end === "—" ? null : `${start} – ${end}`;
   const deliveryAddress = [inquiry.delivery_street, [inquiry.delivery_postal_code, inquiry.delivery_city].filter(Boolean).join(" ")].filter(Boolean).join(", ");
   return (

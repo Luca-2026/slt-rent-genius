@@ -12,6 +12,8 @@ import { toast } from "sonner";
 import { formatEuro } from "./offerMath";
 import { parseInquiryPayments } from "./InquiryPaymentsCard";
 import { evaluateOrderPayment } from "@/lib/orderConfirmation";
+import { AvailabilityDecisionDialog } from "./AvailabilityDecisionDialog";
+import type { AvailabilityResult } from "@/lib/availabilityDecisions";
 
 interface Props {
   inquiryType: "rental" | "sales";
@@ -34,6 +36,7 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
   const [ack, setAck] = useState(false);
   const [attachPdf, setAttachPdf] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [availability, setAvailability] = useState<AvailabilityResult | null>(null);
   if (inquiry.status !== "accepted" || !inquiry.offer_number) return null;
 
   const payload = (inquiry.offer_payload ?? {}) as Record<string, any>;
@@ -45,7 +48,34 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
   });
   const sentAt = inquiry.order_confirmed_at as string | null;
 
+  // Verfügbarkeit nur bei Mietaufträgen: prüfen → ggf. entscheiden → Geräte belegen → E-Mail.
+  const confirmAndSend = async (decisions: Record<string, unknown> = { mode: "confirm", items: {} }) => {
+    setBusy(true);
+    const { data, error } = await supabase.rpc("confirm_order" as any, { inquiry_id: inquiry.id, decisions } as any);
+    if (error) { setBusy(false); toast.error(`Auftrag nicht bestätigt: ${error.message}`); return; }
+    const mode = (data as any)?.mode;
+    if (mode === "pending" || mode === "reject") {
+      setBusy(false); setAvailability(null); setDialogOpen(false);
+      toast.success(mode === "pending" ? "Vermerkt: Verfügbarkeit mit Kunde klären." : "Anfrage abgesagt.");
+      onDone();
+      return;
+    }
+    setAvailability(null);
+    await sendMail();
+  };
+
   const send = async () => {
+    if (inquiryType !== "rental") return sendMail();
+    setBusy(true);
+    const { data, error } = await supabase.rpc("check_availability" as any, { inquiry_id: inquiry.id } as any);
+    setBusy(false);
+    if (error) { toast.error(`Verfügbarkeit nicht prüfbar: ${error.message}`); return; }
+    const res = data as unknown as AvailabilityResult;
+    if (!res?.all_available && !sentAt) { setDialogOpen(false); setAvailability(res); return; }
+    await confirmAndSend();
+  };
+
+  const sendMail = async () => {
     setBusy(true);
     const { error } = await supabase.functions.invoke("send-order-confirmation", {
       body: {
@@ -129,6 +159,13 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
             <Checkbox checked={attachPdf} onCheckedChange={(v) => setAttachPdf(Boolean(v))} />
             <span>Auftragsbestätigung zusätzlich als PDF beifügen</span>
           </label>
+          <AvailabilityDecisionDialog
+            key={availability ? "open" : "closed"}
+            result={availability}
+            busy={busy}
+            onCancel={() => setAvailability(null)}
+            onSubmit={(d) => void confirmAndSend(d)}
+          />
           <AlertDialog open={dialogOpen} onOpenChange={(o) => { setDialogOpen(o); if (!o) setAck(false); }}>
             <AlertDialogTrigger asChild>
               <Button size="sm" disabled={busy}>

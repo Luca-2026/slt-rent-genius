@@ -24,3 +24,4 @@
 - customer_kind vorbereitet für Privatkunden-Registrierung, noch nicht genutzt.
 - Anrufzeiten nur über src/lib/callDateLabel.ts (getestet) – Heute/Gestern nach Berliner Kalendertag statt UTC.
 - Listen-Filter (Mietanfragen, Angebotsübersicht, Anrufe) werden in localStorage gemerkt; interne Links öffnen Mietanfragen direkt über /b2b/mietanfragen/:id.
+- Gerätebelegung nur über DB-Funktionen check_availability/confirm_order (Mietaufträge, vor der Auftragsbestätigungs-E-Mail); Doppelbelegung verhindert der Exclusion-Constraint auf b2b_instance_allocations; Überführung setzt den Gerätestandort dauerhaft um (kein Rücktransport); Entscheidungen in rental_inquiry_events. Artikel ohne Einzelgeräte und ohne CMS-Bestand gelten als nicht geprüft.
