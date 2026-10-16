@@ -982,8 +982,10 @@ export function InquiryOfferForm({
       const withPricing = await Promise.all(
         items.map(async (item) => {
           if (item.price_manual || !item.product_name.trim()) return item;
-          const pricing = item.pricing ?? (await buildLinePricing(item.product_slug, item.product_name));
-          return pricing ? { ...item, pricing } : item;
+          // Vorbelegte Positionen (z. B. nach „Entwurf verwerfen“) haben evtl. noch keinen CMS-Bezug – per Name nachschlagen.
+          const slug = item.product_slug ?? (item.pricing ? undefined : (await findCatalogProductByName(item.product_name))?.slug);
+          const pricing = item.pricing ?? (await buildLinePricing(slug, item.product_name));
+          return pricing ? { ...item, product_slug: item.product_slug ?? slug, pricing } : item;
         }),
       );
       setItems(withPricing.map((it) => applyRentalPricing(it, dayOpts)));
