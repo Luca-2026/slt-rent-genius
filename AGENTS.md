@@ -3,7 +3,7 @@
 - src/components/b2b/admin/AGENTS.md steuert die CMS-Artikelmaske: Preisschema je Artikel, Hauptkategorie und die Preisregeln (Pflicht, Rückfallstufen, Alt-Textfelder).
 - Links via locationWhatsAppContacts.ts + BonnWhatsAppContact (legacy name); iconOnly beside email keeps cards aligned; WhatsAppIcon.tsx brand glyph, not a chat icon.
 - Customer payment-term eligibility is shared through _shared/customer-payment-terms.ts in forms and send functions; validate before number allocation to prevent UI bypasses without modifying issued snapshots.
-- Signing overlays: signingOverlays/SignaturePad ref counting + route gating hide cart/cookies while signing.
+- Signing overlays: ref counting + route gating hide cart/cookies while signing.
 - Both rental offer forms use offerDeposit/OfferDepositWarning; require acknowledgement before finalizing without a deposit, not for drafts.
 <!-- LOVABLE:BEGIN -->
 - Inject the portal first-paint guard through the Vite HTML plugin before body parsing; hide only prerender fallback content on the exact portal host to preserve public SEO and the React portal.
@@ -23,4 +23,4 @@
 - Standortwechsel bei Mietanfragen nur über die DB-Funktion change_rental_inquiry_location (Rechte über can_edit_operations, zieht location_email und verknüpfte b2b_reservations atomar mit, dokumentiert den Wechsel in internal_notes) – versendete Angebote bleiben als Snapshot unverändert, danach neue Fassung über den Überarbeiten-Modus. Kunden-Info zum Wechsel nur über die Edge Function send-location-notice (gleiche Rechte, Konsistenzprüfung gegen den aktuellen Standort, Testkunden-Routing, Nachweis in internal_notes) – kein Freitextversand aus dem Portal heraus.
 - Rückgabe an anderem Standort (One-Way) nur über das Rückgabefeld im InquiryOfferForm + resolveReturnLocation (_shared/inquiry-offer-math.ts); Aufpreis netto als eigene Position, gespeichert im offer_payload und inquiry_invoices.return_location/return_location_cost – Angebot, Rechnung, Auftragsbestätigung und Umsatz rechnen so dieselbe Summe.
 - Angebots-/Rechnungsentwürfe im Anfragenbereich zusätzlich in inquiry_doc_drafts (Server, je draft_key) speichern und nach Versand/Verwerfen löschen – Kollegen sehen begonnene Arbeit, nichts geht verloren oder wird doppelt erfasst.
-- Mietanfragen öffnen als Vollseite /b2b/mietanfragen/:id (RentalInquiryDetail, InquiryDetailPanel layout="page"); ?anfrage=<id> leitet nur um, Verkaufsanfragen nutzen weiter das gestapelte Panel – damit die Kundenanfrage beim Bearbeiten sichtbar bleibt.
+- Mietanfragen: Vollseite /b2b/mietanfragen/:id (InquiryDetailPanel layout="page"), ?anfrage= leitet nur um; Verkauf bleibt gestapelt.
