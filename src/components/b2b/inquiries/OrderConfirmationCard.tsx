@@ -26,6 +26,8 @@ const eur = (cents: number) => formatEuro(cents / 100);
  * Auftragsbestätigung nach Zahlungseingang für angenommene Angebote.
  * Grundlage sind ausschließlich die gespeicherten Zahlungseingänge.
  */
+import { parseOrderType } from "./offerMath";
+
 export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone }: Props) {
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
@@ -88,6 +90,8 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
       <div className="font-semibold">Auftragsbestätigung</div>
       <div className="space-y-0.5 text-muted-foreground">
         <div>Angebot {inquiry.offer_number}: {eur(ev.grossCents)} brutto</div>
+        {/* Paket 3b: Auftragsart aus dem Angebot (alte Angebote ohne Angabe = Abholung) */}
+        <div>Auftragsart: {parseOrderType(payload?.order_type) === "delivery" ? "Lieferung" : "Abholung"}</div>
         {ev.depositCents > 0 && <div>Kaution: {eur(ev.depositCents)} · Gesamt zu zahlen: {eur(ev.requiredCents)}</div>}
         <div>Gespeicherte Zahlungseingänge: {eur(ev.paidCents)}</div>
         <div className={`font-semibold ${statusClass}`}>{statusText}</div>
