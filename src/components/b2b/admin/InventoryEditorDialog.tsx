@@ -1175,6 +1175,51 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
               </div>
 
               <div>
+                <Label>Passende Zusatzartikel (Vorschläge im Anfrageformular)</Label>
+                <p className="text-xs text-muted-foreground mt-0.5 mb-2">
+                  Diese Artikel werden Kunden im Anfrageformular als „Passende Zusatzartikel" vorgeschlagen (max. 8). Nur eintragen, wenn die Zuordnung fachlich passt.
+                </p>
+                {form.suggested_accessory_slugs.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {form.suggested_accessory_slugs.map((slug) => {
+                      const p = allProducts.find((x) => x.slug === slug);
+                      return (
+                        <span key={slug} className="inline-flex items-center gap-1 rounded-full border border-border bg-muted px-2 py-1 text-xs">
+                          {p?.name ?? slug}
+                          <button
+                            type="button"
+                            onClick={() => setForm((f) => ({ ...f, suggested_accessory_slugs: f.suggested_accessory_slugs.filter((s) => s !== slug) }))}
+                            aria-label={`${p?.name ?? slug} entfernen`}
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
+                <select
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+                  value=""
+                  disabled={form.suggested_accessory_slugs.length >= 8}
+                  onChange={(e) => {
+                    const slug = e.target.value;
+                    if (!slug) return;
+                    setForm((f) => (f.suggested_accessory_slugs.includes(slug) ? f : { ...f, suggested_accessory_slugs: [...f.suggested_accessory_slugs, slug] }));
+                  }}
+                >
+                  <option value="">{form.suggested_accessory_slugs.length >= 8 ? "Maximum erreicht (8)" : "Zusatzartikel hinzufügen …"}</option>
+                  {allProducts
+                    .filter((p) => p.slug !== form.slug && !form.suggested_accessory_slugs.includes(p.slug))
+                    .slice()
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map((p) => (
+                      <option key={p.slug} value={p.slug}>{p.name}</option>
+                    ))}
+                </select>
+              </div>
+
+              <div>
                 <Label>Lokaler SEO-Content je Standort</Label>
                 <div className="space-y-3 mt-2">
                   {LOCATIONS.filter((l) => form.available_locations.includes(l.id)).map((loc) => (
