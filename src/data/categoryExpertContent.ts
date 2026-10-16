@@ -2707,7 +2707,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Was kostet die Werkzeug-Miete in Bonn und gibt es Wochenend-Tarife?",
           answer:
-            "Tagespreise pro Gerät sind tagesaktuell im Buchungsprozess hinterlegt. Wochenmiete entspricht ca. 5 Tagessätzen, Wochenend-Miete (Freitag-Abholung / Montag-Rückgabe) wird in vielen Fällen wie 1 Tag berechnet – siehe Wochenend-Tarif im Buchungsprozess. Verbrauchsmaterial (Bohrkronen, Trennscheiben, Bohrer) wird nach Verbrauch abgerechnet bzw. ist im Mietpreis je nach Artikel enthalten.",
+            "Tagespreise pro Gerät sind tagesaktuell im Buchungsprozess hinterlegt. Wochenmiete entspricht ca. 5 Tagessätzen, Wochenend-Miete (Abholung freitags ab 16 Uhr, Rückgabe montags bis 9:30 Uhr) wird für viele Geräte als Wochenendtarif berechnet – der aktuelle Tarif steht auf der Artikelseite. Verbrauchsmaterial (Bohrkronen, Trennscheiben, Bohrer) wird nach Verbrauch abgerechnet bzw. ist im Mietpreis je nach Artikel enthalten.",
         },
         {
           question: "Was passiert bei Verlust oder Beschädigung?",
