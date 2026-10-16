@@ -5025,15 +5025,23 @@ export type Database = {
           id: string | null
           image_alts: string[] | null
           images: string[] | null
+          main_category: string | null
           min_rental_months: number | null
           model_name: string | null
           name: string | null
           on_request: boolean | null
           pdf_url: string | null
+          price_base_1_3_cd: number | null
+          price_from_1_rd: number | null
+          price_from_10_rd: number | null
+          price_from_20_rd: number | null
+          price_from_3_rd: number | null
           price_per_day: string | null
           price_per_month: string | null
           price_unit_label: string | null
           price_weekend: string | null
+          price_weekend_num: number | null
+          pricing_scheme: string | null
           related_slugs: string[] | null
           rental_notes: string[] | null
           rentware_code: Json | null
@@ -5051,6 +5059,8 @@ export type Database = {
           stocked_locations: string[] | null
           subcategory: string | null
           suggested_accessory_slugs: string[] | null
+          surcharge_per_cd_from_4: number | null
+          surcharge_per_cd_from_8: number | null
           tags: string[] | null
           updated_at: string | null
           video_url: string | null
@@ -5070,15 +5080,23 @@ export type Database = {
           id?: string | null
           image_alts?: string[] | null
           images?: string[] | null
+          main_category?: string | null
           min_rental_months?: number | null
           model_name?: string | null
           name?: string | null
           on_request?: boolean | null
           pdf_url?: string | null
+          price_base_1_3_cd?: number | null
+          price_from_1_rd?: number | null
+          price_from_10_rd?: number | null
+          price_from_20_rd?: number | null
+          price_from_3_rd?: number | null
           price_per_day?: string | null
           price_per_month?: string | null
           price_unit_label?: string | null
           price_weekend?: string | null
+          price_weekend_num?: number | null
+          pricing_scheme?: string | null
           related_slugs?: string[] | null
           rental_notes?: string[] | null
           rentware_code?: Json | null
@@ -5096,6 +5114,8 @@ export type Database = {
           stocked_locations?: string[] | null
           subcategory?: string | null
           suggested_accessory_slugs?: string[] | null
+          surcharge_per_cd_from_4?: number | null
+          surcharge_per_cd_from_8?: number | null
           tags?: string[] | null
           updated_at?: string | null
           video_url?: string | null
@@ -5115,15 +5135,23 @@ export type Database = {
           id?: string | null
           image_alts?: string[] | null
           images?: string[] | null
+          main_category?: string | null
           min_rental_months?: number | null
           model_name?: string | null
           name?: string | null
           on_request?: boolean | null
           pdf_url?: string | null
+          price_base_1_3_cd?: number | null
+          price_from_1_rd?: number | null
+          price_from_10_rd?: number | null
+          price_from_20_rd?: number | null
+          price_from_3_rd?: number | null
           price_per_day?: string | null
           price_per_month?: string | null
           price_unit_label?: string | null
           price_weekend?: string | null
+          price_weekend_num?: number | null
+          pricing_scheme?: string | null
           related_slugs?: string[] | null
           rental_notes?: string[] | null
           rentware_code?: Json | null
@@ -5141,6 +5169,8 @@ export type Database = {
           stocked_locations?: string[] | null
           subcategory?: string | null
           suggested_accessory_slugs?: string[] | null
+          surcharge_per_cd_from_4?: number | null
+          surcharge_per_cd_from_8?: number | null
           tags?: string[] | null
           updated_at?: string | null
           video_url?: string | null
