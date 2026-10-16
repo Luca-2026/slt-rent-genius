@@ -105,6 +105,15 @@ export default function ProductDetail() {
   }, [productId, location, categoryId, cmsVersion]);
   const product = useTranslatedProduct(rawProduct);
 
+  // Artikel ohne Rentware-Code am Standort = auf Anfrage: Rentware-Warenkorb ausblenden,
+  // damit das Anfrageformular im Vordergrund steht.
+  const hasLocalRentwareCode = !!(location && rawProduct?.rentwareCode?.[location.id as keyof typeof rawProduct.rentwareCode]);
+  useEffect(() => {
+    if (!rawProduct || hasLocalRentwareCode) return;
+    document.documentElement.setAttribute("data-slt-no-cart", "");
+    return () => document.documentElement.removeAttribute("data-slt-no-cart");
+  }, [rawProduct, hasLocalRentwareCode]);
+
   const rawRelatedProducts = useMemo(() => {
     if (!location || !categoryId || !rawProduct) return [];
 
