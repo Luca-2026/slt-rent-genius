@@ -27,6 +27,9 @@ import { Wand2 } from "lucide-react";
 import { Building2, Plus, UserCheck } from "lucide-react";
 
 const FILTER_STORAGE_KEY = "rentalInquiries.filter";
+// Standorte stehen in der Datenbank teils groß („Krefeld“), teils klein („krefeld“) bzw. mit Umlaut.
+const normalizeLocation = (v?: string | null) =>
+  (v ?? "").trim().toLowerCase().replace(/ü/g, "ue").replace(/\s+an der ruhr$/, "");
 
 export default function RentalInquiries() {
   const { isStaff, loading: accessLoading } = useStaffAccess();
@@ -70,7 +73,7 @@ export default function RentalInquiries() {
         if (!isMyPendingInquiry(r, user?.id)) return false;
       } else if (!matchesInquiryListFilter(withProtocol(r), statusFilter, today)) return false;
       if (!matchesSegment(segmentOf(r), segment)) return false;
-      if (locationFilter !== "all" && r.location !== locationFilter) return false;
+      if (locationFilter !== "all" && normalizeLocation(r.location) !== locationFilter) return false;
       if (!q) return true;
       return [r.product_name, r.customer_name, r.customer_email, r.company_name, r.location, r.customer_city]
         .filter(Boolean)
