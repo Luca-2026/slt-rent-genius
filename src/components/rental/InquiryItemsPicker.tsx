@@ -156,9 +156,63 @@ export function InquiryItemsPicker({ items, onChange }: Props) {
               </div>
               <QuantityStepper value={it.quantity} onChange={(q) => patch(i, q)} label={`Menge ${it.product_name}`} />
             </div>
+            {(() => {
+              const opts = it.product_slug ? addonsBySlug.get(it.product_slug) : undefined;
+              if (!opts?.length) return null;
+              const sorted = [...opts].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+              return (
+                <div className="mt-2 space-y-1.5 border-t border-border pt-2">
+                  <p className="flex items-center gap-1.5 text-xs font-medium text-foreground">
+                    <ShieldCheck className="h-3.5 w-3.5 text-primary" aria-hidden="true" /> Versicherung & Zusatzoptionen
+                  </p>
+                  {sorted.map((o) => {
+                    const mandatory = o.is_default === true;
+                    const checked = mandatory || (it.selected_addons ?? []).includes(o.key);
+                    const priceHint = o.price_type === "percent" ? `${o.price} % des Mietpreises` : o.price > 0 ? `${o.price.toFixed(2).replace(".", ",")} €` : null;
+                    return (
+                      <label key={o.key} className="flex items-start gap-2 text-xs cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="mt-0.5 h-3.5 w-3.5 accent-primary disabled:opacity-60"
+                          checked={checked}
+                          disabled={mandatory}
+                          onChange={(e) => toggleAddon(i, o.key, e.target.checked)}
+                        />
+                        <span className="min-w-0 leading-snug">
+                          <span className="font-medium">{o.label}</span>
+                          {mandatory ? <span className="text-muted-foreground"> (Pflicht)</span> : null}
+                          {o.deductible ? <span className="text-muted-foreground"> – Selbstbeteiligung {o.deductible.toLocaleString("de-DE")} €</span> : null}
+                          {priceHint ? <span className="text-muted-foreground"> · {priceHint}</span> : null}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              );
+            })()}
           </li>
         ))}
       </ul>
+
+      {suggestions.length > 0 && (
+        <div className="space-y-1.5 rounded-md border border-dashed border-primary/40 bg-primary/5 p-2.5">
+          <p className="text-xs font-medium text-foreground">Passende Zusatzartikel</p>
+          <ul className="space-y-1">
+            {suggestions.map((p) => (
+              <li key={p.slug} className="flex items-center gap-2">
+                {pickCatalogImage(p.images) ? (
+                  <img src={pickCatalogImage(p.images)} alt="" loading="lazy" className="h-8 w-8 shrink-0 rounded object-cover bg-muted" />
+                ) : null}
+                <span className="min-w-0 flex-1 truncate text-xs">{p.name}</span>
+                <Button type="button" variant="outline" size="sm" className="h-7 shrink-0 px-2 text-xs"
+                  onClick={() => add(p)} disabled={items.length >= MAX_ITEMS}>
+                  <Plus className="mr-1 h-3 w-3" /> Hinzufügen
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
