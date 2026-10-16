@@ -295,6 +295,13 @@ export function ProductBookingDialog({
           ...form,
           customerKind: form.customerKind,
           message: messageWithExtras,
+          useSaturday: form.useSaturday,
+          useSunday: form.useSunday,
+          priceEstimate: calcLine
+            ? calcLine.kind === "weekend"
+              ? `Wochenendtarif: pauschal ${displayPrice(calcLine.unit_price, customerType)}`
+              : `ca. ${calcLine.duration} ${unitLabel(calcLine.duration, calcLine.unit)} × ${displayPrice(calcLine.unit_price, customerType)} = ${displayPrice(calcLine.duration * calcLine.unit_price, customerType)} (${calcLine.label})`
+            : null,
           items: requestItems.map((it) => ({
             product_name: it.product_name,
             product_slug: it.product_slug ?? null,
