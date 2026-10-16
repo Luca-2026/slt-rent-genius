@@ -424,7 +424,7 @@ function DueInstallments({ today }: { today: string }) {
       <ul className="divide-y divide-border">
         {rows.map((r) => (
           <li key={r.id}>
-            <Link to={`/b2b/${r.kind === "rental" ? "mietanfragen" : "verkaufsanfragen"}?status=all&anfrage=${r.id}`} className="flex flex-wrap items-center justify-between gap-2 px-4 py-2 text-sm hover:bg-muted">
+            <Link to={r.kind === "rental" ? `/b2b/mietanfragen/${r.id}` : `/b2b/verkaufsanfragen?status=all&anfrage=${r.id}`} className="flex flex-wrap items-center justify-between gap-2 px-4 py-2 text-sm hover:bg-muted">
               <span className="min-w-0"><span className="font-medium">{r.name}</span> <span className="text-muted-foreground">· {r.kind === "rental" ? "Miete" : "Verkauf"} · Angebot {r.offer ?? "—"}</span></span>
               <span className="text-muted-foreground">fällig seit {new Date(r.due).toLocaleDateString("de-DE")}{r.amount ? ` · ${formatEuro(Number(r.amount))} netto` : ""}</span>
             </Link>
