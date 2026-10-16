@@ -127,3 +127,14 @@ describe("Alte Angebote ohne neue Felder", () => {
     expect(normalizeExtraFields({ orderer: "  ", project: "" })).toBeUndefined();
   });
 });
+
+describe("Gesendetes Angebot erneut öffnen", () => {
+  it("liest Stückzahl und Dauer getrennt statt Stück × Dauer als Menge", () => {
+    const snap = offerPayloadToLines({
+      items: [{ product_name: "Rüttelplatte 100 kg", quantity: 10, articles: 1, duration: 10, unit: "Miettage", unit_code: "miettage", unit_price: 29, discount_percent: 0 }],
+    })!;
+    expect(snap.items[0].quantity).toBe(1);
+    expect(snap.items[0].duration).toBe(10);
+    expect(snap.items[0].unit).toBe("miettage");
+  });
+});

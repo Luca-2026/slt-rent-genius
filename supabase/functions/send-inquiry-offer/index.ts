@@ -449,6 +449,7 @@ Deno.serve(async (req: Request) => {
       deposit,
       additionalServices: [],
       staffName,
+      extraFields,
       issuingLocation: locationKey,
       deliveryAddress: deliveryRequested ? deliveryAddress : undefined,
       paymentTerms,

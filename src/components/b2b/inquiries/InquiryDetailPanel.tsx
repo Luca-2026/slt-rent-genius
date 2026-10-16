@@ -128,11 +128,18 @@ export function offerPayloadToLines(payload: unknown): {
     | undefined;
   if (!p || !Array.isArray(p.items) || p.items.length === 0) return null;
   const items: (OfferLine & { custom_period?: boolean })[] = p.items.map((raw) => {
-    const split = splitQuantity(
+    const legacy = splitQuantity(
       typeof raw.description === "string" ? raw.description : "",
       Number(raw.quantity) || 1,
       String(raw.unit ?? ""),
     );
+    // Neuere Angebote speichern Stückzahl (articles), Dauer und Einheitencode getrennt –
+    // dann diese direkt nehmen, sonst würde quantity (= Stück × Dauer) als Stückzahl gelesen.
+    const articles = Number(raw.articles);
+    const dur = Number(raw.duration);
+    const split = articles > 0 && dur > 0 && typeof raw.unit_code === "string" && raw.unit_code
+      ? { ...legacy, quantity: articles, duration: dur, unit: raw.unit_code as typeof legacy.unit }
+      : legacy;
     return ({
     product_name: String(raw.product_name ?? ""),
     description: split.description,
@@ -145,6 +152,9 @@ export function offerPayloadToLines(payload: unknown): {
     discount_percent: Number(raw.discount_percent) || 0,
     rental_start: typeof raw.rental_start === "string" ? raw.rental_start : undefined,
     rental_end: typeof raw.rental_end === "string" ? raw.rental_end : undefined,
+    ...(typeof raw.rental_start_time === "string" ? { rental_start_time: raw.rental_start_time } : {}),
+    ...(typeof raw.rental_end_time === "string" ? { rental_end_time: raw.rental_end_time } : {}),
+    ...(typeof raw.product_slug === "string" ? { product_slug: raw.product_slug } : {}),
     image_url: typeof raw.image_url === "string" ? raw.image_url : undefined,
     // Paket 3b (fehlen bei alten Angeboten)
     ...(typeof raw.group_id === "string" ? { group_id: raw.group_id } : {}),
@@ -336,7 +346,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
     let off = false;
     listServerDraftsForInquiry(inquiry.id).then((d) => !off && setServerDrafts(d));
     return () => { off = true; };
-  }, [inquiry.id]);
+    // Nach Versand/Statuswechsel neu laden, damit gelöschte Entwürfe nicht weiter angezeigt werden.
+  }, [inquiry.id, inquiry.status, inquiry.offer_number]);
 
   const handleDelete = async () => {
     setDeleting(true);
@@ -719,7 +730,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const docEl = (
     <>
       <div ref={docSectionRef}>
-        <div className="flex flex-wrap gap-2 mb-3">
+        <div className="mb-4 space-y-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
+        <div className="flex flex-wrap gap-2">
           <Button size="sm" variant={docMode === "offer" ? "default" : "outline"} onClick={() => setDocMode("offer")}>
             {inquiry.offer_number ? "Neues Angebot" : "Angebot erstellen"}
           </Button>
@@ -732,7 +744,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             <Receipt className="h-3.5 w-3.5 mr-1" /> Rechnung erstellen
           </Button>
         </div>
-        <div className="mb-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
+        <div>
           <div className="font-semibold text-sm">
             {docMode === "offer" ? "Angebot erstellen" : docMode === "revise" ? `Angebot ${inquiry.offer_number} überarbeiten` : docMode === "final" ? "Schlussrechnung erstellen" : "Rechnung erstellen"}
           </div>
@@ -745,6 +757,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               ? "Positionen prüfen und das Angebot per E-Mail senden."
               : "Endabrechnung: Positionen und Leistungszeitraum an die tatsächliche Miete anpassen (z. B. Verlängerung). Bereits erfasste Zahlungen werden abgezogen, die Rechnungsnummer wird beim Versand vergeben."}
           </p>
+        </div>
         </div>
         <InquiryOfferForm
           key={`${inquiry.id}:${docMode}:${docMode === "revise" ? inquiry.offer_number : ""}`}

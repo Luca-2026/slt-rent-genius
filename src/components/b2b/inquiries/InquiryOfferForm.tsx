@@ -982,8 +982,10 @@ export function InquiryOfferForm({
       const withPricing = await Promise.all(
         items.map(async (item) => {
           if (item.price_manual || !item.product_name.trim()) return item;
-          const pricing = item.pricing ?? (await buildLinePricing(item.product_slug, item.product_name));
-          return pricing ? { ...item, pricing } : item;
+          // Vorbelegte Positionen (z. B. nach „Entwurf verwerfen“) haben evtl. noch keinen CMS-Bezug – per Name nachschlagen.
+          const slug = item.product_slug ?? (item.pricing ? undefined : (await findCatalogProductByName(item.product_name))?.slug);
+          const pricing = item.pricing ?? (await buildLinePricing(slug, item.product_name));
+          return pricing ? { ...item, product_slug: item.product_slug ?? slug, pricing } : item;
         }),
       );
       setItems(withPricing.map((it) => applyRentalPricing(it, dayOpts)));
@@ -1314,7 +1316,7 @@ export function InquiryOfferForm({
     </p>
   );
   const actionBar = stickyActions ? (
-    <div className="sticky top-28 lg:top-32 z-20 -mx-1 rounded-lg border border-border bg-background/95 p-2 shadow-sm backdrop-blur" data-testid="offer-action-bar">
+    <div className="sticky top-28 lg:top-32 z-20 rounded-lg border border-border bg-background/95 p-2 shadow-sm backdrop-blur" data-testid="offer-action-bar">
       <div className="flex flex-wrap items-center gap-2">
         {stickyActionsLead}
         <div className="ml-auto flex flex-wrap gap-2">{previewButton}{sendButton}</div>
@@ -1368,42 +1370,33 @@ export function InquiryOfferForm({
           </Button>
         </div>
       )}
-      {inquiryType === "rental" && (
-        <div className="rounded-lg border border-border p-3 space-y-2" data-testid="extra-fields">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-medium">Angaben zum Auftrag</span>
-            {(Object.keys(EXTRA_FIELD_LABELS) as (keyof OfferExtraFields)[]).some((k) => !(k in extraFields)) && (
-              <Select value="" disabled={disabled} onValueChange={(k) => setExtraFields((prev) => ({ ...prev, [k]: prev[k as keyof OfferExtraFields] ?? "" }))}>
-                <SelectTrigger className="h-8 w-auto text-xs" aria-label="Feld hinzufügen"><SelectValue placeholder="Feld hinzufügen" /></SelectTrigger>
-                <SelectContent>
-                  {(Object.keys(EXTRA_FIELD_LABELS) as (keyof OfferExtraFields)[])
-                    .filter((k) => !(k in extraFields))
-                    .map((k) => <SelectItem key={k} value={k}>{EXTRA_FIELD_LABELS[k]}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            )}
+      <EditorSection step={1} title="Positionen" testId="section-items">
+      {isInvoice && (
+        <div className="space-y-2 rounded-md bg-muted/40 p-3">
+          <Label className="text-xs">Leistungszeitraum (erscheint auf der Rechnung)</Label>
+          <div className="grid gap-2 sm:grid-cols-2">
+            <Input
+              type="date"
+              value={servicePeriodStart}
+              onChange={(e) => setServicePeriodStart(e.target.value)}
+              disabled={disabled}
+            />
+            <Input
+              type="date"
+              value={servicePeriodEnd}
+              onChange={(e) => setServicePeriodEnd(e.target.value)}
+              disabled={disabled}
+            />
           </div>
-          {Object.keys(extraFields).length > 0 && (
-            <div className="grid gap-2 sm:grid-cols-3">
-              {(Object.keys(EXTRA_FIELD_LABELS) as (keyof OfferExtraFields)[]).filter((k) => k in extraFields).map((k) => (
-                <div key={k}>
-                  <Label className="text-xs">{EXTRA_FIELD_LABELS[k]}</Label>
-                  <div className="flex gap-1">
-                    <Input value={extraFields[k] ?? ""} disabled={disabled} maxLength={200}
-                      onChange={(e) => setExtraFields((prev) => ({ ...prev, [k]: e.target.value }))} />
-                    <Button type="button" variant="ghost" size="icon" aria-label={`${EXTRA_FIELD_LABELS[k]} entfernen`} disabled={disabled}
-                      onClick={() => setExtraFields((prev) => { const n = { ...prev }; delete n[k]; return n; })}>
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          {isSupplement && parentInvoiceNumber ? (
+            <p className="text-xs text-muted-foreground">
+              Nachtrag zu Rechnung {parentInvoiceNumber} – nur die zusätzlichen Leistungen erfassen.
+            </p>
+          ) : null}
         </div>
       )}
       {canOpenEnded && (
-        <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm cursor-pointer">
+        <label className="flex items-start gap-2 rounded-md bg-muted/40 p-3 text-sm cursor-pointer">
           <Checkbox checked={openEnded} disabled={disabled} onCheckedChange={(v) => setOpenEnded(v === true)} className="mt-0.5" />
           <span>
             <span className="font-medium">Unbefristete Monatsmiete</span>
@@ -1415,7 +1408,7 @@ export function InquiryOfferForm({
         </label>
       )}
       {showDayBoxes && (
-        <div className="flex flex-wrap gap-4 rounded-lg border border-border p-3 text-sm" data-testid="weekend-use">
+        <div className="flex flex-wrap gap-x-6 gap-y-2 rounded-md bg-muted/40 p-3 text-sm" data-testid="weekend-use">
           <span className="w-full text-xs text-muted-foreground">Bau-Artikel ab 5 Miettagen: Samstag und Sonntag zählen nur bei Einsatz.</span>
           <label className="flex items-center gap-2 cursor-pointer">
             <Checkbox checked={useSaturday} disabled={disabled} onCheckedChange={(v) => changeDayOpts({ ...dayOpts, use_saturday: v === true })} />
@@ -1473,9 +1466,9 @@ export function InquiryOfferForm({
             onDragEnd={() => { setDragIdx(null); setOverIdx(null); }}
             className={`rounded-lg border border-border p-3 space-y-2 transition-colors ${dragIdx === index ? "opacity-40" : ""} ${overIdx === index && dragIdx !== null && dragIdx !== index ? "ring-2 ring-primary/50" : ""}`}
           >
-            <div className="flex gap-2 items-start">
+            <div className="flex flex-wrap gap-2 items-start sm:flex-nowrap">
               {!isInvoice && (
-                <div className="flex shrink-0 flex-col items-center">
+                <div className="flex shrink-0 flex-row items-center sm:flex-col">
                   <button
                     type="button"
                     draggable={!disabled}
@@ -1514,7 +1507,7 @@ export function InquiryOfferForm({
                   className="h-10 w-10 rounded object-cover border border-border shrink-0"
                 />
               ) : null}
-              <div className="min-w-0 flex-1">
+              <div className="order-last min-w-0 basis-full sm:order-none sm:basis-auto sm:flex-1">
                 {inquiryType === "sales" ? (
                 <SalesProductCombobox
                   value={item.product_name}
@@ -1584,6 +1577,7 @@ export function InquiryOfferForm({
                 type="button"
                 variant="ghost"
                 size="icon"
+                className="ml-auto sm:ml-0"
                 onClick={() => setItems((prev) => prev.filter((_, i) => i !== index))}
                 disabled={disabled || items.length === 1}
                 aria-label="Position entfernen"
@@ -1633,7 +1627,7 @@ export function InquiryOfferForm({
               disabled={disabled || inherited}
             />
             {pricingActive && !openEnded && (
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2" data-testid="position-period">
+              <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,7.5rem)] gap-x-3 gap-y-2" data-testid="position-period">
                 <div>
                   <Label className="text-xs">Mietbeginn</Label>
                   <Input type="date" value={item.rental_start ?? ""} disabled={disabled}
@@ -1685,13 +1679,14 @@ export function InquiryOfferForm({
                 </span>
               </label>
             )}
-            <div className="grid grid-cols-2 sm:grid-cols-6 gap-2" data-testid="position-columns">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2" data-testid="position-columns">
               <div>
                 <Label className="text-xs">Menge</Label>
                 <div className="flex gap-1">
                   <NumberInput
                     type="number"
                     min={1}
+                    className="min-w-0 flex-1"
                     value={item.quantity}
                     onChange={(e) => patchItem(index, { quantity: Number(e.target.value) || 0 })}
                     disabled={disabled}
@@ -1708,7 +1703,7 @@ export function InquiryOfferForm({
                   </Select>
                 </div>
               </div>
-              <div className="sm:col-span-2">
+              <div className="min-w-0">
                 <Label className="text-xs">Dauer</Label>
                 <div className="flex gap-1">
                   {isFlatRate ? (
@@ -1719,6 +1714,7 @@ export function InquiryOfferForm({
                     <NumberInput
                       type="number"
                       min={1}
+                      className="w-20 shrink-0"
                       value={eff.duration ?? 1}
                       onChange={(e) => patchItem(index, { duration: Number(e.target.value) || 0 })}
                       disabled={disabled || inherited}
@@ -1736,7 +1732,7 @@ export function InquiryOfferForm({
                       })
                     }
                   >
-                    <SelectTrigger className="h-10 w-36 shrink-0" aria-label="Einheit der Dauer"><SelectValue /></SelectTrigger>
+                    <SelectTrigger className="h-10 min-w-0 flex-1" aria-label="Einheit der Dauer"><SelectValue /></SelectTrigger>
                     <SelectContent>
                       {OFFER_UNITS.filter((u) => u.value !== "stueck" || eff.unit === "stueck").map((u) => (
                         <SelectItem key={u.value} value={u.value}>{u.label}</SelectItem>
@@ -1783,8 +1779,9 @@ export function InquiryOfferForm({
                   disabled={disabled}
                 />
               </div>
-              <div className="flex items-end text-sm font-semibold">
-                {formatEuro(lineTotal(eff))}
+              <div className="flex items-baseline justify-between gap-2 border-t border-border pt-2 text-sm sm:col-span-2">
+                <span className="text-xs text-muted-foreground">Positionssumme netto</span>
+                <span className="font-semibold tabular-nums">{formatEuro(lineTotal(eff))}</span>
               </div>
             </div>
 
@@ -1922,172 +1919,6 @@ export function InquiryOfferForm({
           );
         })()}
       </div>
-
-      <div className="rounded-lg border border-border p-3 space-y-3">
-        <label className="flex items-start gap-2 text-sm font-medium cursor-pointer">
-          <Checkbox
-            checked={delivery.requested}
-            onCheckedChange={(v) => setDelivery({ ...delivery, requested: v === true })}
-            disabled={disabled}
-            className="mt-0.5"
-          />
-          <span>
-            Lieferadresse im {isInvoice ? "Rechnungsdokument" : "Angebot"} ausweisen
-            {defaultDelivery?.requested ? (
-              <span className="block text-xs font-normal text-muted-foreground">
-                Vom Kunden im Anfrageformular angegeben – hier änderbar.
-              </span>
-            ) : null}
-          </span>
-        </label>
-        {delivery.requested && (
-          <div className="grid gap-2 sm:grid-cols-2">
-            <div className="sm:col-span-2">
-              <Label className="text-xs">Straße und Hausnummer</Label>
-              <Input
-                value={delivery.street}
-                onChange={(e) => setDelivery({ ...delivery, street: e.target.value })}
-                placeholder="Baustelle Nord 4"
-                disabled={disabled}
-              />
-            </div>
-            <div>
-              <Label className="text-xs">PLZ</Label>
-              <Input
-                value={delivery.postal_code}
-                onChange={(e) => setDelivery({ ...delivery, postal_code: e.target.value })}
-                inputMode="numeric"
-                disabled={disabled}
-              />
-            </div>
-            <div>
-              <Label className="text-xs">Ort</Label>
-              <Input
-                value={delivery.city}
-                onChange={(e) => setDelivery({ ...delivery, city: e.target.value })}
-                disabled={disabled}
-              />
-            </div>
-          </div>
-        )}
-      </div>
-
-
-
-      {inquiryType === "rental" && (
-        <div className="rounded-lg border border-border p-3 space-y-2">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <div>
-              <Label className="text-xs">Rückgabe</Label>
-              <Select
-                value={activeReturnLocation || "same"}
-                onValueChange={(v) => setReturnLocation(v === "same" ? "" : v)}
-                disabled={disabled}
-              >
-                <SelectTrigger aria-label="Rückgabestandort"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="same">Am Abholstandort ({LOCATION_LABELS[normalizeLocation(location) ?? ""] ?? location ?? "–"})</SelectItem>
-                  {(["krefeld", "bonn", "muelheim"] as const)
-                    .filter((k) => k !== normalizeLocation(location))
-                    .map((k) => (
-                      <SelectItem key={k} value={k}>Rückgabe in {LOCATION_LABELS[k]}</SelectItem>
-                    ))}
-                </SelectContent>
-              </Select>
-            </div>
-            {activeReturnLocation && (
-              <div>
-                <Label className="text-xs">Aufpreis Rückgabe (netto, €)</Label>
-                <NumberInput type="number" min={0} step="0.01" value={returnLocationCost}
-                  onChange={(e) => setReturnLocationCost(Number(e.target.value) || 0)} disabled={disabled} />
-              </div>
-            )}
-          </div>
-          {activeReturnLocation && (
-            <p className="text-xs text-muted-foreground">
-              Abholung {LOCATION_LABELS[normalizeLocation(location) ?? ""] ?? location}, Rückgabe {LOCATION_LABELS[activeReturnLocation]}.
-              Der Aufpreis erscheint als eigene Position im Dokument (0 € = ohne Aufpreis, nur Hinweis).
-            </p>
-          )}
-        </div>
-      )}
-
-      <div className="flex flex-wrap items-center gap-2" data-testid="order-type">
-        <span className="text-xs text-muted-foreground">Auftragsart</span>
-        {(["pickup", "delivery"] as const).map((t) => (
-          <Button key={t} type="button" size="sm" variant={orderType === t ? "default" : "outline"} disabled={disabled}
-            aria-pressed={orderType === t} onClick={() => setOrderType(t)}>
-            {t === "pickup" ? "Abholung" : "Lieferung"}
-          </Button>
-        ))}
-        {orderType === "delivery" && deliveryCostDelivery + deliveryCostReturn <= 0 && (
-          <span className="text-xs text-muted-foreground">Kostenfreie Lieferung</span>
-        )}
-      </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-        <div>
-          <Label className="text-xs">Lieferkosten</Label>
-          <NumberInput type="number" min={0} step="0.01" value={deliveryCostDelivery}
-            onChange={(e) => changeDeliveryCost(Number(e.target.value) || 0)} disabled={disabled} />
-        </div>
-        <div>
-          <Label className="text-xs">Abholkosten</Label>
-          <NumberInput type="number" min={0} step="0.01" value={deliveryCostReturn}
-            onChange={(e) => changeReturnCost(Number(e.target.value) || 0)} disabled={disabled} />
-        </div>
-        <div>
-          <Label className="text-xs">Aufbau</Label>
-          <NumberInput type="number" min={0} step="0.01" value={setupCost}
-            onChange={(e) => setSetupCost(Number(e.target.value) || 0)} disabled={disabled} />
-        </div>
-        <div>
-          <Label className="text-xs">Abbau</Label>
-          <NumberInput type="number" min={0} step="0.01" value={dismantleCost}
-            onChange={(e) => setDismantleCost(Number(e.target.value) || 0)} disabled={disabled} />
-        </div>
-        <div>
-          <Label className="text-xs">Kaution</Label>
-          <NumberInput type="number" min={0} step="0.01" value={deposit}
-            onChange={(e) => setDeposit(Number(e.target.value) || 0)} disabled={disabled} />
-        </div>
-        {!isInvoice && (
-          <div>
-            <Label className="text-xs">Gültig (Tage)</Label>
-            <NumberInput type="number" min={1} max={180} value={validDays}
-              onChange={(e) => setValidDays(Number(e.target.value) || 14)} disabled={disabled} />
-          </div>
-        )}
-      </div>
-
-      {depositWarning && (
-        <OfferDepositWarning acknowledged={depositAcknowledged} onAcknowledge={setDepositAcknowledged} disabled={disabled} />
-      )}
-
-      {isInvoice && (
-        <div className="rounded-lg border border-border p-3 space-y-2">
-          <Label className="text-xs">Leistungszeitraum (erscheint auf der Rechnung)</Label>
-          <div className="grid gap-2 sm:grid-cols-2">
-            <Input
-              type="date"
-              value={servicePeriodStart}
-              onChange={(e) => setServicePeriodStart(e.target.value)}
-              disabled={disabled}
-            />
-            <Input
-              type="date"
-              value={servicePeriodEnd}
-              onChange={(e) => setServicePeriodEnd(e.target.value)}
-              disabled={disabled}
-            />
-          </div>
-          {isSupplement && parentInvoiceNumber ? (
-            <p className="text-xs text-muted-foreground">
-              Nachtrag zu Rechnung {parentInvoiceNumber} – nur die zusätzlichen Leistungen erfassen.
-            </p>
-          ) : null}
-        </div>
-      )}
-
       {isInvoice && pendingCharges.length > 0 && (
         <div className="rounded-lg border border-accent/40 bg-accent/5 p-3 space-y-2">
           <Label className="text-xs">Offene Posten aus dem Rücknahmeprotokoll</Label>
@@ -2146,26 +1977,149 @@ export function InquiryOfferForm({
           ))}
         </div>
       )}
+      </EditorSection>
 
-
-      {isInvoice && takenChargesGross > 0 && (
-        <div className="rounded-lg border border-border p-3 space-y-1 text-sm">
-          <Label className="text-xs">Verrechnung mit der Kaution</Label>
-          <div className="flex justify-between gap-2"><span>Zusatzkosten brutto</span><span>{formatEuro(takenChargesGross)}</span></div>
-          <div className="flex justify-between gap-2"><span>Gezahlte Kaution</span><span>{formatEuro(settlement.depositHeld)}</span></div>
-          {settlement.offset > 0 ? (
-            <>
-              <div className="flex justify-between gap-2"><span>Verrechnet</span><span>− {formatEuro(settlement.offset)}</span></div>
-              <div className="flex justify-between gap-2 font-semibold"><span>Kaution zurück an Kunden</span><span>{formatEuro(settlement.refund)}</span></div>
-              <p className="text-xs text-muted-foreground break-words">Erscheint als Hinweis auf der Rechnung: „{settlementNote}“</p>
-            </>
-          ) : (
-            <p className="text-xs text-muted-foreground">Keine gezahlte Kaution erkannt – die Zusatzkosten werden als offener Betrag ausgewiesen. Ist die Kaution eingegangen, bitte unter „Bereits erhaltene Zahlungen“ erfassen.</p>
+      <EditorSection step={2} title={inquiryType === "rental" ? "Abholung, Lieferung & Rückgabe" : "Lieferung"} testId="section-logistics">
+      <div className="flex flex-wrap items-center gap-2" data-testid="order-type">
+        <span className="text-xs text-muted-foreground">Auftragsart</span>
+        {(["pickup", "delivery"] as const).map((t) => (
+          <Button key={t} type="button" size="sm" variant={orderType === t ? "default" : "outline"} disabled={disabled}
+            aria-pressed={orderType === t} onClick={() => setOrderType(t)}>
+            {t === "pickup" ? "Abholung" : "Lieferung"}
+          </Button>
+        ))}
+        {orderType === "delivery" && deliveryCostDelivery + deliveryCostReturn <= 0 && (
+          <span className="text-xs text-muted-foreground">Kostenfreie Lieferung</span>
+        )}
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div>
+          <Label className="text-xs">Lieferkosten</Label>
+          <NumberInput type="number" min={0} step="0.01" value={deliveryCostDelivery}
+            onChange={(e) => changeDeliveryCost(Number(e.target.value) || 0)} disabled={disabled} />
+        </div>
+        <div>
+          <Label className="text-xs">Abholkosten</Label>
+          <NumberInput type="number" min={0} step="0.01" value={deliveryCostReturn}
+            onChange={(e) => changeReturnCost(Number(e.target.value) || 0)} disabled={disabled} />
+        </div>
+        <div>
+          <Label className="text-xs">Aufbau</Label>
+          <NumberInput type="number" min={0} step="0.01" value={setupCost}
+            onChange={(e) => setSetupCost(Number(e.target.value) || 0)} disabled={disabled} />
+        </div>
+        <div>
+          <Label className="text-xs">Abbau</Label>
+          <NumberInput type="number" min={0} step="0.01" value={dismantleCost}
+            onChange={(e) => setDismantleCost(Number(e.target.value) || 0)} disabled={disabled} />
+        </div>
+      </div>
+      <div className="space-y-3 border-t border-border pt-4">
+        <label className="flex items-start gap-2 text-sm font-medium cursor-pointer">
+          <Checkbox
+            checked={delivery.requested}
+            onCheckedChange={(v) => setDelivery({ ...delivery, requested: v === true })}
+            disabled={disabled}
+            className="mt-0.5"
+          />
+          <span>
+            Lieferadresse im {isInvoice ? "Rechnungsdokument" : "Angebot"} ausweisen
+            {defaultDelivery?.requested ? (
+              <span className="block text-xs font-normal text-muted-foreground">
+                Vom Kunden im Anfrageformular angegeben – hier änderbar.
+              </span>
+            ) : null}
+          </span>
+        </label>
+        {delivery.requested && (
+          <div className="grid gap-2 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <Label className="text-xs">Straße und Hausnummer</Label>
+              <Input
+                value={delivery.street}
+                onChange={(e) => setDelivery({ ...delivery, street: e.target.value })}
+                placeholder="Baustelle Nord 4"
+                disabled={disabled}
+              />
+            </div>
+            <div>
+              <Label className="text-xs">PLZ</Label>
+              <Input
+                value={delivery.postal_code}
+                onChange={(e) => setDelivery({ ...delivery, postal_code: e.target.value })}
+                inputMode="numeric"
+                disabled={disabled}
+              />
+            </div>
+            <div>
+              <Label className="text-xs">Ort</Label>
+              <Input
+                value={delivery.city}
+                onChange={(e) => setDelivery({ ...delivery, city: e.target.value })}
+                disabled={disabled}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+      {inquiryType === "rental" && (
+        <div className="space-y-2 border-t border-border pt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div>
+              <Label className="text-xs">Rückgabe</Label>
+              <Select
+                value={activeReturnLocation || "same"}
+                onValueChange={(v) => setReturnLocation(v === "same" ? "" : v)}
+                disabled={disabled}
+              >
+                <SelectTrigger aria-label="Rückgabestandort"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="same">Am Abholstandort ({LOCATION_LABELS[normalizeLocation(location) ?? ""] ?? location ?? "–"})</SelectItem>
+                  {(["krefeld", "bonn", "muelheim"] as const)
+                    .filter((k) => k !== normalizeLocation(location))
+                    .map((k) => (
+                      <SelectItem key={k} value={k}>Rückgabe in {LOCATION_LABELS[k]}</SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            </div>
+            {activeReturnLocation && (
+              <div>
+                <Label className="text-xs">Aufpreis Rückgabe (netto, €)</Label>
+                <NumberInput type="number" min={0} step="0.01" value={returnLocationCost}
+                  onChange={(e) => setReturnLocationCost(Number(e.target.value) || 0)} disabled={disabled} />
+              </div>
+            )}
+          </div>
+          {activeReturnLocation && (
+            <p className="text-xs text-muted-foreground">
+              Abholung {LOCATION_LABELS[normalizeLocation(location) ?? ""] ?? location}, Rückgabe {LOCATION_LABELS[activeReturnLocation]}.
+              Der Aufpreis erscheint als eigene Position im Dokument (0 € = ohne Aufpreis, nur Hinweis).
+            </p>
           )}
         </div>
       )}
+      </EditorSection>
 
-      <div className="rounded-lg border border-border p-3 space-y-2">
+      <EditorSection step={3} title={isInvoice ? "Zahlung & Verrechnung" : "Kaution, Gültigkeit & Zahlung"} testId="section-payment">
+      <div className="grid grid-cols-2 gap-3 sm:max-w-md">
+        <div>
+          <Label className="text-xs">Kaution</Label>
+          <NumberInput type="number" min={0} step="0.01" value={deposit}
+            onChange={(e) => setDeposit(Number(e.target.value) || 0)} disabled={disabled} />
+        </div>
+        {!isInvoice && (
+          <div>
+            <Label className="text-xs">Gültig (Tage)</Label>
+            <NumberInput type="number" min={1} max={180} value={validDays}
+              onChange={(e) => setValidDays(Number(e.target.value) || 14)} disabled={disabled} />
+          </div>
+        )}
+      </div>
+      {depositWarning && (
+        <OfferDepositWarning acknowledged={depositAcknowledged} onAcknowledge={setDepositAcknowledged} disabled={disabled} />
+      )}
+      <div className="space-y-2 border-t border-border pt-4">
         <Label className="text-xs">
           Zahlungsbedingungen ({customerKind === "business" ? "Geschäftskunde" : "Privatkunde"})
         </Label>
@@ -2197,14 +2151,24 @@ export function InquiryOfferForm({
                 : "Rechnungszahlung nach Mietende innerhalb der gewählten Frist; es gilt die Angebotsgültigkeit."}
         </p>
       </div>
-
-      <div>
-        <Label className="text-xs">Hinweis für den Kunden (optional)</Label>
-        <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} disabled={disabled} />
-      </div>
-
+      {isInvoice && takenChargesGross > 0 && (
+        <div className="space-y-1 border-t border-border pt-4 text-sm">
+          <Label className="text-xs">Verrechnung mit der Kaution</Label>
+          <div className="flex justify-between gap-2"><span>Zusatzkosten brutto</span><span>{formatEuro(takenChargesGross)}</span></div>
+          <div className="flex justify-between gap-2"><span>Gezahlte Kaution</span><span>{formatEuro(settlement.depositHeld)}</span></div>
+          {settlement.offset > 0 ? (
+            <>
+              <div className="flex justify-between gap-2"><span>Verrechnet</span><span>− {formatEuro(settlement.offset)}</span></div>
+              <div className="flex justify-between gap-2 font-semibold"><span>Kaution zurück an Kunden</span><span>{formatEuro(settlement.refund)}</span></div>
+              <p className="text-xs text-muted-foreground break-words">Erscheint als Hinweis auf der Rechnung: „{settlementNote}“</p>
+            </>
+          ) : (
+            <p className="text-xs text-muted-foreground">Keine gezahlte Kaution erkannt – die Zusatzkosten werden als offener Betrag ausgewiesen. Ist die Kaution eingegangen, bitte unter „Bereits erhaltene Zahlungen“ erfassen.</p>
+          )}
+        </div>
+      )}
       {isInvoice && (
-        <div className="rounded-lg border border-border p-3 space-y-2">
+        <div className="space-y-2 border-t border-border pt-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <Label className="text-xs">Bereits erhaltene Zahlungen (z. B. Vorkasse auf das Angebot)</Label>
             <Button
@@ -2306,6 +2270,48 @@ export function InquiryOfferForm({
           ))}
         </div>
       )}
+      </EditorSection>
+
+      <EditorSection step={4} title={inquiryType === "rental" ? "Angaben zum Auftrag & Hinweis" : "Hinweis für den Kunden"} testId="section-notes">
+      {inquiryType === "rental" && (
+        <div className="space-y-2" data-testid="extra-fields">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs text-muted-foreground">Besteller, Kostenstelle, Bauvorhaben – erscheinen im Angebot</span>
+            {(Object.keys(EXTRA_FIELD_LABELS) as (keyof OfferExtraFields)[]).some((k) => !(k in extraFields)) && (
+              <Select value="" disabled={disabled} onValueChange={(k) => setExtraFields((prev) => ({ ...prev, [k]: prev[k as keyof OfferExtraFields] ?? "" }))}>
+                <SelectTrigger className="h-8 w-auto text-xs" aria-label="Feld hinzufügen"><SelectValue placeholder="Feld hinzufügen" /></SelectTrigger>
+                <SelectContent>
+                  {(Object.keys(EXTRA_FIELD_LABELS) as (keyof OfferExtraFields)[])
+                    .filter((k) => !(k in extraFields))
+                    .map((k) => <SelectItem key={k} value={k}>{EXTRA_FIELD_LABELS[k]}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            )}
+          </div>
+          {Object.keys(extraFields).length > 0 && (
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {(Object.keys(EXTRA_FIELD_LABELS) as (keyof OfferExtraFields)[]).filter((k) => k in extraFields).map((k) => (
+                <div key={k}>
+                  <Label className="text-xs">{EXTRA_FIELD_LABELS[k]}</Label>
+                  <div className="flex gap-1">
+                    <Input value={extraFields[k] ?? ""} disabled={disabled} maxLength={200}
+                      onChange={(e) => setExtraFields((prev) => ({ ...prev, [k]: e.target.value }))} />
+                    <Button type="button" variant="ghost" size="icon" aria-label={`${EXTRA_FIELD_LABELS[k]} entfernen`} disabled={disabled}
+                      onClick={() => setExtraFields((prev) => { const n = { ...prev }; delete n[k]; return n; })}>
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+      <div className="space-y-1">
+        <Label className="text-xs">Hinweis für den Kunden (optional)</Label>
+        <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} disabled={disabled} />
+      </div>
+      </EditorSection>
 
       <div className="rounded-lg bg-muted p-3 text-sm space-y-1">
         <div className="flex justify-between"><span>Mietartikel</span><span>{formatEuro(totals.itemsNet)}</span></div>
@@ -2411,5 +2417,19 @@ export function InquiryOfferForm({
       </Dialog>
       {!stickyActions && actionHint}
     </div>
+  );
+}
+
+
+/** Nummerierter Editor-Abschnitt – feste Reihenfolge: Positionen → Logistik → Zahlung → Angaben → Summe. */
+function EditorSection({ step, title, testId, children }: { step: number; title: string; testId?: string; children: ReactNode }) {
+  return (
+    <section className="min-w-0 space-y-4 rounded-lg border border-border bg-card p-3 sm:p-4" data-testid={testId}>
+      <header className="flex items-center gap-2">
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">{step}</span>
+        <h3 className="text-sm font-semibold">{title}</h3>
+      </header>
+      {children}
+    </section>
   );
 }

@@ -25,6 +25,8 @@ export async function generateOfferPdf(data: {
   deposit: number;
   additionalServices?: any[];
   staffName: string;
+  /** Paket 3b: Besteller, Kostenstelle, Bauvorhaben – im Infoblock ausgewiesen. */
+  extraFields?: { orderer?: string; cost_center?: string; project?: string };
   issuingLocation: string;
   returnLocation?: string;
   deliveryAddress?: { street?: string; postal_code?: string; city?: string };
@@ -322,6 +324,9 @@ export async function generateOfferPdf(data: {
       infoRow("Kundennummer:", String(data.profile.id).substring(0, 8).toUpperCase());
     }
 
+    if (data.extraFields?.orderer) infoRow("Besteller:", data.extraFields.orderer);
+    if (data.extraFields?.cost_center) infoRow("Kostenstelle:", data.extraFields.cost_center);
+    if (data.extraFields?.project) infoRow("Bauvorhaben:", data.extraFields.project);
     infoRow("Ansprechpartner:", data.staffName || SLT_COMPANY.managingDirector);
     infoRow("Ausgabestandort:", issuingLoc.name);
     infoSub(`${issuingLoc.address}, ${issuingLoc.city}`);
@@ -639,15 +644,17 @@ export async function generateOfferPdf(data: {
   } else {
     dt(pg, `USt. ${data.vatRate}%`, tx, y, font, 9, MUTED); dtr(pg, fm(data.vatAmount), vx, y, font, 9); y -= 13;
   }
-  if (data.deposit && data.deposit > 0) {
-    dt(pg, "Kaution (umsatzsteuerfrei)", tx, y, font, 9, MUTED); dtr(pg, fm(data.deposit), vx, y, font, 9); y -= 13;
-  }
-  y -= 6;
+  y -= 8;
   pg.drawRectangle({ x: tx - 6, y: y - 4, width: vx - tx + 10, height: 22, color: rgb(0.94, 0.96, 0.98) });
   pg.drawRectangle({ x: tx - 6, y: y + 17, width: vx - tx + 10, height: 1, color: BRAND });
   dt(pg, isCreditNote ? "Gutschriftbetrag" : "Gesamtbetrag", tx, y + 4, bold, 11, BRAND);
   dtr(pg, isCreditNote ? `-${fm(data.grossAmount)}` : fm(data.grossAmount), vx, y + 4, bold, 12, BRAND);
-  y -= 38;
+  y -= 20;
+  // Kaution separat unter dem Gesamtbetrag – sie ist nicht Teil der Summe.
+  if (data.deposit && data.deposit > 0) {
+    dt(pg, "zzgl. Kaution (umsatzsteuerfrei)", tx, y, font, 9, MUTED); dtr(pg, fm(data.deposit), vx, y, font, 9); y -= 13;
+  }
+  y -= 18;
 
   // ── Bereits geleistete (Teil-)Zahlungen und Restbetrag ──
   const payments = (data.payments || []).filter((p) => Number(p.amount) > 0);
