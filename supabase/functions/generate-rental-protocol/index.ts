@@ -31,7 +31,8 @@ const Body = z.object({
   items_confirmed: z.boolean(),
   operating_hours: z.string().max(40).nullable(),
   fuel_level: z.string().max(20).nullable(),
-  machine_readings: z.array(z.object({ item_name: z.string().max(200), operating_hours: z.string().max(20), fuel_level: z.string().max(20), mileage: z.string().max(20).optional().default(""), managed_product_id: z.string().uuid().nullable().optional() })).max(30).optional().default([]),
+  machine_readings: z.array(z.object({ item_name: z.string().max(200), operating_hours: z.string().max(20), fuel_level: z.string().max(20), mileage: z.string().max(20).optional().default(""), managed_product_id: z.string().uuid().nullable().optional(), cleanliness: z.string().max(10).optional().default("") })).max(30).optional().default([]),
+  item_cleanliness: z.array(z.object({ item_name: z.string().max(300), rating: z.number().int().min(1).max(5), units: z.number().int().min(1).max(999).nullable(), comment: z.string().max(500).nullable() })).max(60).optional().default([]),
   instructed: z.boolean().optional().default(false),
   cleanliness_rating: z.number().int().min(1).max(5).nullable(),
   known_defects: z.string().max(2000).nullable(),
@@ -102,7 +103,7 @@ Deno.serve(async (req) => {
     if (totalPhotos > MAX_PHOTOS) return json({ error: `Maximal ${MAX_PHOTOS} Fotos je Protokoll (gesendet: ${totalPhotos}).` }, 400);
     if (!b.customer_not_present) {
       if (!b.customer_signature || !b.customer_signer_name) return json({ error: "Unterschrift und Name des Kunden fehlen." }, 400);
-      if (!b.id_checked) return json({ error: "Der Ausweisabgleich fehlt." }, 400);
+      if (!isReturn && !b.id_checked) return json({ error: "Der Ausweisabgleich fehlt." }, 400);
       if (!b.items_confirmed || (!isReturn && !b.agb_accepted)) return json({ error: "Die Best\u00E4tigungen des Kunden fehlen." }, 400);
     }
 
