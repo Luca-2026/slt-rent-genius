@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { inquiryStatusLabel } from "@/lib/inquiryStatus";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 
 const STORAGE_KEY = "offerOverview.filters";
@@ -38,11 +39,6 @@ interface Filters {
   sort: "created_desc" | "created_asc" | "number_desc" | "total_desc";
 }
 const DEFAULTS: Filters = { status: "all", location: "all", from: "", to: "", q: "", sort: "created_desc" };
-
-const STATUS_LABEL: Record<string, string> = {
-  new: "Neu", in_progress: "In Bearbeitung", offer_sent: "Angebot gesendet", confirmed: "Bestätigt",
-  done: "Erledigt", rejected: "Abgelehnt", cancelled: "Storniert",
-};
 
 const fmtDate = (d: string | null | undefined) => (d ? new Date(d.length === 10 ? `${d}T12:00:00` : d).toLocaleDateString("de-DE", { timeZone: "Europe/Berlin" }) : "–");
 const eur = (n: number | null) => (n == null ? "–" : n.toLocaleString("de-DE", { style: "currency", currency: "EUR" }));
@@ -121,7 +117,7 @@ export default function OfferOverview() {
           <SelectTrigger aria-label="Status"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Alle Status</SelectItem>
-            {statuses.map((s) => <SelectItem key={s} value={s}>{STATUS_LABEL[s] ?? s}</SelectItem>)}
+            {statuses.map((s) => <SelectItem key={s} value={s}>{inquiryStatusLabel(s)}</SelectItem>)}
           </SelectContent>
         </Select>
         <Select value={f.location} onValueChange={(v) => set("location", v)}>
@@ -176,7 +172,7 @@ export default function OfferOverview() {
                     <div className="flex flex-wrap gap-1 whitespace-nowrap">
                       <InquiryStatusBadge status={r.status} />
                       {r.offer_sent_at && r.status !== "offer_sent" && <Badge variant="outline">gesendet</Badge>}
-                      {r.offer_accepted_at && r.status !== "confirmed" && <Badge variant="secondary">angenommen</Badge>}
+                      {r.offer_accepted_at && r.status !== "accepted" && <Badge variant="secondary">angenommen</Badge>}
                     </div>
                   </TableCell>
                   <TableCell className="hidden whitespace-nowrap xl:table-cell">{fmtDate(createdOf(r))}</TableCell>
