@@ -107,6 +107,8 @@ type FormLine = OfferLine & {
   unit_manual?: boolean;
   /** Anzeige der verwendeten Staffel, z. B. "ab 3 Miettagen". */
   tier_label?: string;
+  /** Vom Kunden im Anfrageformular gewählte Zusatzoptionen – werden beim Laden vorbelegt. */
+  requested_addon_keys?: string[];
 };
 
 /**
