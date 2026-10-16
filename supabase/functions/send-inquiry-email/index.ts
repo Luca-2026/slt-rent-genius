@@ -348,7 +348,7 @@ serve(async (req) => {
       if (!res2.ok) console.error("Resend confirmation error:", await res2.text());
     } else {
       console.log("=== INQUIRY (no RESEND_API_KEY) ===");
-      console.log({ productName, locationName, name, email });
+      console.log("Inquiry received (email not sent)", { locationName });
     }
 
     return new Response(

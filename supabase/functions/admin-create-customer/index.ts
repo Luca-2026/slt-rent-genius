@@ -74,7 +74,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: CreateCustomerRequest = await req.json();
-    console.log("Creating customer:", body.email, body.company_name);
+    console.log("Creating customer");
 
     // Validate required fields
     if (!body.email || !body.password || !body.company_name || !body.contact_first_name || 
@@ -205,7 +205,7 @@ Deno.serve(async (req: Request) => {
 
         if (emailRes.ok) {
           emailSent = true;
-          console.log("Welcome email sent to:", body.email);
+          console.log("Welcome email sent");
         } else {
           const errBody = await emailRes.text();
           console.error("Resend API error:", emailRes.status, errBody);

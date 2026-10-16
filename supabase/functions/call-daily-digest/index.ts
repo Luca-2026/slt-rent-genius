@@ -84,7 +84,8 @@ Deno.serve(async (req) => {
       if (!u?.user) return json({ error: "Unauthorized" }, 401);
       const { data: isStaff } = await svc.rpc("is_staff_member", { _user_id: u.user.id });
       if (!isStaff) return json({ error: "Forbidden" }, 403);
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(testTo)) return json({ error: "Ungültige Test-Adresse" }, 400);
+      const allowedTest = new Set(["luca@sandhoff.org", (u.user.email ?? "").toLowerCase()].filter(Boolean));
+      if (!allowedTest.has(testTo.toLowerCase())) return json({ error: "Testversand nur an die eigene Adresse" }, 403);
     } else if (!testTo) {
       if (!(await isCronCall(req, svc))) return json({ error: "Unauthorized" }, 401);
       // Geplanter Lauf: nur um 20 Uhr Berliner Zeit (Cron läuft 18 und 19 UTC wegen Sommer-/Winterzeit).

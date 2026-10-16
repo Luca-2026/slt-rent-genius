@@ -732,7 +732,7 @@ Deno.serve(async (req: Request) => {
 
         if (emailRes.ok) {
           emailSent = true;
-          console.log("Invoice email sent to:", customerEmail);
+          console.log("Invoice email sent");
           await serviceClient
             .from("b2b_invoices")
             .update({ email_sent: true, email_sent_at: new Date().toISOString() })

@@ -632,7 +632,7 @@ Deno.serve(async (req: Request) => {
 
         if (emailRes.ok) {
           emailSent = true;
-          console.log("Return protocol email sent to:", customerEmail);
+          console.log("Return protocol email sent");
           await serviceClient
             .from("b2b_return_protocols")
             .update({ email_sent: true, email_sent_at: new Date().toISOString() })

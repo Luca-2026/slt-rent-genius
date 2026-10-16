@@ -208,7 +208,7 @@ Deno.serve(async (req: Request) => {
 
         if (emailRes.ok) {
           emailSent = true;
-          console.log("Admin notification email sent to:", adminEmail);
+          console.log("Admin notification email sent");
         } else {
           const errBody = await emailRes.text();
           console.error("Resend API error:", emailRes.status, errBody);

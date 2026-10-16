@@ -282,7 +282,7 @@ Deno.serve(async (req: Request) => {
 
         if (emailRes.ok) {
           emailSent = true;
-          console.log("Confirmation email sent to:", customerEmail);
+          console.log("Confirmation email sent");
         } else {
           const errBody = await emailRes.text();
           console.error("Resend API error:", emailRes.status, errBody);

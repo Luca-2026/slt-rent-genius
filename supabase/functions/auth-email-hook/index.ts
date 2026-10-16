@@ -166,7 +166,7 @@ async function handleWebhook(req: Request): Promise<Response> {
 
   const emailType = payload.data.action_type
   const recipient = payload.data.email
-  console.log('Auth email event', { emailType, recipient, run_id })
+  console.log('Auth email event', { emailType, run_id })
 
   const Template = EMAIL_TEMPLATES[emailType]
   if (!Template) {
@@ -197,7 +197,7 @@ async function handleWebhook(req: Request): Promise<Response> {
       html,
       text,
     })
-    console.log('Auth email sent via Resend', { id: result.id, recipient, emailType, run_id })
+    console.log('Auth email sent via Resend', { id: result.id, emailType, run_id })
     return new Response(JSON.stringify({ success: true, message_id: result.id }), {
       status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

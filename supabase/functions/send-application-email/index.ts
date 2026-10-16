@@ -215,7 +215,7 @@ serve(async (req) => {
       if (!res2.ok) console.error("Resend confirmation error:", await res2.text());
     } else {
       console.log("=== APPLICATION (no RESEND_API_KEY) ===");
-      console.log({ jobTitle, firstName, lastName, email, attachments: attachments.length });
+      console.log("Application received (email not sent)", { attachments: attachments.length });
     }
 
     return new Response(

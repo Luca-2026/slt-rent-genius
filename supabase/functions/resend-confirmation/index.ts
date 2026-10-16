@@ -150,7 +150,7 @@ Deno.serve(async (req) => {
         });
       }
 
-      console.log(`Confirmation email resent to ${email}`);
+      console.log("Confirmation email resent");
     }
 
     return new Response(JSON.stringify({ success: true }), {

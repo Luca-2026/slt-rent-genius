@@ -49,6 +49,26 @@ Deno.serve(async (req) => {
     )
   }
 
+  // Caller must be the backend (service role) or a signed-in staff member.
+  {
+    const bearer = (req.headers.get('Authorization') ?? '').replace(/^Bearer\s+/i, '').trim()
+    let allowed = bearer !== '' && bearer === supabaseServiceKey
+    if (!allowed && bearer) {
+      const admin = createClient(supabaseUrl, supabaseServiceKey)
+      const { data: u } = await admin.auth.getUser(bearer)
+      if (u?.user) {
+        const { data: isStaff } = await admin.rpc('is_staff_member', { _user_id: u.user.id })
+        allowed = isStaff === true
+      }
+    }
+    if (!allowed) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+  }
+
   // Parse request body
   let templateName: string
   let recipientEmail: string
@@ -150,7 +170,7 @@ Deno.serve(async (req) => {
       status: 'suppressed',
     })
 
-    console.log('Email suppressed', { effectiveRecipient, templateName })
+    console.log('Email suppressed', { templateName })
     return new Response(
       JSON.stringify({ success: false, reason: 'email_suppressed' }),
       {
@@ -342,7 +362,7 @@ Deno.serve(async (req) => {
     })
   }
 
-  console.log('Transactional email enqueued', { templateName, effectiveRecipient })
+  console.log('Transactional email enqueued', { templateName })
 
   return new Response(
     JSON.stringify({ success: true, queued: true }),

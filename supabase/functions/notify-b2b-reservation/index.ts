@@ -75,7 +75,7 @@ serve(async (req) => {
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
     const locEmail = locationEmails[locationId] || "mieten@slt-rental.de";
-    const locName = locationNames[locationId] || locationId;
+    const locName = locationNames[locationId] || "SLT Rental";
     const locPhone = locationPhones[locationId] || "02151 417 99 04";
     const locAddress = locationAddresses[locationId] || "Anrather Straße 291, 47807 Krefeld";
 
@@ -221,7 +221,7 @@ serve(async (req) => {
       if (!res2.ok) console.error("Resend confirmation error:", await res2.text());
     } else {
       console.log("=== B2B RESERVATION NOTIFICATION (no RESEND_API_KEY) ===");
-      console.log({ companyName, contactName, contactEmail, locationId, items });
+      console.log("Reservation notification not sent (no RESEND_API_KEY)", { locationId });
     }
 
     return new Response(

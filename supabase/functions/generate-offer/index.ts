@@ -446,7 +446,7 @@ Deno.serve(async (req: Request) => {
 
     const { data: signedUrlData } = await serviceClient.storage
       .from("b2b-invoices")
-      .createSignedUrl(filePath, 60 * 60 * 24 * 365);
+      .createSignedUrl(filePath, 60 * 60);
 
     const fileUrl = signedUrlData?.signedUrl || "";
 
@@ -820,7 +820,7 @@ Deno.serve(async (req: Request) => {
 
         if (emailRes.ok) {
           emailSent = true;
-          console.log("Offer email sent to:", customerEmail);
+          console.log("Offer email sent");
 
           await serviceClient
             .from("b2b_offers")

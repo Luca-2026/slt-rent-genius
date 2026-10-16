@@ -619,7 +619,7 @@ Deno.serve(async (req: Request) => {
 
         if (emailRes.ok) {
           emailSent = true;
-          console.log("Übergabeprotokoll email sent to:", customerEmail);
+          console.log("Übergabeprotokoll email sent");
 
           await serviceClient
             .from("b2b_delivery_notes")
