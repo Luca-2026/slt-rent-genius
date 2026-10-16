@@ -1075,7 +1075,7 @@ export function InquiryOfferForm({
         ...(!isInvoice && reviseOf ? { revise_of: reviseOf } : {}),
         location,
         // Paket 3b: Positionen in Gruppenreihenfolge (PDF ohne Überschriften, die folgen in Paket 4).
-        items: orderItemsByGroups(groups, effectiveItems).map(({ available_addons: _unused, price_source: _src, custom_period: _cp, pricing: _pr, unit_manual: _um, tier_label: _tl, discount_auto: _da, ...rest }) => {
+        items: orderItemsByGroups(groups, effectiveItems).map(({ available_addons: _unused, price_source: _src, custom_period: _cp, pricing: _pr, unit_manual: _um, tier_label: _tl, ...rest }) => {
           const unit = (rest.unit ?? "kalendertage") as OfferUnit;
           // Pauschalpositionen haben keine Dauer – der Preis gilt für den
           // gesamten Auftrag, unabhängig von der Mietzeit.
@@ -1142,6 +1142,31 @@ export function InquiryOfferForm({
   const [dragIdx, setDragIdx] = useState<number | null>(null);
   const [overIdx, setOverIdx] = useState<number | null>(null);
   const reorder = (from: number, to: number) => setItems((prev) => moveItem(prev, from, to));
+  /** Paket 3b: Position einer Gruppe zuordnen; Liste bleibt in Gruppenreihenfolge. */
+  const assignGroup = (index: number, groupId: string | undefined, list: OfferGroup[] = groups) =>
+    setItems((prev) => orderItemsByGroups(list, prev.map((it, i) => (i === index ? { ...it, group_id: groupId } : it))));
+  /** Drag-and-drop: auf eine Position einer anderen Gruppe → in deren Gruppe an diese Stelle. */
+  const dropOn = (from: number, to: number) =>
+    setItems((prev) => {
+      const target = prev[to];
+      const moved = moveItem(prev.map((it, i) => (i === from ? { ...it, group_id: target?.group_id } : it)), from, to);
+      return orderItemsByGroups(groups, moved);
+    });
+  const addManualGroup = () => {
+    const g: OfferGroup = {
+      id: newGroupId(),
+      name: `Gruppe ${groups.length + 1}`,
+      sort_order: groups.length ? Math.max(...groups.map((x) => x.sort_order)) + 1 : 0,
+      source: "manual",
+    };
+    setGroups((prev) => [...prev, g]);
+  };
+  const renameGroup = (id: string, name: string) => setGroups((prev) => prev.map((g) => (g.id === id ? { ...g, name } : g)));
+  const removeGroup = (id: string) => {
+    const next = groups.filter((g) => g.id !== id);
+    setGroups(next);
+    setItems((prev) => orderItemsByGroups(next, prev.map((it) => (it.group_id === id ? { ...it, group_id: undefined } : it))));
+  };
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewing, setPreviewing] = useState(false);
   const [previewedKey, setPreviewedKey] = useState<string | null>(null);
@@ -1343,6 +1368,40 @@ export function InquiryOfferForm({
           </Button>
         </div>
       )}
+      {inquiryType === "rental" && (
+        <div className="rounded-lg border border-border p-3 space-y-2" data-testid="extra-fields">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm font-medium">Angaben zum Auftrag</span>
+            {(Object.keys(EXTRA_FIELD_LABELS) as (keyof OfferExtraFields)[]).some((k) => !(k in extraFields)) && (
+              <Select value="" disabled={disabled} onValueChange={(k) => setExtraFields((prev) => ({ ...prev, [k]: prev[k as keyof OfferExtraFields] ?? "" }))}>
+                <SelectTrigger className="h-8 w-auto text-xs" aria-label="Feld hinzufügen"><SelectValue placeholder="Feld hinzufügen" /></SelectTrigger>
+                <SelectContent>
+                  {(Object.keys(EXTRA_FIELD_LABELS) as (keyof OfferExtraFields)[])
+                    .filter((k) => !(k in extraFields))
+                    .map((k) => <SelectItem key={k} value={k}>{EXTRA_FIELD_LABELS[k]}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            )}
+          </div>
+          {Object.keys(extraFields).length > 0 && (
+            <div className="grid gap-2 sm:grid-cols-3">
+              {(Object.keys(EXTRA_FIELD_LABELS) as (keyof OfferExtraFields)[]).filter((k) => k in extraFields).map((k) => (
+                <div key={k}>
+                  <Label className="text-xs">{EXTRA_FIELD_LABELS[k]}</Label>
+                  <div className="flex gap-1">
+                    <Input value={extraFields[k] ?? ""} disabled={disabled} maxLength={200}
+                      onChange={(e) => setExtraFields((prev) => ({ ...prev, [k]: e.target.value }))} />
+                    <Button type="button" variant="ghost" size="icon" aria-label={`${EXTRA_FIELD_LABELS[k]} entfernen`} disabled={disabled}
+                      onClick={() => setExtraFields((prev) => { const n = { ...prev }; delete n[k]; return n; })}>
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
       {canOpenEnded && (
         <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm cursor-pointer">
           <Checkbox checked={openEnded} disabled={disabled} onCheckedChange={(v) => setOpenEnded(v === true)} className="mt-0.5" />
@@ -1369,7 +1428,38 @@ export function InquiryOfferForm({
         </div>
       )}
       <div className="space-y-3">
-        {items.map((item, index) => {
+        {groupedIndices(groups, items).map(({ group, indices }) => (
+        <div key={group?.id ?? "__loose"} className="space-y-3" data-testid="offer-group">
+          {(groups.length > 0 || group) && (
+            <div
+              className="flex items-center gap-2 border-b border-border pb-1"
+              onDragOver={(e) => { if (dragIdx === null) return; e.preventDefault(); }}
+              onDrop={(e) => { e.preventDefault(); if (dragIdx !== null) assignGroup(dragIdx, group?.id); setDragIdx(null); setOverIdx(null); }}
+            >
+              {group ? (
+                <Input value={group.name} disabled={disabled} aria-label="Gruppenname" className="h-8 max-w-xs text-sm font-semibold"
+                  onChange={(e) => renameGroup(group.id, e.target.value)} />
+              ) : (
+                <span className="text-sm font-semibold">{FALLBACK_GROUP_NAME}</span>
+              )}
+              <span className="text-xs text-muted-foreground">{indices.length} {indices.length === 1 ? "Position" : "Positionen"}</span>
+              {group && (
+                <Button type="button" variant="ghost" size="icon" className="ml-auto h-8 w-8" aria-label="Gruppe entfernen" disabled={disabled}
+                  onClick={() => removeGroup(group.id)}>
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          )}
+          {indices.length === 0 && (
+            <p className="rounded-md border border-dashed border-border p-2 text-xs text-muted-foreground"
+              onDragOver={(e) => { if (dragIdx === null) return; e.preventDefault(); }}
+              onDrop={(e) => { e.preventDefault(); if (dragIdx !== null) assignGroup(dragIdx, group?.id); setDragIdx(null); setOverIdx(null); }}>
+              Position hierher ziehen oder an der Position die Gruppe wählen.
+            </p>
+          )}
+        {indices.map((index) => {
+          const item = items[index];
           const eff = effectiveItems[index] ?? item;
           const inherited = index > 0 && !item.custom_period;
           /** Pauschalposition: fester Preis, keine Mietdauer-Multiplikation. */
@@ -1379,7 +1469,7 @@ export function InquiryOfferForm({
             key={index}
             data-testid="offer-position"
             onDragOver={(e) => { if (dragIdx === null) return; e.preventDefault(); if (overIdx !== index) setOverIdx(index); }}
-            onDrop={(e) => { e.preventDefault(); if (dragIdx !== null) reorder(dragIdx, index); setDragIdx(null); setOverIdx(null); }}
+            onDrop={(e) => { e.preventDefault(); if (dragIdx !== null) dropOn(dragIdx, index); setDragIdx(null); setOverIdx(null); }}
             onDragEnd={() => { setDragIdx(null); setOverIdx(null); }}
             className={`rounded-lg border border-border p-3 space-y-2 transition-colors ${dragIdx === index ? "opacity-40" : ""} ${overIdx === index && dragIdx !== null && dragIdx !== index ? "ring-2 ring-primary/50" : ""}`}
           >
@@ -1489,7 +1579,42 @@ export function InquiryOfferForm({
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
+              {inquiryType === "rental" && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button type="button" variant="ghost" size="icon" aria-label="Weitere Aktionen" disabled={disabled}>
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onSelect={() => setOverrideIdx(index)}>Für diesen Auftrag bearbeiten</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
+            {(item.name_override || item.description_override) && (
+              <p className="text-xs text-primary">
+                Nur in diesem Angebot: {item.name_override ? <strong>{item.name_override}</strong> : null}
+                {item.name_override && item.description_override ? " · " : ""}
+                {item.description_override ?? ""}
+              </p>
+            )}
+            {inquiryType === "rental" && groups.length > 0 && (
+              <div className="flex items-center gap-2">
+                <Label className="text-xs shrink-0">Gruppe</Label>
+                <Select
+                  value={item.group_id && groups.some((g) => g.id === item.group_id) ? item.group_id : "__loose"}
+                  disabled={disabled}
+                  onValueChange={(v) => assignGroup(index, v === "__loose" ? undefined : v)}
+                >
+                  <SelectTrigger className="h-8 max-w-xs text-xs" aria-label="Gruppe der Position"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__loose">{FALLBACK_GROUP_NAME}</SelectItem>
+                    {groups.map((g) => <SelectItem key={g.id} value={g.id}>{g.name || "Ohne Namen"}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
             <Input
               value={inherited ? (eff.description ?? "") : (item.description ?? "")}
               onChange={(e) => patchItem(index, { description: e.target.value })}
@@ -1733,6 +1858,8 @@ export function InquiryOfferForm({
           </div>
           );
         })}
+        </div>
+        ))}
         <div className="flex flex-wrap gap-2">
           <Button
             type="button"
@@ -1751,6 +1878,11 @@ export function InquiryOfferForm({
           >
             <Plus className="h-4 w-4 mr-1" /> Position hinzufügen
           </Button>
+          {inquiryType === "rental" && !isInvoice && (
+            <Button type="button" variant="outline" size="sm" onClick={addManualGroup} disabled={disabled}>
+              <FolderPlus className="h-4 w-4 mr-1" /> Gruppe anlegen
+            </Button>
+          )}
           {pricingActive && (
             <Button type="button" variant="outline" size="sm" onClick={() => void recalcAllPrices()} disabled={disabled || recalculating}>
               {recalculating ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : null}
