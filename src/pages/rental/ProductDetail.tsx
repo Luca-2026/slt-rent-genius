@@ -1468,6 +1468,7 @@ export default function ProductDetail() {
                         product={product}
                         dailyPriceFrom={typeof productSEO?.dailyPriceFrom === "number" ? productSEO.dailyPriceFrom : undefined}
                         perDayLabel={t("rental.perDay")}
+                        hideExtras={showTierPrices}
                       />
                       {showTierPrices && (
                         <RentalPriceTiers
@@ -1478,11 +1479,6 @@ export default function ProductDetail() {
                         />
                       )}
                       {hasAnyPrice(product, productSEO?.dailyPriceFrom) && <p className="text-[11px] text-muted-foreground mt-1">{product.pricePerMonth && product.minRentalMonths ? `Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}</p>}
-                      {hasAnyPrice(product, productSEO?.dailyPriceFrom) && (
-                        <p className="text-[11px] leading-snug text-muted-foreground mt-1">
-                          *Unverbindlicher Ab-Preis{!product.pricePerMonth && !product.pricePerDay ? ", gerechnet auf Monatsmiete" : ""}. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
-                        </p>
-                      )}
                     </div>
 
                   <div className="space-y-2 md:space-y-1.5 lg:space-y-2 mb-3 md:mb-2 lg:mb-4">
@@ -1591,11 +1587,6 @@ function MobileBookingCard({
           />
 
           {showPrice && <p className="text-[11px] text-muted-foreground mt-1">{product.pricePerMonth && product.minRentalMonths ? `Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}</p>}
-          {showPrice && (
-            <p className="text-[11px] leading-snug text-muted-foreground mt-1">
-              *Unverbindlicher Ab-Preis{!product.pricePerMonth && !product.pricePerDay ? ", gerechnet auf Monatsmiete" : ""}. Tatsächlicher Preis abhängig von Standort, Mietdauer, Saison und Auslastung – tagesaktuell im Buchungsprozess.
-            </p>
-          )}
         </div>
       <div className="flex flex-col gap-2">
         <Button

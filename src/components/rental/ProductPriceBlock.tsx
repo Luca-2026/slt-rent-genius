@@ -18,6 +18,8 @@ export interface ProductPriceBlockProps {
   perDayLabel?: string;
   size?: "sm" | "md";
   className?: string;
+  /** Zusatztarife ausblenden, wenn darunter die Staffelpreise (inkl. Wochenendtarif) stehen. */
+  hideExtras?: boolean;
 }
 
 /** Ergänzt fehlende Währungsangabe, wenn im CMS nur eine Zahl gepflegt wurde. */
@@ -44,6 +46,7 @@ export function ProductPriceBlock({
   perDayLabel = "/Tag",
   size = "md",
   className,
+  hideExtras = false,
 }: ProductPriceBlockProps) {
   const { type } = useCustomerType();
   const hasDay = Boolean(product.pricePerDay);
@@ -75,10 +78,10 @@ export function ProductPriceBlock({
 
   // Zusatztarife (nur, was nicht schon Hauptpreis ist)
   const extras: Array<{ label: string; value: string }> = [];
-  if (product.priceWeekend && mainValue !== priceText(product.priceWeekend, type)) {
+  if (!hideExtras && product.priceWeekend && mainValue !== priceText(product.priceWeekend, type)) {
     extras.push({ label: "Wochenende", value: priceText(product.priceWeekend, type) });
   }
-  if (product.pricePerMonth && mainValue !== priceText(product.pricePerMonth, type)) {
+  if (!hideExtras && product.pricePerMonth && mainValue !== priceText(product.pricePerMonth, type)) {
     extras.push({
       label: product.minRentalMonths
         ? `Monat (ab ${product.minRentalMonths} Mon.)`
@@ -94,7 +97,6 @@ export function ProductPriceBlock({
     <div className={className}>
       <div className={`${mainSize} font-bold text-primary leading-tight`}>
         <span className="break-words">{mainValue}</span>
-        {hasPrice && <span className="text-primary">*</span>}
         {mainUnit && (
           <span className={`${unitSize} font-normal text-muted-foreground ml-1.5 whitespace-nowrap`}>{mainUnit}</span>
         )}
