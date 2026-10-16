@@ -112,7 +112,7 @@ export default function ProductDetail() {
   // damit das Anfrageformular im Vordergrund steht.
   const hasLocalRentwareCode = !!(location && rawProduct?.rentwareCode?.[location.id as keyof typeof rawProduct.rentwareCode]);
 
-  // W1: Standortpreise für den Block „Mietpreise“ (nur bei Artikeln ohne Rentware-Code).
+  // W1: Standortpreise für den Block „Preisstaffel“ (nur bei Artikeln ohne Rentware-Code).
   const showTierPrices = !hasLocalRentwareCode && !!rawProduct?.managedId;
   const { data: locationPriceRows } = useQuery({
     queryKey: ["public-product-prices", rawProduct?.managedId],

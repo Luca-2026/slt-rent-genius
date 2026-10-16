@@ -149,7 +149,7 @@ export interface RentalPriceTiersProps {
 }
 
 /**
- * W1: Block „Mietpreise“ mit den gepflegten Staffeln (nur gefüllte Stufen).
+ * W1: Block „Preisstaffel“ mit den gepflegten Staffeln (nur gefüllte Stufen).
  * Nur für Artikel ohne Rentware-Code gedacht – die Einblendung steuert die Seite.
  */
 export function RentalPriceTiers({ product, location, locationRows = [], className }: RentalPriceTiersProps) {
