@@ -167,3 +167,28 @@ export async function findCatalogProductByName(name: string): Promise<CatalogPro
   const needle = name.trim().toLowerCase();
   return list.find((i) => i.name.trim().toLowerCase() === needle);
 }
+
+// ---------------------------------------------------------------- Paket 3b: Kategorie-Name für Positionsgruppen
+
+let categoryNamesPromise: Promise<Map<string, string>> | null = null;
+
+/** Name der Kategorie (product_categories.name zur category des Artikels); Fallback Website-Kategorie, dann Slug. */
+export async function categoryNameFor(slug: string | null | undefined): Promise<string> {
+  const key = (slug ?? "").trim();
+  if (!key) return "";
+  if (!categoryNamesPromise) {
+    categoryNamesPromise = (async () => {
+      const map = new Map<string, string>();
+      try {
+        const { productCategories } = await import("@/data/rentalData");
+        for (const c of productCategories) if (c.id && c.title) map.set(c.id, c.title);
+      } catch { /* ohne Website-Kategorien weiter */ }
+      const { data, error } = await supabase.from("product_categories").select("slug,name");
+      if (!error) for (const r of data ?? []) if (r.slug && r.name) map.set(r.slug, r.name);
+      else categoryNamesPromise = null;
+      return map;
+    })();
+  }
+  const map = await categoryNamesPromise;
+  return map.get(key) ?? key.charAt(0).toUpperCase() + key.slice(1).replace(/-/g, " ");
+}
