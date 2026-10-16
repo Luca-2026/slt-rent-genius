@@ -3,6 +3,7 @@ import { drawUnifiedFooter, resolvePdfLocation, FOOTER_TOP } from "./pdf-footer.
 import { embedProductImages } from "./product-images.ts";
 import { SLT_COMPANY } from "./offer-company.ts";
 import { unitAbbreviation, unitLabel } from "./rental-pricing.ts";
+import { drawEpcQr } from "./epc-qr-pdf.ts";
 
 // ─── PDF Offer Generator ───────────────────────────────────
 export async function generateOfferPdf(data: {
@@ -920,13 +921,24 @@ export async function generateOfferPdf(data: {
           (customPaymentText ?? PAYMENT_TEXTS[data.paymentTerms || "net_14"] ?? "").replace("Zahlungsbedingungen: ", ""),
           font,
           9,
-          CW - 32,
+          CW - 32 - 100,
         ).filter((l) => l.trim());
     const offerRefExtra = data.sourceOfferNumber && !settled ? 11 : 0;
-    const boxH = settled ? 52 : 105 + termLines.length * 11 + offerRefExtra;
+    const boxH = settled ? 52 : Math.max(136, 105 + termLines.length * 11 + offerRefExtra);
     need(boxH + 16);
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.995, 0.97, 0.93) });
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
+    if (!settled) {
+      // Überweisungs-QR (GiroCode) mit offenem Betrag und Rechnungsnummer
+      const QR = 84;
+      drawEpcQr(pg, {
+        name: SLT_COMPANY.name,
+        iban: SLT_COMPANY.iban,
+        bic: SLT_COMPANY.bic,
+        amountCents: Math.round((amountPaid > 0 ? balanceDue : data.grossAmount) * 100),
+        reference: data.offerNumber,
+      }, ML + CW - QR - 12, y - 24 - QR, QR, font);
+    }
     let by = y - 2;
     dt(pg, "Zahlungshinweis", ML + 16, by, bold, 10, INK); by -= 15;
     if (settled) {
