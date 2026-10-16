@@ -1,3 +1,4 @@
+import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
 // Übergabe- und Rückgabeprotokoll zu einer Mietanfrage (Privat- und Firmenkunden).
 // Fotos (max. 15) kommen verkleinert als Base64, werden gespeichert und ins PDF eingebettet.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
@@ -294,18 +295,20 @@ Deno.serve(async (req) => {
     const resendKey = Deno.env.get("RESEND_API_KEY");
     if (b.send_email && recipient && resendKey) {
       const title = isReturn ? "R\u00FCckgabeprotokoll" : "\u00DCbergabeprotokoll";
-      const greeting = inq.customer_name ? `Hallo ${esc(inq.customer_name)},` : "Guten Tag,";
+      const form = await resolveAddressForm(svc, inq);
+      const t = (du: string, sie: string) => byForm(form, du, sie);
+      const greeting = esc(salutationLine({ address_form: form, salutation: inq.customer_salutation, name: inq.customer_name }));
       const html = `<!DOCTYPE html><html lang="de"><body style="margin:0;background:#f4f6f8;font-family:Arial,Helvetica,sans-serif;color:#1f2328;">
 <div style="max-width:600px;margin:0 auto;background:#ffffff;">
 <div style="padding:24px 32px;text-align:center;border-bottom:3px solid #00507d;"><img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental" style="height:64px;width:auto;"></div>
 <div style="padding:28px 32px;font-size:15px;line-height:1.55;">
 <p>${greeting}</p>
-<p>anbei erh\u00E4ltst du das ${title} <strong>${esc(number)}</strong> vom ${esc(berlin(now))} als PDF.</p>
+<p>anbei ${t("erh\u00E4ltst du", "erhalten Sie")} das ${title} <strong>${esc(number)}</strong> vom ${esc(berlin(now))} als PDF.</p>
 <ul style="padding-left:18px;">${b.items.map((it) => `<li>${it.quantity} \u00D7 ${esc(it.name)}</li>`).join("")}</ul>
 ${extraCharges.length ? `<p><strong>Zusatzkosten laut Protokoll: ${extraChargesTotal.toFixed(2).replace(".", ",")} \u20AC brutto</strong> \u2013 sie werden in Rechnung gestellt und mit einer gezahlten Kaution verrechnet.</p>` : ""}
-${damageRows.length ? `<p style="color:#b91c1c;"><strong>${damageRows.length} Schaden/Sch\u00E4den dokumentiert</strong> \u2013 Details und Fotos findest du im PDF.</p>` : ""}
-<p>Bei Fragen erreichst du uns unter ${esc(loc.phone)} oder ${esc(loc.email)}.</p>
-<p>Viele Gr\u00FC\u00DFe<br>dein Team von SLT-Rental ${esc(loc.name)}</p>
+${damageRows.length ? `<p style="color:#b91c1c;"><strong>${damageRows.length} Schaden/Sch\u00E4den dokumentiert</strong> \u2013 Details und Fotos ${t("findest du", "finden Sie")} im PDF.</p>` : ""}
+<p>Bei Fragen ${t("erreichst du", "erreichen Sie")} uns unter ${esc(loc.phone)} oder ${esc(loc.email)}.</p>
+<p>${t("Viele Gr\u00FC\u00DFe", "Freundliche Gr\u00FC\u00DFe")}<br>${t("dein", "Ihr")} Team von SLT-Rental ${esc(loc.name)}</p>
 </div></div></body></html>`;
       try {
         const res = await fetch("https://api.resend.com/emails", {

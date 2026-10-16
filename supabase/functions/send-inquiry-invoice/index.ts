@@ -1,3 +1,4 @@
+import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
 /**
  * Erstellt und versendet eine Rechnung, einen Nachtrag, eine Abschlags- oder
  * Schlussrechnung zu einer Miet- oder Verkaufsanfrage aus dem internen Portal.
@@ -93,6 +94,12 @@ const PAYMENT_EMAIL: Record<string, string> = {
   net_14: "Bitte begleichen Sie den Rechnungsbetrag innerhalb von 14 Tagen ohne Abzug.",
   net_30: "Bitte begleichen Sie den Rechnungsbetrag innerhalb von 30 Tagen ohne Abzug.",
 };
+const PAYMENT_EMAIL_DU: Record<string, string> = {
+  vorkasse: PAYMENT_EMAIL.vorkasse,
+  net_7: "Bitte begleiche den Rechnungsbetrag innerhalb von 7 Tagen ohne Abzug.",
+  net_14: "Bitte begleiche den Rechnungsbetrag innerhalb von 14 Tagen ohne Abzug.",
+  net_30: "Bitte begleiche den Rechnungsbetrag innerhalb von 30 Tagen ohne Abzug.",
+};
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
@@ -133,6 +140,17 @@ Deno.serve(async (req: Request) => {
 
       const { data: file } = await service.storage.from("b2b-invoices").download(inv.file_path);
       if (!file) return json({ error: "Rechnungs-PDF konnte nicht geladen werden" }, 500);
+      let invSalutation: string | null = null;
+      let invFormSrc: { crm_customer_id?: string | null; address_form?: string | null } = { crm_customer_id: inv.crm_customer_id };
+      if (inv.rental_inquiry_id) {
+        const { data: ri } = await service.from("rental_inquiries").select("address_form, customer_salutation, crm_customer_id").eq("id", inv.rental_inquiry_id).maybeSingle();
+        if (ri) { invFormSrc = { crm_customer_id: inv.crm_customer_id ?? ri.crm_customer_id, address_form: ri.address_form }; invSalutation = ri.customer_salutation; }
+      } else if (inv.sales_inquiry_id) {
+        const { data: si } = await service.from("sales_inquiries").select("salutation, crm_customer_id").eq("id", inv.sales_inquiry_id).maybeSingle();
+        if (si) { invFormSrc = { crm_customer_id: inv.crm_customer_id ?? si.crm_customer_id }; invSalutation = si.salutation; }
+      }
+      const rForm = await resolveAddressForm(service, invFormSrc);
+      const rt = (du: string, sie: string) => byForm(rForm, du, sie);
       const bytes = new Uint8Array(await file.arrayBuffer());
       const loc = LOCATION_CONTACTS[resolveLocationKey(inv.location)];
 
@@ -145,17 +163,17 @@ Deno.serve(async (req: Request) => {
           to: [inv.customer_email],
           cc: [loc.email].filter((e) => e && e !== inv.customer_email),
           reply_to: loc.email,
-          subject: `Ihre Rechnung von SLT Rental – ${inv.invoice_number}`,
+          subject: `${rt("Deine", "Ihre")} Rechnung von SLT Rental – ${inv.invoice_number}`,
           html:
-            `<p>Hallo ${escapeHtml(inv.customer_name || "")},</p>` +
-            `<p>anbei erhalten Sie erneut unsere Rechnung ${escapeHtml(inv.invoice_number)} über ${money(Number(inv.gross_amount))} brutto.</p>` +
+            `<p>${escapeHtml(salutationLine({ address_form: rForm, salutation: invSalutation, name: inv.customer_name }))}</p>` +
+            `<p>anbei ${rt("erhältst du", "erhalten Sie")} erneut unsere Rechnung ${escapeHtml(inv.invoice_number)} über ${money(Number(inv.gross_amount))} brutto.</p>` +
              (Number(inv.paid_amount) > 0 || Number(inv.credited_amount) > 0
                ? `<p>Bereits erhalten: ${money(Number(inv.paid_amount))}` +
                  (Number(inv.credited_amount) > 0 ? ` – gutgeschrieben: ${money(Number(inv.credited_amount))}` : "") +
                  ` – offener Restbetrag: <strong>${money(Math.max(0, Number(inv.gross_amount) - Number(inv.paid_amount) - Number(inv.credited_amount)))}</strong>.</p>`
               : "") +
 
-            `<p>Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}</p>`,
+            `<p>${rt("Viele Grüße", "Freundliche Grüße")}<br>${rt("Dein", "Ihr")} SLT Rental Team – Standort ${escapeHtml(loc.name)}</p>`,
           attachments: [{ filename: inv.file_name || `${inv.invoice_number}.pdf`, content: encodeBase64(bytes) }],
         }),
       });
@@ -570,25 +588,30 @@ Deno.serve(async (req: Request) => {
       )
       .join("");
 
+    const form = await resolveAddressForm(service, inquiry);
+    const t = (du: string, sie: string) => byForm(form, du, sie);
     const paymentEmailText = paymentTerms === "custom"
       ? escapeHtml(paymentTermsCustom).replace(/\n/g, "<br>")
+      : form === "du"
+      ? (PAYMENT_EMAIL_DU[paymentTerms] ?? PAYMENT_EMAIL_DU.net_14)
       : (PAYMENT_EMAIL[paymentTerms] ?? PAYMENT_EMAIL.net_14);
 
-    const headline = `Ihre ${DOC_LABEL[invoiceKind]} ${invoiceNumber}`;
+    const headline = `${t("Deine", "Ihre")} ${DOC_LABEL[invoiceKind]} ${invoiceNumber}`;
 
     const greetingName = (customerName || "").trim();
     const intro = invoiceKind === "supplement"
-      ? `vielen Dank, dass Sie die Miete bei uns verlängert haben. Anbei erhalten Sie den Nachtrag${parentInvoiceNumber ? ` zur Rechnung ${escapeHtml(parentInvoiceNumber)}` : ""} mit den zusätzlichen Leistungen.`
+      ? `vielen Dank, dass ${t("du die Miete bei uns verlängert hast. Anbei erhältst du", "Sie die Miete bei uns verlängert haben. Anbei erhalten Sie")} den Nachtrag${parentInvoiceNumber ? ` zur Rechnung ${escapeHtml(parentInvoiceNumber)}` : ""} mit den zusätzlichen Leistungen.`
       : invoiceKind === "installment"
-      ? `vielen Dank für die laufende Zusammenarbeit. Anbei erhalten Sie die ${installmentNumber}. Abschlagsrechnung zu unserem Auftrag${sourceOfferNumber ? ` ${escapeHtml(sourceOfferNumber)}` : ""}. Der Abschlag wird später in der Schlussrechnung verrechnet.`
+      ? `vielen Dank für die laufende Zusammenarbeit. Anbei ${t("erhältst du", "erhalten Sie")} die ${installmentNumber}. Abschlagsrechnung zu unserem Auftrag${sourceOfferNumber ? ` ${escapeHtml(sourceOfferNumber)}` : ""}. Der Abschlag wird später in der Schlussrechnung verrechnet.`
       : invoiceKind === "final"
-      ? `herzlichen Dank für Ihren Auftrag. Anbei erhalten Sie die Schlussrechnung${sourceOfferNumber ? ` zu unserem Auftrag ${escapeHtml(sourceOfferNumber)}` : ""}.${deductions.length ? ` Ihre ${deductions.length === 1 ? "Abschlagsrechnung ist" : `${deductions.length} Abschlagsrechnungen sind`} darin bereits abgezogen.` : ""}`
-      : "herzlichen Dank für Ihren Auftrag und das Vertrauen in SLT Rental – es hat uns gefreut, Sie mit unserer Technik zu unterstützen. Anbei finden Sie Ihre Rechnung als PDF.";
+      ? `herzlichen Dank für ${t("deinen Auftrag. Anbei erhältst du", "Ihren Auftrag. Anbei erhalten Sie")} die Schlussrechnung${sourceOfferNumber ? ` zu unserem Auftrag ${escapeHtml(sourceOfferNumber)}` : ""}.${deductions.length ? ` ${t("Deine", "Ihre")} ${deductions.length === 1 ? "Abschlagsrechnung ist" : `${deductions.length} Abschlagsrechnungen sind`} darin bereits abgezogen.` : ""}`
+      : t("herzlichen Dank für deinen Auftrag und das Vertrauen in SLT Rental – es hat uns gefreut, dich mit unserer Technik zu unterstützen. Anbei findest du deine Rechnung als PDF.",
+          "herzlichen Dank für Ihren Auftrag und das Vertrauen in SLT Rental – es hat uns gefreut, Sie mit unserer Technik zu unterstützen. Anbei finden Sie Ihre Rechnung als PDF.");
 
     const bankBlock = `
     <div style="background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;font-size:14px;">
       ${fullyPaid
-        ? `<strong>Nichts mehr zu tun:</strong><br>Ihre Zahlung${payments.length > 1 ? "en" : ""} über ${money(amountPaid)} ${payments.length > 1 ? "haben" : "hat"} den Rechnungsbetrag vollständig ausgeglichen. Vielen Dank!`
+        ? `<strong>Nichts mehr zu tun:</strong><br>${t("Deine", "Ihre")} Zahlung${payments.length > 1 ? "en" : ""} über ${money(amountPaid)} ${payments.length > 1 ? "haben" : "hat"} den Rechnungsbetrag vollständig ausgeglichen. Vielen Dank!`
         : `<strong>Offener Betrag: ${money(balanceDue)}</strong><br>${paymentEmailText}<br>
       Fällig am <strong>${escapeHtml(fmtDE(dueDate))}</strong><br><br>
       <strong>Unsere Bankverbindung</strong><br>
@@ -603,7 +626,7 @@ Deno.serve(async (req: Request) => {
     const emailHtml = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:16px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
 <div style="max-width:600px;margin:0 auto;">
   <h2 style="color:#00507d;margin:0 0 16px;">${escapeHtml(headline)}</h2>
-  <p>Hallo${greetingName ? ` ${escapeHtml(greetingName)}` : ""},</p>
+  <p>${escapeHtml(salutationLine({ address_form: form, salutation: inquiry.customer_salutation ?? inquiry.salutation, name: greetingName }))}</p>
   <p>${intro}</p>
   ${servicePeriodStart ? `<p style="font-size:14px;"><strong>Leistungszeitraum:</strong> ${escapeHtml(new Date(servicePeriodStart).toLocaleDateString("de-DE"))}${servicePeriodEnd ? ` – ${escapeHtml(new Date(servicePeriodEnd).toLocaleDateString("de-DE"))}` : ""}</p>` : ""}
   <div style="margin:16px 0;border-top:2px solid #00507d;">
@@ -625,8 +648,8 @@ Deno.serve(async (req: Request) => {
   </div>` : ""}
   ${bankBlock}
   ${notes ? `<p style="white-space:pre-wrap;">${escapeHtml(notes)}</p>` : ""}
-  <p>Wenn Sie Fragen zur Rechnung haben oder wieder Technik benötigen, melden Sie sich einfach – wir sind gerne für Sie da.</p>
-  <p style="margin-top:24px;">Herzliche Grüße<br>${escapeHtml(staffName)}<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}<br>
+  <p>${t("Wenn du Fragen zur Rechnung hast oder wieder Technik benötigst, melde dich einfach – wir sind gerne für dich da.", "Wenn Sie Fragen zur Rechnung haben oder wieder Technik benötigen, melden Sie sich einfach – wir sind gerne für Sie da.")}</p>
+  <p style="margin-top:24px;">Herzliche Grüße<br>${escapeHtml(staffName)}<br>${t("Dein", "Ihr")} SLT Rental Team – Standort ${escapeHtml(loc.name)}<br>
   Tel. ${escapeHtml(loc.phone)} · <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a></p>
 </div></body></html>`;
 

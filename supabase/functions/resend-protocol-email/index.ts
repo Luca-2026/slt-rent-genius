@@ -1,3 +1,4 @@
+import { byForm, resolveAddressForm, salutationLine, type AddressForm } from "../_shared/salutation.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { encode as base64Encode } from "https://deno.land/std@0.168.0/encoding/base64.ts";
@@ -68,6 +69,9 @@ serve(async (req) => {
     let emailHtml = "";
     let recipientEmail = "";
     let recipientName = "";
+    let form: AddressForm = "du";
+    const t = (du: string, sie: string) => byForm(form, du, sie);
+    const greetLine = (n: string) => (form === "du" ? salutationLine({ address_form: "du", name: n }) : `Guten Tag ${n},`);
     let documentNumber = "";
     let documentId = "";
     let tableName = "";
@@ -85,13 +89,14 @@ serve(async (req) => {
       documentId = dn.id;
       recipientEmail = profile.contact_email;
       recipientName = `${profile.contact_first_name} ${profile.contact_last_name}`;
+      form = await resolveAddressForm(serviceClient, { b2b_profile_id: profile.id });
 
       const { data: items } = await serviceClient.from("b2b_delivery_note_items").select("*").eq("delivery_note_id", dn.id);
       const itemsList = (items || []).map((item: any) =>
         `<li style="padding:4px 0;font-size:14px;">${item.quantity}x ${escapeHtml(item.product_name)}${item.description ? ` – ${escapeHtml(item.description)}` : ""}</li>`
       ).join("");
 
-      emailSubject = `Ihr Übergabeprotokoll ${documentNumber} – SLT-Rental`;
+      emailSubject = `${t("Dein", "Ihr")} Übergabeprotokoll ${documentNumber} – SLT-Rental`;
       emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
@@ -99,16 +104,16 @@ serve(async (req) => {
       <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:70px;width:auto;" />
     </div>
     <div style="background:#00507d;padding:14px 40px;text-align:center;">
-      <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">Ihr Übergabeprotokoll</p>
+      <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">${t("Dein", "Ihr")} Übergabeprotokoll</p>
     </div>
     <div style="padding:35px 40px;">
-      <p style="font-size:15px;color:#333;">Guten Tag ${escapeHtml(recipientName)},</p>
-      <p style="font-size:14px;color:#555;line-height:1.6;">anbei erhalten Sie Ihr unterschriebenes Übergabeprotokoll <strong>${documentNumber}</strong>.</p>
+      <p style="font-size:15px;color:#333;">${escapeHtml(greetLine(recipientName))}</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">anbei ${t("erhältst du dein", "erhalten Sie Ihr")} unterschriebenes Übergabeprotokoll <strong>${documentNumber}</strong>.</p>
       ${itemsList ? `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:20px 0;">
         <p style="font-size:13px;font-weight:600;margin:0 0 8px;color:#333;">Übergebene Artikel:</p>
         <ul style="margin:0;padding-left:20px;color:#555;">${itemsList}</ul>
       </div>` : ""}
-      <p style="font-size:14px;color:#555;line-height:1.6;">Das vollständige Übergabeprotokoll finden Sie auch in Ihrem B2B-Portal.</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">Das vollständige Übergabeprotokoll ${t("findest du auch in deinem", "finden Sie auch in Ihrem")} Kundenportal.</p>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://www.slt-rental.de/b2b/uebergabeprotokolle" style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">Zum B2B-Portal →</a>
       </div>
@@ -134,6 +139,7 @@ serve(async (req) => {
       documentId = dn.id;
       recipientEmail = profile.contact_email;
       recipientName = `${profile.contact_first_name} ${profile.contact_last_name}`;
+      form = await resolveAddressForm(serviceClient, { b2b_profile_id: profile.id });
 
       // Fetch PDF from storage
       const expectedPath = `${dn.b2b_profile_id}/${dn.delivery_note_number}-blanko.pdf`;
@@ -166,17 +172,17 @@ serve(async (req) => {
       <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">Übergabeprotokoll zur Unterschrift</p>
     </div>
     <div style="padding:35px 40px;">
-      <p style="font-size:15px;color:#333;">Sehr geehrte/r ${escapeHtml(recipientName)},</p>
-      <p style="font-size:14px;color:#555;line-height:1.6;">für Ihre Mietgeräte wurde das Übergabeprotokoll <strong>${documentNumber}</strong> erstellt.</p>
+      <p style="font-size:15px;color:#333;">${escapeHtml(greetLine(recipientName))}</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">für ${t("deine", "Ihre")} Mietgeräte wurde das Übergabeprotokoll <strong>${documentNumber}</strong> erstellt.</p>
       <div style="background:#fef9c3;border:1px solid #fde047;border-radius:8px;padding:16px;margin:20px 0;">
-        <p style="font-size:14px;font-weight:600;margin:0 0 8px;color:#854d0e;">Bitte unterschreiben Sie digital:</p>
-        <p style="font-size:13px;color:#713f12;margin:0;line-height:1.6;">Loggen Sie sich in Ihr B2B-Portal ein und unterschreiben Sie das Protokoll direkt online. Alternativ finden Sie das Dokument auch als PDF im Anhang.</p>
+        <p style="font-size:14px;font-weight:600;margin:0 0 8px;color:#854d0e;">${t("Bitte unterschreibe digital:", "Bitte unterschreiben Sie digital:")}</p>
+        <p style="font-size:13px;color:#713f12;margin:0;line-height:1.6;">${t("Melde dich in deinem Kundenportal an und unterschreibe das Protokoll direkt online.", "Melden Sie sich in Ihrem Kundenportal an und unterschreiben Sie das Protokoll direkt online.")} Alternativ ${t("findest du", "finden Sie")} das Dokument auch als PDF im Anhang.</p>
       </div>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://www.slt-rental.de/b2b/uebergabeprotokolle" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 35px;border-radius:6px;font-size:15px;font-weight:600;">Jetzt im Portal unterschreiben →</a>
       </div>
-      <p style="font-size:14px;color:#555;line-height:1.6;">Bei Fragen stehen wir Ihnen gerne zur Verfügung.</p>
-      <p style="font-size:14px;color:#555;line-height:1.6;margin-top:25px;">Mit freundlichen Grüßen<br/><strong>Ihr SLT-Rental Team</strong></p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">Bei Fragen stehen wir ${t("dir", "Ihnen")} gerne zur Verfügung.</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;margin-top:25px;">${t("Viele Grüße", "Mit freundlichen Grüßen")}<br/><strong>${t("Dein", "Ihr")} SLT-Rental Team</strong></p>
     </div>
     <div style="background:#f1f5f9;padding:25px 40px;border-top:1px solid #e2e8f0;">
       <p style="font-size:12px;color:#64748b;margin:0 0 4px;font-weight:600;">${SLT_COMPANY.name}</p>
@@ -198,13 +204,14 @@ serve(async (req) => {
       documentId = rp.id;
       recipientEmail = profile.contact_email;
       recipientName = `${profile.contact_first_name} ${profile.contact_last_name}`;
+      form = await resolveAddressForm(serviceClient, { b2b_profile_id: profile.id });
 
       const { data: items } = await serviceClient.from("b2b_return_protocol_items").select("*").eq("return_protocol_id", rp.id);
       const itemsList = (items || []).map((item: any) =>
         `<li style="padding:4px 0;font-size:14px;">${item.quantity}x ${escapeHtml(item.product_name)} – Zustand: ${item.condition === "good" ? "Gut" : item.condition === "minor_damage" ? "Leichte Mängel" : "Erhebliche Schäden"}${item.condition_notes ? ` (${escapeHtml(item.condition_notes)})` : ""}</li>`
       ).join("");
 
-      emailSubject = `Ihr Rückgabeprotokoll ${documentNumber} – SLT-Rental`;
+      emailSubject = `${t("Dein", "Ihr")} Rückgabeprotokoll ${documentNumber} – SLT-Rental`;
       emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
@@ -212,16 +219,16 @@ serve(async (req) => {
       <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:70px;width:auto;" />
     </div>
     <div style="background:#00507d;padding:14px 40px;text-align:center;">
-      <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">Ihr Rückgabeprotokoll</p>
+      <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">${t("Dein", "Ihr")} Rückgabeprotokoll</p>
     </div>
     <div style="padding:35px 40px;">
-      <p style="font-size:15px;color:#333;">Guten Tag ${escapeHtml(recipientName)},</p>
-      <p style="font-size:14px;color:#555;line-height:1.6;">anbei erhalten Sie Ihr unterschriebenes Rückgabeprotokoll <strong>${documentNumber}</strong>.</p>
+      <p style="font-size:15px;color:#333;">${escapeHtml(greetLine(recipientName))}</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">anbei ${t("erhältst du dein", "erhalten Sie Ihr")} unterschriebenes Rückgabeprotokoll <strong>${documentNumber}</strong>.</p>
       ${itemsList ? `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:20px 0;">
         <p style="font-size:13px;font-weight:600;margin:0 0 8px;color:#333;">Zurückgegebene Artikel:</p>
         <ul style="margin:0;padding-left:20px;color:#555;">${itemsList}</ul>
       </div>` : ""}
-      <p style="font-size:14px;color:#555;line-height:1.6;">Das vollständige Rückgabeprotokoll finden Sie auch in Ihrem B2B-Portal.</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">Das vollständige Rückgabeprotokoll ${t("findest du auch in deinem", "finden Sie auch in Ihrem")} Kundenportal.</p>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://www.slt-rental.de/b2b/rueckgabeprotokolle" style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">Zum B2B-Portal →</a>
       </div>
@@ -246,6 +253,7 @@ serve(async (req) => {
       documentId = rp.id;
       recipientEmail = profile.contact_email;
       recipientName = `${profile.contact_first_name} ${profile.contact_last_name}`;
+      form = await resolveAddressForm(serviceClient, { b2b_profile_id: profile.id });
 
       emailSubject = `Rückgabeprotokoll ${documentNumber} – Bitte digital unterschreiben`;
       emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
@@ -258,17 +266,17 @@ serve(async (req) => {
       <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">Rückgabeprotokoll zur Unterschrift</p>
     </div>
     <div style="padding:35px 40px;">
-      <p style="font-size:15px;color:#333;">Sehr geehrte/r ${escapeHtml(recipientName)},</p>
-      <p style="font-size:14px;color:#555;line-height:1.6;">für Ihre zurückgegebenen Mietgeräte wurde das Rückgabeprotokoll <strong>${documentNumber}</strong> erstellt.</p>
+      <p style="font-size:15px;color:#333;">${escapeHtml(greetLine(recipientName))}</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">für ${t("deine", "Ihre")} zurückgegebenen Mietgeräte wurde das Rückgabeprotokoll <strong>${documentNumber}</strong> erstellt.</p>
       <div style="background:#fef9c3;border:1px solid #fde047;border-radius:8px;padding:16px;margin:20px 0;">
-        <p style="font-size:14px;font-weight:600;margin:0 0 8px;color:#854d0e;">Bitte unterschreiben Sie digital:</p>
-        <p style="font-size:13px;color:#713f12;margin:0;line-height:1.6;">Loggen Sie sich in Ihr B2B-Portal ein und unterschreiben Sie das Protokoll direkt online.</p>
+        <p style="font-size:14px;font-weight:600;margin:0 0 8px;color:#854d0e;">${t("Bitte unterschreibe digital:", "Bitte unterschreiben Sie digital:")}</p>
+        <p style="font-size:13px;color:#713f12;margin:0;line-height:1.6;">${t("Melde dich in deinem Kundenportal an und unterschreibe das Protokoll direkt online.", "Melden Sie sich in Ihrem Kundenportal an und unterschreiben Sie das Protokoll direkt online.")}</p>
       </div>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://www.slt-rental.de/b2b/rueckgabeprotokolle" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 35px;border-radius:6px;font-size:15px;font-weight:600;">Jetzt im Portal unterschreiben →</a>
       </div>
-      <p style="font-size:14px;color:#555;line-height:1.6;">Bei Fragen stehen wir Ihnen gerne zur Verfügung.</p>
-      <p style="font-size:14px;color:#555;line-height:1.6;margin-top:25px;">Mit freundlichen Grüßen<br/><strong>Ihr SLT-Rental Team</strong></p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">Bei Fragen stehen wir ${t("dir", "Ihnen")} gerne zur Verfügung.</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;margin-top:25px;">${t("Viele Grüße", "Mit freundlichen Grüßen")}<br/><strong>${t("Dein", "Ihr")} SLT-Rental Team</strong></p>
     </div>
     <div style="background:#f1f5f9;padding:25px 40px;border-top:1px solid #e2e8f0;">
       <p style="font-size:12px;color:#64748b;margin:0 0 4px;font-weight:600;">${SLT_COMPANY.name}</p>
