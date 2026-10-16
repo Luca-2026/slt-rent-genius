@@ -1,3 +1,4 @@
+import { isStockedAt } from "@/lib/productAvailability";
 /**
  * Editor-Dialog für CMS-Mietartikel. 6 Tabs: Basis, Bilder, Technik, Preise & Buchung,
  * SEO & Content, Intern (Bestand). KI-Buttons rufen `admin-generate-product-content`.
@@ -92,6 +93,8 @@ interface FormState {
   weight_kg: string;
   drive_type: string;
   rentware_code: Record<LocId, string>;
+  /** Standorte, an denen der Artikel standardmäßig vor Ort steht; sonst „auf Anfrage aus anderem Standort“. */
+  stocked_locations: LocId[];
   on_request: boolean;
   pdf_url: string;
   external_manual_url: string;
@@ -140,6 +143,7 @@ const emptyForm = (): FormState => ({
   weight_kg: "",
   drive_type: "",
   rentware_code: { krefeld: "", bonn: "", muelheim: "" },
+  stocked_locations: ["krefeld", "bonn", "muelheim"],
   on_request: false,
   pdf_url: "",
   external_manual_url: "",
@@ -205,6 +209,9 @@ function fromRow(row: AdminManagedProductRow): FormState {
       bonn: row.rentware_code?.bonn ?? "",
       muelheim: row.rentware_code?.muelheim ?? "",
     },
+    stocked_locations: (Array.isArray(row.stocked_locations)
+      ? row.stocked_locations
+      : (row.available_locations ?? []).filter((l: string) => isStockedAt({ rentwareCode: row.rentware_code }, l))) as LocId[],
     on_request: row.on_request ?? false,
     pdf_url: row.pdf_url ?? "",
     external_manual_url: row.external_manual_url ?? "",
@@ -571,6 +578,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         weight_kg: form.weight_kg ? Number(form.weight_kg) : null,
         drive_type: form.drive_type.trim() || null,
         rentware_code: rentwareCode,
+        stocked_locations: form.stocked_locations.filter((l) => form.available_locations.includes(l)),
         on_request: !hasAnyRentware && form.on_request,
         pdf_url: form.pdf_url.trim() || null,
         external_manual_url: form.external_manual_url.trim() || null,
@@ -937,6 +945,29 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                       <Input value={form.rentware_code[loc.id]} onChange={(e) => setForm((f) => ({ ...f, rentware_code: { ...f.rentware_code, [loc.id]: e.target.value } }))} />
                     </div>
                   ))}
+                </div>
+              </div>
+              <div>
+                <Label>Bestand je Standort</Label>
+                <p className="text-xs text-muted-foreground mb-2">Steuert den Verfügbarkeitshinweis auf der Website – unabhängig vom Rentware-Code.</p>
+                <div className="space-y-2">
+                  {LOCATIONS.filter((loc) => form.available_locations.includes(loc.id)).map((loc) => {
+                    const stocked = form.stocked_locations.includes(loc.id);
+                    const set = (v: boolean) => setForm((f) => ({
+                      ...f,
+                      stocked_locations: v ? Array.from(new Set([...f.stocked_locations, loc.id])) : f.stocked_locations.filter((l) => l !== loc.id),
+                    }));
+                    return (
+                      <div key={loc.id} className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-3">
+                        <span className="text-sm sm:w-40 shrink-0">{loc.label}</span>
+                        <div className="inline-flex flex-wrap rounded-md border border-border p-0.5" role="radiogroup" aria-label={`Bestand ${loc.label}`}>
+                          <Button type="button" size="sm" variant={stocked ? "default" : "ghost"} role="radio" aria-checked={stocked} onClick={() => set(true)}>Am Standort vorhanden</Button>
+                          <Button type="button" size="sm" variant={!stocked ? "default" : "ghost"} role="radio" aria-checked={!stocked} onClick={() => set(false)}>Auf Anfrage von anderem Standort</Button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {form.available_locations.length === 0 && <p className="text-xs text-muted-foreground">Erst Standorte auswählen.</p>}
                 </div>
               </div>
               <div className="flex items-center gap-2">
