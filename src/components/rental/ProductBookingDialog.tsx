@@ -17,7 +17,7 @@ import { Phone, Mail, Loader2, Send, CheckCircle2, Calendar, Truck, Wrench, Info
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { Product, LocationData } from "@/data/rentalData";
-import { pickupTimeOptions, pickupWindowForDate, type LocationInfo } from "@/data/locationData";
+import { getLocationInfoById, pickupTimeOptions, pickupWindowForDate } from "@/data/locationData";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { InquiryItemsPicker, type RequestItem } from "./InquiryItemsPicker";
