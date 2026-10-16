@@ -151,7 +151,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
             <p className="text-xs text-muted-foreground">{row.date} · Bestätigt</p>
             <p className="break-all text-xs text-muted-foreground" title={row.reference}>{shortPaymentReference(row.reference)}</p>
           </div>
-        ) : <div key={index} className="grid min-w-0 grid-cols-2 gap-2 border-b border-border pb-3">
+        ) : <div key={index} className="grid min-w-0 grid-cols-1 gap-2 border-b border-border pb-3 sm:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2">
           <div className="min-w-0">
             <Label className="text-[11px]">Datum</Label>
             <Input className="block h-10 min-w-0 w-full max-w-full appearance-none text-left [&::-webkit-date-and-time-value]:min-w-0 [&::-webkit-date-and-time-value]:text-left" type="date" disabled={disabled || saving} value={row.date ?? ""} onChange={(e) => patch(index, { date: e.target.value })} />
@@ -167,11 +167,11 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
               onChange={(e) => patch(index, { amount: Number(e.target.value) })}
             />
           </div>
-          <div className="col-span-2 min-w-0">
+          <div className="col-span-full min-w-0">
             <Label className="text-[11px]">Zahlungsweg</Label>
             <Input disabled={disabled || saving} value={row.label ?? ""} onChange={(e) => patch(index, { label: e.target.value })} placeholder="Banküberweisung" />
           </div>
-          <div className="col-span-2 flex min-w-0 items-end gap-1">
+          <div className="col-span-full flex min-w-0 items-end gap-1">
             <div className="min-w-0 flex-1">
             <Label className="text-[11px]">Verwendungszweck</Label>
             <Input
