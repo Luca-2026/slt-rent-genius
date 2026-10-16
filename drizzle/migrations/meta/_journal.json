@@ -414,6 +414,13 @@
       "when": 1792139672918,
       "tag": "0058_stocked_locations",
       "breakpoints": true
+    },
+    {
+      "idx": 59,
+      "version": "7",
+      "when": 1792141252251,
+      "tag": "0059_rental_inquiry_salutation",
+      "breakpoints": true
     }
   ]
 }

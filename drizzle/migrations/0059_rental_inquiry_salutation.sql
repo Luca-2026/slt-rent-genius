@@ -1,0 +1,2 @@
+ALTER TABLE public.rental_inquiries ADD COLUMN IF NOT EXISTS customer_salutation text NULL;
+ALTER TABLE public.rental_inquiries ADD CONSTRAINT rental_inquiries_customer_salutation_check CHECK (customer_salutation IS NULL OR customer_salutation IN ('herr','frau'));
