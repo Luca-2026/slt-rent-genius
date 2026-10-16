@@ -44,7 +44,10 @@ import { moebelProductInfo, getMoebelInfoKey } from "@/data/moebelProductInfo";
 import { useTranslation } from "react-i18next";
 import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
 import { REAL_LOCATION_REVIEWS } from "@/data/realGoogleReviews";
-import { ProductPriceBlock, hasAnyPrice, priceText } from "@/components/rental/ProductPriceBlock";
+import { ProductPriceBlock, RentalPriceTiers, hasAnyPrice, priceText } from "@/components/rental/ProductPriceBlock";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import type { LocationPriceRow } from "@/lib/pricing/rentalPricing";
 import { CustomerTypePrompt } from "@/components/rental/CustomerTypePrompt";
 import { useCustomerType } from "@/hooks/useCustomerType";
 import { netToGross } from "@/lib/priceDisplay";
@@ -108,6 +111,22 @@ export default function ProductDetail() {
   // Artikel ohne Rentware-Code am Standort = auf Anfrage: Rentware-Warenkorb ausblenden,
   // damit das Anfrageformular im Vordergrund steht.
   const hasLocalRentwareCode = !!(location && rawProduct?.rentwareCode?.[location.id as keyof typeof rawProduct.rentwareCode]);
+
+  // W1: Standortpreise für den Block „Mietpreise“ (nur bei Artikeln ohne Rentware-Code).
+  const showTierPrices = !hasLocalRentwareCode && !!rawProduct?.managedId;
+  const { data: locationPriceRows } = useQuery({
+    queryKey: ["public-product-prices", rawProduct?.managedId],
+    enabled: showTierPrices,
+    staleTime: 60_000,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("public_product_prices" as never)
+        .select("*")
+        .eq("managed_product_id", rawProduct!.managedId as never);
+      if (error) throw error;
+      return (data as unknown as LocationPriceRow[]) ?? [];
+    },
+  });
   useEffect(() => {
     if (!rawProduct || hasLocalRentwareCode) return;
     document.documentElement.setAttribute("data-slt-no-cart", "");
@@ -1439,6 +1458,14 @@ export default function ProductDetail() {
                         dailyPriceFrom={typeof productSEO?.dailyPriceFrom === "number" ? productSEO.dailyPriceFrom : undefined}
                         perDayLabel={t("rental.perDay")}
                       />
+                      {showTierPrices && (
+                        <RentalPriceTiers
+                          product={rawProduct!}
+                          location={location?.id}
+                          locationRows={locationPriceRows ?? []}
+                          className="mt-3 border-t border-border pt-3"
+                        />
+                      )}
                       {hasAnyPrice(product, productSEO?.dailyPriceFrom) && <p className="text-[11px] text-muted-foreground mt-1">{product.pricePerMonth && product.minRentalMonths ? `Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}</p>}
                       {hasAnyPrice(product, productSEO?.dailyPriceFrom) && (
                         <p className="text-[11px] leading-snug text-muted-foreground mt-1">
