@@ -1,3 +1,4 @@
+import { codedSubject } from "../_shared/order-code.ts";
 /**
  * Öffentliche Online-Annahme eines Angebots (/angebot/<token>).
  * Der unratbare Token ist das Geheimnis; Angebotsdaten kommen immer aus der Datenbank.
@@ -140,14 +141,14 @@ Deno.serve(async (req: Request) => {
         {
           from,
           to: [operationalEmailRecipient(inquiry.customer_email, loc.email)],
-          subject: `Angebot ${link.offer_number} online angenommen – ${String(inquiry.company_name || inquiry.customer_name || "Kunde").replace(/[\r\n]+/g, " ").slice(0, 80)}`,
+          subject: await codedSubject(service, `Angebot ${link.offer_number} online angenommen – ${String(inquiry.company_name || inquiry.customer_name || "Kunde").replace(/[\r\n]+/g, " ").slice(0, 80)}`, { table: link.inquiry_table, id: link.inquiry_id }),
           html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><h2 style="color:#00507d;">Angebot online angenommen</h2><p>Das Angebot <strong>${esc(link.offer_number)}</strong> über <strong>${money(Number(link.gross_amount))}</strong> brutto wurde am ${esc(when)} Uhr von ${who} digital unterschrieben und angenommen. Die AGB wurden bestätigt.</p><p>Nächster Schritt: Auftragsbestätigung senden.</p><p><a href="${esc(portalUrl)}" style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;font-weight:bold;padding:10px 18px;border-radius:4px;">Im Portal öffnen</a></p></div>`,
         },
         {
           from,
           ...(() => { const r = documentEmailRecipients(inquiry.customer_email || link.customer_email || "", []); return { to: r.to }; })(),
           reply_to: loc.email,
-          subject: prepay ? `Danke für deine Annahme – bitte jetzt bezahlen (Angebot ${link.offer_number})` : `Danke für deine Annahme von Angebot ${link.offer_number}`,
+          subject: await codedSubject(service, prepay ? `Danke für deine Annahme – bitte jetzt bezahlen (Angebot ${link.offer_number})` : `Danke für deine Annahme von Angebot ${link.offer_number}`, { table: link.inquiry_table, id: link.inquiry_id }),
           html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><p>Hallo ${esc(inquiry.customer_name || "")},</p><p><strong>Vielen Dank für das angenommene Angebot.</strong> ${prepay ? "Bitte leiste nun die Zahlung." : "Du erhältst in Kürze die Auftragsbestätigung, damit deine Miete bestätigt wird."}</p><p>Angebot <strong>${esc(link.offer_number)}</strong> über <strong>${money(Number(link.gross_amount))}</strong> brutto${Number(payload.deposit) > 0 ? ` zzgl. Kaution ${money(Number(payload.deposit))}` : ""}, angenommen am ${esc(when)} Uhr von ${esc(body.signer_name)}. Du hast dabei unsere ${isBusiness ? "AGB für Unternehmer" : "AGB für Verbraucher"} bestätigt.</p>${prepay && payUrl ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(payUrl)}" style="background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:bold;display:inline-block;">Jetzt bezahlen</a></p>` : ""}${prepay ? `<p style="font-size:13px;color:#4b5563;">Überweisung möglich an ${esc(SLT_COMPANY.name)}, IBAN ${esc(SLT_COMPANY.iban)}, BIC ${esc(SLT_COMPANY.bic)}, Verwendungszweck ${esc(link.offer_number)}.</p>` : ""}<p>Viele Grüße<br>Dein SLT Rental Team – Standort ${esc(loc.name)}<br>Tel. ${esc(loc.phone)} · ${esc(loc.email)}</p></div>`,
         },
       ];

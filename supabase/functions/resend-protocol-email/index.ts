@@ -1,3 +1,4 @@
+import { codedSubject } from "../_shared/order-code.ts";
 import { byForm, resolveAddressForm, salutationLine, type AddressForm } from "../_shared/salutation.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
@@ -97,6 +98,7 @@ serve(async (req) => {
       ).join("");
 
       emailSubject = `${t("Dein", "Ihr")} Übergabeprotokoll ${documentNumber} – SLT-Rental`;
+      emailSubject = await codedSubject(serviceClient, emailSubject, { table: "rental_inquiries", id: dn.rental_inquiry_id, reservationId: dn.reservation_id });
       emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
@@ -162,6 +164,7 @@ serve(async (req) => {
       }
 
       emailSubject = `Übergabeprotokoll ${documentNumber} – Bitte digital unterschreiben`;
+      emailSubject = await codedSubject(serviceClient, emailSubject, { table: "rental_inquiries", id: dn.rental_inquiry_id, reservationId: dn.reservation_id });
       emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
@@ -212,6 +215,7 @@ serve(async (req) => {
       ).join("");
 
       emailSubject = `${t("Dein", "Ihr")} Rückgabeprotokoll ${documentNumber} – SLT-Rental`;
+      emailSubject = await codedSubject(serviceClient, emailSubject, { table: "rental_inquiries", id: rp.rental_inquiry_id, reservationId: rp.reservation_id });
       emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
@@ -256,6 +260,7 @@ serve(async (req) => {
       form = await resolveAddressForm(serviceClient, { b2b_profile_id: profile.id });
 
       emailSubject = `Rückgabeprotokoll ${documentNumber} – Bitte digital unterschreiben`;
+      emailSubject = await codedSubject(serviceClient, emailSubject, { table: "rental_inquiries", id: rp.rental_inquiry_id, reservationId: rp.reservation_id });
       emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">

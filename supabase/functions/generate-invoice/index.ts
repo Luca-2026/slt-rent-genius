@@ -1,3 +1,4 @@
+import { codedSubject } from "../_shared/order-code.ts";
 import { byForm, resolveAddressForm, salutationLine, type AddressForm } from "../_shared/salutation.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
@@ -724,7 +725,7 @@ Deno.serve(async (req: Request) => {
           body: JSON.stringify({
             from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
             to: [customerEmail],
-            subject: `${t("Deine", "Ihre")} ${docTitle} ${invoiceNumber} – SLT-Rental`,
+            subject: await codedSubject(serviceClient, `${t("Deine", "Ihre")} ${docTitle} ${invoiceNumber} – SLT-Rental`, { reservationId: reservation_id }),
             html: emailHtml,
             attachments,
           }),

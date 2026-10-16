@@ -1,3 +1,4 @@
+import { codedSubject } from "../_shared/order-code.ts";
 /**
  * Mitarbeiter-Funktionen zur Online-Zahlung (Bearer-Auth, Rollenprüfung serverseitig):
  *  - create_link:     Zahlungslink zu einem bereits versendeten Angebot erzeugen (alle Mitarbeiter)
@@ -214,7 +215,7 @@ Deno.serve(async (req: Request) => {
             from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
             to: rcpt.to,
             ...(rcpt.cc.length ? { cc: rcpt.cc } : {}),
-            subject: `Ihre Kaution wird erstattet – Angebot ${link.offer_number}`,
+            subject: await codedSubject(service, `Ihre Kaution wird erstattet – Angebot ${link.offer_number}`, { table: link.inquiry_table, id: link.inquiry_id }),
             html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><p>Guten Tag,</p><p>wir erstatten Ihnen <strong>${money(body.amount_cents)}</strong> Ihrer Kaution${partial ? ` (von ${money(link.deposit_cents)})` : ""} zu Angebot ${esc(link.offer_number)} auf das Zahlungsmittel, mit dem Sie bezahlt haben.</p>${body.reason ? `<p>Hinweis: ${esc(body.reason)}</p>` : ""}<p>Die Gutschrift erscheint je nach Bank in der Regel innerhalb von 5–10 Werktagen.</p><p>Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${esc(loc.name)}<br>Tel. ${esc(loc.phone)} · ${esc(loc.email)}</p></div>`,
           }),
         });

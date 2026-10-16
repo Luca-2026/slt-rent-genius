@@ -1,3 +1,4 @@
+import { codedSubject } from "../_shared/order-code.ts";
 /**
  * Nachfass-E-Mail zur Zahlung (ersetzt die frühere 48-h-Erinnerung; läuft per pg_cron).
  * Regel: _shared/payment-followup.ts – online angenommen, Vorkasse/Anzahlung, 1 Stunde nach Annahme
@@ -110,9 +111,9 @@ Deno.serve(async (req) => {
       const form = await resolveAddressForm(service, r);
       const t = (du: string, sie: string) => byForm(form, du, sie);
       const greeting = salutationLine({ address_form: form, salutation: r.customer_salutation ?? r.salutation, name });
-      const subject = isManual
+      const subject = await codedSubject(service, isManual
         ? `Zahlungserinnerung – Angebot ${r.offer_number}`
-        : `Bitte Zahlung innerhalb von 24 Stunden leisten – Angebot ${r.offer_number}`;
+        : `Bitte Zahlung innerhalb von 24 Stunden leisten – Angebot ${r.offer_number}`, { table, id: r.id });
       const intro = isManual
         ? `<p>vielen Dank für ${t("deinen", "Ihren")} Auftrag zu unserem Angebot <strong>${esc(r.offer_number)}</strong>. Bei uns ist bisher noch nicht der vollständige Betrag eingegangen.</p>
 <p><strong>${t("Bitte leiste die Zahlung zeitnah, damit wir deine Miete bestätigen können.", "Bitte leisten Sie die Zahlung zeitnah, damit wir Ihre Miete bestätigen können.")}</strong></p>`

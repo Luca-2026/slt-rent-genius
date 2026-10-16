@@ -512,6 +512,13 @@
       "when": 1792174894960,
       "tag": "0072_inquiry_order_code",
       "breakpoints": true
+    },
+    {
+      "idx": 73,
+      "version": "7",
+      "when": 1792175224750,
+      "tag": "0073_reservation_order_code",
+      "breakpoints": true
     }
   ]
 }

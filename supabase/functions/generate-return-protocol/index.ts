@@ -1,3 +1,4 @@
+import { codedSubject } from "../_shared/order-code.ts";
 import { isAllowedPhotoPath, isAllowedPhotoUrl, escAttr } from "../_shared/protocolPhotos.ts";
 import { parseProtocolMeasurements, measurementRows, type ProtocolMeasurement } from "../_shared/protocolMeasurements.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
@@ -624,7 +625,7 @@ Deno.serve(async (req: Request) => {
           body: JSON.stringify({
             from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
             to: [customerEmail],
-            subject: `Rückgabeprotokoll ${returnProtocolNumber} – SLT-Rental`,
+            subject: await codedSubject(serviceClient, `Rückgabeprotokoll ${returnProtocolNumber} – SLT-Rental`, { reservationId: reservation_id }),
             html: emailHtml,
             attachments,
           }),

@@ -1,3 +1,4 @@
+import { codedSubject } from "../_shared/order-code.ts";
 /**
  * Stripe-Zahlungsmeldung. Öffentlicher Endpunkt – abgesichert über die Stripe-Signatur
  * (STRIPE_WEBHOOK_SECRET). Verarbeitet:
@@ -132,7 +133,7 @@ Deno.serve(async (req: Request) => {
             body: JSON.stringify({
               from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
               to: [to],
-              subject: `Zahlung eingegangen – Angebot ${link.offer_number}`,
+              subject: await codedSubject(service, `Zahlung eingegangen – Angebot ${link.offer_number}`, { table: link.inquiry_table, id: link.inquiry_id }),
               html: `<p>Online-Zahlung per Stripe eingegangen: <strong>${money(expected)}</strong> ${isAnzahlung ? "(30 % Anzahlung)" : `(davon Kaution ${money(Number.isFinite(metaDeposit) ? metaDeposit : link.deposit_cents)})`} zu Angebot <strong>${esc(link.offer_number)}</strong>.</p><p>Die Zahlung ist in der Mietanfrage unter „Zahlungseingänge“ gebucht.${remainingCents > 0 ? ` Noch offen: <strong>${money(remainingCents)}</strong> (Restbetrag inkl. Kaution vor Mietbeginn).` : ""} Die Auftragsbestätigung kann jetzt versendet werden.</p>`,
             }),
           });
