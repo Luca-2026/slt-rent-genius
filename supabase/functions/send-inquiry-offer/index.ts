@@ -467,6 +467,7 @@ Deno.serve(async (req: Request) => {
 
 
     const pdfBytes = await generateOfferPdf({
+      orderCode: (inquiry as { order_code?: string | null }).order_code ?? null,
       offerNumber,
       offerDate: fmt(today),
       validUntil: fmt(validUntil),

@@ -500,6 +500,7 @@ Deno.serve(async (req: Request) => {
     if (!staffName) staffName = "SLT Rental";
 
     const pdfBytes = await generateOfferPdf({
+      orderCode: (inquiry as { order_code?: string | null }).order_code ?? null,
       documentType: invoiceKind,
       offerNumber: invoiceNumber,
       offerDate: isoDate(invoiceDate),
