@@ -4,7 +4,6 @@
 - Links via locationWhatsAppContacts.ts + BonnWhatsAppContact (legacy name); iconOnly beside email keeps cards aligned; WhatsAppIcon.tsx brand glyph, not a chat icon.
 - Customer payment-term eligibility is shared through _shared/customer-payment-terms.ts in forms and send functions; validate before number allocation to prevent UI bypasses without modifying issued snapshots.
 - Signing overlays: ref counting + route gating hide cart/cookies while signing.
-- Both rental offer forms use offerDeposit/OfferDepositWarning; require acknowledgement before finalizing without a deposit, not for drafts.
 <!-- LOVABLE:BEGIN -->
 - Inject the portal first-paint guard through the Vite HTML plugin before body parsing; hide only prerender fallback content on the exact portal host to preserve public SEO and the React portal.
 <!-- LOVABLE:END -->
@@ -21,7 +20,4 @@
 - Kundenrabatte (Kategorie) in Angeboten nur über src/lib/customerDiscounts.ts (getestet): Vorbelegung nur bei neuen Mietangeboten, Sonderpreis hat Vorrang, manuelle Rabatte bleiben – gleiche Regel in Mietanfragen und Portalbuchungen.
 - Mietanfragen ohne bestätigten Auftrag (neu, in Bearbeitung, Angebot gesendet) mit abgelaufenem Mietzeitraum setzt die DB-Funktion close_expired_rental_inquiries täglich per pg_cron auf erledigt – gespeicherter Status, damit Liste, Zähler und Startseite übereinstimmen.
 - Standortwechsel nur über DB-Funktion change_rental_inquiry_location (can_edit_operations, zieht location_email und b2b_reservations atomar mit, Notiz in internal_notes); versendete Angebote bleiben Snapshot. Kundeninfo nur über Edge Function send-location-notice (Konsistenzprüfung, Testkunden-Routing) – kein Freitextversand.
-- Rückgabe an anderem Standort (One-Way) nur über das Rückgabefeld im InquiryOfferForm + resolveReturnLocation (_shared/inquiry-offer-math.ts); Aufpreis netto als eigene Position, gespeichert im offer_payload und inquiry_invoices.return_location/return_location_cost – Angebot, Rechnung, Auftragsbestätigung und Umsatz rechnen so dieselbe Summe.
-- Angebots-/Rechnungsentwürfe im Anfragenbereich zusätzlich in inquiry_doc_drafts (Server, je draft_key) speichern und nach Versand/Verwerfen löschen – Kollegen sehen begonnene Arbeit, nichts geht verloren oder wird doppelt erfasst.
-- Mietanfragen: Vollseite /b2b/mietanfragen/:id (InquiryDetailPanel layout="page"), ?anfrage= leitet nur um; Verkauf bleibt gestapelt.
-- Zahlungseingänge (payments jsonb) stempelt der DB-Trigger stamp_inquiry_payments mit Erfasser/Zeitpunkt und protokolliert in inquiry_payment_events – Browser kann Erfasser nicht fälschen; Clients müssen recorded_* unverändert zurückschreiben.
+- Kunden werden standardmäßig geduzt; address_form am Kunden (crm_customers, Fallback rental_inquiries) schaltet auf Sie. Anrede nur über _shared/salutation.ts (PDF + E-Mail). Übrige Vorlagen folgen in Paket 10.

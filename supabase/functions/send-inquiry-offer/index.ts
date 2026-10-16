@@ -20,6 +20,8 @@ import {
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
+import { byForm, normalizeAddressForm, salutationLine, type AddressForm } from "../_shared/salutation.ts";
+import { defaultTermsText, printableTerms } from "../_shared/offer-terms.ts";
 import { computeRentalLinePrice, resolveProductPrices, type PricingUnit } from "../_shared/rental-pricing.ts";
 import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
 import { normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
@@ -322,11 +324,47 @@ Deno.serve(async (req: Request) => {
       payment_due_days: paymentDueDays,
     };
 
+    // ── Paket 4 (nur Mietanfragen): Anrede-Form, Anrede, Angebotsbedingungen ──
+    const isRentalOffer = inquiryType === "rental";
+    let addressForm: AddressForm = "sie";
+    let termsRaw: string | null = null;
+    let termsPrint = "";
+    if (isRentalOffer) {
+      addressForm = normalizeAddressForm(inquiry.address_form);
+      if (inquiry.crm_customer_id) {
+        const { data: crm } = await service.from("crm_customers").select("address_form").eq("id", inquiry.crm_customer_id).maybeSingle();
+        if (crm?.address_form) addressForm = normalizeAddressForm(crm.address_form);
+      }
+      termsRaw = typeof body.terms_text === "string" && body.terms_text.trim() ? body.terms_text.trim().slice(0, 4000) : null;
+      let termsText = termsRaw;
+      if (termsText === null) {
+        const { data: tb } = await service.from("text_blocks").select("text_business,text_private").eq("key", "offer_terms").maybeSingle();
+        termsText = defaultTermsText(tb, inquiry.customer_kind);
+      }
+      const slugs = Array.from(new Set(items.map((i) => i.product_slug).filter(Boolean))) as string[];
+      let hasBau = false;
+      if (slugs.length) {
+        const { data: bau } = await service.from("b2b_managed_products").select("slug").in("slug", slugs).eq("pricing_scheme", "bau").limit(1);
+        hasBau = (bau ?? []).length > 0;
+      }
+      termsPrint = printableTerms(termsText, hasBau);
+    }
+    const F = (du: string, sie: string) => byForm(addressForm, du, sie);
+    const greeting = isRentalOffer
+      ? salutationLine({ address_form: addressForm, salutation: inquiry.customer_salutation, name: customerName })
+      : `Hallo ${customerName || ""},`;
+
     // ── Produktbilder: explizit übergeben oder per Artikelname aus dem CMS ──
     const pdfItems = items.map((i) => ({
       // Paket 3b: Name nur für dieses Angebot geändert → im PDF der Override.
       product_name: i.name_override || i.product_name,
-      description: i.description,
+      description: i.description_override || i.description,
+      group_id: i.group_id,
+      articles: i.articles,
+      quantity_unit: i.quantity_unit,
+      duration: i.duration,
+      unit_code: i.unit_code,
+      price_basis: i.price_basis,
       quantity: i.quantity,
       unit: i.unit,
       unit_price: i.unit_price,
@@ -454,6 +492,21 @@ Deno.serve(async (req: Request) => {
       deliveryAddress: deliveryRequested ? deliveryAddress : undefined,
       paymentTerms,
       paymentTermsCustom: paymentTerms === "custom" ? paymentTermsCustom : undefined,
+      inquiryOffer: isRentalOffer
+        ? {
+            addressForm,
+            salutation: greeting,
+            customerData: {
+              contact: companyName ? (customerName || undefined) : undefined,
+              phone: inquiry.customer_phone || undefined,
+              mobile: inquiry.customer_mobile || undefined,
+              email: customerEmail,
+            },
+            orderType,
+            groups: offerGroups?.map((g) => ({ id: g.id, name: g.name })),
+            termsText: termsPrint || undefined,
+          }
+        : undefined,
 
     });
 
@@ -558,7 +611,17 @@ Deno.serve(async (req: Request) => {
 
     const pctFmt = (n: number) => (Number.isInteger(n) ? String(n) : String(n).replace(".", ","));
     let discountSum = 0;
+    const groupName = new Map((offerGroups ?? []).map((g) => [g.id, g.name]));
+    let lastGroupId: string | null = null;
     const rowsHtml = items.map((i) => {
+      let groupHtml = "";
+      if (groupName.size) {
+        const gid = i.group_id && groupName.has(i.group_id) ? i.group_id : "";
+        if (gid !== lastGroupId) {
+          lastGroupId = gid;
+          groupHtml = `<div style="padding:12px 0 2px;color:#00507d;font-weight:bold;font-size:13px;">${escapeHtml(gid ? groupName.get(gid) : "Positionen")}</div>`;
+        }
+      }
       const pct = Number(i.discount_percent) || 0;
       const gross = Math.round(i.quantity * i.unit_price * 100) / 100;
       const savings = Math.round(gross * (pct / 100) * 100) / 100;
@@ -567,11 +630,13 @@ Deno.serve(async (req: Request) => {
       const discountHtml = pct > 0
         ? `<br><span style="color:#ff8e02;font-size:12px;font-weight:bold;">Listenpreis ${money(gross)} – Rabatt ${pctFmt(pct)} % = − ${money(savings)}</span>`
         : "";
-      return `
+      const desc = i.description_override || i.description;
+      return `${groupHtml}
       <div style="padding:10px 0;border-bottom:1px solid #e5e7eb;">
-        <div style="font-weight:bold;font-size:14px;">${escapeHtml(i.product_name)}</div>
-        ${i.description ? `<div style="color:#6b7280;font-size:12px;margin-top:2px;">${escapeHtml(i.description)}</div>` : ""}
+        <div style="font-weight:bold;font-size:14px;">${escapeHtml(i.name_override || i.product_name)}</div>
+        ${desc ? `<div style="color:#6b7280;font-size:12px;margin-top:2px;">${escapeHtml(desc)}</div>` : ""}
         ${(i.addons ?? []).filter((a) => a.amount > 0 && !a.optional).map((a) => `<div style="color:#6b7280;font-size:12px;margin-top:2px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}${addonExplanation(a, i) ? `<br><span style="font-size:11px;">${escapeHtml(addonExplanation(a, i))}</span>` : ""}</div>`).join("")}
+        ${(i.addons ?? []).filter((a) => a.optional).map((a) => `<div style="color:#6b7280;font-size:12px;margin-top:2px;padding-left:12px;">Optional: ${escapeHtml(a.label)} – ${money(a.per_day ?? a.rate ?? 0)} je KT (nicht in der Summe enthalten)</div>`).join("")}
         ${discountHtml ? `<div style="margin-top:2px;">${discountHtml.replace(/^<br>/, "")}</div>` : ""}
         <table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:13px;"><tr>
           <td style="color:#6b7280;padding:0;">${i.quantity}${i.unit ? ` ${escapeHtml(i.unit)}` : ""} &times; ${money(i.unit_price)}</td>
@@ -607,17 +672,17 @@ Deno.serve(async (req: Request) => {
       net_14: "Zahlung innerhalb von 14 Tagen nach Rechnungsstellung (netto)." + depositText,
       net_30: "Zahlung innerhalb von 30 Tagen nach Rechnungsstellung (netto)." + depositText,
       vorkasse:
-        "<strong>Vorkasse komplett.</strong> Der Gesamtbetrag ist vor Mietbeginn zu leisten. Sie wählen selbst: " +
+        "<strong>Vorkasse komplett.</strong> Der Gesamtbetrag ist vor Mietbeginn zu leisten. " + F("Du wählst selbst: ", "Sie wählen selbst: ") +
         "per <strong>Banküberweisung</strong> (Bankdaten im Angebots-PDF, Verwendungszweck: Angebotsnummer) oder " +
-        "<strong>online</strong> über Ihren persönlichen Zahlungslink." + depositText,
+        "<strong>online</strong> über " + F("deinen", "Ihren") + " persönlichen Zahlungslink." + depositText,
       anzahlung_30:
         "<strong>30 % Anzahlung.</strong> Mindestens 30 % der Bruttomiete sind als Anzahlung zu leisten, der Restbetrag " +
-        "ist vor Mietbeginn fällig. Sie wählen selbst: per <strong>Banküberweisung</strong> (Bankdaten im Angebots-PDF, " +
-        "Verwendungszweck: Angebotsnummer) oder <strong>online</strong> über Ihren persönlichen Zahlungslink – dort " +
-        "können Sie auch direkt den Gesamtbetrag zahlen." + depositText,
+        "ist vor Mietbeginn fällig. " + F("Du wählst", "Sie wählen") + " selbst: per <strong>Banküberweisung</strong> (Bankdaten im Angebots-PDF, " +
+        "Verwendungszweck: Angebotsnummer) oder <strong>online</strong> über " + F("deinen", "Ihren") + " persönlichen Zahlungslink – dort " +
+        F("kannst du", "können Sie") + " auch direkt den Gesamtbetrag zahlen." + depositText,
       rentpair_vorkasse:
         "<strong>Vorkasse komplett.</strong> Der Gesamtbetrag ist vor Mietbeginn zu leisten – per Banküberweisung " +
-        "(Verwendungszweck: Angebotsnummer) oder online über Ihren persönlichen Zahlungslink." + depositText,
+        "(Verwendungszweck: Angebotsnummer) oder online über " + F("deinen", "Ihren") + " persönlichen Zahlungslink." + depositText,
     };
     const paymentEmailText = paymentTerms === "custom"
       ? escapeHtml(paymentTermsCustom).replace(/\n/g, "<br>") + depositText
@@ -625,14 +690,15 @@ Deno.serve(async (req: Request) => {
 
     const emailHtml = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:16px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
 <div style="max-width:600px;margin:0 auto;">
-  <h2 style="color:#00507d;margin:0 0 16px;">Ihr Angebot ${escapeHtml(offerNumber)}</h2>
-  <p>Hallo ${escapeHtml(customerName || "")},</p>
-  <p>vielen Dank für Ihre Anfrage. Anbei erhalten Sie unser Angebot als PDF.</p>
+  <h2 style="color:#00507d;margin:0 0 16px;">${F("Dein", "Ihr")} Angebot ${escapeHtml(offerNumber)}</h2>
+  <p>${escapeHtml(greeting)}</p>
+  <p>${F("vielen Dank für deine Anfrage. Anbei erhältst du unser Angebot als PDF.", "vielen Dank für Ihre Anfrage. Anbei erhalten Sie unser Angebot als PDF.")}</p>
+  ${pdfNotes ? `<p style="white-space:pre-wrap;">${escapeHtml(pdfNotes)}</p>` : ""}
   <div style="margin:16px 0;border-top:2px solid #00507d;">
     ${rowsHtml}
     ${transportRowsHtml}
   </div>
-  ${discountSum > 0 ? `<p style="background:#fff7ed;border-left:4px solid #ff8e02;padding:10px 14px;margin:16px 0;border-radius:4px;font-size:14px;"><strong style="color:#ff8e02;">Ihr Rabattvorteil: − ${money(discountSum)}</strong><br><span style="color:#6b7280;font-size:13px;">Der Rabatt ist in den oben genannten Positionspreisen bereits abgezogen.</span></p>` : ""}
+  ${discountSum > 0 ? `<p style="background:#fff7ed;border-left:4px solid #ff8e02;padding:10px 14px;margin:16px 0;border-radius:4px;font-size:14px;"><strong style="color:#ff8e02;">${F("Dein", "Ihr")} Rabattvorteil: − ${money(discountSum)}</strong><br><span style="color:#6b7280;font-size:13px;">Der Rabatt ist in den oben genannten Positionspreisen bereits abgezogen.</span></p>` : ""}
   <p style="font-size:15px;"><strong>Gesamtsumme brutto: ${money(totals.grossAmount)}</strong><br>
   <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)}${transportTotal > 0 ? ` (inkl. Transportkosten ${money(transportTotal)})` : ""} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span>${deposit > 0 ? `<br><span style="color:#6b7280;font-size:13px;">zzgl. Kaution ${money(deposit)} (wird nach Rückgabe erstattet) – Gesamtüberweisung inkl. Kaution: ${money(totals.grossAmount + deposit)}</span>` : ""}</p>
 
@@ -641,31 +707,30 @@ Deno.serve(async (req: Request) => {
 
 
   <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;">
-    <strong>So nehmen Sie das Angebot an:</strong><br>
-    ${acceptUrl ? `Klicken Sie auf den Button und unterschreiben Sie digital – mit der Maus oder dem Finger auf dem Smartphone.
+    <strong>${F("So nimmst du das Angebot an:", "So nehmen Sie das Angebot an:")}</strong><br>
+    ${acceptUrl ? `${F("Klick auf den Button und unterschreib digital", "Klicken Sie auf den Button und unterschreiben Sie digital")} – mit der Maus oder dem Finger auf dem Smartphone.
     <p style="margin:12px 0 8px;"><a href="${escapeHtml(acceptUrl)}" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:4px;">Angebot online annehmen</a></p>
-    <span style="color:#6b7280;font-size:12px;">Mit der Annahme bestätigen Sie unsere ${customerKind === "business" ? "AGB für Unternehmer" : "AGB für Verbraucher"} und nehmen das Angebot ${escapeHtml(offerNumber)} rechtsverbindlich an.</span><br>
-    <span style="color:#6b7280;font-size:12px;">Alternativ können Sie die Annahme auch per E-Mail an <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a> bestätigen.</span>` : `Bitte bestätigen Sie uns die Annahme kurz per E-Mail an
-    <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a>.`}${["net_7", "net_14", "net_30"].includes(paymentTerms) ? "" : `<br><span style="font-size:13px;">Bitte leisten Sie danach die Zahlung gemäß den unten stehenden Zahlungsbedingungen.</span>`}
+    <span style="color:#6b7280;font-size:12px;">Mit der Annahme ${F("bestätigst du", "bestätigen Sie")} unsere ${customerKind === "business" ? "AGB für Unternehmer" : "AGB für Verbraucher"} und ${F("nimmst", "nehmen")} das Angebot ${escapeHtml(offerNumber)} rechtsverbindlich an.</span><br>
+    <span style="color:#6b7280;font-size:12px;">Alternativ ${F("kannst du", "können Sie")} die Annahme auch per E-Mail an <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a> bestätigen.</span>` : `${F("Bitte bestätige uns", "Bitte bestätigen Sie uns")} die Annahme kurz per E-Mail an
+    <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a>.`}${["net_7", "net_14", "net_30"].includes(paymentTerms) ? "" : `<br><span style="font-size:13px;">${F("Bitte leiste danach die Zahlung", "Bitte leisten Sie danach die Zahlung")} gemäß den unten stehenden Zahlungsbedingungen.</span>`}
   </div>
   ${paymentLinkUrl ? `<div style="background:#eef4f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>Bequem online bezahlen:</strong><br>
-    ${paymentTerms === "anzahlung_30" ? `Über Ihren persönlichen Zahlungslink zahlen Sie wahlweise die <strong>30 % Anzahlung</strong> oder direkt den Gesamtbetrag von <strong>${money(paymentLinkAmount)}</strong>` : `Über Ihren persönlichen Zahlungslink können Sie den Betrag von <strong>${money(paymentLinkAmount)}</strong>`}${deposit > 0 ? ` (inkl. Kaution ${money(deposit)}, wird nach Rückgabe erstattet)` : ""} direkt online begleichen. Der Link gilt nur für dieses Angebot.
+    ${paymentTerms === "anzahlung_30" ? `${F("Über deinen persönlichen Zahlungslink zahlst du", "Über Ihren persönlichen Zahlungslink zahlen Sie")} wahlweise die <strong>30 % Anzahlung</strong> oder direkt den Gesamtbetrag von <strong>${money(paymentLinkAmount)}</strong>` : `${F("Über deinen persönlichen Zahlungslink kannst du", "Über Ihren persönlichen Zahlungslink können Sie")} den Betrag von <strong>${money(paymentLinkAmount)}</strong>`}${deposit > 0 ? ` (inkl. Kaution ${money(deposit)}, wird nach Rückgabe erstattet)` : ""} direkt online begleichen. Der Link gilt nur für dieses Angebot.
     <p style="margin:12px 0 0;"><a href="${escapeHtml(paymentLinkUrl)}" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;font-weight:bold;padding:10px 18px;border-radius:4px;">Zahlungsart wählen &amp; bezahlen</a></p>
     <span style="color:#6b7280;font-size:12px;">Alternativ ist die Banküberweisung gemäß den Zahlungsbedingungen weiterhin möglich.</span>
   </div>` : ""}
   <div style="background:#eef4f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
-    <strong>Wann ist Ihr Auftrag verbindlich?</strong><br>
-    ${["net_7", "net_14", "net_30"].includes(paymentTerms) ? "Nach Ihrer Annahme erhalten Sie unsere Auftragsbestätigung." : "Sobald Ihre Zahlung bei uns eingegangen ist, erhalten Sie unsere Auftragsbestätigung."}
-    Erst mit der Auftragsbestätigung wird die Miete verbindlich und Ihr Auftrag gilt als angenommen. Maßgeblich ist allein die Auftragsbestätigung – sie dient Ihnen als Nachweis, dass wir Ihren Auftrag angenommen haben.
+    <strong>${F("Wann ist dein Auftrag verbindlich?", "Wann ist Ihr Auftrag verbindlich?")}</strong><br>
+    ${["net_7", "net_14", "net_30"].includes(paymentTerms) ? F("Nach deiner Annahme erhältst du unsere Auftragsbestätigung.", "Nach Ihrer Annahme erhalten Sie unsere Auftragsbestätigung.") : F("Sobald deine Zahlung bei uns eingegangen ist, erhältst du unsere Auftragsbestätigung.", "Sobald Ihre Zahlung bei uns eingegangen ist, erhalten Sie unsere Auftragsbestätigung.")}
+    ${F("Erst mit der Auftragsbestätigung wird die Miete verbindlich und dein Auftrag gilt als angenommen. Maßgeblich ist allein die Auftragsbestätigung – sie dient dir als Nachweis, dass wir deinen Auftrag angenommen haben.", "Erst mit der Auftragsbestätigung wird die Miete verbindlich und Ihr Auftrag gilt als angenommen. Maßgeblich ist allein die Auftragsbestätigung – sie dient Ihnen als Nachweis, dass wir Ihren Auftrag angenommen haben.")}
   </div>
   <div style="background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>Zahlungsbedingungen:</strong><br>${paymentEmailText}
   </div>
   <p style="color:#6b7280;font-size:13px;">Dieses Angebot ist gültig bis ${escapeHtml(fmt(validUntil))}.</p>
-  ${agbBytes ? `<p style="color:#6b7280;font-size:13px;">Es gelten unsere beigefügten ${customerKind === "business" ? "AGB für Unternehmer (B2B)" : "AGB für Verbraucher (B2C)"}.</p>` : ""}
-  ${pdfNotes ? `<p style="white-space:pre-wrap;">${escapeHtml(pdfNotes)}</p>` : ""}
-  <p style="margin-top:24px;">Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}<br>
+  ${agbBytes ? `<p style="color:#6b7280;font-size:13px;">Es gelten unsere beigefügten ${customerKind === "business" ? "AGB für Unternehmer" : "AGB für Verbraucher"}.</p>` : ""}
+  <p style="margin-top:24px;">${F("Viele Grüße<br>Dein", "Freundliche Grüße<br>Ihr")} SLT Rental Team – Standort ${escapeHtml(loc.name)}<br>
   Tel. ${escapeHtml(loc.phone)} · <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a></p>
 </div></body></html>`;
 
@@ -685,7 +750,7 @@ Deno.serve(async (req: Request) => {
               ),
             ),
             reply_to: loc.email,
-            subject: `${isRevision ? "Ihr überarbeitetes Angebot" : "Ihr Angebot"} von SLT Rental – ${offerNumber}`,
+            subject: `${isRevision ? F("Dein überarbeitetes Angebot", "Ihr überarbeitetes Angebot") : F("Dein Angebot", "Ihr Angebot")} von SLT Rental – ${offerNumber}`,
             html: emailHtml,
             attachments: [
               { filename: fileName, content: encodeBase64(pdfBytes) },
@@ -743,6 +808,7 @@ Deno.serve(async (req: Request) => {
           ...(offerGroups ? { groups: offerGroups } : {}),
           ...(extraFields ? { extra_fields: extraFields } : {}),
           ...(orderType ? { order_type: orderType } : {}),
+          ...(isRentalOffer ? { terms_text: termsRaw, address_form: addressForm } : {}),
         },
         ...(inquiryType === "rental"
           ? {

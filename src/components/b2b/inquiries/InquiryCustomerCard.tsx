@@ -23,6 +23,9 @@ interface Props {
   city?: string | null;
   /** Paket 3b: Anrede (nur Mietanfragen; undefined = Feld ausblenden). */
   salutation?: string | null;
+  /** Paket 4: Mobilnummer und Anrede-Form (nur Mietanfragen; undefined = ausblenden). */
+  mobile?: string | null;
+  addressForm?: string | null;
   busy?: boolean;
   /**
    * Persists the edited values. Field mapping (rental vs. sales) is handled by
@@ -39,6 +42,8 @@ interface Props {
     postal_code: string;
     city: string;
     salutation: "" | "herr" | "frau";
+    mobile: string;
+    address_form: "du" | "sie";
   }) => Promise<boolean | void>;
 }
 
@@ -54,9 +59,12 @@ export function InquiryCustomerCard({
   postalCode,
   city,
   salutation,
+  mobile,
+  addressForm,
   busy,
   onSave,
 }: Props) {
+  const showAddressForm = addressForm !== undefined;
   const showSalutation = salutation !== undefined;
   const initial = {
     customer_kind: (customerKind === "business" ? "business" : "private") as CustomerKind,
@@ -69,6 +77,8 @@ export function InquiryCustomerCard({
     postal_code: postalCode ?? "",
     city: city ?? "",
     salutation: (salutation === "herr" || salutation === "frau" ? salutation : "") as "" | "herr" | "frau",
+    mobile: mobile ?? "",
+    address_form: (addressForm === "sie" ? "sie" : "du") as "du" | "sie",
   };
   const [editing, setEditing] = useState(false);
   const [values, setValues] = useState(initial);
@@ -77,7 +87,7 @@ export function InquiryCustomerCard({
     setValues(initial);
     setEditing(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [customerKind, customerName, customerEmail, customerPhone, companyName, vatId, street, postalCode, city, salutation]);
+  }, [customerKind, customerName, customerEmail, customerPhone, companyName, vatId, street, postalCode, city, salutation, mobile, addressForm]);
 
   const isBusiness = initial.customer_kind === "business";
 
@@ -104,7 +114,9 @@ export function InquiryCustomerCard({
             {initial.name || "—"}
             {initial.email ? ` · ${initial.email}` : ""}
             {initial.phone ? ` · ${initial.phone}` : ""}
+            {initial.mobile ? ` · Mobil ${initial.mobile}` : ""}
           </div>
+          {showAddressForm && <div>Anrede-Form: {initial.address_form === "sie" ? "Sie" : "Du"}</div>}
           {(initial.street || initial.postal_code || initial.city) && (
             <div>
               {[initial.street, [initial.postal_code, initial.city].filter(Boolean).join(" ")]
@@ -155,6 +167,18 @@ export function InquiryCustomerCard({
             <Input value={values.name} onChange={(e) => setValues({ ...values, name: e.target.value })} />
           </div>
         </div>
+        {showAddressForm && (
+          <div className="space-y-1.5">
+            <Label className="text-xs">Anrede-Form</Label>
+            <Select value={values.address_form} onValueChange={(v) => setValues({ ...values, address_form: v === "sie" ? "sie" : "du" })}>
+              <SelectTrigger className="h-10" aria-label="Anrede-Form"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="du">Du (Standard)</SelectItem>
+                <SelectItem value="sie">Sie</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
         <div className="space-y-1.5">
           <Label className="text-xs">E-Mail</Label>
           <Input
@@ -167,6 +191,12 @@ export function InquiryCustomerCard({
           <Label className="text-xs">Telefon</Label>
           <Input value={values.phone} onChange={(e) => setValues({ ...values, phone: e.target.value })} />
         </div>
+        {showAddressForm && (
+          <div className="space-y-1.5">
+            <Label className="text-xs">Mobil</Label>
+            <Input value={values.mobile} onChange={(e) => setValues({ ...values, mobile: e.target.value })} />
+          </div>
+        )}
         {values.customer_kind === "business" && (
           <>
             <div className="space-y-1.5">

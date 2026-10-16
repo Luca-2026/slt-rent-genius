@@ -2244,6 +2244,7 @@ export type Database = {
       }
       crm_customers: {
         Row: {
+          address_form: string
           b2b_profile_id: string | null
           city: string | null
           company_name: string | null
@@ -2265,6 +2266,7 @@ export type Database = {
           vat_id: string | null
         }
         Insert: {
+          address_form?: string
           b2b_profile_id?: string | null
           city?: string | null
           company_name?: string | null
@@ -2286,6 +2288,7 @@ export type Database = {
           vat_id?: string | null
         }
         Update: {
+          address_form?: string
           b2b_profile_id?: string | null
           city?: string | null
           company_name?: string | null
@@ -3584,6 +3587,7 @@ export type Database = {
       }
       rental_inquiries: {
         Row: {
+          address_form: string
           assigned_at: string | null
           assigned_name: string | null
           assigned_to: string | null
@@ -3597,6 +3601,7 @@ export type Database = {
           customer_city: string | null
           customer_email: string | null
           customer_kind: string
+          customer_mobile: string | null
           customer_name: string | null
           customer_phone: string | null
           customer_postal_code: string | null
@@ -3650,6 +3655,7 @@ export type Database = {
           vat_id: string | null
         }
         Insert: {
+          address_form?: string
           assigned_at?: string | null
           assigned_name?: string | null
           assigned_to?: string | null
@@ -3663,6 +3669,7 @@ export type Database = {
           customer_city?: string | null
           customer_email?: string | null
           customer_kind?: string
+          customer_mobile?: string | null
           customer_name?: string | null
           customer_phone?: string | null
           customer_postal_code?: string | null
@@ -3716,6 +3723,7 @@ export type Database = {
           vat_id?: string | null
         }
         Update: {
+          address_form?: string
           assigned_at?: string | null
           assigned_name?: string | null
           assigned_to?: string | null
@@ -3729,6 +3737,7 @@ export type Database = {
           customer_city?: string | null
           customer_email?: string | null
           customer_kind?: string
+          customer_mobile?: string | null
           customer_name?: string | null
           customer_phone?: string | null
           customer_postal_code?: string | null
@@ -4521,6 +4530,27 @@ export type Database = {
           received_at?: string
           result?: string | null
           type?: string
+        }
+        Relationships: []
+      }
+      text_blocks: {
+        Row: {
+          key: string
+          text_business: string | null
+          text_private: string | null
+          updated_at: string
+        }
+        Insert: {
+          key: string
+          text_business?: string | null
+          text_private?: string | null
+          updated_at?: string
+        }
+        Update: {
+          key?: string
+          text_business?: string | null
+          text_private?: string | null
+          updated_at?: string
         }
         Relationships: []
       }

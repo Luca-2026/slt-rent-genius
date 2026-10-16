@@ -336,6 +336,8 @@ interface Props {
     groups?: OfferGroup[];
     extra_fields?: OfferExtraFields;
     order_type?: OrderType;
+    /** Paket 4: geänderte Angebotsbedingungen (null = Textbaustein). */
+    terms_text?: string | null;
   };
   /** Vollseite: Aktionsleiste oben angeheftet statt am Formularende (nur Anordnung). */
   stickyActions?: boolean;
@@ -488,6 +490,20 @@ export function InquiryOfferForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerKind, isInvoice]);
   const [notes, setNotes] = useState<string>(draft?.notes ?? defaultMeta?.notes ?? "");
+  // Paket 4: Angebotsbedingungen – Vorbelegung aus dem Textbaustein nach Kundenart, je Angebot änderbar.
+  const showTerms = inquiryType === "rental" && !isInvoice;
+  const [termsDefault, setTermsDefault] = useState("");
+  const [termsText, setTermsText] = useState<string | null>(defaultMeta?.terms_text ?? null);
+  useEffect(() => {
+    if (!showTerms) return;
+    let alive = true;
+    supabase.from("text_blocks").select("text_business,text_private").eq("key", "offer_terms").maybeSingle()
+      .then(({ data }) => {
+        if (!alive || !data) return;
+        setTermsDefault(String((customerKind === "business" ? data.text_business : data.text_private) ?? "").trim());
+      });
+    return () => { alive = false; };
+  }, [showTerms, customerKind]);
   const [sending, setSending] = useState(false);
 
   /** Offene Schäden/Zusatzkosten aus dem Rücknahmeprotokoll dieser Anfrage. */
@@ -627,6 +643,7 @@ export function InquiryOfferForm({
     setGroups(Array.isArray(d.groups) ? (d.groups as OfferGroup[]) : []);
     setExtraFields((d.extraFields as Partial<Record<keyof OfferExtraFields, string>>) ?? {});
     setOrderType(d.orderType === "delivery" ? "delivery" : "pickup");
+    setTermsText(typeof d.termsText === "string" ? d.termsText : null);
   };
 
   /** Beim Öffnen prüfen, ob auf dem Server ein Entwurf (ggf. von Kollegen) liegt. */
@@ -686,6 +703,7 @@ export function InquiryOfferForm({
         groups,
         extraFields,
         orderType,
+        termsText,
       };
       writeInquiryDraft(draftKey, snapshot);
       if (dirtyRef.current && userTouchedRef.current) {
@@ -719,6 +737,7 @@ export function InquiryOfferForm({
     groups,
     extraFields,
     orderType,
+    termsText,
   ]);
 
   /** Entwurf verwerfen und Formular auf die Ausgangswerte zurücksetzen. */
@@ -745,6 +764,7 @@ export function InquiryOfferForm({
     setPaymentTerms(safeCustomerPaymentTerms(customerKind, defaultMeta?.payment_terms ?? defaultTerms(), isInvoice));
     setPaymentTermsCustom(defaultMeta?.payment_terms_custom ?? "");
     setNotes(defaultMeta?.notes ?? "");
+    setTermsText(defaultMeta?.terms_text ?? null);
     setOpenEnded(canOpenEnded && !!defaultMeta?.open_ended);
     setUseSaturday(false);
     setUseSunday(false);
@@ -1137,6 +1157,7 @@ export function InquiryOfferForm({
         notes: [notes.trim(), settlementNote].filter(Boolean).join("\n\n"),
         ...(groups.length ? { groups } : {}),
         ...(cleanExtraFields(extraFields) ? { extra_fields: cleanExtraFields(extraFields) } : {}),
+        ...(showTerms ? { terms_text: termsText !== null && termsText.trim() && termsText.trim() !== termsDefault ? termsText.trim() : null } : {}),
         order_type: orderType,
         staff_name: staffName,
       });
@@ -2311,6 +2332,22 @@ export function InquiryOfferForm({
         <Label className="text-xs">Hinweis für den Kunden (optional)</Label>
         <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} disabled={disabled} />
       </div>
+      {showTerms && (
+        <div className="space-y-1">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <Label className="text-xs">Angebotsbedingungen</Label>
+            {termsText !== null && termsText.trim() !== termsDefault && (
+              <Button type="button" size="sm" variant="ghost" className="h-7 px-2 text-xs" onClick={() => setTermsText(null)} disabled={disabled}>
+                Textbaustein wiederherstellen
+              </Button>
+            )}
+          </div>
+          <Textarea value={termsText ?? termsDefault} onChange={(e) => setTermsText(e.target.value)} rows={5} disabled={disabled} />
+          <p className="text-xs text-muted-foreground">
+            Aus dem Textbaustein ({customerKind === "business" ? "Unternehmen" : "Privat"}). Ab dem zweiten Absatz wird nur gedruckt, wenn ein Bau-Artikel im Angebot ist.
+          </p>
+        </div>
+      )}
       </EditorSection>
 
       <div className="rounded-lg bg-muted p-3 text-sm space-y-1">

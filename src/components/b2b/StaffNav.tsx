@@ -65,6 +65,7 @@ export const STAFF_NAV: StaffNavGroup[] = [
     items: [
       { label: "Mietartikel-CMS", path: "/b2b/aufgaben", tab: "inventory", icon: Boxes, access: "inventory" },
       { label: "Verkaufsartikel-CMS", path: "/b2b/aufgaben", tab: "verkauf", icon: Store, access: "inventory" },
+      { label: "Textbausteine", path: "/b2b/aufgaben", tab: "textbausteine", icon: FileText, access: "inventory" },
       { label: "Zeiterfassung", path: "/b2b/aufgaben", tab: "zeiten", icon: CalendarClock, access: "staff" },
       { label: "Team", path: "/b2b/aufgaben", tab: "staff", icon: UserCog, access: "admin" },
       { label: "Audit-Log", path: "/b2b/aufgaben", tab: "audit", icon: Shield, access: "admin" },

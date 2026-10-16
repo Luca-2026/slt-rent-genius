@@ -2,6 +2,7 @@ import { PDFDocument, StandardFonts, rgb } from "https://esm.sh/pdf-lib@1.17.1";
 import { drawUnifiedFooter, resolvePdfLocation, FOOTER_TOP } from "./pdf-footer.ts";
 import { embedProductImages } from "./product-images.ts";
 import { SLT_COMPANY } from "./offer-company.ts";
+import { unitAbbreviation, unitLabel } from "./rental-pricing.ts";
 
 // ─── PDF Offer Generator ───────────────────────────────────
 export async function generateOfferPdf(data: {
@@ -68,6 +69,19 @@ export async function generateOfferPdf(data: {
    * Werden im Summenblock ausgewiesen und vom Rechnungsbetrag abgezogen.
    */
   payments?: { date?: string; amount: number; label?: string; reference?: string }[];
+  /**
+   * Paket 4: nur Angebote aus Mietanfragen. Gesetzt → Block „Ihre Daten“, Anrede,
+   * Auftragsart, Gruppen, Spalten Menge/Dauer, Legende und Angebotsbedingungen.
+   * Alle anderen Dokumente (Rechnung, Gutschrift, AB, Portal-Angebot) bleiben unverändert.
+   */
+  inquiryOffer?: {
+    addressForm: "du" | "sie";
+    salutation: string;
+    customerData?: { contact?: string; phone?: string; mobile?: string; email?: string };
+    orderType?: "pickup" | "delivery";
+    groups?: { id: string; name: string }[];
+    termsText?: string;
+  };
 
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
@@ -102,6 +116,9 @@ export async function generateOfferPdf(data: {
   const INFO_VAL_X = INFO_X + 30 * MM;
 
   const docType = data.documentType ?? "offer";
+  const iq = docType === "offer" ? data.inquiryOffer : undefined;
+  const isDu = iq?.addressForm === "du";
+  const T = (du: string, sie: string) => (isDu ? du : sie);
   const isOC = docType === "order_confirmation";
   const isInvoice = docType !== "offer" && !isOC;
   const isSupplement = docType === "supplement";
@@ -197,6 +214,12 @@ export async function generateOfferPdf(data: {
   } catch {}
 
   const pages: any[] = [];
+  // Spalten (identisch zur Rechnung); Mietanfrage-Angebote: Menge schmaler, dafür Spalte Dauer
+  const nameColX = ML + 32;
+  const qtyColRight = ML + CW * (iq ? 0.53 : 0.60);
+  const unitColX = qtyColRight + 8;
+  const unitPriceRight = ML + CW * 0.85;
+  const totalRight = W - MR - 4;
 
   // ── Kopf Seite 1: Absenderzeile, Empfängeradresse, Logo rechts, Infoblock, Titel ──
   const renderHeader = (pg: any): number => {
@@ -324,9 +347,11 @@ export async function generateOfferPdf(data: {
       infoRow("Kundennummer:", String(data.profile.id).substring(0, 8).toUpperCase());
     }
 
-    if (data.extraFields?.orderer) infoRow("Besteller:", data.extraFields.orderer);
-    if (data.extraFields?.cost_center) infoRow("Kostenstelle:", data.extraFields.cost_center);
-    if (data.extraFields?.project) infoRow("Bauvorhaben:", data.extraFields.project);
+    if (!iq) {
+      if (data.extraFields?.orderer) infoRow("Besteller:", data.extraFields.orderer);
+      if (data.extraFields?.cost_center) infoRow("Kostenstelle:", data.extraFields.cost_center);
+      if (data.extraFields?.project) infoRow("Bauvorhaben:", data.extraFields.project);
+    }
     infoRow("Ansprechpartner:", data.staffName || SLT_COMPANY.managingDirector);
     infoRow("Ausgabestandort:", issuingLoc.name);
     infoSub(`${issuingLoc.address}, ${issuingLoc.city}`);
@@ -335,6 +360,27 @@ export async function generateOfferPdf(data: {
       infoSub(`${returnLoc.address}, ${returnLoc.city}`);
     }
     if (data.isReverseCharge) infoRow("Verfahren:", "Reverse-Charge", BRAND);
+
+    // Paket 4: Block „Ihre Daten“ – nur gefüllte Zeilen, leer → entfällt.
+    if (iq) {
+      const cd = iq.customerData ?? {};
+      const rows: [string, string | undefined][] = [
+        ["Ansprechpartner:", cd.contact],
+        ["Telefon:", cd.phone],
+        ["Mobil:", cd.mobile],
+        ["E-Mail:", cd.email],
+        ["Besteller:", data.extraFields?.orderer],
+        ["Kostenstelle:", data.extraFields?.cost_center],
+        ["Bauvorhaben:", data.extraFields?.project],
+      ];
+      const filled = rows.filter(([, v]) => v && String(v).trim());
+      if (filled.length) {
+        iy -= 6;
+        dt(pg, T("Deine Daten", "Ihre Daten"), INFO_X, iy, bold, 8.5, BRAND);
+        iy -= 12;
+        for (const [l, v] of filled) infoRow(l, String(v).trim());
+      }
+    }
 
     // Titelblock
     const contentTopY = Math.min(ay, iy) - 26;
@@ -357,7 +403,7 @@ export async function generateOfferPdf(data: {
     }
 
     // Anschreiben
-    dt(pg, "Sehr geehrte Damen und Herren,", ML, ty, font, 9.5); ty -= 13;
+    dt(pg, iq ? iq.salutation : "Sehr geehrte Damen und Herren,", ML, ty, font, 9.5); ty -= 13;
     const intro = isOC
       ? `vielen Dank f\u00FCr Ihren Auftrag. Hiermit best\u00E4tigen wir verbindlich die Annahme Ihres Auftrags auf Grundlage unseres Angebots ${data.sourceOfferNumber || ""}${data.sourceOfferDate ? ` vom ${fd(data.sourceOfferDate)}` : ""} \u00FCber folgende Leistungen:`
       : isCreditNote
@@ -372,10 +418,14 @@ export async function generateOfferPdf(data: {
           ? "vielen Dank f\u00FCr Ihren Auftrag. Wir erlauben uns, Ihnen folgende Leistungen abschlie\u00DFend in Rechnung zu stellen; bereits berechnete Abschl\u00E4ge sind abgezogen:"
         : isInvoice
           ? "vielen Dank f\u00FCr Ihren Auftrag. Wir erlauben uns, Ihnen folgende Leistungen in Rechnung zu stellen:"
-          : "vielen Dank f\u00FCr Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:";
+          : T("vielen Dank f\u00FCr deine Anfrage. Gerne unterbreiten wir dir folgendes Angebot:", "vielen Dank f\u00FCr Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:");
     const introLines = wt(intro, font, 9.5, CW);
     introLines.forEach((ln, li) => dt(pg, ln, ML, ty - li * 12, font, 9.5));
     ty -= (introLines.length - 1) * 12;
+    if (iq?.orderType) {
+      ty -= 16;
+      dt(pg, `Auftragsart: ${iq.orderType === "delivery" ? "Lieferung" : "Selbstabholer"}`, ML, ty, bold, 9.5);
+    }
 
     return ty - 30;
   };
@@ -384,8 +434,8 @@ export async function generateOfferPdf(data: {
     const yy = startY;
     dt(pg, "Pos.", ML + 2, yy, bold, 8.5, BRAND);
     dt(pg, "Bezeichnung", ML + 32, yy, bold, 8.5, BRAND);
-    dtr(pg, "Menge", ML + CW * 0.60, yy, bold, 8.5, BRAND);
-    dt(pg, "Einheit", ML + CW * 0.60 + 8, yy, bold, 8.5, BRAND);
+    dtr(pg, "Menge", qtyColRight, yy, bold, 8.5, BRAND);
+    dt(pg, iq ? "Dauer" : "Einheit", unitColX, yy, bold, 8.5, BRAND);
     dtr(pg, "Einzelpreis", ML + CW * 0.85, yy, bold, 8.5, BRAND);
     dtr(pg, "Gesamt", W - MR - 4, yy, bold, 8.5, BRAND);
     pg.drawRectangle({ x: ML, y: yy - 5, width: CW, height: 2, color: BRAND });
@@ -423,12 +473,6 @@ export async function generateOfferPdf(data: {
     if (y - h < RESERVE_BOTTOM) ({ pg, y } = newPage(false));
   };
 
-  // Spalten (identisch zur Rechnung)
-  const nameColX = ML + 32;
-  const qtyColRight = ML + CW * 0.60;
-  const unitColX = ML + CW * 0.60 + 8;
-  const unitPriceRight = ML + CW * 0.85;
-  const totalRight = W - MR - 4;
 
   const deriveUnit = (item: any, fallback = "St\u00FCck"): string => {
     if (item.unit) return item.unit;
@@ -473,16 +517,54 @@ export async function generateOfferPdf(data: {
 
   // ── Positionen ──
   let discountTotal = 0;
+  const QTY_ABBR: Record<string, string> = { stk: "Stk", m2: "m\u00B2", lfm: "lfm" };
+  const usedUnits = new Set<string>();
+  const groupNames = new Map((iq?.groups ?? []).map((g) => [g.id, g.name]));
+  let lastGroup: string | null = null;
   data.items.forEach((item: any, idx: number) => {
+    if (iq && groupNames.size) {
+      const gid = item.group_id && groupNames.has(item.group_id) ? item.group_id : "";
+      if (gid !== lastGroup) {
+        lastGroup = gid;
+        const title = gid ? groupNames.get(gid)! : "Positionen";
+        need(22 + 40);
+        dt(pg, title, ML + 2, y - 10, bold, 9.5, BRAND);
+        pg.drawRectangle({ x: ML, y: y - 14, width: CW, height: 0.5, color: LINE });
+        y -= 22;
+        rowZebra = false;
+      }
+    }
     const img = item.image_url ? imageCache.get(item.image_url) : null;
     const nameText = safe(item.product_name);
+    // Paket 4: Menge (Stück + Mengeneinheit) und Dauer (Anzahl + Einheit) getrennt
+    let iqQty: string | null = null;
+    let iqDur: string | null = null;
+    if (iq) {
+      const qu = QTY_ABBR[item.quantity_unit || "stk"] || "Stk";
+      if (item.price_basis === "weekend") {
+        iqQty = `${item.articles || item.quantity || 1} ${qu}`;
+        iqDur = "Wochenende";
+        usedUnits.add(qu);
+      } else if (item.unit_code && Number(item.duration) > 0) {
+        iqQty = `${item.articles || 1} ${qu}`;
+        const full = `${String(item.duration).replace(".", ",")} ${unitLabel(Number(item.duration), item.unit_code)}`;
+        iqDur = font.widthOfTextAtSize(safe(full), 9.5) <= unitPriceRight - unitColX - 58
+          ? full
+          : `${String(item.duration).replace(".", ",")} ${unitAbbreviation(item.unit_code)}`;
+        usedUnits.add(qu);
+        usedUnits.add(item.unit_code);
+      } else {
+        iqQty = `${item.quantity}${item.unit ? " " + item.unit : ""}`;
+        iqDur = "\u2013";
+      }
+    }
     // "3 Artikel × 9 Kalendertage" → Menge als "3 × 9" statt hochgerechnet "27" anzeigen
     const periodMatch = typeof item.description === "string"
       ? item.description.match(/(\d+)\s*(?:Artikel|m\u00B2|lfm)\s*[\u00D7x]\s*(\d+)\s*[A-Za-z\u00C4\u00D6\u00DC\u00E4\u00F6\u00FC\u00DF]+\s*$/)
       : null;
-    const qtyText = periodMatch && Number(periodMatch[1]) * Number(periodMatch[2]) === Number(item.quantity)
+    const qtyText = iqQty ?? (periodMatch && Number(periodMatch[1]) * Number(periodMatch[2]) === Number(item.quantity)
       ? `${periodMatch[1]} \u00D7 ${periodMatch[2]}`
-      : String(item.quantity);
+      : String(item.quantity));
     // Bezeichnung endet immer mit Abstand vor der (rechtsbündigen) Mengenangabe
     const rowNameW = Math.min(nameColW, qtyColRight - font.widthOfTextAtSize(safe(qtyText), 9.5) - 10 - textColX);
     const nameLines = wt(nameText, bold, 9.5, rowNameW);
@@ -531,7 +613,7 @@ export async function generateOfferPdf(data: {
       const discTop = subTop - subLines.length * 10 - (subLines.length ? 3 : 0);
       discountLines.forEach((ln, li) => dt(pg, ln, textColX, discTop - li * 10, bold, 8, ORANGE));
       dtr(pg, qtyText, qtyColRight, top - 10, font, 9.5);
-      dt(pg, deriveUnit(item), unitColX, top - 10, font, 9.5, MUTED);
+      dt(pg, iqDur ?? deriveUnit(item), unitColX, top - 10, font, 9.5, MUTED);
       dtr(pg, fm(item.unit_price), unitPriceRight, top - 10, font, 9.5);
       if (pct > 0) dtr(pg, `-${fm2(pct)} %`, unitPriceRight, top - 22, bold, 8, ORANGE);
       dtr(pg, fm(item.total_price), totalRight, top - 10, bold, 9.5);
@@ -591,6 +673,22 @@ export async function generateOfferPdf(data: {
   }
 
   pg.drawRectangle({ x: ML, y, width: CW, height: 0.5, color: LINE });
+  if (iq && usedUnits.size) {
+    const LEG: [string, string][] = [
+      ["Stk", "St\u00FCck"], ["m\u00B2", "Quadratmeter"], ["lfm", "laufender Meter"],
+      ["arbeitstage", ""], ["miettage", ""], ["kalendertage", ""], ["wochen", ""], ["monate", ""], ["pauschal", ""],
+    ];
+    const parts = LEG.filter(([k]) => usedUnits.has(k)).map(([k, v]) => {
+      if (v) return `${k} = ${v}`;
+      return `${unitAbbreviation(k)} = ${unitLabel(1, k)}`;
+    });
+    let legend = `Abk\u00FCrzungen: ${parts.join(", ")}`;
+    if (usedUnits.has("miettage")) legend += ". 1 Miettag = 24 Std. gem. AGB";
+    const legLines = wt(legend, font, 7.5, CW);
+    need(8 + legLines.length * 9);
+    y -= 10;
+    legLines.forEach((ln) => { dt(pg, ln, ML, y, font, 7.5, MUTED); y -= 9; });
+  }
   y -= 26;
   tableClosed = true;
 
@@ -891,8 +989,8 @@ export async function generateOfferPdf(data: {
         : `Zu zahlen: ${fm(data.grossAmount)}${dep ? ` zzgl. Kaution ${fm(dep)}` : ""} bis sp\u00E4testens ${fd(data.validUntil)} (Angebotsg\u00FCltigkeit).`,
       ML + 16, by, font, 9, INK,
     ); by -= 14;
-    dt(pg, "Sie w\u00E4hlen die Zahlungsart selbst:", ML + 16, by, bold, 9, INK); by -= 12;
-    dt(pg, "\u2022 Online: \u00FCber Ihren pers\u00F6nlichen Zahlungslink in der Angebots-E-Mail (z. B. Karte).", ML + 16, by, font, 9, INK); by -= 12;
+    dt(pg, T("Du w\u00E4hlst die Zahlungsart selbst:", "Sie w\u00E4hlen die Zahlungsart selbst:"), ML + 16, by, bold, 9, INK); by -= 12;
+    dt(pg, T("\u2022 Online: \u00FCber deinen pers\u00F6nlichen Zahlungslink in der Angebots-E-Mail (z. B. Karte).", "\u2022 Online: \u00FCber Ihren pers\u00F6nlichen Zahlungslink in der Angebots-E-Mail (z. B. Karte)."), ML + 16, by, font, 9, INK); by -= 12;
     dt(pg, "\u2022 Per \u00DCberweisung auf folgendes Konto:", ML + 16, by, font, 9, INK); by -= 13;
     const rows: [string, string][] = [
       ["Kontoinhaber:", SLT_COMPANY.name],
@@ -906,7 +1004,7 @@ export async function generateOfferPdf(data: {
       by -= 11;
     }
     by -= 2;
-    dt(pg, "Nach Zahlungseingang erhalten Sie unsere Auftragsbest\u00E4tigung; nach Mietende erhalten Sie die Rechnung per E-Mail.", ML + 16, by, font, 8, MUTED);
+    dt(pg, T("Nach Zahlungseingang erh\u00E4ltst du unsere Auftragsbest\u00E4tigung; nach Mietende erh\u00E4ltst du die Rechnung per E-Mail.", "Nach Zahlungseingang erhalten Sie unsere Auftragsbest\u00E4tigung; nach Mietende erhalten Sie die Rechnung per E-Mail."), ML + 16, by, font, 8, MUTED);
     y -= boxH + 12;
   } else if (!isCreditNote) {
     // Mehrzeiliger Hinweiskasten – Höhe wächst mit dem Text
@@ -925,10 +1023,10 @@ export async function generateOfferPdf(data: {
     drawInfoBox(
       "Zustandekommen des Auftrags",
       (paysOnInvoice
-        ? "Nach Ihrer Annahme dieses Angebots erhalten Sie unsere Auftragsbest\u00E4tigung. "
-        : "Bitte leisten Sie die Zahlung gem\u00E4\u00DF den Zahlungsbedingungen. Nach Zahlungseingang erhalten Sie unsere Auftragsbest\u00E4tigung. ") +
+        ? T("Nach deiner Annahme dieses Angebots erh\u00E4ltst du unsere Auftragsbest\u00E4tigung. ", "Nach Ihrer Annahme dieses Angebots erhalten Sie unsere Auftragsbest\u00E4tigung. ")
+        : T("Bitte leiste die Zahlung gem\u00E4\u00DF den Zahlungsbedingungen. Nach Zahlungseingang erh\u00E4ltst du unsere Auftragsbest\u00E4tigung. ", "Bitte leisten Sie die Zahlung gem\u00E4\u00DF den Zahlungsbedingungen. Nach Zahlungseingang erhalten Sie unsere Auftragsbest\u00E4tigung. ")) +
         "Erst mit Zugang der Auftragsbest\u00E4tigung wird die Miete verbindlich und der Auftrag gilt als angenommen. " +
-        "Ma\u00DFgeblich ist allein die Auftragsbest\u00E4tigung; sie dient als Nachweis, dass wir Ihren Auftrag angenommen haben.",
+        T("Ma\u00DFgeblich ist allein die Auftragsbest\u00E4tigung; sie dient als Nachweis, dass wir deinen Auftrag angenommen haben.", "Ma\u00DFgeblich ist allein die Auftragsbest\u00E4tigung; sie dient als Nachweis, dass wir Ihren Auftrag angenommen haben."),
       rgb(0.94, 0.96, 0.98), BRAND,
     );
   }
@@ -977,6 +1075,18 @@ export async function generateOfferPdf(data: {
     y -= 6;
   }
 
+  // ── Paket 4: Angebotsbedingungen (Sie-Form, Text bereits nach Bau-Regel gefiltert) ──
+  if (iq?.termsText?.trim()) {
+    need(30);
+    dt(pg, "Angebotsbedingungen", ML, y, bold, 9);
+    y -= 12;
+    for (const para of iq.termsText.trim().split(/\n\s*\n/)) {
+      for (const line of wt(para, font, 8.5, CW)) { need(12); dt(pg, line, ML, y, font, 8.5, INK); y -= 11; }
+      y -= 4;
+    }
+    y -= 6;
+  }
+
   // ── Grußformel ──
   // Die kurze Korrektur-Grußformel passt kompakter über den reservierten Footer.
   need(isCreditNote ? 44 : 56);
@@ -988,10 +1098,10 @@ export async function generateOfferPdf(data: {
       ? "F\u00FCr R\u00FCckfragen zu dieser Rechnungskorrektur stehen wir Ihnen gerne zur Verf\u00FCgung."
       : isInvoice
       ? "Vielen Dank f\u00FCr Ihren Auftrag. F\u00FCr R\u00FCckfragen zu dieser Rechnung stehen wir Ihnen gerne zur Verf\u00FCgung."
-      : "Wir freuen uns auf Ihre R\u00FCckmeldung und stehen Ihnen f\u00FCr R\u00FCckfragen gerne zur Verf\u00FCgung.",
+      : T("Wir freuen uns auf deine R\u00FCckmeldung und stehen dir f\u00FCr R\u00FCckfragen gerne zur Verf\u00FCgung.", "Wir freuen uns auf Ihre R\u00FCckmeldung und stehen Ihnen f\u00FCr R\u00FCckfragen gerne zur Verf\u00FCgung."),
     ML, y, font, 9,
   ); y -= 22;
-  dt(pg, "Mit freundlichen Gr\u00FC\u00DFen", ML, y, font, 9); y -= 15;
+  dt(pg, T("Viele Gr\u00FC\u00DFe", "Mit freundlichen Gr\u00FC\u00DFen"), ML, y, font, 9); y -= 15;
   dt(pg, data.staffName || SLT_COMPANY.managingDirector, ML, y, bold, 9); y -= 11;
   dt(pg, SLT_COMPANY.brand, ML, y, font, 8, MUTED);
 
