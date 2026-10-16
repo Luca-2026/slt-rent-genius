@@ -291,9 +291,14 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       }
       const machineReadings = items.flatMap((it, i) => {
         const reading = { ...emptyMeasurement(), ...readings[i] };
-        return reading.useHours || reading.useFuel || reading.useMileage
-          ? [{ item_name: it.name, ...selectedMeasurement(reading), managed_product_id: cmsFor(i)?.id ?? null }]
+        const c = cleanlinessFor(i);
+        return reading.useHours || reading.useFuel || reading.useMileage || c.rating > 0
+          ? [{ item_name: it.name, ...selectedMeasurement(reading), managed_product_id: cmsFor(i)?.id ?? null, cleanliness: c.rating > 0 ? String(c.rating) : "" }]
           : [];
+      });
+      const itemCleanliness = items.flatMap((it, i) => {
+        const c = cleanlinessFor(i);
+        return c.rating > 0 ? [{ item_name: it.name, rating: c.rating, units: isDirty(c.rating) ? Math.round(toNumber(c.units)) || null : null, comment: c.comment.trim() || null }] : [];
       });
       setProgress("Protokoll und PDF werden erstellt …");
       const { data, error } = await supabase.functions.invoke("generate-rental-protocol", {
@@ -303,17 +308,17 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
           customer_not_present: customerNotPresent,
           customer_signature: customerNotPresent ? null : customerSignature,
           customer_signer_name: customerNotPresent ? null : signerName.trim(),
-          id_checked: !customerNotPresent && idChecked, id_check_type: idDocType || null,
+          id_checked: !isReturn && !customerNotPresent && idChecked, id_check_type: !isReturn && idDocType ? idDocType : null,
           agb_accepted: !customerNotPresent && !isReturn && agbAccepted,
           items_confirmed: !customerNotPresent && itemsConfirmed,
           operating_hours: machineReadings.filter((m) => m.operating_hours).map((m) => `${m.item_name}: ${m.operating_hours}`).join("; ").slice(0, 40) || null,
           fuel_level: machineReadings.find((m) => m.fuel_level)?.fuel_level ?? null,
           machine_readings: machineReadings, instructed: !customerNotPresent && !isReturn && instructed,
-          cleanliness_rating: cleanliness || null,
+          cleanliness_rating: null, item_cleanliness: itemCleanliness,
           known_defects: knownDefects.trim() || null, notes: notes.trim() || null,
           all_items_returned: isReturn ? allReturned : null, missing_items_notes: isReturn && !allReturned ? missingNotes.trim() : null,
           items, photos: photoPayload, damages: damagePayload, send_email: sendEmail,
-          extra_charges: isReturn ? serializeExtraCharges(charges) : [],
+          extra_charges: isReturn ? serializeExtraCharges(allCharges) : [],
         },
       });
       if (error) {
