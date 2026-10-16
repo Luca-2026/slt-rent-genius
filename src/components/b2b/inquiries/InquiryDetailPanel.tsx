@@ -845,7 +845,6 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           </DesktopOnly>
           <div className="hidden lg:block">{details}</div>
           <OfferAcceptanceNotice inquiryId={inquiry.id} />
-          {orderEl}
           {paymentsEl}
           {stripeEl}
           {installmentEl}
