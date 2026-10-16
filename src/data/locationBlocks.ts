@@ -10,6 +10,7 @@
 
 import { locationData, type LocationInfo } from "@/data/locationData";
 import type { Product } from "@/data/rentalData";
+import { isStockedAt } from "@/lib/productAvailability";
 
 export type LocationAvailabilityStatus =
   | "sofortVorOrt"
@@ -111,18 +112,13 @@ export function locationParagraph(
  * Basis sind die gepflegten Rentware-Codes bzw. das Flag `onRequest`.
  */
 export function resolveAvailabilityStatus(
-  product: Pick<Product, "rentwareCode" | "onRequest"> | undefined,
+  product: Pick<Product, "rentwareCode" | "onRequest" | "stockedLocations"> | undefined,
   locationId: string,
   opts: { categoryId?: string } = {},
 ): LocationAvailabilityStatus {
   if (product?.onRequest) return "aufAnfrageDispoKrefeld";
 
-  const codes = product?.rentwareCode;
-  const hasLocalCode = !!codes?.[locationId];
-  const hasAnyCode = !!codes && Object.keys(codes).length > 0;
-  const isKrefeld = locationId === "krefeld";
-
-  const vorOrt = hasLocalCode || (isKrefeld && !hasAnyCode);
+  const vorOrt = isStockedAt(product, locationId);
   if (!vorOrt) return "aufAnfrageDispoKrefeld";
 
   const selfPickup =
@@ -140,7 +136,7 @@ export function availabilityParagraph(
     case "selbstabholung24_7":
       return `Verfügbarkeit in ${locName}: Selbstabholung rund um die Uhr. Den Code für das Zahlenschloss bekommst du rechtzeitig vor Mietbeginn per E-Mail, die Rückgabe funktioniert genauso.`;
     case "sofortVorOrt":
-      return `Verfügbarkeit in ${locName}: sofort vor Ort verfügbar und direkt online buchbar.`;
+      return `Verfügbarkeit in ${locName}: sofort vor Ort verfügbar.`;
     case "aufAnfrageDispoKrefeld":
     default:
       return `Verfügbarkeit in ${locName}: auf Anfrage – wir disponieren das Gerät aus Krefeld, in der Regel innerhalb von 24 Stunden.`;

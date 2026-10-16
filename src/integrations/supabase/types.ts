@@ -1099,6 +1099,7 @@ export type Database = {
           sort_order: number | null
           spec_order: string[] | null
           specifications: Json
+          stocked_locations: string[] | null
           subcategory: string | null
           surcharge_per_cd_from_4: number | null
           surcharge_per_cd_from_8: number | null
@@ -1163,6 +1164,7 @@ export type Database = {
           sort_order?: number | null
           spec_order?: string[] | null
           specifications?: Json
+          stocked_locations?: string[] | null
           subcategory?: string | null
           surcharge_per_cd_from_4?: number | null
           surcharge_per_cd_from_8?: number | null
@@ -1227,6 +1229,7 @@ export type Database = {
           sort_order?: number | null
           spec_order?: string[] | null
           specifications?: Json
+          stocked_locations?: string[] | null
           subcategory?: string | null
           surcharge_per_cd_from_4?: number | null
           surcharge_per_cd_from_8?: number | null
@@ -4774,6 +4777,7 @@ export type Database = {
           sort_order: number | null
           spec_order: string[] | null
           specifications: Json | null
+          stocked_locations: string[] | null
           subcategory: string | null
           tags: string[] | null
           updated_at: string | null
@@ -4817,6 +4821,7 @@ export type Database = {
           sort_order?: number | null
           spec_order?: string[] | null
           specifications?: Json | null
+          stocked_locations?: string[] | null
           subcategory?: string | null
           tags?: string[] | null
           updated_at?: string | null
@@ -4860,6 +4865,7 @@ export type Database = {
           sort_order?: number | null
           spec_order?: string[] | null
           specifications?: Json | null
+          stocked_locations?: string[] | null
           subcategory?: string | null
           tags?: string[] | null
           updated_at?: string | null

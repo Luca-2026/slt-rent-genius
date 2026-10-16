@@ -33,6 +33,7 @@ export interface ManagedProductRow {
   weight_kg: number | null;
   drive_type: string | null;
   rentware_code: Record<string, string>;
+  stocked_locations?: string[] | null;
   on_request: boolean;
   pdf_url: string | null;
   external_manual_url: string | null;
@@ -105,6 +106,7 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
     rentwareCode: row.rentware_code && Object.keys(row.rentware_code).length
       ? row.rentware_code
       : undefined,
+    stockedLocations: Array.isArray(row.stocked_locations) ? row.stocked_locations : undefined,
     onRequest: row.on_request,
     driveType: row.drive_type ?? undefined,
     rentalNotes: row.rental_notes?.length ? row.rental_notes : undefined,

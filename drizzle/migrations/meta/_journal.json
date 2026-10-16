@@ -407,6 +407,13 @@
       "when": 1792053196358,
       "tag": "0057_managed_product_price_schemes",
       "breakpoints": true
+    },
+    {
+      "idx": 58,
+      "version": "7",
+      "when": 1792139672918,
+      "tag": "0058_stocked_locations",
+      "breakpoints": true
     }
   ]
 }

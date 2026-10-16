@@ -1,3 +1,4 @@
+import { isStockedAt } from "@/lib/productAvailability";
 import { useEffect, useState } from "react";
 import { portalUrl } from "@/lib/portalDomain";
 import { cn } from "@/lib/utils";
@@ -78,6 +79,7 @@ export function ProductBookingDialog({
   categoryId,
 }: ProductBookingDialogProps) {
   const articleId = product?.rentwareCode?.[location?.id || ""];
+  const stockedHere = !product?.onRequest && isStockedAt(product, location?.id || "");
   const containerId = `rentware-dialog-${product?.id || "unknown"}`;
   const [widgetLoading, setWidgetLoading] = useState(true);
   const showSetupService = categoryId ? SETUP_SERVICE_CATEGORIES.includes(categoryId) : false;
@@ -327,7 +329,7 @@ export function ProductBookingDialog({
                   <div className="flex items-center gap-2 mt-1">
                     <span className="inline-flex items-center gap-1.5 bg-accent/20 text-accent-foreground text-xs font-medium px-2.5 py-1 rounded-full border border-accent/30">
                       <Calendar className="h-3 w-3" />
-                      Auf Anfrage – {location.name}
+                      {stockedHere ? `Vor Ort in ${location.name}` : `Auf Anfrage – ${location.name}`}
                     </span>
                   </div>
                 </div>
@@ -349,7 +351,11 @@ export function ProductBookingDialog({
               ) : (
                 <>
                   <p className="text-sm text-muted-foreground">
-                    Dieses Produkt ist in <strong>{location.name}</strong> auf Anfrage verfügbar – wir können alle Artikel zwischen unseren Standorten transportieren. Sende uns deine Anfrage und wir melden uns innerhalb eines Werktages.
+                    {stockedHere ? (
+                      <>Dieses Produkt steht in <strong>{location.name}</strong> vor Ort. Sende uns deine Mietanfrage mit Wunschtermin und wir bestätigen dir die Verfügbarkeit innerhalb eines Werktages.</>
+                    ) : (
+                      <>Dieses Produkt ist in <strong>{location.name}</strong> auf Anfrage verfügbar – wir holen es aus einem anderen Standort. Sende uns deine Anfrage und wir melden uns innerhalb eines Werktages.</>
+                    )}
                   </p>
 
                   <form onSubmit={handleSubmit} className="space-y-4">

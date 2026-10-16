@@ -41,7 +41,7 @@ export interface ProductAvailability {
  * neutralen "on-request" Default.
  */
 export function getProductAvailability(
-  product: Pick<Product, "rentwareCode" | "onRequest"> | undefined,
+  product: Pick<Product, "rentwareCode" | "onRequest" | "stockedLocations"> | undefined,
   locationId: string,
   options?: { categoryId?: string },
 ): ProductAvailability {
@@ -68,15 +68,14 @@ export function getProductAvailability(
     };
   }
   const isServiceStandort = loc?.serviceCharacter === "service-handover";
-  const hasLocalCode = !!product?.rentwareCode?.[locationId];
-  const hasAnyCode = !!product?.rentwareCode && Object.keys(product.rentwareCode).length > 0;
+  const hasLocalCode = isStockedAt(product, locationId);
   const isPickupOnlyCategory =
     options?.categoryId === "anhaenger" || options?.categoryId === "nutzfahrzeuge";
 
   // 1) Krefeld = Hauptlager – vor Ort, solange kein abweichender Bestand gepflegt ist.
   //    Hat ein Artikel Codes NUR für andere Standorte (z. B. reiner Bonner Bestand),
   //    ist er in Krefeld NICHT vor Ort, sondern läuft auf Anfrage.
-  if (isHauptlager && (!hasAnyCode || hasLocalCode)) {
+  if (isHauptlager && hasLocalCode) {
     return {
       status: "available-warehouse",
       badgeLabel: `Verfügbar in ${locName}`,
@@ -145,4 +144,21 @@ export function getProductAvailability(
 
 function locId(id: string | undefined): string {
   return (id || "").toLowerCase();
+}
+
+/**
+ * Steht der Artikel standardmäßig an diesem Standort? Quelle ist das CMS-Feld
+ * „Am Standort vorhanden“ (stockedLocations). Nur ohne dieses Feld gilt die alte
+ * Regel über Rentware-Codes – Rentware-Codes entscheiden sonst nur noch über die Online-Buchung.
+ */
+export function isStockedAt(
+  product: Pick<Product, "rentwareCode" | "stockedLocations"> | undefined,
+  locationId: string,
+): boolean {
+  if (!product) return false;
+  if (Array.isArray(product.stockedLocations)) return product.stockedLocations.includes(locationId);
+  const codes = product.rentwareCode;
+  const hasLocal = !!codes?.[locationId];
+  const hasAny = !!codes && Object.values(codes).some((c) => !!c);
+  return hasLocal || (locationId === "krefeld" && !hasAny);
 }
