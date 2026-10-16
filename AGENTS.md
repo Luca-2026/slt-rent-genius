@@ -1,7 +1,7 @@
 # Agent rules
 - Subdirectories have their own AGENTS.md; read it before changing files there.
 - src/components/b2b/admin/AGENTS.md steuert die CMS-Artikelmaske: Preisschema je Artikel, Hauptkategorie und die Preisregeln (Pflicht, Rückfallstufen, Alt-Textfelder).
-- Links via locationWhatsAppContacts.ts + BonnWhatsAppContact (legacy name); iconOnly beside email keeps cards aligned; WhatsAppIcon.tsx brand glyph, not a chat icon.
+- WhatsApp: locationWhatsAppContacts.ts + BonnWhatsAppContact; WhatsAppIcon.tsx = Markenglyph.
 - Customer payment-term eligibility is shared through _shared/customer-payment-terms.ts in forms and send functions; validate before number allocation to prevent UI bypasses without modifying issued snapshots.
 - Signing overlays: ref counting + route gating hide cart/cookies while signing.
 <!-- LOVABLE:BEGIN -->
@@ -21,7 +21,7 @@
 - Mietanfragen ohne bestätigten Auftrag (neu, in Bearbeitung, Angebot gesendet) mit abgelaufenem Mietzeitraum setzt die DB-Funktion close_expired_rental_inquiries täglich per pg_cron auf erledigt – gespeicherter Status, damit Liste, Zähler und Startseite übereinstimmen.
 - Standortwechsel nur über DB-Funktion change_rental_inquiry_location (can_edit_operations, zieht location_email und b2b_reservations atomar mit, Notiz in internal_notes); versendete Angebote bleiben Snapshot. Kundeninfo nur über Edge Function send-location-notice (Konsistenzprüfung, Testkunden-Routing) – kein Freitextversand.
 - Kunden werden standardmäßig geduzt; address_form am Kunden (crm_customers, Portalkunden über b2b_profile_id, Fallback rental_inquiries) schaltet auf Sie. Anrede und Form nur über _shared/salutation.ts (resolveAddressForm, salutationLine, byForm) in allen Kunden-E-Mails – Angebot, Rechnung, Auftragsbestätigung, Protokoll, Zahlungserinnerung; Angebotsbedingungen bleiben Sie-Form.
-- Anrufzeiten nur über src/lib/callDateLabel.ts (getestet) – Heute/Gestern nach Berliner Kalendertag statt UTC.
+- Anrufzeiten nur über callDateLabel.ts (Berliner Kalendertag).
 - Listen-Filter in localStorage; interne Links auf /b2b/mietanfragen/:id.
 - Gerätebelegung nur über DB-Funktionen check_availability/confirm_order (Mietaufträge, vor der Auftragsbestätigungs-E-Mail); Doppelbelegung verhindert der Exclusion-Constraint auf b2b_instance_allocations; Überführung setzt den Gerätestandort dauerhaft um (kein Rücktransport); Entscheidungen in rental_inquiry_events. Artikel ohne Einzelgeräte und ohne CMS-Bestand gelten als nicht geprüft.
 - Auftrags-ID order_code: DB-Trigger vergibt, unveränderlich; Anzeige via OrderCodeBadge/orderCode; Bank-Zweck „Auftrag CODE“ („#“ kein SEPA-Zeichen).
