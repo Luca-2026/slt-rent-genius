@@ -24,3 +24,4 @@
 - Rückgabe an anderem Standort (One-Way) nur über das Rückgabefeld im InquiryOfferForm + resolveReturnLocation (_shared/inquiry-offer-math.ts); Aufpreis netto als eigene Position, gespeichert im offer_payload und inquiry_invoices.return_location/return_location_cost – Angebot, Rechnung, Auftragsbestätigung und Umsatz rechnen so dieselbe Summe.
 - Angebots-/Rechnungsentwürfe im Anfragenbereich zusätzlich in inquiry_doc_drafts (Server, je draft_key) speichern und nach Versand/Verwerfen löschen – Kollegen sehen begonnene Arbeit, nichts geht verloren oder wird doppelt erfasst.
 - Mietanfragen: Vollseite /b2b/mietanfragen/:id (InquiryDetailPanel layout="page"), ?anfrage= leitet nur um; Verkauf bleibt gestapelt.
+- Zahlungseingänge (payments jsonb) stempelt der DB-Trigger stamp_inquiry_payments mit Erfasser/Zeitpunkt und protokolliert in inquiry_payment_events – Browser kann Erfasser nicht fälschen; Clients müssen recorded_* unverändert zurückschreiben.

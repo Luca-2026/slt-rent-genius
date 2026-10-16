@@ -16,7 +16,28 @@ export interface InquiryPayment {
   amount: number;
   label?: string;
   reference?: string;
+  provider?: string;
+  /** Vom Server gestempelt – wer/wann erfasst (nicht vom Browser setzbar). */
+  recorded_at?: string;
+  recorded_by?: string;
+  recorded_by_id?: string | null;
 }
+
+/** Feste Zahlungswege, damit klar ist, wie das Geld kam. */
+export const PAYMENT_METHODS = ["Banküberweisung", "Barzahlung", "EC-/Kartenzahlung", "PayPal", "Verrechnung"] as const;
+
+interface PaymentEvent {
+  id: string;
+  action: "added" | "removed";
+  amount: number;
+  payment_date: string | null;
+  method: string | null;
+  reference: string | null;
+  actor_email: string | null;
+  created_at: string;
+}
+
+const fmtDateTime = (iso?: string | null) => (iso ? new Date(iso).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" }) : "");
 
 /** Zahlungen aus einem unbekannten JSON-Wert robust lesen. */
 export function parseInquiryPayments(raw: unknown): InquiryPayment[] {
@@ -29,6 +50,10 @@ export function parseInquiryPayments(raw: unknown): InquiryPayment[] {
         amount: Math.round((Number(o.amount) || 0) * 100) / 100,
         label: typeof o.label === "string" ? o.label : undefined,
         reference: typeof o.reference === "string" ? o.reference : undefined,
+        provider: typeof o.provider === "string" ? o.provider : undefined,
+        recorded_at: typeof o.recorded_at === "string" ? o.recorded_at : undefined,
+        recorded_by: typeof o.recorded_by === "string" ? o.recorded_by : undefined,
+        recorded_by_id: typeof o.recorded_by_id === "string" ? o.recorded_by_id : null,
       };
     })
     .filter((p) => p.amount > 0);
@@ -61,8 +86,22 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
   const [confirmReminder, setConfirmReminder] = useState(false);
   const [reminding, setReminding] = useState(false);
 
+  const [events, setEvents] = useState<PaymentEvent[]>([]);
+  const [showLog, setShowLog] = useState(false);
+
   useEffect(() => {
     setRows(parseInquiryPayments(payments));
+  }, [inquiryId, payments]);
+
+  useEffect(() => {
+    let alive = true;
+    supabase
+      .from("inquiry_payment_events")
+      .select("id, action, amount, payment_date, method, reference, actor_email, created_at")
+      .eq("inquiry_id", inquiryId)
+      .order("created_at", { ascending: false })
+      .then(({ data }) => { if (alive) setEvents((data ?? []) as PaymentEvent[]); });
+    return () => { alive = false; };
   }, [inquiryId, payments]);
 
   const total = useMemo(
@@ -95,6 +134,8 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
         amount: Math.round((Number(p.amount) || 0) * 100) / 100,
         label: (p.label || "").trim() || "Zahlungseingang",
         reference: (p.reference || "").trim(),
+        ...(p.provider ? { provider: p.provider } : {}),
+        ...(p.recorded_at ? { recorded_at: p.recorded_at, recorded_by: p.recorded_by, recorded_by_id: p.recorded_by_id ?? null } : {}),
       }))
       .filter((p) => p.amount > 0);
     const paidAmount = Math.round(clean.reduce((s, p) => s + p.amount, 0) * 100) / 100;
@@ -108,7 +149,6 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
       toast({ title: "Zahlungen konnten nicht gespeichert werden", description: error.message, variant: "destructive" });
       return;
     }
-    setRows(clean);
     toast({ title: "Zahlungen gespeichert", description: `Erhalten: ${formatEuro(paidAmount)}` });
     onChanged();
   };
@@ -148,7 +188,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
         isStripePayment(row) ? (
           <div key={index} className="min-w-0 border-b border-border pb-3 space-y-1 text-sm">
             <div className="flex flex-wrap justify-between gap-2"><span className="font-medium">Online-Zahlung (Stripe)</span><strong>{formatEuro(row.amount)}</strong></div>
-            <p className="text-xs text-muted-foreground">{row.date} · Bestätigt</p>
+            <p className="text-xs text-muted-foreground">{row.date} · Bestätigt · automatisch über Stripe gebucht</p>
             <p className="break-all text-xs text-muted-foreground" title={row.reference}>{shortPaymentReference(row.reference)}</p>
           </div>
         ) : <div key={index} className="grid min-w-0 grid-cols-1 gap-2 border-b border-border pb-3 sm:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2">
@@ -169,7 +209,16 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
           </div>
           <div className="col-span-full min-w-0">
             <Label className="text-[11px]">Zahlungsweg</Label>
-            <Input disabled={disabled || saving} value={row.label ?? ""} onChange={(e) => patch(index, { label: e.target.value })} placeholder="Banküberweisung" />
+            <select
+              className="flex h-10 w-full min-w-0 rounded-md border border-input bg-background px-3 text-sm"
+              disabled={disabled || saving}
+              value={row.label ?? ""}
+              onChange={(e) => patch(index, { label: e.target.value })}
+            >
+              {!row.label && <option value="">Bitte wählen</option>}
+              {row.label && !(PAYMENT_METHODS as readonly string[]).includes(row.label) && <option value={row.label}>{row.label}</option>}
+              {PAYMENT_METHODS.map((m) => <option key={m} value={m}>{m}</option>)}
+            </select>
           </div>
           <div className="col-span-full flex min-w-0 items-end gap-1">
             <div className="min-w-0 flex-1">
@@ -192,6 +241,11 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
             <Trash2 className="h-4 w-4" />
           </Button>
           </div>
+          <p className="col-span-full text-[11px] text-muted-foreground">
+            {row.recorded_at
+              ? `Erfasst von ${row.recorded_by || "unbekannt"} am ${fmtDateTime(row.recorded_at)}`
+              : "Erfasser nicht protokolliert (vor Einführung des Protokolls oder noch nicht gespeichert)"}
+          </p>
         </div>
       ))}
 
@@ -219,6 +273,26 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
             </span>
           )}
         </span>
+      </div>
+
+      <div className="border-t border-border pt-2">
+        <button type="button" className="text-xs font-medium text-primary underline underline-offset-2" onClick={() => setShowLog((v) => !v)}>
+          {showLog ? "Zahlungsprotokoll ausblenden" : `Zahlungsprotokoll anzeigen (${events.length})`}
+        </button>
+        {showLog && (
+          <ul className="mt-2 space-y-1.5 text-xs">
+            {events.length === 0 && <li className="text-muted-foreground">Noch keine protokollierten Änderungen. Protokolliert wird seit 16.10.2026.</li>}
+            {events.map((ev) => (
+              <li key={ev.id} className="min-w-0 break-words">
+                <span className="text-muted-foreground">{fmtDateTime(ev.created_at)}</span>{" · "}
+                <strong className={ev.action === "removed" ? "text-destructive" : ""}>{ev.action === "added" ? "erfasst" : "entfernt"}</strong>{" "}
+                {formatEuro(Number(ev.amount))} · {ev.method || "ohne Zahlungsweg"}
+                {ev.payment_date ? ` · Zahlung vom ${new Date(ev.payment_date).toLocaleDateString("de-DE")}` : ""}
+                {" · von "}{ev.actor_email || "System"}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {offerNumber && open != null && open > 0 && (

@@ -2797,6 +2797,48 @@ export type Database = {
           },
         ]
       }
+      inquiry_payment_events: {
+        Row: {
+          action: string
+          actor_email: string | null
+          actor_user_id: string | null
+          amount: number
+          created_at: string
+          id: string
+          inquiry_id: string
+          inquiry_table: string
+          method: string | null
+          payment_date: string | null
+          reference: string | null
+        }
+        Insert: {
+          action: string
+          actor_email?: string | null
+          actor_user_id?: string | null
+          amount: number
+          created_at?: string
+          id?: string
+          inquiry_id: string
+          inquiry_table: string
+          method?: string | null
+          payment_date?: string | null
+          reference?: string | null
+        }
+        Update: {
+          action?: string
+          actor_email?: string | null
+          actor_user_id?: string | null
+          amount?: number
+          created_at?: string
+          id?: string
+          inquiry_id?: string
+          inquiry_table?: string
+          method?: string | null
+          payment_date?: string | null
+          reference?: string | null
+        }
+        Relationships: []
+      }
       internal_cron_secret: {
         Row: {
           id: number
