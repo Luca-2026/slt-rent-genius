@@ -107,6 +107,31 @@ export function ProductBookingDialog({
   const [form, setForm] = useState<InquiryForm>(defaultForm);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const { type: customerType } = useCustomerType();
+
+  // W3: Abhol-/Rückgabezeiten des Standorts als Auswahl (30-Minuten-Schritte).
+  const locationInfo = getLocationInfoById(location?.id || "");
+  const startWindow = pickupWindowForDate(locationInfo, form.startDate);
+  const endWindow = pickupWindowForDate(locationInfo, form.endDate);
+  const startTimeOptions = startWindow ? pickupTimeOptions(startWindow) : null;
+  const endTimeOptions = endWindow ? pickupTimeOptions(endWindow) : null;
+
+  // W2: Rückgabedatum darf nicht vor dem Abholdatum liegen.
+  const dateOrderInvalid = Boolean(form.startDate && form.endDate && form.endDate < form.startDate);
+
+  // W4: Unverbindliche Preisschätzung aus den CMS-Staffelpreisen (wie im Angebot).
+  const calcLine = (() => {
+    if (!product || !form.startDate || !form.endDate || dateOrderInvalid) return null;
+    const prices = productManagedPrices(product, location?.id);
+    const line = computeRentalLinePrice({
+      prices,
+      scheme: product.pricingScheme ?? null,
+      start: { date: form.startDate, time: form.startTime || null },
+      end: { date: form.endDate, time: form.endTime || null },
+      opts: { use_saturday: form.useSaturday, use_sunday: form.useSunday },
+    });
+    return line.kind === "duration_only" ? null : line;
+  })();
   const mainItem = (): RequestItem[] =>
     product
       ? [{ product_name: product.name, product_slug: product.id, quantity: 1, set_size: parseSetSize(product.name), image: product.image }]
@@ -244,6 +269,10 @@ export function ProductBookingDialog({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!product || !location) return;
+    if (dateOrderInvalid) {
+      toast.error("Das Rückgabedatum darf nicht vor dem Abholdatum liegen.");
+      return;
+    }
     setSending(true);
 
     try {
