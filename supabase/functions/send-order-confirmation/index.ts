@@ -1,3 +1,4 @@
+import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
 /**
  * Sendet nach Zahlungseingang die Auftragsbestätigung zu einem angenommenen
  * Angebot (Miet- oder Verkaufsanfrage). Erst mit Zugang dieser Bestätigung
@@ -129,6 +130,9 @@ Deno.serve(async (req) => {
     const customerName = inquiryType === "rental"
       ? inq.customer_name || ""
       : [inq.first_name, inq.last_name].filter(Boolean).join(" ");
+    const form = await resolveAddressForm(service, inq);
+    const t = (du: string, sie: string) => byForm(form, du, sie);
+    const greeting = salutationLine({ address_form: form, salutation: inq.customer_salutation ?? inq.salutation, name: customerName });
     const loc = LOCATION_CONTACTS[locKey(inq.location)];
     const period = inquiryType === "rental" && inq.start_date
       ? `${fmtDate(inq.start_date)}${inq.start_time ? `, ${String(inq.start_time).slice(0, 5)} Uhr` : ""}${inq.end_date ? ` bis ${fmtDate(inq.end_date)}${inq.end_time ? `, ${String(inq.end_time).slice(0, 5)} Uhr` : ""}` : ""}`
@@ -145,29 +149,29 @@ Deno.serve(async (req) => {
     let intro: string;
     let statusLine: string;
     if (ev.state === "full") {
-      intro = `vielen Dank – Ihre Zahlung ist vollständig bei uns eingegangen.`;
+      intro = t(`vielen Dank – deine Zahlung ist vollständig bei uns eingegangen.`, `vielen Dank – Ihre Zahlung ist vollständig bei uns eingegangen.`);
       statusLine = `<p style="margin:4px 0;"><strong>Der Betrag ist vollständig beglichen.</strong></p>`;
     } else if (ev.state === "partial") {
-      intro = `vielen Dank – Ihre Teilzahlung über ${money(paid)} ist bei uns eingegangen.`;
+      intro = t(`vielen Dank – deine Teilzahlung über ${money(paid)} ist bei uns eingegangen.`, `vielen Dank – Ihre Teilzahlung über ${money(paid)} ist bei uns eingegangen.`);
       statusLine = ev.paysOnInvoice
         ? `<p style="margin:4px 0;">Offener Restbetrag: <strong>${money(open)}</strong> – fällig gemäß den vereinbarten Zahlungsbedingungen.</p>`
-        : `<p style="margin:4px 0;">Offener Restbetrag: <strong>${money(open)}</strong> – bitte ${dueWhen} überweisen (${ref}).</p>`;
+        : `<p style="margin:4px 0;">Offener Restbetrag: <strong>${money(open)}</strong> – ${t("bitte", "bitte")} ${dueWhen} überweisen (${ref}).</p>`;
     } else {
-      intro = `vielen Dank für Ihren Auftrag.`;
+      intro = t(`vielen Dank für deinen Auftrag.`, `vielen Dank für Ihren Auftrag.`);
       statusLine = `<p style="margin:4px 0;">Zahlung: <strong>${money(required)}</strong> – fällig gemäß den vereinbarten Zahlungsbedingungen nach Rechnungsstellung. Bisher ist noch keine Zahlung eingegangen.</p>`;
     }
     const paymentList = payments.length
       ? `<p style="margin:4px 0;">Eingegangene Zahlungen: <strong>${money(paid)}</strong></p><ul style="margin:4px 0 4px 18px;padding:0;">${payments.map((p) => `<li>${p?.date ? `${esc(fmtDate(p.date))}: ` : ""}${money(toCents(p.amount) / 100)}</li>`).join("")}</ul>`
       : "";
     const overLine = ev.overpaidCents > 0
-      ? `<p style="margin:4px 0;">Sie haben ${money(ev.overpaidCents / 100)} mehr überwiesen als vereinbart. Wir melden uns dazu bei Ihnen.</p>`
+      ? `<p style="margin:4px 0;">${t(`Du hast ${money(ev.overpaidCents / 100)} mehr überwiesen als vereinbart. Wir melden uns dazu bei dir.`, `Sie haben ${money(ev.overpaidCents / 100)} mehr überwiesen als vereinbart. Wir melden uns dazu bei Ihnen.`)}</p>`
       : "";
 
     const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:16px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
 <div style="max-width:600px;margin:0 auto;">
   <h2 style="color:#00507d;margin:0 0 16px;">Auftragsbestätigung zu Angebot ${esc(inq.offer_number)}</h2>
-  <p>Hallo ${esc(customerName)},</p>
-  <p>${intro} Hiermit bestätigen wir Ihnen verbindlich den Auftrag auf Grundlage unseres Angebots <strong>${esc(inq.offer_number)}</strong>.</p>
+  <p>${esc(greeting)}</p>
+  <p>${intro} Hiermit bestätigen wir ${t("dir", "Ihnen")} verbindlich den Auftrag auf Grundlage unseres Angebots <strong>${esc(inq.offer_number)}</strong>.</p>
   ${period ? `<p><strong>Mietzeitraum:</strong> ${esc(period)}<br><strong>Standort:</strong> ${esc(loc.name)}</p>` : ""}
   ${rows ? `<table role="presentation" style="width:100%;border-collapse:collapse;font-size:14px;margin:12px 0;">${rows}</table>` : ""}
   <div style="background:#f1f5f9;border-radius:6px;padding:12px 16px;margin:16px 0;">
@@ -179,10 +183,10 @@ Deno.serve(async (req) => {
   </div>
   ${note ? `<p style="white-space:pre-wrap;border-left:4px solid #00507d;padding:8px 16px;">${esc(note)}</p>` : ""}
   <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;font-size:14px;">
-    <strong>Verbindliche Auftragsannahme:</strong> Mit dieser Auftragsbestätigung haben wir Ihren Auftrag angenommen – die Miete ist damit verbindlich vereinbart. Diese Auftragsbestätigung dient Ihnen als Nachweis der Auftragsannahme. Es gelten unsere Allgemeinen Geschäftsbedingungen.
+    <strong>Verbindliche Auftragsannahme:</strong> Mit dieser Auftragsbestätigung haben wir ${t("deinen", "Ihren")} Auftrag angenommen – die Miete ist damit verbindlich vereinbart. Diese Auftragsbestätigung dient ${t("dir", "Ihnen")} als Nachweis der Auftragsannahme. Es gelten unsere Allgemeinen Geschäftsbedingungen.
   </div>
-  <p>Bei Fragen erreichen Sie uns am Standort ${esc(loc.name)} unter Tel. ${esc(loc.phone)} oder <a href="mailto:${esc(loc.email)}" style="color:#00507d;">${esc(loc.email)}</a>.</p>
-  <p style="margin-top:24px;">Freundliche Grüße<br>${senderName ? `${esc(senderName)}<br>` : ""}Ihr SLT Rental Team – Standort ${esc(loc.name)}</p>
+  <p>Bei Fragen erreich${t("st du", "en Sie")} uns am Standort ${esc(loc.name)} unter Tel. ${esc(loc.phone)} oder <a href="mailto:${esc(loc.email)}" style="color:#00507d;">${esc(loc.email)}</a>.</p>
+  <p style="margin-top:24px;">Freundliche Grüße<br>${senderName ? `${esc(senderName)}<br>` : ""}${t("Dein", "Ihr")} SLT Rental Team – Standort ${esc(loc.name)}</p>
 </div></body></html>`;
 
     // ── Optional: Auftragsbestätigung als PDF (gleiches Layout wie Angebot/Rechnung) ──
@@ -307,9 +311,9 @@ Deno.serve(async (req) => {
         to: [inq.customer_email],
         cc: Array.from(new Set([loc.email, inq.location_email].filter((e) => e && e !== inq.customer_email))),
         reply_to: loc.email,
-        subject: `Auftragsbestätigung zu Ihrem Angebot ${inq.offer_number}`,
+        subject: `Auftragsbestätigung zu ${t("deinem", "Ihrem")} Angebot ${inq.offer_number}`,
         html: pdfAttachment
-          ? html.replace("</h2>", `</h2><p style="color:#6b7280;font-size:13px;margin-top:-8px;">Die Auftragsbestätigung ${esc(confirmationNumber)} finden Sie zusätzlich als PDF im Anhang.</p>`)
+          ? html.replace("</h2>", `</h2><p style="color:#6b7280;font-size:13px;margin-top:-8px;">Die Auftragsbestätigung ${esc(confirmationNumber)} ${t("findest du", "finden Sie")} zusätzlich als PDF im Anhang.</p>`)
           : html,
         ...(pdfAttachment ? { attachments: [pdfAttachment] } : {}),
       }),
