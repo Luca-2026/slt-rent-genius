@@ -15,11 +15,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Phone, Mail, Loader2, Send, CheckCircle2, Calendar, Truck, Wrench, Info, ArrowUpRight } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { Product, LocationData } from "@/data/rentalData";
+import { pickupTimeOptions, pickupWindowForDate, type LocationInfo } from "@/data/locationData";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { InquiryItemsPicker, type RequestItem } from "./InquiryItemsPicker";
 import { parseSetSize } from "@/lib/setSize";
+import { computeRentalLinePrice, unitLabel, type PricingUnit } from "@/lib/pricing/realrentalPricing";
+import { productManagedPrices } from "./ProductPriceBlock";
+import { displayPrice } from "@/lib/priceDisplay";
+import { useCustomerType } from "@/hooks/useCustomerType";
 
 interface ProductBookingDialogProps {
   product: Product | null;
@@ -48,6 +54,8 @@ interface InquiryForm {
   deliveryCity: string;
   setupServiceRequested: boolean;
   selectedExtras: string[];
+  useSaturday: boolean;
+  useSunday: boolean;
 }
 
 // Categories where "Betreuung / Auf- & Abbau" makes sense (event-related)
@@ -93,6 +101,8 @@ export function ProductBookingDialog({
     deliveryRequested: false, deliveryStreet: "", deliveryPostalCode: "", deliveryCity: "",
     setupServiceRequested: false,
     selectedExtras: [],
+    useSaturday: false,
+    useSunday: false,
   };
   const [form, setForm] = useState<InquiryForm>(defaultForm);
   const [sending, setSending] = useState(false);
