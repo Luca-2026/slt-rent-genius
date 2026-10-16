@@ -6,9 +6,10 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Minus, Plus, Search, Trash2 } from "lucide-react";
+import { Minus, Plus, Search, ShieldCheck, Trash2 } from "lucide-react";
 import { loadCatalog, pickCatalogImage, type CatalogProduct } from "@/components/b2b/inquiries/InquiryProductCombobox";
 import { parseSetSize } from "@/lib/setSize";
+import { parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface RequestItem {
@@ -17,6 +18,8 @@ export interface RequestItem {
   quantity: number;
   set_size: number | null;
   image?: string;
+  /** Vom Kunden gewählte Zusatzoptionen (Versicherungsstufen), Keys aus addon_options. */
+  selected_addons?: string[];
 }
 
 interface Props {
