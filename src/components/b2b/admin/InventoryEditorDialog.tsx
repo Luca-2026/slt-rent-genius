@@ -107,6 +107,7 @@ interface FormState {
   seo_use_case_event: string;
   seo_use_case_privat: string;
   related_slugs: string[];
+  suggested_accessory_slugs: string[];
   seo_draft_meta_description: string;
   seo_draft_faqs: Faq[];
   seo_draft_generated_at: string | null;
@@ -156,6 +157,7 @@ const emptyForm = (): FormState => ({
   seo_use_case_event: "",
   seo_use_case_privat: "",
   related_slugs: [],
+  suggested_accessory_slugs: [],
   seo_draft_meta_description: "",
   seo_draft_faqs: [],
   seo_draft_generated_at: null,
@@ -228,6 +230,7 @@ function fromRow(row: AdminManagedProductRow): FormState {
     seo_use_case_event: (row as unknown as { seo_use_case_event?: string | null }).seo_use_case_event ?? "",
     seo_use_case_privat: (row as unknown as { seo_use_case_privat?: string | null }).seo_use_case_privat ?? "",
     related_slugs: (row as unknown as { related_slugs?: string[] | null }).related_slugs ?? [],
+    suggested_accessory_slugs: (row as unknown as { suggested_accessory_slugs?: string[] | null }).suggested_accessory_slugs ?? [],
     seo_draft_meta_description: row.seo_draft_meta_description ?? "",
     seo_draft_faqs: row.seo_draft_faqs ?? [],
     seo_draft_generated_at: row.seo_draft_generated_at ?? null,
@@ -592,6 +595,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         seo_use_case_event: form.seo_use_case_event.trim() || null,
         seo_use_case_privat: form.seo_use_case_privat.trim() || null,
         related_slugs: form.related_slugs,
+        suggested_accessory_slugs: form.suggested_accessory_slugs,
         seo_draft_meta_description: form.seo_draft_meta_description || null,
         seo_draft_faqs: form.seo_draft_faqs,
         seo_draft_generated_at: form.seo_draft_generated_at,
