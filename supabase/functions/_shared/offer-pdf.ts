@@ -119,7 +119,7 @@ export async function generateOfferPdf(data: {
   const INFO_VAL_X = INFO_X + 30 * MM;
 
   const docType = data.documentType ?? "offer";
-  const withCode = (ref: string) => (data.orderCode ? `${ref} #${data.orderCode}` : ref);
+  const withCode = (ref: string) => (data.orderCode ? `${ref} Auftrag ${data.orderCode}` : ref);
   const iq = docType === "offer" ? data.inquiryOffer : undefined;
   const isDu = iq?.addressForm === "du";
   const T = (du: string, sie: string) => (isDu ? du : sie);

@@ -73,7 +73,7 @@ Deno.serve(async (req: Request) => {
       amount_cents: status === "active" ? plan.openCents : link.amount_cents,
       options: status === "active" ? options : [],
       bank: status === "active"
-        ? { holder: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, bank: SLT_COMPANY.bankName, reference: inquiry.order_code ? `${link.offer_number} #${inquiry.order_code}` : link.offer_number }
+        ? { holder: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, bank: SLT_COMPANY.bankName, reference: inquiry.order_code ? `${link.offer_number} Auftrag ${inquiry.order_code}` : link.offer_number }
         : null,
     };
     if (action === "info") return json(view);
