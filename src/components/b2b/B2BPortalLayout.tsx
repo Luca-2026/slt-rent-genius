@@ -53,7 +53,7 @@ const customerNavItems = [
 
 const adminNavItems = [
   { href: "/", label: "Startseite", icon: Home },
-  { href: "/b2b/admin", label: "B2B-Vermietung", icon: Settings },
+  { href: "/b2b/admin", label: "Portal-Buchungen", icon: Settings },
   { href: "/b2b/mietanfragen", label: "Mietanfragen", icon: Inbox },
   { href: "/b2b/verkaufsanfragen", label: "Verkaufsanfragen", icon: ShoppingCart },
   { href: "/b2b/anfrage-rechnungen", label: "Rechnungen", icon: Receipt },
@@ -216,7 +216,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                     </SheetTrigger>
                     <SheetContent side="left" className="w-[280px] p-0">
                       <SheetHeader className="p-4 border-b border-border">
-                        <SheetTitle className="text-left">B2B-Portal</SheetTitle>
+                        <SheetTitle className="text-left">Kundenportal</SheetTitle>
                       </SheetHeader>
                       <nav className="flex flex-col p-2 gap-1">
                         {navItems.map((item) => {

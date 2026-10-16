@@ -46,7 +46,7 @@ export default function ProjectRequest() {
     if (!loading && user && !isApprovedB2B) {
       toast({
         title: "Zugriff verweigert",
-        description: "Projektanfragen sind nur für freigeschaltete B2B-Kunden verfügbar.",
+        description: "Projektanfragen sind nur für freigeschaltete Geschäftskunden verfügbar.",
         variant: "destructive",
       });
       navigate("/b2b/dashboard");

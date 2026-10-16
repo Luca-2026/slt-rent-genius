@@ -102,14 +102,14 @@ export function B2BProductCard({
               </span>
               {hasDiscount && (
                 <span className="text-sm font-bold text-accent">
-                  Ihr B2B-Preis
+                  Ihr Preis
                 </span>
               )}
             </div>
           )}
           {!product.pricePerDay && hasDiscount && (
             <p className="text-xs text-accent font-medium">
-              {discountPercent}% B2B-Rabatt auf Listenpreis
+              {discountPercent}% Kundenrabatt auf Listenpreis
             </p>
           )}
           <PriceGuaranteeBadge variant="inline" />

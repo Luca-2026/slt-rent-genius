@@ -13,7 +13,7 @@ import { MessageCircle, Phone } from "lucide-react";
 const b2bFaqCategories = [
   {
     id: "portal",
-    title: "B2B-Portal & Konto",
+    title: "Kundenportal & Konto",
     questions: [
       {
         q: "Wie registriere ich mich als Geschäftskunde?",
@@ -55,7 +55,7 @@ const b2bFaqCategories = [
       },
       {
         q: "Erhalte ich individuelle Preise?",
-        a: "Ja, als B2B-Kunde können für Ihr Konto individuelle Kategorierabatte und Produktpreise hinterlegt werden. Diese werden automatisch bei der Angebotserstellung berücksichtigt.",
+        a: "Ja, als Geschäftskunde können für Ihr Konto individuelle Kategorierabatte und Produktpreise hinterlegt werden. Diese werden automatisch bei der Angebotserstellung berücksichtigt.",
       },
     ],
   },
@@ -143,7 +143,7 @@ const b2bFaqCategories = [
 
 function B2BFAQ() {
   return (
-    <B2BPortalLayout title="Häufige Fragen (FAQ)" subtitle="Antworten rund um das B2B-Portal und Ihre Mietvorgänge">
+    <B2BPortalLayout title="Häufige Fragen (FAQ)" subtitle="Antworten rund um das Kundenportal und Ihre Mietvorgänge">
       <div className="max-w-3xl mx-auto space-y-8">
         {b2bFaqCategories.map((category) => (
           <div key={category.id}>
@@ -175,7 +175,7 @@ function B2BFAQ() {
             <MessageCircle className="h-10 w-10 text-primary mx-auto mb-3" />
             <h3 className="text-lg font-bold mb-2">Noch Fragen?</h3>
             <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto">
-              Unser B2B-Team steht Ihnen persönlich zur Verfügung – telefonisch oder über das Kontaktformular.
+              Unser Team steht Ihnen persönlich zur Verfügung – telefonisch oder über das Kontaktformular.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link to="/kontakt">

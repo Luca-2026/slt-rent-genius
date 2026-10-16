@@ -213,7 +213,7 @@ export function B2BReservationDialog({
             )}
             {discountPercent > 0 && (
               <span className="text-xs font-medium text-accent">
-                {discountPercent}% B2B-Rabatt
+                {discountPercent}% Kundenrabatt
               </span>
             )}
           </div>

@@ -117,7 +117,7 @@ export default function RentalInquiries() {
   }
 
   return (
-    <B2BPortalLayout title="Mietanfragen" subtitle="Alle Mietanfragen – Privat-, Geschäfts- und B2B-Portalkunden">
+    <B2BPortalLayout title="Mietanfragen" subtitle="Alle Mietanfragen – Privat- und Geschäftskunden">
       <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 mb-4">
         <Button
           variant={mineOnly ? "default" : "outline"}
@@ -250,7 +250,7 @@ function InquirySourceBadges({ inquiry }: { inquiry: RentalInquiry }) {
           <Building2 className="h-3 w-3" /> Firmenkunde
         </Badge>
       )}
-      {isPortal && <Badge variant="secondary">B2B-Portal</Badge>}
+      {isPortal && <Badge variant="secondary">Kundenportal</Badge>}
       {!isBusiness && <Badge variant="outline">Privat</Badge>}
     </>
   );

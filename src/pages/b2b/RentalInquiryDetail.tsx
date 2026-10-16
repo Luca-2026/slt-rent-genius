@@ -16,7 +16,7 @@ import { rentalDuration } from "@/lib/pricing/rentalPricing";
 export const RENTAL_LIST_STATE_KEY = "slt.rental-inquiries.list.v1";
 
 const SOURCE_LABELS: Record<string, string> = {
-  b2b_portal: "B2B-Portal (Firmenkunde)",
+  b2b_portal: "Kundenportal",
   manual: "Manuell angelegt",
   website: "Website",
   ai_import: "E-Mail/Telefon (KI-Import)",

@@ -150,7 +150,7 @@ export default function B2BDashboard() {
       color: "text-green-600",
       bgColor: "bg-green-50",
       label: "Freigeschaltet",
-      description: "Dein B2B-Konto ist aktiv. Du kannst jetzt Projektanfragen stellen.",
+      description: "Dein Kundenkonto ist aktiv. Du kannst jetzt Projektanfragen stellen.",
     },
     rejected: {
       icon: XCircle,
@@ -186,7 +186,7 @@ export default function B2BDashboard() {
                 )}
               </div>
               <p className="text-primary-foreground/80">
-                {b2bProfile?.company_name || "B2B-Dashboard"}
+                {b2bProfile?.company_name || "Kundenportal"}
               </p>
             </div>
             <div className="flex gap-2 flex-wrap">
@@ -356,7 +356,7 @@ export default function B2BDashboard() {
                       Dein Antrag wird geprüft
                     </h2>
                     <p className="text-muted-foreground mb-3">
-                      Bitte habe noch einen Moment Geduld – unser Team prüft deine Registrierung und schaltet dein B2B-Konto in der Regel innerhalb von 1–2 Werktagen frei. Sobald es so weit ist, bekommst du eine E-Mail von uns.
+                      Bitte habe noch einen Moment Geduld – unser Team prüft deine Registrierung und schaltet dein Kundenkonto in der Regel innerhalb von 1–2 Werktagen frei. Sobald es so weit ist, bekommst du eine E-Mail von uns.
                     </p>
                     <p className="text-sm text-muted-foreground">
                       Falls du deine Registrierung noch nicht abgeschlossen hast,{" "}
@@ -423,7 +423,7 @@ export default function B2BDashboard() {
                 </CardHeader>
                 <CardContent className="flex-1">
                   <p className="text-sm text-muted-foreground">
-                    Durchsuche das gesamte Sortiment und stelle Anfragen mit deinen individuellen B2B-Konditionen.
+                    Durchsuche das gesamte Sortiment und stelle Anfragen mit deinen individuellen Konditionen.
                   </p>
                   {!isApproved && (
                     <p className="text-xs text-yellow-600 mt-2">Verfügbar nach Freischaltung</p>
@@ -676,7 +676,7 @@ export default function B2BDashboard() {
                       <h3 className="font-semibold text-foreground">Konto löschen</h3>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      Beantrage die vollständige Löschung deines B2B-Kontos und aller damit verbundenen Daten.
+                      Beantrage die vollständige Löschung deines Kundenkontos und aller damit verbundenen Daten.
                     </p>
                   </div>
                   <Button
@@ -706,7 +706,7 @@ export default function B2BDashboard() {
             <AlertDialogTitle>Kontolöschung beantragen?</AlertDialogTitle>
             <AlertDialogDescription className="space-y-2">
               <p>
-                Möchtest du die Löschung deines B2B-Kundenkontos beantragen? 
+                Möchtest du die Löschung deines Kundenkontos beantragen? 
                 Unser Team wird deinen Antrag prüfen und die Löschung durchführen.
               </p>
               <p className="font-medium">

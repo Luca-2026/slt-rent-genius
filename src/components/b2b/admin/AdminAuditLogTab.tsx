@@ -22,7 +22,7 @@ interface AuditRow {
 const ENTITY_LABELS: Record<string, string> = {
   auth: "Anmeldung",
   b2b_managed_products: "Produkt (CMS)",
-  b2b_profiles: "B2B-Profil",
+  b2b_profiles: "Kundenprofil",
   b2b_invoices: "Rechnung",
   b2b_offers: "Angebot",
   b2b_delivery_notes: "Lieferschein",

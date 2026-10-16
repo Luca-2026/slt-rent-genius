@@ -105,7 +105,7 @@ export function AdminCreateCustomerDialog({ open, onOpenChange, onCreated }: Pro
             Neuen Kunden anlegen
           </DialogTitle>
           <DialogDescription>
-            Lege einen neuen B2B-Kunden manuell an (z.B. für Laufkunden vor Ort). 
+            Lege einen neuen Geschäftskunden manuell an (z.B. für Laufkunden vor Ort). 
             Der Account wird sofort freigeschaltet.
           </DialogDescription>
         </DialogHeader>

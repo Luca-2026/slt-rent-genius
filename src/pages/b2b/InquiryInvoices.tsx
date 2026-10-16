@@ -327,7 +327,7 @@ export default function InquiryInvoices() {
   return (
     <B2BPortalLayout
       title="Rechnungen"
-      subtitle="Alle Rechnungen und Gutschriften – Privat-, Geschäfts- und B2B-Portalkunden"
+      subtitle="Alle Rechnungen und Gutschriften – Privat- und Geschäftskunden"
     >
       <div className="space-y-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -597,7 +597,7 @@ function PortalInvoiceCard({ row, canManage, onRefresh, onStatusChange, onDelete
           <span className="font-semibold">{row.invoice_number ?? "Entwurf"}</span>
           {row.invoice_kind === "credit_note" && <Badge variant="outline">Gutschrift</Badge>}
           <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>{STATUS_LABEL[row.status] ?? row.status}</Badge>
-          <Badge variant="secondary">B2B-Portal</Badge>
+          <Badge variant="secondary">Kundenportal</Badge>
           <span className="ml-auto font-semibold">{formatEuro(gross)}</span>
         </div>
         <div className="text-sm">

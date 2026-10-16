@@ -168,7 +168,7 @@ export default function B2BProductDetail() {
                   {hasDiscount && (
                     <Badge className="absolute top-3 right-3 bg-accent text-accent-foreground font-bold text-sm px-2 py-1">
                       <Percent className="h-3 w-3 mr-1" />
-                      -{discount}% B2B
+                      -{discount}% Rabatt
                     </Badge>
                   )}
                 </>
@@ -560,7 +560,7 @@ function B2BInquiryCard({
               <Badge className="bg-accent text-accent-foreground text-sm px-2 py-0.5">
                 -{discount}%
               </Badge>
-              <span className="text-sm font-bold text-accent">Ihr B2B-Preis</span>
+              <span className="text-sm font-bold text-accent">Ihr Preis</span>
             </div>
           )}
           {product.priceWeekend && (
@@ -574,7 +574,7 @@ function B2BInquiryCard({
       {!product.pricePerDay && hasDiscount && (
         <div className="pb-3 border-b border-border">
           <Badge className="bg-accent text-accent-foreground text-sm px-2 py-0.5">
-            -{discount}% B2B-Rabatt
+            -{discount}% Kundenrabatt
           </Badge>
           <p className="text-xs text-muted-foreground mt-1">auf den Listenpreis</p>
         </div>
@@ -599,7 +599,7 @@ function B2BInquiryCard({
       </Button>
 
       <p className="text-xs text-muted-foreground text-center">
-        Verbindliches Angebot mit Ihrem persönlichen B2B-Rabatt.
+        Verbindliches Angebot mit Ihrem persönlichen Kundenrabatt.
       </p>
     </div>
   );
