@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { ExternalLink, Pencil, Receipt, Trash2, UserCheck, UserMinus } from "lucide-react";
+import { ExternalLink, FileCheck2, FilePlus2, Pencil, Receipt, Trash2, UserCheck, UserMinus, Wallet } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -523,7 +523,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         {canDelete && (
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button size="sm" variant="destructive" className="sm:ml-auto" disabled={busy || deleting}>
+              <Button size="sm" variant="outline" className="h-9 border-destructive/50 text-destructive hover:bg-destructive/10 hover:text-destructive" disabled={busy || deleting}>
                 <Trash2 className="h-3.5 w-3.5 mr-1" /> Löschen
               </Button>
             </AlertDialogTrigger>
@@ -764,28 +764,27 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
     <>
       <div ref={docSectionRef}>
         <div className="mb-4 space-y-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
-        <div className="flex flex-wrap gap-2">
-          <Button size="sm" variant={docMode === "offer" ? "default" : "outline"} onClick={() => setDocMode("offer")}>
-            {inquiry.offer_number ? "Neues Angebot" : "Angebot erstellen"}
-          </Button>
-          {offerSnapshot && inquiry.offer_number && (
-            <Button size="sm" variant={docMode === "revise" ? "default" : "outline"} onClick={() => setDocMode("revise")}>
-              <Pencil className="h-3.5 w-3.5 mr-1" /> Angebot überarbeiten
-            </Button>
-          )}
-          <Button size="sm" variant={docMode === "invoice" ? "default" : "outline"} onClick={() => setDocMode("invoice")}>
-            <Receipt className="h-3.5 w-3.5 mr-1" /> Rechnung erstellen
-          </Button>
-          {layout === "page" && inquiry.status === "accepted" && inquiry.offer_number && (
-            <Button size="sm" variant={docMode === "order" ? "default" : "outline"} onClick={() => setDocMode("order")}>
-              Auftragsbestätigung erstellen
-            </Button>
-          )}
-          {inquiryType === "rental" && inquiry.offer_number && (
-            <Button size="sm" variant={docMode === "deposit" ? "default" : "outline"} onClick={() => setDocMode("deposit")}>
-              Kaution abrechnen
-            </Button>
-          )}
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+          {([
+            { mode: "offer", label: inquiry.offer_number ? "Neues Angebot" : "Angebot erstellen", icon: FilePlus2, show: true },
+            { mode: "revise", label: "Angebot überarbeiten", icon: Pencil, show: !!(offerSnapshot && inquiry.offer_number) },
+            { mode: "invoice", label: "Rechnung erstellen", icon: Receipt, show: true },
+            { mode: "order", label: "Auftragsbestätigung", icon: FileCheck2, show: layout === "page" && inquiry.status === "accepted" && !!inquiry.offer_number },
+            { mode: "deposit", label: "Kaution abrechnen", icon: Wallet, show: inquiryType === "rental" && !!inquiry.offer_number },
+          ] as { mode: DocMode; label: string; icon: typeof Pencil; show: boolean }[])
+            .filter((b) => b.show)
+            .map(({ mode, label, icon: Icon }) => (
+              <Button
+                key={mode}
+                size="sm"
+                variant={docMode === mode || (mode === "invoice" && docMode === "final") ? "default" : "outline"}
+                className="h-9 w-full justify-start"
+                onClick={() => setDocMode(mode)}
+              >
+                <Icon className="h-4 w-4 mr-2 shrink-0" />
+                <span className="truncate">{label}</span>
+              </Button>
+            ))}
         </div>
         <div>
           <div className="font-semibold text-sm">

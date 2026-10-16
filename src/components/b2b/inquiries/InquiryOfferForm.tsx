@@ -1343,13 +1343,13 @@ export function InquiryOfferForm({
 
   // Aktionen (Vorschau, Senden) – in der Vollseite oben angeheftet, sonst wie bisher am Ende.
   const previewButton = !isInvoice && (
-    <Button type="button" data-draft-neutral variant="outline" onClick={preview} disabled={disabled || previewing || sending} className={stickyActions ? "" : "w-full"}>
+    <Button type="button" data-draft-neutral variant="outline" onClick={preview} disabled={disabled || previewing || sending} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
       {previewing ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Eye className="h-4 w-4 mr-2" />}
       {previewing ? "Vorschau wird erstellt …" : "PDF-Vorschau anzeigen"}
     </Button>
   );
   const sendButton = (
-    <Button data-draft-neutral onClick={send} disabled={disabled || sending || checking || !previewOk} className={stickyActions ? "" : "w-full"}>
+    <Button data-draft-neutral onClick={send} disabled={disabled || sending || checking || !previewOk} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
       <Send className="h-4 w-4 mr-2" />
       {isInvoice
         ? sending
@@ -1372,9 +1372,9 @@ export function InquiryOfferForm({
     <div className="sticky top-28 lg:top-32 z-20 rounded-lg border border-border bg-background/95 p-2 shadow-sm backdrop-blur" data-testid="offer-action-bar">
       <div className="flex flex-wrap items-center gap-2">
         {stickyActionsLead}
-        <div className="ml-auto flex flex-wrap gap-2">{previewButton}{sendButton}</div>
+        <div className="grid w-full grid-cols-1 gap-2 sm:ml-auto sm:flex sm:w-auto">{previewButton}{sendButton}</div>
       </div>
-      {previewHint && <div className="mt-1 text-right">{previewHint}</div>}
+      {previewHint && <div className="mt-1 sm:text-right">{previewHint}</div>}
     </div>
   ) : (
     <>
