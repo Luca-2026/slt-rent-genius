@@ -111,18 +111,13 @@ export function locationParagraph(
  * Basis sind die gepflegten Rentware-Codes bzw. das Flag `onRequest`.
  */
 export function resolveAvailabilityStatus(
-  product: Pick<Product, "rentwareCode" | "onRequest"> | undefined,
+  product: Pick<Product, "rentwareCode" | "onRequest" | "stockedLocations"> | undefined,
   locationId: string,
   opts: { categoryId?: string } = {},
 ): LocationAvailabilityStatus {
   if (product?.onRequest) return "aufAnfrageDispoKrefeld";
 
-  const codes = product?.rentwareCode;
-  const hasLocalCode = !!codes?.[locationId];
-  const hasAnyCode = !!codes && Object.keys(codes).length > 0;
-  const isKrefeld = locationId === "krefeld";
-
-  const vorOrt = hasLocalCode || (isKrefeld && !hasAnyCode);
+  const vorOrt = isStockedAt(product, locationId);
   if (!vorOrt) return "aufAnfrageDispoKrefeld";
 
   const selfPickup =
