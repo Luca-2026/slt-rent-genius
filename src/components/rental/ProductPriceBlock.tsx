@@ -117,3 +117,71 @@ export function ProductPriceBlock({
     </div>
   );
 }
+
+/** Staffelpreise des Produkts aus den CMS-Feldern (netto), inkl. Standortpreisen. */
+export function productManagedPrices(product: Product, location?: string | null, locationRows: LocationPriceRow[] = []): ManagedPrices {
+  return resolveProductPrices(
+    {
+      id: product.managedId ?? null,
+      pricing_scheme: product.pricingScheme ?? null,
+      price_per_day: product.pricePerDay ?? null,
+      price_from_1_rd: product.priceFrom1Rd ?? null,
+      price_from_3_rd: product.priceFrom3Rd ?? null,
+      price_from_10_rd: product.priceFrom10Rd ?? null,
+      price_from_20_rd: product.priceFrom20Rd ?? null,
+      price_weekend_num: product.priceWeekendNum ?? null,
+      price_base_1_3_cd: product.priceBase13Cd ?? null,
+      surcharge_per_cd_from_4: product.surchargePerCdFrom4 ?? null,
+      surcharge_per_cd_from_8: product.surchargePerCdFrom8 ?? null,
+    },
+    location,
+    locationRows,
+  );
+}
+
+export interface RentalPriceTiersProps {
+  product: Product;
+  location?: string | null;
+  locationRows?: LocationPriceRow[];
+  className?: string;
+}
+
+/**
+ * W1: Block „Mietpreise“ mit den gepflegten Staffeln (nur gefüllte Stufen).
+ * Nur für Artikel ohne Rentware-Code gedacht – die Einblendung steuert die Seite.
+ */
+export function RentalPriceTiers({ product, location, locationRows = [], className }: RentalPriceTiersProps) {
+  const { type } = useCustomerType();
+  const prices = productManagedPrices(product, location, locationRows);
+  const rows: Array<{ label: string; value: string }> = [];
+
+  if (product.pricingScheme === "bau") {
+    if (prices.price_from_1_rd !== null) rows.push({ label: "ab 1 Miettag", value: `${displayPrice(prices.price_from_1_rd, type)} / Miettag` });
+    if (prices.price_from_3_rd !== null) rows.push({ label: "ab 3 Miettagen", value: `${displayPrice(prices.price_from_3_rd, type)} / Miettag` });
+    if (prices.price_from_10_rd !== null) rows.push({ label: "ab 10 Miettagen", value: `${displayPrice(prices.price_from_10_rd, type)} / Miettag` });
+    if (prices.price_from_20_rd !== null) rows.push({ label: "ab 20 Miettagen", value: `${displayPrice(prices.price_from_20_rd, type)} / Miettag` });
+  } else {
+    if (prices.price_base_1_3_cd !== null) rows.push({ label: "1–3 Kalendertage", value: displayPrice(prices.price_base_1_3_cd, type) });
+    if (prices.surcharge_per_cd_from_4 !== null) rows.push({ label: "ab 4 Kalendertagen", value: `+ ${displayPrice(prices.surcharge_per_cd_from_4, type)} / Tag` });
+    if (prices.surcharge_per_cd_from_8 !== null) rows.push({ label: "ab 8 Kalendertagen", value: `+ ${displayPrice(prices.surcharge_per_cd_from_8, type)} / Tag` });
+  }
+  if (prices.price_weekend_num !== null) {
+    rows.push({ label: "Wochenendtarif (Fr 16:00 – Mo 09:30)", value: displayPrice(prices.price_weekend_num, type) });
+  }
+
+  if (rows.length === 0) return null;
+
+  return (
+    <div className={className}>
+      <h3 className="text-sm font-semibold text-headline mb-1.5">Mietpreise</h3>
+      <ul className="space-y-0.5">
+        {rows.map((r) => (
+          <li key={r.label} className="flex flex-wrap items-baseline justify-between gap-x-2 text-xs sm:text-sm">
+            <span className="text-muted-foreground">{r.label}</span>
+            <span className="font-semibold text-headline">{r.value}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
