@@ -398,7 +398,7 @@ Deno.serve(async (req: Request) => {
     const servicesSurcharge = servicesWithPrices.reduce((sum, s) => sum + s.amount, 0);
 
     // Bilder über den Stammnamen auflösen (nicht über einen Override nur für dieses Angebot).
-    const missingImages = pdfItems.filter((i) => !i.image_url).map((_, k) => items[pdfItems.indexOf(_)].product_name);
+    const missingImages = pdfItems.flatMap((p, k) => (p.image_url ? [] : [items[k].product_name]));
     if (missingImages.length) {
       try {
         const resolved = await resolveImagesByName(service, missingImages);
