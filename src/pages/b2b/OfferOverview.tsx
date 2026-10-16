@@ -149,17 +149,17 @@ export default function OfferOverview() {
       </div>
 
       {loading ? <p className="text-muted-foreground">Lädt …</p> : (
-        <div className="rounded-lg border border-border bg-card">
+        <div className="overflow-x-auto rounded-lg border border-border bg-card">
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Angebot</TableHead>
                 <TableHead>Kunde</TableHead>
-                <TableHead>Standort</TableHead>
+                <TableHead className="hidden xl:table-cell">Standort</TableHead>
                 <TableHead>Mietzeitraum</TableHead>
                 <TableHead className="text-right">Summe brutto</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Erstellt</TableHead>
+                <TableHead className="hidden xl:table-cell">Erstellt</TableHead>
                 <TableHead>Gültig bis</TableHead>
               </TableRow>
             </TableHeader>
@@ -169,17 +169,17 @@ export default function OfferOverview() {
                   tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter") navigate(`/b2b/mietanfragen/${r.id}`); }}>
                   <TableCell className="font-medium whitespace-nowrap">{r.offer_number}</TableCell>
                   <TableCell>{r.company_name || r.customer_name || "–"}</TableCell>
-                  <TableCell className="whitespace-nowrap">{r.location ? getLocationDisplayName(r.location) : "–"}</TableCell>
+                  <TableCell className="hidden whitespace-nowrap xl:table-cell">{r.location ? getLocationDisplayName(r.location) : "–"}</TableCell>
                   <TableCell className="whitespace-nowrap">{fmtDate(r.start_date)} – {fmtDate(r.end_date)}</TableCell>
                   <TableCell className="text-right whitespace-nowrap">{eur(r.offer_total_gross)}</TableCell>
                   <TableCell>
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-wrap gap-1 whitespace-nowrap">
                       <InquiryStatusBadge status={r.status} />
-                      {r.offer_sent_at && <Badge variant="outline">gesendet</Badge>}
-                      {r.offer_accepted_at && <Badge variant="secondary">angenommen</Badge>}
+                      {r.offer_sent_at && r.status !== "offer_sent" && <Badge variant="outline">gesendet</Badge>}
+                      {r.offer_accepted_at && r.status !== "confirmed" && <Badge variant="secondary">angenommen</Badge>}
                     </div>
                   </TableCell>
-                  <TableCell className="whitespace-nowrap">{fmtDate(createdOf(r))}</TableCell>
+                  <TableCell className="hidden whitespace-nowrap xl:table-cell">{fmtDate(createdOf(r))}</TableCell>
                   <TableCell className="whitespace-nowrap">{fmtDate(validUntil(r))}</TableCell>
                 </TableRow>
               ))}
