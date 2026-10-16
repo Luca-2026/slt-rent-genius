@@ -99,7 +99,7 @@ export function offerPayloadToLines(payload: unknown): {
   meta: {
     payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null; open_ended: boolean;
     /** Paket 3b – fehlen bei alten Angeboten. */
-    groups?: OfferGroup[]; extra_fields?: OfferExtraFields; order_type?: OrderType;
+    groups?: OfferGroup[]; extra_fields?: OfferExtraFields; order_type?: OrderType; terms_text?: string;
   };
   delivery: OfferDeliveryAddress | null;
 } | null {
@@ -120,7 +120,7 @@ export function offerPayloadToLines(payload: unknown): {
         open_ended?: boolean;
         groups?: unknown;
         extra_fields?: unknown;
-        order_type?: unknown;
+        order_type?: unknown; terms_text?: unknown;
         delivery_requested?: boolean;
         delivery_address?: { street?: string; postal_code?: string; city?: string };
       }
