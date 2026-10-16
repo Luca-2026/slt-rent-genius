@@ -719,7 +719,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const docEl = (
     <>
       <div ref={docSectionRef}>
-        <div className="flex flex-wrap gap-2 mb-3">
+        <div className="mb-4 space-y-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
+        <div className="flex flex-wrap gap-2">
           <Button size="sm" variant={docMode === "offer" ? "default" : "outline"} onClick={() => setDocMode("offer")}>
             {inquiry.offer_number ? "Neues Angebot" : "Angebot erstellen"}
           </Button>
@@ -732,7 +733,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             <Receipt className="h-3.5 w-3.5 mr-1" /> Rechnung erstellen
           </Button>
         </div>
-        <div className="mb-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
+        <div>
           <div className="font-semibold text-sm">
             {docMode === "offer" ? "Angebot erstellen" : docMode === "revise" ? `Angebot ${inquiry.offer_number} überarbeiten` : docMode === "final" ? "Schlussrechnung erstellen" : "Rechnung erstellen"}
           </div>
@@ -745,6 +746,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               ? "Positionen prüfen und das Angebot per E-Mail senden."
               : "Endabrechnung: Positionen und Leistungszeitraum an die tatsächliche Miete anpassen (z. B. Verlängerung). Bereits erfasste Zahlungen werden abgezogen, die Rechnungsnummer wird beim Versand vergeben."}
           </p>
+        </div>
         </div>
         <InquiryOfferForm
           key={`${inquiry.id}:${docMode}:${docMode === "revise" ? inquiry.offer_number : ""}`}
