@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { TodoListEditorDialog } from "@/components/b2b/tasks/TodoListEditorDialog";
 import { TodoListDetailSheet } from "@/components/b2b/tasks/TodoListDetailSheet";
 import { MaterialDispoTab } from "@/components/b2b/tasks/MaterialDispoTab";
-import { Boxes, CalendarClock, CheckSquare, Clock, FileEdit, MessageSquare, Pencil, Plus, ShoppingCart, Shield, Trash2, Truck, User, UserCog } from "lucide-react";
+import { Boxes, CalendarClock, CheckSquare, Clock, FileEdit, FileText, MessageSquare, Pencil, Plus, ShoppingCart, Shield, Trash2, Truck, User, UserCog } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,6 +30,7 @@ import { TimesheetReminderBanner } from "@/components/b2b/tasks/TimesheetReminde
 import { usePendingTimesheets } from "@/hooks/usePendingTimesheets";
 import { AdminInventoryTab } from "@/components/b2b/admin/AdminInventoryTab";
 import { AdminSalesCatalogTab } from "@/components/b2b/admin/AdminSalesCatalogTab";
+import { TextBlocksTab } from "@/components/b2b/admin/TextBlocksTab";
 import { AdminStaffTab } from "@/components/b2b/admin/AdminStaffTab";
 import AdminFeedbackTab from "@/components/b2b/admin/AdminFeedbackTab";
 import AdminAuditLogTab from "@/components/b2b/admin/AdminAuditLogTab";
@@ -64,7 +65,7 @@ export default function StaffTasks() {
     () => [
       "tasks",
       "material",
-      ...(canViewInventory ? ["inventory", "verkauf"] : []),
+      ...(canViewInventory ? ["inventory", "verkauf", "textbausteine"] : []),
       "zeiten",
       ...(isAdmin ? ["feedback", "staff"] : []),
       ...(canViewAudit ? ["audit"] : []),
@@ -228,6 +229,11 @@ export default function StaffTasks() {
               <ShoppingCart className="h-4 w-4 mr-2 shrink-0" />
               <span className="sm:hidden">Verkauf</span>
               <span className="hidden sm:inline">Verkaufs-CMS</span>
+            </TabsTrigger>
+          )}
+          {canViewInventory && (
+            <TabsTrigger value="textbausteine" className="text-xs sm:text-sm py-2 sm:flex-none sm:shrink-0 sm:whitespace-nowrap sm:px-3 sm:py-2.5">
+              <FileText className="h-4 w-4 mr-2 shrink-0" /> Textbausteine
             </TabsTrigger>
           )}
           <TabsTrigger value="zeiten" className="text-xs sm:text-sm py-2 sm:flex-none sm:shrink-0 sm:whitespace-nowrap sm:px-3 sm:py-2.5">
@@ -407,6 +413,11 @@ export default function StaffTasks() {
         {canViewInventory && (
           <TabsContent value="verkauf">
             <AdminSalesCatalogTab />
+          </TabsContent>
+        )}
+        {canViewInventory && (
+          <TabsContent value="textbausteine">
+            <TextBlocksTab />
           </TabsContent>
         )}
 

@@ -1,0 +1,29 @@
+/**
+ * Paket 4: gemeinsame Anrede für Angebots-PDF und -E-Mail.
+ * Kunden werden standardmäßig geduzt; address_form = "sie" schaltet auf Sie.
+ */
+export type AddressForm = "du" | "sie";
+
+export function normalizeAddressForm(v: unknown): AddressForm {
+  return v === "sie" ? "sie" : "du";
+}
+
+export interface SalutationInput {
+  address_form?: string | null;
+  salutation?: string | null; // "herr" | "frau"
+  name?: string | null;
+}
+
+export function salutationLine(k: SalutationInput): string {
+  const words = String(k.name ?? "").trim().split(/\s+/).filter(Boolean);
+  if (normalizeAddressForm(k.address_form) === "du") {
+    return words.length ? `Hallo ${words[0]},` : "Hallo,";
+  }
+  const last = words[words.length - 1];
+  if (last && k.salutation === "herr") return `Sehr geehrter Herr ${last},`;
+  if (last && k.salutation === "frau") return `Sehr geehrte Frau ${last},`;
+  return "Sehr geehrte Damen und Herren,";
+}
+
+/** Wählt den Text passend zur Anrede-Form (gleicher Inhalt, zwei Fassungen). */
+export const byForm = (form: AddressForm, du: string, sie: string) => (form === "sie" ? sie : du);

@@ -213,6 +213,7 @@ export function offerPayloadToLines(payload: unknown): {
       ...(parseGroups(p.groups).length ? { groups: parseGroups(p.groups) } : {}),
       ...(cleanExtraFields(p.extra_fields) ? { extra_fields: cleanExtraFields(p.extra_fields) } : {}),
       ...(p.order_type === "delivery" || p.order_type === "pickup" ? { order_type: p.order_type as OrderType } : {}),
+      ...(typeof p.terms_text === "string" && p.terms_text.trim() ? { terms_text: p.terms_text } : {}),
     },
     delivery:
       typeof p.delivery_requested === "boolean"
@@ -341,6 +342,17 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const { toast } = useToast();
   const canDelete = isAdmin;
   const [deleting, setDeleting] = useState(false);
+  // Paket 4: Anrede-Form der verknüpften Kundenakte (Quelle der Wahrheit, sonst die Anfrage)
+  const [crmAddressForm, setCrmAddressForm] = useState<string | null>(null);
+  const crmCustomerId = (inquiry as { crm_customer_id?: string | null }).crm_customer_id ?? null;
+  useEffect(() => {
+    setCrmAddressForm(null);
+    if (!crmCustomerId) return;
+    let alive = true;
+    supabase.from("crm_customers").select("address_form").eq("id", crmCustomerId).maybeSingle()
+      .then(({ data }) => { if (alive && data?.address_form) setCrmAddressForm(data.address_form); });
+    return () => { alive = false; };
+  }, [crmCustomerId]);
   const [serverDrafts, setServerDrafts] = useState<{ draft_key: string; updated_by_name: string | null; updated_at: string }[]>([]);
   useEffect(() => {
     let off = false;
@@ -549,6 +561,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         postalCode={(inquiryType === "rental" ? inquiry.customer_postal_code : inquiry.billing_postal_code) ?? null}
         city={(inquiryType === "rental" ? inquiry.customer_city : inquiry.billing_city) ?? null}
         salutation={inquiryType === "rental" ? ((inquiry as { customer_salutation?: string | null }).customer_salutation ?? null) : undefined}
+        mobile={inquiryType === "rental" ? ((inquiry as { customer_mobile?: string | null }).customer_mobile ?? null) : undefined}
+        addressForm={inquiryType === "rental" ? (crmAddressForm ?? (inquiry as { address_form?: string }).address_form ?? "du") : undefined}
         busy={busy}
         onSave={async (values) => {
           const patch: Record<string, unknown> = {
@@ -571,6 +585,15 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             patch.customer_name = values.name.trim() || null;
             // Paket 3b: Anrede (Ausgabe folgt in Paket 4)
             patch.customer_salutation = values.salutation === "herr" || values.salutation === "frau" ? values.salutation : null;
+            patch.customer_mobile = values.mobile.trim() || null;
+            patch.address_form = values.address_form;
+            // Anrede-Form gehört zum Kunden: an der Kundenakte speichern, wenn verknüpft
+            const crmId = (inquiry as { crm_customer_id?: string | null }).crm_customer_id;
+            if (crmId) {
+              const { error: crmErr } = await supabase.from("crm_customers").update({ address_form: values.address_form }).eq("id", crmId);
+              if (crmErr) return false;
+              setCrmAddressForm(values.address_form);
+            }
           } else {
             const parts = values.name.trim().split(/\s+/);
             patch.first_name = parts.slice(0, -1).join(" ") || parts[0] || null;
