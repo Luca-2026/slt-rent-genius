@@ -795,6 +795,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               : "Endabrechnung: Positionen und Leistungszeitraum an die tatsächliche Miete anpassen (z. B. Verlängerung). Bereits erfasste Zahlungen werden abgezogen, die Rechnungsnummer wird beim Versand vergeben."}
           </p>
         </div>
+        </div>
         {docMode === "order" ? (
           orderEl
         ) : (
