@@ -1,3 +1,5 @@
+import { DepositSettlementCard } from "./DepositSettlementCard";
+import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -310,7 +312,7 @@ interface Props {
 }
 
 
-type DocMode = "offer" | "revise" | "invoice" | "final" | "order";
+type DocMode = "offer" | "revise" | "invoice" | "final" | "order" | "deposit";
 const DOC_MODE_PREFIX = "slt.inquiry-doc-mode.v1:";
 
 function rememberDocMode(inquiryId: string, mode: DocMode) {
@@ -342,6 +344,7 @@ function initialDocMode(inquiryType: string, inquiryId: string, offerNumber: str
 
 export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, defaultDelivery, details, onChanged, onDeleted, layout = "stacked", mobileDetails, protocolSection }: Props) {
   const { user, isAdmin } = useAuth();
+  const { isBranchManager } = useStaffAccess();
   const { toast } = useToast();
   const canDelete = isAdmin;
   const [deleting, setDeleting] = useState(false);
@@ -778,10 +781,15 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               Auftragsbestätigung erstellen
             </Button>
           )}
+          {inquiryType === "rental" && inquiry.offer_number && (
+            <Button size="sm" variant={docMode === "deposit" ? "default" : "outline"} onClick={() => setDocMode("deposit")}>
+              Kaution abrechnen
+            </Button>
+          )}
         </div>
         <div>
           <div className="font-semibold text-sm">
-            {docMode === "offer" ? "Angebot erstellen" : docMode === "revise" ? `Angebot ${inquiry.offer_number} überarbeiten` : docMode === "final" ? "Schlussrechnung erstellen" : docMode === "order" ? "Auftragsbestätigung erstellen" : "Rechnung erstellen"}
+            {docMode === "offer" ? "Angebot erstellen" : docMode === "revise" ? `Angebot ${inquiry.offer_number} überarbeiten` : docMode === "final" ? "Schlussrechnung erstellen" : docMode === "order" ? "Auftragsbestätigung erstellen" : docMode === "deposit" ? "Kautionsabrechnung" : "Rechnung erstellen"}
           </div>
           <p className="text-xs text-muted-foreground">
             {docMode === "revise"
@@ -790,6 +798,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               ? "Gesamtabrechnung des Auftrags: Positionen und Leistungszeitraum an die tatsächliche Miete anpassen. Alle nicht stornierten Abschlagsrechnungen werden beim Versand automatisch mit Netto, USt. und Brutto abgezogen."
               : docMode === "offer"
               ? "Positionen prüfen und das Angebot per E-Mail senden."
+              : docMode === "deposit"
+              ? "Zahlung zählt zuerst auf die Miete. Kosten aus dem Rückgabeprotokoll werden mit der Kaution verrechnet – der Rest geht an den Kunden zurück."
               : docMode === "order"
               ? "Zahlungseingänge prüfen, ggf. Verfügbarkeit klären und die Auftragsbestätigung per E-Mail senden – der Auftrag kommt damit verbindlich zustande."
               : "Endabrechnung: Positionen und Leistungszeitraum an die tatsächliche Miete anpassen (z. B. Verlängerung). Bereits erfasste Zahlungen werden abgezogen, die Rechnungsnummer wird beim Versand vergeben."}
@@ -798,6 +808,13 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         </div>
         {docMode === "order" ? (
           orderEl
+        ) : docMode === "deposit" ? (
+          <DepositSettlementCard
+            inquiry={inquiry as Record<string, any>}
+            staffName={actorName}
+            canMarkStripePayout={isAdmin || isBranchManager}
+            onDone={() => { loadInvoices(); onChanged(); }}
+          />
         ) : (
         <InquiryOfferForm
           key={`${inquiry.id}:${docMode}:${docMode === "revise" ? inquiry.offer_number : ""}`}
