@@ -55,7 +55,7 @@ import {
   type OrderType,
   type QuantityUnit,
 } from "./offerMath";
-import { ADDON_PRESETS, parseAddonOptions, suggestAddonAmount, type AddonOption } from "@/lib/offerAddons";
+import { ADDON_PRESETS, parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 import { AddonSection, buildAddonsFromOptions, recalcAddons } from "./OfferAddonSection";
 import {
   InquiryProductCombobox,
