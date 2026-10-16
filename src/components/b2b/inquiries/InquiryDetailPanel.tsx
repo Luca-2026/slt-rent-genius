@@ -23,6 +23,7 @@ import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm"
 import { OfferAcceptanceNotice } from "./OfferAcceptanceNotice";
 import { useInquiryActions } from "./useInquiryActions";
 import { InquiryCustomerCard, type CustomerKind } from "./InquiryCustomerCard";
+import { DesktopOnly, MobileCollapsible } from "./ResponsiveSlot";
 import { RejectInquiryDialog } from "./RejectInquiryDialog";
 import { OrderConfirmationCard } from "./OrderConfirmationCard";
 import { InquiryPaymentsCard, parseInquiryPayments } from "./InquiryPaymentsCard";
@@ -820,9 +821,15 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
       <div className="flex flex-col gap-5 lg:grid lg:grid-cols-3 lg:items-start">
         {/* Unter 1024 px: Kundenanfrage eingeklappt ganz oben. */}
         {mobileDetails && <div className="lg:hidden">{mobileDetails}</div>}
-        <aside className="order-last space-y-5 lg:order-none lg:col-span-1 lg:sticky lg:top-32 lg:max-h-[calc(100vh-9rem)] lg:overflow-y-auto lg:pr-1">
+        <MobileCollapsible title="Kundendaten & Standort">
           {customerEl}
           {locationEl}
+        </MobileCollapsible>
+        <aside className="order-last space-y-5 lg:order-none lg:col-span-1 lg:sticky lg:top-32 lg:max-h-[calc(100vh-9rem)] lg:overflow-y-auto lg:pr-1">
+          <DesktopOnly>
+            {customerEl}
+            {locationEl}
+          </DesktopOnly>
           <div className="hidden lg:block">{details}</div>
           <OfferAcceptanceNotice inquiryId={inquiry.id} />
           {orderEl}
