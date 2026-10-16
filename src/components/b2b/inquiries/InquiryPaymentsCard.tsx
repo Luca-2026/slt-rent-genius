@@ -3,7 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Banknote, Plus, Trash2 } from "lucide-react";
+import { Banknote, BellRing, Loader2, Plus, Trash2 } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { formatEuro } from "./offerMath";
@@ -42,6 +43,10 @@ interface Props {
   /** Kaution laut Angebot – wird mit überwiesen und zählt zum offenen Betrag. */
   deposit?: number | null;
   disabled?: boolean;
+  /** Versendetes Angebot – Voraussetzung für die manuelle Zahlungserinnerung. */
+  offerNumber?: string | null;
+  customerEmail?: string | null;
+  lastReminderAt?: string | null;
   onChanged: () => void;
 }
 
@@ -49,10 +54,12 @@ interface Props {
  * Zahlungseingänge zu einer Anfrage erfassen – schon bevor die Rechnung erstellt wird
  * (z. B. Vorkasse auf das Angebot). Die Rechnung übernimmt diese Zahlungen später.
  */
-export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGross, deposit, disabled, onChanged }: Props) {
+export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGross, deposit, disabled, offerNumber, customerEmail, lastReminderAt, onChanged }: Props) {
   const { toast } = useToast();
   const [rows, setRows] = useState<InquiryPayment[]>(() => parseInquiryPayments(payments));
   const [saving, setSaving] = useState(false);
+  const [confirmReminder, setConfirmReminder] = useState(false);
+  const [reminding, setReminding] = useState(false);
 
   useEffect(() => {
     setRows(parseInquiryPayments(payments));
@@ -106,6 +113,23 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
     onChanged();
   };
 
+  const sendReminder = async () => {
+    setReminding(true);
+    const { data, error } = await supabase.functions.invoke("payment-reminder", { body: { manual: { table, inquiry_id: inquiryId } } });
+    setReminding(false);
+    setConfirmReminder(false);
+    const msg = (data as { error?: string } | null)?.error;
+    if (error || msg) {
+      let detail = msg;
+      try { detail = detail ?? (await (error as { context?: Response })?.context?.json())?.error; } catch { /* ignore */ }
+      toast({ title: "Zahlungserinnerung nicht gesendet", description: detail ?? "Bitte später erneut versuchen.", variant: "destructive" });
+      return;
+    }
+    toast({ title: "Zahlungserinnerung gesendet", description: `An ${customerEmail}` });
+    onChanged();
+  };
+  const canRemind = !!offerNumber && !!customerEmail && open != null && open > 0 && !dirty;
+
   return (
     <div className="min-w-0 overflow-hidden rounded-lg border border-border p-3 space-y-3">
       <div className="flex flex-wrap items-center gap-2">
@@ -127,7 +151,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
             <p className="text-xs text-muted-foreground">{row.date} · Bestätigt</p>
             <p className="break-all text-xs text-muted-foreground" title={row.reference}>{shortPaymentReference(row.reference)}</p>
           </div>
-        ) : <div key={index} className="grid min-w-0 gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-[130px_120px_minmax(0,1fr)_minmax(0,1fr)_auto] items-end">
+        ) : <div key={index} className="grid min-w-0 grid-cols-2 gap-2 border-b border-border pb-3">
           <div className="min-w-0">
             <Label className="text-[11px]">Datum</Label>
             <Input className="block h-10 min-w-0 w-full max-w-full appearance-none text-left [&::-webkit-date-and-time-value]:min-w-0 [&::-webkit-date-and-time-value]:text-left" type="date" disabled={disabled || saving} value={row.date ?? ""} onChange={(e) => patch(index, { date: e.target.value })} />
@@ -143,11 +167,12 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
               onChange={(e) => patch(index, { amount: Number(e.target.value) })}
             />
           </div>
-          <div className="min-w-0">
+          <div className="col-span-2 min-w-0">
             <Label className="text-[11px]">Zahlungsweg</Label>
             <Input disabled={disabled || saving} value={row.label ?? ""} onChange={(e) => patch(index, { label: e.target.value })} placeholder="Banküberweisung" />
           </div>
-          <div className="min-w-0">
+          <div className="col-span-2 flex min-w-0 items-end gap-1">
+            <div className="min-w-0 flex-1">
             <Label className="text-[11px]">Verwendungszweck</Label>
             <Input
               value={row.reference ?? ""}
@@ -155,17 +180,18 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
               onChange={(e) => patch(index, { reference: e.target.value })}
               placeholder="z. B. Angebotsnummer"
             />
-          </div>
+            </div>
           <Button
             size="icon"
             variant="ghost"
-            className="justify-self-end"
+            className="shrink-0"
             onClick={() => setRows((prev) => prev.filter((_, i) => i !== index))}
             aria-label="Zahlung entfernen"
             disabled={disabled || saving}
           >
             <Trash2 className="h-4 w-4" />
           </Button>
+          </div>
         </div>
       ))}
 
@@ -182,7 +208,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
         <Button size="sm" onClick={save} disabled={disabled || saving || !dirty}>
           Zahlungen speichern
         </Button>
-        <span className="min-w-0 basis-full text-sm sm:ml-auto sm:basis-auto">
+        <span className="min-w-0 basis-full text-sm">
           Erhalten <strong>{formatEuro(total)}</strong>
           {required != null && Number(deposit) > 0 && (
             <span className="ml-2 text-muted-foreground">von {formatEuro(required)} inkl. Kaution</span>
@@ -194,6 +220,36 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
           )}
         </span>
       </div>
+
+      {offerNumber && open != null && open > 0 && (
+        <div className="space-y-1 border-t border-border pt-3">
+          <Button size="sm" variant="outline" className="w-full" disabled={disabled || reminding || !canRemind} onClick={() => setConfirmReminder(true)}>
+            <BellRing className="h-3.5 w-3.5 mr-1" /> Zahlungserinnerung senden
+          </Button>
+          <p className="text-xs text-muted-foreground">
+            {lastReminderAt
+              ? `Zuletzt manuell erinnert: ${new Date(lastReminderAt).toLocaleString("de-DE")}`
+              : "Zusätzlich zur automatischen Erinnerung – ohne Fristsetzung oder Stornohinweis."}
+          </p>
+        </div>
+      )}
+
+      <AlertDialog open={confirmReminder} onOpenChange={setConfirmReminder}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Zahlungserinnerung senden?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {customerEmail} erhält eine freundliche Erinnerung zu Angebot {offerNumber} über offen {open != null ? formatEuro(open) : ""} – mit Bankverbindung und, falls möglich, Zahlungslink.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={reminding}>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction disabled={reminding} onClick={(e) => { e.preventDefault(); void sendReminder(); }}>
+              {reminding && <Loader2 className="h-4 w-4 mr-1 animate-spin" />} Senden
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

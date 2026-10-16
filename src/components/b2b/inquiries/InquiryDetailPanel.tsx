@@ -655,6 +655,9 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         payments={(inquiry as { payments?: unknown }).payments}
         offerTotalGross={inquiry.offer_total_gross}
         deposit={Number((inquiry.offer_payload as { deposit?: unknown } | null)?.deposit) || 0}
+        offerNumber={inquiry.offer_number}
+        customerEmail={(inquiry as { customer_email?: string | null }).customer_email ?? null}
+        lastReminderAt={(inquiry as { payment_reminder_manual_at?: string | null }).payment_reminder_manual_at ?? null}
         disabled={busy}
         onChanged={onChanged}
       />
