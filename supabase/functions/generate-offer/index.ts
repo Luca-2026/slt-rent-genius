@@ -820,7 +820,7 @@ Deno.serve(async (req: Request) => {
 
         if (emailRes.ok) {
           emailSent = true;
-          console.log("Offer email sent to:", customerEmail);
+          console.log("Offer email sent");
 
           await serviceClient
             .from("b2b_offers")

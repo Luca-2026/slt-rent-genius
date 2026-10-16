@@ -221,7 +221,7 @@ serve(async (req) => {
       if (!res2.ok) console.error("Resend confirmation error:", await res2.text());
     } else {
       console.log("=== B2B RESERVATION NOTIFICATION (no RESEND_API_KEY) ===");
-      console.log({ companyName, contactName, contactEmail, locationId, items });
+      console.log("Reservation notification not sent (no RESEND_API_KEY)", { locationId });
     }
 
     return new Response(

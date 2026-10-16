@@ -278,7 +278,7 @@ Deno.serve(async (req: Request) => {
           if (!emailRes.ok) {
             console.error("Failed to send welcome email:", emailBody);
           } else {
-            console.log("Welcome email sent to:", body.email);
+            console.log("Welcome email sent");
           }
         } else {
           if (linkError) console.error("Error generating recovery link:", linkError);

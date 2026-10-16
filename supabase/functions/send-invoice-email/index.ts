@@ -230,7 +230,7 @@ Deno.serve(async (req: Request) => {
       emailPayload.attachments = attachments;
     }
 
-    console.info(`Sending invoice email for ${invoiceNumber} to ${recipientEmail}, CC: ${ccRecipients.join(", ")}`);
+    console.info(`Sending invoice email for ${invoiceNumber} (${ccRecipients.length} CC)`);
 
     const emailRes = await fetch("https://api.resend.com/emails", {
       method: "POST",

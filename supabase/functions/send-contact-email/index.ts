@@ -116,7 +116,7 @@ serve(async (req) => {
       }
     } else {
       console.log("=== CONTACT FORM (no RESEND_API_KEY) ===");
-      console.log({ firstName, lastName, email, phone, subject, message, location, recipientEmail });
+      console.log("Contact form received (email not sent)", { location: location ?? null });
     }
 
     return new Response(

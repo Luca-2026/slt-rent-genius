@@ -354,7 +354,7 @@ Deno.serve(async (req: Request) => {
 
         if (emailRes.ok) {
           emailSent = true;
-          console.log("Deletion confirmation email sent to:", customerEmail);
+          console.log("Deletion confirmation email sent");
         } else {
           const errBody = await emailRes.text();
           console.error("Resend API error:", emailRes.status, errBody);
