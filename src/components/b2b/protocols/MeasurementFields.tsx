@@ -19,13 +19,16 @@ export const selectedMeasurement = (m: Measurement) => ({
   mileage: m.useMileage ? m.mileage.trim() : "",
 });
 
-export function MeasurementFields({ name, value, onChange }: { name: string; value: Measurement; onChange: (m: Measurement) => void }) {
+export function MeasurementFields({ name, value, onChange, allowHours = true, allowFuel = true }: { name: string; value: Measurement; onChange: (m: Measurement) => void; allowHours?: boolean; allowFuel?: boolean }) {
   const set = (patch: Partial<Measurement>) => onChange({ ...value, ...patch });
+  // Tankstand hängt nur an has_fuel_tank, Betriebsstunden nur an tracks_operating_hours (entkoppelt).
+  const fields = ([ ["useMileage", "Kilometerstand", true], ["useHours", "Betriebsstunden", allowHours], ["useFuel", "Tankfüllstand", allowFuel] ] as const)
+    .filter(([, , allowed]) => allowed);
   return (
     <div className="space-y-3 rounded-md border p-3">
       <p className="text-sm font-medium break-words">{name}</p>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-        {([ ["useMileage", "Kilometerstand"], ["useHours", "Betriebsstunden"], ["useFuel", "Tankfüllstand"] ] as const).map(([key, label]) => (
+        {fields.map(([key, label]) => (
           <label key={key} className="flex min-h-11 items-center gap-2 text-sm cursor-pointer">
             <Checkbox checked={value[key]} onCheckedChange={(checked) => set({ [key]: checked === true })} aria-label={`${label} für ${name} erfassen`} />
             {label}

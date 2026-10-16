@@ -4,16 +4,18 @@ import {
 } from "@/lib/returnCharges";
 
 describe("Zusatzkosten bei Rücknahme", () => {
-  it("Reinigung 40 € netto je 15 Min = 47,60 € brutto; 30 Min = 80 € netto = 95,20 € brutto", () => {
-    expect(CLEANING_UNIT_GROSS).toBe(47.6);
-    expect(cleaningChargeGross(2)).toBe(95.2);
+  it("Reinigung 20 € netto je 15 Min = 23,80 € brutto; 3 Einheiten = 71,40 € brutto", () => {
+    expect(CLEANING_UNIT_GROSS).toBe(23.8);
+    expect(cleaningChargeGross(3)).toBe(71.4);
+    expect(cleaningChargeGross(1)).toBe(23.8);
     expect(cleaningChargeGross(0)).toBe(0);
   });
-  it("Reinigung wird bei Sauberkeit unter 5 vorgeschlagen", () => {
-    expect(cleaningSuggested(5)).toBe(false);
-    expect(cleaningSuggested(4)).toBe(true);
-    expect(cleaningSuggested(1)).toBe(true);
+  it("Verschmutzt gilt ein Gerät ab Stufe 2 (1 = sauber)", () => {
+    expect(cleaningSuggested(1)).toBe(false);
+    expect(cleaningSuggested(2)).toBe(true);
+    expect(cleaningSuggested(5)).toBe(true);
     expect(cleaningSuggested(0)).toBe(false);
+    expect(cleaningSuggested(null)).toBe(false);
   });
   it("Literpreise laut Mietbedingungen", () => {
     expect(FUEL_PRICES.find((f) => f.value === "diesel")!.pricePerLiter).toBe(2.85);
