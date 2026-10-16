@@ -46,3 +46,22 @@ describe("Grundpreis-Pflicht", () => {
     expect(isBasePriceMissing("event", { ...emptyPriceSet(), price_base_1_3_cd: "99" })).toBe(false);
   });
 });
+
+import { legacyWeekendText, legacyMonthText } from "@/components/b2b/admin/ManagedPriceFields";
+
+describe("Rückschreiben Wochenende/Monat in die Alt-Textfelder", () => {
+  it("Wochenendpreis 135 landet als Text für die Webseite", () => {
+    expect(legacyWeekendText({ ...emptyPriceSet(), price_weekend_num: "135" }, 100, "100,00 €")).toBe("135,00 €");
+  });
+  it("gelöschter Wochenendpreis leert den Text, nie migrierter Text bleibt", () => {
+    expect(legacyWeekendText(emptyPriceSet(), 100, "100,00 €")).toBeNull();
+    expect(legacyWeekendText(emptyPriceSet(), null, "ca. 120 €")).toBe("ca. 120 €");
+  });
+  it("Bau: Monatspreis = ab 20 Miettagen × 20", () => {
+    expect(legacyMonthText("bau", { ...emptyPriceSet(), price_from_20_rd: "45" }, 40, "800,00 €")).toBe("900,00 €");
+  });
+  it("Bau: gelöschte 20er-Staffel leert den Monatstext; Event lässt ihn unverändert", () => {
+    expect(legacyMonthText("bau", emptyPriceSet(), 45, "900,00 €")).toBeNull();
+    expect(legacyMonthText("event", emptyPriceSet(), null, "900,00 €")).toBe("900,00 €");
+  });
+});

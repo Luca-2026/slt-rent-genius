@@ -25,7 +25,7 @@ import { orderSpecs } from "@/lib/specOrder";
 import { parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 import {
   ManagedPriceFields, emptyPriceSet, rowToPriceSet, priceSetToColumns, legacyDayPrice,
-  formatDayPriceText, basePriceRequired, isBasePriceMissing, type PriceSet, type PricingScheme,
+  formatDayPriceText, legacyWeekendText, legacyMonthText, basePriceRequired, isBasePriceMissing, type PriceSet, type PricingScheme,
 } from "./ManagedPriceFields";
 import { InsuranceTiersEditor, serializeAddonOptions, type InsuranceMeta } from "./InsuranceTiersEditor";
 
@@ -565,8 +565,8 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         tags: [],
         rental_notes: [],
         price_per_day: formatDayPriceText(legacyDayPrice(form.pricing_scheme, form.prices)),
-        price_weekend: normalizePriceInput(form.price_weekend),
-        price_per_month: normalizePriceInput(form.price_per_month),
+        price_weekend: legacyWeekendText(form.prices, initial?.price_weekend_num, normalizePriceInput(form.price_weekend)),
+        price_per_month: legacyMonthText(form.pricing_scheme, form.prices, initial?.price_from_20_rd, normalizePriceInput(form.price_per_month)),
         min_rental_months: form.min_rental_months ? Number(form.min_rental_months) : null,
         weight_kg: form.weight_kg ? Number(form.weight_kg) : null,
         drive_type: form.drive_type.trim() || null,
