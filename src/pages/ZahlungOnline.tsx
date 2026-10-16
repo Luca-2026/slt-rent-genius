@@ -5,6 +5,7 @@ import { Layout } from "@/components/layout";
 import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { PaymentQrCode } from "@/components/PaymentQrCode";
 
 interface PayInfo {
   status: "active" | "paid" | "superseded" | "void" | "amount_mismatch";
@@ -178,6 +179,17 @@ export default function ZahlungOnline() {
                     <p><span className="text-muted-foreground">IBAN:</span> <span className="font-mono">{info.bank.iban}</span></p>
                     <p><span className="text-muted-foreground">BIC:</span> <span className="font-mono">{info.bank.bic}</span> ({info.bank.bank})</p>
                     <p><span className="text-muted-foreground">Verwendungszweck:</span> <strong>{info.bank.reference}</strong></p>
+                    {selected && (
+                      <div className="pt-3">
+                        <PaymentQrCode
+                          name={info.bank.holder}
+                          iban={info.bank.iban}
+                          bic={info.bank.bic}
+                          amountCents={selected.amountCents}
+                          reference={info.bank.reference}
+                        />
+                      </div>
+                    )}
                     <p className="text-xs text-muted-foreground pt-2">Sobald die Überweisung bei uns eingegangen ist, bekommst du die Auftragsbestätigung per E-Mail.</p>
                   </div>
                 ) : null}
