@@ -348,6 +348,8 @@ interface Props {
   stickyActions?: boolean;
   /** Zusätzliche Elemente links in der angehefteten Aktionsleiste (z. B. Status). */
   stickyActionsLead?: ReactNode;
+  /** Versand gesperrt (z. B. Kaution noch nicht abgerechnet) – Warnung mit Sprung zur Lösung. */
+  sendBlock?: { message: string; actionLabel: string; onAction: () => void } | null;
 }
 
 /** Offene Position aus einem Rücknahmeprotokoll, die noch nicht abgerechnet wurde. */
@@ -394,6 +396,7 @@ export function InquiryOfferForm({
   defaultMeta,
   stickyActions = false,
   stickyActionsLead,
+  sendBlock = null,
 }: Props) {
   const isInvoice = mode === "invoice";
   const isSupplement = isInvoice && invoiceKind === "supplement";
@@ -1256,6 +1259,7 @@ export function InquiryOfferForm({
   const previewOk = isInvoice || previewedKey === JSON.stringify(buildBody());
 
   const send = async () => {
+    if (sendBlock) return;
     if (!isInvoice && previewedKey !== JSON.stringify(buildBody())) return;
     const invalid = items.some((i) => !i.product_name.trim() || i.quantity <= 0 || i.unit_price < 0);
     if (invalid) {
@@ -1349,7 +1353,7 @@ export function InquiryOfferForm({
     </Button>
   );
   const sendButton = (
-    <Button data-draft-neutral onClick={send} disabled={disabled || sending || checking || !previewOk} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
+    <Button data-draft-neutral onClick={send} disabled={disabled || sending || checking || !previewOk || !!sendBlock} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
       <Send className="h-4 w-4 mr-2" />
       {isInvoice
         ? sending
@@ -1359,6 +1363,12 @@ export function InquiryOfferForm({
           ? "Angebot wird gesendet …"
           : "Angebot per E-Mail senden"}
     </Button>
+  );
+  const blockNotice = sendBlock && (
+    <div role="alert" className="rounded-md border border-destructive/50 bg-destructive/10 p-2 text-sm text-destructive">
+      <p className="font-medium">{sendBlock.message}</p>
+      <Button type="button" size="sm" variant="outline" className="mt-2 h-8" onClick={sendBlock.onAction}>{sendBlock.actionLabel}</Button>
+    </div>
   );
   const previewHint = !previewOk && <p className="text-xs text-muted-foreground">Vor dem Senden bitte die PDF-Vorschau des aktuellen Stands ansehen.</p>;
   const actionText = (
@@ -1375,6 +1385,7 @@ export function InquiryOfferForm({
         <div className="grid w-full grid-cols-1 gap-2 sm:ml-auto sm:flex sm:w-auto">{previewButton}{sendButton}</div>
       </div>
       {previewHint && <div className="mt-1 sm:text-right">{previewHint}</div>}
+      {blockNotice && <div className="mt-2">{blockNotice}</div>}
     </div>
   ) : (
     <>
@@ -1384,6 +1395,7 @@ export function InquiryOfferForm({
   const actionHint = stickyActions ? actionText : (
     <>
       {previewHint}
+      {blockNotice}
       {sendButton}
       {actionText}
     </>

@@ -1,4 +1,5 @@
 import { DepositSettlementCard } from "./DepositSettlementCard";
+import { depositBlocksInvoice, paymentsUpToRent, useDepositState } from "./useDepositState";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -390,6 +391,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   useEffect(() => setNotes(inquiry.internal_notes ?? ""), [inquiry.id, inquiry.internal_notes]);
 
   /** Positionen und Nebenkosten aus dem versendeten Angebot (inkl. Zusatzoptionen). */
+  const deposit = useDepositState(inquiry as Record<string, any>, inquiryType === "rental");
   const offerSnapshot = useMemo(() => offerPayloadToLines(inquiry.offer_payload), [inquiry.offer_payload]);
 
   /** Bereits erfasste Zahlungen zur Anfrage (z. B. Vorkasse auf das Angebot). */
@@ -812,7 +814,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             inquiry={inquiry as Record<string, any>}
             staffName={actorName}
             canMarkStripePayout={isAdmin || isBranchManager}
-            onDone={() => { loadInvoices(); onChanged(); }}
+            onDone={() => { loadInvoices(); onChanged(); void deposit.reload(); }}
           />
         ) : (
         <InquiryOfferForm
@@ -821,11 +823,24 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           inquiryId={inquiry.id}
           location={inquiry.location}
           // Bestehender Auftrag: immer mit den zuletzt angebotenen Positionen/Beträgen starten, nie bei 0 €.
-          defaultItems={offerSnapshot?.items?.length ? offerSnapshot.items : defaultItems}
+          defaultItems={(() => {
+            const base = offerSnapshot?.items?.length ? offerSnapshot.items : defaultItems;
+            // Rechnung ohne Kaution: Rückgabekosten automatisch als Positionen übernehmen.
+            return (docMode === "invoice" || docMode === "final") && deposit.chargeLines.length
+              ? [...base, ...deposit.chargeLines]
+              : base;
+          })()}
           defaultCosts={offerSnapshot?.costs}
           reviseOf={docMode === "revise" ? inquiry.offer_number : null}
           defaultMeta={docMode === "revise" ? offerSnapshot?.meta : undefined}
-          defaultPayments={docMode === "invoice" || docMode === "final" ? inquiryPayments : undefined}
+          defaultPayments={docMode === "invoice" || docMode === "final"
+            ? deposit.settled ? paymentsUpToRent(inquiryPayments as any[], Number(inquiry.offer_total_gross) || 0) as typeof inquiryPayments : inquiryPayments
+            : undefined}
+          sendBlock={(docMode === "invoice" || docMode === "final") && depositBlocksInvoice(deposit) ? {
+            message: `Kaution von ${formatEuro(deposit.depositHeld)} noch nicht abgerechnet. Bitte zuerst die Kaution abrechnen – Rückgabekosten werden dort automatisch verrechnet. Danach kann die Rechnung versendet werden.`,
+            actionLabel: "Zur Kautionsabrechnung",
+            onAction: () => setDocMode("deposit"),
+          } : null}
           defaultDelivery={offerSnapshot?.delivery ?? defaultDelivery}
           rentalPeriod={{ start: inquiry.start_date ?? null, end: inquiry.end_date ?? null }}
           reservationId={(inquiry as any).b2b_reservation_id ?? null}
