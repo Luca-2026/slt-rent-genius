@@ -1,0 +1,2 @@
+# Inquiries
+- Angebots-Paket 3b: Gruppen, Zusatzfelder, Auftragsart, Mengeneinheit, Overrides und optionale Versicherungsstufen nur als Felder im offer_payload (Helfer in offerMath.ts / _shared/inquiry-offer-math.ts, getestet); optionale Addons (optional = true) zählen nirgends in Summen und entfallen in Rechnungen – alte Angebote ohne die Felder bleiben gültig. AdminCreateOfferDialog.tsx kennt Gruppen, Auftragsart und Zusatzfelder noch nicht.
