@@ -320,6 +320,24 @@ if (managedProducts.length) {
     }
   }
   console.log(`[exportRoutes] CMS override applied on ${overridden} product routes (${managedProducts.length} rows). meta=${metaOverridden}, faqs=${faqOverridden}.`);
+
+  // Die Website zeigt nur veröffentlichte CMS-Artikel am jeweiligen Standort (DB = einzige Quelle).
+  // Statische Artikelrouten ohne passenden CMS-Eintrag würden „Produkt nicht gefunden“ liefern
+  // und dürfen weder vorgerendert noch in die Sitemap aufgenommen werden.
+  const published = new Set<string>();
+  for (const m of managedProducts) for (const loc of m.available_locations || []) published.add(`${loc}/${m.slug}`);
+  let dropped = 0;
+  for (let i = allRoutes.length - 1; i >= 0; i--) {
+    const r = allRoutes[i];
+    if (r.routeType !== "product") continue;
+    const parts = r.path.replace(/\/+$/, "").split("/"); // ["", "mieten", loc, cat, slug]
+    if (parts[1] !== "mieten" || parts.length !== 5) continue;
+    if (!published.has(`${parts[2]}/${parts[4]}`)) {
+      allRoutes.splice(i, 1);
+      dropped++;
+    }
+  }
+  console.log(`[exportRoutes] ${dropped} product routes without published CMS article removed (no sitemap, no prerender).`);
 }
 
 // Duplicate-Title-Dedupe: Verschiedene Produkte mit identischem generischen Namen
