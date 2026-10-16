@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { saveRentalInquiry, rentalInquiryLink } from "../_shared/inquiry-store.ts";
+import { saveRentalInquiry, rentalInquiryLink, serviceClient } from "../_shared/inquiry-store.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
