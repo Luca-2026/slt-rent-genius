@@ -40,7 +40,7 @@ Deno.serve(async (req: Request) => {
 
     const { data: inquiry } = await service
       .from(link.inquiry_table)
-      .select("id, offer_number, customer_email, payments, offer_total_gross, offer_payload")
+      .select("id, offer_number, order_code, customer_email, payments, offer_total_gross, offer_payload")
       .eq("id", link.inquiry_id)
       .maybeSingle();
     if (!inquiry) return json({ error: "Zahlungslink nicht gefunden" }, 404);
@@ -65,6 +65,7 @@ Deno.serve(async (req: Request) => {
     const view = {
       status,
       offer_number: link.offer_number,
+      order_code: inquiry.order_code ?? null,
       payment_terms: terms,
       paid_cents: paidCents,
       rent_cents: status === "active" ? plan.rentCents : link.rent_cents,
@@ -72,7 +73,7 @@ Deno.serve(async (req: Request) => {
       amount_cents: status === "active" ? plan.openCents : link.amount_cents,
       options: status === "active" ? options : [],
       bank: status === "active"
-        ? { holder: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, bank: SLT_COMPANY.bankName, reference: link.offer_number }
+        ? { holder: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, bank: SLT_COMPANY.bankName, reference: inquiry.order_code ? `${link.offer_number} #${inquiry.order_code}` : link.offer_number }
         : null,
     };
     if (action === "info") return json(view);
@@ -102,8 +103,8 @@ Deno.serve(async (req: Request) => {
             currency: "eur",
             unit_amount: option.rentCents,
             product_data: option.choice === "anzahlung"
-              ? { name: `Anzahlung 30 % laut Angebot ${link.offer_number}`, description: "Restbetrag und Kaution vor Mietbeginn" }
-              : { name: `Miete laut Angebot ${link.offer_number}`, description: "Bruttobetrag inkl. MwSt." },
+              ? { name: `Anzahlung 30 % laut Angebot ${link.offer_number}${inquiry.order_code ? ` #${inquiry.order_code}` : ""}`, description: "Restbetrag und Kaution vor Mietbeginn" }
+              : { name: `Miete laut Angebot ${link.offer_number}${inquiry.order_code ? ` #${inquiry.order_code}` : ""}`, description: "Bruttobetrag inkl. MwSt." },
           },
         }]
         : []),
@@ -127,6 +128,7 @@ Deno.serve(async (req: Request) => {
       rent_cents: String(option.rentCents),
       deposit_cents: String(option.depositCents),
       choice: option.choice,
+      order_code: inquiry.order_code ?? "",
     };
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -135,7 +137,10 @@ Deno.serve(async (req: Request) => {
       locale: "de",
       client_reference_id: link.id,
       metadata,
-      payment_intent_data: { description: `Angebot ${link.offer_number}`, metadata },
+      payment_intent_data: {
+        description: `Angebot ${link.offer_number}${inquiry.order_code ? ` · Auftrag #${inquiry.order_code}` : ""}`,
+        metadata,
+      },
       expires_at: Math.floor(Date.now() / 1000) + 60 * 60 * 23,
       success_url: `${origin}/zahlung/${token}?status=success`,
       cancel_url: `${origin}/zahlung/${token}?status=cancelled`,
