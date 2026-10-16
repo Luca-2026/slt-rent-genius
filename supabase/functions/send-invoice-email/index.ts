@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { codedSubject } from "../_shared/order-code.ts";
 import { byForm, resolveAddressForm, salutationLine, type AddressForm } from "../_shared/salutation.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
@@ -129,7 +130,7 @@ Deno.serve(async (req: Request) => {
     const invoiceNumber = invoice.invoice_number;
     const grossFormatted = Number(invoice.gross_amount).toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
-    const emailSubject = `${t("Deine", "Ihre")} ${docLabel} ${invoiceNumber} – SLT-Rental`;
+    const emailSubject = await codedSubject(serviceClient, `${t("Deine", "Ihre")} ${docLabel} ${invoiceNumber} – SLT-Rental`, { reservationId: invoice.reservation_id });
     const emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
