@@ -336,7 +336,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
     let off = false;
     listServerDraftsForInquiry(inquiry.id).then((d) => !off && setServerDrafts(d));
     return () => { off = true; };
-  }, [inquiry.id]);
+    // Nach Versand/Statuswechsel neu laden, damit gelöschte Entwürfe nicht weiter angezeigt werden.
+  }, [inquiry.id, inquiry.status, inquiry.offer_number]);
 
   const handleDelete = async () => {
     setDeleting(true);
