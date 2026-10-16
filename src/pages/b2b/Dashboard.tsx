@@ -186,7 +186,7 @@ export default function B2BDashboard() {
                 )}
               </div>
               <p className="text-primary-foreground/80">
-                {b2bProfile?.company_name || "Kundenportal"}
+                {b2bProfile?.company_name || "B2B-Portal"}
               </p>
             </div>
             <div className="flex gap-2 flex-wrap">

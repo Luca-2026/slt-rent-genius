@@ -277,7 +277,7 @@ function InquirySourceBadges({ inquiry }: { inquiry: RentalInquiry }) {
           <Building2 className="h-3 w-3" /> Firmenkunde
         </Badge>
       )}
-      {isPortal && <Badge variant="secondary">Kundenportal</Badge>}
+      {isPortal && <Badge variant="secondary">B2B-Portal</Badge>}
       {!isBusiness && <Badge variant="outline">Privat</Badge>}
     </>
   );

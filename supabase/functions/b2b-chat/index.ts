@@ -82,7 +82,7 @@ Deno.serve(async (req: Request) => {
     const activeRentals = reservations.filter(r => r.status === "confirmed" || r.status === "active");
 
     // Build system prompt with customer context
-    const systemPrompt = `Du bist ein freundlicher KI-Assistent für das B2B-Kundenportal von SLT Rent (Baumaschinen- und Geräteverleih). Du hilfst Kunden bei Fragen zu ihren Mietverträgen, Rechnungen und ihrem Konto.
+    const systemPrompt = `Du bist ein freundlicher KI-Assistent für das B2B-Portal von SLT Rent (Baumaschinen- und Geräteverleih). Du hilfst Kunden bei Fragen zu ihren Mietverträgen, Rechnungen und ihrem Konto.
 
 WICHTIG: Antworte immer auf Deutsch, sei präzise und freundlich. Verwende die bereitgestellten Kundendaten, um personalisierte Antworten zu geben.
 

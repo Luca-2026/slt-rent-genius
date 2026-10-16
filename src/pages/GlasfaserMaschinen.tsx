@@ -133,7 +133,7 @@ const FAQ = [
   },
   {
     q: "Welche Bezahlmodelle gibt es für Glasfaser-Projekte?",
-    a: "Gewerblichen Kunden bieten wir Rechnungsmiete an – allerdings ausschließlich nach erfolgreicher Bonitätsprüfung. Die erste Miete läuft grundsätzlich auf Vorkasse; anschließend ist die Abwicklung per Rechnung (inkl. Sammelrechnungen für mehrere Trupps und optionalem Kreditlimit über unser Kundenportal) möglich.",
+    a: "Gewerblichen Kunden bieten wir Rechnungsmiete an – allerdings ausschließlich nach erfolgreicher Bonitätsprüfung. Die erste Miete läuft grundsätzlich auf Vorkasse; anschließend ist die Abwicklung per Rechnung (inkl. Sammelrechnungen für mehrere Trupps und optionalem Kreditlimit über unser B2B-Portal) möglich.",
   },
 ];
 

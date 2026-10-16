@@ -58,7 +58,7 @@ export default function B2BLogin() {
     } else {
       toast({
         title: "Erfolgreich angemeldet",
-        description: isPortalHost() ? "Willkommen im Vermietportal!" : "Willkommen im Kundenportal!",
+        description: isPortalHost() ? "Willkommen im B2B-Portal!" : "Willkommen im B2B-Portal!",
       });
       // Redirect happens via useEffect based on isAdmin state
     }
@@ -68,7 +68,7 @@ export default function B2BLogin() {
 
   return (
     <Layout>
-      <Helmet><title>{onPortal ? "Vermietportal | SLT Rental" : "Login Kundenportal | SLT Rental"}</title><meta name="robots" content="noindex, nofollow" /></Helmet>
+      <Helmet><title>{onPortal ? "B2B-Portal | SLT Rental" : "Login B2B-Portal | SLT Rental"}</title><meta name="robots" content="noindex, nofollow" /></Helmet>
       <section className="py-12 lg:py-20 bg-surface-light min-h-[calc(100vh-200px)]">
         <div className="section-container">
           <div className="max-w-md mx-auto">
@@ -81,7 +81,7 @@ export default function B2BLogin() {
                     <Building2 className="h-8 w-8 text-primary" />
                   </div>
                 )}
-                <CardTitle className="text-2xl">{onPortal ? "Vermietportal" : "Login"}</CardTitle>
+                <CardTitle className="text-2xl">{onPortal ? "B2B-Portal" : "Login"}</CardTitle>
                 <CardDescription>
                   Melde dich an, um auf dein Firmenkonto zuzugreifen.
                 </CardDescription>

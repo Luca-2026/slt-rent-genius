@@ -597,7 +597,7 @@ function PortalInvoiceCard({ row, canManage, onRefresh, onStatusChange, onDelete
           <span className="font-semibold">{row.invoice_number ?? "Entwurf"}</span>
           {row.invoice_kind === "credit_note" && <Badge variant="outline">Gutschrift</Badge>}
           <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>{STATUS_LABEL[row.status] ?? row.status}</Badge>
-          <Badge variant="secondary">Kundenportal</Badge>
+          <Badge variant="secondary">B2B-Portal</Badge>
           <span className="ml-auto font-semibold">{formatEuro(gross)}</span>
         </div>
         <div className="text-sm">

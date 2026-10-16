@@ -696,7 +696,7 @@ Deno.serve(async (req: Request) => {
         <p style="font-size:14px;font-weight:600;margin:12px 0 0;color:#333;">Bruttobetrag: ${grossAmount.toFixed(2).replace(".", ",")} €</p>
       </div>
       <p style="font-size:14px;color:#555;line-height:1.6;">
-        Die vollständige ${docTitle} ${t("findest du als Anhang dieser E-Mail sowie in deinem", "finden Sie als Anhang dieser E-Mail sowie in Ihrem")} Kundenportal.
+        Die vollständige ${docTitle} ${t("findest du als Anhang dieser E-Mail sowie in deinem", "finden Sie als Anhang dieser E-Mail sowie in Ihrem")} B2B-Portal.
       </p>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://www.slt-rental.de/b2b/rechnungen" 

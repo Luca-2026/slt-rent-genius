@@ -156,11 +156,11 @@ const faqCategories: FAQCategory[] = [
       },
       {
         q: "Wie registriere ich mich als Geschäftskunde?",
-        a: "Über das Kundenportal das Registrierungsformular ausfüllen, AGB akzeptieren und Gewerbeanmeldung bzw. Handelsregisterauszug sowie das unterschriebene SEPA-Firmenlastschrift-Mandat (Vorlage im Formular) hochladen. Wir prüfen deine Angaben und schalten dein Konto in der Regel innerhalb von 1–2 Werktagen frei.",
+        a: "Über das B2B-Portal das Registrierungsformular ausfüllen, AGB akzeptieren und Gewerbeanmeldung bzw. Handelsregisterauszug sowie das unterschriebene SEPA-Firmenlastschrift-Mandat (Vorlage im Formular) hochladen. Wir prüfen deine Angaben und schalten dein Konto in der Regel innerhalb von 1–2 Werktagen frei.",
       },
       {
         q: "Kann ich Projekt- oder Sammelanfragen stellen?",
-        a: "Ja. Im Kundenportal kannst du mehrere Geräte gesammelt für ein Projekt anfragen. Du erhältst innerhalb kurzer Zeit ein individuelles Angebot mit deinen Konditionen.",
+        a: "Ja. Im B2B-Portal kannst du mehrere Geräte gesammelt für ein Projekt anfragen. Du erhältst innerhalb kurzer Zeit ein individuelles Angebot mit deinen Konditionen.",
       },
     ],
   },
