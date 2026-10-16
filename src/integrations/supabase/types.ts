@@ -2594,6 +2594,87 @@ export type Database = {
           },
         ]
       }
+      deposit_settlements: {
+        Row: {
+          balance: number
+          created_at: string
+          deductions: Json
+          deductions_gross: number
+          deductions_net: number
+          deposit_held: number
+          id: string
+          invoice_id: string | null
+          notes: string | null
+          offset_amount: number
+          paid_amount: number
+          payout_date: string | null
+          payout_method: string
+          payout_status: string
+          rent_amount: number
+          rental_inquiry_id: string
+          settled_at: string
+          settled_by: string | null
+          settled_by_name: string | null
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          deductions?: Json
+          deductions_gross?: number
+          deductions_net?: number
+          deposit_held?: number
+          id?: string
+          invoice_id?: string | null
+          notes?: string | null
+          offset_amount?: number
+          paid_amount?: number
+          payout_date?: string | null
+          payout_method?: string
+          payout_status?: string
+          rent_amount?: number
+          rental_inquiry_id: string
+          settled_at?: string
+          settled_by?: string | null
+          settled_by_name?: string | null
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          deductions?: Json
+          deductions_gross?: number
+          deductions_net?: number
+          deposit_held?: number
+          id?: string
+          invoice_id?: string | null
+          notes?: string | null
+          offset_amount?: number
+          paid_amount?: number
+          payout_date?: string | null
+          payout_method?: string
+          payout_status?: string
+          rent_amount?: number
+          rental_inquiry_id?: string
+          settled_at?: string
+          settled_by?: string | null
+          settled_by_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deposit_settlements_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "inquiry_invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deposit_settlements_rental_inquiry_id_fkey"
+            columns: ["rental_inquiry_id"]
+            isOneToOne: true
+            referencedRelation: "rental_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       google_reviews_cache: {
         Row: {
           created_at: string
@@ -5447,6 +5528,10 @@ export type Database = {
       is_staff_member: { Args: { _user_id: string }; Returns: boolean }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
       log_admin_login: { Args: never; Returns: undefined }
+      mark_deposit_payout_done: {
+        Args: { _settlement_id: string }
+        Returns: undefined
+      }
       mark_overdue_invoices: { Args: never; Returns: number }
       parse_price_text: { Args: { _raw: string }; Returns: number }
       record_inquiry_invoice_payment: {
@@ -5526,6 +5611,44 @@ export type Database = {
         SetofOptions: {
           from: "*"
           to: "inquiry_invoices"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      settle_deposit: {
+        Args: {
+          _deductions: Json
+          _expected_balance: number
+          _inquiry_id: string
+          _invoice_id?: string
+          _notes?: string
+          _payout_date?: string
+          _payout_method: string
+        }
+        Returns: {
+          balance: number
+          created_at: string
+          deductions: Json
+          deductions_gross: number
+          deductions_net: number
+          deposit_held: number
+          id: string
+          invoice_id: string | null
+          notes: string | null
+          offset_amount: number
+          paid_amount: number
+          payout_date: string | null
+          payout_method: string
+          payout_status: string
+          rent_amount: number
+          rental_inquiry_id: string
+          settled_at: string
+          settled_by: string | null
+          settled_by_name: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "deposit_settlements"
           isOneToOne: true
           isSetofReturn: false
         }
