@@ -507,7 +507,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       id: "charges",
       title: "Zusatzkosten",
       optional: true,
-      summary: charges.length ? `${formatEuro(chargesTotal)} brutto` : chargeSuggestions.length ? "Vorschlag offen" : "Keine",
+      summary: allCharges.length ? `${formatEuro(chargesTotal)} brutto` : chargeSuggestions.length ? "Vorschlag offen" : "Keine",
       done: charges.length > 0 && chargesDone,
       content: (
         <ExtraChargesStep charges={charges} onChange={setCharges} suggestions={chargeSuggestions}
@@ -551,7 +551,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
                   <Checkbox id="items-ok" checked={itemsConfirmed} onCheckedChange={(v) => setItemsConfirmed(v === true)} />
                   <label htmlFor="items-ok" className="text-sm cursor-pointer">
                     {isReturn
-                      ? `Der Mieter bestätigt die Rückgabe der Mietgegenstände sowie die Richtigkeit der erfassten Betriebsstunden, Tankfüllstände, der Sauberkeit und der dokumentierten Schäden.${charges.length ? ` Er erkennt die oben aufgeführten Zusatzkosten von ${formatEuro(chargesTotal)} brutto an; sie werden in Rechnung gestellt und mit einer gezahlten Kaution verrechnet.` : ""}`
+                      ? `Der Mieter bestätigt die Rückgabe der Mietgegenstände sowie die Richtigkeit der erfassten Betriebsstunden, Tankfüllstände, der Sauberkeit und der dokumentierten Schäden.${allCharges.length ? ` Er erkennt die oben aufgeführten Zusatzkosten von ${formatEuro(chargesTotal)} brutto an; sie werden in Rechnung gestellt und mit einer gezahlten Kaution verrechnet.` : ""}`
                       : "Der Mieter bestätigt, die oben aufgeführten Mietgegenstände vollständig, funktionsfähig und in einwandfreiem, betriebssicherem Zustand übernommen zu haben – mit Ausnahme der in diesem Protokoll dokumentierten Schäden und Mängel. Die erfassten Betriebsstunden, Tankfüllstände und die Sauberkeit sind zutreffend."}
                   </label>
                 </div>
