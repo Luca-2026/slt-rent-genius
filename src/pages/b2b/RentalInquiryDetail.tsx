@@ -111,7 +111,8 @@ function rentalDefaultItems(selected: RentalInquiry) {
       { date: selected.end_date, time: selected.end_time },
       "kalendertage",
     ),
-    unit: "kalendertage" as const,
+    // Einheit bewusst offen: das Angebotsformular setzt sie nach Preisschema des CMS-Artikels (Bau = Miettage).
+    unit: undefined,
     rental_start: selected.start_date ?? undefined,
     rental_end: selected.end_date ?? undefined,
     rental_start_time: selected.start_time?.slice(0, 5) ?? undefined,
