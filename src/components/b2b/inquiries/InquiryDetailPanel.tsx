@@ -267,6 +267,7 @@ interface Props {
     offer_number: string | null;
     /** Snapshot des versendeten Angebots – Grundlage für die Rechnung. */
     offer_payload?: unknown;
+    order_code?: string | null;
 
     offer_file_url: string | null;
     offer_total_gross: number | null;
