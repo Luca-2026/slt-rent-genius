@@ -21,7 +21,7 @@ import { DamagesStep } from "@/components/b2b/protocols/DamagesStep";
 import { IdCheckStep } from "@/components/b2b/protocols/IdCheckStep";
 import { ExtraChargesStep, type ChargeSuggestion } from "@/components/b2b/protocols/ExtraChargesStep";
 import { cleaningChargeGross, fuelSuggested, CLEANING_UNIT_GROSS } from "@/lib/returnCharges";
-import { CLEANING_RATE_PER_15_MIN, CLEANLINESS_HINT, FUEL_LEVELS, isDirty, isMachineLike, toNumber, formatEuro, serializeExtraCharges, sumExtraCharges, type ExtraCharge, type ProtocolDamage } from "@/components/b2b/protocols/protocolShared";
+import { CLEANING_RATE_PER_15_MIN, CLEANLINESS_HINT, FUEL_LEVELS, isDirty, isMachineLike, toNumber, formatEuro, serializeExtraCharges, sumExtraCharges, emptyExtraCharge, type ExtraCharge, type ProtocolDamage } from "@/components/b2b/protocols/protocolShared";
 import {
   MAX_PROTOCOL_PHOTOS, formatPhotoTimestamp, photoTakenAt, protocolItemsFromInquiry, remainingPhotoSlots, type ProtocolKind,
 } from "@/lib/rentalProtocol";
@@ -197,6 +197,18 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const setReading = (i: number, reading: Measurement) =>
     setReadings((r) => ({ ...r, [i]: reading }));
   const cmsFor = (i: number) => (items[i] ? cms[items[i].name.trim().toLowerCase()] : undefined);
+  const cleanlinessFor = (i: number): ItemCleanliness => cleanlinessByItem[i] ?? { rating: 0, units: "", comment: "" };
+  const setCleanlinessFor = (i: number, patch: Partial<ItemCleanliness>) =>
+    setCleanlinessByItem((m) => ({ ...m, [i]: { rating: 0, units: "", comment: "", ...m[i], ...patch } }));
+  // Reinigung je verschmutztem Gerät (ab Stufe 2): automatische Zusatzkostenposition, 20 € netto je 15 Min.
+  const cleaningCharges: ExtraCharge[] = !isReturn ? [] : items.flatMap((it, i) => {
+    const c = cleanlinessFor(i);
+    const n = Math.round(toNumber(c.units));
+    return isDirty(c.rating) && n > 0
+      ? [{ ...emptyExtraCharge(`Reinigungsservice ${it.name}`), quantity: String(n), unitPrice: String(CLEANING_UNIT_GROSS), unit: "15min", notes: c.comment.trim() }]
+      : [];
+  });
+  const allCharges = [...charges, ...cleaningCharges];
   const usedPhotos = photos.length + damages.reduce((n, d) => n + d.photos.length, 0);
   const slotsLeft = remainingPhotoSlots(usedPhotos);
 
@@ -224,16 +236,20 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   };
 
   const readingsDone = items.every((_, i) => validMeasurement({ ...emptyMeasurement(), ...readings[i] }));
-  const equipmentDone = cleanliness > 0 && readingsDone;
+  // Sauberkeit je Gerät: bei Rücknahme Pflicht (inkl. Reinigungseinheiten bei Verschmutzung), bei Übergabe optional.
+  const cleanlinessDone = !isReturn || items.every((_, i) => {
+    const c = cleanlinessFor(i);
+    return c.rating >= 1 && (!isDirty(c.rating) || Math.round(toNumber(c.units)) >= 1);
+  });
+  const equipmentDone = cleanlinessDone && readingsDone;
   const itemsDone = isReturn ? (allReturned || !!missingNotes.trim()) : true;
   const legalDone = customerNotPresent || (isReturn ? itemsConfirmed : agbAccepted && itemsConfirmed && (!machine || instructed));
   const signaturesDone = !!staffSignature && !!staffName.trim() && (customerNotPresent || (!!customerSignature && !!signerName.trim()));
   const damagesDone = damages.every((d) => d.description.trim());
-  const chargesTotal = sumExtraCharges(charges);
+  const chargesTotal = sumExtraCharges(allCharges);
   const chargesDone = charges.every((c) => c.label.trim() && toNumber(c.quantity) > 0 && toNumber(c.unitPrice) > 0);
   const offerDeposit = Number((inquiry.offer_payload as { deposit?: unknown } | null)?.deposit) || 0;
   const chargeSuggestions: ChargeSuggestion[] = !isReturn ? [] : [
-    ...(cleaningSuggested(cleanliness) ? [{ kind: "cleaning" as const, text: `Sauberkeit ${cleanliness}/5 – Reinigung berechnen? 40,00 € netto je 15 Min (47,60 € brutto).` }] : []),
     ...items.flatMap((it, i) => {
       const r = readings[i];
       const prev = prevReadings[it.name.trim().toLowerCase()];
@@ -242,7 +258,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
         : [];
     }),
   ];
-  const idDone = customerNotPresent || idChecked;
+  const idDone = isReturn || customerNotPresent || idChecked;
 
   const missing: string[] = [];
   if (!itemsDone) missing.push("fehlende Artikel beschreiben");
