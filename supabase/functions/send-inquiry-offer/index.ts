@@ -397,14 +397,15 @@ Deno.serve(async (req: Request) => {
     }
     const servicesSurcharge = servicesWithPrices.reduce((sum, s) => sum + s.amount, 0);
 
-    const missingImages = pdfItems.filter((i) => !i.image_url).map((i) => i.product_name);
+    // Bilder über den Stammnamen auflösen (nicht über einen Override nur für dieses Angebot).
+    const missingImages = pdfItems.filter((i) => !i.image_url).map((_, k) => items[pdfItems.indexOf(_)].product_name);
     if (missingImages.length) {
       try {
         const resolved = await resolveImagesByName(service, missingImages);
-        for (const item of pdfItems) {
-          if (item.image_url) continue;
-          item.image_url = resolved.get((item.product_name || "").trim().toLowerCase()) || null;
-        }
+        pdfItems.forEach((item, k) => {
+          if (item.image_url) return;
+          item.image_url = resolved.get((items[k].product_name || "").trim().toLowerCase()) || null;
+        });
       } catch (err) {
         console.error("Bildauflösung fehlgeschlagen:", err);
       }
