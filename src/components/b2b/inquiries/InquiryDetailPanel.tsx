@@ -85,7 +85,7 @@ function splitQuantity(
 }
 
 /** Angebots-Snapshot in Formular-Positionen übersetzen (inkl. Zusatzoptionen). */
-function offerPayloadToLines(payload: unknown): {
+export function offerPayloadToLines(payload: unknown): {
   items: (OfferLine & { custom_period?: boolean })[];
   costs?: {
     delivery_cost_delivery: number;
