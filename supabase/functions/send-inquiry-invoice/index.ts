@@ -243,7 +243,9 @@ Deno.serve(async (req: Request) => {
 
     let items: InquiryOfferItem[];
     try {
-      items = normalizeInquiryOfferItems(body.items);
+      items = normalizeInquiryOfferItems(body.items)
+        // Paket 3b: optionale Versicherungsstufen aus dem Angebot werden nie berechnet.
+        .map((it) => (it.addons?.some((a) => a.optional) ? { ...it, addons: it.addons.filter((a) => !a.optional) } : it));
     } catch (e) {
       return json({ error: (e as Error).message }, 400);
     }

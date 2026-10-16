@@ -233,7 +233,7 @@ Deno.serve(async (req) => {
       const num = (v: unknown) => Number(v) || 0;
       const servicesWithPrices: any[] = items.flatMap((item, idx) =>
         (Array.isArray(item.addons) ? item.addons : [])
-          .filter((a: any) => num(a?.amount) > 0)
+          .filter((a: any) => num(a?.amount) > 0 && a?.optional !== true)
           .map((a: any, ai: number) => ({
             id: `${idx}-${a.key || ai}`,
             name: a.note ? `${a.label} (${a.note})` : a.label,
