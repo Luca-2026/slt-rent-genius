@@ -3,10 +3,10 @@ import { formatRentalMoment, rentalPeriodOf } from "@/lib/rentalPeriod";
 
 describe("Mietbeginn/-ende", () => {
   it("Format mit Wochentag und Uhrzeit", () => {
-    expect(formatRentalMoment("2026-10-20", "08:00:00")).toBe("Mo, 20.10.2026, 08:00");
+    expect(formatRentalMoment("2026-10-19", "08:00:00")).toBe("Mo, 19.10.2026, 08:00");
   });
   it("ohne Uhrzeit nur Datum, ohne Datum Strich", () => {
-    expect(formatRentalMoment("2026-10-20", null)).toBe("Mo, 20.10.2026");
+    expect(formatRentalMoment("2026-10-19", null)).toBe("Mo, 19.10.2026");
     expect(formatRentalMoment(null, "08:00")).toBe("—");
   });
   it("abweichende Positionsdaten haben Vorrang", () => {
