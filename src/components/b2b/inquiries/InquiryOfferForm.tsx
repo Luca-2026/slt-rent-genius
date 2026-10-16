@@ -1564,7 +1564,18 @@ export function InquiryOfferForm({
                       rental_start_time: item.rental_start_time ?? items[0]?.rental_start_time,
                       rental_end_time: item.rental_end_time ?? items[0]?.rental_end_time,
                     };
-                    setItems((prev) => prev.map((it, i) => (i === index ? applyRentalPricing(next, dayOpts) : it)));
+                    // Paket 3b: CMS-Artikel automatisch in die Gruppe seiner Kategorie (anlegen oder wiederverwenden);
+                    // eine von Hand gewählte eigene Gruppe bleibt erhalten.
+                    const currentGroup = groups.find((g) => g.id === item.group_id);
+                    let nextGroups = groups;
+                    if (product && !isInvoice && (!currentGroup || currentGroup.source === "category")) {
+                      const catName = await categoryNameFor(product.category);
+                      const ensured = ensureCategoryGroup(groups, catName);
+                      nextGroups = ensured.groups;
+                      next.group_id = ensured.id;
+                      if (nextGroups !== groups) setGroups(nextGroups);
+                    }
+                    setItems((prev) => orderItemsByGroups(nextGroups, prev.map((it, i) => (i === index ? applyRentalPricing(next, dayOpts) : it))));
                   }}
                 />
                 )}
@@ -1674,7 +1685,7 @@ export function InquiryOfferForm({
                 </span>
               </label>
             )}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2" data-testid="position-columns">
+            <div className="grid grid-cols-2 sm:grid-cols-6 gap-2" data-testid="position-columns">
               <div>
                 <Label className="text-xs">Menge</Label>
                 <div className="flex gap-1">
@@ -2354,6 +2365,17 @@ export function InquiryOfferForm({
         </div>
       )}
 
+      {overrideIdx !== null && items[overrideIdx] && (
+        <ItemOverrideDialog
+          open
+          onOpenChange={(o) => { if (!o) setOverrideIdx(null); }}
+          masterName={items[overrideIdx].product_name}
+          masterDescription={items[overrideIdx].description}
+          nameOverride={items[overrideIdx].name_override}
+          descriptionOverride={items[overrideIdx].description_override}
+          onSave={(v) => { markTouched(); patchItem(overrideIdx, v); }}
+        />
+      )}
       <InventoryWarningDialog
         open={warningOpen}
         onOpenChange={setWarningOpen}
