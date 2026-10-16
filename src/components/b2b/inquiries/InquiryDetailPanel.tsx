@@ -310,7 +310,7 @@ interface Props {
 }
 
 
-type DocMode = "offer" | "revise" | "invoice" | "final";
+type DocMode = "offer" | "revise" | "invoice" | "final" | "order";
 const DOC_MODE_PREFIX = "slt.inquiry-doc-mode.v1:";
 
 function rememberDocMode(inquiryId: string, mode: DocMode) {
@@ -403,11 +403,11 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
 
 
   /** Angebot oder Rechnung – steuert das Formular unten. */
-  const [docMode, setDocModeState] = useState<"offer" | "revise" | "invoice" | "final">(() =>
+  const [docMode, setDocModeState] = useState<DocMode>(() =>
     initialDocMode(inquiryType, inquiry.id, inquiry.offer_number, !!offerSnapshot),
   );
   const setDocMode = useCallback(
-    (mode: "offer" | "revise" | "invoice" | "final") => {
+    (mode: DocMode) => {
       setDocModeState(mode);
       rememberDocMode(inquiry.id, mode);
     },
