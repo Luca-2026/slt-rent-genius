@@ -22,6 +22,18 @@ export interface LocationHours {
   time: string;
 }
 
+/** Zeitfenster für Abholung/Rückgabe an einem Tag ("HH:MM"). */
+export interface PickupWindow {
+  open: string;
+  close: string;
+}
+
+/** Abhol-/Rückgabezeiten je Standort; null = an diesem Wochentag nicht möglich. */
+export interface LocationPickupHours {
+  weekdays: PickupWindow | null;
+  saturday: PickupWindow | null;
+}
+
 export type LocationServiceCharacter =
   | "full-warehouse"
   | "service-handover"
@@ -45,6 +57,8 @@ export interface LocationInfo {
   mapUrl: string;
 
   // Optional standort-story fields (Sprint 1)
+  /** Abhol-/Rückgabezeiten für das Anfrageformular (reine Eingabehilfe, keine Anzeige). */
+  pickupHours?: LocationPickupHours;
   storyHeadline?: string;
   storyIntro?: string;
   storyParagraphs?: string[];

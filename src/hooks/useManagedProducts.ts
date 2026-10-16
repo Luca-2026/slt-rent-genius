@@ -123,6 +123,16 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
     seoUseCaseEvent: row.seo_use_case_event?.trim() || undefined,
     seoUseCasePrivat: row.seo_use_case_privat?.trim() || undefined,
     relatedSlugs: row.related_slugs?.length ? row.related_slugs : undefined,
+    managedId: row.id,
+    pricingScheme: row.pricing_scheme ?? undefined,
+    priceFrom1Rd: row.price_from_1_rd ?? null,
+    priceFrom3Rd: row.price_from_3_rd ?? null,
+    priceFrom10Rd: row.price_from_10_rd ?? null,
+    priceFrom20Rd: row.price_from_20_rd ?? null,
+    priceWeekendNum: row.price_weekend_num ?? null,
+    priceBase13Cd: row.price_base_1_3_cd ?? null,
+    surchargePerCdFrom4: row.surcharge_per_cd_from_4 ?? null,
+    surchargePerCdFrom8: row.surcharge_per_cd_from_8 ?? null,
   };
 
 }

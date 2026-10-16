@@ -240,7 +240,18 @@ export interface Product {
   seoUseCaseEvent?: string; // CMS: Einsatzbereich Event/Veranstaltung
   seoUseCasePrivat?: string; // CMS: Einsatzbereich Privat
   relatedSlugs?: string[]; // CMS: manuell gepflegtes Zubehör / ähnliche Artikel (Slugs)
-
+  /** Interne CMS-ID (nur bei Managed-Artikeln) – z. B. für Standortpreise. */
+  managedId?: string;
+  /** Preisschema und Staffelpreise aus dem CMS (netto). */
+  pricingScheme?: "bau" | "event";
+  priceFrom1Rd?: number | null;
+  priceFrom3Rd?: number | null;
+  priceFrom10Rd?: number | null;
+  priceFrom20Rd?: number | null;
+  priceWeekendNum?: number | null;
+  priceBase13Cd?: number | null;
+  surchargePerCdFrom4?: number | null;
+  surchargePerCdFrom8?: number | null;
 }
 
 export interface ProductCategory {
