@@ -1,3 +1,4 @@
+import { codedSubject } from "../_shared/order-code.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { PDFDocument, StandardFonts, rgb } from "https://esm.sh/pdf-lib@1.17.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
@@ -812,7 +813,7 @@ Deno.serve(async (req: Request) => {
           body: JSON.stringify({
             from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
             ...documentEmailRecipients(customerEmail, [loc.email]),
-            subject: `Ihr Angebot von SLT Rental - ${offerNumber} ${offerItems.map((i: any) => i.product_name).join(", ")}`,
+            subject: await codedSubject(serviceClient, `Ihr Angebot von SLT Rental - ${offerNumber} ${offerItems.map((i: any) => i.product_name).join(", ")}`, { reservationId: reservation_id }),
             html: emailHtml,
             attachments,
           }),

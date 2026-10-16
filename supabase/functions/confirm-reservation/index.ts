@@ -1,3 +1,4 @@
+import { codedSubject } from "../_shared/order-code.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
 const corsHeaders = {
@@ -275,7 +276,7 @@ Deno.serve(async (req: Request) => {
           body: JSON.stringify({
             from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
             to: [customerEmail],
-            subject: `Mietbestätigung – ${reservation.product_name || reservation.product_id}`,
+            subject: await codedSubject(serviceClient, `Mietbestätigung – ${reservation.product_name || reservation.product_id}`, { reservationId: reservation_id }),
             html: emailHtml,
           }),
         });

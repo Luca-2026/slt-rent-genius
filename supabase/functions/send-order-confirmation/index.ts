@@ -1,3 +1,4 @@
+import { codedSubject } from "../_shared/order-code.ts";
 import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
 /**
  * Sendet nach Zahlungseingang die Auftragsbestätigung zu einem angenommenen
@@ -312,7 +313,7 @@ Deno.serve(async (req) => {
         to: [inq.customer_email],
         cc: Array.from(new Set([loc.email, inq.location_email].filter((e) => e && e !== inq.customer_email))),
         reply_to: loc.email,
-        subject: `Auftragsbestätigung zu ${t("deinem", "Ihrem")} Angebot ${inq.offer_number}`,
+        subject: await codedSubject(service, `Auftragsbestätigung zu ${t("deinem", "Ihrem")} Angebot ${inq.offer_number}`, { table, id: inq.id }),
         html: pdfAttachment
           ? html.replace("</h2>", `</h2><p style="color:#6b7280;font-size:13px;margin-top:-8px;">Die Auftragsbestätigung ${esc(confirmationNumber)} ${t("findest du", "finden Sie")} zusätzlich als PDF im Anhang.</p>`)
           : html,

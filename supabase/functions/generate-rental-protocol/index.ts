@@ -1,3 +1,4 @@
+import { codedSubject } from "../_shared/order-code.ts";
 import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
 // Übergabe- und Rückgabeprotokoll zu einer Mietanfrage (Privat- und Firmenkunden).
 // Fotos (max. 15) kommen verkleinert als Base64, werden gespeichert und ins PDF eingebettet.
@@ -317,7 +318,7 @@ ${damageRows.length ? `<p style="color:#b91c1c;"><strong>${damageRows.length} Sc
           body: JSON.stringify({
             from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
             to: [recipient], bcc: [loc.email], reply_to: loc.email,
-            subject: `Dein ${title} ${number} \u2013 SLT-Rental`,
+            subject: await codedSubject(svc, `Dein ${title} ${number} \u2013 SLT-Rental`, { table: "rental_inquiries", id: inq.id }),
             html,
             attachments: [{ filename: fileName, content: encodeBase64(pdf), content_type: "application/pdf" }],
           }),

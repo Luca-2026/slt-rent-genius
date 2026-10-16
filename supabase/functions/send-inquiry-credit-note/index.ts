@@ -1,3 +1,4 @@
+import { codedSubject } from "../_shared/order-code.ts";
 /**
  * Erstellt und versendet eine Rechnungskorrektur (Gutschrift) zu einer bereits
  * gestellten Rechnung aus einer Miet- oder Verkaufsanfrage.
@@ -105,7 +106,7 @@ Deno.serve(async (req: Request) => {
           to: [credit.customer_email],
           cc: Array.from(new Set([loc.email, credit.location_email].filter((e) => e && e !== credit.customer_email))),
           reply_to: loc.email,
-          subject: `Rechnungskorrektur ${credit.invoice_number}`,
+          subject: await codedSubject(service, `Rechnungskorrektur ${credit.invoice_number}`, { table: credit.rental_inquiry_id ? "rental_inquiries" : "sales_inquiries", id: credit.rental_inquiry_id || credit.sales_inquiry_id }),
           html: `<p>Hallo ${escapeHtml(credit.customer_name || "")},</p><p>anbei erhalten Sie erneut unsere Rechnungskorrektur <strong>${escapeHtml(credit.invoice_number)}</strong>.</p><p>Bei Fragen melden Sie sich gerne bei uns.</p><p>Herzliche Grüße<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}</p>`,
           attachments: [{ filename: credit.file_name || `${credit.invoice_number}.pdf`, content: encodeBase64(bytes) }],
         }),
@@ -466,7 +467,7 @@ Deno.serve(async (req: Request) => {
             to: [invoice.customer_email],
             cc: Array.from(new Set([loc.email, invoice.location_email].filter((e) => e && e !== invoice.customer_email))),
             reply_to: loc.email,
-            subject: `Rechnungskorrektur ${creditNumber} zu Rechnung ${invoice.invoice_number}`,
+            subject: await codedSubject(service, `Rechnungskorrektur ${creditNumber} zu Rechnung ${invoice.invoice_number}`, { table: invoice.rental_inquiry_id ? "rental_inquiries" : "sales_inquiries", id: invoice.rental_inquiry_id || invoice.sales_inquiry_id }),
             html: emailHtml,
             attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
           }),

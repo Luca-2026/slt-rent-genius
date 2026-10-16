@@ -1,3 +1,4 @@
+import { codedSubject } from "../_shared/order-code.ts";
 import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
 /**
  * Erstellt und versendet eine Rechnung, einen Nachtrag, eine Abschlags- oder
@@ -163,7 +164,7 @@ Deno.serve(async (req: Request) => {
           to: [inv.customer_email],
           cc: [loc.email].filter((e) => e && e !== inv.customer_email),
           reply_to: loc.email,
-          subject: `${rt("Deine", "Ihre")} Rechnung von SLT Rental – ${inv.invoice_number}`,
+          subject: await codedSubject(service, `${rt("Deine", "Ihre")} Rechnung von SLT Rental – ${inv.invoice_number}`, { table: inv.rental_inquiry_id ? "rental_inquiries" : "sales_inquiries", id: inv.rental_inquiry_id || inv.sales_inquiry_id }),
           html:
             `<p>${escapeHtml(salutationLine({ address_form: rForm, salutation: invSalutation, name: inv.customer_name }))}</p>` +
             `<p>anbei ${rt("erhältst du", "erhalten Sie")} erneut unsere Rechnung ${escapeHtml(inv.invoice_number)} über ${money(Number(inv.gross_amount))} brutto.</p>` +
@@ -788,7 +789,7 @@ Deno.serve(async (req: Request) => {
             to: [customerEmail],
             cc: Array.from(new Set([loc.email, str(inquiry.location_email)].filter((e) => e && e !== customerEmail))),
             reply_to: loc.email,
-            subject: `${DOC_LABEL[invoiceKind]} von SLT Rental – ${invoiceNumber}`,
+            subject: await codedSubject(service, `${DOC_LABEL[invoiceKind]} von SLT Rental – ${invoiceNumber}`, { table, id: inquiry.id }),
             html: emailHtml,
             attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
           }),

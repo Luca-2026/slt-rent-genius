@@ -752,7 +752,7 @@ Deno.serve(async (req: Request) => {
               ),
             ),
             reply_to: loc.email,
-            subject: await codedSubject(service, `${isRevision ? F("Dein überarbeitetes Angebot", "Ihr überarbeitetes Angebot") : F("Dein Angebot", "Ihr Angebot")} von SLT Rental – ${offerNumber}`,
+            subject: await codedSubject(service, `${isRevision ? F("Dein überarbeitetes Angebot", "Ihr überarbeitetes Angebot") : F("Dein Angebot", "Ihr Angebot")} von SLT Rental – ${offerNumber}`, { table, id: inquiry.id }),
             html: emailHtml,
             attachments: [
               { filename: fileName, content: encodeBase64(pdfBytes) },
