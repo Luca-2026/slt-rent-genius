@@ -16,7 +16,8 @@ export interface ProtocolPdfData {
   customer: { company: string | null; name: string | null; street: string | null; postalCity: string | null; email: string | null; phone: string | null };
   order: { confirmationNumber: string | null; offerNumber: string | null; location: string; locationAddress: string; locationKey?: string; start: string | null; end: string | null; deliveryAddress: string | null; deliveryNoteNumber: string | null };
   items: { name: string; quantity: number; detail: string | null }[];
-  condition: { readings?: { item_name: string; operating_hours: string; fuel_level: string; mileage?: string }[]; operatingHours: string | null; fuelLevel: string | null; cleanliness: number | null; knownDefects: string | null; notes: string | null; allReturned: boolean | null; missingNotes: string | null };
+  condition: { readings?: { item_name: string; operating_hours: string; fuel_level: string; mileage?: string; cleanliness?: string }[]; operatingHours: string | null; fuelLevel: string | null; cleanliness: number | null; knownDefects: string | null; notes: string | null; allReturned: boolean | null; missingNotes: string | null; itemCleanliness?: { item_name: string; rating: number; units: number | null; comment: string | null }[] };
+  signedPlace?: string;
   idCheck: { checked: boolean; type: string | null };
   confirmations: { instructed?: boolean; agb: boolean; items: boolean; customerNotPresent: boolean };
   damages: ProtocolPdfDamage[];
@@ -241,8 +242,12 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
   const rd = data.condition.readings ?? [];
   if (rd.length) {
      for (const m of rd) {
-       const values = [m.mileage ? `Kilometerstand: ${m.mileage} km` : "", m.operating_hours ? `Betriebsstunden: ${m.operating_hours} h` : "", m.fuel_level && m.fuel_level !== "kein_tank" ? `Tank: ${FUEL[m.fuel_level] ?? m.fuel_level}` : ""].filter(Boolean);
+       const values = [m.mileage ? `Kilometerstand: ${m.mileage} km` : "", m.operating_hours ? `Betriebsstunden: ${m.operating_hours} h` : "", m.fuel_level && m.fuel_level !== "kein_tank" ? `Tank: ${FUEL[m.fuel_level] ?? m.fuel_level}` : "", m.cleanliness ? `Sauberkeit: ${m.cleanliness}/5` : ""].filter(Boolean);
        if (values.length) kv(m.item_name, values.join(" \u00B7 "));
+     }
+     for (const c of data.condition.itemCleanliness ?? []) {
+       const cleaning = c.units ? ` · Reinigung: ${c.units} x 15 Min = ${euro(Math.round(c.units * 23.8 * 100) / 100)} brutto${c.comment ? ` (${c.comment})` : ""}` : "";
+       kv(`Sauberkeit ${c.item_name}`, `${c.rating} von 5 (1 = sauber, 5 = sehr verschmutzt)${cleaning}`);
      }
   } else {
     if (data.condition.operatingHours) kv("Betriebsstunden", data.condition.operatingHours);
@@ -325,7 +330,7 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
       text(empty, x + 10, y - 50, font, 8.5, MUTED);
     }
     page.drawRectangle({ x: x + 8, y: y - 76, width: boxW - 16, height: 0.5, color: LINE });
-    text(`${name || "-"} \u00B7 ${berlin(data.createdAt)}`, x + 8, y - 88, font, 8, INK);
+    text(`${name || "-"} \u00B7 ${data.signedPlace ? `${data.signedPlace}, ` : ""}${berlin(data.createdAt)}`, x + 8, y - 88, font, 8, INK);
   };
   sigBox(ML, "Kunde", sigCustomer, data.signatures.customerName, data.confirmations.customerNotPresent ? "Kunde nicht anwesend" : "Keine Unterschrift");
   sigBox(ML + boxW + 20, `Mitarbeiter ${SLT_COMPANY.brand}`, sigStaff, data.signatures.staffName, "Keine Unterschrift");
