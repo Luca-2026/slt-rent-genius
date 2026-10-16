@@ -197,7 +197,7 @@ Das E-Mail-Code-System ist an allen drei SLT-Standorten aktiv:
     slug: "wochenendtarif-vs-tagesmiete",
     title: "Wochenendtarif vs. Tagesmiete – was lohnt sich wirklich?",
     metaTitle: "Wochenendtarif Baumaschine mieten – lohnt sich das? | SLT Rental",
-    metaDescription: "Wochenendtarif oder Tagesmiete? Vergleich mit Rechenbeispiel am Minibagger. So sparen Sie bei SLT Rental bis zu 40 % am Wochenende.",
+    metaDescription: "Wochenendtarif oder Tagesmiete? Rechenbeispiel am Minibagger: Abholung Freitag ab 16 Uhr, Rückgabe Montag bis 9:30 Uhr – so sparst du bei SLT Rental.",
     teaser: "Freitag abholen, Montag zurückbringen, nur einen Tag bezahlen? Wir rechnen vor, wann sich der Wochenendtarif wirklich lohnt.",
     date: "2025-11-22",
     updatedAt: "2026-02-14",
@@ -208,15 +208,15 @@ Das E-Mail-Code-System ist an allen drei SLT-Standorten aktiv:
     imageAlt: "Illustration: Wochenkalender mit Wochenendmarkierung und Preisvergleich – Ratgeber von SLT Rental",
     ogImage: "/images/ratgeber/og/blog_thumbnail_wochenendtarif_vs_tagesmiete.png",
     quickFacts: [
-      "Wochenendtarif: Freitag 16 Uhr abholen, Montag 8 Uhr zurückgeben – 1 Tag bezahlen",
-      "Bis zu 40 % günstiger als 3 Einzeltage",
+      "Wochenendtarif: Freitag ab 16 Uhr abholen, Montag bis 9:30 Uhr zurückgeben – zum Wochenendtarif",
+      "Gilt für viele Baumaschinen, Anhänger und Event-Artikel",
       "Gilt für Baumaschinen, Anhänger und Event-Equipment",
       "Keine Voranmeldung nötig – einfach bei der Buchung auswählen"
     ],
     relatedSlugs: ["anhaenger-24-stunden-mieten-email-code", "minibagger-mieten-ohne-fuehrerschein"],
     content: `## Was ist der Wochenendtarif?
 
-Bei SLT Rental können Sie viele Mietprodukte zum **Wochenendtarif** buchen: Sie holen das Gerät **Freitag ab 16 Uhr** ab und bringen es **Montag bis 8 Uhr** zurück. Abgerechnet wird nur **ein Miettag** – obwohl Sie das Gerät fast drei Tage nutzen.
+Bei SLT Rental können Sie viele Mietprodukte zum **Wochenendtarif** buchen: Sie holen das Gerät **Freitag ab 16 Uhr** ab und bringen es **Montag bis 9:30 Uhr** zurück. Abgerechnet wird der **Wochenendtarif des Artikels** – obwohl Sie das Gerät fast drei Tage nutzen.
 
 Das ist ideal für alle, die am Wochenende bauen, umziehen oder eine Veranstaltung planen.
 
@@ -226,23 +226,15 @@ Nehmen wir einen typischen **Minibagger 1,7 t** als Beispiel:
 
 | Variante | Zeitraum | Kosten |
 |---|---|---|
-| 3 × Tagesmiete (Fr, Sa, So) | Freitag 8 Uhr – Montag 8 Uhr | 3 × 195 € = **585 € brutto** |
-| Wochenendtarif | Freitag 16 Uhr – Montag 8 Uhr | 1 × 195 € = **195 € brutto** |
-| **Ersparnis** | | **390 € (66 %)** |
+| 2 Miettage (Fr–Mo) | Freitag 8 Uhr – Montag 9:30 Uhr | 2 × 195 € = **390 € brutto** |
+| Wochenendtarif | Freitag 16 Uhr – Montag 9:30 Uhr | **292,50 € brutto** |
+| **Ersparnis** | | **97,50 € (25 %)** |
 
 Selbst wenn Sie den Bagger erst Samstagmorgen abholen und am Sonntag zurückbringen, zahlen Sie bei der Einzelbuchung 2 Tagesmieten (390 €). Der Wochenendtarif ist also in jedem Fall günstiger, wenn Sie am Wochenende arbeiten.
 
-## Weitere Preisbeispiele
+Den Wochenendtarif Ihres Geräts sehen Sie direkt auf der Artikelseite.
 
-| Produkt | Tagesmiete | 3 Tage (Fr–Mo) | Wochenendtarif | Ersparnis |
-|---|---|---|---|---|
-| Minibagger 0,8 t | 135 € | 405 € | 135 € | 270 € |
-| Rüttelplatte 130 kg | 55 € | 165 € | 55 € | 110 € |
-| Radlader 1,5 t | 195 € | 585 € | 195 € | 390 € |
-| Kastenanhänger 1.300 kg | 30 € | 90 € | 30 € | 60 € |
-| PA-Anlage Komplett | 180 € | 540 € | 180 € | 360 € |
-
-*Alle Preise brutto inkl. 19 % MwSt. Stand April 2026.*
+*Alle Preise brutto inkl. 19 % MwSt.*
 
 ## Welche Produkte bieten den Wochenendtarif?
 

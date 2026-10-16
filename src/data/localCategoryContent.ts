@@ -718,7 +718,7 @@ export const localCategoryContent: LocalContentMap = {
         },
         {
           q: "Kann ich die Musikanlage für eine Wochenend-Hochzeit direkt am Freitagabend abholen?",
-          a: "Ja. Kompakte Anlagen wie Soundboks oder das 2.1 Soundsystem 1400W RMS kannst du freitags bis 18:00 Uhr am Hauptsitz Krefeld abholen und montags bis 18:00 Uhr zurückbringen – berechnet wird nur die Tagesmiete. Für die große D.A.S. PA-Anlage 3500W empfehlen wir bei Wochenend-Terminen im Niederrhein-Raum die Lieferung direkt zur Location, damit du dich am Eventtag auf die Feier konzentrieren kannst.",
+          a: "Ja. Kompakte Anlagen wie Soundboks oder das 2.1 Soundsystem 1400W RMS kannst du freitags ab 16:00 Uhr am Hauptsitz Krefeld abholen und montags bis 09:30 Uhr zurückbringen – dafür gilt unser Wochenendtarif. Für die große D.A.S. PA-Anlage 3500W empfehlen wir bei Wochenend-Terminen im Niederrhein-Raum die Lieferung direkt zur Location, damit du dich am Eventtag auf die Feier konzentrieren kannst.",
         },
       ],
     },
