@@ -1314,7 +1314,7 @@ export function InquiryOfferForm({
     </p>
   );
   const actionBar = stickyActions ? (
-    <div className="sticky top-28 lg:top-32 z-20 -mx-1 rounded-lg border border-border bg-background/95 p-2 shadow-sm backdrop-blur" data-testid="offer-action-bar">
+    <div className="sticky top-28 lg:top-32 z-20 rounded-lg border border-border bg-background/95 p-2 shadow-sm backdrop-blur" data-testid="offer-action-bar">
       <div className="flex flex-wrap items-center gap-2">
         {stickyActionsLead}
         <div className="ml-auto flex flex-wrap gap-2">{previewButton}{sendButton}</div>
@@ -1624,7 +1624,7 @@ export function InquiryOfferForm({
               disabled={disabled || inherited}
             />
             {pricingActive && !openEnded && (
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2" data-testid="position-period">
+              <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,7.5rem)] gap-x-3 gap-y-2" data-testid="position-period">
                 <div>
                   <Label className="text-xs">Mietbeginn</Label>
                   <Input type="date" value={item.rental_start ?? ""} disabled={disabled}
@@ -1676,13 +1676,14 @@ export function InquiryOfferForm({
                 </span>
               </label>
             )}
-            <div className="grid grid-cols-2 sm:grid-cols-6 gap-2" data-testid="position-columns">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2" data-testid="position-columns">
               <div>
                 <Label className="text-xs">Menge</Label>
                 <div className="flex gap-1">
                   <NumberInput
                     type="number"
                     min={1}
+                    className="min-w-0 flex-1"
                     value={item.quantity}
                     onChange={(e) => patchItem(index, { quantity: Number(e.target.value) || 0 })}
                     disabled={disabled}
@@ -1699,7 +1700,7 @@ export function InquiryOfferForm({
                   </Select>
                 </div>
               </div>
-              <div className="sm:col-span-2">
+              <div className="min-w-0">
                 <Label className="text-xs">Dauer</Label>
                 <div className="flex gap-1">
                   {isFlatRate ? (
@@ -1710,6 +1711,7 @@ export function InquiryOfferForm({
                     <NumberInput
                       type="number"
                       min={1}
+                      className="w-20 shrink-0"
                       value={eff.duration ?? 1}
                       onChange={(e) => patchItem(index, { duration: Number(e.target.value) || 0 })}
                       disabled={disabled || inherited}
@@ -1727,7 +1729,7 @@ export function InquiryOfferForm({
                       })
                     }
                   >
-                    <SelectTrigger className="h-10 w-36 shrink-0" aria-label="Einheit der Dauer"><SelectValue /></SelectTrigger>
+                    <SelectTrigger className="h-10 min-w-0 flex-1" aria-label="Einheit der Dauer"><SelectValue /></SelectTrigger>
                     <SelectContent>
                       {OFFER_UNITS.filter((u) => u.value !== "stueck" || eff.unit === "stueck").map((u) => (
                         <SelectItem key={u.value} value={u.value}>{u.label}</SelectItem>
@@ -1774,8 +1776,9 @@ export function InquiryOfferForm({
                   disabled={disabled}
                 />
               </div>
-              <div className="flex items-end text-sm font-semibold">
-                {formatEuro(lineTotal(eff))}
+              <div className="flex items-baseline justify-between gap-2 border-t border-border pt-2 text-sm sm:col-span-2">
+                <span className="text-xs text-muted-foreground">Positionssumme netto</span>
+                <span className="font-semibold tabular-nums">{formatEuro(lineTotal(eff))}</span>
               </div>
             </div>
 
@@ -2416,7 +2419,7 @@ export function InquiryOfferForm({
 
 
 /** Nummerierter Editor-Abschnitt – feste Reihenfolge: Positionen → Logistik → Zahlung → Angaben → Summe. */
-function EditorSection({ step, title, testId, children }: { step: number; title: string; testId?: string; children: React.ReactNode }) {
+function EditorSection({ step, title, testId, children }: { step: number; title: string; testId?: string; children: ReactNode }) {
   return (
     <section className="min-w-0 space-y-4 rounded-lg border border-border bg-card p-3 sm:p-4" data-testid={testId}>
       <header className="flex items-center gap-2">
