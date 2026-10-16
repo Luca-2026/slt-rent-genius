@@ -11,6 +11,7 @@ import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useRentalInquiries } from "@/hooks/useInquiries";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { useAuth } from "@/hooks/useAuth";
+import { OrderCodeBadge } from "@/components/b2b/inquiries/OrderCodeBadge";
 import { InquiryStatusBadge } from "@/components/b2b/inquiries/InquiryStatusBadge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -75,7 +76,7 @@ export default function RentalInquiries() {
       if (!matchesSegment(segmentOf(r), segment)) return false;
       if (locationFilter !== "all" && normalizeLocation(r.location) !== locationFilter) return false;
       if (!q) return true;
-      return [r.product_name, r.customer_name, r.customer_email, r.company_name, r.location, r.customer_city]
+      return [r.order_code, r.order_code ? `#${r.order_code}` : null, r.product_name, r.customer_name, r.customer_email, r.company_name, r.location, r.customer_city]
         .filter(Boolean)
         .some((v) => String(v).toLowerCase().includes(q));
     });
@@ -234,6 +235,7 @@ export default function RentalInquiries() {
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2 min-w-0">
                     <span className="font-semibold break-words min-w-0">{r.product_name || "Mietanfrage"}</span>
+                    <OrderCodeBadge code={r.order_code} />
                     <InquiryStatusBadge status={r.status} />
                     <InquirySourceBadges inquiry={r} />
                     {(r as any).availability_pending && <Badge variant="destructive">Verfügbarkeit klären</Badge>}

@@ -16,6 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { INQUIRY_STATUSES, canTransition, type InquiryStatus } from "@/lib/inquiryStatus";
 import { InquiryStatusBadge } from "./InquiryStatusBadge";
+import { OrderCodeBadge } from "./OrderCodeBadge";
 import { InquiryLocationSection } from "./InquiryLocationSection";
 import { requestedItemsOf } from "./types";
 import { inquiryDraftKey, listServerDraftsForInquiry, readInquiryDraft } from "./offerDraftStorage";
@@ -468,6 +469,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const headerEl = (
     <>
       <div className="flex flex-wrap items-center gap-2">
+        <OrderCodeBadge code={inquiry.order_code} />
         <InquiryStatusBadge status={inquiry.status} />
         {inquiry.assigned_name ? (
           <span className="text-sm text-muted-foreground">

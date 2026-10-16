@@ -17,6 +17,7 @@ const STORAGE_KEY = "offerOverview.filters";
 interface Row {
   id: string;
   offer_number: string;
+  order_code?: string | null;
   company_name: string | null;
   customer_name: string | null;
   location: string | null;
@@ -71,7 +72,7 @@ export default function OfferOverview() {
       setLoading(true);
       const { data } = await supabase
         .from("rental_inquiries")
-        .select("id,offer_number,company_name,customer_name,location,start_date,end_date,offer_total_gross,status,offer_sent_at,offer_accepted_at,created_at,offer_payload")
+        .select("id,offer_number,order_code,company_name,customer_name,location,start_date,end_date,offer_total_gross,status,offer_sent_at,offer_accepted_at,created_at,offer_payload")
         .not("offer_number", "is", null)
         .order("created_at", { ascending: false })
         .limit(2000);
@@ -93,7 +94,7 @@ export default function OfferOverview() {
       // Zeitraum: Mietzeitraum überschneidet den gewählten Bereich.
       if (f.from && (r.end_date ?? r.start_date ?? "") < f.from) return false;
       if (f.to && (r.start_date ?? "") > f.to) return false;
-      if (q && ![r.offer_number, r.company_name, r.customer_name].some((v) => v?.toLowerCase().includes(q))) return false;
+      if (q && ![r.offer_number, r.order_code, r.company_name, r.customer_name].some((v) => v?.toLowerCase().includes(q))) return false;
       return true;
     });
     const by: Record<Filters["sort"], (a: Row, b: Row) => number> = {
@@ -165,7 +166,7 @@ export default function OfferOverview() {
               {list.map((r) => (
                 <TableRow key={r.id} className="cursor-pointer" onClick={() => navigate(`/b2b/mietanfragen/${r.id}`)}
                   tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter") navigate(`/b2b/mietanfragen/${r.id}`); }}>
-                  <TableCell className="font-medium whitespace-nowrap">{r.offer_number}</TableCell>
+                  <TableCell className="font-medium whitespace-nowrap">{r.offer_number}{r.order_code && <span className="block font-mono text-xs text-primary">#{r.order_code}</span>}</TableCell>
                   <TableCell className="max-w-[14rem]">{r.company_name || r.customer_name || "–"}</TableCell>
                   <TableCell className="hidden whitespace-nowrap xl:table-cell">{r.location ? getLocationDisplayName(r.location) : "–"}</TableCell>
                   <TableCell><span className="whitespace-nowrap">{fmtDate(r.start_date)} –</span> <span className="whitespace-nowrap">{fmtDate(r.end_date)}</span></TableCell>

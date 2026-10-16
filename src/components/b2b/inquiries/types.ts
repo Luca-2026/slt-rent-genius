@@ -48,6 +48,7 @@ export interface RentalInquiry {
   assigned_at: string | null;
   internal_notes: string | null;
   offer_number: string | null;
+  order_code?: string | null;
   offer_file_url: string | null;
   offer_total_gross: number | null;
   offer_sent_at: string | null;
@@ -105,6 +106,7 @@ export interface SalesInquiry {
   assigned_at: string | null;
   internal_notes: string | null;
   offer_number: string | null;
+  order_code?: string | null;
   offer_file_url: string | null;
   offer_total_gross: number | null;
   offer_sent_at: string | null;
