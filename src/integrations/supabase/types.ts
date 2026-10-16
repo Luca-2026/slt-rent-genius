@@ -3778,6 +3778,7 @@ export type Database = {
           offer_payload: Json | null
           offer_sent_at: string | null
           offer_total_gross: number | null
+          order_code: string | null
           order_confirmation_file_url: string | null
           order_confirmation_number: string | null
           order_confirmed_at: string | null
@@ -3849,6 +3850,7 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          order_code?: string | null
           order_confirmation_file_url?: string | null
           order_confirmation_number?: string | null
           order_confirmed_at?: string | null
@@ -3920,6 +3922,7 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          order_code?: string | null
           order_confirmation_file_url?: string | null
           order_confirmation_number?: string | null
           order_confirmed_at?: string | null
@@ -4091,6 +4094,7 @@ export type Database = {
           offer_payload: Json | null
           offer_sent_at: string | null
           offer_total_gross: number | null
+          order_code: string | null
           order_confirmation_file_url: string | null
           order_confirmation_number: string | null
           order_confirmed_at: string | null
@@ -4167,6 +4171,7 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          order_code?: string | null
           order_confirmation_file_url?: string | null
           order_confirmation_number?: string | null
           order_confirmed_at?: string | null
@@ -4243,6 +4248,7 @@ export type Database = {
           offer_payload?: Json | null
           offer_sent_at?: string | null
           offer_total_gross?: number | null
+          order_code?: string | null
           order_confirmation_file_url?: string | null
           order_confirmation_number?: string | null
           order_confirmed_at?: string | null
@@ -5398,6 +5404,7 @@ export type Database = {
       generate_invoice_number: { Args: never; Returns: string }
       generate_offer_number: { Args: never; Returns: string }
       generate_offer_number_for: { Args: { _series: string }; Returns: string }
+      generate_order_code: { Args: never; Returns: string }
       generate_return_protocol_number: { Args: never; Returns: string }
       get_authorized_person_limit: {
         Args: { _user_id: string }

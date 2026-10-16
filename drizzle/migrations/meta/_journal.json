@@ -505,6 +505,13 @@
       "when": 1792172207293,
       "tag": "0071_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 72,
+      "version": "7",
+      "when": 1792174894960,
+      "tag": "0072_inquiry_order_code",
+      "breakpoints": true
     }
   ]
 }
