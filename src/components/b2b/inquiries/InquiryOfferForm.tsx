@@ -1051,6 +1051,7 @@ export function InquiryOfferForm({
           const resolved = await resolveCatalogPrice(match);
           const useCms = item.unit_price <= 0 && resolved !== undefined;
           const pricing = pricingActive ? await buildLinePricing(item.product_slug ?? match.slug, item.product_name) : null;
+          const cmsAddons = parseAddonOptions(match.addon_options);
           const next: FormLine = {
             ...item,
             image_url: item.image_url ?? image,
@@ -1059,10 +1060,30 @@ export function InquiryOfferForm({
             unit: item.unit ?? resolved?.unit ?? "kalendertage",
             duration: item.duration && item.duration > 0 ? item.duration : 1,
             product_slug: item.product_slug ?? match.slug,
-            available_addons: parseAddonOptions(match.addon_options),
+            available_addons: cmsAddons,
             ...withCustomerDiscount(item, match.category, discounts),
             pricing: pricing ?? undefined,
           };
+          // Vom Kunden im Anfrageformular gewählte Zusatzoptionen vorbelegen
+          // (nur solange die Position noch keine Addons hat und der Key im CMS gepflegt ist).
+          if (!next.addons?.length && item.requested_addon_keys?.length) {
+            const picked = cmsAddons.filter((o) => item.requested_addon_keys!.includes(o.key));
+            if (picked.length) {
+              next.addons = picked.map((o) => ({
+                key: o.key,
+                label: o.label,
+                amount: suggestAddonAmount(o, {
+                  quantity: next.quantity,
+                  unit_price: next.unit_price,
+                  discount_percent: next.discount_percent,
+                  duration: next.duration,
+                }),
+                note: o.deductible ? `Selbstbeteiligung ${o.deductible.toLocaleString("de-DE")} €` : undefined,
+                price_type: o.price_type,
+                rate: o.price,
+              }));
+            }
+          }
           // Paket 2: nur neue Positionen (noch ohne Preis) automatisch nach Staffel rechnen;
           // gespeicherte Preise bestehender Angebote bleiben bis „Preise neu berechnen“ stehen.
           return item.unit_price <= 0 ? applyRentalPricing(next, dayOpts) : next;
@@ -1099,7 +1120,7 @@ export function InquiryOfferForm({
         ...(!isInvoice && reviseOf ? { revise_of: reviseOf } : {}),
         location,
         // Paket 3b: Positionen in Gruppenreihenfolge (PDF ohne Überschriften, die folgen in Paket 4).
-        items: orderItemsByGroups(groups, effectiveItems).map(({ available_addons: _unused, price_source: _src, custom_period: _cp, pricing: _pr, unit_manual: _um, tier_label: _tl, ...rest }) => {
+        items: orderItemsByGroups(groups, effectiveItems).map(({ available_addons: _unused, price_source: _src, custom_period: _cp, pricing: _pr, unit_manual: _um, tier_label: _tl, requested_addon_keys: _rak, ...rest }) => {
           const unit = (rest.unit ?? "kalendertage") as OfferUnit;
           // Pauschalpositionen haben keine Dauer – der Preis gilt für den
           // gesamten Auftrag, unabhängig von der Mietzeit.
