@@ -175,7 +175,7 @@ export function RentalPriceTiers({ product, location, locationRows = [], classNa
 
   return (
     <div className={className}>
-      <h3 className="text-sm font-semibold text-headline mb-1.5">Mietpreise</h3>
+      <h3 className="text-sm font-semibold text-headline mb-1.5">Preisstaffel</h3>
       <ul className="space-y-0.5">
         {rows.map((r) => (
           <li key={r.label} className="flex flex-wrap items-baseline justify-between gap-x-2 text-xs sm:text-sm">
