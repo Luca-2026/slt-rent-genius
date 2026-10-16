@@ -56,6 +56,44 @@ export function formatDayPriceText(n: number | null): string | null {
   return `${n.toFixed(2).replace(".", ",")} €/Tag`;
 }
 
+/** Zahl → Alt-Textfeld "120,00 €" (Wochenende/Monat) für Webseite und Angebots-Editor. */
+export function formatLegacyAmountText(n: number | null): string | null {
+  if (n === null) return null;
+  return `${n.toFixed(2).replace(".", ",")} €`;
+}
+
+/**
+ * Alt-Textfeld `price_weekend` aus `price_weekend_num`. Ist das Feld leer und war es vorher
+ * auch leer (Altwert nicht lesbar migriert), bleibt der bisherige Text unverändert;
+ * wurde ein vorhandener Wert gelöscht, wird auch der Text geleert.
+ */
+export function legacyWeekendText(
+  set: PriceSet,
+  previousNum: number | string | null | undefined,
+  existingText: string | null,
+): string | null {
+  const n = parsePriceInput(set.price_weekend_num);
+  if (n !== null) return formatLegacyAmountText(n);
+  return previousNum !== null && previousNum !== undefined && previousNum !== "" ? null : existingText;
+}
+
+/**
+ * Alt-Textfeld `price_per_month` bei Bau-Artikeln: Umkehrung der Migrationsregel
+ * (Monatspreis ÷ 20 = ab 20 Miettagen), also Staffel 20 × 20. Event-Artikel haben keine
+ * Monatsstaffel; ihr Text bleibt unverändert. Gelöschte Staffel leert den Text.
+ */
+export function legacyMonthText(
+  scheme: PricingScheme,
+  set: PriceSet,
+  previousTier20: number | string | null | undefined,
+  existingText: string | null,
+): string | null {
+  if (scheme !== "bau") return existingText;
+  const n = parsePriceInput(set.price_from_20_rd);
+  if (n !== null) return formatLegacyAmountText(Math.round(n * 20 * 100) / 100);
+  return previousTier20 !== null && previousTier20 !== undefined && previousTier20 !== "" ? null : existingText;
+}
+
 /** Tagespreis, der in price_per_day zurückgeschrieben wird. */
 export function legacyDayPrice(scheme: PricingScheme, set: PriceSet): number | null {
   return parsePriceInput(scheme === "event" ? set.price_base_1_3_cd : set.price_from_1_rd);
