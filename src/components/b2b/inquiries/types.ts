@@ -19,6 +19,9 @@ export interface RentalInquiry {
   delivery_postal_code: string | null;
   delivery_city: string | null;
   setup_service_requested: boolean;
+  /** Wochenend-Nutzungstage aus dem Anfrageformular (W4). */
+  use_saturday?: boolean;
+  use_sunday?: boolean;
   customer_name: string | null;
   /** Paket 3b: Anrede ("herr" | "frau"), Ausgabe folgt in Paket 4. */
   customer_salutation?: string | null;
