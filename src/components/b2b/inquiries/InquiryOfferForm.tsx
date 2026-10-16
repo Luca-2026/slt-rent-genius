@@ -554,6 +554,9 @@ export function InquiryOfferForm({
 
   /** Erster Autosave-Lauf beim Öffnen schreibt nicht auf den Server (nur echte Änderungen). */
   const dirtyRef = useRef(false);
+  /** Server-Entwurf nur nach echter Bedienung durch den Nutzer – reines Öffnen legt nie einen Entwurf an. */
+  const userTouchedRef = useRef(false);
+  const markTouched = () => { userTouchedRef.current = true; };
   const [remoteDraft, setRemoteDraft] = useState<ServerInquiryDraft | null>(null);
   const [myUserId, setMyUserId] = useState<string | null>(null);
 
@@ -635,7 +638,7 @@ export function InquiryOfferForm({
         useSunday,
       };
       writeInquiryDraft(draftKey, snapshot);
-      if (dirtyRef.current) {
+      if (dirtyRef.current && userTouchedRef.current) {
         void saveServerDraft(draftKey, inquiryType, inquiryId, snapshot);
       }
       dirtyRef.current = true;
@@ -1238,7 +1241,7 @@ export function InquiryOfferForm({
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" onInputCapture={markTouched} onChangeCapture={markTouched} onKeyDownCapture={markTouched} onPointerDownCapture={markTouched}>
       {stickyActions && actionBar}
       {remoteDraft && !disabled && remoteDraft.updatedBy !== myUserId && (
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-primary/40 bg-primary/5 p-3 text-sm">
@@ -1248,7 +1251,7 @@ export function InquiryOfferForm({
             {draftRef.current ? " – du hast zusätzlich einen eigenen Stand auf diesem Gerät geöffnet." : " wurde geladen. Änderungen speichern den gemeinsamen Entwurf."}
           </span>
           {draftRef.current && (
-            <Button type="button" variant="outline" size="sm" onClick={() => { applyDraftData(remoteDraft.data); dirtyRef.current = true; }}>
+            <Button type="button" variant="outline" size="sm" onClick={() => { applyDraftData(remoteDraft.data); dirtyRef.current = true; userTouchedRef.current = true; }}>
               Entwurf des Kollegen laden
             </Button>
           )}
