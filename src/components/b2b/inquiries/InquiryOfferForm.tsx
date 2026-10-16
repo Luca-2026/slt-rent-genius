@@ -15,7 +15,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { AlertTriangle, ArrowDown, ArrowUp, CheckCircle2, Eye, GripVertical, Info, Loader2, Plus, Send, Trash2 } from "lucide-react";
+import { AlertTriangle, ArrowDown, ArrowUp, CheckCircle2, Eye, FolderPlus, GripVertical, Info, Loader2, MoreVertical, Plus, Send, Trash2, X } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ItemOverrideDialog } from "./ItemOverrideDialog";
 import { moveItem } from "@/components/b2b/admin/SortableRows";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
@@ -32,11 +34,32 @@ import { InventoryWarningDialog } from "./InventoryWarningDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { buildOfferTotals, formatEuro, isValidOfferTotal, lineTotal, type OfferLine } from "./offerMath";
+import {
+  EXTRA_FIELD_LABELS,
+  FALLBACK_GROUP_NAME,
+  QUANTITY_UNITS,
+  buildOfferTotals,
+  cleanExtraFields,
+  ensureCategoryGroup,
+  formatEuro,
+  groupedIndices,
+  isValidOfferTotal,
+  lineTotal,
+  newGroupId,
+  nextOrderType,
+  orderItemsByGroups,
+  quantityUnitShort,
+  type OfferExtraFields,
+  type OfferGroup,
+  type OfferLine,
+  type OrderType,
+  type QuantityUnit,
+} from "./offerMath";
 import { ADDON_PRESETS, parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 import { AddonSection, recalcAddons } from "./OfferAddonSection";
 import {
   InquiryProductCombobox,
+  categoryNameFor,
   findCatalogProductByName,
   pickCatalogImage,
 } from "./InquiryProductCombobox";
@@ -309,6 +332,10 @@ interface Props {
     valid_days?: number | null;
     notes?: string | null;
     open_ended?: boolean | null;
+    /** Paket 3b – fehlen bei alten Angeboten. */
+    groups?: OfferGroup[];
+    extra_fields?: OfferExtraFields;
+    order_type?: OrderType;
   };
   /** Vollseite: Aktionsleiste oben angeheftet statt am Formularende (nur Anordnung). */
   stickyActions?: boolean;
@@ -388,6 +415,22 @@ export function InquiryOfferForm({
   const [deliveryCostReturn, setDeliveryCostReturn] = useState(
     draft?.deliveryCostReturn ?? defaultCosts?.delivery_cost_return ?? 0,
   );
+  /** Paket 3b: Positionsgruppen, Zusatzfelder (Besteller, Kostenstelle, Bauvorhaben) und Auftragsart. */
+  const [groups, setGroups] = useState<OfferGroup[]>((draft?.groups as OfferGroup[]) ?? defaultMeta?.groups ?? []);
+  const [extraFields, setExtraFields] = useState<Partial<Record<keyof OfferExtraFields, string>>>(
+    (draft?.extraFields as Partial<Record<keyof OfferExtraFields, string>>) ?? defaultMeta?.extra_fields ?? {},
+  );
+  const [orderType, setOrderType] = useState<OrderType>(() =>
+    nextOrderType(
+      (draft?.orderType as OrderType) ?? defaultMeta?.order_type ?? "pickup",
+      draft?.deliveryCostDelivery ?? defaultCosts?.delivery_cost_delivery ?? 0,
+      draft?.deliveryCostReturn ?? defaultCosts?.delivery_cost_return ?? 0,
+    ),
+  );
+  const [overrideIdx, setOverrideIdx] = useState<number | null>(null);
+  /** Lieferbetrag > 0 schaltet auf Lieferung; 0 schaltet nicht zurück. */
+  const changeDeliveryCost = (v: number) => { setDeliveryCostDelivery(v); setOrderType((t) => nextOrderType(t, v, 0)); };
+  const changeReturnCost = (v: number) => { setDeliveryCostReturn(v); setOrderType((t) => nextOrderType(t, 0, v)); };
   /** Pauschalen für Auf- und Abbau (Montage/Demontage vor Ort). */
   const [setupCost, setSetupCost] = useState(draft?.setupCost ?? defaultCosts?.setup_cost ?? 0);
   const [dismantleCost, setDismantleCost] = useState(draft?.dismantleCost ?? defaultCosts?.dismantle_cost ?? 0);
@@ -581,6 +624,9 @@ export function InquiryOfferForm({
     setOpenEnded(canOpenEnded && !!d.openEnded);
     setUseSaturday(!!d.useSaturday);
     setUseSunday(!!d.useSunday);
+    setGroups(Array.isArray(d.groups) ? (d.groups as OfferGroup[]) : []);
+    setExtraFields((d.extraFields as Partial<Record<keyof OfferExtraFields, string>>) ?? {});
+    setOrderType(d.orderType === "delivery" ? "delivery" : "pickup");
   };
 
   /** Beim Öffnen prüfen, ob auf dem Server ein Entwurf (ggf. von Kollegen) liegt. */
@@ -637,6 +683,9 @@ export function InquiryOfferForm({
         openEnded,
         useSaturday,
         useSunday,
+        groups,
+        extraFields,
+        orderType,
       };
       writeInquiryDraft(draftKey, snapshot);
       if (dirtyRef.current && userTouchedRef.current) {
@@ -667,6 +716,9 @@ export function InquiryOfferForm({
     openEnded,
     useSaturday,
     useSunday,
+    groups,
+    extraFields,
+    orderType,
   ]);
 
   /** Entwurf verwerfen und Formular auf die Ausgangswerte zurücksetzen. */
@@ -696,6 +748,9 @@ export function InquiryOfferForm({
     setOpenEnded(canOpenEnded && !!defaultMeta?.open_ended);
     setUseSaturday(false);
     setUseSunday(false);
+    setGroups(defaultMeta?.groups ?? []);
+    setExtraFields(defaultMeta?.extra_fields ?? {});
+    setOrderType(nextOrderType(defaultMeta?.order_type ?? "pickup", defaultCosts?.delivery_cost_delivery ?? 0, defaultCosts?.delivery_cost_return ?? 0));
   };
 
   /** Positionen inkl. übernommenem Zeitraum – Basis für Summen, Anzeige und Versand. */
@@ -1019,20 +1074,24 @@ export function InquiryOfferForm({
         inquiry_id: inquiryId,
         ...(!isInvoice && reviseOf ? { revise_of: reviseOf } : {}),
         location,
-        items: effectiveItems.map(({ available_addons: _unused, price_source: _src, custom_period: _cp, pricing: _pr, unit_manual: _um, tier_label: _tl, ...rest }) => {
+        // Paket 3b: Positionen in Gruppenreihenfolge (PDF ohne Überschriften, die folgen in Paket 4).
+        items: orderItemsByGroups(groups, effectiveItems).map(({ available_addons: _unused, price_source: _src, custom_period: _cp, pricing: _pr, unit_manual: _um, tier_label: _tl, discount_auto: _da, ...rest }) => {
           const unit = (rest.unit ?? "kalendertage") as OfferUnit;
           // Pauschalpositionen haben keine Dauer – der Preis gilt für den
           // gesamten Auftrag, unabhängig von der Mietzeit.
           const duration = unit === "pauschal" ? 1 : rest.duration && rest.duration > 0 ? rest.duration : 1;
           const articles = rest.quantity || 1;
-          // Die PDF-Zeile zeigt Menge × Einheit; mehrere Artikel werden in der
+          const qUnit = rest.quantity_unit ?? "stk";
+          // Beschreibung nur für diesen Auftrag hat Vorrang vor der Stammbeschreibung.
+          const baseDescription = rest.description_override?.trim() || rest.description;
+          // Die PDF-Zeile zeigt Menge × Einheit; mehrere Artikel (bzw. m²/lfm) werden in der
           // Beschreibung ausgewiesen, damit die Summe nachvollziehbar bleibt.
           const description =
-            articles > 1 && unit !== "pauschal"
-              ? [rest.description, `${articles} Artikel × ${duration} ${unitLabel(duration, unit)}`]
+            (articles > 1 || qUnit !== "stk") && unit !== "pauschal"
+              ? [baseDescription, `${articles} ${qUnit === "stk" ? "Artikel" : quantityUnitShort(qUnit)} × ${duration} ${unitLabel(duration, unit)}`]
                   .filter(Boolean)
                   .join(" · ")
-              : rest.description;
+              : baseDescription;
           return {
             ...rest,
             description,
@@ -1044,7 +1103,13 @@ export function InquiryOfferForm({
             quantity: articles * duration,
             unit: unitLabel(articles * duration, unit),
             unit_code: unit,
-            addons: (rest.addons ?? []).filter((a) => Number(a.amount) !== 0),
+            // Paket 3b: Dauer separat (quantity bleibt Artikel × Dauer für die Summenfunktionen).
+            duration,
+            ...(rest.quantity_unit && rest.quantity_unit !== "stk" ? { quantity_unit: rest.quantity_unit } : { quantity_unit: undefined }),
+            name_override: rest.name_override || undefined,
+            description_override: rest.description_override || undefined,
+            // Optionale Stufen bleiben im Angebot (Betrag zählt nicht), in Rechnungen entfallen sie.
+            addons: (rest.addons ?? []).filter((a) => (a.optional ? !isInvoice : Number(a.amount) !== 0)),
           };
         }),
         payment_terms: safeCustomerPaymentTerms(customerKind, paymentTerms, isInvoice),
@@ -1068,6 +1133,9 @@ export function InquiryOfferForm({
         ...(canOpenEnded ? { open_ended: openEnded } : {}),
         ...(pricingActive ? { use_saturday: useSaturday, use_sunday: useSunday } : {}),
         notes: [notes.trim(), settlementNote].filter(Boolean).join("\n\n"),
+        ...(groups.length ? { groups } : {}),
+        ...(cleanExtraFields(extraFields) ? { extra_fields: cleanExtraFields(extraFields) } : {}),
+        order_type: orderType,
         staff_name: staffName,
       });
 
