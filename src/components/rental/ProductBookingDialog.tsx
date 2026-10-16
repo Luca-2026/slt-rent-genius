@@ -372,7 +372,7 @@ export function ProductBookingDialog({
         className={cn(
           articleId 
             ? "p-0 sm:p-0 max-w-md w-[calc(100%-1rem)] sm:w-auto max-h-[92dvh] overflow-visible top-[50%] translate-y-[-50%] touch-pan-y" 
-            : "max-w-2xl p-0 max-h-[90vh] overflow-y-auto"
+            : "max-w-2xl p-0 max-h-[90vh] overflow-y-auto overflow-x-hidden"
         )}
       >
         {articleId ? (
@@ -399,7 +399,7 @@ export function ProductBookingDialog({
         ) : (
           <>
             <DialogHeader className="p-6 pb-4 border-b border-border">
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-4 min-w-0">
                 {product.image && (
                   <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
                     <img
@@ -409,8 +409,8 @@ export function ProductBookingDialog({
                     />
                   </div>
                 )}
-                <div>
-                  <DialogTitle className="text-xl font-bold pr-6">
+                <div className="min-w-0">
+                  <DialogTitle className="text-xl font-bold pr-6 break-words">
                     {product.name}
                   </DialogTitle>
                   <div className="flex items-center gap-2 mt-1">
@@ -423,7 +423,7 @@ export function ProductBookingDialog({
               </div>
             </DialogHeader>
 
-            <div className="p-6 space-y-5">
+            <div className="p-4 sm:p-6 space-y-5 min-w-0">
               {sent ? (
                 <div className="text-center py-10 space-y-4">
                 <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto">
