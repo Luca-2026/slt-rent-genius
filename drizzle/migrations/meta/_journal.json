@@ -435,6 +435,13 @@
       "when": 1792143984376,
       "tag": "0061_inquiry_payment_log",
       "breakpoints": true
+    },
+    {
+      "idx": 62,
+      "version": "7",
+      "when": 1792144058528,
+      "tag": "0062_inquiry_payment_log_keep_legacy",
+      "breakpoints": true
     }
   ]
 }
