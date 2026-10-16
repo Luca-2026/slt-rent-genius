@@ -65,6 +65,8 @@ export async function generateOfferPdf(data: {
   creditRemainingBalance?: number;
   /** Nummer des ursprünglichen Angebots, auf das sich die Rechnung bezieht (Vorkasse-Zuordnung). */
   sourceOfferNumber?: string;
+  /** Auftrags-ID (6 Zeichen) – steht zusätzlich zur Belegnummer auf jedem Dokument. */
+  orderCode?: string | null;
   /**
    * Bereits geleistete (Teil-)Zahlungen, z. B. Vorkasse auf das Angebot.
    * Werden im Summenblock ausgewiesen und vom Rechnungsbetrag abgezogen.
@@ -117,6 +119,7 @@ export async function generateOfferPdf(data: {
   const INFO_VAL_X = INFO_X + 30 * MM;
 
   const docType = data.documentType ?? "offer";
+  const withCode = (ref: string) => (data.orderCode ? `${ref} Auftrag ${data.orderCode}` : ref);
   const iq = docType === "offer" ? data.inquiryOffer : undefined;
   const isDu = iq?.addressForm === "du";
   const T = (du: string, sie: string) => (isDu ? du : sie);
@@ -342,6 +345,7 @@ export async function generateOfferPdf(data: {
       infoRow("Angebotsdatum:", fd(data.offerDate));
       infoRow("G\u00FCltig bis:", fd(data.validUntil), rgb(0.7, 0.26, 0.04));
     }
+    if (data.orderCode) infoRow("Auftrags-ID:", `#${data.orderCode}`, BRAND);
     // Anfragen aus dem öffentlichen Formular haben keine Kundennummer –
     // dann die Zeile weglassen statt eine UUID auszuweisen.
     if (String(data.profile.id || "").trim()) {
@@ -874,7 +878,7 @@ export async function generateOfferPdf(data: {
     ["Kontoinhaber:", SLT_COMPANY.name],
     ["Bank:", SLT_COMPANY.bankName],
     ["IBAN / BIC:", `${SLT_COMPANY.iban} | ${SLT_COMPANY.bic}`],
-    ["Verwendungszweck:", ref],
+    ["Verwendungszweck:", withCode(ref)],
   ];
   const paysOnInvoice = ["net_7", "net_14", "net_30", "net_60"].includes(String(data.paymentTerms || ""));
 
@@ -936,7 +940,7 @@ export async function generateOfferPdf(data: {
         iban: SLT_COMPANY.iban,
         bic: SLT_COMPANY.bic,
         amountCents: Math.round((amountPaid > 0 ? balanceDue : data.grossAmount) * 100),
-        reference: data.offerNumber,
+        reference: withCode(data.offerNumber),
       }, ML + CW - QR - 12, y - 24 - QR, QR, font);
     }
     let by = y - 2;
@@ -968,7 +972,7 @@ export async function generateOfferPdf(data: {
         ["Kontoinhaber:", SLT_COMPANY.name],
         ["Bank:", SLT_COMPANY.bankName],
         ["IBAN / BIC:", `${SLT_COMPANY.iban} | ${SLT_COMPANY.bic}`],
-        ["Verwendungszweck:", data.offerNumber],
+        ["Verwendungszweck:", withCode(data.offerNumber)],
       ];
       for (const [label, value] of rows) {
         dt(pg, label, ML + 16, by, font, 8.5, MUTED);
@@ -1008,7 +1012,7 @@ export async function generateOfferPdf(data: {
       ["Kontoinhaber:", SLT_COMPANY.name],
       ["Bank:", SLT_COMPANY.bankName],
       ["IBAN / BIC:", `${SLT_COMPANY.iban} | ${SLT_COMPANY.bic}`],
-      ["Verwendungszweck:", data.offerNumber],
+      ["Verwendungszweck:", withCode(data.offerNumber)],
     ];
     for (const [label, value] of rows) {
       dt(pg, label, ML + 26, by, font, 8.5, MUTED);

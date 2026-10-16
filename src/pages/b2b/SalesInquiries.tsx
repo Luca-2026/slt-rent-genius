@@ -1,3 +1,4 @@
+import { OrderCodeBadge } from "@/components/b2b/inquiries/OrderCodeBadge";
 import { useMemo, useState } from "react";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useSalesInquiries } from "@/hooks/useInquiries";
@@ -90,6 +91,7 @@ export default function SalesInquiries() {
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-semibold break-words min-w-0">{salesInquiryTitle(r)}</span>
+                    <OrderCodeBadge code={r.order_code} />
                     <InquiryStatusBadge status={r.status} />
                     <span className="text-xs text-muted-foreground">
                       {SALES_KIND_LABELS[r.kind] ?? r.kind}

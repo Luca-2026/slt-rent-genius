@@ -257,6 +257,7 @@ Deno.serve(async (req) => {
       const deliveryAddress = payload.delivery_requested ? payload.delivery_address : undefined;
       const today = new Date();
       const pdfBytes = await generateOfferPdf({
+      orderCode: (inq as { order_code?: string | null }).order_code ?? null,
         documentType: "order_confirmation",
         offerNumber: confirmationNumber,
         offerDate: today.toISOString().slice(0, 10),

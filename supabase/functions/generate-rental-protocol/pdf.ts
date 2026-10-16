@@ -14,7 +14,7 @@ export interface ProtocolPdfData {
   number: string;
   createdAt: Date;
   customer: { company: string | null; name: string | null; street: string | null; postalCity: string | null; email: string | null; phone: string | null };
-  order: { confirmationNumber: string | null; offerNumber: string | null; location: string; locationAddress: string; locationKey?: string; start: string | null; end: string | null; deliveryAddress: string | null; deliveryNoteNumber: string | null };
+  order: { orderCode?: string | null; confirmationNumber: string | null; offerNumber: string | null; location: string; locationAddress: string; locationKey?: string; start: string | null; end: string | null; deliveryAddress: string | null; deliveryNoteNumber: string | null };
   items: { name: string; quantity: number; detail: string | null }[];
   condition: { readings?: { item_name: string; operating_hours: string; fuel_level: string; mileage?: string; cleanliness?: string }[]; operatingHours: string | null; fuelLevel: string | null; cleanliness: number | null; knownDefects: string | null; notes: string | null; allReturned: boolean | null; missingNotes: string | null; itemCleanliness?: { item_name: string; rating: number; units: number | null; comment: string | null }[] };
   signedPlace?: string;
@@ -193,6 +193,7 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
     text(l, ix, iy, font, 8.5, MUTED); text(v, ix + 30 * MMU, iy, font, s, col); iy -= 12;
   };
   info("Protokoll-Nr.:", data.number, BRAND);
+  if (data.order.orderCode) info("Auftrags-ID:", `#${data.order.orderCode}`, BRAND);
   info("Erstellt am:", berlin(data.createdAt));
   if (data.order.confirmationNumber) info("Auftragsbest.:", data.order.confirmationNumber);
   if (data.order.offerNumber) info("Angebot:", data.order.offerNumber);
