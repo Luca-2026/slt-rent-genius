@@ -26,7 +26,7 @@ import {
   getCompatibleAccessories,
   type Product,
 } from "@/data/rentalData";
-import { useManagedProductsVersion } from "@/data/managedProductsCache";
+import { getManagedProductsCacheStatus, useManagedProductsVersion } from "@/data/managedProductsCache";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { AnhaengersteckerAnleitung } from "@/components/rental/AnhaengersteckerAnleitung";
 import { BaumaschinenanhaengerBundleHint } from "@/components/rental/BaumaschinenanhaengerBundleHint";
@@ -622,6 +622,17 @@ export default function ProductDetail() {
 
   if (!product && productId && LEGACY_PRODUCT_ID_REDIRECTS[productId]) {
     return <Navigate to={LEGACY_PRODUCT_ID_REDIRECTS[productId]} replace />;
+  }
+
+  // Artikel aus dem CMS noch nicht geladen → Ladeanzeige statt „nicht gefunden“ aufblitzen lassen.
+  if (location && !product && getManagedProductsCacheStatus() === "idle") {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-24 flex justify-center" aria-busy="true">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+        </div>
+      </Layout>
+    );
   }
 
   if (!location || !category || !product) {
