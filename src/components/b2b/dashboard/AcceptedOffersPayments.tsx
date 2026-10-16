@@ -34,6 +34,7 @@ const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30"]);
 /** All accepted inquiries awaiting confirmation, including manual acceptance. */
 export function AcceptedOffersPayments() {
   const [rows, setRows] = useState<Row[]>([]);
+  const seen = useRef<Map<string, Row["state"]> | null>(null);
   const [error, setError] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
@@ -81,7 +82,18 @@ export function AcceptedOffersPayments() {
         });
       }
       out.sort((a, b) => (b.acceptedAt ?? list.find((i) => i.id === b.inquiryId)?.offer_sent_at ?? "").localeCompare(a.acceptedAt ?? list.find((i) => i.id === a.inquiryId)?.offer_sent_at ?? ""));
-      if (active) { setRows(out); setError(false); }
+      if (!active) return;
+      // Pop-up only for changes after the first load: new acceptance, or payment now complete.
+      if (seen.current) {
+        for (const r of out) {
+          const prev = seen.current.get(r.inquiryId);
+          if (!prev) toast.info(`Angebot angenommen: ${r.customer} (${r.offer})`, { duration: 15000 });
+          if (r.state === "paid" && prev !== "paid")
+            toast.success(`${r.customer}: angenommen und bezahlt – Auftragsbestätigung senden und Mietauftrag anlegen.`, { duration: 30000 });
+        }
+      }
+      seen.current = new Map(out.map((r) => [r.inquiryId, r.state]));
+      setRows(out); setError(false);
     };
     load();
     const ch = supabase
