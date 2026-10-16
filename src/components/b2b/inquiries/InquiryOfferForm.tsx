@@ -1060,8 +1060,24 @@ export function InquiryOfferForm({
             image_url: item.image_url ?? image,
             unit_price: useCms ? resolved!.price : item.unit_price,
             price_source: useCms ? ("cms" as const) : item.price_source,
-            unit: item.unit ?? resolved?.unit ?? "kalendertage",
-            duration: item.duration && item.duration > 0 ? item.duration : 1,
+            ...(() => {
+              // Vorbelegte Positionen ohne Einheit: Einheit + Dauer nach Preisschema (Bau = Miettage, Event = Kalendertage).
+              if (!item.unit && pricing && item.rental_start && item.rental_end) {
+                const r = computeRentalLinePrice({
+                  prices: pricing.prices,
+                  scheme: pricing.scheme,
+                  start: { date: item.rental_start, time: item.rental_start_time },
+                  end: { date: item.rental_end, time: item.rental_end_time },
+                  unit: null,
+                  opts: dayOpts,
+                });
+                if (r.kind !== "weekend") return { unit: r.unit, duration: r.duration };
+              }
+              return {
+                unit: item.unit ?? resolved?.unit ?? "kalendertage",
+                duration: item.duration && item.duration > 0 ? item.duration : 1,
+              };
+            })(),
             product_slug: item.product_slug ?? match.slug,
             available_addons: cmsAddons,
             ...withCustomerDiscount(item, match.category, discounts),
