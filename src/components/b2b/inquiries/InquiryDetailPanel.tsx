@@ -773,10 +773,15 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           <Button size="sm" variant={docMode === "invoice" ? "default" : "outline"} onClick={() => setDocMode("invoice")}>
             <Receipt className="h-3.5 w-3.5 mr-1" /> Rechnung erstellen
           </Button>
+          {layout === "page" && inquiry.status === "accepted" && inquiry.offer_number && (
+            <Button size="sm" variant={docMode === "order" ? "default" : "outline"} onClick={() => setDocMode("order")}>
+              Auftragsbestätigung erstellen
+            </Button>
+          )}
         </div>
         <div>
           <div className="font-semibold text-sm">
-            {docMode === "offer" ? "Angebot erstellen" : docMode === "revise" ? `Angebot ${inquiry.offer_number} überarbeiten` : docMode === "final" ? "Schlussrechnung erstellen" : "Rechnung erstellen"}
+            {docMode === "offer" ? "Angebot erstellen" : docMode === "revise" ? `Angebot ${inquiry.offer_number} überarbeiten` : docMode === "final" ? "Schlussrechnung erstellen" : docMode === "order" ? "Auftragsbestätigung erstellen" : "Rechnung erstellen"}
           </div>
           <p className="text-xs text-muted-foreground">
             {docMode === "revise"
@@ -785,6 +790,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               ? "Gesamtabrechnung des Auftrags: Positionen und Leistungszeitraum an die tatsächliche Miete anpassen. Alle nicht stornierten Abschlagsrechnungen werden beim Versand automatisch mit Netto, USt. und Brutto abgezogen."
               : docMode === "offer"
               ? "Positionen prüfen und das Angebot per E-Mail senden."
+              : docMode === "order"
+              ? "Zahlungseingänge prüfen, ggf. Verfügbarkeit klären und die Auftragsbestätigung per E-Mail senden – der Auftrag kommt damit verbindlich zustande."
               : "Endabrechnung: Positionen und Leistungszeitraum an die tatsächliche Miete anpassen (z. B. Verlängerung). Bereits erfasste Zahlungen werden abgezogen, die Rechnungsnummer wird beim Versand vergeben."}
           </p>
         </div>
