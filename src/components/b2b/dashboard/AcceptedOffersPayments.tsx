@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { CheckCircle2, ChevronDown, ChevronRight, ChevronUp } from "lucide-react";
+import { BellRing, CheckCircle2, ChevronDown, ChevronRight, ChevronUp } from "lucide-react";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { isAwaitingOfferConfirmation } from "@/lib/dashboardMetrics";
@@ -98,7 +99,36 @@ export function AcceptedOffersPayments() {
   const PREVIEW = 2;
   const visible = expanded ? rows : rows.slice(0, PREVIEW);
   const hidden = rows.length - PREVIEW;
+  const ready = rows.filter((r) => r.state === "paid");
   return (
+    <div className="space-y-3">
+    {ready.length > 0 && (
+      <section role="alert" className="rounded-xl border-2 border-accent bg-accent/10 p-4" aria-label="Auftragsbestätigung fällig">
+        <div className="flex items-start gap-2">
+          <BellRing className="mt-0.5 h-5 w-5 shrink-0 text-accent animate-pulse" aria-hidden="true" />
+          <div className="min-w-0 flex-1">
+            <h2 className="font-bold text-foreground">
+              {ready.length === 1 ? "1 Auftrag" : `${ready.length} Aufträge`} angenommen und vollständig bezahlt
+            </h2>
+            <p className="text-sm text-muted-foreground">Jetzt Auftragsbestätigung senden und Mietauftrag anlegen.</p>
+          </div>
+        </div>
+        <ul className="mt-3 space-y-2">
+          {ready.map((r) => (
+            <li key={"ready" + r.inquiryId}>
+              <Link
+                to={r.table === "sales_inquiries" ? `/b2b/verkaufsanfragen?anfrage=${r.inquiryId}` : `/b2b/mietanfragen/${r.inquiryId}`}
+                className="flex items-center gap-2 rounded-md bg-card px-3 py-2 text-sm hover:bg-muted"
+              >
+                <span className="min-w-0 flex-1 break-words"><strong className="text-foreground">{r.customer}</strong> · {r.offer} · {euro(r.paid)}</span>
+                <span className="shrink-0 font-medium text-primary">Bestätigen</span>
+                <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
     <section className="rounded-xl border-2 border-primary bg-card" aria-label="Angenommene Angebote">
       <header className="flex items-center gap-2 border-b border-border px-4 py-3">
         <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
@@ -143,5 +173,6 @@ export function AcceptedOffersPayments() {
         </button>
       )}
     </section>
+    </div>
   );
 }
