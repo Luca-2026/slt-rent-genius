@@ -3,11 +3,11 @@
 - src/components/b2b/admin/AGENTS.md steuert die CMS-Artikelmaske: Preisschema je Artikel, Hauptkategorie und die Preisregeln (Pflicht, Rückfallstufen, Alt-Textfelder).
 - WhatsApp: locationWhatsAppContacts.ts + BonnWhatsAppContact; WhatsAppIcon.tsx = Markenglyph.
 - Customer payment-term eligibility is shared through _shared/customer-payment-terms.ts in forms and send functions; validate before number allocation to prevent UI bypasses without modifying issued snapshots.
-- Signing overlays: ref counting + route gating hide cart/cookies while signing.
+- Signing overlays: ref counting + route gating.
 <!-- LOVABLE:BEGIN -->
 - Inject the portal first-paint guard through the Vite HTML plugin before body parsing; hide only prerender fallback content on the exact portal host to preserve public SEO and the React portal.
 <!-- LOVABLE:END -->
-- Kundengruppen-Filter nur über src/lib/customerSegment.ts (Filter: Privat vs. Geschäftskunden inkl. B2B-Portal) – einheitliche Logik in allen Portal-Listen.
+- Kundengruppen-Filter nur über src/lib/customerSegment.ts (Filter: Privat vs. Geschäftskunden inkl. B2B-Portal)
 - Portal-Startseite /b2b/start (StaffHome) ist Landeseite für Admin/Mitarbeiter; Kennzahlen nur über src/lib/dashboardMetrics.ts (getestet) – eine Umsatzdefinition für alle Ansichten.
 - Revenue uses src/lib/dashboardMetrics.ts and revenueAnalytics.ts: countsAsRevenue includes typed cancelled originals and credits in both sources so they offset; location/category/article totals must agree.
 - Accepted-offer monitoring uses isAwaitingOfferConfirmation in dashboardMetrics for every acceptance channel without an age cutoff; online signature details are optional evidence, not an inclusion filter.
