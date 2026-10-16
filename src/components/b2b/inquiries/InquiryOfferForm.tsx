@@ -309,6 +309,10 @@ interface Props {
     notes?: string | null;
     open_ended?: boolean | null;
   };
+  /** Vollseite: Aktionsleiste oben angeheftet statt am Formularende (nur Anordnung). */
+  stickyActions?: boolean;
+  /** Zusätzliche Elemente links in der angehefteten Aktionsleiste (z. B. Status). */
+  stickyActionsLead?: ReactNode;
 }
 
 /** Offene Position aus einem Rücknahmeprotokoll, die noch nicht abgerechnet wurde. */
@@ -1183,8 +1187,57 @@ export function InquiryOfferForm({
     onSent?.();
   };
 
+  // Aktionen (Vorschau, Senden) – in der Vollseite oben angeheftet, sonst wie bisher am Ende.
+  const previewButton = !isInvoice && (
+    <Button type="button" variant="outline" onClick={preview} disabled={disabled || previewing || sending} className={stickyActions ? "" : "w-full"}>
+      {previewing ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Eye className="h-4 w-4 mr-2" />}
+      {previewing ? "Vorschau wird erstellt …" : "PDF-Vorschau anzeigen"}
+    </Button>
+  );
+  const sendButton = (
+    <Button onClick={send} disabled={disabled || sending || checking || !previewOk} className={stickyActions ? "" : "w-full"}>
+      <Send className="h-4 w-4 mr-2" />
+      {isInvoice
+        ? sending
+          ? `${isSupplement ? "Nachtrag" : "Rechnung"} wird gesendet …`
+          : `${isSupplement ? "Nachtrag" : "Rechnung"} per E-Mail senden`
+        : sending
+          ? "Angebot wird gesendet …"
+          : "Angebot per E-Mail senden"}
+    </Button>
+  );
+  const previewHint = !previewOk && <p className="text-xs text-muted-foreground">Vor dem Senden bitte die PDF-Vorschau des aktuellen Stands ansehen.</p>;
+  const actionText = (
+    <p className="text-xs text-muted-foreground">
+      {isInvoice
+        ? "Die Rechnungsnummer wird beim Versand vergeben. Danach ist die Rechnung unveränderlich und kann nur noch storniert werden."
+        : "Der Kunde kann das Angebot über den Button in der E-Mail online annehmen und unterschreiben – ihr bekommt dann einen Hinweis hier in der Anfrage. Danach den Job manuell in Rentware anlegen."}
+    </p>
+  );
+  const actionBar = stickyActions ? (
+    <div className="sticky top-20 z-20 -mx-1 rounded-lg border border-border bg-background/95 p-2 shadow-sm backdrop-blur" data-testid="offer-action-bar">
+      <div className="flex flex-wrap items-center gap-2">
+        {stickyActionsLead}
+        <div className="ml-auto flex flex-wrap gap-2">{previewButton}{sendButton}</div>
+      </div>
+      {previewHint && <div className="mt-1 text-right">{previewHint}</div>}
+    </div>
+  ) : (
+    <>
+      {previewButton}
+    </>
+  );
+  const actionHint = stickyActions ? actionText : (
+    <>
+      {previewHint}
+      {sendButton}
+      {actionText}
+    </>
+  );
+
   return (
     <div className="space-y-4">
+      {stickyActions && actionBar}
       {remoteDraft && !disabled && remoteDraft.updatedBy !== myUserId && (
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-primary/40 bg-primary/5 p-3 text-sm">
           <span>
@@ -2079,12 +2132,7 @@ export function InquiryOfferForm({
         }}
       />
 
-      {!isInvoice && (
-        <Button type="button" variant="outline" onClick={preview} disabled={disabled || previewing || sending} className="w-full">
-          {previewing ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Eye className="h-4 w-4 mr-2" />}
-          {previewing ? "Vorschau wird erstellt …" : "PDF-Vorschau anzeigen"}
-        </Button>
-      )}
+      {!stickyActions && actionBar}
       <Dialog open={!!previewUrl} onOpenChange={(o) => { if (!o) setPreviewUrl(null); }}>
         <DialogContent className="max-w-4xl w-[calc(100vw-1rem)] h-[90vh] flex flex-col gap-3 p-3 sm:p-6">
           <DialogHeader>
@@ -2105,22 +2153,7 @@ export function InquiryOfferForm({
           </div>
         </DialogContent>
       </Dialog>
-      {!previewOk && <p className="text-xs text-muted-foreground">Vor dem Senden bitte die PDF-Vorschau des aktuellen Stands ansehen.</p>}
-      <Button onClick={send} disabled={disabled || sending || checking || !previewOk} className="w-full">
-        <Send className="h-4 w-4 mr-2" />
-        {isInvoice
-          ? sending
-            ? `${isSupplement ? "Nachtrag" : "Rechnung"} wird gesendet …`
-            : `${isSupplement ? "Nachtrag" : "Rechnung"} per E-Mail senden`
-          : sending
-            ? "Angebot wird gesendet …"
-            : "Angebot per E-Mail senden"}
-      </Button>
-      <p className="text-xs text-muted-foreground">
-        {isInvoice
-          ? "Die Rechnungsnummer wird beim Versand vergeben. Danach ist die Rechnung unveränderlich und kann nur noch storniert werden."
-          : "Der Kunde kann das Angebot über den Button in der E-Mail online annehmen und unterschreiben – ihr bekommt dann einen Hinweis hier in der Anfrage. Danach den Job manuell in Rentware anlegen."}
-      </p>
+      {!stickyActions && actionHint}
     </div>
   );
 }
