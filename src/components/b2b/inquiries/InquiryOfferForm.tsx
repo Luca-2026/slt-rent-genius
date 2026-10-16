@@ -56,7 +56,7 @@ import {
   type QuantityUnit,
 } from "./offerMath";
 import { ADDON_PRESETS, parseAddonOptions, suggestAddonAmount, type AddonOption } from "@/lib/offerAddons";
-import { AddonSection, recalcAddons } from "./OfferAddonSection";
+import { AddonSection, buildAddonsFromOptions, recalcAddons } from "./OfferAddonSection";
 import {
   InquiryProductCombobox,
   categoryNameFor,
@@ -1085,22 +1085,12 @@ export function InquiryOfferForm({
           };
           // Vom Kunden im Anfrageformular gewählte Zusatzoptionen vorbelegen
           // (nur solange die Position noch keine Addons hat und der Key im CMS gepflegt ist).
-          if (!next.addons?.length && item.requested_addon_keys?.length) {
-            const picked = cmsAddons.filter((o) => item.requested_addon_keys!.includes(o.key));
+          // Pflichtversicherung (Standardstufe) immer, sonstige nur wenn im CMS gepflegt –
+          // gleiche Logik wie das Dropdown: Kalendertage über den Zeitraum + Selbstbehalt-Stufen.
+          if (!next.addons?.length && item.requested_addon_keys) {
+            const picked = cmsAddons.filter((o) => o.is_default || item.requested_addon_keys!.includes(o.key));
             if (picked.length) {
-              next.addons = picked.map((o) => ({
-                key: o.key,
-                label: o.label,
-                amount: suggestAddonAmount(o, {
-                  quantity: next.quantity,
-                  unit_price: next.unit_price,
-                  discount_percent: next.discount_percent,
-                  duration: next.duration,
-                }),
-                note: o.deductible ? `Selbstbeteiligung ${o.deductible.toLocaleString("de-DE")} €` : undefined,
-                price_type: o.price_type,
-                rate: o.price,
-              }));
+              next.addons = buildAddonsFromOptions(picked, cmsAddons, next as OfferLine, next.rental_start ?? null, next.rental_end ?? null);
             }
           }
           // Paket 2: nur neue Positionen (noch ohne Preis) automatisch nach Staffel rechnen;
