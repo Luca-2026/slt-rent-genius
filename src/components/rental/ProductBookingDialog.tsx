@@ -79,6 +79,46 @@ const PRODUCT_EXTRAS: Record<string, { id: string; label: string; price: number 
   ],
 };
 
+/** Uhrzeit-Feld: Auswahl in 30-Minuten-Schritten, wenn der Standort ein Zeitfenster hat, sonst freie Eingabe. */
+function TimeField({
+  id,
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  options: string[] | null;
+  onChange: (v: string) => void;
+}) {
+  if (!options) {
+    return (
+      <div className="space-y-1.5">
+        <Label htmlFor={id}>{label}</Label>
+        <Input id={id} type="time" required value={value} onChange={(e) => onChange(e.target.value)} />
+      </div>
+    );
+  }
+  const opts = value && !options.includes(value) ? [value, ...options] : options;
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={id}>{label}</Label>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger id={id} aria-label={label}>
+          <SelectValue placeholder="Uhrzeit wählen" />
+        </SelectTrigger>
+        <SelectContent>
+          {opts.map((t) => (
+            <SelectItem key={t} value={t}>{t} Uhr</SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
+
 export function ProductBookingDialog({ 
   product, 
   location, 
