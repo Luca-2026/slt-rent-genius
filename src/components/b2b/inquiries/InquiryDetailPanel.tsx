@@ -764,7 +764,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
     <>
       <div ref={docSectionRef}>
         <div className="mb-4 space-y-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {([
             { mode: "offer", label: inquiry.offer_number ? "Neues Angebot" : "Angebot erstellen", icon: FilePlus2, show: true },
             { mode: "revise", label: "Angebot überarbeiten", icon: Pencil, show: !!(offerSnapshot && inquiry.offer_number) },
