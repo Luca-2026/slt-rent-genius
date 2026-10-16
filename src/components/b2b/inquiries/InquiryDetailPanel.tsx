@@ -818,7 +818,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           />
         ) : (
         <InquiryOfferForm
-          key={`${inquiry.id}:${docMode}:${docMode === "revise" ? inquiry.offer_number : ""}`}
+          key={`${inquiry.id}:${docMode}:${deposit.loaded ? deposit.chargeLines.length : "-"}:${docMode === "revise" ? inquiry.offer_number : ""}`}
           inquiryType={inquiryType}
           inquiryId={inquiry.id}
           location={inquiry.location}
