@@ -1575,6 +1575,7 @@ export function InquiryOfferForm({
                 type="button"
                 variant="ghost"
                 size="icon"
+                className="ml-auto sm:ml-0"
                 onClick={() => setItems((prev) => prev.filter((_, i) => i !== index))}
                 disabled={disabled || items.length === 1}
                 aria-label="Position entfernen"
