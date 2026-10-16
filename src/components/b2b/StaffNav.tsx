@@ -57,6 +57,7 @@ export const STAFF_NAV: StaffNavGroup[] = [
       { label: "Übergabeprotokolle", path: "/b2b/admin", tab: "delivery-notes", icon: ClipboardCheck, access: "inventory" },
       { label: "Rücknahmeprotokolle", path: "/b2b/admin", tab: "return-protocols", icon: Undo2, access: "inventory" },
       { label: "Schäden", path: "/b2b/admin", tab: "damages", icon: AlertTriangle, access: "inventory" },
+      { label: "Transporte", path: "/b2b/transporte", icon: Truck, access: "staff" },
       { label: "Aufgaben", path: "/b2b/aufgaben", icon: CheckSquare, access: "staff", badgeKey: "todos" },
       { label: "Materialdispo", path: "/b2b/aufgaben", tab: "material", icon: Truck, access: "staff" },
     ],
