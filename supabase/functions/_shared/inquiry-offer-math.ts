@@ -23,6 +23,8 @@ export interface InquiryOfferAddon {
   /** Paket 3b: optionale Versicherungsstufe – zählt nicht in die Summe. */
   optional?: boolean;
   per_day?: number;
+  of_key?: string;
+  surcharge_percent?: number;
 }
 
 /** Paket 3b: optionale Zusatzoptionen zählen nicht in Positions-/Angebotssumme. */
@@ -172,6 +174,9 @@ function normalizeAddons(
       out.optional = true;
       const perDay = Number(a.per_day);
       if (Number.isFinite(perDay) && perDay >= 0 && perDay <= 1_000_000) out.per_day = round2(perDay);
+      if (typeof a.of_key === "string") out.of_key = a.of_key.slice(0, 60);
+      const sp = Number(a.surcharge_percent);
+      if (Number.isFinite(sp) && sp > 0 && sp <= 1000) out.surcharge_percent = sp;
     }
     const priceType = a.price_type as AddonPriceType;
     const basis = a.basis as AddonBasis;

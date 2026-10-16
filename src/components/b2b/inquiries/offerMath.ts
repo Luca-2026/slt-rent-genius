@@ -31,6 +31,9 @@ export interface OfferLineAddon {
   optional?: boolean;
   /** Paket 3b: Aufpreis je Kalendertag der optionalen Stufe (Anzeige „€/KT“). */
   per_day?: number;
+  /** Bezug der optionalen Stufe: Schlüssel der Standardstufe und Aufschlag in %. */
+  of_key?: string;
+  surcharge_percent?: number;
 }
 
 export interface OfferLine {

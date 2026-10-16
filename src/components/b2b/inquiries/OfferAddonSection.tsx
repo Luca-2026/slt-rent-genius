@@ -43,7 +43,7 @@ export function recalcAddons<T extends OfferLine>(item: T): T {
   if (!item.addons?.length) return item;
   const ctx = lineContext(item);
   let changed = false;
-  const addons = item.addons.map((a) => {
+  const mapped = item.addons.map((a) => {
     if (!a.price_type || a.rate === undefined) return a;
     let next = a;
     // Einheit auf Stück/Pauschal gewechselt → gesamte Mietdauer nicht mehr möglich.
@@ -60,6 +60,18 @@ export function recalcAddons<T extends OfferLine>(item: T): T {
     if (signed === next.amount && next === a) return a;
     changed = true;
     return { ...next, amount: signed };
+  });
+  // Optionale Stufen folgen dem (neu berechneten) Standardbetrag je KT.
+  const addons = mapped.map((a) => {
+    if (!a.optional || !a.of_key || !a.surcharge_percent || a.manual) return a;
+    const std = mapped.find((x) => x.key === a.of_key && !x.optional);
+    const base = std ? standardPerDay(std, ctx) : null;
+    if (base === null) return a;
+    const perDay = round2(base * (a.surcharge_percent / 100));
+    const amount = a.days ? computeAddonAmount({ price_type: "per_unit", rate: perDay, basis: "full_period", days: a.days }, ctx) ?? 0 : 0;
+    if (perDay === a.per_day && amount === a.amount) return a;
+    changed = true;
+    return { ...a, per_day: perDay, rate: perDay, amount };
   });
   if (!changed && addons.every((a, i) => a === item.addons![i])) return item;
   return { ...item, addons };
@@ -96,6 +108,8 @@ export function buildOptionalTier(
     label: tier.deductible ? `Selbstbehalt-Reduzierung auf ${tier.deductible.toLocaleString("de-DE")} €` : tier.label,
     optional: true,
     per_day: perDay,
+    of_key: std.key,
+    surcharge_percent: tier.surcharge_percent,
     price_type: "per_unit",
     rate: perDay,
     basis: "full_period",
