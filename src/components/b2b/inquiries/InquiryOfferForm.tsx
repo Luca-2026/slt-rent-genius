@@ -1217,7 +1217,7 @@ export function InquiryOfferForm({
     </p>
   );
   const actionBar = stickyActions ? (
-    <div className="sticky top-20 z-20 -mx-1 rounded-lg border border-border bg-background/95 p-2 shadow-sm backdrop-blur" data-testid="offer-action-bar">
+    <div className="sticky top-28 lg:top-32 z-20 -mx-1 rounded-lg border border-border bg-background/95 p-2 shadow-sm backdrop-blur" data-testid="offer-action-bar">
       <div className="flex flex-wrap items-center gap-2">
         {stickyActionsLead}
         <div className="ml-auto flex flex-wrap gap-2">{previewButton}{sendButton}</div>

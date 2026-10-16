@@ -753,7 +753,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
       <div className="flex flex-col gap-5 lg:grid lg:grid-cols-3 lg:items-start">
         {/* Unter 1024 px: Kundenanfrage eingeklappt ganz oben. */}
         {mobileDetails && <div className="lg:hidden">{mobileDetails}</div>}
-        <aside className="order-last space-y-5 lg:order-none lg:col-span-1 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pr-1">
+        <aside className="order-last space-y-5 lg:order-none lg:col-span-1 lg:sticky lg:top-32 lg:max-h-[calc(100vh-9rem)] lg:overflow-y-auto lg:pr-1">
           {customerEl}
           {locationEl}
           <div className="hidden lg:block">{details}</div>
