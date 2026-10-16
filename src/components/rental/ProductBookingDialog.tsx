@@ -579,16 +579,13 @@ export function ProductBookingDialog({
                           onChange={(e) => setForm({ ...form, startDate: e.target.value })}
                         />
                       </div>
-                      <div className="space-y-1.5">
-                        <Label htmlFor="inq-start-time">Abholung Uhrzeit *</Label>
-                        <Input
-                          id="inq-start-time"
-                          type="time"
-                          required
-                          value={form.startTime}
-                          onChange={(e) => setForm({ ...form, startTime: e.target.value })}
-                        />
-                      </div>
+                      <TimeField
+                        id="inq-start-time"
+                        label="Abholung Uhrzeit *"
+                        value={form.startTime}
+                        options={startTimeOptions}
+                        onChange={(v) => setForm({ ...form, startTime: v })}
+                      />
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -598,20 +595,57 @@ export function ProductBookingDialog({
                           id="inq-end"
                           type="date"
                           required
+                          min={form.startDate || undefined}
                           value={form.endDate}
                           onChange={(e) => setForm({ ...form, endDate: e.target.value })}
                         />
                       </div>
-                      <div className="space-y-1.5">
-                        <Label htmlFor="inq-end-time">Rückgabe Uhrzeit *</Label>
-                        <Input
-                          id="inq-end-time"
-                          type="time"
-                          required
-                          value={form.endTime}
-                          onChange={(e) => setForm({ ...form, endTime: e.target.value })}
-                        />
+                      <TimeField
+                        id="inq-end-time"
+                        label="Rückgabe Uhrzeit *"
+                        value={form.endTime}
+                        options={endTimeOptions}
+                        onChange={(v) => setForm({ ...form, endTime: v })}
+                      />
+                    </div>
+
+                    {dateOrderInvalid && (
+                      <p role="alert" className="text-sm font-medium text-destructive">
+                        Das Rückgabedatum darf nicht vor dem Abholdatum liegen.
+                      </p>
+                    )}
+
+                    {/* W4: Wochenend-Nutzungstage + unverbindliche Preisschätzung */}
+                    <div className="space-y-2 rounded-lg border border-border bg-muted/30 p-3">
+                      <div className="flex flex-col gap-2 sm:flex-row sm:gap-6">
+                        <label className="flex items-center gap-2 text-sm cursor-pointer">
+                          <Checkbox
+                            checked={form.useSaturday}
+                            onCheckedChange={(c) => setForm({ ...form, useSaturday: c === true })}
+                          />
+                          Samstag als Nutzungstag
+                        </label>
+                        <label className="flex items-center gap-2 text-sm cursor-pointer">
+                          <Checkbox
+                            checked={form.useSunday}
+                            onCheckedChange={(c) => setForm({ ...form, useSunday: c === true })}
+                          />
+                          Sonntag als Nutzungstag
+                        </label>
                       </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        <Info className="inline h-3 w-3 mr-1 -mt-0.5" aria-hidden="true" />
+                        Bei Mietzeiträumen ab 5 Miettagen zählen Samstag und Sonntag nur mit, wenn du sie hier ankreuzt – z. B. wenn du das Gerät am Wochenende weiter nutzt.
+                      </p>
+                      {calcLine && (
+                        <p className="text-xs font-medium text-foreground border-t border-border pt-2">
+                          Unverbindliche Schätzung:{" "}
+                          {calcLine.kind === "weekend"
+                            ? <>Wochenendtarif pauschal {displayPrice(calcLine.unit_price, customerType)}</>
+                            : <>ca. {calcLine.duration} {unitLabel(calcLine.duration, calcLine.unit)} × {displayPrice(calcLine.unit_price, customerType)} = {displayPrice(calcLine.duration * calcLine.unit_price, customerType)}</>}
+                          {" "}– der verbindliche Preis steht im Angebot.
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-1.5">
