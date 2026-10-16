@@ -96,7 +96,11 @@ function offerPayloadToLines(payload: unknown): {
     return_location_cost: number;
     deposit: number;
   };
-  meta: { payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null; open_ended: boolean };
+  meta: {
+    payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null; open_ended: boolean;
+    /** Paket 3b – fehlen bei alten Angeboten. */
+    groups?: OfferGroup[]; extra_fields?: OfferExtraFields; order_type?: OrderType;
+  };
   delivery: OfferDeliveryAddress | null;
 } | null {
   const p = payload as
@@ -114,6 +118,9 @@ function offerPayloadToLines(payload: unknown): {
         valid_days?: number;
         notes?: string | null;
         open_ended?: boolean;
+        groups?: unknown;
+        extra_fields?: unknown;
+        order_type?: unknown;
         delivery_requested?: boolean;
         delivery_address?: { street?: string; postal_code?: string; city?: string };
       }
@@ -139,6 +146,11 @@ function offerPayloadToLines(payload: unknown): {
     rental_start: typeof raw.rental_start === "string" ? raw.rental_start : undefined,
     rental_end: typeof raw.rental_end === "string" ? raw.rental_end : undefined,
     image_url: typeof raw.image_url === "string" ? raw.image_url : undefined,
+    // Paket 3b (fehlen bei alten Angeboten)
+    ...(typeof raw.group_id === "string" ? { group_id: raw.group_id } : {}),
+    ...(raw.quantity_unit === "m2" || raw.quantity_unit === "lfm" ? { quantity_unit: raw.quantity_unit as QuantityUnit } : {}),
+    ...(typeof raw.name_override === "string" && raw.name_override ? { name_override: raw.name_override } : {}),
+    ...(typeof raw.description_override === "string" && raw.description_override ? { description_override: raw.description_override } : {}),
     addons: Array.isArray(raw.addons)
       ? (raw.addons as Array<Record<string, unknown>>).map((a) => ({
           key: String(a.key ?? "addon"),
@@ -155,6 +167,16 @@ function offerPayloadToLines(payload: unknown): {
                 period_end: typeof a.period_end === "string" ? a.period_end : null,
                 // Übernommene Beträge bleiben exakt wie im Angebot.
                 manual: a.manual === true,
+                ...(a.days_manual === true ? { days_manual: true } : {}),
+                ...(typeof a.days_reason === "string" ? { days_reason: a.days_reason } : {}),
+                ...(a.optional === true
+                  ? {
+                      optional: true,
+                      per_day: Number(a.per_day) || Number(a.rate) || 0,
+                      ...(typeof a.of_key === "string" ? { of_key: a.of_key } : {}),
+                      ...(Number(a.surcharge_percent) > 0 ? { surcharge_percent: Number(a.surcharge_percent) } : {}),
+                    }
+                  : {}),
               }
             : {}),
         }))
@@ -178,6 +200,9 @@ function offerPayloadToLines(payload: unknown): {
       valid_days: Number(p.valid_days) > 0 ? Number(p.valid_days) : null,
       notes: typeof p.notes === "string" ? p.notes : null,
       open_ended: p.open_ended === true,
+      ...(parseGroups(p.groups).length ? { groups: parseGroups(p.groups) } : {}),
+      ...(cleanExtraFields(p.extra_fields) ? { extra_fields: cleanExtraFields(p.extra_fields) } : {}),
+      ...(p.order_type === "delivery" || p.order_type === "pickup" ? { order_type: p.order_type as OrderType } : {}),
     },
     delivery:
       typeof p.delivery_requested === "boolean"
