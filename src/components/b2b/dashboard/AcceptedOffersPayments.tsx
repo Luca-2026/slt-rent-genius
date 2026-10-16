@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { CheckCircle2, ChevronDown, ChevronRight, ChevronUp } from "lucide-react";
+import { BellRing, CheckCircle2, ChevronDown, ChevronRight, ChevronUp } from "lucide-react";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { isAwaitingOfferConfirmation } from "@/lib/dashboardMetrics";
@@ -33,6 +34,7 @@ const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30"]);
 /** All accepted inquiries awaiting confirmation, including manual acceptance. */
 export function AcceptedOffersPayments() {
   const [rows, setRows] = useState<Row[]>([]);
+  const seen = useRef<Map<string, Row["state"]> | null>(null);
   const [error, setError] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
@@ -80,7 +82,18 @@ export function AcceptedOffersPayments() {
         });
       }
       out.sort((a, b) => (b.acceptedAt ?? list.find((i) => i.id === b.inquiryId)?.offer_sent_at ?? "").localeCompare(a.acceptedAt ?? list.find((i) => i.id === a.inquiryId)?.offer_sent_at ?? ""));
-      if (active) { setRows(out); setError(false); }
+      if (!active) return;
+      // Pop-up only for changes after the first load: new acceptance, or payment now complete.
+      if (seen.current) {
+        for (const r of out) {
+          const prev = seen.current.get(r.inquiryId);
+          if (!prev) toast.info(`Angebot angenommen: ${r.customer} (${r.offer})`, { duration: 15000 });
+          if (r.state === "paid" && prev !== "paid")
+            toast.success(`${r.customer}: angenommen und bezahlt – Auftragsbestätigung senden und Mietauftrag anlegen.`, { duration: 30000 });
+        }
+      }
+      seen.current = new Map(out.map((r) => [r.inquiryId, r.state]));
+      setRows(out); setError(false);
     };
     load();
     const ch = supabase
@@ -98,7 +111,36 @@ export function AcceptedOffersPayments() {
   const PREVIEW = 2;
   const visible = expanded ? rows : rows.slice(0, PREVIEW);
   const hidden = rows.length - PREVIEW;
+  const ready = rows.filter((r) => r.state === "paid");
   return (
+    <div className="space-y-3">
+    {ready.length > 0 && (
+      <section role="alert" className="rounded-xl border-2 border-accent bg-accent/10 p-4" aria-label="Auftragsbestätigung fällig">
+        <div className="flex items-start gap-2">
+          <BellRing className="mt-0.5 h-5 w-5 shrink-0 text-accent animate-pulse" aria-hidden="true" />
+          <div className="min-w-0 flex-1">
+            <h2 className="font-bold text-foreground">
+              {ready.length === 1 ? "1 Auftrag" : `${ready.length} Aufträge`} angenommen und vollständig bezahlt
+            </h2>
+            <p className="text-sm text-muted-foreground">Jetzt Auftragsbestätigung senden und Mietauftrag anlegen.</p>
+          </div>
+        </div>
+        <ul className="mt-3 space-y-2">
+          {ready.map((r) => (
+            <li key={"ready" + r.inquiryId}>
+              <Link
+                to={r.table === "sales_inquiries" ? `/b2b/verkaufsanfragen?anfrage=${r.inquiryId}` : `/b2b/mietanfragen/${r.inquiryId}`}
+                className="flex items-center gap-2 rounded-md bg-card px-3 py-2 text-sm hover:bg-muted"
+              >
+                <span className="min-w-0 flex-1 break-words"><strong className="text-foreground">{r.customer}</strong> · {r.offer} · {euro(r.paid)}</span>
+                <span className="shrink-0 font-medium text-primary">Bestätigen</span>
+                <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
     <section className="rounded-xl border-2 border-primary bg-card" aria-label="Angenommene Angebote">
       <header className="flex items-center gap-2 border-b border-border px-4 py-3">
         <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
@@ -143,5 +185,6 @@ export function AcceptedOffersPayments() {
         </button>
       )}
     </section>
+    </div>
   );
 }

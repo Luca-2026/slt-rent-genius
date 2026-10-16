@@ -199,6 +199,9 @@ interface CustomerPriceRow {
   unit_price: number;
 }
 
+/** iOS Safari gives native date/time inputs a fixed min width – force them into their grid cell. */
+const DT_INPUT = "w-full min-w-0 max-w-full appearance-none px-2 text-left [&::-webkit-date-and-time-value]:text-left [&::-webkit-date-and-time-value]:min-h-[1.25rem]";
+
 const PRICE_COLUMNS =
   "id,pricing_scheme,prices_same_all_locations,price_per_day,price_from_1_rd,price_from_3_rd,price_from_10_rd,price_from_20_rd,price_weekend_num,price_base_1_3_cd,surcharge_per_cd_from_4,surcharge_per_cd_from_8";
 
@@ -1671,25 +1674,25 @@ export function InquiryOfferForm({
               disabled={disabled || inherited}
             />
             {pricingActive && !openEnded && (
-              <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,7.5rem)] gap-x-3 gap-y-2" data-testid="position-period">
-                <div>
+              <div className="grid min-w-0 grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-x-2 gap-y-2" data-testid="position-period">
+                <div className="min-w-0">
                   <Label className="text-xs">Mietbeginn</Label>
-                  <Input type="date" value={item.rental_start ?? ""} disabled={disabled}
+                  <Input type="date" className={DT_INPUT} value={item.rental_start ?? ""} disabled={disabled}
                     onChange={(e) => patchPriced(index, { rental_start: e.target.value || undefined, custom_period: true })} />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <Label className="text-xs">Uhrzeit</Label>
-                  <Input type="time" value={item.rental_start_time ?? ""} placeholder="08:00" disabled={disabled}
+                  <Input type="time" className={DT_INPUT} value={item.rental_start_time ?? ""} placeholder="08:00" disabled={disabled}
                     onChange={(e) => patchPriced(index, { rental_start_time: e.target.value || undefined, custom_period: true })} />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <Label className="text-xs">Mietende</Label>
-                  <Input type="date" value={item.rental_end ?? ""} disabled={disabled}
+                  <Input type="date" className={DT_INPUT} value={item.rental_end ?? ""} disabled={disabled}
                     onChange={(e) => patchPriced(index, { rental_end: e.target.value || undefined, custom_period: true })} />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <Label className="text-xs">Uhrzeit</Label>
-                  <Input type="time" value={item.rental_end_time ?? ""} placeholder="17:00" disabled={disabled}
+                  <Input type="time" className={DT_INPUT} value={item.rental_end_time ?? ""} placeholder="17:00" disabled={disabled}
                     onChange={(e) => patchPriced(index, { rental_end_time: e.target.value || undefined, custom_period: true })} />
                 </div>
               </div>
