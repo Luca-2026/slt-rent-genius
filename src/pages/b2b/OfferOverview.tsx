@@ -156,7 +156,7 @@ export default function OfferOverview() {
                 <TableHead className="text-right">Summe brutto</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="hidden xl:table-cell">Erstellt</TableHead>
-                <TableHead>Gültig bis</TableHead>
+                <TableHead className="hidden 2xl:table-cell">Gültig bis</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -164,9 +164,9 @@ export default function OfferOverview() {
                 <TableRow key={r.id} className="cursor-pointer" onClick={() => navigate(`/b2b/mietanfragen/${r.id}`)}
                   tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter") navigate(`/b2b/mietanfragen/${r.id}`); }}>
                   <TableCell className="font-medium whitespace-nowrap">{r.offer_number}</TableCell>
-                  <TableCell>{r.company_name || r.customer_name || "–"}</TableCell>
+                  <TableCell className="max-w-[14rem]">{r.company_name || r.customer_name || "–"}</TableCell>
                   <TableCell className="hidden whitespace-nowrap xl:table-cell">{r.location ? getLocationDisplayName(r.location) : "–"}</TableCell>
-                  <TableCell className="whitespace-nowrap">{fmtDate(r.start_date)} – {fmtDate(r.end_date)}</TableCell>
+                  <TableCell><span className="whitespace-nowrap">{fmtDate(r.start_date)} –</span> <span className="whitespace-nowrap">{fmtDate(r.end_date)}</span></TableCell>
                   <TableCell className="text-right whitespace-nowrap">{eur(r.offer_total_gross)}</TableCell>
                   <TableCell>
                     <div className="flex flex-wrap gap-1 whitespace-nowrap">
@@ -176,7 +176,7 @@ export default function OfferOverview() {
                     </div>
                   </TableCell>
                   <TableCell className="hidden whitespace-nowrap xl:table-cell">{fmtDate(createdOf(r))}</TableCell>
-                  <TableCell className="whitespace-nowrap">{fmtDate(validUntil(r))}</TableCell>
+                  <TableCell className="hidden whitespace-nowrap 2xl:table-cell">{fmtDate(validUntil(r))}</TableCell>
                 </TableRow>
               ))}
               {list.length === 0 && (
