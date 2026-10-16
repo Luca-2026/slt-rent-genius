@@ -181,6 +181,14 @@ function RentalDetails({ inquiry }: { inquiry: RentalInquiry }) {
       )}
       <Row label="Zeitraum" value={period} />
       <Row
+        label="Wochenende"
+        value={
+          inquiry.use_saturday || inquiry.use_sunday
+            ? `${[inquiry.use_saturday ? "Samstag" : null, inquiry.use_sunday ? "Sonntag" : null].filter(Boolean).join(" und ")} als Nutzungstag gewünscht`
+            : null
+        }
+      />
+      <Row
         label="Lieferung"
         value={inquiry.delivery_requested ? deliveryAddress || "gewünscht" : deliveryAddress || (UNSTRUCTURED_SOURCES.has(inquiry.source) ? null : "Selbstabholung")}
       />

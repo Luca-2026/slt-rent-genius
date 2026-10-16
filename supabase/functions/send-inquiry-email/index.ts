@@ -50,7 +50,18 @@ serve(async (req) => {
       customerKind,
       attachments,
       items,
+      useSaturday,
+      useSunday,
+      priceEstimate,
     } = await req.json();
+
+    // W2: Rückgabedatum darf nicht vor dem Abholdatum liegen.
+    if (startDate && endDate && String(endDate) < String(startDate)) {
+      return new Response(
+        JSON.stringify({ error: "Das Rückgabedatum darf nicht vor dem Abholdatum liegen." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
 
     // Gebündelte Artikel (max. 30), Menge 1–9999. Hauptartikel steht an erster Stelle.
     const requestedItems: { product_name: string; product_slug: string | null; quantity: number; set_size: number | null }[] =
@@ -127,6 +138,8 @@ serve(async (req) => {
       customer_postal_code: postalCode ?? null,
       customer_city: city ?? null,
       customer_kind: customerKind === "business" ? "business" : "private",
+      use_saturday: useSaturday === true,
+      use_sunday: useSunday === true,
       message: message ?? null,
       attachments: safeAttachments.map((a) => ({ filename: a.filename })),
     });
@@ -172,6 +185,14 @@ serve(async (req) => {
       ? `<tr><td style="padding: 4px 0; color: #6b7280;">Betreuung / Auf- & Abbau:</td><td style="padding: 4px 0; font-weight: 500; color: #16a34a;">✓ Ja, gewünscht</td></tr>`
       : '';
 
+    const weekendDays = [useSaturday === true ? "Samstag" : null, useSunday === true ? "Sonntag" : null].filter(Boolean).join(" und ");
+    const weekendHtml = weekendDays
+      ? `<tr><td style="padding: 4px 0; color: #6b7280;">Wochenende:</td><td style="padding: 4px 0;">${escapeHtml(weekendDays)} als Nutzungstag gewünscht</td></tr>`
+      : '';
+    const estimateHtml = priceEstimate
+      ? `<tr><td style="padding: 4px 0; color: #6b7280;">Preisschätzung:</td><td style="padding: 4px 0;">${escapeHtml(String(priceEstimate).slice(0, 300))} (unverbindlich)</td></tr>`
+      : '';
+
     // Raw values still needed for non-HTML contexts (mail headers, telephone link)
     const ALLOWED_LOC_EMAILS = ["krefeld@slt-rental.de", "bonn@slt-rental.de", "muelheim@slt-rental.de", "mieten@slt-rental.de", "info@slt-rental.de"];
     const locEmail = ALLOWED_LOC_EMAILS.includes(String(locationEmail ?? "").trim().toLowerCase())
@@ -213,6 +234,8 @@ serve(async (req) => {
       ${timeRange ? `<tr><td style="padding: 4px 0; color: #6b7280;">Uhrzeiten:</td><td style="padding: 4px 0;">${e.timeRange}</td></tr>` : ""}
       ${deliveryHtml}
       ${setupServiceHtml}
+      ${weekendHtml}
+      ${estimateHtml}
     </table>
     ${message ? `<h3 style="color: #374151;">Nachricht</h3><p style="color: #374151; white-space: pre-wrap; background: #f9fafb; padding: 12px; border-radius: 6px;">${e.message}</p>` : ""}
     ${safeAttachments.length ? `<p style="color: #374151; margin-top: 16px;"><strong>📎 ${safeAttachments.length} Bild(er) vom Aufstellort</strong> sind dieser E-Mail als Anhang beigefügt.</p>` : ""}

@@ -67,6 +67,9 @@ export interface RentalInquiryInput {
   customer_postal_code?: string | null;
   customer_city?: string | null;
   customer_kind?: "private" | "business" | null;
+  /** Wochenend-Nutzungstage aus dem Anfrageformular (W4). */
+  use_saturday?: boolean;
+  use_sunday?: boolean;
   message?: string | null;
   attachments?: unknown[];
   raw_payload?: unknown;
@@ -99,6 +102,8 @@ export async function saveRentalInquiry(input: RentalInquiryInput): Promise<stri
     customer_postal_code: input.customer_postal_code ?? null,
     customer_city: input.customer_city ?? null,
     customer_kind: input.customer_kind === "business" ? "business" : "private",
+    use_saturday: input.use_saturday === true,
+    use_sunday: input.use_sunday === true,
     message: input.message ?? null,
     attachments: input.attachments ?? [],
     raw_payload: input.raw_payload ?? null,

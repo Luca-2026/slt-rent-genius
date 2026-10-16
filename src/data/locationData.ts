@@ -22,6 +22,18 @@ export interface LocationHours {
   time: string;
 }
 
+/** Zeitfenster für Abholung/Rückgabe an einem Tag ("HH:MM"). */
+export interface PickupWindow {
+  open: string;
+  close: string;
+}
+
+/** Abhol-/Rückgabezeiten je Standort; null = an diesem Wochentag nicht möglich. */
+export interface LocationPickupHours {
+  weekdays: PickupWindow | null;
+  saturday: PickupWindow | null;
+}
+
 export type LocationServiceCharacter =
   | "full-warehouse"
   | "service-handover"
@@ -45,6 +57,8 @@ export interface LocationInfo {
   mapUrl: string;
 
   // Optional standort-story fields (Sprint 1)
+  /** Abhol-/Rückgabezeiten für das Anfrageformular (reine Eingabehilfe, keine Anzeige). */
+  pickupHours?: LocationPickupHours;
   storyHeadline?: string;
   storyIntro?: string;
   storyParagraphs?: string[];
@@ -74,6 +88,10 @@ export const locationData: LocationInfo[] = [
       { day: "So.", time: "Geschlossen" },
     ],
     hoursNote: "*Samstags früher nach vorheriger Buchung möglich.",
+    pickupHours: {
+      weekdays: { open: "08:00", close: "18:00" },
+      saturday: { open: "10:00", close: "14:30" },
+    },
     features: ["Große Auswahl", "Hauptsitz", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
     mapUrl: "https://maps.google.com/?q=Anrather+Straße+291+47807+Krefeld",
     serviceCharacter: "full-warehouse",
@@ -116,6 +134,10 @@ export const locationData: LocationInfo[] = [
       { day: "So.", time: "Geschlossen" },
     ],
     hoursNote: "*Abholung/Rückgabe von Mietgeräten: Mo–Fr 06–09 Uhr & 17:30–18 Uhr. Anhänger 24/7. Samstag regulär geöffnet.",
+    pickupHours: {
+      weekdays: { open: "07:00", close: "18:00" },
+      saturday: { open: "08:00", close: "17:30" },
+    },
     
     
     features: ["Große Auswahl", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
@@ -189,4 +211,32 @@ export const locationData: LocationInfo[] = [
 
 export function getLocationInfoById(id: string): LocationInfo | undefined {
   return locationData.find((loc) => loc.id === id);
+}
+
+/**
+ * Abhol-/Rückgabefenster eines Standorts für ein Datum ("YYYY-MM-DD").
+ * null = an diesem Tag keine Abholung/Rückgabe (z. B. Sonntag) oder kein Fenster hinterlegt.
+ */
+export function pickupWindowForDate(
+  loc: Pick<LocationInfo, "pickupHours"> | null | undefined,
+  dateIso: string | null | undefined,
+): PickupWindow | null {
+  if (!loc?.pickupHours || !dateIso) return null;
+  const d = new Date(`${dateIso}T12:00:00`);
+  if (Number.isNaN(d.getTime())) return null;
+  const wd = d.getDay();
+  if (wd === 0) return null; // Sonntag geschlossen
+  return wd === 6 ? loc.pickupHours.saturday : loc.pickupHours.weekdays;
+}
+
+/** Alle wählbaren Uhrzeiten im Fenster in 30-Minuten-Schritten, inkl. Ende. */
+export function pickupTimeOptions(window: PickupWindow): string[] {
+  const toMin = (t: string) => {
+    const [h, m] = t.split(":").map(Number);
+    return h * 60 + m;
+  };
+  const toStr = (min: number) => `${String(Math.floor(min / 60)).padStart(2, "0")}:${String(min % 60).padStart(2, "0")}`;
+  const out: string[] = [];
+  for (let t = toMin(window.open); t <= toMin(window.close); t += 30) out.push(toStr(t));
+  return out;
 }

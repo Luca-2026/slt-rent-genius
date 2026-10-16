@@ -15,11 +15,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Phone, Mail, Loader2, Send, CheckCircle2, Calendar, Truck, Wrench, Info, ArrowUpRight } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { Product, LocationData } from "@/data/rentalData";
+import { getLocationInfoById, pickupTimeOptions, pickupWindowForDate } from "@/data/locationData";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { InquiryItemsPicker, type RequestItem } from "./InquiryItemsPicker";
 import { parseSetSize } from "@/lib/setSize";
+import { computeRentalLinePrice, unitLabel, type PricingUnit } from "@/lib/pricing/rentalPricing";
+import { productManagedPrices } from "./ProductPriceBlock";
+import { displayPrice } from "@/lib/priceDisplay";
+import { useCustomerType } from "@/hooks/useCustomerType";
 
 interface ProductBookingDialogProps {
   product: Product | null;
@@ -48,6 +54,8 @@ interface InquiryForm {
   deliveryCity: string;
   setupServiceRequested: boolean;
   selectedExtras: string[];
+  useSaturday: boolean;
+  useSunday: boolean;
 }
 
 // Categories where "Betreuung / Auf- & Abbau" makes sense (event-related)
@@ -71,6 +79,46 @@ const PRODUCT_EXTRAS: Record<string, { id: string; label: string; price: number 
   ],
 };
 
+/** Uhrzeit-Feld: Auswahl in 30-Minuten-Schritten, wenn der Standort ein Zeitfenster hat, sonst freie Eingabe. */
+function TimeField({
+  id,
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  options: string[] | null;
+  onChange: (v: string) => void;
+}) {
+  if (!options) {
+    return (
+      <div className="space-y-1.5">
+        <Label htmlFor={id}>{label}</Label>
+        <Input id={id} type="time" required value={value} onChange={(e) => onChange(e.target.value)} />
+      </div>
+    );
+  }
+  const opts = value && !options.includes(value) ? [value, ...options] : options;
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={id}>{label}</Label>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger id={id} aria-label={label}>
+          <SelectValue placeholder="Uhrzeit wählen" />
+        </SelectTrigger>
+        <SelectContent>
+          {opts.map((t) => (
+            <SelectItem key={t} value={t}>{t} Uhr</SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
+
 export function ProductBookingDialog({ 
   product, 
   location, 
@@ -93,10 +141,37 @@ export function ProductBookingDialog({
     deliveryRequested: false, deliveryStreet: "", deliveryPostalCode: "", deliveryCity: "",
     setupServiceRequested: false,
     selectedExtras: [],
+    useSaturday: false,
+    useSunday: false,
   };
   const [form, setForm] = useState<InquiryForm>(defaultForm);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const { type: customerType } = useCustomerType();
+
+  // W3: Abhol-/Rückgabezeiten des Standorts als Auswahl (30-Minuten-Schritte).
+  const locationInfo = getLocationInfoById(location?.id || "");
+  const startWindow = pickupWindowForDate(locationInfo, form.startDate);
+  const endWindow = pickupWindowForDate(locationInfo, form.endDate);
+  const startTimeOptions = startWindow ? pickupTimeOptions(startWindow) : null;
+  const endTimeOptions = endWindow ? pickupTimeOptions(endWindow) : null;
+
+  // W2: Rückgabedatum darf nicht vor dem Abholdatum liegen.
+  const dateOrderInvalid = Boolean(form.startDate && form.endDate && form.endDate < form.startDate);
+
+  // W4: Unverbindliche Preisschätzung aus den CMS-Staffelpreisen (wie im Angebot).
+  const calcLine = (() => {
+    if (!product || !form.startDate || !form.endDate || dateOrderInvalid) return null;
+    const prices = productManagedPrices(product, location?.id);
+    const line = computeRentalLinePrice({
+      prices,
+      scheme: product.pricingScheme ?? null,
+      start: { date: form.startDate, time: form.startTime || null },
+      end: { date: form.endDate, time: form.endTime || null },
+      opts: { use_saturday: form.useSaturday, use_sunday: form.useSunday },
+    });
+    return line.kind === "duration_only" ? null : line;
+  })();
   const mainItem = (): RequestItem[] =>
     product
       ? [{ product_name: product.name, product_slug: product.id, quantity: 1, set_size: parseSetSize(product.name), image: product.image }]
@@ -234,6 +309,10 @@ export function ProductBookingDialog({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!product || !location) return;
+    if (dateOrderInvalid) {
+      toast.error("Das Rückgabedatum darf nicht vor dem Abholdatum liegen.");
+      return;
+    }
     setSending(true);
 
     try {
@@ -256,6 +335,13 @@ export function ProductBookingDialog({
           ...form,
           customerKind: form.customerKind,
           message: messageWithExtras,
+          useSaturday: form.useSaturday,
+          useSunday: form.useSunday,
+          priceEstimate: calcLine
+            ? calcLine.kind === "weekend"
+              ? `Wochenendtarif: pauschal ${displayPrice(calcLine.unit_price, customerType)}`
+              : `ca. ${calcLine.duration} ${unitLabel(calcLine.duration, calcLine.unit)} × ${displayPrice(calcLine.unit_price, customerType)} = ${displayPrice(calcLine.duration * calcLine.unit_price, customerType)} (${calcLine.label})`
+            : null,
           items: requestItems.map((it) => ({
             product_name: it.product_name,
             product_slug: it.product_slug ?? null,
@@ -493,16 +579,13 @@ export function ProductBookingDialog({
                           onChange={(e) => setForm({ ...form, startDate: e.target.value })}
                         />
                       </div>
-                      <div className="space-y-1.5">
-                        <Label htmlFor="inq-start-time">Abholung Uhrzeit *</Label>
-                        <Input
-                          id="inq-start-time"
-                          type="time"
-                          required
-                          value={form.startTime}
-                          onChange={(e) => setForm({ ...form, startTime: e.target.value })}
-                        />
-                      </div>
+                      <TimeField
+                        id="inq-start-time"
+                        label="Abholung Uhrzeit *"
+                        value={form.startTime}
+                        options={startTimeOptions}
+                        onChange={(v) => setForm({ ...form, startTime: v })}
+                      />
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -512,20 +595,57 @@ export function ProductBookingDialog({
                           id="inq-end"
                           type="date"
                           required
+                          min={form.startDate || undefined}
                           value={form.endDate}
                           onChange={(e) => setForm({ ...form, endDate: e.target.value })}
                         />
                       </div>
-                      <div className="space-y-1.5">
-                        <Label htmlFor="inq-end-time">Rückgabe Uhrzeit *</Label>
-                        <Input
-                          id="inq-end-time"
-                          type="time"
-                          required
-                          value={form.endTime}
-                          onChange={(e) => setForm({ ...form, endTime: e.target.value })}
-                        />
+                      <TimeField
+                        id="inq-end-time"
+                        label="Rückgabe Uhrzeit *"
+                        value={form.endTime}
+                        options={endTimeOptions}
+                        onChange={(v) => setForm({ ...form, endTime: v })}
+                      />
+                    </div>
+
+                    {dateOrderInvalid && (
+                      <p role="alert" className="text-sm font-medium text-destructive">
+                        Das Rückgabedatum darf nicht vor dem Abholdatum liegen.
+                      </p>
+                    )}
+
+                    {/* W4: Wochenend-Nutzungstage + unverbindliche Preisschätzung */}
+                    <div className="space-y-2 rounded-lg border border-border bg-muted/30 p-3">
+                      <div className="flex flex-col gap-2 sm:flex-row sm:gap-6">
+                        <label className="flex items-center gap-2 text-sm cursor-pointer">
+                          <Checkbox
+                            checked={form.useSaturday}
+                            onCheckedChange={(c) => setForm({ ...form, useSaturday: c === true })}
+                          />
+                          Samstag als Nutzungstag
+                        </label>
+                        <label className="flex items-center gap-2 text-sm cursor-pointer">
+                          <Checkbox
+                            checked={form.useSunday}
+                            onCheckedChange={(c) => setForm({ ...form, useSunday: c === true })}
+                          />
+                          Sonntag als Nutzungstag
+                        </label>
                       </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        <Info className="inline h-3 w-3 mr-1 -mt-0.5" aria-hidden="true" />
+                        Bei Mietzeiträumen ab 5 Miettagen zählen Samstag und Sonntag nur mit, wenn du sie hier ankreuzt – z. B. wenn du das Gerät am Wochenende weiter nutzt.
+                      </p>
+                      {calcLine && (
+                        <p className="text-xs font-medium text-foreground border-t border-border pt-2">
+                          Unverbindliche Schätzung:{" "}
+                          {calcLine.kind === "weekend"
+                            ? <>Wochenendtarif pauschal {displayPrice(calcLine.unit_price, customerType)}</>
+                            : <>ca. {calcLine.duration} {unitLabel(calcLine.duration, calcLine.unit)} × {displayPrice(calcLine.unit_price, customerType)} = {displayPrice(calcLine.duration * calcLine.unit_price, customerType)}</>}
+                          {" "}– der verbindliche Preis steht im Angebot.
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-1.5">

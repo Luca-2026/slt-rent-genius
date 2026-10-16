@@ -64,11 +64,15 @@ export interface PricedCatalogRow {
   price_per_day?: string | null;
   price_weekend?: string | null;
   price_per_month?: string | null;
+  /** Staffelpreise aus dem CMS (netto) – haben Vorrang vor den Alt-Textfeldern. */
+  pricing_scheme?: string | null;
+  price_from_1_rd?: number | null;
+  price_base_1_3_cd?: number | null;
 }
 
 export interface ResolvedPrice {
   price: number;
-  unit: "kalendertage" | "wochen" | "monate" | "stueck";
+  unit: "kalendertage" | "miettage" | "wochen" | "monate" | "stueck";
 }
 
 /** Mietpreise im CMS sind Nettopreise; die Website rechnet für Privatkunden brutto (src/lib/priceDisplay.ts). */
@@ -94,6 +98,11 @@ async function resolveGrossCatalogPrice(
   row: PricedCatalogRow | null | undefined,
 ): Promise<ResolvedPrice | undefined> {
   if (!row) return undefined;
+  // Staffelpreise (Paket 2) zuerst: Grundpreis je nach Schema.
+  const tierBase = row.pricing_scheme === "bau" ? row.price_from_1_rd : row.price_base_1_3_cd;
+  if (typeof tierBase === "number" && Number.isFinite(tierBase) && tierBase > 0) {
+    return { price: tierBase, unit: row.pricing_scheme === "bau" ? "miettage" : "kalendertage" };
+  }
   const day = parsePriceValue(row.price_per_day);
   if (day !== undefined) return { price: day, unit: "kalendertage" };
   const seo = await getSeoDayPrice(row.slug);

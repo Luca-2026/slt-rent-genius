@@ -456,6 +456,20 @@
       "when": 1792146677029,
       "tag": "0064_b2b_profiles_customer_kind",
       "breakpoints": true
+    },
+    {
+      "idx": 65,
+      "version": "7",
+      "when": 1792150188595,
+      "tag": "0065_public_product_prices_view_and_weekend_flags",
+      "breakpoints": true
+    },
+    {
+      "idx": 66,
+      "version": "7",
+      "when": 1792150200553,
+      "tag": "0066_public_product_prices_view_definer",
+      "breakpoints": true
     }
   ]
 }
