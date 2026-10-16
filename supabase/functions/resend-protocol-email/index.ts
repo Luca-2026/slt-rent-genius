@@ -1,3 +1,4 @@
+import { byForm, resolveAddressForm, salutationLine, type AddressForm } from "../_shared/salutation.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { encode as base64Encode } from "https://deno.land/std@0.168.0/encoding/base64.ts";
@@ -68,6 +69,9 @@ serve(async (req) => {
     let emailHtml = "";
     let recipientEmail = "";
     let recipientName = "";
+    let form: AddressForm = "du";
+    const t = (du: string, sie: string) => byForm(form, du, sie);
+    const greetLine = (n: string) => (form === "du" ? salutationLine({ address_form: "du", name: n }) : `Guten Tag ${n},`);
     let documentNumber = "";
     let documentId = "";
     let tableName = "";
@@ -85,6 +89,7 @@ serve(async (req) => {
       documentId = dn.id;
       recipientEmail = profile.contact_email;
       recipientName = `${profile.contact_first_name} ${profile.contact_last_name}`;
+      form = await resolveAddressForm(serviceClient, { b2b_profile_id: profile.id });
 
       const { data: items } = await serviceClient.from("b2b_delivery_note_items").select("*").eq("delivery_note_id", dn.id);
       const itemsList = (items || []).map((item: any) =>
@@ -134,6 +139,7 @@ serve(async (req) => {
       documentId = dn.id;
       recipientEmail = profile.contact_email;
       recipientName = `${profile.contact_first_name} ${profile.contact_last_name}`;
+      form = await resolveAddressForm(serviceClient, { b2b_profile_id: profile.id });
 
       // Fetch PDF from storage
       const expectedPath = `${dn.b2b_profile_id}/${dn.delivery_note_number}-blanko.pdf`;
@@ -198,6 +204,7 @@ serve(async (req) => {
       documentId = rp.id;
       recipientEmail = profile.contact_email;
       recipientName = `${profile.contact_first_name} ${profile.contact_last_name}`;
+      form = await resolveAddressForm(serviceClient, { b2b_profile_id: profile.id });
 
       const { data: items } = await serviceClient.from("b2b_return_protocol_items").select("*").eq("return_protocol_id", rp.id);
       const itemsList = (items || []).map((item: any) =>
@@ -246,6 +253,7 @@ serve(async (req) => {
       documentId = rp.id;
       recipientEmail = profile.contact_email;
       recipientName = `${profile.contact_first_name} ${profile.contact_last_name}`;
+      form = await resolveAddressForm(serviceClient, { b2b_profile_id: profile.id });
 
       emailSubject = `Rückgabeprotokoll ${documentNumber} – Bitte digital unterschreiben`;
       emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>

@@ -1,3 +1,4 @@
+import { byForm, resolveAddressForm, salutationLine, type AddressForm } from "../_shared/salutation.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 
@@ -112,6 +113,9 @@ Deno.serve(async (req: Request) => {
 
     const recipientEmail = profile.billing_email || profile.contact_email;
     const recipientName = `${profile.contact_first_name} ${profile.contact_last_name}`;
+    const form = await resolveAddressForm(serviceClient, { b2b_profile_id: profile.id });
+    const t = (du: string, sie: string) => byForm(form, du, sie);
+    const greetLine = (n: string) => (form === "du" ? salutationLine({ address_form: "du", name: n }) : `Guten Tag ${n},`);
     const companyName = profile.company_name;
 
     // Build items list HTML
