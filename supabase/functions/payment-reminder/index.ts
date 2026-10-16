@@ -12,6 +12,7 @@ import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
 import {
   ensurePaymentLink, isStripeTestMode, paymentOptions, paymentPageUrl, planPaymentAmounts, shouldOfferPaymentLink, toCents,
 } from "../_shared/stripe-pay.ts";
+import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
 import { needsPaymentFollowup, paymentDeadline } from "../_shared/payment-followup.ts";
 
 const corsHeaders = {
@@ -45,8 +46,8 @@ Deno.serve(async (req) => {
       const table = TABLES.find((t) => t === manual.table);
       if (!table || typeof manual.inquiry_id !== "string" || !/^[0-9a-f-]{36}$/i.test(manual.inquiry_id)) return json({ error: "Ungültige Anfrage" }, 400);
       const cols = table === "rental_inquiries"
-        ? "id, status, customer_email, customer_name, company_name, location, offer_number, offer_total_gross, offer_payload, payments"
-        : "id, status, customer_email, first_name, last_name, company_name, location, offer_number, offer_total_gross, offer_payload, payments";
+        ? "id, status, customer_email, customer_name, customer_salutation, address_form, crm_customer_id, company_name, location, offer_number, offer_total_gross, offer_payload, payments"
+        : "id, status, customer_email, first_name, last_name, salutation, crm_customer_id, company_name, location, offer_number, offer_total_gross, offer_payload, payments";
       const { data: r, error } = await service.from(table).select(cols).eq("id", manual.inquiry_id).maybeSingle();
       if (error || !r) return json({ error: "Anfrage nicht gefunden" }, 404);
       const row = r as any;
@@ -61,8 +62,8 @@ Deno.serve(async (req) => {
     }
     for (const table of manual ? [] : TABLES) {
       const cols = table === "rental_inquiries"
-        ? "id, status, customer_email, customer_name, company_name, location, offer_number, offer_total_gross, offer_payload, payments, offer_accepted_at, payment_followup_sent_at, order_confirmed_at"
-        : "id, status, customer_email, first_name, last_name, company_name, location, offer_number, offer_total_gross, offer_payload, payments, offer_accepted_at, payment_followup_sent_at, order_confirmed_at";
+        ? "id, status, customer_email, customer_name, customer_salutation, address_form, crm_customer_id, company_name, location, offer_number, offer_total_gross, offer_payload, payments, offer_accepted_at, payment_followup_sent_at, order_confirmed_at"
+        : "id, status, customer_email, first_name, last_name, salutation, crm_customer_id, company_name, location, offer_number, offer_total_gross, offer_payload, payments, offer_accepted_at, payment_followup_sent_at, order_confirmed_at";
       const { data, error } = await service.from(table).select(cols)
         .eq("status", "accepted").is("payment_followup_sent_at", null).not("offer_accepted_at", "is", null)
         .is("order_confirmed_at", null).limit(200);
@@ -106,30 +107,33 @@ Deno.serve(async (req) => {
       const deadline = paymentDeadline(sentAt)!.toLocaleString("de-DE", { timeZone: "Europe/Berlin", dateStyle: "medium", timeStyle: "short" });
       const loc = LOCATION_CONTACTS[resolveLocationKey(r.location)];
       const name = r.customer_name || [r.first_name, r.last_name].filter(Boolean).join(" ") || r.company_name || "";
+      const form = await resolveAddressForm(service, r);
+      const t = (du: string, sie: string) => byForm(form, du, sie);
+      const greeting = salutationLine({ address_form: form, salutation: r.customer_salutation ?? r.salutation, name });
       const subject = isManual
         ? `Zahlungserinnerung – Angebot ${r.offer_number}`
         : `Bitte Zahlung innerhalb von 24 Stunden leisten – Angebot ${r.offer_number}`;
       const intro = isManual
-        ? `<p>vielen Dank für deinen Auftrag zu unserem Angebot <strong>${esc(r.offer_number)}</strong>. Bei uns ist bisher noch nicht der vollständige Betrag eingegangen.</p>
-<p><strong>Bitte leiste die Zahlung zeitnah, damit wir deine Miete bestätigen können.</strong></p>`
-        : `<p>vielen Dank, dass du unser Angebot <strong>${esc(r.offer_number)}</strong> angenommen hast. Bei uns ist bisher noch keine Zahlung eingegangen.</p>
-<p><strong>Bitte leiste die Zahlung innerhalb der nächsten 24 Stunden (bis ${esc(deadline)} Uhr).</strong> Geht die Zahlung bis dahin nicht ein, wird der Auftrag systemseitig storniert.</p>`;
+        ? `<p>vielen Dank für ${t("deinen", "Ihren")} Auftrag zu unserem Angebot <strong>${esc(r.offer_number)}</strong>. Bei uns ist bisher noch nicht der vollständige Betrag eingegangen.</p>
+<p><strong>${t("Bitte leiste die Zahlung zeitnah, damit wir deine Miete bestätigen können.", "Bitte leisten Sie die Zahlung zeitnah, damit wir Ihre Miete bestätigen können.")}</strong></p>`
+        : `<p>vielen Dank, dass ${t("du", "Sie")} unser Angebot <strong>${esc(r.offer_number)}</strong> angenommen ${t("hast", "haben")}. Bei uns ist bisher noch keine Zahlung eingegangen.</p>
+<p><strong>${t("Bitte leiste", "Bitte leisten Sie")} die Zahlung innerhalb der nächsten 24 Stunden (bis ${esc(deadline)} Uhr).</strong> Geht die Zahlung bis dahin nicht ein, wird der Auftrag systemseitig storniert.</p>`;
       const html = `<!DOCTYPE html><html lang="de"><body style="margin:0;background:#ffffff;font-family:Arial,sans-serif;color:#1f2937;">
 <div style="max-width:600px;margin:0 auto;padding:24px;">
-<h2 style="color:#00507d;margin:0 0 16px;">Deine Zahlung steht noch aus</h2>
-<p>Hallo${name ? " " + esc(name) : ""},</p>
+<h2 style="color:#00507d;margin:0 0 16px;">${t("Deine", "Ihre")} Zahlung steht noch aus</h2>
+<p>${esc(greeting)}</p>
 ${intro}
 <p style="font-size:18px;margin:20px 0;">${minCents < plan.openCents ? `Fällige Anzahlung: <strong>${money(minCents)}</strong><br><span style="font-size:13px;color:#6b7280;">Gesamt offen: ${money(plan.openCents)}</span>` : `Offener Betrag: <strong>${money(plan.openCents)}</strong>`}${plan.depositCents > 0 ? `<br><span style="font-size:13px;color:#6b7280;">inkl. Kaution ${money(plan.depositCents)} (wird nach Rückgabe erstattet)</span>` : ""}</p>
 ${payUrl ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(payUrl)}" style="background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:bold;display:inline-block;">Jetzt online bezahlen</a></p>` : ""}
-<p>${payUrl ? "Alternativ per Überweisung:" : "Bitte überweise den Betrag auf folgendes Konto:"}</p>
+<p>${payUrl ? "Alternativ per Überweisung:" : t("Bitte überweise den Betrag auf folgendes Konto:", "Bitte überweisen Sie den Betrag auf folgendes Konto:")}</p>
 <table style="font-size:14px;border-collapse:collapse;">
 <tr><td style="padding:2px 12px 2px 0;color:#6b7280;">Empfänger</td><td>${esc(SLT_COMPANY.name)}</td></tr>
 <tr><td style="padding:2px 12px 2px 0;color:#6b7280;">IBAN</td><td>${esc(SLT_COMPANY.iban)}</td></tr>
 <tr><td style="padding:2px 12px 2px 0;color:#6b7280;">BIC</td><td>${esc(SLT_COMPANY.bic)} (${esc(SLT_COMPANY.bankName)})</td></tr>
 <tr><td style="padding:2px 12px 2px 0;color:#6b7280;">Verwendungszweck</td><td>${esc(r.offer_number)}</td></tr>
 </table>
-<p style="margin-top:20px;">Falls du gerade bezahlt hast, betrachte diese E-Mail bitte als gegenstandslos. Bei Fragen erreichst du uns unter ${esc(loc.phone)} oder ${esc(loc.email)}.</p>
-<p>Viele Grüße<br>Dein Team von SLT-Rental ${esc(loc.name)}</p>
+<p style="margin-top:20px;">${t("Falls du gerade bezahlt hast, betrachte diese E-Mail bitte als gegenstandslos. Bei Fragen erreichst du uns unter", "Falls Sie gerade bezahlt haben, betrachten Sie diese E-Mail bitte als gegenstandslos. Bei Fragen erreichen Sie uns unter")} ${esc(loc.phone)} oder ${esc(loc.email)}.</p>
+<p>${t("Viele Grüße", "Freundliche Grüße")}<br>${t("Dein", "Ihr")} Team von SLT-Rental ${esc(loc.name)}</p>
 </div></body></html>`;
 
       const res = await fetch("https://api.resend.com/emails", {
