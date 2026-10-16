@@ -161,7 +161,7 @@ export function requestedItemsOf(inquiry: Pick<RentalInquiry, "requested_items" 
       set_size: Number(r?.set_size) > 1 ? Math.round(Number(r.set_size)) : null,
       unit_price: Number(r?.unit_price) > 0 ? Number(r.unit_price) : null,
       selected_addons: Array.isArray(r?.selected_addons)
-        ? (r.selected_addons as unknown[]).map((k) => String(k)).filter(Boolean).slice(0, 10)
+        ? (r.selected_addons as unknown[]).filter((k): k is string => typeof k === "string" && !!k.trim()).slice(0, 10)
         : [],
     }))
     .filter((r) => r.product_name);
