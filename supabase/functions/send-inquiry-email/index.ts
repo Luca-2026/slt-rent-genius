@@ -82,8 +82,9 @@ serve(async (req) => {
     // des jeweiligen Artikels werden übernommen, inkl. Pflicht-Standardstufe.
     const slugs = [...new Set(requestedItems.map((it) => it.product_slug).filter((s): s is string => !!s))];
     const addonLabelsBySlug = new Map<string, Map<string, string>>();
-    if (slugs.length) {
-      const { data: prows } = await supabaseAdmin
+    const db = serviceClient();
+    if (slugs.length && db) {
+      const { data: prows } = await db
         .from("b2b_managed_products")
         .select("slug, addon_options")
         .in("slug", slugs);
