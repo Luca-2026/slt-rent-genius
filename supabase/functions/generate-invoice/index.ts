@@ -679,12 +679,12 @@ Deno.serve(async (req: Request) => {
       <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:70px;width:auto;" />
     </div>
     <div style="background:#00507d;padding:14px 40px;text-align:center;">
-      <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">Ihre ${docTitle}</p>
+      <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">${t("Deine", "Ihre")} ${docTitle}</p>
     </div>
     <div style="padding:35px 40px;">
-      <p style="font-size:15px;color:#333;">Guten Tag ${escapeHtml(customerName)},</p>
+      <p style="font-size:15px;color:#333;">${escapeHtml(greetLine(customerName))}</p>
       <p style="font-size:14px;color:#555;line-height:1.6;">
-        anbei erhalten Sie Ihre ${docTitle} <strong>${invoiceNumber}</strong>.
+        anbei ${t("erhältst du deine", "erhalten Sie Ihre")} ${docTitle} <strong>${invoiceNumber}</strong>.
       </p>
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:20px 0;">
         <p style="font-size:13px;font-weight:600;margin:0 0 8px;color:#333;">Positionen:</p>
@@ -692,7 +692,7 @@ Deno.serve(async (req: Request) => {
         <p style="font-size:14px;font-weight:600;margin:12px 0 0;color:#333;">Bruttobetrag: ${grossAmount.toFixed(2).replace(".", ",")} €</p>
       </div>
       <p style="font-size:14px;color:#555;line-height:1.6;">
-        Die vollständige ${docTitle} finden Sie als Anhang dieser E-Mail sowie in Ihrem B2B-Portal.
+        Die vollständige ${docTitle} ${t("findest du als Anhang dieser E-Mail sowie in deinem", "finden Sie als Anhang dieser E-Mail sowie in Ihrem")} Kundenportal.
       </p>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://www.slt-rental.de/b2b/rechnungen" 
@@ -720,7 +720,7 @@ Deno.serve(async (req: Request) => {
           body: JSON.stringify({
             from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
             to: [customerEmail],
-            subject: `Ihre ${docTitle} ${invoiceNumber} – SLT-Rental`,
+            subject: `${t("Deine", "Ihre")} ${docTitle} ${invoiceNumber} – SLT-Rental`,
             html: emailHtml,
             attachments,
           }),

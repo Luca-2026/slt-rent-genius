@@ -124,7 +124,7 @@ Deno.serve(async (req: Request) => {
     const invoiceNumber = invoice.invoice_number;
     const grossFormatted = Number(invoice.gross_amount).toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
-    const emailSubject = `Ihre ${docLabel} ${invoiceNumber} – SLT-Rental`;
+    const emailSubject = `${t("Deine", "Ihre")} ${docLabel} ${invoiceNumber} – SLT-Rental`;
     const emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
@@ -132,21 +132,21 @@ Deno.serve(async (req: Request) => {
       <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:70px;width:auto;" />
     </div>
     <div style="background:#00507d;padding:14px 40px;text-align:center;">
-      <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">Ihre ${escapeHtml(docLabel)}</p>
+      <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">${t("Deine", "Ihre")} ${escapeHtml(docLabel)}</p>
     </div>
     <div style="padding:35px 40px;">
-      <p style="font-size:15px;color:#333;">Guten Tag ${escapeHtml(recipientName)},</p>
-      <p style="font-size:14px;color:#555;line-height:1.6;">anbei erhalten Sie Ihre ${escapeHtml(docLabel)} <strong>${escapeHtml(invoiceNumber)}</strong> über einen Gesamtbetrag von <strong>${grossFormatted}</strong> (brutto).</p>
+      <p style="font-size:15px;color:#333;">${escapeHtml(greetLine(recipientName))}</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">anbei ${t("erhältst du deine", "erhalten Sie Ihre")} ${escapeHtml(docLabel)} <strong>${escapeHtml(invoiceNumber)}</strong> über einen Gesamtbetrag von <strong>${grossFormatted}</strong> (brutto).</p>
       ${itemsList ? `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:20px 0;">
         <p style="font-size:13px;font-weight:600;margin:0 0 8px;color:#333;">Positionen:</p>
         <ul style="margin:0;padding-left:20px;color:#555;">${itemsList}</ul>
       </div>` : ""}
       ${isProforma ? `<div style="background:#fffbeb;border:1px solid #fbbf24;border-radius:8px;padding:16px;margin:20px 0;">
         <p style="font-size:13px;font-weight:600;margin:0 0 4px;color:#92400e;">Hinweis zur Vorkasse</p>
-        <p style="font-size:13px;color:#92400e;margin:0;line-height:1.5;">Bitte überweisen Sie den Rechnungsbetrag vor Mietbeginn auf das in der Rechnung angegebene Bankkonto. Die Mietgeräte werden nach Zahlungseingang bereitgestellt.</p>
-      </div>` : `<p style="font-size:14px;color:#555;line-height:1.6;">Bitte beachten Sie das Zahlungsziel gemäß den vereinbarten Konditionen.</p>`}
+        <p style="font-size:13px;color:#92400e;margin:0;line-height:1.5;">${t("Bitte überweise", "Bitte überweisen Sie")} den Rechnungsbetrag vor Mietbeginn auf das in der Rechnung angegebene Bankkonto. Die Mietgeräte werden nach Zahlungseingang bereitgestellt.</p>
+      </div>` : `<p style="font-size:14px;color:#555;line-height:1.6;">${t("Bitte beachte", "Bitte beachten Sie")} das Zahlungsziel gemäß den vereinbarten Konditionen.</p>`}
       ${invoice.due_date ? `<p style="font-size:14px;color:#555;line-height:1.6;">Fälligkeitsdatum: <strong>${new Date(invoice.due_date).toLocaleDateString("de-DE")}</strong></p>` : ""}
-      <p style="font-size:14px;color:#555;line-height:1.6;">Die vollständige Rechnung finden Sie als PDF im Anhang sowie in Ihrem B2B-Portal.</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">Die vollständige Rechnung ${t("findest du als PDF im Anhang sowie in deinem", "finden Sie als PDF im Anhang sowie in Ihrem")} Kundenportal.</p>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://www.slt-rental.de/b2b/rechnungen" style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">Zum B2B-Portal →</a>
       </div>
