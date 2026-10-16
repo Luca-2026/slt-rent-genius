@@ -121,6 +121,7 @@ function rentalDefaultItems(selected: RentalInquiry) {
     rental_end_time: selected.end_time?.slice(0, 5) ?? undefined,
     unit_price: it.unit_price ?? 0,
     discount_percent: 0,
+    requested_addon_keys: it.selected_addons ?? [],
   }));
 }
 
