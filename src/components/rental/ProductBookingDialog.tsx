@@ -347,6 +347,7 @@ export function ProductBookingDialog({
             product_slug: it.product_slug ?? null,
             quantity: it.quantity > 0 ? it.quantity : 1,
             set_size: it.set_size,
+            selected_addons: it.selected_addons ?? [],
           })),
         },
       });
