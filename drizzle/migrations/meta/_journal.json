@@ -519,6 +519,20 @@
       "when": 1792175224750,
       "tag": "0073_reservation_order_code",
       "breakpoints": true
+    },
+    {
+      "idx": 74,
+      "version": "7",
+      "when": 1792176695736,
+      "tag": "0074_deposit_settlements",
+      "breakpoints": true
+    },
+    {
+      "idx": 75,
+      "version": "7",
+      "when": 1792176724053,
+      "tag": "0075_settle_deposit_staff_name",
+      "breakpoints": true
     }
   ]
 }

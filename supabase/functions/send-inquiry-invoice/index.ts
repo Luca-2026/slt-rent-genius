@@ -375,9 +375,11 @@ Deno.serve(async (req: Request) => {
 
     // ── Bereits geleistete (Teil-)Zahlungen, z. B. Vorkasse auf das Angebot ──
     const stripePayment = (p: any) => /^(cs_|pi_)/.test(String(p?.reference ?? "")) || /stripe/i.test(String(p?.label ?? ""));
-    const confirmedPayments = (Array.isArray(inquiry.payments) ? inquiry.payments : []).filter(stripePayment);
+    // Kautionsabrechnung: nur die übergebene Verrechnung zählt, Stripe-Zahlungen der Miete nicht erneut anrechnen.
+    const isDepositSettlement = body.deposit_settlement === true;
+    const confirmedPayments = isDepositSettlement ? [] : (Array.isArray(inquiry.payments) ? inquiry.payments : []).filter(stripePayment);
     const rawPayments = Array.isArray(body.payments) ? body.payments.slice(0, 20) : [];
-    const payments: RecordedPayment[] = [...rawPayments.filter((p: any) => !stripePayment(p)), ...confirmedPayments]
+    const payments: RecordedPayment[] = [...(isDepositSettlement ? rawPayments : rawPayments.filter((p: any) => !stripePayment(p))), ...confirmedPayments]
       .map((entry: unknown) => {
         const p = (entry ?? {}) as Record<string, unknown>;
         const amount = Math.round((Number(p.amount) || 0) * 100) / 100;
