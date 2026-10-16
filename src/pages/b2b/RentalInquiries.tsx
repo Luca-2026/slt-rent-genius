@@ -25,6 +25,8 @@ import { createInquiryFromImport } from "@/lib/createInquiryFromImport";
 import { Wand2 } from "lucide-react";
 import { Building2, Plus, UserCheck } from "lucide-react";
 
+const FILTER_STORAGE_KEY = "rentalInquiries.filter";
+
 export default function RentalInquiries() {
   const { isStaff, loading: accessLoading } = useStaffAccess();
   const { user } = useAuth();
@@ -80,6 +82,29 @@ export default function RentalInquiries() {
     if (mineOnly) next.delete("meine"); else next.set("meine", "1");
     setSearchParams(next, { replace: true });
   };
+
+  // Filter merken: Status und Standort in localStorage; ohne gespeicherten Wert startet die Liste bei „Alle“.
+  const [restoreFilters] = useState(() => {
+    try { return !location.search && !sessionStorage.getItem(RENTAL_LIST_STATE_KEY); } catch { return false; }
+  });
+  const filtersReady = useRef(false);
+  useEffect(() => {
+    if (restoreFilters) {
+      let saved: { status?: string; standort?: string } = {};
+      try { saved = JSON.parse(localStorage.getItem(FILTER_STORAGE_KEY) ?? "{}") ?? {}; } catch { /* ignorieren */ }
+      const next = new URLSearchParams(searchParams);
+      const st = saved.status ? parseInquiryListFilter(saved.status) : "all";
+      if (st !== DEFAULT_INQUIRY_LIST_FILTER) next.set("status", st);
+      if (saved.standort && saved.standort !== "all") next.set("standort", saved.standort);
+      setSearchParams(next, { replace: true });
+    }
+    filtersReady.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    if (!filtersReady.current) return;
+    try { localStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify({ status: statusFilter, standort: locationFilter })); } catch { /* ignorieren */ }
+  }, [statusFilter, locationFilter]);
 
   // Alte Links (?anfrage=<id>) auf die Vollseite umleiten.
   const legacyId = searchParams.get("anfrage");
