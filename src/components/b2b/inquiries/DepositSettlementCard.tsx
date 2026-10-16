@@ -77,6 +77,11 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
   useEffect(() => { void load(); }, [load]);
 
   const paid = sumPayments(inquiry.payments);
+  // Stripe-Erstattung nur, wenn die Ursprungszahlung über Stripe kam (gleiche Erkennung wie DB-Trigger).
+  const hasStripePayment = Array.isArray(inquiry.payments) && (inquiry.payments as Row[]).some(
+    (p) => /^(cs_|pi_)/.test(String(p?.reference ?? "")) || /stripe/i.test(String(p?.label ?? "")),
+  );
+  useEffect(() => { if (!hasStripePayment && payout === "stripe") setPayout("transfer"); }, [hasStripePayment, payout]);
   const rent = Number(inquiry.offer_total_gross) || 0;
   const result = useMemo(() => computeSettlement({ paid, rent, deductions }), [paid, rent, deductions]);
   const problem = deductionProblem(deductions);
@@ -239,7 +244,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
             <SelectContent>
               <SelectItem value="cash">Bar (heute ausgezahlt)</SelectItem>
               <SelectItem value="transfer">Überweisung (heute veranlasst)</SelectItem>
-              <SelectItem value="stripe">Stripe – Freigabe durch Admin/Niederlassungsleitung</SelectItem>
+              {hasStripePayment && <SelectItem value="stripe">Stripe – Freigabe durch Admin/Niederlassungsleitung</SelectItem>}
             </SelectContent>
           </Select>
         </div>
