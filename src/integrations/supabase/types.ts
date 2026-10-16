@@ -3655,6 +3655,8 @@ export type Database = {
           start_time: string | null
           status: string
           updated_at: string
+          use_saturday: boolean
+          use_sunday: boolean
           vat_id: string | null
         }
         Insert: {
@@ -3723,6 +3725,8 @@ export type Database = {
           start_time?: string | null
           status?: string
           updated_at?: string
+          use_saturday?: boolean
+          use_sunday?: boolean
           vat_id?: string | null
         }
         Update: {
@@ -3791,6 +3795,8 @@ export type Database = {
           start_time?: string | null
           status?: string
           updated_at?: string
+          use_saturday?: boolean
+          use_sunday?: boolean
           vat_id?: string | null
         }
         Relationships: [
@@ -4958,6 +4964,43 @@ export type Database = {
           weight_kg?: number | null
         }
         Relationships: []
+      }
+      public_product_prices: {
+        Row: {
+          location: string | null
+          managed_product_id: string | null
+          price_base_1_3_cd: number | null
+          price_from_1_rd: number | null
+          price_from_10_rd: number | null
+          price_from_20_rd: number | null
+          price_from_3_rd: number | null
+          price_weekend_num: number | null
+          surcharge_per_cd_from_4: number | null
+          surcharge_per_cd_from_8: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "b2b_managed_product_location_prices_managed_product_id_fkey"
+            columns: ["managed_product_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_managed_products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "b2b_managed_product_location_prices_managed_product_id_fkey"
+            columns: ["managed_product_id"]
+            isOneToOne: false
+            referencedRelation: "maintenance_due_overview"
+            referencedColumns: ["managed_product_id"]
+          },
+          {
+            foreignKeyName: "b2b_managed_product_location_prices_managed_product_id_fkey"
+            columns: ["managed_product_id"]
+            isOneToOne: false
+            referencedRelation: "managed_products_public"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Functions: {
