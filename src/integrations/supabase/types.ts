@@ -1867,6 +1867,7 @@ export type Database = {
           inquiry_id: string | null
           location: string
           notes: string | null
+          order_code: string | null
           original_price: number | null
           product_id: string
           product_name: string | null
@@ -1891,6 +1892,7 @@ export type Database = {
           inquiry_id?: string | null
           location: string
           notes?: string | null
+          order_code?: string | null
           original_price?: number | null
           product_id: string
           product_name?: string | null
@@ -1915,6 +1917,7 @@ export type Database = {
           inquiry_id?: string | null
           location?: string
           notes?: string | null
+          order_code?: string | null
           original_price?: number | null
           product_id?: string
           product_name?: string | null
