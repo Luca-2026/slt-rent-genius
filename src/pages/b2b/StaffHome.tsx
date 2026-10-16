@@ -24,6 +24,7 @@ import { priorityDisplayLabel } from "@/lib/callPriority";
 import { DAY_LOCATION_OPTIONS, defaultDayLocation, filterByDayLocation, type DayLocationFilter } from "@/lib/dayLocationFilter";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AcceptedOffersPayments } from "@/components/b2b/dashboard/AcceptedOffersPayments";
+import { DepositSettlementsDue } from "@/components/b2b/dashboard/DepositSettlementsDue";
 
 type ProfileRow = PortalProfileLite & { id: string; company_name: string; credit_limit: number };
 
@@ -265,6 +266,8 @@ export default function StaffHome() {
           </div>
 
           <AcceptedOffersPayments />
+
+          <DepositSettlementsDue location={activeDayLocation} />
 
           <UrgentCalls />
 
