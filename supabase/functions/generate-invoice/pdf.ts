@@ -4,6 +4,7 @@ import { drawUnifiedFooter, resolvePdfLocation, FOOTER_TOP } from "../_shared/pd
 import { SLT_COMPANY as FOOTER_COMPANY } from "../_shared/offer-company.ts";
 import { embedProductImages, normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 import { SLT_COMPANY } from "./company.ts";
+import { drawEpcQr } from "../_shared/epc-qr-pdf.ts";
 
 
 // ─── PDF Generator for Invoice (DIN 5008 + SLT CI) ─────────────────────
@@ -438,9 +439,14 @@ export async function generateDocumentPdf(data: {
       : `Zahlbar bis: ${fd(data.totals.dueDate)} (${data.totals.paymentDueDays} Tage netto)`;
     const bankLine = `${SLT_COMPANY.bankName} | IBAN: ${SLT_COMPANY.iban} | BIC: ${SLT_COMPANY.bic}`;
     const ref = `Verwendungszweck: ${data.documentNumber}`;
-    const boxH = 84;
+    const boxH = 96;
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.995, 0.97, 0.93) });
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
+    // Überweisungs-QR (GiroCode) mit Rechnungsbetrag und Rechnungsnummer
+    drawEpcQr(pg, {
+      name: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic,
+      amountCents: Math.round(Number(data.totals.gross) * 100), reference: data.documentNumber,
+    }, ML + CW - 70 - 10, y - 70, 70, font);
     dt(pg, "Zahlungshinweis", ML + 16, y - 2, bold, 10, INK);
     dt(pg, dueText, ML + 16, y - 20, font, 9.5, INK);
     dt(pg, bankLine, ML + 16, y - 38, font, 9.5, INK);
