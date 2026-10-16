@@ -1674,59 +1674,68 @@ export function InquiryOfferForm({
                 </span>
               </label>
             )}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2" data-testid="position-columns">
               <div>
-                <Label className="text-xs">Menge (Artikel)</Label>
-                <NumberInput
-                  type="number"
-                  min={1}
-                  value={item.quantity}
-                  onChange={(e) => patchItem(index, { quantity: Number(e.target.value) || 0 })}
-                  disabled={disabled}
-                />
+                <Label className="text-xs">Menge</Label>
+                <div className="flex gap-1">
+                  <NumberInput
+                    type="number"
+                    min={1}
+                    value={item.quantity}
+                    onChange={(e) => patchItem(index, { quantity: Number(e.target.value) || 0 })}
+                    disabled={disabled}
+                  />
+                  <Select
+                    value={item.quantity_unit ?? "stk"}
+                    disabled={disabled}
+                    onValueChange={(v) => patchItem(index, { quantity_unit: v as QuantityUnit })}
+                  >
+                    <SelectTrigger className="h-10 w-[4.5rem] shrink-0" aria-label="Mengeneinheit"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {QUANTITY_UNITS.map((q) => <SelectItem key={q.value} value={q.value}>{q.short}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-              <div>
-                <Label className="text-xs">Menge (Dauer)</Label>
-                <NumberInput
-                  type="number"
-                  min={1}
-                  value={isFlatRate ? 1 : eff.duration ?? 1}
-                  onChange={(e) => patchItem(index, { duration: Number(e.target.value) || 0 })}
-                  disabled={disabled || inherited || isFlatRate}
-                />
-              </div>
-              <div>
-                <Label className="text-xs">Einheit</Label>
-                <Select
-                  value={eff.unit ?? "kalendertage"}
-                  disabled={disabled || inherited}
-                  onValueChange={(v) =>
-                    patchPriced(index, {
-                      unit: v as OfferUnit,
-                      unit_manual: true,
-                      // Pauschalpreis gilt für den gesamten Auftrag – Dauer entfällt.
-                      ...(v === "pauschal" ? { duration: 1 } : {}),
-                    })
-                  }
-                >
-                  <SelectTrigger className="h-10">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {OFFER_UNITS.map((u) => (
-                      <SelectItem key={u.value} value={u.value}>{u.label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <p className="mt-1 text-[11px] text-muted-foreground">
+              <div className="sm:col-span-2">
+                <Label className="text-xs">Dauer</Label>
+                <div className="flex gap-1">
                   {isFlatRate ? (
-                    <>Pauschal – unabhängig von der Mietdauer</>
+                    <div className="flex h-10 flex-1 items-center rounded-md border border-input bg-muted/40 px-3 text-sm text-muted-foreground" data-testid="duration-flat">
+                      pauschal
+                    </div>
                   ) : (
-                    <>
-                      {item.quantity || 0} × {eff.duration ?? 1}{" "}
-                      {unitLabel(eff.duration ?? 1, (eff.unit ?? "kalendertage") as OfferUnit)}
-                    </>
+                    <NumberInput
+                      type="number"
+                      min={1}
+                      value={eff.duration ?? 1}
+                      onChange={(e) => patchItem(index, { duration: Number(e.target.value) || 0 })}
+                      disabled={disabled || inherited}
+                    />
                   )}
+                  <Select
+                    value={eff.unit ?? "kalendertage"}
+                    disabled={disabled || inherited}
+                    onValueChange={(v) =>
+                      patchPriced(index, {
+                        unit: v as OfferUnit,
+                        unit_manual: true,
+                        // Pauschalpreis gilt für den gesamten Auftrag – Dauer fest 1.
+                        ...(v === "pauschal" ? { duration: 1 } : {}),
+                      })
+                    }
+                  >
+                    <SelectTrigger className="h-10 w-36 shrink-0" aria-label="Einheit der Dauer"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {OFFER_UNITS.filter((u) => u.value !== "stueck" || eff.unit === "stueck").map((u) => (
+                        <SelectItem key={u.value} value={u.value}>{u.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  {item.quantity || 0} {quantityUnitShort(item.quantity_unit)} ×{" "}
+                  {isFlatRate ? "pauschal" : `${eff.duration ?? 1} ${unitAbbreviation((eff.unit ?? "kalendertage") as OfferUnit)}`}
                 </p>
               </div>
               <div>
@@ -1893,9 +1902,10 @@ export function InquiryOfferForm({
         {(() => {
           const used = Array.from(new Set(effectiveItems.map((i) => (i.unit ?? "kalendertage") as OfferUnit)));
           if (!used.length) return null;
+          const qUsed = QUANTITY_UNITS.filter((q) => effectiveItems.some((i) => (i.quantity_unit ?? "stk") === q.value));
           return (
             <p className="text-[11px] text-muted-foreground" data-testid="unit-legend">
-              {used.map((u) => `${unitAbbreviation(u)} = ${unitLabel(2, u)}`).join(" · ")}
+              {[...qUsed.map((q) => `${q.short} = ${q.label}`), ...used.filter((u) => u !== "pauschal").map((u) => `${unitAbbreviation(u)} = ${unitLabel(2, u)}`)].join(" · ")}
               {used.includes("miettage") ? " · 1 Miettag = 24 Std. gem. AGB" : ""}
             </p>
           );
@@ -1991,16 +2001,28 @@ export function InquiryOfferForm({
         </div>
       )}
 
+      <div className="flex flex-wrap items-center gap-2" data-testid="order-type">
+        <span className="text-xs text-muted-foreground">Auftragsart</span>
+        {(["pickup", "delivery"] as const).map((t) => (
+          <Button key={t} type="button" size="sm" variant={orderType === t ? "default" : "outline"} disabled={disabled}
+            aria-pressed={orderType === t} onClick={() => setOrderType(t)}>
+            {t === "pickup" ? "Abholung" : "Lieferung"}
+          </Button>
+        ))}
+        {orderType === "delivery" && deliveryCostDelivery + deliveryCostReturn <= 0 && (
+          <span className="text-xs text-muted-foreground">Kostenfreie Lieferung</span>
+        )}
+      </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
         <div>
           <Label className="text-xs">Lieferkosten</Label>
           <NumberInput type="number" min={0} step="0.01" value={deliveryCostDelivery}
-            onChange={(e) => setDeliveryCostDelivery(Number(e.target.value) || 0)} disabled={disabled} />
+            onChange={(e) => changeDeliveryCost(Number(e.target.value) || 0)} disabled={disabled} />
         </div>
         <div>
           <Label className="text-xs">Abholkosten</Label>
           <NumberInput type="number" min={0} step="0.01" value={deliveryCostReturn}
-            onChange={(e) => setDeliveryCostReturn(Number(e.target.value) || 0)} disabled={disabled} />
+            onChange={(e) => changeReturnCost(Number(e.target.value) || 0)} disabled={disabled} />
         </div>
         <div>
           <Label className="text-xs">Aufbau</Label>
