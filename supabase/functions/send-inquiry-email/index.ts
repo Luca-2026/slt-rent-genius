@@ -185,6 +185,14 @@ serve(async (req) => {
       ? `<tr><td style="padding: 4px 0; color: #6b7280;">Betreuung / Auf- & Abbau:</td><td style="padding: 4px 0; font-weight: 500; color: #16a34a;">✓ Ja, gewünscht</td></tr>`
       : '';
 
+    const weekendDays = [useSaturday === true ? "Samstag" : null, useSunday === true ? "Sonntag" : null].filter(Boolean).join(" und ");
+    const weekendHtml = weekendDays
+      ? `<tr><td style="padding: 4px 0; color: #6b7280;">Wochenende:</td><td style="padding: 4px 0;">${escapeHtml(weekendDays)} als Nutzungstag gewünscht</td></tr>`
+      : '';
+    const estimateHtml = priceEstimate
+      ? `<tr><td style="padding: 4px 0; color: #6b7280;">Preisschätzung:</td><td style="padding: 4px 0;">${escapeHtml(String(priceEstimate).slice(0, 300))} (unverbindlich)</td></tr>`
+      : '';
+
     // Raw values still needed for non-HTML contexts (mail headers, telephone link)
     const ALLOWED_LOC_EMAILS = ["krefeld@slt-rental.de", "bonn@slt-rental.de", "muelheim@slt-rental.de", "mieten@slt-rental.de", "info@slt-rental.de"];
     const locEmail = ALLOWED_LOC_EMAILS.includes(String(locationEmail ?? "").trim().toLowerCase())
