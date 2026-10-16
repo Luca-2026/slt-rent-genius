@@ -1,3 +1,4 @@
+import { isDraftEditEvent } from "@/lib/draftEditIntent";
 import { CLEANING_UNIT_GROSS, CLEANING_UNIT_MINUTES, cleaningChargeGross, cleaningSuggested, depositSettlementNote, settleDeposit } from "@/lib/returnCharges";
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { needsOfferDepositWarning } from "@/lib/offerDeposit";
@@ -1194,13 +1195,13 @@ export function InquiryOfferForm({
 
   // Aktionen (Vorschau, Senden) – in der Vollseite oben angeheftet, sonst wie bisher am Ende.
   const previewButton = !isInvoice && (
-    <Button type="button" variant="outline" onClick={preview} disabled={disabled || previewing || sending} className={stickyActions ? "" : "w-full"}>
+    <Button type="button" data-draft-neutral variant="outline" onClick={preview} disabled={disabled || previewing || sending} className={stickyActions ? "" : "w-full"}>
       {previewing ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Eye className="h-4 w-4 mr-2" />}
       {previewing ? "Vorschau wird erstellt …" : "PDF-Vorschau anzeigen"}
     </Button>
   );
   const sendButton = (
-    <Button onClick={send} disabled={disabled || sending || checking || !previewOk} className={stickyActions ? "" : "w-full"}>
+    <Button data-draft-neutral onClick={send} disabled={disabled || sending || checking || !previewOk} className={stickyActions ? "" : "w-full"}>
       <Send className="h-4 w-4 mr-2" />
       {isInvoice
         ? sending
@@ -1241,10 +1242,16 @@ export function InquiryOfferForm({
   );
 
   return (
-    <div className="space-y-4" onInputCapture={markTouched} onChangeCapture={markTouched} onKeyDownCapture={markTouched} onPointerDownCapture={markTouched}>
-      {stickyActions && actionBar}
+    <div
+      className="space-y-4"
+      onInputCapture={(e) => { if (isDraftEditEvent(e.target, "input")) markTouched(); }}
+      onChangeCapture={(e) => { if (isDraftEditEvent(e.target, "input")) markTouched(); }}
+      onKeyDownCapture={(e) => { if (isDraftEditEvent(e.target, "key", e.key)) markTouched(); }}
+      onPointerDownCapture={(e) => { if (isDraftEditEvent(e.target, "pointer")) markTouched(); }}
+    >
+      {stickyActions && <div data-draft-neutral>{actionBar}</div>}
       {remoteDraft && !disabled && remoteDraft.updatedBy !== myUserId && (
-        <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-primary/40 bg-primary/5 p-3 text-sm">
+        <div data-draft-neutral className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-primary/40 bg-primary/5 p-3 text-sm">
           <span>
             <span className="font-medium">Entwurf von {remoteDraft.updatedByName ?? "einem Kollegen"}</span>
             {` (zuletzt ${new Date(remoteDraft.updatedAt).toLocaleString("de-DE")})`}
