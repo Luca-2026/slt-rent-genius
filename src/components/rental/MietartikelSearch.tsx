@@ -1,3 +1,4 @@
+import { useManagedProductsVersion } from "@/data/managedProductsCache";
 import { priceText } from "@/components/rental/ProductPriceBlock";
 import { useCustomerType } from "@/hooks/useCustomerType";
 import { useState, useRef, useEffect, useMemo } from "react";
@@ -119,7 +120,8 @@ export function MietartikelSearch() {
   const [showLocationDialog, setShowLocationDialog] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
 
-  const allProducts = useMemo(() => getAllUniqueProducts(), []);
+  const cmsVersion = useManagedProductsVersion();
+  const allProducts = useMemo(() => getAllUniqueProducts(), [cmsVersion]);
   const translatedProducts = useTranslatedProducts(allProducts);
 
   const filteredProducts = useMemo(() => {
