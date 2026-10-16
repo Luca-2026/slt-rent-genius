@@ -382,7 +382,8 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
         </div>
       ),
     },
-    {
+    // Ausweisabgleich nur bei der Herausgabe (Übergabe), nicht bei der Rücknahme.
+    ...(!isReturn ? [{
       id: "id",
       title: "Ausweis abgleichen",
       summary: customerNotPresent ? "Kunde nicht anwesend" : idChecked ? "Abgeglichen" : "Pflicht",
@@ -390,31 +391,52 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       content: customerNotPresent
         ? <p className="text-sm text-muted-foreground">Kunde ist nicht anwesend – kein Ausweisabgleich möglich.</p>
         : <IdCheckStep checked={idChecked} onCheckedChange={setIdChecked} docType={idDocType} onDocTypeChange={setIdDocType} customerName={inquiry.customer_name ?? undefined} />,
-    },
+    }] : []),
     {
       id: "equipment",
       title: "Zustand",
-      summary: `Sauberkeit${cleanliness ? ` ${cleanliness}/5` : ""}`,
+      summary: isReturn ? `Sauberkeit ${items.filter((_, i) => cleanlinessFor(i).rating > 0).length}/${items.length} bewertet` : "Messwerte & Sauberkeit",
       done: equipmentDone,
       content: (
         <div className="space-y-4">
           <div className="space-y-3">
             {items.map((it, i) => {
               const prev = prevReadings[it.name.trim().toLowerCase()];
-              return <div key={i} className="space-y-1">
-                <MeasurementFields name={it.name} value={{ ...emptyMeasurement(), ...readings[i] }} onChange={(m) => setReading(i, m)} />
+              const cl = cleanlinessFor(i);
+              const dirty = isDirty(cl.rating);
+              const units = Math.round(toNumber(cl.units));
+              return <div key={i} className="space-y-2">
+                <MeasurementFields name={it.name} value={{ ...emptyMeasurement(), ...readings[i] }} onChange={(m) => setReading(i, m)}
+                  allowHours={cmsFor(i)?.hours ?? true} allowFuel={cmsFor(i)?.tank ?? true} />
                 {isReturn && prev && (prev.mileage != null || prev.hours != null || !!prev.fuel) && <p className="text-xs text-muted-foreground pl-2">Bei Übergabe: {[prev.mileage != null ? `${prev.mileage} km` : "", prev.hours != null ? `${prev.hours} h` : "", prev.fuel ? `Tank ${FUEL_LEVELS.find((f) => f.value === prev.fuel)?.label ?? prev.fuel}` : ""].filter(Boolean).join(" · ")}</p>}
+                <div className="rounded-md border p-3 space-y-2">
+                  <Label className="text-xs">Sauberkeit / Verschmutzung{isReturn ? " *" : " (optional)"}</Label>
+                  <div className="grid grid-cols-5 gap-2">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <Button key={n} type="button" variant={cl.rating === n ? "default" : "outline"} className="h-11 text-base"
+                        aria-label={`Sauberkeit ${it.name}: Stufe ${n}`}
+                        onClick={() => setCleanlinessFor(i, { rating: cl.rating === n ? 0 : n })}>{n}</Button>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">{CLEANLINESS_HINT} · Reinigungsservice pro 15 Minuten, nach Aufwand</p>
+                  {isReturn && dirty && (
+                    <div className="space-y-2 border-t pt-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-end">
+                        <div className="space-y-1">
+                          <Label className="text-xs">Reinigungsaufwand (angefangene 15-Min-Einheiten) *</Label>
+                          <Input aria-label={`Reinigungsaufwand ${it.name}`} value={cl.units} inputMode="numeric"
+                            onChange={(e) => setCleanlinessFor(i, { units: e.target.value.replace(/[^\d]/g, "").slice(0, 3) })} placeholder="z. B. 2" className="h-11" />
+                        </div>
+                        {units > 0 && (
+                          <p className="text-sm pb-2">{units} × {CLEANING_RATE_PER_15_MIN.toFixed(2).replace(".", ",")} € netto = <strong>{formatEuro(cleaningChargeGross(units))} brutto</strong></p>
+                        )}
+                      </div>
+                      <Input aria-label={`Kommentar Reinigung ${it.name}`} value={cl.comment} onChange={(e) => setCleanlinessFor(i, { comment: e.target.value })} placeholder="Kommentar (optional)" className="h-11" />
+                    </div>
+                  )}
+                </div>
               </div>;
             })}
-          </div>
-          <div>
-            <Label className="text-xs">Sauberkeit / Verschmutzung *</Label>
-            <div className="grid grid-cols-5 gap-2 mt-1">
-              {[1, 2, 3, 4, 5].map((n) => (
-                <Button key={n} type="button" variant={cleanliness === n ? "default" : "outline"} className="h-12 text-base" onClick={() => setCleanliness(n)}>{n}</Button>
-              ))}
-            </div>
-            <p className="text-[11px] text-muted-foreground mt-1">{CLEANLINESS_HINT}</p>
           </div>
           <div>
             <Label className="text-xs">{isReturn ? "Zustand bei Rückgabe (optional)" : "Bekannte Mängel vor Übergabe (optional)"}</Label>
