@@ -15,8 +15,8 @@ import { Plus, RotateCcw, Trash2 } from "lucide-react";
 import type { AddonOption } from "@/lib/offerAddons";
 import { isSalesAddonNegative } from "@/lib/salesAddons";
 import { unitLabel, type OfferUnit } from "@/lib/offerUnits";
+import { insuranceCalendarDays } from "@/lib/pricing/rentalPricing";
 import {
-  calendarDaysInclusive,
   computeAddonAmount,
   daysPerUnit,
   describeAddon,
@@ -65,6 +65,71 @@ export function recalcAddons<T extends OfferLine>(item: T): T {
   return { ...item, addons };
 }
 
+const round2 = (n: number) => Math.round((n + Number.EPSILON) * 100) / 100;
+
+/** Paket 3b: Kalendertage der Versicherung aus dem Zeitraum (Preismodul, immer Kalendertage). */
+export function addonCalendarDays(start?: string | null, end?: string | null): number | null {
+  if (!start || !end || end < start) return null;
+  return insuranceCalendarDays({ date: start }, { date: end });
+}
+
+/** Standardbetrag der Versicherung je Kalendertag und Artikel (null, wenn nicht zeitbasiert). */
+export function standardPerDay(std: OfferLineAddon, ctx: AddonLineContext): number | null {
+  if (!std.price_type || std.price_type === "flat" || std.rate === undefined || !ctx.days_per_unit) return null;
+  return computeAddonAmount({ price_type: std.price_type, rate: std.rate, basis: "full_period", days: 1 }, { ...ctx, articles: 1 });
+}
+
+/** Optionale Stufe: Aufpreis je KT = surcharge_percent × Standardbetrag je KT. */
+export function buildOptionalTier(
+  tier: AddonOption,
+  std: OfferLineAddon,
+  ctx: AddonLineContext,
+  fallbackDays: number | null,
+): OfferLineAddon | null {
+  const base = standardPerDay(std, ctx);
+  if (base === null || !tier.surcharge_percent) return null;
+  const perDay = round2(base * (tier.surcharge_percent / 100));
+  const days = std.days ?? fallbackDays ?? null;
+  const amount = days ? computeAddonAmount({ price_type: "per_unit", rate: perDay, basis: "full_period", days }, ctx) ?? 0 : 0;
+  return {
+    key: `opt-${tier.key}`,
+    label: tier.deductible ? `Selbstbehalt-Reduzierung auf ${tier.deductible.toLocaleString("de-DE")} €` : tier.label,
+    optional: true,
+    per_day: perDay,
+    price_type: "per_unit",
+    rate: perDay,
+    basis: "full_period",
+    days,
+    period_start: std.period_start ?? null,
+    period_end: std.period_end ?? null,
+    manual: false,
+    amount,
+  };
+}
+
+/** Weitere CMS-Stufen zur Standardstufe (nur mit Aufschlag), sortiert. */
+export function furtherTiers(options: AddonOption[]): { std: AddonOption | undefined; tiers: AddonOption[] } {
+  const std = options.find((o) => o.is_default);
+  const tiers = std
+    ? options
+        .filter((o) => !o.is_default && (o.surcharge_percent ?? 0) > 0)
+        .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+    : [];
+  return { std, tiers };
+}
+
+/** Optionale Stufen an die aktuelle Standardstufe anpassen (Satz, Tage, Zeitraum). */
+export function syncOptionalTiers(addons: OfferLineAddon[], options: AddonOption[], ctx: AddonLineContext, fallbackDays: number | null): OfferLineAddon[] {
+  const { std: stdOpt, tiers } = furtherTiers(options);
+  const std = stdOpt ? addons.find((a) => a.key === stdOpt.key && !a.optional) : undefined;
+  if (!std) return addons.filter((a) => !(a.optional && a.key.startsWith("opt-")));
+  return addons.map((a) => {
+    if (!a.optional) return a;
+    const tier = tiers.find((t) => `opt-${t.key}` === a.key);
+    return (tier && buildOptionalTier(tier, std, ctx, fallbackDays)) || a;
+  });
+}
+
 function staffFormula(a: OfferLineAddon, item: OfferLine): string {
   const ctx = lineContext(item);
   const unit = (item.unit ?? "kalendertage") as OfferUnit;
@@ -99,10 +164,12 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
   const addons = item.addons ?? [];
   const ctx = lineContext(item);
   const canFullPeriod = ctx.days_per_unit !== null;
-  const calDays = calendarDaysInclusive(periodStart, periodEnd);
+  const calDays = addonCalendarDays(periodStart, periodEnd);
+  const { std: stdOption, tiers } = furtherTiers(options);
+  const emit = (next: OfferLineAddon[]) => onChange(isSales ? next : syncOptionalTiers(next, options, ctx, calDays));
 
   const patch = (ai: number, p: Partial<OfferLineAddon>) =>
-    onChange(addons.map((a, j) => (j === ai ? { ...a, ...p } : a)));
+    emit(addons.map((a, j) => (j === ai ? { ...a, ...p } : a)));
 
   /** Setzt einen Wert und berechnet (sofern nicht manuell) den Betrag neu. */
   const patchCalc = (ai: number, p: Partial<OfferLineAddon>) => {
@@ -111,7 +178,7 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
       ? computeAddonAmount({ price_type: next.price_type, rate: next.rate ?? 0, basis: next.basis ?? "line", days: next.days }, ctx)
       : null;
     if (!next.manual && amt !== null) next.amount = addons[ai].amount < 0 ? -amt : amt;
-    onChange(addons.map((a, j) => (j === ai ? next : a)));
+    emit(addons.map((a, j) => (j === ai ? next : a)));
   };
 
   const addOption = (option: AddonOption) => {
@@ -137,7 +204,12 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
       amount: 0,
     };
     const amt = computeAddonAmount({ price_type: base.price_type!, rate: base.rate!, basis: base.basis!, days: base.days }, ctx);
-    onChange([...addons, { ...base, amount: amt ?? 0 }]);
+    const added = { ...base, amount: amt ?? 0 };
+    // Standardstufe: weitere Stufen automatisch als optionale Zeilen anbieten (Standard an).
+    const extra = stdOption && option.key === stdOption.key
+      ? tiers.map((t) => buildOptionalTier(t, added, ctx, calDays)).filter((a): a is OfferLineAddon => !!a && !addons.some((x) => x.key === a.key))
+      : [];
+    onChange([...addons, added, ...extra]);
   };
 
   return (
@@ -168,13 +240,14 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
           size="sm"
           className="h-9 shrink-0"
           disabled={disabled}
-          onClick={() => onChange([...addons, { key: `custom-${Date.now()}`, label: "", amount: 0 }])}
+          onClick={() => emit([...addons, { key: `custom-${Date.now()}`, label: "", amount: 0 }])}
         >
           <Plus className="h-4 w-4 mr-1" /> Freie Option
         </Button>
       </div>
 
       {addons.map((addon, ai) => {
+        if (addon.optional) return null;
         const calculated = !!addon.price_type && addon.price_type !== "flat";
         const fullPeriod = addon.basis === "full_period";
         const customerText = describeAddon({
@@ -206,7 +279,7 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                 size="icon"
                 aria-label="Zusatzoption entfernen"
                 disabled={disabled}
-                onClick={() => onChange(addons.filter((_, j) => j !== ai))}
+                onClick={() => emit(addons.filter((_, j) => j !== ai))}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -236,8 +309,14 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                       value={addon.days ?? ""}
                       disabled={disabled}
                       className={missingDays ? "border-destructive" : undefined}
-                      onChange={(e) => patchCalc(ai, { days: Number(e.target.value) || null })}
+                      onChange={(e) => patchCalc(ai, { days: Number(e.target.value) || null, days_manual: true })}
                     />
+                    {addon.days_manual && calDays && addon.days !== calDays ? (
+                      <button type="button" className="mt-1 text-[11px] text-primary underline" disabled={disabled}
+                        onClick={() => patchCalc(ai, { days: calDays, days_manual: false, days_reason: undefined })}>
+                        Zeitraum übernehmen ({calDays} KT)
+                      </button>
+                    ) : null}
                   </div>
                 ) : <div />}
                 {canFullPeriod && (
@@ -259,6 +338,14 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                     </span>
                   </label>
                 )}
+              </div>
+            )}
+
+            {fullPeriod && addon.days_manual && (
+              <div>
+                <Label className="text-xs">Grund für geänderte Kalendertage (intern, nicht im PDF)</Label>
+                <Input value={addon.days_reason ?? ""} placeholder="z. B. Verlängerung telefonisch zugesagt" disabled={disabled}
+                  onChange={(e) => patch(ai, { days_reason: e.target.value || undefined })} />
               </div>
             )}
 
@@ -301,6 +388,31 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                 </Button>
               )}
             </div>
+            {!isSales && stdOption && addon.key === stdOption.key && tiers.length > 0 && (
+              <div className="ml-3 space-y-1 border-l border-border pl-3" data-testid="optional-tiers">
+                {tiers.map((t) => {
+                  const key = `opt-${t.key}`;
+                  const current = addons.find((a) => a.key === key);
+                  const preview = current ?? buildOptionalTier(t, addon, ctx, calDays);
+                  if (!preview) return null;
+                  return (
+                    <label key={key} className="flex items-start gap-2 text-xs cursor-pointer">
+                      <Checkbox
+                        checked={!!current}
+                        disabled={disabled}
+                        onCheckedChange={(v) =>
+                          emit(v === true ? [...addons, preview] : addons.filter((a) => a.key !== key))
+                        }
+                      />
+                      <span>
+                        <span className="font-medium">anbieten</span> – Optional: {preview.label}, Aufpreis {formatEuro(preview.per_day ?? 0)}/KT
+                        <span className="block text-muted-foreground">Nicht in der Angebotssumme</span>
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            )}
           </div>
         );
       })}
