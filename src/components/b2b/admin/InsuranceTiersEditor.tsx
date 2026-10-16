@@ -32,7 +32,18 @@ export function InsuranceTiersEditor({
 }) {
   const insurances = options.map((o, i) => ({ o, i })).filter(({ o }) => isInsuranceOption(o));
   if (!insurances.length) {
-    return <p className="text-sm text-muted-foreground">Keine Versicherung hinterlegt. Versicherungen legst du unten bei den Zusatzoptionen an.</p>;
+    return (
+      <p className="text-sm text-muted-foreground">
+        Keine Versicherung hinterlegt. Versicherungen legst du ganz unten in diesem Tab im Feld „Zusatzoptionen (Versicherungen etc.)“ an.{" "}
+        <button
+          type="button"
+          className="font-medium text-primary underline underline-offset-2"
+          onClick={() => document.getElementById("cms-addon-options")?.scrollIntoView({ behavior: "smooth", block: "center" })}
+        >
+          Zum Feld springen
+        </button>
+      </p>
+    );
   }
 
   const move = (from: number, to: number) => {
