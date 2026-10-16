@@ -252,7 +252,13 @@ Deno.serve(async (req: Request) => {
       payment_due_days: invoice.payment_due_days || 14,
     };
 
+    const codeTable = invoice.rental_inquiry_id ? "rental_inquiries" : "sales_inquiries";
+    const codeId = invoice.rental_inquiry_id || invoice.sales_inquiry_id;
+    const { data: codeRow } = codeId
+      ? await service.from(codeTable).select("order_code").eq("id", codeId).maybeSingle()
+      : { data: null };
     const pdfBytes = await generateOfferPdf({
+      orderCode: (codeRow as { order_code?: string | null } | null)?.order_code ?? null,
       documentType: "credit_note",
       offerNumber: creditNumber,
       offerDate: isoDate(creditDate),
