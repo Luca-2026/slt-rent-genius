@@ -81,13 +81,15 @@ export default function OfferOverview() {
   }, [isStaff]);
 
   const statuses = useMemo(() => [...new Set(rows.map((r) => r.status))].sort(), [rows]);
-  const locations = useMemo(() => [...new Set(rows.map((r) => r.location).filter(Boolean) as string[])].sort(), [rows]);
+  // Standorte liegen teils groß-, teils kleingeschrieben vor – für den Filter vereinheitlichen.
+  const normLoc = (v?: string | null) => (v ?? "").trim().toLowerCase().replace(/ü/g, "ue").replace(/\s+an der ruhr$/, "");
+  const locations = useMemo(() => [...new Set(rows.map((r) => normLoc(r.location)).filter(Boolean))].sort(), [rows]);
 
   const list = useMemo(() => {
     const q = f.q.trim().toLowerCase();
     const out = rows.filter((r) => {
       if (f.status !== "all" && r.status !== f.status) return false;
-      if (f.location !== "all" && r.location !== f.location) return false;
+      if (f.location !== "all" && normLoc(r.location) !== f.location) return false;
       // Zeitraum: Mietzeitraum überschneidet den gewählten Bereich.
       if (f.from && (r.end_date ?? r.start_date ?? "") < f.from) return false;
       if (f.to && (r.start_date ?? "") > f.to) return false;
