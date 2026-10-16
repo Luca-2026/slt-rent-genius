@@ -484,6 +484,13 @@
       "when": 1792151742178,
       "tag": "0068_add_suggested_accessory_slugs",
       "breakpoints": true
+    },
+    {
+      "idx": 69,
+      "version": "7",
+      "when": 1792152788143,
+      "tag": "0069_grant_managed_products_public_select",
+      "breakpoints": true
     }
   ]
 }
