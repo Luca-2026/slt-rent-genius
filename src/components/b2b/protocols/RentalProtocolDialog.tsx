@@ -81,7 +81,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
 
   const [idChecked, setIdChecked] = useState(false);
   const [idDocType, setIdDocType] = useState("");
-  const [cleanliness, setCleanliness] = useState(0);
+  const [cleanlinessByItem, setCleanlinessByItem] = useState<Record<number, ItemCleanliness>>({});
   const [readings, setReadings] = useState<Record<number, Measurement>>({});
   const [machineIdx, setMachineIdx] = useState<number[]>([]);
   const [cms, setCms] = useState<Record<string, { id: string; hours: boolean; tank: boolean }>>({});
@@ -123,7 +123,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     completed.current = false;
     setReadyFor(null);
     let cancelled = false;
-    setIdChecked(false); setIdDocType(""); setCleanliness(0); setReadings({}); setInstructed(false);
+    setIdChecked(false); setIdDocType(""); setCleanlinessByItem({}); setReadings({}); setInstructed(false);
     const its = protocolItemsFromInquiry(inquiry as never);
     setMachineIdx(its.map((it, i) => (isMachineLike([it.name]) ? i : -1)).filter((i) => i >= 0));
     setCms({}); setPrevReadings({});
@@ -155,7 +155,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     void readProtocolDraft<SavedProtocol>(key).then((draft) => {
       if (cancelled || !draft || !draft.value) return;
       const d = draft.value;
-      setIdChecked(d.idChecked); setIdDocType(d.idDocType); setCleanliness(d.cleanliness);
+      setIdChecked(d.idChecked); setIdDocType(d.idDocType); setCleanlinessByItem(d.cleanlinessByItem ?? {});
       setReadings(d.readings ?? {}); setMachineIdx(d.machineIdx ?? []); setInstructed(d.instructed);
       setKnownDefects(d.knownDefects); setNotes(d.notes); setAllReturned(d.allReturned);
       setMissingNotes(d.missingNotes);
@@ -175,14 +175,14 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   useEffect(() => {
     if (!draftKey || readyFor !== draftKey || completed.current || result) return;
     const value: SavedProtocol = {
-      idChecked, idDocType, cleanliness, readings, machineIdx, instructed, knownDefects, notes,
+      idChecked, idDocType, cleanlinessByItem, readings, machineIdx, instructed, knownDefects, notes,
       allReturned, missingNotes, photos: photos.map(({ id, file, caption }) => ({ id, file, caption })),
       damages: damages.map(({ photos: damagePhotos, ...damage }) => ({ ...damage, photos: damagePhotos.map(({ file }) => ({ file })) })),
       agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature,
       staffName, staffSignature, sendEmail, charges,
     };
     void writeProtocolDraft(draftKey, value).catch(() => toast.error("Entwurf konnte auf diesem Gerät nicht gespeichert werden. Bitte Speicherplatz prüfen."));
-  }, [draftKey, readyFor, result, idChecked, idDocType, cleanliness, readings, machineIdx, instructed, knownDefects, notes, allReturned, missingNotes, photos, damages, agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature, staffName, staffSignature, sendEmail, charges]);
+  }, [draftKey, readyFor, result, idChecked, idDocType, cleanlinessByItem, readings, machineIdx, instructed, knownDefects, notes, allReturned, missingNotes, photos, damages, agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature, staffName, staffSignature, sendEmail, charges]);
 
   useEffect(() => {
     if (!open) return;
