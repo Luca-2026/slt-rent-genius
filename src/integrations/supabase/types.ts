@@ -324,6 +324,7 @@ export type Database = {
           reservation_id: string | null
           signature_data: string | null
           signed_at: string | null
+          signed_place: string | null
           staff_name: string | null
           staff_signature_data: string | null
           status: string
@@ -353,6 +354,7 @@ export type Database = {
           reservation_id?: string | null
           signature_data?: string | null
           signed_at?: string | null
+          signed_place?: string | null
           staff_name?: string | null
           staff_signature_data?: string | null
           status?: string
@@ -382,6 +384,7 @@ export type Database = {
           reservation_id?: string | null
           signature_data?: string | null
           signed_at?: string | null
+          signed_place?: string | null
           staff_name?: string | null
           staff_signature_data?: string | null
           status?: string
@@ -1410,6 +1413,7 @@ export type Database = {
       }
       b2b_operating_hours_readings: {
         Row: {
+          cleanliness: string | null
           created_at: string
           delivery_note_id: string | null
           fuel_level: string | null
@@ -1428,6 +1432,7 @@ export type Database = {
           return_protocol_id: string | null
         }
         Insert: {
+          cleanliness?: string | null
           created_at?: string
           delivery_note_id?: string | null
           fuel_level?: string | null
@@ -1446,6 +1451,7 @@ export type Database = {
           return_protocol_id?: string | null
         }
         Update: {
+          cleanliness?: string | null
           created_at?: string
           delivery_note_id?: string | null
           fuel_level?: string | null
@@ -2018,6 +2024,7 @@ export type Database = {
           reservation_id: string | null
           return_protocol_number: string
           signed_at: string | null
+          signed_place: string | null
           staff_name: string | null
           staff_signature_data: string | null
           status: string
@@ -2055,6 +2062,7 @@ export type Database = {
           reservation_id?: string | null
           return_protocol_number: string
           signed_at?: string | null
+          signed_place?: string | null
           staff_name?: string | null
           staff_signature_data?: string | null
           status?: string
@@ -2092,6 +2100,7 @@ export type Database = {
           reservation_id?: string | null
           return_protocol_number?: string
           signed_at?: string | null
+          signed_place?: string | null
           staff_name?: string | null
           staff_signature_data?: string | null
           status?: string

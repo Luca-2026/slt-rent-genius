@@ -12,9 +12,9 @@ export const FUEL_PRICES = [
 ] as const;
 export type FuelType = (typeof FUEL_PRICES)[number]["value"];
 
-/** Reinigung: 40,00 € netto je angefangene 15 Minuten Aufwand = 47,60 € brutto. */
+/** Reinigung: 20,00 € netto je angefangene 15 Minuten Aufwand = 23,80 € brutto. */
 export const CLEANING_UNIT_MINUTES = 15;
-export const CLEANING_UNIT_NET = 40;
+export const CLEANING_UNIT_NET = 20;
 export const CLEANING_UNIT_GROSS = Math.round(CLEANING_UNIT_NET * 1.19 * 100) / 100;
 
 /** Reinigungskosten brutto = Anzahl 15-Minuten-Einheiten × 47,60 €. */
@@ -28,9 +28,9 @@ export const cleaningMinutesLabel = (units: number) => `${Math.round(units * CLE
 
 const FUEL_RANK: Record<string, number> = { voll: 4, dreiviertel: 3, halb: 2, viertel: 1, leer: 0 };
 
-/** Reinigung vorschlagen, sobald die Sauberkeit schlechter als „5 = sauber“ ist. */
+/** Verschmutzt gilt ein Gerät ab Stufe 2 der 5-Stufen-Skala (1 = sauber). */
 export function cleaningSuggested(rating: number | null | undefined): boolean {
-  return !!rating && rating >= 1 && rating < 5;
+  return !!rating && rating >= 2 && rating <= 5;
 }
 
 /** Kraftstoff vorschlagen, wenn der Tank bei Rückgabe niedriger ist als bei Übergabe (ohne Übergabewert: nicht voll). */

@@ -157,7 +157,12 @@ export const FUEL_LEVELS = [
   { value: "leer", label: "Leer" },
 ];
 
-export const CLEANLINESS_HINT = "1 = Sehr verschmutzt · 5 = Sauber";
+export const CLEANLINESS_HINT = "1 = Sauber · 5 = Sehr verschmutzt";
+
+/** Reinigungsservice: 20,00 € netto je angefangene 15 Minuten (Satz zentral, nicht in Komponenten). */
+export const CLEANING_RATE_PER_15_MIN = 20;
+/** Verschmutzt gilt ein Gerät ab Stufe 2 (Stufe 1 = sauber). */
+export const isDirty = (rating: number | null | undefined) => !!rating && rating >= 2 && rating <= 5;
 
 /** Lädt Schadensfotos in den geschützten Dokumentenspeicher und gibt die Pfade zurück. */
 export async function uploadDamagePhotos(

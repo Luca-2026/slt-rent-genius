@@ -31,7 +31,8 @@ const Body = z.object({
   items_confirmed: z.boolean(),
   operating_hours: z.string().max(40).nullable(),
   fuel_level: z.string().max(20).nullable(),
-  machine_readings: z.array(z.object({ item_name: z.string().max(200), operating_hours: z.string().max(20), fuel_level: z.string().max(20), mileage: z.string().max(20).optional().default(""), managed_product_id: z.string().uuid().nullable().optional() })).max(30).optional().default([]),
+  machine_readings: z.array(z.object({ item_name: z.string().max(200), operating_hours: z.string().max(20), fuel_level: z.string().max(20), mileage: z.string().max(20).optional().default(""), managed_product_id: z.string().uuid().nullable().optional(), cleanliness: z.string().max(10).optional().default("") })).max(30).optional().default([]),
+  item_cleanliness: z.array(z.object({ item_name: z.string().max(300), rating: z.number().int().min(1).max(5), units: z.number().int().min(1).max(999).nullable(), comment: z.string().max(500).nullable() })).max(60).optional().default([]),
   instructed: z.boolean().optional().default(false),
   cleanliness_rating: z.number().int().min(1).max(5).nullable(),
   known_defects: z.string().max(2000).nullable(),
@@ -102,7 +103,7 @@ Deno.serve(async (req) => {
     if (totalPhotos > MAX_PHOTOS) return json({ error: `Maximal ${MAX_PHOTOS} Fotos je Protokoll (gesendet: ${totalPhotos}).` }, 400);
     if (!b.customer_not_present) {
       if (!b.customer_signature || !b.customer_signer_name) return json({ error: "Unterschrift und Name des Kunden fehlen." }, 400);
-      if (!b.id_checked) return json({ error: "Der Ausweisabgleich fehlt." }, 400);
+      if (!isReturn && !b.id_checked) return json({ error: "Der Ausweisabgleich fehlt." }, 400);
       if (!b.items_confirmed || (!isReturn && !b.agb_accepted)) return json({ error: "Die Best\u00E4tigungen des Kunden fehlen." }, 400);
     }
 
@@ -174,7 +175,9 @@ Deno.serve(async (req) => {
       condition: {
         operatingHours: b.operating_hours, fuelLevel: b.fuel_level, readings: b.machine_readings, cleanliness: b.cleanliness_rating,
         knownDefects: b.known_defects, notes: b.notes, allReturned: isReturn ? b.all_items_returned : null, missingNotes: b.missing_items_notes,
+        itemCleanliness: b.item_cleanliness,
       },
+      signedPlace: loc.name,
       idCheck: { checked: b.id_checked, type: b.id_check_type },
       confirmations: { instructed: b.instructed, agb: b.agb_accepted, items: b.items_confirmed, customerNotPresent: b.customer_not_present },
       damages: damageRows.map((d) => ({
@@ -204,7 +207,7 @@ Deno.serve(async (req) => {
       pdf_path: pdfPath,
       items: b.items,
       photos: storedPhotos,
-       operating_hours: b.operating_hours, fuel_level: b.fuel_level, machine_readings: b.machine_readings, cleanliness_rating: b.cleanliness_rating,
+       operating_hours: b.operating_hours, fuel_level: b.fuel_level, machine_readings: b.machine_readings, cleanliness_rating: b.cleanliness_rating, item_cleanliness: b.item_cleanliness,
       customer_not_present: b.customer_not_present, customer_signer_name: b.customer_signer_name,
       items_confirmed: b.items_confirmed, created_by: user.id,
     };
@@ -212,7 +215,7 @@ Deno.serve(async (req) => {
     const common = {
       rental_inquiry_id: inq.id, b2b_profile_id: inq.b2b_profile_id ?? null, status,
       staff_signature_data: b.staff_signature, staff_name: b.staff_name, notes: b.notes,
-      signed_at: now.toISOString(), file_url: fileUrl, file_name: fileName, photo_urls: photoUrls,
+      signed_at: now.toISOString(), signed_place: loc.name, file_url: fileUrl, file_name: fileName, photo_urls: photoUrls,
       id_checked: b.id_checked, id_check_type: b.id_check_type, id_checked_at: b.id_checked ? now.toISOString() : null,
       protocol_data: protocolData,
     };
@@ -231,7 +234,7 @@ Deno.serve(async (req) => {
       const damagesTotal = damageRows.reduce((s, d) => s + (d.amount ?? 0), 0);
       const { data: row, error } = await svc.from("b2b_return_protocols").insert({
         ...common, return_protocol_number: number, delivery_note_id: existingDn!.id, customer_signature_data: b.customer_signature,
-        condition_notes: b.known_defects, cleaning_required: (b.cleanliness_rating ?? 5) <= 2,
+        condition_notes: b.known_defects, cleaning_required: b.item_cleanliness.some((c) => c.rating >= 2),
         all_items_returned: b.all_items_returned ?? true, missing_items_notes: b.missing_items_notes,
         meter_reading_end: b.operating_hours, damages_total: damagesTotal, extra_charges_total: extraChargesTotal,
         overall_condition: damageRows.length ? "damaged" : "good",
@@ -263,7 +266,7 @@ Deno.serve(async (req) => {
         product_name: m.item_name, location: lk, kind: isReturn ? "return" : "delivery",
          operating_hours: m.operating_hours ? Number(m.operating_hours.replace(",", ".")) : null,
          mileage_km: m.mileage ? Number(m.mileage.replace(",", ".")) : null,
-        fuel_level: m.fuel_level || null, rental_inquiry_id: inq.id,
+        fuel_level: m.fuel_level || null, cleanliness: m.cleanliness || null, rental_inquiry_id: inq.id,
         delivery_note_id: isReturn ? null : protocolId, return_protocol_id: isReturn ? protocolId : null,
         protocol_number: number, recorded_by: user.id,
       })));

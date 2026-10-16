@@ -20,8 +20,8 @@ import { ProtocolWizard, type WizardStep } from "@/components/b2b/protocols/Prot
 import { DamagesStep } from "@/components/b2b/protocols/DamagesStep";
 import { IdCheckStep } from "@/components/b2b/protocols/IdCheckStep";
 import { ExtraChargesStep, type ChargeSuggestion } from "@/components/b2b/protocols/ExtraChargesStep";
-import { cleaningSuggested, fuelSuggested } from "@/lib/returnCharges";
-import { CLEANLINESS_HINT, FUEL_LEVELS, isMachineLike, toNumber, formatEuro, serializeExtraCharges, sumExtraCharges, type ExtraCharge, type ProtocolDamage } from "@/components/b2b/protocols/protocolShared";
+import { cleaningChargeGross, fuelSuggested, CLEANING_UNIT_GROSS } from "@/lib/returnCharges";
+import { CLEANING_RATE_PER_15_MIN, CLEANLINESS_HINT, FUEL_LEVELS, isDirty, isMachineLike, toNumber, formatEuro, serializeExtraCharges, sumExtraCharges, emptyExtraCharge, type ExtraCharge, type ProtocolDamage } from "@/components/b2b/protocols/protocolShared";
 import {
   MAX_PROTOCOL_PHOTOS, formatPhotoTimestamp, photoTakenAt, protocolItemsFromInquiry, remainingPhotoSlots, type ProtocolKind,
 } from "@/lib/rentalProtocol";
@@ -36,8 +36,10 @@ import { Camera, CheckCircle2, Clock, Download, Loader2, Upload, X } from "lucid
 
 interface GeneralPhoto { id: string; file: File; preview: string; caption: string }
 type SavedPhoto = Omit<GeneralPhoto, "preview">;
+/** Sauberkeit je Gerät: Bewertung 1–5, bei Verschmutzung (ab Stufe 2) Reinigungseinheiten + Kommentar. */
+interface ItemCleanliness { rating: number; units: string; comment: string }
 interface SavedProtocol {
-  idChecked: boolean; idDocType: string; cleanliness: number;
+  idChecked: boolean; idDocType: string; cleanlinessByItem?: Record<number, ItemCleanliness>;
   readings: Record<number, Measurement>;
   machineIdx: number[]; instructed: boolean; knownDefects: string; notes: string;
   allReturned: boolean; missingNotes: string; photos: SavedPhoto[];
@@ -79,7 +81,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
 
   const [idChecked, setIdChecked] = useState(false);
   const [idDocType, setIdDocType] = useState("");
-  const [cleanliness, setCleanliness] = useState(0);
+  const [cleanlinessByItem, setCleanlinessByItem] = useState<Record<number, ItemCleanliness>>({});
   const [readings, setReadings] = useState<Record<number, Measurement>>({});
   const [machineIdx, setMachineIdx] = useState<number[]>([]);
   const [cms, setCms] = useState<Record<string, { id: string; hours: boolean; tank: boolean }>>({});
@@ -121,7 +123,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     completed.current = false;
     setReadyFor(null);
     let cancelled = false;
-    setIdChecked(false); setIdDocType(""); setCleanliness(0); setReadings({}); setInstructed(false);
+    setIdChecked(false); setIdDocType(""); setCleanlinessByItem({}); setReadings({}); setInstructed(false);
     const its = protocolItemsFromInquiry(inquiry as never);
     setMachineIdx(its.map((it, i) => (isMachineLike([it.name]) ? i : -1)).filter((i) => i >= 0));
     setCms({}); setPrevReadings({});
@@ -153,7 +155,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     void readProtocolDraft<SavedProtocol>(key).then((draft) => {
       if (cancelled || !draft || !draft.value) return;
       const d = draft.value;
-      setIdChecked(d.idChecked); setIdDocType(d.idDocType); setCleanliness(d.cleanliness);
+      setIdChecked(d.idChecked); setIdDocType(d.idDocType); setCleanlinessByItem(d.cleanlinessByItem ?? {});
       setReadings(d.readings ?? {}); setMachineIdx(d.machineIdx ?? []); setInstructed(d.instructed);
       setKnownDefects(d.knownDefects); setNotes(d.notes); setAllReturned(d.allReturned);
       setMissingNotes(d.missingNotes);
@@ -173,14 +175,14 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   useEffect(() => {
     if (!draftKey || readyFor !== draftKey || completed.current || result) return;
     const value: SavedProtocol = {
-      idChecked, idDocType, cleanliness, readings, machineIdx, instructed, knownDefects, notes,
+      idChecked, idDocType, cleanlinessByItem, readings, machineIdx, instructed, knownDefects, notes,
       allReturned, missingNotes, photos: photos.map(({ id, file, caption }) => ({ id, file, caption })),
       damages: damages.map(({ photos: damagePhotos, ...damage }) => ({ ...damage, photos: damagePhotos.map(({ file }) => ({ file })) })),
       agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature,
       staffName, staffSignature, sendEmail, charges,
     };
     void writeProtocolDraft(draftKey, value).catch(() => toast.error("Entwurf konnte auf diesem Gerät nicht gespeichert werden. Bitte Speicherplatz prüfen."));
-  }, [draftKey, readyFor, result, idChecked, idDocType, cleanliness, readings, machineIdx, instructed, knownDefects, notes, allReturned, missingNotes, photos, damages, agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature, staffName, staffSignature, sendEmail, charges]);
+  }, [draftKey, readyFor, result, idChecked, idDocType, cleanlinessByItem, readings, machineIdx, instructed, knownDefects, notes, allReturned, missingNotes, photos, damages, agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature, staffName, staffSignature, sendEmail, charges]);
 
   useEffect(() => {
     if (!open) return;
@@ -195,6 +197,18 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const setReading = (i: number, reading: Measurement) =>
     setReadings((r) => ({ ...r, [i]: reading }));
   const cmsFor = (i: number) => (items[i] ? cms[items[i].name.trim().toLowerCase()] : undefined);
+  const cleanlinessFor = (i: number): ItemCleanliness => cleanlinessByItem[i] ?? { rating: 0, units: "", comment: "" };
+  const setCleanlinessFor = (i: number, patch: Partial<ItemCleanliness>) =>
+    setCleanlinessByItem((m) => ({ ...m, [i]: { rating: 0, units: "", comment: "", ...m[i], ...patch } }));
+  // Reinigung je verschmutztem Gerät (ab Stufe 2): automatische Zusatzkostenposition, 20 € netto je 15 Min.
+  const cleaningCharges: ExtraCharge[] = !isReturn ? [] : items.flatMap((it, i) => {
+    const c = cleanlinessFor(i);
+    const n = Math.round(toNumber(c.units));
+    return isDirty(c.rating) && n > 0
+      ? [{ ...emptyExtraCharge(`Reinigungsservice ${it.name}`), quantity: String(n), unitPrice: String(CLEANING_UNIT_GROSS), unit: "15min", notes: c.comment.trim() }]
+      : [];
+  });
+  const allCharges = [...charges, ...cleaningCharges];
   const usedPhotos = photos.length + damages.reduce((n, d) => n + d.photos.length, 0);
   const slotsLeft = remainingPhotoSlots(usedPhotos);
 
@@ -222,16 +236,20 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   };
 
   const readingsDone = items.every((_, i) => validMeasurement({ ...emptyMeasurement(), ...readings[i] }));
-  const equipmentDone = cleanliness > 0 && readingsDone;
+  // Sauberkeit je Gerät: bei Rücknahme Pflicht (inkl. Reinigungseinheiten bei Verschmutzung), bei Übergabe optional.
+  const cleanlinessDone = !isReturn || items.every((_, i) => {
+    const c = cleanlinessFor(i);
+    return c.rating >= 1 && (!isDirty(c.rating) || Math.round(toNumber(c.units)) >= 1);
+  });
+  const equipmentDone = cleanlinessDone && readingsDone;
   const itemsDone = isReturn ? (allReturned || !!missingNotes.trim()) : true;
   const legalDone = customerNotPresent || (isReturn ? itemsConfirmed : agbAccepted && itemsConfirmed && (!machine || instructed));
   const signaturesDone = !!staffSignature && !!staffName.trim() && (customerNotPresent || (!!customerSignature && !!signerName.trim()));
   const damagesDone = damages.every((d) => d.description.trim());
-  const chargesTotal = sumExtraCharges(charges);
+  const chargesTotal = sumExtraCharges(allCharges);
   const chargesDone = charges.every((c) => c.label.trim() && toNumber(c.quantity) > 0 && toNumber(c.unitPrice) > 0);
   const offerDeposit = Number((inquiry.offer_payload as { deposit?: unknown } | null)?.deposit) || 0;
   const chargeSuggestions: ChargeSuggestion[] = !isReturn ? [] : [
-    ...(cleaningSuggested(cleanliness) ? [{ kind: "cleaning" as const, text: `Sauberkeit ${cleanliness}/5 – Reinigung berechnen? 40,00 € netto je 15 Min (47,60 € brutto).` }] : []),
     ...items.flatMap((it, i) => {
       const r = readings[i];
       const prev = prevReadings[it.name.trim().toLowerCase()];
@@ -240,7 +258,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
         : [];
     }),
   ];
-  const idDone = customerNotPresent || idChecked;
+  const idDone = isReturn || customerNotPresent || idChecked;
 
   const missing: string[] = [];
   if (!itemsDone) missing.push("fehlende Artikel beschreiben");
@@ -273,9 +291,14 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       }
       const machineReadings = items.flatMap((it, i) => {
         const reading = { ...emptyMeasurement(), ...readings[i] };
-        return reading.useHours || reading.useFuel || reading.useMileage
-          ? [{ item_name: it.name, ...selectedMeasurement(reading), managed_product_id: cmsFor(i)?.id ?? null }]
+        const c = cleanlinessFor(i);
+        return reading.useHours || reading.useFuel || reading.useMileage || c.rating > 0
+          ? [{ item_name: it.name, ...selectedMeasurement(reading), managed_product_id: cmsFor(i)?.id ?? null, cleanliness: c.rating > 0 ? String(c.rating) : "" }]
           : [];
+      });
+      const itemCleanliness = items.flatMap((it, i) => {
+        const c = cleanlinessFor(i);
+        return c.rating > 0 ? [{ item_name: it.name, rating: c.rating, units: isDirty(c.rating) ? Math.round(toNumber(c.units)) || null : null, comment: c.comment.trim() || null }] : [];
       });
       setProgress("Protokoll und PDF werden erstellt …");
       const { data, error } = await supabase.functions.invoke("generate-rental-protocol", {
@@ -285,17 +308,17 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
           customer_not_present: customerNotPresent,
           customer_signature: customerNotPresent ? null : customerSignature,
           customer_signer_name: customerNotPresent ? null : signerName.trim(),
-          id_checked: !customerNotPresent && idChecked, id_check_type: idDocType || null,
+          id_checked: !isReturn && !customerNotPresent && idChecked, id_check_type: !isReturn && idDocType ? idDocType : null,
           agb_accepted: !customerNotPresent && !isReturn && agbAccepted,
           items_confirmed: !customerNotPresent && itemsConfirmed,
           operating_hours: machineReadings.filter((m) => m.operating_hours).map((m) => `${m.item_name}: ${m.operating_hours}`).join("; ").slice(0, 40) || null,
           fuel_level: machineReadings.find((m) => m.fuel_level)?.fuel_level ?? null,
           machine_readings: machineReadings, instructed: !customerNotPresent && !isReturn && instructed,
-          cleanliness_rating: cleanliness || null,
+          cleanliness_rating: null, item_cleanliness: itemCleanliness,
           known_defects: knownDefects.trim() || null, notes: notes.trim() || null,
           all_items_returned: isReturn ? allReturned : null, missing_items_notes: isReturn && !allReturned ? missingNotes.trim() : null,
           items, photos: photoPayload, damages: damagePayload, send_email: sendEmail,
-          extra_charges: isReturn ? serializeExtraCharges(charges) : [],
+          extra_charges: isReturn ? serializeExtraCharges(allCharges) : [],
         },
       });
       if (error) {
@@ -359,7 +382,8 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
         </div>
       ),
     },
-    {
+    // Ausweisabgleich nur bei der Herausgabe (Übergabe), nicht bei der Rücknahme.
+    ...(!isReturn ? [{
       id: "id",
       title: "Ausweis abgleichen",
       summary: customerNotPresent ? "Kunde nicht anwesend" : idChecked ? "Abgeglichen" : "Pflicht",
@@ -367,31 +391,52 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       content: customerNotPresent
         ? <p className="text-sm text-muted-foreground">Kunde ist nicht anwesend – kein Ausweisabgleich möglich.</p>
         : <IdCheckStep checked={idChecked} onCheckedChange={setIdChecked} docType={idDocType} onDocTypeChange={setIdDocType} customerName={inquiry.customer_name ?? undefined} />,
-    },
+    }] : []),
     {
       id: "equipment",
       title: "Zustand",
-      summary: `Sauberkeit${cleanliness ? ` ${cleanliness}/5` : ""}`,
+      summary: isReturn ? `Sauberkeit ${items.filter((_, i) => cleanlinessFor(i).rating > 0).length}/${items.length} bewertet` : "Messwerte & Sauberkeit",
       done: equipmentDone,
       content: (
         <div className="space-y-4">
           <div className="space-y-3">
             {items.map((it, i) => {
               const prev = prevReadings[it.name.trim().toLowerCase()];
-              return <div key={i} className="space-y-1">
-                <MeasurementFields name={it.name} value={{ ...emptyMeasurement(), ...readings[i] }} onChange={(m) => setReading(i, m)} />
+              const cl = cleanlinessFor(i);
+              const dirty = isDirty(cl.rating);
+              const units = Math.round(toNumber(cl.units));
+              return <div key={i} className="space-y-2">
+                <MeasurementFields name={it.name} value={{ ...emptyMeasurement(), ...readings[i] }} onChange={(m) => setReading(i, m)}
+                  allowHours={cmsFor(i)?.hours ?? true} allowFuel={cmsFor(i)?.tank ?? true} />
                 {isReturn && prev && (prev.mileage != null || prev.hours != null || !!prev.fuel) && <p className="text-xs text-muted-foreground pl-2">Bei Übergabe: {[prev.mileage != null ? `${prev.mileage} km` : "", prev.hours != null ? `${prev.hours} h` : "", prev.fuel ? `Tank ${FUEL_LEVELS.find((f) => f.value === prev.fuel)?.label ?? prev.fuel}` : ""].filter(Boolean).join(" · ")}</p>}
+                <div className="rounded-md border p-3 space-y-2">
+                  <Label className="text-xs">Sauberkeit / Verschmutzung{isReturn ? " *" : " (optional)"}</Label>
+                  <div className="grid grid-cols-5 gap-2">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <Button key={n} type="button" variant={cl.rating === n ? "default" : "outline"} className="h-11 text-base"
+                        aria-label={`Sauberkeit ${it.name}: Stufe ${n}`}
+                        onClick={() => setCleanlinessFor(i, { rating: cl.rating === n ? 0 : n })}>{n}</Button>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">{CLEANLINESS_HINT} · Reinigungsservice pro 15 Minuten, nach Aufwand</p>
+                  {isReturn && dirty && (
+                    <div className="space-y-2 border-t pt-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-end">
+                        <div className="space-y-1">
+                          <Label className="text-xs">Reinigungsaufwand (angefangene 15-Min-Einheiten) *</Label>
+                          <Input aria-label={`Reinigungsaufwand ${it.name}`} value={cl.units} inputMode="numeric"
+                            onChange={(e) => setCleanlinessFor(i, { units: e.target.value.replace(/[^\d]/g, "").slice(0, 3) })} placeholder="z. B. 2" className="h-11" />
+                        </div>
+                        {units > 0 && (
+                          <p className="text-sm pb-2">{units} × {CLEANING_RATE_PER_15_MIN.toFixed(2).replace(".", ",")} € netto = <strong>{formatEuro(cleaningChargeGross(units))} brutto</strong></p>
+                        )}
+                      </div>
+                      <Input aria-label={`Kommentar Reinigung ${it.name}`} value={cl.comment} onChange={(e) => setCleanlinessFor(i, { comment: e.target.value })} placeholder="Kommentar (optional)" className="h-11" />
+                    </div>
+                  )}
+                </div>
               </div>;
             })}
-          </div>
-          <div>
-            <Label className="text-xs">Sauberkeit / Verschmutzung *</Label>
-            <div className="grid grid-cols-5 gap-2 mt-1">
-              {[1, 2, 3, 4, 5].map((n) => (
-                <Button key={n} type="button" variant={cleanliness === n ? "default" : "outline"} className="h-12 text-base" onClick={() => setCleanliness(n)}>{n}</Button>
-              ))}
-            </div>
-            <p className="text-[11px] text-muted-foreground mt-1">{CLEANLINESS_HINT}</p>
           </div>
           <div>
             <Label className="text-xs">{isReturn ? "Zustand bei Rückgabe (optional)" : "Bekannte Mängel vor Übergabe (optional)"}</Label>
@@ -462,7 +507,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       id: "charges",
       title: "Zusatzkosten",
       optional: true,
-      summary: charges.length ? `${formatEuro(chargesTotal)} brutto` : chargeSuggestions.length ? "Vorschlag offen" : "Keine",
+      summary: allCharges.length ? `${formatEuro(chargesTotal)} brutto` : chargeSuggestions.length ? "Vorschlag offen" : "Keine",
       done: charges.length > 0 && chargesDone,
       content: (
         <ExtraChargesStep charges={charges} onChange={setCharges} suggestions={chargeSuggestions}
@@ -495,10 +540,10 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
                     <label htmlFor="instructed" className="text-sm cursor-pointer">Der Mieter wurde in Bedienung, Betankung und sichere Handhabung der Maschinen eingewiesen und hat keine Fragen mehr.</label>
                   </div>
                 )}
-                {isReturn && charges.length > 0 && (
+                {isReturn && allCharges.length > 0 && (
                   <div className="rounded-md bg-muted/60 p-2 text-sm space-y-0.5">
                     <p className="font-medium">Zusatzkosten</p>
-                    {charges.map((c) => <p key={c.id} className="flex justify-between gap-2"><span className="break-words">{c.label}{c.unit === "l" ? ` (${c.quantity} l)` : ""}</span><span className="shrink-0">{formatEuro(toNumber(c.quantity) * toNumber(c.unitPrice))}</span></p>)}
+                    {allCharges.map((c) => <p key={c.id} className="flex justify-between gap-2"><span className="break-words">{c.label}{c.unit === "l" ? ` (${c.quantity} l)` : ""}</span><span className="shrink-0">{formatEuro(toNumber(c.quantity) * toNumber(c.unitPrice))}</span></p>)}
                     <p className="flex justify-between gap-2 font-semibold border-t pt-1"><span>Summe brutto</span><span>{formatEuro(chargesTotal)}</span></p>
                   </div>
                 )}
@@ -506,7 +551,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
                   <Checkbox id="items-ok" checked={itemsConfirmed} onCheckedChange={(v) => setItemsConfirmed(v === true)} />
                   <label htmlFor="items-ok" className="text-sm cursor-pointer">
                     {isReturn
-                      ? `Der Mieter bestätigt die Rückgabe der Mietgegenstände sowie die Richtigkeit der erfassten Betriebsstunden, Tankfüllstände, der Sauberkeit und der dokumentierten Schäden.${charges.length ? ` Er erkennt die oben aufgeführten Zusatzkosten von ${formatEuro(chargesTotal)} brutto an; sie werden in Rechnung gestellt und mit einer gezahlten Kaution verrechnet.` : ""}`
+                      ? `Der Mieter bestätigt die Rückgabe der Mietgegenstände sowie die Richtigkeit der erfassten Betriebsstunden, Tankfüllstände, der Sauberkeit und der dokumentierten Schäden.${allCharges.length ? ` Er erkennt die oben aufgeführten Zusatzkosten von ${formatEuro(chargesTotal)} brutto an; sie werden in Rechnung gestellt und mit einer gezahlten Kaution verrechnet.` : ""}`
                       : "Der Mieter bestätigt, die oben aufgeführten Mietgegenstände vollständig, funktionsfähig und in einwandfreiem, betriebssicherem Zustand übernommen zu haben – mit Ausnahme der in diesem Protokoll dokumentierten Schäden und Mängel. Die erfassten Betriebsstunden, Tankfüllstände und die Sauberkeit sind zutreffend."}
                   </label>
                 </div>
@@ -516,6 +561,10 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
                 <Input value={signerName} onChange={(e) => setSignerName(e.target.value)} className="h-11" autoComplete="off" />
               </div>
               <SignatureBlock title="Unterschrift Kunde" value={customerSignature} onChange={setCustomerSignature} />
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5" />
+                Ort und Zeit werden beim Abschluss automatisch erfasst: {inquiry.location ? getLocationDisplayName(inquiry.location) : "—"}, {now.toLocaleString("de-DE", { dateStyle: "medium", timeStyle: "short" })} Uhr
+              </p>
             </>
           )}
           <div>
