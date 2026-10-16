@@ -20,8 +20,8 @@ import { ProtocolWizard, type WizardStep } from "@/components/b2b/protocols/Prot
 import { DamagesStep } from "@/components/b2b/protocols/DamagesStep";
 import { IdCheckStep } from "@/components/b2b/protocols/IdCheckStep";
 import { ExtraChargesStep, type ChargeSuggestion } from "@/components/b2b/protocols/ExtraChargesStep";
-import { cleaningSuggested, fuelSuggested } from "@/lib/returnCharges";
-import { CLEANLINESS_HINT, FUEL_LEVELS, isMachineLike, toNumber, formatEuro, serializeExtraCharges, sumExtraCharges, type ExtraCharge, type ProtocolDamage } from "@/components/b2b/protocols/protocolShared";
+import { cleaningChargeGross, fuelSuggested, CLEANING_UNIT_GROSS } from "@/lib/returnCharges";
+import { CLEANING_RATE_PER_15_MIN, CLEANLINESS_HINT, FUEL_LEVELS, isDirty, isMachineLike, toNumber, formatEuro, serializeExtraCharges, sumExtraCharges, type ExtraCharge, type ProtocolDamage } from "@/components/b2b/protocols/protocolShared";
 import {
   MAX_PROTOCOL_PHOTOS, formatPhotoTimestamp, photoTakenAt, protocolItemsFromInquiry, remainingPhotoSlots, type ProtocolKind,
 } from "@/lib/rentalProtocol";
@@ -36,8 +36,10 @@ import { Camera, CheckCircle2, Clock, Download, Loader2, Upload, X } from "lucid
 
 interface GeneralPhoto { id: string; file: File; preview: string; caption: string }
 type SavedPhoto = Omit<GeneralPhoto, "preview">;
+/** Sauberkeit je Gerät: Bewertung 1–5, bei Verschmutzung (ab Stufe 2) Reinigungseinheiten + Kommentar. */
+interface ItemCleanliness { rating: number; units: string; comment: string }
 interface SavedProtocol {
-  idChecked: boolean; idDocType: string; cleanliness: number;
+  idChecked: boolean; idDocType: string; cleanlinessByItem?: Record<number, ItemCleanliness>;
   readings: Record<number, Measurement>;
   machineIdx: number[]; instructed: boolean; knownDefects: string; notes: string;
   allReturned: boolean; missingNotes: string; photos: SavedPhoto[];
