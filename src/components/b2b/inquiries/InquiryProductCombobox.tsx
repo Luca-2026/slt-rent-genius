@@ -184,8 +184,11 @@ export async function categoryNameFor(slug: string | null | undefined): Promise<
         for (const c of productCategories) if (c.id && c.title) map.set(c.id, c.title);
       } catch { /* ohne Website-Kategorien weiter */ }
       const { data, error } = await supabase.from("product_categories").select("slug,name");
-      if (!error) for (const r of data ?? []) if (r.slug && r.name) map.set(r.slug, r.name);
-      else categoryNamesPromise = null;
+      if (error) {
+        categoryNamesPromise = null; // beim nächsten Mal erneut versuchen
+      } else {
+        for (const r of data ?? []) if (r.slug && r.name) map.set(r.slug, r.name);
+      }
       return map;
     })();
   }
