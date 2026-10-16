@@ -7,6 +7,7 @@
  * to the previous inline implementation in MyReservations.tsx.
  */
 import { Badge } from "@/components/ui/badge";
+import { OrderCodeBadge } from "@/components/b2b/inquiries/OrderCodeBadge";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import {
@@ -104,6 +105,7 @@ export function ReservationRow({
       <TableCell className={isSubRow ? "pl-10" : ""}>
         <div>
           <p className="font-medium">{r.product_name || r.product_id}</p>
+          <OrderCodeBadge code={(r as { order_code?: string | null }).order_code} className="mt-1" />
           {r.category_slug && (
             <p className="text-xs text-muted-foreground">{r.category_slug}</p>
           )}
@@ -204,6 +206,7 @@ export function ReservationMobileCard({
       <div className="flex items-start justify-between">
         <div>
           <p className="font-semibold text-sm">{r.product_name || r.product_id}</p>
+          <OrderCodeBadge code={(r as { order_code?: string | null }).order_code} className="mt-1" />
           <p className="text-xs text-muted-foreground">{r.category_slug}</p>
         </div>
         <Badge variant={cfg.variant} className="flex items-center gap-1 text-xs">
