@@ -540,10 +540,10 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
                     <label htmlFor="instructed" className="text-sm cursor-pointer">Der Mieter wurde in Bedienung, Betankung und sichere Handhabung der Maschinen eingewiesen und hat keine Fragen mehr.</label>
                   </div>
                 )}
-                {isReturn && charges.length > 0 && (
+                {isReturn && allCharges.length > 0 && (
                   <div className="rounded-md bg-muted/60 p-2 text-sm space-y-0.5">
                     <p className="font-medium">Zusatzkosten</p>
-                    {charges.map((c) => <p key={c.id} className="flex justify-between gap-2"><span className="break-words">{c.label}{c.unit === "l" ? ` (${c.quantity} l)` : ""}</span><span className="shrink-0">{formatEuro(toNumber(c.quantity) * toNumber(c.unitPrice))}</span></p>)}
+                    {allCharges.map((c) => <p key={c.id} className="flex justify-between gap-2"><span className="break-words">{c.label}{c.unit === "l" ? ` (${c.quantity} l)` : ""}</span><span className="shrink-0">{formatEuro(toNumber(c.quantity) * toNumber(c.unitPrice))}</span></p>)}
                     <p className="flex justify-between gap-2 font-semibold border-t pt-1"><span>Summe brutto</span><span>{formatEuro(chargesTotal)}</span></p>
                   </div>
                 )}
@@ -561,6 +561,10 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
                 <Input value={signerName} onChange={(e) => setSignerName(e.target.value)} className="h-11" autoComplete="off" />
               </div>
               <SignatureBlock title="Unterschrift Kunde" value={customerSignature} onChange={setCustomerSignature} />
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5" />
+                Ort und Zeit werden beim Abschluss automatisch erfasst: {inquiry.location ? getLocationDisplayName(inquiry.location) : "—"}, {now.toLocaleString("de-DE", { dateStyle: "medium", timeStyle: "short" })} Uhr
+              </p>
             </>
           )}
           <div>
