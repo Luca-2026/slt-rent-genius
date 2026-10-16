@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { getLocationDisplayName } from "@/data/locationData";
+import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import {
   blockedItems, buildDecisions, orderableLocations, type AvailabilityResult, type ItemChoice,
 } from "@/lib/availabilityDecisions";
