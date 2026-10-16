@@ -13,6 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { callDateLabel } from "@/lib/callDateLabel";
+import { Checkbox } from "@/components/ui/checkbox";
 import { AiInquiryImportDialog } from "@/components/b2b/inquiries/AiInquiryImportDialog";
 import { createInquiryFromImport } from "@/lib/createInquiryFromImport";
 
@@ -25,13 +27,14 @@ const PRIO_CLASS: Record<CallPriority, string> = {
   info: "bg-muted text-muted-foreground",
 };
 
-const fmt = (c: PhoneCall) => new Date(c.call_started_at ?? c.created_at).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short", timeZone: "Europe/Berlin" });
+const fmt = (c: PhoneCall) => callDateLabel(c.call_started_at ?? c.created_at);
 const who = (c: PhoneCall) => [c.company_name, c.customer_name ?? c.caller_name].filter(Boolean).join(" · ") || c.caller_phone || "Unbekannter Anrufer";
 const callTime = (c: PhoneCall) => c.call_started_at ?? c.created_at;
 const NEW_WINDOW_MS = 3 * 60 * 60 * 1000;
 /** Eingegangen in den letzten 3 Stunden – wird markiert, damit neue Anrufe nicht zwischen älteren dringenden untergehen. */
 export const isNewCall = (c: PhoneCall, now = Date.now()) => now - new Date(callTime(c)).getTime() < NEW_WINDOW_MS;
 const SORT_KEY = "slt_calls_sort";
+const STATUS_KEY = "phoneCalls.statusFilter";
 
 export function PriorityBadge({ p, at }: { p: CallPriority | null; at?: string }) {
   if (!p) return <Badge variant="outline">Wird ausgewertet</Badge>;
@@ -47,7 +50,29 @@ export default function PhoneCalls() {
   const [intent, setIntent] = useState("all");
   const [loc, setLoc] = useState("all");
   const [asst, setAsst] = useState("all");
-  const [status, setStatus] = useState("active");
+  const [status, setStatusState] = useState<"active" | "done" | "all">(() => {
+    try { const v = localStorage.getItem(STATUS_KEY); return v === "done" || v === "all" ? v : "active"; } catch { return "active"; }
+  });
+  const setStatus = (v: string) => {
+    const next = v === "done" || v === "all" ? v : "active";
+    setStatusState(next);
+    try { localStorage.setItem(STATUS_KEY, next); } catch { /* ignore */ }
+  };
+  const [checked, setChecked] = useState<Set<string>>(new Set());
+  const [bulkBusy, setBulkBusy] = useState(false);
+  const { toast: bulkToast } = useToast();
+  const toggleChecked = (id: string) => setChecked((prev) => { const n = new Set(prev); if (n.has(id)) n.delete(id); else n.add(id); return n; });
+  const bulkDone = async () => {
+    const ids = [...checked];
+    if (!ids.length) return;
+    setBulkBusy(true);
+    const { error } = await supabase.from("phone_calls" as never).update({ status: "done" } as never).in("id", ids);
+    setBulkBusy(false);
+    if (error) { bulkToast({ title: "Speichern fehlgeschlagen", description: error.message, variant: "destructive" }); return; }
+    bulkToast({ title: `${ids.length} ${ids.length === 1 ? "Anruf" : "Anrufe"} erledigt` });
+    setChecked(new Set());
+    reload();
+  };
   const [selId, setSelId] = useState<string | null>(null);
   const [sort, setSortState] = useState<"priority" | "newest">(() => {
     try { return localStorage.getItem(SORT_KEY) === "newest" ? "newest" : "priority"; } catch { return "priority"; }
@@ -76,8 +101,7 @@ export default function PhoneCalls() {
     <B2BPortalLayout title="Anrufe" subtitle="Telefonate der Telefonassistenz mit KI-Vorauswertung, nach Priorität sortiert">
       <div className="mb-4 grid grid-cols-2 gap-2 lg:grid-cols-3 2xl:grid-cols-6">
         <Select value={status} onValueChange={setStatus}><SelectTrigger aria-label="Status"><SelectValue /></SelectTrigger><SelectContent>
-          <SelectItem value="active">Offen & in Bearbeitung</SelectItem><SelectItem value="open">Offen</SelectItem>
-          <SelectItem value="in_progress">In Bearbeitung</SelectItem><SelectItem value="done">Erledigt</SelectItem><SelectItem value="all">Alle</SelectItem>
+          <SelectItem value="active">Offen</SelectItem><SelectItem value="done">Erledigt</SelectItem><SelectItem value="all">Alle</SelectItem>
         </SelectContent></Select>
         <Select value={prio} onValueChange={setPrio}><SelectTrigger aria-label="Priorität"><SelectValue /></SelectTrigger><SelectContent>
           <SelectItem value="all">Alle Prioritäten</SelectItem>{PRIORITY_ORDER.map((p) => <SelectItem key={p} value={p}>{PRIORITY_LABEL[p]}</SelectItem>)}
@@ -96,7 +120,15 @@ export default function PhoneCalls() {
         </SelectContent></Select>
       </div>
 
-      <p className="mb-3 text-sm text-muted-foreground">{filtered.length} {filtered.length === 1 ? "Anruf" : "Anrufe"}</p>
+      <div className="mb-3 flex flex-wrap items-center gap-3">
+        <p className="text-sm text-muted-foreground">{filtered.length} {filtered.length === 1 ? "Anruf" : "Anrufe"}</p>
+        {checked.size > 0 && (
+          <>
+            <Button size="sm" onClick={bulkDone} disabled={bulkBusy}><Check className="mr-1 h-4 w-4" />Ausgewählte erledigen ({checked.size})</Button>
+            <Button size="sm" variant="ghost" onClick={() => setChecked(new Set())}>Auswahl aufheben</Button>
+          </>
+        )}
+      </div>
 
       {loading ? <p className="text-muted-foreground">Lädt …</p> : filtered.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border p-8 text-center text-muted-foreground">
@@ -107,6 +139,9 @@ export default function PhoneCalls() {
         <ul className="divide-y divide-border rounded-lg border border-border bg-card">
           {filtered.map((c) => (
             <li key={c.id} className={cn("flex items-stretch gap-1", isNewCall(c) && c.status !== "done" && "border-l-4 border-l-accent")}>
+              <div className="flex shrink-0 items-start pl-3 pt-4">
+                <Checkbox checked={checked.has(c.id)} onCheckedChange={() => toggleChecked(c.id)} aria-label={`${who(c)} auswählen`} />
+              </div>
               <button type="button" onClick={() => setSelId(c.id)} className="flex min-w-0 flex-1 flex-col gap-1 p-3 text-left hover:bg-muted md:flex-row md:items-start md:gap-4">
                 <div className="flex shrink-0 items-center gap-2 md:w-36 md:flex-col md:items-start md:gap-1">
                   <div className="flex items-center gap-1">
