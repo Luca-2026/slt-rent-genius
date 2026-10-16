@@ -63,7 +63,7 @@ export function StandortVerfuegbarkeit({
         aria-label={`Verfügbarkeit am Standort ${name}`}
         className="mt-6 md:mt-8 border-t border-border pt-5 md:pt-6"
       >
-        <div className="bg-surface-light rounded-lg p-4 md:p-5 border border-border">
+        <div data-availability={status} className="bg-surface-light rounded-lg p-4 md:p-5 border border-border">
           <div className="flex items-start gap-3">
             <div className="shrink-0 w-9 h-9 rounded-md bg-primary/10 text-primary flex items-center justify-center">
               <Icon className="h-4.5 w-4.5" />
