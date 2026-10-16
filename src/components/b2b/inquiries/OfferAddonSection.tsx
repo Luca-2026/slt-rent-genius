@@ -98,27 +98,75 @@ export function buildOptionalTier(
   ctx: AddonLineContext,
   fallbackDays: number | null,
 ): OfferLineAddon | null {
-  const base = standardPerDay(std, ctx);
-  if (base === null || !tier.surcharge_percent) return null;
-  const perDay = round2(base * (tier.surcharge_percent / 100));
   const days = std.days ?? fallbackDays ?? null;
-  const amount = days ? computeAddonAmount({ price_type: "per_unit", rate: perDay, basis: "full_period", days }, ctx) ?? 0 : 0;
-  return {
+  const label = tier.deductible
+    ? `Selbstbehalt-Reduzierung auf ${tier.deductible.toLocaleString("de-DE")} €`
+    : tier.label;
+  const common = {
     key: `opt-${tier.key}`,
-    label: tier.deductible ? `Selbstbehalt-Reduzierung auf ${tier.deductible.toLocaleString("de-DE")} €` : tier.label,
-    optional: true,
-    per_day: perDay,
+    label,
+    optional: true as const,
     of_key: std.key,
-    surcharge_percent: tier.surcharge_percent,
-    price_type: "per_unit",
-    rate: perDay,
-    basis: "full_period",
+    basis: "full_period" as const,
     days,
     period_start: std.period_start ?? null,
     period_end: std.period_end ?? null,
     manual: false,
-    amount,
   };
+  if (tier.surcharge_percent) {
+    const base = standardPerDay(std, ctx);
+    if (base === null) return null;
+    const perDay = round2(base * (tier.surcharge_percent / 100));
+    const amount = days ? computeAddonAmount({ price_type: "per_unit", rate: perDay, basis: "full_period", days }, ctx) ?? 0 : 0;
+    return { ...common, per_day: perDay, surcharge_percent: tier.surcharge_percent, price_type: "per_unit", rate: perDay, amount };
+  }
+  // CMS-Stufe mit eigenem Satz (z. B. 15 % des Mietpreises) – wie die Standardstufe über Kalendertage.
+  if (tier.price_type === "flat" || !ctx.days_per_unit || !(tier.price > 0)) return null;
+  const perDay = computeAddonAmount({ price_type: tier.price_type, rate: tier.price, basis: "full_period", days: 1 }, { ...ctx, articles: 1 }) ?? 0;
+  const amount = days ? computeAddonAmount({ price_type: tier.price_type, rate: tier.price, basis: "full_period", days }, ctx) ?? 0 : 0;
+  return { ...common, per_day: perDay, price_type: tier.price_type, rate: tier.price, amount };
+}
+
+/** Standardstufe (und gewählte CMS-Optionen) wie im Dropdown anlegen: Kalendertage über den Zeitraum + optionale Stufen. */
+export function buildAddonsFromOptions(
+  picked: AddonOption[],
+  allOptions: AddonOption[],
+  item: OfferLine,
+  periodStart?: string | null,
+  periodEnd?: string | null,
+): OfferLineAddon[] {
+  const ctx = lineContext(item);
+  const calDays = addonCalendarDays(periodStart, periodEnd);
+  const { std, tiers } = furtherTiers(allOptions);
+  const tierKeys = new Set(tiers.map((t) => t.key));
+  const out: OfferLineAddon[] = [];
+  for (const option of picked) {
+    if (tierKeys.has(option.key) || out.some((a) => a.key === option.key)) continue;
+    const fullPeriod = option.price_type !== "flat" && !!option.full_period_default && ctx.days_per_unit !== null;
+    const base: OfferLineAddon = {
+      key: option.key,
+      label: option.label,
+      note: option.deductible ? `Selbstbehalt ${option.deductible.toLocaleString("de-DE")} €` : option.note,
+      price_type: option.price_type,
+      rate: option.price,
+      basis: option.price_type === "flat" ? "once" : fullPeriod ? "full_period" : "line",
+      days: fullPeriod ? calDays : null,
+      period_start: fullPeriod ? periodStart ?? null : null,
+      period_end: fullPeriod ? periodEnd ?? null : null,
+      manual: false,
+      amount: 0,
+    };
+    const amt = computeAddonAmount({ price_type: base.price_type!, rate: base.rate!, basis: base.basis!, days: base.days }, ctx);
+    const added = { ...base, amount: amt ?? 0 };
+    out.push(added);
+    if (std && option.key === std.key) {
+      for (const t of tiers) {
+        const tier = buildOptionalTier(t, added, ctx, calDays);
+        if (tier) out.push(tier);
+      }
+    }
+  }
+  return out;
 }
 
 /** Weitere CMS-Stufen zur Standardstufe (nur mit Aufschlag), sortiert. */
@@ -126,7 +174,7 @@ export function furtherTiers(options: AddonOption[]): { std: AddonOption | undef
   const std = options.find((o) => o.is_default);
   const tiers = std
     ? options
-        .filter((o) => !o.is_default && (o.surcharge_percent ?? 0) > 0)
+        .filter((o) => !o.is_default && ((o.surcharge_percent ?? 0) > 0 || (o.price_type !== "flat" && o.price > 0)))
         .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
     : [];
   return { std, tiers };
@@ -203,27 +251,8 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
       onChange([...addons, { key: option.key, label: option.label, amount: negative ? -Math.abs(option.price) : option.price, note }]);
       return;
     }
-    const fullPeriod = option.price_type !== "flat" && !!option.full_period_default && canFullPeriod;
-    const base: OfferLineAddon = {
-      key: option.key,
-      label: option.label,
-      note,
-      price_type: option.price_type,
-      rate: option.price,
-      basis: option.price_type === "flat" ? "once" : fullPeriod ? "full_period" : "line",
-      days: fullPeriod ? calDays : null,
-      period_start: fullPeriod ? periodStart ?? null : null,
-      period_end: fullPeriod ? periodEnd ?? null : null,
-      manual: false,
-      amount: 0,
-    };
-    const amt = computeAddonAmount({ price_type: base.price_type!, rate: base.rate!, basis: base.basis!, days: base.days }, ctx);
-    const added = { ...base, amount: amt ?? 0 };
-    // Standardstufe: weitere Stufen automatisch als optionale Zeilen anbieten (Standard an).
-    const extra = stdOption && option.key === stdOption.key
-      ? tiers.map((t) => buildOptionalTier(t, added, ctx, calDays)).filter((a): a is OfferLineAddon => !!a && !addons.some((x) => x.key === a.key))
-      : [];
-    onChange([...addons, added, ...extra]);
+    const next = buildAddonsFromOptions([option], options, item, periodStart, periodEnd).filter((x) => !addons.some((y) => y.key === x.key));
+    onChange([...addons, ...next]);
   };
 
   return (
@@ -419,7 +448,7 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                         }
                       />
                       <span>
-                        <span className="font-medium">anbieten</span> – Optional: {preview.label}, Aufpreis {formatEuro(preview.per_day ?? 0)}/KT
+                        <span className="font-medium">anbieten</span> – Optional: {preview.label}, {preview.surcharge_percent ? `Aufpreis ${formatEuro(preview.per_day ?? 0)}/KT` : `${preview.rate?.toLocaleString("de-DE")} % = ${formatEuro(preview.amount)}${preview.days ? ` für ${preview.days} KT` : ""}`}
                         <span className="block text-muted-foreground">Nicht in der Angebotssumme</span>
                       </span>
                     </label>
