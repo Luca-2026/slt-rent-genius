@@ -1464,9 +1464,9 @@ export function InquiryOfferForm({
             onDragEnd={() => { setDragIdx(null); setOverIdx(null); }}
             className={`rounded-lg border border-border p-3 space-y-2 transition-colors ${dragIdx === index ? "opacity-40" : ""} ${overIdx === index && dragIdx !== null && dragIdx !== index ? "ring-2 ring-primary/50" : ""}`}
           >
-            <div className="flex gap-2 items-start">
+            <div className="flex flex-wrap gap-2 items-start sm:flex-nowrap">
               {!isInvoice && (
-                <div className="flex shrink-0 flex-col items-center">
+                <div className="flex shrink-0 flex-row items-center sm:flex-col">
                   <button
                     type="button"
                     draggable={!disabled}
@@ -1505,7 +1505,7 @@ export function InquiryOfferForm({
                   className="h-10 w-10 rounded object-cover border border-border shrink-0"
                 />
               ) : null}
-              <div className="min-w-0 flex-1">
+              <div className="order-last min-w-0 basis-full sm:order-none sm:basis-auto sm:flex-1">
                 {inquiryType === "sales" ? (
                 <SalesProductCombobox
                   value={item.product_name}
