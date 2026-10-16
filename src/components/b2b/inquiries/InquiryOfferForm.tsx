@@ -199,6 +199,9 @@ interface CustomerPriceRow {
   unit_price: number;
 }
 
+/** iOS Safari gives native date/time inputs a fixed min width – force them into their grid cell. */
+const DT_INPUT = "w-full min-w-0 max-w-full appearance-none px-2 text-left [&::-webkit-date-and-time-value]:text-left [&::-webkit-date-and-time-value]:min-h-[1.25rem]";
+
 const PRICE_COLUMNS =
   "id,pricing_scheme,prices_same_all_locations,price_per_day,price_from_1_rd,price_from_3_rd,price_from_10_rd,price_from_20_rd,price_weekend_num,price_base_1_3_cd,surcharge_per_cd_from_4,surcharge_per_cd_from_8";
 
