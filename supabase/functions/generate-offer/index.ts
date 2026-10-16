@@ -446,7 +446,7 @@ Deno.serve(async (req: Request) => {
 
     const { data: signedUrlData } = await serviceClient.storage
       .from("b2b-invoices")
-      .createSignedUrl(filePath, 60 * 60 * 24 * 365);
+      .createSignedUrl(filePath, 60 * 60);
 
     const fileUrl = signedUrlData?.signedUrl || "";
 
