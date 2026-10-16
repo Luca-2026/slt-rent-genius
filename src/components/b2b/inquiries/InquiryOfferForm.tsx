@@ -15,7 +15,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { AlertTriangle, ArrowDown, ArrowUp, CheckCircle2, Eye, GripVertical, Info, Loader2, Plus, Send, Trash2 } from "lucide-react";
+import { AlertTriangle, ArrowDown, ArrowUp, CheckCircle2, Eye, FolderPlus, GripVertical, Info, Loader2, MoreVertical, Plus, Send, Trash2, X } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ItemOverrideDialog } from "./ItemOverrideDialog";
 import { moveItem } from "@/components/b2b/admin/SortableRows";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
@@ -32,11 +34,32 @@ import { InventoryWarningDialog } from "./InventoryWarningDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { buildOfferTotals, formatEuro, isValidOfferTotal, lineTotal, type OfferLine } from "./offerMath";
+import {
+  EXTRA_FIELD_LABELS,
+  FALLBACK_GROUP_NAME,
+  QUANTITY_UNITS,
+  buildOfferTotals,
+  cleanExtraFields,
+  ensureCategoryGroup,
+  formatEuro,
+  groupedIndices,
+  isValidOfferTotal,
+  lineTotal,
+  newGroupId,
+  nextOrderType,
+  orderItemsByGroups,
+  quantityUnitShort,
+  type OfferExtraFields,
+  type OfferGroup,
+  type OfferLine,
+  type OrderType,
+  type QuantityUnit,
+} from "./offerMath";
 import { ADDON_PRESETS, parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 import { AddonSection, recalcAddons } from "./OfferAddonSection";
 import {
   InquiryProductCombobox,
+  categoryNameFor,
   findCatalogProductByName,
   pickCatalogImage,
 } from "./InquiryProductCombobox";
@@ -309,6 +332,10 @@ interface Props {
     valid_days?: number | null;
     notes?: string | null;
     open_ended?: boolean | null;
+    /** Paket 3b – fehlen bei alten Angeboten. */
+    groups?: OfferGroup[];
+    extra_fields?: OfferExtraFields;
+    order_type?: OrderType;
   };
   /** Vollseite: Aktionsleiste oben angeheftet statt am Formularende (nur Anordnung). */
   stickyActions?: boolean;
@@ -388,6 +415,22 @@ export function InquiryOfferForm({
   const [deliveryCostReturn, setDeliveryCostReturn] = useState(
     draft?.deliveryCostReturn ?? defaultCosts?.delivery_cost_return ?? 0,
   );
+  /** Paket 3b: Positionsgruppen, Zusatzfelder (Besteller, Kostenstelle, Bauvorhaben) und Auftragsart. */
+  const [groups, setGroups] = useState<OfferGroup[]>((draft?.groups as OfferGroup[]) ?? defaultMeta?.groups ?? []);
+  const [extraFields, setExtraFields] = useState<Partial<Record<keyof OfferExtraFields, string>>>(
+    (draft?.extraFields as Partial<Record<keyof OfferExtraFields, string>>) ?? defaultMeta?.extra_fields ?? {},
+  );
+  const [orderType, setOrderType] = useState<OrderType>(() =>
+    nextOrderType(
+      (draft?.orderType as OrderType) ?? defaultMeta?.order_type ?? "pickup",
+      draft?.deliveryCostDelivery ?? defaultCosts?.delivery_cost_delivery ?? 0,
+      draft?.deliveryCostReturn ?? defaultCosts?.delivery_cost_return ?? 0,
+    ),
+  );
+  const [overrideIdx, setOverrideIdx] = useState<number | null>(null);
+  /** Lieferbetrag > 0 schaltet auf Lieferung; 0 schaltet nicht zurück. */
+  const changeDeliveryCost = (v: number) => { setDeliveryCostDelivery(v); setOrderType((t) => nextOrderType(t, v, 0)); };
+  const changeReturnCost = (v: number) => { setDeliveryCostReturn(v); setOrderType((t) => nextOrderType(t, 0, v)); };
   /** Pauschalen für Auf- und Abbau (Montage/Demontage vor Ort). */
   const [setupCost, setSetupCost] = useState(draft?.setupCost ?? defaultCosts?.setup_cost ?? 0);
   const [dismantleCost, setDismantleCost] = useState(draft?.dismantleCost ?? defaultCosts?.dismantle_cost ?? 0);
@@ -581,6 +624,9 @@ export function InquiryOfferForm({
     setOpenEnded(canOpenEnded && !!d.openEnded);
     setUseSaturday(!!d.useSaturday);
     setUseSunday(!!d.useSunday);
+    setGroups(Array.isArray(d.groups) ? (d.groups as OfferGroup[]) : []);
+    setExtraFields((d.extraFields as Partial<Record<keyof OfferExtraFields, string>>) ?? {});
+    setOrderType(d.orderType === "delivery" ? "delivery" : "pickup");
   };
 
   /** Beim Öffnen prüfen, ob auf dem Server ein Entwurf (ggf. von Kollegen) liegt. */
@@ -637,6 +683,9 @@ export function InquiryOfferForm({
         openEnded,
         useSaturday,
         useSunday,
+        groups,
+        extraFields,
+        orderType,
       };
       writeInquiryDraft(draftKey, snapshot);
       if (dirtyRef.current && userTouchedRef.current) {
@@ -667,6 +716,9 @@ export function InquiryOfferForm({
     openEnded,
     useSaturday,
     useSunday,
+    groups,
+    extraFields,
+    orderType,
   ]);
 
   /** Entwurf verwerfen und Formular auf die Ausgangswerte zurücksetzen. */
@@ -696,6 +748,9 @@ export function InquiryOfferForm({
     setOpenEnded(canOpenEnded && !!defaultMeta?.open_ended);
     setUseSaturday(false);
     setUseSunday(false);
+    setGroups(defaultMeta?.groups ?? []);
+    setExtraFields(defaultMeta?.extra_fields ?? {});
+    setOrderType(nextOrderType(defaultMeta?.order_type ?? "pickup", defaultCosts?.delivery_cost_delivery ?? 0, defaultCosts?.delivery_cost_return ?? 0));
   };
 
   /** Positionen inkl. übernommenem Zeitraum – Basis für Summen, Anzeige und Versand. */
@@ -1019,20 +1074,24 @@ export function InquiryOfferForm({
         inquiry_id: inquiryId,
         ...(!isInvoice && reviseOf ? { revise_of: reviseOf } : {}),
         location,
-        items: effectiveItems.map(({ available_addons: _unused, price_source: _src, custom_period: _cp, pricing: _pr, unit_manual: _um, tier_label: _tl, ...rest }) => {
+        // Paket 3b: Positionen in Gruppenreihenfolge (PDF ohne Überschriften, die folgen in Paket 4).
+        items: orderItemsByGroups(groups, effectiveItems).map(({ available_addons: _unused, price_source: _src, custom_period: _cp, pricing: _pr, unit_manual: _um, tier_label: _tl, ...rest }) => {
           const unit = (rest.unit ?? "kalendertage") as OfferUnit;
           // Pauschalpositionen haben keine Dauer – der Preis gilt für den
           // gesamten Auftrag, unabhängig von der Mietzeit.
           const duration = unit === "pauschal" ? 1 : rest.duration && rest.duration > 0 ? rest.duration : 1;
           const articles = rest.quantity || 1;
-          // Die PDF-Zeile zeigt Menge × Einheit; mehrere Artikel werden in der
+          const qUnit = rest.quantity_unit ?? "stk";
+          // Beschreibung nur für diesen Auftrag hat Vorrang vor der Stammbeschreibung.
+          const baseDescription = rest.description_override?.trim() || rest.description;
+          // Die PDF-Zeile zeigt Menge × Einheit; mehrere Artikel (bzw. m²/lfm) werden in der
           // Beschreibung ausgewiesen, damit die Summe nachvollziehbar bleibt.
           const description =
-            articles > 1 && unit !== "pauschal"
-              ? [rest.description, `${articles} Artikel × ${duration} ${unitLabel(duration, unit)}`]
+            (articles > 1 || qUnit !== "stk") && unit !== "pauschal"
+              ? [baseDescription, `${articles} ${qUnit === "stk" ? "Artikel" : quantityUnitShort(qUnit)} × ${duration} ${unitLabel(duration, unit)}`]
                   .filter(Boolean)
                   .join(" · ")
-              : rest.description;
+              : baseDescription;
           return {
             ...rest,
             description,
@@ -1044,7 +1103,13 @@ export function InquiryOfferForm({
             quantity: articles * duration,
             unit: unitLabel(articles * duration, unit),
             unit_code: unit,
-            addons: (rest.addons ?? []).filter((a) => Number(a.amount) !== 0),
+            // Paket 3b: Dauer separat (quantity bleibt Artikel × Dauer für die Summenfunktionen).
+            duration,
+            ...(rest.quantity_unit && rest.quantity_unit !== "stk" ? { quantity_unit: rest.quantity_unit } : { quantity_unit: undefined }),
+            name_override: rest.name_override || undefined,
+            description_override: rest.description_override || undefined,
+            // Optionale Stufen bleiben im Angebot (Betrag zählt nicht), in Rechnungen entfallen sie.
+            addons: (rest.addons ?? []).filter((a) => (a.optional ? !isInvoice : Number(a.amount) !== 0)),
           };
         }),
         payment_terms: safeCustomerPaymentTerms(customerKind, paymentTerms, isInvoice),
@@ -1068,12 +1133,40 @@ export function InquiryOfferForm({
         ...(canOpenEnded ? { open_ended: openEnded } : {}),
         ...(pricingActive ? { use_saturday: useSaturday, use_sunday: useSunday } : {}),
         notes: [notes.trim(), settlementNote].filter(Boolean).join("\n\n"),
+        ...(groups.length ? { groups } : {}),
+        ...(cleanExtraFields(extraFields) ? { extra_fields: cleanExtraFields(extraFields) } : {}),
+        order_type: orderType,
         staff_name: staffName,
       });
 
   const [dragIdx, setDragIdx] = useState<number | null>(null);
   const [overIdx, setOverIdx] = useState<number | null>(null);
   const reorder = (from: number, to: number) => setItems((prev) => moveItem(prev, from, to));
+  /** Paket 3b: Position einer Gruppe zuordnen; Liste bleibt in Gruppenreihenfolge. */
+  const assignGroup = (index: number, groupId: string | undefined, list: OfferGroup[] = groups) =>
+    setItems((prev) => orderItemsByGroups(list, prev.map((it, i) => (i === index ? { ...it, group_id: groupId } : it))));
+  /** Drag-and-drop: auf eine Position einer anderen Gruppe → in deren Gruppe an diese Stelle. */
+  const dropOn = (from: number, to: number) =>
+    setItems((prev) => {
+      const target = prev[to];
+      const moved = moveItem(prev.map((it, i) => (i === from ? { ...it, group_id: target?.group_id } : it)), from, to);
+      return orderItemsByGroups(groups, moved);
+    });
+  const addManualGroup = () => {
+    const g: OfferGroup = {
+      id: newGroupId(),
+      name: `Gruppe ${groups.length + 1}`,
+      sort_order: groups.length ? Math.max(...groups.map((x) => x.sort_order)) + 1 : 0,
+      source: "manual",
+    };
+    setGroups((prev) => [...prev, g]);
+  };
+  const renameGroup = (id: string, name: string) => setGroups((prev) => prev.map((g) => (g.id === id ? { ...g, name } : g)));
+  const removeGroup = (id: string) => {
+    const next = groups.filter((g) => g.id !== id);
+    setGroups(next);
+    setItems((prev) => orderItemsByGroups(next, prev.map((it) => (it.group_id === id ? { ...it, group_id: undefined } : it))));
+  };
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewing, setPreviewing] = useState(false);
   const [previewedKey, setPreviewedKey] = useState<string | null>(null);
@@ -1275,6 +1368,40 @@ export function InquiryOfferForm({
           </Button>
         </div>
       )}
+      {inquiryType === "rental" && (
+        <div className="rounded-lg border border-border p-3 space-y-2" data-testid="extra-fields">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm font-medium">Angaben zum Auftrag</span>
+            {(Object.keys(EXTRA_FIELD_LABELS) as (keyof OfferExtraFields)[]).some((k) => !(k in extraFields)) && (
+              <Select value="" disabled={disabled} onValueChange={(k) => setExtraFields((prev) => ({ ...prev, [k]: prev[k as keyof OfferExtraFields] ?? "" }))}>
+                <SelectTrigger className="h-8 w-auto text-xs" aria-label="Feld hinzufügen"><SelectValue placeholder="Feld hinzufügen" /></SelectTrigger>
+                <SelectContent>
+                  {(Object.keys(EXTRA_FIELD_LABELS) as (keyof OfferExtraFields)[])
+                    .filter((k) => !(k in extraFields))
+                    .map((k) => <SelectItem key={k} value={k}>{EXTRA_FIELD_LABELS[k]}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            )}
+          </div>
+          {Object.keys(extraFields).length > 0 && (
+            <div className="grid gap-2 sm:grid-cols-3">
+              {(Object.keys(EXTRA_FIELD_LABELS) as (keyof OfferExtraFields)[]).filter((k) => k in extraFields).map((k) => (
+                <div key={k}>
+                  <Label className="text-xs">{EXTRA_FIELD_LABELS[k]}</Label>
+                  <div className="flex gap-1">
+                    <Input value={extraFields[k] ?? ""} disabled={disabled} maxLength={200}
+                      onChange={(e) => setExtraFields((prev) => ({ ...prev, [k]: e.target.value }))} />
+                    <Button type="button" variant="ghost" size="icon" aria-label={`${EXTRA_FIELD_LABELS[k]} entfernen`} disabled={disabled}
+                      onClick={() => setExtraFields((prev) => { const n = { ...prev }; delete n[k]; return n; })}>
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
       {canOpenEnded && (
         <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm cursor-pointer">
           <Checkbox checked={openEnded} disabled={disabled} onCheckedChange={(v) => setOpenEnded(v === true)} className="mt-0.5" />
@@ -1301,7 +1428,38 @@ export function InquiryOfferForm({
         </div>
       )}
       <div className="space-y-3">
-        {items.map((item, index) => {
+        {groupedIndices(groups, items).map(({ group, indices }) => (
+        <div key={group?.id ?? "__loose"} className="space-y-3" data-testid="offer-group">
+          {(groups.length > 0 || group) && (
+            <div
+              className="flex items-center gap-2 border-b border-border pb-1"
+              onDragOver={(e) => { if (dragIdx === null) return; e.preventDefault(); }}
+              onDrop={(e) => { e.preventDefault(); if (dragIdx !== null) assignGroup(dragIdx, group?.id); setDragIdx(null); setOverIdx(null); }}
+            >
+              {group ? (
+                <Input value={group.name} disabled={disabled} aria-label="Gruppenname" className="h-8 max-w-xs text-sm font-semibold"
+                  onChange={(e) => renameGroup(group.id, e.target.value)} />
+              ) : (
+                <span className="text-sm font-semibold">{FALLBACK_GROUP_NAME}</span>
+              )}
+              <span className="text-xs text-muted-foreground">{indices.length} {indices.length === 1 ? "Position" : "Positionen"}</span>
+              {group && (
+                <Button type="button" variant="ghost" size="icon" className="ml-auto h-8 w-8" aria-label="Gruppe entfernen" disabled={disabled}
+                  onClick={() => removeGroup(group.id)}>
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          )}
+          {indices.length === 0 && (
+            <p className="rounded-md border border-dashed border-border p-2 text-xs text-muted-foreground"
+              onDragOver={(e) => { if (dragIdx === null) return; e.preventDefault(); }}
+              onDrop={(e) => { e.preventDefault(); if (dragIdx !== null) assignGroup(dragIdx, group?.id); setDragIdx(null); setOverIdx(null); }}>
+              Position hierher ziehen oder an der Position die Gruppe wählen.
+            </p>
+          )}
+        {indices.map((index) => {
+          const item = items[index];
           const eff = effectiveItems[index] ?? item;
           const inherited = index > 0 && !item.custom_period;
           /** Pauschalposition: fester Preis, keine Mietdauer-Multiplikation. */
@@ -1311,7 +1469,7 @@ export function InquiryOfferForm({
             key={index}
             data-testid="offer-position"
             onDragOver={(e) => { if (dragIdx === null) return; e.preventDefault(); if (overIdx !== index) setOverIdx(index); }}
-            onDrop={(e) => { e.preventDefault(); if (dragIdx !== null) reorder(dragIdx, index); setDragIdx(null); setOverIdx(null); }}
+            onDrop={(e) => { e.preventDefault(); if (dragIdx !== null) dropOn(dragIdx, index); setDragIdx(null); setOverIdx(null); }}
             onDragEnd={() => { setDragIdx(null); setOverIdx(null); }}
             className={`rounded-lg border border-border p-3 space-y-2 transition-colors ${dragIdx === index ? "opacity-40" : ""} ${overIdx === index && dragIdx !== null && dragIdx !== index ? "ring-2 ring-primary/50" : ""}`}
           >
@@ -1406,7 +1564,18 @@ export function InquiryOfferForm({
                       rental_start_time: item.rental_start_time ?? items[0]?.rental_start_time,
                       rental_end_time: item.rental_end_time ?? items[0]?.rental_end_time,
                     };
-                    setItems((prev) => prev.map((it, i) => (i === index ? applyRentalPricing(next, dayOpts) : it)));
+                    // Paket 3b: CMS-Artikel automatisch in die Gruppe seiner Kategorie (anlegen oder wiederverwenden);
+                    // eine von Hand gewählte eigene Gruppe bleibt erhalten.
+                    const currentGroup = groups.find((g) => g.id === item.group_id);
+                    let nextGroups = groups;
+                    if (product && !isInvoice && (!currentGroup || currentGroup.source === "category")) {
+                      const catName = await categoryNameFor(product.category);
+                      const ensured = ensureCategoryGroup(groups, catName);
+                      nextGroups = ensured.groups;
+                      next.group_id = ensured.id;
+                      if (nextGroups !== groups) setGroups(nextGroups);
+                    }
+                    setItems((prev) => orderItemsByGroups(nextGroups, prev.map((it, i) => (i === index ? applyRentalPricing(next, dayOpts) : it))));
                   }}
                 />
                 )}
@@ -1421,7 +1590,42 @@ export function InquiryOfferForm({
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
+              {inquiryType === "rental" && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button type="button" variant="ghost" size="icon" aria-label="Weitere Aktionen" disabled={disabled}>
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onSelect={() => setOverrideIdx(index)}>Für diesen Auftrag bearbeiten</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
+            {(item.name_override || item.description_override) && (
+              <p className="text-xs text-primary">
+                Nur in diesem Angebot: {item.name_override ? <strong>{item.name_override}</strong> : null}
+                {item.name_override && item.description_override ? " · " : ""}
+                {item.description_override ?? ""}
+              </p>
+            )}
+            {inquiryType === "rental" && groups.length > 0 && (
+              <div className="flex items-center gap-2">
+                <Label className="text-xs shrink-0">Gruppe</Label>
+                <Select
+                  value={item.group_id && groups.some((g) => g.id === item.group_id) ? item.group_id : "__loose"}
+                  disabled={disabled}
+                  onValueChange={(v) => assignGroup(index, v === "__loose" ? undefined : v)}
+                >
+                  <SelectTrigger className="h-8 max-w-xs text-xs" aria-label="Gruppe der Position"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__loose">{FALLBACK_GROUP_NAME}</SelectItem>
+                    {groups.map((g) => <SelectItem key={g.id} value={g.id}>{g.name || "Ohne Namen"}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
             <Input
               value={inherited ? (eff.description ?? "") : (item.description ?? "")}
               onChange={(e) => patchItem(index, { description: e.target.value })}
@@ -1481,59 +1685,68 @@ export function InquiryOfferForm({
                 </span>
               </label>
             )}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-6 gap-2" data-testid="position-columns">
               <div>
-                <Label className="text-xs">Menge (Artikel)</Label>
-                <NumberInput
-                  type="number"
-                  min={1}
-                  value={item.quantity}
-                  onChange={(e) => patchItem(index, { quantity: Number(e.target.value) || 0 })}
-                  disabled={disabled}
-                />
+                <Label className="text-xs">Menge</Label>
+                <div className="flex gap-1">
+                  <NumberInput
+                    type="number"
+                    min={1}
+                    value={item.quantity}
+                    onChange={(e) => patchItem(index, { quantity: Number(e.target.value) || 0 })}
+                    disabled={disabled}
+                  />
+                  <Select
+                    value={item.quantity_unit ?? "stk"}
+                    disabled={disabled}
+                    onValueChange={(v) => patchItem(index, { quantity_unit: v as QuantityUnit })}
+                  >
+                    <SelectTrigger className="h-10 w-[4.5rem] shrink-0" aria-label="Mengeneinheit"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {QUANTITY_UNITS.map((q) => <SelectItem key={q.value} value={q.value}>{q.short}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-              <div>
-                <Label className="text-xs">Menge (Dauer)</Label>
-                <NumberInput
-                  type="number"
-                  min={1}
-                  value={isFlatRate ? 1 : eff.duration ?? 1}
-                  onChange={(e) => patchItem(index, { duration: Number(e.target.value) || 0 })}
-                  disabled={disabled || inherited || isFlatRate}
-                />
-              </div>
-              <div>
-                <Label className="text-xs">Einheit</Label>
-                <Select
-                  value={eff.unit ?? "kalendertage"}
-                  disabled={disabled || inherited}
-                  onValueChange={(v) =>
-                    patchPriced(index, {
-                      unit: v as OfferUnit,
-                      unit_manual: true,
-                      // Pauschalpreis gilt für den gesamten Auftrag – Dauer entfällt.
-                      ...(v === "pauschal" ? { duration: 1 } : {}),
-                    })
-                  }
-                >
-                  <SelectTrigger className="h-10">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {OFFER_UNITS.map((u) => (
-                      <SelectItem key={u.value} value={u.value}>{u.label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <p className="mt-1 text-[11px] text-muted-foreground">
+              <div className="sm:col-span-2">
+                <Label className="text-xs">Dauer</Label>
+                <div className="flex gap-1">
                   {isFlatRate ? (
-                    <>Pauschal – unabhängig von der Mietdauer</>
+                    <div className="flex h-10 flex-1 items-center rounded-md border border-input bg-muted/40 px-3 text-sm text-muted-foreground" data-testid="duration-flat">
+                      pauschal
+                    </div>
                   ) : (
-                    <>
-                      {item.quantity || 0} × {eff.duration ?? 1}{" "}
-                      {unitLabel(eff.duration ?? 1, (eff.unit ?? "kalendertage") as OfferUnit)}
-                    </>
+                    <NumberInput
+                      type="number"
+                      min={1}
+                      value={eff.duration ?? 1}
+                      onChange={(e) => patchItem(index, { duration: Number(e.target.value) || 0 })}
+                      disabled={disabled || inherited}
+                    />
                   )}
+                  <Select
+                    value={eff.unit ?? "kalendertage"}
+                    disabled={disabled || inherited}
+                    onValueChange={(v) =>
+                      patchPriced(index, {
+                        unit: v as OfferUnit,
+                        unit_manual: true,
+                        // Pauschalpreis gilt für den gesamten Auftrag – Dauer fest 1.
+                        ...(v === "pauschal" ? { duration: 1 } : {}),
+                      })
+                    }
+                  >
+                    <SelectTrigger className="h-10 w-36 shrink-0" aria-label="Einheit der Dauer"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {OFFER_UNITS.filter((u) => u.value !== "stueck" || eff.unit === "stueck").map((u) => (
+                        <SelectItem key={u.value} value={u.value}>{u.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  {item.quantity || 0} {quantityUnitShort(item.quantity_unit)} ×{" "}
+                  {isFlatRate ? "pauschal" : `${eff.duration ?? 1} ${unitAbbreviation((eff.unit ?? "kalendertage") as OfferUnit)}`}
                 </p>
               </div>
               <div>
@@ -1665,6 +1878,8 @@ export function InquiryOfferForm({
           </div>
           );
         })}
+        </div>
+        ))}
         <div className="flex flex-wrap gap-2">
           <Button
             type="button"
@@ -1683,6 +1898,11 @@ export function InquiryOfferForm({
           >
             <Plus className="h-4 w-4 mr-1" /> Position hinzufügen
           </Button>
+          {inquiryType === "rental" && !isInvoice && (
+            <Button type="button" variant="outline" size="sm" onClick={addManualGroup} disabled={disabled}>
+              <FolderPlus className="h-4 w-4 mr-1" /> Gruppe anlegen
+            </Button>
+          )}
           {pricingActive && (
             <Button type="button" variant="outline" size="sm" onClick={() => void recalcAllPrices()} disabled={disabled || recalculating}>
               {recalculating ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : null}
@@ -1693,9 +1913,10 @@ export function InquiryOfferForm({
         {(() => {
           const used = Array.from(new Set(effectiveItems.map((i) => (i.unit ?? "kalendertage") as OfferUnit)));
           if (!used.length) return null;
+          const qUsed = QUANTITY_UNITS.filter((q) => effectiveItems.some((i) => (i.quantity_unit ?? "stk") === q.value));
           return (
             <p className="text-[11px] text-muted-foreground" data-testid="unit-legend">
-              {used.map((u) => `${unitAbbreviation(u)} = ${unitLabel(2, u)}`).join(" · ")}
+              {[...qUsed.map((q) => `${q.short} = ${q.label}`), ...used.filter((u) => u !== "pauschal").map((u) => `${unitAbbreviation(u)} = ${unitLabel(2, u)}`)].join(" · ")}
               {used.includes("miettage") ? " · 1 Miettag = 24 Std. gem. AGB" : ""}
             </p>
           );
@@ -1791,16 +2012,28 @@ export function InquiryOfferForm({
         </div>
       )}
 
+      <div className="flex flex-wrap items-center gap-2" data-testid="order-type">
+        <span className="text-xs text-muted-foreground">Auftragsart</span>
+        {(["pickup", "delivery"] as const).map((t) => (
+          <Button key={t} type="button" size="sm" variant={orderType === t ? "default" : "outline"} disabled={disabled}
+            aria-pressed={orderType === t} onClick={() => setOrderType(t)}>
+            {t === "pickup" ? "Abholung" : "Lieferung"}
+          </Button>
+        ))}
+        {orderType === "delivery" && deliveryCostDelivery + deliveryCostReturn <= 0 && (
+          <span className="text-xs text-muted-foreground">Kostenfreie Lieferung</span>
+        )}
+      </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
         <div>
           <Label className="text-xs">Lieferkosten</Label>
           <NumberInput type="number" min={0} step="0.01" value={deliveryCostDelivery}
-            onChange={(e) => setDeliveryCostDelivery(Number(e.target.value) || 0)} disabled={disabled} />
+            onChange={(e) => changeDeliveryCost(Number(e.target.value) || 0)} disabled={disabled} />
         </div>
         <div>
           <Label className="text-xs">Abholkosten</Label>
           <NumberInput type="number" min={0} step="0.01" value={deliveryCostReturn}
-            onChange={(e) => setDeliveryCostReturn(Number(e.target.value) || 0)} disabled={disabled} />
+            onChange={(e) => changeReturnCost(Number(e.target.value) || 0)} disabled={disabled} />
         </div>
         <div>
           <Label className="text-xs">Aufbau</Label>
@@ -2132,6 +2365,17 @@ export function InquiryOfferForm({
         </div>
       )}
 
+      {overrideIdx !== null && items[overrideIdx] && (
+        <ItemOverrideDialog
+          open
+          onOpenChange={(o) => { if (!o) setOverrideIdx(null); }}
+          masterName={items[overrideIdx].product_name}
+          masterDescription={items[overrideIdx].description}
+          nameOverride={items[overrideIdx].name_override}
+          descriptionOverride={items[overrideIdx].description_override}
+          onSave={(v) => { markTouched(); patchItem(overrideIdx, v); }}
+        />
+      )}
       <InventoryWarningDialog
         open={warningOpen}
         onOpenChange={setWarningOpen}

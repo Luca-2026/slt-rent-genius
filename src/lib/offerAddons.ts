@@ -21,6 +21,10 @@ export interface AddonOption {
   note?: string;
   /** Im Angebot standardmäßig über die gesamte Mietdauer (Kalendertage) berechnen */
   full_period_default?: boolean;
+  /** CMS-Versicherungsstufen (Paket 3b): Standardstufe und Aufschlag weiterer Stufen. */
+  is_default?: boolean;
+  sort_order?: number;
+  surcharge_percent?: number | null;
 }
 
 export const ADDON_PRESETS: { key: string; label: string; price_type: AddonPriceType; price: number; deductible?: number; full_period_default?: boolean }[] = [
@@ -59,6 +63,9 @@ export function parseAddonOptions(raw: unknown): AddonOption[] {
         deductible: Number.isFinite(deductible) && deductible > 0 ? deductible : null,
         note: o.note ? String(o.note).slice(0, 200) : undefined,
         full_period_default: o.full_period_default === true,
+        is_default: o.is_default === true,
+        sort_order: Number.isFinite(Number(o.sort_order)) ? Number(o.sort_order) : undefined,
+        surcharge_percent: Number(o.surcharge_percent) > 0 ? Number(o.surcharge_percent) : null,
       };
     })
     .filter((o): o is AddonOption => o !== null);

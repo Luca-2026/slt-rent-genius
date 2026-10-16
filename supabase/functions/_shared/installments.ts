@@ -133,7 +133,7 @@ export function monthlyNetFromOffer(items: Array<Record<string, unknown>> | null
     const disc = Number(it.discount_percent) || 0;
     sum += qty * price * (1 - disc / 100);
     const addons = Array.isArray(it.addons) ? (it.addons as Array<Record<string, unknown>>) : [];
-    for (const a of addons) sum += Number(a.amount) || 0;
+    for (const a of addons) if (a.optional !== true) sum += Number(a.amount) || 0;
   }
   return round2(sum);
 }

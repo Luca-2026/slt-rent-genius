@@ -17,6 +17,19 @@ export interface InquiryOfferAddon {
   period_start?: string | null;
   period_end?: string | null;
   manual?: boolean;
+  /** Paket 3b: Kalendertage von Hand geändert + interner Grund (nicht im PDF). */
+  days_manual?: boolean;
+  days_reason?: string;
+  /** Paket 3b: optionale Versicherungsstufe – zählt nicht in die Summe. */
+  optional?: boolean;
+  per_day?: number;
+  of_key?: string;
+  surcharge_percent?: number;
+}
+
+/** Paket 3b: optionale Zusatzoptionen zählen nicht in Positions-/Angebotssumme. */
+export function countsInTotal(a: Pick<InquiryOfferAddon, "optional">): boolean {
+  return a.optional !== true;
 }
 
 /** Kundenverständliche Erläuterung einer Zusatzoption (für PDF/E-Mail/Rechnung). */
@@ -58,6 +71,12 @@ export interface InquiryOfferItem {
   image_url?: string;
   /** Zusatzoptionen (Versicherungen etc.) dieser Position */
   addons?: InquiryOfferAddon[];
+  /** Paket 3b: Gruppe, Mengeneinheit, Dauer und Overrides (nur dieses Angebot). */
+  group_id?: string;
+  quantity_unit?: "stk" | "m2" | "lfm";
+  duration?: number;
+  name_override?: string | null;
+  description_override?: string | null;
 }
 
 export const VAT_RATE = 19;
@@ -107,7 +126,7 @@ export function lineTotal(item: Pick<InquiryOfferItem, "quantity" | "unit_price"
 
 export function addonsTotal(items: InquiryOfferItem[]): number {
   return round2(
-    items.reduce((sum, i) => sum + (i.addons ?? []).reduce((s, a) => s + (Number(a.amount) || 0), 0), 0),
+    items.reduce((sum, i) => sum + (i.addons ?? []).filter(countsInTotal).reduce((s, a) => s + (Number(a.amount) || 0), 0), 0),
   );
 }
 
@@ -151,6 +170,14 @@ function normalizeAddons(
       amount: round2(amount),
       note: a.note ? String(a.note).slice(0, 200) : undefined,
     };
+    if (a.optional === true) {
+      out.optional = true;
+      const perDay = Number(a.per_day);
+      if (Number.isFinite(perDay) && perDay >= 0 && perDay <= 1_000_000) out.per_day = round2(perDay);
+      if (typeof a.of_key === "string") out.of_key = a.of_key.slice(0, 60);
+      const sp = Number(a.surcharge_percent);
+      if (Number.isFinite(sp) && sp > 0 && sp <= 1000) out.surcharge_percent = sp;
+    }
     const priceType = a.price_type as AddonPriceType;
     const basis = a.basis as AddonBasis;
     const rate = Number(a.rate);
@@ -163,6 +190,8 @@ function normalizeAddons(
       out.basis = basis;
       out.rate = round2(rate);
       out.manual = a.manual === true;
+      if (a.days_manual === true) out.days_manual = true;
+      if (typeof a.days_reason === "string" && a.days_reason.trim()) out.days_reason = a.days_reason.trim().slice(0, 200);
       if (basis === "full_period") {
         const days = Math.round(Number(a.days));
         if (!Number.isFinite(days) || days < 1 || days > 3660) {
@@ -247,6 +276,11 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       price_manual: item.price_manual === true ? true : undefined,
       price_basis: item.price_basis === "tier" || item.price_basis === "weekend" || item.price_basis === "customer" ? item.price_basis : undefined,
       image_url: item.image_url ? String(item.image_url).slice(0, 500) : undefined,
+      group_id: item.group_id ? String(item.group_id).slice(0, 60) : undefined,
+      quantity_unit: item.quantity_unit === "m2" || item.quantity_unit === "lfm" || item.quantity_unit === "stk" ? item.quantity_unit : undefined,
+      duration: Number(item.duration) > 0 && Number(item.duration) <= 10000 ? Math.round(Number(item.duration) * 100) / 100 : undefined,
+      name_override: typeof item.name_override === "string" && item.name_override.trim() ? item.name_override.trim().slice(0, 200) : undefined,
+      description_override: typeof item.description_override === "string" && item.description_override.trim() ? item.description_override.trim().slice(0, 500) : undefined,
       addons: normalizeAddons(item.addons, index, {
         articles,
         quantity: Math.round(quantity),
@@ -256,4 +290,40 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       }),
     };
   });
+}
+
+// ---------------------------------------------------------------- Paket 3b: Kopf-Felder im offer_payload
+
+export interface OfferPayloadGroup { id: string; name: string; sort_order: number; source: "category" | "manual" }
+
+/** Validiert offer_payload.groups (fehlt bei alten Angeboten → undefined). */
+export function normalizeOfferGroups(raw: unknown): OfferPayloadGroup[] | undefined {
+  if (!Array.isArray(raw) || !raw.length) return undefined;
+  const list = raw.slice(0, 50).map((g, i) => {
+    const o = (g ?? {}) as Record<string, unknown>;
+    const id = String(o.id ?? "").trim().slice(0, 60);
+    const name = String(o.name ?? "").trim().slice(0, 120);
+    if (!id || !name) return null;
+    return { id, name, sort_order: Number.isFinite(Number(o.sort_order)) ? Number(o.sort_order) : i, source: o.source === "category" ? "category" : "manual" } as OfferPayloadGroup;
+  }).filter((g): g is OfferPayloadGroup => g !== null).sort((a, b) => a.sort_order - b.sort_order);
+  return list.length ? list : undefined;
+}
+
+/** Nur ausgefüllte Zusatzfelder; leer → undefined. */
+export function normalizeExtraFields(raw: unknown): { orderer?: string; cost_center?: string; project?: string } | undefined {
+  if (!raw || typeof raw !== "object") return undefined;
+  const out: Record<string, string> = {};
+  for (const k of ["orderer", "cost_center", "project"]) {
+    const v = (raw as Record<string, unknown>)[k];
+    if (typeof v === "string" && v.trim()) out[k] = v.trim().slice(0, 200);
+  }
+  return Object.keys(out).length ? out : undefined;
+}
+
+/** Positionen in Gruppenreihenfolge; ohne/unbekannte Gruppe zuerst (Sammelgruppe „Positionen“). */
+export function orderItemsByGroups<T extends { group_id?: string }>(groups: OfferPayloadGroup[] | undefined, items: T[]): T[] {
+  if (!groups?.length) return items;
+  const known = new Set(groups.map((g) => g.id));
+  const loose = items.filter((i) => !i.group_id || !known.has(i.group_id));
+  return [...loose, ...groups.flatMap((g) => items.filter((i) => i.group_id === g.id))];
 }

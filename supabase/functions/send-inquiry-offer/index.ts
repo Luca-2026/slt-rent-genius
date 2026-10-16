@@ -28,6 +28,9 @@ import {
   assertPositiveTotal,
   buildOfferTotals,
   normalizeInquiryOfferItems,
+  normalizeExtraFields,
+  normalizeOfferGroups,
+  orderItemsByGroups,
   resolveLocationKey,
   resolveReturnLocation,
   type InquiryOfferItem,
@@ -97,6 +100,11 @@ Deno.serve(async (req: Request) => {
     } catch (e) {
       return json({ error: (e as Error).message }, 400);
     }
+    // Paket 3b: Gruppen, Zusatzfelder, Auftragsart (fehlen bei alten Angeboten → entfallen).
+    const offerGroups = normalizeOfferGroups(body.groups);
+    items = orderItemsByGroups(offerGroups, items);
+    const extraFields = normalizeExtraFields(body.extra_fields);
+    const orderType = body.order_type === "delivery" ? "delivery" : body.order_type === "pickup" ? "pickup" : undefined;
 
     // Paket 2: Plausibilitätsprüfung der Einzelpreise gegen die Staffel (nur Warnung, kein Abbruch).
     if (inquiryType === "rental") {
@@ -316,7 +324,8 @@ Deno.serve(async (req: Request) => {
 
     // ── Produktbilder: explizit übergeben oder per Artikelname aus dem CMS ──
     const pdfItems = items.map((i) => ({
-      product_name: i.product_name,
+      // Paket 3b: Name nur für dieses Angebot geändert → im PDF der Override.
+      product_name: i.name_override || i.product_name,
       description: i.description,
       quantity: i.quantity,
       unit: i.unit,
@@ -328,9 +337,9 @@ Deno.serve(async (req: Request) => {
       image_url: normalizeImageUrl(i.image_url) as string | null,
     }));
     // ── Zusatzoptionen (Versicherungen etc.) als zugeordnete Zusatzposten ──
-    const servicesWithPrices = items.flatMap((item, idx) =>
+    const servicesWithPrices: Array<{ id: string; name: string; description?: string; pricePercent: number | null; amount: number; allocations: { itemIndex: number; amount: number }[]; optional?: boolean; perDay?: number }> = items.flatMap((item, idx) =>
       (item.addons ?? [])
-        .filter((a) => a.amount > 0)
+        .filter((a) => a.amount > 0 && !a.optional)
         .map((a, ai) => ({
           id: `${idx}-${a.key || ai}`,
           name: a.note ? `${a.label} (${a.note})` : a.label,
@@ -340,6 +349,21 @@ Deno.serve(async (req: Request) => {
           allocations: [{ itemIndex: idx, amount: a.amount }],
         })),
     );
+    // Paket 3b: optionale Versicherungsstufen – eigene Zeile, Betrag 0 in allen Summen.
+    items.forEach((item, idx) => {
+      for (const a of item.addons ?? []) {
+        if (!a.optional) continue;
+        servicesWithPrices.push({
+          id: `${idx}-${a.key}`,
+          name: a.label,
+          pricePercent: null,
+          amount: 0,
+          optional: true,
+          perDay: a.per_day ?? a.rate ?? 0,
+          allocations: [{ itemIndex: idx, amount: 0 }],
+        });
+      }
+    });
     // Auf-/Abbau werden als eigene Pauschalpositionen im PDF ausgewiesen.
     if (setupCost > 0) {
       servicesWithPrices.push({
@@ -373,14 +397,15 @@ Deno.serve(async (req: Request) => {
     }
     const servicesSurcharge = servicesWithPrices.reduce((sum, s) => sum + s.amount, 0);
 
-    const missingImages = pdfItems.filter((i) => !i.image_url).map((i) => i.product_name);
+    // Bilder über den Stammnamen auflösen (nicht über einen Override nur für dieses Angebot).
+    const missingImages = pdfItems.flatMap((p, k) => (p.image_url ? [] : [items[k].product_name]));
     if (missingImages.length) {
       try {
         const resolved = await resolveImagesByName(service, missingImages);
-        for (const item of pdfItems) {
-          if (item.image_url) continue;
-          item.image_url = resolved.get((item.product_name || "").trim().toLowerCase()) || null;
-        }
+        pdfItems.forEach((item, k) => {
+          if (item.image_url) return;
+          item.image_url = resolved.get((items[k].product_name || "").trim().toLowerCase()) || null;
+        });
       } catch (err) {
         console.error("Bildauflösung fehlgeschlagen:", err);
       }
@@ -545,7 +570,7 @@ Deno.serve(async (req: Request) => {
       <div style="padding:10px 0;border-bottom:1px solid #e5e7eb;">
         <div style="font-weight:bold;font-size:14px;">${escapeHtml(i.product_name)}</div>
         ${i.description ? `<div style="color:#6b7280;font-size:12px;margin-top:2px;">${escapeHtml(i.description)}</div>` : ""}
-        ${(i.addons ?? []).filter((a) => a.amount > 0).map((a) => `<div style="color:#6b7280;font-size:12px;margin-top:2px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}${addonExplanation(a, i) ? `<br><span style="font-size:11px;">${escapeHtml(addonExplanation(a, i))}</span>` : ""}</div>`).join("")}
+        ${(i.addons ?? []).filter((a) => a.amount > 0 && !a.optional).map((a) => `<div style="color:#6b7280;font-size:12px;margin-top:2px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}${addonExplanation(a, i) ? `<br><span style="font-size:11px;">${escapeHtml(addonExplanation(a, i))}</span>` : ""}</div>`).join("")}
         ${discountHtml ? `<div style="margin-top:2px;">${discountHtml.replace(/^<br>/, "")}</div>` : ""}
         <table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:13px;"><tr>
           <td style="color:#6b7280;padding:0;">${i.quantity}${i.unit ? ` ${escapeHtml(i.unit)}` : ""} &times; ${money(i.unit_price)}</td>
@@ -714,6 +739,9 @@ Deno.serve(async (req: Request) => {
           open_ended: openEnded,
           use_saturday: body.use_saturday === true,
           use_sunday: body.use_sunday === true,
+          ...(offerGroups ? { groups: offerGroups } : {}),
+          ...(extraFields ? { extra_fields: extraFields } : {}),
+          ...(orderType ? { order_type: orderType } : {}),
         },
         ...(inquiryType === "rental"
           ? {

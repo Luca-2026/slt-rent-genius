@@ -3558,6 +3558,7 @@ export type Database = {
           customer_name: string | null
           customer_phone: string | null
           customer_postal_code: string | null
+          customer_salutation: string | null
           customer_street: string | null
           delivery_city: string | null
           delivery_postal_code: string | null
@@ -3622,6 +3623,7 @@ export type Database = {
           customer_name?: string | null
           customer_phone?: string | null
           customer_postal_code?: string | null
+          customer_salutation?: string | null
           customer_street?: string | null
           delivery_city?: string | null
           delivery_postal_code?: string | null
@@ -3686,6 +3688,7 @@ export type Database = {
           customer_name?: string | null
           customer_phone?: string | null
           customer_postal_code?: string | null
+          customer_salutation?: string | null
           customer_street?: string | null
           delivery_city?: string | null
           delivery_postal_code?: string | null

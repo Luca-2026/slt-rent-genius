@@ -14,7 +14,7 @@ export async function generateOfferPdf(data: {
   deliveryCostDelivery: number;
   deliveryCostReturn: number;
   servicesSurcharge: number;
-  servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number; allocations?: { itemIndex: number; amount: number }[] }[];
+  servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number; allocations?: { itemIndex: number; amount: number }[]; optional?: boolean; perDay?: number }[];
   netAmount: number;
   vatRate: number;
   vatAmount: number;
@@ -447,11 +447,11 @@ export async function generateOfferPdf(data: {
   const textColX = hasAnyImage ? nameColX + IMG + 8 : nameColX;
   const nameColW = qtyColRight - textColX - 12;
 
-  const servicesByItem = new Map<number, { name: string; description?: string; amount: number }[]>();
+  const servicesByItem = new Map<number, { name: string; description?: string; amount: number; optional?: boolean; perDay?: number }[]>();
   for (const svc of data.servicesWithPrices || []) {
     for (const alloc of svc.allocations || []) {
       const current = servicesByItem.get(alloc.itemIndex) || [];
-      current.push({ name: svc.name, description: svc.description, amount: alloc.amount });
+      current.push({ name: svc.name, description: svc.description, amount: alloc.amount, optional: svc.optional, perDay: svc.perDay });
       servicesByItem.set(alloc.itemIndex, current);
     }
   }
@@ -473,7 +473,7 @@ export async function generateOfferPdf(data: {
     const nameText = safe(item.product_name);
     // "3 Artikel × 9 Kalendertage" → Menge als "3 × 9" statt hochgerechnet "27" anzeigen
     const periodMatch = typeof item.description === "string"
-      ? item.description.match(/(\d+)\s*Artikel\s*[\u00D7x]\s*(\d+)\s*[A-Za-z\u00C4\u00D6\u00DC\u00E4\u00F6\u00FC\u00DF]+\s*$/)
+      ? item.description.match(/(\d+)\s*(?:Artikel|m\u00B2|lfm)\s*[\u00D7x]\s*(\d+)\s*[A-Za-z\u00C4\u00D6\u00DC\u00E4\u00F6\u00FC\u00DF]+\s*$/)
       : null;
     const qtyText = periodMatch && Number(periodMatch[1]) * Number(periodMatch[2]) === Number(item.quantity)
       ? `${periodMatch[1]} \u00D7 ${periodMatch[2]}`
@@ -505,9 +505,10 @@ export async function generateOfferPdf(data: {
     // passt er nicht mehr komplett auf die Seite, wandert er geschlossen auf die nächste.
     const svcW = unitColX - 10 - (textColX + 8);
     const svcRows = (servicesByItem.get(idx) || [])
-      .filter((svc) => svc.amount && svc.amount > 0)
+      .filter((svc) => svc.optional || (svc.amount && svc.amount > 0))
       .map((svc) => {
-        const svcLines = wt(`- ${svc.name}`, font, 8.5, svcW);
+        // Optionale Stufe: eingerückt, „Optional:“, Betrag je KT – nicht in den Summen.
+        const svcLines = wt(svc.optional ? `Optional: ${svc.name}` : `- ${svc.name}`, font, 8.5, svcW - (svc.optional ? 8 : 0));
         const expLines = svc.description ? wt(svc.description, font, 7.5, svcW - 8) : [];
         return { svc, svcLines, expLines, h: 10 + svcLines.length * 10 + expLines.length * 9 };
       });
@@ -536,9 +537,15 @@ export async function generateOfferPdf(data: {
     // Zusatzoptionen direkt unter der Position
     for (const { svc, svcLines, expLines, h } of svcRows) {
       renderRow(h, (top) => {
-        svcLines.forEach((ln, li) => dt(pg, ln, textColX + 8, top - 8 - li * 10, font, 8.5, MUTED));
+        const indent = svc.optional ? 16 : 8;
+        svcLines.forEach((ln, li) => dt(pg, ln, textColX + indent, top - 8 - li * 10, font, 8.5, MUTED));
         const expTop = top - 8 - svcLines.length * 10;
-        expLines.forEach((ln, li) => dt(pg, ln, textColX + 16, expTop - li * 9, font, 7.5, MUTED));
+        expLines.forEach((ln, li) => dt(pg, ln, textColX + indent + 8, expTop - li * 9, font, 7.5, MUTED));
+        if (svc.optional) {
+          dt(pg, "je KT", unitColX, top - 8, font, 8.5, MUTED);
+          dtr(pg, fm(svc.perDay || 0), unitPriceRight, top - 8, font, 8.5, MUTED);
+          return;
+        }
         dt(pg, "Pauschale", unitColX, top - 8, font, 8.5, MUTED);
         dtr(pg, fm(svc.amount), totalRight, top - 8, font, 8.5, MUTED);
       });

@@ -20,6 +20,8 @@ export interface RentalInquiry {
   delivery_city: string | null;
   setup_service_requested: boolean;
   customer_name: string | null;
+  /** Paket 3b: Anrede ("herr" | "frau"), Ausgabe folgt in Paket 4. */
+  customer_salutation?: string | null;
   customer_email: string | null;
   customer_kind: string | null;
   customer_phone: string | null;
