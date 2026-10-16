@@ -470,6 +470,13 @@
       "when": 1792150200553,
       "tag": "0066_public_product_prices_view_definer",
       "breakpoints": true
+    },
+    {
+      "idx": 67,
+      "version": "7",
+      "when": 1792151059882,
+      "tag": "0067_protocol_cleanliness_signed_place",
+      "breakpoints": true
     }
   ]
 }
