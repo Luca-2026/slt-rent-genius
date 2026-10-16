@@ -150,7 +150,7 @@ Deno.serve(async (req: Request) => {
         <p style="font-size:13px;color:#92400e;margin:0;line-height:1.5;">${t("Bitte überweise", "Bitte überweisen Sie")} den Rechnungsbetrag vor Mietbeginn auf das in der Rechnung angegebene Bankkonto. Die Mietgeräte werden nach Zahlungseingang bereitgestellt.</p>
       </div>` : `<p style="font-size:14px;color:#555;line-height:1.6;">${t("Bitte beachte", "Bitte beachten Sie")} das Zahlungsziel gemäß den vereinbarten Konditionen.</p>`}
       ${invoice.due_date ? `<p style="font-size:14px;color:#555;line-height:1.6;">Fälligkeitsdatum: <strong>${new Date(invoice.due_date).toLocaleDateString("de-DE")}</strong></p>` : ""}
-      <p style="font-size:14px;color:#555;line-height:1.6;">Die vollständige Rechnung ${t("findest du als PDF im Anhang sowie in deinem", "finden Sie als PDF im Anhang sowie in Ihrem")} Kundenportal.</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">Die vollständige Rechnung ${t("findest du als PDF im Anhang sowie in deinem", "finden Sie als PDF im Anhang sowie in Ihrem")} B2B-Portal.</p>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://www.slt-rental.de/b2b/rechnungen" style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">Zum B2B-Portal →</a>
       </div>

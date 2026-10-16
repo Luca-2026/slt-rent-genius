@@ -30,7 +30,7 @@ export function LegacyB2BRequestsNotice() {
     <div role="note" className="mb-4 flex gap-3 rounded-md border border-accent/40 bg-accent/5 p-3 text-sm">
       <Info className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
       <p>
-        {count} ältere Kundenportal-{count === 1 ? "Anfrage" : "Anfragen"} aus dem bisherigen System {count === 1 ? "ist" : "sind"} noch offen und nicht in dieser Liste.{" "}
+        {count} ältere B2B-Portal-{count === 1 ? "Anfrage" : "Anfragen"} aus dem bisherigen System {count === 1 ? "ist" : "sind"} noch offen und nicht in dieser Liste.{" "}
         <Link to="/b2b/admin" className="font-semibold text-primary underline underline-offset-4">Altfälle öffnen</Link>
       </p>
     </div>

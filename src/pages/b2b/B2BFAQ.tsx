@@ -13,7 +13,7 @@ import { MessageCircle, Phone } from "lucide-react";
 const b2bFaqCategories = [
   {
     id: "portal",
-    title: "Kundenportal & Konto",
+    title: "B2B-Portal & Konto",
     questions: [
       {
         q: "Wie registriere ich mich als Geschäftskunde?",
@@ -143,7 +143,7 @@ const b2bFaqCategories = [
 
 function B2BFAQ() {
   return (
-    <B2BPortalLayout title="Häufige Fragen (FAQ)" subtitle="Antworten rund um das Kundenportal und Ihre Mietvorgänge">
+    <B2BPortalLayout title="Häufige Fragen (FAQ)" subtitle="Antworten rund um das B2B-Portal und Ihre Mietvorgänge">
       <div className="max-w-3xl mx-auto space-y-8">
         {b2bFaqCategories.map((category) => (
           <div key={category.id}>

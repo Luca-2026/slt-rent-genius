@@ -173,7 +173,7 @@ export default function Customers() {
   };
 
   return (
-    <B2BPortalLayout title="Kundenkartei" subtitle="Alle Kunden – Privat- und Geschäftskunden (inkl. Kundenportal), neueste Registrierung zuerst">
+    <B2BPortalLayout title="Kundenkartei" subtitle="Alle Kunden – Privat- und Geschäftskunden (inkl. B2B-Portal), neueste Registrierung zuerst">
       <div className="flex flex-col sm:flex-row flex-wrap gap-2 mb-4">
         <Input
           value={search}

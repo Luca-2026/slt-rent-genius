@@ -113,7 +113,7 @@ serve(async (req) => {
         <p style="font-size:13px;font-weight:600;margin:0 0 8px;color:#333;">Übergebene Artikel:</p>
         <ul style="margin:0;padding-left:20px;color:#555;">${itemsList}</ul>
       </div>` : ""}
-      <p style="font-size:14px;color:#555;line-height:1.6;">Das vollständige Übergabeprotokoll ${t("findest du auch in deinem", "finden Sie auch in Ihrem")} Kundenportal.</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">Das vollständige Übergabeprotokoll ${t("findest du auch in deinem", "finden Sie auch in Ihrem")} B2B-Portal.</p>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://www.slt-rental.de/b2b/uebergabeprotokolle" style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">Zum B2B-Portal →</a>
       </div>
@@ -176,7 +176,7 @@ serve(async (req) => {
       <p style="font-size:14px;color:#555;line-height:1.6;">für ${t("deine", "Ihre")} Mietgeräte wurde das Übergabeprotokoll <strong>${documentNumber}</strong> erstellt.</p>
       <div style="background:#fef9c3;border:1px solid #fde047;border-radius:8px;padding:16px;margin:20px 0;">
         <p style="font-size:14px;font-weight:600;margin:0 0 8px;color:#854d0e;">${t("Bitte unterschreibe digital:", "Bitte unterschreiben Sie digital:")}</p>
-        <p style="font-size:13px;color:#713f12;margin:0;line-height:1.6;">${t("Melde dich in deinem Kundenportal an und unterschreibe das Protokoll direkt online.", "Melden Sie sich in Ihrem Kundenportal an und unterschreiben Sie das Protokoll direkt online.")} Alternativ ${t("findest du", "finden Sie")} das Dokument auch als PDF im Anhang.</p>
+        <p style="font-size:13px;color:#713f12;margin:0;line-height:1.6;">${t("Melde dich in deinem B2B-Portal an und unterschreibe das Protokoll direkt online.", "Melden Sie sich in Ihrem B2B-Portal an und unterschreiben Sie das Protokoll direkt online.")} Alternativ ${t("findest du", "finden Sie")} das Dokument auch als PDF im Anhang.</p>
       </div>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://www.slt-rental.de/b2b/uebergabeprotokolle" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 35px;border-radius:6px;font-size:15px;font-weight:600;">Jetzt im Portal unterschreiben →</a>
@@ -228,7 +228,7 @@ serve(async (req) => {
         <p style="font-size:13px;font-weight:600;margin:0 0 8px;color:#333;">Zurückgegebene Artikel:</p>
         <ul style="margin:0;padding-left:20px;color:#555;">${itemsList}</ul>
       </div>` : ""}
-      <p style="font-size:14px;color:#555;line-height:1.6;">Das vollständige Rückgabeprotokoll ${t("findest du auch in deinem", "finden Sie auch in Ihrem")} Kundenportal.</p>
+      <p style="font-size:14px;color:#555;line-height:1.6;">Das vollständige Rückgabeprotokoll ${t("findest du auch in deinem", "finden Sie auch in Ihrem")} B2B-Portal.</p>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://www.slt-rental.de/b2b/rueckgabeprotokolle" style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">Zum B2B-Portal →</a>
       </div>
@@ -270,7 +270,7 @@ serve(async (req) => {
       <p style="font-size:14px;color:#555;line-height:1.6;">für ${t("deine", "Ihre")} zurückgegebenen Mietgeräte wurde das Rückgabeprotokoll <strong>${documentNumber}</strong> erstellt.</p>
       <div style="background:#fef9c3;border:1px solid #fde047;border-radius:8px;padding:16px;margin:20px 0;">
         <p style="font-size:14px;font-weight:600;margin:0 0 8px;color:#854d0e;">${t("Bitte unterschreibe digital:", "Bitte unterschreiben Sie digital:")}</p>
-        <p style="font-size:13px;color:#713f12;margin:0;line-height:1.6;">${t("Melde dich in deinem Kundenportal an und unterschreibe das Protokoll direkt online.", "Melden Sie sich in Ihrem Kundenportal an und unterschreiben Sie das Protokoll direkt online.")}</p>
+        <p style="font-size:13px;color:#713f12;margin:0;line-height:1.6;">${t("Melde dich in deinem B2B-Portal an und unterschreibe das Protokoll direkt online.", "Melden Sie sich in Ihrem B2B-Portal an und unterschreiben Sie das Protokoll direkt online.")}</p>
       </div>
       <div style="text-align:center;margin:30px 0;">
         <a href="https://www.slt-rental.de/b2b/rueckgabeprotokolle" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 35px;border-radius:6px;font-size:15px;font-weight:600;">Jetzt im Portal unterschreiben →</a>

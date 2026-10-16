@@ -103,7 +103,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
   // Browser-Tab-Titel für Portalseiten (B2B-Seiten haben keine SEO-Komponente)
   useEffect(() => {
     const previous = document.title;
-    document.title = title ? `${title} | SLT Kundenportal` : "SLT Kundenportal";
+    document.title = title ? `${title} | SLT B2B-Portal` : "SLT B2B-Portal";
     return () => { document.title = previous; };
   }, [title]);
 
@@ -176,7 +176,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[290px] overflow-y-auto p-0">
                   <SheetHeader className="p-4 border-b border-border">
-                    <SheetTitle className="text-left">Vermietportal</SheetTitle>
+                    <SheetTitle className="text-left">B2B-Portal</SheetTitle>
                   </SheetHeader>
                   <div className="p-3">
                     <StaffNav isAdmin={isAdmin} canViewInventory={canViewInventory} badges={staffBadges} onNavigate={() => setMobileNavOpen(false)} />
@@ -218,7 +218,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                     </SheetTrigger>
                     <SheetContent side="left" className="w-[280px] p-0">
                       <SheetHeader className="p-4 border-b border-border">
-                        <SheetTitle className="text-left">Kundenportal</SheetTitle>
+                        <SheetTitle className="text-left">B2B-Portal</SheetTitle>
                       </SheetHeader>
                       <nav className="flex flex-col p-2 gap-1">
                         {navItems.map((item) => {
