@@ -289,6 +289,7 @@ rtr-checkout {
 
 /* Signing is distraction-free at every viewport, including multiple pads. */
 html[data-slt-signing] rtr-checkout,
+html[data-slt-no-cart] rtr-checkout,
 html[data-slt-signing] [data-slt-cookie-banner] {
   display: none !important;
   visibility: hidden !important;
