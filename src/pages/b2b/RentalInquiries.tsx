@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { RENTAL_LIST_STATE_KEY, fmtDateTime } from "./RentalInquiryDetail";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SEGMENT_FILTER_OPTIONS, matchesSegment, parseSegmentFilter, segmentOf, type SegmentFilter } from "@/lib/customerSegment";
 import { LegacyB2BRequestsNotice } from "@/components/b2b/inquiries/LegacyB2BRequestsNotice";
@@ -10,54 +11,34 @@ import { useRentalInquiries } from "@/hooks/useInquiries";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { useAuth } from "@/hooks/useAuth";
 import { InquiryStatusBadge } from "@/components/b2b/inquiries/InquiryStatusBadge";
-import { InquiryDetailPanel } from "@/components/b2b/inquiries/InquiryDetailPanel";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { INQUIRY_LIST_FILTERS, isReturnOverdue, isRunningRental, isUpcomingRental, matchesInquiryListFilter, parseInquiryListFilter, DEFAULT_INQUIRY_LIST_FILTER, isMyPendingInquiry, todayIso } from "@/lib/inquiryStatus";
 import { useRentalProtocolStatus } from "@/hooks/useRentalProtocolStatus";
-import { RentalProtocolSection } from "@/components/b2b/protocols/RentalProtocolSection";
-import { requestedItemsOf, type RentalInquiry } from "@/components/b2b/inquiries/types";
-import { quantityLabel } from "@/lib/setSize";
+import { type RentalInquiry } from "@/components/b2b/inquiries/types";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { NewRentalInquiryDialog } from "@/components/b2b/inquiries/NewRentalInquiryDialog";
 import { AiInquiryImportDialog } from "@/components/b2b/inquiries/AiInquiryImportDialog";
 import { createInquiryFromImport } from "@/lib/createInquiryFromImport";
 import { Wand2 } from "lucide-react";
-import { rentalDuration } from "@/lib/pricing/rentalPricing";
 import { Building2, Plus, UserCheck } from "lucide-react";
-
-const SOURCE_LABELS: Record<string, string> = {
-  b2b_portal: "B2B-Portal (Firmenkunde)",
-  manual: "Manuell angelegt",
-  website: "Website",
-  ai_import: "E-Mail/Telefon (KI-Import)",
-  renty_chat: "Website-Chat (Renty)",
-  product_booking: "Website (Artikelseite)",
-};
-
-const fmtDate = (value: string | null) =>
-  value ? new Date(value).toLocaleDateString("de-DE") : "—";
-
-/** Datum inkl. Uhrzeit – wir rechnen zeitgenau, nicht nur tageweise. */
-const fmtDateTime = (date: string | null, time: string | null) => {
-  const d = fmtDate(date);
-  if (d === "—") return "—";
-  return time ? `${d}, ${time.slice(0, 5)} Uhr` : d;
-};
-
 
 export default function RentalInquiries() {
   const { isStaff, loading: accessLoading } = useStaffAccess();
   const { user } = useAuth();
   const { rows, loading, reload } = useRentalInquiries();
+  const location = useLocation();
   const protocols = useRentalProtocolStatus();
   const today = todayIso();
   const withProtocol = (r: RentalInquiry) => ({ ...r, handed_over: !!protocols.byInquiry.get(r.id)?.delivery });
   const [search, setSearch] = useState("");
-  const [selectedId, setSelectedId] = useState<string | null>(() => new URLSearchParams(window.location.search).get("anfrage"));
+  const navigate = useNavigate();
+  const openInquiry = (id: string) => {
+    try { sessionStorage.setItem(RENTAL_LIST_STATE_KEY, JSON.stringify({ search: location.search, query: search, scrollY: window.scrollY })); } catch { /* ignorieren */ }
+    navigate(`/b2b/mietanfragen/${id}`);
+  };
   const [newOpen, setNewOpen] = useState(false);
   const [aiPrefill] = useState<string | null>(() => {
     try { return sessionStorage.getItem("slt-ai-import-prefill"); } catch { return null; }
@@ -100,7 +81,32 @@ export default function RentalInquiries() {
     setSearchParams(next, { replace: true });
   };
 
-  const selected = rows.find((r) => r.id === selectedId) ?? null;
+  // Alte Links (?anfrage=<id>) auf die Vollseite umleiten.
+  const legacyId = searchParams.get("anfrage");
+  useEffect(() => {
+    if (legacyId) navigate(`/b2b/mietanfragen/${legacyId}`, { replace: true });
+  }, [legacyId, navigate]);
+
+  // Zurück aus der Detailseite: Filter (Adresse), Suche und Scrollposition wiederherstellen.
+  const restoreRef = useRef<{ search: string; query: string; scrollY: number } | null>(null);
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(RENTAL_LIST_STATE_KEY);
+      if (!raw || legacyId) return;
+      sessionStorage.removeItem(RENTAL_LIST_STATE_KEY);
+      const saved = JSON.parse(raw);
+      restoreRef.current = saved;
+      if (saved.query) setSearch(saved.query);
+      if (!location.search && saved.search) navigate({ search: saved.search }, { replace: true });
+    } catch { /* ignorieren */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    if (loading || !restoreRef.current) return;
+    const y = restoreRef.current.scrollY;
+    restoreRef.current = null;
+    requestAnimationFrame(() => window.scrollTo(0, y));
+  }, [loading]);
 
   if (!accessLoading && !isStaff) {
     return (
@@ -169,7 +175,7 @@ export default function RentalInquiries() {
           const id = await createInquiryFromImport(r);
           toast.success("Mietanfrage angelegt – Angebot jetzt bearbeiten.");
           await reload();
-          if (id) setSelectedId(id);
+          if (id) openInquiry(id);
         }}
       />
 
@@ -179,7 +185,7 @@ export default function RentalInquiries() {
         onCreated={async (id) => {
           await reload();
           // Direkt in die Angebotserstellung springen – identisch zu eingegangenen Anfragen.
-          if (id) setSelectedId(id);
+          if (id) openInquiry(id);
         }}
       />
 
@@ -193,7 +199,7 @@ export default function RentalInquiries() {
             <Card
               key={r.id}
               className="cursor-pointer hover:border-primary transition-colors"
-              onClick={() => setSelectedId(r.id)}
+              onClick={() => openInquiry(r.id)}
             >
               <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <div className="flex-1 min-w-0">
@@ -220,69 +226,6 @@ export default function RentalInquiries() {
         </div>
       )}
 
-      <Sheet open={!!selected} onOpenChange={(open) => !open && setSelectedId(null)}>
-        <SheetContent side="right" className="w-full sm:max-w-xl overflow-y-auto">
-          <SheetHeader>
-            <SheetTitle>{selected?.product_name || "Mietanfrage"}</SheetTitle>
-          </SheetHeader>
-          {selected && (
-            <div className="mt-4">
-              <InquiryDetailPanel
-                table="rental_inquiries"
-                inquiryType="rental"
-                inquiry={selected}
-                onChanged={reload}
-                onDeleted={() => setSelectedId(null)}
-                defaultItems={(requestedItemsOf(selected).length
-                  ? requestedItemsOf(selected)
-                  : [{ product_name: "Mietartikel", quantity: 1 }]
-                ).map((it, idx) => ({
-                  product_name: it.product_name,
-                  product_slug: it.product_slug ?? undefined,
-                  description: [
-                    idx === 0
-                      ? [fmtDateTime(selected.start_date, selected.start_time), fmtDateTime(selected.end_date, selected.end_time)]
-                          .filter((v) => v !== "—")
-                          .join(" – ")
-                      : "",
-                    it.set_size ? `${it.quantity} × ${it.set_size}er Set = ${it.quantity * it.set_size} Stück` : "",
-                  ].filter(Boolean).join(" · "),
-                  quantity: it.quantity,
-                  duration: rentalDuration(
-                    { date: selected.start_date, time: selected.start_time },
-                    { date: selected.end_date, time: selected.end_time },
-                    "kalendertage",
-                  ),
-                  unit: "kalendertage",
-                  rental_start: selected.start_date ?? undefined,
-                  rental_end: selected.end_date ?? undefined,
-                  rental_start_time: selected.start_time?.slice(0, 5) ?? undefined,
-                  rental_end_time: selected.end_time?.slice(0, 5) ?? undefined,
-                  unit_price: it.unit_price ?? 0,
-                  discount_percent: 0,
-                }))}
-                defaultDelivery={{
-                  requested: Boolean(
-                    selected.delivery_requested ||
-                      selected.delivery_street ||
-                      selected.delivery_city,
-                  ),
-                  street: selected.delivery_street ?? "",
-                  postal_code: selected.delivery_postal_code ?? "",
-                  city: selected.delivery_city ?? "",
-                }}
-
-                details={<RentalDetails inquiry={selected} />}
-              />
-              <RentalProtocolSection
-                inquiry={selected}
-                state={protocols.byInquiry.get(selected.id) ?? { delivery: null, ret: null }}
-                onChanged={() => { void protocols.reload(); void reload(); }}
-              />
-            </div>
-          )}
-        </SheetContent>
-      </Sheet>
     </B2BPortalLayout>
   );
 }
@@ -310,76 +253,5 @@ function InquirySourceBadges({ inquiry }: { inquiry: RentalInquiry }) {
       {isPortal && <Badge variant="secondary">B2B-Portal</Badge>}
       {!isBusiness && <Badge variant="outline">Privat</Badge>}
     </>
-  );
-}
-
-function Row({ label, value }: { label: string; value: string | null | undefined }) {
-  if (!value) return null;
-  return (
-    <div className="flex gap-2 text-sm">
-      <span className="w-36 shrink-0 text-muted-foreground">{label}</span>
-      <span className="font-medium break-words">{value}</span>
-    </div>
-  );
-}
-
-function RentalDetails({ inquiry }: { inquiry: RentalInquiry }) {
-  return (
-    <div className="space-y-1 rounded-lg border border-border p-3">
-      <Row label="Eingegangen" value={new Date(inquiry.created_at).toLocaleString("de-DE")} />
-      <Row label="Standort" value={inquiry.location ? getLocationDisplayName(inquiry.location) : null} />
-      {(() => {
-        const list = requestedItemsOf(inquiry);
-        if (list.length <= 1) {
-          return (
-            <>
-              <Row label="Artikel" value={inquiry.product_name} />
-              <Row label="Menge" value={list[0] ? quantityLabel(list[0].quantity, list[0].set_size ?? null) : null} />
-            </>
-          );
-        }
-        return (
-          <div className="py-1">
-            <p className="text-xs text-muted-foreground mb-1">Artikel ({list.length})</p>
-            <ul className="divide-y divide-border rounded-md border border-border text-sm">
-              {list.map((it, i) => (
-                <li key={i} className="flex items-start justify-between gap-3 px-2 py-1.5">
-                  <span className="min-w-0 break-words">{it.product_name}</span>
-                  <span className="shrink-0 font-medium text-right">{quantityLabel(it.quantity, it.set_size ?? null)}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
-      })()}
-      <Row
-        label="Zeitraum"
-        value={`${fmtDate(inquiry.start_date)}${inquiry.start_time ? ` ${inquiry.start_time}` : ""} – ${fmtDate(inquiry.end_date)}${inquiry.end_time ? ` ${inquiry.end_time}` : ""}`}
-      />
-      <Row label="Quelle" value={SOURCE_LABELS[inquiry.source] ?? inquiry.source} />
-      <Row label="Firma" value={inquiry.company_name} />
-      <Row label="USt-IdNr." value={inquiry.vat_id} />
-      <Row label="Kunde" value={inquiry.customer_name} />
-      <Row label="E-Mail" value={inquiry.customer_email} />
-      <Row label="Telefon" value={inquiry.customer_phone} />
-      <Row
-        label="Adresse"
-        value={[inquiry.customer_street, [inquiry.customer_postal_code, inquiry.customer_city].filter(Boolean).join(" ")]
-          .filter(Boolean)
-          .join(", ") || null}
-      />
-      <Row
-        label="Lieferung"
-        value={
-          inquiry.delivery_requested
-            ? [inquiry.delivery_street, [inquiry.delivery_postal_code, inquiry.delivery_city].filter(Boolean).join(" ")]
-                .filter(Boolean)
-                .join(", ") || "gewünscht"
-            : "Selbstabholung"
-        }
-      />
-      <Row label="Aufbauservice" value={inquiry.setup_service_requested ? "gewünscht" : null} />
-      <Row label="Nachricht" value={inquiry.message} />
-    </div>
   );
 }

@@ -25,6 +25,9 @@ const SOURCE_LABELS: Record<string, string> = {
   product_booking: "Website (Artikelseite)",
 };
 
+/** Telefon-/KI-/manuelle Anfragen: fehlende Angaben bedeuten „nicht erfragt“, nicht „Selbstabholung“. */
+const UNSTRUCTURED_SOURCES = new Set(["fonio", "ai_import", "manual"]);
+
 const fmtDate = (value: string | null) => (value ? new Date(value).toLocaleDateString("de-DE") : "—");
 
 /** Datum inkl. Uhrzeit – wir rechnen zeitgenau, nicht nur tageweise. */
@@ -179,7 +182,7 @@ function RentalDetails({ inquiry }: { inquiry: RentalInquiry }) {
       <Row label="Zeitraum" value={period} />
       <Row
         label="Lieferung"
-        value={inquiry.delivery_requested ? deliveryAddress || "gewünscht" : deliveryAddress ? deliveryAddress : null}
+        value={inquiry.delivery_requested ? deliveryAddress || "gewünscht" : deliveryAddress || (UNSTRUCTURED_SOURCES.has(inquiry.source) ? null : "Selbstabholung")}
       />
       <Row label="Aufbauservice" value={inquiry.setup_service_requested ? "gewünscht" : null} />
       <Row label="Nachricht" value={inquiry.message} />
