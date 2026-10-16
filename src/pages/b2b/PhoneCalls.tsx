@@ -224,7 +224,7 @@ function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => voi
     }
     toast({ title: "Mietanfrage angelegt", description: "Der Anruf ist verknüpft und gilt als erledigt, sobald das Angebot gesendet wurde." });
     onChanged();
-    if (id) navigate(`/b2b/mietanfragen?status=all&anfrage=${id}`);
+    if (id) navigate(`/b2b/mietanfragen/${id}`);
   };
 
   return (
@@ -279,7 +279,7 @@ function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => voi
 
       <div className="flex flex-wrap gap-2">
         {call.status === "open" && <Button onClick={take} disabled={busy}>Übernehmen</Button>}
-        {call.rental_inquiry_id && <Button variant="secondary" onClick={() => navigate(`/b2b/mietanfragen?status=all&anfrage=${call.rental_inquiry_id}`)}><ExternalLink className="mr-1 h-4 w-4" />Mietanfrage öffnen</Button>}
+        {call.rental_inquiry_id && <Button variant="secondary" onClick={() => navigate(`/b2b/mietanfragen/${call.rental_inquiry_id}`)}><ExternalLink className="mr-1 h-4 w-4" />Mietanfrage öffnen</Button>}
         <Button variant={call.rental_inquiry_id ? "outline" : "default"} onClick={() => setImportOpen(true)} disabled={busy || !importText.trim()}><Inbox className="mr-1 h-4 w-4" />{call.rental_inquiry_id ? "Weitere Mietanfrage anlegen" : "Mietanfrage anlegen"}</Button>
         <Button variant="outline" onClick={reanalyze} disabled={busy}><RefreshCw className="mr-1 h-4 w-4" />Erneut auswerten</Button>
         {call.recording_url && <Button variant="outline" asChild><a href={call.recording_url} target="_blank" rel="noopener noreferrer"><ExternalLink className="mr-1 h-4 w-4" />Aufnahme</a></Button>}

@@ -109,7 +109,7 @@ export function AcceptedOffersPayments() {
         {visible.map((r) => (
           <li key={r.inquiryId + r.offer}>
             <Link
-              to={r.table === "sales_inquiries" ? `/b2b/verkaufsanfragen?anfrage=${r.inquiryId}` : `/b2b/mietanfragen?status=all&anfrage=${r.inquiryId}`}
+              to={r.table === "sales_inquiries" ? `/b2b/verkaufsanfragen?anfrage=${r.inquiryId}` : `/b2b/mietanfragen/${r.inquiryId}`}
               className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 text-sm hover:bg-muted"
             >
               <div className="min-w-0 space-y-1.5">

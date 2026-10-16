@@ -97,7 +97,7 @@ function DayList({ title, icon: Icon, rows, empty }: { title: string; icon: Luci
         <ul className="-mx-2">
           {rows.map((r) => (
             <li key={r.id}>
-              <Link to={`/b2b/mietanfragen?status=all&anfrage=${r.id}`} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted">
+              <Link to={`/b2b/mietanfragen/${r.id}`} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted">
                 <span className="min-w-0 flex-1 truncate"><strong className="font-medium">{r.company_name || r.customer_name}</strong><span className="text-muted-foreground"> · {r.product_name}</span></span>
                 <span className="hidden shrink-0 text-xs text-muted-foreground sm:inline">{LOCATION_LABEL[r.location ?? ""] ?? r.location}</span>
                 <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
@@ -131,7 +131,7 @@ function OverdueReturns({ rows, today }: { rows: InquiryRow[]; today: string }) 
           const days = daysBetween(r.end_date!.slice(0, 10), today);
           return (
             <li key={r.id}>
-              <Link to={`/b2b/mietanfragen?status=all&anfrage=${r.id}`} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-destructive/10">
+              <Link to={`/b2b/mietanfragen/${r.id}`} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-destructive/10">
                 <span className="min-w-0 flex-1 truncate"><strong className="font-medium">{r.company_name || r.customer_name}</strong><span className="text-muted-foreground"> · {r.product_name}</span></span>
                 <span className="shrink-0 rounded-full bg-destructive px-2 py-0.5 text-[11px] font-medium text-destructive-foreground">{days} {days === 1 ? "Tag" : "Tage"} überfällig</span>
                 <span className="hidden shrink-0 text-xs text-muted-foreground md:inline">Protokoll fehlt</span>
@@ -183,7 +183,7 @@ export default function StaffHome() {
     if (hit.type === "customer") {
       navigate(`/b2b/kundendaten?kunde=${encodeURIComponent(hit.id)}&aktion=bearbeiten`);
     } else if (hit.type === "invoice") navigate("/b2b/anfrage-rechnungen");
-    else if (hit.type === "reservation") navigate(`/b2b/mietanfragen?status=all&anfrage=${hit.id}`);
+    else if (hit.type === "reservation") navigate(`/b2b/mietanfragen/${hit.id}`);
   };
 
   useEffect(() => {
