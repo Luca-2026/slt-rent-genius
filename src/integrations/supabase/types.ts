@@ -3590,6 +3590,7 @@ export type Database = {
           order_confirmed_by_name: string | null
           paid_amount: number
           payment_followup_sent_at: string | null
+          payment_reminder_manual_at: string | null
           payment_reminder_sent_at: string | null
           payments: Json
           product_id: string | null
@@ -3655,6 +3656,7 @@ export type Database = {
           order_confirmed_by_name?: string | null
           paid_amount?: number
           payment_followup_sent_at?: string | null
+          payment_reminder_manual_at?: string | null
           payment_reminder_sent_at?: string | null
           payments?: Json
           product_id?: string | null
@@ -3720,6 +3722,7 @@ export type Database = {
           order_confirmed_by_name?: string | null
           paid_amount?: number
           payment_followup_sent_at?: string | null
+          payment_reminder_manual_at?: string | null
           payment_reminder_sent_at?: string | null
           payments?: Json
           product_id?: string | null
@@ -3853,6 +3856,7 @@ export type Database = {
           order_confirmed_by_name: string | null
           paid_amount: number
           payment_followup_sent_at: string | null
+          payment_reminder_manual_at: string | null
           payments: Json
           product_category: string | null
           product_kind: string | null
@@ -3928,6 +3932,7 @@ export type Database = {
           order_confirmed_by_name?: string | null
           paid_amount?: number
           payment_followup_sent_at?: string | null
+          payment_reminder_manual_at?: string | null
           payments?: Json
           product_category?: string | null
           product_kind?: string | null
@@ -4003,6 +4008,7 @@ export type Database = {
           order_confirmed_by_name?: string | null
           paid_amount?: number
           payment_followup_sent_at?: string | null
+          payment_reminder_manual_at?: string | null
           payments?: Json
           product_category?: string | null
           product_kind?: string | null
