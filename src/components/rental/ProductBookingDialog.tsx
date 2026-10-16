@@ -22,7 +22,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { InquiryItemsPicker, type RequestItem } from "./InquiryItemsPicker";
 import { parseSetSize } from "@/lib/setSize";
-import { computeRentalLinePrice, unitLabel, type PricingUnit } from "@/lib/pricing/realrentalPricing";
+import { computeRentalLinePrice, unitLabel, type PricingUnit } from "@/lib/pricing/rentalPricing";
 import { productManagedPrices } from "./ProductPriceBlock";
 import { displayPrice } from "@/lib/priceDisplay";
 import { useCustomerType } from "@/hooks/useCustomerType";
