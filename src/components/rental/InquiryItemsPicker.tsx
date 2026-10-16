@@ -69,6 +69,42 @@ export function InquiryItemsPicker({ items, onChange }: Props) {
     () => catalog.filter((p) => !items.some((i) => (i.product_slug && i.product_slug === p.slug) || i.product_name === p.name)),
     [catalog, items],
   );
+
+  /** Passende Zusatzartikel: im CMS gepflegte Vorschläge aller angefragten Artikel, ohne bereits enthaltene. */
+  const suggestions = useMemo(() => {
+    const bySlug = new Map(catalog.map((p) => [p.slug, p]));
+    const seen = new Set<string>();
+    const out: CatalogProduct[] = [];
+    for (const it of items) {
+      const entry = it.product_slug ? bySlug.get(it.product_slug) : undefined;
+      for (const s of entry?.suggested_accessory_slugs ?? []) {
+        if (seen.has(s)) continue;
+        const p = bySlug.get(s);
+        if (!p) continue;
+        if (items.some((i) => i.product_slug === s || i.product_name === p.name)) continue;
+        seen.add(s);
+        out.push(p);
+      }
+    }
+    return out.slice(0, 8);
+  }, [catalog, items]);
+
+  /** Gepflegte Zusatzoptionen (Versicherungen) je Artikel-Slug. */
+  const addonsBySlug = useMemo(() => {
+    const m = new Map<string, AddonOption[]>();
+    for (const p of catalog) {
+      const opts = parseAddonOptions(p.addon_options);
+      if (opts.length) m.set(p.slug, opts);
+    }
+    return m;
+  }, [catalog]);
+
+  const toggleAddon = (index: number, key: string, checked: boolean) =>
+    onChange(items.map((it, j) => {
+      if (j !== index) return it;
+      const cur = it.selected_addons ?? [];
+      return { ...it, selected_addons: checked ? [...cur, key] : cur.filter((k) => k !== key) };
+    }));
   /** Nach Kategorie gruppiert (product_categories.sort_order), innerhalb alphabetisch. */
   const grouped = useMemo(() => {
     const meta = new Map(cats.map((c) => [c.slug, c]));
