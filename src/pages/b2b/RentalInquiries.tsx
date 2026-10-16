@@ -1,3 +1,4 @@
+import { rentalPeriodOf } from "@/lib/rentalPeriod";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -232,6 +233,7 @@ export default function RentalInquiries() {
                     <span className="font-semibold break-words min-w-0">{r.product_name || "Mietanfrage"}</span>
                     <InquiryStatusBadge status={r.status} />
                     <InquirySourceBadges inquiry={r} />
+                    {(r as any).availability_pending && <Badge variant="destructive">Verfügbarkeit klären</Badge>}
                     <RentalPhaseBadge inquiry={withProtocol(r)} returned={!!protocols.byInquiry.get(r.id)?.ret} today={today} />
                   </div>
                   <p className="text-sm text-muted-foreground break-words">
@@ -241,7 +243,7 @@ export default function RentalInquiries() {
                   </p>
                 </div>
                 <div className="text-sm text-muted-foreground sm:text-right shrink-0">
-                  <div>{fmtDateTime(r.start_date, r.start_time)} – {fmtDateTime(r.end_date, r.end_time)}</div>
+                  <div>{(() => { const p = rentalPeriodOf(r); return `${p.start} – ${p.end}`; })()}</div>
                   <div>{r.assigned_name ? `→ ${r.assigned_name}` : "offen"}</div>
                 </div>
 
