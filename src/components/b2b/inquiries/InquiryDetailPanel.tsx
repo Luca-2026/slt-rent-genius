@@ -824,6 +824,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             onChanged();
           }}
         />
+        )}
       </div>
     </>
   );
