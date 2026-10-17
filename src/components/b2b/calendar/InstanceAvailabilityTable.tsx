@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { addDays, deviceAvailability, dayCells, rangesOverlap, toLocalIso } from "@/lib/calendarEntries";
+import { addDays, deviceAvailability, dayCells, earliestFreeFrom, rangesOverlap, toLocalIso } from "@/lib/calendarEntries";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { cn } from "@/lib/utils";
 
@@ -146,8 +146,16 @@ export function InstanceAvailabilityTable({ rows, locationFilter }: Props) {
     return [...map.entries()].sort(([a], [b]) => a.localeCompare(b));
   }, [visible]);
 
+  const rentable = (list: InstanceRow[]) => list.filter((r) => r.status === "available" || r.status === "rented");
   const freeCount = (list: InstanceRow[]) =>
-    list.filter((r) => (r.status === "available" || r.status === "rented") && deviceAvailability(r.allocations, now).state !== "busy").length;
+    rentable(list).filter((r) => deviceAvailability(r.allocations, now).state !== "busy").length;
+  /** Antwort fürs Tagesgeschäft: „sofort" oder Datum, ab dem wieder ein Gerät frei ist. */
+  const nextFreeLabel = (list: InstanceRow[]): string => {
+    const free = freeCount(list);
+    if (free > 0) return `Nächstes freies Gerät: sofort (${free} frei)`;
+    const at = earliestFreeFrom(rentable(list), now);
+    return at ? `Nächstes freies Gerät: ab ${fmtD(at)}` : "Kein vermietbares Gerät";
+  };
 
   return (
     <div>
