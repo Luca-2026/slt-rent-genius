@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parsePriceInput, formatDayPriceText, legacyDayPrice, emptyPriceSet } from "@/components/b2b/admin/ManagedPriceFields";
+import { parsePriceInput, formatDayPriceText, legacyDayPrice, emptyPriceSet, bauTierPrice, applyBauTierAutofill, recalcBauTiers } from "@/components/b2b/admin/ManagedPriceFields";
 import { serializeAddonOptions } from "@/components/b2b/admin/InsuranceTiersEditor";
 import { parsePriceValue } from "@/lib/catalogPricing";
 
@@ -63,5 +63,51 @@ describe("Rückschreiben Wochenende/Monat in die Alt-Textfelder", () => {
   it("Bau: gelöschte 20er-Staffel leert den Monatstext; Event lässt ihn unverändert", () => {
     expect(legacyMonthText("bau", emptyPriceSet(), 45, "900,00 €")).toBeNull();
     expect(legacyMonthText("event", emptyPriceSet(), null, "900,00 €")).toBe("900,00 €");
+  });
+});
+
+describe("Automatische Bau-Staffelpreise", () => {
+  it("84 € Tagespreis ergibt 76 / 67 / 50 € (kaufmännisch gerundet)", () => {
+    expect(bauTierPrice(84, 0.9)).toBe(76);
+    expect(bauTierPrice(84, 0.8)).toBe(67);
+    expect(bauTierPrice(84, 0.6)).toBe(50);
+  });
+  it("Tagespreis-Änderung füllt alle drei Staffeln automatisch", () => {
+    const prev = emptyPriceSet();
+    const next = { ...prev, price_from_1_rd: "115,00" };
+    const r = applyBauTierAutofill("bau", prev, next, []);
+    expect(r.set.price_from_3_rd).toBe("104,00");
+    expect(r.set.price_from_10_rd).toBe("92,00");
+    expect(r.set.price_from_20_rd).toBe("69,00");
+    expect(r.manual).toEqual([]);
+  });
+  it("Manuell geänderte Staffel wird markiert und bei Tagespreis-Änderung nicht überschrieben", () => {
+    const base = { ...emptyPriceSet(), price_from_1_rd: "100,00", price_from_3_rd: "90,00", price_from_10_rd: "80,00", price_from_20_rd: "60,00" };
+    const edited = { ...base, price_from_3_rd: "85,00" };
+    const r1 = applyBauTierAutofill("bau", base, edited, []);
+    expect(r1.manual).toEqual(["price_from_3_rd"]);
+    const r2 = applyBauTierAutofill("bau", r1.set, { ...r1.set, price_from_1_rd: "200,00" }, r1.manual);
+    expect(r2.set.price_from_3_rd).toBe("85,00");
+    expect(r2.set.price_from_10_rd).toBe("160,00");
+    expect(r2.set.price_from_20_rd).toBe("120,00");
+  });
+  it("Geleerte Staffel gilt wieder als automatisch und wird neu gefüllt", () => {
+    const base = { ...emptyPriceSet(), price_from_1_rd: "100,00", price_from_3_rd: "85,00", price_from_10_rd: "80,00", price_from_20_rd: "60,00" };
+    const r = applyBauTierAutofill("bau", base, { ...base, price_from_3_rd: "" }, ["price_from_3_rd"]);
+    expect(r.manual).toEqual([]);
+    expect(r.set.price_from_3_rd).toBe("90,00");
+  });
+  it("Event-Artikel bleiben unberührt", () => {
+    const prev = emptyPriceSet();
+    const next = { ...prev, price_base_1_3_cd: "120,00" };
+    const r = applyBauTierAutofill("event", prev, next, []);
+    expect(r.set.price_from_3_rd).toBe("");
+  });
+  it("Staffeln neu berechnen verwirft manuelle Markierungen", () => {
+    const set = { ...emptyPriceSet(), price_from_1_rd: "84,00", price_from_3_rd: "70,00" };
+    const r = recalcBauTiers(set);
+    expect(r.price_from_3_rd).toBe("76,00");
+    expect(r.price_from_10_rd).toBe("67,00");
+    expect(r.price_from_20_rd).toBe("50,00");
   });
 });

@@ -26,7 +26,7 @@ import { orderSpecs } from "@/lib/specOrder";
 import { parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 import {
   ManagedPriceFields, emptyPriceSet, rowToPriceSet, priceSetToColumns, legacyDayPrice,
-  formatDayPriceText, legacyWeekendText, legacyMonthText, basePriceRequired, isBasePriceMissing, type PriceSet, type PricingScheme,
+  formatDayPriceText, legacyWeekendText, legacyMonthText, basePriceRequired, isBasePriceMissing, applyBauTierAutofill, recalcBauTiers, type PriceSet, type PricingScheme,
 } from "./ManagedPriceFields";
 import { InsuranceTiersEditor, serializeAddonOptions, type InsuranceMeta } from "./InsuranceTiersEditor";
 
@@ -120,6 +120,9 @@ interface FormState {
   prices: PriceSet;
   prices_same_all_locations: boolean;
   location_prices: Record<LocId, PriceSet>;
+  /** Von Hand geänderte Bau-Staffeln (werden bei Tagespreis-Änderung nicht überschrieben). */
+  tier_prices_manual: string[];
+  location_tiers_manual: Record<LocId, string[]>;
   is_published: boolean;
   tracks_operating_hours: boolean;
   has_fuel_tank: boolean;
@@ -170,6 +173,8 @@ const emptyForm = (): FormState => ({
   prices: emptyPriceSet(),
   prices_same_all_locations: true,
   location_prices: { krefeld: emptyPriceSet(), bonn: emptyPriceSet(), muelheim: emptyPriceSet() },
+  tier_prices_manual: [],
+  location_tiers_manual: { krefeld: [], bonn: [], muelheim: [] },
   is_published: false,
   tracks_operating_hours: false,
   has_fuel_tank: false,
@@ -251,6 +256,8 @@ function fromRow(row: AdminManagedProductRow): FormState {
     prices: rowToPriceSet(row as never),
     prices_same_all_locations: (row as unknown as { prices_same_all_locations?: boolean }).prices_same_all_locations ?? true,
     location_prices: { krefeld: emptyPriceSet(), bonn: emptyPriceSet(), muelheim: emptyPriceSet() },
+    tier_prices_manual: (row as unknown as { tier_prices_manual?: string[] }).tier_prices_manual ?? [],
+    location_tiers_manual: { krefeld: [], bonn: [], muelheim: [] },
     is_published: row.is_published,
     tracks_operating_hours: !!(row as { tracks_operating_hours?: boolean }).tracks_operating_hours,
     has_fuel_tank: !!(row as { has_fuel_tank?: boolean }).has_fuel_tank,
@@ -306,15 +313,19 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         .eq("managed_product_id", initial.id);
       if (cancelled || error || !data?.length) return;
       const patch = { krefeld: emptyPriceSet(), bonn: emptyPriceSet(), muelheim: emptyPriceSet() } as Record<LocId, PriceSet>;
-      for (const r of data as Array<{ location: LocId }>) patch[r.location] = rowToPriceSet(r as never);
+      const manualPatch = { krefeld: [], bonn: [], muelheim: [] } as Record<LocId, string[]>;
+      for (const r of data as Array<{ location: LocId; tier_prices_manual?: string[] }>) {
+        patch[r.location] = rowToPriceSet(r as never);
+        manualPatch[r.location] = r.tier_prices_manual ?? [];
+      }
       setForm((f) => {
         const untouched = Object.values(f.location_prices).every((s) => Object.values(s).every((v) => !v));
-        return untouched ? { ...f, location_prices: patch } : f;
+        return untouched ? { ...f, location_prices: patch, location_tiers_manual: manualPatch } : f;
       });
       if (dirtyBaselineRef.current) {
         try {
           const base = JSON.parse(dirtyBaselineRef.current) as FormState;
-          dirtyBaselineRef.current = JSON.stringify({ ...base, location_prices: patch });
+          dirtyBaselineRef.current = JSON.stringify({ ...base, location_prices: patch, location_tiers_manual: manualPatch });
         } catch { /* ignore */ }
       }
     })();
@@ -605,6 +616,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         main_category: form.main_category,
         pricing_scheme: form.pricing_scheme,
         ...priceSetToColumns(form.prices),
+        tier_prices_manual: form.tier_prices_manual,
         prices_same_all_locations: form.prices_same_all_locations,
         is_published: form.is_published,
         tracks_operating_hours: form.tracks_operating_hours,
@@ -633,6 +645,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
           managed_product_id: productId,
           location: loc,
           ...priceSetToColumns(form.location_prices[loc]),
+          tier_prices_manual: form.location_tiers_manual[loc],
         }));
         const { error } = await (supabase.from("b2b_managed_product_location_prices" as never) as any)
           .upsert(rows, { onConflict: "managed_product_id,location" });
@@ -910,12 +923,32 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                 <Label htmlFor="same-prices">Preis an allen Standorten gleich</Label>
               </div>
               {form.prices_same_all_locations ? (
-                <ManagedPriceFields scheme={form.pricing_scheme} value={form.prices} idPrefix="all" onChange={(next) => setForm((f) => ({ ...f, prices: next }))} />
+                <ManagedPriceFields
+                  scheme={form.pricing_scheme}
+                  value={form.prices}
+                  idPrefix="all"
+                  manualTiers={form.tier_prices_manual}
+                  onRecalcTiers={() => setForm((f) => ({ ...f, prices: recalcBauTiers(f.prices), tier_prices_manual: [] }))}
+                  onChange={(next) => setForm((f) => {
+                    const r = applyBauTierAutofill(f.pricing_scheme, f.prices, next, f.tier_prices_manual);
+                    return { ...f, prices: r.set, tier_prices_manual: r.manual };
+                  })}
+                />
               ) : (
                 <div className="space-y-4">
                   <div className="rounded-lg border border-border p-3">
                     <div className="text-sm font-medium mb-2">Grundpreis (Webseite & Angebots-Editor)</div>
-                    <ManagedPriceFields scheme={form.pricing_scheme} value={form.prices} idPrefix="all" onChange={(next) => setForm((f) => ({ ...f, prices: next }))} />
+                    <ManagedPriceFields
+                      scheme={form.pricing_scheme}
+                      value={form.prices}
+                      idPrefix="all"
+                      manualTiers={form.tier_prices_manual}
+                      onRecalcTiers={() => setForm((f) => ({ ...f, prices: recalcBauTiers(f.prices), tier_prices_manual: [] }))}
+                      onChange={(next) => setForm((f) => {
+                        const r = applyBauTierAutofill(f.pricing_scheme, f.prices, next, f.tier_prices_manual);
+                        return { ...f, prices: r.set, tier_prices_manual: r.manual };
+                      })}
+                    />
                   </div>
                   {LOCATIONS.filter((l) => form.available_locations.includes(l.id)).map((loc) => (
                     <div key={loc.id} className="rounded-lg border border-border p-3">
@@ -924,7 +957,20 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                         scheme={form.pricing_scheme}
                         value={form.location_prices[loc.id]}
                         idPrefix={loc.id}
-                        onChange={(next) => setForm((f) => ({ ...f, location_prices: { ...f.location_prices, [loc.id]: next } }))}
+                        manualTiers={form.location_tiers_manual[loc.id]}
+                        onRecalcTiers={() => setForm((f) => ({
+                          ...f,
+                          location_prices: { ...f.location_prices, [loc.id]: recalcBauTiers(f.location_prices[loc.id]) },
+                          location_tiers_manual: { ...f.location_tiers_manual, [loc.id]: [] },
+                        }))}
+                        onChange={(next) => setForm((f) => {
+                          const r = applyBauTierAutofill(f.pricing_scheme, f.location_prices[loc.id], next, f.location_tiers_manual[loc.id]);
+                          return {
+                            ...f,
+                            location_prices: { ...f.location_prices, [loc.id]: r.set },
+                            location_tiers_manual: { ...f.location_tiers_manual, [loc.id]: r.manual },
+                          };
+                        })}
                       />
                     </div>
                   ))}
