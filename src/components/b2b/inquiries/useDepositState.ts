@@ -63,7 +63,10 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
         } as OfferLine);
       }
     }
-    const held = round2(sumPayments(inquiry.payments) - (Number(inquiry.offer_total_gross) || 0));
+    // Ohne Angebotssumme gibt es keine Miete als Referenz – dann zählt jede
+    // Zahlung als Mietzahlung, nicht als Kaution (z. B. Telefonbuchung bar).
+    const rent = Number(inquiry.offer_total_gross) || 0;
+    const held = rent > 0 ? round2(sumPayments(inquiry.payments) - rent) : 0;
     setState({ loaded: true, settled: !!s, depositHeld: Math.max(0, held), chargeLines });
   }, [enabled, inquiry.id, inquiry.payments, inquiry.offer_total_gross]);
   useEffect(() => { void load(); }, [load]);
