@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { ExternalLink, FileCheck2, FilePlus2, Pencil, Receipt, Trash2, UserCheck, UserMinus, Wallet } from "lucide-react";
+import { ExternalLink, FileCheck2, FilePlus2, PenLine, Pencil, Receipt, Trash2, UserCheck, UserMinus, Wallet } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -25,6 +25,8 @@ import { requestedItemsOf } from "./types";
 import { inquiryDraftKey, listServerDraftsForInquiry, readInquiryDraft } from "./offerDraftStorage";
 import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm";
 import { OfferAcceptanceNotice } from "./OfferAcceptanceNotice";
+import { OnSiteOfferSignDialog } from "./OnSiteOfferSignDialog";
+import { canSignOfferOnSite } from "@/lib/onsiteSign";
 import { useInquiryActions } from "./useInquiryActions";
 import { InquiryCustomerCard, type CustomerKind } from "./InquiryCustomerCard";
 import { DesktopOnly, MobileCollapsible } from "./ResponsiveSlot";
