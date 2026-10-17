@@ -198,6 +198,27 @@ export function dayCells(allocations: AllocationRange[], startIso: string, days:
   return cells;
 }
 
+/**
+ * Ab wann ist das Gerät wieder frei? null = jetzt sofort frei,
+ * sonst ISO-Zeitpunkt = Ende der laufenden Belegung.
+ * Geräte in Wartung/Reparatur etc. (outOfService) sind ausgenommen.
+ */
+export function nextFreeFrom(allocations: AllocationRange[], nowIso: string): string | null {
+  const avail = deviceAvailability(allocations, nowIso);
+  return avail.state === "busy" ? avail.busyUntil : null;
+}
+
+/**
+ * Früheste Verfügbarkeit über eine Geräteliste: null = mindestens ein Gerät ist sofort frei,
+ * sonst der früheste Zeitpunkt, ab dem wieder ein Gerät frei wird.
+ */
+export function earliestFreeFrom(list: Array<{ allocations: AllocationRange[] }>, nowIso: string): string | null {
+  const frees = list.map((r) => nextFreeFrom(r.allocations, nowIso));
+  if (frees.some((f) => f === null)) return null;
+  const sorted = (frees as string[]).sort();
+  return sorted[0] ?? null;
+}
+
 /** „Bonn" / „Mülheim an der Ruhr" → Standortschlüssel wie in der Datenbank. */
 export function normalizeLoc(raw: string | null | undefined): string | null {
   const v = (raw ?? "").trim().toLowerCase();
