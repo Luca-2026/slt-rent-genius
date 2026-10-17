@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +29,11 @@ export function OnSiteOfferSignDialog({ open, onOpenChange, inquiryId, inquiryTa
   const [agb, setAgb] = useState(false);
   const [binding, setBinding] = useState(false);
   const [busy, setBusy] = useState(false);
+
+  // Name nachziehen, sobald die Anfrage geladen ist / der Dialog öffnet.
+  useEffect(() => {
+    if (open && customerName) setSignerName((prev) => (prev.trim() ? prev : customerName));
+  }, [open, customerName]);
 
   const ready = signerName.trim().length >= 2 && !!signature && agb && binding && !busy;
 
