@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { deviceAvailability, dayCells, rangesOverlap, toLocalIso } from "@/lib/calendarEntries";
+import { addDays, deviceAvailability, dayCells, rangesOverlap, toLocalIso } from "@/lib/calendarEntries";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { cn } from "@/lib/utils";
 
