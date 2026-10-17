@@ -131,8 +131,9 @@ Deno.serve(async (req: Request) => {
       signer_name: body.signer_name,
       signature_data: body.signature_data,
       agb_accepted: true,
-      accepted_ip: ip,
-      accepted_user_agent: (req.headers.get("user-agent") ?? "").slice(0, 300),
+      accepted_channel: onsiteStaff ? "onsite" : "online",
+      accepted_ip: onsiteStaff ? null : ip,
+      accepted_user_agent: onsiteStaff ? `onsite-staff:${onsiteStaff.id}` : (req.headers.get("user-agent") ?? "").slice(0, 300),
     }).eq("id", link.id).eq("status", "active").select("id").maybeSingle();
     if (updErr || !updated) return json({ error: "Dieses Angebot wurde bereits angenommen.", status: "accepted" }, 409);
 
