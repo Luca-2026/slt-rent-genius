@@ -575,6 +575,8 @@ export async function generateOfferPdf(data: {
     const nameLines = wt(nameText, bold, 9.5, rowNameW);
     const subLines: string[] = [];
     if (item.description) subLines.push(...wt(item.description, font, 8, nameColW));
+    // Schadensersatzpositionen sind nicht steuerbar – ausweisen laut GoBD.
+    if (Number(item.vat_rate) === 0) subLines.push(...wt("Nicht steuerbarer Schadensersatz (0 % USt)", font, 8, nameColW));
     // Zeitraum steht bereits in der Beschreibung → nicht doppelt als "Mietzeitraum" ausgeben
     const descHasPeriod = typeof item.description === "string" && /\d{1,2}\.\d{1,2}\.\d{4}/.test(item.description);
     if (item.rental_start && !descHasPeriod) {
@@ -741,6 +743,12 @@ export async function generateOfferPdf(data: {
   }
 
   dt(pg, "Nettobetrag", tx, y, font, 9.5); dtr(pg, fm(data.netAmount), vx, y, font, 9.5); y -= 13;
+
+  const nonTaxable = Math.round((Number(data.nonTaxableNet) || 0) * 100) / 100;
+  if (nonTaxable > 0) {
+    dt(pg, "davon nicht steuerbarer Schadensersatz", tx, y, font, 9, MUTED);
+    dtr(pg, fm(nonTaxable), vx, y, font, 9); y -= 13;
+  }
 
   if (data.isReverseCharge) {
     dt(pg, "USt. (Reverse Charge)", tx, y, font, 9, MUTED); dtr(pg, "0,00 \u20AC", vx, y, font, 9); y -= 13;
