@@ -20,6 +20,8 @@ export async function generateOfferPdf(data: {
   netAmount: number;
   vatRate: number;
   vatAmount: number;
+  /** Nettosumme der nicht steuerbaren Schadensersatzpositionen (0 % USt). */
+  nonTaxableNet?: number;
   grossAmount: number;
   isReverseCharge: boolean;
   notes: string | null;
@@ -712,6 +714,7 @@ export async function generateOfferPdf(data: {
     ((data.deliveryCostDelivery || 0) + (data.deliveryCostReturn || 0) + (data.deliveryCost || 0) > 0 ? 1 : 0) +
     (discountTotal > 0 ? 1 : 0) +
     2 +
+    (Number(data.nonTaxableNet) > 0 ? 1 : 0) +
     (data.deposit && data.deposit > 0 ? 1 : 0);
   const summaryHeight =
     summaryRows * 13 + 44 +
