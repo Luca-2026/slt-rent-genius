@@ -3,6 +3,7 @@ import {
   buildCalendarEntries,
   dayCells,
   deviceAvailability,
+  earliestFreeFrom,
   effectiveEnd,
   effectiveStart,
   isCalendarRelevant,
@@ -105,5 +106,23 @@ describe("calendarEntries", () => {
     const cells = dayCells([{ from_at: "2026-10-18T08:00:00", to_at: "2026-10-20T17:00:00" }], "2026-10-17", 7);
     expect(cells).toEqual([false, true, true, true, false, false, false]);
     expect(dayCells([], "2026-10-17", 3)).toEqual([false, false, false]);
+  });
+});
+
+describe("earliestFreeFrom", () => {
+  const now = "2026-10-17T10:00:00";
+  it("null, wenn mindestens ein Gerät sofort frei ist", () => {
+    expect(earliestFreeFrom([{ allocations: [] }, { allocations: [{ from_at: "2026-10-15T08:00:00", to_at: "2026-10-20T17:00:00" }] }], now)).toBeNull();
+  });
+  it("frühestes Ende, wenn alle belegt sind", () => {
+    expect(
+      earliestFreeFrom(
+        [
+          { allocations: [{ from_at: "2026-10-15T08:00:00", to_at: "2026-10-25T17:00:00" }] },
+          { allocations: [{ from_at: "2026-10-16T08:00:00", to_at: "2026-10-20T17:00:00" }] },
+        ],
+        now,
+      ),
+    ).toBe("2026-10-20T17:00:00");
   });
 });
