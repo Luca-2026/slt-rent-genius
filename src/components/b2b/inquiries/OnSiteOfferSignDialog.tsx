@@ -93,7 +93,7 @@ export function OnSiteOfferSignDialog({ open, onOpenChange, inquiryId, inquiryTa
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={busy}>Abbrechen</Button>
-          <Button onClick={submit} disabled={!ready} data-debug={`name=${signerName.trim().length >= 2} sig=${!!signature} agb=${agb} binding=${binding}`}>{busy ? "Wird gespeichert …" : "Angebot verbindlich annehmen"}</Button>
+          <Button onClick={submit} disabled={!ready}>{busy ? "Wird gespeichert …" : "Angebot verbindlich annehmen"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
