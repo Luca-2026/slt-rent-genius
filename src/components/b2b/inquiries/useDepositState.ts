@@ -50,23 +50,40 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
       supabase.from("deposit_settlements").select("id").eq("rental_inquiry_id", inquiry.id).maybeSingle(),
       supabase
         .from("b2b_return_protocols")
-        .select("id, return_protocol_number, b2b_return_extra_charges(id, label, quantity, unit_price, billed)")
+        .select("id, return_protocol_number, damages_total, damages_billed, b2b_return_extra_charges(id, label, quantity, unit_price, billed)")
         .eq("rental_inquiry_id", inquiry.id),
     ]);
     const chargeLines: OfferLine[] = [];
     for (const p of (protocols ?? []) as any[]) {
+      const protoRef = p.return_protocol_number ? `laut Rückgabeprotokoll ${p.return_protocol_number}` : "laut Rückgabeprotokoll";
       for (const c of (p.b2b_return_extra_charges ?? []) as any[]) {
         if (c.billed) continue;
         const gross = round2((Number(c.quantity) || 0) * (Number(c.unit_price) || 0));
         if (gross <= 0) continue;
+        // Service (Reinigung, Betankung, Mehrstunden): steuerpflichtig, 19 % USt.
         chargeLines.push({
           product_name: c.label,
-          description: p.return_protocol_number ? `laut Rückgabeprotokoll ${p.return_protocol_number}` : "laut Rückgabeprotokoll",
+          description: protoRef,
           quantity: 1,
           unit: "pauschal",
           duration: 1,
           unit_price: netOf(gross),
           discount_percent: 0,
+          vat_rate: 19,
+        } as OfferLine);
+      }
+      // Schäden am Mietgerät: nicht steuerbarer Schadensersatz (0 % USt).
+      const dmg = round2(Number(p.damages_total) || 0);
+      if (dmg > 0 && !p.damages_billed) {
+        chargeLines.push({
+          product_name: "Schadensersatz Mietgerät",
+          description: `Schäden ${protoRef} – nicht steuerbar`,
+          quantity: 1,
+          unit: "pauschal",
+          duration: 1,
+          unit_price: dmg,
+          discount_percent: 0,
+          vat_rate: 0,
         } as OfferLine);
       }
     }
