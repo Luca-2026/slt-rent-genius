@@ -64,10 +64,10 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
       for (const c of (p.b2b_return_extra_charges ?? []) as Row[]) {
         const qty = Number(c.quantity) || 0;
         const gross = Math.round(qty * (Number(c.unit_price) || 0) * 100) / 100;
-        if (gross > 0) list.push({ key: c.id, label: qty !== 1 ? `${c.label} (${qty.toLocaleString("de-DE")} × ${formatEuro(Number(c.unit_price))})` : c.label, gross, source: "protocol" });
+        if (gross > 0) list.push({ key: c.id, label: qty !== 1 ? `${c.label} (${qty.toLocaleString("de-DE")} × ${formatEuro(Number(c.unit_price))})` : c.label, gross, source: "protocol", kind: "service" });
       }
       const dmg = Number(p.damages_total) || 0;
-      if (dmg > 0) list.push({ key: `dmg-${p.id}`, label: `Schäden laut Rückgabeprotokoll ${p.return_protocol_number ?? ""}`.trim(), gross: dmg, source: "damage" });
+      if (dmg > 0) list.push({ key: `dmg-${p.id}`, label: `Schäden laut Rückgabeprotokoll ${p.return_protocol_number ?? ""}`.trim(), gross: dmg, source: "damage", kind: "damage" });
     }
     setHasProtocol((protocols ?? []).length > 0);
     setDeductions(list);
@@ -113,7 +113,16 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
             payment_terms: "vorkasse",
             service_period_start: inquiry.start_date ?? null,
             service_period_end: inquiry.end_date ?? null,
-            items: active.map((d) => ({ product_name: d.label, description: "", quantity: 1, unit: "Pauschal", unit_price: netOf(d.gross), discount_percent: 0 })),
+            items: active.map((d) => ({
+              product_name: d.label,
+              description: d.kind === "damage" ? "Nicht steuerbarer Schadensersatz" : "",
+              quantity: 1,
+              unit: "Pauschal",
+              // Schadensersatz ohne USt (brutto = netto), Service netto aus brutto.
+              unit_price: d.kind === "damage" ? Math.round(d.gross * 100) / 100 : netOf(d.gross),
+              discount_percent: 0,
+              vat_rate: d.kind === "damage" ? 0 : 19,
+            })),
             payments: result.offset > 0 ? [{ date: today, amount: result.offset, label: "Kaution verrechnet", reference: inquiry.order_code ? `Auftrag ${inquiry.order_code}` : "" }] : [],
             notes: summary,
             staff_name: staffName,
@@ -221,7 +230,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
           </div>
         ))}
         <Button type="button" variant="outline" size="sm"
-          onClick={() => setDeductions((x) => [...x, { key: `manual-${Date.now()}`, label: "", gross: 0, source: "manual" }])}>
+          onClick={() => setDeductions((x) => [...x, { key: `manual-${Date.now()}`, label: "", gross: 0, source: "manual", kind: "service" }])}>
           <Plus className="h-4 w-4 mr-1" /> Abzug hinzufügen
         </Button>
       </div>
