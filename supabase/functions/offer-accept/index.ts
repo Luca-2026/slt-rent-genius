@@ -35,6 +35,17 @@ const Body = z.discriminatedUnion("action", [
     agb_accepted: z.literal(true),
     binding_accepted: z.literal(true),
   }),
+  // Vor-Ort-Annahme: Kunde unterschreibt auf dem Gerät eines Mitarbeiters (Staff-JWT Pflicht).
+  z.object({
+    action: z.literal("accept_onsite"),
+    inquiry_table: z.enum(["rental_inquiries", "sales_inquiries"]),
+    inquiry_id: z.string().uuid(),
+    offer_number: z.string().trim().min(3).max(40),
+    signer_name: z.string().trim().min(2).max(120),
+    signature_data: z.string().max(400_000).regex(/^data:image\/png;base64,[A-Za-z0-9+/=]+$/),
+    agb_accepted: z.literal(true),
+    binding_accepted: z.literal(true),
+  }),
 ]);
 
 Deno.serve(async (req: Request) => {
