@@ -12,6 +12,7 @@ import { LOCATION_CONTACTS, resolveLocationKey } from "../_shared/inquiry-offer-
 import { isPrepayTerms } from "../_shared/payment-followup.ts";
 import { ensurePaymentLink, isStripeTestMode, planPaymentAmounts, shouldOfferPaymentLink, toCents } from "../_shared/stripe-pay.ts";
 import { documentEmailRecipients, operationalEmailRecipient } from "../_shared/test-email-routing.ts";
+import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -170,8 +171,23 @@ Deno.serve(async (req: Request) => {
     if (resendKey) {
       const portalUrl = `https://app.slt-rental.de/b2b/${link.inquiry_table === "rental_inquiries" ? "mietanfragen" : "verkaufsanfragen"}?anfrage=${inquiry.id}`;
       const channelLabel = onsiteStaff ? "vor Ort unterschrieben" : "online angenommen";
-      const pdfBlock = inquiry.offer_file_url
-        ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(inquiry.offer_file_url)}" style="background:#00507d;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:6px;font-weight:bold;display:inline-block;">Deine Kopie: Angebot als PDF</a></p>`
+      // Kundenkopie: unterschriebenes Angebot als PDF-Anhang statt Download-Link.
+      let pdfAttachment: { filename: string; content: string } | null = null;
+      if (inquiry.offer_file_url) {
+        try {
+          const pdfRes = await fetch(String(inquiry.offer_file_url));
+          if (pdfRes.ok) {
+            const bytes = new Uint8Array(await pdfRes.arrayBuffer());
+            if (bytes.byteLength > 0 && bytes.byteLength <= 8 * 1024 * 1024) {
+              pdfAttachment = { filename: `Angebot-${link.offer_number}.pdf`, content: encodeBase64(bytes) };
+            }
+          } else {
+            console.error("Angebots-PDF nicht ladbar:", pdfRes.status);
+          }
+        } catch (e) { console.error("Angebots-PDF Anhang Fehler:", (e as Error).message); }
+      }
+      const pdfBlock = pdfAttachment
+        ? `<p style="font-size:13px;color:#4b5563;">Deine Kopie des unterschriebenen Angebots findest du als PDF im Anhang dieser E-Mail.</p>`
         : "";
       const mails = [
         {
@@ -185,6 +201,7 @@ Deno.serve(async (req: Request) => {
           ...(() => { const r = documentEmailRecipients(inquiry.customer_email || link.customer_email || "", []); return { to: r.to }; })(),
           reply_to: loc.email,
           subject: await codedSubject(service, prepay ? `Danke für deine Annahme – bitte jetzt bezahlen (Angebot ${link.offer_number})` : `Danke für deine Annahme von Angebot ${link.offer_number}`, { table: link.inquiry_table, id: link.inquiry_id }),
+          ...(pdfAttachment ? { attachments: [pdfAttachment] } : {}),
           html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><p>Hallo ${esc(inquiry.customer_name || "")},</p><p><strong>Vielen Dank für das angenommene Angebot.</strong> ${prepay ? "Bitte leiste nun die Zahlung." : "Du erhältst in Kürze die Auftragsbestätigung, damit deine Miete bestätigt wird."}</p><p>Angebot <strong>${esc(link.offer_number)}</strong> über <strong>${money(Number(link.gross_amount))}</strong> brutto${Number(payload.deposit) > 0 ? ` zzgl. Kaution ${money(Number(payload.deposit))}` : ""}, angenommen am ${esc(when)} Uhr von ${esc(body.signer_name)}. Du hast dabei unsere ${isBusiness ? "AGB für Unternehmer" : "AGB für Verbraucher"} bestätigt.</p>${pdfBlock}${prepay && payUrl ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(payUrl)}" style="background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:bold;display:inline-block;">Jetzt bezahlen</a></p>` : ""}${prepay ? `<p style="font-size:13px;color:#4b5563;">Überweisung möglich an ${esc(SLT_COMPANY.name)}, IBAN ${esc(SLT_COMPANY.iban)}, BIC ${esc(SLT_COMPANY.bic)}, Verwendungszweck ${esc(link.offer_number)}.</p>` : ""}<p>Viele Grüße<br>Dein SLT Rental Team – Standort ${esc(loc.name)}<br>Tel. ${esc(loc.phone)} · ${esc(loc.email)}</p></div>`,
         },
       ];
