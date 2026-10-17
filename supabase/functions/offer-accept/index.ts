@@ -79,7 +79,7 @@ Deno.serve(async (req: Request) => {
           .eq("offer_number", body.offer_number).eq("status", "active")
           .order("created_at", { ascending: false }).limit(1).maybeSingle()).data
       : (await service.from("offer_acceptance_links").select("*").eq("token", body.token).maybeSingle()).data;
-    if (!link) return json({ error: body.action === "accept_onsite" ? "Kein aktives Angebot zu dieser Anfrage gefunden." : "Dieser Link ist nicht gültig." }, 404);
+    if (!link) return json({ error: body.action === "accept_onsite" ? `Kein aktives Angebot zu dieser Anfrage gefunden. [${body.inquiry_table}/${body.inquiry_id}/${body.offer_number}]` : "Dieser Link ist nicht gültig." }, 404);
     const { data: inquiry } = await service.from(link.inquiry_table)
       .select("id, status, offer_number, offer_file_url, offer_payload, customer_name, company_name, customer_email, customer_kind, location, location_email, offer_total_gross, payments")
       .eq("id", link.inquiry_id).maybeSingle();
