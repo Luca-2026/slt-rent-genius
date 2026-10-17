@@ -71,7 +71,7 @@ function InstanceCard({ r, now, todayIso }: { r: InstanceRow; now: string; today
       {/* 14-Tage-Zeitleiste: grün = frei, orange = belegt */}
       <div className="mt-2 flex gap-0.5" aria-label="Belegung der nächsten 14 Tage">
         {cells.map((busy, i) => {
-          const d = new Date(`${toLocalIso(new Date(new Date(`${todayIso}T00:00:00`).getTime() + i * 86400000))}T00:00:00`);
+          const d = addDays(new Date(`${todayIso}T00:00:00`), i);
           return (
             <div key={i} className="flex-1">
               <div
