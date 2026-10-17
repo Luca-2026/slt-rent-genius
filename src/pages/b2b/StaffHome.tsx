@@ -2,7 +2,7 @@ import { isRunningRental, isReturnOverdue } from "@/lib/inquiryStatus";
 import { useRentalProtocolStatus } from "@/hooks/useRentalProtocolStatus";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, CalendarCheck, CalendarX, AlertTriangle, Inbox, ListTodo, TrendingUp, Receipt, FileCheck2, Package, ShoppingCart, ChevronRight, LayoutGrid } from "lucide-react";
+import { ArrowRight, CalendarCheck, CalendarDays, CalendarX, AlertTriangle, Inbox, ListTodo, TrendingUp, Receipt, FileCheck2, Package, ShoppingCart, ChevronRight, LayoutGrid } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
@@ -94,24 +94,17 @@ function MoneyRow({ label, value, hint, to, tone }: { label: string; value: stri
   );
 }
 
-function DayList({ title, icon: Icon, rows, empty }: { title: string; icon: LucideIcon; rows: InquiryRow[]; empty: string }) {
+/** Tagesliste mit Kalender-Karten (Uhrzeit, Auftrags-ID, Protokoll-Status, klickbar). */
+function DayEntries({ title, icon: Icon, entries, empty }: { title: string; icon: LucideIcon; entries: DayEntry[]; empty: string }) {
   return (
     <div className="px-4 py-3">
       <p className="mb-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        <Icon className="h-3.5 w-3.5" aria-hidden="true" />{title}<span className="ml-auto rounded-full bg-muted px-2 py-0.5 text-[11px] text-foreground">{rows.length}</span>
+        <Icon className="h-3.5 w-3.5" aria-hidden="true" />{title}<span className="ml-auto rounded-full bg-muted px-2 py-0.5 text-[11px] text-foreground">{entries.length}</span>
       </p>
-      {rows.length === 0 ? <p className="py-1 text-sm text-muted-foreground">{empty}</p> : (
-        <ul className="-mx-2">
-          {rows.map((r) => (
-            <li key={r.id}>
-              <Link to={`/b2b/mietanfragen/${r.id}`} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted">
-                <span className="min-w-0 flex-1 truncate"><strong className="font-medium">{r.company_name || r.customer_name}</strong><span className="text-muted-foreground"> · {r.product_name}</span></span>
-                <span className="hidden shrink-0 text-xs text-muted-foreground sm:inline">{LOCATION_LABEL[r.location ?? ""] ?? r.location}</span>
-                <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-              </Link>
-            </li>
-          ))}
-        </ul>
+      {entries.length === 0 ? <p className="py-1 text-sm text-muted-foreground">{empty}</p> : (
+        <div className="grid gap-2 sm:grid-cols-2">
+          {entries.map((e) => <DayEntryCard key={`${e.kind}-${e.inquiryId}`} entry={e} />)}
+        </div>
       )}
     </div>
   );
