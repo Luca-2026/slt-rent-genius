@@ -288,6 +288,7 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       duration: Number(item.duration) > 0 && Number(item.duration) <= 10000 ? Math.round(Number(item.duration) * 100) / 100 : undefined,
       name_override: typeof item.name_override === "string" && item.name_override.trim() ? item.name_override.trim().slice(0, 200) : undefined,
       description_override: typeof item.description_override === "string" && item.description_override.trim() ? item.description_override.trim().slice(0, 500) : undefined,
+      vat_rate: Number(item.vat_rate) === 0 ? 0 : undefined,
       addons: normalizeAddons(item.addons, index, {
         articles,
         quantity: Math.round(quantity),
