@@ -446,7 +446,7 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                         }
                       />
                       <span>
-                        <span className="font-medium">anbieten</span> – Optional: {preview.label}, {preview.surcharge_percent ? `Aufpreis ${formatEuro(preview.per_day ?? 0)}/KT` : `${preview.rate?.toLocaleString("de-DE")} % = ${formatEuro(preview.amount)}${preview.days ? ` für ${preview.days} KT` : ""}`}
+                        <span className="font-medium">anbieten</span> – Optional: {preview.label}, Aufpreis {formatEuro(preview.per_day ?? 0)}/KT{preview.days ? `, ${preview.days} KT = ${formatEuro(preview.amount)}` : ""}
                         <span className="block text-muted-foreground">Nicht in der Angebotssumme</span>
                       </span>
                     </label>
