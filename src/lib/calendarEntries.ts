@@ -154,6 +154,50 @@ export function rangesOverlap(aFrom: string, aTo: string, bFrom: string, bTo: st
   return aFrom < bTo && bFrom < aTo;
 }
 
+export interface AllocationRange {
+  from_at: string;
+  to_at: string;
+}
+
+export type DeviceAvailability =
+  | { state: "busy"; busyUntil: string; next: AllocationRange | null }
+  | { state: "free_until"; freeUntil: string; next: AllocationRange }
+  | { state: "free" };
+
+/**
+ * Verfügbarkeit eines Geräts zum Zeitpunkt `nowIso`:
+ * - busy: aktuell belegt (busyUntil = Ende der laufenden Belegung)
+ * - free_until: frei, aber nächste Belegung steht fest (freeUntil = deren Beginn)
+ * - free: keine künftige Belegung
+ */
+export function deviceAvailability(allocations: AllocationRange[], nowIso: string): DeviceAvailability {
+  const upcoming = allocations
+    .filter((a) => a.to_at > nowIso)
+    .sort((a, b) => a.from_at.localeCompare(b.from_at));
+  const current = upcoming.find((a) => a.from_at <= nowIso);
+  if (current) {
+    const next = upcoming.find((a) => a.from_at > nowIso) ?? null;
+    return { state: "busy", busyUntil: current.to_at, next };
+  }
+  if (upcoming[0]) return { state: "free_until", freeUntil: upcoming[0].from_at, next: upcoming[0] };
+  return { state: "free" };
+}
+
+/**
+ * Belegungs-Zeitleiste: für jeden Tag ab `startIso` (YYYY-MM-DD) true = belegt.
+ * Ein Tag gilt als belegt, wenn eine Belegung den Kalendertag (lokal) schneidet.
+ */
+export function dayCells(allocations: AllocationRange[], startIso: string, days: number): boolean[] {
+  const cells: boolean[] = [];
+  for (let i = 0; i < days; i++) {
+    const day = toLocalIso(addDays(new Date(`${startIso}T00:00:00`), i));
+    const dayFrom = `${day}T00:00:00`;
+    const dayTo = `${day}T23:59:59`;
+    cells.push(allocations.some((a) => rangesOverlap(a.from_at.slice(0, 19), a.to_at.slice(0, 19), dayFrom, dayTo)));
+  }
+  return cells;
+}
+
 /** „Bonn" / „Mülheim an der Ruhr" → Standortschlüssel wie in der Datenbank. */
 export function normalizeLoc(raw: string | null | undefined): string | null {
   const v = (raw ?? "").trim().toLowerCase();
