@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
   buildCalendarEntries,
+  dayCells,
+  deviceAvailability,
   effectiveEnd,
   effectiveStart,
   isCalendarRelevant,
@@ -76,5 +78,32 @@ describe("calendarEntries", () => {
     expect(rangesOverlap("2026-10-01", "2026-10-10", "2026-10-05", "2026-10-12")).toBe(true);
     expect(rangesOverlap("2026-10-01", "2026-10-10", "2026-10-10", "2026-10-12")).toBe(false);
     expect(rangesOverlap("2026-10-01", "2026-10-10", "2026-09-01", "2026-09-30")).toBe(false);
+  });
+
+  it("deviceAvailability: belegt, frei bis, frei", () => {
+    const now = "2026-10-17T10:00:00";
+    const busy = deviceAvailability([{ from_at: "2026-10-15T08:00:00", to_at: "2026-10-20T17:00:00" }], now);
+    expect(busy).toMatchObject({ state: "busy", busyUntil: "2026-10-20T17:00:00" });
+    const freeUntil = deviceAvailability([{ from_at: "2026-10-20T08:00:00", to_at: "2026-10-22T17:00:00" }], now);
+    expect(freeUntil).toMatchObject({ state: "free_until", freeUntil: "2026-10-20T08:00:00" });
+    expect(deviceAvailability([], now)).toEqual({ state: "free" });
+    // Vergangene Belegungen zählen nicht
+    expect(deviceAvailability([{ from_at: "2026-10-01T08:00:00", to_at: "2026-10-05T17:00:00" }], now)).toEqual({ state: "free" });
+    // Belegt mit Folgebelegung nennt beide
+    const both = deviceAvailability(
+      [
+        { from_at: "2026-10-15T08:00:00", to_at: "2026-10-18T17:00:00" },
+        { from_at: "2026-10-25T08:00:00", to_at: "2026-10-27T17:00:00" },
+      ],
+      now,
+    );
+    expect(both).toMatchObject({ state: "busy", busyUntil: "2026-10-18T17:00:00" });
+    expect(both.state === "busy" && both.next?.from_at).toBe("2026-10-25T08:00:00");
+  });
+
+  it("dayCells: markiert belegte Kalendertage", () => {
+    const cells = dayCells([{ from_at: "2026-10-18T08:00:00", to_at: "2026-10-20T17:00:00" }], "2026-10-17", 7);
+    expect(cells).toEqual([false, true, true, true, false, false, false]);
+    expect(dayCells([], "2026-10-17", 3)).toEqual([false, false, false]);
   });
 });
