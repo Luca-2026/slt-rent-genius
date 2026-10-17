@@ -13,12 +13,19 @@ export interface DepositState {
   loaded: boolean;
   settled: boolean;
   depositHeld: number;
+  /** Rücknahmeprotokoll abgeschlossen – erst dann sperrt die Kaution die Rechnung */
+  hasProtocol: boolean;
   /** Rückgabekosten als Rechnungspositionen (netto), nur unberechnete */
   chargeLines: OfferLine[];
 }
 
+/**
+ * Sperre gilt nur für die Schlussrechnung nach Rückgabe: Voraus- und
+ * Folgerechnungen (Miete im Voraus, alle 4 Wochen) müssen bei laufender
+ * Miete mit offener Kaution jederzeit versendbar bleiben.
+ */
 export function depositBlocksInvoice(s: DepositState): boolean {
-  return s.loaded && !s.settled && s.depositHeld > 0.004;
+  return s.loaded && !s.settled && s.depositHeld > 0.004 && s.hasProtocol;
 }
 
 /** Zahlungen in Reihenfolge nur bis zur Miete anrechnen (Rest war Kaution). */
@@ -36,7 +43,7 @@ export function paymentsUpToRent<T extends { amount?: unknown }>(payments: T[], 
 }
 
 export function useDepositState(inquiry: Record<string, any>, enabled: boolean) {
-  const [state, setState] = useState<DepositState>({ loaded: false, settled: false, depositHeld: 0, chargeLines: [] });
+  const [state, setState] = useState<DepositState>({ loaded: false, settled: false, depositHeld: 0, hasProtocol: false, chargeLines: [] });
   const load = useCallback(async () => {
     if (!enabled) return;
     const [{ data: s }, { data: protocols }] = await Promise.all([
@@ -67,7 +74,7 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
     // Zahlung als Mietzahlung, nicht als Kaution (z. B. Telefonbuchung bar).
     const rent = Number(inquiry.offer_total_gross) || 0;
     const held = rent > 0 ? round2(sumPayments(inquiry.payments) - rent) : 0;
-    setState({ loaded: true, settled: !!s, depositHeld: Math.max(0, held), chargeLines });
+    setState({ loaded: true, settled: !!s, depositHeld: Math.max(0, held), hasProtocol: (protocols ?? []).length > 0, chargeLines });
   }, [enabled, inquiry.id, inquiry.payments, inquiry.offer_total_gross]);
   useEffect(() => { void load(); }, [load]);
   return { ...state, reload: load };
