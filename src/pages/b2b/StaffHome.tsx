@@ -220,16 +220,22 @@ export default function StaffHome() {
   const rec = useMemo(() => receivables(invoices, portalInvoices, now), [invoices, portalInvoices, now]);
   const pipe = useMemo(() => pipeline(inquiries), [inquiries]);
 
-  const active = inquiries.filter((r) => r.status === "accepted" || r.status === "done");
-  const pickups = filterByDayLocation(active.filter((r) => r.status === "accepted" && r.start_date?.slice(0, 10) === today), activeDayLocation);
-  const returns = filterByDayLocation(active.filter((r) => r.end_date?.slice(0, 10) === today), activeDayLocation);
-  const overdueReturns = filterByDayLocation(inquiries, activeDayLocation)
+  // Nur echte Mietaufträge: Auftragsbestätigung versandt (order_confirmed_at gesetzt).
+  const confirmed = inquiries.filter((r) => (r.status === "accepted" || r.status === "done") && r.order_confirmed_at);
+  const signedDelivery = new Set([...protocols.byInquiry].filter(([, s]) => s.delivery).map(([id]) => id));
+  const signedReturn = new Set([...protocols.byInquiry].filter(([, s]) => s.ret).map(([id]) => id));
+  const todayEntries = buildCalendarEntries(confirmed, signedDelivery, signedReturn)
+    .filter((e) => e.date === today)
+    .filter((e) => activeDayLocation === "all" || normalizeLoc(e.location) === activeDayLocation);
+  const pickups = todayEntries.filter((e) => e.kind === "pickup");
+  const returns = todayEntries.filter((e) => e.kind === "return");
+  const overdueReturns = filterByDayLocation(confirmed, activeDayLocation)
     .filter((r) => {
       const st = protocols.byInquiry.get(r.id);
       return !st?.ret && isReturnOverdue({ ...r, handed_over: !!st?.delivery }, today);
     })
     .sort((a, b) => (a.end_date ?? "").localeCompare(b.end_date ?? ""));
-  const running = inquiries.filter((r) => isRunningRental({ ...r, handed_over: protocols.byInquiry.has(r.id) && !!protocols.byInquiry.get(r.id)?.delivery }, today)).length;
+  const running = confirmed.filter((r) => isRunningRental({ ...r, handed_over: protocols.byInquiry.has(r.id) && !!protocols.byInquiry.get(r.id)?.delivery }, today)).length;
   const awaitingConfirmation = inquiries.filter((r) => r.status === "accepted" && !r.order_confirmed_at).length;
   const unprocessed = inquiries.filter(isUnprocessedInquiry).length;
   const customerRequests = profiles.flatMap((p) => ([
