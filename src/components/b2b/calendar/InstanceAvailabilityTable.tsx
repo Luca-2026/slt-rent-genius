@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { rangesOverlap } from "@/lib/calendarEntries";
+import { deviceAvailability, dayCells, rangesOverlap, toLocalIso } from "@/lib/calendarEntries";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
+import { cn } from "@/lib/utils";
 
 export interface InstanceRow {
   id: string;
@@ -26,15 +27,90 @@ const STATUS_LABEL: Record<string, string> = {
   lost: "Verloren",
 };
 
+const TIMELINE_DAYS = 14;
+const WEEKDAY = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
+
+const fmtD = (iso: string) =>
+  new Date(iso).toLocaleDateString("de-DE", { timeZone: "Europe/Berlin", day: "2-digit", month: "2-digit", year: "numeric" });
 const fmtDT = (iso: string) =>
-  new Date(iso).toLocaleString("de-DE", { timeZone: "Europe/Berlin", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  new Date(iso).toLocaleString("de-DE", { timeZone: "Europe/Berlin", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
 
 interface Props {
   rows: InstanceRow[];
   locationFilter: string;
 }
 
-/** Verfügbarkeitsliste aller Einzelgeräte mit aktueller/nächster Belegung. */
+/** Ein Gerät: Statuszeile + 14-Tage-Zeitleiste. */
+function InstanceCard({ r, now, todayIso }: { r: InstanceRow; now: string; todayIso: string }) {
+  const avail = deviceAvailability(r.allocations, now);
+  const cells = dayCells(r.allocations, todayIso, TIMELINE_DAYS);
+  const outOfService = r.status !== "available" && r.status !== "rented";
+
+  return (
+    <div className="rounded-lg border p-3">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <span className="font-mono text-xs text-muted-foreground">{r.internal_inventory_number || r.serial_number || "—"}</span>
+        <span className="text-sm">{getLocationDisplayName(r.location) || r.location}</span>
+        {outOfService ? (
+          <Badge variant="destructive">{STATUS_LABEL[r.status] ?? r.status}</Badge>
+        ) : avail.state === "busy" ? (
+          <Badge variant="default" className="bg-orange-500 text-white hover:bg-orange-500">
+            Belegt bis {fmtD(avail.busyUntil)}
+          </Badge>
+        ) : avail.state === "free_until" ? (
+          <Badge variant="secondary" className="bg-green-100 text-green-900 hover:bg-green-100">
+            Frei bis {fmtD(avail.freeUntil)}
+          </Badge>
+        ) : (
+          <Badge variant="secondary" className="bg-green-100 text-green-900 hover:bg-green-100">Frei</Badge>
+        )}
+        {avail.state === "busy" && avail.next && (
+          <span className="text-xs text-muted-foreground">danach frei bis {fmtD(avail.next.from_at)}</span>
+        )}
+      </div>
+      {/* 14-Tage-Zeitleiste: grün = frei, orange = belegt */}
+      <div className="mt-2 flex gap-0.5" aria-label="Belegung der nächsten 14 Tage">
+        {cells.map((busy, i) => {
+          const d = new Date(`${toLocalIso(new Date(new Date(`${todayIso}T00:00:00`).getTime() + i * 86400000))}T00:00:00`);
+          return (
+            <div key={i} className="flex-1">
+              <div
+                title={`${d.toLocaleDateString("de-DE")}: ${busy ? "belegt" : "frei"}`}
+                className={cn(
+                  "h-3 rounded-sm",
+                  busy ? "bg-orange-400" : "bg-green-200",
+                  i === 0 && "ring-1 ring-foreground/40",
+                )}
+              />
+              <div className="mt-0.5 text-center text-[9px] leading-none text-muted-foreground">
+                {i % 2 === 0 ? WEEKDAY[d.getDay()] : ""}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {/* Nächste Belegung mit Auftrags-Link */}
+      {avail.state !== "free" && avail.next && (
+        <div className="mt-1 text-xs text-muted-foreground">
+          {avail.state === "busy" ? "Nächste Belegung" : "Belegt"}: {fmtDT(avail.next.from_at)} – {fmtDT(avail.next.to_at)}
+          {"orderCode" in avail.next && (avail.next as InstanceRow["allocations"][number]).orderCode && (
+            <>
+              {" · "}
+              <Link
+                className="font-mono underline"
+                to={`/b2b/mietanfragen/${(avail.next as InstanceRow["allocations"][number]).rental_inquiry_id}`}
+              >
+                #{(avail.next as InstanceRow["allocations"][number]).orderCode}
+              </Link>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Verfügbarkeitsliste aller Einzelgeräte, gruppiert nach Artikel, mit Zeitleiste. */
 export function InstanceAvailabilityTable({ rows, locationFilter }: Props) {
   const [statusFilter, setStatusFilter] = useState("all");
   const [search, setSearch] = useState("");
@@ -42,6 +118,7 @@ export function InstanceAvailabilityTable({ rows, locationFilter }: Props) {
   const [to, setTo] = useState("");
 
   const now = new Date().toISOString();
+  const todayIso = toLocalIso(new Date());
   const rangeActive = !!from && !!to && from <= to;
 
   const visible = useMemo(() => {
@@ -58,10 +135,19 @@ export function InstanceAvailabilityTable({ rows, locationFilter }: Props) {
     });
   }, [rows, locationFilter, statusFilter, search, rangeActive, from, to]);
 
-  const currentOrNext = (r: InstanceRow) => {
-    const upcoming = r.allocations.filter((a) => a.to_at >= now).sort((a, b) => a.from_at.localeCompare(b.from_at));
-    return upcoming[0] ?? null;
-  };
+  // Nach Artikel gruppieren
+  const groups = useMemo(() => {
+    const map = new Map<string, InstanceRow[]>();
+    for (const r of visible) {
+      const list = map.get(r.productName) ?? [];
+      list.push(r);
+      map.set(r.productName, list);
+    }
+    return [...map.entries()].sort(([a], [b]) => a.localeCompare(b));
+  }, [visible]);
+
+  const freeCount = (list: InstanceRow[]) =>
+    list.filter((r) => (r.status === "available" || r.status === "rented") && deviceAvailability(r.allocations, now).state !== "busy").length;
 
   return (
     <div>
@@ -91,53 +177,25 @@ export function InstanceAvailabilityTable({ rows, locationFilter }: Props) {
           Es werden nur Geräte gezeigt, die im Zeitraum {from} bis {to} komplett frei sind.
         </p>
       )}
-      {visible.length === 0 ? (
+      {groups.length === 0 ? (
         <p className="text-sm text-muted-foreground">Keine Geräte für diese Auswahl.</p>
       ) : (
-        <div className="overflow-x-auto rounded-lg border">
-          <table className="w-full min-w-[640px] text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50 text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th className="p-2">Gerät</th>
-                <th className="p-2">Artikel</th>
-                <th className="p-2">Standort</th>
-                <th className="p-2">Status</th>
-                <th className="p-2">Aktuelle / nächste Belegung</th>
-              </tr>
-            </thead>
-            <tbody>
-              {visible.map((r) => {
-                const next = currentOrNext(r);
-                return (
-                  <tr key={r.id} className="border-b last:border-0">
-                    <td className="p-2 font-mono text-xs">{r.internal_inventory_number || r.serial_number || "—"}</td>
-                    <td className="p-2">{r.productName}</td>
-                    <td className="p-2">{getLocationDisplayName(r.location) || r.location}</td>
-                    <td className="p-2">
-                      <Badge variant={r.status === "available" ? "secondary" : r.status === "rented" ? "default" : "destructive"}>
-                        {STATUS_LABEL[r.status] ?? r.status}
-                      </Badge>
-                    </td>
-                    <td className="p-2 text-xs">
-                      {next ? (
-                        <span>
-                          {fmtDT(next.from_at)} – {fmtDT(next.to_at)}
-                          {next.orderCode && (
-                            <>
-                              {" · "}
-                              <Link className="font-mono underline" to={`/b2b/mietanfragen/${next.rental_inquiry_id}`}>#{next.orderCode}</Link>
-                            </>
-                          )}
-                        </span>
-                      ) : (
-                        <span className="text-muted-foreground">frei</span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div className="space-y-5">
+          {groups.map(([product, list]) => (
+            <section key={product}>
+              <div className="mb-2 flex items-baseline gap-2">
+                <h3 className="font-semibold">{product}</h3>
+                <span className="text-xs text-muted-foreground">
+                  {freeCount(list)} von {list.length} jetzt frei
+                </span>
+              </div>
+              <div className="grid gap-2 md:grid-cols-2">
+                {list.map((r) => (
+                  <InstanceCard key={r.id} r={r} now={now} todayIso={todayIso} />
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
       )}
     </div>
