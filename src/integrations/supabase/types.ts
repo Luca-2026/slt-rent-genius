@@ -1050,6 +1050,7 @@ export type Database = {
           price_weekend_num: number | null
           surcharge_per_cd_from_4: number | null
           surcharge_per_cd_from_8: number | null
+          tier_prices_manual: string[]
           updated_at: string
         }
         Insert: {
@@ -1065,6 +1066,7 @@ export type Database = {
           price_weekend_num?: number | null
           surcharge_per_cd_from_4?: number | null
           surcharge_per_cd_from_8?: number | null
+          tier_prices_manual?: string[]
           updated_at?: string
         }
         Update: {
@@ -1080,6 +1082,7 @@ export type Database = {
           price_weekend_num?: number | null
           surcharge_per_cd_from_4?: number | null
           surcharge_per_cd_from_8?: number | null
+          tier_prices_manual?: string[]
           updated_at?: string
         }
         Relationships: [
@@ -1166,6 +1169,7 @@ export type Database = {
           surcharge_per_cd_from_4: number | null
           surcharge_per_cd_from_8: number | null
           tags: string[]
+          tier_prices_manual: string[]
           tracks_operating_hours: boolean
           updated_at: string
           updated_by: string | null
@@ -1232,6 +1236,7 @@ export type Database = {
           surcharge_per_cd_from_4?: number | null
           surcharge_per_cd_from_8?: number | null
           tags?: string[]
+          tier_prices_manual?: string[]
           tracks_operating_hours?: boolean
           updated_at?: string
           updated_by?: string | null
@@ -1298,6 +1303,7 @@ export type Database = {
           surcharge_per_cd_from_4?: number | null
           surcharge_per_cd_from_8?: number | null
           tags?: string[]
+          tier_prices_manual?: string[]
           tracks_operating_hours?: boolean
           updated_at?: string
           updated_by?: string | null
