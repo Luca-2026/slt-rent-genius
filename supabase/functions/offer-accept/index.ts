@@ -171,8 +171,23 @@ Deno.serve(async (req: Request) => {
     if (resendKey) {
       const portalUrl = `https://app.slt-rental.de/b2b/${link.inquiry_table === "rental_inquiries" ? "mietanfragen" : "verkaufsanfragen"}?anfrage=${inquiry.id}`;
       const channelLabel = onsiteStaff ? "vor Ort unterschrieben" : "online angenommen";
-      const pdfBlock = inquiry.offer_file_url
-        ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(inquiry.offer_file_url)}" style="background:#00507d;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:6px;font-weight:bold;display:inline-block;">Deine Kopie: Angebot als PDF</a></p>`
+      // Kundenkopie: unterschriebenes Angebot als PDF-Anhang statt Download-Link.
+      let pdfAttachment: { filename: string; content: string } | null = null;
+      if (inquiry.offer_file_url) {
+        try {
+          const pdfRes = await fetch(String(inquiry.offer_file_url));
+          if (pdfRes.ok) {
+            const bytes = new Uint8Array(await pdfRes.arrayBuffer());
+            if (bytes.byteLength > 0 && bytes.byteLength <= 8 * 1024 * 1024) {
+              pdfAttachment = { filename: `Angebot-${link.offer_number}.pdf`, content: encodeBase64(bytes) };
+            }
+          } else {
+            console.error("Angebots-PDF nicht ladbar:", pdfRes.status);
+          }
+        } catch (e) { console.error("Angebots-PDF Anhang Fehler:", (e as Error).message); }
+      }
+      const pdfBlock = pdfAttachment
+        ? `<p style="font-size:13px;color:#4b5563;">Deine Kopie des unterschriebenen Angebots findest du als PDF im Anhang dieser E-Mail.</p>`
         : "";
       const mails = [
         {
