@@ -792,6 +792,12 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               </Button>
             ))}
         </div>
+        {canSignOfferOnSite({ offerNumber: inquiry.offer_number, status: inquiry.status, alreadyAccepted: !!offerAcceptedAt }) && (
+          <Button size="sm" variant="outline" className="h-9 w-full justify-start border-primary/50" onClick={() => setOnSiteSignOpen(true)}>
+            <PenLine className="h-4 w-4 mr-2 shrink-0" />
+            <span className="truncate">Vor Ort unterschreiben lassen</span>
+          </Button>
+        )}
         <div>
           <div className="font-semibold text-sm">
             {docMode === "offer" ? "Angebot erstellen" : docMode === "revise" ? `Angebot ${inquiry.offer_number} überarbeiten` : docMode === "final" ? "Schlussrechnung erstellen" : docMode === "order" ? "Auftragsbestätigung erstellen" : docMode === "deposit" ? "Kautionsabrechnung" : "Rechnung erstellen"}
