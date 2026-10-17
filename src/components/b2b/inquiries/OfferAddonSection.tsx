@@ -120,11 +120,9 @@ export function buildOptionalTier(
     const amount = days ? computeAddonAmount({ price_type: "per_unit", rate: perDay, basis: "full_period", days }, ctx) ?? 0 : 0;
     return { ...common, per_day: perDay, surcharge_percent: tier.surcharge_percent, price_type: "per_unit", rate: perDay, amount };
   }
-  // CMS-Stufe mit eigenem Satz (z. B. 15 % des Mietpreises) – wie die Standardstufe über Kalendertage.
-  if (tier.price_type === "flat" || !ctx.days_per_unit || !(tier.price > 0)) return null;
-  const perDay = computeAddonAmount({ price_type: tier.price_type, rate: tier.price, basis: "full_period", days: 1 }, { ...ctx, articles: 1 }) ?? 0;
-  const amount = days ? computeAddonAmount({ price_type: tier.price_type, rate: tier.price, basis: "full_period", days }, ctx) ?? 0 : 0;
-  return { ...common, per_day: perDay, price_type: tier.price_type, rate: tier.price, amount };
+  // Stufe ohne Aufschlag: nicht anbieten – der Prozentsatz bezieht sich immer
+  // auf den Standardbetrag der Versicherung, nie auf den Mietpreis.
+  return null;
 }
 
 /** Standardstufe (und gewählte CMS-Optionen) wie im Dropdown anlegen: Kalendertage über den Zeitraum + optionale Stufen. */
@@ -174,7 +172,7 @@ export function furtherTiers(options: AddonOption[]): { std: AddonOption | undef
   const std = options.find((o) => o.is_default);
   const tiers = std
     ? options
-        .filter((o) => !o.is_default && ((o.surcharge_percent ?? 0) > 0 || (o.price_type !== "flat" && o.price > 0)))
+        .filter((o) => !o.is_default && (o.surcharge_percent ?? 0) > 0)
         .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
     : [];
   return { std, tiers };
