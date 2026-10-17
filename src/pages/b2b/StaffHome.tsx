@@ -35,11 +35,17 @@ interface InquiryRow {
   offer_total_gross: number | null;
   order_confirmed_at: string | null;
   start_date: string | null;
+  start_time: string | null;
   end_date: string | null;
+  end_time: string | null;
+  order_code: string | null;
   customer_name: string | null;
   company_name: string | null;
   product_name: string | null;
+  quantity: number | null;
   location: string | null;
+  requested_items: unknown;
+  offer_payload: unknown;
 }
 interface TodoRow { id: string; title: string; due_date: string | null; status: string; location: string | null }
 
@@ -191,7 +197,7 @@ export default function StaffHome() {
     if (accessLoading || !isStaff) return;
     (async () => {
       const [inq, td, inv, pinv, sales, prof] = await Promise.all([
-        supabase.from("rental_inquiries").select("id,status,assigned_to,offer_total_gross,order_confirmed_at,start_date,end_date,customer_name,company_name,product_name,location"),
+        supabase.from("rental_inquiries").select("id,status,assigned_to,offer_total_gross,order_confirmed_at,start_date,start_time,end_date,end_time,order_code,customer_name,company_name,product_name,quantity,location,requested_items,offer_payload"),
         supabase.from("staff_todo_lists").select("id,title,due_date,status,location").neq("status", "done"),
         isAdmin ? supabase.from("inquiry_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,paid_amount,credited_amount,due_date") : Promise.resolve({ data: [] }),
         isAdmin ? supabase.from("b2b_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,due_date") : Promise.resolve({ data: [] }),
