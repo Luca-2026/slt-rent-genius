@@ -50,12 +50,23 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
       supabase.from("deposit_settlements").select("id").eq("rental_inquiry_id", inquiry.id).maybeSingle(),
       supabase
         .from("b2b_return_protocols")
-        .select("id, return_protocol_number, damages_total, damages_billed, b2b_return_extra_charges(id, label, quantity, unit_price, billed)")
+        .select("id, return_protocol_number, b2b_return_extra_charges(id, label, quantity, unit_price, billed)")
         .eq("rental_inquiry_id", inquiry.id),
     ]);
+    const protocolIds = (protocols ?? []).map((p: any) => p.id);
+    const { data: damages } = protocolIds.length
+      ? await supabase
+          .from("b2b_protocol_damages")
+          .select("id, item_name, category, description, amount, return_protocol_id")
+          .in("return_protocol_id", protocolIds)
+          .eq("billed", false)
+      : { data: [] as any[] };
+    const protoRef = (pid: string) => {
+      const num = (protocols ?? []).find((p: any) => p.id === pid)?.return_protocol_number;
+      return num ? `laut Rückgabeprotokoll ${num}` : "laut Rückgabeprotokoll";
+    };
     const chargeLines: OfferLine[] = [];
     for (const p of (protocols ?? []) as any[]) {
-      const protoRef = p.return_protocol_number ? `laut Rückgabeprotokoll ${p.return_protocol_number}` : "laut Rückgabeprotokoll";
       for (const c of (p.b2b_return_extra_charges ?? []) as any[]) {
         if (c.billed) continue;
         const gross = round2((Number(c.quantity) || 0) * (Number(c.unit_price) || 0));
@@ -63,7 +74,7 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
         // Service (Reinigung, Betankung, Mehrstunden): steuerpflichtig, 19 % USt.
         chargeLines.push({
           product_name: c.label,
-          description: protoRef,
+          description: protoRef(p.id),
           quantity: 1,
           unit: "pauschal",
           duration: 1,
@@ -72,20 +83,21 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
           vat_rate: 19,
         } as OfferLine);
       }
-      // Schäden am Mietgerät: nicht steuerbarer Schadensersatz (0 % USt).
-      const dmg = round2(Number(p.damages_total) || 0);
-      if (dmg > 0 && !p.damages_billed) {
-        chargeLines.push({
-          product_name: "Schadensersatz Mietgerät",
-          description: `Schäden ${protoRef} – nicht steuerbar`,
-          quantity: 1,
-          unit: "pauschal",
-          duration: 1,
-          unit_price: dmg,
-          discount_percent: 0,
-          vat_rate: 0,
-        } as OfferLine);
-      }
+    }
+    // Schäden am Mietgerät: nicht steuerbarer Schadensersatz (0 % USt, brutto = netto).
+    for (const d of (damages ?? []) as any[]) {
+      const amount = round2(Number(d.amount) || 0);
+      if (amount <= 0) continue;
+      chargeLines.push({
+        product_name: `Schadensersatz${d.item_name ? ` – ${d.item_name}` : ""}`,
+        description: [[d.category, d.description].filter(Boolean).join(": "), protoRef(d.return_protocol_id)].filter(Boolean).join(" · "),
+        quantity: 1,
+        unit: "pauschal",
+        duration: 1,
+        unit_price: amount,
+        discount_percent: 0,
+        vat_rate: 0,
+      } as OfferLine);
     }
     // Ohne Angebotssumme gibt es keine Miete als Referenz – dann zählt jede
     // Zahlung als Mietzahlung, nicht als Kaution (z. B. Telefonbuchung bar).

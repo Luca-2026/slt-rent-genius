@@ -604,8 +604,10 @@ export function InquiryOfferForm({
         quantity: 1,
         duration: 1,
         unit: "pauschal",
-        unit_price: Math.round((charge.gross / 1.19) * 100) / 100,
+        // Schadensersatz ist nicht steuerbar (brutto = netto), Service mit 19 % USt.
+        unit_price: charge.source === "damage" ? charge.gross : Math.round((charge.gross / 1.19) * 100) / 100,
         discount_percent: 0,
+        vat_rate: charge.source === "damage" ? 0 : 19,
       } as FormLine,
     ]);
   };
