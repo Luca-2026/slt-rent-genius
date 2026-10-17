@@ -12,6 +12,7 @@ import { LOCATION_CONTACTS, resolveLocationKey } from "../_shared/inquiry-offer-
 import { isPrepayTerms } from "../_shared/payment-followup.ts";
 import { ensurePaymentLink, isStripeTestMode, planPaymentAmounts, shouldOfferPaymentLink, toCents } from "../_shared/stripe-pay.ts";
 import { documentEmailRecipients, operationalEmailRecipient } from "../_shared/test-email-routing.ts";
+import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
