@@ -3357,6 +3357,7 @@ export type Database = {
       offer_acceptance_links: {
         Row: {
           accepted_at: string | null
+          accepted_channel: string
           accepted_ip: string | null
           accepted_user_agent: string | null
           agb_accepted: boolean
@@ -3376,6 +3377,7 @@ export type Database = {
         }
         Insert: {
           accepted_at?: string | null
+          accepted_channel?: string
           accepted_ip?: string | null
           accepted_user_agent?: string | null
           agb_accepted?: boolean
@@ -3395,6 +3397,7 @@ export type Database = {
         }
         Update: {
           accepted_at?: string | null
+          accepted_channel?: string
           accepted_ip?: string | null
           accepted_user_agent?: string | null
           agb_accepted?: boolean
