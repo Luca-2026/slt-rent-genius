@@ -153,3 +153,13 @@ export function weekDays(anchor: Date): string[] {
 export function rangesOverlap(aFrom: string, aTo: string, bFrom: string, bTo: string): boolean {
   return aFrom < bTo && bFrom < aTo;
 }
+
+/** „Bonn" / „Mülheim an der Ruhr" → Standortschlüssel wie in der Datenbank. */
+export function normalizeLoc(raw: string | null | undefined): string | null {
+  const v = (raw ?? "").trim().toLowerCase();
+  if (!v) return null;
+  if (v.includes("bonn")) return "bonn";
+  if (v.includes("lheim") || v.includes("mulheim")) return "muelheim";
+  if (v.includes("krefeld")) return "krefeld";
+  return v;
+}
