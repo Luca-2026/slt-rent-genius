@@ -224,6 +224,18 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
                 {d.removed ? <RotateCcw className="h-4 w-4" /> : <Trash2 className="h-4 w-4" />}
               </Button>
             </div>
+            {d.source === "manual" && (
+              <Select value={d.kind} onValueChange={(v) => patch(i, { kind: v as "service" | "damage" })}>
+                <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="service">Service (19 % USt)</SelectItem>
+                  <SelectItem value="damage">Schadensersatz (ohne USt)</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+            {d.source !== "manual" && (
+              <p className="text-xs text-muted-foreground">{d.kind === "damage" ? "Schadensersatz – nicht steuerbar (ohne USt)" : "Service – 19 % USt"}</p>
+            )}
             {d.removed && (
               <Input className="h-8" value={d.reason ?? ""} placeholder="Grund, warum nicht berechnet" onChange={(e) => patch(i, { reason: e.target.value })} />
             )}
