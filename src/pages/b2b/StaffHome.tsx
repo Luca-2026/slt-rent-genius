@@ -25,6 +25,8 @@ import { DAY_LOCATION_OPTIONS, defaultDayLocation, filterByDayLocation, type Day
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AcceptedOffersPayments } from "@/components/b2b/dashboard/AcceptedOffersPayments";
 import { DepositSettlementsDue } from "@/components/b2b/dashboard/DepositSettlementsDue";
+import { DayEntryCard } from "@/components/b2b/calendar/DayEntryCard";
+import { buildCalendarEntries, normalizeLoc, type DayEntry } from "@/lib/calendarEntries";
 
 type ProfileRow = PortalProfileLite & { id: string; company_name: string; credit_limit: number };
 
