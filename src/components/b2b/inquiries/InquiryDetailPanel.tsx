@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { ExternalLink, FileCheck2, FilePlus2, Pencil, Receipt, Trash2, UserCheck, UserMinus, Wallet } from "lucide-react";
+import { ExternalLink, FileCheck2, FilePlus2, PenLine, Pencil, Receipt, Trash2, UserCheck, UserMinus, Wallet } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -25,6 +25,8 @@ import { requestedItemsOf } from "./types";
 import { inquiryDraftKey, listServerDraftsForInquiry, readInquiryDraft } from "./offerDraftStorage";
 import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm";
 import { OfferAcceptanceNotice } from "./OfferAcceptanceNotice";
+import { OnSiteOfferSignDialog } from "./OnSiteOfferSignDialog";
+import { canSignOfferOnSite } from "@/lib/onsiteSign";
 import { useInquiryActions } from "./useInquiryActions";
 import { InquiryCustomerCard, type CustomerKind } from "./InquiryCustomerCard";
 import { DesktopOnly, MobileCollapsible } from "./ResponsiveSlot";
@@ -410,6 +412,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
 
 
   /** Angebot oder Rechnung – steuert das Formular unten. */
+  const [onSiteSignOpen, setOnSiteSignOpen] = useState(false);
+  const offerAcceptedAt = (inquiry as { offer_accepted_at?: string | null }).offer_accepted_at ?? null;
   const [docMode, setDocModeState] = useState<DocMode>(() =>
     initialDocMode(inquiryType, inquiry.id, inquiry.offer_number, !!offerSnapshot),
   );
@@ -790,6 +794,12 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               </Button>
             ))}
         </div>
+        {canSignOfferOnSite({ offerNumber: inquiry.offer_number, status: inquiry.status, alreadyAccepted: !!offerAcceptedAt }) && (
+          <Button size="sm" variant="outline" className="h-9 w-full justify-start border-primary/50" onClick={() => setOnSiteSignOpen(true)}>
+            <PenLine className="h-4 w-4 mr-2 shrink-0" />
+            <span className="truncate">Vor Ort unterschreiben lassen</span>
+          </Button>
+        )}
         <div>
           <div className="font-semibold text-sm">
             {docMode === "offer" ? "Angebot erstellen" : docMode === "revise" ? `Angebot ${inquiry.offer_number} überarbeiten` : docMode === "final" ? "Schlussrechnung erstellen" : docMode === "order" ? "Auftragsbestätigung erstellen" : docMode === "deposit" ? "Kautionsabrechnung" : "Rechnung erstellen"}
@@ -858,6 +868,17 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             onChanged();
           }}
         />
+        )}
+        {inquiry.offer_number && (
+          <OnSiteOfferSignDialog
+            open={onSiteSignOpen}
+            onOpenChange={setOnSiteSignOpen}
+            inquiryId={inquiry.id}
+            inquiryTable={inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries"}
+            offerNumber={inquiry.offer_number}
+            customerName={inquiry.company_name || inquiry.customer_name || ""}
+            onAccepted={() => { loadInvoices(); onChanged(); }}
+          />
         )}
       </div>
     </>

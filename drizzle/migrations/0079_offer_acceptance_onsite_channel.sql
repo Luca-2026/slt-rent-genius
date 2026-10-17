@@ -1,0 +1,3 @@
+ALTER TABLE public.offer_acceptance_links ADD COLUMN accepted_channel text NOT NULL DEFAULT 'online';
+ALTER TABLE public.offer_acceptance_links ADD CONSTRAINT offer_acceptance_links_channel_check CHECK (accepted_channel IN ('online','onsite')) NOT VALID;
+COMMENT ON COLUMN public.offer_acceptance_links.accepted_channel IS 'online = Kunde über Annahme-Link, onsite = Kunde unterschreibt vor Ort auf dem Gerät eines Mitarbeiters';

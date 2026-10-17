@@ -35,6 +35,17 @@ const Body = z.discriminatedUnion("action", [
     agb_accepted: z.literal(true),
     binding_accepted: z.literal(true),
   }),
+  // Vor-Ort-Annahme: Kunde unterschreibt auf dem Gerät eines Mitarbeiters (Staff-JWT Pflicht).
+  z.object({
+    action: z.literal("accept_onsite"),
+    inquiry_table: z.enum(["rental_inquiries", "sales_inquiries"]),
+    inquiry_id: z.string().uuid(),
+    offer_number: z.string().trim().min(3).max(40),
+    signer_name: z.string().trim().min(2).max(120),
+    signature_data: z.string().max(400_000).regex(/^data:image\/png;base64,[A-Za-z0-9+/=]+$/),
+    agb_accepted: z.literal(true),
+    binding_accepted: z.literal(true),
+  }),
 ]);
 
 Deno.serve(async (req: Request) => {
@@ -49,8 +60,28 @@ Deno.serve(async (req: Request) => {
     const { data: allowed } = await service.rpc("check_public_rate_limit", { _bucket: `offer-accept-${body.action}`, _client_key: ip, _max_hits: body.action === "accept" ? 10 : 60, _window_seconds: 3600 });
     if (allowed === false) return json({ error: "Zu viele Versuche. Bitte später erneut versuchen." }, 429);
 
-    const { data: link } = await service.from("offer_acceptance_links").select("*").eq("token", body.token).maybeSingle();
-    if (!link) return json({ error: "Dieser Link ist nicht gültig." }, 404);
+    // Vor-Ort-Annahme: nur eingeloggte Mitarbeiter mit Bearbeitungsrecht.
+    let onsiteStaff: { id: string } | null = null;
+    if (body.action === "accept_onsite") {
+      const jwt = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
+      if (!jwt) return json({ error: "Nicht angemeldet." }, 401);
+      const { data: userData } = await service.auth.getUser(jwt);
+      const userId = userData?.user?.id;
+      if (!userId) return json({ error: "Nicht angemeldet." }, 401);
+      const { data: canEdit } = await service.rpc("can_edit_operations", { _user_id: userId });
+      if (!canEdit) return json({ error: "Keine Berechtigung für die Vor-Ort-Annahme." }, 403);
+      onsiteStaff = { id: userId };
+    }
+
+    const linkRes = body.action === "accept_onsite"
+      ? await service.from("offer_acceptance_links").select("*")
+          .eq("inquiry_table", body.inquiry_table).eq("inquiry_id", body.inquiry_id)
+          .eq("offer_number", body.offer_number).eq("status", "active")
+          .order("created_at", { ascending: false }).limit(1).maybeSingle()
+      : await service.from("offer_acceptance_links").select("*").eq("token", body.token).maybeSingle();
+    if (linkRes.error) return json({ error: `Datenbankfehler: ${linkRes.error.message}` }, 500);
+    const link = linkRes.data;
+    if (!link) return json({ error: body.action === "accept_onsite" ? "Kein aktives Angebot zu dieser Anfrage gefunden." : "Dieser Link ist nicht gültig." }, 404);
     const { data: inquiry } = await service.from(link.inquiry_table)
       .select("id, status, offer_number, offer_file_url, offer_payload, customer_name, company_name, customer_email, customer_kind, location, location_email, offer_total_gross, payments")
       .eq("id", link.inquiry_id).maybeSingle();
@@ -102,8 +133,9 @@ Deno.serve(async (req: Request) => {
       signer_name: body.signer_name,
       signature_data: body.signature_data,
       agb_accepted: true,
-      accepted_ip: ip,
-      accepted_user_agent: (req.headers.get("user-agent") ?? "").slice(0, 300),
+      accepted_channel: onsiteStaff ? "onsite" : "online",
+      accepted_ip: onsiteStaff ? null : ip,
+      accepted_user_agent: onsiteStaff ? `onsite-staff:${onsiteStaff.id}` : (req.headers.get("user-agent") ?? "").slice(0, 300),
     }).eq("id", link.id).eq("status", "active").select("id").maybeSingle();
     if (updErr || !updated) return json({ error: "Dieses Angebot wurde bereits angenommen.", status: "accepted" }, 409);
 
@@ -137,19 +169,23 @@ Deno.serve(async (req: Request) => {
     const who = esc(inquiry.company_name ? `${body.signer_name} (${inquiry.company_name})` : body.signer_name);
     if (resendKey) {
       const portalUrl = `https://app.slt-rental.de/b2b/${link.inquiry_table === "rental_inquiries" ? "mietanfragen" : "verkaufsanfragen"}?anfrage=${inquiry.id}`;
+      const channelLabel = onsiteStaff ? "vor Ort unterschrieben" : "online angenommen";
+      const pdfBlock = inquiry.offer_file_url
+        ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(inquiry.offer_file_url)}" style="background:#00507d;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:6px;font-weight:bold;display:inline-block;">Deine Kopie: Angebot als PDF</a></p>`
+        : "";
       const mails = [
         {
           from,
           to: [operationalEmailRecipient(inquiry.customer_email, loc.email)],
-          subject: await codedSubject(service, `Angebot ${link.offer_number} online angenommen – ${String(inquiry.company_name || inquiry.customer_name || "Kunde").replace(/[\r\n]+/g, " ").slice(0, 80)}`, { table: link.inquiry_table, id: link.inquiry_id }),
-          html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><h2 style="color:#00507d;">Angebot online angenommen</h2><p>Das Angebot <strong>${esc(link.offer_number)}</strong> über <strong>${money(Number(link.gross_amount))}</strong> brutto wurde am ${esc(when)} Uhr von ${who} digital unterschrieben und angenommen. Die AGB wurden bestätigt.</p><p>Nächster Schritt: Auftragsbestätigung senden.</p><p><a href="${esc(portalUrl)}" style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;font-weight:bold;padding:10px 18px;border-radius:4px;">Im Portal öffnen</a></p></div>`,
+          subject: await codedSubject(service, `Angebot ${link.offer_number} ${channelLabel} – ${String(inquiry.company_name || inquiry.customer_name || "Kunde").replace(/[\r\n]+/g, " ").slice(0, 80)}`, { table: link.inquiry_table, id: link.inquiry_id }),
+          html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><h2 style="color:#00507d;">Angebot ${esc(channelLabel)}</h2><p>Das Angebot <strong>${esc(link.offer_number)}</strong> über <strong>${money(Number(link.gross_amount))}</strong> brutto wurde am ${esc(when)} Uhr von ${who} ${onsiteStaff ? "vor Ort" : "digital"} unterschrieben und angenommen. Die AGB wurden bestätigt.</p><p>Nächster Schritt: Auftragsbestätigung senden.</p><p><a href="${esc(portalUrl)}" style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;font-weight:bold;padding:10px 18px;border-radius:4px;">Im Portal öffnen</a></p></div>`,
         },
         {
           from,
           ...(() => { const r = documentEmailRecipients(inquiry.customer_email || link.customer_email || "", []); return { to: r.to }; })(),
           reply_to: loc.email,
           subject: await codedSubject(service, prepay ? `Danke für deine Annahme – bitte jetzt bezahlen (Angebot ${link.offer_number})` : `Danke für deine Annahme von Angebot ${link.offer_number}`, { table: link.inquiry_table, id: link.inquiry_id }),
-          html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><p>Hallo ${esc(inquiry.customer_name || "")},</p><p><strong>Vielen Dank für das angenommene Angebot.</strong> ${prepay ? "Bitte leiste nun die Zahlung." : "Du erhältst in Kürze die Auftragsbestätigung, damit deine Miete bestätigt wird."}</p><p>Angebot <strong>${esc(link.offer_number)}</strong> über <strong>${money(Number(link.gross_amount))}</strong> brutto${Number(payload.deposit) > 0 ? ` zzgl. Kaution ${money(Number(payload.deposit))}` : ""}, angenommen am ${esc(when)} Uhr von ${esc(body.signer_name)}. Du hast dabei unsere ${isBusiness ? "AGB für Unternehmer" : "AGB für Verbraucher"} bestätigt.</p>${prepay && payUrl ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(payUrl)}" style="background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:bold;display:inline-block;">Jetzt bezahlen</a></p>` : ""}${prepay ? `<p style="font-size:13px;color:#4b5563;">Überweisung möglich an ${esc(SLT_COMPANY.name)}, IBAN ${esc(SLT_COMPANY.iban)}, BIC ${esc(SLT_COMPANY.bic)}, Verwendungszweck ${esc(link.offer_number)}.</p>` : ""}<p>Viele Grüße<br>Dein SLT Rental Team – Standort ${esc(loc.name)}<br>Tel. ${esc(loc.phone)} · ${esc(loc.email)}</p></div>`,
+          html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><p>Hallo ${esc(inquiry.customer_name || "")},</p><p><strong>Vielen Dank für das angenommene Angebot.</strong> ${prepay ? "Bitte leiste nun die Zahlung." : "Du erhältst in Kürze die Auftragsbestätigung, damit deine Miete bestätigt wird."}</p><p>Angebot <strong>${esc(link.offer_number)}</strong> über <strong>${money(Number(link.gross_amount))}</strong> brutto${Number(payload.deposit) > 0 ? ` zzgl. Kaution ${money(Number(payload.deposit))}` : ""}, angenommen am ${esc(when)} Uhr von ${esc(body.signer_name)}. Du hast dabei unsere ${isBusiness ? "AGB für Unternehmer" : "AGB für Verbraucher"} bestätigt.</p>${pdfBlock}${prepay && payUrl ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(payUrl)}" style="background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:bold;display:inline-block;">Jetzt bezahlen</a></p>` : ""}${prepay ? `<p style="font-size:13px;color:#4b5563;">Überweisung möglich an ${esc(SLT_COMPANY.name)}, IBAN ${esc(SLT_COMPANY.iban)}, BIC ${esc(SLT_COMPANY.bic)}, Verwendungszweck ${esc(link.offer_number)}.</p>` : ""}<p>Viele Grüße<br>Dein SLT Rental Team – Standort ${esc(loc.name)}<br>Tel. ${esc(loc.phone)} · ${esc(loc.email)}</p></div>`,
         },
       ];
       for (const mail of mails) {
