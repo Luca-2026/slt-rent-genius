@@ -88,9 +88,12 @@ function itemsLabel(inq: CalendarInquiry): string {
   return "Mietauftrag";
 }
 
-/** Aufträge, die im Kalender erscheinen: bestätigt oder abgeschlossen, nie abgelehnt/offen. */
-export function isCalendarRelevant(status: unknown): boolean {
-  return status === "accepted" || status === "done";
+/**
+ * Aufträge, die im Kalender erscheinen: nur echte Mietaufträge mit versandter
+ * Auftragsbestätigung (order_confirmed_at gesetzt) und Status „accepted"/„done".
+ */
+export function isCalendarRelevant(status: unknown, orderConfirmedAt?: unknown): boolean {
+  return (status === "accepted" || status === "done") && !!orderConfirmedAt;
 }
 
 /**
@@ -104,7 +107,7 @@ export function buildCalendarEntries(
 ): DayEntry[] {
   const entries: DayEntry[] = [];
   for (const inq of inquiries) {
-    if (!isCalendarRelevant(inq.status)) continue;
+    if (!isCalendarRelevant(inq.status, inq.order_confirmed_at)) continue;
     const base = {
       inquiryId: inq.id,
       orderCode: inq.order_code ?? null,
