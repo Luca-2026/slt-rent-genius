@@ -923,12 +923,32 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                 <Label htmlFor="same-prices">Preis an allen Standorten gleich</Label>
               </div>
               {form.prices_same_all_locations ? (
-                <ManagedPriceFields scheme={form.pricing_scheme} value={form.prices} idPrefix="all" onChange={(next) => setForm((f) => ({ ...f, prices: next }))} />
+                <ManagedPriceFields
+                  scheme={form.pricing_scheme}
+                  value={form.prices}
+                  idPrefix="all"
+                  manualTiers={form.tier_prices_manual}
+                  onRecalcTiers={() => setForm((f) => ({ ...f, prices: recalcBauTiers(f.prices), tier_prices_manual: [] }))}
+                  onChange={(next) => setForm((f) => {
+                    const r = applyBauTierAutofill(f.pricing_scheme, f.prices, next, f.tier_prices_manual);
+                    return { ...f, prices: r.set, tier_prices_manual: r.manual };
+                  })}
+                />
               ) : (
                 <div className="space-y-4">
                   <div className="rounded-lg border border-border p-3">
                     <div className="text-sm font-medium mb-2">Grundpreis (Webseite & Angebots-Editor)</div>
-                    <ManagedPriceFields scheme={form.pricing_scheme} value={form.prices} idPrefix="all" onChange={(next) => setForm((f) => ({ ...f, prices: next }))} />
+                    <ManagedPriceFields
+                      scheme={form.pricing_scheme}
+                      value={form.prices}
+                      idPrefix="all"
+                      manualTiers={form.tier_prices_manual}
+                      onRecalcTiers={() => setForm((f) => ({ ...f, prices: recalcBauTiers(f.prices), tier_prices_manual: [] }))}
+                      onChange={(next) => setForm((f) => {
+                        const r = applyBauTierAutofill(f.pricing_scheme, f.prices, next, f.tier_prices_manual);
+                        return { ...f, prices: r.set, tier_prices_manual: r.manual };
+                      })}
+                    />
                   </div>
                   {LOCATIONS.filter((l) => form.available_locations.includes(l.id)).map((loc) => (
                     <div key={loc.id} className="rounded-lg border border-border p-3">
@@ -937,7 +957,20 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                         scheme={form.pricing_scheme}
                         value={form.location_prices[loc.id]}
                         idPrefix={loc.id}
-                        onChange={(next) => setForm((f) => ({ ...f, location_prices: { ...f.location_prices, [loc.id]: next } }))}
+                        manualTiers={form.location_tiers_manual[loc.id]}
+                        onRecalcTiers={() => setForm((f) => ({
+                          ...f,
+                          location_prices: { ...f.location_prices, [loc.id]: recalcBauTiers(f.location_prices[loc.id]) },
+                          location_tiers_manual: { ...f.location_tiers_manual, [loc.id]: [] },
+                        }))}
+                        onChange={(next) => setForm((f) => {
+                          const r = applyBauTierAutofill(f.pricing_scheme, f.location_prices[loc.id], next, f.location_tiers_manual[loc.id]);
+                          return {
+                            ...f,
+                            location_prices: { ...f.location_prices, [loc.id]: r.set },
+                            location_tiers_manual: { ...f.location_tiers_manual, [loc.id]: r.manual },
+                          };
+                        })}
                       />
                     </div>
                   ))}
