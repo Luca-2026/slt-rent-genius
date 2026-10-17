@@ -26,7 +26,7 @@ import { orderSpecs } from "@/lib/specOrder";
 import { parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 import {
   ManagedPriceFields, emptyPriceSet, rowToPriceSet, priceSetToColumns, legacyDayPrice,
-  formatDayPriceText, legacyWeekendText, legacyMonthText, basePriceRequired, isBasePriceMissing, type PriceSet, type PricingScheme,
+  formatDayPriceText, legacyWeekendText, legacyMonthText, basePriceRequired, isBasePriceMissing, applyBauTierAutofill, recalcBauTiers, type PriceSet, type PricingScheme,
 } from "./ManagedPriceFields";
 import { InsuranceTiersEditor, serializeAddonOptions, type InsuranceMeta } from "./InsuranceTiersEditor";
 
@@ -120,6 +120,9 @@ interface FormState {
   prices: PriceSet;
   prices_same_all_locations: boolean;
   location_prices: Record<LocId, PriceSet>;
+  /** Von Hand geänderte Bau-Staffeln (werden bei Tagespreis-Änderung nicht überschrieben). */
+  tier_prices_manual: string[];
+  location_tiers_manual: Record<LocId, string[]>;
   is_published: boolean;
   tracks_operating_hours: boolean;
   has_fuel_tank: boolean;
