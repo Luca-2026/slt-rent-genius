@@ -412,6 +412,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
 
 
   /** Angebot oder Rechnung – steuert das Formular unten. */
+  const [onSiteSignOpen, setOnSiteSignOpen] = useState(false);
+  const offerAcceptedAt = (inquiry as { offer_accepted_at?: string | null }).offer_accepted_at ?? null;
   const [docMode, setDocModeState] = useState<DocMode>(() =>
     initialDocMode(inquiryType, inquiry.id, inquiry.offer_number, !!offerSnapshot),
   );
@@ -866,6 +868,17 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             onChanged();
           }}
         />
+        )}
+        {inquiry.offer_number && (
+          <OnSiteOfferSignDialog
+            open={onSiteSignOpen}
+            onOpenChange={setOnSiteSignOpen}
+            inquiryId={inquiry.id}
+            inquiryTable={inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries"}
+            offerNumber={inquiry.offer_number}
+            customerName={inquiry.company_name || inquiry.customer_name || ""}
+            onAccepted={() => { loadInvoices(); onChanged(); }}
+          />
         )}
       </div>
     </>
