@@ -19,6 +19,12 @@ export interface SettlementDeduction {
   /** Bruttobetrag laut Protokoll bzw. Eingabe */
   gross: number;
   source: "protocol" | "damage" | "manual";
+  /**
+   * Rechnungskategorie: "service" = steuerpflichtige Leistung (19 % USt:
+   * Reinigung, Betankung, Mehrstunden), "damage" = nicht steuerbarer
+   * Schadensersatz (Schäden am Mietgerät, ohne USt).
+   */
+  kind: "service" | "damage";
   /** Abgewählt (mit Grund) – zählt nicht */
   removed?: boolean;
   reason?: string;
@@ -51,12 +57,19 @@ export interface SettlementResult {
 
 export const netOf = (gross: number) => round2(gross / (1 + VAT_RATE));
 
+/** Netto einer Abzugsposition: Schadensersatz ist nicht steuerbar (brutto = netto). */
+export const deductionNet = (d: Pick<SettlementDeduction, "gross" | "kind">) =>
+  d.kind === "damage" ? round2(d.gross) : netOf(d.gross);
+
 export function computeSettlement({ paid, rent, deductions }: SettlementInput): SettlementResult {
   const p = round2(Math.max(0, paid));
   const r = round2(Math.max(0, rent));
   const active = deductions.filter((d) => !d.removed && d.gross > 0);
-  const deductionsNet = round2(active.reduce((s, d) => s + netOf(d.gross), 0));
-  const deductionsGross = round2(deductionsNet * (1 + VAT_RATE));
+  const deductionsNet = round2(active.reduce((s, d) => s + deductionNet(d), 0));
+  // Brutto je Position: Service netto × 1,19; Schadensersatz bleibt ohne USt.
+  const deductionsGross = round2(
+    active.reduce((s, d) => s + (d.kind === "damage" ? round2(d.gross) : round2(deductionNet(d) * (1 + VAT_RATE))), 0),
+  );
   const depositHeld = round2(Math.max(0, p - r));
   const rentShortfall = round2(Math.max(0, r - p));
   const offset = round2(Math.min(depositHeld, deductionsGross));
