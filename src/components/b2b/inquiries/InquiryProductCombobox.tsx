@@ -5,10 +5,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Check, ChevronsUpDown, PencilLine } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { parsePriceValue } from "@/lib/catalogPricing";
+import { parsePriceValue, type PricedCatalogRow } from "@/lib/catalogPricing";
 import { normalizeLocation } from "@/lib/inventoryAvailability";
 
-export interface CatalogProduct {
+export interface CatalogProduct extends PricedCatalogRow {
   slug: string;
   name: string;
   category: string;
@@ -30,7 +30,7 @@ export async function loadCatalog(): Promise<CatalogProduct[]> {
     catalogPromise = (async () => {
       const { data, error } = await supabase
         .from("managed_products_public")
-        .select("slug,name,category,images,price_per_day,price_weekend,price_per_month,available_locations,addon_options,suggested_accessory_slugs")
+        .select("slug,name,category,images,pricing_scheme,price_from_1_rd,price_base_1_3_cd,price_per_day,price_weekend,price_per_month,available_locations,addon_options,suggested_accessory_slugs")
         .order("name");
       const list = (data ?? []) as CatalogProduct[];
       // Fehler/leere Antwort nicht dauerhaft merken, sonst bleibt die Auswahl bis zum Neuladen leer.

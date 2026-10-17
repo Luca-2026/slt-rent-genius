@@ -45,6 +45,8 @@ const UNIT_BY_LABEL: Record<string, OfferUnit> = {
   pauschal: "pauschal",
   arbeitstag: "arbeitstage",
   arbeitstage: "arbeitstage",
+  miettag: "miettage",
+  miettage: "miettage",
   kalendertag: "kalendertage",
   kalendertage: "kalendertage",
   woche: "wochen",

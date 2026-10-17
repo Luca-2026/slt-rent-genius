@@ -104,9 +104,9 @@ async function resolveGrossCatalogPrice(
     return { price: tierBase, unit: row.pricing_scheme === "bau" ? "miettage" : "kalendertage" };
   }
   const day = parsePriceValue(row.price_per_day);
-  if (day !== undefined) return { price: day, unit: "kalendertage" };
+  if (day !== undefined) return { price: day, unit: row.pricing_scheme === "bau" ? "miettage" : "kalendertage" };
   const seo = await getSeoDayPrice(row.slug);
-  if (seo !== undefined) return { price: seo, unit: "kalendertage" };
+  if (seo !== undefined) return { price: seo, unit: row.pricing_scheme === "bau" ? "miettage" : "kalendertage" };
   const weekend = parsePriceValue(row.price_weekend);
   if (weekend !== undefined) return { price: weekend, unit: "wochen" };
   const month = parsePriceValue(row.price_per_month);

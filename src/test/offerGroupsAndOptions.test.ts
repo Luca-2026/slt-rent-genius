@@ -129,6 +129,19 @@ describe("Alte Angebote ohne neue Felder", () => {
 });
 
 describe("Gesendetes Angebot erneut öffnen", () => {
+  it("erhält Miettage auch bei älteren Snapshots ohne Einheitencode", () => {
+    const snap = offerPayloadToLines({
+      items: [{ product_name: "Minibagger", quantity: 2, unit: "Miettage", unit_price: 84 }],
+    });
+    expect(snap?.items[0].unit).toBe("miettage");
+    expect(snap?.items[0].quantity).toBe(1);
+    expect(snap?.items[0].duration).toBe(2);
+  });
+  it("erhält den einzelnen Miettag aus älteren Snapshots", () => {
+    const snap = offerPayloadToLines({ items: [{ product_name: "Minibagger", quantity: 1, unit: "Miettag", unit_price: 84 }] });
+    expect(snap?.items[0].unit).toBe("miettage");
+    expect(snap?.items[0].duration).toBe(1);
+  });
   it("liest Stückzahl und Dauer getrennt statt Stück × Dauer als Menge", () => {
     const snap = offerPayloadToLines({
       items: [{ product_name: "Rüttelplatte 100 kg", quantity: 10, articles: 1, duration: 10, unit: "Miettage", unit_code: "miettage", unit_price: 29, discount_percent: 0 }],
