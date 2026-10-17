@@ -3,7 +3,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   Home, LayoutDashboard, Inbox, FileText, Package, ShoppingCart, Receipt, Users,
   ClipboardCheck, Undo2, AlertTriangle, CheckSquare, Truck, Boxes, CalendarClock,
-  Store, UserCog, Shield, MessageSquare, BookOpen, BarChart3, PhoneCall,
+  Store, UserCog, Shield, MessageSquare, BookOpen, BarChart3, PhoneCall, CalendarDays,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PUBLIC_ORIGIN } from "@/lib/portalDomain";
@@ -54,6 +54,7 @@ export const STAFF_NAV: StaffNavGroup[] = [
   {
     label: "Einsatz",
     items: [
+      { label: "Kalender", path: "/b2b/kalender", icon: CalendarDays, access: "staff" },
       { label: "Übergabeprotokolle", path: "/b2b/admin", tab: "delivery-notes", icon: ClipboardCheck, access: "inventory" },
       { label: "Rücknahmeprotokolle", path: "/b2b/admin", tab: "return-protocols", icon: Undo2, access: "inventory" },
       { label: "Schäden", path: "/b2b/admin", tab: "damages", icon: AlertTriangle, access: "inventory" },
