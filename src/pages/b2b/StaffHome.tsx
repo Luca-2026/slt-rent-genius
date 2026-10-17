@@ -321,20 +321,25 @@ export default function StaffHome() {
               icon={CalendarCheck}
               className={cn(isAdmin && "lg:col-span-3")}
               action={
-                <Select value={activeDayLocation} onValueChange={(v) => setDayLocation(v as DayLocationFilter)}>
-                  <SelectTrigger className="h-8 w-[11.5rem] max-w-[55%] text-xs" aria-label="Standort für Übergaben und Rückgaben">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {DAY_LOCATION_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
-                  </SelectContent>
-                </Select>
+                <div className="flex items-center gap-2">
+                  <Select value={activeDayLocation} onValueChange={(v) => setDayLocation(v as DayLocationFilter)}>
+                    <SelectTrigger className="h-8 w-[11.5rem] max-w-[55%] text-xs" aria-label="Standort für Übergaben und Rückgaben">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {DAY_LOCATION_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                  <Link to="/b2b/kalender" className="flex h-8 shrink-0 items-center gap-1 rounded-md border border-border px-2.5 text-xs font-medium text-primary hover:bg-muted">
+                    <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />Kalender
+                  </Link>
+                </div>
               }
             >
               <div className="divide-y divide-border">
-                <DayList title="Übergaben" icon={CalendarCheck} rows={pickups} empty={activeDayLocation === "all" ? "Keine Übergaben geplant." : "Keine Übergaben an diesem Standort."} />
+                <DayEntries title="Übergaben" icon={CalendarCheck} entries={pickups} empty={activeDayLocation === "all" ? "Keine Übergaben geplant." : "Keine Übergaben an diesem Standort."} />
                 <OverdueReturns rows={overdueReturns} today={today} />
-                <DayList title="Rückgaben" icon={CalendarX} rows={returns} empty={activeDayLocation === "all" ? "Keine Rückgaben geplant." : "Keine Rückgaben an diesem Standort."} />
+                <DayEntries title="Rückgaben" icon={CalendarX} entries={returns} empty={activeDayLocation === "all" ? "Keine Rückgaben geplant." : "Keine Rückgaben an diesem Standort."} />
                 <div className="px-4 py-3">
                   <p className="mb-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     <ListTodo className="h-3.5 w-3.5" aria-hidden="true" />Fällige Aufgaben<span className="ml-auto rounded-full bg-muted px-2 py-0.5 text-[11px] text-foreground">{dueTodos.length}</span>
