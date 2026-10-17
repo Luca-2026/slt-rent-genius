@@ -2,7 +2,8 @@
  * Kalender-Einträge für die Tages-/Wochenübersicht (Übergaben & Rückgaben).
  * Reine Funktionen, damit die Regeln unit-testbar sind.
  *
- * Quelle: bestätigte Mietaufträge (Status „accepted"/„done") mit Mietzeitraum.
+ * Quelle: Mietaufträge mit versandter Auftragsbestätigung (order_confirmed_at gesetzt,
+ * Status „accepted"/„done"). Ohne Auftragsbestätigung erscheint nichts im Kalender.
  * Abweichende Positionsdaten im Angebot gewinnen (frühester Beginn, spätestes Ende).
  */
 
@@ -17,6 +18,7 @@ export interface CalendarInquiry {
   customer_name: string | null;
   company_name: string | null;
   order_code?: string | null;
+  order_confirmed_at?: string | null;
   product_name: string | null;
   quantity: number | null;
   requested_items?: unknown;
