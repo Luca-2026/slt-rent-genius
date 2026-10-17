@@ -60,8 +60,26 @@ Deno.serve(async (req: Request) => {
     const { data: allowed } = await service.rpc("check_public_rate_limit", { _bucket: `offer-accept-${body.action}`, _client_key: ip, _max_hits: body.action === "accept" ? 10 : 60, _window_seconds: 3600 });
     if (allowed === false) return json({ error: "Zu viele Versuche. Bitte später erneut versuchen." }, 429);
 
-    const { data: link } = await service.from("offer_acceptance_links").select("*").eq("token", body.token).maybeSingle();
-    if (!link) return json({ error: "Dieser Link ist nicht gültig." }, 404);
+    // Vor-Ort-Annahme: nur eingeloggte Mitarbeiter mit Bearbeitungsrecht.
+    let onsiteStaff: { id: string } | null = null;
+    if (body.action === "accept_onsite") {
+      const jwt = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
+      if (!jwt) return json({ error: "Nicht angemeldet." }, 401);
+      const { data: userData } = await service.auth.getUser(jwt);
+      const userId = userData?.user?.id;
+      if (!userId) return json({ error: "Nicht angemeldet." }, 401);
+      const { data: canEdit } = await service.rpc("can_edit_operations", { _user_id: userId });
+      if (!canEdit) return json({ error: "Keine Berechtigung für die Vor-Ort-Annahme." }, 403);
+      onsiteStaff = { id: userId };
+    }
+
+    const { data: link } = body.action === "accept_onsite"
+      ? (await service.from("offer_acceptance_links").select("*")
+          .eq("inquiry_table", body.inquiry_table).eq("inquiry_id", body.inquiry_id)
+          .eq("offer_number", body.offer_number).eq("status", "active")
+          .order("created_at", { ascending: false }).limit(1).maybeSingle()).data
+      : (await service.from("offer_acceptance_links").select("*").eq("token", body.token).maybeSingle()).data;
+    if (!link) return json({ error: body.action === "accept_onsite" ? "Kein aktives Angebot zu dieser Anfrage gefunden." : "Dieser Link ist nicht gültig." }, 404);
     const { data: inquiry } = await service.from(link.inquiry_table)
       .select("id, status, offer_number, offer_file_url, offer_payload, customer_name, company_name, customer_email, customer_kind, location, location_email, offer_total_gross, payments")
       .eq("id", link.inquiry_id).maybeSingle();
