@@ -77,6 +77,8 @@ export interface InquiryOfferItem {
   duration?: number;
   name_override?: string | null;
   description_override?: string | null;
+  /** USt-Satz der Position: 19 = Leistung, 0 = nicht steuerbarer Schadensersatz (Standard 19). */
+  vat_rate?: 0 | 19;
 }
 
 export const VAT_RATE = 19;
@@ -134,9 +136,14 @@ export function buildOfferTotals(items: InquiryOfferItem[], deliveryCost = 0) {
   const itemsNet = round2(items.reduce((sum, i) => sum + lineTotal(i), 0));
   const addonsNet = addonsTotal(items);
   const netAmount = round2(itemsNet + addonsNet + (deliveryCost || 0));
-  const vatAmount = round2(netAmount * (VAT_RATE / 100));
+  // USt je Position: Schadensersatz (vat_rate 0) ist nicht steuerbar.
+  const itemsVat = round2(
+    items.reduce((sum, i) => sum + lineTotal(i) * ((i.vat_rate ?? VAT_RATE) / 100), 0),
+  );
+  const vatAmount = round2(itemsVat + addonsNet * (VAT_RATE / 100) + (deliveryCost || 0) * (VAT_RATE / 100));
   const grossAmount = round2(netAmount + vatAmount);
-  return { itemsNet, addonsNet, netAmount, vatRate: VAT_RATE, vatAmount, grossAmount };
+  const nonTaxableNet = round2(items.filter((i) => i.vat_rate === 0).reduce((s, i) => s + lineTotal(i), 0));
+  return { itemsNet, addonsNet, netAmount, vatRate: VAT_RATE, vatAmount, grossAmount, nonTaxableNet };
 }
 
 /** Abzüge (z. B. Inzahlungnahme) dürfen die Angebotssumme nicht negativ machen. */
@@ -281,6 +288,7 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       duration: Number(item.duration) > 0 && Number(item.duration) <= 10000 ? Math.round(Number(item.duration) * 100) / 100 : undefined,
       name_override: typeof item.name_override === "string" && item.name_override.trim() ? item.name_override.trim().slice(0, 200) : undefined,
       description_override: typeof item.description_override === "string" && item.description_override.trim() ? item.description_override.trim().slice(0, 500) : undefined,
+      vat_rate: Number(item.vat_rate) === 0 ? 0 : undefined,
       addons: normalizeAddons(item.addons, index, {
         articles,
         quantity: Math.round(quantity),

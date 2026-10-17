@@ -452,6 +452,7 @@ Deno.serve(async (req: Request) => {
       total_price: Math.round(i.quantity * i.unit_price * (1 - (i.discount_percent || 0) / 100) * 100) / 100,
       rental_start: i.rental_start,
       rental_end: i.rental_end,
+      vat_rate: i.vat_rate ?? 19,
       image_url: normalizeImageUrl(i.image_url) as string | null,
     }));
 
@@ -524,6 +525,7 @@ Deno.serve(async (req: Request) => {
       vatRate: totals.vatRate,
       vatAmount: totals.vatAmount,
       grossAmount: totals.grossAmount,
+      nonTaxableNet: totals.nonTaxableNet,
       isReverseCharge: false,
       notes,
       validDays: paymentDueDays,
@@ -577,6 +579,7 @@ Deno.serve(async (req: Request) => {
       <div style="padding:10px 0;border-bottom:1px solid #e5e7eb;">
         <div style="font-weight:bold;font-size:14px;">${escapeHtml(i.product_name)}</div>
         ${i.description ? `<div style="color:#6b7280;font-size:12px;margin-top:2px;">${escapeHtml(i.description)}</div>` : ""}
+        ${Number(i.vat_rate) === 0 ? `<div style="color:#6b7280;font-size:12px;margin-top:2px;">Nicht steuerbarer Schadensersatz (0 % USt)</div>` : ""}
         ${addonsHtml}
         <table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:13px;"><tr>
           <td style="color:#6b7280;padding:0;">${i.quantity}${i.unit ? ` ${escapeHtml(i.unit)}` : ""} &times; ${money(i.unit_price)}</td>
@@ -642,7 +645,7 @@ Deno.serve(async (req: Request) => {
     ${returnLoc && returnLoc.cost > 0 ? `<div style="padding:10px 0;border-bottom:1px solid #e5e7eb;font-size:14px;">Rückgabe an anderem Standort (${escapeHtml(returnLoc.name)}) <strong style="float:right;">${money(returnLoc.cost)}</strong></div>` : ""}
   </div>
   <p style="font-size:15px;"><strong>Rechnungsbetrag brutto: ${money(totals.grossAmount)}</strong><br>
-  <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span></p>
+  <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})${totals.nonTaxableNet > 0 ? ` – davon nicht steuerbarer Schadensersatz: ${money(totals.nonTaxableNet)}` : ""}</span></p>
   ${amountPaid > 0 ? `<div style="margin:12px 0;padding:10px 14px;background:#f8fafc;border-radius:4px;">
     <div style="font-size:14px;font-weight:bold;">Bereits erhaltene Zahlungen: − ${money(amountPaid)}</div>
     ${paymentsHtml}
@@ -742,6 +745,7 @@ Deno.serve(async (req: Request) => {
       total_price: Math.round(i.quantity * i.unit_price * (1 - (i.discount_percent || 0) / 100) * 100) / 100,
       rental_start: i.rental_start ?? null,
       rental_end: i.rental_end ?? null,
+      vat_rate: i.vat_rate ?? 19,
       addons: i.addons ?? [],
       image_url: pdfItems[index]?.image_url ?? null,
     }));

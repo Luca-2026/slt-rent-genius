@@ -67,6 +67,8 @@ export interface OfferLine {
   /** Paket 3b: Name/Beschreibung nur für dieses Angebot (null = Stammdaten). */
   name_override?: string | null;
   description_override?: string | null;
+  /** USt-Satz der Position: 19 = Leistung, 0 = nicht steuerbarer Schadensersatz (Standard 19). */
+  vat_rate?: 0 | 19;
 }
 
 // ---------------------------------------------------------------- Paket 3b: Felder und Positionen
@@ -216,9 +218,14 @@ export function buildOfferTotals(items: OfferLine[], deliveryCost = 0) {
   const itemsNet = round2(items.reduce((sum, i) => sum + lineTotal(i), 0));
   const addonsNet = addonsTotal(items);
   const netAmount = round2(itemsNet + addonsNet + (deliveryCost || 0));
-  const vatAmount = round2(netAmount * (VAT_RATE / 100));
+  // USt je Position: Schadensersatz (vat_rate 0) ist nicht steuerbar.
+  const itemsVat = round2(
+    items.reduce((sum, i) => sum + lineTotal(i) * ((i.vat_rate ?? VAT_RATE) / 100), 0),
+  );
+  const vatAmount = round2(itemsVat + addonsNet * (VAT_RATE / 100) + (deliveryCost || 0) * (VAT_RATE / 100));
   const grossAmount = round2(netAmount + vatAmount);
-  return { itemsNet, addonsNet, netAmount, vatRate: VAT_RATE, vatAmount, grossAmount };
+  const nonTaxableNet = round2(items.filter((i) => i.vat_rate === 0).reduce((s, i) => s + lineTotal(i), 0));
+  return { itemsNet, addonsNet, netAmount, vatRate: VAT_RATE, vatAmount, grossAmount, nonTaxableNet };
 }
 
 

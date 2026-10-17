@@ -2755,6 +2755,7 @@ export type Database = {
           total_price: number
           unit: string | null
           unit_price: number
+          vat_rate: number
         }
         Insert: {
           addons?: Json
@@ -2772,6 +2773,7 @@ export type Database = {
           total_price?: number
           unit?: string | null
           unit_price?: number
+          vat_rate?: number
         }
         Update: {
           addons?: Json
@@ -2789,6 +2791,7 @@ export type Database = {
           total_price?: number
           unit?: string | null
           unit_price?: number
+          vat_rate?: number
         }
         Relationships: [
           {
