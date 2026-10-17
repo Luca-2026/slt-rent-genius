@@ -313,15 +313,19 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         .eq("managed_product_id", initial.id);
       if (cancelled || error || !data?.length) return;
       const patch = { krefeld: emptyPriceSet(), bonn: emptyPriceSet(), muelheim: emptyPriceSet() } as Record<LocId, PriceSet>;
-      for (const r of data as Array<{ location: LocId }>) patch[r.location] = rowToPriceSet(r as never);
+      const manualPatch = { krefeld: [], bonn: [], muelheim: [] } as Record<LocId, string[]>;
+      for (const r of data as Array<{ location: LocId; tier_prices_manual?: string[] }>) {
+        patch[r.location] = rowToPriceSet(r as never);
+        manualPatch[r.location] = r.tier_prices_manual ?? [];
+      }
       setForm((f) => {
         const untouched = Object.values(f.location_prices).every((s) => Object.values(s).every((v) => !v));
-        return untouched ? { ...f, location_prices: patch } : f;
+        return untouched ? { ...f, location_prices: patch, location_tiers_manual: manualPatch } : f;
       });
       if (dirtyBaselineRef.current) {
         try {
           const base = JSON.parse(dirtyBaselineRef.current) as FormState;
-          dirtyBaselineRef.current = JSON.stringify({ ...base, location_prices: patch });
+          dirtyBaselineRef.current = JSON.stringify({ ...base, location_prices: patch, location_tiers_manual: manualPatch });
         } catch { /* ignore */ }
       }
     })();
@@ -612,6 +616,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         main_category: form.main_category,
         pricing_scheme: form.pricing_scheme,
         ...priceSetToColumns(form.prices),
+        tier_prices_manual: form.tier_prices_manual,
         prices_same_all_locations: form.prices_same_all_locations,
         is_published: form.is_published,
         tracks_operating_hours: form.tracks_operating_hours,
@@ -640,6 +645,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
           managed_product_id: productId,
           location: loc,
           ...priceSetToColumns(form.location_prices[loc]),
+          tier_prices_manual: form.location_tiers_manual[loc],
         }));
         const { error } = await (supabase.from("b2b_managed_product_location_prices" as never) as any)
           .upsert(rows, { onConflict: "managed_product_id,location" });
