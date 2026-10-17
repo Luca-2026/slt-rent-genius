@@ -540,6 +540,13 @@
       "when": 1792178106852,
       "tag": "0076_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 77,
+      "version": "7",
+      "when": 1792220240553,
+      "tag": "0077_invoice_item_vat_rate",
+      "breakpoints": true
     }
   ]
 }
