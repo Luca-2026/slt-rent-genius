@@ -51,7 +51,6 @@ interface InquiryRow {
 }
 interface TodoRow { id: string; title: string; due_date: string | null; status: string; location: string | null }
 
-const LOCATION_LABEL: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
 
 /** Einheitlicher Rahmen für alle Bereiche der Startseite. */
 function Panel({ title, icon: Icon, action, children, className }: { title: string; icon: LucideIcon; action?: React.ReactNode; children: React.ReactNode; className?: string }) {
