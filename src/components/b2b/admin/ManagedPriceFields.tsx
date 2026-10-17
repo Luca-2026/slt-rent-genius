@@ -208,13 +208,20 @@ export function ManagedPriceFields({
   value,
   onChange,
   idPrefix,
+  manualTiers = [],
+  onRecalcTiers,
 }: {
   scheme: PricingScheme;
   value: PriceSet;
   onChange: (next: PriceSet) => void;
   idPrefix: string;
+  /** Staffelfelder, die von Hand geändert wurden und nicht automatisch überschrieben werden. */
+  manualTiers?: readonly string[];
+  /** Nur Bau: verwirft manuelle Markierungen und berechnet alle Staffeln neu aus dem Tagespreis. */
+  onRecalcTiers?: () => void;
 }) {
   const fields = schemeFields(scheme);
+  const manualSet = new Set(manualTiers);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
       {fields.map((f) => (
@@ -230,8 +237,24 @@ export function ManagedPriceFields({
             onChange={(e) => onChange({ ...value, [f.key]: e.target.value })}
           />
           {f.hint && <p className="text-[11px] text-muted-foreground mt-1">{f.hint}</p>}
+          {scheme === "bau" && manualSet.has(f.key) && (
+            <p className="text-[11px] text-amber-600 dark:text-amber-400 mt-1">
+              Manuell geändert – wird bei Tagespreis-Änderungen nicht überschrieben.
+            </p>
+          )}
         </div>
       ))}
+      {scheme === "bau" && onRecalcTiers && parsePriceInput(value.price_from_1_rd) !== null && (
+        <div className="col-span-full">
+          <Button type="button" variant="outline" size="sm" onClick={onRecalcTiers}>
+            <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
+            Staffeln neu berechnen
+          </Button>
+          <p className="text-[11px] text-muted-foreground mt-1">
+            Automatik: ab 3 Miettagen −10 %, ab 10 −20 %, ab 20 −40 % vom Tagespreis, auf volle Euro gerundet. Manuell geänderte Staffeln werden dabei ebenfalls neu gesetzt.
+          </p>
+        </div>
+      )}
       {isBasePriceMissing(scheme, value) && (
         <p className="col-span-full text-xs text-amber-600 dark:text-amber-400">{NO_BASE_PRICE_HINT}</p>
       )}
