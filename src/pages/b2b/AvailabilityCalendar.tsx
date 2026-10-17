@@ -29,7 +29,7 @@ export default function AvailabilityCalendar() {
     const [inqRes, delRes, retRes, instRes, allocRes] = await Promise.all([
       supabase
         .from("rental_inquiries")
-        .select("id, status, start_date, start_time, end_date, end_time, location, customer_name, company_name, order_code, product_name, quantity, requested_items, offer_payload")
+        .select("id, status, start_date, start_time, end_date, end_time, location, customer_name, company_name, order_code, order_confirmed_at, product_name, quantity, requested_items, offer_payload")
         .in("status", ["accepted", "done"])
         .not("start_date", "is", null),
       (supabase.from("b2b_delivery_notes" as any) as any).select("rental_inquiry_id").not("signed_at", "is", null),
