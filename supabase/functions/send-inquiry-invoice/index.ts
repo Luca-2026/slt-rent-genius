@@ -645,7 +645,7 @@ Deno.serve(async (req: Request) => {
     ${returnLoc && returnLoc.cost > 0 ? `<div style="padding:10px 0;border-bottom:1px solid #e5e7eb;font-size:14px;">Rückgabe an anderem Standort (${escapeHtml(returnLoc.name)}) <strong style="float:right;">${money(returnLoc.cost)}</strong></div>` : ""}
   </div>
   <p style="font-size:15px;"><strong>Rechnungsbetrag brutto: ${money(totals.grossAmount)}</strong><br>
-  <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span></p>
+  <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})${totals.nonTaxableNet > 0 ? ` – davon nicht steuerbarer Schadensersatz: ${money(totals.nonTaxableNet)}` : ""}</span></p>
   ${amountPaid > 0 ? `<div style="margin:12px 0;padding:10px 14px;background:#f8fafc;border-radius:4px;">
     <div style="font-size:14px;font-weight:bold;">Bereits erhaltene Zahlungen: − ${money(amountPaid)}</div>
     ${paymentsHtml}
