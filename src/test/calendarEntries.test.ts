@@ -3,6 +3,7 @@ import {
   buildCalendarEntries,
   dayCells,
   deviceAvailability,
+  earliestFreeFrom,
   effectiveEnd,
   effectiveStart,
   isCalendarRelevant,

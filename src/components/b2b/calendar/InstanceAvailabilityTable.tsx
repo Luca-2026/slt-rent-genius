@@ -191,8 +191,11 @@ export function InstanceAvailabilityTable({ rows, locationFilter }: Props) {
         <div className="space-y-5">
           {groups.map(([product, list]) => (
             <section key={product}>
-              <div className="mb-2 flex items-baseline gap-2">
+              <div className="mb-2 flex flex-wrap items-baseline gap-x-2">
                 <h3 className="font-semibold">{product}</h3>
+                <span className={cn("text-sm font-medium", freeCount(list) > 0 ? "text-green-700" : "text-orange-600")}>
+                  {nextFreeLabel(list)}
+                </span>
                 <span className="text-xs text-muted-foreground">
                   {freeCount(list)} von {list.length} jetzt frei
                 </span>
