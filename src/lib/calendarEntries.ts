@@ -2,7 +2,8 @@
  * Kalender-Einträge für die Tages-/Wochenübersicht (Übergaben & Rückgaben).
  * Reine Funktionen, damit die Regeln unit-testbar sind.
  *
- * Quelle: bestätigte Mietaufträge (Status „accepted"/„done") mit Mietzeitraum.
+ * Quelle: Mietaufträge mit versandter Auftragsbestätigung (order_confirmed_at gesetzt,
+ * Status „accepted"/„done"). Ohne Auftragsbestätigung erscheint nichts im Kalender.
  * Abweichende Positionsdaten im Angebot gewinnen (frühester Beginn, spätestes Ende).
  */
 
@@ -17,6 +18,7 @@ export interface CalendarInquiry {
   customer_name: string | null;
   company_name: string | null;
   order_code?: string | null;
+  order_confirmed_at?: string | null;
   product_name: string | null;
   quantity: number | null;
   requested_items?: unknown;
@@ -86,9 +88,12 @@ function itemsLabel(inq: CalendarInquiry): string {
   return "Mietauftrag";
 }
 
-/** Aufträge, die im Kalender erscheinen: bestätigt oder abgeschlossen, nie abgelehnt/offen. */
-export function isCalendarRelevant(status: unknown): boolean {
-  return status === "accepted" || status === "done";
+/**
+ * Aufträge, die im Kalender erscheinen: nur echte Mietaufträge mit versandter
+ * Auftragsbestätigung (order_confirmed_at gesetzt) und Status „accepted"/„done".
+ */
+export function isCalendarRelevant(status: unknown, orderConfirmedAt?: unknown): boolean {
+  return (status === "accepted" || status === "done") && !!orderConfirmedAt;
 }
 
 /**
@@ -102,7 +107,7 @@ export function buildCalendarEntries(
 ): DayEntry[] {
   const entries: DayEntry[] = [];
   for (const inq of inquiries) {
-    if (!isCalendarRelevant(inq.status)) continue;
+    if (!isCalendarRelevant(inq.status, inq.order_confirmed_at)) continue;
     const base = {
       inquiryId: inq.id,
       orderCode: inq.order_code ?? null,

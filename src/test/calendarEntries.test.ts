@@ -23,6 +23,7 @@ const base = {
   customer_name: "Max Müller",
   company_name: null,
   order_code: "C48T6Q",
+  order_confirmed_at: "2026-10-16T09:00:00Z",
   product_name: "Minibagger 2t",
   quantity: 1,
   requested_items: null,
@@ -44,10 +45,19 @@ describe("calendarEntries", () => {
   });
 
   it("ignoriert abgelehnte und offene Anfragen", () => {
-    expect(isCalendarRelevant("rejected")).toBe(false);
-    expect(isCalendarRelevant("new")).toBe(false);
-    expect(isCalendarRelevant("offer_sent")).toBe(false);
+    expect(isCalendarRelevant("rejected", "2026-10-16T09:00:00Z")).toBe(false);
+    expect(isCalendarRelevant("new", "2026-10-16T09:00:00Z")).toBe(false);
+    expect(isCalendarRelevant("offer_sent", "2026-10-16T09:00:00Z")).toBe(false);
     expect(buildCalendarEntries([{ ...base, status: "rejected" }], new Set(), new Set())).toHaveLength(0);
+  });
+
+  it("zeigt nur Aufträge mit versandter Auftragsbestätigung", () => {
+    // Angenommen, aber noch keine Auftragsbestätigung → nicht im Kalender
+    expect(isCalendarRelevant("accepted", null)).toBe(false);
+    expect(isCalendarRelevant("accepted", "")).toBe(false);
+    expect(isCalendarRelevant("accepted", "2026-10-16T09:00:00Z")).toBe(true);
+    expect(isCalendarRelevant("done", "2026-10-16T09:00:00Z")).toBe(true);
+    expect(buildCalendarEntries([{ ...base, order_confirmed_at: null }], new Set(), new Set())).toHaveLength(0);
   });
 
   it("nutzt abweichende Positionsdaten aus dem Angebot (frühester Beginn, spätestes Ende)", () => {
