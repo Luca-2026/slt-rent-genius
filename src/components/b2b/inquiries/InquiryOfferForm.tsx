@@ -586,6 +586,8 @@ export function InquiryOfferForm({
         }
       }
       const takenIds = new Set(takenChargesRef.current.map((t) => t.id));
+      // Bereits als Position vorbelegte Protokollposten (aus der Kautionslogik) nicht erneut anbieten.
+      for (const d of defaultItems) if (d.protocol_charge_id) takenIds.add(d.protocol_charge_id);
       setPendingCharges(list.filter((c) => !takenIds.has(c.id)));
     })();
     return () => { active = false; };
@@ -1327,10 +1329,18 @@ export function InquiryOfferForm({
       title: `${docLabel} gesendet`,
       description: `${(data as any)?.invoice_number ?? (data as any)?.offer_number} · ${formatEuro(totals.grossAmount)} brutto`,
     });
-    // Übernommene Protokollposten als abgerechnet markieren.
-    if (isInvoice && takenChargesRef.current.length) {
-      const damageIds = takenChargesRef.current.filter((c) => c.source === "damage").map((c) => c.id);
-      const chargeIds = takenChargesRef.current.filter((c) => c.source === "extra_charge").map((c) => c.id);
+    // Übernommene Protokollposten als abgerechnet markieren – sowohl manuell
+    // übernommene als auch automatisch vorbelegte Positionen (Kautionslogik),
+    // damit Schäden/Zusatzkosten nicht auf Folgerechnungen erneut erscheinen.
+    if (isInvoice) {
+      const billedMarkers = [
+        ...takenChargesRef.current.map((c) => ({ id: c.id, source: c.source })),
+        ...items
+          .filter((i) => i.protocol_charge_id && i.protocol_charge_source)
+          .map((i) => ({ id: i.protocol_charge_id as string, source: i.protocol_charge_source as "damage" | "extra_charge" })),
+      ];
+      const damageIds = [...new Set(billedMarkers.filter((c) => c.source === "damage").map((c) => c.id))];
+      const chargeIds = [...new Set(billedMarkers.filter((c) => c.source === "extra_charge").map((c) => c.id))];
       if (damageIds.length) {
         await supabase.from("b2b_protocol_damages").update({ billed: true }).in("id", damageIds);
       }

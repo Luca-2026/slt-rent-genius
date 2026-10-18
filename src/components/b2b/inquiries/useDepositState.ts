@@ -81,6 +81,8 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
           unit_price: netOf(gross),
           discount_percent: 0,
           vat_rate: 19,
+          protocol_charge_id: c.id,
+          protocol_charge_source: "extra_charge",
         } as OfferLine);
       }
     }
@@ -97,6 +99,8 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
         unit_price: amount,
         discount_percent: 0,
         vat_rate: 0,
+        protocol_charge_id: d.id,
+        protocol_charge_source: "damage",
       } as OfferLine);
     }
     // Ohne Angebotssumme gibt es keine Miete als Referenz – dann zählt jede
