@@ -69,6 +69,9 @@ export interface OfferLine {
   description_override?: string | null;
   /** USt-Satz der Position: 19 = Leistung, 0 = nicht steuerbarer Schadensersatz (Standard 19). */
   vat_rate?: 0 | 19;
+  /** Intern: ID des Protokollpostens (Schaden/Zusatzkosten), aus dem diese Position vorbelegt wurde – wird nach Rechnungsversand als abgerechnet markiert. */
+  protocol_charge_id?: string;
+  protocol_charge_source?: "damage" | "extra_charge";
 }
 
 // ---------------------------------------------------------------- Paket 3b: Felder und Positionen
