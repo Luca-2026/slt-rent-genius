@@ -774,6 +774,13 @@ Deno.serve(async (req: Request) => {
       .from(table)
       .update({
         status: "offer_sent",
+        // Wer das Angebot versendet, übernimmt den Auftrag automatisch
+        // (außer er ist bereits einem anderen Kollegen zugewiesen).
+        ...(inquiry.assigned_to && inquiry.assigned_to !== user.id ? {} : {
+          assigned_to: user.id,
+          assigned_name: staffName !== "SLT Rental" ? staffName : (user.email ?? staffName),
+          assigned_at: new Date().toISOString(),
+        }),
         offer_number: offerNumber,
         offer_file_url: fileUrl,
         offer_total_gross: totals.grossAmount,
