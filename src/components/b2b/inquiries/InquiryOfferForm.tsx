@@ -1,5 +1,5 @@
 import { isDraftEditEvent } from "@/lib/draftEditIntent";
-import { CLEANING_UNIT_GROSS, CLEANING_UNIT_MINUTES, cleaningChargeGross, cleaningSuggested, depositSettlementNote, settleDeposit } from "@/lib/returnCharges";
+import { CLEANING_UNIT_GROSS, CLEANING_UNIT_MINUTES, CLEANING_UNIT_NET, chargeQuantityText, cleaningChargeGross, cleaningSuggested, depositSettlementNote, settleDeposit } from "@/lib/returnCharges";
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { needsOfferDepositWarning } from "@/lib/offerDeposit";
 import { OfferDepositWarning } from "@/components/b2b/OfferDepositWarning";
@@ -567,7 +567,7 @@ export function InquiryOfferForm({
           id: c.id,
           source: "extra_charge" as const,
           label: c.label,
-          description: c.notes || undefined,
+          description: [chargeQuantityText(c.label, Number(c.quantity) || 0, Number(c.unit_price) || 0), c.notes].filter(Boolean).join(" · ") || undefined,
           gross: Math.round(Number(c.quantity) * Number(c.unit_price) * 100) / 100,
         })),
       ];
@@ -579,7 +579,7 @@ export function InquiryOfferForm({
           list.push({
             id: `suggest-clean-${p.id}`, source: "suggestion",
             label: "Reinigung (Mehraufwand laut AGB)",
-            description: `Rückgabeprotokoll ${p.return_protocol_number}: Sauberkeit ${rating}/5 · 40,00 € netto je 15 Min`,
+            description: `Rückgabeprotokoll ${p.return_protocol_number}: Sauberkeit ${rating}/5 · 1 × 15 Min à ${CLEANING_UNIT_NET.toFixed(2).replace(".", ",")} € netto je 15 Min`,
             gross: cleaningChargeGross(1),
             cleaningUnits: 1,
           });
@@ -2030,7 +2030,7 @@ export function InquiryOfferForm({
                         setPendingCharges((prev) => prev.map((c) => c.id === charge.id
                           ? { ...c, cleaningUnits: units, gross: cleaningChargeGross(units),
                               label: "Reinigung (Mehraufwand laut AGB)",
-                              description: `${units} × ${CLEANING_UNIT_MINUTES} Min (${units * CLEANING_UNIT_MINUTES} Min) × ${formatEuro(CLEANING_UNIT_GROSS)}` }
+                              description: chargeQuantityText("Reinigung", units, CLEANING_UNIT_GROSS) ?? "" }
                           : c));
                       }}
                     />

@@ -85,3 +85,27 @@ export function depositSettlementNote(s: DepositSettlement, chargesGross: number
   ];
   return parts.filter(Boolean).join(" ");
 }
+
+/** Art eines Rückgabepostens anhand der Bezeichnung (Einheit wird nicht gespeichert). */
+export function chargeUnitKind(label: string): "time" | "liter" | null {
+  if (/reinigung/i.test(label)) return "time";
+  if (/kraftstoff|diesel|benzin|adblue|nachgetankt|betankung/i.test(label)) return "liter";
+  return null;
+}
+
+const de2 = (n: number) => n.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const deQty = (n: number) => n.toLocaleString("de-DE", { maximumFractionDigits: 2 });
+
+/**
+ * Mengenangabe für Rechnung/Abrechnung: Reinigung in 15-Minuten-Einheiten,
+ * Kraftstoff in Litern – jeweils mit Nettopreis je Einheit. Sonst null.
+ */
+export function chargeQuantityText(label: string, quantity: number, unitPriceGross: number): string | null {
+  const kind = chargeUnitKind(label);
+  if (!kind || !(quantity > 0)) return null;
+  const net = round2(unitPriceGross / 1.19);
+  if (kind === "time") {
+    return `${deQty(quantity)} × ${CLEANING_UNIT_MINUTES} Min = ${cleaningMinutesLabel(quantity)} à ${de2(net)} € netto je ${CLEANING_UNIT_MINUTES} Min`;
+  }
+  return `${deQty(quantity)} Liter à ${de2(net)} € netto je Liter`;
+}

@@ -1,3 +1,4 @@
+import { chargeQuantityText } from "@/lib/returnCharges";
 /**
  * Kautionsabrechnung nach der Rückgabe (Regeln: src/lib/depositSettlement.ts).
  * Zahlung zählt zuerst auf die Miete, Rückgabekosten werden mit der Kaution verrechnet.
@@ -65,7 +66,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
       for (const c of (p.b2b_return_extra_charges ?? []) as Row[]) {
         const qty = Number(c.quantity) || 0;
         const gross = Math.round(qty * (Number(c.unit_price) || 0) * 100) / 100;
-        if (gross > 0) list.push({ key: c.id, label: qty !== 1 ? `${c.label} (${qty.toLocaleString("de-DE")} × ${formatEuro(Number(c.unit_price))})` : c.label, gross, source: "protocol", kind: "service" });
+        if (gross > 0) list.push({ key: c.id, label: qty !== 1 && !chargeQuantityText(c.label, qty, Number(c.unit_price)) ? `${c.label} (${qty.toLocaleString("de-DE")} × ${formatEuro(Number(c.unit_price))})` : c.label, gross, source: "protocol", kind: "service", quantity_text: chargeQuantityText(c.label, qty, Number(c.unit_price)) ?? undefined });
       }
       const dmg = Number(p.damages_total) || 0;
       if (dmg > 0) list.push({ key: `dmg-${p.id}`, label: `Schäden laut Rückgabeprotokoll ${p.return_protocol_number ?? ""}`.trim(), gross: dmg, source: "damage", kind: "damage" });
@@ -210,7 +211,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
               {d.source === "manual" ? (
                 <Input className="h-8 min-w-0 flex-1" value={d.label} placeholder="Bezeichnung, z. B. Schaden Schaufel" onChange={(e) => patch(i, { label: e.target.value })} />
               ) : (
-                <span className={`min-w-0 flex-1 break-words ${d.removed ? "line-through text-muted-foreground" : ""}`}>{d.label}</span>
+                <span className={`min-w-0 flex-1 break-words ${d.removed ? "line-through text-muted-foreground" : ""}`}>{d.label}{d.quantity_text && <span className="block text-xs text-muted-foreground">{d.quantity_text}</span>}</span>
               )}
               {d.source === "manual" ? (
                 <NumberInput className="h-8 w-24" type="number" step="0.01" min={0} value={d.gross || ""} onChange={(e) => patch(i, { gross: Number(e.target.value) || 0 })} />
