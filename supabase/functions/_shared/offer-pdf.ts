@@ -16,7 +16,7 @@ export async function generateOfferPdf(data: {
   deliveryCostDelivery: number;
   deliveryCostReturn: number;
   servicesSurcharge: number;
-  servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number; allocations?: { itemIndex: number; amount: number }[]; optional?: boolean; perDay?: number }[];
+  servicesWithPrices: { id: string; name: string; description?: string; pricePercent: number | null; amount: number; allocations?: { itemIndex: number; amount: number }[]; optional?: boolean; perDay?: number; days?: number }[];
   netAmount: number;
   vatRate: number;
   vatAmount: number;
@@ -150,6 +150,12 @@ export async function generateOfferPdf(data: {
     const parts = abs.toFixed(2).split(".");
     const intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     return (n < 0 ? "-" : "") + intPart + "," + parts[1] + " \u20AC";
+  };
+  /** Einzelpreis mit bis zu 3 Nachkommastellen (z. B. Literpreis 2,395 €). */
+  const fmU = (n: number) => {
+    const v = Number(n) || 0;
+    if (Math.abs(Math.round(v * 100) - v * 100) < 1e-6) return fm(v);
+    return v.toFixed(3).replace(".", ",") + " \u20AC";
   };
   /** Prozentwert deutsch, ohne unnötige Nullen: 10 → "10", 12,5 → "12,5" */
   const fm2 = (n: number) => {
@@ -503,11 +509,11 @@ export async function generateOfferPdf(data: {
   const textColX = hasAnyImage ? nameColX + IMG + 8 : nameColX;
   const nameColW = qtyColRight - textColX - 12;
 
-  const servicesByItem = new Map<number, { name: string; description?: string; amount: number; optional?: boolean; perDay?: number }[]>();
+  const servicesByItem = new Map<number, { name: string; description?: string; amount: number; optional?: boolean; perDay?: number; days?: number }[]>();
   for (const svc of data.servicesWithPrices || []) {
     for (const alloc of svc.allocations || []) {
       const current = servicesByItem.get(alloc.itemIndex) || [];
-      current.push({ name: svc.name, description: svc.description, amount: alloc.amount, optional: svc.optional, perDay: svc.perDay });
+      current.push({ name: svc.name, description: svc.description, amount: alloc.amount, optional: svc.optional, perDay: svc.perDay, days: svc.days });
       servicesByItem.set(alloc.itemIndex, current);
     }
   }
@@ -569,6 +575,12 @@ export async function generateOfferPdf(data: {
     const periodMatch = typeof item.description === "string"
       ? item.description.match(/(\d+)\s*(?:Artikel|m\u00B2|lfm)\s*[\u00D7x]\s*(\d+)\s*[A-Za-z\u00C4\u00D6\u00DC\u00E4\u00F6\u00FC\u00DF]+\s*$/)
       : null;
+    // Rückgabekosten mit Maßeinheit (Liter, 15 Min): echte Menge, Einheit und Einzelpreis ausweisen.
+    const measure = item.measure && Number(item.measure.quantity) > 0 ? item.measure : null;
+    if (measure) {
+      iqQty = String(Math.round(Number(measure.quantity) * 100) / 100).replace(".", ",");
+      iqDur = measure.unit === "liter" ? "Liter" : "\u00D7 15 Min";
+    }
     const qtyText = iqQty ?? (periodMatch && Number(periodMatch[1]) * Number(periodMatch[2]) === Number(item.quantity)
       ? `${periodMatch[1]} \u00D7 ${periodMatch[2]}`
       : String(item.quantity));
@@ -581,7 +593,7 @@ export async function generateOfferPdf(data: {
     if (Number(item.vat_rate) === 0) subLines.push(...wt("Nicht steuerbarer Schadensersatz (0 % USt)", font, 8, nameColW));
     // Zeitraum steht bereits in der Beschreibung → nicht doppelt als "Mietzeitraum" ausgeben
     const descHasPeriod = typeof item.description === "string" && /\d{1,2}\.\d{1,2}\.\d{4}/.test(item.description);
-    if (item.rental_start && !descHasPeriod) {
+    if (item.rental_start && !descHasPeriod && !measure) {
       subLines.push(...wt(`Mietzeitraum: ${fd(item.rental_start)}${item.rental_end ? " - " + fd(item.rental_end) : ""}`, font, 8, nameColW));
     }
     // Rabattzeile: Listenpreis, Rabattsatz und Ersparnis transparent ausweisen
@@ -623,7 +635,7 @@ export async function generateOfferPdf(data: {
       discountLines.forEach((ln, li) => dt(pg, ln, textColX, discTop - li * 10, bold, 8, ORANGE));
       dtr(pg, qtyText, qtyColRight, top - 10, font, 9.5);
       dt(pg, iqDur ?? deriveUnit(item), unitColX, top - 10, font, 9.5, MUTED);
-      dtr(pg, fm(item.unit_price), unitPriceRight, top - 10, font, 9.5);
+      dtr(pg, measure ? fmU(Number(measure.unit_price)) : fm(item.unit_price), unitPriceRight, top - 10, font, 9.5);
       if (pct > 0) dtr(pg, `-${fm2(pct)} %`, unitPriceRight, top - 22, bold, 8, ORANGE);
       dtr(pg, fm(item.total_price), totalRight, top - 10, bold, 9.5);
     });
@@ -642,7 +654,13 @@ export async function generateOfferPdf(data: {
           dtr(pg, fm(svc.perDay || 0), unitPriceRight, top - 8, font, 8.5, MUTED);
           return;
         }
-        dt(pg, "Pauschale", unitColX, top - 8, font, 8.5, MUTED);
+        if (svc.days && svc.days > 0) {
+          // Versicherung über die Mietdauer: Kalendertage und Betrag je Kalendertag ausweisen.
+          dt(pg, `${svc.days} ${svc.days === 1 ? "Kalendertag" : "Kalendertage"}`, unitColX, top - 8, font, 8.5, MUTED);
+          dtr(pg, fmU(Math.round((svc.amount / svc.days) * 1000) / 1000), unitPriceRight, top - 8, font, 8.5, MUTED);
+        } else {
+          dt(pg, "Pauschale", unitColX, top - 8, font, 8.5, MUTED);
+        }
         dtr(pg, fm(svc.amount), totalRight, top - 8, font, 8.5, MUTED);
       });
     }

@@ -62,3 +62,20 @@ describe("Mengenangabe Rückgabekosten", () => {
     expect(chargeQuantityText("Mehrstunden", 3, 10)).toBeNull();
   });
 });
+
+import { chargeMeasure, quantityFromText } from "@/lib/returnCharges";
+describe("Einheiten der Rückgabekosten auf der Rechnung", () => {
+  it("Diesel 4,5 Liter: Einheit Liter, Menge × Einzelpreis ergibt die Netto-Summe", () => {
+    const m = chargeMeasure("Kraftstoff Diesel nachgetankt", 4.5, 10.78)!;
+    expect(m.unit).toBe("liter");
+    expect(m.quantity).toBe(4.5);
+    expect(Math.round(m.quantity * m.unit_price * 100) / 100).toBe(10.78);
+  });
+  it("Reinigung 2 Einheiten: 15 Min à 20 € netto", () => {
+    expect(chargeMeasure("Reinigungsservice 1t Minibagger", 2, 40)).toEqual({ quantity: 2, unit: "15min", unit_price: 20 });
+  });
+  it("Menge aus gespeicherter Mengenangabe", () => {
+    expect(quantityFromText("4,5 Liter à 2,39 € netto je Liter")).toBe(4.5);
+    expect(quantityFromText("2 × 15 Min = 30 Min à 20,00 €")).toBe(2);
+  });
+});

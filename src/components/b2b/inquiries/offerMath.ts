@@ -72,6 +72,8 @@ export interface OfferLine {
   /** Intern: ID des Protokollpostens (Schaden/Zusatzkosten), aus dem diese Position vorbelegt wurde – wird nach Rechnungsversand als abgerechnet markiert. */
   protocol_charge_id?: string;
   protocol_charge_source?: "damage" | "extra_charge" | "settlement";
+  /** Rückgabekosten: echte Menge/Einheit (Liter, 15 Min) und Netto-Einzelpreis für die Rechnung. */
+  measure?: { quantity: number; unit: "liter" | "15min"; unit_price: number };
 }
 
 /** Rückgabekosten (aus Protokoll oder Kautionsabrechnung) sind Pauschalpositionen – nie mit der Mietdauer multiplizieren, kein Bestand. */

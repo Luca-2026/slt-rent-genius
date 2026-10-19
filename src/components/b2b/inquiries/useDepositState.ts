@@ -1,4 +1,4 @@
-import { chargeQuantityText } from "@/lib/returnCharges";
+import { chargeMeasure, chargeQuantityText, quantityFromText } from "@/lib/returnCharges";
 /**
  * Kautionsstatus einer Mietanfrage für die Rechnungserstellung:
  * - Liegt eine Kaution vor (Zahlung über die Miete hinaus) und ist sie nicht abgerechnet,
@@ -84,6 +84,7 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
           unit: "pauschal",
           duration: 1,
           unit_price: netOf(gross),
+          measure: chargeMeasure(c.label, Number(c.quantity) || 0, netOf(gross)),
           discount_percent: 0,
           vat_rate: 19,
           protocol_charge_id: c.id,
@@ -131,6 +132,7 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
             unit_price: dmg ? gross : netOf(gross),
             discount_percent: 0,
             vat_rate: dmg ? 0 : 19,
+            measure: dmg ? undefined : chargeMeasure(d.label, quantityFromText(d.quantity_text), netOf(gross)),
             protocol_charge_source: "settlement",
           } as OfferLine);
         }
