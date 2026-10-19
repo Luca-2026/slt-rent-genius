@@ -12,6 +12,8 @@ import type { OfferLine } from "./offerMath";
 export interface DepositState {
   loaded: boolean;
   settled: boolean;
+  /** Rechnung aus der Kautionsabrechnung (= Schlussrechnung) */
+  settlementInvoiceId: string | null;
   depositHeld: number;
   /** Rücknahmeprotokoll abgeschlossen – erst dann sperrt die Kaution die Rechnung */
   hasProtocol: boolean;
@@ -43,11 +45,11 @@ export function paymentsUpToRent<T extends { amount?: unknown }>(payments: T[], 
 }
 
 export function useDepositState(inquiry: Record<string, any>, enabled: boolean) {
-  const [state, setState] = useState<DepositState>({ loaded: false, settled: false, depositHeld: 0, hasProtocol: false, chargeLines: [] });
+  const [state, setState] = useState<DepositState>({ loaded: false, settled: false, settlementInvoiceId: null, depositHeld: 0, hasProtocol: false, chargeLines: [] });
   const load = useCallback(async () => {
     if (!enabled) return;
     const [{ data: s }, { data: protocols }] = await Promise.all([
-      supabase.from("deposit_settlements").select("id").eq("rental_inquiry_id", inquiry.id).maybeSingle(),
+      supabase.from("deposit_settlements").select("id, invoice_id").eq("rental_inquiry_id", inquiry.id).maybeSingle(),
       supabase
         .from("b2b_return_protocols")
         .select("id, return_protocol_number, b2b_return_extra_charges(id, label, quantity, unit_price, billed)")
@@ -107,7 +109,7 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
     // Zahlung als Mietzahlung, nicht als Kaution (z. B. Telefonbuchung bar).
     const rent = Number(inquiry.offer_total_gross) || 0;
     const held = rent > 0 ? round2(sumPayments(inquiry.payments) - rent) : 0;
-    setState({ loaded: true, settled: !!s, depositHeld: Math.max(0, held), hasProtocol: (protocols ?? []).length > 0, chargeLines });
+    setState({ loaded: true, settled: !!s, settlementInvoiceId: (s as any)?.invoice_id ?? null, depositHeld: Math.max(0, held), hasProtocol: (protocols ?? []).length > 0, chargeLines });
   }, [enabled, inquiry.id, inquiry.payments, inquiry.offer_total_gross]);
   useEffect(() => { void load(); }, [load]);
   return { ...state, reload: load };
