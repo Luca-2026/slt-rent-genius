@@ -1,4 +1,5 @@
 import { DepositSettlementCard } from "./DepositSettlementCard";
+import { ReturnChargesSummary } from "./ReturnChargesSummary";
 import { depositBlocksInvoice, paymentsUpToRent, useDepositState } from "./useDepositState";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -771,6 +772,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const docEl = (
     <>
       <div ref={docSectionRef}>
+        {inquiryType === "rental" && <ReturnChargesSummary inquiryId={inquiry.id} reloadKey={deposit.settled} />}
         <div className="mb-4 space-y-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {([
