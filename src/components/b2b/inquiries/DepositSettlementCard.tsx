@@ -101,7 +101,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
         _notes: notes || (null as never),
       });
       if (rpcErr) throw new Error(rpcErr.message.replace(/^CONFLICT:\s*/, ""));
-      toast({ title: "Kaution abgerechnet", description: result.refund > 0 ? `Erstattung ${formatEuro(result.refund)} – ${PAYOUT_LABEL[payout]}` : result.due > 0 ? `Nachzahlung ${formatEuro(result.due)} steht auf der Rechnung` : "Saldo ausgeglichen" });
+      toast({ title: "Kaution abgerechnet", description: result.refund > 0 ? `Erstattung ${formatEuro(result.refund)} – ${PAYOUT_LABEL[payout]}` : result.due > 0 ? `Nachzahlung ${formatEuro(result.due)} kommt auf die Schlussrechnung` : "Saldo ausgeglichen" });
       await load();
       onDone();
     } catch (e) {
@@ -213,7 +213,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
           : result.due > 0
           ? line("Nachzahlung Kunde", formatEuro(result.due), true)
           : line("Saldo", formatEuro(0), true)}
-        {result.due > 0 && <p className="text-xs text-muted-foreground">Der offene Betrag steht auf der Rechnung mit Überweisungs-QR-Code.</p>}
+        {result.due > 0 && <p className="text-xs text-muted-foreground">Der offene Betrag kommt auf die Schlussrechnung (mit Überweisungs-QR-Code).</p>}
       </div>
 
       {result.refund > 0 && (
@@ -238,7 +238,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
         {busy ? "Wird abgerechnet …" : "Abrechnen"}
       </Button>
       {result.deductionsGross > 0 && (
-        <p className="text-xs text-muted-foreground">Erstellt eine Rechnung über die Abzüge, bezahlt durch „Kaution verrechnet“, und sendet sie an den Kunden.</p>
+        <p className="text-xs text-muted-foreground">Hält Abzüge und Erstattung fest. Danach „Schlussrechnung erstellen“: Miete, Lieferung, Rückgabekosten und Kautionsverrechnung stehen dann gemeinsam auf einer Rechnung.</p>
       )}
     </div>
   );
