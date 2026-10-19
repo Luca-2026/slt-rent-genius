@@ -351,6 +351,8 @@ interface Props {
   stickyActionsLead?: ReactNode;
   /** Versand gesperrt (z. B. Kaution noch nicht abgerechnet) – Warnung mit Sprung zur Lösung. */
   sendBlock?: { message: string; actionLabel: string; onAction: () => void } | null;
+  /** Gespeicherten Entwurf nicht wiederherstellen (z. B. Schlussrechnung nach Kautionsabrechnung). */
+  ignoreDraft?: boolean;
 }
 
 /** Offene Position aus einem Rücknahmeprotokoll, die noch nicht abgerechnet wurde. */
@@ -398,6 +400,7 @@ export function InquiryOfferForm({
   stickyActions = false,
   stickyActionsLead,
   sendBlock = null,
+  ignoreDraft = false,
 }: Props) {
   const isInvoice = mode === "invoice";
   const isSupplement = isInvoice && invoiceKind === "supplement";
@@ -405,7 +408,8 @@ export function InquiryOfferForm({
 
   // Zwischengespeicherter Entwurf (Tabwechsel / Reload) – einmalig beim Mount gelesen.
   const draftKey = inquiryDraftKey(reviseOf && !isInvoice ? `revise-${reviseOf}` : mode, inquiryType, inquiryId);
-  const draftRef = useRef(readInquiryDraft<Record<string, any>>(draftKey));
+  // Nach der Kautionsabrechnung gilt nur der aktuelle Stand – ein älterer Entwurf würde Abzüge und Zahlungen verfälschen.
+  const draftRef = useRef(ignoreDraft ? null : readInquiryDraft<Record<string, any>>(draftKey));
   const draft = draftRef.current;
   const [draftRestored, setDraftRestored] = useState(!!draft);
 

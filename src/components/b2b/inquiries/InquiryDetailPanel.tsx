@@ -832,7 +832,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           />
         ) : (
         <InquiryOfferForm
-          key={`${inquiry.id}:${docMode}:${deposit.loaded ? deposit.chargeLines.length : "-"}:${docMode === "revise" ? inquiry.offer_number : ""}`}
+          key={`${inquiry.id}:${docMode}:${deposit.loaded ? `${deposit.settled ? "s" : "o"}${deposit.chargeLines.length}` : "-"}:${docMode === "revise" ? inquiry.offer_number : ""}`}
           inquiryType={inquiryType}
           inquiryId={inquiry.id}
           location={inquiry.location}
@@ -844,6 +844,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               ? [...base, ...deposit.chargeLines]
               : base;
           })()}
+          ignoreDraft={(docMode === "invoice" || docMode === "final") && deposit.chargeLines.some((l) => l.protocol_charge_source === "settlement")}
           defaultCosts={offerSnapshot?.costs}
           reviseOf={docMode === "revise" ? inquiry.offer_number : null}
           defaultMeta={docMode === "revise" ? offerSnapshot?.meta : undefined}
