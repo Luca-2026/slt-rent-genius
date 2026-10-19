@@ -100,7 +100,13 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
       // Schlussrechnung über ALLE Positionen: Miete laut Angebot (inkl. Zusatzoptionen,
       // Lieferung/Abholung) + Rückgabekosten; Mietzahlungen und Kautionsverrechnung als Zahlungen.
       const offer = offerPayloadToLines(inquiry.offer_payload);
-      const rentLines = offer?.items ?? [];
+      // Wurde die Miete schon per Voraus-/Folgerechnung berechnet, nicht doppelt aufnehmen.
+      const { data: prior } = await supabase
+        .from("inquiry_invoices")
+        .select("id, status, invoice_kind")
+        .eq("rental_inquiry_id", inquiry.id);
+      const rentAlreadyBilled = (prior ?? []).some((r: Row) => r.status !== "cancelled" && r.invoice_kind !== "credit_note");
+      const rentLines = rentAlreadyBilled ? [] : offer?.items ?? [];
       if (active.length || rentLines.length) {
         const summary = [
           `Schlussrechnung mit Kautionsabrechnung zu Auftrag ${inquiry.order_code ? `#${inquiry.order_code}` : ""}`.trim(),
@@ -114,7 +120,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
         const rentPayments = rentLines.length
           ? paymentsUpToRent(Array.isArray(inquiry.payments) ? (inquiry.payments as Row[]) : [], rent)
           : [];
-        const c = offer?.costs;
+        const c = rentLines.length ? offer?.costs : undefined;
         const { data, error } = await supabase.functions.invoke("send-inquiry-invoice", {
           body: {
             inquiry_type: "rental",
