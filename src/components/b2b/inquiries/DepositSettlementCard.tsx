@@ -13,6 +13,7 @@ import { NumberInput } from "@/components/ui/number-input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Lock, Plus, RotateCcw, Trash2, Wallet } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { useToast } from "@/hooks/use-toast";
 import {
   computeSettlement,
@@ -116,6 +117,39 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
     const { error } = await supabase.rpc("mark_deposit_payout_done", { _settlement_id: settlement.id });
     if (error) toast({ title: "Nicht gespeichert", description: error.message, variant: "destructive" });
     else void load();
+  };
+
+  // Stripe-Erstattung wirklich auslösen (über die bezahlte Online-Zahlung des Auftrags), dann als erledigt markieren.
+  const executeStripePayout = async () => {
+    if (!settlement || busy) return;
+    setBusy(true);
+    try {
+      const { data: links } = await supabase
+        .from("offer_payment_links")
+        .select("id")
+        .eq("inquiry_table", "rental_inquiries")
+        .eq("inquiry_id", inquiry.id)
+        .eq("status", "paid")
+        .gt("deposit_cents", 0)
+        .order("paid_at", { ascending: false })
+        .limit(1);
+      const link = links?.[0];
+      if (!link) throw new Error("Keine bezahlte Online-Zahlung mit Kaution gefunden.");
+      const { data, error } = await invokeWithAuth<{ success?: boolean; error?: string }>("offer-payment-admin", {
+        action: "refund_deposit",
+        link_id: link.id,
+        amount_cents: Math.round(Number(settlement.balance) * 100),
+        reason: `Kautionsabrechnung Auftrag ${inquiry.order_code ?? ""}`.trim(),
+        request_id: crypto.randomUUID(),
+      });
+      if (error || !data?.success) throw new Error(data?.error ?? "Erstattung nicht ausgeführt.");
+      await markPayout();
+      toast({ title: "Stripe-Erstattung ausgelöst", description: `${formatEuro(Number(settlement.balance))} gehen auf die ursprüngliche Zahlungsart zurück.` });
+    } catch (e) {
+      toast({ title: "Stripe-Erstattung fehlgeschlagen", description: e instanceof Error ? e.message : String(e), variant: "destructive" });
+    } finally {
+      setBusy(false);
+    }
   };
 
   if (loading) return <div className="rounded-lg border border-border p-3 text-sm text-muted-foreground">Kautionsabrechnung wird geladen …</div>;
