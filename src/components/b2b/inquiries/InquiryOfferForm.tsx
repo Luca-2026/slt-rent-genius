@@ -610,7 +610,7 @@ export function InquiryOfferForm({
         unit_price: charge.source === "damage" ? charge.gross : Math.round((charge.gross / 1.19) * 100) / 100,
         discount_percent: 0,
         vat_rate: charge.source === "damage" ? 0 : 19,
-        protocol_charge_source: charge.source,
+        protocol_charge_source: charge.source === "suggestion" ? "settlement" : charge.source,
       } as FormLine,
     ]);
   };
