@@ -131,6 +131,7 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
             unit_price: dmg ? gross : netOf(gross),
             discount_percent: 0,
             vat_rate: dmg ? 0 : 19,
+            protocol_charge_source: "settlement",
           } as OfferLine);
         }
       }

@@ -71,7 +71,12 @@ export interface OfferLine {
   vat_rate?: 0 | 19;
   /** Intern: ID des Protokollpostens (Schaden/Zusatzkosten), aus dem diese Position vorbelegt wurde – wird nach Rechnungsversand als abgerechnet markiert. */
   protocol_charge_id?: string;
-  protocol_charge_source?: "damage" | "extra_charge";
+  protocol_charge_source?: "damage" | "extra_charge" | "settlement";
+}
+
+/** Rückgabekosten (aus Protokoll oder Kautionsabrechnung) sind Pauschalpositionen – nie mit der Mietdauer multiplizieren, kein Bestand. */
+export function isReturnChargeLine(line: Pick<OfferLine, "protocol_charge_source">): boolean {
+  return !!line.protocol_charge_source;
 }
 
 // ---------------------------------------------------------------- Paket 3b: Felder und Positionen
