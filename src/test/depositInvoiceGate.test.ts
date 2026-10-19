@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { depositBlocksInvoice, paymentsUpToRent } from "@/components/b2b/inquiries/useDepositState";
 
-const base = { loaded: true, settled: false, settlementInvoiceId: null, chargeLines: [] };
+const base = { loaded: true, settled: false, settlementInvoiceId: null, offset: 0, chargeLines: [] };
 
 describe("Rechnung und Kaution", () => {
   it("offene Kaution sperrt erst die Schlussrechnung nach Rückgabe (Protokoll vorhanden)", () => {

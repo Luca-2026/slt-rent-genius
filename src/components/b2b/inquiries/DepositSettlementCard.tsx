@@ -1,8 +1,8 @@
 /**
  * Kautionsabrechnung nach der Rückgabe (Regeln: src/lib/depositSettlement.ts).
  * Zahlung zählt zuerst auf die Miete, Rückgabekosten werden mit der Kaution verrechnet.
- * „Abrechnen“ erzeugt die Rechnung über die Abzüge (bezahlt durch „Kaution verrechnet“)
- * und sperrt die Abrechnung serverseitig (settle_deposit).
+ * „Abrechnen“ hält Abzüge und Erstattung fest (settle_deposit) – keine eigene Rechnung.
+ * Die Schlussrechnung übernimmt danach Miete, Lieferung, Abzüge und „Kaution verrechnet“.
  */
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -22,8 +22,6 @@ import {
   type SettlementDeduction,
 } from "@/lib/depositSettlement";
 import { formatEuro } from "./offerMath";
-import { offerPayloadToLines } from "./InquiryDetailPanel";
-import { paymentsUpToRent } from "./useDepositState";
 
 type Row = Record<string, any>;
 
@@ -95,87 +93,15 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
     if (!window.confirm(`Kaution jetzt abrechnen? ${result.refund > 0 ? `Erstattung ${formatEuro(result.refund)}` : result.due > 0 ? `Nachzahlung ${formatEuro(result.due)}` : "Saldo 0 €"}. Danach ist die Abrechnung gesperrt.`)) return;
     setBusy(true);
     try {
-      let invoiceId: string | null = null;
-      const active = deductions.filter((d) => !d.removed && d.gross > 0);
-      // Schlussrechnung über ALLE Positionen: Miete laut Angebot (inkl. Zusatzoptionen,
-      // Lieferung/Abholung) + Rückgabekosten; Mietzahlungen und Kautionsverrechnung als Zahlungen.
-      const offer = offerPayloadToLines(inquiry.offer_payload);
-      // Wurde die Miete schon per Voraus-/Folgerechnung berechnet, nicht doppelt aufnehmen.
-      const { data: prior } = await supabase
-        .from("inquiry_invoices")
-        .select("id, status, invoice_kind")
-        .eq("rental_inquiry_id", inquiry.id);
-      const rentAlreadyBilled = (prior ?? []).some((r: Row) => r.status !== "cancelled" && r.invoice_kind !== "credit_note");
-      const rentLines = rentAlreadyBilled ? [] : offer?.items ?? [];
-      if (active.length || rentLines.length) {
-        const summary = [
-          `Schlussrechnung mit Kautionsabrechnung zu Auftrag ${inquiry.order_code ? `#${inquiry.order_code}` : ""}`.trim(),
-          `Gezahlt ${formatEuro(result.paid)}, davon Miete ${formatEuro(result.rent)}, Kaution ${formatEuro(result.depositHeld)}.`,
-          `Rückgabekosten ${formatEuro(result.deductionsGross)}, mit der Kaution verrechnet: ${formatEuro(result.offset)}.`,
-          result.refund > 0 ? `Erstattung Kaution: ${formatEuro(result.refund)}.` : result.due > 0 ? `Offener Restbetrag: ${formatEuro(result.due)}.` : "Kein Restbetrag.",
-          notes.trim(),
-        ].filter(Boolean).join("\n");
-        const today = new Date().toISOString().slice(0, 10);
-        const ref = inquiry.order_code ? `Auftrag ${inquiry.order_code}` : "";
-        const rentPayments = rentLines.length
-          ? paymentsUpToRent(Array.isArray(inquiry.payments) ? (inquiry.payments as Row[]) : [], rent)
-          : [];
-        const c = rentLines.length ? offer?.costs : undefined;
-        const { data, error } = await supabase.functions.invoke("send-inquiry-invoice", {
-          body: {
-            inquiry_type: "rental",
-            inquiry_id: inquiry.id,
-            location: inquiry.location,
-            deposit_settlement: true,
-            invoice_kind: "final",
-            payment_terms: "vorkasse",
-            service_period_start: inquiry.start_date ?? null,
-            service_period_end: inquiry.end_date ?? null,
-            delivery_cost_delivery: c?.delivery_cost_delivery ?? 0,
-            delivery_cost_return: c?.delivery_cost_return ?? 0,
-            setup_cost: c?.setup_cost ?? 0,
-            dismantle_cost: c?.dismantle_cost ?? 0,
-            return_location: c?.return_location ?? null,
-            return_location_cost: c?.return_location_cost ?? 0,
-            deposit: 0,
-            ...(offer?.delivery ? { delivery_address: offer.delivery } : {}),
-            items: [
-              ...rentLines,
-              ...active.map((d) => ({
-                product_name: d.label,
-                description: d.kind === "damage" ? "Nicht steuerbarer Schadensersatz" : "Rückgabekosten laut Rückgabeprotokoll",
-                quantity: 1,
-                unit: "Pauschal",
-                // Schadensersatz ohne USt (brutto = netto), Service netto aus brutto.
-                unit_price: d.kind === "damage" ? Math.round(d.gross * 100) / 100 : netOf(d.gross),
-                discount_percent: 0,
-                vat_rate: d.kind === "damage" ? 0 : 19,
-              })),
-            ],
-            payments: [
-              ...rentPayments,
-              ...(result.offset > 0 ? [{ date: today, amount: result.offset, label: "Kaution verrechnet", reference: ref }] : []),
-            ],
-            notes: summary,
-            staff_name: staffName,
-          },
-
-        });
-        const err = (data as { error?: string } | null)?.error || error?.message;
-        if (err) throw new Error(`Rechnung nicht erstellt: ${err}`);
-        invoiceId = (data as { invoice_id?: string }).invoice_id ?? null;
-        if (!invoiceId) throw new Error("Rechnung wurde nicht gespeichert – bitte neu laden und prüfen");
-      }
       const { error: rpcErr } = await supabase.rpc("settle_deposit", {
         _inquiry_id: inquiry.id,
         _deductions: deductions as never,
         _payout_method: result.refund > 0 ? payout : "none",
         _expected_balance: result.balance,
-        _invoice_id: invoiceId as never,
         _notes: notes || (null as never),
       });
       if (rpcErr) throw new Error(rpcErr.message.replace(/^CONFLICT:\s*/, ""));
-      toast({ title: "Kaution abgerechnet", description: result.refund > 0 ? `Erstattung ${formatEuro(result.refund)} – ${PAYOUT_LABEL[payout]}` : result.due > 0 ? `Nachzahlung ${formatEuro(result.due)} steht auf der Rechnung` : "Saldo ausgeglichen" });
+      toast({ title: "Kaution abgerechnet", description: result.refund > 0 ? `Erstattung ${formatEuro(result.refund)} – ${PAYOUT_LABEL[payout]}` : result.due > 0 ? `Nachzahlung ${formatEuro(result.due)} kommt auf die Schlussrechnung` : "Saldo ausgeglichen" });
       await load();
       onDone();
     } catch (e) {
@@ -287,7 +213,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
           : result.due > 0
           ? line("Nachzahlung Kunde", formatEuro(result.due), true)
           : line("Saldo", formatEuro(0), true)}
-        {result.due > 0 && <p className="text-xs text-muted-foreground">Der offene Betrag steht auf der Rechnung mit Überweisungs-QR-Code.</p>}
+        {result.due > 0 && <p className="text-xs text-muted-foreground">Der offene Betrag kommt auf die Schlussrechnung (mit Überweisungs-QR-Code).</p>}
       </div>
 
       {result.refund > 0 && (
@@ -312,7 +238,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
         {busy ? "Wird abgerechnet …" : "Abrechnen"}
       </Button>
       {result.deductionsGross > 0 && (
-        <p className="text-xs text-muted-foreground">Erstellt eine Rechnung über die Abzüge, bezahlt durch „Kaution verrechnet“, und sendet sie an den Kunden.</p>
+        <p className="text-xs text-muted-foreground">Hält Abzüge und Erstattung fest. Danach „Schlussrechnung erstellen“: Miete, Lieferung, Rückgabekosten und Kautionsverrechnung stehen dann gemeinsam auf einer Rechnung.</p>
       )}
     </div>
   );

@@ -846,13 +846,16 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           reviseOf={docMode === "revise" ? inquiry.offer_number : null}
           defaultMeta={docMode === "revise" ? offerSnapshot?.meta : undefined}
           defaultPayments={docMode === "invoice" || docMode === "final"
-            ? deposit.settled ? paymentsUpToRent(inquiryPayments as any[], Number(inquiry.offer_total_gross) || 0) as typeof inquiryPayments : inquiryPayments
+            ? deposit.settled
+              ? [
+                  ...paymentsUpToRent(inquiryPayments as any[], Number(inquiry.offer_total_gross) || 0),
+                  ...(deposit.offset > 0
+                    ? [{ date: new Date().toISOString().slice(0, 10), amount: deposit.offset, label: "Kaution verrechnet", reference: inquiry.order_code ? `Auftrag ${inquiry.order_code}` : "" }]
+                    : []),
+                ] as typeof inquiryPayments
+              : inquiryPayments
             : undefined}
-          sendBlock={(docMode === "invoice" || docMode === "final") && deposit.settled && deposit.settlementInvoiceId ? {
-            message: "Die Schlussrechnung wurde bereits mit der Kautionsabrechnung erstellt (alle Positionen, Kaution verrechnet). Eine weitere Rechnung zu diesem Auftrag ist nicht vorgesehen – Korrekturen nur per Gutschrift.",
-            actionLabel: "Zur Kautionsabrechnung",
-            onAction: () => setDocMode("deposit"),
-          } : (docMode === "invoice" || docMode === "final") && depositBlocksInvoice(deposit) ? {
+          sendBlock={(docMode === "invoice" || docMode === "final") && depositBlocksInvoice(deposit) ? {
             message: `Kaution von ${formatEuro(deposit.depositHeld)} noch nicht abgerechnet. Bitte zuerst die Kaution abrechnen – Rückgabekosten werden dort automatisch verrechnet. Danach kann die Rechnung versendet werden.`,
             actionLabel: "Zur Kautionsabrechnung",
             onAction: () => setDocMode("deposit"),

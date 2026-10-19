@@ -14,6 +14,8 @@ export interface DepositState {
   settled: boolean;
   /** Rechnung aus der Kautionsabrechnung (= Schlussrechnung) */
   settlementInvoiceId: string | null;
+  /** Mit der Kaution verrechneter Betrag – Zahlungszeile „Kaution verrechnet“ auf der Schlussrechnung */
+  offset: number;
   depositHeld: number;
   /** Rücknahmeprotokoll abgeschlossen – erst dann sperrt die Kaution die Rechnung */
   hasProtocol: boolean;
@@ -45,11 +47,11 @@ export function paymentsUpToRent<T extends { amount?: unknown }>(payments: T[], 
 }
 
 export function useDepositState(inquiry: Record<string, any>, enabled: boolean) {
-  const [state, setState] = useState<DepositState>({ loaded: false, settled: false, settlementInvoiceId: null, depositHeld: 0, hasProtocol: false, chargeLines: [] });
+  const [state, setState] = useState<DepositState>({ loaded: false, settled: false, settlementInvoiceId: null, offset: 0, depositHeld: 0, hasProtocol: false, chargeLines: [] });
   const load = useCallback(async () => {
     if (!enabled) return;
     const [{ data: s }, { data: protocols }] = await Promise.all([
-      supabase.from("deposit_settlements").select("id, invoice_id").eq("rental_inquiry_id", inquiry.id).maybeSingle(),
+      supabase.from("deposit_settlements").select("id, invoice_id, deductions, offset_amount, settled_at").eq("rental_inquiry_id", inquiry.id).maybeSingle(),
       supabase
         .from("b2b_return_protocols")
         .select("id, return_protocol_number, b2b_return_extra_charges(id, label, quantity, unit_price, billed)")
@@ -105,11 +107,38 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
         protocol_charge_source: "damage",
       } as OfferLine);
     }
+    // Nach der Kautionsabrechnung: Abzüge (wie abgerechnet) kommen auf die Schlussrechnung,
+    // solange danach noch keine Rechnung erstellt wurde (alte Abrechnungen mit eigener Rechnung ausgenommen).
+    let offset = 0;
+    if (s && !(s as any).invoice_id) {
+      const { data: later } = await supabase
+        .from("inquiry_invoices")
+        .select("id, status, invoice_kind, created_at")
+        .eq("rental_inquiry_id", inquiry.id)
+        .gt("created_at", (s as any).settled_at);
+      const billedAfter = (later ?? []).some((r: any) => r.status !== "cancelled" && r.invoice_kind !== "credit_note");
+      if (!billedAfter) {
+        offset = round2(Number((s as any).offset_amount) || 0);
+        for (const d of (((s as any).deductions ?? []) as any[])) {
+          const gross = round2(Number(d.gross) || 0);
+          if (d.removed || gross <= 0) continue;
+          const dmg = d.kind === "damage";
+          chargeLines.push({
+            product_name: dmg && !/^Schadensersatz/.test(d.label) ? `Schadensersatz – ${d.label}` : d.label,
+            description: dmg ? "Nicht steuerbarer Schadensersatz" : "Rückgabekosten laut Rückgabeprotokoll",
+            quantity: 1, unit: "pauschal", duration: 1,
+            unit_price: dmg ? gross : netOf(gross),
+            discount_percent: 0,
+            vat_rate: dmg ? 0 : 19,
+          } as OfferLine);
+        }
+      }
+    }
     // Ohne Angebotssumme gibt es keine Miete als Referenz – dann zählt jede
     // Zahlung als Mietzahlung, nicht als Kaution (z. B. Telefonbuchung bar).
     const rent = Number(inquiry.offer_total_gross) || 0;
     const held = rent > 0 ? round2(sumPayments(inquiry.payments) - rent) : 0;
-    setState({ loaded: true, settled: !!s, settlementInvoiceId: (s as any)?.invoice_id ?? null, depositHeld: Math.max(0, held), hasProtocol: (protocols ?? []).length > 0, chargeLines });
+    setState({ loaded: true, settled: !!s, settlementInvoiceId: (s as any)?.invoice_id ?? null, offset, depositHeld: Math.max(0, held), hasProtocol: (protocols ?? []).length > 0, chargeLines });
   }, [enabled, inquiry.id, inquiry.payments, inquiry.offer_total_gross]);
   useEffect(() => { void load(); }, [load]);
   return { ...state, reload: load };
