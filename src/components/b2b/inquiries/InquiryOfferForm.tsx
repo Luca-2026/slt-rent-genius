@@ -717,7 +717,8 @@ export function InquiryOfferForm({
         orderType,
         termsText,
       };
-      writeInquiryDraft(draftKey, snapshot);
+      // Reines Öffnen (noch ohne CMS-Preise) darf keinen Entwurf anlegen – sonst überschreibt er beim nächsten Laden die Preise.
+      if (userTouchedRef.current || draftRef.current) writeInquiryDraft(draftKey, snapshot);
       if (dirtyRef.current && userTouchedRef.current) {
         void saveServerDraft(draftKey, inquiryType, inquiryId, snapshot);
       }

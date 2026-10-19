@@ -510,7 +510,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       summary: allCharges.length ? `${formatEuro(chargesTotal)} brutto` : chargeSuggestions.length ? "Vorschlag offen" : "Keine",
       done: charges.length > 0 && chargesDone,
       content: (
-        <ExtraChargesStep charges={charges} onChange={setCharges} suggestions={chargeSuggestions}
+        <ExtraChargesStep charges={charges} onChange={setCharges} suggestions={chargeSuggestions} fixedCharges={cleaningCharges}
           depositHint={offerDeposit > 0 ? `Wird mit der Kaution (${formatEuro(offerDeposit)}) verrechnet, sofern sie gezahlt wurde.` : null} />
       ),
     }] : []),
