@@ -48,6 +48,7 @@ import {
   newGroupId,
   nextOrderType,
   orderItemsByGroups,
+  isReturnChargeLine,
   quantityUnitShort,
   type OfferExtraFields,
   type OfferGroup,
