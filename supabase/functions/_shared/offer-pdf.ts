@@ -4,6 +4,7 @@ import { embedProductImages } from "./product-images.ts";
 import { SLT_COMPANY } from "./offer-company.ts";
 import { unitAbbreviation, unitLabel } from "./rental-pricing.ts";
 import { drawEpcQr } from "./epc-qr-pdf.ts";
+import { payoutText } from "./final-invoice-deposit.ts";
 
 // ─── PDF Offer Generator ───────────────────────────────────
 export async function generateOfferPdf(data: {
@@ -74,6 +75,8 @@ export async function generateOfferPdf(data: {
    * Werden im Summenblock ausgewiesen und vom Rechnungsbetrag abgezogen.
    */
   payments?: { date?: string; amount: number; label?: string; reference?: string }[];
+  /** Schlussrechnung nach Kautionsabrechnung: erhaltene, verrechnete und erstattete Kaution. */
+  depositSettlement?: import("./final-invoice-deposit.ts").DepositSummary;
   /**
    * Paket 4: nur Angebote aus Mietanfragen. Gesetzt → Block „Ihre Daten“, Anrede,
    * Auftragsart, Gruppen, Spalten Menge/Dauer, Legende und Angebotsbedingungen.
@@ -788,7 +791,17 @@ export async function generateOfferPdf(data: {
   const depositOffset = Math.round((data.payments || [])
     .filter((p) => /^Kaution verrechnet/i.test(String(p.label || "")))
     .reduce((sum, p) => sum + (Number(p.amount) || 0), 0) * 100) / 100;
-  if (data.deposit && data.deposit > 0 && depositOffset > 0 && !isCreditNote) {
+  const ds = !isCreditNote ? data.depositSettlement : undefined;
+  if (ds && ds.held > 0) {
+    dt(pg, "Kaution erhalten (umsatzsteuerfrei)", tx, y, font, 9, MUTED); dtr(pg, fm(ds.held), vx, y, font, 9); y -= 13;
+    if (ds.offset > 0) { dt(pg, "davon mit Rückgabekosten verrechnet", tx, y, font, 9, MUTED); dtr(pg, `-${fm(ds.offset)}`, vx, y, font, 9); y -= 13; }
+    if (ds.refund > 0) {
+      dt(pg, "Restkaution an Kunden erstattet", tx, y, bold, 9); dtr(pg, fm(ds.refund), vx, y, bold, 9); y -= 11;
+      dt(pg, payoutText(ds), tx, y, font, 8, MUTED); y -= 13;
+    } else {
+      dt(pg, "Kaution vollständig verrechnet", tx, y, font, 9, MUTED); dtr(pg, fm(0), vx, y, font, 9); y -= 13;
+    }
+  } else if (data.deposit && data.deposit > 0 && depositOffset > 0 && !isCreditNote) {
     const depositRefund = Math.max(0, Math.round((data.deposit - depositOffset) * 100) / 100);
     dt(pg, "Kaution erhalten (umsatzsteuerfrei)", tx, y, font, 9, MUTED); dtr(pg, fm(data.deposit), vx, y, font, 9); y -= 13;
     dt(pg, "davon mit dieser Rechnung verrechnet", tx, y, font, 9, MUTED); dtr(pg, `-${fm(depositOffset)}`, vx, y, font, 9); y -= 13;

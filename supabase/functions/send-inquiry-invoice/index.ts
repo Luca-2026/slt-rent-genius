@@ -14,6 +14,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
+import { depositSummary, depositSummaryNote, inferChargeMeasure, measureUnitLabel, settlementAppliesToNewInvoice, settlementPayments, type DepositSummary, type SettlementRow } from "../_shared/final-invoice-deposit.ts";
 import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
 import {
@@ -264,7 +265,12 @@ Deno.serve(async (req: Request) => {
     try {
       items = normalizeInquiryOfferItems(body.items)
         // Paket 3b: optionale Versicherungsstufen aus dem Angebot werden nie berechnet.
-        .map((it) => (it.addons?.some((a) => a.optional) ? { ...it, addons: it.addons.filter((a) => !a.optional) } : it));
+        .map((it) => (it.addons?.some((a) => a.optional) ? { ...it, addons: it.addons.filter((a) => !a.optional) } : it))
+        // Reinigung/Kraftstoff ohne Einheit (z. B. alter Entwurf): Einheit aus Mengenangabe ergänzen.
+        .map((it) => {
+          const m = inferChargeMeasure(it as any);
+          return m ? { ...it, measure: m } : it;
+        });
     } catch (e) {
       return json({ error: (e as Error).message }, 400);
     }
@@ -288,9 +294,9 @@ Deno.serve(async (req: Request) => {
       ? resolveReturnLocation(body.return_location, body.location || inquiry.location, body.return_location_cost)
       : null;
     const returnLocationCost = returnLoc?.cost ?? 0;
-    const deposit = Math.max(0, Number(body.deposit) || 0);
+    let deposit = Math.max(0, Number(body.deposit) || 0);
     const userNotes: string | null = typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
-    const notes: string | null =
+    let notes: string | null =
       [userNotes, deductionNote(deductions, (iso) => new Date(iso).toLocaleDateString("de-DE"))].filter(Boolean).join("\n\n") || null;
 
     const totals = buildOfferTotals(
@@ -379,7 +385,7 @@ Deno.serve(async (req: Request) => {
     const isDepositSettlement = body.deposit_settlement === true;
     const confirmedPayments = isDepositSettlement ? [] : (Array.isArray(inquiry.payments) ? inquiry.payments : []).filter(stripePayment);
     const rawPayments = Array.isArray(body.payments) ? body.payments.slice(0, 20) : [];
-    const payments: RecordedPayment[] = [...(isDepositSettlement ? rawPayments : rawPayments.filter((p: any) => !stripePayment(p))), ...confirmedPayments]
+    let payments: RecordedPayment[] = [...(isDepositSettlement ? rawPayments : rawPayments.filter((p: any) => !stripePayment(p))), ...confirmedPayments]
       .map((entry: unknown) => {
         const p = (entry ?? {}) as Record<string, unknown>;
         const amount = Math.round((Number(p.amount) || 0) * 100) / 100;
@@ -391,6 +397,29 @@ Deno.serve(async (req: Request) => {
         };
       })
       .filter((p: RecordedPayment) => p.amount > 0);
+    // ── Schlussrechnung nach Kautionsabrechnung: Zahlungen und Kaution serverseitig festlegen ──
+    let depositInfo: DepositSummary | null = null;
+    if (inquiryType === "rental" && !isDepositSettlement && (invoiceKind === "invoice" || invoiceKind === "final")) {
+      const { data: srow } = await service
+        .from("deposit_settlements")
+        .select("deposit_held, offset_amount, balance, payout_method, payout_status, payout_date, settled_at, invoice_id")
+        .eq("rental_inquiry_id", inquiryId)
+        .maybeSingle();
+      if (srow) {
+        const { data: invs } = await service
+          .from("inquiry_invoices")
+          .select("status, invoice_kind, created_at")
+          .eq("rental_inquiry_id", inquiryId);
+        if (settlementAppliesToNewInvoice(srow as SettlementRow, invs ?? [])) {
+          depositInfo = depositSummary(srow as SettlementRow);
+          const storedTotal = (Array.isArray(inquiry.payments) ? inquiry.payments : [])
+            .filter((p: any) => !/^Kaution\b/i.test(String(p?.label ?? "")))
+            .reduce((sum: number, p: any) => sum + (Number(p?.amount) || 0), 0);
+          payments = settlementPayments(payments, storedTotal, depositInfo, (inquiry as { order_code?: string | null }).order_code ?? null);
+          deposit = depositInfo.held;
+        }
+      }
+    }
     const amountPaid = Math.round(payments.reduce((s: number, p: RecordedPayment) => s + p.amount, 0) * 100) / 100;
 
 
@@ -506,7 +535,12 @@ Deno.serve(async (req: Request) => {
     }
     if (!staffName) staffName = "SLT Rental";
 
+    if (depositInfo) {
+      const dn = depositSummaryNote(depositInfo);
+      if (dn && !(notes ?? "").includes("Kautionsabrechnung vom")) notes = [notes, dn].filter(Boolean).join("\n\n");
+    }
     const pdfBytes = await generateOfferPdf({
+      depositSettlement: depositInfo ?? undefined,
       orderCode: (inquiry as { order_code?: string | null }).order_code ?? null,
       documentType: invoiceKind,
       offerNumber: invoiceNumber,
@@ -741,9 +775,10 @@ Deno.serve(async (req: Request) => {
       position: index + 1,
       product_name: i.product_name,
       description: i.description ?? null,
-      quantity: i.quantity,
-      unit: i.unit ?? null,
-      unit_price: i.unit_price,
+      // Mit echter Einheit (Liter / 15 Min) speichern, wie sie auf dem PDF steht.
+      quantity: pdfItems[index]?.measure ? pdfItems[index].measure!.quantity : i.quantity,
+      unit: pdfItems[index]?.measure ? measureUnitLabel(pdfItems[index].measure!.unit) : i.unit ?? null,
+      unit_price: pdfItems[index]?.measure ? pdfItems[index].measure!.unit_price : i.unit_price,
       discount_percent: i.discount_percent,
       total_price: Math.round(i.quantity * i.unit_price * (1 - (i.discount_percent || 0) / 100) * 100) / 100,
       rental_start: i.rental_start ?? null,
