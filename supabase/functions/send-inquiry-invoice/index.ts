@@ -416,6 +416,7 @@ Deno.serve(async (req: Request) => {
             .filter((p: any) => !/^Kaution\b/i.test(String(p?.label ?? "")))
             .reduce((sum: number, p: any) => sum + (Number(p?.amount) || 0), 0);
           payments = settlementPayments(payments, storedTotal, depositInfo, (inquiry as { order_code?: string | null }).order_code ?? null);
+          deposit = depositInfo.held;
         }
       }
     }
