@@ -94,9 +94,11 @@ Deno.serve(async (req) => {
     if (!parsed.success) return json({ error: "Ung\u00FCltige Angaben.", details: parsed.error.flatten().fieldErrors }, 400);
     const b = parsed.data;
     for (const m of b.machine_readings) {
-      if (!m.item_name.trim() || ![m.operating_hours, m.fuel_level, m.mileage].some(Boolean) ||
+      // Eine Zeile darf nur aus der Sauberkeit bestehen (Messwerte sind je Gerät optional).
+      if (!m.item_name.trim() || ![m.operating_hours, m.fuel_level, m.mileage, m.cleanliness].some(Boolean) ||
           [m.operating_hours, m.mileage].some((v) => v && (!/^\d{1,9}(?:[,.]\d{1,2})?$/.test(v) || Number(v.replace(",", ".")) > 999999999)) ||
-          (m.fuel_level && !["voll", "dreiviertel", "halb", "viertel", "leer", "kein_tank"].includes(m.fuel_level)))
+          (m.fuel_level && !["voll", "dreiviertel", "halb", "viertel", "leer", "kein_tank"].includes(m.fuel_level)) ||
+          (m.cleanliness && !/^[1-5]$/.test(m.cleanliness)))
         return json({ error: `Ungültiger Messwert für ${m.item_name}.` }, 400);
     }
   const isReturn = b.kind === "return";
