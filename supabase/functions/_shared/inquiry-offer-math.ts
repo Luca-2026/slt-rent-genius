@@ -79,6 +79,8 @@ export interface InquiryOfferItem {
   description_override?: string | null;
   /** USt-Satz der Position: 19 = Leistung, 0 = nicht steuerbarer Schadensersatz (Standard 19). */
   vat_rate?: 0 | 19;
+  /** Rückgabekosten: echte Menge/Einheit/Netto-Einzelpreis (Liter, 15 Min) – nur Anzeige, Summe bleibt quantity × unit_price. */
+  measure?: { quantity: number; unit: "liter" | "15min"; unit_price: number };
 }
 
 export const VAT_RATE = 19;
@@ -289,6 +291,7 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       name_override: typeof item.name_override === "string" && item.name_override.trim() ? item.name_override.trim().slice(0, 200) : undefined,
       description_override: typeof item.description_override === "string" && item.description_override.trim() ? item.description_override.trim().slice(0, 500) : undefined,
       vat_rate: Number(item.vat_rate) === 0 ? 0 : undefined,
+      measure: normalizeMeasure(item.measure),
       addons: normalizeAddons(item.addons, index, {
         articles,
         quantity: Math.round(quantity),
@@ -334,4 +337,14 @@ export function orderItemsByGroups<T extends { group_id?: string }>(groups: Offe
   const known = new Set(groups.map((g) => g.id));
   const loose = items.filter((i) => !i.group_id || !known.has(i.group_id));
   return [...loose, ...groups.flatMap((g) => items.filter((i) => i.group_id === g.id))];
+}
+
+function normalizeMeasure(raw: unknown): InquiryOfferItem["measure"] {
+  const m = (raw ?? null) as Record<string, unknown> | null;
+  if (!m || (m.unit !== "liter" && m.unit !== "15min")) return undefined;
+  const quantity = Number(m.quantity);
+  const unitPrice = Number(m.unit_price);
+  if (!Number.isFinite(quantity) || quantity <= 0 || quantity > 10000) return undefined;
+  if (!Number.isFinite(unitPrice) || unitPrice < 0 || unitPrice > 100000) return undefined;
+  return { quantity: Math.round(quantity * 100) / 100, unit: m.unit, unit_price: Math.round(unitPrice * 10000) / 10000 };
 }

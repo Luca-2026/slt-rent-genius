@@ -453,6 +453,7 @@ Deno.serve(async (req: Request) => {
       rental_start: i.rental_start,
       rental_end: i.rental_end,
       vat_rate: i.vat_rate ?? 19,
+      measure: i.measure,
       image_url: normalizeImageUrl(i.image_url) as string | null,
     }));
 
@@ -465,6 +466,7 @@ Deno.serve(async (req: Request) => {
           description: (addonExplanation(a, item) || undefined) as string | undefined,
           pricePercent: null,
           amount: a.amount,
+          days: a.basis === "full_period" && Number(a.days) > 0 ? Number(a.days) : undefined,
           allocations: [{ itemIndex: idx, amount: a.amount }],
         })),
     );
