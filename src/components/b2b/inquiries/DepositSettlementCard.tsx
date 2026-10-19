@@ -176,7 +176,13 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
           {bal > 0 ? ` · ${PAYOUT_LABEL[settlement.payout_method]}${settlement.payout_status === "pending" ? " – Auszahlung offen" : settlement.payout_date ? ` am ${new Date(settlement.payout_date).toLocaleDateString("de-DE")}` : ""}` : ""}
         </p>
         {settlement.payout_status === "pending" && canMarkStripePayout && (
-          <Button size="sm" variant="outline" onClick={markPayout}>Stripe-Erstattung erledigt</Button>
+          <div className="flex flex-wrap gap-2 pt-1">
+            <Button size="sm" onClick={executeStripePayout} disabled={busy}>
+              {busy ? <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" /> : <Undo2 className="h-3.5 w-3.5 mr-1" />}
+              Jetzt über Stripe erstatten
+            </Button>
+            <Button size="sm" variant="outline" onClick={markPayout} disabled={busy}>Manuell erstattet – als erledigt markieren</Button>
+          </div>
         )}
         <p className="text-xs text-muted-foreground">Korrekturen nur per Gutschrift.</p>
       </div>
