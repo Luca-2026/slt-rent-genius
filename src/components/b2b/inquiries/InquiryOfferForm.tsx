@@ -675,7 +675,7 @@ export function InquiryOfferForm({
       if (cancelled) return;
       const uid = u.user?.id ?? null;
       setMyUserId(uid);
-      if (!remote) return;
+      if (!remote || ignoreDraft) return;
       const localAt = draftRef.current?.savedAt ?? 0;
       const remoteAt = new Date(remote.updatedAt).getTime();
       if (remote.updatedBy === uid && localAt >= remoteAt) return;
