@@ -48,6 +48,7 @@ import {
   newGroupId,
   nextOrderType,
   orderItemsByGroups,
+  isReturnChargeLine,
   quantityUnitShort,
   type OfferExtraFields,
   type OfferGroup,
@@ -116,7 +117,7 @@ type FormLine = OfferLine & {
  * Zeitraumtext der ersten Position, damit nichts kopiert werden muss.
  */
 function applyInheritedPeriod(item: FormLine, index: number, base: FormLine | undefined): FormLine {
-  if (index === 0 || item.custom_period || !base) return item;
+  if (index === 0 || item.custom_period || !base || isReturnChargeLine(item)) return item;
   return {
     ...item,
     duration: base.duration,
@@ -610,6 +611,7 @@ export function InquiryOfferForm({
         unit_price: charge.source === "damage" ? charge.gross : Math.round((charge.gross / 1.19) * 100) / 100,
         discount_percent: 0,
         vat_rate: charge.source === "damage" ? 0 : 19,
+        protocol_charge_source: charge.source === "suggestion" ? "settlement" : charge.source,
       } as FormLine,
     ]);
   };
@@ -717,7 +719,8 @@ export function InquiryOfferForm({
         orderType,
         termsText,
       };
-      writeInquiryDraft(draftKey, snapshot);
+      // Reines Öffnen (noch ohne CMS-Preise) darf keinen Entwurf anlegen – sonst überschreibt er beim nächsten Laden die Preise.
+      if (userTouchedRef.current || draftRef.current) writeInquiryDraft(draftKey, snapshot);
       if (dirtyRef.current && userTouchedRef.current) {
         void saveServerDraft(draftKey, inquiryType, inquiryId, snapshot);
       }
@@ -836,7 +839,7 @@ export function InquiryOfferForm({
       await Promise.all(
         items.map(async (item, index) => {
           const name = item.product_name.trim();
-          if (!name) return;
+          if (!name || isReturnChargeLine(item)) return;
           let slug = item.product_slug;
           if (!slug) {
             const match = await findCatalogProductByName(name);
@@ -1336,7 +1339,7 @@ export function InquiryOfferForm({
       const billedMarkers = [
         ...takenChargesRef.current.map((c) => ({ id: c.id, source: c.source })),
         ...items
-          .filter((i) => i.protocol_charge_id && i.protocol_charge_source)
+          .filter((i) => i.protocol_charge_id && (i.protocol_charge_source === "damage" || i.protocol_charge_source === "extra_charge"))
           .map((i) => ({ id: i.protocol_charge_id as string, source: i.protocol_charge_source as "damage" | "extra_charge" })),
       ];
       const damageIds = [...new Set(billedMarkers.filter((c) => c.source === "damage").map((c) => c.id))];

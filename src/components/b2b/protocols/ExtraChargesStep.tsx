@@ -23,6 +23,8 @@ interface Props {
   suggestions?: ChargeSuggestion[];
   /** Hinweis zur Kaution (z. B. „Kaution 750,00 € – wird verrechnet“). */
   depositHint?: string | null;
+  /** Bereits aus dem Schritt „Zustand“ übernommene Kosten (z. B. Reinigung) – zählen in die Summe. */
+  fixedCharges?: ExtraCharge[];
 }
 
 const price = (n: number) => n.toFixed(2).replace(".", ",");
@@ -35,7 +37,7 @@ export const fuelCharge = (fuel: (typeof FUEL_PRICES)[number], itemName?: string
   quantity: "", unitPrice: price(fuel.pricePerLiter), unit: "l",
 });
 
-export function ExtraChargesStep({ charges, onChange, suggestions = [], depositHint }: Props) {
+export function ExtraChargesStep({ charges, onChange, suggestions = [], depositHint, fixedCharges = [] }: Props) {
   const update = (id: string, patch: Partial<ExtraCharge>) =>
     onChange(charges.map((c) => (c.id === id ? { ...c, ...patch } : c)));
   const hasCleaning = charges.some((c) => /reinigung/i.test(c.label));
@@ -124,9 +126,12 @@ export function ExtraChargesStep({ charges, onChange, suggestions = [], depositH
         <Plus className="h-4 w-4 mr-1.5" /> Freie Position hinzufügen
       </Button>
 
-      {charges.length > 0 && (
+      {charges.length + fixedCharges.length > 0 && (
         <div className="text-sm text-right space-y-0.5">
-          <p className="font-medium">Summe Zusatzkosten: {formatEuro(sumExtraCharges(charges))} brutto</p>
+          {fixedCharges.map((c) => (
+            <p key={c.id} className="text-xs text-muted-foreground">{c.label} (aus „Zustand“): {formatEuro(sumExtraCharges([c]))}</p>
+          ))}
+          <p className="font-medium">Summe Zusatzkosten: {formatEuro(sumExtraCharges([...charges, ...fixedCharges]))} brutto</p>
           {depositHint && <p className="text-xs text-muted-foreground">{depositHint}</p>}
         </div>
       )}

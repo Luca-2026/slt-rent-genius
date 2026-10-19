@@ -765,7 +765,17 @@ export async function generateOfferPdf(data: {
   dtr(pg, isCreditNote ? `-${fm(data.grossAmount)}` : fm(data.grossAmount), vx, y + 4, bold, 12, BRAND);
   y -= 20;
   // Kaution separat unter dem Gesamtbetrag – sie ist nicht Teil der Summe.
-  if (data.deposit && data.deposit > 0) {
+  // Nach der Kautionsabrechnung (Zahlung „Kaution verrechnet“): keine „zzgl.“-Zeile mehr,
+  // sondern die Verrechnung der erhaltenen Kaution transparent ausweisen.
+  const depositOffset = Math.round((data.payments || [])
+    .filter((p) => /^Kaution verrechnet/i.test(String(p.label || "")))
+    .reduce((sum, p) => sum + (Number(p.amount) || 0), 0) * 100) / 100;
+  if (data.deposit && data.deposit > 0 && depositOffset > 0 && !isCreditNote) {
+    const depositRefund = Math.max(0, Math.round((data.deposit - depositOffset) * 100) / 100);
+    dt(pg, "Kaution erhalten (umsatzsteuerfrei)", tx, y, font, 9, MUTED); dtr(pg, fm(data.deposit), vx, y, font, 9); y -= 13;
+    dt(pg, "davon mit dieser Rechnung verrechnet", tx, y, font, 9, MUTED); dtr(pg, `-${fm(depositOffset)}`, vx, y, font, 9); y -= 13;
+    dt(pg, "Kaution erstattet", tx, y, font, 9, MUTED); dtr(pg, fm(depositRefund), vx, y, font, 9); y -= 13;
+  } else if (data.deposit && data.deposit > 0) {
     dt(pg, "zzgl. Kaution (umsatzsteuerfrei)", tx, y, font, 9, MUTED); dtr(pg, fm(data.deposit), vx, y, font, 9); y -= 13;
   }
   y -= 18;

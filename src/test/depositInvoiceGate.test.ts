@@ -22,3 +22,12 @@ describe("Rechnung und Kaution", () => {
     expect(paymentsUpToRent([{ amount: 500, label: "Bar" }], 230.86)).toEqual([{ amount: 230.86, label: "Bar" }]);
   });
 });
+
+import { isReturnChargeLine } from "@/components/b2b/inquiries/offerMath";
+describe("Rückgabekosten auf der Schlussrechnung", () => {
+  it("Positionen aus Protokoll oder Kautionsabrechnung gelten als Pauschale (keine Mietdauer)", () => {
+    expect(isReturnChargeLine({ protocol_charge_source: "settlement" })).toBe(true);
+    expect(isReturnChargeLine({ protocol_charge_source: "extra_charge" })).toBe(true);
+    expect(isReturnChargeLine({})).toBe(false);
+  });
+});
