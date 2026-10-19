@@ -243,7 +243,8 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
   const rd = data.condition.readings ?? [];
   if (rd.length) {
      for (const m of rd) {
-       const values = [m.mileage ? `Kilometerstand: ${m.mileage} km` : "", m.operating_hours ? `Betriebsstunden: ${m.operating_hours} h` : "", m.fuel_level && m.fuel_level !== "kein_tank" ? `Tank: ${FUEL[m.fuel_level] ?? m.fuel_level}` : "", m.cleanliness ? `Sauberkeit: ${m.cleanliness}/5` : ""].filter(Boolean);
+       const hasItemCleanliness = (data.condition.itemCleanliness ?? []).some((c) => c.item_name === m.item_name);
+       const values = [m.mileage ? `Kilometerstand: ${m.mileage} km` : "", m.operating_hours ? `Betriebsstunden: ${m.operating_hours} h` : "", m.fuel_level && m.fuel_level !== "kein_tank" ? `Tank: ${FUEL[m.fuel_level] ?? m.fuel_level}` : "", m.cleanliness && !hasItemCleanliness ? `Sauberkeit: ${m.cleanliness}/5` : ""].filter(Boolean);
        if (values.length) kv(m.item_name, values.join(" \u00B7 "));
      }
      for (const c of data.condition.itemCleanliness ?? []) {
