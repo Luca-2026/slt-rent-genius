@@ -22,6 +22,8 @@ import {
   type SettlementDeduction,
 } from "@/lib/depositSettlement";
 import { formatEuro } from "./offerMath";
+import { offerPayloadToLines } from "./InquiryDetailPanel";
+import { paymentsUpToRent } from "./useDepositState";
 
 type Row = Record<string, any>;
 
@@ -95,38 +97,63 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
     try {
       let invoiceId: string | null = null;
       const active = deductions.filter((d) => !d.removed && d.gross > 0);
-      if (active.length) {
+      // Schlussrechnung über ALLE Positionen: Miete laut Angebot (inkl. Zusatzoptionen,
+      // Lieferung/Abholung) + Rückgabekosten; Mietzahlungen und Kautionsverrechnung als Zahlungen.
+      const offer = offerPayloadToLines(inquiry.offer_payload);
+      const rentLines = offer?.items ?? [];
+      if (active.length || rentLines.length) {
         const summary = [
-          `Kautionsabrechnung zu Auftrag ${inquiry.order_code ? `#${inquiry.order_code}` : ""}`.trim(),
+          `Schlussrechnung mit Kautionsabrechnung zu Auftrag ${inquiry.order_code ? `#${inquiry.order_code}` : ""}`.trim(),
           `Gezahlt ${formatEuro(result.paid)}, davon Miete ${formatEuro(result.rent)}, Kaution ${formatEuro(result.depositHeld)}.`,
-          `Mit der Kaution verrechnet: ${formatEuro(result.offset)}.`,
-          result.refund > 0 ? `Erstattung: ${formatEuro(result.refund)}.` : result.due > 0 ? `Offener Restbetrag: ${formatEuro(result.due)}.` : "Kein Restbetrag.",
+          `Rückgabekosten ${formatEuro(result.deductionsGross)}, mit der Kaution verrechnet: ${formatEuro(result.offset)}.`,
+          result.refund > 0 ? `Erstattung Kaution: ${formatEuro(result.refund)}.` : result.due > 0 ? `Offener Restbetrag: ${formatEuro(result.due)}.` : "Kein Restbetrag.",
           notes.trim(),
         ].filter(Boolean).join("\n");
         const today = new Date().toISOString().slice(0, 10);
+        const ref = inquiry.order_code ? `Auftrag ${inquiry.order_code}` : "";
+        const rentPayments = rentLines.length
+          ? paymentsUpToRent(Array.isArray(inquiry.payments) ? (inquiry.payments as Row[]) : [], rent)
+          : [];
+        const c = offer?.costs;
         const { data, error } = await supabase.functions.invoke("send-inquiry-invoice", {
           body: {
             inquiry_type: "rental",
             inquiry_id: inquiry.id,
             location: inquiry.location,
             deposit_settlement: true,
+            invoice_kind: "final",
             payment_terms: "vorkasse",
             service_period_start: inquiry.start_date ?? null,
             service_period_end: inquiry.end_date ?? null,
-            items: active.map((d) => ({
-              product_name: d.label,
-              description: d.kind === "damage" ? "Nicht steuerbarer Schadensersatz" : "",
-              quantity: 1,
-              unit: "Pauschal",
-              // Schadensersatz ohne USt (brutto = netto), Service netto aus brutto.
-              unit_price: d.kind === "damage" ? Math.round(d.gross * 100) / 100 : netOf(d.gross),
-              discount_percent: 0,
-              vat_rate: d.kind === "damage" ? 0 : 19,
-            })),
-            payments: result.offset > 0 ? [{ date: today, amount: result.offset, label: "Kaution verrechnet", reference: inquiry.order_code ? `Auftrag ${inquiry.order_code}` : "" }] : [],
+            delivery_cost_delivery: c?.delivery_cost_delivery ?? 0,
+            delivery_cost_return: c?.delivery_cost_return ?? 0,
+            setup_cost: c?.setup_cost ?? 0,
+            dismantle_cost: c?.dismantle_cost ?? 0,
+            return_location: c?.return_location ?? null,
+            return_location_cost: c?.return_location_cost ?? 0,
+            deposit: 0,
+            ...(offer?.delivery ? { delivery_address: offer.delivery } : {}),
+            items: [
+              ...rentLines,
+              ...active.map((d) => ({
+                product_name: d.label,
+                description: d.kind === "damage" ? "Nicht steuerbarer Schadensersatz" : "Rückgabekosten laut Rückgabeprotokoll",
+                quantity: 1,
+                unit: "Pauschal",
+                // Schadensersatz ohne USt (brutto = netto), Service netto aus brutto.
+                unit_price: d.kind === "damage" ? Math.round(d.gross * 100) / 100 : netOf(d.gross),
+                discount_percent: 0,
+                vat_rate: d.kind === "damage" ? 0 : 19,
+              })),
+            ],
+            payments: [
+              ...rentPayments,
+              ...(result.offset > 0 ? [{ date: today, amount: result.offset, label: "Kaution verrechnet", reference: ref }] : []),
+            ],
             notes: summary,
             staff_name: staffName,
           },
+
         });
         const err = (data as { error?: string } | null)?.error || error?.message;
         if (err) throw new Error(`Rechnung nicht erstellt: ${err}`);
