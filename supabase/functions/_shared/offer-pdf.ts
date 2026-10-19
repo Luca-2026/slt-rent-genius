@@ -796,7 +796,8 @@ export async function generateOfferPdf(data: {
     dt(pg, "Kaution erhalten (umsatzsteuerfrei)", tx, y, font, 9, MUTED); dtr(pg, fm(ds.held), vx, y, font, 9); y -= 13;
     if (ds.offset > 0) { dt(pg, "davon mit Rückgabekosten verrechnet", tx, y, font, 9, MUTED); dtr(pg, `-${fm(ds.offset)}`, vx, y, font, 9); y -= 13; }
     if (ds.refund > 0) {
-      dt(pg, `Restkaution ${payoutText(ds)}`.slice(0, 70), tx, y, bold, 9); dtr(pg, fm(ds.refund), vx, y, bold, 9); y -= 13;
+      dt(pg, "Restkaution an Kunden erstattet", tx, y, bold, 9); dtr(pg, fm(ds.refund), vx, y, bold, 9); y -= 11;
+      dt(pg, payoutText(ds), tx, y, font, 8, MUTED); y -= 13;
     } else {
       dt(pg, "Kaution vollständig verrechnet", tx, y, font, 9, MUTED); dtr(pg, fm(0), vx, y, font, 9); y -= 13;
     }
