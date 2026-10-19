@@ -49,3 +49,16 @@ describe("Verrechnung mit Kaution", () => {
     expect(depositSettlementNote(s, 59.5)).toBe("");
   });
 });
+
+import { chargeQuantityText } from "@/lib/returnCharges";
+describe("Mengenangabe Rückgabekosten", () => {
+  it("Reinigung in 15-Minuten-Einheiten, 20 € netto", () => {
+    expect(chargeQuantityText("Reinigungsservice Bagger", 2, 23.8)).toBe("2 × 15 Min = 30 Min à 20,00 € netto je 15 Min");
+  });
+  it("Diesel in Litern", () => {
+    expect(chargeQuantityText("Kraftstoff Diesel nachgetankt – Bagger", 12.5, 2.85)).toBe("12,5 Liter à 2,39 € netto je Liter");
+  });
+  it("sonstige Posten ohne Mengenangabe", () => {
+    expect(chargeQuantityText("Mehrstunden", 3, 10)).toBeNull();
+  });
+});

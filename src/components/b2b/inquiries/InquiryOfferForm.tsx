@@ -2030,7 +2030,7 @@ export function InquiryOfferForm({
                         setPendingCharges((prev) => prev.map((c) => c.id === charge.id
                           ? { ...c, cleaningUnits: units, gross: cleaningChargeGross(units),
                               label: "Reinigung (Mehraufwand laut AGB)",
-                              description: `${units} × ${CLEANING_UNIT_MINUTES} Min (${units * CLEANING_UNIT_MINUTES} Min) × ${formatEuro(CLEANING_UNIT_GROSS)}` }
+                              description: chargeQuantityText("Reinigung", units, CLEANING_UNIT_GROSS) ?? "" }
                           : c));
                       }}
                     />
