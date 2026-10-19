@@ -376,7 +376,7 @@ Deno.serve(async (req: Request) => {
       image_url: normalizeImageUrl(i.image_url) as string | null,
     }));
     // ── Zusatzoptionen (Versicherungen etc.) als zugeordnete Zusatzposten ──
-    const servicesWithPrices: Array<{ id: string; name: string; description?: string; pricePercent: number | null; amount: number; allocations: { itemIndex: number; amount: number }[]; optional?: boolean; perDay?: number }> = items.flatMap((item, idx) =>
+    const servicesWithPrices: Array<{ id: string; name: string; description?: string; pricePercent: number | null; amount: number; allocations: { itemIndex: number; amount: number }[]; optional?: boolean; perDay?: number; days?: number }> = items.flatMap((item, idx) =>
       (item.addons ?? [])
         .filter((a) => a.amount > 0 && !a.optional)
         .map((a, ai) => ({
@@ -385,6 +385,7 @@ Deno.serve(async (req: Request) => {
           description: (addonExplanation(a, item) || undefined) as string | undefined,
           pricePercent: null,
           amount: a.amount,
+          days: a.basis === "full_period" && Number(a.days) > 0 ? Number(a.days) : undefined,
           allocations: [{ itemIndex: idx, amount: a.amount }],
         })),
     );

@@ -245,6 +245,7 @@ Deno.serve(async (req) => {
             description: addonExplanation(a, item) || undefined,
             pricePercent: null,
             amount: num(a.amount),
+            days: a?.basis === "full_period" && num(a?.days) > 0 ? num(a.days) : undefined,
             allocations: [{ itemIndex: idx, amount: num(a.amount) }],
           })),
       );
