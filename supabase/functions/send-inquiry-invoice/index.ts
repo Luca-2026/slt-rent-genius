@@ -453,7 +453,8 @@ Deno.serve(async (req: Request) => {
       rental_start: i.rental_start,
       rental_end: i.rental_end,
       vat_rate: i.vat_rate ?? 19,
-      measure: i.measure,
+      // Einheit nur ausweisen, solange Menge × Einzelpreis noch zur (ggf. von Hand geänderten) Position passt.
+      measure: i.measure && Math.abs(i.measure.quantity * i.measure.unit_price - i.quantity * i.unit_price) < 0.015 ? i.measure : undefined,
       image_url: normalizeImageUrl(i.image_url) as string | null,
     }));
 
