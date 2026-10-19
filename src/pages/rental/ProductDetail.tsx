@@ -1489,6 +1489,7 @@ export default function ProductDetail() {
                     >
                       {t("rental.rentNow")}
                     </Button>
+                    {categoryId !== "anhaenger" && (<>
                     <Link to="/b2b/login" className="block">
                       <Button size="lg" variant="outline" className="w-full md:h-9 md:text-sm lg:h-11 lg:text-base border-2 border-primary text-primary bg-background hover:bg-primary hover:text-primary-foreground hover:border-primary">
                         {t("rental.b2bConditions")}
@@ -1497,6 +1498,7 @@ export default function ProductDetail() {
                     <p className="text-[11px] leading-snug text-muted-foreground">
                       B2B-Konditionen sinnvoll ab größeren Mengen, Rahmenverträgen oder wiederkehrenden Bestellungen. Für einzelne Kurzmieten bitte direkt „{t("rental.rentNow")}" nutzen.
                     </p>
+                    </>)}
                   </div>
 
 
@@ -1596,6 +1598,7 @@ function MobileBookingCard({
         >
           {t("rental.rentNow")}
         </Button>
+        {categoryId !== "anhaenger" && (<>
         <Link to="/b2b/login" className="w-full">
           <Button size="default" variant="outline" className="w-full border-2 border-primary text-primary bg-background hover:bg-primary hover:text-primary-foreground hover:border-primary">
             {t("rental.b2bConditions")}
@@ -1604,6 +1607,7 @@ function MobileBookingCard({
         <p className="text-[11px] leading-snug text-muted-foreground">
           B2B-Konditionen sinnvoll ab größeren Mengen, Rahmenverträgen oder wiederkehrenden Bestellungen. Für einzelne Kurzmieten bitte direkt „{t("rental.rentNow")}" nutzen.
         </p>
+        </>)}
       </div>
 
       <div className="flex items-center gap-2 text-xs text-muted-foreground mt-3">
