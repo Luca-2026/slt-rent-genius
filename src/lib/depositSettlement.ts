@@ -25,6 +25,8 @@ export interface SettlementDeduction {
    * Schadensersatz (Schäden am Mietgerät, ohne USt).
    */
   kind: "service" | "damage";
+  /** Mengenangabe (z. B. „12,5 Liter à …“, „2 × 15 Min …“) für die Schlussrechnung */
+  quantity_text?: string;
   /** Abgewählt (mit Grund) – zählt nicht */
   removed?: boolean;
   reason?: string;

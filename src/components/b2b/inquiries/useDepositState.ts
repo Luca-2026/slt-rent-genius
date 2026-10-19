@@ -1,3 +1,4 @@
+import { chargeQuantityText } from "@/lib/returnCharges";
 /**
  * Kautionsstatus einer Mietanfrage für die Rechnungserstellung:
  * - Liegt eine Kaution vor (Zahlung über die Miete hinaus) und ist sie nicht abgerechnet,
@@ -78,7 +79,7 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
         // Service (Reinigung, Betankung, Mehrstunden): steuerpflichtig, 19 % USt.
         chargeLines.push({
           product_name: c.label,
-          description: protoRef(p.id),
+          description: [chargeQuantityText(c.label, Number(c.quantity) || 0, Number(c.unit_price) || 0), protoRef(p.id)].filter(Boolean).join(" · "),
           quantity: 1,
           unit: "pauschal",
           duration: 1,
@@ -125,7 +126,7 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
           const dmg = d.kind === "damage";
           chargeLines.push({
             product_name: dmg && !/^Schadensersatz/.test(d.label) ? `Schadensersatz – ${d.label}` : d.label,
-            description: dmg ? "Nicht steuerbarer Schadensersatz" : "Rückgabekosten laut Rückgabeprotokoll",
+            description: dmg ? "Nicht steuerbarer Schadensersatz" : [d.quantity_text, "Rückgabekosten laut Rückgabeprotokoll"].filter(Boolean).join(" · "),
             quantity: 1, unit: "pauschal", duration: 1,
             unit_price: dmg ? gross : netOf(gross),
             discount_percent: 0,
