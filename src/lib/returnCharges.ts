@@ -109,3 +109,23 @@ export function chargeQuantityText(label: string, quantity: number, unitPriceGro
   }
   return `${deQty(quantity)} Liter à ${de2(net)} € netto je Liter`;
 }
+
+export interface ChargeMeasure { quantity: number; unit: "liter" | "15min"; unit_price: number }
+
+/**
+ * Echte Menge und Einheit einer Rückgabeposition für die Rechnung (Liter bzw. 15-Min-Einheiten).
+ * Einzelpreis netto = Netto-Summe ÷ Menge (bis 4 Nachkommastellen), damit Menge × Preis = Summe bleibt.
+ */
+export function chargeMeasure(label: string, quantity: number, netTotal: number): ChargeMeasure | undefined {
+  const kind = chargeUnitKind(label);
+  if (!kind || !(quantity > 0) || !(netTotal > 0)) return undefined;
+  return { quantity: round2(quantity), unit: kind === "time" ? "15min" : "liter", unit_price: Math.round((netTotal / quantity) * 10000) / 10000 };
+}
+
+/** Menge aus einer gespeicherten Mengenangabe lesen („4,5 Liter à …“, „2 × 15 Min …“). */
+export function quantityFromText(text: string | null | undefined): number {
+  const m = String(text ?? "").match(/^\s*([\d.,]+)\s*(?:Liter|×)/);
+  if (!m) return 0;
+  const n = Number(m[1].replace(/\./g, "").replace(",", "."));
+  return Number.isFinite(n) ? n : 0;
+}
