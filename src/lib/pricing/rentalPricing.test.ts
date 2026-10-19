@@ -144,3 +144,12 @@ describe("Spiegelkopie", () => {
   it("Server-Kopie rechnet identisch", () =>
     expect(mirror.rentalDuration(m("2026-10-16", "10:00"), m("2026-10-19", "09:30"), "miettage")).toBe(2));
 });
+
+describe("Sonntag als Nutzungstag gewünscht", () => {
+  it("Fr 23.10. 18:00 bis Mo 26.10. 16:41 mit Sa+So = 3 Miettage", () => {
+    expect(rentalDuration({ date: "2026-10-23", time: "18:00" }, { date: "2026-10-26", time: "16:41" }, "miettage", { use_saturday: true, use_sunday: true })).toBe(3);
+  });
+  it("ohne Sonntagsnutzung bleibt es bei 2 Miettagen", () => {
+    expect(rentalDuration({ date: "2026-10-23", time: "18:00" }, { date: "2026-10-26", time: "16:41" }, "miettage")).toBe(2);
+  });
+});

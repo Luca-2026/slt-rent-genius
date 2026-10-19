@@ -125,7 +125,8 @@ export function rentalBlockCount(start: RentalMoment, end: RentalMoment): number
  * Stand 15.10., Bestätigung durch Benedikt ausstehend – bewusst isoliert,
  * damit die Regel ohne Umbau des restlichen Moduls austauschbar ist.
  *
- * Unter 5 Blöcken: Blöcke mit Beginn am Sonntag zählen nicht; ein Block mit
+ * Unter 5 Blöcken: Blöcke mit Beginn am Sonntag zählen nicht – außer der Kunde
+ * nutzt den Sonntag ausdrücklich (use_sunday); ein Block mit
  * Beginn am Montag zählt nicht, wenn die Rückgabe am selben Montag bis 09:30 erfolgt.
  * Ab 5 Blöcken: Samstag/Sonntag zählen nur mit use_saturday bzw. use_sunday.
  */
@@ -137,7 +138,7 @@ export function isUncountedBlock(
 ): boolean {
   const b = berlinParts(blockStart);
   if (totalBlocks < 5) {
-    if (b.weekday === 0) return true;
+    if (b.weekday === 0) return !opts.use_sunday;
     if (b.weekday === 1) {
       const e = berlinParts(rentalEnd);
       return e.dayNumber === b.dayNumber && e.hour * 60 + e.minute <= 9 * 60 + 30;
