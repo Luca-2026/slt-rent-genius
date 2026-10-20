@@ -43,9 +43,8 @@ describe("Serverseitige Feedback-Gutscheinprüfung", () => {
     };
     await expect(applyFeedbackCoupon(service, "0123456789ABCDEF0123", "portal", null, "customer", [{ product_name: "1t Minibagger", quantity: 3, unit_price: 81 }])).rejects.toThrow("Keine rabattfähige Mietposition");
   });
-  it("puts a personal own-domain feedback link in invoice email without coupon promotion", async () => {
-    const html = await rentalFeedbackEmail({ rpc: async () => ({ data: { token: "personal-token" }, error: null }) }, "inquiry", "invoice");
-    expect(html).toContain("https://www.slt-rental.de/feedback/mietprozess?token=personal-token");
-    expect(html).not.toMatch(/10\s*%|Gutschein|Google/);
+  it("does not issue an invitation when completed rental eligibility is absent", async () => {
+    const html = await rentalFeedbackEmail({ rpc: async () => ({ data: null, error: null }) }, "inquiry", "invoice");
+    expect(html).toBe("");
   });
 });
