@@ -35,13 +35,14 @@ export interface PipelineInquiryRow {
   offer_total_gross: number | null;
   order_confirmed_at?: string | null;
   end_date?: string | null;
+  start_date?: string | null;
   end_time?: string | null;
   offer_payload?: unknown;
 }
 
 /** Mietende nach Berliner Datum/Uhrzeit; ohne Uhrzeit erst nach Ende des Tages. */
 export function hasRentalEnded(row: PipelineInquiryRow, now: Date = new Date()): boolean {
-  const end = effectiveEnd({ end_date: row.end_date ?? null, offer_payload: row.offer_payload });
+  const end = effectiveEnd({ start_date: row.start_date, end_date: row.end_date ?? null, offer_payload: row.offer_payload });
   if (!end) return false;
   const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Berlin", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(now);
   const part = (key: string) => parts.find((p) => p.type === key)?.value ?? "";

@@ -48,7 +48,7 @@ export function AcceptedOffersPayments() {
     let active = true;
     const load = async () => {
       const now = new Date();
-      const cols = "end_date, end_time, id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, customer_name, company_name";
+      const cols = "start_date, end_date, end_time, id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, customer_name, company_name";
       const [rent, sale] = await Promise.all([
         supabase.from("rental_inquiries").select(cols).in("status", ["accepted", "done"]),
         supabase.from("sales_inquiries").select("id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, first_name, last_name, company_name").eq("status", "accepted").is("order_confirmed_at", null),

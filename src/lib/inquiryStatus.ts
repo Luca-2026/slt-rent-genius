@@ -3,6 +3,8 @@
  * B2B portal. Kept pure so it can be unit tested.
  */
 
+import { effectiveEnd, effectiveStart } from "@/lib/calendarEntries";
+
 export const INQUIRY_STATUSES = [
   "new",
   "in_progress",
@@ -84,6 +86,7 @@ type ListRow = {
   order_confirmed_at?: string | null;
   start_date?: string | null;
   end_date?: string | null;
+  offer_payload?: unknown;
   /** Übergabeprotokoll existiert bereits (Gerät ist beim Kunden). */
   handed_over?: boolean;
 };
@@ -108,7 +111,7 @@ function isConfirmedOrder(row: ListRow): boolean {
 export function isRunningRental(row: ListRow, today: string = todayIso()): boolean {
   if (!isConfirmedOrder(row)) return false;
   if (row.handed_over) return true;
-  const start = (row.start_date ?? "").slice(0, 10);
+  const start = effectiveStart({ start_date: row.start_date ?? null, offer_payload: row.offer_payload });
   if (!start) return true; // ohne Mietbeginn nicht verstecken
   return start <= today;
 }
@@ -121,7 +124,7 @@ export function isUpcomingRental(row: ListRow, today: string = todayIso()): bool
 /** Laufend, aber Mietende überschritten → Rückgabe überfällig. */
 export function isReturnOverdue(row: ListRow, today: string = todayIso()): boolean {
   if (!isRunningRental(row, today)) return false;
-  const end = (row.end_date ?? "").slice(0, 10);
+  const end = effectiveEnd({ ...row, end_date: row.end_date ?? null });
   return !!end && end < today;
 }
 

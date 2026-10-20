@@ -65,9 +65,21 @@ export function effectiveStart(inq: Pick<CalendarInquiry, "start_date" | "offer_
 }
 
 /** Effektives Mietende (späteste Position, sonst Anfrage). */
-export function effectiveEnd(inq: Pick<CalendarInquiry, "end_date" | "offer_payload">): string | null {
+export function effectiveEnd(inq: Pick<CalendarInquiry, "end_date" | "offer_payload"> & { start_date?: string | null }): string | null {
   const ends = payloadItems(inq.offer_payload).map((i) => isoDate(i.rental_end)).filter((v): v is string => !!v).sort();
-  return ends[ends.length - 1] ?? isoDate(inq.end_date);
+  const end = ends[ends.length - 1] ?? isoDate(inq.end_date);
+  const start = effectiveStart({ start_date: inq.start_date ?? null, offer_payload: inq.offer_payload });
+  if (payloadItems(inq.offer_payload).some((i) => {
+    const from = isoDate(i.rental_start), to = isoDate(i.rental_end);
+    return !!from && !!to && to < from;
+  })) return null;
+  return end && start && end < start ? null : end;
+}
+
+/** Widersprüchliche Zeiträume nicht als echte Rückgabetermine behandeln. */
+export function hasInvalidRentalPeriod(inq: { start_date?: string | null; end_date?: string | null; offer_payload?: unknown }): boolean {
+  const hasEnd = !!isoDate(inq.end_date) || payloadItems(inq.offer_payload).some((i) => !!isoDate(i.rental_end));
+  return hasEnd && !effectiveEnd({ ...inq, end_date: inq.end_date ?? null });
 }
 
 function itemsLabel(inq: CalendarInquiry): string {

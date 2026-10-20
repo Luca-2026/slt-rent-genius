@@ -2,6 +2,9 @@ import { describe, expect, it } from "vitest";
 import { hasRentalEnded, isAwaitingOfferConfirmation, rentalCloseoutTasks } from "@/lib/dashboardMetrics";
 
 describe("accepted offers on staff home", () => {
+  it("Linus: Ende vor Beginn löst am Ausgabetag keine Abschlussarbeiten aus", () => {
+    expect(hasRentalEnded({ status: "accepted", offer_total_gross: 17.85, start_date: "2026-10-20", end_date: "2026-10-13", end_time: "17:30", offer_payload: { items: [{ rental_start: "2026-10-20", rental_end: "2026-10-13" }] } }, new Date("2026-10-20T06:20:00Z"))).toBe(false);
+  });
   it("includes all 14 accepted inquiries, not only the three signed online", () => {
     const rows = Array.from({ length: 14 }, (_, index) => ({
       status: "accepted", offer_total_gross: 1.19, order_confirmed_at: null,

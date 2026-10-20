@@ -1,4 +1,5 @@
 # Roadmap – Paket 4 (Angebots-PDF & E-Mail)
+- [x] Linus Hauser: heutige Ausgabe statt falscher Überfälligkeit, Mietdaten-Warnung, gemeinsame Datumserkennung; angemeldet geprüft, 50 Tests bestanden. Gespeicherter Rückgabetermin bleibt unverändert und muss fachlich geklärt werden.
 - [x] Datumsabhängige Hinweise: beendete Mietaufträge als Abschlussarbeiten statt neue Auftragsbestätigung anzeigen; Andre Krieger angemeldet geprüft, Auftrag geöffnet, 25 Tests bestanden.
 - [x] DB: Mobil, Anrede-Form (du/sie) an Anfrage + Kundenakte, Textbausteine + Baustein offer_terms
 - [x] _shared/salutation.ts + offer-terms.ts (+ Tests)
