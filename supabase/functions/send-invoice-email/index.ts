@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { rentalFeedbackEmail } from "../_shared/feedback-coupons.ts";
 import { byForm, resolveAddressForm, salutationLine, type AddressForm } from "../_shared/salutation.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
@@ -130,6 +131,7 @@ Deno.serve(async (req: Request) => {
     const grossFormatted = Number(invoice.gross_amount).toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 
     const emailSubject = await codedSubject(serviceClient, `${t("Deine", "Ihre")} ${docLabel} ${invoiceNumber} – SLT-Rental`, { reservationId: invoice.reservation_id });
+    const feedbackHtml = isProforma ? "" : await rentalFeedbackEmail(serviceClient, "portal", invoice.id);
     const emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
@@ -152,6 +154,7 @@ Deno.serve(async (req: Request) => {
       </div>` : `<p style="font-size:14px;color:#555;line-height:1.6;">${t("Bitte beachte", "Bitte beachten Sie")} das Zahlungsziel gemäß den vereinbarten Konditionen.</p>`}
       ${invoice.due_date ? `<p style="font-size:14px;color:#555;line-height:1.6;">Fälligkeitsdatum: <strong>${new Date(invoice.due_date).toLocaleDateString("de-DE")}</strong></p>` : ""}
       <p style="font-size:14px;color:#555;line-height:1.6;">Die vollständige Rechnung ${t("findest du als PDF im Anhang sowie in deinem", "finden Sie als PDF im Anhang sowie in Ihrem")} B2B-Portal.</p>
+      ${feedbackHtml}
       <div style="text-align:center;margin:30px 0;">
         <a href="https://www.slt-rental.de/b2b/rechnungen" style="display:inline-block;background:#00507d;color:#ffffff;text-decoration:none;padding:12px 30px;border-radius:6px;font-size:14px;font-weight:600;">Zum B2B-Portal →</a>
       </div>

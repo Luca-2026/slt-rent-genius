@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { applyFeedbackCoupon } from "../_shared/feedback-coupons.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { PDFDocument, StandardFonts, rgb } from "https://esm.sh/pdf-lib@1.17.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
@@ -46,6 +47,8 @@ interface OfferRequest {
   return_location?: string;
   delivery_address?: { street?: string; postal_code?: string; city?: string };
   payment_terms?: string;
+  coupon_code?: string;
+  preview?: boolean;
 }
 
 Deno.serve(async (req: Request) => {
@@ -199,7 +202,12 @@ Deno.serve(async (req: Request) => {
     const isReverseCharge = !!(profile.tax_id && profile.vat_id_verified);
     const vatRate = isReverseCharge ? 0 : 19;
 
-    const offerItems = items.map((item) => {
+    const newOfferId = offer_id || crypto.randomUUID();
+    let coupon;
+    try { coupon = await applyFeedbackCoupon(serviceClient, body.coupon_code, "portal", offer_id || null, profile.id, items); }
+    catch (e) { return new Response(JSON.stringify({ error: (e as Error).message }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }); }
+
+    const offerItems = coupon.items.map((item) => {
       const discountedPrice = item.unit_price * (1 - (item.discount_percent || 0) / 100);
       const totalPrice = Math.round(discountedPrice * item.quantity * 100) / 100;
       let rentalStart = item.rental_start || reservation?.start_date || null;
@@ -350,7 +358,11 @@ Deno.serve(async (req: Request) => {
     let offerDate: string;
     let validUntil: string;
 
-    if (offer_id) {
+    if (body.preview === true) {
+      offerNumber = "ENTWURF";
+      offerDate = new Date().toISOString().slice(0, 10);
+      validUntil = new Date(Date.now() + valid_days * 86400000).toISOString().slice(0, 10);
+    } else if (offer_id) {
       const { data: existingOffer, error: existingError } = await serviceClient
         .from("b2b_offers")
         .select("offer_number, status")
@@ -414,7 +426,7 @@ Deno.serve(async (req: Request) => {
       vatAmount,
       grossAmount,
       isReverseCharge,
-      notes: notes || null,
+      notes: [notes, coupon.code ? `Feedback-Gutschein ${coupon.code}: ${coupon.saving.toFixed(2)} € netto Rabatt, in den Positionen enthalten.` : null].filter(Boolean).join("\n") || null,
       validDays: valid_days,
       deposit,
       additionalServices,
@@ -425,6 +437,12 @@ Deno.serve(async (req: Request) => {
       paymentTerms: paymentTerms || undefined,
     });
 
+    if (body.preview === true) return new Response(JSON.stringify({ preview: true, pdf_base64: encodeBase64(pdfBytes), gross_amount: grossAmount }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
+    if (coupon.code && !save_as_draft) {
+      const { error } = await serviceClient.rpc("reserve_rental_coupon", { p_code: coupon.code, p_kind: "portal", p_order: newOfferId, p_profile: profile.id, p_offer: offerNumber, p_until: validUntil + "T23:59:59Z" });
+      if (error) return new Response(JSON.stringify({ error: error.message }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
     // Store as PDF file
     const safeName = profile.company_name.replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/Ä/g,"Ae").replace(/Ö/g,"Oe").replace(/Ü/g,"Ue").replace(/ß/g,"ss").replace(/[^a-zA-Z0-9_\- ]/g, "_").replace(/\s+/g, "_");
     const fileName = `Angebot_SLTRental_${offerNumber}_${safeName}.pdf`;
@@ -474,6 +492,7 @@ Deno.serve(async (req: Request) => {
         .from("b2b_offers")
         .update({
           offer_number: offerNumber,
+          feedback_coupon_code: coupon.code,
           offer_date: offerDate,
           valid_until: validUntil,
           status: updateStatus,
@@ -511,6 +530,8 @@ Deno.serve(async (req: Request) => {
       const { data: newOffer, error: offerError } = await serviceClient
         .from("b2b_offers")
         .insert({
+          id: newOfferId,
+          feedback_coupon_code: coupon.code,
           reservation_id: reservation_id || null,
           b2b_profile_id: profile.id,
           offer_number: offerNumber,
