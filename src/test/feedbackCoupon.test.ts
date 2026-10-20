@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { couponLine, couponSaving, couponCategoryEligible } from "../../supabase/functions/_shared/feedback-coupon-math";
+import { applyFeedbackCoupon, rentalFeedbackEmail } from "../../supabase/functions/_shared/feedback-coupons";
 
 describe("Feedback: 10 % nächste Miete", () => {
   it("subtracts exactly 10 % of rental net, rounded to cents", () => {
@@ -20,5 +21,30 @@ describe("Feedback: 10 % nächste Miete", () => {
       expect(couponSaving({ quantity: 1, unit_price: 100 }, false)).toBe(0);
     }
     expect(couponCategoryEligible("erdbewegung")).toBe(true);
+  });
+});
+
+describe("Serverseitige Feedback-Gutscheinprüfung", () => {
+  it("rejects a foreign customer before changing a rental price", async () => {
+    const service = { rpc: async () => ({ error: { message: "Gutschein gehört zu einem anderen Kunden" } }) };
+    await expect(applyFeedbackCoupon(service, "0123456789ABCDEF0123", "portal", null, "other-customer", [{ product_name: "1t Minibagger", quantity: 3, unit_price: 81 }])).rejects.toThrow("anderen Kunden");
+  });
+  it("does not grant a discount when coupon is already redeemed", async () => {
+    const service = { rpc: async () => ({ error: { message: "Gutschein ist bereits eingelöst oder gesperrt" } }) };
+    await expect(applyFeedbackCoupon(service, "0123456789ABCDEF0123", "portal", null, "customer", [{ product_name: "1t Minibagger", quantity: 3, unit_price: 81 }])).rejects.toThrow("bereits eingelöst");
+  });
+  it("keeps persisted customer special prices even if client omits the marker", async () => {
+    const service = {
+      rpc: async () => ({ error: null }),
+      from: (table: string) => {
+        const query = { select: () => query, eq: () => query, limit: () => query, maybeSingle: async () => ({ data: table === "b2b_customer_prices" ? { id: "special-price" } : { name: "1t Minibagger", category: "erdbewegung" } }) };
+        return query;
+      },
+    };
+    await expect(applyFeedbackCoupon(service, "0123456789ABCDEF0123", "portal", null, "customer", [{ product_name: "1t Minibagger", quantity: 3, unit_price: 81 }])).rejects.toThrow("Keine rabattfähige Mietposition");
+  });
+  it("does not issue an invitation when completed rental eligibility is absent", async () => {
+    const html = await rentalFeedbackEmail({ rpc: async () => ({ data: null, error: null }) }, "inquiry", "invoice");
+    expect(html).toBe("");
   });
 });

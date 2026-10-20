@@ -3,7 +3,13 @@ import { couponCategoryEligible, couponLine, couponSaving, type CouponLine } fro
 export async function applyFeedbackCoupon<T extends CouponLine & { product_name: string; product_slug?: string }>(
   service: any, code: unknown, kind: "inquiry" | "portal", orderId: string | null, profileId: string | null, items: T[],
 ): Promise<{ items: T[]; code: string | null; saving: number }> {
-  if (code === undefined || code === null || code === "") return { items, code: null, saving: 0 };
+  if (code === undefined || code === null || code === "") {
+    if (kind === "inquiry" && orderId) {
+      const { data } = await service.from("rental_inquiries").select("feedback_coupon_code,offer_accepted_at").eq("id", orderId).maybeSingle();
+      if (data?.feedback_coupon_code && data.offer_accepted_at) throw new Error("Ein angenommenes Gutscheinangebot kann nicht nachträglich geändert werden.");
+    }
+    return { items, code: null, saving: 0 };
+  }
   if (typeof code !== "string" || !/^[A-F0-9]{20}$/i.test(code.trim())) throw new Error("Ungültiger Gutscheincode");
   const normalized = code.trim().toUpperCase();
   const { error } = await service.rpc("check_rental_coupon", { p_code: normalized, p_kind: kind, p_order: orderId, p_profile: profileId });

@@ -1247,6 +1247,7 @@ export function InquiryOfferForm({
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewing, setPreviewing] = useState(false);
   const [previewedKey, setPreviewedKey] = useState<string | null>(null);
+  const [couponPreviewTotal, setCouponPreviewTotal] = useState<number | null>(null);
   useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
 
   const preview = async () => {
@@ -1273,6 +1274,7 @@ export function InquiryOfferForm({
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     setPreviewUrl(URL.createObjectURL(new Blob([bytes], { type: "application/pdf" })));
     setPreviewedKey(JSON.stringify(previewBody));
+    setCouponPreviewTotal((data as any)?.totals?.grossAmount ?? null);
   };
   // Versand erst nach Vorschau des aktuellen Stands (jede Änderung verlangt eine neue Vorschau).
   const previewOk = matchesDocumentPreview(previewedKey, buildBody());
@@ -2513,6 +2515,7 @@ export function InquiryOfferForm({
             <DialogTitle>{isInvoice ? "Rechnungsvorschau" : "PDF-Vorschau"}</DialogTitle>
             <DialogDescription>{isInvoice ? "Unverbindlicher Entwurf ohne Rechnungsnummer. Keine Rechnung wurde ausgestellt und nichts verschickt." : "So sieht das Angebot für den Kunden aus. Die Angebotsnummer wird erst beim Senden vergeben – nichts wurde verschickt."}</DialogDescription>
           </DialogHeader>
+          {!isInvoice && couponCode && couponPreviewTotal !== null && <p className="text-sm font-semibold">Gesamtbetrag mit geprüftem Gutschein: {formatEuro(couponPreviewTotal)} brutto</p>}
           {previewUrl && <PdfPagesPreview url={previewUrl} className="min-h-0 flex-1 w-full overflow-y-auto rounded border border-border bg-muted p-3" />}
           <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
             {previewUrl && (
