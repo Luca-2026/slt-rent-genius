@@ -18,5 +18,5 @@ export function couponSaving(line: CouponLine, eligible: boolean): number {
 }
 
 export function couponCategoryEligible(category: string): boolean {
-  return !/anh[aä]nger|trailer|versicherung|service|reinigung|kraftstoff|diesel|schaden|transport/i.test(category);
+  return !/anh(?:a|ä|ae)nger|trailer|versicherung|service|reinigung|kraftstoff|diesel|schaden|transport/i.test(category);
 }

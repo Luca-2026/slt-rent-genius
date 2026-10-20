@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { SEO } from "@/components/SEO";
@@ -72,11 +72,37 @@ export default function FeedbackMietprozess() {
   const [googleReviewDone, setGoogleReviewDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  const personalToken = searchParams.get("token");
+  const [linkReady, setLinkReady] = useState(!personalToken);
+  const [linkError, setLinkError] = useState("");
+  const [couponCode, setCouponCode] = useState<string | null>(null);
+  const [couponStatus, setCouponStatus] = useState<string | null>(null);
+  useEffect(() => {
+    if (!personalToken) return;
+    let cancelled = false;
+    supabase.functions.invoke("rental-feedback", { body: { action: "info", token: personalToken } }).then(({ data, error }) => {
+      if (cancelled) return;
+      if (error || data?.error) { setLinkError(data?.error ?? "Dieser Feedback-Link konnte nicht geöffnet werden."); return; }
+      setOrderRef(data.order_ref); setLocation(data.location); setRentedItems(data.rented_items);
+      setCouponCode(data.coupon_code); setCouponStatus(data.coupon_status); setDone(data.submitted); setLinkReady(true);
+    });
+    return () => { cancelled = true; };
+  }, [personalToken]);
 
   const answeredCount = useMemo(() => Object.keys(ratings).length, [ratings]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (personalToken) {
+      if (!linkReady || linkError) return;
+      setSubmitting(true);
+      const { data, error } = await supabase.functions.invoke("rental-feedback", { body: { action: "submit", token: personalToken, ratings, answers: { ...answers, gesamt_kommentar: freeText.trim() }, recommend } });
+      setSubmitting(false);
+      if (error || data?.error) { toast({ title: "Feedback nicht gespeichert", description: data?.error ?? error?.message, variant: "destructive" }); return; }
+      setCouponCode(data.coupon_code); setCouponStatus(data.coupon_status); setDone(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
     if (!orderRef.trim()) {
       toast({
         title: "Buchungsnummer fehlt",
@@ -188,11 +214,10 @@ export default function FeedbackMietprozess() {
           </p>
           <div className="mt-5 rounded-lg bg-accent/15 border border-accent/40 p-4">
             <p className="text-primary-foreground font-semibold flex items-center gap-2">
-              <Gift className="h-5 w-5 text-accent" /> 10 % Cashback-Gutschein für deine nächste Miete
+              <Gift className="h-5 w-5 text-accent" /> {personalToken ? "10 % Gutschein für deine nächste Miete" : "Deine Rückmeldung"}
             </p>
             <p className="text-primary-foreground/80 text-sm mt-1">
-              Feedback ausfüllen + Google-Bewertung abgeben = du erhältst nach unserer Prüfung deinen persönlichen
-              10-%-Gutscheincode per E-Mail. Buchungsnummer und E-Mail-Adresse sind dafür Pflicht.
+              {personalToken ? "Nach deinem Feedback wird dein persönlicher Gutschein aktiviert – insgesamt einmal pro Kunde, unabhängig von deiner Bewertung. Keine Google-Bewertung erforderlich." : "Für eine Gutscheinberechtigung ist der persönliche Feedback-Link zu deinem abgeschlossenen Mietauftrag erforderlich."}
             </p>
           </div>
         </div>
@@ -200,7 +225,7 @@ export default function FeedbackMietprozess() {
 
       <section className="py-8 md:py-12">
         <div className="section-container max-w-3xl">
-          {done ? (
+          {linkError ? <p role="alert" className="text-destructive">{linkError}</p> : !linkReady ? <p>Feedback wird geladen …</p> : done ? (
             <Card>
               <CardContent className="p-8 text-center">
                 <CheckCircle2 className="h-12 w-12 text-accent mx-auto mb-4" />
@@ -210,13 +235,12 @@ export default function FeedbackMietprozess() {
                 </p>
                 <div className="mt-6 rounded-lg border border-accent/50 bg-accent/10 p-4 text-left">
                   <p className="font-semibold flex items-center gap-2">
-                    <Gift className="h-5 w-5 text-accent" /> Dein 10-%-Cashback-Gutschein
+                    <Gift className="h-5 w-5 text-accent" /> {couponCode ? "Dein 10-%-Gutschein" : "Feedback gespeichert"}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Falls noch nicht geschehen: Gib jetzt deine Google-Bewertung ab. Nach unserer Prüfung erhältst du
-                    deinen persönlichen Gutscheincode per E-Mail.
+                    {couponCode ? `Code: ${couponCode} · ${couponStatus === "active" ? "Aktiv für deine nächste Miete" : couponStatus === "reserved" ? "In einem Angebot reserviert" : couponStatus === "redeemed" ? "Bereits eingelöst" : "Gesperrt"}` : personalToken ? "Du hast den einmaligen Feedback-Gutschein bereits bei einer früheren Rückmeldung erhalten." : "Vielen Dank für deine Rückmeldung."}
                   </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div className="hidden">
                     <a href={GOOGLE_REVIEW_LINKS.krefeld} target="_blank" rel="noopener noreferrer">
                       <Button variant="outline" size="sm" className="gap-2">
                         <ExternalLink className="h-4 w-4" /> Krefeld bewerten
@@ -233,7 +257,7 @@ export default function FeedbackMietprozess() {
             </Card>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
-              <Card>
+              {!personalToken && <Card>
                 <CardContent className="p-5 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="fb-location">
@@ -321,7 +345,7 @@ export default function FeedbackMietprozess() {
                     />
                   </div>
                 </CardContent>
-              </Card>
+              </Card>}
 
               {FEEDBACK_QUESTIONS.map((q) => (
                 <Card key={q.key}>
@@ -393,7 +417,7 @@ export default function FeedbackMietprozess() {
                 </CardContent>
               </Card>
 
-              <Card className="border-accent/50">
+              {false && <Card className="border-accent/50">
                 <CardContent className="p-5 md:p-6">
                   <h2 className="font-semibold text-foreground flex items-center gap-2">
                     <Gift className="h-5 w-5 text-accent" /> Letzter Schritt: Google-Bewertung & 10 % Cashback
@@ -423,7 +447,7 @@ export default function FeedbackMietprozess() {
                     <span>Ich habe eine Google-Bewertung abgegeben und möchte den 10-%-Gutschein erhalten.</span>
                   </label>
                 </CardContent>
-              </Card>
+              </Card>}
 
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                 <Button

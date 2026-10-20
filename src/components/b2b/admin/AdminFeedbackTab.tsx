@@ -337,7 +337,7 @@ export default function AdminFeedbackTab() {
               </div>
             )}
 
-            <div className="rounded-md border border-accent/50 bg-accent/5 p-3 space-y-2">
+            {false && <div className="rounded-md border border-accent/50 bg-accent/5 p-3 space-y-2">
               <p className="text-xs font-medium flex items-center gap-1.5">
                 <Gift className="h-3.5 w-3.5 text-accent" /> 10 %-Cashback-Gutschein
                 {r.voucher_sent_at && (
@@ -366,7 +366,7 @@ export default function AdminFeedbackTab() {
               {!r.customer_email && (
                 <p className="text-xs text-muted-foreground">Keine E-Mail-Adresse hinterlegt – Versand nicht möglich.</p>
               )}
-            </div>
+            </div>}
           </CardContent>
         </Card>
       ))}
