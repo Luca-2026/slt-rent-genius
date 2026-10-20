@@ -8,18 +8,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Star, CheckCircle2, Loader2, Gift, ExternalLink } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Star, CheckCircle2, Loader2, Gift } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { FEEDBACK_QUESTIONS } from "@/data/feedbackQuestions";
 import { cn } from "@/lib/utils";
-import { getReviewUrl } from "@/components/reviews/GoogleReviews";
-/** Direktlinks zum Google-Bewertungsfenster je Standort (Place-IDs aus GoogleReviews). */
-const GOOGLE_REVIEW_LINKS = {
-  krefeld: getReviewUrl("krefeld") ?? "",
-  bonn: getReviewUrl("bonn") ?? "",
-} as const;
 
 
 function StarRating({
@@ -69,7 +62,6 @@ export default function FeedbackMietprozess() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [freeText, setFreeText] = useState("");
-  const [googleReviewDone, setGoogleReviewDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
   const personalToken = searchParams.get("token");
@@ -106,7 +98,7 @@ export default function FeedbackMietprozess() {
     if (!orderRef.trim()) {
       toast({
         title: "Buchungsnummer fehlt",
-        description: "Bitte gib deine Rentware-Buchungsnummer ein – nur so können wir den Gutschein zuordnen.",
+        description: "Bitte gib deine Buchungsnummer ein – nur so können wir den Gutschein zuordnen.",
         variant: "destructive",
       });
       return;
@@ -130,7 +122,7 @@ export default function FeedbackMietprozess() {
     if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) {
       toast({
         title: "E-Mail erforderlich",
-        description: "Bitte gib eine gültige E-Mail-Adresse an – dorthin senden wir deinen Gutscheincode.",
+        description: "Bitte gib eine gültige E-Mail-Adresse für Rückfragen an.",
         variant: "destructive",
       });
       return;
@@ -161,7 +153,7 @@ export default function FeedbackMietprozess() {
       answers: { ...answers, gesamt_kommentar: freeText.trim().slice(0, 3000) },
       recommend_score: recommend,
       avg_rating: avg,
-      google_review_confirmed: googleReviewDone,
+      google_review_confirmed: false,
     });
     setSubmitting(false);
 
@@ -240,18 +232,7 @@ export default function FeedbackMietprozess() {
                   <p className="text-sm text-muted-foreground mt-1">
                     {couponCode ? `Code: ${couponCode} · ${couponStatus === "active" ? "Aktiv für deine nächste Miete" : couponStatus === "reserved" ? "In einem Angebot reserviert" : couponStatus === "redeemed" ? "Bereits eingelöst" : "Gesperrt"}` : personalToken ? "Du hast den einmaligen Feedback-Gutschein bereits bei einer früheren Rückmeldung erhalten." : "Vielen Dank für deine Rückmeldung."}
                   </p>
-                  <div className="hidden">
-                    <a href={GOOGLE_REVIEW_LINKS.krefeld} target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" size="sm" className="gap-2">
-                        <ExternalLink className="h-4 w-4" /> Krefeld bewerten
-                      </Button>
-                    </a>
-                    <a href={GOOGLE_REVIEW_LINKS.bonn} target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" size="sm" className="gap-2">
-                        <ExternalLink className="h-4 w-4" /> Bonn bewerten
-                      </Button>
-                    </a>
-                  </div>
+
                 </div>
               </CardContent>
             </Card>
@@ -288,7 +269,7 @@ export default function FeedbackMietprozess() {
                   </div>
                   <div>
                     <Label htmlFor="fb-ref">
-                      Rentware-Buchungsnummer <span className="text-destructive">*</span>
+                      Buchungsnummer <span className="text-destructive">*</span>
                     </Label>
                     <Input
                       id="fb-ref"
@@ -331,7 +312,7 @@ export default function FeedbackMietprozess() {
                   </div>
                   <div className="md:col-span-2">
                     <Label htmlFor="fb-email">
-                      E-Mail für Gutschein & Rückfragen <span className="text-destructive">*</span>
+                      E-Mail für Rückfragen <span className="text-destructive">*</span>
                     </Label>
                     <Input
                       id="fb-email"
@@ -417,37 +398,7 @@ export default function FeedbackMietprozess() {
                 </CardContent>
               </Card>
 
-              {false && <Card className="border-accent/50">
-                <CardContent className="p-5 md:p-6">
-                  <h2 className="font-semibold text-foreground flex items-center gap-2">
-                    <Gift className="h-5 w-5 text-accent" /> Letzter Schritt: Google-Bewertung & 10 % Cashback
-                  </h2>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Gib zusätzlich eine Google-Bewertung ab. Sobald wir dein Feedback geprüft und freigegeben haben,
-                    senden wir dir deinen persönlichen 10-%-Gutscheincode per E-Mail zu.
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <a href={GOOGLE_REVIEW_LINKS.krefeld} target="_blank" rel="noopener noreferrer">
-                      <Button type="button" variant="outline" className="gap-2">
-                        <ExternalLink className="h-4 w-4" /> Google-Bewertung Krefeld
-                      </Button>
-                    </a>
-                    <a href={GOOGLE_REVIEW_LINKS.bonn} target="_blank" rel="noopener noreferrer">
-                      <Button type="button" variant="outline" className="gap-2">
-                        <ExternalLink className="h-4 w-4" /> Google-Bewertung Bonn
-                      </Button>
-                    </a>
-                  </div>
-                  <label className="mt-4 flex items-start gap-3 text-sm cursor-pointer">
-                    <Checkbox
-                      checked={googleReviewDone}
-                      onCheckedChange={(v) => setGoogleReviewDone(v === true)}
-                      className="mt-0.5"
-                    />
-                    <span>Ich habe eine Google-Bewertung abgegeben und möchte den 10-%-Gutschein erhalten.</span>
-                  </label>
-                </CardContent>
-              </Card>}
+
 
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                 <Button
