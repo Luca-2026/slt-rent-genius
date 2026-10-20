@@ -5747,6 +5747,20 @@ export type Database = {
       is_authorized_person: { Args: { _user_id: string }; Returns: boolean }
       is_staff_member: { Args: { _user_id: string }; Returns: boolean }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
+      list_rental_feedback_invitations: {
+        Args: never
+        Returns: {
+          created_at: string
+          customer_email: string
+          id: string
+          invoice_id: string
+          location: string
+          order_ref: string
+          source_kind: string
+          source_order_id: string
+          submitted_at: string
+        }[]
+      }
       log_admin_login: { Args: never; Returns: undefined }
       mark_deposit_payout_done: {
         Args: { _settlement_id: string }
