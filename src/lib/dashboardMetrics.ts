@@ -28,15 +28,35 @@ export interface PortalInvoiceRow {
   due_date?: string | null;
 }
 
+import { effectiveEnd } from "@/lib/calendarEntries";
+
 export interface PipelineInquiryRow {
   status: string;
   offer_total_gross: number | null;
   order_confirmed_at?: string | null;
+  end_date?: string | null;
+  end_time?: string | null;
+  offer_payload?: unknown;
 }
 
-/** All accepted inquiries awaiting confirmation, regardless of acceptance channel or age. */
-export function isAwaitingOfferConfirmation(row: PipelineInquiryRow): boolean {
-  return row.status === "accepted" && !row.order_confirmed_at;
+/** Mietende nach Berliner Datum/Uhrzeit; ohne Uhrzeit erst nach Ende des Tages. */
+export function hasRentalEnded(row: PipelineInquiryRow, now: Date = new Date()): boolean {
+  const end = effectiveEnd({ end_date: row.end_date ?? null, offer_payload: row.offer_payload });
+  if (!end) return false;
+  const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Berlin", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(now);
+  const part = (key: string) => parts.find((p) => p.type === key)?.value ?? "";
+  const day = `${part("year")}-${part("month")}-${part("day")}`;
+  const time = /^\d{2}:\d{2}/.test(row.end_time ?? "") ? row.end_time?.slice(0, 5) : null;
+  return end < day || (end === day && !!time && time <= `${part("hour")}:${part("minute")}`);
+}
+
+/** Acceptance age is irrelevant; an ended rental belongs to closeout instead. */
+export function isAwaitingOfferConfirmation(row: PipelineInquiryRow, now: Date = new Date()): boolean {
+  return row.status === "accepted" && !row.order_confirmed_at && !hasRentalEnded(row, now);
+}
+
+export function rentalCloseoutTasks(state: { deliverySigned: boolean; returnSigned: boolean; invoiced: boolean }): string[] {
+  return [!state.deliverySigned && "Übergabeprotokoll fehlt", !state.returnSigned && "Rückgabe klären · Rückgabeprotokoll fehlt", !state.invoiced && "Schlussrechnung fehlt"].filter((v): v is string => typeof v === "string");
 }
 
 const n = (v: number | null | undefined) => (typeof v === "number" && isFinite(v) ? v : Number(v) || 0);
