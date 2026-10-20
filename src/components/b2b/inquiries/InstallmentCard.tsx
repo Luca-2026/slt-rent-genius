@@ -1,4 +1,7 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { PdfPagesPreview } from "@/components/b2b/PdfPagesPreview";
+import { invokeWithAuth } from "@/lib/invokeWithAuth";
+import { matchesDocumentPreview } from "../../../../supabase/functions/_shared/invoice-preview";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,7 +11,7 @@ import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CalendarClock, FileCheck2, Receipt } from "lucide-react";
+import { CalendarClock, Eye, FileCheck2, Receipt } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { formatEuro, VAT_RATE } from "./offerMath";
@@ -68,6 +71,10 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
   const [terms, setTerms] = useState(inquiry.customer_kind === "business" ? "net_14" : "vorkasse");
   const [notes, setNotes] = useState("");
   const [sending, setSending] = useState(false);
+  const [previewing, setPreviewing] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewedKey, setPreviewedKey] = useState<string | null>(null);
+  useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
 
   if (!inquiry.offer_number) return null;
 
@@ -108,6 +115,8 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
     setMode("amount");
     setValue(suggestion ? String(suggestion) : "");
     setNotes("");
+    setPreviewedKey(null);
+    setPreviewUrl(null);
     setOpen(true);
   };
 
@@ -116,11 +125,7 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
   const vat = r2(net * VAT_RATE / 100);
   const problem = validateInstallment(net, { openEnded, orderNet, alreadyBilledNet: billedNet });
 
-  const send = async () => {
-    if (problem || sending) return;
-    setSending(true);
-    const { data, error } = await supabase.functions.invoke("send-inquiry-invoice", {
-      body: {
+  const buildBody = () => ({
         invoice_kind: "installment",
         inquiry_type: inquiryType,
         inquiry_id: inquiry.id,
@@ -131,8 +136,26 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
         payment_terms: terms,
         notes,
         staff_name: staffName,
-      },
-    });
+  });
+  const previewOk = matchesDocumentPreview(previewedKey, buildBody());
+  const preview = async () => {
+    if (problem || previewing || sending) return;
+    const body = buildBody();
+    setPreviewing(true);
+    const { data, error } = await invokeWithAuth("send-inquiry-invoice", { ...body, preview: true });
+    setPreviewing(false);
+    if (error || !data?.pdf_base64) {
+      toast({ title: "Vorschau nicht möglich", description: data?.error || error?.message, variant: "destructive" });
+      return;
+    }
+    const bytes = Uint8Array.from(atob(data.pdf_base64), (c) => c.charCodeAt(0));
+    setPreviewUrl(URL.createObjectURL(new Blob([bytes], { type: "application/pdf" })));
+    setPreviewedKey(JSON.stringify(body));
+  };
+  const send = async () => {
+    if (problem || sending || !previewOk) return;
+    setSending(true);
+    const { data, error } = await invokeWithAuth("send-inquiry-invoice", buildBody());
     setSending(false);
     const err = (data as { error?: string } | null)?.error || error?.message;
     if (err) {
@@ -266,7 +289,7 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
               <Select value={terms} onValueChange={setTerms}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {PAYMENT_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+                  {PAYMENT_OPTIONS.filter((o) => inquiry.customer_kind === "business" || o.value === "vorkasse").map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
@@ -283,8 +306,16 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>Abbrechen</Button>
-            <Button onClick={send} disabled={!!problem || sending}>{sending ? "Wird gesendet …" : "Erstellen und senden"}</Button>
+            <Button variant="outline" onClick={preview} disabled={!!problem || previewing || sending}><Eye className="mr-2 h-4 w-4" />{previewing ? "Vorschau wird erstellt …" : "PDF-Vorschau anzeigen"}</Button>
+            <Button onClick={send} disabled={!!problem || sending || !previewOk}>{sending ? "Wird gesendet …" : "Final erstellen und senden"}</Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={!!previewUrl} onOpenChange={(v) => { if (!v) setPreviewUrl(null); }}>
+        <DialogContent className="flex h-[90vh] w-[calc(100vw-1rem)] max-w-4xl flex-col">
+          <DialogHeader><DialogTitle>Abschlagsrechnung – Vorschau</DialogTitle><DialogDescription>Entwurf ohne Rechnungsnummer. Nichts wurde ausgestellt oder versendet.</DialogDescription></DialogHeader>
+          {previewUrl && <PdfPagesPreview url={previewUrl} className="min-h-0 flex-1 overflow-y-auto" />}
+          <DialogFooter><Button variant="outline" onClick={() => setPreviewUrl(null)}>Zurück zum Bearbeiten</Button><Button disabled={!previewOk || sending} onClick={() => { setPreviewUrl(null); void send(); }}>Final erstellen und senden</Button></DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

@@ -1,4 +1,5 @@
 # Inquiries
+- Invoice and installment editors require a matching current PDF preview before final sending; send-inquiry-invoice preview uses the final renderer but returns before number allocation, storage, invoices, billing markers, schedule changes and emails.
 - Angebots-Paket 3b: Gruppen, Zusatzfelder, Auftragsart, Mengeneinheit, Overrides und optionale Versicherungsstufen nur als Felder im offer_payload (Helfer in offerMath.ts / _shared/inquiry-offer-math.ts, getestet); optionale Addons (optional = true) zählen nirgends in Summen und entfallen in Rechnungen – alte Angebote ohne die Felder bleiben gültig. Zusatzfelder (Besteller, Kostenstelle, Bauvorhaben) stehen im PDF-Infoblock. AdminCreateOfferDialog.tsx kennt Gruppen, Auftragsart und Zusatzfelder noch nicht.
 - InquiryOfferForm gliedert sich in nummerierte EditorSection-Blöcke (1 Positionen, 2 Logistik, 3 Kaution/Zahlung, 4 Angaben/Hinweis, dann Summe) – neue Felder in den passenden Block statt als lose Kachel, damit Reihenfolge und Fluchtlinien einheitlich bleiben.
 - offerPayloadToLines liest articles/duration/unit_code, wenn vorhanden (quantity = Stück × Dauer); splitQuantity nur für Altangebote.
