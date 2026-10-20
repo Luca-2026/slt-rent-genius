@@ -278,6 +278,88 @@ export default function StaffHome() {
             <ActionStat label="Verkaufsanfragen" value={openSales} to="/b2b/verkaufsanfragen" icon={ShoppingCart} />
           </div>
 
+          {/* 2. Heute + Finanzen – Kalender führt die Startseite an */}
+          <div className={cn("grid gap-5 [&>*]:min-w-0", isAdmin && "lg:grid-cols-5")}>
+            <Panel
+              title="Heute"
+              icon={CalendarCheck}
+              className={cn(isAdmin && "lg:col-span-3")}
+              action={
+                <div className="flex items-center gap-2">
+                  <Select value={activeDayLocation} onValueChange={(v) => setDayLocation(v as DayLocationFilter)}>
+                    <SelectTrigger className="h-8 w-[11.5rem] max-w-[55%] text-xs" aria-label="Standort für Übergaben und Rückgaben">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {DAY_LOCATION_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                  <Link to="/b2b/kalender" className="flex h-8 shrink-0 items-center gap-1 rounded-md border border-border px-2.5 text-xs font-medium text-primary hover:bg-muted">
+                    <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />Kalender
+                  </Link>
+                </div>
+              }
+            >
+              <div className="divide-y divide-border">
+                <DayEntries title="Übergaben" icon={CalendarCheck} entries={pickups} empty={activeDayLocation === "all" ? "Keine Übergaben geplant." : "Keine Übergaben an diesem Standort."} />
+                {invalidPeriods.length > 0 && (
+                  <section className="border-l-4 border-accent bg-accent/5 px-4 py-3" aria-label="Mietdaten prüfen">
+                    <h3 className="text-sm font-semibold text-foreground">Mietdaten prüfen</h3>
+                    {invalidPeriods.map((r) => (
+                      <Link key={r.id} to={`/b2b/mietanfragen/${r.id}`} className="mt-2 flex items-start gap-2 text-sm text-foreground hover:underline">
+                        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                        <span className="min-w-0 break-words"><strong>{r.company_name || r.customer_name}</strong> · {r.product_name}<span className="block text-xs text-muted-foreground">Mietende liegt vor Mietbeginn – Rückgabetermin klären.</span></span>
+                      </Link>
+                    ))}
+                  </section>
+                )}
+                <OverdueReturns rows={overdueReturns} today={today} />
+                <DayEntries title="Rückgaben" icon={CalendarX} entries={returns} empty={activeDayLocation === "all" ? "Keine Rückgaben geplant." : "Keine Rückgaben an diesem Standort."} />
+                <div className="px-4 py-3">
+                  <p className="mb-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <ListTodo className="h-3.5 w-3.5" aria-hidden="true" />Fällige Aufgaben<span className="ml-auto rounded-full bg-muted px-2 py-0.5 text-[11px] text-foreground">{dueTodos.length}</span>
+                  </p>
+                  {dueTodos.length === 0 ? <p className="py-1 text-sm text-muted-foreground">Keine fälligen Aufgaben.</p> : (
+                    <ul className="-mx-2">
+                      {dueTodos.map((t) => (
+                        <li key={t.id}>
+                          <Link to="/b2b/aufgaben" className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted">
+                            <span className="min-w-0 flex-1 truncate">{t.title}</span>
+                            {t.due_date!.slice(0, 10) < today && <span className="flex shrink-0 items-center gap-1 text-xs text-destructive"><AlertTriangle className="h-3 w-3" aria-hidden="true" />überfällig</span>}
+                            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            </Panel>
+
+            {isAdmin && (
+              <Panel title="Finanzen" icon={TrendingUp} className="lg:col-span-2">
+                <p className="px-4 pt-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Umsatz fakturiert · netto</p>
+                <div className="grid grid-cols-2 gap-px bg-border sm:grid-cols-4 lg:grid-cols-2 m-4 mt-2 overflow-hidden rounded-lg border border-border">
+                  {[
+                    ["Heute", rev.day], ["Woche", rev.week], [monthName, rev.month], [String(now.getFullYear()), rev.year],
+                  ].map(([l, v]) => (
+                    <Link key={String(l)} to="/b2b/anfrage-rechnungen" className="bg-card px-3 py-2.5 hover:bg-muted">
+                      <span className="block text-xs capitalize text-muted-foreground">{l}</span>
+                      <span className="block text-lg font-bold tabular-nums text-foreground">{formatEuro(Number(v))}</span>
+                    </Link>
+                  ))}
+                </div>
+                <p className="border-t border-border px-4 pt-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Pipeline & Forderungen · brutto</p>
+                <div className="py-1">
+                  <MoneyRow label="Angebote offen" hint={`${pipe.offeredCount} gesendet`} value={formatEuro(pipe.offered)} to="/b2b/mietanfragen?status=offer_sent" />
+                  <MoneyRow label="Beauftragt, nicht abgerechnet" hint={`${pipe.acceptedCount} Aufträge`} value={formatEuro(pipe.accepted)} to="/b2b/mietanfragen?status=accepted" />
+                  <MoneyRow label="Offene Forderungen" value={formatEuro(rec.open)} to="/b2b/anfrage-rechnungen" />
+                  <MoneyRow label="davon überfällig" hint={`${rec.overdueCount} Rechnungen`} value={formatEuro(rec.overdue)} to="/b2b/anfrage-rechnungen" tone={rec.overdue > 0 ? "danger" : undefined} />
+                </div>
+              </Panel>
+            )}
+          </div>
+
           <AcceptedOffersPayments />
 
           <DepositSettlementsDue location={activeDayLocation} />
