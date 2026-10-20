@@ -1,5 +1,5 @@
 # Roadmap – Paket 4 (Angebots-PDF & E-Mail)
-- [ ] Rechnungsvorschau vor Versand: ohne Nummernvergabe/Beleg/Versand, aktueller Stand vor Freigabe; Miet-/Verkaufs-, Schluss- und Abschlagsrechnungen testen.
+- [x] Rechnungsvorschau in Miet-/Verkaufsanfragen inkl. Schluss-/Abschlagseditor: ohne Nummernvergabe/Beleg/Versand, aktueller Stand vor Freigabe. Luca-Vorschau angemeldet erzeugt und angezeigt, Rückkehr und Änderungssperre geprüft; 15 Tests bestanden. Keine finale Rechnung versandt; separate Portal-Rechnungsverwaltung unverändert.
 - [x] Linus Hauser: heutige Ausgabe statt falscher Überfälligkeit, Mietdaten-Warnung, gemeinsame Datumserkennung; angemeldet geprüft, 50 Tests bestanden. Gespeicherter Rückgabetermin bleibt unverändert und muss fachlich geklärt werden.
 - [x] Datumsabhängige Hinweise: beendete Mietaufträge als Abschlussarbeiten statt neue Auftragsbestätigung anzeigen; Andre Krieger angemeldet geprüft, Auftrag geöffnet, 25 Tests bestanden.
 - [x] DB: Mobil, Anrede-Form (du/sie) an Anfrage + Kundenakte, Textbausteine + Baustein offer_terms
