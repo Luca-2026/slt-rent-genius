@@ -4,10 +4,16 @@ import { BellRing, CheckCircle2, ChevronDown, ChevronRight, ChevronUp } from "lu
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
-import { isAwaitingOfferConfirmation } from "@/lib/dashboardMetrics";
+import { hasRentalEnded, rentalCloseoutTasks, isAwaitingOfferConfirmation } from "@/lib/dashboardMetrics";
 import { isPaymentOverdue, paymentDeadline } from "../../../../supabase/functions/_shared/payment-followup";
 
+import { effectiveEnd } from "@/lib/calendarEntries";
+import { Button } from "@/components/ui/button";
+
 type Row = {
+  ended: boolean;
+  end: string | null;
+  tasks: string[];
   inquiryId: string;
   table: string;
   offer: string;
@@ -41,25 +47,36 @@ export function AcceptedOffersPayments() {
   useEffect(() => {
     let active = true;
     const load = async () => {
-      const cols = "id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, customer_name, company_name";
+      const now = new Date();
+      const cols = "end_date, end_time, id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, customer_name, company_name";
       const [rent, sale] = await Promise.all([
-        supabase.from("rental_inquiries").select(cols).eq("status", "accepted").is("order_confirmed_at", null),
+        supabase.from("rental_inquiries").select(cols).in("status", ["accepted", "done"]),
         supabase.from("sales_inquiries").select("id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, first_name, last_name, company_name").eq("status", "accepted").is("order_confirmed_at", null),
       ]);
       if (rent.error || sale.error) { if (active) setError(true); return; }
       const list = [
         ...(rent.data ?? []).map((i) => ({ ...i, table: "rental_inquiries" })),
         ...(sale.data ?? []).map((i) => ({ ...i, table: "sales_inquiries" })),
-      ].filter(isAwaitingOfferConfirmation);
+      ].filter((i) => isAwaitingOfferConfirmation(i, now) || (i.table === "rental_inquiries" && hasRentalEnded(i, now)));
       if (!list.length) { if (active) { setRows([]); setError(false); } return; }
       const ids = list.map((i) => i.id);
-      const [acc, links] = await Promise.all([
+      const [acc, links, delivery, returns, invoices] = await Promise.all([
         supabase.from("offer_acceptance_links").select("inquiry_id, offer_number, accepted_at, signer_name").eq("status", "accepted").in("inquiry_id", ids).order("accepted_at", { ascending: false }),
         supabase.from("offer_payment_links").select("inquiry_id, offer_number, status, stripe_session_id").in("inquiry_id", ids),
+        supabase.from("b2b_delivery_notes").select("rental_inquiry_id,status").in("rental_inquiry_id", ids),
+        supabase.from("b2b_return_protocols").select("rental_inquiry_id,status").in("rental_inquiry_id", ids),
+        supabase.from("inquiry_invoices").select("rental_inquiry_id,status,invoice_kind").in("rental_inquiry_id", ids),
       ]);
-      if (acc.error || links.error) { if (active) setError(true); return; }
+      if (acc.error || links.error || delivery.error || returns.error || invoices.error) { if (active) setError(true); return; }
       const out: Row[] = [];
       for (const i of list) {
+        const ended = i.table === "rental_inquiries" && hasRentalEnded(i, now);
+        const tasks = ended ? rentalCloseoutTasks({
+          deliverySigned: (delivery.data ?? []).some((p) => p.rental_inquiry_id === i.id && p.status === "signed"),
+          returnSigned: (returns.data ?? []).some((p) => p.rental_inquiry_id === i.id && p.status === "signed"),
+          invoiced: (invoices.data ?? []).some((p) => p.rental_inquiry_id === i.id && !["draft", "cancelled"].includes(p.status) && ["invoice", "final"].includes(p.invoice_kind ?? "invoice")),
+        }) : [];
+        if (ended && !tasks.length) continue;
         const a = acc.data?.find((a) => a.inquiry_id === i.id && a.offer_number === i.offer_number);
         const payload = (i.offer_payload ?? {}) as { deposit?: unknown; payment_terms?: string };
         const total = (Number(i.offer_total_gross) || 0) + (Number(payload.deposit) || 0);
@@ -76,7 +93,7 @@ export function AcceptedOffersPayments() {
         out.push({
           inquiryId: i.id, table: i.table, offer: i.offer_number ?? "", acceptedAt: a?.accepted_at ?? null,
           signer: a?.signer_name ?? null, customer: i.company_name || ("customer_name" in i ? i.customer_name : [i.first_name, i.last_name].filter(Boolean).join(" ")) || "",
-          state, paid, open,
+          state, paid, open, ended, tasks, end: "end_date" in i ? effectiveEnd(i) : null,
           overdue: isPaymentOverdue({ status: i.status, order_confirmed_at: i.order_confirmed_at, payment_followup_sent_at: i.payment_followup_sent_at, payment_terms: payload.payment_terms ?? "vorkasse", gross: i.offer_total_gross, deposit: payload.deposit, paid_cents: Math.round(paid * 100) }, new Date()),
           deadline: paymentDeadline(i.payment_followup_sent_at)?.toISOString() ?? null,
         });
@@ -89,7 +106,7 @@ export function AcceptedOffersPayments() {
           const prev = seen.current.get(r.inquiryId);
           if (!prev) toast.info(`Angebot angenommen: ${r.customer} (${r.offer})`, { duration: 15000 });
           if (r.state === "paid" && prev !== "paid")
-            toast.success(`${r.customer}: angenommen und bezahlt – Auftragsbestätigung senden und Mietauftrag anlegen.`, { duration: 30000 });
+            toast.success(r.ended ? `${r.customer}: bezahlt – Mietende erreicht, Abschluss prüfen.` : `${r.customer}: angenommen und bezahlt – Auftragsbestätigung senden und Mietauftrag anlegen.`, { duration: 30000 });
         }
       }
       seen.current = new Map(out.map((r) => [r.inquiryId, r.state]));
@@ -102,18 +119,43 @@ export function AcceptedOffersPayments() {
       .on("postgres_changes", { event: "*", schema: "public", table: "rental_inquiries" }, load)
       .on("postgres_changes", { event: "*", schema: "public", table: "sales_inquiries" }, load)
       .on("postgres_changes", { event: "*", schema: "public", table: "offer_payment_links" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "b2b_delivery_notes" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "b2b_return_protocols" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "inquiry_invoices" }, load)
       .subscribe();
-    return () => { active = false; supabase.removeChannel(ch); };
+    const timer = window.setInterval(load, 60_000);
+    return () => { active = false; window.clearInterval(timer); supabase.removeChannel(ch); };
   }, []);
 
   if (error) return <p role="alert" className="text-sm text-destructive">Angenommene Angebote konnten nicht aktualisiert werden. Bitte lade die Seite erneut.</p>;
   if (!rows.length) return null;
   const PREVIEW = 2;
-  const visible = expanded ? rows : rows.slice(0, PREVIEW);
-  const hidden = rows.length - PREVIEW;
-  const ready = rows.filter((r) => r.state === "paid");
+  const pending = rows.filter((r) => !r.ended);
+  const closeout = rows.filter((r) => r.ended);
+  const visible = expanded ? pending : pending.slice(0, PREVIEW);
+  const hidden = pending.length - PREVIEW;
+  const ready = pending.filter((r) => r.state === "paid");
   return (
     <div className="space-y-3">
+    {closeout.length > 0 && (
+      <section className="rounded-lg border-2 border-accent bg-card" aria-label="Mietende – Abschluss offen">
+        <h2 className="border-b border-border px-4 py-3 text-sm font-semibold text-foreground">Mietende – Abschluss offen · {closeout.length}</h2>
+        <ul className="divide-y divide-border">
+          {closeout.map((r) => (
+            <li key={r.inquiryId}>
+              <Link to={`/b2b/mietanfragen/${r.inquiryId}`} className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-muted">
+                <div className="min-w-0 flex-1 space-y-1">
+                  <strong className="block break-words text-foreground">{r.customer} · {r.offer}</strong>
+                  <span className="block text-xs text-muted-foreground">Mietende {r.end?.split("-").reverse().join(".")} · {LABEL[r.state]}{r.state === "paid" ? ` · ${euro(r.paid)}` : ""}</span>
+                  {r.tasks.map((task) => <span key={task} className="block break-words text-xs font-medium text-foreground">{task}</span>)}
+                </div>
+                <ChevronRight className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
     {ready.length > 0 && (
       <section role="alert" className="rounded-xl border-2 border-accent bg-accent/10 p-4" aria-label="Auftragsbestätigung fällig">
         <div className="flex items-start gap-2">
@@ -141,11 +183,11 @@ export function AcceptedOffersPayments() {
         </ul>
       </section>
     )}
-    <section className="rounded-xl border-2 border-primary bg-card" aria-label="Angenommene Angebote">
+    {pending.length > 0 && <section className="rounded-xl border-2 border-primary bg-card" aria-label="Angenommene Angebote">
       <header className="flex items-center gap-2 border-b border-border px-4 py-3">
         <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
         <h2 className="min-w-0 flex-1 text-sm font-semibold text-foreground">Angenommene Angebote · Zahlungseingang</h2>
-        <span className="shrink-0 rounded-full bg-primary px-2 py-0.5 text-xs text-primary-foreground">{rows.length}</span>
+        <span className="shrink-0 rounded-full bg-primary px-2 py-0.5 text-xs text-primary-foreground">{pending.length}</span>
       </header>
       <ul className="divide-y divide-border">
         {visible.map((r) => (
@@ -175,16 +217,16 @@ export function AcceptedOffersPayments() {
         ))}
       </ul>
       {hidden > 0 && (
-        <button
+        <Button variant="ghost"
           type="button"
           onClick={() => setExpanded((v) => !v)}
           aria-expanded={expanded}
           className="flex w-full items-center justify-center gap-1.5 border-t border-border px-4 py-2.5 text-sm font-medium text-primary hover:bg-muted"
         >
-          {expanded ? <>Weniger anzeigen <ChevronUp className="h-4 w-4" aria-hidden="true" /></> : <>Alle {rows.length} anzeigen (+{hidden} weitere) <ChevronDown className="h-4 w-4" aria-hidden="true" /></>}
-        </button>
+          {expanded ? <>Weniger anzeigen <ChevronUp className="h-4 w-4" aria-hidden="true" /></> : <>Alle {pending.length} anzeigen (+{hidden} weitere) <ChevronDown className="h-4 w-4" aria-hidden="true" /></>}
+        </Button>
       )}
-    </section>
+    </section>}
     </div>
   );
 }

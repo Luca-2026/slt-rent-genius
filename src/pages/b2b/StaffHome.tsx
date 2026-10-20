@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { visibleGroups, itemHref } from "@/components/b2b/StaffNav";
 import {
-  formatEuro, isoDay, pipeline, receivables, revenueSummary,
+  formatEuro, isoDay, pipeline, receivables, revenueSummary, isAwaitingOfferConfirmation,
   type InquiryInvoiceRow, type PortalInvoiceRow,
 } from "@/lib/dashboardMetrics";
 import { isOpenInquiry, isUnprocessedInquiry } from "@/lib/inquiryStatus";
@@ -230,7 +230,7 @@ export default function StaffHome() {
     })
     .sort((a, b) => (a.end_date ?? "").localeCompare(b.end_date ?? ""));
   const running = confirmed.filter((r) => isRunningRental({ ...r, handed_over: protocols.byInquiry.has(r.id) && !!protocols.byInquiry.get(r.id)?.delivery }, today)).length;
-  const awaitingConfirmation = inquiries.filter((r) => r.status === "accepted" && !r.order_confirmed_at).length;
+  const awaitingConfirmation = inquiries.filter((r) => isAwaitingOfferConfirmation(r)).length;
   const unprocessed = inquiries.filter(isUnprocessedInquiry).length;
   const customerRequests = profiles.flatMap((p) => ([
     needsAction(p, "freigabe") && { p, kind: "freigabe", label: "Freischaltung durchführen" },
