@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { rentalFeedbackEmail } from "../_shared/feedback-coupons.ts";
 import { invoiceNumberForGeneration } from "../_shared/invoice-preview.ts";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
@@ -156,6 +157,7 @@ Deno.serve(async (req: Request) => {
       const loc = LOCATION_CONTACTS[resolveLocationKey(inv.location)];
 
       if (!resendKey) return json({ error: "E-Mail-Versand ist nicht konfiguriert" }, 500);
+      const feedbackHtml = await rentalFeedbackEmail(service, "inquiry", inv.id);
       const res = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
@@ -174,7 +176,7 @@ Deno.serve(async (req: Request) => {
                  ` – offener Restbetrag: <strong>${money(Math.max(0, Number(inv.gross_amount) - Number(inv.paid_amount) - Number(inv.credited_amount)))}</strong>.</p>`
               : "") +
 
-            `<p>${rt("Viele Grüße", "Freundliche Grüße")}<br>${rt("Dein", "Ihr")} SLT Rental Team – Standort ${escapeHtml(loc.name)}</p>`,
+            feedbackHtml + `<p>${rt("Viele Grüße", "Freundliche Grüße")}<br>${rt("Dein", "Ihr")} SLT Rental Team – Standort ${escapeHtml(loc.name)}</p>`,
           attachments: [{ filename: inv.file_name || `${inv.invoice_number}.pdf`, content: encodeBase64(bytes) }],
         }),
       });
@@ -822,6 +824,7 @@ Deno.serve(async (req: Request) => {
     }
 
     // Erst nach vollständig gespeicherten und finalisierten Positionen versenden.
+    const feedbackHtml = await rentalFeedbackEmail(service, "inquiry", inserted.id);
     if (resendKey) {
       try {
         const res = await fetch("https://api.resend.com/emails", {
@@ -833,7 +836,7 @@ Deno.serve(async (req: Request) => {
             cc: Array.from(new Set([loc.email, str(inquiry.location_email)].filter((e) => e && e !== customerEmail))),
             reply_to: loc.email,
             subject: await codedSubject(service, `${DOC_LABEL[invoiceKind]} von SLT Rental – ${invoiceNumber}`, { table, id: inquiry.id }),
-            html: emailHtml,
+            html: emailHtml.replace("</div></body>", `${feedbackHtml}</div></body>`),
             attachments: [{ filename: fileName, content: encodeBase64(pdfBytes) }],
           }),
         });

@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { applyFeedbackCoupon } from "../_shared/feedback-coupons.ts";
 /**
  * Sends a priced offer for a public rental or sales inquiry that is being
  * processed inside the B2B portal.
@@ -220,6 +221,12 @@ Deno.serve(async (req: Request) => {
 
 
 
+    let coupon: { items: InquiryOfferItem[]; code: string | null; saving: number };
+    try {
+      if (inquiryType !== "rental" && body.coupon_code) return json({ error: "Gutscheine gelten nur für Mieten" }, 400);
+      coupon = await applyFeedbackCoupon(service, body.coupon_code, "inquiry", inquiry.id, inquiry.b2b_profile_id, items);
+      items = coupon.items;
+    } catch (e) { return json({ error: (e as Error).message }, 409); }
     const totals = buildOfferTotals(
       items,
       deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + returnLocationCost,
@@ -277,7 +284,7 @@ Deno.serve(async (req: Request) => {
     const returnLocationText = returnLoc
       ? `Abholung am Standort ${pickupName}, Rückgabe abweichend am Standort ${returnLoc.name}${returnLoc.cost > 0 ? " (Aufpreis siehe Position „Rückgabe an anderem Standort“)" : " (ohne Aufpreis)"}.`
       : null;
-    const pdfNotes = [supersedesText, returnLocationText, openEnded ? OPEN_ENDED_NOTE : null, notes].filter(Boolean).join("\n\n") || null;
+    const pdfNotes = [supersedesText, returnLocationText, openEnded ? OPEN_ENDED_NOTE : null, notes, coupon.code ? `Feedback-Gutschein ${coupon.code}: ${money(coupon.saving)} netto Rabatt, in den Positionspreisen enthalten.` : null].filter(Boolean).join("\n\n") || null;
 
     const customerName = inquiryType === "rental"
       ? (inquiry.customer_name || "")
@@ -518,7 +525,7 @@ Deno.serve(async (req: Request) => {
       let bin = "";
       const bytes = new Uint8Array(pdfBytes);
       for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
-      return json({ preview: true, pdf_base64: btoa(bin), offer_number: offerNumber });
+      return json({ preview: true, pdf_base64: btoa(bin), offer_number: offerNumber, totals });
     }
 
     const safeName = (profile.company_name || "Kunde")
@@ -540,6 +547,15 @@ Deno.serve(async (req: Request) => {
       .from("b2b-invoices")
       .createSignedUrl(filePath, 60 * 60 * 24 * 365);
     const fileUrl = signed?.signedUrl || "";
+
+    if (coupon.code) {
+      const { error } = await service.rpc("reserve_rental_coupon", { p_code: coupon.code, p_kind: "inquiry", p_order: inquiry.id, p_profile: inquiry.b2b_profile_id, p_offer: offerNumber, p_until: validUntil.toISOString().slice(0, 10) + "T23:59:59Z" });
+      if (error) return json({ error: error.message }, 409);
+    }
+    if (inquiryType === "rental") {
+      const { error } = await service.from(table).update({ feedback_coupon_code: coupon.code }).eq("id", inquiry.id);
+      if (error) return json({ error: "Gutscheinzuordnung konnte nicht gespeichert werden" }, 500);
+    }
 
     // ── passende AGB als zweiter Anhang (B2C für Privat-, B2B für Geschäftskunden) ──
     const customerKind = inquiry.customer_kind === "business" ? "business" : "private";
@@ -792,6 +808,8 @@ Deno.serve(async (req: Request) => {
         ...(inquiryType === "rental" ? { delivery_requested: deliveryRequested } : {}),
         // Snapshot des Angebots – Grundlage für die spätere Rechnung (inkl. Zusatzoptionen)
         offer_payload: {
+          coupon_code: coupon.code,
+          coupon_saving_net: coupon.saving,
           offer_number: offerNumber,
           base_offer_number: baseOfferNumber,
           version,
