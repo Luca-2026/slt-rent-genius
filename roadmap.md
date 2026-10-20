@@ -1,5 +1,5 @@
 # Roadmap – Paket 4 (Angebots-PDF & E-Mail)
-- [ ] Datumsabhängige Hinweise: beendete Mietaufträge als Abschlussarbeiten statt neue Auftragsbestätigung anzeigen; Andre Krieger prüfen und testen.
+- [x] Datumsabhängige Hinweise: beendete Mietaufträge als Abschlussarbeiten statt neue Auftragsbestätigung anzeigen; Andre Krieger angemeldet geprüft, Auftrag geöffnet, 25 Tests bestanden.
 - [x] DB: Mobil, Anrede-Form (du/sie) an Anfrage + Kundenakte, Textbausteine + Baustein offer_terms
 - [x] _shared/salutation.ts + offer-terms.ts (+ Tests)
 - [x] offer-pdf.ts: Ihre Daten, Anrede, Auftragsart, Gruppen/Spalten, Legende, Bedingungen (nur Mietanfrage-Angebote)
