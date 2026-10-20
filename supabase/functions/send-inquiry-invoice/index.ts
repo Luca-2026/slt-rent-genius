@@ -1,4 +1,6 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { invoiceNumberForGeneration } from "../_shared/invoice-preview.ts";
+import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
 /**
  * Erstellt und versendet eine Rechnung, einen Nachtrag, eine Abschlags- oder
@@ -46,12 +48,6 @@ import {
   resolveReturnLocation,
   type InquiryOfferItem,
 } from "../_shared/inquiry-offer-math.ts";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -126,6 +122,9 @@ Deno.serve(async (req: Request) => {
 
     const body = await req.json().catch(() => null);
     if (!body || typeof body !== "object") return json({ error: "Ungültige Anfrage" }, 400);
+    if (body.preview !== undefined && typeof body.preview !== "boolean") return json({ error: "Ungültiger Vorschau-Modus" }, 400);
+    const isPreview = body.preview === true;
+    if (isPreview && body.resend_invoice_id) return json({ error: "Vorschau und erneuter Versand sind getrennte Aktionen" }, 400);
 
     const resendKey = Deno.env.get("RESEND_API_KEY");
     const str = (v: unknown, max = 200) => (typeof v === "string" ? v.trim().slice(0, max) : "");
@@ -328,7 +327,7 @@ Deno.serve(async (req: Request) => {
       .order("created_at", { ascending: false })
       .limit(1);
     const duplicate = recent?.[0];
-    if (duplicate && Math.abs(Number(duplicate.gross_amount) - totals.grossAmount) < 0.01) {
+    if (!isPreview && duplicate && Math.abs(Number(duplicate.gross_amount) - totals.grossAmount) < 0.01) {
       console.log("Duplicate invoice suppressed for inquiry", inquiryId);
       return json({
         success: true,
@@ -437,14 +436,11 @@ Deno.serve(async (req: Request) => {
 
     // ── Rechnungsnummer erst jetzt ziehen ──
     // Getrennte Nummernkreise: Miete RE-M-JJJJ-MM-0001, Verkauf RE-V-JJJJ-MM-0001
-    const { data: numberData, error: numErr } = await service.rpc("generate_inquiry_invoice_number_for", {
-      _series: invoiceSeries(inquiryType),
+    const invoiceNumber = await invoiceNumberForGeneration(isPreview, async () => {
+      const { data: numberData, error: numErr } = await service.rpc("generate_inquiry_invoice_number_for", { _series: invoiceSeries(inquiryType) });
+      if (numErr || !numberData) throw new Error("Rechnungsnummer konnte nicht erzeugt werden");
+      return String(numberData);
     });
-    if (numErr || !numberData) {
-      console.error("Nummernkreis fehlgeschlagen:", numErr?.message);
-      return json({ error: "Rechnungsnummer konnte nicht erzeugt werden" }, 500);
-    }
-    const invoiceNumber = String(numberData);
 
     const profile = {
       id: "",
@@ -576,6 +572,9 @@ Deno.serve(async (req: Request) => {
       payments,
 
     });
+
+    // Return before any storage, invoice, payment, schedule or mail mutation.
+    if (isPreview) return json({ preview: true, pdf_base64: encodeBase64(pdfBytes), gross_amount: totals.grossAmount });
 
     const safeName = (profile.company_name || "Kunde")
       .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue")

@@ -1,4 +1,5 @@
 import { isDraftEditEvent } from "@/lib/draftEditIntent";
+import { matchesDocumentPreview } from "../../../../supabase/functions/_shared/invoice-preview";
 import { CLEANING_UNIT_GROSS, CLEANING_UNIT_MINUTES, CLEANING_UNIT_NET, chargeMeasure, chargeQuantityText, quantityFromText, cleaningChargeGross, cleaningSuggested, depositSettlementNote, settleDeposit } from "@/lib/returnCharges";
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { needsOfferDepositWarning } from "@/lib/offerDeposit";
@@ -1254,7 +1255,7 @@ export function InquiryOfferForm({
     }
     setPreviewing(true);
     const previewBody = buildBody();
-    const { data, error } = await invokeWithAuth("send-inquiry-offer", { ...previewBody, preview: true });
+    const { data, error } = await invokeWithAuth(isInvoice ? "send-inquiry-invoice" : "send-inquiry-offer", { ...previewBody, preview: true });
     setPreviewing(false);
     const b64 = (data as any)?.pdf_base64 as string | undefined;
     if (error || !b64) {
@@ -1269,11 +1270,11 @@ export function InquiryOfferForm({
     setPreviewedKey(JSON.stringify(previewBody));
   };
   // Versand erst nach Vorschau des aktuellen Stands (jede Änderung verlangt eine neue Vorschau).
-  const previewOk = isInvoice || previewedKey === JSON.stringify(buildBody());
+  const previewOk = matchesDocumentPreview(previewedKey, buildBody());
 
   const send = async () => {
     if (sendBlock) return;
-    if (!isInvoice && previewedKey !== JSON.stringify(buildBody())) return;
+    if (!matchesDocumentPreview(previewedKey, buildBody())) return;
     const invalid = items.some((i) => !i.product_name.trim() || i.quantity <= 0 || i.unit_price < 0);
     if (invalid) {
       toast({ title: "Bitte alle Positionen ausfüllen", description: "Bezeichnung, Menge und Preis werden benötigt.", variant: "destructive" });
@@ -1367,7 +1368,7 @@ export function InquiryOfferForm({
   };
 
   // Aktionen (Vorschau, Senden) – in der Vollseite oben angeheftet, sonst wie bisher am Ende.
-  const previewButton = !isInvoice && (
+  const previewButton = (
     <Button type="button" data-draft-neutral variant="outline" onClick={preview} disabled={disabled || previewing || sending} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
       {previewing ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Eye className="h-4 w-4 mr-2" />}
       {previewing ? "Vorschau wird erstellt …" : "PDF-Vorschau anzeigen"}
@@ -1379,7 +1380,7 @@ export function InquiryOfferForm({
       {isInvoice
         ? sending
           ? `${isSupplement ? "Nachtrag" : "Rechnung"} wird gesendet …`
-          : `${isSupplement ? "Nachtrag" : "Rechnung"} per E-Mail senden`
+          : `${isSupplement ? "Nachtrag" : "Rechnung"} final erstellen und senden`
         : sending
           ? "Angebot wird gesendet …"
           : "Angebot per E-Mail senden"}
@@ -1395,7 +1396,7 @@ export function InquiryOfferForm({
   const actionText = (
     <p className="text-xs text-muted-foreground">
       {isInvoice
-        ? "Die Rechnungsnummer wird beim Versand vergeben. Danach ist die Rechnung unveränderlich und kann nur noch storniert werden."
+        ? "Die Vorschau vergibt keine Rechnungsnummer und versendet nichts. Erst beim finalen Erstellen wird die Rechnung unveränderlich; Korrekturen erfolgen per Gutschrift."
         : "Der Kunde kann das Angebot über den Button in der E-Mail online annehmen und unterschreiben – ihr bekommt dann einen Hinweis hier in der Anfrage. Danach den Job manuell in Rentware anlegen."}
     </p>
   );
@@ -2500,8 +2501,8 @@ export function InquiryOfferForm({
       <Dialog open={!!previewUrl} onOpenChange={(o) => { if (!o) setPreviewUrl(null); }}>
         <DialogContent className="max-w-4xl w-[calc(100vw-1rem)] h-[90vh] flex flex-col gap-3 p-3 sm:p-6">
           <DialogHeader>
-            <DialogTitle>PDF-Vorschau</DialogTitle>
-            <DialogDescription>So sieht das Angebot für den Kunden aus. Die Angebotsnummer wird erst beim Senden vergeben – nichts wurde verschickt.</DialogDescription>
+            <DialogTitle>{isInvoice ? "Rechnungsvorschau" : "PDF-Vorschau"}</DialogTitle>
+            <DialogDescription>{isInvoice ? "Unverbindlicher Entwurf ohne Rechnungsnummer. Keine Rechnung wurde ausgestellt und nichts verschickt." : "So sieht das Angebot für den Kunden aus. Die Angebotsnummer wird erst beim Senden vergeben – nichts wurde verschickt."}</DialogDescription>
           </DialogHeader>
           {previewUrl && <PdfPagesPreview url={previewUrl} className="min-h-0 flex-1 w-full overflow-y-auto rounded border border-border bg-muted p-3" />}
           <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
@@ -2511,8 +2512,8 @@ export function InquiryOfferForm({
               </Button>
             )}
             <Button variant="outline" onClick={() => setPreviewUrl(null)}>Zurück zum Bearbeiten</Button>
-            <Button onClick={() => { setPreviewUrl(null); void send(); }} disabled={disabled || sending || checking}>
-              <Send className="h-4 w-4 mr-2" />Angebot jetzt senden
+            <Button onClick={() => { setPreviewUrl(null); void send(); }} disabled={disabled || sending || checking || !previewOk || !!sendBlock}>
+              <Send className="h-4 w-4 mr-2" />{isInvoice ? "Rechnung final erstellen und senden" : "Angebot jetzt senden"}
             </Button>
           </div>
         </DialogContent>
