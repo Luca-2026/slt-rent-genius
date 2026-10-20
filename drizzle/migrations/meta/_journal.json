@@ -589,6 +589,13 @@
       "when": 1792478791949,
       "tag": "0083_secure_feedback_coupons",
       "breakpoints": true
+    },
+    {
+      "idx": 84,
+      "version": "7",
+      "when": 1792478962891,
+      "tag": "0084_feedback_completion_and_coupon_write_guards",
+      "breakpoints": true
     }
   ]
 }
