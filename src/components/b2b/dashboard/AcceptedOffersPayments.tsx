@@ -140,20 +140,23 @@ export function AcceptedOffersPayments() {
     {closeout.length > 0 && (
       <section className="rounded-lg border-2 border-accent bg-card" aria-label="Mietende – Abschluss offen">
         <h2 className="border-b border-border px-4 py-3 text-sm font-semibold text-foreground">Mietende – Abschluss offen · {closeout.length}</h2>
-        <ul className="divide-y divide-border">
-          {closeout.map((r) => (
-            <li key={r.inquiryId}>
-              <Link to={`/b2b/mietanfragen/${r.inquiryId}`} className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-muted">
-                <div className="min-w-0 flex-1 space-y-1">
-                  <strong className="block break-words text-foreground">{r.customer} · {r.offer}</strong>
-                  <span className="block text-xs text-muted-foreground">Mietende {r.end?.split("-").reverse().join(".")} · {LABEL[r.state]}{r.state === "paid" ? ` · ${euro(r.paid)}` : ""}</span>
-                  {r.tasks.map((task) => <span key={task} className="block break-words text-xs font-medium text-foreground">{task}</span>)}
-                </div>
-                <ChevronRight className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {/* Max. drei Einträge sichtbar, Rest scrollbar – hält die Startseite kompakt. */}
+        <div className="max-h-[15.5rem] overflow-y-auto">
+          <ul className="divide-y divide-border">
+            {closeout.map((r) => (
+              <li key={r.inquiryId}>
+                <Link to={`/b2b/mietanfragen/${r.inquiryId}`} className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-muted">
+                  <div className="min-w-0 flex-1 space-y-1">
+                    <strong className="block break-words text-foreground">{r.customer} · {r.offer}</strong>
+                    <span className="block text-xs text-muted-foreground">Mietende {r.end?.split("-").reverse().join(".")} · {LABEL[r.state]}{r.state === "paid" ? ` · ${euro(r.paid)}` : ""}</span>
+                    {r.tasks.map((task) => <span key={task} className="block break-words text-xs font-medium text-foreground">{task}</span>)}
+                  </div>
+                  <ChevronRight className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
     )}
     {ready.length > 0 && (
