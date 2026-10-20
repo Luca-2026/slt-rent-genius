@@ -44,8 +44,16 @@ describe("inquiryStatus", () => {
   });
 });
 
-import { isUnprocessedInquiry, matchesInquiryListFilter } from "@/lib/inquiryStatus";
+import { isUnprocessedInquiry, matchesInquiryListFilter, isReturnOverdue } from "@/lib/inquiryStatus";
 describe("offene Anfragen", () => {
+  it("Linus: heutige Ausgabe mit widersprüchlichem Ende ist nicht sieben Tage überfällig", () => {
+    const row = { status: "accepted", order_confirmed_at: "2026-10-14", start_date: "2026-10-20", end_date: "2026-10-13" };
+    expect(isReturnOverdue(row, "2026-10-20")).toBe(false);
+    expect(isReturnOverdue({ ...row, end_date: "2026-10-20" }, "2026-10-21")).toBe(true);
+  });
+  it("verlängertes Angebotsende gilt auch für die Überfällig-Anzeige", () => {
+    expect(isReturnOverdue({ status: "accepted", order_confirmed_at: "2026-10-14", start_date: "2026-10-12", end_date: "2026-10-13", offer_payload: { items: [{ rental_start: "2026-10-12", rental_end: "2026-10-22" }] } }, "2026-10-20")).toBe(false);
+  });
   it("offen = nicht übernommen und kein Angebot", () => {
     expect(isUnprocessedInquiry({ status: "new", assigned_to: null })).toBe(true);
     expect(isUnprocessedInquiry({ status: "new", assigned_to: "u1" })).toBe(false);

@@ -6,6 +6,7 @@ import {
   earliestFreeFrom,
   effectiveEnd,
   effectiveStart,
+  hasInvalidRentalPeriod,
   isCalendarRelevant,
   rangesOverlap,
   weekDays,
@@ -31,6 +32,13 @@ const base = {
 };
 
 describe("calendarEntries", () => {
+  it("Linus Hauser: Ausgabe am 20.10., falsches Ende 13.10. ist kein Rückgabetermin", () => {
+    const row = { ...base, end_date: "2026-10-13", offer_payload: { items: [{ rental_start: "2026-10-20", rental_end: "2026-10-13" }] } };
+    expect(hasInvalidRentalPeriod(row)).toBe(true);
+    expect(effectiveEnd(row)).toBeNull();
+    expect(buildCalendarEntries([row], new Set(), new Set()).map((e) => [e.kind, e.date])).toEqual([["pickup", "2026-10-20"]]);
+    expect(hasInvalidRentalPeriod(base)).toBe(false);
+  });
   it("erzeugt Übergabe und Rückgabe mit Uhrzeit, Kunde und Auftrags-ID", () => {
     const entries = buildCalendarEntries([base], new Set(), new Set());
     expect(entries).toHaveLength(2);

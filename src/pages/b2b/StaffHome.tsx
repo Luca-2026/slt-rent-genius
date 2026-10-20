@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { visibleGroups, itemHref } from "@/components/b2b/StaffNav";
 import {
-  formatEuro, isoDay, pipeline, receivables, revenueSummary, isAwaitingOfferConfirmation,
+  formatEuro, pipeline, receivables, revenueSummary, isAwaitingOfferConfirmation,
   type InquiryInvoiceRow, type PortalInvoiceRow,
 } from "@/lib/dashboardMetrics";
 import { isOpenInquiry, isUnprocessedInquiry } from "@/lib/inquiryStatus";
@@ -26,7 +26,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { AcceptedOffersPayments } from "@/components/b2b/dashboard/AcceptedOffersPayments";
 import { DepositSettlementsDue } from "@/components/b2b/dashboard/DepositSettlementsDue";
 import { DayEntryCard } from "@/components/b2b/calendar/DayEntryCard";
-import { buildCalendarEntries, normalizeLoc, type DayEntry } from "@/lib/calendarEntries";
+import { buildCalendarEntries, effectiveEnd, hasInvalidRentalPeriod, normalizeLoc, type DayEntry } from "@/lib/calendarEntries";
 
 type ProfileRow = PortalProfileLite & { id: string; company_name: string; credit_limit: number };
 
@@ -129,7 +129,9 @@ function OverdueReturns({ rows, today }: { rows: InquiryRow[]; today: string }) 
       <p className="mb-2 text-xs text-foreground">Mietende überschritten – bitte Rückgabe klären und ein Rückgabeprotokoll erstellen.</p>
       <ul className="-mx-2">
         {rows.map((r) => {
-          const days = daysBetween(r.end_date!.slice(0, 10), today);
+          const end = effectiveEnd(r);
+          if (!end) return null;
+          const days = daysBetween(end, today);
           return (
             <li key={r.id}>
               <Link to={`/b2b/mietanfragen/${r.id}`} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-destructive/10">
@@ -208,8 +210,12 @@ export default function StaffHome() {
     })();
   }, [accessLoading, isStaff, isAdmin]);
 
-  const now = useMemo(() => new Date(), []);
-  const today = isoDay(now);
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 60_000);
+    return () => window.clearInterval(timer);
+  }, []);
+  const today = now.toLocaleDateString("en-CA", { timeZone: "Europe/Berlin" });
   const rev = useMemo(() => revenueSummary(invoices, portalInvoices, now), [invoices, portalInvoices, now]);
   const rec = useMemo(() => receivables(invoices, portalInvoices, now), [invoices, portalInvoices, now]);
   const pipe = useMemo(() => pipeline(inquiries), [inquiries]);
@@ -223,12 +229,13 @@ export default function StaffHome() {
     .filter((e) => activeDayLocation === "all" || normalizeLoc(e.location) === activeDayLocation);
   const pickups = todayEntries.filter((e) => e.kind === "pickup");
   const returns = todayEntries.filter((e) => e.kind === "return");
+  const invalidPeriods = filterByDayLocation(confirmed, activeDayLocation).filter(hasInvalidRentalPeriod);
   const overdueReturns = filterByDayLocation(confirmed, activeDayLocation)
     .filter((r) => {
       const st = protocols.byInquiry.get(r.id);
       return !st?.ret && isReturnOverdue({ ...r, handed_over: !!st?.delivery }, today);
     })
-    .sort((a, b) => (a.end_date ?? "").localeCompare(b.end_date ?? ""));
+    .sort((a, b) => (effectiveEnd(a) ?? "").localeCompare(effectiveEnd(b) ?? ""));
   const running = confirmed.filter((r) => isRunningRental({ ...r, handed_over: protocols.byInquiry.has(r.id) && !!protocols.byInquiry.get(r.id)?.delivery }, today)).length;
   const awaitingConfirmation = inquiries.filter((r) => isAwaitingOfferConfirmation(r)).length;
   const unprocessed = inquiries.filter(isUnprocessedInquiry).length;
@@ -332,6 +339,17 @@ export default function StaffHome() {
             >
               <div className="divide-y divide-border">
                 <DayEntries title="Übergaben" icon={CalendarCheck} entries={pickups} empty={activeDayLocation === "all" ? "Keine Übergaben geplant." : "Keine Übergaben an diesem Standort."} />
+                {invalidPeriods.length > 0 && (
+                  <section className="border-l-4 border-accent bg-accent/5 px-4 py-3" aria-label="Mietdaten prüfen">
+                    <h3 className="text-sm font-semibold text-foreground">Mietdaten prüfen</h3>
+                    {invalidPeriods.map((r) => (
+                      <Link key={r.id} to={`/b2b/mietanfragen/${r.id}`} className="mt-2 flex items-start gap-2 text-sm text-foreground hover:underline">
+                        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                        <span className="min-w-0 break-words"><strong>{r.company_name || r.customer_name}</strong> · {r.product_name}<span className="block text-xs text-muted-foreground">Mietende liegt vor Mietbeginn – Rückgabetermin klären.</span></span>
+                      </Link>
+                    ))}
+                  </section>
+                )}
                 <OverdueReturns rows={overdueReturns} today={today} />
                 <DayEntries title="Rückgaben" icon={CalendarX} entries={returns} empty={activeDayLocation === "all" ? "Keine Rückgaben geplant." : "Keine Rückgaben an diesem Standort."} />
                 <div className="px-4 py-3">
