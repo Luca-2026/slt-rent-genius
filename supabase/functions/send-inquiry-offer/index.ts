@@ -1,5 +1,6 @@
 import { codedSubject } from "../_shared/order-code.ts";
 import { applyFeedbackCoupon } from "../_shared/feedback-coupons.ts";
+import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
 /**
  * Sends a priced offer for a public rental or sales inquiry that is being
  * processed inside the B2B portal.
@@ -760,14 +761,7 @@ Deno.serve(async (req: Request) => {
           headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
           body: JSON.stringify({
             from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
-            to: [customerEmail],
-            // Standort-Postfach immer in Kopie (inkl. abweichender Anfrage-Mailbox)
-            cc: Array.from(
-              new Set(
-                [loc.email, str(inquiry.location_email)]
-                  .filter((e) => e && e !== customerEmail),
-              ),
-            ),
+            ...documentEmailRecipients(customerEmail, [loc.email, str(inquiry.location_email)]),
             reply_to: loc.email,
             subject: await codedSubject(service, `${isRevision ? F("Dein überarbeitetes Angebot", "Ihr überarbeitetes Angebot") : F("Dein Angebot", "Ihr Angebot")} von SLT Rental – ${offerNumber}`, { table, id: inquiry.id }),
             html: emailHtml,
