@@ -1376,6 +1376,7 @@ export type Database = {
           deposit: number | null
           email_sent: boolean
           email_sent_at: string | null
+          feedback_coupon_code: string | null
           file_name: string | null
           file_url: string | null
           gross_amount: number
@@ -1406,6 +1407,7 @@ export type Database = {
           deposit?: number | null
           email_sent?: boolean
           email_sent_at?: string | null
+          feedback_coupon_code?: string | null
           file_name?: string | null
           file_url?: string | null
           gross_amount?: number
@@ -1436,6 +1438,7 @@ export type Database = {
           deposit?: number | null
           email_sent?: boolean
           email_sent_at?: string | null
+          feedback_coupon_code?: string | null
           file_name?: string | null
           file_url?: string | null
           gross_amount?: number
@@ -3827,6 +3830,187 @@ export type Database = {
         }
         Relationships: []
       }
+      rental_coupon_events: {
+        Row: {
+          actor: string | null
+          coupon_id: string
+          created_at: string
+          event: string
+          id: string
+          note: string | null
+          order_id: string | null
+        }
+        Insert: {
+          actor?: string | null
+          coupon_id: string
+          created_at?: string
+          event: string
+          id?: string
+          note?: string | null
+          order_id?: string | null
+        }
+        Update: {
+          actor?: string | null
+          coupon_id?: string
+          created_at?: string
+          event?: string
+          id?: string
+          note?: string | null
+          order_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_coupon_events_coupon_id_fkey"
+            columns: ["coupon_id"]
+            isOneToOne: false
+            referencedRelation: "rental_feedback_coupons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rental_feedback_coupons: {
+        Row: {
+          b2b_profile_id: string | null
+          block_reason: string | null
+          code: string
+          created_at: string
+          crm_customer_id: string | null
+          customer_email: string
+          customer_key: string
+          discount_percent: number
+          feedback_id: string
+          id: string
+          invitation_id: string
+          redeemed_at: string | null
+          reserved_kind: string | null
+          reserved_offer_number: string | null
+          reserved_order_id: string | null
+          reserved_until: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          b2b_profile_id?: string | null
+          block_reason?: string | null
+          code?: string
+          created_at?: string
+          crm_customer_id?: string | null
+          customer_email: string
+          customer_key: string
+          discount_percent?: number
+          feedback_id: string
+          id?: string
+          invitation_id: string
+          redeemed_at?: string | null
+          reserved_kind?: string | null
+          reserved_offer_number?: string | null
+          reserved_order_id?: string | null
+          reserved_until?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          b2b_profile_id?: string | null
+          block_reason?: string | null
+          code?: string
+          created_at?: string
+          crm_customer_id?: string | null
+          customer_email?: string
+          customer_key?: string
+          discount_percent?: number
+          feedback_id?: string
+          id?: string
+          invitation_id?: string
+          redeemed_at?: string | null
+          reserved_kind?: string | null
+          reserved_offer_number?: string | null
+          reserved_order_id?: string | null
+          reserved_until?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_feedback_coupons_feedback_id_fkey"
+            columns: ["feedback_id"]
+            isOneToOne: false
+            referencedRelation: "customer_feedback"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rental_feedback_coupons_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: true
+            referencedRelation: "rental_feedback_invitations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rental_feedback_invitations: {
+        Row: {
+          b2b_profile_id: string | null
+          created_at: string
+          crm_customer_id: string | null
+          customer_email: string
+          customer_key: string
+          customer_name: string | null
+          feedback_id: string | null
+          id: string
+          invoice_id: string
+          location: string
+          order_ref: string
+          rented_items: string
+          source_kind: string
+          source_order_id: string
+          submitted_at: string | null
+          token: string
+        }
+        Insert: {
+          b2b_profile_id?: string | null
+          created_at?: string
+          crm_customer_id?: string | null
+          customer_email: string
+          customer_key: string
+          customer_name?: string | null
+          feedback_id?: string | null
+          id?: string
+          invoice_id: string
+          location: string
+          order_ref: string
+          rented_items: string
+          source_kind: string
+          source_order_id: string
+          submitted_at?: string | null
+          token?: string
+        }
+        Update: {
+          b2b_profile_id?: string | null
+          created_at?: string
+          crm_customer_id?: string | null
+          customer_email?: string
+          customer_key?: string
+          customer_name?: string | null
+          feedback_id?: string | null
+          id?: string
+          invoice_id?: string
+          location?: string
+          order_ref?: string
+          rented_items?: string
+          source_kind?: string
+          source_order_id?: string
+          submitted_at?: string | null
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_feedback_invitations_feedback_id_fkey"
+            columns: ["feedback_id"]
+            isOneToOne: false
+            referencedRelation: "customer_feedback"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rental_inquiries: {
         Row: {
           address_form: string
@@ -3857,6 +4041,7 @@ export type Database = {
           email_sent: boolean
           end_date: string | null
           end_time: string | null
+          feedback_coupon_code: string | null
           id: string
           installment_amount_net: number | null
           installment_enabled: boolean
@@ -3929,6 +4114,7 @@ export type Database = {
           email_sent?: boolean
           end_date?: string | null
           end_time?: string | null
+          feedback_coupon_code?: string | null
           id?: string
           installment_amount_net?: number | null
           installment_enabled?: boolean
@@ -4001,6 +4187,7 @@ export type Database = {
           email_sent?: boolean
           end_date?: string | null
           end_time?: string | null
+          feedback_coupon_code?: string | null
           id?: string
           installment_amount_net?: number | null
           installment_enabled?: boolean
@@ -5408,6 +5595,10 @@ export type Database = {
         }
       }
       backfill_allocations: { Args: { dry_run?: boolean }; Returns: Json }
+      block_rental_coupon: {
+        Args: { p_coupon: string; p_reason: string }
+        Returns: undefined
+      }
       can_access_todo_list: {
         Args: { _list_id: string; _user_id: string }
         Returns: boolean
@@ -5447,6 +5638,15 @@ export type Database = {
         }
         Returns: boolean
       }
+      check_rental_coupon: {
+        Args: {
+          p_code: string
+          p_kind: string
+          p_order: string
+          p_profile?: string
+        }
+        Returns: Json
+      }
       close_expired_rental_inquiries: { Args: never; Returns: number }
       complete_maintenance: {
         Args: {
@@ -5480,7 +5680,15 @@ export type Database = {
         }
         Returns: string
       }
+      ensure_rental_feedback_invitation: {
+        Args: { p_invoice: string; p_kind: string }
+        Returns: Json
+      }
       ensure_repair_list: { Args: { _location: string }; Returns: string }
+      feedback_customer_identity: {
+        Args: { p_crm: string; p_email: string; p_profile: string }
+        Returns: Json
+      }
       finalize_portal_credit_note: {
         Args: { p_credit_id: string }
         Returns: undefined
@@ -5627,6 +5835,26 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      redeem_reserved_rental_coupon: {
+        Args: {
+          p_code: string
+          p_kind: string
+          p_offer: string
+          p_order: string
+        }
+        Returns: undefined
+      }
+      reserve_rental_coupon: {
+        Args: {
+          p_code: string
+          p_kind: string
+          p_offer: string
+          p_order: string
+          p_profile: string
+          p_until: string
+        }
+        Returns: undefined
+      }
       settle_deposit: {
         Args: {
           _deductions: Json
@@ -5696,6 +5924,15 @@ export type Database = {
       }
       slt_normalize_location: { Args: { _raw: string }; Returns: string }
       slt_try_date: { Args: { _raw: string }; Returns: string }
+      submit_rental_feedback: {
+        Args: {
+          p_answers: Json
+          p_ratings: Json
+          p_recommend: number
+          p_token: string
+        }
+        Returns: Json
+      }
       sync_credit_note_refund: {
         Args: {
           _credit_id: string
