@@ -11,10 +11,10 @@ export async function applyFeedbackCoupon<T extends CouponLine & { product_name:
   let saving = 0;
   const updated: T[] = [];
   for (const item of items) {
-    let query = service.from("b2b_managed_products").select("slug,name,category_slug");
+    let query = service.from("b2b_managed_products").select("slug,name,category");
     query = item.product_slug ? query.eq("slug", item.product_slug) : query.eq("name", item.product_name);
     const { data: product } = await query.limit(1).maybeSingle();
-    const eligible = !!product && couponCategoryEligible(product.category_slug ?? "");
+    const eligible = !!product && couponCategoryEligible(product.category ?? "") && couponCategoryEligible(product.name ?? "");
     saving += couponSaving(item, eligible);
     updated.push(couponLine(item, eligible));
   }

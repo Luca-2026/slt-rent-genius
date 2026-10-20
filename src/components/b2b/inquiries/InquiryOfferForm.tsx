@@ -413,6 +413,7 @@ export function InquiryOfferForm({
   const draftRef = useRef(ignoreDraft ? null : readInquiryDraft<Record<string, any>>(draftKey));
   const draft = draftRef.current;
   const [draftRestored, setDraftRestored] = useState(!!draft);
+  const [couponCode, setCouponCode] = useState("");
 
   const [items, setItems] = useState<FormLine[]>(
     Array.isArray(draft?.items) && draft!.items.length
@@ -1142,6 +1143,7 @@ export function InquiryOfferForm({
           : {}),
 
         inquiry_type: inquiryType,
+        ...(!isInvoice && inquiryType === "rental" && couponCode.trim() ? { coupon_code: couponCode.trim().toUpperCase() } : {}),
         inquiry_id: inquiryId,
         ...(!isInvoice && reviseOf ? { revise_of: reviseOf } : {}),
         location,
@@ -2189,6 +2191,10 @@ export function InquiryOfferForm({
       </EditorSection>
 
       <EditorSection step={3} title={isInvoice ? "Zahlung & Verrechnung" : "Kaution, Gültigkeit & Zahlung"} testId="section-payment">
+      {!isInvoice && inquiryType === "rental" && <div className="space-y-2">
+        <Label htmlFor="feedback-coupon">Feedback-Gutschein</Label>
+        <Input id="feedback-coupon" value={couponCode} onChange={e => setCouponCode(e.target.value.toUpperCase())} maxLength={20} disabled={disabled} placeholder="Gutscheincode" />
+      </div>}
       <div className="grid grid-cols-2 gap-3 sm:max-w-md">
         <div>
           <Label className="text-xs">Kaution</Label>

@@ -62,6 +62,7 @@ export function AdminCreateOfferDialog({
 }: Props) {
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
   const [items, setItems] = useState<OfferItemInput[]>([]);
   const [deliveryCostDelivery, setDeliveryCostDelivery] = useState(0);
   const [deliveryCostReturn, setDeliveryCostReturn] = useState(0);
@@ -541,8 +542,9 @@ export function AdminCreateOfferDialog({
 
       const { data, error } = await supabase.functions.invoke("generate-offer", {
         body: {
+          coupon_code: couponCode.trim() || undefined,
           reservation_id: reservationId || undefined,
-          b2b_profile_id: isStandalone ? profile!.id : (isEditing && !reservationId ? existingOffer?.b2b_profile_id : undefined),
+          b2b_profile_id: isStandalone ? profile?.id : (isEditing && !reservationId ? existingOffer?.b2b_profile_id : undefined),
           offer_id: existingOffer?.id || undefined,
           items: validItems.map((item) => ({
             product_name: item.product_name,
@@ -921,7 +923,11 @@ export function AdminCreateOfferDialog({
             />
           </div>
           <div>
-            <div className="flex items-center gap-2 mb-1">
+          <div className="space-y-2 mb-4">
+            <Label htmlFor="portal-feedback-coupon">Feedback-Gutschein</Label>
+            <Input id="portal-feedback-coupon" value={couponCode} onChange={e => setCouponCode(e.target.value.toUpperCase())} maxLength={20} placeholder="Gutscheincode" />
+          </div>
+          <div className="flex items-center gap-2 mb-1">
               <Checkbox
                 id="include-return"
                 checked={includeReturn}

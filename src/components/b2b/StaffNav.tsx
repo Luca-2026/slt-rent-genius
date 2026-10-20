@@ -3,7 +3,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   Home, LayoutDashboard, Inbox, FileText, Package, ShoppingCart, Receipt, Users,
   ClipboardCheck, Undo2, AlertTriangle, CheckSquare, Truck, Boxes, CalendarClock,
-  Store, UserCog, Shield, MessageSquare, BookOpen, BarChart3, PhoneCall, CalendarDays,
+  Store, UserCog, Shield, MessageSquare, BookOpen, BarChart3, PhoneCall, CalendarDays, Gift,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PUBLIC_ORIGIN } from "@/lib/portalDomain";
@@ -49,6 +49,7 @@ export const STAFF_NAV: StaffNavGroup[] = [
     label: "Kunden",
     items: [
       { label: "Kundenkartei", path: "/b2b/kundendaten", icon: Users, access: "staff" },
+      { label: "Gutscheine", path: "/b2b/gutscheine", icon: Gift, access: "staff" },
     ],
   },
   {

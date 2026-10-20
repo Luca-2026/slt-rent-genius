@@ -12,7 +12,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import {
   LayoutDashboard, Package, FileText, Receipt,
   LogOut, Phone, Home, Settings, ClipboardCheck, Undo2, BookOpen, Building2, Download, Menu, CheckSquare,
-  Users,
+  Users, Gift,
   Inbox, ShoppingCart,
 } from "lucide-react";
 import { useOpenInquiryCounts } from "@/hooks/useInquiries";
@@ -45,6 +45,7 @@ const customerNavItems = [
   { href: "/b2b/rueckgabeprotokolle", label: "Rückgabeprotokolle", icon: Undo2 },
   { href: "/b2b/angebote", label: "Angebote", icon: FileText },
   { href: "/b2b/rechnungen", label: "Rechnungen", icon: Receipt },
+  { href: "/b2b/gutscheine", label: "Gutscheine", icon: Gift },
   { href: "/b2b/firmendaten", label: "Firmendaten", icon: Building2 },
   { href: "/b2b/downloads", label: "Downloads", icon: Download },
   { href: "/hilfe", label: "Hilfe & Anleitungen", icon: BookOpen },

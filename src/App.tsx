@@ -92,6 +92,7 @@ const BaumaxService = lazy(() => import("./pages/BaumaxService"));
 const GlasfaserMaschinen = lazy(() => import("./pages/GlasfaserMaschinen"));
 const HochzeitTechnik = lazy(() => import("./pages/HochzeitTechnik"));
 const FeedbackMietprozess = lazy(() => import("./pages/FeedbackMietprozess"));
+const FeedbackCoupons = lazy(() => import("./pages/b2b/FeedbackCoupons"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -234,6 +235,7 @@ const App = () => (
               <Route path="/b2b/mietvorgaenge" element={<MyReservations />} />
               <Route path="/b2b/anfragen" element={<MyReservations />} />
               <Route path="/b2b/rechnungen" element={<B2BInvoices />} />
+              <Route path="/b2b/gutscheine" element={<FeedbackCoupons />} />
               <Route path="/b2b/uebergabeprotokolle" element={<B2BDeliveryNotes />} />
               <Route path="/b2b/lieferscheine" element={<B2BDeliveryNotes />} />
               <Route path="/b2b/rueckgabeprotokolle" element={<B2BReturnProtocols />} />
