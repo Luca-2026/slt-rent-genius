@@ -278,44 +278,7 @@ export default function StaffHome() {
             <ActionStat label="Verkaufsanfragen" value={openSales} to="/b2b/verkaufsanfragen" icon={ShoppingCart} />
           </div>
 
-          <AcceptedOffersPayments />
-
-          <DepositSettlementsDue location={activeDayLocation} />
-
-          <UrgentCalls />
-
-          {customerRequests.length > 0 && (
-            <section className="rounded-xl border-2 border-accent bg-card" aria-label="Offene Kundenanfragen">
-              <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
-                <h2 className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                  <UserCheck className="h-4 w-4 text-accent" aria-hidden="true" />Offene Kundenanfragen
-                  <span className="rounded-full bg-accent px-2 py-0.5 text-xs text-accent-foreground">{customerRequests.length}</span>
-                </h2>
-                <Link to="/b2b/kundendaten?handlung=alle" className="text-xs font-medium text-primary hover:underline">Alle anzeigen</Link>
-              </header>
-              <ul className="divide-y divide-border">
-                {customerRequests.slice(0, 8).map(({ p, kind, label }) => (
-                  <li key={p.id + kind}>
-                    <Link to={isAdmin ? `/b2b/kundendaten?handlung=alle&profil=${p.id}` : `/b2b/kundendaten?handlung=${kind}`} className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-muted">
-                      <span className="min-w-0 flex-1 truncate font-medium text-foreground">{p.company_name}</span>
-                      <span className={cn("shrink-0 rounded-full px-2 py-0.5 text-xs", kind === "loeschung" ? "bg-destructive/10 text-destructive" : "bg-accent/15 text-foreground")}>{label}</span>
-                      <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          {isAdmin && rec.overdueCount > 0 && (
-            <Link to="/b2b/anfrage-rechnungen" className="flex items-center gap-3 rounded-xl border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive">
-              <Receipt className="h-4 w-4 shrink-0" aria-hidden="true" />
-              <span className="min-w-0 flex-1">{rec.overdueCount} überfällige Rechnungen · {formatEuro(rec.overdue)}</span>
-              <span className="hidden font-medium sm:inline">Prüfen</span><ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
-            </Link>
-          )}
-
-          {/* 2. Heute + Finanzen */}
+          {/* 2. Heute + Finanzen – Kalender führt die Startseite an */}
           <div className={cn("grid gap-5 [&>*]:min-w-0", isAdmin && "lg:grid-cols-5")}>
             <Panel
               title="Heute"
@@ -396,6 +359,43 @@ export default function StaffHome() {
               </Panel>
             )}
           </div>
+
+          <AcceptedOffersPayments />
+
+          <DepositSettlementsDue location={activeDayLocation} />
+
+          <UrgentCalls />
+
+          {customerRequests.length > 0 && (
+            <section className="rounded-xl border-2 border-accent bg-card" aria-label="Offene Kundenanfragen">
+              <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
+                <h2 className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <UserCheck className="h-4 w-4 text-accent" aria-hidden="true" />Offene Kundenanfragen
+                  <span className="rounded-full bg-accent px-2 py-0.5 text-xs text-accent-foreground">{customerRequests.length}</span>
+                </h2>
+                <Link to="/b2b/kundendaten?handlung=alle" className="text-xs font-medium text-primary hover:underline">Alle anzeigen</Link>
+              </header>
+              <ul className="divide-y divide-border">
+                {customerRequests.slice(0, 8).map(({ p, kind, label }) => (
+                  <li key={p.id + kind}>
+                    <Link to={isAdmin ? `/b2b/kundendaten?handlung=alle&profil=${p.id}` : `/b2b/kundendaten?handlung=${kind}`} className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-muted">
+                      <span className="min-w-0 flex-1 truncate font-medium text-foreground">{p.company_name}</span>
+                      <span className={cn("shrink-0 rounded-full px-2 py-0.5 text-xs", kind === "loeschung" ? "bg-destructive/10 text-destructive" : "bg-accent/15 text-foreground")}>{label}</span>
+                      <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {isAdmin && rec.overdueCount > 0 && (
+            <Link to="/b2b/anfrage-rechnungen" className="flex items-center gap-3 rounded-xl border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+              <Receipt className="h-4 w-4 shrink-0" aria-hidden="true" />
+              <span className="min-w-0 flex-1">{rec.overdueCount} überfällige Rechnungen · {formatEuro(rec.overdue)}</span>
+              <span className="hidden font-medium sm:inline">Prüfen</span><ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+            </Link>
+          )}
 
           <DueInstallments today={today} />
 
