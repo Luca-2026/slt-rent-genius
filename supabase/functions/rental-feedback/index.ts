@@ -13,12 +13,27 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "Ungültige Anfrage" }, 405);
   try {
-    const parsed = schema.safeParse(await req.json());
-    if (!parsed.success) return json({ error: "Ungültiger Feedback-Link oder Angaben" }, 400);
-    const body = parsed.data;
+    const raw = await req.json();
     const url = Deno.env.get("SUPABASE_URL"); const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!url || !key) return json({ error: "Dienst nicht verfügbar" }, 500);
     const service = createClient(url, key);
+    if (raw?.action === "invite") {
+      const invite = z.object({ action: z.literal("invite"), kind: z.enum(["inquiry", "portal"]), invoice_id: z.string().uuid() }).safeParse(raw);
+      if (!invite.success) return json({ error: "Ungültige Rechnung" }, 400);
+      const bearer = req.headers.get("Authorization")?.replace(/^Bearer /, "");
+      if (!bearer) return json({ error: "Anmeldung erforderlich" }, 401);
+      const { data: { user }, error: authError } = await service.auth.getUser(bearer);
+      if (authError || !user) return json({ error: "Anmeldung erforderlich" }, 401);
+      const { data: staff } = await service.rpc("is_staff_member", { _user_id: user.id });
+      if (!staff) return json({ error: "Keine Berechtigung" }, 403);
+      const { data, error } = await service.rpc("ensure_rental_feedback_invitation", { p_kind: invite.data.kind, p_invoice: invite.data.invoice_id });
+      if (error) return json({ error: error.message }, 409);
+      if (!data) return json({ error: "Erst nach abgeschlossener Rückgabe und endgültiger Mietrechnung verfügbar." }, 409);
+      return json({ url: `https://www.slt-rental.de/feedback/mietprozess?token=${data.token}` });
+    }
+    const parsed = schema.safeParse(raw);
+    if (!parsed.success) return json({ error: "Ungültiger Feedback-Link oder Angaben" }, 400);
+    const body = parsed.data;
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
     const { data: allowed, error: rateError } = await service.rpc("check_public_rate_limit", { _bucket: "rental-feedback", _client_key: ip, _max_hits: 60, _window_seconds: 3600 });
     if (rateError || !allowed) return json({ error: "Zu viele Versuche. Bitte später erneut versuchen." }, 429);

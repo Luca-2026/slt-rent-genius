@@ -2,7 +2,8 @@
 - Subdirectories have their own AGENTS.md; read it before changing files there.
 - src/components/b2b/admin/AGENTS.md steuert die CMS-Artikelmaske: Preisschema je Artikel, Hauptkategorie und die Preisregeln (Pflicht, Rückfallstufen, Alt-Textfelder).
 - WhatsApp: locationWhatsAppContacts.ts + BonnWhatsAppContact; WhatsAppIcon.tsx = Markenglyph.
-- Customer payment-term eligibility is shared through _shared/customer-payment-terms.ts in forms and send functions; validate before number allocation to prevent UI bypasses without modifying issued snapshots.
+- Payment-term eligibility: _shared/customer-payment-terms.ts; validate before numbering, preserve issued snapshots.
+- Feedback coupons: protected DB invitation/activation/reservation functions; acceptance triggers redeem atomically; feedback-coupon-math keeps extras unchanged.
 - Signing overlays: ref counting + route gating.
 - Inquiry invoice previews: same final renderer, no number/write/mail side effects; editors require preview of current data.
 <!-- LOVABLE:BEGIN -->

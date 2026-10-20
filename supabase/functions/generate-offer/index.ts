@@ -302,7 +302,8 @@ Deno.serve(async (req: Request) => {
         if (applicableIndexes.length === 0 && !hasAnyCategory) {
           applicableIndexes = offerItems.map((_, idx) => idx);
         }
-        const baseForService = applicableIndexes.reduce((sum, idx) => sum + (offerItems[idx]?.total_price || 0), 0);
+        const originalTotal = (idx: number) => { const item = items[idx]; return item ? Math.round(item.quantity * item.unit_price * (1 - (item.discount_percent || 0) / 100) * 100) / 100 : 0; };
+        const baseForService = applicableIndexes.reduce((sum, idx) => sum + originalTotal(idx), 0);
 
         let amount = 0;
         if (svc.customPrice && svc.customPrice > 0) {
@@ -319,7 +320,7 @@ Deno.serve(async (req: Request) => {
           let allocated = 0;
           applicableIndexes.forEach((idx, pos) => {
             const isLast = pos === applicableIndexes.length - 1;
-            const rawShare = amount * ((offerItems[idx]?.total_price || 0) / baseForService);
+            const rawShare = amount * (originalTotal(idx) / baseForService);
             const share = isLast
               ? Math.round((amount - allocated) * 100) / 100
               : Math.round(rawShare * 100) / 100;

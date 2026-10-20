@@ -2,6 +2,7 @@ import { applyCategoryDiscount, loadCategoryDiscounts } from "@/lib/customerDisc
 import { needsOfferDepositWarning } from "@/lib/offerDeposit";
 import { OfferDepositWarning } from "@/components/b2b/OfferDepositWarning";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { PdfPagesPreview } from "@/components/b2b/PdfPagesPreview";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -477,9 +478,11 @@ export function AdminCreateOfferDialog({
   // Always show ALL services in admin mode so staff can add any option regardless of category
   const relevantServices = ADDITIONAL_SERVICES;
 
-  const [saveMode, setSaveMode] = useState<"draft" | "finalize" | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [saveMode, setSaveMode] = useState<"draft" | "finalize" | "preview" | null>(null);
+  useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
 
-  const handleSave = async (mode: "draft" | "finalize") => {
+  const handleSave = async (mode: "draft" | "finalize" | "preview") => {
     if (!isStandalone && !isEditing && !reservationId) {
       toast({ title: "Fehler", description: "Keine Reservierung ausgewählt.", variant: "destructive" });
       return;
@@ -543,6 +546,7 @@ export function AdminCreateOfferDialog({
       const { data, error } = await supabase.functions.invoke("generate-offer", {
         body: {
           coupon_code: couponCode.trim() || undefined,
+          preview: mode === "preview",
           reservation_id: reservationId || undefined,
           b2b_profile_id: isStandalone ? profile?.id : (isEditing && !reservationId ? existingOffer?.b2b_profile_id : undefined),
           offer_id: existingOffer?.id || undefined,
@@ -588,6 +592,14 @@ export function AdminCreateOfferDialog({
       });
 
       if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      if (mode === "preview") {
+        if (!data.pdf_base64) throw new Error("Vorschau konnte nicht erzeugt werden");
+        const bytes = Uint8Array.from(atob(data.pdf_base64), c => c.charCodeAt(0));
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        setPreviewUrl(URL.createObjectURL(new Blob([bytes], { type: "application/pdf" })));
+        return;
+      }
 
       if (mode === "draft") {
         toast({
@@ -1187,7 +1199,9 @@ export function AdminCreateOfferDialog({
         </p>
 
         {/* Actions */}
+        {previewUrl && <div className="space-y-2"><PdfPagesPreview url={previewUrl} className="max-h-[60vh] overflow-auto" /><Button variant="outline" onClick={() => setPreviewUrl(null)}>Vorschau schließen</Button></div>}
         <div className="flex flex-col sm:flex-row gap-3 sm:justify-end pt-2">
+          <Button variant="outline" disabled={saving} onClick={() => handleSave("preview")}><FileText className="h-4 w-4" />PDF-Vorschau</Button>
           <Button variant="outline" onClick={() => {
             offerDraftStore.key = null;
             offerDraftStore.data = null;
