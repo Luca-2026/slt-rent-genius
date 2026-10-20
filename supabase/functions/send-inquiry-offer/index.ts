@@ -169,7 +169,7 @@ Deno.serve(async (req: Request) => {
     // Angebot zu dieser Anfrage versendet, wird kein zweites erzeugt/gemailt.
     // Eine bewusste Überarbeitung der aktuellen Fassung ist davon ausgenommen.
     const lastSentAt = inquiry.offer_sent_at ? Date.parse(inquiry.offer_sent_at) : 0;
-    if (!isRevision && lastSentAt && Date.now() - lastSentAt < 2 * 60 * 1000) {
+    if (body.preview !== true && !isRevision && lastSentAt && Date.now() - lastSentAt < 2 * 60 * 1000) {
       console.log("Duplicate send suppressed for inquiry", inquiryId);
       return json({
         success: true,
