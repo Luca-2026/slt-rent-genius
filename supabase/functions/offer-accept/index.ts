@@ -138,7 +138,7 @@ Deno.serve(async (req: Request) => {
       accepted_ip: onsiteStaff ? null : ip,
       accepted_user_agent: onsiteStaff ? `onsite-staff:${onsiteStaff.id}` : (req.headers.get("user-agent") ?? "").slice(0, 300),
     }).eq("id", link.id).eq("status", "active").select("id").maybeSingle();
-    if (updErr || !updated) return json({ error: "Dieses Angebot wurde bereits angenommen.", status: "accepted" }, 409);
+    if (updErr || !updated) return json({ error: updErr?.message?.includes("Gutschein") ? updErr.message : "Dieses Angebot wurde bereits angenommen oder ist nicht mehr gültig.", status: "unavailable" }, 409);
 
     const statusPatch = ["new", "in_progress", "offer_sent"].includes(inquiry.status) ? { status: "accepted" } : {};
     {

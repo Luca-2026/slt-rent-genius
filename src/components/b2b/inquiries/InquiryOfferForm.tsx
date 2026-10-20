@@ -413,7 +413,7 @@ export function InquiryOfferForm({
   const draftRef = useRef(ignoreDraft ? null : readInquiryDraft<Record<string, any>>(draftKey));
   const draft = draftRef.current;
   const [draftRestored, setDraftRestored] = useState(!!draft);
-  const [couponCode, setCouponCode] = useState("");
+  const [couponCode, setCouponCode] = useState(draft?.couponCode ?? "");
 
   const [items, setItems] = useState<FormLine[]>(
     Array.isArray(draft?.items) && draft!.items.length
@@ -659,6 +659,7 @@ export function InquiryOfferForm({
     if (d.paymentTerms) setPaymentTerms(safeCustomerPaymentTerms(customerKind, d.paymentTerms, isInvoice));
     setPaymentTermsCustom(d.paymentTermsCustom ?? "");
     setNotes(d.notes ?? "");
+    setCouponCode(d.couponCode ?? "");
     setOpenEnded(canOpenEnded && !!d.openEnded);
     setUseSaturday(!!d.useSaturday);
     setUseSunday(!!d.useSunday);
@@ -703,6 +704,7 @@ export function InquiryOfferForm({
     if (disabled) return;
     const timer = window.setTimeout(() => {
       const snapshot = {
+        couponCode,
         items,
         delivery,
         deliveryCostDelivery,
@@ -736,6 +738,7 @@ export function InquiryOfferForm({
     }, 1200);
     return () => window.clearTimeout(timer);
   }, [
+    couponCode,
     draftKey,
     disabled,
     items,
@@ -1339,7 +1342,7 @@ export function InquiryOfferForm({
     }
     toast({
       title: `${docLabel} gesendet`,
-      description: `${(data as any)?.invoice_number ?? (data as any)?.offer_number} · ${formatEuro(totals.grossAmount)} brutto`,
+      description: `${(data as any)?.invoice_number ?? (data as any)?.offer_number} · ${formatEuro((data as any)?.totals?.grossAmount ?? totals.grossAmount)} brutto`,
     });
     // Übernommene Protokollposten als abgerechnet markieren – sowohl manuell
     // übernommene als auch automatisch vorbelegte Positionen (Kautionslogik),

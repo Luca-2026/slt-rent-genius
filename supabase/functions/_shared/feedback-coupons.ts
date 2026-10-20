@@ -8,13 +8,27 @@ export async function applyFeedbackCoupon<T extends CouponLine & { product_name:
   const normalized = code.trim().toUpperCase();
   const { error } = await service.rpc("check_rental_coupon", { p_code: normalized, p_kind: kind, p_order: orderId, p_profile: profileId });
   if (error) throw new Error(error.message);
+  let sourceProfile = profileId;
+  if (kind === "inquiry" && orderId) {
+    const { data: inquiry } = await service.from("rental_inquiries").select("b2b_profile_id,crm_customer_id").eq("id", orderId).maybeSingle();
+    sourceProfile = inquiry?.b2b_profile_id;
+    if (!sourceProfile && inquiry?.crm_customer_id) {
+      const { data: customer } = await service.from("crm_customers").select("b2b_profile_id").eq("id", inquiry.crm_customer_id).maybeSingle();
+      sourceProfile = customer?.b2b_profile_id;
+    }
+  }
   let saving = 0;
   const updated: T[] = [];
   for (const item of items) {
     let query = service.from("b2b_managed_products").select("slug,name,category");
     query = item.product_slug ? query.eq("slug", item.product_slug) : query.eq("name", item.product_name);
     const { data: product } = await query.limit(1).maybeSingle();
-    const eligible = !!product && couponCategoryEligible(product.category ?? "") && couponCategoryEligible(product.name ?? "");
+    let special = false;
+    if (sourceProfile) {
+      const { data } = await service.from("b2b_customer_prices").select("id").eq("b2b_profile_id", sourceProfile).eq("product_name", item.product_name).limit(1).maybeSingle();
+      special = !!data;
+    }
+    const eligible = !special && !!product && couponCategoryEligible(product.category ?? "") && couponCategoryEligible(product.name ?? "");
     saving += couponSaving(item, eligible);
     updated.push(couponLine(item, eligible));
   }
