@@ -59,7 +59,7 @@ export function isAwaitingOfferConfirmation(row: PipelineInquiryRow, now: Date =
 
 /** Closeout only for real orders: confirmed, or accepted (awaiting confirmation). "done" without confirmation = closed request, never a to-do. */
 export function needsRentalCloseout(row: PipelineInquiryRow, now: Date = new Date()): boolean {
-  if (row.closed_manually_at || !hasRentalEnded(row, now)) return false;
+  if (!hasRentalEnded(row, now)) return false;
   return !!row.order_confirmed_at || row.status === "accepted";
 }
 
