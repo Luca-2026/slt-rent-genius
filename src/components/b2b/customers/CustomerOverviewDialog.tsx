@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Pencil, ChevronRight } from "lucide-react";
 import { crmCustomerLabel, type CrmCustomer } from "@/hooks/useCrmCustomers";
+import { inquiryStatusLabel } from "@/lib/inquiryStatus";
 import { countsAsRevenue } from "@/lib/dashboardMetrics";
 
 type Inq = { id: string; table: "rental" | "sales"; created_at: string; status: string; offer_number: string | null; offer_sent_at: string | null; offer_total_gross: number | null; order_code?: string | null };
@@ -99,7 +100,7 @@ export function CustomerOverviewDialog({ customer, open, onOpenChange, onEdit, s
                           </div>
                         </div>
                         {q.offer_total_gross != null && q.offer_number && <span className="shrink-0 text-sm text-foreground">{euro(Number(q.offer_total_gross))}</span>}
-                        <Badge variant="outline" className="shrink-0">{q.status}</Badge>
+                        <Badge variant="outline" className="shrink-0">{inquiryStatusLabel(q.status)}</Badge>
                         <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
                       </Link>
                     </li>
@@ -116,7 +117,7 @@ export function CustomerOverviewDialog({ customer, open, onOpenChange, onEdit, s
                     <li key={v.id} className="flex items-center gap-3 px-3 py-2.5 text-sm">
                       <div className="min-w-0 flex-1">
                         <div className="break-words font-medium text-foreground">{v.invoice_number || "Entwurf"}</div>
-                        <div className="text-xs text-muted-foreground">{day(v.invoice_date)} · {v.status}</div>
+                        <div className="text-xs text-muted-foreground">{day(v.invoice_date)} · {v.invoice_kind === "credit_note" ? "Gutschrift" : ({ open: "offen", paid: "bezahlt", overdue: "überfällig", cancelled: "storniert", draft: "Entwurf" } as Record<string, string>)[v.status] ?? v.status}</div>
                       </div>
                       <span className="shrink-0 text-foreground">{euro(Number(v.gross_amount) || 0)}</span>
                     </li>
