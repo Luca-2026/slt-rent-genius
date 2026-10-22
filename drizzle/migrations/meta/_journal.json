@@ -610,6 +610,13 @@
       "when": 1792479438317,
       "tag": "0086_feedback_coupon_preview_read_only",
       "breakpoints": true
+    },
+    {
+      "idx": 87,
+      "version": "7",
+      "when": 1792653859640,
+      "tag": "0087_manual_rental_closeout",
+      "breakpoints": true
     }
   ]
 }

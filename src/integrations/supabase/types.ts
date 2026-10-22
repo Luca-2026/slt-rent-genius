@@ -4022,6 +4022,9 @@ export type Database = {
           b2b_profile_id: string | null
           b2b_reservation_id: string | null
           category_slug: string | null
+          closed_manually_at: string | null
+          closed_manually_by: string | null
+          closed_manually_reason: string | null
           company_name: string | null
           created_at: string
           crm_customer_id: string | null
@@ -4095,6 +4098,9 @@ export type Database = {
           b2b_profile_id?: string | null
           b2b_reservation_id?: string | null
           category_slug?: string | null
+          closed_manually_at?: string | null
+          closed_manually_by?: string | null
+          closed_manually_reason?: string | null
           company_name?: string | null
           created_at?: string
           crm_customer_id?: string | null
@@ -4168,6 +4174,9 @@ export type Database = {
           b2b_profile_id?: string | null
           b2b_reservation_id?: string | null
           category_slug?: string | null
+          closed_manually_at?: string | null
+          closed_manually_by?: string | null
+          closed_manually_reason?: string | null
           company_name?: string | null
           created_at?: string
           crm_customer_id?: string | null
@@ -5648,6 +5657,10 @@ export type Database = {
         Returns: Json
       }
       close_expired_rental_inquiries: { Args: never; Returns: number }
+      close_rental_without_protocol: {
+        Args: { _inquiry_id: string; _reason: string }
+        Returns: undefined
+      }
       complete_maintenance: {
         Args: {
           _cost: number
@@ -5762,6 +5775,10 @@ export type Database = {
         }[]
       }
       log_admin_login: { Args: never; Returns: undefined }
+      log_return_without_delivery: {
+        Args: { _inquiry_id: string }
+        Returns: undefined
+      }
       mark_deposit_payout_done: {
         Args: { _settlement_id: string }
         Returns: undefined
