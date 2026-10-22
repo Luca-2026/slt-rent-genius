@@ -4,7 +4,7 @@ import { BellRing, CheckCircle2, ChevronDown, ChevronRight, ChevronUp } from "lu
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
-import { hasRentalEnded, rentalCloseoutTasks, isAwaitingOfferConfirmation } from "@/lib/dashboardMetrics";
+import { hasRentalEnded, needsRentalCloseout, rentalCloseoutTasks, isAwaitingOfferConfirmation } from "@/lib/dashboardMetrics";
 import { isPaymentOverdue, paymentDeadline } from "../../../../supabase/functions/_shared/payment-followup";
 
 import { effectiveEnd } from "@/lib/calendarEntries";
@@ -57,7 +57,7 @@ export function AcceptedOffersPayments() {
       const list = [
         ...(rent.data ?? []).map((i) => ({ ...i, table: "rental_inquiries" })),
         ...(sale.data ?? []).map((i) => ({ ...i, table: "sales_inquiries" })),
-      ].filter((i) => isAwaitingOfferConfirmation(i, now) || (i.table === "rental_inquiries" && hasRentalEnded(i, now)));
+      ].filter((i) => isAwaitingOfferConfirmation(i, now) || (i.table === "rental_inquiries" && needsRentalCloseout(i, now)));
       if (!list.length) { if (active) { setRows([]); setError(false); } return; }
       const ids = list.map((i) => i.id);
       const [acc, links, delivery, returns, invoices] = await Promise.all([
@@ -67,7 +67,8 @@ export function AcceptedOffersPayments() {
         supabase.from("b2b_return_protocols").select("rental_inquiry_id,status").in("rental_inquiry_id", ids),
         supabase.from("inquiry_invoices").select("rental_inquiry_id,status,invoice_kind").in("rental_inquiry_id", ids),
       ]);
-      if (acc.error || links.error || delivery.error || returns.error || invoices.error) { if (active) setError(true); return; }
+      if (acc.error || links.error) { if (active) setError(true); return; }
+      const protocolsFailed = !!(delivery.error || returns.error || invoices.error);
       const out: Row[] = [];
       for (const i of list) {
         const ended = i.table === "rental_inquiries" && hasRentalEnded(i, now);
@@ -76,7 +77,7 @@ export function AcceptedOffersPayments() {
           returnSigned: (returns.data ?? []).some((p) => p.rental_inquiry_id === i.id && p.status === "signed"),
           invoiced: (invoices.data ?? []).some((p) => p.rental_inquiry_id === i.id && !["draft", "cancelled"].includes(p.status) && ["invoice", "final"].includes(p.invoice_kind ?? "invoice")),
         }) : [];
-        if (ended && !tasks.length) continue;
+        if (ended && (protocolsFailed || !tasks.length)) continue;
         const a = acc.data?.find((a) => a.inquiry_id === i.id && a.offer_number === i.offer_number);
         const payload = (i.offer_payload ?? {}) as { deposit?: unknown; payment_terms?: string };
         const total = (Number(i.offer_total_gross) || 0) + (Number(payload.deposit) || 0);

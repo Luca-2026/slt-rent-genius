@@ -56,6 +56,12 @@ export function isAwaitingOfferConfirmation(row: PipelineInquiryRow, now: Date =
   return row.status === "accepted" && !row.order_confirmed_at && !hasRentalEnded(row, now);
 }
 
+/** Closeout only for real orders: confirmed, or accepted (awaiting confirmation). "done" without confirmation = closed request, never a to-do. */
+export function needsRentalCloseout(row: PipelineInquiryRow, now: Date = new Date()): boolean {
+  if (!hasRentalEnded(row, now)) return false;
+  return !!row.order_confirmed_at || row.status === "accepted";
+}
+
 export function rentalCloseoutTasks(state: { deliverySigned: boolean; returnSigned: boolean; invoiced: boolean }): string[] {
   return [!state.deliverySigned && "Übergabeprotokoll fehlt", !state.returnSigned && "Rückgabe klären · Rückgabeprotokoll fehlt", !state.invoiced && "Schlussrechnung fehlt"].filter((v): v is string => typeof v === "string");
 }
