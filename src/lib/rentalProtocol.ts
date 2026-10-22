@@ -88,7 +88,7 @@ export function protocolItemsFromInquiry(inq: InquiryLike): ProtocolItem[] {
   return name ? [{ name, quantity: inq.quantity && inq.quantity > 0 ? inq.quantity : 1, detail: null }] : [];
 }
 
-type CandidateRow = { status: unknown; order_confirmed_at?: string | null };
+type CandidateRow = { status: unknown; order_confirmed_at?: string | null; closed_manually_at?: string | null };
 
 /**
  * Welche Aufträge stehen zur Auswahl?
