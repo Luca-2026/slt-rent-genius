@@ -8,6 +8,7 @@ import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { DeclineCreditLimitButton } from "@/components/b2b/DeclineCreditLimitButton";
 import { GrantCreditLimitButton } from "@/components/b2b/GrantCreditLimitButton";
 import { useCrmCustomers, crmCustomerLabel, type CrmCustomer } from "@/hooks/useCrmCustomers";
+import { CustomerOverviewDialog } from "@/components/b2b/customers/CustomerOverviewDialog";
 import { CustomerFormDialog } from "@/components/b2b/customers/CustomerFormDialog";
 import { AdminCustomerDetailDialog } from "@/components/b2b/admin/AdminCustomerDetailDialog";
 import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
@@ -31,6 +32,7 @@ export default function Customers() {
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<CrmCustomer | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [overview, setOverview] = useState<CrmCustomer | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const segment = parseSegmentFilter(searchParams.get("kunden"));
   const action = parseActionFilter(searchParams.get("handlung"));
@@ -223,7 +225,7 @@ export default function Customers() {
             const p = c.b2b_profile_id ? profileById.get(c.b2b_profile_id) : null;
             const credit = p ? Number(p.credit_limit) || 0 : 0;
             return (
-              <Card key={c.id} data-testid="customer-card">
+              <Card key={c.id} data-testid="customer-card" role="button" tabIndex={0} className="cursor-pointer hover:border-primary" onClick={() => setOverview(c)} onKeyDown={(e) => { if (e.key === "Enter") setOverview(c); }}>
                 <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
@@ -262,7 +264,7 @@ export default function Customers() {
                       </span>
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2 shrink-0">
+                  <div className="flex flex-wrap gap-2 shrink-0" onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
                     {p && isBranchManager && !isAdmin && needsAction(p, "kreditlimit") && (
                       <>
                         <GrantCreditLimitButton profileId={p.id} companyName={p.company_name || crmCustomerLabel(c)} onDone={loadPortal} />
@@ -284,6 +286,8 @@ export default function Customers() {
           })}
         </div>
       )}
+
+      <CustomerOverviewDialog customer={overview} open={!!overview} onOpenChange={(v) => { if (!v) setOverview(null); }} showRevenue={isAdmin} onEdit={(c) => { setOverview(null); openEdit(c); }} />
 
       <CustomerFormDialog
         open={dialogOpen}
