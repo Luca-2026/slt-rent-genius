@@ -73,8 +73,8 @@ export function AcceptedOffersPayments() {
       for (const i of list) {
         const ended = i.table === "rental_inquiries" && hasRentalEnded(i, now);
         const tasks = ended ? rentalCloseoutTasks({
-          deliverySigned: !!i.closed_manually_at || (delivery.data ?? []).some((p) => p.rental_inquiry_id === i.id && p.status === "signed"),
-          returnSigned: !!i.closed_manually_at || (returns.data ?? []).some((p) => p.rental_inquiry_id === i.id && p.status === "signed"),
+          deliverySigned: ("closed_manually_at" in i && !!i.closed_manually_at) || (delivery.data ?? []).some((p) => p.rental_inquiry_id === i.id && p.status === "signed"),
+          returnSigned: ("closed_manually_at" in i && !!i.closed_manually_at) || (returns.data ?? []).some((p) => p.rental_inquiry_id === i.id && p.status === "signed"),
           invoiced: (invoices.data ?? []).some((p) => p.rental_inquiry_id === i.id && !["draft", "cancelled"].includes(p.status) && ["invoice", "final"].includes(p.invoice_kind ?? "invoice")),
         }) : [];
         if (ended && (protocolsFailed || !tasks.length)) continue;
