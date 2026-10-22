@@ -101,6 +101,8 @@ export function isProtocolCandidate(
   state: { handedOver: boolean; returned: boolean },
 ): boolean {
   if (String(row.status) !== "accepted") return false;
+  if ((row as { closed_manually_at?: string | null }).closed_manually_at) return false;
   if (state.returned) return false;
-  return kind === "delivery" ? !state.handedOver : state.handedOver;
+  // Rückgabe auch ohne Übergabeprotokoll möglich (Bestätigung im Dialog).
+  return kind === "delivery" ? !state.handedOver : true;
 }
