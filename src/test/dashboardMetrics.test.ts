@@ -57,3 +57,12 @@ describe("dashboardMetrics", () => {
     ])).toEqual({ offered: 100, offeredCount: 1, accepted: 50, acceptedCount: 1 });
   });
 });
+
+import { needsRentalCloseout } from "@/lib/dashboardMetrics";
+describe("needsRentalCloseout", () => {
+  const now = new Date("2026-10-22T07:00:00Z");
+  const base = { offer_total_gross: 100, start_date: "2026-10-01", end_date: "2026-10-05" };
+  it("ignores done requests never confirmed", () => expect(needsRentalCloseout({ ...base, status: "done" }, now)).toBe(false));
+  it("includes confirmed done orders", () => expect(needsRentalCloseout({ ...base, status: "done", order_confirmed_at: "2026-09-30" }, now)).toBe(true));
+  it("includes ended accepted orders", () => expect(needsRentalCloseout({ ...base, status: "accepted" }, now)).toBe(true));
+});
