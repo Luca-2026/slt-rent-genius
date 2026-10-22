@@ -47,7 +47,8 @@ describe("Auftragsauswahl", () => {
   });
   it("Rückgabe nur nach Übergabe und ohne Rückgabe", () => {
     expect(isProtocolCandidate(acc, "return", { handedOver: true, returned: false })).toBe(true);
-    expect(isProtocolCandidate(acc, "return", { handedOver: false, returned: false })).toBe(false);
+    expect(isProtocolCandidate(acc, "return", { handedOver: false, returned: false })).toBe(true);
+    expect(isProtocolCandidate({ ...acc, closed_manually_at: "2026-10-22" } as typeof acc, "return", { handedOver: false, returned: false })).toBe(false);
     expect(isProtocolCandidate(acc, "return", { handedOver: true, returned: true })).toBe(false);
   });
 });

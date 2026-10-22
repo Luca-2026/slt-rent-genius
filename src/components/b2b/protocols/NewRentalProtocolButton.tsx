@@ -14,6 +14,7 @@ import { isProtocolCandidate, type ProtocolKind } from "@/lib/rentalProtocol";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import type { RentalInquiry } from "@/components/b2b/inquiries/types";
 import { RentalProtocolDialog } from "./RentalProtocolDialog";
+import { ReturnWithoutDeliveryConfirm } from "./RentalProtocolSection";
 
 const fmt = (v: string | null) => (v ? new Date(v.slice(0, 10)).toLocaleDateString("de-DE") : "—");
 
@@ -21,6 +22,7 @@ export function NewRentalProtocolButton({ kind, onCreated }: { kind: ProtocolKin
   const [pickerOpen, setPickerOpen] = useState(false);
   const [selected, setSelected] = useState<RentalInquiry | null>(null);
   const [q, setQ] = useState("");
+  const [pendingNoDelivery, setPendingNoDelivery] = useState<RentalInquiry | null>(null);
   const { rows, reload } = useRentalInquiries();
   const protocols = useRentalProtocolStatus();
   const label = kind === "delivery" ? "Übergabeprotokoll" : "Rückgabeprotokoll";
@@ -49,7 +51,7 @@ export function NewRentalProtocolButton({ kind, onCreated }: { kind: ProtocolKin
             <DialogDescription>
               {kind === "delivery"
                 ? "Angenommene Aufträge ohne Übergabeprotokoll."
-                : "Übergebene Aufträge ohne Rückgabeprotokoll."}
+                : "Angenommene Aufträge ohne Rückgabeprotokoll – auch ohne Übergabeprotokoll (mit Bestätigung)."}
             </DialogDescription>
           </DialogHeader>
           <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Kunde, Artikel, Nummer oder Datum suchen …" />
@@ -60,13 +62,14 @@ export function NewRentalProtocolButton({ kind, onCreated }: { kind: ProtocolKin
                 key={r.id}
                 type="button"
                 className="w-full text-left rounded-lg border p-3 hover:border-primary transition-colors"
-                onClick={() => { setSelected(r); setPickerOpen(false); }}
+                onClick={() => { setPickerOpen(false); if (kind === "return" && !protocols.byInquiry.get(r.id)?.delivery) setPendingNoDelivery(r); else setSelected(r); }}
               >
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="font-semibold break-words">{[r.company_name, r.customer_name].filter(Boolean).join(" · ") || r.customer_email}</span>
                   {r.order_confirmed_at
                     ? <Badge variant="secondary">AB {r.order_confirmation_number ?? "verschickt"}</Badge>
                     : <Badge variant="outline">Auftragsbestätigung offen</Badge>}
+                  {kind === "return" && !protocols.byInquiry.get(r.id)?.delivery && <Badge variant="destructive">Ohne Übergabeprotokoll</Badge>}
                 </div>
                 <p className="text-sm text-muted-foreground break-words">
                   {r.product_name} · {fmt(r.start_date)} – {fmt(r.end_date)}{r.location ? ` · ${getLocationDisplayName(r.location)}` : ""}
@@ -76,6 +79,9 @@ export function NewRentalProtocolButton({ kind, onCreated }: { kind: ProtocolKin
           </div>
         </DialogContent>
       </Dialog>
+      {pendingNoDelivery && (
+        <ReturnWithoutDeliveryConfirm inquiryId={pendingNoDelivery.id} open onCancel={() => setPendingNoDelivery(null)} onConfirmed={() => { setSelected(pendingNoDelivery); setPendingNoDelivery(null); }} />
+      )}
       <RentalProtocolDialog
         kind={kind}
         inquiry={selected}

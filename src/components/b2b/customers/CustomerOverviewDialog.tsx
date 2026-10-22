@@ -90,8 +90,8 @@ export function CustomerOverviewDialog({ customer, open, onOpenChange, onEdit, s
                 <ul className="divide-y divide-border rounded-md border border-border">
                   {inqs.map((q) => (
                     <li key={q.table + q.id}>
-                      <Link to={link(q)} onClick={() => onOpenChange(false)} className="flex items-center gap-3 px-3 py-2.5 text-sm hover:bg-muted">
-                        <div className="min-w-0 flex-1">
+                      <Link to={link(q)} onClick={() => onOpenChange(false)} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2.5 text-sm hover:bg-muted">
+                        <div className="min-w-[14rem] flex-1">
                           <div className="break-words font-medium text-foreground">
                             {q.offer_number || "Anfrage ohne Angebot"}{q.order_code ? ` · #${q.order_code}` : ""}
                           </div>

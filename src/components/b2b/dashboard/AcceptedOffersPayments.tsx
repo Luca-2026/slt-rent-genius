@@ -48,7 +48,7 @@ export function AcceptedOffersPayments() {
     let active = true;
     const load = async () => {
       const now = new Date();
-      const cols = "start_date, end_date, end_time, id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, customer_name, company_name";
+      const cols = "start_date, end_date, end_time, id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, customer_name, company_name, closed_manually_at";
       const [rent, sale] = await Promise.all([
         supabase.from("rental_inquiries").select(cols).in("status", ["accepted", "done"]),
         supabase.from("sales_inquiries").select("id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, first_name, last_name, company_name").eq("status", "accepted").is("order_confirmed_at", null),
@@ -73,8 +73,8 @@ export function AcceptedOffersPayments() {
       for (const i of list) {
         const ended = i.table === "rental_inquiries" && hasRentalEnded(i, now);
         const tasks = ended ? rentalCloseoutTasks({
-          deliverySigned: (delivery.data ?? []).some((p) => p.rental_inquiry_id === i.id && p.status === "signed"),
-          returnSigned: (returns.data ?? []).some((p) => p.rental_inquiry_id === i.id && p.status === "signed"),
+          deliverySigned: ("closed_manually_at" in i && !!i.closed_manually_at) || (delivery.data ?? []).some((p) => p.rental_inquiry_id === i.id && p.status === "signed"),
+          returnSigned: ("closed_manually_at" in i && !!i.closed_manually_at) || (returns.data ?? []).some((p) => p.rental_inquiry_id === i.id && p.status === "signed"),
           invoiced: (invoices.data ?? []).some((p) => p.rental_inquiry_id === i.id && !["draft", "cancelled"].includes(p.status) && ["invoice", "final"].includes(p.invoice_kind ?? "invoice")),
         }) : [];
         if (ended && (protocolsFailed || !tasks.length)) continue;

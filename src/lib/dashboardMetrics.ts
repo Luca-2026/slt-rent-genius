@@ -38,6 +38,7 @@ export interface PipelineInquiryRow {
   start_date?: string | null;
   end_time?: string | null;
   offer_payload?: unknown;
+  closed_manually_at?: string | null;
 }
 
 /** Mietende nach Berliner Datum/Uhrzeit; ohne Uhrzeit erst nach Ende des Tages. */
