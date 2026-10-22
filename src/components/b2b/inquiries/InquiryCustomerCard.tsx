@@ -8,6 +8,14 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Pencil, Save, X } from "lucide-react";
 
+/** Name is stored as one string; last word = Nachname. Tab separates while typing so spaces in Vorname survive. */
+const splitName = (n: string) => {
+  if (n.includes("\t")) { const [f, l] = n.split("\t"); return { first: f, last: l ?? "" }; }
+  const p = n.trim().split(/\s+/).filter(Boolean);
+  return p.length > 1 ? { first: p.slice(0, -1).join(" "), last: p[p.length - 1] } : { first: p[0] ?? "", last: "" };
+};
+const joinName = (first: string, last: string) => `${first}\t${last}`;
+
 export type CustomerKind = "private" | "business";
 
 interface Props {
@@ -116,7 +124,7 @@ export function InquiryCustomerCard({
             {initial.phone ? ` · ${initial.phone}` : ""}
             {initial.mobile ? ` · Mobil ${initial.mobile}` : ""}
           </div>
-          {showAddressForm && <div>Anrede-Form: {initial.address_form === "sie" ? "Sie" : "Du"}</div>}
+          {showAddressForm && <div>Anrede: {initial.address_form === "sie" ? "Sie" : "Du"}</div>}
           {(initial.street || initial.postal_code || initial.city) && (
             <div>
               {[initial.street, [initial.postal_code, initial.city].filter(Boolean).join(" ")]
@@ -148,37 +156,34 @@ export function InquiryCustomerCard({
             </SelectContent>
           </Select>
         </div>
-        <div className="space-y-1.5">
-          <Label className="text-xs">{inquiryType === "sales" ? "Vor- und Nachname" : "Name"}</Label>
-          <div className="flex gap-2">
-            {showSalutation && (
-              <Select
-                value={values.salutation || "none"}
-                onValueChange={(v) => setValues({ ...values, salutation: v === "herr" || v === "frau" ? v : "" })}
-              >
-                <SelectTrigger className="h-10 w-28 shrink-0" aria-label="Anrede"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">Anrede</SelectItem>
-                  <SelectItem value="herr">Herr</SelectItem>
-                  <SelectItem value="frau">Frau</SelectItem>
-                </SelectContent>
-              </Select>
-            )}
-            <Input value={values.name} onChange={(e) => setValues({ ...values, name: e.target.value })} />
-          </div>
-        </div>
-        {showAddressForm && (
-          <div className="space-y-1.5">
-            <Label className="text-xs">Anrede-Form</Label>
-            <Select value={values.address_form} onValueChange={(v) => setValues({ ...values, address_form: v === "sie" ? "sie" : "du" })}>
-              <SelectTrigger className="h-10" aria-label="Anrede-Form"><SelectValue /></SelectTrigger>
+        {(showAddressForm || showSalutation) && (
+          <div className="space-y-1.5 sm:col-span-2">
+            <Label className="text-xs">Anrede</Label>
+            <Select
+              value={values.address_form === "sie" ? `sie-${values.salutation || "none"}` : "du"}
+              onValueChange={(v) => {
+                const [form, sal] = v.split("-");
+                setValues({ ...values, address_form: form === "sie" ? "sie" : "du", salutation: sal === "herr" || sal === "frau" ? sal : "" });
+              }}
+            >
+              <SelectTrigger className="h-10" aria-label="Anrede"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="du">Du (Standard)</SelectItem>
-                <SelectItem value="sie">Sie</SelectItem>
+                <SelectItem value="sie-herr">Sie · Herr</SelectItem>
+                <SelectItem value="sie-frau">Sie · Frau</SelectItem>
+                <SelectItem value="sie-none">Sie · ohne Herr/Frau</SelectItem>
               </SelectContent>
             </Select>
           </div>
         )}
+        <div className="space-y-1.5">
+          <Label className="text-xs">Vorname</Label>
+          <Input value={splitName(values.name).first} onChange={(e) => setValues({ ...values, name: joinName(e.target.value, splitName(values.name).last) })} />
+        </div>
+        <div className="space-y-1.5">
+          <Label className="text-xs">Nachname</Label>
+          <Input value={splitName(values.name).last} onChange={(e) => setValues({ ...values, name: joinName(splitName(values.name).first, e.target.value) })} />
+        </div>
         <div className="space-y-1.5">
           <Label className="text-xs">E-Mail</Label>
           <Input
@@ -235,7 +240,8 @@ export function InquiryCustomerCard({
           size="sm"
           disabled={busy}
           onClick={async () => {
-            const ok = await onSave(values);
+            const { first, last } = splitName(values.name);
+            const ok = await onSave({ ...values, name: [first.trim(), last.trim()].filter(Boolean).join(" ") });
             if (ok !== false) setEditing(false);
           }}
         >
