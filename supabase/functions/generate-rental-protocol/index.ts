@@ -133,7 +133,7 @@ Deno.serve(async (req) => {
     if (existingRp) return json({ error: "F\u00FCr diesen Auftrag gibt es bereits ein R\u00FCckgabeprotokoll." }, 409);
     if (!isReturn && existingDn) return json({ error: `F\u00FCr diesen Auftrag gibt es bereits das \u00DCbergabeprotokoll ${existingDn.delivery_note_number}.` }, 409);
     if (isReturn && !existingDn) {
-      const { data: confirmed } = await svc.from("rental_inquiry_events").select("id").eq("rental_inquiry_id", inq.id).eq("actor_id", user.id).eq("event_type", "return_without_delivery_confirmed").limit(1).maybeSingle();
+      const { data: confirmed } = await svc.from("rental_inquiry_events").select("id").eq("rental_inquiry_id", inq.id).eq("user_id", user.id).eq("event", "return_without_delivery_confirmed").limit(1).maybeSingle();
       if (!confirmed) return json({ error: "Rückgabe ohne Übergabeprotokoll muss ausdrücklich bestätigt werden." }, 409);
     }
 
