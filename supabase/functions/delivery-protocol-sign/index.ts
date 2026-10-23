@@ -3,7 +3,6 @@ import { PDFDocument, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
 import { decodeBase64, encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { requestDeliverySignature, signatureTokenHash } from "../_shared/delivery-signature.ts";
 import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
-import { berlin } from "../generate-rental-protocol/pdf.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { protocolItemQuantity } from "../_shared/protocol-quantity.ts";
 import { drawUnifiedFooter, resolvePdfLocation } from "../_shared/pdf-footer.ts";
@@ -11,6 +10,7 @@ import { SLT_COMPANY } from "../_shared/offer-company.ts";
 
 const headers = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version" };
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...headers, "Content-Type": "application/json" } });
+const berlin = (date: Date) => date.toLocaleString("de-DE", { timeZone: "Europe/Berlin", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }) + " Uhr";
 Deno.serve(async req => {
   if (req.method === "OPTIONS") return new Response("ok", { headers });
   try {
