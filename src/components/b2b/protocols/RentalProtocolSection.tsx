@@ -95,6 +95,17 @@ export function RentalProtocolSection({ inquiry, state, onChanged }: Props) {
         <p className="text-xs text-muted-foreground">Die Auftragsbestätigung ist noch nicht verschickt. Ein Übergabeprotokoll ist trotzdem möglich.</p>
       )}
       {state.delivery && <Row title="Übergabeprotokoll" number={state.delivery.number} url={state.delivery.file_url} date={state.delivery.created_at} />}
+      {state.delivery?.status === "signed_staff_only" && <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center text-sm">
+        <span className="text-muted-foreground">Kundenunterschrift ausstehend</span>
+        <Button variant="outline" size="sm" disabled={busy} onClick={async () => {
+          if (!state.delivery) return;
+          setBusy(true);
+          const { data, error } = await supabase.functions.invoke("delivery-protocol-sign", { body: { action: "request", id: state.delivery.id } });
+          setBusy(false);
+          if (error || !data?.success) { toast.error("Unterschriftsanfrage konnte nicht gesendet werden."); return; }
+          toast.success("Unterschriftsanfrage per E-Mail gesendet.");
+        }}>Unterschrift per E-Mail anfordern</Button>
+      </div>}
       {state.ret && <Row title="Rückgabeprotokoll" number={state.ret.number} url={state.ret.file_url} date={state.ret.created_at} />}
       {closedAt && (
         <div className="rounded-md border border-accent bg-accent/10 px-3 py-2 text-sm">

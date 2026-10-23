@@ -4,6 +4,8 @@
  */
 
 /** Höchstzahl Fotos je Protokoll (Zustandsfotos + Schadensfotos zusammen). */
+import { protocolItemQuantity } from "../../supabase/functions/_shared/protocol-quantity";
+export { protocolItemQuantity } from "../../supabase/functions/_shared/protocol-quantity";
 export const MAX_PROTOCOL_PHOTOS = 15;
 
 export type ProtocolKind = "delivery" | "return";
@@ -57,11 +59,11 @@ type InquiryLike = {
  */
 export function protocolItemsFromInquiry(inq: InquiryLike): ProtocolItem[] {
   const payload = (inq.offer_payload ?? null) as { items?: unknown } | null;
-  const offerItems = Array.isArray(payload?.items) ? (payload!.items as Record<string, unknown>[]) : [];
+  const offerItems = Array.isArray(payload?.items) ? (payload.items as Record<string, unknown>[]) : [];
   const fromOffer = offerItems
     .filter((it) => String(it.product_name ?? "").trim())
     .map((it) => {
-      const qty = Number(it.articles ?? it.quantity ?? 1);
+      const qty = protocolItemQuantity(it);
       const desc = String(it.description ?? "");
       // Set-Angabe nur bei Set-Artikeln übernehmen (Beschreibungen anderer Positionen können sie fälschlich enthalten)
       const isSet = /set/i.test(String(it.product_name));

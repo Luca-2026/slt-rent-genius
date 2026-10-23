@@ -306,6 +306,7 @@ export type Database = {
           agb_accepted_at: string | null
           b2b_profile_id: string | null
           created_at: string
+          customer_signed_at: string | null
           delivery_note_number: string
           email_sent: boolean
           email_sent_at: string | null
@@ -336,6 +337,7 @@ export type Database = {
           agb_accepted_at?: string | null
           b2b_profile_id?: string | null
           created_at?: string
+          customer_signed_at?: string | null
           delivery_note_number: string
           email_sent?: boolean
           email_sent_at?: string | null
@@ -366,6 +368,7 @@ export type Database = {
           agb_accepted_at?: string | null
           b2b_profile_id?: string | null
           created_at?: string
+          customer_signed_at?: string | null
           delivery_note_number?: string
           email_sent?: boolean
           email_sent_at?: string | null
@@ -2555,6 +2558,41 @@ export type Database = {
           voucher_sent_to?: string | null
         }
         Relationships: []
+      }
+      delivery_signature_links: {
+        Row: {
+          created_at: string
+          delivery_note_id: string
+          expires_at: string
+          id: string
+          token_hash: string
+          used_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          delivery_note_id: string
+          expires_at: string
+          id?: string
+          token_hash: string
+          used_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          delivery_note_id?: string
+          expires_at?: string
+          id?: string
+          token_hash?: string
+          used_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "delivery_signature_links_delivery_note_id_fkey"
+            columns: ["delivery_note_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_delivery_notes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       deposit_refunds: {
         Row: {
@@ -5660,6 +5698,17 @@ export type Database = {
       close_rental_without_protocol: {
         Args: { _inquiry_id: string; _reason: string }
         Returns: undefined
+      }
+      complete_delivery_signature: {
+        Args: {
+          _file_url: string
+          _pdf_path: string
+          _signature: string
+          _signed_at: string
+          _signer: string
+          _token_hash: string
+        }
+        Returns: string
       }
       complete_maintenance: {
         Args: {

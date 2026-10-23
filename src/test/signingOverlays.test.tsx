@@ -10,6 +10,7 @@ describe("signing overlays", () => {
   it("only gates offer acceptance routes, including trailing slashes", () => {
     expect(isSigningRoute("/angebot/test-token")).toBe(true);
     expect(isSigningRoute("/angebot/test-token/")).toBe(true);
+    expect(isSigningRoute("/b2b/protokoll-unterschreiben/test-token")).toBe(true);
     for (const path of ["/", "/angebote", "/angebot", "/zahlung/test", "/mieten"]) {
       expect(isSigningRoute(path)).toBe(false);
     }

@@ -268,6 +268,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   if (!chargesDone) missing.push("Menge und Preis bei jeder Zusatzkostenposition");
   if (!legalDone) missing.push("Bestätigungen des Kunden");
   if (!signaturesDone) missing.push("Unterschriften und Namen");
+  if (!isReturn && customerNotPresent && !inquiry.customer_email) missing.push("E-Mail-Adresse für die nachträgliche Kundenunterschrift");
   const allValid = missing.length === 0;
 
   const submit = async () => {
@@ -327,6 +328,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
         throw new Error(msg);
       }
       if (data?.error) throw new Error(data.error);
+      if (data?.warning) toast.warning(data.warning);
       setResult({ number: data.number, fileUrl: data.file_url ?? null, emailSent: !!data.email_sent, recipient: data.recipient ?? null });
       completed.current = true;
       if (draftKey) await deleteProtocolDraft(draftKey).catch(() => toast.warning("Lokaler Entwurf konnte nicht entfernt werden."));
@@ -523,7 +525,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
         <div className="space-y-4">
           <div className="flex items-start gap-3 rounded-lg border p-3">
             <Checkbox id="not-present" checked={customerNotPresent} onCheckedChange={(v) => setCustomerNotPresent(v === true)} />
-            <label htmlFor="not-present" className="text-sm cursor-pointer">Kunde ist nicht anwesend (z. B. Lieferung an Baustelle) – das Protokoll wird ohne Kundenunterschrift erstellt und so vermerkt.</label>
+            <label htmlFor="not-present" className="text-sm cursor-pointer">Kunde ist nicht anwesend (z. B. Lieferung an Baustelle) – {isReturn ? "das Protokoll wird ohne Kundenunterschrift erstellt und so vermerkt." : "der Kunde erhält das Protokoll per E-Mail zur nachträglichen digitalen Unterschrift."}</label>
           </div>
           {!customerNotPresent && (
             <>
@@ -573,8 +575,8 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
           </div>
           <SignatureBlock title="Unterschrift Mitarbeiter" value={staffSignature} onChange={setStaffSignature} />
           <div className="flex items-start gap-3">
-            <Checkbox id="send-mail" checked={sendEmail} onCheckedChange={(v) => setSendEmail(v === true)} />
-            <label htmlFor="send-mail" className="text-sm cursor-pointer">PDF per E-Mail an {inquiry.customer_email || "den Kunden"} senden</label>
+            <Checkbox id="send-mail" checked={(!isReturn && customerNotPresent) || sendEmail} disabled={!isReturn && customerNotPresent} onCheckedChange={(v) => setSendEmail(v === true)} />
+            <label htmlFor="send-mail" className="text-sm cursor-pointer">{!isReturn && customerNotPresent ? "Unterschriftsanfrage und PDF" : "PDF"} per E-Mail an {inquiry.customer_email || "den Kunden"} senden</label>
           </div>
         </div>
       ),

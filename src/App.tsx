@@ -93,6 +93,7 @@ const GlasfaserMaschinen = lazy(() => import("./pages/GlasfaserMaschinen"));
 const HochzeitTechnik = lazy(() => import("./pages/HochzeitTechnik"));
 const FeedbackMietprozess = lazy(() => import("./pages/FeedbackMietprozess"));
 const FeedbackCoupons = lazy(() => import("./pages/b2b/FeedbackCoupons"));
+const DeliveryProtocolSign = lazy(() => import("./pages/DeliveryProtocolSign"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -119,6 +120,7 @@ const App = () => (
             <Suspense fallback={<PageLoader />}>
               <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/b2b/protokoll-unterschreiben/:token" element={<DeliveryProtocolSign />} />
               
               {/* New rental flow: Location → Category → Products → Product Detail */}
               <Route path="/mieten" element={<RentalStart />} />

@@ -25,6 +25,12 @@ describe("Foto-Limit", () => {
 });
 
 describe("Artikel aus dem Auftrag", () => {
+  it("weist Björns 50 Bodenplatten trotz altem articles=1 als 50 Stück aus", () => {
+    expect(protocolItemsFromInquiry({ offer_payload: { items: [{ product_name: "Event- / Zeltboden Anthrazit", articles: 1, quantity: 50, unit: "Stück" }] } })[0].quantity).toBe(50);
+  });
+  it("verwechselt Mietdauer nicht mit der Gerätestückzahl", () => {
+    expect(protocolItemsFromInquiry({ offer_payload: { items: [{ product_name: "Bagger", articles: 2, quantity: 6, unit: "Miettage" }] } })[0].quantity).toBe(2);
+  });
   it("nimmt das Angebot, sonst die Anfrage", () => {
     const fromOffer = protocolItemsFromInquiry({
       offer_payload: { items: [{ product_name: "Weißweinglas Brunelli, 25er Set", articles: 2, quantity: 2, description: "20.10.2026 – 21.10.2026 · 2 × 25er Set = 50 Stück" }] },

@@ -22,7 +22,7 @@ export function registerSigningSurface(): () => void {
 }
 
 export function isSigningRoute(pathname: string): boolean {
-  return /^\/angebot\/[^/]+\/?$/.test(pathname);
+  return /^\/angebot\/[^/]+\/?$/.test(pathname) || /^\/b2b\/protokoll-unterschreiben\/[^/]+\/?$/.test(pathname);
 }
 
 export function useSigningOverlaysSuppressed(pathname: string): boolean {
