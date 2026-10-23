@@ -7,6 +7,7 @@ import { encodeBase64, decodeBase64 } from "https://deno.land/std@0.224.0/encodi
 import { z } from "https://esm.sh/zod@3.23.8";
 import { mirrorDamagesToInventory } from "../_shared/inventory-damages.ts";
 import { renderProtocolPdf, berlin, type ProtocolPdfPhoto } from "./pdf.ts";
+import { requestDeliverySignature } from "../_shared/delivery-signature.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -93,6 +94,7 @@ Deno.serve(async (req) => {
     const parsed = Body.safeParse(await req.json());
     if (!parsed.success) return json({ error: "Ung\u00FCltige Angaben.", details: parsed.error.flatten().fieldErrors }, 400);
     const b = parsed.data;
+    if (b.customer_not_present && b.kind === "delivery" && !Deno.env.get("RESEND_API_KEY")) return json({ error: "E-Mail-Versand zur Kundenunterschrift ist nicht verfügbar." }, 503);
     for (const m of b.machine_readings) {
       // Eine Zeile darf nur aus der Sauberkeit bestehen (Messwerte sind je Gerät optional).
       if (!m.item_name.trim() || ![m.operating_hours, m.fuel_level, m.mileage, m.cleanliness].some(Boolean) ||
@@ -113,6 +115,7 @@ Deno.serve(async (req) => {
 
     const { data: inq, error: inqErr } = await svc.from("rental_inquiries").select("*").eq("id", b.rental_inquiry_id).maybeSingle();
     if (inqErr || !inq) return json({ error: "Mietanfrage nicht gefunden." }, 404);
+    if (b.customer_not_present && !isReturn && !inq.customer_email) return json({ error: "E-Mail-Adresse für die Kundenunterschrift fehlt." }, 400);
     if (inq.status !== "accepted") return json({ error: "Protokolle sind nur f\u00FCr angenommene Auftr\u00E4ge m\u00F6glich." }, 409);
 
     const [{ data: existingDn }, { data: existingRp }] = await Promise.all([
@@ -214,12 +217,13 @@ Deno.serve(async (req) => {
        operating_hours: b.operating_hours, fuel_level: b.fuel_level, machine_readings: b.machine_readings, cleanliness_rating: b.cleanliness_rating, item_cleanliness: b.item_cleanliness,
       customer_not_present: b.customer_not_present, customer_signer_name: b.customer_signer_name,
       items_confirmed: b.items_confirmed, created_by: user.id,
+      instructed: b.instructed,
     };
     const status = b.customer_not_present ? "signed_staff_only" : "signed";
     const common = {
       rental_inquiry_id: inq.id, b2b_profile_id: inq.b2b_profile_id ?? null, status,
       staff_signature_data: b.staff_signature, staff_name: b.staff_name, notes: b.notes,
-      signed_at: now.toISOString(), signed_place: loc.name, file_url: fileUrl, file_name: fileName, photo_urls: photoUrls,
+      signed_at: b.customer_not_present ? null : now.toISOString(), signed_place: loc.name, file_url: fileUrl, file_name: fileName, photo_urls: photoUrls,
       id_checked: b.id_checked, id_check_type: b.id_check_type, id_checked_at: b.id_checked ? now.toISOString() : null,
       protocol_data: protocolData,
     };
@@ -228,6 +232,7 @@ Deno.serve(async (req) => {
     if (!isReturn) {
       const { data: row, error } = await svc.from("b2b_delivery_notes").insert({
         ...common, delivery_note_number: number, signature_data: b.customer_signature, known_defects: b.known_defects,
+        customer_signed_at: b.customer_not_present ? null : now.toISOString(),
         agb_accepted: b.agb_accepted, agb_accepted_at: b.agb_accepted ? now.toISOString() : null,
         additional_defects: damageRows.length ? damageRows.map((d) => `Schaden ${d.no}: ${d.description}`).join("\n") : null,
       }).select("id").single();
@@ -296,7 +301,13 @@ Deno.serve(async (req) => {
     let emailSent = false;
     const recipient: string | null = inq.customer_email || null;
     const resendKey = Deno.env.get("RESEND_API_KEY");
-    if (b.send_email && recipient && resendKey) {
+    if (!isReturn && b.customer_not_present) {
+      try {
+        emailSent = await requestDeliverySignature(svc, { id: protocolId, delivery_note_number: number, file_name: fileName }, inq, pdf);
+      } catch {
+        return json({ success: true, id: protocolId, number, file_url: fileUrl, email_sent: false, recipient, warning: "Protokoll gespeichert, aber Unterschriftsanfrage nicht versendet. Bitte im Auftrag erneut anfordern." });
+      }
+    } else if (b.send_email && recipient && resendKey) {
       const title = isReturn ? "R\u00FCckgabeprotokoll" : "\u00DCbergabeprotokoll";
       const form = await resolveAddressForm(svc, inq);
       const t = (du: string, sie: string) => byForm(form, du, sie);
