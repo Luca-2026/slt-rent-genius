@@ -18,6 +18,7 @@ Deno.serve(async req => {
     const svc = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
     let note: any;
     let hash = "";
+    let used = false;
     if (b.action === "request" || b.action === "correct_quantities") {
       const auth = req.headers.get("Authorization")?.replace(/^Bearer /, "") ?? "";
       const { data: { user } } = await svc.auth.getUser(auth);
@@ -31,6 +32,7 @@ Deno.serve(async req => {
       hash = await signatureTokenHash(b.token);
       const { data: link } = await svc.from("delivery_signature_links").select("*").eq("token_hash", hash).maybeSingle();
       if (!link || new Date(link.expires_at).getTime() <= Date.now()) return json({ error: "Link ungültig oder abgelaufen." }, 404);
+      used = Boolean(link.used_at);
       const { data } = await svc.from("b2b_delivery_notes").select("*").eq("id", link.delivery_note_id).maybeSingle();
       note = data;
     }
@@ -38,8 +40,10 @@ Deno.serve(async req => {
     const { data: inquiry } = await svc.from("rental_inquiries").select("*").eq("id", note.rental_inquiry_id).single();
     if (!inquiry) return json({ error: "Auftrag nicht gefunden." }, 404);
     const signedAt = note.customer_signed_at ?? note.protocol_data?.customer_signed_at ?? (note.signature_data ? note.signed_at : null);
+    if (!signedAt && !["signed_staff_only", "pending_customer_signature"].includes(note.status)) return json({ error: "Link nicht mehr gültig." }, 409);
+    if (used && !signedAt) return json({ error: "Link bereits verwendet." }, 409);
     if (b.action === "info") return json({ number: note.delivery_note_number, order_code: inquiry.order_code, name: inquiry.customer_name, items: note.protocol_data?.items ?? [], file_url: note.file_url, signed_at: signedAt, signer: note.protocol_data?.customer_signer_name });
-    if (note.signature_data || !["signed_staff_only", "pending_customer_signature"].includes(note.status)) return json({ error: "Protokoll bereits unterschrieben." }, 409);
+    if (used || note.signature_data || !["signed_staff_only", "pending_customer_signature"].includes(note.status)) return json({ error: "Protokoll bereits unterschrieben." }, 409);
     const path = note.protocol_data?.pdf_path;
     if (!path) return json({ error: "Protokoll-PDF fehlt." }, 409);
     const { data: original, error: downloadError } = await svc.storage.from("b2b-invoices").download(path);

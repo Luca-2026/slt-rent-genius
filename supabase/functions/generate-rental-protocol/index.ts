@@ -8,6 +8,7 @@ import { z } from "https://esm.sh/zod@3.23.8";
 import { mirrorDamagesToInventory } from "../_shared/inventory-damages.ts";
 import { renderProtocolPdf, berlin, type ProtocolPdfPhoto } from "./pdf.ts";
 import { requestDeliverySignature } from "../_shared/delivery-signature.ts";
+import { protocolItemQuantity } from "../_shared/protocol-quantity.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -117,6 +118,13 @@ Deno.serve(async (req) => {
     if (inqErr || !inq) return json({ error: "Mietanfrage nicht gefunden." }, 404);
     if (b.customer_not_present && !isReturn && !inq.customer_email) return json({ error: "E-Mail-Adresse für die Kundenunterschrift fehlt." }, 400);
     if (inq.status !== "accepted") return json({ error: "Protokolle sind nur f\u00FCr angenommene Auftr\u00E4ge m\u00F6glich." }, 409);
+    if (!isReturn) {
+      const offerItems = Array.isArray((inq.offer_payload as any)?.items) ? (inq.offer_payload as any).items : [];
+      b.items = b.items.map(item => {
+        const source = offerItems.find((line: any) => line.product_name === item.name);
+        return source ? { ...item, quantity: protocolItemQuantity(source) } : item;
+      });
+    }
 
     const [{ data: existingDn }, { data: existingRp }] = await Promise.all([
       svc.from("b2b_delivery_notes").select("id,delivery_note_number").eq("rental_inquiry_id", inq.id).order("created_at", { ascending: false }).limit(1).maybeSingle(),
@@ -124,7 +132,10 @@ Deno.serve(async (req) => {
     ]);
     if (existingRp) return json({ error: "F\u00FCr diesen Auftrag gibt es bereits ein R\u00FCckgabeprotokoll." }, 409);
     if (!isReturn && existingDn) return json({ error: `F\u00FCr diesen Auftrag gibt es bereits das \u00DCbergabeprotokoll ${existingDn.delivery_note_number}.` }, 409);
-    if (isReturn && !existingDn) return json({ error: "Zuerst muss das \u00DCbergabeprotokoll erstellt werden." }, 409);
+    if (isReturn && !existingDn) {
+      const { data: confirmed } = await svc.from("rental_inquiry_events").select("id").eq("rental_inquiry_id", inq.id).eq("actor_id", user.id).eq("event_type", "return_without_delivery_confirmed").limit(1).maybeSingle();
+      if (!confirmed) return json({ error: "Rückgabe ohne Übergabeprotokoll muss ausdrücklich bestätigt werden." }, 409);
+    }
 
     const { data: number, error: numErr } = await svc.rpc(isReturn ? "generate_return_protocol_number" : "generate_delivery_note_number");
     if (numErr || !number) return json({ error: "Protokollnummer konnte nicht vergeben werden." }, 500);
