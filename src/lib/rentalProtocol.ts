@@ -4,6 +4,8 @@
  */
 
 /** Höchstzahl Fotos je Protokoll (Zustandsfotos + Schadensfotos zusammen). */
+import { protocolItemQuantity } from "../../supabase/functions/_shared/protocol-quantity";
+export { protocolItemQuantity } from "../../supabase/functions/_shared/protocol-quantity";
 export const MAX_PROTOCOL_PHOTOS = 15;
 
 export type ProtocolKind = "delivery" | "return";
@@ -42,14 +44,6 @@ export interface ProtocolItem {
   name: string;
   quantity: number;
   detail: string | null;
-}
-
-/** Stück-/Setpositionen speichern die wirkliche Menge in quantity, nicht im alten articles-Feld. */
-export function protocolItemQuantity(it: Record<string, unknown>): number {
-  const unit = String(it.unit_code ?? it.unit ?? "").trim().toLowerCase();
-  const isCount = /^(stück|stueck|stk\.?|st\.?|set|sets)$/.test(unit);
-  const qty = Number(isCount ? it.quantity ?? it.articles ?? 1 : it.articles ?? it.quantity ?? 1);
-  return Number.isFinite(qty) && qty > 0 ? qty : 1;
 }
 
 type InquiryLike = {

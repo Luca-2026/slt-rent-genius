@@ -5,6 +5,9 @@ import { requestDeliverySignature, signatureTokenHash } from "../_shared/deliver
 import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
 import { berlin } from "../generate-rental-protocol/pdf.ts";
 import { codedSubject } from "../_shared/order-code.ts";
+import { protocolItemQuantity } from "../_shared/protocol-quantity.ts";
+import { drawUnifiedFooter, resolvePdfLocation } from "../_shared/pdf-footer.ts";
+import { SLT_COMPANY } from "../_shared/offer-company.ts";
 
 const headers = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version" };
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...headers, "Content-Type": "application/json" } });
@@ -15,7 +18,7 @@ Deno.serve(async req => {
     const svc = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
     let note: any;
     let hash = "";
-    if (b.action === "request") {
+    if (b.action === "request" || b.action === "correct_quantities") {
       const auth = req.headers.get("Authorization")?.replace(/^Bearer /, "") ?? "";
       const { data: { user } } = await svc.auth.getUser(auth);
       if (!user) return json({ error: "Nicht angemeldet." }, 401);
@@ -42,6 +45,36 @@ Deno.serve(async req => {
     const { data: original, error: downloadError } = await svc.storage.from("b2b-invoices").download(path);
     if (downloadError || !original) throw new Error("Protokoll-PDF konnte nicht geladen werden.");
     const originalBytes = new Uint8Array(await original.arrayBuffer());
+    if (b.action === "correct_quantities") {
+      // Preserve the staff-signed original; corrections are a dated additional page.
+      const items = (note.protocol_data?.items ?? []).map((item: any) => {
+        const offerItem = (inquiry.offer_payload?.items ?? []).find((it: any) => it.product_name === item.name);
+        return offerItem ? { ...item, quantity: protocolItemQuantity(offerItem) } : item;
+      });
+      if (!items.some((item: any, i: number) => item.quantity !== note.protocol_data.items[i].quantity)) return json({ success: true, unchanged: true });
+      const doc = await PDFDocument.load(originalBytes);
+      const font = await doc.embedFont(StandardFonts.Helvetica);
+      const page = doc.addPage([595.28, 841.89]);
+      page.drawText(`Mengenberichtigung ${note.delivery_note_number}`, { x: 50, y: 760, size: 16, font });
+      page.drawText(`Auftrag #${inquiry.order_code} - ${berlin(new Date())}`, { x: 50, y: 735, size: 10, font });
+      page.drawText("Die korrekten Mengen laut bestätigtem Angebot sind:", { x: 50, y: 695, size: 11, font });
+      items.forEach((item: any, i: number) => page.drawText(`${item.quantity} x ${item.name}`, { x: 50, y: 665 - i * 22, size: 10, font, maxWidth: 490 }));
+      page.drawText("Die ursprüngliche Mitarbeiterdokumentation bleibt unverändert erhalten.", { x: 50, y: 580, size: 9, font });
+      drawUnifiedFooter({ doc, font, company: SLT_COMPANY, location: resolvePdfLocation(inquiry.location), W: 595.28, ML: 50, MR: 50, showPageNo: i => i === doc.getPageCount() - 1 });
+      const bytes = await doc.save();
+      const correctedPath = `protocols/${inquiry.id}/corrected-${note.id}-${crypto.randomUUID()}.pdf`;
+      const { error: uploadError } = await svc.storage.from("b2b-invoices").upload(correctedPath, bytes, { contentType: "application/pdf", upsert: false });
+      if (uploadError) throw uploadError;
+      const { data: correctedUrl } = await svc.storage.from("b2b-invoices").createSignedUrl(correctedPath, 365 * 86400);
+      if (!correctedUrl?.signedUrl) throw new Error("PDF-Link fehlt.");
+      const { error: updateError } = await svc.from("b2b_delivery_notes").update({ file_url: correctedUrl.signedUrl, protocol_data: { ...note.protocol_data, items, original_pdf_path: path, pdf_path: correctedPath, quantity_corrected_at: new Date().toISOString() } }).eq("id", note.id).is("signature_data", null);
+      if (updateError) throw updateError;
+      for (const item of items) {
+        const { error: itemError } = await svc.from("b2b_delivery_note_items").update({ quantity: item.quantity }).eq("delivery_note_id", note.id).eq("product_name", item.name);
+        if (itemError) throw itemError;
+      }
+      return json({ success: true, items });
+    }
     if (b.action === "request") {
       await requestDeliverySignature(svc, note, inquiry, originalBytes);
       return json({ success: true });
@@ -61,6 +94,7 @@ Deno.serve(async req => {
     page.drawText(`Digital unterschrieben am: ${berlin(time)}`, { x: 50, y: 598, size: 11, font });
     const scale = Math.min(400 / image.width, 140 / image.height);
     page.drawImage(image, { x: 50, y: 410, width: image.width * scale, height: image.height * scale });
+    drawUnifiedFooter({ doc, font, company: SLT_COMPANY, location: resolvePdfLocation(inquiry.location), W: 595.28, ML: 50, MR: 50, showPageNo: i => i === doc.getPageCount() - 1 });
     const pdf = await doc.save();
     const newPath = `protocols/${inquiry.id}/signed-${note.id}-${crypto.randomUUID()}.pdf`;
     const { error: uploadError } = await svc.storage.from("b2b-invoices").upload(newPath, pdf, { contentType: "application/pdf", upsert: false });

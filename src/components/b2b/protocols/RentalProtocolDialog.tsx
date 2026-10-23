@@ -328,6 +328,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
         throw new Error(msg);
       }
       if (data?.error) throw new Error(data.error);
+      if (data?.warning) toast.warning(data.warning);
       setResult({ number: data.number, fileUrl: data.file_url ?? null, emailSent: !!data.email_sent, recipient: data.recipient ?? null });
       completed.current = true;
       if (draftKey) await deleteProtocolDraft(draftKey).catch(() => toast.warning("Lokaler Entwurf konnte nicht entfernt werden."));
