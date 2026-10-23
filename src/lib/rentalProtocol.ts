@@ -44,6 +44,14 @@ export interface ProtocolItem {
   detail: string | null;
 }
 
+/** Stück-/Setpositionen speichern die wirkliche Menge in quantity, nicht im alten articles-Feld. */
+export function protocolItemQuantity(it: Record<string, unknown>): number {
+  const unit = String(it.unit_code ?? it.unit ?? "").trim().toLowerCase();
+  const isCount = /^(stück|stueck|stk\.?|st\.?|set|sets)$/.test(unit);
+  const qty = Number(isCount ? it.quantity ?? it.articles ?? 1 : it.articles ?? it.quantity ?? 1);
+  return Number.isFinite(qty) && qty > 0 ? qty : 1;
+}
+
 type InquiryLike = {
   product_name?: string | null;
   quantity?: number | null;
@@ -57,11 +65,11 @@ type InquiryLike = {
  */
 export function protocolItemsFromInquiry(inq: InquiryLike): ProtocolItem[] {
   const payload = (inq.offer_payload ?? null) as { items?: unknown } | null;
-  const offerItems = Array.isArray(payload?.items) ? (payload!.items as Record<string, unknown>[]) : [];
+  const offerItems = Array.isArray(payload?.items) ? (payload.items as Record<string, unknown>[]) : [];
   const fromOffer = offerItems
     .filter((it) => String(it.product_name ?? "").trim())
     .map((it) => {
-      const qty = Number(it.articles ?? it.quantity ?? 1);
+      const qty = protocolItemQuantity(it);
       const desc = String(it.description ?? "");
       // Set-Angabe nur bei Set-Artikeln übernehmen (Beschreibungen anderer Positionen können sie fälschlich enthalten)
       const isSet = /set/i.test(String(it.product_name));
