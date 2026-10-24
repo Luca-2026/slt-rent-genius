@@ -234,7 +234,9 @@ Deno.serve(async (req) => {
     const common = {
       rental_inquiry_id: inq.id, b2b_profile_id: inq.b2b_profile_id ?? null, status,
       staff_signature_data: b.staff_signature, staff_name: b.staff_name, notes: b.notes,
-      signed_at: b.customer_not_present ? null : now.toISOString(), signed_place: loc.name, file_url: fileUrl, file_name: fileName, photo_urls: photoUrls,
+      // Rückgaben ohne anwesenden Kunden sind mit der Mitarbeiterunterschrift final (keine spätere Kundenunterschrift);
+      // nur Übergaben warten auf die nachträgliche Kundenunterschrift (Kalender liest signed_at).
+      signed_at: b.customer_not_present && !isReturn ? null : now.toISOString(), signed_place: loc.name, file_url: fileUrl, file_name: fileName, photo_urls: photoUrls,
       id_checked: b.id_checked, id_check_type: b.id_check_type, id_checked_at: b.id_checked ? now.toISOString() : null,
       protocol_data: protocolData,
     };
@@ -253,7 +255,7 @@ Deno.serve(async (req) => {
     } else {
       const damagesTotal = damageRows.reduce((s, d) => s + (d.amount ?? 0), 0);
       const { data: row, error } = await svc.from("b2b_return_protocols").insert({
-        ...common, return_protocol_number: number, delivery_note_id: existingDn!.id, customer_signature_data: b.customer_signature,
+        ...common, return_protocol_number: number, delivery_note_id: existingDn?.id ?? null, customer_signature_data: b.customer_signature,
         condition_notes: b.known_defects, cleaning_required: b.item_cleanliness.some((c) => c.rating >= 2),
         all_items_returned: b.all_items_returned ?? true, missing_items_notes: b.missing_items_notes,
         meter_reading_end: b.operating_hours, damages_total: damagesTotal, extra_charges_total: extraChargesTotal,
