@@ -193,7 +193,7 @@ export default function StaffHome() {
     if (accessLoading || !isStaff) return;
     (async () => {
       const [inq, td, inv, pinv, sales, prof] = await Promise.all([
-        supabase.from("rental_inquiries").select("id,status,assigned_to,offer_total_gross,order_confirmed_at,start_date,start_time,end_date,end_time,order_code,customer_name,company_name,product_name,quantity,location,requested_items,offer_payload"),
+        supabase.from("rental_inquiries").select("id,status,assigned_to,offer_total_gross,order_confirmed_at,start_date,start_time,end_date,end_time,order_code,customer_name,company_name,product_name,quantity,location,requested_items,offer_payload,closed_manually_at"),
         supabase.from("staff_todo_lists").select("id,title,due_date,status,location").neq("status", "done"),
         isAdmin ? supabase.from("inquiry_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,paid_amount,credited_amount,due_date") : Promise.resolve({ data: [] }),
         isAdmin ? supabase.from("b2b_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,due_date") : Promise.resolve({ data: [] }),
@@ -221,10 +221,12 @@ export default function StaffHome() {
   const pipe = useMemo(() => pipeline(inquiries), [inquiries]);
 
   // Nur echte Mietaufträge: Auftragsbestätigung versandt (order_confirmed_at gesetzt).
-  const confirmed = inquiries.filter((r) => (r.status === "accepted" || r.status === "done") && r.order_confirmed_at);
+  const confirmedAll = inquiries.filter((r) => (r.status === "accepted" || r.status === "done") && r.order_confirmed_at);
+  // Manuell abgeschlossene Aufträge sind erledigt: keine Prüf-, Überfällig- oder Laufend-Hinweise mehr.
+  const confirmed = confirmedAll.filter((r) => !(r as { closed_manually_at?: string | null }).closed_manually_at);
   const signedDelivery = new Set([...protocols.byInquiry].filter(([, s]) => s.delivery).map(([id]) => id));
-  const signedReturn = new Set([...protocols.byInquiry].filter(([, s]) => s.ret).map(([id]) => id));
-  const todayEntries = buildCalendarEntries(confirmed, signedDelivery, signedReturn)
+  const signedReturn = new Set([...[...protocols.byInquiry].filter(([, s]) => s.ret).map(([id]) => id), ...confirmedAll.filter((r) => (r as { closed_manually_at?: string | null }).closed_manually_at).map((r) => r.id)]);
+  const todayEntries = buildCalendarEntries(confirmedAll, signedDelivery, signedReturn)
     .filter((e) => e.date === today)
     .filter((e) => activeDayLocation === "all" || normalizeLoc(e.location) === activeDayLocation);
   const pickups = todayEntries.filter((e) => e.kind === "pickup");
