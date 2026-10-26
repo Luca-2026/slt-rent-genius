@@ -21,6 +21,8 @@ export interface InquiryPayment {
   recorded_at?: string;
   recorded_by?: string;
   recorded_by_id?: string | null;
+  /** Nur lokal: neu erfasst, noch nicht gespeichert – nur diese Zeilen sind editierbar. */
+  _draft?: boolean;
 }
 
 /** Feste Zahlungswege, damit klar ist, wie das Geld kam. */
@@ -124,6 +126,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
         amount: open && open > 0 ? open : 0,
         label: "Banküberweisung",
         reference: "",
+        _draft: true,
       },
     ]);
 
@@ -191,6 +194,20 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
             <p className="text-xs text-muted-foreground">{row.date} · Bestätigt · automatisch über Stripe gebucht</p>
             <p className="break-all text-xs text-muted-foreground" title={row.reference}>{shortPaymentReference(row.reference)}</p>
           </div>
+        ) : !row._draft ? (
+          <div key={index} className="flex min-w-0 items-start justify-between gap-2 border-b border-border pb-3 text-sm">
+            <div className="min-w-0">
+              <div className="flex flex-wrap gap-x-2"><span className="font-medium">{row.label || "Zahlungseingang"}</span><span className="text-muted-foreground">{row.date ? new Date(row.date).toLocaleDateString("de-DE") : ""}</span></div>
+              {row.reference && <p className="break-all text-xs text-muted-foreground">{row.reference}</p>}
+              <p className="text-[11px] text-muted-foreground">{row.recorded_at ? `Erfasst von ${row.recorded_by || "unbekannt"} am ${fmtDateTime(row.recorded_at)}` : "Gebucht"}</p>
+            </div>
+            <div className="flex shrink-0 items-center gap-1">
+              <strong>{formatEuro(row.amount)}</strong>
+              <Button size="icon" variant="ghost" onClick={() => setRows((prev) => prev.filter((_, i) => i !== index))} aria-label="Zahlung entfernen" disabled={disabled || saving}>
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
         ) : <div key={index} className="grid min-w-0 grid-cols-1 gap-2 border-b border-border pb-3 sm:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2">
           <div className="min-w-0">
             <Label className="text-[11px]">Datum</Label>
@@ -244,7 +261,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
           <p className="col-span-full text-[11px] text-muted-foreground">
             {row.recorded_at
               ? `Erfasst von ${row.recorded_by || "unbekannt"} am ${fmtDateTime(row.recorded_at)}`
-              : "Erfasser nicht protokolliert (vor Einführung des Protokolls oder noch nicht gespeichert)"}
+              : "Neue Zahlung – wird beim Speichern gebucht"}
           </p>
         </div>
       ))}
