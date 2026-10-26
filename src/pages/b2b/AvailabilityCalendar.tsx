@@ -29,7 +29,7 @@ export default function AvailabilityCalendar() {
     const [inqRes, delRes, retRes, instRes, allocRes] = await Promise.all([
       supabase
         .from("rental_inquiries")
-        .select("id, status, start_date, start_time, end_date, end_time, location, customer_name, company_name, order_code, order_confirmed_at, product_name, quantity, requested_items, offer_payload")
+        .select("id, status, start_date, start_time, end_date, end_time, location, customer_name, company_name, order_code, order_confirmed_at, product_name, quantity, requested_items, offer_payload, closed_manually_at")
         .in("status", ["accepted", "done"])
         .not("start_date", "is", null),
       (supabase.from("b2b_delivery_notes" as any) as any).select("rental_inquiry_id").not("signed_at", "is", null),
@@ -41,7 +41,7 @@ export default function AvailabilityCalendar() {
     const inqs = ((inqRes.data ?? []) as unknown) as CalendarInquiry[];
     setInquiries(inqs);
     setSignedDelivery(new Set(((delRes.data ?? []) as Array<{ rental_inquiry_id: string | null }>).map((r) => r.rental_inquiry_id).filter((v): v is string => !!v)));
-    setSignedReturn(new Set(((retRes.data ?? []) as Array<{ rental_inquiry_id: string | null }>).map((r) => r.rental_inquiry_id).filter((v): v is string => !!v)));
+    setSignedReturn(new Set([...((retRes.data ?? []) as Array<{ rental_inquiry_id: string | null }>).map((r) => r.rental_inquiry_id).filter((v): v is string => !!v), ...(inqs as Array<{ id: string; closed_manually_at?: string | null }>).filter((r) => r.closed_manually_at).map((r) => r.id)]));
 
     // Geräte + Belegungen + Artikelnamen + Auftrags-IDs
     const inst = ((instRes.data ?? []) as Array<{ id: string; internal_inventory_number: string | null; serial_number: string | null; location: string; status: string; managed_product_id: string }>);
