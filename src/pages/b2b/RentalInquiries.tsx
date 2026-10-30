@@ -11,6 +11,7 @@ import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useRentalInquiries } from "@/hooks/useInquiries";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { useAuth } from "@/hooks/useAuth";
+import { initialRentalInquiryFilters } from "@/lib/rentalInquiryFilters";
 import { OrderCodeBadge } from "@/components/b2b/inquiries/OrderCodeBadge";
 import { InquiryStatusBadge } from "@/components/b2b/inquiries/InquiryStatusBadge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -33,7 +34,7 @@ const normalizeLocation = (v?: string | null) =>
   (v ?? "").trim().toLowerCase().replace(/ü/g, "ue").replace(/\s+an der ruhr$/, "");
 
 export default function RentalInquiries() {
-  const { isStaff, loading: accessLoading } = useStaffAccess();
+  const { isStaff, staffProfile, loading: accessLoading } = useStaffAccess();
   const { user } = useAuth();
   const { rows, loading, reload } = useRentalInquiries();
   const location = useLocation();
@@ -88,24 +89,19 @@ export default function RentalInquiries() {
     setSearchParams(next, { replace: true });
   };
 
-  // Filter merken: Status und Standort in localStorage; ohne gespeicherten Wert startet die Liste bei „Alle“.
+  // Frischer Einstieg: offene Anfragen am Mitarbeiterstandort, unabhängig von alten Filtern.
   const [restoreFilters] = useState(() => {
     try { return !location.search && !sessionStorage.getItem(RENTAL_LIST_STATE_KEY); } catch { return false; }
   });
   const filtersReady = useRef(false);
+  const [filtersInitialized, setFiltersInitialized] = useState(false);
   useEffect(() => {
-    if (restoreFilters) {
-      let saved: { status?: string; standort?: string } = {};
-      try { saved = JSON.parse(localStorage.getItem(FILTER_STORAGE_KEY) ?? "{}") ?? {}; } catch { /* ignorieren */ }
-      const next = new URLSearchParams(searchParams);
-      const st = saved.status ? parseInquiryListFilter(saved.status) : "all";
-      if (st !== DEFAULT_INQUIRY_LIST_FILTER) next.set("status", st);
-      if (saved.standort && saved.standort !== "all") next.set("standort", saved.standort);
-      setSearchParams(next, { replace: true });
-    }
+    if (accessLoading || filtersReady.current) return;
+    const next = initialRentalInquiryFilters(location.search, !restoreFilters, staffProfile?.location);
+    if (next) setSearchParams(next, { replace: true });
     filtersReady.current = true;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setFiltersInitialized(true);
+  }, [accessLoading, staffProfile?.location, restoreFilters, location.search, setSearchParams]);
   useEffect(() => {
     if (!filtersReady.current) return;
     try { localStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify({ status: statusFilter, standort: locationFilter })); } catch { /* ignorieren */ }
@@ -219,7 +215,7 @@ export default function RentalInquiries() {
         }}
       />
 
-      {loading ? (
+      {loading || !filtersInitialized ? (
         <p className="text-muted-foreground">Wird geladen …</p>
       ) : filtered.length === 0 ? (
         <p className="text-muted-foreground">Keine Anfragen gefunden.</p>
