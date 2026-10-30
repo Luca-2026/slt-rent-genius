@@ -34,6 +34,27 @@ function isHtmlFile(fileUrl: string): boolean {
 }
 
 /**
+ * Removes active content (scripts, event handlers, javascript: URLs, embeds)
+ * from stored document HTML before it is written into a window.
+ */
+function sanitizeDocumentHtml(html: string): string {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  doc.querySelectorAll("script, iframe, object, embed, frame, frameset, base, form, meta[http-equiv]").forEach((el) => el.remove());
+  doc.querySelectorAll("*").forEach((el) => {
+    for (const attr of Array.from(el.attributes)) {
+      const name = attr.name.toLowerCase();
+      const value = attr.value.trim().toLowerCase();
+      if (name.startsWith("on")) el.removeAttribute(attr.name);
+      else if (["href", "src", "xlink:href", "action", "formaction", "srcdoc"].includes(name) &&
+        (name === "srcdoc" || value.startsWith("javascript:") || (value.startsWith("data:") && !value.startsWith("data:image/")))) {
+        el.removeAttribute(attr.name);
+      }
+    }
+  });
+  return "<!DOCTYPE html>" + doc.documentElement.outerHTML;
+}
+
+/**
  * Opens an HTML string in a new window and triggers the browser print dialog
  * so the user can save it as PDF.
  */
@@ -42,7 +63,7 @@ function openHtmlAsPdfPrint(htmlContent: string, popup: Window | null): void {
   if (!target) return;
 
   target.document.open();
-  target.document.write(htmlContent);
+  target.document.write(sanitizeDocumentHtml(htmlContent));
   target.document.close();
 
   // Wait for images/styles to load, then trigger print (Save as PDF)
