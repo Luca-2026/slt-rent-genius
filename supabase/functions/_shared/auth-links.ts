@@ -13,6 +13,12 @@ export function recoveryLink(properties: { hashed_token?: string }): string {
 /** Keep provider verification endpoints intact, but replace legacy app redirects. */
 export function ownDomainAuthLink(value: string): string {
   const url = new URL(value);
+  if (url.searchParams.get("type") === "invite" && url.searchParams.get("token")) {
+    const target = new URL(`${PORTAL_AUTH_ORIGIN}/b2b/einladung/`);
+    target.searchParams.set("token_hash", url.searchParams.get("token") ?? "");
+    target.searchParams.set("type", "invite");
+    return target.href;
+  }
   if (url.hostname === "slt-rent-genius.lovable.app") {
     url.hostname = "app.slt-rental.de";
     url.protocol = "https:";

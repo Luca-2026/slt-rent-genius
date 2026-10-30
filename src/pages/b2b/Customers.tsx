@@ -299,7 +299,7 @@ export default function Customers() {
         onSave={save}
         allowPortal={isAdmin || isBranchManager}
         onSaved={() => { void reload(); }}
-        onPortalCreated={async () => { await loadPortal(); await reload(); }}
+        onPortalCreated={async (id) => { await loadPortal(); await reload(); setOnboardingId(id); }}
       />
 
       <B2BOnboardingDialog customerId={onboardingId} open={!!onboardingId} onOpenChange={(v) => { if(!v) setOnboardingId(null); }} onUpdated={() => { void loadPortal(); void reload(); }} />

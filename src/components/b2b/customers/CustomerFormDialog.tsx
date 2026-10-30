@@ -18,7 +18,7 @@ interface Props {
   onSaved?: (id: string) => void;
   /** Admin: beim Anlegen optional Portalzugang (Login) für Firmenkunden einrichten. */
   allowPortal?: boolean;
-  onPortalCreated?: () => void;
+  onPortalCreated?: (id: string) => void;
 }
 
 const empty: CrmCustomerInput = {
@@ -43,12 +43,14 @@ export function CustomerFormDialog({ open, onOpenChange, customer, onSave, onSav
   const [busy, setBusy] = useState(false);
   const [portal, setPortal] = useState(false);
   const [legalForm, setLegalForm] = useState("");
+  const [savedCustomerId, setSavedCustomerId] = useState<string | undefined>();
 
   useEffect(() => {
     if (!open) return;
     setForm(customer ? { ...empty, ...customer } : empty);
     setPortal(false);
     setLegalForm("");
+    setSavedCustomerId(undefined);
   }, [open, customer]);
 
   const withPortal = Boolean(allowPortal && !customer?.b2b_profile_id && portal);
@@ -76,7 +78,8 @@ export function CustomerFormDialog({ open, onOpenChange, customer, onSave, onSav
     setBusy(true);
     try {
       const payload: CrmCustomerInput = Object.fromEntries(Object.entries(form).map(([k,v]) => [k, typeof v === "string" ? v.trim() || null : v]));
-      const id = await onSave(payload, customer?.id);
+      const id = await onSave(payload, customer?.id ?? savedCustomerId);
+      setSavedCustomerId(id);
       const { data, error } = await supabase.functions.invoke("onsite-b2b-customer", {
         body: { action: "create", customer_id: id, legal_form: legalForm.trim() },
       });
@@ -84,7 +87,7 @@ export function CustomerFormDialog({ open, onOpenChange, customer, onSave, onSav
       if(data?.warning) toast.warning(data.warning); else toast.success("B2B-Profil angelegt. Einladung zur E-Mail-Bestätigung versendet.");
       onOpenChange(false);
       onSaved?.(id);
-      onPortalCreated?.();
+      onPortalCreated?.(id);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Anlegen fehlgeschlagen.");
     } finally {
