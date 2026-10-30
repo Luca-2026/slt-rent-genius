@@ -5823,6 +5823,15 @@ export type Database = {
       is_authorized_person: { Args: { _user_id: string }; Returns: boolean }
       is_staff_member: { Args: { _user_id: string }; Returns: boolean }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
+      link_onsite_b2b_profile: {
+        Args: {
+          _actor: string
+          _customer: string
+          _legal_form?: string
+          _user: string
+        }
+        Returns: string
+      }
       list_rental_feedback_invitations: {
         Args: never
         Returns: {
@@ -5847,6 +5856,7 @@ export type Database = {
         Returns: undefined
       }
       mark_overdue_invoices: { Args: never; Returns: number }
+      onsite_b2b_password_set: { Args: { _user: string }; Returns: boolean }
       parse_price_text: { Args: { _raw: string }; Returns: number }
       record_inquiry_invoice_payment: {
         Args: {
