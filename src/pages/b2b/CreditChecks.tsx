@@ -11,7 +11,7 @@ import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { useCrmCustomers, crmCustomerLabel } from "@/hooks/useCrmCustomers";
 import { useCreditAssessments } from "@/hooks/useCreditAssessments";
 import { supabase } from "@/integrations/supabase/client";
-import { canManageCreditChecks, creditAssessmentSchema, creditEuro } from "@/lib/creditAssessment";
+import { canManageCreditChecks, creditAssessmentSchema, creditEuro, findCreditCustomerMatches } from "@/lib/creditAssessment";
 import { toast } from "sonner";
 
 export default function CreditChecks() {
@@ -34,6 +34,7 @@ export default function CreditChecks() {
   const [search, setSearch] = useState("");
   const [saving, setSaving] = useState(false);
   const eligible = customers.filter((c) => c.customer_kind === "business" || c.customer_kind === "b2b");
+  const matches = customerId ? [] : findCreditCustomerMatches(customers, company, postal, city);
   const displayed = rows.filter((r) => (!customerId || r.crm_customer_id === customerId) && [r.company_name, r.rating, r.report_reference].some((v) => (v || "").toLowerCase().includes(search.toLowerCase())));
   const save = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -59,6 +60,7 @@ export default function CreditChecks() {
           <div className="space-y-1.5"><Label>Kundenkartei zuordnen</Label><Select value={customerId || "standalone"} onValueChange={(id) => { const next = new URLSearchParams(params); if (id === "standalone") next.delete("kunde"); else next.set("kunde", id); setParams(next); }}><SelectTrigger aria-label="Kundenkartei zuordnen"><SelectValue placeholder="Ohne Zuordnung" /></SelectTrigger><SelectContent><SelectItem value="standalone">Ohne Zuordnung</SelectItem>{eligible.map((c) => <SelectItem key={c.id} value={c.id}>{crmCustomerLabel(c)}{c.city ? ` · ${c.city}` : ""}</SelectItem>)}</SelectContent></Select></div>
           <div className="grid sm:grid-cols-2 gap-4">
             <Field id="credit-company" label="Firma / Einzelunternehmen" value={customer ? crmCustomerLabel(customer) : company} onChange={setCompany} readOnly={Boolean(customer)} required maxLength={255} />
+            {!customerId && matches.length > 0 && <div className="sm:col-span-2 border-l-2 border-primary pl-3 space-y-2" aria-label="Passende Kunden"><p className="text-sm font-semibold">Passende Kunden in der Kundenkartei</p>{matches.map((c) => <Button type="button" key={c.id} variant="outline" className="w-full h-auto min-h-10 justify-start whitespace-normal text-left" onClick={() => { const next = new URLSearchParams(params); next.set("kunde", c.id); setParams(next); }}><span className="min-w-0 break-words">{crmCustomerLabel(c)} · {[c.postal_code, c.city].filter(Boolean).join(" ")} · Zuordnen</span></Button>)}</div>}
             <Field id="credit-registration" label="Handelsregister- / Registrierungsnummer" value={registration} onChange={setRegistration} maxLength={100} />
             <Field id="credit-postal" label="Postleitzahl" value={customer?.postal_code || postal} onChange={setPostal} readOnly={Boolean(customer)} maxLength={20} />
             <Field id="credit-city" label="Ort" value={customer?.city || city} onChange={setCity} readOnly={Boolean(customer)} maxLength={255} />
@@ -67,6 +69,7 @@ export default function CreditChecks() {
             <Field id="credit-date" label="Prüfdatum" value={date} onChange={setDate} type="date" required />
             <Field id="credit-reference" label="CreditSafe-Berichtsreferenz" value={reference} onChange={setReference} maxLength={255} />
           </div>
+          <div className="flex flex-wrap items-center gap-2"><Button type="button" variant="outline" disabled><ShieldCheck className="h-4 w-4 mr-2" /> Jetzt über CreditSafe prüfen</Button><span className="text-sm text-muted-foreground">Noch nicht verbunden – API-Zugangsdaten ausstehend</span></div>
           <div className="space-y-1.5"><Label htmlFor="credit-notes">Notiz</Label><Textarea id="credit-notes" value={notes} onChange={(e) => setNotes(e.target.value)} maxLength={4000} /></div>
           <Button type="submit" disabled={saving} className="w-full sm:w-auto"><Save className="h-4 w-4 mr-2" />{saving ? "Wird gespeichert …" : "Prüfung speichern"}</Button>
         </form>

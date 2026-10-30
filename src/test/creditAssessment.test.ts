@@ -1,8 +1,20 @@
 import { describe, it, expect } from "vitest";
-import { canManageCreditChecks, creditAssessmentSchema } from "@/lib/creditAssessment";
+import { canManageCreditChecks, creditAssessmentSchema, findCreditCustomerMatches } from "@/lib/creditAssessment";
 import { visibleGroups } from "@/components/b2b/StaffNav";
 
 describe("Bonitätsprüfung", () => {
+  const business = { id: "1", customer_kind: "b2b", company_name: "Müller & Söhne GmbH", first_name: null, last_name: null, postal_code: "53111", city: "Bonn" };
+  it("findet Firmen unabhängig von Umlauten und Satzzeichen", () => {
+    expect(findCreditCustomerMatches([business], "Muller & Sohne").map((c) => c.id)).toEqual(["1"]);
+  });
+  it("priorisiert den passenden Standort bei gleichnamigen Firmen ohne automatische Zuordnung", () => {
+    const other = { ...business, id: "2", postal_code: "47798", city: "Krefeld" };
+    expect(findCreditCustomerMatches([other, business], "Müller", "53111", "Bonn").map((c) => c.id)).toEqual(["1", "2"]);
+  });
+  it("schließt Privatkunden und zu kurze Suchbegriffe aus", () => {
+    expect(findCreditCustomerMatches([{ ...business, customer_kind: "b2c" }], "Müller")).toEqual([]);
+    expect(findCreditCustomerMatches([business], "Mü")).toEqual([]);
+  });
   it("erlaubt Admins und aktiven Niederlassungsleitern den Zugriff", () => {
     expect(canManageCreditChecks(true, false, false)).toBe(true);
     expect(canManageCreditChecks(false, true, true)).toBe(true);
