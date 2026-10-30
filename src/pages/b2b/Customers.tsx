@@ -9,6 +9,7 @@ import { DeclineCreditLimitButton } from "@/components/b2b/DeclineCreditLimitBut
 import { GrantCreditLimitButton } from "@/components/b2b/GrantCreditLimitButton";
 import { useCrmCustomers, crmCustomerLabel, type CrmCustomer } from "@/hooks/useCrmCustomers";
 import { CustomerOverviewDialog } from "@/components/b2b/customers/CustomerOverviewDialog";
+import { B2BOnboardingDialog } from "@/components/b2b/customers/B2BOnboardingDialog";
 import { CustomerFormDialog } from "@/components/b2b/customers/CustomerFormDialog";
 import { AdminCustomerDetailDialog } from "@/components/b2b/admin/AdminCustomerDetailDialog";
 import { AdminCustomerEditDialog } from "@/components/b2b/admin/AdminCustomerEditDialog";
@@ -32,6 +33,7 @@ export default function Customers() {
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<CrmCustomer | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [onboardingId, setOnboardingId] = useState<string | null>(null);
   const [overview, setOverview] = useState<CrmCustomer | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const segment = parseSegmentFilter(searchParams.get("kunden"));
@@ -271,6 +273,7 @@ export default function Customers() {
                         <DeclineCreditLimitButton profileId={p.id} companyName={p.company_name || crmCustomerLabel(c)} onDone={loadPortal} />
                       </>
                     )}
+                    {p && (isAdmin || isBranchManager) && <Button size="sm" variant="outline" onClick={() => setOnboardingId(c.id)}>B2B-Profil</Button>}
                     <Button size="sm" variant="outline" onClick={() => openEdit(c)} aria-label={`${crmCustomerLabel(c)} bearbeiten`}>
                       <Pencil className="h-3.5 w-3.5 mr-1" /> Bearbeiten
                     </Button>
@@ -294,10 +297,12 @@ export default function Customers() {
         onOpenChange={setDialogOpen}
         customer={editing}
         onSave={save}
-        allowPortal={isAdmin}
+        allowPortal={isAdmin || isBranchManager}
+        onSaved={() => { void reload(); }}
         onPortalCreated={async () => { await loadPortal(); await reload(); }}
       />
 
+      <B2BOnboardingDialog customerId={onboardingId} open={!!onboardingId} onOpenChange={(v) => { if(!v) setOnboardingId(null); }} onUpdated={() => { void loadPortal(); void reload(); }} />
       {isAdmin && (
         <>
           <AdminCustomerDetailDialog

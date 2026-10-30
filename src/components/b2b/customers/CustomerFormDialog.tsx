@@ -42,20 +42,16 @@ export function CustomerFormDialog({ open, onOpenChange, customer, onSave, onSav
   const [form, setForm] = useState<CrmCustomerInput>(empty);
   const [busy, setBusy] = useState(false);
   const [portal, setPortal] = useState(false);
-  const [password, setPassword] = useState("");
   const [legalForm, setLegalForm] = useState("");
-  const [creditLimit, setCreditLimit] = useState("");
 
   useEffect(() => {
     if (!open) return;
     setForm(customer ? { ...empty, ...customer } : empty);
     setPortal(false);
-    setPassword("");
     setLegalForm("");
-    setCreditLimit("");
   }, [open, customer]);
 
-  const withPortal = Boolean(allowPortal && !customer && portal);
+  const withPortal = Boolean(allowPortal && !customer?.b2b_profile_id && portal);
 
   const submitPortal = async () => {
     const t = (v: string | null | undefined) => (v ?? "").trim();
@@ -77,36 +73,17 @@ export function CustomerFormDialog({ open, onOpenChange, customer, onSave, onSav
       toast.error("Bitte eine gültige E-Mail-Adresse angeben.");
       return;
     }
-    if (password.length < 6) {
-      toast.error("Passwort muss mindestens 6 Zeichen lang sein.");
-      return;
-    }
     setBusy(true);
     try {
-      const { data, error } = await supabase.functions.invoke("admin-create-customer", {
-        body: {
-          email: t(form.email),
-          password,
-          company_name: t(form.company_name),
-          legal_form: legalForm.trim() || null,
-          contact_first_name: t(form.first_name),
-          contact_last_name: t(form.last_name),
-          contact_phone: t(form.phone),
-          contact_email: t(form.email),
-          street: t(form.street),
-          house_number: null,
-          postal_code: t(form.postal_code),
-          city: t(form.city),
-          country: t(form.country) || "Deutschland",
-          tax_id: t(form.vat_id) || null,
-          credit_limit: Number(creditLimit) || 0,
-          assigned_location: form.location || null,
-        },
+      const payload: CrmCustomerInput = Object.fromEntries(Object.entries(form).map(([k,v]) => [k, typeof v === "string" ? v.trim() || null : v]));
+      const id = await onSave(payload, customer?.id);
+      const { data, error } = await supabase.functions.invoke("onsite-b2b-customer", {
+        body: { action: "create", customer_id: id, legal_form: legalForm.trim() },
       });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-      toast.success(`Firmenkunde mit Portalzugang angelegt.${data?.email_sent ? " Willkommens-E-Mail wurde versendet." : ""}`);
+      if (error || data?.error) throw new Error(data?.error || error?.message);
+      if(data?.warning) toast.warning(data.warning); else toast.success("B2B-Profil angelegt. Einladung zur E-Mail-Bestätigung versendet.");
       onOpenChange(false);
+      onSaved?.(id);
       onPortalCreated?.();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Anlegen fehlgeschlagen.");
@@ -214,31 +191,17 @@ export function CustomerFormDialog({ open, onOpenChange, customer, onSave, onSav
             <Label>Ort</Label>
             <Input value={form.city ?? ""} onChange={(e) => set("city", e.target.value)} maxLength={100} />
           </div>
-          {allowPortal && !customer && form.customer_kind === "b2b" && (
+          {allowPortal && !customer?.b2b_profile_id && form.customer_kind === "b2b" && (
             <div className="sm:col-span-2 rounded-lg border border-border bg-muted/40 p-3 space-y-3">
               <label className="flex items-center gap-2 text-sm font-medium cursor-pointer">
                 <Checkbox checked={portal} onCheckedChange={(v) => setPortal(v === true)} />
-                Portalzugang für Firmenkunden einrichten (optional)
+                Zusätzlich ein B2B-Profil anlegen
               </label>
               {portal && (
                 <>
-                  <p className="text-xs text-muted-foreground">
-                    Die E-Mail oben wird die Login-Adresse. Das Konto ist sofort freigeschaltet; Rabatte, berechtigte Personen,
-                    Zahlungskondition usw. pflegst du danach über „Bearbeiten“.
-                  </p>
-                  <div className="grid gap-3 sm:grid-cols-3">
-                    <div>
-                      <Label>Passwort *</Label>
-                      <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Min. 6 Zeichen" />
-                    </div>
-                    <div>
-                      <Label>Rechtsform</Label>
-                      <Input value={legalForm} onChange={(e) => setLegalForm(e.target.value)} placeholder="GmbH" maxLength={40} />
-                    </div>
-                    <div>
-                      <Label>Kreditlimit (€)</Label>
-                      <Input type="number" min={0} step={100} value={creditLimit} onChange={(e) => setCreditLimit(e.target.value)} placeholder="0" />
-                    </div>
+                  <div>
+                    <Label>Rechtsform</Label>
+                    <Input value={legalForm} onChange={(e) => setLegalForm(e.target.value)} placeholder="GmbH" maxLength={40} />
                   </div>
                 </>
               )}

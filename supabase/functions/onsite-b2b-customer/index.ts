@@ -58,6 +58,7 @@ Deno.serve(async req => {
     if(!profileAllowed) return reply({error:'Keine Berechtigung für diesen B2B-Standort'},403);
     const {data:auth}=await service.auth.admin.getUserById(p.user_id);
     if(!auth.user) return reply({error:'Zugang nicht gefunden'},404);
+    const {data:passwordSet}=await service.rpc('onsite_b2b_password_set',{_user:p.user_id});
     if(b.action==='info' || b.action==='create') {
       const signed=async (value:string|null) => {
         if(!value?.startsWith('private:')) return null;
@@ -65,7 +66,7 @@ Deno.serve(async req => {
         if(error) throw new Error('Dokument konnte nicht geöffnet werden');
         return data.signedUrl;
       };
-      return reply({profile_id:p.id,status:p.status,email:auth.user.email,email_confirmed:Boolean(auth.user.email_confirmed_at),password_set:Boolean(auth.user.last_sign_in_at),ready:approvalReady(Boolean(auth.user.email_confirmed_at),Boolean(auth.user.last_sign_in_at),p.document_url,p.sepa_mandate_url),business_filename:p.document_filename,sepa_filename:p.sepa_mandate_filename,business_url:await signed(p.document_url),sepa_url:await signed(p.sepa_mandate_url),invitation_sent_at:p.invitation_sent_at});
+      return reply({profile_id:p.id,status:p.status,email:auth.user.email,email_confirmed:Boolean(auth.user.email_confirmed_at),password_set:Boolean(passwordSet),ready:approvalReady(Boolean(auth.user.email_confirmed_at),Boolean(passwordSet),p.document_url,p.sepa_mandate_url),business_filename:p.document_filename,sepa_filename:p.sepa_mandate_filename,business_url:await signed(p.document_url),sepa_url:await signed(p.sepa_mandate_url),invitation_sent_at:p.invitation_sent_at});
     }
     if(b.action==='resend') {
       if(auth.user.email_confirmed_at) return reply({error:'E-Mail bereits bestätigt. Passwort bei Bedarf über „Passwort vergessen“ zurücksetzen.'},409);
