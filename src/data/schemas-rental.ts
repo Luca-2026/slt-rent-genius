@@ -15,6 +15,7 @@ import type {
 } from "./seo-routes-rental";
 import type { LocalArea } from "./localSeoData";
 import type { LocationInfo } from "./locationData";
+import { locationOpeningHoursSpecification } from "./locationData";
 import type { Solution } from "@/pages/Loesungen";
 import type { BlogArticle } from "./blogArticles";
 const BASE_URL = "https://www.slt-rental.de";
@@ -115,15 +116,7 @@ function localBusiness(locId: string): JsonLd {
         { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "10:00", closes: "14:30" },
       ]
     : loc.id === "bonn"
-    ? [
-        {
-          "@type": "OpeningHoursSpecification",
-          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-          opens: "07:00",
-          closes: "18:00",
-        },
-        { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "08:00", closes: "17:30" },
-      ]
+    ? locationOpeningHoursSpecification("bonn")
     : [
         {
           "@type": "OpeningHoursSpecification",

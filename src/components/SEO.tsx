@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { sanitizeJsonLd } from "@/lib/sanitizeJsonLd";
+import { locationOpeningHoursSpecification } from "@/data/locationData";
 
 interface SEOProps {
   title: string;
@@ -195,10 +196,7 @@ export const SLT_LOCATION_JSONLD = (locationId: string) => {
         "https://maps.google.com/?cid=2313761103288101712",
         "https://maps.app.goo.gl/kqckK45DSwd5eyhb9",
       ],
-      openingHoursSpecification: [
-        { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "07:00", closes: "18:00" },
-        { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "08:00", closes: "17:30" },
-      ],
+      openingHoursSpecification: locationOpeningHoursSpecification("bonn"),
       priceRange: "€€",
     },
     muelheim: {
