@@ -2493,6 +2493,68 @@ export type Database = {
           },
         ]
       }
+      customer_credit_assessments: {
+        Row: {
+          checked_at: string
+          city: string | null
+          company_name: string
+          created_at: string
+          created_by: string
+          crm_customer_id: string | null
+          currency: string
+          id: string
+          notes: string | null
+          postal_code: string | null
+          rating: string | null
+          recommended_limit: number | null
+          registration_number: string | null
+          report_reference: string | null
+          source: string
+        }
+        Insert: {
+          checked_at: string
+          city?: string | null
+          company_name: string
+          created_at?: string
+          created_by?: string
+          crm_customer_id?: string | null
+          currency?: string
+          id?: string
+          notes?: string | null
+          postal_code?: string | null
+          rating?: string | null
+          recommended_limit?: number | null
+          registration_number?: string | null
+          report_reference?: string | null
+          source?: string
+        }
+        Update: {
+          checked_at?: string
+          city?: string | null
+          company_name?: string
+          created_at?: string
+          created_by?: string
+          crm_customer_id?: string | null
+          currency?: string
+          id?: string
+          notes?: string | null
+          postal_code?: string | null
+          rating?: string | null
+          recommended_limit?: number | null
+          registration_number?: string | null
+          report_reference?: string | null
+          source?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_credit_assessments_crm_customer_id_fkey"
+            columns: ["crm_customer_id"]
+            isOneToOne: false
+            referencedRelation: "crm_customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customer_feedback: {
         Row: {
           answers: Json
@@ -5665,6 +5727,7 @@ export type Database = {
         Args: { _actor: string; _location: string }
         Returns: boolean
       }
+      can_manage_credit_checks: { Args: { _actor: string }; Returns: boolean }
       change_rental_inquiry_location: {
         Args: { _inquiry_id: string; _new_location: string }
         Returns: {
