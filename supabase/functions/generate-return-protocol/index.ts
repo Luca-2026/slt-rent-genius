@@ -938,7 +938,7 @@ function generateReturnProtocolHtml(data: {
         <tr>
           <td style="padding:6px 0;color:#595959;width:40%;">Gesamtzustand:</td>
           <td style="padding:6px 0;font-weight:600;color:${conditionColors[data.overallCondition] || "#333"};">
-            ${conditionLabels[data.overallCondition] || data.overallCondition}
+            ${escapeHtml(conditionLabels[data.overallCondition] || data.overallCondition || "")}
           </td>
         </tr>
         <tr>
