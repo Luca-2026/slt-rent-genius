@@ -624,6 +624,13 @@
       "when": 1792740916379,
       "tag": "0088_delivery_customer_signature_links",
       "breakpoints": true
+    },
+    {
+      "idx": 89,
+      "version": "7",
+      "when": 1793326186642,
+      "tag": "0089_onsite_b2b_onboarding",
+      "breakpoints": true
     }
   ]
 }
