@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CalendarLocationFilter } from '@/components/b2b/calendar/CalendarLocationFilter';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { WeekGrid } from "@/components/b2b/calendar/WeekGrid";
 import { InstanceAvailabilityTable, type InstanceRow } from "@/components/b2b/calendar/InstanceAvailabilityTable";
@@ -82,30 +82,22 @@ export default function AvailabilityCalendar() {
   return (
     <B2BPortalLayout title="Kalender" subtitle="Übergaben, Rückgaben und Verfügbarkeit der Geräte">
       <div className="mb-4 flex flex-wrap items-center gap-2">
-        <Select value={location} onValueChange={setLocation}>
-          <SelectTrigger className="w-48"><SelectValue /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Alle Standorte</SelectItem>
-            <SelectItem value="krefeld">Krefeld</SelectItem>
-            <SelectItem value="bonn">Bonn</SelectItem>
-            <SelectItem value="muelheim">Mülheim an der Ruhr</SelectItem>
-          </SelectContent>
-        </Select>
         <Button variant="outline" size="sm" onClick={() => void load()}><RefreshCw className="mr-1 h-4 w-4" />Aktualisieren</Button>
       </div>
       {loading ? (
         <p className="text-muted-foreground">Lädt …</p>
       ) : (
         <Tabs defaultValue="week">
-          <TabsList className="mb-4">
-            <TabsTrigger value="week">Wochenübersicht</TabsTrigger>
-            <TabsTrigger value="instances">Verfügbarkeit Geräte</TabsTrigger>
+          <TabsList className="mb-4 grid w-full h-auto grid-cols-2 sm:w-fit">
+            <TabsTrigger className="whitespace-normal text-center" value="week">Wochenübersicht</TabsTrigger>
+            <TabsTrigger className="whitespace-normal text-center" value="instances">Verfügbarkeit Geräte</TabsTrigger>
           </TabsList>
           <TabsContent value="week">
+            <div className="mb-4"><CalendarLocationFilter value={location} onChange={setLocation} /></div>
             <WeekGrid entries={entries} weekAnchor={weekAnchor} onWeekChange={setWeekAnchor} />
           </TabsContent>
           <TabsContent value="instances">
-            <InstanceAvailabilityTable rows={instances} locationFilter={location} />
+            <InstanceAvailabilityTable rows={instances} locationFilter={location} onLocationChange={setLocation} />
           </TabsContent>
         </Tabs>
       )}

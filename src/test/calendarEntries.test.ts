@@ -8,6 +8,7 @@ import {
   effectiveStart,
   hasInvalidRentalPeriod,
   isCalendarRelevant,
+  matchesCalendarLocation,
   rangesOverlap,
   weekDays,
   weekStart,
@@ -32,6 +33,16 @@ const base = {
 };
 
 describe("calendarEntries", () => {
+  it("Standortfilter Krefeld zeigt ausschließlich Krefelder Geräte, unabhängig von Schreibweise", () => {
+    const devices = ["Krefeld", "bonn", " krefeld ", "Mülheim an der Ruhr"];
+    expect(devices.filter((location) => matchesCalendarLocation(location, "krefeld"))).toEqual(["Krefeld", " krefeld "]);
+  });
+  it("Standortfilter Bonn und Mülheim und alle Standorte", () => {
+    expect(matchesCalendarLocation("Bonn", "bonn")).toBe(true);
+    expect(matchesCalendarLocation("Mülheim an der Ruhr", "muelheim")).toBe(true);
+    expect(matchesCalendarLocation("Krefeld", "bonn")).toBe(false);
+    expect(matchesCalendarLocation(null, "all")).toBe(true);
+  });
   it("Linus Hauser: Ausgabe am 20.10., falsches Ende 13.10. ist kein Rückgabetermin", () => {
     const row = { ...base, end_date: "2026-10-13", offer_payload: { items: [{ rental_start: "2026-10-20", rental_end: "2026-10-13" }] } };
     expect(hasInvalidRentalPeriod(row)).toBe(true);

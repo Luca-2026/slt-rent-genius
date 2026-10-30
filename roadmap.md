@@ -1,4 +1,5 @@
 # Roadmap – Paket 4 (Angebots-PDF & E-Mail)
+- [x] Kalender-Geräteverfügbarkeit: direkter Standortfilter in der Geräteliste, gemeinsame gespeicherte Auswahl mit Wochenübersicht; angemeldet 104 Krefeld / 33 Bonn / 16 Mülheim / 153 gesamt geprüft, Mobil 390/320 px ohne Überlauf, 15 Tests bestanden.
 - [x] Vor-Ort-Kundenanlage: B2B-Haken, sichere Einladung mit eigenem Passwort, private Dokumente, standortgebundene Freischaltung; Lucas Kundenakte und Desktop/Mobil geprüft, 22 Tests bestanden.
 - [ ] Vollständiger Neueinladungs-Test: blockiert durch Lucas bestehenden bestätigten B2B-Zugang; separate freigegebene Test-E-Mail plus Zugriff auf den dort eingegangenen Einladungslink erforderlich. Keine realen Kundenzugänge verändert.
 - [x] Übergabe: Björns Bodenplatten auf 50 berichtigt (Original erhalten); persönliche digitale Unterschrift bei abwesendem Kunden, E-Mail und Zeitnachweis mit separatem Luca-Testprotokoll auf Desktop/Mobil geprüft; Zweitsignatur abgewiesen.
