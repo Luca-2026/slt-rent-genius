@@ -109,6 +109,19 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    if (!isAdminRole) {
+      const { data: allowed, error: permErr } = await authed.rpc("can_manage_b2b_onboarding", {
+        _actor: authUser.id,
+        _location: profile.assigned_location,
+      });
+      if (permErr || allowed !== true) {
+        return new Response(JSON.stringify({ error: "Keine Berechtigung für diesen Standort" }), {
+          status: 403,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+    }
+
     // Fetch approving admin's staff profile for personal contact details
     const { data: staff } = await admin
       .from("staff_profiles")
