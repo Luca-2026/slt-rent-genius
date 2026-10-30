@@ -1,5 +1,6 @@
 # Roadmap – Paket 4 (Angebots-PDF & E-Mail)
-- [ ] CreditSafe: Zugang und API-Vertrag klären; automatische Bonitätsprüfung bei B2B-Registrierung, Rating und Kreditlinienempfehlung in Kundenakte/Übersicht, direkter B2B-Portal-Filter; Kreditvergabe bleibt getrennt.
+- [x] Direkter B2B-Portal-Filter: angemeldet mit Luca 120 Geschäftskunden / 67 Portalkunden, erneutes Laden und Mobilansicht geprüft; 6 Tests erfolgreich.
+- [ ] CreditSafe: automatische Bonitätsprüfung bei B2B-Registrierung, Rating und Kreditlinienempfehlung in Kundenakte/Übersicht; blockiert bis API-Vertragszugang bestätigt und API-Zugangsdaten sicher hinterlegt sind. Kreditvergabe bleibt getrennt.
 - [x] Kalender-Geräteverfügbarkeit: direkter Standortfilter in der Geräteliste, gemeinsame gespeicherte Auswahl mit Wochenübersicht; angemeldet 104 Krefeld / 33 Bonn / 16 Mülheim / 153 gesamt geprüft, Mobil 390/320 px ohne Überlauf, 15 Tests bestanden.
 - [x] Vor-Ort-Kundenanlage: B2B-Haken, sichere Einladung mit eigenem Passwort, private Dokumente, standortgebundene Freischaltung; Lucas Kundenakte und Desktop/Mobil geprüft, 22 Tests bestanden.
 - [ ] Vollständiger Neueinladungs-Test: blockiert durch Lucas bestehenden bestätigten B2B-Zugang; separate freigegebene Test-E-Mail plus Zugriff auf den dort eingegangenen Einladungslink erforderlich. Keine realen Kundenzugänge verändert.
