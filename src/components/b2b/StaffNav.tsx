@@ -16,7 +16,7 @@ export interface StaffNavItem {
   status?: string;
   icon: LucideIcon;
   /** wer den Eintrag sieht */
-  access: "staff" | "admin" | "inventory";
+  access: "staff" | "admin" | "inventory" | "credit";
   badgeKey?: "rental" | "sales" | "todos" | "calls";
 }
 
@@ -49,6 +49,7 @@ export const STAFF_NAV: StaffNavGroup[] = [
     label: "Kunden",
     items: [
       { label: "Kundenkartei", path: "/b2b/kundendaten", icon: Users, access: "staff" },
+      { label: "Bonitätsprüfung", path: "/b2b/bonitaetspruefung", icon: Shield, access: "credit" },
       { label: "Gutscheine", path: "/b2b/gutscheine", icon: Gift, access: "staff" },
     ],
   },
@@ -106,19 +107,20 @@ export function isItemActive(item: StaffNavItem, pathname: string, search: strin
 interface Props {
   isAdmin: boolean;
   canViewInventory: boolean;
+  canManageCredit?: boolean;
   badges: { rental: number; sales: number; todos: number; calls?: number };
   onNavigate?: () => void;
 }
 
-export function visibleGroups(isAdmin: boolean, canViewInventory: boolean) {
+export function visibleGroups(isAdmin: boolean, canViewInventory: boolean, canManageCredit = false) {
   const allowed = (i: StaffNavItem) =>
-    i.access === "staff" || (i.access === "admin" && isAdmin) || (i.access === "inventory" && canViewInventory);
+    i.access === "staff" || (i.access === "admin" && isAdmin) || (i.access === "inventory" && canViewInventory) || (i.access === "credit" && (isAdmin || canManageCredit));
   return STAFF_NAV.map((g) => ({ ...g, items: g.items.filter(allowed) })).filter((g) => g.items.length > 0);
 }
 
-export function StaffNav({ isAdmin, canViewInventory, badges, onNavigate }: Props) {
+export function StaffNav({ isAdmin, canViewInventory, canManageCredit = false, badges, onNavigate }: Props) {
   const { pathname, search } = useLocation();
-  const groups = visibleGroups(isAdmin, canViewInventory);
+  const groups = visibleGroups(isAdmin, canViewInventory, canManageCredit);
 
   const renderItem = (item: StaffNavItem) => {
     const active = isItemActive(item, pathname, search);

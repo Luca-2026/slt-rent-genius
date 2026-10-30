@@ -18,6 +18,7 @@ import {
 import { useOpenInquiryCounts } from "@/hooks/useInquiries";
 import { usePhoneCalls, isUrgentCall } from "@/hooks/usePhoneCalls";
 import { StaffNav, visibleGroups, isItemActive } from "@/components/b2b/StaffNav";
+import { canManageCreditChecks } from "@/lib/creditAssessment";
 
 function navBadge(
   href: string,
@@ -77,7 +78,8 @@ const staffNavItems = [
 
 export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutProps) {
   const { user, b2bProfile, loading, signOut, isAdmin } = useAuth();
-  const { isStaff, canViewInventory } = useStaffAccess();
+  const { isStaff, canViewInventory, isBranchManager, staffProfile } = useStaffAccess();
+  const canManageCredit = canManageCreditChecks(isAdmin, isBranchManager, Boolean(staffProfile));
   const { count: openTodoCount } = useStaffWork();
   const inquiryCounts = useOpenInquiryCounts();
   const { rows: phoneCalls } = usePhoneCalls();
@@ -128,7 +130,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
   if (!user) return null;
 
   const staffBadges = { rental: inquiryCounts.rental, sales: inquiryCounts.sales, todos: openTodoCount, calls: phoneCalls.filter(isUrgentCall).length };
-  const staffActiveLabel = visibleGroups(isAdmin, canViewInventory)
+  const staffActiveLabel = visibleGroups(isAdmin, canViewInventory, canManageCredit)
     .flatMap((g) => g.items)
     .find((i) => isItemActive(i, location.pathname, location.search))?.label;
 
@@ -180,7 +182,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                     <SheetTitle className="text-left">B2B-Portal</SheetTitle>
                   </SheetHeader>
                   <div className="p-3">
-                    <StaffNav isAdmin={isAdmin} canViewInventory={canViewInventory} badges={staffBadges} onNavigate={() => setMobileNavOpen(false)} />
+                    <StaffNav isAdmin={isAdmin} canViewInventory={canViewInventory} canManageCredit={canManageCredit} badges={staffBadges} onNavigate={() => setMobileNavOpen(false)} />
                   </div>
                 </SheetContent>
               </Sheet>
@@ -190,7 +192,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
             <div className="section-container lg:grid lg:grid-cols-[250px_minmax(0,1fr)] lg:gap-8">
               <aside className="hidden lg:block">
                 <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-1">
-                  <StaffNav isAdmin={isAdmin} canViewInventory={canViewInventory} badges={staffBadges} />
+                  <StaffNav isAdmin={isAdmin} canViewInventory={canViewInventory} canManageCredit={canManageCredit} badges={staffBadges} />
                 </div>
               </aside>
               <div className="min-w-0">{children}</div>
