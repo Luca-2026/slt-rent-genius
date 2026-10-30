@@ -36,6 +36,14 @@ export function matchesSegment(segment: CustomerSegment, filter: SegmentFilter):
   return filter === segment;
 }
 
+/** Zusätzlich zur Kundengruppe nur tatsächlich mit dem B2B-Portal verknüpfte Kunden. */
+export function matchesPortalRegistration(
+  row: { b2b_profile_id?: string | null },
+  portalOnly: boolean,
+): boolean {
+  return !portalOnly || Boolean(row.b2b_profile_id);
+}
+
 /** Filter aus der URL lesen (?kunden=private|business|portal). */
 export function parseSegmentFilter(value: string | null): SegmentFilter {
   if (value === "portal" || value === "business") return "business";

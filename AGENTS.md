@@ -11,6 +11,7 @@
 - Inject the portal first-paint guard through the Vite HTML plugin before body parsing; hide only prerender fallback content on the exact portal host to preserve public SEO and the React portal.
 <!-- LOVABLE:END -->
 - Kundengruppen-Filter nur über src/lib/customerSegment.ts (Filter: Privat vs. Geschäftskunden inkl. B2B-Portal)
+- The customer registry's independent portal toggle uses matchesPortalRegistration with a linked B2B profile and URL state; keep the shared business segment inclusive to preserve other lists.
 - StaffHome metrics: dashboardMetrics.ts; revenue includes cancelled originals and credits in both sources, all totals agree. Accepted offers: isAwaitingOfferConfirmation, no channel/age filter. Closeout: hasRentalEnded (Berlin), rentalCloseoutTasks. Calendar/list/dashboard dates use effectiveStart/effectiveEnd; end-before-start requires review, never overdue or an invented return date.
 - Offene Kundenanfragen (Freischaltung, Kreditlimit, Löschung) nur über src/lib/customerActions.ts (getestet) – gleiche Regel in Kundenkartei und Startseite; Portalkunden werden in der Kundenkartei über die Kundenakte bearbeitet.
 - Verkaufspreisrahmen nur über src/lib/salesPricing.ts (getestet): Mindestpreis = EK netto × (1 + Gemeinkosten, Standard 10 %), Bonusbasis = Verkaufspreis − Mindestpreis; EK liegt in sales_article_costs (nur Mitarbeiter lesbar), nie in den öffentlichen Artikeltabellen.

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SEGMENT_FILTER_OPTIONS, SEGMENT_LABELS, matchesSegment, parseSegmentFilter, segmentOf, type SegmentFilter } from "@/lib/customerSegment";
+import { SEGMENT_FILTER_OPTIONS, SEGMENT_LABELS, matchesSegment, matchesPortalRegistration, parseSegmentFilter, segmentOf, type SegmentFilter } from "@/lib/customerSegment";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { DeclineCreditLimitButton } from "@/components/b2b/DeclineCreditLimitButton";
@@ -17,7 +17,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Pencil, Trash2, Mail, Phone, MapPin, CreditCard, CalendarDays } from "lucide-react";
+import { Plus, Pencil, Trash2, Mail, Phone, MapPin, CreditCard, CalendarDays, Building2 } from "lucide-react";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { toast } from "sonner";
 import { ACTION_FILTER_OPTIONS, needsAction, parseActionFilter, registrationDate, type ActionFilter, type PortalProfileLite } from "@/lib/customerActions";
@@ -38,6 +38,7 @@ export default function Customers() {
   const [searchParams, setSearchParams] = useSearchParams();
   const segment = parseSegmentFilter(searchParams.get("kunden"));
   const action = parseActionFilter(searchParams.get("handlung"));
+  const portalOnly = searchParams.get("portal") === "1";
 
   const [profiles, setProfiles] = useState<Row[]>([]);
   const [invoices, setInvoices] = useState<Row[]>([]);
@@ -133,6 +134,7 @@ export default function Customers() {
     return rows
       .filter((c) => {
         if (!matchesSegment(segmentOf(c), segment)) return false;
+        if (!matchesPortalRegistration(c, portalOnly)) return false;
         if (action !== "none") {
           const p = c.b2b_profile_id ? profileById.get(c.b2b_profile_id) : null;
           if (!p || !needsAction(p, action)) return false;
@@ -144,7 +146,7 @@ export default function Customers() {
       })
       .map((c) => ({ c, reg: registrationDate(c, c.b2b_profile_id ? profileById.get(c.b2b_profile_id) : null, firstInquiry.get(c.id)) }))
       .sort((a, b) => b.reg.localeCompare(a.reg));
-  }, [rows, search, segment, action, profileById, firstInquiry]);
+  }, [rows, search, segment, action, portalOnly, profileById, firstInquiry]);
 
   const setParam = (key: string, value: string | null) => {
     const next = new URLSearchParams(searchParams);
@@ -191,6 +193,18 @@ export default function Customers() {
             {SEGMENT_FILTER_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
           </SelectContent>
         </Select>
+        <Button
+          variant={portalOnly ? "default" : "outline"}
+          aria-pressed={portalOnly}
+          onClick={() => {
+            const next = new URLSearchParams(searchParams);
+            if (portalOnly) next.delete("portal");
+            else { next.set("portal", "1"); next.set("kunden", "business"); }
+            setSearchParams(next, { replace: true });
+          }}
+        >
+          <Building2 className="h-4 w-4 mr-2" /> Nur B2B-Portal
+        </Button>
         <Select value={action} onValueChange={(v) => setParam("handlung", v === "none" ? null : v)}>
           <SelectTrigger className="sm:w-56" aria-label="Handlungsbedarf"><SelectValue /></SelectTrigger>
           <SelectContent>
