@@ -47,6 +47,13 @@ Deno.serve(async (req) => {
     let userId: string;
 
     if (existingUser) {
+      // Never link an account whose mailbox ownership is unproven
+      if (!existingUser.email_confirmed_at) {
+        return new Response(
+          JSON.stringify({ error: "Das bestehende Konto mit dieser E-Mail-Adresse ist nicht bestätigt. Bitte zuerst die E-Mail-Adresse bestätigen lassen." }),
+          { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        );
+      }
       userId = existingUser.id;
     } else {
       // Create new user with a random password (they will set their own via reset link)
