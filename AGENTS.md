@@ -29,3 +29,4 @@
 - Auftrags-ID order_code: DB-Trigger vergibt, unveränderlich; Anzeige via OrderCodeBadge/orderCode; Bank-Zweck „Auftrag CODE“ („#“ kein SEPA-Zeichen).
 - Schlussrechnung nach Kautionsabrechnung: Zahlungen, Kautionsblock, Einheiten serverseitig via _shared/final-invoice-deposit.ts (getestet) – alte Entwürfe verfälschen nichts.
 - Manueller Auftragsabschluss ohne Rückgabeprotokoll nur über DB-Funktion close_rental_without_protocol (admin/niederlassungsleiter, Grund Pflicht, Event-Log, closed_manually_*); Rückgabe ohne Übergabe nach bestätigter Checkbox (log_return_without_delivery). Startseiten-Abschluss zählt dann nur noch die Rechnung.
+- Onsite B2B onboarding uses onsite-b2b-customer with atomic CRM linking, private document uploads and DB approval guards; active branch managers are location-scoped, and invitation OTP verification precedes customer-owned password setup.

@@ -1681,7 +1681,9 @@ export type Database = {
           house_number: string | null
           id: string
           internal_notes: string | null
+          invitation_sent_at: string | null
           legal_form: string | null
+          onsite_onboarding: boolean
           payment_due_days: number
           postal_code: string
           postal_invoice: boolean
@@ -1724,7 +1726,9 @@ export type Database = {
           house_number?: string | null
           id?: string
           internal_notes?: string | null
+          invitation_sent_at?: string | null
           legal_form?: string | null
+          onsite_onboarding?: boolean
           payment_due_days?: number
           postal_code: string
           postal_invoice?: boolean
@@ -1767,7 +1771,9 @@ export type Database = {
           house_number?: string | null
           id?: string
           internal_notes?: string | null
+          invitation_sent_at?: string | null
           legal_form?: string | null
+          onsite_onboarding?: boolean
           payment_due_days?: number
           postal_code?: string
           postal_invoice?: boolean
@@ -5641,6 +5647,10 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      approve_onsite_b2b_profile: {
+        Args: { _profile: string }
+        Returns: undefined
+      }
       backfill_allocations: { Args: { dry_run?: boolean }; Returns: Json }
       block_rental_coupon: {
         Args: { p_coupon: string; p_reason: string }
@@ -5651,6 +5661,10 @@ export type Database = {
         Returns: boolean
       }
       can_edit_operations: { Args: { _user_id: string }; Returns: boolean }
+      can_manage_b2b_onboarding: {
+        Args: { _actor: string; _location: string }
+        Returns: boolean
+      }
       change_rental_inquiry_location: {
         Args: { _inquiry_id: string; _new_location: string }
         Returns: {
@@ -5809,6 +5823,15 @@ export type Database = {
       is_authorized_person: { Args: { _user_id: string }; Returns: boolean }
       is_staff_member: { Args: { _user_id: string }; Returns: boolean }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
+      link_onsite_b2b_profile: {
+        Args: {
+          _actor: string
+          _customer: string
+          _legal_form?: string
+          _user: string
+        }
+        Returns: string
+      }
       list_rental_feedback_invitations: {
         Args: never
         Returns: {
@@ -5833,6 +5856,7 @@ export type Database = {
         Returns: undefined
       }
       mark_overdue_invoices: { Args: never; Returns: number }
+      onsite_b2b_password_set: { Args: { _user: string }; Returns: boolean }
       parse_price_text: { Args: { _raw: string }; Returns: number }
       record_inquiry_invoice_payment: {
         Args: {

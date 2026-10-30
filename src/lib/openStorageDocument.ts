@@ -8,7 +8,7 @@ export async function openStorageDocument(urlOrPath: string, bucket = "b2b-docum
   const win = window.open("", "_blank");
   const marker = `/${bucket}/`;
   const idx = urlOrPath.indexOf(marker);
-  const path = decodeURIComponent((idx >= 0 ? urlOrPath.slice(idx + marker.length) : urlOrPath).split("?")[0]);
+  const path = decodeURIComponent((idx >= 0 ? urlOrPath.slice(idx + marker.length) : urlOrPath.replace(/^private:/, "")).split("?")[0]);
   const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, 600);
   if (error || !data?.signedUrl) {
     win?.close();
