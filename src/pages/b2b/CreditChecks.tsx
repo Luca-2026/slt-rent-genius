@@ -43,7 +43,7 @@ export default function CreditChecks() {
     if (!parsed.success) { toast.error(parsed.error.issues[0]?.message || "Bitte Eingaben prüfen."); return; }
     if (!date || date > new Date().toISOString().slice(0, 10)) { toast.error("Bitte einen gültigen Prüfzeitpunkt wählen."); return; }
     setSaving(true);
-    const { error: err } = await supabase.from("customer_credit_assessments").insert({ ...parsed.data, crm_customer_id: customerId || null, checked_at: `${date}T00:00:00Z`, source: "manual_creditsafe", registration_number: registration.trim() || null, report_reference: reference.trim() || null, postal_code: customer?.postal_code || postal.trim() || null, city: customer?.city || city.trim() || null });
+    const { error: err } = await supabase.from("customer_credit_assessments").insert({ company_name: parsed.data.company_name || "", rating: parsed.data.rating, recommended_limit: parsed.data.recommended_limit, notes: parsed.data.notes, crm_customer_id: customerId || null, checked_at: `${date}T00:00:00Z`, source: "manual_creditsafe", registration_number: registration.trim() || null, report_reference: reference.trim() || null, postal_code: customer?.postal_code || postal.trim() || null, city: customer?.city || city.trim() || null });
     setSaving(false);
     if (err) { toast.error(err.message); return; }
     toast.success("Bonitätsprüfung dokumentiert. Kein Kreditlimit vergeben.");
@@ -79,6 +79,6 @@ export default function CreditChecks() {
   </B2BPortalLayout>;
 }
 
-function Field({ label, onChange, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string; onChange: (v: string) => void }) {
+function Field({ label, onChange, ...props }: Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> & { label: string; onChange: (v: string) => void }) {
   return <div className="space-y-1.5 min-w-0"><Label htmlFor={props.id}>{label}</Label><Input {...props} onChange={(e) => onChange(e.target.value)} /></div>;
 }
