@@ -41,7 +41,7 @@ type LocalContentMap = Record<string, Record<string, LocalCategoryContent>>;
 export const localCategoryContent: LocalContentMap = {
   // =================================================================
   // BONN – Filiale Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem)
-  // Öffnung: Mo–Fr 07:00–18:00, Sa 08:00–17:30
+  // Öffnung: Mo–Do 07:00–16:30, Fr 07:00–18:00, Sa geschlossen
   // Einzugsgebiet: Bonn, Köln-Süd, Wachtberg, Bad Honnef,
   // Königswinter, Sankt Augustin, Rhein-Sieg-Kreis, Ahrtal
   // =================================================================
@@ -50,11 +50,11 @@ export const localCategoryContent: LocalContentMap = {
       hookline:
         "Rüttelplatten, Stampfer und Walzen mietest du direkt an unserer Filiale Bonn – mit Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über die B9, die A555 (Bonn–Köln) und die A565 (Bonner Autobahnring). Geliefert wird ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über die B9, die A555 (Bonn–Köln) und die A565 (Bonner Autobahnring). Geliefert wird ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler.",
       faqs: [
         {
           q: "Hat die SLT-Filiale Bonn auch samstags geöffnet?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Werktags öffnen wir bereits um 07:00 Uhr, eine Stunde früher als unser Hauptsitz in Krefeld. Damit kannst du Verdichtungsgeräte auch für Wochenendeinsätze direkt vor Ort abholen.",
+          a: "Nein. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags geschlossen. Abholung ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr möglich. Werktags öffnen wir bereits um 07:00 Uhr, eine Stunde früher als unser Hauptsitz in Krefeld. Damit kannst du Verdichtungsgeräte auch für Wochenendeinsätze direkt vor Ort abholen.",
         },
         {
           q: "Liefert ihr Verdichtungsgeräte ins Ahrtal und in den Rhein-Sieg-Kreis?",
@@ -67,7 +67,7 @@ export const localCategoryContent: LocalContentMap = {
       hookline:
         "Minibagger, Dumper und Anbaugeräte mietest du an unserer Filiale Bonn – passend für Tiefbau und GaLaBau zwischen Rhein-Sieg-Kreis, Köln-Süd und Ahrtal.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über die B9, die A555 (Bonn–Köln) und die A565 (Bonner Autobahnring). Geliefert wird ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler. Tieflader-Transport für größere Bagger und Dumper organisieren wir bei Bedarf mit.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über die B9, die A555 (Bonn–Köln) und die A565 (Bonner Autobahnring). Geliefert wird ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler. Tieflader-Transport für größere Bagger und Dumper organisieren wir bei Bedarf mit.",
       faqs: [
         {
           q: "Welche Bagger und Dumper habt ihr an der Filiale Bonn vor Ort?",
@@ -84,11 +84,11 @@ export const localCategoryContent: LocalContentMap = {
       hookline:
         "Auto-, Kasten-, Planen-, Koffer-, Baumaschinen- und Aggregat-Anhänger mietest du an unserer Filiale Bonn – 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss abholbar und zurückgebbar. Anhänger werden grundsätzlich abgeholt, eine Lieferung bieten wir hierfür nicht an.",
       standortFakten:
-        "Abholung und Rückgabe an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg) – 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss, auch nachts, sonntags und an Feiertagen, ohne Personalaufwand. Für persönliche Einweisung, Zubehör (Planen, Spanngurte) oder Beratung sind wir Mo–Fr ab 07:00 Uhr und samstags regulär von 08:00 bis 17:30 Uhr vor Ort. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565. Hinweis: Mietanhänger werden ausschließlich vor Ort abgeholt und zurückgegeben – eine Lieferung wie bei Baumaschinen ist für Anhänger und Nutzfahrzeuge nicht vorgesehen.",
+        "Abholung und Rückgabe an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg) – 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss, auch nachts, sonntags und an Feiertagen, ohne Personalaufwand. Für persönliche Einweisung, Zubehör (Planen, Spanngurte) oder Beratung sind wir Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr vor Ort; samstags ist die Filiale geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565. Hinweis: Mietanhänger werden ausschließlich vor Ort abgeholt und zurückgegeben – eine Lieferung wie bei Baumaschinen ist für Anhänger und Nutzfahrzeuge nicht vorgesehen.",
       faqs: [
         {
           q: "Kann ich den Anhänger an der Filiale Bonn auch nachts, sonntags oder an Feiertagen abholen und zurückgeben?",
-          a: "Ja. An unserem Standort Drachenburgstraße 8 in Bonn-Bad Godesberg sind alle Mietanhänger 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss abholbar und zurückgebbar – auch nachts, sonntags und an Feiertagen, ohne dass jemand vor Ort sein muss. Nach der Buchung bekommst du den Code per E-Mail. Für persönliche Einweisung oder Zubehör nutze zusätzlich unsere regulären Öffnungszeiten Mo–Fr 07:00–18:00 und Sa 08:00–17:30.",
+          a: "Ja. An unserem Standort Drachenburgstraße 8 in Bonn-Bad Godesberg sind alle Mietanhänger 24/7 an 365 Tagen im Jahr per E-Mail-Code-Schloss abholbar und zurückgebbar – auch nachts, sonntags und an Feiertagen, ohne dass jemand vor Ort sein muss. Nach der Buchung bekommst du den Code per E-Mail. Für persönliche Einweisung oder Zubehör nutze zusätzlich unsere regulären Öffnungszeiten Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen.",
         },
         {
           q: "Liefert ihr Anhänger auch nach Bonn oder ins Ahrtal?",
@@ -105,7 +105,7 @@ export const localCategoryContent: LocalContentMap = {
       hookline:
         "Scheren-, Mast- und Anhängerbühnen mietest du an unserer Filiale Bonn – mit Lieferung ins Bonner Stadtgebiet, in den Rhein-Sieg-Kreis und ins Ahrtal.",
       standortFakten:
-        "Abholung und Einweisung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Geliefert wird ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anhängerbühnen werden vor Ort abgeholt, selbstfahrende Bühnen liefern wir per Transport an die Einsatzstelle.",
+        "Abholung und Einweisung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Geliefert wird ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler. Anhängerbühnen werden vor Ort abgeholt, selbstfahrende Bühnen liefern wir per Transport an die Einsatzstelle.",
       faqs: [
         {
           q: "Liefert ihr Arbeitsbühnen ins Ahrtal und in den Rhein-Sieg-Kreis?",
@@ -120,13 +120,13 @@ export const localCategoryContent: LocalContentMap = {
 
     werkzeuge: {
       hookline:
-        "Bohr-, Säge-, Fräs- und Messwerkzeuge mietest du an unserer Filiale Bonn – samstags bis 17:30 Uhr abholbar, ohne Voranmeldung.",
+        "Bohr-, Säge-, Fräs- und Messwerkzeuge mietest du an unserer Filiale Bonn – Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr abholbar; samstags geschlossen.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr – damit eine Stunde früher als unser Hauptsitz in Krefeld und samstags deutlich länger. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565. Für Sanierungs- und Renovierungsprojekte im Bonner Stadtgebiet, Rhein-Sieg-Kreis und Ahrtal sind die meisten Werkzeuge kompakt genug für den eigenen Pkw – Lieferung ist auf Anfrage ebenfalls möglich.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565. Für Sanierungs- und Renovierungsprojekte im Bonner Stadtgebiet, Rhein-Sieg-Kreis und Ahrtal sind die meisten Werkzeuge kompakt genug für den eigenen Pkw – Lieferung ist auf Anfrage ebenfalls möglich.",
       faqs: [
         {
           q: "Kann ich Werkzeuge an der Filiale Bonn auch samstags abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Damit kannst du Bohrhämmer, Sägen, Fräsen oder Messtechnik auch für Wochenend-Projekte direkt vor Ort mitnehmen. Werktags öffnen wir bereits um 07:00 Uhr, eine Stunde früher als unser Hauptsitz in Krefeld.",
+          a: "Nein. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags geschlossen. Abholung ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr möglich. Damit kannst du Bohrhämmer, Sägen, Fräsen oder Messtechnik auch für Wochenend-Projekte direkt vor Ort mitnehmen. Werktags öffnen wir bereits um 07:00 Uhr, eine Stunde früher als unser Hauptsitz in Krefeld.",
         },
         {
           q: "Welche Werkzeuge habt ihr an der Filiale Bonn vor Ort?",
@@ -139,7 +139,7 @@ export const localCategoryContent: LocalContentMap = {
       hookline:
         "Heizlüfter, Heizpilze und Bautrockner mietest du an unserer Filiale Bonn – mit Lieferung ins Bonner Stadtgebiet, in den Rhein-Sieg-Kreis und ins Ahrtal.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Geliefert wird ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – relevant vor allem für Wasserschäden, Neubau-Trocknung und Außen-Events in der Region.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Geliefert wird ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – relevant vor allem für Wasserschäden, Neubau-Trocknung und Außen-Events in der Region.",
       faqs: [
         {
           q: "Liefert ihr Bautrockner und Heizgeräte ins Ahrtal und in den Rhein-Sieg-Kreis?",
@@ -154,13 +154,13 @@ export const localCategoryContent: LocalContentMap = {
 
     "leitern-gerueste": {
       hookline:
-        "Mehrzweckleitern, Stehleitern und Rollgerüste mietest du an unserer Filiale Bonn – kompakte Leitern auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar, Rollgerüste mit Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
+        "Mehrzweckleitern, Stehleitern und Rollgerüste mietest du an unserer Filiale Bonn – kompakte Leitern auch während der Öffnungszeiten abholbar, Rollgerüste mit Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Klapp- und Mehrzweckleitern lassen sich in der Regel im eigenen Pkw oder Kombi transportieren – Rollgerüste, große Steh- und Schiebeleitern liefern wir per Transport ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Klapp- und Mehrzweckleitern lassen sich in der Regel im eigenen Pkw oder Kombi transportieren – Rollgerüste, große Steh- und Schiebeleitern liefern wir per Transport ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler.",
       faqs: [
         {
           q: "Kann ich Leitern an der Filiale Bonn auch samstags abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Mehrzweck-, Steh- und Klappleitern kannst du also auch für Wochenend-Projekte direkt vor Ort mitnehmen, in der Regel passen sie in jeden Kombi oder Pkw mit Dachträger.",
+          a: "Nein. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags geschlossen. Abholung ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr möglich. Mehrzweck-, Steh- und Klappleitern kannst du also auch für Wochenend-Projekte direkt vor Ort mitnehmen, in der Regel passen sie in jeden Kombi oder Pkw mit Dachträger.",
         },
         {
           q: "Liefert ihr Rollgerüste ins Ahrtal oder in den Rhein-Sieg-Kreis?",
@@ -175,9 +175,9 @@ export const localCategoryContent: LocalContentMap = {
 
     aggregate: {
       hookline:
-        "Stromaggregate von 2,8 bis 100 kVA mietest du an unserer Filiale Bonn – kleine tragbare Aggregate auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar, große Diesel-Stromerzeuger mit Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
+        "Stromaggregate von 2,8 bis 100 kVA mietest du an unserer Filiale Bonn – kleine tragbare Aggregate auch während der Öffnungszeiten abholbar, große Diesel-Stromerzeuger mit Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Kleine Aggregate ab 2,8 kVA passen in der Regel in jeden Pkw oder Kombi. Größere Diesel-Aggregate (20, 50, 80, 100 kVA) liefern wir per Transport ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – passend für Baustellen ohne Netzanschluss, Events, Notstrom und Wasserschaden-Sanierung.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Kleine Aggregate ab 2,8 kVA passen in der Regel in jeden Pkw oder Kombi. Größere Diesel-Aggregate (20, 50, 80, 100 kVA) liefern wir per Transport ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – passend für Baustellen ohne Netzanschluss, Events, Notstrom und Wasserschaden-Sanierung.",
       faqs: [
         {
           q: "Liefert ihr große Stromaggregate ins Ahrtal oder in den Rhein-Sieg-Kreis?",
@@ -185,7 +185,7 @@ export const localCategoryContent: LocalContentMap = {
         },
         {
           q: "Kann ich kleine Aggregate in Bonn auch samstags abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Tragbare Aggregate wie der 2,8 kVA Ford FG4050 oder der 7,5 kVA Kärcher PGG 8/3 passen in jeden Pkw und sind für Wochenend-Events oder Außen-Einsätze direkt mitnehmbar.",
+          a: "Nein. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags geschlossen. Abholung ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr möglich. Tragbare Aggregate wie der 2,8 kVA Ford FG4050 oder der 7,5 kVA Kärcher PGG 8/3 passen in jeden Pkw und sind für Wochenend-Events oder Außen-Einsätze direkt mitnehmbar.",
         },
         {
           q: "Welche Aggregate habt ihr an der Filiale Bonn vor Ort?",
@@ -196,9 +196,9 @@ export const localCategoryContent: LocalContentMap = {
 
     "kabel-stromverteiler": {
       hookline:
-        "Verlängerungskabel, Stromverteiler und Kabelbrücken für die sichere Stromversorgung Ihrer Veranstaltung oder Baustelle – an unserer Filiale Bonn abholbar, samstags bis 17:30 Uhr ohne Voranmeldung. Wir machen auch Baustrom und übernehmen sämtliche Anträge zum Festpreis.",
+        "Verlängerungskabel, Stromverteiler und Kabelbrücken für die sichere Stromversorgung Ihrer Veranstaltung oder Baustelle – an unserer Filiale Bonn abholbar, während der Öffnungszeiten. Wir machen auch Baustrom und übernehmen sämtliche Anträge zum Festpreis.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). CEE-Verlängerungskabel 16/32/63 A rot in Längen von 3, 5, 10, 20 und 50 m (H07RN-F), Schukokabel, Schuko-Kabeltrommel 50 m sowie Mennekes CEE-Adapter (Schuko↔16 A, 16↔32 A, 32↔16 A, 32↔63 A, 63↔32 A inkl. Sicherung) passen in der Regel in jeden Pkw oder Kombi. CEE-Unterverteiler (16 A auf 3× oder 5× Schuko, 32 A auf 6× Schuko, 63 A auf 2× 32 A / 1× 16 A / 6× Schuko bzw. 19\"-Rack-Variante) sowie die Verteilerschränke Endverteilerschrank 22 kVA (EV32 Typ B), Endverteilerschrank 44 kVA (EV63 Typ B), Anschlussverteilerschrank 44 kVA und Hauptverteilerschrank 86 kVA (HV125 Typ B) liefern wir per Transport ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – passend zur Stromversorgung von Baustellen, Events und Notstrom-Szenarien. Für Baustrom-Anschlüsse übernehmen wir die Beantragung beim Netzbetreiber zum Festpreis und liefern den passenden Endverteilerschrank inklusive Zubehör direkt zur Baustelle.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). CEE-Verlängerungskabel 16/32/63 A rot in Längen von 3, 5, 10, 20 und 50 m (H07RN-F), Schukokabel, Schuko-Kabeltrommel 50 m sowie Mennekes CEE-Adapter (Schuko↔16 A, 16↔32 A, 32↔16 A, 32↔63 A, 63↔32 A inkl. Sicherung) passen in der Regel in jeden Pkw oder Kombi. CEE-Unterverteiler (16 A auf 3× oder 5× Schuko, 32 A auf 6× Schuko, 63 A auf 2× 32 A / 1× 16 A / 6× Schuko bzw. 19\"-Rack-Variante) sowie die Verteilerschränke Endverteilerschrank 22 kVA (EV32 Typ B), Endverteilerschrank 44 kVA (EV63 Typ B), Anschlussverteilerschrank 44 kVA und Hauptverteilerschrank 86 kVA (HV125 Typ B) liefern wir per Transport ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – passend zur Stromversorgung von Baustellen, Events und Notstrom-Szenarien. Für Baustrom-Anschlüsse übernehmen wir die Beantragung beim Netzbetreiber zum Festpreis und liefern den passenden Endverteilerschrank inklusive Zubehör direkt zur Baustelle.",
       faqs: [
         {
           q: "Übernehmt ihr auch die Anträge für den Baustromanschluss?",
@@ -210,7 +210,7 @@ export const localCategoryContent: LocalContentMap = {
         },
         {
           q: "Kann ich CEE-Kabel und Adapter in Bonn auch samstags abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. CEE-Verlängerungskabel 16/32/63 A in Längen von 3, 5, 10, 20 und 50 m, Schukokabel, die Schuko-Kabeltrommel 50 m sowie die Mennekes-Adapter (Schuko↔16 A, 16↔32 A, 32↔16 A, 32↔63 A und 63↔32 A inkl. Sicherung) kannst du direkt mitnehmen.",
+          a: "Nein. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags geschlossen. Abholung ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr möglich. CEE-Verlängerungskabel 16/32/63 A in Längen von 3, 5, 10, 20 und 50 m, Schukokabel, die Schuko-Kabeltrommel 50 m sowie die Mennekes-Adapter (Schuko↔16 A, 16↔32 A, 32↔16 A, 32↔63 A und 63↔32 A inkl. Sicherung) kannst du direkt mitnehmen.",
         },
         {
           q: "Welche Verteiler und Kabel habt ihr an der Filiale Bonn vor Ort?",
@@ -221,13 +221,13 @@ export const localCategoryContent: LocalContentMap = {
 
     gartenpflege: {
       hookline:
-        "Vertikutierer, Häcksler, Erdbohrer, Akku-Kettensägen, Freischneider, Baumstumpffräse und Hochdruckreiniger mietest du an unserer Filiale Bonn – die meisten Geräte passen in jeden Pkw oder Kombi und sind samstags bis 17:30 Uhr ohne Voranmeldung abholbar.",
+        "Vertikutierer, Häcksler, Erdbohrer, Akku-Kettensägen, Freischneider, Baumstumpffräse und Hochdruckreiniger mietest du an unserer Filiale Bonn – die meisten Geräte passen in jeden Pkw oder Kombi und sind während der Öffnungszeiten abholbar.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Vertikutierer (elektrisch und benzinbetrieben), Akku-Kettensäge, Freischneider, Benzin-Bodenhacke, Benzin-Erdbohrer, Erdbohrer 4308 sowie Häcksler (Axt und LS95) lassen sich in der Regel im eigenen Pkw, Kombi oder kleinen Anhänger transportieren. Größere Geräte wie die Baumstumpffräse F360 liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal – passend für Grundstückspflege, Heckenrückschnitt, Rasen-Sanierung im Frühjahr und Aufräumarbeiten nach Sturm- oder Hochwasser-Schäden.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Vertikutierer (elektrisch und benzinbetrieben), Akku-Kettensäge, Freischneider, Benzin-Bodenhacke, Benzin-Erdbohrer, Erdbohrer 4308 sowie Häcksler (Axt und LS95) lassen sich in der Regel im eigenen Pkw, Kombi oder kleinen Anhänger transportieren. Größere Geräte wie die Baumstumpffräse F360 liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal – passend für Grundstückspflege, Heckenrückschnitt, Rasen-Sanierung im Frühjahr und Aufräumarbeiten nach Sturm- oder Hochwasser-Schäden.",
       faqs: [
         {
           q: "Kann ich Vertikutierer und Häcksler in Bonn auch samstags abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Vertikutierer (elektrisch und Benzin), Häcksler (Axt und LS95), Akku-Kettensäge, Freischneider und Erdbohrer kannst du direkt mitnehmen – ideal für den Wochenend-Einsatz im Garten.",
+          a: "Nein. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags geschlossen. Abholung ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr möglich. Vertikutierer (elektrisch und Benzin), Häcksler (Axt und LS95), Akku-Kettensäge, Freischneider und Erdbohrer kannst du direkt mitnehmen – ideal für den Wochenend-Einsatz im Garten.",
         },
         {
           q: "Welche Gartengeräte habt ihr an der Filiale Bonn vor Ort?",
@@ -242,13 +242,13 @@ export const localCategoryContent: LocalContentMap = {
 
     erdbohrer: {
       hookline:
-        "Benzin-Erdbohrer mit 100, 150 und 200 mm Bohrschnecke – an der Filiale Bonn samstags bis 17:30 Uhr ohne Voranmeldung abholbar.",
+        "Benzin-Erdbohrer mit 100, 150 und 200 mm Bohrschnecke – an der Filiale Bonn während der Öffnungszeiten abholbar.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Der Benzin-Erdbohrer inklusive aller drei Schnecken-Durchmesser (100 mm, 150 mm, 200 mm) ist Bestandteil des Bonner Stamm-Sortiments und passt komplett in jeden Pkw-Kofferraum. Passend für Zaunfundamente, Pergola- und Carport-Pfosten, Pflanzlöcher und Erdanker im Bonner Stadtgebiet, in Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, im Rhein-Sieg-Kreis sowie im Ahrtal.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Der Benzin-Erdbohrer inklusive aller drei Schnecken-Durchmesser (100 mm, 150 mm, 200 mm) ist Bestandteil des Bonner Stamm-Sortiments und passt komplett in jeden Pkw-Kofferraum. Passend für Zaunfundamente, Pergola- und Carport-Pfosten, Pflanzlöcher und Erdanker im Bonner Stadtgebiet, in Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, im Rhein-Sieg-Kreis sowie im Ahrtal.",
       faqs: [
         {
           q: "Kann ich den Benzin-Erdbohrer in Bonn auch samstags oder früh morgens abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 öffnet werktags bereits um 07:00 Uhr – eine Stunde früher als der Hauptsitz Krefeld – und samstags durchgehend von 08:00 bis 17:30 Uhr. Der Erdbohrer inklusive aller drei Schnecken (100/150/200 mm) ist Stammsortiment und in der Regel ohne Voranmeldung mitnehmbar. Perfekt für Wochenend-Projekte im Rhein-Sieg-Kreis und im Ahrtal.",
+          a: "Frühmorgens ja: Unsere Filiale Bonn in der Drachenburgstraße 8 ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr geöffnet. Samstags ist sie geschlossen. Der Erdbohrer inklusive aller drei Schnecken (100/150/200 mm) ist Stammsortiment und in der Regel ohne Voranmeldung mitnehmbar. Perfekt für Wochenend-Projekte im Rhein-Sieg-Kreis und im Ahrtal.",
         },
         {
           q: "Sind an der Filiale Bonn alle drei Bohrschnecken-Größen vorrätig?",
@@ -265,13 +265,13 @@ export const localCategoryContent: LocalContentMap = {
 
     absperrtechnik: {
       hookline:
-        "TL-Warnleuchten, Schrankenzäune, Warnbarken, Fußplatten und das 18-teilige Halteverbotsschilder-Set mietest du an unserer Filiale Bonn – kompakte Artikel wie Warnleuchten und Klemmschellen auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar.",
+        "TL-Warnleuchten, Schrankenzäune, Warnbarken, Fußplatten und das 18-teilige Halteverbotsschilder-Set mietest du an unserer Filiale Bonn – kompakte Artikel wie Warnleuchten und Klemmschellen auch während der Öffnungszeiten abholbar.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Warnleuchten, Fußplatten, Klemmschellen und Warnbarken passen in der Regel in jeden Pkw oder Kombi. Das 18-teilige Halteverbotsschilder-Set für mobile Halteverbotszonen nach StVO wird vor Ort zusammengestellt und kann ebenfalls selbst abgeholt werden. Für Baustellen, Events und Umzüge im Bonner Stadtgebiet, Rhein-Sieg-Kreis und Ahrtal liefern wir auf Anfrage größere Mengen an Schrankenzäunen, Bauzäunen und Verkehrszeichen direkt zur Einsatzstelle.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Warnleuchten, Fußplatten, Klemmschellen und Warnbarken passen in der Regel in jeden Pkw oder Kombi. Das 18-teilige Halteverbotsschilder-Set für mobile Halteverbotszonen nach StVO wird vor Ort zusammengestellt und kann ebenfalls selbst abgeholt werden. Für Baustellen, Events und Umzüge im Bonner Stadtgebiet, Rhein-Sieg-Kreis und Ahrtal liefern wir auf Anfrage größere Mengen an Schrankenzäunen, Bauzäunen und Verkehrszeichen direkt zur Einsatzstelle.",
       faqs: [
         {
           q: "Kann ich Warnleuchten und das Halteverbotsschilder-Set in Bonn auch samstags abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. TL-Warnleuchten, Fußplatten, Wemas-Klemmschellen, Warnbarken und das 18-teilige Halteverbotsschilder-Set kannst du direkt mitnehmen, in der Regel passen sie in jeden Pkw oder Kombi.",
+          a: "Nein. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags geschlossen. Abholung ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr möglich. TL-Warnleuchten, Fußplatten, Wemas-Klemmschellen, Warnbarken und das 18-teilige Halteverbotsschilder-Set kannst du direkt mitnehmen, in der Regel passen sie in jeden Pkw oder Kombi.",
         },
         {
           q: "Liefert ihr Absperrtechnik ins Ahrtal und in den Rhein-Sieg-Kreis?",
@@ -286,13 +286,13 @@ export const localCategoryContent: LocalContentMap = {
 
     beleuchtung: {
       hookline:
-        "LED Outdoorscheinwerfer TourLED 50 XCR, Moving Heads, LED-Beleuchtungssets und Party-Ton-&-Licht-Sets mietest du an unserer Filiale Bonn – einzelne Scheinwerfer und kleinere Sets auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar.",
+        "LED Outdoorscheinwerfer TourLED 50 XCR, Moving Heads, LED-Beleuchtungssets und Party-Ton-&-Licht-Sets mietest du an unserer Filiale Bonn – einzelne Scheinwerfer und kleinere Sets auch während der Öffnungszeiten abholbar.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Einzelne LED-Outdoorscheinwerfer, Moving Heads und kleinere Beleuchtungssets passen in der Regel in jeden Pkw oder Kombi und können direkt abgeholt werden. Größere Sets wie das LED Outdoorscheinwerfer 6er-Set oder das Party Ton & Licht-Set liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal – passend für Firmenevents, Hochzeiten, Geburtstage, Konzerte und Außenveranstaltungen.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Einzelne LED-Outdoorscheinwerfer, Moving Heads und kleinere Beleuchtungssets passen in der Regel in jeden Pkw oder Kombi und können direkt abgeholt werden. Größere Sets wie das LED Outdoorscheinwerfer 6er-Set oder das Party Ton & Licht-Set liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal – passend für Firmenevents, Hochzeiten, Geburtstage, Konzerte und Außenveranstaltungen.",
       faqs: [
         {
           q: "Kann ich LED-Scheinwerfer und kleinere Licht-Sets in Bonn auch samstags abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. LED Outdoorscheinwerfer TourLED 50 XCR, einzelne Moving Heads und kleinere Beleuchtungssets kannst du direkt mitnehmen, in der Regel passen sie in jeden Pkw oder Kombi.",
+          a: "Nein. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags geschlossen. Abholung ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr möglich. LED Outdoorscheinwerfer TourLED 50 XCR, einzelne Moving Heads und kleinere Beleuchtungssets kannst du direkt mitnehmen, in der Regel passen sie in jeden Pkw oder Kombi.",
         },
         {
           q: "Liefert ihr Beleuchtungstechnik ins Ahrtal und in den Rhein-Sieg-Kreis?",
@@ -307,13 +307,13 @@ export const localCategoryContent: LocalContentMap = {
 
     beschallung: {
       hookline:
-        "Soundboks Gen.3 (126 dB Bluetooth-Outdoor-Lautsprecher), 2.1 Soundsystem 1400W RMS mit Mischpult sowie Ersatz-Akkus mietest du an unserer Filiale Bonn – Soundboks und Zubehör auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar.",
+        "Soundboks Gen.3 (126 dB Bluetooth-Outdoor-Lautsprecher), 2.1 Soundsystem 1400W RMS mit Mischpult sowie Ersatz-Akkus mietest du an unserer Filiale Bonn – Soundboks und Zubehör auch während der Öffnungszeiten abholbar.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Soundboks Gen.3 (15,4 kg) und Batteryboks passen in jeden Pkw oder Kombi. Das 2.1 Soundsystem 1400W RMS (ca. 55 kg) liefert die 1400-Watt-PA-Anlage mit integriertem 4-Kanal-Mischpult für bis zu 75 Personen. Größere Beschallungssets liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal – passend für Hochzeiten, Firmenevents, Geburtstage und Outdoor-Partys.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Soundboks Gen.3 (15,4 kg) und Batteryboks passen in jeden Pkw oder Kombi. Das 2.1 Soundsystem 1400W RMS (ca. 55 kg) liefert die 1400-Watt-PA-Anlage mit integriertem 4-Kanal-Mischpult für bis zu 75 Personen. Größere Beschallungssets liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal – passend für Hochzeiten, Firmenevents, Geburtstage und Outdoor-Partys.",
       faqs: [
         {
           q: "Kann ich den Soundboks in Bonn auch samstags abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Der Soundboks Gen.3 (15,4 kg, Bluetooth 5.0, bis zu 40 Stunden Akkulaufzeit) und der Batteryboks Ersatz-Akku passen in jeden Pkw oder Kombi und sind direkt mitnehmbar.",
+          a: "Nein. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags geschlossen. Abholung ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr möglich. Der Soundboks Gen.3 (15,4 kg, Bluetooth 5.0, bis zu 40 Stunden Akkulaufzeit) und der Batteryboks Ersatz-Akku passen in jeden Pkw oder Kombi und sind direkt mitnehmbar.",
         },
         {
           q: "Liefert ihr das 2.1 Soundsystem ins Ahrtal und in den Rhein-Sieg-Kreis?",
@@ -328,13 +328,13 @@ export const localCategoryContent: LocalContentMap = {
 
     kommunikation: {
       hookline:
-        "Funkmikrofon für Reden und Präsentationen mietest du an unserer Filiale Bonn – kompakt und samstags bis 17:30 Uhr ohne Voranmeldung abholbar.",
+        "Funkmikrofon für Reden und Präsentationen mietest du an unserer Filiale Bonn – kompakt und während der Öffnungszeiten abholbar.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Das Funkmikrofon passt in jeden Pkw oder Kombi und ist direkt mitnehmbar. Größere Funkgeräte-Sets oder Headset-Konfigurationen liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal – die Geräte disponieren wir bei Bedarf aus unserem Hauptsitz in Krefeld, in der Regel innerhalb von 24 Stunden.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Das Funkmikrofon passt in jeden Pkw oder Kombi und ist direkt mitnehmbar. Größere Funkgeräte-Sets oder Headset-Konfigurationen liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal – die Geräte disponieren wir bei Bedarf aus unserem Hauptsitz in Krefeld, in der Regel innerhalb von 24 Stunden.",
       faqs: [
         {
           q: "Kann ich das Funkmikrofon in Bonn auch samstags abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Das Funkmikrofon ist kompakt und passt in jeden Pkw oder Kombi, sodass du es direkt mitnehmen kannst.",
+          a: "Nein. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags geschlossen. Abholung ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr möglich. Das Funkmikrofon ist kompakt und passt in jeden Pkw oder Kombi, sodass du es direkt mitnehmen kannst.",
         },
         {
           q: "Liefert ihr Funkmikrofone ins Ahrtal und in den Rhein-Sieg-Kreis?",
@@ -349,13 +349,13 @@ export const localCategoryContent: LocalContentMap = {
 
     "moebel-zelte": {
       hookline:
-        "Party- / Eventzelte (3×3 m und 4×6 m), Zeltboden anthrazit, Bierzeltgarnituren mit Hussen, Stehtische, Stühle und Kleiderständer mietest du an unserer Filiale Bonn – Möbel auch samstags bis 17:30 Uhr ohne Voranmeldung abholbar, Party- / Eventzelte mit Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
+        "Party- / Eventzelte (3×3 m und 4×6 m), Zeltboden anthrazit, Bierzeltgarnituren mit Hussen, Stehtische, Stühle und Kleiderständer mietest du an unserer Filiale Bonn – Möbel auch während der Öffnungszeiten abholbar, Party- / Eventzelte mit Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Bierzeltgarnitur-Sets, Hussen-Sets, Stehtische, Stühle, Kleiderbügel und Kleiderständer mit Rollen passen in der Regel in jeden Kombi oder Transporter. Die Party- / Eventzelte 3×3 m (9 m² Grundfläche) und 4×6 m (24 m² Grundfläche) mit UV-beständiger 500 g/m² PVC-Plane sowie der Event- / Zeltboden Anthrazit liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – passend für Hochzeiten, Geburtstage, Firmenfeiern und Vereinsfeste.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Bierzeltgarnitur-Sets, Hussen-Sets, Stehtische, Stühle, Kleiderbügel und Kleiderständer mit Rollen passen in der Regel in jeden Kombi oder Transporter. Die Party- / Eventzelte 3×3 m (9 m² Grundfläche) und 4×6 m (24 m² Grundfläche) mit UV-beständiger 500 g/m² PVC-Plane sowie der Event- / Zeltboden Anthrazit liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler – passend für Hochzeiten, Geburtstage, Firmenfeiern und Vereinsfeste.",
       faqs: [
         {
           q: "Kann ich Bierzeltgarnituren und Stehtische in Bonn auch samstags abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Bierzeltgarnitur-Sets, Hussen-Sets weiß, Stehtische, Stehtisch-Hussen weiß, Stühle weiß sowie Kleiderbügel-20er-Sets und Kleiderständer mit Rollen kannst du direkt mitnehmen, in der Regel passen sie in jeden Kombi oder kleinen Transporter.",
+          a: "Nein. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags geschlossen. Abholung ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr möglich. Bierzeltgarnitur-Sets, Hussen-Sets weiß, Stehtische, Stehtisch-Hussen weiß, Stühle weiß sowie Kleiderbügel-20er-Sets und Kleiderständer mit Rollen kannst du direkt mitnehmen, in der Regel passen sie in jeden Kombi oder kleinen Transporter.",
         },
         {
           q: "Liefert ihr Party- / Eventzelte ins Ahrtal oder in den Rhein-Sieg-Kreis?",
@@ -370,13 +370,13 @@ export const localCategoryContent: LocalContentMap = {
 
     "gastro-equipment": {
       hookline:
-        "Getränkekühlschrank, Eiswürfelbereiter und Eiswürfelmaschine mietest du an unserer Filiale Bonn – samstags bis 17:30 Uhr abholbar, Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
+        "Getränkekühlschrank, Eiswürfelbereiter und Eiswürfelmaschine mietest du an unserer Filiale Bonn – während der Öffnungszeiten abholbar, Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Der Getränkekühlschrank 236 l (54 × 55 × 144 cm, 45 kg) und der kompakte SLT Eiswürfelbereiter sind an der Filiale Bonn direkt buchbar; der Kühlschrank muss stehend transportiert werden und benötigt einen Kombi oder Transporter. Lieferung ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Der Getränkekühlschrank 236 l (54 × 55 × 144 cm, 45 kg) und der kompakte SLT Eiswürfelbereiter sind an der Filiale Bonn direkt buchbar; der Kühlschrank muss stehend transportiert werden und benötigt einen Kombi oder Transporter. Lieferung ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler.",
       faqs: [
         {
           q: "Kann ich Getränkekühlschrank und Eiswürfelmaschine in Bonn auch samstags abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags von 08:00 bis 17:30 Uhr geöffnet, werktags ab 07:00 Uhr. Der kompakte Eiswürfelbereiter passt in jeden Pkw, der Getränkekühlschrank 236 l muss stehend transportiert werden – dafür brauchst du einen Kombi oder Transporter oder du buchst die Lieferung dazu.",
+          a: "Nein. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags geschlossen. Abholung ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr möglich. Der kompakte Eiswürfelbereiter passt in jeden Pkw, der Getränkekühlschrank 236 l muss stehend transportiert werden – dafür brauchst du einen Kombi oder Transporter oder du buchst die Lieferung dazu.",
         },
         {
           q: "Liefert ihr Gastro Equipment ins Ahrtal und in den Rhein-Sieg-Kreis?",
@@ -387,13 +387,13 @@ export const localCategoryContent: LocalContentMap = {
 
     "geschirr-glaeser-besteck": {
       hookline:
-        "Gläser (Passionata & Brunelli), Teller, Schüsseln, Besteck und Gastro-Spülmaschine mietest du an unserer Filiale Bonn – abholbar samstags bis 17:30 Uhr, Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
+        "Gläser (Passionata & Brunelli), Teller, Schüsseln, Besteck und Gastro-Spülmaschine mietest du an unserer Filiale Bonn – abholbar während der Öffnungszeiten, Lieferung in den Rhein-Sieg-Kreis und ins Ahrtal.",
       standortFakten:
-        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Gläser-Sets (Longdrink, Wasser, Weißwein, Rotwein, Champagner), Teller SIMPLY und Deluxe, Dessertteller, Schüsseln, Kaffeetassen, Aschenbecher sowie Besteck-Sets (Gabeln, Löffel, Messer) und die Gastro-Spülmaschine passen in der Regel in jeden Pkw oder Kombi. Größere Mengen oder der Buffet-Tellerwärmer liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler.",
+        "Abholung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Gläser-Sets (Longdrink, Wasser, Weißwein, Rotwein, Champagner), Teller SIMPLY und Deluxe, Dessertteller, Schüsseln, Kaffeetassen, Aschenbecher sowie Besteck-Sets (Gabeln, Löffel, Messer) und die Gastro-Spülmaschine passen in der Regel in jeden Pkw oder Kombi. Größere Mengen oder der Buffet-Tellerwärmer liefern wir auf Anfrage ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler.",
       faqs: [
         {
           q: "Kann ich Geschirr und Gläser in Bonn auch samstags abholen?",
-          a: "Ja. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags regulär von 08:00 bis 17:30 Uhr geöffnet – ohne Voranmeldung. Gläser-Sets, Teller, Besteck und kleinere Geschirr-Mengen passen in der Regel in jeden Pkw oder Kombi und können direkt mitgenommen werden. Größere Mengen oder die Gastro-Spülmaschine organisieren wir auf Wunsch mit Lieferung.",
+          a: "Nein. Unsere Filiale Bonn in der Drachenburgstraße 8 ist samstags geschlossen. Abholung ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr möglich. Gläser-Sets, Teller, Besteck und kleinere Geschirr-Mengen passen in der Regel in jeden Pkw oder Kombi und können direkt mitgenommen werden. Größere Mengen oder die Gastro-Spülmaschine organisieren wir auf Wunsch mit Lieferung.",
         },
         {
           q: "Liefert ihr Geschirr, Gläser und Besteck ins Ahrtal und in den Rhein-Sieg-Kreis?",
@@ -410,7 +410,7 @@ export const localCategoryContent: LocalContentMap = {
       hookline:
         "Nivtec Systempodeste (2×0,5 m, 2×0,75 m, 2×1 m), Teleskopfüße (40/80 cm), Verstellspindelfüße (60 cm) und Manfrotto Autopoles disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – Übergabe und Beratung an unserer Filiale Bonn.",
       standortFakten:
-        "Übergabe und Beratung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Bühnenequipment (Nivtec Systempodeste in 2×0,5 m, 2×0,75 m und 2×1 m, Teleskopfüße 40/80 cm, Verstellspindelfuß 60 cm sowie Manfrotto 032B Autopole schwarz) disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden. Lieferung ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler möglich.",
+        "Übergabe und Beratung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Bühnenequipment (Nivtec Systempodeste in 2×0,5 m, 2×0,75 m und 2×1 m, Teleskopfüße 40/80 cm, Verstellspindelfuß 60 cm sowie Manfrotto 032B Autopole schwarz) disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden. Lieferung ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler möglich.",
       faqs: [
         {
           q: "Stehen Nivtec-Podeste direkt an der Filiale Bonn?",
@@ -427,7 +427,7 @@ export const localCategoryContent: LocalContentMap = {
       hookline:
         "Milos M290 Traversen-System (Multicube, P4 QTU 500/1000/1500/2000, UBPQC Base) und Traversen-Cover weiß (2 m und 3 m) disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – Übergabe und Beratung an unserer Filiale Bonn.",
       standortFakten:
-        "Übergabe und Beratung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Milos M290 Traversen (Multicube black, P4 QTU 500/1000/1500/2000 black, UBPQC Base black) und die Traversen-Cover weiß in 2 m und 3 m disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden. Lieferung ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler möglich.",
+        "Übergabe und Beratung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Milos M290 Traversen (Multicube black, P4 QTU 500/1000/1500/2000 black, UBPQC Base black) und die Traversen-Cover weiß in 2 m und 3 m disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden. Lieferung ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler möglich.",
       faqs: [
         {
           q: "Stehen Milos-Traversen direkt an der Filiale Bonn?",
@@ -444,7 +444,7 @@ export const localCategoryContent: LocalContentMap = {
       hookline:
         "ADJ Fog Fury Jett PRO Nebelmaschine, Kalt-Funkenfontänen (Spark/Sparkular) als Einzelgerät, 2er- und 4er-Set, TCM FX Turbo CO2 Jet und XL Profi Popcornmaschine disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – Übergabe und Beratung an unserer Filiale Bonn.",
       standortFakten:
-        "Übergabe und Beratung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Spezialeffekt-Geräte – ADJ Fog Fury Jett PRO, Kalt-Funkenfontänen Einzelgerät/2er-Set/4er-Set, TCM FX Turbo CO2 Jet und die XL Profi Popcornmaschine – disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden. Lieferung ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler möglich – passend für Hochzeiten, Firmenfeiern, Bühnenshows und Vereinsfeste.",
+        "Übergabe und Beratung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Spezialeffekt-Geräte – ADJ Fog Fury Jett PRO, Kalt-Funkenfontänen Einzelgerät/2er-Set/4er-Set, TCM FX Turbo CO2 Jet und die XL Profi Popcornmaschine – disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden. Lieferung ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler möglich – passend für Hochzeiten, Firmenfeiern, Bühnenshows und Vereinsfeste.",
       faqs: [
         {
           q: "Liefert ihr Nebelmaschinen und Kalt-Funkenfontänen ins Ahrtal oder in den Rhein-Sieg-Kreis?",
@@ -461,7 +461,7 @@ export const localCategoryContent: LocalContentMap = {
       hookline:
         "HappyHop Hüpfburg Lamar 2,8×2,1 m, Hüpfburg Wasserpark 3×4 m, Hüpfburg Rollercoaster 4,9×4 m und Hüpfburg Clown 6,1×5,2 m disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – Lieferung ins Bonner Stadtgebiet, in den Rhein-Sieg-Kreis und ins Ahrtal.",
       standortFakten:
-        "Übergabe und Beratung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Hüpfburgen – HappyHop Lamar 2,8×2,1 m, Wasserpark 3×4 m, Rollercoaster 4,9×4 m sowie Clown 6,1×5,2 m – disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden. Lieferung ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler möglich – passend für Kindergeburtstage, Schulfeste, Vereinsfeiern und Stadtteilfeste.",
+        "Übergabe und Beratung an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Hüpfburgen – HappyHop Lamar 2,8×2,1 m, Wasserpark 3×4 m, Rollercoaster 4,9×4 m sowie Clown 6,1×5,2 m – disponieren wir auf Anfrage aus unserem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden. Lieferung ins Bonner Stadtgebiet, nach Wachtberg, Königswinter, Bad Honnef, Sankt Augustin, in den Rhein-Sieg-Kreis sowie ins Ahrtal bis Bad Neuenahr-Ahrweiler möglich – passend für Kindergeburtstage, Schulfeste, Vereinsfeiern und Stadtteilfeste.",
       faqs: [
         {
           q: "Liefert ihr Hüpfburgen ins Ahrtal oder in den Rhein-Sieg-Kreis?",
@@ -478,7 +478,7 @@ export const localCategoryContent: LocalContentMap = {
       hookline:
         "Den Weinsberg CaraOne 480 QDK (familientauglich, bis 5 Personen, Dusche, WC, Truma-Heizung und Mover) mietest du auf Anfrage an unserer Filiale Bonn – ab 30 €/Tag inkl. Vollkasko.",
       standortFakten:
-        "Übergabe und Rückgabe an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Der Weinsberg CaraOne 480 QDK (Gesamtlänge mit Deichsel 7,07 m, zulässiges Gesamtgewicht 1.500 kg, 2 Erwachsene + 3 Kinder) wird auf Anfrage aus unserem Hauptsitz Krefeld disponiert. Mindestmietdauer 5 Tage, Servicepauschale 99 € einmalig (Einweisung, 11-kg-Gasflasche, Spiegelverlängerungen, Strom-Adapterkabel, Sanitärchemie, 2 Rollen Toilettenpapier), Endreinigung optional 99 €, Kaution 1.000 €, Teil- und Vollkasko enthalten (Selbstbeteiligung gegenüber Versicherung 2.500 €). Wohnwagen werden mit dem eigenen Zugfahrzeug (ab 1.500 kg Anhängelast) abgeholt – eine Lieferung bieten wir hierfür nicht an.",
+        "Übergabe und Rückgabe an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Der Weinsberg CaraOne 480 QDK (Gesamtlänge mit Deichsel 7,07 m, zulässiges Gesamtgewicht 1.500 kg, 2 Erwachsene + 3 Kinder) wird auf Anfrage aus unserem Hauptsitz Krefeld disponiert. Mindestmietdauer 5 Tage, Servicepauschale 99 € einmalig (Einweisung, 11-kg-Gasflasche, Spiegelverlängerungen, Strom-Adapterkabel, Sanitärchemie, 2 Rollen Toilettenpapier), Endreinigung optional 99 €, Kaution 1.000 €, Teil- und Vollkasko enthalten (Selbstbeteiligung gegenüber Versicherung 2.500 €). Wohnwagen werden mit dem eigenen Zugfahrzeug (ab 1.500 kg Anhängelast) abgeholt – eine Lieferung bieten wir hierfür nicht an.",
       faqs: [
         {
           q: "Kann ich den Wohnwagen direkt an der Filiale Bonn übernehmen?",
@@ -499,7 +499,7 @@ export const localCategoryContent: LocalContentMap = {
       hookline:
         "Den 7,5-t Dreiseitenkipper (MAN TGL 8.220, Meiller D205, Automatik, Euro 6e) und den 3,5-t Pritschenwagen Dreiseitenkipper mit Doppelkabine (Opel Movano o. vgl., Klasse B) mietest du auf Anfrage an unserer Filiale Bonn – Abholung vor Ort, eine Lieferung bieten wir für Nutzfahrzeuge nicht an.",
       standortFakten:
-        "Übergabe und Rückgabe an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Fr ab 07:00 Uhr und samstags durchgehend von 08:00 bis 17:30 Uhr. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Der 7,5-t MAN-Dreiseitenkipper mit Meiller-D205-Aufbau (220 PS, Automatik, 4,5 m³ Volumen, Hydraulikanschluss für Kippanhänger, Führerscheinklasse C1) und der 3,5-t Opel Movano Pritschenwagen-Dreiseitenkipper mit Doppelkabine (bis zu 7 Sitzplätze, 1.135 kg Nutzlast, 3,60 × 2,05 m Ladefläche, Anhängelast bis 2.500 kg, Führerscheinklasse B) werden auf Anfrage aus unserem Hauptsitz Krefeld disponiert. Mietkonditionen: 100 km/Tag inklusive, Diesel-Rückgabe vollgetankt (sonst 2,85 €/l), Kaution 1.000 €, Vollkasko-Selbstbeteiligung 2.500 €. Hinweis: Nutzfahrzeuge werden ausschließlich vor Ort abgeholt und zurückgegeben – eine Lieferung wie bei Baumaschinen ist hierfür nicht vorgesehen.",
+        "Übergabe und Rückgabe an unserer Filiale Bonn, Drachenburgstraße 8, 53179 Bonn (Bad Godesberg/Mehlem). Geöffnet Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Anfahrt direkt über B9, A555 (Bonn–Köln) und A565 (Bonner Autobahnring). Der 7,5-t MAN-Dreiseitenkipper mit Meiller-D205-Aufbau (220 PS, Automatik, 4,5 m³ Volumen, Hydraulikanschluss für Kippanhänger, Führerscheinklasse C1) und der 3,5-t Opel Movano Pritschenwagen-Dreiseitenkipper mit Doppelkabine (bis zu 7 Sitzplätze, 1.135 kg Nutzlast, 3,60 × 2,05 m Ladefläche, Anhängelast bis 2.500 kg, Führerscheinklasse B) werden auf Anfrage aus unserem Hauptsitz Krefeld disponiert. Mietkonditionen: 100 km/Tag inklusive, Diesel-Rückgabe vollgetankt (sonst 2,85 €/l), Kaution 1.000 €, Vollkasko-Selbstbeteiligung 2.500 €. Hinweis: Nutzfahrzeuge werden ausschließlich vor Ort abgeholt und zurückgegeben – eine Lieferung wie bei Baumaschinen ist hierfür nicht vorgesehen.",
       faqs: [
         {
           q: "Welchen Führerschein brauche ich für eure Kipper?",

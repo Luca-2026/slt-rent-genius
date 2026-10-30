@@ -31,6 +31,7 @@ export interface PickupWindow {
 /** Abhol-/Rückgabezeiten je Standort; null = an diesem Wochentag nicht möglich. */
 export interface LocationPickupHours {
   weekdays: PickupWindow | null;
+  friday?: PickupWindow | null;
   saturday: PickupWindow | null;
 }
 
@@ -129,14 +130,16 @@ export const locationData: LocationInfo[] = [
     image: imgBonn,
     manager: { name: bonnDirectContact.name, role: "locations.locationManager", image: imgRalf, email: "r.doehler@slt-rental.de" },
     hours: [
-      { day: "Mo. - Fr.", time: "07:00 - 18:00 Uhr" },
-      { day: "Sa.", time: "08:00 - 17:30 Uhr" },
+      { day: "Mo. - Do.", time: "07:00 - 16:30 Uhr" },
+      { day: "Fr.", time: "07:00 - 18:00 Uhr" },
+      { day: "Sa.", time: "Geschlossen" },
       { day: "So.", time: "Geschlossen" },
     ],
-    hoursNote: "*Abholung/Rückgabe von Mietgeräten: Mo–Fr 06–09 Uhr & 17:30–18 Uhr. Anhänger 24/7. Samstag regulär geöffnet.",
+    hoursNote: "Anhänger-Abholung und -Rückgabe per Code weiterhin 24/7.",
     pickupHours: {
-      weekdays: { open: "07:00", close: "18:00" },
-      saturday: { open: "08:00", close: "17:30" },
+      weekdays: { open: "07:00", close: "16:30" },
+      friday: { open: "07:00", close: "18:00" },
+      saturday: null,
     },
     
     
@@ -226,7 +229,26 @@ export function pickupWindowForDate(
   if (Number.isNaN(d.getTime())) return null;
   const wd = d.getDay();
   if (wd === 0) return null; // Sonntag geschlossen
+  if (wd === 5 && loc.pickupHours.friday !== undefined) return loc.pickupHours.friday;
   return wd === 6 ? loc.pickupHours.saturday : loc.pickupHours.weekdays;
+}
+
+/** Regular staffed hours for search engines, derived from the same pickup windows. */
+export function locationOpeningHoursSpecification(id: string) {
+  const hours = getLocationInfoById(id)?.pickupHours;
+  if (!hours) return [];
+  const weekdayNames = ["Monday", "Tuesday", "Wednesday", "Thursday"];
+  const windows = [
+    { days: hours.friday === undefined ? [...weekdayNames, "Friday"] : weekdayNames, window: hours.weekdays },
+    { days: ["Friday"], window: hours.friday },
+    { days: ["Saturday"], window: hours.saturday },
+  ];
+  return windows.flatMap(({ days, window }) => window ? [{
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: days,
+    opens: window.open,
+    closes: window.close,
+  }] : []);
 }
 
 /** Alle wählbaren Uhrzeiten im Fenster in 30-Minuten-Schritten, inkl. Ende. */

@@ -16,7 +16,7 @@ const LOCATIONS = [
     address: "Bonn (siehe Website für vollständige Adresse)",
     phone: "0228 – siehe Website",
     email: "bonn@slt-rental.de",
-    hours: "Mo–Fr 07:00–18:00, Sa 08:00–17:30",
+    hours: "Mo–Do 07:00–16:30, Fr 07:00–18:00, Sa geschlossen",
     url: "https://www.slt-rental.de/standorte/bonn",
   },
   {

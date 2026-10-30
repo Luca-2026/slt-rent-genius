@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { getLocationInfoById, pickupTimeOptions, pickupWindowForDate } from "@/data/locationData";
+import { getLocationInfoById, locationOpeningHoursSpecification, pickupTimeOptions, pickupWindowForDate } from "@/data/locationData";
 
 // W3: Abhol-/Rückgabezeiten je Standort (Quelle: locationData.ts pickupHours)
 describe("pickupWindowForDate / pickupTimeOptions", () => {
-  const krefeld = getLocationInfoById("krefeld")!;
-  const bonn = getLocationInfoById("bonn")!;
-  const muelheim = getLocationInfoById("muelheim")!;
+  const krefeld = getLocationInfoById("krefeld");
+  const bonn = getLocationInfoById("bonn");
+  const muelheim = getLocationInfoById("muelheim");
 
   it("Krefeld werktags 08:00–18:00, samstags 10:00–14:30", () => {
     // 16.10.2026 = Freitag, 17.10.2026 = Samstag
@@ -13,9 +13,23 @@ describe("pickupWindowForDate / pickupTimeOptions", () => {
     expect(pickupWindowForDate(krefeld, "2026-10-17")).toEqual({ open: "10:00", close: "14:30" });
   });
 
-  it("Bonn werktags 07:00–18:00, samstags 08:00–17:30", () => {
+  it.each(["2026-10-26", "2026-10-27", "2026-10-28", "2026-10-29"])("Bonn Mo–Do 07:00–16:30 (%s)", (date) => {
+    expect(pickupWindowForDate(bonn, date)).toEqual({ open: "07:00", close: "16:30" });
+  });
+
+  it("Bonn freitags 07:00–18:00", () => {
     expect(pickupWindowForDate(bonn, "2026-10-16")).toEqual({ open: "07:00", close: "18:00" });
-    expect(pickupWindowForDate(bonn, "2026-10-17")).toEqual({ open: "08:00", close: "17:30" });
+  });
+
+  it("Bonn samstags geschlossen", () => {
+    expect(pickupWindowForDate(bonn, "2026-10-17")).toBeNull();
+  });
+
+  it("Bonn Suchmaschinenzeiten unterscheiden Mo–Do und Freitag ohne Samstagsöffnung", () => {
+    expect(locationOpeningHoursSpecification("bonn")).toEqual([
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"], opens: "07:00", closes: "16:30" },
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Friday"], opens: "07:00", closes: "18:00" },
+    ]);
   });
 
   it("Sonntag ist an allen Standorten geschlossen", () => {

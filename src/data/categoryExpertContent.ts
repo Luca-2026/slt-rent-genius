@@ -2336,7 +2336,7 @@ export const categoryExpertContent: ExpertContentMap = {
 
   // ================================================================
   // BONN – Filiale Drachenburgstraße 8, 53179 Bonn-Mehlem
-  // Öffnungszeiten: Mo–Fr 07:00–18:00, Sa 08:00–17:30
+  // Öffnungszeiten: Mo–Do 07:00–16:30, Fr 07:00–18:00, Sa geschlossen
   // Liefergebiet: Bonn, Köln-Süd, Wachtberg, Bad Honnef,
   // Königswinter, Sankt Augustin, Bad Neuenahr-Ahrweiler,
   // Rhein-Sieg-Kreis. Direkte Anbindung an B9, A555 (Bonn–Köln),
@@ -2397,7 +2397,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Wie läuft die Übergabe in Bonn-Mehlem konkret ab?",
           answer:
-            "Abholung in der Drachenburgstraße 8 (53179 Bonn) – verkehrsgünstig direkt an der B9, mit kurzem Weg zur A562 und A565. Reguläre Übergabezeiten Mo–Fr 07:00–18:00 (früherer Start als die anderen Standorte) und Sa 08:00–17:30. Bei der Übergabe Geräteeinweisung am konkreten Modell, gemeinsame Sichtprüfung und schriftliches Übergabeprotokoll. Bei Lieferung auf die Baustelle erfolgt die Einweisung vor Ort durch unseren Fahrer.",
+            "Abholung in der Drachenburgstraße 8 (53179 Bonn) – verkehrsgünstig direkt an der B9, mit kurzem Weg zur A562 und A565. Reguläre Übergabezeiten Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr; samstags geschlossen. Bei der Übergabe Geräteeinweisung am konkreten Modell, gemeinsame Sichtprüfung und schriftliches Übergabeprotokoll. Bei Lieferung auf die Baustelle erfolgt die Einweisung vor Ort durch unseren Fahrer.",
         },
         {
           question: "Welche PSA muss der Bediener tragen?",
@@ -2438,7 +2438,7 @@ export const categoryExpertContent: ExpertContentMap = {
           h3: "Bonn als zweiter SLT-Standort: lokales Sortiment plus 24-Stunden-Nachlieferung aus Krefeld",
           paragraphs: [
             "Die Filiale Bonn (Drachenburgstraße 8, 53179 Bonn-Mehlem) führt das nachgefragte Kernsortiment vor Ort: Minibagger 1,0–2,5 t, Plateauanhänger, Rüttelplatten, Stromaggregate, Bauwerkzeug, GaLaBau-Geräte und das wichtigste Eventequipment. Spezialmaschinen aus dem erweiterten Programm liefern wir aus dem Hauptsitz Krefeld – in der Regel innerhalb von 24 Stunden, oft schon am Folgetag.",
-            "Reguläre Öffnungszeiten Mo–Fr 07:00–18:00 (eine Stunde früher als Krefeld), Sa 08:00–17:30 (länger als Krefeld). Damit kannst du auch nach Feierabend oder samstags abholen und zurückgeben – ideal für Wochenend­projekte zwischen Köln-Süd, Bonn und Ahrtal. Beratung zur Maschinenwahl und zum Tieflader-Transport telefonisch unter 0228 504 660 61.",
+            "Reguläre Öffnungszeiten Mo–Do 07:00–16:30 Uhr, Fr 07:00–18:00 Uhr, Sa geschlossen. Für Wochenendmieten kannst du freitags bis 18:00 Uhr abholen – ideal für Wochenend­projekte zwischen Köln-Süd, Bonn und Ahrtal. Beratung zur Maschinenwahl und zum Tieflader-Transport telefonisch unter 0228 504 660 61.",
           ],
         },
       ],
@@ -2609,7 +2609,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Wie funktioniert die Übergabe in Bonn-Mehlem zeitlich?",
           answer:
-            "Reguläre Übergabezeiten Mo–Fr 07:00–18:00, Sa 08:00–17:30. Für Selbstfahrer-Gelenkbühnen und LKW-Arbeitsbühnen empfehlen wir Selbstabholung mit eigenem Tieflader oder Lieferung durch uns – das spart Risiko beim Ent- und Aufladen. Bei der Übergabe Geräteeinweisung, gemeinsame Sichtprüfung mit Funktions­test (Heben, Senken, Notabsenkung) und schriftliches Protokoll.",
+            "Reguläre Übergabezeiten Mo–Do 07:00–16:30, Fr 07:00–18:00, Sa geschlossen. Für Selbstfahrer-Gelenkbühnen und LKW-Arbeitsbühnen empfehlen wir Selbstabholung mit eigenem Tieflader oder Lieferung durch uns – das spart Risiko beim Ent- und Aufladen. Bei der Übergabe Geräteeinweisung, gemeinsame Sichtprüfung mit Funktions­test (Heben, Senken, Notabsenkung) und schriftliches Protokoll.",
         },
       ],
       expertSections: [
@@ -2645,7 +2645,7 @@ export const categoryExpertContent: ExpertContentMap = {
           h3: "Bonner Einsatzfelder: vom Baumpflege-Schnitt im Siebengebirge bis zur Bürofassade in der Südstadt",
           paragraphs: [
             "Im Bonner Liefergebiet (Bonn, Köln-Süd, Wachtberg, Bad Honnef, Königswinter, Sankt Augustin, Bad Neuenahr-Ahrweiler, Rhein-Sieg-Kreis) decken wir vier typische Einsatzfelder ab. Baumpflege und Obstbau im Siebengebirge und im Vorgebirge: kompakte Anhängerbühnen 12–17 m, oft mit Allrad-Selbstfahrt zur Aufstellung auf weichem Untergrund. Fassaden- und Dacharbeiten in Bonner Mehrfamilienhäusern: 15–22-m-Gelenkteleskopbühnen mit langer horizontaler Reichweite, um Vorgartenpflanzungen zu überfahren.",
-            "Werbeanlagen- und Beleuchtungs­montage in der Bonner Innenstadt: schmale Gelenkbühnen mit kurzem Schwenkradius, oft in Verbindung mit Sondernutzung. Industriebau und Versorgungs­technik im Bonner Norden (Beuel, Pützchen, Sankt Augustin): Scherenbühnen 12–14 m für Hallen-Innenarbeiten an Beleuchtung, Lüftung und Brandmelde­anlagen. Reguläre Öffnungszeiten Mo–Fr 07:00–18:00, Sa 08:00–17:30 – Beratung unter 0228 504 660 61.",
+            "Werbeanlagen- und Beleuchtungs­montage in der Bonner Innenstadt: schmale Gelenkbühnen mit kurzem Schwenkradius, oft in Verbindung mit Sondernutzung. Industriebau und Versorgungs­technik im Bonner Norden (Beuel, Pützchen, Sankt Augustin): Scherenbühnen 12–14 m für Hallen-Innenarbeiten an Beleuchtung, Lüftung und Brandmelde­anlagen. Reguläre Öffnungszeiten Mo–Do 07:00–16:30, Fr 07:00–18:00, Sa geschlossen – Beratung unter 0228 504 660 61.",
           ],
         },
       ],
@@ -2852,7 +2852,7 @@ export const categoryExpertContent: ExpertContentMap = {
           h3: "Bonn-spezifisch: vom Hochwasser-Notbetrieb bis zum Stage-V-Eventaggregat in der Innenstadt",
           paragraphs: [
             "Im Bonner Liefergebiet decken Aggregate vier typische Einsatzfelder ab. Notstrom bei Hochwasser (Ahrtal, Rheinauen): mobile Aggregate 5–20 kVA, kurzfristig verfügbar – wir halten Reserve-Aggregate für solche Lagen bereit. Baustromversorgung in Bonner Tiefbau- und GaLaBau-Projekten: 13–40 kVA als Standard-Bauaggregat, schallgedämmt. Eventversorgung in der Bonner Innenstadt (Münsterplatz, Marktplatz, Hofgarten): Stage-V-Whisper-Aggregate 40–60 kVA wegen Wohnnähe und Tagungsbetrieb.",
-            "Industriestrom für temporäre Gewerbeprojekte (Sankt Augustin, Beuel-Nord): 60–100+ kVA mit CEE-32/63-A-Verteilern. Beratung zur passenden Größe und Schadstoff­klasse telefonisch unter 0228 504 660 61. Reguläre Öffnungszeiten Mo–Fr 07:00–18:00, Sa 08:00–17:30 – für Notfälle (Hochwasser, Stromausfall) erreichst du uns auch außerhalb der Öffnungszeiten über die Standortnummer.",
+            "Industriestrom für temporäre Gewerbeprojekte (Sankt Augustin, Beuel-Nord): 60–100+ kVA mit CEE-32/63-A-Verteilern. Beratung zur passenden Größe und Schadstoff­klasse telefonisch unter 0228 504 660 61. Reguläre Öffnungszeiten Mo–Do 07:00–16:30, Fr 07:00–18:00, Sa geschlossen – für Notfälle (Hochwasser, Stromausfall) erreichst du uns auch außerhalb der Öffnungszeiten über die Standortnummer.",
           ],
         },
       ],
@@ -3210,7 +3210,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Wie schnell kann ich Halteverbot, Baken und Leitkegel in Bonn bekommen?",
           answer:
-            "Bei verfügbarem Material und Selbstabholung sind Halteverbots-Sets und Standard-Absperrmaterial am Standort Bonn-Mehlem in der Regel taggleich verfügbar (Mo–Fr 07:00–18:00, Sa 08:00–17:30). Für die verkehrsrechtliche Anordnung der Stadt Bonn rechne mit 7–14 Tagen Vorlauf. Bei Komplett-Auftrag (Antrag + Material + Aufstellung) ist die Genehmigung der Engpass; wir empfehlen 3 Wochen Vorlauf.",
+            "Bei verfügbarem Material und Selbstabholung sind Halteverbots-Sets und Standard-Absperrmaterial am Standort Bonn-Mehlem in der Regel taggleich verfügbar (Mo–Do 07:00–16:30, Fr 07:00–18:00, Sa geschlossen). Für die verkehrsrechtliche Anordnung der Stadt Bonn rechne mit 7–14 Tagen Vorlauf. Bei Komplett-Auftrag (Antrag + Material + Aufstellung) ist die Genehmigung der Engpass; wir empfehlen 3 Wochen Vorlauf.",
         },
         {
           question: "Was kostet ein Halteverbotsschild-Set in Bonn?",
@@ -3321,7 +3321,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Was muss ich bei der Rückgabe in Bonn beachten?",
           answer:
-            "Fahrzeug volltank, sauber außen und innen (besenrein im Laderaum), inklusive aller Zurrgurte, Sackkarren und Decken, im Rückgabezeitfenster zurückbringen. Außerhalb der Öffnungszeiten (Mo–Fr 07:00–18:00, Sa 08:00–17:30) ist eine Schlüsseleinwurf-Box am Standort Bonn-Mehlem verfügbar – Schaden- und Tankprüfung erfolgen dann am nächsten Werktag mit Foto-Dokumentation. Verspätete Rückgabe wird stundenweise berechnet; kurze Vorabinfo per Telefon, wenn der Zeitplan kippt.",
+            "Fahrzeug volltank, sauber außen und innen (besenrein im Laderaum), inklusive aller Zurrgurte, Sackkarren und Decken, im Rückgabezeitfenster zurückbringen. Außerhalb der Öffnungszeiten (Mo–Do 07:00–16:30, Fr 07:00–18:00, Sa geschlossen) ist eine Schlüsseleinwurf-Box am Standort Bonn-Mehlem verfügbar – Schaden- und Tankprüfung erfolgen dann am nächsten Werktag mit Foto-Dokumentation. Verspätete Rückgabe wird stundenweise berechnet; kurze Vorabinfo per Telefon, wenn der Zeitplan kippt.",
         },
       ],
       expertSections: [
@@ -3356,7 +3356,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Standort Bonn-Mehlem: kurze Wege zur B9, A555, A565 und ins Rheinland",
           paragraphs: [
-            "Die Filiale Bonn-Mehlem (Drachenburgstraße 8) liegt verkehrsgünstig direkt an der B9 mit kurzer Anbindung an A562, A565, A555 (Köln–Bonn) und A59 (Siebengebirge). Damit sind Köln-Süd, Bad Godesberg, Beuel, Sankt Augustin, Königswinter, Bad Honnef und das Ahrtal aus dem Stand erreichbar. Reguläre Öffnungszeiten Mo–Fr 07:00–18:00, Sa 08:00–17:30 – eine Stunde früher als andere Standorte beim Start, samstags länger geöffnet.",
+            "Die Filiale Bonn-Mehlem (Drachenburgstraße 8) liegt verkehrsgünstig direkt an der B9 mit kurzer Anbindung an A562, A565, A555 (Köln–Bonn) und A59 (Siebengebirge). Damit sind Köln-Süd, Bad Godesberg, Beuel, Sankt Augustin, Königswinter, Bad Honnef und das Ahrtal aus dem Stand erreichbar. Reguläre Öffnungszeiten Mo–Do 07:00–16:30 Uhr, Fr 07:00–18:00 Uhr, Sa geschlossen.",
             "Für Bonner Handwerker- und Umzugsbetriebe bieten wir Rahmenmieten mit festen Wochentarifen und Bevorzugungsverfügbarkeit – samstägliche Umzugslogistik und Wochen-Touren in den Köln-Bonn-Raum sind Kernanwendungen. Telefonische Beratung zur richtigen Fahrzeuggröße, Tachograph-Pflicht und Versicherungs-Konstellation unter 0228 504 660 61.",
           ],
         },
@@ -3412,7 +3412,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Wie ist die Logistik – Selbstabholung oder Lieferung im Bonner Raum?",
           answer:
-            "Selbstabholung in der Drachenburgstraße 8 ist Mo–Fr 07:00–18:00 und Sa 08:00–17:30 möglich – kleinere Pakete passen in Kombi/Bus. Für komplette Lichtsetups mit Stativen, Truss und Verkabelung empfehlen wir Lieferung im Liefergebiet Bonn, Köln-Süd, Sankt Augustin, Wachtberg, Königswinter, Bad Honnef, Bad Neuenahr-Ahrweiler. Auf- und Abbau führen wir auf Anfrage durch – Preise nach Aufwand.",
+            "Selbstabholung in der Drachenburgstraße 8 ist Mo–Do 07:00–16:30 Uhr und Fr 07:00–18:00 Uhr möglich; samstags geschlossen – kleinere Pakete passen in Kombi/Bus. Für komplette Lichtsetups mit Stativen, Truss und Verkabelung empfehlen wir Lieferung im Liefergebiet Bonn, Köln-Süd, Sankt Augustin, Wachtberg, Königswinter, Bad Honnef, Bad Neuenahr-Ahrweiler. Auf- und Abbau führen wir auf Anfrage durch – Preise nach Aufwand.",
         },
         {
           question: "Brauche ich für Nebel oder Hazer eine Brandmelde-Abschaltung?",
@@ -4441,7 +4441,7 @@ export const categoryExpertContent: ExpertContentMap = {
           h3: "Bonn-Mehlem als Anhänger-Standort: B9, A555, A565 und das Liefergebiet",
           paragraphs: [
             "Unsere Filiale in der Drachenburgstraße 8 (53179 Bonn-Mehlem) liegt unmittelbar an der B9 und mit kurzem Zugang zur A562 (Friedrich-Ebert-Brücke), A555 (Bonn–Köln) und A565 (Bonner Autobahn nach Meckenheim/Eifel). Aus dieser Lage erreichst du das Bonner Stadtgebiet, Bad Godesberg, Königswinter, Bad Honnef, Wachtberg, den gesamten Rhein-Sieg-Kreis und das Ahrtal (Bad Neuenahr-Ahrweiler, Sinzig, Remagen) ohne Stadtdurchquerung – ideal für Anhänger-Selbstabholung.",
-            "Im Bonner Mietpark halten wir Plateau-, Baumaschinen-, Koffer-, Autotransport- und Motorradanhänger jeweils in mehreren Größen vor – Verfügbarkeit zeigt jedes Produkt direkt an. Reguläre Übergabezeiten Mo–Fr 07:00–18:00, Sa 08:00–17:30 (eine der längsten Samstags-Verfügbarkeiten in der Region). Zurrgurt-Set, Antirutschmatten und ein Adapter 7-/13-polig sind im Mietpreis enthalten. Reparatur und Wartung – auch von Fremdanhängern – bietet unsere Werkstatt in Bonn an: service@slt-rental.de.",
+            "Im Bonner Mietpark halten wir Plateau-, Baumaschinen-, Koffer-, Autotransport- und Motorradanhänger jeweils in mehreren Größen vor – Verfügbarkeit zeigt jedes Produkt direkt an. Reguläre Übergabezeiten Mo–Do 07:00–16:30 Uhr, Fr 07:00–18:00 Uhr, Sa geschlossen. Zurrgurt-Set, Antirutschmatten und ein Adapter 7-/13-polig sind im Mietpreis enthalten. Reparatur und Wartung – auch von Fremdanhängern – bietet unsere Werkstatt in Bonn an: service@slt-rental.de.",
           ],
         },
       ],
