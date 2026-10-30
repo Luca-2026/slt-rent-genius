@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { addDays, deviceAvailability, dayCells, earliestFreeFrom, rangesOverlap, toLocalIso } from "@/lib/calendarEntries";
+import { addDays, deviceAvailability, dayCells, earliestFreeFrom, matchesCalendarLocation, rangesOverlap, toLocalIso } from "@/lib/calendarEntries";
+import { CalendarLocationFilter } from './CalendarLocationFilter';
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { cn } from "@/lib/utils";
 
@@ -38,6 +39,7 @@ const fmtDT = (iso: string) =>
 interface Props {
   rows: InstanceRow[];
   locationFilter: string;
+  onLocationChange: (value: string) => void;
 }
 
 /** Ein Gerät: Statuszeile + 14-Tage-Zeitleiste. */
@@ -111,7 +113,7 @@ function InstanceCard({ r, now, todayIso }: { r: InstanceRow; now: string; today
 }
 
 /** Verfügbarkeitsliste aller Einzelgeräte, gruppiert nach Artikel, mit Zeitleiste. */
-export function InstanceAvailabilityTable({ rows, locationFilter }: Props) {
+export function InstanceAvailabilityTable({ rows, locationFilter, onLocationChange }: Props) {
   const [statusFilter, setStatusFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [from, setFrom] = useState("");
@@ -124,7 +126,7 @@ export function InstanceAvailabilityTable({ rows, locationFilter }: Props) {
   const visible = useMemo(() => {
     const q = search.trim().toLowerCase();
     return rows.filter((r) => {
-      if (locationFilter !== "all" && r.location !== locationFilter) return false;
+      if (!matchesCalendarLocation(r.location, locationFilter)) return false;
       if (statusFilter !== "all" && r.status !== statusFilter) return false;
       if (q && !`${r.productName} ${r.internal_inventory_number ?? ""} ${r.serial_number ?? ""}`.toLowerCase().includes(q)) return false;
       if (rangeActive) {
@@ -159,25 +161,34 @@ export function InstanceAvailabilityTable({ rows, locationFilter }: Props) {
 
   return (
     <div>
-      <div className="mb-3 flex flex-wrap items-center gap-2">
+      <div className="mb-3 grid grid-cols-1 gap-3 sm:flex sm:flex-wrap sm:items-end">
+        <div className="min-w-0 space-y-1.5"><label className="text-sm font-medium">Standort</label><CalendarLocationFilter value={locationFilter} onChange={onLocationChange} /></div>
+        <div className="min-w-0 space-y-1.5"><label htmlFor="device-search" className="text-sm font-medium">Gerät suchen</label>
         <Input
+          id="device-search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Artikel oder Inventarnummer suchen …"
           className="w-full sm:w-64"
         />
+        </div>
+        <div className="min-w-0 space-y-1.5"><label className="text-sm font-medium">Status</label>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+          <SelectTrigger className="w-full sm:w-40" aria-label="Gerätestatus"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Alle Status</SelectItem>
             {Object.entries(STATUS_LABEL).map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}
           </SelectContent>
         </Select>
-        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+        </div>
+        <div className="grid min-w-0 grid-cols-2 gap-2 text-sm sm:flex">
+          <div className="min-w-0 space-y-1.5">
           <label htmlFor="cal-from">Frei von</label>
-          <Input id="cal-from" type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="w-36" />
+          <Input id="cal-from" type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="w-full min-w-0 sm:w-40" />
+          </div><div className="min-w-0 space-y-1.5">
           <label htmlFor="cal-to">bis</label>
-          <Input id="cal-to" type="date" value={to} onChange={(e) => setTo(e.target.value)} className="w-36" />
+          <Input id="cal-to" type="date" value={to} onChange={(e) => setTo(e.target.value)} className="w-full min-w-0 sm:w-40" />
+          </div>
         </div>
       </div>
       {rangeActive && (
@@ -192,7 +203,7 @@ export function InstanceAvailabilityTable({ rows, locationFilter }: Props) {
           {groups.map(([product, list]) => (
             <section key={product}>
               <div className="mb-2 flex flex-wrap items-baseline gap-x-2">
-                <h3 className="font-semibold">{product}</h3>
+                <h3 className="font-semibold break-words min-w-0">{product}</h3>
                 <span className={cn("text-sm font-medium", freeCount(list) > 0 ? "text-green-700" : "text-orange-600")}>
                   {nextFreeLabel(list)}
                 </span>

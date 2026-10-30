@@ -237,6 +237,10 @@ export function earliestFreeFrom(list: Array<{ allocations: AllocationRange[] }>
 }
 
 /** „Bonn" / „Mülheim an der Ruhr" → Standortschlüssel wie in der Datenbank. */
+export function matchesCalendarLocation(raw: string | null | undefined, filter: string): boolean {
+  return filter === "all" || normalizeLoc(raw) === normalizeLoc(filter);
+}
+
 export function normalizeLoc(raw: string | null | undefined): string | null {
   const v = (raw ?? "").trim().toLowerCase();
   if (!v) return null;
