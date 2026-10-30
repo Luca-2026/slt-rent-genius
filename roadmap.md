@@ -1,4 +1,5 @@
 # Roadmap – Paket 4 (Angebots-PDF & E-Mail)
+- [ ] Bonn: Öffnungszeiten Mo–Do 07:00–16:30, Fr 07:00–18:00, Samstag geschlossen an allen Website-Stellen, Übersetzungen und Suchmaschinenangaben korrigieren und prüfen.
 - [x] Bonitätsprüfung: automatische Firmensuche mit bestätigter Kundenzuordnung; Prüfbutton an Geschäftskunden und „Speichern & Kreditlimit prüfen“ bei Anlage. Firmensuche und direkter Prüfbutton mit Luca angemeldet geprüft, Mobil ohne Überlauf, 14 Tests erfolgreich; CreditSafe-Abruf bis Zugangsdaten bewusst deaktiviert.
 - [x] Kundenübersicht: vergebenes Kreditlimit getrennt von Empfehlung; Bonitätsprüfung unter Kunden nur für aktive Niederlassungsleitung/Admin, unveränderlicher manueller Prüfverlauf optional der Geschäftskundenkartei zugeordnet. Luca-Test gespeichert und aus Kundenübersicht zurückgelesen, Desktop/Mobil ohne Überlauf, 13 Tests bestanden. Testwerte ausdrücklich markiert; keine CreditSafe-Abfrage oder Kreditvergabe ausgelöst. Andere Mitarbeiterrollen nicht live angemeldet getestet.
 - [x] Direkter B2B-Portal-Filter: angemeldet mit Luca 120 Geschäftskunden / 67 Portalkunden, erneutes Laden und Mobilansicht geprüft; 6 Tests erfolgreich.
