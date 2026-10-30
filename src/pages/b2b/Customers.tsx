@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SEGMENT_FILTER_OPTIONS, SEGMENT_LABELS, matchesSegment, matchesPortalRegistration, parseSegmentFilter, segmentOf, type SegmentFilter } from "@/lib/customerSegment";
@@ -21,6 +21,7 @@ import { Plus, Pencil, Trash2, Mail, Phone, MapPin, CreditCard, CalendarDays, Bu
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { toast } from "sonner";
 import { ACTION_FILTER_OPTIONS, needsAction, parseActionFilter, registrationDate, type ActionFilter, type PortalProfileLite } from "@/lib/customerActions";
+import { canManageCreditChecks } from "@/lib/creditAssessment";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Row = any;
@@ -28,7 +29,9 @@ type Row = any;
 const euro = (n: number) => n.toLocaleString("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
 
 export default function Customers() {
-  const { isStaff, isAdmin, isBranchManager, loading: accessLoading } = useStaffAccess();
+  const { isStaff, isAdmin, isBranchManager, staffProfile, loading: accessLoading } = useStaffAccess();
+  const navigate = useNavigate();
+  const canCheckCredit = canManageCreditChecks(isAdmin, isBranchManager, Boolean(staffProfile));
   const { rows, loading, save, remove, reload } = useCrmCustomers();
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<CrmCustomer | null>(null);
@@ -281,6 +284,7 @@ export default function Customers() {
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2 shrink-0" onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
+                    {canCheckCredit && segmentOf(c) !== "private" && <Button size="sm" variant="outline" onClick={() => navigate(`/b2b/bonitaetspruefung?kunde=${c.id}`)}><CreditCard className="h-3.5 w-3.5 mr-1" /> Kreditlimit prüfen · CreditSafe</Button>}
                     {p && isBranchManager && !isAdmin && needsAction(p, "kreditlimit") && (
                       <>
                         <GrantCreditLimitButton profileId={p.id} companyName={p.company_name || crmCustomerLabel(c)} onDone={loadPortal} />
@@ -313,6 +317,7 @@ export default function Customers() {
         onSave={save}
         allowPortal={isAdmin || isBranchManager}
         onSaved={() => { void reload(); }}
+        onCheckCredit={canCheckCredit ? (id) => navigate(`/b2b/bonitaetspruefung?kunde=${id}`) : undefined}
         onPortalCreated={async (id) => { await loadPortal(); await reload(); setOnboardingId(id); }}
       />
 

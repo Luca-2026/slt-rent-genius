@@ -19,6 +19,7 @@ interface Props {
   /** Admin: beim Anlegen optional Portalzugang (Login) für Firmenkunden einrichten. */
   allowPortal?: boolean;
   onPortalCreated?: (id: string) => void;
+  onCheckCredit?: (id: string) => void;
 }
 
 const empty: CrmCustomerInput = {
@@ -38,7 +39,7 @@ const empty: CrmCustomerInput = {
   notes: "",
 };
 
-export function CustomerFormDialog({ open, onOpenChange, customer, onSave, onSaved, allowPortal, onPortalCreated }: Props) {
+export function CustomerFormDialog({ open, onOpenChange, customer, onSave, onSaved, allowPortal, onPortalCreated, onCheckCredit }: Props) {
   const [form, setForm] = useState<CrmCustomerInput>(empty);
   const [busy, setBusy] = useState(false);
   const [portal, setPortal] = useState(false);
@@ -55,7 +56,7 @@ export function CustomerFormDialog({ open, onOpenChange, customer, onSave, onSav
 
   const withPortal = Boolean(allowPortal && !customer?.b2b_profile_id && portal);
 
-  const submitPortal = async () => {
+  const submitPortal = async (checkCredit = false) => {
     const t = (v: string | null | undefined) => (v ?? "").trim();
     const missing = [
       !t(form.company_name) && "Firma",
@@ -87,7 +88,7 @@ export function CustomerFormDialog({ open, onOpenChange, customer, onSave, onSav
       if(data?.warning) toast.warning(data.warning); else toast.success("B2B-Profil angelegt. Einladung zur E-Mail-Bestätigung versendet.");
       onOpenChange(false);
       onSaved?.(id);
-      onPortalCreated?.(id);
+      if (checkCredit) onCheckCredit?.(id); else onPortalCreated?.(id);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Anlegen fehlgeschlagen.");
     } finally {
@@ -98,8 +99,8 @@ export function CustomerFormDialog({ open, onOpenChange, customer, onSave, onSav
   const set = (key: keyof CrmCustomerInput, value: string) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
-  const submit = async () => {
-    if (withPortal) return submitPortal();
+  const submit = async (checkCredit = false) => {
+    if (withPortal) return submitPortal(checkCredit);
     const hasName = form.company_name?.trim() || form.last_name?.trim();
     if (!hasName) {
       toast.error("Bitte Firma oder Nachname angeben.");
@@ -118,6 +119,7 @@ export function CustomerFormDialog({ open, onOpenChange, customer, onSave, onSav
       toast.success(customer ? "Kunde aktualisiert." : "Kunde gespeichert.");
       onOpenChange(false);
       onSaved?.(id);
+      if (checkCredit) onCheckCredit?.(id);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Speichern fehlgeschlagen.");
     } finally {
@@ -218,7 +220,8 @@ export function CustomerFormDialog({ open, onOpenChange, customer, onSave, onSav
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={busy}>Abbrechen</Button>
-          <Button onClick={submit} disabled={busy}>{busy ? "Speichert …" : withPortal ? "Kunde mit Portalzugang anlegen" : "Speichern"}</Button>
+          {onCheckCredit && (form.customer_kind === "business" || form.customer_kind === "b2b") && <Button variant="outline" onClick={() => submit(true)} disabled={busy}>Speichern & Kreditlimit prüfen</Button>}
+          <Button onClick={() => submit()} disabled={busy}>{busy ? "Speichert …" : withPortal ? "Kunde mit Portalzugang anlegen" : "Speichern"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
