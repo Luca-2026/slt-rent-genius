@@ -645,6 +645,13 @@
       "when": 1793328378647,
       "tag": "0091_customer_credit_assessments",
       "breakpoints": true
+    },
+    {
+      "idx": 92,
+      "version": "7",
+      "when": 1793363747393,
+      "tag": "0092_migration",
+      "breakpoints": true
     }
   ]
 }
