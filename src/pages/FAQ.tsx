@@ -78,7 +78,7 @@ const faqCategories: FAQCategory[] = [
       },
       {
         q: "Welche Öffnungszeiten haben die Standorte?",
-        a: "Krefeld: Mo–Fr 08:00–18:00 Uhr, Sa 10:00–14:30 Uhr (samstags früher nach vorheriger Buchung möglich), So geschlossen. Bonn: Mo–Fr 07:00–18:00 Uhr, Sa 08:00–17:30 Uhr, So geschlossen. Mülheim an der Ruhr: Online-Buchung 24/7, Abholung nach Vereinbarung.",
+        a: "Krefeld: Mo–Fr 08:00–18:00 Uhr, Sa 10:00–14:30 Uhr (samstags früher nach vorheriger Buchung möglich), So geschlossen. Bonn: Mo–Do 07:00–16:30 Uhr, Fr 07:00–18:00 Uhr, Sa geschlossen, So geschlossen. Mülheim an der Ruhr: Online-Buchung 24/7, Abholung nach Vereinbarung.",
       },
       {
         q: "Bietet ihr Lieferung an?",
