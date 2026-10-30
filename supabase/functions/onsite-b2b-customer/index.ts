@@ -61,8 +61,11 @@ Deno.serve(async req => {
     const {data:passwordSet}=await service.rpc('onsite_b2b_password_set',{_user:p.user_id});
     if(b.action==='info' || b.action==='create') {
       const signed=async (value:string|null) => {
-        if(!value?.startsWith('private:')) return null;
-        const {data,error}=await service.storage.from('b2b-documents').createSignedUrl(value.slice(8),300);
+        if(!value) return null;
+        const marker='/b2b-documents/';
+        const path=value.startsWith('private:')?value.slice(8):value.includes(marker)?decodeURIComponent(value.split(marker)[1].split('?')[0]):null;
+        if(!path) return null;
+        const {data,error}=await service.storage.from('b2b-documents').createSignedUrl(path,300);
         if(error) throw new Error('Dokument konnte nicht geöffnet werden');
         return data.signedUrl;
       };
