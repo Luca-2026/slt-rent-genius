@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { segmentOf, matchesSegment, parseSegmentFilter } from "@/lib/customerSegment";
+import { segmentOf, matchesSegment, matchesPortalRegistration, parseSegmentFilter } from "@/lib/customerSegment";
 
 describe("customerSegment", () => {
   it("erkennt Portalkunden an Quelle oder Profil", () => {
@@ -22,5 +22,14 @@ describe("customerSegment", () => {
     expect(parseSegmentFilter("portal")).toBe("business");
     expect(parseSegmentFilter("quatsch")).toBe("all");
     expect(parseSegmentFilter(null)).toBe("all");
+  });
+  it("zeigt im Portalfilter ausschließlich Kunden mit verknüpftem B2B-Profil", () => {
+    expect(matchesPortalRegistration({ b2b_profile_id: "profil-1" }, true)).toBe(true);
+    expect(matchesPortalRegistration({ b2b_profile_id: null }, true)).toBe(false);
+    expect(matchesPortalRegistration({}, true)).toBe(false);
+  });
+  it("schränkt ohne Portalfilter die normalen Geschäftskunden nicht ein", () => {
+    expect(matchesPortalRegistration({ b2b_profile_id: null }, false)).toBe(true);
+    expect(matchesPortalRegistration({ b2b_profile_id: "profil-1" }, false)).toBe(true);
   });
 });
