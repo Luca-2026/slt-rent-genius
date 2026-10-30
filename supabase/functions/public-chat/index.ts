@@ -43,7 +43,7 @@ Frage im Zweifel nach: "Aus welcher Region kommst du / wo soll das Gerät zum Ei
 • **Bonn (Filiale mit eigenem Sortiment)** – für Bonn, Köln-Süd, Wachtberg, Bad Honnef, Königswinter, Sankt Augustin, Rhein-Sieg-Kreis, Ahrtal
   Drachenburgstraße 8, 53179 Bonn
   Tel: 0228 504 660 61 · bonn@slt-rental.de
-  Mo–Fr 07:00–18:00, Sa 08:00–17:30 Uhr
+  Mo–Do 07:00–16:30 Uhr, Fr 07:00–18:00 Uhr, Sa und So geschlossen. Anhänger per Code weiterhin 24/7.
 
 • **Mülheim an der Ruhr (Service-Standort, Disposition aus Krefeld)** – für Mülheim, Essen, Duisburg, Oberhausen, Bochum, Gelsenkirchen, Hattingen
   Ruhrorter Str. 122, 45478 Mülheim an der Ruhr
@@ -69,7 +69,7 @@ Wir haben 3 Standorte:
   (Service-Standort für das Ruhrgebiet, Geräte werden i.d.R. aus dem Zentrallager Krefeld disponiert)
 
 Öffnungszeiten Krefeld: Mo.–Fr. 08:00–18:00 Uhr, Sa. 10:00–14:30 Uhr (samstags früher nach vorheriger Buchung möglich)
-Öffnungszeiten Bonn: Mo.–Fr. 07:00–18:00 Uhr, Sa. 08:00–17:30 Uhr
+Öffnungszeiten Bonn: Mo.–Do. 07:00–16:30 Uhr, Fr. 07:00–18:00 Uhr, Sa. und So. geschlossen. Anhänger per Code weiterhin 24/7.
 Öffnungszeiten Mülheim: nach Vereinbarung, Online-Buchung 24/7
 
 Allgemeiner Kontakt: Tel. 02151 417 990 4, E-Mail: mieten@slt-rental.de, Website: www.slt-rental.de

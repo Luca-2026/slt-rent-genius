@@ -42,7 +42,7 @@ const LOCATIONS: Record<LocationKey, LocationConfig> = {
     address: "Drachenburgstraße 8, 53179 Bonn",
     phoneDisplay: "+49 228 504 660 61",
     phoneTel: "+4922850466061",
-    hours: "Mo.–Fr. 07:00–18:00 Uhr\nSa. 08:00–17:30 Uhr\nSo. geschlossen",
+    hours: "Mo.–Do. 07:00–16:30 Uhr\nFr. 07:00–18:00 Uhr\nSa. geschlossen\nSo. geschlossen",
     managerName: "Ihr SLT-Team Bonn",
   },
 };
