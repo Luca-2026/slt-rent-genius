@@ -285,12 +285,7 @@ function buildProductSpecsBlock(route) {
     : p.pricePerMonth
       ? (p.priceUnitLabel || "pro Monat")
       : "pro Wochenende";
-  const priceMatch = priceSource?.match(/\d[\d.]*([,.]\d+)?/);
-  const gross = priceMatch ? Number(priceMatch[0].replace(/\./g, "").replace(",", ".")) : null;
-  const net = gross && Number.isFinite(gross)
-    ? new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 2 }).format(gross / 1.19)
-    : null;
-  parts.push(`<section data-prerender-price-availability style="margin:24px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">Preis und Verfügbarkeit</h2><p style="margin:0 0 8px;font-weight:700;">${priceSource ? `${escapeHtml(priceSource)} ${escapeHtml(priceUnit)}${net ? ` – brutto inkl. 19 % USt. (${escapeHtml(net)} netto)` : ""}` : "Preis auf Anfrage"}</p>${p.availabilityText ? `<p style="margin:0 0 8px;">${escapeHtml(p.availabilityText)}</p>` : ""}${p.bookingHint ? `<p style="margin:0;">${escapeHtml(p.bookingHint)}</p>` : ""}</section>`);
+  parts.push(`<section data-prerender-price-availability style="margin:24px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">Preis und Verfügbarkeit</h2><p style="margin:0 0 8px;font-weight:700;">${priceSource ? `${escapeHtml(p.seoGrossPrice || priceSource)} ${escapeHtml(priceUnit)} – ${p.seoGrossPrice ? "brutto inkl. 19 % USt." : "netto zzgl. 19 % USt."}` : "Preis auf Anfrage"}</p>${p.availabilityText ? `<p style="margin:0 0 8px;">${escapeHtml(p.availabilityText)}</p>` : ""}${p.bookingHint ? `<p style="margin:0;">${escapeHtml(p.bookingHint)}</p>` : ""}</section>`);
 
   if (p.specifications && Object.keys(p.specifications).length) {
     const rows = Object.entries(p.specifications)

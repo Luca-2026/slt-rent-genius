@@ -206,7 +206,7 @@ export default function GlasfaserMaschinen() {
               Maschinenpakete für den Glasfaserausbau
             </p>
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 max-w-4xl">
-              Baumaschinen für den Glasfaserausbau in NRW mieten
+              Baumaschinen für den Glasfaserausbau mieten
             </h1>
             <p className="text-primary-foreground/85 max-w-3xl text-sm md:text-base lg:text-lg leading-relaxed mb-6">
               Minibagger, Radlader, Rüttelplatten, Stampfer, Fugenschneider und das komplette Absperrmaterial – aus einer Hand, kurzfristig verfügbar, mit gestaffelten Wochen- und Monatspaketen für Glasfaser-Trupps und Tiefbau-Generalunternehmer in <strong>Krefeld, Bonn und Mülheim an der Ruhr</strong>.

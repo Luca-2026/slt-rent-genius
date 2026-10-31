@@ -139,7 +139,7 @@ export default function HochzeitTechnik() {
                 <Heart className="h-3.5 w-3.5" /> Eure Hochzeit – clever geplant
               </div>
               <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-5 text-white">
-                Hochzeit Technik mieten in Bonn, Krefeld &amp; Mülheim
+                Hochzeitstechnik mieten
               </h1>
               <p className="text-base md:text-lg text-white/90 mb-6 leading-relaxed">
                 DJ-Beschallung von D.A.S. Audio, Effektlicht, Sparkular-Kaltfunken,

@@ -30,6 +30,7 @@ import { orderSpecs } from "../src/lib/specOrder";
 import { PRODUCT_SUBCATEGORIES } from "../src/data/productSubcategories";
 import { seoPublicImage } from "../src/lib/seoPublicImage";
 import { seoTopicRoutes } from "../src/data/seoTopicRoutes";
+import { displayPrice } from "../src/lib/priceDisplay";
 
 const distDir = resolve(process.env.SEO_OUTPUT_DIR || resolve(process.cwd(), "dist"));
 if (!existsSync(distDir)) mkdirSync(distDir, { recursive: true });
@@ -501,6 +502,7 @@ const enriched = allRoutes.map((route) => {
         longName: route.productData.longName,
         specifications: route.productData.specifications,
         pricePerDay: route.productData.pricePerDay,
+        seoGrossPrice: displayPrice(route.productData.pricePerDay || route.productData.pricePerMonth || route.productData.priceWeekend, "private"),
         pricePerMonth: route.productData.pricePerMonth,
         priceWeekend: route.productData.priceWeekend,
         priceUnitLabel: route.productData.priceUnitLabel,
