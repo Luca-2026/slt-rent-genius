@@ -561,6 +561,13 @@ writeFileSync(outPath, JSON.stringify(payload), "utf-8");
 
 // Legacy-301-Mappings (Alt-URLs → konkrete Produkt-/Kategorieseiten)
 const legacyRules = buildLegacyRedirectRules();
+for (const old of ALL_ROUTES) {
+  if (old.routeType !== "product" || !old.productData) continue;
+  const current = managedProducts.find(m => m.slug === old.productData?.id && m.available_locations.includes(old.productData.locationId));
+  if (!current) continue;
+  const target = `/mieten/${old.productData.locationId}/${current.category}/${current.slug}`;
+  if (target !== old.path) legacyRules.unshift({ from: old.path, to: `${target}/`, kind: "product" });
+}
 const legacyFrom = new Set(legacyRules.map((r) => r.from));
 
 // Zusätzlich: alle Alt-URLs aus der GSC-404-Liste, die bisher nur pauschal auf
