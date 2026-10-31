@@ -1,4 +1,5 @@
 import { seoRentalOffer } from "@/lib/seoProductOffer";
+import { isAccessoryItem } from "@/data/categoryModel";
 import { Navigate, useParams, Link, useNavigate } from "react-router-dom";
 import { categoryContent as seoCategoryContent } from "@/components/rental/ProductSEOContent";
 import { getProductSEO, productSEOData } from "@/data/productSEOData";
