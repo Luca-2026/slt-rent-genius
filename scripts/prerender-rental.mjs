@@ -14,7 +14,7 @@ import { resolve, join, dirname } from "node:path";
 import { stripRouteHead } from "./seoHead.mjs";
 
 const ROOT = process.cwd();
-const DIST = resolve(ROOT, "dist");
+const DIST = resolve(process.env.SEO_OUTPUT_DIR || resolve(ROOT, "dist"));
 const ROUTES_JSON = resolve(DIST, ".prerender-routes.json");
 const TEMPLATE_HTML = resolve(DIST, "index.html");
 const BASE_URL = "https://www.slt-rental.de";
@@ -511,7 +511,7 @@ function injectIntoTemplate(html, headBlock, heroBlock) {
 function pathToFile(routePath) {
   if (routePath === "/") return join(DIST, "index.html");
   // Strip leading slash, treat as directory + index.html
-  const clean = routePath.replace(/^\/+/, "").replace(/\/+$/, "");
+  const clean = routePath.replace(/^\/+/, "").replace(/\/+$/, "").split("/").map(segment => encodeURIComponent(decodeURIComponent(segment))).join("/");
   return join(DIST, clean, "index.html");
 }
 

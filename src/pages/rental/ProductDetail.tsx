@@ -1,3 +1,4 @@
+import { seoPublicImage } from "@/lib/seoPublicImage";
 import { seoRentalOffer } from "@/lib/seoProductOffer";
 import { isAccessoryItem } from "@/data/categoryModel";
 import { Navigate, useParams, Link, useNavigate } from "react-router-dom";
@@ -352,11 +353,12 @@ export default function ProductDetail() {
         "og:url": canonicalUrl,
         "og:site_name": "SLT Rental",
       };
-      const ogImageUrl = images.length > 0
+      const ogImageUrlRaw = images.length > 0
         ? (images[0].startsWith("http")
             ? images[0]
             : `https://www.slt-rental.de${images[0].startsWith("/") ? "" : "/"}${images[0]}`)
         : "https://www.slt-rental.de/images/og/default-slt-rental.png";
+      const ogImageUrl = seoPublicImage(ogImageUrlRaw) ?? ogImageUrlRaw;
       ogTags["og:image"] = ogImageUrl;
       ogTags["og:image:alt"] = `${genericName} mieten in ${cityName} – SLT Rental`;
       ogTags["og:locale"] = "de_DE";
@@ -396,7 +398,7 @@ export default function ProductDetail() {
         "@type": "Product",
         "name": product.modelName ? `${product.name} ${product.modelName}` : product.name,
         "description": localizeText(product.description || ""),
-        "image": images.length > 0 ? (images[0].startsWith("http") ? images[0] : `https://www.slt-rental.de${images[0].startsWith("/") ? "" : "/"}${images[0]}`) : undefined,
+        "image": images.length > 0 ? ogImageUrl : undefined,
         "url": canonicalUrl,
         "category": category.title,
         "sku": product.id,

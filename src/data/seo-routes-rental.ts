@@ -1205,7 +1205,7 @@ const RATGEBER_ROUTES: SeoRoute[] = (blogArticles as BlogArticle[]).map((a) => (
 // ---------------------------------------------------------------
 
 const KARRIERE_VALID_DAYS = 90;
-const KARRIERE_OG_IMAGE = `${BASE_URL}/images/og/karriere-slt-rental.png`;
+const KARRIERE_OG_IMAGE = `${BASE_URL}/images/og/default-slt-rental.png`;
 
 function buildJobPostingJsonLd(job: typeof jobListings[number], absUrl: string) {
   const datePosted = job.datePosted ?? new Date().toISOString().slice(0, 10);
