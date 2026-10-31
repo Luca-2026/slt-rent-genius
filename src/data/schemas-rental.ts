@@ -1,4 +1,5 @@
 import { seoRentalOffer } from "../lib/seoProductOffer";
+import { seoPath } from "../lib/seoUrl";
 // Sprint 5 – Schema-Builder for Build-Time-Prerender
 // ---------------------------------------------------------------
 // Pure data functions that emit JSON-LD blocks per route type.
@@ -174,7 +175,7 @@ function abs(path: string): string {
   if (/^https?:/i.test(path)) return path;
   const [pure, hash] = path.split("#");
   const withSlash = pure.endsWith("/") || /\.[a-zA-Z0-9]+$/.test(pure) ? pure : `${pure}/`;
-  return `${BASE_URL}${withSlash}${hash ? `#${hash}` : ""}`;
+  return `${BASE_URL}${seoPath(withSlash)}${hash ? `#${hash}` : ""}`;
 }
 
 function breadcrumbList(items: Array<{ name: string; path: string }>): JsonLd {

@@ -1,6 +1,7 @@
 import { seoPublicImage } from "@/lib/seoPublicImage";
 import { seoRentalOffer } from "@/lib/seoProductOffer";
 import { isAccessoryItem } from "@/data/categoryModel";
+import { seoPath } from "@/lib/seoUrl";
 import { Navigate, useParams, Link, useNavigate } from "react-router-dom";
 import { categoryContent as seoCategoryContent } from "@/components/rental/ProductSEOContent";
 import { getProductSEO, productSEOData } from "@/data/productSEOData";
@@ -334,7 +335,7 @@ export default function ProductDetail() {
       // (Etappe 5b.2) primaryKeywords/<meta name="keywords"> entfernt – von Google ignoriert.
 
       // SEO: Canonical URL
-      const canonicalUrl = `https://www.slt-rental.de/mieten/${location.id}/${categoryId}/${product.id}/`;
+      const canonicalUrl = `https://www.slt-rental.de${seoPath(`/mieten/${location.id}/${categoryId}/${product.id}/`)}`;
       let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
       if (canonicalLink) {
         canonicalLink.href = canonicalUrl;

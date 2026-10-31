@@ -385,6 +385,8 @@ for (const route of allRoutes) {
   const entries = allRoutes.filter(r => r.routeType === "product" && r.productData?.category === c.category && r.productData.locationId === c.locationId);
   c.productSummaries = entries.map(r => ({ id: r.productData?.id ?? "", name: r.productData?.name ?? r.h1, path: r.path }));
   c.productCount = entries.length;
+  route.description = route.description.replace(/\d+ Geräte?/g, `${entries.length} Geräte`).replace(/verfügbar – .*$/, "im Mietkatalog.");
+  route.intro = route.intro.map(text => text.replace(/\d+ Geräte?/g, `${entries.length} Geräte`).replace(/sofort wählbar/g, "im Mietkatalog"));
 }
 
 // Duplicate-Title-Dedupe: Verschiedene Produkte mit identischem generischen Namen
