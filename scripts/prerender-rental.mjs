@@ -456,6 +456,7 @@ function buildHeadBlock(route, globalSchemas) {
   const robots = route.noindex ? "noindex, follow" : "index, follow, max-image-preview:large";
 
   const lines = [
+    `<title data-rh="true">${escapeHtml(titleFull)}</title>`,
     `<meta name="description" content="${escapeAttr(route.description)}">`,
     `<meta name="robots" content="${robots}">`,
     `<link rel="canonical" href="${escapeAttr(canonical)}">`,
@@ -493,7 +494,8 @@ function injectIntoTemplate(html, headBlock, heroBlock) {
     "",
   );
 
-  const headInsert = `<!-- prerender:head:start -->\n    ${headBlock}\n    ${PRERENDER_MARKER}\n    <!-- prerender:head:end -->`;
+  const managedHead = headBlock.replace(/<(meta|link|script)\b/g, '<$1 data-rh="true"');
+  const headInsert = `<!-- prerender:head:start -->\n    ${managedHead}\n    ${PRERENDER_MARKER}\n    <!-- prerender:head:end -->`;
   out = out.replace(/<\/head>/i, `${headInsert}\n  </head>`);
 
   // Insert hero INSIDE #root so React's createRoot() replaces it on hydration.
