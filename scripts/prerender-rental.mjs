@@ -11,9 +11,10 @@
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { resolve, join, dirname } from "node:path";
+import { stripRouteHead } from "./seoHead.mjs";
 
 const ROOT = process.cwd();
-const DIST = resolve(ROOT, "dist");
+const DIST = resolve(process.env.SEO_OUTPUT_DIR || resolve(ROOT, "dist"));
 const ROUTES_JSON = resolve(DIST, ".prerender-routes.json");
 const TEMPLATE_HTML = resolve(DIST, "index.html");
 const BASE_URL = "https://www.slt-rental.de";
@@ -278,18 +279,13 @@ function buildProductSpecsBlock(route) {
     );
   }
 
-  const priceSource = p.pricePerDay || p.pricePerMonth || p.priceWeekend;
-  const priceUnit = p.pricePerDay
+  const priceSource = p.seoPriceSource || p.pricePerDay || p.pricePerMonth || p.priceWeekend;
+  const priceUnit = p.seoPriceSource ? "pro Miettag" : p.pricePerDay
     ? (p.priceUnitLabel || "pro Tag")
     : p.pricePerMonth
       ? (p.priceUnitLabel || "pro Monat")
       : "pro Wochenende";
-  const priceMatch = priceSource?.match(/\d[\d.]*([,.]\d+)?/);
-  const gross = priceMatch ? Number(priceMatch[0].replace(/\./g, "").replace(",", ".")) : null;
-  const net = gross && Number.isFinite(gross)
-    ? new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 2 }).format(gross / 1.19)
-    : null;
-  parts.push(`<section data-prerender-price-availability style="margin:24px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">Preis und Verfügbarkeit</h2><p style="margin:0 0 8px;font-weight:700;">${priceSource ? `${escapeHtml(priceSource)} ${escapeHtml(priceUnit)}${net ? ` – brutto inkl. 19 % USt. (${escapeHtml(net)} netto)` : ""}` : "Preis auf Anfrage"}</p>${p.availabilityText ? `<p style="margin:0 0 8px;">${escapeHtml(p.availabilityText)}</p>` : ""}${p.bookingHint ? `<p style="margin:0;">${escapeHtml(p.bookingHint)}</p>` : ""}</section>`);
+  parts.push(`<section data-prerender-price-availability style="margin:24px 0;"><h2 style="font-size:22px;color:#00507d;margin:0 0 12px;font-weight:600;">Preis und Verfügbarkeit</h2><p style="margin:0 0 8px;font-weight:700;">${priceSource ? `${escapeHtml(p.seoGrossPrice || priceSource)} ${escapeHtml(priceUnit)} – ${p.seoGrossPrice ? "brutto inkl. 19 % USt." : "netto zzgl. 19 % USt."}` : "Preis auf Anfrage"}</p>${p.availabilityText ? `<p style="margin:0 0 8px;">${escapeHtml(p.availabilityText)}</p>` : ""}${p.bookingHint ? `<p style="margin:0;">${escapeHtml(p.bookingHint)}</p>` : ""}</section>`);
 
   if (p.specifications && Object.keys(p.specifications).length) {
     const rows = Object.entries(p.specifications)
@@ -443,7 +439,8 @@ function withTrailingSlash(path) {
   if (!path || path === "/") return "/";
   const [pathOnly, query] = path.split("?");
   if (/\.[a-zA-Z0-9]{2,5}$/.test(pathOnly)) return path;
-  const normalized = pathOnly.endsWith("/") ? pathOnly : `${pathOnly}/`;
+  const encodedPath = pathOnly.split('/').map(segment => encodeURIComponent(decodeURIComponent(segment))).join('/');
+  const normalized = encodedPath.endsWith("/") ? encodedPath : `${encodedPath}/`;
   return query ? `${normalized}?${query}` : normalized;
 }
 
@@ -455,7 +452,7 @@ function buildHeadBlock(route, globalSchemas) {
   const robots = route.noindex ? "noindex, follow" : "index, follow, max-image-preview:large";
 
   const lines = [
-    `<title>${escapeHtml(titleFull)}</title>`,
+    `<title data-rh="true">${escapeHtml(titleFull)}</title>`,
     `<meta name="description" content="${escapeAttr(route.description)}">`,
     `<meta name="robots" content="${robots}">`,
     `<link rel="canonical" href="${escapeAttr(canonical)}">`,
@@ -480,7 +477,7 @@ function buildHeadBlock(route, globalSchemas) {
 }
 
 function injectIntoTemplate(html, headBlock, heroBlock) {
-  let out = html;
+  let out = stripRouteHead(html);
 
   // Inject head block before </head>.
   // Strip any prior prerender block first (for resume / re-runs).
@@ -493,7 +490,8 @@ function injectIntoTemplate(html, headBlock, heroBlock) {
     "",
   );
 
-  const headInsert = `<!-- prerender:head:start -->\n    ${headBlock}\n    ${PRERENDER_MARKER}\n    <!-- prerender:head:end -->`;
+  const managedHead = headBlock.replace(/<(meta|link|script)\b/g, '<$1 data-rh="true"');
+  const headInsert = `<!-- prerender:head:start -->\n    ${managedHead}\n    ${PRERENDER_MARKER}\n    <!-- prerender:head:end -->`;
   out = out.replace(/<\/head>/i, `${headInsert}\n  </head>`);
 
   // Insert hero INSIDE #root so React's createRoot() replaces it on hydration.
@@ -509,7 +507,7 @@ function injectIntoTemplate(html, headBlock, heroBlock) {
 function pathToFile(routePath) {
   if (routePath === "/") return join(DIST, "index.html");
   // Strip leading slash, treat as directory + index.html
-  const clean = routePath.replace(/^\/+/, "").replace(/\/+$/, "");
+  const clean = routePath.replace(/^\/+/, "").replace(/\/+$/, "").split("/").map(segment => encodeURIComponent(decodeURIComponent(segment))).join("/");
   return join(DIST, clean, "index.html");
 }
 

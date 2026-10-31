@@ -1,3 +1,7 @@
+import { seoPublicImage } from "@/lib/seoPublicImage";
+import { seoRentalOffer } from "@/lib/seoProductOffer";
+import { isAccessoryItem } from "@/data/categoryModel";
+import { seoPath } from "@/lib/seoUrl";
 import { Navigate, useParams, Link, useNavigate } from "react-router-dom";
 import { categoryContent as seoCategoryContent } from "@/components/rental/ProductSEOContent";
 import { getProductSEO, productSEOData } from "@/data/productSEOData";
@@ -122,7 +126,7 @@ export default function ProductDetail() {
       const { data, error } = await supabase
         .from("public_product_prices" as never)
         .select("*")
-        .eq("managed_product_id", rawProduct!.managedId as never);
+        .eq("managed_product_id", rawProduct?.managedId as never);
       if (error) throw error;
       return (data as unknown as LocationPriceRow[]) ?? [];
     },
@@ -290,7 +294,11 @@ export default function ProductDetail() {
         return `${cleanName}${locationTail}${titleSuffix}`;
       };
       let seoTitle = fitTitle(localizedSeoTitle || titleBase);
+      for (const stale of Array.from(document.head.querySelectorAll('title')).slice(1)) stale.remove();
       document.title = seoTitle;
+      let robots = document.head.querySelector('meta[name="robots"]');
+      if (!robots) { robots = document.createElement('meta'); robots.setAttribute('name', 'robots'); document.head.appendChild(robots); }
+      robots.setAttribute('content', isAccessoryItem(product) ? 'noindex, follow' : 'index, follow, max-image-preview:large');
 
       // SEO: Meta description - CMS override wins, else generated
       const modelInfo = product.modelName ? ` ${product.modelName}` : '';
@@ -327,7 +335,7 @@ export default function ProductDetail() {
       // (Etappe 5b.2) primaryKeywords/<meta name="keywords"> entfernt – von Google ignoriert.
 
       // SEO: Canonical URL
-      const canonicalUrl = `https://www.slt-rental.de/mieten/${location.id}/${categoryId}/${product.id}/`;
+      const canonicalUrl = `https://www.slt-rental.de${seoPath(`/mieten/${location.id}/${categoryId}/${product.id}/`)}`;
       let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
       if (canonicalLink) {
         canonicalLink.href = canonicalUrl;
@@ -346,11 +354,12 @@ export default function ProductDetail() {
         "og:url": canonicalUrl,
         "og:site_name": "SLT Rental",
       };
-      const ogImageUrl = images.length > 0
+      const ogImageUrlRaw = images.length > 0
         ? (images[0].startsWith("http")
             ? images[0]
             : `https://www.slt-rental.de${images[0].startsWith("/") ? "" : "/"}${images[0]}`)
         : "https://www.slt-rental.de/images/og/default-slt-rental.png";
+      const ogImageUrl = seoPublicImage(ogImageUrlRaw) ?? ogImageUrlRaw;
       ogTags["og:image"] = ogImageUrl;
       ogTags["og:image:alt"] = `${genericName} mieten in ${cityName} – SLT Rental`;
       ogTags["og:locale"] = "de_DE";
@@ -390,99 +399,13 @@ export default function ProductDetail() {
         "@type": "Product",
         "name": product.modelName ? `${product.name} ${product.modelName}` : product.name,
         "description": localizeText(product.description || ""),
-        "image": images.length > 0 ? (images[0].startsWith("http") ? images[0] : `https://www.slt-rental.de${images[0].startsWith("/") ? "" : "/"}${images[0]}`) : undefined,
+        "image": images.length > 0 ? ogImageUrl : undefined,
         "url": canonicalUrl,
         "category": category.title,
         "sku": product.id,
-        ...((() => {
-          // Monthly offer (e.g. Winterdienst-Set) — has priority because it's a concrete price
-          if (product.pricePerMonth) {
-            const netMonth = parseFloat(product.pricePerMonth.replace(/[^\d,.-]/g, "").replace(/\./g, "").replace(",", "."));
-            if (!isFinite(netMonth) || netMonth <= 0) return {};
-            const numeric = netToGross(netMonth); // CMS netto → Google brutto
-            const validUntil = new Date();
-            validUntil.setFullYear(validUntil.getFullYear() + 1);
-            const availability = getProductAvailability(product, location.id, { categoryId });
-            return {
-              offers: {
-                "@type": "Offer",
-                "availability": availability.schemaAvailability,
-                "url": canonicalUrl,
-                "priceCurrency": "EUR",
-                "price": numeric.toFixed(2),
-                "priceValidUntil": validUntil.toISOString().slice(0, 10),
-                "seller": { "@id": `https://www.slt-rental.de/mieten/${location.id}#localbusiness` },
-                "areaServed": { "@type": "City", "name": location.name },
-                "eligibleQuantity": product.minRentalMonths
-                  ? {
-                      "@type": "QuantitativeValue",
-                      "value": product.minRentalMonths,
-                      "unitCode": "MON",
-                    }
-                  : undefined,
-                "priceSpecification": {
-                  "@type": "UnitPriceSpecification",
-                  "price": numeric.toFixed(2),
-                  "priceCurrency": "EUR",
-                  "unitCode": "MON",
-                  "referenceQuantity": {
-                    "@type": "QuantitativeValue",
-                    "value": 1,
-                    "unitCode": "MON",
-                  },
-                  "valueAddedTaxIncluded": true,
-                },
-              },
-            };
-          }
-          const parsedDailyPrice = (() => {
-            if (typeof productSEO?.dailyPriceFrom === "number") return productSEO.dailyPriceFrom as number;
-            if (!product.pricePerDay) return undefined;
-            const n = parseFloat(
-              String(product.pricePerDay).replace(/[^\d,.-]/g, "").replace(/\./g, "").replace(",", "."),
-            );
-            return isFinite(n) && n > 0 ? n : undefined;
-          })();
-          if (typeof parsedDailyPrice === "number") {
-            const priceFrom = netToGross(parsedDailyPrice); // CMS netto → Google brutto
-            const validUntil = new Date();
-            validUntil.setFullYear(validUntil.getFullYear() + 1);
-            const availability = getProductAvailability(product, location.id, { categoryId });
-            return {
-              offers: {
-                "@type": "Offer",
-                "availability": availability.schemaAvailability,
-                ...(availability.deliveryLeadTime
-                  ? {
-                      "deliveryLeadTime": {
-                        "@type": "QuantitativeValue",
-                        "value": 24,
-                        "unitCode": "HUR",
-                      },
-                    }
-                  : {}),
-                "url": canonicalUrl,
-                "priceCurrency": "EUR",
-                "price": priceFrom.toFixed(2),
-                "priceValidUntil": validUntil.toISOString().slice(0, 10),
-                "seller": { "@id": `https://www.slt-rental.de/mieten/${location.id}#localbusiness` },
-                "areaServed": { "@type": "City", "name": location.name },
-                "priceSpecification": {
-                  "@type": "UnitPriceSpecification",
-                  "price": priceFrom.toFixed(2),
-                  "priceCurrency": "EUR",
-                  "unitCode": "DAY",
-                  "referenceQuantity": {
-                    "@type": "QuantitativeValue",
-                    "value": 1,
-                    "unitCode": "DAY",
-                  },
-                },
-              },
-            };
-          }
-          return {};
-        })()),
+        ...(seoRentalOffer({ pricePerMonth: product.pricePerMonth, pricePerDay: product.pricePerDay, dailyNet: product.pricingScheme === "bau" ? product.priceFrom1Rd : undefined, eventBundle: product.pricingScheme === "event" && Boolean(product.priceBase13Cd), url: canonicalUrl, availability: getProductAvailability(product, location.id, { categoryId }).schemaAvailability })
+          ? { offers: seoRentalOffer({ pricePerMonth: product.pricePerMonth, pricePerDay: product.pricePerDay, dailyNet: product.pricingScheme === "bau" ? product.priceFrom1Rd : undefined, eventBundle: product.pricingScheme === "event" && Boolean(product.priceBase13Cd), url: canonicalUrl, availability: getProductAvailability(product, location.id, { categoryId }).schemaAvailability }) }
+          : {}),
 
       };
       // Add brand + model if modelName exists
@@ -497,31 +420,8 @@ export default function ProductDetail() {
         jsonLd["brand"] = { "@type": "Brand", "name": "SLT Rental" };
       }
 
-      // AggregateRating + Review from real Google Reviews snapshot per location
+      // Real location reviews belong only to the location, not every product.
       const locRating = REAL_LOCATION_REVIEWS[locationId];
-      if (locRating) {
-        jsonLd["aggregateRating"] = {
-          "@type": "AggregateRating",
-          "ratingValue": locRating.ratingValue,
-          "reviewCount": locRating.reviewCount,
-          "bestRating": "5",
-          "worstRating": "1",
-        };
-        if (locRating.reviews?.length) {
-          jsonLd["review"] = locRating.reviews.map((r) => ({
-            "@type": "Review",
-            "author": { "@type": "Person", "name": r.author },
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": String(r.rating),
-              "bestRating": "5",
-              "worstRating": "1",
-            },
-            "reviewBody": r.text,
-            "datePublished": r.datePublished,
-          }));
-        }
-      }
 
       const jsonLdArray: Record<string, unknown>[] = [jsonLd];
 

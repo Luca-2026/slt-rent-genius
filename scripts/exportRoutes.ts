@@ -25,9 +25,14 @@ import {
   resolveLegacyProduct,
   resolveLegacyCategory,
 } from "../src/data/legacyRedirects";
-import { isSaleItem } from "../src/data/categoryModel";
+import { isSaleItem, isAccessoryItem, categoryDisplayName } from "../src/data/categoryModel";
+import { orderSpecs } from "../src/lib/specOrder";
+import { PRODUCT_SUBCATEGORIES } from "../src/data/productSubcategories";
+import { seoPublicImage } from "../src/lib/seoPublicImage";
+import { seoTopicRoutes } from "../src/data/seoTopicRoutes";
+import { displayPrice } from "../src/lib/priceDisplay";
 
-const distDir = resolve(process.cwd(), "dist");
+const distDir = resolve(process.env.SEO_OUTPUT_DIR || resolve(process.cwd(), "dist"));
 if (!existsSync(distDir)) mkdirSync(distDir, { recursive: true });
 
 // ---------------------------------------------------------------
@@ -109,30 +114,42 @@ interface ManagedProductRoutePayload {
   seo_meta_description: string | null;
   seo_faqs: Array<{ q?: string; a?: string; question?: string; answer?: string }> | null;
   updated_at?: string | null;
+  specifications?: Record<string, string> | null;
+  spec_order?: string[] | null;
+  subcategory?: string | null;
+  price_per_day?: string | null;
+  price_per_month?: string | null;
+  price_weekend?: string | null;
+  price_unit_label?: string | null;
+  min_rental_months?: number | null;
+  stocked_locations?: string[] | null;
+  rentware_code?: Record<string, string> | null;
+  pricing_scheme?: string | null;
+  price_from_1_rd?: number | null;
+  price_base_1_3_cd?: number | null;
 }
 
 async function fetchManagedProducts(): Promise<ManagedProductRoutePayload[]> {
   const url = process.env.VITE_SUPABASE_URL;
   const key = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
   if (!url || !key) {
-    console.warn("[exportRoutes] No Supabase env – skipping managed-product overrides");
-    return [];
+    throw new Error("[exportRoutes] Authoritative CMS configuration unavailable; export blocked");
   }
   try {
     const endpoint =
       `${url}/rest/v1/managed_products_public` +
-      `?select=slug,name,description,category,available_locations,images,model_name,seo_meta_description,seo_faqs,updated_at`;
+      `?select=*&limit=10000`;
     const res = await fetch(endpoint, {
       headers: { apikey: key, Authorization: `Bearer ${key}` },
     });
     if (!res.ok) {
-      console.warn(`[exportRoutes] managed_products fetch failed: ${res.status}`);
-      return [];
+      throw new Error(`[exportRoutes] Authoritative CMS request failed: ${res.status}`);
     }
-    return (await res.json()) as ManagedProductRoutePayload[];
+    const rows = (await res.json()) as ManagedProductRoutePayload[];
+    if (!Array.isArray(rows) || !rows.length) throw new Error("Authoritative CMS returned no products; export blocked");
+    return rows;
   } catch (err) {
-    console.warn(`[exportRoutes] managed_products fetch error: ${(err as Error).message}`);
-    return [];
+    throw new Error(`[exportRoutes] CMS export blocked: ${(err as Error).message}`);
   }
 }
 
@@ -235,7 +252,7 @@ const [usedMachineRoutes, newMachineRoutes, managedProducts] = await Promise.all
   fetchNewMachineRoutes(),
   fetchManagedProducts(),
 ]);
-const allRoutes: SeoRoute[] = [...ALL_ROUTES, ...usedMachineRoutes, ...newMachineRoutes];
+const allRoutes: SeoRoute[] = [...ALL_ROUTES, ...usedMachineRoutes, ...newMachineRoutes, ...seoTopicRoutes];
 
 // Apply CMS overrides on matching product routes (by path).
 if (managedProducts.length) {
@@ -245,7 +262,7 @@ if (managedProducts.length) {
   let metaOverridden = 0;
   let faqOverridden = 0;
   for (const m of managedProducts) {
-    const image = m.images && m.images.length ? m.images[0] : undefined;
+    const image = seoPublicImage(m.images?.[0]);
     // Normalize FAQ shape: DB uses {q,a}, statisch uses same — accept both.
     const normalizedFaqs = Array.isArray(m.seo_faqs) && m.seo_faqs.length
       ? m.seo_faqs
@@ -257,8 +274,22 @@ if (managedProducts.length) {
       : [];
     for (const loc of m.available_locations || []) {
       const path = `/mieten/${loc}/${m.category}/${m.slug}`;
-      const route = routeByPath.get(path);
-      if (!route) continue;
+      let route = routeByPath.get(path);
+      const previous = allRoutes.find(r => r.routeType === "product" && r.productData?.id === m.slug && r.productData.locationId === loc);
+      if (!route) {
+        route = {
+          path, routeType: "product", title: previous?.title ?? m.name,
+          description: previous?.description ?? m.seo_meta_description ?? m.description ?? m.name,
+          h1: previous?.h1 ?? m.name, intro: [], ogType: "product",
+          productData: { id: m.slug, name: m.name, category: m.category, locationId: loc, hasSEO: Boolean(m.seo_meta_description) },
+          breadcrumbs: [{ name: "Start", path: "/" }, { name: "Mieten", path: "/mieten" }, { name: LOCATION_DISPLAY_FOR_OVERRIDE[loc] ?? loc, path: `/mieten/${loc}` }, { name: categoryDisplayName(m.category), path: `/mieten/${loc}/${m.category}` }, { name: m.name, path }],
+          changefreq: "weekly", priority: 0.7,
+        };
+        allRoutes.push(route);
+        routeByPath.set(path, route);
+      }
+      route.noindex = isAccessoryItem({ id: m.slug, category: m.subcategory ?? PRODUCT_SUBCATEGORIES[m.slug] ?? m.category });
+      route.intro = m.description ? [m.description] : [];
       // Authoritative per-page timestamp aus dem CMS (letzte Inhaltsänderung).
       if (m.updated_at) route.lastmod = m.updated_at.slice(0, 10);
       const locName = LOCATION_DISPLAY_FOR_OVERRIDE[loc] || loc;
@@ -293,9 +324,21 @@ if (managedProducts.length) {
       }
       if (route.productData) {
         route.productData.name = m.name;
-        if (m.description) route.productData.description = localizeToLocation(m.description, locName);
+        route.productData.description = m.description ?? undefined;
         if (image) route.productData.image = image;
-        if (m.model_name) route.productData.modelName = m.model_name;
+        route.productData.modelName = m.model_name ?? undefined;
+        route.productData.specifications = m.specifications ? orderSpecs(m.specifications, m.spec_order) : undefined;
+        route.productData.pricePerDay = m.price_per_day ?? undefined;
+        route.productData.seoDailyNet = m.pricing_scheme === "bau" ? m.price_from_1_rd : undefined;
+        route.productData.seoEventBundle = m.pricing_scheme === "event" && Boolean(m.price_base_1_3_cd);
+        route.productData.pricePerMonth = m.price_per_month ?? undefined;
+        route.productData.priceWeekend = m.price_weekend ?? undefined;
+        route.productData.priceUnitLabel = m.price_unit_label ?? undefined;
+        route.productData.minRentalMonths = m.min_rental_months ?? undefined;
+        route.productData.availabilityText = m.stocked_locations?.includes(loc) ? "Am Standort verfügbar" : "Auf Anfrage";
+        route.productData.bookingHint = m.rentware_code?.[loc] ? "Online buchbar" : "Mietanfrage";
+        route.productData.alternatives = undefined;
+        route.productData.accessories = undefined;
         // CMS-FAQs gewinnen; belegte Fallbacks sichern weiterhin mindestens drei Antworten.
         if (normalizedFaqs.length) {
           const cmsFaqs = normalizedFaqs.map((f) => ({
@@ -325,19 +368,30 @@ if (managedProducts.length) {
   // Statische Artikelrouten ohne passenden CMS-Eintrag würden „Produkt nicht gefunden“ liefern
   // und dürfen weder vorgerendert noch in die Sitemap aufgenommen werden.
   const published = new Set<string>();
-  for (const m of managedProducts) for (const loc of m.available_locations || []) published.add(`${loc}/${m.slug}`);
+  for (const m of managedProducts) for (const loc of m.available_locations || []) published.add(`/mieten/${loc}/${m.category}/${m.slug}`);
   let dropped = 0;
   for (let i = allRoutes.length - 1; i >= 0; i--) {
     const r = allRoutes[i];
     if (r.routeType !== "product") continue;
     const parts = r.path.replace(/\/+$/, "").split("/"); // ["", "mieten", loc, cat, slug]
     if (parts[1] !== "mieten" || parts.length !== 5) continue;
-    if (!published.has(`${parts[2]}/${parts[4]}`)) {
+    if (!published.has(r.path.replace(/\/+$/, ""))) {
       allRoutes.splice(i, 1);
       dropped++;
     }
   }
   console.log(`[exportRoutes] ${dropped} product routes without published CMS article removed (no sitemap, no prerender).`);
+}
+
+// Category summaries use the same CMS snapshot, never deleted static items.
+for (const route of allRoutes) {
+  if (route.routeType !== "category" || !route.categoryData) continue;
+  const c = route.categoryData;
+  const entries = allRoutes.filter(r => r.routeType === "product" && r.productData?.category === c.category && r.productData.locationId === c.locationId);
+  c.productSummaries = entries.map(r => ({ id: r.productData?.id ?? "", name: r.productData?.name ?? r.h1, path: r.path }));
+  c.productCount = entries.length;
+  route.description = route.description.replace(/\d+ Geräte?/g, `${entries.length} Geräte`).replace(/verfügbar – .*$/, "im Mietkatalog.");
+  route.intro = route.intro.map(text => text.replace(/\d+ Geräte?/g, `${entries.length} Geräte`).replace(/sofort wählbar/g, "im Mietkatalog"));
 }
 
 // Duplicate-Title-Dedupe: Verschiedene Produkte mit identischem generischen Namen
@@ -455,6 +509,10 @@ const enriched = allRoutes.map((route) => {
         longName: route.productData.longName,
         specifications: route.productData.specifications,
         pricePerDay: route.productData.pricePerDay,
+        seoPriceSource: route.productData.seoDailyNet ? String(route.productData.seoDailyNet) : undefined,
+        seoDailyNet: route.productData.seoDailyNet,
+        seoEventBundle: route.productData.seoEventBundle,
+        seoGrossPrice: displayPrice(route.productData.seoDailyNet || route.productData.pricePerDay || route.productData.pricePerMonth || route.productData.priceWeekend, "private"),
         pricePerMonth: route.productData.pricePerMonth,
         priceWeekend: route.productData.priceWeekend,
         priceUnitLabel: route.productData.priceUnitLabel,
@@ -513,6 +571,13 @@ writeFileSync(outPath, JSON.stringify(payload), "utf-8");
 
 // Legacy-301-Mappings (Alt-URLs → konkrete Produkt-/Kategorieseiten)
 const legacyRules = buildLegacyRedirectRules();
+for (const old of ALL_ROUTES) {
+  if (old.routeType !== "product" || !old.productData) continue;
+  const current = managedProducts.find(m => m.slug === old.productData?.id && m.available_locations.includes(old.productData.locationId));
+  if (!current) continue;
+  const target = `/mieten/${old.productData.locationId}/${current.category}/${current.slug}`;
+  if (target !== old.path) legacyRules.unshift({ from: old.path, to: `${target}/`, kind: "product" });
+}
 const legacyFrom = new Set(legacyRules.map((r) => r.from));
 
 // Zusätzlich: alle Alt-URLs aus der GSC-404-Liste, die bisher nur pauschal auf

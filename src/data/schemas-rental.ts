@@ -1,3 +1,5 @@
+import { seoRentalOffer } from "../lib/seoProductOffer";
+import { seoPath } from "../lib/seoUrl";
 // Sprint 5 – Schema-Builder for Build-Time-Prerender
 // ---------------------------------------------------------------
 // Pure data functions that emit JSON-LD blocks per route type.
@@ -173,7 +175,7 @@ function abs(path: string): string {
   if (/^https?:/i.test(path)) return path;
   const [pure, hash] = path.split("#");
   const withSlash = pure.endsWith("/") || /\.[a-zA-Z0-9]+$/.test(pure) ? pure : `${pure}/`;
-  return `${BASE_URL}${withSlash}${hash ? `#${hash}` : ""}`;
+  return `${BASE_URL}${seoPath(withSlash)}${hash ? `#${hash}` : ""}`;
 }
 
 function breadcrumbList(items: Array<{ name: string; path: string }>): JsonLd {
@@ -308,16 +310,6 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
       : `${BASE_URL}${p.image}`
     : DEFAULT_IMG;
 
-  const locRating = LOCATION_RATINGS[p.locationId];
-  const priceSource = p.pricePerDay || p.pricePerMonth || p.priceWeekend;
-  const parsedPrice = priceSource
-    ? Number(priceSource.match(/\d[\d.]*([,.]\d+)?/)?.[0].replace(/\./g, "").replace(",", "."))
-    : undefined;
-  const validPrice = typeof parsedPrice === "number" && Number.isFinite(parsedPrice) && parsedPrice > 0
-    ? Math.round(parsedPrice * 1.19 * 100) / 100 // CMS netto → Google brutto (valueAddedTaxIncluded)
-    : undefined;
-  const unitCode = p.pricePerDay ? "DAY" : p.pricePerMonth ? "MON" : "C62";
-
   const product: JsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -337,52 +329,9 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
           })),
         }
       : {}),
-    ...(validPrice
-      ? {
-          offers: {
-            "@type": "Offer",
-            url: productUrl,
-            price: validPrice.toFixed(2),
-            priceCurrency: "EUR",
-            availability: p.availabilityText?.includes("auf Anfrage")
-              ? "https://schema.org/LimitedAvailability"
-              : "https://schema.org/InStock",
-            businessFunction: "http://purl.org/goodrelations/v1#LeaseOut",
-            areaServed: { "@type": "City", name: loc?.cityFull || p.locationId },
-            seller: { "@id": LOCATION_BUSINESS_ID(p.locationId) },
-            priceSpecification: {
-              "@type": "UnitPriceSpecification",
-              price: validPrice.toFixed(2),
-              priceCurrency: "EUR",
-              unitCode,
-              valueAddedTaxIncluded: true,
-            },
-          },
-        }
+    ...(seoRentalOffer({ pricePerMonth: p.pricePerMonth, pricePerDay: p.pricePerDay, dailyNet: p.seoDailyNet, eventBundle: p.seoEventBundle, url: productUrl })
+      ? { offers: seoRentalOffer({ pricePerMonth: p.pricePerMonth, pricePerDay: p.pricePerDay, dailyNet: p.seoDailyNet, eventBundle: p.seoEventBundle, url: productUrl }) }
       : {}),
-    aggregateRating: locRating
-      ? {
-          "@type": "AggregateRating",
-          ratingValue: locRating.ratingValue,
-          reviewCount: locRating.reviewCount,
-          bestRating: "5",
-          worstRating: "1",
-        }
-      : undefined,
-    review: locRating?.reviews?.length
-      ? locRating.reviews.map((r) => ({
-          "@type": "Review",
-          author: { "@type": "Person", name: r.author },
-          reviewRating: {
-            "@type": "Rating",
-            ratingValue: String(r.rating),
-            bestRating: "5",
-            worstRating: "1",
-          },
-          reviewBody: r.text,
-          datePublished: r.datePublished,
-        }))
-      : undefined,
   };
 
   // strip undefineds to keep JSON tidy

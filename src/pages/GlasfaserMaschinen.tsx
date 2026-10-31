@@ -190,8 +190,8 @@ export default function GlasfaserMaschinen() {
   return (
     <Layout>
       <SEO
-        title="Baumaschinen für den Glasfaserausbau in NRW mieten | SLT Rental"
-        description="Minibagger, Rüttelplatte, Stampfer und Fugenschneider für den Glasfaserausbau in NRW mieten. Sonderkonditionen für Glasfaser-Trupps, Lieferung inklusive."
+        title="Baumaschinen für Glasfaserausbau mieten | SLT Rental"
+        description="Baumaschinen für den Glasfaserausbau bei SLT Rental anfragen: Minibagger, Verdichtung und Absperrtechnik in Bonn, Krefeld und Mülheim an der Ruhr."
         canonical={PAGE_PATH}
         keywords="Baumaschinen Glasfaserausbau mieten, Minibagger mieten NRW, Rüttelplatte mieten NRW, Stampfer mieten, Fugenschneider mieten, Bauzaun mieten Glasfaser, Halteverbotsschilder Glasfaserausbau, Maschinenpaket Glasfaser-Trupp, FTTH Hausanschluss Maschinen, Microtrenching Maschinen mieten"
         ogImage={OG_IMAGE}
@@ -206,7 +206,7 @@ export default function GlasfaserMaschinen() {
               Maschinenpakete für den Glasfaserausbau
             </p>
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 max-w-4xl">
-              Baumaschinen für den Glasfaserausbau in NRW mieten
+              Baumaschinen für den Glasfaserausbau mieten
             </h1>
             <p className="text-primary-foreground/85 max-w-3xl text-sm md:text-base lg:text-lg leading-relaxed mb-6">
               Minibagger, Radlader, Rüttelplatten, Stampfer, Fugenschneider und das komplette Absperrmaterial – aus einer Hand, kurzfristig verfügbar, mit gestaffelten Wochen- und Monatspaketen für Glasfaser-Trupps und Tiefbau-Generalunternehmer in <strong>Krefeld, Bonn und Mülheim an der Ruhr</strong>.
