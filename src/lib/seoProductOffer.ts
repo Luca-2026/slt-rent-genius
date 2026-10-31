@@ -1,10 +1,10 @@
 import { netToGross } from './priceDisplay';
 import { parsePriceValue } from './catalogPricing';
 
-export function seoRentalOffer(input: { pricePerMonth?: string; pricePerDay?: string; url: string; availability?: string }) {
+export function seoRentalOffer(input: { pricePerMonth?: string; pricePerDay?: string; dailyNet?: number | null; eventBundle?: boolean; url: string; availability?: string }) {
+  if (input.eventBundle) return undefined; // A 1–3-day bundle is not a daily price.
   const source = input.pricePerMonth || input.pricePerDay;
-  if (!source) return undefined;
-  const amount = parsePriceValue(source);
+  const amount = input.pricePerMonth ? parsePriceValue(input.pricePerMonth) : input.dailyNet ?? parsePriceValue(source);
   if (amount === undefined || !Number.isFinite(amount) || amount <= 0) return undefined;
   const price = netToGross(amount).toFixed(2);
   const unitCode = input.pricePerMonth ? 'MON' : 'DAY';

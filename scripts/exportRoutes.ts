@@ -124,6 +124,9 @@ interface ManagedProductRoutePayload {
   min_rental_months?: number | null;
   stocked_locations?: string[] | null;
   rentware_code?: Record<string, string> | null;
+  pricing_scheme?: string | null;
+  price_from_1_rd?: number | null;
+  price_base_1_3_cd?: number | null;
 }
 
 async function fetchManagedProducts(): Promise<ManagedProductRoutePayload[]> {
@@ -326,6 +329,8 @@ if (managedProducts.length) {
         route.productData.modelName = m.model_name ?? undefined;
         route.productData.specifications = m.specifications ? orderSpecs(m.specifications, m.spec_order) : undefined;
         route.productData.pricePerDay = m.price_per_day ?? undefined;
+        route.productData.seoDailyNet = m.pricing_scheme === "bau" ? m.price_from_1_rd : undefined;
+        route.productData.seoEventBundle = m.pricing_scheme === "event" && Boolean(m.price_base_1_3_cd);
         route.productData.pricePerMonth = m.price_per_month ?? undefined;
         route.productData.priceWeekend = m.price_weekend ?? undefined;
         route.productData.priceUnitLabel = m.price_unit_label ?? undefined;
@@ -504,6 +509,8 @@ const enriched = allRoutes.map((route) => {
         longName: route.productData.longName,
         specifications: route.productData.specifications,
         pricePerDay: route.productData.pricePerDay,
+        seoDailyNet: route.productData.seoDailyNet,
+        seoEventBundle: route.productData.seoEventBundle,
         seoGrossPrice: displayPrice(route.productData.pricePerDay || route.productData.pricePerMonth || route.productData.priceWeekend, "private"),
         pricePerMonth: route.productData.pricePerMonth,
         priceWeekend: route.productData.priceWeekend,
