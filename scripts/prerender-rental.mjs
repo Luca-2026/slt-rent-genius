@@ -439,7 +439,8 @@ function withTrailingSlash(path) {
   if (!path || path === "/") return "/";
   const [pathOnly, query] = path.split("?");
   if (/\.[a-zA-Z0-9]{2,5}$/.test(pathOnly)) return path;
-  const normalized = pathOnly.endsWith("/") ? pathOnly : `${pathOnly}/`;
+  const encodedPath = pathOnly.split('/').map(segment => encodeURIComponent(decodeURIComponent(segment))).join('/');
+  const normalized = encodedPath.endsWith("/") ? encodedPath : `${encodedPath}/`;
   return query ? `${normalized}?${query}` : normalized;
 }
 

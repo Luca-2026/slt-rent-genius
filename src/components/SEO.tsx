@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { sanitizeJsonLd } from "@/lib/sanitizeJsonLd";
 import { locationOpeningHoursSpecification } from "@/data/locationData";
 import { adoptSeoHead } from "@/lib/seoHeadOwnership";
+import { seoPath } from "@/lib/seoUrl";
 
 interface SEOProps {
   title: string;
@@ -42,7 +43,7 @@ export function SEO({
     const normalized = pathOnly.endsWith("/") ? pathOnly : `${pathOnly}/`;
     return query ? `${normalized}?${query}` : normalized;
   };
-  const canonicalUrl = `${BASE_URL}${normalizeTrailingSlash(rawPath)}`;
+  const canonicalUrl = `${BASE_URL}${seoPath(normalizeTrailingSlash(rawPath))}`;
 
   return (
     <Helmet>

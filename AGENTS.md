@@ -1,4 +1,5 @@
 # Agent rules
+- SEO export reads published CMS facts without writes; generated head tags are Helmet-owned, URL segments encoded once, and rental structured-data prices use the shared display conversion. This prevents static/client drift and duplicated metadata without changing business data.
 - Subdirectories have their own AGENTS.md; read it before changing files there.
 - src/components/b2b/admin/AGENTS.md steuert die CMS-Artikelmaske: Preisschema je Artikel, Hauptkategorie und die Preisregeln (Pflicht, Rückfallstufen, Alt-Textfelder).
 - WhatsApp: locationWhatsAppContacts.ts + BonnWhatsAppContact; WhatsAppIcon.tsx = Markenglyph.
