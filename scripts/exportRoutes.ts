@@ -28,8 +28,10 @@ import {
 import { isSaleItem, isAccessoryItem, categoryDisplayName } from "../src/data/categoryModel";
 import { orderSpecs } from "../src/lib/specOrder";
 import { PRODUCT_SUBCATEGORIES } from "../src/data/productSubcategories";
+import { seoPublicImage } from "../src/lib/seoPublicImage";
+import { seoTopicRoutes } from "../src/data/seoTopicRoutes";
 
-const distDir = resolve(process.cwd(), "dist");
+const distDir = resolve(process.env.SEO_OUTPUT_DIR || resolve(process.cwd(), "dist"));
 if (!existsSync(distDir)) mkdirSync(distDir, { recursive: true });
 
 // ---------------------------------------------------------------
@@ -246,7 +248,7 @@ const [usedMachineRoutes, newMachineRoutes, managedProducts] = await Promise.all
   fetchNewMachineRoutes(),
   fetchManagedProducts(),
 ]);
-const allRoutes: SeoRoute[] = [...ALL_ROUTES, ...usedMachineRoutes, ...newMachineRoutes];
+const allRoutes: SeoRoute[] = [...ALL_ROUTES, ...usedMachineRoutes, ...newMachineRoutes, ...seoTopicRoutes];
 
 // Apply CMS overrides on matching product routes (by path).
 if (managedProducts.length) {
@@ -256,7 +258,7 @@ if (managedProducts.length) {
   let metaOverridden = 0;
   let faqOverridden = 0;
   for (const m of managedProducts) {
-    const image = m.images && m.images.length ? m.images[0] : undefined;
+    const image = seoPublicImage(m.images?.[0]);
     // Normalize FAQ shape: DB uses {q,a}, statisch uses same — accept both.
     const normalizedFaqs = Array.isArray(m.seo_faqs) && m.seo_faqs.length
       ? m.seo_faqs

@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import "./i18n";
 import App from "./App.tsx";
+import { adoptSeoHead } from "./lib/seoHeadOwnership";
 
 const rootElement = document.getElementById("root");
 
@@ -12,4 +13,5 @@ if (!rootElement) {
 }
 
 const root = createRoot(rootElement);
+adoptSeoHead();
 root.render(<App />);

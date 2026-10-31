@@ -122,8 +122,8 @@ export default function HochzeitTechnik() {
   return (
     <Layout>
       <SEO
-        title="Hochzeit Technik mieten – Bonn, Krefeld & Mülheim | SLT Rental"
-        description="Hochzeitstechnik mieten in Bonn, Krefeld & Mülheim: DJ-Beschallung, Licht, Kaltfunken, Nebelmaschine, Fotobox und Geschirr – Angebot in 24 Stunden."
+        title="Hochzeitstechnik mieten | SLT Rental"
+        description="Hochzeitstechnik mieten: Beschallung, Licht und Event-Equipment bei SLT Rental in Bonn, Krefeld und Mülheim an der Ruhr anfragen."
         canonical="/hochzeit-technik-mieten"
         keywords="hochzeit technik mieten, dj equipment mieten hochzeit, sparkular mieten, fotobox mieten hochzeit bonn, nebelmaschine hochzeit, love buchstaben mieten, hochzeit beschallung mieten krefeld, hochzeitslicht mieten nrw"
         ogImage="https://www.slt-rental.de/images/hochzeit/hochzeit-ringtausch.jpg"

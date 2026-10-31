@@ -1,13 +1,11 @@
 import { netToGross } from './priceDisplay';
+import { parsePriceValue } from './catalogPricing';
 
 export function seoRentalOffer(input: { pricePerMonth?: string; pricePerDay?: string; url: string; availability?: string }) {
   const source = input.pricePerMonth || input.pricePerDay;
   if (!source) return undefined;
-  const match = source.match(/\d[\d.,]*/)?.[0];
-  if (!match) return undefined;
-  const normalized = match.includes(',') ? match.replace(/\./g, '').replace(',', '.') : match;
-  const amount = Number(normalized);
-  if (!Number.isFinite(amount) || amount <= 0) return undefined;
+  const amount = parsePriceValue(source);
+  if (amount === undefined || !Number.isFinite(amount) || amount <= 0) return undefined;
   const price = netToGross(amount).toFixed(2);
   const unitCode = input.pricePerMonth ? 'MON' : 'DAY';
   return {
