@@ -308,7 +308,8 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
       : `${BASE_URL}${p.image}`
     : DEFAULT_IMG;
 
-  const locRating = LOCATION_RATINGS[p.locationId];
+  // Business reviews are not reviews of this individual rental product.
+  const locRating = undefined;
   const priceSource = p.pricePerDay || p.pricePerMonth || p.priceWeekend;
   const parsedPrice = priceSource
     ? Number(priceSource.match(/\d[\d.]*([,.]\d+)?/)?.[0].replace(/\./g, "").replace(",", "."))
