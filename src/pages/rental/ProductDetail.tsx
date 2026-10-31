@@ -126,7 +126,7 @@ export default function ProductDetail() {
       const { data, error } = await supabase
         .from("public_product_prices" as never)
         .select("*")
-        .eq("managed_product_id", rawProduct!.managedId as never);
+        .eq("managed_product_id", rawProduct?.managedId as never);
       if (error) throw error;
       return (data as unknown as LocationPriceRow[]) ?? [];
     },
@@ -403,8 +403,8 @@ export default function ProductDetail() {
         "url": canonicalUrl,
         "category": category.title,
         "sku": product.id,
-        ...(seoRentalOffer({ pricePerMonth: product.pricePerMonth, pricePerDay: product.pricePerDay, url: canonicalUrl, availability: getProductAvailability(product, location.id, { categoryId }).schemaAvailability })
-          ? { offers: seoRentalOffer({ pricePerMonth: product.pricePerMonth, pricePerDay: product.pricePerDay, url: canonicalUrl, availability: getProductAvailability(product, location.id, { categoryId }).schemaAvailability }) }
+        ...(seoRentalOffer({ pricePerMonth: product.pricePerMonth, pricePerDay: product.pricePerDay, dailyNet: product.pricingScheme === "bau" ? product.priceFrom1Rd : undefined, eventBundle: product.pricingScheme === "event" && Boolean(product.priceBase13Cd), url: canonicalUrl, availability: getProductAvailability(product, location.id, { categoryId }).schemaAvailability })
+          ? { offers: seoRentalOffer({ pricePerMonth: product.pricePerMonth, pricePerDay: product.pricePerDay, dailyNet: product.pricingScheme === "bau" ? product.priceFrom1Rd : undefined, eventBundle: product.pricingScheme === "event" && Boolean(product.priceBase13Cd), url: canonicalUrl, availability: getProductAvailability(product, location.id, { categoryId }).schemaAvailability }) }
           : {}),
 
       };

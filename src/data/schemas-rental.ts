@@ -329,8 +329,8 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
           })),
         }
       : {}),
-    ...(seoRentalOffer({ pricePerMonth: p.pricePerMonth, pricePerDay: p.pricePerDay, url: productUrl })
-      ? { offers: seoRentalOffer({ pricePerMonth: p.pricePerMonth, pricePerDay: p.pricePerDay, url: productUrl }) }
+    ...(seoRentalOffer({ pricePerMonth: p.pricePerMonth, pricePerDay: p.pricePerDay, dailyNet: p.seoDailyNet, eventBundle: p.seoEventBundle, url: productUrl })
+      ? { offers: seoRentalOffer({ pricePerMonth: p.pricePerMonth, pricePerDay: p.pricePerDay, dailyNet: p.seoDailyNet, eventBundle: p.seoEventBundle, url: productUrl }) }
       : {}),
   };
 
