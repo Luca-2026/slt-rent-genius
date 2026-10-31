@@ -279,8 +279,8 @@ function buildProductSpecsBlock(route) {
     );
   }
 
-  const priceSource = p.pricePerDay || p.pricePerMonth || p.priceWeekend;
-  const priceUnit = p.pricePerDay
+  const priceSource = p.seoPriceSource || p.pricePerDay || p.pricePerMonth || p.priceWeekend;
+  const priceUnit = p.seoPriceSource ? "pro Miettag" : p.pricePerDay
     ? (p.priceUnitLabel || "pro Tag")
     : p.pricePerMonth
       ? (p.priceUnitLabel || "pro Monat")

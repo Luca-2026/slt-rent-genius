@@ -10,4 +10,10 @@ describe('unchanged CMS price in rental structured data', () => {
   it('does not invent prices for quote-only articles', () => {
     expect(seoRentalOffer({ pricePerDay: 'Auf Anfrage', url: '/test' })).toBeUndefined();
   });
+  it('reads the CMS construction base rate without changing it', () => {
+    expect(seoRentalOffer({ dailyNet: 100, url: '/test' })?.price).toBe('119.00');
+  });
+  it('never converts an event bundle into a daily offer', () => {
+    expect(seoRentalOffer({ dailyNet: 100, eventBundle: true, url: '/test' })).toBeUndefined();
+  });
 });
