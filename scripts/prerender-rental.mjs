@@ -11,6 +11,7 @@
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { resolve, join, dirname } from "node:path";
+import { stripRouteHead } from "./seoHead.mjs";
 
 const ROOT = process.cwd();
 const DIST = resolve(ROOT, "dist");
@@ -455,7 +456,6 @@ function buildHeadBlock(route, globalSchemas) {
   const robots = route.noindex ? "noindex, follow" : "index, follow, max-image-preview:large";
 
   const lines = [
-    `<title>${escapeHtml(titleFull)}</title>`,
     `<meta name="description" content="${escapeAttr(route.description)}">`,
     `<meta name="robots" content="${robots}">`,
     `<link rel="canonical" href="${escapeAttr(canonical)}">`,
@@ -480,7 +480,7 @@ function buildHeadBlock(route, globalSchemas) {
 }
 
 function injectIntoTemplate(html, headBlock, heroBlock) {
-  let out = html;
+  let out = stripRouteHead(html);
 
   // Inject head block before </head>.
   // Strip any prior prerender block first (for resume / re-runs).
