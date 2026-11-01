@@ -10,7 +10,7 @@ import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
  * - The customer is asked to confirm acceptance by replying to the location mailbox;
  *   the job is then created manually in Rentware.
  */
-import { OPEN_ENDED_NOTE, monthlyNetFromOffer } from "../_shared/installments.ts";
+import { openEndedNote, normalizeMinMonths, monthlyNetFromOffer } from "../_shared/installments.ts";
 import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts";
 import {
   ensurePaymentLink,
@@ -281,11 +281,12 @@ Deno.serve(async (req: Request) => {
       : null;
     // Unbefristete Monatsmiete: Preise gelten pro Monat, kein Enddatum, monatliche Abschläge.
     const openEnded = inquiryType === "rental" && body.open_ended === true;
+    const minMonths = openEnded ? normalizeMinMonths(body.min_months) : 1;
     const pickupName = LOCATION_CONTACTS[resolveLocationKey(body.location || inquiry.location)].name;
     const returnLocationText = returnLoc
       ? `Abholung am Standort ${pickupName}, Rückgabe abweichend am Standort ${returnLoc.name}${returnLoc.cost > 0 ? " (Aufpreis siehe Position „Rückgabe an anderem Standort“)" : " (ohne Aufpreis)"}.`
       : null;
-    const pdfNotes = [supersedesText, returnLocationText, openEnded ? OPEN_ENDED_NOTE : null, notes, coupon.code ? `Feedback-Gutschein ${coupon.code}: ${money(coupon.saving)} netto Rabatt, in den Positionspreisen enthalten.` : null].filter(Boolean).join("\n\n") || null;
+    const pdfNotes = [supersedesText, returnLocationText, openEnded ? openEndedNote(minMonths) : null, notes, coupon.code ? `Feedback-Gutschein ${coupon.code}: ${money(coupon.saving)} netto Rabatt, in den Positionspreisen enthalten.` : null].filter(Boolean).join("\n\n") || null;
 
     const customerName = inquiryType === "rental"
       ? (inquiry.customer_name || "")
@@ -825,6 +826,7 @@ Deno.serve(async (req: Request) => {
           notes,
           totals,
           open_ended: openEnded,
+          ...(openEnded ? { min_months: minMonths } : {}),
           use_saturday: body.use_saturday === true,
           use_sunday: body.use_sunday === true,
           ...(offerGroups ? { groups: offerGroups } : {}),
