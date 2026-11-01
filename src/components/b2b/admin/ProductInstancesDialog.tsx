@@ -68,7 +68,12 @@ function getMaintenanceSuggestions(category: string): Array<{ title: string; typ
 export function ProductInstancesDialog({
   open, onOpenChange, productId, productName, productCategory, availableLocations,
 }: Props) {
-  const [selectedInstance, setSelectedInstance] = useState<ProductInstance | null>(null);
+  const [selectedSnapshot, setSelectedInstance] = useState<ProductInstance | null>(null);
+  const { data: liveInstances = [] } = useProductInstances(productId ?? "");
+  // Always show the freshest saved data, not the snapshot taken when the row was clicked.
+  const selectedInstance = selectedSnapshot
+    ? liveInstances.find((i) => i.id === selectedSnapshot.id) ?? selectedSnapshot
+    : null;
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) setSelectedInstance(null); onOpenChange(v); }}>
@@ -289,7 +294,7 @@ function InstanceDetail({
         </TabsList>
 
         <TabsContent value="stammdaten">
-          <StammdatenTab instance={instance} onSaved={() => invalidate(instance.managed_product_id, instance.id)} />
+          <StammdatenTab key={instance.updated_at} instance={instance} onSaved={() => invalidate(instance.managed_product_id, instance.id)} />
         </TabsContent>
         <TabsContent value="hours">
           <HoursTab instance={instance} onSaved={() => invalidate(instance.managed_product_id, instance.id)} />
