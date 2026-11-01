@@ -294,7 +294,7 @@ function InstanceDetail({
         </TabsList>
 
         <TabsContent value="stammdaten">
-          <StammdatenTab instance={instance} onSaved={() => invalidate(instance.managed_product_id, instance.id)} />
+          <StammdatenTab key={instance.updated_at} instance={instance} onSaved={() => invalidate(instance.managed_product_id, instance.id)} />
         </TabsContent>
         <TabsContent value="hours">
           <HoursTab instance={instance} onSaved={() => invalidate(instance.managed_product_id, instance.id)} />
