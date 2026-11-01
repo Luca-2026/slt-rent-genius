@@ -157,6 +157,21 @@ export const OPEN_ENDED_NOTE =
   "Ein Enddatum ist nicht vereinbart. Die Abrechnung erfolgt monatlich per Abschlagsrechnung; " +
   "nach Rückgabe erhalten Sie eine Schlussrechnung über die tatsächliche Mietdauer, in der alle Abschläge verrechnet werden.";
 
+/** Mindestmietzeit für unbefristete Monatsmiete: ganze Monate 1–60. */
+export function normalizeMinMonths(v: unknown): number {
+  const n = Math.floor(Number(v));
+  return Number.isFinite(n) && n >= 1 ? Math.min(n, 60) : 1;
+}
+
+/** Angebotshinweis inkl. verbindlicher Mindestmietzeit (ab 2 Monaten). */
+export function openEndedNote(minMonths: number): string {
+  const m = normalizeMinMonths(minMonths);
+  if (m <= 1) return OPEN_ENDED_NOTE;
+  return OPEN_ENDED_NOTE +
+    ` Es wird eine verbindliche Mindestmietzeit von ${m} Monaten vereinbart; der Angebotsbetrag umfasst diese Mindestmietzeit. ` +
+    "Nach Ablauf der Mindestmietzeit läuft die Miete monatlich weiter, bis zur Rückgabe.";
+}
+
 /** Hinweistext für die Schlussrechnung (§ 14 Abs. 5 UStG: Abschläge mit Entgelt und Steuer ausweisen). */
 export function deductionNote(list: InstallmentDeduction[], fmtDate: (iso: string) => string): string {
   if (!list.length) return "";

@@ -339,6 +339,7 @@ interface Props {
     valid_days?: number | null;
     notes?: string | null;
     open_ended?: boolean | null;
+    min_months?: number | null;
     /** Paket 3b – fehlen bei alten Angeboten. */
     groups?: OfferGroup[];
     extra_fields?: OfferExtraFields;
@@ -462,6 +463,7 @@ export function InquiryOfferForm({
   /** Unbefristete Monatsmiete: Mietpositionen gelten pro Monat, kein Enddatum (nur Mietangebote). */
   const canOpenEnded = !isInvoice && inquiryType === "rental";
   const [openEnded, setOpenEnded] = useState<boolean>(canOpenEnded && !!(draft?.openEnded ?? defaultMeta?.open_ended));
+  const [minMonths, setMinMonths] = useState<number>(Math.max(1, Math.floor(Number(draft?.minMonths ?? defaultMeta?.min_months ?? 1)) || 1));
   /** Paket 2: Staffel-/Dauerrechnung nur im Mietangebot (Rechnungen übernehmen die Angebotswerte). */
   const pricingActive = inquiryType === "rental" && !isInvoice;
   /** Einsatz am Samstag/Sonntag (Bau ab 5 Miettagen) – im offer_payload als use_saturday/use_sunday. */
@@ -661,6 +663,7 @@ export function InquiryOfferForm({
     setNotes(d.notes ?? "");
     setCouponCode(d.couponCode ?? "");
     setOpenEnded(canOpenEnded && !!d.openEnded);
+    setMinMonths(Math.max(1, Math.floor(Number(d.minMonths ?? 1)) || 1));
     setUseSaturday(!!d.useSaturday);
     setUseSunday(!!d.useSunday);
     setGroups(Array.isArray(d.groups) ? (d.groups as OfferGroup[]) : []);
@@ -722,6 +725,7 @@ export function InquiryOfferForm({
         paymentTermsCustom,
         notes,
         openEnded,
+        minMonths,
         useSaturday,
         useSunday,
         groups,
@@ -758,6 +762,7 @@ export function InquiryOfferForm({
     paymentTermsCustom,
     notes,
     openEnded,
+    minMonths,
     useSaturday,
     useSunday,
     groups,
@@ -807,11 +812,11 @@ export function InquiryOfferForm({
         const unit = inherited.unit ?? "kalendertage";
         // Unbefristet: zeitabhängige Positionen werden als Preis pro Monat geführt.
         const monthly = openEnded && unit !== "pauschal" && unit !== "stueck"
-          ? { ...inherited, unit: "monate" as OfferUnit, duration: 1, rental_end: undefined }
+          ? { ...inherited, unit: "monate" as OfferUnit, duration: minMonths, rental_end: undefined }
           : inherited;
         return recalcAddons(monthly);
       }),
-    [items, openEnded],
+    [items, openEnded, minMonths],
   );
 
   // ----------------------------------------------------------------
@@ -1206,7 +1211,7 @@ export function InquiryOfferForm({
           : null,
         deposit,
         valid_days: validDays,
-        ...(canOpenEnded ? { open_ended: openEnded } : {}),
+        ...(canOpenEnded ? { open_ended: openEnded, ...(openEnded ? { min_months: minMonths } : {}) } : {}),
         ...(pricingActive ? { use_saturday: useSaturday, use_sunday: useSunday } : {}),
         notes: [notes.trim(), settlementNote].filter(Boolean).join("\n\n"),
         ...(groups.length ? { groups } : {}),
@@ -1490,16 +1495,38 @@ export function InquiryOfferForm({
         </div>
       )}
       {canOpenEnded && (
-        <label className="flex items-start gap-2 rounded-md bg-muted/40 p-3 text-sm cursor-pointer">
-          <Checkbox checked={openEnded} disabled={disabled} onCheckedChange={(v) => setOpenEnded(v === true)} className="mt-0.5" />
-          <span>
-            <span className="font-medium">Unbefristete Monatsmiete</span>
-            <span className="block text-xs text-muted-foreground">
-              Mietpositionen gelten als Preis pro Monat, ohne Enddatum. Das Angebot weist den Monatsbetrag aus und
-              enthält den Hinweis auf monatliche Abschlagsrechnungen und eine Schlussrechnung nach Rückgabe.
+        <div className="space-y-3 rounded-md bg-muted/40 p-3 text-sm">
+          <label className="flex items-start gap-2 cursor-pointer">
+            <Checkbox checked={openEnded} disabled={disabled} onCheckedChange={(v) => setOpenEnded(v === true)} className="mt-0.5" />
+            <span>
+              <span className="font-medium">Unbefristete Monatsmiete</span>
+              <span className="block text-xs text-muted-foreground">
+                Mietpositionen gelten als Preis pro Monat, ohne Enddatum. Das Angebot umfasst die Mindestmietzeit und
+                enthält den Hinweis auf monatliche Abschlagsrechnungen und eine Schlussrechnung nach Rückgabe.
+              </span>
             </span>
-          </span>
-        </label>
+          </label>
+          {openEnded && (
+            <div className="flex flex-wrap items-center gap-2 pl-6">
+              <Label htmlFor="min-months" className="text-sm">Mindestmietzeit (Monate)</Label>
+              <Input
+                id="min-months"
+                type="number"
+                inputMode="numeric"
+                min={1}
+                max={60}
+                step={1}
+                className="h-9 w-24"
+                disabled={disabled}
+                value={minMonths}
+                onChange={(e) => setMinMonths(Math.min(60, Math.max(1, Math.floor(Number(e.target.value)) || 1)))}
+              />
+              <span className="w-full text-xs text-muted-foreground">
+                Wird verbindlich im Angebot vereinbart; Positionen rechnen Monatspreis × Mindestmietzeit, Abschläge bleiben monatlich.
+              </span>
+            </div>
+          )}
+        </div>
       )}
       {showDayBoxes && (
         <div className="flex flex-wrap gap-x-6 gap-y-2 rounded-md bg-muted/40 p-3 text-sm" data-testid="weekend-use">

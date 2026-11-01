@@ -107,7 +107,7 @@ export function offerPayloadToLines(payload: unknown): {
     deposit: number;
   };
   meta: {
-    payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null; open_ended: boolean;
+    payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null; open_ended: boolean; min_months?: number;
     /** Paket 3b – fehlen bei alten Angeboten. */
     groups?: OfferGroup[]; extra_fields?: OfferExtraFields; order_type?: OrderType; terms_text?: string;
   };
@@ -128,6 +128,7 @@ export function offerPayloadToLines(payload: unknown): {
         valid_days?: number;
         notes?: string | null;
         open_ended?: boolean;
+        min_months?: number;
         groups?: unknown;
         extra_fields?: unknown;
         order_type?: unknown; terms_text?: unknown;
@@ -220,6 +221,7 @@ export function offerPayloadToLines(payload: unknown): {
       valid_days: Number(p.valid_days) > 0 ? Number(p.valid_days) : null,
       notes: typeof p.notes === "string" ? p.notes : null,
       open_ended: p.open_ended === true,
+      min_months: Number(p.min_months) >= 1 ? Math.floor(Number(p.min_months)) : 1,
       ...(parseGroups(p.groups).length ? { groups: parseGroups(p.groups) } : {}),
       ...(cleanExtraFields(p.extra_fields) ? { extra_fields: cleanExtraFields(p.extra_fields) } : {}),
       ...(p.order_type === "delivery" || p.order_type === "pickup" ? { order_type: p.order_type as OrderType } : {}),
