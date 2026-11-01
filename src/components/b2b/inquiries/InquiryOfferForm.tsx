@@ -1495,16 +1495,38 @@ export function InquiryOfferForm({
         </div>
       )}
       {canOpenEnded && (
-        <label className="flex items-start gap-2 rounded-md bg-muted/40 p-3 text-sm cursor-pointer">
-          <Checkbox checked={openEnded} disabled={disabled} onCheckedChange={(v) => setOpenEnded(v === true)} className="mt-0.5" />
-          <span>
-            <span className="font-medium">Unbefristete Monatsmiete</span>
-            <span className="block text-xs text-muted-foreground">
-              Mietpositionen gelten als Preis pro Monat, ohne Enddatum. Das Angebot weist den Monatsbetrag aus und
-              enthält den Hinweis auf monatliche Abschlagsrechnungen und eine Schlussrechnung nach Rückgabe.
+        <div className="space-y-3 rounded-md bg-muted/40 p-3 text-sm">
+          <label className="flex items-start gap-2 cursor-pointer">
+            <Checkbox checked={openEnded} disabled={disabled} onCheckedChange={(v) => setOpenEnded(v === true)} className="mt-0.5" />
+            <span>
+              <span className="font-medium">Unbefristete Monatsmiete</span>
+              <span className="block text-xs text-muted-foreground">
+                Mietpositionen gelten als Preis pro Monat, ohne Enddatum. Das Angebot umfasst die Mindestmietzeit und
+                enthält den Hinweis auf monatliche Abschlagsrechnungen und eine Schlussrechnung nach Rückgabe.
+              </span>
             </span>
-          </span>
-        </label>
+          </label>
+          {openEnded && (
+            <div className="flex flex-wrap items-center gap-2 pl-6">
+              <Label htmlFor="min-months" className="text-sm">Mindestmietzeit (Monate)</Label>
+              <Input
+                id="min-months"
+                type="number"
+                inputMode="numeric"
+                min={1}
+                max={60}
+                step={1}
+                className="h-9 w-24"
+                disabled={disabled}
+                value={minMonths}
+                onChange={(e) => setMinMonths(Math.min(60, Math.max(1, Math.floor(Number(e.target.value)) || 1)))}
+              />
+              <span className="w-full text-xs text-muted-foreground">
+                Wird verbindlich im Angebot vereinbart; Positionen rechnen Monatspreis × Mindestmietzeit, Abschläge bleiben monatlich.
+              </span>
+            </div>
+          )}
+        </div>
       )}
       {showDayBoxes && (
         <div className="flex flex-wrap gap-x-6 gap-y-2 rounded-md bg-muted/40 p-3 text-sm" data-testid="weekend-use">
