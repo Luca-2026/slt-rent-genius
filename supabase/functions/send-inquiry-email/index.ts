@@ -152,6 +152,7 @@ serve(async (req) => {
           const label = String(o?.label ?? "").trim();
           if (key && label) labels.set(key, label);
         }
+        labels.set(FREE_CANCELLATION_OPTION.key, FREE_CANCELLATION_OPTION.label);
         addonLabelsBySlug.set(String(row.slug), labels);
       }
     }
