@@ -13,7 +13,7 @@
 - Additional cart items inherit periods through withCartPeriod, validated for their pickup location; set quantities remain counts of sets and display through setSize helpers to avoid multiplying prices by contained pieces.
 - Public deposit previews prefer deposit_amount, with legacy specification/note fallback; unknown values stay unknown, deposit totals are quantity-based and never VAT-converted.
 - CartAccessories resolves only curated catalog accessories before insurance; DeliveryAddressFields uses protected geo-address Places lookups for suggestions and postal completion.
-- Cancellation-option owns the cancellation surcharge rate and rental-only amount; public quotes and service defaults share it, unknown rental amounts stay unknown. Rentware placement follows a reserved header slot to avoid navigation overlap.
+- Cancellation-option owns the cancellation surcharge rate and rental-only amount; public quotes and service defaults share it, unknown rental amounts stay unknown. Rentware placement follows a reserved header slot, including the actual control inside nested shadow roots after hydration, to avoid navigation overlap and vertical drift.
 <!-- LOVABLE:BEGIN -->
 - Inject the portal first-paint guard through the Vite HTML plugin before body parsing; hide only prerender fallback content on the exact portal host to preserve public SEO and the React portal.
 <!-- LOVABLE:END -->

@@ -233,6 +233,41 @@ export function RentwareLoader() {
           }
         `;
       }
+
+      // Rentware renders its visible control inside several nested shadow roots.
+      // Styling the checkout host alone leaves that control at its default 60px.
+      const alignControl = (root: Document | ShadowRoot) => {
+        for (const child of root.querySelectorAll("*")) {
+          if (!child.shadowRoot) continue;
+          if (child.tagName === "RENTWARE-CART-CONTROL-BUTTON") {
+            let controlStyle = child.shadowRoot.querySelector<HTMLStyleElement>("#slt-cart-control-position");
+            if (!controlStyle) {
+              controlStyle = document.createElement("style");
+              controlStyle.id = "slt-cart-control-position";
+              child.shadowRoot.appendChild(controlStyle);
+            }
+            controlStyle.textContent = `
+              .CollapsedButton.GlobalButtonPosition {
+                position: fixed !important;
+                top: var(--rentware-cart-view-position-top) !important;
+                right: var(--rentware-cart-view-position-right) !important;
+                bottom: unset !important;
+                left: unset !important;
+                width: var(--slt-rentware-cart-size) !important;
+                height: var(--slt-rentware-cart-size) !important;
+                min-width: var(--slt-rentware-cart-size) !important;
+                min-height: var(--slt-rentware-cart-size) !important;
+                box-sizing: border-box !important;
+                margin: 0 !important;
+                transform: none !important;
+              }
+            `;
+          } else {
+            alignControl(child.shadowRoot);
+          }
+        }
+      };
+      if (el.shadowRoot) alignControl(el.shadowRoot);
     };
 
     applyStyles();
@@ -273,8 +308,22 @@ export function RentwareLoader() {
     };
     window.addEventListener("resize", onResize);
 
+    // The external widget hydrates its nested controls after the host appears.
+    // Keep retries bounded rather than observing every page mutation forever.
+    let hydrationTries = 0;
+    const hydrationTimer = window.setInterval(() => {
+      applyStyles();
+      if (++hydrationTries >= 40) window.clearInterval(hydrationTimer);
+    }, 250);
+    const slotObserver = new ResizeObserver(onResize);
+    const slotElement = document.querySelector("[data-rentware-cart-slot]");
+    if (slotElement) slotObserver.observe(slotElement);
+    slotObserver.observe(document.documentElement);
+
     return () => {
       observer?.disconnect();
+      slotObserver.disconnect();
+      window.clearInterval(hydrationTimer);
       window.removeEventListener("resize", onResize);
       if (resizeRaf) cancelAnimationFrame(resizeRaf);
     };
