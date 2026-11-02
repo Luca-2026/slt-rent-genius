@@ -20,7 +20,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Lock, Key, Play, Info, FileDown, ShieldCheck, ExternalLink, Car, HardHat, Sparkles, Truck } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Package, MapPin, Phone, Mail, CheckCircle, Clock, Lock, Key, Play, Info, FileDown, ShieldCheck, ExternalLink, Car, HardHat, Sparkles, Truck, ShoppingCart } from "lucide-react";
 import {
   getLocationById,
   getCategoryById,
@@ -1387,16 +1387,18 @@ export default function ProductDetail() {
                       className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover md:h-9 md:text-sm lg:h-11 lg:text-base"
                       onClick={() => setShowBookingDialog(true)}
                     >
-                      {t("rental.rentNow")}
+                      {categoryId !== "anhaenger" && <ShoppingCart className="h-4 w-4 shrink-0" />}
+                      {t(categoryId === "anhaenger" ? "rental.rentNow" : "rental.addToCart")}
                     </Button>
                     {categoryId !== "anhaenger" && (<>
+                    <p className="text-xs leading-relaxed text-muted-foreground">{t("rental.cartCheckoutHint")}</p>
                     <Link to="/b2b/login" className="block">
                       <Button size="lg" variant="outline" className="w-full md:h-9 md:text-sm lg:h-11 lg:text-base border-2 border-primary text-primary bg-background hover:bg-primary hover:text-primary-foreground hover:border-primary">
                         {t("rental.b2bConditions")}
                       </Button>
                     </Link>
                     <p className="text-[11px] leading-snug text-muted-foreground">
-                      B2B-Konditionen sinnvoll ab größeren Mengen, Rahmenverträgen oder wiederkehrenden Bestellungen. Für einzelne Kurzmieten bitte direkt „{t("rental.rentNow")}" nutzen.
+                      B2B-Konditionen sinnvoll ab größeren Mengen, Rahmenverträgen oder wiederkehrenden Bestellungen. Für einzelne Kurzmieten bitte direkt „{t("rental.addToCart")}" nutzen.
                     </p>
                     </>)}
                   </div>
@@ -1496,16 +1498,18 @@ function MobileBookingCard({
           className="w-full bg-accent text-accent-foreground hover:bg-cta-orange-hover"
           onClick={onBook}
         >
-          {t("rental.rentNow")}
+          {categoryId !== "anhaenger" && <ShoppingCart className="h-4 w-4 shrink-0" />}
+          {t(categoryId === "anhaenger" ? "rental.rentNow" : "rental.addToCart")}
         </Button>
         {categoryId !== "anhaenger" && (<>
+        <p className="text-xs leading-relaxed text-muted-foreground">{t("rental.cartCheckoutHint")}</p>
         <Link to="/b2b/login" className="w-full">
           <Button size="default" variant="outline" className="w-full border-2 border-primary text-primary bg-background hover:bg-primary hover:text-primary-foreground hover:border-primary">
             {t("rental.b2bConditions")}
           </Button>
         </Link>
         <p className="text-[11px] leading-snug text-muted-foreground">
-          B2B-Konditionen sinnvoll ab größeren Mengen, Rahmenverträgen oder wiederkehrenden Bestellungen. Für einzelne Kurzmieten bitte direkt „{t("rental.rentNow")}" nutzen.
+          B2B-Konditionen sinnvoll ab größeren Mengen, Rahmenverträgen oder wiederkehrenden Bestellungen. Für einzelne Kurzmieten bitte direkt „{t("rental.addToCart")}" nutzen.
         </p>
         </>)}
       </div>
