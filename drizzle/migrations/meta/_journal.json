@@ -673,6 +673,13 @@
       "when": 1793617697258,
       "tag": "0095_rental_product_deposit",
       "breakpoints": true
+    },
+    {
+      "idx": 96,
+      "version": "7",
+      "when": 1793632776351,
+      "tag": "0096_offer_followups_and_rejections",
+      "breakpoints": true
     }
   ]
 }

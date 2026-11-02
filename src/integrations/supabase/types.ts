@@ -3476,6 +3476,11 @@ export type Database = {
           created_at: string
           created_by: string | null
           customer_email: string | null
+          decline_note: string | null
+          decline_reason: string | null
+          declined_at: string | null
+          dispatched_at: string | null
+          expires_at: string | null
           gross_amount: number
           id: string
           inquiry_id: string
@@ -3496,6 +3501,11 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           customer_email?: string | null
+          decline_note?: string | null
+          decline_reason?: string | null
+          declined_at?: string | null
+          dispatched_at?: string | null
+          expires_at?: string | null
           gross_amount?: number
           id?: string
           inquiry_id: string
@@ -3516,6 +3526,11 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           customer_email?: string | null
+          decline_note?: string | null
+          decline_reason?: string | null
+          declined_at?: string | null
+          dispatched_at?: string | null
+          expires_at?: string | null
           gross_amount?: number
           id?: string
           inquiry_id?: string
@@ -3528,6 +3543,50 @@ export type Database = {
           valid_until?: string | null
         }
         Relationships: []
+      }
+      offer_followup_deliveries: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          link_id: string
+          provider_id: string | null
+          recipient: string
+          sent_at: string | null
+          sequence: number
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind: string
+          link_id: string
+          provider_id?: string | null
+          recipient: string
+          sent_at?: string | null
+          sequence?: number
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          link_id?: string
+          provider_id?: string | null
+          recipient?: string
+          sent_at?: string | null
+          sequence?: number
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "offer_followup_deliveries_link_id_fkey"
+            columns: ["link_id"]
+            isOneToOne: false
+            referencedRelation: "offer_acceptance_links"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       offer_payment_links: {
         Row: {
@@ -5830,6 +5889,7 @@ export type Database = {
         Returns: Json
       }
       ensure_repair_list: { Args: { _location: string }; Returns: string }
+      expire_open_offer_links: { Args: never; Returns: number }
       feedback_customer_identity: {
         Args: { p_crm: string; p_email: string; p_profile: string }
         Returns: Json
@@ -5925,6 +5985,13 @@ export type Database = {
         Returns: undefined
       }
       mark_overdue_invoices: { Args: never; Returns: number }
+      offer_link_deadline: {
+        Args: {
+          p_link: Database["public"]["Tables"]["offer_acceptance_links"]["Row"]
+        }
+        Returns: string
+      }
+      offer_link_deadline_by_id: { Args: { p_id: string }; Returns: string }
       onsite_b2b_password_set: { Args: { _user: string }; Returns: boolean }
       parse_price_text: { Args: { _raw: string }; Returns: number }
       record_inquiry_invoice_payment: {
