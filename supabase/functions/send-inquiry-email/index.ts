@@ -4,6 +4,20 @@ import { previewPublicCoupon } from "../_shared/public-coupon.ts";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { publicRentalQuote } from "../_shared/public-rental-quote.ts";
 import { operationalEmailRecipient } from "../_shared/test-email-routing.ts";
+import { z } from "npm:zod@3";
+import { validPublicRentalPeriod } from "../_shared/public-rental-period.ts";
+import { publicRequestAllowed } from "../_shared/public-request-limit.ts";
+import { publicLocationContacts } from "../_shared/public-location-contact.ts";
+
+const cartLineSchema = z.object({ id: z.string().min(1).max(100), product_slug: z.string().min(1).max(200), product_name: z.string().min(1).max(200), location: z.enum(["krefeld", "bonn", "muelheim"]), quantity: z.number().int().min(1).max(9999), start_date: z.string(), end_date: z.string(), start_time: z.string(), end_time: z.string(), selected_addons: z.array(z.string().max(60)).max(10), use_saturday: z.boolean(), use_sunday: z.boolean() }).refine(validPublicRentalPeriod);
+const cartSchema = z.object({
+  cartRequestId: z.string().uuid(), cartExpiresAt: z.number().finite(), items: z.array(cartLineSchema).min(1).max(30),
+  name: z.string().trim().min(2).max(200), email: z.string().trim().email().max(180).transform(value => value.toLowerCase()),
+  phone: z.string().trim().max(50).refine(value => value.replace(/\D/g, "").length >= 6),
+  street: z.string().trim().min(1).max(200), postalCode: z.string().trim().min(1).max(20), city: z.string().trim().min(1).max(100),
+  customerKind: z.enum(["private", "business"]), message: z.string().max(4000).optional(), couponCode: z.string().max(20).optional(),
+  deliveryRequested: z.boolean(), deliveryStreet: z.string().max(200).optional(), deliveryPostalCode: z.string().max(20).optional(), deliveryCity: z.string().max(100).optional(),
+}).refine(value => !value.deliveryRequested || !!(value.deliveryStreet?.trim() && value.deliveryPostalCode?.trim() && value.deliveryCity?.trim()));
 
 
 const SLT_LOGO = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
@@ -23,9 +37,21 @@ serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
+  if (req.method !== "POST") return new Response(JSON.stringify({ error: "Ungültige Anfrage" }), { status: 405, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
   try {
-    const {
+    let body = await req.json();
+    const isCart = body && Object.prototype.hasOwnProperty.call(body, "cartRequestId");
+    if (isCart) {
+      const parsed = cartSchema.safeParse(body);
+      if (!parsed.success) return new Response(JSON.stringify({ error: "Bitte vollständige Kontaktdaten und gültige Artikelzeiträume angeben." }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      body = parsed.data;
+      if (new Set(body.items.map((item: { id: string }) => item.id)).size !== body.items.length) return new Response(JSON.stringify({ error: "Doppelte Positionen" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      const first = body.items[0];
+      const location = publicLocationContacts[first.location];
+      body = { ...body, productName: first.product_name, locationName: location.name, locationEmail: location.email, locationPhone: location.phone, locationAddress: location.address, startDate: first.start_date, startTime: first.start_time, endDate: first.end_date, endTime: first.end_time, useSaturday: first.use_saturday, useSunday: first.use_sunday };
+    }
+    let {
       productName,
       locationName,
       locationEmail,
@@ -56,7 +82,7 @@ serve(async (req) => {
       couponCode,
       cartRequestId,
       cartExpiresAt,
-    } = await req.json();
+    } = body;
 
     const requestedCode = typeof couponCode === "string" ? couponCode.trim().toUpperCase() : "";
     if ((couponCode != null && typeof couponCode !== "string") || (requestedCode && !/^[A-F0-9]{20}$/.test(requestedCode))) {
@@ -98,9 +124,15 @@ serve(async (req) => {
     if (cartRequestId) {
       if (!db || !/^[a-f0-9-]{36}$/i.test(String(cartRequestId)) || !Number.isFinite(cartExpiresAt) || cartExpiresAt <= Date.now() || cartExpiresAt > Date.now() + 900000 || !requestedItems.length) return new Response(JSON.stringify({ error: "Warenkorb abgelaufen oder ungültig" }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       if (requestedItems.some((item: any) => !["krefeld", "bonn", "muelheim"].includes(item.location) || !/^\d{4}-\d{2}-\d{2}$/.test(item.start_date) || !/^\d{4}-\d{2}-\d{2}$/.test(item.end_date) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(item.start_time) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(item.end_time) || `${item.end_date}T${item.end_time}` <= `${item.start_date}T${item.start_time}`)) return new Response(JSON.stringify({ error: "Ungültige Positionszeiträume" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-      const { data: existing } = await db.from("rental_inquiries").select("id,order_code").contains("raw_payload", { cart_request_id: cartRequestId }).maybeSingle();
+      const { data: existing } = await db.from("rental_inquiries").select("id,order_code").contains("raw_payload", { cart_request_id: cartRequestId }).eq("customer_email", email).maybeSingle();
       if (existing) return new Response(JSON.stringify({ success: true, order_code: existing.order_code }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      if (!await publicRequestAllowed(db, req, "public-cart-submit", email, 10)) return new Response(JSON.stringify({ error: "Zu viele Anfragen. Bitte später erneut versuchen." }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       quoteLines = await publicRentalQuote(db, requestedItems);
+      for (const item of requestedItems) {
+        const quote = (quoteLines as { id: string; product_name: string }[]).find(line => line.id === item.id);
+        if (quote) item.product_name = quote.product_name;
+      }
+      productName = requestedItems[0].product_name;
     }
     if (requestedCode) {
       if (!db) return new Response(JSON.stringify({ error: "Gutscheinprüfung derzeit nicht möglich" }), { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -139,7 +171,8 @@ serve(async (req) => {
           <tr><th style="text-align:left;padding:6px 4px;border-bottom:2px solid #e5e7eb;color:#6b7280;">Artikel</th><th style="text-align:right;padding:6px 4px;border-bottom:2px solid #e5e7eb;color:#6b7280;">Menge</th></tr>
           ${requestedItems.map((it) => {
             const addons = addonText(it);
-            return `<tr><td style="padding:6px 4px;border-bottom:1px solid #f3f4f6;">${escapeHtml(it.product_name)}${addons ? `<br><span style="color:#6b7280;font-size:12px;">Zusatzoptionen: ${escapeHtml(addons)}</span>` : ""}</td><td style="padding:6px 4px;border-bottom:1px solid #f3f4f6;text-align:right;white-space:nowrap;">${escapeHtml(qtyText(it))}</td></tr>`;
+            const period = cartRequestId ? `<br><span>${escapeHtml(publicLocationContacts[it.location]?.name)} · ${escapeHtml(it.start_date)} ${escapeHtml(it.start_time)} – ${escapeHtml(it.end_date)} ${escapeHtml(it.end_time)}</span>` : "";
+            return `<tr><td style="padding:6px 4px;border-bottom:1px solid #f3f4f6;">${escapeHtml(it.product_name)}${period}${addons ? `<br><span style="color:#6b7280;font-size:12px;">Zusatzoptionen: ${escapeHtml(addons)}</span>` : ""}</td><td style="padding:6px 4px;border-bottom:1px solid #f3f4f6;text-align:right;white-space:nowrap;">${escapeHtml(qtyText(it))}</td></tr>`;
           }).join("")}
         </table>`
       : "";
@@ -204,15 +237,16 @@ serve(async (req) => {
       message: message ?? null,
       raw_payload: { ...(requestedCode ? { requested_coupon_code: requestedCode } : {}), ...(cartRequestId ? { cart_request_id: cartRequestId, quote_lines: quoteLines } : {}) },
       attachments: safeAttachments.map((a) => ({ filename: a.filename })),
+      ...(cartRequestId ? { email_sent: false } : {}),
     });
     const portalLink = rentalInquiryLink(inquiryId);
     if (cartRequestId && !inquiryId) {
-      const { data: duplicate } = db ? await db.from("rental_inquiries").select("order_code").contains("raw_payload", { cart_request_id: cartRequestId }).maybeSingle() : { data: null };
+      const { data: duplicate } = db ? await db.from("rental_inquiries").select("order_code").contains("raw_payload", { cart_request_id: cartRequestId }).eq("customer_email", email).maybeSingle() : { data: null };
       return new Response(JSON.stringify(duplicate ? { success: true, order_code: duplicate.order_code } : { error: "Anfrage konnte nicht gespeichert werden. Bitte erneut versuchen." }), { status: duplicate ? 200 : 503, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
     const { data: storedInquiry } = inquiryId && db ? await db.from("rental_inquiries").select("order_code").eq("id", inquiryId).maybeSingle() : { data: null };
 
-    const dateRange = startDate
+    const dateRange = cartRequestId && requestedItems.length > 1 ? "Je Artikel unten angegeben" : startDate
       ? `${startDate}${endDate ? ` bis ${endDate}` : ""}`
       : "Kein Datum angegeben";
 
@@ -349,6 +383,7 @@ serve(async (req) => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${RESEND_API_KEY}`,
+          ...(cartRequestId ? { "Idempotency-Key": `public-cart-${cartRequestId}-internal` } : {}),
         },
         body: JSON.stringify({
           from: "Anfragen <anfragen@slt-rental.de>",
@@ -367,6 +402,7 @@ serve(async (req) => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${RESEND_API_KEY}`,
+          ...(cartRequestId ? { "Idempotency-Key": `public-cart-${cartRequestId}-customer` } : {}),
         },
         body: JSON.stringify({
           from: "SLT Rental <anfragen@slt-rental.de>",
@@ -376,6 +412,7 @@ serve(async (req) => {
         }),
       });
       if (!res2.ok) console.error("Resend confirmation error:", await res2.text());
+      if (cartRequestId && inquiryId && db) await db.from("rental_inquiries").update({ email_sent: res1.ok && res2.ok }).eq("id", inquiryId);
     } else {
       console.log("=== INQUIRY (no RESEND_API_KEY) ===");
       console.log("Inquiry received (email not sent)", { locationName });
