@@ -226,26 +226,26 @@ export function ProductSearchDialog({ open, onOpenChange }: ProductSearchDialogP
             )}
 
             {/* Location list */}
-            <div className="space-y-2 overflow-y-auto flex-1">
+            <div className="grid auto-rows-fr gap-2 overflow-y-auto">
               {availableLocations.map((location) => (
-                <button
+                <Button variant="outline"
                   key={location.id}
                   onClick={() => handleLocationSelect(location.id)}
-                  className="w-full flex items-center justify-between p-4 rounded-lg border border-border hover:border-primary hover:bg-muted/50 transition-all group"
+                  className="w-full h-full min-h-24 whitespace-normal flex items-center justify-between gap-3 p-4 rounded-lg border border-border hover:border-primary hover:bg-muted/50 transition-all group"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                  <div className="flex min-w-0 flex-1 items-center gap-3">
+                    <div className="w-10 h-10 shrink-0 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                       <MapPin className="h-5 w-5" />
                     </div>
-                    <div className="text-left">
+                    <div className="min-w-0 flex-1 text-left">
                       <span className="font-medium text-foreground block group-hover:text-primary transition-colors">
                         {location.name}
                       </span>
-                      <span className="text-xs text-muted-foreground">{location.address}</span>
+                      <span className="block text-xs leading-5 text-muted-foreground break-words">{location.address}</span>
                     </div>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                </button>
+                  <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors" />
+                </Button>
               ))}
             </div>
 
