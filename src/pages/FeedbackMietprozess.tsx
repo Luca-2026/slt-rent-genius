@@ -392,7 +392,7 @@ export default function FeedbackMietprozess() {
                         onClick={() => setRecommend(n)}
                         aria-pressed={recommend === n}
                         className={cn(
-                          "h-10 w-10 rounded-md border text-sm font-medium transition-colors",
+                          "h-11 w-11 shrink-0 rounded-md border text-sm font-medium transition-colors",
                           recommend === n
                             ? "bg-accent text-accent-foreground border-accent"
                             : "bg-background text-foreground hover:bg-muted",
