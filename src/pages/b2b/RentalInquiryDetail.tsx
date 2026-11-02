@@ -32,7 +32,7 @@ const UNSTRUCTURED_SOURCES = new Set(["fonio", "ai_import", "manual"]);
 const fmtDate = (value: string | null) => (value ? new Date(value).toLocaleDateString("de-DE") : "—");
 
 /** Datum inkl. Uhrzeit – wir rechnen zeitgenau, nicht nur tageweise. */
-export const fmtDateTime = (date: string | null, time: string | null) => formatRentalMoment(date, time);
+export const fmtDateTime = (date: string | null | undefined, time: string | null | undefined) => formatRentalMoment(date ?? null, time ?? null);
 
 export default function RentalInquiryDetail() {
   const { id } = useParams<{ id: string }>();

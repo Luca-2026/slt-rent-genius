@@ -14,7 +14,7 @@ export async function publicRentalQuote(service: any, items: any[]) {
     const unitPrice = line.kind === "duration_only" ? null : line.unit_price;
     const options = Array.isArray(product.addon_options) ? product.addon_options : [];
     const defaults = options.filter((o: any) => o.is_default);
-    const selected = options.filter((o: any) => item.selected_addons.includes(o.key));
+    const selected = options.filter((o: any) => item.selected_addons.includes(o.key) && !(String(o.key).startsWith("sb_reduktion") && !o.surcharge_percent));
     const alternative = selected.find((o: any) => Number(o.surcharge_percent) > 0);
     const base = defaults[0];
     const calculate = (option: any) => {

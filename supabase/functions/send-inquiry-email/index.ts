@@ -206,7 +206,10 @@ serve(async (req) => {
       attachments: safeAttachments.map((a) => ({ filename: a.filename })),
     });
     const portalLink = rentalInquiryLink(inquiryId);
-    if (cartRequestId && !inquiryId) return new Response(JSON.stringify({ error: "Anfrage konnte nicht gespeichert werden. Bitte erneut versuchen." }), { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    if (cartRequestId && !inquiryId) {
+      const { data: duplicate } = db ? await db.from("rental_inquiries").select("order_code").contains("raw_payload", { cart_request_id: cartRequestId }).maybeSingle() : { data: null };
+      return new Response(JSON.stringify(duplicate ? { success: true, order_code: duplicate.order_code } : { error: "Anfrage konnte nicht gespeichert werden. Bitte erneut versuchen." }), { status: duplicate ? 200 : 503, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
     const { data: storedInquiry } = inquiryId && db ? await db.from("rental_inquiries").select("order_code").eq("id", inquiryId).maybeSingle() : { data: null };
 
     const dateRange = startDate

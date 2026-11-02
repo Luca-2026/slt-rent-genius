@@ -201,10 +201,7 @@ export default function Products() {
             <div className="section-container">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2">
-                  <RentwareSearch 
-                    config={selectedCategory.rentwareSearch} 
-                    categoryId={selectedCategory.id} 
-                  />
+                  <Button asChild><Link to="/mieten/krefeld/erdbewegung/">Mietartikel auswählen</Link></Button>
                 </div>
                 <div className="lg:col-span-1">
                   <div className="sticky top-4">
