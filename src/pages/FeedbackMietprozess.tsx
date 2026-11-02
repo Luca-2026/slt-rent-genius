@@ -13,6 +13,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { FEEDBACK_QUESTIONS } from "@/data/feedbackQuestions";
 import { cn } from "@/lib/utils";
+import { Checkbox } from "@/components/ui/checkbox";
+import { getReviewUrl } from "@/components/reviews/GoogleReviews";
 
 
 function StarRating({
@@ -34,7 +36,7 @@ function StarRating({
           aria-checked={value === n}
           aria-label={`${n} von 5 Sternen`}
           onClick={() => onChange(n)}
-          className="p-1 rounded transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <Star
             className={cn(
@@ -64,6 +66,8 @@ export default function FeedbackMietprozess() {
   const [freeText, setFreeText] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  const [showGoogleReview, setShowGoogleReview] = useState(false);
+  const reviewUrl = getReviewUrl(location);
   const personalToken = searchParams.get("token");
   const [linkReady, setLinkReady] = useState(!personalToken);
   const [linkError, setLinkError] = useState("");
@@ -209,8 +213,8 @@ export default function FeedbackMietprozess() {
             Sternen und Platz für deine Worte. Dauert rund 3 Minuten.
           </p>
           <div className="mt-5 rounded-lg bg-accent/15 border border-accent/40 p-4">
-            <p className="text-primary-foreground font-semibold flex items-center gap-2">
-              <Gift className="h-5 w-5 text-accent" /> {personalToken ? "10 % Gutschein für deine nächste Miete" : "Deine Rückmeldung"}
+            <p className="text-primary-foreground font-semibold flex items-start gap-2">
+              <Gift className="h-5 w-5 shrink-0 text-accent" /> {personalToken ? "10 % Gutschein für deine nächste Miete" : "Deine Rückmeldung"}
             </p>
             <p className="text-primary-foreground/80 text-sm mt-1">
               {personalToken ? "Nach deinem Feedback wird dein persönlicher Gutschein aktiviert – insgesamt einmal pro Kunde, unabhängig von deiner Bewertung. Keine Google-Bewertung erforderlich." : "Für eine Gutscheinberechtigung ist der persönliche Feedback-Link zu deinem abgeschlossenen Mietauftrag erforderlich."}
@@ -222,6 +226,7 @@ export default function FeedbackMietprozess() {
       <section className="py-8 md:py-12">
         <div className="section-container max-w-3xl">
           {linkError ? <p role="alert" className="text-destructive">{linkError}</p> : !linkReady ? <p>Feedback wird geladen …</p> : done ? (
+            <>
             <Card>
               <CardContent className="p-8 text-center">
                 <CheckCircle2 className="h-12 w-12 text-accent mx-auto mb-4" />
@@ -233,13 +238,24 @@ export default function FeedbackMietprozess() {
                   <p className="font-semibold flex items-center gap-2">
                     <Gift className="h-5 w-5 text-accent" /> {couponCode ? "Dein 10-%-Gutschein" : "Feedback gespeichert"}
                   </p>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-muted-foreground mt-1 break-words">
                     {couponCode ? `Code: ${couponCode} · ${couponStatus === "active" ? "Aktiv für deine nächste Miete" : couponStatus === "reserved" ? "In einem Angebot reserviert" : couponStatus === "redeemed" ? "Bereits eingelöst" : "Gesperrt"}` : personalToken ? "Du hast den einmaligen Feedback-Gutschein bereits bei einer früheren Rückmeldung erhalten." : "Vielen Dank für deine Rückmeldung."}
                   </p>
 
                 </div>
               </CardContent>
             </Card>
+            {reviewUrl && <div className="mt-8 border-t border-border pt-6 space-y-4">
+              <div className="flex items-start gap-3">
+                <Checkbox id="voluntary-google-review" checked={showGoogleReview} onCheckedChange={value => setShowGoogleReview(value === true)} className="mt-0.5 shrink-0" />
+                <Label htmlFor="voluntary-google-review" className="leading-6">Ich möchte freiwillig eine Google-Bewertung abgeben (optional).</Label>
+              </div>
+              <p className="text-sm text-muted-foreground">Dein Feedback ist bereits gespeichert. Die Google-Bewertung hat keinen Einfluss auf deinen Gutschein.</p>
+              {showGoogleReview && <Button asChild variant="outline" className="w-full sm:w-auto h-auto min-h-11 whitespace-normal text-center">
+                <a href={reviewUrl} target="_blank" rel="noopener noreferrer">Standort {location.trim().toLowerCase() === "bonn" ? "Bonn" : "Krefeld"} auf Google bewerten</a>
+              </Button>}
+            </div>}
+            </>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               {!personalToken && <Card>
@@ -376,7 +392,7 @@ export default function FeedbackMietprozess() {
                         onClick={() => setRecommend(n)}
                         aria-pressed={recommend === n}
                         className={cn(
-                          "h-10 w-10 rounded-md border text-sm font-medium transition-colors",
+                          "h-11 w-11 shrink-0 rounded-md border text-sm font-medium transition-colors",
                           recommend === n
                             ? "bg-accent text-accent-foreground border-accent"
                             : "bg-background text-foreground hover:bg-muted",
@@ -409,7 +425,7 @@ export default function FeedbackMietprozess() {
                   type="submit"
                   size="lg"
                   disabled={submitting}
-                  className="bg-accent text-accent-foreground hover:bg-cta-orange-hover"
+                  className="w-full sm:w-auto bg-accent text-accent-foreground hover:bg-cta-orange-hover"
                 >
                   {submitting ? (
                     <>

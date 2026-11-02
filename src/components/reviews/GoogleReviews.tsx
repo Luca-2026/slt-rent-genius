@@ -44,7 +44,8 @@ export function getPlaceId(locationId: string): string | undefined {
 }
 
 export function getReviewUrl(locationId: string): string | undefined {
-  return GOOGLE_REVIEW_URLS[locationId];
+  const normalized = locationId.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return GOOGLE_REVIEW_URLS[normalized];
 }
 
 function StarRating({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg" }) {
