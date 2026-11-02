@@ -1,3 +1,4 @@
+import { normalizeOpenEndedUnit, normalizeOpenEndedDuration, type OpenEndedUnit } from "@/lib/installments";
 import { DepositSettlementCard } from "./DepositSettlementCard";
 import { requestedCoupon } from "@/lib/requestedCoupon";
 import { ReturnChargesSummary } from "./ReturnChargesSummary";
@@ -108,7 +109,7 @@ export function offerPayloadToLines(payload: unknown): {
     deposit: number;
   };
   meta: {
-    payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null; open_ended: boolean; min_months?: number;
+    payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null; open_ended: boolean; min_months?: number; minimum_duration?: number; open_ended_unit?: OpenEndedUnit;
     /** Paket 3b – fehlen bei alten Angeboten. */
     groups?: OfferGroup[]; extra_fields?: OfferExtraFields; order_type?: OrderType; terms_text?: string;
   };
@@ -129,7 +130,7 @@ export function offerPayloadToLines(payload: unknown): {
         valid_days?: number;
         notes?: string | null;
         open_ended?: boolean;
-        min_months?: number;
+        min_months?: number; minimum_duration?: number; open_ended_unit?: OpenEndedUnit;
         groups?: unknown;
         extra_fields?: unknown;
         order_type?: unknown; terms_text?: unknown;
@@ -222,6 +223,8 @@ export function offerPayloadToLines(payload: unknown): {
       valid_days: Number(p.valid_days) > 0 ? Number(p.valid_days) : null,
       notes: typeof p.notes === "string" ? p.notes : null,
       open_ended: p.open_ended === true,
+      open_ended_unit: normalizeOpenEndedUnit(p.open_ended_unit),
+      minimum_duration: normalizeOpenEndedDuration(p.minimum_duration ?? p.min_months, normalizeOpenEndedUnit(p.open_ended_unit)),
       min_months: Number(p.min_months) >= 1 ? Math.floor(Number(p.min_months)) : 1,
       ...(parseGroups(p.groups).length ? { groups: parseGroups(p.groups) } : {}),
       ...(cleanExtraFields(p.extra_fields) ? { extra_fields: cleanExtraFields(p.extra_fields) } : {}),
@@ -853,7 +856,12 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           ignoreDraft={(docMode === "invoice" || docMode === "final") && deposit.chargeLines.some((l) => l.protocol_charge_source === "settlement")}
           defaultCosts={offerSnapshot?.costs}
           reviseOf={docMode === "revise" ? inquiry.offer_number : null}
-          defaultMeta={docMode === "revise" ? offerSnapshot?.meta : undefined}
+          defaultMeta={docMode === "revise" ? offerSnapshot?.meta : docMode === "offer" ? (() => {
+            const raw = inquiry.raw_payload as Record<string, unknown> | null;
+            if (raw?.open_ended !== true) return undefined;
+            const unit = normalizeOpenEndedUnit(raw.open_ended_unit);
+            return { open_ended: true, open_ended_unit: unit, minimum_duration: normalizeOpenEndedDuration(raw.minimum_duration, unit) };
+          })() : undefined}
           defaultPayments={docMode === "invoice" || docMode === "final"
             ? deposit.settled
               ? [

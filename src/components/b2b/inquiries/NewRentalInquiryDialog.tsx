@@ -1,3 +1,5 @@
+import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
+import { type OpenEndedUnit } from "@/lib/installments";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -58,6 +60,9 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
   const [crmCustomerId, setCrmCustomerId] = useState<string | null>(null);
   const [storeCustomer, setStoreCustomer] = useState(true);
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [openEnded, setOpenEnded] = useState(false);
+  const [openEndedUnit, setOpenEndedUnit] = useState<OpenEndedUnit>("monate");
+  const [minimumDuration, setMinimumDuration] = useState(1);
   const [busy, setBusy] = useState(false);
 
   const set = (key: keyof typeof emptyForm, value: string) =>
@@ -84,6 +89,9 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
 
   const reset = () => {
     setForm({ ...emptyForm });
+    setOpenEnded(false);
+    setOpenEndedUnit("monate");
+    setMinimumDuration(1);
     setCrmCustomerId(null);
     setStoreCustomer(true);
   };
@@ -105,7 +113,7 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
       toast.error("Bitte das Mietstart-Datum angeben.");
       return;
     }
-    if (form.end_date && form.end_date < form.start_date) {
+    if (!openEnded && form.end_date && form.end_date < form.start_date) {
       toast.error("Das Rückgabedatum darf nicht vor dem Startdatum liegen.");
       return;
     }
@@ -144,8 +152,9 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
           quantity: Number(form.quantity) > 0 ? Number(form.quantity) : 1,
           start_date: form.start_date,
           start_time: form.start_time || null,
-          end_date: form.end_date || null,
-          end_time: form.end_time || null,
+          end_date: openEnded ? null : form.end_date || null,
+          end_time: openEnded ? null : form.end_time || null,
+          ...(openEnded ? { raw_payload: { open_ended: true, open_ended_unit: openEndedUnit, minimum_duration: minimumDuration } } : {}),
           customer_kind: form.customer_kind,
           company_name: form.company_name.trim() || null,
           vat_id: form.vat_id.trim() || null,
@@ -270,13 +279,21 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
             </div>
             <div>
               <Label htmlFor="nri-end-date">Rückgabe am</Label>
-              <Input id="nri-end-date" type="date" value={form.end_date} onChange={(e) => set("end_date", e.target.value)} />
+              <Input id="nri-end-date" disabled={openEnded} type="date" value={form.end_date} onChange={(e) => set("end_date", e.target.value)} />
             </div>
             <div>
               <Label>Uhrzeit</Label>
-              <Input type="time" value={form.end_time} onChange={(e) => set("end_time", e.target.value)} />
+              <Input type="time" disabled={openEnded} value={form.end_time} onChange={(e) => set("end_time", e.target.value)} />
             </div>
 
+            <div className="sm:col-span-2 space-y-3">
+              <label className="flex items-center gap-2 text-sm">
+                <Checkbox checked={openEnded} onCheckedChange={(v) => setOpenEnded(v === true)} />
+                Unbefristete Miete (ohne Enddatum)
+              </label>
+              {openEnded && <OpenEndedPeriodFields unit={openEndedUnit} duration={minimumDuration}
+                onChange={(unit, duration) => { setOpenEndedUnit(unit); setMinimumDuration(duration); }} />}
+            </div>
             <div className="sm:col-span-2">
               <Label htmlFor="nri-company">Firma</Label>
               <Input id="nri-company" value={form.company_name} onChange={(e) => set("company_name", e.target.value)} maxLength={160} />
