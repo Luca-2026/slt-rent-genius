@@ -37,6 +37,14 @@ Deno.serve(async (req) => {
     });
     const body = await req.json().catch(() => ({} as Record<string, unknown>));
     const dryRun = body?.dry_run === true;
+    if (body?.test_offer_link_id) {
+      const jwt = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
+      const { data: userData } = await service.auth.getUser(jwt);
+      if (userData.user?.email?.toLowerCase() !== "luca@sandhoff.org" || !/^[0-9a-f-]{36}$/i.test(body.test_offer_link_id)) return json({ error: "Kein Testzugriff" }, 403);
+      const { data: testLink } = await service.from("offer_acceptance_links").select("customer_email").eq("id", body.test_offer_link_id).maybeSingle();
+      if (testLink?.customer_email?.toLowerCase() !== "luca@sandhoff.org") return json({ error: "Nur freigegebene Testadresse" }, 403);
+      return json(await processOfferFollowups(service, body.test_offer_link_id));
+    }
     if (!(await isCronCall(req, service)) && !(await staffUserId(req, service))) return json({ error: "Unauthorized" }, 401);
 
     const now = new Date();
