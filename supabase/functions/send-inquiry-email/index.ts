@@ -1,10 +1,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { saveRentalInquiry, rentalInquiryLink, serviceClient } from "../_shared/inquiry-store.ts";
+import { previewPublicCoupon } from "../_shared/public-coupon.ts";
+import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
 
 const SLT_LOGO = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
 const COMPANY_NAME = "SLT Technology Group GmbH & Co. KG";
@@ -91,6 +89,11 @@ serve(async (req) => {
     const slugs = [...new Set(requestedItems.map((it) => it.product_slug).filter((s): s is string => !!s))];
     const addonLabelsBySlug = new Map<string, Map<string, string>>();
     const db = serviceClient();
+    if (requestedCode) {
+      if (!db) return new Response(JSON.stringify({ error: "Gutscheinprüfung derzeit nicht möglich" }), { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      const preview = await previewPublicCoupon(db, requestedCode, String(email ?? ""), slugs);
+      if (!preview.valid) return new Response(JSON.stringify({ error: preview.message }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
     if (slugs.length && db) {
       const { data: prows } = await db
         .from("b2b_managed_products")

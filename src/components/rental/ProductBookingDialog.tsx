@@ -26,6 +26,7 @@ import { computeRentalLinePrice, unitLabel, type PricingUnit } from "@/lib/prici
 import { productManagedPrices } from "./ProductPriceBlock";
 import { displayPrice } from "@/lib/priceDisplay";
 import { useCustomerType } from "@/hooks/useCustomerType";
+import { usePublicCoupon } from "@/hooks/usePublicCoupon";
 
 interface ProductBookingDialogProps {
   product: Product | null;
@@ -179,6 +180,7 @@ export function ProductBookingDialog({
       ? [{ product_name: product.name, product_slug: product.id, quantity: 1, set_size: parseSetSize(product.name), image: product.image }]
       : [];
   const [requestItems, setRequestItems] = useState<RequestItem[]>([]);
+  const coupon = usePublicCoupon(form.couponCode, form.email, requestItems.flatMap(item => item.product_slug ? [item.product_slug] : []), JSON.stringify([requestItems, form.startDate, form.startTime, form.endDate, form.endTime, location?.id]));
   // Entwurf der Kundenanfrage: übersteht Tabwechsel, Schließen und Neuladen (7 Tage).
   const draftKey = `slt.customer-inquiry-draft.v1:${product?.id ?? "x"}:${location?.id ?? "x"}`;
   const [draftReady, setDraftReady] = useState(false);
@@ -311,6 +313,7 @@ export function ProductBookingDialog({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!product || !location) return;
+    if (!coupon.valid) { toast.error(coupon.message); return; }
     if (dateOrderInvalid) {
       toast.error("Das Rückgabedatum darf nicht vor dem Abholdatum liegen.");
       return;
@@ -657,6 +660,7 @@ export function ProductBookingDialog({
                       <Input id="inq-coupon" value={form.couponCode} maxLength={20}
                         pattern="[A-Fa-f0-9]{20}" autoCapitalize="characters"
                         onChange={e => setForm({ ...form, couponCode: e.target.value.toUpperCase() })} />
+                      {coupon.message && <p role="status" className="text-sm text-muted-foreground">{coupon.message}</p>}
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="inq-message">Kommentar / weitere Wünsche</Label>
@@ -802,7 +806,7 @@ export function ProductBookingDialog({
                     <Button
                       type="submit"
                       className="w-full"
-                      disabled={sending}
+                      disabled={sending || !coupon.valid}
                     >
                       {sending ? (
                         <>
