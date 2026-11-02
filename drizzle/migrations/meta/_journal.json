@@ -694,6 +694,13 @@
       "when": 1793633197109,
       "tag": "0098_offer_expiry_test_scope",
       "breakpoints": true
+    },
+    {
+      "idx": 99,
+      "version": "7",
+      "when": 1793633309110,
+      "tag": "0099_offer_dispatch_success_only",
+      "breakpoints": true
     }
   ]
 }

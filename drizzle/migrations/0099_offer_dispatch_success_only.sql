@@ -1,0 +1,3 @@
+DROP TRIGGER track_offer_dispatch ON public.rental_inquiries;
+COMMENT ON FUNCTION public.track_offer_dispatch() IS 'DEPRECATED: dispatched_at is recorded by send-inquiry-offer only after successful provider response; inquiry offer_sent_at alone does not prove email delivery.';
+UPDATE public.offer_acceptance_links SET dispatched_at=NULL WHERE created_at<'2026-11-02T15:18:00Z' AND dispatched_at IS NOT NULL;
