@@ -3,8 +3,8 @@ import { computeAddonAmount, daysPerUnit } from "./addon-calc.ts";
 import { catalogDeposit } from "./catalog-deposit.ts";
 import { validPublicRentalPeriod } from "./public-rental-period.ts";
 
-/** Gleicher Satz wie ADDITIONAL_SERVICES "kostenfreie-stornierung" (Angebote/Reservierungen): 7 % der Miete. */
-export const FREE_CANCELLATION_OPTION = { key: "kostenfreie_stornierung", label: "Kostenfreie Stornierung bis 72 Std. vor Mietbeginn", price_type: "percent", price: 7, is_default: false } as const;
+import { FREE_CANCELLATION_OPTION, cancellationAmount } from "./cancellation-option.ts";
+export { FREE_CANCELLATION_OPTION } from "./cancellation-option.ts";
 
 export async function publicRentalQuote(service: any, items: any[]) {
   const slugs = [...new Set(items.map(item => item.product_slug))];
@@ -27,6 +27,7 @@ export async function publicRentalQuote(service: any, items: any[]) {
     const base = defaults[0];
     const insuranceDays = insuranceCalendarDays({ date: item.start_date }, { date: item.end_date });
     const calculate = (option: any) => {
+      if (option.key === FREE_CANCELLATION_OPTION.key) return cancellationAmount(unitPrice === null ? null : item.quantity * line.duration * unitPrice);
       if (unitPrice === null && option.price_type === "percent") return null;
       return computeAddonAmount({ price_type: option.price_type, rate: Number(option.price), basis: option.full_period_default && daysPerUnit(line.unit) ? "full_period" : "line", days: insuranceDays }, { articles: item.quantity, duration: line.duration, unit_price: unitPrice ?? 0, discount_percent: 0, days_per_unit: daysPerUnit(line.unit) });
     };
