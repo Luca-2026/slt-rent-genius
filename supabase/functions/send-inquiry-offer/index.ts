@@ -10,7 +10,7 @@ import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
  * - The customer is asked to confirm acceptance by replying to the location mailbox;
  *   the job is then created manually in Rentware.
  */
-import { openEndedNote, normalizeOpenEndedDuration, normalizeOpenEndedUnit, monthlyNetFromOffer } from "../_shared/installments.ts";
+import { OPEN_ENDED_UNITS, openEndedNote, normalizeOpenEndedDuration, normalizeOpenEndedUnit, monthlyNetFromOffer } from "../_shared/installments.ts";
 import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts";
 import {
   ensurePaymentLink,
@@ -97,6 +97,10 @@ Deno.serve(async (req: Request) => {
     }
     if (typeof inquiryId !== "string" || inquiryId.length < 10) {
       return json({ error: "inquiry_id fehlt" }, 400);
+    }
+    if (inquiryType === "rental" && body.open_ended === true && body.open_ended_unit != null &&
+        !OPEN_ENDED_UNITS.some((entry) => entry.value === body.open_ended_unit)) {
+      return json({ error: "Ungültige Einheit für unbefristete Miete" }, 400);
     }
 
     let items: InquiryOfferItem[];
