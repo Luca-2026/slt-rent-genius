@@ -1,5 +1,5 @@
 # Roadmap – Paket 4 (Angebots-PDF & E-Mail)
-- [ ] Ausführlichen Plan für eigenes öffentliches Mietanfrage-System erstellen: unmittelbare Gutscheinprüfung, Kalender/Preis/Optionen, persistenter Warenkorb mit Zeitraum je Position; Rentware ausschließlich Anhänger.
+- [x] Ausführlicher Plan erstellt: unmittelbare Gutscheinprüfung, Kalender/Preis/Optionen, persistenter Warenkorb mit Positionszeiträumen, Rentware nur Anhänger; Umsetzung wartet auf Planfreigabe.
 - [x] Feedback/Anfrage auf Mobil 402×725, Tablet 768×1024 und Desktop 1280×1800 geprüft, ohne horizontalen Überlauf/Browserfehler; größere Bewertungsflächen. Freiwillige Google-Option nach Feedback für Bonn/Krefeld, unabhängig vom Gutschein; Abschlussanzeige mit Testantwort statt echtem Feedback geprüft, 21 Tests bestanden.
 - [ ] Google-Bewertungslink Mülheim an der Ruhr: kein bestätigter eigener Link vorhanden; wartet auf echten Standortlink, kein fremder Standort als Ersatz.
 - [x] Gutscheine: öffentliches Eingabefeld bis Angebotsvorbelegung; vollständiges internes Feedback; Ausschlüsse für Versicherung/Zubehör/Haftungsfreistellung/Stundenlohn und unveränderte prozentuale Zusatzkosten umgesetzt. Desktop/Mobil geprüft, 58 Tests bestanden; keine Kundenmail/Rechnung versandt.
