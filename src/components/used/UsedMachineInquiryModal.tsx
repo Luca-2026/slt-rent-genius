@@ -31,6 +31,7 @@ interface Props {
   open: boolean;
   onClose: () => void;
   machine: MachineData | null; // null = general inquiry
+  financing?: { term: string; downPayment: string; balloon: string; summary: string } | null;
 }
 
 type FormView = "form" | "success" | "error";
@@ -41,7 +42,7 @@ const locationLabels: Record<string, string> = {
   muelheim: "Mülheim",
 };
 
-export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
+export function UsedMachineInquiryModal({ open, onClose, machine, financing }: Props) {
   const [view, setView] = useState<FormView>("form");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -80,6 +81,8 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
   const [financingDesired, setFinancingDesired] = useState(false);
   const [financingTerm, setFinancingTerm] = useState("");
   const [financingDownPayment, setFinancingDownPayment] = useState("");
+  const [financingBalloon, setFinancingBalloon] = useState("");
+  const [financingSummary, setFinancingSummary] = useState("");
 
   // Block 5
   const [message, setMessage] = useState("");
@@ -89,6 +92,7 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
     if (open) {
       setView("form");
       setErrors({});
+      if (financing) { setFinancingDesired(true); setFinancingTerm(financing.term); setFinancingDownPayment(financing.downPayment); setFinancingBalloon(financing.balloon); setFinancingSummary(financing.summary); }
     }
   }, [open]);
 
@@ -186,8 +190,8 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
           financingDesired,
           financingTerm,
           financingDownPayment,
-          // message
-          message,
+          // message (Schlussrate/Rechnerergebnis ergänzend im Nachrichtentext)
+          message: [financingDesired && financingBalloon ? `Gewünschte Schlussrate: ${financingBalloon} €` : "", financingDesired ? financingSummary : "", message].filter(Boolean).join("\n\n"),
         },
       });
       if (error) throw error;
@@ -515,8 +519,8 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
             <div className="space-y-3">
               <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Finanzierung</h3>
               <p className="text-xs text-muted-foreground">
-                Über unseren Finanzierungspartner bieten wir Dir die besten Finanzierungsoptionen direkt mit an –
-                flexible Laufzeiten und individuelle Anzahlung.
+                Über unsere Partnerbanken prüfen wir gerne eine Finanzierung zu günstigen Konditionen –
+                Laufzeiten von 12 bis 60 Monaten, individuelle Anzahlung oder Vollfinanzierung, optional mit Schlussrate.
               </p>
               <div className="flex items-start gap-2">
                 <Checkbox
@@ -535,6 +539,7 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
                     <Select value={financingTerm} onValueChange={setFinancingTerm}>
                       <SelectTrigger className="mt-1"><SelectValue placeholder="Laufzeit wählen" /></SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="12">12 Monate</SelectItem>
                         <SelectItem value="24">24 Monate</SelectItem>
                         <SelectItem value="36">36 Monate</SelectItem>
                         <SelectItem value="48">48 Monate</SelectItem>
@@ -553,6 +558,11 @@ export function UsedMachineInquiryModal({ open, onClose, machine }: Props) {
                       onChange={(e) => setFinancingDownPayment(e.target.value)}
                     />
                   </div>
+                  <div>
+                    <Label>Schlussrate (€, optional)</Label>
+                    <Input type="text" inputMode="decimal" placeholder="z. B. 2.000" value={financingBalloon} onChange={(e) => setFinancingBalloon(e.target.value)} />
+                  </div>
+                  {financingSummary && <p className="sm:col-span-2 text-xs text-muted-foreground">{financingSummary}</p>}
                 </div>
               )}
             </div>
