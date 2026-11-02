@@ -687,6 +687,13 @@
       "when": 1793632905834,
       "tag": "0097_offer_dispatch_rollout_and_legacy_dates",
       "breakpoints": true
+    },
+    {
+      "idx": 98,
+      "version": "7",
+      "when": 1793633197109,
+      "tag": "0098_offer_expiry_test_scope",
+      "breakpoints": true
     }
   ]
 }

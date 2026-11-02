@@ -5904,6 +5904,7 @@ export type Database = {
         Returns: Json
       }
       ensure_repair_list: { Args: { _location: string }; Returns: string }
+      expire_open_offer_link: { Args: { p_id: string }; Returns: boolean }
       expire_open_offer_links: { Args: never; Returns: number }
       feedback_customer_identity: {
         Args: { p_crm: string; p_email: string; p_profile: string }
