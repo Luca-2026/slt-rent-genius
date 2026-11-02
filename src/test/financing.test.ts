@@ -23,3 +23,8 @@ describe("financing calculator", () => {
     expect(parseEuro("4.558,10 €")).toBe(4558.1);
   });
 });
+
+import { teaserMonthlyRate as teaser } from "@/lib/financing";
+test("Preis-Lockrate: 60 Monate, Anzahlung = USt., ohne Schlussrate", () => {
+  expect(teaser(22598.10, 18990)).toBe(362.73);
+});
