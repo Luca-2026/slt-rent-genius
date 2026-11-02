@@ -164,12 +164,49 @@ export function normalizeMinMonths(v: unknown): number {
 }
 
 /** Angebotshinweis inkl. verbindlicher Mindestmietzeit (ab 2 Monaten). */
-export function openEndedNote(minMonths: number): string {
+export function openEndedNote(minMonths: number, unit: OpenEndedUnit = "monate"): string {
+  if (unit !== "monate") {
+    const duration = normalizeOpenEndedDuration(minMonths, unit);
+    const label = OPEN_ENDED_UNITS.find((entry) => entry.value === unit)?.label ?? "Miettage";
+    return `Unbefristete Miete: Die ausgewiesenen Mietpreise gelten je ${openEndedUnitSingular(unit)}. ` +
+      `Ein Enddatum ist nicht vereinbart. Es wird eine verbindliche Mindestmietzeit von ${duration} ${label} vereinbart; der Angebotsbetrag umfasst diese Mindestmietzeit. ` +
+      "Die Abrechnung erfolgt per Abschlagsrechnung; nach Rückgabe erhalten Sie eine Schlussrechnung über die tatsächliche Mietdauer, in der alle Abschläge verrechnet werden.";
+  }
   const m = normalizeMinMonths(minMonths);
   if (m <= 1) return OPEN_ENDED_NOTE;
   return OPEN_ENDED_NOTE +
     ` Es wird eine verbindliche Mindestmietzeit von ${m} Monaten vereinbart; der Angebotsbetrag umfasst diese Mindestmietzeit. ` +
     "Nach Ablauf der Mindestmietzeit läuft die Miete monatlich weiter, bis zur Rückgabe.";
+}
+
+export const OPEN_ENDED_UNITS = [
+  { value: "monate", label: "Monate" },
+  { value: "arbeitstage", label: "Arbeitstage" },
+  { value: "kalendertage", label: "Kalendertage" },
+  { value: "miettage", label: "Miettage" },
+] as const;
+export type OpenEndedUnit = typeof OPEN_ENDED_UNITS[number]["value"];
+
+export function normalizeOpenEndedUnit(value: unknown): OpenEndedUnit {
+  return OPEN_ENDED_UNITS.find((entry) => entry.value === value)?.value ?? "monate";
+}
+
+export function normalizeOpenEndedDuration(value: unknown, unit: OpenEndedUnit): number {
+  if (unit === "monate") return normalizeMinMonths(value);
+  const n = Math.floor(Number(value));
+  return Number.isSafeInteger(n) && n >= 1 ? n : 1;
+}
+
+export function openEndedUnitSingular(unit: OpenEndedUnit): string {
+  return { monate: "Monat", arbeitstage: "Arbeitstag", kalendertage: "Kalendertag", miettage: "Miettag" }[unit];
+}
+
+/** Only duration-based rental lines inherit the open-ended minimum; one-off extras stay unchanged. */
+export function applyOpenEndedPeriod<T extends { unit?: string; duration?: number; rental_end?: string }>(
+  item: T, unit: OpenEndedUnit, duration: number,
+): T {
+  if (item.unit === "pauschal" || item.unit === "stueck") return item;
+  return { ...item, unit, duration: normalizeOpenEndedDuration(duration, unit), rental_end: undefined };
 }
 
 /** Hinweistext für die Schlussrechnung (§ 14 Abs. 5 UStG: Abschläge mit Entgelt und Steuer ausweisen). */

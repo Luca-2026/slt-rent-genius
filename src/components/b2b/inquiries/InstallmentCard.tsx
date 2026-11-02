@@ -176,7 +176,7 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="font-semibold flex items-center gap-2">
           <CalendarClock className="h-4 w-4" /> Abschlagsrechnungen
-          {openEnded && <span className="rounded bg-muted px-2 py-0.5 text-xs font-normal">Unbefristete Monatsmiete</span>}
+          {openEnded && <span className="rounded bg-muted px-2 py-0.5 text-xs font-normal">Unbefristete Miete</span>}
         </div>
         {due && <span className="rounded bg-destructive/10 px-2 py-0.5 text-xs font-medium text-destructive">Abschlag fällig</span>}
       </div>
