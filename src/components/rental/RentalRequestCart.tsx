@@ -106,7 +106,7 @@ export function RentalRequestCart() {
   return <>
     <Dialog open={snapshot.open} onOpenChange={open => update({ open, edit: open ? state.edit : null })}>
       <DialogContent className="max-w-3xl max-h-[92dvh] overflow-y-auto overflow-x-hidden p-4 sm:p-6">
-        <DialogHeader><DialogTitle>{edit ? edit.product_name : "Deine Mietanfrage"}</DialogTitle><DialogDescription>Verfügbarkeit wird nach deiner Anfrage bestätigt.</DialogDescription></DialogHeader>
+        <DialogHeader><DialogTitle>{edit ? "Mietanfrage" : "Deine Mietanfrage"}</DialogTitle><DialogDescription>Verfügbarkeit wird nach deiner Anfrage bestätigt.</DialogDescription></DialogHeader>
         {snapshot.cart && <p className="flex items-center gap-2 text-sm font-semibold text-primary"><Clock className="h-4 w-4" />Warenkorb läuft ab in {Math.floor(remaining / 60)}:{String(remaining % 60).padStart(2, "0")} · danach werden ungesendete Artikel entfernt.</p>}
         {done ? <p role="status">{done} Unser Team prüft deine Anfrage und meldet sich bei dir.</p> : snapshot.expired && !edit ? <p role="status">Dein Warenkorb ist abgelaufen. Bitte wähle deine Artikel erneut.</p> : null}
         {!done && <RadioGroup className="flex flex-wrap gap-4" value={type} onValueChange={value => { if (value === "private" || value === "business") setCustomerType(value); }} aria-label="Kundenart">{([['private', 'Privatkunde'], ['business', 'Geschäftskunde']] as const).map(([value, label]) => <label key={value} className="flex items-center gap-2 text-sm"><RadioGroupItem value={value} />{label}</label>)}</RadioGroup>}
