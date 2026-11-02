@@ -29,6 +29,27 @@ serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const action = body?.action as string | undefined;
 
+    if (action === "details" || action === "postal") {
+      const placeId = String(body.placeId ?? "");
+      const postalCode = String(body.postalCode ?? "");
+      if (action === "details" ? !/^[A-Za-z0-9_-]{1,300}$/.test(placeId) : !/^\d{5}$/.test(postalCode)) return json({ error: "Ungültige Eingabe" }, 400);
+      if (!(await allowPublicRequest(req, "geo-address-details", 120, 3600))) return json({ error: "Zu viele Anfragen" }, 429);
+      let components: any[] = [];
+      if (action === "details") {
+        const response = await fetch(`https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}`, { headers: { "X-Goog-Api-Key": apiKey, "X-Goog-FieldMask": "addressComponents" } });
+        if (!response.ok) return json({ error: "Adresse nicht gefunden" }, 502);
+        components = (await response.json()).addressComponents ?? [];
+      } else {
+        const params = new URLSearchParams({ components: `postal_code:${postalCode}|country:DE`, key: apiKey, language: "de" });
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?${params}`);
+        if (!response.ok) return json({ error: "Ort nicht gefunden" }, 502);
+        const result = await response.json();
+        components = (result.results ?? []).find((r: any) => r.address_components?.some((c: any) => c.types.includes("postal_code") && c.long_name === postalCode))?.address_components ?? [];
+      }
+      const field = (type: string) => { const component = components.find((c: any) => c.types?.includes(type)); return component?.longText ?? component?.long_name ?? ""; };
+      return json({ street: [field("route"), field("street_number")].filter(Boolean).join(" "), postalCode: field("postal_code"), city: field("locality") || field("postal_town") });
+    }
+
     if (action === "autocomplete") {
       const input = String(body.input ?? "").trim();
       const sessionToken = String(body.sessionToken ?? "");
