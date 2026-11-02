@@ -65,6 +65,7 @@ import {
   InquiryProductCombobox,
   categoryNameFor,
   findCatalogProductByName,
+  loadCatalog,
   pickCatalogImage,
 } from "./InquiryProductCombobox";
 import { SalesProductCombobox } from "./SalesProductCombobox";
@@ -1098,7 +1099,7 @@ export function InquiryOfferForm({
               available_addons: [],
             };
           }
-          const catalog = await import("./InquiryProductCombobox").then((m) => m.loadCatalog());
+          const catalog = await loadCatalog();
           const baseName = item.product_name.endsWith(WEEKEND_SUFFIX) ? item.product_name.slice(0, -WEEKEND_SUFFIX.length) : item.product_name;
           const match = catalog.find((p) => p.slug === item.product_slug) ?? await findCatalogProductByName(baseName);
           if (!match) return item;
