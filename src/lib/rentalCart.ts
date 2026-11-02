@@ -8,6 +8,15 @@ export interface RentalCartItem {
   use_saturday: boolean; use_sunday: boolean;
 }
 export interface RentalCart { version: 1; expiresAt: number; requestId: string; items: RentalCartItem[] }
+/** Include the current draft and every accessory once in the live estimate. */
+export function cartQuoteItems(items: RentalCartItem[], edit: RentalCartItem | null): RentalCartItem[] {
+  if (!edit) return items;
+  const others = items.filter(item => item.id !== edit.id);
+  return validPublicRentalPeriod(edit) ? [edit, ...others] : others;
+}
+export function cartQuoteTotal(lines: { rental_net: number | null; addons: { amount: number | null }[] }[]): number {
+  return Math.round(lines.reduce((sum, line) => sum + (line.rental_net ?? 0) + line.addons.reduce((total, addon) => total + (addon.amount ?? 0), 0), 0) * 100) / 100;
+}
 export function cartCategoryPath(items: RentalCartItem[]): string {
   const location = items[0]?.location;
   return location && ["krefeld", "bonn", "muelheim"].includes(location) ? `/mieten/${location}/` : "/mieten/";

@@ -48,17 +48,17 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: {
       <p className="mt-1 font-semibold">{validCalendarDate(date) ? format(fromIso(date), "EEE, dd.MM.yyyy", { locale: de }) : "Im Kalender wählen"}</p>
       {validCalendarDate(date) && (win ? <Select value={slots.includes(time) ? time : undefined} onValueChange={value => patch(prefix === "start" ? { start_time: value } : { end_time: value })}>
         <SelectTrigger className="mt-2 h-10 bg-background" aria-label={`${label} Uhrzeit`}><SelectValue placeholder="Uhrzeit wählen" /></SelectTrigger>
-        <SelectContent className="max-h-64">{slots.map(slot => { const tariff = !!weekendPrice && ((prefix === "start" && fromIso(date).getDay() === 5 && slot === "16:00") || (prefix === "end" && fromIso(date).getDay() === 1 && slot === "09:30")); return <SelectItem key={slot} value={slot} className={tariff ? "bg-accent/15 font-semibold" : undefined}>{slot} Uhr{tariff ? (prefix === "start" ? " · Wochenendtarif ab hier" : " · Wochenendtarif bis hier") : ""}</SelectItem>; })}</SelectContent>
+        <SelectContent className="max-h-64">{slots.map(slot => { const tariff = ((prefix === "start" && fromIso(date).getDay() === 5 && slot === "16:00") || (prefix === "end" && fromIso(date).getDay() === 1 && slot === "09:30")); return <SelectItem key={slot} value={slot} className={tariff ? "bg-accent/15 font-semibold" : undefined}>{slot} Uhr{tariff ? (prefix === "start" ? " · Wochenendtarif ab hier" : " · Wochenendtarif bis hier") : ""}</SelectItem>; })}</SelectContent>
       </Select> : <p className="mt-2 text-sm text-destructive">An diesem Tag geschlossen</p>)}
-      {win && weekendPrice && ((prefix === "start" && fromIso(date).getDay() === 5) || (prefix === "end" && fromIso(date).getDay() === 1)) && <p className="mt-1 text-xs font-semibold text-accent-foreground"><span className="rounded bg-accent/20 px-1.5 py-0.5">Wochenendtarif: {prefix === "start" ? "Abholung ab 16:00 Uhr" : "Rückgabe bis 09:30 Uhr"}</span></p>}
+      {win && ((prefix === "start" && fromIso(date).getDay() === 5) || (prefix === "end" && fromIso(date).getDay() === 1)) && <p className="mt-1 text-xs font-semibold text-accent-foreground"><span className="rounded bg-accent/20 px-1.5 py-0.5">Wochenendtarif: {prefix === "start" ? "Abholung ab 16:00 Uhr" : "Rückgabe bis 09:30 Uhr"}</span></p>}
       {win && <p className="mt-1 text-xs text-muted-foreground">{flexible ? "Nach Vereinbarung" : `Geöffnet ${win.open}–${win.close} Uhr`}</p>}
     </div>;
   };
 
   return <div className="space-y-4">
-    {weekendPrice && <div className={`grid grid-cols-[auto_1fr] items-start gap-x-3 gap-y-2 rounded-md border p-3 ${weekendActive ? "border-accent bg-accent/15" : "border-accent/60 bg-accent/5"}`}>
+    {<div className={`grid grid-cols-[auto_1fr] items-start gap-x-3 gap-y-2 rounded-md border p-3 ${weekendActive ? "border-accent bg-accent/15" : "border-accent/60 bg-accent/5"}`}>
       <BadgePercent className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
-      <div className="min-w-0 text-sm"><p className="font-semibold">{weekendActive ? "Wochenendtarif aktiv" : `Wochenendtarif ${weekendPrice}`}</p><p className="text-muted-foreground">Abholung Fr ab 16:00, Rückgabe Mo bis 09:30 – Abholtag Freitag, Rückgabetag Montag.</p></div>
+      <div className="min-w-0 text-sm"><p className="font-semibold">{weekendActive ? "Wochenendtarif aktiv" : (weekendPrice ? `Wochenendtarif ${weekendPrice}` : "Wochenendzeitraum · Tarif im Angebot")}</p><p className="text-muted-foreground">Abholung Fr ab 16:00, Rückgabe Mo bis 09:30 – Abholtag Freitag, Rückgabetag Montag.</p></div>
       {!weekendActive && <Button type="button" size="sm" variant="outline" className="col-span-2 w-full border-accent sm:col-span-1 sm:col-start-2 sm:w-fit" onClick={() => { const fri = nextWeekendStart(new Date()); patch({ start_date: toIso(fri), start_time: "16:00", end_date: toIso(addDays(fri, 3)), end_time: "09:30" }); }}>Nächstes Wochenende wählen</Button>}
     </div>}
     <div className="rounded-md border border-border">
@@ -73,7 +73,7 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: {
         className="mx-auto w-fit"
         classNames={{ cell: "h-10 w-10 sm:h-11 sm:w-11 text-center text-sm p-0 relative [&:has([aria-selected])]:bg-primary/10 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md [&:has(.day-range-start)]:rounded-l-md [&:has(.day-range-end)]:rounded-r-md", day: "h-10 w-10 sm:h-11 sm:w-11 p-0 font-normal rounded-md hover:bg-muted aria-selected:opacity-100", day_today: "font-bold underline underline-offset-4", day_range_start: "day-range-start", day_range_middle: "aria-selected:bg-transparent aria-selected:text-foreground", head_cell: "text-muted-foreground rounded-md w-10 sm:w-11 font-normal text-[0.8rem]" }} />
     </div>
-    <div className="flex flex-wrap gap-2 text-xs"><span className="rental-available-legend rounded px-2 py-1">Verfügbar · vorbehaltlich Bestätigung</span><span className="rounded border border-border px-2 py-1"><b>Ab</b> = Abholtag · <b>Rück</b> = Rückgabetag</span>{weekendPrice && <span className="rounded bg-accent/15 px-2 py-1">Wochenendtarif: Abholung Fr ab 16:00 · Rückgabe Mo bis 09:30</span>}</div>
+    <div className="flex flex-wrap gap-2 text-xs"><span className="rental-available-legend rounded px-2 py-1">Verfügbar · vorbehaltlich Bestätigung</span><span className="rounded border border-border px-2 py-1"><b>Ab</b> = Abholtag · <b>Rück</b> = Rückgabetag</span>{<span className="rounded bg-accent/15 px-2 py-1">Wochenendtarif: Abholung Fr ab 16:00 · Rückgabe Mo bis 09:30</span>}</div>
     <div className="grid grid-cols-2 gap-3">{field("start", "Abholung")}{field("end", "Rückgabe")}</div>
     <div className="flex items-center justify-between rounded-md border border-border p-3">
       <span className="text-sm font-semibold">Anzahl</span>
