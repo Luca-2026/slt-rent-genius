@@ -44,6 +44,7 @@ export function CookieConsentBanner() {
   const { pathname } = useLocation();
   const signing = useSigningOverlaysSuppressed(pathname);
   const [visible, setVisible] = useState(false);
+  const [rentalDialogOpen, setRentalDialogOpen] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [analytics, setAnalytics] = useState(false);
   const [marketing, setMarketing] = useState(false);
@@ -70,7 +71,9 @@ export function CookieConsentBanner() {
     window.addEventListener("open-cookie-settings", handler);
     const consentChanged = () => { if (getConsentState()) setVisible(false); };
     window.addEventListener("cookie-consent-changed", consentChanged);
-    return () => { window.removeEventListener("open-cookie-settings", handler); window.removeEventListener("cookie-consent-changed", consentChanged); };
+    const rentalDialog = (event: Event) => setRentalDialogOpen((event as CustomEvent<boolean>).detail === true);
+    window.addEventListener("public-rental-dialog", rentalDialog);
+    return () => { window.removeEventListener("open-cookie-settings", handler); window.removeEventListener("cookie-consent-changed", consentChanged); window.removeEventListener("public-rental-dialog", rentalDialog); };
   }, [loadExisting]);
 
   const accept = () => {
@@ -91,7 +94,7 @@ export function CookieConsentBanner() {
     setShowDetails(false);
   };
 
-  if (!visible || signing) return null;
+  if (!visible || signing || rentalDialogOpen) return null;
 
   return (
     <div data-slt-cookie-banner className="fixed inset-0 z-[9999] flex items-end justify-center pointer-events-none">
