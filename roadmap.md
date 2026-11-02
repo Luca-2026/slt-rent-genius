@@ -1,4 +1,6 @@
 # Roadmap – Paket 4 (Angebots-PDF & E-Mail)
+- [x] Kostenfreie Stornierung: 5 % reine Miete ohne Versicherung/Kaution; fehlende Preise bleiben unbekannt, Option wählbar mit 5-%-Hinweis. CMS-Preis im mobilen/Desktop-Warenkorb geprüft; Funktionen aktualisiert, kein Versand.
+- [x] Anhängerseiten: reservierter Warenkorbplatz rechts neben mobilem Menü; geladenen Widget-Platz und Menüöffnung bei 393×841 geprüft. Leerer Rentware-Warenkorb blendet sein inneres Symbol selbst aus.
 - [x] Kaution im öffentlichen Warenkorb je Artikel und gesamt aus CMS; fehlende Angaben offen, keine Steuerumrechnung. 8 Tests und echte Fahrzeugkaution 1.000 € im Browser geprüft; Preisfunktion deployed, keine Anfrage versandt.
 - [x] Plan für eigenen Anfrage-Warenkorb freigegeben: Kalender, CMS-Preise/Optionen, Positionszeiträume, 15-Minuten-Frist, globales Pop-up und Rentware nur Anhänger.
 - [x] Eigene Anfrage-Strecke: zwei verschiedene Artikel mit eigenen Zeiträumen, Neuladen/Startseiten-Rückkehr, unveränderte Frist, Entfernung und Ablauf per Browser-Zeitsprung geprüft; Kalender/Optionen/Kontakt Mobil/Tablet/Desktop ohne Überlauf. 62 Regel-/Regressionstests bestanden; ungültige Serveranfragen HTTP 400. Vollständiger Live-Versand separat offen.

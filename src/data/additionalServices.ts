@@ -1,4 +1,5 @@
 // Additional services & deposit options for B2B rentals
+import { FREE_CANCELLATION_OPTION } from "../../supabase/functions/_shared/cancellation-option";
 
 export interface AdditionalService {
   id: string;
@@ -119,9 +120,9 @@ export const ADDITIONAL_SERVICES: AdditionalService[] = [
   {
     id: "kostenfreie-stornierung",
     name: "Kostenfreie Stornierung",
-    description: "Mit dieser Option ist die Stornierung bis 72h vor Mietbeginn kostenfrei.",
+    description: "Einmalig 5 % des Mietpreises, ohne Versicherung und Kaution. Stornierung bis 72h vor Mietbeginn kostenfrei.",
     applicableCategories: null, // always available
-    pricePercent: 7,
+    pricePercent: FREE_CANCELLATION_OPTION.price,
     calculationBase: "all_items",
   },
 ];

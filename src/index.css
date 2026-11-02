@@ -259,13 +259,13 @@
 
 rtr-checkout {
   position: fixed !important;
-  top: 40px !important;
-  right: 16px !important;
+  top: var(--rentware-cart-view-position-top) !important;
+  right: var(--rentware-cart-view-position-right) !important;
   bottom: unset !important;
   left: unset !important;
   z-index: 51 !important;
-  width: 56px !important;
-  height: 56px !important;
+  width: var(--slt-rentware-cart-size, 56px) !important;
+  height: var(--slt-rentware-cart-size, 56px) !important;
 }
 
 /* Mobile: improve touch scrolling in Rentware time dropdown */

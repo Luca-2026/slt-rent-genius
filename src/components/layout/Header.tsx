@@ -6,6 +6,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 import sltLogo from "@/assets/slt-logo-sm.webp";
 import { RentalCartButton } from "@/components/rental/RentalRequestCart";
+import { isTrailerRoute } from "@/lib/rentalBookingMode";
 
 const locations = [
   { id: "krefeld", name: "Krefeld", address: "Anrather Straße 291, 47807 Krefeld-Fichtenhain", phone: "02151 417 99 04", email: "krefeld@slt-rental.de" },
@@ -311,6 +312,7 @@ export function Header() {
             </div>
 
             <RentalCartButton />
+            {isTrailerRoute(location.pathname) && <div data-rentware-cart-slot className="h-11 w-11 shrink-0 lg:h-14 lg:w-14" />}
           </div>
         </div>
       </div>

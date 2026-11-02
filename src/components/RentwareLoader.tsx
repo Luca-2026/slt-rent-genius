@@ -184,14 +184,21 @@ export function RentwareLoader() {
       el.style.display = "";
       el.style.visibility = "";
       el.removeAttribute("aria-hidden");
+      const slot = document.querySelector("[data-rentware-cart-slot]")?.getBoundingClientRect();
+      const top = slot ? `${slot.top}px` : "40px";
+      const right = slot ? `${document.documentElement.clientWidth - slot.right}px` : "16px";
+      const size = slot ? `${slot.width}px` : "56px";
+      document.documentElement.style.setProperty("--rentware-cart-view-position-top", top, "important");
+      document.documentElement.style.setProperty("--rentware-cart-view-position-right", right, "important");
+      el.style.setProperty("--slt-rentware-cart-size", size);
       el.style.position = "fixed";
-      el.style.top = "40px";
-      el.style.right = "16px";
+      el.style.top = top;
+      el.style.right = right;
       el.style.bottom = "unset";
       el.style.left = "unset";
       el.style.zIndex = "51";
-      el.style.width = "56px";
-      el.style.height = "56px";
+      el.style.width = size;
+      el.style.height = size;
 
       if (el.shadowRoot) {
         const hideTag = el.shadowRoot.querySelector("#slt-hide-override");
@@ -206,23 +213,23 @@ export function RentwareLoader() {
         styleTag.textContent = `
           :host {
             position: fixed !important;
-            top: 40px !important;
-            right: 16px !important;
+            top: var(--rentware-cart-view-position-top) !important;
+            right: var(--rentware-cart-view-position-right) !important;
             bottom: unset !important;
             left: unset !important;
             z-index: 51 !important;
-            width: 56px !important;
-            height: 56px !important;
+            width: var(--slt-rentware-cart-size, 56px) !important;
+            height: var(--slt-rentware-cart-size, 56px) !important;
           }
           .cart-button, .rtr-cart-button, [class*="cart"], [class*="toggle"], button {
             position: relative !important;
             top: 0 !important;
             right: 0 !important;
             bottom: unset !important;
-            width: 56px !important;
-            height: 56px !important;
-            min-width: 56px !important;
-            min-height: 56px !important;
+            width: var(--slt-rentware-cart-size, 56px) !important;
+            height: var(--slt-rentware-cart-size, 56px) !important;
+            min-width: var(--slt-rentware-cart-size, 56px) !important;
+            min-height: var(--slt-rentware-cart-size, 56px) !important;
           }
         `;
       }

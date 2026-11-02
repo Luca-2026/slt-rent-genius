@@ -10,6 +10,18 @@ function service(p = product) {
   } };
 }
 describe("Öffentliche CMS-Preisvorschau", () => {
+  it("Stornierung kostet einmalig 5 % reine Miete ohne Versicherung und Kaution", async () => {
+    const [quote] = await publicRentalQuote(service({ ...product, specifications: { Kaution: "1.000 €" } } as any), [{ ...row, quantity: 2, selected_addons: ["kostenfreie_stornierung"] }]);
+    expect(quote.rental_net).toBe(540);
+    expect(quote.deposit).toBe(2000);
+    expect(quote.addons.find((a: any) => a.key === "insurance")?.amount).toBe(54);
+    expect(quote.addons.find((a: any) => a.key === "kostenfreie_stornierung")?.amount).toBe(27);
+  });
+  it("Stornierung bleibt ohne Mietpreis wählbar und ohne erfundenen Betrag", async () => {
+    const [quote] = await publicRentalQuote(service({ ...product, price_from_1_rd: null, price_from_3_rd: null } as any), [{ ...row, selected_addons: ["kostenfreie_stornierung"] }]);
+    expect(quote.options.find((a: any) => a.key === "kostenfreie_stornierung")?.is_default).toBe(false);
+    expect(quote.addons.find((a: any) => a.key === "kostenfreie_stornierung")?.amount).toBeNull();
+  });
   it("Kaution aus CMS bleibt steuerfrei, mengenbezogen und unabhängig vom Mietzeitraum", async () => {
     const [quote] = await publicRentalQuote(service({ ...product, specifications: { Kaution: "1.000 €" } } as any), [{ ...row, quantity: 2 }]);
     expect(quote.deposit).toBe(2000);
