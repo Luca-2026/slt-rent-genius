@@ -58,7 +58,7 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: {
   return <div className="space-y-4">
     {<div className={`grid grid-cols-[auto_1fr] items-start gap-x-3 gap-y-2 rounded-md border p-3 ${weekendActive ? "border-accent bg-accent/15" : "border-accent/60 bg-accent/5"}`}>
       <BadgePercent className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
-      <div className="min-w-0 text-sm"><p className="font-semibold">{weekendActive ? "Wochenendtarif aktiv" : (weekendPrice ? `Wochenendtarif ${weekendPrice}` : "Wochenendzeitraum · Tarif im Angebot")}</p><p className="text-muted-foreground">Abholung Fr ab 16:00, Rückgabe Mo bis 09:30 – Abholtag Freitag, Rückgabetag Montag.</p></div>
+      <div className="min-w-0 text-sm"><p className="font-semibold">{weekendActive ? "Wochenendtarif aktiv" : (weekendPrice ? `Wochenendtarif ${weekendPrice}` : "Wochenendtarif · Preis im Angebot")}</p><p className="text-muted-foreground">Abholung Fr ab 16:00, Rückgabe Mo bis 09:30 – Abholtag Freitag, Rückgabetag Montag.</p></div>
       {!weekendActive && <Button type="button" size="sm" variant="outline" className="col-span-2 w-full border-accent sm:col-span-1 sm:col-start-2 sm:w-fit" onClick={() => { const fri = nextWeekendStart(new Date()); patch({ start_date: toIso(fri), start_time: "16:00", end_date: toIso(addDays(fri, 3)), end_time: "09:30" }); }}>Nächstes Wochenende wählen</Button>}
     </div>}
     <div className="rounded-md border border-border">
