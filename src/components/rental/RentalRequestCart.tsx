@@ -16,7 +16,8 @@ import { unitLabel } from "@/lib/pricing/rentalPricing";
 import { usePublicCoupon } from "@/hooks/usePublicCoupon";
 import { supabase } from "@/integrations/supabase/client";
 import { useSigningOverlaysSuppressed } from "@/lib/signingOverlays";
-import { CART_STORAGE_KEY, addCartItem, parseCart, cartExpired, cartRemainingSeconds, type RentalCart, type RentalCartItem } from "@/lib/rentalCart";
+import { CART_STORAGE_KEY, addCartItem, withCartPeriod, parseCart, cartExpired, cartRemainingSeconds, type RentalCart, type RentalCartItem } from "@/lib/rentalCart";
+import { parseSetSize, quantityLabel } from "@/lib/setSize";
 import { isTrailerRoute } from "@/lib/rentalBookingMode";
 import { pickupWindowForDate, getLocationInfoById } from "@/data/locationData";
 import { validPublicRentalPeriod, validCalendarDate } from "../../../supabase/functions/_shared/public-rental-period";
@@ -30,7 +31,13 @@ function update(next: Partial<typeof state>) { state = { ...state, ...next }; li
 function save(cart: RentalCart | null) { update({ cart }); try { if (cart) localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart)); else localStorage.removeItem(CART_STORAGE_KEY); } catch { /* session state still works */ } }
 export function openRentalRequest(product: Product, location: LocationData) {
   if (typeof product.priceWeekendNum === "number" && product.priceWeekendNum > 0) weekendPrices.set(product.id, product.priceWeekendNum);
-  update({ open: true, expired: false, edit: { id: crypto.randomUUID(), product_slug: product.id, product_name: product.name, image: product.image, location: location.id, quantity: 1, start_date: "", start_time: "", end_date: "", end_time: "", selected_addons: [], use_saturday: false, use_sunday: false } });
+  const item = withCartPeriod(state.cart, { id: crypto.randomUUID(), product_slug: product.id, product_name: product.name, image: product.image, location: location.id, quantity: 1, start_date: "", start_time: "", end_date: "", end_time: "", selected_addons: [], use_saturday: false, use_sunday: false });
+  if (validPublicRentalPeriod(item) && (state.cart?.items.length ?? 0) < 30) {
+    save(addCartItem(state.cart, item));
+    update({ open: true, expired: false, edit: null });
+  } else {
+    update({ open: true, expired: false, edit: item });
+  }
 }
 type Quote = { id: string; product_name: string; category: string; unit: string; duration: number; unit_price: number | null; rental_net: number | null; addons: { key: string; label: string; amount: number | null; deductible: number | null }[]; options: { key: string; label: string; amount: number | null; is_default: boolean; surcharge_percent?: number; deductible?: number }[] };
 const emptyContact = { name: "", email: "", phone: "", street: "", postalCode: "", city: "", couponCode: "", message: "", deliveryRequested: false, deliveryStreet: "", deliveryPostalCode: "", deliveryCity: "" };
@@ -71,7 +78,7 @@ export function RentalRequestCart() {
     window.addEventListener("storage", sync); window.addEventListener("focus", tick);
     return () => { clearInterval(timer); window.removeEventListener("storage", sync); window.removeEventListener("focus", tick); };
   }, []);
-  useEffect(() => { if (edit) { setStep("period"); setDone(""); } else if (snapshot.open) setStep("cart"); }, [edit?.id, snapshot.open]);
+  useEffect(() => { if (edit) { setStep("period"); setDone(""); } else if (snapshot.open) { setStep("cart"); if (snapshot.cart) setDone(""); } }, [edit?.id, snapshot.open, snapshot.cart?.items.length]);
   useEffect(() => {
     window.dispatchEvent(new CustomEvent("public-rental-dialog", { detail: snapshot.open }));
     return () => { window.dispatchEvent(new CustomEvent("public-rental-dialog", { detail: false })); };

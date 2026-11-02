@@ -10,6 +10,7 @@
 - Inquiry invoice previews: same final renderer, no number/write/mail side effects; editors require preview of current data.
 - Percentage add-ons use the undiscounted rental basis in shared addon-calc, so rental discounts cannot reduce insurance or liability charges.
 - Public non-trailer requests use RentalRequestCart with an absolute deadline and server CMS quotes; only trailer routes load Rentware, coupon previews never reserve/redeem, and public-rental-period shares calendar validation and pickup windows between client/server to prevent drift.
+- Additional cart items inherit periods through withCartPeriod, validated for their pickup location; set quantities remain counts of sets and display through setSize helpers to avoid multiplying prices by contained pieces.
 <!-- LOVABLE:BEGIN -->
 - Inject the portal first-paint guard through the Vite HTML plugin before body parsing; hide only prerender fallback content on the exact portal host to preserve public SEO and the React portal.
 <!-- LOVABLE:END -->
