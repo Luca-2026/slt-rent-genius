@@ -15,6 +15,7 @@ import {
 import { UsedMachineInquiryModal, type MachineData } from "@/components/used/UsedMachineInquiryModal";
 import { FinancingCalculator, type FinancingSelection } from "@/components/sales/FinancingCalculator";
 import { financingEligible } from "@/lib/financing";
+import { FinancingTeaser } from "@/components/sales/FinancingTeaser";
 import { LazyVideo } from "@/components/used/LazyVideo";
 import { getUsedMachineDisplayModel } from "@/data/usedMachineDisplayNames";
 
@@ -295,6 +296,7 @@ export default function SLTUsedDetail() {
                     {formatPrice(priceGross, false)} brutto inkl. USt.
                   </p>
                 )}
+                {!isSold && <FinancingTeaser priceGross={priceGross} priceNet={priceNet} onRequest={machine.price_on_request} />}
                 <p className="text-xs text-muted-foreground mt-3">
                   Bei innergemeinschaftlicher Lieferung an Unternehmer mit gültiger USt-IdNr.: 0 % USt.
                 </p>

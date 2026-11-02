@@ -26,3 +26,9 @@ export function parseEuro(input: string): number {
   const v = input.trim().replace(/\s|€/g, "").replace(/\./g, "").replace(",", ".");
   return v === "" ? 0 : Number(v);
 }
+
+/** Lock-Rate für die Preisanzeige: 60 Monate, Anzahlung = USt., keine Schlussrate. */
+export function teaserMonthlyRate(priceGross: number, priceNet: number): number | null {
+  const vat = cents(priceGross - priceNet);
+  return calculateFinancing(priceGross, vat, 0, 60)?.monthly ?? null;
+}
