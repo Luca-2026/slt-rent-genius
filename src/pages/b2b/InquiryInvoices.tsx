@@ -95,6 +95,13 @@ const STATUS_LABEL: Record<string, string> = {
   cancelled: "Storniert",
 };
 
+/** Offene Rechnung mit überschrittener Fälligkeit (Berliner Kalendertag) gilt als überfällig. */
+const effectiveStatus = (row: { status: string; due_date?: string | null }) => {
+  if (row.status !== "open" || !row.due_date) return row.status;
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Berlin" }).format(new Date());
+  return row.due_date.slice(0, 10) < today ? "overdue" : row.status;
+};
+
 const STATUS_VARIANT: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
   draft: "outline",
   open: "default",
@@ -167,13 +174,13 @@ export default function InquiryInvoices() {
     for (const row of rows) {
       const seg = segmentOf({ customer_kind: row.customer_kind });
       if (!matchesSegment(seg, segment)) continue;
-      if (statusFilter !== "all" && row.status !== statusFilter) continue;
+      if (statusFilter !== "all" && effectiveStatus(row) !== statusFilter) continue;
       if (!hit([row.invoice_number, row.offer_number, row.company_name, row.customer_name, row.customer_email, row.location])) continue;
       list.push({ kind: "inquiry", segment: seg, sortDate: row.created_at, row });
     }
     for (const row of portalRows) {
       if (!matchesSegment("portal", segment)) continue;
-      if (statusFilter !== "all" && row.status !== statusFilter) continue;
+      if (statusFilter !== "all" && effectiveStatus(row) !== statusFilter) continue;
       if (!hit([row.invoice_number, row.customer_company, row.b2b_profiles?.company_name, row.b2b_profiles?.contact_email])) continue;
       list.push({ kind: "portal", segment: "portal", sortDate: row.created_at, row });
     }
@@ -394,10 +401,10 @@ export default function InquiryInvoices() {
                     {row.invoice_kind === "credit_note" && (
                       <Badge variant="secondary">Gutschrift</Badge>
                     )}
-                    <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>
+                    <Badge variant={STATUS_VARIANT[effectiveStatus(row)] ?? "outline"}>
                       {row.invoice_kind === "credit_note" && row.status === "paid"
                         ? "Erstellt"
-                        : STATUS_LABEL[row.status] ?? row.status}
+                        : STATUS_LABEL[effectiveStatus(row)] ?? row.status}
                     </Badge>
                     <Badge variant="outline">{row.customer_kind === "business" ? "Geschäftskunde" : "Privat"}</Badge>
                     <Badge variant="outline">
@@ -602,7 +609,7 @@ function PortalInvoiceCard({ row, canManage, onRefresh, onStatusChange, onDelete
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-semibold">{row.invoice_number ?? "Entwurf"}</span>
           {row.invoice_kind === "credit_note" && <Badge variant="outline">Gutschrift</Badge>}
-          <Badge variant={STATUS_VARIANT[row.status] ?? "outline"}>{STATUS_LABEL[row.status] ?? row.status}</Badge>
+          <Badge variant={STATUS_VARIANT[effectiveStatus(row)] ?? "outline"}>{STATUS_LABEL[effectiveStatus(row)] ?? row.status}</Badge>
           <Badge variant="secondary">B2B-Portal</Badge>
           <span className="ml-auto font-semibold">{formatEuro(gross)}</span>
         </div>
