@@ -43,3 +43,4 @@
 - Calendar week and device views share CalendarLocationFilter and persisted location state; device filtering uses matchesCalendarLocation to normalize location names consistently.
 - Bonn opening-hours schemas use locationOpeningHoursSpecification from locationData; its optional Friday pickup override keeps website, time suggestions and search-engine schedules consistent.
 - Delivery tariffs live only in supabase/functions/_shared/delivery-tariffs.ts (re-exported by src/data/lieferkosten); public cart delivery = most expensive item tariff, distance recomputed server-side via _shared/route-distance.ts, so website preview and stored inquiry cannot drift.
+- Sales financing examples only via src/lib/financing.ts (tested annuity with balloon) and FinancingCalculator; requests reuse existing inquiry fields/message so no backend contract changes.
