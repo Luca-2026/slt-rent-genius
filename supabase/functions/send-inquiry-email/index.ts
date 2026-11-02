@@ -2,6 +2,8 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { saveRentalInquiry, rentalInquiryLink, serviceClient } from "../_shared/inquiry-store.ts";
 import { previewPublicCoupon } from "../_shared/public-coupon.ts";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { publicRentalQuote } from "../_shared/public-rental-quote.ts";
+import { operationalEmailRecipient } from "../_shared/test-email-routing.ts";
 
 
 const SLT_LOGO = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
@@ -52,6 +54,8 @@ serve(async (req) => {
       useSunday,
       priceEstimate,
       couponCode,
+      cartRequestId,
+      cartExpiresAt,
     } = await req.json();
 
     const requestedCode = typeof couponCode === "string" ? couponCode.trim().toUpperCase() : "";
@@ -70,7 +74,7 @@ serve(async (req) => {
     }
 
     // Gebündelte Artikel (max. 30), Menge 1–9999. Hauptartikel steht an erster Stelle.
-    const requestedItems: { product_name: string; product_slug: string | null; quantity: number; set_size: number | null; selected_addons: string[] }[] =
+    const requestedItems =
       (Array.isArray(items) ? items : [])
         .slice(0, 30)
         .map((it: any) => ({
@@ -81,6 +85,7 @@ serve(async (req) => {
           selected_addons: (Array.isArray(it?.selected_addons) ? it.selected_addons : [])
             .slice(0, 10)
             .map((k: unknown) => String(k).slice(0, 60)),
+          ...(cartRequestId ? { id: String(it?.id ?? "").slice(0, 100), location: String(it?.location ?? ""), start_date: String(it?.start_date ?? ""), end_date: String(it?.end_date ?? ""), start_time: String(it?.start_time ?? ""), end_time: String(it?.end_time ?? ""), use_saturday: it?.use_saturday === true, use_sunday: it?.use_sunday === true } : {}),
         }))
         .filter((it) => it.product_name);
 
@@ -89,6 +94,14 @@ serve(async (req) => {
     const slugs = [...new Set(requestedItems.map((it) => it.product_slug).filter((s): s is string => !!s))];
     const addonLabelsBySlug = new Map<string, Map<string, string>>();
     const db = serviceClient();
+    let quoteLines: unknown[] = [];
+    if (cartRequestId) {
+      if (!db || !/^[a-f0-9-]{36}$/i.test(String(cartRequestId)) || !Number.isFinite(cartExpiresAt) || cartExpiresAt <= Date.now() || cartExpiresAt > Date.now() + 900000 || !requestedItems.length) return new Response(JSON.stringify({ error: "Warenkorb abgelaufen oder ungültig" }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      if (requestedItems.some((item: any) => !["krefeld", "bonn", "muelheim"].includes(item.location) || !/^\d{4}-\d{2}-\d{2}$/.test(item.start_date) || !/^\d{4}-\d{2}-\d{2}$/.test(item.end_date) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(item.start_time) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(item.end_time) || `${item.end_date}T${item.end_time}` <= `${item.start_date}T${item.start_time}`)) return new Response(JSON.stringify({ error: "Ungültige Positionszeiträume" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      const { data: existing } = await db.from("rental_inquiries").select("id,order_code").contains("raw_payload", { cart_request_id: cartRequestId }).maybeSingle();
+      if (existing) return new Response(JSON.stringify({ success: true, order_code: existing.order_code }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      quoteLines = await publicRentalQuote(db, requestedItems);
+    }
     if (requestedCode) {
       if (!db) return new Response(JSON.stringify({ error: "Gutscheinprüfung derzeit nicht möglich" }), { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       const preview = await previewPublicCoupon(db, requestedCode, String(email ?? ""), slugs);
@@ -189,10 +202,12 @@ serve(async (req) => {
       use_saturday: useSaturday === true,
       use_sunday: useSunday === true,
       message: message ?? null,
-      raw_payload: requestedCode ? { requested_coupon_code: requestedCode } : null,
+      raw_payload: { ...(requestedCode ? { requested_coupon_code: requestedCode } : {}), ...(cartRequestId ? { cart_request_id: cartRequestId, quote_lines: quoteLines } : {}) },
       attachments: safeAttachments.map((a) => ({ filename: a.filename })),
     });
     const portalLink = rentalInquiryLink(inquiryId);
+    if (cartRequestId && !inquiryId) return new Response(JSON.stringify({ error: "Anfrage konnte nicht gespeichert werden. Bitte erneut versuchen." }), { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    const { data: storedInquiry } = inquiryId && db ? await db.from("rental_inquiries").select("order_code").eq("id", inquiryId).maybeSingle() : { data: null };
 
     const dateRange = startDate
       ? `${startDate}${endDate ? ` bis ${endDate}` : ""}`
@@ -334,7 +349,7 @@ serve(async (req) => {
         },
         body: JSON.stringify({
           from: "Anfragen <anfragen@slt-rental.de>",
-          to: [locEmail],
+          to: [operationalEmailRecipient(String(email), locEmail)],
           reply_to: email,
           subject: `Mietanfrage: ${productName}${requestedItems.length > 1 ? ` + ${requestedItems.length - 1} weitere` : ""} – ${locationName}`,
           html: internalHtml,
@@ -364,7 +379,7 @@ serve(async (req) => {
     }
 
     return new Response(
-      JSON.stringify({ success: true }),
+      JSON.stringify({ success: true, order_code: storedInquiry?.order_code ?? null }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
     );
   } catch (err) {
