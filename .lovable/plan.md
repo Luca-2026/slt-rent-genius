@@ -11,7 +11,7 @@ Zunächst **unverbindliche Leads**, keine Reservierung/Zahlung/Gerätebelegung. 
 Vorhanden: Zeitraum, Menge, Preisvorschau, Optionen und zusätzliche Artikel. Es fehlen ein gemeinsamer Warenkorb, Positionszeiträume und öffentliche Gutscheinprüfung ohne bestehende Anfrage. Rentware wird teils noch anhand von Codes statt Artikelart aktiviert.
 
 ## 1. Zuerst: Gutschein direkt am Eingabefeld prüfen
-Diese Etappe separat umsetzen und prüfen, bevor der große Umbau beginnt.
+Diese Etappe zuerst separat umsetzen und prüfen.
 
 - Vollständigen Code nach kurzer Eingabepause und Feldverlassen geschützt prüfen, nicht pro Tastendruck.
 - Feldzustände: **„Wird geprüft“**, **„E-Mail erforderlich“**, **„Anwendbar“** oder Fehler. Rabattbetrag erst mit Zeitraum/Artikeln berechnen.
@@ -87,4 +87,4 @@ Diese Etappe separat umsetzen und prüfen, bevor der große Umbau beginnt.
 - Lead: richtige Zuordnung, Auftrags-ID und Positionszeiträume, keine Doppelanfrage oder Gerätebelegung; Anhänger bleiben extern buchbar.
 - Bericht je Etappe: umgesetzt, konkret geprüft, Tests und offene Punkte. Keine produktive Anfrage/Rechnung/Buchung/Mail ohne Freigabe; Testmails nur an luca@sandhoff.org. Mitarbeiterzugang für interne Abnahme erforderlich.
 
-**Der Plan startet keine Umsetzung oder Veröffentlichung.** Gutscheinprüfung zuerst als eigene Etappe, danach Warenkorb-Umbau.
+**Keine Umsetzung oder Veröffentlichung vor Freigabe.**
