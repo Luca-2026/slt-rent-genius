@@ -11,7 +11,8 @@
 - Percentage add-ons use the undiscounted rental basis in shared addon-calc, so rental discounts cannot reduce insurance or liability charges.
 - Public non-trailer requests use RentalRequestCart with an absolute deadline and server CMS quotes; only trailer routes load Rentware, coupon previews never reserve/redeem, and public-rental-period shares calendar validation and pickup windows between client/server to prevent drift.
 - Additional cart items inherit periods through withCartPeriod, validated for their pickup location; set quantities remain counts of sets and display through setSize helpers to avoid multiplying prices by contained pieces.
-- Public deposit previews use catalog-deposit to read explicit CMS specifications or rental notes; unknown values stay unknown, deposit totals are quantity-based and never VAT-converted.
+- Public deposit previews prefer deposit_amount, with legacy specification/note fallback; unknown values stay unknown, deposit totals are quantity-based and never VAT-converted.
+- CartAccessories resolves only curated catalog accessories before insurance; DeliveryAddressFields uses protected geo-address Places lookups for suggestions and postal completion.
 - Cancellation-option owns the cancellation surcharge rate and rental-only amount; public quotes and service defaults share it, unknown rental amounts stay unknown. Rentware placement follows a reserved header slot to avoid navigation overlap.
 <!-- LOVABLE:BEGIN -->
 - Inject the portal first-paint guard through the Vite HTML plugin before body parsing; hide only prerender fallback content on the exact portal host to preserve public SEO and the React portal.

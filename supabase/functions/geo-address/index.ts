@@ -40,11 +40,10 @@ serve(async (req) => {
         if (!response.ok) return json({ error: "Adresse nicht gefunden" }, 502);
         components = (await response.json()).addressComponents ?? [];
       } else {
-        const params = new URLSearchParams({ components: `postal_code:${postalCode}|country:DE`, key: apiKey, language: "de" });
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?${params}`);
+        const response = await fetch("https://places.googleapis.com/v1/places:searchText", { method: "POST", headers: { "Content-Type": "application/json", "X-Goog-Api-Key": apiKey, "X-Goog-FieldMask": "places.addressComponents" }, body: JSON.stringify({ textQuery: `${postalCode} Deutschland`, languageCode: "de", regionCode: "DE" }) });
         if (!response.ok) return json({ error: "Ort nicht gefunden" }, 502);
         const result = await response.json();
-        components = (result.results ?? []).find((r: any) => r.address_components?.some((c: any) => c.types.includes("postal_code") && c.long_name === postalCode))?.address_components ?? [];
+        components = (result.places ?? []).find((r: any) => r.addressComponents?.some((c: any) => c.types.includes("postal_code") && c.longText === postalCode))?.addressComponents ?? [];
       }
       const field = (type: string) => { const component = components.find((c: any) => c.types?.includes(type)); return component?.longText ?? component?.long_name ?? ""; };
       return json({ street: [field("route"), field("street_number")].filter(Boolean).join(" "), postalCode: field("postal_code"), city: field("locality") || field("postal_town") });

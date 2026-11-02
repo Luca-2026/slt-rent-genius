@@ -120,7 +120,7 @@ export function RentalRequestCart() {
     setDeliveryKm({ key: deliveryAddressKey, km: null, loading: true });
     const timer = setTimeout(async () => {
       const { data, error } = await supabase.functions.invoke("geo-address", { body: { action: "distance", locationId: deliveryLocation, address: `${deliveryAddressKey}, Germany` } });
-      if (!cancelled) setDeliveryKm({ key: deliveryAddressKey, km: error || !data?.roundedKm ? null : Number(data.roundedKm), loading: false });
+      if (!cancelled) setDeliveryKm({ key: deliveryAddressKey, km: error || !Number.isFinite(data?.roundedKm) ? null : Number(data.roundedKm), loading: false });
     }, 700);
     return () => { cancelled = true; clearTimeout(timer); };
   }, [deliveryAddressKey, deliveryLocation]);
