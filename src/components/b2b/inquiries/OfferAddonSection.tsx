@@ -34,7 +34,7 @@ export function lineContext(item: OfferLine): AddonLineContext {
     duration: unit === "pauschal" ? 1 : item.duration && item.duration > 0 ? item.duration : 1,
     days_per_unit: timeBased ? daysPerUnit(unit) : null,
     unit_price: item.unit_price || 0,
-    discount_percent: item.discount_percent || 0,
+    discount_percent: 0,
   };
 }
 

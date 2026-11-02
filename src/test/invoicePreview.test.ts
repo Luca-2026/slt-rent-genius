@@ -17,4 +17,12 @@ describe("invoice preview", () => {
     expect(matchesDocumentPreview(key, { ...body, items: [{ quantity: 4, unit_price: 15 }] })).toBe(false);
     expect(matchesDocumentPreview(key, { ...body, payments: [{ amount: 30 }] })).toBe(false);
   });
+  it("requires a new preview after a post-return rental discount", () => {
+    const body = { invoice_kind: "final", items: [{ quantity: 3, unit_price: 100, discount_percent: 0, addons: [{ amount: 20 }] }] };
+    const changed = { ...body, items: [{ ...body.items[0], discount_percent: 10 }] };
+    expect(matchesDocumentPreview(JSON.stringify(body), changed)).toBe(false);
+    expect(matchesDocumentPreview(JSON.stringify(changed), changed)).toBe(true);
+    expect(body.items[0].discount_percent).toBe(0);
+    expect(changed.items[0].addons[0].amount).toBe(20);
+  });
 });

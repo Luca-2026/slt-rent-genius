@@ -1,6 +1,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { z } from "npm:zod@3";
+import { hasCompleteFeedback } from "../_shared/feedback-completion.ts";
 
 const schema = z.object({
   action: z.enum(["info", "submit"]), token: z.string().regex(/^[a-f0-9]{64}$/),
@@ -42,6 +43,11 @@ Deno.serve(async (req) => {
       if (!invite) return json({ error: "Dieser Feedback-Link ist ungültig." }, 404);
       const { data: coupon } = await service.from("rental_feedback_coupons").select("code,status").eq("invitation_id", invite.id).maybeSingle();
       return json({ order_ref: invite.order_ref, location: invite.location, rented_items: invite.rented_items, submitted: !!invite.feedback_id, coupon_code: coupon?.code ?? null, coupon_status: coupon?.status ?? null });
+    }
+    // Already submitted links remain idempotent even for historic partial feedback.
+    if (!hasCompleteFeedback(body.ratings)) {
+      const { data: previous } = await service.from("rental_feedback_invitations").select("feedback_id").eq("token", body.token).maybeSingle();
+      if (!previous?.feedback_id) return json({ error: "Bitte bewerte alle zehn Fragen. Freitext ist optional." }, 400);
     }
     const { data, error } = await service.rpc("submit_rental_feedback", { p_token: body.token, p_ratings: body.ratings, p_answers: body.answers, p_recommend: body.recommend });
     if (error) return json({ error: error.message }, 400);

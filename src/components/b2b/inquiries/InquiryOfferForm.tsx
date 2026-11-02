@@ -297,6 +297,7 @@ export interface OfferDeliveryAddress {
 interface Props {
   inquiryType: "rental" | "sales";
   inquiryId: string;
+  defaultCouponCode?: string;
   location: string | null;
   defaultItems: (OfferLine & { custom_period?: boolean; product_slug?: string })[];
   /** Vom Kunden im Anfrageformular angegebene Lieferadresse (im Portal änderbar). */
@@ -399,6 +400,7 @@ export function InquiryOfferForm({
   reservationId = null,
   reviseOf = null,
   defaultMeta,
+  defaultCouponCode = "",
   stickyActions = false,
   stickyActionsLead,
   sendBlock = null,
@@ -414,7 +416,7 @@ export function InquiryOfferForm({
   const draftRef = useRef(ignoreDraft ? null : readInquiryDraft<Record<string, any>>(draftKey));
   const draft = draftRef.current;
   const [draftRestored, setDraftRestored] = useState(!!draft);
-  const [couponCode, setCouponCode] = useState(draft?.couponCode ?? "");
+  const [couponCode, setCouponCode] = useState(draft?.couponCode ?? defaultCouponCode);
 
   const [items, setItems] = useState<FormLine[]>(
     Array.isArray(draft?.items) && draft!.items.length
@@ -661,7 +663,7 @@ export function InquiryOfferForm({
     if (d.paymentTerms) setPaymentTerms(safeCustomerPaymentTerms(customerKind, d.paymentTerms, isInvoice));
     setPaymentTermsCustom(d.paymentTermsCustom ?? "");
     setNotes(d.notes ?? "");
-    setCouponCode(d.couponCode ?? "");
+    setCouponCode(d.couponCode ?? defaultCouponCode);
     setOpenEnded(canOpenEnded && !!d.openEnded);
     setMinMonths(Math.max(1, Math.floor(Number(d.minMonths ?? 1)) || 1));
     setUseSaturday(!!d.useSaturday);
@@ -779,6 +781,7 @@ export function InquiryOfferForm({
     setRemoteDraft(null);
     draftRef.current = null;
     setDraftRestored(false);
+    setCouponCode(defaultCouponCode);
     setItems(defaultItems.length ? defaultItems : [emptyLine()]);
     setDelivery(defaultDelivery ?? emptyDelivery);
     setDeliveryCostDelivery(defaultCosts?.delivery_cost_delivery ?? 0);

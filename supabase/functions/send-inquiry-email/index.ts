@@ -53,7 +53,15 @@ serve(async (req) => {
       useSaturday,
       useSunday,
       priceEstimate,
+      couponCode,
     } = await req.json();
+
+    const requestedCode = typeof couponCode === "string" ? couponCode.trim().toUpperCase() : "";
+    if ((couponCode != null && typeof couponCode !== "string") || (requestedCode && !/^[A-F0-9]{20}$/.test(requestedCode))) {
+      return new Response(JSON.stringify({ error: "Ungültiger Gutscheincode" }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     // W2: Rückgabedatum darf nicht vor dem Abholdatum liegen.
     if (startDate && endDate && String(endDate) < String(startDate)) {
@@ -178,6 +186,7 @@ serve(async (req) => {
       use_saturday: useSaturday === true,
       use_sunday: useSunday === true,
       message: message ?? null,
+      raw_payload: requestedCode ? { requested_coupon_code: requestedCode } : null,
       attachments: safeAttachments.map((a) => ({ filename: a.filename })),
     });
     const portalLink = rentalInquiryLink(inquiryId);

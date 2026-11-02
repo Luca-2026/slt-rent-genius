@@ -1,4 +1,5 @@
 import { DepositSettlementCard } from "./DepositSettlementCard";
+import { requestedCoupon } from "@/lib/requestedCoupon";
 import { ReturnChargesSummary } from "./ReturnChargesSummary";
 import { depositBlocksInvoice, paymentsUpToRent, useDepositState } from "./useDepositState";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
@@ -277,6 +278,8 @@ interface Props {
     offer_number: string | null;
     /** Snapshot des versendeten Angebots – Grundlage für die Rechnung. */
     offer_payload?: unknown;
+    raw_payload?: unknown;
+    feedback_coupon_code?: string | null;
     order_code?: string | null;
 
     offer_file_url: string | null;
@@ -837,6 +840,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           key={`${inquiry.id}:${docMode}:${deposit.loaded ? `${deposit.settled ? "s" : "o"}${deposit.chargeLines.length}` : "-"}:${docMode === "revise" ? inquiry.offer_number : ""}`}
           inquiryType={inquiryType}
           inquiryId={inquiry.id}
+          defaultCouponCode={inquiryType === "rental" ? inquiry.feedback_coupon_code ?? requestedCoupon(inquiry.raw_payload) : ""}
           location={inquiry.location}
           // Bestehender Auftrag: immer mit den zuletzt angebotenen Positionen/Beträgen starten, nie bei 0 €.
           defaultItems={(() => {

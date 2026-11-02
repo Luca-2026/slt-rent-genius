@@ -21,10 +21,11 @@ describe("Zusatzoptionen – Berechnung", () => {
     expect(computeAddonAmount({ price_type: "percent", rate: 12, basis: "full_period", days: 14 }, bagger)).toBe(403.2);
   });
 
-  it("berücksichtigt Rabatt", () => {
+  it("Versicherung bleibt bei 50 % Mietrabatt unverändert", () => {
     expect(
       computeAddonAmount({ price_type: "percent", rate: 10, basis: "full_period", days: 7 }, { ...bagger, articles: 1, discount_percent: 50 }),
-    ).toBe(42);
+    ).toBe(84);
+    expect(computeAddonAmount({ price_type: "percent", rate: 12, basis: "line" }, { ...bagger, discount_percent: 10 })).toBe(288);
   });
 
   it("Tagessatz je Artikel", () => {
@@ -77,5 +78,10 @@ describe("Zusatzoptionen – Berechnung", () => {
     expect(r.addons![1].amount).toBe(99);
     const stueck = recalcAddons({ ...line, unit: "stueck" as const });
     expect(stueck.addons![0].basis).toBe("line");
+  });
+  it("Rabatt nach Rücknahme ändert keine automatische Versicherungsposition", () => {
+    const result = recalcAddons({ product_name: "Bagger", quantity: 1, duration: 3, unit: "arbeitstage" as const, unit_price: 100, discount_percent: 10,
+      addons: [{ key: "insurance", label: "Versicherung", amount: 36, price_type: "percent" as const, rate: 12, basis: "line" as const }] });
+    expect(result.addons?.[0].amount).toBe(36);
   });
 });
