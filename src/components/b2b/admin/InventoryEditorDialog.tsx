@@ -509,6 +509,8 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   }
 
   async function handleSave() {
+    const deposit = form.deposit_amount?.trim() ? Number(form.deposit_amount.replace(",", ".")) : null;
+    if (deposit != null && (!Number.isFinite(deposit) || deposit < 0)) { toast.error("Bitte eine gültige Kaution ab 0 € eingeben"); setTab("preise"); return; }
     if (!form.name.trim() || !form.slug.trim() || !form.category) {
       toast.error("Bitte Name, Slug und Kategorie ausfüllen");
       setTab("basis");
