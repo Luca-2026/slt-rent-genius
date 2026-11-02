@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { NewMachineInquiryModal } from "@/components/new-machines/NewMachineInquiryModal";
+import { FinancingCalculator } from "@/components/sales/FinancingCalculator";
+import { financingEligible } from "@/lib/financing";
 import {
   ArrowLeft, ArrowRight, Phone, MapPin, Shield, Wrench, Truck, CheckCircle2,
   Package, Mail, Clock,
@@ -142,6 +144,7 @@ export default function NeumaschineDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [activeImage, setActiveImage] = useState(0);
   const [inquiryOpen, setInquiryOpen] = useState(false);
+  const [financingSummary, setFinancingSummary] = useState("");
   const [selectedConfig, setSelectedConfig] = useState<string | null>(null);
 
   const { data: machine, isLoading } = useQuery({
@@ -539,7 +542,7 @@ export default function NeumaschineDetail() {
             )}
 
             <div className="flex flex-col sm:flex-row gap-3 mb-6">
-              <Button size="lg" className="w-full sm:flex-1" onClick={() => setInquiryOpen(true)}>
+              <Button size="lg" className="w-full sm:flex-1" onClick={() => { setFinancingSummary(""); setInquiryOpen(true); }}>
                 <ArrowRight className="mr-2 h-4 w-4" /> Anfrage senden
               </Button>
               <Button size="lg" variant="outline" className="w-full sm:w-auto" asChild>
@@ -548,6 +551,7 @@ export default function NeumaschineDetail() {
                 </a>
               </Button>
             </div>
+            {priceGross && priceNet && financingEligible(priceNet, machine.price_on_request) && <div className="mb-6"><FinancingCalculator priceGross={priceGross} priceNet={priceNet} onRequest={sel => { setFinancingSummary(sel.summary); setInquiryOpen(true); }} /></div>}
 
 
 
@@ -912,6 +916,7 @@ export default function NeumaschineDetail() {
           configOptions: options.length > 0 ? options.map((o) => ({ name: o.name, price: o.price, note: o.note })) : undefined,
           initialConfig: selectedConfig || undefined,
         }}
+        financingSummary={financingSummary || undefined}
       />
 
     </Layout>

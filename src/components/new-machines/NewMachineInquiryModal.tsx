@@ -25,13 +25,14 @@ interface Props {
     configOptions?: { name: string; price: string; note?: string }[];
     initialConfig?: string;
   };
+  financingSummary?: string;
 }
 
 type View = "form" | "success" | "error";
 
 const COUNTRIES = ["Deutschland", "Österreich", "Schweiz", "Niederlande", "Belgien", "Luxemburg"];
 
-export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
+export function NewMachineInquiryModal({ open, onClose, machine, financingSummary }: Props) {
   const [view, setView] = useState<View>("form");
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -143,7 +144,7 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
           produktkategorie: machine.category || machine.name,
           modell: `${machine.brand} ${machine.model} – ${machine.name}${hasConfig && selectedConfig ? ` [Konfiguration: ${selectedConfig}]` : ""}${isAnhaengerkupplungProduct && kupplungDumperModell ? ` [Für Dumper: ${kupplungDumperModell}]` : ""}`,
           anzahl: "1",
-          anforderungen: `Direktanfrage zur Produktseite: https://www.slt-rental.de/verkauf/neumaschinen/${machine.slug} – Preis: ${machine.priceLabel}${hasConfig && selectedConfig ? ` · gewählte Konfiguration: ${selectedConfig}` : ""}${isAnhaengerkupplungProduct && kupplungDumperModell ? ` · Anhängerkupplung für: ${kupplungDumperModell}` : ""}`,
+          anforderungen: `Direktanfrage zur Produktseite: https://www.slt-rental.de/verkauf/neumaschinen/${machine.slug} – Preis: ${machine.priceLabel}${hasConfig && selectedConfig ? ` · gewählte Konfiguration: ${selectedConfig}` : ""}${isAnhaengerkupplungProduct && kupplungDumperModell ? ` · Anhängerkupplung für: ${kupplungDumperModell}` : ""}${financingSummary ? ` · FINANZIERUNG GEWÜNSCHT – ${financingSummary}` : ""}`,
           lieferOption,
           strasse: lieferStrasse,
           plz: lieferPlz,
@@ -222,6 +223,7 @@ export function NewMachineInquiryModal({ open, onClose, machine }: Props) {
 
         {view === "form" && (
           <form onSubmit={handleSubmit} className="px-4 sm:px-6 py-5 space-y-5">
+            {financingSummary && <div className="rounded-md border border-accent/40 bg-accent/5 p-3 text-sm"><p className="font-semibold">Finanzierung gewünscht</p><p className="text-xs text-muted-foreground mt-1">{financingSummary}</p><p className="text-xs text-muted-foreground mt-1">Wir prüfen die Finanzierung über unsere Partnerbanken und melden uns mit einem Angebot.</p></div>}
             {/* 1 — Pre-selected machine */}
             <Card>
               <CardContent className="p-4 space-y-3">

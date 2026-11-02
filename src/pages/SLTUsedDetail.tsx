@@ -13,6 +13,8 @@ import {
   CheckCircle2, Package, Download, PlayCircle,
 } from "lucide-react";
 import { UsedMachineInquiryModal, type MachineData } from "@/components/used/UsedMachineInquiryModal";
+import { FinancingCalculator, type FinancingSelection } from "@/components/sales/FinancingCalculator";
+import { financingEligible } from "@/lib/financing";
 import { LazyVideo } from "@/components/used/LazyVideo";
 import { getUsedMachineDisplayModel } from "@/data/usedMachineDisplayNames";
 
@@ -29,6 +31,7 @@ export default function SLTUsedDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [modalOpen, setModalOpen] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
+  const [financing, setFinancing] = useState<FinancingSelection | null>(null);
 
   const { data: machine, isLoading } = useQuery({
     queryKey: ["used-machine", slug],
@@ -302,7 +305,7 @@ export default function SLTUsedDetail() {
               <Button
                 size="lg"
                 className="w-full sm:flex-1"
-                onClick={() => setModalOpen(true)}
+                onClick={() => { setFinancing(null); setModalOpen(true); }}
                 disabled={isSold}
               >
                 {isSold ? "Verkauft" : "Anfrage senden"}
@@ -315,15 +318,7 @@ export default function SLTUsedDetail() {
               </Button>
             </div>
 
-            {/* Financing note */}
-            <div className="mb-6 rounded-lg border border-accent/30 bg-accent/5 p-4">
-              <p className="text-sm font-semibold text-headline mb-1">Finanzierung gewünscht?</p>
-              <p className="text-sm text-foreground/80 leading-relaxed">
-                Über unseren Finanzierungspartner bieten wir Dir die besten Finanzierungsoptionen direkt mit an –
-                flexible Laufzeiten von 24 bis 60 Monaten und individuelle Anzahlung. Einfach im Anfrageformular
-                "Finanzierung gewünscht" auswählen, wir erstellen Dir ein passendes Angebot.
-              </p>
-            </div>
+            {!isSold && priceNet && priceGross && financingEligible(priceNet, machine.price_on_request) && <div className="mb-6"><FinancingCalculator priceGross={priceGross} priceNet={priceNet} onRequest={sel => { setFinancing(sel); setModalOpen(true); }} /></div>}
 
             <div className="grid grid-cols-2 gap-3 text-sm">
               {[
@@ -518,6 +513,7 @@ export default function SLTUsedDetail() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         machine={machineData}
+        financing={financing}
       />
     </Layout>
   );
