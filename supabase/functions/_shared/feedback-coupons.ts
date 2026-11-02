@@ -12,8 +12,9 @@ export async function applyFeedbackCoupon<T extends CouponLine & { product_name:
   }
   if (typeof code !== "string" || !/^[A-F0-9]{20}$/i.test(code.trim())) throw new Error("Ungültiger Gutscheincode");
   const normalized = code.trim().toUpperCase();
-  const { error } = await service.rpc("check_rental_coupon", { p_code: normalized, p_kind: kind, p_order: orderId, p_profile: profileId });
+  const { data: checked, error } = await service.rpc("check_rental_coupon", { p_code: normalized, p_kind: kind, p_order: orderId, p_profile: profileId });
   if (error) throw new Error(error.message);
+  const percent = Number(checked?.discount_percent ?? 10);
   let sourceProfile = profileId;
   if (kind === "inquiry" && orderId) {
     const { data: inquiry } = await service.from("rental_inquiries").select("b2b_profile_id,crm_customer_id").eq("id", orderId).maybeSingle();
@@ -35,8 +36,8 @@ export async function applyFeedbackCoupon<T extends CouponLine & { product_name:
       special = !!data;
     }
     const eligible = !special && couponItemEligible(item, product);
-    saving += couponSaving(item, eligible);
-    updated.push(couponLine(item, eligible));
+    saving += couponSaving(item, eligible, percent);
+    updated.push(couponLine(item, eligible, percent));
   }
   saving = Math.round(saving * 100) / 100;
   if (saving <= 0) throw new Error("Keine rabattfähige Mietposition: Sonderpreise, bestehende höhere Rabatte und Anhänger bleiben unverändert.");

@@ -291,7 +291,7 @@ Deno.serve(async (req: Request) => {
     const returnLocationText = returnLoc
       ? `Abholung am Standort ${pickupName}, Rückgabe abweichend am Standort ${returnLoc.name}${returnLoc.cost > 0 ? " (Aufpreis siehe Position „Rückgabe an anderem Standort“)" : " (ohne Aufpreis)"}.`
       : null;
-    const pdfNotes = [supersedesText, returnLocationText, openEnded ? openEndedNote(minMonths, openEndedUnit) : null, notes, coupon.code ? `Feedback-Gutschein ${coupon.code}: ${money(coupon.saving)} netto Rabatt, in den Positionspreisen enthalten.` : null].filter(Boolean).join("\n\n") || null;
+    const pdfNotes = [supersedesText, returnLocationText, openEnded ? openEndedNote(minMonths, openEndedUnit) : null, notes, coupon.code ? `Gutschein ${coupon.code}: ${money(coupon.saving)} netto Rabatt, in den Positionspreisen enthalten.` : null].filter(Boolean).join("\n\n") || null;
 
     const customerName = inquiryType === "rental"
       ? (inquiry.customer_name || "")

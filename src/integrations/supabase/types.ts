@@ -3328,6 +3328,115 @@ export type Database = {
         }
         Relationships: []
       }
+      manual_rental_coupon_events: {
+        Row: {
+          actor: string | null
+          coupon_id: string
+          created_at: string
+          event: string
+          id: string
+          note: string | null
+          order_id: string | null
+        }
+        Insert: {
+          actor?: string | null
+          coupon_id: string
+          created_at?: string
+          event: string
+          id?: string
+          note?: string | null
+          order_id?: string | null
+        }
+        Update: {
+          actor?: string | null
+          coupon_id?: string
+          created_at?: string
+          event?: string
+          id?: string
+          note?: string | null
+          order_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "manual_rental_coupon_events_coupon_id_fkey"
+            columns: ["coupon_id"]
+            isOneToOne: false
+            referencedRelation: "manual_rental_coupons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      manual_rental_coupons: {
+        Row: {
+          b2b_profile_id: string | null
+          block_reason: string | null
+          code: string
+          created_at: string
+          crm_customer_id: string
+          customer_email: string
+          customer_key: string
+          discount_percent: number
+          id: string
+          issue_reason: string
+          issued_by: string
+          redeemed_at: string | null
+          reserved_kind: string | null
+          reserved_offer_number: string | null
+          reserved_order_id: string | null
+          reserved_until: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          b2b_profile_id?: string | null
+          block_reason?: string | null
+          code?: string
+          created_at?: string
+          crm_customer_id: string
+          customer_email: string
+          customer_key: string
+          discount_percent: number
+          id?: string
+          issue_reason: string
+          issued_by: string
+          redeemed_at?: string | null
+          reserved_kind?: string | null
+          reserved_offer_number?: string | null
+          reserved_order_id?: string | null
+          reserved_until?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          b2b_profile_id?: string | null
+          block_reason?: string | null
+          code?: string
+          created_at?: string
+          crm_customer_id?: string
+          customer_email?: string
+          customer_key?: string
+          discount_percent?: number
+          id?: string
+          issue_reason?: string
+          issued_by?: string
+          redeemed_at?: string | null
+          reserved_kind?: string | null
+          reserved_offer_number?: string | null
+          reserved_order_id?: string | null
+          reserved_until?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "manual_rental_coupons_crm_customer_id_fkey"
+            columns: ["crm_customer_id"]
+            isOneToOne: false
+            referencedRelation: "crm_customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       migration_price_log: {
         Row: {
           created_at: string
@@ -5794,6 +5903,10 @@ export type Database = {
         Returns: undefined
       }
       backfill_allocations: { Args: { dry_run?: boolean }; Returns: Json }
+      block_manual_rental_coupon: {
+        Args: { p_coupon: string; p_reason: string }
+        Returns: undefined
+      }
       block_rental_coupon: {
         Args: { p_coupon: string; p_reason: string }
         Returns: undefined
@@ -5803,6 +5916,7 @@ export type Database = {
         Returns: boolean
       }
       can_edit_operations: { Args: { _user_id: string }; Returns: boolean }
+      can_issue_rental_coupon: { Args: never; Returns: boolean }
       can_manage_b2b_onboarding: {
         Args: { _actor: string; _location: string }
         Returns: boolean
@@ -5968,6 +6082,35 @@ export type Database = {
       is_authorized_person: { Args: { _user_id: string }; Returns: boolean }
       is_staff_member: { Args: { _user_id: string }; Returns: boolean }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
+      issue_manual_rental_coupon: {
+        Args: { p_customer: string; p_percent: number; p_reason: string }
+        Returns: {
+          b2b_profile_id: string | null
+          block_reason: string | null
+          code: string
+          created_at: string
+          crm_customer_id: string
+          customer_email: string
+          customer_key: string
+          discount_percent: number
+          id: string
+          issue_reason: string
+          issued_by: string
+          redeemed_at: string | null
+          reserved_kind: string | null
+          reserved_offer_number: string | null
+          reserved_order_id: string | null
+          reserved_until: string | null
+          status: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "manual_rental_coupons"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       link_onsite_b2b_profile: {
         Args: {
           _actor: string
@@ -5995,6 +6138,18 @@ export type Database = {
       log_return_without_delivery: {
         Args: { _inquiry_id: string }
         Returns: undefined
+      }
+      manual_coupon_action: {
+        Args: {
+          p_action: string
+          p_code: string
+          p_kind: string
+          p_offer: string
+          p_order: string
+          p_profile: string
+          p_until: string
+        }
+        Returns: Json
       }
       mark_deposit_payout_done: {
         Args: { _settlement_id: string }

@@ -122,7 +122,7 @@ export function RentalRequestCart() {
   const depositUnknown = quotes.length !== items.length || quotes.some(line => line.deposit == null);
   const depositPrice = (amount: number) => displayPrice(amount, "business");
   const addonTotal = quotes.reduce((sum, line) => sum + line.addons.reduce((a, addon) => a + (addon.amount ?? 0), 0), 0);
-  const discount = coupon.valid && contact.couponCode ? quotes.reduce((sum, line) => sum + (coupon.eligibleSlugs.includes(items.find(item => item.id === line.id)?.product_slug ?? "") ? Math.round((line.rental_net ?? 0) * 10) / 100 : 0), 0) : 0;
+  const discount = coupon.valid && contact.couponCode ? quotes.reduce((sum, line) => sum + (coupon.eligibleSlugs.includes(items.find(item => item.id === line.id)?.product_slug ?? "") ? Math.round((line.rental_net ?? 0) * (coupon.discountPercent ?? 0)) / 100 : 0), 0) : 0;
   const [deliveryKm, setDeliveryKm] = useState<{ key: string; km: number | null; loading: boolean }>({ key: "", km: null, loading: false });
   const deliveryAddressKey = contact.deliveryRequested && contact.deliveryStreet.trim().length > 3 && /^\d{5}$/.test(contact.deliveryPostalCode.trim()) && contact.deliveryCity.trim().length > 1 ? `${contact.deliveryStreet.trim()}, ${contact.deliveryPostalCode.trim()} ${contact.deliveryCity.trim()}` : "";
   const deliveryLocation = items[0]?.location ?? "";

@@ -1,8 +1,32 @@
 import { describe, expect, it } from "vitest";
-import { couponLine, couponSaving, couponCategoryEligible, couponItemEligible } from "../../supabase/functions/_shared/feedback-coupon-math";
+import { couponLine, couponSaving, couponCategoryEligible, couponItemEligible, validCouponPercent } from "../../supabase/functions/_shared/feedback-coupon-math";
 import { applyFeedbackCoupon, rentalFeedbackEmail } from "../../supabase/functions/_shared/feedback-coupons";
 
 describe("Feedback: 10 % nächste Miete", () => {
+  it("allows manual 20-percent coupons", () => {
+    expect(validCouponPercent(20)).toBe(true);
+    expect(couponSaving({ quantity: 2, unit_price: 100 }, true, 20)).toBe(40);
+  });
+  it("rejects more than 20 percent", () => {
+    expect(validCouponPercent(20.01)).toBe(false);
+    expect(() => couponLine({ quantity: 1, unit_price: 100 }, true, 21)).toThrow();
+  });
+  it.each([0, -1, NaN, Infinity])("rejects invalid discount %s", value => {
+    expect(validCouponPercent(value)).toBe(false);
+  });
+  it.each(["Versicherung", "Zubehör", "Haftungsfreistellung", "Stundenlohn"])("manual 20 percent keeps %s unchanged", category => {
+    const line = { quantity: 1, unit_price: 100, discount_percent: 0 };
+    expect(couponSaving(line, couponItemEligible(line, { category }), 20)).toBe(0);
+  });
+  it("uses the server-validated manual rate in offer lines", async () => {
+    const service = {
+      rpc: async () => ({ data: { discount_percent: 20 }, error: null }),
+      from: () => { const q = { select: () => q, eq: () => q, limit: () => q, maybeSingle: async () => ({ data: { category: "erdbewegung" } }) }; return q; },
+    };
+    const result = await applyFeedbackCoupon(service, "0123456789ABCDEF0123", "portal", null, null, [{ product_name: "Bagger", quantity: 1, unit_price: 100, discount_percent: 0 }]);
+    expect(result.saving).toBe(20);
+    expect(result.items[0].discount_percent).toBe(20);
+  });
   it("subtracts exactly 10 % of rental net, rounded to cents", () => {
     expect(couponSaving({ quantity: 3, unit_price: 81, discount_percent: 0 }, true)).toBe(24.3);
     expect(couponSaving({ quantity: 1, unit_price: 84.17 }, true)).toBe(8.42);

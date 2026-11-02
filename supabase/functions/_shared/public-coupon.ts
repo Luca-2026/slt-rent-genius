@@ -7,10 +7,18 @@ export function couponCanPreview(coupon: { status: string; reserved_until?: stri
 
 /** Possession of code and matching email permits only a non-mutating preliminary check. */
 export async function previewPublicCoupon(service: any, code: string, email: string, slugs: string[]) {
-  const { data: coupon, error } = await service.from("rental_feedback_coupons")
-    .select("status,reserved_until,b2b_profile_id")
+  const { data: feedback, error } = await service.from("rental_feedback_coupons")
+    .select("status,reserved_until,b2b_profile_id,discount_percent")
     .eq("code", code.trim().toUpperCase()).eq("customer_email", email.trim().toLowerCase()).maybeSingle();
   if (error) throw new Error("Gutscheinprüfung derzeit nicht möglich.");
+  let coupon = feedback;
+  if (!coupon) {
+    const { data, error: manualError } = await service.from("manual_rental_coupons")
+      .select("status,reserved_until,b2b_profile_id,discount_percent")
+      .eq("code", code.trim().toUpperCase()).eq("customer_email", email.trim().toLowerCase()).maybeSingle();
+    if (manualError) throw new Error("Gutscheinprüfung derzeit nicht möglich.");
+    coupon = data;
+  }
   if (!couponCanPreview(coupon)) return { valid: false, message: "Dieser Gutschein ist für diese E-Mail und Anfrage nicht anwendbar." };
   const { data: products, error: catalogError } = await service.from("managed_products_public")
     .select("slug,name,category,subcategory").in("slug", slugs);
@@ -24,5 +32,6 @@ export async function previewPublicCoupon(service: any, code: string, email: str
   const eligibleSlugs = (products ?? []).filter((product: { slug: string; name: string }) =>
     !specialNames.has(product.name) && couponItemEligible({ quantity: 1, unit_price: 0 }, product)).map((product: { slug: string }) => product.slug);
   if (!eligibleSlugs.length) return { valid: false, message: "Dieser Gutschein ist für diese E-Mail und Anfrage nicht anwendbar." };
-  return { valid: true, discount_percent: 10, eligible_slugs: eligibleSlugs, message: "10 % auf rabattfähige Mietpositionen – vorbehaltlich der Angebotsprüfung." };
+  const percent = Number(coupon?.discount_percent ?? 10);
+  return { valid: true, discount_percent: percent, eligible_slugs: eligibleSlugs, message: `${percent} % auf rabattfähige Mietpositionen – vorbehaltlich der Angebotsprüfung.` };
 }

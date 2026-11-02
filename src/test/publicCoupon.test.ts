@@ -1,6 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { couponCanPreview, previewPublicCoupon } from "../../supabase/functions/_shared/public-coupon";
 describe("Nicht schreibende Gutscheinvorprüfung", () => {
+  it("returns the stored manual 20-percent rate without writes", async () => {
+    const service = { from: (table: string) => {
+      const q: any = { select: () => q, eq: () => q, maybeSingle: async () => ({ data: table === "rental_feedback_coupons" ? null : { status: "active", discount_percent: 20 }, error: null }), in: async () => ({ data: [{ slug: "bagger", category: "erdbewegung" }], error: null }) };
+      return q;
+    } };
+    const result = await previewPublicCoupon(service, "0123456789ABCDEF0123", "test@example.com", ["bagger"]);
+    expect(result.valid).toBe(true);
+    expect(result.discount_percent).toBe(20);
+    expect(result.eligible_slugs).toEqual(["bagger"]);
+  });
   it("erlaubt aktive, nicht aber verbrauchte oder gesperrte Codes", () => {
     expect(couponCanPreview({ status: "active" })).toBe(true);
     expect(couponCanPreview({ status: "redeemed" })).toBe(false);

@@ -708,6 +708,13 @@
       "when": 1793634393637,
       "tag": "0100_fix_invoice_payment_staff_authorization",
       "breakpoints": true
+    },
+    {
+      "idx": 101,
+      "version": "7",
+      "when": 1793635086747,
+      "tag": "0101_manual_customer_rental_coupons",
+      "breakpoints": true
     }
   ]
 }
