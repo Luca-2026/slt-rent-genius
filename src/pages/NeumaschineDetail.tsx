@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { NewMachineInquiryModal } from "@/components/new-machines/NewMachineInquiryModal";
 import { FinancingCalculator } from "@/components/sales/FinancingCalculator";
 import { financingEligible } from "@/lib/financing";
+import { FinancingTeaser } from "@/components/sales/FinancingTeaser";
 import {
   ArrowLeft, ArrowRight, Phone, MapPin, Shield, Wrench, Truck, CheckCircle2,
   Package, Mail, Clock,
@@ -478,6 +479,7 @@ export default function NeumaschineDetail() {
                     entspricht {formatPriceGross(priceNet, false)} netto
                   </p>
                 )}
+                <FinancingTeaser priceGross={priceGross} priceNet={priceNet} onRequest={machine.price_on_request} />
                 {machine.slug === "baumax-anhaengerkupplung-kde550" && priceGross && (
                   <div className="mt-3 p-3 rounded-lg bg-accent/10 border border-accent/30">
                     <p className="text-sm font-semibold text-foreground">
