@@ -186,7 +186,7 @@ export function RentwareLoader() {
       el.removeAttribute("aria-hidden");
       const slot = document.querySelector("[data-rentware-cart-slot]")?.getBoundingClientRect();
       const top = slot ? `${slot.top}px` : "40px";
-      const right = slot ? `${window.innerWidth - slot.right}px` : "16px";
+      const right = slot ? `${document.documentElement.clientWidth - slot.right}px` : "16px";
       const size = slot ? `${slot.width}px` : "56px";
       document.documentElement.style.setProperty("--rentware-cart-view-position-top", top, "important");
       document.documentElement.style.setProperty("--rentware-cart-view-position-right", right, "important");
