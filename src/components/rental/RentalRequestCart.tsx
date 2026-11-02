@@ -56,8 +56,6 @@ export function RentalRequestCart() {
   const [done, setDone] = useState("");
   const items = snapshot.cart?.items ?? [];
   const edit = snapshot.edit;
-  const startWindow = edit ? pickupWindowForDate(getLocationInfoById(edit.location), edit.start_date) : null;
-  const endWindow = edit ? pickupWindowForDate(getLocationInfoById(edit.location), edit.end_date) : null;
   const validPeriod = !!edit && validPublicRentalPeriod(edit);
   const quoteItems = edit && validPeriod ? [edit] : items;
   const quoteKey = JSON.stringify(quoteItems);
@@ -76,7 +74,7 @@ export function RentalRequestCart() {
     return () => { window.dispatchEvent(new CustomEvent("public-rental-dialog", { detail: false })); };
   }, [snapshot.open]);
   useEffect(() => {
-    if (!snapshot.open || !quoteItems.length || (edit && !validPeriod)) { setQuotes([]); return; }
+    if (!snapshot.open || !quoteItems.length || (edit && !validPeriod)) { setQuotes([]); setLoading(false); setQuoteError(""); return; }
     let cancelled = false;
     setLoading(true); setQuoteError("");
     const timer = setTimeout(async () => {
