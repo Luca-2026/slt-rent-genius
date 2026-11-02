@@ -2,7 +2,7 @@
 // Quelle: lieferpreise-slt-tarife-NEU-v4-2.csv, lieferpreise-slt-mapping-NEU-v2-2.csv,
 // lieferpreise-slt-zusatzkosten-NEU-v5-2.csv
 
-import { tariffs, type Tariff, type TariffKey } from "../../../supabase/functions/_shared/delivery-tariffs";
+import { tariffs, type Tariff, type TariffKey, type TariffDistance } from "../../../supabase/functions/_shared/delivery-tariffs";
 export { tariffs, TIEFLADER_AB_KG, parseWeightKg, deliverySubtypeKey, deliveryTariffFor, cartDeliveryQuote, type TariffKey, type TariffDistance, type Tariff, type CartDeliveryQuote } from "../../../supabase/functions/_shared/delivery-tariffs";
 
 // Zusatzkosten (Konstanten aus CSV)
