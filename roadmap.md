@@ -1,4 +1,5 @@
 # Roadmap – Paket 4 (Angebots-PDF & E-Mail)
+- [ ] Feedback/Anfrage auf Mobil, Tablet, Desktop prüfen; freiwilliger standortbezogener Google-Link unabhängig vom Gutschein, keine Google-Bewertungs-Pflicht.
 - [x] Gutscheine: öffentliches Eingabefeld bis Angebotsvorbelegung; vollständiges internes Feedback; Ausschlüsse für Versicherung/Zubehör/Haftungsfreistellung/Stundenlohn und unveränderte prozentuale Zusatzkosten umgesetzt. Desktop/Mobil geprüft, 58 Tests bestanden; keine Kundenmail/Rechnung versandt.
 - [ ] Gutschein-Live-Abnahme: öffentliche Anfrage bis Mitarbeiterangebot, Feedback bis Code und Rabatt nach Rückgabe in Rechnungs-PDF; blockiert durch fehlenden Mitarbeiterzugang im aktuellen Luca-Testkonto und fehlende Freigabe für Testanfrage/Versand. Bestehende Rechnungen/Angebote nicht verändert.
 - [x] SEO-Korrekturen lokal umgesetzt: eindeutige Metadaten, CMS-Abdeckung (1.131 Produkte/1.320 Seiten), Umlautpfade, Themenseiten, Bilder, XML und Produkt-Strukturdaten; CMS-Fakten unverändert. 58 Tests, fünf Browser-Stichproben, 1.320 Einzelprüfungen, Bericht/XLSX geliefert.
