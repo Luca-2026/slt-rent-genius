@@ -4,7 +4,7 @@ import { validPublicRentalPeriod } from "./public-rental-period.ts";
 
 export async function publicRentalQuote(service: any, items: any[]) {
   const slugs = [...new Set(items.map(item => item.product_slug))];
-  const { data: products, error } = await service.from("b2b_managed_products").select("*").eq("is_published", true).in("slug", slugs);
+  const { data: products, error } = await service.from("b2b_managed_products").select("id,slug,name,category,pricing_scheme,prices_same_all_locations,price_per_day,price_from_1_rd,price_from_3_rd,price_from_10_rd,price_from_20_rd,price_weekend_num,price_base_1_3_cd,surcharge_per_cd_from_4,surcharge_per_cd_from_8,addon_options").eq("is_published", true).in("slug", slugs);
   if (error) throw new Error("Preise konnten nicht geladen werden");
   const { data: locationPrices, error: locationError } = await service.from("public_product_prices").select("*").in("managed_product_id", (products ?? []).map((p: any) => p.id));
   if (locationError) throw new Error("Standortpreise konnten nicht geladen werden");

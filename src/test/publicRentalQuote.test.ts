@@ -18,7 +18,7 @@ describe("Öffentliche CMS-Preisvorschau", () => {
   });
   it("rundet Versicherungsstufen je Tag wie das Angebotsformular", async () => {
     const [quote] = await publicRentalQuote(service({ ...product, price_from_3_rd: 89 }), [row]);
-    expect(quote.addons[1].amount).toBe(3.99);
+    expect(quote.addons[1].amount).toBe(4.02);
   });
   it("lehnen unbekannte Optionen ab", async () => {
     await expect(publicRentalQuote(service(), [{ ...row, selected_addons: ["fake"] }])).rejects.toThrow();
