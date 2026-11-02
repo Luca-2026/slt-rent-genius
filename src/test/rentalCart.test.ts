@@ -1,8 +1,19 @@
 import { describe, it, expect } from "vitest";
-import { addCartItem, withCartPeriod, parseCart, CART_LIFETIME_MS, cartExpired, cartRemainingSeconds, type RentalCartItem } from "@/lib/rentalCart";
+import { addCartItem, withCartPeriod, parseCart, CART_LIFETIME_MS, cartExpired, cartRemainingSeconds, cartCategoryPath, pickupConfirmationRequired, type RentalCartItem } from "@/lib/rentalCart";
 import { isTrailerCategory, isTrailerRoute } from "@/lib/rentalBookingMode";
 const row: RentalCartItem = { id: "a", product_slug: "bagger", product_name: "Bagger", location: "krefeld", quantity: 1, start_date: "2026-11-03", end_date: "2026-11-05", start_time: "08:00", end_time: "16:00", selected_addons: [], use_saturday: false, use_sunday: false };
 describe("15-Minuten-Anfragewarenkorb", () => {
+  it("führt weitere Artikelauswahl zur Kategorieübersicht des Artikelstandorts", () => {
+    expect(cartCategoryPath([row])).toBe("/mieten/krefeld/");
+    expect(cartCategoryPath([{ ...row, location: "bonn" }])).toBe("/mieten/bonn/");
+    expect(cartCategoryPath([{ ...row, location: "muelheim" }])).toBe("/mieten/muelheim/");
+    expect(cartCategoryPath([])).toBe("/mieten/");
+  });
+  it("verlangt aktive Selbstabholbestätigung nur ohne Lieferung", () => {
+    expect(pickupConfirmationRequired(false, false)).toBe(true);
+    expect(pickupConfirmationRequired(false, true)).toBe(false);
+    expect(pickupConfirmationRequired(true, false)).toBe(false);
+  });
   it("übernimmt Zeitraum und Nutzung für weitere Artikel, nicht deren Zusatzoptionen", () => {
     const source = { ...row, selected_addons: ["versicherung"], use_sunday: true };
     const next = withCartPeriod(addCartItem(null, source, 0), { ...row, id: "glass", start_date: "", end_date: "", start_time: "", end_time: "" }, 1);
