@@ -27,6 +27,8 @@ import { productManagedPrices } from "./ProductPriceBlock";
 import { displayPrice } from "@/lib/priceDisplay";
 import { useCustomerType } from "@/hooks/useCustomerType";
 import { usePublicCoupon } from "@/hooks/usePublicCoupon";
+import { openRentalRequest } from "./RentalRequestCart";
+import { isTrailerCategory } from "@/lib/rentalBookingMode";
 
 interface ProductBookingDialogProps {
   product: Product | null;
@@ -128,7 +130,11 @@ export function ProductBookingDialog({
   onClose,
   categoryId,
 }: ProductBookingDialogProps) {
-  const articleId = product?.rentwareCode?.[location?.id || ""];
+  const external = isTrailerCategory(categoryId);
+  const articleId = external ? product?.rentwareCode?.[location?.id || ""] : undefined;
+  useEffect(() => {
+    if (isOpen && product && location && !external) { openRentalRequest(product, location); onClose(); }
+  }, [isOpen, product?.id, location?.id, external]);
   const stockedHere = !product?.onRequest && isStockedAt(product, location?.id || "");
   const containerId = `rentware-dialog-${product?.id || "unknown"}`;
   const [widgetLoading, setWidgetLoading] = useState(true);

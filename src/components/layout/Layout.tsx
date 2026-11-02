@@ -4,6 +4,7 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { PublicChatAssistant } from "@/components/PublicChatAssistant";
 import { RentwareLoader } from "@/components/RentwareLoader";
+import { RentalRequestCart } from "@/components/rental/RentalRequestCart";
 import { CookieConsentBanner } from "@/components/CookieConsentBanner";
 import { isPortalPath, isPortalHost } from "@/lib/portalDomain";
 
@@ -24,6 +25,7 @@ export function Layout({ children }: LayoutProps) {
       <div className="h-0 md:hidden" aria-hidden="true" />
       {!isPortal && <PublicChatAssistant />}
       <RentwareLoader />
+      {!isPortal && <RentalRequestCart />}
       <CookieConsentBanner />
     </div>
   );
