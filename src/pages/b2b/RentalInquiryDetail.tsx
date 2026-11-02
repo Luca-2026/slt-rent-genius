@@ -153,6 +153,15 @@ function Row({ label, value }: { label: string; value: string | null | undefined
   );
 }
 
+function deliveryQuoteLabel(raw: unknown): string | null {
+  const q = (raw as { delivery_quote?: { status?: string; net?: number; tarif?: string; product_name?: string | null; km?: number; distance_km?: number | null; reason?: string; two_machines?: boolean } } | null)?.delivery_quote;
+  if (!q) return null;
+  const eur = (n: number) => n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
+  if (q.status === "priced" && typeof q.net === "number") return `${eur(q.net)} netto (Lieferung + Abholung) · Tarif ${q.tarif} nach ${q.product_name} · ${q.distance_km ?? q.km} km${q.two_machines ? " · Aufschlag 2 Maschinen" : ""}`;
+  if (q.status === "on_request") return q.reason === "tieflader" ? `Auf Anfrage – Tieflader (${q.product_name ?? ""})` : "Auf Anfrage – über 50 km oder nicht ermittelbar";
+  return null;
+}
+
 function RentalDetails({ inquiry }: { inquiry: RentalInquiry }) {
   const list = requestedItemsOf(inquiry);
   const { start, end } = rentalPeriodOf(inquiry);
@@ -194,6 +203,7 @@ function RentalDetails({ inquiry }: { inquiry: RentalInquiry }) {
         label="Lieferung"
         value={inquiry.delivery_requested ? deliveryAddress || "gewünscht" : deliveryAddress || (UNSTRUCTURED_SOURCES.has(inquiry.source) ? null : "Selbstabholung")}
       />
+      <Row label="Lieferkosten" value={deliveryQuoteLabel((inquiry as { raw_payload?: unknown }).raw_payload)} />
       <Row label="Aufbauservice" value={inquiry.setup_service_requested ? "gewünscht" : null} />
       <Row label="Nachricht" value={inquiry.message} />
     </div>
