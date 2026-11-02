@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { processOfferFollowups } from "../../supabase/functions/_shared/offer-followup-delivery";
 vi.mock("../../supabase/functions/_shared/order-code.ts", () => ({ codedSubject: async (_: unknown, subject: string) => subject }));
 vi.mock("../../supabase/functions/_shared/salutation.ts", () => ({ resolveAddressForm: async () => "du", byForm: (_: string, du: string) => du, salutationLine: () => "Guten Tag" }));
@@ -69,3 +69,4 @@ describe("Angebotsnachfragen und Ablehnungsversand", () => {
     expect(mail.subject).toContain("Preis zu hoch");
   });
 });
+afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });

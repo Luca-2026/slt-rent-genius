@@ -25,6 +25,7 @@ import { InquiryStatusBadge } from "./InquiryStatusBadge";
 import { OrderCodeBadge } from "./OrderCodeBadge";
 import { InquiryLocationSection } from "./InquiryLocationSection";
 import { requestedItemsOf } from "./types";
+import { OfferDecisionHistory } from "./OfferDecisionHistory";
 import { inquiryDraftKey, listServerDraftsForInquiry, readInquiryDraft } from "./offerDraftStorage";
 import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm";
 import { OfferAcceptanceNotice } from "./OfferAcceptanceNotice";
