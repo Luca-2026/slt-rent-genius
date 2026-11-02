@@ -65,6 +65,7 @@ import {
   InquiryProductCombobox,
   categoryNameFor,
   findCatalogProductByName,
+  loadCatalog,
   pickCatalogImage,
 } from "./InquiryProductCombobox";
 import { SalesProductCombobox } from "./SalesProductCombobox";
@@ -105,6 +106,8 @@ type FormLine = OfferLine & {
   custom_period?: boolean;
   /** true = Rabatt automatisch aus den Kundenrabatten vorbelegt. */
   discount_auto?: boolean;
+  /** Bereits auf Kundenrabatte geprüfte Katalogkategorie (nur im Entwurf). */
+  discount_category?: string;
   /** Paket 2: CMS-Staffelpreise dieser Position (nur lokal). */
   pricing?: LinePricing;
   /** Einheit von Hand gewählt – sonst defaultUnit des Preisschemas. */
@@ -1006,7 +1009,11 @@ export function InquiryOfferForm({
     if (!discountsRef.current) {
       discountsRef.current = loadInquiryProfileId(inquiryId)
         .then(loadCategoryDiscounts)
-        .catch(() => ({}));
+        .catch(() => {
+          discountsRef.current = null;
+          toast({ title: "Kundenrabatte konnten nicht geladen werden", description: "Bitte das Angebot erneut öffnen, bevor du es versendest.", variant: "destructive" });
+          return {};
+        });
     }
     return discountsRef.current;
   };
@@ -1070,7 +1077,8 @@ export function InquiryOfferForm({
       const discounts = await ensureDiscounts();
       const enriched = await Promise.all(
         items.map(async (item) => {
-          if (item.available_addons || !item.product_name.trim()) return item;
+          if (!item.product_name.trim()) return item;
+          if (item.available_addons && (!autoDiscounts || item.discount_category !== undefined)) return item;
           if (inquiryType === "sales") {
             const hit = findSalesArticle(salesCatalog, {
               slug: item.product_slug,
@@ -1091,7 +1099,9 @@ export function InquiryOfferForm({
               available_addons: [],
             };
           }
-          const match = await findCatalogProductByName(item.product_name);
+          const catalog = await loadCatalog();
+          const baseName = item.product_name.endsWith(WEEKEND_SUFFIX) ? item.product_name.slice(0, -WEEKEND_SUFFIX.length) : item.product_name;
+          const match = catalog.find((p) => p.slug === item.product_slug) ?? await findCatalogProductByName(baseName);
           if (!match) return item;
           const image = pickCatalogImage(match.images);
           const resolved = await resolveCatalogPrice(match);
@@ -1122,8 +1132,9 @@ export function InquiryOfferForm({
               };
             })(),
             product_slug: item.product_slug ?? match.slug,
-            available_addons: cmsAddons,
-            ...withCustomerDiscount(item, match.category, discounts),
+            available_addons: item.available_addons ?? cmsAddons,
+            discount_category: match.category,
+            ...(!pricing?.customer_price ? withCustomerDiscount(item, match.category, discounts) : {}),
             pricing: pricing ?? undefined,
           };
           // Vom Kunden im Anfrageformular gewählte Zusatzoptionen vorbelegen
@@ -1148,7 +1159,7 @@ export function InquiryOfferForm({
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inquiryId]);
+  }, [inquiryId, items]);
 
   const buildBody = () => ({
         ...(isInvoice
@@ -1174,7 +1185,7 @@ export function InquiryOfferForm({
         ...(!isInvoice && reviseOf ? { revise_of: reviseOf } : {}),
         location,
         // Paket 3b: Positionen in Gruppenreihenfolge (PDF ohne Überschriften, die folgen in Paket 4).
-        items: orderItemsByGroups(groups, effectiveItems).map(({ available_addons: _unused, price_source: _src, custom_period: _cp, pricing: _pr, unit_manual: _um, tier_label: _tl, requested_addon_keys: _rak, ...rest }) => {
+        items: orderItemsByGroups(groups, effectiveItems).map(({ available_addons: _unused, discount_category: _dc, price_source: _src, custom_period: _cp, pricing: _pr, unit_manual: _um, tier_label: _tl, requested_addon_keys: _rak, ...rest }) => {
           const unit = (rest.unit ?? "kalendertage") as OfferUnit;
           // Pauschalpositionen haben keine Dauer – der Preis gilt für den
           // gesamten Auftrag, unabhängig von der Mietzeit.
@@ -1661,13 +1672,14 @@ export function InquiryOfferForm({
                   onSelect={async (product, freeText) => {
                     const resolved = product ? await resolveCatalogPrice(product) : undefined;
                     const discounts = await ensureDiscounts();
-                    const base = item.discount_auto ? { ...item, discount_percent: 0, discount_auto: false } : item;
+                    const base = item.discount_auto ? { ...item, discount_percent: 0, discount_auto: undefined } : item;
                     const pricing = pricingActive && product ? await buildLinePricing(product.slug, freeText) : null;
                     const next: FormLine = {
                       ...item,
                       discount_percent: base.discount_percent,
                       discount_auto: base.discount_auto,
-                      ...withCustomerDiscount(base, product?.category, discounts),
+                      ...(!pricing?.customer_price ? withCustomerDiscount(base, product?.category, discounts) : {}),
+                      discount_category: product?.category,
                       product_name: freeText,
                       image_url: product ? pickCatalogImage(product.images) : undefined,
                       ...resolvePricePatch(item, resolved),
