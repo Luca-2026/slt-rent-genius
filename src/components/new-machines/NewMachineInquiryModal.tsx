@@ -223,6 +223,7 @@ export function NewMachineInquiryModal({ open, onClose, machine, financingSummar
 
         {view === "form" && (
           <form onSubmit={handleSubmit} className="px-4 sm:px-6 py-5 space-y-5">
+            {financingSummary && <div className="rounded-md border border-accent/40 bg-accent/5 p-3 text-sm"><p className="font-semibold">Finanzierung gewünscht</p><p className="text-xs text-muted-foreground mt-1">{financingSummary}</p><p className="text-xs text-muted-foreground mt-1">Wir prüfen die Finanzierung über unsere Partnerbanken und melden uns mit einem Angebot.</p></div>}
             {/* 1 — Pre-selected machine */}
             <Card>
               <CardContent className="p-4 space-y-3">
