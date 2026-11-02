@@ -502,14 +502,20 @@ export default function InquiryInvoices() {
                   : ""}
               </DialogDescription>
             </DialogHeader>
-            <div className="space-y-3">
+            <div className="min-w-0 space-y-3">
               <div>
                 <Label className="text-xs">Eingegangener Betrag (€)</Label>
                 <Input type="number" step="0.01" min="0" value={payAmount} onChange={(e) => setPayAmount(e.target.value)} />
               </div>
-              <div>
-                <Label className="text-xs">Zahlungsdatum</Label>
-                <Input type="date" value={payDate} onChange={(e) => setPayDate(e.target.value)} />
+              <div className="min-w-0">
+                <Label htmlFor="invoice-payment-date" className="text-xs">Zahlungsdatum</Label>
+                <Input
+                  id="invoice-payment-date"
+                  type="date"
+                  className="block min-w-0 max-w-full appearance-none [&::-webkit-date-and-time-value]:min-w-0 [&::-webkit-date-and-time-value]:text-left [&::-webkit-datetime-edit]:block [&::-webkit-datetime-edit]:p-0"
+                  value={payDate}
+                  onChange={(e) => setPayDate(e.target.value)}
+                />
               </div>
               <div>
                 <Label className="text-xs">Zahlungsweg</Label>
