@@ -14,10 +14,10 @@ Vorhanden: Zeitraum, Menge, Preisvorschau, Optionen und zusätzliche Artikel. Es
 Diese Etappe separat umsetzen und prüfen, bevor der große Umbau beginnt.
 
 - Vollständigen Code nach kurzer Eingabepause und Feldverlassen geschützt prüfen, nicht pro Tastendruck.
-- Unmittelbare Feldzustände: **„Wird geprüft“**, **„Bitte E-Mail zur Zuordnung eingeben“**, **„Für diese Anfrage anwendbar“** oder verständlicher Fehler. Bei fehlendem Zeitraum/Artikeln zunächst Status/Kundenbindung prüfen und die konkrete Rabattberechnung später ergänzen.
+- Feldzustände: **„Wird geprüft“**, **„E-Mail erforderlich“**, **„Anwendbar“** oder Fehler. Rabattbetrag erst mit Zeitraum/Artikeln berechnen.
 - Code mit Kunden-E-Mail prüfen; ohne Identität kein vollständig gültiger Status. E-Mail direkt beim Gutscheinfeld in der Zusammenfassung, bestehendes Formular nutzt sein E-Mail-Feld.
 - Bei Änderungen an Code/E-Mail/Positionen Prüfung verwerfen; verspätete Antworten ignorieren.
-- Ungültiger eingegebener Code blockiert das Absenden, bis er korrigiert oder entfernt wird. Ein leeres Gutscheinfeld blockiert nie. Bei Dienstausfall keine falsche Gültigkeit anzeigen; Anfrage ohne Code bleibt möglich.
+- Ungültigen Code korrigieren/entfernen vor Absenden; leeres Feld blockiert nie. Dienstausfall nicht als gültig anzeigen, Anfrage ohne Code möglich.
 - Prüfung zeigt den konkreten 10-%-Rabatt nur auf berechtigte Mietpositionen. Versicherung, Zubehör, Haftungsfreistellung, Stundenlohn sowie bestehende ausgeschlossene Zusatzkosten bleiben unverändert; Sonderpreise/höhere Rabatte nicht stapeln.
 - **Beim Prüfen weder reservieren noch einlösen.** Vor Lead-Speicherung erneut prüfen; vor Angebotsversand erneut prüfen und wie bisher reservieren, bei Annahme atomar einlösen. Zwischenzeitliche Einlösung verständlich behandeln.
 
@@ -37,7 +37,7 @@ Diese Etappe separat umsetzen und prüfen, bevor der große Umbau beginnt.
 - Monatskalender mit Abholung und Rückgabe, Datum mit Wochentag sowie Uhrzeit; Mobil kompakt und gut scrollbar, Tablet/Desktop mit mehr Kalenderfläche.
 - Standortbezogene Abholzeiten verwenden; ungültige Zeitfolge auch bei gleichem Datum abweisen. Nicht verfügbare Daten nicht als „frei“ darstellen.
 - Vorläufiger Hinweis: **„Verfügbarkeit wird nach deiner Anfrage bestätigt.“** Vor-Ort-Bestand und konkrete Zeitraumverfügbarkeit ausdrücklich unterscheiden.
-- Bau-/Event-, Wochenend- und Nutzungstagsregeln aus dem bestehenden geprüften Preismodul übernehmen, keine neue Tageszählung erfinden. Spezialfälle wie Monatsmiete ohne Enddatum ausdrücklich darstellen und nur aktivieren, wenn der CMS-Tarif und Mindestlaufzeit unterstützt werden.
+- Geprüfte Bau-/Event-/Wochenend-/Nutzungstagsregeln übernehmen. Monatsmiete ohne Enddatum nur mit passendem CMS-Tarif/Mindestlaufzeit.
 
 ### Schritt B – Preis und Optionen
 - Sobald Zeitraum und Menge feststehen, Mietpreis aus veröffentlichten CMS-Preisen am gewählten Standort berechnen. Tatsächlich gespeicherte Staffeln einschließlich manueller Werte verwenden.
