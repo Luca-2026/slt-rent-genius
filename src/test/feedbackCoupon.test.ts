@@ -23,7 +23,7 @@ describe("Feedback: 10 % nächste Miete", () => {
       rpc: async () => ({ data: { discount_percent: 20 }, error: null }),
       from: () => { const q = { select: () => q, eq: () => q, limit: () => q, maybeSingle: async () => ({ data: { category: "erdbewegung" } }) }; return q; },
     };
-    const result = await applyFeedbackCoupon(service, "0123456789ABCDEF0123", "portal", null, null, [{ product_name: "Bagger", quantity: 1, unit_price: 100 }]);
+    const result = await applyFeedbackCoupon(service, "0123456789ABCDEF0123", "portal", null, null, [{ product_name: "Bagger", quantity: 1, unit_price: 100, discount_percent: 0 }]);
     expect(result.saving).toBe(20);
     expect(result.items[0].discount_percent).toBe(20);
   });

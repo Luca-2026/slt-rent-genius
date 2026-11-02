@@ -13,10 +13,10 @@ export function usePublicCoupon(code: string, email: string, slugs: string[], re
     }, 500);
     return () => { cancelled = true; window.clearTimeout(timer); };
   }, [key]);
-  if (!code.trim()) return { valid: true, checking: false, message: "", eligibleSlugs: [] };
-  if (!/^[a-f0-9]{20}$/i.test(code.trim())) return { valid: false, checking: false, message: "Bitte den vollständigen 20-stelligen Gutscheincode eingeben.", eligibleSlugs: [] };
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) return { valid: false, checking: false, message: "Bitte E-Mail zur Gutscheinzuordnung eingeben.", eligibleSlugs: [] };
-  if (!slugs.length) return { valid: false, checking: false, message: "Bitte einen Mietartikel auswählen.", eligibleSlugs: [] };
-  if (result?.key !== key) return { valid: false, checking: true, message: "Gutschein wird geprüft …", eligibleSlugs: [] };
+  if (!code.trim()) return { valid: true, checking: false, message: "", eligibleSlugs: [], discountPercent: 0 };
+  if (!/^[a-f0-9]{20}$/i.test(code.trim())) return { valid: false, checking: false, message: "Bitte den vollständigen 20-stelligen Gutscheincode eingeben.", eligibleSlugs: [], discountPercent: 0 };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) return { valid: false, checking: false, message: "Bitte E-Mail zur Gutscheinzuordnung eingeben.", eligibleSlugs: [], discountPercent: 0 };
+  if (!slugs.length) return { valid: false, checking: false, message: "Bitte einen Mietartikel auswählen.", eligibleSlugs: [], discountPercent: 0 };
+  if (result?.key !== key) return { valid: false, checking: true, message: "Gutschein wird geprüft …", eligibleSlugs: [], discountPercent: 0 };
   return { ...result, checking: false };
 }
