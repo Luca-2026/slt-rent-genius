@@ -4,7 +4,7 @@
 - src/components/b2b/admin/AGENTS.md steuert die CMS-Artikelmaske: Preisschema je Artikel, Hauptkategorie und die Preisregeln (Pflicht, Rückfallstufen, Alt-Textfelder).
 - WhatsApp: locationWhatsAppContacts.ts + BonnWhatsAppContact; WhatsAppIcon.tsx = Markenglyph.
 - Payment-term eligibility: _shared/customer-payment-terms.ts; validate before numbering, preserve issued snapshots.
-- Feedback coupons: protected DB invitation/activation/reservation functions; acceptance triggers redeem atomically; feedback-coupon-math keeps extras unchanged.
+- Feedback coupons: protected DB invitation/activation/reservation functions; acceptance triggers redeem atomically; feedback-coupon-math checks catalog subcategories and keeps extras unchanged. Public requested_coupon_code lives only in raw_payload until checked offer creation, never in the applied coupon column. Personal feedback completeness is enforced on insert so historic submissions remain idempotent.
 - Signing overlays: ref counting + route gating.
 - Inquiry delivery signatures: absent customers receive hashed single-use delivery_signature_links; service-only complete_delivery_signature atomically stores customer signature/time and versioned signed PDF, preserving the staff protocol. Protocol quantities use quantity for piece/set lines, articles for duration lines.
 - Inquiry invoice previews: same final renderer, no number/write/mail side effects; editors require preview of current data.

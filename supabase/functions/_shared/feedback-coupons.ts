@@ -1,4 +1,4 @@
-import { couponCategoryEligible, couponLine, couponSaving, type CouponLine } from "./feedback-coupon-math.ts";
+import { couponItemEligible, couponLine, couponSaving, type CouponLine } from "./feedback-coupon-math.ts";
 
 export async function applyFeedbackCoupon<T extends CouponLine & { product_name: string; product_slug?: string }>(
   service: any, code: unknown, kind: "inquiry" | "portal", orderId: string | null, profileId: string | null, items: T[],
@@ -26,7 +26,7 @@ export async function applyFeedbackCoupon<T extends CouponLine & { product_name:
   let saving = 0;
   const updated: T[] = [];
   for (const item of items) {
-    let query = service.from("b2b_managed_products").select("slug,name,category");
+    let query = service.from("b2b_managed_products").select("slug,name,category,subcategory");
     query = item.product_slug ? query.eq("slug", item.product_slug) : query.eq("name", item.product_name);
     const { data: product } = await query.limit(1).maybeSingle();
     let special = false;
@@ -34,7 +34,7 @@ export async function applyFeedbackCoupon<T extends CouponLine & { product_name:
       const { data } = await service.from("b2b_customer_prices").select("id").eq("b2b_profile_id", sourceProfile).eq("product_name", item.product_name).limit(1).maybeSingle();
       special = !!data;
     }
-    const eligible = !special && !!product && couponCategoryEligible(product.category ?? "") && couponCategoryEligible(product.name ?? "");
+    const eligible = !special && couponItemEligible(item, product);
     saving += couponSaving(item, eligible);
     updated.push(couponLine(item, eligible));
   }

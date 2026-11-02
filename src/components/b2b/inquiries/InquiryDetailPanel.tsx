@@ -1,4 +1,5 @@
 import { DepositSettlementCard } from "./DepositSettlementCard";
+import { requestedCoupon } from "@/lib/requestedCoupon";
 import { ReturnChargesSummary } from "./ReturnChargesSummary";
 import { depositBlocksInvoice, paymentsUpToRent, useDepositState } from "./useDepositState";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
@@ -628,6 +629,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
       {inquiryType === "rental" && (
         <InquiryLocationSection
           inquiryId={inquiry.id}
+          defaultCouponCode={inquiryType === "rental" ? (inquiry as RentalInquiry).feedback_coupon_code ?? requestedCoupon((inquiry as RentalInquiry).raw_payload) : ""}
           location={inquiry.location}
           startDate={inquiry.start_date ?? null}
           endDate={inquiry.end_date ?? null}
