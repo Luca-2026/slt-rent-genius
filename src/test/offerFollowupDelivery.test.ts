@@ -33,6 +33,7 @@ function service() {
 }
 beforeEach(() => {
   state.status = "active"; state.inquiryStatus = "offer_sent"; state.email = "luca@sandhoff.org"; state.sent = false; state.last = null;
+  vi.useFakeTimers(); vi.setSystemTime(new Date("2026-11-04T10:00:00Z"));
   vi.stubGlobal("Deno", { env: { get: (key: string) => key === "RESEND_API_KEY" ? "test-only" : undefined } });
   dispatch.mockReset().mockResolvedValue({ ok: true, json: async () => ({ id: "provider-test" }) });
   vi.stubGlobal("fetch", dispatch);
