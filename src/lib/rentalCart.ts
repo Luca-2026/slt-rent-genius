@@ -10,6 +10,15 @@ export interface RentalCartItem {
 export interface RentalCart { version: 1; expiresAt: number; requestId: string; items: RentalCartItem[] }
 export function cartExpired(cart: RentalCart | null, now = Date.now()) { return !!cart && cart.expiresAt <= now; }
 export function cartRemainingSeconds(cart: RentalCart | null, now = Date.now()) { return Math.min(900, Math.max(0, Math.ceil(((cart?.expiresAt ?? now) - now) / 1000))); }
+/** Prefer the latest period at this pickup location; never copy article-specific extras. */
+export function withCartPeriod(cart: RentalCart | null, item: RentalCartItem, now = Date.now()): RentalCartItem {
+  if (!cart || cartExpired(cart, now)) return item;
+  const candidates = [...cart.items].reverse();
+  const source = candidates.find(row => row.location === item.location) ?? candidates[0];
+  if (!source) return item;
+  const next = { ...item, start_date: source.start_date, start_time: source.start_time, end_date: source.end_date, end_time: source.end_time, use_saturday: source.use_saturday, use_sunday: source.use_sunday };
+  return validPublicRentalPeriod(next) ? next : item;
+}
 export function addCartItem(cart: RentalCart | null, item: RentalCartItem, now = Date.now()): RentalCart {
   const existing = cart && !cartExpired(cart, now) ? cart : null;
   return { version: 1, expiresAt: existing?.expiresAt ?? now + CART_LIFETIME_MS, requestId: existing?.requestId ?? crypto.randomUUID(), items: [...(existing?.items.filter(row => row.id !== item.id) ?? []), item] };
