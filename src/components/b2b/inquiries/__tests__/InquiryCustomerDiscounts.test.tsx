@@ -57,7 +57,7 @@ function open(props: Partial<React.ComponentProps<typeof InquiryOfferForm>> = {}
 function discounts() {
   return screen.getAllByRole("spinbutton").filter((input) => input.getAttribute("max") === "100") as HTMLInputElement[];
 }
-beforeEach(() => { fixtures.draft = null; fixtures.specialPrice = 0; fixtures.invoke.mockReset(); fixtures.queries.mockClear(); });
+beforeEach(() => { fixtures.draft = null; fixtures.specialPrice = 0; fixtures.invoke.mockReset(); fixtures.invoke.mockResolvedValue({ data: null, error: null }); fixtures.queries.mockClear(); });
 afterEach(cleanup);
 
 describe("Kundenrabatte im Mietanfrage-Angebot", () => {
@@ -80,17 +80,19 @@ describe("Kundenrabatte im Mietanfrage-Angebot", () => {
     fixtures.draft = { items: [{ ...line(), discount_auto: false }] };
     open();
     await waitFor(() => expect(fixtures.queries).toHaveBeenCalledWith("b2b_managed_products"));
-    expect(discounts()[0].value).toBe("0");
+    expect(Number(discounts()[0].value)).toBe(0);
   });
   it("wendet keinen Kategorierabatt zusätzlich zu einem Kundensonderpreis an", async () => {
     fixtures.specialPrice = 80;
     open();
     await waitFor(() => expect(fixtures.queries).toHaveBeenCalledWith("b2b_customer_prices"));
-    expect(discounts()[0].value).toBe("0");
+    fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
+    await waitFor(() => expect(fixtures.invoke).toHaveBeenCalled());
+    expect(fixtures.invoke.mock.calls[0][1].items[0].discount_percent).toBe(0);
   });
   it("ändert Rabatte bestehender Angebotsrevisionen nicht", async () => {
     open({ reviseOf: "ANG-TEST" });
-    expect(discounts()[0].value).toBe("0");
+    expect(Number(discounts()[0].value)).toBe(0);
     expect(fixtures.queries).not.toHaveBeenCalledWith("b2b_category_discounts");
   });
 });
