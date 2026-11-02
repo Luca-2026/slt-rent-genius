@@ -8,6 +8,13 @@ export interface RentalCartItem {
   use_saturday: boolean; use_sunday: boolean;
 }
 export interface RentalCart { version: 1; expiresAt: number; requestId: string; items: RentalCartItem[] }
+export function cartCategoryPath(items: RentalCartItem[]): string {
+  const location = items[0]?.location;
+  return location && ["krefeld", "bonn", "muelheim"].includes(location) ? `/mieten/${location}/` : "/mieten/";
+}
+export function pickupConfirmationRequired(deliveryRequested: boolean, pickupConfirmed: boolean): boolean {
+  return !deliveryRequested && !pickupConfirmed;
+}
 export function cartExpired(cart: RentalCart | null, now = Date.now()) { return !!cart && cart.expiresAt <= now; }
 export function cartRemainingSeconds(cart: RentalCart | null, now = Date.now()) { return Math.min(900, Math.max(0, Math.ceil(((cart?.expiresAt ?? now) - now) / 1000))); }
 /** Prefer the latest period at this pickup location; never copy article-specific extras. */
