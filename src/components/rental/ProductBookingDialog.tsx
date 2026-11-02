@@ -378,6 +378,7 @@ export function ProductBookingDialog({
 
   if (!product || !location) return null;
 
+  if (!external) return null;
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()} modal={!articleId}>
       <DialogContent 
