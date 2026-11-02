@@ -30,6 +30,14 @@ export function openRentalRequest(product: Product, location: LocationData) {
 type Quote = { id: string; product_name: string; unit: string; duration: number; unit_price: number | null; rental_net: number | null; addons: { key: string; label: string; amount: number | null; deductible: number | null }[]; options: { key: string; label: string; amount: number | null; is_default: boolean; surcharge_percent?: number; deductible?: number }[] };
 const emptyContact = { name: "", email: "", phone: "", street: "", postalCode: "", city: "", couponCode: "", message: "" };
 
+export function RentalCartButton() {
+  const snapshot = useSyncExternalStore(fn => { listeners.add(fn); return () => { listeners.delete(fn); }; }, () => state);
+  const { pathname } = useLocation();
+  const signing = useSigningOverlaysSuppressed(pathname);
+  if (signing || pathname.startsWith("/b2b") || isTrailerRoute(pathname)) return null;
+  return <Button variant="outline" size="icon" aria-label={`Mietanfrage-Warenkorb (${snapshot.cart?.items.length ?? 0} Artikel)`} title="Mietanfrage-Warenkorb" className="relative h-11 w-11 shrink-0" onClick={() => update({ open: true, edit: null })}><ShoppingCart className="h-5 w-5" /><span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent text-accent-foreground text-xs">{snapshot.cart?.items.length ?? 0}</span></Button>;
+}
+
 export function RentalRequestCart() {
   const snapshot = useSyncExternalStore(fn => { listeners.add(fn); return () => { listeners.delete(fn); }; }, () => state);
   const route = useLocation();
@@ -58,7 +66,7 @@ export function RentalRequestCart() {
     window.addEventListener("storage", sync); window.addEventListener("focus", tick);
     return () => { clearInterval(timer); window.removeEventListener("storage", sync); window.removeEventListener("focus", tick); };
   }, []);
-  useEffect(() => { if (edit) { setStep("period"); setDone(""); } }, [edit?.id]);
+  useEffect(() => { if (edit) { setStep("period"); setDone(""); } else if (snapshot.open) setStep("cart"); }, [edit?.id, snapshot.open]);
   useEffect(() => {
     if (!snapshot.open || !quoteItems.length || (edit && !validPeriod)) { setQuotes([]); return; }
     let cancelled = false;
@@ -90,9 +98,6 @@ export function RentalRequestCart() {
   };
   if (signing || route.pathname.startsWith("/b2b")) return null;
   return <>
-    {!isTrailerRoute(route.pathname) && <Button variant="outline" size="icon" aria-label={`Mietanfrage-Warenkorb (${items.length} Artikel)`} title="Mietanfrage-Warenkorb" className="fixed right-3 top-12 z-50 h-11 w-11 bg-background" onClick={() => { update({ open: true, edit: null }); setStep("cart"); }}>
-      <ShoppingCart className="h-5 w-5" /><span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent text-accent-foreground text-xs">{items.length}</span>
-    </Button>}
     <Dialog open={snapshot.open} onOpenChange={open => update({ open, edit: open ? state.edit : null })}>
       <DialogContent className="max-w-3xl max-h-[92dvh] overflow-y-auto overflow-x-hidden p-4 sm:p-6">
         <DialogHeader><DialogTitle>{edit ? edit.product_name : "Deine Mietanfrage"}</DialogTitle><DialogDescription>Verfügbarkeit wird nach deiner Anfrage bestätigt.</DialogDescription></DialogHeader>
