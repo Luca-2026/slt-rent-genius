@@ -781,6 +781,7 @@ export function InquiryOfferForm({
     setRemoteDraft(null);
     draftRef.current = null;
     setDraftRestored(false);
+    setCouponCode(defaultCouponCode);
     setItems(defaultItems.length ? defaultItems : [emptyLine()]);
     setDelivery(defaultDelivery ?? emptyDelivery);
     setDeliveryCostDelivery(defaultCosts?.delivery_cost_delivery ?? 0);

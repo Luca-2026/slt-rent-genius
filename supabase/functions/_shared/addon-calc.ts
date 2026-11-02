@@ -74,7 +74,8 @@ export function computeAddonAmount(spec: AddonCalcSpec, ctx: AddonLineContext): 
   if (!Number.isFinite(rate)) return null;
   const articles = Math.max(1, Number(ctx.articles) || 1);
   const duration = Math.max(1, Number(ctx.duration) || 1);
-  const factor = 1 - (Number(ctx.discount_percent) || 0) / 100;
+  // Rental discounts never reduce insurance, liability waivers or accessories.
+  const factor = 1;
   const price = Number(ctx.unit_price) || 0;
 
   if (spec.price_type === "flat" || spec.basis === "once") {
