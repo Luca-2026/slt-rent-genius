@@ -701,6 +701,13 @@
       "when": 1793633309110,
       "tag": "0099_offer_dispatch_success_only",
       "breakpoints": true
+    },
+    {
+      "idx": 100,
+      "version": "7",
+      "when": 1793634393637,
+      "tag": "0100_fix_invoice_payment_staff_authorization",
+      "breakpoints": true
     }
   ]
 }
