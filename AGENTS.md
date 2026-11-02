@@ -8,6 +8,7 @@
 - Signing overlays: ref counting + route gating.
 - Inquiry delivery signatures: absent customers receive hashed single-use delivery_signature_links; service-only complete_delivery_signature atomically stores customer signature/time and versioned signed PDF, preserving the staff protocol. Protocol quantities use quantity for piece/set lines, articles for duration lines.
 - Inquiry invoice previews: same final renderer, no number/write/mail side effects; editors require preview of current data.
+- Percentage add-ons use the undiscounted rental basis in shared addon-calc, so rental discounts cannot reduce insurance or liability charges.
 <!-- LOVABLE:BEGIN -->
 - Inject the portal first-paint guard through the Vite HTML plugin before body parsing; hide only prerender fallback content on the exact portal host to preserve public SEO and the React portal.
 <!-- LOVABLE:END -->
