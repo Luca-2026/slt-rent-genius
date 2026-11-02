@@ -5,6 +5,8 @@ Eigener Anfrageprozess für **alle Nicht-Anhänger**, auch mit Restcodes. **Anh�
 
 Zunächst **unverbindliche Leads**, keine Reservierung/Zahlung/Gerätebelegung. Admin oder Mitarbeiter prüft und erstellt Angebot/Auftragsbestätigung im bestehenden Ablauf. Maschinenverfügbarkeit folgt später.
 
+Langfristiges Ziel: ausgewählte Artikel direkt online buchbar machen; Angebote dann vorrangig für Geschäftskunden und große Projektvolumen. Das ändert heute weder Zahlungs- noch Freigaberegeln.
+
 **Annahme für diesen Plan:** Anhänger bleiben vollständig im externen Buchungsweg; sie werden nicht gleichzeitig im eigenen Warenkorb verbindlich gebucht. Beide Warenkörbe bleiben getrennt, sehen aber konsistent aus.
 
 ## Aktueller Stand
@@ -27,6 +29,7 @@ Diese Etappe zuerst separat umsetzen und prüfen.
 - Zentral festlegen, ob ein Artikel Anhänger oder Nicht-Anhänger ist: über echte Hauptkategorie/Artikelmerkmale, niemals allein über Rentware-Code oder Namenssuche.
 - Artikelansichten, Kategorien, Suche, Empfehlungen und ältere Kataloge verwenden dieselbe Entscheidung.
 - Nicht-Anhänger: „Jetzt mieten“ öffnet den eigenen Kalender. Anhänger: bestehender Rentware-Kalender und dessen Checkout.
+- Kalender und komplette Strecke als **globales Pop-up**, auf jeder öffentlichen Website-Seite fortsetzbar. Warenkorbsymbol **oben rechts auch auf der Startseite**; Klick öffnet den gespeicherten Stand bis zum Lead-Abschluss. Schließen oder Zurückkehren zur Website verliert den Stand innerhalb der Frist nicht. Anhängerseiten öffnen stattdessen Rentware.
 - Eigenes Symbol in Form/Größe/Farbe/Position am realen Rentware-Symbol ausrichten, mit Mengenanzeige und zugänglichem Namen; Navigation/Chat nicht überlagern.
 - Auf Anhängerseiten externes Symbol, sonst eigener Warenkorb; vorhandene eigene Positionen bleiben separat erreichbar. Keine überlappenden Symbole. Rentware nur bei Anhängerbedarf laden.
 - B2B-Portal, Unterschriften und bisherige geschützte Abläufe bleiben ohne störenden Warenkorb.
@@ -58,8 +61,9 @@ Diese Etappe zuerst separat umsetzen und prüfen.
 
 ## 4. Speicherung und Mitarbeiterablauf
 - Ein gemeinsamer Warenkorb über Seitenwechsel, Schließen und Reload; Produkt, Standort, Menge, Zeitraum und Optionsschlüssel speichern, keine verbindlichen Browserpreise. Beim Öffnen/Absenden CMS neu laden und Änderungen zeigen.
-- Kontaktdaten/Codes nicht unnötig dauerhaft speichern. Keine neue willkürliche Ablauffrist; alte Zeiträume markieren. Versionierter Speicher mit sicherem Verhalten bei beschädigten/gesperrten Daten.
-- Erst nach erfolgreicher Lead-Speicherung gesendete Positionen entfernen. Fehler erhalten den Warenkorb; Wiederholungen erzeugen keinen zweiten Lead.
+- **15-Minuten-Frist:** startet beim ersten hinzugefügten Artikel für den gesamten Warenkorb. Sichtbare Restzeit `14:59` und Ablaufhinweis im Pop-up. Als Standard keine Verlängerung durch Tippen, Hinzufügen, Seitenwechsel oder Reload; neue Frist erst für einen neuen Warenkorb nach Leerung.
+- Nach Ablauf automatisch alle ungesendeten Positionen samt Zeiträumen/Optionen und Gutscheinprüfung leeren, auch nach Rückkehr aus Hintergrund/geschlossenem Browser. Bei Wiederöffnung: „Dein Warenkorb ist abgelaufen. Bitte wähle deine Artikel erneut.“ Kontaktdaten/Codes nicht unnötig dauerhaft speichern; beschädigten/gesperrten Speicher sicher behandeln.
+- Nach erfolgreicher Lead-Speicherung gesendete Positionen entfernen. Fehler erhalten sie nur bis zum Fristende; Wiederholungen erzeugen keinen zweiten Lead. Absenden und Fristablauf eindeutig koordinieren: bereits erfolgreich gespeicherte Leads nie löschen, abgelaufene Warenkörbe nicht neu absenden.
 - Alle Positionen/Zeiträume in Mitarbeiteransicht, Benachrichtigung und Angebotsvorbelegung übernehmen. Globale Daten nur Zusammenfassung: keine pauschale Belegung aller Artikel zwischen frühester Abholung und letzter Rückgabe.
 - Unterschiedliche Ausgabe-/Rückgabetermine auch in Protokollen und Verfügbarkeitsprüfung unterstützen; heutige Protokollgrenzen vor Freigabe prüfen und nötige positionsbezogene Rückgaben ergänzen.
 - Mitarbeiter erstellt Angebot/Bestätigung im bestehenden geschützten Ablauf. Ausgestellte Rechnungen, angenommene Angebote, Kautionen und echte Aufträge unverändert lassen.
@@ -70,6 +74,13 @@ Diese Etappe zuerst separat umsetzen und prüfen.
 - Vorhandene Browser-/Server-Preis- und Add-on-Regeln wiederverwenden und Gleichheit testen; ältere alternative Rabattbasis-Helfer nicht ungeprüft nutzen.
 - `requested_items` um Positionszeiträume/Standort/Optionen erweitern, alte Anfragen kompatibel halten. Parser, Mitarbeiteransicht, Angebot und Protokolle nachziehen.
 - Lead serverseitig erneut berechnen, mit Wiederholungskennung speichern; Mailfehler erzeugt keinen zweiten Lead. Datenbankänderungen nur über vorgesehenen Migrationsweg mit Rechten; Entscheidungen in `AGENTS.md`, CMS-Fakten unverändert.
+- Frist über einen gespeicherten absoluten Ablaufzeitpunkt berechnen, nicht über heruntergezählte Sekunden; Tabs synchronisieren. Countdown löscht keine bereits gesendeten Leads und reserviert in der jetzigen Phase keinen Bestand.
+
+## Später: echte 15-Minuten-Reservierungen und Direktbuchung
+- **Wichtig:** Heute hält ein Lead-Warenkorb keine Maschine zurück. Daher gibt seine Leerung noch keinen Bestand frei; mehrere unverbindliche Anfragen sind möglich. Keine falsche Reservierungszusage zeigen.
+- Bei aktivierter Verfügbarkeit hält der Server konkrete Geräte bzw. verfügbare Mengen für die jeweiligen Mietzeiträume höchstens 15 Minuten. Gleichzeitige Zugriffe transaktional prüfen: nur tatsächlich freie Kapazität vergeben, nicht pauschal alle Anfragen desselben Artikels sperren.
+- Ablauf zählt serverseitig auch bei geschlossenem Browser. Abgelaufene Haltefristen bei jeder Verfügbarkeits-/Buchungsprüfung nicht mehr berücksichtigen; Freigabe darf nicht auf einen Browser-Timer oder häufige Hintergrundabfragen angewiesen sein.
+- Vor Direktbuchung gültige Haltefrist atomar in verbindliche Belegung überführen; Zahlung, Ablauf, Abbruch und Wiederholung dürfen keine Doppelbuchung oder verlorene Zahlung erzeugen. Bestehende bestätigte Belegungen schützen. Dieser Ausbauschritt braucht eigene Abnahme vor Aktivierung.
 
 ## Reihenfolge und Freigaben
 1. **Gutscheinprüfung** im bisherigen Formular separat umsetzen und testen.
@@ -77,11 +88,12 @@ Diese Etappe zuerst separat umsetzen und prüfen.
 3. **Kalender/Preis/Optionen:** einen Artikel vollständig prüfen, CMS-Preisgleichheit und Pflicht-/Wahloptionen.
 4. **Mehrere Artikel/Zeiträume:** Mitarbeiter-, Angebots- und Protokollkompatibilität vollständig nachziehen.
 5. **Lead-Abnahme:** freigegebene echte Testanfrage bis Mitarbeiteransicht, Angebotsvorschau und Empfangsbestätigung; dann kontrolliert veröffentlichen.
-6. **Später separat:** öffentliche tatsächliche Maschinenverfügbarkeit nach Bereinigung der Bestandsdaten; nicht Teil der Erstumstellung.
+6. **Später separat:** tatsächliche Maschinenverfügbarkeit, serverseitige 15-Minuten-Haltefristen und anschließend Direktbuchung ausgewählter Artikel. Erst nach Bestandsbereinigung und Prüfung paralleler Zugriffe/Zahlungsabläufe aktivieren; Angebote für Geschäftskunden/große Projekte erhalten.
 
 ## Tests und Bericht pro Etappe
 - Mobil 402×725 und kleiner, Tablet 768×1024 in beiden Ausrichtungen, Desktop 1280×1800: Kalender, Tastatur, Scrollen, Symbol, Dialoge und Textüberläufe.
 - Warenkorb: Seitenwechsel/Reload, derselbe Artikel mit mehreren Zeiträumen, Bearbeiten/Löschen, Speicherausfall, Preisänderungen und fehlgeschlagenes Absenden.
+- Timer: bei 14:59 erhalten, bei genau 15:00 leer; Reload/weitere Tabs/Hintergrund verlängern nicht. Globales Pop-up von Start-/Artikel-/Kategorieseite fortsetzen. Später zwei gleichzeitige Buchungen um das letzte Gerät testen: nur eine erhält die Kapazität, abgelaufene Haltefrist gibt sie wieder frei.
 - Preise: Staffelgrenzen, Wochenende, Berlin/DST, Mengen/Sets, Standortpreise, Event/Monatsfälle, fehlende Preise, brutto/netto und centgenaue Summen.
 - Optionen/Gutscheine: Pflichtversicherung, exklusive Stufen, ausgeschlossene Beträge; falscher Code/Kunde, eingelöst/reserviert, Dienstfehler, veraltete Antworten und keine Reservierung bei Vorprüfung.
 - Lead: richtige Zuordnung, Auftrags-ID und Positionszeiträume, keine Doppelanfrage oder Gerätebelegung; Anhänger bleiben extern buchbar.
