@@ -1,4 +1,5 @@
 # Roadmap – Paket 4 (Angebots-PDF & E-Mail)
+- [ ] Kaution im öffentlichen Warenkorb je Artikel und gesamt aus CMS anzeigen und prüfen; fehlende Angaben als offen kennzeichnen.
 - [x] Plan für eigenen Anfrage-Warenkorb freigegeben: Kalender, CMS-Preise/Optionen, Positionszeiträume, 15-Minuten-Frist, globales Pop-up und Rentware nur Anhänger.
 - [x] Eigene Anfrage-Strecke: zwei verschiedene Artikel mit eigenen Zeiträumen, Neuladen/Startseiten-Rückkehr, unveränderte Frist, Entfernung und Ablauf per Browser-Zeitsprung geprüft; Kalender/Optionen/Kontakt Mobil/Tablet/Desktop ohne Überlauf. 62 Regel-/Regressionstests bestanden; ungültige Serveranfragen HTTP 400. Vollständiger Live-Versand separat offen.
 - [ ] Vollständige öffentliche Testanfrage bis Mitarbeiteransicht: gesonderte Freigabe zur Anlage und Testmail an luca@sandhoff.org erforderlich; keine echte Gerätebuchung.
