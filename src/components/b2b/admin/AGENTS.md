@@ -1,4 +1,5 @@
 # CMS-Artikelmaske (Mietartikel)
+- Deposit is saved independently in deposit_amount per rented article/set; blank stays null, explicit zero stays zero, no VAT conversion.
 - Preisschema (bau/event) gilt je Artikel (`pricing_scheme`); Hauptkategorie (`main_category`: event/bau) steuert die Filterzuordnung der Website. Preise netto, Spalten `price_*` in b2b_managed_products, optional je Standort in b2b_managed_product_location_prices (gleiche RLS wie b2b_managed_products).
 - Migration alter Textpreise: Monatspreis ÷ 20 = `price_from_20_rd`; nicht lesbare Werte landen in migration_price_log, nichts wird geraten.
 - Leere Staffelstufen fallen auf die nächstniedrigere gefüllte Stufe zurück (3 → 1, 10 → 3, 20 → 10), nie auf 0. Umgesetzt in Paket 2 in src/lib/pricing (`tierPriceBau`); Spiegelkopie supabase/functions/_shared/rental-pricing.ts, Änderungen immer in beiden Dateien.

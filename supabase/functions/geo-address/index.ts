@@ -29,6 +29,26 @@ serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const action = body?.action as string | undefined;
 
+    if (action === "details" || action === "postal") {
+      const placeId = String(body.placeId ?? "");
+      const postalCode = String(body.postalCode ?? "");
+      if (action === "details" ? !/^[A-Za-z0-9_-]{1,300}$/.test(placeId) : !/^\d{5}$/.test(postalCode)) return json({ error: "Ungültige Eingabe" }, 400);
+      if (!(await allowPublicRequest(req, "geo-address-details", 120, 3600))) return json({ error: "Zu viele Anfragen" }, 429);
+      let components: any[] = [];
+      if (action === "details") {
+        const response = await fetch(`https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}`, { headers: { "X-Goog-Api-Key": apiKey, "X-Goog-FieldMask": "addressComponents" } });
+        if (!response.ok) return json({ error: "Adresse nicht gefunden" }, 502);
+        components = (await response.json()).addressComponents ?? [];
+      } else {
+        const response = await fetch("https://places.googleapis.com/v1/places:searchText", { method: "POST", headers: { "Content-Type": "application/json", "X-Goog-Api-Key": apiKey, "X-Goog-FieldMask": "places.addressComponents" }, body: JSON.stringify({ textQuery: `${postalCode} Deutschland`, languageCode: "de", regionCode: "DE" }) });
+        if (!response.ok) return json({ error: "Ort nicht gefunden" }, 502);
+        const result = await response.json();
+        components = (result.places ?? []).find((r: any) => r.addressComponents?.some((c: any) => c.types.includes("postal_code") && c.longText === postalCode))?.addressComponents ?? [];
+      }
+      const field = (type: string) => { const component = components.find((c: any) => c.types?.includes(type)); return component?.longText ?? component?.long_name ?? ""; };
+      return json({ street: [field("route"), field("street_number")].filter(Boolean).join(" "), postalCode: field("postal_code"), city: field("locality") || field("postal_town") });
+    }
+
     if (action === "autocomplete") {
       const input = String(body.input ?? "").trim();
       const sessionToken = String(body.sessionToken ?? "");

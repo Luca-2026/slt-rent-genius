@@ -666,6 +666,13 @@
       "when": 1793606514575,
       "tag": "0094_unique_public_cart_request",
       "breakpoints": true
+    },
+    {
+      "idx": 95,
+      "version": "7",
+      "when": 1793617697258,
+      "tag": "0095_rental_product_deposit",
+      "breakpoints": true
     }
   ]
 }

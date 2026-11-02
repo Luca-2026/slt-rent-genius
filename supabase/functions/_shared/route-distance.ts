@@ -15,8 +15,8 @@ export async function routeDistance(apiKey: string, locationId: string, destinat
   });
   if (!res.ok) { console.error(`Routes failed for ${locationId}`, res.status, await res.text()); return null; }
   const route = (await res.json())?.routes?.[0];
-  if (!route?.distanceMeters) return null;
-  const meters = Number(route.distanceMeters);
+  if (!route || !Number.isFinite(Number(route.distanceMeters ?? 0))) return null;
+  const meters = Number(route.distanceMeters ?? 0);
   const km = meters / 1000;
   return { locationId, origin, distanceMeters: meters, distanceKm: km, roundedKm: Math.max(5, Math.ceil(km / 5) * 5), durationSeconds: Number(String(route.duration ?? "0s").replace(/\D/g, "")) || null };
 }

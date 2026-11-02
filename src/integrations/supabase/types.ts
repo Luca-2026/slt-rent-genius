@@ -1119,6 +1119,7 @@ export type Database = {
           category: string
           created_at: string
           created_by: string | null
+          deposit_amount: number | null
           description: string | null
           detailed_description: string | null
           drive_type: string | null
@@ -1186,6 +1187,7 @@ export type Database = {
           category: string
           created_at?: string
           created_by?: string | null
+          deposit_amount?: number | null
           description?: string | null
           detailed_description?: string | null
           drive_type?: string | null
@@ -1253,6 +1255,7 @@ export type Database = {
           category?: string
           created_at?: string
           created_by?: string | null
+          deposit_amount?: number | null
           description?: string | null
           detailed_description?: string | null
           drive_type?: string | null
@@ -5421,6 +5424,7 @@ export type Database = {
           available_locations: string[] | null
           category: string | null
           created_at: string | null
+          deposit_amount: number | null
           description: string | null
           detailed_description: string | null
           drive_type: string | null
@@ -5476,6 +5480,7 @@ export type Database = {
           available_locations?: string[] | null
           category?: string | null
           created_at?: string | null
+          deposit_amount?: number | null
           description?: string | null
           detailed_description?: string | null
           drive_type?: string | null
@@ -5531,6 +5536,7 @@ export type Database = {
           available_locations?: string[] | null
           category?: string | null
           created_at?: string | null
+          deposit_amount?: number | null
           description?: string | null
           detailed_description?: string | null
           drive_type?: string | null

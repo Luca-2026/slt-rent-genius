@@ -1,4 +1,9 @@
 # Roadmap – Paket 4 (Angebots-PDF & E-Mail)
+- [x] Kalender vorläufig freie Tage grün, Wochenendtarif 24,99 € beim Heizlüfter sichtbar; endgültige Bestätigung bleibt beim Team.
+- [x] Zusatzartikel vor Versicherungen; unbekannte Beträge ausblenden und Kundentexte ohne CMS-Begriffe. Echter Heizlüfter-Ablauf sowie simulierte fehlende Preise geprüft, kein Anfrageversand.
+- [x] Lieferadresse mit echten Straßenvorschlägen und PLZ 47807 → Krefeld; Lieferung 100 € / Gesamt 146,41 € im Browser geprüft, Mobil/Tablet/Desktop ohne Überlauf. Null-Kilometer-Route korrigiert.
+- [x] Eigenes Kautionsfeld deposit_amount je Artikel ergänzt, öffentliche Preisfunktion und Legacy-Rückfall geprüft; 26 Tests bestanden, keine bestehenden Artikelwerte geändert.
+- [ ] Kautionsfeld speichern und wieder öffnen in Mitarbeiteransicht: Lucas aktueller Testfirma-Zugang hat keine Team-Berechtigung; angemeldeter Versuch bestätigt „Kein Zugriff“, keine Rollen geändert.
 - [x] Kostenfreie Stornierung: 5 % reine Miete ohne Versicherung/Kaution; fehlende Preise bleiben unbekannt, Option wählbar mit 5-%-Hinweis. CMS-Preis im mobilen/Desktop-Warenkorb geprüft; Funktionen aktualisiert, kein Versand.
 - [x] Anhängerseiten: reservierter Warenkorbplatz rechts neben mobilem Menü; geladenen Widget-Platz und Menüöffnung bei 393×841 geprüft. Leerer Rentware-Warenkorb blendet sein inneres Symbol selbst aus.
 - [x] Kaution im öffentlichen Warenkorb je Artikel und gesamt aus CMS; fehlende Angaben offen, keine Steuerumrechnung. 8 Tests und echte Fahrzeugkaution 1.000 € im Browser geprüft; Preisfunktion deployed, keine Anfrage versandt.

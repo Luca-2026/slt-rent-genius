@@ -30,6 +30,7 @@ export interface ManagedProductRow {
   price_weekend: string | null;
   price_per_month: string | null;
   min_rental_months: number | null;
+  deposit_amount?: number | null;
   weight_kg: number | null;
   drive_type: string | null;
   rentware_code: Record<string, string>;
