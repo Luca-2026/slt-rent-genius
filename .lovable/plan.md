@@ -7,12 +7,8 @@ Das eigene System erzeugt zunächst **unverbindliche Leads**, keine bestätigten
 
 **Annahme für diesen Plan:** Anhänger bleiben vollständig im externen Buchungsweg; sie werden nicht gleichzeitig im eigenen Warenkorb verbindlich gebucht. Beide Warenkörbe bleiben getrennt, sehen aber konsistent aus.
 
-## Was bereits vorhanden ist – und was noch fehlt
-- Das eigene Anfrageformular besitzt Zeitraum, Menge, Kundenangaben, Lieferung, zusätzliche Artikel, Gutschein-Eingabe und eine erste CMS-Preisvorschau.
-- Entwürfe sind derzeit pro Hauptartikel und Standort gespeichert, nicht als gemeinsamer Website-Warenkorb. Zusätzliche Artikel besitzen noch keinen unabhängigen Zeitraum.
-- Die Gutscheinprüfung findet bislang im Mitarbeiterangebot statt. Die bestehende geschützte Prüfung setzt eine gespeicherte Anfrage oder ein B2B-Profil voraus; sie kann nicht einfach unverändert für anonyme Eingaben verwendet werden.
-- Rentware wird über die öffentliche Seitenhülle geladen. Einige Artikel-/Listenansichten entscheiden noch anhand vorhandener Codes statt anhand der Artikelart. Auch ältere Such-/Katalogwege müssen berücksichtigt werden.
-- CMS-Staffeln, Standortpreise und Versicherungsoptionen sind vorhanden. Die neue öffentliche Berechnung darf keine SEO-Ab-Preise oder frei eingegebenen Browserbeträge als Preisquelle verwenden.
+## Aktueller Stand
+Das Formular hat bereits Zeitraum, Menge, CMS-Preisvorschau, Optionen und zusätzliche Artikel. Entwürfe sind aber pro Hauptartikel gespeichert, nicht als gemeinsamer Warenkorb; zusätzliche Artikel besitzen keinen eigenen Zeitraum. Die Gutscheinprüfung erfordert bisher eine gespeicherte Anfrage oder ein B2B-Profil. Rentware-Einstiege entscheiden teilweise anhand von Codes statt Artikelart. Diese Grundlagen werden gezielt erweitert, nicht neu erfunden.
 
 ## 1. Zuerst: Gutschein direkt am Eingabefeld prüfen
 Diese Etappe separat umsetzen und prüfen, bevor der große Umbau beginnt.
@@ -20,19 +16,19 @@ Diese Etappe separat umsetzen und prüfen, bevor der große Umbau beginnt.
 - Beim vollständigen Code und nach kurzer Eingabepause sowie beim Verlassen des Feldes eine geschützte Prüfung auslösen; keine Anfrage pro Tastendruck.
 - Unmittelbare Feldzustände: **„Wird geprüft“**, **„Bitte E-Mail zur Zuordnung eingeben“**, **„Für diese Anfrage anwendbar“** oder verständlicher Fehler. Bei fehlendem Zeitraum/Artikeln zunächst Status/Kundenbindung prüfen und die konkrete Rabattberechnung später ergänzen.
 - Code und Kunden-E-Mail gemeinsam prüfen. Ohne Kundenidentität darf ein Code nicht als vollständig gültig bezeichnet werden. Im neuen Ablauf liegt die E-Mail direkt beim Gutscheinfeld in der abschließenden Zusammenfassung; im bisherigen Formular ist sie bereits vorhanden.
-- Die anonyme Vorprüfung aus Code und E-Mail ist keine Identitätsbestätigung. Keine Kundendaten, fremden E-Mails oder internen IDs zurückgeben; Fehler bei unbekanntem Code/falscher Zuordnung gemeinsam formulieren. Endgültige Berechtigung bleibt im geschützten Angebots-/Annahmeprozess.
 - Bei Änderung von Code, E-Mail, Artikeln, Standort, Menge oder Zeitraum die alte Prüfung verwerfen und erneut prüfen; verspätete Antworten dürfen neue Eingaben nicht überschreiben.
 - Ungültiger eingegebener Code blockiert das Absenden, bis er korrigiert oder entfernt wird. Ein leeres Gutscheinfeld blockiert nie. Bei Dienstausfall keine falsche Gültigkeit anzeigen; Anfrage ohne Code bleibt möglich.
 - Prüfung zeigt den konkreten 10-%-Rabatt nur auf berechtigte Mietpositionen. Versicherung, Zubehör, Haftungsfreistellung, Stundenlohn sowie bestehende ausgeschlossene Zusatzkosten bleiben unverändert; Sonderpreise/höhere Rabatte nicht stapeln.
 - **Beim Prüfen weder reservieren noch einlösen.** Vor Lead-Speicherung erneut prüfen; vor Angebotsversand erneut prüfen und wie bisher reservieren, bei Annahme atomar einlösen. Zwischenzeitliche Einlösung verständlich behandeln.
+
+- Vorprüfung aus Code/E-Mail bestätigt keine Identität: keine fremden Daten ausgeben, falschen Code/Zuordnung gemeinsam melden; endgültige Berechtigung geschützt prüfen.
 
 ## 2. Einheitlicher Buchungsweg und Warenkorbsymbol
 - Zentral festlegen, ob ein Artikel Anhänger oder Nicht-Anhänger ist: über echte Hauptkategorie/Artikelmerkmale, niemals allein über Rentware-Code oder Namenssuche.
 - Artikelansichten, Kategorien, Suche, Empfehlungen und ältere Kataloge verwenden dieselbe Entscheidung.
 - Nicht-Anhänger: „Jetzt mieten“ öffnet den eigenen Kalender. Anhänger: bestehender Rentware-Kalender und dessen Checkout.
 - Eigener Warenkorb im gleichen sichtbaren Stil wie das bisherige Symbol: Form, Größe, Farbe, Mengenanzeige und Position vor Umsetzung am realen externen Symbol vergleichen. Symbol erhält eindeutigen Namen und eine stabile Position ohne Überlagerung von Navigation/Chat.
-- Auf eigenen Miet- und allgemeinen Website-Seiten den eigenen Anfrage-Warenkorb zeigen. Auf Anhänger-Buchungsseiten übernimmt Rentware diesen Platz; ein vorhandener eigener Anfragebestand bleibt über einen getrennt beschrifteten Zugang erreichbar, ohne zwei identische Symbole übereinander.
-- Rentware-Skript nur für tatsächliche Anhängerfunktionen laden, nicht pauschal bei Scrollen auf jeder Seite. Bereits geladene externe Komponenten bei Seitenwechsel korrekt ausblenden, ohne externe Buchungen zu verlieren.
+- Auf Anhängerseiten externes Symbol, sonst eigener Warenkorb; vorhandene eigene Positionen bleiben separat erreichbar. Keine überlappenden Symbole. Rentware nur bei Anhängerbedarf laden.
 - B2B-Portal, Unterschriften und bisherige geschützte Abläufe bleiben ohne störenden Warenkorb.
 
 ## 3. Neuer Kundenablauf
@@ -50,7 +46,6 @@ Diese Etappe separat umsetzen und prüfen, bevor der große Umbau beginnt.
 - Ohne belastbaren CMS-Preis: **„Preis auf Anfrage“**. Bekannte Positionen als bekannte Zwischensumme zeigen, unbepreiste nicht als null Euro oder vollständigen Gesamtpreis ausgeben.
 - Nur am Artikel im CMS vorhandene Versicherungen/Haftungsfreistellungen anbieten. Pflichtdeckung nicht abwählbar; alternative Stufen als eindeutige Auswahl, kombinierbare Extras als Checkboxen.
 - Selbstbeteiligung, Zeitraum und Euro-Aufpreis sichtbar. Versicherungsstufen beziehen sich auf die Standardversicherung; Mietrabatte reduzieren Versicherungen nicht.
-- Keine neuen Versicherungstarife, Zubehörpreise oder Gratisleistungen erfinden. Fehlende Konfiguration kennzeichnen statt einen Standard-Preset als echte CMS-Tatsache auszugeben.
 
 ### Schritt C – In den Anfrage-Warenkorb
 - Artikel mit Menge, Standort, eigenem Zeitraum und gewählten Optionen hinzufügen.
@@ -68,8 +63,7 @@ Diese Etappe separat umsetzen und prüfen, bevor der große Umbau beginnt.
 ## 4. Zwischenspeicherung und verschiedene Zeiträume
 - Gemeinsamer Website-Warenkorb über Seitenwechsel, Dialogschließen, Neuladen und weitere Artikel hinweg. Speichern bei jeder relevanten Änderung, nicht erst beim Absenden.
 - Produkt, Standort, Mengen, Zeiträume und Optionsschlüssel speichern; gespeicherte Preise sind nie verbindliche Wahrheiten. Beim Öffnen/Absenden CMS-Stand neu laden, Preisänderungen zeigen.
-- Keine Kontaktdaten oder Gutscheincodes unnötig dauerhaft im Warenkorb speichern. Keine neue willkürliche Ablauffrist; veraltete/past liegende Zeiträume zur Korrektur markieren.
-- Speicherformat versionieren, beschädigte Daten sicher abfangen; bei gesperrtem Gerätespeicher nutzbarer Sitzungsspeicher mit ehrlichem Hinweis.
+- Keine Kontaktdaten/Codes unnötig dauerhaft speichern, keine neue willkürliche Ablauffrist; alte Zeiträume markieren. Beschädigten/gesperrten Speicher sicher abfangen und Sitzungsersatz anbieten.
 - Erst nach bestätigter Lead-Speicherung gesendete Positionen entfernen. Bei Fehler bleiben sie erhalten. Mehrfachklick/Wiederholung darf keine doppelten Leads erzeugen.
 
 ## 5. Mitarbeiterseite und bestehende Abläufe
@@ -80,13 +74,11 @@ Diese Etappe separat umsetzen und prüfen, bevor der große Umbau beginnt.
 - Keine Änderungen an ausgestellten Rechnungen, angenommenen Angeboten, Kautionsabrechnungen oder echten Kundenaufträgen.
 
 ## Technische Umsetzung
-- Gemeinsamer Anfrage-Warenkorb mit versioniertem Speicher, globalem Zugriff und eigener Anzeige; Kalender/Optionen als fokussierte Schritte statt weiterer Überladung des bisherigen Dialogs.
-- Öffentliche, begrenzte Serverprüfung für CMS-Preisberechnung und Gutschein-Vorprüfung; nur veröffentlichte Produkte und erlaubte Optionsschlüssel, keine vom Browser gelieferten Preise/Profil-IDs vertrauen. Anfragen begrenzen und Eingaben validieren.
-- Bestehende Preismodule und Add-on-Regeln wiederverwenden; Browser-/Serverberechnung auf identische Ergebnisse prüfen, alternative ältere Helfer mit Rabattbasis nicht ungeprüft verwenden.
-- `requested_items` um optionale Positionszeiträume/Standort/Tarif und Optionsauswahl erweitern; ältere Anfragen verwenden ihren bestehenden Gesamtzeitraum. Betroffene Parser, Angebotsformulare, Protokolle und Belegdarstellungen vollständig nachziehen.
-- Nicht-schreibende Gutschein-Vorprüfung von geschützter Reservierung/Einlösung trennen. Eventuelle Datenbankänderungen ausschließlich über den vorgesehenen Migrationsweg mit passenden Zugriffsrechten.
-- Lead-Erstellung serverseitig erneut berechnen, sicher speichern und mit eindeutiger Wiederholungskennung versehen; E-Mail-Fehler dürfen keinen zweiten Lead erzeugen.
-- Technische Entscheidungen in `AGENTS.md` festhalten; CMS-Fakten/SEO-Produktdaten nicht verändern.
+- Gemeinsamer versionierter Anfrage-Warenkorb; Kalender/Optionen als kleine Schritte statt überladener Dialog. Anhängerentscheidung zentral für Artikelansichten, Suche und externe Widgets.
+- Begrenzte öffentliche Serverprüfung für Preise und Gutscheine: nur veröffentlichte CMS-Produkte und erlaubte Optionsschlüssel; keine Browserpreise oder fremde Profil-IDs vertrauen. Nicht-schreibende Vorprüfung von Reservierung/Einlösung trennen.
+- Bestehende Browser-/Server-Preis- und Add-on-Regeln wiederverwenden und auf Gleichheit prüfen; ältere Helfer mit Rabattbasis nicht ungeprüft übernehmen.
+- `requested_items` um optionale Positionszeiträume/Standort/Optionsauswahl erweitern. Ältere Anfragen behalten ihren Gesamtzeitraum. Parser, Mitarbeiteransicht, Angebote, Belege und Protokolle nachziehen.
+- Lead erneut berechnen und mit Wiederholungskennung speichern; E-Mail-Fehler erzeugen keinen zweiten Lead. Datenbankänderungen ausschließlich über den vorgesehenen Migrationsweg mit passenden Rechten; Architektur in `AGENTS.md` dokumentieren. CMS-Fakten bleiben unverändert.
 
 ## Umsetzung in freigabefähigen Etappen
 1. **Gutschein-Feldprüfung:** bisheriges Formular erweitern, Fehler-/Änderungsfälle und Nicht-Einlösung testen.
@@ -97,11 +89,11 @@ Diese Etappe separat umsetzen und prüfen, bevor der große Umbau beginnt.
 6. **Später separat:** echter öffentlicher Verfügbarkeitskalender je Maschine. Nicht Teil dieser Erstumstellung; fehlende Bestandsdaten vorher bereinigen.
 
 ## Tests und Bericht pro Etappe
-- Mobil 402×725/kleinere Geräte, Tablet 768×1024 in beiden Ausrichtungen und Desktop 1280×1800; Kalender, Tastatur, Scrollen, Symbol, Dialoge und Textüberläufe.
-- Warenkorb: Seitenwechsel, Reload, mehrere Zeiträume desselben Artikels, Änderungen/Löschen, Speicherausfall, CMS-Preisänderung und erfolgloses Absenden.
-- Regeln: Staffelgrenzen, Wochenende, Berliner Zeit/DST, Mengen/Sets, Standortpreise, Event/Monatsfälle, fehlende Preise, brutto/netto und centgenaue Summen.
-- Optionen/Gutscheine: Pflichtversicherung, exklusive Stufen, unveränderte nicht rabattfähige Beträge; falscher Code/Kunde, bereits eingelöst/reserviert, Dienstfehler, parallele Antworten, keine Reservierung durch Vorprüfung.
-- Lead: richtige Zuordnung, Auftrags-ID, Positionszeiträume, keine Doppelanfrage, keine Gerätebelegung/Bestätigung durch Warenkorb; Anhänger bleiben extern buchbar.
-- Je Etappe Bericht: umgesetzt, konkret geprüft, Testergebnis, offene Punkte. Keine produktive Anfrage, Rechnung, Buchung oder Mail ohne Freigabe; Testmails ausschließlich an luca@sandhoff.org. Neuer Test mit Mitarbeiterzugang für die interne Abnahme erforderlich.
+- Mobil 402×725 und kleiner, Tablet 768×1024 in beiden Ausrichtungen, Desktop 1280×1800: Kalender, Tastatur, Scrollen, Symbol, Dialoge und Textüberläufe.
+- Warenkorb: Seitenwechsel/Reload, derselbe Artikel mit mehreren Zeiträumen, Bearbeiten/Löschen, Speicherausfall, Preisänderungen und fehlgeschlagenes Absenden.
+- Preise: Staffelgrenzen, Wochenende, Berlin/DST, Mengen/Sets, Standortpreise, Event/Monatsfälle, fehlende Preise, brutto/netto und centgenaue Summen.
+- Optionen/Gutscheine: Pflichtversicherung, exklusive Stufen, ausgeschlossene Beträge; falscher Code/Kunde, eingelöst/reserviert, Dienstfehler, veraltete Antworten und keine Reservierung bei Vorprüfung.
+- Lead: richtige Zuordnung, Auftrags-ID und Positionszeiträume, keine Doppelanfrage oder Gerätebelegung; Anhänger bleiben extern buchbar.
+- Bericht je Etappe: umgesetzt, konkret geprüft, Tests und offene Punkte. Keine produktive Anfrage/Rechnung/Buchung/Mail ohne Freigabe; Testmails nur an luca@sandhoff.org. Mitarbeiterzugang für interne Abnahme erforderlich.
 
-**Dieser Plan startet noch keine Umsetzung oder Veröffentlichung.** Die sofortige Gutscheinprüfung wird als erste eigenständige Etappe umgesetzt, danach der Warenkorb-Umbau.
+**Der Plan startet keine Umsetzung oder Veröffentlichung.** Gutscheinprüfung zuerst als eigene Etappe, danach Warenkorb-Umbau.
