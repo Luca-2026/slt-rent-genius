@@ -38,3 +38,4 @@
 - Onsite B2B onboarding uses onsite-b2b-customer with atomic CRM linking, private document uploads and DB approval guards; active branch managers are location-scoped, and invitation OTP verification precedes customer-owned password setup.
 - Calendar week and device views share CalendarLocationFilter and persisted location state; device filtering uses matchesCalendarLocation to normalize location names consistently.
 - Bonn opening-hours schemas use locationOpeningHoursSpecification from locationData; its optional Friday pickup override keeps website, time suggestions and search-engine schedules consistent.
+- Delivery tariffs live only in supabase/functions/_shared/delivery-tariffs.ts (re-exported by src/data/lieferkosten); public cart delivery = most expensive item tariff, distance recomputed server-side via _shared/route-distance.ts, so website preview and stored inquiry cannot drift.
