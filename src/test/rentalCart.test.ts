@@ -1,8 +1,16 @@
 import { describe, it, expect } from "vitest";
-import { addCartItem, withCartPeriod, parseCart, CART_LIFETIME_MS, cartExpired, cartRemainingSeconds, cartCategoryPath, pickupConfirmationRequired, type RentalCartItem } from "@/lib/rentalCart";
+import { addCartItem, withCartPeriod, cartQuoteItems, cartQuoteTotal, parseCart, CART_LIFETIME_MS, cartExpired, cartRemainingSeconds, cartCategoryPath, pickupConfirmationRequired, type RentalCartItem } from "@/lib/rentalCart";
 import { isTrailerCategory, isTrailerRoute } from "@/lib/rentalBookingMode";
 const row: RentalCartItem = { id: "a", product_slug: "bagger", product_name: "Bagger", location: "krefeld", quantity: 1, start_date: "2026-11-03", end_date: "2026-11-05", start_time: "08:00", end_time: "16:00", selected_addons: [], use_saturday: false, use_sunday: false };
 describe("15-Minuten-Anfragewarenkorb", () => {
+  it("rechnet Zusatzartikel sofort mit dem bearbeiteten Artikel ohne Doppelzählung", () => {
+    const accessory = { ...row, id: "glass", quantity: 2 };
+    expect(cartQuoteItems([row, accessory], { ...row, quantity: 3 }).map(item => [item.id, item.quantity])).toEqual([["a", 3], ["glass", 2]]);
+    expect(cartQuoteTotal([{ rental_net: 100, addons: [{ amount: 5 }] }, { rental_net: 20, addons: [] }])).toBe(125);
+  });
+  it("erhält bekannte Summen bei unbekannten Zusatzartikelpreisen", () => {
+    expect(cartQuoteTotal([{ rental_net: 100, addons: [] }, { rental_net: null, addons: [{ amount: null }] }])).toBe(100);
+  });
   it("führt weitere Artikelauswahl zur Kategorieübersicht des Artikelstandorts", () => {
     expect(cartCategoryPath([row])).toBe("/mieten/krefeld/");
     expect(cartCategoryPath([{ ...row, location: "bonn" }])).toBe("/mieten/bonn/");
