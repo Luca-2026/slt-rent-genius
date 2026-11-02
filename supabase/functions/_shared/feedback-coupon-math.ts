@@ -10,13 +10,18 @@ export interface CouponLine {
 }
 
 /** Never stack discounts or change insurance/logistics/addon amounts. */
-export function couponLine<T extends CouponLine>(line: T, eligible: boolean): T {
-  if (!eligible || line.price_manual || line.price_basis === "customer") return line;
-  return { ...line, discount_percent: Math.max(Number(line.discount_percent) || 0, 10) };
+export function validCouponPercent(percent: number): boolean {
+  return Number.isFinite(percent) && percent > 0 && percent <= 20;
 }
 
-export function couponSaving(line: CouponLine, eligible: boolean): number {
-  const after = couponLine(line, eligible);
+export function couponLine<T extends CouponLine>(line: T, eligible: boolean, percent = 10): T {
+  if (!validCouponPercent(percent)) throw new Error("Ungültiger Gutscheinrabatt");
+  if (!eligible || line.price_manual || line.price_basis === "customer") return line;
+  return { ...line, discount_percent: Math.max(Number(line.discount_percent) || 0, percent) };
+}
+
+export function couponSaving(line: CouponLine, eligible: boolean, percent = 10): number {
+  const after = couponLine(line, eligible, percent);
   return Math.round(line.quantity * line.unit_price * ((Number(after.discount_percent) || 0) - (Number(line.discount_percent) || 0))) / 100;
 }
 

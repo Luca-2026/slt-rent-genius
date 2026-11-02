@@ -427,7 +427,7 @@ Deno.serve(async (req: Request) => {
       vatAmount,
       grossAmount,
       isReverseCharge,
-      notes: [notes, coupon.code ? `Feedback-Gutschein ${coupon.code}: ${coupon.saving.toFixed(2)} € netto Rabatt, in den Positionen enthalten.` : null].filter(Boolean).join("\n") || null,
+      notes: [notes, coupon.code ? `Gutschein ${coupon.code}: ${coupon.saving.toFixed(2)} € netto Rabatt, in den Positionen enthalten.` : null].filter(Boolean).join("\n") || null,
       validDays: valid_days,
       deposit,
       additionalServices,
