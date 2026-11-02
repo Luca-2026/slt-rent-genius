@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { processOfferFollowups } from "../_shared/offer-followup-delivery.ts";
 /**
  * Öffentliche Online-Annahme eines Angebots (/angebot/<token>).
  * Der unratbare Token ist das Geheimnis; Angebotsdaten kommen immer aus der Datenbank.
@@ -27,6 +28,7 @@ const berlinNow = () => new Date().toLocaleString("de-DE", { timeZone: "Europe/B
 const todayBerlin = () => new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Berlin" });
 
 const Body = z.discriminatedUnion("action", [
+  z.object({ action: z.literal("decline"), token: z.string().regex(/^[A-Za-z0-9_-]{20,64}$/), reason: z.enum(["price", "no_need", "dates", "other"]), note: z.string().trim().max(2000).default("") }),
   z.object({ action: z.literal("info"), token: z.string().regex(/^[A-Za-z0-9_-]{20,64}$/) }),
   z.object({
     action: z.literal("accept"),
@@ -93,6 +95,9 @@ Deno.serve(async (req: Request) => {
     if (status === "active" && ["rejected", "done"].includes(inquiry.status)) status = "closed";
     if (status === "active" && link.valid_until && link.valid_until < todayBerlin()) status = "expired";
     if (status === "void") status = "superseded";
+    const { data: deadline, error: deadlineError } = await service.rpc("offer_link_deadline_by_id", { p_id: link.id });
+    if (deadlineError) return json({ error: "Angebotsfrist konnte nicht geprüft werden." }, 500);
+    if (status === "active" && deadline && Date.now() >= Date.parse(deadline)) status = "expired";
 
     const payload = (inquiry.offer_payload ?? {}) as { items?: Array<{ product_name?: string; quantity?: number; unit?: string }>; totals?: { netAmount?: number; grossAmount?: number }; deposit?: number };
     const loc = LOCATION_CONTACTS[resolveLocationKey(inquiry.location)];
@@ -107,6 +112,9 @@ Deno.serve(async (req: Request) => {
         net_amount: payload.totals?.netAmount ?? null,
         deposit: Number(payload.deposit) || 0,
         valid_until: link.valid_until,
+        expires_at: deadline,
+        decline_reason: status === "declined" ? link.decline_reason : null,
+        decline_note: status === "declined" ? link.decline_note : null,
         items: (payload.items ?? []).slice(0, 30).map((i) => ({ name: String(i.product_name ?? ""), quantity: i.quantity ?? 1, unit: i.unit ?? "" })),
         agb_kind: isBusiness ? "business" : "private",
         accepted_at: link.accepted_at,
@@ -122,8 +130,20 @@ Deno.serve(async (req: Request) => {
         superseded: "Zu diesem Angebot gibt es eine neuere Fassung. Bitte nutze den Link aus der aktuellen E-Mail.",
         expired: "Dieses Angebot ist abgelaufen. Bitte melde dich bei uns für ein neues Angebot.",
         closed: "Diese Anfrage ist bereits abgeschlossen.",
+        declined: "Dieses Angebot wurde bereits abgelehnt.",
       };
       return json({ error: msg[status] ?? "Annahme nicht möglich.", status }, 409);
+    }
+
+    if (body.action === "decline") {
+      const { data: declined, error: declineError } = await service.from("offer_acceptance_links")
+        .update({ status: "declined", decline_reason: body.reason, decline_note: body.note })
+        .eq("id", link.id).eq("status", "active").select("id").maybeSingle();
+      if (declineError || !declined) return json({ error: "Das Angebot wurde bereits entschieden oder ist nicht mehr gültig." }, 409);
+      let notified = false;
+      try { notified = (await processOfferFollowups(service, link.id)).sent > 0; }
+      catch (e) { console.error("Ablehnungsnachricht ausstehend", (e as Error).message); }
+      return json({ success: true, status: "declined", notified });
     }
 
     // Atomar: nur ein einziger erfolgreicher Annahmevorgang pro Link.

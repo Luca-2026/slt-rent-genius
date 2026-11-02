@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { processOfferFollowups } from "../_shared/offer-followup-delivery.ts";
 /**
  * Nachfass-E-Mail zur Zahlung (ersetzt die frühere 48-h-Erinnerung; läuft per pg_cron).
  * Regel: _shared/payment-followup.ts – online angenommen, Vorkasse/Anzahlung, 1 Stunde nach Annahme
@@ -36,6 +37,15 @@ Deno.serve(async (req) => {
     });
     const body = await req.json().catch(() => ({} as Record<string, unknown>));
     const dryRun = body?.dry_run === true;
+    if (body?.test_offer_link_id) {
+      const jwt = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
+      const { data: userData } = await service.auth.getUser(jwt);
+      if (userData.user?.email?.toLowerCase() !== "luca@sandhoff.org" || !/^[0-9a-f-]{36}$/i.test(body.test_offer_link_id)) return json({ error: "Kein Testzugriff" }, 403);
+      const { data: testLink } = await service.from("offer_acceptance_links").select("customer_email,inquiry_id").eq("id", body.test_offer_link_id).maybeSingle();
+      const { data: testInquiry } = testLink ? await service.from("rental_inquiries").select("company_name").eq("id", testLink.inquiry_id).maybeSingle() : { data: null };
+      if (testLink?.customer_email?.toLowerCase() !== "luca@sandhoff.org" || !testInquiry?.company_name?.includes("Angebotsnachfragen TEST")) return json({ error: "Nur freigegebener Testvorgang" }, 403);
+      return json(await processOfferFollowups(service, body.test_offer_link_id));
+    }
     if (!(await isCronCall(req, service)) && !(await staffUserId(req, service))) return json({ error: "Unauthorized" }, 401);
 
     const now = new Date();
@@ -154,7 +164,8 @@ ${payUrl ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(payUrl)}"
       if (isManual) await service.from(table).update({ payment_reminder_manual_at: sentAt }).eq("id", r.id);
       sent++;
     }
-    return json({ due: due.length, sent });
+    const offers = manual ? { sent: 0 } : await processOfferFollowups(service);
+    return json({ due: due.length, sent, offer_followups: offers });
   } catch (err) {
     console.error("payment-reminder error:", err);
     return json({ error: "Unerwarteter Fehler" }, 500);

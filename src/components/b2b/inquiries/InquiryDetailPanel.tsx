@@ -25,6 +25,7 @@ import { InquiryStatusBadge } from "./InquiryStatusBadge";
 import { OrderCodeBadge } from "./OrderCodeBadge";
 import { InquiryLocationSection } from "./InquiryLocationSection";
 import { requestedItemsOf } from "./types";
+import { OfferDecisionHistory } from "./OfferDecisionHistory";
 import { inquiryDraftKey, listServerDraftsForInquiry, readInquiryDraft } from "./offerDraftStorage";
 import { InquiryOfferForm, type OfferDeliveryAddress } from "./InquiryOfferForm";
 import { OfferAcceptanceNotice } from "./OfferAcceptanceNotice";
@@ -780,6 +781,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const docEl = (
     <>
       <div ref={docSectionRef}>
+        {inquiryType === "rental" && <OfferDecisionHistory inquiryId={inquiry.id} status={inquiry.status} />}
         {inquiryType === "rental" && <ReturnChargesSummary inquiryId={inquiry.id} reloadKey={deposit.settled} />}
         <div className="mb-4 space-y-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">

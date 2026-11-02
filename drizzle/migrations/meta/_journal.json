@@ -673,6 +673,34 @@
       "when": 1793617697258,
       "tag": "0095_rental_product_deposit",
       "breakpoints": true
+    },
+    {
+      "idx": 96,
+      "version": "7",
+      "when": 1793632776351,
+      "tag": "0096_offer_followups_and_rejections",
+      "breakpoints": true
+    },
+    {
+      "idx": 97,
+      "version": "7",
+      "when": 1793632905834,
+      "tag": "0097_offer_dispatch_rollout_and_legacy_dates",
+      "breakpoints": true
+    },
+    {
+      "idx": 98,
+      "version": "7",
+      "when": 1793633197109,
+      "tag": "0098_offer_expiry_test_scope",
+      "breakpoints": true
+    },
+    {
+      "idx": 99,
+      "version": "7",
+      "when": 1793633309110,
+      "tag": "0099_offer_dispatch_success_only",
+      "breakpoints": true
     }
   ]
 }
