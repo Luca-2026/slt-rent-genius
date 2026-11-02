@@ -9,7 +9,7 @@
 - Inquiry delivery signatures: absent customers receive hashed single-use delivery_signature_links; service-only complete_delivery_signature atomically stores customer signature/time and versioned signed PDF, preserving the staff protocol. Protocol quantities use quantity for piece/set lines, articles for duration lines.
 - Inquiry invoice previews: same final renderer, no number/write/mail side effects; editors require preview of current data.
 - Percentage add-ons use the undiscounted rental basis in shared addon-calc, so rental discounts cannot reduce insurance or liability charges.
-- Public non-trailer requests use RentalRequestCart with an absolute 15-minute deadline and server CMS quotes; only canonical trailer routes load Rentware, and coupon previews never reserve or redeem.
+- Public non-trailer requests use RentalRequestCart with an absolute deadline and server CMS quotes; only trailer routes load Rentware, coupon previews never reserve/redeem, and public-rental-period shares calendar validation and pickup windows between client/server to prevent drift.
 <!-- LOVABLE:BEGIN -->
 - Inject the portal first-paint guard through the Vite HTML plugin before body parsing; hide only prerender fallback content on the exact portal host to preserve public SEO and the React portal.
 <!-- LOVABLE:END -->

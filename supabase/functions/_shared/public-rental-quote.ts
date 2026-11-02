@@ -21,7 +21,7 @@ export async function publicRentalQuote(service: any, items: any[]) {
     if (selected.filter((o: any) => Number(o.surcharge_percent) > 0).length > 1) throw new Error("Bitte nur eine Versicherungsstufe wählen");
     const alternative = selected.find((o: any) => Number(o.surcharge_percent) > 0);
     const base = defaults[0];
-    const insuranceDays = insuranceCalendarDays({ date: item.start_date, time: item.start_time }, { date: item.end_date, time: item.end_time });
+    const insuranceDays = insuranceCalendarDays({ date: item.start_date }, { date: item.end_date });
     const calculate = (option: any) => {
       if (unitPrice === null && option.price_type === "percent") return null;
       return computeAddonAmount({ price_type: option.price_type, rate: Number(option.price), basis: option.full_period_default && daysPerUnit(line.unit) ? "full_period" : "line", days: insuranceDays }, { articles: item.quantity, duration: line.duration, unit_price: unitPrice ?? 0, discount_percent: 0, days_per_unit: daysPerUnit(line.unit) });

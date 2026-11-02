@@ -157,6 +157,8 @@ export interface RequestedItem {
   start_time?: string;
   end_time?: string;
   location?: string;
+  use_saturday?: boolean;
+  use_sunday?: boolean;
 }
 
 /** Untrusted JSON → Artikelliste; Fallback: Einzelartikel der Anfrage. */
@@ -171,6 +173,8 @@ export function requestedItemsOf(inquiry: Pick<RentalInquiry, "requested_items" 
       start_time: typeof r.start_time === "string" ? r.start_time : undefined,
       end_time: typeof r.end_time === "string" ? r.end_time : undefined,
       location: typeof r.location === "string" ? r.location : undefined,
+      use_saturday: r.use_saturday === true,
+      use_sunday: r.use_sunday === true,
       quantity: Math.max(1, Math.round(Number(r?.quantity) || 1)),
       set_size: Number(r?.set_size) > 1 ? Math.round(Number(r.set_size)) : null,
       unit_price: Number(r?.unit_price) > 0 ? Number(r.unit_price) : null,
