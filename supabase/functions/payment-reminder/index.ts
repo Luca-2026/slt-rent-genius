@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { processOfferFollowups } from "../_shared/offer-followup-delivery.ts";
 /**
  * Nachfass-E-Mail zur Zahlung (ersetzt die frühere 48-h-Erinnerung; läuft per pg_cron).
  * Regel: _shared/payment-followup.ts – online angenommen, Vorkasse/Anzahlung, 1 Stunde nach Annahme
@@ -154,7 +155,8 @@ ${payUrl ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(payUrl)}"
       if (isManual) await service.from(table).update({ payment_reminder_manual_at: sentAt }).eq("id", r.id);
       sent++;
     }
-    return json({ due: due.length, sent });
+    const offers = manual ? { sent: 0 } : await processOfferFollowups(service);
+    return json({ due: due.length, sent, offer_followups: offers });
   } catch (err) {
     console.error("payment-reminder error:", err);
     return json({ error: "Unerwarteter Fehler" }, 500);

@@ -611,6 +611,7 @@ Deno.serve(async (req: Request) => {
 
     // ── Online-Annahme: unratbarer Link je Angebotsfassung; ältere Fassungen werden ungültig ──
     let acceptUrl = "";
+    let acceptanceToken: string | null = null;
     try {
       await service.from("offer_acceptance_links").update({ status: "void" }).eq("inquiry_id", inquiry.id).eq("status", "active");
       const raw = crypto.getRandomValues(new Uint8Array(24));
@@ -625,7 +626,7 @@ Deno.serve(async (req: Request) => {
         customer_email: customerEmail,
         created_by: user.id,
       });
-      if (!accErr) acceptUrl = `https://www.slt-rental.de/angebot/${token}`;
+      if (!accErr) { acceptUrl = `https://www.slt-rental.de/angebot/${token}`; acceptanceToken = token; }
       else console.error("Annahmelink konnte nicht erstellt werden:", accErr.message);
     } catch (e) {
       console.error("Annahmelink fehlgeschlagen:", (e as Error).message);
@@ -736,6 +737,7 @@ Deno.serve(async (req: Request) => {
     <strong>${F("So nimmst du das Angebot an:", "So nehmen Sie das Angebot an:")}</strong><br>
     ${acceptUrl ? `${F("Klick auf den Button und unterschreib digital", "Klicken Sie auf den Button und unterschreiben Sie digital")} – mit der Maus oder dem Finger auf dem Smartphone.
     <p style="margin:12px 0 8px;"><a href="${escapeHtml(acceptUrl)}" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:4px;">Angebot online annehmen</a></p>
+    <p style="margin:12px 0 8px;"><a href="${escapeHtml(acceptUrl)}?aktion=ablehnen" style="display:inline-block;border:1px solid #00507d;color:#00507d;text-decoration:none;padding:10px 18px;border-radius:4px;">Angebot ablehnen</a></p>
     <span style="color:#6b7280;font-size:12px;">Mit der Annahme ${F("bestätigst du", "bestätigen Sie")} unsere ${customerKind === "business" ? "AGB für Unternehmer" : "AGB für Verbraucher"} und ${F("nimmst", "nehmen")} das Angebot ${escapeHtml(offerNumber)} rechtsverbindlich an.</span><br>
     <span style="color:#6b7280;font-size:12px;">Alternativ ${F("kannst du", "können Sie")} die Annahme auch per E-Mail an <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a> bestätigen.</span>` : `${F("Bitte bestätige uns", "Bitte bestätigen Sie uns")} die Annahme kurz per E-Mail an
     <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a>.`}${["net_7", "net_14", "net_30"].includes(paymentTerms) ? "" : `<br><span style="font-size:13px;">${F("Bitte leiste danach die Zahlung", "Bitte leisten Sie danach die Zahlung")} gemäß den unten stehenden Zahlungsbedingungen.</span>`}
