@@ -3,6 +3,8 @@ import { saveRentalInquiry, rentalInquiryLink, serviceClient } from "../_shared/
 import { previewPublicCoupon } from "../_shared/public-coupon.ts";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { publicRentalQuote, FREE_CANCELLATION_OPTION } from "../_shared/public-rental-quote.ts";
+import { cartDeliveryQuote, type CartDeliveryQuote } from "../_shared/delivery-tariffs.ts";
+import { routeDistance } from "../_shared/route-distance.ts";
 import { operationalEmailRecipient } from "../_shared/test-email-routing.ts";
 import { z } from "npm:zod@3";
 import { validPublicRentalPeriod } from "../_shared/public-rental-period.ts";
@@ -121,6 +123,7 @@ serve(async (req) => {
     const addonLabelsBySlug = new Map<string, Map<string, string>>();
     const db = serviceClient();
     let quoteLines: unknown[] = [];
+    let deliveryQuote: (CartDeliveryQuote & { distance_km?: number | null }) | null = null;
     if (cartRequestId) {
       if (!db || !/^[a-f0-9-]{36}$/i.test(String(cartRequestId)) || !Number.isFinite(cartExpiresAt) || cartExpiresAt <= Date.now() || cartExpiresAt > Date.now() + 900000 || !requestedItems.length) return new Response(JSON.stringify({ error: "Warenkorb abgelaufen oder ungültig" }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       if (requestedItems.some((item: any) => !["krefeld", "bonn", "muelheim"].includes(item.location) || !/^\d{4}-\d{2}-\d{2}$/.test(item.start_date) || !/^\d{4}-\d{2}-\d{2}$/.test(item.end_date) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(item.start_time) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(item.end_time) || `${item.end_date}T${item.end_time}` <= `${item.start_date}T${item.start_time}`)) return new Response(JSON.stringify({ error: "Ungültige Positionszeiträume" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -133,6 +136,13 @@ serve(async (req) => {
         if (quote) item.product_name = quote.product_name;
       }
       productName = requestedItems[0].product_name;
+      if (deliveryRequested) {
+        // Entfernung serverseitig neu ermitteln; Tarif des teuersten Artikels gilt für den ganzen Warenkorb.
+        const apiKey = Deno.env.get("GOOGLE_PLACES_API_KEY");
+        const route = apiKey ? await routeDistance(apiKey, requestedItems[0].location, { address: `${deliveryStreet}, ${deliveryPostalCode} ${deliveryCity}, Germany` }).catch(() => null) : null;
+        const lines = (quoteLines as { category: string; product_name: string; id: string }[]).map(line => ({ category: line.category, product_name: line.product_name, quantity: requestedItems.find((item: any) => item.id === line.id)?.quantity ?? 1 }));
+        deliveryQuote = route ? { ...cartDeliveryQuote(lines, route.roundedKm), distance_km: Math.round(route.distanceKm * 10) / 10 } : { status: "on_request", reason: "distance", product_name: null, km: 0, distance_km: null };
+      }
     }
     if (requestedCode) {
       if (!db) return new Response(JSON.stringify({ error: "Gutscheinprüfung derzeit nicht möglich" }), { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -236,7 +246,7 @@ serve(async (req) => {
       use_saturday: useSaturday === true,
       use_sunday: useSunday === true,
       message: message ?? null,
-      raw_payload: { ...(requestedCode ? { requested_coupon_code: requestedCode } : {}), ...(cartRequestId ? { cart_request_id: cartRequestId, quote_lines: quoteLines } : {}) },
+      raw_payload: { ...(requestedCode ? { requested_coupon_code: requestedCode } : {}), ...(cartRequestId ? { cart_request_id: cartRequestId, quote_lines: quoteLines, ...(deliveryQuote ? { delivery_quote: deliveryQuote } : {}) } : {}) },
       attachments: safeAttachments.map((a) => ({ filename: a.filename })),
       ...(cartRequestId ? { email_sent: false } : {}),
     });
@@ -280,7 +290,7 @@ serve(async (req) => {
     const deliveryHtml = deliveryRequested
       ? `
       <tr><td style="padding: 4px 0; color: #6b7280;">Lieferung:</td><td style="padding: 4px 0; font-weight: 500; color: #16a34a;">✓ Ja, gewünscht</td></tr>
-      <tr><td style="padding: 4px 0; color: #6b7280;">Lieferadresse:</td><td style="padding: 4px 0;">${e.deliveryStreet}<br>${e.deliveryPostalCode} ${e.deliveryCity}</td></tr>`
+      <tr><td style="padding: 4px 0; color: #6b7280;">Lieferadresse:</td><td style="padding: 4px 0;">${e.deliveryStreet}<br>${e.deliveryPostalCode} ${e.deliveryCity}</td></tr>${deliveryQuote ? `<tr><td style="padding: 4px 0; color: #6b7280;">Lieferkosten:</td><td style="padding: 4px 0; font-weight: 600;">${deliveryQuote.status === "priced" ? `${deliveryQuote.net.toFixed(2).replace(".", ",")} € netto (${deliveryQuote.brutto.toFixed(2).replace(".", ",")} € brutto) – Lieferung + Abholung, Tarif ${deliveryQuote.tarif} nach ${escapeHtml(deliveryQuote.product_name)}, ${deliveryQuote.distance_km ?? deliveryQuote.km} km (Stufe bis ${deliveryQuote.band} km)${deliveryQuote.two_machines ? ", Aufschlag 2 Maschinen" : ""}` : deliveryQuote.status === "on_request" ? (deliveryQuote.reason === "tieflader" ? `Auf Anfrage – Tieflader nötig (${escapeHtml(deliveryQuote.product_name ?? "")})` : "Auf Anfrage – Entfernung über 50 km oder nicht ermittelbar") : "–"}</td></tr>` : ""}`
       : `<tr><td style="padding: 4px 0; color: #6b7280;">Lieferung:</td><td style="padding: 4px 0;">Selbstabholung</td></tr>`;
 
     const setupServiceHtml = setupServiceRequested
