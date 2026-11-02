@@ -41,8 +41,9 @@ Deno.serve(async (req) => {
       const jwt = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
       const { data: userData } = await service.auth.getUser(jwt);
       if (userData.user?.email?.toLowerCase() !== "luca@sandhoff.org" || !/^[0-9a-f-]{36}$/i.test(body.test_offer_link_id)) return json({ error: "Kein Testzugriff" }, 403);
-      const { data: testLink } = await service.from("offer_acceptance_links").select("customer_email").eq("id", body.test_offer_link_id).maybeSingle();
-      if (testLink?.customer_email?.toLowerCase() !== "luca@sandhoff.org") return json({ error: "Nur freigegebene Testadresse" }, 403);
+      const { data: testLink } = await service.from("offer_acceptance_links").select("customer_email,inquiry_id").eq("id", body.test_offer_link_id).maybeSingle();
+      const { data: testInquiry } = testLink ? await service.from("rental_inquiries").select("company_name").eq("id", testLink.inquiry_id).maybeSingle() : { data: null };
+      if (testLink?.customer_email?.toLowerCase() !== "luca@sandhoff.org" || !testInquiry?.company_name?.includes("Angebotsnachfragen TEST")) return json({ error: "Nur freigegebener Testvorgang" }, 403);
       return json(await processOfferFollowups(service, body.test_offer_link_id));
     }
     if (!(await isCronCall(req, service)) && !(await staffUserId(req, service))) return json({ error: "Unauthorized" }, 401);

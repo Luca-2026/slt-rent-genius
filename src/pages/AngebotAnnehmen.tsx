@@ -133,7 +133,7 @@ export default function AngebotAnnehmen() {
               <div className="space-y-6">
                 <div>
                   <p className="text-sm text-muted-foreground">Angebot {info.offer_number}{info.customer_name ? ` · ${info.customer_name}` : ""}</p>
-                  <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><FileSignature className="h-6 w-6 text-primary" /> Angebot annehmen</h1>
+                  <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><FileSignature className="h-6 w-6 text-primary" /> {declining ? "Angebot ablehnen" : "Angebot annehmen"}</h1>
                 </div>
 
                 <div className="rounded-lg bg-muted/50 p-4 space-y-2">

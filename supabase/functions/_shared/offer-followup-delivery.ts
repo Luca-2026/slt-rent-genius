@@ -1,4 +1,5 @@
 import { codedSubject } from "./order-code.ts";
+declare const Deno: { env: { get(name: string): string | undefined } };
 import { LOCATION_CONTACTS, resolveLocationKey } from "./inquiry-offer-math.ts";
 import { operationalEmailRecipient } from "./test-email-routing.ts";
 import { byForm, resolveAddressForm, salutationLine } from "./salutation.ts";
