@@ -2,7 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { saveRentalInquiry, rentalInquiryLink, serviceClient } from "../_shared/inquiry-store.ts";
 import { previewPublicCoupon } from "../_shared/public-coupon.ts";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-import { publicRentalQuote } from "../_shared/public-rental-quote.ts";
+import { publicRentalQuote, FREE_CANCELLATION_OPTION } from "../_shared/public-rental-quote.ts";
 import { operationalEmailRecipient } from "../_shared/test-email-routing.ts";
 import { z } from "npm:zod@3";
 import { validPublicRentalPeriod } from "../_shared/public-rental-period.ts";
@@ -152,6 +152,7 @@ serve(async (req) => {
           const label = String(o?.label ?? "").trim();
           if (key && label) labels.set(key, label);
         }
+        labels.set(FREE_CANCELLATION_OPTION.key, FREE_CANCELLATION_OPTION.label);
         addonLabelsBySlug.set(String(row.slug), labels);
       }
     }
