@@ -107,16 +107,17 @@ function rentalDefaultItems(selected: RentalInquiry) {
     ].filter(Boolean).join(" · "),
     quantity: it.quantity,
     duration: rentalDuration(
-      { date: selected.start_date, time: selected.start_time },
-      { date: selected.end_date, time: selected.end_time },
+      { date: it.start_date ?? selected.start_date, time: it.start_time ?? selected.start_time },
+      { date: it.end_date ?? selected.end_date, time: it.end_time ?? selected.end_time },
       "kalendertage",
     ),
     // Einheit bewusst offen: das Angebotsformular setzt sie nach Preisschema des CMS-Artikels (Bau = Miettage).
     unit: undefined,
-    rental_start: selected.start_date ?? undefined,
-    rental_end: selected.end_date ?? undefined,
-    rental_start_time: selected.start_time?.slice(0, 5) ?? undefined,
-    rental_end_time: selected.end_time?.slice(0, 5) ?? undefined,
+    rental_start: it.start_date ?? selected.start_date ?? undefined,
+    rental_end: it.end_date ?? selected.end_date ?? undefined,
+    rental_start_time: it.start_time ?? selected.start_time?.slice(0, 5) ?? undefined,
+    rental_end_time: it.end_time ?? selected.end_time?.slice(0, 5) ?? undefined,
+    custom_period: !!it.start_date,
     unit_price: it.unit_price ?? 0,
     discount_percent: 0,
     requested_addon_keys: it.selected_addons ?? [],
@@ -170,7 +171,7 @@ function RentalDetails({ inquiry }: { inquiry: RentalInquiry }) {
           <ul className="divide-y divide-border rounded-md border border-border text-sm">
             {list.map((it, i) => (
               <li key={i} className="flex items-start justify-between gap-3 px-2 py-1.5">
-                <span className="min-w-0 break-words">{it.product_name}</span>
+                <span className="min-w-0 break-words">{it.product_name}{it.start_date && <span className="block text-xs text-muted-foreground">{fmtDateTime(it.start_date, it.start_time)} – {fmtDateTime(it.end_date, it.end_time)}</span>}</span>
                 <span className="shrink-0 font-medium text-right">{quantityLabel(it.quantity, it.set_size ?? null)}</span>
               </li>
             ))}

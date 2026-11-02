@@ -152,6 +152,11 @@ export interface RequestedItem {
   unit_price?: number | null;
   /** Vom Kunden im Anfrageformular gewählte Zusatzoptionen (Keys aus addon_options). */
   selected_addons?: string[];
+  start_date?: string;
+  end_date?: string;
+  start_time?: string;
+  end_time?: string;
+  location?: string;
 }
 
 /** Untrusted JSON → Artikelliste; Fallback: Einzelartikel der Anfrage. */
@@ -161,6 +166,11 @@ export function requestedItemsOf(inquiry: Pick<RentalInquiry, "requested_items" 
     .map((r) => ({
       product_name: String(r?.product_name ?? "").trim(),
       product_slug: r?.product_slug ? String(r.product_slug) : null,
+      start_date: typeof r.start_date === "string" ? r.start_date : undefined,
+      end_date: typeof r.end_date === "string" ? r.end_date : undefined,
+      start_time: typeof r.start_time === "string" ? r.start_time : undefined,
+      end_time: typeof r.end_time === "string" ? r.end_time : undefined,
+      location: typeof r.location === "string" ? r.location : undefined,
       quantity: Math.max(1, Math.round(Number(r?.quantity) || 1)),
       set_size: Number(r?.set_size) > 1 ? Math.round(Number(r.set_size)) : null,
       unit_price: Number(r?.unit_price) > 0 ? Number(r.unit_price) : null,
