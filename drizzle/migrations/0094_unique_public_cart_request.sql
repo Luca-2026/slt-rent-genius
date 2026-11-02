@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX IF NOT EXISTS rental_inquiry_cart_request_unique ON public.rental_inquiries ((raw_payload->>'cart_request_id')) WHERE raw_payload->>'cart_request_id' IS NOT NULL;

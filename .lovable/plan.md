@@ -1,102 +1,70 @@
-# Eigenes Mietanfrage-System mit Kalender, Warenkorb und sofortiger Gutscheinprüfung
+# Eigenes Mietanfrage-System mit globalem Warenkorb
 
-## Ziel und klare Abgrenzung
-Eigener Anfrageprozess für **alle Nicht-Anhänger**, auch mit Restcodes. **Anhänger bleiben bei Rentware** mit gültigem Standortcode; ohne Code klarer Kontaktweg, keine vorgetäuschte Online-Buchung.
+## Ziel
+Nicht-Anhänger erhalten eine eigene, durchgängige Anfrage-Strecke als Pop-up. Anhänger bleiben in der externen Rentware-Buchung. Zunächst werden ausschließlich unverbindliche Anfragen erzeugt: Verfügbarkeit und Auftrag bestätigt ein berechtigter Mitarbeiter.
 
-Zunächst **unverbindliche Leads**, keine Reservierung/Zahlung/Gerätebelegung. Admin oder Mitarbeiter prüft und erstellt Angebot/Auftragsbestätigung im bestehenden Ablauf. Maschinenverfügbarkeit folgt später.
+## 1. Kalender und CMS-Preisvorschau
+- „Jetzt mieten“ öffnet auf der Produktseite den Kalender mit Standort, Menge, Abholung und Rückgabe einschließlich Uhrzeit.
+- Abhol- und Rückgabezeiten gegen die tatsächlichen Standortöffnungszeiten prüfen.
+- Preise ausschließlich aus veröffentlichten CMS-Daten und den bestehenden Preisregeln berechnen; Privatkunden brutto, Geschäftskunden netto.
+- Ohne hinterlegte Preise „Preis auf Anfrage“ anzeigen; fehlende Preise nicht als kostenlos darstellen.
+- Anschließend verpflichtende Versicherungen und wählbare CMS-Optionen anzeigen. Unvollständige Versicherungseinstellungen nicht mit erfundenen Preisen ergänzen.
+- Zusätzliche Artikel und Lieferwunsch ermöglichen; noch nicht berechnete Lieferkosten ausdrücklich aus der Zwischensumme ausnehmen.
 
-Langfristiges Ziel: ausgewählte Artikel direkt online buchbar machen; Angebote dann vorrangig für Geschäftskunden und große Projektvolumen. Das ändert heute weder Zahlungs- noch Freigaberegeln.
+## 2. Globales Pop-up und Warenkorb
+- Das eigene Warenkorbsymbol oben rechts auf öffentlichen Nicht-Anhängerseiten einschließlich Startseite anbieten.
+- Kalender, Optionen, Warenkorb und Kontaktformular in derselben Pop-up-Strecke öffnen; beim Seitenwechsel fortsetzen können.
+- Jede Position speichert Artikel, Standort, Menge, eigenen Zeitraum und Optionen. Unterschiedliche Zeiträume je Artikel unterstützen.
+- Positionen bearbeiten und entfernen; weitere Artikel über andere Produktseiten hinzufügen.
+- Rentware-Symbol und externe Buchungsstrecke ausschließlich für Anhänger verwenden; auch alte Kategoriepfade prüfen.
 
-**Annahme für diesen Plan:** Anhänger bleiben vollständig im externen Buchungsweg; sie werden nicht gleichzeitig im eigenen Warenkorb verbindlich gebucht. Beide Warenkörbe bleiben getrennt, sehen aber konsistent aus.
+## 3. Sichtbare 15-Minuten-Frist
+- Beim ersten hinzugefügten Artikel eine absolute Ablaufzeit von 15 Minuten setzen.
+- Countdown im Warenkorb sichtbar anzeigen; niemals mehr als 15:00 darstellen.
+- Seitenwechsel, erneutes Laden und zusätzliche Artikel verlängern die bestehende Frist nicht.
+- Nach Ablauf sämtliche ungesendeten Positionen automatisch entfernen und den abgelaufenen Zustand verständlich anzeigen.
+- In dieser Phase reserviert der Warenkorb keine Geräte. Der Countdown darf daher keine aktuelle Gerätefreigabe oder Verfügbarkeitsgarantie suggerieren.
 
-## Aktueller Stand
-Vorhanden: Zeitraum, Menge, Preisvorschau, Optionen und zusätzliche Artikel. Es fehlen ein gemeinsamer Warenkorb, Positionszeiträume und öffentliche Gutscheinprüfung ohne bestehende Anfrage. Rentware wird teils noch anhand von Codes statt Artikelart aktiviert.
+## 4. Gutscheincode direkt im Eingabefeld
+- Nach Eingabe von Code und Kunden-E-Mail unmittelbar eine geschützte Vorprüfung durchführen; Ergebnis direkt am Feld anzeigen.
+- Prüfung ohne Reservierung oder Einlösung. Allgemeine Fehlermeldungen und begrenzte Prüfversuche verhindern die Offenlegung fremder Gutscheine.
+- Ausschlüsse für Versicherungen, Zubehör, Haftungsfreistellung, Stundenlohn und weitere Zusatzkosten erhalten.
+- Vorläufige Rabattbeträge nur für tatsächlich berechtigte Mietpositionen anzeigen.
+- Vor Angebotsversand erneut serverseitig prüfen; die bestehende atomare Einmal-Einlösung bei Angebotsannahme bleibt maßgeblich.
 
-## 1. Zuerst: Gutschein direkt am Eingabefeld prüfen
-Diese Etappe zuerst separat umsetzen und prüfen.
+## 5. Lead-Anfrage und Mitarbeiterbearbeitung
+- Kontakt- und Lieferdaten mit allen Positionen und deren Zeiträumen an die bestehende Mietanfrage-Bearbeitung übergeben.
+- Artikel, Optionen und Preise serverseitig erneut prüfen; Browserbeträge niemals ungeprüft übernehmen.
+- Wiederholtes Absenden gegen doppelte Anfragen absichern.
+- Mitarbeiter können die Anfrage prüfen und daraus ein Angebot erstellen; keine automatische Auftragsbestätigung oder Gerätebelegung.
+- Bestehende Angebote, Rechnungen und CMS-Fakten unverändert lassen.
 
-- Vollständigen Code nach kurzer Eingabepause und Feldverlassen geschützt prüfen, nicht pro Tastendruck.
-- Feldzustände: **„Wird geprüft“**, **„E-Mail erforderlich“**, **„Anwendbar“** oder Fehler. Rabattbetrag erst mit Zeitraum/Artikeln berechnen.
-- Code mit Kunden-E-Mail prüfen; ohne Identität kein vollständig gültiger Status. E-Mail direkt beim Gutscheinfeld in der Zusammenfassung, bestehendes Formular nutzt sein E-Mail-Feld.
-- Bei Änderungen an Code/E-Mail/Positionen Prüfung verwerfen; verspätete Antworten ignorieren.
-- Ungültigen Code korrigieren/entfernen vor Absenden; leeres Feld blockiert nie. Dienstausfall nicht als gültig anzeigen, Anfrage ohne Code möglich.
-- Prüfung zeigt den konkreten 10-%-Rabatt nur auf berechtigte Mietpositionen. Versicherung, Zubehör, Haftungsfreistellung, Stundenlohn sowie bestehende ausgeschlossene Zusatzkosten bleiben unverändert; Sonderpreise/höhere Rabatte nicht stapeln.
-- **Beim Prüfen weder reservieren noch einlösen.** Vor Lead-Speicherung erneut prüfen; vor Angebotsversand erneut prüfen und wie bisher reservieren, bei Annahme atomar einlösen. Zwischenzeitliche Einlösung verständlich behandeln.
+## 6. Spätere Verfügbarkeit und Direktbuchung
+- Verfügbarkeit erst aktivieren, wenn Gerätebestand und Kapazitäten konsistent hinterlegt sind.
+- Echte Haltefristen serverseitig anlegen: Gerät oder Artikelkapazität, Zeitraum, Menge und Ablaufzeit atomar prüfen und reservieren.
+- Gleichzeitige Überbuchungen verhindern; abgelaufene Haltefristen serverseitig freigeben, unabhängig davon, ob der Browser geöffnet bleibt.
+- Bestehende bestätigte Aufträge und Belegungen einbeziehen. Parallele Lead-Anfragen sind aktuell keine verbindlichen Reservierungen.
+- Danach ausgewählte Artikel für sichere Direktbuchungen freigeben; den Angebotsprozess langfristig auf Geschäftskunden und große Projekte konzentrieren.
 
-- Vorprüfung aus Code/E-Mail bestätigt keine Identität: keine fremden Daten ausgeben, falschen Code/Zuordnung gemeinsam melden; endgültige Berechtigung geschützt prüfen.
+## Abnahme und Reporting
+- Mobil, Tablet und Desktop: Kalender, Uhrzeitfelder, Optionen, Warenkorbsymbol, Scrollbarkeit, Kontaktformular und Fehlermeldungen sichtbar prüfen.
+- Mehrere Artikel mit unterschiedlichen Zeiträumen, Seitenwechsel, erneutes Laden, Bearbeitung, Entfernung und tatsächlichen Timerablauf testen.
+- CMS-Preisgleichheit, Versicherungssätze, Steueranzeige und Gutschein-Ausschlüsse mit konkreten Regeltests absichern.
+- Gutscheine: gültig, ungültig, fremde E-Mail, bereits eingelöst und fehlende Berechtigung prüfen; Tippen darf keinerlei Einlösung auslösen.
+- Mit separat freigegebener Luca-Testanfrage den vollständigen Weg bis zur Mitarbeiteransicht prüfen, einschließlich Positionszeiträumen und Schutz vor doppeltem Absenden. Testmails ausschließlich an luca@sandhoff.org.
+- Je Etappe berichten: umgesetzt, konkrete Testergebnisse, verbleibende Einschränkungen und Veröffentlichungsstatus. Kein uneingeschränktes grünes Licht ohne vollständige Abnahme.
 
-## 2. Einheitlicher Buchungsweg und Warenkorbsymbol
-- Zentral festlegen, ob ein Artikel Anhänger oder Nicht-Anhänger ist: über echte Hauptkategorie/Artikelmerkmale, niemals allein über Rentware-Code oder Namenssuche.
-- Artikelansichten, Kategorien, Suche, Empfehlungen und ältere Kataloge verwenden dieselbe Entscheidung.
-- Nicht-Anhänger: „Jetzt mieten“ öffnet den eigenen Kalender. Anhänger: bestehender Rentware-Kalender und dessen Checkout.
-- Kalender und komplette Strecke als **globales Pop-up**, auf jeder öffentlichen Website-Seite fortsetzbar. Warenkorbsymbol **oben rechts auch auf der Startseite**; Klick öffnet den gespeicherten Stand bis zum Lead-Abschluss. Schließen oder Zurückkehren zur Website verliert den Stand innerhalb der Frist nicht. Anhängerseiten öffnen stattdessen Rentware.
-- Eigenes Symbol in Form/Größe/Farbe/Position am realen Rentware-Symbol ausrichten, mit Mengenanzeige und zugänglichem Namen; Navigation/Chat nicht überlagern.
-- Auf Anhängerseiten externes Symbol, sonst eigener Warenkorb; vorhandene eigene Positionen bleiben separat erreichbar. Keine überlappenden Symbole. Rentware nur bei Anhängerbedarf laden.
-- B2B-Portal, Unterschriften und bisherige geschützte Abläufe bleiben ohne störenden Warenkorb.
+## Aktueller Zwischenstand
+Ein erster Stand wurde bereits umgesetzt und einige serverseitige Änderungen wurden bereitgestellt, bevor diese Planergänzung ausdrücklich freigegeben war. Die Website wurde nicht veröffentlicht; keine echte Anfrage wurde im beschriebenen Browsertest abgeschickt.
 
-## 3. Neuer Kundenablauf
+Browser-Stichproben bestätigten Kalender, eine CMS-Preisantwort, Warenkorb-Rückkehr auf der Startseite und die Sperre eines ungültigen Codes. Das ist noch keine vollständige Abnahme. Die gezeigte Mobilaufnahme enthält einen überlagernden Cookie-Hinweis; der gezeigte Countdown von 15:01 und die Versicherungsstufen benötigen eine erneute Sichtprüfung des überarbeiteten Standes. Sicherheit der öffentlichen Vorprüfung, Preisgleichheit, vollständiger Lead-Ablauf und Timerablauf bleiben gesondert zu prüfen.
 
-### Schritt A – Zeitraum und Menge
-- Monatskalender mit Abholung und Rückgabe, Datum mit Wochentag sowie Uhrzeit; Mobil kompakt und gut scrollbar, Tablet/Desktop mit mehr Kalenderfläche.
-- Standortbezogene Abholzeiten verwenden; ungültige Zeitfolge auch bei gleichem Datum abweisen. Nicht verfügbare Daten nicht als „frei“ darstellen.
-- Vorläufiger Hinweis: **„Verfügbarkeit wird nach deiner Anfrage bestätigt.“** Vor-Ort-Bestand und konkrete Zeitraumverfügbarkeit ausdrücklich unterscheiden.
-- Geprüfte Bau-/Event-/Wochenend-/Nutzungstagsregeln übernehmen. Monatsmiete ohne Enddatum nur mit passendem CMS-Tarif/Mindestlaufzeit.
-
-### Schritt B – Preis und Optionen
-- Sobald Zeitraum und Menge feststehen, Mietpreis aus veröffentlichten CMS-Preisen am gewählten Standort berechnen. Tatsächlich gespeicherte Staffeln einschließlich manueller Werte verwenden.
-- Aufschlüsselung: Menge × Dauer/Tarif, Versicherung, Optionen, Lieferung und Rabatt. Kaution separat, kein Mietumsatz.
-- Privatkunden brutto, Geschäftskunden netto mit passendem Steuerhinweis; genau eine Umrechnung. Einheit passend zum Preisschema: Miettage/Kalendertage/Monate/Stück etc.
-- Ohne belastbaren CMS-Preis: **„Preis auf Anfrage“**. Bekannte Positionen als bekannte Zwischensumme zeigen, unbepreiste nicht als null Euro oder vollständigen Gesamtpreis ausgeben.
-- Nur am Artikel im CMS vorhandene Versicherungen/Haftungsfreistellungen anbieten. Pflichtdeckung nicht abwählbar; alternative Stufen als eindeutige Auswahl, kombinierbare Extras als Checkboxen.
-- Selbstbeteiligung, Zeitraum und Euro-Aufpreis sichtbar. Versicherungsstufen beziehen sich auf die Standardversicherung; Mietrabatte reduzieren Versicherungen nicht.
-
-### Schritt C – Warenkorb und weitere Artikel
-- Menge, Standort, eigener Zeitraum und Optionsauswahl speichern; weitere Artikel auch auf anderen Produktseiten hinzufügen.
-- Derselbe Artikel mit unterschiedlichen Zeiträumen bleibt getrennt. Zeitraum übernehmen oder je Position ändern; Änderungen rechnen neu und verwerfen die Gutscheinprüfung.
-
-### Schritt D – Zusammenfassung und Lead
-- Bilder, Zeiträume, Mengen, Preise/Optionen mit Bearbeiten/Entfernen; vollständige Kontakt-/Adressdaten und Lieferung ohne Registrierungszwang.
-- Gutschein direkt im Feld prüfen; Rabatt und Ausschlüsse nachvollziehbar zeigen.
-- **„Mietanfrage senden“**, nicht kostenpflichtig buchen. Keine Zahlung, keine Rechnungszahlungsoption für Privatkunden. Empfangsbestätigung mit Auftrags-ID, Positionen/Zeiträumen und ausstehender Mitarbeiterbestätigung.
-
-## 4. Speicherung und Mitarbeiterablauf
-- Ein gemeinsamer Warenkorb über Seitenwechsel, Schließen und Reload; Produkt, Standort, Menge, Zeitraum und Optionsschlüssel speichern, keine verbindlichen Browserpreise. Beim Öffnen/Absenden CMS neu laden und Änderungen zeigen.
-- **15-Minuten-Frist:** startet beim ersten hinzugefügten Artikel für den gesamten Warenkorb. Sichtbare Restzeit `14:59` und Ablaufhinweis im Pop-up. Als Standard keine Verlängerung durch Tippen, Hinzufügen, Seitenwechsel oder Reload; neue Frist erst für einen neuen Warenkorb nach Leerung.
-- Nach Ablauf automatisch alle ungesendeten Positionen samt Zeiträumen/Optionen und Gutscheinprüfung leeren, auch nach Rückkehr aus Hintergrund/geschlossenem Browser. Bei Wiederöffnung: „Dein Warenkorb ist abgelaufen. Bitte wähle deine Artikel erneut.“ Kontaktdaten/Codes nicht unnötig dauerhaft speichern; beschädigten/gesperrten Speicher sicher behandeln.
-- Nach erfolgreicher Lead-Speicherung gesendete Positionen entfernen. Fehler erhalten sie nur bis zum Fristende; Wiederholungen erzeugen keinen zweiten Lead. Absenden und Fristablauf eindeutig koordinieren: bereits erfolgreich gespeicherte Leads nie löschen, abgelaufene Warenkörbe nicht neu absenden.
-- Alle Positionen/Zeiträume in Mitarbeiteransicht, Benachrichtigung und Angebotsvorbelegung übernehmen. Globale Daten nur Zusammenfassung: keine pauschale Belegung aller Artikel zwischen frühester Abholung und letzter Rückgabe.
-- Unterschiedliche Ausgabe-/Rückgabetermine auch in Protokollen und Verfügbarkeitsprüfung unterstützen; heutige Protokollgrenzen vor Freigabe prüfen und nötige positionsbezogene Rückgaben ergänzen.
-- Mitarbeiter erstellt Angebot/Bestätigung im bestehenden geschützten Ablauf. Ausgestellte Rechnungen, angenommene Angebote, Kautionen und echte Aufträge unverändert lassen.
+Weitere Umsetzung und Veröffentlichungsfreigabe erfolgen erst nach Zustimmung zum Plan.
 
 ## Technische Umsetzung
-- Gemeinsamer versionierter Warenkorb und fokussierte Kalender-/Optionsschritte. Zentrale Anhängerentscheidung in Detailseiten, Kategorien, Suche und Widgets.
-- Begrenzte öffentliche Serverprüfung: veröffentlichte CMS-Produkte, erlaubte Optionen und validierte Eingaben; keine Browserpreise/fremden Profil-IDs vertrauen. Gutschein-Vorprüfung nicht schreibend und getrennt von Reservierung/Einlösung.
-- Vorhandene Browser-/Server-Preis- und Add-on-Regeln wiederverwenden und Gleichheit testen; ältere alternative Rabattbasis-Helfer nicht ungeprüft nutzen.
-- `requested_items` um Positionszeiträume/Standort/Optionen erweitern, alte Anfragen kompatibel halten. Parser, Mitarbeiteransicht, Angebot und Protokolle nachziehen.
-- Lead serverseitig erneut berechnen, mit Wiederholungskennung speichern; Mailfehler erzeugt keinen zweiten Lead. Datenbankänderungen nur über vorgesehenen Migrationsweg mit Rechten; Entscheidungen in `AGENTS.md`, CMS-Fakten unverändert.
-- Frist über einen gespeicherten absoluten Ablaufzeitpunkt berechnen, nicht über heruntergezählte Sekunden; Tabs synchronisieren. Countdown löscht keine bereits gesendeten Leads und reserviert in der jetzigen Phase keinen Bestand.
-
-## Später: echte 15-Minuten-Reservierungen und Direktbuchung
-- **Wichtig:** Heute hält ein Lead-Warenkorb keine Maschine zurück. Daher gibt seine Leerung noch keinen Bestand frei; mehrere unverbindliche Anfragen sind möglich. Keine falsche Reservierungszusage zeigen.
-- Bei aktivierter Verfügbarkeit hält der Server konkrete Geräte bzw. verfügbare Mengen für die jeweiligen Mietzeiträume höchstens 15 Minuten. Gleichzeitige Zugriffe transaktional prüfen: nur tatsächlich freie Kapazität vergeben, nicht pauschal alle Anfragen desselben Artikels sperren.
-- Ablauf zählt serverseitig auch bei geschlossenem Browser. Abgelaufene Haltefristen bei jeder Verfügbarkeits-/Buchungsprüfung nicht mehr berücksichtigen; Freigabe darf nicht auf einen Browser-Timer oder häufige Hintergrundabfragen angewiesen sein.
-- Vor Direktbuchung gültige Haltefrist atomar in verbindliche Belegung überführen; Zahlung, Ablauf, Abbruch und Wiederholung dürfen keine Doppelbuchung oder verlorene Zahlung erzeugen. Bestehende bestätigte Belegungen schützen. Dieser Ausbauschritt braucht eigene Abnahme vor Aktivierung.
-
-## Reihenfolge und Freigaben
-1. **Gutscheinprüfung** im bisherigen Formular separat umsetzen und testen.
-2. **Buchungsgrenze/Warenkorb:** Anhängerentscheidung, Speicherung, Symbol und Seitenwechsel; externen Ablauf erhalten.
-3. **Kalender/Preis/Optionen:** einen Artikel vollständig prüfen, CMS-Preisgleichheit und Pflicht-/Wahloptionen.
-4. **Mehrere Artikel/Zeiträume:** Mitarbeiter-, Angebots- und Protokollkompatibilität vollständig nachziehen.
-5. **Lead-Abnahme:** freigegebene echte Testanfrage bis Mitarbeiteransicht, Angebotsvorschau und Empfangsbestätigung; dann kontrolliert veröffentlichen.
-6. **Später separat:** tatsächliche Maschinenverfügbarkeit, serverseitige 15-Minuten-Haltefristen und anschließend Direktbuchung ausgewählter Artikel. Erst nach Bestandsbereinigung und Prüfung paralleler Zugriffe/Zahlungsabläufe aktivieren; Angebote für Geschäftskunden/große Projekte erhalten.
-
-## Tests und Bericht pro Etappe
-- Mobil 402×725 und kleiner, Tablet 768×1024 in beiden Ausrichtungen, Desktop 1280×1800: Kalender, Tastatur, Scrollen, Symbol, Dialoge und Textüberläufe.
-- Warenkorb: Seitenwechsel/Reload, derselbe Artikel mit mehreren Zeiträumen, Bearbeiten/Löschen, Speicherausfall, Preisänderungen und fehlgeschlagenes Absenden.
-- Timer: bei 14:59 erhalten, bei genau 15:00 leer; Reload/weitere Tabs/Hintergrund verlängern nicht. Globales Pop-up von Start-/Artikel-/Kategorieseite fortsetzen. Später zwei gleichzeitige Buchungen um das letzte Gerät testen: nur eine erhält die Kapazität, abgelaufene Haltefrist gibt sie wieder frei.
-- Preise: Staffelgrenzen, Wochenende, Berlin/DST, Mengen/Sets, Standortpreise, Event/Monatsfälle, fehlende Preise, brutto/netto und centgenaue Summen.
-- Optionen/Gutscheine: Pflichtversicherung, exklusive Stufen, ausgeschlossene Beträge; falscher Code/Kunde, eingelöst/reserviert, Dienstfehler, veraltete Antworten und keine Reservierung bei Vorprüfung.
-- Lead: richtige Zuordnung, Auftrags-ID und Positionszeiträume, keine Doppelanfrage oder Gerätebelegung; Anhänger bleiben extern buchbar.
-- Bericht je Etappe: umgesetzt, konkret geprüft, Tests und offene Punkte. Keine produktive Anfrage/Rechnung/Buchung/Mail ohne Freigabe; Testmails nur an luca@sandhoff.org. Mitarbeiterzugang für interne Abnahme erforderlich.
-
-**Keine Umsetzung oder Veröffentlichung vor Freigabe.**
+- Gemeinsamer öffentlicher Warenkorb mit validiertem Speicherformat und absoluter Ablaufzeit; globale Dialogsteuerung über die gemeinsame Website-Anordnung.
+- Öffentliche Preis- und Gutscheinendpunkte mit Eingabevalidierung, begrenzten Prüfversuchen und minimalen Antworten; keine Offenlegung privater Kunden- oder Gutscheindaten.
+- Bestehende zentrale Mietpreis-, Zusatzkosten- und Gutscheinregeln wiederverwenden statt paralleler Preislogik.
+- Positionszeiträume abwärtskompatibel an Mitarbeiteransicht und Angebotsvorbelegung übergeben.
+- Eindeutige Anfragekennung serverseitig absichern; konkurrierende Wiederholungen müssen dasselbe Ergebnis zurückliefern.
+- Spätere Gerätehaltefristen an die vorhandene transaktionale Belegungsprüfung anbinden; Browser-Zeitgeber niemals als Bestandskontrolle verwenden.

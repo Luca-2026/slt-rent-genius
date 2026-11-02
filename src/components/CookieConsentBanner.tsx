@@ -68,7 +68,9 @@ export function CookieConsentBanner() {
       setVisible(true);
     };
     window.addEventListener("open-cookie-settings", handler);
-    return () => window.removeEventListener("open-cookie-settings", handler);
+    const consentChanged = () => { if (getConsentState()) setVisible(false); };
+    window.addEventListener("cookie-consent-changed", consentChanged);
+    return () => { window.removeEventListener("open-cookie-settings", handler); window.removeEventListener("cookie-consent-changed", consentChanged); };
   }, [loadExisting]);
 
   const accept = () => {

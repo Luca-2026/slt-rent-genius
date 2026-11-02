@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 import sltLogo from "@/assets/slt-logo-sm.webp";
+import { RentalCartButton } from "@/components/rental/RentalRequestCart";
 
 const locations = [
   { id: "krefeld", name: "Krefeld", address: "Anrather Straße 291, 47807 Krefeld-Fichtenhain", phone: "02151 417 99 04", email: "krefeld@slt-rental.de" },
@@ -309,10 +310,7 @@ export function Header() {
               </Link>
             </div>
 
-            {/* Space for Rentware cart icon */}
-            {!location.pathname.startsWith("/b2b") && (
-              <div className="w-10 h-10 shrink-0" aria-hidden="true" />
-            )}
+            <RentalCartButton />
           </div>
         </div>
       </div>

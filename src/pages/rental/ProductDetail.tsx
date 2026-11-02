@@ -114,7 +114,7 @@ export default function ProductDetail() {
 
   // Artikel ohne Rentware-Code am Standort = auf Anfrage: Rentware-Warenkorb ausblenden,
   // damit das Anfrageformular im Vordergrund steht.
-  const hasLocalRentwareCode = !!(location && rawProduct?.rentwareCode?.[location.id as keyof typeof rawProduct.rentwareCode]);
+  const hasLocalRentwareCode = categoryId === "anhaenger" && !!(location && rawProduct?.rentwareCode?.[location.id as keyof typeof rawProduct.rentwareCode]);
 
   // W1: Standortpreise für den Block „Preisstaffel“ (nur bei Artikeln ohne Rentware-Code).
   const showTierPrices = !hasLocalRentwareCode && !!rawProduct?.managedId;
