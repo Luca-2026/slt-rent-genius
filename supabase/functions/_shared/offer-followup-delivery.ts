@@ -14,7 +14,10 @@ export async function processOfferFollowups(service: any, onlyLinkId?: string) {
   const { data: settings } = await service.from("offer_followup_settings").select("live_enabled").eq("id", true).maybeSingle();
   const live = settings?.live_enabled === true;
   // Never expire unrelated production offers during the test-only rollout.
-  if (!onlyLinkId && live) await service.rpc("expire_open_offer_links");
+  if (!onlyLinkId && live) {
+    const { error: expiryError } = await service.rpc("expire_open_offer_links");
+    if (expiryError) throw expiryError;
+  }
   let query = service.from("offer_acceptance_links").select("*").in("status", ["active", "declined"]).order("created_at").limit(200);
   if (onlyLinkId) query = query.eq("id", onlyLinkId);
   const { data: links, error } = await query;
@@ -26,6 +29,11 @@ export async function processOfferFollowups(service: any, onlyLinkId?: string) {
     if (!inquiry || inquiry.offer_number !== link.offer_number) continue;
     const { data: deadline, error: deadlineError } = await service.rpc("offer_link_deadline_by_id", { p_id: link.id });
     if (deadlineError) throw deadlineError;
+    if (link.status === "active" && deadline && Date.now() >= Date.parse(deadline)) {
+      const { error: expiryError } = await service.rpc("expire_open_offer_link", { p_id: link.id });
+      if (expiryError) throw expiryError;
+      continue;
+    }
     const { data: previous, error: historyError } = await service.from("offer_followup_deliveries").select("*").eq("link_id", link.id).order("created_at", { ascending: false });
     if (historyError) throw historyError;
     const kind = link.status === "declined" ? "decline" : "followup";
