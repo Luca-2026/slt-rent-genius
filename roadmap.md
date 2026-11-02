@@ -1,5 +1,5 @@
 # Roadmap – Paket 4 (Angebots-PDF & E-Mail)
-- [ ] Weitere Artikelauswahl zur Standort-Kategorieübersicht; Selbstabholung am Anfrageende aktiv bestätigen; genannte Artikelkautionen einmalig hinterlegen und prüfen.
+- [x] Weitere Artikelauswahl zur Standort-Kategorieübersicht; Selbstabholung vor Versand aktiv bestätigen und beim Lieferungswechsel zurücksetzen. 112 Artikelkautionen hinterlegt (101 × 150 €, 1 × 300 €, 6 × 500 €, 4 × 1.000 €). Browser: Bonn → Kategorien → Bautrockner mit übernommenem Zeitraum, 1.150 € Kaution, Abholsperre auf Mobil/Tablet/Desktop geprüft; 16 Tests erfolgreich. Echte Preisantwort per Netzwerkweiterleitung (Sandbox-Browserverbindung hing), kein Anfrageversand, Website noch nicht veröffentlicht.
 - [x] Kalender vorläufig freie Tage grün, Wochenendtarif 24,99 € beim Heizlüfter sichtbar; endgültige Bestätigung bleibt beim Team.
 - [x] Zusatzartikel vor Versicherungen; unbekannte Beträge ausblenden und Kundentexte ohne CMS-Begriffe. Echter Heizlüfter-Ablauf sowie simulierte fehlende Preise geprüft, kein Anfrageversand.
 - [x] Lieferadresse mit echten Straßenvorschlägen und PLZ 47807 → Krefeld; Lieferung 100 € / Gesamt 146,41 € im Browser geprüft, Mobil/Tablet/Desktop ohne Überlauf. Null-Kilometer-Route korrigiert.
