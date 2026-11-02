@@ -3588,6 +3588,21 @@ export type Database = {
           },
         ]
       }
+      offer_followup_settings: {
+        Row: {
+          id: boolean
+          live_enabled: boolean
+        }
+        Insert: {
+          id?: boolean
+          live_enabled?: boolean
+        }
+        Update: {
+          id?: boolean
+          live_enabled?: boolean
+        }
+        Relationships: []
+      }
       offer_payment_links: {
         Row: {
           amount_cents: number
