@@ -1,6 +1,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { z } from "npm:zod@3";
+import { hasCompleteFeedback } from "../_shared/feedback-completion.ts";
 
 const schema = z.object({
   action: z.enum(["info", "submit"]), token: z.string().regex(/^[a-f0-9]{64}$/),

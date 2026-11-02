@@ -48,6 +48,7 @@ interface InquiryForm {
   endDate: string;
   endTime: string;
   message: string;
+  couponCode: string;
   deliveryRequested: boolean;
   deliveryStreet: string;
   deliveryPostalCode: string;
@@ -138,6 +139,7 @@ export function ProductBookingDialog({
     street: "", postalCode: "", city: "",
     startDate: "", startTime: "", endDate: "", endTime: "",
     message: "",
+    couponCode: "",
     deliveryRequested: false, deliveryStreet: "", deliveryPostalCode: "", deliveryCity: "",
     setupServiceRequested: false,
     selectedExtras: [],
@@ -335,6 +337,7 @@ export function ProductBookingDialog({
           ...form,
           customerKind: form.customerKind,
           message: messageWithExtras,
+          couponCode: form.couponCode.trim().toUpperCase(),
           useSaturday: form.useSaturday,
           useSunday: form.useSunday,
           priceEstimate: calcLine
@@ -649,6 +652,12 @@ export function ProductBookingDialog({
                       )}
                     </div>
 
+                    <div className="space-y-1.5">
+                      <Label htmlFor="inq-coupon">Gutscheincode (optional)</Label>
+                      <Input id="inq-coupon" value={form.couponCode} maxLength={20}
+                        pattern="[A-Fa-f0-9]{20}" autoCapitalize="characters"
+                        onChange={e => setForm({ ...form, couponCode: e.target.value.toUpperCase() })} />
+                    </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="inq-message">Kommentar / weitere Wünsche</Label>
                       <Textarea

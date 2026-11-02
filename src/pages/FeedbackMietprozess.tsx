@@ -87,6 +87,10 @@ export default function FeedbackMietprozess() {
     e.preventDefault();
     if (personalToken) {
       if (!linkReady || linkError) return;
+      if (!FEEDBACK_QUESTIONS.every(question => Number.isInteger(ratings[question.key]) && ratings[question.key] >= 1 && ratings[question.key] <= 5)) {
+        toast({ title: "Feedback noch nicht vollständig", description: "Bitte bewerte alle zehn Fragen. Freitext ist optional.", variant: "destructive" });
+        return;
+      }
       setSubmitting(true);
       const { data, error } = await supabase.functions.invoke("rental-feedback", { body: { action: "submit", token: personalToken, ratings, answers: { ...answers, gesamt_kommentar: freeText.trim() }, recommend } });
       setSubmitting(false);

@@ -3,6 +3,8 @@ export interface RentalInquiry {
   order_confirmed_at?: string | null;
   order_confirmation_number?: string | null;
   offer_payload?: unknown;
+  raw_payload?: unknown;
+  feedback_coupon_code?: string | null;
   source: string;
   location: string | null;
   location_email: string | null;
