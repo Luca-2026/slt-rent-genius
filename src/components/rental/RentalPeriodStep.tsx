@@ -63,7 +63,7 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: {
     </div>}
     <div className="rounded-md border border-border">
       <p className="flex items-center gap-2 border-b border-border px-3 py-2 text-sm font-semibold"><CalendarDays className="h-4 w-4 text-primary" />{!from ? "Abholtag wählen" : !to ? "Rückgabetag wählen" : "Mietzeitraum"}</p>
-      <Calendar mode="range" locale={de} modifiers={{ available: day => day >= today && (!!windowFor(toIso(day))), pickupDay: day => !!from && day.getTime() === from.getTime(), returnDay: day => !!to && day.getTime() === to.getTime() }} modifiersClassNames={{ available: "rental-day-available", pickupDay: "rental-day-pickup", returnDay: "rental-day-return" }} weekStartsOn={1} numberOfMonths={1} selected={from ? { from, to } : undefined}
+      <Calendar mode="range" locale={de} modifiers={{ available: day => day >= today && (!!windowFor(toIso(day))), pickupDay: day => toIso(day) === edit.start_date, returnDay: day => toIso(day) === edit.end_date }} modifiersClassNames={{ available: "rental-day-available", pickupDay: "rental-day-pickup", returnDay: "rental-day-return" }} weekStartsOn={1} numberOfMonths={1} selected={from ? { from, to } : undefined}
         disabled={day => day < today || (!flexible && !pickupWindowForDate(info, toIso(day)))}
         onSelect={range => {
           const start = range?.from ? toIso(range.from) : "";
