@@ -111,6 +111,10 @@ type FormLine = OfferLine & {
   tier_label?: string;
   /** Vom Kunden im Anfrageformular gewählte Zusatzoptionen – werden beim Laden vorbelegt. */
   requested_addon_keys?: string[];
+  /** Public cart lines keep their requested location and weekend use during draft pricing. */
+  location?: string;
+  use_saturday?: boolean;
+  use_sunday?: boolean;
 };
 
 /**
@@ -240,7 +244,7 @@ function applyRentalPricing(item: FormLine, dayOpts: RentalDayOptions): FormLine
     start: { date: item.rental_start, time: item.rental_start_time },
     end: { date: item.rental_end, time: item.rental_end_time },
     unit: item.unit_manual ? ((item.unit ?? null) as OfferUnit | null) : null,
-    opts: dayOpts,
+    opts: { use_saturday: item.use_saturday ?? dayOpts.use_saturday, use_sunday: item.use_sunday ?? dayOpts.use_sunday },
   });
   const base: FormLine = { ...item, custom_period: true, product_name: p.base_name };
   if (r.kind === "weekend") {
@@ -1019,8 +1023,8 @@ export function InquiryOfferForm({
     }
     return customerPricesRef.current;
   };
-  const buildLinePricing = async (slug: string | null | undefined, name: string): Promise<LinePricing | null> => {
-    const loaded = await loadRentalPricing(slug, location);
+  const buildLinePricing = async (slug: string | null | undefined, name: string, requestedLocation?: string): Promise<LinePricing | null> => {
+    const loaded = await loadRentalPricing(slug, requestedLocation ?? location);
     if (!loaded) return null;
     const baseName = name.endsWith(WEEKEND_SUFFIX) ? name.slice(0, -WEEKEND_SUFFIX.length) : name;
     const cps = await ensureCustomerPrices();
@@ -1038,7 +1042,7 @@ export function InquiryOfferForm({
           if (item.price_manual || !item.product_name.trim()) return item;
           // Vorbelegte Positionen (z. B. nach „Entwurf verwerfen“) haben evtl. noch keinen CMS-Bezug – per Name nachschlagen.
           const slug = item.product_slug ?? (item.pricing ? undefined : (await findCatalogProductByName(item.product_name))?.slug);
-          const pricing = item.pricing ?? (await buildLinePricing(slug, item.product_name));
+          const pricing = item.pricing ?? (await buildLinePricing(slug, item.product_name, item.location));
           return pricing ? { ...item, product_slug: item.product_slug ?? slug, pricing } : item;
         }),
       );
@@ -1082,7 +1086,7 @@ export function InquiryOfferForm({
           const image = pickCatalogImage(match.images);
           const resolved = await resolveCatalogPrice(match);
           const useCms = item.unit_price <= 0 && resolved !== undefined;
-          const pricing = pricingActive ? await buildLinePricing(item.product_slug ?? match.slug, item.product_name) : null;
+          const pricing = pricingActive ? await buildLinePricing(item.product_slug ?? match.slug, item.product_name, item.location) : null;
           const cmsAddons = parseAddonOptions(match.addon_options);
           const next: FormLine = {
             ...item,
@@ -1098,7 +1102,7 @@ export function InquiryOfferForm({
                   start: { date: item.rental_start, time: item.rental_start_time },
                   end: { date: item.rental_end, time: item.rental_end_time },
                   unit: null,
-                  opts: dayOpts,
+                  opts: { use_saturday: item.use_saturday ?? dayOpts.use_saturday, use_sunday: item.use_sunday ?? dayOpts.use_sunday },
                 });
                 if (r.kind !== "weekend") return { unit: r.unit, duration: r.duration };
               }
@@ -1117,7 +1121,8 @@ export function InquiryOfferForm({
           // Pflichtversicherung (Standardstufe) immer, sonstige nur wenn im CMS gepflegt –
           // gleiche Logik wie das Dropdown: Kalendertage über den Zeitraum + Selbstbehalt-Stufen.
           if (!next.addons?.length && item.requested_addon_keys) {
-            const picked = cmsAddons.filter((o) => o.is_default || item.requested_addon_keys!.includes(o.key));
+            const requestedKeys = item.requested_addon_keys ?? [];
+            const picked = cmsAddons.filter((o) => o.is_default || requestedKeys.includes(o.key));
             if (picked.length) {
               next.addons = buildAddonsFromOptions(picked, cmsAddons, next as OfferLine, next.rental_start ?? null, next.rental_end ?? null);
             }

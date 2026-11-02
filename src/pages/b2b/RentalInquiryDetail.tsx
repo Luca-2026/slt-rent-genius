@@ -118,6 +118,7 @@ function rentalDefaultItems(selected: RentalInquiry) {
     rental_start_time: it.start_time ?? selected.start_time?.slice(0, 5) ?? undefined,
     rental_end_time: it.end_time ?? selected.end_time?.slice(0, 5) ?? undefined,
     custom_period: !!it.start_date,
+    location: it.location,
     use_saturday: it.use_saturday ?? selected.use_saturday,
     use_sunday: it.use_sunday ?? selected.use_sunday,
     unit_price: it.unit_price ?? 0,
