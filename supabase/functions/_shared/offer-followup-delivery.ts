@@ -5,20 +5,22 @@ import { byForm, resolveAddressForm, salutationLine } from "./salutation.ts";
 import { DECLINE_REASONS, escapeOfferText as esc, followupSequence } from "./offer-followup.ts";
 
 // Initial activation is test-only until production mail is explicitly released.
-const maySend = (email: string) => email.trim().toLowerCase() === "luca@sandhoff.org" || Deno.env.get("OFFER_FOLLOWUPS_LIVE") === "true";
+const maySend = (email: string, live: boolean) => email.trim().toLowerCase() === "luca@sandhoff.org" || live;
 
 export async function processOfferFollowups(service: any, onlyLinkId?: string) {
   const key = Deno.env.get("RESEND_API_KEY");
   if (!key) throw new Error("E-Mail-Versand ist nicht konfiguriert");
+  const { data: settings } = await service.from("offer_followup_settings").select("live_enabled").eq("id", true).maybeSingle();
+  const live = settings?.live_enabled === true;
   // Never expire unrelated production offers during the test-only rollout.
-  if (!onlyLinkId && Deno.env.get("OFFER_FOLLOWUPS_LIVE") === "true") await service.rpc("expire_open_offer_links");
+  if (!onlyLinkId && live) await service.rpc("expire_open_offer_links");
   let query = service.from("offer_acceptance_links").select("*").in("status", ["active", "declined"]).order("created_at").limit(200);
   if (onlyLinkId) query = query.eq("id", onlyLinkId);
   const { data: links, error } = await query;
   if (error) throw error;
   let sent = 0;
   for (const link of links ?? []) {
-    if (!maySend(link.customer_email ?? "")) continue;
+    if (!maySend(link.customer_email ?? "", live)) continue;
     const { data: inquiry } = await service.from(link.inquiry_table).select("*").eq("id", link.inquiry_id).maybeSingle();
     if (!inquiry || inquiry.offer_number !== link.offer_number) continue;
     const { data: deadline, error: deadlineError } = await service.rpc("offer_link_deadline_by_id", { p_id: link.id });
