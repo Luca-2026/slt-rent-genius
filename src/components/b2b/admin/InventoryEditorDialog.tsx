@@ -90,6 +90,7 @@ interface FormState {
   price_weekend: string;
   price_per_month: string;
   min_rental_months: string;
+  deposit_amount: string;
   weight_kg: string;
   drive_type: string;
   rentware_code: Record<LocId, string>;
@@ -144,6 +145,7 @@ const emptyForm = (): FormState => ({
   price_weekend: "",
   price_per_month: "",
   min_rental_months: "",
+  deposit_amount: "",
   weight_kg: "",
   drive_type: "",
   rentware_code: { krefeld: "", bonn: "", muelheim: "" },
@@ -209,6 +211,7 @@ function fromRow(row: AdminManagedProductRow): FormState {
     price_weekend: row.price_weekend ?? "",
     price_per_month: row.price_per_month ?? "",
     min_rental_months: row.min_rental_months ? String(row.min_rental_months) : "",
+    deposit_amount: row.deposit_amount != null ? String(row.deposit_amount) : "",
     weight_kg: row.weight_kg ? String(row.weight_kg) : "",
     drive_type: row.drive_type ?? "",
     rentware_code: {
@@ -589,6 +592,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         price_weekend: legacyWeekendText(form.prices, initial?.price_weekend_num, normalizePriceInput(form.price_weekend)),
         price_per_month: legacyMonthText(form.pricing_scheme, form.prices, initial?.price_from_20_rd, normalizePriceInput(form.price_per_month)),
         min_rental_months: form.min_rental_months ? Number(form.min_rental_months) : null,
+        deposit_amount: form.deposit_amount?.trim() ? Number(form.deposit_amount.replace(",", ".")) : null,
         weight_kg: form.weight_kg ? Number(form.weight_kg) : null,
         drive_type: form.drive_type.trim() || null,
         rentware_code: rentwareCode,
@@ -892,6 +896,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
             </TabsContent>
 
             <TabsContent value="preise" className="space-y-4">
+              <div><Label htmlFor="article-deposit">Kaution je Artikel / Set (€)</Label><Input id="article-deposit" type="number" min="0" step="0.01" value={form.deposit_amount ?? ""} onChange={e => setForm({ ...form, deposit_amount: e.target.value })} /><p className="mt-1 text-xs text-muted-foreground">Ohne Umsatzsteuer. Leer = individuell im Angebot ermitteln; 0 = keine Kaution.</p></div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label>Preisschema</Label>

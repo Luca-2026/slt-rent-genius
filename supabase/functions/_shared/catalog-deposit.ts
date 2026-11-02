@@ -1,5 +1,6 @@
 /** Explicit CMS facts only; absent or ambiguous deposit amounts remain unknown. */
-export function catalogDeposit(product: { specifications?: unknown; rental_notes?: unknown }): number | null {
+export function catalogDeposit(product: { deposit_amount?: number | null; specifications?: unknown; rental_notes?: unknown }): number | null {
+  if (product.deposit_amount != null) return Number.isFinite(product.deposit_amount) && product.deposit_amount >= 0 ? product.deposit_amount : null;
   const specs = product.specifications;
   const value = specs && typeof specs === "object" && !Array.isArray(specs)
     ? Object.entries(specs).find(([key]) => key.trim().toLowerCase() === "kaution")?.[1] : undefined;
