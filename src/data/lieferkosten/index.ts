@@ -2,77 +2,8 @@
 // Quelle: lieferpreise-slt-tarife-NEU-v4-2.csv, lieferpreise-slt-mapping-NEU-v2-2.csv,
 // lieferpreise-slt-zusatzkosten-NEU-v5-2.csv
 
-export type TariffKey = "A" | "B" | "C";
-
-export interface TariffDistance {
-  km: number;
-  brutto: number;
-}
-
-export interface Tariff {
-  key: TariffKey;
-  name: string;
-  vehicle: string;
-  multiplier2Maschinen: number;
-  distances: TariffDistance[];
-}
-
-export const tariffs: Record<TariffKey, Tariff> = {
-  A: {
-    key: "A",
-    name: "Sprinter Standard",
-    vehicle: "Sprinter solo",
-    multiplier2Maschinen: 1.0,
-    distances: [
-      { km: 5, brutto: 50 },
-      { km: 10, brutto: 80 },
-      { km: 15, brutto: 100 },
-      { km: 20, brutto: 130 },
-      { km: 25, brutto: 135 },
-      { km: 30, brutto: 155 },
-      { km: 35, brutto: 180 },
-      { km: 40, brutto: 180 },
-      { km: 45, brutto: 200 },
-      { km: 50, brutto: 220 },
-    ],
-  },
-  B: {
-    key: "B",
-    name: "Sprinter + 2,5t-Anhänger (Baumaschinen < 2 t)",
-    vehicle: "Sprinter mit Pkw-Anhänger",
-    multiplier2Maschinen: 1.3,
-    distances: [
-      { km: 5, brutto: 75 },
-      { km: 10, brutto: 95 },
-      { km: 15, brutto: 115 },
-      { km: 20, brutto: 145 },
-      { km: 25, brutto: 150 },
-      { km: 30, brutto: 175 },
-      { km: 35, brutto: 200 },
-      { km: 40, brutto: 200 },
-      { km: 45, brutto: 225 },
-      { km: 50, brutto: 245 },
-    ],
-  },
-  C: {
-    key: "C",
-    name: "Sprinter + 3,5t-Baumaschinenanhänger (Baumaschinen < 3,5 t)",
-    vehicle: "Sprinter mit Baumaschinenanhänger",
-    multiplier2Maschinen: 1.8,
-    distances: [
-      { km: 5, brutto: 95 },
-      { km: 10, brutto: 105 },
-      { km: 15, brutto: 130 },
-      { km: 20, brutto: 160 },
-      { km: 25, brutto: 170 },
-      { km: 30, brutto: 195 },
-      { km: 35, brutto: 220 },
-      { km: 40, brutto: 225 },
-      { km: 45, brutto: 250 },
-      { km: 50, brutto: 275 },
-    ],
-  },
-};
+import { tariffs, type Tariff, type TariffKey } from "../../../supabase/functions/_shared/delivery-tariffs";
+export { tariffs, TIEFLADER_AB_KG, parseWeightKg, deliverySubtypeKey, deliveryTariffFor, cartDeliveryQuote, type TariffKey, type TariffDistance, type Tariff, type CartDeliveryQuote } from "../../../supabase/functions/_shared/delivery-tariffs";
 
 // Zusatzkosten (Konstanten aus CSV)
 export const ZUSATZKOSTEN = {
@@ -100,23 +31,6 @@ export interface SubtypeOption {
   tarif: TariffKey; // intern
   /** Transport nur per Tieflader – Lieferkosten ausschließlich auf Anfrage (kein Pauschaltarif) */
   onRequest?: boolean;
-}
-
-/** Geräte über dieser Grenze (kg) werden per Tieflader transportiert → Lieferkosten nur auf Anfrage. */
-export const TIEFLADER_AB_KG = 3000;
-
-/**
- * Liest das Gerätegewicht in kg aus dem Produktnamen ("6t Minibagger", "3,5t …", "5.700 kg").
- * Gibt null zurück, wenn kein Gewicht erkennbar ist.
- */
-export function parseWeightKg(text?: string | null): number | null {
-  if (!text) return null;
-  const t = text.toLowerCase();
-  const tons = t.match(/(\d{1,2}(?:[.,]\d{1,2})?)\s*(?:t\b|tonnen)/);
-  if (tons) return parseFloat(tons[1].replace(",", ".")) * 1000;
-  const kg = t.match(/(\d{1,2}[.\s]?\d{3}|\d{3,5})\s*kg/);
-  if (kg) return parseInt(kg[1].replace(/[.\s]/g, ""), 10);
-  return null;
 }
 
 export interface CategoryConfig {
