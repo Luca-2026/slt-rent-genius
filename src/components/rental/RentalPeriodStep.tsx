@@ -55,7 +55,8 @@ export function RentalPeriodStep({ edit, patch }: { edit: RentalCartItem; patch:
           const end = range?.to ? toIso(range.to) : "";
           patch({ start_date: start, end_date: end, ...(start !== edit.start_date ? { start_time: "" } : {}), ...(end !== edit.end_date ? { end_time: "" } : {}) });
         }}
-        className="mx-auto w-fit" />
+        className="mx-auto w-fit"
+        classNames={{ cell: "h-10 w-10 sm:h-11 sm:w-11 text-center text-sm p-0 relative [&:has([aria-selected])]:bg-primary/10 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md [&:has(.day-range-start)]:rounded-l-md [&:has(.day-range-end)]:rounded-r-md", day: "h-10 w-10 sm:h-11 sm:w-11 p-0 font-normal rounded-md hover:bg-muted aria-selected:opacity-100", day_today: "font-bold underline underline-offset-4", day_range_start: "day-range-start", day_range_middle: "aria-selected:bg-transparent aria-selected:text-foreground", head_cell: "text-muted-foreground rounded-md w-10 sm:w-11 font-normal text-[0.8rem]" }} />
     </div>
     <div className="grid grid-cols-2 gap-3">{field("start", "Abholung")}{field("end", "Rückgabe")}</div>
     <div className="flex items-center justify-between rounded-md border border-border p-3">
