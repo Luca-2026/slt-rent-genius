@@ -1,5 +1,6 @@
 import { computeRentalLinePrice, resolveProductPrices, insuranceCalendarDays } from "./rental-pricing.ts";
 import { computeAddonAmount, daysPerUnit } from "./addon-calc.ts";
+import { catalogDeposit } from "./catalog-deposit.ts";
 import { validPublicRentalPeriod } from "./public-rental-period.ts";
 
 /** Gleicher Satz wie ADDITIONAL_SERVICES "kostenfreie-stornierung" (Angebote/Reservierungen): 7 % der Miete. */
@@ -7,7 +8,7 @@ export const FREE_CANCELLATION_OPTION = { key: "kostenfreie_stornierung", label:
 
 export async function publicRentalQuote(service: any, items: any[]) {
   const slugs = [...new Set(items.map(item => item.product_slug))];
-  const { data: products, error } = await service.from("b2b_managed_products").select("id,slug,name,category,pricing_scheme,prices_same_all_locations,price_per_day,price_from_1_rd,price_from_3_rd,price_from_10_rd,price_from_20_rd,price_weekend_num,price_base_1_3_cd,surcharge_per_cd_from_4,surcharge_per_cd_from_8,addon_options").eq("is_published", true).in("slug", slugs);
+  const { data: products, error } = await service.from("b2b_managed_products").select("id,slug,name,category,pricing_scheme,prices_same_all_locations,price_per_day,price_from_1_rd,price_from_3_rd,price_from_10_rd,price_from_20_rd,price_weekend_num,price_base_1_3_cd,surcharge_per_cd_from_4,surcharge_per_cd_from_8,addon_options,specifications,rental_notes").eq("is_published", true).in("slug", slugs);
   if (error) throw new Error("Preise konnten nicht geladen werden");
   const { data: locationPrices, error: locationError } = await service.from("public_product_prices").select("*").in("managed_product_id", (products ?? []).map((p: any) => p.id));
   if (locationError) throw new Error("Standortpreise konnten nicht geladen werden");
@@ -41,6 +42,7 @@ export async function publicRentalQuote(service: any, items: any[]) {
     if (alternative && base) {
       addons.push({ key: alternative.key, label: alternative.label, amount: tierAmount(alternative), deductible: alternative.deductible ?? null });
     }
-    return { id: item.id, product_name: product.name, category: product.category, unit: line.unit, duration: line.duration, unit_price: unitPrice, rental_net: unitPrice === null ? null : Math.round(item.quantity * line.duration * unitPrice * 100) / 100, addons, options: options.map((o: any) => ({ key: o.key, label: o.label, is_default: o.is_default === true, surcharge_percent: o.surcharge_percent, deductible: o.deductible, amount: Number(o.surcharge_percent) > 0 ? tierAmount(o) : calculate(o) })) };
+    const depositPerItem = catalogDeposit(product);
+    return { deposit: depositPerItem === null ? null : Math.round(depositPerItem * item.quantity * 100) / 100, id: item.id, product_name: product.name, category: product.category, unit: line.unit, duration: line.duration, unit_price: unitPrice, rental_net: unitPrice === null ? null : Math.round(item.quantity * line.duration * unitPrice * 100) / 100, addons, options: options.map((o: any) => ({ key: o.key, label: o.label, is_default: o.is_default === true, surcharge_percent: o.surcharge_percent, deductible: o.deductible, amount: Number(o.surcharge_percent) > 0 ? tierAmount(o) : calculate(o) })) };
   });
 }

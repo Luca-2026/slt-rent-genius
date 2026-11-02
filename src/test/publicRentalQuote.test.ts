@@ -10,6 +10,12 @@ function service(p = product) {
   } };
 }
 describe("Öffentliche CMS-Preisvorschau", () => {
+  it("Kaution aus CMS bleibt steuerfrei, mengenbezogen und unabhängig vom Mietzeitraum", async () => {
+    const [quote] = await publicRentalQuote(service({ ...product, specifications: { Kaution: "1.000 €" } } as any), [{ ...row, quantity: 2 }]);
+    expect(quote.deposit).toBe(2000);
+    const [missing] = await publicRentalQuote(service(), [row]);
+    expect(missing.deposit).toBeNull();
+  });
   it("übernimmt 3-Tage-Staffel und berechnet Versicherung ohne Mietrabatt", async () => {
     const [quote] = await publicRentalQuote(service(), [row]);
     expect(quote.rental_net).toBe(270);
