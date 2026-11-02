@@ -779,7 +779,13 @@ Deno.serve(async (req: Request) => {
             ],
           }),
         });
-        if (res.ok) emailSent = true;
+        if (res.ok) {
+          emailSent = true;
+          if (acceptanceToken) {
+            const { error: dispatchError } = await service.from("offer_acceptance_links").update({ dispatched_at: new Date().toISOString() }).eq("token", acceptanceToken);
+            if (dispatchError) console.error("Angebotsversand-Zeitpunkt nicht gespeichert", dispatchError.message);
+          }
+        }
         else console.error("Resend error:", res.status, await res.text());
       } catch (err) {
         console.error("Resend exception:", err);
