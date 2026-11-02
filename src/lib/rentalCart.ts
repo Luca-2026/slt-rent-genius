@@ -1,3 +1,4 @@
+import { validPublicRentalPeriod } from "../../supabase/functions/_shared/public-rental-period";
 export const CART_STORAGE_KEY = "slt.rental-cart.v1";
 export const CART_LIFETIME_MS = 15 * 60 * 1000;
 export interface RentalCartItem {
@@ -8,6 +9,7 @@ export interface RentalCartItem {
 }
 export interface RentalCart { version: 1; expiresAt: number; requestId: string; items: RentalCartItem[] }
 export function cartExpired(cart: RentalCart | null, now = Date.now()) { return !!cart && cart.expiresAt <= now; }
+export function cartRemainingSeconds(cart: RentalCart | null, now = Date.now()) { return Math.min(900, Math.max(0, Math.ceil(((cart?.expiresAt ?? now) - now) / 1000))); }
 export function addCartItem(cart: RentalCart | null, item: RentalCartItem, now = Date.now()): RentalCart {
   const existing = cart && !cartExpired(cart, now) ? cart : null;
   return { version: 1, expiresAt: existing?.expiresAt ?? now + CART_LIFETIME_MS, requestId: existing?.requestId ?? crypto.randomUUID(), items: [...(existing?.items.filter(row => row.id !== item.id) ?? []), item] };
@@ -15,8 +17,10 @@ export function addCartItem(cart: RentalCart | null, item: RentalCartItem, now =
 export function parseCart(raw: string | null, now = Date.now()): RentalCart | null {
   try {
     const cart = raw ? JSON.parse(raw) : null;
-    if (cart?.version !== 1 || !Number.isFinite(cart.expiresAt) || cart.expiresAt <= now || typeof cart.requestId !== "string" || !Array.isArray(cart.items) || cart.items.length > 30) return null;
+    if (cart?.version !== 1 || !Number.isFinite(cart.expiresAt) || cart.expiresAt <= now || cart.expiresAt > now + CART_LIFETIME_MS || typeof cart.requestId !== "string" || !/^[a-f0-9-]{36}$/i.test(cart.requestId) || !Array.isArray(cart.items) || !cart.items.length || cart.items.length > 30) return null;
     if (!cart.items.every((row: RentalCartItem) => typeof row.id === "string" && typeof row.product_slug === "string" && typeof row.product_name === "string" && ["krefeld", "bonn", "muelheim"].includes(row.location) && Number.isInteger(row.quantity) && row.quantity >= 1 && row.quantity <= 9999 && typeof row.start_date === "string" && typeof row.end_date === "string" && typeof row.start_time === "string" && typeof row.end_time === "string" && Array.isArray(row.selected_addons) && row.selected_addons.every(key => typeof key === "string"))) return null;
+    if (!cart.items.every((row: RentalCartItem) => validPublicRentalPeriod(row) && typeof row.use_saturday === "boolean" && typeof row.use_sunday === "boolean" && row.selected_addons.length <= 10 && row.product_name.length <= 200 && row.product_slug.length <= 200 && (!row.image || typeof row.image === "string" && row.image.length <= 2000 && /^(\/|https:\/\/)/.test(row.image)))) return null;
+    if (new Set(cart.items.map((row: RentalCartItem) => row.id)).size !== cart.items.length) return null;
     return cart;
   } catch { return null; }
 }

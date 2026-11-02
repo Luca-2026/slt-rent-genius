@@ -10,15 +10,17 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar } from "@/components/ui/calendar";
 import { getLocationById, type Product, type LocationData } from "@/data/rentalData";
-import { useCustomerType } from "@/hooks/useCustomerType";
+import { useCustomerType, setCustomerType } from "@/hooks/useCustomerType";
 import { displayPrice } from "@/lib/priceDisplay";
 import { unitLabel } from "@/lib/pricing/rentalPricing";
 import { usePublicCoupon } from "@/hooks/usePublicCoupon";
 import { supabase } from "@/integrations/supabase/client";
 import { useSigningOverlaysSuppressed } from "@/lib/signingOverlays";
-import { CART_STORAGE_KEY, addCartItem, parseCart, cartExpired, type RentalCart, type RentalCartItem } from "@/lib/rentalCart";
+import { CART_STORAGE_KEY, addCartItem, parseCart, cartExpired, cartRemainingSeconds, type RentalCart, type RentalCartItem } from "@/lib/rentalCart";
 import { isTrailerRoute } from "@/lib/rentalBookingMode";
-import { pickupWindowForDate, pickupTimeOptions, getLocationInfoById } from "@/data/locationData";
+import { pickupWindowForDate, getLocationInfoById } from "@/data/locationData";
+import { validPublicRentalPeriod, validCalendarDate } from "../../../supabase/functions/_shared/public-rental-period";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 let state: { cart: RentalCart | null; open: boolean; edit: RentalCartItem | null; expired: boolean } = { cart: null, open: false, edit: null, expired: false };
 const listeners = new Set<() => void>();
@@ -54,10 +56,7 @@ export function RentalRequestCart() {
   const [done, setDone] = useState("");
   const items = snapshot.cart?.items ?? [];
   const edit = snapshot.edit;
-  const startWindow = edit ? pickupWindowForDate(getLocationInfoById(edit.location), edit.start_date) : null;
-  const endWindow = edit ? pickupWindowForDate(getLocationInfoById(edit.location), edit.end_date) : null;
-  const validHours = !!edit && !!startWindow && !!endWindow && edit.start_time >= startWindow.open && edit.start_time <= startWindow.close && edit.end_time >= endWindow.open && edit.end_time <= endWindow.close;
-  const validPeriod = validHours && !!edit && !!edit.start_date && !!edit.end_date && !!edit.start_time && !!edit.end_time && `${edit.end_date}T${edit.end_time}` > `${edit.start_date}T${edit.start_time}`;
+  const validPeriod = !!edit && validPublicRentalPeriod(edit);
   const quoteItems = edit && validPeriod ? [edit] : items;
   const quoteKey = JSON.stringify(quoteItems);
   const coupon = usePublicCoupon(contact.couponCode, contact.email, items.map(item => item.product_slug), JSON.stringify(items));
@@ -71,7 +70,11 @@ export function RentalRequestCart() {
   }, []);
   useEffect(() => { if (edit) { setStep("period"); setDone(""); } else if (snapshot.open) setStep("cart"); }, [edit?.id, snapshot.open]);
   useEffect(() => {
-    if (!snapshot.open || !quoteItems.length || (edit && !validPeriod)) { setQuotes([]); return; }
+    window.dispatchEvent(new CustomEvent("public-rental-dialog", { detail: snapshot.open }));
+    return () => { window.dispatchEvent(new CustomEvent("public-rental-dialog", { detail: false })); };
+  }, [snapshot.open]);
+  useEffect(() => {
+    if (!snapshot.open || !quoteItems.length || (edit && !validPeriod)) { setQuotes([]); setLoading(false); setQuoteError(""); return; }
     let cancelled = false;
     setLoading(true); setQuoteError("");
     const timer = setTimeout(async () => {
@@ -82,7 +85,7 @@ export function RentalRequestCart() {
     return () => { cancelled = true; clearTimeout(timer); };
   }, [quoteKey, snapshot.open]);
   const patch = (next: Partial<RentalCartItem>) => { if (edit) update({ edit: { ...edit, ...next } }); };
-  const remaining = Math.max(0, Math.ceil(((snapshot.cart?.expiresAt ?? now) - Date.now()) / 1000));
+  const remaining = cartRemainingSeconds(snapshot.cart, now);
   const price = (amount: number | null) => amount === null ? "Preis auf Anfrage" : displayPrice(amount, type);
   const rentTotal = quotes.reduce((sum, line) => sum + (line.rental_net ?? 0), 0);
   const addonTotal = quotes.reduce((sum, line) => sum + line.addons.reduce((a, addon) => a + (addon.amount ?? 0), 0), 0);
@@ -90,7 +93,7 @@ export function RentalRequestCart() {
   const partial = quotes.some(line => line.rental_net === null || line.addons.some(addon => addon.amount === null));
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!state.cart || cartExpired(state.cart) || !coupon.valid || !items.length) return;
+    if (sending || !state.cart || cartExpired(state.cart) || !coupon.valid || !items.length) return;
     setSending(true); setSendError("");
     const first = items[0], location = getLocationById(first.location);
     if (!location) { setSending(false); return; }
@@ -106,13 +109,14 @@ export function RentalRequestCart() {
         <DialogHeader><DialogTitle>{edit ? edit.product_name : "Deine Mietanfrage"}</DialogTitle><DialogDescription>Verfügbarkeit wird nach deiner Anfrage bestätigt.</DialogDescription></DialogHeader>
         {snapshot.cart && <p className="flex items-center gap-2 text-sm font-semibold text-primary"><Clock className="h-4 w-4" />Warenkorb läuft ab in {Math.floor(remaining / 60)}:{String(remaining % 60).padStart(2, "0")} · danach werden ungesendete Artikel entfernt.</p>}
         {done ? <p role="status">{done} Unser Team prüft deine Anfrage und meldet sich bei dir.</p> : snapshot.expired && !edit ? <p role="status">Dein Warenkorb ist abgelaufen. Bitte wähle deine Artikel erneut.</p> : null}
+        {!done && <RadioGroup className="flex flex-wrap gap-4" value={type} onValueChange={value => { if (value === "private" || value === "business") setCustomerType(value); }} aria-label="Kundenart">{([['private', 'Privatkunde'], ['business', 'Geschäftskunde']] as const).map(([value, label]) => <label key={value} className="flex items-center gap-2 text-sm"><RadioGroupItem value={value} />{label}</label>)}</RadioGroup>}
         {edit && step === "period" && <div className="space-y-4">
-          <Calendar mode="range" locale={de} selected={edit.start_date ? { from: new Date(`${edit.start_date}T12:00:00`), to: edit.end_date ? new Date(`${edit.end_date}T12:00:00`) : undefined } : undefined} onSelect={range => patch({ start_date: range?.from ? format(range.from, "yyyy-MM-dd") : "", end_date: range?.to ? format(range.to, "yyyy-MM-dd") : "" })} className="mx-auto w-fit" />
+          <Calendar mode="range" locale={de} selected={validCalendarDate(edit.start_date) ? { from: new Date(`${edit.start_date}T12:00:00`), to: validCalendarDate(edit.end_date) ? new Date(`${edit.end_date}T12:00:00`) : undefined } : undefined} onSelect={range => patch({ start_date: range?.from ? format(range.from, "yyyy-MM-dd") : "", end_date: range?.to ? format(range.to, "yyyy-MM-dd") : "" })} className="mx-auto w-fit" />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">{([['start','Abholung'],['end','Rückgabe']] as const).map(([prefix,label]) => {
             const date = prefix === "start" ? edit.start_date : edit.end_date;
             const time = prefix === "start" ? edit.start_time : edit.end_time;
             const window = pickupWindowForDate(getLocationInfoById(edit.location), date);
-            return <div key={prefix} className="space-y-2"><Label htmlFor={`cart-${prefix}-date`}>{label}</Label><Input id={`cart-${prefix}-date`} type="date" value={date} onChange={e => patch(prefix === "start" ? { start_date: e.target.value } : { end_date: e.target.value })} /><Input aria-label={`${label} Uhrzeit`} type="time" value={time} min={window?.open} max={window?.close} onChange={e => patch(prefix === "start" ? { start_time: e.target.value } : { end_time: e.target.value })} />{date && <p className="text-xs text-muted-foreground">{format(new Date(`${date}T12:00:00`), "EEEE, dd.MM.yyyy", { locale: de })}</p>}</div>;
+            return <div key={prefix} className="space-y-2"><Label htmlFor={`cart-${prefix}-date`}>{label}</Label><Input id={`cart-${prefix}-date`} type="date" value={date} onChange={e => patch(prefix === "start" ? { start_date: e.target.value } : { end_date: e.target.value })} /><Input aria-label={`${label} Uhrzeit`} type="time" value={time} min={window?.open} max={window?.close} onChange={e => patch(prefix === "start" ? { start_time: e.target.value } : { end_time: e.target.value })} />{validCalendarDate(date) && <p className="text-xs text-muted-foreground">{format(new Date(`${date}T12:00:00`), "EEEE, dd.MM.yyyy", { locale: de })} · {window ? `${window.open}–${window.close} Uhr` : edit.location === "muelheim" ? "nach Vereinbarung" : "geschlossen"}</p>}</div>;
           })}</div>
           <Label htmlFor="cart-quantity">Anzahl</Label><Input id="cart-quantity" type="number" min={1} max={9999} value={edit.quantity} onChange={e => patch({ quantity: Math.max(1, Math.min(9999, Number(e.target.value) || 1)) })} />
           <div className="flex flex-wrap gap-4">{([['use_saturday','Samstag als Nutzungstag'],['use_sunday','Sonntag als Nutzungstag']] as const).map(([key,label]) => <label key={key} className="flex items-center gap-2 text-sm"><Checkbox checked={edit[key]} onCheckedChange={value => patch({ [key]: value === true })} />{label}</label>)}</div>

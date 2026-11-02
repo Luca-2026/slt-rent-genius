@@ -23,6 +23,6 @@ export async function previewPublicCoupon(service: any, code: string, email: str
   }
   const eligibleSlugs = (products ?? []).filter((product: { slug: string; name: string }) =>
     !specialNames.has(product.name) && couponItemEligible({ quantity: 1, unit_price: 0 }, product)).map((product: { slug: string }) => product.slug);
-  if (!eligibleSlugs.length) return { valid: false, message: "Keine rabattfähige Mietposition. Versicherung, Zubehör und Sonderpreise bleiben unverändert." };
+  if (!eligibleSlugs.length) return { valid: false, message: "Dieser Gutschein ist für diese E-Mail und Anfrage nicht anwendbar." };
   return { valid: true, discount_percent: 10, eligible_slugs: eligibleSlugs, message: "10 % auf rabattfähige Mietpositionen – vorbehaltlich der Angebotsprüfung." };
 }

@@ -100,8 +100,8 @@ function rentalDefaultItems(selected: RentalInquiry) {
     product_name: it.product_name,
     product_slug: it.product_slug ?? undefined,
     description: [
-      idx === 0
-        ? [fmtDateTime(selected.start_date, selected.start_time), fmtDateTime(selected.end_date, selected.end_time)].filter((v) => v !== "—").join(" – ")
+      idx === 0 || it.start_date
+        ? [fmtDateTime(it.start_date ?? selected.start_date, it.start_time ?? selected.start_time), fmtDateTime(it.end_date ?? selected.end_date, it.end_time ?? selected.end_time)].filter((v) => v !== "—").join(" – ")
         : "",
       it.set_size ? `${it.quantity} × ${it.set_size}er Set = ${it.quantity * it.set_size} Stück` : "",
     ].filter(Boolean).join(" · "),
@@ -118,6 +118,9 @@ function rentalDefaultItems(selected: RentalInquiry) {
     rental_start_time: it.start_time ?? selected.start_time?.slice(0, 5) ?? undefined,
     rental_end_time: it.end_time ?? selected.end_time?.slice(0, 5) ?? undefined,
     custom_period: !!it.start_date,
+    location: it.location,
+    use_saturday: it.use_saturday ?? selected.use_saturday,
+    use_sunday: it.use_sunday ?? selected.use_sunday,
     unit_price: it.unit_price ?? 0,
     discount_percent: 0,
     requested_addon_keys: it.selected_addons ?? [],

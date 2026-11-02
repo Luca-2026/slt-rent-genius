@@ -9,6 +9,7 @@ import imgMuelheim from "@/assets/locations/muelheim.webp";
 import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
 import imgRalf from "@/assets/team/ralf-doehler.jpg";
 import { bonnDirectContact } from "@/data/bonnContact";
+import { publicPickupHours } from "../../supabase/functions/_shared/public-rental-period";
 
 export interface LocationManager {
   name: string;
@@ -89,10 +90,7 @@ export const locationData: LocationInfo[] = [
       { day: "So.", time: "Geschlossen" },
     ],
     hoursNote: "*Samstags früher nach vorheriger Buchung möglich.",
-    pickupHours: {
-      weekdays: { open: "08:00", close: "18:00" },
-      saturday: { open: "10:00", close: "14:30" },
-    },
+    pickupHours: publicPickupHours.krefeld,
     features: ["Große Auswahl", "Hauptsitz", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
     mapUrl: "https://maps.google.com/?q=Anrather+Straße+291+47807+Krefeld",
     serviceCharacter: "full-warehouse",
@@ -136,11 +134,7 @@ export const locationData: LocationInfo[] = [
       { day: "So.", time: "Geschlossen" },
     ],
     hoursNote: "Anhänger-Abholung und -Rückgabe per Code weiterhin 24/7.",
-    pickupHours: {
-      weekdays: { open: "07:00", close: "16:30" },
-      friday: { open: "07:00", close: "18:00" },
-      saturday: null,
-    },
+    pickupHours: publicPickupHours.bonn,
     
     
     features: ["Große Auswahl", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],

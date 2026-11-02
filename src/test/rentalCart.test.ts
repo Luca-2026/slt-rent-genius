@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { addCartItem, parseCart, CART_LIFETIME_MS, cartExpired, type RentalCartItem } from "@/lib/rentalCart";
+import { addCartItem, parseCart, CART_LIFETIME_MS, cartExpired, cartRemainingSeconds, type RentalCartItem } from "@/lib/rentalCart";
 import { isTrailerCategory, isTrailerRoute } from "@/lib/rentalBookingMode";
 const row: RentalCartItem = { id: "a", product_slug: "bagger", product_name: "Bagger", location: "krefeld", quantity: 1, start_date: "2026-11-03", end_date: "2026-11-05", start_time: "08:00", end_time: "16:00", selected_addons: [], use_saturday: false, use_sunday: false };
 describe("15-Minuten-Anfragewarenkorb", () => {
@@ -12,15 +12,26 @@ describe("15-Minuten-Anfragewarenkorb", () => {
   });
   it("Hinzufügen und Neuladen verlängern die Frist nicht", () => {
     const cart = addCartItem(null, row, 0);
-    const next = addCartItem(parseCart(JSON.stringify(cart), 300000), { ...row, id: "b", end_date: "2026-11-08" }, 300000);
+    const next = addCartItem(parseCart(JSON.stringify(cart), 300000), { ...row, id: "b", end_date: "2026-11-09" }, 300000);
     expect(next.expiresAt).toBe(900000);
     expect(next.items).toHaveLength(2);
-    expect(next.items[1].end_date).toBe("2026-11-08");
+    expect(next.items[1].end_date).toBe("2026-11-09");
   });
   it("verwirft beschädigte Daten und beginnt nach Ablauf neu", () => {
     expect(parseCart("broken")).toBeNull();
     const cart = addCartItem(addCartItem(null, row, 0), row, 900000);
     expect(cart.expiresAt).toBe(1800000);
+  });
+  it("Countdown zeigt maximal 15:00 und nach Ablauf null", () => {
+    const cart = addCartItem(null, row, 1000);
+    expect(cartRemainingSeconds(cart, 0)).toBe(900);
+    expect(cartRemainingSeconds(cart, 2000)).toBe(899);
+    expect(cartRemainingSeconds(cart, 901000)).toBe(0);
+  });
+  it("verwirft ungültige Kalendertage und unsichere Bilder", () => {
+    const cart = addCartItem(null, row, 0);
+    expect(parseCart(JSON.stringify({ ...cart, items: [{ ...row, start_date: "2026-02-30" }] }), 0)).toBeNull();
+    expect(parseCart(JSON.stringify({ ...cart, items: [{ ...row, image: "javascript:alert(1)" }] }), 0)).toBeNull();
   });
   it("nur echte Anhängerkategorie aktiviert Rentware, nicht Arbeitsbühnen", () => {
     expect(isTrailerCategory("anhaenger")).toBe(true);

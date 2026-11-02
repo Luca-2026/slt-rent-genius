@@ -75,6 +75,7 @@ export interface RentalInquiryInput {
   raw_payload?: unknown;
   /** Gebündelte Artikel der Anfrage */
   requested_items?: unknown[];
+  email_sent?: boolean;
 }
 
 export async function saveRentalInquiry(input: RentalInquiryInput): Promise<string | null> {
@@ -108,7 +109,7 @@ export async function saveRentalInquiry(input: RentalInquiryInput): Promise<stri
     attachments: input.attachments ?? [],
     raw_payload: input.raw_payload ?? null,
     requested_items: input.requested_items ?? [],
-    email_sent: true,
+    email_sent: input.email_sent ?? true,
   });
 }
 
