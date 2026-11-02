@@ -334,6 +334,8 @@
     "operatingManual": "Operating Manual",
     "downloadPdf": "Download manual as PDF",
     "rentNow": "Rent Now",
+    "addToCart": "Add to cart",
+    "cartCheckoutHint": "Choose your rental period and options, then add the item to your cart. Complete checkout in the cart to send your rental request.",
     "locationLabel": "Location",
     "relatedProducts": "Similar Products",
     "optionalAccessories": "Optional Accessories",

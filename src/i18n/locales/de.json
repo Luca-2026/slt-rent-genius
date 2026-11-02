@@ -334,6 +334,8 @@
     "operatingManual": "Betriebsanleitung",
     "downloadPdf": "Anleitung als PDF herunterladen",
     "rentNow": "Jetzt mieten",
+    "addToCart": "In den Warenkorb",
+    "cartCheckoutHint": "Wähle Zeitraum und Optionen und lege den Artikel in den Warenkorb. Schließe anschließend im Warenkorb die Anfrage ab, um deine Mietanfrage abzusenden.",
     "locationLabel": "Standort",
     "relatedProducts": "Ähnliche Produkte",
     "optionalAccessories": "Optionales Zubehör",
