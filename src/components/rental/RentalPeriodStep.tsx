@@ -55,10 +55,10 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: {
   };
 
   return <div className="space-y-4">
-    {weekendPrice && <div className={`flex flex-wrap items-center gap-3 rounded-md border p-3 ${weekendActive ? "border-accent bg-accent/15" : "border-accent/60 bg-accent/5"}`}>
-      <BadgePercent className="h-5 w-5 shrink-0 text-accent" />
-      <div className="min-w-0 flex-1 text-sm"><p className="font-semibold">{weekendActive ? "Wochenendtarif aktiv" : `Wochenendtarif ${weekendPrice}`}</p><p className="text-muted-foreground">Abholung Fr ab 16:00, Rückgabe Mo bis 09:30 – Freitage und Montage sind im Kalender markiert.</p></div>
-      {!weekendActive && <Button type="button" size="sm" variant="outline" className="border-accent" onClick={() => { const fri = nextWeekendStart(new Date()); patch({ start_date: toIso(fri), start_time: "16:00", end_date: toIso(addDays(fri, 3)), end_time: "09:30" }); }}>Nächstes Wochenende wählen</Button>}
+    {weekendPrice && <div className={`grid grid-cols-[auto_1fr] items-start gap-x-3 gap-y-2 rounded-md border p-3 ${weekendActive ? "border-accent bg-accent/15" : "border-accent/60 bg-accent/5"}`}>
+      <BadgePercent className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
+      <div className="min-w-0 text-sm"><p className="font-semibold">{weekendActive ? "Wochenendtarif aktiv" : `Wochenendtarif ${weekendPrice}`}</p><p className="text-muted-foreground">Abholung Fr ab 16:00, Rückgabe Mo bis 09:30 – Freitage und Montage sind im Kalender markiert.</p></div>
+      {!weekendActive && <Button type="button" size="sm" variant="outline" className="col-span-2 w-full border-accent sm:col-span-1 sm:col-start-2 sm:w-fit" onClick={() => { const fri = nextWeekendStart(new Date()); patch({ start_date: toIso(fri), start_time: "16:00", end_date: toIso(addDays(fri, 3)), end_time: "09:30" }); }}>Nächstes Wochenende wählen</Button>}
     </div>}
     <div className="rounded-md border border-border">
       <p className="flex items-center gap-2 border-b border-border px-3 py-2 text-sm font-semibold"><CalendarDays className="h-4 w-4 text-primary" />{!from ? "Abholtag wählen" : !to ? "Rückgabetag wählen" : "Mietzeitraum"}</p>
