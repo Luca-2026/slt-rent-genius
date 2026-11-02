@@ -62,7 +62,7 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: {
     </div>}
     <div className="rounded-md border border-border">
       <p className="flex items-center gap-2 border-b border-border px-3 py-2 text-sm font-semibold"><CalendarDays className="h-4 w-4 text-primary" />{!from ? "Abholtag wählen" : !to ? "Rückgabetag wählen" : "Mietzeitraum"}</p>
-      <Calendar mode="range" locale={de} modifiers={weekendPrice ? { weekendDay: day => day.getDay() === 5 || day.getDay() === 1 } : undefined} modifiersClassNames={{ weekendDay: "text-accent font-semibold" }} weekStartsOn={1} numberOfMonths={1} selected={from ? { from, to } : undefined}
+      <Calendar mode="range" locale={de} modifiers={{ available: day => day >= today && (!!windowFor(toIso(day))), weekendDay: day => !!weekendPrice && (day.getDay() === 5 || day.getDay() === 1) }} modifiersClassNames={{ available: "rental-day-available", weekendDay: "rental-day-weekend font-semibold" }} weekStartsOn={1} numberOfMonths={1} selected={from ? { from, to } : undefined}
         disabled={day => day < today || (!flexible && !pickupWindowForDate(info, toIso(day)))}
         onSelect={range => {
           const start = range?.from ? toIso(range.from) : "";
@@ -72,6 +72,7 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: {
         className="mx-auto w-fit"
         classNames={{ cell: "h-10 w-10 sm:h-11 sm:w-11 text-center text-sm p-0 relative [&:has([aria-selected])]:bg-primary/10 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md [&:has(.day-range-start)]:rounded-l-md [&:has(.day-range-end)]:rounded-r-md", day: "h-10 w-10 sm:h-11 sm:w-11 p-0 font-normal rounded-md hover:bg-muted aria-selected:opacity-100", day_today: "font-bold underline underline-offset-4", day_range_start: "day-range-start", day_range_middle: "aria-selected:bg-transparent aria-selected:text-foreground", head_cell: "text-muted-foreground rounded-md w-10 sm:w-11 font-normal text-[0.8rem]" }} />
     </div>
+    <div className="flex flex-wrap gap-2 text-xs"><span className="rental-available-legend rounded px-2 py-1">Verfügbar · vorbehaltlich Bestätigung</span>{weekendPrice && <span className="rounded border-b-2 border-accent px-2 py-1">Wochenendtarif · Fr–Mo</span>}</div>
     <div className="grid grid-cols-2 gap-3">{field("start", "Abholung")}{field("end", "Rückgabe")}</div>
     <div className="flex items-center justify-between rounded-md border border-border p-3">
       <span className="text-sm font-semibold">Anzahl</span>
