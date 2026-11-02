@@ -1,6 +1,6 @@
 # Roadmap – Paket 4 (Angebots-PDF & E-Mail)
 - [x] Plan für eigenen Anfrage-Warenkorb freigegeben: Kalender, CMS-Preise/Optionen, Positionszeiträume, 15-Minuten-Frist, globales Pop-up und Rentware nur Anhänger.
-- [ ] Eigene Anfrage-Strecke abschließend prüfen: Timerablauf, mehrere Positionen, Mobil/Tablet/Desktop, sichere Gutscheinvorprüfung und CMS-Preisgleichheit.
+- [x] Eigene Anfrage-Strecke: zwei verschiedene Artikel mit eigenen Zeiträumen, Neuladen/Startseiten-Rückkehr, unveränderte Frist, Entfernung und Ablauf per Browser-Zeitsprung geprüft; Kalender/Optionen/Kontakt Mobil/Tablet/Desktop ohne Überlauf. 62 Regel-/Regressionstests bestanden; ungültige Serveranfragen HTTP 400. Vollständiger Live-Versand separat offen.
 - [ ] Vollständige öffentliche Testanfrage bis Mitarbeiteransicht: gesonderte Freigabe zur Anlage und Testmail an luca@sandhoff.org erforderlich; keine echte Gerätebuchung.
 - [ ] Spätere serverseitige Bestandsreservierung/Direktbuchung: wartet auf konsistent hinterlegte Geräteverfügbarkeit und separate Freigabe der Folgephase.
 - [x] Feedback/Anfrage auf Mobil 402×725, Tablet 768×1024 und Desktop 1280×1800 geprüft, ohne horizontalen Überlauf/Browserfehler; größere Bewertungsflächen. Freiwillige Google-Option nach Feedback für Bonn/Krefeld, unabhängig vom Gutschein; Abschlussanzeige mit Testantwort statt echtem Feedback geprüft, 21 Tests bestanden.
