@@ -9,7 +9,7 @@ function functionOnly(sql: string, name: string) { const start=sql.indexOf(`CREA
 beforeAll(async()=>{
 await db.exec(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role; CREATE SCHEMA auth; CREATE FUNCTION auth.role() RETURNS text LANGUAGE sql AS $$ SELECT 'service_role' $$;
 CREATE TABLE public.rental_inquiries(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),source text,location text,location_email text,product_name text,product_id text,category_slug text,quantity integer,start_date text,start_time text,end_date text,end_time text,delivery_requested boolean,delivery_street text,delivery_postal_code text,delivery_city text,setup_service_requested boolean,customer_name text,customer_email text,customer_phone text,customer_street text,customer_postal_code text,customer_city text,message text,attachments jsonb,raw_payload jsonb,status text,assigned_to uuid,assigned_name text,assigned_at timestamptz,internal_notes text,offer_number text,offer_file_url text,offer_total_gross numeric,offer_sent_at timestamptz,email_sent boolean,created_at timestamptz,updated_at timestamptz,customer_kind text,company_name text,vat_id text,crm_customer_id uuid,b2b_profile_id uuid,b2b_reservation_id uuid,rental_group_id text,offer_payload jsonb,payments jsonb,paid_amount numeric,order_confirmed_at timestamptz,order_confirmed_by_name text,order_confirmation_number text,order_confirmation_file_url text,requested_items jsonb,installment_enabled boolean,installment_amount_net numeric,installment_interval_months integer,installment_next_due date,installment_open_ended boolean,installment_reminded_on date,payment_reminder_sent_at timestamptz,offer_accepted_at timestamptz,payment_followup_sent_at timestamptz,customer_salutation text,payment_reminder_manual_at timestamptz,customer_mobile text,address_form text,use_saturday boolean,use_sunday boolean,availability_pending boolean,order_code text,feedback_coupon_code text,closed_manually_at timestamptz,closed_manually_by uuid,closed_manually_reason text);
-CREATE TABLE b2b_managed_products(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),slug text,name text,category text,is_published boolean,quantities jsonb,direct_booking_config jsonb);
+CREATE TABLE b2b_managed_products(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),slug text,name text,category text,is_published boolean,quantities jsonb,direct_booking_config jsonb,available_locations text[]);
 CREATE TABLE b2b_reservations(id uuid PRIMARY KEY,product_id text,location text,status text,quantity int,start_date date,end_date date);
 CREATE TABLE rental_inquiry_events(rental_inquiry_id uuid,event text,details jsonb);
 CREATE TABLE offer_payment_links(inquiry_id uuid,inquiry_table text,status text,updated_at timestamptz);
@@ -25,13 +25,28 @@ await db.exec(functionOnly(reserveSql,'reserve_sign_booking')+functionOnly(reser
 await db.exec(readFileSync('drizzle/migrations/0108_sign_booking_operational_tasks.sql','utf8'));
 await db.exec(readFileSync('drizzle/migrations/0109_sign_task_list_completion_guard.sql','utf8'));
 await db.exec(readFileSync('drizzle/migrations/0110_sign_calendar_and_distance_price.sql','utf8'));
+await db.exec(readFileSync('drizzle/migrations/0111_sign_booking_additional_signs.sql','utf8'));
 await db.exec(`CREATE TRIGGER payments AFTER UPDATE OF payments ON rental_inquiries FOR EACH ROW EXECUTE FUNCTION sign_booking_payment_state(); CREATE TRIGGER inventory BEFORE INSERT OR UPDATE OF status,offer_payload,quantity,start_date,end_date,location ON rental_inquiries FOR EACH ROW EXECUTE FUNCTION guard_sign_inventory();`);
 await db.exec(`INSERT INTO b2b_managed_products(slug,name,category,is_published,quantities,direct_booking_config) VALUES('halteverbotsschilder-set','Halteverbotsschilder-Set','absperrtechnik',true,'{"bonn":10,"krefeld":10}','{"enabled":true,"live_enabled":false,"standardGrossCents":4900,"sorglosGrossCents":19900,"depositCents":10000,"maxRentalDays":10}');`);
 },30000);
 afterAll(()=>db.close());
 const base={location:'bonn',package:'standard',quantity:1,start_date:'2027-03-01',end_date:'2027-03-05',start_time:'10:00',end_time:'10:00',name:'Luca Sandhoff',email:'luca@sandhoff.org',phone:'021514179904',street:'Anrather Straße 291',postalCode:'47807',city:'Krefeld',customerKind:'private',termsAccepted:true,pickupConfirmed:true,municipalFeesAccepted:true,zoneStreet:'Anrather Straße 291',zonePostalCode:'47807',zoneCity:'Krefeld',message:'Isolated test'};
-async function reserve(body: typeof base, request=crypto.randomUUID()) { const r=await db.query<{b: {id:string;inquiry_id:string}}>('SELECT reserve_sign_booking($1,$2,$3::jsonb,NULL) AS b',[request,crypto.randomUUID(),JSON.stringify(body)]); return r.rows[0]?.b; }
+async function reserve(body: typeof base & { additionalSigns?: { slug: string; quantity: number }[] }, request=crypto.randomUUID()) { const r=await db.query<{b: {id:string;inquiry_id:string}}>('SELECT reserve_sign_booking($1,$2,$3::jsonb,NULL) AS b',[request,crypto.randomUUID(),JSON.stringify(body)]); return r.rows[0]?.b; }
 describe('Complete isolated sign reservations',()=>{
+it('stores selected CMS signs at five euros each without extra deposit and requires full payment',async()=>{
+ await db.exec(`UPDATE b2b_managed_products SET direct_booking_config=direct_booking_config||'{"additionalSignGrossCents":500}'::jsonb WHERE slug='halteverbotsschilder-set'; INSERT INTO b2b_managed_products(slug,name,category,is_published,available_locations) VALUES('zusatz-test','Zusatzschild','absperrtechnik',true,ARRAY['bonn']);`);
+ const input={...base,start_date:'2027-12-06',end_date:'2027-12-08',additionalSigns:[{slug:'zusatz-test',quantity:3}]};
+ const b=await reserve(input); if(!b) throw new Error('Missing booking');
+ const row=(await db.query<{gross_cents:number;deposit_cents:number;total_cents:number;snapshot:{offer_payload:{items:{product_slug:string;articles:number;unit_price:number}[]}}}>('SELECT gross_cents,deposit_cents,total_cents,snapshot FROM sign_bookings WHERE id=$1',[b.id])).rows[0];
+ expect(row?.gross_cents).toBe(6400); expect(row?.deposit_cents).toBe(10000); expect(row?.total_cents).toBe(16400);
+ expect(row?.snapshot.offer_payload.items[1]?.product_slug).toBe('zusatz-test'); expect(row?.snapshot.offer_payload.items[1]?.articles).toBe(3);
+ await db.query('UPDATE rental_inquiries SET payments=$2::jsonb WHERE id=$1',[b.inquiry_id,JSON.stringify([{amount:149}])]);
+ expect((await db.query<{status:string}>('SELECT status FROM sign_bookings WHERE id=$1',[b.id])).rows[0]?.status).toBe('reserved');
+ await db.query('UPDATE rental_inquiries SET payments=$2::jsonb WHERE id=$1',[b.inquiry_id,JSON.stringify([{amount:164}])]);
+ expect((await db.query<{status:string}>('SELECT status FROM sign_bookings WHERE id=$1',[b.id])).rows[0]?.status).toBe('paid');
+ await expect(reserve({...input,location:'krefeld'})).rejects.toThrow('Zusatzschild am Standort');
+ await expect(reserve({...input,additionalSigns:[{slug:'invented',quantity:1}]})).rejects.toThrow('Zusatzschild am Standort');
+});
 it.each([['bonn','standard',14900],['bonn','sorglos',29900],['krefeld','standard',14900],['krefeld','sorglos',29900]])('saves and fully pays %s/%s at %i cents',async(location,pkg,total)=>{
  const request=crypto.randomUUID(), body={...base,location:String(location),package:String(pkg)};
  const b=await reserve(body,request); expect(b).toBeDefined(); if(!b) return;

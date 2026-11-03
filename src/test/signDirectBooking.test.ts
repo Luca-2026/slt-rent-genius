@@ -3,6 +3,14 @@ import { eligibleSignCart, signBookingPrice, signCapacityAvailable, signHoldDead
 
 const config: SignBookingConfiguration = { enabled: true, standardGrossCents: 4900, sorglosGrossCents: 19900, depositCents: 10000, maxRentalDays: 10, municipalFeesSeparate: true };
 describe("Halteverbotsschilder direct booking", () => {
+  it("charges 5 euros per additional sign for the whole period", () => {
+    const c = { ...config, additionalSignGrossCents: 500 };
+    for (const rentalDays of [1, 10]) expect(signBookingPrice(c, { package: "standard", quantity: 1, rentalDays, municipalFeesCents: null, additionalSignQuantity: 3 })?.grossCents).toBe(6400);
+    expect(signBookingPrice(config, { package: "standard", quantity: 1, rentalDays: 1, municipalFeesCents: null, additionalSignQuantity: 1 })).toBeNull();
+  });
+  it("never adds deposit for additional signs", () => {
+    expect(signBookingPrice({ ...config, additionalSignGrossCents: 500 }, { package: "standard", quantity: 1, rentalDays: 10, municipalFeesCents: null, additionalSignQuantity: 4 })).toEqual({ grossCents: 6900, depositCents: 10000, totalCents: 16900 });
+  });
   it("includes the selected start as day 1 and limits rental to day 10", () => { expect(signLastRentalDate("2027-03-01")).toBe("2027-03-10"); expect(validSignRentalRange("2027-03-01", "2027-03-10")).toBe(true); expect(validSignRentalRange("2027-03-01", "2027-03-11")).toBe(false); });
   it("charges 199 through 15 km and 299 above 15 km", () => {
     const c = { ...config, sorglosRadiusKm: 15, sorglosOuterGrossCents: 29900 };

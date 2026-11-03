@@ -12,6 +12,7 @@ export interface SignBookingConfiguration {
   municipalFeesSeparate?: boolean;
   sorglosOuterGrossCents?: number | null;
   sorglosRadiusKm?: number | null;
+  additionalSignGrossCents?: number | null;
 }
 export interface SignBookingLine {
   product_slug: string;
@@ -39,6 +40,7 @@ export function signBookingPrice(config: SignBookingConfiguration, input: {
   rentalDays: number;
   municipalFeesCents: number | null;
   distanceKm?: number | null;
+  additionalSignQuantity?: number;
 }): { grossCents: number; depositCents: number; totalCents: number } | null {
   const price = input.package === "standard" ? config.standardGrossCents : signSetupGrossCents(config, input.distanceKm);
   if (!config.enabled || !Number.isInteger(price) || price === null || price <= 0 ||
@@ -48,10 +50,18 @@ export function signBookingPrice(config: SignBookingConfiguration, input: {
     !Number.isInteger(input.quantity) || input.quantity < 1) return null;
   const fees = input.package === "sorglos" && !config.municipalFeesSeparate ? input.municipalFeesCents : 0;
   if (fees === null || !Number.isInteger(fees) || fees < 0) return null;
-  const grossCents = price * input.quantity + fees;
+  const extras = signAdditionalGrossCents(config, input.additionalSignQuantity ?? 0);
+  if (extras === null) return null;
+  const grossCents = price * input.quantity + fees + extras;
   const depositCents = config.depositCents * input.quantity;
   const totalCents = grossCents + depositCents;
   return Number.isSafeInteger(totalCents) ? { grossCents, depositCents, totalCents } : null;
+}
+export function signAdditionalGrossCents(config: SignBookingConfiguration, quantity: number): number | null {
+  if (!Number.isSafeInteger(quantity) || quantity < 0 || quantity > 100) return null;
+  if (quantity === 0) return 0;
+  const cents = config.additionalSignGrossCents;
+  return cents != null && Number.isSafeInteger(cents) && cents > 0 ? cents * quantity : null;
 }
 export function signSetupGrossCents(config: SignBookingConfiguration, distanceKm?: number | null): number | null {
   if (config.sorglosRadiusKm == null) return config.sorglosGrossCents;
