@@ -19,7 +19,8 @@ export function cartQuoteItems(items: RentalCartItem[], edit: RentalCartItem | n
   return validPublicRentalPeriod(edit) ? [edit, ...others] : others;
 }
 export function cartQuoteTotal(lines: { rental_net: number | null; addons: { amount: number | null }[] }[]): number {
-  return Math.round(lines.reduce((sum, line) => sum + (line.rental_net ?? 0) + line.addons.reduce((total, addon) => total + (addon.amount ?? 0), 0), 0) * 100) / 100;
+  // Keep sub-cent net precision: gross display rounds once after VAT, matching each line (e.g. 477,60 € not 477,59 €).
+  return Math.round(lines.reduce((sum, line) => sum + (line.rental_net ?? 0) + line.addons.reduce((total, addon) => total + (addon.amount ?? 0), 0), 0) * 1e6) / 1e6;
 }
 export function cartCategoryPath(items: RentalCartItem[]): string {
   const location = items[0]?.location;

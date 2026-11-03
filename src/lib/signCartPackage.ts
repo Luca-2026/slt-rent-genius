@@ -25,3 +25,9 @@ export function signCartRentalNet(config: SignBookingConfiguration | null, item:
   return key && key === item.sign_setup_quote_key && Number.isSafeInteger(item.sign_setup_gross_cents) && (item.sign_setup_gross_cents ?? 0) > 0
     ? (() => { const cents = signRentalGrossCents(item.sign_setup_gross_cents, days, config?.maxRentalDays ?? undefined); return cents == null ? null : cents * item.quantity / 119; })() : null;
 }
+/** Keeps the stored Sorglos price in sync with the live route quote; null when nothing changes. */
+export function signSetupQuotePatch(item: RentalCartItem | null, quote: { key: string; cents: number | null }): Pick<RentalCartItem, "sign_setup_quote_key" | "sign_setup_gross_cents"> | null {
+  if (item?.sign_package !== "sorglos") return null;
+  const next = { sign_setup_quote_key: quote.cents != null && quote.key ? quote.key : undefined, sign_setup_gross_cents: quote.cents != null && quote.key ? quote.cents : undefined };
+  return item.sign_setup_quote_key === next.sign_setup_quote_key && item.sign_setup_gross_cents === next.sign_setup_gross_cents ? null : next;
+}

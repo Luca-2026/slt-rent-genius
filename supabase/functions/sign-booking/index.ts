@@ -38,7 +38,9 @@ Deno.serve(async req => {
       const { data: inquiry } = await service.from("rental_inquiries").select("order_code,offer_number").eq("id", b.inquiry_id).single();
       const expired = b.status === "reserved" && Date.parse(b.expires_at) <= Date.now();
       const { data: link } = await service.from("offer_payment_links").select("token").eq("inquiry_id", b.inquiry_id).eq("inquiry_table", "rental_inquiries").eq("status", "active").maybeSingle();
-      return json({ status: expired ? "expired" : b.status, order_code: inquiry?.order_code, expires_at: b.expires_at, amount_cents: b.total_cents, payment_url: !expired && link ? `https://www.slt-rental.de/zahlung/${link.token}` : null, bank: { holder: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, reference: `Auftrag ${inquiry?.order_code ?? ""}` } });
+      const extraCount = Array.isArray(b.snapshot?.request?.additionalSigns) ? b.snapshot.request.additionalSigns.reduce((sum: number, row: { quantity?: number }) => sum + (Number.isInteger(row?.quantity) ? Number(row.quantity) : 0), 0) : 0;
+      const extrasCents = Math.min(b.gross_cents, extraCount * (Number(b.snapshot?.config?.additionalSignGrossCents) || 0));
+      return json({ status: expired ? "expired" : b.status, order_code: inquiry?.order_code, expires_at: b.expires_at, amount_cents: b.total_cents, start_date: b.start_date, end_date: b.end_date, package: b.package, quantity: b.quantity, rental_cents: b.gross_cents - extrasCents, extras_cents: extrasCents, deposit_cents: b.deposit_cents, payment_url: !expired && link ? `https://www.slt-rental.de/zahlung/${link.token}` : null, bank: { holder: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, reference: `Auftrag ${inquiry?.order_code ?? ""}` } });
     }
     const readAction = raw.action === "config" || raw.action === "availability";
     const { data: allowed, error: rateError } = await service.rpc("check_public_rate_limit", { _bucket: readAction ? "sign-booking-read" : "sign-booking", _client_key: req.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown", _max_hits: readAction ? 600 : 30, _window_seconds: 3600 });
