@@ -25,7 +25,7 @@ vi.mock("@/integrations/supabase/client", () => ({ supabase: {
       : table === "crm_customers" ? { b2b_profile_id: "profile" }
       : table === "b2b_category_discounts" ? [{ discount_percent: 20, product_categories: { slug: "erdbewegung" } }]
       : table === "b2b_customer_prices" ? (fixtures.specialPrice ? [{ product_id: "machine", product_name: "2t Minibagger", unit_price: fixtures.specialPrice }] : [])
-      : table === "b2b_managed_products" ? { id: "machine", pricing_scheme: "bau", prices_same_all_locations: true, price_from_1_rd: 100 }
+      : table === "b2b_managed_products" ? { id: "machine", pricing_scheme: "bau", prices_same_all_locations: true, price_from_1_rd: 100, price_from_3_rd: 90, price_from_10_rd: 80, price_from_20_rd: 60 }
       : null;
     const result = { data, error: null };
     const query: Record<string, unknown> = { then: (resolve: (r: unknown) => unknown) => Promise.resolve(result).then(resolve) };
