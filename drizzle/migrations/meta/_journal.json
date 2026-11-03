@@ -771,6 +771,13 @@
       "when": 1793672978182,
       "tag": "0109_sign_task_list_completion_guard",
       "breakpoints": true
+    },
+    {
+      "idx": 110,
+      "version": "7",
+      "when": 1793673240950,
+      "tag": "0110_sign_calendar_and_distance_price",
+      "breakpoints": true
     }
   ]
 }

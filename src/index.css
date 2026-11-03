@@ -263,6 +263,9 @@
 .rental-day-pickup::after { content: "Ab"; }
 .rental-day-return::after { content: "Rück"; }
 .rental-available-legend { background-color: hsl(var(--rental-available)); color: hsl(var(--rental-available-foreground)); }
+.rental-day-full { background-color: hsl(var(--destructive) / .14); color: hsl(var(--destructive)); opacity: 1 !important; text-decoration: line-through; }
+.rental-day-limit { outline: 2px solid hsl(var(--accent)); outline-offset: -2px; }
+.rental-day-package:not([aria-selected="true"]):not(.rental-day-full) { box-shadow: inset 0 -3px hsl(var(--accent)); }
 
 :root {
   --rentware-cart-view-position-top: 40px !important;

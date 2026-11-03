@@ -1,8 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { eligibleSignCart, signBookingPrice, signCapacityAvailable, signHoldDeadline, signHoldExpired, signPaymentComplete, type SignBookingConfiguration } from "../../supabase/functions/_shared/sign-direct-booking";
+import { eligibleSignCart, signBookingPrice, signCapacityAvailable, signHoldDeadline, signHoldExpired, signPaymentComplete, signLastRentalDate, validSignRentalRange, type SignBookingConfiguration } from "../../supabase/functions/_shared/sign-direct-booking";
 
 const config: SignBookingConfiguration = { enabled: true, standardGrossCents: 4900, sorglosGrossCents: 19900, depositCents: 10000, maxRentalDays: 10, municipalFeesSeparate: true };
 describe("Halteverbotsschilder direct booking", () => {
+  it("includes the selected start as day 1 and limits rental to day 10", () => { expect(signLastRentalDate("2027-03-01")).toBe("2027-03-10"); expect(validSignRentalRange("2027-03-01", "2027-03-10")).toBe(true); expect(validSignRentalRange("2027-03-01", "2027-03-11")).toBe(false); });
+  it("charges 199 through 15 km and 299 above 15 km", () => {
+    const c = { ...config, sorglosRadiusKm: 15, sorglosOuterGrossCents: 29900 };
+    const input = { package: "sorglos" as const, quantity: 1, rentalDays: 10, municipalFeesCents: null };
+    expect(signBookingPrice(c, { ...input, distanceKm: 15 })?.grossCents).toBe(19900);
+    expect(signBookingPrice(c, { ...input, distanceKm: 15.001 })?.grossCents).toBe(29900);
+    expect(signBookingPrice(c, { ...input, distanceKm: null })).toBeNull();
+  });
+  it("uses the 49 euro package for a weekend and all ten days alike", () => { for (const rentalDays of [1,3,10]) expect(signBookingPrice(config,{package:"standard",quantity:1,rentalDays,municipalFeesCents:null})?.grossCents).toBe(4900); });
   it("only permits the existing sets in Krefeld and Bonn", () => {
     for (const location of ["krefeld", "bonn"]) expect(eligibleSignCart([{ product_slug: "halteverbotsschilder-set", location, quantity: 1 }])).toBe(true);
     expect(eligibleSignCart([{ product_slug: "halteverbotsschilder-set", location: "muelheim", quantity: 1 }])).toBe(false);

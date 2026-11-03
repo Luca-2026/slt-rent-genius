@@ -10,6 +10,8 @@ export interface SignBookingConfiguration {
   depositCents: number | null;
   maxRentalDays: number | null;
   municipalFeesSeparate?: boolean;
+  sorglosOuterGrossCents?: number | null;
+  sorglosRadiusKm?: number | null;
 }
 export interface SignBookingLine {
   product_slug: string;
@@ -36,8 +38,9 @@ export function signBookingPrice(config: SignBookingConfiguration, input: {
   quantity: number;
   rentalDays: number;
   municipalFeesCents: number | null;
+  distanceKm?: number | null;
 }): { grossCents: number; depositCents: number; totalCents: number } | null {
-  const price = input.package === "standard" ? config.standardGrossCents : config.sorglosGrossCents;
+  const price = input.package === "standard" ? config.standardGrossCents : signSetupGrossCents(config, input.distanceKm);
   if (!config.enabled || !Number.isInteger(price) || price === null || price <= 0 ||
     config.depositCents === null || !Number.isInteger(config.depositCents) || config.depositCents < 0 ||
     config.maxRentalDays === null || !Number.isInteger(config.maxRentalDays) || config.maxRentalDays < 1 ||
@@ -49,6 +52,20 @@ export function signBookingPrice(config: SignBookingConfiguration, input: {
   const depositCents = config.depositCents * input.quantity;
   const totalCents = grossCents + depositCents;
   return Number.isSafeInteger(totalCents) ? { grossCents, depositCents, totalCents } : null;
+}
+export function signSetupGrossCents(config: SignBookingConfiguration, distanceKm?: number | null): number | null {
+  if (config.sorglosRadiusKm == null) return config.sorglosGrossCents;
+  if (distanceKm == null || !Number.isFinite(distanceKm) || distanceKm < 0) return null;
+  return distanceKm <= config.sorglosRadiusKm ? config.sorglosGrossCents : config.sorglosOuterGrossCents ?? null;
+}
+export function signLastRentalDate(start: string, maxDays = 10): string | null {
+  const time = Date.parse(`${start}T12:00:00Z`);
+  if (!Number.isFinite(time) || !Number.isInteger(maxDays) || maxDays < 1) return null;
+  return new Date(time + (maxDays - 1) * 86400000).toISOString().slice(0, 10);
+}
+export function validSignRentalRange(start: string, end: string, maxDays = 10): boolean {
+  const last = signLastRentalDate(start, maxDays);
+  return last !== null && end >= start && end <= last;
 }
 export function signPaymentComplete(expectedCents: number, paidCents: number): boolean {
   return Number.isSafeInteger(expectedCents) && expectedCents > 0 &&

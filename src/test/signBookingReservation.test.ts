@@ -24,6 +24,7 @@ for(const table of ['sign_bookings','sign_permit_uploads']) { const start=schema
 await db.exec(functionOnly(reserveSql,'reserve_sign_booking')+functionOnly(reserveSql,'expire_sign_bookings')+functionOnly(paymentSql,'sign_booking_payment_state')+functionOnly(capacitySql,'guard_sign_inventory'));
 await db.exec(readFileSync('drizzle/migrations/0108_sign_booking_operational_tasks.sql','utf8'));
 await db.exec(readFileSync('drizzle/migrations/0109_sign_task_list_completion_guard.sql','utf8'));
+await db.exec(readFileSync('drizzle/migrations/0110_sign_calendar_and_distance_price.sql','utf8'));
 await db.exec(`CREATE TRIGGER payments AFTER UPDATE OF payments ON rental_inquiries FOR EACH ROW EXECUTE FUNCTION sign_booking_payment_state(); CREATE TRIGGER inventory BEFORE INSERT OR UPDATE OF status,offer_payload,quantity,start_date,end_date,location ON rental_inquiries FOR EACH ROW EXECUTE FUNCTION guard_sign_inventory();`);
 await db.exec(`INSERT INTO b2b_managed_products(slug,name,category,is_published,quantities,direct_booking_config) VALUES('halteverbotsschilder-set','Halteverbotsschilder-Set','absperrtechnik',true,'{"bonn":10,"krefeld":10}','{"enabled":true,"live_enabled":false,"standardGrossCents":4900,"sorglosGrossCents":19900,"depositCents":10000,"maxRentalDays":10}');`);
 },30000);
@@ -72,5 +73,26 @@ it('creates no setup work for self-pickup and closes work for expired setup hold
  const setup=await reserve({...base,package:'sorglos',start_date:'2027-08-02',end_date:'2027-08-04'}); if(!setup) throw new Error('Missing booking');
  await db.query("UPDATE sign_bookings SET expires_at=now()-interval '1 second' WHERE id=$1",[setup.id]); await db.exec('SELECT expire_sign_bookings()');
  expect((await db.query<{status:string}>('SELECT status FROM staff_todo_lists WHERE sign_booking_id=$1',[setup.id])).rows[0]?.status).toBe('done');
+});
+it('calendar reports ten booked sets as zero remaining and frees expired holds',async()=>{
+ const b=await reserve({...base,location:'krefeld',quantity:10,start_date:'2027-09-06',end_date:'2027-09-08'}); if(!b) throw new Error('Missing booking');
+ const days=await db.query<{days:{date:string;remaining:number}[]}>('SELECT sign_calendar_availability($1,$2,$3) AS days',['krefeld','2027-09-06','2027-09-08']);
+ expect(days.rows[0]?.days.map(d=>d.remaining)).toEqual([0,0,0]);
+ await db.query("UPDATE sign_bookings SET expires_at=now()-interval '1 second' WHERE id=$1",[b.id]);
+ expect((await db.query<{n:number}>("SELECT sign_reserved_sets('krefeld','2027-09-06','2027-09-08') AS n")).rows[0]?.n).toBe(0);
+});
+it('server rejects unknown setup distance and prices exactly 15 km versus beyond',async()=>{
+ await db.exec(`UPDATE b2b_managed_products SET direct_booking_config=direct_booking_config||'{"sorglosRadiusKm":15,"sorglosOuterGrossCents":29900}'::jsonb WHERE slug='halteverbotsschilder-set'`);
+ const input={...base,package:'sorglos',start_date:'2027-10-04',end_date:'2027-10-06'};
+ await expect(reserve(input)).rejects.toThrow('Aufstelladresse');
+ for(const [distance,cents] of [[15,19900],[15.001,29900]]) {
+   const b=await reserve({...input,verifiedDistanceKm:distance} as typeof base); if(!b) throw new Error('Missing booking');
+   expect((await db.query<{gross_cents:number}>('SELECT gross_cents FROM sign_bookings WHERE id=$1',[b.id])).rows[0]?.gross_cents).toBe(cents);
+ }
+});
+it('calendar includes staff bookings and B2B reservations',async()=>{
+ await db.exec(`INSERT INTO rental_inquiries(product_id,location,status,quantity,start_date,end_date) VALUES('halteverbotsschilder-set','Bonn','accepted',6,'2027-11-01','2027-11-03'); INSERT INTO b2b_reservations(id,product_id,location,status,quantity,start_date,end_date) VALUES(gen_random_uuid(),'halteverbotsschilder-set','Bonn','confirmed',4,'2027-11-01','2027-11-03');`);
+ const result=await db.query<{days:{remaining:number}[]}>("SELECT sign_calendar_availability('bonn','2027-11-01','2027-11-03') AS days");
+ expect(result.rows[0]?.days.map(d=>d.remaining)).toEqual([0,0,0]);
 });
 });

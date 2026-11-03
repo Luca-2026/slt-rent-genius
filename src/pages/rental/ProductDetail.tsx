@@ -241,7 +241,9 @@ export default function ProductDetail() {
 
     return {
       ...product.specifications,
-      Hinweis: `Genehmigungs-Kopie an ${location.email} senden`,
+      Hinweis: "Genehmigungskopie im Buchungsschritt hochladen – nicht per E-Mail senden.",
+      "Abholung & Rückgabe": "Schilder und Füße am vollständig videoüberwachten Vermietstandort abholen und zurückgeben.",
+      "Kaution": "100 € je Set. Erstattung des Kautionsrests innerhalb von 48 Stunden nach Rückgabe und Prüfung.",
     };
   }, [product, location]);
 
@@ -794,7 +796,7 @@ export default function ProductDetail() {
                             <p className="text-sm font-semibold text-foreground mb-1"><SignPackagePrices kind="standard" /></p>
                             <p className="text-[11px] text-muted-foreground mb-1">Brutto inkl. 19% USt.</p>
                             <p className="text-xs text-muted-foreground leading-relaxed">
-                              Selbstabholer ab Standort Bonn, Krefeld oder Mülheim an der Ruhr.
+                              Schilder und Füße am vollständig videoüberwachten Vermietstandort abholen und zurückgeben.
                             </p>
                           </div>
                           <div className="border-t border-border pt-3">
@@ -1365,7 +1367,7 @@ export default function ProductDetail() {
                 {/* Booking Card – desktop/tablet only */}
                 <div className="hidden md:block bg-card rounded-xl border border-border p-4 md:p-3 lg:p-5">
                   <div className="mb-3 md:mb-2 lg:mb-4 pb-3 md:pb-2 lg:pb-4 border-b border-border">
-                      {product.id === "halteverbotsschilder-set" && ["krefeld", "bonn"].includes(location.id) ? <p className="font-semibold"><SignPackagePrices kind="standard" /></p> : <ProductPriceBlock
+                      {<ProductPriceBlock
                         product={product}
                         dailyPriceFrom={typeof productSEO?.dailyPriceFrom === "number" ? productSEO.dailyPriceFrom : undefined}
                         perDayLabel={t("rental.perDay")}
@@ -1373,7 +1375,7 @@ export default function ProductDetail() {
                       />}
                       {showTierPrices && (
                         <RentalPriceTiers
-                          product={rawProduct!}
+                          product={rawProduct ?? product}
                           location={location?.id}
                           locationRows={locationPriceRows ?? []}
                           className="mt-3 border-t border-border pt-3"
@@ -1485,7 +1487,7 @@ function MobileBookingCard({
   return (
     <div className="bg-card rounded-xl border border-border p-4">
       <div className="mb-3 pb-3 border-b border-border">
-          {product.id === "halteverbotsschilder-set" && ["krefeld", "bonn"].includes(location.id) ? <p className="font-semibold"><SignPackagePrices kind="standard" /></p> : <ProductPriceBlock
+          {<ProductPriceBlock
             product={product}
             dailyPriceFrom={dailyPriceFrom}
             perDayLabel={t("rental.perDay")}

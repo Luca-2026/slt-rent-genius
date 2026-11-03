@@ -5,6 +5,8 @@ import { ensurePaymentLink, isStripeConfigured, newToken, planPaymentAmounts } f
 import { SLT_COMPANY } from "../_shared/company.ts";
 import { validCalendarDate, validPublicRentalPeriod } from "../_shared/public-rental-period.ts";
 import { validSignPermit } from "../_shared/sign-permit.ts";
+import { routeDistance } from "../_shared/route-distance.ts";
+import { signSetupGrossCents } from "../_shared/sign-direct-booking.ts";
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json", "Cache-Control": "no-store" } });
 const text = (max: number) => z.string().trim().min(1).max(max);
@@ -34,13 +36,32 @@ Deno.serve(async req => {
       const { data: link } = await service.from("offer_payment_links").select("token").eq("inquiry_id", b.inquiry_id).eq("inquiry_table", "rental_inquiries").eq("status", "active").maybeSingle();
       return json({ status: expired ? "expired" : b.status, order_code: inquiry?.order_code, expires_at: b.expires_at, amount_cents: b.total_cents, payment_url: !expired && link ? `https://www.slt-rental.de/zahlung/${link.token}` : null, bank: { holder: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, reference: `Auftrag ${inquiry?.order_code ?? ""}` } });
     }
-    const { data: allowed, error: rateError } = await service.rpc("check_public_rate_limit", { _bucket: "sign-booking", _client_key: req.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown", _max_hits: 30, _window_seconds: 3600 });
+    const readAction = raw.action === "config" || raw.action === "availability";
+    const { data: allowed, error: rateError } = await service.rpc("check_public_rate_limit", { _bucket: readAction ? "sign-booking-read" : "sign-booking", _client_key: req.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown", _max_hits: readAction ? 600 : 30, _window_seconds: 3600 });
     if (rateError || !allowed) return json({ error: "Bitte später erneut versuchen" }, 429);
     if (raw.action === "config") {
       const { data: p } = await service.from("b2b_managed_products").select("direct_booking_config").eq("slug", "halteverbotsschilder-set").eq("is_published", true).maybeSingle();
       const { data: signs, error: signsError } = await service.from("b2b_managed_products").select("slug,name,images,available_locations").eq("is_published", true).eq("category", "absperrtechnik").or("slug.ilike.%zusatz%,slug.like.vz-1000-%").order("name");
       if (signsError) throw signsError;
       return json({ config: p?.direct_booking_config ?? null, additionalSigns: signs ?? [] });
+    }
+    if (raw.action === "availability") {
+      const parsed = z.object({ location: z.enum(["bonn", "krefeld"]), from: z.string().refine(validCalendarDate), to: z.string().refine(validCalendarDate) }).safeParse(raw);
+      if (!parsed.success) return json({ error: "Ungültiger Zeitraum" }, 400);
+      const { data, error } = await service.rpc("sign_calendar_availability", { _location: parsed.data.location, _from: parsed.data.from, _to: parsed.data.to });
+      if (error) return json({ error: "Belegung konnte nicht geladen werden" }, 400);
+      return json({ days: data });
+    }
+    if (raw.action === "setup-quote") {
+      const parsed = z.object({ location: z.enum(["bonn", "krefeld"]), street: text(200), postalCode: z.string().regex(/^\d{5}$/), city: text(100) }).safeParse(raw);
+      if (!parsed.success) return json({ error: "Bitte vollständige Aufstelladresse angeben" }, 400);
+      const apiKey = Deno.env.get("GOOGLE_PLACES_API_KEY");
+      const distance = apiKey ? await routeDistance(apiKey, parsed.data.location, { address: `${parsed.data.street}, ${parsed.data.postalCode} ${parsed.data.city}, Deutschland` }) : null;
+      if (!distance) return json({ error: "Aufstelladresse konnte nicht geprüft werden" }, 503);
+      const { data: p } = await service.from("b2b_managed_products").select("direct_booking_config").eq("slug", "halteverbotsschilder-set").eq("is_published", true).single();
+      const cents = p?.direct_booking_config ? signSetupGrossCents(p.direct_booking_config, distance.distanceKm) : null;
+      if (cents == null) return json({ error: "Aufstellpreis derzeit nicht verfügbar" }, 503);
+      return json({ grossCents: cents, distanceKm: distance.distanceKm });
     }
     if (raw.action === "upload") {
       const parsed = z.object({ filename: text(120), contentType: z.enum(["application/pdf", "image/jpeg", "image/png"]), size: z.number().int().min(1).max(5 * 1024 * 1024) }).safeParse(raw);
@@ -68,7 +89,7 @@ Deno.serve(async req => {
     const { requestId, cartExpiresAt, permitToken, ...body } = parsed.data;
     if (body.package === "standard" && !validPublicRentalPeriod(body)) return json({ error: "Abholung und Rückgabe müssen innerhalb der Öffnungszeiten liegen" }, 400);
     // Retry may read back an existing reservation even after the original cart deadline.
-    const { data: existing } = await service.from("sign_bookings").select("id").eq("request_id", requestId).maybeSingle();
+    const { data: existing } = await service.from("sign_bookings").select("id,snapshot").eq("request_id", requestId).maybeSingle();
     if (!existing && (cartExpiresAt <= Date.now() || cartExpiresAt > Date.now() + 900000)) return json({ error: "Warenkorb abgelaufen" }, 409);
     if (!isStripeConfigured()) return json({ error: "Online-Zahlung derzeit nicht verfügbar" }, 503);
     if (permitToken) {
@@ -81,7 +102,17 @@ Deno.serve(async req => {
       const valid = validSignPermit(bytes, upload.content_type);
       if (!valid) return json({ error: "Datei entspricht nicht dem gewählten Dateityp" }, 400);
     }
-    const { data: reserved, error } = await service.rpc("reserve_sign_booking", { _request: requestId, _token: newToken(), _body: body, _permit_token: permitToken });
+    let trustedBody: Record<string, unknown> = body;
+    if (body.package === "sorglos") {
+      if (existing?.snapshot?.request?.verifiedDistanceKm != null) trustedBody = { ...body, verifiedDistanceKm: existing.snapshot.request.verifiedDistanceKm };
+      else {
+        const apiKey = Deno.env.get("GOOGLE_PLACES_API_KEY");
+        const distance = apiKey ? await routeDistance(apiKey, body.location, { address: `${body.zoneStreet}, ${body.zonePostalCode} ${body.zoneCity}, Deutschland` }) : null;
+        if (!distance) return json({ error: "Aufstelladresse konnte nicht geprüft werden. Bitte Adresse kontrollieren." }, 503);
+        trustedBody = { ...body, verifiedDistanceKm: distance.distanceKm };
+      }
+    }
+    const { data: reserved, error } = await service.rpc("reserve_sign_booking", { _request: requestId, _token: newToken(), _body: trustedBody, _permit_token: permitToken });
     if (error) return json({ error: error.message }, error.code === "42501" ? 403 : 409);
     const { data: inquiry } = await service.from("rental_inquiries").select("customer_email,offer_number,offer_total_gross,offer_payload").eq("id", reserved.inquiry_id).single();
     const { data: link } = await service.from("offer_payment_links").select("token").eq("inquiry_id", reserved.inquiry_id).eq("inquiry_table", "rental_inquiries").eq("status", "active").maybeSingle();
