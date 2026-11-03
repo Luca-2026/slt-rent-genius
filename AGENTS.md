@@ -13,7 +13,7 @@
 - Additional cart items inherit periods through withCartPeriod, validated for their pickup location; set quantities remain counts of sets and display through setSize helpers to avoid multiplying prices by contained pieces.
 - Live cart estimates use cartQuoteItems to include the current draft and saved accessories once; locate the draft quote by ID, never array position, so all steps share the same server-priced total.
 - Cart continuation and pickup confirmation use rentalCart helpers: category navigation retains the first item's pickup location, and final public submission requires explicit self-pickup confirmation when delivery is not selected.
-- Deposits: quote before CMS/no VAT. Sign carts persist package/address/quote; changed addresses invalidate quotes. sign-booking-lead and DB enforce permit lead; server stamps terms hash/time.
+- Deposits: quote before CMS/no VAT. Signs: signRentalGrossCents matches SQL duration pricing; cart persists address/quote, changes invalidate price; lead/terms enforced server-side to prevent drift.
 - CartAccessories resolves only curated catalog accessories before insurance; DeliveryAddressFields uses protected geo-address Places lookups for suggestions and postal completion.
 - Cancellation-option owns the cancellation surcharge rate and rental-only amount; public quotes and service defaults share it, unknown rental amounts stay unknown. Rentware placement follows a reserved header slot, including the actual control inside nested shadow roots after hydration, to avoid navigation overlap and vertical drift.
 <!-- LOVABLE:BEGIN -->

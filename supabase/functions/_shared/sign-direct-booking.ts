@@ -1,6 +1,8 @@
 /** Fail-closed rules for the narrowly scoped sign checkout. Money is integer cents. */
 export const SIGN_PRODUCT_SLUG = "halteverbotsschilder-set";
 export const SIGN_HOLD_HOURS = 24;
+export const SIGN_BASE_RENTAL_DAYS = 10;
+export const SIGN_MAX_RENTAL_DAYS = 100;
 export const SIGN_LOCATIONS = ["krefeld", "bonn"] as const;
 export type SignPackage = "standard" | "sorglos";
 export interface SignBookingConfiguration {
@@ -52,7 +54,9 @@ export function signBookingPrice(config: SignBookingConfiguration, input: {
   if (fees === null || !Number.isInteger(fees) || fees < 0) return null;
   const extras = signAdditionalGrossCents(config, input.additionalSignQuantity ?? 0);
   if (extras === null) return null;
-  const grossCents = price * input.quantity + fees + extras;
+  const rental = signRentalGrossCents(price, input.rentalDays, config.maxRentalDays);
+  if (rental === null) return null;
+  const grossCents = rental * input.quantity + fees + extras;
   const depositCents = config.depositCents * input.quantity;
   const totalCents = grossCents + depositCents;
   return Number.isSafeInteger(totalCents) ? { grossCents, depositCents, totalCents } : null;
@@ -68,12 +72,21 @@ export function signSetupGrossCents(config: SignBookingConfiguration, distanceKm
   if (distanceKm == null || !Number.isFinite(distanceKm) || distanceKm < 0) return null;
   return distanceKm <= config.sorglosRadiusKm ? config.sorglosGrossCents : config.sorglosOuterGrossCents ?? null;
 }
-export function signLastRentalDate(start: string, maxDays = 10): string | null {
+export function signRentalDays(start: string, end: string): number {
+  return Math.round((Date.parse(`${end}T12:00:00Z`) - Date.parse(`${start}T12:00:00Z`)) / 86400000) + 1;
+}
+/** First ten calendar days are included; each extra day adds one tenth of the CMS package. */
+export function signRentalGrossCents(baseCents: number | null | undefined, days: number, maxDays = SIGN_MAX_RENTAL_DAYS): number | null {
+  if (baseCents == null || !Number.isSafeInteger(baseCents) || baseCents <= 0 || !Number.isInteger(days) || days < 1 || days > maxDays) return null;
+  const cents = Math.round(baseCents * (SIGN_BASE_RENTAL_DAYS + Math.max(0, days - SIGN_BASE_RENTAL_DAYS)) / SIGN_BASE_RENTAL_DAYS);
+  return Number.isSafeInteger(cents) ? cents : null;
+}
+export function signLastRentalDate(start: string, maxDays = SIGN_MAX_RENTAL_DAYS): string | null {
   const time = Date.parse(`${start}T12:00:00Z`);
   if (!Number.isFinite(time) || !Number.isInteger(maxDays) || maxDays < 1) return null;
   return new Date(time + (maxDays - 1) * 86400000).toISOString().slice(0, 10);
 }
-export function validSignRentalRange(start: string, end: string, maxDays = 10): boolean {
+export function validSignRentalRange(start: string, end: string, maxDays = SIGN_MAX_RENTAL_DAYS): boolean {
   const last = signLastRentalDate(start, maxDays);
   return last !== null && end >= start && end <= last;
 }

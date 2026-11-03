@@ -10,6 +10,15 @@ function service(p = product) {
   } };
 }
 describe("Öffentliche CMS-Preisvorschau", () => {
+  it("berechnet 100 Tage Schildermiete aus CMS mit täglich einem Zehntel ab Tag elf", async () => {
+    const signs = { ...product, slug: "halteverbotsschilder-set", category: "absperrtechnik", direct_booking_config: { enabled: true, standardGrossCents: 4900, sorglosGrossCents: 19900, depositCents: 10000, maxRentalDays: 100, municipalFeesSeparate: true } };
+    const input = { ...row, product_slug: signs.slug, selected_addons: [], start_date: "2027-03-01", end_date: "2027-06-08" };
+    const [quote] = await publicRentalQuote(service(signs), [input]);
+    expect(quote.rental_net).toBe(411.76);
+    expect(quote.deposit).toBe(100);
+    const [tooLong] = await publicRentalQuote(service(signs), [{ ...input, end_date: "2027-06-09" }]);
+    expect(tooLong.rental_net).toBeNull();
+  });
   it("Stornierung kostet einmalig 5 % reine Miete ohne Versicherung und Kaution", async () => {
     const [quote] = await publicRentalQuote(service({ ...product, specifications: { Kaution: "1.000 €" } } as any), [{ ...row, quantity: 2, selected_addons: ["kostenfreie_stornierung"] }]);
     expect(quote.rental_net).toBe(540);

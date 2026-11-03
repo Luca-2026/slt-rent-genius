@@ -4,6 +4,15 @@ import { isTrailerCategory, isTrailerRoute } from "@/lib/rentalBookingMode";
 import { signCartPackage, signPackageEstimate, signCartRentalNet, signSetupAddressKey } from "@/lib/signCartPackage";
 const row: RentalCartItem = { id: "a", product_slug: "bagger", product_name: "Bagger", location: "krefeld", quantity: 1, start_date: "2026-11-03", end_date: "2026-11-05", start_time: "08:00", end_time: "16:00", selected_addons: [], use_saturday: false, use_sunday: false };
 describe("15-Minuten-Anfragewarenkorb", () => {
+  it("berechnet lange Miete aus Zeitraum und geprüftem Paketpreis", () => {
+    const config = { enabled: true, standardGrossCents: 4900, sorglosGrossCents: 19900, depositCents: 10000, maxRentalDays: 100 };
+    const item = { ...row, sign_package: "standard" as const, start_date: "2027-03-01", end_date: "2027-03-11" };
+    expect(Math.round((signCartRentalNet(config, item) ?? 0) * 119)).toBe(5390);
+    const address = { zoneStreet: "Teststraße 1", zonePostalCode: "47807", zoneCity: "Krefeld" };
+    const setup = { ...item, sign_package: "sorglos" as const, end_date: "2027-06-08", sign_zone_street: address.zoneStreet, sign_zone_postal_code: address.zonePostalCode, sign_zone_city: address.zoneCity, sign_setup_quote_key: signSetupAddressKey("krefeld", address), sign_setup_gross_cents: 29900 };
+    expect(Math.round((signCartRentalNet(config, setup) ?? 0) * 119)).toBe(299000);
+    expect(signCartRentalNet(config, { ...setup, end_date: "2027-06-09" })).toBeNull();
+  });
   it("übernimmt den berechneten 299-Euro-Preis samt Aufstelladresse und verwirft ihn bei Adressänderung", () => {
     const address = { zoneStreet: "Teststraße 1", zonePostalCode: "47807", zoneCity: "Krefeld" };
     const item = { ...row, sign_package: "sorglos" as const, sign_zone_street: address.zoneStreet, sign_zone_postal_code: address.zonePostalCode, sign_zone_city: address.zoneCity, sign_setup_quote_key: signSetupAddressKey("krefeld", address), sign_setup_gross_cents: 29900 };
@@ -21,7 +30,7 @@ describe("15-Minuten-Anfragewarenkorb", () => {
     expect(signCartPackage([chosen, { ...row, sign_package: "standard" }])).toBeNull();
   });
   it("zeigt für Sorglos 199 Euro statt 49 Euro und keine Summe ohne Paketwahl", () => {
-    const config = { enabled: true, standardGrossCents: 4900, sorglosGrossCents: 19900, depositCents: 10000, maxRentalDays: 10 };
+    const config = { enabled: true, standardGrossCents: 4900, sorglosGrossCents: 19900, depositCents: 10000, maxRentalDays: 100 };
     expect(Math.round((signPackageEstimate(config, "sorglos", 1) ?? 0) * 119)).toBe(19900);
     expect(Math.round((signPackageEstimate(config, "standard", 1) ?? 0) * 119)).toBe(4900);
     expect(signPackageEstimate(config, null, 1)).toBeNull();
