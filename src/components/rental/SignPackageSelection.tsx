@@ -4,6 +4,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { displayPrice } from "@/lib/priceDisplay";
 import { useCustomerType } from "@/hooks/useCustomerType";
 import type { SignBookingConfiguration, SignPackage } from "../../../supabase/functions/_shared/sign-direct-booking";
+import { DeliveryAddressFields } from "./DeliveryAddressFields";
+import type { SignSetupAddress } from "@/lib/signCartPackage";
+import { LOCATION_ORIGINS } from "../../../supabase/functions/_shared/route-distance";
 
 export function useSignBookingConfig(enabled = true) {
   return useQuery<SignBookingConfiguration | null>({ queryKey: ["sign-booking-config"], enabled, staleTime: 60000, queryFn: async () => {
@@ -13,7 +16,7 @@ export function useSignBookingConfig(enabled = true) {
   } });
 }
 
-export function SignPackageSelection({ value, onChange }: { value: SignPackage | null; onChange: (pkg: SignPackage) => void }) {
+export function SignPackageSelection({ value, onChange, location, address, onAddressChange, quote }: { value: SignPackage | null; onChange: (pkg: SignPackage) => void; location: string; address: SignSetupAddress; onAddressChange: (next: Partial<SignSetupAddress>) => void; quote: { cents: number | null; km: number | null; loading: boolean; error: string } }) {
   const { data: config } = useSignBookingConfig();
   const { type } = useCustomerType();
   return <section className="space-y-3" aria-label="Paket wählen">
@@ -32,5 +35,11 @@ export function SignPackageSelection({ value, onChange }: { value: SignPackage |
         </label>;
       })}
     </RadioGroup>
+    {value === "sorglos" && <div className="space-y-3 border-b border-border pb-4">
+      <h4 className="font-semibold">Aufstelladresse der Halteverbotszone</h4>
+      <p className="text-xs text-muted-foreground">Abfahrt: {LOCATION_ORIGINS[location]?.replace(", Germany", "")}</p>
+      <DeliveryAddressFields zone prefix="sign-zone" value={{ deliveryStreet: address.zoneStreet, deliveryPostalCode: address.zonePostalCode, deliveryCity: address.zoneCity }} onChange={next => onAddressChange({ ...(next.deliveryStreet !== undefined ? { zoneStreet: next.deliveryStreet } : {}), ...(next.deliveryPostalCode !== undefined ? { zonePostalCode: next.deliveryPostalCode } : {}), ...(next.deliveryCity !== undefined ? { zoneCity: next.deliveryCity } : {}) })} />
+      <p role={quote.error ? "alert" : "status"} className={`text-sm ${quote.error ? "text-destructive" : "text-primary"}`}>{quote.loading ? "Google Maps berechnet Fahrstrecke und Paketpreis …" : quote.error || (quote.cents != null ? `Paketpreis je Set: ${displayPrice(quote.cents / 119, type)} · ${quote.km?.toLocaleString("de-DE", { maximumFractionDigits: 1 })} km Fahrstrecke` : "Bitte vollständige Aufstelladresse für den Paketpreis angeben.")}</p>
+    </div>}
   </section>;
 }
