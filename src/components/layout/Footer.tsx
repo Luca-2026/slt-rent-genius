@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import sltLogo from "@/assets/slt-logo-sm.webp";
 import { getAreasForLocation } from "@/data/localSeoData";
 import { BonnWhatsAppContact } from "@/components/BonnWhatsAppContact";
+import { PaymentMethods } from "@/components/PaymentMethods";
 
 const locations = [
   {
@@ -204,6 +205,7 @@ export function Footer() {
         </div>
       </div>
 
+      <div className="section-container pb-5"><PaymentMethods footer /></div>
       {/* Copyright Bar */}
       <div className="bg-primary/90 border-t border-white/5">
         <div className="section-container py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/80">

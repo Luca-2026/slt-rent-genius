@@ -6,6 +6,7 @@ import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { PaymentQrCode } from "@/components/PaymentQrCode";
+import { PaymentMethods } from "@/components/PaymentMethods";
 
 interface PayInfo {
   status: "active" | "paid" | "superseded" | "void" | "amount_mismatch";
@@ -166,11 +167,12 @@ export default function ZahlungOnline() {
                   <>
                     <Button onClick={pay} disabled={starting || !selected} size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
                       {starting ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Lock className="h-4 w-4 mr-2" />}
-                      {selected ? `${eur(selected.amountCents)} jetzt sicher bezahlen` : "Jetzt sicher bezahlen"}
+                      {selected ? `${eur(selected.amountCents)} online bezahlen` : "Online bezahlen"}
                     </Button>
                     <p className="text-xs text-muted-foreground text-center">
-                      Die Zahlung läuft sicher über Stripe. Eine Kaution erstatten wir nach der Rückgabe auf das Zahlungsmittel, mit dem du bezahlt hast.
+                      Eine Kaution erstatten wir nach der Rückgabe auf das Zahlungsmittel, mit dem du bezahlt hast.
                     </p>
+                    <PaymentMethods />
                   </>
                 ) : info.bank ? (
                   <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm space-y-1">
