@@ -28,13 +28,31 @@ await db.exec(readFileSync('drizzle/migrations/0110_sign_calendar_and_distance_p
 await db.exec(readFileSync('drizzle/migrations/0111_sign_booking_additional_signs.sql','utf8'));
 await db.exec(readFileSync('drizzle/migrations/0112_sign_permit_lead_and_terms_evidence.sql','utf8'));
 await db.exec(readFileSync('drizzle/migrations/0113_sign_package_permit_description.sql','utf8'));
+await db.exec(readFileSync('drizzle/migrations/0114_sign_extended_rental_duration.sql','utf8'));
 await db.exec(`CREATE TRIGGER payments AFTER UPDATE OF payments ON rental_inquiries FOR EACH ROW EXECUTE FUNCTION sign_booking_payment_state(); CREATE TRIGGER inventory BEFORE INSERT OR UPDATE OF status,offer_payload,quantity,start_date,end_date,location ON rental_inquiries FOR EACH ROW EXECUTE FUNCTION guard_sign_inventory();`);
-await db.exec(`INSERT INTO b2b_managed_products(slug,name,category,is_published,quantities,direct_booking_config) VALUES('halteverbotsschilder-set','Halteverbotsschilder-Set','absperrtechnik',true,'{"bonn":10,"krefeld":10}','{"enabled":true,"live_enabled":false,"standardGrossCents":4900,"sorglosGrossCents":19900,"depositCents":10000,"maxRentalDays":10}');`);
+await db.exec(`INSERT INTO b2b_managed_products(slug,name,category,is_published,quantities,direct_booking_config) VALUES('halteverbotsschilder-set','Halteverbotsschilder-Set','absperrtechnik',true,'{"bonn":10,"krefeld":10}','{"enabled":true,"live_enabled":false,"standardGrossCents":4900,"sorglosGrossCents":19900,"depositCents":10000,"maxRentalDays":100}');`);
 },30000);
 afterAll(()=>db.close());
 const base={location:'bonn',package:'standard',quantity:1,start_date:'2027-03-01',end_date:'2027-03-05',start_time:'10:00',end_time:'10:00',name:'Luca Sandhoff',email:'luca@sandhoff.org',phone:'021514179904',street:'Anrather Straße 291',postalCode:'47807',city:'Krefeld',customerKind:'private',termsAccepted:true,termsVersion:'2026-05',termsDocumentHash:'770d16fa42d287aa23d556309b1afeb7ec93d6ab7fb7a97f1dbe7c46fd3d4864',permitMode:'slt',pickupConfirmed:true,municipalFeesAccepted:true,zoneStreet:'Anrather Straße 291',zonePostalCode:'47807',zoneCity:'Krefeld',message:'Isolated test'};
 async function reserve(body: typeof base & { additionalSigns?: { slug: string; quantity: number }[] }, request=crypto.randomUUID()) { const r=await db.query<{b: {id:string;inquiry_id:string}}>('SELECT reserve_sign_booking($1,$2,$3::jsonb,NULL) AS b',[request,crypto.randomUUID(),JSON.stringify(body)]); return r.rows[0]?.b; }
 describe('Complete isolated sign reservations',()=>{
+it.each([['standard',15,49000],['sorglos',15,199000],['sorglos',16,299000]])('stores 100-day %s rental price at %i km and unchanged deposit',async(pkg,distance,gross)=>{
+ await db.exec(`UPDATE b2b_managed_products SET direct_booking_config=direct_booking_config||'{"sorglosRadiusKm":15,"sorglosOuterGrossCents":29900}'::jsonb WHERE slug='halteverbotsschilder-set'`);
+ const body={...base,package:pkg,start_date:'2029-01-08',end_date:'2029-04-17',verifiedDistanceKm:distance} as typeof base;
+ const b=await reserve(body); if(!b) throw new Error('Missing booking');
+ const row=(await db.query<{gross_cents:number;deposit_cents:number;total_cents:number}>('SELECT gross_cents,deposit_cents,total_cents FROM sign_bookings WHERE id=$1',[b.id])).rows[0];
+ expect(row).toEqual({gross_cents:gross,deposit_cents:10000,total_cents:Number(gross)+10000});
+ const inquiry=(await db.query<{offer_total_gross:number;offer_payload:{deposit:number}}> ('SELECT offer_total_gross,offer_payload FROM rental_inquiries WHERE id=$1',[b.inquiry_id])).rows[0];
+ expect(Number(inquiry?.offer_total_gross)).toBe(Number(gross)/100); expect(Number(inquiry?.offer_payload.deposit)).toBe(100);
+ await expect(reserve({...body,end_date:'2029-04-18'})).rejects.toThrow('Ungültige Buchung');
+ const days=(await db.query<{days:unknown[]}>('SELECT sign_calendar_availability($1,$2,$3) AS days',['bonn','2029-01-08','2029-04-17'])).rows[0]?.days;
+ expect(days).toHaveLength(100);
+ await db.exec(`UPDATE b2b_managed_products SET direct_booking_config=direct_booking_config-'sorglosRadiusKm'-'sorglosOuterGrossCents' WHERE slug='halteverbotsschilder-set'`);
+});
+it('stores 11-day standard rental at 53.90 euros',async()=>{
+ const b=await reserve({...base,start_date:'2030-01-07',end_date:'2030-01-17'}); if(!b) throw new Error('Missing booking');
+ expect((await db.query<{gross_cents:number}>('SELECT gross_cents FROM sign_bookings WHERE id=$1',[b.id])).rows[0]?.gross_cents).toBe(5390);
+});
 it('rejects missing AGB evidence, missing permit choice and missing existing permit',async()=>{
  await expect(reserve({...base,termsAccepted:false})).rejects.toThrow('Bedingungen');
  await expect(reserve({...base,termsVersion:'old'})).rejects.toThrow('AGB');
