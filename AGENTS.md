@@ -45,4 +45,4 @@
 
 - Inquiry and sign-booking rules: see inquiries/AGENTS.md.
 - Accepted rental amendments preserve original offer evidence and append immutable revisions while atomically updating operational periods, reservations and allocations; new ABs use versioned PDF paths, so historical documents and issued invoices cannot be overwritten.
-- Kassenprotokoll: Barzahlungen (Label „Bar…“) werden per DB-Trigger append-only in cash_journal protokolliert (Entfernen = Storno-Gegenbuchung, Rechnungen erst ab späteren Zahlungseingängen, um Doppelzählung zu vermeiden); deposit-refund-digest versendet 18 Uhr Berlin Tagesabschluss mit DATEV-CSV aus _shared/datev-cash-csv.ts (getestet).
+- Kassenprotokoll: Barzahlungen (Label „Bar…“) werden per DB-Trigger append-only in cash_journal protokolliert (Entfernen = Storno-Gegenbuchung, Rechnungen erst ab späteren Zahlungseingängen, um Doppelzählung zu vermeiden); deposit-refund-digest versendet 18 Uhr Berlin Tagesabschluss mit je einer DATEV-CSV pro Kasse (cash_register über cash_register_for_location, Mülheim → Krefeld) aus _shared/datev-cash-csv.ts, da DATEV je Kasse importiert.
