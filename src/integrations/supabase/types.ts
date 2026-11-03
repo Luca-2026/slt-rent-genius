@@ -1122,6 +1122,7 @@ export type Database = {
           deposit_amount: number | null
           description: string | null
           detailed_description: string | null
+          direct_booking_config: Json | null
           drive_type: string | null
           external_manual_url: string | null
           features: string[]
@@ -1190,6 +1191,7 @@ export type Database = {
           deposit_amount?: number | null
           description?: string | null
           detailed_description?: string | null
+          direct_booking_config?: Json | null
           drive_type?: string | null
           external_manual_url?: string | null
           features?: string[]
@@ -1258,6 +1260,7 @@ export type Database = {
           deposit_amount?: number | null
           description?: string | null
           detailed_description?: string | null
+          direct_booking_config?: Json | null
           drive_type?: string | null
           external_manual_url?: string | null
           features?: string[]
@@ -4862,6 +4865,121 @@ export type Database = {
             columns: ["crm_customer_id"]
             isOneToOne: false
             referencedRelation: "crm_customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sign_bookings: {
+        Row: {
+          confirmation_file_path: string | null
+          confirmation_sent_at: string | null
+          confirmed_at: string | null
+          created_at: string
+          deposit_cents: number
+          end_date: string
+          expires_at: string
+          gross_cents: number
+          id: string
+          inquiry_id: string
+          location: string
+          package: string
+          permit_path: string | null
+          quantity: number
+          request_id: string
+          snapshot: Json
+          start_date: string
+          status: string
+          token: string
+          total_cents: number
+        }
+        Insert: {
+          confirmation_file_path?: string | null
+          confirmation_sent_at?: string | null
+          confirmed_at?: string | null
+          created_at?: string
+          deposit_cents: number
+          end_date: string
+          expires_at?: string
+          gross_cents: number
+          id?: string
+          inquiry_id: string
+          location: string
+          package: string
+          permit_path?: string | null
+          quantity: number
+          request_id: string
+          snapshot: Json
+          start_date: string
+          status?: string
+          token: string
+          total_cents: number
+        }
+        Update: {
+          confirmation_file_path?: string | null
+          confirmation_sent_at?: string | null
+          confirmed_at?: string | null
+          created_at?: string
+          deposit_cents?: number
+          end_date?: string
+          expires_at?: string
+          gross_cents?: number
+          id?: string
+          inquiry_id?: string
+          location?: string
+          package?: string
+          permit_path?: string | null
+          quantity?: number
+          request_id?: string
+          snapshot?: Json
+          start_date?: string
+          status?: string
+          token?: string
+          total_cents?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sign_bookings_inquiry_id_fkey"
+            columns: ["inquiry_id"]
+            isOneToOne: true
+            referencedRelation: "rental_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sign_permit_uploads: {
+        Row: {
+          booking_id: string | null
+          content_type: string
+          created_at: string
+          file_path: string
+          filename: string
+          id: string
+          token: string
+        }
+        Insert: {
+          booking_id?: string | null
+          content_type: string
+          created_at?: string
+          file_path: string
+          filename: string
+          id?: string
+          token: string
+        }
+        Update: {
+          booking_id?: string | null
+          content_type?: string
+          created_at?: string
+          file_path?: string
+          filename?: string
+          id?: string
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sign_permit_uploads_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "sign_bookings"
             referencedColumns: ["id"]
           },
         ]
