@@ -35,7 +35,7 @@ const base={location:'bonn',package:'standard',quantity:1,start_date:'2027-03-01
 async function reserve(body: typeof base & { additionalSigns?: { slug: string; quantity: number }[] }, request=crypto.randomUUID()) { const r=await db.query<{b: {id:string;inquiry_id:string}}>('SELECT reserve_sign_booking($1,$2,$3::jsonb,NULL) AS b',[request,crypto.randomUUID(),JSON.stringify(body)]); return r.rows[0]?.b; }
 describe('Complete isolated sign reservations',()=>{
 it('rejects missing AGB evidence, missing permit choice and missing existing permit',async()=>{
- await expect(reserve({...base,termsAccepted:false})).rejects.toThrow('AGB');
+ await expect(reserve({...base,termsAccepted:false})).rejects.toThrow('Bedingungen');
  await expect(reserve({...base,termsVersion:'old'})).rejects.toThrow('AGB');
  await expect(reserve({...base,package:'sorglos',permitMode:''})).rejects.toThrow('Genehmigungswahl');
  await expect(reserve({...base,package:'sorglos',permitMode:'existing'})).rejects.toThrow('hochgeladen');
