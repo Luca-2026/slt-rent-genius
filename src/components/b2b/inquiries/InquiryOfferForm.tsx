@@ -1,4 +1,5 @@
 import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
+import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLegacyPeriod } from "./offerCalendarPeriod";
 import { applyOpenEndedPeriod, normalizeOpenEndedUnit, normalizeOpenEndedDuration, openEndedUnitSingular, type OpenEndedUnit } from "@/lib/installments";
 import { isDraftEditEvent } from "@/lib/draftEditIntent";
 import { matchesDocumentPreview } from "../../../../supabase/functions/_shared/invoice-preview";
@@ -129,10 +130,7 @@ type FormLine = OfferLine & {
 function applyInheritedPeriod(item: FormLine, index: number, base: FormLine | undefined): FormLine {
   if (index === 0 || item.custom_period || !base || isReturnChargeLine(item)) return item;
   return {
-    ...item,
-    duration: base.duration,
-    unit: base.unit,
-    description: item.description?.trim() ? item.description : base.description,
+    ...inheritCalendarPeriod(item, base),
   };
 }
 
@@ -241,6 +239,7 @@ async function loadRentalPricing(
  * Positionen mit price_manual bleiben unverändert.
  */
 function applyRentalPricing(item: FormLine, dayOpts: RentalDayOptions): FormLine {
+  item = calendarDuration(item, { use_saturday: item.use_saturday ?? dayOpts.use_saturday, use_sunday: item.use_sunday ?? dayOpts.use_sunday });
   const p = item.pricing;
   if (!p || item.price_manual || !item.rental_start || !item.rental_end) return item;
   const r = computeRentalLinePrice({
@@ -251,7 +250,7 @@ function applyRentalPricing(item: FormLine, dayOpts: RentalDayOptions): FormLine
     unit: item.unit_manual ? ((item.unit ?? null) as OfferUnit | null) : null,
     opts: { use_saturday: item.use_saturday ?? dayOpts.use_saturday, use_sunday: item.use_sunday ?? dayOpts.use_sunday },
   });
-  const base: FormLine = { ...item, custom_period: true, product_name: p.base_name };
+  const base: FormLine = { ...item, product_name: p.base_name };
   if (r.kind === "weekend") {
     return { ...base, product_name: p.base_name + WEEKEND_SUFFIX, unit: "pauschal", duration: 1, unit_price: r.unit_price, price_source: "cms", price_basis: "weekend", tier_label: r.label };
   }
@@ -834,14 +833,15 @@ export function InquiryOfferForm({
     () =>
       items.map((item, i) => {
         const inherited = applyInheritedPeriod(item, i, items[0]);
+        const calendar = pricingActive && !openEnded ? calendarDuration(inherited, { use_saturday: inherited.use_saturday ?? useSaturday, use_sunday: inherited.use_sunday ?? useSunday }) : inherited;
         const unit = inherited.unit ?? "kalendertage";
         // Unbefristet: zeitabhängige Positionen werden als Preis pro Monat geführt.
         const monthly = openEnded && unit !== "pauschal" && unit !== "stueck"
           ? applyOpenEndedPeriod(inherited, openEndedUnit, minMonths)
-          : inherited;
+          : calendar;
         return recalcAddons(monthly);
       }),
-    [items, openEnded, minMonths, openEndedUnit],
+    [items, openEnded, minMonths, openEndedUnit, pricingActive, useSaturday, useSunday],
   );
 
   // ----------------------------------------------------------------
@@ -863,9 +863,9 @@ export function InquiryOfferForm({
   const checkSignature = useMemo(
     () =>
       JSON.stringify(
-        items.map((i) => [i.product_slug ?? "", i.product_name.trim().toLowerCase(), i.quantity]),
+        effectiveItems.map((i) => [i.product_slug ?? "", i.product_name.trim().toLowerCase(), i.quantity, i.rental_start, i.rental_end]),
       ) + `|${location ?? ""}|${checkStart ?? ""}|${checkEnd ?? ""}`,
-    [items, location, checkStart, checkEnd],
+    [effectiveItems, location, checkStart, checkEnd],
   );
 
   useEffect(() => {
@@ -878,7 +878,7 @@ export function InquiryOfferForm({
       setChecking(true);
       const next: Record<number, InventoryResult | null> = {};
       await Promise.all(
-        items.map(async (item, index) => {
+        effectiveItems.map(async (item, index) => {
           const name = item.product_name.trim();
           if (!name || isReturnChargeLine(item)) return;
           let slug = item.product_slug;
@@ -895,8 +895,8 @@ export function InquiryOfferForm({
             next[index] = await fetchAvailability({
               slug,
               location,
-              start: checkStart,
-              end: checkEnd,
+              start: item.rental_start || checkStart,
+              end: item.rental_end || checkEnd,
               excludeInquiryId: inquiryId,
             });
           } catch {
@@ -963,13 +963,18 @@ export function InquiryOfferForm({
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, ...patch } : item)));
   /** Wie patchItem, rechnet danach Dauer/Staffelpreis neu (ohne Handpreis-Marker). */
   const patchPriced = (index: number, patch: Partial<FormLine>) =>
-    setItems((prev) =>
-      prev.map((item, i) => (i === index ? (pricingActive ? applyRentalPricing({ ...item, ...patch }, dayOpts) : { ...item, ...patch }) : item)),
-    );
+    setItems((prev) => {
+      const next = prev.map((item, i) => i === index ? { ...item, ...patch } : item);
+      return next.map((item, i) => {
+        if (i !== index && (index !== 0 || item.custom_period)) return item;
+        const inherited = applyInheritedPeriod(item, i, next[0]);
+        return pricingActive ? applyRentalPricing(inherited, dayOpts) : inherited;
+      });
+    });
   const changeDayOpts = (next: RentalDayOptions) => {
     setUseSaturday(!!next.use_saturday);
     setUseSunday(!!next.use_sunday);
-    setItems((prev) => prev.map((item) => applyRentalPricing(item, next)));
+    setItems((prev) => prev.map((item, i) => applyRentalPricing(applyInheritedPeriod(item, i, prev[0]), next)));
   };
   const showDayBoxes =
     pricingActive &&
@@ -1068,7 +1073,7 @@ export function InquiryOfferForm({
           return pricing ? { ...item, product_slug: item.product_slug ?? slug, pricing } : item;
         }),
       );
-      setItems(withPricing.map((it) => applyRentalPricing(it, dayOpts)));
+      setItems(withPricing.map((it, i) => applyRentalPricing(applyInheritedPeriod(it, i, withPricing[0]), dayOpts)));
     } finally {
       setRecalculating(false);
     }
@@ -1199,7 +1204,7 @@ export function InquiryOfferForm({
           const articles = rest.quantity || 1;
           const qUnit = rest.quantity_unit ?? "stk";
           // Beschreibung nur für diesen Auftrag hat Vorrang vor der Stammbeschreibung.
-          const baseDescription = rest.description_override?.trim() || rest.description;
+          const baseDescription = pricingActive && !openEnded && !isReturnChargeLine(rest) ? calendarDescription(rest) : rest.description_override?.trim() || rest.description;
           // Die PDF-Zeile zeigt Menge × Einheit; mehrere Artikel (bzw. m²/lfm) werden in der
           // Beschreibung ausgewiesen, damit die Summe nachvollziehbar bleibt.
           const description =
@@ -1223,7 +1228,7 @@ export function InquiryOfferForm({
             duration,
             ...(rest.quantity_unit && rest.quantity_unit !== "stk" ? { quantity_unit: rest.quantity_unit } : { quantity_unit: undefined }),
             name_override: rest.name_override || undefined,
-            description_override: rest.description_override || undefined,
+            description_override: rest.description_override ? baseDescription : undefined,
             // Optionale Stufen bleiben im Angebot (Betrag zählt nicht), in Rechnungen entfallen sie.
             addons: (rest.addons ?? []).filter((a) => (a.optional ? !isInvoice : Number(a.amount) !== 0)),
           };
@@ -1765,32 +1770,32 @@ export function InquiryOfferForm({
                 </Select>
               </div>
             )}
-            <Input
-              value={inherited ? (eff.description ?? "") : (item.description ?? "")}
+            {(!pricingActive || !!withoutLegacyPeriod(item.description)) && <Input
+              value={pricingActive ? withoutLegacyPeriod(item.description) : (inherited ? (eff.description ?? "") : (item.description ?? ""))}
               onChange={(e) => patchItem(index, { description: e.target.value })}
-              placeholder="Beschreibung / Zeitraum (optional)"
+              placeholder={pricingActive ? "Beschreibung (optional)" : "Beschreibung / Zeitraum (optional)"}
               disabled={disabled || inherited || (openEnded && !isFlatRate && eff.unit !== "stueck")}
-            />
+            />}
             {pricingActive && !openEnded && (
               <div className="grid min-w-0 grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-x-2 gap-y-2" data-testid="position-period">
                 <div className="min-w-0">
                   <Label className="text-xs">Mietbeginn</Label>
-                  <Input type="date" className={DT_INPUT} value={item.rental_start ?? ""} disabled={disabled}
+                  <Input type="date" aria-label="Mietbeginn" className={DT_INPUT} value={eff.rental_start ?? ""} disabled={disabled || inherited}
                     onChange={(e) => patchPriced(index, { rental_start: e.target.value || undefined, custom_period: true })} />
                 </div>
                 <div className="min-w-0">
                   <Label className="text-xs">Uhrzeit</Label>
-                  <Input type="time" className={DT_INPUT} value={item.rental_start_time ?? ""} placeholder="08:00" disabled={disabled}
+                  <Input type="time" aria-label="Uhrzeit Mietbeginn" className={DT_INPUT} value={eff.rental_start_time ?? ""} placeholder="08:00" disabled={disabled || inherited}
                     onChange={(e) => patchPriced(index, { rental_start_time: e.target.value || undefined, custom_period: true })} />
                 </div>
                 <div className="min-w-0">
                   <Label className="text-xs">Mietende</Label>
-                  <Input type="date" className={DT_INPUT} value={item.rental_end ?? ""} disabled={disabled}
+                  <Input type="date" aria-label="Mietende" className={DT_INPUT} value={eff.rental_end ?? ""} disabled={disabled || inherited}
                     onChange={(e) => patchPriced(index, { rental_end: e.target.value || undefined, custom_period: true })} />
                 </div>
                 <div className="min-w-0">
                   <Label className="text-xs">Uhrzeit</Label>
-                  <Input type="time" className={DT_INPUT} value={item.rental_end_time ?? ""} placeholder="17:00" disabled={disabled}
+                  <Input type="time" aria-label="Uhrzeit Mietende" className={DT_INPUT} value={eff.rental_end_time ?? ""} placeholder="17:00" disabled={disabled || inherited}
                     onChange={(e) => patchPriced(index, { rental_end_time: e.target.value || undefined, custom_period: true })} />
                 </div>
               </div>
@@ -1801,13 +1806,14 @@ export function InquiryOfferForm({
                   checked={!!item.custom_period}
                   disabled={disabled}
                   onCheckedChange={(v) =>
-                    patchItem(index, {
+                    patchPriced(index, {
                       custom_period: v === true,
                       ...(v === true
                         ? {
-                            duration: eff.duration,
-                            unit: eff.unit,
-                            description: eff.description,
+                            rental_start: eff.rental_start,
+                            rental_end: eff.rental_end,
+                            rental_start_time: eff.rental_start_time,
+                            rental_end_time: eff.rental_end_time,
                           }
                         : {}),
                     })
@@ -1862,7 +1868,7 @@ export function InquiryOfferForm({
                       className="w-20 shrink-0"
                       value={eff.duration ?? 1}
                       onChange={(e) => patchItem(index, { duration: Number(e.target.value) || 0 })}
-                      disabled={disabled || inherited || (openEnded && !isFlatRate && eff.unit !== "stueck")}
+                      disabled={disabled || inherited || (pricingActive && !openEnded && !!eff.rental_start && !!eff.rental_end) || (openEnded && !isFlatRate && eff.unit !== "stueck")}
                     />
                   )}
                   <Select
