@@ -7,6 +7,7 @@ import type { SignBookingConfiguration, SignPackage } from "../../../supabase/fu
 import { DeliveryAddressFields } from "./DeliveryAddressFields";
 import type { SignSetupAddress } from "@/lib/signCartPackage";
 import { LOCATION_ORIGINS } from "../../../supabase/functions/_shared/route-distance";
+import { SignRentalTariff } from "./SignRentalTariff";
 
 export function useSignBookingConfig(enabled = true) {
   return useQuery<SignBookingConfiguration | null>({ queryKey: ["sign-booking-config"], enabled, staleTime: 60000, queryFn: async () => {
@@ -34,7 +35,7 @@ export function SignPackageSelection({ value, onChange, location, address, onAdd
             <span className="block text-sm text-muted-foreground">{pkg === "standard" ? "Schilder und Füße selbst abholen, aufstellen und zurückgeben. Genehmigung und Protokollierung organisierst du selbst. Keine Beratung oder Unterstützung bei Genehmigungsfragen enthalten." : "Genehmigungsantrag, Aufstellung, Aufstellprotokoll und Abbau durch uns. Städtische Genehmigungsgebühren werden zusätzlich separat abgerechnet."}</span>
             <span className="block font-bold text-primary">{cents != null ? displayPrice(cents / 119, type) : "Preis derzeit nicht verfügbar"}{pkg === "sorglos" && <span className="text-sm font-normal">{value === "sorglos" && safeQuote.cents != null ? " (für deine Aufstelladresse)" : ` (bis ${config?.sorglosRadiusKm ?? "–"} km)`}</span>}</span>
             <span className="block text-xs text-muted-foreground">Je Set für 1–10 Tage · {type === "private" ? "inkl. 19 % USt." : "netto zzgl. 19 % USt."}{pkg === "sorglos" && config?.sorglosOuterGrossCents != null ? ` · Darüber ${displayPrice(config.sorglosOuterGrossCents / 119, type)}` : ""}</span>
-            <span className="block text-xs text-muted-foreground">Ab Tag 11 je weiterem Tag {cents != null ? displayPrice(cents / 1190, type) : "ein Zehntel des Paketpreises"} je Set.</span>
+            <span className="block text-xs text-muted-foreground">{pkg === "standard" && config?.standardRentalTiers ? <SignRentalTariff tiers={config.standardRentalTiers} customerType={type} /> : <>Ab Tag 11 je weiterem Tag {cents != null ? displayPrice(cents / 1190, type) : "ein Zehntel des Paketpreises"} je Set.</>}</span>
           </span>
         </label>;
       })}
