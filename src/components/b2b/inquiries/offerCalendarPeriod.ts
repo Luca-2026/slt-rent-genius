@@ -1,6 +1,6 @@
 import { rentalDuration, type RentalDayOptions } from "@/lib/pricing/rentalPricing";
 import type { OfferLine } from "./offerMath";
-import { logisticsDescription } from "../../../../supabase/functions/_shared/offer-logistics";
+import { logisticsDescription, offerInsurancePeriod } from "../../../../supabase/functions/_shared/offer-logistics";
 
 // Legacy inquiry descriptions consisted only of a formatted rental period.
 const LEGACY_PERIOD = /^(?:Mietzeitraum:\s*)?(?:(?:Mo|Di|Mi|Do|Fr|Sa|So)\.?[,]?\s*)?\d{1,2}\.\s*\d{1,2}\.\s*\d{4}(?:[,]?\s*\d{1,2}:\d{2})?(?:\s*[–—-]\s*(?:(?:Mo|Di|Mi|Do|Fr|Sa|So)\.?[,]?\s*)?\d{1,2}\.\s*\d{1,2}\.\s*\d{4}(?:[,]?\s*\d{1,2}:\d{2})?)?$/;
@@ -22,13 +22,15 @@ export function calendarDescription(line: OfferLine): string {
 
 export function calendarDuration<T extends OfferLine>(line: T, opts: RentalDayOptions): T {
   if (!line.rental_start || !line.rental_end || line.protocol_charge_source) return line;
-  const days = rentalDuration({ date: line.rental_start }, { date: line.rental_end }, "kalendertage");
+  // Invalid/incomplete edits stay editable; final server validation rejects them.
+  let period: ReturnType<typeof offerInsurancePeriod> = null;
+  try { period = offerInsurancePeriod(line); } catch { /* intermediate input */ }
   return { ...line, duration: line.unit !== "pauschal" && line.unit !== "stueck" && Number(line.duration_override) > 0 ? line.duration_override : rentalDuration(
     { date: line.rental_start, time: line.rental_start_time },
     { date: line.rental_end, time: line.rental_end_time },
     line.unit ?? "kalendertage", opts,
-  ), addons: line.addons?.map((addon) => addon.basis === "full_period" && !addon.days_manual && !addon.manual
-    ? { ...addon, days, period_start: line.rental_start, period_end: line.rental_end }
+   ), addons: line.addons?.map((addon) => addon.basis === "full_period" && !addon.days_manual && !addon.manual && period
+    ? { ...addon, days: period.days, period_start: period.start, period_end: period.end }
     : addon) };
 }
 

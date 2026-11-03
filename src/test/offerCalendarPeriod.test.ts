@@ -25,11 +25,27 @@ describe("Calendar is the rental offer period source", () => {
     expect(withoutLegacyPeriod(saved)).toBe("");
     expect(calendarDescription({ ...line, description: saved })).toBe(saved);
   });
-  it("Friday to Saturday insurance is two days, independent of Monday collection", () => {
+  it("Friday to Saturday rent stays two days while Monday collection extends insurance to four", () => {
     const updated = recalcAddons(calendarDuration<OfferLine>({ ...line, rental_start: "2026-11-06", rental_end: "2026-11-07", collection_at: "2026-11-09T09:00", addons: [{ key: "insurance", label: "Versicherung", basis: "full_period", price_type: "per_unit", rate: 10, days: 4, amount: 40 }] }, {}));
     expect(updated.duration).toBe(2);
-    expect(updated.addons?.[0].days).toBe(2);
-    expect(updated.addons?.[0].amount).toBe(20);
+    expect(updated.addons?.[0].days).toBe(4);
+    expect(updated.addons?.[0].amount).toBe(40);
+    expect(updated.addons?.[0].period_end).toBe("2026-11-09");
+    const saved = normalizeInquiryOfferItems([{ ...updated, articles: 1, quantity: 2 }])[0];
+    expect(saved.addons?.[0].days).toBe(4);
+    expect(saved.addons?.[0].amount).toBe(40);
+    expect(() => normalizeInquiryOfferItems([{ ...updated, articles: 1, quantity: 2, addons: [{ ...updated.addons?.[0], days: 2, amount: 20 }] }])).toThrow(/Versicherungszeitraum/);
+  });
+  it("uses earlier delivery and later collection independently of billed rental days", () => {
+    const updated = calendarDuration<OfferLine>({ ...line, rental_start: "2026-11-06", rental_end: "2026-11-07", delivery_at: "2026-11-05T17:00", collection_at: "2026-11-09T09:00", duration_override: 1, addons: [{ key: "insurance", label: "Versicherung", basis: "full_period", amount: 0 }] }, {});
+    expect(updated.duration).toBe(1);
+    expect(updated.addons?.[0].days).toBe(5);
+    expect(updated.addons?.[0].period_start).toBe("2026-11-05");
+    expect(updated.addons?.[0].period_end).toBe("2026-11-09");
+  });
+  it("falls back to rental end when only delivery is specified", () => {
+    const updated = calendarDuration<OfferLine>({ ...line, rental_start: "2026-11-06", rental_end: "2026-11-07", delivery_at: "2026-11-05T17:00", addons: [{ key: "insurance", label: "Versicherung", basis: "full_period", amount: 0 }] }, {});
+    expect(updated.addons?.[0].days).toBe(3);
     expect(updated.addons?.[0].period_end).toBe("2026-11-07");
   });
   it("stores independent delivery and collection moments without changing rent", () => {

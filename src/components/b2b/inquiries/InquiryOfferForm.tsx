@@ -2054,8 +2054,8 @@ export function InquiryOfferForm({
               options={addonOptionsFor(item, inquiryType === "sales")}
               isSales={inquiryType === "sales"}
               disabled={disabled}
-              periodStart={eff.rental_start ?? checkStart ?? undefined}
-              periodEnd={eff.rental_end ?? checkEnd ?? undefined}
+              periodStart={eff.delivery_at?.slice(0, 10) || eff.rental_start || checkStart || undefined}
+              periodEnd={eff.collection_at?.slice(0, 10) || eff.rental_end || checkEnd || undefined}
               onChange={(addons) => patchItem(index, { addons })}
             />
           </div>
