@@ -50,6 +50,8 @@ Deno.serve(async req => {
       if (finishError) throw finishError;
       sent++;
     }
+    const { error: drainError } = await service.rpc("drain_sign_booking_processor");
+    if (drainError) throw drainError;
     return json({ sent });
   } catch (error) { console.error("sign-booking-worker:", error instanceof Error ? error.message : "failed"); return json({ error: "Processing failed" }, 500); }
 });
