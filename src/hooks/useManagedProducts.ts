@@ -85,7 +85,9 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
     imageAlts: row.image_alts?.length ? row.image_alts : undefined,
     videoUrl: row.video_url ?? undefined,
     videoUrls: row.video_urls?.length ? row.video_urls : undefined,
-    pricePerDay: row.price_per_day ?? undefined,
+    pricePerDay: row.category === "anhaenger" && row.price_per_day?.trim() && !/^\s*ab\b/i.test(row.price_per_day)
+      ? `ab ${row.price_per_day.trim()}`
+      : row.price_per_day ?? undefined,
     priceUnitLabel: row.price_unit_label ?? undefined,
     priceWeekend: row.price_weekend ?? undefined,
     pricePerMonth: row.price_per_month ?? undefined,

@@ -101,6 +101,16 @@ export function legacyDayPrice(scheme: PricingScheme, set: PriceSet): number | n
   return parsePriceInput(scheme === "event" ? set.price_base_1_3_cd : set.price_from_1_rd);
 }
 
+/** Rentware trailers retain their maintained starting price, not the Bau base rate. */
+export function legacyDayText(category: string, scheme: PricingScheme, set: PriceSet, existingText: string | null): string | null {
+  if (category === "anhaenger") {
+    const text = existingText?.trim();
+    return text ? (/^ab\b/i.test(text) ? text : `ab ${text}`) : null;
+  }
+  const text = formatDayPriceText(legacyDayPrice(scheme, set));
+  return text && /^\s*ab\b/i.test(existingText ?? "") ? `ab ${text}` : text;
+}
+
 /**
  * Automatische Staffelpreise bei Preisschema Bau: ab 3 Miettagen −10 %, ab 10 −20 %,
  * ab 20 −40 % vom Tagespreis „ab 1 Miettag", kaufmännisch auf volle Euro gerundet

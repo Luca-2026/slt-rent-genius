@@ -25,8 +25,8 @@ import { SortableRows } from "./SortableRows";
 import { orderSpecs } from "@/lib/specOrder";
 import { parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 import {
-  ManagedPriceFields, emptyPriceSet, rowToPriceSet, priceSetToColumns, legacyDayPrice,
-  formatDayPriceText, legacyWeekendText, legacyMonthText, basePriceRequired, isBasePriceMissing, applyBauTierAutofill, recalcBauTiers, type PriceSet, type PricingScheme,
+  ManagedPriceFields, emptyPriceSet, rowToPriceSet, priceSetToColumns, legacyDayText,
+  legacyWeekendText, legacyMonthText, basePriceRequired, isBasePriceMissing, applyBauTierAutofill, recalcBauTiers, type PriceSet, type PricingScheme,
 } from "./ManagedPriceFields";
 import { InsuranceTiersEditor, serializeAddonOptions, type InsuranceMeta } from "./InsuranceTiersEditor";
 
@@ -610,9 +610,9 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         features: form.features.filter((f) => f.trim()),
         tags: [],
         rental_notes: [],
-        price_per_day: formatDayPriceText(legacyDayPrice(form.pricing_scheme, form.prices)),
+        price_per_day: legacyDayText(form.category, form.pricing_scheme, form.prices, normalizePriceInput(form.price_per_day)),
         price_weekend: legacyWeekendText(form.prices, initial?.price_weekend_num, normalizePriceInput(form.price_weekend)),
-        price_per_month: legacyMonthText(form.pricing_scheme, form.prices, initial?.price_from_20_rd, normalizePriceInput(form.price_per_month)),
+        price_per_month: form.category === "anhaenger" ? normalizePriceInput(form.price_per_month) : legacyMonthText(form.pricing_scheme, form.prices, initial?.price_from_20_rd, normalizePriceInput(form.price_per_month)),
         min_rental_months: form.min_rental_months ? Number(form.min_rental_months) : null,
         deposit_amount: form.deposit_amount?.trim() ? Number(form.deposit_amount.replace(",", ".")) : null,
         weight_kg: form.weight_kg ? Number(form.weight_kg) : null,
