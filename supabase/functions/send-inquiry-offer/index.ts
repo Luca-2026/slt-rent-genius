@@ -140,7 +140,7 @@ Deno.serve(async (req: Request) => {
             start: { date: it.rental_start, time: it.rental_start_time },
             end: { date: it.rental_end, time: it.rental_end_time },
             unit,
-            opts: dayOpts,
+            opts: { use_saturday: it.use_saturday ?? dayOpts.use_saturday, use_sunday: it.use_sunday ?? dayOpts.use_sunday },
           });
           if (expected.kind !== "duration_only" && Math.abs(expected.unit_price - it.unit_price) > 0.01) {
             console.warn(`Preisprüfung Position ${idx + 1} (${it.product_slug}): gesendet ${it.unit_price}, berechnet ${expected.unit_price} (${expected.label})`);

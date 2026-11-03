@@ -77,6 +77,8 @@ export interface InquiryOfferItem extends OfferLogistics {
   quantity_unit?: "stk" | "m2" | "lfm";
   duration?: number;
   duration_override?: number;
+  use_saturday?: boolean;
+  use_sunday?: boolean;
   name_override?: string | null;
   description_override?: string | null;
   /** USt-Satz der Position: 19 = Leistung, 0 = nicht steuerbarer Schadensersatz (Standard 19). */
@@ -300,6 +302,8 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       quantity_unit: item.quantity_unit === "m2" || item.quantity_unit === "lfm" || item.quantity_unit === "stk" ? item.quantity_unit : undefined,
       duration: Number(item.duration) > 0 && Number(item.duration) <= 10000 ? Math.round(Number(item.duration) * 100) / 100 : undefined,
       duration_override: Number(item.duration_override) > 0 && Number(item.duration_override) <= 10000 ? Math.round(Number(item.duration_override) * 100) / 100 : undefined,
+      ...(typeof item.use_saturday === "boolean" ? { use_saturday: item.use_saturday } : {}),
+      ...(typeof item.use_sunday === "boolean" ? { use_sunday: item.use_sunday } : {}),
       name_override: typeof item.name_override === "string" && item.name_override.trim() ? item.name_override.trim().slice(0, 200) : undefined,
       description_override: typeof item.description_override === "string" && item.description_override.trim() ? item.description_override.trim().slice(0, 500) : undefined,
       vat_rate: Number(item.vat_rate) === 0 ? 0 : undefined,

@@ -3,11 +3,28 @@ import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLe
 import { recalcAddons } from "@/components/b2b/inquiries/OfferAddonSection";
 import { normalizeInquiryOfferItems } from "../../supabase/functions/_shared/inquiry-offer-math";
 import { lineTotal, type OfferLine } from "@/components/b2b/inquiries/offerMath";
+import { requestedItemsOf } from "@/components/b2b/inquiries/types";
 
 const line: OfferLine = { product_name: "Test", quantity: 1, duration: 5, unit: "miettage", unit_price: 5, discount_percent: 0,
   description: "Mo, 16.11.2026, 09:00 – Fr, 20.11.2026, 16:30",
   rental_start: "2026-11-23", rental_end: "2026-11-24", rental_start_time: "09:00", rental_end_time: "16:30" };
 describe("Calendar is the rental offer period source", () => {
+  it("counts both requested weekend days for HYPW7X: 21 instead of 15 rental days", () => {
+    const requested = requestedItemsOf({ product_name: "20 kVA Aggregat", quantity: 1, requested_items: [{ product_name: "20 kVA Aggregat", quantity: 1, use_saturday: true, use_sunday: true }] })[0];
+    const actual = { ...line, rental_start: "2026-11-04", rental_end: "2026-11-24", rental_start_time: "07:00", rental_end_time: "18:00" };
+    expect(calendarDuration(actual, requested).duration).toBe(21);
+    expect(calendarDuration(actual, {}).duration).toBe(15);
+  });
+  it("preserves per-line true and explicit false weekend use through offer normalization", () => {
+    const saved = normalizeInquiryOfferItems([{ ...line, use_saturday: true, use_sunday: false }])[0];
+    expect(saved.use_saturday).toBe(true);
+    expect(saved.use_sunday).toBe(false);
+  });
+  it("leaves missing legacy weekend flags undefined so inquiry defaults can apply", () => {
+    const requested = requestedItemsOf({ product_name: "20 kVA Aggregat", quantity: 1, requested_items: [{ product_name: "20 kVA Aggregat" }] })[0];
+    expect(requested.use_saturday).toBeUndefined();
+    expect(requested.use_sunday).toBeUndefined();
+  });
   it("allows manually billed days without changing the HYPW7X calendar or insurance period", () => {
     const updated = calendarDuration<OfferLine>({ ...line, rental_start: "2026-11-04", rental_end: "2026-11-24", rental_start_time: "07:00", rental_end_time: "18:00", duration_override: 10,
       unit_price: 51, addons: [{ key: "insurance", label: "Insurance", basis: "full_period", days: 10, amount: 0 }] }, {});

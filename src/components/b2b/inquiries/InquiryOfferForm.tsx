@@ -353,6 +353,8 @@ interface Props {
     min_months?: number | null;
     minimum_duration?: number | null;
     open_ended_unit?: OpenEndedUnit;
+    use_saturday?: boolean;
+    use_sunday?: boolean;
     /** Paket 3b – fehlen bei alten Angeboten. */
     groups?: OfferGroup[];
     extra_fields?: OfferExtraFields;
@@ -486,8 +488,8 @@ export function InquiryOfferForm({
   /** Paket 2: Staffel-/Dauerrechnung nur im Mietangebot (Rechnungen übernehmen die Angebotswerte). */
   const pricingActive = inquiryType === "rental" && !isInvoice;
   /** Einsatz am Samstag/Sonntag (Bau ab 5 Miettagen) – im offer_payload als use_saturday/use_sunday. */
-  const [useSaturday, setUseSaturday] = useState<boolean>(!!(draft?.useSaturday ?? (defaultMeta as { use_saturday?: boolean } | undefined)?.use_saturday));
-  const [useSunday, setUseSunday] = useState<boolean>(!!(draft?.useSunday ?? (defaultMeta as { use_sunday?: boolean } | undefined)?.use_sunday));
+  const [useSaturday, setUseSaturday] = useState<boolean>(!!(draft?.items?.[0]?.use_saturday ?? draft?.useSaturday ?? defaultItems[0]?.use_saturday ?? defaultMeta?.use_saturday));
+  const [useSunday, setUseSunday] = useState<boolean>(!!(draft?.items?.[0]?.use_sunday ?? draft?.useSunday ?? defaultItems[0]?.use_sunday ?? defaultMeta?.use_sunday));
   const dayOpts: RentalDayOptions = { use_saturday: useSaturday, use_sunday: useSunday };
   /** Bereits erhaltene (Teil-)Zahlungen – werden auf der Rechnung abgezogen. */
   const [payments, setPayments] = useState<OfferPayment[]>(
@@ -684,8 +686,8 @@ export function InquiryOfferForm({
     setOpenEnded(canOpenEnded && !!d.openEnded);
     setOpenEndedUnit(normalizeOpenEndedUnit(d.openEndedUnit));
     setMinMonths(normalizeOpenEndedDuration(d.minMonths ?? 1, normalizeOpenEndedUnit(d.openEndedUnit)));
-    setUseSaturday(!!d.useSaturday);
-    setUseSunday(!!d.useSunday);
+    setUseSaturday(!!(d.items?.[0]?.use_saturday ?? d.useSaturday ?? defaultItems[0]?.use_saturday ?? defaultMeta?.use_saturday));
+    setUseSunday(!!(d.items?.[0]?.use_sunday ?? d.useSunday ?? defaultItems[0]?.use_sunday ?? defaultMeta?.use_sunday));
     setGroups(Array.isArray(d.groups) ? (d.groups as OfferGroup[]) : []);
     setExtraFields((d.extraFields as Partial<Record<keyof OfferExtraFields, string>>) ?? {});
     setOrderType(d.orderType === "delivery" ? "delivery" : "pickup");
@@ -822,8 +824,8 @@ export function InquiryOfferForm({
     setOpenEnded(canOpenEnded && !!defaultMeta?.open_ended);
     setOpenEndedUnit(normalizeOpenEndedUnit(defaultMeta?.open_ended_unit));
     setMinMonths(normalizeOpenEndedDuration(defaultMeta?.minimum_duration ?? defaultMeta?.min_months ?? 1, normalizeOpenEndedUnit(defaultMeta?.open_ended_unit)));
-    setUseSaturday(false);
-    setUseSunday(false);
+    setUseSaturday(!!(defaultItems[0]?.use_saturday ?? defaultMeta?.use_saturday));
+    setUseSunday(!!(defaultItems[0]?.use_sunday ?? defaultMeta?.use_sunday));
     setGroups(defaultMeta?.groups ?? []);
     setExtraFields(defaultMeta?.extra_fields ?? {});
     setOrderType(nextOrderType(defaultMeta?.order_type ?? "pickup", defaultCosts?.delivery_cost_delivery ?? 0, defaultCosts?.delivery_cost_return ?? 0));
@@ -975,7 +977,13 @@ export function InquiryOfferForm({
   const changeDayOpts = (next: RentalDayOptions) => {
     setUseSaturday(!!next.use_saturday);
     setUseSunday(!!next.use_sunday);
-    setItems((prev) => prev.map((item, i) => applyRentalPricing(applyInheritedPeriod(item, i, prev[0]), next)));
+    // A staff change is explicit: replace the selected flag on each line, rather
+    // than letting the original per-line request silently override the checkbox.
+    const changed = {
+      ...(next.use_saturday !== useSaturday ? { use_saturday: !!next.use_saturday } : {}),
+      ...(next.use_sunday !== useSunday ? { use_sunday: !!next.use_sunday } : {}),
+    };
+    setItems((prev) => prev.map((item, i) => applyRentalPricing({ ...applyInheritedPeriod(item, i, prev[0]), ...changed }, next)));
   };
   const showDayBoxes =
     pricingActive &&
