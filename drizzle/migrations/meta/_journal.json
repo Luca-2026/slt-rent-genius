@@ -757,6 +757,13 @@
       "when": 1793672270542,
       "tag": "0107_sign_booking_payment_alias_fix",
       "breakpoints": true
+    },
+    {
+      "idx": 108,
+      "version": "7",
+      "when": 1793672725522,
+      "tag": "0108_sign_booking_operational_tasks",
+      "breakpoints": true
     }
   ]
 }

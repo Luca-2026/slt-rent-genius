@@ -5314,6 +5314,7 @@ export type Database = {
           is_done: boolean
           list_id: string
           note: string | null
+          sign_step: string | null
           sort_order: number
           title: string
           updated_at: string
@@ -5328,6 +5329,7 @@ export type Database = {
           is_done?: boolean
           list_id: string
           note?: string | null
+          sign_step?: string | null
           sort_order?: number
           title: string
           updated_at?: string
@@ -5342,6 +5344,7 @@ export type Database = {
           is_done?: boolean
           list_id?: string
           note?: string | null
+          sign_step?: string | null
           sort_order?: number
           title?: string
           updated_at?: string
@@ -5375,6 +5378,7 @@ export type Database = {
           location: string | null
           priority: string
           sent_at: string | null
+          sign_booking_id: string | null
           status: string
           title: string
           updated_at: string
@@ -5397,6 +5401,7 @@ export type Database = {
           location?: string | null
           priority?: string
           sent_at?: string | null
+          sign_booking_id?: string | null
           status?: string
           title: string
           updated_at?: string
@@ -5419,11 +5424,20 @@ export type Database = {
           location?: string | null
           priority?: string
           sent_at?: string | null
+          sign_booking_id?: string | null
           status?: string
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "staff_todo_lists_sign_booking_id_fkey"
+            columns: ["sign_booking_id"]
+            isOneToOne: false
+            referencedRelation: "sign_bookings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       stripe_webhook_events: {
         Row: {
