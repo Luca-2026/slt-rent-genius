@@ -43,11 +43,24 @@ describe("Rundum-Sorglos-Preis bleibt nach Adressauswahl erhalten", () => {
     const cleared = { ...base, sign_setup_gross_cents: undefined, sign_setup_quote_key: undefined };
     const patch = signSetupQuotePatch(cleared, { key: base.sign_setup_quote_key ?? "", cents: 19900 });
     expect(patch).toEqual({ sign_setup_quote_key: base.sign_setup_quote_key, sign_setup_gross_cents: 19900 });
-    expect(displayPrice(signCartRentalNet(config, { ...cleared, ...patch }), "private")).toBe("477,60 €");
+    expect(displayPrice(signCartRentalNet(config, { ...cleared, ...patch }), "private")).toBe(euro(47760));
   });
   it("ändert nichts, wenn der Preis schon stimmt (keine Endlosschleife)", () => {
     const base = item("sorglos", 24, 1, 19900);
     expect(signSetupQuotePatch(base, { key: base.sign_setup_quote_key ?? "", cents: 19900 })).toBeNull();
     expect(signSetupQuotePatch(item("standard", 5, 1), { key: "x", cents: 19900 })).toBeNull();
+  });
+});
+
+import { cartQuoteTotal } from "@/lib/rentalCart";
+describe("Gesamtsumme im Warenkorb = Summe der Positionen", () => {
+  it("rundet die Gesamtsumme erst nach der Umsatzsteuer (24 Tage Sorglos: 477,60 €, nicht 477,59 €)", () => {
+    const mismatches: string[] = [];
+    for (const base of [4900, 19900, 29900]) for (let days = 1; days <= 100; days++) for (let quantity = 1; quantity <= 10; quantity++) {
+      const net = signCartRentalNet(config, item(base === 4900 ? "standard" : "sorglos", days, quantity, base));
+      const total = displayPrice(cartQuoteTotal([{ rental_net: net, addons: [] }]), "private");
+      if (total !== euro((signRentalGrossCents(base, days) ?? 0) * quantity)) mismatches.push(`${base}/${days}/${quantity}: ${total}`);
+    }
+    expect(mismatches).toEqual([]);
   });
 });
