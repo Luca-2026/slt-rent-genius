@@ -8,7 +8,7 @@ export function readCartDraft<T extends object>(key: string, requestId: string, 
     const stored = raw ? JSON.parse(raw) : cache.get(storageKey);
     if (stored?.expiresAt === expiresAt && expiresAt > Date.now() && stored.value && typeof stored.value === "object") {
       // Only restore expected fields with matching types; never restore consent.
-      return Object.fromEntries(Object.entries(initial).map(([field, fallback]) => [field, typeof stored.value[field] === typeof fallback ? stored.value[field] : fallback])) as T;
+      return Object.fromEntries(Object.entries(initial).map(([field, fallback]) => [field, field === "pickupConfirmed" ? false : typeof stored.value[field] === typeof fallback ? stored.value[field] : fallback])) as T;
     }
     localStorage.removeItem(storageKey);
   } catch { /* Private/restricted browsers still retain the current page's state. */
