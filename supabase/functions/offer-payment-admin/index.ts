@@ -3,7 +3,7 @@ import { codedSubject } from "../_shared/order-code.ts";
  * Mitarbeiter-Funktionen zur Online-Zahlung (Bearer-Auth, Rollenprüfung serverseitig):
  *  - create_link:     Zahlungslink zu einem bereits versendeten Angebot erzeugen (alle Mitarbeiter)
  *  - refund_deposit:  Kaution ganz oder teilweise zurück aufs ursprüngliche Zahlungsmittel
- *                     (nur Admin und Niederlassungsleiter; Standortmitarbeiter nicht)
+ *                     (Admin, Niederlassungsleitung und Standortmitarbeiter; Gutschrift-Erstattungen nur Admin/Niederlassungsleitung)
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { z } from "https://esm.sh/zod@3.23.8";
@@ -103,8 +103,11 @@ Deno.serve(async (req: Request) => {
       .from("user_roles")
       .select("role")
       .eq("user_id", user.id)
-      .in("role", ["admin", "niederlassungsleiter"]);
-    if (!roleRows || roleRows.length === 0) return json({ error: "Keine Berechtigung für Kautionserstattungen" }, 403);
+      .in("role", ["admin", "niederlassungsleiter", "standort_mitarbeiter"]);
+    const roles = (roleRows ?? []).map((row: { role: string }) => row.role);
+    if (!roles.length) return json({ error: "Keine Berechtigung für Kautionserstattungen" }, 403);
+    const isCreditAction = body.action === "refund_credit_note" || body.action === "credit_refund_info";
+    if (isCreditAction && !roles.some(role => role === "admin" || role === "niederlassungsleiter")) return json({ error: "Keine Berechtigung für Gutschrift-Erstattungen" }, 403);
 
     if (body.action === "refund_credit_note" || body.action === "credit_refund_info") {
       try {
