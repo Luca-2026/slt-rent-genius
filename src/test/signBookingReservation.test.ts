@@ -23,6 +23,7 @@ const schema=readFileSync("drizzle/migrations/0103_sign_booking_schema.sql","utf
 for(const table of ['sign_bookings','sign_permit_uploads']) { const start=schema.indexOf(`CREATE TABLE public.${table}`); await db.exec(schema.slice(start,schema.indexOf(');',start)+2)); }
 await db.exec(functionOnly(reserveSql,'reserve_sign_booking')+functionOnly(reserveSql,'expire_sign_bookings')+functionOnly(paymentSql,'sign_booking_payment_state')+functionOnly(capacitySql,'guard_sign_inventory'));
 await db.exec(readFileSync('drizzle/migrations/0108_sign_booking_operational_tasks.sql','utf8'));
+await db.exec(readFileSync('drizzle/migrations/0109_sign_task_list_completion_guard.sql','utf8'));
 await db.exec(`CREATE TRIGGER payments AFTER UPDATE OF payments ON rental_inquiries FOR EACH ROW EXECUTE FUNCTION sign_booking_payment_state(); CREATE TRIGGER inventory BEFORE INSERT OR UPDATE OF status,offer_payload,quantity,start_date,end_date,location ON rental_inquiries FOR EACH ROW EXECUTE FUNCTION guard_sign_inventory();`);
 await db.exec(`INSERT INTO b2b_managed_products(slug,name,category,is_published,quantities,direct_booking_config) VALUES('halteverbotsschilder-set','Halteverbotsschilder-Set','absperrtechnik',true,'{"bonn":10,"krefeld":10}','{"enabled":true,"live_enabled":false,"standardGrossCents":4900,"sorglosGrossCents":19900,"depositCents":10000,"maxRentalDays":10}');`);
 },30000);
@@ -57,6 +58,7 @@ it.each(['bonn','krefeld'])('creates one setup checklist at %s and enforces perm
  expect(lists.rows).toHaveLength(1); expect(lists.rows[0]?.location).toBe(location); expect(lists.rows[0]?.status).toBe('sent');
  const list=lists.rows[0]; if(!list) throw new Error('Missing task');
  expect((await db.query('SELECT * FROM staff_todo_items WHERE list_id=$1',[list.id])).rows).toHaveLength(3);
+ await expect(db.query("UPDATE staff_todo_lists SET status='done' WHERE id=$1",[list.id])).rejects.toThrow('Genehmigungsprüfung');
  await expect(db.query("UPDATE staff_todo_items SET is_done=true WHERE list_id=$1 AND sign_step='setup'",[list.id])).rejects.toThrow('Genehmigungsprüfung');
  await db.query("UPDATE staff_todo_items SET is_done=true WHERE list_id=$1 AND sign_step='permit'",[list.id]);
  await expect(db.query("UPDATE staff_todo_items SET is_done=true WHERE list_id=$1 AND sign_step='setup'",[list.id])).rejects.toThrow('Zahlungseingang');
