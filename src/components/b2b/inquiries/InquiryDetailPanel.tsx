@@ -167,6 +167,8 @@ export function offerPayloadToLines(payload: unknown): {
     discount_percent: Number(raw.discount_percent) || 0,
     rental_start: typeof raw.rental_start === "string" ? raw.rental_start : undefined,
     rental_end: typeof raw.rental_end === "string" ? raw.rental_end : undefined,
+    delivery_at: typeof raw.delivery_at === "string" ? raw.delivery_at : undefined,
+    collection_at: typeof raw.collection_at === "string" ? raw.collection_at : undefined,
     ...(typeof raw.rental_start_time === "string" ? { rental_start_time: raw.rental_start_time } : {}),
     ...(typeof raw.rental_end_time === "string" ? { rental_end_time: raw.rental_end_time } : {}),
     ...(typeof raw.product_slug === "string" ? { product_slug: raw.product_slug } : {}),

@@ -1,5 +1,6 @@
 import type { OfferUnit } from "@/lib/offerUnits";
 import type { AddonBasis, AddonPriceType } from "@/lib/addonCalc";
+import type { OfferLogistics } from "../../../../supabase/functions/_shared/offer-logistics";
 
 /**
  * Frontend mirror of the offer math used by the `send-inquiry-offer`
@@ -36,7 +37,7 @@ export interface OfferLineAddon {
   surcharge_percent?: number;
 }
 
-export interface OfferLine {
+export interface OfferLine extends OfferLogistics {
   product_name: string;
   description?: string;
   /** Anzahl der Artikel */
