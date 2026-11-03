@@ -35,3 +35,19 @@ describe("Schilderpreise: Warenkorb = Abschluss = Datenbank", () => {
     expect((signRentalGrossCents(4900, 10) ?? 0) + 500 + 10000).toBe(15400);
   });
 });
+
+import { signSetupQuotePatch } from "@/lib/signCartPackage";
+describe("Rundum-Sorglos-Preis bleibt nach Adressauswahl erhalten", () => {
+  it("stellt den Aufstellpreis wieder her, wenn die Adresse gleich bleibt, der gespeicherte Preis aber gelöscht wurde", () => {
+    const base = item("sorglos", 24, 1, 19900);
+    const cleared = { ...base, sign_setup_gross_cents: undefined, sign_setup_quote_key: undefined };
+    const patch = signSetupQuotePatch(cleared, { key: base.sign_setup_quote_key ?? "", cents: 19900 });
+    expect(patch).toEqual({ sign_setup_quote_key: base.sign_setup_quote_key, sign_setup_gross_cents: 19900 });
+    expect(displayPrice(signCartRentalNet(config, { ...cleared, ...patch }), "private")).toBe("477,60 €");
+  });
+  it("ändert nichts, wenn der Preis schon stimmt (keine Endlosschleife)", () => {
+    const base = item("sorglos", 24, 1, 19900);
+    expect(signSetupQuotePatch(base, { key: base.sign_setup_quote_key ?? "", cents: 19900 })).toBeNull();
+    expect(signSetupQuotePatch(item("standard", 5, 1), { key: "x", cents: 19900 })).toBeNull();
+  });
+});
