@@ -1,5 +1,8 @@
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { SIGN_PRODUCT_SLUG, signLastRentalDate, validSignRentalRange } from "../../../supabase/functions/_shared/sign-direct-booking";
 import { de } from "date-fns/locale";
-import { format, startOfDay } from "date-fns";
+import { format, startOfDay, startOfMonth, endOfMonth } from "date-fns";
 import { Minus, Plus, CalendarDays, BadgePercent } from "lucide-react";
 import { addDays } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
@@ -31,6 +34,27 @@ export function nextWeekendStart(now: Date): Date {
 }
 
 export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: { edit: RentalCartItem; patch: (next: Partial<RentalCartItem>) => void; weekendPrice: string | null; weekendActive: boolean }) {
+  const isSign = edit.product_slug === SIGN_PRODUCT_SLUG;
+  const [month, setMonth] = useState(new Date());
+  const [availability, setAvailability] = useState<Record<string, number>>({});
+  const [availabilityError, setAvailabilityError] = useState("");
+  const [availabilityLoading, setAvailabilityLoading] = useState(false);
+  useEffect(() => {
+    if (!isSign) return;
+    let active = true;
+    const read = async () => {
+      setAvailabilityLoading(true);
+      const { data, error } = await supabase.functions.invoke("sign-booking", { body: { action: "availability", location: edit.location, from: toIso(startOfMonth(month)), to: toIso(endOfMonth(addDays(endOfMonth(month), 1))) } });
+      if (!active) return;
+      setAvailabilityLoading(false);
+      setAvailabilityError(error || !Array.isArray(data?.days) ? "Belegung derzeit nicht verfügbar. Bitte erneut versuchen." : "");
+      setAvailability(Object.fromEntries((data?.days ?? []).map((day: { date: string; remaining: number }) => [day.date, day.remaining])));
+    };
+    void read(); const timer = window.setInterval(read, 60000);
+    return () => { active = false; clearInterval(timer); };
+  }, [isSign, edit.location, month]);
+  const lastDate = isSign ? signLastRentalDate(edit.start_date) : null;
+  const blocked = (day: Date) => isSign && (availability[toIso(day)] == null || availability[toIso(day)] < edit.quantity);
   const info = getLocationInfoById(edit.location);
   const flexible = edit.location === "muelheim";
   const windowFor = (iso: string) => flexible && validCalendarDate(iso) && fromIso(iso).getDay() !== 0 ? { open: "07:00", close: "18:00" } : pickupWindowForDate(info, iso);
@@ -48,41 +72,49 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: {
       <p className="mt-1 font-semibold">{validCalendarDate(date) ? format(fromIso(date), "EEE, dd.MM.yyyy", { locale: de }) : "Im Kalender wählen"}</p>
       {validCalendarDate(date) && (win ? <Select value={slots.includes(time) ? time : undefined} onValueChange={value => patch(prefix === "start" ? { start_time: value } : { end_time: value })}>
         <SelectTrigger className="mt-2 h-10 bg-background" aria-label={`${label} Uhrzeit`}><SelectValue placeholder="Uhrzeit wählen" /></SelectTrigger>
-        <SelectContent className="max-h-64">{slots.map(slot => { const tariff = ((prefix === "start" && fromIso(date).getDay() === 5 && slot === "16:00") || (prefix === "end" && fromIso(date).getDay() === 1 && slot === "09:30")); return <SelectItem key={slot} value={slot} className={tariff ? "bg-accent/15 font-semibold" : undefined}>{slot} Uhr{tariff ? (prefix === "start" ? " · Wochenendtarif ab hier" : " · Wochenendtarif bis hier") : ""}</SelectItem>; })}</SelectContent>
+        <SelectContent className="max-h-64">{slots.map(slot => { const tariff = !isSign && ((prefix === "start" && fromIso(date).getDay() === 5 && slot === "16:00") || (prefix === "end" && fromIso(date).getDay() === 1 && slot === "09:30")); return <SelectItem key={slot} value={slot} className={tariff ? "bg-accent/15 font-semibold" : undefined}>{slot} Uhr{tariff ? (prefix === "start" ? " · Wochenendtarif ab hier" : " · Wochenendtarif bis hier") : ""}</SelectItem>; })}</SelectContent>
       </Select> : <p className="mt-2 text-sm text-destructive">An diesem Tag geschlossen</p>)}
-      {win && ((prefix === "start" && fromIso(date).getDay() === 5) || (prefix === "end" && fromIso(date).getDay() === 1)) && <p className="mt-1 text-xs font-semibold text-accent-foreground"><span className="rounded bg-accent/20 px-1.5 py-0.5">Wochenendtarif: {prefix === "start" ? "Abholung ab 16:00 Uhr" : "Rückgabe bis 09:30 Uhr"}</span></p>}
+      {!isSign && win && ((prefix === "start" && fromIso(date).getDay() === 5) || (prefix === "end" && fromIso(date).getDay() === 1)) && <p className="mt-1 text-xs font-semibold text-accent-foreground"><span className="rounded bg-accent/20 px-1.5 py-0.5">Wochenendtarif: {prefix === "start" ? "Abholung ab 16:00 Uhr" : "Rückgabe bis 09:30 Uhr"}</span></p>}
       {win && <p className="mt-1 text-xs text-muted-foreground">{flexible ? "Nach Vereinbarung" : `Geöffnet ${win.open}–${win.close} Uhr`}</p>}
     </div>;
   };
 
   return <div className="space-y-4">
-    {<div className={`grid grid-cols-[auto_1fr] items-start gap-x-3 gap-y-2 rounded-md border p-3 ${weekendActive ? "border-accent bg-accent/15" : "border-accent/60 bg-accent/5"}`}>
+    {!isSign && <div className={`grid grid-cols-[auto_1fr] items-start gap-x-3 gap-y-2 rounded-md border p-3 ${weekendActive ? "border-accent bg-accent/15" : "border-accent/60 bg-accent/5"}`}>
       <BadgePercent className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
       <div className="min-w-0 text-sm"><p className="font-semibold">{weekendActive ? "Wochenendtarif aktiv" : (weekendPrice ? `Wochenendtarif ${weekendPrice}` : "Wochenendtarif · Preis im Angebot")}</p><p className="text-muted-foreground">Abholung Fr ab 16:00, Rückgabe Mo bis 09:30 – Abholtag Freitag, Rückgabetag Montag.</p></div>
       {!weekendActive && <Button type="button" size="sm" variant="outline" className="col-span-2 w-full border-accent sm:col-span-1 sm:col-start-2 sm:w-fit" onClick={() => { const fri = nextWeekendStart(new Date()); patch({ start_date: toIso(fri), start_time: "16:00", end_date: toIso(addDays(fri, 3)), end_time: "09:30" }); }}>Nächstes Wochenende wählen</Button>}
     </div>}
+    {isSign && <p role="status" className="text-sm font-semibold">1–10 Tage zum Festpreis, kein Wochenendtarif.{lastDate && <> Rückgabe spätestens am {format(fromIso(lastDate), "dd.MM.yyyy")} (10. Tag).</>}</p>}
+    {isSign && availabilityLoading && <p className="text-sm text-muted-foreground">Belegung wird geprüft …</p>}
+    {availabilityError && <p role="alert" className="text-sm text-destructive">{availabilityError}</p>}
     <div className="rounded-md border border-border">
       <p className="flex items-center gap-2 border-b border-border px-3 py-2 text-sm font-semibold"><CalendarDays className="h-4 w-4 text-primary" />{!from ? "Abholtag wählen" : !to ? "Rückgabetag wählen" : "Mietzeitraum"}</p>
-      <Calendar mode="range" locale={de} modifiers={{ available: day => day >= today && (!!windowFor(toIso(day))), pickupDay: day => toIso(day) === edit.start_date, returnDay: day => toIso(day) === edit.end_date }} modifiersClassNames={{ available: "rental-day-available", pickupDay: "rental-day-pickup", returnDay: "rental-day-return" }} weekStartsOn={1} numberOfMonths={1} selected={from ? { from, to } : undefined}
-        disabled={day => day < today || (!flexible && !pickupWindowForDate(info, toIso(day)))}
+      <Calendar mode="range" locale={de} month={month} onMonthChange={setMonth} modifiers={{ available: day => day >= today && (!!windowFor(toIso(day))) && !blocked(day), full: day => isSign && availability[toIso(day)] != null && availability[toIso(day)] < edit.quantity, limit: day => isSign && toIso(day) === lastDate, packageDay: day => isSign && !!lastDate && toIso(day) >= edit.start_date && toIso(day) <= lastDate, pickupDay: day => toIso(day) === edit.start_date, returnDay: day => toIso(day) === edit.end_date }} modifiersClassNames={{ available: "rental-day-available", full: "rental-day-full", limit: "rental-day-limit", packageDay: "rental-day-package", pickupDay: "rental-day-pickup", returnDay: "rental-day-return" }} weekStartsOn={1} numberOfMonths={1} selected={from ? { from, to } : undefined}
+        disabled={day => day < today || (!flexible && !pickupWindowForDate(info, toIso(day))) || blocked(day) || (isSign && !!from && !to && !!lastDate && toIso(day) > lastDate)}
         onSelect={range => {
           const start = range?.from ? toIso(range.from) : "";
           const end = range?.to ? toIso(range.to) : "";
+          if (isSign && start && end) {
+            if (!validSignRentalRange(start, end)) return;
+            for (let day = fromIso(start); toIso(day) <= end; day = addDays(day, 1)) if (blocked(day)) return;
+          }
           patch({ start_date: start, end_date: end, ...(start !== edit.start_date ? { start_time: "" } : {}), ...(end !== edit.end_date ? { end_time: "" } : {}) });
         }}
         className="mx-auto w-fit"
         classNames={{ cell: "h-10 w-10 sm:h-11 sm:w-11 text-center text-sm p-0 relative [&:has([aria-selected])]:bg-primary/10 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md [&:has(.day-range-start)]:rounded-l-md [&:has(.day-range-end)]:rounded-r-md", day: "h-10 w-10 sm:h-11 sm:w-11 p-0 font-normal rounded-md hover:bg-muted aria-selected:opacity-100", day_today: "font-bold underline underline-offset-4", day_range_start: "day-range-start", day_range_middle: "aria-selected:bg-transparent aria-selected:text-foreground", head_cell: "text-muted-foreground rounded-md w-10 sm:w-11 font-normal text-[0.8rem]" }} />
     </div>
-    <div className="flex flex-wrap gap-2 text-xs"><span className="rental-available-legend rounded px-2 py-1">Verfügbar · vorbehaltlich Bestätigung</span><span className="rounded border border-border px-2 py-1"><b>Ab</b> = Abholtag · <b>Rück</b> = Rückgabetag</span>{<span className="rounded bg-accent/15 px-2 py-1">Wochenendtarif: Abholung Fr ab 16:00 · Rückgabe Mo bis 09:30</span>}</div>
+    <div className="flex flex-wrap gap-2 text-xs"><span className="rental-available-legend rounded px-2 py-1">Verfügbar · vorbehaltlich Bestätigung</span><span className="rounded border border-border px-2 py-1"><b>Ab</b> = Abholtag · <b>Rück</b> = Rückgabetag</span>{!isSign && <span className="rounded bg-accent/15 px-2 py-1">Wochenendtarif: Abholung Fr ab 16:00 · Rückgabe Mo bis 09:30</span>}</div>
+    {isSign && <div className="flex flex-wrap gap-2 text-xs"><span className="rounded bg-destructive/10 text-destructive px-2 py-1">Nicht verfügbar / zu wenige Sets</span><span className="rounded border border-accent px-2 py-1">Markiert: 1–10 Tage ab Abholung</span></div>}
     <div className="grid grid-cols-2 gap-3">{field("start", "Abholung")}{field("end", "Rückgabe")}</div>
     <div className="flex items-center justify-between rounded-md border border-border p-3">
       <span className="text-sm font-semibold">Anzahl</span>
       <div className="flex items-center gap-2">
         <Button type="button" size="icon" variant="outline" className="h-9 w-9" aria-label="Anzahl verringern" disabled={edit.quantity <= 1} onClick={() => patch({ quantity: Math.max(1, edit.quantity - 1) })}><Minus className="h-4 w-4" /></Button>
         <span className="w-8 text-center font-semibold" aria-live="polite">{edit.quantity}</span>
-        <Button type="button" size="icon" variant="outline" className="h-9 w-9" aria-label="Anzahl erhöhen" disabled={edit.quantity >= 9999} onClick={() => patch({ quantity: Math.min(9999, edit.quantity + 1) })}><Plus className="h-4 w-4" /></Button>
+        <Button type="button" size="icon" variant="outline" className="h-9 w-9" aria-label="Anzahl erhöhen" disabled={edit.quantity >= (isSign ? 10 : 9999)} onClick={() => patch({ quantity: Math.min(isSign ? 10 : 9999, edit.quantity + 1) })}><Plus className="h-4 w-4" /></Button>
       </div>
     </div>
-    <div className="flex flex-wrap gap-x-5 gap-y-2">{([['use_saturday', 'Samstag wird genutzt'], ['use_sunday', 'Sonntag wird genutzt']] as const).map(([key, label]) => <label key={key} className="flex items-center gap-2 text-sm"><Checkbox checked={edit[key]} onCheckedChange={value => patch({ [key]: value === true })} />{label}</label>)}</div>
+    {!isSign && <div className="flex flex-wrap gap-x-5 gap-y-2">{([['use_saturday', 'Samstag wird genutzt'], ['use_sunday', 'Sonntag wird genutzt']] as const).map(([key, label]) => <label key={key} className="flex items-center gap-2 text-sm"><Checkbox checked={edit[key]} onCheckedChange={value => patch({ [key]: value === true })} />{label}</label>)}</div>}
   </div>;
 }
