@@ -4,3 +4,4 @@
 - Cart continuation and pickup confirmation use rentalCart helpers: category navigation retains the first item's pickup location, and final public submission requires explicit self-pickup confirmation when delivery is not selected.
 - Deposits: quote before CMS/no VAT. Signs: signRentalGrossCents matches SQL duration pricing; cart persists address/quote, changes invalidate price; lead/terms enforced server-side to prevent drift.
 - CartAccessories resolves only curated catalog accessories before insurance; DeliveryAddressFields uses protected geo-address Places lookups for suggestions and postal completion.
+- Checkout contact validation shares booking-contact with the server; useCartDraft preserves contact inputs only within the original cart deadline/request, with in-page fallback for blocked storage; consent must be confirmed again.
