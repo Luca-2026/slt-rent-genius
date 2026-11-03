@@ -31,7 +31,7 @@ await db.exec(`INSERT INTO b2b_managed_products(slug,name,category,is_published,
 },30000);
 afterAll(()=>db.close());
 const base={location:'bonn',package:'standard',quantity:1,start_date:'2027-03-01',end_date:'2027-03-05',start_time:'10:00',end_time:'10:00',name:'Luca Sandhoff',email:'luca@sandhoff.org',phone:'021514179904',street:'Anrather Straße 291',postalCode:'47807',city:'Krefeld',customerKind:'private',termsAccepted:true,pickupConfirmed:true,municipalFeesAccepted:true,zoneStreet:'Anrather Straße 291',zonePostalCode:'47807',zoneCity:'Krefeld',message:'Isolated test'};
-async function reserve(body: typeof base, request=crypto.randomUUID()) { const r=await db.query<{b: {id:string;inquiry_id:string}}>('SELECT reserve_sign_booking($1,$2,$3::jsonb,NULL) AS b',[request,crypto.randomUUID(),JSON.stringify(body)]); return r.rows[0]?.b; }
+async function reserve(body: typeof base & { additionalSigns?: { slug: string; quantity: number }[] }, request=crypto.randomUUID()) { const r=await db.query<{b: {id:string;inquiry_id:string}}>('SELECT reserve_sign_booking($1,$2,$3::jsonb,NULL) AS b',[request,crypto.randomUUID(),JSON.stringify(body)]); return r.rows[0]?.b; }
 describe('Complete isolated sign reservations',()=>{
 it('stores selected CMS signs at five euros each without extra deposit and requires full payment',async()=>{
  await db.exec(`UPDATE b2b_managed_products SET direct_booking_config=direct_booking_config||'{"additionalSignGrossCents":500}'::jsonb WHERE slug='halteverbotsschilder-set'; INSERT INTO b2b_managed_products(slug,name,category,is_published,available_locations) VALUES('zusatz-test','Zusatzschild','absperrtechnik',true,ARRAY['bonn']);`);
