@@ -80,7 +80,7 @@ export function ProductPriceBlock({
   }
   if (isSign) {
     mainValue = Number.isInteger(signConfig?.standardGrossCents) ? displayPrice(signConfig.standardGrossCents / 119, type) : "Preis derzeit nicht verfügbar";
-    mainUnit = signConfig?.maxRentalDays ? `für 1–${signConfig.maxRentalDays} Tage` : "";
+    mainUnit = "für 1–10 Tage";
   }
 
   const hasPrice = isSign || mainValue !== "Preis auf Anfrage";
