@@ -277,6 +277,26 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   const loadedIdRef = useRef<string | null>(null);
   const pendingFormRef = useRef<FormState | null>(null);
   const [restoredAt, setRestoredAt] = useState<number | null>(null);
+  // Einzelgeräte je Bestandsstandort (Mülheim an der Ruhr zählt zu Krefeld).
+  const [instanceCounts, setInstanceCounts] = useState<Record<string, number> | null>(null);
+  useEffect(() => {
+    const id = initial?.id;
+    if (!open || !id) { setInstanceCounts(null); return; }
+    let cancelled = false;
+    supabase.from("b2b_product_instances").select("location,status").eq("managed_product_id", id).then(({ data }) => {
+      if (cancelled) return;
+      const counts: Record<string, number> = { krefeld: 0, bonn: 0 };
+      for (const r of (data ?? []) as { location: string; status: string }[]) {
+        if (r.status === "retired" || r.status === "lost") continue;
+        const k = /bonn/i.test(r.location) ? "bonn" : "krefeld";
+        counts[k] += 1;
+      }
+      setInstanceCounts(counts);
+    });
+    return () => { cancelled = true; };
+  }, [open, initial?.id]);
+  const hasInstances = !!instanceCounts && instanceCounts.krefeld + instanceCounts.bonn > 0;
+
 
   // Nur beim Öffnen oder beim Wechsel auf einen ANDEREN Artikel neu befüllen.
   // Kein Reset bei Realtime-Refetch (identity-change von `initial`), sonst
@@ -1295,14 +1315,21 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
               <div className="rounded border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
                 🔒 Diese Felder sind <strong>nur intern</strong> sichtbar und werden niemals ans Frontend ausgeliefert. Sie dienen ausschließlich der internen Bestandsführung.
               </div>
+              <div className="rounded border bg-muted/40 p-3 text-sm">
+                {hasInstances ? (
+                  <>Verfügbarkeit kommt aus den <strong>Einzelgeräten</strong>: Krefeld (inkl. Mülheim an der Ruhr) {instanceCounts!.krefeld}, Bonn {instanceCounts!.bonn}. Die Mengenfelder werden für diesen Artikel nicht verwendet.</>
+                ) : (
+                  <>Für diesen Artikel sind keine Einzelgeräte angelegt. Verfügbarkeit kommt aus der <strong>Menge</strong> je Standort; Mülheim an der Ruhr zählt zu Krefeld. Ohne Menge prüft das System keine Verfügbarkeit.</>
+                )}
+              </div>
               <div className="space-y-3">
                 {LOCATIONS.map((loc) => (
                   <div key={loc.id} className="border rounded p-3">
-                    <div className="font-medium mb-2">{loc.label}</div>
+                    <div className="font-medium mb-2">{loc.label}{loc.id === "muelheim" ? " (zählt zu Krefeld)" : ""}</div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                       <div>
                         <Label className="text-xs">Menge</Label>
-                        <Input type="number" value={form.quantities[loc.id]} onChange={(e) => setForm((f) => ({ ...f, quantities: { ...f.quantities, [loc.id]: e.target.value } }))} />
+                        <Input type="number" disabled={hasInstances} value={form.quantities[loc.id]} onChange={(e) => setForm((f) => ({ ...f, quantities: { ...f.quantities, [loc.id]: e.target.value } }))} />
                       </div>
                       <div className="col-span-3">
                         <Label className="text-xs">Interne Notiz</Label>

@@ -6691,6 +6691,11 @@ export type Database = {
         Returns: Record<string, unknown>
       }
       slt_normalize_location: { Args: { _raw: string }; Returns: string }
+      slt_quantity_at: {
+        Args: { _q: Json; _stock_loc: string }
+        Returns: number
+      }
+      slt_stock_location: { Args: { _raw: string }; Returns: string }
       slt_try_date: { Args: { _raw: string }; Returns: string }
       submit_rental_feedback: {
         Args: {
