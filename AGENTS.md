@@ -11,7 +11,7 @@
 - Percentage add-ons use the undiscounted rental basis in shared addon-calc, so rental discounts cannot reduce insurance or liability charges.
 - Public non-trailer requests use RentalRequestCart with an absolute deadline and server CMS quotes; only trailer routes load Rentware, coupon previews never reserve/redeem, and public-rental-period shares calendar validation and pickup windows between client/server to prevent drift.
 - Additional cart items inherit periods through withCartPeriod, validated for their pickup location; set quantities remain counts of sets and display through setSize helpers to avoid multiplying prices by contained pieces.
-- Live cart estimates use cartQuoteItems to include the current draft and saved accessories once; locate the draft quote by ID, never array position, so all steps share the same server-priced total.
+- Live cart estimates use cartQuoteItems to include the current draft and saved accessories once; locate the draft quote by ID, never array position; cartQuoteTotal keeps sub-cent net precision and Sorglos prices sync via signSetupQuotePatch, so every step shows the same cent-exact total.
 - Cart continuation and pickup confirmation use rentalCart helpers: category navigation retains the first item's pickup location, and final public submission requires explicit self-pickup confirmation when delivery is not selected.
 - Deposits: quote before CMS/no VAT. Signs: signRentalGrossCents matches SQL duration pricing; cart persists address/quote, changes invalidate price; lead/terms enforced server-side to prevent drift.
 - CartAccessories resolves only curated catalog accessories before insurance; DeliveryAddressFields uses protected geo-address Places lookups for suggestions and postal completion.
