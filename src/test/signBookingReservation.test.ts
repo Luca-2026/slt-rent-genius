@@ -41,7 +41,7 @@ it.each(['bonn','krefeld'])('rejects the eleventh set and releases expired holds
  const body={...base,location,quantity:10,start_date:'2027-04-05',end_date:'2027-04-09'};
  const b=await reserve(body); expect(b).toBeDefined(); if(!b) return;
  await expect(reserve({...body,quantity:1})).rejects.toThrow('Nicht genügend Sets');
- await db.query('UPDATE sign_bookings SET expires_at=now()-interval '1 second' WHERE id=$1',[b.id]); await db.exec('SELECT expire_sign_bookings()');
+ await db.query("UPDATE sign_bookings SET expires_at=now()-interval '1 second' WHERE id=$1",[b.id]); await db.exec('SELECT expire_sign_bookings()');
  expect((await db.query<{status:string}>('SELECT status FROM sign_bookings WHERE id=$1',[b.id])).rows[0]?.status).toBe('expired');
  expect(await reserve(body)).toBeDefined();
 });
