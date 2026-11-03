@@ -27,6 +27,7 @@ await db.exec(readFileSync('drizzle/migrations/0109_sign_task_list_completion_gu
 await db.exec(readFileSync('drizzle/migrations/0110_sign_calendar_and_distance_price.sql','utf8'));
 await db.exec(readFileSync('drizzle/migrations/0111_sign_booking_additional_signs.sql','utf8'));
 await db.exec(readFileSync('drizzle/migrations/0112_sign_permit_lead_and_terms_evidence.sql','utf8'));
+await db.exec(readFileSync('drizzle/migrations/0113_sign_package_permit_description.sql','utf8'));
 await db.exec(`CREATE TRIGGER payments AFTER UPDATE OF payments ON rental_inquiries FOR EACH ROW EXECUTE FUNCTION sign_booking_payment_state(); CREATE TRIGGER inventory BEFORE INSERT OR UPDATE OF status,offer_payload,quantity,start_date,end_date,location ON rental_inquiries FOR EACH ROW EXECUTE FUNCTION guard_sign_inventory();`);
 await db.exec(`INSERT INTO b2b_managed_products(slug,name,category,is_published,quantities,direct_booking_config) VALUES('halteverbotsschilder-set','Halteverbotsschilder-Set','absperrtechnik',true,'{"bonn":10,"krefeld":10}','{"enabled":true,"live_enabled":false,"standardGrossCents":4900,"sorglosGrossCents":19900,"depositCents":10000,"maxRentalDays":10}');`);
 },30000);
@@ -48,6 +49,11 @@ it('stores server timestamp and exact confirmed terms hash without changing retr
 it('DB counts Saturdays and skips NRW holidays like the shared client rule',async()=>{
  const rows=(await db.query<{day:string;work:boolean}>("SELECT d::text AS day,sign_nrw_workday(d::date) AS work FROM (VALUES ('2026-11-07'),('2026-11-08'),('2027-03-26'),('2027-05-27')) t(d)")).rows;
  expect(rows.map(r=>r.work)).toEqual([true,false,false,false]);
+});
+it('rejects SLT bookings with fewer than 14 workdays before creating an inquiry',async()=>{
+ const day=(await db.query<{day:string}>("SELECT ((now() AT TIME ZONE 'Europe/Berlin')::date+1)::text AS day")).rows[0]?.day;
+ if(!day) throw new Error('missing day');
+ await expect(reserve({...base,package:'sorglos',start_date:day,end_date:day})).rejects.toThrow('14 Werktage');
 });
 
 it('stores selected CMS signs at five euros each without extra deposit and requires full payment',async()=>{
