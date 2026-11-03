@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { eligibleSignCart, signBookingPrice, signCapacityAvailable, signHoldDeadline, signHoldExpired, signPaymentComplete, type SignBookingConfiguration } from "../../supabase/functions/_shared/sign-direct-booking";
 
-const config: SignBookingConfiguration = { enabled: true, standardGrossCents: 4900, sorglosGrossCents: 19900, depositCents: 0, maxRentalDays: 10 };
-// Deposit and duration here are fixtures, not approved production defaults.
+const config: SignBookingConfiguration = { enabled: true, standardGrossCents: 4900, sorglosGrossCents: 19900, depositCents: 10000, maxRentalDays: 10, municipalFeesSeparate: true };
 describe("Halteverbotsschilder direct booking", () => {
   it("only permits the existing sets in Krefeld and Bonn", () => {
     for (const location of ["krefeld", "bonn"]) expect(eligibleSignCart([{ product_slug: "halteverbotsschilder-set", location, quantity: 1 }])).toBe(true);
@@ -15,9 +14,12 @@ describe("Halteverbotsschilder direct booking", () => {
     expect(signBookingPrice(config, { package: "standard", quantity: 1, rentalDays: 5, municipalFeesCents: null })?.grossCents).toBe(4900);
     expect(signBookingPrice(config, { package: "standard", quantity: 2, rentalDays: 5, municipalFeesCents: null })?.grossCents).toBe(9800);
   });
-  it("preserves the stated sorglos price of 199 euros and requires known city fees", () => {
-    expect(signBookingPrice(config, { package: "sorglos", quantity: 1, rentalDays: 5, municipalFeesCents: 2500 })?.grossCents).toBe(22400);
-    expect(signBookingPrice(config, { package: "sorglos", quantity: 1, rentalDays: 5, municipalFeesCents: null })).toBeNull();
+  it("charges 199 euros for sorglos and bills city fees separately", () => {
+    expect(signBookingPrice(config, { package: "sorglos", quantity: 1, rentalDays: 10, municipalFeesCents: null })).toEqual({ grossCents: 19900, depositCents: 10000, totalCents: 29900 });
+    expect(signBookingPrice(config, { package: "sorglos", quantity: 1, rentalDays: 5, municipalFeesCents: 2500 })?.grossCents).toBe(19900);
+  });
+  it("requires 100 euros deposit per set in addition to the rental", () => {
+    expect(signBookingPrice(config, { package: "standard", quantity: 2, rentalDays: 5, municipalFeesCents: null })).toEqual({ grossCents: 9800, depositCents: 20000, totalCents: 29800 });
   });
   it("does not turn an unknown deposit or tariff period into a sale", () => {
     const input = { package: "standard" as const, quantity: 1, rentalDays: 5, municipalFeesCents: null };

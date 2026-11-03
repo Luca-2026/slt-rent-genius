@@ -9,6 +9,7 @@ export interface SignBookingConfiguration {
   sorglosGrossCents: number | null;
   depositCents: number | null;
   maxRentalDays: number | null;
+  municipalFeesSeparate?: boolean;
 }
 export interface SignBookingLine {
   product_slug: string;
@@ -42,7 +43,7 @@ export function signBookingPrice(config: SignBookingConfiguration, input: {
     config.maxRentalDays === null || !Number.isInteger(config.maxRentalDays) || config.maxRentalDays < 1 ||
     !Number.isInteger(input.rentalDays) || input.rentalDays < 1 || input.rentalDays > config.maxRentalDays ||
     !Number.isInteger(input.quantity) || input.quantity < 1) return null;
-  const fees = input.package === "sorglos" ? input.municipalFeesCents : 0;
+  const fees = input.package === "sorglos" && !config.municipalFeesSeparate ? input.municipalFeesCents : 0;
   if (fees === null || !Number.isInteger(fees) || fees < 0) return null;
   const grossCents = price * input.quantity + fees;
   const depositCents = config.depositCents * input.quantity;
