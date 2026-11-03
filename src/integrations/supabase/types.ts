@@ -2329,6 +2329,54 @@ export type Database = {
         }
         Relationships: []
       }
+      cash_journal: {
+        Row: {
+          amount: number
+          company_name: string | null
+          customer_name: string | null
+          document_number: string | null
+          id: string
+          kind: string
+          label: string | null
+          logged_at: string
+          order_code: string | null
+          payment_date: string
+          reference: string | null
+          source_id: string
+          source_table: string
+        }
+        Insert: {
+          amount: number
+          company_name?: string | null
+          customer_name?: string | null
+          document_number?: string | null
+          id?: string
+          kind: string
+          label?: string | null
+          logged_at?: string
+          order_code?: string | null
+          payment_date: string
+          reference?: string | null
+          source_id: string
+          source_table: string
+        }
+        Update: {
+          amount?: number
+          company_name?: string | null
+          customer_name?: string | null
+          document_number?: string | null
+          id?: string
+          kind?: string
+          label?: string | null
+          logged_at?: string
+          order_code?: string | null
+          payment_date?: string
+          reference?: string | null
+          source_id?: string
+          source_table?: string
+        }
+        Relationships: []
+      }
       credit_note_number_counters: {
         Row: {
           last_value: number
