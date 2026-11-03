@@ -319,6 +319,8 @@ interface Props {
     end_date?: string | null;
     /** Mietanfragen: angefragte Positionen (für die Standort-Verfügbarkeitsprüfung). */
     requested_items?: unknown;
+    use_saturday?: boolean;
+    use_sunday?: boolean;
     /** Mietanfragen: verknüpfte B2B-Reservierung (wird beim Standortwechsel mitgezogen). */
     b2b_reservation_id?: string | null;
   };

@@ -66,8 +66,8 @@ describe("Kundenrabatte im Mietanfrage-Angebot", () => {
       use_saturday: true, use_sunday: true, pricing: { scheme: "bau", base_name: "2t Minibagger", prices: { price_from_1_rd: 100, price_from_3_rd: 90, price_from_10_rd: 80, price_from_20_rd: 60, price_weekend_num: null, price_base_1_3_cd: null, surcharge_per_cd_from_4: null, surcharge_per_cd_from_8: null } } };
     fixtures.draft = { items: [rental], useSaturday: false, useSunday: false };
     open({ defaultItems: [rental] });
-    const saturday = screen.getByRole("checkbox", { name: /Einsatz am Samstag/ });
-    const sunday = screen.getByRole("checkbox", { name: /Einsatz am Sonntag/ });
+    const saturday = screen.getByRole("checkbox", { name: /Einsatz Samstag/ });
+    const sunday = screen.getByRole("checkbox", { name: /Einsatz Sonntag/ });
     expect(saturday.getAttribute("data-state")).toBe("checked");
     expect(sunday.getAttribute("data-state")).toBe("checked");
     fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
