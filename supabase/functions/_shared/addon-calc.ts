@@ -136,12 +136,12 @@ export function describeAddon(a: AddonDescribeInput): string {
   const period = formatPeriod(a.period_start, a.period_end);
   const days = Number(a.days) || 0;
   const fullPeriodText =
-    `berechnet über die gesamte Mietdauer: ${days} ${days === 1 ? "Kalendertag" : "Kalendertage"}` +
+    `Versicherungszeitraum: ${days} ${days === 1 ? "Kalendertag" : "Kalendertage"}` +
     (period ? ` (${period})` : "") +
-    ", da der Versicherungsschutz auch an nicht berechneten Tagen (z. B. Wochenende) besteht";
+    ". Bei abweichender Lieferung/Rückholung gilt deren Zeitraum, sonst der Mietzeitraum. Der Versicherungsschutz umfasst auch mietfreie Tage bis zur Rückholung (z. B. Wochenende)";
 
   if (a.basis === "full_period" && days > 0) {
-    if (a.manual) return `Gilt für die gesamte Mietdauer: ${days} ${days === 1 ? "Kalendertag" : "Kalendertage"}${period ? ` (${period})` : ""}`;
+    if (a.manual) return `Versicherungszeitraum: ${days} ${days === 1 ? "Kalendertag" : "Kalendertage"}${period ? ` (${period})` : ""}`;
     if (a.price_type === "percent") return `${fmtNum(a.rate)} % · ${fullPeriodText}`;
     if (a.price_type === "per_unit") return `${fmtEuro(a.rate)} je Artikel und Kalendertag · ${fullPeriodText}`;
   }

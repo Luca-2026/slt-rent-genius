@@ -4,7 +4,7 @@
  */
 
 import { computeAddonAmount, daysPerUnit, describeAddon, type AddonBasis, type AddonPriceType } from "./addon-calc.ts";
-import { normalizeOfferLogistics, type OfferLogistics } from "./offer-logistics.ts";
+import { normalizeOfferLogistics, offerInsurancePeriod, type OfferLogistics } from "./offer-logistics.ts";
 
 export interface InquiryOfferAddon {
   key: string;
@@ -162,7 +162,7 @@ const ISO = /^\d{4}-\d{2}-\d{2}$/;
 function normalizeAddons(
   raw: unknown,
   itemIndex: number,
-  line?: { articles: number; quantity: number; unit?: string; unit_price: number; discount_percent: number },
+  line?: OfferLogistics & { rental_start?: string; rental_end?: string; articles: number; quantity: number; unit?: string; unit_price: number; discount_percent: number },
 ): InquiryOfferAddon[] | undefined {
   if (!Array.isArray(raw) || raw.length === 0) return undefined;
   if (raw.length > 10) throw new Error(`Position ${itemIndex + 1}: zu viele Zusatzoptionen (max. 10)`);
@@ -211,6 +211,12 @@ function normalizeAddons(
         out.days = days;
         out.period_start = typeof a.period_start === "string" && ISO.test(a.period_start) ? a.period_start : null;
         out.period_end = typeof a.period_end === "string" && ISO.test(a.period_end) ? a.period_end : null;
+        if (line && (line.delivery_at || line.collection_at) && !out.manual && !out.days_manual) {
+          const period = offerInsurancePeriod(line);
+          if (!period || days !== period.days) throw new Error(`Position ${itemIndex + 1}: Versicherungszeitraum stimmt nicht mit Lieferung/Rückholung überein – bitte neu berechnen`);
+          out.period_start = period.start;
+          out.period_end = period.end;
+        }
       }
       // Serverprüfung: automatisch berechnete Beträge müssen zur Angabe passen.
       if (!out.manual && line) {
@@ -267,6 +273,8 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
     const articles =
       Number.isFinite(Number(item.articles)) && Number(item.articles) > 0 ? Math.round(Number(item.articles)) : 1;
     const unitStr = item.unit ? String(item.unit).slice(0, 40) : undefined;
+    const logistics = normalizeOfferLogistics(item);
+    if (logistics.delivery_at || logistics.collection_at) offerInsurancePeriod({ ...logistics, rental_start: typeof item.rental_start === "string" ? item.rental_start : undefined, rental_end: typeof item.rental_end === "string" ? item.rental_end : undefined });
     return {
       product_name: name.slice(0, 200),
       product_slug: item.product_slug ? String(item.product_slug).slice(0, 200) : undefined,
@@ -283,7 +291,7 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       rental_end: item.rental_end ? String(item.rental_end).slice(0, 40) : undefined,
       rental_start_time: item.rental_start_time ? String(item.rental_start_time).slice(0, 5) : undefined,
       rental_end_time: item.rental_end_time ? String(item.rental_end_time).slice(0, 5) : undefined,
-      ...normalizeOfferLogistics(item),
+      ...logistics,
       unit_code: item.unit_code ? String(item.unit_code).slice(0, 20) : undefined,
       price_manual: item.price_manual === true ? true : undefined,
       price_basis: item.price_basis === "tier" || item.price_basis === "weekend" || item.price_basis === "customer" ? item.price_basis : undefined,
@@ -297,6 +305,9 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       vat_rate: Number(item.vat_rate) === 0 ? 0 : undefined,
       measure: normalizeMeasure(item.measure),
       addons: normalizeAddons(item.addons, index, {
+        ...logistics,
+        rental_start: typeof item.rental_start === "string" ? item.rental_start : undefined,
+        rental_end: typeof item.rental_end === "string" ? item.rental_end : undefined,
         articles,
         quantity: Math.round(quantity),
         unit: unitStr,

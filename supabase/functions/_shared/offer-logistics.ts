@@ -1,7 +1,18 @@
-/** Optional local Berlin logistics moments; never used as billing-period input. */
+/** Optional local Berlin logistics moments; affect insurance, never rental billing. */
 export interface OfferLogistics {
   delivery_at?: string;
   collection_at?: string;
+}
+
+/** Inclusive Berlin calendar days; each missing logistics endpoint falls back to rent. */
+export function offerInsurancePeriod(line: OfferLogistics & { rental_start?: string; rental_end?: string }) {
+  const start = (line.delivery_at || line.rental_start)?.slice(0, 10);
+  const end = (line.collection_at || line.rental_end)?.slice(0, 10);
+  if (!start || !end) return null;
+  const from = Date.parse(`${start}T00:00:00Z`);
+  const to = Date.parse(`${end}T00:00:00Z`);
+  if (!Number.isFinite(from) || !Number.isFinite(to) || to < from) throw new Error("Versicherungsende liegt vor dem Versicherungsbeginn oder ist ungültig");
+  return { start, end, days: Math.round((to - from) / 86400000) + 1 };
 }
 
 export function normalizeOfferLogistics(raw: Record<string, unknown>): OfferLogistics {
