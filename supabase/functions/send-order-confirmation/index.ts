@@ -95,7 +95,7 @@ Deno.serve(async (req) => {
     const senderName = typeof body?.sender_name === "string" ? body.sender_name.trim().slice(0, 120) : "";
     const amendment = body?.amendment === true;
     const preview = body?.preview === true;
-    const attachPdf = amendment || body?.attach_pdf === true;
+    let attachPdf = amendment || body?.attach_pdf === true;
 
     const table = inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries";
     const { data: inq } = await service.from(table).select("*").eq("id", inquiryId).maybeSingle();
@@ -104,6 +104,8 @@ Deno.serve(async (req) => {
     if (!inq.offer_number) return json({ error: "Zu dieser Anfrage gibt es kein Angebot." }, 400);
     if (!inq.customer_email) return json({ error: "Keine Kunden-E-Mail hinterlegt." }, 400);
 
+    attachPdf = attachPdf || Number(inq.order_revision ?? 0) > 0;
+    if (!amendment && Number(body.expected_revision ?? 0) !== Number(inq.order_revision ?? 0)) return json({error:"Auftragsfassung wurde inzwischen geändert. Bitte neu laden."},409);
     const resendKey = Deno.env.get("RESEND_API_KEY");
     if (!resendKey) return json({ error: "E-Mail-Versand nicht konfiguriert" }, 500);
 
@@ -149,8 +151,11 @@ Deno.serve(async (req) => {
     const t = (du: string, sie: string) => byForm(form, du, sie);
     const greeting = salutationLine({ address_form: form, salutation: inq.customer_salutation ?? inq.salutation, name: customerName });
     const loc = LOCATION_CONTACTS[locKey(inq.location)];
-    const period = inquiryType === "rental" && inq.start_date
-      ? `${fmtDate(inq.start_date)}${inq.start_time ? `, ${String(inq.start_time).slice(0, 5)} Uhr` : ""}${inq.end_date ? ` bis ${fmtDate(inq.end_date)}${inq.end_time ? `, ${String(inq.end_time).slice(0, 5)} Uhr` : ""}` : ""}`
+    const starts = items.map(i=>i.rental_start).filter(Boolean).sort();
+    const ends = items.map(i=>i.rental_end).filter(Boolean).sort();
+    const periodStart = starts[0] ?? inq.start_date, periodEnd = ends.at(-1) ?? inq.end_date;
+    const period = inquiryType === "rental" && periodStart
+      ? `${fmtDate(periodStart)}${inq.start_time ? `, ${String(inq.start_time).slice(0, 5)} Uhr` : ""}${periodEnd ? ` bis ${fmtDate(periodEnd)}${inq.end_time ? `, ${String(inq.end_time).slice(0, 5)} Uhr` : ""}` : ""}`
       : "";
 
     const rows = items.map((i) => {
@@ -184,7 +189,7 @@ Deno.serve(async (req) => {
 
     const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:16px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
 <div style="max-width:600px;margin:0 auto;">
-  <h2 style="color:#00507d;margin:0 0 16px;">Auftragsbestätigung zu Angebot ${esc(inq.offer_number)}</h2>
+  <h2 style="color:#00507d;margin:0 0 16px;">${inq.order_revision ? `Geänderte Auftragsbestätigung · Fassung ${inq.order_revision} zu` : "Auftragsbestätigung zu"} Angebot ${esc(inq.offer_number)}</h2>
   <p>${esc(greeting)}</p>
   <p>${intro} Hiermit bestätigen wir ${t("dir", "Ihnen")} verbindlich den Auftrag auf Grundlage unseres Angebots <strong>${esc(inq.offer_number)}</strong>.</p>
   ${period ? `<p><strong>Mietzeitraum:</strong> ${esc(period)}<br><strong>Standort:</strong> ${esc(loc.name)}</p>` : ""}
@@ -301,8 +306,8 @@ Deno.serve(async (req) => {
         paymentTermsCustom: payload.payment_terms_custom || undefined,
         sourceOfferNumber: inq.offer_number,
         sourceOfferDate: typeof inq.offer_sent_at === "string" ? inq.offer_sent_at.slice(0, 10) : undefined,
-        servicePeriodStart: inquiryType === "rental" && inq.start_date ? `${inq.start_date}${inq.start_time ? " " + String(inq.start_time).slice(0, 5) : ""}` : undefined,
-        servicePeriodEnd: inquiryType === "rental" && inq.end_date ? `${inq.end_date}${inq.end_time ? " " + String(inq.end_time).slice(0, 5) : ""}` : undefined,
+        servicePeriodStart: inquiryType === "rental" && periodStart ? `${periodStart}${inq.start_time ? " " + String(inq.start_time).slice(0, 5) : ""}` : undefined,
+        servicePeriodEnd: inquiryType === "rental" && periodEnd ? `${periodEnd}${inq.end_time ? " " + String(inq.end_time).slice(0, 5) : ""}` : undefined,
         payments: payments.map((p) => ({ date: p?.date, amount: toCents(p?.amount) / 100, label: p?.label, reference: p?.reference })),
       });
       if (preview) return json({preview:true,pdf_base64:encodeBase64(pdfBytes),totals:payload.totals});
@@ -322,7 +327,7 @@ Deno.serve(async (req) => {
         .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/Ä/g, "Ae").replace(/Ö/g, "Oe").replace(/Ü/g, "Ue").replace(/ß/g, "ss")
         .replace(/[^a-zA-Z0-9_\- ]/g, "_").replace(/\s+/g, "_");
       const fileName = `Auftragsbestaetigung_SLTRental_${confirmationNumber}_${safeName}.pdf`;
-      const filePath = `inquiry-order-confirmations/${inquiryType}/${inquiryId}/${fileName}`;
+      const filePath = `inquiry-order-confirmations/${inquiryType}/${inquiryId}/${confirmationNumber}/${crypto.randomUUID()}/${fileName}`;
       const { error: upErr } = await service.storage.from("b2b-invoices")
         .upload(filePath, pdfBytes, { contentType: "application/pdf", upsert: true });
       if (upErr) {
