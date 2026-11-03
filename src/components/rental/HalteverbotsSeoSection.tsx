@@ -10,15 +10,8 @@ const CITY_NAME: Record<string, string> = {
   muelheim: "Mülheim an der Ruhr",
 };
 
-const STANDORT_EMAIL: Record<string, string> = {
-  krefeld: "krefeld@slt-rental.de",
-  bonn: "bonn@slt-rental.de",
-  muelheim: "muelheim@slt-rental.de",
-};
-
 export function HalteverbotsSeoSection({ locationId }: HalteverbotsSeoSectionProps) {
   const city = CITY_NAME[locationId] || "Krefeld";
-  const email = STANDORT_EMAIL[locationId] || "krefeld@slt-rental.de";
 
 
   return (
@@ -87,8 +80,7 @@ export function HalteverbotsSeoSection({ locationId }: HalteverbotsSeoSectionPro
           Den Link zum Online-Antrag der Stadt {city} findest Du oben im Preis- und
           Buchungsbereich. Tipp: Lass Dir die Genehmigung als PDF zuschicken und drucke
           sie für die Aufstellung sowie für Polizei und Abschleppdienst aus. Falls wir
-          aufstellen sollen, schicke uns bitte eine Kopie an{" "}
-          <a href={`mailto:${email}`} className="underline">{email}</a>.
+          aufstellen sollen, lade die Genehmigungskopie bitte im Buchungsschritt hoch.
         </p>
       </section>
 
