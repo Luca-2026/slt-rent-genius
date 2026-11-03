@@ -743,6 +743,13 @@
       "when": 1793671857701,
       "tag": "0105_sign_booking_capacity_and_payment_safety",
       "breakpoints": true
+    },
+    {
+      "idx": 106,
+      "version": "7",
+      "when": 1793672004517,
+      "tag": "0106_sign_booking_event_driven_wake",
+      "breakpoints": true
     }
   ]
 }

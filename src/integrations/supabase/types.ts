@@ -4869,6 +4869,21 @@ export type Database = {
           },
         ]
       }
+      sign_booking_processor_config: {
+        Row: {
+          endpoint: string
+          id: number
+        }
+        Insert: {
+          endpoint: string
+          id: number
+        }
+        Update: {
+          endpoint?: string
+          id?: number
+        }
+        Relationships: []
+      }
       sign_bookings: {
         Row: {
           confirmation_file_path: string | null
@@ -6131,6 +6146,7 @@ export type Database = {
         }
         Returns: string
       }
+      drain_sign_booking_processor: { Args: never; Returns: undefined }
       ensure_rental_feedback_invitation: {
         Args: { p_invoice: string; p_kind: string }
         Returns: Json
