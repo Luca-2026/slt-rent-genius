@@ -74,6 +74,7 @@ export function RentalRequestCart() {
   const { type } = useCustomerType();
   const [now, setNow] = useState(Date.now());
   const checkoutQueue = useRef<string[] | null>(null);
+  const toContact = useRef(false);
   const [step, setStep] = useState<"package" | "period" | "accessories" | "options" | "cart" | "contact">("cart");
   const { data: managedData } = useManagedProducts();
   const managed = managedData ?? EMPTY_MANAGED;
@@ -124,7 +125,7 @@ export function RentalRequestCart() {
     window.addEventListener("storage", sync); window.addEventListener("focus", tick);
     return () => { clearInterval(timer); window.removeEventListener("storage", sync); window.removeEventListener("focus", tick); };
   }, []);
-  useEffect(() => { if (edit) { setStep(checkoutQueue.current ? "accessories" : edit.product_slug === SIGN_PRODUCT_SLUG ? "package" : "period"); setDone(""); } else if (snapshot.open) { setStep(!snapshot.cart && signReceipt ? "contact" : "cart"); if (snapshot.cart) setDone(""); } }, [edit?.id, snapshot.open]);
+  useEffect(() => { if (edit) { setStep(checkoutQueue.current ? "accessories" : edit.product_slug === SIGN_PRODUCT_SLUG ? "package" : "period"); setDone(""); } else if (snapshot.open) { setStep(toContact.current ? "contact" : !snapshot.cart && signReceipt ? "contact" : "cart"); toContact.current = false; if (snapshot.cart) setDone(""); } }, [edit?.id, snapshot.open]);
   useEffect(() => {
     window.dispatchEvent(new CustomEvent("public-rental-dialog", { detail: snapshot.open }));
     return () => { window.dispatchEvent(new CustomEvent("public-rental-dialog", { detail: false })); };
@@ -163,7 +164,7 @@ export function RentalRequestCart() {
     const queue = checkoutQueue.current ?? [];
     const nextId = queue.find(id => cart.items.some(item => item.id === id));
     if (nextId) { checkoutQueue.current = queue.slice(queue.indexOf(nextId) + 1); update({ edit: cart.items.find(item => item.id === nextId) ?? null }); }
-    else { checkoutQueue.current = null; update({ edit: null, expired: false }); setStep("contact"); }
+    else { checkoutQueue.current = null; toContact.current = true; update({ edit: null, expired: false }); setStep("contact"); }
   };
   const leaveCheckout = () => { checkoutQueue.current = null; update({ edit: null }); setStep("cart"); };
   const patch = (next: Partial<RentalCartItem>) => { if (edit) update({ edit: { ...edit, ...next } }); };
