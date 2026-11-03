@@ -11,6 +11,11 @@ import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
 import { normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 
+import { buildOrderAmendment } from "../_shared/order-amendment.ts";
+import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts";
+import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
+import { ensurePaymentLink, planPaymentAmounts, isStripeConfigured } from "../_shared/stripe-pay.ts";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -88,7 +93,9 @@ Deno.serve(async (req) => {
     if (typeof inquiryId !== "string" || inquiryId.length < 10) return json({ error: "inquiry_id fehlt" }, 400);
     const note = typeof body?.note === "string" ? body.note.trim().slice(0, 800) : "";
     const senderName = typeof body?.sender_name === "string" ? body.sender_name.trim().slice(0, 120) : "";
-    const attachPdf = body?.attach_pdf === true;
+    const amendment = body?.amendment === true;
+    const preview = body?.preview === true;
+    const attachPdf = amendment || body?.attach_pdf === true;
 
     const table = inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries";
     const { data: inq } = await service.from(table).select("*").eq("id", inquiryId).maybeSingle();
@@ -100,25 +107,32 @@ Deno.serve(async (req) => {
     const resendKey = Deno.env.get("RESEND_API_KEY");
     if (!resendKey) return json({ error: "E-Mail-Versand nicht konfiguriert" }, 500);
 
-    const payload = (inq.offer_payload ?? {}) as Record<string, any>;
+    let payload = (inq.offer_payload ?? {}) as Record<string, any>;
+    if (amendment) {
+      if (inquiryType !== "rental") return json({ error: "Auftragsänderung nur für Mietaufträge" },400);
+      if (!allowsCustomerPaymentTerms(inq.customer_kind, body.payment_terms)) return json({error:"Unzulässige Zahlungsbedingungen"},400);
+      if (typeof body.agreement_note !== "string" || body.agreement_note.trim().length < 5 || !Number.isFinite(Date.parse(body.agreed_at))) return json({error:"Bitte Vereinbarung mit Datum und Notiz dokumentieren"},400);
+      if (Number(body.expected_revision) !== (inq.order_revision ?? 0)) return json({error:"Auftrag wurde inzwischen geändert. Bitte neu laden."},409);
+      try { payload = buildOrderAmendment(body,payload,inq.location); } catch(e) { return json({error:e instanceof Error ? e.message : "Ungültige Änderung"},400); }
+    }
     const items: any[] = Array.isArray(payload.items) ? payload.items : [];
     const payments: any[] = (Array.isArray(inq.payments) ? inq.payments : []).filter((p: any) => toCents(p?.amount) > 0);
     const ev = evaluateOrderPayment({
-      gross: inq.offer_total_gross ?? payload?.totals?.grossAmount,
+      gross: amendment ? payload?.totals?.grossAmount : inq.offer_total_gross ?? payload?.totals?.grossAmount,
       deposit: payload?.deposit,
       payments,
       paymentTerms: payload?.payment_terms,
     });
 
     // Server rechnet selbst – Anzeige im Portal darf nicht veraltet sein.
-    if (
+    if (!amendment && !preview && (
       Number(body?.expected_paid_cents) !== ev.paidCents ||
       Number(body?.expected_required_cents) !== ev.requiredCents
-    ) {
+    )) {
       return json({ error: "Die Zahlungen oder die Angebotssumme wurden inzwischen geändert. Bitte die Anfrage neu laden und erneut prüfen." }, 409);
     }
-    if (!ev.canSend) return json({ error: ev.blockReason }, 400);
-    if (ev.needsAcknowledgement && body?.acknowledge_open !== true) {
+    if (!preview && !amendment && !ev.canSend) return json({ error: ev.blockReason }, 400);
+    if (!preview && !amendment && ev.needsAcknowledgement && body?.acknowledge_open !== true) {
       return json({ error: "Offener Betrag muss vor dem Versand ausdrücklich bestätigt werden." }, 400);
     }
 
@@ -191,7 +205,8 @@ Deno.serve(async (req) => {
 </div></body></html>`;
 
     // ── Optional: Auftragsbestätigung als PDF (gleiches Layout wie Angebot/Rechnung) ──
-    const confirmationNumber = String(inq.offer_number).replace(/^ANG-/, "AB-");
+    const revision = (inq.order_revision ?? 0) + (amendment ? 1 : 0);
+    const confirmationNumber = String(inq.offer_number).replace(/^ANG-/, "AB-") + (revision ? `-A${revision}` : "");
     let pdfAttachment: { filename: string; content: string } | null = null;
     let fileUrl: string | null = null;
     if (attachPdf) {
@@ -276,7 +291,7 @@ Deno.serve(async (req) => {
         vatAmount: num(totals.vatAmount),
         grossAmount: gross,
         isReverseCharge: false,
-        notes: note || null,
+        notes: [revision ? `Geänderte Auftragsbestätigung · Fassung ${revision}` : "", note].filter(Boolean).join("\n") || null,
         validDays: 0,
         deposit,
         staffName: senderName || "SLT Rental",
@@ -290,6 +305,19 @@ Deno.serve(async (req) => {
         servicePeriodEnd: inquiryType === "rental" && inq.end_date ? `${inq.end_date}${inq.end_time ? " " + String(inq.end_time).slice(0, 5) : ""}` : undefined,
         payments: payments.map((p) => ({ date: p?.date, amount: toCents(p?.amount) / 100, label: p?.label, reference: p?.reference })),
       });
+      if (preview) return json({preview:true,pdf_base64:encodeBase64(pdfBytes),totals:payload.totals});
+      if (amendment) {
+        const actor = createClient(Deno.env.get("SUPABASE_URL")!,Deno.env.get("SUPABASE_ANON_KEY")!,{global:{headers:{Authorization:auth}},auth:{persistSession:false}});
+        const {error:saveError}=await actor.rpc("save_rental_order_amendment",{_id:inquiryId,_expected:body.expected_revision,_payload:payload,_note:body.agreement_note,_agreed_at:body.agreed_at});
+        if(saveError) return json({error:saveError.message},409);
+        let paymentUrl=null;
+        if(ev.openCents>0 && isStripeConfigured()) {
+          const link=await ensurePaymentLink(service,{table:"rental_inquiries",inquiryId,customerEmail:inq.customer_email,offerNumber:inq.offer_number,plan:planPaymentAmounts({gross,deposit,paidCents:ev.paidCents}),createdBy:user.id});
+          paymentUrl=link?.url ?? null;
+        }
+        // Saving changes does not bypass existing payment gates. Send the current AB from its card after payment.
+        return json({success:true,saved:true,version:revision,totals:payload.totals,payment_url:paymentUrl,open_cents:ev.openCents});
+      }
       const safeName = String(profile.company_name)
         .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/Ä/g, "Ae").replace(/Ö/g, "Oe").replace(/Ü/g, "Ue").replace(/ß/g, "ss")
         .replace(/[^a-zA-Z0-9_\- ]/g, "_").replace(/\s+/g, "_");
@@ -311,8 +339,7 @@ Deno.serve(async (req) => {
       headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
-        to: [inq.customer_email],
-        cc: Array.from(new Set([loc.email, inq.location_email].filter((e) => e && e !== inq.customer_email))),
+        ...documentEmailRecipients(inq.customer_email,Array.from(new Set([loc.email, inq.location_email].filter((e) => e && e !== inq.customer_email)))),
         reply_to: loc.email,
         subject: await codedSubject(service, `Auftragsbestätigung zu ${t("deinem", "Ihrem")} Angebot ${inq.offer_number}`, { table, id: inq.id }),
         html: pdfAttachment
