@@ -106,8 +106,8 @@ export function ProtocolWizard({ steps, footer, missingHint }: Props) {
         StepList
       ) : (
         <div className="grid grid-cols-[minmax(220px,300px)_minmax(0,1fr)] gap-4 items-start">
-          <div>{StepList}</div>
-          <div className="min-h-0 min-w-0 max-h-[60dvh] overflow-y-auto overscroll-contain pr-3" role="region" aria-label="Protokollangaben" tabIndex={0}>
+          <div className="sticky top-0 z-10">{StepList}</div>
+          <div className="min-w-0" role="region" aria-label="Protokollangaben">
             <div className="space-y-4">
               {active ? active.content : steps[0]?.content}
             </div>
