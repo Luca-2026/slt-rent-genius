@@ -61,8 +61,9 @@ interface Props {
 /** Online-Zahlung (Stripe): Zahlungslink zum Angebot, Zahlungsstatus, Kautionserstattung. */
 export function StripePaymentCard({ table, inquiryId, offerNumber, onChanged }: Props) {
   const { toast } = useToast();
-  const { isAdmin, isBranchManager } = useStaffAccess();
-  const canRefund = isAdmin || isBranchManager;
+  const { canManageInventory } = useStaffAccess();
+  // Kautionserstattung per Stripe: alle Standortmitarbeiter, Niederlassungsleitung und Admin.
+  const canRefund = canManageInventory;
   const [links, setLinks] = useState<LinkRow[]>([]);
   const [refunds, setRefunds] = useState<RefundRow[]>([]);
   const [busy, setBusy] = useState(false);
@@ -203,7 +204,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, onChanged }: 
       {paidLink && paidLink.deposit_cents > 0 && (
         <p className="text-xs text-muted-foreground">
           Kaution {cents(paidLink.deposit_cents)} · erstattet {cents(refundedCents)} · noch erstattbar {cents(refundable)}
-          {!canRefund && " · Erstattung nur durch Niederlassungsleitung oder Admin"}
+          {!canRefund && " · Erstattung nur durch Standortmitarbeiter, Niederlassungsleitung oder Admin"}
         </p>
       )}
 
