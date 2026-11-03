@@ -2,13 +2,14 @@ import { computeRentalLinePrice, resolveProductPrices, insuranceCalendarDays } f
 import { computeAddonAmount, daysPerUnit } from "./addon-calc.ts";
 import { catalogDeposit } from "./catalog-deposit.ts";
 import { validPublicRentalPeriod } from "./public-rental-period.ts";
+import { signBookingPrice, SIGN_PRODUCT_SLUG } from "./sign-direct-booking.ts";
 
 import { FREE_CANCELLATION_OPTION, cancellationAmount } from "./cancellation-option.ts";
 export { FREE_CANCELLATION_OPTION } from "./cancellation-option.ts";
 
 export async function publicRentalQuote(service: any, items: any[]) {
   const slugs = [...new Set(items.map(item => item.product_slug))];
-  const { data: products, error } = await service.from("b2b_managed_products").select("id,slug,name,category,pricing_scheme,prices_same_all_locations,price_per_day,price_from_1_rd,price_from_3_rd,price_from_10_rd,price_from_20_rd,price_weekend_num,price_base_1_3_cd,surcharge_per_cd_from_4,surcharge_per_cd_from_8,addon_options,specifications,rental_notes,deposit_amount").eq("is_published", true).in("slug", slugs);
+  const { data: products, error } = await service.from("b2b_managed_products").select("id,slug,name,category,pricing_scheme,prices_same_all_locations,price_per_day,price_from_1_rd,price_from_3_rd,price_from_10_rd,price_from_20_rd,price_weekend_num,price_base_1_3_cd,surcharge_per_cd_from_4,surcharge_per_cd_from_8,addon_options,specifications,rental_notes,deposit_amount,direct_booking_config").eq("is_published", true).in("slug", slugs);
   if (error) throw new Error("Preise konnten nicht geladen werden");
   const { data: locationPrices, error: locationError } = await service.from("public_product_prices").select("*").in("managed_product_id", (products ?? []).map((p: any) => p.id));
   if (locationError) throw new Error("Standortpreise konnten nicht geladen werden");
@@ -16,6 +17,12 @@ export async function publicRentalQuote(service: any, items: any[]) {
     if (!validPublicRentalPeriod(item)) throw new Error("Ungültiger Zeitraum oder Standortzeiten");
     const product = (products ?? []).find((p: any) => p.slug === item.product_slug);
     if (!product || product.category === "anhaenger") throw new Error("Artikel nicht im eigenen Anfrage-System verfügbar");
+    if (product.slug === SIGN_PRODUCT_SLUG && ["bonn", "krefeld"].includes(item.location) && product.direct_booking_config?.enabled) {
+      const days = Math.round((Date.parse(item.end_date) - Date.parse(item.start_date)) / 86400000) + 1;
+      const amount = signBookingPrice(product.direct_booking_config, { package: "standard", quantity: item.quantity, rentalDays: days, municipalFeesCents: null });
+      if (item.selected_addons.length) throw new Error("Schilderpakete werden ohne zusätzliche Versicherungsoptionen gebucht");
+      return { id: item.id, product_name: product.name, category: product.category, unit: "set_package", duration: 1, unit_price: amount ? Math.round(amount.grossCents / item.quantity / 1.19) / 100 : null, rental_net: amount ? Math.round(amount.grossCents / 1.19) / 100 : null, deposit: amount ? amount.depositCents / 100 : null, addons: [], options: [] };
+    }
     const line = computeRentalLinePrice({ prices: resolveProductPrices(product, item.location, locationPrices ?? []), scheme: product.pricing_scheme, start: { date: item.start_date, time: item.start_time }, end: { date: item.end_date, time: item.end_time }, opts: item });
     const unitPrice = line.kind === "duration_only" ? null : line.unit_price;
     const options = [...(Array.isArray(product.addon_options) ? product.addon_options : []).filter((o: any) => o?.key !== FREE_CANCELLATION_OPTION.key), FREE_CANCELLATION_OPTION];

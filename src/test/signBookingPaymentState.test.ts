@@ -2,7 +2,7 @@ import { PGlite } from "@electric-sql/pglite";
 import { readFileSync } from "node:fs";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 const db = new PGlite();
-const migration = readFileSync("drizzle/migrations/0105_sign_booking_capacity_and_payment_safety.sql", "utf8");
+const migration = readFileSync("drizzle/migrations/0107_sign_booking_payment_alias_fix.sql", "utf8");
 const start = migration.indexOf("CREATE OR REPLACE FUNCTION public.sign_booking_payment_state()");
 const end = migration.indexOf("END; $$;", start) + "END; $$;".length;
 beforeAll(async () => {
