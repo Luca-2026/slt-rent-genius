@@ -8,6 +8,18 @@ const line: OfferLine = { product_name: "Test", quantity: 1, duration: 5, unit: 
   description: "Mo, 16.11.2026, 09:00 – Fr, 20.11.2026, 16:30",
   rental_start: "2026-11-23", rental_end: "2026-11-24", rental_start_time: "09:00", rental_end_time: "16:30" };
 describe("Calendar is the rental offer period source", () => {
+  it("allows manually billed days without changing the HYPW7X calendar or insurance period", () => {
+    const updated = calendarDuration<OfferLine>({ ...line, rental_start: "2026-11-04", rental_end: "2026-11-24", rental_start_time: "07:00", rental_end_time: "18:00", duration_override: 10,
+      unit_price: 51, addons: [{ key: "insurance", label: "Insurance", basis: "full_period", days: 10, amount: 0 }] }, {});
+    expect(updated.duration).toBe(10);
+    expect(lineTotal(updated)).toBe(510);
+    expect(updated.rental_end).toBe("2026-11-24");
+    expect(updated.addons?.[0].days).toBe(21);
+    expect(calendarDuration({ ...updated, duration_override: undefined }, {}).duration).toBe(15);
+  });
+  it("preserves the explicit override through server normalization", () => {
+    expect(normalizeInquiryOfferItems([{ ...line, duration_override: 10 }])[0].duration_override).toBe(10);
+  });
   it("removes previously generated periods when reopening and never duplicates them", () => {
     const saved = calendarDescription(line);
     expect(withoutLegacyPeriod(saved)).toBe("");

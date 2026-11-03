@@ -289,14 +289,16 @@ export function computeRentalLinePrice(input: {
   end: RentalMoment;
   unit?: PricingUnit | null;
   opts?: RentalDayOptions;
+  durationOverride?: number;
 }): LinePrice {
   const unit = input.unit ?? defaultUnit({ pricing_scheme: input.scheme ?? null });
+  const override = Number.isFinite(input.durationOverride) && Number(input.durationOverride) > 0 && Number(input.durationOverride) <= 10000 ? input.durationOverride : undefined;
   const isDefaultUnit = unit === defaultUnit({ pricing_scheme: input.scheme ?? null });
-  if (isDefaultUnit) {
+  if (isDefaultUnit && override === undefined) {
     const we = weekendTariff(input.start, input.end, input.prices);
     if (we) return { kind: "weekend", unit: "pauschal", duration: 1, unit_price: we.price, label: "Wochenendtarif" };
   }
-  const duration = rentalDuration(input.start, input.end, unit, input.opts);
+  const duration = unit !== "pauschal" && unit !== "stueck" && override !== undefined ? override : rentalDuration(input.start, input.end, unit, input.opts);
   if (unit !== "miettage" && unit !== "kalendertage") return { kind: "duration_only", unit, duration };
   if (input.scheme === "bau") {
     const t = tierPriceBau(input.prices, duration);

@@ -23,7 +23,7 @@ export function calendarDescription(line: OfferLine): string {
 export function calendarDuration<T extends OfferLine>(line: T, opts: RentalDayOptions): T {
   if (!line.rental_start || !line.rental_end || line.protocol_charge_source) return line;
   const days = rentalDuration({ date: line.rental_start }, { date: line.rental_end }, "kalendertage");
-  return { ...line, duration: rentalDuration(
+  return { ...line, duration: line.unit !== "pauschal" && line.unit !== "stueck" && Number(line.duration_override) > 0 ? line.duration_override : rentalDuration(
     { date: line.rental_start, time: line.rental_start_time },
     { date: line.rental_end, time: line.rental_end_time },
     line.unit ?? "kalendertage", opts,
