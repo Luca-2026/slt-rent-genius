@@ -15,8 +15,14 @@ Deno.serve(async req => {
     const url = Deno.env.get("SUPABASE_URL"), key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!url || !key) return json({ error: "Preise derzeit nicht verfügbar" }, 503);
     const service = createClient(url, key);
-    const { data, error } = await service.rpc("check_public_rate_limit", { _bucket: "public-rental-quote", _client_key: req.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown", _max_hits: 120, _window_seconds: 3600 });
+    const { data, error } = await service.rpc("check_public_rate_limit", { _bucket: "public-rental-quote", _client_key: req.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown", _max_hits: 1500, _window_seconds: 3600 });
     if (error || !data) return json({ error: "Bitte später erneut versuchen" }, 429);
     return json({ lines: await publicRentalQuote(service, parsed.data.items) });
-  } catch { return json({ error: "Preisprüfung nicht möglich. Bitte erneut versuchen." }, 503); }
+  } catch (e) {
+    const message = e instanceof Error ? e.message : "";
+    // Fachliche Prüffehler (Zeitraum, Optionen, Artikel) sind Eingabefehler, keine Störung.
+    if (/Zeitraum|Zusatzoption|Versicherungsstufe|Artikel|Schilderpakete/.test(message)) return json({ error: message }, 400);
+    console.error("public-rental-quote", e);
+    return json({ error: "Preisprüfung nicht möglich. Bitte erneut versuchen." }, 503);
+  }
 });
