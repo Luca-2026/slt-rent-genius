@@ -3,6 +3,9 @@ import { useCustomerType } from "@/hooks/useCustomerType";
 import { displayPrice, type CustomerType } from "@/lib/priceDisplay";
 import { CustomerTypeToggle } from "@/components/rental/CustomerTypePrompt";
 import { resolveProductPrices, type LocationPriceRow, type ManagedPrices } from "@/lib/pricing/rentalPricing";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { SIGN_PRODUCT_SLUG } from "../../../supabase/functions/_shared/sign-direct-booking";
 
 /**
  * Einheitliche Preisdarstellung für Mietartikel.
@@ -49,6 +52,8 @@ export function ProductPriceBlock({
   hideExtras = false,
 }: ProductPriceBlockProps) {
   const { type } = useCustomerType();
+  const isSign = product.id === SIGN_PRODUCT_SLUG || product.id === `bonn-${SIGN_PRODUCT_SLUG}`;
+  const { data: signConfig } = useQuery({ queryKey: ["sign-booking-config"], enabled: isSign, staleTime: 60000, queryFn: async () => { const { data, error } = await supabase.functions.invoke("sign-booking", { body: { action: "config" } }); if (error) throw error; return data?.config ?? null; } });
   const hasDay = Boolean(product.pricePerDay);
   const hasMonth = Boolean(product.pricePerMonth);
   const hasWeekend = Boolean(product.priceWeekend);
@@ -73,15 +78,19 @@ export function ProductPriceBlock({
     mainValue = "Preis auf Anfrage";
     mainUnit = "";
   }
+  if (isSign) {
+    mainValue = Number.isInteger(signConfig?.standardGrossCents) ? displayPrice(signConfig.standardGrossCents / 119, type) : "Preis derzeit nicht verfügbar";
+    mainUnit = signConfig?.maxRentalDays ? `für 1–${signConfig.maxRentalDays} Tage` : "";
+  }
 
-  const hasPrice = mainValue !== "Preis auf Anfrage";
+  const hasPrice = isSign || mainValue !== "Preis auf Anfrage";
 
   // Zusatztarife (nur, was nicht schon Hauptpreis ist)
   const extras: Array<{ label: string; value: string }> = [];
-  if (!hideExtras && product.priceWeekend && mainValue !== priceText(product.priceWeekend, type)) {
+  if (!isSign && !hideExtras && product.priceWeekend && mainValue !== priceText(product.priceWeekend, type)) {
     extras.push({ label: "Wochenende", value: priceText(product.priceWeekend, type) });
   }
-  if (!hideExtras && product.pricePerMonth && mainValue !== priceText(product.pricePerMonth, type)) {
+  if (!isSign && !hideExtras && product.pricePerMonth && mainValue !== priceText(product.pricePerMonth, type)) {
     extras.push({
       label: product.minRentalMonths
         ? `Monat (ab ${product.minRentalMonths} Mon.)`
@@ -156,6 +165,7 @@ export function RentalPriceTiers({ product, location, locationRows = [], classNa
   const { type } = useCustomerType();
   const prices = productManagedPrices(product, location, locationRows);
   const rows: Array<{ label: string; value: string }> = [];
+  if (product.id === SIGN_PRODUCT_SLUG || product.id === `bonn-${SIGN_PRODUCT_SLUG}`) return null;
 
   if (product.pricingScheme === "bau") {
     if (prices.price_from_1_rd !== null) rows.push({ label: "ab 1 Miettag", value: `${displayPrice(prices.price_from_1_rd, type)} / Miettag` });
