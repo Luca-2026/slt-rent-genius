@@ -1515,12 +1515,12 @@ export function InquiryOfferForm({
         <div className="space-y-2 rounded-md bg-muted/40 p-3">
           <Label className="text-xs">Leistungszeitraum (erscheint auf der Rechnung)</Label>
           <div className="grid gap-2 sm:grid-cols-2">
-            {(!pricingActive || !!withoutLegacyPeriod(item.description)) && <Input
+            <Input
               type="date"
               value={servicePeriodStart}
               onChange={(e) => setServicePeriodStart(e.target.value)}
               disabled={disabled}
-            />}
+            />
             <Input
               type="date"
               value={servicePeriodEnd}
@@ -1770,12 +1770,12 @@ export function InquiryOfferForm({
                 </Select>
               </div>
             )}
-            <Input
+            {(!pricingActive || !!withoutLegacyPeriod(item.description)) && <Input
               value={pricingActive ? withoutLegacyPeriod(item.description) : (inherited ? (eff.description ?? "") : (item.description ?? ""))}
               onChange={(e) => patchItem(index, { description: e.target.value })}
               placeholder={pricingActive ? "Beschreibung (optional)" : "Beschreibung / Zeitraum (optional)"}
               disabled={disabled || inherited || (openEnded && !isFlatRate && eff.unit !== "stueck")}
-            />
+            />}
             {pricingActive && !openEnded && (
               <div className="grid min-w-0 grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-x-2 gap-y-2" data-testid="position-period">
                 <div className="min-w-0">
