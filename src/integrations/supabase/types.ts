@@ -2668,6 +2668,30 @@ export type Database = {
           },
         ]
       }
+      deposit_refund_digest_log: {
+        Row: {
+          digest_date: string
+          id: string
+          refund_count: number
+          sent_at: string
+          total_amount: number
+        }
+        Insert: {
+          digest_date: string
+          id?: string
+          refund_count?: number
+          sent_at?: string
+          total_amount?: number
+        }
+        Update: {
+          digest_date?: string
+          id?: string
+          refund_count?: number
+          sent_at?: string
+          total_amount?: number
+        }
+        Relationships: []
+      }
       deposit_refunds: {
         Row: {
           amount_cents: number
