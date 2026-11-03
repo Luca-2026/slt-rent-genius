@@ -1,5 +1,6 @@
 import { normalizeInquiryOfferItems, buildOfferTotals, normalizeOfferGroups, normalizeExtraFields, resolveReturnLocation } from "./inquiry-offer-math.ts";
 import { validCalendarDate } from "./public-rental-period.ts";
+import { normalizeOpenEndedUnit, normalizeOpenEndedDuration } from "./installments.ts";
 export function buildOrderAmendment<T extends Record<string, unknown>>(body: Record<string, unknown>, current: T, location: string) {
   const items = normalizeInquiryOfferItems(body.items);
   for (const item of items) {
@@ -9,6 +10,8 @@ export function buildOrderAmendment<T extends Record<string, unknown>>(body: Rec
   const returnLocation = resolveReturnLocation(body.return_location, location, body.return_location_cost);
   const costs = { delivery_cost_delivery: amount("delivery_cost_delivery"), delivery_cost_return: amount("delivery_cost_return"), setup_cost: amount("setup_cost"), dismantle_cost: amount("dismantle_cost"), return_location_cost: returnLocation?.cost ?? 0 };
   const totals = buildOfferTotals(items, Object.values(costs).reduce((sum, value) => sum + value, 0));
+  const openEndedUnit = normalizeOpenEndedUnit(body.open_ended_unit);
+  const minimumDuration = normalizeOpenEndedDuration(body.minimum_duration ?? body.min_months, openEndedUnit);
   if (totals.netAmount <= 0) throw new Error("Auftragssumme muss größer als 0 € sein.");
   // Preserve original terms/coupon evidence unless explicitly editing supported fields.
   return { ...current, ...costs, items, totals, deposit: amount("deposit"), return_location: returnLocation?.key ?? null,
@@ -16,5 +19,7 @@ export function buildOrderAmendment<T extends Record<string, unknown>>(body: Rec
     delivery_requested: body.delivery_requested === true, delivery_address: body.delivery_address ?? null,
     groups: normalizeOfferGroups(body.groups), extra_fields: normalizeExtraFields(body.extra_fields),
     order_type: body.order_type === "delivery" ? "delivery" : "pickup", notes: typeof body.notes === "string" ? body.notes.slice(0,4000) : null,
-    open_ended: body.open_ended === true, use_saturday: body.use_saturday === true, use_sunday: body.use_sunday === true };
+    open_ended: body.open_ended === true, open_ended_unit: openEndedUnit, minimum_duration: minimumDuration,
+    min_months: openEndedUnit === "monate" ? minimumDuration : null,
+    use_saturday: body.use_saturday === true, use_sunday: body.use_sunday === true };
 }

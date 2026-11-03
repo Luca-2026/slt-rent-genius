@@ -44,3 +44,4 @@
 - Sales financing examples only via src/lib/financing.ts (tested annuity with balloon) and FinancingCalculator; requests reuse existing inquiry fields/message so no backend contract changes.
 
 - Inquiry and sign-booking rules: see inquiries/AGENTS.md.
+- Accepted rental amendments preserve original offer evidence and append immutable revisions while atomically updating operational periods, reservations and allocations; new ABs use versioned PDF paths, so historical documents and issued invoices cannot be overwritten.
