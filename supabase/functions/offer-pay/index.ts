@@ -15,12 +15,8 @@ import {
   toCents,
 } from "../_shared/stripe-pay.ts";
 import { SLT_COMPANY } from "../_shared/company.ts";
+import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
@@ -44,9 +40,13 @@ Deno.serve(async (req: Request) => {
       .eq("id", link.inquiry_id)
       .maybeSingle();
     if (!inquiry) return json({ error: "Zahlungslink nicht gefunden" }, 404);
+    const { data: signBooking } = link.inquiry_table === "rental_inquiries"
+      ? await service.from("sign_bookings").select("status,expires_at").eq("inquiry_id", inquiry.id).maybeSingle()
+      : { data: null };
 
     // Aktueller Stand: nur die zuletzt versendete Angebotsfassung ist bezahlbar.
     let status: string = link.status;
+    if (signBooking && (signBooking.status !== "reserved" || Date.parse(signBooking.expires_at) <= Date.now())) status = signBooking.status === "paid" ? "paid" : "superseded";
     if (status === "active" && inquiry.offer_number !== link.offer_number) status = "superseded";
 
     const paidCents = (Array.isArray(inquiry.payments) ? inquiry.payments : []).reduce(
@@ -60,7 +60,7 @@ Deno.serve(async (req: Request) => {
     const options = paymentOptions({ gross: inquiry.offer_total_gross, deposit, paidCents, terms });
     if (status === "active" && plan.openCents <= 0) status = "paid";
     // Nach einer Anzahlung bleibt der Link für den Restbetrag gültig.
-    if (status === "paid" && plan.openCents > 0 && inquiry.offer_number === link.offer_number) status = "active";
+    if (!signBooking && status === "paid" && plan.openCents > 0 && inquiry.offer_number === link.offer_number) status = "active";
 
     const view = {
       status,
@@ -87,6 +87,8 @@ Deno.serve(async (req: Request) => {
 
     const origin = ALLOWED_RETURN_ORIGINS.includes(String(body?.origin)) ? String(body.origin) : PAY_BASE;
     const stripe = stripeClient();
+    const sessionExpires = signBooking ? Math.min(Math.floor(Date.parse(signBooking.expires_at) / 1000), Math.floor(Date.now() / 1000) + 23 * 3600) : Math.floor(Date.now() / 1000) + 23 * 3600;
+    if (sessionExpires < Math.floor(Date.now() / 1000) + 1800) return json({ error: "Die Reservierung läuft in weniger als 30 Minuten ab. Bitte den Standort kontaktieren." }, 409);
 
     // frühere, noch offene Session beenden (verhindert Doppelzahlung)
     if (link.stripe_session_id) {
@@ -141,7 +143,7 @@ Deno.serve(async (req: Request) => {
         description: `Angebot ${link.offer_number}${inquiry.order_code ? ` · Auftrag #${inquiry.order_code}` : ""}`,
         metadata,
       },
-      expires_at: Math.floor(Date.now() / 1000) + 60 * 60 * 23,
+      expires_at: sessionExpires,
       success_url: `${origin}/zahlung/${token}?status=success`,
       cancel_url: `${origin}/zahlung/${token}?status=cancelled`,
     });
