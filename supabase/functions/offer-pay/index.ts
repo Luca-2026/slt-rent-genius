@@ -9,6 +9,7 @@ import {
   ALLOWED_RETURN_ORIGINS,
   PAY_BASE,
   isStripeConfigured,
+  isStripeTestMode,
   paymentOptions,
   planPaymentAmounts,
   stripeClient,
@@ -80,6 +81,10 @@ Deno.serve(async (req: Request) => {
 
     if (status !== "active") return json({ error: "Dieser Zahlungslink ist nicht mehr gültig", ...view }, 409);
     if (!isStripeConfigured()) return json({ error: "Online-Zahlung ist derzeit nicht verfügbar" }, 503);
+    if (signBooking && !isStripeTestMode()) {
+      const { data: product } = await service.from("b2b_managed_products").select("direct_booking_config").eq("slug", "halteverbotsschilder-set").single();
+      if (!product?.direct_booking_config?.live_enabled) return json({ error: "Stripe ist live eingerichtet. Echte Zahlungen für die Schilder-Testbuchung sind bis zur Freigabe gesperrt." }, 403);
+    }
 
     const choice = body?.choice === "anzahlung" ? "anzahlung" : "full";
     const option = options.find((o) => o.choice === choice) ?? options.find((o) => o.choice === "full");

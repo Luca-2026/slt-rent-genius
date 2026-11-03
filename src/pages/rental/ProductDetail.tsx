@@ -1365,12 +1365,12 @@ export default function ProductDetail() {
                 {/* Booking Card – desktop/tablet only */}
                 <div className="hidden md:block bg-card rounded-xl border border-border p-4 md:p-3 lg:p-5">
                   <div className="mb-3 md:mb-2 lg:mb-4 pb-3 md:pb-2 lg:pb-4 border-b border-border">
-                      <ProductPriceBlock
+                      {product.id === "halteverbotsschilder-set" && ["krefeld", "bonn"].includes(location.id) ? <p className="font-semibold"><SignPackagePrices kind="standard" /></p> : <ProductPriceBlock
                         product={product}
                         dailyPriceFrom={typeof productSEO?.dailyPriceFrom === "number" ? productSEO.dailyPriceFrom : undefined}
                         perDayLabel={t("rental.perDay")}
                         hideExtras={showTierPrices}
-                      />
+                      />}
                       {showTierPrices && (
                         <RentalPriceTiers
                           product={rawProduct!}
@@ -1485,11 +1485,11 @@ function MobileBookingCard({
   return (
     <div className="bg-card rounded-xl border border-border p-4">
       <div className="mb-3 pb-3 border-b border-border">
-          <ProductPriceBlock
+          {product.id === "halteverbotsschilder-set" && ["krefeld", "bonn"].includes(location.id) ? <p className="font-semibold"><SignPackagePrices kind="standard" /></p> : <ProductPriceBlock
             product={product}
             dailyPriceFrom={dailyPriceFrom}
             perDayLabel={t("rental.perDay")}
-          />
+          />}
 
           {showPrice && <p className="text-[11px] text-muted-foreground mt-1">{product.pricePerMonth && product.minRentalMonths ? `Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}</p>}
         </div>
