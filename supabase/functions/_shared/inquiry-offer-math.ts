@@ -4,6 +4,7 @@
  */
 
 import { computeAddonAmount, daysPerUnit, describeAddon, type AddonBasis, type AddonPriceType } from "./addon-calc.ts";
+import { normalizeOfferLogistics, type OfferLogistics } from "./offer-logistics.ts";
 
 export interface InquiryOfferAddon {
   key: string;
