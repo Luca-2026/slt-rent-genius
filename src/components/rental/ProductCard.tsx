@@ -11,6 +11,8 @@ import { getProductSEO } from "@/data/productSEOData";
 import { priceText } from "@/components/rental/ProductPriceBlock";
 import { useCustomerType } from "@/hooks/useCustomerType";
 import { vatNote } from "@/lib/priceDisplay";
+import { displayPrice as formatNetPrice } from "@/lib/priceDisplay";
+import { useSignBookingConfig } from "./SignPackageSelection";
 
 interface ProductCardProps {
   product: Product;
@@ -26,6 +28,8 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
 
   // Fallback: hole "ab"-Preis aus productSEOData (dailyPriceFrom), falls kein pricePerDay gepflegt ist
   const { type } = useCustomerType();
+  const isSign = product.id === "halteverbotsschilder-set" || product.id === "bonn-halteverbotsschilder-set";
+  const { data: signConfig } = useSignBookingConfig(isSign);
   const formatPriceValue = (v: string) => priceText(v, type);
   const seo = getProductSEO(product.id);
   const seoPriceFrom = typeof seo?.dailyPriceFrom === "number"
@@ -36,10 +40,10 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
     ? (product.pricePerMonth ? { value: formatPriceValue(product.pricePerMonth), unit: "/Monat" } :
        product.priceWeekend ? { value: formatPriceValue(product.priceWeekend), unit: "/Wochenende" } : undefined)
     : undefined;
-  const displayPrice = (product.pricePerDay ? formatPriceValue(product.pricePerDay) : undefined) || seoPriceFrom || fallbackMain?.value;
-  const displayUnit = fallbackMain ? fallbackMain.unit : (product.priceUnitLabel ?? "/Tag");
-  const showWeekendRow = Boolean(product.priceWeekend) && formatPriceValue(product.priceWeekend!) !== displayPrice;
-  const showMonthRow = Boolean(product.pricePerMonth) && formatPriceValue(product.pricePerMonth!) !== displayPrice;
+  const displayPrice = isSign ? (signConfig?.standardGrossCents ? formatNetPrice(signConfig.standardGrossCents / 119, type) : undefined) : (product.pricePerDay ? formatPriceValue(product.pricePerDay) : undefined) || seoPriceFrom || fallbackMain?.value;
+  const displayUnit = isSign ? " für 1–10 Tage" : fallbackMain ? fallbackMain.unit : (product.priceUnitLabel ?? "/Tag");
+  const showWeekendRow = !isSign && Boolean(product.priceWeekend) && formatPriceValue(product.priceWeekend ?? "") !== displayPrice;
+  const showMonthRow = !isSign && Boolean(product.pricePerMonth) && formatPriceValue(product.pricePerMonth ?? "") !== displayPrice;
 
   const handlePrev = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -133,7 +137,7 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
         )}
         
         {/* Weekend Badge */}
-        {product.priceWeekend && (
+        {!isSign && product.priceWeekend && (
           <Badge className="absolute top-2 right-2 bg-accent text-accent-foreground text-xs">
             Weekend-Tarif
           </Badge>

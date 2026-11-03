@@ -5,9 +5,11 @@ export const SIGN_BASE_RENTAL_DAYS = 10;
 export const SIGN_MAX_RENTAL_DAYS = 100;
 export const SIGN_LOCATIONS = ["krefeld", "bonn"] as const;
 export type SignPackage = "standard" | "sorglos";
+export interface SignRentalTier { fromDays: number; grossCents: number; extraDayGrossCents: number }
 export interface SignBookingConfiguration {
   enabled: boolean;
   standardGrossCents: number | null;
+  standardRentalTiers?: SignRentalTier[];
   sorglosGrossCents: number | null;
   depositCents: number | null;
   maxRentalDays: number | null;
@@ -54,7 +56,7 @@ export function signBookingPrice(config: SignBookingConfiguration, input: {
   if (fees === null || !Number.isInteger(fees) || fees < 0) return null;
   const extras = signAdditionalGrossCents(config, input.additionalSignQuantity ?? 0);
   if (extras === null) return null;
-  const rental = signRentalGrossCents(price, input.rentalDays, config.maxRentalDays);
+  const rental = signRentalGrossCents(price, input.rentalDays, config.maxRentalDays, input.package === "standard" ? config.standardRentalTiers : undefined);
   if (rental === null) return null;
   const grossCents = rental * input.quantity + fees + extras;
   const depositCents = config.depositCents * input.quantity;
@@ -76,8 +78,21 @@ export function signRentalDays(start: string, end: string): number {
   return Math.round((Date.parse(`${end}T12:00:00Z`) - Date.parse(`${start}T12:00:00Z`)) / 86400000) + 1;
 }
 /** First ten calendar days are included; each extra day adds one tenth of the CMS package. */
-export function signRentalGrossCents(baseCents: number | null | undefined, days: number, maxDays = SIGN_MAX_RENTAL_DAYS): number | null {
+export function signRentalGrossCents(baseCents: number | null | undefined, days: number, maxDays = SIGN_MAX_RENTAL_DAYS, tiers?: SignRentalTier[]): number | null {
   if (baseCents == null || !Number.isSafeInteger(baseCents) || baseCents <= 0 || !Number.isInteger(days) || days < 1 || days > maxDays) return null;
+  if (tiers !== undefined) {
+    if (!Array.isArray(tiers) || !tiers.length || tiers[0]?.fromDays !== 1 || tiers[0]?.grossCents !== baseCents) return null;
+    let selected: SignRentalTier | undefined;
+    let previous = 0;
+    for (const tier of tiers) {
+      if (!Number.isSafeInteger(tier.fromDays) || tier.fromDays <= previous || !Number.isSafeInteger(tier.grossCents) || tier.grossCents <= 0 || !Number.isSafeInteger(tier.extraDayGrossCents) || tier.extraDayGrossCents < 0) return null;
+      previous = tier.fromDays;
+      if (days >= tier.fromDays) selected = tier;
+    }
+    if (!selected) return null;
+    const cents = selected.grossCents + (days - selected.fromDays) * selected.extraDayGrossCents;
+    return Number.isSafeInteger(cents) ? cents : null;
+  }
   const cents = Math.round(baseCents * (SIGN_BASE_RENTAL_DAYS + Math.max(0, days - SIGN_BASE_RENTAL_DAYS)) / SIGN_BASE_RENTAL_DAYS);
   return Number.isSafeInteger(cents) ? cents : null;
 }

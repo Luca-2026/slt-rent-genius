@@ -4,7 +4,8 @@ import { signCartRentalNet, signSetupAddressKey } from "@/lib/signCartPackage";
 import { signRentalGrossCents } from "../../supabase/functions/_shared/sign-direct-booking";
 import type { RentalCartItem } from "@/lib/rentalCart";
 
-const config = { enabled: true, standardGrossCents: 4900, sorglosGrossCents: 19900, sorglosOuterGrossCents: 29900, depositCents: 10000, maxRentalDays: 100 } as never;
+const tiers = [{ fromDays: 1, grossCents: 3900, extraDayGrossCents: 0 }, { fromDays: 11, grossCents: 5500, extraDayGrossCents: 1000 }, { fromDays: 14, grossCents: 8500, extraDayGrossCents: 500 }, { fromDays: 22, grossCents: 12000, extraDayGrossCents: 200 }, { fromDays: 40, grossCents: 15500, extraDayGrossCents: 100 }];
+const config = { enabled: true, standardGrossCents: 3900, standardRentalTiers: tiers, sorglosGrossCents: 19900, sorglosOuterGrossCents: 29900, depositCents: 10000, maxRentalDays: 100 } as never;
 const euro = (cents: number) => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 2 }).format(cents / 100);
 const iso = (offset: number) => new Date(Date.UTC(2027, 0, 4) + offset * 86400000).toISOString().slice(0, 10);
 const zone = { sign_zone_street: "Hafenstraße 1", sign_zone_postal_code: "47809", sign_zone_city: "Krefeld" };
@@ -17,9 +18,9 @@ const item = (pkg: "standard" | "sorglos", days: number, quantity: number, setup
 describe("Schilderpreise: Warenkorb = Abschluss = Datenbank", () => {
   it("zeigt im Warenkorb für jeden Tag 1–100, 1–10 Sets und alle drei Pakete denselben Bruttobetrag wie der Abschluss", () => {
     const mismatches: string[] = [];
-    for (const [pkg, base] of [["standard", 4900], ["sorglos", 19900], ["sorglos", 29900]] as const) {
+    for (const [pkg, base] of [["standard", 3900], ["sorglos", 19900], ["sorglos", 29900]] as const) {
       for (let days = 1; days <= 100; days++) for (let quantity = 1; quantity <= 10; quantity++) {
-        const checkout = (signRentalGrossCents(base, days) ?? 0) * quantity;
+        const checkout = (signRentalGrossCents(base, days, 100, base === 3900 ? tiers : undefined) ?? 0) * quantity;
         const cart = displayPrice(signCartRentalNet(config, item(pkg, days, quantity, base)), "private");
         if (cart !== euro(checkout)) mismatches.push(`${pkg}/${base}/${days}T/${quantity}: ${cart} ≠ ${euro(checkout)}`);
       }
@@ -56,10 +57,10 @@ import { cartQuoteTotal } from "@/lib/rentalCart";
 describe("Gesamtsumme im Warenkorb = Summe der Positionen", () => {
   it("rundet die Gesamtsumme erst nach der Umsatzsteuer (24 Tage Sorglos: 477,60 €, nicht 477,59 €)", () => {
     const mismatches: string[] = [];
-    for (const base of [4900, 19900, 29900]) for (let days = 1; days <= 100; days++) for (let quantity = 1; quantity <= 10; quantity++) {
-      const net = signCartRentalNet(config, item(base === 4900 ? "standard" : "sorglos", days, quantity, base));
+    for (const base of [3900, 19900, 29900]) for (let days = 1; days <= 100; days++) for (let quantity = 1; quantity <= 10; quantity++) {
+      const net = signCartRentalNet(config, item(base === 3900 ? "standard" : "sorglos", days, quantity, base));
       const total = displayPrice(cartQuoteTotal([{ rental_net: net, addons: [] }]), "private");
-      if (total !== euro((signRentalGrossCents(base, days) ?? 0) * quantity)) mismatches.push(`${base}/${days}/${quantity}: ${total}`);
+      if (total !== euro((signRentalGrossCents(base, days, 100, base === 3900 ? tiers : undefined) ?? 0) * quantity)) mismatches.push(`${base}/${days}/${quantity}: ${total}`);
     }
     expect(mismatches).toEqual([]);
   });

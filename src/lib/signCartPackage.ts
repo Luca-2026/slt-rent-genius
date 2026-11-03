@@ -9,7 +9,7 @@ export function signCartPackage(items: RentalCartItem[]): SignPackage | null {
 
 /** Display estimate only; the server verifies the actual setup address at checkout. */
 export function signPackageEstimate(config: SignBookingConfiguration | null, pkg: SignPackage | null, quantity: number, days = 1): number | null {
-  const cents = signRentalGrossCents(pkg === "standard" ? config?.standardGrossCents : pkg === "sorglos" ? config?.sorglosGrossCents : null, days, config?.maxRentalDays ?? undefined);
+  const cents = signRentalGrossCents(pkg === "standard" ? config?.standardGrossCents : pkg === "sorglos" ? config?.sorglosGrossCents : null, days, config?.maxRentalDays ?? undefined, pkg === "standard" ? config?.standardRentalTiers : undefined);
   return cents != null && Number.isSafeInteger(cents) && cents > 0 ? cents * quantity / 119 : null;
 }
 

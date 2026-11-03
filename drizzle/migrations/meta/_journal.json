@@ -862,6 +862,13 @@
       "when": 1793684163047,
       "tag": "0122_consolidate_stock_sources",
       "breakpoints": true
+    },
+    {
+      "idx": 123,
+      "version": "7",
+      "when": 1793692071398,
+      "tag": "0123_sign_standard_rental_tiers",
+      "breakpoints": true
     }
   ]
 }
