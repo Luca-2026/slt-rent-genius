@@ -57,11 +57,20 @@ Deno.serve(async (req) => {
       .gte("logged_at", since).lte("logged_at", now.toISOString()).order("payment_date").order("logged_at");
     if (cashErr) throw cashErr;
     // deno-lint-ignore no-explicit-any
-    const cash: CashEntry[] = (cashData ?? []).map((c: any) => ({
+    let cash: CashEntry[] = (cashData ?? []).map((c: any) => ({
       amount: Number(c.amount), paymentDate: c.payment_date, orderCode: c.order_code, documentNumber: c.document_number,
       customerName: c.customer_name, companyName: c.company_name,
       label: c.kind === "payment_removed" ? `Storno ${c.label ?? "Barzahlung"}` : c.label,
     }));
+    // Nur Testversand: theoretische Beispielbuchungen, nichts wird gespeichert.
+    if (testTo && body.sample_cash === true) {
+      cash = [
+        { amount: 119, paymentDate: day, orderCode: "TEST01", documentNumber: "RE-M-TEST-0001", customerName: "Max Mustermann", companyName: null, label: "Bar Miete" },
+        { amount: 300, paymentDate: day, orderCode: "TEST01", documentNumber: null, customerName: "Max Mustermann", companyName: null, label: "Bar Kaution" },
+        { amount: 1785.5, paymentDate: day, orderCode: "TEST02", documentNumber: "RE-V-TEST-0001", customerName: "Erika Musterfrau", companyName: "Muster Bau GmbH", label: "Bar Verkauf" },
+        { amount: -300, paymentDate: day, orderCode: "TEST03", documentNumber: null, customerName: "Hans Beispiel", companyName: null, label: "Bar Kautionsauszahlung" },
+      ] as CashEntry[];
+    }
     const cashTotal = Math.round(cash.reduce((s, c) => s + c.amount, 0) * 100) / 100;
     const csv = buildDatevCashCsv(cash);
     const dateLabel = new Date(`${day}T12:00:00Z`).toLocaleDateString("de-DE");
