@@ -46,6 +46,9 @@ export interface OfferLine extends OfferLogistics {
   duration?: number;
   /** Explicit staff override of billed duration; calendar period remains unchanged. */
   duration_override?: number;
+  /** Requested/saved weekend usage; explicit false must not fall back to global defaults. */
+  use_saturday?: boolean;
+  use_sunday?: boolean;
   /** Mengeneinheit der Position */
   unit?: OfferUnit;
   unit_price: number;

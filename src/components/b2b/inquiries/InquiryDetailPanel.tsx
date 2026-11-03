@@ -112,6 +112,7 @@ export function offerPayloadToLines(payload: unknown): {
   };
   meta: {
     payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null; open_ended: boolean; min_months?: number; minimum_duration?: number; open_ended_unit?: OpenEndedUnit;
+    use_saturday?: boolean; use_sunday?: boolean;
     /** Paket 3b – fehlen bei alten Angeboten. */
     groups?: OfferGroup[]; extra_fields?: OfferExtraFields; order_type?: OrderType; terms_text?: string;
   };
@@ -132,6 +133,7 @@ export function offerPayloadToLines(payload: unknown): {
         valid_days?: number;
         notes?: string | null;
         open_ended?: boolean;
+        use_saturday?: boolean; use_sunday?: boolean;
         min_months?: number; minimum_duration?: number; open_ended_unit?: OpenEndedUnit;
         groups?: unknown;
         extra_fields?: unknown;
@@ -161,6 +163,8 @@ export function offerPayloadToLines(payload: unknown): {
     quantity: split.quantity,
     duration: split.duration,
     duration_override: Number(raw.duration_override) > 0 ? Number(raw.duration_override) : undefined,
+    ...(typeof raw.use_saturday === "boolean" ? { use_saturday: raw.use_saturday } : {}),
+    ...(typeof raw.use_sunday === "boolean" ? { use_sunday: raw.use_sunday } : {}),
     unit: split.unit,
     // Jede Position behält ihre eigene Einheit/Dauer aus dem Angebot.
     custom_period: true,
@@ -228,6 +232,8 @@ export function offerPayloadToLines(payload: unknown): {
       valid_days: Number(p.valid_days) > 0 ? Number(p.valid_days) : null,
       notes: typeof p.notes === "string" ? p.notes : null,
       open_ended: p.open_ended === true,
+      ...(typeof p.use_saturday === "boolean" ? { use_saturday: p.use_saturday } : {}),
+      ...(typeof p.use_sunday === "boolean" ? { use_sunday: p.use_sunday } : {}),
       open_ended_unit: normalizeOpenEndedUnit(p.open_ended_unit),
       minimum_duration: normalizeOpenEndedDuration(p.minimum_duration ?? p.min_months, normalizeOpenEndedUnit(p.open_ended_unit)),
       min_months: Number(p.min_months) >= 1 ? Math.floor(Number(p.min_months)) : 1,
@@ -866,9 +872,13 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           reviseOf={docMode === "revise" ? inquiry.offer_number : null}
           defaultMeta={(docMode === "revise" || docMode === "amendment") ? offerSnapshot?.meta : docMode === "offer" ? (() => {
             const raw = inquiry.raw_payload as Record<string, unknown> | null;
-            if (raw?.open_ended !== true) return undefined;
+            const weekend = {
+              use_saturday: typeof inquiry.use_saturday === "boolean" ? inquiry.use_saturday : undefined,
+              use_sunday: typeof inquiry.use_sunday === "boolean" ? inquiry.use_sunday : undefined,
+            };
+            if (raw?.open_ended !== true) return weekend;
             const unit = normalizeOpenEndedUnit(raw.open_ended_unit);
-            return { open_ended: true, open_ended_unit: unit, minimum_duration: normalizeOpenEndedDuration(raw.minimum_duration, unit) };
+            return { ...weekend, open_ended: true, open_ended_unit: unit, minimum_duration: normalizeOpenEndedDuration(raw.minimum_duration, unit) };
           })() : undefined}
           defaultPayments={docMode === "invoice" || docMode === "final"
             ? deposit.settled
