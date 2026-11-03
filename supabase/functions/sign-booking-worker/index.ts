@@ -23,12 +23,12 @@ Deno.serve(async req => {
       const { data: inq } = await service.from("rental_inquiries").select("*").eq("id", b.inquiry_id).single();
       if (!inq) continue;
       // No production mail until explicit rollout, even for previously created rows.
-      const { data: product } = await service.from("b2b_managed_products").select("direct_booking_config,image_url").eq("slug", "halteverbotsschilder-set").single();
+      const { data: product } = await service.from("b2b_managed_products").select("direct_booking_config,images").eq("slug", "halteverbotsschilder-set").single();
       if (!product?.direct_booking_config?.live_enabled && inq.customer_email?.toLowerCase() !== "luca@sandhoff.org") continue;
       const payload = b.snapshot.offer_payload, totals = payload.totals;
       const profile = { id: "", company_name: inq.company_name || inq.customer_name, legal_form: null, contact_first_name: inq.customer_name, contact_last_name: "", street: inq.customer_street, house_number: "", postal_code: inq.customer_postal_code, city: inq.customer_city, country: "Deutschland", contact_email: inq.customer_email, contact_phone: inq.customer_phone, credit_limit: 0, payment_due_days: 0 };
       const bytes = await generateOfferPdf({ documentType: "order_confirmation", offerNumber: inq.offer_number.replace(/^ANG-/, "AB-"), offerDate: b.confirmed_at.slice(0, 10), validUntil: "", profile,
-        items: payload.items.map((item: any) => ({ ...item, total_price: totals.netAmount, rental_start: b.start_date, rental_end: b.end_date, image_url: product?.image_url })),
+        items: payload.items.map((item: any) => ({ ...item, total_price: totals.netAmount, rental_start: b.start_date, rental_end: b.end_date, image_url: product?.images?.[0] })),
         deliveryCost: 0, deliveryCostDelivery: 0, deliveryCostReturn: 0, servicesSurcharge: 0, servicesWithPrices: [], netAmount: totals.netAmount, vatRate: 19, vatAmount: totals.vatAmount, grossAmount: b.gross_cents / 100,
         isReverseCharge: false, notes: b.package === "sorglos" ? "Städtische Gebühren werden zusätzlich separat abgerechnet." : null, validDays: 0, deposit: b.deposit_cents / 100, staffName: "SLT Rental", issuingLocation: b.location, orderCode: inq.order_code, sourceOfferNumber: inq.offer_number, servicePeriodStart: b.start_date, servicePeriodEnd: b.end_date, paymentTerms: "vorkasse", payments: inq.payments,
       });
