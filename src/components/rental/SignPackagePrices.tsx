@@ -13,5 +13,5 @@ export function SignPackagePrices({ kind }: { kind: "standard" | "sorglos" }) {
     return () => { active = false; };
   }, [kind]);
   const money = (value: number) => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(value / 100);
-  return <>{cents === null ? "Preis derzeit nicht verfügbar" : kind === "standard" ? `Standard-Set: ${money(cents)} brutto je Set für 1–10 Tage` : `Premium-Festpreis: ${money(cents)} brutto bis ${radius ?? "–"} km ab Vermietstandort${outer == null ? "" : `, darüber ${money(outer)} brutto`} je Set für 1–10 Tage`}{cents != null && ` · Bis 100 Tage mietbar, ab Tag 11 täglich ${money(cents / 10)} brutto zusätzlich je Set${kind === "sorglos" && outer != null ? ` (außerhalb ${radius} km: ${money(outer / 10)})` : ""}.`}</>;
+  return <>{cents === null ? "Preis derzeit nicht verfügbar" : kind === "standard" ? `Standard-Set: ${money(cents)} brutto je Set für 1–10 Tage` : `Premium-Festpreis: ${money(cents)} brutto bis ${radius ?? "–"} km ab Vermietstandort${outer == null ? "" : `, darüber ${money(outer)} brutto`} je Set für 1–10 Tage`}{cents != null && ` · Ab Tag 11 täglich ${money(cents / 10)} brutto zusätzlich je Set${kind === "sorglos" && outer != null ? ` (außerhalb ${radius} km: ${money(outer / 10)})` : ""}.`}</>;
 }
