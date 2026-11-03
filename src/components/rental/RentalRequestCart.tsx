@@ -30,7 +30,7 @@ import { cartDeliveryQuote, type CartDeliveryQuote } from "../../../supabase/fun
 import { eligibleSignCart, SIGN_PRODUCT_SLUG, validSignRentalRange } from "../../../supabase/functions/_shared/sign-direct-booking";
 import { SignBookingCheckout } from "./SignBookingCheckout";
 import { SignPackageSelection, useSignBookingConfig } from "./SignPackageSelection";
-import { signCartPackage, signCartRentalNet } from "@/lib/signCartPackage";
+import { signCartPackage, signCartRentalNet, signSetupQuotePatch } from "@/lib/signCartPackage";
 import { useSignSetupQuote } from "./useSignSetupQuote";
 import { SignPermitChoice } from "./SignPermitChoice";
 import { signLeadError } from "../../../supabase/functions/_shared/sign-booking-lead";
@@ -90,8 +90,9 @@ export function RentalRequestCart() {
   const setupQuote = useSignSetupQuote(edit?.location ?? "", edit?.sign_package === "sorglos", zoneAddress);
   const packageReady = !!edit?.sign_package && (edit.sign_package === "standard" || setupQuote.cents != null && !setupQuote.loading && !!edit.sign_permit_mode);
   useEffect(() => {
-    if (edit?.sign_package === "sorglos") update({ edit: { ...edit, sign_setup_quote_key: setupQuote.cents != null ? setupQuote.key : undefined, sign_setup_gross_cents: setupQuote.cents ?? undefined } });
-  }, [setupQuote.key, setupQuote.cents, edit?.id]);
+    const next = signSetupQuotePatch(state.edit, setupQuote);
+    if (next && state.edit) update({ edit: { ...state.edit, ...next } });
+  }, [setupQuote.key, setupQuote.cents, edit?.id, edit?.sign_package, edit?.sign_setup_quote_key, edit?.sign_setup_gross_cents]);
   const validPeriod = !!edit && validPublicRentalPeriod(edit) && (edit.product_slug !== SIGN_PRODUCT_SLUG || validSignRentalRange(edit.start_date, edit.end_date) && !signLeadError(edit.sign_package ?? "", edit.sign_permit_mode, edit.start_date, edit.start_time, now));
   const quoteItems = cartQuoteItems(items, edit);
   const editQuote = quotes.find(line => line.id === edit?.id);
