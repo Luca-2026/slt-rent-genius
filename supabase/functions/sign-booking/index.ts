@@ -10,6 +10,8 @@ import { signSetupGrossCents } from "../_shared/sign-direct-booking.ts";
 import { signLeadError } from "../_shared/sign-booking-lead.ts";
 import { SIGN_TERMS_VERSION, SIGN_TERMS_HASHES } from "../_shared/sign-legal.ts";
 
+import { bookingContactErrors } from "../_shared/booking-contact.ts";
+
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json", "Cache-Control": "no-store" } });
 const text = (max: number) => z.string().trim().min(1).max(max);
 const booking = z.object({
@@ -20,7 +22,7 @@ const booking = z.object({
   termsVersion: z.literal(SIGN_TERMS_VERSION), permitMode: z.enum(["existing", "slt"]).optional(),
   additionalSigns: z.array(z.object({ slug: text(150), quantity: z.number().int().min(1).max(100) })).max(30).default([]),
   zoneStreet: z.string().trim().max(200), zonePostalCode: z.string().trim().max(20), zoneCity: z.string().trim().max(100), message: z.string().max(4000), permitToken: z.string().regex(/^[A-Za-z0-9_-]{20,64}$/).nullable(),
-}).refine(v => v.package === "standard" ? v.pickupConfirmed : v.municipalFeesAccepted && v.zoneStreet.length > 3 && v.zonePostalCode.length > 3 && v.zoneCity.length > 1);
+}).refine(v => Object.keys(bookingContactErrors(v)).length === 0).refine(v => v.package === "standard" ? v.pickupConfirmed : v.municipalFeesAccepted && v.zoneStreet.length > 3 && v.zonePostalCode.length > 3 && v.zoneCity.length > 1);
 
 Deno.serve(async req => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
