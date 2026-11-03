@@ -4600,6 +4600,47 @@ export type Database = {
           },
         ]
       }
+      rental_order_confirmation_deliveries: {
+        Row: {
+          confirmation_number: string
+          file_url: string
+          id: string
+          rental_inquiry_id: string
+          sent_at: string
+          sent_by: string
+          snapshot: Json
+          version: number
+        }
+        Insert: {
+          confirmation_number: string
+          file_url: string
+          id?: string
+          rental_inquiry_id: string
+          sent_at?: string
+          sent_by: string
+          snapshot: Json
+          version: number
+        }
+        Update: {
+          confirmation_number?: string
+          file_url?: string
+          id?: string
+          rental_inquiry_id?: string
+          sent_at?: string
+          sent_by?: string
+          snapshot?: Json
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_order_confirmation_deliveries_rental_inquiry_id_fkey"
+            columns: ["rental_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "rental_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rental_order_revisions: {
         Row: {
           agreed_at: string
