@@ -21,11 +21,19 @@ export default function ForgotPassword() {
 
     setLoading(true);
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-        redirectTo: authRedirectUrl("/b2b/passwort-zuruecksetzen/"),
+      // Sent via our own Resend function, independent of the provider mailer.
+      const { data, error } = await supabase.functions.invoke("request-password-reset", {
+        body: { email: email.trim() },
       });
-
-      if (error) throw error;
+      if (error) {
+        let message = "E-Mail konnte nicht gesendet werden. Bitte versuchen Sie es erneut.";
+        try {
+          const details = await (error as any).context?.json?.();
+          if (details?.error) message = details.error;
+        } catch { /* keep default */ }
+        throw new Error(message);
+      }
+      if (!data?.success) throw new Error("E-Mail konnte nicht gesendet werden.");
       setSent(true);
     } catch (error: any) {
       toast({

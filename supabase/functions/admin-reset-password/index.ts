@@ -114,7 +114,7 @@ Deno.serve(async (req) => {
         </a>
       </div>
       <p style="color:#595959;font-size:14px;line-height:1.6;margin:0 0 20px;">
-        Dieser Link ist 24 Stunden gültig. Danach muss ein neuer Link angefordert werden.
+        Dieser Link ist nur einmal und für begrenzte Zeit gültig. Ist er abgelaufen, kannst du über „Passwort vergessen" jederzeit einen neuen anfordern.
       </p>
       <p style="color:#999999;font-size:12px;margin:20px 0 0;">
         Falls du diese Anfrage nicht erwartest, kontaktiere bitte deinen Ansprechpartner.
