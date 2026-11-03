@@ -1,9 +1,20 @@
 import { describe, it, expect } from "vitest";
-import { parsePriceInput, formatDayPriceText, legacyDayPrice, emptyPriceSet, bauTierPrice, applyBauTierAutofill, recalcBauTiers } from "@/components/b2b/admin/ManagedPriceFields";
+import { parsePriceInput, formatDayPriceText, legacyDayPrice, legacyDayText, emptyPriceSet, bauTierPrice, applyBauTierAutofill, recalcBauTiers } from "@/components/b2b/admin/ManagedPriceFields";
 import { serializeAddonOptions } from "@/components/b2b/admin/InsuranceTiersEditor";
 import { parsePriceValue } from "@/lib/catalogPricing";
 
 describe("CMS-Preisschema", () => {
+  it("Anhänger behalten den gepflegten Abpreis statt des abweichenden Bau-Grundpreises", () => {
+    const prices = { ...emptyPriceSet(), price_from_1_rd: "89,00", price_from_20_rd: "53,00" };
+    expect(legacyDayText("anhaenger", "bau", prices, "ab 15,00 €/Tag")).toBe("ab 15,00 €/Tag");
+  });
+  it("Anhängerpreis ohne Ab wird als Abpreis gespeichert, ohne den Betrag zu ändern", () => {
+    expect(legacyDayText("anhaenger", "bau", emptyPriceSet(), "15,00 €/Tag")).toBe("ab 15,00 €/Tag");
+    expect(legacyDayText("anhaenger", "bau", emptyPriceSet(), null)).toBeNull();
+  });
+  it("Andere Kategorien behalten Ab beim Rückschreiben ihres aktualisierten Grundpreises", () => {
+    expect(legacyDayText("erdbewegung", "bau", { ...emptyPriceSet(), price_from_1_rd: "89" }, "ab 80,00 €/Tag")).toBe("ab 89,00 €/Tag");
+  });
   it("Monatspreis 900 € ergibt 45,00 ab 20 Miettagen", () => {
     expect(Math.round((parsePriceValue("900,00 €/Monat")! / 20) * 100) / 100).toBe(45);
   });
