@@ -81,4 +81,18 @@ it('calendar reports ten booked sets as zero remaining and frees expired holds',
  await db.query("UPDATE sign_bookings SET expires_at=now()-interval '1 second' WHERE id=$1",[b.id]);
  expect((await db.query<{n:number}>("SELECT sign_reserved_sets('krefeld','2027-09-06','2027-09-08') AS n")).rows[0]?.n).toBe(0);
 });
+it('server rejects unknown setup distance and prices exactly 15 km versus beyond',async()=>{
+ await db.exec(`UPDATE b2b_managed_products SET direct_booking_config=direct_booking_config||'{"sorglosRadiusKm":15,"sorglosOuterGrossCents":29900}'::jsonb WHERE slug='halteverbotsschilder-set'`);
+ const input={...base,package:'sorglos',start_date:'2027-10-04',end_date:'2027-10-06'};
+ await expect(reserve(input)).rejects.toThrow('Aufstelladresse');
+ for(const [distance,cents] of [[15,19900],[15.001,29900]]) {
+   const b=await reserve({...input,verifiedDistanceKm:distance} as typeof base); if(!b) throw new Error('Missing booking');
+   expect((await db.query<{gross_cents:number}>('SELECT gross_cents FROM sign_bookings WHERE id=$1',[b.id])).rows[0]?.gross_cents).toBe(cents);
+ }
+});
+it('calendar includes staff bookings and B2B reservations',async()=>{
+ await db.exec(`INSERT INTO rental_inquiries(product_id,location,status,quantity,start_date,end_date) VALUES('halteverbotsschilder-set','Bonn','accepted',6,'2027-11-01','2027-11-03'); INSERT INTO b2b_reservations(id,product_id,location,status,quantity,start_date,end_date) VALUES(gen_random_uuid(),'halteverbotsschilder-set','Bonn','confirmed',4,'2027-11-01','2027-11-03');`);
+ const result=await db.query<{days:{remaining:number}[]}>("SELECT sign_calendar_availability('bonn','2027-11-01','2027-11-03') AS days");
+ expect(result.rows[0]?.days.map(d=>d.remaining)).toEqual([0,0,0]);
+});
 });
