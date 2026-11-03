@@ -45,6 +45,6 @@
 - Delivery tariffs live only in supabase/functions/_shared/delivery-tariffs.ts (re-exported by src/data/lieferkosten); public cart delivery = most expensive item tariff, distance recomputed server-side via _shared/route-distance.ts, so website preview and stored inquiry cannot drift.
 - Sales financing examples only via src/lib/financing.ts (tested annuity with balloon) and FinancingCalculator; requests reuse existing inquiry fields/message so no backend contract changes.
 
-- Inquiry and sign-booking rules: see inquiries/AGENTS.md; logistics-only delivery/collection moments use _shared/offer-logistics to keep billing dates independent.
+- Inquiry rules: see inquiries/AGENTS.md; logistics and duration_override never alter the rental calendar, insurance period or availability.
 - Accepted rental amendments preserve original offer evidence and append immutable revisions while atomically updating operational periods, reservations and allocations; new ABs use versioned PDF paths, so historical documents and issued invoices cannot be overwritten.
 - Kassenprotokoll: Barzahlungen („Bar…“) per Trigger append-only in cash_journal (Entfernen = Storno, Rechnungen nur spätere Eingänge gegen Doppelzählung); deposit-refund-digest versendet 18 Uhr Berlin Tagesabschluss mit je einer DATEV-CSV pro Kasse (cash_register über cash_register_for_location, Mülheim → Krefeld) aus _shared/datev-cash-csv.ts, da DATEV je Kasse importiert.

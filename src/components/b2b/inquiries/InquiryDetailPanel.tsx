@@ -160,6 +160,7 @@ export function offerPayloadToLines(payload: unknown): {
     description: split.description,
     quantity: split.quantity,
     duration: split.duration,
+    duration_override: Number(raw.duration_override) > 0 ? Number(raw.duration_override) : undefined,
     unit: split.unit,
     // Jede Position behält ihre eigene Einheit/Dauer aus dem Angebot.
     custom_period: true,

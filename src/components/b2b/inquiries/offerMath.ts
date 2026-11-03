@@ -44,6 +44,8 @@ export interface OfferLine extends OfferLogistics {
   quantity: number;
   /** Mietdauer/Menge in der gewählten Einheit (Tage, Wochen, Monate …) */
   duration?: number;
+  /** Explicit staff override of billed duration; calendar period remains unchanged. */
+  duration_override?: number;
   /** Mengeneinheit der Position */
   unit?: OfferUnit;
   unit_price: number;

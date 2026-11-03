@@ -248,6 +248,7 @@ function applyRentalPricing(item: FormLine, dayOpts: RentalDayOptions): FormLine
     start: { date: item.rental_start, time: item.rental_start_time },
     end: { date: item.rental_end, time: item.rental_end_time },
     unit: item.unit_manual ? ((item.unit ?? null) as OfferUnit | null) : null,
+    durationOverride: item.duration_override,
     opts: { use_saturday: item.use_saturday ?? dayOpts.use_saturday, use_sunday: item.use_sunday ?? dayOpts.use_sunday },
   });
   const base: FormLine = { ...item, product_name: p.base_name };
@@ -1879,6 +1880,13 @@ export function InquiryOfferForm({
               </div>
               <div className="min-w-0">
                 <Label className="text-xs">Dauer</Label>
+                {pricingActive && !openEnded && !isFlatRate && eff.unit !== "stueck" && (
+                  <label className="mb-1 flex items-center gap-2 text-xs">
+                    <Checkbox aria-label="Dauer manuell festlegen" checked={item.duration_override !== undefined} disabled={disabled || inherited}
+                      onCheckedChange={(checked) => patchPriced(index, { duration_override: checked === true ? (eff.duration ?? 1) : undefined })} />
+                    Dauer manuell festlegen
+                  </label>
+                )}
                 <div className="flex gap-1">
                   {isFlatRate ? (
                     <div className="flex h-10 flex-1 items-center rounded-md border border-input bg-muted/40 px-3 text-sm text-muted-foreground" data-testid="duration-flat">
@@ -1890,8 +1898,11 @@ export function InquiryOfferForm({
                       min={1}
                       className="w-20 shrink-0"
                       value={eff.duration ?? 1}
-                      onChange={(e) => patchItem(index, { duration: Number(e.target.value) || 0 })}
-                      disabled={disabled || inherited || (pricingActive && !openEnded && !!eff.rental_start && !!eff.rental_end) || (openEnded && !isFlatRate && eff.unit !== "stueck")}
+                      aria-label="Abgerechnete Dauer"
+                      onChange={(e) => item.duration_override !== undefined
+                        ? patchPriced(index, { duration_override: Math.min(10000, Math.max(1, Number(e.target.value) || 1)) })
+                        : patchItem(index, { duration: Number(e.target.value) || 0 })}
+                      disabled={disabled || inherited || (pricingActive && !openEnded && !!eff.rental_start && !!eff.rental_end && item.duration_override === undefined) || (openEnded && !isFlatRate && eff.unit !== "stueck")}
                     />
                   )}
                   <Select
@@ -1901,6 +1912,7 @@ export function InquiryOfferForm({
                       patchPriced(index, {
                         unit: v as OfferUnit,
                         unit_manual: true,
+                        duration_override: undefined,
                         // Pauschalpreis gilt für den gesamten Auftrag – Dauer fest 1.
                         ...(v === "pauschal" ? { duration: 1 } : {}),
                       })

@@ -64,6 +64,11 @@ describe("isUncountedBlock (Stand 15.10., Bestätigung ausstehend)", () => {
 });
 
 describe("1b defaultUnit", () => {
+  it("uses manually billed days for Bau tiers in both pricing copies", () => {
+    const input = { scheme: "bau", prices: { price_from_1_rd: 85, price_from_3_rd: 77, price_from_10_rd: 68, price_from_20_rd: 51 }, start: m("2026-11-04", "07:00"), end: m("2026-11-24", "18:00"), durationOverride: 10 };
+    expect(computeRentalLinePrice(input)).toMatchObject({ duration: 10, unit_price: 68 });
+    expect(mirror.computeRentalLinePrice(input)).toEqual(computeRentalLinePrice(input));
+  });
   it("bau → miettage, event → kalendertage", () => {
     expect(defaultUnit({ pricing_scheme: "bau" })).toBe("miettage");
     expect(defaultUnit({ pricing_scheme: "event" })).toBe("kalendertage");
