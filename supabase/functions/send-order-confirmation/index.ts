@@ -6,6 +6,7 @@ import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutatio
  * kommt der Auftrag verbindlich zustande.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
+import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
@@ -16,11 +17,6 @@ import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts
 import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
 import { ensurePaymentLink, planPaymentAmounts, isStripeConfigured } from "../_shared/stripe-pay.ts";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
@@ -77,7 +73,9 @@ Deno.serve(async (req) => {
   try {
     const auth = req.headers.get("Authorization");
     if (!auth?.startsWith("Bearer ")) return json({ error: "Unauthorized" }, 401);
-    const service = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, {
+    const serviceUrl = Deno.env.get("SUPABASE_URL"), serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"), anonKey = Deno.env.get("SUPABASE_ANON_KEY");
+    if (!serviceUrl || !serviceKey || !anonKey) return json({ error: "Dienst nicht konfiguriert" },500);
+    const service = createClient(serviceUrl, serviceKey, {
       auth: { persistSession: false },
     });
     const { data: u } = await service.auth.getUser(auth.replace("Bearer ", ""));
@@ -312,7 +310,7 @@ Deno.serve(async (req) => {
       });
       if (preview) return json({preview:true,pdf_base64:encodeBase64(pdfBytes),totals:payload.totals});
       if (amendment) {
-        const actor = createClient(Deno.env.get("SUPABASE_URL")!,Deno.env.get("SUPABASE_ANON_KEY")!,{global:{headers:{Authorization:auth}},auth:{persistSession:false}});
+        const actor = createClient(serviceUrl,anonKey,{global:{headers:{Authorization:auth}},auth:{persistSession:false}});
         const {error:saveError}=await actor.rpc("save_rental_order_amendment",{_id:inquiryId,_expected:body.expected_revision,_payload:payload,_note:body.agreement_note,_agreed_at:body.agreed_at});
         if(saveError) return json({error:saveError.message},409);
         let paymentUrl=null;

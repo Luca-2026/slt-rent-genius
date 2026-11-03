@@ -422,7 +422,7 @@ export function InquiryOfferForm({
   const isInvoice = mode === "invoice";
   const isAmendment = mode === "amendment";
   const [agreementNote,setAgreementNote] = useState("");
-  const [agreedAt,setAgreedAt] = useState(new Date().toISOString().slice(0,16));
+  const [agreedAt,setAgreedAt] = useState(() => { const now = new Date(); return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0,16); });
   const isSupplement = isInvoice && invoiceKind === "supplement";
   const { toast } = useToast();
 
@@ -1167,7 +1167,7 @@ export function InquiryOfferForm({
   }, [inquiryId, items]);
 
   const buildBody = () => ({
-        ...(isAmendment ? {amendment:true,expected_revision:expectedRevision,agreement_note:agreementNote,agreed_at:agreedAt+":00Z"} : {}),
+        ...(isAmendment ? {amendment:true,expected_revision:expectedRevision,agreement_note:agreementNote,agreed_at:agreedAt ? new Date(agreedAt).toISOString() : null} : {}),
         ...(isInvoice
           ? {
               invoice_kind: invoiceKind,
@@ -1384,7 +1384,7 @@ export function InquiryOfferForm({
     }
     toast({
       title: isAmendment ? "Auftragsänderung gespeichert – neue AB jetzt prüfen und senden" : `${docLabel} gesendet`,
-      description: `${(data as any)?.invoice_number ?? (data as any)?.offer_number} · ${formatEuro((data as any)?.totals?.grossAmount ?? totals.grossAmount)} brutto`,
+      description: `${isAmendment ? `Fassung ${(data as any)?.version}` : (data as any)?.invoice_number ?? (data as any)?.offer_number} · ${formatEuro((data as any)?.totals?.grossAmount ?? totals.grossAmount)} brutto`,
     });
     // Übernommene Protokollposten als abgerechnet markieren – sowohl manuell
     // übernommene als auch automatisch vorbelegte Positionen (Kautionslogik),
@@ -1479,7 +1479,7 @@ export function InquiryOfferForm({
       onPointerDownCapture={(e) => { if (isDraftEditEvent(e.target, "pointer")) markTouched(); }}
     >
       {stickyActions && <div data-draft-neutral>{actionBar}</div>}
-      {isAmendment && <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3"><div><Label htmlFor="order-agreement-note">Telefonische / mündliche Vereinbarung *</Label><Input id="order-agreement-note" value={agreementNote} onChange={e=>setAgreementNote(e.target.value)} placeholder="Änderungen mit Kunde vereinbart …" /></div><div><Label htmlFor="order-agreed-at">Vereinbart am (UTC) *</Label><Input id="order-agreed-at" type="datetime-local" value={agreedAt} onChange={e=>setAgreedAt(e.target.value)} /></div></div>}
+      {isAmendment && <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3"><div><Label htmlFor="order-agreement-note">Telefonische / mündliche Vereinbarung *</Label><Input id="order-agreement-note" value={agreementNote} onChange={e=>setAgreementNote(e.target.value)} placeholder="Änderungen mit Kunde vereinbart …" /></div><div><Label htmlFor="order-agreed-at">Vereinbart am *</Label><Input id="order-agreed-at" type="datetime-local" value={agreedAt} onChange={e=>setAgreedAt(e.target.value)} /></div></div>}
       {remoteDraft && !disabled && remoteDraft.updatedBy !== myUserId && (
         <div data-draft-neutral className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-primary/40 bg-primary/5 p-3 text-sm">
           <span>

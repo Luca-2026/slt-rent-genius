@@ -283,6 +283,7 @@ interface Props {
     offer_number: string | null;
     /** Snapshot des versendeten Angebots – Grundlage für die Rechnung. */
     offer_payload?: unknown;
+    original_accepted_offer?: { offer_total_gross?: number; offer_file_url?: string; offer_number?: string } | null;
     raw_payload?: unknown;
     feedback_coupon_code?: string | null;
     order_code?: string | null;
@@ -680,7 +681,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           <div className="font-semibold">Angebot {inquiry.offer_number}</div>
           <div className="text-muted-foreground">
             {inquiry.offer_sent_at ? new Date(inquiry.offer_sent_at).toLocaleString("de-DE") : "—"}
-            {inquiry.offer_total_gross != null && ` · ${formatEuro(Number(inquiry.offer_total_gross))} brutto`}
+            {(inquiry.original_accepted_offer?.offer_total_gross ?? inquiry.offer_total_gross) != null && ` · ${formatEuro(Number(inquiry.original_accepted_offer?.offer_total_gross ?? inquiry.offer_total_gross))} brutto`}
           </div>
           {inquiry.offer_file_url && (
             <a
