@@ -841,6 +841,13 @@
       "when": 1793682637841,
       "tag": "0119_deposit_refund_digest_log",
       "breakpoints": true
+    },
+    {
+      "idx": 120,
+      "version": "7",
+      "when": 1793683214381,
+      "tag": "0120_cash_journal",
+      "breakpoints": true
     }
   ]
 }
