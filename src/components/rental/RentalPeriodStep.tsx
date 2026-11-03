@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SIGN_PRODUCT_SLUG, signLastRentalDate, validSignRentalRange } from "../../../supabase/functions/_shared/sign-direct-booking";
+import { signEarliestDay, signLeadError } from "../../../supabase/functions/_shared/sign-booking-lead";
 import { de } from "date-fns/locale";
 import { format, startOfDay, startOfMonth, endOfMonth } from "date-fns";
 import { Minus, Plus, CalendarDays, BadgePercent } from "lucide-react";
@@ -58,6 +59,8 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: {
   const info = getLocationInfoById(edit.location);
   const flexible = edit.location === "muelheim";
   const windowFor = (iso: string) => flexible && validCalendarDate(iso) && fromIso(iso).getDay() !== 0 ? { open: "07:00", close: "18:00" } : pickupWindowForDate(info, iso);
+  const minSetupDay = edit.sign_package === "sorglos" && edit.sign_permit_mode ? signEarliestDay(edit.sign_permit_mode) : "";
+  const leadError = signLeadError(edit.sign_package ?? "", edit.sign_permit_mode, edit.start_date, edit.start_time);
   const today = startOfDay(new Date());
   const from = validCalendarDate(edit.start_date) ? fromIso(edit.start_date) : undefined;
   const to = validCalendarDate(edit.end_date) ? fromIso(edit.end_date) : undefined;
@@ -86,12 +89,14 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: {
       {!weekendActive && <Button type="button" size="sm" variant="outline" className="col-span-2 w-full border-accent sm:col-span-1 sm:col-start-2 sm:w-fit" onClick={() => { const fri = nextWeekendStart(new Date()); patch({ start_date: toIso(fri), start_time: "16:00", end_date: toIso(addDays(fri, 3)), end_time: "09:30" }); }}>Nächstes Wochenende wählen</Button>}
     </div>}
     {isSign && <p role="status" className="text-sm font-semibold">1–10 Tage zum Festpreis.{lastDate && <> Rückgabe spätestens am {format(fromIso(lastDate), "dd.MM.yyyy")} (10. Tag).</>}</p>}
+    {edit.sign_package === "sorglos" && <p role="status" className="text-sm font-semibold text-primary">Früheste Aufstellung: {minSetupDay.split("-").reverse().join(".")} · {edit.sign_permit_mode === "slt" ? "14 Werktage (Mo–Sa, ohne NRW-Feiertage)" : "mindestens 96 Stunden Vorlauf"}</p>}
+    {edit.start_date && leadError && <p role="alert" className="text-sm text-destructive">{leadError}</p>}
     {isSign && availabilityLoading && <p className="text-sm text-muted-foreground">Belegung wird geprüft …</p>}
     {availabilityError && <p role="alert" className="text-sm text-destructive">{availabilityError}</p>}
     <div className="rounded-md border border-border">
       <p className="flex items-center gap-2 border-b border-border px-3 py-2 text-sm font-semibold"><CalendarDays className="h-4 w-4 text-primary" />{!from ? "Abholtag wählen" : !to ? "Rückgabetag wählen" : "Mietzeitraum"}</p>
       <Calendar mode="range" locale={de} month={month} onMonthChange={setMonth} modifiers={{ available: day => day >= today && (!!windowFor(toIso(day))) && !blocked(day), full: day => isSign && availability[toIso(day)] != null && availability[toIso(day)] < edit.quantity, limit: day => isSign && toIso(day) === lastDate, packageDay: day => isSign && !!lastDate && toIso(day) >= edit.start_date && toIso(day) <= lastDate, pickupDay: day => toIso(day) === edit.start_date, returnDay: day => toIso(day) === edit.end_date }} modifiersClassNames={{ available: "rental-day-available", full: "rental-day-full", limit: "rental-day-limit", packageDay: "rental-day-package", pickupDay: "rental-day-pickup", returnDay: "rental-day-return" }} weekStartsOn={1} numberOfMonths={1} selected={from ? { from, to } : undefined}
-        disabled={day => day < today || (!flexible && !pickupWindowForDate(info, toIso(day))) || blocked(day) || (isSign && !!from && !to && !!lastDate && toIso(day) > lastDate)}
+        disabled={day => day < today || (!!minSetupDay && toIso(day) < minSetupDay) || (!flexible && !pickupWindowForDate(info, toIso(day))) || blocked(day) || (isSign && !!from && !to && !!lastDate && toIso(day) > lastDate)}
         onSelect={range => {
           const start = range?.from ? toIso(range.from) : "";
           const end = range?.to ? toIso(range.to) : "";
@@ -106,7 +111,7 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: {
     </div>
     <div className="flex flex-wrap gap-2 text-xs"><span className="rental-available-legend rounded px-2 py-1">Verfügbar · vorbehaltlich Bestätigung</span><span className="rounded border border-border px-2 py-1"><b>Ab</b> = Abholtag · <b>Rück</b> = Rückgabetag</span>{!isSign && <span className="rounded bg-accent/15 px-2 py-1">Wochenendtarif: Abholung Fr ab 16:00 · Rückgabe Mo bis 09:30</span>}</div>
     {isSign && <div className="flex flex-wrap gap-2 text-xs"><span className="rounded bg-destructive/10 text-destructive px-2 py-1">Nicht verfügbar / zu wenige Sets</span><span className="rounded border border-accent px-2 py-1">Markiert: 1–10 Tage ab Abholung</span></div>}
-    <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-3">{field("start", "Abholung")}{field("end", "Rückgabe")}</div>
+    <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-3">{field("start", edit.sign_package === "sorglos" ? "Aufstellung" : "Abholung")}{field("end", edit.sign_package === "sorglos" ? "Abbau" : "Rückgabe")}</div>
     <div className="flex items-center justify-between rounded-md border border-border p-3">
       <span className="text-sm font-semibold">Anzahl</span>
       <div className="flex items-center gap-2">

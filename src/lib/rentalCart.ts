@@ -6,6 +6,7 @@ export interface RentalCartItem {
   location: string; quantity: number; start_date: string; start_time: string;
   end_date: string; end_time: string; selected_addons: string[];
   use_saturday: boolean; use_sunday: boolean;
+  sign_permit_mode?: "existing" | "slt";
   sign_package?: "standard" | "sorglos";
   sign_zone_street?: string; sign_zone_postal_code?: string; sign_zone_city?: string;
   sign_setup_quote_key?: string; sign_setup_gross_cents?: number;
