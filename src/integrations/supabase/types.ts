@@ -2332,6 +2332,7 @@ export type Database = {
       cash_journal: {
         Row: {
           amount: number
+          cash_register: string | null
           company_name: string | null
           customer_name: string | null
           document_number: string | null
@@ -2347,6 +2348,7 @@ export type Database = {
         }
         Insert: {
           amount: number
+          cash_register?: string | null
           company_name?: string | null
           customer_name?: string | null
           document_number?: string | null
@@ -2362,6 +2364,7 @@ export type Database = {
         }
         Update: {
           amount?: number
+          cash_register?: string | null
           company_name?: string | null
           customer_name?: string | null
           document_number?: string | null
@@ -6241,6 +6244,7 @@ export type Database = {
         Returns: boolean
       }
       can_manage_credit_checks: { Args: { _actor: string }; Returns: boolean }
+      cash_register_for_location: { Args: { _loc: string }; Returns: string }
       change_rental_inquiry_location: {
         Args: { _inquiry_id: string; _new_location: string }
         Returns: {
