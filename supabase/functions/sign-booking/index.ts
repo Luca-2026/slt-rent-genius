@@ -3,7 +3,7 @@ import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { z } from "npm:zod@3";
 import { ensurePaymentLink, isStripeConfigured, newToken, planPaymentAmounts } from "../_shared/stripe-pay.ts";
 import { SLT_COMPANY } from "../_shared/company.ts";
-import { validCalendarDate } from "../_shared/public-rental-period.ts";
+import { validCalendarDate, validPublicRentalPeriod } from "../_shared/public-rental-period.ts";
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json", "Cache-Control": "no-store" } });
 const text = (max: number) => z.string().trim().min(1).max(max);
@@ -54,6 +54,7 @@ Deno.serve(async req => {
     const parsed = booking.safeParse(raw);
     if (!parsed.success) return json({ error: "Bitte Kontaktdaten, Zeitraum und Bedingungen vollständig angeben" }, 400);
     const { requestId, cartExpiresAt, permitToken, ...body } = parsed.data;
+    if (body.package === "standard" && !validPublicRentalPeriod(body)) return json({ error: "Abholung und Rückgabe müssen innerhalb der Öffnungszeiten liegen" }, 400);
     // Retry may read back an existing reservation even after the original cart deadline.
     const { data: existing } = await service.from("sign_bookings").select("id").eq("request_id", requestId).maybeSingle();
     if (!existing && (cartExpiresAt <= Date.now() || cartExpiresAt > Date.now() + 900000)) return json({ error: "Warenkorb abgelaufen" }, 409);
@@ -71,7 +72,10 @@ Deno.serve(async req => {
     if (error) return json({ error: error.message }, error.code === "42501" ? 403 : 409);
     const { data: inquiry } = await service.from("rental_inquiries").select("customer_email,offer_number,offer_total_gross,offer_payload").eq("id", reserved.inquiry_id).single();
     const { data: link } = await service.from("offer_payment_links").select("token").eq("inquiry_id", reserved.inquiry_id).eq("inquiry_table", "rental_inquiries").eq("status", "active").maybeSingle();
-    if (!link && reserved.status === "reserved" && inquiry) await ensurePaymentLink(service, { table: "rental_inquiries", inquiryId: reserved.inquiry_id, customerEmail: inquiry.customer_email, offerNumber: inquiry.offer_number, plan: planPaymentAmounts({ gross: inquiry.offer_total_gross, deposit: inquiry.offer_payload.deposit }) });
+    if (!link && reserved.status === "reserved" && inquiry) {
+      const created = await ensurePaymentLink(service, { table: "rental_inquiries", inquiryId: reserved.inquiry_id, customerEmail: inquiry.customer_email, offerNumber: inquiry.offer_number, plan: planPaymentAmounts({ gross: inquiry.offer_total_gross, deposit: inquiry.offer_payload.deposit }) });
+      if (!created) return json({ error: "Reservierung gespeichert, Zahlungslink noch nicht verfügbar. Bitte denselben Vorgang erneut versuchen." }, 503);
+    }
     return json({ token: reserved.token });
   } catch (error) {
     console.error("sign-booking:", error instanceof Error ? error.message : "failed");

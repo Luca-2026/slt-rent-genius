@@ -80,6 +80,7 @@ Deno.serve(async (req) => {
         .is("order_confirmed_at", null).limit(200);
       if (error) throw new Error(error.message);
       for (const r of (data ?? []) as any[]) {
+        if (r.offer_payload?.direct_booking === true) continue; // Dedicated absolute 24-hour hold, never extend via generic reminders.
         const paidCents = (Array.isArray(r.payments) ? r.payments : []).reduce((s: number, p: any) => s + toCents(p?.amount), 0);
         const payload = (r.offer_payload ?? {}) as { deposit?: unknown; payment_terms?: unknown };
         const terms = typeof payload.payment_terms === "string" ? payload.payment_terms : "vorkasse";

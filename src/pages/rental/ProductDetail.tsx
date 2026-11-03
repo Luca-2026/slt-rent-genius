@@ -58,6 +58,7 @@ import { netToGross } from "@/lib/priceDisplay";
 import { RatgeberTeaserBlock } from "@/components/ratgeber/RatgeberTeaserBlock";
 import { getArticlesForCategory } from "@/data/blogArticles";
 import { getDrivingLicenseInfo, localizeProductText, resolveProductFaqs } from "@/data/productPageContent";
+import { SignPackagePrices } from "@/components/rental/SignPackagePrices";
 
 const LEGACY_PRODUCT_ID_REDIRECTS: Record<string, string> = {
   "bonn-stampfer-gs72": "/mieten/bonn/verdichtung/stampfer-gs72-xh/",
@@ -790,7 +791,7 @@ export default function ProductDetail() {
                       <div className="mt-4 space-y-3">
                         <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-3">
                           <div>
-                            <p className="text-sm font-semibold text-foreground mb-1">Preis: ab 39 € für 1–10 Tage Mietzeit</p>
+                            <p className="text-sm font-semibold text-foreground mb-1"><SignPackagePrices kind="standard" /></p>
                             <p className="text-[11px] text-muted-foreground mb-1">Brutto inkl. 19% USt.</p>
                             <p className="text-xs text-muted-foreground leading-relaxed">
                               Selbstabholer ab Standort Bonn, Krefeld oder Mülheim an der Ruhr.
@@ -801,7 +802,7 @@ export default function ProductDetail() {
                               <Sparkles className="h-4 w-4 text-accent flex-shrink-0 mt-0.5" />
                               <div>
                                 <p className="text-sm font-semibold text-foreground mb-1">
-                                  Premium-Festpreis 199 € – Sorglos-Paket
+                                  <SignPackagePrices kind="sorglos" />
                                 </p>
                                 <p className="text-xs text-muted-foreground leading-relaxed">
                                   Inkl. Aufstellung & Antrag bei der Stadt.* Exkl. Gebühren der Stadt je nach Aufstellzeit.
@@ -1364,12 +1365,12 @@ export default function ProductDetail() {
                 {/* Booking Card – desktop/tablet only */}
                 <div className="hidden md:block bg-card rounded-xl border border-border p-4 md:p-3 lg:p-5">
                   <div className="mb-3 md:mb-2 lg:mb-4 pb-3 md:pb-2 lg:pb-4 border-b border-border">
-                      <ProductPriceBlock
+                      {product.id === "halteverbotsschilder-set" && ["krefeld", "bonn"].includes(location.id) ? <p className="font-semibold"><SignPackagePrices kind="standard" /></p> : <ProductPriceBlock
                         product={product}
                         dailyPriceFrom={typeof productSEO?.dailyPriceFrom === "number" ? productSEO.dailyPriceFrom : undefined}
                         perDayLabel={t("rental.perDay")}
                         hideExtras={showTierPrices}
-                      />
+                      />}
                       {showTierPrices && (
                         <RentalPriceTiers
                           product={rawProduct!}
@@ -1484,11 +1485,11 @@ function MobileBookingCard({
   return (
     <div className="bg-card rounded-xl border border-border p-4">
       <div className="mb-3 pb-3 border-b border-border">
-          <ProductPriceBlock
+          {product.id === "halteverbotsschilder-set" && ["krefeld", "bonn"].includes(location.id) ? <p className="font-semibold"><SignPackagePrices kind="standard" /></p> : <ProductPriceBlock
             product={product}
             dailyPriceFrom={dailyPriceFrom}
             perDayLabel={t("rental.perDay")}
-          />
+          />}
 
           {showPrice && <p className="text-[11px] text-muted-foreground mt-1">{product.pricePerMonth && product.minRentalMonths ? `Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}</p>}
         </div>
