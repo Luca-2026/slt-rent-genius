@@ -71,3 +71,6 @@ project_id = "ccmxitxgyznethanixlg"
     verify_jwt = false
   [functions.offer-accept]
     verify_jwt = false
+
+[functions.request-password-reset]
+  verify_jwt = false
