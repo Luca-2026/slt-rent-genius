@@ -61,6 +61,30 @@ beforeEach(() => { fixtures.draft = null; fixtures.specialPrice = 0; fixtures.in
 afterEach(cleanup);
 
 describe("Kundenrabatte im Mietanfrage-Angebot", () => {
+  it("restores requested weekend use despite contradictory old draft globals and lets staff change it", async () => {
+    const rental = { ...line(), rental_start: "2026-11-04", rental_end: "2026-11-24", rental_start_time: "07:00", rental_end_time: "18:00", duration: 21,
+      use_saturday: true, use_sunday: true, pricing: { scheme: "bau", base_name: "2t Minibagger", prices: { price_from_1_rd: 100, price_from_3_rd: 90, price_from_10_rd: 80, price_from_20_rd: 60, price_weekend_num: null, price_base_1_3_cd: null, surcharge_per_cd_from_4: null, surcharge_per_cd_from_8: null } } };
+    fixtures.draft = { items: [rental], useSaturday: false, useSunday: false };
+    open({ defaultItems: [rental] });
+    const saturday = screen.getByRole("checkbox", { name: /Einsatz am Samstag/ });
+    const sunday = screen.getByRole("checkbox", { name: /Einsatz am Sonntag/ });
+    expect(saturday.getAttribute("data-state")).toBe("checked");
+    expect(sunday.getAttribute("data-state")).toBe("checked");
+    fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
+    await waitFor(() => expect(fixtures.invoke).toHaveBeenCalled());
+    expect(fixtures.invoke.mock.calls[0][1].items[0].duration).toBe(21);
+    expect(fixtures.invoke.mock.calls[0][1].use_saturday).toBe(true);
+    expect(fixtures.invoke.mock.calls[0][1].use_sunday).toBe(true);
+    fixtures.invoke.mockClear();
+    fireEvent.click(saturday);
+    fireEvent.click(sunday);
+    fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
+    await waitFor(() => expect(fixtures.invoke).toHaveBeenCalled());
+    expect(fixtures.invoke.mock.calls[0][1].items[0].duration).toBe(15);
+    expect(fixtures.invoke.mock.calls[0][1].items[0].use_saturday).toBe(false);
+    expect(fixtures.invoke.mock.calls[0][1].items[0].use_sunday).toBe(false);
+    expect(fixtures.invoke.mock.calls[0][1].items[0].unit_price).toBe(80);
+  });
   it("übernimmt 20 % Erdbewegung aus CRM-verknüpftem Portalprofil für Bagger und Radlader", async () => {
     open({ defaultItems: [line(), line("kramer-5045", "3t Radlader Kramer 5045")] });
     await waitFor(() => expect(discounts().map((input) => input.value)).toEqual(["20", "20"]));
