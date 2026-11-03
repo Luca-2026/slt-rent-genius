@@ -78,6 +78,7 @@ export function RentalRequestCart() {
   const managed = managedData ?? EMPTY_MANAGED;
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [quoteError, setQuoteError] = useState("");
+  const [quoteNotice, setQuoteNotice] = useState("");
   const [loading, setLoading] = useState(false);
   const [contact, setContact] = useCartDraft("rental-contact", snapshot.cart?.requestId ?? "", snapshot.cart?.expiresAt ?? 0, emptyContact);
   const contactErrors = bookingContactErrors(contact);
@@ -130,11 +131,20 @@ export function RentalRequestCart() {
   useEffect(() => {
     if (!snapshot.open || !quoteItems.length ) { setQuotes([]); setLoading(false); setQuoteError(""); return; }
     let cancelled = false;
-    setLoading(true); setQuoteError("");
+    setLoading(true); setQuoteError(""); setQuoteNotice("");
     const timer = setTimeout(async () => {
-      const { data, error } = await supabase.functions.invoke("public-rental-quote", { body: { items: quoteItems } });
+      const call = () => supabase.functions.invoke("public-rental-quote", { body: { items: quoteItems } });
+      let { data, error } = await call();
+      if (error && !cancelled) { await new Promise(r => setTimeout(r, 1500)); if (!cancelled) ({ data, error } = await call()); }
       if (cancelled) return;
-      setLoading(false); setQuotes(error ? [] : (data?.lines ?? []).map((line: Quote) => { const item = quoteItems.find(item => item.id === line.id); return item?.product_slug === SIGN_PRODUCT_SLUG ? { ...line, rental_net: signCartRentalNet(signConfig, item) } : line; })); setQuoteError(error ? "Preisprüfung nicht möglich. Bitte erneut versuchen." : data?.error ?? "");
+      // Nur echte Eingabefehler (400) blockieren; Netz-/Lastfehler blockieren die reine Anfrage nicht – Preise kommen dann im Angebot.
+      const status = (error as { context?: Response } | null)?.context?.status;
+      let message = "";
+      if (error && status === 400) { try { message = (await (error as { context: Response }).context.clone().json())?.error ?? ""; } catch { /* ignore */ } }
+      setLoading(false); setQuotes(error ? [] : (data?.lines ?? []).map((line: Quote) => { const item = quoteItems.find(item => item.id === line.id); return item?.product_slug === SIGN_PRODUCT_SLUG ? { ...line, rental_net: signCartRentalNet(signConfig, item) } : line; }));
+      const blocking = error && (status === 400 || quoteItems.some(item => item.product_slug === SIGN_PRODUCT_SLUG));
+      setQuoteError(blocking ? (message || "Preisprüfung nicht möglich. Bitte erneut versuchen.") : data?.error ?? "");
+      setQuoteNotice(error && !blocking ? "Die Preise konnten gerade nicht berechnet werden. Du kannst trotzdem anfragen – die Preise erhältst du mit unserem Angebot." : "");
     }, 400);
     return () => { cancelled = true; clearTimeout(timer); };
   }, [quoteKey, snapshot.open, signConfig]);
