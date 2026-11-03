@@ -6466,6 +6466,10 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      sign_calendar_availability: {
+        Args: { _from: string; _location: string; _to: string }
+        Returns: Json
+      }
       sign_delivery_note: {
         Args: {
           _agb_accepted?: boolean
@@ -6473,6 +6477,10 @@ export type Database = {
           _signature_data: string
         }
         Returns: undefined
+      }
+      sign_reserved_sets: {
+        Args: { _end: string; _loc: string; _start: string }
+        Returns: number
       }
       sign_return_protocol: {
         Args: { _protocol_id: string; _signature_data: string }
