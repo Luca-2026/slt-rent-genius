@@ -23,13 +23,13 @@ export function SignPackageSelection({ value, onChange, location, address, onAdd
     <h3 className="font-semibold">Welche Leistung möchtest du buchen?</h3>
     <RadioGroup value={value ?? ""} onValueChange={next => { if (next === "standard" || next === "sorglos") onChange(next); }} aria-label="Schilderpaket">
       {(["standard", "sorglos"] as const).map(pkg => {
-        const cents = pkg === "standard" ? config?.standardGrossCents : config?.sorglosGrossCents;
+        const cents = pkg === "standard" ? config?.standardGrossCents : value === "sorglos" && quote.cents != null ? quote.cents : config?.sorglosGrossCents;
         return <label key={pkg} className={`flex items-start gap-3 border-b py-4 ${value === pkg ? "border-primary" : "border-border"}`}>
           <RadioGroupItem value={pkg} className="mt-1 shrink-0" />
           <span className="min-w-0 flex-1 space-y-2">
             <strong className="block">{pkg === "standard" ? "Nur Schildermiete · Selbstabholung" : "Rundum-Sorglos-Paket"}</strong>
             <span className="block text-sm text-muted-foreground">{pkg === "standard" ? "Schilder und Füße selbst abholen, aufstellen und zurückgeben. Genehmigung und Protokollierung organisierst du selbst. Keine Beratung oder Unterstützung bei Genehmigungsfragen enthalten." : "Genehmigungsantrag, Aufstellung, Aufstellprotokoll und Abbau durch uns. Städtische Genehmigungsgebühren werden zusätzlich separat abgerechnet."}</span>
-            <span className="block font-bold text-primary">{cents != null ? displayPrice(cents / 119, type) : "Preis derzeit nicht verfügbar"}{pkg === "sorglos" && <span className="text-sm font-normal"> (bis {config?.sorglosRadiusKm ?? "–"} km)</span>}</span>
+            <span className="block font-bold text-primary">{cents != null ? displayPrice(cents / 119, type) : "Preis derzeit nicht verfügbar"}{pkg === "sorglos" && <span className="text-sm font-normal">{value === "sorglos" && quote.cents != null ? " (für deine Aufstelladresse)" : ` (bis ${config?.sorglosRadiusKm ?? "–"} km)`}</span>}</span>
             <span className="block text-xs text-muted-foreground">Je Set für 1–{config?.maxRentalDays ?? "–"} Tage · {type === "private" ? "inkl. 19 % USt." : "netto zzgl. 19 % USt."}{pkg === "sorglos" && config?.sorglosOuterGrossCents != null ? ` · Darüber ${displayPrice(config.sorglosOuterGrossCents / 119, type)}` : ""}</span>
           </span>
         </label>;
