@@ -61,18 +61,27 @@ Deno.serve(async (req) => {
       amount: Number(c.amount), paymentDate: c.payment_date, orderCode: c.order_code, documentNumber: c.document_number,
       customerName: c.customer_name, companyName: c.company_name,
       label: c.kind === "payment_removed" ? `Storno ${c.label ?? "Barzahlung"}` : c.label,
+      register: c.cash_register ?? null,
     }));
     // Nur Testversand: theoretische Beispielbuchungen, nichts wird gespeichert.
     if (testTo && body.sample_cash === true) {
       cash = [
-        { amount: 119, paymentDate: day, orderCode: "TEST01", documentNumber: "RE-M-TEST-0001", customerName: "Max Mustermann", companyName: null, label: "Bar Miete" },
-        { amount: 300, paymentDate: day, orderCode: "TEST01", documentNumber: null, customerName: "Max Mustermann", companyName: null, label: "Bar Kaution" },
-        { amount: 1785.5, paymentDate: day, orderCode: "TEST02", documentNumber: "RE-V-TEST-0001", customerName: "Erika Musterfrau", companyName: "Muster Bau GmbH", label: "Bar Verkauf" },
-        { amount: -300, paymentDate: day, orderCode: "TEST03", documentNumber: null, customerName: "Hans Beispiel", companyName: null, label: "Bar Kautionsauszahlung" },
+        { amount: 119, paymentDate: day, orderCode: "TEST01", documentNumber: "RE-M-TEST-0001", customerName: "Max Mustermann", companyName: null, register: "krefeld", label: "Bar Miete" },
+        { amount: 300, paymentDate: day, orderCode: "TEST01", documentNumber: null, customerName: "Max Mustermann", companyName: null, register: "krefeld", label: "Bar Kaution" },
+        { amount: 1785.5, paymentDate: day, orderCode: "TEST02", documentNumber: "RE-V-TEST-0001", customerName: "Erika Musterfrau", companyName: "Muster Bau GmbH", register: "bonn", label: "Bar Verkauf" },
+        { amount: -300, paymentDate: day, orderCode: "TEST03", documentNumber: null, customerName: "Hans Beispiel", companyName: null, register: "bonn", label: "Bar Kautionsauszahlung" },
       ] as CashEntry[];
     }
     const cashTotal = Math.round(cash.reduce((s, c) => s + c.amount, 0) * 100) / 100;
-    const csv = buildDatevCashCsv(cash);
+    const REG_LABEL: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", "": "Ohne Standort" };
+    const regKey = (c: CashEntry) => (c.register === "krefeld" || c.register === "bonn") ? c.register : "";
+    const groups = ["krefeld", "bonn", ""].map((k) => ({ key: k, entries: cash.filter((c) => regKey(c) === k) }))
+      .filter((g) => g.entries.length || g.key !== "");
+    const attachments = groups.map((g) => {
+      const csv = buildDatevCashCsv(g.entries);
+      const name = g.key ? `Kassenbuch_${REG_LABEL[g.key]}_DATEV_${day}.csv` : `Kassenbuch_OHNE_STANDORT_${day}.csv`;
+      return { filename: name, content: btoa(String.fromCharCode(...new TextEncoder().encode(csv))), csv };
+    });
     const dateLabel = new Date(`${day}T12:00:00Z`).toLocaleDateString("de-DE");
     const td = 'style="border:1px solid #d1d5db;padding:6px 10px;"';
     const table = rows.length
@@ -83,9 +92,9 @@ ${rows.map((r) => `<tr><td ${td}>${esc(r.name)}</td><td ${td}>${esc(r.company ||
       : `<p><strong>Keine Kautionen zu erstatten.</strong></p>`;
     const cashTable = cash.length
       ? `<table style="border-collapse:collapse;font-size:14px;"><thead><tr style="background:#00507d;color:#ffffff;">
-<th ${td}>Datum</th><th ${td}>Name</th><th ${td}>Firma</th><th ${td}>Auftrags-ID</th><th ${td}>Art</th><th ${td}>Betrag</th></tr></thead><tbody>
-${cash.map((c) => `<tr><td ${td}>${esc(new Date(c.paymentDate + "T12:00:00Z").toLocaleDateString("de-DE"))}</td><td ${td}>${esc(c.customerName || "")}</td><td ${td}>${esc(c.companyName || "–")}</td><td ${td}>${esc(c.orderCode ? "#" + c.orderCode : "")}</td><td ${td}>${esc(c.label || "")}</td><td ${td} align="right">${esc(eur(c.amount))}</td></tr>`).join("")}
-<tr><td ${td} colspan="5"><strong>Saldo</strong></td><td ${td} align="right"><strong>${esc(eur(cashTotal))}</strong></td></tr></tbody></table>`
+<th ${td}>Kasse</th><th ${td}>Datum</th><th ${td}>Name</th><th ${td}>Firma</th><th ${td}>Auftrags-ID</th><th ${td}>Art</th><th ${td}>Betrag</th></tr></thead><tbody>
+${cash.map((c) => `<tr><td ${td}>${esc(REG_LABEL[regKey(c)])}</td><td ${td}>${esc(new Date(c.paymentDate + "T12:00:00Z").toLocaleDateString("de-DE"))}</td><td ${td}>${esc(c.customerName || "")}</td><td ${td}>${esc(c.companyName || "–")}</td><td ${td}>${esc(c.orderCode ? "#" + c.orderCode : "")}</td><td ${td}>${esc(c.label || "")}</td><td ${td} align="right">${esc(eur(c.amount))}</td></tr>`).join("")}
+<tr><td ${td} colspan="6"><strong>Saldo</strong></td><td ${td} align="right"><strong>${esc(eur(cashTotal))}</strong></td></tr></tbody></table>`
       : `<p><strong>Keine Barzahlungen.</strong></p>`;
     const html = `<div style="font-family:Arial,sans-serif;max-width:680px;color:#111827;">
 <h2 style="color:#00507d;margin:0 0 8px;">Tagesabschluss ${esc(dateLabel)}</h2>
@@ -94,7 +103,9 @@ ${cash.map((c) => `<tr><td ${td}>${esc(new Date(c.paymentDate + "T12:00:00Z").to
 ${table}
 <h3 style="color:#00507d;margin:24px 0 8px;">Kassenprotokoll Barzahlungen</h3>
 ${cashTable}
-<p style="font-size:12px;color:#6b7280;">Die angehängte CSV-Datei ist für den Import in DATEV Kassenbuch online vorbereitet (Kassenübersicht → Optionen → Kassenbewegungen importieren). Bitte nicht in Excel bearbeiten und nur einmal importieren.</p>
+${groups.filter((g) => g.key).map((g) => `<p style="font-size:13px;margin:4px 0;">Saldo Kasse ${REG_LABEL[g.key]}: <strong>${esc(eur(Math.round(g.entries.reduce((s, c) => s + c.amount, 0) * 100) / 100))}</strong></p>`).join("")}
+${groups.some((g) => !g.key) ? `<p style="color:#b91c1c;"><strong>Achtung:</strong> Einige Barzahlungen haben keinen Standort. Sie stehen in einer separaten Datei und müssen manuell der richtigen Kasse zugeordnet werden.</p>` : ""}
+<p style="font-size:12px;color:#6b7280;">Je Kasse liegt eine eigene CSV-Datei bei (Krefeld inkl. Mülheim an der Ruhr, Bonn). Jede Datei nur in die gleichnamige Kasse importieren; die Datei ist für den Import in DATEV Kassenbuch online vorbereitet (Kassenübersicht → Optionen → Kassenbewegungen importieren). Bitte nicht in Excel bearbeiten und nur einmal importieren.</p>
 <p style="font-size:12px;color:#6b7280;margin-top:16px;">Automatische Liste aus dem SLT-Rental-Portal.</p></div>`;
 
     const resendKey = Deno.env.get("RESEND_API_KEY");
@@ -108,12 +119,12 @@ ${cashTable}
         to: [to],
         subject: `${testTo ? "[TEST] " : ""}Tagesabschluss ${dateLabel}: Kautionserstattungen (${rows.length}) und Kassenprotokoll (${cash.length})`,
         html,
-        attachments: [{ filename: `Kassenbuch_DATEV_${day}.csv`, content: btoa(String.fromCharCode(...new TextEncoder().encode(csv))) }],
+        attachments: attachments.map(({ filename, content }) => ({ filename, content })),
       }),
     });
     if (!res.ok) { console.error("Resend", res.status, await res.text()); return json({ error: `Versand fehlgeschlagen (${res.status})` }, 502); }
     if (!testTo) await svc.from("deposit_refund_digest_log").insert({ digest_date: day, refund_count: rows.length, total_amount: total });
-    return json({ to, count: rows.length, total, cash: cash.length, cashTotal, csv });
+    return json({ to, count: rows.length, total, cash: cash.length, cashTotal, files: attachments.map(({ filename, csv }) => ({ filename, csv })) });
   } catch (e) {
     console.error("deposit-refund-digest", e);
     return json({ error: "Unerwarteter Fehler" }, 500);

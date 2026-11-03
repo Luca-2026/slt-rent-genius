@@ -848,6 +848,13 @@
       "when": 1793683214381,
       "tag": "0120_cash_journal",
       "breakpoints": true
+    },
+    {
+      "idx": 121,
+      "version": "7",
+      "when": 1793683655764,
+      "tag": "0121_migration",
+      "breakpoints": true
     }
   ]
 }
