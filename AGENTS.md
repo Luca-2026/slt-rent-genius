@@ -47,4 +47,4 @@
 - Delivery tariffs live only in supabase/functions/_shared/delivery-tariffs.ts (re-exported by src/data/lieferkosten); public cart delivery = most expensive item tariff, distance recomputed server-side via _shared/route-distance.ts, so website preview and stored inquiry cannot drift.
 - Sales financing examples only via src/lib/financing.ts (tested annuity with balloon) and FinancingCalculator; requests reuse existing inquiry fields/message so no backend contract changes.
 
-- Open-ended rental rules: see inquiries/AGENTS.md.
+- Inquiry and sign-booking rules: see inquiries/AGENTS.md.

@@ -49,7 +49,7 @@ interface InquiryRow {
   requested_items: unknown;
   offer_payload: unknown;
 }
-interface TodoRow { id: string; title: string; due_date: string | null; status: string; location: string | null }
+interface TodoRow { id: string; title: string; due_date: string | null; status: string; location: string | null; sign_booking_id?: string | null }
 
 
 /** Einheitlicher Rahmen für alle Bereiche der Startseite. */
@@ -194,7 +194,7 @@ export default function StaffHome() {
     (async () => {
       const [inq, td, inv, pinv, sales, prof] = await Promise.all([
         supabase.from("rental_inquiries").select("id,status,assigned_to,offer_total_gross,order_confirmed_at,start_date,start_time,end_date,end_time,order_code,customer_name,company_name,product_name,quantity,location,requested_items,offer_payload,closed_manually_at"),
-        supabase.from("staff_todo_lists").select("id,title,due_date,status,location").neq("status", "done"),
+        supabase.from("staff_todo_lists").select("id,title,due_date,status,location,sign_booking_id").neq("status", "done"),
         isAdmin ? supabase.from("inquiry_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,paid_amount,credited_amount,due_date") : Promise.resolve({ data: [] }),
         isAdmin ? supabase.from("b2b_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,due_date") : Promise.resolve({ data: [] }),
         supabase.from("sales_inquiries").select("status"),
@@ -247,6 +247,7 @@ export default function StaffHome() {
     needsAction(p, "loeschung") && { p, kind: "loeschung", label: "Löschung beantragt" },
   ].filter(Boolean) as { p: ProfileRow; kind: string; label: string }[]));
   const dueTodos = todos.filter((t) => t.due_date && t.due_date.slice(0, 10) <= today && (activeDayLocation === "all" || !t.location || filterByDayLocation([t], activeDayLocation).length > 0));
+  const signTodos = filterByDayLocation(todos, activeDayLocation).filter(t => t.sign_booking_id && t.status !== "done");
 
   const monthName = now.toLocaleDateString("de-DE", { month: "long" });
   const firstName = displayName && !displayName.includes("@") ? displayName.split(" ")[0] : "";
@@ -281,6 +282,7 @@ export default function StaffHome() {
           </div>
 
           {/* 2. Heute + Finanzen – Kalender führt die Startseite an */}
+          {signTodos.length > 0 && <section className="border-l-4 border-accent bg-accent/5 p-4 space-y-2" aria-label="Halteverbot: Genehmigung und Aufstellung"><h2 className="flex items-center gap-2 font-semibold"><AlertTriangle className="h-4 w-4 text-accent" />Halteverbot: Genehmigung und Aufstellung ({signTodos.length})</h2>{signTodos.map(t => <Link key={t.id} to={`/b2b/aufgaben?aufgabe=${t.id}`} className="flex items-start gap-2 text-sm text-primary hover:underline"><span className="min-w-0 flex-1 break-words">{t.title}</span><ChevronRight className="h-4 w-4 shrink-0" /></Link>)}</section>}
           <div className={cn("grid gap-5 [&>*]:min-w-0", isAdmin && "lg:grid-cols-5")}>
             <Panel
               title="Heute"
@@ -325,9 +327,9 @@ export default function StaffHome() {
                     <ul className="-mx-2">
                       {dueTodos.map((t) => (
                         <li key={t.id}>
-                          <Link to="/b2b/aufgaben" className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted">
+                          <Link to={`/b2b/aufgaben?aufgabe=${t.id}`} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted">
                             <span className="min-w-0 flex-1 truncate">{t.title}</span>
-                            {t.due_date!.slice(0, 10) < today && <span className="flex shrink-0 items-center gap-1 text-xs text-destructive"><AlertTriangle className="h-3 w-3" aria-hidden="true" />überfällig</span>}
+                            {t.due_date && t.due_date.slice(0, 10) < today && <span className="flex shrink-0 items-center gap-1 text-xs text-destructive"><AlertTriangle className="h-3 w-3" aria-hidden="true" />überfällig</span>}
                             <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
                           </Link>
                         </li>

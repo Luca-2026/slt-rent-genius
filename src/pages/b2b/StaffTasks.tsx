@@ -153,6 +153,10 @@ export default function StaffTasks() {
   useEffect(() => {
     if (isStaff) load();
   }, [isStaff, load]);
+  useEffect(() => {
+    const taskId = searchParams.get("aufgabe");
+    if (taskId) { const task = lists.find(list => list.id === taskId); if (task) setDetailList(task); }
+  }, [searchParams, lists]);
 
   // Live-Fortschritt: Ersteller sieht sofort, wenn abgehakt wird
   useEffect(() => {

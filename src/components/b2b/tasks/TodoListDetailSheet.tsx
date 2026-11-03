@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { SignBookingStatus } from "@/components/b2b/inquiries/SignBookingStatus";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
@@ -40,6 +42,7 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
   const [newComment, setNewComment] = useState("");
   const [actualMinutes, setActualMinutes] = useState("");
   const [busy, setBusy] = useState(false);
+  const [signInquiryId, setSignInquiryId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     if (!list) return;
@@ -57,6 +60,12 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
   useEffect(() => {
     load();
   }, [load]);
+  useEffect(() => {
+    let active = true;
+    setSignInquiryId(null);
+    if (list?.sign_booking_id) void supabase.from("sign_bookings").select("inquiry_id").eq("id", list.sign_booking_id).maybeSingle().then(({ data }) => { if (active) setSignInquiryId(data?.inquiry_id ?? null); });
+    return () => { active = false; };
+  }, [list?.sign_booking_id]);
 
   useEffect(() => {
     if (!list) return;
@@ -75,8 +84,7 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
   const doneCount = items.filter((i) => i.is_done).length;
 
   const toggleItem = async (item: TodoItem, checked: boolean) => {
-    setItems((prev) => prev.map((i) => (i.id === item.id ? { ...i, is_done: checked } : i)));
-    await supabase
+    const { error } = await supabase
       .from("staff_todo_items")
       .update({
         is_done: checked,
@@ -84,6 +92,8 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
         done_by: checked ? user?.id ?? null : null,
       })
       .eq("id", item.id);
+    if (error) { toast({ title: "Aufgabenpunkt nicht abgeschlossen", description: error.message, variant: "destructive" }); return; }
+    setItems((prev) => prev.map((i) => (i.id === item.id ? { ...i, is_done: checked } : i)));
 
     if (checked && list.status === "sent") {
       await supabase.from("staff_todo_lists").update({ status: "in_progress" }).eq("id", list.id);
@@ -108,7 +118,7 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
 
   const completeList = async () => {
     setBusy(true);
-    await supabase
+    const { error } = await supabase
       .from("staff_todo_lists")
       .update({
         status: "done",
@@ -116,6 +126,7 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
         actual_minutes: actualMinutes === "" ? null : Number(actualMinutes),
       })
       .eq("id", list.id);
+    if (error) { setBusy(false); toast({ title: "Abschluss nicht möglich", description: error.message, variant: "destructive" }); return; }
     void notifyTodoUpdate(list.id, "completed", { createdBy: list.created_by, currentUserId: user?.id });
     setBusy(false);
     toast({ title: "Aufgabe erledigt", description: "Die Liste wurde als erledigt markiert." });
@@ -160,6 +171,7 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
         </SheetHeader>
 
         <div className="p-4 space-y-6">
+          {signInquiryId && <section className="space-y-3 border-b border-border pb-4"><Button asChild variant="outline"><Link to={`/b2b/mietanfragen/${signInquiryId}`}>Auftrag öffnen</Link></Button><SignBookingStatus inquiryId={signInquiryId} /></section>}
           {list.description && (
             <p className="text-sm text-muted-foreground whitespace-pre-line">{list.description}</p>
           )}
@@ -248,7 +260,7 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
           </div>
 
           {list.status !== "done" && (
-            <Button className="w-full" onClick={completeList} disabled={busy}>
+            <Button className="w-full" onClick={completeList} disabled={busy || (!!list.sign_booking_id && doneCount !== items.length)}>
               <CheckCircle2 className="h-4 w-4 mr-1" /> Aufgabe abschließen
             </Button>
           )}
