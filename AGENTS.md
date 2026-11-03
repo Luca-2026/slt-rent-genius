@@ -34,7 +34,7 @@
 - Anrufzeiten nur über callDateLabel.ts (Berliner Kalendertag).
 - Listen-Filter in localStorage; interne Links auf /b2b/mietanfragen/:id.
 - Rental inquiry fresh-entry defaults use rentalInquiryFilters.ts after staff access loads; explicit URL filters and detail-return state take precedence over defaults, never stale localStorage.
-- Bestand: aktive Einzelgeräte vor Menge je Standort; Mülheim→Krefeld via slt_stock_location, in allen Verfügbarkeitsfunktionen gleich.
+- Stock: instances before CMS quantity; slt_stock_location keeps physical locations. Transport is explicit; cash stays separate.
 - Gerätebelegung nur über check_availability/confirm_order vor AB-Versand; Exclusion-Constraint auf b2b_instance_allocations verhindert Doppelbelegung; Überführung setzt Gerätestandort dauerhaft; Entscheidungen in rental_inquiry_events; ohne Einzelgeräte/Menge = nicht geprüft. Kalender (calendarEntries.ts) und Startseite „Heute“ zeigen nur Aufträge mit order_confirmed_at (accepted/done).
 - Auftrags-ID order_code: DB-Trigger vergibt, unveränderlich; Anzeige via OrderCodeBadge/orderCode; Bank-Zweck „Auftrag CODE“ („#“ kein SEPA-Zeichen). Shared inquiry triggers must branch on the table before accessing rental-only fields, so sales inserts remain valid.
 - Schlussrechnung nach Kautionsabrechnung: Zahlungen, Kautionsblock, Einheiten serverseitig via _shared/final-invoice-deposit.ts (getestet) – alte Entwürfe verfälschen nichts.
