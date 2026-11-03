@@ -1,6 +1,6 @@
 import { normalizeInquiryOfferItems, buildOfferTotals, normalizeOfferGroups, normalizeExtraFields, resolveReturnLocation } from "./inquiry-offer-math.ts";
 import { validCalendarDate } from "./public-rental-period.ts";
-export function buildOrderAmendment(body: Record<string, unknown>, current: Record<string, unknown>, location: string) {
+export function buildOrderAmendment<T extends Record<string, unknown>>(body: Record<string, unknown>, current: T, location: string) {
   const items = normalizeInquiryOfferItems(body.items);
   for (const item of items) {
     if (!item.rental_start || !validCalendarDate(item.rental_start) || (!body.open_ended && (!item.rental_end || !validCalendarDate(item.rental_end) || item.rental_end < item.rental_start))) throw new Error("Bitte gültige Mietzeiträume für jede Position angeben.");
