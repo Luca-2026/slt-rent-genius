@@ -1442,7 +1442,7 @@ export function InquiryOfferForm({
   const previewHint = !previewOk && <p className="text-xs text-muted-foreground">Vor dem Senden bitte die PDF-Vorschau des aktuellen Stands ansehen.</p>;
   const actionText = (
     <p className="text-xs text-muted-foreground">
-      {isInvoice
+      {isAmendment ? "Auftragsänderung speichern und anschließend die neue AB senden. Kein neues Angebot und keine erneute Online-Annahme." : isInvoice
         ? "Die Vorschau vergibt keine Rechnungsnummer und versendet nichts. Erst beim finalen Erstellen wird die Rechnung unveränderlich; Korrekturen erfolgen per Gutschrift."
         : "Der Kunde kann das Angebot über den Button in der E-Mail online annehmen und unterschreiben – ihr bekommt dann einen Hinweis hier in der Anfrage. Danach den Job manuell in Rentware anlegen."}
     </p>
@@ -1453,7 +1453,6 @@ export function InquiryOfferForm({
         {stickyActionsLead}
         <div className="grid w-full grid-cols-1 gap-2 sm:ml-auto sm:flex sm:w-auto">{previewButton}{sendButton}</div>
       </div>
-      {isAmendment && <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3"><div><Label htmlFor="order-agreement-note">Telefonische / mündliche Vereinbarung *</Label><Input id="order-agreement-note" value={agreementNote} onChange={e=>setAgreementNote(e.target.value)} placeholder="Änderungen mit Kunde vereinbart …" /></div><div><Label htmlFor="order-agreed-at">Vereinbart am (UTC) *</Label><Input id="order-agreed-at" type="datetime-local" value={agreedAt} onChange={e=>setAgreedAt(e.target.value)} /></div></div>}
       {previewHint && <div className="mt-1 sm:text-right">{previewHint}</div>}
       {blockNotice && <div className="mt-2">{blockNotice}</div>}
     </div>
@@ -1480,6 +1479,7 @@ export function InquiryOfferForm({
       onPointerDownCapture={(e) => { if (isDraftEditEvent(e.target, "pointer")) markTouched(); }}
     >
       {stickyActions && <div data-draft-neutral>{actionBar}</div>}
+      {isAmendment && <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3"><div><Label htmlFor="order-agreement-note">Telefonische / mündliche Vereinbarung *</Label><Input id="order-agreement-note" value={agreementNote} onChange={e=>setAgreementNote(e.target.value)} placeholder="Änderungen mit Kunde vereinbart …" /></div><div><Label htmlFor="order-agreed-at">Vereinbart am (UTC) *</Label><Input id="order-agreed-at" type="datetime-local" value={agreedAt} onChange={e=>setAgreedAt(e.target.value)} /></div></div>}
       {remoteDraft && !disabled && remoteDraft.updatedBy !== myUserId && (
         <div data-draft-neutral className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-primary/40 bg-primary/5 p-3 text-sm">
           <span>
