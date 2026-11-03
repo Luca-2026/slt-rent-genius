@@ -358,6 +358,10 @@ Deno.serve(async (req) => {
     }
 
     const now = new Date();
+    if (inquiryType === "rental" && fileUrl) {
+      const { error: historyError } = await service.from("rental_order_confirmation_deliveries").insert({ rental_inquiry_id: inquiryId, version: revision, confirmation_number: confirmationNumber, file_url: fileUrl, snapshot: { offer_payload: payload, payments, order_code: inq.order_code }, sent_at: now.toISOString(), sent_by: user.id });
+      if (historyError) { console.error("AB history error",historyError.message); return json({ error: "E-Mail versendet, aber AB-Historie konnte nicht gespeichert werden. Bitte nicht erneut versenden." },500); }
+    }
     const line = `[${now.toLocaleString("de-DE")}] Auftragsbestätigung zu ${inq.offer_number} versendet${senderName ? ` von ${senderName}` : ""}`;
     await service.from(table).update({
       order_confirmed_at: now.toISOString(),
