@@ -855,6 +855,13 @@
       "when": 1793683655764,
       "tag": "0121_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 122,
+      "version": "7",
+      "when": 1793684163047,
+      "tag": "0122_consolidate_stock_sources",
+      "breakpoints": true
     }
   ]
 }
