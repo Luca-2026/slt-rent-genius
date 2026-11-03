@@ -14,12 +14,13 @@ vi.mock("@/components/rental/SignPackageSelection", () => ({ useSignBookingConfi
 vi.mock("@/components/rental/useSignSetupQuote", () => ({ useSignSetupQuote: () => ({ key: "", cents: null, loading: false }) }));
 
 beforeEach(() => {
+  vi.stubGlobal("ResizeObserver", class { observe() {} unobserve() {} disconnect() {} });
   localStorage.clear();
   localStorage.setItem("slt-customer-type", "private");
   localStorage.setItem("slt-sign-booking-receipt", "previous-reservation");
   invoke.mockImplementation((_name, { body }) => Promise.resolve({ data: body.action === "config" ? { config, additionalSigns: [] } : body.action === "info" ? { status: "reserved", order_code: "OLD123", amount_cents: 15400, expires_at: "2026-12-01T12:00:00Z", payment_url: null, bank: { holder: "SLT", iban: "", bic: "", reference: "Auftrag OLD123" } } : { lines: [{ id: "new-sign", rental_net: 98.82, deposit: 100, addons: [], options: [] }] } }));
 });
-afterEach(() => { cleanup(); invoke.mockClear(); });
+afterEach(() => { const close = screen.queryByRole("button", { name: "Close" }); if (close) fireEvent.click(close); cleanup(); invoke.mockClear(); });
 
 function mount() {
   render(<MemoryRouter><RentalCartButton /><RentalRequestCart /></MemoryRouter>);
