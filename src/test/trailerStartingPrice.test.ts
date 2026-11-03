@@ -14,8 +14,8 @@ describe("Anhänger-Abpreis vom CMS bis zur Website", () => {
     const saved = { ...edited, price_per_day: legacyDayText(edited.category, "bau", rowToPriceSet(edited), edited.price_per_day) };
     const product = managedRowToProduct(saved);
     expect(product.pricePerDay).toBe("ab 15,00 €/Tag");
-    expect(priceText(product.pricePerDay ?? "", "private")).toBe("ab 17,85 €");
-    expect(priceText(product.pricePerDay ?? "", "business")).toBe("ab 15,00 €");
+    expect(priceText(product.pricePerDay ?? "", "private")).toBe("ab 17,85\u00a0€");
+    expect(priceText(product.pricePerDay ?? "", "business")).toBe("ab 15,00\u00a0€");
     expect(product.specifications).toEqual({ Nutzlast: "900 kg" });
   });
   it("Bereits verlorenes Ab wird in der öffentlichen Darstellung ergänzt, Betrag bleibt gleich", () => {
