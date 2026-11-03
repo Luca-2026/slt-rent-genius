@@ -26,13 +26,30 @@ await db.exec(readFileSync('drizzle/migrations/0108_sign_booking_operational_tas
 await db.exec(readFileSync('drizzle/migrations/0109_sign_task_list_completion_guard.sql','utf8'));
 await db.exec(readFileSync('drizzle/migrations/0110_sign_calendar_and_distance_price.sql','utf8'));
 await db.exec(readFileSync('drizzle/migrations/0111_sign_booking_additional_signs.sql','utf8'));
+await db.exec(readFileSync('drizzle/migrations/0112_sign_permit_lead_and_terms_evidence.sql','utf8'));
 await db.exec(`CREATE TRIGGER payments AFTER UPDATE OF payments ON rental_inquiries FOR EACH ROW EXECUTE FUNCTION sign_booking_payment_state(); CREATE TRIGGER inventory BEFORE INSERT OR UPDATE OF status,offer_payload,quantity,start_date,end_date,location ON rental_inquiries FOR EACH ROW EXECUTE FUNCTION guard_sign_inventory();`);
 await db.exec(`INSERT INTO b2b_managed_products(slug,name,category,is_published,quantities,direct_booking_config) VALUES('halteverbotsschilder-set','Halteverbotsschilder-Set','absperrtechnik',true,'{"bonn":10,"krefeld":10}','{"enabled":true,"live_enabled":false,"standardGrossCents":4900,"sorglosGrossCents":19900,"depositCents":10000,"maxRentalDays":10}');`);
 },30000);
 afterAll(()=>db.close());
-const base={location:'bonn',package:'standard',quantity:1,start_date:'2027-03-01',end_date:'2027-03-05',start_time:'10:00',end_time:'10:00',name:'Luca Sandhoff',email:'luca@sandhoff.org',phone:'021514179904',street:'Anrather Straße 291',postalCode:'47807',city:'Krefeld',customerKind:'private',termsAccepted:true,pickupConfirmed:true,municipalFeesAccepted:true,zoneStreet:'Anrather Straße 291',zonePostalCode:'47807',zoneCity:'Krefeld',message:'Isolated test'};
+const base={location:'bonn',package:'standard',quantity:1,start_date:'2027-03-01',end_date:'2027-03-05',start_time:'10:00',end_time:'10:00',name:'Luca Sandhoff',email:'luca@sandhoff.org',phone:'021514179904',street:'Anrather Straße 291',postalCode:'47807',city:'Krefeld',customerKind:'private',termsAccepted:true,termsVersion:'2026-05',termsDocumentHash:'770d16fa42d287aa23d556309b1afeb7ec93d6ab7fb7a97f1dbe7c46fd3d4864',permitMode:'slt',pickupConfirmed:true,municipalFeesAccepted:true,zoneStreet:'Anrather Straße 291',zonePostalCode:'47807',zoneCity:'Krefeld',message:'Isolated test'};
 async function reserve(body: typeof base & { additionalSigns?: { slug: string; quantity: number }[] }, request=crypto.randomUUID()) { const r=await db.query<{b: {id:string;inquiry_id:string}}>('SELECT reserve_sign_booking($1,$2,$3::jsonb,NULL) AS b',[request,crypto.randomUUID(),JSON.stringify(body)]); return r.rows[0]?.b; }
 describe('Complete isolated sign reservations',()=>{
+it('rejects missing AGB evidence, missing permit choice and missing existing permit',async()=>{
+ await expect(reserve({...base,termsAccepted:false})).rejects.toThrow('AGB');
+ await expect(reserve({...base,termsVersion:'old'})).rejects.toThrow('AGB');
+ await expect(reserve({...base,package:'sorglos',permitMode:''})).rejects.toThrow('Genehmigungswahl');
+ await expect(reserve({...base,package:'sorglos',permitMode:'existing'})).rejects.toThrow('hochgeladen');
+});
+it('stores server timestamp and exact confirmed terms hash without changing retries',async()=>{
+ const request=crypto.randomUUID(); const b=await reserve({...base,start_date:'2028-02-07',end_date:'2028-02-09'},request); if(!b) throw new Error('missing');
+ const row=(await db.query<{terms_version:string;terms_document_hash:string;terms_accepted_at:string}>('SELECT terms_version,terms_document_hash,terms_accepted_at FROM sign_bookings WHERE id=$1',[b.id])).rows[0];
+ expect(row?.terms_version).toBe('2026-05'); expect(row?.terms_document_hash).toBe(base.termsDocumentHash); expect(row?.terms_accepted_at).toBeTruthy();
+});
+it('DB counts Saturdays and skips NRW holidays like the shared client rule',async()=>{
+ const rows=(await db.query<{day:string;work:boolean}>("SELECT d::text AS day,sign_nrw_workday(d::date) AS work FROM (VALUES ('2026-11-07'),('2026-11-08'),('2027-03-26'),('2027-05-27')) t(d)")).rows;
+ expect(rows.map(r=>r.work)).toEqual([true,false,false,false]);
+});
+
 it('stores selected CMS signs at five euros each without extra deposit and requires full payment',async()=>{
  await db.exec(`UPDATE b2b_managed_products SET direct_booking_config=direct_booking_config||'{"additionalSignGrossCents":500}'::jsonb WHERE slug='halteverbotsschilder-set'; INSERT INTO b2b_managed_products(slug,name,category,is_published,available_locations) VALUES('zusatz-test','Zusatzschild','absperrtechnik',true,ARRAY['bonn']);`);
  const input={...base,start_date:'2027-12-06',end_date:'2027-12-08',additionalSigns:[{slug:'zusatz-test',quantity:3}]};
