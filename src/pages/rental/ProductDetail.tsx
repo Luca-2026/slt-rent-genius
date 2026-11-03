@@ -241,7 +241,7 @@ export default function ProductDetail() {
 
     return {
       ...product.specifications,
-      Hinweis: "Genehmigungskopie im Buchungsschritt hochladen – nicht per E-Mail senden.",
+      Hinweis: "Genehmigungskopie im Buchungsschritt hochladen",
       "Abholung & Rückgabe": "Schilder und Füße am vollständig videoüberwachten Vermietstandort abholen und zurückgeben.",
       "Kaution": "100 € je Set. Erstattung des Kautionsrests innerhalb von 48 Stunden nach Rückgabe und Prüfung.",
     };
