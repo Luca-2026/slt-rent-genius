@@ -1,8 +1,21 @@
 import { describe, it, expect } from "vitest";
 import { addCartItem, withCartPeriod, cartQuoteItems, cartQuoteTotal, parseCart, CART_LIFETIME_MS, cartExpired, cartRemainingSeconds, cartCategoryPath, pickupConfirmationRequired, type RentalCartItem } from "@/lib/rentalCart";
 import { isTrailerCategory, isTrailerRoute } from "@/lib/rentalBookingMode";
+import { signCartPackage, signPackageEstimate } from "@/lib/signCartPackage";
 const row: RentalCartItem = { id: "a", product_slug: "bagger", product_name: "Bagger", location: "krefeld", quantity: 1, start_date: "2026-11-03", end_date: "2026-11-05", start_time: "08:00", end_time: "16:00", selected_addons: [], use_saturday: false, use_sunday: false };
 describe("15-Minuten-Anfragewarenkorb", () => {
+  it("verlangt eine explizite gemeinsame Paketwahl und erhält sie beim Neuladen", () => {
+    expect(signCartPackage([row])).toBeNull();
+    const chosen = { ...row, sign_package: "sorglos" as const };
+    expect(signCartPackage(parseCart(JSON.stringify(addCartItem(null, chosen, 0)), 1)?.items ?? [])).toBe("sorglos");
+    expect(signCartPackage([chosen, { ...row, sign_package: "standard" }])).toBeNull();
+  });
+  it("zeigt für Sorglos 199 Euro statt 49 Euro und keine Summe ohne Paketwahl", () => {
+    const config = { enabled: true, standardGrossCents: 4900, sorglosGrossCents: 19900, depositCents: 10000, maxRentalDays: 10 };
+    expect(Math.round((signPackageEstimate(config, "sorglos", 1) ?? 0) * 119)).toBe(19900);
+    expect(Math.round((signPackageEstimate(config, "standard", 1) ?? 0) * 119)).toBe(4900);
+    expect(signPackageEstimate(config, null, 1)).toBeNull();
+  });
   it("rechnet Zusatzartikel sofort mit dem bearbeiteten Artikel ohne Doppelzählung", () => {
     const accessory = { ...row, id: "glass", quantity: 2 };
     expect(cartQuoteItems([row, accessory], { ...row, quantity: 3 }).map(item => [item.id, item.quantity])).toEqual([["a", 3], ["glass", 2]]);

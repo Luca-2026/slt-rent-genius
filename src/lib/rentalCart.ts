@@ -6,6 +6,7 @@ export interface RentalCartItem {
   location: string; quantity: number; start_date: string; start_time: string;
   end_date: string; end_time: string; selected_addons: string[];
   use_saturday: boolean; use_sunday: boolean;
+  sign_package?: "standard" | "sorglos";
 }
 export interface RentalCart { version: 1; expiresAt: number; requestId: string; items: RentalCartItem[] }
 /** Include the current draft and every accessory once in the live estimate. */
@@ -46,6 +47,7 @@ export function parseCart(raw: string | null, now = Date.now()): RentalCart | nu
     if (!cart.items.every((row: RentalCartItem) => typeof row.id === "string" && typeof row.product_slug === "string" && typeof row.product_name === "string" && ["krefeld", "bonn", "muelheim"].includes(row.location) && Number.isInteger(row.quantity) && row.quantity >= 1 && row.quantity <= 9999 && typeof row.start_date === "string" && typeof row.end_date === "string" && typeof row.start_time === "string" && typeof row.end_time === "string" && Array.isArray(row.selected_addons) && row.selected_addons.every(key => typeof key === "string"))) return null;
     if (!cart.items.every((row: RentalCartItem) => validPublicRentalPeriod(row) && typeof row.use_saturday === "boolean" && typeof row.use_sunday === "boolean" && row.selected_addons.length <= 10 && row.product_name.length <= 200 && row.product_slug.length <= 200 && (!row.image || typeof row.image === "string" && row.image.length <= 2000 && /^(\/|https:\/\/)/.test(row.image)))) return null;
     if (new Set(cart.items.map((row: RentalCartItem) => row.id)).size !== cart.items.length) return null;
+    if (!cart.items.every((row: RentalCartItem) => row.sign_package === undefined || row.sign_package === "standard" || row.sign_package === "sorglos")) return null;
     return cart;
   } catch { return null; }
 }
