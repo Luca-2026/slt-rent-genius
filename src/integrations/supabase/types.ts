@@ -4898,12 +4898,16 @@ export type Database = {
           inquiry_id: string
           location: string
           package: string
+          permit_mode: string | null
           permit_path: string | null
           quantity: number
           request_id: string
           snapshot: Json
           start_date: string
           status: string
+          terms_accepted_at: string | null
+          terms_document_hash: string | null
+          terms_version: string | null
           token: string
           total_cents: number
         }
@@ -4920,12 +4924,16 @@ export type Database = {
           inquiry_id: string
           location: string
           package: string
+          permit_mode?: string | null
           permit_path?: string | null
           quantity: number
           request_id: string
           snapshot: Json
           start_date: string
           status?: string
+          terms_accepted_at?: string | null
+          terms_document_hash?: string | null
+          terms_version?: string | null
           token: string
           total_cents: number
         }
@@ -4942,12 +4950,16 @@ export type Database = {
           inquiry_id?: string
           location?: string
           package?: string
+          permit_mode?: string | null
           permit_path?: string | null
           quantity?: number
           request_id?: string
           snapshot?: Json
           start_date?: string
           status?: string
+          terms_accepted_at?: string | null
+          terms_document_hash?: string | null
+          terms_version?: string | null
           token?: string
           total_cents?: number
         }
@@ -6478,6 +6490,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      sign_nrw_workday: { Args: { d: string }; Returns: boolean }
       sign_reserved_sets: {
         Args: { _end: string; _loc: string; _start: string }
         Returns: number

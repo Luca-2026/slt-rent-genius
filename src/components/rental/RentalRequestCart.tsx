@@ -32,6 +32,8 @@ import { SignBookingCheckout } from "./SignBookingCheckout";
 import { SignPackageSelection, useSignBookingConfig } from "./SignPackageSelection";
 import { signCartPackage, signCartRentalNet } from "@/lib/signCartPackage";
 import { useSignSetupQuote } from "./useSignSetupQuote";
+import { SignPermitChoice } from "./SignPermitChoice";
+import { signLeadError } from "../../../supabase/functions/_shared/sign-booking-lead";
 import { rentalCartDeposit } from "@/lib/rentalCartDeposit";
 
 let state: { cart: RentalCart | null; open: boolean; edit: RentalCartItem | null; expired: boolean } = { cart: null, open: false, edit: null, expired: false };
@@ -82,11 +84,11 @@ export function RentalRequestCart() {
   const { data: signConfig = null } = useSignBookingConfig(edit?.product_slug === SIGN_PRODUCT_SLUG || signCart);
   const zoneAddress = { zoneStreet: edit?.sign_zone_street ?? "", zonePostalCode: edit?.sign_zone_postal_code ?? "", zoneCity: edit?.sign_zone_city ?? "" };
   const setupQuote = useSignSetupQuote(edit?.location ?? "", edit?.sign_package === "sorglos", zoneAddress);
-  const packageReady = !!edit?.sign_package && (edit.sign_package === "standard" || setupQuote.cents != null && !setupQuote.loading);
+  const packageReady = !!edit?.sign_package && (edit.sign_package === "standard" || setupQuote.cents != null && !setupQuote.loading && !!edit.sign_permit_mode);
   useEffect(() => {
     if (edit?.sign_package === "sorglos") update({ edit: { ...edit, sign_setup_quote_key: setupQuote.cents != null ? setupQuote.key : undefined, sign_setup_gross_cents: setupQuote.cents ?? undefined } });
   }, [setupQuote.key, setupQuote.cents, edit?.id]);
-  const validPeriod = !!edit && validPublicRentalPeriod(edit) && (edit.product_slug !== SIGN_PRODUCT_SLUG || validSignRentalRange(edit.start_date, edit.end_date));
+  const validPeriod = !!edit && validPublicRentalPeriod(edit) && (edit.product_slug !== SIGN_PRODUCT_SLUG || validSignRentalRange(edit.start_date, edit.end_date) && !signLeadError(edit.sign_package ?? "", edit.sign_permit_mode, edit.start_date, edit.start_time, now));
   const quoteItems = cartQuoteItems(items, edit);
   const editQuote = quotes.find(line => line.id === edit?.id);
   const [tariffRows, setTariffRows] = useState<LocationPriceRow[]>([]);
@@ -181,6 +183,7 @@ export function RentalRequestCart() {
         {edit && (step === "package" || step === "period" || step === "accessories" || step === "options") && <div className="flex items-center gap-3 rounded-md border border-border p-3">{edit.image && <img src={edit.image} alt="" className="h-14 w-14 shrink-0 object-contain" />}<div className="min-w-0"><p className="break-words font-semibold">{edit.product_name}</p><p className="text-sm text-muted-foreground">Standort {getLocationById(edit.location)?.name}</p><p className="text-sm font-semibold">{editDeposit === null ? depositNote : `Kaution: ${depositPrice(editDeposit)}`}</p></div></div>}
         {edit && (step === "package" || step === "period" || step === "accessories" || step === "options") && <ol className="grid grid-cols-3 gap-2 break-words text-xs font-semibold" aria-label="Fortschritt">{(edit.product_slug === SIGN_PRODUCT_SLUG ? [['package', '1 · Paket'], ['period', '2 · Zeitraum'], ['cart', '3 · Warenkorb']] : [['period', '1 · Zeitraum'], ['accessories', '2 · Zusatzartikel'], ['options', '3 · Versicherungen']]).map(([key, label]) => <li key={key} aria-current={step === key ? "step" : undefined} className={`border-b-2 pb-1 ${step === key ? "border-primary text-primary" : "border-border text-muted-foreground"}`}>{label}</li>)}</ol>}
         {edit && step === "package" && <SignPackageSelection value={edit.sign_package ?? null} onChange={sign_package => patch({ sign_package })} location={edit.location} address={zoneAddress} quote={setupQuote} onAddressChange={next => patch({ sign_zone_street: next.zoneStreet ?? zoneAddress.zoneStreet, sign_zone_postal_code: next.zonePostalCode ?? zoneAddress.zonePostalCode, sign_zone_city: next.zoneCity ?? zoneAddress.zoneCity, sign_setup_gross_cents: undefined, sign_setup_quote_key: undefined })} />}
+        {edit && edit.sign_package === "sorglos" && step === "package" && <SignPermitChoice value={edit.sign_permit_mode} onChange={sign_permit_mode => patch({ sign_permit_mode })} />}
         {edit && step === "period" && tariffs?.price_base_1_3_cd != null && <p className="text-sm font-semibold">Grundtarif 1–3 Kalendertage: {displayPrice(tariffs.price_base_1_3_cd, type)} pro {parseSetSize(edit.product_name) ? "Set" : "Artikel"}</p>}
         {edit && step === "period" && <RentalPeriodStep edit={edit} patch={patch} weekendPrice={weekendNet != null ? displayPrice(weekendNet, type) : null} weekendActive={!loading && editQuote?.unit === "pauschal"} />}
         {edit && step === "accessories" && <CartAccessories item={edit} existing={[...items, edit]} onAdd={item => save(addCartItem(state.cart, item))} />}

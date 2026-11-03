@@ -7,6 +7,8 @@ import { validCalendarDate, validPublicRentalPeriod } from "../_shared/public-re
 import { validSignPermit } from "../_shared/sign-permit.ts";
 import { routeDistance } from "../_shared/route-distance.ts";
 import { signSetupGrossCents } from "../_shared/sign-direct-booking.ts";
+import { signLeadError } from "../_shared/sign-booking-lead.ts";
+import { SIGN_TERMS_VERSION, SIGN_TERMS_HASHES } from "../_shared/sign-legal.ts";
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json", "Cache-Control": "no-store" } });
 const text = (max: number) => z.string().trim().min(1).max(max);
@@ -15,6 +17,7 @@ const booking = z.object({
   start_date: z.string().refine(validCalendarDate), end_date: z.string().refine(validCalendarDate), start_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/), end_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
   name: text(200), email: z.string().trim().email().max(180).transform(v => v.toLowerCase()), phone: text(50).refine(v => v.replace(/\D/g, "").length >= 6), street: text(200), postalCode: text(20), city: text(100), customerKind: z.enum(["private", "business"]),
   termsAccepted: z.literal(true), municipalFeesAccepted: z.boolean(), pickupConfirmed: z.boolean(),
+  termsVersion: z.literal(SIGN_TERMS_VERSION), permitMode: z.enum(["existing", "slt"]).optional(),
   additionalSigns: z.array(z.object({ slug: text(150), quantity: z.number().int().min(1).max(100) })).max(30).default([]),
   zoneStreet: z.string().trim().max(200), zonePostalCode: z.string().trim().max(20), zoneCity: z.string().trim().max(100), message: z.string().max(4000), permitToken: z.string().regex(/^[A-Za-z0-9_-]{20,64}$/).nullable(),
 }).refine(v => v.package === "standard" ? v.pickupConfirmed : v.municipalFeesAccepted && v.zoneStreet.length > 3 && v.zonePostalCode.length > 3 && v.zoneCity.length > 1);
@@ -91,6 +94,11 @@ Deno.serve(async req => {
     if (body.package === "standard" && !validPublicRentalPeriod(body)) return json({ error: "Abholung und Rückgabe müssen innerhalb der Öffnungszeiten liegen" }, 400);
     // Retry may read back an existing reservation even after the original cart deadline.
     const { data: existing } = await service.from("sign_bookings").select("id,snapshot").eq("request_id", requestId).maybeSingle();
+    if (!existing) {
+      const leadError = signLeadError(body.package, body.permitMode, body.start_date, body.start_time);
+      if (leadError) return json({ error: leadError }, 400);
+      if (body.package === "sorglos" && body.permitMode === "existing" && !permitToken) return json({ error: "Bitte vorhandene Genehmigung hochladen" }, 400);
+    }
     if (!existing && (cartExpiresAt <= Date.now() || cartExpiresAt > Date.now() + 900000)) return json({ error: "Warenkorb abgelaufen" }, 409);
     if (!isStripeConfigured()) return json({ error: "Online-Zahlung derzeit nicht verfügbar" }, 503);
     if (permitToken) {
@@ -103,14 +111,14 @@ Deno.serve(async req => {
       const valid = validSignPermit(bytes, upload.content_type);
       if (!valid) return json({ error: "Datei entspricht nicht dem gewählten Dateityp" }, 400);
     }
-    let trustedBody: Record<string, unknown> = body;
+    let trustedBody: Record<string, unknown> = { ...body, termsDocumentHash: SIGN_TERMS_HASHES[body.customerKind] };
     if (body.package === "sorglos") {
-      if (existing?.snapshot?.request?.verifiedDistanceKm != null) trustedBody = { ...body, verifiedDistanceKm: existing.snapshot.request.verifiedDistanceKm };
+      if (existing?.snapshot?.request?.verifiedDistanceKm != null) trustedBody = { ...trustedBody, verifiedDistanceKm: existing.snapshot.request.verifiedDistanceKm };
       else {
         const apiKey = Deno.env.get("GOOGLE_PLACES_API_KEY");
         const distance = apiKey ? await routeDistance(apiKey, body.location, { address: `${body.zoneStreet}, ${body.zonePostalCode} ${body.zoneCity}, Deutschland` }) : null;
         if (!distance) return json({ error: "Aufstelladresse konnte nicht geprüft werden. Bitte Adresse kontrollieren." }, 503);
-        trustedBody = { ...body, verifiedDistanceKm: distance.distanceKm };
+        trustedBody = { ...trustedBody, verifiedDistanceKm: distance.distanceKm };
       }
     }
     const { data: reserved, error } = await service.rpc("reserve_sign_booking", { _request: requestId, _token: newToken(), _body: trustedBody, _permit_token: permitToken });
