@@ -8,7 +8,7 @@ const { config, invoke } = vi.hoisted(() => ({
   invoke: vi.fn(),
 }));
 vi.mock("@/integrations/supabase/client", () => ({ supabase: { functions: { invoke } } }));
-vi.mock("@/hooks/useManagedProducts", () => ({ useManagedProducts: () => ({ data: [] }) }));
+vi.mock("@/hooks/useManagedProducts", () => { const data: never[] = []; return { useManagedProducts: () => ({ data }) }; });
 vi.mock("@/hooks/usePublicCoupon", () => ({ usePublicCoupon: () => ({ valid: true, eligibleSlugs: [] }) }));
 vi.mock("@/components/rental/SignPackageSelection", () => ({ useSignBookingConfig: () => ({ data: config }), SignPackageSelection: () => null }));
 vi.mock("@/components/rental/useSignSetupQuote", () => ({ useSignSetupQuote: () => ({ key: "", cents: null, loading: false }) }));
