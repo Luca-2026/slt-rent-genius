@@ -80,8 +80,8 @@ export function RentalRequestCart() {
   const [signReceipt, setSignReceipt] = useState(() => { try { return !!localStorage.getItem("slt-sign-booking-receipt"); } catch { return false; } });
   const items = snapshot.cart?.items ?? [];
   const signCart = eligibleSignCart(items);
-  const showingSignReceipt = signReceipt && !edit && !items.length && step === "contact";
   const edit = snapshot.edit;
+  const showingSignReceipt = signReceipt && !edit && !items.length && step === "contact";
   const { data: signConfig = null } = useSignBookingConfig(edit?.product_slug === SIGN_PRODUCT_SLUG || signCart);
   const zoneAddress = { zoneStreet: edit?.sign_zone_street ?? "", zonePostalCode: edit?.sign_zone_postal_code ?? "", zoneCity: edit?.sign_zone_city ?? "" };
   const setupQuote = useSignSetupQuote(edit?.location ?? "", edit?.sign_package === "sorglos", zoneAddress);
