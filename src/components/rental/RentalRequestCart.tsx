@@ -73,6 +73,7 @@ export function RentalRequestCart() {
   const signing = useSigningOverlaysSuppressed(route.pathname);
   const { type } = useCustomerType();
   const [now, setNow] = useState(Date.now());
+  const checkoutQueue = useRef<string[] | null>(null);
   const [step, setStep] = useState<"package" | "period" | "accessories" | "options" | "cart" | "contact">("cart");
   const { data: managedData } = useManagedProducts();
   const managed = managedData ?? EMPTY_MANAGED;
@@ -123,7 +124,7 @@ export function RentalRequestCart() {
     window.addEventListener("storage", sync); window.addEventListener("focus", tick);
     return () => { clearInterval(timer); window.removeEventListener("storage", sync); window.removeEventListener("focus", tick); };
   }, []);
-  useEffect(() => { if (edit) { setStep(edit.product_slug === SIGN_PRODUCT_SLUG ? "package" : "period"); setDone(""); } else if (snapshot.open) { setStep(!snapshot.cart && signReceipt ? "contact" : "cart"); if (snapshot.cart) setDone(""); } }, [edit?.id, snapshot.open]);
+  useEffect(() => { if (edit) { setStep(checkoutQueue.current ? "accessories" : edit.product_slug === SIGN_PRODUCT_SLUG ? "package" : "period"); setDone(""); } else if (snapshot.open) { setStep(!snapshot.cart && signReceipt ? "contact" : "cart"); if (snapshot.cart) setDone(""); } }, [edit?.id, snapshot.open]);
   useEffect(() => {
     window.dispatchEvent(new CustomEvent("public-rental-dialog", { detail: snapshot.open }));
     return () => { window.dispatchEvent(new CustomEvent("public-rental-dialog", { detail: false })); };
@@ -148,6 +149,23 @@ export function RentalRequestCart() {
     }, 400);
     return () => { cancelled = true; clearTimeout(timer); };
   }, [quoteKey, snapshot.open, signConfig]);
+  const inCheckout = !!checkoutQueue.current && !!edit;
+  // Zusatzartikel und Versicherungen erst im Checkout: Artikel nacheinander durchlaufen, danach Kontaktdaten.
+  const startCheckout = () => {
+    const queue = items.filter(item => item.product_slug !== SIGN_PRODUCT_SLUG && !item.accessory_of).map(item => item.id);
+    if (!queue.length) { checkoutQueue.current = null; setStep("contact"); return; }
+    checkoutQueue.current = queue.slice(1);
+    update({ edit: items.find(item => item.id === queue[0]) ?? null });
+  };
+  const nextCheckoutItem = () => {
+    if (!edit || !state.cart) return;
+    const cart = addCartItem(state.cart, edit); save(cart);
+    const queue = checkoutQueue.current ?? [];
+    const nextId = queue.find(id => cart.items.some(item => item.id === id));
+    if (nextId) { checkoutQueue.current = queue.slice(queue.indexOf(nextId) + 1); update({ edit: cart.items.find(item => item.id === nextId) ?? null }); }
+    else { checkoutQueue.current = null; update({ edit: null, expired: false }); setStep("contact"); }
+  };
+  const leaveCheckout = () => { checkoutQueue.current = null; update({ edit: null }); setStep("cart"); };
   const patch = (next: Partial<RentalCartItem>) => { if (edit) update({ edit: { ...edit, ...next } }); };
   const remaining = cartRemainingSeconds(snapshot.cart, now);
   const cancellationNote = "Einmalig 5 % des Mietpreises, ohne Versicherung und Kaution";
