@@ -764,6 +764,13 @@
       "when": 1793672725522,
       "tag": "0108_sign_booking_operational_tasks",
       "breakpoints": true
+    },
+    {
+      "idx": 109,
+      "version": "7",
+      "when": 1793672978182,
+      "tag": "0109_sign_task_list_completion_guard",
+      "breakpoints": true
     }
   ]
 }
