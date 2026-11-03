@@ -45,16 +45,20 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: {
     let active = true;
     const read = async () => {
       setAvailabilityLoading(true);
-      const { data, error } = await supabase.functions.invoke("sign-booking", { body: { action: "availability", location: edit.location, from: toIso(startOfMonth(month)), to: toIso(endOfMonth(addDays(endOfMonth(month), 1))) } });
+      const ranges = [{ from: toIso(startOfMonth(month)), to: toIso(endOfMonth(addDays(endOfMonth(month), 1))) }];
+      const end = signLastRentalDate(edit.start_date);
+      if (end) ranges.push({ from: edit.start_date, to: end });
+      const results = await Promise.all(ranges.map(range => supabase.functions.invoke("sign-booking", { body: { action: "availability", location: edit.location, ...range } })));
       if (!active) return;
       setAvailabilityLoading(false);
-      setAvailabilityError(error || !Array.isArray(data?.days) ? "Belegung derzeit nicht verfügbar. Bitte erneut versuchen." : "");
-      setAvailability(Object.fromEntries((data?.days ?? []).map((day: { date: string; remaining: number }) => [day.date, day.remaining])));
+      setAvailabilityError(results.some(({ data, error }) => error || !Array.isArray(data?.days)) ? "Belegung derzeit nicht verfügbar. Bitte erneut versuchen." : "");
+      setAvailability(Object.fromEntries(results.flatMap(({ data }) => (data?.days ?? []).map((day: { date: string; remaining: number }) => [day.date, day.remaining]))));
     };
     void read(); const timer = window.setInterval(read, 60000);
     return () => { active = false; clearInterval(timer); };
-  }, [isSign, edit.location, month]);
+  }, [isSign, edit.location, edit.start_date, month]);
   const lastDate = isSign ? signLastRentalDate(edit.start_date) : null;
+  const baseLastDate = isSign ? signLastRentalDate(edit.start_date, 10) : null;
   const blocked = (day: Date) => isSign && (availability[toIso(day)] == null || availability[toIso(day)] < edit.quantity);
   const info = getLocationInfoById(edit.location);
   const flexible = edit.location === "muelheim";
@@ -88,14 +92,14 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: {
       <div className="min-w-0 text-sm"><p className="font-semibold">{weekendActive ? "Wochenendtarif aktiv" : (weekendPrice ? `Wochenendtarif ${weekendPrice}` : "Wochenendtarif · Preis im Angebot")}</p><p className="text-muted-foreground">Abholung Fr ab 16:00, Rückgabe Mo bis 09:30 – Abholtag Freitag, Rückgabetag Montag.</p></div>
       {!weekendActive && <Button type="button" size="sm" variant="outline" className="col-span-2 w-full border-accent sm:col-span-1 sm:col-start-2 sm:w-fit" onClick={() => { const fri = nextWeekendStart(new Date()); patch({ start_date: toIso(fri), start_time: "16:00", end_date: toIso(addDays(fri, 3)), end_time: "09:30" }); }}>Nächstes Wochenende wählen</Button>}
     </div>}
-    {isSign && <p role="status" className="text-sm font-semibold">1–10 Tage zum Festpreis.{lastDate && <> Rückgabe spätestens am {format(fromIso(lastDate), "dd.MM.yyyy")} (10. Tag).</>}</p>}
+    {isSign && <p role="status" className="text-sm font-semibold">1–10 Tage zum Grundpreis.{baseLastDate && <> Enthalten bis {format(fromIso(baseLastDate), "dd.MM.yyyy")}.</>} Ab Tag 11 je weiterem Tag ein Zehntel des Paketpreises. Bis 100 Tage mietbar.</p>}
     {edit.sign_package === "sorglos" && <p role="status" className="text-sm font-semibold text-primary">Früheste Aufstellung: {minSetupDay.split("-").reverse().join(".")} · {edit.sign_permit_mode === "slt" ? "14 Werktage (Mo–Sa, ohne NRW-Feiertage)" : "mindestens 96 Stunden Vorlauf"}</p>}
     {edit.start_date && leadError && <p role="alert" className="text-sm text-destructive">{leadError}</p>}
     {isSign && availabilityLoading && <p className="text-sm text-muted-foreground">Belegung wird geprüft …</p>}
     {availabilityError && <p role="alert" className="text-sm text-destructive">{availabilityError}</p>}
     <div className="rounded-md border border-border">
       <p className="flex items-center gap-2 border-b border-border px-3 py-2 text-sm font-semibold"><CalendarDays className="h-4 w-4 text-primary" />{!from ? "Abholtag wählen" : !to ? "Rückgabetag wählen" : "Mietzeitraum"}</p>
-      <Calendar mode="range" locale={de} month={month} onMonthChange={setMonth} modifiers={{ available: day => day >= today && (!!windowFor(toIso(day))) && !blocked(day), full: day => isSign && availability[toIso(day)] != null && availability[toIso(day)] < edit.quantity, limit: day => isSign && toIso(day) === lastDate, packageDay: day => isSign && !!lastDate && toIso(day) >= edit.start_date && toIso(day) <= lastDate, pickupDay: day => toIso(day) === edit.start_date, returnDay: day => toIso(day) === edit.end_date }} modifiersClassNames={{ available: "rental-day-available", full: "rental-day-full", limit: "rental-day-limit", packageDay: "rental-day-package", pickupDay: "rental-day-pickup", returnDay: "rental-day-return" }} weekStartsOn={1} numberOfMonths={1} selected={from ? { from, to } : undefined}
+      <Calendar mode="range" locale={de} month={month} onMonthChange={setMonth} modifiers={{ available: day => day >= today && (!!windowFor(toIso(day))) && !blocked(day), full: day => isSign && availability[toIso(day)] != null && availability[toIso(day)] < edit.quantity, limit: day => isSign && toIso(day) === baseLastDate, packageDay: day => isSign && !!baseLastDate && toIso(day) >= edit.start_date && toIso(day) <= baseLastDate, pickupDay: day => toIso(day) === edit.start_date, returnDay: day => toIso(day) === edit.end_date }} modifiersClassNames={{ available: "rental-day-available", full: "rental-day-full", limit: "rental-day-limit", packageDay: "rental-day-package", pickupDay: "rental-day-pickup", returnDay: "rental-day-return" }} weekStartsOn={1} numberOfMonths={1} selected={from ? { from, to } : undefined}
         disabled={day => day < today || (!!minSetupDay && toIso(day) < minSetupDay) || (!flexible && !pickupWindowForDate(info, toIso(day))) || blocked(day) || (isSign && !!from && !to && !!lastDate && toIso(day) > lastDate)}
         onSelect={range => {
           const start = range?.from ? toIso(range.from) : "";
