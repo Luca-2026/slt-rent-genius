@@ -820,6 +820,13 @@
       "when": 1793681625272,
       "tag": "0116_order_amendment_consistency_guards",
       "breakpoints": true
+    },
+    {
+      "idx": 117,
+      "version": "7",
+      "when": 1793681878690,
+      "tag": "0117_order_amendment_period_and_amount_consistency",
+      "breakpoints": true
     }
   ]
 }
