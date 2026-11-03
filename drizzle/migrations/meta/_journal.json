@@ -869,6 +869,13 @@
       "when": 1793692071398,
       "tag": "0123_sign_standard_rental_tiers",
       "breakpoints": true
+    },
+    {
+      "idx": 124,
+      "version": "7",
+      "when": 1793707756734,
+      "tag": "0124_physical_stock_locations",
+      "breakpoints": true
     }
   ]
 }
