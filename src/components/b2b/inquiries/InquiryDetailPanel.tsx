@@ -36,6 +36,7 @@ import { InquiryCustomerCard, type CustomerKind } from "./InquiryCustomerCard";
 import { DesktopOnly, MobileCollapsible } from "./ResponsiveSlot";
 import { RejectInquiryDialog } from "./RejectInquiryDialog";
 import { OrderConfirmationCard } from "./OrderConfirmationCard";
+import { SignBookingStatus } from "./SignBookingStatus";
 import { InquiryPaymentsCard, parseInquiryPayments } from "./InquiryPaymentsCard";
 import { StripePaymentCard } from "./StripePaymentCard";
 import type { OfferLine } from "./offerMath";
@@ -723,12 +724,12 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   );
   const orderEl = (
     <>
-      <OrderConfirmationCard
+      {(inquiry.offer_payload as { direct_booking?: boolean } | null)?.direct_booking ? <SignBookingStatus inquiryId={inquiry.id} /> : <OrderConfirmationCard
         inquiryType={inquiryType}
         inquiry={inquiry as Record<string, any>}
         senderName={actorName}
         onDone={onChanged}
-      />
+      />}
     </>
   );
   const installmentEl = (
