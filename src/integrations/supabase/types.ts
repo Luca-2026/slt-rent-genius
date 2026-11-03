@@ -6665,6 +6665,10 @@ export type Database = {
         Returns: undefined
       }
       sign_nrw_workday: { Args: { d: string }; Returns: boolean }
+      sign_rental_gross_cents: {
+        Args: { _base: number; _days: number; _max: number; _tiers?: Json }
+        Returns: number
+      }
       sign_reserved_sets: {
         Args: { _end: string; _loc: string; _start: string }
         Returns: number
