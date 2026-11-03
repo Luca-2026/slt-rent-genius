@@ -4,6 +4,7 @@
  */
 
 import { computeAddonAmount, daysPerUnit, describeAddon, type AddonBasis, type AddonPriceType } from "./addon-calc.ts";
+import { normalizeOfferLogistics, type OfferLogistics } from "./offer-logistics.ts";
 
 export interface InquiryOfferAddon {
   key: string;
@@ -47,7 +48,7 @@ function singularUnit(unit?: string): string {
   return "";
 }
 
-export interface InquiryOfferItem {
+export interface InquiryOfferItem extends OfferLogistics {
   product_name: string;
   /** CMS-Slug des Artikels – Grundlage der Bestandsprüfung. */
   product_slug?: string;
@@ -281,6 +282,7 @@ export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
       rental_end: item.rental_end ? String(item.rental_end).slice(0, 40) : undefined,
       rental_start_time: item.rental_start_time ? String(item.rental_start_time).slice(0, 5) : undefined,
       rental_end_time: item.rental_end_time ? String(item.rental_end_time).slice(0, 5) : undefined,
+      ...normalizeOfferLogistics(item),
       unit_code: item.unit_code ? String(item.unit_code).slice(0, 20) : undefined,
       price_manual: item.price_manual === true ? true : undefined,
       price_basis: item.price_basis === "tier" || item.price_basis === "weekend" || item.price_basis === "customer" ? item.price_basis : undefined,

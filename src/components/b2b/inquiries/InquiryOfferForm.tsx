@@ -1800,6 +1800,29 @@ export function InquiryOfferForm({
                 </div>
               </div>
             )}
+            {pricingActive && !openEnded && !isReturnChargeLine(item) && (
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 text-xs cursor-pointer">
+                  <Checkbox checked={item.delivery_at !== undefined || item.collection_at !== undefined} disabled={disabled}
+                    onCheckedChange={(v) => patchItem(index, { delivery_at: v === true ? "" : undefined, collection_at: v === true ? "" : undefined })} />
+                  <span>Lieferung / Rückholung abweichend</span>
+                </label>
+                {(item.delivery_at !== undefined || item.collection_at !== undefined) && (
+                  <div className="grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-2">
+                    <div className="min-w-0">
+                      <Label className="text-xs">Lieferzeitpunkt</Label>
+                      <Input type="datetime-local" aria-label="Lieferzeitpunkt" className={DT_INPUT} value={item.delivery_at ?? ""} disabled={disabled}
+                        onChange={(e) => patchItem(index, { delivery_at: e.target.value })} />
+                    </div>
+                    <div className="min-w-0">
+                      <Label className="text-xs">Rückholzeitpunkt</Label>
+                      <Input type="datetime-local" aria-label="Rückholzeitpunkt" className={DT_INPUT} value={item.collection_at ?? ""} disabled={disabled}
+                        onChange={(e) => patchItem(index, { collection_at: e.target.value })} />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
             {index > 0 && (
               <label className="flex items-center gap-2 text-xs cursor-pointer">
                 <Checkbox
