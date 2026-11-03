@@ -15,6 +15,7 @@ const booking = z.object({
   start_date: z.string().refine(validCalendarDate), end_date: z.string().refine(validCalendarDate), start_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/), end_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
   name: text(200), email: z.string().trim().email().max(180).transform(v => v.toLowerCase()), phone: text(50).refine(v => v.replace(/\D/g, "").length >= 6), street: text(200), postalCode: text(20), city: text(100), customerKind: z.enum(["private", "business"]),
   termsAccepted: z.literal(true), municipalFeesAccepted: z.boolean(), pickupConfirmed: z.boolean(),
+  additionalSigns: z.array(z.object({ slug: text(150), quantity: z.number().int().min(1).max(100) })).max(30).default([]),
   zoneStreet: z.string().trim().max(200), zonePostalCode: z.string().trim().max(20), zoneCity: z.string().trim().max(100), message: z.string().max(4000), permitToken: z.string().regex(/^[A-Za-z0-9_-]{20,64}$/).nullable(),
 }).refine(v => v.package === "standard" ? v.pickupConfirmed : v.municipalFeesAccepted && v.zoneStreet.length > 3 && v.zonePostalCode.length > 3 && v.zoneCity.length > 1);
 
