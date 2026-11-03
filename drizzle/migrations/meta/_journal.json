@@ -806,6 +806,13 @@
       "when": 1793676409345,
       "tag": "0114_sign_extended_rental_duration",
       "breakpoints": true
+    },
+    {
+      "idx": 115,
+      "version": "7",
+      "when": 1793681528416,
+      "tag": "0115_rental_order_amendment_versions",
+      "breakpoints": true
     }
   ]
 }

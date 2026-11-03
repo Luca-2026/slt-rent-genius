@@ -1,0 +1,34 @@
+ALTER TABLE public.rental_inquiries ADD COLUMN IF NOT EXISTS original_accepted_offer jsonb, ADD COLUMN IF NOT EXISTS order_revision integer NOT NULL DEFAULT 0;
+CREATE TABLE public.rental_order_revisions(id uuid PRIMARY KEY DEFAULT gen_random_uuid(), rental_inquiry_id uuid NOT NULL REFERENCES public.rental_inquiries(id), version integer NOT NULL, snapshot jsonb NOT NULL, agreement_note text NOT NULL, agreed_at timestamptz NOT NULL, created_by uuid NOT NULL, created_at timestamptz NOT NULL DEFAULT now(), UNIQUE(rental_inquiry_id,version));
+GRANT SELECT ON public.rental_order_revisions TO authenticated;
+GRANT ALL ON public.rental_order_revisions TO service_role;
+ALTER TABLE public.rental_order_revisions ENABLE ROW LEVEL SECURITY;
+CREATE POLICY staff_read_order_revisions ON public.rental_order_revisions FOR SELECT TO authenticated USING(public.is_staff_member(auth.uid()));
+CREATE FUNCTION public.save_rental_order_amendment(_id uuid,_expected integer,_payload jsonb,_note text,_agreed_at timestamptz) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$
+DECLARE r public.rental_inquiries; total numeric; result jsonb; availability jsonb; snapshot jsonb;
+BEGIN
+IF NOT public.can_edit_operations(auth.uid()) THEN RAISE EXCEPTION 'Keine Berechtigung' USING ERRCODE='42501'; END IF;
+SELECT * INTO r FROM public.rental_inquiries WHERE id=_id FOR UPDATE;
+IF NOT FOUND OR r.status<>'accepted' OR r.offer_number IS NULL THEN RAISE EXCEPTION 'Nur angenommene Mietaufträge können geändert werden'; END IF;
+IF r.order_revision<>_expected THEN RAISE EXCEPTION 'Auftrag wurde inzwischen geändert' USING ERRCODE='40001'; END IF;
+IF length(trim(COALESCE(_note,'')))<5 OR _agreed_at IS NULL OR _agreed_at>now()+interval '5 minutes' THEN RAISE EXCEPTION 'Vereinbarung mit Datum und Notiz erforderlich'; END IF;
+IF COALESCE((r.offer_payload->>'direct_booking')::boolean,false) THEN RAISE EXCEPTION 'Direktbuchungen benötigen eine eigene Änderungsabwicklung'; END IF;
+IF EXISTS(SELECT 1 FROM public.deposit_settlements WHERE rental_inquiry_id=_id) THEN RAISE EXCEPTION 'Kaution bereits abgerechnet; Änderung gesperrt'; END IF;
+IF EXISTS(SELECT 1 FROM public.offer_payment_links WHERE inquiry_id=_id AND inquiry_table='rental_inquiries' AND status='active' AND stripe_session_id IS NOT NULL) THEN RAISE EXCEPTION 'Aktive Online-Zahlung zuerst abschließen oder den Zahlungslink sperren'; END IF;
+total:=(_payload->'totals'->>'grossAmount')::numeric;
+IF total IS NULL OR total<=0 OR jsonb_array_length(_payload->'items')=0 THEN RAISE EXCEPTION 'Ungültige Auftragssumme'; END IF;
+snapshot:=jsonb_build_object('offer_payload',r.offer_payload,'offer_total_gross',r.offer_total_gross,'start_date',r.start_date,'end_date',r.end_date,'offer_number',r.offer_number,'offer_file_url',r.offer_file_url,'offer_sent_at',r.offer_sent_at,'offer_accepted_at',r.offer_accepted_at,'order_confirmation_number',r.order_confirmation_number,'order_confirmation_file_url',r.order_confirmation_file_url);
+IF r.order_revision=0 THEN INSERT INTO public.rental_order_revisions(rental_inquiry_id,version,snapshot,agreement_note,agreed_at,created_by) VALUES(_id,0,snapshot,'Ursprünglich angenommener Auftrag',COALESCE(r.offer_accepted_at,now()),auth.uid()); END IF;
+UPDATE public.rental_inquiries SET original_accepted_offer=COALESCE(original_accepted_offer,snapshot),offer_payload=_payload,offer_total_gross=total,order_revision=order_revision+1,availability_pending=true WHERE id=_id;
+availability:=public.check_availability(_id);
+IF NOT COALESCE((availability->>'all_available')::boolean,false) THEN RAISE EXCEPTION 'Geänderte Artikel oder Zeiträume nicht vollständig verfügbar. Verfügbarkeit zuerst klären' USING ERRCODE='40001'; END IF;
+DELETE FROM public.b2b_instance_allocations WHERE rental_inquiry_id=_id;
+result:=public.confirm_order(_id,'{"mode":"confirm","items":{}}'::jsonb);
+UPDATE public.offer_payment_links SET status='superseded',updated_at=now() WHERE inquiry_id=_id AND inquiry_table='rental_inquiries' AND status='active';
+INSERT INTO public.rental_order_revisions(rental_inquiry_id,version,snapshot,agreement_note,agreed_at,created_by) VALUES(_id,_expected+1,jsonb_build_object('offer_payload',_payload,'offer_total_gross',total,'offer_number',r.offer_number),trim(_note),_agreed_at,auth.uid());
+INSERT INTO public.rental_inquiry_events(rental_inquiry_id,event,details,user_id) VALUES(_id,'order_amended',jsonb_build_object('version',_expected+1,'agreement_note',trim(_note),'agreed_at',_agreed_at),auth.uid());
+RETURN jsonb_build_object('version',_expected+1,'totals',_payload->'totals');
+END; $$;
+REVOKE ALL ON FUNCTION public.save_rental_order_amendment(uuid,integer,jsonb,text,timestamptz) FROM PUBLIC,anon;
+GRANT EXECUTE ON FUNCTION public.save_rental_order_amendment(uuid,integer,jsonb,text,timestamptz) TO authenticated;
+COMMENT ON COLUMN public.rental_inquiries.original_accepted_offer IS 'Immutable original accepted offer retained before operational order amendments; offer_payload becomes current operational snapshot only through save_rental_order_amendment.';
