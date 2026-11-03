@@ -19,6 +19,7 @@ export interface TodoList {
   completed_at: string | null;
   created_at: string;
   updated_at: string;
+  sign_booking_id?: string | null;
 }
 
 export interface TodoItem {

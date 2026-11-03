@@ -4,6 +4,7 @@ import { z } from "npm:zod@3";
 import { ensurePaymentLink, isStripeConfigured, newToken, planPaymentAmounts } from "../_shared/stripe-pay.ts";
 import { SLT_COMPANY } from "../_shared/company.ts";
 import { validCalendarDate, validPublicRentalPeriod } from "../_shared/public-rental-period.ts";
+import { validSignPermit } from "../_shared/sign-permit.ts";
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json", "Cache-Control": "no-store" } });
 const text = (max: number) => z.string().trim().min(1).max(max);
@@ -37,7 +38,9 @@ Deno.serve(async req => {
     if (rateError || !allowed) return json({ error: "Bitte später erneut versuchen" }, 429);
     if (raw.action === "config") {
       const { data: p } = await service.from("b2b_managed_products").select("direct_booking_config").eq("slug", "halteverbotsschilder-set").eq("is_published", true).maybeSingle();
-      return json({ config: p?.direct_booking_config ?? null });
+      const { data: signs, error: signsError } = await service.from("b2b_managed_products").select("slug,name,images,available_locations").eq("is_published", true).eq("category", "absperrtechnik").or("slug.ilike.%zusatz%,slug.like.vz-1000-%").order("name");
+      if (signsError) throw signsError;
+      return json({ config: p?.direct_booking_config ?? null, additionalSigns: signs ?? [] });
     }
     if (raw.action === "upload") {
       const parsed = z.object({ filename: text(120), contentType: z.enum(["application/pdf", "image/jpeg", "image/png"]), size: z.number().int().min(1).max(5 * 1024 * 1024) }).safeParse(raw);
@@ -50,6 +53,15 @@ Deno.serve(async req => {
       if (uploadError || !data) throw uploadError;
       return json({ token, path, uploadToken: data.token });
     }
+    if (raw.action === "upload-complete") {
+      const parsed = z.object({ token: z.string().regex(/^[A-Za-z0-9_-]{20,64}$/) }).safeParse(raw);
+      if (!parsed.success) return json({ error: "Ungültiger Upload" }, 400);
+      const { data: upload } = await service.from("sign_permit_uploads").select("file_path,content_type").eq("token", parsed.data.token).is("booking_id", null).gt("created_at", new Date(Date.now() - 7200000).toISOString()).maybeSingle();
+      if (!upload) return json({ error: "Upload abgelaufen oder bereits zugeordnet" }, 400);
+      const { data: file, error } = await service.storage.from("sign-permits").download(upload.file_path);
+      if (error || !file || !validSignPermit(new Uint8Array(await file.arrayBuffer()), upload.content_type)) return json({ error: "Genehmigung nicht vollständig hochgeladen oder ungültiger Dateityp" }, 400);
+      return json({ verified: true });
+    }
     if (raw.action !== "reserve") return json({ error: "Ungültige Aktion" }, 400);
     const parsed = booking.safeParse(raw);
     if (!parsed.success) return json({ error: "Bitte Kontaktdaten, Zeitraum und Bedingungen vollständig angeben" }, 400);
@@ -60,12 +72,13 @@ Deno.serve(async req => {
     if (!existing && (cartExpiresAt <= Date.now() || cartExpiresAt > Date.now() + 900000)) return json({ error: "Warenkorb abgelaufen" }, 409);
     if (!isStripeConfigured()) return json({ error: "Online-Zahlung derzeit nicht verfügbar" }, 503);
     if (permitToken) {
-      const { data: upload } = await service.from("sign_permit_uploads").select("file_path,content_type").eq("token", permitToken).maybeSingle();
+      const { data: upload } = await service.from("sign_permit_uploads").select("file_path,content_type,booking_id").eq("token", permitToken).maybeSingle();
       if (!upload) return json({ error: "Genehmigung nicht gefunden" }, 400);
+      if (upload.booking_id && upload.booking_id !== existing?.id) return json({ error: "Genehmigung bereits einem anderen Auftrag zugeordnet" }, 409);
       const { data: file, error } = await service.storage.from("sign-permits").download(upload.file_path);
       if (error || !file || file.size > 5 * 1024 * 1024) return json({ error: "Genehmigung nicht vollständig hochgeladen" }, 400);
       const bytes = new Uint8Array(await file.arrayBuffer());
-      const valid = upload.content_type === "application/pdf" ? new TextDecoder().decode(bytes.slice(0, 5)) === "%PDF-" : upload.content_type === "image/png" ? bytes[0] === 137 && bytes[1] === 80 && bytes[2] === 78 && bytes[3] === 71 : bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255;
+      const valid = validSignPermit(bytes, upload.content_type);
       if (!valid) return json({ error: "Datei entspricht nicht dem gewählten Dateityp" }, 400);
     }
     const { data: reserved, error } = await service.rpc("reserve_sign_booking", { _request: requestId, _token: newToken(), _body: body, _permit_token: permitToken });
