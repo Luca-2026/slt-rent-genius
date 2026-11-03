@@ -36,7 +36,8 @@ Deno.serve(async req => {
       const { data: link } = await service.from("offer_payment_links").select("token").eq("inquiry_id", b.inquiry_id).eq("inquiry_table", "rental_inquiries").eq("status", "active").maybeSingle();
       return json({ status: expired ? "expired" : b.status, order_code: inquiry?.order_code, expires_at: b.expires_at, amount_cents: b.total_cents, payment_url: !expired && link ? `https://www.slt-rental.de/zahlung/${link.token}` : null, bank: { holder: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, reference: `Auftrag ${inquiry?.order_code ?? ""}` } });
     }
-    const { data: allowed, error: rateError } = await service.rpc("check_public_rate_limit", { _bucket: "sign-booking", _client_key: req.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown", _max_hits: 30, _window_seconds: 3600 });
+    const readAction = raw.action === "config" || raw.action === "availability";
+    const { data: allowed, error: rateError } = await service.rpc("check_public_rate_limit", { _bucket: readAction ? "sign-booking-read" : "sign-booking", _client_key: req.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown", _max_hits: readAction ? 600 : 30, _window_seconds: 3600 });
     if (rateError || !allowed) return json({ error: "Bitte später erneut versuchen" }, 429);
     if (raw.action === "config") {
       const { data: p } = await service.from("b2b_managed_products").select("direct_booking_config").eq("slug", "halteverbotsschilder-set").eq("is_published", true).maybeSingle();
