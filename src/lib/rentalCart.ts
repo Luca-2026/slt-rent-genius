@@ -7,6 +7,8 @@ export interface RentalCartItem {
   end_date: string; end_time: string; selected_addons: string[];
   use_saturday: boolean; use_sunday: boolean;
   sign_package?: "standard" | "sorglos";
+  sign_zone_street?: string; sign_zone_postal_code?: string; sign_zone_city?: string;
+  sign_setup_quote_key?: string; sign_setup_gross_cents?: number;
 }
 export interface RentalCart { version: 1; expiresAt: number; requestId: string; items: RentalCartItem[] }
 /** Include the current draft and every accessory once in the live estimate. */

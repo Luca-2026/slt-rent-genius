@@ -1,9 +1,19 @@
 import { describe, it, expect } from "vitest";
 import { addCartItem, withCartPeriod, cartQuoteItems, cartQuoteTotal, parseCart, CART_LIFETIME_MS, cartExpired, cartRemainingSeconds, cartCategoryPath, pickupConfirmationRequired, type RentalCartItem } from "@/lib/rentalCart";
 import { isTrailerCategory, isTrailerRoute } from "@/lib/rentalBookingMode";
-import { signCartPackage, signPackageEstimate } from "@/lib/signCartPackage";
+import { signCartPackage, signPackageEstimate, signCartRentalNet, signSetupAddressKey } from "@/lib/signCartPackage";
 const row: RentalCartItem = { id: "a", product_slug: "bagger", product_name: "Bagger", location: "krefeld", quantity: 1, start_date: "2026-11-03", end_date: "2026-11-05", start_time: "08:00", end_time: "16:00", selected_addons: [], use_saturday: false, use_sunday: false };
 describe("15-Minuten-Anfragewarenkorb", () => {
+  it("übernimmt den berechneten 299-Euro-Preis samt Aufstelladresse und verwirft ihn bei Adressänderung", () => {
+    const address = { zoneStreet: "Teststraße 1", zonePostalCode: "47807", zoneCity: "Krefeld" };
+    const item = { ...row, sign_package: "sorglos" as const, sign_zone_street: address.zoneStreet, sign_zone_postal_code: address.zonePostalCode, sign_zone_city: address.zoneCity, sign_setup_quote_key: signSetupAddressKey("krefeld", address), sign_setup_gross_cents: 29900 };
+    const restored = parseCart(JSON.stringify(addCartItem(null, item, 0)), 1)?.items[0];
+    expect(restored?.sign_zone_street).toBe("Teststraße 1");
+    expect(Math.round((signCartRentalNet(null, item) ?? 0) * 119)).toBe(29900);
+    expect(signCartRentalNet(null, { ...item, sign_zone_city: "Bonn" })).toBeNull();
+    expect(signCartRentalNet(null, { ...item, location: "bonn" })).toBeNull();
+    expect(signCartRentalNet(null, { ...item, sign_setup_gross_cents: undefined })).toBeNull();
+  });
   it("verlangt eine explizite gemeinsame Paketwahl und erhält sie beim Neuladen", () => {
     expect(signCartPackage([row])).toBeNull();
     const chosen = { ...row, sign_package: "sorglos" as const };
