@@ -4362,6 +4362,8 @@ export type Database = {
           order_confirmation_number: string | null
           order_confirmed_at: string | null
           order_confirmed_by_name: string | null
+          order_revision: number
+          original_accepted_offer: Json | null
           paid_amount: number
           payment_followup_sent_at: string | null
           payment_reminder_manual_at: string | null
@@ -4438,6 +4440,8 @@ export type Database = {
           order_confirmation_number?: string | null
           order_confirmed_at?: string | null
           order_confirmed_by_name?: string | null
+          order_revision?: number
+          original_accepted_offer?: Json | null
           paid_amount?: number
           payment_followup_sent_at?: string | null
           payment_reminder_manual_at?: string | null
@@ -4514,6 +4518,8 @@ export type Database = {
           order_confirmation_number?: string | null
           order_confirmed_at?: string | null
           order_confirmed_by_name?: string | null
+          order_revision?: number
+          original_accepted_offer?: Json | null
           paid_amount?: number
           payment_followup_sent_at?: string | null
           payment_reminder_manual_at?: string | null
@@ -4587,6 +4593,88 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "rental_inquiry_events_rental_inquiry_id_fkey"
+            columns: ["rental_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "rental_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rental_order_confirmation_deliveries: {
+        Row: {
+          confirmation_number: string
+          file_url: string
+          id: string
+          rental_inquiry_id: string
+          sent_at: string
+          sent_by: string
+          snapshot: Json
+          version: number
+        }
+        Insert: {
+          confirmation_number: string
+          file_url: string
+          id?: string
+          rental_inquiry_id: string
+          sent_at?: string
+          sent_by: string
+          snapshot: Json
+          version: number
+        }
+        Update: {
+          confirmation_number?: string
+          file_url?: string
+          id?: string
+          rental_inquiry_id?: string
+          sent_at?: string
+          sent_by?: string
+          snapshot?: Json
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_order_confirmation_deliveries_rental_inquiry_id_fkey"
+            columns: ["rental_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "rental_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rental_order_revisions: {
+        Row: {
+          agreed_at: string
+          agreement_note: string
+          created_at: string
+          created_by: string
+          id: string
+          rental_inquiry_id: string
+          snapshot: Json
+          version: number
+        }
+        Insert: {
+          agreed_at: string
+          agreement_note: string
+          created_at?: string
+          created_by: string
+          id?: string
+          rental_inquiry_id: string
+          snapshot: Json
+          version: number
+        }
+        Update: {
+          agreed_at?: string
+          agreement_note?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          rental_inquiry_id?: string
+          snapshot?: Json
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_order_revisions_rental_inquiry_id_fkey"
             columns: ["rental_inquiry_id"]
             isOneToOne: false
             referencedRelation: "rental_inquiries"
@@ -6437,6 +6525,16 @@ export type Database = {
           _permit_token?: string
           _request: string
           _token: string
+        }
+        Returns: Json
+      }
+      save_rental_order_amendment: {
+        Args: {
+          _agreed_at: string
+          _expected: number
+          _id: string
+          _note: string
+          _payload: Json
         }
         Returns: Json
       }

@@ -317,7 +317,8 @@ interface Props {
   disabled?: boolean;
   onSent?: () => void;
   /** "offer" (Standard) erzeugt ein Angebot, "invoice" eine Rechnung bzw. einen Nachtrag. */
-  mode?: "offer" | "invoice";
+  mode?: "offer" | "invoice" | "amendment";
+  expectedRevision?: number;
   invoiceKind?: "invoice" | "supplement" | "final";
   parentInvoiceId?: string | null;
   parentInvoiceNumber?: string | null;
@@ -401,6 +402,7 @@ export function InquiryOfferForm({
   disabled,
   onSent,
   mode = "offer",
+  expectedRevision = 0,
   invoiceKind = "invoice",
   parentInvoiceId = null,
   parentInvoiceNumber = null,
@@ -418,6 +420,9 @@ export function InquiryOfferForm({
   ignoreDraft = false,
 }: Props) {
   const isInvoice = mode === "invoice";
+  const isAmendment = mode === "amendment";
+  const [agreementNote,setAgreementNote] = useState("");
+  const [agreedAt,setAgreedAt] = useState(() => { const now = new Date(); return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0,16); });
   const isSupplement = isInvoice && invoiceKind === "supplement";
   const { toast } = useToast();
 
@@ -1162,6 +1167,7 @@ export function InquiryOfferForm({
   }, [inquiryId, items]);
 
   const buildBody = () => ({
+        ...(isAmendment ? {amendment:true,expected_revision:expectedRevision,agreement_note:agreementNote,agreed_at:agreedAt ? new Date(agreedAt).toISOString() : null} : {}),
         ...(isInvoice
           ? {
               invoice_kind: invoiceKind,
@@ -1295,7 +1301,7 @@ export function InquiryOfferForm({
     }
     setPreviewing(true);
     const previewBody = buildBody();
-    const { data, error } = await invokeWithAuth(isInvoice ? "send-inquiry-invoice" : "send-inquiry-offer", { ...previewBody, preview: true });
+    const { data, error } = await invokeWithAuth(isAmendment ? "send-order-confirmation" : isInvoice ? "send-inquiry-invoice" : "send-inquiry-offer", { ...previewBody, preview: true });
     setPreviewing(false);
     const b64 = (data as any)?.pdf_base64 as string | undefined;
     if (error || !b64) {
@@ -1360,14 +1366,14 @@ export function InquiryOfferForm({
     sendLock.current = true;
     setSending(true);
     const { data, error } = await invokeWithAuth(
-      isInvoice ? "send-inquiry-invoice" : "send-inquiry-offer",
+      isAmendment ? "send-order-confirmation" : isInvoice ? "send-inquiry-invoice" : "send-inquiry-offer",
       buildBody(),
     );
 
     setSending(false);
     sendLock.current = false;
 
-    const docLabel = isSupplement ? "Nachtrag" : invoiceKind === "final" && isInvoice ? "Schlussrechnung" : isInvoice ? "Rechnung" : "Angebot";
+    const docLabel = isAmendment ? "Auftragsänderung" : isSupplement ? "Nachtrag" : invoiceKind === "final" && isInvoice ? "Schlussrechnung" : isInvoice ? "Rechnung" : "Angebot";
     if (error || (data as any)?.error) {
       toast({
         title: `${docLabel} konnte nicht gesendet werden`,
@@ -1377,8 +1383,8 @@ export function InquiryOfferForm({
       return;
     }
     toast({
-      title: `${docLabel} gesendet`,
-      description: `${(data as any)?.invoice_number ?? (data as any)?.offer_number} · ${formatEuro((data as any)?.totals?.grossAmount ?? totals.grossAmount)} brutto`,
+      title: isAmendment ? "Auftragsänderung gespeichert – neue AB jetzt prüfen und senden" : `${docLabel} gesendet`,
+      description: `${isAmendment ? `Fassung ${(data as any)?.version}` : (data as any)?.invoice_number ?? (data as any)?.offer_number} · ${formatEuro((data as any)?.totals?.grossAmount ?? totals.grossAmount)} brutto`,
     });
     // Übernommene Protokollposten als abgerechnet markieren – sowohl manuell
     // übernommene als auch automatisch vorbelegte Positionen (Kautionslogik),
@@ -1416,9 +1422,9 @@ export function InquiryOfferForm({
     </Button>
   );
   const sendButton = (
-    <Button data-draft-neutral onClick={send} disabled={disabled || sending || checking || !previewOk || !!sendBlock} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
+    <Button data-draft-neutral onClick={send} disabled={disabled || sending || checking || !previewOk || !!sendBlock || (isAmendment && agreementNote.trim().length < 5)} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
       <Send className="h-4 w-4 mr-2" />
-      {isInvoice
+      {isAmendment ? (sending ? "Auftragsänderung wird gespeichert …" : "Auftragsänderung speichern") : isInvoice
         ? sending
           ? `${isSupplement ? "Nachtrag" : "Rechnung"} wird gesendet …`
           : `${isSupplement ? "Nachtrag" : "Rechnung"} final erstellen und senden`
@@ -1436,7 +1442,7 @@ export function InquiryOfferForm({
   const previewHint = !previewOk && <p className="text-xs text-muted-foreground">Vor dem Senden bitte die PDF-Vorschau des aktuellen Stands ansehen.</p>;
   const actionText = (
     <p className="text-xs text-muted-foreground">
-      {isInvoice
+      {isAmendment ? "Auftragsänderung speichern und anschließend die neue AB senden. Kein neues Angebot und keine erneute Online-Annahme." : isInvoice
         ? "Die Vorschau vergibt keine Rechnungsnummer und versendet nichts. Erst beim finalen Erstellen wird die Rechnung unveränderlich; Korrekturen erfolgen per Gutschrift."
         : "Der Kunde kann das Angebot über den Button in der E-Mail online annehmen und unterschreiben – ihr bekommt dann einen Hinweis hier in der Anfrage. Danach den Job manuell in Rentware anlegen."}
     </p>
@@ -1473,6 +1479,7 @@ export function InquiryOfferForm({
       onPointerDownCapture={(e) => { if (isDraftEditEvent(e.target, "pointer")) markTouched(); }}
     >
       {stickyActions && <div data-draft-neutral>{actionBar}</div>}
+      {isAmendment && <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3"><div><Label htmlFor="order-agreement-note">Telefonische / mündliche Vereinbarung *</Label><Input id="order-agreement-note" value={agreementNote} onChange={e=>setAgreementNote(e.target.value)} placeholder="Änderungen mit Kunde vereinbart …" /></div><div><Label htmlFor="order-agreed-at">Vereinbart am *</Label><Input id="order-agreed-at" type="datetime-local" value={agreedAt} onChange={e=>setAgreedAt(e.target.value)} /></div></div>}
       {remoteDraft && !disabled && remoteDraft.updatedBy !== myUserId && (
         <div data-draft-neutral className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-primary/40 bg-primary/5 p-3 text-sm">
           <span>
@@ -2557,7 +2564,7 @@ export function InquiryOfferForm({
         <DialogContent className="max-w-4xl w-[calc(100vw-1rem)] h-[90vh] flex flex-col gap-3 p-3 sm:p-6">
           <DialogHeader>
             <DialogTitle>{isInvoice ? "Rechnungsvorschau" : "PDF-Vorschau"}</DialogTitle>
-            <DialogDescription>{isInvoice ? "Unverbindlicher Entwurf ohne Rechnungsnummer. Keine Rechnung wurde ausgestellt und nichts verschickt." : "So sieht das Angebot für den Kunden aus. Die Angebotsnummer wird erst beim Senden vergeben – nichts wurde verschickt."}</DialogDescription>
+            <DialogDescription>{isInvoice ? "Unverbindlicher Entwurf ohne Rechnungsnummer. Keine Rechnung wurde ausgestellt und nichts verschickt." : isAmendment ? "Vorschau der geänderten Auftragsbestätigung. Noch nichts gespeichert oder verschickt." : "So sieht das Angebot für den Kunden aus. Die Angebotsnummer wird erst beim Senden vergeben – nichts wurde verschickt."}</DialogDescription>
           </DialogHeader>
           {!isInvoice && couponCode && couponPreviewTotal !== null && <p className="text-sm font-semibold">Gesamtbetrag mit geprüftem Gutschein: {formatEuro(couponPreviewTotal)} brutto</p>}
           {previewUrl && <PdfPagesPreview url={previewUrl} className="min-h-0 flex-1 w-full overflow-y-auto rounded border border-border bg-muted p-3" />}
@@ -2568,8 +2575,8 @@ export function InquiryOfferForm({
               </Button>
             )}
             <Button variant="outline" onClick={() => setPreviewUrl(null)}>Zurück zum Bearbeiten</Button>
-            <Button onClick={() => { setPreviewUrl(null); void send(); }} disabled={disabled || sending || checking || !previewOk || !!sendBlock}>
-              <Send className="h-4 w-4 mr-2" />{isInvoice ? "Rechnung final erstellen und senden" : "Angebot jetzt senden"}
+            <Button onClick={() => { setPreviewUrl(null); void send(); }} disabled={disabled || sending || checking || !previewOk || !!sendBlock || (isAmendment && agreementNote.trim().length < 5)}>
+              <Send className="h-4 w-4 mr-2" />{isAmendment ? "Auftragsänderung speichern" : isInvoice ? "Rechnung final erstellen und senden" : "Angebot jetzt senden"}
             </Button>
           </div>
         </DialogContent>

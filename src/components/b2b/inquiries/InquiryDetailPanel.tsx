@@ -283,6 +283,7 @@ interface Props {
     offer_number: string | null;
     /** Snapshot des versendeten Angebots – Grundlage für die Rechnung. */
     offer_payload?: unknown;
+    original_accepted_offer?: { offer_total_gross?: number; offer_file_url?: string; offer_number?: string } | null;
     raw_payload?: unknown;
     feedback_coupon_code?: string | null;
     order_code?: string | null;
@@ -328,7 +329,7 @@ interface Props {
 }
 
 
-type DocMode = "offer" | "revise" | "invoice" | "final" | "order" | "deposit";
+type DocMode = "amendment" | "offer" | "revise" | "invoice" | "final" | "order" | "deposit";
 const DOC_MODE_PREFIX = "slt.inquiry-doc-mode.v1:";
 
 function rememberDocMode(inquiryId: string, mode: DocMode) {
@@ -680,7 +681,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           <div className="font-semibold">Angebot {inquiry.offer_number}</div>
           <div className="text-muted-foreground">
             {inquiry.offer_sent_at ? new Date(inquiry.offer_sent_at).toLocaleString("de-DE") : "—"}
-            {inquiry.offer_total_gross != null && ` · ${formatEuro(Number(inquiry.offer_total_gross))} brutto`}
+            {(inquiry.original_accepted_offer?.offer_total_gross ?? inquiry.offer_total_gross) != null && ` · ${formatEuro(Number(inquiry.original_accepted_offer?.offer_total_gross ?? inquiry.offer_total_gross))} brutto`}
           </div>
           {inquiry.offer_file_url && (
             <a
@@ -790,6 +791,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             { mode: "offer", label: inquiry.offer_number ? "Neues Angebot" : "Angebot erstellen", icon: FilePlus2, show: true },
             { mode: "revise", label: "Angebot überarbeiten", icon: Pencil, show: !!(offerSnapshot && inquiry.offer_number) },
             { mode: "invoice", label: "Rechnung erstellen", icon: Receipt, show: true },
+            { mode: "amendment", label: "Auftrag ändern / neue AB", icon: Pencil, show: inquiryType === "rental" && inquiry.status === "accepted" && !!inquiry.offer_number },
             { mode: "order", label: "Auftragsbestätigung", icon: FileCheck2, show: layout === "page" && inquiry.status === "accepted" && !!inquiry.offer_number },
             { mode: "deposit", label: "Kaution abrechnen", icon: Wallet, show: inquiryType === "rental" && !!inquiry.offer_number },
           ] as { mode: DocMode; label: string; icon: typeof Pencil; show: boolean }[])
@@ -815,10 +817,10 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         )}
         <div>
           <div className="font-semibold text-sm">
-            {docMode === "offer" ? "Angebot erstellen" : docMode === "revise" ? `Angebot ${inquiry.offer_number} überarbeiten` : docMode === "final" ? "Schlussrechnung erstellen" : docMode === "order" ? "Auftragsbestätigung erstellen" : docMode === "deposit" ? "Kautionsabrechnung" : "Rechnung erstellen"}
+            {docMode === "amendment" ? "Auftrag ändern / neue AB" : docMode === "offer" ? "Angebot erstellen" : docMode === "revise" ? `Angebot ${inquiry.offer_number} überarbeiten` : docMode === "final" ? "Schlussrechnung erstellen" : docMode === "order" ? "Auftragsbestätigung erstellen" : docMode === "deposit" ? "Kautionsabrechnung" : "Rechnung erstellen"}
           </div>
           <p className="text-xs text-muted-foreground">
-            {docMode === "revise"
+            {docMode === "amendment" ? "Mündlich vereinbarte Änderungen erfassen. Originalangebot bleibt erhalten; anschließend neue AB senden, ohne neues Angebot." : docMode === "revise"
               ? "Alle Angaben aus dem zuletzt versendeten Angebot sind übernommen. Anpassen und als neue Fassung senden – sie erhält die Stammnummer mit Fassungszusatz und den Hinweis, welches Angebot sie ersetzt."
               : docMode === "final"
               ? "Gesamtabrechnung des Auftrags: Positionen und Leistungszeitraum an die tatsächliche Miete anpassen. Alle nicht stornierten Abschlagsrechnungen werden beim Versand automatisch mit Netto, USt. und Brutto abgezogen."
@@ -859,7 +861,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           ignoreDraft={(docMode === "invoice" || docMode === "final") && deposit.chargeLines.some((l) => l.protocol_charge_source === "settlement")}
           defaultCosts={offerSnapshot?.costs}
           reviseOf={docMode === "revise" ? inquiry.offer_number : null}
-          defaultMeta={docMode === "revise" ? offerSnapshot?.meta : docMode === "offer" ? (() => {
+          defaultMeta={(docMode === "revise" || docMode === "amendment") ? offerSnapshot?.meta : docMode === "offer" ? (() => {
             const raw = inquiry.raw_payload as Record<string, unknown> | null;
             if (raw?.open_ended !== true) return undefined;
             const unit = normalizeOpenEndedUnit(raw.open_ended_unit);
@@ -885,12 +887,14 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           reservationId={(inquiry as any).b2b_reservation_id ?? null}
 
           customerKind={inquiry.customer_kind === "business" ? "business" : "private"}
-          mode={docMode === "invoice" || docMode === "final" ? "invoice" : "offer"}
+          mode={docMode === "amendment" ? "amendment" : docMode === "invoice" || docMode === "final" ? "invoice" : "offer"}
+          expectedRevision={Number((inquiry as Record<string, unknown>).order_revision ?? 0)}
           invoiceKind={docMode === "final" ? "final" : "invoice"}
           staffName={actorName}
           disabled={busy}
           stickyActions={layout === "page"}
           onSent={() => {
+            if(docMode === "amendment") setDocMode("order");
             loadInvoices();
             onChanged();
           }}
