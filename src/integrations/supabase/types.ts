@@ -6147,6 +6147,10 @@ export type Database = {
         Args: { p_credit_id: string }
         Returns: undefined
       }
+      finish_sign_confirmation: {
+        Args: { _id: string; _path: string; _url: string }
+        Returns: undefined
+      }
       generate_delivery_note_number: { Args: never; Returns: string }
       generate_inquiry_credit_note_number: { Args: never; Returns: string }
       generate_inquiry_credit_note_number_for: {

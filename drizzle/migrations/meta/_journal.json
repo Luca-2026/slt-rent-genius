@@ -736,6 +736,13 @@
       "when": 1793671528490,
       "tag": "0104_sign_booking_atomic_reservation",
       "breakpoints": true
+    },
+    {
+      "idx": 105,
+      "version": "7",
+      "when": 1793671857701,
+      "tag": "0105_sign_booking_capacity_and_payment_safety",
+      "breakpoints": true
     }
   ]
 }
