@@ -9,6 +9,8 @@ import { payoutText } from "./final-invoice-deposit.ts";
 // ─── PDF Offer Generator ───────────────────────────────────
 export async function generateOfferPdf(data: {
   offerNumber: string;
+  /** Geschäftsart für die Artikelbezeichnung; bestehende Aufrufer bleiben Miete. */
+  businessType?: "rental" | "sales";
   offerDate: string;
   validUntil: string;
   profile: any;
@@ -750,7 +752,7 @@ export async function generateOfferPdf(data: {
     ((data.deliveryCost > 0) ? data.deliveryCost : 0);
 
   if (servicesSubtotal > 0 || deliverySubtotal > 0) {
-    dt(pg, "Zwischensumme Mietartikel", tx, y, font, 9, MUTED);
+    dt(pg, data.businessType === "sales" ? "Zwischensumme Verkaufsartikel" : "Zwischensumme Mietartikel", tx, y, font, 9, MUTED);
     dtr(pg, fm(itemsTotal), vx, y, font, 9); y -= 13;
   }
   if (servicesSubtotal > 0) {
