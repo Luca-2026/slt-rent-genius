@@ -1,4 +1,5 @@
 # Inquiries
+- Rental offer calendar fields are the authoritative period; offerCalendarPeriod derives descriptions and duration, inherited lines keep their own billing unit, and calendar edits reprice dependents without altering issued snapshots.
 - Order amendments reuse InquiryOfferForm in amendment mode, preserve original_accepted_offer and append-only rental_order_revisions, and update the operational offer_payload only through save_rental_order_amendment; AB/payment/calendar/protocol/new invoices read that current operational snapshot. Issued invoice snapshots never change.
 - Sign setup bookings create one idempotent checklist per booking: permit review before paid setup; expired holds close tasks. Private uploads are verified before acceptance; additional signs use CMS configuration, are catalog/location-validated inside atomic reservation, and never add a deposit.
 - Sign calendars and reservations share sign_reserved_sets; setup distance is resolved by the trusted booking function, never client input. ProductPriceBlock owns every rental price layout and customer switch, including packages.
