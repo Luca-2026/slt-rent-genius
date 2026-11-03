@@ -11,6 +11,7 @@ export interface CashEntry {
   customerName?: string | null;
   companyName?: string | null;
   label?: string | null;
+  register?: string | null; // krefeld | bonn – getrennte DATEV-Kassen
 }
 
 // Felder dürfen kein Semikolon, Anführungszeichen oder Zeilenumbruch enthalten.
