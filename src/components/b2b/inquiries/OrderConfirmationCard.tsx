@@ -29,6 +29,7 @@ const eur = (cents: number) => formatEuro(cents / 100);
  * Grundlage sind ausschließlich die gespeicherten Zahlungseingänge.
  */
 import { parseOrderType } from "./offerMath";
+import { OrderRevisionHistory } from "./OrderRevisionHistory";
 
 export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone }: Props) {
   const [note, setNote] = useState("");
@@ -119,6 +120,7 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
   return (
     <div className="rounded-lg border border-border p-3 text-sm space-y-2">
       <div className="font-semibold">Auftragsbestätigung</div>
+      {inquiryType === "rental" && <OrderRevisionHistory inquiry={inquiry} />}
       <div className="space-y-0.5 text-muted-foreground">
         <div>{inquiry.order_revision ? `Aktueller Auftrag · Änderung ${inquiry.order_revision}` : `Angebot ${inquiry.offer_number}`}: {eur(ev.grossCents)} brutto</div>
         {/* Paket 3b: Auftragsart aus dem Angebot (alte Angebote ohne Angabe = Abholung) */}
