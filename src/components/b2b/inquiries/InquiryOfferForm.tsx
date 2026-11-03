@@ -1073,7 +1073,7 @@ export function InquiryOfferForm({
           return pricing ? { ...item, product_slug: item.product_slug ?? slug, pricing } : item;
         }),
       );
-      setItems(withPricing.map((it) => applyRentalPricing(it, dayOpts)));
+      setItems(withPricing.map((it, i) => applyRentalPricing(applyInheritedPeriod(it, i, withPricing[0]), dayOpts)));
     } finally {
       setRecalculating(false);
     }
@@ -1515,12 +1515,12 @@ export function InquiryOfferForm({
         <div className="space-y-2 rounded-md bg-muted/40 p-3">
           <Label className="text-xs">Leistungszeitraum (erscheint auf der Rechnung)</Label>
           <div className="grid gap-2 sm:grid-cols-2">
-            <Input
+            {(!pricingActive || !!withoutLegacyPeriod(item.description)) && <Input
               type="date"
               value={servicePeriodStart}
               onChange={(e) => setServicePeriodStart(e.target.value)}
               disabled={disabled}
-            />
+            />}
             <Input
               type="date"
               value={servicePeriodEnd}

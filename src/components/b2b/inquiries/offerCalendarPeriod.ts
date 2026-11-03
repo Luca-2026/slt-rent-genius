@@ -21,11 +21,14 @@ export function calendarDescription(line: OfferLine): string {
 
 export function calendarDuration<T extends OfferLine>(line: T, opts: RentalDayOptions): T {
   if (!line.rental_start || !line.rental_end || line.protocol_charge_source) return line;
+  const days = rentalDuration({ date: line.rental_start }, { date: line.rental_end }, "kalendertage");
   return { ...line, duration: rentalDuration(
     { date: line.rental_start, time: line.rental_start_time },
     { date: line.rental_end, time: line.rental_end_time },
     line.unit ?? "kalendertage", opts,
-  ) };
+  ), addons: line.addons?.map((addon) => addon.basis === "full_period" && !addon.days_manual && !addon.manual
+    ? { ...addon, days, period_start: line.rental_start, period_end: line.rental_end }
+    : addon) };
 }
 
 export function inheritCalendarPeriod<T extends OfferLine>(line: T, base: OfferLine): T {

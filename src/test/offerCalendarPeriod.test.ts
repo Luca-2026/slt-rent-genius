@@ -23,4 +23,10 @@ describe("Calendar is the rental offer period source", () => {
   it("preserves genuine article descriptions and removes only the legacy period", () => {
     expect(calendarDescription({ ...line, description: `Inkl. Tieflöffel · ${line.description}` })).toBe("Inkl. Tieflöffel · Mietzeitraum: 23.11.2026, 09:00 – 24.11.2026, 16:30");
   });
+  it("updates full-period insurance days from the selected calendar", () => {
+    const updated = calendarDuration({ ...line, addons: [{ key: "insurance", label: "Insurance", amount: 25, days: 5, basis: "full_period" as const }] }, {});
+    expect(updated.addons?.[0].days).toBe(2);
+    expect(updated.addons?.[0].period_start).toBe("2026-11-23");
+    expect(updated.addons?.[0].period_end).toBe("2026-11-24");
+  });
 });
