@@ -34,7 +34,7 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [ack, setAck] = useState(false);
-  const [attachPdf, setAttachPdf] = useState(false);
+  const [attachPdf, setAttachPdf] = useState(Number(inquiry.order_revision ?? 0) > 0);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [availability, setAvailability] = useState<AvailabilityResult | null>(null);
   if (inquiry.status !== "accepted" || !inquiry.offer_number) return null;
@@ -85,6 +85,7 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
         sender_name: senderName,
         acknowledge_open: ev.needsAcknowledgement ? ack : false,
         attach_pdf: attachPdf,
+        expected_revision: inquiry.order_revision ?? 0,
         expected_paid_cents: ev.paidCents,
         expected_required_cents: ev.requiredCents,
       },
@@ -119,7 +120,7 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
     <div className="rounded-lg border border-border p-3 text-sm space-y-2">
       <div className="font-semibold">Auftragsbestätigung</div>
       <div className="space-y-0.5 text-muted-foreground">
-        <div>Angebot {inquiry.offer_number}: {eur(ev.grossCents)} brutto</div>
+        <div>{inquiry.order_revision ? `Aktueller Auftrag · Änderung ${inquiry.order_revision}` : `Angebot ${inquiry.offer_number}`}: {eur(ev.grossCents)} brutto</div>
         {/* Paket 3b: Auftragsart aus dem Angebot (alte Angebote ohne Angabe = Abholung) */}
         <div>Auftragsart: {parseOrderType(payload?.order_type) === "delivery" ? "Lieferung" : "Abholung"}</div>
         {ev.depositCents > 0 && <div>Kaution: {eur(ev.depositCents)} · Gesamt zu zahlen: {eur(ev.requiredCents)}</div>}
