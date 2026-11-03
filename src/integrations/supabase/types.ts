@@ -6138,6 +6138,7 @@ export type Database = {
       ensure_repair_list: { Args: { _location: string }; Returns: string }
       expire_open_offer_link: { Args: { p_id: string }; Returns: boolean }
       expire_open_offer_links: { Args: never; Returns: number }
+      expire_sign_bookings: { Args: never; Returns: number }
       feedback_customer_identity: {
         Args: { p_crm: string; p_email: string; p_profile: string }
         Returns: Json
@@ -6383,6 +6384,15 @@ export type Database = {
           p_until: string
         }
         Returns: undefined
+      }
+      reserve_sign_booking: {
+        Args: {
+          _body: Json
+          _permit_token?: string
+          _request: string
+          _token: string
+        }
+        Returns: Json
       }
       settle_deposit: {
         Args: {
