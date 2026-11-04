@@ -1,7 +1,7 @@
 // DATEV Kassenbuch online – Standard-ASCII-Import (Dok.-Nr. 1002367).
 // 13 Spalten, Semikolon, UTF-8, Kopfzeile immer vollständig.
 export const DATEV_CASH_HEADER =
-  '"Währung";"VorxBetrag";"RechNr";"BelegDatum";"Belegtext";"UStSatz";"BU";"Gegenkonto";"Kost1";"Kost2";"Kostmenge";"Skonto";"Nachricht"';
+  '"Währung";"VorzBetrag";"RechNr";"BelegDatum";"Belegtext";"UStSatz";"BU";"Gegenkonto";"Kost1";"Kost2";"Kostmenge";"Skonto";"Nachricht"';
 
 export interface CashEntry {
   amount: number; // + Einnahme, - Ausgabe

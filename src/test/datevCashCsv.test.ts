@@ -4,6 +4,11 @@ import { buildDatevCashCsv, DATEV_CASH_HEADER } from "../../supabase/functions/_
 const lines = (csv: string) => csv.trim().split("\r\n");
 
 describe("DATEV-Kassen-CSV", () => {
+  it("verwendet exakt den Headersatz aus DATEV-Dokument 1002367, Kapitel 2.1.1", () => {
+    expect(lines(buildDatevCashCsv([]))[0].split(";").map((field) => field.replace(/"/g, ""))).toEqual([
+      "Währung", "VorzBetrag", "RechNr", "BelegDatum", "Belegtext", "UStSatz", "BU", "Gegenkonto", "Kost1", "Kost2", "Kostmenge", "Skonto", "Nachricht",
+    ]);
+  });
   it("Kopfzeile ist immer vorhanden, auch ohne Buchungen", () => {
     expect(lines(buildDatevCashCsv([]))).toEqual([DATEV_CASH_HEADER]);
   });
