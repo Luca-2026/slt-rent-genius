@@ -1,3 +1,4 @@
+import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { allowsBindingOffer } from "../_shared/undated-offer.ts";
 import { processOfferFollowups } from "../_shared/offer-followup-delivery.ts";
@@ -87,7 +88,7 @@ Deno.serve(async (req: Request) => {
     const link = linkRes.data;
     if (!link) return json({ error: body.action === "accept_onsite" ? "Kein aktives Angebot zu dieser Anfrage gefunden." : "Dieser Link ist nicht gültig." }, 404);
     const { data: inquiry } = await service.from(link.inquiry_table)
-      .select("id, status, offer_number, offer_file_url, offer_payload, customer_name, company_name, customer_email, customer_kind, location, location_email, offer_total_gross, payments")
+      .select("*")
       .eq("id", link.inquiry_id).maybeSingle();
     if (!inquiry) return json({ error: "Dieser Link ist nicht gültig." }, 404);
     if (!allowsBindingOffer(inquiry.offer_payload)) return json({ error: "Dieses Preisangebot ist unverbindlich. Bitte zuerst einen Mietzeitraum mit dem Standort vereinbaren." }, 400);
@@ -108,8 +109,9 @@ Deno.serve(async (req: Request) => {
     if (body.action === "info") {
       return json({
         status,
+        business_type: link.inquiry_table === "sales_inquiries" ? "sales" : "rental",
         offer_number: link.offer_number,
-        customer_name: inquiry.company_name || inquiry.customer_name || "",
+        customer_name: inquiry.company_name || inquiry.customer_name || [inquiry.first_name, inquiry.last_name].filter(Boolean).join(" ") || "",
         gross_amount: Number(link.gross_amount),
         net_amount: payload.totals?.netAmount ?? null,
         deposit: Number(payload.deposit) || 0,
@@ -172,7 +174,7 @@ Deno.serve(async (req: Request) => {
     const terms = typeof (payload as { payment_terms?: unknown }).payment_terms === "string" ? String((payload as { payment_terms?: string }).payment_terms) : "vorkasse";
     const prepay = isPrepayTerms(terms);
     let payUrl: string | null = null;
-    if (prepay) {
+    if (prepay && onlineOfferPaymentAllowed(link.inquiry_table)) {
       const paidCents = (Array.isArray(inquiry.payments) ? inquiry.payments : []).reduce((s: number, p: { amount?: unknown }) => s + toCents(p?.amount), 0);
       const plan = planPaymentAmounts({ gross: inquiry.offer_total_gross, deposit: Number(payload.deposit) || 0, paidCents });
       const email = inquiry.customer_email || link.customer_email;
@@ -224,7 +226,7 @@ Deno.serve(async (req: Request) => {
           reply_to: loc.email,
           subject: await codedSubject(service, prepay ? `Danke für deine Annahme – bitte jetzt bezahlen (Angebot ${link.offer_number})` : `Danke für deine Annahme von Angebot ${link.offer_number}`, { table: link.inquiry_table, id: link.inquiry_id }),
           ...(pdfAttachment ? { attachments: [pdfAttachment] } : {}),
-          html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><p>Hallo ${esc(inquiry.customer_name || "")},</p><p><strong>Vielen Dank für das angenommene Angebot.</strong> ${prepay ? "Bitte leiste nun die Zahlung." : "Du erhältst in Kürze die Auftragsbestätigung, damit deine Miete bestätigt wird."}</p><p>Angebot <strong>${esc(link.offer_number)}</strong> über <strong>${money(Number(link.gross_amount))}</strong> brutto${Number(payload.deposit) > 0 ? ` zzgl. Kaution ${money(Number(payload.deposit))}` : ""}, angenommen am ${esc(when)} Uhr von ${esc(body.signer_name)}. Du hast dabei unsere ${isBusiness ? "AGB für Unternehmer" : "AGB für Verbraucher"} bestätigt.</p>${pdfBlock}${prepay && payUrl ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(payUrl)}" style="background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:bold;display:inline-block;">Jetzt bezahlen</a></p>` : ""}${prepay ? `<p style="font-size:13px;color:#4b5563;">Überweisung möglich an ${esc(SLT_COMPANY.name)}, IBAN ${esc(SLT_COMPANY.iban)}, BIC ${esc(SLT_COMPANY.bic)}, Verwendungszweck ${esc(link.offer_number)}.</p>` : ""}<p>Viele Grüße<br>Dein SLT Rental Team – Standort ${esc(loc.name)}<br>Tel. ${esc(loc.phone)} · ${esc(loc.email)}</p></div>`,
+          html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><p>Hallo ${esc(inquiry.customer_name || "")},</p><p><strong>Vielen Dank für das angenommene Angebot.</strong> ${prepay ? (link.inquiry_table === "sales_inquiries" ? "Bitte leiste nun die Zahlung gemäß den vereinbarten Zahlungsbedingungen per Banküberweisung." : "Bitte leiste nun die Zahlung.") : (link.inquiry_table === "sales_inquiries" ? "Du erhältst in Kürze die Auftragsbestätigung für deinen Kauf." : "Du erhältst in Kürze die Auftragsbestätigung, damit deine Miete bestätigt wird.")}</p><p>Angebot <strong>${esc(link.offer_number)}</strong> über <strong>${money(Number(link.gross_amount))}</strong> brutto${Number(payload.deposit) > 0 ? ` zzgl. Kaution ${money(Number(payload.deposit))}` : ""}, angenommen am ${esc(when)} Uhr von ${esc(body.signer_name)}. Du hast dabei unsere ${isBusiness ? "AGB für Unternehmer" : "AGB für Verbraucher"} bestätigt.</p>${pdfBlock}${prepay && payUrl ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(payUrl)}" style="background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:bold;display:inline-block;">Jetzt bezahlen</a></p>` : ""}${prepay ? `<p style="font-size:13px;color:#4b5563;">Überweisung möglich an ${esc(SLT_COMPANY.name)}, IBAN ${esc(SLT_COMPANY.iban)}, BIC ${esc(SLT_COMPANY.bic)}, Verwendungszweck ${esc(link.offer_number)}.</p>` : ""}<p>Viele Grüße<br>Dein SLT Rental Team – Standort ${esc(loc.name)}<br>Tel. ${esc(loc.phone)} · ${esc(loc.email)}</p></div>`,
         },
       ];
       for (const mail of mails) {

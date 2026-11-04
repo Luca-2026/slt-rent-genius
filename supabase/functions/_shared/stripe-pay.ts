@@ -1,3 +1,4 @@
+import { onlineOfferPaymentAllowed } from "./sales-offer.ts";
 /**
  * Gemeinsame Bausteine für Online-Zahlung per Stripe (Zahlungslink zum Angebot,
  * Zahlungsmeldung, Kautionserstattung). Reine Funktionen sind getestet (stripe-pay_test.ts).
@@ -144,7 +145,7 @@ export async function ensurePaymentLink(
     createdBy?: string | null;
   },
 ): Promise<{ id: string; token: string; url: string } | null> {
-  if (args.plan.openCents <= 0) return null;
+  if (!onlineOfferPaymentAllowed(args.table) || args.plan.openCents <= 0) return null;
   await service
     .from("offer_payment_links")
     .update({ status: "superseded", updated_at: new Date().toISOString() })

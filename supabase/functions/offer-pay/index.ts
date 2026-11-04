@@ -1,3 +1,4 @@
+import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
 /**
  * Öffentlicher Zahlungslink zum Angebot (/zahlung/<token>).
  * Der unratbare Token ist das Geheimnis; Beträge kommen immer aus der Datenbank.
@@ -34,6 +35,7 @@ Deno.serve(async (req: Request) => {
     });
     const { data: link } = await service.from("offer_payment_links").select("*").eq("token", token).maybeSingle();
     if (!link) return json({ error: "Zahlungslink nicht gefunden" }, 404);
+    if (!onlineOfferPaymentAllowed(link.inquiry_table)) return json({ error: "Verkaufsangebote werden ausschließlich per Banküberweisung bezahlt. Bitte nutze die Bankdaten im Angebot." }, 400);
 
     const { data: inquiry } = await service
       .from(link.inquiry_table)

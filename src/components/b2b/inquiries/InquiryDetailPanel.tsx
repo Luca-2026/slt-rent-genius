@@ -1,3 +1,4 @@
+import type { SalesFinancing } from "../../../../supabase/functions/_shared/sales-offer";
 import { normalizeOpenEndedUnit, normalizeOpenEndedDuration, type OpenEndedUnit } from "@/lib/installments";
 import { DepositSettlementCard } from "./DepositSettlementCard";
 import { requestedCoupon } from "@/lib/requestedCoupon";
@@ -112,7 +113,7 @@ export function offerPayloadToLines(payload: unknown): {
   };
   meta: {
     payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null; open_ended: boolean; min_months?: number; minimum_duration?: number; open_ended_unit?: OpenEndedUnit;
-    undated_offer?: boolean; use_saturday?: boolean; use_sunday?: boolean;
+    financing?: SalesFinancing; undated_offer?: boolean; use_saturday?: boolean; use_sunday?: boolean;
     /** Paket 3b – fehlen bei alten Angeboten. */
     groups?: OfferGroup[]; extra_fields?: OfferExtraFields; order_type?: OrderType; terms_text?: string;
   };
@@ -133,6 +134,7 @@ export function offerPayloadToLines(payload: unknown): {
         valid_days?: number;
         notes?: string | null;
         open_ended?: boolean;
+        financing?: SalesFinancing;
         undated_offer?: boolean;
         use_saturday?: boolean; use_sunday?: boolean;
         min_months?: number; minimum_duration?: number; open_ended_unit?: OpenEndedUnit;
@@ -232,6 +234,7 @@ export function offerPayloadToLines(payload: unknown): {
       payment_terms_custom: typeof p.payment_terms_custom === "string" ? p.payment_terms_custom : null,
       valid_days: Number(p.valid_days) > 0 ? Number(p.valid_days) : null,
       notes: typeof p.notes === "string" ? p.notes : null,
+      financing: p.financing,
       open_ended: p.open_ended === true,
       undated_offer: p.undated_offer === true,
       ...(typeof p.use_saturday === "boolean" ? { use_saturday: p.use_saturday } : {}),
@@ -306,6 +309,9 @@ interface Props {
     customer_email?: string | null;
     customer_phone?: string | null;
     customer_name?: string | null;
+    financing_desired?: boolean | null;
+    financing_term?: string | null;
+    financing_down_payment?: string | null;
     first_name?: string | null;
     last_name?: string | null;
     company_name?: string | null;
@@ -729,12 +735,12 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   );
   const stripeEl = (
     <>
-      <StripePaymentCard
+      {inquiryType === "rental" && <StripePaymentCard
         table={table}
         inquiryId={inquiry.id}
         offerNumber={inquiry.offer_number}
         onChanged={onChanged}
-      />
+      />}
     </>
   );
   const orderEl = (
@@ -862,6 +868,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           key={`${inquiry.id}:${docMode}:${deposit.loaded ? `${deposit.settled ? "s" : "o"}${deposit.chargeLines.length}` : "-"}:${docMode === "revise" ? inquiry.offer_number : ""}`}
           inquiryType={inquiryType}
           inquiryId={inquiry.id}
+          financingRequest={{ desired: inquiry.financing_desired, term: inquiry.financing_term, downPayment: inquiry.financing_down_payment }}
           defaultCouponCode={inquiryType === "rental" ? inquiry.feedback_coupon_code ?? requestedCoupon(inquiry.raw_payload) : ""}
           location={inquiry.location}
           // Bestehender Auftrag: immer mit den zuletzt angebotenen Positionen/Beträgen starten, nie bei 0 €.

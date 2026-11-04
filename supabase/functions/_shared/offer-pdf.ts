@@ -1,3 +1,4 @@
+import { FINANCING_INFORMATION, salesPaymentText, type SalesFinancing } from "./sales-offer.ts";
 import { PDFDocument, StandardFonts, rgb } from "https://esm.sh/pdf-lib@1.17.1";
 import { drawUnifiedFooter, resolvePdfLocation, FOOTER_TOP } from "./pdf-footer.ts";
 import { embedProductImages } from "./product-images.ts";
@@ -12,6 +13,7 @@ export async function generateOfferPdf(data: {
   /** Geschäftsart für die Artikelbezeichnung; bestehende Aufrufer bleiben Miete. */
   businessType?: "rental" | "sales";
   undatedOffer?: boolean;
+  salesOffer?: { addressForm?: "du" | "sie"; salutation: string; financing?: SalesFinancing; orderType?: "pickup" | "delivery" };
   offerDate: string;
   validUntil: string;
   profile: any;
@@ -128,8 +130,10 @@ export async function generateOfferPdf(data: {
 
   const docType = data.documentType ?? "offer";
   const withCode = (ref: string) => (data.orderCode ? `${ref} Auftrag ${data.orderCode}` : ref);
+  const isSalesOffer = data.businessType === "sales" && docType === "offer";
+  const sq = isSalesOffer ? data.salesOffer : undefined;
   const iq = docType === "offer" ? data.inquiryOffer : undefined;
-  const isDu = iq?.addressForm === "du";
+  const isDu = iq?.addressForm === "du" || sq?.addressForm === "du";
   const T = (du: string, sie: string) => (isDu ? du : sie);
   const isOC = docType === "order_confirmation";
   const isInvoice = docType !== "offer" && !isOC;
@@ -138,7 +142,7 @@ export async function generateOfferPdf(data: {
   const TITLE = isOC ? "AUFTRAGSBEST\u00C4TIGUNG" : isCreditNote
     ? "RECHNUNGSKORREKTUR"
     : isSupplement ? "NACHTRAGSRECHNUNG" : docType === "installment" ? "ABSCHLAGSRECHNUNG"
-    : docType === "final" ? "SCHLUSSRECHNUNG" : isInvoice ? "RECHNUNG" : "ANGEBOT";
+    : docType === "final" ? "SCHLUSSRECHNUNG" : isInvoice ? "RECHNUNG" : isSalesOffer ? "VERKAUFSANGEBOT" : "ANGEBOT";
 
   // WinAnsi-sichere Normalisierung: typografische Zeichen auf darstellbare mappen,
   // Euro-Zeichen bleibt erhalten (WinAnsi kann 0x20AC).
@@ -422,7 +426,7 @@ export async function generateOfferPdf(data: {
     }
 
     // Anschreiben
-    dt(pg, iq ? iq.salutation : "Sehr geehrte Damen und Herren,", ML, ty, font, 9.5); ty -= 13;
+    dt(pg, iq ? iq.salutation : sq?.salutation ?? "Sehr geehrte Damen und Herren,", ML, ty, font, 9.5); ty -= 13;
     const intro = isOC
       ? `vielen Dank f\u00FCr Ihren Auftrag. Hiermit best\u00E4tigen wir verbindlich die Annahme Ihres Auftrags auf Grundlage unseres Angebots ${data.sourceOfferNumber || ""}${data.sourceOfferDate ? ` vom ${fd(data.sourceOfferDate)}` : ""} \u00FCber folgende Leistungen:`
       : isCreditNote
@@ -599,7 +603,7 @@ export async function generateOfferPdf(data: {
     if (Number(item.vat_rate) === 0) subLines.push(...wt("Nicht steuerbarer Schadensersatz (0 % USt)", font, 8, nameColW));
     // Zeitraum steht bereits in der Beschreibung → nicht doppelt als "Mietzeitraum" ausgeben
     const descHasPeriod = typeof item.description === "string" && /\d{1,2}\.\d{1,2}\.\d{4}/.test(item.description);
-    if (item.rental_start && !descHasPeriod && !measure) {
+    if (!isSalesOffer && item.rental_start && !descHasPeriod && !measure) {
       subLines.push(...wt(`Mietzeitraum: ${fd(item.rental_start)}${item.rental_end ? " - " + fd(item.rental_end) : ""}`, font, 8, nameColW));
     }
     // Rabattzeile: Listenpreis, Rabattsatz und Ersparnis transparent ausweisen
@@ -619,7 +623,7 @@ export async function generateOfferPdf(data: {
     // passt er nicht mehr komplett auf die Seite, wandert er geschlossen auf die nächste.
     const svcW = unitColX - 10 - (textColX + 8);
     const svcRows = (servicesByItem.get(idx) || [])
-      .filter((svc) => svc.optional || (svc.amount && svc.amount > 0))
+      .filter((svc) => svc.optional || (isSalesOffer ? svc.amount !== 0 : svc.amount && svc.amount > 0))
       .map((svc) => {
         // Optionale Stufe: eingerückt, „Optional:“, Betrag je KT – nicht in den Summen.
         const svcLines = wt(svc.optional ? `Optional: ${svc.name}` : `- ${svc.name}`, font, 8.5, svcW - (svc.optional ? 8 : 0));
@@ -640,7 +644,7 @@ export async function generateOfferPdf(data: {
       const discTop = subTop - subLines.length * 10 - (subLines.length ? 3 : 0);
       discountLines.forEach((ln, li) => dt(pg, ln, textColX, discTop - li * 10, bold, 8, ORANGE));
       dtr(pg, qtyText, qtyColRight, top - 10, font, 9.5);
-      dt(pg, iqDur ?? deriveUnit(item), unitColX, top - 10, font, 9.5, MUTED);
+      dt(pg, isSalesOffer ? (item.quantity_unit === "m2" ? "m²" : item.quantity_unit === "lfm" ? "lfm" : "Stück") : iqDur ?? deriveUnit(item), unitColX, top - 10, font, 9.5, MUTED);
       dtr(pg, measure ? fmU(Number(measure.unit_price)) : fm(item.unit_price), unitPriceRight, top - 10, font, 9.5);
       if (pct > 0) dtr(pg, `-${fm2(pct)} %`, unitPriceRight, top - 22, bold, 8, ORANGE);
       dtr(pg, fm(item.total_price), totalRight, top - 10, bold, 9.5);
@@ -693,7 +697,7 @@ export async function generateOfferPdf(data: {
   // ── Nicht zugeordnete Zusatzoptionen ──
   for (const svc of data.servicesWithPrices || []) {
     const allocated = (svc.allocations || []).length > 0;
-    if (allocated || !svc.amount || svc.amount <= 0) continue;
+    if (allocated || !svc.amount || (!isSalesOffer && svc.amount <= 0)) continue;
     const scLines = wt(svc.name, font, 9.5, nameColW);
     renderRow(4 + scLines.length * 11, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);
@@ -745,19 +749,19 @@ export async function generateOfferPdf(data: {
     (!isCreditNote && paidRows.length ? paidRows.length * 12 + 64 : 0);
   need(summaryHeight);
 
-  const tx = ML + CW * 0.55;
+  const tx = ML + CW * (isSalesOffer ? 0.40 : 0.55);
   const vx = W - MR - 4;
   const itemsTotal = data.items.reduce((sum: number, item: any) => sum + (item.total_price || 0), 0);
   const servicesSubtotal = (data.servicesWithPrices || []).reduce((sum, svc) => sum + (svc.amount || 0), 0);
   const deliverySubtotal = (data.deliveryCostDelivery || 0) + (data.deliveryCostReturn || 0) ||
     ((data.deliveryCost > 0) ? data.deliveryCost : 0);
 
-  if (servicesSubtotal > 0 || deliverySubtotal > 0) {
+  if ((isSalesOffer ? servicesSubtotal !== 0 : servicesSubtotal > 0) || deliverySubtotal > 0) {
     dt(pg, data.businessType === "sales" ? "Zwischensumme Verkaufsartikel" : "Zwischensumme Mietartikel", tx, y, font, 9, MUTED);
     dtr(pg, fm(itemsTotal), vx, y, font, 9); y -= 13;
   }
-  if (servicesSubtotal > 0) {
-    dt(pg, "Zwischensumme Zusatzoptionen", tx, y, font, 9, MUTED);
+  if (isSalesOffer ? servicesSubtotal !== 0 : servicesSubtotal > 0) {
+    dt(pg, isSalesOffer ? "Zusatzleistungen / Abzüge" : "Zwischensumme Zusatzoptionen", tx, y, font, 9, MUTED);
     dtr(pg, fm(servicesSubtotal), vx, y, font, 9); y -= 13;
   }
   if (deliverySubtotal > 0) {
@@ -1044,6 +1048,9 @@ export async function generateOfferPdf(data: {
       termLines.forEach((ln) => { dt(pg, ln, ML + 16, by, font, 8.5, MUTED); by -= 11; });
     }
     y -= boxH + 12;
+  } else if (isSalesOffer) {
+    drawInfoBox("Bankzahlung", salesPaymentText(data.paymentTerms || "vorkasse"), rgb(0.995, 0.97, 0.93), ORANGE, bankRows(data.offerNumber));
+    if (sq?.financing?.enabled) drawInfoBox("Finanzierung – unverbindliche Information", [FINANCING_INFORMATION, sq.financing.note].filter(Boolean).join(" "), rgb(0.94, 0.96, 0.98), BRAND);
   } else if (!isCreditNote && ["vorkasse", "anzahlung_30", "rentpair_vorkasse"].includes(String(data.paymentTerms))) {
     // Vorkasse-Kasten: Kunde wählt Online-Zahlung (Zahlungslink) oder Überweisung.
     const isAnz = data.paymentTerms === "anzahlung_30";
@@ -1098,7 +1105,7 @@ export async function generateOfferPdf(data: {
       (paysOnInvoice
         ? T("Nach deiner Annahme dieses Angebots erh\u00E4ltst du unsere Auftragsbest\u00E4tigung. ", "Nach Ihrer Annahme dieses Angebots erhalten Sie unsere Auftragsbest\u00E4tigung. ")
         : T("Bitte leiste die Zahlung gem\u00E4\u00DF den Zahlungsbedingungen. Nach Zahlungseingang erh\u00E4ltst du unsere Auftragsbest\u00E4tigung. ", "Bitte leisten Sie die Zahlung gem\u00E4\u00DF den Zahlungsbedingungen. Nach Zahlungseingang erhalten Sie unsere Auftragsbest\u00E4tigung. ")) +
-        "Erst mit Zugang der Auftragsbest\u00E4tigung wird die Miete verbindlich und der Auftrag gilt als angenommen. " +
+        (isSalesOffer ? "Die Abwicklung des Kaufs wird durch unsere Auftragsbestätigung dokumentiert. Maßgeblich sind die vereinbarten Verkaufsbedingungen. " : "Erst mit Zugang der Auftragsbest\u00E4tigung wird die Miete verbindlich und der Auftrag gilt als angenommen. ") +
         T("Ma\u00DFgeblich ist allein die Auftragsbest\u00E4tigung; sie dient als Nachweis, dass wir deinen Auftrag angenommen haben.", "Ma\u00DFgeblich ist allein die Auftragsbest\u00E4tigung; sie dient als Nachweis, dass wir Ihren Auftrag angenommen haben."),
       rgb(0.94, 0.96, 0.98), BRAND,
     );

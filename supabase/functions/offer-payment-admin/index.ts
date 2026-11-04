@@ -1,3 +1,4 @@
+import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 /**
  * Mitarbeiter-Funktionen zur Online-Zahlung (Bearer-Auth, Rollenprüfung serverseitig):
@@ -69,6 +70,7 @@ Deno.serve(async (req: Request) => {
     if (!isStripeConfigured()) return json({ error: "Stripe ist nicht eingerichtet" }, 503);
 
     if (body.action === "create_link") {
+      if (!onlineOfferPaymentAllowed(body.inquiry_type === "sales" ? "sales_inquiries" : "rental_inquiries")) return json({ error: "Verkaufsangebote werden ausschließlich per Banküberweisung bezahlt." }, 400);
       const table = body.inquiry_type === "rental" ? "rental_inquiries" : "sales_inquiries";
       const { data: inquiry } = await service
         .from(table)
