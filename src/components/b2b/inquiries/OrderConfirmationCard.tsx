@@ -186,6 +186,7 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
         <>
           <Textarea
             aria-label="Nachricht zur Auftragsbestätigung"
+            disabled={busy}
             value={note}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Optionale Nachricht an den Kunden (z. B. Abholhinweise)"
@@ -193,7 +194,7 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
             maxLength={800}
           />
           <label className="flex items-center gap-2">
-            <Checkbox checked={attachPdf} onCheckedChange={(v) => setAttachPdf(Boolean(v))} />
+            <Checkbox disabled={busy} checked={attachPdf} onCheckedChange={(v) => setAttachPdf(Boolean(v))} />
             <span>Auftragsbestätigung zusätzlich als PDF beifügen</span>
           </label>
           <AvailabilityDecisionDialog
@@ -203,9 +204,6 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
             onCancel={() => setAvailability(null)}
             onSubmit={(d) => void confirmAndSend(d)}
           />
-          <Button size="sm" variant="outline" onClick={() => void preview()} disabled={busy || previewing}>
-            <Eye className="mr-2 h-4 w-4" />{previewing ? "Vorschau wird erstellt …" : "AB-Vorschau anzeigen"}
-          </Button>
           <AlertDialog open={dialogOpen} onOpenChange={(o) => { setDialogOpen(o); if (!o) setAck(false); }}>
             <AlertDialogTrigger asChild>
               <Button size="sm" disabled={busy || previewing || !previewOk}>
@@ -253,14 +251,17 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
           </AlertDialog>
         </>
       )}
+      <Button size="sm" variant="outline" onClick={() => void preview()} disabled={busy || previewing}>
+        <Eye className="mr-2 h-4 w-4" />{previewing ? "Vorschau wird erstellt …" : "AB-Vorschau anzeigen"}
+      </Button>
       <Dialog open={!!previewUrl} onOpenChange={(open) => { if (!open) setPreviewUrl(null); }}>
-        <DialogContent className="flex h-[90dvh] max-w-5xl flex-col overflow-hidden">
+        <DialogContent aria-describedby={undefined} className="flex h-[90dvh] max-w-5xl flex-col overflow-hidden">
           <DialogHeader><DialogTitle>Auftragsbestätigung – Vorschau</DialogTitle></DialogHeader>
           {previewUrl && <PdfPagesPreview url={previewUrl} className="min-h-0 flex-1 overflow-y-auto border border-border bg-muted p-3" />}
           <DialogFooter>
             {previewUrl && <Button variant="outline" asChild><a href={previewUrl} target="_blank" rel="noreferrer">In neuem Tab öffnen</a></Button>}
             <Button variant="outline" onClick={() => setPreviewUrl(null)}>Zurück</Button>
-            <Button disabled={!previewOk || busy} onClick={() => { setPreviewUrl(null); setDialogOpen(true); }}>Versand prüfen</Button>
+            <Button disabled={!previewOk || busy || !ev.canSend} onClick={() => { setPreviewUrl(null); setDialogOpen(true); }}>Versand prüfen</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
