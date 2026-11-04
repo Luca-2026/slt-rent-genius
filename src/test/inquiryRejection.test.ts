@@ -34,7 +34,8 @@ describe("Absage mit Entscheidung je Artikel", () => {
   it("nennt in der E-Mail jeden Artikel mit Status, auch den Bagger", () => {
     const items = rejectionItemsOf("rental", inquiry);
     const res = normalizeRejectionDecisions(items, []);
-    if (!res.ok) throw new Error(res.error);
+    if (!res.ok) throw new Error("unexpected");
+    if (!("decisions" in res)) throw new Error("unexpected");
     const html = rejectionItemsHtml(res.decisions, "du", { inquiryPeriod: "06.11.2026 bis 09.11.2026", locationKey: "krefeld", resolveLocationKey: resolve });
     for (const item of items) expect(html).toContain(item.name.replace("/", "/"));
     expect(html.match(/Nicht verfügbar/g)?.length).toBe(4);
@@ -47,7 +48,8 @@ describe("Absage mit Entscheidung je Artikel", () => {
       { index: 3, available: false, alternative: { name: "2t Minibagger", slug: "minibagger-2t", category: "bagger" } },
       { index: 1, available: true, alternative: { name: "soll ignoriert werden" } },
     ]);
-    if (!res.ok) throw new Error(res.error);
+    if (!res.ok) throw new Error("unexpected");
+    if (!("decisions" in res)) throw new Error("unexpected");
     expect(res.decisions.map((d) => d.available)).toEqual([true, true, false, false]);
     expect(res.decisions[3].alternative?.name).toBe("2t Minibagger");
     expect(res.decisions[1].alternative).toBeNull();
@@ -65,14 +67,16 @@ describe("Absage mit Entscheidung je Artikel", () => {
   it("ignoriert Indizes außerhalb der gespeicherten Anfrage", () => {
     const items = rejectionItemsOf("rental", inquiry);
     const res = normalizeRejectionDecisions(items, [{ index: 9, available: true }]);
-    if (!res.ok) throw new Error(res.error);
+    if (!res.ok) throw new Error("unexpected");
+    if (!("decisions" in res)) throw new Error("unexpected");
     expect(res.decisions).toHaveLength(4);
     expect(res.decisions.every((d) => !d.available)).toBe(true);
   });
 
   it("duzt standardmäßig und siezt bei Sie-Kunden", () => {
     const res = normalizeRejectionDecisions(rejectionItemsOf("rental", inquiry), []);
-    if (!res.ok) throw new Error(res.error);
+    if (!res.ok) throw new Error("unexpected");
+    if (!("decisions" in res)) throw new Error("unexpected");
     expect(rejectionTexts("du", "rental", res.decisions).closing).toContain("melde dich");
     expect(rejectionTexts("sie", "rental", res.decisions).closing).toContain("melden Sie sich");
   });
