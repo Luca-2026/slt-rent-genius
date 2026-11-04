@@ -49,7 +49,7 @@ Deno.serve(async (req) => {
   if (query.trim().length < 2) return json({ ergebnis: "Bitte den gewünschten Artikel nennen." });
   if (!cache || Date.now() - cache.at > 60_000) {
     const { data, error } = await svc.from("b2b_managed_products")
-      .select("slug,name,model_name,category,subcategory,rentware_code,price_per_day,price_weekend,price_per_month,price_unit_label")
+      .select("slug,name,model_name,category,subcategory,rentware_code,price_per_day,price_weekend,price_per_month,price_unit_label,direct_booking_config")
       .eq("is_published", true);
     if (error) return json({ ergebnis: "Artikeldaten gerade nicht abrufbar. Das Team meldet sich." }, 200);
     cache = { at: Date.now(), rows: (data ?? []) as LookupProduct[] };
