@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { finalPriority, normalizePhone, priorityRank } from "@/lib/callPriority";
 import { normalizeFonioPayload, safeEqual } from "../../supabase/functions/_shared/fonioPayload";
-import { availabilityStatus, searchProducts, matchCaller, type LookupProduct, type CallerRow } from "../../supabase/functions/_shared/liveLookup";
+import { availabilityStatus, searchProducts, matchCaller, onlineBookingOnly, ONLINE_BOOKING_ONLY_HINT, type LookupProduct, type CallerRow } from "../../supabase/functions/_shared/liveLookup";
 
 describe("callPriority", () => {
   const base = { callDate: "2026-10-01" };
@@ -58,6 +58,30 @@ describe("live lookup", () => {
     expect(availabilityStatus(5, 5, 1)).toBe("ausgebucht");
     expect(availabilityStatus(5, 4, 1)).toBe("knapp");
     expect(availabilityStatus(10, 0, 1)).toBe("verfuegbar");
+  });
+});
+
+describe("Online-only-Hinweis (Anhänger & Halteverbotsschilder)", () => {
+  const trailer: LookupProduct = { slug: "kasten-laubgitter-750", name: "Kastenanhänger mit Laubgitter", model_name: null, category: "Anhaenger", subcategory: null, rentware_code: { krefeld: "A1" }, price_per_day: "25 €", price_weekend: null, price_per_month: null, price_unit_label: null };
+  const signs: LookupProduct = { slug: "halteverbotsschilder-set", name: "Halteverbotsschilder-Set", model_name: null, category: "Absperrtechnik", subcategory: null, rentware_code: null, price_per_day: null, price_weekend: null, price_per_month: null, price_unit_label: null, direct_booking_config: { enabled: true } };
+  const bonnSigns: LookupProduct = { ...signs, slug: "bonn-halteverbotsschilder-set", direct_booking_config: null };
+  const excavator: LookupProduct = { slug: "mb18", name: "Minibagger 1,8 t", model_name: null, category: "Erdbewegung", subcategory: null, rentware_code: { krefeld: "X" }, price_per_day: "129 €", price_weekend: null, price_per_month: null, price_unit_label: null };
+  it("Anhänger und Schilder-Sets sind nur online buchbar", () => {
+    expect(onlineBookingOnly(trailer)).toBe(true);
+    expect(onlineBookingOnly(signs)).toBe(true);
+    expect(onlineBookingOnly(bonnSigns)).toBe(true);
+  });
+  it("andere Artikel bleiben telefonisch anfragbar", () => {
+    expect(onlineBookingOnly(excavator)).toBe(false);
+  });
+  it("Suche liefert Website-Verweis nur bei Online-only-Artikeln", () => {
+    const rows = [trailer, signs, excavator];
+    const hit = searchProducts(rows, "Laubgitter Anhänger", "krefeld")[0];
+    expect(hit.slug).toBe("kasten-laubgitter-750");
+    expect(hit.buchungshinweis).toBe(ONLINE_BOOKING_ONLY_HINT);
+    expect(hit.buchungshinweis).toContain("www.slt-rental.de");
+    const bagger = searchProducts(rows, "Minibagger", null)[0];
+    expect(bagger.buchungshinweis).toBeNull();
   });
 });
 

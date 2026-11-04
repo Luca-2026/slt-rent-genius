@@ -51,7 +51,10 @@ Regeln – strikt:
 - delivery.wanted: true bei Liefer-/Transportwunsch, false bei Selbstabholung, sonst null; delivery.address: Baustellen-/Lieferadresse im Wortlaut.
 - callback_time: gewünschte Rückrufzeit im Wortlaut (z. B. "morgen ab 14 Uhr"), sonst null.
 - Buchstabierte E-Mails/Namen zusammensetzen ("m-a-x at firma punkt de" -> max@firma.de).
-- E-Mail und Telefon exakt wie genannt.`;
+- E-Mail und Telefon exakt wie genannt.
+- Anhänger und Halteverbotsschilder sind nur online über die Website buchbar. Hat die Assistenz dafür an die Website verwiesen und es gibt kein weiteres Anliegen: intent = info, priority = info, keine open_points. Wurde eine solche Anfrage fälschlich vollständig aufgenommen, in open_points vermerken: "Anhänger/Halteverbotsschilder nur online buchbar – Kunde an Website verweisen, nichts telefonisch bestätigen".
+- Eine mündliche Zusage der Assistenz ist keine Bestätigung: Eine Mietanfrage gilt erst mit der schriftlichen Auftragsbestätigung als bestätigt.
+- Stornierungen sind telefonisch nicht möglich, nur schriftlich per E-Mail an den Standort. Bei Stornierungswunsch: intent = offer_change und in open_points vermerken, dass der Kunde an die schriftliche Stornierung per E-Mail an den Standort verwiesen wurde.`;
 }
 
 export async function readSse(body: ReadableStream<Uint8Array>): Promise<string> {
