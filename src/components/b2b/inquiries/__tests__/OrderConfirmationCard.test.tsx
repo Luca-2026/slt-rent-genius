@@ -29,6 +29,14 @@ beforeEach(() => {
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 describe("AB preview and independent editing", () => {
+  it("allows preview before payment without allowing dispatch", async () => {
+    open({ inquiry: { ...inquiry, payments: [] } });
+    await preview();
+    expect(mocks.preview).toHaveBeenCalledOnce();
+    expect(screen.queryByRole("button", { name: "Auftragsbestätigung senden" })).toBeNull();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+    expect(mocks.send).not.toHaveBeenCalled();
+  });
   it("previews without changing the order, allocating devices or sending mail", async () => {
     open();
     expect(screen.getByRole("button", { name: "Auftragsbestätigung senden" })).toBeDisabled();
