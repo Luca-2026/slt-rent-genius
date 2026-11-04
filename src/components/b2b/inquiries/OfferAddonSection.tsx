@@ -140,7 +140,7 @@ export function buildAddonsFromOptions(
   const out: OfferLineAddon[] = [];
   for (const option of picked) {
     if (tierKeys.has(option.key) || out.some((a) => a.key === option.key)) continue;
-    const fullPeriod = option.price_type !== "flat" && !!option.full_period_default && ctx.days_per_unit !== null;
+    const fullPeriod = !item.undated_offer && option.price_type !== "flat" && !!option.full_period_default && ctx.days_per_unit !== null;
     const base: OfferLineAddon = {
       key: option.key,
       label: option.label,
@@ -223,7 +223,7 @@ interface Props {
 export function AddonSection({ item, options, isSales, disabled, periodStart, periodEnd, onChange }: Props) {
   const addons = item.addons ?? [];
   const ctx = lineContext(item);
-  const canFullPeriod = ctx.days_per_unit !== null;
+  const canFullPeriod = !item.undated_offer && ctx.days_per_unit !== null;
   const calDays = addonCalendarDays(periodStart, periodEnd);
   const { std: stdOption, tiers } = furtherTiers(options);
   const emit = (next: OfferLineAddon[]) => onChange(isSales ? next : syncOptionalTiers(next, options, ctx, calDays));

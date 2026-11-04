@@ -247,7 +247,7 @@ function applyRentalPricing(item: FormLine, dayOpts: RentalDayOptions): FormLine
     scheme: p.scheme,
     start: { date: item.rental_start, time: item.rental_start_time },
     end: { date: item.rental_end, time: item.rental_end_time },
-    unit: item.unit_manual ? ((item.unit ?? null) as OfferUnit | null) : null,
+    unit: item.unit_manual || item.undated_offer ? ((item.unit ?? null) as OfferUnit | null) : null,
     durationOverride: item.undated_offer ? item.duration ?? 1 : item.duration_override,
     opts: { use_saturday: item.use_saturday ?? dayOpts.use_saturday, use_sunday: item.use_sunday ?? dayOpts.use_sunday },
   });
@@ -1091,7 +1091,7 @@ export function InquiryOfferForm({
           return pricing ? { ...item, product_slug: item.product_slug ?? slug, pricing } : item;
         }),
       );
-      setItems(withPricing.map((it, i) => applyRentalPricing(applyInheritedPeriod(it, i, withPricing[0]), dayOpts)));
+      setItems(withPricing.map((it, i) => applyRentalPricing(undatedOffer ? { ...undatedOfferLine(it), undated_offer: true } : applyInheritedPeriod(it, i, withPricing[0]), dayOpts)));
     } finally {
       setRecalculating(false);
     }
@@ -1627,7 +1627,7 @@ export function InquiryOfferForm({
         {indices.map((index) => {
           const item = items[index];
           const eff = effectiveItems[index] ?? item;
-          const inherited = index > 0 && !item.custom_period;
+          const inherited = !undatedOffer && index > 0 && !item.custom_period;
           /** Pauschalposition: fester Preis, keine Mietdauer-Multiplikation. */
           const isFlatRate = (eff.unit ?? "kalendertage") === "pauschal";
           return (

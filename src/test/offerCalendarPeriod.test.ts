@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLegacyPeriod } from "@/components/b2b/inquiries/offerCalendarPeriod";
+import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLegacyPeriod, undatedOfferLine } from "@/components/b2b/inquiries/offerCalendarPeriod";
+import { allowsBindingOffer } from "../../supabase/functions/_shared/undated-offer";
 import { recalcAddons } from "@/components/b2b/inquiries/OfferAddonSection";
 import { normalizeInquiryOfferItems } from "../../supabase/functions/_shared/inquiry-offer-math";
 import { lineTotal, type OfferLine } from "@/components/b2b/inquiries/offerMath";
@@ -9,6 +10,34 @@ const line: OfferLine = { product_name: "Test", quantity: 1, duration: 5, unit: 
   description: "Mo, 16.11.2026, 09:00 – Fr, 20.11.2026, 16:30",
   rental_start: "2026-11-23", rental_end: "2026-11-24", rental_start_time: "09:00", rental_end_time: "16:30" };
 describe("Calendar is the rental offer period source", () => {
+  it("quotes ten rental days without inherited dates or logistics", () => {
+    const quote = recalcAddons(undatedOfferLine({ ...line, duration: 10, unit_price: 51, delivery_at: "2026-11-22T08:00", addons: [{ key: "insurance", label: "Versicherung", price_type: "percent" as const, basis: "full_period" as const, rate: 10, amount: 0, days: 21 }] }));
+    expect(quote.rental_start).toBeUndefined();
+    expect(quote.delivery_at).toBeUndefined();
+    expect(quote.duration).toBe(10);
+    expect(lineTotal(quote)).toBe(510);
+    expect(quote.addons?.[0].amount).toBe(51);
+    expect(quote.addons?.[0].period_start).toBeNull();
+  });
+  it("normalizes two months without operational dates even if stale dates are submitted", () => {
+    const saved = normalizeInquiryOfferItems([{ ...line, articles: 2, quantity: 4, duration: 2, unit: "Monate", unit_code: "monate" }], true)[0];
+    expect(saved.rental_start).toBeUndefined();
+    expect(saved.rental_end).toBeUndefined();
+    expect(saved.duration).toBe(2);
+    expect(saved.unit_code).toBe("monate");
+    expect(saved.quantity).toBe(4);
+  });
+  it("rejects indicative offers without duration or with mismatched article quantities", () => {
+    expect(() => normalizeInquiryOfferItems([{ ...line, articles: 1, unit_code: "miettage", duration: 0 }], true)).toThrow(/Mietdauer/);
+    expect(() => normalizeInquiryOfferItems([{ ...line, articles: 1, unit_code: "miettage", duration: 10, quantity: 1 }], true)).toThrow(/Menge/);
+    expect(() => normalizeInquiryOfferItems([{ ...line, articles: 1, unit_code: "invalid", duration: 1 }], true)).toThrow(/Einheit/);
+  });
+  it("blocks binding acceptance for explicitly undated quotes only", () => {
+    expect(allowsBindingOffer({ undated_offer: true })).toBe(false);
+    expect(allowsBindingOffer({ undated_offer: false })).toBe(true);
+    expect(allowsBindingOffer({ open_ended: true })).toBe(true);
+    expect(allowsBindingOffer(null)).toBe(true);
+  });
   it("counts both requested weekend days for HYPW7X: 21 instead of 15 rental days", () => {
     const requested = requestedItemsOf({ product_name: "20 kVA Aggregat", quantity: 1, requested_items: [{ product_name: "20 kVA Aggregat", quantity: 1, use_saturday: true, use_sunday: true }] })[0];
     const actual = { ...line, rental_start: "2026-11-04", rental_end: "2026-11-24", rental_start_time: "07:00", rental_end_time: "18:00" };
