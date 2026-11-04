@@ -1,4 +1,5 @@
 # Roadmap – Paket 4 (Angebots-PDF & E-Mail)
+- [ ] AB ANG-M-2026-11-0022-2: gespeicherte Angebotsbezeichnungen mit Versandhistorie vergleichen, Übernahmefehler für Miete/Verkauf beheben, PDF prüfen; bereits versendete Belege nicht überschreiben.
 - [x] Kundenkartei: gespeicherte Miet-/Verkaufsangebote, ABs einschließlich Historie, Rechnungen/Gutschriften, Protokolle und verknüpfte B2B-Dokumente direkt anklickbar; PDF-Links erneuern, Alt-HTML als Druck/PDF öffnen. Sechs Tests bestanden, Build OK; keine Dokumente erstellt oder geändert.
 - [ ] PDF-Klick im echten Mitarbeiter-Kundenakt prüfen: angemeldetes eigenes Konto zeigt auf /b2b/kundendaten weiterhin „Kein Zugriff“; Mitarbeiterzugang erforderlich.
 - [x] Miet-AB direkt über „AB bearbeiten“ (Artikel, Preise, Mietzeit) als geschützte Auftragsfassung ohne neues Angebot bearbeiten; Originalangebot bleibt erhalten. Normale Miet-/Verkaufs-AB haben PDF-Vorschau vor Versand, auch vor Zahlung ohne Versandfreigabe; aktuelle Vorschau bei Text-/Zahlungs-/Auftragsänderung ungültig. Tests und Funktionsprüfung erfolgreich, send-order-confirmation deployed; keine Kundenaufträge oder Mails geändert.

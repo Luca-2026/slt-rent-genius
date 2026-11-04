@@ -52,6 +52,7 @@ export async function generateOfferPdf(data: {
   documentType?: "offer" | "invoice" | "supplement" | "credit_note" | "order_confirmation" | "installment" | "final";
   /** Auftragsbestätigung: Datum des zugrunde liegenden Angebots. */
   sourceOfferDate?: string;
+  orderConfirmationGreeting?: { addressForm: "du" | "sie"; salutation: string };
   /** Fälligkeitsdatum der Rechnung (YYYY-MM-DD oder bereits formatiert). */
   dueDate?: string;
   /** Leistungszeitraum der Rechnung. */
@@ -133,7 +134,8 @@ export async function generateOfferPdf(data: {
   const isSalesOffer = data.businessType === "sales" && docType === "offer";
   const sq = isSalesOffer ? data.salesOffer : undefined;
   const iq = docType === "offer" ? data.inquiryOffer : undefined;
-  const isDu = iq?.addressForm === "du" || sq?.addressForm === "du";
+  const ocGreeting = docType === "order_confirmation" ? data.orderConfirmationGreeting : undefined;
+  const isDu = iq?.addressForm === "du" || sq?.addressForm === "du" || ocGreeting?.addressForm === "du";
   const T = (du: string, sie: string) => (isDu ? du : sie);
   const isOC = docType === "order_confirmation";
   const isInvoice = docType !== "offer" && !isOC;
@@ -437,9 +439,9 @@ export async function generateOfferPdf(data: {
     }
 
     // Anschreiben
-    dt(pg, iq ? iq.salutation : sq?.salutation ?? "Sehr geehrte Damen und Herren,", ML, ty, font, 9.5); ty -= 13;
+    dt(pg, iq ? iq.salutation : sq?.salutation ?? ocGreeting?.salutation ?? "Sehr geehrte Damen und Herren,", ML, ty, font, 9.5); ty -= 13;
     const intro = isOC
-      ? `vielen Dank f\u00FCr Ihren Auftrag. Hiermit best\u00E4tigen wir verbindlich die Annahme Ihres Auftrags auf Grundlage unseres Angebots ${data.sourceOfferNumber || ""}${data.sourceOfferDate ? ` vom ${fd(data.sourceOfferDate)}` : ""} \u00FCber folgende Leistungen:`
+      ? `${T("vielen Dank für deinen Auftrag. Hiermit bestätigen wir verbindlich die Annahme deines Auftrags", "vielen Dank für Ihren Auftrag. Hiermit bestätigen wir verbindlich die Annahme Ihres Auftrags")} auf Grundlage unseres Angebots ${data.sourceOfferNumber || ""}${data.sourceOfferDate ? ` vom ${fd(data.sourceOfferDate)}` : ""} über folgende Leistungen:`
       : isCreditNote
       ? `hiermit korrigieren wir unsere Rechnung ${data.parentInvoiceNumber || ""}${data.parentInvoiceDate ? ` vom ${fd(data.parentInvoiceDate)}` : ""}. ` +
         `Wir schreiben Ihnen ${data.creditIsPartial ? "die folgenden Positionen anteilig" : "die folgenden Positionen vollst\u00E4ndig"} gut` +
