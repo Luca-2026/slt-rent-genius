@@ -18,17 +18,30 @@ interface Props {
   inquiryId: string;
   customerEmail?: string | null;
   location?: string | null;
+  /** Alle angefragten Artikel in Reihenfolge der Anfrage (Index = Position). */
+  items?: { name: string; quantity: number }[];
   disabled?: boolean;
   onDone: () => void;
 }
 
 type ReasonMode = "unavailable" | "custom";
 
+interface ItemDecision {
+  available: boolean;
+  withAlt: boolean;
+  altName: string;
+  altProduct: CatalogProduct | null;
+  altNote: string;
+}
+
+const emptyDecision = (): ItemDecision => ({ available: false, withAlt: false, altName: "", altProduct: null, altNote: "" });
+
 /**
  * Absage einer offenen Anfrage: Standardtext („nicht verfügbar") oder eigene
  * Begründung, optional mit Alternativvorschlag aus dem CMS-Katalog.
  */
-export function RejectInquiryDialog({ inquiryType, inquiryId, customerEmail, location, disabled, onDone }: Props) {
+export function RejectInquiryDialog({ inquiryType, inquiryId, customerEmail, location, items, disabled, onDone }: Props) {
+  const rows = items && items.length ? items : [{ name: "Angefragter Artikel", quantity: 1 }];
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<ReasonMode>("unavailable");
@@ -37,23 +50,25 @@ export function RejectInquiryDialog({ inquiryType, inquiryId, customerEmail, loc
   const [notify, setNotify] = useState(true);
   const [busy, setBusy] = useState(false);
 
-  // Alternativvorschlag
-  const [withAlt, setWithAlt] = useState(false);
-  const [altName, setAltName] = useState("");
-  const [altProduct, setAltProduct] = useState<CatalogProduct | null>(null);
-  const [altNote, setAltNote] = useState("");
+  // Entscheidung und Alternativvorschlag je angefragtem Artikel
+  const [decisions, setDecisions] = useState<ItemDecision[]>(() => rows.map(emptyDecision));
+  const decisionAt = (i: number) => decisions[i] ?? emptyDecision();
+  const updateDecision = (i: number, patch: Partial<ItemDecision>) =>
+    setDecisions((prev) => rows.map((_, idx) => (idx === i ? { ...(prev[idx] ?? emptyDecision()), ...patch } : prev[idx] ?? emptyDecision())));
 
   const customInvalid = mode === "custom" && customReason.trim().length < 10;
-  const altInvalid = withAlt && altName.trim().length === 0;
+  const altInvalid = rows.some((_, i) => {
+    const d = decisionAt(i);
+    return !d.available && d.withAlt && d.altName.trim().length === 0;
+  });
+  const noneUnavailable = rows.every((_, i) => decisionAt(i).available);
+  const someAvailable = rows.some((_, i) => decisionAt(i).available);
 
   const reset = () => {
     setMode("unavailable");
     setCustomReason("");
     setNote("");
-    setWithAlt(false);
-    setAltName("");
-    setAltProduct(null);
-    setAltNote("");
+    setDecisions(rows.map(emptyDecision));
   };
 
   const submit = async () => {
@@ -66,17 +81,24 @@ export function RejectInquiryDialog({ inquiryType, inquiryId, customerEmail, loc
         custom_reason: mode === "custom" ? customReason.trim() : null,
         note: note.trim() || null,
         notify_customer: notify && !!customerEmail,
-        alternative: withAlt && altName.trim()
-          ? {
-              name: altName.trim(),
-              slug: altProduct?.slug ?? null,
-              category: altProduct?.category ?? null,
-              image: pickCatalogImage(altProduct?.images) ?? null,
-              price: altProduct?.price_per_day ?? null,
-              location: location ?? null,
-              note: altNote.trim() || null,
-            }
-          : null,
+        items: rows.map((_, index) => {
+          const d = decisionAt(index);
+          return {
+            index,
+            available: d.available,
+            alternative: !d.available && d.withAlt && d.altName.trim()
+              ? {
+                  name: d.altName.trim(),
+                  slug: d.altProduct?.slug ?? null,
+                  category: d.altProduct?.category ?? null,
+                  image: pickCatalogImage(d.altProduct?.images) ?? null,
+                  price: d.altProduct?.price_per_day ?? null,
+                  location: location ?? null,
+                  note: d.altNote.trim() || null,
+                }
+              : null,
+          };
+        }),
       },
     });
     setBusy(false);
@@ -114,9 +136,8 @@ export function RejectInquiryDialog({ inquiryType, inquiryId, customerEmail, loc
         <DialogHeader>
           <DialogTitle>Anfrage ablehnen</DialogTitle>
           <DialogDescription>
-            Ablehnen ohne Grund verschickt den Standardtext („leider im angefragten Zeitraum nicht
-            verfügbar"). Alternativ kannst du eine eigene Begründung und einen verfügbaren
-            Alternativartikel vorschlagen.
+            Markiere jeden angefragten Artikel als verfügbar oder nicht verfügbar und schlage bei Bedarf
+            je Artikel eine Alternative vor. Ohne eigene Begründung geht der Standardtext raus.
           </DialogDescription>
         </DialogHeader>
 
@@ -159,40 +180,96 @@ export function RejectInquiryDialog({ inquiryType, inquiryId, customerEmail, loc
             </div>
           )}
 
-          <div className="rounded-lg border border-border p-3 space-y-3">
-            <div className="flex items-start gap-2">
-              <Checkbox id="with-alt" checked={withAlt} onCheckedChange={(v) => setWithAlt(v === true)} />
-              <Label htmlFor="with-alt" className="text-sm font-normal leading-snug cursor-pointer">
-                Alternativartikel vorschlagen (aus dem CMS-Katalog)
-              </Label>
-            </div>
-            {withAlt && (
-              <div className="space-y-3">
-                <div>
-                  <Label className="text-xs">Alternativer Artikel *</Label>
-                  <InquiryProductCombobox
-                    value={altName}
-                    location={location}
-                    onSelect={(product, freeText) => {
-                      setAltProduct(product);
-                      setAltName(freeText);
-                    }}
-                  />
-                  {altProduct?.price_per_day && (
-                    <p className="text-xs text-muted-foreground mt-1">Preis laut CMS: {altProduct.price_per_day}</p>
+          <div className="space-y-2">
+            <Label className="text-xs">Angefragte Artikel ({rows.length})</Label>
+            <p className="text-xs text-muted-foreground">
+              Lege für jeden Artikel fest, ob er verfügbar ist. Der Kunde sieht in der E-Mail jeden Artikel
+              mit seinem Status und deinem Vorschlag.
+            </p>
+            {rows.map((row, i) => {
+              const d = decisionAt(i);
+              return (
+                <div key={i} className="rounded-lg border border-border p-3 space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-sm font-medium">
+                      {row.quantity > 1 ? `${row.quantity} × ` : ""}{row.name}
+                    </span>
+                    <div className="inline-flex rounded-md border border-border overflow-hidden" role="group" aria-label={`Verfügbarkeit ${row.name}`}>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant={d.available ? "ghost" : "destructive"}
+                        className="rounded-none h-8"
+                        aria-pressed={!d.available}
+                        onClick={() => updateDecision(i, { available: false })}
+                      >
+                        Nicht verfügbar
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant={d.available ? "default" : "ghost"}
+                        className="rounded-none h-8"
+                        aria-pressed={d.available}
+                        onClick={() => updateDecision(i, { available: true })}
+                      >
+                        Verfügbar
+                      </Button>
+                    </div>
+                  </div>
+                  {!d.available && (
+                    <>
+                      <div className="flex items-start gap-2">
+                        <Checkbox
+                          id={`with-alt-${i}`}
+                          checked={d.withAlt}
+                          onCheckedChange={(v) => updateDecision(i, { withAlt: v === true })}
+                        />
+                        <Label htmlFor={`with-alt-${i}`} className="text-sm font-normal leading-snug cursor-pointer">
+                          Alternativartikel vorschlagen (aus dem CMS-Katalog)
+                        </Label>
+                      </div>
+                      {d.withAlt && (
+                        <div className="space-y-3">
+                          <div>
+                            <Label className="text-xs">Alternativer Artikel *</Label>
+                            <InquiryProductCombobox
+                              value={d.altName}
+                              location={location}
+                              onSelect={(product, freeText) => updateDecision(i, { altProduct: product, altName: freeText })}
+                            />
+                            {d.altProduct?.price_per_day && (
+                              <p className="text-xs text-muted-foreground mt-1">Preis laut CMS: {d.altProduct.price_per_day}</p>
+                            )}
+                            {d.altName.trim().length === 0 && (
+                              <p className="text-xs text-destructive mt-1">Bitte einen Artikel wählen.</p>
+                            )}
+                          </div>
+                          <div>
+                            <Label className="text-xs">Kurze Notiz zum Vorschlag (optional)</Label>
+                            <Input
+                              value={d.altNote}
+                              onChange={(e) => updateDecision(i, { altNote: e.target.value })}
+                              maxLength={300}
+                              placeholder="z. B. vergleichbare Leistung, im Zeitraum verfügbar"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </>
                   )}
-                  {altInvalid && <p className="text-xs text-destructive mt-1">Bitte einen Artikel wählen.</p>}
                 </div>
-                <div>
-                  <Label className="text-xs">Kurze Notiz zum Vorschlag (optional)</Label>
-                  <Input
-                    value={altNote}
-                    onChange={(e) => setAltNote(e.target.value)}
-                    maxLength={300}
-                    placeholder="z. B. vergleichbare Leistung, im Zeitraum verfügbar"
-                  />
-                </div>
-              </div>
+              );
+            })}
+            {noneUnavailable && (
+              <p className="text-xs text-destructive">
+                Alle Artikel sind als verfügbar markiert – das ist keine Absage. Bitte stattdessen ein Angebot erstellen.
+              </p>
+            )}
+            {someAvailable && !noneUnavailable && (
+              <p className="text-xs text-muted-foreground">
+                Tipp: Will der Kunde die verfügbaren Artikel trotzdem, ist ein Angebot nur mit diesen Artikeln oft der schnellere Weg.
+              </p>
             )}
           </div>
 
@@ -227,7 +304,7 @@ export function RejectInquiryDialog({ inquiryType, inquiryId, customerEmail, loc
           </Button>
           <Button
             onClick={submit}
-            disabled={busy || customInvalid || altInvalid}
+            disabled={busy || customInvalid || altInvalid || noneUnavailable}
             className="w-full sm:w-auto bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
             {busy ? "Wird gesendet…" : "Ablehnen & Absage senden"}
