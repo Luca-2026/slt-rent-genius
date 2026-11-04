@@ -6,6 +6,15 @@
  * - Standort-Postfach immer in Kopie.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
+import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
+import {
+  normalizeRejectionDecisions,
+  rejectionItemsHtml,
+  rejectionItemsOf,
+  rejectionNoteSummary,
+  rejectionSubjectSuffix,
+  rejectionTexts,
+} from "../_shared/inquiry-rejection.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -86,21 +95,6 @@ Deno.serve(async (req: Request) => {
       return json({ error: "Bitte eine Begründung mit mindestens 10 Zeichen angeben." }, 400);
     }
 
-    // Optionaler Alternativvorschlag aus dem CMS-Katalog.
-    const altRaw = body.alternative && typeof body.alternative === "object" ? body.alternative : null;
-    const clean = (v: unknown, max = 200) => (typeof v === "string" && v.trim() ? v.trim().slice(0, max) : "");
-    const alternative = altRaw && clean(altRaw.name)
-      ? {
-          name: clean(altRaw.name),
-          slug: clean(altRaw.slug, 120),
-          category: clean(altRaw.category, 120),
-          image: clean(altRaw.image, 500),
-          price: clean(altRaw.price, 80),
-          location: clean(altRaw.location, 80),
-          note: clean(altRaw.note, 300),
-        }
-      : null;
-
     const table = inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries";
     const { data: inquiry, error: inqErr } = await service
       .from(table)
@@ -109,15 +103,29 @@ Deno.serve(async (req: Request) => {
       .maybeSingle();
     if (inqErr || !inquiry) return json({ error: "Anfrage nicht gefunden" }, 404);
 
+    // Artikel immer aus der gespeicherten Anfrage; Browser liefert nur Entscheidungen je Index.
+    const items = rejectionItemsOf(inquiryType, inquiry);
+    let rawDecisions: unknown = body.items;
+    if (!Array.isArray(rawDecisions)) {
+      // Altaufrufe ohne Einzelentscheidung: alles nicht verfügbar, Alternative am ersten Artikel.
+      rawDecisions = items.map((i) => ({ index: i.index, available: false, alternative: i.index === 0 ? body.alternative : null }));
+    }
+    const decided = normalizeRejectionDecisions(items, rawDecisions);
+    if (!decided.ok) return json({ error: decided.error }, 400);
+    const decisions = decided.decisions;
+
     const customerName = inquiryType === "rental"
       ? (inquiry.customer_name || "")
       : [inquiry.first_name, inquiry.last_name].filter(Boolean).join(" ");
-    const productName = inquiryType === "rental"
-      ? (inquiry.product_name || "")
-      : [inquiry.brand, inquiry.model].filter(Boolean).join(" ");
 
-    const loc = LOCATION_CONTACTS[resolveLocationKey(inquiry.location)];
+    const locationKey = resolveLocationKey(inquiry.location);
+    const loc = LOCATION_CONTACTS[locationKey];
     const customerEmail: string | null = inquiry.customer_email;
+    const form = await resolveAddressForm(service, {
+      crm_customer_id: inquiry.crm_customer_id ?? null,
+      b2b_profile_id: inquiry.b2b_profile_id ?? null,
+      address_form: inquiry.address_form ?? null,
+    });
 
     let emailSent = false;
     const resendKey = Deno.env.get("RESEND_API_KEY");
@@ -133,52 +141,42 @@ Deno.serve(async (req: Request) => {
       const endDe = inquiryType === "rental" ? fmtDate(inquiry.end_date) : "";
       const period = startDe ? `${startDe}${endDe ? ` bis ${endDe}` : ""}` : "";
 
-      // Miet- und Verkaufsanfragen brauchen unterschiedliche Formulierungen.
-      const standardText = inquiryType === "rental"
-        ? `Leider müssen wir Ihnen mitteilen, dass der gewünschte Mietgegenstand im angefragten Zeitraum bereits ausgebucht und daher nicht verfügbar ist. Das bedauern wir sehr.`
-        : `Leider müssen wir Ihnen mitteilen, dass der angefragte Artikel aktuell nicht verfügbar ist. Das bedauern wir sehr.`;
-      const rejectionText = reasonMode === "custom" ? escapeHtml(customReason) : standardText;
-      const closingText = alternative
-        ? `Gerne erstellen wir Ihnen zu diesem Vorschlag ein Angebot – antworten Sie einfach kurz auf diese E-Mail oder rufen Sie uns an. Wir unterstützen Sie beim nächsten Projekt sehr gerne wieder.`
-        : inquiryType === "rental"
-          ? `Sehr gerne prüfen wir für Sie eine Alternative oder einen anderen Zeitraum – melden Sie sich einfach kurz bei uns. Wir unterstützen Sie beim nächsten Projekt sehr gerne wieder und freuen uns jederzeit über Ihre Anfrage.`
-          : `Sehr gerne prüfen wir für Sie eine Alternative aus unserem Bestand – melden Sie sich einfach kurz bei uns. Wir unterstützen Sie beim nächsten Projekt sehr gerne wieder und freuen uns jederzeit über Ihre Anfrage.`;
-
-      // Alternativvorschlag als Karte inkl. Link auf die Artikelseite (nur wenn Slug + Kategorie bekannt).
-      const altLocation = alternative?.location || (typeof inquiry.location === "string" ? inquiry.location : "");
-      const altUrl = alternative?.slug && alternative.category && altLocation
-        ? `https://www.slt-rental.de/mieten/${resolveLocationKey(altLocation)}/${alternative.category}/${alternative.slug}/`
-        : "";
-      const altBlock = alternative
-        ? `<div style="border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:20px 0;">
-    <strong style="color:#00507d;">Unser Alternativvorschlag</strong>
-    <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin-top:12px;"><tr>
-      ${alternative.image ? `<td style="width:96px;vertical-align:top;padding-right:12px;"><img src="${escapeHtml(alternative.image)}" alt="${escapeHtml(alternative.name)}" width="96" style="width:96px;max-width:96px;border-radius:6px;display:block;"></td>` : ""}
-      <td style="vertical-align:top;">
-        <div style="font-size:16px;font-weight:bold;">${escapeHtml(alternative.name)}</div>
-        ${alternative.price ? `<div style="color:#475569;margin-top:4px;">${escapeHtml(alternative.price)}</div>` : ""}
-        ${alternative.note ? `<div style="margin-top:8px;white-space:pre-wrap;">${escapeHtml(alternative.note)}</div>` : ""}
-        ${altUrl ? `<div style="margin-top:12px;"><a href="${escapeHtml(altUrl)}" style="background:#ff8e02;color:#ffffff;text-decoration:none;padding:10px 16px;border-radius:6px;display:inline-block;">Artikel ansehen</a></div>` : ""}
-      </td>
-    </tr></table>
-  </div>`
-        : "";
+      const texts = rejectionTexts(form, inquiryType, decisions);
+      const rejectionText = reasonMode === "custom" ? escapeHtml(customReason) : texts.standard;
+      const itemsBlock = rejectionItemsHtml(decisions, form, {
+        inquiryPeriod: period,
+        locationKey,
+        resolveLocationKey,
+      });
+      const subjectProduct = decisions.length === 1 ? decisions[0].name : "";
+      const greeting = salutationLine({
+        address_form: form,
+        salutation: inquiryType === "rental" ? inquiry.customer_salutation : inquiry.salutation,
+        name: customerName,
+      });
+      const title = byForm(form, "Deine Anfrage bei SLT Rental", "Ihre Anfrage bei SLT Rental");
+      const thanks = byForm(form, "vielen Dank für deine Anfrage", "vielen Dank für Ihre Anfrage");
+      const interest = byForm(form, "dein Interesse", "Ihr Interesse");
+      const contactLabel = byForm(form, "Dein Kontakt", "Ihr Kontakt");
 
       const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:16px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
 <div style="max-width:600px;margin:0 auto;">
-  <h2 style="color:#00507d;margin:0 0 16px;">Ihre Anfrage bei SLT Rental</h2>
-  <p>Hallo ${escapeHtml(customerName || "")},</p>
-  <p>vielen Dank für Ihre Anfrage${productName ? ` zu <strong>${escapeHtml(productName)}</strong>` : ""}${period ? ` für den Zeitraum ${escapeHtml(period)}` : ""} und Ihr Interesse an SLT&nbsp;Rental.</p>
+  <h2 style="color:#00507d;margin:0 0 16px;">${title}</h2>
+  <p>${escapeHtml(greeting)}</p>
+  <p>${thanks}${subjectProduct ? ` zu <strong>${escapeHtml(subjectProduct)}</strong>` : ""}${period ? ` für den Zeitraum ${escapeHtml(period)}` : ""} und ${interest} an SLT&nbsp;Rental.</p>
   <p style="white-space:pre-wrap;">${rejectionText}</p>
+  ${itemsBlock}
   ${extraNote ? `<p style="white-space:pre-wrap;background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;border-radius:4px;">${escapeHtml(extraNote)}</p>` : ""}
-  ${altBlock}
-  <p>${closingText}</p>
+  <p>${texts.closing}</p>
   <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;">
-    <strong>Ihr Kontakt am Standort ${escapeHtml(loc.name)}:</strong><br>
+    <strong>${contactLabel} am Standort ${escapeHtml(loc.name)}:</strong><br>
     Tel. ${escapeHtml(loc.phone)} · <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a>
   </div>
-  <p style="margin-top:24px;">Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${escapeHtml(loc.name)}</p>
-</div></body></html>`;
+  <p style="margin-top:24px;">Viele Grüße<br>Dein SLT Rental Team – Standort ${escapeHtml(loc.name)}</p>
+</div></body></html>`.replace(
+        "Viele Grüße<br>Dein SLT Rental Team",
+        byForm(form, "Viele Grüße<br>Dein SLT Rental Team", "Freundliche Grüße<br>Ihr SLT Rental Team"),
+      );
 
       try {
         const res = await fetch("https://api.resend.com/emails", {
@@ -194,7 +192,7 @@ Deno.serve(async (req: Request) => {
               ),
             ),
             reply_to: loc.email,
-            subject: `Ihre Anfrage bei SLT Rental${productName ? ` – ${productName}` : ""}`,
+            subject: `${title}${rejectionSubjectSuffix(decisions)}`,
             html,
           }),
         });
@@ -209,10 +207,8 @@ Deno.serve(async (req: Request) => {
     }
 
     const reasonLabel = reasonMode === "custom" ? `Grund: ${customReason}` : "Grund: Artikel nicht verfügbar (Standardtext)";
-    const altLabel = alternative
-      ? ` | Alternativvorschlag: ${alternative.name}${alternative.note ? ` (${alternative.note})` : ""}`
-      : "";
-    const noteLine = `[${new Date().toLocaleString("de-DE")}] Absage versendet${emailSent ? "" : " (ohne E-Mail)"} – ${reasonLabel}${altLabel}${extraNote ? ` | Zusatz: ${extraNote}` : ""}`;
+    const altLabel = ` | Artikel: ${rejectionNoteSummary(decisions)}`;
+    const noteLine = `[${new Date().toLocaleString("de-DE", { timeZone: "Europe/Berlin" })}] Absage versendet${emailSent ? "" : " (ohne E-Mail)"} – ${reasonLabel}${altLabel}${extraNote ? ` | Zusatz: ${extraNote}` : ""}`;
     const internalNotes = [inquiry.internal_notes, noteLine].filter(Boolean).join("\n");
 
     const { error: updErr } = await service
