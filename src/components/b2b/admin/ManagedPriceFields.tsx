@@ -202,9 +202,9 @@ export function isBasePriceMissing(scheme: PricingScheme, set: PriceSet | null |
   return !set || parsePriceInput(set[basePriceField(scheme)]) === null;
 }
 
-/** Grundpreis ist nur Pflicht, wenn der Artikel veröffentlicht ist und nicht „nur auf Anfrage". */
-export function basePriceRequired(a: { is_published: boolean; on_request: boolean }): boolean {
-  return a.is_published && !a.on_request;
+/** Article data may always be saved independently of optional prices. */
+export function basePriceRequired(_a: { is_published: boolean; on_request: boolean }): boolean {
+  return false;
 }
 
 export const NO_BASE_PRICE_HINT = "Ohne Grundpreis wird auf der Webseite kein Preis angezeigt.";
