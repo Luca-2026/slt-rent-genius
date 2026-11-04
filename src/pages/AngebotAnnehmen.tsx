@@ -27,6 +27,7 @@ interface AcceptInfo {
   signer_name: string | null;
   location: { name: string; email: string; phone: string };
   prepay?: boolean;
+  business_type?: "rental" | "sales";
 }
 
 const eur = (n: number) => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(n || 0);
@@ -124,7 +125,7 @@ export default function AngebotAnnehmen() {
                 <h1 className="text-2xl font-bold text-foreground">Vielen Dank – Angebot angenommen</h1>
                 <p className="text-muted-foreground">
                   Angebot {info.offer_number} wurde{info.accepted_at ? ` am ${new Date(info.accepted_at).toLocaleString("de-DE", { timeZone: "Europe/Berlin", dateStyle: "medium", timeStyle: "short" })} Uhr` : ""}{info.signer_name ? ` von ${info.signer_name}` : ""} verbindlich angenommen.
-                  {info.prepay ? " Bitte leiste nun die Zahlung – den Zahlungslink findest du auch in deiner E-Mail." : " Du erhältst in Kürze die Auftragsbestätigung, damit deine Miete bestätigt wird."}
+                  {info.business_type === "sales" ? (info.prepay ? " Bitte überweise den Kaufpreis gemäß den Bankdaten und Zahlungsbedingungen im Angebot." : " Du erhältst in Kürze die Auftragsbestätigung für deinen Kauf.") : info.prepay ? " Bitte leiste nun die Zahlung – den Zahlungslink findest du auch in deiner E-Mail." : " Du erhältst in Kürze die Auftragsbestätigung, damit deine Miete bestätigt wird."}
                 </p>
               </div>
             ) : info.status !== "active" ? (
@@ -159,7 +160,7 @@ export default function AngebotAnnehmen() {
                     <SelectTrigger aria-label="Ablehnungsgrund"><SelectValue placeholder="Grund auswählen" /></SelectTrigger>
                     <SelectContent>{Object.entries(DECLINE_REASONS).map(([key, label]) => <SelectItem key={key} value={key}>{label}</SelectItem>)}</SelectContent>
                   </Select>
-                  {reason === "price" && <div className="border-l-4 border-accent bg-muted p-4 space-y-2">
+                  {reason === "price" && info.business_type !== "sales" && <div className="border-l-4 border-accent bg-muted p-4 space-y-2">
                     <h3 className="font-semibold">SLT Rental Tiefpreisgarantie</h3>
                     <p className="text-sm">Ein vergleichbares Mietprodukt günstiger gefunden? Wir prüfen dein Vergleichsangebot nach den Bedingungen unserer Tiefpreisgarantie.</p>
                     <a href="https://www.slt-rental.de/tiefpreisgarantie" target="_blank" rel="noopener noreferrer" className="text-primary underline">Tiefpreisgarantie ansehen</a>

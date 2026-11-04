@@ -88,7 +88,7 @@ Deno.serve(async (req: Request) => {
     const link = linkRes.data;
     if (!link) return json({ error: body.action === "accept_onsite" ? "Kein aktives Angebot zu dieser Anfrage gefunden." : "Dieser Link ist nicht gültig." }, 404);
     const { data: inquiry } = await service.from(link.inquiry_table)
-      .select("id, status, offer_number, offer_file_url, offer_payload, customer_name, company_name, customer_email, customer_kind, location, location_email, offer_total_gross, payments")
+      .select(link.inquiry_table === "sales_inquiries" ? "id, status, offer_number, offer_file_url, offer_payload, first_name, last_name, company_name, customer_email, customer_kind, location, location_email, offer_total_gross, payments" : "id, status, offer_number, offer_file_url, offer_payload, customer_name, company_name, customer_email, customer_kind, location, location_email, offer_total_gross, payments")
       .eq("id", link.inquiry_id).maybeSingle();
     if (!inquiry) return json({ error: "Dieser Link ist nicht gültig." }, 404);
     if (!allowsBindingOffer(inquiry.offer_payload)) return json({ error: "Dieses Preisangebot ist unverbindlich. Bitte zuerst einen Mietzeitraum mit dem Standort vereinbaren." }, 400);
@@ -109,8 +109,9 @@ Deno.serve(async (req: Request) => {
     if (body.action === "info") {
       return json({
         status,
+        business_type: link.inquiry_table === "sales_inquiries" ? "sales" : "rental",
         offer_number: link.offer_number,
-        customer_name: inquiry.company_name || inquiry.customer_name || "",
+        customer_name: inquiry.company_name || inquiry.customer_name || [inquiry.first_name, inquiry.last_name].filter(Boolean).join(" ") || "",
         gross_amount: Number(link.gross_amount),
         net_amount: payload.totals?.netAmount ?? null,
         deposit: Number(payload.deposit) || 0,
