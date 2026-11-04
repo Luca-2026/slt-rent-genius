@@ -547,6 +547,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             inquiryId={inquiry.id}
             customerEmail={inquiry.customer_email ?? null}
             location={(inquiry as any).location ?? null}
+            items={inquiryType === "rental" ? requestedItemsOf(inquiry as any).map((i) => ({ name: i.product_name, quantity: i.quantity })) : undefined}
             disabled={busy}
             onDone={onChanged}
           />
