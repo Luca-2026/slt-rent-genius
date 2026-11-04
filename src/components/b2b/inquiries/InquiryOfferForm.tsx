@@ -1,5 +1,5 @@
 import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
-import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLegacyPeriod } from "./offerCalendarPeriod";
+import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLegacyPeriod, undatedOfferLine } from "./offerCalendarPeriod";
 import { applyOpenEndedPeriod, normalizeOpenEndedUnit, normalizeOpenEndedDuration, openEndedUnitSingular, type OpenEndedUnit } from "@/lib/installments";
 import { isDraftEditEvent } from "@/lib/draftEditIntent";
 import { matchesDocumentPreview } from "../../../../supabase/functions/_shared/invoice-preview";
@@ -241,14 +241,14 @@ async function loadRentalPricing(
 function applyRentalPricing(item: FormLine, dayOpts: RentalDayOptions): FormLine {
   item = calendarDuration(item, { use_saturday: item.use_saturday ?? dayOpts.use_saturday, use_sunday: item.use_sunday ?? dayOpts.use_sunday });
   const p = item.pricing;
-  if (!p || item.price_manual || !item.rental_start || !item.rental_end) return item;
+  if (!p || item.price_manual || ((!item.rental_start || !item.rental_end) && !item.undated_offer)) return item;
   const r = computeRentalLinePrice({
     prices: p.prices,
     scheme: p.scheme,
     start: { date: item.rental_start, time: item.rental_start_time },
     end: { date: item.rental_end, time: item.rental_end_time },
     unit: item.unit_manual ? ((item.unit ?? null) as OfferUnit | null) : null,
-    durationOverride: item.duration_override,
+    durationOverride: item.undated_offer ? item.duration ?? 1 : item.duration_override,
     opts: { use_saturday: item.use_saturday ?? dayOpts.use_saturday, use_sunday: item.use_sunday ?? dayOpts.use_sunday },
   });
   const base: FormLine = { ...item, product_name: p.base_name };
@@ -350,6 +350,7 @@ interface Props {
     valid_days?: number | null;
     notes?: string | null;
     open_ended?: boolean | null;
+    undated_offer?: boolean;
     min_months?: number | null;
     minimum_duration?: number | null;
     open_ended_unit?: OpenEndedUnit;
@@ -482,6 +483,8 @@ export function InquiryOfferForm({
   const [validDays, setValidDays] = useState(draft?.validDays ?? defaultMeta?.valid_days ?? 14);
   /** Unbefristete Monatsmiete: Mietpositionen gelten pro Monat, kein Enddatum (nur Mietangebote). */
   const canOpenEnded = !isInvoice && inquiryType === "rental";
+  const canUndated = mode === "offer" && inquiryType === "rental";
+  const [undatedOffer, setUndatedOffer] = useState(canUndated && !!(draft?.undatedOffer ?? defaultMeta?.undated_offer));
   const [openEnded, setOpenEnded] = useState<boolean>(canOpenEnded && !!(draft?.openEnded ?? defaultMeta?.open_ended));
   const [openEndedUnit, setOpenEndedUnit] = useState<OpenEndedUnit>(normalizeOpenEndedUnit(draft?.openEndedUnit ?? defaultMeta?.open_ended_unit));
   const [minMonths, setMinMonths] = useState<number>(normalizeOpenEndedDuration(draft?.minMonths ?? defaultMeta?.minimum_duration ?? defaultMeta?.min_months ?? 1, openEndedUnit));
@@ -684,6 +687,7 @@ export function InquiryOfferForm({
     setNotes(d.notes ?? "");
     setCouponCode(d.couponCode ?? defaultCouponCode);
     setOpenEnded(canOpenEnded && !!d.openEnded);
+    setUndatedOffer(canUndated && !!d.undatedOffer);
     setOpenEndedUnit(normalizeOpenEndedUnit(d.openEndedUnit));
     setMinMonths(normalizeOpenEndedDuration(d.minMonths ?? 1, normalizeOpenEndedUnit(d.openEndedUnit)));
     setUseSaturday(!!(d.items?.[0]?.use_saturday ?? d.useSaturday ?? defaultItems[0]?.use_saturday ?? defaultMeta?.use_saturday));
@@ -747,6 +751,7 @@ export function InquiryOfferForm({
         paymentTermsCustom,
         notes,
         openEnded,
+        undatedOffer,
         minMonths,
         openEndedUnit,
         useSaturday,
@@ -785,6 +790,7 @@ export function InquiryOfferForm({
     paymentTermsCustom,
     notes,
     openEnded,
+    undatedOffer,
     minMonths,
     openEndedUnit,
     useSaturday,
@@ -822,6 +828,7 @@ export function InquiryOfferForm({
     setNotes(defaultMeta?.notes ?? "");
     setTermsText(defaultMeta?.terms_text ?? null);
     setOpenEnded(canOpenEnded && !!defaultMeta?.open_ended);
+    setUndatedOffer(canUndated && !!defaultMeta?.undated_offer);
     setOpenEndedUnit(normalizeOpenEndedUnit(defaultMeta?.open_ended_unit));
     setMinMonths(normalizeOpenEndedDuration(defaultMeta?.minimum_duration ?? defaultMeta?.min_months ?? 1, normalizeOpenEndedUnit(defaultMeta?.open_ended_unit)));
     setUseSaturday(!!(defaultItems[0]?.use_saturday ?? defaultMeta?.use_saturday));
@@ -835,7 +842,7 @@ export function InquiryOfferForm({
   const effectiveItems = useMemo(
     () =>
       items.map((item, i) => {
-        const inherited = applyInheritedPeriod(item, i, items[0]);
+        const inherited = undatedOffer ? applyRentalPricing({ ...undatedOfferLine(item), undated_offer: true }, dayOpts) : applyInheritedPeriod(item, i, items[0]);
         const calendar = pricingActive && !openEnded ? calendarDuration(inherited, { use_saturday: inherited.use_saturday ?? useSaturday, use_sunday: inherited.use_sunday ?? useSunday }) : inherited;
         const unit = inherited.unit ?? "kalendertage";
         // Unbefristet: zeitabhängige Positionen werden als Preis pro Monat geführt.
@@ -844,7 +851,7 @@ export function InquiryOfferForm({
           : calendar;
         return recalcAddons(monthly);
       }),
-    [items, openEnded, minMonths, openEndedUnit, pricingActive, useSaturday, useSunday],
+    [items, openEnded, undatedOffer, minMonths, openEndedUnit, pricingActive, useSaturday, useSunday],
   );
 
   // ----------------------------------------------------------------
@@ -872,8 +879,9 @@ export function InquiryOfferForm({
   );
 
   useEffect(() => {
-    if (inquiryType !== "rental" || !checkStart) {
+    if (inquiryType !== "rental" || !checkStart || undatedOffer) {
       setAvailability({});
+      setChecking(false);
       return;
     }
     let cancelled = false;
@@ -917,7 +925,7 @@ export function InquiryOfferForm({
       window.clearTimeout(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [checkSignature, inquiryType, inquiryId]);
+  }, [checkSignature, inquiryType, inquiryId, undatedOffer]);
 
   /** Alle offenen Bestandsprobleme – Grundlage für den Bestätigungsdialog. */
   const inventoryIssues = useMemo<InventoryIssue[]>(() => {
@@ -971,7 +979,7 @@ export function InquiryOfferForm({
       return next.map((item, i) => {
         if (i !== index && (index !== 0 || item.custom_period)) return item;
         const inherited = applyInheritedPeriod(item, i, next[0]);
-        return pricingActive ? applyRentalPricing(inherited, dayOpts) : inherited;
+        return pricingActive && !undatedOffer ? applyRentalPricing(inherited, dayOpts) : inherited;
       });
     });
   const changeDayOpts = (next: RentalDayOptions) => {
@@ -987,6 +995,7 @@ export function InquiryOfferForm({
   };
   const showDayBoxes =
     pricingActive &&
+    !undatedOffer &&
     items.some(
       (i) =>
         i.pricing?.scheme === "bau" &&
@@ -1228,8 +1237,8 @@ export function InquiryOfferForm({
             // Für die spätere Bestandsprüfung: echte Stückzahl und Zeitraum
             // getrennt mitschreiben (quantity ist Artikel × Dauer).
             articles,
-            rental_start: rest.rental_start ?? checkStart ?? undefined,
-            rental_end: openEnded ? undefined : rest.rental_end ?? checkEnd ?? undefined,
+            rental_start: undatedOffer ? undefined : rest.rental_start ?? checkStart ?? undefined,
+            rental_end: undatedOffer || openEnded ? undefined : rest.rental_end ?? checkEnd ?? undefined,
             quantity: articles * duration,
             unit: unitLabel(articles * duration, unit),
             unit_code: unit,
@@ -1260,6 +1269,7 @@ export function InquiryOfferForm({
           : null,
         deposit,
         valid_days: validDays,
+        ...(canUndated ? { undated_offer: undatedOffer } : {}),
         ...(canOpenEnded ? { open_ended: openEnded, ...(openEnded ? { open_ended_unit: openEndedUnit, minimum_duration: minMonths, ...(openEndedUnit === "monate" ? { min_months: minMonths } : {}) } : {}) } : {}),
         ...(pricingActive ? { use_saturday: useSaturday, use_sunday: useSunday } : {}),
         notes: [notes.trim(), settlementNote].filter(Boolean).join("\n\n"),
@@ -1546,8 +1556,13 @@ export function InquiryOfferForm({
       )}
       {canOpenEnded && (
         <div className="space-y-3 rounded-md bg-muted/40 p-3 text-sm">
+          {canUndated && <label className="flex items-center gap-2 cursor-pointer">
+            <Checkbox aria-label="Ohne festen Mietzeitraum" checked={undatedOffer} disabled={disabled}
+              onCheckedChange={(v) => { setUndatedOffer(v === true); if (v === true) setOpenEnded(false); }} />
+            <span className="font-medium">Ohne festen Mietzeitraum (unverbindliches Preisangebot)</span>
+          </label>}
           <label className="flex items-start gap-2 cursor-pointer">
-            <Checkbox checked={openEnded} disabled={disabled} onCheckedChange={(v) => setOpenEnded(v === true)} className="mt-0.5" />
+            <Checkbox checked={openEnded} disabled={disabled || undatedOffer} onCheckedChange={(v) => setOpenEnded(v === true)} className="mt-0.5" />
             <span>
               <span className="font-medium">Unbefristete Miete (ohne Enddatum)</span>
               <span className="block text-xs text-muted-foreground">
@@ -1785,7 +1800,7 @@ export function InquiryOfferForm({
               placeholder={pricingActive ? "Beschreibung (optional)" : "Beschreibung / Zeitraum (optional)"}
               disabled={disabled || inherited || (openEnded && !isFlatRate && eff.unit !== "stueck")}
             />}
-            {pricingActive && !openEnded && (
+            {pricingActive && !openEnded && !undatedOffer && (
               <div className="grid min-w-0 grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-x-2 gap-y-2" data-testid="position-period">
                 <div className="min-w-0">
                   <Label className="text-xs">Mietbeginn</Label>
@@ -1809,7 +1824,7 @@ export function InquiryOfferForm({
                 </div>
               </div>
             )}
-            {pricingActive && !openEnded && !isReturnChargeLine(item) && (
+            {pricingActive && !openEnded && !undatedOffer && !isReturnChargeLine(item) && (
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-xs cursor-pointer">
                   <Checkbox checked={item.delivery_at !== undefined || item.collection_at !== undefined} disabled={disabled}
@@ -1832,7 +1847,7 @@ export function InquiryOfferForm({
                 )}
               </div>
             )}
-            {index > 0 && (
+            {index > 0 && !undatedOffer && (
               <label className="flex items-center gap-2 text-xs cursor-pointer">
                 <Checkbox
                   checked={!!item.custom_period}
@@ -1888,7 +1903,7 @@ export function InquiryOfferForm({
               </div>
               <div className="min-w-0">
                 <Label className="text-xs">Dauer</Label>
-                {pricingActive && !openEnded && !isFlatRate && eff.unit !== "stueck" && (
+                {pricingActive && !openEnded && !undatedOffer && !isFlatRate && eff.unit !== "stueck" && (
                   <label className="mb-1 flex items-center gap-2 text-xs">
                     <Checkbox aria-label="Dauer manuell festlegen" checked={item.duration_override !== undefined} disabled={disabled || inherited}
                       onCheckedChange={(checked) => patchPriced(index, { duration_override: checked === true ? (eff.duration ?? 1) : undefined })} />
@@ -1907,15 +1922,15 @@ export function InquiryOfferForm({
                       className="w-20 shrink-0"
                       value={eff.duration ?? 1}
                       aria-label="Abgerechnete Dauer"
-                      onChange={(e) => item.duration_override !== undefined
+                      onChange={(e) => !undatedOffer && item.duration_override !== undefined
                         ? patchPriced(index, { duration_override: Math.min(10000, Math.max(1, Number(e.target.value) || 1)) })
                         : patchItem(index, { duration: Number(e.target.value) || 0 })}
-                      disabled={disabled || inherited || (pricingActive && !openEnded && !!eff.rental_start && !!eff.rental_end && item.duration_override === undefined) || (openEnded && !isFlatRate && eff.unit !== "stueck")}
+                      disabled={disabled || (!undatedOffer && inherited) || (pricingActive && !openEnded && !undatedOffer && !!eff.rental_start && !!eff.rental_end && item.duration_override === undefined) || (openEnded && !isFlatRate && eff.unit !== "stueck")}
                     />
                   )}
                   <Select
                     value={eff.unit ?? "kalendertage"}
-                    disabled={disabled || inherited || (openEnded && !isFlatRate && eff.unit !== "stueck")}
+                    disabled={disabled || (!undatedOffer && inherited) || (openEnded && !isFlatRate && eff.unit !== "stueck")}
                     onValueChange={(v) =>
                       patchPriced(index, {
                         unit: v as OfferUnit,
@@ -2019,7 +2034,7 @@ export function InquiryOfferForm({
 
 
             {/* Bestandslage am Standort im gewählten Zeitraum */}
-            {inquiryType === "rental" && item.product_name.trim() && availability[index] ? (
+            {inquiryType === "rental" && !undatedOffer && item.product_name.trim() && availability[index] ? (
               (() => {
                 const result = availability[index]!;
                 const issue = evaluateLine(item.product_name.trim(), item.quantity || 1, location, result);
@@ -2049,7 +2064,7 @@ export function InquiryOfferForm({
                   </p>
                 );
               })()
-            ) : inquiryType === "rental" && item.product_name.trim() && !checkStart ? (
+            ) : inquiryType === "rental" && item.product_name.trim() && (undatedOffer || !checkStart) ? (
               <p className="flex items-start gap-1.5 text-[11px] text-muted-foreground">
                 <Info className="h-3.5 w-3.5 shrink-0 mt-px" />
                 <span>Ohne Mietzeitraum ist keine Bestandsprüfung möglich.</span>
@@ -2062,8 +2077,8 @@ export function InquiryOfferForm({
               options={addonOptionsFor(item, inquiryType === "sales")}
               isSales={inquiryType === "sales"}
               disabled={disabled}
-              periodStart={eff.delivery_at?.slice(0, 10) || eff.rental_start || checkStart || undefined}
-              periodEnd={eff.collection_at?.slice(0, 10) || eff.rental_end || checkEnd || undefined}
+              periodStart={undatedOffer ? undefined : eff.delivery_at?.slice(0, 10) || eff.rental_start || checkStart || undefined}
+              periodEnd={undatedOffer ? undefined : eff.collection_at?.slice(0, 10) || eff.rental_end || checkEnd || undefined}
               onChange={(addons) => patchItem(index, { addons })}
             />
           </div>

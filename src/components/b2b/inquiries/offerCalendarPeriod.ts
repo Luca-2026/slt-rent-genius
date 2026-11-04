@@ -1,6 +1,17 @@
 import { rentalDuration, type RentalDayOptions } from "@/lib/pricing/rentalPricing";
 import type { OfferLine } from "./offerMath";
 import { logisticsDescription, offerInsurancePeriod } from "../../../../supabase/functions/_shared/offer-logistics";
+import { withoutOfferDates } from "../../../../supabase/functions/_shared/undated-offer";
+
+export function undatedOfferLine<T extends OfferLine>(line: T): T {
+  return { ...withoutOfferDates(line), duration_override: undefined,
+    description: withoutLegacyPeriod(line.description),
+    description_override: line.description_override ? withoutLegacyPeriod(line.description_override) : undefined,
+    addons: line.addons?.map((addon) => ({ ...addon, period_start: null, period_end: null,
+      ...(addon.basis === "full_period" && !addon.days_manual && !addon.manual ? { basis: "line" as const, days: null } : {}),
+    })),
+  };
+}
 
 // Legacy inquiry descriptions consisted only of a formatted rental period.
 const LEGACY_PERIOD = /^(?:Mietzeitraum:\s*)?(?:(?:Mo|Di|Mi|Do|Fr|Sa|So)\.?[,]?\s*)?\d{1,2}\.\s*\d{1,2}\.\s*\d{4}(?:[,]?\s*\d{1,2}:\d{2})?(?:\s*[–—-]\s*(?:(?:Mo|Di|Mi|Do|Fr|Sa|So)\.?[,]?\s*)?\d{1,2}\.\s*\d{1,2}\.\s*\d{4}(?:[,]?\s*\d{1,2}:\d{2})?)?$/;

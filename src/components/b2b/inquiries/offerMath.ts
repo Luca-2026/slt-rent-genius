@@ -38,6 +38,7 @@ export interface OfferLineAddon {
 }
 
 export interface OfferLine extends OfferLogistics {
+  undated_offer?: boolean;
   product_name: string;
   description?: string;
   /** Anzahl der Artikel */
