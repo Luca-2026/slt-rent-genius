@@ -172,11 +172,8 @@ Deno.serve(async (req: Request) => {
     <strong>${contactLabel} am Standort ${escapeHtml(loc.name)}:</strong><br>
     Tel. ${escapeHtml(loc.phone)} · <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a>
   </div>
-  <p style="margin-top:24px;">Viele Grüße<br>Dein SLT Rental Team – Standort ${escapeHtml(loc.name)}</p>
-</div></body></html>`.replace(
-        "Viele Grüße<br>Dein SLT Rental Team",
-        byForm(form, "Viele Grüße<br>Dein SLT Rental Team", "Freundliche Grüße<br>Ihr SLT Rental Team"),
-      );
+  <p style="margin-top:24px;">${byForm(form, "Viele Grüße<br>Dein SLT Rental Team", "Freundliche Grüße<br>Ihr SLT Rental Team")} – Standort ${escapeHtml(loc.name)}</p>
+</div></body></html>`;
 
       try {
         const res = await fetch("https://api.resend.com/emails", {
