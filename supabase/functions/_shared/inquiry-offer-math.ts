@@ -5,6 +5,7 @@
 
 import { computeAddonAmount, daysPerUnit, describeAddon, type AddonBasis, type AddonPriceType } from "./addon-calc.ts";
 import { normalizeOfferLogistics, offerInsurancePeriod, type OfferLogistics } from "./offer-logistics.ts";
+import { withoutOfferDates } from "./undated-offer.ts";
 
 export interface InquiryOfferAddon {
   key: string;
@@ -246,14 +247,19 @@ function normalizeAddons(
 }
 
 /** Validates + normalizes untrusted item input coming from the portal UI. */
-export function normalizeInquiryOfferItems(raw: unknown): InquiryOfferItem[] {
+export function normalizeInquiryOfferItems(raw: unknown, undated = false): InquiryOfferItem[] {
   if (!Array.isArray(raw) || raw.length === 0) {
     throw new Error("Mindestens eine Position mit Preis wird benötigt");
   }
   if (raw.length > 50) throw new Error("Zu viele Positionen (max. 50)");
 
   return raw.map((entry, index) => {
-    const item = (entry ?? {}) as Record<string, unknown>;
+    const item = undated ? withoutOfferDates((entry ?? {}) as Record<string, unknown>) : (entry ?? {}) as Record<string, unknown>;
+    if (undated) {
+      if (!["miettage", "kalendertage", "arbeitstage", "wochen", "monate", "pauschal", "stueck"].includes(String(item.unit_code))) throw new Error(`Position ${index + 1}: ungültige Einheit für das Preisangebot`);
+      if (!Number.isFinite(Number(item.duration)) || Number(item.duration) <= 0 || Number(item.duration) > 10000) throw new Error(`Position ${index + 1}: beispielhafte Mietdauer fehlt`);
+      if (Math.abs(Number(item.quantity) - Number(item.articles) * Number(item.duration)) > 0.001) throw new Error(`Position ${index + 1}: Menge und Mietdauer stimmen nicht überein`);
+    }
     const name = String(item.product_name ?? "").trim();
     if (!name) throw new Error(`Position ${index + 1}: Bezeichnung fehlt`);
 

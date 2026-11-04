@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { UNDATED_OFFER_NOTE } from "../_shared/undated-offer.ts";
 import { applyFeedbackCoupon } from "../_shared/feedback-coupons.ts";
 import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
 /**
@@ -103,9 +104,11 @@ Deno.serve(async (req: Request) => {
       return json({ error: "Ungültige Einheit für unbefristete Miete" }, 400);
     }
 
+    const undatedOffer = inquiryType === "rental" && body.undated_offer === true;
+    if (body.undated_offer === true && (inquiryType !== "rental" || body.open_ended === true)) return json({ error: "Unverbindliches Preisangebot nur für Miete ohne festen Zeitraum" }, 400);
     let items: InquiryOfferItem[];
     try {
-      items = normalizeInquiryOfferItems(body.items);
+      items = normalizeInquiryOfferItems(body.items, undatedOffer);
     } catch (e) {
       return json({ error: (e as Error).message }, 400);
     }
@@ -158,6 +161,7 @@ Deno.serve(async (req: Request) => {
       .eq("id", inquiryId)
       .maybeSingle();
     if (inqErr || !inquiry) return json({ error: "Anfrage nicht gefunden" }, 404);
+    if (undatedOffer && inquiry.order_confirmed_at) return json({ error: "Ein bestätigter Mietauftrag darf nicht durch ein unverbindliches Preisangebot ersetzt werden." }, 409);
     if (!allowsCustomerPaymentTerms(inquiry.customer_kind, body.payment_terms)) {
       return json({ error: "Privatkunden zahlen nicht auf Rechnung. Bitte Vorkasse oder Anzahlung wählen." }, 400);
     }
@@ -291,7 +295,7 @@ Deno.serve(async (req: Request) => {
     const returnLocationText = returnLoc
       ? `Abholung am Standort ${pickupName}, Rückgabe abweichend am Standort ${returnLoc.name}${returnLoc.cost > 0 ? " (Aufpreis siehe Position „Rückgabe an anderem Standort“)" : " (ohne Aufpreis)"}.`
       : null;
-    const pdfNotes = [supersedesText, returnLocationText, openEnded ? openEndedNote(minMonths, openEndedUnit) : null, notes, coupon.code ? `Gutschein ${coupon.code}: ${money(coupon.saving)} netto Rabatt, in den Positionspreisen enthalten.` : null].filter(Boolean).join("\n\n") || null;
+    const pdfNotes = [undatedOffer ? UNDATED_OFFER_NOTE : null, supersedesText, returnLocationText, openEnded ? openEndedNote(minMonths, openEndedUnit) : null, notes, coupon.code ? `Gutschein ${coupon.code}: ${money(coupon.saving)} netto Rabatt, in den Positionspreisen enthalten.` : null].filter(Boolean).join("\n\n") || null;
 
     const customerName = inquiryType === "rental"
       ? (inquiry.customer_name || "")
@@ -484,6 +488,7 @@ Deno.serve(async (req: Request) => {
 
     const pdfBytes = await generateOfferPdf({
       businessType: inquiryType,
+      undatedOffer,
       orderCode: (inquiry as { order_code?: string | null }).order_code ?? null,
       offerNumber,
       offerDate: fmt(today),
@@ -585,7 +590,7 @@ Deno.serve(async (req: Request) => {
     let paymentLinkUrl: string | null = null;
     let paymentLinkAmount = 0;
     try {
-      if (isStripeConfigured()) {
+      if (!undatedOffer && isStripeConfigured()) {
         const paidCents = (Array.isArray(inquiry.payments) ? inquiry.payments : []).reduce(
           (sum: number, p: { amount?: unknown }) => sum + toCents(p?.amount),
           0,
@@ -615,6 +620,7 @@ Deno.serve(async (req: Request) => {
     let acceptanceToken: string | null = null;
     try {
       await service.from("offer_acceptance_links").update({ status: "void" }).eq("inquiry_id", inquiry.id).eq("status", "active");
+      if (!undatedOffer) {
       const raw = crypto.getRandomValues(new Uint8Array(24));
       const token = btoa(String.fromCharCode(...raw)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
       const { error: accErr } = await service.from("offer_acceptance_links").insert({
@@ -629,6 +635,7 @@ Deno.serve(async (req: Request) => {
       });
       if (!accErr) { acceptUrl = `https://www.slt-rental.de/angebot/${token}`; acceptanceToken = token; }
       else console.error("Annahmelink konnte nicht erstellt werden:", accErr.message);
+      }
     } catch (e) {
       console.error("Annahmelink fehlgeschlagen:", (e as Error).message);
     }
@@ -728,13 +735,13 @@ Deno.serve(async (req: Request) => {
   </div>
   ${discountSum > 0 ? `<p style="background:#fff7ed;border-left:4px solid #ff8e02;padding:10px 14px;margin:16px 0;border-radius:4px;font-size:14px;"><strong style="color:#ff8e02;">${F("Dein", "Ihr")} Rabattvorteil: − ${money(discountSum)}</strong><br><span style="color:#6b7280;font-size:13px;">Der Rabatt ist in den oben genannten Positionspreisen bereits abgezogen.</span></p>` : ""}
   <p style="font-size:15px;"><strong>Gesamtsumme brutto: ${money(totals.grossAmount)}</strong><br>
-  <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)}${transportTotal > 0 ? ` (inkl. Transportkosten ${money(transportTotal)})` : ""} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span>${deposit > 0 ? `<br><span style="color:#6b7280;font-size:13px;">zzgl. Kaution ${money(deposit)} (wird nach Rückgabe erstattet) – Gesamtüberweisung inkl. Kaution: ${money(totals.grossAmount + deposit)}</span>` : ""}</p>
+  <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)}${transportTotal > 0 ? ` (inkl. Transportkosten ${money(transportTotal)})` : ""} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span>${deposit > 0 ? `<br><span style="color:#6b7280;font-size:13px;">zzgl. Kaution ${money(deposit)} (wird nach Rückgabe erstattet)${undatedOffer ? " – bei späterer Beauftragung, aktuell nicht fällig" : ` – Gesamtüberweisung inkl. Kaution: ${money(totals.grossAmount + deposit)}`}</span>` : ""}</p>
 
   ${returnLoc ? `<p style="font-size:14px;"><strong>Rückgabe:</strong> Abholung am Standort ${escapeHtml(pickupName)}, Rückgabe am Standort ${escapeHtml(returnLoc.name)}${returnLoc.cost > 0 ? ` (Aufpreis ${money(returnLoc.cost)} netto)` : " (ohne Aufpreis)"}.</p>` : ""}
   ${deliveryRequested && (deliveryAddress.street || deliveryAddress.city) ? `<p style="font-size:14px;"><strong>Lieferadresse:</strong><br>${escapeHtml(deliveryAddress.street)}<br>${escapeHtml([deliveryAddress.postal_code, deliveryAddress.city].filter(Boolean).join(" "))}</p>` : ""}
 
 
-  <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;">
+  ${undatedOffer ? `<p>${F("Bitte teile uns deinen gewünschten Mietzeitraum mit", "Bitte teilen Sie uns Ihren gewünschten Mietzeitraum mit")}: <a href="mailto:${escapeHtml(loc.email)}">${escapeHtml(loc.email)}</a>. Danach prüfen wir die Verfügbarkeit und erstellen das endgültige Angebot.</p>` : `<div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>${F("So nimmst du das Angebot an:", "So nehmen Sie das Angebot an:")}</strong><br>
     ${acceptUrl ? `${F("Klick auf den Button und unterschreib digital", "Klicken Sie auf den Button und unterschreiben Sie digital")} – mit der Maus oder dem Finger auf dem Smartphone.
     <p style="margin:12px 0 8px;"><a href="${escapeHtml(acceptUrl)}" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:4px;">Angebot online annehmen</a></p>
@@ -757,6 +764,7 @@ Deno.serve(async (req: Request) => {
   <div style="background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>Zahlungsbedingungen:</strong><br>${paymentEmailText}
   </div>
+  `}
   <p style="color:#6b7280;font-size:13px;">Dieses Angebot ist gültig bis ${escapeHtml(fmt(validUntil))}.</p>
   ${agbBytes ? `<p style="color:#6b7280;font-size:13px;">Es gelten unsere beigefügten ${customerKind === "business" ? "AGB für Unternehmer" : "AGB für Verbraucher"}.</p>` : ""}
   <p style="margin-top:24px;">${F("Viele Grüße<br>Dein", "Freundliche Grüße<br>Ihr")} SLT Rental Team – Standort ${escapeHtml(loc.name)}<br>
@@ -840,6 +848,7 @@ Deno.serve(async (req: Request) => {
           notes,
           totals,
           open_ended: openEnded,
+          undated_offer: undatedOffer,
           ...(openEnded ? { open_ended_unit: openEndedUnit, minimum_duration: minMonths, ...(openEndedUnit === "monate" ? { min_months: minMonths } : {}) } : {}),
           use_saturday: body.use_saturday === true,
           use_sunday: body.use_sunday === true,

@@ -61,6 +61,36 @@ beforeEach(() => { fixtures.draft = null; fixtures.specialPrice = 0; fixtures.in
 afterEach(cleanup);
 
 describe("Kundenrabatte im Mietanfrage-Angebot", () => {
+  it("quotes ten rental days without dates and keeps the original calendar when switching back", async () => {
+    open({ defaultItems: [{ ...line(), rental_start: "2026-11-04", rental_end: "2026-11-24" }], rentalPeriod: { start: "2026-11-04", end: "2026-11-24" } });
+    await waitFor(() => expect(fixtures.queries).toHaveBeenCalledWith("b2b_managed_products"));
+    fireEvent.click(screen.getByRole("checkbox", { name: "Ohne festen Mietzeitraum" }));
+    fireEvent.change(screen.getByRole("spinbutton", { name: "Abgerechnete Dauer" }), { target: { value: "10" } });
+    fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
+    await waitFor(() => expect(fixtures.invoke).toHaveBeenCalled());
+    const payload = fixtures.invoke.mock.calls[0][1];
+    expect(payload.undated_offer).toBe(true);
+    expect(payload.items[0].duration).toBe(10);
+    expect(payload.items[0].unit_price).toBe(80);
+    expect(payload.items[0].rental_start).toBeUndefined();
+    expect(payload.items[0].rental_end).toBeUndefined();
+    fixtures.invoke.mockClear();
+    fireEvent.click(screen.getByRole("checkbox", { name: "Ohne festen Mietzeitraum" }));
+    fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
+    await waitFor(() => expect(fixtures.invoke).toHaveBeenCalled());
+    expect(fixtures.invoke.mock.calls[0][1].items[0].rental_start).toBe("2026-11-04");
+  });
+  it("restores undated quotes from saved drafts with separate duration for each article", async () => {
+    fixtures.draft = { undatedOffer: true, items: [{ ...line(), duration: 2, unit: "monate", unit_manual: true }, { ...line("kramer-5045", "3t Radlader Kramer 5045"), duration: 5 }] };
+    open();
+    fireEvent.change(screen.getAllByRole("spinbutton", { name: "Abgerechnete Dauer" })[1], { target: { value: "7" } });
+    fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
+    await waitFor(() => expect(fixtures.invoke).toHaveBeenCalled());
+    const payload = fixtures.invoke.mock.calls[0][1];
+    expect(payload.undated_offer).toBe(true);
+    expect(payload.items.map((i: {duration: number}) => i.duration)).toEqual([2, 7]);
+    expect(payload.items[0].unit_code).toBe("monate");
+  });
   it("restores requested weekend use despite contradictory old draft globals and lets staff change it", async () => {
     const rental = { ...line(), rental_start: "2026-11-04", rental_end: "2026-11-24", rental_start_time: "07:00", rental_end_time: "18:00", duration: 21,
       use_saturday: true, use_sunday: true, pricing: { scheme: "bau", base_name: "2t Minibagger", prices: { price_from_1_rd: 100, price_from_3_rd: 90, price_from_10_rd: 80, price_from_20_rd: 60, price_weekend_num: null, price_base_1_3_cd: null, surcharge_per_cd_from_4: null, surcharge_per_cd_from_8: null } } };
