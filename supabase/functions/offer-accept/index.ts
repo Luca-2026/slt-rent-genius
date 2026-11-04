@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { allowsBindingOffer } from "../_shared/undated-offer.ts";
 import { processOfferFollowups } from "../_shared/offer-followup-delivery.ts";
 /**
  * Öffentliche Online-Annahme eines Angebots (/angebot/<token>).
@@ -89,6 +90,7 @@ Deno.serve(async (req: Request) => {
       .select("id, status, offer_number, offer_file_url, offer_payload, customer_name, company_name, customer_email, customer_kind, location, location_email, offer_total_gross, payments")
       .eq("id", link.inquiry_id).maybeSingle();
     if (!inquiry) return json({ error: "Dieser Link ist nicht gültig." }, 404);
+    if (!allowsBindingOffer(inquiry.offer_payload)) return json({ error: "Dieses Preisangebot ist unverbindlich. Bitte zuerst einen Mietzeitraum mit dem Standort vereinbaren." }, 400);
 
     let status: string = link.status;
     if (status === "active" && inquiry.offer_number !== link.offer_number) status = "superseded";

@@ -11,6 +11,7 @@ export async function generateOfferPdf(data: {
   offerNumber: string;
   /** Geschäftsart für die Artikelbezeichnung; bestehende Aufrufer bleiben Miete. */
   businessType?: "rental" | "sales";
+  undatedOffer?: boolean;
   offerDate: string;
   validUntil: string;
   profile: any;
@@ -936,7 +937,9 @@ export async function generateOfferPdf(data: {
   ];
   const paysOnInvoice = ["net_7", "net_14", "net_30", "net_60"].includes(String(data.paymentTerms || ""));
 
-  if (isOC) {
+  if (docType === "offer" && data.undatedOffer) {
+    drawInfoBox("Unverbindliches Preisangebot", "Ohne festen Mietzeitraum. Die ausgewiesene Mietdauer dient als Preisbeispiel. Es wird kein Gerät reserviert; derzeit ist keine Zahlung fällig. Vor einer verbindlichen Beauftragung sind Zeitraum und Verfügbarkeit gesondert zu bestätigen.", rgb(0.94, 0.96, 0.98), BRAND);
+  } else if (isOC) {
     const GREEN = rgb(0.05, 0.45, 0.25);
     const ref = data.sourceOfferNumber || data.offerNumber;
     if (amountPaid > 0 && balanceDue <= 0.009) {
@@ -1089,7 +1092,7 @@ export async function generateOfferPdf(data: {
   }
 
 
-  if (docType === "offer") {
+  if (docType === "offer" && !data.undatedOffer) {
     drawInfoBox(
       "Zustandekommen des Auftrags",
       (paysOnInvoice

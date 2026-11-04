@@ -112,7 +112,7 @@ export function offerPayloadToLines(payload: unknown): {
   };
   meta: {
     payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null; open_ended: boolean; min_months?: number; minimum_duration?: number; open_ended_unit?: OpenEndedUnit;
-    use_saturday?: boolean; use_sunday?: boolean;
+    undated_offer?: boolean; use_saturday?: boolean; use_sunday?: boolean;
     /** Paket 3b – fehlen bei alten Angeboten. */
     groups?: OfferGroup[]; extra_fields?: OfferExtraFields; order_type?: OrderType; terms_text?: string;
   };
@@ -133,6 +133,7 @@ export function offerPayloadToLines(payload: unknown): {
         valid_days?: number;
         notes?: string | null;
         open_ended?: boolean;
+        undated_offer?: boolean;
         use_saturday?: boolean; use_sunday?: boolean;
         min_months?: number; minimum_duration?: number; open_ended_unit?: OpenEndedUnit;
         groups?: unknown;
@@ -232,6 +233,7 @@ export function offerPayloadToLines(payload: unknown): {
       valid_days: Number(p.valid_days) > 0 ? Number(p.valid_days) : null,
       notes: typeof p.notes === "string" ? p.notes : null,
       open_ended: p.open_ended === true,
+      undated_offer: p.undated_offer === true,
       ...(typeof p.use_saturday === "boolean" ? { use_saturday: p.use_saturday } : {}),
       ...(typeof p.use_sunday === "boolean" ? { use_sunday: p.use_sunday } : {}),
       open_ended_unit: normalizeOpenEndedUnit(p.open_ended_unit),
@@ -864,7 +866,9 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           location={inquiry.location}
           // Bestehender Auftrag: immer mit den zuletzt angebotenen Positionen/Beträgen starten, nie bei 0 €.
           defaultItems={(() => {
-            const base = offerSnapshot?.items?.length ? offerSnapshot.items : defaultItems;
+            let base = offerSnapshot?.items?.length ? offerSnapshot.items : defaultItems;
+            const raw = inquiry.raw_payload as Record<string, unknown> | null;
+            if (!offerSnapshot && raw?.undated_offer === true) base = base.map((item) => ({ ...item, duration: Number(raw.quote_duration) || 1, unit: (raw.quote_unit ?? "miettage") as OfferLine["unit"] }));
             // Rechnung ohne Kaution: Rückgabekosten automatisch als Positionen übernehmen.
             return (docMode === "invoice" || docMode === "final") && deposit.chargeLines.length
               ? [...base, ...deposit.chargeLines]
@@ -876,6 +880,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           defaultMeta={(docMode === "revise" || docMode === "amendment") ? offerSnapshot?.meta : docMode === "offer" ? (() => {
             const raw = inquiry.raw_payload as Record<string, unknown> | null;
             const weekend = {
+              undated_offer: raw?.undated_offer === true,
               use_saturday: typeof inquiry.use_saturday === "boolean" ? inquiry.use_saturday : undefined,
               use_sunday: typeof inquiry.use_sunday === "boolean" ? inquiry.use_sunday : undefined,
             };

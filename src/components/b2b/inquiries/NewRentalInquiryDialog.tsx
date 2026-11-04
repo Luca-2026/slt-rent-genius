@@ -1,5 +1,6 @@
 import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
 import { type OpenEndedUnit } from "@/lib/installments";
+import { OFFER_UNITS, type OfferUnit } from "@/lib/offerUnits";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -61,6 +62,9 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
   const [storeCustomer, setStoreCustomer] = useState(true);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [openEnded, setOpenEnded] = useState(false);
+  const [undatedOffer, setUndatedOffer] = useState(false);
+  const [quoteDuration, setQuoteDuration] = useState(1);
+  const [quoteUnit, setQuoteUnit] = useState<OfferUnit>("miettage");
   const [openEndedUnit, setOpenEndedUnit] = useState<OpenEndedUnit>("monate");
   const [minimumDuration, setMinimumDuration] = useState(1);
   const [busy, setBusy] = useState(false);
@@ -90,6 +94,9 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
   const reset = () => {
     setForm({ ...emptyForm });
     setOpenEnded(false);
+    setUndatedOffer(false);
+    setQuoteDuration(1);
+    setQuoteUnit("miettage");
     setOpenEndedUnit("monate");
     setMinimumDuration(1);
     setCrmCustomerId(null);
@@ -109,11 +116,11 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
       toast.error("Bitte einen Mietartikel angeben.");
       return;
     }
-    if (!form.start_date) {
+    if (!undatedOffer && !form.start_date) {
       toast.error("Bitte das Mietstart-Datum angeben.");
       return;
     }
-    if (!openEnded && form.end_date && form.end_date < form.start_date) {
+    if (!undatedOffer && !openEnded && form.end_date && form.end_date < form.start_date) {
       toast.error("Das Rückgabedatum darf nicht vor dem Startdatum liegen.");
       return;
     }
@@ -150,10 +157,11 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
           location: form.location,
           product_name: form.product_name.trim(),
           quantity: Number(form.quantity) > 0 ? Number(form.quantity) : 1,
-          start_date: form.start_date,
-          start_time: form.start_time || null,
-          end_date: openEnded ? null : form.end_date || null,
-          end_time: openEnded ? null : form.end_time || null,
+          start_date: undatedOffer ? null : form.start_date,
+          start_time: undatedOffer ? null : form.start_time || null,
+          end_date: undatedOffer || openEnded ? null : form.end_date || null,
+          end_time: undatedOffer || openEnded ? null : form.end_time || null,
+          ...(undatedOffer ? { raw_payload: { undated_offer: true, quote_duration: quoteDuration, quote_unit: quoteUnit } } : {}),
           ...(openEnded ? { raw_payload: { open_ended: true, open_ended_unit: openEndedUnit, minimum_duration: minimumDuration } } : {}),
           customer_kind: form.customer_kind,
           company_name: form.company_name.trim() || null,
@@ -269,6 +277,7 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
               <Input id="nri-qty" type="number" min={1} value={form.quantity} onChange={(e) => set("quantity", e.target.value)} />
             </div>
             <div />
+            {!undatedOffer && <>
             <div>
               <Label htmlFor="nri-start-date">Abholung / Lieferung am</Label>
               <Input id="nri-start-date" type="date" value={form.start_date} onChange={(e) => set("start_date", e.target.value)} />
@@ -285,10 +294,23 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
               <Label>Uhrzeit</Label>
               <Input type="time" disabled={openEnded} value={form.end_time} onChange={(e) => set("end_time", e.target.value)} />
             </div>
+            </>}
 
             <div className="sm:col-span-2 space-y-3">
               <label className="flex items-center gap-2 text-sm">
-                <Checkbox checked={openEnded} onCheckedChange={(v) => setOpenEnded(v === true)} />
+                <Checkbox aria-label="Ohne festen Mietzeitraum" checked={undatedOffer} onCheckedChange={(v) => { setUndatedOffer(v === true); if (v === true) setOpenEnded(false); }} />
+                Ohne festen Mietzeitraum (unverbindliches Preisangebot)
+              </label>
+              {undatedOffer && <div className="grid grid-cols-2 gap-3">
+                <div><Label htmlFor="quote-duration">Beispielhafte Mietdauer</Label>
+                  <Input id="quote-duration" type="number" min={1} max={10000} value={quoteDuration} onChange={(e) => setQuoteDuration(Math.min(10000, Math.max(1, Number(e.target.value) || 1)))} /></div>
+                <div><Label>Einheit</Label><Select value={quoteUnit} onValueChange={(v) => setQuoteUnit(v as OfferUnit)}>
+                  <SelectTrigger aria-label="Einheit der beispielhaften Mietdauer"><SelectValue /></SelectTrigger>
+                  <SelectContent>{OFFER_UNITS.filter((u) => !["pauschal", "stueck"].includes(u.value)).map((u) => <SelectItem key={u.value} value={u.value}>{u.label}</SelectItem>)}</SelectContent>
+                </Select></div>
+              </div>}
+              <label className="flex items-center gap-2 text-sm">
+                <Checkbox checked={openEnded} disabled={undatedOffer} onCheckedChange={(v) => setOpenEnded(v === true)} />
                 Unbefristete Miete (ohne Enddatum)
               </label>
               {openEnded && <OpenEndedPeriodFields unit={openEndedUnit} duration={minimumDuration}

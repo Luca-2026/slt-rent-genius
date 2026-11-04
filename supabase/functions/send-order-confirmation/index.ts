@@ -108,6 +108,7 @@ Deno.serve(async (req) => {
     if (!resendKey) return json({ error: "E-Mail-Versand nicht konfiguriert" }, 500);
 
     let payload = (inq.offer_payload ?? {}) as Record<string, any>;
+    if (payload.undated_offer === true) return json({ error: "Unverbindliches Preisangebot: zuerst einen festen Mietzeitraum vereinbaren und ein neues Angebot erstellen." }, 400);
     if (amendment) {
       if (inquiryType !== "rental") return json({ error: "Auftragsänderung nur für Mietaufträge" },400);
       if (!allowsCustomerPaymentTerms(inq.customer_kind, body.payment_terms)) return json({error:"Unzulässige Zahlungsbedingungen"},400);
