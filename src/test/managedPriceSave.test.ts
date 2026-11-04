@@ -4,6 +4,14 @@ import { emptyPriceSet } from "@/components/b2b/admin/ManagedPriceFields";
 
 const baseline = (): ManagedPriceState => ({ category: "erdbewegung", pricing_scheme: "bau", prices: { ...emptyPriceSet(), price_from_1_rd: "89,00", price_from_20_rd: "53,00" }, price_per_day: "ab 75,00 €/Tag", price_weekend: "auf Anfrage", price_per_month: "ab 999 €/Monat", tier_prices_manual: [], prices_same_all_locations: true });
 describe("independent CMS price saving", () => {
+  it("explicit schema switch uses its maintained base price while preserving starting-price status", () => {
+    const before = { ...baseline(), prices: { ...baseline().prices, price_base_1_3_cd: "120" } };
+    expect(managedPricePatch({ ...before, pricing_scheme: "event" }, before)).toEqual({ pricing_scheme: "event", price_per_day: "ab 120,00 €/Tag" });
+  });
+  it("schema switch without a maintained base does not erase a legacy starting price", () => {
+    const before = baseline();
+    expect(managedPricePatch({ ...before, pricing_scheme: "event" }, before)).toEqual({ pricing_scheme: "event" });
+  });
   it("omits all unchanged prices and legacy starting prices during article edits", () => {
     const before = baseline();
     expect(managedPricePatch({ ...before }, before)).toEqual({});
