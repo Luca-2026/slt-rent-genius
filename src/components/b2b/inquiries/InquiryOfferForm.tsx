@@ -1494,7 +1494,7 @@ export function InquiryOfferForm({
     <p className="text-xs text-muted-foreground">
       {undatedOffer ? "Unverbindliches Preisangebot: keine Reservierung, keine Online-Annahme und keine Zahlungsaufforderung." : isAmendment ? "Auftragsänderung speichern und anschließend die neue AB senden. Kein neues Angebot und keine erneute Online-Annahme." : isInvoice
         ? "Die Vorschau vergibt keine Rechnungsnummer und versendet nichts. Erst beim finalen Erstellen wird die Rechnung unveränderlich; Korrekturen erfolgen per Gutschrift."
-        : "Der Kunde kann das Angebot über den Button in der E-Mail online annehmen und unterschreiben – ihr bekommt dann einen Hinweis hier in der Anfrage. Danach den Job manuell in Rentware anlegen."}
+        : isSalesOffer ? "Verkaufsangebot: Annahme per Unterschrift; Zahlung ausschließlich per Banküberweisung gemäß den vereinbarten Bedingungen." : "Der Kunde kann das Angebot über den Button in der E-Mail online annehmen und unterschreiben – ihr bekommt dann einen Hinweis hier in der Anfrage. Danach den Job manuell in Rentware anlegen."}
     </p>
   );
   const actionBar = stickyActions ? (
@@ -1823,7 +1823,7 @@ export function InquiryOfferForm({
             {(!pricingActive || !!withoutLegacyPeriod(item.description)) && <Input
               value={pricingActive ? withoutLegacyPeriod(item.description) : (inherited ? (eff.description ?? "") : (item.description ?? ""))}
               onChange={(e) => patchItem(index, { description: e.target.value })}
-              placeholder={pricingActive ? "Beschreibung (optional)" : "Beschreibung / Zeitraum (optional)"}
+              placeholder={pricingActive || isSalesOffer ? "Beschreibung (optional)" : "Beschreibung / Zeitraum (optional)"}
               disabled={disabled || inherited || (openEnded && !isFlatRate && eff.unit !== "stueck")}
             />}
             {pricingActive && !openEnded && !undatedOffer && (
