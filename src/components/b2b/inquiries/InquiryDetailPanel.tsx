@@ -894,7 +894,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             if (raw?.open_ended !== true) return weekend;
             const unit = normalizeOpenEndedUnit(raw.open_ended_unit);
             return { ...weekend, open_ended: true, open_ended_unit: unit, minimum_duration: normalizeOpenEndedDuration(raw.minimum_duration, unit) };
-          })() : undefined}
+          })() : { extra_fields: offerSnapshot?.meta.extra_fields }}
           defaultPayments={docMode === "invoice" || docMode === "final"
             ? deposit.settled
               ? [
