@@ -36,8 +36,8 @@ describe("actual CMS article save", () => {
   });
   it("saves a deliberately edited price together with article changes", async () => {
     render(<InventoryEditorDialog open onOpenChange={vi.fn()} onSaved={vi.fn()} initial={product()} />);
-    fireEvent.click(screen.getByRole("tab", { name: /Preise/ }));
-    fireEvent.change(screen.getByLabelText("ab 1 Miettag (€ netto je Miettag)"), { target: { value: "100" } });
+    fireEvent.mouseDown(screen.getByRole("tab", { name: /Preise/ }), { button: 0, ctrlKey: false });
+    fireEvent.change(await screen.findByLabelText("ab 1 Miettag (€ netto je Miettag)"), { target: { value: "100" } });
     fireEvent.click(screen.getByRole("button", { name: /^Speichern$/ }));
     await waitFor(() => expect(mocks.update).toHaveBeenCalled());
     expect(mocks.update.mock.calls[0][1]).toMatchObject({ price_from_1_rd: 100, price_from_3_rd: 90, price_from_10_rd: 80, price_from_20_rd: 60, price_per_day: "ab 100,00 €/Tag" });
