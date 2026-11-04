@@ -1,7 +1,10 @@
 import { codedSubject } from "../_shared/order-code.ts";
 import { rentalFeedbackEmail } from "../_shared/feedback-coupons.ts";
 import { invoiceNumberForGeneration } from "../_shared/invoice-preview.ts";
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+};
 import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
 /**
  * Erstellt und versendet eine Rechnung, einen Nachtrag, eine Abschlags- oder
@@ -485,7 +488,7 @@ Deno.serve(async (req: Request) => {
       image_url: normalizeImageUrl(i.image_url) as string | null,
     }));
 
-    const servicesWithPrices = items.flatMap((item, idx) =>
+    const servicesWithPrices: Parameters<typeof generateOfferPdf>[0]["servicesWithPrices"] = items.flatMap((item, idx) =>
       (item.addons ?? [])
         .filter((a) => a.amount > 0)
         .map((a, ai) => ({
