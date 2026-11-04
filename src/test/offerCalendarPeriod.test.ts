@@ -11,7 +11,7 @@ const line: OfferLine = { product_name: "Test", quantity: 1, duration: 5, unit: 
   rental_start: "2026-11-23", rental_end: "2026-11-24", rental_start_time: "09:00", rental_end_time: "16:30" };
 describe("Calendar is the rental offer period source", () => {
   it("quotes ten rental days without inherited dates or logistics", () => {
-    const quote = recalcAddons(undatedOfferLine({ ...line, duration: 10, unit_price: 51, delivery_at: "2026-11-22T08:00", addons: [{ key: "insurance", label: "Versicherung", price_type: "percent" as const, basis: "full_period" as const, rate: 10, amount: 0, days: 21 }] }));
+    const quote = recalcAddons(undatedOfferLine<OfferLine>({ ...line, duration: 10, unit_price: 51, delivery_at: "2026-11-22T08:00", addons: [{ key: "insurance", label: "Versicherung", price_type: "percent", basis: "full_period", rate: 10, amount: 0, days: 21 }] }));
     expect(quote.rental_start).toBeUndefined();
     expect(quote.delivery_at).toBeUndefined();
     expect(quote.duration).toBe(10);
