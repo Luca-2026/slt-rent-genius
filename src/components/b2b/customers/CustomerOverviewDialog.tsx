@@ -9,6 +9,7 @@ import { crmCustomerLabel, type CrmCustomer } from "@/hooks/useCrmCustomers";
 import { inquiryStatusLabel } from "@/lib/inquiryStatus";
 import { countsAsRevenue } from "@/lib/dashboardMetrics";
 import { CustomerCreditSummary } from "./CustomerCreditSummary";
+import { CustomerDocuments } from "./CustomerDocuments";
 
 type Inq = { id: string; table: "rental" | "sales"; created_at: string; status: string; offer_number: string | null; offer_sent_at: string | null; offer_total_gross: number | null; order_code?: string | null };
 type Inv = { id: string; invoice_number: string | null; invoice_date: string | null; invoice_kind: string | null; status: string; net_amount: number | null; gross_amount: number | null };
@@ -77,6 +78,7 @@ export function CustomerOverviewDialog({ customer, open, onOpenChange, onEdit, s
         </div>
 
         <CustomerCreditSummary key={customer.id} customer={customer} />
+        {open && <CustomerDocuments key={customer.id} customerId={customer.id} profileId={customer.b2b_profile_id} />}
 
         {error ? <p role="alert" className="text-sm text-destructive">Kundendaten konnten nicht geladen werden.</p> : loading ? <p className="text-sm text-muted-foreground">Wird geladen …</p> : (
           <div className="space-y-5">
