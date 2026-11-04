@@ -1,4 +1,5 @@
 # Edge function rules
+- AB email/PDF and new invoice evidence must honor saved offer name/description overrides rather than linked catalogue labels; AB uses offerItemText without mutating the accepted snapshot, preventing customer-facing document drift.
 - Sales inquiry offers use _shared/sales-offer.ts for bank-only payment, one-time line normalization and optional informational financing; block sales at creation, acceptance, reminders and public checkout, including legacy payment links, while preserving rental payment and refund behavior.
 
 - Legacy B2B protocol HTML footers must use `unifiedFooterHtml` from `_shared/pdf-footer.ts`; their email PDFs use `drawUnifiedFooter` with the reservation location so both outputs match business documents.

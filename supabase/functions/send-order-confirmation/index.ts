@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { offerItemText } from "../_shared/offer-item-text.ts";
 import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
 /**
  * Sendet nach Zahlungseingang die Auftragsbestätigung zu einem angenommenen
@@ -119,7 +120,7 @@ Deno.serve(async (req) => {
       if (Number(body.expected_revision) !== (inq.order_revision ?? 0)) return json({error:"Auftrag wurde inzwischen geändert. Bitte neu laden."},409);
       try { payload = buildOrderAmendment(body,payload,inq.location); } catch(e) { return json({error:e instanceof Error ? e.message : "Ungültige Änderung"},400); }
     }
-    const items: any[] = Array.isArray(payload.items) ? payload.items : [];
+    const items: any[] = Array.isArray(payload.items) ? payload.items.map((item: any) => ({ ...item, ...offerItemText(item) })) : [];
     const payments: any[] = (Array.isArray(inq.payments) ? inq.payments : []).filter((p: any) => toCents(p?.amount) > 0);
     const ev = evaluateOrderPayment({
       gross: amendment ? payload?.totals?.grossAmount : inq.offer_total_gross ?? payload?.totals?.grossAmount,
@@ -285,6 +286,7 @@ Deno.serve(async (req) => {
         documentType: "order_confirmation",
         businessType: inquiryType,
         extraFields: payload.extra_fields,
+        orderConfirmationGreeting: { addressForm: form, salutation: greeting },
         offerNumber: confirmationNumber,
         offerDate: today.toISOString().slice(0, 10),
         validUntil: "",

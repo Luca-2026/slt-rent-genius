@@ -473,8 +473,8 @@ Deno.serve(async (req: Request) => {
     };
 
     const pdfItems = items.map((i) => ({
-      product_name: i.product_name,
-      description: i.description,
+      product_name: i.name_override || i.product_name,
+      description: i.description_override || i.description,
       quantity: i.quantity,
       unit: i.unit,
       unit_price: i.unit_price,
@@ -779,8 +779,8 @@ Deno.serve(async (req: Request) => {
     const itemRows = items.map((i, index) => ({
       invoice_id: inserted.id,
       position: index + 1,
-      product_name: i.product_name,
-      description: i.description ?? null,
+      product_name: i.name_override || i.product_name,
+      description: i.description_override || i.description || null,
       // Mit echter Einheit (Liter / 15 Min) speichern, wie sie auf dem PDF steht.
       quantity: pdfItems[index]?.measure ? pdfItems[index].measure!.quantity : i.quantity,
       unit: pdfItems[index]?.measure ? measureUnitLabel(pdfItems[index].measure!.unit) : i.unit ?? null,
