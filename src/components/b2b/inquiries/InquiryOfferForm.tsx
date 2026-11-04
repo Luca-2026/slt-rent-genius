@@ -680,7 +680,7 @@ export function InquiryOfferForm({
     if (!isSalesOffer) return;
     const saved = draft?.financing ?? defaultMeta?.financing;
     setFinancingEnabled(saved ? saved.enabled === true : financingRequest?.desired === true);
-    setFinancingNote(saved?.note ?? "");
+    setFinancingNote(saved?.note ?? [financingRequest?.term ? `Gewünschte Laufzeit: ${financingRequest.term} Monate` : "", financingRequest?.downPayment ? `Gewünschte Anzahlung: ${financingRequest.downPayment}` : ""].filter(Boolean).join(" · "));
   }, []);
 
   const applyDraftData = (d: Record<string, any>) => {
@@ -2120,6 +2120,7 @@ export function InquiryOfferForm({
             onClick={() =>
               setItems((prev) => [...prev, {
                 ...emptyLine(),
+                ...(isSalesOffer ? { unit: "stueck" as const, duration: 1 } : {}),
                 rental_start: prev[0]?.rental_start ?? rentalPeriod?.start ?? undefined,
                 rental_end: prev[0]?.rental_end ?? rentalPeriod?.end ?? undefined,
                 rental_start_time: prev[0]?.rental_start_time,

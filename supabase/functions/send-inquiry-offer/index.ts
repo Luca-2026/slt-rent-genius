@@ -372,10 +372,17 @@ Deno.serve(async (req: Request) => {
       }
       termsPrint = printableTerms(termsText, hasBau);
     }
+    if (inquiryType === "sales") {
+      addressForm = normalizeAddressForm(inquiry.address_form);
+      if (inquiry.crm_customer_id) {
+        const { data: crm } = await service.from("crm_customers").select("address_form").eq("id", inquiry.crm_customer_id).maybeSingle();
+        if (crm?.address_form) addressForm = normalizeAddressForm(crm.address_form);
+      }
+    }
     const F = (du: string, sie: string) => byForm(addressForm, du, sie);
     const greeting = isRentalOffer
       ? salutationLine({ address_form: addressForm, salutation: inquiry.customer_salutation, name: customerName })
-      : `Hallo ${customerName || ""},`;
+      : salutationLine({ address_form: addressForm, salutation: inquiry.salutation, name: customerName });
 
     // ── Produktbilder: explizit übergeben oder per Artikelname aus dem CMS ──
     const pdfItems = items.map((i) => ({
@@ -492,7 +499,7 @@ Deno.serve(async (req: Request) => {
 
     const pdfBytes = await generateOfferPdf({
       businessType: inquiryType,
-      salesOffer: inquiryType === "sales" ? { salutation: salutationLine({ address_form: normalizeAddressForm(inquiry.address_form), salutation: inquiry.salutation, name: customerName }), financing, orderType } : undefined,
+      salesOffer: inquiryType === "sales" ? { addressForm, salutation: greeting, financing, orderType } : undefined,
       undatedOffer,
       orderCode: (inquiry as { order_code?: string | null }).order_code ?? null,
       offerNumber,

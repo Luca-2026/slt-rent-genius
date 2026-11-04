@@ -13,7 +13,7 @@ export async function generateOfferPdf(data: {
   /** Geschäftsart für die Artikelbezeichnung; bestehende Aufrufer bleiben Miete. */
   businessType?: "rental" | "sales";
   undatedOffer?: boolean;
-  salesOffer?: { salutation: string; financing?: SalesFinancing; orderType?: "pickup" | "delivery" };
+  salesOffer?: { addressForm?: "du" | "sie"; salutation: string; financing?: SalesFinancing; orderType?: "pickup" | "delivery" };
   offerDate: string;
   validUntil: string;
   profile: any;
@@ -133,7 +133,7 @@ export async function generateOfferPdf(data: {
   const isSalesOffer = data.businessType === "sales" && docType === "offer";
   const sq = isSalesOffer ? data.salesOffer : undefined;
   const iq = docType === "offer" ? data.inquiryOffer : undefined;
-  const isDu = iq?.addressForm === "du";
+  const isDu = iq?.addressForm === "du" || sq?.addressForm === "du";
   const T = (du: string, sie: string) => (isDu ? du : sie);
   const isOC = docType === "order_confirmation";
   const isInvoice = docType !== "offer" && !isOC;
@@ -756,12 +756,12 @@ export async function generateOfferPdf(data: {
   const deliverySubtotal = (data.deliveryCostDelivery || 0) + (data.deliveryCostReturn || 0) ||
     ((data.deliveryCost > 0) ? data.deliveryCost : 0);
 
-  if (servicesSubtotal > 0 || deliverySubtotal > 0) {
+  if ((isSalesOffer ? servicesSubtotal !== 0 : servicesSubtotal > 0) || deliverySubtotal > 0) {
     dt(pg, data.businessType === "sales" ? "Zwischensumme Verkaufsartikel" : "Zwischensumme Mietartikel", tx, y, font, 9, MUTED);
     dtr(pg, fm(itemsTotal), vx, y, font, 9); y -= 13;
   }
-  if (servicesSubtotal > 0) {
-    dt(pg, "Zwischensumme Zusatzoptionen", tx, y, font, 9, MUTED);
+  if (isSalesOffer ? servicesSubtotal !== 0 : servicesSubtotal > 0) {
+    dt(pg, isSalesOffer ? "Zusatzleistungen / Abzüge" : "Zwischensumme Zusatzoptionen", tx, y, font, 9, MUTED);
     dtr(pg, fm(servicesSubtotal), vx, y, font, 9); y -= 13;
   }
   if (deliverySubtotal > 0) {
@@ -1049,8 +1049,8 @@ export async function generateOfferPdf(data: {
     }
     y -= boxH + 12;
   } else if (isSalesOffer) {
-    drawInfoBox("Bankzahlung", salesPaymentText(data.paymentTerms || "vorkasse"), rgb(0.995, 0.97, 0.93), ORANGE, bankRows(withCode(data.offerNumber)));
-    if (sq?.financing?.enabled) drawInfoBox("Finanzierung – unverbindliche Information", [FINANCING_INFORMATION, sq.financing.note].filter(Boolean).join("\n\n"), rgb(0.94, 0.96, 0.98), BRAND);
+    drawInfoBox("Bankzahlung", salesPaymentText(data.paymentTerms || "vorkasse"), rgb(0.995, 0.97, 0.93), ORANGE, bankRows(data.offerNumber));
+    if (sq?.financing?.enabled) drawInfoBox("Finanzierung – unverbindliche Information", [FINANCING_INFORMATION, sq.financing.note].filter(Boolean).join(" "), rgb(0.94, 0.96, 0.98), BRAND);
   } else if (!isCreditNote && ["vorkasse", "anzahlung_30", "rentpair_vorkasse"].includes(String(data.paymentTerms))) {
     // Vorkasse-Kasten: Kunde wählt Online-Zahlung (Zahlungslink) oder Überweisung.
     const isAnz = data.paymentTerms === "anzahlung_30";
