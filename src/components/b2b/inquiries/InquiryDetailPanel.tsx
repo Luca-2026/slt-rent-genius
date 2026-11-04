@@ -730,7 +730,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         lastReminderAt={(inquiry as { payment_reminder_manual_at?: string | null }).payment_reminder_manual_at ?? null}
         disabled={busy}
         onChanged={onChanged}
-      />}
+      />
     </>
   );
   const stripeEl = (
@@ -740,7 +740,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         inquiryId={inquiry.id}
         offerNumber={inquiry.offer_number}
         onChanged={onChanged}
-      />
+      />}
     </>
   );
   const orderEl = (

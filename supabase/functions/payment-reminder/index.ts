@@ -1,3 +1,4 @@
+import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { processOfferFollowups } from "../_shared/offer-followup-delivery.ts";
 /**
@@ -66,7 +67,7 @@ Deno.serve(async (req) => {
       const paidCents = (Array.isArray(row.payments) ? row.payments : []).reduce((s: number, p: any) => s + toCents(p?.amount), 0);
       const payload = (row.offer_payload ?? {}) as { deposit?: unknown; payment_terms?: unknown };
       const terms = typeof payload.payment_terms === "string" ? payload.payment_terms : "vorkasse";
-      const deposit = Number(payload.deposit) || 0;
+      const deposit = table === "sales_inquiries" ? 0 : Number(payload.deposit) || 0;
       const plan = planPaymentAmounts({ gross: row.offer_total_gross, deposit, paidCents });
       if (plan.openCents <= 0) return json({ error: "Kein offener Betrag – keine Erinnerung nötig" }, 409);
       due.push({ table, r: row, terms, deposit, paidCents, plan, manual: true });
@@ -84,7 +85,7 @@ Deno.serve(async (req) => {
         const paidCents = (Array.isArray(r.payments) ? r.payments : []).reduce((s: number, p: any) => s + toCents(p?.amount), 0);
         const payload = (r.offer_payload ?? {}) as { deposit?: unknown; payment_terms?: unknown };
         const terms = typeof payload.payment_terms === "string" ? payload.payment_terms : "vorkasse";
-        const deposit = Number(payload.deposit) || 0;
+        const deposit = table === "sales_inquiries" ? 0 : Number(payload.deposit) || 0;
         if (!needsPaymentFollowup({ ...r, payment_terms: terms, gross: r.offer_total_gross, deposit, paid_cents: paidCents }, now)) continue;
         due.push({ table, r, terms, deposit, paidCents, plan: planPaymentAmounts({ gross: r.offer_total_gross, deposit, paidCents }) });
       }
@@ -106,7 +107,7 @@ Deno.serve(async (req) => {
       }
 
       let payUrl: string | null = null;
-      if (shouldOfferPaymentLink({ paymentTerms: terms, customerEmail: r.customer_email, testMode, openCents: plan.openCents })) {
+      if (onlineOfferPaymentAllowed(table) && shouldOfferPaymentLink({ paymentTerms: terms, customerEmail: r.customer_email, testMode, openCents: plan.openCents })) {
         const { data: link } = await service.from("offer_payment_links").select("token")
           .eq("inquiry_table", table).eq("inquiry_id", r.id).eq("status", "active")
           .eq("offer_number", r.offer_number).order("created_at", { ascending: false }).limit(1).maybeSingle();
@@ -134,7 +135,7 @@ Deno.serve(async (req) => {
 <div style="max-width:600px;margin:0 auto;padding:24px;">
 <h2 style="color:#00507d;margin:0 0 16px;">${t("Deine", "Ihre")} Zahlung steht noch aus</h2>
 <p>${esc(greeting)}</p>
-${intro}
+${table === "sales_inquiries" ? `<p>Zum Angebot <strong>${esc(r.offer_number)}</strong> steht noch ein Betrag aus. Bitte überweise diesen gemäß den vereinbarten Zahlungsbedingungen.</p>` : intro}
 <p style="font-size:18px;margin:20px 0;">${minCents < plan.openCents ? `Fällige Anzahlung: <strong>${money(minCents)}</strong><br><span style="font-size:13px;color:#6b7280;">Gesamt offen: ${money(plan.openCents)}</span>` : `Offener Betrag: <strong>${money(plan.openCents)}</strong>`}${plan.depositCents > 0 ? `<br><span style="font-size:13px;color:#6b7280;">inkl. Kaution ${money(plan.depositCents)} (wird nach Rückgabe erstattet)</span>` : ""}</p>
 ${payUrl ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(payUrl)}" style="background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:bold;display:inline-block;">Jetzt online bezahlen</a></p>` : ""}
 <p>${payUrl ? "Alternativ per Überweisung:" : t("Bitte überweise den Betrag auf folgendes Konto:", "Bitte überweisen Sie den Betrag auf folgendes Konto:")}</p>

@@ -1,3 +1,4 @@
+import { salesOfferLine, salesPaymentTerms, salesPaymentText, normalizeSalesFinancing } from "../_shared/sales-offer.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { UNDATED_OFFER_NOTE } from "../_shared/undated-offer.ts";
 import { applyFeedbackCoupon } from "../_shared/feedback-coupons.ts";
@@ -108,7 +109,8 @@ Deno.serve(async (req: Request) => {
     if (body.undated_offer === true && (inquiryType !== "rental" || body.open_ended === true)) return json({ error: "Unverbindliches Preisangebot nur für Miete ohne festen Zeitraum" }, 400);
     let items: InquiryOfferItem[];
     try {
-      items = normalizeInquiryOfferItems(body.items, undatedOffer);
+      const input = inquiryType === "sales" && Array.isArray(body.items) ? body.items.map((item: any) => { const sale = salesOfferLine(item); return { ...sale, articles: sale.quantity, unit_code: "stueck", unit: sale.quantity_unit === "m2" ? "m²" : sale.quantity_unit === "lfm" ? "lfm" : "Stück" }; }) : body.items;
+      items = normalizeInquiryOfferItems(input, undatedOffer);
     } catch (e) {
       return json({ error: (e as Error).message }, 400);
     }
@@ -192,16 +194,17 @@ Deno.serve(async (req: Request) => {
     if (!customerEmail) return json({ error: "Anfrage hat keine E-Mail-Adresse" }, 400);
 
     const deliveryCostDelivery = Number(body.delivery_cost_delivery) || 0;
-    const deliveryCostReturn = Number(body.delivery_cost_return) || 0;
+    const deliveryCostReturn = inquiryType === "sales" ? 0 : Number(body.delivery_cost_return) || 0;
     // Pauschalen für Auf-/Abbau (Montage & Demontage vor Ort)
     const setupCost = Math.max(0, Number(body.setup_cost) || 0);
-    const dismantleCost = Math.max(0, Number(body.dismantle_cost) || 0);
+    const dismantleCost = inquiryType === "sales" ? 0 : Math.max(0, Number(body.dismantle_cost) || 0);
     // Rückgabe an anderem Standort (One-Way) mit optionalem Netto-Aufpreis
     const returnLoc = inquiryType === "rental"
       ? resolveReturnLocation(body.return_location, body.location || inquiry.location, body.return_location_cost)
       : null;
     const returnLocationCost = returnLoc?.cost ?? 0;
-    const deposit = Number(body.deposit) || 0;
+    const deposit = inquiryType === "sales" ? 0 : Number(body.deposit) || 0;
+    const financing = inquiryType === "sales" ? normalizeSalesFinancing(body.financing) : undefined;
     const validDays = Number(body.valid_days) > 0 ? Math.min(Number(body.valid_days), 180) : 14;
     const notes: string | null = typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
 
@@ -311,6 +314,7 @@ Deno.serve(async (req: Request) => {
     if (paymentTerms === "custom" && !paymentTermsCustom) {
       paymentTerms = isBusiness ? "net_14" : "anzahlung_30";
     }
+    if (inquiryType === "sales") paymentTerms = salesPaymentTerms(inquiry.customer_kind, requestedTerms);
     const paymentDueDays = paymentTerms === "net_7" ? 7 : paymentTerms === "net_30" ? 30 : 14;
 
     const profile = {
@@ -488,6 +492,7 @@ Deno.serve(async (req: Request) => {
 
     const pdfBytes = await generateOfferPdf({
       businessType: inquiryType,
+      salesOffer: inquiryType === "sales" ? { salutation: salutationLine({ address_form: normalizeAddressForm(inquiry.address_form), salutation: inquiry.salutation, name: customerName }), financing, orderType } : undefined,
       undatedOffer,
       orderCode: (inquiry as { order_code?: string | null }).order_code ?? null,
       offerNumber,
@@ -590,7 +595,7 @@ Deno.serve(async (req: Request) => {
     let paymentLinkUrl: string | null = null;
     let paymentLinkAmount = 0;
     try {
-      if (!undatedOffer && isStripeConfigured()) {
+      if (inquiryType === "rental" && !undatedOffer && isStripeConfigured()) {
         const paidCents = (Array.isArray(inquiry.payments) ? inquiry.payments : []).reduce(
           (sum: number, p: { amount?: unknown }) => sum + toCents(p?.amount),
           0,
@@ -719,7 +724,7 @@ Deno.serve(async (req: Request) => {
         "<strong>Vorkasse komplett.</strong> Der Gesamtbetrag ist vor Mietbeginn zu leisten – per Banküberweisung " +
         "(Verwendungszweck: Angebotsnummer) oder online über " + F("deinen", "Ihren") + " persönlichen Zahlungslink." + depositText,
     };
-    const paymentEmailText = paymentTerms === "custom"
+    const paymentEmailText = inquiryType === "sales" ? escapeHtml(salesPaymentText(paymentTerms)) : paymentTerms === "custom"
       ? escapeHtml(paymentTermsCustom).replace(/\n/g, "<br>") + depositText
       : (PAYMENT_EMAIL[paymentTerms] ?? PAYMENT_EMAIL.net_14);
 
@@ -825,6 +830,7 @@ Deno.serve(async (req: Request) => {
         ...(inquiryType === "rental" ? { delivery_requested: deliveryRequested } : {}),
         // Snapshot des Angebots – Grundlage für die spätere Rechnung (inkl. Zusatzoptionen)
         offer_payload: {
+          ...(inquiryType === "sales" ? { business_type: "sales", financing: financing ?? { enabled: false } } : {}),
           coupon_code: coupon.code,
           coupon_saving_net: coupon.saving,
           offer_number: offerNumber,
