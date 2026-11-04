@@ -19,6 +19,7 @@ import { useOpenInquiryCounts } from "@/hooks/useInquiries";
 import { usePhoneCalls, isUrgentCall } from "@/hooks/usePhoneCalls";
 import { StaffNav, visibleGroups, isItemActive } from "@/components/b2b/StaffNav";
 import { canManageCreditChecks } from "@/lib/creditAssessment";
+import { customerDossierReturnPath } from "@/lib/customerDossierLink";
 
 function navBadge(
   href: string,
@@ -113,9 +114,10 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate("/b2b/login");
+      const returnTo = customerDossierReturnPath(location.pathname + location.search);
+      navigate(returnTo ? `/b2b/login?weiter=${encodeURIComponent(returnTo)}` : "/b2b/login");
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, location.pathname, location.search]);
 
   if (loading) {
     return (

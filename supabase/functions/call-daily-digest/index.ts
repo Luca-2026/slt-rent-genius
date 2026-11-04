@@ -11,6 +11,7 @@ import { isCronCall } from "../_shared/cronAuth.ts";
 import { LOCATION_CONTACTS } from "../_shared/inquiry-offer-math.ts";
 import { CALL_MODEL, readSse } from "../_shared/phoneCallAnalysis.ts";
 import { PRIORITY_LABEL, priorityRank, type CallPriority } from "../_shared/callPriority.ts";
+import { customerDossierUrl } from "../_shared/customer-dossier-link.ts";
 
 const json = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 const esc = (s: unknown) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -55,7 +56,7 @@ function renderCall(c: any, i: number): string {
   const items = (d.items?.length ? d.items.map((x: any) => `${x.quantity ? x.quantity + " × " : ""}${x.name}${x.note ? ` (${x.note})` : ""}`) : c.mentioned_items ?? []).join(", ");
   const period = [c.rental_start, d.rental_end].filter(Boolean).map((x: string) => new Date(x).toLocaleDateString("de-DE")).join(" – ");
   const row = (l: string, v: string | null | undefined) => v ? `<tr><td style="color:#6b7280;padding:2px 8px 2px 0;vertical-align:top;white-space:nowrap;">${l}</td><td style="padding:2px 0;">${esc(v)}</td></tr>` : "";
-  const link = `https://www.slt-rental.de/b2b/anrufe`;
+  const link = `https://app.slt-rental.de/b2b/anrufe`;
   return `<div style="border:1px solid #e5e7eb;border-left:4px solid ${PRIO_COLOR[p]};border-radius:6px;padding:12px;margin:0 0 12px;">
 <div style="font-size:12px;color:${PRIO_COLOR[p]};font-weight:bold;">${i}. ${esc(PRIORITY_LABEL[p] ?? p)} · ${esc(INTENT[c.intent] ?? "Nicht ausgewertet")} · ${esc(time)} Uhr · ${esc(STATUS[c.status] ?? c.status)}</div>
 <div style="font-size:15px;font-weight:bold;margin:4px 0;">${esc(who)}</div>
@@ -66,6 +67,7 @@ ${row("Lieferung", d.delivery?.wanted ? ["gewünscht", d.delivery.address].filte
 ${row("Offen", c.open_points?.length ? c.open_points.join(" · ") : null)}${row("Priorität", c.priority_reason)}
 </table>
 <a href="${link}" style="font-size:13px;color:#00507d;">Im Portal öffnen</a>
+${c.crm_customer_id ? `<br><a href="${esc(customerDossierUrl(c.crm_customer_id))}" style="font-size:13px;color:#00507d;">Kundenakte öffnen</a>` : ""}
 </div>`;
 }
 

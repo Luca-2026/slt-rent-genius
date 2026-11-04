@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, LogIn, Building2, ShieldCheck } from "lucide-react";
 import { isPortalHost } from "@/lib/portalDomain";
+import { customerDossierReturnPath } from "@/lib/customerDossierLink";
 
 export default function B2BLogin() {
   const [email, setEmail] = useState("");
@@ -20,16 +21,18 @@ export default function B2BLogin() {
   const { staffProfile, loading: staffLoading } = useStaffAccess();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const returnTo = customerDossierReturnPath(searchParams.get("weiter"));
 
   // Redirect already-authenticated users based on role
   useEffect(() => {
     if (!authLoading && !staffLoading && user) {
       navigate(
-        isAdmin || staffProfile ? "/b2b/start" : "/b2b/dashboard",
+        returnTo ?? (isAdmin || staffProfile ? "/b2b/start" : "/b2b/dashboard"),
         { replace: true }
       );
     }
-  }, [user, authLoading, staffLoading, staffProfile, isAdmin, navigate]);
+  }, [user, authLoading, staffLoading, staffProfile, isAdmin, navigate, returnTo]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

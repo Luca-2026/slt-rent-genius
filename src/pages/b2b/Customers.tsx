@@ -101,7 +101,7 @@ export default function Customers() {
     setSearchParams(next, { replace: true });
   }, [searchParams, profileById, isAdmin, setSearchParams]);
 
-  // CRM-Direktlink öffnet die Bearbeitung, unabhängig von Listenfiltern.
+  // CRM-Direktlink öffnet die gewünschte Ansicht, unabhängig von Listenfiltern.
   useEffect(() => {
     const id = searchParams.get("kunde");
     if (!id || !isStaff || accessLoading || loading || portalLoading) return;
@@ -110,7 +110,9 @@ export default function Customers() {
       toast.error("Der Kunde konnte nicht geöffnet werden.");
     } else {
       const profile = customer.b2b_profile_id ? profileById.get(customer.b2b_profile_id) : null;
-      if (profile && isAdmin) {
+      if (searchParams.get("aktion") === "ansehen") {
+        setOverview(customer);
+      } else if (profile && isAdmin) {
         setSelectedProfile(profile);
         setEditPortalOpen(true);
       } else {
