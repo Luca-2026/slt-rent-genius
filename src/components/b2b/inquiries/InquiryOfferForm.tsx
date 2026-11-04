@@ -1,3 +1,4 @@
+import { SALES_PAYMENT_OPTIONS, salesPaymentTerms, salesOfferLine, type SalesFinancing } from "../../../../supabase/functions/_shared/sales-offer";
 import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
 import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLegacyPeriod, undatedOfferLine } from "./offerCalendarPeriod";
 import { applyOpenEndedPeriod, normalizeOpenEndedUnit, normalizeOpenEndedDuration, openEndedUnitSingular, type OpenEndedUnit } from "@/lib/installments";
@@ -307,6 +308,7 @@ interface Props {
   inquiryType: "rental" | "sales";
   inquiryId: string;
   defaultCouponCode?: string;
+  financingRequest?: { desired?: boolean | null; term?: string | null; downPayment?: string | null };
   location: string | null;
   defaultItems: (OfferLine & { custom_period?: boolean; product_slug?: string })[];
   /** Vom Kunden im Anfrageformular angegebene Lieferadresse (im Portal änderbar). */
@@ -362,6 +364,7 @@ interface Props {
     order_type?: OrderType;
     /** Paket 4: geänderte Angebotsbedingungen (null = Textbaustein). */
     terms_text?: string | null;
+    financing?: SalesFinancing;
   };
   /** Vollseite: Aktionsleiste oben angeheftet statt am Formularende (nur Anordnung). */
   stickyActions?: boolean;
@@ -417,12 +420,16 @@ export function InquiryOfferForm({
   reviseOf = null,
   defaultMeta,
   defaultCouponCode = "",
+  financingRequest,
   stickyActions = false,
   stickyActionsLead,
   sendBlock = null,
   ignoreDraft = false,
 }: Props) {
   const isInvoice = mode === "invoice";
+  const isSalesOffer = inquiryType === "sales" && mode === "offer";
+  const [financingEnabled, setFinancingEnabled] = useState(false);
+  const [financingNote, setFinancingNote] = useState("");
   const isAmendment = mode === "amendment";
   const [agreementNote,setAgreementNote] = useState("");
   const [agreedAt,setAgreedAt] = useState(() => { const now = new Date(); return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0,16); });
@@ -509,11 +516,11 @@ export function InquiryOfferForm({
 
   // Standard immer Vorkasse (auch Geschäftskunden), damit nie versehentlich „auf Rechnung“ rausgeht.
   const defaultTerms = () =>
-    isInvoice || customerKind === "business" ? "vorkasse" : "anzahlung_30";
+    isSalesOffer || isInvoice || customerKind === "business" ? "vorkasse" : "anzahlung_30";
   const [paymentTerms, setPaymentTerms] = useState<string>(() => {
     const t = draft?.paymentTerms ?? defaultMeta?.payment_terms ?? defaultTerms();
     // Alte Variante „Vorkasse über Zahlungslink“ ist jetzt Teil von „Vorkasse komplett“.
-    return safeCustomerPaymentTerms(customerKind, t, isInvoice);
+    return isSalesOffer ? salesPaymentTerms(customerKind, t) : safeCustomerPaymentTerms(customerKind, t, isInvoice);
   });
   /** Freitext für „Individuelle Zahlungsbedingungen“ (nur Geschäftskunden). */
   const [paymentTermsCustom, setPaymentTermsCustom] = useState<string>(draft?.paymentTermsCustom ?? defaultMeta?.payment_terms_custom ?? "");
@@ -522,6 +529,7 @@ export function InquiryOfferForm({
   const skipDefaults = useRef(!!draft || !!defaultMeta?.payment_terms);
 
   useEffect(() => {
+    if (isSalesOffer) { setPaymentTerms((terms) => salesPaymentTerms(customerKind, terms)); return; }
     if (customerKind === "private") {
       setPaymentTerms((terms) => safeCustomerPaymentTerms(customerKind, terms, isInvoice));
       return;
@@ -668,7 +676,15 @@ export function InquiryOfferForm({
   const [remoteDraft, setRemoteDraft] = useState<ServerInquiryDraft | null>(null);
   const [myUserId, setMyUserId] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (!isSalesOffer) return;
+    const saved = draft?.financing ?? defaultMeta?.financing;
+    setFinancingEnabled(saved ? saved.enabled === true : financingRequest?.desired === true);
+    setFinancingNote(saved?.note ?? "");
+  }, []);
+
   const applyDraftData = (d: Record<string, any>) => {
+    if (isSalesOffer) { setFinancingEnabled(d.financing?.enabled === true); setFinancingNote(d.financing?.note ?? ""); }
     if (Array.isArray(d.items) && d.items.length) setItems(d.items as FormLine[]);
     if (d.delivery) setDelivery(d.delivery as OfferDeliveryAddress);
     setDeliveryCostDelivery(d.deliveryCostDelivery ?? 0);
@@ -682,7 +698,7 @@ export function InquiryOfferForm({
     setPayments(((d.payments as OfferPayment[]) ?? []).filter((p) => !isStripePayment(p)));
     setServicePeriodStart(d.servicePeriodStart ?? "");
     setServicePeriodEnd(d.servicePeriodEnd ?? "");
-    if (d.paymentTerms) setPaymentTerms(safeCustomerPaymentTerms(customerKind, d.paymentTerms, isInvoice));
+    if (d.paymentTerms) setPaymentTerms(isSalesOffer ? salesPaymentTerms(customerKind, d.paymentTerms) : safeCustomerPaymentTerms(customerKind, d.paymentTerms, isInvoice));
     setPaymentTermsCustom(d.paymentTermsCustom ?? "");
     setNotes(d.notes ?? "");
     setCouponCode(d.couponCode ?? defaultCouponCode);
@@ -734,6 +750,7 @@ export function InquiryOfferForm({
     const timer = window.setTimeout(() => {
       const snapshot = {
         couponCode,
+        ...(isSalesOffer ? { financing: { enabled: financingEnabled, note: financingNote } } : {}),
         items,
         delivery,
         deliveryCostDelivery,
@@ -771,6 +788,8 @@ export function InquiryOfferForm({
     return () => window.clearTimeout(timer);
   }, [
     couponCode,
+    financingEnabled,
+    financingNote,
     draftKey,
     disabled,
     items,
@@ -842,6 +861,7 @@ export function InquiryOfferForm({
   const effectiveItems = useMemo(
     () =>
       items.map((item, i) => {
+        if (isSalesOffer) return recalcAddons(salesOfferLine(item));
         const inherited = undatedOffer ? applyRentalPricing({ ...undatedOfferLine(item), undated_offer: true }, dayOpts) : applyInheritedPeriod(item, i, items[0]);
         const calendar = pricingActive && !openEnded ? calendarDuration(inherited, { use_saturday: inherited.use_saturday ?? useSaturday, use_sunday: inherited.use_sunday ?? useSunday }) : inherited;
         const unit = inherited.unit ?? "kalendertage";
@@ -851,7 +871,7 @@ export function InquiryOfferForm({
           : calendar;
         return recalcAddons(monthly);
       }),
-    [items, openEnded, undatedOffer, minMonths, openEndedUnit, pricingActive, useSaturday, useSunday],
+    [items, isSalesOffer, openEnded, undatedOffer, minMonths, openEndedUnit, pricingActive, useSaturday, useSunday],
   );
 
   // ----------------------------------------------------------------
@@ -951,8 +971,8 @@ export function InquiryOfferForm({
   const activeReturnCost = activeReturnLocation ? Math.max(0, Number(returnLocationCost) || 0) : 0;
 
   const totals = useMemo(
-    () => buildOfferTotals(effectiveItems, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + activeReturnCost),
-    [effectiveItems, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost, activeReturnCost],
+    () => buildOfferTotals(effectiveItems, deliveryCostDelivery + (isSalesOffer ? 0 : deliveryCostReturn) + setupCost + (isSalesOffer ? 0 : dismantleCost) + activeReturnCost),
+    [effectiveItems, isSalesOffer, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost, activeReturnCost],
   );
 
   /** Summe der erfassten Teilzahlungen und daraus der offene Restbetrag. */
@@ -1215,6 +1235,10 @@ export function InquiryOfferForm({
         location,
         // Paket 3b: Positionen in Gruppenreihenfolge (PDF ohne Überschriften, die folgen in Paket 4).
         items: orderItemsByGroups(groups, effectiveItems).map(({ available_addons: _unused, discount_category: _dc, price_source: _src, custom_period: _cp, pricing: _pr, unit_manual: _um, tier_label: _tl, requested_addon_keys: _rak, ...rest }) => {
+          if (isSalesOffer) {
+            const sale = salesOfferLine(rest);
+            return { ...sale, articles: sale.quantity, quantity: sale.quantity, duration: 1, unit_code: "stueck", unit: quantityUnitShort(sale.quantity_unit), description: sale.description_override?.trim() || sale.description };
+          }
           const unit = (rest.unit ?? "kalendertage") as OfferUnit;
           // Pauschalpositionen haben keine Dauer – der Preis gilt für den
           // gesamten Auftrag, unabhängig von der Mietzeit.
@@ -1251,12 +1275,12 @@ export function InquiryOfferForm({
             addons: (rest.addons ?? []).filter((a) => (a.optional ? !isInvoice : Number(a.amount) !== 0)),
           };
         }),
-        payment_terms: safeCustomerPaymentTerms(customerKind, paymentTerms, isInvoice),
+        payment_terms: isSalesOffer ? salesPaymentTerms(customerKind, paymentTerms) : safeCustomerPaymentTerms(customerKind, paymentTerms, isInvoice),
         payment_terms_custom: customerKind === "business" && paymentTerms === "custom" ? paymentTermsCustom.trim() : null,
         delivery_cost_delivery: deliveryCostDelivery,
-        delivery_cost_return: deliveryCostReturn,
+        delivery_cost_return: isSalesOffer ? 0 : deliveryCostReturn,
         setup_cost: setupCost,
-        dismantle_cost: dismantleCost,
+        dismantle_cost: isSalesOffer ? 0 : dismantleCost,
         return_location: activeReturnLocation || null,
         return_location_cost: activeReturnCost,
         delivery_requested: delivery.requested,
@@ -1267,7 +1291,8 @@ export function InquiryOfferForm({
               city: delivery.city.trim(),
             }
           : null,
-        deposit,
+        deposit: isSalesOffer ? 0 : deposit,
+        ...(isSalesOffer ? { financing: { enabled: financingEnabled, note: financingNote } } : {}),
         valid_days: validDays,
         ...(canUndated ? { undated_offer: undatedOffer } : {}),
         ...(canOpenEnded ? { open_ended: openEnded, ...(openEnded ? { open_ended_unit: openEndedUnit, minimum_duration: minMonths, ...(openEndedUnit === "monate" ? { min_months: minMonths } : {}) } : {}) } : {}),
@@ -1847,7 +1872,7 @@ export function InquiryOfferForm({
                 )}
               </div>
             )}
-            {index > 0 && !undatedOffer && (
+            {!isSalesOffer && index > 0 && !undatedOffer && (
               <label className="flex items-center gap-2 text-xs cursor-pointer">
                 <Checkbox
                   checked={!!item.custom_period}
@@ -1901,7 +1926,7 @@ export function InquiryOfferForm({
                   </Select>
                 </div>
               </div>
-              <div className="min-w-0">
+              {!isSalesOffer && <div className="min-w-0">
                 <Label className="text-xs">Dauer</Label>
                 {pricingActive && !openEnded && !undatedOffer && !isFlatRate && eff.unit !== "stueck" && (
                   <label className="mb-1 flex items-center gap-2 text-xs">
@@ -1953,7 +1978,7 @@ export function InquiryOfferForm({
                   {item.quantity || 0} {quantityUnitShort(item.quantity_unit)} ×{" "}
                   {isFlatRate ? "pauschal" : `${eff.duration ?? 1} ${unitAbbreviation((eff.unit ?? "kalendertage") as OfferUnit)}`}
                 </p>
-              </div>
+              </div>}
               <div>
                 <Label className="text-xs">{isFlatRate ? "Pauschalpreis netto" : "Einzelpreis netto"}</Label>
                 <NumberInput
@@ -2118,7 +2143,7 @@ export function InquiryOfferForm({
         </div>
         {(() => {
           const used = Array.from(new Set(effectiveItems.map((i) => (i.unit ?? "kalendertage") as OfferUnit)));
-          if (!used.length) return null;
+          if (isSalesOffer || !used.length) return null;
           const qUsed = QUANTITY_UNITS.filter((q) => effectiveItems.some((i) => (i.quantity_unit ?? "stk") === q.value));
           return (
             <p className="text-[11px] text-muted-foreground" data-testid="unit-legend">
@@ -2207,21 +2232,21 @@ export function InquiryOfferForm({
           <NumberInput type="number" min={0} step="0.01" value={deliveryCostDelivery}
             onChange={(e) => changeDeliveryCost(Number(e.target.value) || 0)} disabled={disabled} />
         </div>
-        <div>
+        {!isSalesOffer && <div>
           <Label className="text-xs">Abholkosten</Label>
           <NumberInput type="number" min={0} step="0.01" value={deliveryCostReturn}
             onChange={(e) => changeReturnCost(Number(e.target.value) || 0)} disabled={disabled} />
-        </div>
+        </div>}
         <div>
           <Label className="text-xs">Aufbau</Label>
           <NumberInput type="number" min={0} step="0.01" value={setupCost}
             onChange={(e) => setSetupCost(Number(e.target.value) || 0)} disabled={disabled} />
         </div>
-        <div>
+        {!isSalesOffer && <div>
           <Label className="text-xs">Abbau</Label>
           <NumberInput type="number" min={0} step="0.01" value={dismantleCost}
             onChange={(e) => setDismantleCost(Number(e.target.value) || 0)} disabled={disabled} />
-        </div>
+        </div>}
       </div>
       <div className="space-y-3 border-t border-border pt-4">
         <label className="flex items-start gap-2 text-sm font-medium cursor-pointer">
@@ -2310,17 +2335,17 @@ export function InquiryOfferForm({
       )}
       </EditorSection>
 
-      <EditorSection step={3} title={isInvoice ? "Zahlung & Verrechnung" : "Kaution, Gültigkeit & Zahlung"} testId="section-payment">
+      <EditorSection step={3} title={isInvoice ? "Zahlung & Verrechnung" : isSalesOffer ? "Gültigkeit, Bankzahlung & Finanzierung" : "Kaution, Gültigkeit & Zahlung"} testId="section-payment">
       {!isInvoice && inquiryType === "rental" && <div className="space-y-2">
         <Label htmlFor="feedback-coupon">Feedback-Gutschein</Label>
         <Input id="feedback-coupon" value={couponCode} onChange={e => setCouponCode(e.target.value.toUpperCase())} maxLength={20} disabled={disabled} placeholder="Gutscheincode" />
       </div>}
       <div className="grid grid-cols-2 gap-3 sm:max-w-md">
-        <div>
+        {!isSalesOffer && <div>
           <Label className="text-xs">Kaution</Label>
           <NumberInput type="number" min={0} step="0.01" value={deposit}
             onChange={(e) => setDeposit(Number(e.target.value) || 0)} disabled={disabled} />
-        </div>
+        </div>}
         {!isInvoice && (
           <div>
             <Label className="text-xs">Gültig (Tage)</Label>
@@ -2339,7 +2364,7 @@ export function InquiryOfferForm({
         <Select value={paymentTerms} onValueChange={setPaymentTerms} disabled={disabled}>
           <SelectTrigger><SelectValue /></SelectTrigger>
           <SelectContent>
-            {(isInvoice ? INVOICE_PAYMENT_OPTIONS.filter((o) => customerKind === "business" || o.value === "vorkasse") : PAYMENT_OPTIONS[customerKind]).map((o) => (
+            {(isSalesOffer ? SALES_PAYMENT_OPTIONS.filter((o) => customerKind === "business" || o.value === "vorkasse") : isInvoice ? INVOICE_PAYMENT_OPTIONS.filter((o) => customerKind === "business" || o.value === "vorkasse") : PAYMENT_OPTIONS[customerKind]).map((o) => (
               <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
             ))}
           </SelectContent>
@@ -2355,7 +2380,7 @@ export function InquiryOfferForm({
           />
         )}
         <p className="text-xs text-muted-foreground">
-          {undatedOffer ? "Keine Zahlung fällig. Zahlungsbedingungen werden erst im endgültigen Angebot mit festem Mietzeitraum vereinbart." : paymentTerms === "custom"
+          {isSalesOffer ? (paymentTerms === "vorkasse" ? "Kaufpreis vollständig vor Übergabe oder Lieferung per Banküberweisung." : "Zahlung nach Rechnungsstellung per Banküberweisung innerhalb der gewählten Frist.") : undatedOffer ? "Keine Zahlung fällig. Zahlungsbedingungen werden erst im endgültigen Angebot mit festem Mietzeitraum vereinbart." : paymentTerms === "custom"
             ? "Dieser Text erscheint wortgleich im Angebots-PDF und in der E-Mail an den Kunden."
             : paymentTerms === "anzahlung_30"
             ? "Kunde zahlt mindestens 30 % der Bruttomiete vorab, Rest inkl. Kaution vor Mietbeginn. Er wählt selbst: Überweisung oder online über den Zahlungslink in der Angebotsmail."
@@ -2364,6 +2389,17 @@ export function InquiryOfferForm({
                 : "Rechnungszahlung nach Mietende innerhalb der gewählten Frist; es gilt die Angebotsgültigkeit."}
         </p>
       </div>
+      {isSalesOffer && <div className="space-y-3 border-t border-border pt-4">
+        {financingRequest?.desired && <p className="text-sm text-primary">Finanzierung vom Kunden angefragt{financingRequest.term ? ` · Laufzeit: ${financingRequest.term}` : ""}{financingRequest.downPayment ? ` · Anzahlung: ${financingRequest.downPayment}` : ""}</p>}
+        <label className="flex items-center gap-2 text-sm font-medium">
+          <Checkbox aria-label="Finanzierungshinweis ausweisen" checked={financingEnabled} onCheckedChange={(v) => setFinancingEnabled(v === true)} disabled={disabled} /> Finanzierungshinweis ausweisen
+        </label>
+        {financingEnabled && <>
+          <p className="text-xs text-muted-foreground">Rein informativ über eine Partnerbank; keine Finanzierungszusage durch SLT. Kaufpreis und Bankzahlung bleiben unverändert.</p>
+          <Label htmlFor="sales-financing-note">Zusätzliche Angaben zur Finanzierungsanfrage (optional)</Label>
+          <Textarea id="sales-financing-note" value={financingNote} onChange={(e) => setFinancingNote(e.target.value)} maxLength={1200} rows={3} disabled={disabled} />
+        </>}
+      </div>}
       {isInvoice && takenChargesGross > 0 && (
         <div className="space-y-1 border-t border-border pt-4 text-sm">
           <Label className="text-xs">Verrechnung mit der Kaution</Label>
