@@ -36,7 +36,7 @@ export async function generateOfferPdf(data: {
   additionalServices?: any[];
   staffName: string;
   /** Paket 3b: Besteller, Kostenstelle, Bauvorhaben – im Infoblock ausgewiesen. */
-  extraFields?: { orderer?: string; cost_center?: string; project?: string };
+  extraFields?: { orderer?: string; cost_center?: string; project?: string; commission?: string };
   issuingLocation: string;
   returnLocation?: string;
   deliveryAddress?: { street?: string; postal_code?: string; city?: string };
@@ -317,6 +317,15 @@ export async function generateOfferPdf(data: {
       dt(pg, value, INFO_VAL_X, iy, font, fitVal(value, font, 9), c);
       iy -= 12;
     };
+    const referenceRow = (label: string, value: string) => {
+      dt(pg, label, INFO_X, iy, font, 8.5, MUTED);
+      const lines = wt(value, font, 8.5, VAL_W);
+      for (const line of lines) {
+        dt(pg, line, INFO_VAL_X, iy, font, 8.5, INK);
+        iy -= 11;
+      }
+      iy -= 1;
+    };
     const infoSub = (value: string) => {
       dt(pg, value, INFO_VAL_X, iy + 2, font, fitVal(value, font, 7), MUTED);
       iy -= 10;
@@ -371,9 +380,10 @@ export async function generateOfferPdf(data: {
     }
 
     if (!iq) {
-      if (data.extraFields?.orderer) infoRow("Besteller:", data.extraFields.orderer);
-      if (data.extraFields?.cost_center) infoRow("Kostenstelle:", data.extraFields.cost_center);
-      if (data.extraFields?.project) infoRow("Bauvorhaben:", data.extraFields.project);
+      if (data.extraFields?.orderer) referenceRow("Besteller:", data.extraFields.orderer);
+      if (data.extraFields?.cost_center) referenceRow("Kostenstelle:", data.extraFields.cost_center);
+      if (data.extraFields?.project) referenceRow("Bauvorhaben:", data.extraFields.project);
+      if (data.extraFields?.commission) referenceRow("Kommission:", data.extraFields.commission);
     }
     infoRow("Ansprechpartner:", data.staffName || SLT_COMPANY.managingDirector);
     infoRow("Ausgabestandort:", issuingLoc.name);
@@ -395,13 +405,14 @@ export async function generateOfferPdf(data: {
         ["Besteller:", data.extraFields?.orderer],
         ["Kostenstelle:", data.extraFields?.cost_center],
         ["Bauvorhaben:", data.extraFields?.project],
+        ["Kommission:", data.extraFields?.commission],
       ];
       const filled = rows.filter(([, v]) => v && String(v).trim());
       if (filled.length) {
         iy -= 6;
         dt(pg, T("Deine Daten", "Ihre Daten"), INFO_X, iy, bold, 8.5, BRAND);
         iy -= 12;
-        for (const [l, v] of filled) infoRow(l, String(v).trim());
+        for (const [l, v] of filled) referenceRow(l, String(v).trim());
       }
     }
 

@@ -106,11 +106,13 @@ export interface OfferExtraFields {
   orderer?: string;
   cost_center?: string;
   project?: string;
+  commission?: string;
 }
 export const EXTRA_FIELD_LABELS: Record<keyof OfferExtraFields, string> = {
   orderer: "Besteller",
   cost_center: "Kostenstelle",
   project: "Bauvorhaben",
+  commission: "Kommission",
 };
 
 /** Nur ausgefüllte Zusatzfelder speichern; leer → undefined (Feld entfällt im offer_payload). */

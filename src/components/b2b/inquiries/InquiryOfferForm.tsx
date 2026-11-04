@@ -2523,11 +2523,11 @@ export function InquiryOfferForm({
       )}
       </EditorSection>
 
-      <EditorSection step={4} title={inquiryType === "rental" ? "Angaben zum Auftrag & Hinweis" : "Hinweis für den Kunden"} testId="section-notes">
-      {inquiryType === "rental" && (
+      <EditorSection step={4} title="Angaben zum Auftrag & Hinweis" testId="section-notes">
+      {(
         <div className="space-y-2" data-testid="extra-fields">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs text-muted-foreground">Besteller, Kostenstelle, Bauvorhaben – erscheinen im Angebot</span>
+            <span className="text-xs text-muted-foreground">Kundenreferenzen</span>
             {(Object.keys(EXTRA_FIELD_LABELS) as (keyof OfferExtraFields)[]).some((k) => !(k in extraFields)) && (
               <Select value="" disabled={disabled} onValueChange={(k) => setExtraFields((prev) => ({ ...prev, [k]: prev[k as keyof OfferExtraFields] ?? "" }))}>
                 <SelectTrigger className="h-8 w-auto text-xs" aria-label="Feld hinzufügen"><SelectValue placeholder="Feld hinzufügen" /></SelectTrigger>

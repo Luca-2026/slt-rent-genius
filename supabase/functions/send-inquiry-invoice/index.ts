@@ -18,7 +18,7 @@ import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { depositSummary, depositSummaryNote, inferChargeMeasure, measureUnitLabel, settlementAppliesToNewInvoice, settlementPayments, type DepositSummary, type SettlementRow } from "../_shared/final-invoice-deposit.ts";
-import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
+import { addonExplanation, invoiceExtraFields } from "../_shared/inquiry-offer-math.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
 import {
   addMonths,
@@ -538,9 +538,11 @@ Deno.serve(async (req: Request) => {
       if (dn && !(notes ?? "").includes("Kautionsabrechnung vom")) notes = [notes, dn].filter(Boolean).join("\n\n");
     }
     const pdfBytes = await generateOfferPdf({
+      extraFields: invoiceExtraFields(inquiry.offer_payload, body.extra_fields),
       depositSettlement: depositInfo ?? undefined,
       orderCode: (inquiry as { order_code?: string | null }).order_code ?? null,
       documentType: invoiceKind,
+      businessType: inquiryType,
       offerNumber: invoiceNumber,
       offerDate: isoDate(invoiceDate),
       validUntil: isoDate(dueDate),

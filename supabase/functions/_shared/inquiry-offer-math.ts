@@ -346,14 +346,20 @@ export function normalizeOfferGroups(raw: unknown): OfferPayloadGroup[] | undefi
 }
 
 /** Nur ausgefüllte Zusatzfelder; leer → undefined. */
-export function normalizeExtraFields(raw: unknown): { orderer?: string; cost_center?: string; project?: string } | undefined {
+export function normalizeExtraFields(raw: unknown): { orderer?: string; cost_center?: string; project?: string; commission?: string } | undefined {
   if (!raw || typeof raw !== "object") return undefined;
   const out: Record<string, string> = {};
-  for (const k of ["orderer", "cost_center", "project"]) {
+  for (const k of ["orderer", "cost_center", "project", "commission"]) {
     const v = (raw as Record<string, unknown>)[k];
     if (typeof v === "string" && v.trim()) out[k] = v.trim().slice(0, 200);
   }
   return Object.keys(out).length ? out : undefined;
+}
+
+/** New invoices inherit offer references even when an older draft or installment sends none. */
+export function invoiceExtraFields(offerPayload: unknown, editorFields: unknown) {
+  const payload = offerPayload && typeof offerPayload === "object" ? offerPayload as Record<string, unknown> : {};
+  return normalizeExtraFields({ ...normalizeExtraFields(payload.extra_fields), ...normalizeExtraFields(editorFields) });
 }
 
 /** Positionen in Gruppenreihenfolge; ohne/unbekannte Gruppe zuerst (Sammelgruppe „Positionen“). */
