@@ -9,6 +9,23 @@ export interface LookupProduct {
   slug: string; name: string; model_name: string | null; category: string | null; subcategory: string | null;
   rentware_code: Record<string, string> | null; price_per_day: string | null; price_weekend: string | null;
   price_per_month: string | null; price_unit_label: string | null;
+  direct_booking_config?: { enabled?: boolean } | null;
+}
+
+/**
+ * Anhänger und Halteverbotsschilder-Sets sind ausschließlich online über die
+ * Website buchbar (24/7). Dafür nimmt die Telefonassistenz keine Mietanfrage
+ * auf und bestätigt nichts – sie verweist an www.slt-rental.de.
+ */
+export const ONLINE_BOOKING_ONLY_HINT =
+  "Nur online über www.slt-rental.de buchbar (24/7, inkl. Preisen und Verfügbarkeit). " +
+  "Keine telefonische Mietanfrage dafür aufnehmen und nichts telefonisch bestätigen – " +
+  "den Anrufer freundlich an die Website verweisen. Bei offenen Fragen gern in der Leitung bleiben.";
+
+export function onlineBookingOnly(r: LookupProduct): boolean {
+  if (r.slug.endsWith("halteverbotsschilder-set")) return true;
+  if (r.direct_booking_config?.enabled === true) return true;
+  return norm(r.category ?? "") === "anhaenger";
 }
 
 const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ß/g, "ss")
@@ -38,6 +55,7 @@ export function searchProducts(rows: LookupProduct[], query: string, location: s
     name: r.model_name ? `${r.name} (${r.model_name})` : r.name,
     kategorie: r.category,
     direkt_buchbar_in: locs,
+    buchungshinweis: onlineBookingOnly(r) ? ONLINE_BOOKING_ONLY_HINT : null,
     preise: {
       tag: priceOrNull(r.price_per_day), wochenende: priceOrNull(r.price_weekend), monat: priceOrNull(r.price_per_month),
       einheit: r.price_unit_label?.trim() || null,
