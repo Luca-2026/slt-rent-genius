@@ -28,7 +28,7 @@ export async function loadCustomerDocuments(customerId: string, profileId?: stri
     add(`offer-${q.id}`, `Angebot ${q.offer_number ?? ""} · ${kind}`, q.offer_sent_at, q.offer_file_url);
     add(`ab-${q.id}`, `Auftragsbestätigung ${q.order_confirmation_number ?? ""} · ${kind}`, q.order_confirmed_at, q.order_confirmation_file_url);
     if ("original_accepted_offer" in q && q.original_accepted_offer && typeof q.original_accepted_offer === "object" && !Array.isArray(q.original_accepted_offer)) {
-      const original = q.original_accepted_offer;
+      const original = q.original_accepted_offer as Record<string, unknown>;
       if (typeof original.offer_file_url === "string") add(`original-${q.id}`, `Ursprüngliches Angebot ${typeof original.offer_number === "string" ? original.offer_number : ""}`, q.offer_sent_at, original.offer_file_url);
       if (typeof original.order_confirmation_file_url === "string") add(`original-ab-${q.id}`, "Ursprüngliche Auftragsbestätigung", q.order_confirmed_at, original.order_confirmation_file_url);
     }
