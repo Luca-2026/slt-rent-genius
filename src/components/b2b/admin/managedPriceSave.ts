@@ -25,7 +25,8 @@ export function managedPricePatch(current: ManagedPriceState, previous?: Managed
     if (changed(key)) patch[key] = current[key];
   }
   const baseChanged = basePriceField(current.pricing_scheme) in patch;
-  if (baseChanged || changed("price_per_day")) {
+  const schemeBaseChanged = previous && changed("pricing_scheme") && priceSetToColumns(current.prices)[basePriceField(current.pricing_scheme)] !== null;
+  if (baseChanged || schemeBaseChanged || changed("price_per_day")) {
     patch.price_per_day = legacyDayText(current.category, current.pricing_scheme, current.prices, current.price_per_day.trim() || null);
   }
   if ("price_weekend_num" in patch || changed("price_weekend")) {
