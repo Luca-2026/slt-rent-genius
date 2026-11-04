@@ -25,10 +25,11 @@ import { SortableRows } from "./SortableRows";
 import { orderSpecs } from "@/lib/specOrder";
 import { parseAddonOptions, type AddonOption } from "@/lib/offerAddons";
 import {
-  ManagedPriceFields, emptyPriceSet, rowToPriceSet, priceSetToColumns, legacyDayText,
-  legacyWeekendText, legacyMonthText, basePriceRequired, isBasePriceMissing, applyBauTierAutofill, recalcBauTiers, type PriceSet, type PricingScheme,
+  ManagedPriceFields, emptyPriceSet, rowToPriceSet,
+  applyBauTierAutofill, recalcBauTiers, type PriceSet, type PricingScheme,
 } from "./ManagedPriceFields";
 import { InsuranceTiersEditor, serializeAddonOptions, type InsuranceMeta } from "./InsuranceTiersEditor";
+import { changedPriceColumns, managedPricePatch } from "./managedPriceSave";
 
 const LOCATIONS = [
   { id: "krefeld", label: "Krefeld" },
@@ -546,22 +547,10 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
       setTab("basis");
       return;
     }
-    if (basePriceRequired({ is_published: form.is_published, on_request: !hasAnyRentware && form.on_request })) {
-      const sets = form.prices_same_all_locations
-        ? [form.prices]
-        : form.available_locations.map((l) => form.location_prices[l]);
-      if (sets.some((s) => isBasePriceMissing(form.pricing_scheme, s))) {
-        toast.error(
-          form.pricing_scheme === "event"
-            ? "Veröffentlichte Artikel brauchen den Grundpreis „1–3 Kalendertage“"
-            : "Veröffentlichte Artikel brauchen den Preis „ab 1 Miettag“",
-        );
-        setTab("preise");
-        return;
-      }
-    }
     setSaving(true);
     try {
+      const priceBaseline: FormState | undefined = initial && dirtyBaselineRef.current
+        ? JSON.parse(dirtyBaselineRef.current) as FormState : undefined;
       // Konsistenz-Check: bei gesetztem Rentware-Code "auf Anfrage"-Sätze aus Content strippen
       let detailedDesc = form.detailed_description;
       let metaDesc = form.seo_meta_description;
@@ -610,9 +599,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         features: form.features.filter((f) => f.trim()),
         tags: [],
         rental_notes: [],
-        price_per_day: legacyDayText(form.category, form.pricing_scheme, form.prices, normalizePriceInput(form.price_per_day)),
-        price_weekend: legacyWeekendText(form.prices, initial?.price_weekend_num, normalizePriceInput(form.price_weekend)),
-        price_per_month: form.category === "anhaenger" ? normalizePriceInput(form.price_per_month) : legacyMonthText(form.pricing_scheme, form.prices, initial?.price_from_20_rd, normalizePriceInput(form.price_per_month)),
+        ...managedPricePatch(form, priceBaseline),
         min_rental_months: form.min_rental_months ? Number(form.min_rental_months) : null,
         deposit_amount: form.deposit_amount?.trim() ? Number(form.deposit_amount.replace(",", ".")) : null,
         weight_kg: form.weight_kg ? Number(form.weight_kg) : null,
@@ -640,10 +627,6 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         quantity_notes: quantityNotes,
         addon_options: serializeAddonOptions(form.addon_options, form.insurance_meta),
         main_category: form.main_category,
-        pricing_scheme: form.pricing_scheme,
-        ...priceSetToColumns(form.prices),
-        tier_prices_manual: form.tier_prices_manual,
-        prices_same_all_locations: form.prices_same_all_locations,
         is_published: form.is_published,
         tracks_operating_hours: form.tracks_operating_hours,
         has_fuel_tank: form.tracks_operating_hours && form.has_fuel_tank,
@@ -667,15 +650,16 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
 
       // Standortpreise: nur bei abweichenden Preisen schreiben; ausgeblendete Zeilen bleiben erhalten
       if (productId && !form.prices_same_all_locations && form.available_locations.length) {
-        const rows = form.available_locations.map((loc) => ({
-          managed_product_id: productId,
-          location: loc,
-          ...priceSetToColumns(form.location_prices[loc]),
-          tier_prices_manual: form.location_tiers_manual[loc],
-        }));
-        const { error } = await (supabase.from("b2b_managed_product_location_prices" as never) as any)
-          .upsert(rows, { onConflict: "managed_product_id,location" });
-        if (error) throw error;
+        for (const loc of form.available_locations) {
+          const patch: Record<string, unknown> = changedPriceColumns(form.location_prices[loc], priceBaseline?.location_prices[loc]);
+          if (!priceBaseline || JSON.stringify(form.location_tiers_manual[loc]) !== JSON.stringify(priceBaseline.location_tiers_manual[loc])) {
+            patch.tier_prices_manual = form.location_tiers_manual[loc];
+          }
+          if (!Object.keys(patch).length) continue;
+          const { error } = await (supabase.from("b2b_managed_product_location_prices" as never) as any)
+            .upsert({ managed_product_id: productId, location: loc, ...patch }, { onConflict: "managed_product_id,location" });
+          if (error) throw error;
+        }
       }
 
       toast.success(initial ? "Artikel aktualisiert" : "Artikel angelegt");

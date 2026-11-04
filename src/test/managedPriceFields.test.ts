@@ -45,8 +45,8 @@ describe("CMS-Preisschema", () => {
 import { basePriceRequired, isBasePriceMissing } from "@/components/b2b/admin/ManagedPriceFields";
 
 describe("Grundpreis-Pflicht", () => {
-  it("nur veröffentlicht und nicht auf Anfrage", () => {
-    expect(basePriceRequired({ is_published: true, on_request: false })).toBe(true);
+  it("Artikel auch veröffentlicht ohne Preis speichern", () => {
+    expect(basePriceRequired({ is_published: true, on_request: false })).toBe(false);
     expect(basePriceRequired({ is_published: false, on_request: false })).toBe(false);
     expect(basePriceRequired({ is_published: true, on_request: true })).toBe(false);
   });
