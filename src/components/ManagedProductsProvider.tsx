@@ -44,16 +44,28 @@ async function loadCache() {
 export function ManagedProductsProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     loadCache();
-    const channel = supabase
-      .channel("managed-products-cache")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "b2b_managed_products" },
-        () => loadCache(),
-      )
-      .subscribe();
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    try {
+      channel = supabase
+        .channel("managed-products-cache")
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "b2b_managed_products" },
+          () => loadCache(),
+        )
+        .subscribe();
+    } catch (error) {
+      // Live updates are optional; the loaded catalogue stays usable.
+      console.warn("Live catalogue updates unavailable", error);
+    }
     return () => {
-      supabase.removeChannel(channel);
+      if (channel) {
+        try {
+          supabase.removeChannel(channel);
+        } catch {
+          /* ignore */
+        }
+      }
     };
   }, []);
   return <>{children}</>;
