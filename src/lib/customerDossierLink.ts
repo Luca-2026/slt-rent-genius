@@ -1,0 +1,1 @@
+export { customerDossierPath, customerDossierUrl, customerDossierReturnPath } from "../../supabase/functions/_shared/customer-dossier-link";

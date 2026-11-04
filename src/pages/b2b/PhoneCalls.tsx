@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Phone, RefreshCw, Inbox, Clock, ExternalLink, Check, Undo2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
@@ -17,6 +17,7 @@ import { callDateLabel } from "@/lib/callDateLabel";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AiInquiryImportDialog } from "@/components/b2b/inquiries/AiInquiryImportDialog";
 import { createInquiryFromImport } from "@/lib/createInquiryFromImport";
+import { customerDossierPath } from "@/lib/customerDossierLink";
 
 const LOC: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" };
 const STATUS: Record<PhoneCall["status"], string> = { open: "Offen", in_progress: "In Bearbeitung", done: "Erledigt" };
@@ -289,7 +290,7 @@ function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => voi
         <div><span className="text-muted-foreground">Adresse: </span>{[call.details?.address?.street, [call.details?.address?.postal_code, call.details?.address?.city].filter(Boolean).join(" ")].filter(Boolean).join(", ") || "—"}</div>
         <div><span className="text-muted-foreground">Lieferung: </span>{call.details?.delivery?.wanted === true ? `Ja${call.details.delivery.address ? ` – ${call.details.delivery.address}` : ""}` : call.details?.delivery?.wanted === false ? "Selbstabholung" : "—"}</div>
         <div><span className="text-muted-foreground">Rückruf: </span>{[call.details?.callback_time, call.details?.callback_phone].filter(Boolean).join(" · ") || "—"}</div>
-        <div><span className="text-muted-foreground">Kundenkartei: </span>{call.crm_customer_id ? <a className="text-primary underline" href="/b2b/kundendaten">bekannter Kunde</a> : "nicht gefunden"}</div>
+        <div><span className="text-muted-foreground">Kundenkartei: </span>{call.crm_customer_id ? <Link className="text-primary underline" to={customerDossierPath(call.crm_customer_id)}>bekannter Kunde</Link> : "nicht gefunden"}</div>
       </section>
 
       {(call.details?.items?.length ?? 0) > 0 ? (
