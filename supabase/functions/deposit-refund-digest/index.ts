@@ -4,9 +4,13 @@
  * Testlauf (nur Mitarbeiter): POST { "test_to": "luca@sandhoff.org" } – keine Protokollierung.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { isCronCall, staffUserId } from "../_shared/cronAuth.ts";
 import { buildDatevCashCsv, type CashEntry } from "../_shared/datev-cash-csv.ts";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-cron-secret",
+};
 
 const RECIPIENT = "buchhaltung@slt-tg.de";
 const TEST_RECIPIENTS = new Set(["luca@sandhoff.org"]);
