@@ -161,6 +161,7 @@ Deno.serve(async (req: Request) => {
       .eq("id", inquiryId)
       .maybeSingle();
     if (inqErr || !inquiry) return json({ error: "Anfrage nicht gefunden" }, 404);
+    if (undatedOffer && inquiry.order_confirmed_at) return json({ error: "Ein bestätigter Mietauftrag darf nicht durch ein unverbindliches Preisangebot ersetzt werden." }, 409);
     if (!allowsCustomerPaymentTerms(inquiry.customer_kind, body.payment_terms)) {
       return json({ error: "Privatkunden zahlen nicht auf Rechnung. Bitte Vorkasse oder Anzahlung wählen." }, 400);
     }
@@ -734,7 +735,7 @@ Deno.serve(async (req: Request) => {
   </div>
   ${discountSum > 0 ? `<p style="background:#fff7ed;border-left:4px solid #ff8e02;padding:10px 14px;margin:16px 0;border-radius:4px;font-size:14px;"><strong style="color:#ff8e02;">${F("Dein", "Ihr")} Rabattvorteil: − ${money(discountSum)}</strong><br><span style="color:#6b7280;font-size:13px;">Der Rabatt ist in den oben genannten Positionspreisen bereits abgezogen.</span></p>` : ""}
   <p style="font-size:15px;"><strong>Gesamtsumme brutto: ${money(totals.grossAmount)}</strong><br>
-  <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)}${transportTotal > 0 ? ` (inkl. Transportkosten ${money(transportTotal)})` : ""} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span>${deposit > 0 ? `<br><span style="color:#6b7280;font-size:13px;">zzgl. Kaution ${money(deposit)} (wird nach Rückgabe erstattet) – Gesamtüberweisung inkl. Kaution: ${money(totals.grossAmount + deposit)}</span>` : ""}</p>
+  <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)}${transportTotal > 0 ? ` (inkl. Transportkosten ${money(transportTotal)})` : ""} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span>${deposit > 0 ? `<br><span style="color:#6b7280;font-size:13px;">zzgl. Kaution ${money(deposit)} (wird nach Rückgabe erstattet)${undatedOffer ? " – bei späterer Beauftragung, aktuell nicht fällig" : ` – Gesamtüberweisung inkl. Kaution: ${money(totals.grossAmount + deposit)}`}</span>` : ""}</p>
 
   ${returnLoc ? `<p style="font-size:14px;"><strong>Rückgabe:</strong> Abholung am Standort ${escapeHtml(pickupName)}, Rückgabe am Standort ${escapeHtml(returnLoc.name)}${returnLoc.cost > 0 ? ` (Aufpreis ${money(returnLoc.cost)} netto)` : " (ohne Aufpreis)"}.</p>` : ""}
   ${deliveryRequested && (deliveryAddress.street || deliveryAddress.city) ? `<p style="font-size:14px;"><strong>Lieferadresse:</strong><br>${escapeHtml(deliveryAddress.street)}<br>${escapeHtml([deliveryAddress.postal_code, deliveryAddress.city].filter(Boolean).join(" "))}</p>` : ""}

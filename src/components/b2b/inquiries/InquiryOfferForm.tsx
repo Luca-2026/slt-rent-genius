@@ -1466,7 +1466,7 @@ export function InquiryOfferForm({
   const previewHint = !previewOk && <p className="text-xs text-muted-foreground">Vor dem Senden bitte die PDF-Vorschau des aktuellen Stands ansehen.</p>;
   const actionText = (
     <p className="text-xs text-muted-foreground">
-      {isAmendment ? "Auftragsänderung speichern und anschließend die neue AB senden. Kein neues Angebot und keine erneute Online-Annahme." : isInvoice
+      {undatedOffer ? "Unverbindliches Preisangebot: keine Reservierung, keine Online-Annahme und keine Zahlungsaufforderung." : isAmendment ? "Auftragsänderung speichern und anschließend die neue AB senden. Kein neues Angebot und keine erneute Online-Annahme." : isInvoice
         ? "Die Vorschau vergibt keine Rechnungsnummer und versendet nichts. Erst beim finalen Erstellen wird die Rechnung unveränderlich; Korrekturen erfolgen per Gutschrift."
         : "Der Kunde kann das Angebot über den Button in der E-Mail online annehmen und unterschreiben – ihr bekommt dann einen Hinweis hier in der Anfrage. Danach den Job manuell in Rentware anlegen."}
     </p>
@@ -2355,7 +2355,7 @@ export function InquiryOfferForm({
           />
         )}
         <p className="text-xs text-muted-foreground">
-          {paymentTerms === "custom"
+          {undatedOffer ? "Keine Zahlung fällig. Zahlungsbedingungen werden erst im endgültigen Angebot mit festem Mietzeitraum vereinbart." : paymentTerms === "custom"
             ? "Dieser Text erscheint wortgleich im Angebots-PDF und in der E-Mail an den Kunden."
             : paymentTerms === "anzahlung_30"
             ? "Kunde zahlt mindestens 30 % der Bruttomiete vorab, Rest inkl. Kaution vor Mietbeginn. Er wählt selbst: Überweisung oder online über den Zahlungslink in der Angebotsmail."
