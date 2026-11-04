@@ -623,7 +623,7 @@ export async function generateOfferPdf(data: {
     // passt er nicht mehr komplett auf die Seite, wandert er geschlossen auf die nächste.
     const svcW = unitColX - 10 - (textColX + 8);
     const svcRows = (servicesByItem.get(idx) || [])
-      .filter((svc) => svc.optional || (svc.amount && svc.amount > 0))
+      .filter((svc) => svc.optional || (isSalesOffer ? svc.amount !== 0 : svc.amount && svc.amount > 0))
       .map((svc) => {
         // Optionale Stufe: eingerückt, „Optional:“, Betrag je KT – nicht in den Summen.
         const svcLines = wt(svc.optional ? `Optional: ${svc.name}` : `- ${svc.name}`, font, 8.5, svcW - (svc.optional ? 8 : 0));
@@ -697,7 +697,7 @@ export async function generateOfferPdf(data: {
   // ── Nicht zugeordnete Zusatzoptionen ──
   for (const svc of data.servicesWithPrices || []) {
     const allocated = (svc.allocations || []).length > 0;
-    if (allocated || !svc.amount || svc.amount <= 0) continue;
+    if (allocated || !svc.amount || (!isSalesOffer && svc.amount <= 0)) continue;
     const scLines = wt(svc.name, font, 9.5, nameColW);
     renderRow(4 + scLines.length * 11, (top) => {
       dt(pg, `${posNum}`, ML + 2, top - 8, font, 9);

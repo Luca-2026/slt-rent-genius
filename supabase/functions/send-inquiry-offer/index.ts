@@ -1,4 +1,4 @@
-import { salesOfferLine, salesPaymentTerms, salesPaymentText, normalizeSalesFinancing } from "../_shared/sales-offer.ts";
+import { salesOfferLine, salesPaymentTerms, salesPaymentText, FINANCING_INFORMATION, normalizeSalesFinancing } from "../_shared/sales-offer.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { UNDATED_OFFER_NOTE } from "../_shared/undated-offer.ts";
 import { applyFeedbackCoupon } from "../_shared/feedback-coupons.ts";
@@ -400,7 +400,7 @@ Deno.serve(async (req: Request) => {
     // ── Zusatzoptionen (Versicherungen etc.) als zugeordnete Zusatzposten ──
     const servicesWithPrices: Array<{ id: string; name: string; description?: string; pricePercent: number | null; amount: number; allocations: { itemIndex: number; amount: number }[]; optional?: boolean; perDay?: number; days?: number }> = items.flatMap((item, idx) =>
       (item.addons ?? [])
-        .filter((a) => a.amount > 0 && !a.optional)
+        .filter((a) => (inquiryType === "sales" ? a.amount !== 0 : a.amount > 0) && !a.optional)
         .map((a, ai) => ({
           id: `${idx}-${a.key || ai}`,
           name: a.note ? `${a.label} (${a.note})` : a.label,
@@ -675,7 +675,7 @@ Deno.serve(async (req: Request) => {
       <div style="padding:10px 0;border-bottom:1px solid #e5e7eb;">
         <div style="font-weight:bold;font-size:14px;">${escapeHtml(i.name_override || i.product_name)}</div>
         ${desc ? `<div style="color:#6b7280;font-size:12px;margin-top:2px;">${escapeHtml(desc)}</div>` : ""}
-        ${(i.addons ?? []).filter((a) => a.amount > 0 && !a.optional).map((a) => `<div style="color:#6b7280;font-size:12px;margin-top:2px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}${addonExplanation(a, i) ? `<br><span style="font-size:11px;">${escapeHtml(addonExplanation(a, i))}</span>` : ""}</div>`).join("")}
+        ${(i.addons ?? []).filter((a) => (inquiryType === "sales" ? a.amount !== 0 : a.amount > 0) && !a.optional).map((a) => `<div style="color:#6b7280;font-size:12px;margin-top:2px;">&#8627; ${escapeHtml(a.label)}${a.note ? ` (${escapeHtml(a.note)})` : ""} – ${money(a.amount)}${addonExplanation(a, i) ? `<br><span style="font-size:11px;">${escapeHtml(addonExplanation(a, i))}</span>` : ""}</div>`).join("")}
         ${(i.addons ?? []).filter((a) => a.optional).map((a) => `<div style="color:#6b7280;font-size:12px;margin-top:2px;padding-left:12px;">Optional: ${escapeHtml(a.label)} – ${money(a.per_day ?? a.rate ?? 0)} je KT (nicht in der Summe enthalten)</div>`).join("")}
         ${discountHtml ? `<div style="margin-top:2px;">${discountHtml.replace(/^<br>/, "")}</div>` : ""}
         <table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:13px;"><tr>
@@ -764,12 +764,13 @@ Deno.serve(async (req: Request) => {
   <div style="background:#eef4f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>${F("Wann ist dein Auftrag verbindlich?", "Wann ist Ihr Auftrag verbindlich?")}</strong><br>
     ${["net_7", "net_14", "net_30"].includes(paymentTerms) ? F("Nach deiner Annahme erhältst du unsere Auftragsbestätigung.", "Nach Ihrer Annahme erhalten Sie unsere Auftragsbestätigung.") : F("Sobald deine Zahlung bei uns eingegangen ist, erhältst du unsere Auftragsbestätigung.", "Sobald Ihre Zahlung bei uns eingegangen ist, erhalten Sie unsere Auftragsbestätigung.")}
-    ${F("Erst mit der Auftragsbestätigung wird die Miete verbindlich und dein Auftrag gilt als angenommen. Maßgeblich ist allein die Auftragsbestätigung – sie dient dir als Nachweis, dass wir deinen Auftrag angenommen haben.", "Erst mit der Auftragsbestätigung wird die Miete verbindlich und Ihr Auftrag gilt als angenommen. Maßgeblich ist allein die Auftragsbestätigung – sie dient Ihnen als Nachweis, dass wir Ihren Auftrag angenommen haben.")}
+    ${inquiryType === "sales" ? "Maßgeblich für die Abwicklung des Kaufs sind unsere Auftragsbestätigung und die vereinbarten Verkaufsbedingungen." : F("Erst mit der Auftragsbestätigung wird die Miete verbindlich und dein Auftrag gilt als angenommen. Maßgeblich ist allein die Auftragsbestätigung – sie dient dir als Nachweis, dass wir deinen Auftrag angenommen haben.", "Erst mit der Auftragsbestätigung wird die Miete verbindlich und Ihr Auftrag gilt als angenommen. Maßgeblich ist allein die Auftragsbestätigung – sie dient Ihnen als Nachweis, dass wir Ihren Auftrag angenommen haben.")}
   </div>
   <div style="background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>Zahlungsbedingungen:</strong><br>${paymentEmailText}
   </div>
   `}
+  ${financing?.enabled ? `<div style="border-top:1px solid #00507d;padding-top:12px;"><strong>Finanzierung – unverbindliche Information</strong><p>${escapeHtml(FINANCING_INFORMATION)}</p>${financing.note ? `<p>${escapeHtml(financing.note)}</p>` : ""}</div>` : ""}
   <p style="color:#6b7280;font-size:13px;">Dieses Angebot ist gültig bis ${escapeHtml(fmt(validUntil))}.</p>
   ${agbBytes ? `<p style="color:#6b7280;font-size:13px;">Es gelten unsere beigefügten ${customerKind === "business" ? "AGB für Unternehmer" : "AGB für Verbraucher"}.</p>` : ""}
   <p style="margin-top:24px;">${F("Viele Grüße<br>Dein", "Freundliche Grüße<br>Ihr")} SLT Rental Team – Standort ${escapeHtml(loc.name)}<br>

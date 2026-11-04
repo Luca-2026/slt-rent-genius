@@ -829,6 +829,7 @@ export function InquiryOfferForm({
     draftRef.current = null;
     setDraftRestored(false);
     setCouponCode(defaultCouponCode);
+    if (isSalesOffer) { setFinancingEnabled(defaultMeta?.financing ? defaultMeta.financing.enabled : financingRequest?.desired === true); setFinancingNote(defaultMeta?.financing?.note ?? ""); }
     setItems(defaultItems.length ? defaultItems : [emptyLine()]);
     setDelivery(defaultDelivery ?? emptyDelivery);
     setDeliveryCostDelivery(defaultCosts?.delivery_cost_delivery ?? 0);
@@ -2579,8 +2580,8 @@ export function InquiryOfferForm({
       </EditorSection>
 
       <div className="rounded-lg bg-muted p-3 text-sm space-y-1">
-        <div className="flex justify-between"><span>Mietartikel</span><span>{formatEuro(totals.itemsNet)}</span></div>
-        {totals.addonsNet > 0 && (
+        <div className="flex justify-between"><span>{inquiryType === "sales" ? "Verkaufsartikel" : "Mietartikel"}</span><span>{formatEuro(totals.itemsNet)}</span></div>
+        {(isSalesOffer ? totals.addonsNet !== 0 : totals.addonsNet > 0) && (
           <div className="flex justify-between"><span>Zusatzoptionen</span><span>{formatEuro(totals.addonsNet)}</span></div>
         )}
         <div className="flex justify-between"><span>Netto</span><span>{formatEuro(totals.netAmount)}</span></div>
