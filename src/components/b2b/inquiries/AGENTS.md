@@ -1,4 +1,5 @@
 # Inquiries
+- AB editing enters the existing amendment editor, never offer revision; normal AB sends require a preview matching note, attachment choice, payments and operational snapshot, and preview must not reserve devices or send mail.
 - Invoice references inherit offer extra_fields with editor overrides for rental/sales and all invoice kinds; issued PDFs remain immutable.
 - Sales offer mode uses shared sales-offer policy for one-time quantities, bank-only payment and optional informational financing stored in drafts/snapshots; rental and invoice modes retain their existing paths to avoid business-type drift.
 - Explicit undated_offer quotes persist in inquiry raw_payload, offer drafts and snapshots; duration/unit remain independently editable per line, calendars/availability are omitted, and no operational dates are invented. Dated and open-ended rentals retain their existing rules.
