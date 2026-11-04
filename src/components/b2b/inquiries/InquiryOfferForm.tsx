@@ -464,7 +464,7 @@ export function InquiryOfferForm({
   /** Paket 3b: Positionsgruppen, Zusatzfelder (Besteller, Kostenstelle, Bauvorhaben) und Auftragsart. */
   const [groups, setGroups] = useState<OfferGroup[]>((draft?.groups as OfferGroup[]) ?? defaultMeta?.groups ?? []);
   const [extraFields, setExtraFields] = useState<Partial<Record<keyof OfferExtraFields, string>>>(
-    (draft?.extraFields as Partial<Record<keyof OfferExtraFields, string>>) ?? defaultMeta?.extra_fields ?? {},
+    { ...defaultMeta?.extra_fields, ...(draft?.extraFields as Partial<Record<keyof OfferExtraFields, string>> | undefined) },
   );
   const [orderType, setOrderType] = useState<OrderType>(() =>
     nextOrderType(
@@ -709,7 +709,7 @@ export function InquiryOfferForm({
     setUseSaturday(!!(d.items?.[0]?.use_saturday ?? d.useSaturday ?? defaultItems[0]?.use_saturday ?? defaultMeta?.use_saturday));
     setUseSunday(!!(d.items?.[0]?.use_sunday ?? d.useSunday ?? defaultItems[0]?.use_sunday ?? defaultMeta?.use_sunday));
     setGroups(Array.isArray(d.groups) ? (d.groups as OfferGroup[]) : []);
-    setExtraFields((d.extraFields as Partial<Record<keyof OfferExtraFields, string>>) ?? {});
+    setExtraFields({ ...defaultMeta?.extra_fields, ...(d.extraFields as Partial<Record<keyof OfferExtraFields, string>> | undefined) });
     setOrderType(d.orderType === "delivery" ? "delivery" : "pickup");
     setTermsText(typeof d.termsText === "string" ? d.termsText : null);
   };

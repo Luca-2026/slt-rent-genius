@@ -64,6 +64,14 @@ vi.mock("@/hooks/useSalesCatalog", () => ({ loadSalesCatalog: async () => [], lo
 vi.mock("../SalesProductCombobox", () => ({ SalesProductCombobox: () => null }));
 
 describe("sales-only quote flow", () => {
+  it.each(["rental", "sales"] as const)("carries offer references into the %s invoice preview despite an older empty draft", async (inquiryType) => {
+    fixtures.draft = { extraFields: {} };
+    open({ inquiryType, mode: "invoice", defaultMeta: { extra_fields: { commission: "KOM-2026-014", project: "BV-2026-081" } } });
+    fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
+    await waitFor(() => expect(fixtures.invoke).toHaveBeenCalled());
+    expect(fixtures.invoke.mock.calls[0][0]).toBe("send-inquiry-invoice");
+    expect(fixtures.invoke.mock.calls[0][1].extra_fields).toEqual({ commission: "KOM-2026-014", project: "BV-2026-081" });
+  });
   it("previews each quantity once with no inherited rental duration or deposit", async () => {
     fixtures.draft = { deposit: 300, deliveryCostReturn: 100, dismantleCost: 50, paymentTerms: "anzahlung_30" };
     open({ inquiryType: "sales", defaultItems: [{ ...line(), quantity: 2, duration: 10, unit_price: 1000 }, { ...line(), quantity: 3, duration: 5, unit_price: 200 }] });

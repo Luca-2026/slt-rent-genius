@@ -1,4 +1,5 @@
 # Inquiries
+- Invoice references inherit offer extra_fields with editor overrides for rental/sales and all invoice kinds; issued PDFs remain immutable.
 - Sales offer mode uses shared sales-offer policy for one-time quantities, bank-only payment and optional informational financing stored in drafts/snapshots; rental and invoice modes retain their existing paths to avoid business-type drift.
 - Explicit undated_offer quotes persist in inquiry raw_payload, offer drafts and snapshots; duration/unit remain independently editable per line, calendars/availability are omitted, and no operational dates are invented. Dated and open-ended rentals retain their existing rules.
 - Rental offer weekend-use defaults follow explicit per-line request/snapshot flags before global flags; staff checkbox changes update that flag on every line and normalization preserves it, so duration, tier pricing and reopening cannot disagree.
