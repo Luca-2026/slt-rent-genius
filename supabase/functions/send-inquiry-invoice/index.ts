@@ -1,5 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
-import { allPaymentsByBank, BANK_DISCOUNT_TERMS, hasBankDiscountPolicy, priceBankTransfer, withoutBankDiscount } from "../_shared/bank-transfer-discount.ts";
+import { allPaymentsByBank, hasBankDiscountPolicy } from "../_shared/bank-transfer-discount.ts";
 import { invoiceBankDiscount } from "../_shared/invoice-bank-discount.ts";
 import { rentalFeedbackEmail } from "../_shared/feedback-coupons.ts";
 import { invoiceNumberForGeneration } from "../_shared/invoice-preview.ts";
