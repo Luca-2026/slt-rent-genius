@@ -5016,6 +5016,8 @@ export type Database = {
           order_confirmation_number: string | null
           order_confirmed_at: string | null
           order_confirmed_by_name: string | null
+          order_revision: number
+          original_accepted_offer: Json | null
           paid_amount: number
           payment_followup_sent_at: string | null
           payment_reminder_manual_at: string | null
@@ -5093,6 +5095,8 @@ export type Database = {
           order_confirmation_number?: string | null
           order_confirmed_at?: string | null
           order_confirmed_by_name?: string | null
+          order_revision?: number
+          original_accepted_offer?: Json | null
           paid_amount?: number
           payment_followup_sent_at?: string | null
           payment_reminder_manual_at?: string | null
@@ -5170,6 +5174,8 @@ export type Database = {
           order_confirmation_number?: string | null
           order_confirmed_at?: string | null
           order_confirmed_by_name?: string | null
+          order_revision?: number
+          original_accepted_offer?: Json | null
           paid_amount?: number
           payment_followup_sent_at?: string | null
           payment_reminder_manual_at?: string | null
@@ -5195,6 +5201,47 @@ export type Database = {
             columns: ["crm_customer_id"]
             isOneToOne: false
             referencedRelation: "crm_customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sales_order_revisions: {
+        Row: {
+          agreed_at: string
+          agreement_note: string
+          created_at: string
+          created_by: string
+          id: string
+          sales_inquiry_id: string
+          snapshot: Json
+          version: number
+        }
+        Insert: {
+          agreed_at: string
+          agreement_note: string
+          created_at?: string
+          created_by: string
+          id?: string
+          sales_inquiry_id: string
+          snapshot: Json
+          version: number
+        }
+        Update: {
+          agreed_at?: string
+          agreement_note?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          sales_inquiry_id?: string
+          snapshot?: Json
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sales_order_revisions_sales_inquiry_id_fkey"
+            columns: ["sales_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "sales_inquiries"
             referencedColumns: ["id"]
           },
         ]
@@ -6824,6 +6871,16 @@ export type Database = {
         Returns: Json
       }
       save_rental_order_amendment: {
+        Args: {
+          _agreed_at: string
+          _expected: number
+          _id: string
+          _note: string
+          _payload: Json
+        }
+        Returns: Json
+      }
+      save_sales_order_amendment: {
         Args: {
           _agreed_at: string
           _expected: number
