@@ -24,7 +24,7 @@ const actor = (id: string) => db.query("SELECT set_config('test.actor',$1,false)
 async function fixture(refund = 100) {
   const inquiry=crypto.randomUUID(), credit=crypto.randomUUID(), link=crypto.randomUUID();
   await db.query("INSERT INTO rental_inquiries VALUES($1)",[inquiry]);
-  await db.query("INSERT INTO inquiry_invoices VALUES($1,$2,'credit_note','open',$3,-$3)",[credit,inquiry,refund]);
+  await db.query("INSERT INTO inquiry_invoices VALUES($1,$2,'credit_note','open',$3::numeric,-$3::numeric)",[credit,inquiry,refund]);
   await db.query("INSERT INTO offer_payment_links VALUES($1,$2,'rental_inquiries','paid','pi_fixture',10000,now())",[link,inquiry]);
   return { inquiry,credit,link };
 }
