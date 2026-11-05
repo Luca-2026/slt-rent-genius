@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { feedbackSubmission } from "./submission.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -39,30 +40,26 @@ const QUESTION_LABELS: Record<string, string> = {
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  if (req.method !== "POST") return json({ error: "Ungültige Anfrage" }, 405);
 
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
     const resendDomain = Deno.env.get("RESEND_DOMAIN") ?? "slt-rental.de";
-    if (!resendApiKey) return json({ error: "RESEND_API_KEY not configured" }, 500);
-
-    const body = await req.json().catch(() => ({}));
-    const feedbackId = typeof body.feedback_id === "string" ? body.feedback_id : "";
-    if (!/^[0-9a-f-]{36}$/i.test(feedbackId)) return json({ error: "feedback_id ist erforderlich" }, 400);
+    let submission;
+    try { submission = feedbackSubmission(await req.json()); }
+    catch { return json({ error: "Bitte prüfe deine Feedbackangaben." }, 400); }
 
     const service = createClient(supabaseUrl, serviceRoleKey);
+    const feedbackId = crypto.randomUUID();
     const { data: fb, error } = await service
       .from("customer_feedback")
+      .insert({ ...submission, id: feedbackId })
       .select("*")
-      .eq("id", feedbackId)
-      .maybeSingle();
-    if (error || !fb) return json({ error: "Feedback nicht gefunden" }, 404);
-    // Nur frisch abgegebenes Feedback darf die Benachrichtigung auslösen (Formular ruft direkt nach dem Speichern auf).
-    const ageMs = Date.now() - new Date(fb.created_at).getTime();
-    if (!(ageMs >= 0 && ageMs < 10 * 60 * 1000) || fb.status !== "new") {
-      return json({ error: "Feedback nicht gefunden" }, 404);
-    }
+      .single();
+    if (error || !fb) return json({ error: "Feedback konnte nicht gespeichert werden." }, 400);
+    if (!resendApiKey) return json({ success: true, notified: false });
 
     // Einmalig: nur der erste Aufruf darf die Mail auslösen (verhindert erneutes Versenden durch Dritte).
     const { data: claimed } = await service
@@ -72,7 +69,7 @@ Deno.serve(async (req: Request) => {
       .is("staff_notified_at", null)
       .select("id")
       .maybeSingle();
-    if (!claimed) return json({ error: "Feedback nicht gefunden" }, 404);
+    if (!claimed) return json({ success: true, notified: false });
 
     const locKey = (fb.location ?? "").toLowerCase();
     const to = LOCATION_EMAILS[locKey] ?? "info@slt-rental.de";
@@ -142,12 +139,12 @@ Deno.serve(async (req: Request) => {
       const errText = await res.text();
       console.error(`Resend failed [${res.status}]: ${errText}`);
       console.error("Resend", res.status, errText);
-      return json({ error: "E-Mail-Versand fehlgeschlagen" }, 502);
+      return json({ success: true, notified: false });
     }
 
     return json({ success: true });
   } catch (e) {
     console.error("notify-feedback error:", e);
-    return json({ error: e instanceof Error ? e.message : "Unbekannter Fehler" }, 500);
+    return json({ error: "Feedback konnte nicht verarbeitet werden." }, 500);
   }
 });

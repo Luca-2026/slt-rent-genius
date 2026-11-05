@@ -95,7 +95,7 @@ Deno.serve(async (req) => {
     .maybeSingle()
 
   if (updateError) {
-    console.error('Failed to mark token as used', { error: updateError })
+    console.error('Failed to mark token as used')
     return jsonResponse({ error: 'Failed to process unsubscribe' }, 500)
   }
 
@@ -112,10 +112,8 @@ Deno.serve(async (req) => {
     )
 
   if (suppressError) {
-    console.error('Failed to suppress email', {
-      error: suppressError,
-      email: tokenRecord.email,
-    })
+    // Database errors can contain the affected email in their message/details.
+    console.error('Failed to suppress email')
     return jsonResponse({ error: 'Failed to process unsubscribe' }, 500)
   }
 

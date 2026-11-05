@@ -144,12 +144,7 @@ export default function FeedbackMietprozess() {
       return;
     }
     setSubmitting(true);
-    const values = Object.values(ratings);
-    const avg = values.length ? Number((values.reduce((a, b) => a + b, 0) / values.length).toFixed(2)) : null;
-    const feedbackId = crypto.randomUUID();
-
-    const { error } = await supabase.from("customer_feedback" as any).insert({
-      id: feedbackId,
+    const { data, error } = await supabase.functions.invoke("notify-feedback", { body: {
       source: searchParams.get("src")?.slice(0, 60) || "link",
       location: location.slice(0, 60),
       order_ref: orderRef.trim().slice(0, 80),
@@ -160,12 +155,10 @@ export default function FeedbackMietprozess() {
       ratings,
       answers: { ...answers, gesamt_kommentar: freeText.trim().slice(0, 3000) },
       recommend_score: recommend,
-      avg_rating: avg,
-      google_review_confirmed: false,
-    });
+    } });
     setSubmitting(false);
 
-    if (error) {
+    if (error || data?.error) {
       const msg = (error as any)?.message ?? "";
       toast({
         title: "Senden fehlgeschlagen",
@@ -184,11 +177,6 @@ export default function FeedbackMietprozess() {
       });
       return;
     }
-
-    // Standort-Team per E-Mail benachrichtigen (Fehler blockieren den Kunden nicht)
-    supabase.functions
-      .invoke("notify-feedback", { body: { feedback_id: feedbackId } })
-      .catch((err) => console.error("notify-feedback failed", err));
 
     setDone(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
