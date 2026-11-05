@@ -925,6 +925,13 @@
       "when": 1793860203728,
       "tag": "0131_harden_rental_payment_snapshot_guards",
       "breakpoints": true
+    },
+    {
+      "idx": 132,
+      "version": "7",
+      "when": 1793860418059,
+      "tag": "0132_bind_rental_receipts_to_durable_attempts",
+      "breakpoints": true
     }
   ]
 }
