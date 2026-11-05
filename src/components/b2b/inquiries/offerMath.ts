@@ -9,6 +9,7 @@ import type { OfferLogistics } from "../../../../supabase/functions/_shared/offe
  */
 
 export interface OfferLineAddon {
+  payment_cost_kind?: "rental" | "damage" | "municipal" | "deposit";
   key: string;
   label: string;
   /** Netto-Betrag der Zusatzoption für diese Position */
@@ -38,6 +39,7 @@ export interface OfferLineAddon {
 }
 
 export interface OfferLine extends OfferLogistics {
+  payment_cost_kind?: "rental" | "damage" | "municipal" | "deposit";
   undated_offer?: boolean;
   product_name: string;
   description?: string;

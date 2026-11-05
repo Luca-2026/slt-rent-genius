@@ -500,7 +500,7 @@ Deno.serve(async (req: Request) => {
 
     const servicesWithPrices: Parameters<typeof generateOfferPdf>[0]["servicesWithPrices"] = items.flatMap((item, idx) =>
       (item.addons ?? [])
-        .filter((a) => a.amount > 0)
+        .filter((a) => a.amount !== 0)
         .map((a, ai) => ({
           id: `${idx}-${a.key || ai}`,
           name: a.note ? `${a.label} (${a.note})` : a.label,

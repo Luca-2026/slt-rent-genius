@@ -162,6 +162,7 @@ export function offerPayloadToLines(payload: unknown): {
       : legacy;
     return ({
     product_name: String(raw.product_name ?? ""),
+    ...(["rental", "damage", "municipal", "deposit"].includes(String(raw.payment_cost_kind)) ? { payment_cost_kind: raw.payment_cost_kind as OfferLine["payment_cost_kind"] } : {}),
     description: split.description,
     quantity: split.quantity,
     duration: split.duration,
@@ -189,6 +190,7 @@ export function offerPayloadToLines(payload: unknown): {
     addons: Array.isArray(raw.addons)
       ? (raw.addons as Array<Record<string, unknown>>).map((a) => ({
           key: String(a.key ?? "addon"),
+          ...(["rental", "damage", "municipal", "deposit"].includes(String(a.payment_cost_kind)) ? { payment_cost_kind: a.payment_cost_kind as OfferLineAddon["payment_cost_kind"] } : {}),
           label: String(a.label ?? "Zusatzoption"),
           amount: Number(a.amount) || 0,
           note: typeof a.note === "string" ? a.note : undefined,

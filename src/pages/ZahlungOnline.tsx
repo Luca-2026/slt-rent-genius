@@ -17,6 +17,7 @@ interface PayInfo {
   payment_terms?: string;
   paid_cents?: number;
   options?: { choice: "anzahlung" | "full"; rentCents: number; depositCents: number; amountCents: number }[];
+  bank_discount?: { rate: number; selected: "bank" | "regular"; terms: string; discount_cents: number; regular_options: NonNullable<PayInfo["options"]>; bank_options: NonNullable<PayInfo["options"]> };
   bank?: { holder: string; iban: string; bic: string; bank: string; reference: string } | null;
 }
 
@@ -42,6 +43,7 @@ export default function ZahlungOnline() {
     } else {
       const d = data as PayInfo;
       setInfo(d);
+      setMethod(d.bank_discount?.selected === "bank" ? "bank" : "online");
       setChoice(d.options?.some((o) => o.choice === "anzahlung") ? "anzahlung" : "full");
       setError(null);
     }
@@ -66,6 +68,17 @@ export default function ZahlungOnline() {
       return;
     }
     window.location.href = url;
+  };
+  const selectMethod = async (next: "online" | "bank") => {
+    if (!info?.bank_discount) { setMethod(next); return; }
+    setStarting(true); setError(null);
+    const { data, error: err } = await supabase.functions.invoke("offer-pay", { body: { token, action: "select_method", method: next === "bank" ? "bank" : "regular" } });
+    if (err || data?.error) {
+      let message = data?.error;
+      try { message ??= (await err?.context?.json())?.error; } catch { /* controlled fallback */ }
+      setError(message ?? "Die Zahlungsart konnte nicht geändert werden. Bitte deinen Standort kontaktieren.");
+    } else { setInfo(data as PayInfo); setMethod(next); }
+    setStarting(false);
   };
 
   const justPaid = params.get("status") === "success";
@@ -149,13 +162,18 @@ export default function ZahlungOnline() {
                 <fieldset className="space-y-2">
                   <legend className="text-sm font-semibold text-foreground mb-2">Zahlungsart</legend>
                   <div className="grid grid-cols-2 gap-2">
-                    <Button type="button" variant={method === "online" ? "default" : "outline"} onClick={() => setMethod("online")}>
+                    <Button type="button" disabled={starting} variant={method === "online" ? "default" : "outline"} onClick={() => void selectMethod("online")}>
                       <CreditCard className="h-4 w-4 mr-2" />Online
                     </Button>
-                    <Button type="button" variant={method === "bank" ? "default" : "outline"} onClick={() => setMethod("bank")}>
+                    <Button type="button" disabled={starting} variant={method === "bank" ? "default" : "outline"} onClick={() => void selectMethod("bank")}>
                       <Landmark className="h-4 w-4 mr-2" />Überweisung
                     </Button>
                   </div>
+                  {info.bank_discount && <div className="space-y-2 text-sm">
+                    <p className="font-semibold text-primary">3 % Rabatt bei vollständiger Banküberweisung</p>
+                    <p>Regulär inkl. Kaution: {eur(info.bank_discount.regular_options.find(o => o.choice === "full")?.amountCents ?? 0)} · Per Überweisung: {eur(info.bank_discount.bank_options.find(o => o.choice === "full")?.amountCents ?? 0)}</p>
+                    <p className="text-xs text-muted-foreground">{info.bank_discount.terms}</p>
+                  </div>}
                 </fieldset>
 
                 {params.get("status") === "cancelled" && (
