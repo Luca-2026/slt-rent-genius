@@ -142,7 +142,7 @@ Deno.serve(async (req: Request) => {
     const stripe = stripeClient();
     const sessionExpires = signBooking ? Math.min(Math.floor(Date.parse(signBooking.expires_at) / 1000), Math.floor(Date.now() / 1000) + 23 * 3600) : Math.floor(Date.now() / 1000) + 23 * 3600;
     if (sessionExpires < Math.floor(Date.now() / 1000) + 1800) return json({ error: "Die Reservierung läuft in weniger als 30 Minuten ab. Bitte den Standort kontaktieren." }, 409);
-    let claim = hasBankDiscountPolicy(inquiry.offer_payload?.bank_transfer_discount) ? crypto.randomUUID() : null;
+    let claim = crypto.randomUUID();
     const lineItems = [
       ...(option.rentCents > 0
         ? [{
@@ -216,7 +216,7 @@ Deno.serve(async (req: Request) => {
     const session = await stripe.checkout.sessions.create(checkoutRequest, claim ? { idempotencyKey: `rental-checkout-${link.id}-${claim}` } : undefined);
     const sessionUpdate = service
       .from("offer_payment_links")
-      .update({ stripe_session_id: session.id, updated_at: new Date().toISOString() })
+      .update({ stripe_session_id: session.id, amount_cents: Number(checkoutRequest.metadata.amount_cents), updated_at: new Date().toISOString() })
       .eq("id", link.id);
     const { data: updated, error: sessionError } = await (claim ? sessionUpdate.eq("checkout_claim", claim) : sessionUpdate).select("id");
     if (sessionError || !updated?.length) throw new Error("Zahlungsfenster konnte nicht sicher zugeordnet werden; gespeicherten Versuch erneut abgleichen");

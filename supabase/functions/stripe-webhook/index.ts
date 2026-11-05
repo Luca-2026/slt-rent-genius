@@ -74,10 +74,11 @@ Deno.serve(async (req: Request) => {
 
       if (link.inquiry_table === "rental_inquiries") {
         const version = session.metadata?.payment_decision_version;
-        const { data: settled, error: settleError } = await service.rpc("settle_rental_stripe_receipt", {
+        const { data: settled, error: settleError } = await service.rpc("settle_rental_stripe_receipt_v2", {
           _event: event.id, _type: event.type, _link: link.id, _session: session.id, _intent: piId,
           _amount: session.amount_total ?? 0, _currency: session.currency ?? "", _offer: session.metadata?.offer_number ?? "",
           _version: version && /^\d+$/.test(version) ? Number(version) : null,
+          _claim: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(session.metadata?.checkout_claim ?? "") ? session.metadata.checkout_claim : null,
         });
         if (settleError) throw new Error(`Zahlung konnte nicht atomar gebucht werden: ${settleError.message}`);
         if (settled?.added && Deno.env.get("RESEND_API_KEY")) {

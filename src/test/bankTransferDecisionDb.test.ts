@@ -23,6 +23,7 @@ beforeAll(async () => {
     CREATE TABLE stripe_webhook_events(event_id text PRIMARY KEY,type text,result text);`);
   await db.exec(readFileSync("drizzle/migrations/0130_atomic_rental_stripe_receipts.sql", "utf8"));
   await db.exec(readFileSync("drizzle/migrations/0131_harden_rental_payment_snapshot_guards.sql", "utf8"));
+  await db.exec(readFileSync("drizzle/migrations/0132_bind_rental_receipts_to_durable_attempts.sql", "utf8"));
 }, 30000);
 afterAll(() => db.close());
 async function fixture(payments: unknown[] = []) {
@@ -40,13 +41,13 @@ describe("protected persisted bank discount", () => {
     const link = (await db.query<{ id: string }>("INSERT INTO offer_payment_links(inquiry_id,inquiry_table,status,offer_number,stripe_session_id,checkout_request) VALUES($1,'rental_inquiries','active','TEST','cs_test',$2::jsonb) RETURNING id", [f.id, JSON.stringify({ metadata: { amount_cents: "23090" } })])).rows[0]?.id;
     if (!link) throw new Error("Missing link");
     await db.query("INSERT INTO stripe_webhook_events VALUES('evt_crash','completed',NULL)");
-    const settle = (event: string, amount = 23090, version: number | null = 0) => db.query<{ settled: { added: boolean; result: string } }>("SELECT settle_rental_stripe_receipt($1,'completed',$2,'cs_test','pi_test',$3,'eur','TEST',$4) AS settled", [event, link, amount, version]);
+    const settle = (event: string, amount = 23090, version: number | null = 0) => db.query<{ settled: { added: boolean; result: string } }>("SELECT settle_rental_stripe_receipt_v2($1,'completed',$2,'cs_test','pi_test',$3,'eur','TEST',$4,NULL) AS settled", [event, link, amount, version]);
     expect((await settle('evt_crash')).rows[0]?.settled.added).toBe(true);
     expect((await settle('evt_async')).rows[0]?.settled.added).toBe(false);
     const row = (await db.query<{ payments: unknown[]; paid_amount: number }>("SELECT payments,paid_amount FROM rental_inquiries WHERE id=$1", [f.id])).rows[0];
     expect(row?.payments).toHaveLength(1); expect(Number(row?.paid_amount)).toBe(230.9);
-    expect((await settle('evt_stale',23090,1)).rows[0]?.settled.result).toBe('reconciliation_required');
-    expect((await settle('evt_missing_version',23090,null)).rows[0]?.settled.result).toBe('reconciliation_required');
+    expect((await settle('evt_stale',23090,1)).rows[0]?.settled.result).toBe('already_booked');
+    expect((await settle('evt_missing_version',23090,null)).rows[0]?.settled.result).toBe('already_booked');
     expect((await settle('evt_wrong_amount',1)).rows[0]?.settled.result).toBe('reconciliation_required');
   });
   it("recovers the same immutable attempt after a process crash, even with a different requested choice", async () => {
@@ -71,11 +72,28 @@ describe("protected persisted bank discount", () => {
     const request = { metadata: { amount_cents: "23090", payment_decision_version: "0", choice: "full" } };
     await expect(db.query("SELECT begin_rental_checkout($1,0,$2,$3::jsonb)", [first, crypto.randomUUID(), JSON.stringify({ ...request, metadata: { ...request.metadata, amount_cents: "1" } })])).rejects.toThrow("Zahlbetrag");
     await db.query("SELECT begin_rental_checkout($1,0,$2,$3::jsonb)", [first, crypto.randomUUID(), JSON.stringify(request)]);
+    await db.query("UPDATE offer_payment_links SET status='superseded' WHERE id=$1", [first]);
     await expect(db.query("SELECT begin_rental_checkout($1,0,$2,$3::jsonb)", [second, crypto.randomUUID(), JSON.stringify(request)])).rejects.toThrow("Andere Online-Zahlung");
   });
   it("preserves the agreed rate and policy evidence during selection", async () => {
     const f = await fixture();
     await expect(decide(f.id, { ...f.bank, bank_transfer_discount: { ...f.bank.bank_transfer_discount, rate: 20 } })).rejects.toThrow("Rabattvereinbarung");
+  });
+  it("does not consume a new attempt when an old installment event is redelivered", async () => {
+    const f = await fixture();
+    const link = (await db.query<{ id: string }>("INSERT INTO offer_payment_links(inquiry_id,inquiry_table,status,offer_number,stripe_session_id,amount_cents) VALUES($1,'rental_inquiries','active','TEST','cs_installment',3927) RETURNING id", [f.id])).rows[0]?.id;
+    if (!link) throw new Error("Missing link");
+    const settle = (event: string, session: string, intent: string, amount: number, claim: string | null = null) => db.query<{ settled: { added: boolean; result: string } }>("SELECT settle_rental_stripe_receipt_v2($1,'completed',$2,$3,$4,$5,'eur','TEST',0,$6) AS settled", [event, link, session, intent, amount, claim]);
+    expect((await settle('evt_installment','cs_installment','pi_installment',3927)).rows[0]?.settled.added).toBe(true);
+    const claim = crypto.randomUUID();
+    const request = { metadata: { amount_cents: "19163", checkout_claim: claim } };
+    await db.query("UPDATE offer_payment_links SET checkout_claim=$2,checkout_request=$3::jsonb WHERE id=$1", [link, claim, JSON.stringify(request)]);
+    expect((await settle('evt_installment_repeat','cs_installment','pi_installment',3927)).rows[0]?.settled.result).toBe('already_booked');
+    expect((await db.query<{ checkout_claim: string }>("SELECT checkout_claim FROM offer_payment_links WHERE id=$1", [link])).rows[0]?.checkout_claim).toBe(claim);
+    expect((await settle('evt_wrong_claim','cs_remaining','pi_remaining',19163,crypto.randomUUID())).rows[0]?.settled.result).toBe('reconciliation_required');
+    expect((await settle('evt_remaining','cs_remaining','pi_remaining',19163,claim)).rows[0]?.settled.added).toBe(true);
+    const row = (await db.query<{ payments: unknown[]; paid_amount: number }>("SELECT payments,paid_amount FROM rental_inquiries WHERE id=$1", [f.id])).rows[0];
+    expect(row?.payments).toHaveLength(2); expect(Number(row?.paid_amount)).toBe(230.9);
   });
   it("persists 3 % on rental including insurance, preserves original and 100 euro deposit", async () => {
     const f = await fixture(); await decide(f.id, f.bank);
