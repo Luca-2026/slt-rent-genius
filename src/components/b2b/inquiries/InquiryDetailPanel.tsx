@@ -40,7 +40,7 @@ import { OrderConfirmationCard } from "./OrderConfirmationCard";
 import { SignBookingStatus } from "./SignBookingStatus";
 import { InquiryPaymentsCard, parseInquiryPayments } from "./InquiryPaymentsCard";
 import { StripePaymentCard } from "./StripePaymentCard";
-import type { OfferLine } from "./offerMath";
+import type { OfferLine, OfferLineAddon } from "./offerMath";
 import { formatEuro, parseGroups, cleanExtraFields, type OfferGroup, type OfferExtraFields, type OrderType, type QuantityUnit } from "./offerMath";
 import { useAuth } from "@/hooks/useAuth";
 import { InstallmentCard } from "./InstallmentCard";
