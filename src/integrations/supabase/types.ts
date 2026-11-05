@@ -4209,6 +4209,125 @@ export type Database = {
         }
         Relationships: []
       }
+      rental_additional_payout_events: {
+        Row: {
+          actor: string
+          created_at: string
+          details: Json
+          event: string
+          id: string
+          payout_id: string
+        }
+        Insert: {
+          actor: string
+          created_at?: string
+          details?: Json
+          event: string
+          id?: string
+          payout_id: string
+        }
+        Update: {
+          actor?: string
+          created_at?: string
+          details?: Json
+          event?: string
+          id?: string
+          payout_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_additional_payout_events_payout_id_fkey"
+            columns: ["payout_id"]
+            isOneToOne: false
+            referencedRelation: "rental_additional_payouts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rental_additional_payouts: {
+        Row: {
+          amount_cents: number
+          approval_required: boolean
+          approved_at: string | null
+          approved_by: string | null
+          correction_refund_cents: number
+          created_at: string
+          created_by: string
+          credit_note_id: string
+          decision_note: string | null
+          iban: string
+          id: string
+          original_stripe_cents: number
+          paid_at: string | null
+          paid_by: string | null
+          prior_refund_cents: number
+          reason: string
+          recipient: string
+          rental_inquiry_id: string
+          status: string
+          transfer_reference: string | null
+        }
+        Insert: {
+          amount_cents: number
+          approval_required: boolean
+          approved_at?: string | null
+          approved_by?: string | null
+          correction_refund_cents: number
+          created_at?: string
+          created_by: string
+          credit_note_id: string
+          decision_note?: string | null
+          iban: string
+          id?: string
+          original_stripe_cents: number
+          paid_at?: string | null
+          paid_by?: string | null
+          prior_refund_cents: number
+          reason: string
+          recipient: string
+          rental_inquiry_id: string
+          status: string
+          transfer_reference?: string | null
+        }
+        Update: {
+          amount_cents?: number
+          approval_required?: boolean
+          approved_at?: string | null
+          approved_by?: string | null
+          correction_refund_cents?: number
+          created_at?: string
+          created_by?: string
+          credit_note_id?: string
+          decision_note?: string | null
+          iban?: string
+          id?: string
+          original_stripe_cents?: number
+          paid_at?: string | null
+          paid_by?: string | null
+          prior_refund_cents?: number
+          reason?: string
+          recipient?: string
+          rental_inquiry_id?: string
+          status?: string
+          transfer_reference?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_additional_payouts_credit_note_id_fkey"
+            columns: ["credit_note_id"]
+            isOneToOne: true
+            referencedRelation: "inquiry_invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rental_additional_payouts_rental_inquiry_id_fkey"
+            columns: ["rental_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "rental_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rental_coupon_events: {
         Row: {
           actor: string | null
@@ -4781,6 +4900,21 @@ export type Database = {
         Update: {
           id?: boolean
           live_enabled?: boolean
+        }
+        Relationships: []
+      }
+      rental_payout_approvers: {
+        Row: {
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -6273,6 +6407,7 @@ export type Database = {
         Args: { _list_id: string; _user_id: string }
         Returns: boolean
       }
+      can_approve_rental_payout: { Args: { _actor: string }; Returns: boolean }
       can_edit_operations: { Args: { _user_id: string }; Returns: boolean }
       can_issue_rental_coupon: { Args: never; Returns: boolean }
       can_manage_b2b_onboarding: {
@@ -6356,6 +6491,10 @@ export type Database = {
         }
         Returns: string
       }
+      complete_rental_additional_payout: {
+        Args: { _id: string; _reference: string }
+        Returns: undefined
+      }
       confirm_b2b_email: { Args: { _user_id: string }; Returns: undefined }
       confirm_order: {
         Args: { decisions: Json; inquiry_id: string }
@@ -6375,6 +6514,10 @@ export type Database = {
           _vat: string
         }
         Returns: string
+      }
+      decide_rental_additional_payout: {
+        Args: { _approve: boolean; _id: string; _note: string }
+        Returns: undefined
       }
       drain_sign_booking_processor: { Args: never; Returns: undefined }
       ensure_rental_feedback_invitation: {
@@ -6643,6 +6786,16 @@ export type Database = {
           _terminal: string
         }
         Returns: boolean
+      }
+      request_rental_additional_payout: {
+        Args: {
+          _amount: number
+          _credit: string
+          _iban: string
+          _reason: string
+          _recipient: string
+        }
+        Returns: string
       }
       reserve_rental_coupon: {
         Args: {
