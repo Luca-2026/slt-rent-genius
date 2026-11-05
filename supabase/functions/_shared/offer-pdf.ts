@@ -784,7 +784,7 @@ export async function generateOfferPdf(data: {
     dtr(pg, fm(deliverySubtotal), vx, y, font, 9); y -= 13;
   }
   if (discountTotal > 0) {
-    dt(pg, "Ihr Rabattvorteil (bereits abgezogen)", tx, y, bold, 9, ORANGE);
+    dt(pg, T("Dein Rabattvorteil (bereits abgezogen)", "Ihr Rabattvorteil (bereits abgezogen)"), tx, y, bold, 9, ORANGE);
     dtr(pg, `-${fm(discountTotal)}`, vx, y, bold, 9, ORANGE); y -= 13;
   }
 
@@ -1205,7 +1205,7 @@ export async function generateOfferPdf(data: {
   dt(
     pg,
     isOC
-      ? "Vielen Dank f\u00FCr Ihr Vertrauen. Wir freuen uns auf die Zusammenarbeit."
+      ? T("Vielen Dank f\u00FCr dein Vertrauen. Wir freuen uns auf die Zusammenarbeit.", "Vielen Dank f\u00FCr Ihr Vertrauen. Wir freuen uns auf die Zusammenarbeit.")
       : isCreditNote
       ? "F\u00FCr R\u00FCckfragen zu dieser Rechnungskorrektur stehen wir Ihnen gerne zur Verf\u00FCgung."
       : isInvoice

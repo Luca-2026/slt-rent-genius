@@ -49,5 +49,5 @@ Deno.test("AB after a later discount shows the customer's credit instead of 0,00
   assertEquals(text.includes("Guthaben zu deinen Gunsten"), true);
   assertEquals(text.includes("123,76"), true);
   assertEquals(text.includes("haben wir deinen Auftrag angenommen"), true);
-  assertEquals(text.includes("Ihre Zahlung"), false);
+  assertEquals(/\b(Ihre?|Ihnen|Ihren)\b/.test(text.split("Seite 2")[1] ?? text), false);
 });
