@@ -1,5 +1,6 @@
 import { salesOfferLine, salesPaymentTerms, salesPaymentText, FINANCING_INFORMATION, normalizeSalesFinancing } from "../_shared/sales-offer.ts";
 import { BANK_DISCOUNT_TERMS, newBankDiscountPolicy, withoutBankDiscount } from "../_shared/bank-transfer-discount.ts";
+import { bankDiscountLive } from "../_shared/payment-incentive-rollout.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { UNDATED_OFFER_NOTE } from "../_shared/undated-offer.ts";
 import { applyFeedbackCoupon } from "../_shared/feedback-coupons.ts";
@@ -159,6 +160,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const table = inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries";
+    const discountEnabled = inquiryType === "rental" && await bankDiscountLive(service);
     const { data: inquiry, error: inqErr } = await service
       .from(table)
       .select("*")
@@ -300,7 +302,7 @@ Deno.serve(async (req: Request) => {
     const returnLocationText = returnLoc
       ? `Abholung am Standort ${pickupName}, Rückgabe abweichend am Standort ${returnLoc.name}${returnLoc.cost > 0 ? " (Aufpreis siehe Position „Rückgabe an anderem Standort“)" : " (ohne Aufpreis)"}.`
       : null;
-    const pdfNotes = [undatedOffer ? UNDATED_OFFER_NOTE : null, supersedesText, returnLocationText, openEnded ? openEndedNote(minMonths, openEndedUnit) : null, notes, inquiryType === "rental" ? BANK_DISCOUNT_TERMS : null, coupon.code ? `Gutschein ${coupon.code}: ${money(coupon.saving)} netto Rabatt, in den Positionspreisen enthalten.` : null].filter(Boolean).join("\n\n") || null;
+    const pdfNotes = [undatedOffer ? UNDATED_OFFER_NOTE : null, supersedesText, returnLocationText, openEnded ? openEndedNote(minMonths, openEndedUnit) : null, notes, discountEnabled ? BANK_DISCOUNT_TERMS : null, coupon.code ? `Gutschein ${coupon.code}: ${money(coupon.saving)} netto Rabatt, in den Positionspreisen enthalten.` : null].filter(Boolean).join("\n\n") || null;
 
     const customerName = inquiryType === "rental"
       ? (inquiry.customer_name || "")
@@ -749,7 +751,7 @@ Deno.serve(async (req: Request) => {
   </div>
   ${discountSum > 0 ? `<p style="background:#fff7ed;border-left:4px solid #ff8e02;padding:10px 14px;margin:16px 0;border-radius:4px;font-size:14px;"><strong style="color:#ff8e02;">${F("Dein", "Ihr")} Rabattvorteil: − ${money(discountSum)}</strong><br><span style="color:#6b7280;font-size:13px;">Der Rabatt ist in den oben genannten Positionspreisen bereits abgezogen.</span></p>` : ""}
   <p style="font-size:15px;"><strong>Gesamtsumme brutto: ${money(totals.grossAmount)}</strong><br>
-  ${inquiryType === "rental" ? `<span>${escapeHtml(BANK_DISCOUNT_TERMS)}</span><br>` : ""}
+  ${discountEnabled ? `<span>${escapeHtml(BANK_DISCOUNT_TERMS)}</span><br>` : ""}
   <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)}${transportTotal > 0 ? ` (inkl. Transportkosten ${money(transportTotal)})` : ""} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span>${deposit > 0 ? `<br><span style="color:#6b7280;font-size:13px;">zzgl. Kaution ${money(deposit)} (wird nach Rückgabe erstattet)${undatedOffer ? " – bei späterer Beauftragung, aktuell nicht fällig" : ` – Gesamtüberweisung inkl. Kaution: ${money(totals.grossAmount + deposit)}`}</span>` : ""}</p>
 
   ${returnLoc ? `<p style="font-size:14px;"><strong>Rückgabe:</strong> Abholung am Standort ${escapeHtml(pickupName)}, Rückgabe am Standort ${escapeHtml(returnLoc.name)}${returnLoc.cost > 0 ? ` (Aufpreis ${money(returnLoc.cost)} netto)` : " (ohne Aufpreis)"}.</p>` : ""}
@@ -841,7 +843,7 @@ Deno.serve(async (req: Request) => {
         ...(inquiryType === "rental" ? { delivery_requested: deliveryRequested } : {}),
         // Snapshot des Angebots – Grundlage für die spätere Rechnung (inkl. Zusatzoptionen)
         offer_payload: {
-          ...(inquiryType === "rental" ? { bank_transfer_discount: newBankDiscountPolicy() } : {}),
+          ...(discountEnabled ? { bank_transfer_discount: newBankDiscountPolicy() } : {}),
           ...(inquiryType === "sales" ? { business_type: "sales", financing: financing ?? { enabled: false } } : {}),
           coupon_code: coupon.code,
           coupon_saving_net: coupon.saving,
