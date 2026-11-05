@@ -953,6 +953,20 @@
       "when": 1793865733496,
       "tag": "0135_protect_manual_rental_provider_receipts",
       "breakpoints": true
+    },
+    {
+      "idx": 136,
+      "version": "7",
+      "when": 1793867776352,
+      "tag": "0136_rental_additional_payout_approval",
+      "breakpoints": true
+    },
+    {
+      "idx": 137,
+      "version": "7",
+      "when": 1793867857609,
+      "tag": "0137_guard_additional_payout_approval_and_evidence",
+      "breakpoints": true
     }
   ]
 }

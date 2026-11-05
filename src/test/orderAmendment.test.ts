@@ -3,6 +3,13 @@ import { buildOrderAmendment } from "../../supabase/functions/_shared/order-amen
 const item = { product_name:"Testartikel",quantity:10,articles:1,unit_price:10,discount_percent:0,rental_start:"2026-11-10",rental_end:"2026-11-19" };
 const original = {items:[item],deposit:100,offer_number:"ANG-ORIGINAL",terms_text:"Originalbedingungen"};
 describe("Auftragsänderung ohne neues Angebot",()=>{
+ it.each([10,20,0])("übernimmt nachträglichen Rabatt %s ohne Originaländerung",discount_percent=>{
+  const before=JSON.stringify(original);
+  const result=buildOrderAmendment({items:[{...item,discount_percent}],deposit:100},original,"krefeld");
+  expect(result.items[0].discount_percent).toBe(discount_percent);
+  expect(result.totals.grossAmount).toBe(Math.round(119*(1-discount_percent/100)*100)/100);
+  expect(JSON.stringify(original)).toBe(before);
+ });
  it("ändert Preis und Zeitraum, erhält das Original unverändert",()=>{
   const before=JSON.stringify(original);
   const result=buildOrderAmendment({items:[{...item,unit_price:12,rental_end:"2026-11-20"}],deposit:100,payment_terms:"vorkasse"},original,"krefeld");

@@ -1,4 +1,5 @@
 import { SALES_PAYMENT_OPTIONS, salesPaymentTerms, salesOfferLine, type SalesFinancing } from "../../../../supabase/functions/_shared/sales-offer";
+import { editorBankDiscount } from "@/lib/editorBankDiscount";
 import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
 import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLegacyPeriod, undatedOfferLine } from "./offerCalendarPeriod";
 import { applyOpenEndedPeriod, normalizeOpenEndedUnit, normalizeOpenEndedDuration, openEndedUnitSingular, type OpenEndedUnit } from "@/lib/installments";
@@ -305,6 +306,7 @@ export interface OfferDeliveryAddress {
 }
 
 interface Props {
+  discountPolicy?: unknown;
   inquiryType: "rental" | "sales";
   inquiryId: string;
   defaultCouponCode?: string;
@@ -398,6 +400,7 @@ export interface OfferPayment {
 
 
 export function InquiryOfferForm({
+  discountPolicy,
   inquiryType,
   inquiryId,
   location,
@@ -859,7 +862,7 @@ export function InquiryOfferForm({
   };
 
   /** Positionen inkl. übernommenem Zeitraum – Basis für Summen, Anzeige und Versand. */
-  const effectiveItems = useMemo(
+  const unpricedEffectiveItems = useMemo(
     () =>
       items.map((item, i) => {
         if (isSalesOffer) return recalcAddons(salesOfferLine(item));
@@ -894,9 +897,9 @@ export function InquiryOfferForm({
   const checkSignature = useMemo(
     () =>
       JSON.stringify(
-        effectiveItems.map((i) => [i.product_slug ?? "", i.product_name.trim().toLowerCase(), i.quantity, i.rental_start, i.rental_end]),
+        unpricedEffectiveItems.map((i) => [i.product_slug ?? "", i.product_name.trim().toLowerCase(), i.quantity, i.rental_start, i.rental_end]),
       ) + `|${location ?? ""}|${checkStart ?? ""}|${checkEnd ?? ""}`,
-    [effectiveItems, location, checkStart, checkEnd],
+    [unpricedEffectiveItems, location, checkStart, checkEnd],
   );
 
   useEffect(() => {
@@ -910,7 +913,7 @@ export function InquiryOfferForm({
       setChecking(true);
       const next: Record<number, InventoryResult | null> = {};
       await Promise.all(
-        effectiveItems.map(async (item, index) => {
+        unpricedEffectiveItems.map(async (item, index) => {
           const name = item.product_name.trim();
           if (!name || isReturnChargeLine(item)) return;
           let slug = item.product_slug;
@@ -970,6 +973,11 @@ export function InquiryOfferForm({
   const activeReturnLocation =
     inquiryType === "rental" && returnLocation && returnLocation !== normalizeLocation(location) ? returnLocation : "";
   const activeReturnCost = activeReturnLocation ? Math.max(0, Number(returnLocationCost) || 0) : 0;
+
+  const effectiveItems = useMemo(() => inquiryType === "rental" && (isAmendment || isInvoice)
+    ? editorBankDiscount(unpricedEffectiveItems, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + activeReturnCost, discountPolicy, isAmendment ? "amendment" : invoiceKind, ignoreDraft)
+    : unpricedEffectiveItems,
+    [unpricedEffectiveItems, inquiryType, isAmendment, isInvoice, discountPolicy, invoiceKind, ignoreDraft, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost, activeReturnCost]);
 
   const totals = useMemo(
     () => buildOfferTotals(effectiveItems, deliveryCostDelivery + (isSalesOffer ? 0 : deliveryCostReturn) + setupCost + (isSalesOffer ? 0 : dismantleCost) + activeReturnCost),
@@ -2589,7 +2597,7 @@ export function InquiryOfferForm({
 
       <div className="rounded-lg bg-muted p-3 text-sm space-y-1">
         <div className="flex justify-between"><span>{inquiryType === "sales" ? "Verkaufsartikel" : "Mietartikel"}</span><span>{formatEuro(totals.itemsNet)}</span></div>
-        {(isSalesOffer ? totals.addonsNet !== 0 : totals.addonsNet > 0) && (
+        {totals.addonsNet !== 0 && (
           <div className="flex justify-between"><span>Zusatzoptionen</span><span>{formatEuro(totals.addonsNet)}</span></div>
         )}
         <div className="flex justify-between"><span>Netto</span><span>{formatEuro(totals.netAmount)}</span></div>
@@ -2601,8 +2609,8 @@ export function InquiryOfferForm({
               <span>Bereits gezahlt</span><span>− {formatEuro(amountPaid)}</span>
             </div>
             <div className="flex justify-between font-bold text-base">
-              <span>{balanceDue <= 0 ? "Vollständig bezahlt" : "Noch zu zahlen"}</span>
-              <span>{formatEuro(Math.max(0, balanceDue))}</span>
+              <span>{balanceDue < 0 ? "Überzahlung vor Kautionsabrechnung / Erstattungen" : balanceDue === 0 ? "Vollständig bezahlt" : "Noch zu zahlen"}</span>
+              <span>{formatEuro(Math.abs(balanceDue))}</span>
             </div>
           </>
         )}
