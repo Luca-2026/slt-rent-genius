@@ -755,7 +755,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         inquiry={inquiry as Record<string, any>}
         senderName={actorName}
         onDone={onChanged}
-        onEdit={inquiryType === "rental" ? () => setDocMode("amendment") : undefined}
+        onEdit={() => setDocMode("amendment")}
       />}
     </>
   );
@@ -818,7 +818,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             { mode: "offer", label: inquiry.offer_number ? "Neues Angebot" : "Angebot erstellen", icon: FilePlus2, show: true },
             { mode: "revise", label: "Angebot überarbeiten", icon: Pencil, show: !!(offerSnapshot && inquiry.offer_number) },
             { mode: "invoice", label: "Rechnung erstellen", icon: Receipt, show: true },
-            { mode: "amendment", label: "AB bearbeiten", icon: Pencil, show: inquiryType === "rental" && inquiry.status === "accepted" && !!inquiry.offer_number },
+            { mode: "amendment", label: "AB bearbeiten", icon: Pencil, show: inquiry.status === "accepted" && !!inquiry.offer_number },
             { mode: "order", label: "Auftragsbestätigung", icon: FileCheck2, show: layout === "page" && inquiry.status === "accepted" && !!inquiry.offer_number },
             { mode: "deposit", label: "Kaution abrechnen", icon: Wallet, show: inquiryType === "rental" && !!inquiry.offer_number },
           ] as { mode: DocMode; label: string; icon: typeof Pencil; show: boolean }[])

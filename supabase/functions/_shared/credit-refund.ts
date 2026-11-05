@@ -18,9 +18,14 @@ export async function creditRefund(service: any, creditId: string, userId: strin
   const eligible = credit.credit_refund_amount == null ? calculated : Math.min(calculated, toCents(credit.credit_refund_amount));
   const { data: existing, error: existingError } = await service.from("credit_note_refunds").select("*").eq("credit_note_id", creditId).maybeSingle();
   if (existingError) throw new Error("Erstattungsstatus konnte nicht geprüft werden.");
-  if (existing && ["succeeded", "pending"].includes(existing.status) && existing.allocations.every((a: any) => a.refund_id)) return { success: true, amount_cents: existing.amount_cents, status: existing.status, already_requested: true };
-
   const stripe = stripeClient();
+  if (existing) {
+    for (const allocation of existing.allocations) {
+      const intent = await stripe.paymentIntents.retrieve(allocation.payment_intent);
+      if (intent.livemode !== !isStripeTestMode()) throw new Error("Die Zahlung stammt aus einem anderen Stripe-Modus (Test/Live).");
+    }
+    if (["succeeded", "pending", "partial_failed", "failed"].includes(existing.status) && existing.allocations.every((a: any) => a.refund_id)) return { success: true, amount_cents: existing.amount_cents, status: existing.status, already_requested: true };
+  }
   let allocations = existing?.allocations;
   if (!existing) {
     let remaining = eligible;
@@ -72,11 +77,14 @@ export async function creditRefund(service: any, creditId: string, userId: strin
     // Persisted plan + stable keys survive double clicks, timeouts and browser restarts.
     let knownRefund;
     for await (const candidate of stripe.refunds.list({ payment_intent: allocation.payment_intent, limit: 100 })) {
-      if (candidate.metadata?.credit_note_id === creditId) { knownRefund = candidate; break; }
+      if (candidate.metadata?.credit_note_id === creditId) {
+        if (candidate.amount !== allocation.amount_cents) throw new Error("Erstattung stimmt nicht mit dem gespeicherten Anspruch überein.");
+        knownRefund = candidate; break;
+      }
     }
     if (!knownRefund && existing && new Date(existing.created_at).getTime() < Date.now() - 23 * 60 * 60 * 1000) throw new Error("Älterer Erstattungsversuch ist ungeklärt. Erst den Zahlungsstatus abgleichen; keine neue Erstattung auslösen.");
     const refund = knownRefund ?? await stripe.refunds.create({ payment_intent: allocation.payment_intent, amount: allocation.amount_cents, reason: "requested_by_customer", metadata: { credit_note_id: creditId, invoice_number: credit.invoice_number, kind: "credit_note" } }, { idempotencyKey: `credit-${creditId}-${allocation.payment_intent}` });
-    const { error } = await service.rpc("sync_credit_note_refund", { _credit_id: creditId, _intent: allocation.payment_intent, _refund_id: refund.id, _status: refund.status ?? "pending" });
+    const { error } = await service.rpc("sync_credit_note_refund_v2", { _credit_id: creditId, _intent: allocation.payment_intent, _refund_id: refund.id, _status: refund.status ?? "pending", _amount: refund.amount });
     if (error) throw new Error("Stripe hat die Erstattung angenommen; der Status muss erneut abgefragt werden. Nicht manuell erneut erstatten.");
   }
   const { data: result } = await service.from("credit_note_refunds").select("status, amount_cents").eq("credit_note_id", creditId).single();

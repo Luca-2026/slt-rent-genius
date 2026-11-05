@@ -1,0 +1,34 @@
+ALTER TABLE public.sales_inquiries ADD COLUMN IF NOT EXISTS original_accepted_offer jsonb, ADD COLUMN IF NOT EXISTS order_revision integer NOT NULL DEFAULT 0;
+CREATE TABLE public.sales_order_revisions(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),sales_inquiry_id uuid NOT NULL REFERENCES public.sales_inquiries(id),version integer NOT NULL,snapshot jsonb NOT NULL,agreement_note text NOT NULL,agreed_at timestamptz NOT NULL,created_by uuid NOT NULL,created_at timestamptz NOT NULL DEFAULT now(),UNIQUE(sales_inquiry_id,version));
+GRANT SELECT ON public.sales_order_revisions TO authenticated;
+GRANT ALL ON public.sales_order_revisions TO service_role;
+ALTER TABLE public.sales_order_revisions ENABLE ROW LEVEL SECURITY;
+CREATE POLICY staff_read_sales_revisions ON public.sales_order_revisions FOR SELECT TO authenticated USING(public.is_staff_member(auth.uid()));
+CREATE TRIGGER preserve_sales_revision_history BEFORE UPDATE OR DELETE ON public.sales_order_revisions FOR EACH ROW EXECUTE FUNCTION public.guard_order_revision_history();
+CREATE TRIGGER preserve_sales_original_offer BEFORE UPDATE ON public.sales_inquiries FOR EACH ROW EXECUTE FUNCTION public.guard_original_accepted_offer();
+CREATE OR REPLACE FUNCTION public.save_sales_order_amendment(_id uuid,_expected integer,_payload jsonb,_note text,_agreed_at timestamptz) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$
+DECLARE r public.sales_inquiries; total numeric; item_net numeric; item_vat numeric; addon_net numeric; cost_net numeric; expected_total numeric; snapshot jsonb;
+BEGIN
+IF NOT public.can_edit_operations(auth.uid()) THEN RAISE EXCEPTION 'Keine Berechtigung' USING ERRCODE='42501'; END IF;
+SELECT * INTO r FROM public.sales_inquiries WHERE id=_id FOR UPDATE;
+IF NOT FOUND OR r.status<>'accepted' OR r.offer_number IS NULL THEN RAISE EXCEPTION 'Nur angenommene Verkaufsaufträge können geändert werden'; END IF;
+IF _expected IS NULL OR r.order_revision<>_expected THEN RAISE EXCEPTION 'Auftrag wurde inzwischen geändert' USING ERRCODE='40001'; END IF;
+IF length(trim(COALESCE(_note,'')))<5 OR _agreed_at IS NULL OR _agreed_at>now()+interval '5 minutes' THEN RAISE EXCEPTION 'Vereinbarung mit Datum und Notiz erforderlich'; END IF;
+IF (_payload->>'payment_terms') IS NULL OR (_payload->>'payment_terms') NOT IN ('vorkasse','net_7','net_14','net_30') OR (r.customer_kind IS DISTINCT FROM 'business' AND _payload->>'payment_terms'<>'vorkasse') THEN RAISE EXCEPTION 'Unzulässige Zahlungsbedingungen'; END IF;
+IF jsonb_typeof(_payload->'items') IS DISTINCT FROM 'array' OR jsonb_array_length(_payload->'items')=0 OR COALESCE((_payload->>'deposit')::numeric,0)<>0 OR _payload->'bank_transfer_discount' NOT IN ('null'::jsonb) THEN RAISE EXCEPTION 'Ungültiger Verkaufsauftrag'; END IF;
+IF EXISTS(SELECT 1 FROM jsonb_array_elements(_payload->'items') i WHERE (i->>'quantity') IS NULL OR (i->>'quantity')::numeric<=0 OR (i->>'unit_price') IS NULL OR (i->>'unit_price')::numeric<0 OR COALESCE((i->>'discount_percent')::numeric,0) NOT BETWEEN 0 AND 100 OR i->>'rental_start' IS NOT NULL OR i->>'rental_end' IS NOT NULL OR COALESCE((i->>'duration')::numeric,1)<>1 OR COALESCE(i->>'unit','stueck')<>'stueck') THEN RAISE EXCEPTION 'Verkauf benötigt einmalige Mengen ohne Mietzeitraum'; END IF;
+SELECT COALESCE(sum(round((i->>'quantity')::numeric*(i->>'unit_price')::numeric*(1-COALESCE((i->>'discount_percent')::numeric,0)/100),2)),0),round(COALESCE(sum(round((i->>'quantity')::numeric*(i->>'unit_price')::numeric*(1-COALESCE((i->>'discount_percent')::numeric,0)/100),2)*COALESCE((i->>'vat_rate')::numeric,19)/100),0),2) INTO item_net,item_vat FROM jsonb_array_elements(_payload->'items') i;
+SELECT round(COALESCE(sum((a->>'amount')::numeric),0),2) INTO addon_net FROM jsonb_array_elements(_payload->'items') i CROSS JOIN LATERAL jsonb_array_elements(COALESCE(i->'addons','[]'::jsonb)) a WHERE COALESCE((a->>'optional')::boolean,false)=false;
+cost_net:=COALESCE((_payload->>'delivery_cost_delivery')::numeric,0)+COALESCE((_payload->>'setup_cost')::numeric,0);
+expected_total:=round(item_net+addon_net+cost_net,2)+round(item_vat+addon_net*0.19+cost_net*0.19,2);
+total:=(_payload->'totals'->>'grossAmount')::numeric;
+IF total IS NULL OR total<=0 OR total<>expected_total THEN RAISE EXCEPTION 'Auftragssumme stimmt nicht mit Positionen überein'; END IF;
+snapshot:=jsonb_build_object('offer_payload',r.offer_payload,'offer_total_gross',r.offer_total_gross,'offer_number',r.offer_number,'offer_file_url',r.offer_file_url,'offer_sent_at',r.offer_sent_at,'offer_accepted_at',r.offer_accepted_at,'order_confirmation_number',r.order_confirmation_number,'order_confirmation_file_url',r.order_confirmation_file_url);
+IF r.order_revision=0 THEN INSERT INTO public.sales_order_revisions(sales_inquiry_id,version,snapshot,agreement_note,agreed_at,created_by) VALUES(_id,0,snapshot,'Ursprünglich angenommener Auftrag',COALESCE(r.offer_accepted_at,now()),auth.uid()); END IF;
+UPDATE public.sales_inquiries SET original_accepted_offer=COALESCE(original_accepted_offer,snapshot),offer_payload=_payload,offer_total_gross=total,order_revision=order_revision+1 WHERE id=_id;
+INSERT INTO public.sales_order_revisions(sales_inquiry_id,version,snapshot,agreement_note,agreed_at,created_by) VALUES(_id,_expected+1,jsonb_build_object('offer_payload',_payload,'offer_total_gross',total,'offer_number',r.offer_number),trim(_note),_agreed_at,auth.uid());
+RETURN jsonb_build_object('version',_expected+1,'totals',_payload->'totals');
+END $$;
+REVOKE ALL ON FUNCTION public.save_sales_order_amendment(uuid,integer,jsonb,text,timestamptz) FROM PUBLIC,anon;
+GRANT EXECUTE ON FUNCTION public.save_sales_order_amendment(uuid,integer,jsonb,text,timestamptz) TO authenticated;
+COMMENT ON COLUMN public.sales_inquiries.original_accepted_offer IS 'Immutable accepted offer evidence; sales amendments update operational payload only through save_sales_order_amendment without rental or payment-link side effects';
