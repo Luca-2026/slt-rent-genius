@@ -307,7 +307,8 @@ Deno.serve(async (req: Request) => {
     const discountPolicy = inquiryType === "rental" ? inquiry.offer_payload?.bank_transfer_discount : null;
     if (hasBankDiscountPolicy(discountPolicy)) {
       items = withoutBankDiscount(items);
-      if (discountPolicy.selected === "bank" && body.deposit_settlement !== true) {
+      // Installment_net is already a share of the discounted stored contract, never discount it again.
+      if (discountPolicy.selected === "bank" && body.deposit_settlement !== true && invoiceKind !== "installment") {
         if (!allPaymentsByBank(inquiry.payments)) return json({ error: "Gemischte Zahlungen: zuerst Zahlungsart und Belege korrigieren." }, 409);
         items = priceBankTransfer(items, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + returnLocationCost, "bank").items;
       }

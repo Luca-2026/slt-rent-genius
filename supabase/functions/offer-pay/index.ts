@@ -75,6 +75,7 @@ Deno.serve(async (req: Request) => {
         if (decisionError) return json({ error: decisionError.message }, 409);
         inquiry.offer_payload = nextPayload;
         inquiry.offer_total_gross = priced.totals.grossAmount;
+        inquiry.payment_decision_version += 1;
       }
     } else if (action === "select_method") return json({ error: "Für dieses Angebot wurde kein Überweisungsrabatt vereinbart." }, 400);
     const { data: signBooking } = link.inquiry_table === "rental_inquiries"
@@ -139,6 +140,12 @@ Deno.serve(async (req: Request) => {
     const stripe = stripeClient();
     const sessionExpires = signBooking ? Math.min(Math.floor(Date.parse(signBooking.expires_at) / 1000), Math.floor(Date.now() / 1000) + 23 * 3600) : Math.floor(Date.now() / 1000) + 23 * 3600;
     if (sessionExpires < Math.floor(Date.now() / 1000) + 1800) return json({ error: "Die Reservierung läuft in weniger als 30 Minuten ab. Bitte den Standort kontaktieren." }, 409);
+    const claim = hasBankDiscountPolicy(inquiry.offer_payload?.bank_transfer_discount) ? crypto.randomUUID() : null;
+    if (claim) {
+      const { data: claimed, error: claimError } = await service.rpc("claim_rental_checkout", { _link: link.id, _version: inquiry.payment_decision_version, _claim: claim });
+      if (claimError || !claimed) return json({ error: "Eine Zahlung wird bereits gestartet oder der Auftrag wurde geändert. Bitte neu laden." }, 409);
+    }
+    try {
 
     // frühere, noch offene Session beenden (verhindert Doppelzahlung)
     if (link.stripe_session_id) {
@@ -181,6 +188,7 @@ Deno.serve(async (req: Request) => {
       deposit_cents: String(option.depositCents),
       choice: option.choice,
       order_code: inquiry.order_code ?? "",
+      ...(claim ? { payment_decision_version: String(inquiry.payment_decision_version) } : {}),
     };
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -197,11 +205,16 @@ Deno.serve(async (req: Request) => {
       success_url: `${origin}/zahlung/${token}?status=success`,
       cancel_url: `${origin}/zahlung/${token}?status=cancelled`,
     });
-    await service
+    const sessionUpdate = service
       .from("offer_payment_links")
-      .update({ stripe_session_id: session.id, updated_at: new Date().toISOString() })
+      .update({ stripe_session_id: session.id, ...(claim ? { checkout_claim: null, checkout_claimed_at: null } : {}), updated_at: new Date().toISOString() })
       .eq("id", link.id);
+    const { data: updated, error: sessionError } = await (claim ? sessionUpdate.eq("checkout_claim", claim) : sessionUpdate).select("id");
+    if (sessionError || !updated?.length) { await stripe.checkout.sessions.expire(session.id); throw new Error("Zahlungsfenster konnte nicht sicher zugeordnet werden"); }
     return json({ url: session.url });
+    } finally {
+      if (claim) await service.from("offer_payment_links").update({ checkout_claim: null, checkout_claimed_at: null }).eq("id", link.id).eq("checkout_claim", claim);
+    }
   } catch (err) {
     console.error("offer-pay error:", err);
     return json({ error: "Zahlung konnte nicht gestartet werden" }, 500);
