@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ExternalLink, RefreshCw, Search, Send, CheckCircle2, Ban, Banknote } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 import { useToast } from "@/hooks/use-toast";
 import { formatEuro } from "@/components/b2b/inquiries/offerMath";
 import { CreditNoteRefund } from "@/components/b2b/inquiries/CreditNoteRefund";
@@ -246,7 +247,7 @@ export default function InquiryInvoices() {
 
   const setStatus = async (row: InvoiceRow, status: "paid" | "cancelled") => {
     setBusyId(row.id);
-    const patch: Record<string, unknown> = { status };
+    const patch: Database["public"]["Tables"]["inquiry_invoices"]["Update"] = { status };
     if (status === "paid") patch.paid_at = new Date().toISOString();
     if (status === "cancelled") patch.cancelled_at = new Date().toISOString();
     const { error } = await supabase.from("inquiry_invoices").update(patch).eq("id", row.id);

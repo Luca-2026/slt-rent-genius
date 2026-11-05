@@ -904,6 +904,41 @@
       "when": 1793857624075,
       "tag": "0128_serialize_rental_online_checkout_claims",
       "breakpoints": true
+    },
+    {
+      "idx": 129,
+      "version": "7",
+      "when": 1793860090602,
+      "tag": "0129_durable_rental_checkout_attempts",
+      "breakpoints": true
+    },
+    {
+      "idx": 130,
+      "version": "7",
+      "when": 1793860157043,
+      "tag": "0130_atomic_rental_stripe_receipts",
+      "breakpoints": true
+    },
+    {
+      "idx": 131,
+      "version": "7",
+      "when": 1793860203728,
+      "tag": "0131_harden_rental_payment_snapshot_guards",
+      "breakpoints": true
+    },
+    {
+      "idx": 132,
+      "version": "7",
+      "when": 1793860418059,
+      "tag": "0132_bind_rental_receipts_to_durable_attempts",
+      "breakpoints": true
+    },
+    {
+      "idx": 133,
+      "version": "7",
+      "when": 1793860667707,
+      "tag": "0133_reconcile_terminal_rental_checkout_attempts",
+      "breakpoints": true
     }
   ]
 }

@@ -3795,6 +3795,7 @@ export type Database = {
           amount_cents: number
           checkout_claim: string | null
           checkout_claimed_at: string | null
+          checkout_request: Json | null
           created_at: string
           created_by: string | null
           customer_email: string | null
@@ -3818,6 +3819,7 @@ export type Database = {
           amount_cents: number
           checkout_claim?: string | null
           checkout_claimed_at?: string | null
+          checkout_request?: Json | null
           created_at?: string
           created_by?: string | null
           customer_email?: string | null
@@ -3841,6 +3843,7 @@ export type Database = {
           amount_cents?: number
           checkout_claim?: string | null
           checkout_claimed_at?: string | null
+          checkout_request?: Json | null
           created_at?: string
           created_by?: string | null
           customer_email?: string | null
@@ -6249,6 +6252,15 @@ export type Database = {
         Returns: undefined
       }
       backfill_allocations: { Args: { dry_run?: boolean }; Returns: Json }
+      begin_rental_checkout: {
+        Args: {
+          _claim: string
+          _link: string
+          _request: Json
+          _version: number
+        }
+        Returns: Json
+      }
       block_manual_rental_coupon: {
         Args: { p_coupon: string; p_reason: string }
         Returns: undefined
@@ -6612,6 +6624,15 @@ export type Database = {
         }
         Returns: undefined
       }
+      release_terminal_rental_checkout: {
+        Args: {
+          _claim: string
+          _link: string
+          _session: string
+          _terminal: string
+        }
+        Returns: boolean
+      }
       reserve_rental_coupon: {
         Args: {
           p_code: string
@@ -6689,6 +6710,35 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      settle_rental_stripe_receipt: {
+        Args: {
+          _amount: number
+          _currency: string
+          _event: string
+          _intent: string
+          _link: string
+          _offer: string
+          _session: string
+          _type: string
+          _version: number
+        }
+        Returns: Json
+      }
+      settle_rental_stripe_receipt_v2: {
+        Args: {
+          _amount: number
+          _claim: string
+          _currency: string
+          _event: string
+          _intent: string
+          _link: string
+          _offer: string
+          _session: string
+          _type: string
+          _version: number
+        }
+        Returns: Json
       }
       sign_calendar_availability: {
         Args: { _from: string; _location: string; _to: string }

@@ -40,9 +40,15 @@ Deno.serve(async (req: Request) => {
   // Idempotenz: jedes Ereignis nur einmal verarbeiten
   const { error: dupErr } = await service.from("stripe_webhook_events").insert({ event_id: event.id, type: event.type });
   if (dupErr) {
-    if ((dupErr as { code?: string }).code === "23505") return new Response(JSON.stringify({ duplicate: true }), { status: 200 });
-    console.error("Ereignis konnte nicht gespeichert werden:", dupErr.message);
-    return new Response("Error", { status: 500 });
+    if ((dupErr as { code?: string }).code === "23505") {
+      const { data: prior, error: priorError } = await service.from("stripe_webhook_events").select("result").eq("event_id", event.id).maybeSingle();
+      if (priorError) return new Response("Error", { status: 500 });
+      if (prior?.result) return new Response(JSON.stringify({ duplicate: true }), { status: 200 });
+      // Received is not committed: retry work left unfinished by a terminated process.
+    } else {
+      console.error("Ereignis konnte nicht gespeichert werden:", dupErr.message);
+      return new Response("Error", { status: 500 });
+    }
   }
   const finish = (result: string) =>
     service.from("stripe_webhook_events").update({ result }).eq("event_id", event.id);
@@ -65,6 +71,34 @@ Deno.serve(async (req: Request) => {
       const metaCents = Number(session.metadata?.amount_cents);
       const expected = Number.isFinite(metaCents) && metaCents > 0 ? metaCents : link.amount_cents;
       const piId = typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id ?? null;
+
+      if (link.inquiry_table === "rental_inquiries") {
+        const version = session.metadata?.payment_decision_version;
+        const { data: settled, error: settleError } = await service.rpc("settle_rental_stripe_receipt_v2", {
+          _event: event.id, _type: event.type, _link: link.id, _session: session.id, _intent: piId,
+          _amount: session.amount_total ?? 0, _currency: session.currency ?? "", _offer: session.metadata?.offer_number ?? "",
+          _version: version && /^\d+$/.test(version) ? Number(version) : null,
+          _claim: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(session.metadata?.checkout_claim ?? "") ? session.metadata.checkout_claim : null,
+        });
+        if (settleError) throw new Error(`Zahlung konnte nicht atomar gebucht werden: ${settleError.message}`);
+        if (settled?.added && Deno.env.get("RESEND_API_KEY")) {
+          const { data: customer } = await service.from("rental_inquiries").select("customer_email,location").eq("id", link.inquiry_id).maybeSingle();
+          const loc = LOCATION_CONTACTS[resolveLocationKey(customer?.location)];
+          try {
+            await fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: { Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`, "Content-Type": "application/json", "Idempotency-Key": `rental-receipt-${session.id}` },
+              body: JSON.stringify({
+                from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
+                to: [operationalEmailRecipient(customer?.customer_email ?? undefined, loc.email)],
+                subject: await codedSubject(service, `Zahlung eingegangen – Angebot ${link.offer_number}`, { table: link.inquiry_table, id: link.inquiry_id }),
+                html: `<p>Online-Zahlung eingegangen: <strong>${money(session.amount_total ?? 0)}</strong> zu Angebot <strong>${esc(link.offer_number)}</strong>.</p><p>Die Zahlung ist in der Mietanfrage gebucht.${settled.remaining_cents > 0 ? ` Noch offen: <strong>${money(settled.remaining_cents)}</strong>.` : " Der vollständige Zahlbetrag ist eingegangen."}</p>`,
+              }),
+            });
+          } catch (error) { console.error("Zahlungshinweis fehlgeschlagen", error instanceof Error ? error.message : "unknown"); }
+        }
+        return new Response(JSON.stringify({ result: settled?.result }), { status: 200 });
+      }
 
       if (link.status === "paid" && link.stripe_session_id !== session.id) {
         await service.from("offer_payment_links").update({
@@ -164,8 +198,7 @@ Deno.serve(async (req: Request) => {
     return new Response("ok");
   } catch (err) {
     console.error("stripe-webhook error:", err);
-    // Ereignis wieder freigeben, damit Stripe es erneut zustellen kann
-    await service.from("stripe_webhook_events").delete().eq("event_id", event.id);
+    // Keep the unfinished event: receipt settlement retries until committed.
     return new Response("Error", { status: 500 });
   }
 });

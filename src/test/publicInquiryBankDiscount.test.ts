@@ -1,8 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { bankDiscountLive, publicInquiryBankDiscount } from "../../supabase/functions/_shared/payment-incentive-rollout";
+import { bankDiscountLive, inquiryBankDiscountEnabled, publicInquiryBankDiscount } from "../../supabase/functions/_shared/payment-incentive-rollout";
 
 const rental = [{ product_slug: "minibagger" }];
 describe("Anfragerabatt und Angebotsfreigabe", () => {
+  it("preserves the server-stored 3 percent inquiry promise after rollout is disabled", () => {
+    expect(inquiryBankDiscountEnabled(false, { bank_transfer_discount: publicInquiryBankDiscount(true, rental) })).toBe(true);
+    expect(inquiryBankDiscountEnabled(false, { bank_transfer_discount: { rate: 20 } })).toBe(false);
+    expect(inquiryBankDiscountEnabled(false, null)).toBe(false);
+  });
   it("offers exactly 3 percent only for an enabled rental inquiry", () => {
     expect(publicInquiryBankDiscount(true, rental)).toEqual({ version: "bank-transfer-3-v1", rate: 3, selected: "regular" });
   });

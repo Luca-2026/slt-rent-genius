@@ -210,7 +210,7 @@ export function RentalRequestCart() {
     setSending(true); setSendError("");
     const first = items[0], location = getLocationById(first.location);
     if (!location) { setSending(false); return; }
-    const { data, error } = await supabase.functions.invoke("send-inquiry-email", { body: { ...contact, productName: first.product_name, locationName: location.name, locationEmail: location.email, locationPhone: location.phone, locationAddress: location.address, startDate: first.start_date, startTime: first.start_time, endDate: first.end_date, endTime: first.end_time, customerKind: type === "private" ? "private" : "business", items, cartRequestId: state.cart.requestId, cartExpiresAt: state.cart.expiresAt } });
+    const { data, error } = await supabase.functions.invoke("send-inquiry-email", { body: { ...contact, bankDiscountShown: bankDiscountAvailable, productName: first.product_name, locationName: location.name, locationEmail: location.email, locationPhone: location.phone, locationAddress: location.address, startDate: first.start_date, startTime: first.start_time, endDate: first.end_date, endTime: first.end_time, customerKind: type === "private" ? "private" : "business", items, cartRequestId: state.cart.requestId, cartExpiresAt: state.cart.expiresAt } });
     setSending(false);
     if (error || data?.error) { setSendError(data?.error ?? "Anfrage nicht gespeichert. Bitte erneut versuchen."); return; }
     setDone(data?.order_code ? `Deine Anfrage #${data.order_code} ist eingegangen.` : "Deine Mietanfrage ist eingegangen."); save(null); setContact(emptyContact);
