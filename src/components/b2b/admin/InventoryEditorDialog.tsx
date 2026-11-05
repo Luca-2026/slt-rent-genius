@@ -305,6 +305,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   useEffect(() => {
     if (!open) {
       loadedIdRef.current = null;
+      saveIdentityRef.current = null;
       pendingFormRef.current = null;
       dirtyBaselineRef.current = "";
       setDirty(false);
