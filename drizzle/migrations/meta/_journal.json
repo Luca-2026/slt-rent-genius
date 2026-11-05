@@ -876,6 +876,13 @@
       "when": 1793707756734,
       "tag": "0124_physical_stock_locations",
       "breakpoints": true
+    },
+    {
+      "idx": 125,
+      "version": "7",
+      "when": 1793857271646,
+      "tag": "0125_rental_bank_transfer_discount_decisions",
+      "breakpoints": true
     }
   ]
 }

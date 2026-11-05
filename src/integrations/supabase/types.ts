@@ -4440,6 +4440,7 @@ export type Database = {
           order_revision: number
           original_accepted_offer: Json | null
           paid_amount: number
+          payment_decision_version: number
           payment_followup_sent_at: string | null
           payment_reminder_manual_at: string | null
           payment_reminder_sent_at: string | null
@@ -4518,6 +4519,7 @@ export type Database = {
           order_revision?: number
           original_accepted_offer?: Json | null
           paid_amount?: number
+          payment_decision_version?: number
           payment_followup_sent_at?: string | null
           payment_reminder_manual_at?: string | null
           payment_reminder_sent_at?: string | null
@@ -4596,6 +4598,7 @@ export type Database = {
           order_revision?: number
           original_accepted_offer?: Json | null
           paid_amount?: number
+          payment_decision_version?: number
           payment_followup_sent_at?: string | null
           payment_reminder_manual_at?: string | null
           payment_reminder_sent_at?: string | null
@@ -6610,6 +6613,16 @@ export type Database = {
           _expected: number
           _id: string
           _note: string
+          _payload: Json
+        }
+        Returns: Json
+      }
+      select_rental_payment_method: {
+        Args: {
+          _expected: number
+          _id: string
+          _method: string
+          _offer: string
           _payload: Json
         }
         Returns: Json
