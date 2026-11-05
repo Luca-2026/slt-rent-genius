@@ -145,7 +145,7 @@ Deno.serve(async (req: Request) => {
                 ...(rcpt.cc.length ? { cc: rcpt.cc } : {}),
                 reply_to: loc.email,
                 subject: `Erstattung über Stripe – Rechnungskorrektur ${credit.invoice_number}`,
-                html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><p>Guten Tag${credit.customer_name ? ` ${esc(credit.customer_name)}` : ""},</p><p>zu unserer Rechnungskorrektur <strong>${esc(credit.invoice_number)}</strong>${parent?.invoice_number ? ` (Rechnung ${esc(parent.invoice_number)})` : ""} haben wir Ihnen <strong>${money(result.amount_cents)}</strong> vollständig über Stripe erstattet – auf dasselbe Zahlungsmittel (z. B. Karte), mit dem Sie online bezahlt haben.</p><p>Die Gutschrift erscheint je nach Bank in der Regel innerhalb von 5–10 Werktagen. Sie müssen nichts weiter tun.</p><p>Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${esc(loc.name)}<br>Tel. ${esc(loc.phone)} · ${esc(loc.email)}</p></div>`,
+                html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><p>Guten Tag${credit.customer_name ? ` ${esc(credit.customer_name)}` : ""},</p><p>zu unserer Rechnungskorrektur <strong>${esc(credit.invoice_number)}</strong>${parent?.invoice_number ? ` (Rechnung ${esc(parent.invoice_number)})` : ""} ${result.status === "succeeded" ? "haben wir Ihnen" : "haben wir die Erstattung von"} <strong>${money(result.amount_cents)}</strong> ${result.status === "succeeded" ? "vollständig erstattet" : "veranlasst; sie wird noch verarbeitet"} – auf dasselbe Zahlungsmittel, mit dem Sie online bezahlt haben.</p><p>Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${esc(loc.name)}<br>Tel. ${esc(loc.phone)} · ${esc(loc.email)}</p></div>`,
               }),
             });
             result.customer_mailed = res.ok;
@@ -161,8 +161,8 @@ Deno.serve(async (req: Request) => {
         return json({
           success: false,
           error: permission
-            ? "Der Stripe-Schlüssel darf keine Erstattungen ausführen. Bitte im Stripe-Dashboard beim eingeschränkten Schlüssel „Charges and Refunds“ auf „Write“ stellen. Es wurde nichts erstattet."
-            : (msg && !/rk_(live|test)_|sk_(live|test)_/.test(msg) ? msg : "Erstattung nicht möglich. Es wurde nichts erstattet."),
+            ? "Erstattungsberechtigung fehlt. Der Status kann teilweise offen sein; bitte abgleichen und nicht manuell zusätzlich erstatten."
+            : (msg && !/rk_(live|test)_|sk_(live|test)_/.test(msg) ? msg : "Erstattungsstatus ungeklärt. Bitte abgleichen und nicht manuell zusätzlich erstatten."),
         });
       }
     }

@@ -186,9 +186,9 @@ export function furtherTiers(options: AddonOption[]): { std: AddonOption | undef
 export function syncOptionalTiers(addons: OfferLineAddon[], options: AddonOption[], ctx: AddonLineContext, fallbackDays: number | null): OfferLineAddon[] {
   const { std: stdOpt, tiers } = furtherTiers(options);
   const std = stdOpt ? addons.find((a) => a.key === stdOpt.key && !a.optional) : undefined;
-  if (!std) return addons.filter((a) => !(a.optional && a.key.startsWith("opt-")));
+  if (!std) return addons;
   return addons.map((a) => {
-    if (!a.optional) return a;
+    if (!a.optional || a.manual) return a;
     const tier = tiers.find((t) => `opt-${t.key}` === a.key);
     return (tier && buildOptionalTier(tier, std, ctx, fallbackDays)) || a;
   });
@@ -292,7 +292,6 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
       </div>
 
       {addons.map((addon, ai) => {
-        if (addon.optional) return null;
         const machineInsurance = !isSales && isMachineInsurance(addon);
         const calculated = !!addon.price_type && addon.price_type !== "flat";
         const fullPeriod = addon.basis === "full_period";
@@ -311,7 +310,7 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                     value={addon.label}
                     placeholder="Bezeichnung der Zusatzoption"
                     disabled={disabled}
-                    onChange={(e) => patch(ai, { label: e.target.value })}
+                    onChange={(e) => patch(ai, { label: e.target.value, ...(addon.optional ? { manual: true } : {}) })}
                   />
               </div>
               <Button
@@ -330,7 +329,7 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
               <Label className="text-xs">Selbstbehalt / Zusatztext</Label>
               <Input aria-label="Selbstbehalt / Zusatztext" value={addon.note ?? ""}
                 placeholder="Selbstbehalt laut Vereinbarung" disabled={disabled}
-                onChange={(e) => patch(ai, { note: e.target.value })} />
+                onChange={(e) => patch(ai, { note: e.target.value, ...(addon.optional ? { manual: true } : {}) })} />
             </div>
             {!isSales && (
               <Select value={addon.price_type ?? "flat"} disabled={disabled}
@@ -362,7 +361,7 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                     value={addon.rate ?? 0}
                     aria-label={addon.price_type === "percent" ? "Prozentsatz (%)" : "Tagessatz netto"}
                     disabled={disabled}
-                    onChange={(e) => patchCalc(ai, { rate: Number(e.target.value) || 0 })}
+                    onChange={(e) => addon.optional ? patch(ai, { rate: Number(e.target.value) || 0, per_day: Number(e.target.value) || 0, amount: (computeAddonAmount({ price_type: addon.price_type ?? "per_unit", rate: Number(e.target.value) || 0, basis: addon.basis ?? "full_period", days: addon.days }, ctx) ?? 0), manual: true }) : patchCalc(ai, { rate: Number(e.target.value) || 0 })}
                   />
                 </div>
                 {fullPeriod ? (

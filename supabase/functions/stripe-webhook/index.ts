@@ -11,7 +11,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { LOCATION_CONTACTS, resolveLocationKey } from "../_shared/inquiry-offer-math.ts";
 import { operationalEmailRecipient } from "../_shared/test-email-routing.ts";
-import { appendPayment, paymentMatches, stripeClient, toCents } from "../_shared/stripe-pay.ts";
+import { appendPayment, isStripeTestMode, paymentMatches, stripeClient, toCents } from "../_shared/stripe-pay.ts";
 
 const money = (cents: number) =>
   new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(cents / 100);
@@ -33,6 +33,7 @@ Deno.serve(async (req: Request) => {
     return new Response("Invalid signature", { status: 400 });
   }
 
+  if (event.livemode !== !isStripeTestMode()) return new Response("Stripe mode mismatch", { status: 400 });
   const service = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, {
     auth: { persistSession: false },
   });
@@ -184,7 +185,7 @@ Deno.serve(async (req: Request) => {
       if (refund.metadata?.credit_note_id) {
         const intent = typeof refund.payment_intent === "string" ? refund.payment_intent : refund.payment_intent?.id;
         if (intent) {
-          const { error } = await service.rpc("sync_credit_note_refund", { _credit_id: refund.metadata.credit_note_id, _intent: intent, _refund_id: refund.id, _status: refund.status ?? "pending" });
+          const { error } = await service.rpc("sync_credit_note_refund_v2", { _credit_id: refund.metadata.credit_note_id, _intent: intent, _refund_id: refund.id, _status: refund.status ?? "pending", _amount: refund.amount });
           if (error) throw new Error("Erstattungsstatus konnte nicht gespeichert werden");
         }
       }
