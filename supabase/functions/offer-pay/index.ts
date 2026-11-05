@@ -210,7 +210,7 @@ Deno.serve(async (req: Request) => {
     const session = await stripe.checkout.sessions.create(checkoutRequest, claim ? { idempotencyKey: `rental-checkout-${link.id}-${claim}` } : undefined);
     const sessionUpdate = service
       .from("offer_payment_links")
-      .update({ stripe_session_id: session.id, ...(claim ? { checkout_claim: null, checkout_claimed_at: null, checkout_request: null } : {}), updated_at: new Date().toISOString() })
+      .update({ stripe_session_id: session.id, ...(claim ? { checkout_claim: null, checkout_claimed_at: null } : {}), updated_at: new Date().toISOString() })
       .eq("id", link.id);
     const { data: updated, error: sessionError } = await (claim ? sessionUpdate.eq("checkout_claim", claim) : sessionUpdate).select("id");
     if (sessionError || !updated?.length) throw new Error("Zahlungsfenster konnte nicht sicher zugeordnet werden; gespeicherten Versuch erneut abgleichen");
