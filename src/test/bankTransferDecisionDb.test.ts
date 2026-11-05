@@ -17,6 +17,7 @@ beforeAll(async () => {
   await db.exec(readFileSync("drizzle/migrations/0125_rental_bank_transfer_discount_decisions.sql", "utf8"));
   await db.exec(readFileSync("drizzle/migrations/0126_protect_bank_discount_snapshot_and_checkout.sql", "utf8"));
   await db.exec(readFileSync("drizzle/migrations/0128_serialize_rental_online_checkout_claims.sql", "utf8"));
+  await db.exec(readFileSync("drizzle/migrations/0129_durable_rental_checkout_attempts.sql", "utf8"));
 }, 30000);
 afterAll(() => db.close());
 async function fixture(payments: unknown[] = []) {
@@ -29,6 +30,34 @@ async function fixture(payments: unknown[] = []) {
 }
 const decide = (id: string, payload: unknown, expected = 0, method = "bank") => db.query("SELECT select_rental_payment_method($1,'TEST',$2,$3,$4::jsonb)", [id, expected, method, JSON.stringify(payload)]);
 describe("protected persisted bank discount", () => {
+  it("recovers the same immutable attempt after a process crash, even with a different requested choice", async () => {
+    const f = await fixture();
+    const link = (await db.query<{ id: string }>("INSERT INTO offer_payment_links(inquiry_id,inquiry_table,status,offer_number) VALUES($1,'rental_inquiries','active','TEST') RETURNING id", [f.id])).rows[0]?.id;
+    if (!link) throw new Error("Missing test link");
+    const request = { metadata: { amount_cents: "23090", payment_decision_version: "0", choice: "full" }, expires_at: 2000000000 };
+    const claim = crypto.randomUUID();
+    const begin = (c: string, r: unknown) => db.query<{ attempt: { claim: string; request: typeof request } }>("SELECT begin_rental_checkout($1,0,$2,$3::jsonb) AS attempt", [link, c, JSON.stringify(r)]);
+    await begin(claim, request);
+    const recovered = (await begin(crypto.randomUUID(), { metadata: { choice: "anzahlung", amount_cents: "1" } })).rows[0]?.attempt;
+    expect(recovered?.claim).toBe(claim); expect(recovered?.request).toEqual(request);
+    await expect(decide(f.id, f.bank)).rejects.toThrow("Online-Zahlung");
+    await db.query("UPDATE offer_payment_links SET checkout_claimed_at=now()-interval '24 hours' WHERE id=$1", [link]);
+    await expect(begin(crypto.randomUUID(), request)).rejects.toThrow("abgeglichen");
+  });
+  it("blocks a second payment link for the same order and fabricated outstanding amount", async () => {
+    const f = await fixture();
+    const links = (await db.query<{ id: string }>("INSERT INTO offer_payment_links(inquiry_id,inquiry_table,status,offer_number) VALUES($1,'rental_inquiries','active','TEST'),($1,'rental_inquiries','active','TEST') RETURNING id", [f.id])).rows;
+    const first = links[0]?.id, second = links[1]?.id;
+    if (!first || !second) throw new Error("Missing links");
+    const request = { metadata: { amount_cents: "23090", payment_decision_version: "0", choice: "full" } };
+    await expect(db.query("SELECT begin_rental_checkout($1,0,$2,$3::jsonb)", [first, crypto.randomUUID(), JSON.stringify({ ...request, metadata: { ...request.metadata, amount_cents: "1" } })])).rejects.toThrow("Zahlbetrag");
+    await db.query("SELECT begin_rental_checkout($1,0,$2,$3::jsonb)", [first, crypto.randomUUID(), JSON.stringify(request)]);
+    await expect(db.query("SELECT begin_rental_checkout($1,0,$2,$3::jsonb)", [second, crypto.randomUUID(), JSON.stringify(request)])).rejects.toThrow("Andere Online-Zahlung");
+  });
+  it("preserves the agreed rate and policy evidence during selection", async () => {
+    const f = await fixture();
+    await expect(decide(f.id, { ...f.bank, bank_transfer_discount: { ...f.bank.bank_transfer_discount, rate: 20 } })).rejects.toThrow("Rabattvereinbarung");
+  });
   it("persists 3 % on rental including insurance, preserves original and 100 euro deposit", async () => {
     const f = await fixture(); await decide(f.id, f.bank);
     const row = (await db.query<{ offer_total_gross: string; offer_payload: typeof f.bank; original_accepted_offer: { offer_total_gross: number }; payment_decision_version: number }>("SELECT * FROM rental_inquiries WHERE id=$1", [f.id])).rows[0];
