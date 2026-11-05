@@ -1051,6 +1051,13 @@
       "when": 1793881014522,
       "tag": "0149_route_bank_rental_refunds_safely",
       "breakpoints": true
+    },
+    {
+      "idx": 150,
+      "version": "7",
+      "when": 1793881405724,
+      "tag": "0150_protect_direct_rental_refund_finality",
+      "breakpoints": true
     }
   ]
 }
