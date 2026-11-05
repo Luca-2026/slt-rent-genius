@@ -981,6 +981,13 @@
       "when": 1793876445817,
       "tag": "0139_retire_rental_additional_compensation",
       "breakpoints": true
+    },
+    {
+      "idx": 140,
+      "version": "7",
+      "when": 1793876548623,
+      "tag": "0140_separate_deposit_from_rental_credit",
+      "breakpoints": true
     }
   ]
 }

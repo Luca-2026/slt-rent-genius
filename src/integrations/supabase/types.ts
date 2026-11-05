@@ -2807,6 +2807,7 @@ export type Database = {
           payout_method: string
           payout_status: string
           rent_amount: number
+          rental_credit: number
           rental_inquiry_id: string
           settled_at: string
           settled_by: string | null
@@ -2828,6 +2829,7 @@ export type Database = {
           payout_method?: string
           payout_status?: string
           rent_amount?: number
+          rental_credit?: number
           rental_inquiry_id: string
           settled_at?: string
           settled_by?: string | null
@@ -2849,6 +2851,7 @@ export type Database = {
           payout_method?: string
           payout_status?: string
           rent_amount?: number
+          rental_credit?: number
           rental_inquiry_id?: string
           settled_at?: string
           settled_by?: string | null
@@ -6863,6 +6866,7 @@ export type Database = {
           payout_method: string
           payout_status: string
           rent_amount: number
+          rental_credit: number
           rental_inquiry_id: string
           settled_at: string
           settled_by: string | null
