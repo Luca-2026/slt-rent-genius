@@ -1,4 +1,5 @@
 import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
+import { reconcileRefundsBeforeExecution } from "../_shared/refund-reconciliation.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { selectStaffRentalPayment } from "../_shared/staff-payment-decision.ts";
 import { recordRentalPayments } from "../_shared/record-rental-payments.ts";
@@ -203,6 +204,7 @@ Deno.serve(async (req: Request) => {
         if (candidate.metadata?.deposit_refund_id === reserved.id) { knownRefund = candidate; break; }
       }
       if (!knownRefund && prior && new Date(prior.created_at).getTime() < Date.now() - 23 * 60 * 60 * 1000) return json({ error: "Älterer Erstattungsversuch ist ungeklärt. Erst den Zahlungsstatus abgleichen; keine neue Erstattung auslösen." }, 409);
+      if (!knownRefund) await reconcileRefundsBeforeExecution(service, stripe, link.payment_intent_id, !isStripeTestMode());
       const refund = knownRefund ?? await stripe.refunds.create(
         {
           payment_intent: link.payment_intent_id,

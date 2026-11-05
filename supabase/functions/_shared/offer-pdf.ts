@@ -977,20 +977,22 @@ export async function generateOfferPdf(data: {
         `${T("Deine", "Ihre")} Teilzahlung \u00FCber ${fm(amountPaid)} ist bei uns eingegangen. Offen ist noch ein Restbetrag von ${fm(balanceDue)}. ` +
           (paysOnInvoice
             ? "Dieser ist gem\u00E4\u00DF den vereinbarten Zahlungsbedingungen f\u00E4llig."
-            : T("Bitte \u00FCberweise diesen sp\u00E4testens vor Mietbeginn auf folgendes Konto:", "Bitte \u00FCberweisen Sie diesen sp\u00E4testens vor Mietbeginn auf folgendes Konto:")),
+            : data.businessType === "sales"
+              ? T("Bitte überweise diesen spätestens vor Übergabe auf folgendes Konto:", "Bitte überweisen Sie diesen spätestens vor Übergabe auf folgendes Konto:")
+              : T("Bitte \u00FCberweise diesen sp\u00E4testens vor Mietbeginn auf folgendes Konto:", "Bitte \u00FCberweisen Sie diesen sp\u00E4testens vor Mietbeginn auf folgendes Konto:")),
         rgb(0.995, 0.97, 0.93), ORANGE,
         paysOnInvoice ? [] : bankRows(ref),
       );
     } else {
       drawInfoBox(
         "Zahlungshinweis",
-        `Die Zahlung von ${fm(requiredTotal)} erfolgt gem\u00E4\u00DF den vereinbarten Zahlungsbedingungen nach Rechnungsstellung. Bisher ist noch keine Zahlung eingegangen.`,
+        `Die Zahlung von ${fm(requiredTotal)} ${paysOnInvoice ? "erfolgt gemäß den vereinbarten Zahlungsbedingungen nach Rechnungsstellung" : data.businessType === "sales" ? "ist vor Übergabe bzw. Lieferung vollständig per Banküberweisung zu zahlen" : "ist gemäß den vereinbarten Zahlungsbedingungen vor Mietbeginn zu zahlen"}. Bisher ist noch keine Zahlung eingegangen.`,
         rgb(0.995, 0.97, 0.93), ORANGE,
       );
     }
     drawInfoBox(
       "Verbindliche Auftragsannahme",
-      `Mit dieser Auftragsbest\u00E4tigung haben wir ${T("deinen", "Ihren")} Auftrag angenommen. Die Miete ist damit verbindlich vereinbart. ` +
+      `Mit dieser Auftragsbest\u00E4tigung haben wir ${T("deinen", "Ihren")} Auftrag angenommen. ${data.businessType === "sales" ? "Der Kauf" : "Die Miete"} ist damit verbindlich vereinbart. ` +
         `Diese Auftragsbest\u00E4tigung dient ${T("dir", "Ihnen")} als Nachweis der Auftragsannahme. Es gelten unsere Allgemeinen Gesch\u00E4ftsbedingungen.`,
       rgb(0.94, 0.96, 0.98), BRAND,
     );

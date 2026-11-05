@@ -5828,6 +5828,36 @@ export type Database = {
           },
         ]
       }
+      stripe_refund_receipts: {
+        Row: {
+          amount_cents: number
+          currency: string
+          livemode: boolean
+          payment_intent: string
+          refund_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount_cents: number
+          currency: string
+          livemode: boolean
+          payment_intent: string
+          refund_id: string
+          status: string
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          currency?: string
+          livemode?: boolean
+          payment_intent?: string
+          refund_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       stripe_webhook_events: {
         Row: {
           event_id: string
@@ -6438,6 +6468,10 @@ export type Database = {
         Args: { _profile: string }
         Returns: undefined
       }
+      assert_stripe_refund_execution_capacity: {
+        Args: { _credit_id?: string; _deposit_id?: string; _intent: string }
+        Returns: undefined
+      }
       backfill_allocations: { Args: { dry_run?: boolean }; Returns: Json }
       begin_rental_checkout: {
         Args: {
@@ -6822,6 +6856,17 @@ export type Database = {
         }
         Returns: Json
       }
+      record_stripe_refund_receipt: {
+        Args: {
+          _amount: number
+          _currency: string
+          _id: string
+          _intent: string
+          _live: boolean
+          _status: string
+        }
+        Returns: undefined
+      }
       redeem_reserved_rental_coupon: {
         Args: {
           p_code: string
@@ -6869,6 +6914,10 @@ export type Database = {
           _token: string
         }
         Returns: Json
+      }
+      save_managed_article: {
+        Args: { _article: Json; _id: string; _location_prices?: Json }
+        Returns: string
       }
       save_rental_order_amendment: {
         Args: {

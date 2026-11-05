@@ -3,6 +3,34 @@
 ## Ergebnis
 Keine vollständige Freigabe. Die Fortsetzung mit dem bestehenden berechtigten Admin-Konto ist erfolgt; fehlender Mitarbeiterzugang ist für dieses Konto kein Hindernis mehr. Es wurden keine Rollen geändert, keine tatsächlichen Zahlungen ausgelöst und keine finalen Rechnungen verschickt.
 
+## Abschlussstand dieses Durchlaufs ab 11:52 UTC
+
+**Keine Gesamtfreigabe; keine Websiteveröffentlichung angefordert.** Die folgenden Ergebnisse sind tatsächlich belegt, nicht aus Einzeltests abgeleitet.
+
+| Bereich | Aktueller Beleg | Ergebnis |
+|---|---|---|
+| Verkaufs-AB | Interner Testauftrag #5U673T: Angebot ANG-V-2026-11-0002 mit 119 € → ausdrücklich gekennzeichnete interne Vor-Ort-Testannahme → AB-Mengenänderung auf 2 × 100 € netto → Vorschau → geschütztes Speichern → vollständiges Neuladen → simulierte, ausdrücklich als Test markierte Bankzahlung 238 € → AB-Vorschau → Versand ausschließlich ans Testpostfach → Neuladen/PDF | AB-V-2026-11-0002-A1 gespeichert, ursprüngliches Angebot weiterhin 119 €, aktueller Auftrag 238 €, Version 1. PDF gelesen: zwei Stück, 238 €, Kauf statt Miete, Du, keine Kaution/Mietdaten. |
+| Verkaufs-PDF | Tatsächliche Vorschau zeigte noch „Die Miete“ und falsche Fälligkeit bei Vorkasse | Korrigiert und eingespielt; anschließend tatsächlich erzeugtes und versendetes PDF gelesen. |
+| CMS-Teilfehler | Artikel/Standortpreise zuvor getrennte Schreibvorgänge | Eine geschützte atomare Speicherung mit stabiler Artikel-ID. Datenbanktest: Fehler am zweiten Standort rollt Artikel und ersten Standort zurück; Wiederholung erzeugt keine Dublette, unveränderte Preise bleiben erhalten. Event-Preisfelder separat geprüft. Tatsächlicher CMS-Browser-Speicherlauf bleibt offen. |
+| Versicherung | Neue Angebote und Miet-AB-Änderungen prüften Altpauschale/Selbstbehalt nicht vollständig | Gemeinsame Versandprüfung ergänzt: Kalendertage/Tagessatz, Selbstbehalt und konsistente Summe auch bei manueller Änderung. 6 × 12 € = 72 €, Selbstbehalt 750 € geprüft; Altpauschale und fehlerhafte Werte gesperrt. Historische ausgestellte Belege werden nicht umgedeutet. Tatsächlicher Altfall-Speichern/Wiederöffnen bleibt offen. |
+| Externe Stripe-Erstattungen | Externe Belege bisher nicht dauerhaft gespeichert, charge.refunded ignoriert | Providerbelegbuch ergänzt; charge.refunded liest sämtliche Erstattungen; vor weiterer Auszahlung gemeinsamer Kapazitätsabgleich, unbekannte externe Zuordnung sperrt Auszahlung. Belegte Tests für Belegerhalt, Doppelzählungsvermeidung, Modus/Status/Persistenzfehler. Keine echte Providerzahlung oder Auszahlung geprüft. |
+| Automatische Tests | Gesamtsammlung nach Änderungen | 136 Dateien / 893 Tests bestanden; anschließend erweiterte DB-Erstattungsprüfung und fokussierte Wiederholung: 5 Dateien / 28 Tests bestanden. Nicht als 921 unterschiedliche Tests zählen. |
+
+### Noch nicht abgeschlossen – konkrete Freigabesperren
+1. **Direkte Mietguthabenerstattung auf Erst-Rechnung fehlt weiterhin.** 123,76 € müssen ohne erfundene zusätzliche Rechnungskorrektur aus ursprünglichen Zahlungen erstattbar werden; gemeinsamer Anspruch und Oberfläche sind noch umzusetzen.
+2. **Separater B2B-3-%-Rabatt fehlt weiterhin.** Servergespeicherte Zusage, Kostenklassifikation, geschützte Zahlungswahl und Angebotsübernahme in Rechnung einschließlich Reverse Charge sind noch umzusetzen. Allgemeiner Rabatt bleibt deaktiviert.
+3. **Echter isolierter Stripe-Testlauf fehlt.** Verifizierter vorhandener Zahlungsweg verwendet nur einen produktiven Schlüssel; sichere separate Testumgebung/Testzugang ist noch nicht bereitgestellt/verifiziert. Produktiven Schlüssel nicht ersetzen, kein Kundengeld als Test. Providerparallelität, Abbruch und Teilfehler damit nicht Ende zu Ende abgenommen.
+4. **Abschlussabnahme fehlt:** tatsächliche Kautionsabrechnung/Auszahlung, erstmalige Rechnung/Mietguthaben, Korrektur, CMS-Speichern und Versicherungsaltfälle sowie B2B-/Schilder-Zahlungsabschluss.
+5. **Externe Erstattungssicherheit ist konservativ gesperrt, nicht vollständig fertig:** unbekannte externe Erstattungen blockieren weitere Auszahlung; fachliche Zuordnung und reservierungsintegrierter Gesamtabschluss samt echter Parallelitätsprüfung bleiben offen.
+
+### Nebenwirkungen und Veröffentlichung
+- Keine echten Geldbewegungen. Nur der ausdrücklich gekennzeichnete interne Verkaufsauftrag wurde angelegt, angenommen, geändert und mit einer simulierten Bankzahlung versehen. Angebots-/AB-E-Mails ausschließlich an das bestehende Testpostfach; keine operative Standortkopie.
+- CMS- und Erstattungsregeln sowie geänderte Dokument-/Zahlungsfunktionen sind bereits im gemeinsamen produktiven Hintergrund eingespielt; das ist keine Websiteveröffentlichung.
+- Aktuelle Datenbanksicherheitsprüfung abgeschlossen; sie meldete keine neuen aktiven kritischen Befunde. Der ältere vollständige Sicherheitsbericht enthält einen Bewerbungsdokument-Befund, der vor Veröffentlichung gesondert geklärt werden muss; die Datenbankprüfung ersetzt diese Prüfung nicht.
+- Ralfs Auswertung bleibt bis zur gewünschten vollständigen Abnahme offen.
+
+**Dieser Bericht erfüllt eine ehrliche Ergebnisdokumentation, aber nicht die verlangte vollständige Abnahme. Die noch fehlende Umsetzung liegt weiterhin bei der technischen Bearbeitung; sie ist keine neue Geschäftsentscheidung für Luca.**
+
 ## Fortsetzung ab 11:11 UTC – aktueller Stand
 
 ### Tatsächlich abgeschlossen

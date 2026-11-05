@@ -1016,6 +1016,27 @@
       "when": 1793877806334,
       "tag": "0144_sales_order_amendment_versions",
       "breakpoints": true
+    },
+    {
+      "idx": 145,
+      "version": "7",
+      "when": 1793879889590,
+      "tag": "0145_atomic_managed_article_price_save",
+      "breakpoints": true
+    },
+    {
+      "idx": 146,
+      "version": "7",
+      "when": 1793880172576,
+      "tag": "0146_allow_event_location_price_patches",
+      "breakpoints": true
+    },
+    {
+      "idx": 147,
+      "version": "7",
+      "when": 1793880257684,
+      "tag": "0147_durable_external_stripe_refund_receipts",
+      "breakpoints": true
     }
   ]
 }

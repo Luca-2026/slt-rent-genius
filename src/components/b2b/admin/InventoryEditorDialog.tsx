@@ -305,6 +305,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   useEffect(() => {
     if (!open) {
       loadedIdRef.current = null;
+      saveIdentityRef.current = null;
       pendingFormRef.current = null;
       dirtyBaselineRef.current = "";
       setDirty(false);
@@ -358,6 +359,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
 
   // Dirty-Tracking: vergleicht laufend gegen die beim Laden gesetzte Baseline
   const dirtyBaselineRef = useRef<string>("");
+  const saveIdentityRef = useRef<string | null>(null);
   useEffect(() => {
     if (!open || !dirtyBaselineRef.current) return;
     const snap = JSON.stringify(form);
@@ -633,34 +635,29 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         updated_by: user?.id ?? null,
       };
 
-      let productId = initial?.id ?? null;
-      if (initial) {
-        const { error } = await (supabase.from("b2b_managed_products" as never) as any)
-          .update(payload)
-          .eq("id", initial.id);
-        if (error) throw error;
-      } else {
-        const { data: created, error } = await (supabase.from("b2b_managed_products" as never) as any)
-          .insert({ ...payload, created_by: user?.id ?? null })
-          .select("id")
-          .single();
-        if (error) throw error;
-        productId = (created as { id: string } | null)?.id ?? null;
-      }
-
-      // Standortpreise: nur bei abweichenden Preisen schreiben; ausgeblendete Zeilen bleiben erhalten
-      if (productId && !form.prices_same_all_locations && form.available_locations.length) {
+      // One stable identity and one transaction: retries cannot create duplicates
+      // or leave article content committed while a location price failed.
+      const productId = initial?.id ?? saveIdentityRef.current ?? crypto.randomUUID();
+      saveIdentityRef.current = productId;
+      const locationPrices: Record<string, unknown>[] = [];
+      if (!form.prices_same_all_locations && form.available_locations.length) {
         for (const loc of form.available_locations) {
           const patch: Record<string, unknown> = changedPriceColumns(form.location_prices[loc], priceBaseline?.location_prices[loc]);
           if (!priceBaseline || JSON.stringify(form.location_tiers_manual[loc]) !== JSON.stringify(priceBaseline.location_tiers_manual[loc])) {
             patch.tier_prices_manual = form.location_tiers_manual[loc];
           }
           if (!Object.keys(patch).length) continue;
-          const { error } = await (supabase.from("b2b_managed_product_location_prices" as never) as any)
-            .upsert({ managed_product_id: productId, location: loc, ...patch }, { onConflict: "managed_product_id,location" });
-          if (error) throw error;
+          locationPrices.push({ location: loc, ...patch });
         }
       }
+      const { updated_by: _updatedBy, ...article } = payload;
+      const { error } = await supabase.rpc("save_managed_article", {
+        _id: productId,
+        _article: JSON.parse(JSON.stringify(article)),
+        _location_prices: JSON.parse(JSON.stringify(locationPrices)),
+      });
+      if (error) throw error;
+      saveIdentityRef.current = null;
 
       toast.success(initial ? "Artikel aktualisiert" : "Artikel angelegt");
       if (loadedIdRef.current) clearCmsDraft(cmsDraftKey("inventory", loadedIdRef.current));

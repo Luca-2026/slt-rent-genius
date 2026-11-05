@@ -1,4 +1,5 @@
 import { normalizeInquiryOfferItems, buildOfferTotals, normalizeOfferGroups, normalizeExtraFields, resolveReturnLocation } from "./inquiry-offer-math.ts";
+import { assertCalendarInsurance } from './insurance-validation.ts';
 import { hasBankDiscountPolicy, priceBankTransfer, withoutBankDiscount } from "./bank-transfer-discount.ts";
 import { validCalendarDate } from "./public-rental-period.ts";
 import { normalizeOpenEndedUnit, normalizeOpenEndedDuration } from "./installments.ts";
@@ -27,6 +28,7 @@ export function buildSalesOrderAmendment(body: Record<string, unknown>, current:
 }
 export function buildOrderAmendment<T extends Record<string, unknown>>(body: Record<string, unknown>, current: T, location: string) {
   let items = withoutBankDiscount(normalizeInquiryOfferItems(body.items));
+  assertCalendarInsurance(items);
   for (const item of items) {
     if (!item.rental_start || !validCalendarDate(item.rental_start) || (!body.open_ended && (!item.rental_end || !validCalendarDate(item.rental_end) || item.rental_end < item.rental_start))) throw new Error("Bitte gültige Mietzeiträume für jede Position angeben.");
   }
