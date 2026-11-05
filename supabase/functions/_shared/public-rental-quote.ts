@@ -28,12 +28,15 @@ export async function publicRentalQuote(service: any, items: any[]) {
     const options = [...(Array.isArray(product.addon_options) ? product.addon_options : []).filter((o: any) => o?.key !== FREE_CANCELLATION_OPTION.key), FREE_CANCELLATION_OPTION];
     if (item.selected_addons.some((key: string) => !options.some((o: any) => o.key === key)) || new Set(item.selected_addons).size !== item.selected_addons.length) throw new Error("Ungültige Zusatzoptionen");
     const defaults = options.filter((o: any) => o.is_default);
-    const selected = options.filter((o: any) => item.selected_addons.includes(o.key) && !(String(o.key).startsWith("sb_reduktion") && !o.surcharge_percent));
+    const selected = options.filter((o: any) => item.selected_addons.includes(o.key));
+    if (selected.filter((o: any) => String(o.key).startsWith("sb_reduktion")).length > 1) throw new Error("Bitte nur eine Haftungsreduzierung wählen");
     if (selected.filter((o: any) => Number(o.surcharge_percent) > 0).length > 1) throw new Error("Bitte nur eine Versicherungsstufe wählen");
     const alternative = selected.find((o: any) => Number(o.surcharge_percent) > 0);
     const base = defaults[0];
     const insuranceDays = insuranceCalendarDays({ date: item.start_date }, { date: item.end_date });
     const calculate = (option: any) => {
+      // Legacy reduction entries express a request, not a validated insurance tariff.
+      if (String(option.key).startsWith("sb_reduktion") && !option.surcharge_percent) return null;
       if (option.key === FREE_CANCELLATION_OPTION.key) return cancellationAmount(unitPrice === null ? null : item.quantity * line.duration * unitPrice);
       if (unitPrice === null && option.price_type === "percent") return null;
       return computeAddonAmount({ price_type: option.price_type, rate: Number(option.price), basis: option.full_period_default && daysPerUnit(line.unit) ? "full_period" : "line", days: insuranceDays }, { articles: item.quantity, duration: line.duration, unit_price: unitPrice ?? 0, discount_percent: 0, days_per_unit: daysPerUnit(line.unit) });
