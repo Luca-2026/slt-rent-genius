@@ -3,6 +3,20 @@
 ## Ergebnis
 Keine vollständige Freigabe. Die Fortsetzung mit dem bestehenden berechtigten Admin-Konto ist erfolgt; fehlender Mitarbeiterzugang ist für dieses Konto kein Hindernis mehr. Es wurden keine Rollen geändert, keine tatsächlichen Zahlungen ausgelöst und keine finalen Rechnungen verschickt.
 
+## Mietguthabenerstattung – Durchlauf ab 12:15 UTC
+
+**Direkte Mietguthabenerstattung für eine erstmalige Mietrechnung implementiert. Keine Gesamtfreigabe.** Die Aussage oben über nicht ausgestellte Rechnungen beschreibt die vorherigen Durchläufe: In diesem Durchlauf wurde ausschließlich die gekennzeichnete interne Testrechnung RE-M-2026-11-0004 erstellt und an den vorhandenen Testkunden versendet.
+
+- Mitarbeiterablauf am internen Auftrag #96ASUG tatsächlich durchgeführt: Kaution mit ausdrücklich simuliertem Hinweis abgerechnet → Rechnungsvorschau → Testrechnung ausgestellt → neu geladen → Mietguthaben geprüft → Bankauftrag vorbereitet → ausdrücklich simulierter Banknachweis gespeichert → vollständig neu geladen → Erstattungs-PDF geöffnet (HTTP 200).
+- Rechnung bleibt **556,92 €**, angerechnete Mietzahlungen **680,68 €**, direkte Mietguthabenerstattung **123,76 €**. **500 € Kaution bleiben getrennt.** Keine zusätzliche steuerliche Gutschrift erstellt, kein zweiter Rabattabzug, ursprüngliche Zahlungsbelege unverändert.
+- PDF tatsächlich ausgelesen und visuell geprüft: Beleg-ID, Auftrag #96ASUG, Rechnung RE-M-2026-11-0004, Empfänger, 680,68 € minus 556,92 € = 123,76 €, Status, Banknachweis und gemeinsame Firmen-/Standortfußzeile korrekt. Der Banknachweis kennzeichnet ausdrücklich „TEST – simulierte Überweisung, keine reale Zahlung“.
+- Desktop und Handy geprüft; gespeicherte Bestätigung nach Neuladen vorhanden, Handy-Dialog ohne horizontalen Überlauf.
+- Geschützte Auszahlung nur Admin/Niederlassungsleitung. Bankbestätigung verlangt reine Bankzahlung und Buchungsnachweis; eine Stripe-Zahlung darf nicht als Bankauszahlung umgangen werden. Keine automatische Banküberweisung.
+- Stripe-Mietguthaben verwendet denselben unveränderlichen Anspruch, Originalzahlungszuordnung, Idempotenzschlüssel, Providerabgleich und gemeinsamen Kautions-/Miet-Erstattungsschutz wie Rechnungskorrekturen. Unbekannte externe Erstattungen bleiben gesperrt.
+- Weitere ausgestellte Rechnungen/Abschläge/Korrekturen werden für diesen engen Erst-Rechnungsweg bewusst abgewiesen. Nach begonnenem Mietguthabenanspruch wird das Ausstellen weiterer Belege zu diesem Auftrag gesperrt, damit keine doppelte Verrechnung erfolgt; eine gesonderte Korrekturabrechnung ist noch nicht implementiert.
+- **58 Tests in sieben betroffenen Dateien bestanden.** Darunter exact 123,76 €, falsche 123,77 €, zweite Auszahlung, Originalzahlungsgrenze, Kautionsseparation, Banknachweis, finaler Status, Providerbetrag-/Modus-/Wiederholungsschutz. Edge-Funktion geprüft und deployed; letzter Anwendungsbuild erfolgreich.
+- **Keine tatsächliche Geldbewegung.** Kautions- und Bankauszahlungsstatus am eindeutig gekennzeichneten internen Testauftrag sind simuliert. Echte Stripe-Ausführung, Providerparallelität und Abbruch bleiben mangels separater sicherer Stripe-Testkonfiguration Ende zu Ende ungeprüft. Weitere offene B2B-/Gesamtabnahmeaufgaben bleiben bestehen; keine Veröffentlichung.
+
 ## Abschlussstand dieses Durchlaufs ab 11:52 UTC
 
 **Keine Gesamtfreigabe; keine Websiteveröffentlichung angefordert.** Die folgenden Ergebnisse sind tatsächlich belegt, nicht aus Einzeltests abgeleitet.
