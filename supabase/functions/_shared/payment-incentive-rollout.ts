@@ -1,4 +1,4 @@
-import { newBankDiscountPolicy } from "./bank-transfer-discount.ts";
+import { hasBankDiscountPolicy, newBankDiscountPolicy } from "./bank-transfer-discount.ts";
 import { SIGN_PRODUCT_SLUG } from "./sign-direct-booking.ts";
 
 /** Production stays off until every internal rental path and payment switch is verified. */
@@ -12,4 +12,10 @@ export function publicInquiryBankDiscount(enabled: boolean, items: { product_slu
   return enabled && items.length > 0 && items.every(item => item.product_slug !== SIGN_PRODUCT_SLUG)
     ? newBankDiscountPolicy()
     : null;
+}
+
+/** Only a server-persisted promise survives rollout changes. */
+export function inquiryBankDiscountEnabled(enabled: boolean, rawPayload: unknown): boolean {
+  const raw = rawPayload && typeof rawPayload === "object" ? rawPayload as Record<string, unknown> : null;
+  return enabled || hasBankDiscountPolicy(raw?.bank_transfer_discount);
 }

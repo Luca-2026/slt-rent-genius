@@ -10,10 +10,12 @@ import { z } from "npm:zod@3";
 import { validPublicRentalPeriod } from "../_shared/public-rental-period.ts";
 import { publicRequestAllowed } from "../_shared/public-request-limit.ts";
 import { publicLocationContacts } from "../_shared/public-location-contact.ts";
+import { bankDiscountLive, publicInquiryBankDiscount } from "../_shared/payment-incentive-rollout.ts";
+import { BANK_DISCOUNT_TERMS } from "../_shared/bank-transfer-discount.ts";
 
 const cartLineSchema = z.object({ id: z.string().min(1).max(100), product_slug: z.string().min(1).max(200), product_name: z.string().min(1).max(200), location: z.enum(["krefeld", "bonn", "muelheim"]), quantity: z.number().int().min(1).max(9999), start_date: z.string(), end_date: z.string(), start_time: z.string(), end_time: z.string(), selected_addons: z.array(z.string().max(60)).max(10), use_saturday: z.boolean(), use_sunday: z.boolean() }).refine(validPublicRentalPeriod);
 const cartSchema = z.object({
-  cartRequestId: z.string().uuid(), cartExpiresAt: z.number().finite(), items: z.array(cartLineSchema).min(1).max(30),
+  cartRequestId: z.string().uuid(), cartExpiresAt: z.number().finite(), bankDiscountShown: z.boolean().optional(), items: z.array(cartLineSchema).min(1).max(30),
   name: z.string().trim().min(2).max(200), email: z.string().trim().email().max(180).transform(value => value.toLowerCase()),
   phone: z.string().trim().max(50).refine(value => value.replace(/\D/g, "").length >= 6),
   street: z.string().trim().min(1).max(200), postalCode: z.string().trim().min(1).max(20), city: z.string().trim().min(1).max(100),
@@ -122,6 +124,10 @@ serve(async (req) => {
     const slugs = [...new Set(requestedItems.map((it) => it.product_slug).filter((s): s is string => !!s))];
     const addonLabelsBySlug = new Map<string, Map<string, string>>();
     const db = serviceClient();
+    const inquiryDiscount = db && cartRequestId ? publicInquiryBankDiscount(await bankDiscountLive(db), requestedItems.map(item => ({ product_slug: item.product_slug ?? "" }))) : null;
+    if (cartRequestId && body.bankDiscountShown === true && !inquiryDiscount) {
+      return new Response(JSON.stringify({ error: "Die Rabattbedingungen wurden geändert. Bitte lade den Warenkorb neu und prüfe die aktuellen Bedingungen vor dem Absenden." }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
     let quoteLines: unknown[] = [];
     let deliveryQuote: (CartDeliveryQuote & { distance_km?: number | null }) | null = null;
     if (cartRequestId) {
@@ -246,7 +252,7 @@ serve(async (req) => {
       use_saturday: useSaturday === true,
       use_sunday: useSunday === true,
       message: message ?? null,
-      raw_payload: { ...(requestedCode ? { requested_coupon_code: requestedCode } : {}), ...(cartRequestId ? { cart_request_id: cartRequestId, quote_lines: quoteLines, ...(deliveryQuote ? { delivery_quote: deliveryQuote } : {}) } : {}) },
+      raw_payload: { ...(inquiryDiscount ? { bank_transfer_discount: inquiryDiscount } : {}), ...(requestedCode ? { requested_coupon_code: requestedCode } : {}), ...(cartRequestId ? { cart_request_id: cartRequestId, quote_lines: quoteLines, ...(deliveryQuote ? { delivery_quote: deliveryQuote } : {}) } : {}) },
       attachments: safeAttachments.map((a) => ({ filename: a.filename })),
       ...(cartRequestId ? { email_sent: false } : {}),
     });
@@ -336,6 +342,7 @@ serve(async (req) => {
     </div>
     ${itemsTableHtml}
     <h3 style="color: #374151;">Kontaktdaten</h3>
+    ${inquiryDiscount ? `<p>${escapeHtml(BANK_DISCOUNT_TERMS)}</p>` : ""}
     <table style="width: 100%; border-collapse: collapse;">
       <tr><td style="padding: 4px 0; color: #6b7280; width: 100px;">Name:</td><td style="padding: 4px 0; font-weight: 500;">${e.name}</td></tr>
       <tr><td style="padding: 4px 0; color: #6b7280;">E-Mail:</td><td style="padding: 4px 0;"><a href="mailto:${e.email}" style="color: #f97316;">${e.email}</a></td></tr>
@@ -377,6 +384,7 @@ serve(async (req) => {
     </div>
     ${itemsTableHtml}
     <p style="color: #374151; line-height: 1.6;">
+      ${inquiryDiscount ? `${escapeHtml(BANK_DISCOUNT_TERMS)}<br><br>` : ""}
       Falls Sie in der Zwischenzeit Fragen haben, erreichen Sie uns unter <a href="tel:${escapeHtml(locPhone.replace(/\s/g, ''))}" style="color: #f97316;">${e.locPhone}</a> oder per E-Mail an <a href="mailto:${e.locEmail}" style="color: #f97316;">${e.locEmail}</a>.
     </p>
     <p style="color: #374151;">

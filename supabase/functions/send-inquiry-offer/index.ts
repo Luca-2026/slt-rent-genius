@@ -1,6 +1,6 @@
 import { salesOfferLine, salesPaymentTerms, salesPaymentText, FINANCING_INFORMATION, normalizeSalesFinancing } from "../_shared/sales-offer.ts";
 import { BANK_DISCOUNT_TERMS, newBankDiscountPolicy, withoutBankDiscount } from "../_shared/bank-transfer-discount.ts";
-import { bankDiscountLive } from "../_shared/payment-incentive-rollout.ts";
+import { bankDiscountLive, inquiryBankDiscountEnabled } from "../_shared/payment-incentive-rollout.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { UNDATED_OFFER_NOTE } from "../_shared/undated-offer.ts";
 import { applyFeedbackCoupon } from "../_shared/feedback-coupons.ts";
@@ -160,13 +160,14 @@ Deno.serve(async (req: Request) => {
     }
 
     const table = inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries";
-    const discountEnabled = inquiryType === "rental" && await bankDiscountLive(service);
+    const discountRolloutEnabled = inquiryType === "rental" && await bankDiscountLive(service);
     const { data: inquiry, error: inqErr } = await service
       .from(table)
       .select("*")
       .eq("id", inquiryId)
       .maybeSingle();
     if (inqErr || !inquiry) return json({ error: "Anfrage nicht gefunden" }, 404);
+    const discountEnabled = inquiryType === "rental" && inquiryBankDiscountEnabled(discountRolloutEnabled, inquiry.raw_payload);
     if (undatedOffer && inquiry.order_confirmed_at) return json({ error: "Ein bestätigter Mietauftrag darf nicht durch ein unverbindliches Preisangebot ersetzt werden." }, 409);
     if (!allowsCustomerPaymentTerms(inquiry.customer_kind, body.payment_terms)) {
       return json({ error: "Privatkunden zahlen nicht auf Rechnung. Bitte Vorkasse oder Anzahlung wählen." }, 400);
