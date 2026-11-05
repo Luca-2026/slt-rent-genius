@@ -9,3 +9,4 @@
 - Cart quotes: only server 400 validation errors (and sign carts) block; transient quote failures retry once, then show a non-blocking note so unpriced requests still reach staff for an offer.
 - Item dialog only collects period/quantity and adds to cart; accessories and insurances are chosen per item in the checkout ("Mietanfrage abschließen") before contact data, so customers can collect several items first.
 - Inquiry discount notices use the server quote's versioned incentive and the offer rollout gate; hide on failed quotes and separate sign checkout to avoid promising an unavailable price.
+- Sign discounts use `SignPaymentOptions` with the shared protected payment decision and refreshed booking receipt; display transfer details only after bank selection is saved, never calculate discounted totals in the browser.
