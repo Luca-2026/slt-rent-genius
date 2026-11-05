@@ -125,5 +125,7 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive }: {
       </div>
     </div>
     {!isSign && <div className="flex flex-wrap gap-x-5 gap-y-2">{([['use_saturday', 'Samstag wird genutzt'], ['use_sunday', 'Sonntag wird genutzt']] as const).map(([key, label]) => <label key={key} className="flex items-center gap-2 text-sm"><Checkbox checked={edit[key]} onCheckedChange={value => patch({ [key]: value === true })} />{label}</label>)}</div>}
+    {!isSign && weekendActive && <p className="text-sm text-muted-foreground">Der Wochenendtarif ist ein Festpreis inklusive Samstag und Sonntag. Deine Nutzungsauswahl wird übermittelt; sie ändert diesen Pauschalpreis nicht.</p>}
+    {!isSign && !weekendActive && <p className="text-xs text-muted-foreground">Bei Mieten unter fünf angefangenen 24-Stunden-Zeiträumen ist Samstag bereits berechnet. Bei längeren Mieten zählen Samstag und Sonntag zusätzlich, wenn du sie nutzt; Sonntag zählt bei kurzen Mieten ebenfalls nur bei Nutzung.</p>}
   </div>;
 }
