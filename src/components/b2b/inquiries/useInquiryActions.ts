@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 import { useAuth } from "@/hooks/useAuth";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { canTransition, type InquiryStatus } from "@/lib/inquiryStatus";
@@ -21,7 +22,8 @@ export function useInquiryActions(table: TableName, onChanged?: () => void) {
   const update = useCallback(
     async (id: string, patch: Record<string, unknown>) => {
       setBusy(true);
-      const { error } = await supabase.from(table).update(patch).eq("id", id);
+      const typedPatch = patch as Database["public"]["Tables"][TableName]["Update"];
+      const { error } = await supabase.from(table).update(typedPatch).eq("id", id);
       setBusy(false);
       if (error) {
         toast({ title: "Speichern fehlgeschlagen", description: error.message, variant: "destructive" });

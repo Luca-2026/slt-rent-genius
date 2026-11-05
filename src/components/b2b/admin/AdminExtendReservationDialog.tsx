@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -59,7 +60,7 @@ export function AdminExtendReservationDialog({ reservation, companyName, open, o
     if (!reservation || !newEndDate) return;
     setSaving(true);
 
-    const updateData: Record<string, any> = {
+    const updateData: Database["public"]["Tables"]["b2b_reservations"]["Update"] = {
       end_date: newEndDate.toISOString().split("T")[0],
     };
 

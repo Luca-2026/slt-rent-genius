@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -111,7 +112,7 @@ export function InventoryDamageManager() {
     [damages, statusFilter, locationFilter],
   );
 
-  const updateDamage = async (id: string, patch: Record<string, unknown>) => {
+  const updateDamage = async (id: string, patch: Database["public"]["Tables"]["b2b_inventory_damages"]["Update"]) => {
     const { error } = await supabase.from("b2b_inventory_damages").update(patch).eq("id", id);
     if (error) {
       toast({ title: "Fehler", description: error.message, variant: "destructive" });
