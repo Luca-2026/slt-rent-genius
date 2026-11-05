@@ -890,6 +890,13 @@
       "when": 1793857360712,
       "tag": "0126_protect_bank_discount_snapshot_and_checkout",
       "breakpoints": true
+    },
+    {
+      "idx": 127,
+      "version": "7",
+      "when": 1793857470044,
+      "tag": "0127_persist_new_sign_rental_discount_agreement",
+      "breakpoints": true
     }
   ]
 }
