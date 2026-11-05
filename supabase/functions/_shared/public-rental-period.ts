@@ -8,10 +8,14 @@ export function validCalendarDate(value: unknown): value is string {
   const date = new Date(`${value}T12:00:00Z`);
   return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
 }
-export function validPublicRentalPeriod(row: { location: string; start_date: string; end_date: string; start_time: string; end_time: string }): boolean {
+export function isSignSelfPickup(row: { product_slug?: string; sign_package?: string }): boolean {
+  return row.product_slug === "halteverbotsschilder-set" && row.sign_package === "standard";
+}
+export function validPublicRentalPeriod(row: { location: string; start_date: string; end_date: string; start_time: string; end_time: string; product_slug?: string; sign_package?: string }): boolean {
   if (!validCalendarDate(row.start_date) || !validCalendarDate(row.end_date)) return false;
   const time = /^([01]\d|2[0-3]):[0-5]\d$/;
   if (!time.test(row.start_time) || !time.test(row.end_time) || `${row.end_date}T${row.end_time}` <= `${row.start_date}T${row.start_time}`) return false;
+  if (isSignSelfPickup(row)) return row.location === "krefeld" || row.location === "bonn";
   if (row.location === "muelheim") return true; // Explicitly subject to appointment confirmation.
   const hours = publicPickupHours[row.location as keyof typeof publicPickupHours];
   if (!hours) return false;

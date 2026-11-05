@@ -6,6 +6,7 @@ import { resolveProductPrices, type LocationPriceRow, type ManagedPrices } from 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { SIGN_PRODUCT_SLUG } from "../../../supabase/functions/_shared/sign-direct-booking";
+import { signPublicBaseGrossCents } from "@/lib/signPublicPrice";
 
 /**
  * Einheitliche Preisdarstellung für Mietartikel.
@@ -79,7 +80,7 @@ export function ProductPriceBlock({
     mainUnit = "";
   }
   if (isSign) {
-    mainValue = Number.isInteger(signConfig?.standardGrossCents) ? displayPrice(signConfig.standardGrossCents / 119, type) : "Preis derzeit nicht verfügbar";
+    mainValue = displayPrice(signPublicBaseGrossCents(signConfig) / 119, type);
     mainUnit = "für 1–10 Tage";
   }
 
