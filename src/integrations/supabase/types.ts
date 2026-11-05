@@ -6978,6 +6978,16 @@ export type Database = {
         }
         Returns: undefined
       }
+      sync_credit_note_refund_v2: {
+        Args: {
+          _amount: number
+          _credit_id: string
+          _intent: string
+          _refund_id: string
+          _status: string
+        }
+        Returns: undefined
+      }
       sync_deposit_refund: {
         Args: {
           _amount: number
