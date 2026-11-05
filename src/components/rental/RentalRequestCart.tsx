@@ -38,6 +38,7 @@ import { rentalCartDeposit } from "@/lib/rentalCartDeposit";
 
 import { useCartDraft } from "./useCartDraft";
 import { bookingContactErrors } from "../../../supabase/functions/_shared/booking-contact";
+import { hasBankDiscountPolicy } from "@/lib/bankTransferDiscount";
 
 let state: { cart: RentalCart | null; open: boolean; edit: RentalCartItem | null; expired: boolean } = { cart: null, open: false, edit: null, expired: false };
 const listeners = new Set<() => void>();
@@ -81,6 +82,7 @@ export function RentalRequestCart() {
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [quoteError, setQuoteError] = useState("");
   const [quoteNotice, setQuoteNotice] = useState("");
+  const [bankDiscountAvailable, setBankDiscountAvailable] = useState(false);
   const [loading, setLoading] = useState(false);
   const [contact, setContact] = useCartDraft("rental-contact", snapshot.cart?.requestId ?? "", snapshot.cart?.expiresAt ?? 0, emptyContact);
   const contactErrors = bookingContactErrors(contact);
@@ -131,14 +133,15 @@ export function RentalRequestCart() {
     return () => { window.dispatchEvent(new CustomEvent("public-rental-dialog", { detail: false })); };
   }, [snapshot.open]);
   useEffect(() => {
-    if (!snapshot.open || !quoteItems.length ) { setQuotes([]); setLoading(false); setQuoteError(""); return; }
+    if (!snapshot.open || !quoteItems.length ) { setQuotes([]); setLoading(false); setQuoteError(""); setBankDiscountAvailable(false); return; }
     let cancelled = false;
-    setLoading(true); setQuoteError(""); setQuoteNotice("");
+    setLoading(true); setQuoteError(""); setQuoteNotice(""); setBankDiscountAvailable(false);
     const timer = setTimeout(async () => {
       const call = () => supabase.functions.invoke("public-rental-quote", { body: { items: quoteItems } });
       let { data, error } = await call();
       if (error && !cancelled) { await new Promise(r => setTimeout(r, 1500)); if (!cancelled) ({ data, error } = await call()); }
       if (cancelled) return;
+      setBankDiscountAvailable(!error && hasBankDiscountPolicy(data?.bank_transfer_discount));
       // Nur echte Eingabefehler (400) blockieren; Netz-/Lastfehler blockieren die reine Anfrage nicht – Preise kommen dann im Angebot.
       const status = (error as { context?: Response } | null)?.context?.status;
       let message = "";
@@ -220,6 +223,11 @@ export function RentalRequestCart() {
         {snapshot.cart && !showingSignReceipt && <p className="flex items-center gap-2 text-sm font-semibold text-primary"><Clock className="h-4 w-4" />Warenkorb läuft ab in {Math.floor(remaining / 60)}:{String(remaining % 60).padStart(2, "0")} · danach werden ungesendete Artikel entfernt.</p>}
         {done ? <p role="status">{done} Unser Team prüft deine Anfrage und meldet sich bei dir.</p> : snapshot.expired && !edit ? <p role="status">Dein Warenkorb ist abgelaufen. Bitte wähle deine Artikel erneut.</p> : null}
         {!done && <RadioGroup className="flex flex-wrap gap-4" value={type} onValueChange={value => { if (value === "private" || value === "business") setCustomerType(value); }} aria-label="Kundenart">{([['private', 'Privatkunde'], ['business', 'Geschäftskunde']] as const).map(([value, label]) => <label key={value} className="flex items-center gap-2 text-sm"><RadioGroupItem value={value} />{label}</label>)}</RadioGroup>}
+        {bankDiscountAvailable && !done && !showingSignReceipt && !signCart && edit?.product_slug !== SIGN_PRODUCT_SLUG && <aside aria-label="Überweisungsrabatt" className="border-l-4 border-primary bg-primary/5 px-3 py-2 text-sm">
+          <p className="font-semibold text-primary">3 % Überweisungsrabatt</p>
+          <p>Wenn du den gesamten Mietbetrag per Überweisung bezahlst, erhältst du 3 % Rabatt auf Miete und vereinbarte Zusatzleistungen – nach sonstigen Rabatten. Mehrere Überweisungen sind möglich; bei gemischten Zahlungsarten entfällt der Rabatt.</p>
+          <p className="mt-1 text-muted-foreground">Kaution, Schäden und städtische Gebühren sind ausgenommen. Die angezeigten Preise enthalten diesen Rabatt noch nicht; im Angebot wird er gesondert ausgewiesen. Online zahlst du den regulären Preis ohne Aufschlag.</p>
+        </aside>}
         {edit && (step === "package" || step === "period" || step === "accessories" || step === "options") && <div className="flex items-center gap-3 rounded-md border border-border p-3">{edit.image && <img src={edit.image} alt="" className="h-14 w-14 shrink-0 object-contain" />}<div className="min-w-0"><p className="break-words font-semibold">{edit.product_name}</p><p className="text-sm text-muted-foreground">Standort {getLocationById(edit.location)?.name}</p><p className="text-sm font-semibold">{editDeposit === null ? depositNote : `Kaution: ${depositPrice(editDeposit)}`}</p></div></div>}
         {edit && (step === "package" || step === "period" || step === "accessories" || step === "options") && <ol className="grid grid-cols-3 gap-2 break-words text-xs font-semibold" aria-label="Fortschritt">{(edit.product_slug === SIGN_PRODUCT_SLUG ? [['package', '1 · Paket'], ['period', '2 · Zeitraum'], ['cart', '3 · Warenkorb']] : (inCheckout ? [['accessories', '1 · Zusatzartikel'], ['options', '2 · Versicherungen'], ['contact', '3 · Kontaktdaten']] : [['period', '1 · Zeitraum'], ['cart', '2 · Warenkorb'], ['contact', '3 · Abschluss']])).map(([key, label]) => <li key={key} aria-current={step === key ? "step" : undefined} className={`border-b-2 pb-1 ${step === key ? "border-primary text-primary" : "border-border text-muted-foreground"}`}>{label}</li>)}</ol>}
         {edit && step === "package" && <SignPackageSelection value={edit.sign_package ?? null} onChange={sign_package => patch({ sign_package })} location={edit.location} address={zoneAddress} quote={setupQuote} onAddressChange={next => patch({ sign_zone_street: next.zoneStreet ?? zoneAddress.zoneStreet, sign_zone_postal_code: next.zonePostalCode ?? zoneAddress.zonePostalCode, sign_zone_city: next.zoneCity ?? zoneAddress.zoneCity, sign_setup_gross_cents: undefined, sign_setup_quote_key: undefined })} />}

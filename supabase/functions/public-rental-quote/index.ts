@@ -3,6 +3,7 @@ import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { z } from "npm:zod@3";
 import { publicRentalQuote } from "../_shared/public-rental-quote.ts";
 import { validPublicRentalPeriod } from "../_shared/public-rental-period.ts";
+import { bankDiscountLive, publicInquiryBankDiscount } from "../_shared/payment-incentive-rollout.ts";
 const item = z.object({ id: z.string().max(100), product_slug: z.string().min(1).max(200), location: z.enum(["krefeld", "bonn", "muelheim"]), quantity: z.number().int().min(1).max(9999), start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), start_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/), end_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/), selected_addons: z.array(z.string().max(60)).max(10), use_saturday: z.boolean(), use_sunday: z.boolean() }).refine(row => `${row.end_date}T${row.end_time}` > `${row.start_date}T${row.start_time}`, "Rückgabe muss nach Abholung liegen");
 const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status, headers: { ...corsHeaders, "Content-Type": "application/json", "Cache-Control": "no-store" } });
 Deno.serve(async req => {
@@ -17,7 +18,11 @@ Deno.serve(async req => {
     const service = createClient(url, key);
     const { data, error } = await service.rpc("check_public_rate_limit", { _bucket: "public-rental-quote", _client_key: req.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown", _max_hits: 1500, _window_seconds: 3600 });
     if (error || !data) return json({ error: "Bitte später erneut versuchen" }, 429);
-    return json({ lines: await publicRentalQuote(service, parsed.data.items) });
+    const [lines, discountEnabled] = await Promise.all([
+      publicRentalQuote(service, parsed.data.items),
+      bankDiscountLive(service).catch(() => false),
+    ]);
+    return json({ lines, bank_transfer_discount: publicInquiryBankDiscount(discountEnabled, parsed.data.items) });
   } catch (e) {
     const message = e instanceof Error ? e.message : "";
     // Fachliche Prüffehler (Zeitraum, Optionen, Artikel) sind Eingabefehler, keine Störung.
