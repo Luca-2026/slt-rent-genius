@@ -12,7 +12,7 @@ import { SIGN_TERMS_VERSION, SIGN_TERMS_HASHES } from "../_shared/sign-legal.ts"
 
 import { bookingContactErrors } from "../_shared/booking-contact.ts";
 import { bankDiscountLive } from "../_shared/payment-incentive-rollout.ts";
-import { newBankDiscountPolicy } from "../_shared/bank-transfer-discount.ts";
+import { hasBankDiscountPolicy, newBankDiscountPolicy } from "../_shared/bank-transfer-discount.ts";
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json", "Cache-Control": "no-store" } });
 const text = (max: number) => z.string().trim().min(1).max(max);
@@ -20,7 +20,7 @@ const booking = z.object({
   requestId: z.string().uuid(), cartExpiresAt: z.number().finite(), location: z.enum(["krefeld", "bonn"]), package: z.enum(["standard", "sorglos"]), quantity: z.number().int().min(1).max(10),
   start_date: z.string().refine(validCalendarDate), end_date: z.string().refine(validCalendarDate), start_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/), end_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
   name: text(200), email: z.string().trim().email().max(180).transform(v => v.toLowerCase()), phone: text(50).refine(v => v.replace(/\D/g, "").length >= 6), street: text(200), postalCode: text(20), city: text(100), customerKind: z.enum(["private", "business"]),
-  termsAccepted: z.literal(true), municipalFeesAccepted: z.boolean(), pickupConfirmed: z.boolean(),
+  termsAccepted: z.literal(true), municipalFeesAccepted: z.boolean(), pickupConfirmed: z.boolean(), bankDiscountShown: z.boolean().optional(),
   termsVersion: z.literal(SIGN_TERMS_VERSION), permitMode: z.enum(["existing", "slt"]).optional(),
   additionalSigns: z.array(z.object({ slug: text(150), quantity: z.number().int().min(1).max(100) })).max(30).default([]),
   zoneStreet: z.string().trim().max(200), zonePostalCode: z.string().trim().max(20), zoneCity: z.string().trim().max(100), message: z.string().max(4000), permitToken: z.string().regex(/^[A-Za-z0-9_-]{20,64}$/).nullable(),
@@ -44,7 +44,8 @@ Deno.serve(async req => {
       const { data: link } = await service.from("offer_payment_links").select("token").eq("inquiry_id", b.inquiry_id).eq("inquiry_table", "rental_inquiries").eq("status", "active").maybeSingle();
       const extraCount = Array.isArray(b.snapshot?.request?.additionalSigns) ? b.snapshot.request.additionalSigns.reduce((sum: number, row: { quantity?: number }) => sum + (Number.isInteger(row?.quantity) ? Number(row.quantity) : 0), 0) : 0;
       const extrasCents = Math.min(b.gross_cents, extraCount * (Number(b.snapshot?.config?.additionalSignGrossCents) || 0));
-      return json({ payment_discount_available: Boolean(inquiry?.offer_payload?.bank_transfer_discount), status: expired ? "expired" : b.status, order_code: inquiry?.order_code, expires_at: b.expires_at, amount_cents: b.total_cents, start_date: b.start_date, end_date: b.end_date, package: b.package, quantity: b.quantity, rental_cents: b.gross_cents - extrasCents, extras_cents: extrasCents, deposit_cents: b.deposit_cents, payment_url: !expired && link ? `https://www.slt-rental.de/zahlung/${link.token}` : null, bank: { holder: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, reference: `Auftrag ${inquiry?.order_code ?? ""}` } });
+      const policy = inquiry?.offer_payload?.bank_transfer_discount;
+      return json({ payment_discount_available: hasBankDiscountPolicy(policy), payment_method: hasBankDiscountPolicy(policy) ? policy.selected : "regular", status: expired ? "expired" : b.status, order_code: inquiry?.order_code, expires_at: b.expires_at, amount_cents: b.total_cents, start_date: b.start_date, end_date: b.end_date, package: b.package, quantity: b.quantity, rental_cents: b.gross_cents - extrasCents, extras_cents: extrasCents, deposit_cents: b.deposit_cents, payment_url: !expired && link ? `https://www.slt-rental.de/zahlung/${link.token}` : null, bank: { holder: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, reference: `Auftrag ${inquiry?.order_code ?? ""}` } });
     }
     const readAction = raw.action === "config" || raw.action === "availability";
     const { data: allowed, error: rateError } = await service.rpc("check_public_rate_limit", { _bucket: readAction ? "sign-booking-read" : "sign-booking", _client_key: req.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown", _max_hits: readAction ? 600 : 30, _window_seconds: 3600 });
@@ -117,7 +118,9 @@ Deno.serve(async req => {
       const valid = validSignPermit(bytes, upload.content_type);
       if (!valid) return json({ error: "Datei entspricht nicht dem gewählten Dateityp" }, 400);
     }
-    let trustedBody: Record<string, unknown> = { ...body, termsDocumentHash: SIGN_TERMS_HASHES[body.customerKind], ...(await bankDiscountLive(service) ? { bankTransferDiscount: newBankDiscountPolicy() } : {}) };
+    const discountEnabled = await bankDiscountLive(service);
+    if (!existing && body.bankDiscountShown && !discountEnabled) return json({ error: "Rabattbedingungen wurden geändert. Bitte lade den Warenkorb neu und prüfe die Bedingungen." }, 409);
+    let trustedBody: Record<string, unknown> = { ...body, termsDocumentHash: SIGN_TERMS_HASHES[body.customerKind], ...(discountEnabled ? { bankTransferDiscount: newBankDiscountPolicy() } : {}) };
     if (body.package === "sorglos") {
       if (existing?.snapshot?.request?.verifiedDistanceKm != null) trustedBody = { ...trustedBody, verifiedDistanceKm: existing.snapshot.request.verifiedDistanceKm };
       else {
