@@ -18,18 +18,37 @@ beforeAll(async () => {
   await db.exec(readFileSync("drizzle/migrations/0126_protect_bank_discount_snapshot_and_checkout.sql", "utf8"));
   await db.exec(readFileSync("drizzle/migrations/0128_serialize_rental_online_checkout_claims.sql", "utf8"));
   await db.exec(readFileSync("drizzle/migrations/0129_durable_rental_checkout_attempts.sql", "utf8"));
+  await db.exec(`ALTER TABLE rental_inquiries ADD COLUMN paid_amount numeric;
+    ALTER TABLE offer_payment_links ADD COLUMN amount_cents integer DEFAULT 23090, ADD COLUMN payment_intent_id text, ADD COLUMN paid_cents integer, ADD COLUMN paid_at timestamptz, ADD COLUMN warning text, ADD COLUMN updated_at timestamptz;
+    CREATE TABLE stripe_webhook_events(event_id text PRIMARY KEY,type text,result text);`);
+  await db.exec(readFileSync("drizzle/migrations/0130_atomic_rental_stripe_receipts.sql", "utf8"));
+  await db.exec(readFileSync("drizzle/migrations/0131_harden_rental_payment_snapshot_guards.sql", "utf8"));
 }, 30000);
 afterAll(() => db.close());
 async function fixture(payments: unknown[] = []) {
   const id = crypto.randomUUID();
   const items = [{ product_name: "Miete", quantity: 1, unit_price: 100, discount_percent: 0, addons: [{ key: "insurance", label: "Versicherung", amount: 10 }] }];
   const base = { items, totals: priceBankTransfer(items).totals, deposit: 100, bank_transfer_discount: newBankDiscountPolicy() };
-  await db.query("INSERT INTO rental_inquiries VALUES($1,'accepted','TEST',$2::jsonb,$3::jsonb,130.9,'original.pdf',NULL,0)", [id, JSON.stringify(base), JSON.stringify(payments)]);
+  await db.query("INSERT INTO rental_inquiries(id,status,offer_number,offer_payload,payments,offer_total_gross,offer_file_url,original_accepted_offer,payment_decision_version) VALUES($1,'accepted','TEST',$2::jsonb,$3::jsonb,130.9,'original.pdf',NULL,0)", [id, JSON.stringify(base), JSON.stringify(payments)]);
   const priced = priceBankTransfer(items, 0, "bank");
   return { id, base, bank: { ...base, items: priced.items, totals: priced.totals, bank_transfer_discount: { ...base.bank_transfer_discount, selected: "bank" } } };
 }
 const decide = (id: string, payload: unknown, expected = 0, method = "bank") => db.query("SELECT select_rental_payment_method($1,'TEST',$2,$3,$4::jsonb)", [id, expected, method, JSON.stringify(payload)]);
 describe("protected persisted bank discount", () => {
+  it("retries an unfinished webhook and books completed/async deliveries exactly once", async () => {
+    const f = await fixture();
+    const link = (await db.query<{ id: string }>("INSERT INTO offer_payment_links(inquiry_id,inquiry_table,status,offer_number,stripe_session_id,checkout_request) VALUES($1,'rental_inquiries','active','TEST','cs_test',$2::jsonb) RETURNING id", [f.id, JSON.stringify({ metadata: { amount_cents: "23090" } })])).rows[0]?.id;
+    if (!link) throw new Error("Missing link");
+    await db.query("INSERT INTO stripe_webhook_events VALUES('evt_crash','completed',NULL)");
+    const settle = (event: string, amount = 23090, version: number | null = 0) => db.query<{ settled: { added: boolean; result: string } }>("SELECT settle_rental_stripe_receipt($1,'completed',$2,'cs_test','pi_test',$3,'eur','TEST',$4) AS settled", [event, link, amount, version]);
+    expect((await settle('evt_crash')).rows[0]?.settled.added).toBe(true);
+    expect((await settle('evt_async')).rows[0]?.settled.added).toBe(false);
+    const row = (await db.query<{ payments: unknown[]; paid_amount: number }>("SELECT payments,paid_amount FROM rental_inquiries WHERE id=$1", [f.id])).rows[0];
+    expect(row?.payments).toHaveLength(1); expect(Number(row?.paid_amount)).toBe(230.9);
+    expect((await settle('evt_stale',23090,1)).rows[0]?.settled.result).toBe('reconciliation_required');
+    expect((await settle('evt_missing_version',23090,null)).rows[0]?.settled.result).toBe('reconciliation_required');
+    expect((await settle('evt_wrong_amount',1)).rows[0]?.settled.result).toBe('reconciliation_required');
+  });
   it("recovers the same immutable attempt after a process crash, even with a different requested choice", async () => {
     const f = await fixture();
     const link = (await db.query<{ id: string }>("INSERT INTO offer_payment_links(inquiry_id,inquiry_table,status,offer_number) VALUES($1,'rental_inquiries','active','TEST') RETURNING id", [f.id])).rows[0]?.id;
