@@ -901,7 +901,7 @@ export async function generateOfferPdf(data: {
     // Overpayment (e.g. after a later discount) must stay visible instead of collapsing to 0,00 €.
     const overpaid = balanceDue < -0.009;
     dt(pg, overpaid ? T("Guthaben zu deinen Gunsten", "Guthaben zu Ihren Gunsten") : fullyPaid ? (isOC ? "Vollst\u00E4ndig bezahlt" : "Bereits vollst\u00E4ndig bezahlt") : (isOC ? "Noch offen" : "Noch zu zahlen"), tx, y + 4, bold, 10.5, accent);
-    dtr(pg, fm(Math.abs(Math.min(0, balanceDue)) || Math.max(0, balanceDue)), vx, y + 4, bold, 12, accent);
+    dtr(pg, fm(overpaid ? -balanceDue : Math.max(0, balanceDue)), vx, y + 4, bold, 12, accent);
     y -= 38;
   }
 
