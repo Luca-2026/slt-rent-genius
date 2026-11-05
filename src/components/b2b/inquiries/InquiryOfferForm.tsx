@@ -1,4 +1,5 @@
 import { SALES_PAYMENT_OPTIONS, salesPaymentTerms, salesOfferLine, type SalesFinancing } from "../../../../supabase/functions/_shared/sales-offer";
+import { editorBankDiscount } from "@/lib/editorBankDiscount";
 import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
 import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLegacyPeriod, undatedOfferLine } from "./offerCalendarPeriod";
 import { applyOpenEndedPeriod, normalizeOpenEndedUnit, normalizeOpenEndedDuration, openEndedUnitSingular, type OpenEndedUnit } from "@/lib/installments";
@@ -305,6 +306,7 @@ export interface OfferDeliveryAddress {
 }
 
 interface Props {
+  discountPolicy?: unknown;
   inquiryType: "rental" | "sales";
   inquiryId: string;
   defaultCouponCode?: string;
@@ -398,6 +400,7 @@ export interface OfferPayment {
 
 
 export function InquiryOfferForm({
+  discountPolicy,
   inquiryType,
   inquiryId,
   location,
@@ -859,7 +862,7 @@ export function InquiryOfferForm({
   };
 
   /** Positionen inkl. übernommenem Zeitraum – Basis für Summen, Anzeige und Versand. */
-  const effectiveItems = useMemo(
+  const unpricedEffectiveItems = useMemo(
     () =>
       items.map((item, i) => {
         if (isSalesOffer) return recalcAddons(salesOfferLine(item));
@@ -970,6 +973,11 @@ export function InquiryOfferForm({
   const activeReturnLocation =
     inquiryType === "rental" && returnLocation && returnLocation !== normalizeLocation(location) ? returnLocation : "";
   const activeReturnCost = activeReturnLocation ? Math.max(0, Number(returnLocationCost) || 0) : 0;
+
+  const effectiveItems = useMemo(() => inquiryType === "rental" && (isAmendment || isInvoice)
+    ? editorBankDiscount(unpricedEffectiveItems, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + activeReturnCost, discountPolicy, isAmendment ? "amendment" : invoiceKind, ignoreDraft)
+    : unpricedEffectiveItems,
+    [unpricedEffectiveItems, inquiryType, isAmendment, isInvoice, discountPolicy, invoiceKind, ignoreDraft, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost, activeReturnCost]);
 
   const totals = useMemo(
     () => buildOfferTotals(effectiveItems, deliveryCostDelivery + (isSalesOffer ? 0 : deliveryCostReturn) + setupCost + (isSalesOffer ? 0 : dismantleCost) + activeReturnCost),
