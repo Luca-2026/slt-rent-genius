@@ -1,5 +1,5 @@
 import { salesOfferLine, salesPaymentTerms, salesPaymentText, FINANCING_INFORMATION, normalizeSalesFinancing } from "../_shared/sales-offer.ts";
-import { BANK_DISCOUNT_TERMS, newBankDiscountPolicy, withoutBankDiscount } from "../_shared/bank-transfer-discount.ts";
+import { BANK_DISCOUNT_TERMS, newBankDiscountPolicy, withoutBankDiscount, priceBankTransfer } from "../_shared/bank-transfer-discount.ts";
 import { bankDiscountLive, inquiryBankDiscountEnabled } from "../_shared/payment-incentive-rollout.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { UNDATED_OFFER_NOTE } from "../_shared/undated-offer.ts";
@@ -502,7 +502,9 @@ Deno.serve(async (req: Request) => {
     if (!staffName) staffName = "SLT Rental";
 
 
+    const bankAlternative = discountEnabled ? priceBankTransfer(items, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + returnLocationCost, "bank") : null;
     const pdfBytes = await generateOfferPdf({
+      bankTransferOffer: bankAlternative && !undatedOffer ? { amountCents: toCents(bankAlternative.bankTotals.grossAmount) + toCents(deposit), discountGross: bankAlternative.discountGross } : undefined,
       businessType: inquiryType,
       salesOffer: inquiryType === "sales" ? { addressForm, salutation: greeting, financing, orderType } : undefined,
       undatedOffer,

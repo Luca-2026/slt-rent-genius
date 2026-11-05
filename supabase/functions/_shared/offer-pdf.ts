@@ -41,6 +41,8 @@ export async function generateOfferPdf(data: {
   returnLocation?: string;
   deliveryAddress?: { street?: string; postal_code?: string; city?: string };
   paymentTerms?: string;
+  /** Trusted bank alternative from the shared rental calculator, including unchanged deposit. */
+  bankTransferOffer?: { amountCents: number; discountGross: number };
   /** Freitext bei individuellen Zahlungsbedingungen (paymentTerms === "custom"). */
   paymentTermsCustom?: string;
   /**
@@ -1111,6 +1113,20 @@ export async function generateOfferPdf(data: {
     y -= boxH + 12;
   }
 
+
+  if (docType === "offer" && !data.undatedOffer && data.bankTransferOffer) {
+    const bank = data.bankTransferOffer;
+    const QR = 100;
+    const textWidth = CW - 32 - QR - 16;
+    const lines = wt(`3 % Überweisungsrabatt: ${fm(bank.discountGross)} brutto. Bitte überweisen Sie ${fm(bank.amountCents / 100)}${data.deposit > 0 ? ` einschließlich unveränderter Kaution ${fm(data.deposit)}` : ""}. Der QR-Code enthält den Gesamtbetrag zur direkten Überweisung.`, font, 9, textWidth);
+    const boxH = Math.max(152, 46 + lines.length * 12);
+    need(boxH + 16);
+    pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.94, 0.96, 0.98) });
+    dt(pg, "Direkt überweisen · 3 % Rabatt", ML + 16, y - 2, bold, 10, INK);
+    lines.forEach((line, index) => dt(pg, line, ML + 16, y - 20 - index * 12, font, 9, INK));
+    drawEpcQr(pg, { name: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, amountCents: bank.amountCents, reference: withCode(data.offerNumber) }, ML + CW - QR - 12, y - 24 - QR, QR, font);
+    y -= boxH + 12;
+  }
 
   if (docType === "offer" && !data.undatedOffer) {
     drawInfoBox(
