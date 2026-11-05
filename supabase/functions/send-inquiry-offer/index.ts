@@ -27,6 +27,7 @@ import {
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
+import { assertCalendarInsurance } from '../_shared/insurance-validation.ts';
 import { byForm, normalizeAddressForm, salutationLine, type AddressForm } from "../_shared/salutation.ts";
 import { defaultTermsText, printableTerms } from "../_shared/offer-terms.ts";
 import { computeRentalLinePrice, resolveProductPrices, type PricingUnit } from "../_shared/rental-pricing.ts";
@@ -113,7 +114,10 @@ Deno.serve(async (req: Request) => {
     try {
       const input = inquiryType === "sales" && Array.isArray(body.items) ? body.items.map((item: any) => { const sale = salesOfferLine(item); return { ...sale, articles: sale.quantity, unit_code: "stueck", unit: sale.quantity_unit === "m2" ? "m²" : sale.quantity_unit === "lfm" ? "lfm" : "Stück" }; }) : body.items;
       items = normalizeInquiryOfferItems(input, undatedOffer);
-      if (inquiryType === "rental") items = withoutBankDiscount(items);
+      if (inquiryType === "rental") {
+        assertCalendarInsurance(items);
+        items = withoutBankDiscount(items);
+      }
     } catch (e) {
       return json({ error: (e as Error).message }, 400);
     }
