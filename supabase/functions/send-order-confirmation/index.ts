@@ -17,7 +17,7 @@ import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
 import { normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 
-import { buildOrderAmendment } from "../_shared/order-amendment.ts";
+import { buildOrderAmendment, buildSalesOrderAmendment } from "../_shared/order-amendment.ts";
 import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts";
 import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
 import { ensurePaymentLink, planPaymentAmounts, isStripeConfigured } from "../_shared/stripe-pay.ts";
@@ -113,13 +113,12 @@ Deno.serve(async (req) => {
     if (!preview && !resendKey) return json({ error: "E-Mail-Versand nicht konfiguriert" }, 500);
 
     let payload = (inq.offer_payload ?? {}) as Record<string, any>;
-    if (payload.undated_offer === true) return json({ error: "Unverbindliches Preisangebot: zuerst einen festen Mietzeitraum vereinbaren und ein neues Angebot erstellen." }, 400);
+    if (inquiryType === "rental" && payload.undated_offer === true) return json({ error: "Unverbindliches Preisangebot: zuerst einen festen Mietzeitraum vereinbaren und ein neues Angebot erstellen." }, 400);
     if (amendment) {
-      if (inquiryType !== "rental") return json({ error: "Auftragsänderung nur für Mietaufträge" },400);
       if (!allowsCustomerPaymentTerms(inq.customer_kind, body.payment_terms)) return json({error:"Unzulässige Zahlungsbedingungen"},400);
       if (typeof body.agreement_note !== "string" || body.agreement_note.trim().length < 5 || !Number.isFinite(Date.parse(body.agreed_at))) return json({error:"Bitte Vereinbarung mit Datum und Notiz dokumentieren"},400);
       if (Number(body.expected_revision) !== (inq.order_revision ?? 0)) return json({error:"Auftrag wurde inzwischen geändert. Bitte neu laden."},409);
-      try { payload = buildOrderAmendment(body,payload,inq.location); } catch(e) { return json({error:e instanceof Error ? e.message : "Ungültige Änderung"},400); }
+      try { payload = inquiryType === "sales" ? buildSalesOrderAmendment(body,payload,inq.customer_kind) : buildOrderAmendment(body,payload,inq.location); } catch(e) { return json({error:e instanceof Error ? e.message : "Ungültige Änderung"},400); }
     }
     const items: any[] = Array.isArray(payload.items) ? payload.items.map((item: any) => ({ ...item, ...offerItemText(item) })) : [];
     const payments: any[] = (Array.isArray(inq.payments) ? inq.payments : []).filter((p: any) => toCents(p?.amount) > 0);
@@ -320,10 +319,10 @@ Deno.serve(async (req) => {
       if (preview) return json({preview:true,pdf_base64:encodeBase64(pdfBytes),totals:payload.totals});
       if (amendment) {
         const actor = createClient(serviceUrl,anonKey,{global:{headers:{Authorization:auth}},auth:{persistSession:false}});
-        const {error:saveError}=await actor.rpc("save_rental_order_amendment",{_id:inquiryId,_expected:body.expected_revision,_payload:payload,_note:body.agreement_note,_agreed_at:body.agreed_at});
+        const {error:saveError}=await actor.rpc(inquiryType === "sales" ? "save_sales_order_amendment" : "save_rental_order_amendment",{_id:inquiryId,_expected:body.expected_revision,_payload:payload,_note:body.agreement_note,_agreed_at:body.agreed_at});
         if(saveError) return json({error:saveError.message},409);
         let paymentUrl=null;
-        if(ev.openCents>0 && isStripeConfigured()) {
+        if(inquiryType === "rental" && ev.openCents>0 && isStripeConfigured()) {
           const link=await ensurePaymentLink(service,{table:"rental_inquiries",inquiryId,customerEmail:inq.customer_email,offerNumber:inq.offer_number,plan:planPaymentAmounts({gross,deposit,paidCents:ev.paidCents}),createdBy:user.id});
           paymentUrl=link?.url ?? null;
         }

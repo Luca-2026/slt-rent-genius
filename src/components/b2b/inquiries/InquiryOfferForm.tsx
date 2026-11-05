@@ -430,7 +430,7 @@ export function InquiryOfferForm({
   ignoreDraft = false,
 }: Props) {
   const isInvoice = mode === "invoice";
-  const isSalesOffer = inquiryType === "sales" && mode === "offer";
+  const isSalesOffer = inquiryType === "sales" && (mode === "offer" || mode === "amendment");
   const [financingEnabled, setFinancingEnabled] = useState(false);
   const [financingNote, setFinancingNote] = useState("");
   const isAmendment = mode === "amendment";
