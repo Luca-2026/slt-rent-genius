@@ -1,8 +1,8 @@
 // @vitest-environment node
 import { describe, it, expect, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { feedbackSubmission } from '../../supabase/functions/notify-feedback/submission';
-import { applicationSubmission, attachmentContent } from '../../supabase/functions/send-application-email/submission';
+import { feedbackSubmission } from '../supabase/functions/notify-feedback/submission';
+import { applicationSubmission, attachmentContent } from '../supabase/functions/send-application-email/submission';
 
 const feedback = { location: 'bonn', order_ref: 'TEST', rented_items: 'Gerät', customer_email: 'test@example.com', ratings: { q1_buchung: 4 }, answers: {} };
 function application() {
