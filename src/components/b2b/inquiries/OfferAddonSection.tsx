@@ -79,6 +79,10 @@ export function recalcAddons<T extends OfferLine>(item: T): T {
 
 const round2 = (n: number) => Math.round((n + Number.EPSILON) * 100) / 100;
 
+export function isMachineInsurance(addon: { key: string; label: string }): boolean {
+  return /maschinenbruch/i.test(`${addon.key} ${addon.label}`);
+}
+
 /** Paket 3b: Kalendertage der Versicherung aus dem Zeitraum (Preismodul, immer Kalendertage). */
 export function addonCalendarDays(start?: string | null, end?: string | null): number | null {
   if (!start || !end || end < start) return null;
@@ -140,11 +144,11 @@ export function buildAddonsFromOptions(
   const out: OfferLineAddon[] = [];
   for (const option of picked) {
     if (tierKeys.has(option.key) || out.some((a) => a.key === option.key)) continue;
-    const fullPeriod = !item.undated_offer && option.price_type !== "flat" && !!option.full_period_default && ctx.days_per_unit !== null;
+    const fullPeriod = !item.undated_offer && option.price_type !== "flat" && (isMachineInsurance(option) || !!option.full_period_default) && ctx.days_per_unit !== null;
     const base: OfferLineAddon = {
       key: option.key,
       label: option.label,
-      note: option.deductible ? `Selbstbehalt ${option.deductible.toLocaleString("de-DE")} €` : option.note,
+      note: option.deductible != null ? `Selbstbehalt ${option.deductible.toLocaleString("de-DE")} €` : option.note,
       price_type: option.price_type,
       rate: option.price,
       basis: option.price_type === "flat" ? "once" : fullPeriod ? "full_period" : "line",
@@ -289,6 +293,7 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
 
       {addons.map((addon, ai) => {
         if (addon.optional) return null;
+        const machineInsurance = !isSales && isMachineInsurance(addon);
         const calculated = !!addon.price_type && addon.price_type !== "flat";
         const fullPeriod = addon.basis === "full_period";
         const customerText = describeAddon({
@@ -300,19 +305,14 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
           <div key={addon.key} className="rounded-md border border-border bg-background p-2 space-y-2">
             <div className="flex items-start gap-2">
               <div className="min-w-0 flex-1">
-                {addon.key.startsWith("custom") ? (
+                <Label className="text-xs">Bezeichnung</Label>
                   <Input
+                    aria-label="Bezeichnung der Zusatzoption"
                     value={addon.label}
                     placeholder="Bezeichnung der Zusatzoption"
                     disabled={disabled}
                     onChange={(e) => patch(ai, { label: e.target.value })}
                   />
-                ) : (
-                  <p className="text-sm font-medium break-words">
-                    {addon.label}
-                    {addon.note ? <span className="block text-xs text-muted-foreground font-normal">{addon.note}</span> : null}
-                  </p>
-                )}
               </div>
               <Button
                 type="button"
@@ -325,6 +325,28 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
+
+            <div>
+              <Label className="text-xs">Selbstbehalt / Zusatztext</Label>
+              <Input aria-label="Selbstbehalt / Zusatztext" value={addon.note ?? ""}
+                placeholder="Selbstbehalt laut Vereinbarung" disabled={disabled}
+                onChange={(e) => patch(ai, { note: e.target.value })} />
+            </div>
+            {!isSales && (
+              <Select value={addon.price_type ?? "flat"} disabled={disabled}
+                onValueChange={(value) => {
+                  const price_type = value as "percent" | "per_unit" | "flat";
+                  patchCalc(ai, { price_type, rate: addon.rate ?? 0, manual: false,
+                    ...(machineInsurance && price_type !== "flat" ? { basis: "full_period", days: addon.days || calDays, period_start: periodStart ?? null, period_end: periodEnd ?? null } : {}) });
+                }}>
+                <SelectTrigger aria-label="Preisberechnung der Zusatzoption"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="percent">Prozentsatz</SelectItem>
+                  <SelectItem value="per_unit">Tagessatz je Artikel</SelectItem>
+                  {!machineInsurance && <SelectItem value="flat">Pauschale</SelectItem>}
+                </SelectContent>
+              </Select>
+            )}
 
             {calculated && (
               <div className="grid grid-cols-2 gap-2 items-end">
@@ -348,7 +370,7 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                       type="number"
                       min={1}
                       value={addon.days ?? ""}
-                      disabled={disabled}
+                      disabled={disabled || machineInsurance}
                       className={missingDays ? "border-destructive" : undefined}
                       onChange={(e) => patchCalc(ai, { days: Number(e.target.value) || null, days_manual: true })}
                     />
@@ -378,6 +400,12 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                       </span>
                     </span>
                   </label>
+                )}
+                {machineInsurance && !fullPeriod && canFullPeriod && (
+                  <Button type="button" variant="outline" disabled={disabled} className="col-span-2"
+                    onClick={() => patchCalc(ai, { basis: "full_period", days: addon.days || calDays, period_start: periodStart ?? null, period_end: periodEnd ?? null })}>
+                    Kalendertage übernehmen
+                  </Button>
                 )}
               </div>
             )}
