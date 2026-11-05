@@ -6978,6 +6978,16 @@ export type Database = {
         }
         Returns: undefined
       }
+      sync_deposit_refund: {
+        Args: {
+          _amount: number
+          _id: string
+          _intent: string
+          _refund_id: string
+          _status: string
+        }
+        Returns: undefined
+      }
       timesheet_locked_through: { Args: never; Returns: string }
       update_b2b_profile_with_pending: {
         Args: {
