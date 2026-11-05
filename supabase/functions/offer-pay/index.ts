@@ -146,12 +146,17 @@ Deno.serve(async (req: Request) => {
       if (claimError || !claimed) return json({ error: "Eine Zahlung wird bereits gestartet oder der Auftrag wurde geändert. Bitte neu laden." }, 409);
     }
     try {
+    // A competing request may have completed since our initial read; only the claimed row is current.
+    const { data: claimedLink, error: claimedLinkError } = claim
+      ? await service.from("offer_payment_links").select("stripe_session_id").eq("id", link.id).eq("checkout_claim", claim).maybeSingle()
+      : { data: link, error: null };
+    if (claimedLinkError || !claimedLink) throw new Error("Zahlungsversuch konnte nicht sicher gelesen werden");
 
     // frühere, noch offene Session beenden (verhindert Doppelzahlung)
-    if (link.stripe_session_id) {
-      const previous = await stripe.checkout.sessions.retrieve(link.stripe_session_id);
+    if (claimedLink.stripe_session_id) {
+      const previous = await stripe.checkout.sessions.retrieve(claimedLink.stripe_session_id);
       if (previous.status === "complete" || previous.payment_status === "paid") return json({ error: "Online-Zahlung wird verarbeitet. Bitte den Zahlungseingang abwarten." }, 409);
-      if (previous.status === "open") await stripe.checkout.sessions.expire(link.stripe_session_id);
+      if (previous.status === "open") await stripe.checkout.sessions.expire(claimedLink.stripe_session_id);
     }
 
     const lineItems = [
@@ -204,7 +209,7 @@ Deno.serve(async (req: Request) => {
       expires_at: sessionExpires,
       success_url: `${origin}/zahlung/${token}?status=success`,
       cancel_url: `${origin}/zahlung/${token}?status=cancelled`,
-    });
+    }, claim ? { idempotencyKey: `rental-checkout-${link.id}-${claim}` } : undefined);
     const sessionUpdate = service
       .from("offer_payment_links")
       .update({ stripe_session_id: session.id, ...(claim ? { checkout_claim: null, checkout_claimed_at: null } : {}), updated_at: new Date().toISOString() })
