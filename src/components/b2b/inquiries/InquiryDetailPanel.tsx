@@ -3,6 +3,7 @@ import { normalizeOpenEndedUnit, normalizeOpenEndedDuration, type OpenEndedUnit 
 import { DepositSettlementCard } from "./DepositSettlementCard";
 import { CreditNoteRefund } from "./CreditNoteRefund";
 import { RentalCreditRefund } from "./RentalCreditRefund";
+import { InvoicePdfButton } from "./InvoicePdfButton";
 import { requestedCoupon } from "@/lib/requestedCoupon";
 import { ReturnChargesSummary } from "./ReturnChargesSummary";
 import { depositBlocksInvoice, paymentsUpToRent, useDepositState } from "./useDepositState";
@@ -793,7 +794,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               <InquiryStatusBadge status={inv.status} />
               {inquiryType === "rental" && inv.invoice_kind === "credit_note" && !["draft", "cancelled"].includes(inv.status) && <CreditNoteRefund creditId={inv.id} onChanged={() => { loadInvoices(); onChanged(); }} />}
               {inquiryType === "rental" && ["invoice", "final"].includes(inv.invoice_kind) && !["draft", "cancelled"].includes(inv.status) && <RentalCreditRefund invoiceId={inv.id} />}
-              {inv.file_url && (
+              {inv.file_url && inv.invoice_kind !== "credit_note" ? <InvoicePdfButton invoiceId={inv.id} /> : inv.file_url && (
                 <a
                   href={inv.file_url}
                   target="_blank"

@@ -5,6 +5,13 @@ Keine vollständige Freigabe. Die Fortsetzung mit dem bestehenden berechtigten A
 
 ## Mietguthabenerstattung – Durchlauf ab 12:15 UTC
 
+### Korrektur ab 12:26 UTC – maßgeblicher aktueller Stand
+- Auf ausdrückliche Klarstellung zurückgenommen: eigener Mietguthaben-PDF-Generator entfernt; keine neuen separaten Erstattungsbelege werden erzeugt oder gespeichert. Bereits vorhandener interner Testbeleg bleibt nur historische Testevidenz.
+- Rechnungsöffnung in Anfrage, Rechnungsübersicht und Kundenakte sowie erneuter Rechnungsversand lesen den aktuellen Erstattungsstand. Das ursprüngliche Rechnungs-PDF bleibt erhalten; dieselbe Rechnungsnummer enthält zusätzlich eine Zahlungsstandsseite, keine neue Gutschrift und keinen zweiten Rabattabzug.
+- Tatsächlicher Mitarbeiterabruf HTTP 200 am internen #96ASUG: Rechnung RE-M-2026-11-0004 enthält ursprüngliche Rechnungsseiten plus Zahlungsstandsseite. PDF ausgelesen/visuell geprüft: Rechnung 556,92 €, Mietzahlungen 680,68 €, Mietguthaben 123,76 €, bestätigt erstattet 123,76 €, verbleibend 0,00 €, simulierter Banknachweis sichtbar. Kaution getrennt. Handy ohne Überlauf.
+- 44 fokussierte Tests bestanden; beide geänderten Funktionen geprüft/eingespielt, Anwendung fehlerfrei. Keine neue Auszahlung und keine weitere E-Mail in diesem Korrekturdurchlauf. Echter Stripe-Test weiterhin offen.
+- Keine spezielle B2B-Rabatt-URL vorhanden. B2B-Angebote: https://app.slt-rental.de/b2b/angebote; Kundenrabatte erscheinen auf Angeboten und Artikeln. Der separate 3-%-Überweisungsrabatt bleibt deaktiviert und hat keine eigene Freigabeseite.
+
 **Direkte Mietguthabenerstattung für eine erstmalige Mietrechnung implementiert. Keine Gesamtfreigabe.** Die Aussage oben über nicht ausgestellte Rechnungen beschreibt die vorherigen Durchläufe: In diesem Durchlauf wurde ausschließlich die gekennzeichnete interne Testrechnung RE-M-2026-11-0004 erstellt und an den vorhandenen Testkunden versendet.
 
 - Mitarbeiterablauf am internen Auftrag #96ASUG tatsächlich durchgeführt: Kaution mit ausdrücklich simuliertem Hinweis abgerechnet → Rechnungsvorschau → Testrechnung ausgestellt → neu geladen → Mietguthaben geprüft → Bankauftrag vorbereitet → ausdrücklich simulierter Banknachweis gespeichert → vollständig neu geladen → Erstattungs-PDF geöffnet (HTTP 200).

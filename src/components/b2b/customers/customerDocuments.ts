@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { openStorageDocument } from "@/lib/openStorageDocument";
 import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
+import { invokeWithAuth } from "@/lib/invokeWithAuth";
 
 export interface CustomerDocument {
   id: string;
@@ -82,6 +83,19 @@ export async function loadCustomerDocuments(customerId: string, profileId?: stri
 }
 
 export async function openCustomerDocument(document: CustomerDocument) {
+  if (document.id.startsWith("invoice-") && !document.label.startsWith("Gutschrift")) {
+    const tab = window.open("about:blank", "_blank");
+    if (tab) tab.opener = null;
+    try {
+      const { data, error } = await invokeWithAuth<{ pdf_base64: string }>("send-inquiry-invoice", { invoice_pdf_id: document.id.slice("invoice-".length) });
+      if (error || !data?.pdf_base64) throw new Error("Rechnungsstand konnte nicht gelesen werden");
+      const url = URL.createObjectURL(new Blob([Uint8Array.from(atob(data.pdf_base64), c => c.charCodeAt(0))], { type: "application/pdf" }));
+      if (tab) tab.location.href = url;
+      else window.open(url, "_blank", "noopener,noreferrer");
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+      return;
+    } catch (error) { tab?.close(); throw error; }
+  }
   // Renew even previously signed links: stored tokens can have expired.
   const match = document.url.match(/\/storage\/v1\/object\/(?:sign|public|authenticated)\/([^/]+)\/(.+)/);
   if (!/\.html(?:\?|$)/i.test(document.url) && (match || document.bucket)) {

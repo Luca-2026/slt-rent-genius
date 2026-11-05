@@ -21,6 +21,7 @@ import type { Database } from "@/integrations/supabase/types";
 import { useToast } from "@/hooks/use-toast";
 import { formatEuro } from "@/components/b2b/inquiries/offerMath";
 import { CreditNoteRefund } from "@/components/b2b/inquiries/CreditNoteRefund";
+import { InvoicePdfButton } from "@/components/b2b/inquiries/InvoicePdfButton";
 
 
 interface InvoiceRow {
@@ -443,7 +444,7 @@ export default function InquiryInvoices() {
                   </div>
                   <div className="flex flex-wrap gap-2 pt-1">
                     {row.invoice_kind === "credit_note" && row.status !== "draft" && row.status !== "cancelled" && (isAdmin || isBranchManager) && <CreditNoteRefund creditId={row.id} onChanged={load} />}
-                    {row.file_url && (
+                    {row.file_url && row.invoice_kind !== "credit_note" ? <InvoicePdfButton invoiceId={row.id} /> : row.file_url && (
                       <Button size="sm" variant="outline" asChild>
                         <a href={row.file_url} target="_blank" rel="noreferrer">
                           PDF öffnen <ExternalLink className="h-3.5 w-3.5 ml-1" />

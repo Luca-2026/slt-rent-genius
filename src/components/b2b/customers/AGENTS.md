@@ -1,3 +1,3 @@
 # Customer dossiers
-- CustomerDocuments reads stored evidence from CRM-linked inquiries and the explicitly linked B2B profile, including AB history and protocols; never generate, issue or mutate documents when opening the dossier.
+- CustomerDocuments reads stored evidence from CRM-linked inquiries and the explicitly linked B2B profile; inquiry invoices open through the read-only current invoice payment statement, never issue or mutate documents when opening the dossier.
 - Renew stored PDF storage links on click through openStorageDocument; legacy HTML uses invoiceViewer's sanitized print/PDF path so expired tokens and old formats remain usable.
