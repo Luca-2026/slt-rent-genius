@@ -435,6 +435,19 @@ Deno.serve(async (req: Request) => {
           payments = settlementPayments(storedPayments, storedTotal, depositInfo, (inquiry as { order_code?: string | null }).order_code ?? null);
           deposit = depositInfo.held;
         }
+      } else {
+        // Before return settlement, rental invoices must not call the deposit rental credit.
+        const storedPayments: RecordedPayment[] = (Array.isArray(inquiry.payments) ? inquiry.payments : []).map((p: any) => ({
+          date: str(p.date, 10) || isoDate(new Date()), amount: Math.round((Number(p.amount) || 0) * 100) / 100,
+          label: str(p.label, 80) || "Zahlungseingang", reference: str(p.reference, 255) || "",
+        })).filter((p: RecordedPayment) => p.amount > 0);
+        const storedTotal = storedPayments.reduce((sum, p) => sum + p.amount, 0);
+        const agreed = inquiry.offer_payload?.deposit;
+        const surplus = Math.max(0, storedTotal - (Number(inquiry.offer_total_gross) || 0));
+        const held = agreed == null ? surplus : Math.min(surplus, Math.max(0, Number(agreed) || 0));
+        if (held > 0) payments = settlementPayments(storedPayments, storedTotal, {
+          held, offset: 0, refund: 0, due: 0, payoutMethod: null, payoutStatus: null, payoutDate: null, settledDate: isoDate(new Date()),
+        }, (inquiry as { order_code?: string | null }).order_code ?? null);
       }
     }
     const amountPaid = Math.round(payments.reduce((s: number, p: RecordedPayment) => s + p.amount, 0) * 100) / 100;
