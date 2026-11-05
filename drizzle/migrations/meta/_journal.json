@@ -897,6 +897,13 @@
       "when": 1793857470044,
       "tag": "0127_persist_new_sign_rental_discount_agreement",
       "breakpoints": true
+    },
+    {
+      "idx": 128,
+      "version": "7",
+      "when": 1793857624075,
+      "tag": "0128_serialize_rental_online_checkout_claims",
+      "breakpoints": true
     }
   ]
 }

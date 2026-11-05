@@ -3793,6 +3793,8 @@ export type Database = {
       offer_payment_links: {
         Row: {
           amount_cents: number
+          checkout_claim: string | null
+          checkout_claimed_at: string | null
           created_at: string
           created_by: string | null
           customer_email: string | null
@@ -3814,6 +3816,8 @@ export type Database = {
         }
         Insert: {
           amount_cents: number
+          checkout_claim?: string | null
+          checkout_claimed_at?: string | null
           created_at?: string
           created_by?: string | null
           customer_email?: string | null
@@ -3835,6 +3839,8 @@ export type Database = {
         }
         Update: {
           amount_cents?: number
+          checkout_claim?: string | null
+          checkout_claimed_at?: string | null
           created_at?: string
           created_by?: string | null
           customer_email?: string | null
@@ -6305,6 +6311,10 @@ export type Database = {
           p_profile?: string
         }
         Returns: Json
+      }
+      claim_rental_checkout: {
+        Args: { _claim: string; _link: string; _version: number }
+        Returns: boolean
       }
       close_expired_rental_inquiries: { Args: never; Returns: number }
       close_rental_without_protocol: {
