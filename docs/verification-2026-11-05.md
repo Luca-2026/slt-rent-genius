@@ -3,6 +3,29 @@
 ## Ergebnis
 Keine vollständige Freigabe. Die Fortsetzung mit dem bestehenden berechtigten Admin-Konto ist erfolgt; fehlender Mitarbeiterzugang ist für dieses Konto kein Hindernis mehr. Es wurden keine Rollen geändert, keine tatsächlichen Zahlungen ausgelöst und keine finalen Rechnungen verschickt.
 
+## Fortsetzung ab 11:11 UTC – aktueller Stand
+
+### Tatsächlich abgeschlossen
+- Interner Testauftrag #96ASUG: Rückgabe ohne Übergabe nach bestätigtem Hinweis; Sauberkeit Stufe 1, Kunde ausdrücklich abwesend, Mitarbeitersignatur als automatischer interner Prüflauf gekennzeichnet. **RP-2026-0012 gespeichert**, ausdrücklich keine E-Mail versendet. Nach vollständigem Neuladen ist das Protokoll weiterhin vorhanden; PDF-Link HTTP 200 / application/pdf, Datei gelesen. PDF zeigt Auftrags-ID, abwesenden Kunden und internen Test-Unterzeichner. Keine Kundenunterschrift simuliert und keine Geldbewegung.
+- Anschließende Kautionsmaske nach Neuladen weiterhin 500 € Kaution und 123,76 € Mietguthaben getrennt. Nicht als tatsächlich überwiesen gespeichert.
+- Erstattungsabgleich für Rechnungskorrekturen prüft jetzt den tatsächlichen Providerbetrag und nicht nur die Metadaten; unzulässige/null Status und leere Identitäten werden abgewiesen. Gemischte endgültige Ergebnisse erhalten partial_failed statt endlos pending. Wiederaufgenommene Ansprüche prüfen ebenfalls Test-/Livemodus; Webhook weist abweichenden Modus ab. Pending-Kundenmail behauptet keine abgeschlossene Erstattung; Fehlerantwort behauptet nicht fälschlich, dass nichts erstattet wurde.
+- Optionale Versicherungsstufen sind im vollständigen Editor zugänglich; gespeicherte Stufen werden ohne aktuelle CMS-Konfiguration nicht gelöscht. Manuelle Selbstbehalt-/Satz-/Tageänderungen bleiben erhalten. Regression: 12 € × 6 Kalendertage = 72 €, Selbstbehalt 500 €, optional weiterhin außerhalb der Summe.
+- Eigenständige Verkaufs-AB-Bearbeitung implementiert: gemeinsamer Editor mit Verkaufspolitik; einmalige Mengen, keine Mietzeiträume/Kaution/Online-Zahlungslinks, Vorkasse für Privatkunden. Geschützte versionierte Speicherung mit unverändertem Originalangebot, append-only Historie, stale-revision- und exakter Summenprüfung. Funktion und Tabellen nach Einspielen lesend bestätigt. **Noch kein tatsächlicher Verkaufsauftrag Speichern→Wiederöffnen→AB-PDF abgeschlossen**, daher keine E2E-Freigabe dieses Wegs.
+
+### Automatische Abnahme
+- Gesamtprüfung mit zwei parallelen Testprozessen: **133 Testdateien, 877 Tests bestanden**. Vorherige hochparallele Wiederholung hatte zwei Startzeitüberschreitungen und einen Zeitablauffehler in bestehendem UI-Test; begrenzte Parallelität beseitigte diese ohne Abschwächen der Assertions.
+- Neue gezielte Prüfungen: falscher Providerbetrag, ungültiger Status, falscher Modus bei Wiederaufnahme, Metadata-Recovery, optionale Versicherungsstufe, Verkaufs-Originalschutz, Privatkunden-Zahlungsregel, manipulierte Summe und unveränderliche Historie.
+- Geänderte Funktionen für AB, Mitarbeiterzahlungen und Stripe-Meldungen geprüft und eingespielt. Letzter Anwendungsbuild erfolgreich.
+
+### Nach erneuter unabhängiger Prüfung verbleibende Freigabesperren
+1. Erstmalig ausgestellte Rechnung mit bereits bestehendem Mietguthaben: direkter Originalzahlungs-Erstattungsanspruch fehlt weiterhin; eine zusätzliche Rechnungskorrektur darf nicht nur zum Auszahlen erfunden werden.
+2. Manuelle/externe Stripe-Erstattungen: noch kein gemeinsames dauerhaftes externes Erstattungsbuch; charge.refunded nicht vollständig abgeglichen. Bereits reservierte Ansprüche brauchen erneute konservative Providerprüfung. SQL-Regeltests ersetzen keine echte Parallelitätsprüfung; abweichende Transaktionsisolation ebenfalls noch zu härten.
+3. Stripe-Ende-zu-Ende mit Teilzahlungen, Parallelität, Abbruch und Teilfehlern: nur Live-Konfiguration verfügbar; sicherer separater Testmodus erforderlich. Keine echten Gelder als Test verwenden und produktiven Schlüssel nicht ersetzen.
+4. Separate B2B-Angebote/-Rechnungen: gespeicherte 3-%-Zusage und Angebot→Rechnung-Übernahme einschließlich Kostenklassifikation/Reverse Charge fehlen. Schilder-Bankwahl/Zahlungsabschluss noch nicht vollständig abgenommen. Rabatt bleibt global deaktiviert.
+5. Verkaufs-AB tatsächliches Speichern/Wiederöffnen/PDF; Versicherungsaltpauschalen und Versandvalidierung; CMS-Speicherung/Teilfehler; finale Abrechnung/Rechnung/Korrektur und weitere Dokumentarten weiterhin offen.
+
+**Keine Veröffentlichung, keine allgemeine Rabattaktivierung und kein vollständiger Freigabebericht behauptet.** Dieser Bericht enthält den aktuellen Prüfstand; die offenen Implementierungen benötigen weitere Arbeit. Ralfs Auswertung bleibt gemäß Auftrag nach der vollständigen Abnahme.
+
 ## Fortsetzung ab 10:59 UTC – Ergebnis dieses Prüfschritts
 
 ### Behoben und nachgeprüft
