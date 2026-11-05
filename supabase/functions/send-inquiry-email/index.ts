@@ -145,7 +145,7 @@ serve(async (req) => {
       if (deliveryRequested) {
         // Entfernung serverseitig neu ermitteln; Tarif des teuersten Artikels gilt für den ganzen Warenkorb.
         const apiKey = Deno.env.get("GOOGLE_PLACES_API_KEY");
-        const route = apiKey ? await routeDistance(apiKey, requestedItems[0].location, { address: `${deliveryStreet}, ${deliveryPostalCode} ${deliveryCity}, Germany` }).catch(() => null) : null;
+        const route = apiKey && requestedItems[0]?.location ? await routeDistance(apiKey, requestedItems[0].location, { address: `${deliveryStreet}, ${deliveryPostalCode} ${deliveryCity}, Germany` }).catch(() => null) : null;
         const lines = (quoteLines as { category: string; product_name: string; id: string }[]).map(line => ({ category: line.category, product_name: line.product_name, quantity: requestedItems.find((item: any) => item.id === line.id)?.quantity ?? 1 }));
         deliveryQuote = route ? { ...cartDeliveryQuote(lines, route.roundedKm), distance_km: Math.round(route.distanceKm * 10) / 10 } : { status: "on_request", reason: "distance", product_name: null, km: 0, distance_km: null };
       }
@@ -174,7 +174,7 @@ serve(async (req) => {
     }
     for (const it of requestedItems) {
       const allowed = it.product_slug ? addonLabelsBySlug.get(it.product_slug) : undefined;
-      it.selected_addons = allowed ? it.selected_addons.filter((k) => allowed.has(k)) : [];
+      it.selected_addons = allowed ? it.selected_addons.filter((k: string) => allowed.has(k)) : [];
     }
     const addonText = (it: { product_slug: string | null; selected_addons: string[] }) => {
       const labels = it.product_slug ? addonLabelsBySlug.get(it.product_slug) : undefined;
@@ -188,7 +188,7 @@ serve(async (req) => {
           <tr><th style="text-align:left;padding:6px 4px;border-bottom:2px solid #e5e7eb;color:#6b7280;">Artikel</th><th style="text-align:right;padding:6px 4px;border-bottom:2px solid #e5e7eb;color:#6b7280;">Menge</th></tr>
           ${requestedItems.map((it) => {
             const addons = addonText(it);
-            const period = cartRequestId ? `<br><span>${escapeHtml(publicLocationContacts[it.location]?.name)} · ${escapeHtml(it.start_date)} ${escapeHtml(it.start_time)} – ${escapeHtml(it.end_date)} ${escapeHtml(it.end_time)}</span>` : "";
+            const period = cartRequestId ? `<br><span>${escapeHtml(it.location ? publicLocationContacts[it.location]?.name : "")} · ${escapeHtml(it.start_date)} ${escapeHtml(it.start_time)} – ${escapeHtml(it.end_date)} ${escapeHtml(it.end_time)}</span>` : "";
             return `<tr><td style="padding:6px 4px;border-bottom:1px solid #f3f4f6;">${escapeHtml(it.product_name)}${period}${addons ? `<br><span style="color:#6b7280;font-size:12px;">Zusatzoptionen: ${escapeHtml(addons)}</span>` : ""}</td><td style="padding:6px 4px;border-bottom:1px solid #f3f4f6;text-align:right;white-space:nowrap;">${escapeHtml(qtyText(it))}</td></tr>`;
           }).join("")}
         </table>`
