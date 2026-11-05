@@ -918,6 +918,13 @@
       "when": 1793860157043,
       "tag": "0130_atomic_rental_stripe_receipts",
       "breakpoints": true
+    },
+    {
+      "idx": 131,
+      "version": "7",
+      "when": 1793860203728,
+      "tag": "0131_harden_rental_payment_snapshot_guards",
+      "breakpoints": true
     }
   ]
 }
