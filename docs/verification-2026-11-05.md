@@ -3,6 +3,14 @@
 ## Ergebnis
 Keine vollständige Freigabe. Die Fortsetzung mit dem bestehenden berechtigten Admin-Konto ist erfolgt; fehlender Mitarbeiterzugang ist für dieses Konto kein Hindernis mehr. Es wurden keine Rollen geändert, keine tatsächlichen Zahlungen ausgelöst und keine finalen Rechnungen verschickt.
 
+## Guthabenbestätigung und Überweisungs-QR – 12:34 UTC
+- Rechnung bestätigt ausschließlich erfolgreiche Erstattungen ausdrücklich mit Betrag und gespeichertem Zahlungsweg: „Das Guthaben … haben wir dir/Ihnen per Überweisung erstattet“ beziehungsweise „über Stripe auf das ursprünglich verwendete Zahlungsmittel“. Teilbestätigte Stripe-Aufteilungen zählen einzeln, ausstehende Auszahlung niemals als erledigt. Du/Sie aus Kundenakte.
+- Mitarbeiter-Rechnungsabruf am internen #96ASUG HTTP 200: 123,76 € ausdrücklich per Überweisung erstattet, 0,00 € verbleibend, ursprüngliche Rechnungsseiten erhalten. Banknachweis weiterhin eindeutig simuliert; keine neue Auszahlung.
+- Fehlende QR-Codes auf normalen Miet-/Verkaufs-/B2B-Angeboten ergänzt; Rechnungskunden erhalten Hinweis auf Zahlung nach Rechnungsstellung statt verfrühter Fälligkeit. Bereits vorhandene Rechnungs-QRs konnten von langen Bankzeilen überlagert werden: separate Text-/Codebereiche in beiden Rechnungsrenderern, größere QR-Codes und reservierter Seitenplatz.
+- Sechs PDF-QRs tatsächlich decodiert: 556,92 € Miet-/Verkaufsangebot und offene Rechnung, 456,92 € Restrechnung nach 100 € Zahlung, 1.236,77 € separate Portalrechnung, 415,43 € rabattiertes Angebot einschließlich unveränderter 300 € Kaution. Bankdaten und Beleg-/Auftragsreferenz stimmen. Guthabenrechnung ohne Zahlungs-QR.
+- 36 gezielte Regel-/Datenbanktests bestanden; 11 PDF-Prüfungen bestanden, zusätzlich Stripe-Bestätigung anhand Testdaten geprüft. Mitarbeiter-Angebotsvorschau HTTP 200 ohne Versand; QR auf erzeugtem PDF vorhanden. Kein Bank-App-Import und keine echte Stripe-Erstattung durchgeführt.
+- Sieben betroffene Funktionen eingespielt; Anwendung fehlerfrei. Historische gespeicherte Angebote/Rechnungen ohne QR werden nicht überschrieben; neue PDFs/Vorschauen verwenden die korrigierte Darstellung. Keine Websiteveröffentlichung oder allgemeine 3-%-Rabattaktivierung.
+
 ## Mietguthabenerstattung – Durchlauf ab 12:15 UTC
 
 ### Korrektur ab 12:26 UTC – maßgeblicher aktueller Stand

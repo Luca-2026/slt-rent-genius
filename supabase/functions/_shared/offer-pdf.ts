@@ -5,6 +5,7 @@ import { embedProductImages } from "./product-images.ts";
 import { SLT_COMPANY } from "./offer-company.ts";
 import { unitAbbreviation, unitLabel } from "./rental-pricing.ts";
 import { drawEpcQr } from "./epc-qr-pdf.ts";
+import { documentTransferCents } from "./document-transfer.ts";
 import { payoutText } from "./final-invoice-deposit.ts";
 
 // ─── PDF Offer Generator ───────────────────────────────────
@@ -1014,17 +1015,6 @@ export async function generateOfferPdf(data: {
     need(boxH + 16);
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.995, 0.97, 0.93) });
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
-    if (!settled) {
-      // Überweisungs-QR (GiroCode) mit offenem Betrag und Rechnungsnummer
-      const QR = 84;
-      drawEpcQr(pg, {
-        name: SLT_COMPANY.name,
-        iban: SLT_COMPANY.iban,
-        bic: SLT_COMPANY.bic,
-        amountCents: Math.round((amountPaid > 0 ? balanceDue : data.grossAmount) * 100),
-        reference: withCode(data.offerNumber),
-      }, ML + CW - QR - 12, y - 24 - QR, QR, font);
-    }
     let by = y - 2;
     dt(pg, "Zahlungshinweis", ML + 16, by, bold, 10, INK); by -= 15;
     if (settled) {
@@ -1120,17 +1110,28 @@ export async function generateOfferPdf(data: {
   }
 
 
-  if (docType === "offer" && !data.undatedOffer && data.bankTransferOffer) {
-    const bank = data.bankTransferOffer;
+  const transferCents = documentTransferCents(data);
+  if (transferCents !== null) {
+    const bank = docType === "offer" ? data.bankTransferOffer : undefined;
     const QR = 100;
     const textWidth = CW - 32 - QR - 16;
-    const lines = wt(`3 % Überweisungsrabatt: ${fm(bank.discountGross)} brutto. Bitte überweisen Sie ${fm(bank.amountCents / 100)}${data.deposit > 0 ? ` einschließlich unveränderter Kaution ${fm(data.deposit)}` : ""}. Der QR-Code enthält den Gesamtbetrag zur direkten Überweisung.`, font, 9, textWidth);
+    const instruction = docType === "offer" && paysOnInvoice
+      ? `Zahlung nach Rechnungsstellung gemäß den vereinbarten Zahlungsbedingungen. Betrag: ${fm(transferCents / 100)}.`
+      : `${T("Bitte überweise", "Bitte überweisen Sie")} ${fm(transferCents / 100)} gemäß den Zahlungsbedingungen.`;
+    const lines = [
+      ...(bank ? wt(`3 % Überweisungsrabatt: ${fm(bank.discountGross)} brutto (Kaution unverändert).`, font, 9, textWidth) : []),
+      ...wt(instruction, font, 9, textWidth),
+      ...wt(`Kontoinhaber: ${SLT_COMPANY.name}`, font, 8.5, textWidth),
+      ...wt(`IBAN: ${SLT_COMPANY.iban}`, font, 8.5, textWidth),
+      ...wt(`BIC: ${SLT_COMPANY.bic}`, font, 8.5, textWidth),
+      ...wt(`Verwendungszweck: ${withCode(data.offerNumber)}`, font, 8.5, textWidth),
+    ];
     const boxH = Math.max(152, 46 + lines.length * 12);
     need(boxH + 16);
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.94, 0.96, 0.98) });
-    dt(pg, "Direkt überweisen · 3 % Rabatt", ML + 16, y - 2, bold, 10, INK);
+    dt(pg, bank ? "Direkt überweisen · 3 % Rabatt" : "Banküberweisung · QR-Code", ML + 16, y - 2, bold, 10, INK);
     lines.forEach((line, index) => dt(pg, line, ML + 16, y - 20 - index * 12, font, 9, INK));
-    drawEpcQr(pg, { name: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, amountCents: bank.amountCents, reference: withCode(data.offerNumber) }, ML + CW - QR - 12, y - 24 - QR, QR, font);
+    if (!drawEpcQr(pg, { name: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, amountCents: transferCents, reference: withCode(data.offerNumber) }, ML + CW - QR - 12, y - 24 - QR, QR, font)) throw new Error("Überweisungs-QR konnte nicht erstellt werden.");
     y -= boxH + 12;
   }
 
