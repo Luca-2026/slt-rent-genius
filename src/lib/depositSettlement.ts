@@ -37,6 +37,8 @@ export interface SettlementInput {
   paid: number;
   /** Mietbetrag laut Angebot (brutto, ohne Kaution) */
   rent: number;
+  /** Vereinbarte Kaution; fehlender Wert erhält die historische Zuordnung. */
+  deposit?: number;
   deductions: SettlementDeduction[];
 }
 
@@ -45,6 +47,8 @@ export interface SettlementResult {
   rent: number;
   /** Kaution vorhanden = Zahlung über die Miete hinaus (nie negativ) */
   depositHeld: number;
+  /** Mietüberzahlung bleibt für die Rechnung, nicht für die Kautionsauszahlung. */
+  rentalCredit: number;
   /** Fehlbetrag auf die Miete (Sonderfall Teilzahlung) */
   rentShortfall: number;
   deductionsNet: number;
@@ -63,7 +67,7 @@ export const netOf = (gross: number) => round2(gross / (1 + VAT_RATE));
 export const deductionNet = (d: Pick<SettlementDeduction, "gross" | "kind">) =>
   d.kind === "damage" ? round2(d.gross) : netOf(d.gross);
 
-export function computeSettlement({ paid, rent, deductions }: SettlementInput): SettlementResult {
+export function computeSettlement({ paid, rent, deposit, deductions }: SettlementInput): SettlementResult {
   const p = round2(Math.max(0, paid));
   const r = round2(Math.max(0, rent));
   const active = deductions.filter((d) => !d.removed && d.gross > 0);
@@ -72,14 +76,17 @@ export function computeSettlement({ paid, rent, deductions }: SettlementInput): 
   const deductionsGross = round2(
     active.reduce((s, d) => s + (d.kind === "damage" ? round2(d.gross) : round2(deductionNet(d) * (1 + VAT_RATE))), 0),
   );
-  const depositHeld = round2(Math.max(0, p - r));
+  const surplus = round2(Math.max(0, p - r));
+  const depositHeld = deposit === undefined ? surplus : round2(Math.min(surplus, Math.max(0, deposit)));
+  const rentalCredit = round2(surplus - depositHeld);
   const rentShortfall = round2(Math.max(0, r - p));
   const offset = round2(Math.min(depositHeld, deductionsGross));
-  const balance = round2(p - r - deductionsGross);
+  const balance = round2(depositHeld - rentShortfall - deductionsGross);
   return {
     paid: p,
     rent: r,
     depositHeld,
+    rentalCredit,
     rentShortfall,
     deductionsNet,
     deductionsGross,

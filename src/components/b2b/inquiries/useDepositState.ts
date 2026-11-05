@@ -7,7 +7,7 @@ import { chargeMeasure, chargeQuantityText, quantityFromText } from "@/lib/retur
  */
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { netOf, round2, sumPayments } from "@/lib/depositSettlement";
+import { computeSettlement, netOf, round2, sumPayments } from "@/lib/depositSettlement";
 import type { OfferLine } from "./offerMath";
 
 export interface DepositState {
@@ -141,9 +141,10 @@ export function useDepositState(inquiry: Record<string, any>, enabled: boolean) 
     // Ohne Angebotssumme gibt es keine Miete als Referenz – dann zählt jede
     // Zahlung als Mietzahlung, nicht als Kaution (z. B. Telefonbuchung bar).
     const rent = Number(inquiry.offer_total_gross) || 0;
-    const held = rent > 0 ? round2(sumPayments(inquiry.payments) - rent) : 0;
+    const deposit = inquiry.offer_payload?.deposit == null ? undefined : Math.max(0, Number(inquiry.offer_payload.deposit) || 0);
+    const held = rent > 0 ? computeSettlement({ paid: sumPayments(inquiry.payments), rent, deposit, deductions: [] }).depositHeld : 0;
     setState({ loaded: true, settled: !!s, settlementInvoiceId: (s as any)?.invoice_id ?? null, offset, depositHeld: Math.max(0, held), hasProtocol: (protocols ?? []).length > 0, chargeLines });
-  }, [enabled, inquiry.id, inquiry.payments, inquiry.offer_total_gross]);
+  }, [enabled, inquiry.id, inquiry.payments, inquiry.offer_total_gross, inquiry.offer_payload]);
   useEffect(() => { void load(); }, [load]);
   return { ...state, reload: load };
 }

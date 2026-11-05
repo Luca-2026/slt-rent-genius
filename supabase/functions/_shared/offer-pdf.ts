@@ -55,6 +55,7 @@ export async function generateOfferPdf(data: {
   /** Auftragsbestätigung: Datum des zugrunde liegenden Angebots. */
   sourceOfferDate?: string;
   orderConfirmationGreeting?: { addressForm: "du" | "sie"; salutation: string };
+  documentGreeting?: { addressForm: "du" | "sie"; salutation: string };
   /** Fälligkeitsdatum der Rechnung (YYYY-MM-DD oder bereits formatiert). */
   dueDate?: string;
   /** Leistungszeitraum der Rechnung. */
@@ -137,7 +138,7 @@ export async function generateOfferPdf(data: {
   const sq = isSalesOffer ? data.salesOffer : undefined;
   const iq = docType === "offer" ? data.inquiryOffer : undefined;
   const ocGreeting = docType === "order_confirmation" ? data.orderConfirmationGreeting : undefined;
-  const isDu = iq?.addressForm === "du" || sq?.addressForm === "du" || ocGreeting?.addressForm === "du";
+  const isDu = data.documentGreeting ? data.documentGreeting.addressForm === "du" : iq?.addressForm === "du" || sq?.addressForm === "du" || ocGreeting?.addressForm === "du";
   const T = (du: string, sie: string) => (isDu ? du : sie);
   const isOC = docType === "order_confirmation";
   const isInvoice = docType !== "offer" && !isOC;
@@ -441,21 +442,21 @@ export async function generateOfferPdf(data: {
     }
 
     // Anschreiben
-    dt(pg, iq ? iq.salutation : sq?.salutation ?? ocGreeting?.salutation ?? "Sehr geehrte Damen und Herren,", ML, ty, font, 9.5); ty -= 13;
+    dt(pg, data.documentGreeting?.salutation ?? (iq ? iq.salutation : sq?.salutation ?? ocGreeting?.salutation ?? "Sehr geehrte Damen und Herren,"), ML, ty, font, 9.5); ty -= 13;
     const intro = isOC
       ? `${T("vielen Dank für deinen Auftrag. Hiermit bestätigen wir verbindlich die Annahme deines Auftrags", "vielen Dank für Ihren Auftrag. Hiermit bestätigen wir verbindlich die Annahme Ihres Auftrags")} auf Grundlage unseres Angebots ${data.sourceOfferNumber || ""}${data.sourceOfferDate ? ` vom ${fd(data.sourceOfferDate)}` : ""} über folgende Leistungen:`
       : isCreditNote
       ? `hiermit korrigieren wir unsere Rechnung ${data.parentInvoiceNumber || ""}${data.parentInvoiceDate ? ` vom ${fd(data.parentInvoiceDate)}` : ""}. ` +
-        `Wir schreiben Ihnen ${data.creditIsPartial ? "die folgenden Positionen anteilig" : "die folgenden Positionen vollst\u00E4ndig"} gut` +
+        `${T("Wir schreiben dir", "Wir schreiben Ihnen")} ${data.creditIsPartial ? "die folgenden Positionen anteilig" : "die folgenden Positionen vollst\u00E4ndig"} gut` +
         `${data.creditReason ? ` (Grund: ${data.creditReason})` : ""}:`
       : isSupplement
-        ? `vielen Dank f\u00FCr die Verl\u00E4ngerung. Wir berechnen Ihnen nachtr\u00E4glich zur Rechnung ${data.parentInvoiceNumber || ""} folgende Leistungen:`.replace("  ", " ")
+        ? `vielen Dank für die Verlängerung. ${T("Wir berechnen dir", "Wir berechnen Ihnen")} nachträglich zur Rechnung ${data.parentInvoiceNumber || ""} folgende Leistungen:`.replace("  ", " ")
         : docType === "installment"
-          ? "gem\u00E4\u00DF unserem Auftrag berechnen wir Ihnen folgende Abschlagszahlung. Der Abschlag wird in der Schlussrechnung verrechnet:"
+          ? T("gemäß unserem Auftrag berechnen wir dir folgende Abschlagszahlung. Der Abschlag wird in der Schlussrechnung verrechnet:", "gem\u00E4\u00DF unserem Auftrag berechnen wir Ihnen folgende Abschlagszahlung. Der Abschlag wird in der Schlussrechnung verrechnet:")
         : docType === "final"
-          ? "vielen Dank f\u00FCr Ihren Auftrag. Wir erlauben uns, Ihnen folgende Leistungen abschlie\u00DFend in Rechnung zu stellen; bereits berechnete Abschl\u00E4ge sind abgezogen:"
+          ? T("vielen Dank für deinen Auftrag. Wir stellen dir folgende Leistungen abschließend in Rechnung; bereits berechnete Abschläge sind abgezogen:", "vielen Dank f\u00FCr Ihren Auftrag. Wir erlauben uns, Ihnen folgende Leistungen abschlie\u00DFend in Rechnung zu stellen; bereits berechnete Abschl\u00E4ge sind abgezogen:")
         : isInvoice
-          ? "vielen Dank f\u00FCr Ihren Auftrag. Wir erlauben uns, Ihnen folgende Leistungen in Rechnung zu stellen:"
+          ? T("vielen Dank für deinen Auftrag. Wir stellen dir folgende Leistungen in Rechnung:", "vielen Dank f\u00FCr Ihren Auftrag. Wir erlauben uns, Ihnen folgende Leistungen in Rechnung zu stellen:")
           : T("vielen Dank f\u00FCr deine Anfrage. Gerne unterbreiten wir dir folgendes Angebot:", "vielen Dank f\u00FCr Ihre Anfrage. Gerne unterbreiten wir Ihnen folgendes Angebot:");
     const introLines = wt(intro, font, 9.5, CW);
     introLines.forEach((ln, li) => dt(pg, ln, ML, ty - li * 12, font, 9.5));
@@ -818,7 +819,7 @@ export async function generateOfferPdf(data: {
     dt(pg, "Kaution erhalten (umsatzsteuerfrei)", tx, y, font, 9, MUTED); dtr(pg, fm(ds.held), vx, y, font, 9); y -= 13;
     if (ds.offset > 0) { dt(pg, "davon mit Rückgabekosten verrechnet", tx, y, font, 9, MUTED); dtr(pg, `-${fm(ds.offset)}`, vx, y, font, 9); y -= 13; }
     if (ds.refund > 0) {
-      dt(pg, "Restkaution an Kunden erstattet", tx, y, bold, 9); dtr(pg, fm(ds.refund), vx, y, bold, 9); y -= 11;
+      dt(pg, ds.payoutStatus === "pending" ? "Restkaution – Erstattung offen" : "Restkaution an Kunden erstattet", tx, y, bold, 9); dtr(pg, fm(ds.refund), vx, y, bold, 9); y -= 11;
       dt(pg, payoutText(ds), tx, y, font, 8, MUTED); y -= 13;
     } else {
       dt(pg, "Kaution vollständig verrechnet", tx, y, font, 9, MUTED); dtr(pg, fm(0), vx, y, font, 9); y -= 13;
@@ -843,13 +844,13 @@ export async function generateOfferPdf(data: {
     const refundAmount = Math.max(0, Number(data.creditRefundAmount) || 0);
     const remainingBalance = Math.max(0, Number(data.creditRemainingBalance) || 0);
     const refundText = refundAmount > 0
-      ? `${fm(refundAmount)} werden Ihnen auf das ursprüngliche Zahlungsmittel bzw. das uns bekannte Konto erstattet. ` +
+      ? `${fm(refundAmount)} ${T("werden dir", "werden Ihnen")} auf das ursprüngliche Zahlungsmittel bzw. das uns bekannte Konto erstattet. ` +
         (remainingBalance > 0
           ? `Nach Verrechnung verbleibt aus der Rechnung ${data.parentInvoiceNumber || ""} noch ein offener Betrag von ${fm(remainingBalance)}.`
-          : "Eine gesonderte Zahlung Ihrerseits ist nicht erforderlich.")
+          : T("Eine gesonderte Zahlung von dir ist nicht erforderlich.", "Eine gesonderte Zahlung Ihrerseits ist nicht erforderlich."))
       : `Der Gutschriftbetrag von ${fm(data.grossAmount)} wird mit der Rechnung ${data.parentInvoiceNumber || ""} verrechnet. ` +
         (remainingBalance > 0
-          ? `Bitte \u00FCberweisen Sie nur noch den verbleibenden Betrag von ${fm(remainingBalance)}.`
+          ? `${T("Bitte überweise", "Bitte überweisen Sie")} nur noch den verbleibenden Betrag von ${fm(remainingBalance)}.`
           : "Die Rechnung ist damit vollst\u00E4ndig ausgeglichen.");
     const refundLines = wt(refundText, font, 9, CW - 32);
     const boxH = 46 + refundLines.length * 11 + (data.creditReason ? 13 : 0);
@@ -1027,7 +1028,7 @@ export async function generateOfferPdf(data: {
     if (settled) {
       dt(
         pg,
-        `Der Rechnungsbetrag ist durch Ihre Zahlung${payments.length > 1 ? "en" : ""} von ${fm(amountPaid)} vollst\u00E4ndig ausgeglichen. Vielen Dank!`,
+        `Der Rechnungsbetrag ist durch ${T("deine", "Ihre")} Zahlung${payments.length > 1 ? "en" : ""} von ${fm(amountPaid)} vollständig ausgeglichen. Vielen Dank!`,
         ML + 16, by, font, 9, INK,
       );
       by -= 14;
@@ -1035,13 +1036,13 @@ export async function generateOfferPdf(data: {
       if (amountPaid > 0) {
         dt(
           pg,
-          `Bereits gezahlt ${fm(amountPaid)}. Bitte \u00FCberweisen Sie den Restbetrag von ${fm(balanceDue)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
+          `Bereits gezahlt ${fm(amountPaid)}. ${T("Bitte überweise", "Bitte überweisen Sie")} den Restbetrag von ${fm(balanceDue)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
           ML + 16, by, font, 9, INK,
         );
       } else {
         dt(
           pg,
-          `Bitte \u00FCberweisen Sie ${fm(data.grossAmount)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
+          `${T("Bitte überweise", "Bitte überweisen Sie")} ${fm(data.grossAmount)}${data.dueDate ? ` bis zum ${fd(data.dueDate)}` : ""} auf folgendes Konto:`,
           ML + 16, by, font, 9, INK,
         );
       }
@@ -1207,9 +1208,9 @@ export async function generateOfferPdf(data: {
     isOC
       ? T("Vielen Dank f\u00FCr dein Vertrauen. Wir freuen uns auf die Zusammenarbeit.", "Vielen Dank f\u00FCr Ihr Vertrauen. Wir freuen uns auf die Zusammenarbeit.")
       : isCreditNote
-      ? "F\u00FCr R\u00FCckfragen zu dieser Rechnungskorrektur stehen wir Ihnen gerne zur Verf\u00FCgung."
+      ? T("Für Rückfragen zu dieser Rechnungskorrektur stehen wir dir gerne zur Verfügung.", "F\u00FCr R\u00FCckfragen zu dieser Rechnungskorrektur stehen wir Ihnen gerne zur Verf\u00FCgung.")
       : isInvoice
-      ? "Vielen Dank f\u00FCr Ihren Auftrag. F\u00FCr R\u00FCckfragen zu dieser Rechnung stehen wir Ihnen gerne zur Verf\u00FCgung."
+      ? T("Vielen Dank für deinen Auftrag. Für Rückfragen zu dieser Rechnung stehen wir dir gerne zur Verfügung.", "Vielen Dank f\u00FCr Ihren Auftrag. F\u00FCr R\u00FCckfragen zu dieser Rechnung stehen wir Ihnen gerne zur Verf\u00FCgung.")
       : T("Wir freuen uns auf deine R\u00FCckmeldung und stehen dir f\u00FCr R\u00FCckfragen gerne zur Verf\u00FCgung.", "Wir freuen uns auf Ihre R\u00FCckmeldung und stehen Ihnen f\u00FCr R\u00FCckfragen gerne zur Verf\u00FCgung."),
     ML, y, font, 9,
   ); y -= 22;

@@ -3,6 +3,31 @@ import { computeSettlement, deductionProblem } from "@/lib/depositSettlement";
 import { buildOfferTotals } from "@/components/b2b/inquiries/offerMath";
 
 describe("Kautionsabrechnung", () => {
+  it("trennt 500 € Kaution von 123,76 € Mietguthaben nach Rabatt", () => {
+    const r = computeSettlement({ paid: 1180.68, rent: 556.92, deposit: 500, deductions: [] });
+    expect(r.depositHeld).toBe(500);
+    expect(r.rentalCredit).toBe(123.76);
+    expect(r.refund).toBe(500);
+    expect(r.due).toBe(0);
+  });
+  it("erfindet bei ausdrücklich 0 € Kaution keine Kaution aus einem Mietguthaben", () => {
+    const r = computeSettlement({ paid: 680.68, rent: 556.92, deposit: 0, deductions: [] });
+    expect(r.depositHeld).toBe(0);
+    expect(r.rentalCredit).toBe(123.76);
+    expect(r.refund).toBe(0);
+  });
+  it("Rückgabekosten ziehen nur von der Kaution ab, Mietguthaben bleibt separat", () => {
+    const r = computeSettlement({ paid: 1180.68, rent: 556.92, deposit: 500, deductions: [{ key: 'damage', label: 'Schaden', gross: 100, kind: 'damage', source: 'damage' }] });
+    expect(r.refund).toBe(400);
+    expect(r.rentalCredit).toBe(123.76);
+    expect(r.offset).toBe(100);
+  });
+  it("Teilzahlung füllt nur den tatsächlich gezahlten Kautionsanteil", () => {
+    const r = computeSettlement({ paid: 700, rent: 556.92, deposit: 500, deductions: [] });
+    expect(r.depositHeld).toBe(143.08);
+    expect(r.rentalCredit).toBe(0);
+    expect(r.refund).toBe(143.08);
+  });
   it("Zahlung zählt zuerst auf die Miete (Janko Samuel: 500 € bar, 230,86 € Miete)", () => {
     const r = computeSettlement({ paid: 500, rent: 230.86, deductions: [] });
     expect(r.depositHeld).toBe(269.14);

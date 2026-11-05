@@ -2752,6 +2752,7 @@ export type Database = {
           id: string
           link_id: string
           reason: string | null
+          request_id: string | null
           status: string
           stripe_refund_id: string | null
           updated_at: string
@@ -2764,6 +2765,7 @@ export type Database = {
           id?: string
           link_id: string
           reason?: string | null
+          request_id?: string | null
           status?: string
           stripe_refund_id?: string | null
           updated_at?: string
@@ -2776,6 +2778,7 @@ export type Database = {
           id?: string
           link_id?: string
           reason?: string | null
+          request_id?: string | null
           status?: string
           stripe_refund_id?: string | null
           updated_at?: string
@@ -2807,6 +2810,7 @@ export type Database = {
           payout_method: string
           payout_status: string
           rent_amount: number
+          rental_credit: number
           rental_inquiry_id: string
           settled_at: string
           settled_by: string | null
@@ -2828,6 +2832,7 @@ export type Database = {
           payout_method?: string
           payout_status?: string
           rent_amount?: number
+          rental_credit?: number
           rental_inquiry_id: string
           settled_at?: string
           settled_by?: string | null
@@ -2849,6 +2854,7 @@ export type Database = {
           payout_method?: string
           payout_status?: string
           rent_amount?: number
+          rental_credit?: number
           rental_inquiry_id?: string
           settled_at?: string
           settled_by?: string | null
@@ -6863,6 +6869,7 @@ export type Database = {
           payout_method: string
           payout_status: string
           rent_amount: number
+          rental_credit: number
           rental_inquiry_id: string
           settled_at: string
           settled_by: string | null
@@ -6965,6 +6972,16 @@ export type Database = {
       sync_credit_note_refund: {
         Args: {
           _credit_id: string
+          _intent: string
+          _refund_id: string
+          _status: string
+        }
+        Returns: undefined
+      }
+      sync_deposit_refund: {
+        Args: {
+          _amount: number
+          _id: string
           _intent: string
           _refund_id: string
           _status: string

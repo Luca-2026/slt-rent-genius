@@ -47,7 +47,11 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
   const [settlement, setSettlement] = useState<Row | null>(null);
   const [hasProtocol, setHasProtocol] = useState(false);
   const [deductions, setDeductions] = useState<SettlementDeduction[]>([]);
-  const [payout, setPayout] = useState<string>("cash");
+  const [payout, setPayout] = useState<string>(() => {
+    const payments = Array.isArray(inquiry.payments) ? inquiry.payments as Row[] : [];
+    if (payments.some(p => /^(cs_|pi_)/.test(String(p.reference ?? "")) || /stripe/i.test(String(p.label ?? "")))) return "stripe";
+    return payments.some(p => /überweisung|bank/i.test(String(p.label ?? ""))) ? "transfer" : "cash";
+  });
   const [notes, setNotes] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -85,7 +89,8 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
   );
   useEffect(() => { if (!hasStripePayment && payout === "stripe") setPayout("transfer"); }, [hasStripePayment, payout]);
   const rent = Number(inquiry.offer_total_gross) || 0;
-  const result = useMemo(() => computeSettlement({ paid, rent, deductions }), [paid, rent, deductions]);
+  const deposit = inquiry.offer_payload?.deposit == null ? undefined : Math.max(0, Number(inquiry.offer_payload.deposit) || 0);
+  const result = useMemo(() => computeSettlement({ paid, rent, deposit, deductions }), [paid, rent, deposit, deductions]);
   const problem = deductionProblem(deductions);
 
   const patch = (i: number, p: Partial<SettlementDeduction>) => setDeductions((d) => d.map((x, j) => (j === i ? { ...x, ...p } : x)));
@@ -136,15 +141,16 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
         .limit(1);
       const link = links?.[0];
       if (!link) throw new Error("Keine bezahlte Online-Zahlung mit Kaution gefunden.");
-      const { data, error } = await invokeWithAuth<{ success?: boolean; error?: string }>("offer-payment-admin", {
+      const { data, error } = await invokeWithAuth<{ success?: boolean; error?: string; status?: string }>("offer-payment-admin", {
         action: "refund_deposit",
         link_id: link.id,
         amount_cents: Math.round(Number(settlement.balance) * 100),
         reason: `Kautionsabrechnung Auftrag ${inquiry.order_code ?? ""}`.trim(),
-        request_id: crypto.randomUUID(),
+        request_id: settlement.id,
       });
       if (error || !data?.success) throw new Error(data?.error ?? "Erstattung nicht ausgeführt.");
-      await markPayout();
+      if (data.status === "succeeded") await markPayout();
+      else await load();
       toast({ title: "Stripe-Erstattung ausgelöst", description: `${formatEuro(Number(settlement.balance))} gehen auf die ursprüngliche Zahlungsart zurück.` });
     } catch (e) {
       toast({ title: "Stripe-Erstattung fehlgeschlagen", description: e instanceof Error ? e.message : String(e), variant: "destructive" });
@@ -170,13 +176,14 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
         {line("Gezahlt gesamt", formatEuro(Number(settlement.paid_amount)))}
         {line("davon Miete", `−${formatEuro(Number(settlement.rent_amount))}`)}
         {line("Kaution vorhanden", formatEuro(Number(settlement.deposit_held)))}
+        {Number(settlement.rental_credit) > 0 && line("Mietguthaben (Rechnung)", formatEuro(Number(settlement.rental_credit)))}
         {(settlement.deductions as SettlementDeduction[]).filter((d) => !d.removed && d.gross > 0).map((d) => line(d.label, `−${formatEuro(d.gross)}`))}
         {line(bal >= 0 ? "Erstattung an Kunden" : "Nachzahlung Kunde", formatEuro(Math.abs(bal)), true)}
         <p className="text-xs text-muted-foreground">
           {new Date(settlement.settled_at).toLocaleString("de-DE", { timeZone: "Europe/Berlin" })} von {settlement.settled_by_name ?? "—"}
           {bal > 0 ? ` · ${PAYOUT_LABEL[settlement.payout_method]}${settlement.payout_status === "pending" ? " – Auszahlung offen" : settlement.payout_date ? ` am ${new Date(settlement.payout_date).toLocaleDateString("de-DE")}` : ""}` : ""}
         </p>
-        {settlement.payout_status === "pending" && canMarkStripePayout && (
+        {settlement.payout_status === "pending" && settlement.payout_method === "stripe" && canMarkStripePayout && (
           <div className="flex flex-wrap gap-2 pt-1">
             <Button size="sm" onClick={executeStripePayout} disabled={busy}>
               {busy ? <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" /> : <Undo2 className="h-3.5 w-3.5 mr-1" />}
@@ -200,6 +207,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
         {result.rentShortfall > 0
           ? line("Miete noch offen", formatEuro(result.rentShortfall))
           : line("= Kaution vorhanden", formatEuro(result.depositHeld), true)}
+        {result.rentalCredit > 0 && line("Mietguthaben (Rechnung)", formatEuro(result.rentalCredit))}
       </div>
 
       <div className="space-y-2">

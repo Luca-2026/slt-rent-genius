@@ -974,6 +974,34 @@
       "when": 1793871530391,
       "tag": "0138_fix_order_amendment_reservation_date_cast",
       "breakpoints": true
+    },
+    {
+      "idx": 139,
+      "version": "7",
+      "when": 1793876445817,
+      "tag": "0139_retire_rental_additional_compensation",
+      "breakpoints": true
+    },
+    {
+      "idx": 140,
+      "version": "7",
+      "when": 1793876548623,
+      "tag": "0140_separate_deposit_from_rental_credit",
+      "breakpoints": true
+    },
+    {
+      "idx": 141,
+      "version": "7",
+      "when": 1793876730364,
+      "tag": "0141_serialize_shared_original_payment_refunds",
+      "breakpoints": true
+    },
+    {
+      "idx": 142,
+      "version": "7",
+      "when": 1793876773014,
+      "tag": "0142_reconcile_durable_deposit_refunds",
+      "breakpoints": true
     }
   ]
 }

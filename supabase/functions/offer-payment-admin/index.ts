@@ -18,7 +18,6 @@ import {
   isStripeConfigured,
   isStripeTestMode,
   planPaymentAmounts,
-  refundableDepositCents,
   stripeClient,
   toCents,
 } from "../_shared/stripe-pay.ts";
@@ -177,10 +176,14 @@ Deno.serve(async (req: Request) => {
       return json({ error: "Die Zahlung stammt aus einem anderen Stripe-Modus (Test/Live)." }, 409);
     }
 
-    // Reservieren, dann Gesamtgrenze erneut prüfen (verhindert parallele Doppelerstattung)
-    const { data: reserved, error: insErr } = await service
-      .from("deposit_refunds")
-      .insert({
+    // Stable database request + shared trigger serialize deposit/credit capacity.
+    const { data: prior, error: priorErr } = await service.from("deposit_refunds").select("*").eq("request_id", body.request_id).maybeSingle();
+    if (priorErr) return json({ error: "Erstattungsstatus konnte nicht sicher geprüft werden." }, 409);
+    if (prior && (prior.link_id !== link.id || prior.amount_cents !== body.amount_cents)) return json({ error: "Der gespeicherte Erstattungsauftrag darf nicht geändert werden." }, 409);
+    if (prior?.stripe_refund_id) return json({ success: !["failed", "canceled"].includes(prior.status), refund_id: prior.stripe_refund_id, status: prior.status, already_requested: true });
+    const reservation = prior ? { data: prior, error: null } : await service.from("deposit_refunds").insert({
+        id: body.request_id,
+        request_id: body.request_id,
         link_id: link.id,
         amount_cents: body.amount_cents,
         status: "creating",
@@ -188,37 +191,35 @@ Deno.serve(async (req: Request) => {
         created_by: user.id,
         created_by_name: user.email ?? null,
       })
-      .select("id")
+      .select("*")
       .single();
-    if (insErr || !reserved) return json({ error: "Erstattung konnte nicht vorbereitet werden" }, 500);
-    const { data: all } = await service.from("deposit_refunds").select("id, amount_cents, status").eq("link_id", link.id);
-    const others = (all ?? []).filter((r: { id: string }) => r.id !== reserved.id);
-    const remaining = refundableDepositCents(link.deposit_cents, others);
-    if (body.amount_cents > remaining) {
-      await service.from("deposit_refunds").delete().eq("id", reserved.id);
-      return json({ error: `Es sind höchstens ${money(remaining)} Kaution erstattbar.` }, 409);
-    }
+    const reserved = reservation.data;
+    if (reservation.error || !reserved) return json({ error: "Erstattung nicht reserviert: Betrag oder Erstattungsstatus prüfen und neu laden." }, 409);
 
     const stripe = stripeClient();
     try {
-      const refund = await stripe.refunds.create(
+      let knownRefund;
+      for await (const candidate of stripe.refunds.list({ payment_intent: link.payment_intent_id, limit: 100 })) {
+        if (candidate.metadata?.deposit_refund_id === reserved.id) { knownRefund = candidate; break; }
+      }
+      if (!knownRefund && prior && new Date(prior.created_at).getTime() < Date.now() - 23 * 60 * 60 * 1000) return json({ error: "Älterer Erstattungsversuch ist ungeklärt. Erst den Zahlungsstatus abgleichen; keine neue Erstattung auslösen." }, 409);
+      const refund = knownRefund ?? await stripe.refunds.create(
         {
           payment_intent: link.payment_intent_id,
           amount: body.amount_cents,
           reason: "requested_by_customer",
-          metadata: { link_id: link.id, offer_number: link.offer_number, kind: "deposit", note: body.reason ?? "" },
+          metadata: { link_id: link.id, deposit_refund_id: reserved.id, offer_number: link.offer_number, kind: "deposit", note: body.reason ?? "" },
         },
         { idempotencyKey: `deposit-refund-${body.request_id}` },
       );
-      await service
-        .from("deposit_refunds")
-        .update({ stripe_refund_id: refund.id, status: refund.status ?? "pending", updated_at: new Date().toISOString() })
-        .eq("id", reserved.id);
+      const { error: syncErr } = await service.rpc("sync_deposit_refund", { _id: reserved.id, _intent: link.payment_intent_id, _refund_id: refund.id, _status: refund.status ?? "pending", _amount: refund.amount });
+      if (syncErr) return json({ error: "Erstattung wurde angenommen; Statusabgleich ist offen. Nicht manuell erneut erstatten." }, 409);
 
       // Kundenmail (Testkunde → keine Kopien)
       const resendKey = Deno.env.get("RESEND_API_KEY");
       let mailed = false;
-      if (resendKey && link.customer_email) {
+      if (resendKey && link.customer_email && !prior) {
+        try {
         const { data: inq } = await service
           .from(link.inquiry_table)
           .select("location")
@@ -240,12 +241,12 @@ Deno.serve(async (req: Request) => {
         });
         mailed = res.ok;
         if (!res.ok) console.error("Erstattungsmail fehlgeschlagen:", res.status);
+        } catch { console.error("Erstattungsbestätigung konnte nicht versendet werden; Zahlungsstatus bleibt erhalten."); }
       }
       return json({ success: true, refund_id: refund.id, status: refund.status, customer_mailed: mailed });
     } catch (err) {
-      await service.from("deposit_refunds").delete().eq("id", reserved.id).is("stripe_refund_id", null);
-      console.error("Stripe-Erstattung fehlgeschlagen:", (err as Error).message);
-      return json({ error: "Stripe konnte die Erstattung nicht ausführen. Bitte später erneut versuchen." }, 502);
+      console.error("Stripe-Erstattungsstatus ungeklärt; Reservierung bleibt erhalten.");
+      return json({ error: "Erstattungsstatus ist ungeklärt. Derselbe Erstattungsauftrag bleibt reserviert; nicht manuell zusätzlich erstatten." }, 502);
     }
   } catch (err) {
     console.error("offer-payment-admin error:", err);

@@ -1,4 +1,4 @@
-import { stripeClient, toCents } from "./stripe-pay.ts";
+import { isStripeTestMode, stripeClient, toCents } from "./stripe-pay.ts";
 
 /** Refunds never alter the invoice or its original received-payment snapshot. */
 export async function creditRefund(service: any, creditId: string, userId: string, execute: boolean) {
@@ -39,6 +39,7 @@ export async function creditRefund(service: any, creditId: string, userId: strin
       if (!intentId || seen.has(intentId)) continue;
       seen.add(intentId);
       const intent = await stripe.paymentIntents.retrieve(intentId, { expand: ["latest_charge"] });
+      if (intent.livemode !== !isStripeTestMode()) throw new Error("Die Zahlung stammt aus einem anderen Stripe-Modus (Test/Live).");
       const charge = intent.latest_charge;
       if (intent.status !== "succeeded" || intent.currency !== "eur" || !charge || typeof charge === "string") continue;
       let used = 0;
@@ -73,6 +74,7 @@ export async function creditRefund(service: any, creditId: string, userId: strin
     for await (const candidate of stripe.refunds.list({ payment_intent: allocation.payment_intent, limit: 100 })) {
       if (candidate.metadata?.credit_note_id === creditId) { knownRefund = candidate; break; }
     }
+    if (!knownRefund && existing && new Date(existing.created_at).getTime() < Date.now() - 23 * 60 * 60 * 1000) throw new Error("Älterer Erstattungsversuch ist ungeklärt. Erst den Zahlungsstatus abgleichen; keine neue Erstattung auslösen.");
     const refund = knownRefund ?? await stripe.refunds.create({ payment_intent: allocation.payment_intent, amount: allocation.amount_cents, reason: "requested_by_customer", metadata: { credit_note_id: creditId, invoice_number: credit.invoice_number, kind: "credit_note" } }, { idempotencyKey: `credit-${creditId}-${allocation.payment_intent}` });
     const { error } = await service.rpc("sync_credit_note_refund", { _credit_id: creditId, _intent: allocation.payment_intent, _refund_id: refund.id, _status: refund.status ?? "pending" });
     if (error) throw new Error("Stripe hat die Erstattung angenommen; der Status muss erneut abgefragt werden. Nicht manuell erneut erstatten.");
