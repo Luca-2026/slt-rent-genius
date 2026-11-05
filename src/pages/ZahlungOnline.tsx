@@ -119,7 +119,7 @@ export default function ZahlungOnline() {
               <div className="space-y-6">
                 <div>
                   <p className="text-sm text-muted-foreground">Angebot {info.offer_number}</p>
-                  <h1 className="text-2xl font-bold text-foreground">Online bezahlen</h1>
+                    <h1 className="text-2xl font-bold text-foreground">Angebot bezahlen</h1>
                 </div>
                 {(info.paid_cents ?? 0) > 0 && (
                   <p className="text-sm text-muted-foreground">Bereits bezahlt: {eur(info.paid_cents ?? 0)}. Offen ist noch der Restbetrag.</p>
@@ -194,6 +194,7 @@ export default function ZahlungOnline() {
                   </>
                 ) : info.bank ? (
                   <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm space-y-1">
+                    {info.bank_discount?.selected === "bank" && <p className="font-semibold text-primary">3 % Überweisungsrabatt: −{eur(info.bank_discount.discount_cents)} brutto · bereits im Zahlbetrag enthalten</p>}
                     <p className="font-semibold text-foreground mb-2">Bitte überweise {selected ? eur(selected.amountCents) : "den Betrag"} auf:</p>
                     <p><span className="text-muted-foreground">Empfänger:</span> {info.bank.holder}</p>
                     <p><span className="text-muted-foreground">IBAN:</span> <span className="font-mono">{info.bank.iban}</span></p>

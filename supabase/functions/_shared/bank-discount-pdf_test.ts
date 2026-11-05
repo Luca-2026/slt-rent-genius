@@ -3,6 +3,13 @@ import { generateOfferPdf } from "./offer-pdf.ts";
 import { OFFER_FIXTURE } from "./pdf-test-fixtures.ts";
 import { BANK_DISCOUNT_TERMS, priceBankTransfer } from "./bank-transfer-discount.ts";
 
+Deno.test("offer transfer QR uses 3 percent rental discount and unchanged deposit", async () => {
+  const priced = priceBankTransfer([{ product_name: "Miete", quantity: 1, unit_price: 100 }], 0, "bank");
+  assertEquals(priced.bankTotals.grossAmount, 115.43);
+  const bytes = await generateOfferPdf({ ...OFFER_FIXTURE, offerNumber: "ANG-TEST-QR", orderCode: "TEST01", paymentTerms: "vorkasse", bankTransferOffer: { amountCents: 41543, discountGross: 3.57 }, deposit: 300 });
+  await Deno.writeFile("/tmp/bank-discount-offer-qr.pdf", bytes);
+});
+
 Deno.test("discounted AB and invoice retain rental, insurance, VAT and unchanged deposit", async () => {
   const original = [{ product_name: "Miete", quantity: 1, unit_price: 100, discount_percent: 0, addons: [{ key: "insurance", label: "Versicherung", amount: 10 }] }];
   const priced = priceBankTransfer(original, 0, "bank");
