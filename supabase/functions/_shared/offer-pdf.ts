@@ -784,7 +784,7 @@ export async function generateOfferPdf(data: {
     dtr(pg, fm(deliverySubtotal), vx, y, font, 9); y -= 13;
   }
   if (discountTotal > 0) {
-    dt(pg, "Ihr Rabattvorteil (bereits abgezogen)", tx, y, bold, 9, ORANGE);
+    dt(pg, T("Dein Rabattvorteil (bereits abgezogen)", "Ihr Rabattvorteil (bereits abgezogen)"), tx, y, bold, 9, ORANGE);
     dtr(pg, `-${fm(discountTotal)}`, vx, y, bold, 9, ORANGE); y -= 13;
   }
 
@@ -898,8 +898,10 @@ export async function generateOfferPdf(data: {
     const accent = fullyPaid ? rgb(0.05, 0.45, 0.25) : ORANGE;
     pg.drawRectangle({ x: tx - 6, y: y - 4, width: vx - tx + 10, height: 22, color: fullyPaid ? rgb(0.93, 0.98, 0.94) : rgb(1, 0.96, 0.9) });
     pg.drawRectangle({ x: tx - 6, y: y + 17, width: vx - tx + 10, height: 1, color: accent });
-    dt(pg, fullyPaid ? (isOC ? "Vollst\u00E4ndig bezahlt" : "Bereits vollst\u00E4ndig bezahlt") : (isOC ? "Noch offen" : "Noch zu zahlen"), tx, y + 4, bold, 10.5, accent);
-    dtr(pg, fm(Math.max(0, balanceDue)), vx, y + 4, bold, 12, accent);
+    // Overpayment (e.g. after a later discount) must stay visible instead of collapsing to 0,00 €.
+    const overpaid = balanceDue < -0.009;
+    dt(pg, overpaid ? T("Guthaben zu deinen Gunsten", "Guthaben zu Ihren Gunsten") : fullyPaid ? (isOC ? "Vollst\u00E4ndig bezahlt" : "Bereits vollst\u00E4ndig bezahlt") : (isOC ? "Noch offen" : "Noch zu zahlen"), tx, y + 4, bold, 10.5, accent);
+    dtr(pg, fm(overpaid ? -balanceDue : Math.max(0, balanceDue)), vx, y + 4, bold, 12, accent);
     y -= 38;
   }
 
@@ -964,16 +966,17 @@ export async function generateOfferPdf(data: {
     if (amountPaid > 0 && balanceDue <= 0.009) {
       drawInfoBox(
         "Zahlungseingang",
-        `Ihre Zahlung${payments.length > 1 ? "en" : ""} \u00FCber ${fm(amountPaid)} ist vollst\u00E4ndig bei uns eingegangen. Vielen Dank!`,
+        `${T("Deine", "Ihre")} Zahlung${payments.length > 1 ? "en" : ""} \u00FCber ${fm(amountPaid)} ist vollst\u00E4ndig bei uns eingegangen.` +
+          (balanceDue < -0.009 ? ` ${T("Dein", "Ihr")} Guthaben von ${fm(-balanceDue)} ${T("erstatten wir dir", "erstatten wir Ihnen")} gesondert.` : " Vielen Dank!"),
         rgb(0.93, 0.98, 0.94), GREEN,
       );
     } else if (amountPaid > 0) {
       drawInfoBox(
         "Zahlungshinweis \u2013 offener Restbetrag",
-        `Ihre Teilzahlung \u00FCber ${fm(amountPaid)} ist bei uns eingegangen. Offen ist noch ein Restbetrag von ${fm(balanceDue)}. ` +
+        `${T("Deine", "Ihre")} Teilzahlung \u00FCber ${fm(amountPaid)} ist bei uns eingegangen. Offen ist noch ein Restbetrag von ${fm(balanceDue)}. ` +
           (paysOnInvoice
             ? "Dieser ist gem\u00E4\u00DF den vereinbarten Zahlungsbedingungen f\u00E4llig."
-            : "Bitte \u00FCberweisen Sie diesen sp\u00E4testens vor Mietbeginn auf folgendes Konto:"),
+            : T("Bitte \u00FCberweise diesen sp\u00E4testens vor Mietbeginn auf folgendes Konto:", "Bitte \u00FCberweisen Sie diesen sp\u00E4testens vor Mietbeginn auf folgendes Konto:")),
         rgb(0.995, 0.97, 0.93), ORANGE,
         paysOnInvoice ? [] : bankRows(ref),
       );
@@ -986,8 +989,8 @@ export async function generateOfferPdf(data: {
     }
     drawInfoBox(
       "Verbindliche Auftragsannahme",
-      "Mit dieser Auftragsbest\u00E4tigung haben wir Ihren Auftrag angenommen. Die Miete ist damit verbindlich vereinbart. " +
-        "Diese Auftragsbest\u00E4tigung dient Ihnen als Nachweis der Auftragsannahme. Es gelten unsere Allgemeinen Gesch\u00E4ftsbedingungen.",
+      `Mit dieser Auftragsbest\u00E4tigung haben wir ${T("deinen", "Ihren")} Auftrag angenommen. Die Miete ist damit verbindlich vereinbart. ` +
+        `Diese Auftragsbest\u00E4tigung dient ${T("dir", "Ihnen")} als Nachweis der Auftragsannahme. Es gelten unsere Allgemeinen Gesch\u00E4ftsbedingungen.`,
       rgb(0.94, 0.96, 0.98), BRAND,
     );
   } else if (isInvoice && !isCreditNote) {
@@ -1202,7 +1205,7 @@ export async function generateOfferPdf(data: {
   dt(
     pg,
     isOC
-      ? "Vielen Dank f\u00FCr Ihr Vertrauen. Wir freuen uns auf die Zusammenarbeit."
+      ? T("Vielen Dank f\u00FCr dein Vertrauen. Wir freuen uns auf die Zusammenarbeit.", "Vielen Dank f\u00FCr Ihr Vertrauen. Wir freuen uns auf die Zusammenarbeit.")
       : isCreditNote
       ? "F\u00FCr R\u00FCckfragen zu dieser Rechnungskorrektur stehen wir Ihnen gerne zur Verf\u00FCgung."
       : isInvoice

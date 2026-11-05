@@ -37,3 +37,17 @@ Deno.test("post-acceptance 20 percent rental discount propagates to AB and invoi
     await Deno.writeFile(`/tmp/post-discount-${documentType}.pdf`, bytes);
   }
 });
+Deno.test("AB after a later discount shows the customer's credit instead of 0,00 € and keeps Du form", async () => {
+  const bytes = await generateOfferPdf({ ...OFFER_FIXTURE, documentType: "order_confirmation", offerNumber: "GUTHABEN-TEST",
+    orderConfirmationGreeting: { addressForm: "du", salutation: "Hallo Test," },
+    items: [{ product_name: "Bagger", quantity: 5, unit_price: 104, discount_percent: 20, total_price: 416 }], deliveryCost: 0, deliveryCostDelivery: 0, deliveryCostReturn: 0,
+    servicesSurcharge: 52, servicesWithPrices: [{ id: "mb", name: "Maschinenbruchversicherung", pricePercent: null, amount: 52, allocations: [{ itemIndex: 0, amount: 52 }] }],
+    netAmount: 468, vatAmount: 88.92, grossAmount: 556.92, deposit: 500, payments: [{ amount: 1180.68, label: "Banküberweisung" }] });
+  await Deno.writeFile("/tmp/ab-credit.pdf", bytes);
+  const p = new Deno.Command("pdftotext", { args: ["/tmp/ab-credit.pdf", "-"] }).outputSync();
+  const text = new TextDecoder().decode(p.stdout).replace(/\s+/g, " ");
+  assertEquals(text.includes("Guthaben zu deinen Gunsten"), true);
+  assertEquals(text.includes("123,76"), true);
+  assertEquals(text.includes("haben wir deinen Auftrag angenommen"), true);
+  assertEquals(/\b(Ihre?|Ihnen|Ihren)\b/.test(text.split("Seite 2")[1] ?? text), false);
+});
