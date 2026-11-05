@@ -939,6 +939,13 @@
       "when": 1793860667707,
       "tag": "0133_reconcile_terminal_rental_checkout_attempts",
       "breakpoints": true
+    },
+    {
+      "idx": 134,
+      "version": "7",
+      "when": 1793865495218,
+      "tag": "0134_record_rental_bank_payments_atomically",
+      "breakpoints": true
     }
   ]
 }
