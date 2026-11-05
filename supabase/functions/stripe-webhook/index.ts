@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { reconcileStripeRefund } from "../_shared/refund-reconciliation.ts";
 /**
  * Stripe-Zahlungsmeldung. Öffentlicher Endpunkt – abgesichert über die Stripe-Signatur
  * (STRIPE_WEBHOOK_SECRET). Verarbeitet:
@@ -51,8 +52,10 @@ Deno.serve(async (req: Request) => {
       return new Response("Error", { status: 500 });
     }
   }
-  const finish = (result: string) =>
-    service.from("stripe_webhook_events").update({ result }).eq("event_id", event.id);
+  const finish = async (result: string) => {
+    const { error } = await service.from("stripe_webhook_events").update({ result }).eq("event_id", event.id);
+    if (error) throw new Error("Ereignisabschluss konnte nicht gespeichert werden");
+  };
 
   try {
     if (event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") {
@@ -180,27 +183,16 @@ Deno.serve(async (req: Request) => {
       return new Response("ok");
     }
 
-    if (event.type === "refund.created" || event.type === "refund.updated") {
-      const refund = event.data.object as Stripe.Refund;
-      if (refund.metadata?.credit_note_id) {
-        const intent = typeof refund.payment_intent === "string" ? refund.payment_intent : refund.payment_intent?.id;
-        if (intent) {
-          const { error } = await service.rpc("sync_credit_note_refund_v2", { _credit_id: refund.metadata.credit_note_id, _intent: intent, _refund_id: refund.id, _status: refund.status ?? "pending", _amount: refund.amount });
-          if (error) throw new Error("Erstattungsstatus konnte nicht gespeichert werden");
-        }
-      }
-      const intent = typeof refund.payment_intent === "string" ? refund.payment_intent : refund.payment_intent?.id;
-      let depositId = refund.metadata?.deposit_refund_id;
-      if (!depositId) {
-        const { data: legacy, error } = await service.from("deposit_refunds").select("id").eq("stripe_refund_id", refund.id).maybeSingle();
-        if (error) throw new Error("Erstattungsstatus konnte nicht gelesen werden");
-        depositId = legacy?.id;
-      }
-      if (depositId && intent) {
-        const { error } = await service.rpc("sync_deposit_refund", { _id: depositId, _intent: intent, _refund_id: refund.id, _status: refund.status ?? "pending", _amount: refund.amount });
-        if (error) throw new Error("Kautionserstattungsstatus konnte nicht gespeichert werden");
-      }
+    if (event.type === "refund.created" || event.type === "refund.updated" || event.type === "refund.failed") {
+      const refund = await stripe.refunds.retrieve((event.data.object as Stripe.Refund).id);
+      await reconcileStripeRefund(service, refund, event.livemode);
       await finish(`refund_${refund.status}`);
+      return new Response("ok");
+    }
+    if (event.type === "charge.refunded") {
+      const charge = event.data.object as Stripe.Charge;
+      for await (const refund of stripe.refunds.list({ charge: charge.id, limit: 100 })) await reconcileStripeRefund(service, refund, event.livemode);
+      await finish("charge_refunds_reconciled");
       return new Response("ok");
     }
 

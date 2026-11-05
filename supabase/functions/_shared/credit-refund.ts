@@ -1,4 +1,5 @@
 import { isStripeTestMode, stripeClient, toCents } from "./stripe-pay.ts";
+import { reconcileRefundsBeforeExecution } from "./refund-reconciliation.ts";
 
 /** Refunds never alter the invoice or its original received-payment snapshot. */
 export async function creditRefund(service: any, creditId: string, userId: string, execute: boolean) {
@@ -83,6 +84,7 @@ export async function creditRefund(service: any, creditId: string, userId: strin
       }
     }
     if (!knownRefund && existing && new Date(existing.created_at).getTime() < Date.now() - 23 * 60 * 60 * 1000) throw new Error("Älterer Erstattungsversuch ist ungeklärt. Erst den Zahlungsstatus abgleichen; keine neue Erstattung auslösen.");
+    if (!knownRefund) await reconcileRefundsBeforeExecution(service, stripe, allocation.payment_intent, !isStripeTestMode());
     const refund = knownRefund ?? await stripe.refunds.create({ payment_intent: allocation.payment_intent, amount: allocation.amount_cents, reason: "requested_by_customer", metadata: { credit_note_id: creditId, invoice_number: credit.invoice_number, kind: "credit_note" } }, { idempotencyKey: `credit-${creditId}-${allocation.payment_intent}` });
     const { error } = await service.rpc("sync_credit_note_refund_v2", { _credit_id: creditId, _intent: allocation.payment_intent, _refund_id: refund.id, _status: refund.status ?? "pending", _amount: refund.amount });
     if (error) throw new Error("Stripe hat die Erstattung angenommen; der Status muss erneut abgefragt werden. Nicht manuell erneut erstatten.");
