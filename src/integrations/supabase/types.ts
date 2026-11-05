@@ -4760,6 +4760,21 @@ export type Database = {
           },
         ]
       }
+      rental_payment_incentive_settings: {
+        Row: {
+          id: boolean
+          live_enabled: boolean
+        }
+        Insert: {
+          id?: boolean
+          live_enabled?: boolean
+        }
+        Update: {
+          id?: boolean
+          live_enabled?: boolean
+        }
+        Relationships: []
+      }
       sales_article_costs: {
         Row: {
           article_id: string

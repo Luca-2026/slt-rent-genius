@@ -883,6 +883,13 @@
       "when": 1793857271646,
       "tag": "0125_rental_bank_transfer_discount_decisions",
       "breakpoints": true
+    },
+    {
+      "idx": 126,
+      "version": "7",
+      "when": 1793857360712,
+      "tag": "0126_protect_bank_discount_snapshot_and_checkout",
+      "breakpoints": true
     }
   ]
 }

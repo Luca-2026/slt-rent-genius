@@ -1,0 +1,11 @@
+DO $$ DECLARE def text; BEGIN
+SELECT pg_get_functiondef('public.select_rental_payment_method(uuid,text,integer,text,jsonb)'::regprocedure) INTO def;
+def:=replace(def,'UPDATE public.rental_inquiries SET original_accepted_offer=',E'IF (SELECT jsonb_agg(i - ''addons'' ORDER BY ord) FROM jsonb_array_elements(r.offer_payload->''items'') WITH ORDINALITY x(i,ord)) IS DISTINCT FROM (SELECT jsonb_agg(i - ''addons'' ORDER BY ord) FROM jsonb_array_elements(_payload->''items'') WITH ORDINALITY x(i,ord)) THEN RAISE EXCEPTION ''Zahlungsentscheidung darf Artikel nicht ändern''; END IF;\nIF (SELECT jsonb_agg(jsonb_build_object(''addons'',COALESCE((SELECT jsonb_agg(a ORDER BY ao) FROM jsonb_array_elements(COALESCE(i->''addons'',''[]''::jsonb)) WITH ORDINALITY ax(a,ao) WHERE a->>''key'' IS DISTINCT FROM ''bank_transfer_discount_v1''),''[]''::jsonb)) ORDER BY ord) FROM jsonb_array_elements(r.offer_payload->''items'') WITH ORDINALITY x(i,ord)) IS DISTINCT FROM (SELECT jsonb_agg(jsonb_build_object(''addons'',COALESCE((SELECT jsonb_agg(a ORDER BY ao) FROM jsonb_array_elements(COALESCE(i->''addons'',''[]''::jsonb)) WITH ORDINALITY ax(a,ao) WHERE a->>''key'' IS DISTINCT FROM ''bank_transfer_discount_v1''),''[]''::jsonb)) ORDER BY ord) FROM jsonb_array_elements(_payload->''items'') WITH ORDINALITY x(i,ord)) THEN RAISE EXCEPTION ''Zahlungsentscheidung darf Zusatzleistungen nicht ändern''; END IF;\nUPDATE public.rental_inquiries SET original_accepted_offer=');
+def:=replace(def,'WHERE a->>''key''<>''bank_transfer_discount_v1''','WHERE a->>''key'' IS DISTINCT FROM ''bank_transfer_discount_v1''');
+EXECUTE def;
+END $$;
+CREATE TABLE public.rental_payment_incentive_settings (id boolean PRIMARY KEY DEFAULT true, live_enabled boolean NOT NULL DEFAULT false, CONSTRAINT singleton_rental_payment_incentive CHECK(id));
+GRANT SELECT ON public.rental_payment_incentive_settings TO authenticated;
+GRANT ALL ON public.rental_payment_incentive_settings TO service_role;
+ALTER TABLE public.rental_payment_incentive_settings ENABLE ROW LEVEL SECURITY;
+CREATE POLICY staff_read_rental_payment_incentive ON public.rental_payment_incentive_settings FOR SELECT TO authenticated USING(public.is_staff_member(auth.uid()));
