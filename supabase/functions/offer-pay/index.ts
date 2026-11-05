@@ -1,6 +1,7 @@
 import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
 import { BANK_DISCOUNT_TERMS, hasBankDiscountPolicy } from "../_shared/bank-transfer-discount.ts";
 import { rentalPaymentPrices, validateRentalPaymentDecision } from "../_shared/rental-payment-decision.ts";
+import { reconcileRentalCheckout } from "../_shared/rental-checkout-recovery.ts";
 /**
  * Öffentlicher Zahlungslink zum Angebot (/zahlung/<token>).
  * Der unratbare Token ist das Geheimnis; Beträge kommen immer aus der Datenbank.
@@ -48,6 +49,11 @@ Deno.serve(async (req: Request) => {
       .eq("id", link.inquiry_id)
       .maybeSingle();
     if (!inquiry) return json({ error: "Zahlungslink nicht gefunden" }, 404);
+    if (action === "checkout" || action === "select_method") {
+      try {
+        if (link.stripe_session_id || link.checkout_claim) await reconcileRentalCheckout(service, stripeClient(), link);
+      } catch (error) { return json({ error: error instanceof Error ? error.message : "Online-Zahlung muss zuerst abgeglichen werden." }, 409); }
+    }
     const policy = inquiry.offer_payload?.bank_transfer_discount;
     if ((action === "select_method" || action === "checkout") && hasBankDiscountPolicy(policy)) {
       const method = action === "checkout" ? "regular" : body?.method;
