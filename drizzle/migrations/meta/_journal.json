@@ -1058,6 +1058,13 @@
       "when": 1793881405724,
       "tag": "0150_protect_direct_rental_refund_finality",
       "breakpoints": true
+    },
+    {
+      "idx": 151,
+      "version": "7",
+      "when": 1793882643920,
+      "tag": "0151_scoped_offer_choice_incentive",
+      "breakpoints": true
     }
   ]
 }

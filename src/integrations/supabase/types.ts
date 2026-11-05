@@ -4913,14 +4913,17 @@ export type Database = {
         Row: {
           id: boolean
           live_enabled: boolean
+          offer_choice_enabled: boolean
         }
         Insert: {
           id?: boolean
           live_enabled?: boolean
+          offer_choice_enabled?: boolean
         }
         Update: {
           id?: boolean
           live_enabled?: boolean
+          offer_choice_enabled?: boolean
         }
         Relationships: []
       }

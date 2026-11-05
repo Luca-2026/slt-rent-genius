@@ -1,0 +1,1 @@
+ALTER TABLE public.rental_payment_incentive_settings ADD COLUMN IF NOT EXISTS offer_choice_enabled boolean NOT NULL DEFAULT false;
