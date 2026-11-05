@@ -1030,6 +1030,13 @@
       "when": 1793880172576,
       "tag": "0146_allow_event_location_price_patches",
       "breakpoints": true
+    },
+    {
+      "idx": 147,
+      "version": "7",
+      "when": 1793880257684,
+      "tag": "0147_durable_external_stripe_refund_receipts",
+      "breakpoints": true
     }
   ]
 }
