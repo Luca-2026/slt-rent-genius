@@ -2,6 +2,29 @@ import { normalizeInquiryOfferItems, buildOfferTotals, normalizeOfferGroups, nor
 import { hasBankDiscountPolicy, priceBankTransfer, withoutBankDiscount } from "./bank-transfer-discount.ts";
 import { validCalendarDate } from "./public-rental-period.ts";
 import { normalizeOpenEndedUnit, normalizeOpenEndedDuration } from "./installments.ts";
+import { salesOfferLine, salesPaymentTerms, normalizeSalesFinancing } from "./sales-offer.ts";
+export function buildSalesOrderAmendment(body: Record<string, unknown>, current: Record<string, unknown>, customerKind: unknown) {
+  const raw = Array.isArray(body.items) ? body.items : [];
+  const items = normalizeInquiryOfferItems(raw.map((line) => {
+    const record = line as Record<string, unknown>;
+    const quantity = Number(record.articles ?? record.quantity);
+    return salesOfferLine({ ...record, quantity, articles: quantity, duration: 1 });
+  }));
+  const amount = (key: string) => {
+    const value = Number(body[key] ?? 0);
+    if (!Number.isFinite(value) || value < 0 || value > 1000000) throw new Error("Ungültiger Betrag");
+    return Math.round(value * 100) / 100;
+  };
+  const costs = { delivery_cost_delivery: amount("delivery_cost_delivery"), delivery_cost_return: 0, setup_cost: amount("setup_cost"), dismantle_cost: 0, return_location_cost: 0 };
+  const totals = buildOfferTotals(items, costs.delivery_cost_delivery + costs.setup_cost);
+  if (totals.netAmount <= 0) throw new Error("Auftragssumme muss größer als 0 € sein.");
+  return { ...current, ...costs, items, totals, deposit: 0, return_location: null, open_ended: false, undated_offer: false,
+    payment_terms: salesPaymentTerms(customerKind, body.payment_terms), payment_terms_custom: null,
+    sales_financing: normalizeSalesFinancing(body.sales_financing), bank_transfer_discount: null,
+    delivery_requested: body.delivery_requested === true, delivery_address: body.delivery_address ?? null,
+    groups: normalizeOfferGroups(body.groups), extra_fields: normalizeExtraFields(body.extra_fields),
+    order_type: body.order_type === "delivery" ? "delivery" : "pickup", notes: typeof body.notes === "string" ? body.notes.slice(0,4000) : null };
+}
 export function buildOrderAmendment<T extends Record<string, unknown>>(body: Record<string, unknown>, current: T, location: string) {
   let items = withoutBankDiscount(normalizeInquiryOfferItems(body.items));
   for (const item of items) {

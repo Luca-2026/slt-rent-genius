@@ -1,8 +1,15 @@
 import { describe,expect,it } from "vitest";
-import { buildOrderAmendment } from "../../supabase/functions/_shared/order-amendment";
+import { buildOrderAmendment, buildSalesOrderAmendment } from "../../supabase/functions/_shared/order-amendment";
 const item = { product_name:"Testartikel",quantity:10,articles:1,unit_price:10,discount_percent:0,rental_start:"2026-11-10",rental_end:"2026-11-19" };
 const original = {items:[item],deposit:100,offer_number:"ANG-ORIGINAL",terms_text:"Originalbedingungen"};
 describe("Auftragsänderung ohne neues Angebot",()=>{
+ it("sales amendments use one-time quantities without rental dates and retain original evidence",()=>{
+  const before=JSON.stringify(original);
+  const result=buildSalesOrderAmendment({items:[{product_name:'Verkaufsgerät',articles:2,quantity:6,duration:3,unit_price:100}],payment_terms:'net_14',sales_financing:{enabled:true,note:'Auf Anfrage'}},original,'private');
+  expect(result.items[0].quantity).toBe(2);expect(result.items[0].rental_start).toBeUndefined();
+  expect(result.totals.grossAmount).toBe(238);expect(result.payment_terms).toBe('vorkasse');expect(result.deposit).toBe(0);
+  expect(result.sales_financing).toEqual({enabled:true,note:'Auf Anfrage'});expect(JSON.stringify(original)).toBe(before);
+ });
  it.each([10,20,0])("übernimmt nachträglichen Rabatt %s ohne Originaländerung",discount_percent=>{
   const before=JSON.stringify(original);
   const result=buildOrderAmendment({items:[{...item,discount_percent}],deposit:100},original,"krefeld");
