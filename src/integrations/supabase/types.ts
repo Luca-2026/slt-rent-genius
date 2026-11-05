@@ -3793,6 +3793,8 @@ export type Database = {
       offer_payment_links: {
         Row: {
           amount_cents: number
+          checkout_claim: string | null
+          checkout_claimed_at: string | null
           created_at: string
           created_by: string | null
           customer_email: string | null
@@ -3814,6 +3816,8 @@ export type Database = {
         }
         Insert: {
           amount_cents: number
+          checkout_claim?: string | null
+          checkout_claimed_at?: string | null
           created_at?: string
           created_by?: string | null
           customer_email?: string | null
@@ -3835,6 +3839,8 @@ export type Database = {
         }
         Update: {
           amount_cents?: number
+          checkout_claim?: string | null
+          checkout_claimed_at?: string | null
           created_at?: string
           created_by?: string | null
           customer_email?: string | null
@@ -4440,6 +4446,7 @@ export type Database = {
           order_revision: number
           original_accepted_offer: Json | null
           paid_amount: number
+          payment_decision_version: number
           payment_followup_sent_at: string | null
           payment_reminder_manual_at: string | null
           payment_reminder_sent_at: string | null
@@ -4518,6 +4525,7 @@ export type Database = {
           order_revision?: number
           original_accepted_offer?: Json | null
           paid_amount?: number
+          payment_decision_version?: number
           payment_followup_sent_at?: string | null
           payment_reminder_manual_at?: string | null
           payment_reminder_sent_at?: string | null
@@ -4596,6 +4604,7 @@ export type Database = {
           order_revision?: number
           original_accepted_offer?: Json | null
           paid_amount?: number
+          payment_decision_version?: number
           payment_followup_sent_at?: string | null
           payment_reminder_manual_at?: string | null
           payment_reminder_sent_at?: string | null
@@ -4756,6 +4765,21 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      rental_payment_incentive_settings: {
+        Row: {
+          id: boolean
+          live_enabled: boolean
+        }
+        Insert: {
+          id?: boolean
+          live_enabled?: boolean
+        }
+        Update: {
+          id?: boolean
+          live_enabled?: boolean
+        }
+        Relationships: []
       }
       sales_article_costs: {
         Row: {
@@ -6288,6 +6312,10 @@ export type Database = {
         }
         Returns: Json
       }
+      claim_rental_checkout: {
+        Args: { _claim: string; _link: string; _version: number }
+        Returns: boolean
+      }
       close_expired_rental_inquiries: { Args: never; Returns: number }
       close_rental_without_protocol: {
         Args: { _inquiry_id: string; _reason: string }
@@ -6610,6 +6638,16 @@ export type Database = {
           _expected: number
           _id: string
           _note: string
+          _payload: Json
+        }
+        Returns: Json
+      }
+      select_rental_payment_method: {
+        Args: {
+          _expected: number
+          _id: string
+          _method: string
+          _offer: string
           _payload: Json
         }
         Returns: Json

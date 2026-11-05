@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DECLINE_REASONS } from "../../supabase/functions/_shared/offer-followup";
+import { BANK_DISCOUNT_TERMS } from "@/lib/bankTransferDiscount";
 
 interface AcceptInfo {
   status: "active" | "accepted" | "superseded" | "expired" | "closed" | "declined";
@@ -19,6 +20,7 @@ interface AcceptInfo {
   offer_number: string;
   customer_name: string;
   gross_amount: number;
+  bank_discount_available?: boolean;
   deposit: number;
   valid_until: string | null;
   items: { name: string; quantity: number; unit: string }[];
@@ -191,6 +193,7 @@ export default function AngebotAnnehmen() {
                     <Checkbox id="binding" checked={binding} onCheckedChange={(v) => setBinding(v === true)} />
                     <label htmlFor="binding" className="text-sm text-muted-foreground leading-snug cursor-pointer">
                       Ich nehme das Angebot {info.offer_number} über {eur(info.gross_amount)} brutto rechtsverbindlich an.
+                      {info.bank_discount_available && <span className="block mt-2">{BANK_DISCOUNT_TERMS}</span>}
                     </label>
                   </div>
                 </div>

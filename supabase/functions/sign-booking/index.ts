@@ -11,6 +11,8 @@ import { signLeadError } from "../_shared/sign-booking-lead.ts";
 import { SIGN_TERMS_VERSION, SIGN_TERMS_HASHES } from "../_shared/sign-legal.ts";
 
 import { bookingContactErrors } from "../_shared/booking-contact.ts";
+import { bankDiscountLive } from "../_shared/payment-incentive-rollout.ts";
+import { newBankDiscountPolicy } from "../_shared/bank-transfer-discount.ts";
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json", "Cache-Control": "no-store" } });
 const text = (max: number) => z.string().trim().min(1).max(max);
@@ -37,12 +39,12 @@ Deno.serve(async req => {
       if (!parsed.success) return json({ error: "Ungültige Buchung" }, 400);
       const { data: b } = await service.from("sign_bookings").select("*").eq("token", parsed.data.token).maybeSingle();
       if (!b) return json({ error: "Buchung nicht gefunden" }, 404);
-      const { data: inquiry } = await service.from("rental_inquiries").select("order_code,offer_number").eq("id", b.inquiry_id).single();
+      const { data: inquiry } = await service.from("rental_inquiries").select("order_code,offer_number,offer_payload").eq("id", b.inquiry_id).single();
       const expired = b.status === "reserved" && Date.parse(b.expires_at) <= Date.now();
       const { data: link } = await service.from("offer_payment_links").select("token").eq("inquiry_id", b.inquiry_id).eq("inquiry_table", "rental_inquiries").eq("status", "active").maybeSingle();
       const extraCount = Array.isArray(b.snapshot?.request?.additionalSigns) ? b.snapshot.request.additionalSigns.reduce((sum: number, row: { quantity?: number }) => sum + (Number.isInteger(row?.quantity) ? Number(row.quantity) : 0), 0) : 0;
       const extrasCents = Math.min(b.gross_cents, extraCount * (Number(b.snapshot?.config?.additionalSignGrossCents) || 0));
-      return json({ status: expired ? "expired" : b.status, order_code: inquiry?.order_code, expires_at: b.expires_at, amount_cents: b.total_cents, start_date: b.start_date, end_date: b.end_date, package: b.package, quantity: b.quantity, rental_cents: b.gross_cents - extrasCents, extras_cents: extrasCents, deposit_cents: b.deposit_cents, payment_url: !expired && link ? `https://www.slt-rental.de/zahlung/${link.token}` : null, bank: { holder: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, reference: `Auftrag ${inquiry?.order_code ?? ""}` } });
+      return json({ payment_discount_available: Boolean(inquiry?.offer_payload?.bank_transfer_discount), status: expired ? "expired" : b.status, order_code: inquiry?.order_code, expires_at: b.expires_at, amount_cents: b.total_cents, start_date: b.start_date, end_date: b.end_date, package: b.package, quantity: b.quantity, rental_cents: b.gross_cents - extrasCents, extras_cents: extrasCents, deposit_cents: b.deposit_cents, payment_url: !expired && link ? `https://www.slt-rental.de/zahlung/${link.token}` : null, bank: { holder: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, reference: `Auftrag ${inquiry?.order_code ?? ""}` } });
     }
     const readAction = raw.action === "config" || raw.action === "availability";
     const { data: allowed, error: rateError } = await service.rpc("check_public_rate_limit", { _bucket: readAction ? "sign-booking-read" : "sign-booking", _client_key: req.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown", _max_hits: readAction ? 600 : 30, _window_seconds: 3600 });
@@ -51,7 +53,7 @@ Deno.serve(async req => {
       const { data: p } = await service.from("b2b_managed_products").select("direct_booking_config").eq("slug", "halteverbotsschilder-set").eq("is_published", true).maybeSingle();
       const { data: signs, error: signsError } = await service.from("b2b_managed_products").select("slug,name,images,available_locations").eq("is_published", true).eq("category", "absperrtechnik").or("slug.ilike.%zusatz%,slug.like.vz-1000-%").order("name");
       if (signsError) throw signsError;
-      return json({ config: p?.direct_booking_config ?? null, additionalSigns: signs ?? [] });
+      return json({ config: p?.direct_booking_config ? { ...p.direct_booking_config, bank_discount_enabled: await bankDiscountLive(service) } : null, additionalSigns: signs ?? [] });
     }
     if (raw.action === "availability") {
       const parsed = z.object({ location: z.enum(["bonn", "krefeld"]), from: z.string().refine(validCalendarDate), to: z.string().refine(validCalendarDate) }).safeParse(raw);
@@ -115,7 +117,7 @@ Deno.serve(async req => {
       const valid = validSignPermit(bytes, upload.content_type);
       if (!valid) return json({ error: "Datei entspricht nicht dem gewählten Dateityp" }, 400);
     }
-    let trustedBody: Record<string, unknown> = { ...body, termsDocumentHash: SIGN_TERMS_HASHES[body.customerKind] };
+    let trustedBody: Record<string, unknown> = { ...body, termsDocumentHash: SIGN_TERMS_HASHES[body.customerKind], ...(await bankDiscountLive(service) ? { bankTransferDiscount: newBankDiscountPolicy() } : {}) };
     if (body.package === "sorglos") {
       if (existing?.snapshot?.request?.verifiedDistanceKm != null) trustedBody = { ...trustedBody, verifiedDistanceKm: existing.snapshot.request.verifiedDistanceKm };
       else {

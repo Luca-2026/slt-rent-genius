@@ -102,7 +102,7 @@ Deno.serve(async (req: Request) => {
     if (deadlineError) return json({ error: "Angebotsfrist konnte nicht geprüft werden." }, 500);
     if (status === "active" && deadline && Date.now() >= Date.parse(deadline)) status = "expired";
 
-    const payload = (inquiry.offer_payload ?? {}) as { items?: Array<{ product_name?: string; quantity?: number; unit?: string }>; totals?: { netAmount?: number; grossAmount?: number }; deposit?: number };
+    const payload = (inquiry.offer_payload ?? {}) as { items?: Array<{ product_name?: string; quantity?: number; unit?: string }>; totals?: { netAmount?: number; grossAmount?: number }; deposit?: number; bank_transfer_discount?: unknown };
     const loc = LOCATION_CONTACTS[resolveLocationKey(inquiry.location)];
     const isBusiness = inquiry.customer_kind === "business";
 
@@ -125,6 +125,7 @@ Deno.serve(async (req: Request) => {
         signer_name: status === "accepted" ? link.signer_name : null,
         location: { name: loc.name, email: loc.email, phone: loc.phone },
         prepay: isPrepayTerms(typeof (payload as { payment_terms?: unknown }).payment_terms === "string" ? String((payload as { payment_terms?: string }).payment_terms) : "vorkasse"),
+        bank_discount_available: Boolean(payload.bank_transfer_discount),
       });
     }
 

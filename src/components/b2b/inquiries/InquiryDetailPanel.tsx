@@ -40,7 +40,7 @@ import { OrderConfirmationCard } from "./OrderConfirmationCard";
 import { SignBookingStatus } from "./SignBookingStatus";
 import { InquiryPaymentsCard, parseInquiryPayments } from "./InquiryPaymentsCard";
 import { StripePaymentCard } from "./StripePaymentCard";
-import type { OfferLine } from "./offerMath";
+import type { OfferLine, OfferLineAddon } from "./offerMath";
 import { formatEuro, parseGroups, cleanExtraFields, type OfferGroup, type OfferExtraFields, type OrderType, type QuantityUnit } from "./offerMath";
 import { useAuth } from "@/hooks/useAuth";
 import { InstallmentCard } from "./InstallmentCard";
@@ -162,6 +162,7 @@ export function offerPayloadToLines(payload: unknown): {
       : legacy;
     return ({
     product_name: String(raw.product_name ?? ""),
+    ...(["rental", "damage", "municipal", "deposit"].includes(String(raw.payment_cost_kind)) ? { payment_cost_kind: raw.payment_cost_kind as OfferLine["payment_cost_kind"] } : {}),
     description: split.description,
     quantity: split.quantity,
     duration: split.duration,
@@ -189,6 +190,7 @@ export function offerPayloadToLines(payload: unknown): {
     addons: Array.isArray(raw.addons)
       ? (raw.addons as Array<Record<string, unknown>>).map((a) => ({
           key: String(a.key ?? "addon"),
+          ...(["rental", "damage", "municipal", "deposit"].includes(String(a.payment_cost_kind)) ? { payment_cost_kind: a.payment_cost_kind as OfferLineAddon["payment_cost_kind"] } : {}),
           label: String(a.label ?? "Zusatzoption"),
           amount: Number(a.amount) || 0,
           note: typeof a.note === "string" ? a.note : undefined,

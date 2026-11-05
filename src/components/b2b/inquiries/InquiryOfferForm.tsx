@@ -1927,6 +1927,13 @@ export function InquiryOfferForm({
                   </Select>
                 </div>
               </div>
+              {!isSalesOffer && <div className="min-w-0 basis-full space-y-1">
+                <Label className="text-xs">Kostenart für Zahlungsrabatt</Label>
+                <Select value={item.payment_cost_kind ?? (item.vat_rate === 0 ? "damage" : "rental")} disabled={disabled} onValueChange={value => patchItem(index, { payment_cost_kind: value as OfferLine["payment_cost_kind"] })}>
+                  <SelectTrigger aria-label="Kostenart für Zahlungsrabatt"><SelectValue /></SelectTrigger>
+                  <SelectContent><SelectItem value="rental">Miete / Zusatzleistung</SelectItem><SelectItem value="municipal">Städtische Gebühren (kein Rabatt)</SelectItem><SelectItem value="damage">Schadensersatz (kein Rabatt)</SelectItem><SelectItem value="deposit">Kaution (kein Rabatt)</SelectItem></SelectContent>
+                </Select>
+              </div>}
               {!isSalesOffer && <div className="min-w-0">
                 <Label className="text-xs">Dauer</Label>
                 {pricingActive && !openEnded && !undatedOffer && !isFlatRate && eff.unit !== "stueck" && (

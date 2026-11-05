@@ -1,4 +1,6 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { allPaymentsByBank, hasBankDiscountPolicy } from "../_shared/bank-transfer-discount.ts";
+import { invoiceBankDiscount } from "../_shared/invoice-bank-discount.ts";
 import { rentalFeedbackEmail } from "../_shared/feedback-coupons.ts";
 import { invoiceNumberForGeneration } from "../_shared/invoice-preview.ts";
 const corsHeaders = {
@@ -303,6 +305,15 @@ Deno.serve(async (req: Request) => {
     let notes: string | null =
       [userNotes, deductionNote(deductions, (iso) => new Date(iso).toLocaleDateString("de-DE"))].filter(Boolean).join("\n\n") || null;
 
+    const discountPolicy = inquiryType === "rental" ? inquiry.offer_payload?.bank_transfer_discount : null;
+    if (hasBankDiscountPolicy(discountPolicy)) {
+      if (discountPolicy.selected === "bank" && body.deposit_settlement !== true) {
+        if (!allPaymentsByBank(inquiry.payments)) return json({ error: "Gemischte Zahlungen: zuerst Zahlungsart und Belege korrigieren." }, 409);
+      }
+      const invoiceDiscount = invoiceBankDiscount(items, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + returnLocationCost, discountPolicy, invoiceKind, body.deposit_settlement === true);
+      items = invoiceDiscount.items;
+      notes = [notes, invoiceDiscount.note].filter(Boolean).join("\n\n");
+    }
     const totals = buildOfferTotals(
       items,
       deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + returnLocationCost,
@@ -490,7 +501,7 @@ Deno.serve(async (req: Request) => {
 
     const servicesWithPrices: Parameters<typeof generateOfferPdf>[0]["servicesWithPrices"] = items.flatMap((item, idx) =>
       (item.addons ?? [])
-        .filter((a) => a.amount > 0)
+        .filter((a) => a.amount !== 0)
         .map((a, ai) => ({
           id: `${idx}-${a.key || ai}`,
           name: a.note ? `${a.label} (${a.note})` : a.label,

@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { BANK_DISCOUNT_TERMS, hasBankDiscountPolicy } from "../_shared/bank-transfer-discount.ts";
 import { offerItemText } from "../_shared/offer-item-text.ts";
 import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
 /**
@@ -261,7 +262,7 @@ Deno.serve(async (req) => {
       const num = (v: unknown) => Number(v) || 0;
       const servicesWithPrices: any[] = items.flatMap((item, idx) =>
         (Array.isArray(item.addons) ? item.addons : [])
-          .filter((a: any) => num(a?.amount) > 0 && a?.optional !== true)
+          .filter((a: any) => num(a?.amount) !== 0 && a?.optional !== true)
           .map((a: any, ai: number) => ({
             id: `${idx}-${a.key || ai}`,
             name: a.note ? `${a.label} (${a.note})` : a.label,
@@ -302,7 +303,7 @@ Deno.serve(async (req) => {
         vatAmount: num(totals.vatAmount),
         grossAmount: gross,
         isReverseCharge: false,
-        notes: [revision ? `Geänderte Auftragsbestätigung · Fassung ${revision}` : "", note].filter(Boolean).join("\n") || null,
+        notes: [revision ? `Geänderte Auftragsbestätigung · Fassung ${revision}` : "", note, hasBankDiscountPolicy(payload.bank_transfer_discount) ? BANK_DISCOUNT_TERMS : null].filter(Boolean).join("\n") || null,
         validDays: 0,
         deposit,
         staffName: senderName || "SLT Rental",

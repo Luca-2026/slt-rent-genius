@@ -636,7 +636,7 @@ export async function generateOfferPdf(data: {
     // passt er nicht mehr komplett auf die Seite, wandert er geschlossen auf die nächste.
     const svcW = unitColX - 10 - (textColX + 8);
     const svcRows = (servicesByItem.get(idx) || [])
-      .filter((svc) => svc.optional || (isSalesOffer ? svc.amount !== 0 : svc.amount && svc.amount > 0))
+      .filter((svc) => svc.optional || svc.amount !== 0)
       .map((svc) => {
         // Optionale Stufe: eingerückt, „Optional:“, Betrag je KT – nicht in den Summen.
         const svcLines = wt(svc.optional ? `Optional: ${svc.name}` : `- ${svc.name}`, font, 8.5, svcW - (svc.optional ? 8 : 0));
