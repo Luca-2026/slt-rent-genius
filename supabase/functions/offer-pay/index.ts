@@ -44,7 +44,7 @@ Deno.serve(async (req: Request) => {
 
     const { data: inquiry } = await service
       .from(link.inquiry_table)
-      .select(`id, offer_number, order_code, customer_email, payments, offer_total_gross, offer_payload${link.inquiry_table === "rental_inquiries" ? ", payment_decision_version" : ""}`)
+      .select("*")
       .eq("id", link.inquiry_id)
       .maybeSingle();
     if (!inquiry) return json({ error: "Zahlungslink nicht gefunden" }, 404);
