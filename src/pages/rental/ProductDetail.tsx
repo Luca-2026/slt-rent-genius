@@ -796,7 +796,7 @@ export default function ProductDetail() {
                             <p className="text-sm font-semibold text-foreground mb-1"><SignPackagePrices kind="standard" /></p>
                             <p className="text-[11px] text-muted-foreground mb-1">Brutto inkl. 19% USt.</p>
                             <p className="text-xs text-muted-foreground leading-relaxed">
-                              Schilder und Füße am vollständig videoüberwachten Vermietstandort abholen und zurückgeben.
+                              Schilder und Füße rund um die Uhr (24/7) am vollständig videoüberwachten Vermietstandort abholen und zurückgeben – auch an Sonn- und Feiertagen.
                             </p>
                           </div>
                           <div className="border-t border-border pt-3">
