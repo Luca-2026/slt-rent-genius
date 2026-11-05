@@ -2,6 +2,7 @@ import type { SalesFinancing } from "../../../../supabase/functions/_shared/sale
 import { normalizeOpenEndedUnit, normalizeOpenEndedDuration, type OpenEndedUnit } from "@/lib/installments";
 import { DepositSettlementCard } from "./DepositSettlementCard";
 import { AdditionalPayout } from "./AdditionalPayout";
+import { CreditNoteRefund } from "./CreditNoteRefund";
 import { requestedCoupon } from "@/lib/requestedCoupon";
 import { ReturnChargesSummary } from "./ReturnChargesSummary";
 import { depositBlocksInvoice, paymentsUpToRent, useDepositState } from "./useDepositState";
@@ -791,6 +792,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               </span>
               <InquiryStatusBadge status={inv.status} />
               {inquiryType === "rental" && inv.invoice_kind === "credit_note" && !["draft", "cancelled"].includes(inv.status) && <AdditionalPayout creditId={inv.id} />}
+              {inquiryType === "rental" && inv.invoice_kind === "credit_note" && !["draft", "cancelled"].includes(inv.status) && <CreditNoteRefund creditId={inv.id} onChanged={() => { loadInvoices(); onChanged(); }} />}
               {inv.file_url && (
                 <a
                   href={inv.file_url}
