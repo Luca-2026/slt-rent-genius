@@ -125,6 +125,7 @@ Deno.serve(async (req: Request) => {
         signer_name: status === "accepted" ? link.signer_name : null,
         location: { name: loc.name, email: loc.email, phone: loc.phone },
         prepay: isPrepayTerms(typeof (payload as { payment_terms?: unknown }).payment_terms === "string" ? String((payload as { payment_terms?: string }).payment_terms) : "vorkasse"),
+        bank_discount_available: Boolean(payload.bank_transfer_discount),
       });
     }
 
