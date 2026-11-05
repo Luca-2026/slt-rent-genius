@@ -98,7 +98,7 @@ Deno.serve(async req => {
     const parsed = booking.safeParse(raw);
     if (!parsed.success) return json({ error: "Bitte Kontaktdaten, Zeitraum und Bedingungen vollständig angeben" }, 400);
     const { requestId, cartExpiresAt, permitToken, ...body } = parsed.data;
-    if (body.package === "standard" && !validPublicRentalPeriod(body)) return json({ error: "Abholung und Rückgabe müssen innerhalb der Öffnungszeiten liegen" }, 400);
+    if (body.package === "standard" && !validPublicRentalPeriod({ ...body, product_slug: "halteverbotsschilder-set", sign_package: body.package })) return json({ error: "Bitte gültige Abhol- und Rückgabezeiten wählen" }, 400);
     // Retry may read back an existing reservation even after the original cart deadline.
     const { data: existing } = await service.from("sign_bookings").select("id,snapshot").eq("request_id", requestId).maybeSingle();
     if (!existing) {

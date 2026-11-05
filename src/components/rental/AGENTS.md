@@ -1,4 +1,5 @@
 # Rental cart rules
+- Standard sign self-pickup uses shared isSignSelfPickup/validPublicRentalPeriod for 24/7 calendars, cart persistence and server validation; all other items retain staffed hours. Public sign prices use signPublicPrice's confirmed base fallback while checkout remains server-priced; never render duration tiers before calendar selection.
 - Unpriced liability reductions remain selectable as mutually exclusive request keys; publicRentalQuote returns null amounts and send-inquiry-email preserves validated keys/labels in requested_items and staff mail, so no legacy price becomes a promised tariff.
 - Additional cart items inherit periods through withCartPeriod, validated for their pickup location; set quantities remain counts of sets and display through setSize helpers to avoid multiplying prices by contained pieces.
 - Live cart estimates use cartQuoteItems to include the current draft and saved accessories once; locate the draft quote by ID, never array position; cartQuoteTotal keeps sub-cent net precision and Sorglos prices sync via signSetupQuotePatch, so every step shows the same cent-exact total.
