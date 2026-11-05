@@ -3,12 +3,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { InventoryEditorDialog } from "@/components/b2b/admin/InventoryEditorDialog";
 import type { AdminManagedProductRow } from "@/hooks/useManagedProducts";
 
-const mocks = vi.hoisted(() => ({ update: vi.fn(), upsert: vi.fn(), error: vi.fn() }));
+const mocks = vi.hoisted(() => ({ update: vi.fn(), upsert: vi.fn(), error: vi.fn(), rpc: vi.fn() }));
 vi.mock("sonner", () => ({ toast: { error: mocks.error, success: vi.fn() } }));
 vi.mock("@/hooks/useManagedProducts", () => ({ resolveSubcategory: () => "", useAdminManagedProducts: () => ({ data: [] }) }));
 vi.mock("@/lib/cmsDraftStorage", () => ({ cmsDraftKey: () => "test", readCmsDraft: () => null, clearCmsDraft: vi.fn(), writeCmsDraft: vi.fn() }));
 vi.mock("@/integrations/supabase/client", () => ({ supabase: {
   auth: { getUser: async () => ({ data: { user: { id: "staff" } } }) },
+  rpc: mocks.rpc,
   from: (table: string) => {
     const query: Record<string, unknown> = { then: (resolve: (r: unknown) => unknown) => Promise.resolve({ data: [], error: null }).then(resolve) };
     query.select = () => query; query.eq = () => query;
@@ -18,15 +19,15 @@ vi.mock("@/integrations/supabase/client", () => ({ supabase: {
   },
 } }));
 const product = (overrides = {}) => ({ id: "test-article", name: "TEST Artikel", slug: "test-artikel", category: "erdbewegung", main_category: "bau", pricing_scheme: "bau", available_locations: ["krefeld"], stocked_locations: ["krefeld"], is_published: true, on_request: false, price_per_day: "ab 75,00 €/Tag", price_per_month: "ab 999 €/Monat", price_from_1_rd: null, price_from_20_rd: null, ...overrides }) as unknown as AdminManagedProductRow;
-beforeEach(() => { mocks.update.mockClear(); mocks.upsert.mockClear(); mocks.error.mockClear(); });
+beforeEach(() => { mocks.update.mockClear(); mocks.upsert.mockClear(); mocks.error.mockClear(); mocks.rpc.mockReset(); mocks.rpc.mockResolvedValue({ data: "test-article", error: null }); });
 afterEach(cleanup);
 describe("actual CMS article save", () => {
   it.each([true, false])("saves published content independently of shared prices=%s", async (samePrices) => {
     render(<InventoryEditorDialog open onOpenChange={vi.fn()} onSaved={vi.fn()} initial={product({ prices_same_all_locations: samePrices })} />);
     fireEvent.change(screen.getByDisplayValue("TEST Artikel"), { target: { value: "TEST Artikel bearbeitet" } });
     fireEvent.click(screen.getByRole("button", { name: /^Speichern$/ }));
-    await waitFor(() => expect(mocks.update).toHaveBeenCalled());
-    const payload = mocks.update.mock.calls[0][1];
+    await waitFor(() => expect(mocks.rpc).toHaveBeenCalled());
+    const payload = mocks.rpc.mock.calls[0][1]._article;
     expect(payload.name).toBe("TEST Artikel bearbeitet");
     expect(payload).not.toHaveProperty("price_per_day");
     expect(payload).not.toHaveProperty("price_per_month");
@@ -39,7 +40,21 @@ describe("actual CMS article save", () => {
     fireEvent.mouseDown(screen.getByRole("tab", { name: /Preise/ }), { button: 0, ctrlKey: false });
     fireEvent.change(await screen.findByLabelText("ab 1 Miettag (€ netto je Miettag)"), { target: { value: "100" } });
     fireEvent.click(screen.getByRole("button", { name: /^Speichern$/ }));
-    await waitFor(() => expect(mocks.update).toHaveBeenCalled());
-    expect(mocks.update.mock.calls[0][1]).toMatchObject({ price_from_1_rd: 100, price_from_3_rd: 90, price_from_10_rd: 80, price_from_20_rd: 60, price_per_day: "ab 100,00 €/Tag" });
+    await waitFor(() => expect(mocks.rpc).toHaveBeenCalled());
+    expect(mocks.rpc.mock.calls[0][1]._article).toMatchObject({ price_from_1_rd: 100, price_from_3_rd: 90, price_from_10_rd: 80, price_from_20_rd: 60, price_per_day: "ab 100,00 €/Tag" });
+  });
+  it("failed atomic save preserves the editor and retries the same article identity", async () => {
+    const onSaved = vi.fn(), onOpenChange = vi.fn();
+    mocks.rpc.mockResolvedValueOnce({ error: new Error("Standortpreis fehlgeschlagen") });
+    render(<InventoryEditorDialog open onOpenChange={onOpenChange} onSaved={onSaved} initial={product()} />);
+    fireEvent.change(screen.getByDisplayValue("TEST Artikel"), { target: { value: "TEST Artikel bearbeitet" } });
+    fireEvent.click(screen.getByRole("button", { name: /^Speichern$/ }));
+    await waitFor(() => expect(mocks.error).toHaveBeenCalled());
+    expect(onSaved).not.toHaveBeenCalled();
+    expect(onOpenChange).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: /^Speichern$/ }));
+    await waitFor(() => expect(onSaved).toHaveBeenCalledTimes(1));
+    expect(mocks.rpc.mock.calls.map(call => call[1]._id)).toEqual(["test-article", "test-article"]);
+    expect(mocks.update).not.toHaveBeenCalled();
   });
 });
