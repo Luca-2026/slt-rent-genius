@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { formatEuro } from "./offerMath";
 import { isStripePayment, shortPaymentReference } from "@/lib/paymentPresentation";
+import { hasBankDiscountPolicy } from "@/lib/bankTransferDiscount";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 /** Erfasste (Teil-)Zahlung zu einer Anfrage. */
 export interface InquiryPayment {
@@ -74,6 +76,7 @@ interface Props {
   offerNumber?: string | null;
   customerEmail?: string | null;
   lastReminderAt?: string | null;
+  discountPolicy?: unknown;
   onChanged: () => void;
 }
 
@@ -81,7 +84,7 @@ interface Props {
  * Zahlungseingänge zu einer Anfrage erfassen – schon bevor die Rechnung erstellt wird
  * (z. B. Vorkasse auf das Angebot). Die Rechnung übernimmt diese Zahlungen später.
  */
-export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGross, deposit, disabled, offerNumber, customerEmail, lastReminderAt, onChanged }: Props) {
+export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGross, deposit, disabled, offerNumber, customerEmail, lastReminderAt, discountPolicy, onChanged }: Props) {
   const { toast } = useToast();
   const [rows, setRows] = useState<InquiryPayment[]>(() => parseInquiryPayments(payments));
   const [saving, setSaving] = useState(false);
@@ -172,9 +175,29 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
     onChanged();
   };
   const canRemind = !!offerNumber && !!customerEmail && open != null && open > 0 && !dirty;
+  const selectMethod = async (method: string) => {
+    if (method !== "bank" && method !== "regular") return;
+    setSaving(true);
+    const { data, error } = await supabase.functions.invoke("offer-payment-admin", { body: { action: "select_method", inquiry_id: inquiryId, method } });
+    setSaving(false);
+    if (error || data?.error) {
+      let detail = data?.error;
+      try { detail ??= (await error?.context?.json())?.error; } catch { /* controlled fallback */ }
+      toast({ title: "Zahlungsart nicht geändert", description: detail ?? "Bitte zuerst laufende Zahlung oder Belege prüfen.", variant: "destructive" });
+      return;
+    }
+    onChanged();
+  };
 
   return (
     <div className="min-w-0 overflow-hidden rounded-lg border border-border p-3 space-y-3">
+      {table === "rental_inquiries" && hasBankDiscountPolicy(discountPolicy) && <fieldset disabled={disabled || saving || dirty} className="space-y-2">
+        <legend className="text-sm font-semibold">Vereinbarte Zahlungsart</legend>
+        <RadioGroup value={discountPolicy.selected} onValueChange={value => void selectMethod(value)} className="flex flex-wrap gap-3">
+          <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="bank" />Überweisung · 3 % Rabatt</label>
+          <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="regular" />Andere Zahlungsart · regulärer Preis</label>
+        </RadioGroup>
+      </fieldset>}
       <div className="flex flex-wrap items-center gap-2">
         <Banknote className="h-4 w-4 text-primary" />
         <span className="font-semibold text-sm">Zahlungseingänge</span>
