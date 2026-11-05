@@ -25,6 +25,8 @@ beforeAll(async () => {
   await db.exec(readFileSync("drizzle/migrations/0131_harden_rental_payment_snapshot_guards.sql", "utf8"));
   await db.exec(readFileSync("drizzle/migrations/0132_bind_rental_receipts_to_durable_attempts.sql", "utf8"));
   await db.exec(readFileSync("drizzle/migrations/0133_reconcile_terminal_rental_checkout_attempts.sql", "utf8"));
+  await db.exec(`CREATE FUNCTION public.can_edit_operations(uuid) RETURNS boolean LANGUAGE sql AS $$ SELECT true $$;`);
+  await db.exec(readFileSync("drizzle/migrations/0134_record_rental_bank_payments_atomically.sql", "utf8"));
 }, 30000);
 afterAll(() => db.close());
 async function fixture(payments: unknown[] = []) {
@@ -37,6 +39,26 @@ async function fixture(payments: unknown[] = []) {
 }
 const decide = (id: string, payload: unknown, expected = 0, method = "bank") => db.query("SELECT select_rental_payment_method($1,'TEST',$2,$3,$4::jsonb)", [id, expected, method, JSON.stringify(payload)]);
 describe("protected persisted bank discount", () => {
+  it("atomically books bank money and 3% discount for subsequent AB/invoice snapshots", async () => {
+    const f = await fixture();
+    const receipt = [{ label: "Banküberweisung", amount: 226.97 }];
+    await db.query("SELECT record_rental_staff_payments($1,$2,'[]'::jsonb,0,$3::jsonb,$4::jsonb)", [f.id, crypto.randomUUID(), JSON.stringify(receipt), JSON.stringify(f.bank)]);
+    const row = (await db.query<{ offer_total_gross: string; paid_amount: string; offer_payload: typeof f.bank; payments: unknown[] }>("SELECT * FROM rental_inquiries WHERE id=$1", [f.id])).rows[0];
+    expect(Number(row?.offer_total_gross)).toBe(126.97);
+    expect(Number(row?.paid_amount)).toBe(226.97);
+    expect(row?.offer_payload.bank_transfer_discount.selected).toBe("bank");
+    expect(row?.offer_payload.deposit).toBe(100);
+    expect(row?.payments).toEqual(receipt);
+  });
+  it("rolls back both receipt and rebate on stale payments or issued invoice", async () => {
+    const f = await fixture();
+    const record = (expected: unknown[]) => db.query("SELECT record_rental_staff_payments($1,$2,$3::jsonb,0,$4::jsonb,$5::jsonb)", [f.id, crypto.randomUUID(), JSON.stringify(expected), JSON.stringify([{ label: "Banküberweisung", amount: 226.97 }]), JSON.stringify(f.bank)]);
+    await expect(record([{ label: "Banküberweisung", amount: 1 }])).rejects.toThrow("inzwischen");
+    await db.query("INSERT INTO inquiry_invoices VALUES($1,'sent')", [f.id]);
+    await expect(record([])).rejects.toThrow("Belegkorrektur");
+    const row = (await db.query<{ payments: unknown[]; offer_total_gross: string }>("SELECT payments,offer_total_gross FROM rental_inquiries WHERE id=$1", [f.id])).rows[0];
+    expect(row?.payments).toEqual([]); expect(Number(row?.offer_total_gross)).toBe(130.9);
+  });
   it("retries an unfinished webhook and books completed/async deliveries exactly once", async () => {
     const f = await fixture();
     const link = (await db.query<{ id: string }>("INSERT INTO offer_payment_links(inquiry_id,inquiry_table,status,offer_number,stripe_session_id,checkout_request) VALUES($1,'rental_inquiries','active','TEST','cs_test',$2::jsonb) RETURNING id", [f.id, JSON.stringify({ metadata: { amount_cents: "23090" } })])).rows[0]?.id;

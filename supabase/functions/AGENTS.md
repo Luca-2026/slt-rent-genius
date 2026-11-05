@@ -1,4 +1,5 @@
 # Edge function rules
+- Staff bank receipts atomically select the agreed three-percent price and record actual money through record_rental_staff_payments with optimistic payment/version checks; subsequent ABs/invoices read the saved operational snapshot. Offer transfer QRs use shared rental pricing plus unchanged deposit, never total × 0.97.
 - Rental incentive agreements persist from server-validated inquiries into offers; unresolved Stripe attempts retain their immutable request and idempotency claim across errors, blocking new methods until provider reconciliation to prevent duplicate payable sessions.
 - Staff rental payment choices use `_shared/staff-payment-decision.ts` and the same protected RPC as public choices; failed document reads block changes so issued invoices and settlements cannot be bypassed.
 - Anruf-Kundenlinks use `_shared/customer-dossier-link.ts` with the persisted CRM ID and `aktion=ansehen`; the staff-only dossier opens without edits and survives login, avoiding name-based navigation.
