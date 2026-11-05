@@ -1,4 +1,5 @@
 # Edge function rules
+- Direct rental-credit refunds share credit_note_refunds with a distinct refund_kind and the original-payment cap; versioned refund PDFs show payments minus invoice, never a second revenue/VAT correction. Bank completion requires pure bank evidence and an immutable transfer reference.
 - Staff bank receipts atomically select the agreed three-percent price and record actual money through record_rental_staff_payments with optimistic payment/version checks; subsequent ABs/invoices read the saved operational snapshot. Offer transfer QRs use shared rental pricing plus unchanged deposit, never total × 0.97.
 - Rental incentive agreements persist from server-validated inquiries into offers; unresolved Stripe attempts retain their immutable request and idempotency claim across errors, blocking new methods until provider reconciliation to prevent duplicate payable sessions.
 - Staff rental payment choices use `_shared/staff-payment-decision.ts` and the same protected RPC as public choices; failed document reads block changes so issued invoices and settlements cannot be bypassed.
