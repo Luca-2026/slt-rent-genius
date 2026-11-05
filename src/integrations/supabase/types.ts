@@ -6870,6 +6870,10 @@ export type Database = {
         }
         Returns: Json
       }
+      save_managed_article: {
+        Args: { _article: Json; _id: string; _location_prices?: Json }
+        Returns: string
+      }
       save_rental_order_amendment: {
         Args: {
           _agreed_at: string
