@@ -1,5 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+const corsHeaders = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type" };
 import { z } from "npm:zod@3";
 import { publicRentalQuote } from "../_shared/public-rental-quote.ts";
 import { validPublicRentalPeriod } from "../_shared/public-rental-period.ts";
@@ -26,7 +26,7 @@ Deno.serve(async req => {
   } catch (e) {
     const message = e instanceof Error ? e.message : "";
     // Fachliche Prüffehler (Zeitraum, Optionen, Artikel) sind Eingabefehler, keine Störung.
-    if (/Zeitraum|Zusatzoption|Versicherungsstufe|Artikel|Schilderpakete/.test(message)) return json({ error: message }, 400);
+    if (/Zeitraum|Zusatzoption|Versicherungsstufe|Haftungsreduzierung|Artikel|Schilderpakete/.test(message)) return json({ error: message }, 400);
     console.error("public-rental-quote", e);
     return json({ error: "Preisprüfung nicht möglich. Bitte erneut versuchen." }, 503);
   }

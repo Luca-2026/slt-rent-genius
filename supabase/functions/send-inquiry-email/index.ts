@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { saveRentalInquiry, rentalInquiryLink, serviceClient } from "../_shared/inquiry-store.ts";
 import { previewPublicCoupon } from "../_shared/public-coupon.ts";
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+const corsHeaders = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type" };
 import { publicRentalQuote, FREE_CANCELLATION_OPTION } from "../_shared/public-rental-quote.ts";
 import { cartDeliveryQuote, type CartDeliveryQuote } from "../_shared/delivery-tariffs.ts";
 import { routeDistance } from "../_shared/route-distance.ts";
