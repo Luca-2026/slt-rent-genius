@@ -46,14 +46,6 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
   const [honeypot, setHoneypot] = useState("");
   const formLoadedAt = useRef<number>(Date.now());
 
-  const sanitize = (s: string) =>
-    s
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-zA-Z0-9._-]/g, "-")
-      .replace(/-+/g, "-")
-      .slice(0, 60);
-
   const {
     register,
     handleSubmit,
@@ -104,48 +96,18 @@ export function QuickApplyForm({ job }: QuickApplyFormProps) {
     }
     setSubmitting(true);
     try {
-      let resumeUrl: string | null = null;
-      let resumeFilename: string | null = null;
-
-      if (resume) {
-        const ext = (resume.name.split(".").pop() || "pdf").toLowerCase();
-        const safeLast = sanitize(values.lastName) || "bewerber";
-        const safeFirst = sanitize(values.firstName) || "anonym";
-        const path = `${Date.now()}-${safeLast}-${safeFirst}.${ext}`;
-        const { error: upErr } = await supabase.storage
-          .from("bewerbungen")
-          .upload(path, resume, { contentType: resume.type, upsert: false });
-        if (upErr) throw upErr;
-        resumeUrl = path;
-        resumeFilename = resume.name;
-      }
-
-      const { error: insErr } = await supabase.from("job_applications").insert({
-        job_id: job.id,
-        job_title: job.title,
-        first_name: values.firstName,
-        last_name: values.lastName,
-        email: values.email,
-        phone: values.phone,
-        resume_url: resumeUrl,
-        resume_filename: resumeFilename,
+      const body = new FormData();
+      const fields = {
+        jobId: job.id, jobTitle: job.title, firstName: values.firstName,
+        lastName: values.lastName, email: values.email, phone: values.phone,
+        preferredLocation: locationField ? location : "",
         motivation: "Schnellbewerbung über Stellendetailseite",
-        job_specific_answers: locationField ? { [locationField.id]: location } : {},
-      });
-      if (insErr) throw insErr;
-
-      await supabase.functions.invoke("send-application-email", {
-        body: {
-          jobTitle: job.title,
-          firstName: values.firstName,
-          lastName: values.lastName,
-          email: values.email,
-          phone: values.phone,
-          preferredLocation: locationField ? location : null,
-          resumeFilename,
-          resumePath: resumeUrl,
-        },
-      });
+        jobSpecificAnswers: JSON.stringify(locationField ? { [locationField.id]: location } : {}),
+      };
+      Object.entries(fields).forEach(([key, value]) => body.append(key, value));
+      body.append("resume", resume);
+      const { data, error } = await supabase.functions.invoke("send-application-email", { body });
+      if (error || !data?.success) throw new Error("Bewerbung konnte nicht gespeichert werden");
 
       setDone(true);
       toast({ title: "Bewerbung erhalten", description: "Wir melden uns innerhalb von 5 Werktagen." });
