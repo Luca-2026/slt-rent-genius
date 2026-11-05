@@ -3,6 +3,13 @@
 ## Ergebnis
 Keine vollständige Freigabe. Die Fortsetzung mit dem bestehenden berechtigten Admin-Konto ist erfolgt; fehlender Mitarbeiterzugang ist für dieses Konto kein Hindernis mehr. Es wurden keine Rollen geändert, keine tatsächlichen Zahlungen ausgelöst und keine finalen Rechnungen verschickt.
 
+## 3-%-Rabatt nur bei Online-/Überweisungswahl – 12:41 UTC
+- Für neue Mietangebote mit Vorkasse/30-%-Anzahlung aktiviert; net_7/14/30/60, individuelle Rechnungskonditionen, bankpflichtige Verkäufe und externe Wege ausgeschlossen. Separater Schilder-/öffentlicher Anfrageschalter bleibt unverändert aus. Bereits vereinbarte Rabatte bleiben in der Rechnungsberechnung erhalten, aber Rechnungen/AB erhalten keine neue Rabattwerbung.
+- Angebots-E-Mail hat einen eigenen deutlich bezeichneten Rabattblock mit Bankbetrag, Ersparnis und Bedingungen. Angebots-PDF enthält „3 % Rabatt bei Zahlung per Überweisung“; an der Überweisungsoption steht der Rabatt bereits bei vorausgewählter Online-Zahlung.
+- Tatsächlicher Mitarbeiterlauf: interner Testauftrag 9c9b1d53 erstellt, Testangebot ANG-M-2026-11-0035 als PDF geprüft und ausschließlich an luca@sandhoff.org gesendet (Versandantwort erfolgreich, Postfacheingang nicht verifiziert). Keine reale Miete/Gerätebelegung/Zahlung.
+- Tatsächliche Zahlungsseite: Online vorausgewählt → Bankwahl geschützt gespeichert → 238,00 € regulär / 230,86 € Bank / 7,14 € Rabatt; Anzahlung 71,40 € → 69,26 €. Neuladen erhält Bankwahl. Desktop/390-px-Handy geprüft, kein horizontaler Überlauf. Keine Stripe-Session oder Geldbewegung ausgelöst.
+- 39 gezielte Regel-/Speicherprüfungen bestanden; relevante Funktionen eingespielt. Neue Zahlungsseitenanzeige benötigt Websiteveröffentlichung; vorhandene Angebote ohne gespeicherte Zusage werden nicht rückwirkend rabattiert. Keine Gesamtfreigabe aus diesem Teiltest ableiten.
+
 ## Guthabenbestätigung und Überweisungs-QR – 12:34 UTC
 - Rechnung bestätigt ausschließlich erfolgreiche Erstattungen ausdrücklich mit Betrag und gespeichertem Zahlungsweg: „Das Guthaben … haben wir dir/Ihnen per Überweisung erstattet“ beziehungsweise „über Stripe auf das ursprünglich verwendete Zahlungsmittel“. Teilbestätigte Stripe-Aufteilungen zählen einzeln, ausstehende Auszahlung niemals als erledigt. Du/Sie aus Kundenakte.
 - Mitarbeiter-Rechnungsabruf am internen #96ASUG HTTP 200: 123,76 € ausdrücklich per Überweisung erstattet, 0,00 € verbleibend, ursprüngliche Rechnungsseiten erhalten. Banknachweis weiterhin eindeutig simuliert; keine neue Auszahlung.
