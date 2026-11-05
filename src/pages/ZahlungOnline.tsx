@@ -162,11 +162,11 @@ export default function ZahlungOnline() {
                 <fieldset className="space-y-2">
                   <legend className="text-sm font-semibold text-foreground mb-2">Zahlungsart</legend>
                   <div className="grid grid-cols-2 gap-2">
-                    <Button type="button" disabled={starting} variant={method === "online" ? "default" : "outline"} onClick={() => void selectMethod("online")}>
-                      <CreditCard className="h-4 w-4 mr-2" />Online
+                    <Button type="button" className="h-16 min-w-0 px-2 py-2 whitespace-normal" aria-pressed={method === "online"} disabled={starting} variant={method === "online" ? "default" : "outline"} onClick={() => void selectMethod("online")}>
+                      <CreditCard className="h-4 w-4 shrink-0" /><span>Online</span>
                     </Button>
-                    <Button type="button" className="h-auto min-h-12 py-3 whitespace-normal" disabled={starting} variant={method === "bank" ? "default" : "outline"} onClick={() => void selectMethod("bank")}>
-                      <Landmark className="h-4 w-4 mr-2 shrink-0" /><span>Überweisung{info.bank_discount && <span className="block text-xs font-semibold">3 % Rabatt</span>}</span>
+                    <Button type="button" className="h-16 min-w-0 px-2 py-2 whitespace-normal" aria-pressed={method === "bank"} disabled={starting} variant={method === "bank" ? "default" : "outline"} onClick={() => void selectMethod("bank")}>
+                      <Landmark className="h-4 w-4 shrink-0" /><span>Überweisung{info.bank_discount && <span className="block text-xs font-semibold">3 % Rabatt</span>}</span>
                     </Button>
                   </div>
                   {info.bank_discount && <div className="space-y-2 text-sm">
@@ -190,7 +190,7 @@ export default function ZahlungOnline() {
                     <p className="text-xs text-muted-foreground text-center">
                       Eine Kaution erstatten wir nach der Rückgabe auf das Zahlungsmittel, mit dem du bezahlt hast.
                     </p>
-                    <PaymentMethods />
+                    <PaymentMethods centered />
                   </>
                 ) : info.bank ? (
                   <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm space-y-1">
