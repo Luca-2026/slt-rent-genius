@@ -6624,6 +6624,15 @@ export type Database = {
         }
         Returns: undefined
       }
+      release_terminal_rental_checkout: {
+        Args: {
+          _claim: string
+          _link: string
+          _session: string
+          _terminal: string
+        }
+        Returns: boolean
+      }
       reserve_rental_coupon: {
         Args: {
           p_code: string
