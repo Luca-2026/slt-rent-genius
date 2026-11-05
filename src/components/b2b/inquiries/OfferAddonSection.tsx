@@ -374,7 +374,10 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                       aria-label="Kalendertage gesamt"
                       disabled={disabled}
                       className={missingDays ? "border-destructive" : undefined}
-                      onChange={(e) => patchCalc(ai, { days: Number(e.target.value) || null, days_manual: true })}
+                      onChange={(e) => addon.optional ? patch(ai, {
+                        days: Number(e.target.value) || null, days_manual: true, manual: true,
+                        amount: computeAddonAmount({ price_type: addon.price_type ?? "per_unit", rate: addon.rate ?? 0, basis: "full_period", days: Number(e.target.value) || null }, ctx) ?? 0,
+                      }) : patchCalc(ai, { days: Number(e.target.value) || null, days_manual: true })}
                     />
                     {addon.days_manual && calDays && addon.days !== calDays ? (
                       <button type="button" className="mt-1 text-[11px] text-primary underline" disabled={disabled}

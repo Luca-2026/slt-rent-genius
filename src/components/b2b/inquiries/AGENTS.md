@@ -1,5 +1,6 @@
 # Inquiries
 - Rental machine insurance uses full-calendar-period pricing by default; per-item addon labels and deductible notes remain editable snapshot fields, never catalogue mutations, so the PDF preserves agreed insurance terms.
+- Persisted optional insurance tiers use the same editor as standard addons; missing current CMS configuration must not delete them, and manual edits must survive tier synchronization.
 - Editor bank rebates are recalculated through editorBankDiscount after manual price/discount edits; server billing quantity is converted once. The retired AdditionalPayout compensation route must never be exposed; deposit and rental refunds use the original payment with a shared cumulative cap, preserving original receipts.
 - AB editing enters the existing amendment editor, never offer revision; normal AB sends require a preview matching note, attachment choice, payments and operational snapshot, and preview must not reserve devices or send mail.
 - Invoice references inherit offer extra_fields with editor overrides for rental/sales and all invoice kinds; issued PDFs remain immutable.

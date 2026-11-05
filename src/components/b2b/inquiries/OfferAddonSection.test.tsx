@@ -19,7 +19,8 @@ describe("Editierbare Maschinenbruchversicherung je Artikel", () => {
     render(<Editor />);
     fireEvent.change(screen.getByLabelText('Tagessatz netto'), { target: { value: '12' } });
     fireEvent.change(screen.getByLabelText('Selbstbehalt / Zusatztext'), { target: { value: 'Selbstbehalt 500 €' } });
-    expect(saved[0]).toMatchObject({ rate: 12, amount: 60, note: 'Selbstbehalt 500 €', optional: true });
+    fireEvent.change(screen.getByLabelText('Kalendertage gesamt'), { target: { value: '6' } });
+    expect(saved[0]).toMatchObject({ rate: 12, amount: 72, days: 6, note: 'Selbstbehalt 500 €', optional: true });
     expect(syncOptionalTiers(saved, [], lineContext(item), 5)).toEqual(saved);
   });
   it("erzwingt Kalendertage auch ohne alten CMS-Standard und erhält den Selbstbehalt", () => {
