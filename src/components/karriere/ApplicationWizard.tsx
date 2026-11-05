@@ -96,14 +96,6 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
     mode: "onChange"
   });
 
-  const sanitize = (s: string) =>
-    s
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-zA-Z0-9._-]/g, "-")
-      .replace(/-+/g, "-")
-      .slice(0, 60);
-
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     setFile: (file: File | null) => void
@@ -138,24 +130,6 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
     });
     e.target.value = "";
   };
-
-  const uploadFile = async (file: File, folder: string): Promise<{ url: string; filename: string } | null> => {
-    const fileExt = (file.name.split('.').pop() || 'pdf').toLowerCase();
-    const safeFolder = sanitize(folder) || "bewerbung";
-    const fileName = `${safeFolder}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-
-    const { error } = await supabase.storage
-      .from('bewerbungen')
-      .upload(fileName, file, { contentType: file.type || undefined, upsert: false });
-
-    if (error) {
-      console.error('Upload error:', error);
-      return null;
-    }
-
-    return { url: fileName, filename: file.name };
-  };
-
 
   const nextStep = async () => {
     let fieldsToValidate: (keyof FormData)[] = [];
@@ -216,70 +190,20 @@ export function ApplicationWizard({ job, onClose }: ApplicationWizardProps) {
     setIsSubmitting(true);
 
     try {
-      // Upload resume
-      let resumeData = null;
-      if (resumeFile) {
-        resumeData = await uploadFile(resumeFile, job.id);
-        if (!resumeData) {
-          throw new Error("Lebenslauf konnte nicht hochgeladen werden");
-        }
-      }
-
-      // Upload cover letter if provided
-      let coverLetterData = null;
-      if (coverLetterFile) {
-        coverLetterData = await uploadFile(coverLetterFile, job.id);
-      }
-
-      // Submit application
-      const { error } = await supabase.from('job_applications').insert({
-        job_id: job.id,
-        job_title: job.title,
-        first_name: data.firstName,
-        last_name: data.lastName,
-        email: data.email,
-        phone: data.phone,
-        street: data.street || null,
-        postal_code: data.postalCode || null,
-        city: data.city || null,
-        earliest_start_date: data.earliestStartDate || null,
-        salary_expectation: data.salaryExpectation || null,
-        motivation: data.motivation,
-        job_specific_answers: jobSpecificAnswers,
-        resume_url: resumeData?.url || null,
-        resume_filename: resumeData?.filename || null,
-        cover_letter_url: coverLetterData?.url || null,
-        cover_letter_filename: coverLetterData?.filename || null
-      });
-
-      if (error) throw error;
-
-      // Send notification email to karriere@slt-rental.de
-      try {
-        await supabase.functions.invoke("send-application-email", {
-          body: {
-            jobTitle: job.title,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            email: data.email,
-            phone: data.phone,
-            street: data.street || null,
-            postalCode: data.postalCode || null,
-            city: data.city || null,
-            earliestStartDate: data.earliestStartDate || null,
-            salaryExpectation: data.salaryExpectation || null,
-            motivation: data.motivation || null,
-            preferredLocation: jobSpecificAnswers["preferredLocation"] || null,
-            resumeFilename: resumeData?.filename || null,
-            resumePath: resumeData?.url || null,
-            coverLetterFilename: coverLetterData?.filename || null,
-            coverLetterPath: coverLetterData?.url || null,
-          },
-        });
-      } catch (emailErr) {
-        console.error("Application email notification failed:", emailErr);
-        // Don't block the success – the application is already saved
-      }
+      const body = new globalThis.FormData();
+      const fields = {
+        jobId: job.id, jobTitle: job.title, firstName: data.firstName,
+        lastName: data.lastName, email: data.email, phone: data.phone,
+        street: data.street || "", postalCode: data.postalCode || "", city: data.city || "",
+        earliestStartDate: data.earliestStartDate || "", salaryExpectation: data.salaryExpectation || "",
+        motivation: data.motivation || "", preferredLocation: jobSpecificAnswers["preferredLocation"] || "",
+        jobSpecificAnswers: JSON.stringify(jobSpecificAnswers),
+      };
+      Object.entries(fields).forEach(([key, value]) => body.append(key, value));
+      body.append("resume", resumeFile);
+      if (coverLetterFile) body.append("coverLetter", coverLetterFile);
+      const { data: result, error } = await supabase.functions.invoke("send-application-email", { body });
+      if (error || !result?.success) throw new Error("Bewerbung konnte nicht gespeichert werden");
 
       setIsSuccess(true);
     } catch (error) {
