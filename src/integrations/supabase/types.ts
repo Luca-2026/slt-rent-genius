@@ -6702,6 +6702,20 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      settle_rental_stripe_receipt: {
+        Args: {
+          _amount: number
+          _currency: string
+          _event: string
+          _intent: string
+          _link: string
+          _offer: string
+          _session: string
+          _type: string
+          _version: number
+        }
+        Returns: Json
+      }
       sign_calendar_availability: {
         Args: { _from: string; _location: string; _to: string }
         Returns: Json

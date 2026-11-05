@@ -911,6 +911,13 @@
       "when": 1793860090602,
       "tag": "0129_durable_rental_checkout_attempts",
       "breakpoints": true
+    },
+    {
+      "idx": 130,
+      "version": "7",
+      "when": 1793860157043,
+      "tag": "0130_atomic_rental_stripe_receipts",
+      "breakpoints": true
     }
   ]
 }
