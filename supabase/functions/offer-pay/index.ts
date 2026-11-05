@@ -44,7 +44,7 @@ Deno.serve(async (req: Request) => {
 
     const { data: inquiry } = await service
       .from(link.inquiry_table)
-      .select("id, offer_number, order_code, customer_email, payments, offer_total_gross, offer_payload, payment_decision_version")
+      .select(`id, offer_number, order_code, customer_email, payments, offer_total_gross, offer_payload${link.inquiry_table === "rental_inquiries" ? ", payment_decision_version" : ""}`)
       .eq("id", link.inquiry_id)
       .maybeSingle();
     if (!inquiry) return json({ error: "Zahlungslink nicht gefunden" }, 404);
@@ -149,9 +149,9 @@ Deno.serve(async (req: Request) => {
 
     // frühere, noch offene Session beenden (verhindert Doppelzahlung)
     if (link.stripe_session_id) {
-      try {
-        await stripe.checkout.sessions.expire(link.stripe_session_id);
-      } catch (_e) { /* bereits abgelaufen oder bezahlt */ }
+      const previous = await stripe.checkout.sessions.retrieve(link.stripe_session_id);
+      if (previous.status === "complete" || previous.payment_status === "paid") return json({ error: "Online-Zahlung wird verarbeitet. Bitte den Zahlungseingang abwarten." }, 409);
+      if (previous.status === "open") await stripe.checkout.sessions.expire(link.stripe_session_id);
     }
 
     const lineItems = [
