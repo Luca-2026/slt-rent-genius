@@ -2,12 +2,12 @@ import { isStripeTestMode, stripeClient, toCents } from "./stripe-pay.ts";
 import { reconcileRefundsBeforeExecution } from "./refund-reconciliation.ts";
 
 /** Refunds never alter the invoice or its original received-payment snapshot. */
-export async function creditRefund(service: any, creditId: string, userId: string, execute: boolean) {
+export async function creditRefund(service: any, creditId: string, userId: string, execute: boolean, rentalCredit = false) {
   const { data: credit, error: creditError } = await service.from("inquiry_invoices").select("*").eq("id", creditId).maybeSingle();
-  if (creditError || !credit || credit.invoice_kind !== "credit_note" || credit.status === "draft" || credit.status === "cancelled" || !credit.parent_invoice_id) {
+  if (creditError || !credit || credit.status === "draft" || credit.status === "cancelled" || (rentalCredit ? !["invoice", "final"].includes(credit.invoice_kind) || !credit.rental_inquiry_id || credit.parent_invoice_id || credit.deducted_installments?.length : credit.invoice_kind !== "credit_note" || !credit.parent_invoice_id)) {
     throw new Error("Keine ausgestellte Gutschrift gefunden.");
   }
-  const { data: parent, error: parentError } = await service.from("inquiry_invoices").select("*").eq("id", credit.parent_invoice_id).single();
+  const { data: parent, error: parentError } = rentalCredit ? { data: credit, error: null } : await service.from("inquiry_invoices").select("*").eq("id", credit.parent_invoice_id).single();
   if (parentError || !parent) throw new Error("Ursprungsrechnung nicht gefunden.");
   const { data: previous, error: previousError } = await service.from("inquiry_invoices").select("gross_amount, created_at, id").eq("parent_invoice_id", parent.id).eq("invoice_kind", "credit_note").neq("status", "draft").neq("status", "cancelled");
   if (previousError) throw new Error("Gutschriften konnten nicht geprüft werden.");
@@ -16,7 +16,11 @@ export async function creditRefund(service: any, creditId: string, userId: strin
   const outstandingBefore = Math.max(0, toCents(parent.gross_amount) - before);
   const paid = toCents(parent.paid_amount);
   const calculated = Math.min(creditCents, Math.max(0, paid - Math.max(0, outstandingBefore - creditCents)) - Math.max(0, paid - outstandingBefore));
-  const eligible = credit.credit_refund_amount == null ? calculated : Math.min(calculated, toCents(credit.credit_refund_amount));
+  const eligible = rentalCredit ? Math.max(0, toCents(credit.paid_amount) - toCents(credit.gross_amount)) : credit.credit_refund_amount == null ? calculated : Math.min(calculated, toCents(credit.credit_refund_amount));
+  if (rentalCredit) {
+    const { data: siblings, error } = await service.from("inquiry_invoices").select("id").eq("rental_inquiry_id", credit.rental_inquiry_id).neq("id", creditId).neq("status", "draft").neq("status", "cancelled");
+    if (error || siblings?.length) throw new Error("Weitere Rechnungen oder Korrekturen erfordern gesonderte Abrechnung.");
+  }
   const { data: existing, error: existingError } = await service.from("credit_note_refunds").select("*").eq("credit_note_id", creditId).maybeSingle();
   if (existingError) throw new Error("Erstattungsstatus konnte nicht geprüft werden.");
   const stripe = stripeClient();
@@ -70,7 +74,7 @@ export async function creditRefund(service: any, creditId: string, userId: strin
   }
   if (!execute) return { success: true, amount_cents: existing?.amount_cents ?? eligible, status: existing && allocations.some((a: any) => !a.refund_id) ? "creating" : existing?.status ?? "available" };
   if (!existing) {
-    const { error } = await service.from("credit_note_refunds").insert({ credit_note_id: creditId, amount_cents: eligible, allocations, created_by: userId });
+    const { error } = await service.from("credit_note_refunds").insert({ credit_note_id: creditId, amount_cents: eligible, allocations, created_by: userId, ...(rentalCredit ? { refund_kind: "rental_credit", receipt_snapshot: { invoice_number: credit.invoice_number, customer_name: credit.customer_name, company_name: credit.company_name, location: credit.location, paid_amount: credit.paid_amount, gross_amount: credit.gross_amount, amount_cents: eligible } } : {}) });
     if (error) throw new Error("Die Erstattung wird bereits vorbereitet. Bitte Status neu laden.");
   }
   for (const allocation of allocations) {

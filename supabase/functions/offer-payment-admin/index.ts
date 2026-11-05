@@ -14,6 +14,7 @@ import { z } from "https://esm.sh/zod@3.23.8";
 import { LOCATION_CONTACTS, resolveLocationKey } from "../_shared/inquiry-offer-math.ts";
 import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
 import { creditRefund } from "../_shared/credit-refund.ts";
+import { rentalCreditRefund } from "../_shared/rental-credit-refund.ts";
 import {
   ensurePaymentLink,
   isStripeConfigured,
@@ -35,6 +36,9 @@ const money = (cents: number) =>
 const esc = (s: unknown) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 const Body = z.discriminatedUnion("action", [
+  z.object({ action: z.literal("rental_credit_info"), invoice_id: z.string().uuid() }),
+  z.object({ action: z.literal("refund_rental_credit"), invoice_id: z.string().uuid() }),
+  z.object({ action: z.literal("confirm_rental_credit_transfer"), invoice_id: z.string().uuid(), bank_reference: z.string().trim().min(3).max(200) }),
   z.object({ action: z.literal("record_payments"), inquiry_id: z.string().uuid(), expected_payments: z.array(z.record(z.unknown())), payments: z.array(z.record(z.unknown())) }),
   z.object({ action: z.literal("select_method"), inquiry_id: z.string().uuid(), method: z.enum(["bank", "regular"]) }),
   z.object({ action: z.literal("credit_refund_info"), credit_note_id: z.string().uuid() }),
@@ -80,6 +84,12 @@ Deno.serve(async (req: Request) => {
       if (!canEdit) return json({ error: "Keine Berechtigung für Zahlungsänderungen" }, 403);
       try { return json(await selectStaffRentalPayment(service, body.inquiry_id, body.method)); }
       catch (error) { return json({ error: error instanceof Error ? error.message : "Zahlungsänderung nicht möglich" }, 409); }
+    }
+    if (body.action === "rental_credit_info" || body.action === "refund_rental_credit" || body.action === "confirm_rental_credit_transfer") {
+      const { data: roles, error: roleError } = await service.from("user_roles").select("role").eq("user_id", user.id).in("role", ["admin", "niederlassungsleiter"]);
+      if (roleError || !roles?.length) return json({ error: "Keine Berechtigung für Mietguthabenerstattungen" }, 403);
+      try { return json(await rentalCreditRefund(service, body.invoice_id, user.id, body.action, body.action === "confirm_rental_credit_transfer" ? body.bank_reference : undefined)); }
+      catch (error) { const message = error instanceof Error ? error.message : "Erstattungsstatus ungeklärt"; return json({ success: false, error: /[rs]k_(live|test)_/.test(message) ? "Erstattungsstatus ungeklärt. Nicht zusätzlich auszahlen." : message }, 409); }
     }
     if (!isStripeConfigured()) return json({ error: "Stripe ist nicht eingerichtet" }, 503);
 

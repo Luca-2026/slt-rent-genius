@@ -2405,30 +2405,45 @@ export type Database = {
         Row: {
           allocations: Json
           amount_cents: number
+          bank_reference: string | null
           created_at: string
           created_by: string
           credit_note_id: string
           id: string
+          payout_method: string
+          receipt_path: string | null
+          receipt_snapshot: Json | null
+          refund_kind: string
           status: string
           updated_at: string
         }
         Insert: {
           allocations?: Json
           amount_cents: number
+          bank_reference?: string | null
           created_at?: string
           created_by: string
           credit_note_id: string
           id?: string
+          payout_method?: string
+          receipt_path?: string | null
+          receipt_snapshot?: Json | null
+          refund_kind?: string
           status?: string
           updated_at?: string
         }
         Update: {
           allocations?: Json
           amount_cents?: number
+          bank_reference?: string | null
           created_at?: string
           created_by?: string
           credit_note_id?: string
           id?: string
+          payout_method?: string
+          receipt_path?: string | null
+          receipt_snapshot?: Json | null
+          refund_kind?: string
           status?: string
           updated_at?: string
         }

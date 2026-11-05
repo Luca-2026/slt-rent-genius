@@ -1,0 +1,6 @@
+DO $$ DECLARE definition text; BEGIN SELECT pg_get_functiondef('public.guard_shared_stripe_refund_capacity()'::regprocedure) INTO definition; definition:=replace(definition,E'BEGIN\n',E'BEGIN\nIF TG_TABLE_NAME=''credit_note_refunds'' THEN\n IF NEW.refund_kind=''rental_credit'' AND NEW.payout_method=''transfer'' THEN RETURN NEW; END IF;\nEND IF;\n'); EXECUTE definition; END $$;
+COMMENT ON FUNCTION public.guard_bank_rental_refund_shared() IS 'DEPRECATED: not attached; bank routing is handled directly inside guard_shared_stripe_refund_capacity';
+CREATE OR REPLACE FUNCTION public.guard_invoice_after_rental_refund() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN
+IF NEW.invoice_kind='credit_note' AND NEW.parent_invoice_id IS NOT NULL AND NEW.status NOT IN ('draft','cancelled') AND EXISTS(SELECT 1 FROM public.credit_note_refunds r WHERE r.credit_note_id=NEW.parent_invoice_id AND r.refund_kind='rental_credit') THEN RAISE EXCEPTION 'Rechnung mit separat erstattetem Mietguthaben benötigt eine gesonderte Korrekturabrechnung'; END IF;
+RETURN NEW; END $$;
+CREATE TRIGGER guard_invoice_after_rental_refund BEFORE INSERT OR UPDATE ON public.inquiry_invoices FOR EACH ROW EXECUTE FUNCTION public.guard_invoice_after_rental_refund();
