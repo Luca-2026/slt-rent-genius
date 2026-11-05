@@ -8,6 +8,7 @@ import { normalizeOfferLogistics, offerInsurancePeriod, type OfferLogistics } fr
 import { withoutOfferDates } from "./undated-offer.ts";
 
 export interface InquiryOfferAddon {
+  payment_cost_kind?: "rental" | "damage" | "municipal" | "deposit";
   key: string;
   label: string;
   amount: number;
@@ -50,6 +51,7 @@ function singularUnit(unit?: string): string {
 }
 
 export interface InquiryOfferItem extends OfferLogistics {
+  payment_cost_kind?: "rental" | "damage" | "municipal" | "deposit";
   product_name: string;
   /** CMS-Slug des Artikels – Grundlage der Bestandsprüfung. */
   product_slug?: string;
@@ -182,6 +184,7 @@ function normalizeAddons(
       key: String(a.key ?? label).slice(0, 60),
       label: label.slice(0, 120),
       amount: round2(amount),
+      ...(["rental", "damage", "municipal", "deposit"].includes(String(a.payment_cost_kind)) ? { payment_cost_kind: a.payment_cost_kind as InquiryOfferAddon["payment_cost_kind"] } : {}),
       note: a.note ? String(a.note).slice(0, 200) : undefined,
     };
     if (a.optional === true) {
@@ -285,6 +288,7 @@ export function normalizeInquiryOfferItems(raw: unknown, undated = false): Inqui
     if (logistics.delivery_at || logistics.collection_at) offerInsurancePeriod({ ...logistics, rental_start: typeof item.rental_start === "string" ? item.rental_start : undefined, rental_end: typeof item.rental_end === "string" ? item.rental_end : undefined });
     return {
       product_name: name.slice(0, 200),
+      ...(["rental", "damage", "municipal", "deposit"].includes(String(item.payment_cost_kind)) ? { payment_cost_kind: item.payment_cost_kind as InquiryOfferItem["payment_cost_kind"] } : {}),
       product_slug: item.product_slug ? String(item.product_slug).slice(0, 200) : undefined,
       articles:
         Number.isFinite(Number(item.articles)) && Number(item.articles) > 0
