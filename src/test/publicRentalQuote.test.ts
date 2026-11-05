@@ -10,6 +10,34 @@ function service(p = product) {
   } };
 }
 describe("Öffentliche CMS-Preisvorschau", () => {
+  it("übernimmt unbepreiste Haftungsreduzierung als Wunsch ohne erfundenen Preis", async () => {
+    const p = { ...product, addon_options: [...product.addon_options, { key: "sb_reduktion", label: "Reduzierung Selbstbehalt", price: 15, price_type: "percent", deductible: 1000 }] } as any;
+    const [quote] = await publicRentalQuote(service(p), [{ ...row, selected_addons: ["sb_reduktion"] }]);
+    expect(quote.addons.find((a: any) => a.key === "sb_reduktion")).toMatchObject({ amount: null, deductible: 1000 });
+    expect(quote.options.find((a: any) => a.key === "sb_reduktion")).toMatchObject({ is_default: false, amount: null });
+  });
+  it("weist zwei gleichzeitig angefragte Haftungsreduzierungen zurück", async () => {
+    const p = { ...product, addon_options: [{ key: "sb_reduktion", label: "Stufe 1" }, { key: "sb_reduktion-2", label: "Stufe 2" }] } as any;
+    await expect(publicRentalQuote(service(p), [{ ...row, selected_addons: ["sb_reduktion", "sb_reduktion-2"] }])).rejects.toThrow("Bitte nur eine Haftungsreduzierung wählen");
+  });
+  it("6t-Bagger: Wochenendpauschale bleibt 275 netto inklusive beider Nutzungstage", async () => {
+    const p = { ...product, price_from_1_rd: 185, price_from_3_rd: 168, price_weekend_num: 275 };
+    for (const use_saturday of [false, true]) for (const use_sunday of [false, true]) {
+      const [quote] = await publicRentalQuote(service(p), [{ ...row, start_date: "2026-11-06", start_time: "16:00", end_date: "2026-11-09", end_time: "09:30", selected_addons: [], use_saturday, use_sunday }]);
+      expect(quote.rental_net).toBe(275);
+      expect(quote.unit).toBe("pauschal");
+    }
+  });
+  it("6t-Bagger: längere Miete steigt durch Samstag und Sonntag von 840 auf 1176 netto", async () => {
+    const p = { ...product, price_from_1_rd: 185, price_from_3_rd: 168, price_weekend_num: 275 };
+    const input = { ...row, start_date: "2026-11-09", end_date: "2026-11-16", end_time: "08:00", selected_addons: [] };
+    const [normal] = await publicRentalQuote(service(p), [input]);
+    const [saturday] = await publicRentalQuote(service(p), [{ ...input, use_saturday: true }]);
+    const [both] = await publicRentalQuote(service(p), [{ ...input, use_saturday: true, use_sunday: true }]);
+    expect(normal.rental_net).toBe(840);
+    expect(saturday.rental_net).toBe(1008);
+    expect(both.rental_net).toBe(1176);
+  });
   it("berechnet 100 Tage Schildermiete aus CMS mit täglich einem Zehntel ab Tag elf", async () => {
     const signs = { ...product, slug: "halteverbotsschilder-set", category: "absperrtechnik", direct_booking_config: { enabled: true, standardGrossCents: 4900, sorglosGrossCents: 19900, depositCents: 10000, maxRentalDays: 100, municipalFeesSeparate: true } };
     const input = { ...row, product_slug: signs.slug, selected_addons: [], start_date: "2027-03-01", end_date: "2027-06-08" };
