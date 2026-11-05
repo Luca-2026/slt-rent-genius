@@ -1,0 +1,6 @@
+DO $$ DECLARE def text; BEGIN
+SELECT pg_get_functiondef('public.record_rental_staff_payments(uuid,uuid,jsonb,integer,jsonb,jsonb)'::regprocedure) INTO def;
+IF position('IF _bank_payload IS NOT NULL THEN' IN def)=0 THEN RAISE EXCEPTION 'Missing receipt decision guard'; END IF;
+def:=replace(def,'IF _bank_payload IS NOT NULL THEN',E'IF EXISTS(SELECT 1 FROM jsonb_array_elements(_payments) p WHERE (p->>''provider''=''stripe'' OR COALESCE(p->>''reference'','''')~''^(cs_|pi_)'' OR p->>''label'' ILIKE ''%stripe%'') AND NOT COALESCE(r.payments,''[]''::jsonb) @> jsonb_build_array(p)) THEN RAISE EXCEPTION ''Online-Zahlungen werden ausschließlich automatisch bestätigt''; END IF;\nIF EXISTS(SELECT 1 FROM jsonb_array_elements(COALESCE(r.payments,''[]''::jsonb)) p WHERE (p->>''provider''=''stripe'' OR COALESCE(p->>''reference'','''')~''^(cs_|pi_)'' OR p->>''label'' ILIKE ''%stripe%'') AND NOT _payments @> jsonb_build_array(p)) THEN RAISE EXCEPTION ''Bestätigte Online-Zahlungen dürfen nicht verändert werden''; END IF;\nIF _bank_payload IS NOT NULL THEN');
+EXECUTE def;
+END $$;

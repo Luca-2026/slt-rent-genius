@@ -6615,6 +6615,17 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      record_rental_staff_payments: {
+        Args: {
+          _actor: string
+          _bank_payload?: Json
+          _expected_payments: Json
+          _expected_version: number
+          _id: string
+          _payments: Json
+        }
+        Returns: Json
+      }
       redeem_reserved_rental_coupon: {
         Args: {
           p_code: string

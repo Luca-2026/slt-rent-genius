@@ -9,7 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { formatEuro } from "./offerMath";
 import { isStripePayment, shortPaymentReference } from "@/lib/paymentPresentation";
-import { hasBankDiscountPolicy } from "@/lib/bankTransferDiscount";
+import { allPaymentsByBank, hasBankDiscountPolicy } from "@/lib/bankTransferDiscount";
+import { rentalPaymentPrices } from "../../../../supabase/functions/_shared/rental-payment-decision";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 /** Erfasste (Teil-)Zahlung zu einer Anfrage. */
@@ -77,6 +78,7 @@ interface Props {
   customerEmail?: string | null;
   lastReminderAt?: string | null;
   discountPolicy?: unknown;
+  offerPayload?: Record<string, unknown> | null;
   onChanged: () => void;
 }
 
@@ -84,7 +86,7 @@ interface Props {
  * Zahlungseingänge zu einer Anfrage erfassen – schon bevor die Rechnung erstellt wird
  * (z. B. Vorkasse auf das Angebot). Die Rechnung übernimmt diese Zahlungen später.
  */
-export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGross, deposit, disabled, offerNumber, customerEmail, lastReminderAt, discountPolicy, onChanged }: Props) {
+export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGross, deposit, disabled, offerNumber, customerEmail, lastReminderAt, discountPolicy, offerPayload, onChanged }: Props) {
   const { toast } = useToast();
   const [rows, setRows] = useState<InquiryPayment[]>(() => parseInquiryPayments(payments));
   const [saving, setSaving] = useState(false);
@@ -113,7 +115,9 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
     () => Math.round(rows.reduce((s, p) => s + (Number(p.amount) || 0), 0) * 100) / 100,
     [rows],
   );
-  const required = offerTotalGross != null ? Math.round((Number(offerTotalGross) + (Number(deposit) || 0)) * 100) / 100 : null;
+  const bankPreview = table === "rental_inquiries" && hasBankDiscountPolicy(discountPolicy) && offerPayload && rows.length > 0 && allPaymentsByBank(rows)
+    ? rentalPaymentPrices({ ...offerPayload, bank_transfer_discount: { ...discountPolicy, selected: "bank" } }) : null;
+  const required = offerTotalGross != null ? Math.round(((bankPreview?.bankTotals.grossAmount ?? Number(offerTotalGross)) + (Number(deposit) || 0)) * 100) / 100 : null;
   const open = required != null ? Math.round((required - total) * 100) / 100 : null;
   const saved = useMemo(() => JSON.stringify(parseInquiryPayments(payments)), [payments]);
   const dirty = JSON.stringify(parseInquiryPayments(rows)) !== saved;
@@ -146,13 +150,16 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
       .filter((p) => p.amount > 0);
     const paidAmount = Math.round(clean.reduce((s, p) => s + p.amount, 0) * 100) / 100;
     setSaving(true);
-    const { error } = await supabase
-      .from(table)
-      .update({ payments: clean, paid_amount: paidAmount } as never)
-      .eq("id", inquiryId);
+    const result = table === "rental_inquiries"
+      ? await supabase.functions.invoke("offer-payment-admin", { body: { action: "record_payments", inquiry_id: inquiryId, expected_payments: payments ?? [], payments: clean } })
+      : await supabase.from(table).update({ payments: clean, paid_amount: paidAmount } as never).eq("id", inquiryId);
+    const error = result.error;
+    const failure = "data" in result ? (result.data as { error?: string } | null)?.error : undefined;
     setSaving(false);
-    if (error) {
-      toast({ title: "Zahlungen konnten nicht gespeichert werden", description: error.message, variant: "destructive" });
+    if (error || failure) {
+      let detail = failure ?? error?.message;
+      try { detail = (await (error as { context?: Response } | null)?.context?.json())?.error ?? detail; } catch { /* controlled fallback */ }
+      toast({ title: "Zahlungen konnten nicht gespeichert werden", description: detail, variant: "destructive" });
       return;
     }
     toast({ title: "Zahlungen gespeichert", description: `Erhalten: ${formatEuro(paidAmount)}` });
@@ -205,6 +212,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
           Vorkasse und Teilzahlungen hier erfassen – die Rechnung übernimmt sie automatisch.
         </span>
       </div>
+      {bankPreview && <p className="text-sm font-semibold text-primary">3 % Überweisungsrabatt: −{formatEuro(bankPreview.discountGross)} brutto · Miete {formatEuro(bankPreview.bankTotals.grossAmount)}{Number(deposit) > 0 ? ` zzgl. Kaution ${formatEuro(Number(deposit))}` : ""}</p>}
 
       {rows.length === 0 && (
         <p className="text-xs text-muted-foreground">Noch keine Zahlung erfasst.</p>

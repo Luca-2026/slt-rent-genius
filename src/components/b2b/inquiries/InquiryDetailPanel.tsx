@@ -729,6 +729,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         deposit={Number((inquiry.offer_payload as { deposit?: unknown } | null)?.deposit) || 0}
         offerNumber={inquiry.offer_number}
         discountPolicy={(inquiry.offer_payload as { bank_transfer_discount?: unknown } | null)?.bank_transfer_discount}
+        offerPayload={inquiry.offer_payload as Record<string, unknown> | null}
         customerEmail={(inquiry as { customer_email?: string | null }).customer_email ?? null}
         lastReminderAt={(inquiry as { payment_reminder_manual_at?: string | null }).payment_reminder_manual_at ?? null}
         disabled={busy}

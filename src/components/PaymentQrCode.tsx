@@ -10,7 +10,7 @@ export function PaymentQrCode(props: EpcInput) {
     const qr = qrcode(0, "M");
     qr.addData(payload, "Byte");
     qr.make();
-    return qr.createSvgTag({ cellSize: 4, margin: 8, scalable: true });
+    return qr.createSvgTag({ cellSize: 4, margin: 16, scalable: true });
   }, [props.name, props.iban, props.bic, props.amountCents, props.reference]);
   if (!svg) return null;
   return (

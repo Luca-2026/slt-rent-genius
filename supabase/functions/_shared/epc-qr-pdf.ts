@@ -13,7 +13,7 @@ export function drawEpcQr(page: any, input: EpcInput, x: number, y: number, size
   qr.addData(payload, "Byte");
   qr.make();
   const n = qr.getModuleCount();
-  const quiet = 2;
+  const quiet = 4;
   const cell = size / (n + quiet * 2);
   page.drawRectangle({ x, y, width: size, height: size, color: rgb(1, 1, 1) });
   for (let r = 0; r < n; r++) {

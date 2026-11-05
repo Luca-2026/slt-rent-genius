@@ -1,6 +1,7 @@
 import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { selectStaffRentalPayment } from "../_shared/staff-payment-decision.ts";
+import { recordRentalPayments } from "../_shared/record-rental-payments.ts";
 /**
  * Mitarbeiter-Funktionen zur Online-Zahlung (Bearer-Auth, Rollenprüfung serverseitig):
  *  - create_link:     Zahlungslink zu einem bereits versendeten Angebot erzeugen (alle Mitarbeiter)
@@ -34,6 +35,7 @@ const money = (cents: number) =>
 const esc = (s: unknown) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 const Body = z.discriminatedUnion("action", [
+  z.object({ action: z.literal("record_payments"), inquiry_id: z.string().uuid(), expected_payments: z.array(z.record(z.unknown())), payments: z.array(z.record(z.unknown())) }),
   z.object({ action: z.literal("select_method"), inquiry_id: z.string().uuid(), method: z.enum(["bank", "regular"]) }),
   z.object({ action: z.literal("credit_refund_info"), credit_note_id: z.string().uuid() }),
   z.object({ action: z.literal("refund_credit_note"), credit_note_id: z.string().uuid() }),
@@ -69,6 +71,10 @@ Deno.serve(async (req: Request) => {
     const parsed = Body.safeParse(await req.json().catch(() => null));
     if (!parsed.success) return json({ error: "Ungültige Anfrage" }, 400);
     const body = parsed.data;
+    if (body.action === "record_payments") {
+      try { return json(await recordRentalPayments(service, body.inquiry_id, user.id, body.expected_payments, body.payments)); }
+      catch (error) { return json({ error: error instanceof Error ? error.message : "Zahlungen nicht gespeichert" }, 409); }
+    }
     if (body.action === "select_method") {
       const { data: canEdit } = await service.rpc("can_edit_operations", { _user_id: user.id });
       if (!canEdit) return json({ error: "Keine Berechtigung für Zahlungsänderungen" }, 403);
