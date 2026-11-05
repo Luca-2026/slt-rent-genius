@@ -10,6 +10,7 @@ beforeAll(async () => {
     CREATE TABLE credit_note_refunds(id uuid PRIMARY KEY,credit_note_id uuid,amount_cents integer,status text,allocations jsonb,updated_at timestamptz);`);
   await db.exec(readFileSync("drizzle/migrations/0141_serialize_shared_original_payment_refunds.sql", "utf8"));
   await db.exec(readFileSync("drizzle/migrations/0142_reconcile_durable_deposit_refunds.sql", "utf8"));
+  await db.exec(readFileSync("drizzle/migrations/0143_validate_credit_refund_provider_evidence.sql", "utf8"));
 }, 30000);
 afterAll(() => db.close());
 async function fixture() {
@@ -50,4 +51,15 @@ it("late pending events cannot undo a successful refund", async () => {
 it("provider amount mismatch does not change the stored reservation", async () => {
   const f = await fixture(), id = crypto.randomUUID(); await deposit(f.link, 50000, id);
   await expect(db.query("SELECT sync_deposit_refund($1,$2,'re_test','succeeded',50001)", [id, f.intent])).rejects.toThrow("Anspruch");
+});
+it("credit reconciliation rejects wrong provider amount", async () => {
+  const f = await fixture(); await credit(f.credit, f.intent, 12376);
+  await expect(db.query("SELECT sync_credit_note_refund_v2($1,$2,'re_wrong','succeeded',12377)", [f.credit, f.intent])).rejects.toThrow("Anspruch");
+  await db.query("SELECT sync_credit_note_refund_v2($1,$2,'re_right','succeeded',12376)", [f.credit, f.intent]);
+  expect((await db.query<{ status: string }>("SELECT status FROM credit_note_refunds WHERE credit_note_id=$1", [f.credit])).rows[0]?.status).toBe('succeeded');
+});
+it("invalid provider status never releases deposit capacity", async () => {
+  const f = await fixture(), id = crypto.randomUUID(); await deposit(f.link, 50000, id);
+  await expect(db.query("SELECT sync_deposit_refund($1,$2,'re_test',null,50000)", [id, f.intent])).rejects.toThrow("Ungültiger");
+  expect((await db.query<{ status: string }>("SELECT status FROM deposit_refunds WHERE id=$1", [id])).rows[0]?.status).toBe('creating');
 });
