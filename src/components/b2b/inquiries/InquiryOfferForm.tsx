@@ -897,9 +897,9 @@ export function InquiryOfferForm({
   const checkSignature = useMemo(
     () =>
       JSON.stringify(
-        effectiveItems.map((i) => [i.product_slug ?? "", i.product_name.trim().toLowerCase(), i.quantity, i.rental_start, i.rental_end]),
+        unpricedEffectiveItems.map((i) => [i.product_slug ?? "", i.product_name.trim().toLowerCase(), i.quantity, i.rental_start, i.rental_end]),
       ) + `|${location ?? ""}|${checkStart ?? ""}|${checkEnd ?? ""}`,
-    [effectiveItems, location, checkStart, checkEnd],
+    [unpricedEffectiveItems, location, checkStart, checkEnd],
   );
 
   useEffect(() => {
@@ -913,7 +913,7 @@ export function InquiryOfferForm({
       setChecking(true);
       const next: Record<number, InventoryResult | null> = {};
       await Promise.all(
-        effectiveItems.map(async (item, index) => {
+        unpricedEffectiveItems.map(async (item, index) => {
           const name = item.product_name.trim();
           if (!name || isReturnChargeLine(item)) return;
           let slug = item.product_slug;

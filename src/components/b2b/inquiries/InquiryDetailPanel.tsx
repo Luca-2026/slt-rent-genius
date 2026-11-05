@@ -870,6 +870,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           />
         ) : (
         <InquiryOfferForm
+          discountPolicy={(inquiry.offer_payload as { bank_transfer_discount?: unknown } | null)?.bank_transfer_discount}
           key={`${inquiry.id}:${docMode}:${deposit.loaded ? `${deposit.settled ? "s" : "o"}${deposit.chargeLines.length}` : "-"}:${docMode === "revise" ? inquiry.offer_number : ""}`}
           inquiryType={inquiryType}
           inquiryId={inquiry.id}
