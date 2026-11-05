@@ -1,5 +1,5 @@
 import { salesOfferLine, salesPaymentTerms, salesPaymentText, FINANCING_INFORMATION, normalizeSalesFinancing } from "../_shared/sales-offer.ts";
-import { BANK_DISCOUNT_TERMS, newBankDiscountPolicy, withoutBankDiscount, priceBankTransfer } from "../_shared/bank-transfer-discount.ts";
+import { newBankDiscountPolicy, withoutBankDiscount, priceBankTransfer } from "../_shared/bank-transfer-discount.ts";
 import { bankDiscountLive, hasRentalPaymentChoice, inquiryBankDiscountEnabled, offerChoiceDiscountLive } from "../_shared/payment-incentive-rollout.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { UNDATED_OFFER_NOTE } from "../_shared/undated-offer.ts";
@@ -611,7 +611,6 @@ Deno.serve(async (req: Request) => {
     // ── Online-Zahlungslink (Stripe) für Vorkasse-Angebote ──
     // Im Stripe-Testmodus erhält nur die Testadresse einen Link – nie echte Kunden.
     let paymentLinkUrl: string | null = null;
-    let paymentLinkAmount = 0;
     try {
       if (inquiryType === "rental" && !undatedOffer && isStripeConfigured()) {
         const paidCents = (Array.isArray(inquiry.payments) ? inquiry.payments : []).reduce(
@@ -630,7 +629,6 @@ Deno.serve(async (req: Request) => {
           });
           if (link) {
             paymentLinkUrl = link.url;
-            paymentLinkAmount = plan.openCents / 100;
           }
         }
       }
@@ -730,14 +728,10 @@ Deno.serve(async (req: Request) => {
       net_14: "Zahlung innerhalb von 14 Tagen nach Rechnungsstellung (netto)." + depositText,
       net_30: "Zahlung innerhalb von 30 Tagen nach Rechnungsstellung (netto)." + depositText,
       vorkasse:
-        "<strong>Vorkasse komplett.</strong> Der Gesamtbetrag ist vor Mietbeginn zu leisten. " + F("Du wählst selbst: ", "Sie wählen selbst: ") +
-        "per <strong>Banküberweisung</strong> (Bankdaten im Angebots-PDF, Verwendungszweck: Angebotsnummer) oder " +
-        "<strong>online</strong> über " + F("deinen", "Ihren") + " persönlichen Zahlungslink." + depositText,
+        "<strong>Vorkasse komplett.</strong> Der Gesamtbetrag ist vor Mietbeginn zu leisten." + depositText,
       anzahlung_30:
         "<strong>30 % Anzahlung.</strong> Mindestens 30 % der Bruttomiete sind als Anzahlung zu leisten, der Restbetrag " +
-        "ist vor Mietbeginn fällig. " + F("Du wählst", "Sie wählen") + " selbst: per <strong>Banküberweisung</strong> (Bankdaten im Angebots-PDF, " +
-        "Verwendungszweck: Angebotsnummer) oder <strong>online</strong> über " + F("deinen", "Ihren") + " persönlichen Zahlungslink – dort " +
-        F("kannst du", "können Sie") + " auch direkt den Gesamtbetrag zahlen." + depositText,
+        "ist vor Mietbeginn fällig." + depositText,
       rentpair_vorkasse:
         "<strong>Vorkasse komplett.</strong> Der Gesamtbetrag ist vor Mietbeginn zu leisten – per Banküberweisung " +
         "(Verwendungszweck: Angebotsnummer) oder online über " + F("deinen", "Ihren") + " persönlichen Zahlungslink." + depositText,
@@ -751,7 +745,6 @@ Deno.serve(async (req: Request) => {
   <h2 style="color:#00507d;margin:0 0 16px;">${F("Dein", "Ihr")} Angebot ${escapeHtml(offerNumber)}</h2>
   <p>${escapeHtml(greeting)}</p>
   <p>${F("vielen Dank für deine Anfrage. Anbei erhältst du unser Angebot als PDF.", "vielen Dank für Ihre Anfrage. Anbei erhalten Sie unser Angebot als PDF.")}</p>
-  ${discountEnabled && bankAlternative ? `<div style="border-left:4px solid #ff8e02;background:#fff7ed;padding:14px 16px;margin:16px 0;"><strong>3 % Rabatt bei Zahlung per Überweisung</strong><p>${F("Du hast die Wahl", "Sie haben die Wahl")}: Online-Zahlung zum regulären Preis oder Banküberweisung mit 3 % Rabatt auf die rabattberechtigten Mietleistungen.</p><strong>Bei vollständiger Überweisung: ${money(bankAlternative.bankTotals.grossAmount + deposit)}${deposit > 0 ? " einschließlich unveränderter Kaution" : ""}</strong><br>Ersparnis: ${money(bankAlternative.discountGross)} brutto.<p style="font-size:12px;">${escapeHtml(BANK_DISCOUNT_TERMS)}</p></div>` : ""}
   ${pdfNotes ? `<p style="white-space:pre-wrap;">${escapeHtml(pdfNotes)}</p>` : ""}
   <div style="margin:16px 0;border-top:2px solid #00507d;">
     ${rowsHtml}
@@ -772,21 +765,22 @@ Deno.serve(async (req: Request) => {
     <p style="margin:12px 0 8px;"><a href="${escapeHtml(acceptUrl)}?aktion=ablehnen" style="display:inline-block;border:1px solid #00507d;color:#00507d;text-decoration:none;padding:10px 18px;border-radius:4px;">Angebot ablehnen</a></p>
     <span style="color:#6b7280;font-size:12px;">Mit der Annahme ${F("bestätigst du", "bestätigen Sie")} unsere ${customerKind === "business" ? "AGB für Unternehmer" : "AGB für Verbraucher"} und ${F("nimmst", "nehmen")} das Angebot ${escapeHtml(offerNumber)} rechtsverbindlich an.</span><br>
     <span style="color:#6b7280;font-size:12px;">Alternativ ${F("kannst du", "können Sie")} die Annahme auch per E-Mail an <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a> bestätigen.</span>` : `${F("Bitte bestätige uns", "Bitte bestätigen Sie uns")} die Annahme kurz per E-Mail an
-    <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a>.`}${["net_7", "net_14", "net_30"].includes(paymentTerms) ? "" : `<br><span style="font-size:13px;">${F("Bitte leiste danach die Zahlung", "Bitte leisten Sie danach die Zahlung")} gemäß den unten stehenden Zahlungsbedingungen.</span>`}
+    <a href="mailto:${escapeHtml(loc.email)}" style="color:#00507d;">${escapeHtml(loc.email)}</a>.`}
   </div>
   ${paymentLinkUrl ? `<div style="background:#eef4f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>Bequem online bezahlen:</strong><br>
-    ${paymentTerms === "anzahlung_30" ? `${F("Über deinen persönlichen Zahlungslink zahlst du", "Über Ihren persönlichen Zahlungslink zahlen Sie")} wahlweise die <strong>30 % Anzahlung</strong> oder direkt den Gesamtbetrag von <strong>${money(paymentLinkAmount)}</strong>` : `${F("Über deinen persönlichen Zahlungslink kannst du", "Über Ihren persönlichen Zahlungslink können Sie")} den Betrag von <strong>${money(paymentLinkAmount)}</strong>`}${deposit > 0 ? ` (inkl. Kaution ${money(deposit)}, wird nach Rückgabe erstattet)` : ""} direkt online begleichen. Der Link gilt nur für dieses Angebot.
+    ${paymentEmailText}
+    <p style="margin:8px 0;">${F("Über deinen persönlichen Zahlungslink wählst du die Zahlungsart", "Über Ihren persönlichen Zahlungslink wählen Sie die Zahlungsart")}${paymentTerms === "anzahlung_30" ? F(" und kannst wahlweise die Anzahlung oder direkt den Gesamtbetrag zahlen", " und können wahlweise die Anzahlung oder direkt den Gesamtbetrag zahlen") : ""}. Der Link gilt nur für dieses Angebot.</p>
     <p style="margin:12px 0 0;"><a href="${escapeHtml(paymentLinkUrl)}" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;font-weight:bold;padding:10px 18px;border-radius:4px;">Zahlungsart wählen &amp; bezahlen</a></p>
-    <span style="color:#6b7280;font-size:12px;">Alternativ ist die Banküberweisung gemäß den Zahlungsbedingungen weiterhin möglich.</span>
-  </div>` : ""}
+    <p style="color:#6b7280;font-size:12px;margin:8px 0 0;">${discountEnabled && bankAlternative ? "Bei vollständiger Zahlung per Überweisung gibt es 3 % Rabatt auf die rabattberechtigten Mietleistungen; die Kaution bleibt unverändert." : "Alternativ ist Zahlung per Banküberweisung möglich."} Bankdaten und QR-Code stehen im Angebots-PDF.</p>
+  </div>` : `<div style="background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
+    <strong>Zahlungsbedingungen:</strong><br>${paymentEmailText}
+    ${inquiryType === "rental" && ["vorkasse", "anzahlung_30"].includes(paymentTerms) ? `<p style="font-size:12px;margin:8px 0 0;">${discountEnabled && bankAlternative ? "Bei vollständiger Zahlung per Überweisung gibt es 3 % Rabatt auf die rabattberechtigten Mietleistungen; die Kaution bleibt unverändert. " : ""}Bankdaten und QR-Code stehen im Angebots-PDF.</p>` : ""}
+  </div>`}
   <div style="background:#eef4f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>${F("Wann ist dein Auftrag verbindlich?", "Wann ist Ihr Auftrag verbindlich?")}</strong><br>
     ${["net_7", "net_14", "net_30"].includes(paymentTerms) ? F("Nach deiner Annahme erhältst du unsere Auftragsbestätigung.", "Nach Ihrer Annahme erhalten Sie unsere Auftragsbestätigung.") : F("Sobald deine Zahlung bei uns eingegangen ist, erhältst du unsere Auftragsbestätigung.", "Sobald Ihre Zahlung bei uns eingegangen ist, erhalten Sie unsere Auftragsbestätigung.")}
     ${inquiryType === "sales" ? "Maßgeblich für die Abwicklung des Kaufs sind unsere Auftragsbestätigung und die vereinbarten Verkaufsbedingungen." : F("Erst mit der Auftragsbestätigung wird die Miete verbindlich und dein Auftrag gilt als angenommen. Maßgeblich ist allein die Auftragsbestätigung – sie dient dir als Nachweis, dass wir deinen Auftrag angenommen haben.", "Erst mit der Auftragsbestätigung wird die Miete verbindlich und Ihr Auftrag gilt als angenommen. Maßgeblich ist allein die Auftragsbestätigung – sie dient Ihnen als Nachweis, dass wir Ihren Auftrag angenommen haben.")}
-  </div>
-  <div style="background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
-    <strong>Zahlungsbedingungen:</strong><br>${paymentEmailText}
   </div>
   `}
   ${financing?.enabled ? `<div style="border-top:1px solid #00507d;padding-top:12px;"><strong>Finanzierung – unverbindliche Information</strong><p>${escapeHtml(FINANCING_INFORMATION)}</p>${financing.note ? `<p>${escapeHtml(financing.note)}</p>` : ""}</div>` : ""}
