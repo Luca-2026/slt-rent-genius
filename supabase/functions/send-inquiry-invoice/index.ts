@@ -1,5 +1,6 @@
 import { codedSubject } from "../_shared/order-code.ts";
 import { allPaymentsByBank, BANK_DISCOUNT_TERMS, hasBankDiscountPolicy, priceBankTransfer, withoutBankDiscount } from "../_shared/bank-transfer-discount.ts";
+import { invoiceBankDiscount } from "../_shared/invoice-bank-discount.ts";
 import { rentalFeedbackEmail } from "../_shared/feedback-coupons.ts";
 import { invoiceNumberForGeneration } from "../_shared/invoice-preview.ts";
 const corsHeaders = {
@@ -306,13 +307,12 @@ Deno.serve(async (req: Request) => {
 
     const discountPolicy = inquiryType === "rental" ? inquiry.offer_payload?.bank_transfer_discount : null;
     if (hasBankDiscountPolicy(discountPolicy)) {
-      items = withoutBankDiscount(items);
-      // Installment_net is already a share of the discounted stored contract, never discount it again.
-      if (discountPolicy.selected === "bank" && body.deposit_settlement !== true && invoiceKind !== "installment") {
+      if (discountPolicy.selected === "bank" && body.deposit_settlement !== true) {
         if (!allPaymentsByBank(inquiry.payments)) return json({ error: "Gemischte Zahlungen: zuerst Zahlungsart und Belege korrigieren." }, 409);
-        items = priceBankTransfer(items, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + returnLocationCost, "bank").items;
       }
-      notes = [notes, BANK_DISCOUNT_TERMS].filter(Boolean).join("\n\n");
+      const invoiceDiscount = invoiceBankDiscount(items, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + returnLocationCost, discountPolicy, invoiceKind, body.deposit_settlement === true);
+      items = invoiceDiscount.items;
+      notes = [notes, invoiceDiscount.note].filter(Boolean).join("\n\n");
     }
     const totals = buildOfferTotals(
       items,
