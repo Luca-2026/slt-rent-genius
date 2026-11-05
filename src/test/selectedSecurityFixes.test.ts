@@ -21,7 +21,7 @@ async function loadHandler(path: string, client: unknown, extra: Record<string, 
   // Transpile entrypoints to execute the actual handlers with isolated, non-network services.
   const { transform } = await import('esbuild');
   const js = (await transform(source, { loader: 'ts', format: 'cjs' })).code;
-  const values = { createClient: () => client, Deno: { serve: register, env: { get: (key: keyof typeof env) => env[key] } }, serve: register, fetch, corsHeaders: {}, ...extra };
+  const values = { createClient: () => client, Deno: { serve: register, env: { get: (key: keyof typeof env) => env[key] } }, serve: register, fetch, ...(!source.includes('const corsHeaders') ? { corsHeaders: {} } : {}), ...extra };
   new Function(...Object.keys(values), js)(...Object.values(values));
   return { handler, fetch };
 }
