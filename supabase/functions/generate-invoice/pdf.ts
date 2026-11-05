@@ -437,20 +437,20 @@ export async function generateDocumentPdf(data: {
     const dueText = data.totals.paymentDueDays === 0
       ? "Zahlungsziel: Vorkasse. Die Bereitstellung erfolgt nach Zahlungseingang."
       : `Zahlbar bis: ${fd(data.totals.dueDate)} (${data.totals.paymentDueDays} Tage netto)`;
-    const bankLine = `${SLT_COMPANY.bankName} | IBAN: ${SLT_COMPANY.iban} | BIC: ${SLT_COMPANY.bic}`;
     const ref = `Verwendungszweck: ${data.documentNumber}`;
-    const boxH = 96;
+    const textWidth = CW - 32 - 100 - 16;
+    const lines = [dueText, `Kontoinhaber: ${SLT_COMPANY.name}`, `Bank: ${SLT_COMPANY.bankName}`, `IBAN: ${SLT_COMPANY.iban}`, `BIC: ${SLT_COMPANY.bic}`, ref].flatMap(t => wt(t, font, 9, textWidth));
+    const boxH = Math.max(144, 46 + lines.length * 12);
+    need(boxH + 16);
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.995, 0.97, 0.93) });
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: 3, height: boxH, color: ORANGE });
     // Überweisungs-QR (GiroCode) mit Rechnungsbetrag und Rechnungsnummer
     drawEpcQr(pg, {
       name: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic,
       amountCents: Math.round(Number(data.totals.gross) * 100), reference: data.documentNumber,
-    }, ML + CW - 70 - 10, y - 70, 70, font);
+    }, ML + CW - 100 - 12, y - 24 - 100, 100, font);
     dt(pg, "Zahlungshinweis", ML + 16, y - 2, bold, 10, INK);
-    dt(pg, dueText, ML + 16, y - 20, font, 9.5, INK);
-    dt(pg, bankLine, ML + 16, y - 38, font, 9.5, INK);
-    dt(pg, ref, ML + 16, y - 56, bold, 9.5, INK);
+    lines.forEach((line, index) => dt(pg, line, ML + 16, y - 20 - index * 12, font, 9, INK));
     y -= boxH + 10;
   }
 
