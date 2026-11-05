@@ -1,4 +1,6 @@
 import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
+import { BANK_DISCOUNT_TERMS, hasBankDiscountPolicy } from "../_shared/bank-transfer-discount.ts";
+import { rentalPaymentPrices, validateRentalPaymentDecision } from "../_shared/rental-payment-decision.ts";
 /**
  * Öffentlicher Zahlungslink zum Angebot (/zahlung/<token>).
  * Der unratbare Token ist das Geheimnis; Beträge kommen immer aus der Datenbank.
@@ -30,7 +32,7 @@ Deno.serve(async (req: Request) => {
   try {
     const body = await req.json().catch(() => null);
     const token = typeof body?.token === "string" ? body.token : "";
-    const action = body?.action === "checkout" ? "checkout" : "info";
+    const action = body?.action === "checkout" ? "checkout" : body?.action === "select_method" ? "select_method" : "info";
     if (!/^[A-Za-z0-9_-]{20,64}$/.test(token)) return json({ error: "Ungültiger Zahlungslink" }, 400);
 
     const service = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, {
@@ -42,10 +44,39 @@ Deno.serve(async (req: Request) => {
 
     const { data: inquiry } = await service
       .from(link.inquiry_table)
-      .select("id, offer_number, order_code, customer_email, payments, offer_total_gross, offer_payload")
+      .select("id, offer_number, order_code, customer_email, payments, offer_total_gross, offer_payload, payment_decision_version")
       .eq("id", link.inquiry_id)
       .maybeSingle();
     if (!inquiry) return json({ error: "Zahlungslink nicht gefunden" }, 404);
+    const policy = inquiry.offer_payload?.bank_transfer_discount;
+    if ((action === "select_method" || action === "checkout") && hasBankDiscountPolicy(policy)) {
+      const method = action === "checkout" ? "regular" : body?.method;
+      if (method !== "bank" && method !== "regular") return json({ error: "Ungültige Zahlungsart" }, 400);
+      if (link.status !== "active" || link.offer_number !== inquiry.offer_number) return json({ error: "Zahlungslink nicht mehr gültig" }, 409);
+      const { data: inv } = await service.from("inquiry_invoices").select("id").eq("rental_inquiry_id", inquiry.id).not("status", "in", "(draft,cancelled)").limit(1);
+      const { data: settlement } = await service.from("deposit_settlements").select("id").eq("rental_inquiry_id", inquiry.id).limit(1);
+      try { validateRentalPaymentDecision({ policy, method, payments: inquiry.payments, hasIssuedInvoice: Boolean(inv?.length), hasSettlement: Boolean(settlement?.length) }); }
+      catch (e) { return json({ error: e instanceof Error ? e.message : "Zahlungswechsel gesperrt" }, 409); }
+      if (method !== policy.selected) {
+        if (link.stripe_session_id) {
+          try {
+            const stripe = stripeClient();
+            const previous = await stripe.checkout.sessions.retrieve(link.stripe_session_id);
+            if (previous.status === "complete") return json({ error: "Online-Zahlung wird verarbeitet. Bitte zunächst den Zahlungseingang abwarten." }, 409);
+            if (previous.status === "open") await stripe.checkout.sessions.expire(link.stripe_session_id);
+            const { error: clearError } = await service.from("offer_payment_links").update({ stripe_session_id: null }).eq("id", link.id).eq("stripe_session_id", link.stripe_session_id);
+            if (clearError) throw clearError;
+          } catch { return json({ error: "Bestehende Online-Zahlung konnte nicht sicher beendet werden. Bitte erneut versuchen." }, 409); }
+        }
+        const changed = { ...inquiry.offer_payload, bank_transfer_discount: { ...policy, selected: method } };
+        const priced = rentalPaymentPrices(changed);
+        const nextPayload = { ...changed, items: priced.items, totals: priced.totals };
+        const { error: decisionError } = await service.rpc("select_rental_payment_method", { _id: inquiry.id, _offer: inquiry.offer_number, _expected: inquiry.payment_decision_version, _method: method, _payload: nextPayload });
+        if (decisionError) return json({ error: decisionError.message }, 409);
+        inquiry.offer_payload = nextPayload;
+        inquiry.offer_total_gross = priced.totals.grossAmount;
+      }
+    } else if (action === "select_method") return json({ error: "Für dieses Angebot wurde kein Überweisungsrabatt vereinbart." }, 400);
     const { data: signBooking } = link.inquiry_table === "rental_inquiries"
       ? await service.from("sign_bookings").select("status,expires_at").eq("inquiry_id", inquiry.id).maybeSingle()
       : { data: null };
@@ -69,6 +100,15 @@ Deno.serve(async (req: Request) => {
     if (!signBooking && status === "paid" && plan.openCents > 0 && inquiry.offer_number === link.offer_number) status = "active";
 
     const view = {
+      ...(hasBankDiscountPolicy(inquiry.offer_payload?.bank_transfer_discount) ? {
+        bank_discount: {
+          rate: 3, selected: inquiry.offer_payload.bank_transfer_discount.selected,
+          terms: BANK_DISCOUNT_TERMS,
+          discount_cents: toCents(rentalPaymentPrices(inquiry.offer_payload).discountGross),
+          regular_options: paymentOptions({ gross: rentalPaymentPrices(inquiry.offer_payload).regularTotals.grossAmount, deposit, paidCents, terms }),
+          bank_options: paymentOptions({ gross: rentalPaymentPrices(inquiry.offer_payload).bankTotals.grossAmount, deposit, paidCents, terms }),
+        },
+      } : {}),
       status,
       offer_number: link.offer_number,
       order_code: inquiry.order_code ?? null,
@@ -82,7 +122,7 @@ Deno.serve(async (req: Request) => {
         ? { holder: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, bank: SLT_COMPANY.bankName, reference: inquiry.order_code ? `${link.offer_number} Auftrag ${inquiry.order_code}` : link.offer_number }
         : null,
     };
-    if (action === "info") return json(view);
+    if (action === "info" || action === "select_method") return json(view);
 
     if (status !== "active") return json({ error: "Dieser Zahlungslink ist nicht mehr gültig", ...view }, 409);
     if (!isStripeConfigured()) return json({ error: "Online-Zahlung ist derzeit nicht verfügbar" }, 503);
