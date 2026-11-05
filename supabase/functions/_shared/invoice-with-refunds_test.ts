@@ -15,3 +15,16 @@ Deno.test("invoice retains original page and incorporates confirmed rental refun
   const doc = await PDFDocument.load(result);
   if (doc.getPageCount() !== 2 || doc.getPage(0).getWidth() !== 595.28 || writes !== 0) throw new Error("Original invoice or read-only guarantee violated");
 });
+
+Deno.test("confirmed Stripe rental refund is incorporated without a separate receipt", async () => {
+  const doc = await PDFDocument.create();
+  doc.addPage();
+  const bytes = await doc.save();
+  const service = {
+    storage: { from: () => ({ download: async () => ({ data: new Blob([new Uint8Array(bytes)]) }) }) },
+    from: () => { const q: any = { select: () => q, eq: () => q, then: (resolve: any) => resolve({ data: [{ status: "succeeded", amount_cents: 12376, payout_method: "stripe", allocations: [{ status: "succeeded", amount_cents: 12376, refund_id: "re_TEST" }] }] }) }; return q; },
+  };
+  const result = await invoiceWithRefunds(service, { id: "test", file_path: "original.pdf", invoice_number: "RE-STRIPE-TEST", paid_amount: 680.68, gross_amount: 556.92 });
+  if ((await PDFDocument.load(result)).getPageCount() !== 2) throw new Error("Missing refund statement");
+  await Deno.writeFile("/tmp/invoice-stripe-confirmed.pdf", result);
+});
