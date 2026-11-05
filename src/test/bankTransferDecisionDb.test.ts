@@ -64,6 +64,17 @@ describe("protected persisted bank discount", () => {
     await db.query("UPDATE offer_payment_links SET checkout_claimed_at=now()-interval '24 hours' WHERE id=$1", [link]);
     await expect(begin(crypto.randomUUID(), request)).rejects.toThrow("abgeglichen");
   });
+  it("serializes ordinary rentals without a discount policy too", async () => {
+    const f = await fixture();
+    await db.query("UPDATE rental_inquiries SET offer_payload=offer_payload-'bank_transfer_discount' WHERE id=$1", [f.id]);
+    const link = (await db.query<{ id: string }>("INSERT INTO offer_payment_links(inquiry_id,inquiry_table,status,offer_number) VALUES($1,'rental_inquiries','active','TEST') RETURNING id", [f.id])).rows[0]?.id;
+    if (!link) throw new Error("Missing link");
+    const claim = crypto.randomUUID();
+    const request = { metadata: { amount_cents: "23090", payment_decision_version: "0", choice: "full", checkout_claim: claim } };
+    await db.query("SELECT begin_rental_checkout($1,0,$2,$3::jsonb)", [link, claim, JSON.stringify(request)]);
+    const recovered = await db.query<{ attempt: { claim: string } }>("SELECT begin_rental_checkout($1,0,$2,$3::jsonb) AS attempt", [link, crypto.randomUUID(), JSON.stringify(request)]);
+    expect(recovered.rows[0]?.attempt.claim).toBe(claim);
+  });
   it("blocks a second payment link for the same order and fabricated outstanding amount", async () => {
     const f = await fixture();
     const links = (await db.query<{ id: string }>("INSERT INTO offer_payment_links(inquiry_id,inquiry_table,status,offer_number) VALUES($1,'rental_inquiries','active','TEST'),($1,'rental_inquiries','active','TEST') RETURNING id", [f.id])).rows;
