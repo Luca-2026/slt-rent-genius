@@ -2752,6 +2752,7 @@ export type Database = {
           id: string
           link_id: string
           reason: string | null
+          request_id: string | null
           status: string
           stripe_refund_id: string | null
           updated_at: string
@@ -2764,6 +2765,7 @@ export type Database = {
           id?: string
           link_id: string
           reason?: string | null
+          request_id?: string | null
           status?: string
           stripe_refund_id?: string | null
           updated_at?: string
@@ -2776,6 +2778,7 @@ export type Database = {
           id?: string
           link_id?: string
           reason?: string | null
+          request_id?: string | null
           status?: string
           stripe_refund_id?: string | null
           updated_at?: string
