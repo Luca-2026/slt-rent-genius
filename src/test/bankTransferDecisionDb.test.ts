@@ -11,11 +11,12 @@ beforeAll(async () => {
     CREATE TABLE rental_inquiries(id uuid PRIMARY KEY,status text,offer_number text,offer_payload jsonb,payments jsonb,offer_total_gross numeric,offer_file_url text,original_accepted_offer jsonb);
     CREATE TABLE inquiry_invoices(rental_inquiry_id uuid,status text);
     CREATE TABLE deposit_settlements(rental_inquiry_id uuid);
-    CREATE TABLE offer_payment_links(inquiry_id uuid,inquiry_table text,status text,stripe_session_id text);
+    CREATE TABLE offer_payment_links(inquiry_id uuid,inquiry_table text,status text,stripe_session_id text,id uuid DEFAULT gen_random_uuid(),offer_number text);
     CREATE TABLE sign_bookings(inquiry_id uuid,status text,gross_cents int,total_cents int,deposit_cents int,snapshot jsonb);
     CREATE TABLE rental_inquiry_events(rental_inquiry_id uuid,event text,details jsonb);`);
   await db.exec(readFileSync("drizzle/migrations/0125_rental_bank_transfer_discount_decisions.sql", "utf8"));
   await db.exec(readFileSync("drizzle/migrations/0126_protect_bank_discount_snapshot_and_checkout.sql", "utf8"));
+  await db.exec(readFileSync("drizzle/migrations/0128_serialize_rental_online_checkout_claims.sql", "utf8"));
 }, 30000);
 afterAll(() => db.close());
 async function fixture(payments: unknown[] = []) {
@@ -52,7 +53,16 @@ describe("protected persisted bank discount", () => {
   it("blocks changing an issued invoice or an active online checkout", async () => {
     const f = await fixture(); await db.query("INSERT INTO inquiry_invoices VALUES($1,'open')", [f.id]);
     await expect(decide(f.id, f.bank)).rejects.toThrow("Belegkorrektur");
-    const g = await fixture(); await db.query("INSERT INTO offer_payment_links VALUES($1,'rental_inquiries','active','cs_live_open')", [g.id]);
+    const g = await fixture(); await db.query("INSERT INTO offer_payment_links(inquiry_id,inquiry_table,status,stripe_session_id) VALUES($1,'rental_inquiries','active','cs_live_open')", [g.id]);
     await expect(decide(g.id, g.bank)).rejects.toThrow("Online-Zahlung");
+  });
+  it("allows only one checkout claim and blocks payment changes during creation", async () => {
+    const f = await fixture();
+    const result = await db.query<{ id: string }>("INSERT INTO offer_payment_links(inquiry_id,inquiry_table,status,offer_number) VALUES($1,'rental_inquiries','active','TEST') RETURNING id", [f.id]);
+    const id = result.rows[0]?.id; if (!id) throw new Error("Missing test link");
+    const first = await db.query<{ ok: boolean }>("SELECT claim_rental_checkout($1,0,$2) AS ok", [id, crypto.randomUUID()]);
+    const second = await db.query<{ ok: boolean }>("SELECT claim_rental_checkout($1,0,$2) AS ok", [id, crypto.randomUUID()]);
+    expect(first.rows[0]?.ok).toBe(true); expect(second.rows[0]?.ok).toBe(false);
+    await expect(decide(f.id, f.bank)).rejects.toThrow("Online-Zahlung");
   });
 });
