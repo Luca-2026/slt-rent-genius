@@ -5,6 +5,11 @@ import { buildOfferTotals } from "../../supabase/functions/_shared/inquiry-offer
 const policy = { ...newBankDiscountPolicy(), selected: "bank" as const };
 const line = (net: number) => ({ product_name: "Miete", quantity: 1, unit_price: net, discount_percent: 0 });
 describe("installments and final bank rebate", () => {
+  it("does not advertise a new payment incentive on invoices", () => {
+    expect(invoiceBankDiscount([line(100)], 0, newBankDiscountPolicy(), "invoice", false).note).toBeNull();
+    expect(invoiceBankDiscount([line(100)], 0, policy, "invoice", false).note).toBeNull();
+    expect(buildOfferTotals(invoiceBankDiscount([line(100)], 0, null, "invoice", false).items).grossAmount).toBe(119);
+  });
   it("keeps two installments and final equal to the once-discounted contract", () => {
     const order = priceBankTransfer([line(1000)], 0, "bank");
     const first = buildOfferTotals(invoiceBankDiscount([line(300)], 0, policy, "installment", false).items);

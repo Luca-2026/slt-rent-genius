@@ -165,8 +165,8 @@ export default function ZahlungOnline() {
                     <Button type="button" disabled={starting} variant={method === "online" ? "default" : "outline"} onClick={() => void selectMethod("online")}>
                       <CreditCard className="h-4 w-4 mr-2" />Online
                     </Button>
-                    <Button type="button" disabled={starting} variant={method === "bank" ? "default" : "outline"} onClick={() => void selectMethod("bank")}>
-                      <Landmark className="h-4 w-4 mr-2" />Überweisung
+                    <Button type="button" className="h-auto min-h-12 py-3 whitespace-normal" disabled={starting} variant={method === "bank" ? "default" : "outline"} onClick={() => void selectMethod("bank")}>
+                      <Landmark className="h-4 w-4 mr-2 shrink-0" /><span>Überweisung{info.bank_discount && <span className="block text-xs font-semibold">3 % Rabatt</span>}</span>
                     </Button>
                   </div>
                   {info.bank_discount && <div className="space-y-2 text-sm">
