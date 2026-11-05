@@ -427,10 +427,12 @@ Deno.serve(async (req: Request) => {
           .eq("rental_inquiry_id", inquiryId);
         if (settlementAppliesToNewInvoice(srow as SettlementRow, invs ?? [])) {
           depositInfo = depositSummary(srow as SettlementRow);
-          const storedTotal = (Array.isArray(inquiry.payments) ? inquiry.payments : [])
-            .filter((p: any) => !/^Kaution\b/i.test(String(p?.label ?? "")))
-            .reduce((sum: number, p: any) => sum + (Number(p?.amount) || 0), 0);
-          payments = settlementPayments(payments, storedTotal, depositInfo, (inquiry as { order_code?: string | null }).order_code ?? null);
+          const storedPayments: RecordedPayment[] = (Array.isArray(inquiry.payments) ? inquiry.payments : []).map((p: any) => ({
+            date: str(p.date, 10) || isoDate(new Date()), amount: Math.round((Number(p.amount) || 0) * 100) / 100,
+            label: str(p.label, 80) || "Zahlungseingang", reference: str(p.reference, 255) || "",
+          })).filter((p: RecordedPayment) => p.amount > 0);
+          const storedTotal = storedPayments.reduce((sum, p) => sum + p.amount, 0);
+          payments = settlementPayments(storedPayments, storedTotal, depositInfo, (inquiry as { order_code?: string | null }).order_code ?? null);
           deposit = depositInfo.held;
         }
       }
@@ -551,7 +553,9 @@ Deno.serve(async (req: Request) => {
       const dn = depositSummaryNote(depositInfo);
       if (dn && !(notes ?? "").includes("Kautionsabrechnung vom")) notes = [notes, dn].filter(Boolean).join("\n\n");
     }
+    const form = await resolveAddressForm(service, inquiry);
     const pdfBytes = await generateOfferPdf({
+      documentGreeting: { addressForm: form, salutation: salutationLine({ address_form: form, salutation: inquiry.customer_salutation ?? inquiry.salutation, name: customerName }) },
       extraFields: invoiceExtraFields(inquiry.offer_payload, body.extra_fields),
       depositSettlement: depositInfo ?? undefined,
       orderCode: (inquiry as { order_code?: string | null }).order_code ?? null,
@@ -649,7 +653,6 @@ Deno.serve(async (req: Request) => {
       )
       .join("");
 
-    const form = await resolveAddressForm(service, inquiry);
     const t = (du: string, sie: string) => byForm(form, du, sie);
     const paymentEmailText = paymentTerms === "custom"
       ? escapeHtml(paymentTermsCustom).replace(/\n/g, "<br>")

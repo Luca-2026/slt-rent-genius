@@ -10,6 +10,17 @@ const row: SettlementRow = {
 };
 
 describe("Schlussrechnung nach Kautionsabrechnung", () => {
+  it("behält 123,76 € Mietguthaben bei separat zurückgezahlten 500 € Kaution", () => {
+    const summary = depositSummary({ ...row, deposit_held: 500, offset_amount: 0, balance: 500 });
+    const p = settlementPayments([{ date: '2026-11-05', amount: 1180.68, label: 'Banküberweisung', reference: '' }], 1180.68, summary, '96ASUG');
+    expect(p.reduce((sum, line) => sum + line.amount, 0)).toBe(680.68);
+    expect(Math.round((680.68 - 556.92) * 100) / 100).toBe(123.76);
+    expect(summary.refund).toBe(500);
+  });
+  it("entfernt getrennt gebuchte Kaution nur einmal", () => {
+    const p = settlementPayments([{ date: '2026-11-05', amount: 680.68, label: 'Banküberweisung', reference: '' }, { date: '2026-11-05', amount: 500, label: 'Kaution', reference: '' }], 1180.68, depositSummary({ ...row, deposit_held: 500, offset_amount: 0, balance: 500 }), '96ASUG');
+    expect(p.map(line => line.amount)).toEqual([680.68]);
+  });
   it("Barzahlung zählt nur bis zur Miete, dazu „Kaution verrechnet“", () => {
     const p = settlementPayments([{ date: "2026-10-16", amount: 500, label: "Barzahlung", reference: "" }], 500, depositSummary(row), "GNSC9U");
     expect(p.map((x) => x.amount)).toEqual([230.86, 32.34]);
