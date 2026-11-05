@@ -946,6 +946,13 @@
       "when": 1793865495218,
       "tag": "0134_record_rental_bank_payments_atomically",
       "breakpoints": true
+    },
+    {
+      "idx": 135,
+      "version": "7",
+      "when": 1793865733496,
+      "tag": "0135_protect_manual_rental_provider_receipts",
+      "breakpoints": true
     }
   ]
 }
