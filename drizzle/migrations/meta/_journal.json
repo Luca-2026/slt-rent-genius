@@ -904,6 +904,13 @@
       "when": 1793857624075,
       "tag": "0128_serialize_rental_online_checkout_claims",
       "breakpoints": true
+    },
+    {
+      "idx": 129,
+      "version": "7",
+      "when": 1793860090602,
+      "tag": "0129_durable_rental_checkout_attempts",
+      "breakpoints": true
     }
   ]
 }

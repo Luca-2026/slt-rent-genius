@@ -3795,6 +3795,7 @@ export type Database = {
           amount_cents: number
           checkout_claim: string | null
           checkout_claimed_at: string | null
+          checkout_request: Json | null
           created_at: string
           created_by: string | null
           customer_email: string | null
@@ -3818,6 +3819,7 @@ export type Database = {
           amount_cents: number
           checkout_claim?: string | null
           checkout_claimed_at?: string | null
+          checkout_request?: Json | null
           created_at?: string
           created_by?: string | null
           customer_email?: string | null
@@ -3841,6 +3843,7 @@ export type Database = {
           amount_cents?: number
           checkout_claim?: string | null
           checkout_claimed_at?: string | null
+          checkout_request?: Json | null
           created_at?: string
           created_by?: string | null
           customer_email?: string | null
@@ -6249,6 +6252,15 @@ export type Database = {
         Returns: undefined
       }
       backfill_allocations: { Args: { dry_run?: boolean }; Returns: Json }
+      begin_rental_checkout: {
+        Args: {
+          _claim: string
+          _link: string
+          _request: Json
+          _version: number
+        }
+        Returns: Json
+      }
       block_manual_rental_coupon: {
         Args: { p_coupon: string; p_reason: string }
         Returns: undefined
