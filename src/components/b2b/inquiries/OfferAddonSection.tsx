@@ -337,6 +337,7 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                 onValueChange={(value) => {
                   const price_type = value as "percent" | "per_unit" | "flat";
                   patchCalc(ai, { price_type, rate: addon.rate ?? 0, manual: false,
+                    ...(price_type === "flat" ? { basis: "once", days: null } : !addon.basis || addon.basis === "once" ? { basis: "line" } : {}),
                     ...(machineInsurance && price_type !== "flat" ? { basis: "full_period", days: addon.days || calDays, period_start: periodStart ?? null, period_end: periodEnd ?? null } : {}) });
                 }}>
                 <SelectTrigger aria-label="Preisberechnung der Zusatzoption"><SelectValue /></SelectTrigger>
@@ -359,6 +360,7 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                     step="0.01"
                     min={0}
                     value={addon.rate ?? 0}
+                    aria-label={addon.price_type === "percent" ? "Prozentsatz (%)" : "Tagessatz netto"}
                     disabled={disabled}
                     onChange={(e) => patchCalc(ai, { rate: Number(e.target.value) || 0 })}
                   />
@@ -370,7 +372,8 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                       type="number"
                       min={1}
                       value={addon.days ?? ""}
-                      disabled={disabled || machineInsurance}
+                      aria-label="Kalendertage gesamt"
+                      disabled={disabled}
                       className={missingDays ? "border-destructive" : undefined}
                       onChange={(e) => patchCalc(ai, { days: Number(e.target.value) || null, days_manual: true })}
                     />
@@ -386,7 +389,7 @@ export function AddonSection({ item, options, isSales, disabled, periodStart, pe
                   <label className="col-span-2 flex items-start gap-2 text-xs cursor-pointer">
                     <Checkbox
                       checked={fullPeriod}
-                      disabled={disabled}
+                      disabled={disabled || (machineInsurance && fullPeriod)}
                       onCheckedChange={(v) =>
                         patchCalc(ai, v === true
                           ? { basis: "full_period", days: addon.days || calDays, period_start: periodStart ?? null, period_end: periodEnd ?? null }
