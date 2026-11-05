@@ -80,6 +80,22 @@ Deno.serve(async (req: Request) => {
           _version: version && /^\d+$/.test(version) ? Number(version) : null,
         });
         if (settleError) throw new Error(`Zahlung konnte nicht atomar gebucht werden: ${settleError.message}`);
+        if (settled?.added && Deno.env.get("RESEND_API_KEY")) {
+          const { data: customer } = await service.from("rental_inquiries").select("customer_email,location").eq("id", link.inquiry_id).maybeSingle();
+          const loc = LOCATION_CONTACTS[resolveLocationKey(customer?.location)];
+          try {
+            await fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: { Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`, "Content-Type": "application/json", "Idempotency-Key": `rental-receipt-${session.id}` },
+              body: JSON.stringify({
+                from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
+                to: [operationalEmailRecipient(customer?.customer_email ?? undefined, loc.email)],
+                subject: await codedSubject(service, `Zahlung eingegangen – Angebot ${link.offer_number}`, { table: link.inquiry_table, id: link.inquiry_id }),
+                html: `<p>Online-Zahlung eingegangen: <strong>${money(session.amount_total ?? 0)}</strong> zu Angebot <strong>${esc(link.offer_number)}</strong>.</p><p>Die Zahlung ist in der Mietanfrage gebucht.${settled.remaining_cents > 0 ? ` Noch offen: <strong>${money(settled.remaining_cents)}</strong>.` : " Der vollständige Zahlbetrag ist eingegangen."}</p>`,
+              }),
+            });
+          } catch (error) { console.error("Zahlungshinweis fehlgeschlagen", error instanceof Error ? error.message : "unknown"); }
+        }
         return new Response(JSON.stringify({ result: settled?.result }), { status: 200 });
       }
 
