@@ -27,6 +27,7 @@ beforeAll(async () => {
   await db.exec(readFileSync("drizzle/migrations/0133_reconcile_terminal_rental_checkout_attempts.sql", "utf8"));
   await db.exec(`CREATE FUNCTION public.can_edit_operations(uuid) RETURNS boolean LANGUAGE sql AS $$ SELECT true $$;`);
   await db.exec(readFileSync("drizzle/migrations/0134_record_rental_bank_payments_atomically.sql", "utf8"));
+  await db.exec(readFileSync("drizzle/migrations/0135_protect_manual_rental_provider_receipts.sql", "utf8"));
 }, 30000);
 afterAll(() => db.close());
 async function fixture(payments: unknown[] = []) {
@@ -39,6 +40,13 @@ async function fixture(payments: unknown[] = []) {
 }
 const decide = (id: string, payload: unknown, expected = 0, method = "bank") => db.query("SELECT select_rental_payment_method($1,'TEST',$2,$3,$4::jsonb)", [id, expected, method, JSON.stringify(payload)]);
 describe("protected persisted bank discount", () => {
+  it("cannot forge or remove provider receipts through the new staff save endpoint", async () => {
+    const receipt = { label: "Online-Zahlung (Stripe)", provider: "stripe", reference: "cs_real", amount: 10 };
+    const empty = await fixture();
+    await expect(db.query("SELECT record_rental_staff_payments($1,$2,'[]'::jsonb,0,$3::jsonb,NULL)", [empty.id, crypto.randomUUID(), JSON.stringify([receipt])])).rejects.toThrow("automatisch");
+    const existing = await fixture([receipt]);
+    await expect(db.query("SELECT record_rental_staff_payments($1,$2,$3::jsonb,0,'[]'::jsonb,NULL)", [existing.id, crypto.randomUUID(), JSON.stringify([receipt])])).rejects.toThrow("verändert");
+  });
   it("atomically books bank money and 3% discount for subsequent AB/invoice snapshots", async () => {
     const f = await fixture();
     const receipt = [{ label: "Banküberweisung", amount: 226.97 }];
