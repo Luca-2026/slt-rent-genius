@@ -24,6 +24,7 @@ beforeAll(async () => {
   await db.exec(readFileSync("drizzle/migrations/0130_atomic_rental_stripe_receipts.sql", "utf8"));
   await db.exec(readFileSync("drizzle/migrations/0131_harden_rental_payment_snapshot_guards.sql", "utf8"));
   await db.exec(readFileSync("drizzle/migrations/0132_bind_rental_receipts_to_durable_attempts.sql", "utf8"));
+  await db.exec(readFileSync("drizzle/migrations/0133_reconcile_terminal_rental_checkout_attempts.sql", "utf8"));
 }, 30000);
 afterAll(() => db.close());
 async function fixture(payments: unknown[] = []) {
