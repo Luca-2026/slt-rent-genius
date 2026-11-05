@@ -1,4 +1,4 @@
-import { BANK_DISCOUNT_TERMS, hasBankDiscountPolicy, priceBankTransfer, withoutBankDiscount } from "./bank-transfer-discount.ts";
+import { hasBankDiscountPolicy, priceBankTransfer, withoutBankDiscount } from "./bank-transfer-discount.ts";
 import type { InquiryOfferItem } from "./inquiry-offer-math.ts";
 
 /** Installments are already an amount against the discounted contract; final deductions are never discounted again. */
@@ -7,6 +7,6 @@ export function invoiceBankDiscount(items: InquiryOfferItem[], costs: number, po
   const clean = withoutBankDiscount(items);
   return {
     items: policy.selected === "bank" && kind !== "installment" && !depositSettlement ? priceBankTransfer(clean, costs, "bank").items : clean,
-    note: policy.selected === "bank" && kind === "installment" ? "Abschlag auf die bereits um 3 % reduzierte Auftragssumme; kein erneuter Rabattabzug." : BANK_DISCOUNT_TERMS,
+    note: policy.selected === "bank" && kind === "installment" ? "Abschlag auf die bereits reduzierte Auftragssumme; kein erneuter Rabattabzug." : null,
   };
 }

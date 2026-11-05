@@ -1,6 +1,16 @@
 import { hasBankDiscountPolicy, newBankDiscountPolicy } from "./bank-transfer-discount.ts";
 import { SIGN_PRODUCT_SLUG } from "./sign-direct-booking.ts";
 
+export function hasRentalPaymentChoice(businessType: string, paymentTerms: string, undated = false): boolean {
+  return businessType === "rental" && !undated && ["vorkasse", "anzahlung_30"].includes(paymentTerms);
+}
+
+/** Scoped offer rollout never enables the separate sign checkout. */
+export async function offerChoiceDiscountLive(service: { from: (table: string) => any }): Promise<boolean> {
+  const { data, error } = await service.from("rental_payment_incentive_settings").select("offer_choice_enabled").eq("id", true).maybeSingle();
+  return !error && data?.offer_choice_enabled === true;
+}
+
 /** Production stays off until every internal rental path and payment switch is verified. */
 export async function bankDiscountLive(service: { from: (table: string) => any }): Promise<boolean> {
   const { data, error } = await service.from("rental_payment_incentive_settings").select("live_enabled").eq("id", true).maybeSingle();

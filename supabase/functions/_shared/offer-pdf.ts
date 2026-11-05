@@ -1119,7 +1119,7 @@ export async function generateOfferPdf(data: {
       ? `Zahlung nach Rechnungsstellung gemäß den vereinbarten Zahlungsbedingungen. Betrag: ${fm(transferCents / 100)}.`
       : `${T("Bitte überweise", "Bitte überweisen Sie")} ${fm(transferCents / 100)} gemäß den Zahlungsbedingungen.`;
     const lines = [
-      ...(bank ? wt(`3 % Überweisungsrabatt: ${fm(bank.discountGross)} brutto (Kaution unverändert).`, font, 9, textWidth) : []),
+      ...(bank ? wt(`3 % Rabatt bei Zahlung per Überweisung: ${fm(bank.discountGross)} brutto. Nur bei vollständig per Überweisung bezahlter Miete; Kaution, Schäden und städtische Gebühren sind ausgenommen.`, font, 9, textWidth) : []),
       ...wt(instruction, font, 9, textWidth),
       ...wt(`Kontoinhaber: ${SLT_COMPANY.name}`, font, 8.5, textWidth),
       ...wt(`IBAN: ${SLT_COMPANY.iban}`, font, 8.5, textWidth),
@@ -1129,7 +1129,7 @@ export async function generateOfferPdf(data: {
     const boxH = Math.max(152, 46 + lines.length * 12);
     need(boxH + 16);
     pg.drawRectangle({ x: ML, y: y - boxH + 12, width: CW, height: boxH, color: rgb(0.94, 0.96, 0.98) });
-    dt(pg, bank ? "Direkt überweisen · 3 % Rabatt" : "Banküberweisung · QR-Code", ML + 16, y - 2, bold, 10, INK);
+    dt(pg, bank ? "Überweisung · 3 % Rabatt" : "Banküberweisung · QR-Code", ML + 16, y - 2, bold, 10, INK);
     lines.forEach((line, index) => dt(pg, line, ML + 16, y - 20 - index * 12, font, 9, INK));
     if (!drawEpcQr(pg, { name: SLT_COMPANY.name, iban: SLT_COMPANY.iban, bic: SLT_COMPANY.bic, amountCents: transferCents, reference: withCode(data.offerNumber) }, ML + CW - QR - 12, y - 24 - QR, QR, font)) throw new Error("Überweisungs-QR konnte nicht erstellt werden.");
     y -= boxH + 12;

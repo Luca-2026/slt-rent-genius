@@ -1,6 +1,6 @@
 import { salesOfferLine, salesPaymentTerms, salesPaymentText, FINANCING_INFORMATION, normalizeSalesFinancing } from "../_shared/sales-offer.ts";
 import { BANK_DISCOUNT_TERMS, newBankDiscountPolicy, withoutBankDiscount, priceBankTransfer } from "../_shared/bank-transfer-discount.ts";
-import { bankDiscountLive, inquiryBankDiscountEnabled } from "../_shared/payment-incentive-rollout.ts";
+import { bankDiscountLive, hasRentalPaymentChoice, inquiryBankDiscountEnabled, offerChoiceDiscountLive } from "../_shared/payment-incentive-rollout.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { UNDATED_OFFER_NOTE } from "../_shared/undated-offer.ts";
 import { applyFeedbackCoupon } from "../_shared/feedback-coupons.ts";
@@ -164,14 +164,13 @@ Deno.serve(async (req: Request) => {
     }
 
     const table = inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries";
-    const discountRolloutEnabled = inquiryType === "rental" && await bankDiscountLive(service);
+    const discountRolloutEnabled = inquiryType === "rental" && (await offerChoiceDiscountLive(service) || await bankDiscountLive(service));
     const { data: inquiry, error: inqErr } = await service
       .from(table)
       .select("*")
       .eq("id", inquiryId)
       .maybeSingle();
     if (inqErr || !inquiry) return json({ error: "Anfrage nicht gefunden" }, 404);
-    const discountEnabled = inquiryType === "rental" && inquiryBankDiscountEnabled(discountRolloutEnabled, inquiry.raw_payload);
     if (undatedOffer && inquiry.order_confirmed_at) return json({ error: "Ein bestätigter Mietauftrag darf nicht durch ein unverbindliches Preisangebot ersetzt werden." }, 409);
     if (!allowsCustomerPaymentTerms(inquiry.customer_kind, body.payment_terms)) {
       return json({ error: "Privatkunden zahlen nicht auf Rechnung. Bitte Vorkasse oder Anzahlung wählen." }, 400);
@@ -307,7 +306,6 @@ Deno.serve(async (req: Request) => {
     const returnLocationText = returnLoc
       ? `Abholung am Standort ${pickupName}, Rückgabe abweichend am Standort ${returnLoc.name}${returnLoc.cost > 0 ? " (Aufpreis siehe Position „Rückgabe an anderem Standort“)" : " (ohne Aufpreis)"}.`
       : null;
-    const pdfNotes = [undatedOffer ? UNDATED_OFFER_NOTE : null, supersedesText, returnLocationText, openEnded ? openEndedNote(minMonths, openEndedUnit) : null, notes, discountEnabled ? BANK_DISCOUNT_TERMS : null, coupon.code ? `Gutschein ${coupon.code}: ${money(coupon.saving)} netto Rabatt, in den Positionspreisen enthalten.` : null].filter(Boolean).join("\n\n") || null;
 
     const customerName = inquiryType === "rental"
       ? (inquiry.customer_name || "")
@@ -324,6 +322,8 @@ Deno.serve(async (req: Request) => {
       paymentTerms = isBusiness ? "net_14" : "anzahlung_30";
     }
     if (inquiryType === "sales") paymentTerms = salesPaymentTerms(inquiry.customer_kind, requestedTerms);
+    const discountEnabled = hasRentalPaymentChoice(inquiryType, paymentTerms, undatedOffer) && inquiryBankDiscountEnabled(discountRolloutEnabled, inquiry.raw_payload);
+    const pdfNotes = [undatedOffer ? UNDATED_OFFER_NOTE : null, supersedesText, returnLocationText, openEnded ? openEndedNote(minMonths, openEndedUnit) : null, notes, coupon.code ? `Gutschein ${coupon.code}: ${money(coupon.saving)} netto Rabatt, in den Positionspreisen enthalten.` : null].filter(Boolean).join("\n\n") || null;
     const paymentDueDays = paymentTerms === "net_7" ? 7 : paymentTerms === "net_30" ? 30 : 14;
 
     const profile = {
@@ -751,6 +751,7 @@ Deno.serve(async (req: Request) => {
   <h2 style="color:#00507d;margin:0 0 16px;">${F("Dein", "Ihr")} Angebot ${escapeHtml(offerNumber)}</h2>
   <p>${escapeHtml(greeting)}</p>
   <p>${F("vielen Dank für deine Anfrage. Anbei erhältst du unser Angebot als PDF.", "vielen Dank für Ihre Anfrage. Anbei erhalten Sie unser Angebot als PDF.")}</p>
+  ${discountEnabled && bankAlternative ? `<div style="border-left:4px solid #ff8e02;background:#fff7ed;padding:14px 16px;margin:16px 0;"><strong>3 % Rabatt bei Zahlung per Überweisung</strong><p>${F("Du hast die Wahl", "Sie haben die Wahl")}: Online-Zahlung zum regulären Preis oder Banküberweisung mit 3 % Rabatt auf die rabattberechtigten Mietleistungen.</p><strong>Bei vollständiger Überweisung: ${money(bankAlternative.bankTotals.grossAmount + deposit)}${deposit > 0 ? " einschließlich unveränderter Kaution" : ""}</strong><br>Ersparnis: ${money(bankAlternative.discountGross)} brutto.<p style="font-size:12px;">${escapeHtml(BANK_DISCOUNT_TERMS)}</p></div>` : ""}
   ${pdfNotes ? `<p style="white-space:pre-wrap;">${escapeHtml(pdfNotes)}</p>` : ""}
   <div style="margin:16px 0;border-top:2px solid #00507d;">
     ${rowsHtml}
@@ -758,7 +759,6 @@ Deno.serve(async (req: Request) => {
   </div>
   ${discountSum > 0 ? `<p style="background:#fff7ed;border-left:4px solid #ff8e02;padding:10px 14px;margin:16px 0;border-radius:4px;font-size:14px;"><strong style="color:#ff8e02;">${F("Dein", "Ihr")} Rabattvorteil: − ${money(discountSum)}</strong><br><span style="color:#6b7280;font-size:13px;">Der Rabatt ist in den oben genannten Positionspreisen bereits abgezogen.</span></p>` : ""}
   <p style="font-size:15px;"><strong>Gesamtsumme brutto: ${money(totals.grossAmount)}</strong><br>
-  ${discountEnabled ? `<span>${escapeHtml(BANK_DISCOUNT_TERMS)}</span><br>` : ""}
   <span style="color:#6b7280;font-size:13px;">Netto ${money(totals.netAmount)}${transportTotal > 0 ? ` (inkl. Transportkosten ${money(transportTotal)})` : ""} zzgl. ${totals.vatRate}% MwSt. (${money(totals.vatAmount)})</span>${deposit > 0 ? `<br><span style="color:#6b7280;font-size:13px;">zzgl. Kaution ${money(deposit)} (wird nach Rückgabe erstattet)${undatedOffer ? " – bei späterer Beauftragung, aktuell nicht fällig" : ` – Gesamtüberweisung inkl. Kaution: ${money(totals.grossAmount + deposit)}`}</span>` : ""}</p>
 
   ${returnLoc ? `<p style="font-size:14px;"><strong>Rückgabe:</strong> Abholung am Standort ${escapeHtml(pickupName)}, Rückgabe am Standort ${escapeHtml(returnLoc.name)}${returnLoc.cost > 0 ? ` (Aufpreis ${money(returnLoc.cost)} netto)` : " (ohne Aufpreis)"}.</p>` : ""}
