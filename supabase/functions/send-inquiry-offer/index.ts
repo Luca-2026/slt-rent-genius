@@ -611,7 +611,6 @@ Deno.serve(async (req: Request) => {
     // ── Online-Zahlungslink (Stripe) für Vorkasse-Angebote ──
     // Im Stripe-Testmodus erhält nur die Testadresse einen Link – nie echte Kunden.
     let paymentLinkUrl: string | null = null;
-    let paymentLinkAmount = 0;
     try {
       if (inquiryType === "rental" && !undatedOffer && isStripeConfigured()) {
         const paidCents = (Array.isArray(inquiry.payments) ? inquiry.payments : []).reduce(
@@ -630,7 +629,6 @@ Deno.serve(async (req: Request) => {
           });
           if (link) {
             paymentLinkUrl = link.url;
-            paymentLinkAmount = plan.openCents / 100;
           }
         }
       }
@@ -772,7 +770,7 @@ Deno.serve(async (req: Request) => {
   ${paymentLinkUrl ? `<div style="background:#eef4f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>Bequem online bezahlen:</strong><br>
     ${paymentEmailText}
-    <p style="margin:8px 0;">${F("Über deinen persönlichen Zahlungslink wählst du die Zahlungsart", "Über Ihren persönlichen Zahlungslink wählen Sie die Zahlungsart")}${paymentTerms === "anzahlung_30" ? " und kannst wahlweise die Anzahlung oder direkt den Gesamtbetrag zahlen".replace("kannst", F("kannst", "können Sie")) : ""}. Der Link gilt nur für dieses Angebot.</p>
+    <p style="margin:8px 0;">${F("Über deinen persönlichen Zahlungslink wählst du die Zahlungsart", "Über Ihren persönlichen Zahlungslink wählen Sie die Zahlungsart")}${paymentTerms === "anzahlung_30" ? F(" und kannst wahlweise die Anzahlung oder direkt den Gesamtbetrag zahlen", " und können wahlweise die Anzahlung oder direkt den Gesamtbetrag zahlen") : ""}. Der Link gilt nur für dieses Angebot.</p>
     <p style="margin:12px 0 0;"><a href="${escapeHtml(paymentLinkUrl)}" style="display:inline-block;background:#ff8e02;color:#ffffff;text-decoration:none;font-weight:bold;padding:10px 18px;border-radius:4px;">Zahlungsart wählen &amp; bezahlen</a></p>
     <p style="color:#6b7280;font-size:12px;margin:8px 0 0;">${discountEnabled && bankAlternative ? "Bei vollständiger Zahlung per Überweisung gibt es 3 % Rabatt auf die rabattberechtigten Mietleistungen; die Kaution bleibt unverändert." : "Alternativ ist Zahlung per Banküberweisung möglich."} Bankdaten und QR-Code stehen im Angebots-PDF.</p>
   </div>` : `<div style="background:#f1f5f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
