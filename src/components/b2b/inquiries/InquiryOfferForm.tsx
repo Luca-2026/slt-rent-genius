@@ -2597,7 +2597,7 @@ export function InquiryOfferForm({
 
       <div className="rounded-lg bg-muted p-3 text-sm space-y-1">
         <div className="flex justify-between"><span>{inquiryType === "sales" ? "Verkaufsartikel" : "Mietartikel"}</span><span>{formatEuro(totals.itemsNet)}</span></div>
-        {(isSalesOffer ? totals.addonsNet !== 0 : totals.addonsNet > 0) && (
+        {totals.addonsNet !== 0 && (
           <div className="flex justify-between"><span>Zusatzoptionen</span><span>{formatEuro(totals.addonsNet)}</span></div>
         )}
         <div className="flex justify-between"><span>Netto</span><span>{formatEuro(totals.netAmount)}</span></div>
@@ -2609,8 +2609,8 @@ export function InquiryOfferForm({
               <span>Bereits gezahlt</span><span>− {formatEuro(amountPaid)}</span>
             </div>
             <div className="flex justify-between font-bold text-base">
-              <span>{balanceDue <= 0 ? "Vollständig bezahlt" : "Noch zu zahlen"}</span>
-              <span>{formatEuro(Math.max(0, balanceDue))}</span>
+              <span>{balanceDue < 0 ? "Überzahlung vor Kautionsabrechnung / Erstattungen" : balanceDue === 0 ? "Vollständig bezahlt" : "Noch zu zahlen"}</span>
+              <span>{formatEuro(Math.abs(balanceDue))}</span>
             </div>
           </>
         )}
