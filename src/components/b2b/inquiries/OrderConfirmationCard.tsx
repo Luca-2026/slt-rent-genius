@@ -57,7 +57,8 @@ export function OrderConfirmationCard({ inquiryType, inquiry, senderName, onDone
     payments: parseInquiryPayments(inquiry.payments),
     paymentTerms: payload?.payment_terms,
   });
-  const sentAt = inquiry.order_confirmed_at as string | null;
+  // Amendments confirm device allocation (order_confirmed_at) before any AB exists; only an issued AB number counts as sent.
+  const sentAt = inquiry.order_confirmation_number ? (inquiry.order_confirmed_at as string | null) : null;
   const requestBody = {
     inquiry_type: inquiryType, inquiry_id: inquiry.id, note, sender_name: senderName,
     attach_pdf: attachPdf, expected_revision: inquiry.order_revision ?? 0,
