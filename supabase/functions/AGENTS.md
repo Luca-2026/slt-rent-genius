@@ -1,5 +1,6 @@
 # Edge function rules
 - Rental incentive agreements persist from server-validated inquiries into offers; unresolved Stripe attempts retain their immutable request and idempotency claim across errors, blocking new methods until provider reconciliation to prevent duplicate payable sessions.
+- Staff rental payment choices use `_shared/staff-payment-decision.ts` and the same protected RPC as public choices; failed document reads block changes so issued invoices and settlements cannot be bypassed.
 - Anruf-Kundenlinks use `_shared/customer-dossier-link.ts` with the persisted CRM ID and `aktion=ansehen`; the staff-only dossier opens without edits and survives login, avoiding name-based navigation.
 - AB email/PDF and new invoice evidence must honor saved offer name/description overrides rather than linked catalogue labels; AB uses offerItemText without mutating the accepted snapshot, preventing customer-facing document drift.
 - Sales inquiry offers use _shared/sales-offer.ts for bank-only payment, one-time line normalization and optional informational financing; block sales at creation, acceptance, reminders and public checkout, including legacy payment links, while preserving rental payment and refund behavior.

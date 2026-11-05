@@ -53,11 +53,13 @@ Deno.serve(async (req: Request) => {
       const method = action === "checkout" ? "regular" : body?.method;
       if (method !== "bank" && method !== "regular") return json({ error: "Ungültige Zahlungsart" }, 400);
       if (link.status !== "active" || link.offer_number !== inquiry.offer_number) return json({ error: "Zahlungslink nicht mehr gültig" }, 409);
-      const { data: inv } = await service.from("inquiry_invoices").select("id").eq("rental_inquiry_id", inquiry.id).not("status", "in", "(draft,cancelled)").limit(1);
-      const { data: settlement } = await service.from("deposit_settlements").select("id").eq("rental_inquiry_id", inquiry.id).limit(1);
+      const { data: inv, error: invoiceError } = await service.from("inquiry_invoices").select("id").eq("rental_inquiry_id", inquiry.id).not("status", "in", "(draft,cancelled)").limit(1);
+      const { data: settlement, error: settlementError } = await service.from("deposit_settlements").select("id").eq("rental_inquiry_id", inquiry.id).limit(1);
+      if (invoiceError || settlementError) return json({ error: "Belegstatus konnte nicht geprüft werden. Zahlungswechsel bleibt gesperrt." }, 503);
       try { validateRentalPaymentDecision({ policy, method, payments: inquiry.payments, hasIssuedInvoice: Boolean(inv?.length), hasSettlement: Boolean(settlement?.length) }); }
       catch (e) { return json({ error: e instanceof Error ? e.message : "Zahlungswechsel gesperrt" }, 409); }
       if (method !== policy.selected) {
+        if (link.checkout_claim || link.checkout_request) return json({ error: "Online-Zahlungsversuch muss zuerst sicher abgeglichen werden. Bitte den Standort kontaktieren." }, 409);
         if (link.stripe_session_id) {
           try {
             const stripe = stripeClient();
@@ -175,7 +177,7 @@ Deno.serve(async (req: Request) => {
       deposit_cents: String(option.depositCents),
       choice: option.choice,
       order_code: inquiry.order_code ?? "",
-      ...(claim ? { payment_decision_version: String(inquiry.payment_decision_version) } : {}),
+      ...(claim ? { payment_decision_version: String(inquiry.payment_decision_version), checkout_claim: claim } : {}),
     };
     let checkoutRequest = {
       mode: "payment" as const,
@@ -204,13 +206,17 @@ Deno.serve(async (req: Request) => {
     if (previousSessionId) {
       const previous = await stripe.checkout.sessions.retrieve(previousSessionId);
       if (previous.status === "complete" || previous.payment_status === "paid") return json({ error: "Online-Zahlung wird verarbeitet. Bitte den Zahlungseingang abwarten." }, 409);
+      if (claim && previous.metadata?.checkout_claim === claim) {
+        if (previous.status === "open" && previous.url) return json({ url: previous.url });
+        return json({ error: "Der Zahlungsversuch ist beendet und muss vor einem Neustart abgeglichen werden. Bitte den Standort kontaktieren." }, 409);
+      }
       if (previous.status === "open") await stripe.checkout.sessions.expire(previousSessionId);
     }
     // A timeout is an unknown provider outcome: preserve the request and replay this exact key.
     const session = await stripe.checkout.sessions.create(checkoutRequest, claim ? { idempotencyKey: `rental-checkout-${link.id}-${claim}` } : undefined);
     const sessionUpdate = service
       .from("offer_payment_links")
-      .update({ stripe_session_id: session.id, ...(claim ? { checkout_claim: null, checkout_claimed_at: null } : {}), updated_at: new Date().toISOString() })
+      .update({ stripe_session_id: session.id, updated_at: new Date().toISOString() })
       .eq("id", link.id);
     const { data: updated, error: sessionError } = await (claim ? sessionUpdate.eq("checkout_claim", claim) : sessionUpdate).select("id");
     if (sessionError || !updated?.length) throw new Error("Zahlungsfenster konnte nicht sicher zugeordnet werden; gespeicherten Versuch erneut abgleichen");
