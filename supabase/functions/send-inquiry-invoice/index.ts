@@ -22,6 +22,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
+import { invoiceWithRefunds } from "../_shared/invoice-with-refunds.ts";
 import { depositSummary, depositSummaryNote, inferChargeMeasure, measureUnitLabel, settlementAppliesToNewInvoice, settlementPayments, type DepositSummary, type SettlementRow } from "../_shared/final-invoice-deposit.ts";
 import { addonExplanation, invoiceExtraFields } from "../_shared/inquiry-offer-math.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
@@ -135,7 +136,13 @@ Deno.serve(async (req: Request) => {
     const resendKey = Deno.env.get("RESEND_API_KEY");
     const str = (v: unknown, max = 200) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
-    // ── Erneut versenden: bestehende Rechnung unverändert nochmals mailen ──
+    if (typeof body.invoice_pdf_id === "string") {
+      if (!/^[0-9a-f-]{36}$/i.test(body.invoice_pdf_id)) return json({ error: "Ungültige Rechnungs-ID" }, 400);
+      const { data: invoice, error } = await service.from("inquiry_invoices").select("*").eq("id", body.invoice_pdf_id).single();
+      if (error || !invoice || ["draft", "cancelled"].includes(invoice.status)) return json({ error: "Keine ausgestellte Rechnung gefunden" }, 404);
+      return json({ success: true, pdf_base64: encodeBase64(await invoiceWithRefunds(service, invoice)) });
+    }
+    // ── Erneut versenden: ursprüngliche Rechnung mit aktuellem Erstattungszahlungsstand ──
     if (typeof body.resend_invoice_id === "string") {
       const { data: inv } = await service
         .from("inquiry_invoices")
@@ -145,8 +152,7 @@ Deno.serve(async (req: Request) => {
       if (!inv) return json({ error: "Rechnung nicht gefunden" }, 404);
       if (!inv.file_path) return json({ error: "Zu dieser Rechnung existiert kein PDF" }, 400);
 
-      const { data: file } = await service.storage.from("b2b-invoices").download(inv.file_path);
-      if (!file) return json({ error: "Rechnungs-PDF konnte nicht geladen werden" }, 500);
+      const currentInvoiceBytes = await invoiceWithRefunds(service, inv);
       let invSalutation: string | null = null;
       let invFormSrc: { crm_customer_id?: string | null; address_form?: string | null } = { crm_customer_id: inv.crm_customer_id };
       if (inv.rental_inquiry_id) {
@@ -158,7 +164,7 @@ Deno.serve(async (req: Request) => {
       }
       const rForm = await resolveAddressForm(service, invFormSrc);
       const rt = (du: string, sie: string) => byForm(rForm, du, sie);
-      const bytes = new Uint8Array(await file.arrayBuffer());
+      const bytes = currentInvoiceBytes;
       const loc = LOCATION_CONTACTS[resolveLocationKey(inv.location)];
 
       if (!resendKey) return json({ error: "E-Mail-Versand ist nicht konfiguriert" }, 500);

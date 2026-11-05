@@ -1,5 +1,5 @@
 import { creditRefund } from "./credit-refund.ts";
-import { rentalRefundPdf } from "./rental-refund-pdf.ts";
+import { invoiceWithRefunds } from "./invoice-with-refunds.ts";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 
 export async function rentalCreditRefund(service: any, invoiceId: string, userId: string, action: string, bankReference?: string) {
@@ -39,17 +39,6 @@ export async function rentalCreditRefund(service: any, invoiceId: string, userId
   } else if (!bank && !existing) {
     await creditRefund(service, invoiceId, userId, false, true);
   }
-  const { data: inquiry, error: inquiryError } = await service.from("rental_inquiries").select("order_code").eq("id", invoice.rental_inquiry_id).single();
-  if (inquiryError) throw new Error("Auftrags-ID konnte nicht gelesen werden.");
-  const pdf = await rentalRefundPdf(invoice, claim, inquiry?.order_code ?? null);
-  let pdfUrl: string | null = null;
-  if (claim.id) {
-    const path = `rental-refunds/${claim.id}/${claim.status}-${String(claim.updated_at ?? claim.created_at).replace(/[^0-9]/g, "")}.pdf`;
-    const { error: uploadError } = await service.storage.from("b2b-invoices").upload(path, pdf, { contentType: "application/pdf", upsert: false });
-    if (uploadError && !/already exists|duplicate/i.test(uploadError.message ?? "")) throw new Error("Erstattung gespeichert; PDF-Speicherung fehlgeschlagen. Status prüfen, nicht erneut auszahlen.");
-    const { data: signed, error: signError } = await service.storage.from("b2b-invoices").createSignedUrl(path, 3600);
-    if (signError) throw new Error("PDF konnte nicht geöffnet werden.");
-    pdfUrl = signed?.signedUrl ?? null;
-  }
-  return { success: true, amount_cents: amount, status: claim.status, payout_method: claim.payout_method, pdf_url: pdfUrl, pdf_base64: encodeBase64(pdf) };
+  const pdf = await invoiceWithRefunds(service, invoice);
+  return { success: true, amount_cents: amount, status: claim.status, payout_method: claim.payout_method, pdf_base64: encodeBase64(pdf) };
 }
