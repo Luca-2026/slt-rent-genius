@@ -188,8 +188,17 @@ Deno.serve(async (req: Request) => {
           if (error) throw new Error("Erstattungsstatus konnte nicht gespeichert werden");
         }
       }
-      await service.from("deposit_refunds").update({ status: refund.status ?? "pending", updated_at: new Date().toISOString() })
-        .eq("stripe_refund_id", refund.id);
+      const intent = typeof refund.payment_intent === "string" ? refund.payment_intent : refund.payment_intent?.id;
+      let depositId = refund.metadata?.deposit_refund_id;
+      if (!depositId) {
+        const { data: legacy, error } = await service.from("deposit_refunds").select("id").eq("stripe_refund_id", refund.id).maybeSingle();
+        if (error) throw new Error("Erstattungsstatus konnte nicht gelesen werden");
+        depositId = legacy?.id;
+      }
+      if (depositId && intent) {
+        const { error } = await service.rpc("sync_deposit_refund", { _id: depositId, _intent: intent, _refund_id: refund.id, _status: refund.status ?? "pending", _amount: refund.amount });
+        if (error) throw new Error("Kautionserstattungsstatus konnte nicht gespeichert werden");
+      }
       await finish(`refund_${refund.status}`);
       return new Response("ok");
     }

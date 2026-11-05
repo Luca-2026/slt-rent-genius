@@ -141,15 +141,16 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
         .limit(1);
       const link = links?.[0];
       if (!link) throw new Error("Keine bezahlte Online-Zahlung mit Kaution gefunden.");
-      const { data, error } = await invokeWithAuth<{ success?: boolean; error?: string }>("offer-payment-admin", {
+      const { data, error } = await invokeWithAuth<{ success?: boolean; error?: string; status?: string }>("offer-payment-admin", {
         action: "refund_deposit",
         link_id: link.id,
         amount_cents: Math.round(Number(settlement.balance) * 100),
         reason: `Kautionsabrechnung Auftrag ${inquiry.order_code ?? ""}`.trim(),
-        request_id: crypto.randomUUID(),
+        request_id: settlement.id,
       });
       if (error || !data?.success) throw new Error(data?.error ?? "Erstattung nicht ausgeführt.");
-      await markPayout();
+      if (data.status === "succeeded") await markPayout();
+      else await load();
       toast({ title: "Stripe-Erstattung ausgelöst", description: `${formatEuro(Number(settlement.balance))} gehen auf die ursprüngliche Zahlungsart zurück.` });
     } catch (e) {
       toast({ title: "Stripe-Erstattung fehlgeschlagen", description: e instanceof Error ? e.message : String(e), variant: "destructive" });
