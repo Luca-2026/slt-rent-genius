@@ -28,10 +28,10 @@ export default function SignBookings() {
       const bookings = await supabase.from("sign_bookings").select("id,inquiry_id,location,package,quantity,start_date,end_date,status,permit_mode,permit_path,permit_valid_from,permit_valid_until,permit_issued_on,confirmation_sent_at,staff_notified_at").order("start_date", { ascending: true });
       if (bookings.error) throw bookings.error;
       if (!bookings.data.length) return [];
-      const inquiries = await supabase.from("rental_inquiries").select("id,order_code,customer_name,company_name,customer_email,customer_phone,delivery_address,internal_notes,status").in("id", bookings.data.map(b => b.inquiry_id));
+      const inquiries = await supabase.from("rental_inquiries").select("id,order_code,customer_name,company_name,customer_email,customer_phone,delivery_street,delivery_postal_code,delivery_city,internal_notes,status").in("id", bookings.data.map(b => b.inquiry_id));
       if (inquiries.error) throw inquiries.error;
       const byId = new Map(inquiries.data.map(i => [i.id, i]));
-      return bookings.data.map(b => ({ ...b, inquiry: byId.get(b.inquiry_id) }));
+      return bookings.data.map(b => ({ ...b, inquiry: byId.get(b.inquiry_id), address: [byId.get(b.inquiry_id)?.delivery_street, byId.get(b.inquiry_id)?.delivery_postal_code, byId.get(b.inquiry_id)?.delivery_city].filter(Boolean).join(" ") }));
     },
   });
   const openPermit = async (path: string) => {
@@ -49,7 +49,7 @@ export default function SignBookings() {
     } finally { setOpening(null); }
   };
   const visible = rows.filter(b => (location === "all" || b.location === location) && (status === "all" || b.status === status) &&
-    [b.inquiry?.order_code, b.inquiry?.customer_name, b.inquiry?.company_name, b.inquiry?.delivery_address].some(value => (value || "").toLocaleLowerCase("de").includes(search.trim().toLocaleLowerCase("de"))));
+    [b.inquiry?.order_code, b.inquiry?.customer_name, b.inquiry?.company_name, b.address].some(value => (value || "").toLocaleLowerCase("de").includes(search.trim().toLocaleLowerCase("de"))));
 
   return <B2BPortalLayout title="Halteverbote">
     {accessLoading ? <p className="text-muted-foreground">Lädt …</p> : !isStaff ? <p>Nur für Mitarbeiter.</p> : <>
@@ -70,7 +70,7 @@ export default function SignBookings() {
             <div><dt className="text-muted-foreground">Genehmigungszeitraum / Beklebung</dt><dd>{b.permit_valid_from ? `${date(b.permit_valid_from)} – ${date(b.permit_valid_until)}` : "Nicht hinterlegt"}</dd></div>
             <div><dt className="text-muted-foreground">Genehmigung vom</dt><dd>{b.permit_issued_on ? date(b.permit_issued_on) : "Nicht hinterlegt"}</dd></div>
             <div><dt className="text-muted-foreground">Genehmigung</dt><dd>{b.permit_mode === "slt" ? "Beantragung durch SLT" : b.permit_mode === "existing" ? "Vom Kunden vorhanden" : b.package === "standard" ? "Angaben durch den Kunden" : "Nicht hinterlegt"}</dd></div>
-            {b.inquiry?.delivery_address && <div className="sm:col-span-2"><dt className="text-muted-foreground">Aufstelladresse</dt><dd className="break-words whitespace-pre-line">{b.inquiry.delivery_address}</dd></div>}
+            {b.address && <div className="sm:col-span-2"><dt className="text-muted-foreground">Aufstelladresse</dt><dd className="break-words whitespace-pre-line">{b.address}</dd></div>}
           </dl>
           {b.permit_path ? <Button variant="outline" size="sm" disabled={opening === b.permit_path} onClick={() => void openPermit(b.permit_path || "")}><FileDown className="mr-2 h-4 w-4" />{opening === b.permit_path ? "Öffnet …" : "Genehmigung öffnen"}</Button> : <p className="text-sm text-muted-foreground">Keine Genehmigungs-PDF hinterlegt.</p>}
           <details className="border-t border-border pt-3 text-sm"><summary className="cursor-pointer font-medium">Weitere Auftragsinfos</summary><div className="mt-3 space-y-2 break-words"><p>{b.inquiry?.customer_name}</p>{b.inquiry?.customer_email && <p><a className="text-primary underline" href={`mailto:${b.inquiry.customer_email}`}>{b.inquiry.customer_email}</a></p>}{b.inquiry?.customer_phone && <p><a className="text-primary underline" href={`tel:${b.inquiry.customer_phone}`}>{b.inquiry.customer_phone}</a></p>}<p>Kundenbestätigung: {b.confirmation_sent_at ? "Versendet" : "Noch nicht versendet"}</p><p>Standortbenachrichtigung: {b.staff_notified_at ? "Versendet" : "Noch nicht versendet"}</p>{b.inquiry?.internal_notes && <p className="whitespace-pre-line">{b.inquiry.internal_notes}</p>}</div></details>
