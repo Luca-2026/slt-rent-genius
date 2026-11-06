@@ -1135,6 +1135,9 @@ export type Database = {
           min_rental_months: number | null
           model_name: string | null
           name: string
+          offer_unit: string | null
+          offer_unit_price: number | null
+          offer_vat_rate: number
           on_request: boolean
           pdf_url: string | null
           price_base_1_3_cd: number | null
@@ -1204,6 +1207,9 @@ export type Database = {
           min_rental_months?: number | null
           model_name?: string | null
           name: string
+          offer_unit?: string | null
+          offer_unit_price?: number | null
+          offer_vat_rate?: number
           on_request?: boolean
           pdf_url?: string | null
           price_base_1_3_cd?: number | null
@@ -1273,6 +1279,9 @@ export type Database = {
           min_rental_months?: number | null
           model_name?: string | null
           name?: string
+          offer_unit?: string | null
+          offer_unit_price?: number | null
+          offer_vat_rate?: number
           on_request?: boolean
           pdf_url?: string | null
           price_base_1_3_cd?: number | null
@@ -5733,6 +5742,8 @@ export type Database = {
           is_done: boolean
           list_id: string
           note: string | null
+          scheduled_date: string | null
+          scheduled_time: string | null
           sign_step: string | null
           sort_order: number
           title: string
@@ -5748,6 +5759,8 @@ export type Database = {
           is_done?: boolean
           list_id: string
           note?: string | null
+          scheduled_date?: string | null
+          scheduled_time?: string | null
           sign_step?: string | null
           sort_order?: number
           title: string
@@ -5763,6 +5776,8 @@ export type Database = {
           is_done?: boolean
           list_id?: string
           note?: string | null
+          scheduled_date?: string | null
+          scheduled_time?: string | null
           sign_step?: string | null
           sort_order?: number
           title?: string

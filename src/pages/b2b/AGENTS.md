@@ -1,1 +1,2 @@
 - Calendar week and device views share CalendarLocationFilter and persisted location state; device filtering uses matchesCalendarLocation to normalize location names consistently.
+- Dashboard and week calendar share rental/task entry builders; explicit task-item schedules take precedence over list deadlines without inventing permit setup dates or duplicate alerts.

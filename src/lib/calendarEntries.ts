@@ -25,10 +25,12 @@ export interface CalendarInquiry {
   offer_payload?: unknown;
 }
 
-export type DayEntryKind = "pickup" | "return";
+export type DayEntryKind = "pickup" | "return" | "delivery" | "collection" | "sign" | "task";
+export const ENTRY_LABELS: Record<DayEntryKind, string> = { pickup: "Abholung", return: "Rückgabe", delivery: "Lieferung", collection: "Rückholung", sign: "Schilderarbeit", task: "Aufgabe" };
 
 export interface DayEntry {
   kind: DayEntryKind;
+  taskId?: string;
   /** YYYY-MM-DD */
   date: string;
   /** „HH:MM" oder null */
@@ -127,16 +129,38 @@ export function buildCalendarEntries(
       itemsLabel: itemsLabel(inq),
       location: inq.location,
     };
-    const start = effectiveStart(inq);
+    const lines = payloadItems(inq.offer_payload) as Array<{ delivery_at?: string; collection_at?: string }>;
+    const payload = inq.offer_payload as { order_type?: string; delivery_cost?: number; collection_cost?: number } | null;
+    const deliveries = lines.map(i => i.delivery_at).filter((v): v is string => !!v).sort();
+    const collections = lines.map(i => i.collection_at).filter((v): v is string => !!v).sort();
+    const delivery = deliveries[0];
+    const collection = collections[collections.length - 1];
+    const start = delivery ? isoDate(delivery) : effectiveStart(inq);
     if (start) {
-      entries.push({ ...base, kind: "pickup", date: start, time: timeOf(inq.start_time), protocolSigned: signedDelivery.has(inq.id) });
+      entries.push({ ...base, kind: delivery || payload?.order_type === "delivery" ? "delivery" : "pickup", date: start, time: delivery ? timeOf(delivery.slice(11)) : timeOf(inq.start_time), protocolSigned: signedDelivery.has(inq.id) });
     }
     const end = effectiveEnd(inq);
     if (end) {
-      entries.push({ ...base, kind: "return", date: end, time: timeOf(inq.end_time), protocolSigned: signedReturn.has(inq.id) });
+      entries.push({ ...base, kind: collection || Number(payload?.collection_cost) > 0 ? "collection" : "return", date: collection ? isoDate(collection) ?? end : end, time: collection ? timeOf(collection.slice(11)) : timeOf(inq.end_time), protocolSigned: signedReturn.has(inq.id) });
     }
   }
   return entries.sort((a, b) => a.date.localeCompare(b.date) || (a.time ?? "").localeCompare(b.time ?? ""));
+}
+
+export interface CalendarTask { id: string; title: string; due_date: string | null; location: string | null; sign_booking_id?: string | null; status: string }
+export interface CalendarTaskItem { list_id: string; title: string; scheduled_date: string | null; scheduled_time: string | null; is_done: boolean }
+export function buildTaskCalendarEntries(tasks: CalendarTask[], items: CalendarTaskItem[]): DayEntry[] {
+  const entries: DayEntry[] = [];
+  for (const task of tasks) {
+    if (task.status === "done" || task.status === "draft") continue;
+    const scheduled = items.filter(i => i.list_id === task.id && i.scheduled_date && !i.is_done);
+    const dates = scheduled.length ? scheduled.map(i => ({ date: i.scheduled_date, time: i.scheduled_time, label: i.title })) : [{ date: task.due_date, time: null, label: task.title }];
+    for (const d of dates) if (d.date) entries.push({ kind: task.sign_booking_id ? "sign" : "task", date: d.date, time: d.time?.slice(0,5) ?? null, taskId: task.id, inquiryId: "", orderCode: null, customer: scheduled.length ? task.title : "", itemsLabel: d.label, location: task.location, protocolSigned: false });
+  }
+  return sortCalendarEntries(entries);
+}
+export function sortCalendarEntries(entries: DayEntry[]): DayEntry[] {
+  return [...entries].sort((a,b) => a.date.localeCompare(b.date) || (a.time ?? "23:59").localeCompare(b.time ?? "23:59") || a.itemsLabel.localeCompare(b.itemsLabel));
 }
 
 /** Montag der Woche zu einem Datum (lokal). */

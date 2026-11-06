@@ -1,0 +1,6 @@
+ALTER TABLE public.b2b_managed_products ADD COLUMN offer_unit text CHECK (offer_unit IN ('stunden','stueck','pauschal')), ADD COLUMN offer_unit_price numeric(12,2) CHECK (offer_unit_price>=0), ADD COLUMN offer_vat_rate integer NOT NULL DEFAULT 19 CHECK (offer_vat_rate IN (0,19));
+CREATE FUNCTION public.guard_internal_offer_article() RETURNS trigger LANGUAGE plpgsql SET search_path=public AS $$ BEGIN IF NEW.category='gebuehren-personal' THEN NEW.is_published:=false; IF NEW.offer_unit IS NULL THEN NEW.offer_unit:='pauschal'; END IF; END IF; RETURN NEW; END $$;
+CREATE TRIGGER guard_internal_offer_article BEFORE INSERT OR UPDATE ON public.b2b_managed_products FOR EACH ROW EXECUTE FUNCTION public.guard_internal_offer_article();
+COMMENT ON COLUMN public.b2b_managed_products.offer_unit IS 'Optional fixed billing unit for period-free internal fees/personnel; null keeps rental pricing.';
+ALTER TABLE public.staff_todo_items ADD COLUMN scheduled_date date, ADD COLUMN scheduled_time time;
+COMMENT ON COLUMN public.staff_todo_items.scheduled_date IS 'Explicit operational work date; setup dates require manual scheduling from permit requirements, never inferred from rental dates.';

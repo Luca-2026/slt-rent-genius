@@ -130,7 +130,7 @@ type FormLine = OfferLine & {
  * Zeitraumtext der ersten Position, damit nichts kopiert werden muss.
  */
 function applyInheritedPeriod(item: FormLine, index: number, base: FormLine | undefined): FormLine {
-  if (index === 0 || item.custom_period || !base || isReturnChargeLine(item)) return item;
+  if (index === 0 || item.period_free || item.custom_period || !base || isReturnChargeLine(item)) return item;
   return {
     ...inheritCalendarPeriod(item, base),
   };
@@ -241,6 +241,7 @@ async function loadRentalPricing(
  * Positionen mit price_manual bleiben unverändert.
  */
 function applyRentalPricing(item: FormLine, dayOpts: RentalDayOptions): FormLine {
+  if (item.period_free) return calendarDuration(item, dayOpts);
   item = calendarDuration(item, { use_saturday: item.use_saturday ?? dayOpts.use_saturday, use_sunday: item.use_sunday ?? dayOpts.use_sunday });
   const p = item.pricing;
   if (!p || item.price_manual || ((!item.rental_start || !item.rental_end) && !item.undated_offer)) return item;
@@ -870,7 +871,7 @@ export function InquiryOfferForm({
         const calendar = pricingActive && !openEnded ? calendarDuration(inherited, { use_saturday: inherited.use_saturday ?? useSaturday, use_sunday: inherited.use_sunday ?? useSunday }) : inherited;
         const unit = inherited.unit ?? "kalendertage";
         // Unbefristet: zeitabhängige Positionen werden als Preis pro Monat geführt.
-        const monthly = openEnded && unit !== "pauschal" && unit !== "stueck"
+        const monthly = openEnded && !inherited.period_free && unit !== "pauschal" && unit !== "stueck"
           ? applyOpenEndedPeriod(inherited, openEndedUnit, minMonths)
           : calendar;
         return recalcAddons(monthly);
@@ -915,7 +916,7 @@ export function InquiryOfferForm({
       await Promise.all(
         unpricedEffectiveItems.map(async (item, index) => {
           const name = item.product_name.trim();
-          if (!name || isReturnChargeLine(item)) return;
+          if (!name || item.period_free || isReturnChargeLine(item)) return;
           let slug = item.product_slug;
           if (!slug) {
             const match = await findCatalogProductByName(name);
@@ -1270,8 +1271,8 @@ export function InquiryOfferForm({
             // Für die spätere Bestandsprüfung: echte Stückzahl und Zeitraum
             // getrennt mitschreiben (quantity ist Artikel × Dauer).
             articles,
-            rental_start: undatedOffer ? undefined : rest.rental_start ?? checkStart ?? undefined,
-            rental_end: undatedOffer || openEnded ? undefined : rest.rental_end ?? checkEnd ?? undefined,
+            rental_start: undatedOffer || rest.period_free ? undefined : rest.rental_start ?? checkStart ?? undefined,
+            rental_end: undatedOffer || openEnded || rest.period_free ? undefined : rest.rental_end ?? checkEnd ?? undefined,
             quantity: articles * duration,
             unit: unitLabel(articles * duration, unit),
             unit_code: unit,
@@ -1740,10 +1741,10 @@ export function InquiryOfferForm({
                   location={location}
                   disabled={disabled}
                   onSelect={async (product, freeText) => {
-                    const resolved = product ? await resolveCatalogPrice(product) : undefined;
+                    const resolved = product?.offer_unit ? (product.offer_unit_price != null ? { price: Number(product.offer_unit_price), unit: product.offer_unit } : undefined) : product ? await resolveCatalogPrice(product) : undefined;
                     const discounts = await ensureDiscounts();
                     const base = item.discount_auto ? { ...item, discount_percent: 0, discount_auto: undefined } : item;
-                    const pricing = pricingActive && product ? await buildLinePricing(product.slug, freeText) : null;
+                    const pricing = pricingActive && product && !product.offer_unit ? await buildLinePricing(product.slug, freeText) : null;
                     const next: FormLine = {
                       ...item,
                       discount_percent: base.discount_percent,
@@ -1757,11 +1758,14 @@ export function InquiryOfferForm({
                       available_addons: product ? parseAddonOptions(product.addon_options) : [],
                       addons: [],
                       pricing: pricing ?? undefined,
-                      unit_manual: false,
+                      unit_manual: !!product?.offer_unit,
+                      period_free: !!product?.offer_unit,
+                      vat_rate: product?.offer_vat_rate === 0 ? 0 : 19,
+                      ...(product?.offer_unit ? { unit: product.offer_unit, duration: 1, custom_period: true, price_manual: true, rental_start: undefined, rental_end: undefined } : {}),
                       price_basis: undefined,
                       tier_label: undefined,
-                      rental_start: item.rental_start ?? items[0]?.rental_start ?? rentalPeriod?.start ?? undefined,
-                      rental_end: item.rental_end ?? items[0]?.rental_end ?? rentalPeriod?.end ?? undefined,
+                      rental_start: product?.offer_unit ? undefined : item.rental_start ?? items[0]?.rental_start ?? rentalPeriod?.start ?? undefined,
+                      rental_end: product?.offer_unit ? undefined : item.rental_end ?? items[0]?.rental_end ?? rentalPeriod?.end ?? undefined,
                       rental_start_time: item.rental_start_time ?? items[0]?.rental_start_time,
                       rental_end_time: item.rental_end_time ?? items[0]?.rental_end_time,
                     };
@@ -1834,7 +1838,7 @@ export function InquiryOfferForm({
               placeholder={pricingActive || isSalesOffer ? "Beschreibung (optional)" : "Beschreibung / Zeitraum (optional)"}
               disabled={disabled || inherited || (openEnded && !isFlatRate && eff.unit !== "stueck")}
             />}
-            {pricingActive && !openEnded && !undatedOffer && (
+            {pricingActive && !openEnded && !undatedOffer && !item.period_free && (
               <div className="grid min-w-0 grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-x-2 gap-y-2" data-testid="position-period">
                 <div className="min-w-0">
                   <Label className="text-xs">Mietbeginn</Label>
@@ -1858,7 +1862,7 @@ export function InquiryOfferForm({
                 </div>
               </div>
             )}
-            {pricingActive && !openEnded && !undatedOffer && !isReturnChargeLine(item) && (
+            {pricingActive && !openEnded && !undatedOffer && !item.period_free && !isReturnChargeLine(item) && (
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-xs cursor-pointer">
                   <Checkbox checked={item.delivery_at !== undefined || item.collection_at !== undefined} disabled={disabled}
@@ -1881,7 +1885,7 @@ export function InquiryOfferForm({
                 )}
               </div>
             )}
-            {!isSalesOffer && index > 0 && !undatedOffer && (
+            {!isSalesOffer && index > 0 && !undatedOffer && !item.period_free && (
               <label className="flex items-center gap-2 text-xs cursor-pointer">
                 <Checkbox
                   checked={!!item.custom_period}
@@ -1978,13 +1982,13 @@ export function InquiryOfferForm({
                         unit_manual: true,
                         duration_override: undefined,
                         // Pauschalpreis gilt für den gesamten Auftrag – Dauer fest 1.
-                        ...(v === "pauschal" ? { duration: 1 } : {}),
+                        ...(["pauschal", "stueck", "stunden"].includes(v) ? { period_free: true, custom_period: true, rental_start: undefined, rental_end: undefined, rental_start_time: undefined, rental_end_time: undefined, delivery_at: undefined, collection_at: undefined, ...(v !== "stunden" ? { duration: 1 } : {}) } : { period_free: false }),
                       })
                     }
                   >
                     <SelectTrigger className="h-10 min-w-0 flex-1" aria-label="Einheit der Dauer"><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {OFFER_UNITS.filter((u) => u.value !== "stueck" || eff.unit === "stueck").map((u) => (
+                      {OFFER_UNITS.map((u) => (
                         <SelectItem key={u.value} value={u.value}>{u.label}</SelectItem>
                       ))}
                     </SelectContent>
@@ -1995,6 +1999,7 @@ export function InquiryOfferForm({
                   {isFlatRate ? "pauschal" : `${eff.duration ?? 1} ${unitAbbreviation((eff.unit ?? "kalendertage") as OfferUnit)}`}
                 </p>
               </div>}
+              <div><Label className="text-xs">Mehrwertsteuer</Label><Select value={String(item.vat_rate ?? 19)} disabled={disabled} onValueChange={v => patchItem(index, { vat_rate: Number(v) === 0 ? 0 : 19 })}><SelectTrigger aria-label="Mehrwertsteuer der Position"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="19">19 % – Leistung</SelectItem><SelectItem value="0">0 % – echter Schadensersatz</SelectItem></SelectContent></Select></div>
               <div>
                 <Label className="text-xs">{isFlatRate ? "Pauschalpreis netto" : "Einzelpreis netto"}</Label>
                 <NumberInput

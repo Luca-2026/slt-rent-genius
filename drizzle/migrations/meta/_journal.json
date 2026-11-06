@@ -1114,6 +1114,13 @@
       "when": 1793962589017,
       "tag": "0158_protect_credit_approval_task_points",
       "breakpoints": true
+    },
+    {
+      "idx": 159,
+      "version": "7",
+      "when": 1793962949489,
+      "tag": "0159_internal_offer_article_units",
+      "breakpoints": true
     }
   ]
 }

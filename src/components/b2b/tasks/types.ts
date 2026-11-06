@@ -31,6 +31,8 @@ export interface TodoItem {
   title: string;
   note: string | null;
   is_done: boolean;
+  scheduled_date?: string | null;
+  scheduled_time?: string | null;
   done_at: string | null;
   estimated_minutes: number | null;
   actual_minutes: number | null;

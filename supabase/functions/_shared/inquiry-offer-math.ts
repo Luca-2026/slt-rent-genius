@@ -257,9 +257,11 @@ export function normalizeInquiryOfferItems(raw: unknown, undated = false): Inqui
   if (raw.length > 50) throw new Error("Zu viele Positionen (max. 50)");
 
   return raw.map((entry, index) => {
-    const item = undated ? withoutOfferDates((entry ?? {}) as Record<string, unknown>) : (entry ?? {}) as Record<string, unknown>;
+    const source = (entry ?? {}) as Record<string, unknown>;
+    const item = undated || source.period_free === true ? withoutOfferDates(source) : source;
+    if (item.vat_rate !== undefined && item.vat_rate !== 0 && item.vat_rate !== 19) throw new Error(`Position ${index + 1}: ungültiger Mehrwertsteuersatz`);
     if (undated) {
-      if (!["miettage", "kalendertage", "arbeitstage", "wochen", "monate", "pauschal", "stueck"].includes(String(item.unit_code))) throw new Error(`Position ${index + 1}: ungültige Einheit für das Preisangebot`);
+      if (!["miettage", "kalendertage", "arbeitstage", "wochen", "monate", "pauschal", "stueck", "stunden"].includes(String(item.unit_code))) throw new Error(`Position ${index + 1}: ungültige Einheit für das Preisangebot`);
       if (!Number.isFinite(Number(item.duration)) || Number(item.duration) <= 0 || Number(item.duration) > 10000) throw new Error(`Position ${index + 1}: beispielhafte Mietdauer fehlt`);
       if (Math.abs(Number(item.quantity) - Number(item.articles) * Number(item.duration)) > 0.001) throw new Error(`Position ${index + 1}: Menge und Mietdauer stimmen nicht überein`);
     }
@@ -288,6 +290,7 @@ export function normalizeInquiryOfferItems(raw: unknown, undated = false): Inqui
     if (logistics.delivery_at || logistics.collection_at) offerInsurancePeriod({ ...logistics, rental_start: typeof item.rental_start === "string" ? item.rental_start : undefined, rental_end: typeof item.rental_end === "string" ? item.rental_end : undefined });
     return {
       product_name: name.slice(0, 200),
+      ...(source.period_free === true ? { period_free: true } : {}),
       ...(["rental", "damage", "municipal", "deposit"].includes(String(item.payment_cost_kind)) ? { payment_cost_kind: item.payment_cost_kind as InquiryOfferItem["payment_cost_kind"] } : {}),
       product_slug: item.product_slug ? String(item.product_slug).slice(0, 200) : undefined,
       articles:
@@ -316,7 +319,7 @@ export function normalizeInquiryOfferItems(raw: unknown, undated = false): Inqui
       ...(typeof item.use_sunday === "boolean" ? { use_sunday: item.use_sunday } : {}),
       name_override: typeof item.name_override === "string" && item.name_override.trim() ? item.name_override.trim().slice(0, 200) : undefined,
       description_override: typeof item.description_override === "string" && item.description_override.trim() ? item.description_override.trim().slice(0, 500) : undefined,
-      vat_rate: Number(item.vat_rate) === 0 ? 0 : undefined,
+      vat_rate: Number(item.vat_rate) === 0 ? 0 : 19,
       measure: normalizeMeasure(item.measure),
       addons: normalizeAddons(item.addons, index, {
         ...logistics,

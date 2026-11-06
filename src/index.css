@@ -59,6 +59,12 @@
     --ring: 201 100% 25%;
 
     --radius: 0.5rem;
+    --calendar-pickup: 201 100% 36%;
+    --calendar-return: 24 85% 44%;
+    --calendar-delivery: 153 65% 32%;
+    --calendar-collection: 345 65% 43%;
+    --calendar-sign: 45 90% 38%;
+    --calendar-task: 218 10% 45%;
 
     /* Custom SLT tokens */
     --headline: 218 10% 25%;
@@ -172,6 +178,12 @@
 }
 
 @layer components {
+  .calendar-entry-pickup { border-color: hsl(var(--calendar-pickup) / .5); background: hsl(var(--calendar-pickup) / .09); }
+  .calendar-entry-return { border-color: hsl(var(--calendar-return) / .5); background: hsl(var(--calendar-return) / .09); }
+  .calendar-entry-delivery { border-color: hsl(var(--calendar-delivery) / .5); background: hsl(var(--calendar-delivery) / .09); }
+  .calendar-entry-collection { border-color: hsl(var(--calendar-collection) / .5); background: hsl(var(--calendar-collection) / .09); }
+  .calendar-entry-sign { border-color: hsl(var(--calendar-sign) / .5); background: hsl(var(--calendar-sign) / .12); }
+  .calendar-entry-task { border-color: hsl(var(--calendar-task) / .5); background: hsl(var(--calendar-task) / .09); }
   @keyframes search-highlight-spin {
     to {
       transform: translate(-50%, -50%) rotate(1turn);

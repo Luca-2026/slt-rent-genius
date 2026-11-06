@@ -10,7 +10,7 @@
  * Preise sind Nettopreise aus dem CMS.
  */
 
-export type PricingUnit = "stueck" | "pauschal" | "arbeitstage" | "miettage" | "kalendertage" | "wochen" | "monate";
+export type PricingUnit = "stunden" | "stueck" | "pauschal" | "arbeitstage" | "miettage" | "kalendertage" | "wochen" | "monate";
 export type PricingScheme = "bau" | "event";
 
 export interface RentalMoment {
@@ -313,6 +313,7 @@ export function computeRentalLinePrice(input: {
 // ---------------------------------------------------------------- 1g) Einheiten
 
 const LABELS: Record<PricingUnit, { one: string; many: string; short: string }> = {
+  stunden: { one: "Stunde", many: "Stunden", short: "Std." },
   stueck: { one: "Stück", many: "Stück", short: "Stk." },
   pauschal: { one: "Pauschal", many: "Pauschal", short: "psch." },
   arbeitstage: { one: "Arbeitstag", many: "Arbeitstage", short: "AT" },

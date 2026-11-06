@@ -9,6 +9,10 @@ import { parsePriceValue, type PricedCatalogRow } from "@/lib/catalogPricing";
 import { normalizeLocation } from "@/lib/inventoryAvailability";
 
 export interface CatalogProduct extends PricedCatalogRow {
+  offer_unit?: "stunden" | "stueck" | "pauschal" | null;
+  offer_unit_price?: number | null;
+  offer_vat_rate?: number;
+  is_published?: boolean;
   slug: string;
   name: string;
   category: string;
@@ -29,8 +33,8 @@ export async function loadCatalog(): Promise<CatalogProduct[]> {
   if (!catalogPromise) {
     catalogPromise = (async () => {
       const { data, error } = await supabase
-        .from("managed_products_public")
-        .select("slug,name,category,images,pricing_scheme,price_from_1_rd,price_base_1_3_cd,price_per_day,price_weekend,price_per_month,available_locations,addon_options,suggested_accessory_slugs")
+        .from("b2b_managed_products")
+        .select("slug,name,category,images,pricing_scheme,price_from_1_rd,price_base_1_3_cd,price_per_day,price_weekend,price_per_month,available_locations,addon_options,suggested_accessory_slugs,offer_unit,offer_unit_price,offer_vat_rate,is_published")
         .order("name");
       const list = (data ?? []) as CatalogProduct[];
       // Fehler/leere Antwort nicht dauerhaft merken, sonst bleibt die Auswahl bis zum Neuladen leer.
@@ -82,7 +86,7 @@ export function InquiryProductCombobox({ value, location, disabled, onSelect }: 
     if (!location) return items;
     const loc = normalizeLocation(location);
     if (!loc) return items;
-    return items.filter((i) => !i.available_locations?.length || i.available_locations.includes(loc));
+    return items.filter((i) => i.offer_unit || !i.is_published || !i.available_locations?.length || i.available_locations.includes(loc));
   }, [items, location]);
 
   const trimmed = search.trim();
@@ -128,7 +132,7 @@ export function InquiryProductCombobox({ value, location, disabled, onSelect }: 
               </CommandGroup>
             )}
             <CommandEmpty>Tippe einen Begriff, um ihn frei zu übernehmen.</CommandEmpty>
-            <CommandGroup heading="Mietartikel (CMS)">
+            <CommandGroup heading="Artikel und Leistungen (CMS)">
               {filtered.map((item) => {
                 const img = pickCatalogImage(item.images);
                 return (
@@ -147,7 +151,7 @@ export function InquiryProductCombobox({ value, location, disabled, onSelect }: 
                     <div className="min-w-0 flex-1">
                       <div className="truncate">{item.name}</div>
                       <div className="text-xs text-muted-foreground truncate">
-                        {item.category}
+                        {item.category === "gebuehren-personal" ? "Gebühren & Personal" : item.category}{!item.is_published ? " · Intern" : ""}
                         {item.price_per_day ? ` · ${item.price_per_day}` : ""}
                       </div>
                     </div>

@@ -75,12 +75,13 @@ export function AdminInventoryTab() {
   }, [products, search, locFilter, catFilter, statusFilter]);
 
   async function togglePublish(row: AdminManagedProductRow) {
+    if (row.category === "gebuehren-personal") { toast.info("Gebühren & Personal bleiben intern verfügbar."); return; }
     const { error } = await (supabase.from("b2b_managed_products" as never) as any)
       .update({ is_published: !row.is_published })
       .eq("id", row.id);
     if (error) toast.error(error.message);
     else {
-      toast.success(!row.is_published ? "Veröffentlicht" : "Auf Entwurf gesetzt");
+      toast.success(!row.is_published ? "Auf der Website veröffentlicht" : "Nur intern verfügbar");
       refetch();
     }
   }
@@ -143,6 +144,7 @@ export function AdminInventoryTab() {
               <SelectTrigger><SelectValue placeholder="Kategorie" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Alle Kategorien</SelectItem>
+                <SelectItem value="gebuehren-personal">Gebühren & Personal (intern)</SelectItem>
                 {productCategories.filter((c) => c.id !== "alle").map((c) => <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>)}
               </SelectContent>
             </Select>
@@ -151,7 +153,7 @@ export function AdminInventoryTab() {
               <SelectContent>
                 <SelectItem value="all">Alle</SelectItem>
                 <SelectItem value="published">Veröffentlicht</SelectItem>
-                <SelectItem value="draft">Entwurf</SelectItem>
+                <SelectItem value="draft">Nur intern (nicht veröffentlicht)</SelectItem>
                 <SelectItem value="seo-draft">SEO-Entwurf vorhanden{draftCount ? ` (${draftCount})` : ""}</SelectItem>
               </SelectContent>
             </Select>
