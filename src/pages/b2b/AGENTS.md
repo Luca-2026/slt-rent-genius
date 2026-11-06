@@ -1,0 +1,1 @@
+- Calendar week and device views share CalendarLocationFilter and persisted location state; device filtering uses matchesCalendarLocation to normalize location names consistently.
