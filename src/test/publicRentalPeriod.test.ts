@@ -8,7 +8,12 @@ describe("Öffentliche Mietzeiträume", () => {
   it("Krefeld erlaubt Samstag bis 14:30 Uhr", () => expect(validPublicRentalPeriod({ ...period, location: "krefeld", start_time: "08:00", end_date: "2026-11-07", end_time: "14:30" })).toBe(true));
   it("Mülheim bleibt nach Vereinbarung anfragbar", () => expect(validPublicRentalPeriod({ ...period, location: "muelheim", end_date: "2026-11-07" })).toBe(true));
   it("Kalender-invalides Datum wird nicht normalisiert", () => expect(validCalendarDate("2026-02-30")).toBe(false));
-  for (const location of ["bonn", "krefeld"]) {
+  it("Krefeld: Schildermiete folgt den Öffnungszeiten, nicht 24/7", () => {
+    const row = { location: "krefeld", product_slug: "halteverbotsschilder-set", sign_package: "standard", start_date: "2026-11-08", end_date: "2026-11-08", start_time: "00:00", end_time: "23:59" };
+    expect(validPublicRentalPeriod(row)).toBe(false);
+    expect(validPublicRentalPeriod({ ...row, start_date: "2026-11-09", start_time: "08:00", end_date: "2026-11-10", end_time: "18:00" })).toBe(true);
+  });
+  for (const location of ["bonn"]) {
     it(`${location}: nur reine Schildermiete erlaubt Sonntag 00:00 bis 23:59`, () => {
       const row = { location, product_slug: "halteverbotsschilder-set", sign_package: "standard", start_date: "2026-11-08", end_date: "2026-11-08", start_time: "00:00", end_time: "23:59" };
       expect(validPublicRentalPeriod(row)).toBe(true);

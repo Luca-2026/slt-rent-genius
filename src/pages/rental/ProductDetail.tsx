@@ -241,8 +241,8 @@ export default function ProductDetail() {
 
     return {
       ...product.specifications,
-      Hinweis: "Genehmigungskopie im Buchungsschritt hochladen",
-      "Abholung & Rückgabe": "Schilder und Füße am vollständig videoüberwachten Vermietstandort abholen und zurückgeben.",
+      Hinweis: "Genehmigungszeitraum und -datum im Buchungsschritt angeben",
+      "Abholung & Rückgabe": location?.id === "bonn" ? "Schilder und Füße rund um die Uhr am vollständig videoüberwachten Vermietstandort abholen und zurückgeben." : "Schilder und Füße während der Öffnungszeiten am Vermietstandort abholen und zurückgeben.",
       "Kaution": "100 € je Set. Erstattung des Kautionsrests innerhalb von 48 Stunden nach Rückgabe und Prüfung.",
     };
   }, [product, location]);
@@ -796,7 +796,7 @@ export default function ProductDetail() {
                             <p className="text-sm font-semibold text-foreground mb-1"><SignPackagePrices kind="standard" /></p>
                             <p className="text-[11px] text-muted-foreground mb-1">Brutto inkl. 19% USt.</p>
                             <p className="text-xs text-muted-foreground leading-relaxed">
-                              Schilder und Füße rund um die Uhr (24/7) am vollständig videoüberwachten Vermietstandort abholen und zurückgeben – auch an Sonn- und Feiertagen.
+                              {location.id === "bonn" ? "Schilder und Füße rund um die Uhr (24/7) am vollständig videoüberwachten Vermietstandort abholen und zurückgeben – auch an Sonn- und Feiertagen." : `Schilder und Füße während der Öffnungszeiten am Standort ${cityName} abholen und zurückgeben.`}
                             </p>
                           </div>
                           <div className="border-t border-border pt-3">
