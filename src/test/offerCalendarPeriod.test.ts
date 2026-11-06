@@ -3,7 +3,8 @@ import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLe
 import { allowsBindingOffer } from "../../supabase/functions/_shared/undated-offer";
 import { recalcAddons } from "@/components/b2b/inquiries/OfferAddonSection";
 import { normalizeInquiryOfferItems } from "../../supabase/functions/_shared/inquiry-offer-math";
-import { lineTotal, type OfferLine } from "@/components/b2b/inquiries/offerMath";
+import { lineTotal, calcOfferTotals, type OfferLine } from "@/components/b2b/inquiries/offerMath";
+import { offerPayloadToLines } from "@/components/b2b/inquiries/InquiryDetailPanel";
 import { requestedItemsOf } from "@/components/b2b/inquiries/types";
 
 const line: OfferLine = { product_name: "Test", quantity: 1, duration: 5, unit: "miettage", unit_price: 5, discount_percent: 0,
@@ -20,6 +21,11 @@ describe("Calendar is the rental offer period source", () => {
   it("accepts 0 percent compensation and rejects unsupported VAT rates", () => {
     expect(normalizeInquiryOfferItems([{ ...line,period_free: true,vat_rate: 0 }])[0].vat_rate).toBe(0);
     expect(()=>normalizeInquiryOfferItems([{ ...line,vat_rate: 7 }])).toThrow(/Mehrwertsteuer/);
+  });
+  it("restores period-free personnel and compensation with their exact VAT", () => {
+    const restored = offerPayloadToLines({ items: [{ product_name: "Personal",quantity: 4,articles: 1,duration: 4,unit_code: "stunden",unit_price: 50,vat_rate: 19,period_free: true }, { product_name: "Schadensersatz",quantity: 1,articles: 1,duration: 1,unit_code: "pauschal",unit_price: 100,vat_rate: 0,period_free: true }] });
+    expect(restored?.items[0]).toMatchObject({ quantity: 1,duration: 4,unit: "stunden",vat_rate: 19,period_free: true });
+    expect(restored?.items[1].vat_rate).toBe(0);
   });
   it("quotes ten rental days without inherited dates or logistics", () => {
     const quote = recalcAddons(undatedOfferLine<OfferLine>({ ...line, duration: 10, unit_price: 51, delivery_at: "2026-11-22T08:00", addons: [{ key: "insurance", label: "Versicherung", price_type: "percent", basis: "full_period", rate: 10, amount: 0, days: 21 }] }));
