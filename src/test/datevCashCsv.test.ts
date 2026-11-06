@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildDatevCashCsv, DATEV_CASH_HEADER } from "../../supabase/functions/_shared/datev-cash-csv";
+import { buildDatevCashCsv, DATEV_CASH_HEADER, encodeWindows1252 } from "../../supabase/functions/_shared/datev-cash-csv";
 
 const lines = (csv: string) => csv.trim().split("\r\n");
 
@@ -16,11 +16,17 @@ describe("DATEV-Kassen-CSV", () => {
     const csv = buildDatevCashCsv([{ amount: 120.5, paymentDate: "2026-11-03", orderCode: "#AB12CD", customerName: "Max; Muster" }]);
     expect(lines(csv)[1].split(";")).toHaveLength(13);
   });
-  it("Kost1 = Auftrags-ID, Belegtext „Rental, Name“, USt 0", () => {
-    const row = lines(buildDatevCashCsv([{ amount: 120.5, paymentDate: "2026-11-03", orderCode: "#AB12CD", customerName: "Max Muster" }]))[1].split(";");
-    expect(row[8]).toBe("AB12CD");
-    expect(row[4]).toBe("Rental, Max Muster");
+  it("wie DATEV-Export: RechNr = Auftrags-ID, Belegtext „Rental“, USt 0, Kost1 leer", () => {
+    const row = lines(buildDatevCashCsv([{ amount: 120.5, paymentDate: "2026-11-03", orderCode: "#AB12CD", documentNumber: "RE-M-2026-11-0001", customerName: "Max Muster" }]))[1].split(";");
+    expect(row[2]).toBe("AB12CD");
+    expect(row[4]).toBe("Rental");
     expect(row[5]).toBe("0,00");
+    expect(row[8]).toBe("");
+  });
+  it("Datei ist Windows-1252 kodiert (ä = 0xE4)", () => {
+    const bytes = encodeWindows1252(DATEV_CASH_HEADER);
+    expect(bytes[2]).toBe(0xe4);
+    expect(bytes.length).toBe(DATEV_CASH_HEADER.length);
   });
   it("Betrag mit Vorzeichen und Komma, Datum TTMM", () => {
     const row = lines(buildDatevCashCsv([{ amount: -1234.5, paymentDate: "2026-07-18", orderCode: "X1" }]))[1].split(";");
