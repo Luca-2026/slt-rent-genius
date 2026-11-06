@@ -207,6 +207,7 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
                     {item.note && <span className="block text-xs text-muted-foreground">{item.note}</span>}
                   </span>
                 </label>
+                {!list.credit_profile_id && <div className="flex flex-wrap gap-2 pl-7"><div><Label className="text-xs">Arbeitstermin</Label><Input type="date" aria-label={`Arbeitstermin: ${item.title}`} defaultValue={item.scheduled_date ?? ""} onBlur={async e => { const { error } = await supabase.from("staff_todo_items").update({ scheduled_date: e.target.value || null }).eq("id",item.id); if (error) toast({ title: "Termin nicht gespeichert", description: error.message, variant: "destructive" }); else onChanged(); }} /></div><div><Label className="text-xs">Uhrzeit</Label><Input type="time" aria-label={`Arbeitszeit: ${item.title}`} defaultValue={item.scheduled_time?.slice(0,5) ?? ""} onBlur={async e => { const { error } = await supabase.from("staff_todo_items").update({ scheduled_time: e.target.value || null }).eq("id",item.id); if (error) toast({ title: "Uhrzeit nicht gespeichert", description: error.message, variant: "destructive" }); else onChanged(); }} /></div></div>}
                 <div className="flex items-center gap-2 pl-7">
                   <Clock className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
                   <span className="text-xs text-muted-foreground whitespace-nowrap">
