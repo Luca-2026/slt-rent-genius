@@ -65,14 +65,14 @@ export function RentalProtocolSection({ inquiry, state, onChanged }: Props) {
   if (!accepted && !state.delivery && !state.ret && !closedAt && !canClose) return null;
 
   const Row = ({ title, number, url, date }: { title: string; number: string; url: string | null; date: string }) => (
-    <div className="flex items-center justify-between gap-3 rounded-md border bg-card px-3 py-2">
+    <div className="flex flex-wrap items-center justify-between gap-2 rounded-md border bg-card px-3 py-2">
       <div className="min-w-0 text-sm">
         <p className="font-medium">{title} {number}</p>
         <p className="text-xs text-muted-foreground">{new Date(date).toLocaleString("de-DE", { dateStyle: "medium", timeStyle: "short" })} Uhr</p>
       </div>
       {url && (
         <Button asChild size="sm" variant="outline">
-          <a href={url} target="_blank" rel="noreferrer"><FileText className="h-4 w-4 mr-1" /> PDF</a>
+          <a href={url} target="_blank" rel="noreferrer"><FileText className="h-4 w-4" /> PDF</a>
         </Button>
       )}
     </div>
@@ -115,17 +115,17 @@ export function RentalProtocolSection({ inquiry, state, onChanged }: Props) {
       )}
       {accepted && !closedAt && !state.delivery && (
         <Button className="w-full" onClick={() => setKind("delivery")}>
-          <ClipboardCheck className="h-4 w-4 mr-2" /> Übergabeprotokoll erstellen
+          <ClipboardCheck className="h-4 w-4" /> Übergabeprotokoll erstellen
         </Button>
       )}
       {accepted && !closedAt && !state.ret && (
         <Button className="w-full" variant={state.delivery ? "default" : "outline"} onClick={() => (state.delivery ? setKind("return") : setAskReturn(true))}>
-          <PackageCheck className="h-4 w-4 mr-2" /> {state.delivery ? "Rückgabeprotokoll erstellen" : "Rückgabeprotokoll ohne Übergabe erstellen"}
+          <PackageCheck className="h-4 w-4" /> {state.delivery ? "Rückgabeprotokoll erstellen" : "Rückgabeprotokoll ohne Übergabe erstellen"}
         </Button>
       )}
       {canClose && (
         <Button className="w-full" variant="outline" onClick={() => setCloseOpen(true)}>
-          <Lock className="h-4 w-4 mr-2" /> Ohne Rückgabeprotokoll abschließen
+          <Lock className="h-4 w-4" /> Ohne Rückgabeprotokoll abschließen
         </Button>
       )}
 
