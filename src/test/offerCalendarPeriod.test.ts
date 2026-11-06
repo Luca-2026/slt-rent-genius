@@ -3,7 +3,7 @@ import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLe
 import { allowsBindingOffer } from "../../supabase/functions/_shared/undated-offer";
 import { recalcAddons } from "@/components/b2b/inquiries/OfferAddonSection";
 import { normalizeInquiryOfferItems } from "../../supabase/functions/_shared/inquiry-offer-math";
-import { lineTotal, calcOfferTotals, type OfferLine } from "@/components/b2b/inquiries/offerMath";
+import { lineTotal, type OfferLine } from "@/components/b2b/inquiries/offerMath";
 import { offerPayloadToLines } from "@/components/b2b/inquiries/InquiryDetailPanel";
 import { requestedItemsOf } from "@/components/b2b/inquiries/types";
 
