@@ -871,7 +871,7 @@ export function InquiryOfferForm({
         const calendar = pricingActive && !openEnded ? calendarDuration(inherited, { use_saturday: inherited.use_saturday ?? useSaturday, use_sunday: inherited.use_sunday ?? useSunday }) : inherited;
         const unit = inherited.unit ?? "kalendertage";
         // Unbefristet: zeitabhängige Positionen werden als Preis pro Monat geführt.
-        const monthly = openEnded && unit !== "pauschal" && unit !== "stueck"
+        const monthly = openEnded && !inherited.period_free && unit !== "pauschal" && unit !== "stueck"
           ? applyOpenEndedPeriod(inherited, openEndedUnit, minMonths)
           : calendar;
         return recalcAddons(monthly);
@@ -1271,8 +1271,8 @@ export function InquiryOfferForm({
             // Für die spätere Bestandsprüfung: echte Stückzahl und Zeitraum
             // getrennt mitschreiben (quantity ist Artikel × Dauer).
             articles,
-            rental_start: undatedOffer ? undefined : rest.rental_start ?? checkStart ?? undefined,
-            rental_end: undatedOffer || openEnded ? undefined : rest.rental_end ?? checkEnd ?? undefined,
+            rental_start: undatedOffer || rest.period_free ? undefined : rest.rental_start ?? checkStart ?? undefined,
+            rental_end: undatedOffer || openEnded || rest.period_free ? undefined : rest.rental_end ?? checkEnd ?? undefined,
             quantity: articles * duration,
             unit: unitLabel(articles * duration, unit),
             unit_code: unit,

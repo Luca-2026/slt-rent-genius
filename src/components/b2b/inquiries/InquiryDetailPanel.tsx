@@ -165,6 +165,8 @@ export function offerPayloadToLines(payload: unknown): {
       : legacy;
     return ({
     product_name: String(raw.product_name ?? ""),
+    period_free: raw.period_free === true,
+    vat_rate: raw.vat_rate === 0 ? 0 : 19,
     ...(["rental", "damage", "municipal", "deposit"].includes(String(raw.payment_cost_kind)) ? { payment_cost_kind: raw.payment_cost_kind as OfferLine["payment_cost_kind"] } : {}),
     description: split.description,
     quantity: split.quantity,
