@@ -5,7 +5,7 @@
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { isCronCall, staffUserId } from "../_shared/cronAuth.ts";
-import { buildDatevCashCsv, type CashEntry } from "../_shared/datev-cash-csv.ts";
+import { buildDatevCashCsv, encodeWindows1252, type CashEntry } from "../_shared/datev-cash-csv.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -84,7 +84,7 @@ Deno.serve(async (req) => {
     const attachments = groups.map((g) => {
       const csv = buildDatevCashCsv(g.entries);
       const name = g.key ? `Kassenbuch_${REG_LABEL[g.key]}_DATEV_${day}.csv` : `Kassenbuch_OHNE_STANDORT_${day}.csv`;
-      return { filename: name, content: btoa(String.fromCharCode(...new TextEncoder().encode(csv))), csv };
+      return { filename: name, content: btoa(String.fromCharCode(...encodeWindows1252(csv))), csv };
     });
     const dateLabel = new Date(`${day}T12:00:00Z`).toLocaleDateString("de-DE");
     const td = 'style="border:1px solid #d1d5db;padding:6px 10px;"';
