@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { addDays, toLocalIso, weekDays, weekStart, type DayEntry } from "@/lib/calendarEntries";
+import { addDays, toLocalIso, weekDays, weekStart, sortCalendarEntries, ENTRY_LABELS, type DayEntry } from "@/lib/calendarEntries";
 import { DayEntryCard } from "./DayEntryCard";
 import { cn } from "@/lib/utils";
 
@@ -48,8 +48,6 @@ export function WeekGrid({ entries, weekAnchor, onWeekChange }: Props) {
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-7">
         {days.map((iso, i) => {
           const dayEntries = byDay.get(iso) ?? [];
-          const pickups = dayEntries.filter((e) => e.kind === "pickup");
-          const returns = dayEntries.filter((e) => e.kind === "return");
           const isToday = iso === today;
           return (
             <section
@@ -65,18 +63,7 @@ export function WeekGrid({ entries, weekAnchor, onWeekChange }: Props) {
                 <p className="px-1 text-[11px] text-muted-foreground">—</p>
               ) : (
                 <div className="space-y-2">
-                  {pickups.length > 0 && (
-                    <div>
-                      <p className="px-1 text-[10px] font-semibold uppercase tracking-wide text-primary">Übergaben</p>
-                      <div className="mt-1 space-y-1.5">{pickups.map((e, j) => <DayEntryCard key={`p${j}`} entry={e} />)}</div>
-                    </div>
-                  )}
-                  {returns.length > 0 && (
-                    <div>
-                      <p className="px-1 text-[10px] font-semibold uppercase tracking-wide text-accent-foreground">Rückgaben</p>
-                      <div className="mt-1 space-y-1.5">{returns.map((e, j) => <DayEntryCard key={`r${j}`} entry={e} />)}</div>
-                    </div>
-                  )}
+                  {sortCalendarEntries(dayEntries).map((entry,index) => <DayEntryCard key={`${entry.kind}-${entry.taskId ?? entry.inquiryId}-${index}`} entry={entry} />)}
                 </div>
               )}
             </section>
