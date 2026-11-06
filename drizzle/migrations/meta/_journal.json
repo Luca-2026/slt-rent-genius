@@ -1079,6 +1079,13 @@
       "when": 1793959952953,
       "tag": "0153_branch_manager_b2b_approval",
       "breakpoints": true
+    },
+    {
+      "idx": 154,
+      "version": "7",
+      "when": 1793960229096,
+      "tag": "0154_standard_sign_booking_tasks",
+      "breakpoints": true
     }
   ]
 }

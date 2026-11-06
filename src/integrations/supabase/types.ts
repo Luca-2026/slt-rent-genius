@@ -5301,6 +5301,7 @@ export type Database = {
           quantity: number
           request_id: string
           snapshot: Json
+          staff_notified_at: string | null
           start_date: string
           status: string
           terms_accepted_at: string | null
@@ -5330,6 +5331,7 @@ export type Database = {
           quantity: number
           request_id: string
           snapshot: Json
+          staff_notified_at?: string | null
           start_date: string
           status?: string
           terms_accepted_at?: string | null
@@ -5359,6 +5361,7 @@ export type Database = {
           quantity?: number
           request_id?: string
           snapshot?: Json
+          staff_notified_at?: string | null
           start_date?: string
           status?: string
           terms_accepted_at?: string | null
