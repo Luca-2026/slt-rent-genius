@@ -32,4 +32,8 @@ describe("home calendar window", () => {
     // Mo 09.11.2026 → Mo, Di, Mi
     expect(workingDayWindowEnd("2026-11-09", 3)).toBe("2026-11-11");
   });
+  it("lists Friday, Saturday and Monday as the three dashboard days on a Friday", async () => {
+    const { workingDaysInWindow } = await import("@/lib/calendarEntries");
+    expect(workingDaysInWindow("2026-11-06", "2026-11-09")).toEqual(["2026-11-06", "2026-11-07", "2026-11-09"]);
+  });
 });

@@ -183,6 +183,13 @@ export function workingDayWindowEnd(todayIso: string, count = 3): string {
   return day;
 }
 
+/** Alle Arbeitstage (Mo–Sa) von heute bis einschließlich Fensterende. */
+export function workingDaysInWindow(todayIso: string, endIso: string): string[] {
+  const days: string[] = [];
+  for (let day = todayIso; day <= endIso; day = toLocalIso(addDays(new Date(`${day}T12:00:00`), 1))) if (isWorkingDay(day)) days.push(day);
+  return days;
+}
+
 /** Einträge je Kalendertag gruppieren (chronologisch), für eine Tagesüberschrift je Datum. */
 export function groupEntriesByDay(entries: DayEntry[]): Array<{ date: string; entries: DayEntry[] }> {
   const groups: Array<{ date: string; entries: DayEntry[] }> = [];
