@@ -125,6 +125,9 @@ interface FormState {
   /** Von Hand geänderte Bau-Staffeln (werden bei Tagespreis-Änderung nicht überschrieben). */
   tier_prices_manual: string[];
   location_tiers_manual: Record<LocId, string[]>;
+  offer_unit: string;
+  offer_unit_price: string;
+  offer_vat_rate: number;
   is_published: boolean;
   tracks_operating_hours: boolean;
   has_fuel_tank: boolean;
@@ -178,6 +181,9 @@ const emptyForm = (): FormState => ({
   location_prices: { krefeld: emptyPriceSet(), bonn: emptyPriceSet(), muelheim: emptyPriceSet() },
   tier_prices_manual: [],
   location_tiers_manual: { krefeld: [], bonn: [], muelheim: [] },
+  offer_unit: "",
+  offer_unit_price: "",
+  offer_vat_rate: 19,
   is_published: false,
   tracks_operating_hours: false,
   has_fuel_tank: false,
@@ -262,6 +268,9 @@ function fromRow(row: AdminManagedProductRow): FormState {
     location_prices: { krefeld: emptyPriceSet(), bonn: emptyPriceSet(), muelheim: emptyPriceSet() },
     tier_prices_manual: (row as unknown as { tier_prices_manual?: string[] }).tier_prices_manual ?? [],
     location_tiers_manual: { krefeld: [], bonn: [], muelheim: [] },
+    offer_unit: row.offer_unit ?? "",
+    offer_unit_price: row.offer_unit_price != null ? String(row.offer_unit_price) : "",
+    offer_vat_rate: row.offer_vat_rate ?? 19,
     is_published: row.is_published,
     tracks_operating_hours: !!(row as { tracks_operating_hours?: boolean }).tracks_operating_hours,
     has_fuel_tank: !!(row as { has_fuel_tank?: boolean }).has_fuel_tank,
@@ -629,7 +638,10 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         quantity_notes: quantityNotes,
         addon_options: serializeAddonOptions(form.addon_options, form.insurance_meta),
         main_category: form.main_category,
-        is_published: form.is_published,
+        offer_unit: form.offer_unit || null,
+        offer_unit_price: form.offer_unit_price?.trim() ? Number(form.offer_unit_price.replace(",", ".")) : null,
+        offer_vat_rate: form.offer_vat_rate,
+        is_published: form.category === "gebuehren-personal" ? false : form.is_published,
         tracks_operating_hours: form.tracks_operating_hours,
         has_fuel_tank: form.tracks_operating_hours && form.has_fuel_tank,
         updated_by: user?.id ?? null,
@@ -741,9 +753,10 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                 </div>
                 <div>
                   <Label>Kategorie *</Label>
-                  <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v })}>
+                  <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v, ...(v === "gebuehren-personal" ? { offer_unit: "pauschal", is_published: false, main_category: "bau", available_locations: ["krefeld", "bonn", "muelheim"] } : {}) })}>
                     <SelectTrigger><SelectValue placeholder="Kategorie wählen" /></SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="gebuehren-personal">Gebühren & Personal (intern)</SelectItem>
                       {productCategories.filter((c) => c.id !== "alle").map((c) => (
                         <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>
                       ))}
@@ -798,9 +811,14 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                   <Input type="number" value={form.sort_order} onChange={(e) => setForm({ ...form, sort_order: e.target.value })} />
                 </div>
                 <div className="flex items-end gap-2">
-                  <Checkbox id="pub" checked={form.is_published} onCheckedChange={(v) => setForm({ ...form, is_published: !!v })} />
-                  <Label htmlFor="pub">Veröffentlicht (im Frontend sichtbar)</Label>
+                  <Checkbox id="pub" disabled={form.category === "gebuehren-personal"} checked={form.is_published} onCheckedChange={(v) => setForm({ ...form, is_published: !!v })} />
+                  <Label htmlFor="pub">Auf der Website veröffentlichen</Label>
                 </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div><Label>Abrechnung</Label><Select value={form.offer_unit || "rental"} onValueChange={v => setForm({ ...form, offer_unit: v === "rental" ? "" : v })}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="rental">Mietzeitraum / Staffel</SelectItem><SelectItem value="stunden">Stunden (ohne Zeitraum)</SelectItem><SelectItem value="stueck">Stück (ohne Zeitraum)</SelectItem><SelectItem value="pauschal">Pauschale (ohne Zeitraum)</SelectItem></SelectContent></Select></div>
+                <div><Label>Fester Einzelpreis netto (€)</Label><Input type="number" min={0} step="0.01" value={form.offer_unit_price} onChange={e => setForm({ ...form, offer_unit_price: e.target.value })} disabled={!form.offer_unit} /></div>
+                <div><Label>Mehrwertsteuer</Label><Select value={String(form.offer_vat_rate)} onValueChange={v => setForm({ ...form, offer_vat_rate: Number(v) })}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="19">19 % – Leistung</SelectItem><SelectItem value="0">0 % – echter Schadensersatz</SelectItem></SelectContent></Select></div>
               </div>
             </TabsContent>
 

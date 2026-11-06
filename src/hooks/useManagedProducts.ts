@@ -157,6 +157,9 @@ export function useManagedProducts() {
 
 /** Für Admins: alle Artikel inkl. Entwürfe und interner Bestandsdaten. */
 export interface AdminManagedProductRow extends ManagedProductRow {
+  offer_unit?: "stunden" | "stueck" | "pauschal" | null;
+  offer_unit_price?: number | null;
+  offer_vat_rate?: number;
   is_published: boolean;
   quantities: Record<string, number>;
   quantity_notes: Record<string, string>;

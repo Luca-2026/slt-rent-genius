@@ -22,6 +22,7 @@ export function withoutLegacyPeriod(text?: string | null): string {
 
 export function calendarDescription(line: OfferLine): string {
   const text = withoutLegacyPeriod(line.description_override?.trim() || line.description);
+  if (line.period_free) return text;
   if (!line.rental_start) return text;
   const moment = (date: string, time?: string) => {
     const [year, month, day] = date.slice(0, 10).split("-");
@@ -32,6 +33,7 @@ export function calendarDescription(line: OfferLine): string {
 }
 
 export function calendarDuration<T extends OfferLine>(line: T, opts: RentalDayOptions): T {
+  if (line.period_free) return { ...line, rental_start: undefined, rental_end: undefined, rental_start_time: undefined, rental_end_time: undefined, delivery_at: undefined, collection_at: undefined };
   if (!line.rental_start || !line.rental_end || line.protocol_charge_source) return line;
   // Invalid/incomplete edits stay editable; final server validation rejects them.
   let period: ReturnType<typeof offerInsurancePeriod> = null;
@@ -46,6 +48,7 @@ export function calendarDuration<T extends OfferLine>(line: T, opts: RentalDayOp
 }
 
 export function inheritCalendarPeriod<T extends OfferLine>(line: T, base: OfferLine): T {
+  if (line.period_free) return line;
   return { ...line, rental_start: base.rental_start, rental_end: base.rental_end,
     rental_start_time: base.rental_start_time, rental_end_time: base.rental_end_time };
 }

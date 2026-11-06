@@ -41,6 +41,7 @@ export interface OfferLineAddon {
 export interface OfferLine extends OfferLogistics {
   payment_cost_kind?: "rental" | "damage" | "municipal" | "deposit";
   undated_offer?: boolean;
+  period_free?: boolean;
   product_name: string;
   description?: string;
   /** Anzahl der Artikel */

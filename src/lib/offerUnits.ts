@@ -5,6 +5,7 @@ export type OfferUnit = PricingUnit;
 
 /** Auswahlliste im Editor. "arbeitstage" bleibt für alte Angebote wählbar, wird aber nicht mehr vorbelegt. */
 export const OFFER_UNITS: { value: OfferUnit; label: string; short: string }[] = [
+  { value: "stunden", label: "Stunden", short: unitAbbreviation("stunden") },
   { value: "miettage", label: "Miettage", short: unitAbbreviation("miettage") },
   { value: "kalendertage", label: "Kalendertage", short: unitAbbreviation("kalendertage") },
   { value: "wochen", label: "Wochen", short: unitAbbreviation("wochen") },
