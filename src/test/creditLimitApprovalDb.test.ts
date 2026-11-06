@@ -19,6 +19,7 @@ beforeAll(async () => {
     INSERT INTO b2b_profiles VALUES('${customer}','approved','bonn','TEST Kreditfreigabe',500,NULL);`);
   await db.exec(readFileSync('drizzle/migrations/0156_credit_limit_admin_approval_tasks.sql','utf8'));
   await db.exec(readFileSync('drizzle/migrations/0157_credit_approval_invoker_guard.sql','utf8'));
+  await db.exec(readFileSync('drizzle/migrations/0158_protect_credit_approval_task_points.sql','utf8'));
 },30000);
 afterAll(()=>db.close());
 let task: string;
