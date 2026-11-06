@@ -1,2 +1,3 @@
 - Calendar week and device views share CalendarLocationFilter and persisted location state; device filtering uses matchesCalendarLocation to normalize location names consistently.
+- Staff Halteverbote reads existing sign_bookings and linked inquiries; permit PDFs use short-lived authenticated sign-permits URLs, with no duplicate storage or changes to booking workflows.
 - Dashboard and week calendar show only rental handover/return entries (sign bookings included as normal orders); staff tasks stay in "Meine Aufgaben" via src/lib/myTasks.ts (assigned or unassigned same-location, Mülheim→Krefeld), so work is never listed twice. Dashboard shows the next three working days (Mo–Sa) grouped per day; entry colors live outside Tailwind layers because classes are dynamic.
