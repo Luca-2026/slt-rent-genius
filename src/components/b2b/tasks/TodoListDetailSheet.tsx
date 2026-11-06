@@ -24,6 +24,7 @@ import {
   type TodoList,
 } from "./types";
 import { notifyTodoUpdate } from "./notify";
+import { CreditLimitApproval } from "./CreditLimitApproval";
 
 interface Props {
   list: TodoList | null;
@@ -171,6 +172,7 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
         </SheetHeader>
 
         <div className="p-4 space-y-6">
+          {list.credit_profile_id && <CreditLimitApproval list={list} onDone={() => { onChanged(); onOpenChange(false); }} />}
           {signInquiryId && <section className="space-y-3 border-b border-border pb-4"><Button asChild variant="outline"><Link to={`/b2b/mietanfragen/${signInquiryId}`}>Auftrag öffnen</Link></Button><SignBookingStatus inquiryId={signInquiryId} /></section>}
           {list.description && (
             <p className="text-sm text-muted-foreground whitespace-pre-line">{list.description}</p>
@@ -195,6 +197,7 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
               <div key={item.id} className="rounded-lg border border-border p-3 space-y-2">
                 <label className="flex items-start gap-3 cursor-pointer">
                   <Checkbox
+                    disabled={!!list.credit_profile_id}
                     checked={item.is_done}
                     onCheckedChange={(v) => toggleItem(item, v === true)}
                     className="mt-0.5"
@@ -259,7 +262,7 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
             </div>
           </div>
 
-          {list.status !== "done" && (
+          {list.status !== "done" && !list.credit_profile_id && (
             <Button className="w-full" onClick={completeList} disabled={busy || (!!list.sign_booking_id && doneCount !== items.length)}>
               <CheckCircle2 className="h-4 w-4 mr-1" /> Aufgabe abschließen
             </Button>

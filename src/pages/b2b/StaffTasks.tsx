@@ -314,7 +314,7 @@ export default function StaffTasks() {
           <div className="space-y-3">
             {visible.map((list) => {
               const counts = itemCounts[list.id] ?? { total: 0, done: 0 };
-              const canEdit = list.created_by === user?.id || isAdmin;
+              const canEdit = !list.credit_profile_id && (list.created_by === user?.id || isAdmin);
               return (
                 <Card key={list.id} className="overflow-hidden">
                   <CardContent className="p-4 space-y-3">
@@ -364,7 +364,7 @@ export default function StaffTasks() {
                       <Button size="sm" variant="outline" className="flex-1 min-w-[130px]" onClick={() => setDetailList(list)}>
                         Öffnen
                       </Button>
-                      {list.status !== "draft" && list.status !== "done" && list.assigned_to !== user?.id && (
+                      {!list.credit_profile_id && list.status !== "draft" && list.status !== "done" && list.assigned_to !== user?.id && (
                         <Button size="sm" variant="secondary" onClick={() => takeOver(list)}>
                           Übernehmen
                         </Button>
