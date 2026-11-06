@@ -36,4 +36,9 @@ describe("home calendar window", () => {
     const { workingDaysInWindow } = await import("@/lib/calendarEntries");
     expect(workingDaysInWindow("2026-11-06", "2026-11-09")).toEqual(["2026-11-06", "2026-11-07", "2026-11-09"]);
   });
+  it("filters calendar kinds into counter (pickup/return) and transport (delivery/collection)", async () => {
+    const { matchesKindFilter } = await import("@/lib/calendarEntries");
+    expect(["pickup", "return", "delivery", "collection"].filter((k) => matchesKindFilter(k as never, "counter"))).toEqual(["pickup", "return"]);
+    expect(["pickup", "return", "delivery", "collection"].filter((k) => matchesKindFilter(k as never, "transport"))).toEqual(["delivery", "collection"]);
+  });
 });

@@ -8,7 +8,7 @@ import { CalendarLocationFilter } from '@/components/b2b/calendar/CalendarLocati
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { WeekGrid } from "@/components/b2b/calendar/WeekGrid";
 import { InstanceAvailabilityTable, type InstanceRow } from "@/components/b2b/calendar/InstanceAvailabilityTable";
-import { buildCalendarEntries, sortCalendarEntries, normalizeLoc, type CalendarInquiry } from "@/lib/calendarEntries";
+import { buildCalendarEntries, sortCalendarEntries, normalizeLoc, matchesKindFilter, type CalendarInquiry, type CalendarKindFilter } from "@/lib/calendarEntries";
 import { CalendarLegend } from "@/components/b2b/calendar/CalendarLegend";
 import { toast } from "sonner";
 
@@ -18,6 +18,7 @@ export default function AvailabilityCalendar() {
   const { isStaff, loading: accessLoading } = useStaffAccess();
   const saved = (() => { try { return JSON.parse(localStorage.getItem(FILTER_KEY) || "{}"); } catch { return {}; } })();
   const [location, setLocation] = useState<string>(saved.location ?? "all");
+  const [kind, setKind] = useState<CalendarKindFilter>(saved.kind ?? "all");
   const [weekAnchor, setWeekAnchor] = useState<Date>(() => new Date());
   const [inquiries, setInquiries] = useState<CalendarInquiry[]>([]);
   const [signedDelivery, setSignedDelivery] = useState<Set<string>>(new Set());
@@ -68,13 +69,12 @@ export default function AvailabilityCalendar() {
   }, []);
 
   useEffect(() => { if (isStaff) void load(); }, [isStaff, load]);
-  useEffect(() => { localStorage.setItem(FILTER_KEY, JSON.stringify({ location })); }, [location]);
+  useEffect(() => { localStorage.setItem(FILTER_KEY, JSON.stringify({ location, kind })); }, [location, kind]);
 
   const entries = useMemo(() => {
     const all = sortCalendarEntries(buildCalendarEntries(inquiries, signedDelivery, signedReturn));
-    if (location === "all") return all;
-    return all.filter((e) => normalizeLoc(e.location) === location);
-  }, [inquiries, signedDelivery, signedReturn, location]);
+    return all.filter((e) => (location === "all" || normalizeLoc(e.location) === location) && matchesKindFilter(e.kind, kind));
+  }, [inquiries, signedDelivery, signedReturn, location, kind]);
 
   if (!accessLoading && !isStaff) {
     return <B2BPortalLayout title="Kalender"><p className="text-muted-foreground">Nur für Mitarbeiter.</p></B2BPortalLayout>;
@@ -94,7 +94,12 @@ export default function AvailabilityCalendar() {
             <TabsTrigger className="whitespace-normal text-center" value="instances">Verfügbarkeit Geräte</TabsTrigger>
           </TabsList>
           <TabsContent value="week">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><CalendarLocationFilter value={location} onChange={setLocation} /><CalendarLegend /></div>
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><div className="flex flex-wrap items-center gap-2"><CalendarLocationFilter value={location} onChange={setLocation} />
+              <div role="group" aria-label="Art der Termine" className="flex flex-wrap gap-1 rounded-md border border-border p-1">
+                {([["all", "Alle"], ["counter", "Abholung & Rückgabe"], ["transport", "Lieferung & Rückholung"]] as const).map(([v, l]) => (
+                  <Button key={v} type="button" size="sm" variant={kind === v ? "default" : "ghost"} aria-pressed={kind === v} className="h-8 text-xs" onClick={() => setKind(v)}>{l}</Button>
+                ))}
+              </div></div><CalendarLegend /></div>
             <WeekGrid entries={entries} weekAnchor={weekAnchor} onWeekChange={setWeekAnchor} />
           </TabsContent>
           <TabsContent value="instances">
