@@ -5953,6 +5953,27 @@ export type Database = {
         }
         Relationships: []
       }
+      test_order_registry: {
+        Row: {
+          evidence: string
+          registered_at: string
+          source_id: string
+          source_table: string
+        }
+        Insert: {
+          evidence: string
+          registered_at?: string
+          source_id: string
+          source_table: string
+        }
+        Update: {
+          evidence?: string
+          registered_at?: string
+          source_id?: string
+          source_table?: string
+        }
+        Relationships: []
+      }
       text_blocks: {
         Row: {
           key: string
@@ -6669,6 +6690,10 @@ export type Database = {
       confirm_order: {
         Args: { decisions: Json; inquiry_id: string }
         Returns: Json
+      }
+      credit_registered_test_invoice: {
+        Args: { _id: string; _table: string }
+        Returns: string
       }
       crm_find_or_create_from_inquiry: {
         Args: {

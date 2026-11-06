@@ -1121,6 +1121,13 @@
       "when": 1793962949489,
       "tag": "0159_internal_offer_article_units",
       "breakpoints": true
+    },
+    {
+      "idx": 160,
+      "version": "7",
+      "when": 1793964691962,
+      "tag": "0160_automatic_registered_test_invoice_credits",
+      "breakpoints": true
     }
   ]
 }
