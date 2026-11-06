@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { completeTestInvoiceDocuments } from "../_shared/test-invoice-documents.ts";
 import { byForm, resolveAddressForm, salutationLine, type AddressForm } from "../_shared/salutation.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
@@ -244,6 +245,9 @@ Deno.serve(async (req: Request) => {
         console.error("Finalize update err:", updErr);
         return new Response(JSON.stringify({ error: updErr.message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
+
+      const testCredits = await completeTestInvoiceDocuments(serviceClient2, "b2b_invoices", draft.id);
+      if (testCredits.length) return new Response(JSON.stringify({ success: true, invoice: { id: draft.id, invoice_number: finalNumber }, test_credits: testCredits, email_sent: false }), { headers: corsHeaders });
 
       // Optionally send email via existing send-invoice-email
       let emailSent = false;
@@ -635,6 +639,11 @@ Deno.serve(async (req: Request) => {
         return new Response(JSON.stringify({ error: finalResult.error.message }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
       invoice.status = is_correction ? "paid" : "open";
+    }
+
+    if (!save_as_draft && !is_correction) {
+      const testCredits = await completeTestInvoiceDocuments(serviceClient, "b2b_invoices", invoice.id);
+      if (testCredits.length) return new Response(JSON.stringify({ success: true, invoice, test_credits: testCredits, email_sent: false }), { headers: corsHeaders });
     }
 
     // Update reservation status to reflect invoicing
