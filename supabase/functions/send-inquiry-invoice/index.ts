@@ -1,4 +1,5 @@
 import { codedSubject } from "../_shared/order-code.ts";
+import { completeTestInvoiceDocuments } from "../_shared/test-invoice-documents.ts";
 import { allPaymentsByBank, hasBankDiscountPolicy } from "../_shared/bank-transfer-discount.ts";
 import { invoiceBankDiscount } from "../_shared/invoice-bank-discount.ts";
 import { rentalFeedbackEmail } from "../_shared/feedback-coupons.ts";
@@ -846,6 +847,10 @@ Deno.serve(async (req: Request) => {
       console.error("Rechnung konnte nicht finalisiert werden:", finalErr.message);
       return json({ error: "Rechnung konnte nicht finalisiert werden" }, 500);
     }
+
+    const testCredits = await completeTestInvoiceDocuments(service, "inquiry_invoices", inserted.id);
+    if (testCredits.length) return json({ success: true, invoice_id: inserted.id, invoice_number: invoiceNumber,
+      file_url: fileUrl, gross_amount: totals.grossAmount, email_sent: false, test_credits: testCredits });
 
     // Abschlag gestellt → nächste Fälligkeit im Abschlagsplan weiterschieben.
     if (invoiceKind === "installment" && inquiry.installment_enabled) {
