@@ -1072,6 +1072,13 @@
       "when": 1793959583633,
       "tag": "0152_sign_permit_period",
       "breakpoints": true
+    },
+    {
+      "idx": 153,
+      "version": "7",
+      "when": 1793959952953,
+      "tag": "0153_branch_manager_b2b_approval",
+      "breakpoints": true
     }
   ]
 }
