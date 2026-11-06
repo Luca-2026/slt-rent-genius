@@ -45,7 +45,7 @@ export function WeekGrid({ entries, weekAnchor, onWeekChange }: Props) {
           KW {fmt(start)} – {fmt(end)}.{end.getFullYear()}
         </span>
       </div>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-7">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-7 [&>*]:min-w-0">
         {days.map((iso, i) => {
           const dayEntries = byDay.get(iso) ?? [];
           const isToday = iso === today;

@@ -14,10 +14,10 @@ export function DayEntryCard({ entry }: { entry: DayEntry }) {
         `calendar-entry-${entry.kind}`,
       )}
     >
-      <div className="flex items-center justify-between gap-2">
-        <span className="flex min-w-0 items-center gap-1.5">
+      <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+        <span className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1">
           <span className="calendar-entry-badge shrink-0 rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide">{ENTRY_LABELS[entry.kind]}</span>
-          <span className="font-medium">{entry.time ? `${entry.time} Uhr` : "ohne Uhrzeit"}</span>
+          <span className="whitespace-nowrap font-medium">{entry.time ? `${entry.time} Uhr` : "ohne Uhrzeit"}</span>
         </span>
         {entry.orderCode && <span className="font-mono text-[10px] text-muted-foreground">#{entry.orderCode}</span>}
       </div>

@@ -27,7 +27,7 @@ import { AcceptedOffersPayments } from "@/components/b2b/dashboard/AcceptedOffer
 import { DepositSettlementsDue } from "@/components/b2b/dashboard/DepositSettlementsDue";
 import { DayEntryCard } from "@/components/b2b/calendar/DayEntryCard";
 import { CalendarLegend } from "@/components/b2b/calendar/CalendarLegend";
-import { buildCalendarEntries, groupEntriesByDay, workingDayWindowEnd, effectiveEnd, hasInvalidRentalPeriod, normalizeLoc, type DayEntry } from "@/lib/calendarEntries";
+import { buildCalendarEntries, groupEntriesByDay, workingDayWindowEnd, workingDaysInWindow, effectiveEnd, hasInvalidRentalPeriod, normalizeLoc, type DayEntry } from "@/lib/calendarEntries";
 
 type ProfileRow = PortalProfileLite & { id: string; company_name: string; credit_limit: number };
 
@@ -251,9 +251,14 @@ export default function StaffHome() {
   // Startseite: nur Rausgaben/Rücknahmen der nächsten drei Arbeitstage. Schilderarbeiten stehen in den
   // Aufgaben des Standorts, nicht zusätzlich im Kalender; alles Spätere zeigt die Wochenübersicht.
   const windowEnd = workingDayWindowEnd(today, 3);
-  const upcomingDays = groupEntriesByDay(buildCalendarEntries(confirmedAll, signedDelivery, signedReturn)
+  const upcomingGroups = groupEntriesByDay(buildCalendarEntries(confirmedAll, signedDelivery, signedReturn)
     .filter(e => e.date >= today && e.date <= windowEnd && !e.protocolSigned)
     .filter(e => activeDayLocation === "all" || !e.location || normalizeLoc(e.location) === activeDayLocation));
+  // Alle drei Arbeitstage immer als eigene Überschrift zeigen – auch ohne Termine –, damit kein Tag „fehlt“.
+  const upcomingDays = workingDaysInWindow(today, windowEnd)
+    .map((date) => upcomingGroups.find((g) => g.date === date) ?? { date, entries: [] })
+    .concat(upcomingGroups.filter((g) => !workingDaysInWindow(today, windowEnd).includes(g.date)))
+    .sort((a, b) => a.date.localeCompare(b.date));
 
   const monthName = now.toLocaleDateString("de-DE", { month: "long" });
   const firstName = displayName && !displayName.includes("@") ? displayName.split(" ")[0] : "";
@@ -313,14 +318,14 @@ export default function StaffHome() {
               <div className="divide-y divide-border">
                 <div className="space-y-4 px-4 py-3">
                   <CalendarLegend />
-                  {upcomingDays.length === 0 ? <p className="text-sm text-muted-foreground">Keine Rausgaben oder Rücknahmen in den nächsten drei Arbeitstagen.</p> : upcomingDays.map((day) => (
+                  {upcomingDays.map((day) => (
                     <section key={day.date} aria-label={day.date}>
                       <h3 className="mb-2 border-b border-border pb-1 text-sm font-semibold text-foreground">
                         {day.date === today ? "Heute · " : ""}{new Date(`${day.date}T12:00:00`).toLocaleDateString("de-DE", { weekday: "long", day: "2-digit", month: "2-digit" })}
                       </h3>
-                      <div className="grid gap-2 sm:grid-cols-2">
+                      {day.entries.length === 0 ? <p className="text-xs text-muted-foreground">Keine offenen Rausgaben oder Rücknahmen{activeDayLocation !== "all" ? " an diesem Standort" : ""}.</p> : <div className="grid gap-2 sm:grid-cols-2">
                         {day.entries.map((entry, index) => <DayEntryCard key={`${entry.kind}-${entry.inquiryId}-${index}`} entry={entry} />)}
-                      </div>
+                      </div>}
                     </section>
                   ))}
                   <Link to="/b2b/kalender" className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">Ganze Woche im Kalender ansehen<ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></Link>
