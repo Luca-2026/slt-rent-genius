@@ -155,6 +155,7 @@ export function AdminCustomerEditDialog({ profile, open, onOpenChange, onSaved }
     if (!error && grantWithEmail) {
       const { data, error: gErr } = await supabase.functions.invoke("grant-credit-limit", { body: { profileId: profile.id, amount: creditLimit } });
       if (gErr || data?.error) grantError = data?.error || gErr?.message || "Unbekannter Fehler";
+      else if (data?.pending_approval) toast({ title: "Kreditlimitfreigabe liegt beim Admin", description: "Benedikt und Luca erhalten eine Freigabeaufgabe. Das bisherige Limit bleibt unverändert." });
       else toast({ title: "Kreditlimit vergeben", description: data?.email_sent ? `Bestätigung an ${data.email_sent_to} gesendet.` : "E-Mail konnte nicht gesendet werden." });
     }
 
