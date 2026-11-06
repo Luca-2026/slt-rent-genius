@@ -5788,6 +5788,11 @@ export type Database = {
           created_at: string
           created_by: string | null
           created_by_name: string | null
+          credit_decided_at: string | null
+          credit_decided_by: string | null
+          credit_profile_id: string | null
+          credit_request_amount: number | null
+          credit_request_status: string | null
           description: string | null
           due_date: string | null
           email_sent: boolean
@@ -5811,6 +5816,11 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           created_by_name?: string | null
+          credit_decided_at?: string | null
+          credit_decided_by?: string | null
+          credit_profile_id?: string | null
+          credit_request_amount?: number | null
+          credit_request_status?: string | null
           description?: string | null
           due_date?: string | null
           email_sent?: boolean
@@ -5834,6 +5844,11 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           created_by_name?: string | null
+          credit_decided_at?: string | null
+          credit_decided_by?: string | null
+          credit_profile_id?: string | null
+          credit_request_amount?: number | null
+          credit_request_status?: string | null
           description?: string | null
           due_date?: string | null
           email_sent?: boolean
@@ -5849,6 +5864,20 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "staff_todo_lists_credit_profile_id_fkey"
+            columns: ["credit_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "staff_todo_lists_credit_profile_id_fkey"
+            columns: ["credit_profile_id"]
+            isOneToOne: false
+            referencedRelation: "b2b_profiles_customer"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "staff_todo_lists_sign_booking_id_fkey"
             columns: ["sign_booking_id"]
@@ -6494,6 +6523,15 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      apply_staff_credit_limit: {
+        Args: {
+          _actor: string
+          _amount: number
+          _profile: string
+          _request?: string
+        }
+        Returns: undefined
+      }
       approve_onsite_b2b_profile: {
         Args: { _profile: string }
         Returns: undefined
@@ -6906,6 +6944,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      reject_credit_limit_approval: {
+        Args: { _request: string }
+        Returns: undefined
+      }
       release_terminal_rental_checkout: {
         Args: {
           _claim: string
@@ -6914,6 +6956,10 @@ export type Database = {
           _terminal: string
         }
         Returns: boolean
+      }
+      request_credit_limit_approval: {
+        Args: { _amount: number; _profile: string }
+        Returns: string
       }
       request_rental_additional_payout: {
         Args: {
