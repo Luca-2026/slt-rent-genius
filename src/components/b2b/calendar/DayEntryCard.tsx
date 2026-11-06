@@ -3,22 +3,25 @@ import { CheckCircle2, CircleDashed } from "lucide-react";
 import { ENTRY_LABELS, type DayEntry } from "@/lib/calendarEntries";
 import { cn } from "@/lib/utils";
 
-/** Ein Eintrag (Übergabe oder Rückgabe) im Tageskalender. */
+/** Ein Eintrag (Rausgabe oder Rücknahme) im Kalender; Farbe je Art (Abholung, Lieferung, Rückgabe, Rückholung). */
 export function DayEntryCard({ entry }: { entry: DayEntry }) {
   const isPickup = entry.kind === "pickup" || entry.kind === "delivery";
   return (
     <Link
       to={entry.taskId ? `/b2b/aufgaben?aufgabe=${entry.taskId}` : `/b2b/mietanfragen/${entry.inquiryId}`}
       className={cn(
-        "block rounded-md border p-2 text-left text-xs transition-colors hover:bg-muted/60",
+        "calendar-entry block rounded-md border p-2 text-left text-xs transition-[filter] hover:brightness-95",
         `calendar-entry-${entry.kind}`,
       )}
     >
       <div className="flex items-center justify-between gap-2">
-        <span className="font-medium">{ENTRY_LABELS[entry.kind]} · {entry.time ? `${entry.time} Uhr` : "ohne Uhrzeit"}</span>
+        <span className="flex min-w-0 items-center gap-1.5">
+          <span className="calendar-entry-badge shrink-0 rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide">{ENTRY_LABELS[entry.kind]}</span>
+          <span className="font-medium">{entry.time ? `${entry.time} Uhr` : "ohne Uhrzeit"}</span>
+        </span>
         {entry.orderCode && <span className="font-mono text-[10px] text-muted-foreground">#{entry.orderCode}</span>}
       </div>
-      <p className="mt-0.5 break-words font-medium leading-snug">{entry.itemsLabel}</p>
+      <p className="mt-1 break-words font-medium leading-snug">{entry.itemsLabel}</p>
       <p className="break-words text-muted-foreground">{entry.customer}</p>
       {!entry.taskId && <p className="mt-1 flex items-center gap-1 text-[10px] text-muted-foreground">
         {entry.protocolSigned ? (
