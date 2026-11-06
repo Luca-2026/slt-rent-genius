@@ -916,7 +916,7 @@ export function InquiryOfferForm({
       await Promise.all(
         unpricedEffectiveItems.map(async (item, index) => {
           const name = item.product_name.trim();
-          if (!name || isReturnChargeLine(item)) return;
+          if (!name || item.period_free || isReturnChargeLine(item)) return;
           let slug = item.product_slug;
           if (!slug) {
             const match = await findCatalogProductByName(name);

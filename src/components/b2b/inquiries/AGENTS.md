@@ -1,4 +1,5 @@
 # Inquiries
+- Period-free service lines preserve unit/VAT and omit dates and inventory checks; snapshots carry period_free through reopening and downstream documents.
 - Rental machine insurance uses full-calendar-period pricing by default; per-item addon labels and deductible notes remain editable snapshot fields, never catalogue mutations, so the PDF preserves agreed insurance terms.
 - Persisted optional insurance tiers use the same editor as standard addons; missing current CMS configuration must not delete them, and manual edits must survive tier synchronization.
 - Editor bank rebates are recalculated through editorBankDiscount after manual price/discount edits; server billing quantity is converted once. The retired AdditionalPayout compensation route must never be exposed; deposit and rental refunds use the original payment with a shared cumulative cap, preserving original receipts.
