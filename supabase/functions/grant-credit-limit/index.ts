@@ -1,10 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { z } from 'npm:zod@3';
 
 const SLT_LOGO =
   "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
@@ -41,9 +37,10 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-    const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
+    const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+    const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY");
+    if (!SUPABASE_URL || !SERVICE_KEY || !ANON_KEY) throw new Error("Konfiguration fehlt");
 
     const authed = createClient(SUPABASE_URL, ANON_KEY, {
       global: { headers: { Authorization: authHeader } },
@@ -75,20 +72,15 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    const { profileId, amount } = await req.json();
+    const parsed = z.object({ profileId: z.string().uuid(), amount: z.number().positive().max(9999999999.99), requestId: z.string().uuid().optional() }).safeParse(await req.json());
+    if (!parsed.success) return new Response(JSON.stringify({ error: "Ungültiger Kreditlimit-Antrag" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    const { profileId, amount, requestId } = parsed.data;
     const roles = roleRows.map((r: { role: string }) => r.role);
     const isAdminRole = roles.includes("admin");
     const limit = Number(amount);
     if (!profileId || !Number.isFinite(limit) || limit <= 0 || Math.round(limit * 100) !== limit * 100) {
       return new Response(JSON.stringify({ error: "profileId und Betrag > 0 € erforderlich" }), {
         status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-    // Niederlassungsleiter dürfen höchstens 2.000 € vergeben
-    if (!isAdminRole && limit > MAX_BRANCH_LIMIT) {
-      return new Response(JSON.stringify({ error: `Niederlassungsleiter dürfen höchstens ${MAX_BRANCH_LIMIT.toLocaleString("de-DE")} € vergeben.` }), {
-        status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
@@ -149,6 +141,11 @@ Deno.serve(async (req: Request) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+    if (!isAdminRole && limit > MAX_BRANCH_LIMIT) {
+      const { data: taskId, error } = await authed.rpc("request_credit_limit_approval", { _profile: profile.id, _amount: limit });
+      if (error) return new Response(JSON.stringify({ error: error.message }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      return new Response(JSON.stringify({ success: true, pending_approval: true, task_id: taskId, message: "Kreditlimitfreigabe liegt beim Admin" }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
     if (!isAdminRole && Number(profile.credit_limit) > MAX_BRANCH_LIMIT) {
       return new Response(JSON.stringify({ error: "Dieses Kreditlimit liegt über 2.000 € und kann nur ein Admin ändern." }), {
         status: 403,
@@ -166,12 +163,11 @@ Deno.serve(async (req: Request) => {
       `Viele Grüße\n${senderFullName}\nSLT Rental – Standort ${locationLabel}\nE-Mail: ${senderEmail}\nTelefon: ${locationPhone}`;
 
     // Limit setzen und Antrag abschließen
-    const { error: clearErr } = await admin
-      .from("b2b_profiles")
-      .update({ credit_limit: limit, credit_limit_requested_at: null })
-      .eq("id", profile.id);
+    const { error: clearErr } = await admin.rpc("apply_staff_credit_limit", {
+      _actor: authUser.id, _profile: profile.id, _amount: limit, _request: requestId ?? null,
+    });
     if (clearErr) {
-      return new Response(JSON.stringify({ error: "Kreditlimit konnte nicht gespeichert werden" }), {
+      return new Response(JSON.stringify({ error: clearErr.message }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });

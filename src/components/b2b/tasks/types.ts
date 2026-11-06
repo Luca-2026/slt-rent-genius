@@ -20,6 +20,9 @@ export interface TodoList {
   created_at: string;
   updated_at: string;
   sign_booking_id?: string | null;
+  credit_profile_id?: string | null;
+  credit_request_amount?: number | null;
+  credit_request_status?: string | null;
 }
 
 export interface TodoItem {

@@ -1093,6 +1093,27 @@
       "when": 1793960335366,
       "tag": "0155_sign_processor_staff_notice",
       "breakpoints": true
+    },
+    {
+      "idx": 156,
+      "version": "7",
+      "when": 1793962451512,
+      "tag": "0156_credit_limit_admin_approval_tasks",
+      "breakpoints": true
+    },
+    {
+      "idx": 157,
+      "version": "7",
+      "when": 1793962483435,
+      "tag": "0157_credit_approval_invoker_guard",
+      "breakpoints": true
+    },
+    {
+      "idx": 158,
+      "version": "7",
+      "when": 1793962589017,
+      "tag": "0158_protect_credit_approval_task_points",
+      "breakpoints": true
     }
   ]
 }
