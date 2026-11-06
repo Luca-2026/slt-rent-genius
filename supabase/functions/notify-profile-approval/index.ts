@@ -97,6 +97,10 @@ Deno.serve(async (req: Request) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+    if (roleData.role !== "admin") {
+      const { data: allowed } = await admin.rpc("can_manage_b2b_onboarding", { _actor: authUser.id, _location: profile.assigned_location });
+      if (allowed !== true) return new Response(JSON.stringify({ error: "Keine Berechtigung für diesen Standort" }), { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
 
     // Fetch approving admin's staff profile for personal contact details
     const { data: staff } = await admin
