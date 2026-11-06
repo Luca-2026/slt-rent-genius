@@ -4,7 +4,8 @@ import { z } from "npm:zod@3";
 import { ensurePaymentLink, isStripeConfigured, newToken, planPaymentAmounts } from "../_shared/stripe-pay.ts";
 import { SLT_COMPANY } from "../_shared/company.ts";
 import { validCalendarDate, validPublicRentalPeriod } from "../_shared/public-rental-period.ts";
-import { validSignPermit } from "../_shared/sign-permit.ts";
+import { SIGN_PERMIT_MAX_BYTES, validSignPermit } from "../_shared/sign-permit.ts";
+import { signPermitPeriodError } from "../_shared/sign-permit-period.ts";
 import { routeDistance } from "../_shared/route-distance.ts";
 import { signSetupGrossCents } from "../_shared/sign-direct-booking.ts";
 import { signLeadError } from "../_shared/sign-booking-lead.ts";
@@ -24,6 +25,7 @@ const booking = z.object({
   termsVersion: z.literal(SIGN_TERMS_VERSION), permitMode: z.enum(["existing", "slt"]).optional(),
   additionalSigns: z.array(z.object({ slug: text(150), quantity: z.number().int().min(1).max(100) })).max(30).default([]),
   zoneStreet: z.string().trim().max(200), zonePostalCode: z.string().trim().max(20), zoneCity: z.string().trim().max(100), message: z.string().max(4000), permitToken: z.string().regex(/^[A-Za-z0-9_-]{20,64}$/).nullable(),
+  permitValidFrom: z.string().optional(), permitValidUntil: z.string().optional(), permitIssuedOn: z.string().optional(),
 }).refine(v => Object.keys(bookingContactErrors(v)).length === 0).refine(v => v.package === "standard" ? v.pickupConfirmed : v.municipalFeesAccepted && v.zoneStreet.length > 3 && v.zonePostalCode.length > 3 && v.zoneCity.length > 1);
 
 Deno.serve(async req => {
@@ -75,8 +77,8 @@ Deno.serve(async req => {
       return json({ grossCents: cents, distanceKm: distance.distanceKm });
     }
     if (raw.action === "upload") {
-      const parsed = z.object({ filename: text(120), contentType: z.enum(["application/pdf", "image/jpeg", "image/png"]), size: z.number().int().min(1).max(5 * 1024 * 1024) }).safeParse(raw);
-      if (!parsed.success) return json({ error: "Bitte PDF, JPG oder PNG bis 5 MB auswählen" }, 400);
+      const parsed = z.object({ filename: text(120), contentType: z.enum(["application/pdf", "image/jpeg", "image/png"]), size: z.number().int().min(1).max(SIGN_PERMIT_MAX_BYTES) }).safeParse(raw);
+      if (!parsed.success) return json({ error: "Bitte PDF, JPG oder PNG bis 10 MB auswählen" }, 400);
       const token = newToken(), extension = parsed.data.contentType === "application/pdf" ? "pdf" : parsed.data.contentType === "image/png" ? "png" : "jpg";
       const path = `${crypto.randomUUID()}/genehmigung.${extension}`;
       const { error } = await service.from("sign_permit_uploads").insert({ token, file_path: path, filename: parsed.data.filename, content_type: parsed.data.contentType });
@@ -97,13 +99,16 @@ Deno.serve(async req => {
     if (raw.action !== "reserve") return json({ error: "Ungültige Aktion" }, 400);
     const parsed = booking.safeParse(raw);
     if (!parsed.success) return json({ error: "Bitte Kontaktdaten, Zeitraum und Bedingungen vollständig angeben" }, 400);
-    const { requestId, cartExpiresAt, permitToken, ...body } = parsed.data;
+    const { requestId, cartExpiresAt, permitToken, permitValidFrom, permitValidUntil, permitIssuedOn, ...body } = parsed.data;
+    // Uploads belong only to the Sorglos package with an existing permit; standard customers declare the permit period instead.
+    if (permitToken && !(body.package === "sorglos" && body.permitMode === "existing")) return json({ error: "Ein Genehmigungs-Upload ist nur beim Rundum-sorglos-Paket mit vorhandener Genehmigung möglich" }, 400);
     if (body.package === "standard" && !validPublicRentalPeriod({ ...body, product_slug: "halteverbotsschilder-set", sign_package: body.package })) return json({ error: "Bitte gültige Abhol- und Rückgabezeiten wählen" }, 400);
     // Retry may read back an existing reservation even after the original cart deadline.
     const { data: existing } = await service.from("sign_bookings").select("id,snapshot").eq("request_id", requestId).maybeSingle();
     if (!existing) {
       const leadError = signLeadError(body.package, body.permitMode, body.start_date, body.start_time);
       if (leadError) return json({ error: leadError }, 400);
+      if (body.package === "standard") { const periodError = signPermitPeriodError({ permitValidFrom, permitValidUntil, permitIssuedOn }, body.start_date, body.end_date); if (periodError) return json({ error: periodError }, 400); }
       if (body.package === "sorglos" && body.permitMode === "existing" && !permitToken) return json({ error: "Bitte vorhandene Genehmigung hochladen" }, 400);
     }
     if (!existing && (cartExpiresAt <= Date.now() || cartExpiresAt > Date.now() + 900000)) return json({ error: "Warenkorb abgelaufen" }, 409);
@@ -113,7 +118,7 @@ Deno.serve(async req => {
       if (!upload) return json({ error: "Genehmigung nicht gefunden" }, 400);
       if (upload.booking_id && upload.booking_id !== existing?.id) return json({ error: "Genehmigung bereits einem anderen Auftrag zugeordnet" }, 409);
       const { data: file, error } = await service.storage.from("sign-permits").download(upload.file_path);
-      if (error || !file || file.size > 5 * 1024 * 1024) return json({ error: "Genehmigung nicht vollständig hochgeladen" }, 400);
+      if (error || !file || file.size > SIGN_PERMIT_MAX_BYTES) return json({ error: "Genehmigung nicht vollständig hochgeladen" }, 400);
       const bytes = new Uint8Array(await file.arrayBuffer());
       const valid = validSignPermit(bytes, upload.content_type);
       if (!valid) return json({ error: "Datei entspricht nicht dem gewählten Dateityp" }, 400);
@@ -132,6 +137,10 @@ Deno.serve(async req => {
     }
     const { data: reserved, error } = await service.rpc("reserve_sign_booking", { _request: requestId, _token: newToken(), _body: trustedBody, _permit_token: permitToken });
     if (error) return json({ error: error.message }, error.code === "42501" ? 403 : 409);
+    if (!existing && body.package === "standard") {
+      const { error: periodSaveError } = await service.from("sign_bookings").update({ permit_valid_from: permitValidFrom, permit_valid_until: permitValidUntil, permit_issued_on: permitIssuedOn }).eq("inquiry_id", reserved.inquiry_id);
+      if (periodSaveError) throw periodSaveError;
+    }
     const { data: inquiry } = await service.from("rental_inquiries").select("customer_email,offer_number,offer_total_gross,offer_payload").eq("id", reserved.inquiry_id).single();
     const { data: link } = await service.from("offer_payment_links").select("token").eq("inquiry_id", reserved.inquiry_id).eq("inquiry_table", "rental_inquiries").eq("status", "active").maybeSingle();
     if (!link && reserved.status === "reserved" && inquiry) {
