@@ -76,10 +76,10 @@ export default function AvailabilityCalendar() {
   useEffect(() => { localStorage.setItem(FILTER_KEY, JSON.stringify({ location })); }, [location]);
 
   const entries = useMemo(() => {
-    const all = sortCalendarEntries([...buildCalendarEntries(inquiries, signedDelivery, signedReturn), ...buildTaskCalendarEntries(tasks, taskItems)]);
+    const all = sortCalendarEntries(buildCalendarEntries(inquiries, signedDelivery, signedReturn));
     if (location === "all") return all;
     return all.filter((e) => normalizeLoc(e.location) === location);
-  }, [inquiries, signedDelivery, signedReturn, location, tasks, taskItems]);
+  }, [inquiries, signedDelivery, signedReturn, location]);
 
   if (!accessLoading && !isStaff) {
     return <B2BPortalLayout title="Kalender"><p className="text-muted-foreground">Nur für Mitarbeiter.</p></B2BPortalLayout>;

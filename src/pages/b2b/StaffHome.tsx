@@ -26,7 +26,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { AcceptedOffersPayments } from "@/components/b2b/dashboard/AcceptedOffersPayments";
 import { DepositSettlementsDue } from "@/components/b2b/dashboard/DepositSettlementsDue";
 import { DayEntryCard } from "@/components/b2b/calendar/DayEntryCard";
-import { buildCalendarEntries, buildTaskCalendarEntries, sortCalendarEntries, type CalendarTaskItem, effectiveEnd, hasInvalidRentalPeriod, normalizeLoc, type DayEntry } from "@/lib/calendarEntries";
+import { CalendarLegend } from "@/components/b2b/calendar/CalendarLegend";
+import { buildCalendarEntries, groupEntriesByDay, workingDayWindowEnd, effectiveEnd, hasInvalidRentalPeriod, normalizeLoc, type DayEntry } from "@/lib/calendarEntries";
 
 type ProfileRow = PortalProfileLite & { id: string; company_name: string; credit_limit: number };
 
@@ -155,7 +156,6 @@ export default function StaffHome() {
   const [openSales, setOpenSales] = useState(0);
   const [inquiries, setInquiries] = useState<InquiryRow[]>([]);
   const [todos, setTodos] = useState<TodoRow[]>([]);
-  const [taskItems, setTaskItems] = useState<CalendarTaskItem[]>([]);
   const [invoices, setInvoices] = useState<InquiryInvoiceRow[]>([]);
   const [portalInvoices, setPortalInvoices] = useState<PortalInvoiceRow[]>([]);
   const [profiles, setProfiles] = useState<ProfileRow[]>([]);
@@ -193,20 +193,18 @@ export default function StaffHome() {
   useEffect(() => {
     if (accessLoading || !isStaff) return;
     (async () => {
-      const [inq, td, inv, pinv, sales, prof, ti] = await Promise.all([
+      const [inq, td, inv, pinv, sales, prof] = await Promise.all([
         supabase.from("rental_inquiries").select("id,status,assigned_to,offer_total_gross,order_confirmed_at,start_date,start_time,end_date,end_time,order_code,customer_name,company_name,product_name,quantity,location,requested_items,offer_payload,closed_manually_at"),
         supabase.from("staff_todo_lists").select("id,title,due_date,status,location,sign_booking_id").neq("status", "done"),
         isAdmin ? supabase.from("inquiry_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,paid_amount,credited_amount,due_date") : Promise.resolve({ data: [] }),
         isAdmin ? supabase.from("b2b_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,due_date") : Promise.resolve({ data: [] }),
         supabase.from("sales_inquiries").select("status"),
         supabase.from("b2b_profiles").select("id,company_name,status,credit_limit,credit_limit_requested_at,deletion_requested_at,created_at").order("created_at", { ascending: false }),
-        supabase.from("staff_todo_items").select("list_id,title,scheduled_date,scheduled_time,is_done").eq("is_done", false),
       ]);
       setProfiles((prof.data as ProfileRow[] | null) ?? []);
       setOpenSales(((sales.data as { status: string }[] | null) ?? []).filter((r) => isOpenInquiry(r.status)).length);
       setInquiries((inq.data as InquiryRow[] | null) ?? []);
       setTodos((td.data as TodoRow[] | null) ?? []);
-      setTaskItems(ti.data ?? []);
       setInvoices((inv.data as InquiryInvoiceRow[] | null) ?? []);
       setPortalInvoices((pinv.data as PortalInvoiceRow[] | null) ?? []);
       setLoading(false);
