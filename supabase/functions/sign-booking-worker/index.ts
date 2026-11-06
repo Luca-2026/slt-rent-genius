@@ -4,6 +4,8 @@ import { isCronCall, staffUserId } from "../_shared/cronAuth.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
 import { SLT_COMPANY } from "../_shared/company.ts";
+import { operationalEmailRecipient } from "../_shared/test-email-routing.ts";
+import { signStaffNotice } from "./staff-notice.ts";
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 const esc = (value: unknown) => String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 Deno.serve(async req => {
@@ -50,8 +52,32 @@ Deno.serve(async req => {
       if (finishError) throw finishError;
       sent++;
     }
+    // Location mailbox notice for every paid booking, independent of the customer confirmation, with the permit attached.
+    const { data: unnotified, error: noticeReadError } = await service.from("sign_bookings").select("*").eq("status", "paid").is("staff_notified_at", null).limit(20);
+    if (noticeReadError) throw noticeReadError;
+    let notified = 0;
+    for (const b of unnotified ?? []) {
+      try {
+        const { data: inq } = await service.from("rental_inquiries").select("id,order_code,offer_number,customer_name,company_name,customer_email,customer_phone,delivery_street,delivery_postal_code,delivery_city,message").eq("id", b.inquiry_id).single();
+        if (!inq) continue;
+        const resend = Deno.env.get("RESEND_API_KEY");
+        if (!resend) throw new Error("Email not configured");
+        const attachments: { filename: string; content: string }[] = [];
+        if (b.permit_path) {
+          const { data: file } = await service.storage.from("sign-permits").download(b.permit_path);
+          if (file) { const bytes = new Uint8Array(await file.arrayBuffer()); let bin = ""; for (let i = 0; i < bytes.length; i += 32768) bin += String.fromCharCode(...bytes.subarray(i, i + 32768)); attachments.push({ filename: `Genehmigung_${inq.order_code}.${b.permit_path.split(".").pop()}`, content: btoa(bin) }); }
+        }
+        const notice = signStaffNotice(b, inq, `https://app.slt-rental.de/b2b/mietanfragen/${inq.id}`, attachments.length > 0);
+        const mailbox = operationalEmailRecipient(inq.customer_email, `${b.location}@slt-rental.de`);
+        const response = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${resend}`, "Content-Type": "application/json", "Idempotency-Key": `sign-staff-${b.id}` }, body: JSON.stringify({
+          from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`, to: [mailbox], reply_to: inq.customer_email || undefined, subject: notice.subject, html: notice.html, attachments }) });
+        if (!response.ok) throw new Error(`Staff notice failed (${response.status})`);
+        await service.from("sign_bookings").update({ staff_notified_at: new Date().toISOString() }).eq("id", b.id).is("staff_notified_at", null);
+        notified++;
+      } catch (noticeError) { console.error("sign-booking-worker staff notice:", noticeError instanceof Error ? noticeError.message : "failed"); }
+    }
     const { error: drainError } = await service.rpc("drain_sign_booking_processor");
     if (drainError) throw drainError;
-    return json({ sent });
+    return json({ sent, notified });
   } catch (error) { console.error("sign-booking-worker:", error instanceof Error ? error.message : "failed"); return json({ error: "Processing failed" }, 500); }
 });
