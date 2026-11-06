@@ -1,4 +1,4 @@
-export const SIGN_PERMIT_MAX_BYTES = 5 * 1024 * 1024;
+export const SIGN_PERMIT_MAX_BYTES = 10 * 1024 * 1024;
 export function validSignPermit(bytes: Uint8Array, contentType: string): boolean {
   if (bytes.length === 0 || bytes.length > SIGN_PERMIT_MAX_BYTES) return false;
   if (contentType === "application/pdf") return new TextDecoder().decode(bytes.slice(0, 5)) === "%PDF-";

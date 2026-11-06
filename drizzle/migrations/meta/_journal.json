@@ -1065,6 +1065,13 @@
       "when": 1793882643920,
       "tag": "0151_scoped_offer_choice_incentive",
       "breakpoints": true
+    },
+    {
+      "idx": 152,
+      "version": "7",
+      "when": 1793959583633,
+      "tag": "0152_sign_permit_period",
+      "breakpoints": true
     }
   ]
 }

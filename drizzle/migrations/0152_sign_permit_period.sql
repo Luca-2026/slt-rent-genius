@@ -1,0 +1,2 @@
+ALTER TABLE public.sign_bookings ADD COLUMN IF NOT EXISTS permit_valid_from date, ADD COLUMN IF NOT EXISTS permit_valid_until date, ADD COLUMN IF NOT EXISTS permit_issued_on date;
+COMMENT ON COLUMN public.sign_bookings.permit_valid_from IS 'Customer-declared start of approved no-parking period (standard package); sign labelling date.';

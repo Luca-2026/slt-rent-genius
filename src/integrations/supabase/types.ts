@@ -5293,8 +5293,11 @@ export type Database = {
           inquiry_id: string
           location: string
           package: string
+          permit_issued_on: string | null
           permit_mode: string | null
           permit_path: string | null
+          permit_valid_from: string | null
+          permit_valid_until: string | null
           quantity: number
           request_id: string
           snapshot: Json
@@ -5319,8 +5322,11 @@ export type Database = {
           inquiry_id: string
           location: string
           package: string
+          permit_issued_on?: string | null
           permit_mode?: string | null
           permit_path?: string | null
+          permit_valid_from?: string | null
+          permit_valid_until?: string | null
           quantity: number
           request_id: string
           snapshot: Json
@@ -5345,8 +5351,11 @@ export type Database = {
           inquiry_id?: string
           location?: string
           package?: string
+          permit_issued_on?: string | null
           permit_mode?: string | null
           permit_path?: string | null
+          permit_valid_from?: string | null
+          permit_valid_until?: string | null
           quantity?: number
           request_id?: string
           snapshot?: Json
