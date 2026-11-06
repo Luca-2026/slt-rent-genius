@@ -143,8 +143,8 @@ Deno.serve(async (req: Request) => {
 
     const customerFirstName = profile.contact_first_name || "";
     // Niederlassungsleiter dürfen nur offene Kreditlimit-Anfragen freigegebener Kunden bearbeiten
-    if (!isAdminRole && (!profile.credit_limit_requested_at || profile.status !== "approved")) {
-      return new Response(JSON.stringify({ error: "Für diesen Kunden liegt keine offene Kreditlimit-Anfrage vor. Nur ein Admin kann das Limit ändern." }), {
+    if (!isAdminRole && profile.status !== "approved") {
+      return new Response(JSON.stringify({ error: "Bitte den Kunden zuerst freischalten, dann das Kreditlimit vergeben." }), {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
