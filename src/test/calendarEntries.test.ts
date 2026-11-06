@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
   buildCalendarEntries,
+  buildTaskCalendarEntries,
+  sortCalendarEntries,
   dayCells,
   deviceAvailability,
   earliestFreeFrom,
@@ -33,6 +35,17 @@ const base = {
 };
 
 describe("calendarEntries", () => {
+  it("shows explicit delivery and collection dates rather than customer pickups", () => {
+    const entries = buildCalendarEntries([{ ...base, offer_payload: { items: [{ delivery_at: "2026-10-19T12:30", collection_at: "2026-10-24T15:00" }] } }],new Set(),new Set());
+    expect(entries.map(e => [e.kind,e.date,e.time])).toEqual([["delivery","2026-10-19","12:30"],["collection","2026-10-24","15:00"]]);
+  });
+  it("uses explicit work dates and never duplicates the parent due date", () => {
+    const tasks = [{ id: "t1",title: "Schilder #ABC123",status: "sent",due_date: "2026-11-01",location: "bonn",sign_booking_id: "s1" }];
+    const entries = buildTaskCalendarEntries(tasks,[{ list_id: "t1",title: "Bekleben",scheduled_date: "2026-11-04",scheduled_time: "09:00:00",is_done: false }, { list_id: "t1",title: "Aufstellen",scheduled_date: "2026-11-05",scheduled_time: null,is_done: false }]);
+    expect(entries.map(e => [e.kind,e.date])).toEqual([["sign","2026-11-04"],["sign","2026-11-05"]]);
+    expect(buildTaskCalendarEntries([{ ...tasks[0],due_date: null }],[])).toEqual([]);
+    expect(sortCalendarEntries([...entries].reverse()).map(e => e.date)).toEqual(["2026-11-04","2026-11-05"]);
+  });
   it("Standortfilter Krefeld zeigt ausschließlich Krefelder Geräte, unabhängig von Schreibweise", () => {
     const devices = ["Krefeld", "bonn", " krefeld ", "Mülheim an der Ruhr"];
     expect(devices.filter((location) => matchesCalendarLocation(location, "krefeld"))).toEqual(["Krefeld", " krefeld "]);

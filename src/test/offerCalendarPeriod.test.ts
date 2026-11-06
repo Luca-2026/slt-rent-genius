@@ -10,6 +10,17 @@ const line: OfferLine = { product_name: "Test", quantity: 1, duration: 5, unit: 
   description: "Mo, 16.11.2026, 09:00 – Fr, 20.11.2026, 16:30",
   rental_start: "2026-11-23", rental_end: "2026-11-24", rental_start_time: "09:00", rental_end_time: "16:30" };
 describe("Calendar is the rental offer period source", () => {
+  it("fixed personnel hours do not inherit dates and preserve quantity and VAT", () => {
+    const fixed: OfferLine = { ...line,period_free: true,unit: "stunden",duration: 4,unit_price: 50,vat_rate: 19 };
+    const updated = calendarDuration(inheritCalendarPeriod(fixed,line),{});
+    expect(updated.rental_start).toBeUndefined(); expect(updated.duration).toBe(4); expect(lineTotal(updated)).toBe(200);
+    const saved = normalizeInquiryOfferItems([{ ...updated,quantity: 4,articles: 1,unit_code: "stunden",rental_start: "2026-11-23" }])[0];
+    expect(saved.rental_start).toBeUndefined(); expect(saved.unit_code).toBe("stunden"); expect(saved.vat_rate).toBe(19);
+  });
+  it("accepts 0 percent compensation and rejects unsupported VAT rates", () => {
+    expect(normalizeInquiryOfferItems([{ ...line,period_free: true,vat_rate: 0 }])[0].vat_rate).toBe(0);
+    expect(()=>normalizeInquiryOfferItems([{ ...line,vat_rate: 7 }])).toThrow(/Mehrwertsteuer/);
+  });
   it("quotes ten rental days without inherited dates or logistics", () => {
     const quote = recalcAddons(undatedOfferLine<OfferLine>({ ...line, duration: 10, unit_price: 51, delivery_at: "2026-11-22T08:00", addons: [{ key: "insurance", label: "Versicherung", price_type: "percent", basis: "full_period", rate: 10, amount: 0, days: 21 }] }));
     expect(quote.rental_start).toBeUndefined();
