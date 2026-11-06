@@ -57,8 +57,8 @@ interface TodoRow { id: string; title: string; due_date: string | null; status: 
 function Panel({ title, icon: Icon, action, children, className }: { title: string; icon: LucideIcon; action?: React.ReactNode; children: React.ReactNode; className?: string }) {
   return (
     <section className={cn("rounded-xl border border-border bg-card", className)}>
-      <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
-        <h2 className="flex items-center gap-2 text-sm font-semibold text-foreground"><Icon className="h-4 w-4 text-primary" aria-hidden="true" />{title}</h2>
+      <header className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-3">
+        <h2 className="flex items-center gap-2 text-sm font-semibold text-foreground"><Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />{title}</h2>
         {action}
       </header>
       {children}
@@ -302,7 +302,7 @@ export default function StaffHome() {
               action={
                 <div className="flex items-center gap-2">
                   <Select value={activeDayLocation} onValueChange={(v) => setDayLocation(v as DayLocationFilter)}>
-                    <SelectTrigger className="h-8 w-[11.5rem] max-w-[55%] text-xs" aria-label="Standort für Übergaben und Rückgaben">
+                    <SelectTrigger className="h-8 w-[11.5rem] text-xs" aria-label="Standort für Übergaben und Rückgaben">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -378,7 +378,7 @@ export default function StaffHome() {
 
           {customerRequests.length > 0 && (
             <section className="rounded-xl border-2 border-accent bg-card" aria-label="Offene Kundenanfragen">
-              <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
+              <header className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-3">
                 <h2 className="flex items-center gap-2 text-sm font-semibold text-foreground">
                   <UserCheck className="h-4 w-4 text-accent" aria-hidden="true" />Offene Kundenanfragen
                   <span className="rounded-full bg-accent px-2 py-0.5 text-xs text-accent-foreground">{customerRequests.length}</span>
@@ -460,7 +460,7 @@ function DueInstallments({ today }: { today: string }) {
   if (!rows.length) return null;
   return (
     <section className="rounded-xl border-2 border-accent/60 bg-card" aria-label="Fällige Abschlagsrechnungen">
-      <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
+      <header className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-3">
         <h2 className="text-sm font-semibold text-foreground">Fällige Abschlagsrechnungen <span className="ml-1 rounded-full bg-accent px-2 py-0.5 text-xs text-accent-foreground">{rows.length}</span></h2>
       </header>
       <ul className="divide-y divide-border">
@@ -483,7 +483,7 @@ function UrgentCalls() {
   if (!urgent.length) return null;
   return (
     <section className="rounded-xl border-2 border-destructive/60 bg-card" aria-label="Dringende Anrufe">
-      <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
+      <header className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-3">
         <h2 className="text-sm font-semibold text-foreground">Anrufe mit Handlungsbedarf <span className="ml-1 rounded-full bg-destructive px-2 py-0.5 text-xs text-destructive-foreground">{urgent.length}</span></h2>
         <Link to="/b2b/anrufe" className="text-xs font-medium text-primary hover:underline">Alle anzeigen</Link>
       </header>
