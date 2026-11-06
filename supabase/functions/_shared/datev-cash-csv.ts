@@ -51,7 +51,7 @@ export function buildDatevCashCsv(entries: CashEntry[]): string {
       "",
       "",
       "",
-      clean([e.label, customerLabel(e), e.documentNumber].filter(Boolean).join(" "), 120),
+      clean([e.label, e.customerName || e.companyName, e.documentNumber].filter(Boolean).join(" "), 120),
     ].join(";"));
   return [DATEV_CASH_HEADER, ...rows].join("\r\n") + "\r\n";
 }
