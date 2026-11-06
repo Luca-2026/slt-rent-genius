@@ -20,6 +20,8 @@ export interface InquiryPayment {
   label?: string;
   reference?: string;
   provider?: string;
+  /** Vom Server bei Stripe-Zahlungen gesetzt – muss unverändert zurückgeschrieben werden. */
+  payment_intent_id?: string;
   /** Vom Server gestempelt – wer/wann erfasst (nicht vom Browser setzbar). */
   recorded_at?: string;
   recorded_by?: string;
@@ -56,6 +58,7 @@ export function parseInquiryPayments(raw: unknown): InquiryPayment[] {
         label: typeof o.label === "string" ? o.label : undefined,
         reference: typeof o.reference === "string" ? o.reference : undefined,
         provider: typeof o.provider === "string" ? o.provider : undefined,
+        ...(typeof o.payment_intent_id === "string" ? { payment_intent_id: o.payment_intent_id } : {}),
         recorded_at: typeof o.recorded_at === "string" ? o.recorded_at : undefined,
         recorded_by: typeof o.recorded_by === "string" ? o.recorded_by : undefined,
         recorded_by_id: typeof o.recorded_by_id === "string" ? o.recorded_by_id : null,
@@ -145,6 +148,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
         label: (p.label || "").trim() || "Zahlungseingang",
         reference: (p.reference || "").trim(),
         ...(p.provider ? { provider: p.provider } : {}),
+        ...(p.payment_intent_id ? { payment_intent_id: p.payment_intent_id } : {}),
         ...(p.recorded_at ? { recorded_at: p.recorded_at, recorded_by: p.recorded_by, recorded_by_id: p.recorded_by_id ?? null } : {}),
       }))
       .filter((p) => p.amount > 0);
