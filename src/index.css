@@ -178,12 +178,6 @@
 }
 
 @layer components {
-  .calendar-entry-pickup { border-color: hsl(var(--calendar-pickup) / .5); background: hsl(var(--calendar-pickup) / .09); }
-  .calendar-entry-return { border-color: hsl(var(--calendar-return) / .5); background: hsl(var(--calendar-return) / .09); }
-  .calendar-entry-delivery { border-color: hsl(var(--calendar-delivery) / .5); background: hsl(var(--calendar-delivery) / .09); }
-  .calendar-entry-collection { border-color: hsl(var(--calendar-collection) / .5); background: hsl(var(--calendar-collection) / .09); }
-  .calendar-entry-sign { border-color: hsl(var(--calendar-sign) / .5); background: hsl(var(--calendar-sign) / .12); }
-  .calendar-entry-task { border-color: hsl(var(--calendar-task) / .5); background: hsl(var(--calendar-task) / .09); }
   @keyframes search-highlight-spin {
     to {
       transform: translate(-50%, -50%) rotate(1turn);
@@ -334,3 +328,15 @@ html[data-slt-signing] [data-slt-cookie-banner] {
     visibility: hidden !important;
   }
 }
+
+/* Kalenderfarben bewusst außerhalb von @layer: die Klassen werden dynamisch je Eintragsart
+   gesetzt und würden sonst beim Build entfernt. */
+.calendar-entry-pickup { --entry: var(--calendar-pickup); }
+.calendar-entry-return { --entry: var(--calendar-return); }
+.calendar-entry-delivery { --entry: var(--calendar-delivery); }
+.calendar-entry-collection { --entry: var(--calendar-collection); }
+.calendar-entry-sign { --entry: var(--calendar-sign); }
+.calendar-entry-task { --entry: var(--calendar-task); }
+.calendar-entry { border-color: hsl(var(--entry) / .45); border-left: 4px solid hsl(var(--entry)); background: hsl(var(--entry) / .12); }
+.calendar-entry-badge { background: hsl(var(--entry)); color: hsl(0 0% 100%); }
+.calendar-entry-dot { background: hsl(var(--entry)); }
