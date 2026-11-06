@@ -311,3 +311,11 @@ export function normalizeLoc(raw: string | null | undefined): string | null {
   if (v.includes("krefeld")) return "krefeld";
   return v;
 }
+
+/** Kalenderfilter nach Art: Abholung/Rückgabe am Standort vs. zu liefernde Sachen (Lieferung + Rückholung). */
+export type CalendarKindFilter = "all" | "counter" | "transport";
+export function matchesKindFilter(kind: DayEntry["kind"], filter: CalendarKindFilter): boolean {
+  if (filter === "all") return true;
+  if (filter === "counter") return kind === "pickup" || kind === "return";
+  return kind === "delivery" || kind === "collection";
+}
