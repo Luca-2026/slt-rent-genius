@@ -1,2 +1,2 @@
 - Calendar week and device views share CalendarLocationFilter and persisted location state; device filtering uses matchesCalendarLocation to normalize location names consistently.
-- Dashboard and week calendar share rental/task entry builders; explicit task-item schedules take precedence over list deadlines without inventing permit setup dates or duplicate alerts.
+- Dashboard and week calendar show only rental handover/return entries (sign bookings included as normal orders); staff tasks stay in "Meine Aufgaben" via src/lib/myTasks.ts (assigned or unassigned same-location, Mülheim→Krefeld), so work is never listed twice. Dashboard shows the next three working days (Mo–Sa) grouped per day; entry colors live outside Tailwind layers because classes are dynamic.

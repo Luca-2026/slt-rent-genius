@@ -8,7 +8,8 @@ import { CalendarLocationFilter } from '@/components/b2b/calendar/CalendarLocati
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { WeekGrid } from "@/components/b2b/calendar/WeekGrid";
 import { InstanceAvailabilityTable, type InstanceRow } from "@/components/b2b/calendar/InstanceAvailabilityTable";
-import { buildCalendarEntries, buildTaskCalendarEntries, sortCalendarEntries, normalizeLoc, type CalendarInquiry, type CalendarTask, type CalendarTaskItem } from "@/lib/calendarEntries";
+import { buildCalendarEntries, sortCalendarEntries, normalizeLoc, type CalendarInquiry } from "@/lib/calendarEntries";
+import { CalendarLegend } from "@/components/b2b/calendar/CalendarLegend";
 import { toast } from "sonner";
 
 const FILTER_KEY = "slt.calendar.filter";
@@ -23,12 +24,10 @@ export default function AvailabilityCalendar() {
   const [signedReturn, setSignedReturn] = useState<Set<string>>(new Set());
   const [instances, setInstances] = useState<InstanceRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [tasks, setTasks] = useState<CalendarTask[]>([]);
-  const [taskItems, setTaskItems] = useState<CalendarTaskItem[]>([]);
 
   const load = useCallback(async () => {
     setLoading(true);
-    const [inqRes, delRes, retRes, instRes, allocRes, taskRes, itemRes] = await Promise.all([
+    const [inqRes, delRes, retRes, instRes, allocRes] = await Promise.all([
       supabase
         .from("rental_inquiries")
         .select("id, status, start_date, start_time, end_date, end_time, location, customer_name, company_name, order_code, order_confirmed_at, product_name, quantity, requested_items, offer_payload, closed_manually_at")
@@ -38,14 +37,10 @@ export default function AvailabilityCalendar() {
       (supabase.from("b2b_return_protocols" as any) as any).select("rental_inquiry_id").not("signed_at", "is", null),
       (supabase.from("b2b_product_instances" as any) as any).select("id, internal_inventory_number, serial_number, location, status, managed_product_id"),
       (supabase.from("b2b_instance_allocations" as any) as any).select("instance_id, from_at, to_at, rental_inquiry_id"),
-      supabase.from("staff_todo_lists").select("id,title,due_date,location,sign_booking_id,status").neq("status", "done"),
-      supabase.from("staff_todo_items").select("list_id,title,scheduled_date,scheduled_time,is_done").eq("is_done", false),
     ]);
     if (inqRes.error) toast.error(`Aufträge nicht ladbar: ${inqRes.error.message}`);
     const inqs = ((inqRes.data ?? []) as unknown) as CalendarInquiry[];
     setInquiries(inqs);
-    setTasks(taskRes.data ?? []);
-    setTaskItems(itemRes.data ?? []);
     setSignedDelivery(new Set(((delRes.data ?? []) as Array<{ rental_inquiry_id: string | null }>).map((r) => r.rental_inquiry_id).filter((v): v is string => !!v)));
     setSignedReturn(new Set([...((retRes.data ?? []) as Array<{ rental_inquiry_id: string | null }>).map((r) => r.rental_inquiry_id).filter((v): v is string => !!v), ...(inqs as Array<{ id: string; closed_manually_at?: string | null }>).filter((r) => r.closed_manually_at).map((r) => r.id)]));
 
@@ -76,17 +71,17 @@ export default function AvailabilityCalendar() {
   useEffect(() => { localStorage.setItem(FILTER_KEY, JSON.stringify({ location })); }, [location]);
 
   const entries = useMemo(() => {
-    const all = sortCalendarEntries([...buildCalendarEntries(inquiries, signedDelivery, signedReturn), ...buildTaskCalendarEntries(tasks, taskItems)]);
+    const all = sortCalendarEntries(buildCalendarEntries(inquiries, signedDelivery, signedReturn));
     if (location === "all") return all;
     return all.filter((e) => normalizeLoc(e.location) === location);
-  }, [inquiries, signedDelivery, signedReturn, location, tasks, taskItems]);
+  }, [inquiries, signedDelivery, signedReturn, location]);
 
   if (!accessLoading && !isStaff) {
     return <B2BPortalLayout title="Kalender"><p className="text-muted-foreground">Nur für Mitarbeiter.</p></B2BPortalLayout>;
   }
 
   return (
-    <B2BPortalLayout title="Kalender" subtitle="Termine, Arbeiten und Geräte">
+    <B2BPortalLayout title="Kalender" subtitle="Rausgaben, Rücknahmen und Geräte">
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <Button variant="outline" size="sm" onClick={() => void load()}><RefreshCw className="mr-1 h-4 w-4" />Aktualisieren</Button>
       </div>
@@ -99,7 +94,7 @@ export default function AvailabilityCalendar() {
             <TabsTrigger className="whitespace-normal text-center" value="instances">Verfügbarkeit Geräte</TabsTrigger>
           </TabsList>
           <TabsContent value="week">
-            <div className="mb-4"><CalendarLocationFilter value={location} onChange={setLocation} /></div>
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><CalendarLocationFilter value={location} onChange={setLocation} /><CalendarLegend /></div>
             <WeekGrid entries={entries} weekAnchor={weekAnchor} onWeekChange={setWeekAnchor} />
           </TabsContent>
           <TabsContent value="instances">

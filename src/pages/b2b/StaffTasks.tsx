@@ -1,3 +1,4 @@
+import { isMyTask } from "@/lib/myTasks";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -40,7 +41,7 @@ const PRIORITY_LABELS: Record<string, string> = { low: "Niedrig", normal: "Norma
 
 export default function StaffTasks() {
   const { user } = useAuth();
-  const { isStaff, isAdmin, canViewInventory, displayName, loading: accessLoading } = useStaffAccess();
+  const { isStaff, isAdmin, canViewInventory, displayName, staffProfile, loading: accessLoading } = useStaffAccess();
   // Audit-Log nur für Admins mit Vollzugriff
   const canViewAudit = isAdmin;
   const { toast } = useToast();
@@ -174,7 +175,7 @@ export default function StaffTasks() {
   const visible = useMemo(() => {
     return lists.filter((l) => {
       if (locationFilter !== "all" && l.location !== locationFilter) return false;
-      if (scope === "mine") return l.assigned_to === user?.id && l.status !== "done";
+      if (scope === "mine") return isMyTask(l, user?.id, staffProfile?.location);
       if (scope === "created") return l.created_by === user?.id && l.status !== "done";
       if (scope === "unassigned") return !l.assigned_to && l.status !== "done" && l.status !== "draft";
       if (scope === "drafts") return l.status === "draft" && (isAdmin || l.created_by === user?.id);
@@ -182,7 +183,7 @@ export default function StaffTasks() {
       if (scope === "done") return l.status === "done";
       return true;
     });
-  }, [lists, scope, locationFilter, user?.id, isAdmin]);
+  }, [lists, scope, locationFilter, user?.id, isAdmin, staffProfile?.location]);
 
 
   if (accessLoading) {
@@ -271,7 +272,7 @@ export default function StaffTasks() {
               <Select value={scope} onValueChange={setScope}>
                 <SelectTrigger className="w-full sm:w-64"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="mine">Mir zugewiesen</SelectItem>
+                  <SelectItem value="mine">Meine Aufgaben (inkl. Standort)</SelectItem>
                   <SelectItem value="created">Von mir erstellt</SelectItem>
                   <SelectItem value="unassigned">Standort-Aufgaben (offen, ohne Zuweisung)</SelectItem>
                   <SelectItem value="drafts">Entwürfe</SelectItem>

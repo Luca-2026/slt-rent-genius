@@ -163,6 +163,37 @@ export function sortCalendarEntries(entries: DayEntry[]): DayEntry[] {
   return [...entries].sort((a,b) => a.date.localeCompare(b.date) || (a.time ?? "23:59").localeCompare(b.time ?? "23:59") || a.itemsLabel.localeCompare(b.itemsLabel));
 }
 
+/** Arbeitstag = Mo–Sa (Krefeld hat samstags geöffnet); Sonntag zählt nicht mit. */
+function isWorkingDay(iso: string): boolean {
+  return new Date(`${iso}T12:00:00`).getDay() !== 0;
+}
+
+/**
+ * Letzter Kalendertag des Startseiten-Fensters: heute plus die folgenden Tage, bis
+ * `count` Arbeitstage abgedeckt sind. Dazwischenliegende Sonntage bleiben enthalten,
+ * damit z. B. 24/7-Abholungen nicht verschwinden.
+ */
+export function workingDayWindowEnd(todayIso: string, count = 3): string {
+  let day = todayIso;
+  let seen = isWorkingDay(day) ? 1 : 0;
+  while (seen < count) {
+    day = toLocalIso(addDays(new Date(`${day}T12:00:00`), 1));
+    if (isWorkingDay(day)) seen++;
+  }
+  return day;
+}
+
+/** Einträge je Kalendertag gruppieren (chronologisch), für eine Tagesüberschrift je Datum. */
+export function groupEntriesByDay(entries: DayEntry[]): Array<{ date: string; entries: DayEntry[] }> {
+  const groups: Array<{ date: string; entries: DayEntry[] }> = [];
+  for (const entry of sortCalendarEntries(entries)) {
+    const last = groups[groups.length - 1];
+    if (last && last.date === entry.date) last.entries.push(entry);
+    else groups.push({ date: entry.date, entries: [entry] });
+  }
+  return groups;
+}
+
 /** Montag der Woche zu einem Datum (lokal). */
 export function weekStart(date: Date): Date {
   const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
