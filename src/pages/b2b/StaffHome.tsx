@@ -250,7 +250,12 @@ export default function StaffHome() {
     needsAction(p, "loeschung") && { p, kind: "loeschung", label: "Löschung beantragt" },
   ].filter(Boolean) as { p: ProfileRow; kind: string; label: string }[]));
   const dueTodos = todos.filter((t) => t.due_date && t.due_date.slice(0, 10) <= today && (activeDayLocation === "all" || !t.location || filterByDayLocation([t], activeDayLocation).length > 0));
-  const upcomingEntries = sortCalendarEntries([...buildCalendarEntries(confirmedAll, signedDelivery, signedReturn).filter(e => e.date >= today && !e.protocolSigned), ...buildTaskCalendarEntries(todos, taskItems)]).filter(e => activeDayLocation === "all" || !e.location || normalizeLoc(e.location) === activeDayLocation).slice(0, 20);
+  // Startseite: nur Rausgaben/Rücknahmen der nächsten drei Arbeitstage. Schilderarbeiten stehen in den
+  // Aufgaben des Standorts, nicht zusätzlich im Kalender; alles Spätere zeigt die Wochenübersicht.
+  const windowEnd = workingDayWindowEnd(today, 3);
+  const upcomingDays = groupEntriesByDay(buildCalendarEntries(confirmedAll, signedDelivery, signedReturn)
+    .filter(e => e.date >= today && e.date <= windowEnd && !e.protocolSigned)
+    .filter(e => activeDayLocation === "all" || !e.location || normalizeLoc(e.location) === activeDayLocation));
 
   const monthName = now.toLocaleDateString("de-DE", { month: "long" });
   const firstName = displayName && !displayName.includes("@") ? displayName.split(" ")[0] : "";
@@ -308,7 +313,20 @@ export default function StaffHome() {
               }
             >
               <div className="divide-y divide-border">
-                <div className="px-4 py-3 space-y-3">{upcomingEntries.length === 0 ? <p className="text-sm text-muted-foreground">Keine Termine geplant.</p> : upcomingEntries.map((entry,index) => <div key={`${entry.kind}-${entry.taskId ?? entry.inquiryId}-${index}`}><p className="mb-1 text-xs text-muted-foreground">{new Date(`${entry.date}T12:00:00`).toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" })}</p><DayEntryCard entry={entry} /></div>)}</div>
+                <div className="space-y-4 px-4 py-3">
+                  <CalendarLegend />
+                  {upcomingDays.length === 0 ? <p className="text-sm text-muted-foreground">Keine Rausgaben oder Rücknahmen in den nächsten drei Arbeitstagen.</p> : upcomingDays.map((day) => (
+                    <section key={day.date} aria-label={day.date}>
+                      <h3 className="mb-2 border-b border-border pb-1 text-sm font-semibold text-foreground">
+                        {day.date === today ? "Heute · " : ""}{new Date(`${day.date}T12:00:00`).toLocaleDateString("de-DE", { weekday: "long", day: "2-digit", month: "2-digit" })}
+                      </h3>
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        {day.entries.map((entry, index) => <DayEntryCard key={`${entry.kind}-${entry.inquiryId}-${index}`} entry={entry} />)}
+                      </div>
+                    </section>
+                  ))}
+                  <Link to="/b2b/kalender" className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">Ganze Woche im Kalender ansehen<ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></Link>
+                </div>
                 {invalidPeriods.length > 0 && (
                   <section className="border-l-4 border-accent bg-accent/5 px-4 py-3" aria-label="Mietdaten prüfen">
                     <h3 className="text-sm font-semibold text-foreground">Mietdaten prüfen</h3>
