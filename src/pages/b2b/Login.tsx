@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { useAuth } from "@/hooks/useAuth";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, LogIn, Building2, ShieldCheck } from "lucide-react";
+import { Eye, EyeOff, LogIn, ShieldCheck } from "lucide-react";
 import { isPortalHost } from "@/lib/portalDomain";
 import { customerDossierReturnPath } from "@/lib/customerDossierLink";
 
@@ -77,13 +77,7 @@ export default function B2BLogin() {
           <div className="max-w-md mx-auto">
             <Card>
               <CardHeader className="text-center">
-                {onPortal ? (
-                  <img src="/images/slt-portal-logo.png" alt="SLT Rental" width={64} height={64} className="w-16 h-16 mx-auto mb-4" />
-                ) : (
-                  <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <Building2 className="h-8 w-8 text-primary" />
-                  </div>
-                )}
+                <img src="/favicon.png" alt="SLT Rental" width={64} height={64} className="w-16 h-16 object-contain mx-auto mb-4" />
                 <CardTitle className="text-2xl">{onPortal ? "B2B-Portal" : "Login"}</CardTitle>
                 <CardDescription>
                   Melde dich an, um auf dein Firmenkonto zuzugreifen.
