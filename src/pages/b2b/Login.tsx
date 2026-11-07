@@ -61,7 +61,7 @@ export default function B2BLogin() {
     } else {
       toast({
         title: "Erfolgreich angemeldet",
-        description: "Willkommen im B2B-Portal!",
+        description: "Willkommen bei SLT Rental!",
       });
       // Redirect happens via useEffect based on isAdmin state
     }

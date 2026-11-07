@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 import sltLogo from "@/assets/slt-logo-sm.webp";
 import { RentalCartButton } from "@/components/rental/RentalRequestCart";
 import { isTrailerRoute } from "@/lib/rentalBookingMode";
+import { useAuth } from "@/hooks/useAuth";
+import { useStaffAccess } from "@/hooks/useStaffAccess";
 
 const locations = [
   { id: "krefeld", name: "Krefeld", address: "Anrather Straße 291, 47807 Krefeld-Fichtenhain", phone: "02151 417 99 04", email: "krefeld@slt-rental.de" },
@@ -161,6 +163,9 @@ export function Header() {
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
   const location = useLocation();
   const { t } = useTranslation();
+  const { isAdmin } = useAuth();
+  const { isStaff } = useStaffAccess();
+  const isInternalUser = isAdmin || isStaff;
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -304,9 +309,9 @@ export function Header() {
                 </Button>
               </Link>
 
-              <Link to="/b2b/login">
+              <Link to={isInternalUser ? "/b2b/start" : "/b2b/login"}>
                 <Button variant="outline" size="sm" className="whitespace-nowrap">
-                  {t("nav.b2bPortal")}
+                  {isInternalUser ? "SLT Rental App" : t("nav.b2bPortal")}
                 </Button>
               </Link>
             </div>
@@ -364,11 +369,11 @@ export function Header() {
             <div className="h-px bg-border/60 my-2 mx-4" />
 
             <Link
-              to="/b2b/login"
+              to={isInternalUser ? "/b2b/start" : "/b2b/login"}
               className="px-4 py-3 rounded-lg text-sm font-medium hover:bg-muted text-foreground/70"
               onClick={() => setIsMenuOpen(false)}
             >
-              {t("nav.b2bLogin")}
+              {isInternalUser ? "SLT Rental App" : t("nav.b2bLogin")}
             </Link>
 
             <Link
