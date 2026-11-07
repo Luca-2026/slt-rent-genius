@@ -5,6 +5,19 @@ function fixture() {
  return {rpc:vi.fn().mockResolvedValue({error:null}),from:()=>q};
 }
 const refund={id:'re_external',payment_intent:'pi_original',amount:12376,currency:'eur',livemode:true,status:'succeeded',metadata:{}};
+it('marks the 700 € settlement paid only after matching provider evidence, never just a refund request',async()=>{
+ const updates:unknown[]=[];
+ const service={rpc:vi.fn(async(name:string)=>({data:name==='deposit_payout_verified',error:null})),from:(table:string)=>{
+  const q:any={select:()=>q,limit:()=>q,maybeSingle:async()=>({data:{inquiry_id:'florian',inquiry_table:'rental_inquiries'},error:null}),update:(value:unknown)=>{updates.push(value);return q;},eq:()=>q,then:(resolve:any)=>resolve({data:table==='deposit_refunds'?[]:table==='deposit_settlements'?[{id:'settlement',balance:700}]:[],error:null})};return q;
+ }};
+ await reconcileStripeRefund(service,{...refund,id:'re_deposit',amount:70000,metadata:{deposit_refund_id:'claim'}},true);
+ expect(service.rpc).toHaveBeenCalledWith('deposit_payout_verified',{_inquiry:'florian',_cents:70000});
+ expect(updates).toHaveLength(1);
+ expect(updates[0]).toEqual(expect.objectContaining({payout_status:'paid'}));
+ updates.length=0;
+ await reconcileStripeRefund(service,{...refund,status:'pending',metadata:{deposit_refund_id:'claim'}},true);
+ expect(updates).toHaveLength(0);
+});
 it('records metadata-free external refund with exact 12376 cents',async()=>{
  const service=fixture();await reconcileStripeRefund(service,refund,true);
  expect(service.rpc).toHaveBeenCalledWith('record_stripe_refund_receipt',expect.objectContaining({_amount:12376,_id:'re_external',_intent:'pi_original'}));
