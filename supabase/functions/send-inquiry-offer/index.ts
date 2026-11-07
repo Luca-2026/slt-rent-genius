@@ -876,6 +876,7 @@ Deno.serve(async (req: Request) => {
           ...(offerGroups ? { groups: offerGroups } : {}),
           ...(extraFields ? { extra_fields: extraFields } : {}),
           ...(orderType ? { order_type: orderType } : {}),
+          return_mode: body.return_mode === "collection" ? "collection" : "customer",
           ...(isRentalOffer ? { terms_text: termsRaw, address_form: addressForm } : {}),
         },
         ...(inquiryType === "rental"
