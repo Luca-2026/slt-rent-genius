@@ -39,9 +39,9 @@ beforeEach(() => {
   vi.stubGlobal("fetch", dispatch);
 });
 describe("Angebotsnachfragen und Ablehnungsversand", () => {
-  it("sendet eine fällige Nachfrage ausschließlich an die Testadresse", async () => {
-    expect(await processOfferFollowups(service(), "link")).toEqual({ sent: 1 });
-    expect(JSON.parse(dispatch.mock.calls[0][1].body).to).toEqual(["luca@sandhoff.org"]);
+  it("sendet auch für Testangebote keine zusätzlichen automatischen Nachfragen", async () => {
+    expect(await processOfferFollowups(service(), "link")).toEqual({ sent: 0 });
+    expect(dispatch).not.toHaveBeenCalled();
   });
   it("verschickt ohne Freigabe nichts an produktive Kunden", async () => {
     state.email = "customer@example.com";

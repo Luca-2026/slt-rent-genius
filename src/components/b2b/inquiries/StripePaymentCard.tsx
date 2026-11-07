@@ -153,7 +153,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, onChanged }: 
       toast({ title: "Erstattung nicht ausgeführt", description: data?.error ?? "Bitte später erneut versuchen.", variant: "destructive" });
       return;
     }
-    toast({ title: "Kaution wird erstattet", description: data.customer_mailed ? "Der Kunde wurde per E-Mail informiert." : "Kunden-E-Mail wurde nicht versendet." });
+    toast({ title: "Kaution wird erstattet", description: "Der Erstattungsstatus wird im Auftrag gespeichert. Es wird keine separate E-Mail versendet." });
     setDialog(false);
     load();
     onChanged();
@@ -224,7 +224,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, onChanged }: 
           <DialogHeader>
             <DialogTitle>Kaution erstatten</DialogTitle>
             <DialogDescription>
-              Der Betrag geht auf das ursprüngliche Zahlungsmittel zurück. Bei Schäden kannst du einen geringeren Betrag erstatten (z. B. abzüglich Schäden laut Rückgabeprotokoll). Der Kunde bekommt eine E-Mail.
+              Der Betrag geht auf das ursprüngliche Zahlungsmittel zurück. Bei Schäden kannst du einen geringeren Betrag erstatten (z. B. abzüglich Schäden laut Rückgabeprotokoll). Die Erstattung wird auf der Rechnung ausgewiesen, ohne separate E-Mail.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
@@ -233,7 +233,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, onChanged }: 
               <NumberInput value={amount} onChange={(e) => setAmount(e.target.value.replace(",", "."))} />
             </div>
             <div>
-              <Label className="text-xs">Hinweis an den Kunden (optional)</Label>
+              <Label className="text-xs">Erstattungsgrund (optional)</Label>
               <Input value={reason} maxLength={300} onChange={(e) => setReason(e.target.value)} placeholder="z. B. abzüglich Reinigung" />
             </div>
           </div>
