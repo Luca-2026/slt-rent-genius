@@ -163,70 +163,7 @@ Gesendet über slt-rental.de/verkauf/gebrauchtmaschinen`;
       );
     }
 
-    // Confirmation email to customer
-    const escapeHtml = (s: unknown): string =>
-      s === null || s === undefined ? "" : String(s)
-        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-
-    const greeting = salutation === "Herr"
-      ? `Sehr geehrter Herr ${escapeHtml(lastName)}`
-      : salutation === "Frau"
-        ? `Sehr geehrte Frau ${escapeHtml(lastName)}`
-        : `Hallo ${escapeHtml(firstName)} ${escapeHtml(lastName)}`;
-
-    const machineLineRaw = isSpecific
-      ? `${manufacturerModel}${articleNumber ? ` (Art.-Nr. ${articleNumber})` : ""}${year ? `, Bj. ${year}` : ""}${price ? ` – ${price}` : ""}`
-      : `${searchedMachine || "Allgemeine Suchanfrage"}${preferredManufacturer ? ` (Wunschhersteller: ${preferredManufacturer})` : ""}`;
-    const machineLine = escapeHtml(machineLineRaw);
-    const interestSafe = escapeHtml(interestLabels[interest] || interest);
-    const wishDateSafe = escapeHtml(wishDate);
-    const deliveryOptionSafe = escapeHtml(deliveryOption);
-    const financingTermSafe = escapeHtml(financingTerm);
-    const financingDownPaymentSafe = escapeHtml(financingDownPayment);
-
-    const confirmHtml = `<!doctype html><html><body style="font-family:Arial,sans-serif;color:#1a1a1a;background:#ffffff;margin:0;padding:24px;">
-<div style="max-width:600px;margin:0 auto;">
-  <h2 style="color:#00507d;margin:0 0 16px;">Vielen Dank für Deine Anfrage!</h2>
-  <p>${greeting},</p>
-  <p>wir haben Deine Kaufanfrage erhalten und melden uns innerhalb von <strong>1 Werktag</strong> persönlich bei Dir.</p>
-  <div style="background:#f5f7fa;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;">
-    <p style="margin:0 0 6px;"><strong>Deine Anfrage im Überblick:</strong></p>
-    <p style="margin:4px 0;">Maschine: ${machineLine}</p>
-    <p style="margin:4px 0;">Interesse: ${interestSafe}</p>
-    ${wishDate ? `<p style="margin:4px 0;">Wunschtermin: ${wishDateSafe}</p>` : ""}
-    ${deliveryOption ? `<p style="margin:4px 0;">Lieferung/Abholung: ${deliveryOptionSafe}</p>` : ""}
-    ${financingDesired ? `<p style="margin:4px 0;">Finanzierung: gewünscht${financingTerm ? `, Laufzeit ${financingTermSafe} Monate` : ""}${financingDownPayment ? `, Anzahlung ${financingDownPaymentSafe} €` : ""}</p>` : ""}
-  </div>
-  ${financingDesired ? `<p>Wir leiten Deine Finanzierungsanfrage parallel an unseren Finanzierungspartner weiter und schicken Dir das passende Angebot mit unserer Rückmeldung mit.</p>` : ""}
-  <p>Bei dringenden Rückfragen erreichst Du uns telefonisch unter <a href="tel:+4921514179904" style="color:#00507d;">02151 417 99 04</a> oder per E-Mail an <a href="mailto:kaufanfrage@slt-rental.de" style="color:#00507d;">kaufanfrage@slt-rental.de</a>.</p>
-  <p style="margin-top:24px;">Beste Grüße<br/>Dein SLT-Rental Team</p>
-  <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
-  <p style="font-size:12px;color:#6b7280;margin:0;">SLT-Rental GmbH · Krefeld · Bonn · Mülheim an der Ruhr<br/>www.slt-rental.de</p>
-</div></body></html>`;
-
-    // Send confirmation (non-blocking — log if it fails but don't fail the request)
-    try {
-      const confirmRes = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${RESEND_API_KEY}`,
-        },
-        body: JSON.stringify({
-          from: "SLT-Rental <kaufanfrage@slt-rental.de>",
-          to: [email],
-          reply_to: "kaufanfrage@slt-rental.de",
-          subject: `Bestätigung Deiner Kaufanfrage${isSpecific && manufacturerModel ? ` – ${manufacturerModel}` : ""}`,
-          html: confirmHtml,
-        }),
-      });
-      if (!confirmRes.ok) {
-        console.error("Confirmation email failed:", await confirmRes.text());
-      }
-    } catch (e) {
-      console.error("Confirmation email exception:", e);
-    }
+    // Submission is acknowledged in the website; only staff receive the inquiry email.
 
     return new Response(
       JSON.stringify({ success: true }),

@@ -152,42 +152,6 @@ serve(async (req) => {
   </div>
 </div>`.trim();
 
-    // ── Customer confirmation ──
-    const itemsSummaryHtml = (items || []).map((item: any) => {
-      const dateRange = item.startDate
-        ? `${item.startDate}${item.endDate ? ` – ${item.endDate}` : ""}`
-        : "";
-      return `<li style="margin-bottom:4px;"><strong>${item.productName}</strong> (${item.quantity || 1}x) – ${dateRange}</li>`;
-    }).join("");
-
-    const confirmationHtml = `
-<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;background:#ffffff;">
-  <div style="background:#ffffff;padding:20px;text-align:center;border-bottom:3px solid #f97316;">
-    <img src="${SLT_LOGO}" alt="SLT Rental" style="height:50px;max-width:200px;" />
-  </div>
-  <div style="padding:24px;">
-    <h2 style="color:#1a1a1a;margin-top:0;">Vielen Dank für Ihre Anfrage!</h2>
-    <p style="color:#374151;line-height:1.6;">
-      Hallo ${contactName},<br><br>
-      wir haben Ihre ${isBatch ? "Sammelanfrage" : "Anfrage"} erhalten und werden Ihnen schnellstmöglich ein Angebot erstellen – in der Regel innerhalb von <strong>1 Stunde</strong> während unserer Geschäftszeiten.
-    </p>
-    <div style="background:#fff7ed;border-left:4px solid #f97316;padding:12px 16px;margin:16px 0;border-radius:4px;">
-      <strong style="color:#ea580c;">Ihre angefragten Artikel:</strong>
-      <ul style="margin:8px 0 0 0;padding-left:20px;color:#374151;">${itemsSummaryHtml}</ul>
-      ${deliveryRequested ? `<br><strong style="color:#ea580c;">Lieferung an:</strong> ${deliveryStreet}, ${deliveryPostalCode} ${deliveryCity}` : ""}
-      ${additionalServices && additionalServices.length > 0 ? `<br><strong style="color:#ea580c;">Zusatzoptionen:</strong> ${additionalServices.map((s: any) => s.name).join(", ")}` : ""}
-    </div>
-    <p style="color:#374151;line-height:1.6;">
-      Falls Sie in der Zwischenzeit Fragen haben, erreichen Sie uns unter <a href="tel:${locPhone.replace(/\s/g, '')}" style="color:#f97316;">${locPhone}</a> oder per E-Mail an <a href="mailto:${locEmail}" style="color:#f97316;">${locEmail}</a>.
-    </p>
-    <p style="color:#374151;">
-      Mit freundlichen Grüßen,<br>
-      <strong>Ihr SLT Rental Team – Standort ${locName}</strong>
-    </p>
-    ${footerHtml}
-  </div>
-</div>`.trim();
-
     if (RESEND_API_KEY) {
       const subjectInternal = isBatch
         ? `B2B-Sammelanfrage: ${companyName} – ${itemCount} Artikel`
@@ -207,18 +171,6 @@ serve(async (req) => {
       });
       if (!res1.ok) console.error("Resend internal error:", await res1.text());
 
-      // Send customer confirmation
-      const res2 = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${RESEND_API_KEY}` },
-        body: JSON.stringify({
-          from: "SLT Rental <anfragen@slt-rental.de>",
-          to: [authData.user.email || contactEmailRaw],
-          subject: `Ihre B2B-Anfrage – Bestätigung`,
-          html: confirmationHtml,
-        }),
-      });
-      if (!res2.ok) console.error("Resend confirmation error:", await res2.text());
     } else {
       console.log("=== B2B RESERVATION NOTIFICATION (no RESEND_API_KEY) ===");
       console.log("Reservation notification not sent (no RESEND_API_KEY)", { locationId });

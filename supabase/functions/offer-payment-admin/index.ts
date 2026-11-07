@@ -1,6 +1,5 @@
 import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
 import { reconcileRefundsBeforeExecution } from "../_shared/refund-reconciliation.ts";
-import { codedSubject } from "../_shared/order-code.ts";
 import { selectStaffRentalPayment } from "../_shared/staff-payment-decision.ts";
 import { recordRentalPayments } from "../_shared/record-rental-payments.ts";
 /**
@@ -11,8 +10,6 @@ import { recordRentalPayments } from "../_shared/record-rental-payments.ts";
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { z } from "https://esm.sh/zod@3.23.8";
-import { LOCATION_CONTACTS, resolveLocationKey } from "../_shared/inquiry-offer-math.ts";
-import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
 import { creditRefund } from "../_shared/credit-refund.ts";
 import { rentalCreditRefund } from "../_shared/rental-credit-refund.ts";
 import {
@@ -31,10 +28,6 @@ const corsHeaders = {
 };
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-const money = (cents: number) =>
-  new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(cents / 100);
-const esc = (s: unknown) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
 const Body = z.discriminatedUnion("action", [
   z.object({ action: z.literal("rental_credit_info"), invoice_id: z.string().uuid() }),
   z.object({ action: z.literal("refund_rental_credit"), invoice_id: z.string().uuid() }),
@@ -139,30 +132,8 @@ Deno.serve(async (req: Request) => {
       try {
         const execute = body.action === "refund_credit_note";
         const result: any = await creditRefund(service, body.credit_note_id, user.id, execute);
-        // Bestätigung nur einmal: bei frischer, von Stripe angenommener Erstattung.
-        if (execute && !result.already_requested && ["succeeded", "pending"].includes(result.status)) {
-          const resendKey = Deno.env.get("RESEND_API_KEY");
-          const { data: credit } = await service.from("inquiry_invoices").select("invoice_number, customer_email, customer_name, location, parent_invoice_id").eq("id", body.credit_note_id).maybeSingle();
-          const { data: parent } = credit?.parent_invoice_id ? await service.from("inquiry_invoices").select("invoice_number").eq("id", credit.parent_invoice_id).maybeSingle() : { data: null };
-          if (resendKey && credit?.customer_email) {
-            const loc = LOCATION_CONTACTS[resolveLocationKey(credit.location)];
-            const rcpt = documentEmailRecipients(credit.customer_email, [loc.email]);
-            const res = await fetch("https://api.resend.com/emails", {
-              method: "POST",
-              headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
-              body: JSON.stringify({
-                from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
-                to: rcpt.to,
-                ...(rcpt.cc.length ? { cc: rcpt.cc } : {}),
-                reply_to: loc.email,
-                subject: `Erstattung über Stripe – Rechnungskorrektur ${credit.invoice_number}`,
-                html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><p>Guten Tag${credit.customer_name ? ` ${esc(credit.customer_name)}` : ""},</p><p>zu unserer Rechnungskorrektur <strong>${esc(credit.invoice_number)}</strong>${parent?.invoice_number ? ` (Rechnung ${esc(parent.invoice_number)})` : ""} ${result.status === "succeeded" ? "haben wir Ihnen" : "haben wir die Erstattung von"} <strong>${money(result.amount_cents)}</strong> ${result.status === "succeeded" ? "vollständig erstattet" : "veranlasst; sie wird noch verarbeitet"} – auf dasselbe Zahlungsmittel, mit dem Sie online bezahlt haben.</p><p>Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${esc(loc.name)}<br>Tel. ${esc(loc.phone)} · ${esc(loc.email)}</p></div>`,
-              }),
-            });
-            result.customer_mailed = res.ok;
-            if (!res.ok) console.error("Erstattungsbestätigung fehlgeschlagen:", res.status);
-          }
-        }
+        // Refund evidence is provided by the invoice, not a separate customer email.
+        result.customer_mailed = false;
         return json(result);
       } catch (error) {
         const msg = error instanceof Error ? error.message : "";
@@ -227,35 +198,8 @@ Deno.serve(async (req: Request) => {
       const { error: syncErr } = await service.rpc("sync_deposit_refund", { _id: reserved.id, _intent: link.payment_intent_id, _refund_id: refund.id, _status: refund.status ?? "pending", _amount: refund.amount });
       if (syncErr) return json({ error: "Erstattung wurde angenommen; Statusabgleich ist offen. Nicht manuell erneut erstatten." }, 409);
 
-      // Kundenmail (Testkunde → keine Kopien)
-      const resendKey = Deno.env.get("RESEND_API_KEY");
-      let mailed = false;
-      if (resendKey && link.customer_email && !prior) {
-        try {
-        const { data: inq } = await service
-          .from(link.inquiry_table)
-          .select("location")
-          .eq("id", link.inquiry_id)
-          .maybeSingle();
-        const loc = LOCATION_CONTACTS[resolveLocationKey(inq?.location)];
-        const rcpt = documentEmailRecipients(link.customer_email, [loc.email]);
-        const partial = body.amount_cents < link.deposit_cents;
-        const res = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
-            to: rcpt.to,
-            ...(rcpt.cc.length ? { cc: rcpt.cc } : {}),
-            subject: await codedSubject(service, `Ihre Kaution wird erstattet – Angebot ${link.offer_number}`, { table: link.inquiry_table, id: link.inquiry_id }),
-            html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;color:#1a1a1a;"><p>Guten Tag,</p><p>wir erstatten Ihnen <strong>${money(body.amount_cents)}</strong> Ihrer Kaution${partial ? ` (von ${money(link.deposit_cents)})` : ""} zu Angebot ${esc(link.offer_number)} auf das Zahlungsmittel, mit dem Sie bezahlt haben.</p>${body.reason ? `<p>Hinweis: ${esc(body.reason)}</p>` : ""}<p>Die Gutschrift erscheint je nach Bank in der Regel innerhalb von 5–10 Werktagen.</p><p>Freundliche Grüße<br>Ihr SLT Rental Team – Standort ${esc(loc.name)}<br>Tel. ${esc(loc.phone)} · ${esc(loc.email)}</p></div>`,
-          }),
-        });
-        mailed = res.ok;
-        if (!res.ok) console.error("Erstattungsmail fehlgeschlagen:", res.status);
-        } catch { console.error("Erstattungsbestätigung konnte nicht versendet werden; Zahlungsstatus bleibt erhalten."); }
-      }
-      return json({ success: true, refund_id: refund.id, status: refund.status, customer_mailed: mailed });
+      // Keep the persisted refund result independent of email delivery.
+      return json({ success: true, refund_id: refund.id, status: refund.status, customer_mailed: false });
     } catch (err) {
       console.error("Stripe-Erstattungsstatus ungeklärt; Reservierung bleibt erhalten.");
       return json({ error: "Erstattungsstatus ist ungeklärt. Derselbe Erstattungsauftrag bleibt reserviert; nicht manuell zusätzlich erstatten." }, 502);

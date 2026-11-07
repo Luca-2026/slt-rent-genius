@@ -362,39 +362,6 @@ serve(async (req) => {
   </div>
 </div>`.trim();
 
-    // ── Customer confirmation email ──
-    const confirmationHtml = `
-<div style="font-family: Arial, Helvetica, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
-  <div style="background: #ffffff; padding: 20px; text-align: center; border-bottom: 3px solid #f97316;">
-    <img src="${SLT_LOGO}" alt="SLT Rental" style="height: 50px; max-width: 200px;" />
-  </div>
-  <div style="padding: 24px;">
-    <h2 style="color: #1a1a1a; margin-top: 0;">Vielen Dank für Ihre Anfrage!</h2>
-    <p style="color: #374151; line-height: 1.6;">
-      Hallo ${e.name},<br><br>
-      wir haben Ihre Mietanfrage erhalten und werden uns schnellstmöglich bei Ihnen melden – in der Regel innerhalb eines Werktages.
-    </p>
-    <div style="background: #fff7ed; border-left: 4px solid #f97316; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
-      <strong style="color: #ea580c;">${requestedItems.length > 1 ? "Ihre Artikel:" : "Artikel:"}</strong> ${requestedItems.length > 1 ? "" : e.productName}<br>
-      <strong style="color: #ea580c;">Standort:</strong> ${e.locationName}<br>
-      <strong style="color: #ea580c;">Zeitraum:</strong> ${e.dateRange}
-      ${timeRange ? `<br><strong style="color: #ea580c;">Uhrzeiten:</strong> ${e.timeRange}` : ""}
-      ${deliveryRequested ? `<br><strong style="color: #ea580c;">Lieferung an:</strong> ${e.deliveryStreet}, ${e.deliveryPostalCode} ${e.deliveryCity}` : ""}
-      ${setupServiceRequested ? `<br><strong style="color: #ea580c;">Betreuung / Auf- & Abbau:</strong> Gewünscht` : ""}
-    </div>
-    ${itemsTableHtml}
-    <p style="color: #374151; line-height: 1.6;">
-      ${inquiryDiscount ? `${escapeHtml(BANK_DISCOUNT_TERMS)}<br><br>` : ""}
-      Falls Sie in der Zwischenzeit Fragen haben, erreichen Sie uns unter <a href="tel:${escapeHtml(locPhone.replace(/\s/g, ''))}" style="color: #f97316;">${e.locPhone}</a> oder per E-Mail an <a href="mailto:${e.locEmail}" style="color: #f97316;">${e.locEmail}</a>.
-    </p>
-    <p style="color: #374151;">
-      Mit freundlichen Grüßen,<br>
-      <strong>Ihr SLT Rental Team – Standort ${e.locationName}</strong>
-    </p>
-    ${footerHtml}
-  </div>
-</div>`.trim();
-
     if (RESEND_API_KEY) {
       // Send internal notification
       const res1 = await fetch("https://api.resend.com/emails", {
@@ -415,23 +382,7 @@ serve(async (req) => {
       });
       if (!res1.ok) console.error("Resend internal error:", await res1.text());
 
-      // Send customer confirmation
-      const res2 = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${RESEND_API_KEY}`,
-          ...(cartRequestId ? { "Idempotency-Key": `public-cart-${cartRequestId}-customer` } : {}),
-        },
-        body: JSON.stringify({
-          from: "SLT Rental <anfragen@slt-rental.de>",
-          to: [email],
-          subject: `Ihre Mietanfrage: ${productName} – Bestätigung`,
-          html: confirmationHtml,
-        }),
-      });
-      if (!res2.ok) console.error("Resend confirmation error:", await res2.text());
-      if (cartRequestId && inquiryId && db) await db.from("rental_inquiries").update({ email_sent: res1.ok && res2.ok }).eq("id", inquiryId);
+      if (cartRequestId && inquiryId && db) await db.from("rental_inquiries").update({ email_sent: res1.ok }).eq("id", inquiryId);
     } else {
       console.log("=== INQUIRY (no RESEND_API_KEY) ===");
       console.log("Inquiry received (email not sent)", { locationName });

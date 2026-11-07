@@ -1,3 +1,4 @@
+import { shouldSendCustomerEmail } from "../_shared/customer-email-policy.ts";
 import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { allowsBindingOffer } from "../_shared/undated-offer.ts";
@@ -198,7 +199,7 @@ Deno.serve(async (req: Request) => {
       const channelLabel = onsiteStaff ? "vor Ort unterschrieben" : "online angenommen";
       // Kundenkopie: unterschriebenes Angebot als PDF-Anhang statt Download-Link.
       let pdfAttachment: { filename: string; content: string } | null = null;
-      if (inquiry.offer_file_url) {
+      if (onsiteStaff && inquiry.offer_file_url) {
         try {
           const pdfRes = await fetch(String(inquiry.offer_file_url));
           if (pdfRes.ok) {
@@ -231,6 +232,8 @@ Deno.serve(async (req: Request) => {
         },
       ];
       for (const mail of mails) {
+        // Onsite signers still need their contract copy; online acceptance is shown on the payment page.
+        if (mail === mails[1] && !onsiteStaff && !shouldSendCustomerEmail("online_acceptance_confirmation")) continue;
         if (!mail.to?.[0]) continue;
         try {
           const res = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" }, body: JSON.stringify(mail) });
