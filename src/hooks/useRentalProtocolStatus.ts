@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { isOperationalProtocolComplete } from "@/lib/dashboardMetrics";
 
 export interface RentalProtocolRef {
   id: string;
@@ -31,9 +32,11 @@ export function useRentalProtocolStatus() {
       return cur;
     };
     for (const r of (dn.data ?? []) as any[]) {
+      if (!isOperationalProtocolComplete(r.status)) continue;
       get(r.rental_inquiry_id).delivery = { id: r.id, number: r.delivery_note_number, file_url: r.file_url, created_at: r.created_at, status: r.status };
     }
     for (const r of (rp.data ?? []) as any[]) {
+      if (!isOperationalProtocolComplete(r.status)) continue;
       get(r.rental_inquiry_id).ret = { id: r.id, number: r.return_protocol_number, file_url: r.file_url, created_at: r.created_at, status: r.status };
     }
     setByInquiry(map);

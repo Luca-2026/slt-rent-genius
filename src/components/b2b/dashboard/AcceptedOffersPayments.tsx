@@ -4,7 +4,7 @@ import { BellRing, CheckCircle2, ChevronDown, ChevronRight, ChevronUp } from "lu
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
-import { hasRentalEnded, needsRentalCloseout, rentalCloseoutTasks, isAwaitingOfferConfirmation, filterStaffConfirmationTasks } from "@/lib/dashboardMetrics";
+import { hasRentalEnded, needsRentalCloseout, rentalCloseoutTasks, isAwaitingOfferConfirmation, filterStaffConfirmationTasks, isOperationalProtocolComplete } from "@/lib/dashboardMetrics";
 import { isPaymentOverdue, paymentDeadline } from "../../../../supabase/functions/_shared/payment-followup";
 
 import { effectiveEnd } from "@/lib/calendarEntries";
@@ -76,8 +76,8 @@ export function AcceptedOffersPayments({ staffLocation, includeUnassigned = fals
       for (const i of list) {
         const ended = i.table === "rental_inquiries" && hasRentalEnded(i, now);
         const tasks = ended ? rentalCloseoutTasks({
-          deliverySigned: ("closed_manually_at" in i && !!i.closed_manually_at) || (delivery.data ?? []).some((p) => p.rental_inquiry_id === i.id && p.status === "signed"),
-          returnSigned: ("closed_manually_at" in i && !!i.closed_manually_at) || (returns.data ?? []).some((p) => p.rental_inquiry_id === i.id && p.status === "signed"),
+          deliverySigned: ("closed_manually_at" in i && !!i.closed_manually_at) || (delivery.data ?? []).some((p) => p.rental_inquiry_id === i.id && isOperationalProtocolComplete(p.status)),
+          returnSigned: ("closed_manually_at" in i && !!i.closed_manually_at) || (returns.data ?? []).some((p) => p.rental_inquiry_id === i.id && isOperationalProtocolComplete(p.status)),
           invoiced: (invoices.data ?? []).some((p) => p.rental_inquiry_id === i.id && !["draft", "cancelled"].includes(p.status) && ["invoice", "final"].includes(p.invoice_kind ?? "invoice")),
         }) : [];
         if (ended && (protocolsFailed || !tasks.length)) continue;
