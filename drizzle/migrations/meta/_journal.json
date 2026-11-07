@@ -1177,6 +1177,13 @@
       "when": 1794055171488,
       "tag": "0167_fix_order_refund_allocation_completion_guard",
       "breakpoints": true
+    },
+    {
+      "idx": 168,
+      "version": "7",
+      "when": 1794055555933,
+      "tag": "0168_protect_order_refund_allocation_terminal_states",
+      "breakpoints": true
     }
   ]
 }
