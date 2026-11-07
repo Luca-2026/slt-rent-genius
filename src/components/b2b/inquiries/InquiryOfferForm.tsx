@@ -1,7 +1,7 @@
 import { SALES_PAYMENT_OPTIONS, salesPaymentTerms, salesOfferLine, type SalesFinancing } from "../../../../supabase/functions/_shared/sales-offer";
 import { editorBankDiscount } from "@/lib/editorBankDiscount";
 import { LogisticsServiceFields } from "./LogisticsServiceFields";
-import { isLogisticsService, logisticsService, migrateServiceCosts, type ServiceKind } from "./logisticsServices";
+import { isLogisticsService, logisticsService, migrateServiceCosts, SERVICE_UNITS, serviceUnit, type ServiceKind } from "./logisticsServices";
 import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
 import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLegacyPeriod, undatedOfferLine } from "./offerCalendarPeriod";
 import { applyOpenEndedPeriod, normalizeOpenEndedUnit, normalizeOpenEndedDuration, openEndedUnitSingular, type OpenEndedUnit } from "@/lib/installments";
@@ -1274,7 +1274,7 @@ export function InquiryOfferForm({
           // Die PDF-Zeile zeigt Menge × Einheit; mehrere Artikel (bzw. m²/lfm) werden in der
           // Beschreibung ausgewiesen, damit die Summe nachvollziehbar bleibt.
           const description =
-            (articles > 1 || qUnit !== "stk") && unit !== "pauschal"
+            !isLogisticsService(rest) && (articles > 1 || qUnit !== "stk") && unit !== "pauschal"
               ? [baseDescription, `${articles} ${qUnit === "stk" ? "Artikel" : quantityUnitShort(qUnit)} × ${duration} ${unitLabel(duration, unit)}`]
                   .filter(Boolean)
                   .join(" · ")
@@ -1288,7 +1288,7 @@ export function InquiryOfferForm({
             rental_start: undatedOffer || rest.period_free ? undefined : rest.rental_start ?? checkStart ?? undefined,
             rental_end: undatedOffer || openEnded || rest.period_free ? undefined : rest.rental_end ?? checkEnd ?? undefined,
             quantity: articles * duration,
-            unit: unitLabel(articles * duration, unit),
+            unit: isLogisticsService(rest) ? SERVICE_UNITS.find(u => u.value === serviceUnit(rest))?.label ?? "Pauschale" : unitLabel(articles * duration, unit),
             unit_code: unit,
             // Paket 3b: Dauer separat (quantity bleibt Artikel × Dauer für die Summenfunktionen).
             duration,
