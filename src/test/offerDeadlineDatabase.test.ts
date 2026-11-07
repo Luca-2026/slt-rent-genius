@@ -60,7 +60,8 @@ describe("Same-day offers and shared online/onsite acceptance guard", () => {
   });
   for (const status of ["expired", "declined"]) {
     it(`does not reopen ${status} links`, async () => {
-      await fixture(); await db.query("UPDATE offer_acceptance_links SET status=$1", [status]);
+      await fixture(); await db.exec("UPDATE offer_acceptance_links SET status='expired'");
+      await db.query("UPDATE offer_acceptance_links SET status=$1", [status]);
       await deadline();
       const { rows } = await db.query<{ status: string }>("SELECT status FROM offer_acceptance_links");
       expect(rows[0].status).toBe(status);
