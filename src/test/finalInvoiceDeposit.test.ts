@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  depositSummary, depositSummaryNote, inferChargeMeasure, settlementAppliesToNewInvoice, settlementPayments, type SettlementRow,
+  depositSummary, depositSummaryNote, payoutText, inferChargeMeasure, settlementAppliesToNewInvoice, settlementPayments, type SettlementRow,
 } from "../../supabase/functions/_shared/final-invoice-deposit";
 
 // Fall Janko Samuel: 500 € bar, Miete 230,86 €, Kaution 269,14 €, Rückgabekosten 32,34 €, Rest 236,80 € bar zurück.
@@ -10,6 +10,13 @@ const row: SettlementRow = {
 };
 
 describe("Schlussrechnung nach Kautionsabrechnung", () => {
+  it("Florian: pending 700 € is not shown as refunded; 69.97 € rental credit stays separate", () => {
+    const summary = depositSummary({ ...row, deposit_held: 700, offset_amount: 0, balance: 700, payout_method: "stripe", payout_status: "pending", payout_date: null });
+    expect(payoutText(summary)).toBe("wird auf die ursprüngliche Zahlungsart erstattet");
+    const p = settlementPayments([{ date: "2026-10-17", amount: 1029.63, label: "Stripe", reference: "cs_original" }, { date: "2026-10-20", amount: 47.6, label: "Stripe", reference: "cs_topup" }], 1077.23, summary, "C48T6Q");
+    expect(p.reduce((s, line) => s + line.amount, 0)).toBe(377.23);
+    expect(Math.round((377.23 - 307.26) * 100)).toBe(6997);
+  });
   it("bewahrt Pascals tatsächliche Überweisung 133,47 € bei 33,47 € Mietanrechnung und 100 € Kaution", () => {
     const summary = depositSummary({ ...row, deposit_held: 100, offset_amount: 0, balance: 100, payout_method: "transfer", payout_date: "2026-11-07" });
     const payments = settlementPayments([{ date: "2026-11-06", amount: 133.47, label: "Banküberweisung", reference: "" }], 133.47, summary, "9DFW9V");
