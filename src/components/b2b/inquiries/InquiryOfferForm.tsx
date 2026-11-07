@@ -1,4 +1,5 @@
 import { SALES_PAYMENT_OPTIONS, salesPaymentTerms, salesOfferLine, type SalesFinancing } from "../../../../supabase/functions/_shared/sales-offer";
+import { RentalCreditRefund } from "./RentalCreditRefund";
 import { bankDiscountPresentation, editorBankDiscount } from "@/lib/editorBankDiscount";
 import { invoiceServicePeriod } from "@/lib/invoiceServicePeriod";
 import { LogisticsServiceFields } from "./LogisticsServiceFields";
@@ -1385,9 +1386,11 @@ export function InquiryOfferForm({
   const [previewing, setPreviewing] = useState(false);
   const [previewedKey, setPreviewedKey] = useState<string | null>(null);
   const [couponPreviewTotal, setCouponPreviewTotal] = useState<number | null>(null);
+  const [refundBlock, setRefundBlock] = useState<string | null>(null);
+  const [refundBasisReady, setRefundBasisReady] = useState(false);
   useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
 
-  const preview = async () => {
+  const preview = async (prepareRefund = false) => {
     if (openEnded && independentPricing && hasMissingOpenEndedPrice(items)) {
       toast({ title: "Mietpreis fehlt", description: "Bitte für jede Mietposition den Preis der gewählten Einheit festlegen.", variant: "destructive" });
       return;
@@ -1402,7 +1405,7 @@ export function InquiryOfferForm({
     }
     setPreviewing(true);
     const previewBody = buildBody();
-    const { data, error } = await invokeWithAuth(isAmendment ? "send-order-confirmation" : isInvoice ? "send-inquiry-invoice" : "send-inquiry-offer", { ...previewBody, preview: true });
+    const { data, error } = await invokeWithAuth(isAmendment ? "send-order-confirmation" : isInvoice ? "send-inquiry-invoice" : "send-inquiry-offer", { ...previewBody, preview: true, ...(prepareRefund ? { prepare_refund: true } : {}) });
     setPreviewing(false);
     const b64 = (data as any)?.pdf_base64 as string | undefined;
     if (error || !b64) {
@@ -1416,11 +1419,14 @@ export function InquiryOfferForm({
     setPreviewUrl(URL.createObjectURL(new Blob([bytes], { type: "application/pdf" })));
     setPreviewedKey(JSON.stringify(previewBody));
     setCouponPreviewTotal((data as any)?.totals?.grossAmount ?? null);
+    setRefundBlock((data as any)?.refund_block ?? null);
+    setRefundBasisReady(Boolean((data as any)?.refund_basis_id));
   };
   // Versand erst nach Vorschau des aktuellen Stands (jede Änderung verlangt eine neue Vorschau).
   const previewOk = matchesDocumentPreview(previewedKey, buildBody());
 
   const send = async () => {
+    if (refundBlock) return;
     if (sendBlock) return;
     if (!matchesDocumentPreview(previewedKey, buildBody())) return;
     const invalid = items.some((i) => !i.product_name.trim() || i.quantity <= 0 || i.unit_price < 0);
@@ -1517,13 +1523,13 @@ export function InquiryOfferForm({
 
   // Aktionen (Vorschau, Senden) – in der Vollseite oben angeheftet, sonst wie bisher am Ende.
   const previewButton = (
-    <Button type="button" data-draft-neutral variant="outline" onClick={preview} disabled={disabled || previewing || sending} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
+    <Button type="button" data-draft-neutral variant="outline" onClick={() => void preview()} disabled={disabled || previewing || sending} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
       {previewing ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Eye className="h-4 w-4 mr-2" />}
       {previewing ? "Vorschau wird erstellt …" : "PDF-Vorschau anzeigen"}
     </Button>
   );
   const sendButton = (
-    <Button data-draft-neutral onClick={send} disabled={disabled || sending || checking || !previewOk || !!sendBlock || (isAmendment && agreementNote.trim().length < 5)} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
+    <Button data-draft-neutral onClick={send} disabled={disabled || sending || checking || !previewOk || !!sendBlock || !!refundBlock || (isAmendment && agreementNote.trim().length < 5)} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
       <Send className="h-4 w-4 mr-2" />
       {isAmendment ? (sending ? "Auftragsänderung wird gespeichert …" : "Auftragsänderung speichern") : isInvoice
         ? sending
@@ -1541,6 +1547,13 @@ export function InquiryOfferForm({
     </div>
   );
   const previewHint = !previewOk && <p className="text-xs text-muted-foreground">Vor dem Senden bitte die PDF-Vorschau des aktuellen Stands ansehen.</p>;
+  const refundNotice = isInvoice && inquiryType === "rental" && refundBlock && <div role="alert" className="space-y-2 border-t border-border pt-2 text-sm">
+    <p className="text-destructive">{refundBlock}</p>
+    <div className="flex flex-wrap gap-2">
+      <Button type="button" variant="outline" disabled={previewing || sending || !previewOk} onClick={() => void preview(true)}>Erstattungsgrundlage vorbereiten</Button>
+      {refundBasisReady && <RentalCreditRefund inquiryId={inquiryId} onDone={() => void preview()} />}
+    </div>
+  </div>;
   const actionText = (
     <p className="text-xs text-muted-foreground">
       {undatedOffer ? "Unverbindliches Preisangebot: keine Reservierung, keine Online-Annahme und keine Zahlungsaufforderung." : isAmendment ? "Auftragsänderung speichern und anschließend die neue AB senden. Kein neues Angebot und keine erneute Online-Annahme." : isInvoice
@@ -1556,6 +1569,7 @@ export function InquiryOfferForm({
       </div>
       {previewHint && <div className="mt-1 sm:text-right">{previewHint}</div>}
       {blockNotice && <div className="mt-2">{blockNotice}</div>}
+      {refundNotice}
     </div>
   ) : (
     <>
@@ -1566,6 +1580,7 @@ export function InquiryOfferForm({
     <>
       {previewHint}
       {blockNotice}
+      {refundNotice}
       {sendButton}
       {actionText}
     </>
@@ -2744,6 +2759,7 @@ export function InquiryOfferForm({
             <DialogDescription>{isInvoice ? "Unverbindlicher Entwurf ohne Rechnungsnummer. Keine Rechnung wurde ausgestellt und nichts verschickt." : isAmendment ? "Vorschau der geänderten Auftragsbestätigung. Noch nichts gespeichert oder verschickt." : "So sieht das Angebot für den Kunden aus. Die Angebotsnummer wird erst beim Senden vergeben – nichts wurde verschickt."}</DialogDescription>
           </DialogHeader>
           {!isInvoice && couponCode && couponPreviewTotal !== null && <p className="text-sm font-semibold">Gesamtbetrag mit geprüftem Gutschein: {formatEuro(couponPreviewTotal)} brutto</p>}
+          {refundNotice}
           {previewUrl && <PdfPagesPreview url={previewUrl} className="min-h-0 flex-1 w-full overflow-y-auto rounded border border-border bg-muted p-3" />}
           <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
             {previewUrl && (
@@ -2752,7 +2768,7 @@ export function InquiryOfferForm({
               </Button>
             )}
             <Button variant="outline" onClick={() => setPreviewUrl(null)}>Zurück zum Bearbeiten</Button>
-            <Button onClick={() => { setPreviewUrl(null); void send(); }} disabled={disabled || sending || checking || !previewOk || !!sendBlock || (isAmendment && agreementNote.trim().length < 5)}>
+            <Button onClick={() => { setPreviewUrl(null); void send(); }} disabled={disabled || sending || checking || !previewOk || !!sendBlock || !!refundBlock || (isAmendment && agreementNote.trim().length < 5)}>
               <Send className="h-4 w-4 mr-2" />{isAmendment ? "Auftragsänderung speichern" : isInvoice ? "Rechnung final erstellen und senden" : "Angebot jetzt senden"}
             </Button>
           </div>
