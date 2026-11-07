@@ -1,7 +1,7 @@
 import { beforeEach, expect, it, vi } from "vitest";
 const { stripe } = vi.hoisted(() => ({ stripe: { checkout: { sessions: { retrieve: vi.fn() } }, paymentIntents: { retrieve: vi.fn() }, refunds: { list: vi.fn(), create: vi.fn() } } }));
-vi.mock("../../supabase/functions/_shared/stripe-pay.ts", () => ({ stripeClient: () => stripe, isStripeTestMode: () => false, toCents: (v: unknown) => Math.round(Number(v) * 100) }));
-import { creditRefund } from "../../supabase/functions/_shared/credit-refund";
+vi.mock("../supabase/functions/_shared/stripe-pay.ts", () => ({ stripeClient: () => stripe, isStripeTestMode: () => false, toCents: (v: unknown) => Math.round(Number(v) * 100) }));
+import { creditRefund } from "../supabase/functions/_shared/credit-refund";
 
 beforeEach(() => {
   vi.clearAllMocks();
