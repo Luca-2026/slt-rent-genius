@@ -135,14 +135,14 @@ export default function RentalInquiries() {
 
   if (!accessLoading && !isStaff) {
     return (
-      <B2BPortalLayout title="Mietanfragen">
+      <B2BPortalLayout title="Mietvorgänge">
         <p className="text-muted-foreground">Kein Zugriff auf diesen Bereich.</p>
       </B2BPortalLayout>
     );
   }
 
   return (
-    <B2BPortalLayout title="Mietanfragen" subtitle="Alle Mietanfragen – Privat- und Geschäftskunden">
+    <B2BPortalLayout title="Mietvorgänge" subtitle="Anfragen, Angebote und Mietaufträge – Privat- und Geschäftskunden">
       <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 mb-4">
         <Button
           variant={mineOnly ? "default" : "outline"}
@@ -198,7 +198,7 @@ export default function RentalInquiries() {
         onOpenChange={setAiOpen}
         onConfirm={async (r) => {
           const id = await createInquiryFromImport(r);
-          toast.success("Mietanfrage angelegt – Angebot jetzt bearbeiten.");
+          toast.success("Mietvorgang angelegt – Angebot jetzt bearbeiten.");
           await reload();
           if (id) openInquiry(id);
         }}
@@ -229,7 +229,7 @@ export default function RentalInquiries() {
               <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2 min-w-0">
-                    <span className="font-semibold break-words min-w-0">{r.product_name || "Mietanfrage"}</span>
+                    <span className="font-semibold break-words min-w-0">{r.product_name || "Mietvorgang"}</span>
                     <OrderCodeBadge code={r.order_code} />
                     <InquiryStatusBadge status={r.status} />
                     <InquirySourceBadges inquiry={r} />

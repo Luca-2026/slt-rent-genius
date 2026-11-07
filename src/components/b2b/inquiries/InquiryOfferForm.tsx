@@ -1915,7 +1915,7 @@ export function InquiryOfferForm({
                 </span>
               </label>
             )}
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2" data-testid="position-columns">
+            <div className="grid grid-cols-1 items-start gap-3 sm:grid-cols-2 [&>div]:min-w-0 [&>div>label]:mb-1 [&>div>label]:block [&>div>label]:min-h-4" data-testid="position-columns">
               <div>
                 <Label className="text-xs">Menge</Label>
                 <div className="flex gap-1">
@@ -1939,22 +1939,8 @@ export function InquiryOfferForm({
                   </Select>
                 </div>
               </div>
-              {!isSalesOffer && <div className="min-w-0 basis-full space-y-1">
-                <Label className="text-xs">Kostenart für Zahlungsrabatt</Label>
-                <Select value={item.payment_cost_kind ?? (item.vat_rate === 0 ? "damage" : "rental")} disabled={disabled} onValueChange={value => patchItem(index, { payment_cost_kind: value as OfferLine["payment_cost_kind"] })}>
-                  <SelectTrigger aria-label="Kostenart für Zahlungsrabatt"><SelectValue /></SelectTrigger>
-                  <SelectContent><SelectItem value="rental">Miete / Zusatzleistung</SelectItem><SelectItem value="municipal">Städtische Gebühren (kein Rabatt)</SelectItem><SelectItem value="damage">Schadensersatz (kein Rabatt)</SelectItem><SelectItem value="deposit">Kaution (kein Rabatt)</SelectItem></SelectContent>
-                </Select>
-              </div>}
               {!isSalesOffer && <div className="min-w-0">
                 <Label className="text-xs">Dauer</Label>
-                {pricingActive && !openEnded && !undatedOffer && !isFlatRate && eff.unit !== "stueck" && (
-                  <label className="mb-1 flex items-center gap-2 text-xs">
-                    <Checkbox aria-label="Dauer manuell festlegen" checked={item.duration_override !== undefined} disabled={disabled || inherited}
-                      onCheckedChange={(checked) => patchPriced(index, { duration_override: checked === true ? (eff.duration ?? 1) : undefined })} />
-                    Dauer manuell festlegen
-                  </label>
-                )}
                 <div className="flex gap-1">
                   {isFlatRate ? (
                     <div className="flex h-10 flex-1 items-center rounded-md border border-input bg-muted/40 px-3 text-sm text-muted-foreground" data-testid="duration-flat">
@@ -1994,12 +1980,18 @@ export function InquiryOfferForm({
                     </SelectContent>
                   </Select>
                 </div>
+                {pricingActive && !openEnded && !undatedOffer && !isFlatRate && eff.unit !== "stueck" && (
+                  <div className="mt-2 flex items-start gap-2 text-xs">
+                    <Checkbox aria-label="Dauer manuell festlegen" checked={item.duration_override !== undefined} disabled={disabled || inherited}
+                      onCheckedChange={(checked) => patchPriced(index, { duration_override: checked === true ? (eff.duration ?? 1) : undefined })} />
+                    <span>Dauer manuell festlegen</span>
+                  </div>
+                )}
                 <p className="mt-1 text-[11px] text-muted-foreground">
                   {item.quantity || 0} {quantityUnitShort(item.quantity_unit)} ×{" "}
                   {isFlatRate ? "pauschal" : `${eff.duration ?? 1} ${unitAbbreviation((eff.unit ?? "kalendertage") as OfferUnit)}`}
                 </p>
               </div>}
-              <div><Label className="text-xs">Mehrwertsteuer</Label><Select value={String(item.vat_rate ?? 19)} disabled={disabled} onValueChange={v => patchItem(index, { vat_rate: Number(v) === 0 ? 0 : 19 })}><SelectTrigger aria-label="Mehrwertsteuer der Position"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="19">19 % – Leistung</SelectItem><SelectItem value="0">0 % – echter Schadensersatz</SelectItem></SelectContent></Select></div>
               <div>
                 <Label className="text-xs">{isFlatRate ? "Pauschalpreis netto" : "Einzelpreis netto"}</Label>
                 <NumberInput
@@ -2034,6 +2026,14 @@ export function InquiryOfferForm({
                   disabled={disabled}
                 />
               </div>
+              <div><Label className="text-xs">Mehrwertsteuer</Label><Select value={String(item.vat_rate ?? 19)} disabled={disabled} onValueChange={v => patchItem(index, { vat_rate: Number(v) === 0 ? 0 : 19 })}><SelectTrigger className="h-10" aria-label="Mehrwertsteuer der Position"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="19">19 % – Leistung</SelectItem><SelectItem value="0">0 % – echter Schadensersatz</SelectItem></SelectContent></Select></div>
+              {!isSalesOffer && <div>
+                <Label className="text-xs">Kostenart für Zahlungsrabatt</Label>
+                <Select value={item.payment_cost_kind ?? (item.vat_rate === 0 ? "damage" : "rental")} disabled={disabled} onValueChange={value => patchItem(index, { payment_cost_kind: value as OfferLine["payment_cost_kind"] })}>
+                  <SelectTrigger className="h-10" aria-label="Kostenart für Zahlungsrabatt"><SelectValue /></SelectTrigger>
+                  <SelectContent><SelectItem value="rental">Miete / Zusatzleistung</SelectItem><SelectItem value="municipal">Städtische Gebühren (kein Rabatt)</SelectItem><SelectItem value="damage">Schadensersatz (kein Rabatt)</SelectItem><SelectItem value="deposit">Kaution (kein Rabatt)</SelectItem></SelectContent>
+                </Select>
+              </div>}
               <div className="flex items-baseline justify-between gap-2 border-t border-border pt-2 text-sm sm:col-span-2">
                 <span className="text-xs text-muted-foreground">Positionssumme netto</span>
                 <span className="font-semibold tabular-nums">{formatEuro(lineTotal(eff))}</span>
