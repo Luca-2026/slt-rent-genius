@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { NumberInput } from "@/components/ui/number-input";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { CreditCard, Copy, Link2, Loader2, Undo2 } from "lucide-react";
+import { CreditCard, Copy, Link2, Loader2, RotateCcw, Undo2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { useToast } from "@/hooks/use-toast";
