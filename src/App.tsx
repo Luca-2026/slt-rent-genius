@@ -238,7 +238,6 @@ const App = () => (
               <Route path="/b2b/projektanfrage" element={<ProjectRequest />} />
               <Route path="/b2b/produkte" element={<B2BProducts />} />
               <Route path="/b2b/produkte/:locationId/:categoryId/:productId" element={<B2BProductDetail />} />
-              <Route path="/b2b/mietvorgaenge" element={<MyReservations />} />
               <Route path="/b2b/anfragen" element={<MyReservations />} />
               <Route path="/b2b/rechnungen" element={<B2BInvoices />} />
               <Route path="/b2b/gutscheine" element={<FeedbackCoupons />} />

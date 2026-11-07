@@ -42,7 +42,7 @@ const customerNavItems = [
   { href: "/", label: "Startseite", icon: Home },
   { href: "/b2b/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/b2b/produkte", label: "Produkte & Anfragen", icon: Package },
-  { href: "/b2b/mietvorgaenge", label: "Mietvorgänge", icon: FileText },
+  { href: "/b2b/anfragen", label: "Mietvorgänge", icon: FileText },
   { href: "/b2b/uebergabeprotokolle", label: "Übergabeprotokolle", icon: ClipboardCheck },
   { href: "/b2b/rueckgabeprotokolle", label: "Rückgabeprotokolle", icon: Undo2 },
   { href: "/b2b/angebote", label: "Angebote", icon: FileText },
