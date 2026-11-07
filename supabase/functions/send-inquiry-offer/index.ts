@@ -14,7 +14,7 @@ import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
  * - The customer is asked to confirm acceptance by replying to the location mailbox;
  *   the job is then created manually in Rentware.
  */
-import { OPEN_ENDED_UNITS, openEndedNote, normalizeOpenEndedDuration, normalizeOpenEndedUnit, monthlyNetFromOffer } from "../_shared/installments.ts";
+import { OPEN_ENDED_UNITS, openEndedNote, normalizeOpenEndedDuration, normalizeOpenEndedUnit, monthlyNetFromOffer, hasMissingOpenEndedPrice } from "../_shared/installments.ts";
 import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts";
 import {
   ensurePaymentLink,
@@ -114,6 +114,7 @@ Deno.serve(async (req: Request) => {
     try {
       const input = inquiryType === "sales" && Array.isArray(body.items) ? body.items.map((item: any) => { const sale = salesOfferLine(item); return { ...sale, articles: sale.quantity, unit_code: "stueck", unit: sale.quantity_unit === "m2" ? "m²" : sale.quantity_unit === "lfm" ? "lfm" : "Stück" }; }) : body.items;
       items = normalizeInquiryOfferItems(input, undatedOffer);
+      if (body.open_ended === true && body.open_ended_independent_pricing === true && hasMissingOpenEndedPrice(items)) throw new Error("Bitte für jede Mietposition den Preis der gewählten Einheit festlegen.");
       if (inquiryType === "rental") {
         assertCalendarInsurance(items);
         items = withoutBankDiscount(items);
