@@ -78,9 +78,8 @@ export function settlementPayments(
   const out: PaymentLine[] = [];
   for (const p of payments) {
     if (isDepositLine(p)) continue;
-    if (left <= 0) break;
     const use = r2(Math.min(Number(p.amount) || 0, left));
-    if (use > 0) out.push({ ...p, amount: use, ...(Number(p.amount) > use ? { receipt_amount: Number(p.amount) } : {}) });
+    if (Number(p.amount) > 0) out.push({ ...p, amount: use, ...(Number(p.amount) > use ? { receipt_amount: Number(p.amount) } : {}) });
     left = r2(left - use);
   }
   if (sum.offset > 0) {
