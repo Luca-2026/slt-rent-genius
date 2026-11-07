@@ -7,6 +7,7 @@ import { unitAbbreviation, unitLabel } from "./rental-pricing.ts";
 import { drawEpcQr } from "./epc-qr-pdf.ts";
 import { documentTransferCents } from "./document-transfer.ts";
 import { payoutText } from "./final-invoice-deposit.ts";
+import { settledInvoiceBalance } from "./invoice-refund-balance.ts";
 
 // ─── PDF Offer Generator ───────────────────────────────────
 export async function generateOfferPdf(data: {
@@ -845,7 +846,7 @@ export async function generateOfferPdf(data: {
   const payments = (data.payments || []).filter((p) => Number(p.amount) > 0 || Number(p.receipt_amount) > 0);
   const amountPaid = Math.round(payments.reduce((sum, p) => sum + Number(p.amount || 0), 0) * 100) / 100;
   const requiredTotal = Math.round((data.grossAmount + (isOC ? Number(data.deposit) || 0 : 0)) * 100) / 100;
-  const balanceDue = Math.round((requiredTotal - amountPaid + (data.rentalRefund?.amount ?? 0)) * 100) / 100;
+  const balanceDue = settledInvoiceBalance(requiredTotal, amountPaid, data.rentalRefund?.amount);
   if (isCreditNote) {
     // Rechnungskorrektur: Hinweis zur Erstattung bzw. Verrechnung statt Zahlungsaufforderung
     const refundAmount = Math.max(0, Number(data.creditRefundAmount) || 0);
@@ -899,7 +900,7 @@ export async function generateOfferPdf(data: {
       dtr(pg, amountText, vx, y, font, 9, MUTED);
       y -= labelLines.length * 12;
       if (receiptAmount > Number(p.amount)) {
-        const allocation = `Davon auf diese Rechnung angerechnet: ${fm(Number(p.amount))}; Kautionsanteil: ${fm(receiptAmount - Number(p.amount))}`;
+        const allocation = `Davon Mietzahlung vor Erstattung: ${fm(Number(p.amount))}; Kautionsanteil: ${fm(receiptAmount - Number(p.amount))}`;
         const allocationLines = wt(allocation, font, 8, CW);
         need(allocationLines.length * 11 + 52);
         allocationLines.forEach((line, i) => dt(pg, line, ML, y - i * 11, font, 8, MUTED));

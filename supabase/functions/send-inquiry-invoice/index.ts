@@ -24,6 +24,7 @@ import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { invoiceWithRefunds } from "../_shared/invoice-with-refunds.ts";
+import { settledInvoiceBalance } from "../_shared/invoice-refund-balance.ts";
 import { depositSummary, depositSummaryNote, inferChargeMeasure, measureUnitLabel, settlementAppliesToNewInvoice, settlementPayments, type DepositSummary, type SettlementRow } from "../_shared/final-invoice-deposit.ts";
 import { addonExplanation, invoiceExtraFields } from "../_shared/inquiry-offer-math.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
@@ -662,7 +663,7 @@ Deno.serve(async (req: Request) => {
     const fileUrl = signed?.signedUrl || "";
 
     // ── E-Mail an den Kunden (persönlich formuliert, mit Bankdaten und Restbetrag) ──
-    const balanceDue = Math.round((totals.grossAmount - amountPaid + (rentalRefund?.amount ?? 0)) * 100) / 100;
+    const balanceDue = settledInvoiceBalance(totals.grossAmount, amountPaid, rentalRefund?.amount);
     const fullyPaid = balanceDue <= 0.009;
 
     const rowsHtml = items.map((i) => {
