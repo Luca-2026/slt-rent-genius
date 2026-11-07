@@ -113,7 +113,7 @@ export default function OfferOverview() {
   const filtersActive = JSON.stringify({ ...f, sort: DEFAULTS.sort }) !== JSON.stringify({ ...DEFAULTS });
 
   return (
-    <B2BPortalLayout title="Angebote (alle)" subtitle="Alle Angebote aus Mietanfragen – Privat- und Geschäftskunden">
+    <B2BPortalLayout title="Angebote (alle)" subtitle="Alle Angebote aus Mietvorgängen – Privat- und Geschäftskunden">
       <div className="mb-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-6">
         <Input className="lg:col-span-2" placeholder="Suche nach Nummer oder Kunde" value={f.q} onChange={(e) => set("q", e.target.value)} aria-label="Suche" />
         <Select value={f.status} onValueChange={(v) => set("status", v)}>

@@ -49,6 +49,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { InstallmentCard } from "./InstallmentCard";
 
 import type { OfferUnit } from "@/lib/offerUnits";
+import { unitLabel } from "@/lib/offerUnits";
 
 /** Einheitenbezeichnung aus dem Angebots-Snapshot zurück auf den Schlüssel mappen. */
 const UNIT_BY_LABEL: Record<string, OfferUnit> = {
@@ -456,9 +457,11 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
     initialDocMode(inquiryType, inquiry.id, inquiry.offer_number, !!offerSnapshot),
   );
   const [editorOpen, setEditorOpen] = useState(inquiryType !== "rental");
+  const [editorActivated, setEditorActivated] = useState(inquiryType !== "rental");
   const setDocMode = useCallback(
     (mode: DocMode) => {
       setEditorOpen(true);
+      setEditorActivated(true);
       setDocModeState(mode);
       rememberDocMode(inquiry.id, mode);
     },
@@ -498,6 +501,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
     if (lastInquiryId.current !== inquiry.id) {
       lastInquiryId.current = inquiry.id;
       setEditorOpen(inquiryType !== "rental");
+      setEditorActivated(inquiryType !== "rental");
       setDocModeState(initialDocMode(inquiryType, inquiry.id, inquiry.offer_number, !!offerSnapshot));
     }
     loadInvoices();
@@ -879,13 +883,13 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               {(offerSnapshot?.items ?? defaultItems).map((item, index) => <li key={index} className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-1 py-3 text-sm">
                 <span className="min-w-0 break-words font-medium">{item.name_override || item.product_name}</span>
                 <span className="tabular-nums">{item.quantity} {item.quantity_unit === "m2" ? "m²" : item.quantity_unit === "lfm" ? "lfm" : "Stk."}</span>
-                <span className="col-span-2 text-xs text-muted-foreground">{item.duration ?? 1} {item.unit ?? "Miettage"}{inquiry.offer_number ? ` · ${formatEuro(item.unit_price)} netto${item.discount_percent ? ` · ${item.discount_percent} % Rabatt` : ""}` : ""}</span>
+                <span className="col-span-2 text-xs text-muted-foreground">{item.duration ?? 1} {unitLabel(item.duration ?? 1, item.unit ?? "miettage")}{inquiry.offer_number ? ` · ${formatEuro(item.unit_price)} netto${item.discount_percent ? ` · ${item.discount_percent} % Rabatt` : ""}` : ""}</span>
               </li>)}
             </ul>
             {inquiry.offer_total_gross != null && <div className="flex justify-between gap-3 text-sm"><span>Auftragssumme brutto</span><strong className="tabular-nums">{formatEuro(inquiry.offer_total_gross)}</strong></div>}
           </section>
         )}
-        <div hidden={!editorOpen}>
+        {editorActivated && <div hidden={!editorOpen}>
         {docMode === "order" ? (
           orderEl
         ) : docMode === "deposit" ? (
@@ -962,7 +966,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           }}
         />
         )}
-        </div>
+        </div>}
         {inquiry.offer_number && (
           <OnSiteOfferSignDialog
             open={onSiteSignOpen}

@@ -1,4 +1,5 @@
 # Inquiries
+- Rental document workspaces start in a read-only order summary, mount editors only after explicit document actions, retain drafts while collapsed, and close on successful completion; amendment saves still advance to AB review/send before closing.
 - Period-free service lines preserve unit/VAT and omit dates and inventory checks; snapshots carry period_free through reopening and downstream documents.
 - Rental machine insurance uses full-calendar-period pricing by default; per-item addon labels and deductible notes remain editable snapshot fields, never catalogue mutations, so the PDF preserves agreed insurance terms.
 - Persisted optional insurance tiers use the same editor as standard addons; missing current CMS configuration must not delete them, and manual edits must survive tier synchronization.

@@ -127,7 +127,7 @@ interface InvoiceSurcharge {
 
 // ─── Component ────────────────────────────────────────────
 const ADMIN_TAB_TITLES: Record<string, { title: string; subtitle?: string }> = {
-  reservations: { title: "Anfragen (Portal, Altfälle)", subtitle: "Anfragen aus dem bisherigen Portal-System – neue Portal-Anfragen erscheinen unter Mietanfragen" },
+  reservations: { title: "Anfragen (Portal, Altfälle)", subtitle: "Anfragen aus dem bisherigen Portal-System – neue Portal-Anfragen erscheinen unter Mietvorgänge" },
   rentals: { title: "Laufende Mietvorgänge", subtitle: "Bestätigte und aktive Mieten von Firmenkunden" },
   offers: { title: "Angebote (Portal, Altfälle)", subtitle: "Angebote an Firmenkunden mit Portalkonto" },
   "delivery-notes": { title: "Übergabeprotokolle" },
@@ -922,7 +922,7 @@ export default function AdminDashboard() {
           <div className="mb-4 rounded-lg border border-border bg-muted/40 p-3 text-sm text-muted-foreground">
             Neue Anfragen aus dem B2B-Portal werden zentral unter{" "}
             <Link to="/b2b/mietanfragen" className="font-medium text-primary underline underline-offset-2">
-              Mietanfragen
+              Mietvorgänge
             </Link>{" "}
             bearbeitet – dort laufen Website- und Firmenkundenanfragen in einer Pipeline zusammen.
           </div>
