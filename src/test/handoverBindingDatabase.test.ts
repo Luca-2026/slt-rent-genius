@@ -51,4 +51,18 @@ describe("Verbindliche Übergabe ohne vorherige AB", () => {
   it("lässt öffentliche Annahme abgelaufener Angebote weiterhin nicht zu", async () => {
     await reset(); await expect(db.exec("UPDATE offer_acceptance_links SET status='accepted',accepted_channel='online'")).rejects.toThrow("nicht mehr gültig");
   });
+  it("bindet die nachträgliche digitale Kundenunterschrift desselben Mitarbeiterprotokolls", async () => {
+    await reset();
+    await db.exec("UPDATE rental_inquiries SET status='accepted'");
+    await db.query("INSERT INTO b2b_delivery_notes VALUES($1,$1,null,null,false,$2)", [id, JSON.stringify({ created_by: actor })]);
+    await db.exec("UPDATE b2b_delivery_notes SET customer_signed_at=now(),signature_data='data:image/png;base64,test',agb_accepted=true,protocol_data=protocol_data||'{\"items_confirmed\":true,\"customer_signer_name\":\"Testkunde\"}'::jsonb");
+    const { rows } = await db.query<{ confirmed: boolean }>("SELECT order_confirmed_at IS NOT NULL confirmed FROM rental_inquiries");
+    expect(rows[0].confirmed).toBe(true);
+  });
+  it("akzeptiert keinen unberechtigten Erfasser als Bestätigungsautor", async () => {
+    await reset();
+    await expect(db.query("INSERT INTO b2b_delivery_notes VALUES($1,$1,now(),'data:image/png;base64,test',true,$2)", [id, JSON.stringify({ created_by: id, items_confirmed: true })])).rejects.toThrow("Keine Berechtigung");
+    const { rows } = await db.query<{ count: number }>("SELECT count(*)::int count FROM b2b_delivery_notes");
+    expect(rows[0].count).toBe(0);
+  });
 });
