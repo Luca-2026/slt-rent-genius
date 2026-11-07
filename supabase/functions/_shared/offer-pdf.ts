@@ -1033,7 +1033,7 @@ export async function generateOfferPdf(data: {
     if (settled) {
       dt(
         pg,
-        `Der Rechnungsbetrag ist durch ${T("deine", "Ihre")} Zahlung${payments.length > 1 ? "en" : ""} von ${fm(amountPaid)} vollständig ausgeglichen. Vielen Dank!`,
+        `Der Rechnungsbetrag ist durch angerechnete Zahlungen von ${fm(amountPaid)} vollständig ausgeglichen. Vielen Dank!`,
         ML + 16, by, font, 9, INK,
       );
       by -= 14;
