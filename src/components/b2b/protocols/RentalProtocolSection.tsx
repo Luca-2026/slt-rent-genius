@@ -58,14 +58,14 @@ export function RentalProtocolSection({ inquiry, state, onChanged }: Props) {
   const [closeOk, setCloseOk] = useState(false);
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
-  const { isAdmin, isBranchManager } = useStaffAccess();
+  const { isSuperAdmin } = useStaffAccess();
   const closedAt = (inquiry as { closed_manually_at?: string | null }).closed_manually_at ?? null;
   const closedReason = (inquiry as { closed_manually_reason?: string | null }).closed_manually_reason ?? null;
   const accepted = inquiry.status === "accepted";
   const candidateState = { handedOver: !!state.delivery, returned: !!state.ret };
   const canDeliver = isProtocolCandidate(inquiry, "delivery", candidateState);
   const canReturn = isProtocolCandidate(inquiry, "return", candidateState);
-  const canClose = (isAdmin || isBranchManager) && !closedAt && !state.ret && (accepted || (inquiry.status === "done" && !!inquiry.order_confirmed_at));
+  const canClose = isSuperAdmin && !closedAt && !state.ret && (accepted || (inquiry.status === "done" && !!inquiry.order_confirmed_at));
   if (!canDeliver && !canReturn && !state.delivery && !state.ret && !closedAt && !canClose) return null;
 
   const Row = ({ title, number, url, date }: { title: string; number: string; url: string | null; date: string }) => (
@@ -138,7 +138,7 @@ export function RentalProtocolSection({ inquiry, state, onChanged }: Props) {
       </div>
       {canClose && (
         <Button className="w-full" variant="outline" onClick={() => setCloseOpen(true)}>
-          <Lock className="h-4 w-4" /> Ohne Rückgabeprotokoll abschließen
+          <Lock className="h-4 w-4" /> Rückgabeprotokoll nicht ausgefüllt
         </Button>
       )}
 
