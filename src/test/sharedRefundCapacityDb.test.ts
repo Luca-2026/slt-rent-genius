@@ -17,7 +17,7 @@ beforeAll(async () => {
 }, 30000);
 afterAll(() => db.close());
 async function fixture() {
-  const link = crypto.randomUUID(), inquiry = crypto.randomUUID(), credit = crypto.randomUUID(), intent = `pi_${crypto.randomUUID()}`;
+  const link = crypto.randomUUID(), inquiry = crypto.randomUUID(), credit = crypto.randomUUID(), intent = `pi_${crypto.randomUUID().replaceAll("-", "")}`;
   await db.query("INSERT INTO offer_payment_links VALUES($1,$2,'rental_inquiries',$3,'paid',118068,50000)", [link, inquiry, intent]);
   await db.query("INSERT INTO inquiry_invoices VALUES($1,$2)", [credit, inquiry]);
   return { link, credit, intent };
