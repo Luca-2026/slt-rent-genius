@@ -252,8 +252,8 @@ const App = () => (
               <Route path="/b2b/admin" element={<AdminDashboard />} />
               <Route path="/b2b/aufgaben" element={<StaffTasks />} />
               <Route path="/b2b/start" element={<StaffHome />} />
-              <Route path="/b2b/mietanfragen" element={<RentalInquiries />} />
-              <Route path="/b2b/mietanfragen/:id" element={<RentalInquiryDetail />} />
+              <Route path="/b2b/mietvorgaenge" element={<RentalInquiries />} />
+              <Route path="/b2b/mietvorgaenge/:id" element={<RentalInquiryDetail />} />
               <Route path="/b2b/angebotsuebersicht" element={<OfferOverview />} />
               <Route path="/b2b/transporte" element={<TransportOrders />} />
               <Route path="/b2b/halteverbote" element={<SignBookings />} />

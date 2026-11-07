@@ -8,7 +8,7 @@ export function DayEntryCard({ entry }: { entry: DayEntry }) {
   const isPickup = entry.kind === "pickup" || entry.kind === "delivery";
   return (
     <Link
-      to={entry.taskId ? `/b2b/aufgaben?aufgabe=${entry.taskId}` : `/b2b/mietanfragen/${entry.inquiryId}`}
+      to={entry.taskId ? `/b2b/aufgaben?aufgabe=${entry.taskId}` : `/b2b/mietvorgaenge/${entry.inquiryId}`}
       className={cn(
         "calendar-entry block rounded-md border p-2 text-left text-xs transition-[filter] hover:brightness-95",
         `calendar-entry-${entry.kind}`,

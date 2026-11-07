@@ -138,7 +138,7 @@ function OverdueReturns({ rows, today }: { rows: InquiryRow[]; today: string }) 
           const days = daysBetween(end, today);
           return (
             <li key={r.id}>
-              <Link to={`/b2b/mietanfragen/${r.id}`} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-destructive/10">
+              <Link to={`/b2b/mietvorgaenge/${r.id}`} className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-destructive/10">
                 <span className="min-w-0 flex-1 truncate"><strong className="font-medium">{r.company_name || r.customer_name}</strong><span className="text-muted-foreground"> · {r.product_name}</span></span>
                 <span className="shrink-0 rounded-full bg-destructive px-2 py-0.5 text-[11px] font-medium text-destructive-foreground">{days} {days === 1 ? "Tag" : "Tage"} überfällig</span>
                 <span className="hidden shrink-0 text-xs text-muted-foreground md:inline">Protokoll fehlt</span>
@@ -202,7 +202,7 @@ export default function StaffHome() {
     if (hit.type === "customer") {
       navigate(`/b2b/kundendaten?kunde=${encodeURIComponent(hit.id)}&aktion=bearbeiten`);
     } else if (hit.type === "invoice") navigate("/b2b/anfrage-rechnungen");
-    else if (hit.type === "reservation") navigate(hit.kind === "sales" ? `/b2b/verkaufsanfragen?anfrage=${encodeURIComponent(hit.id)}` : `/b2b/mietanfragen/${hit.id}`);
+    else if (hit.type === "reservation") navigate(hit.kind === "sales" ? `/b2b/verkaufsanfragen?anfrage=${encodeURIComponent(hit.id)}` : `/b2b/mietvorgaenge/${hit.id}`);
   };
 
   useEffect(() => {
@@ -303,9 +303,9 @@ export default function StaffHome() {
           {searchError && <p role="alert" className="text-sm text-destructive">Die Suche konnte nicht vollständig geladen werden. Bitte die Seite erneut laden.</p>}
           {/* 1. Handlungsbedarf */}
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <ActionStat label="Neue Mietvorgänge" value={unprocessed} to="/b2b/mietanfragen" icon={Inbox} highlight />
-            <ActionStat label="Bestätigung offen" value={awaitingConfirmation} to="/b2b/mietanfragen?status=accepted" icon={FileCheck2} highlight />
-            <ActionStat label="Laufende Mieten" value={running} to="/b2b/mietanfragen?status=running" icon={Package} />
+            <ActionStat label="Neue Mietvorgänge" value={unprocessed} to="/b2b/mietvorgaenge" icon={Inbox} highlight />
+            <ActionStat label="Bestätigung offen" value={awaitingConfirmation} to="/b2b/mietvorgaenge?status=accepted" icon={FileCheck2} highlight />
+            <ActionStat label="Laufende Mieten" value={running} to="/b2b/mietvorgaenge?status=running" icon={Package} />
             <ActionStat label="Verkaufsanfragen" value={openSales} to="/b2b/verkaufsanfragen" icon={ShoppingCart} />
           </div>
 
@@ -351,7 +351,7 @@ export default function StaffHome() {
                   <section className="border-l-4 border-accent bg-accent/5 px-4 py-3" aria-label="Mietdaten prüfen">
                     <h3 className="text-sm font-semibold text-foreground">Mietdaten prüfen</h3>
                     {invalidPeriods.map((r) => (
-                      <Link key={r.id} to={`/b2b/mietanfragen/${r.id}`} className="mt-2 flex items-start gap-2 text-sm text-foreground hover:underline">
+                      <Link key={r.id} to={`/b2b/mietvorgaenge/${r.id}`} className="mt-2 flex items-start gap-2 text-sm text-foreground hover:underline">
                         <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
                         <span className="min-w-0 break-words"><strong>{r.company_name || r.customer_name}</strong> · {r.product_name}<span className="block text-xs text-muted-foreground">Mietende liegt vor Mietbeginn – Rückgabetermin klären.</span></span>
                       </Link>
@@ -378,8 +378,8 @@ export default function StaffHome() {
                 </div>
                 <p className="border-t border-border px-4 pt-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Pipeline & Forderungen · brutto</p>
                 <div className="py-1">
-                  <MoneyRow label="Angebote offen" hint={`${pipe.offeredCount} gesendet`} value={formatEuro(pipe.offered)} to="/b2b/mietanfragen?status=offer_sent" />
-                  <MoneyRow label="Beauftragt, nicht abgerechnet" hint={`${pipe.acceptedCount} Aufträge`} value={formatEuro(pipe.accepted)} to="/b2b/mietanfragen?status=accepted" />
+                  <MoneyRow label="Angebote offen" hint={`${pipe.offeredCount} gesendet`} value={formatEuro(pipe.offered)} to="/b2b/mietvorgaenge?status=offer_sent" />
+                  <MoneyRow label="Beauftragt, nicht abgerechnet" hint={`${pipe.acceptedCount} Aufträge`} value={formatEuro(pipe.accepted)} to="/b2b/mietvorgaenge?status=accepted" />
                   <MoneyRow label="Offene Forderungen" value={formatEuro(rec.open)} to="/b2b/anfrage-rechnungen" />
                   <MoneyRow label="davon überfällig" hint={`${rec.overdueCount} Rechnungen`} value={formatEuro(rec.overdue)} to="/b2b/anfrage-rechnungen" tone={rec.overdue > 0 ? "danger" : undefined} />
                 </div>
@@ -483,7 +483,7 @@ function DueInstallments({ today }: { today: string }) {
       <ul className="divide-y divide-border">
         {rows.map((r) => (
           <li key={r.id}>
-            <Link to={r.kind === "rental" ? `/b2b/mietanfragen/${r.id}` : `/b2b/verkaufsanfragen?status=all&anfrage=${r.id}`} className="flex flex-wrap items-center justify-between gap-2 px-4 py-2 text-sm hover:bg-muted">
+            <Link to={r.kind === "rental" ? `/b2b/mietvorgaenge/${r.id}` : `/b2b/verkaufsanfragen?status=all&anfrage=${r.id}`} className="flex flex-wrap items-center justify-between gap-2 px-4 py-2 text-sm hover:bg-muted">
               <span className="min-w-0"><span className="font-medium">{r.name}</span> <span className="text-muted-foreground">· {r.kind === "rental" ? "Miete" : "Verkauf"} · Angebot {r.offer ?? "—"}</span></span>
               <span className="text-muted-foreground">fällig seit {new Date(r.due).toLocaleDateString("de-DE")}{r.amount ? ` · ${formatEuro(Number(r.amount))} netto` : ""}</span>
             </Link>

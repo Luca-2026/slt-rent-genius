@@ -67,7 +67,7 @@ Deno.serve(async req => {
           const { data: file } = await service.storage.from("sign-permits").download(b.permit_path);
           if (file) { const bytes = new Uint8Array(await file.arrayBuffer()); let bin = ""; for (let i = 0; i < bytes.length; i += 32768) bin += String.fromCharCode(...bytes.subarray(i, i + 32768)); attachments.push({ filename: `Genehmigung_${inq.order_code}.${b.permit_path.split(".").pop()}`, content: btoa(bin) }); }
         }
-        const notice = signStaffNotice(b, inq, `https://app.slt-rental.de/b2b/mietanfragen/${inq.id}`, attachments.length > 0);
+        const notice = signStaffNotice(b, inq, `https://app.slt-rental.de/b2b/mietvorgaenge/${inq.id}`, attachments.length > 0);
         const mailbox = operationalEmailRecipient(inq.customer_email, `${b.location}@slt-rental.de`);
         const response = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${resend}`, "Content-Type": "application/json", "Idempotency-Key": `sign-staff-${b.id}` }, body: JSON.stringify({
           from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`, to: [mailbox], reply_to: inq.customer_email || undefined, subject: notice.subject, html: notice.html, attachments }) });

@@ -164,8 +164,8 @@ export default function OfferOverview() {
             </TableHeader>
             <TableBody>
               {list.map((r) => (
-                <TableRow key={r.id} className="cursor-pointer" onClick={() => navigate(`/b2b/mietanfragen/${r.id}`)}
-                  tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter") navigate(`/b2b/mietanfragen/${r.id}`); }}>
+                <TableRow key={r.id} className="cursor-pointer" onClick={() => navigate(`/b2b/mietvorgaenge/${r.id}`)}
+                  tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter") navigate(`/b2b/mietvorgaenge/${r.id}`); }}>
                   <TableCell className="font-medium whitespace-nowrap">{r.offer_number}{r.order_code && <span className="block font-mono text-xs text-primary">#{r.order_code}</span>}</TableCell>
                   <TableCell className="max-w-[14rem]">{r.company_name || r.customer_name || "–"}</TableCell>
                   <TableCell className="hidden whitespace-nowrap xl:table-cell">{r.location ? getLocationDisplayName(r.location) : "–"}</TableCell>

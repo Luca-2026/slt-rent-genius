@@ -36,7 +36,7 @@ async function insert(table: string, row: Record<string, unknown>): Promise<stri
 }
 
 export function rentalInquiryLink(id: string | null): string {
-  return id ? `${PORTAL_BASE_URL}/b2b/mietanfragen?id=${id}` : `${PORTAL_BASE_URL}/b2b/mietanfragen`;
+  return id ? `${PORTAL_BASE_URL}/b2b/mietvorgaenge?id=${id}` : `${PORTAL_BASE_URL}/b2b/mietvorgaenge`;
 }
 
 export function salesInquiryLink(id: string | null): string {

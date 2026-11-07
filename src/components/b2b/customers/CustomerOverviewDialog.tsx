@@ -59,7 +59,7 @@ export function CustomerOverviewDialog({ customer, open, onOpenChange, onEdit, s
   if (!customer) return null;
   const offers = inqs.filter((q) => q.offer_number);
   const revenue = invs.filter((v) => countsAsRevenue(v, false)).reduce((s, v) => s + (Number(v.net_amount) || 0), 0);
-  const link = (q: Inq) => (q.table === "rental" ? `/b2b/mietanfragen/${q.id}` : `/b2b/verkaufsanfragen?anfrage=${q.id}`);
+  const link = (q: Inq) => (q.table === "rental" ? `/b2b/mietvorgaenge/${q.id}` : `/b2b/verkaufsanfragen?anfrage=${q.id}`);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
