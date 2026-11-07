@@ -2072,6 +2072,7 @@ export function InquiryOfferForm({
                   <SelectTrigger className="h-10" aria-label="Kostenart für Zahlungsrabatt"><SelectValue /></SelectTrigger>
                   <SelectContent><SelectItem value="rental">Miete / Zusatzleistung</SelectItem><SelectItem value="municipal">Städtische Gebühren (kein Rabatt)</SelectItem><SelectItem value="damage">Schadensersatz (kein Rabatt)</SelectItem><SelectItem value="deposit">Kaution (kein Rabatt)</SelectItem></SelectContent>
                 </Select>
+                <p className="mt-1 text-xs text-muted-foreground">Legt fest, ob diese Position zum 3-%-Überweisungsrabatt zählt: Miete und Zusatzleistungen (z. B. Lieferung oder Versicherung) ja; Kaution, Schadensersatz und städtische Gebühren nein. Das Feld gewährt keinen zusätzlichen Rabatt und ändert nicht die Mehrwertsteuer. Der Rabatt gilt nur, wenn der Kunde zwischen Online-Zahlung und Überweisung wählen kann.</p>
               </div>}
               <div className="flex items-baseline justify-between gap-2 border-t border-border pt-2 text-sm sm:col-span-2">
                 <span className="text-xs text-muted-foreground">Positionssumme netto</span>

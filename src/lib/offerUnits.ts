@@ -13,7 +13,7 @@ export const OFFER_UNITS: { value: OfferUnit; label: string; short: string }[] =
   { value: "jahre", label: "Jahre", short: unitAbbreviation("jahre") },
   { value: "stueck", label: "Stück", short: unitAbbreviation("stueck") },
   { value: "pauschal", label: "Pauschalpreis", short: unitAbbreviation("pauschal") },
-  { value: "arbeitstage", label: "Arbeitstage (alt)", short: unitAbbreviation("arbeitstage") },
+  { value: "arbeitstage", label: "Arbeitstage", short: unitAbbreviation("arbeitstage") },
 ];
 
 /** z. B. (1, "monate") -> "Monat", (3, "monate") -> "Monate" – Quelle: src/lib/pricing. */
