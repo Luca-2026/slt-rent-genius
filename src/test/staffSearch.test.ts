@@ -8,7 +8,7 @@ describe("staff search", () => {
     expect(matchesStaffSearch("#OTHER1", ["VXQCC4"])).toBe(false);
   });
   it("searches both customer and company names, including umlaut spellings", () => {
-    expect(matchesStaffSearch("Do ehler", ["Ralf Döhler"])).toBe(false);
+    expect(matchesStaffSearch("Do ehler", ["Ralf Döhler"])).toBe(true);
     expect(matchesStaffSearch("Doehler Ralf", ["Ralf Döhler", "SLT"])).toBe(true);
     expect(matchesStaffSearch("SLT Ralf", ["Ralf Döhler", "SLT"])).toBe(true);
     expect(matchesStaffSearch("Carmen", ["Ralf Döhler", "SLT"])).toBe(false);

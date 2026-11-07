@@ -36,7 +36,7 @@ export default function SalesInquiries() {
       if (onlyOpen && !isOpenInquiry(r.status)) return false;
       if (kind !== "all" && r.kind !== kind) return false;
       if (!q) return true;
-      return matchesStaffSearch(q, [r.id, r.order_code, r.offer_number, r.order_confirmation_number, salesInquiryTitle(r), r.customer_name, r.company_name, r.customer_email, r.location]);
+      return matchesStaffSearch(q, [r.id, r.order_code, r.offer_number, salesInquiryTitle(r), [r.first_name, r.last_name].filter(Boolean).join(" "), r.company_name, r.customer_email, r.location]);
     });
   }, [rows, search, onlyOpen, kind]);
 
