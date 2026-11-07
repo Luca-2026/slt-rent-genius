@@ -10,7 +10,7 @@ function fixture(existing: any = null) {
  }};
  stripe.paymentIntents.retrieve.mockResolvedValue({livemode:true,status:'succeeded',currency:'eur',latest_charge:{amount:118068}});
  stripe.refunds.list.mockImplementation(async function*(){});
- stripe.refunds.create.mockResolvedValue({id:'re_rental',amount:12376,status:'succeeded'});
+ stripe.refunds.create.mockResolvedValue({id:'re_rental',payment_intent:'pi_original',currency:'eur',metadata:{credit_note_id:'invoice'},amount:12376,status:'succeeded'});
  return {service,inserts,invoice};
 }
 beforeEach(()=>vi.clearAllMocks());
