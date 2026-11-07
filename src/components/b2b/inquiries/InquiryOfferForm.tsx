@@ -1,5 +1,5 @@
 import { SALES_PAYMENT_OPTIONS, salesPaymentTerms, salesOfferLine, type SalesFinancing } from "../../../../supabase/functions/_shared/sales-offer";
-import { editorBankDiscount } from "@/lib/editorBankDiscount";
+import { bankDiscountPresentation, editorBankDiscount } from "@/lib/editorBankDiscount";
 import { LogisticsServiceFields } from "./LogisticsServiceFields";
 import { isLogisticsService, logisticsService, migrateServiceCosts, SERVICE_UNITS, serviceUnit, type ServiceKind } from "./logisticsServices";
 import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
@@ -1004,6 +1004,8 @@ export function InquiryOfferForm({
     () => buildOfferTotals(effectiveItems, deliveryCostDelivery + (isSalesOffer ? 0 : deliveryCostReturn) + setupCost + (isSalesOffer ? 0 : dismantleCost) + activeReturnCost),
     [effectiveItems, isSalesOffer, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost, activeReturnCost],
   );
+  const bankDiscountNet = Math.round(effectiveItems.reduce((sum, line) => sum + bankDiscountPresentation(line).discountNet, 0) * 100) / 100;
+  const editableAddonsNet = Math.round((totals.addonsNet - bankDiscountNet) * 100) / 100;
 
   /** Summe der erfassten Teilzahlungen und daraus der offene Restbetrag. */
   const amountPaid = useMemo(
@@ -2159,14 +2161,20 @@ export function InquiryOfferForm({
 
             {/* Zusatzoptionen dieser Position (CMS-Optionen + Standardauswahl + Freifeld) */}
             <AddonSection
-              item={eff}
+              item={{ ...eff, addons: bankDiscountPresentation(eff).editableAddons }}
               options={addonOptionsFor(item, inquiryType === "sales")}
               isSales={inquiryType === "sales"}
               disabled={disabled}
               periodStart={undatedOffer ? undefined : eff.delivery_at?.slice(0, 10) || eff.rental_start || checkStart || undefined}
               periodEnd={undatedOffer ? undefined : eff.collection_at?.slice(0, 10) || eff.rental_end || checkEnd || undefined}
-              onChange={(addons) => patchItem(index, { addons })}
+              onChange={(addons) => patchItem(index, { addons: [...addons, ...bankDiscountPresentation(eff).automaticAddons] })}
             />
+            {bankDiscountPresentation(eff).discountNet < 0 && (
+              <div className="flex flex-wrap justify-between gap-2 border-t border-border pt-2 text-sm">
+                <span>3 % Überweisungsrabatt · automatisch berücksichtigt</span>
+                <span className="font-semibold tabular-nums">{formatEuro(bankDiscountPresentation(eff).discountNet)} netto</span>
+              </div>
+            )}
           </div>
           );
         })}
@@ -2637,9 +2645,10 @@ export function InquiryOfferForm({
 
       <div className="rounded-lg bg-muted p-3 text-sm space-y-1">
         <div className="flex justify-between"><span>{inquiryType === "sales" ? "Verkaufsartikel" : "Mietartikel"}</span><span>{formatEuro(totals.itemsNet)}</span></div>
-        {totals.addonsNet !== 0 && (
-          <div className="flex justify-between"><span>Zusatzoptionen</span><span>{formatEuro(totals.addonsNet)}</span></div>
+        {editableAddonsNet !== 0 && (
+          <div className="flex justify-between"><span>Zusatzoptionen</span><span>{formatEuro(editableAddonsNet)}</span></div>
         )}
+        {bankDiscountNet < 0 && <div className="flex justify-between gap-2"><span>Überweisungsrabatt</span><span>{formatEuro(bankDiscountNet)}</span></div>}
         <div className="flex justify-between"><span>Netto</span><span>{formatEuro(totals.netAmount)}</span></div>
         <div className="flex justify-between"><span>MwSt. {totals.vatRate}%</span><span>{formatEuro(totals.vatAmount)}</span></div>
         <div className="flex justify-between font-bold text-base"><span>Brutto</span><span>{formatEuro(totals.grossAmount)}</span></div>
