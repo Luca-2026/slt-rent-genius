@@ -80,6 +80,7 @@ const staffNavItems = [
 export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutProps) {
   const { user, b2bProfile, loading, signOut, isAdmin } = useAuth();
   const { isStaff, canViewInventory, isBranchManager, staffProfile } = useStaffAccess();
+  const applicationName = isAdmin || isStaff ? "SLT Rental App" : "B2B-Portal";
   const canManageCredit = canManageCreditChecks(isAdmin, isBranchManager, Boolean(staffProfile));
   const { count: openTodoCount } = useStaffWork();
   const inquiryCounts = useOpenInquiryCounts();
@@ -107,9 +108,9 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
   // Browser-Tab-Titel für Portalseiten (B2B-Seiten haben keine SEO-Komponente)
   useEffect(() => {
     const previous = document.title;
-    document.title = title ? `${title} | SLT B2B-Portal` : "SLT B2B-Portal";
+    document.title = title ? `${title} | ${applicationName}` : applicationName;
     return () => { document.title = previous; };
-  }, [title]);
+  }, [title, applicationName]);
 
 
   useEffect(() => {
@@ -143,6 +144,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
         <div className="section-container">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <div>
+              {(isAdmin || isStaff) && <p className="mb-1 text-sm font-semibold text-primary-foreground">{applicationName}</p>}
               <h1 className="text-xl lg:text-2xl font-bold text-primary-foreground">{title}</h1>
               {subtitle && (
                 <p className="text-primary-foreground/80 text-sm">{subtitle}</p>
@@ -181,7 +183,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[290px] overflow-y-auto p-0">
                   <SheetHeader className="p-4 border-b border-border">
-                    <SheetTitle className="text-left">B2B-Portal</SheetTitle>
+                    <SheetTitle className="text-left">{applicationName}</SheetTitle>
                   </SheetHeader>
                   <div className="p-3">
                     <StaffNav isAdmin={isAdmin} canViewInventory={canViewInventory} canManageCredit={canManageCredit} badges={staffBadges} onNavigate={() => setMobileNavOpen(false)} />
@@ -194,6 +196,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
             <div className="section-container lg:grid lg:grid-cols-[250px_minmax(0,1fr)] lg:gap-8">
               <aside className="hidden lg:block">
                 <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-1">
+                  <p className="mb-3 px-3 text-sm font-semibold text-primary">{applicationName}</p>
                   <StaffNav isAdmin={isAdmin} canViewInventory={canViewInventory} canManageCredit={canManageCredit} badges={staffBadges} />
                 </div>
               </aside>
