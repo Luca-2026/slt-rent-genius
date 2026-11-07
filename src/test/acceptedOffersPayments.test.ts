@@ -2,6 +2,18 @@ import { describe, expect, it } from "vitest";
 import { hasRentalEnded, isAwaitingOfferConfirmation, rentalCloseoutTasks, filterStaffConfirmationTasks, needsRentalCloseout } from "@/lib/dashboardMetrics";
 
 describe("accepted offers on staff home", () => {
+  it("admins retain unassigned accepted sales alongside their own branch, never another branch", () => {
+    const rows = [
+      { id: "sale", location: null, status: "accepted", offer_total_gross: 119, order_confirmed_at: null },
+      { id: "unknown", location: "unknown", status: "accepted", offer_total_gross: 238, order_confirmed_at: null },
+      { id: "B", location: "Bonn", status: "accepted", offer_total_gross: 39, order_confirmed_at: null },
+      { id: "K", location: "Krefeld", status: "accepted", offer_total_gross: 39, order_confirmed_at: null },
+    ];
+    expect(filterStaffConfirmationTasks(rows, "Bonn", true).filter(r => isAwaitingOfferConfirmation(r)).map(r => r.id)).toEqual(["sale", "unknown", "B"]);
+    expect(filterStaffConfirmationTasks(rows, "Bonn").map(r => r.id)).toEqual(["B"]);
+    expect(filterStaffConfirmationTasks(rows, null, true).map(r => r.id)).toEqual(["sale", "unknown"]);
+    expect(filterStaffConfirmationTasks(rows, null)).toEqual([]);
+  });
   it("automatische Schilderbuchungen benötigen auch vor dem PDF-Versand keine manuelle AB", () => {
     const row = { status: "accepted", offer_total_gross: 39, end_date: "2026-11-10", order_confirmed_at: null };
     const now = new Date("2026-11-07T04:30:00Z");

@@ -1,7 +1,9 @@
 /** Provider facts are retained even when an external refund conflicts with a local claim. */
 export async function reconcileStripeRefund(service: any, refund: any, live: boolean) {
   const intent = typeof refund.payment_intent === 'string' ? refund.payment_intent : refund.payment_intent?.id;
-  if (!intent || refund.livemode !== live || refund.currency !== 'eur' || !Number.isInteger(refund.amount) || refund.amount <= 0) throw new Error('Ungültiger Stripe-Erstattungsbeleg');
+  // Stripe Refund objects omit livemode. The caller supplies the mode from the
+  // verified webhook event or the authenticated Stripe client, not refund input.
+  if (!intent || (refund.livemode !== undefined && refund.livemode !== live) || refund.currency !== 'eur' || !Number.isInteger(refund.amount) || refund.amount <= 0) throw new Error('Ungültiger Stripe-Erstattungsbeleg');
   const { error } = await service.rpc('record_stripe_refund_receipt', { _id: refund.id, _intent: intent, _amount: refund.amount, _currency: refund.currency, _live: live, _status: refund.status ?? 'pending' });
   if (error) throw new Error('Erstattungsbeleg konnte nicht gespeichert werden');
   const { data: deposits, error: readError } = await service.from('deposit_refunds').select('id,amount_cents').eq('stripe_refund_id', refund.id);

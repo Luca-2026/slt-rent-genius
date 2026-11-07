@@ -12,6 +12,22 @@ it('records metadata-free external refund with exact 12376 cents',async()=>{
 it('wrong mode never persists provider evidence',async()=>{
  const service=fixture();await expect(reconcileStripeRefund(service,refund,false)).rejects.toThrow();expect(service.rpc).not.toHaveBeenCalled();
 });
+it('accepts the actual Stripe Refund shape without livemode using verified event mode',async()=>{
+ const service=fixture();const {livemode,...providerRefund}=refund;
+ await reconcileStripeRefund(service,providerRefund,true);
+ expect(service.rpc).toHaveBeenCalledWith('record_stripe_refund_receipt',expect.objectContaining({_live:true,_amount:12376}));
+});
+it('test-mode refunds without livemode remain test receipts',async()=>{
+ const service=fixture();const {livemode,...providerRefund}=refund;
+ await reconcileStripeRefund(service,providerRefund,false);
+ expect(service.rpc).toHaveBeenCalledWith('record_stripe_refund_receipt',expect.objectContaining({_live:false}));
+});
+it.each([
+ {...refund,payment_intent:null}, {...refund,currency:'usd'}, {...refund,amount:0}, {...refund,amount:1.5},
+])('still rejects incompatible evidence without writing receipts',async invalid=>{
+ const service=fixture();await expect(reconcileStripeRefund(service,invalid,true)).rejects.toThrow('Ungültiger');
+ expect(service.rpc).not.toHaveBeenCalled();
+});
 it('persistence failure is retryable and never asserts execution capacity',async()=>{
  const service=fixture();service.rpc.mockResolvedValue({error:{message:'failed'}});
  const stripe={refunds:{list:async function*(){yield refund;}}};
