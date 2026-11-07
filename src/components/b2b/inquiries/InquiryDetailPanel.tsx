@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { ChevronUp, ExternalLink, FileCheck2, FilePlus2, PenLine, Pencil, Receipt, Trash2, UserCheck, UserMinus, Wallet } from "lucide-react";
+import { ChevronDown, ChevronUp, ExternalLink, FileCheck2, FilePlus2, PenLine, Pencil, Receipt, Trash2, UserCheck, UserMinus, Wallet } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -825,6 +825,22 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const docEl = (
     <>
       <div ref={docSectionRef}>
+        {inquiryType === "rental" && (
+          <Button
+            variant="outline"
+            className="mb-3 min-h-12 w-full justify-between gap-3 px-4 py-3"
+            aria-label={editorOpen ? "Dokumentbearbeitung einklappen" : "Positionen bearbeiten"}
+            aria-expanded={editorOpen}
+            aria-controls={`rental-document-editor-${inquiry.id}`}
+            onClick={() => {
+              if (editorOpen) setEditorOpen(false);
+              else setDocMode(editorActivated ? docMode : inquiry.status === "accepted" && inquiry.offer_number ? "amendment" : docMode);
+            }}
+          >
+            <span className="flex min-w-0 items-center gap-2 text-left font-semibold"><Pencil />{editorOpen ? "Positionen einklappen" : "Positionen bearbeiten"}</span>
+            {editorOpen ? <ChevronUp /> : <ChevronDown />}
+          </Button>
+        )}
         {inquiryType === "rental" && <OfferDecisionHistory inquiryId={inquiry.id} status={inquiry.status} />}
         {inquiryType === "rental" && <ReturnChargesSummary inquiryId={inquiry.id} reloadKey={deposit.settled} />}
         <div className="mb-4 space-y-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
@@ -876,7 +892,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               : "Endabrechnung: Positionen und Leistungszeitraum an die tatsächliche Miete anpassen (z. B. Verlängerung). Bereits erfasste Zahlungen werden abgezogen, die Rechnungsnummer wird beim Versand vergeben."}
           </p>
         </div>
-        <Button variant="ghost" size="icon" aria-label="Dokumentbearbeitung einklappen" title="Dokumentbearbeitung einklappen" onClick={() => setEditorOpen(false)}><ChevronUp className="h-4 w-4" /></Button>
+        {inquiryType !== "rental" && <Button variant="ghost" size="icon" aria-label="Dokumentbearbeitung einklappen" title="Dokumentbearbeitung einklappen" onClick={() => setEditorOpen(false)}><ChevronUp className="h-4 w-4" /></Button>}
         </div>}
         </div>
         {!editorOpen && inquiryType === "rental" && (
@@ -892,7 +908,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             {inquiry.offer_total_gross != null && <div className="flex justify-between gap-3 text-sm"><span>Auftragssumme brutto</span><strong className="tabular-nums">{formatEuro(inquiry.offer_total_gross)}</strong></div>}
           </section>
         )}
-        {editorActivated && <div hidden={!editorOpen}>
+        {editorActivated && <div id={`rental-document-editor-${inquiry.id}`} hidden={!editorOpen}>
         {docMode === "order" ? (
           orderEl
         ) : docMode === "deposit" ? (

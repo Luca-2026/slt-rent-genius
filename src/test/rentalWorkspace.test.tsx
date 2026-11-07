@@ -29,6 +29,19 @@ function openWorkspace() {
   render(<MemoryRouter><InquiryDetailPanel layout="page" table="rental_inquiries" inquiryType="rental" inquiry={inquiry} defaultItems={[{ product_name: "Bagger", quantity: 1, duration: 1, unit_price: 100, discount_percent: 0 }]} details={null} onChanged={vi.fn()} /></MemoryRouter>);
 }
 describe("rental document workspace", () => {
+  it("opens accepted order positions as an amendment and retains the chosen workspace and draft when toggled", () => {
+    openWorkspace();
+    fireEvent.click(screen.getByRole("button", { name: "Positionen bearbeiten" }));
+    expect(screen.getByText("Modus amendment")).toBeVisible();
+    fireEvent.change(screen.getByRole("textbox", { name: "Arbeitsentwurf" }), { target: { value: "Auftragsänderung" } });
+    fireEvent.click(screen.getByRole("button", { name: "Dokumentbearbeitung einklappen" }));
+    fireEvent.click(screen.getByRole("button", { name: "Positionen bearbeiten" }));
+    expect(screen.getByRole("textbox", { name: "Arbeitsentwurf" })).toHaveValue("Auftragsänderung");
+    fireEvent.click(screen.getByRole("button", { name: "Rechnung erstellen" }));
+    fireEvent.click(screen.getByRole("button", { name: "Dokumentbearbeitung einklappen" }));
+    fireEvent.click(screen.getByRole("button", { name: "Positionen bearbeiten" }));
+    expect(screen.getByText("Modus invoice")).toBeVisible();
+  });
   it("opens only on an explicit action and retains edits across collapse/reopen", () => {
     openWorkspace();
     expect(screen.queryByRole("textbox", { name: "Arbeitsentwurf" })).toBeNull();

@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Banknote, BellRing, Loader2, Plus, Trash2 } from "lucide-react";
+import { Banknote, BellRing, Loader2, Plus, Save, Trash2 } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -251,6 +251,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
           <div className="min-w-0">
             <Label className="text-[11px]">Betrag (€)</Label>
             <NumberInput
+              className="h-10"
               type="number"
               step="0.01"
               min="0"
@@ -276,6 +277,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
             <div className="min-w-0 flex-1">
             <Label className="text-[11px]">Verwendungszweck</Label>
             <Input
+              className="h-10"
               value={row.reference ?? ""}
               disabled={disabled || saving}
               onChange={(e) => patch(index, { reference: e.target.value })}
@@ -307,30 +309,32 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
         </p>
       )}
 
-      <div className="flex flex-wrap items-center gap-2">
-        <Button size="sm" variant="outline" onClick={add} disabled={disabled || saving}>
-          <Plus className="h-3.5 w-3.5 mr-1" /> Zahlung hinzufügen
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2">
+        <Button variant="outline" className="h-11 w-full px-3 py-0" onClick={add} disabled={disabled || saving}>
+          <Plus /> Zahlung hinzufügen
         </Button>
-        <Button size="sm" onClick={save} disabled={disabled || saving || !dirty}>
-          Zahlungen speichern
+        <Button className="h-11 w-full px-3 py-0" onClick={save} disabled={disabled || saving || !dirty}>
+          {saving ? <Loader2 className="animate-spin" /> : <Save />} Zahlungen speichern
         </Button>
-        <span className="min-w-0 basis-full text-sm">
+      </div>
+        <div className="min-w-0 space-y-1 border-t border-border pt-3 text-sm">
+        <span className="block">
           Erhalten <strong>{formatEuro(total)}</strong>
           {required != null && Number(deposit) > 0 && (
             <span className="ml-2 text-muted-foreground">von {formatEuro(required)} inkl. Kaution</span>
           )}
+        </span>
           {open != null && (
-            <span className={open > 0 ? "ml-2 text-destructive font-semibold" : "ml-2 text-primary font-semibold"}>
+            <span className={open > 0 ? "block text-destructive font-semibold" : "block text-primary font-semibold"}>
               {open > 0 ? `offen ${formatEuro(open)}` : "vollständig bezahlt"}
             </span>
           )}
-        </span>
-      </div>
+        </div>
 
       <div className="border-t border-border pt-2">
-        <button type="button" className="text-xs font-medium text-primary underline underline-offset-2" onClick={() => setShowLog((v) => !v)}>
+        <Button variant="link" className="h-auto min-h-0 justify-start p-0 text-xs" aria-expanded={showLog} onClick={() => setShowLog((v) => !v)}>
           {showLog ? "Zahlungsprotokoll ausblenden" : `Zahlungsprotokoll anzeigen (${events.length})`}
-        </button>
+        </Button>
         {showLog && (
           <ul className="mt-2 space-y-1.5 text-xs">
             {events.length === 0 && <li className="text-muted-foreground">Noch keine protokollierten Änderungen. Protokolliert wird seit 16.10.2026.</li>}
@@ -349,7 +353,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
 
       {offerNumber && open != null && open > 0 && (
         <div className="space-y-1 border-t border-border pt-3">
-          <Button size="sm" variant="outline" className="w-full" disabled={disabled || reminding || !canRemind} onClick={() => setConfirmReminder(true)}>
+          <Button variant="outline" className="h-11 w-full px-3 py-0" disabled={disabled || reminding || !canRemind} onClick={() => setConfirmReminder(true)}>
             <BellRing className="h-3.5 w-3.5 mr-1" /> Zahlungserinnerung senden
           </Button>
           <p className="text-xs text-muted-foreground">
