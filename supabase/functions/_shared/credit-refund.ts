@@ -2,8 +2,11 @@ import { isStripeTestMode, stripeClient, toCents } from "./stripe-pay.ts";
 import { reconcileRefundsBeforeExecution, reconcileStripeRefund } from "./refund-reconciliation.ts";
 
 /** Refunds never alter the invoice or its original received-payment snapshot. */
-export async function creditRefund(service: any, creditId: string, userId: string, execute: boolean, rentalCredit = false) {
-  const { data: credit, error: creditError } = await service.from("inquiry_invoices").select("*").eq("id", creditId).maybeSingle();
+export async function creditRefund(service: any, creditId: string, userId: string, execute: boolean, rentalCredit = false, orderCredit = false) {
+  const claimsTable = orderCredit ? "rental_order_refunds" : "credit_note_refunds";
+  const claimKey = orderCredit ? "basis_id" : "credit_note_id";
+  const { data: rawCredit, error: creditError } = await service.from(orderCredit ? "rental_refund_bases" : "inquiry_invoices").select("*").eq("id", creditId).maybeSingle();
+  const credit = orderCredit && rawCredit ? { ...rawCredit, rental_inquiry_id: rawCredit.inquiry_id, status: "basis", invoice_kind: "final", invoice_number: "", payments: rawCredit.payments } : rawCredit;
   if (creditError || !credit || credit.status === "draft" || credit.status === "cancelled" || (rentalCredit ? !["invoice", "final"].includes(credit.invoice_kind) || !credit.rental_inquiry_id || credit.parent_invoice_id || credit.deducted_installments?.length : credit.invoice_kind !== "credit_note" || !credit.parent_invoice_id)) {
     throw new Error("Keine ausgestellte Gutschrift gefunden.");
   }
@@ -21,7 +24,7 @@ export async function creditRefund(service: any, creditId: string, userId: strin
     const { data: siblings, error } = await service.from("inquiry_invoices").select("id").eq("rental_inquiry_id", credit.rental_inquiry_id).neq("id", creditId).neq("status", "draft").neq("status", "cancelled");
     if (error || siblings?.length) throw new Error("Weitere Rechnungen oder Korrekturen erfordern gesonderte Abrechnung.");
   }
-  const { data: existing, error: existingError } = await service.from("credit_note_refunds").select("*").eq("credit_note_id", creditId).maybeSingle();
+  const { data: existing, error: existingError } = await service.from(claimsTable).select("*").eq(claimKey, creditId).maybeSingle();
   if (existingError) throw new Error("Erstattungsstatus konnte nicht geprüft werden.");
   const stripe = stripeClient();
   if (existing) {
@@ -29,7 +32,7 @@ export async function creditRefund(service: any, creditId: string, userId: strin
       const intent = await stripe.paymentIntents.retrieve(allocation.payment_intent);
       if (intent.livemode !== !isStripeTestMode()) throw new Error("Die Zahlung stammt aus einem anderen Stripe-Modus (Test/Live).");
     }
-    if (["succeeded", "pending", "partial_failed", "failed"].includes(existing.status) && existing.allocations.every((a: any) => a.refund_id)) return { success: true, amount_cents: existing.amount_cents, status: existing.status, already_requested: true };
+    if (["succeeded", "pending", "partial_failed", "failed"].includes(existing.status) && existing.allocations.every((a: any) => a.refund_id)) return { success: true, amount_cents: existing.amount_cents, status: existing.status, payout_method: "stripe", already_requested: true };
   }
   let allocations = existing?.allocations;
   if (!existing) {
@@ -72,9 +75,9 @@ export async function creditRefund(service: any, creditId: string, userId: strin
     }
     if (remaining > 0 || eligible <= 0) throw new Error("Kein vollständig zuordenbarer Stripe-Erstattungsbetrag verfügbar. Bereits erfolgte Erstattungen und Verrechnungen werden berücksichtigt.");
   }
-  if (!execute) return { success: true, amount_cents: existing?.amount_cents ?? eligible, status: existing && allocations.some((a: any) => !a.refund_id) ? "creating" : existing?.status ?? "available" };
+  if (!execute) return { success: true, amount_cents: existing?.amount_cents ?? eligible, payout_method: "stripe", status: existing && allocations.some((a: any) => !a.refund_id) ? "creating" : existing?.status ?? "available" };
   if (!existing) {
-    const { error } = await service.from("credit_note_refunds").insert({ credit_note_id: creditId, amount_cents: eligible, allocations, created_by: userId, ...(rentalCredit ? { refund_kind: "rental_credit", receipt_snapshot: { invoice_number: credit.invoice_number, customer_name: credit.customer_name, company_name: credit.company_name, location: credit.location, paid_amount: credit.paid_amount, gross_amount: credit.gross_amount, amount_cents: eligible } } : {}) });
+    const { error } = await service.from(claimsTable).insert({ [claimKey]: creditId, amount_cents: eligible, allocations, created_by: userId, ...(!orderCredit && rentalCredit ? { refund_kind: "rental_credit", receipt_snapshot: { invoice_number: credit.invoice_number, customer_name: credit.customer_name, company_name: credit.company_name, location: credit.location, paid_amount: credit.paid_amount, gross_amount: credit.gross_amount, amount_cents: eligible } } : {}) });
     if (error) throw new Error("Die Erstattung wird bereits vorbereitet. Bitte Status neu laden.");
   }
   for (const allocation of allocations) {
@@ -82,16 +85,17 @@ export async function creditRefund(service: any, creditId: string, userId: strin
     // Persisted plan + stable keys survive double clicks, timeouts and browser restarts.
     let knownRefund;
     for await (const candidate of stripe.refunds.list({ payment_intent: allocation.payment_intent, limit: 100 })) {
-      if (candidate.metadata?.credit_note_id === creditId) {
+      if (candidate.metadata?.[orderCredit ? "rental_basis_id" : "credit_note_id"] === creditId) {
         if (candidate.amount !== allocation.amount_cents) throw new Error("Erstattung stimmt nicht mit dem gespeicherten Anspruch überein.");
         knownRefund = candidate; break;
       }
     }
     if (!knownRefund && existing && new Date(existing.created_at).getTime() < Date.now() - 23 * 60 * 60 * 1000) throw new Error("Älterer Erstattungsversuch ist ungeklärt. Erst den Zahlungsstatus abgleichen; keine neue Erstattung auslösen.");
     if (!knownRefund) await reconcileRefundsBeforeExecution(service, stripe, allocation.payment_intent, !isStripeTestMode());
-    const refund = knownRefund ?? await stripe.refunds.create({ payment_intent: allocation.payment_intent, amount: allocation.amount_cents, reason: "requested_by_customer", metadata: { credit_note_id: creditId, invoice_number: credit.invoice_number, kind: "credit_note" } }, { idempotencyKey: `credit-${creditId}-${allocation.payment_intent}` });
+    const refund = knownRefund ?? await stripe.refunds.create({ payment_intent: allocation.payment_intent, amount: allocation.amount_cents, reason: "requested_by_customer", metadata: { [orderCredit ? "rental_basis_id" : "credit_note_id"]: creditId, invoice_number: credit.invoice_number, kind: orderCredit ? "rental_credit" : "credit_note" } }, { idempotencyKey: `credit-${creditId}-${allocation.payment_intent}` });
     await reconcileStripeRefund(service, refund, !isStripeTestMode());
   }
-  const { data: result } = await service.from("credit_note_refunds").select("status, amount_cents").eq("credit_note_id", creditId).single();
-  return { success: true, ...result };
+  const { data: result, error: resultError } = await service.from(claimsTable).select("status, amount_cents").eq(claimKey, creditId).single();
+  if (resultError || !result) throw new Error("Erstattungsstatus ungeklärt. Nicht zusätzlich erstatten.");
+  return { success: true, payout_method: "stripe", ...result };
 }
