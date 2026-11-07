@@ -96,6 +96,16 @@ export function RentalProtocolSection({ inquiry, state, onChanged }: Props) {
     <div className="mt-3 space-y-2 border-t border-border pt-3">
       <p className="text-sm font-semibold">Übergabe & Rückgabe</p>
       {state.delivery && <Row title="Übergabeprotokoll" number={state.delivery.number} url={state.delivery.file_url} date={state.delivery.created_at} />}
+      {state.delivery?.status === "signed" && !inquiry.order_confirmation_number && <Button variant="outline" className="min-h-10 w-full justify-start" disabled={busy} onClick={async () => {
+        if (!state.delivery) return;
+        setBusy(true);
+        try {
+          const { data, error } = await supabase.functions.invoke("send-order-confirmation", { body: { inquiry_type: "rental", handover_protocol_id: state.delivery.id, attach_pdf: true } });
+          if (error || !data?.success) { toast.error(data?.error ?? "Auftragsbestätigung konnte nicht versendet werden."); return; }
+          toast.success("Auftragsbestätigung versendet."); onChanged();
+        } catch { toast.error("Auftragsbestätigung konnte nicht versendet werden."); }
+        finally { setBusy(false); }
+      }}><FileText className="h-4 w-4" /> Ausstehende AB senden</Button>}
       {state.delivery?.status === "signed_staff_only" && <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center text-sm">
         <span className="text-muted-foreground">Kundenunterschrift ausstehend</span>
         <Button variant="outline" size="sm" disabled={busy} onClick={async () => {

@@ -81,15 +81,16 @@ Deno.serve(async (req) => {
     });
     const body = await req.json().catch(() => null);
     const internalHandover = auth === `Bearer ${serviceKey}` && typeof body?.handover_protocol_id === "string" && /^[0-9a-f-]{36}$/i.test(body.handover_protocol_id);
-    const { data: handover } = internalHandover ? await service.from("b2b_delivery_notes").select("id,rental_inquiry_id,customer_signed_at,signature_data,agb_accepted,protocol_data").eq("id", body.handover_protocol_id).maybeSingle() : { data: null };
+    const { data: handover } = typeof body?.handover_protocol_id === "string" && /^[0-9a-f-]{36}$/i.test(body.handover_protocol_id) ? await service.from("b2b_delivery_notes").select("id,rental_inquiry_id,customer_signed_at,signature_data,agb_accepted,protocol_data").eq("id", body.handover_protocol_id).maybeSingle() : { data: null };
     if (internalHandover && (!handover?.customer_signed_at || !handover.signature_data || !handover.agb_accepted)) return json({ error: "Keine unterschriebene Übergabe vorhanden." }, 409);
     const { data: u } = internalHandover ? { data: { user: { id: handover?.protocol_data?.created_by } } } : await service.auth.getUser(auth.replace("Bearer ", ""));
     const user = u?.user;
     if (!user?.id) return json({ error: "Unauthorized" }, 401);
     const { data: isStaff } = await service.rpc("can_edit_operations", { _user_id: user.id });
     if (!isStaff) return json({ error: "Forbidden" }, 403);
+    const signedHandover = !!handover?.customer_signed_at && !!handover.signature_data && !!handover.agb_accepted;
     const inquiryType = body?.inquiry_type;
-    const inquiryId = internalHandover ? handover?.rental_inquiry_id : body?.inquiry_id;
+    const inquiryId = signedHandover ? handover?.rental_inquiry_id : body?.inquiry_id;
     if (inquiryType !== "rental" && inquiryType !== "sales") return json({ error: "inquiry_type ungültig" }, 400);
     if (typeof inquiryId !== "string" || inquiryId.length < 10) return json({ error: "inquiry_id fehlt" }, 400);
     const note = typeof body?.note === "string" ? body.note.trim().slice(0, 800) : "";
@@ -104,11 +105,13 @@ Deno.serve(async (req) => {
     if (inq.status !== "accepted") return json({ error: "Nur angenommene Angebote können bestätigt werden." }, 400);
     if (!inq.offer_number) return json({ error: "Zu dieser Anfrage gibt es kein Angebot." }, 400);
     if (!inq.customer_email) return json({ error: "Keine Kunden-E-Mail hinterlegt." }, 400);
-    if (internalHandover && inquiryType !== "rental") return json({ error: "Nur Mietübergaben." }, 400);
-    if (internalHandover && inq.order_confirmation_number) return json({ success: true, already_sent: true, file_url: inq.order_confirmation_file_url });
+    if (signedHandover && inquiryType !== "rental") return json({ error: "Nur Mietübergaben." }, 400);
+    if (signedHandover && inq.order_confirmation_number) return json({ success: true, already_sent: true, file_url: inq.order_confirmation_file_url });
+    if (signedHandover && !inq.order_confirmed_at) return json({ error: "Übergabe hat den Auftrag noch nicht bestätigt." }, 409);
+    if (signedHandover) attachPdf = true;
 
     attachPdf = attachPdf || Number(inq.order_revision ?? 0) > 0;
-    if (!internalHandover && !amendment && Number(body.expected_revision ?? 0) !== Number(inq.order_revision ?? 0)) return json({error:"Auftragsfassung wurde inzwischen geändert. Bitte neu laden."},409);
+    if (!signedHandover && !amendment && Number(body.expected_revision ?? 0) !== Number(inq.order_revision ?? 0)) return json({error:"Auftragsfassung wurde inzwischen geändert. Bitte neu laden."},409);
     const resendKey = Deno.env.get("RESEND_API_KEY");
     if (!preview && !resendKey) return json({ error: "E-Mail-Versand nicht konfiguriert" }, 500);
 
@@ -130,14 +133,14 @@ Deno.serve(async (req) => {
     });
 
     // Server rechnet selbst – Anzeige im Portal darf nicht veraltet sein.
-    if (!internalHandover && !amendment && !preview && (
+    if (!signedHandover && !amendment && !preview && (
       Number(body?.expected_paid_cents) !== ev.paidCents ||
       Number(body?.expected_required_cents) !== ev.requiredCents
     )) {
       return json({ error: "Die Zahlungen oder die Angebotssumme wurden inzwischen geändert. Bitte die Anfrage neu laden und erneut prüfen." }, 409);
     }
-    if (!internalHandover && !preview && !amendment && !ev.canSend) return json({ error: ev.blockReason }, 400);
-    if (!internalHandover && !preview && !amendment && ev.needsAcknowledgement && body?.acknowledge_open !== true) {
+    if (!signedHandover && !preview && !amendment && !ev.canSend) return json({ error: ev.blockReason }, 400);
+    if (!signedHandover && !preview && !amendment && ev.needsAcknowledgement && body?.acknowledge_open !== true) {
       return json({ error: "Offener Betrag muss vor dem Versand ausdrücklich bestätigt werden." }, 400);
     }
 
@@ -350,7 +353,7 @@ Deno.serve(async (req) => {
 
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
-      headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json", ...(internalHandover ? { "Idempotency-Key": `handover-ab-${handover?.id}` } : {}) },
+      headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json", ...(signedHandover ? { "Idempotency-Key": `handover-ab-${handover?.id}` } : {}) },
       body: JSON.stringify({
         from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
         ...documentEmailRecipients(inq.customer_email,Array.from(new Set([loc.email, inq.location_email].filter((e) => e && e !== inq.customer_email)))),
