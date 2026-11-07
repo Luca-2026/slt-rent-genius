@@ -31,6 +31,16 @@ export async function creditRefund(service: any, creditId: string, userId: strin
     for (const allocation of existing.allocations) {
       const intent = await stripe.paymentIntents.retrieve(allocation.payment_intent);
       if (intent.livemode !== !isStripeTestMode()) throw new Error("Die Zahlung stammt aus einem anderen Stripe-Modus (Test/Live).");
+      if (orderCredit) {
+        for await (const refund of stripe.refunds.list({ payment_intent: allocation.payment_intent, limit: 100 })) {
+          if (refund.metadata?.rental_basis_id === creditId) await reconcileStripeRefund(service, refund, !isStripeTestMode());
+        }
+      }
+    }
+    if (orderCredit) {
+      const { data: current, error } = await service.from(claimsTable).select("*").eq(claimKey, creditId).single();
+      if (error || !current) throw new Error("Erstattungsstatus ungeklärt.");
+      Object.assign(existing, current);
     }
     if (["succeeded", "pending", "partial_failed", "failed"].includes(existing.status) && existing.allocations.every((a: any) => a.refund_id)) return { success: true, amount_cents: existing.amount_cents, status: existing.status, payout_method: "stripe", already_requested: true };
   }
