@@ -65,6 +65,8 @@ const UNIT_BY_LABEL: Record<string, OfferUnit> = {
   wochen: "wochen",
   monat: "monate",
   monate: "monate",
+  jahr: "jahre",
+  jahre: "jahre",
 };
 
 /**
@@ -119,6 +121,7 @@ export function offerPayloadToLines(payload: unknown): {
   meta: {
     payment_terms: string | null; payment_terms_custom: string | null; valid_days: number | null; notes: string | null; open_ended: boolean; min_months?: number; minimum_duration?: number; open_ended_unit?: OpenEndedUnit;
     financing?: SalesFinancing; undated_offer?: boolean; use_saturday?: boolean; use_sunday?: boolean;
+    open_ended_independent_pricing?: boolean;
     /** Paket 3b – fehlen bei alten Angeboten. */
     groups?: OfferGroup[]; extra_fields?: OfferExtraFields; order_type?: OrderType; terms_text?: string;
   };
@@ -140,6 +143,7 @@ export function offerPayloadToLines(payload: unknown): {
         valid_days?: number;
         notes?: string | null;
         open_ended?: boolean;
+        open_ended_independent_pricing?: boolean;
         financing?: SalesFinancing;
         undated_offer?: boolean;
         use_saturday?: boolean; use_sunday?: boolean;
@@ -247,6 +251,7 @@ export function offerPayloadToLines(payload: unknown): {
       notes: typeof p.notes === "string" ? p.notes : null,
       financing: p.financing,
       open_ended: p.open_ended === true,
+      open_ended_independent_pricing: p.open_ended_independent_pricing === true,
       undated_offer: p.undated_offer === true,
       ...(typeof p.use_saturday === "boolean" ? { use_saturday: p.use_saturday } : {}),
       ...(typeof p.use_sunday === "boolean" ? { use_sunday: p.use_sunday } : {}),

@@ -50,6 +50,7 @@ export function buildOrderAmendment<T extends Record<string, unknown>>(body: Rec
     groups: normalizeOfferGroups(body.groups), extra_fields: normalizeExtraFields(body.extra_fields),
     order_type: body.order_type === "delivery" ? "delivery" : "pickup", return_mode: body.return_mode === "collection" ? "collection" : "customer", notes: typeof body.notes === "string" ? body.notes.slice(0,4000) : null,
     open_ended: body.open_ended === true, open_ended_unit: openEndedUnit, minimum_duration: minimumDuration,
+    open_ended_independent_pricing: body.open_ended_independent_pricing === true,
     min_months: openEndedUnit === "monate" ? minimumDuration : null,
     use_saturday: body.use_saturday === true, use_sunday: body.use_sunday === true };
 }

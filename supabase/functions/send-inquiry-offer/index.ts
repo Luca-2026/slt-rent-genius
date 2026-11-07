@@ -323,7 +323,7 @@ Deno.serve(async (req: Request) => {
     }
     if (inquiryType === "sales") paymentTerms = salesPaymentTerms(inquiry.customer_kind, requestedTerms);
     const discountEnabled = hasRentalPaymentChoice(inquiryType, paymentTerms, undatedOffer) && inquiryBankDiscountEnabled(discountRolloutEnabled, inquiry.raw_payload);
-    const pdfNotes = [undatedOffer ? UNDATED_OFFER_NOTE : null, supersedesText, returnLocationText, openEnded ? openEndedNote(minMonths, openEndedUnit) : null, notes, coupon.code ? `Gutschein ${coupon.code}: ${money(coupon.saving)} netto Rabatt, in den Positionspreisen enthalten.` : null].filter(Boolean).join("\n\n") || null;
+    const pdfNotes = [undatedOffer ? UNDATED_OFFER_NOTE : null, supersedesText, returnLocationText, openEnded ? openEndedNote(minMonths, openEndedUnit, body.open_ended_independent_pricing === true) : null, notes, coupon.code ? `Gutschein ${coupon.code}: ${money(coupon.saving)} netto Rabatt, in den Positionspreisen enthalten.` : null].filter(Boolean).join("\n\n") || null;
     const paymentDueDays = paymentTerms === "net_7" ? 7 : paymentTerms === "net_30" ? 30 : 14;
 
     const profile = {
@@ -869,6 +869,7 @@ Deno.serve(async (req: Request) => {
           notes,
           totals,
           open_ended: openEnded,
+          open_ended_independent_pricing: openEnded && body.open_ended_independent_pricing === true,
           undated_offer: undatedOffer,
           ...(openEnded ? { open_ended_unit: openEndedUnit, minimum_duration: minMonths, ...(openEndedUnit === "monate" ? { min_months: minMonths } : {}) } : {}),
           use_saturday: body.use_saturday === true,
