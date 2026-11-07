@@ -597,6 +597,7 @@ Deno.serve(async (req: Request) => {
       const dn = depositSummaryNote(depositInfo);
       if (dn && !(notes ?? "").includes("Kautionsabrechnung vom")) notes = [notes, dn].filter(Boolean).join("\n\n");
     }
+    if (rentalRefund) notes = [notes, `Mietguthaben ${money(rentalRefund.amount)} bereits am ${rentalRefund.date} ${rentalRefund.method === "transfer" ? "per Überweisung" : "über Stripe auf das ursprüngliche Zahlungsmittel"} erstattet. Zahlungsstand nach Erstattung: ${money(Math.max(0, settledInvoiceBalance(totals.grossAmount, amountPaid, rentalRefund.amount)))}.`].filter(Boolean).join("\n\n");
     const form = await resolveAddressForm(service, inquiry);
     const pdfBytes = await generateOfferPdf({
       documentGreeting: { addressForm: form, salutation: salutationLine({ address_form: form, salutation: inquiry.customer_salutation ?? inquiry.salutation, name: customerName }) },

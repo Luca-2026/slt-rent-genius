@@ -900,7 +900,7 @@ export async function generateOfferPdf(data: {
       dtr(pg, amountText, vx, y, font, 9, MUTED);
       y -= labelLines.length * 12;
       if (receiptAmount > Number(p.amount)) {
-        const allocation = `Davon Mietzahlung vor Erstattung: ${fm(Number(p.amount))}; Kautionsanteil: ${fm(receiptAmount - Number(p.amount))}`;
+        const allocation = `Davon ${data.rentalRefund ? "Mietzahlung vor Erstattung" : "auf diese Rechnung angerechnet"}: ${fm(Number(p.amount))}; Kautionsanteil: ${fm(receiptAmount - Number(p.amount))}`;
         const allocationLines = wt(allocation, font, 8, CW);
         need(allocationLines.length * 11 + 52);
         allocationLines.forEach((line, i) => dt(pg, line, ML, y - i * 11, font, 8, MUTED));
@@ -1044,7 +1044,7 @@ export async function generateOfferPdf(data: {
     if (settled) {
       dt(
         pg,
-        `Der Rechnungsbetrag ist durch angerechnete Zahlungen von ${fm(amountPaid)} vollständig ausgeglichen. Vielen Dank!`,
+        data.rentalRefund ? `Nach bestätigter Mietguthabenerstattung von ${fm(data.rentalRefund.amount)} ist der Rechnungsbetrag vollständig ausgeglichen. Restbetrag: ${fm(Math.max(0, balanceDue))}.` : `Der Rechnungsbetrag ist durch angerechnete Zahlungen von ${fm(amountPaid)} vollständig ausgeglichen. Vielen Dank!`,
         ML + 16, by, font, 9, INK,
       );
       by -= 14;
