@@ -10,6 +10,7 @@ import { recordRentalPayments } from "../_shared/record-rental-payments.ts";
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { z } from "https://esm.sh/zod@3.23.8";
+import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { creditRefund } from "../_shared/credit-refund.ts";
 import { rentalCreditRefund } from "../_shared/rental-credit-refund.ts";
 import {
@@ -21,14 +22,10 @@ import {
   toCents,
 } from "../_shared/stripe-pay.ts";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 const Body = z.discriminatedUnion("action", [
+  z.object({ action: z.literal("sync_deposit_refunds"), inquiry_id: z.string().uuid() }),
   z.object({ action: z.literal("rental_credit_info"), invoice_id: z.string().uuid() }),
   z.object({ action: z.literal("refund_rental_credit"), invoice_id: z.string().uuid() }),
   z.object({ action: z.literal("confirm_rental_credit_transfer"), invoice_id: z.string().uuid(), bank_reference: z.string().trim().min(3).max(200) }),
@@ -55,7 +52,7 @@ Deno.serve(async (req: Request) => {
   try {
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) return json({ error: "Unauthorized" }, 401);
-    const service = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, {
+    const service = createClient(Deno.env.get("SUPABASE_URL") ?? "", Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "", {
       auth: { persistSession: false },
     });
     const { data: userData, error: userErr } = await service.auth.getUser(authHeader.replace("Bearer ", ""));
@@ -146,6 +143,21 @@ Deno.serve(async (req: Request) => {
             ? "Erstattungsberechtigung fehlt. Der Status kann teilweise offen sein; bitte abgleichen und nicht manuell zusätzlich erstatten."
             : (msg && !/rk_(live|test)_|sk_(live|test)_/.test(msg) ? msg : "Erstattungsstatus ungeklärt. Bitte abgleichen und nicht manuell zusätzlich erstatten."),
         });
+      }
+    }
+
+    if (body.action === "sync_deposit_refunds") {
+      const { data: links, error } = await service.from("offer_payment_links").select("payment_intent_id,livemode").eq("inquiry_table", "rental_inquiries").eq("inquiry_id", body.inquiry_id).eq("status", "paid");
+      if (error) return json({ success: false, error: "Originalzahlungen konnten nicht geprüft werden." }, 409);
+      try {
+        const stripe = stripeClient();
+        for (const link of links ?? []) {
+          if (!link.payment_intent_id || link.livemode !== !isStripeTestMode()) throw new Error("Zahlungsmodus nicht zuordenbar.");
+          for await (const refund of stripe.refunds.list({ payment_intent: link.payment_intent_id, limit: 100 })) await reconcileStripeRefund(service, refund, link.livemode);
+        }
+        return json({ success: true, status: "synced" });
+      } catch {
+        return json({ success: false, error: "Erstattungsstatus nicht bestätigt. Es wurde keine neue Auszahlung ausgelöst; nicht zusätzlich erstatten." }, 409);
       }
     }
 
