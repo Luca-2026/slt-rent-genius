@@ -177,7 +177,7 @@ export default function StaffHome() {
       setSearchError(false);
       const [crm, inv, rentals, sales, bookings] = await Promise.all([
         loadAllSearchRows((from, to) => supabase.from("crm_customers").select("id,company_name,first_name,last_name,email,vat_id,city,b2b_profile_id").order("id").range(from, to)),
-        isAdmin ? loadAllSearchRows((from, to) => supabase.from("inquiry_invoices").select("id,invoice_number,company_name,customer_name,status,order_code").order("id").range(from, to)) : Promise.resolve([]),
+        isAdmin ? loadAllSearchRows((from, to) => supabase.from("inquiry_invoices").select("id,invoice_number,company_name,customer_name,status").order("id").range(from, to)) : Promise.resolve([]),
         loadAllSearchRows((from, to) => supabase.from("rental_inquiries").select("id,order_code,customer_name,company_name,customer_email,product_name,offer_number,order_confirmation_number,status").order("id").range(from, to)),
         loadAllSearchRows((from, to) => supabase.from("sales_inquiries").select("id,order_code,first_name,last_name,company_name,customer_email,brand,model,offer_number,order_confirmation_number,status").order("id").range(from, to)),
         loadAllSearchRows((from, to) => supabase.from("sign_bookings").select("id,inquiry_id").order("id").range(from, to)),
@@ -188,7 +188,7 @@ export default function StaffHome() {
         contact_email: c.email ?? undefined, tax_id: c.vat_id, city: c.city, b2b_profile_id: c.b2b_profile_id,
       })));
       setSearchInvoices(inv.map((i) => ({
-        id: i.id, invoice_number: i.invoice_number, customer_company: i.company_name, customer_name: i.customer_name, order_code: i.order_code, status: i.status,
+        id: i.id, invoice_number: i.invoice_number, customer_company: i.company_name, customer_name: i.customer_name, status: i.status,
       })));
       const bookingByInquiry = new Map(bookings.map(b => [b.inquiry_id, b.id]));
       setSearchOrders([
