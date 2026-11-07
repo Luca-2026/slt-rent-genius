@@ -13,16 +13,36 @@ beforeAll(async () => {
   await db.exec(readFileSync("drizzle/migrations/0142_reconcile_durable_deposit_refunds.sql", "utf8"));
   await db.exec(readFileSync("drizzle/migrations/0143_validate_credit_refund_provider_evidence.sql", "utf8"));
   await db.exec(readFileSync("drizzle/migrations/0147_durable_external_stripe_refund_receipts.sql", "utf8"));
+  await db.exec(readFileSync("drizzle/migrations/0164_accept_stripe_paypal_refund_receipts.sql", "utf8"));
 }, 30000);
 afterAll(() => db.close());
 async function fixture() {
-  const link = crypto.randomUUID(), inquiry = crypto.randomUUID(), credit = crypto.randomUUID(), intent = `pi_${crypto.randomUUID()}`;
+  const link = crypto.randomUUID(), inquiry = crypto.randomUUID(), credit = crypto.randomUUID(), intent = `pi_${crypto.randomUUID().replace(/-/g, "")}`;
   await db.query("INSERT INTO offer_payment_links VALUES($1,$2,'rental_inquiries',$3,'paid',118068,50000)", [link, inquiry, intent]);
   await db.query("INSERT INTO inquiry_invoices VALUES($1,$2)", [credit, inquiry]);
   return { link, credit, intent };
 }
 const deposit = (link: string, amount = 50000, id = crypto.randomUUID()) => db.query("INSERT INTO deposit_refunds(id,link_id,amount_cents,status,request_id) VALUES($1,$2,$3,'creating',$1)", [id, link, amount]);
 const credit = (id: string, intent: string, amount: number) => db.query("INSERT INTO credit_note_refunds VALUES($1,$2,$3,'creating',$4::jsonb,now())", [crypto.randomUUID(), id, amount, JSON.stringify([{ payment_intent: intent, amount_cents: amount, status: 'creating' }])]);
+it("Florian: PayPal pyr_ evidence confirms 700 € and leaves room for 69.97 € credit exactly once", async () => {
+  const f = await fixture(), id = crypto.randomUUID();
+  await db.query("UPDATE offer_payment_links SET paid_cents=102963,deposit_cents=70000 WHERE id=$1", [f.link]);
+  await deposit(f.link, 70000, id);
+  await db.query("SELECT record_stripe_refund_receipt('pyr_Florian',$1,70000,'eur',true,'succeeded')", [f.intent]);
+  await db.query("SELECT sync_deposit_refund($1,$2,'pyr_Florian','succeeded',70000)", [id,f.intent]);
+  await credit(f.credit, f.intent, 6997);
+  await expect(db.query("SELECT assert_stripe_refund_execution_capacity($1)", [f.intent])).resolves.toBeDefined();
+  await db.query("SELECT record_stripe_refund_receipt('pyr_Florian',$1,70000,'eur',true,'pending')", [f.intent]);
+  expect((await db.query<{status:string}>("SELECT status FROM stripe_refund_receipts WHERE refund_id='pyr_Florian'" )).rows[0]?.status).toBe("succeeded");
+  await expect(credit(f.credit, f.intent, 25967)).rejects.toThrow("gemeinsam");
+});
+it("provider identifiers remain strict and evidence amounts immutable", async () => {
+  const f = await fixture();
+  await expect(db.query("SELECT record_stripe_refund_receipt('pyrBad',$1,70000,'eur',true,'succeeded')", [f.intent])).rejects.toThrow("Providerbeleg");
+  await expect(db.query("SELECT record_stripe_refund_receipt(null,$1,70000,'eur',true,'succeeded')", [f.intent])).rejects.toThrow("Providerbeleg");
+  await db.query("SELECT record_stripe_refund_receipt('pyr_Immutable',$1,70000,'eur',true,'succeeded')", [f.intent]);
+  await expect(db.query("SELECT record_stripe_refund_receipt('pyr_Immutable',$1,70001,'eur',true,'succeeded')", [f.intent])).rejects.toThrow("unveränderlich");
+});
 it("allows 500 deposit plus 123.76 rental refund below the original total", async () => {
   const f = await fixture(); await deposit(f.link); await credit(f.credit, f.intent, 12376);
   expect((await db.query<{ count: number }>("SELECT count(*)::int AS count FROM deposit_refunds WHERE link_id=$1", [f.link])).rows[0]?.count).toBe(1);

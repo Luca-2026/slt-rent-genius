@@ -4,14 +4,14 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { NumberInput } from "@/components/ui/number-input";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { CreditCard, Copy, Link2, Loader2, Undo2 } from "lucide-react";
+import { CreditCard, Copy, Link2, Loader2, RotateCcw, Undo2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { formatEuro } from "./offerMath";
 import { allPaymentsByBank } from "@/lib/bankTransferDiscount";
-import { depositRefundPayment } from "@/lib/depositRefundPayment";
+import { depositRefundPayment, pendingDepositRefund } from "@/lib/depositRefundPayment";
 
 interface LinkRow {
   id: string;
@@ -28,6 +28,7 @@ interface LinkRow {
   created_at: string;
 }
 interface RefundRow {
+  request_id: string;
   link_id: string;
   id: string;
   amount_cents: number;
@@ -91,7 +92,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
     if (ids.length) {
       const { data: r } = await supabase
         .from("deposit_refunds")
-        .select("id, link_id, amount_cents, status, reason, created_at, created_by_name")
+        .select("id, request_id, link_id, amount_cents, status, reason, created_at, created_by_name")
         .in("link_id", ids)
         .order("created_at", { ascending: false });
       setRefunds((r ?? []) as RefundRow[]);
@@ -111,6 +112,17 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
   const paidLink = refundChoice?.link;
   const refundedCents = refunds.filter((r) => !["failed", "canceled"].includes(r.status)).reduce((s, r) => s + r.amount_cents, 0);
   const refundable = refundChoice?.available ?? 0;
+  const unresolved = pendingDepositRefund(refunds);
+  const syncRefund = async () => {
+    setBusy(true);
+    try {
+      const { data, error } = await invokeWithAuth<{ success?: boolean; error?: string }>("offer-payment-admin", { action: "sync_deposit_refunds", inquiry_id: inquiryId });
+      if (error || !data?.success) throw new Error(data?.error ?? "Erstattungsstatus ungeklärt.");
+      await load(); onChanged();
+      toast({ title: "Erstattungsstatus aktualisiert", description: "Keine neue Auszahlung ausgelöst." });
+    } catch (e) { toast({ title: "Status nicht bestätigt", description: e instanceof Error ? e.message : "Nicht zusätzlich erstatten.", variant: "destructive" }); }
+    finally { setBusy(false); }
+  };
   const linkUrl = !settledByBank && current?.status === "active" ? `${window.location.origin.includes("app.") ? "https://www.slt-rental.de" : window.location.origin}/zahlung/${current.token}` : null;
 
   const createLink = async () => {
@@ -204,7 +216,8 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
             {current?.status === "active" ? "Neuen Link erstellen" : "Zahlungslink erstellen"}
           </Button>
         )}
-        {paidLink && paidLink.deposit_cents > 0 && canRefund && (
+        {unresolved && canRefund && <Button variant="outline" className="h-11 w-full px-3 py-0" disabled={busy} onClick={syncRefund}><RotateCcw /> Erstattungsstatus abgleichen</Button>}
+        {!unresolved && paidLink && paidLink.deposit_cents > 0 && canRefund && (
           <Button className="h-11 w-full px-3 py-0" onClick={openRefund} disabled={busy || refundable <= 0}>
             <Undo2 /> Kaution erstatten
           </Button>
