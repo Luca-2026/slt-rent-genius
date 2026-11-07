@@ -373,7 +373,7 @@ export default function StaffHome() {
             )}
           </div>
 
-          <AcceptedOffersPayments staffLocation={staffProfile?.location} />
+          <AcceptedOffersPayments staffLocation={staffProfile?.location} includeUnassigned={isAdmin} />
 
           <DepositSettlementsDue location={activeDayLocation} />
 
