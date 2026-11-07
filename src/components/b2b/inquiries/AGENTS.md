@@ -1,4 +1,5 @@
 # Inquiries
+- Invoice service-period defaults use invoiceServicePeriod to inherit agreed rental item dates with inquiry fallback; nonempty manual dates survive draft restoration, while empty legacy drafts and reset regain the rental default.
 - Online-link status must defer to saved bank receipts and the current order balance; settled bank orders never expose another payment link merely because a historical link remains active.
 - Setup/dismantle controls edit period-free offer lines with unit descriptions and fractional quantities; legacy scalar costs migrate once and are zeroed to avoid double billing. Outbound and return transport use independent choices, persisted return_mode, and only selected legs retain costs.
 - Rental document workspaces start in a read-only order summary with a visible position toggle; first opening an accepted order selects amendment, reopening retains the selected mode/draft. Editors mount only after explicit actions and close on successful completion; amendment saves still advance to AB review/send before closing.

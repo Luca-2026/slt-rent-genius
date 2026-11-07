@@ -871,8 +871,10 @@ export function InquiryOfferForm({
     setDeposit(defaultCosts?.deposit ?? 0);
     setValidDays(defaultMeta?.valid_days ?? 14);
     setPayments(defaultPayments ?? []);
-    setServicePeriodStart(defaultServicePeriod?.start ?? "");
-    setServicePeriodEnd(defaultServicePeriod?.end ?? "");
+    const resetServicePeriod = invoiceServicePeriod(undefined, defaultServicePeriod,
+      inquiryType === "rental" ? rentalPeriod : undefined, inquiryType === "rental" ? defaultItems : []);
+    setServicePeriodStart(resetServicePeriod.start);
+    setServicePeriodEnd(resetServicePeriod.end);
     setPaymentTerms(safeCustomerPaymentTerms(customerKind, defaultMeta?.payment_terms ?? defaultTerms(), isInvoice));
     setPaymentTermsCustom(defaultMeta?.payment_terms_custom ?? "");
     setNotes(defaultMeta?.notes ?? "");
