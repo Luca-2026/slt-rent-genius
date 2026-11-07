@@ -58,10 +58,12 @@ describe("Same-day offers and shared online/onsite acceptance guard", () => {
     await fixture(); await db.exec("UPDATE rental_inquiries SET offer_number='NEW'; UPDATE offer_acceptance_links SET expires_at='2099-01-01'");
     await expect(db.exec("UPDATE offer_acceptance_links SET status='accepted'")).rejects.toThrow("nicht mehr gültig");
   });
-  it("does not reopen declined or expired links", async () => {
-    await fixture(); await db.exec("UPDATE offer_acceptance_links SET status='expired'");
-    await deadline();
-    const { rows } = await db.query<{ status: string }>("SELECT status FROM offer_acceptance_links");
-    expect(rows[0].status).toBe("expired");
-  });
+  for (const status of ["expired", "declined"]) {
+    it(`does not reopen ${status} links`, async () => {
+      await fixture(); await db.query("UPDATE offer_acceptance_links SET status=$1", [status]);
+      await deadline();
+      const { rows } = await db.query<{ status: string }>("SELECT status FROM offer_acceptance_links");
+      expect(rows[0].status).toBe(status);
+    });
+  }
 });
