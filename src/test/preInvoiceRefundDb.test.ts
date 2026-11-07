@@ -12,7 +12,7 @@ beforeAll(async () => {
  CREATE TABLE deposit_settlements(id uuid PRIMARY KEY,rental_inquiry_id uuid,balance numeric,payout_status text,payout_method text);
  CREATE FUNCTION deposit_payout_verified(uuid,bigint) RETURNS boolean LANGUAGE sql AS $$ SELECT true $$;
  CREATE TABLE offer_payment_links(id uuid PRIMARY KEY,inquiry_id uuid,inquiry_table text,payment_intent_id text,status text,paid_cents integer,deposit_cents integer);
- CREATE TABLE deposit_refunds(id uuid PRIMARY KEY,link_id uuid,amount_cents integer,status text,request_id uuid,stripe_refund_id text);
+ CREATE TABLE deposit_refunds(id uuid PRIMARY KEY,link_id uuid,amount_cents integer,status text,stripe_refund_id text);
  CREATE TABLE credit_note_refunds(id uuid PRIMARY KEY,credit_note_id uuid,amount_cents integer,allocations jsonb,status text);
  `);
  for (const f of ['0141_serialize_shared_original_payment_refunds','0147_durable_external_stripe_refund_receipts','0165_pre_invoice_rental_refund_and_issue_lock','0166_include_order_refunds_in_execution_reconciliation']) await db.exec(readFileSync(`drizzle/migrations/${f}.sql`, 'utf8'));
