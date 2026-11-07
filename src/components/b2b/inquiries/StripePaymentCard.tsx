@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { NumberInput } from "@/components/ui/number-input";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { CreditCard, Copy, Loader2, Undo2 } from "lucide-react";
+import { CreditCard, Copy, Link2, Loader2, Undo2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -160,7 +160,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, onChanged }: 
   };
 
   return (
-    <div className="rounded-lg border border-border p-3 text-sm space-y-3">
+    <div className="min-w-0 rounded-lg border border-border p-3 text-sm space-y-3">
       <div className="flex items-center gap-2 font-semibold">
         <CreditCard className="h-4 w-4" /> Online-Zahlung (Stripe)
       </div>
@@ -182,21 +182,21 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, onChanged }: 
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2">
         {linkUrl && (
-          <Button size="sm" variant="outline" onClick={copy}>
-            <Copy className="h-3.5 w-3.5 mr-1.5" /> Link kopieren
+          <Button variant="outline" className="h-11 w-full px-3 py-0" onClick={copy}>
+            <Copy /> Link kopieren
           </Button>
         )}
         {current?.status !== "paid" && (
-          <Button size="sm" variant="outline" onClick={createLink} disabled={busy}>
-            {busy && <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />}
+          <Button variant="outline" className="h-11 w-full px-3 py-0" onClick={createLink} disabled={busy}>
+            {busy ? <Loader2 className="animate-spin" /> : <Link2 />}
             {current?.status === "active" ? "Neuen Link erstellen" : "Zahlungslink erstellen"}
           </Button>
         )}
         {paidLink && paidLink.deposit_cents > 0 && canRefund && (
-          <Button size="sm" onClick={openRefund} disabled={busy || refundable <= 0}>
-            <Undo2 className="h-3.5 w-3.5 mr-1.5" /> Kaution erstatten
+          <Button className="h-11 w-full px-3 py-0" onClick={openRefund} disabled={busy || refundable <= 0}>
+            <Undo2 /> Kaution erstatten
           </Button>
         )}
       </div>
