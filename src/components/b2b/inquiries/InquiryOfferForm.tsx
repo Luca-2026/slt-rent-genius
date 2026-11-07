@@ -1,5 +1,7 @@
 import { SALES_PAYMENT_OPTIONS, salesPaymentTerms, salesOfferLine, type SalesFinancing } from "../../../../supabase/functions/_shared/sales-offer";
 import { editorBankDiscount } from "@/lib/editorBankDiscount";
+import { LogisticsServiceFields } from "./LogisticsServiceFields";
+import { isLogisticsService, logisticsService, migrateServiceCosts, type ServiceKind } from "./logisticsServices";
 import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
 import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLegacyPeriod, undatedOfferLine } from "./offerCalendarPeriod";
 import { applyOpenEndedPeriod, normalizeOpenEndedUnit, normalizeOpenEndedDuration, openEndedUnitSingular, type OpenEndedUnit } from "@/lib/installments";
@@ -334,6 +336,7 @@ interface Props {
     delivery_cost_delivery?: number;
     delivery_cost_return?: number;
     setup_cost?: number;
+    return_mode?: "customer" | "collection";
     dismantle_cost?: number;
     /** Abweichender Rückgabestandort (One-Way) und Netto-Aufpreis. */
     return_location?: string | null;
@@ -449,10 +452,10 @@ export function InquiryOfferForm({
   const [couponCode, setCouponCode] = useState(draft?.couponCode ?? defaultCouponCode);
 
   const [items, setItems] = useState<FormLine[]>(
-    Array.isArray(draft?.items) && draft!.items.length
-      ? (draft!.items as FormLine[])
+    Array.isArray(draft?.items) && draft.items.length
+      ? migrateServiceCosts(draft.items as FormLine[], draft.setupCost ?? 0, draft.dismantleCost ?? 0) as FormLine[]
       : defaultItems.length
-        ? defaultItems
+        ? migrateServiceCosts(defaultItems, defaultCosts?.setup_cost ?? 0, defaultCosts?.dismantle_cost ?? 0) as FormLine[]
         : [emptyLine()],
   );
   const emptyDelivery: OfferDeliveryAddress = { requested: false, street: "", postal_code: "", city: "" };
@@ -472,7 +475,7 @@ export function InquiryOfferForm({
   );
   const [orderType, setOrderType] = useState<OrderType>(() =>
     nextOrderType(
-      (draft?.orderType as OrderType) ?? defaultMeta?.order_type ?? "pickup",
+      (draft?.orderType as OrderType) ?? defaultMeta?.order_type ?? (defaultDelivery?.requested ? "delivery" : "pickup"),
       draft?.deliveryCostDelivery ?? defaultCosts?.delivery_cost_delivery ?? 0,
       draft?.deliveryCostReturn ?? defaultCosts?.delivery_cost_return ?? 0,
     ),
@@ -480,10 +483,16 @@ export function InquiryOfferForm({
   const [overrideIdx, setOverrideIdx] = useState<number | null>(null);
   /** Lieferbetrag > 0 schaltet auf Lieferung; 0 schaltet nicht zurück. */
   const changeDeliveryCost = (v: number) => { setDeliveryCostDelivery(v); setOrderType((t) => nextOrderType(t, v, 0)); };
-  const changeReturnCost = (v: number) => { setDeliveryCostReturn(v); setOrderType((t) => nextOrderType(t, 0, v)); };
+  const changeReturnCost = (v: number) => { setDeliveryCostReturn(v); };
   /** Pauschalen für Auf- und Abbau (Montage/Demontage vor Ort). */
-  const [setupCost, setSetupCost] = useState(draft?.setupCost ?? defaultCosts?.setup_cost ?? 0);
-  const [dismantleCost, setDismantleCost] = useState(draft?.dismantleCost ?? defaultCosts?.dismantle_cost ?? 0);
+  const setupCost = 0;
+  const dismantleCost = 0;
+  const [returnMode, setReturnMode] = useState<"customer" | "collection">(draft?.returnMode ?? defaultCosts?.return_mode ?? ((draft?.deliveryCostReturn ?? defaultCosts?.delivery_cost_return ?? 0) > 0 ? "collection" : "customer"));
+  const [differentReturn, setDifferentReturn] = useState(!!(draft?.returnLocation ?? defaultCosts?.return_location));
+  const changeOrderType = (type: OrderType) => { setOrderType(type); if (type === "pickup") setDeliveryCostDelivery(0); setDelivery(d => ({ ...d, requested: type === "delivery" })); };
+  const changeReturnMode = (value: "customer" | "collection") => { setReturnMode(value); if (value === "customer") setDeliveryCostReturn(0); else { setDifferentReturn(false); setReturnLocation(""); setReturnLocationCost(0); } };
+  const toggleService = (kind: ServiceKind, enabled: boolean) => setItems(prev => enabled ? prev.some(i => isLogisticsService(i, kind)) ? prev : [...prev, { ...logisticsService(kind), custom_period: true }] : prev.filter(i => !isLogisticsService(i, kind)));
+  const patchService = (kind: ServiceKind, patch: Partial<OfferLine>) => setItems(prev => prev.map(i => isLogisticsService(i, kind) ? { ...i, ...patch } : i));
   /** Rückgabe an anderem Standort als die Abholung ("" = gleicher Standort) inkl. Netto-Aufpreis. */
   const [returnLocation, setReturnLocation] = useState<string>(draft?.returnLocation ?? defaultCosts?.return_location ?? "");
   const [returnLocationCost, setReturnLocationCost] = useState<number>(draft?.returnLocationCost ?? defaultCosts?.return_location_cost ?? 0);
@@ -689,12 +698,12 @@ export function InquiryOfferForm({
 
   const applyDraftData = (d: Record<string, any>) => {
     if (isSalesOffer) { setFinancingEnabled(d.financing?.enabled === true); setFinancingNote(d.financing?.note ?? ""); }
-    if (Array.isArray(d.items) && d.items.length) setItems(d.items as FormLine[]);
+    if (Array.isArray(d.items) && d.items.length) setItems(migrateServiceCosts(d.items as FormLine[], d.setupCost ?? 0, d.dismantleCost ?? 0) as FormLine[]);
     if (d.delivery) setDelivery(d.delivery as OfferDeliveryAddress);
     setDeliveryCostDelivery(d.deliveryCostDelivery ?? 0);
     setDeliveryCostReturn(d.deliveryCostReturn ?? 0);
-    setSetupCost(d.setupCost ?? 0);
-    setDismantleCost(d.dismantleCost ?? 0);
+    setReturnMode(d.returnMode ?? (d.deliveryCostReturn > 0 ? "collection" : "customer"));
+    setDifferentReturn(!!d.returnLocation);
     setReturnLocation(d.returnLocation ?? "");
     setReturnLocationCost(d.returnLocationCost ?? 0);
     setDeposit(d.deposit ?? 0);
@@ -780,6 +789,8 @@ export function InquiryOfferForm({
         groups,
         extraFields,
         orderType,
+        returnMode,
+        differentReturn,
         termsText,
       };
       // Reines Öffnen (noch ohne CMS-Preise) darf keinen Entwurf anlegen – sonst überschreibt er beim nächsten Laden die Preise.
@@ -821,6 +832,8 @@ export function InquiryOfferForm({
     groups,
     extraFields,
     orderType,
+    returnMode,
+    differentReturn,
     termsText,
   ]);
 
@@ -834,12 +847,12 @@ export function InquiryOfferForm({
     setDraftRestored(false);
     setCouponCode(defaultCouponCode);
     if (isSalesOffer) { setFinancingEnabled(defaultMeta?.financing ? defaultMeta.financing.enabled : financingRequest?.desired === true); setFinancingNote(defaultMeta?.financing?.note ?? ""); }
-    setItems(defaultItems.length ? defaultItems : [emptyLine()]);
+    setItems(defaultItems.length ? migrateServiceCosts(defaultItems, defaultCosts?.setup_cost ?? 0, defaultCosts?.dismantle_cost ?? 0) as FormLine[] : [emptyLine()]);
     setDelivery(defaultDelivery ?? emptyDelivery);
     setDeliveryCostDelivery(defaultCosts?.delivery_cost_delivery ?? 0);
     setDeliveryCostReturn(defaultCosts?.delivery_cost_return ?? 0);
-    setSetupCost(defaultCosts?.setup_cost ?? 0);
-    setDismantleCost(defaultCosts?.dismantle_cost ?? 0);
+    setReturnMode(defaultCosts?.return_mode ?? ((defaultCosts?.delivery_cost_return ?? 0) > 0 ? "collection" : "customer"));
+    setDifferentReturn(!!defaultCosts?.return_location);
     setReturnLocation(defaultCosts?.return_location ?? "");
     setReturnLocationCost(defaultCosts?.return_location_cost ?? 0);
     setDeposit(defaultCosts?.deposit ?? 0);
@@ -1312,6 +1325,7 @@ export function InquiryOfferForm({
         ...(cleanExtraFields(extraFields) ? { extra_fields: cleanExtraFields(extraFields) } : {}),
         ...(showTerms ? { terms_text: termsText !== null && termsText.trim() && termsText.trim() !== termsDefault ? termsText.trim() : null } : {}),
         order_type: orderType,
+        return_mode: returnMode,
         staff_name: staffName,
       });
 
@@ -1661,6 +1675,7 @@ export function InquiryOfferForm({
           )}
         {indices.map((index) => {
           const item = items[index];
+          if (isLogisticsService(item)) return null;
           const eff = effectiveItems[index] ?? item;
           const inherited = !undatedOffer && index > 0 && !item.custom_period;
           /** Pauschalposition: fester Preis, keine Mietdauer-Multiplikation. */
@@ -2240,7 +2255,7 @@ export function InquiryOfferForm({
         <span className="text-xs text-muted-foreground">Auftragsart</span>
         {(["pickup", "delivery"] as const).map((t) => (
           <Button key={t} type="button" size="sm" variant={orderType === t ? "default" : "outline"} disabled={disabled}
-            aria-pressed={orderType === t} onClick={() => setOrderType(t)}>
+            aria-pressed={orderType === t} onClick={() => changeOrderType(t)}>
             {t === "pickup" ? "Abholung" : "Lieferung"}
           </Button>
         ))}
@@ -2248,29 +2263,23 @@ export function InquiryOfferForm({
           <span className="text-xs text-muted-foreground">Kostenfreie Lieferung</span>
         )}
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div>
+      <div className="grid grid-cols-1 items-start gap-3 sm:grid-cols-2">
+        {orderType === "delivery" && <div className="space-y-1">
           <Label className="text-xs">Lieferkosten</Label>
-          <NumberInput type="number" min={0} step="0.01" value={deliveryCostDelivery}
+          <NumberInput aria-label="Lieferkosten netto" type="number" min={0} step="0.01" value={deliveryCostDelivery}
             onChange={(e) => changeDeliveryCost(Number(e.target.value) || 0)} disabled={disabled} />
-        </div>
-        {!isSalesOffer && <div>
-          <Label className="text-xs">Abholkosten</Label>
-          <NumberInput type="number" min={0} step="0.01" value={deliveryCostReturn}
-            onChange={(e) => changeReturnCost(Number(e.target.value) || 0)} disabled={disabled} />
-        </div>}
-        <div>
-          <Label className="text-xs">Aufbau</Label>
-          <NumberInput type="number" min={0} step="0.01" value={setupCost}
-            onChange={(e) => setSetupCost(Number(e.target.value) || 0)} disabled={disabled} />
-        </div>
-        {!isSalesOffer && <div>
-          <Label className="text-xs">Abbau</Label>
-          <NumberInput type="number" min={0} step="0.01" value={dismantleCost}
-            onChange={(e) => setDismantleCost(Number(e.target.value) || 0)} disabled={disabled} />
         </div>}
       </div>
-      <div className="space-y-3 border-t border-border pt-4">
+      {!isSalesOffer && <div className="space-y-3 border-t border-border pt-4">
+        <Label className="text-xs">Rückweg</Label>
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+          {(["customer", "collection"] as const).map(value => <Button key={value} type="button" variant={returnMode === value ? "default" : "outline"} aria-pressed={returnMode === value} disabled={disabled} onClick={() => changeReturnMode(value)}>{value === "customer" ? "Kunde bringt zurück" : "Rückholung durch SLT"}</Button>)}
+        </div>
+        {returnMode === "collection" && <div className="space-y-1"><Label className="text-xs">Rückholkosten netto</Label><NumberInput aria-label="Rückholkosten netto" type="number" min={0} step="0.01" value={deliveryCostReturn} onChange={e => changeReturnCost(Number(e.target.value) || 0)} disabled={disabled} /></div>}
+      </div>}
+      <LogisticsServiceFields kind="setup" line={items.find(i => isLogisticsService(i, "setup"))} disabled={disabled} onToggle={v => toggleService("setup", v)} onChange={p => patchService("setup", p)} />
+      {!isSalesOffer && <LogisticsServiceFields kind="dismantle" line={items.find(i => isLogisticsService(i, "dismantle"))} disabled={disabled} onToggle={v => toggleService("dismantle", v)} onChange={p => patchService("dismantle", p)} />}
+      {(orderType === "delivery" || returnMode === "collection") && <div className="space-y-3 border-t border-border pt-4">
         <label className="flex items-start gap-2 text-sm font-medium cursor-pointer">
           <Checkbox
             checked={delivery.requested}
@@ -2317,10 +2326,11 @@ export function InquiryOfferForm({
             </div>
           </div>
         )}
-      </div>
-      {inquiryType === "rental" && (
+      </div>}
+      {inquiryType === "rental" && returnMode === "customer" && (
         <div className="space-y-2 border-t border-border pt-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <label className="flex items-center gap-2 text-sm"><Checkbox aria-label="Rückgabe an anderem Standort" checked={differentReturn} disabled={disabled} onCheckedChange={v => { setDifferentReturn(v === true); if (v !== true) { setReturnLocation(""); setReturnLocationCost(0); } }} />Rückgabe an anderem Standort</label>
+          {differentReturn && <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div>
               <Label className="text-xs">Rückgabe</Label>
               <Select
@@ -2346,7 +2356,7 @@ export function InquiryOfferForm({
                   onChange={(e) => setReturnLocationCost(Number(e.target.value) || 0)} disabled={disabled} />
               </div>
             )}
-          </div>
+          </div>}
           {activeReturnLocation && (
             <p className="text-xs text-muted-foreground">
               Abholung {LOCATION_LABELS[normalizeLocation(location) ?? ""] ?? location}, Rückgabe {LOCATION_LABELS[activeReturnLocation]}.
