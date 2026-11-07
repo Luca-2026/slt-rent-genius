@@ -477,7 +477,7 @@ export function InquiryOfferForm({
     nextOrderType(
       (draft?.orderType as OrderType) ?? defaultMeta?.order_type ?? (defaultDelivery?.requested ? "delivery" : "pickup"),
       draft?.deliveryCostDelivery ?? defaultCosts?.delivery_cost_delivery ?? 0,
-      draft?.deliveryCostReturn ?? defaultCosts?.delivery_cost_return ?? 0,
+      0,
     ),
   );
   const [overrideIdx, setOverrideIdx] = useState<number | null>(null);
@@ -736,6 +736,7 @@ export function InquiryOfferForm({
       if (cancelled) return;
       const uid = u.user?.id ?? null;
       setMyUserId(uid);
+      if (userTouchedRef.current) return;
       if (!remote || ignoreDraft) return;
       const localAt = draftRef.current?.savedAt ?? 0;
       const remoteAt = new Date(remote.updatedAt).getTime();
@@ -872,7 +873,7 @@ export function InquiryOfferForm({
     setUseSunday(!!(defaultItems[0]?.use_sunday ?? defaultMeta?.use_sunday));
     setGroups(defaultMeta?.groups ?? []);
     setExtraFields(defaultMeta?.extra_fields ?? {});
-    setOrderType(nextOrderType(defaultMeta?.order_type ?? "pickup", defaultCosts?.delivery_cost_delivery ?? 0, defaultCosts?.delivery_cost_return ?? 0));
+    setOrderType(nextOrderType(defaultMeta?.order_type ?? (defaultDelivery?.requested ? "delivery" : "pickup"), defaultCosts?.delivery_cost_delivery ?? 0, 0));
   };
 
   /** Positionen inkl. übernommenem Zeitraum – Basis für Summen, Anzeige und Versand. */
@@ -985,7 +986,7 @@ export function InquiryOfferForm({
 
   /** Nur gültig, wenn abweichend vom Abholstandort (bei Standortwechsel fällt sie ggf. weg). */
   const activeReturnLocation =
-    inquiryType === "rental" && returnLocation && returnLocation !== normalizeLocation(location) ? returnLocation : "";
+    inquiryType === "rental" && returnMode === "customer" && differentReturn && returnLocation && returnLocation !== normalizeLocation(location) ? returnLocation : "";
   const activeReturnCost = activeReturnLocation ? Math.max(0, Number(returnLocationCost) || 0) : 0;
 
   const effectiveItems = useMemo(() => inquiryType === "rental" && (isAmendment || isInvoice)
