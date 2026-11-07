@@ -110,6 +110,7 @@ export function offerPayloadToLines(payload: unknown): {
     delivery_cost_delivery: number;
     delivery_cost_return: number;
     setup_cost: number;
+    return_mode?: "customer" | "collection";
     dismantle_cost: number;
     return_location: string | null;
     return_location_cost: number;
@@ -129,6 +130,7 @@ export function offerPayloadToLines(payload: unknown): {
         delivery_cost_delivery?: number;
         delivery_cost_return?: number;
         setup_cost?: number;
+        return_mode?: "customer" | "collection";
         dismantle_cost?: number;
         return_location?: string | null;
         return_location_cost?: number;
@@ -232,6 +234,7 @@ export function offerPayloadToLines(payload: unknown): {
       delivery_cost_delivery: Number(p.delivery_cost_delivery) || 0,
       delivery_cost_return: Number(p.delivery_cost_return) || 0,
       setup_cost: Number(p.setup_cost) || 0,
+      return_mode: p.return_mode ?? (Number(p.delivery_cost_return) > 0 ? "collection" : "customer"),
       dismantle_cost: Number(p.dismantle_cost) || 0,
       return_location: typeof p.return_location === "string" ? p.return_location : null,
       return_location_cost: Number(p.return_location_cost) || 0,

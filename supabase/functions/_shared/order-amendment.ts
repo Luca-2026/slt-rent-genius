@@ -30,6 +30,7 @@ export function buildOrderAmendment<T extends Record<string, unknown>>(body: Rec
   let items = withoutBankDiscount(normalizeInquiryOfferItems(body.items));
   assertCalendarInsurance(items);
   for (const item of items) {
+    if (item.period_free) continue;
     if (!item.rental_start || !validCalendarDate(item.rental_start) || (!body.open_ended && (!item.rental_end || !validCalendarDate(item.rental_end) || item.rental_end < item.rental_start))) throw new Error("Bitte gültige Mietzeiträume für jede Position angeben.");
   }
   const amount = (key: string) => { const value = Number(body[key] ?? 0); if (!Number.isFinite(value) || value < 0 || value > 1000000) throw new Error("Ungültiger Betrag"); return Math.round(value * 100) / 100; };
@@ -47,7 +48,7 @@ export function buildOrderAmendment<T extends Record<string, unknown>>(body: Rec
     payment_terms: body.payment_terms, payment_terms_custom: body.payment_terms_custom ?? null,
     delivery_requested: body.delivery_requested === true, delivery_address: body.delivery_address ?? null,
     groups: normalizeOfferGroups(body.groups), extra_fields: normalizeExtraFields(body.extra_fields),
-    order_type: body.order_type === "delivery" ? "delivery" : "pickup", notes: typeof body.notes === "string" ? body.notes.slice(0,4000) : null,
+    order_type: body.order_type === "delivery" ? "delivery" : "pickup", return_mode: body.return_mode === "collection" ? "collection" : "customer", notes: typeof body.notes === "string" ? body.notes.slice(0,4000) : null,
     open_ended: body.open_ended === true, open_ended_unit: openEndedUnit, minimum_duration: minimumDuration,
     min_months: openEndedUnit === "monate" ? minimumDuration : null,
     use_saturday: body.use_saturday === true, use_sunday: body.use_sunday === true };

@@ -53,6 +53,7 @@ function singularUnit(unit?: string): string {
 export interface InquiryOfferItem extends OfferLogistics {
   payment_cost_kind?: "rental" | "damage" | "municipal" | "deposit";
   product_name: string;
+  period_free?: boolean;
   /** CMS-Slug des Artikels – Grundlage der Bestandsprüfung. */
   product_slug?: string;
   /** Tatsächliche Stückzahl (quantity = Stückzahl × Dauer). */
@@ -283,8 +284,9 @@ export function normalizeInquiryOfferItems(raw: unknown, undated = false): Inqui
       throw new Error(`Position ${index + 1}: ungültiger Rabatt`);
     }
 
+    const normalizeQuantity = (value: number) => source.period_free === true ? round2(value) : Math.round(value);
     const articles =
-      Number.isFinite(Number(item.articles)) && Number(item.articles) > 0 ? Math.round(Number(item.articles)) : 1;
+      Number.isFinite(Number(item.articles)) && Number(item.articles) > 0 ? normalizeQuantity(Number(item.articles)) : 1;
     const unitStr = item.unit ? String(item.unit).slice(0, 40) : undefined;
     const logistics = normalizeOfferLogistics(item);
     if (logistics.delivery_at || logistics.collection_at) offerInsurancePeriod({ ...logistics, rental_start: typeof item.rental_start === "string" ? item.rental_start : undefined, rental_end: typeof item.rental_end === "string" ? item.rental_end : undefined });
@@ -295,10 +297,10 @@ export function normalizeInquiryOfferItems(raw: unknown, undated = false): Inqui
       product_slug: item.product_slug ? String(item.product_slug).slice(0, 200) : undefined,
       articles:
         Number.isFinite(Number(item.articles)) && Number(item.articles) > 0
-          ? Math.round(Number(item.articles))
+          ? normalizeQuantity(Number(item.articles))
           : undefined,
       description: item.description ? String(item.description).slice(0, 500) : undefined,
-      quantity: Math.round(quantity),
+      quantity: normalizeQuantity(quantity),
       unit: item.unit ? String(item.unit).slice(0, 40) : undefined,
       unit_price: round2(unitPrice),
       discount_percent: round2(discount),
@@ -326,7 +328,7 @@ export function normalizeInquiryOfferItems(raw: unknown, undated = false): Inqui
         rental_start: typeof item.rental_start === "string" ? item.rental_start : undefined,
         rental_end: typeof item.rental_end === "string" ? item.rental_end : undefined,
         articles,
-        quantity: Math.round(quantity),
+        quantity: normalizeQuantity(quantity),
         unit: unitStr,
         unit_price: round2(unitPrice),
         discount_percent: round2(discount),
