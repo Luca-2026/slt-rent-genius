@@ -164,7 +164,13 @@ export function normalizeMinMonths(v: unknown): number {
 }
 
 /** Angebotshinweis inkl. verbindlicher Mindestmietzeit (ab 2 Monaten). */
-export function openEndedNote(minMonths: number, unit: OpenEndedUnit = "monate"): string {
+export function openEndedNote(minMonths: number, unit: OpenEndedUnit = "monate", independentPricing = false): string {
+  if (independentPricing) {
+    const duration = normalizeOpenEndedDuration(minMonths, unit);
+    return `Unbefristete Miete: Ein Enddatum ist nicht vereinbart. Die Mietpreise und Abrechnungseinheiten sind je Position ausgewiesen. ` +
+      `Es wird eine verbindliche Mindestmietzeit von ${duration} ${duration === 1 ? openEndedUnitSingular(unit) : OPEN_ENDED_UNITS.find(entry => entry.value === unit)?.label} vereinbart. ` +
+      "Die Abrechnung erfolgt per Abschlagsrechnung; nach Rückgabe erhalten Sie eine Schlussrechnung über die tatsächliche Mietdauer, in der alle Abschläge verrechnet werden.";
+  }
   if (unit !== "monate") {
     const duration = normalizeOpenEndedDuration(minMonths, unit);
     const label = OPEN_ENDED_UNITS.find((entry) => entry.value === unit)?.label ?? "Miettage";
@@ -181,6 +187,8 @@ export function openEndedNote(minMonths: number, unit: OpenEndedUnit = "monate")
 
 export const OPEN_ENDED_UNITS = [
   { value: "monate", label: "Monate" },
+  { value: "wochen", label: "Wochen" },
+  { value: "jahre", label: "Jahre" },
   { value: "arbeitstage", label: "Arbeitstage" },
   { value: "kalendertage", label: "Kalendertage" },
   { value: "miettage", label: "Miettage" },
@@ -198,7 +206,12 @@ export function normalizeOpenEndedDuration(value: unknown, unit: OpenEndedUnit):
 }
 
 export function openEndedUnitSingular(unit: OpenEndedUnit): string {
-  return { monate: "Monat", arbeitstage: "Arbeitstag", kalendertage: "Kalendertag", miettage: "Miettag" }[unit];
+  return { monate: "Monat", wochen: "Woche", jahre: "Jahr", arbeitstage: "Arbeitstag", kalendertage: "Kalendertag", miettage: "Miettag" }[unit];
+}
+
+/** Independent pricing preserves each explicitly agreed rate/unit/count; minimum duration is contractual metadata. */
+export function applyOpenEndedBilling<T extends { rental_end?: string; rental_end_time?: string }>(item: T): T {
+  return { ...item, rental_end: undefined, rental_end_time: undefined };
 }
 
 /** Only duration-based rental lines inherit the open-ended minimum; one-off extras stay unchanged. */

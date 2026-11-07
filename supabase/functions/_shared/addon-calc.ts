@@ -44,6 +44,7 @@ export function daysPerUnit(unit: string | null | undefined): number | null {
   if (!u) return 1;
   if (u.includes("woche")) return 7;
   if (u.includes("monat")) return 30;
+  if (u.includes("jahr")) return 365;
   if (u.includes("tag")) return 1;
   return null; // Stück, Pauschal
 }

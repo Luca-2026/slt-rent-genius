@@ -15,7 +15,7 @@ export function OpenEndedPeriodFields({ unit, duration, disabled, onChange }: {
         onChange={(e) => onChange(unit, normalizeOpenEndedDuration(e.target.value, unit))} />
     </div>
     <div className="min-w-0 space-y-1">
-      <Label htmlFor="open-ended-unit">Einheit</Label>
+      <Label htmlFor="open-ended-unit">Einheit Mindestmietzeit</Label>
       <Select value={unit} disabled={disabled} onValueChange={(value) => {
         const next = normalizeOpenEndedUnit(value);
         onChange(next, normalizeOpenEndedDuration(duration, next));
