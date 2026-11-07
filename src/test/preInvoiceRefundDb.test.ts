@@ -15,7 +15,7 @@ beforeAll(async () => {
  CREATE TABLE deposit_refunds(id uuid PRIMARY KEY,link_id uuid,amount_cents integer,status text,stripe_refund_id text);
  CREATE TABLE credit_note_refunds(id uuid PRIMARY KEY,credit_note_id uuid,amount_cents integer,allocations jsonb,status text);
  `);
- for (const f of ['0141_serialize_shared_original_payment_refunds','0147_durable_external_stripe_refund_receipts','0165_pre_invoice_rental_refund_and_issue_lock','0166_include_order_refunds_in_execution_reconciliation']) await db.exec(readFileSync(`drizzle/migrations/${f}.sql`, 'utf8'));
+ for (const f of ['0141_serialize_shared_original_payment_refunds','0147_durable_external_stripe_refund_receipts','0165_pre_invoice_rental_refund_and_issue_lock','0166_include_order_refunds_in_execution_reconciliation','0167_fix_order_refund_allocation_completion_guard']) await db.exec(readFileSync(`drizzle/migrations/${f}.sql`, 'utf8'));
 }, 30000);
 afterAll(() => db.close());
 async function fixture(bank=false) {
