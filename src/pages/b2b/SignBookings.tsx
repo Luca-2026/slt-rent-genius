@@ -64,7 +64,7 @@ export default function SignBookings() {
         {visible.map(b => <article key={b.id} className="rounded-lg border border-border p-4 space-y-4">
           <div className="flex flex-wrap justify-between gap-3">
             <div className="min-w-0 space-y-1"><div className="flex flex-wrap items-center gap-2"><span className="font-semibold">{b.inquiry?.order_code ? `#${b.inquiry.order_code}` : "Halteverbot"}</span><Badge variant={b.status === "review" ? "destructive" : "secondary"}>{statusLabels[b.status] || b.status}</Badge><span className="text-sm text-muted-foreground">{getLocationDisplayName(b.location)}</span></div><p className="font-medium break-words">{b.inquiry?.company_name || b.inquiry?.customer_name || "–"}</p><p className="text-sm">{b.package === "standard" ? "Schildermiete · Selbstabholung" : "Rundum-sorglos-Paket"} · {b.quantity} {b.quantity === 1 ? "Set" : "Sets"}</p></div>
-            <Button asChild variant="outline" size="sm"><Link to={`/b2b/mietanfragen/${b.inquiry_id}`}>Auftrag öffnen<ArrowUpRight className="ml-1 h-4 w-4" /></Link></Button>
+            <Button asChild variant="outline" size="sm"><Link to={`/b2b/mietvorgaenge/${b.inquiry_id}`}>Auftrag öffnen<ArrowUpRight className="ml-1 h-4 w-4" /></Link></Button>
           </div>
           <dl className="grid gap-3 text-sm sm:grid-cols-2">
             <div><dt className="text-muted-foreground">Mietzeitraum</dt><dd>{date(b.start_date)} – {date(b.end_date)}</dd></div>

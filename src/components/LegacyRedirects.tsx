@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Navigate } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import { resolveLegacyCategory, resolveLegacyProduct } from "@/data/legacyRedirects";
 
@@ -62,4 +63,13 @@ export function LegacyAlleRedirect() {
   }, [locationId, navigate]);
 
   return null;
+}
+
+/**
+ * Redirects old staff URLs /b2b/mietanfragen/:id to /b2b/mietvorgaenge/:id
+ * so saved bookmarks and links from older e-mails keep working.
+ */
+export function RentalInquiryLegacyRedirect() {
+  const { id } = useParams<{ id: string }>();
+  return <Navigate to={`/b2b/mietvorgaenge/${id ?? ""}`} replace />;
 }

@@ -46,7 +46,7 @@ export default function RentalInquiries() {
   const navigate = useNavigate();
   const openInquiry = (id: string) => {
     try { sessionStorage.setItem(RENTAL_LIST_STATE_KEY, JSON.stringify({ search: location.search, query: search, scrollY: window.scrollY })); } catch { /* ignorieren */ }
-    navigate(`/b2b/mietanfragen/${id}`);
+    navigate(`/b2b/mietvorgaenge/${id}`);
   };
   const [newOpen, setNewOpen] = useState(false);
   const [aiPrefill] = useState<string | null>(() => {
@@ -109,7 +109,7 @@ export default function RentalInquiries() {
   // Alte Links (?anfrage=<id>) auf die Vollseite umleiten.
   const legacyId = searchParams.get("anfrage");
   useEffect(() => {
-    if (legacyId) navigate(`/b2b/mietanfragen/${legacyId}`, { replace: true });
+    if (legacyId) navigate(`/b2b/mietvorgaenge/${legacyId}`, { replace: true });
   }, [legacyId, navigate]);
 
   // Zurück aus der Detailseite: Filter (Adresse), Suche und Scrollposition wiederherstellen.

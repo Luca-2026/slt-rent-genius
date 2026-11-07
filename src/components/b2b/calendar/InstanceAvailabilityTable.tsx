@@ -100,7 +100,7 @@ function InstanceCard({ r, now, todayIso }: { r: InstanceRow; now: string; today
               {" · "}
               <Link
                 className="font-mono underline"
-                to={`/b2b/mietanfragen/${(avail.next as InstanceRow["allocations"][number]).rental_inquiry_id}`}
+                to={`/b2b/mietvorgaenge/${(avail.next as InstanceRow["allocations"][number]).rental_inquiry_id}`}
               >
                 #{(avail.next as InstanceRow["allocations"][number]).orderCode}
               </Link>

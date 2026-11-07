@@ -921,7 +921,7 @@ export default function AdminDashboard() {
          <TabsContent value="reservations" forceMount className="data-[state=inactive]:hidden">
           <div className="mb-4 rounded-lg border border-border bg-muted/40 p-3 text-sm text-muted-foreground">
             Neue Anfragen aus dem B2B-Portal werden zentral unter{" "}
-            <Link to="/b2b/mietanfragen" className="font-medium text-primary underline underline-offset-2">
+            <Link to="/b2b/mietvorgaenge" className="font-medium text-primary underline underline-offset-2">
               Mietvorgänge
             </Link>{" "}
             bearbeitet – dort laufen Website- und Firmenkundenanfragen in einer Pipeline zusammen.

@@ -41,7 +41,7 @@ export function DepositSettlementsDue({ location }: { location: DayLocationFilte
       <ul className="space-y-1">
         {visible.map((r) => (
           <li key={r.id}>
-            <Link to={`/b2b/mietanfragen/${r.id}`} className="text-primary underline">
+            <Link to={`/b2b/mietvorgaenge/${r.id}`} className="text-primary underline">
               {r.customer}{r.product ? ` – ${r.product}` : ""}{r.order_code ? ` · #${r.order_code}` : ""}
             </Link>
           </li>

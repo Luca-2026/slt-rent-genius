@@ -173,7 +173,7 @@ export function TodoListDetailSheet({ list, onOpenChange, onChanged }: Props) {
 
         <div className="p-4 space-y-6">
           {list.credit_profile_id && <CreditLimitApproval list={list} onDone={() => { onChanged(); onOpenChange(false); }} />}
-          {signInquiryId && <section className="space-y-3 border-b border-border pb-4"><Button asChild variant="outline"><Link to={`/b2b/mietanfragen/${signInquiryId}`}>Auftrag öffnen</Link></Button><SignBookingStatus inquiryId={signInquiryId} /></section>}
+          {signInquiryId && <section className="space-y-3 border-b border-border pb-4"><Button asChild variant="outline"><Link to={`/b2b/mietvorgaenge/${signInquiryId}`}>Auftrag öffnen</Link></Button><SignBookingStatus inquiryId={signInquiryId} /></section>}
           {list.description && (
             <p className="text-sm text-muted-foreground whitespace-pre-line">{list.description}</p>
           )}

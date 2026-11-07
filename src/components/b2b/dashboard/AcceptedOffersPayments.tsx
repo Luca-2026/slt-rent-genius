@@ -149,7 +149,7 @@ export function AcceptedOffersPayments({ staffLocation, includeUnassigned = fals
           <ul className="divide-y divide-border">
             {closeout.map((r) => (
               <li key={r.inquiryId}>
-                <Link to={`/b2b/mietanfragen/${r.inquiryId}`} className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-muted">
+                <Link to={`/b2b/mietvorgaenge/${r.inquiryId}`} className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-muted">
                   <div className="min-w-0 flex-1 space-y-1">
                     <strong className="block break-words text-foreground">{r.customer} · {r.offer}</strong>
                     <span className="block text-xs text-muted-foreground">Mietende {r.end?.split("-").reverse().join(".")} · {LABEL[r.state]}{r.state === "paid" ? ` · ${euro(r.paid)}` : ""}</span>
@@ -178,7 +178,7 @@ export function AcceptedOffersPayments({ staffLocation, includeUnassigned = fals
           {ready.map((r) => (
             <li key={"ready" + r.inquiryId}>
               <Link
-                to={r.table === "sales_inquiries" ? `/b2b/verkaufsanfragen?anfrage=${r.inquiryId}` : `/b2b/mietanfragen/${r.inquiryId}`}
+                to={r.table === "sales_inquiries" ? `/b2b/verkaufsanfragen?anfrage=${r.inquiryId}` : `/b2b/mietvorgaenge/${r.inquiryId}`}
                 className="flex items-center gap-2 rounded-md bg-card px-3 py-2 text-sm hover:bg-muted"
               >
                 <span className="min-w-0 flex-1 break-words"><strong className="text-foreground">{r.customer}</strong> · {r.offer} · {euro(r.paid)}</span>
@@ -200,7 +200,7 @@ export function AcceptedOffersPayments({ staffLocation, includeUnassigned = fals
         {visible.map((r) => (
           <li key={r.inquiryId + r.offer}>
             <Link
-              to={r.table === "sales_inquiries" ? `/b2b/verkaufsanfragen?anfrage=${r.inquiryId}` : `/b2b/mietanfragen/${r.inquiryId}`}
+              to={r.table === "sales_inquiries" ? `/b2b/verkaufsanfragen?anfrage=${r.inquiryId}` : `/b2b/mietvorgaenge/${r.inquiryId}`}
               className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 text-sm hover:bg-muted"
             >
               <div className="min-w-0 space-y-1.5">

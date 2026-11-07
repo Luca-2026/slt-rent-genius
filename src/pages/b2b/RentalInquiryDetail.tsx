@@ -43,7 +43,7 @@ export default function RentalInquiryDetail() {
   const selected = rows.find((r) => r.id === id) ?? null;
 
   const backLink = (
-    <Link to="/b2b/mietanfragen" className="mb-4 inline-flex items-center gap-1 text-sm text-primary hover:underline">
+    <Link to="/b2b/mietvorgaenge" className="mb-4 inline-flex items-center gap-1 text-sm text-primary hover:underline">
       <ArrowLeft className="h-4 w-4" /> Zurück zur Liste
     </Link>
   );
@@ -71,7 +71,7 @@ export default function RentalInquiryDetail() {
           inquiryType="rental"
           inquiry={selected}
           onChanged={reload}
-          onDeleted={() => navigate("/b2b/mietanfragen")}
+          onDeleted={() => navigate("/b2b/mietvorgaenge")}
           defaultItems={rentalDefaultItems(selected)}
           defaultDelivery={{
             requested: Boolean(selected.delivery_requested || selected.delivery_street || selected.delivery_city),

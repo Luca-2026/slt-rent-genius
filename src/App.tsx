@@ -1,6 +1,6 @@
 // Build sync fix
 import { lazy, Suspense } from "react";
-import { LegacyProductRedirect, LegacyLocationProductRedirect, LegacyCategoryRedirect, LegacyAlleRedirect } from "@/components/LegacyRedirects";
+import { LegacyProductRedirect, LegacyLocationProductRedirect, LegacyCategoryRedirect, LegacyAlleRedirect, RentalInquiryLegacyRedirect } from "@/components/LegacyRedirects";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -238,7 +238,6 @@ const App = () => (
               <Route path="/b2b/projektanfrage" element={<ProjectRequest />} />
               <Route path="/b2b/produkte" element={<B2BProducts />} />
               <Route path="/b2b/produkte/:locationId/:categoryId/:productId" element={<B2BProductDetail />} />
-              <Route path="/b2b/mietvorgaenge" element={<MyReservations />} />
               <Route path="/b2b/anfragen" element={<MyReservations />} />
               <Route path="/b2b/rechnungen" element={<B2BInvoices />} />
               <Route path="/b2b/gutscheine" element={<FeedbackCoupons />} />
@@ -252,8 +251,10 @@ const App = () => (
               <Route path="/b2b/admin" element={<AdminDashboard />} />
               <Route path="/b2b/aufgaben" element={<StaffTasks />} />
               <Route path="/b2b/start" element={<StaffHome />} />
-              <Route path="/b2b/mietanfragen" element={<RentalInquiries />} />
-              <Route path="/b2b/mietanfragen/:id" element={<RentalInquiryDetail />} />
+              <Route path="/b2b/mietvorgaenge" element={<RentalInquiries />} />
+              <Route path="/b2b/mietvorgaenge/:id" element={<RentalInquiryDetail />} />
+              <Route path="/b2b/mietanfragen" element={<Navigate to="/b2b/mietvorgaenge" replace />} />
+              <Route path="/b2b/mietanfragen/:id" element={<RentalInquiryLegacyRedirect />} />
               <Route path="/b2b/angebotsuebersicht" element={<OfferOverview />} />
               <Route path="/b2b/transporte" element={<TransportOrders />} />
               <Route path="/b2b/halteverbote" element={<SignBookings />} />

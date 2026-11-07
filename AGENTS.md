@@ -34,7 +34,7 @@
 - Standortwechsel nur über DB-Funktion change_rental_inquiry_location (can_edit_operations, zieht location_email und b2b_reservations atomar mit, Notiz in internal_notes); versendete Angebote bleiben Snapshot. Kundeninfo nur über Edge Function send-location-notice (Konsistenzprüfung, Testkunden-Routing) – kein Freitextversand.
 - Kunden werden standardmäßig geduzt; address_form am Kunden (crm_customers, Portalkunden über b2b_profile_id, Fallback rental_inquiries) schaltet auf Sie. Anrede nur über _shared/salutation.ts (resolveAddressForm, salutationLine, byForm) in allen Kunden-E-Mails; Angebotsbedingungen bleiben Sie-Form.
 - Anrufzeiten nur über callDateLabel.ts (Berliner Kalendertag).
-- Listen-Filter in localStorage; interne Links auf /b2b/mietanfragen/:id.
+- Listen-Filter in localStorage; interne Links auf /b2b/mietvorgaenge/:id (alt: /b2b/mietanfragen leitet weiter).
 - Rental inquiry fresh-entry defaults use rentalInquiryFilters.ts after staff access loads; explicit URL filters and detail-return state take precedence over defaults, never stale localStorage.
 - Stock: instances before CMS quantity; slt_stock_location keeps physical locations. Transport is explicit; cash stays separate.
 - Gerätebelegung nur über check_availability/confirm_order vor AB-Versand; Exclusion-Constraint auf b2b_instance_allocations verhindert Doppelbelegung; Überführung setzt Gerätestandort dauerhaft; Entscheidungen in rental_inquiry_events; ohne Einzelgeräte/Menge = nicht geprüft. Kalender (calendarEntries.ts) und Startseite „Heute“ zeigen nur Aufträge mit order_confirmed_at (accepted/done).

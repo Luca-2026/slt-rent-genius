@@ -123,7 +123,7 @@ export default function TransportOrders() {
                   </p>
                 </div>
                 <div className="flex shrink-0 gap-2">
-                  {r.rental_inquiry_id && <Button asChild variant="outline" size="sm"><Link to={`/b2b/mietanfragen/${r.rental_inquiry_id}`}>Auftrag</Link></Button>}
+                  {r.rental_inquiry_id && <Button asChild variant="outline" size="sm"><Link to={`/b2b/mietvorgaenge/${r.rental_inquiry_id}`}>Auftrag</Link></Button>}
                   {r.status === "open" && canManageInventory !== false && (
                     <Button size="sm" onClick={() => void markDone(r.id)}><Check className="mr-1 h-4 w-4" />Erledigt</Button>
                   )}

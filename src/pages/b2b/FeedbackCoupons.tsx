@@ -79,7 +79,7 @@ export default function FeedbackCoupons() {
           <p className="font-mono text-sm break-all">{r.code}</p>
           {isStaff && <p className="text-sm text-muted-foreground break-all">{r.customer_email}</p>}
           <p className="text-xs text-muted-foreground">Aktiviert {new Date(r.created_at).toLocaleDateString("de-DE", { timeZone: "Europe/Berlin" })}{r.redeemed_at ? ` · Eingelöst ${new Date(r.redeemed_at).toLocaleDateString("de-DE", { timeZone: "Europe/Berlin" })}` : ""}</p>
-          {r.reserved_offer_number && <p className="text-sm">Angebot {r.reserved_offer_number}{isStaff && r.reserved_kind === "inquiry" && <Link className="text-primary underline ml-2" to={`/b2b/mietanfragen/${r.reserved_order_id}`}>Auftrag öffnen</Link>}</p>}
+          {r.reserved_offer_number && <p className="text-sm">Angebot {r.reserved_offer_number}{isStaff && r.reserved_kind === "inquiry" && <Link className="text-primary underline ml-2" to={`/b2b/mietvorgaenge/${r.reserved_order_id}`}>Auftrag öffnen</Link>}</p>}
           {r.block_reason && <p className="text-sm text-destructive">{r.block_reason}</p>}
           {isStaff && <details className="text-xs text-muted-foreground"><summary className="cursor-pointer">Verlauf</summary>{events.filter(e => e.coupon_id === r.id).map(e => <p key={e.id} className="mt-1 break-words">{new Date(e.created_at).toLocaleString("de-DE", { timeZone: "Europe/Berlin" })} · {({ issued: "Erstellt", activated: "Aktiviert", reserved: "Reserviert", redeemed: "Eingelöst", blocked: "Gesperrt", released_expired: "Abgelaufene Reservierung gelöst" } as Record<string, string>)[e.event] ?? e.event}{e.note ? ` · ${e.note}` : ""}</p>)}</details>}
         </div>
