@@ -6,8 +6,10 @@ import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { drawUnifiedFooter, resolvePdfLocation } from "../_shared/pdf-footer.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
+import { sendHandoverConfirmation } from "../_shared/handover-confirmation.ts";
+import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 
-const headers = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version" };
+const headers = corsHeaders;
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...headers, "Content-Type": "application/json" } });
 const berlin = (date: Date) => date.toLocaleString("de-DE", { timeZone: "Europe/Berlin", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }) + " Uhr";
 Deno.serve(async req => {
@@ -87,6 +89,7 @@ Deno.serve(async req => {
       }) });
       emailSent = response.ok;
     }
-    return json({ success: true, signed_at: time.toISOString(), email_sent: emailSent });
+    const confirmationSent = await sendHandoverConfirmation(note.id);
+    return json({ success: true, signed_at: time.toISOString(), email_sent: emailSent, confirmation_sent: confirmationSent });
   } catch { return json({ error: "Vorgang konnte nicht abgeschlossen werden. Bitte erneut versuchen." }, 500); }
 });

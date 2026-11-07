@@ -882,6 +882,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             <span className="truncate">Vor Ort unterschreiben lassen</span>
           </Button>
         )}
+        {protocolSection}
         {editorOpen && <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="font-semibold text-sm">
@@ -1030,7 +1031,6 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           {paymentsEl}
           {stripeEl}
           {installmentEl}
-          {protocolSection}
           {offerEl}
           {invoicesEl}
           {notesEl}

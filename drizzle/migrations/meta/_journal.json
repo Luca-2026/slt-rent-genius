@@ -1128,6 +1128,13 @@
       "when": 1793964691962,
       "tag": "0160_automatic_registered_test_invoice_credits",
       "breakpoints": true
+    },
+    {
+      "idx": 161,
+      "version": "7",
+      "when": 1794050763834,
+      "tag": "0161_signed_handover_confirms_rental_order",
+      "breakpoints": true
     }
   ]
 }

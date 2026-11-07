@@ -13,6 +13,7 @@ import { RentalProtocolDialog } from "./RentalProtocolDialog";
 import type { RentalInquiry } from "@/components/b2b/inquiries/types";
 import type { RentalProtocolState } from "@/hooks/useRentalProtocolStatus";
 import type { ProtocolKind } from "@/lib/rentalProtocol";
+import { isProtocolCandidate } from "@/lib/rentalProtocol";
 
 interface Props {
   inquiry: RentalInquiry;
@@ -61,8 +62,11 @@ export function RentalProtocolSection({ inquiry, state, onChanged }: Props) {
   const closedAt = (inquiry as { closed_manually_at?: string | null }).closed_manually_at ?? null;
   const closedReason = (inquiry as { closed_manually_reason?: string | null }).closed_manually_reason ?? null;
   const accepted = inquiry.status === "accepted";
+  const candidateState = { handedOver: !!state.delivery, returned: !!state.ret };
+  const canDeliver = isProtocolCandidate(inquiry, "delivery", candidateState);
+  const canReturn = isProtocolCandidate(inquiry, "return", candidateState);
   const canClose = (isAdmin || isBranchManager) && !closedAt && !state.ret && (accepted || (inquiry.status === "done" && !!inquiry.order_confirmed_at));
-  if (!accepted && !state.delivery && !state.ret && !closedAt && !canClose) return null;
+  if (!canDeliver && !canReturn && !state.delivery && !state.ret && !closedAt && !canClose) return null;
 
   const Row = ({ title, number, url, date }: { title: string; number: string; url: string | null; date: string }) => (
     <div className="flex flex-wrap items-center justify-between gap-2 rounded-md border bg-card px-3 py-2">
@@ -89,12 +93,19 @@ export function RentalProtocolSection({ inquiry, state, onChanged }: Props) {
   };
 
   return (
-    <div className="mt-4 space-y-2 rounded-lg border border-border p-3">
+    <div className="mt-3 space-y-2 border-t border-border pt-3">
       <p className="text-sm font-semibold">Übergabe & Rückgabe</p>
-      {!inquiry.order_confirmed_at && accepted && !state.delivery && (
-        <p className="text-xs text-muted-foreground">Die Auftragsbestätigung ist noch nicht verschickt. Ein Übergabeprotokoll ist trotzdem möglich.</p>
-      )}
       {state.delivery && <Row title="Übergabeprotokoll" number={state.delivery.number} url={state.delivery.file_url} date={state.delivery.created_at} />}
+      {state.delivery?.status === "signed" && !inquiry.order_confirmation_number && <Button variant="outline" className="min-h-10 w-full justify-start" disabled={busy} onClick={async () => {
+        if (!state.delivery) return;
+        setBusy(true);
+        try {
+          const { data, error } = await supabase.functions.invoke("send-order-confirmation", { body: { inquiry_type: "rental", handover_protocol_id: state.delivery.id, attach_pdf: true } });
+          if (error || !data?.success) { toast.error(data?.error ?? "Auftragsbestätigung konnte nicht versendet werden."); return; }
+          toast.success("Auftragsbestätigung versendet."); onChanged();
+        } catch { toast.error("Auftragsbestätigung konnte nicht versendet werden."); }
+        finally { setBusy(false); }
+      }}><FileText className="h-4 w-4" /> Ausstehende AB senden</Button>}
       {state.delivery?.status === "signed_staff_only" && <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center text-sm">
         <span className="text-muted-foreground">Kundenunterschrift ausstehend</span>
         <Button variant="outline" size="sm" disabled={busy} onClick={async () => {
@@ -113,16 +124,18 @@ export function RentalProtocolSection({ inquiry, state, onChanged }: Props) {
           <p className="text-xs text-muted-foreground break-words">{new Date(closedAt).toLocaleString("de-DE", { timeZone: "Europe/Berlin", dateStyle: "medium", timeStyle: "short" })} Uhr{closedReason ? ` · Grund: ${closedReason}` : ""}</p>
         </div>
       )}
-      {accepted && !closedAt && !state.delivery && (
-        <Button className="w-full" onClick={() => setKind("delivery")}>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+      {canDeliver && (
+        <Button variant="outline" className="min-h-10 w-full justify-start" onClick={() => setKind("delivery")}>
           <ClipboardCheck className="h-4 w-4" /> Übergabeprotokoll erstellen
         </Button>
       )}
-      {accepted && !closedAt && !state.ret && (
-        <Button className="w-full" variant={state.delivery ? "default" : "outline"} onClick={() => (state.delivery ? setKind("return") : setAskReturn(true))}>
-          <PackageCheck className="h-4 w-4" /> {state.delivery ? "Rückgabeprotokoll erstellen" : "Rückgabeprotokoll ohne Übergabe erstellen"}
+      {!state.ret && !closedAt && (canDeliver || canReturn) && (
+        <Button className="min-h-10 w-full justify-start" variant="outline" disabled={!canReturn} onClick={() => (state.delivery ? setKind("return") : setAskReturn(true))}>
+          <PackageCheck className="h-4 w-4" /> Rückgabeprotokoll erstellen
         </Button>
       )}
+      </div>
       {canClose && (
         <Button className="w-full" variant="outline" onClick={() => setCloseOpen(true)}>
           <Lock className="h-4 w-4" /> Ohne Rückgabeprotokoll abschließen

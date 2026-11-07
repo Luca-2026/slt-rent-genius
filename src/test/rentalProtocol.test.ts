@@ -51,6 +51,12 @@ describe("Auftragsauswahl", () => {
     expect(isProtocolCandidate(acc, "delivery", { handedOver: true, returned: false })).toBe(false);
     expect(isProtocolCandidate({ status: "offer_sent" }, "delivery", { handedOver: false, returned: false })).toBe(false);
   });
+  it("ermöglicht die Übergabe eines bestehenden Angebots ohne vorherige AB oder Online-Annahme", () => {
+    expect(isProtocolCandidate({ status: "offer_sent", offer_number: "ANG-M-2026-11-0001" }, "delivery", { handedOver: false, returned: false })).toBe(true);
+    expect(isProtocolCandidate({ status: "offer_sent", offer_number: "ANG-M-2026-11-0001" }, "return", { handedOver: false, returned: false })).toBe(false);
+    expect(isProtocolCandidate({ status: "rejected", offer_number: "ANG-M-2026-11-0001" }, "delivery", { handedOver: false, returned: false })).toBe(false);
+    expect(isProtocolCandidate({ status: "offer_sent", offer_number: "ANG-M-2026-11-0001", offer_payload: { undated_offer: true } }, "delivery", { handedOver: false, returned: false })).toBe(false);
+  });
   it("Rückgabe nur nach Übergabe und ohne Rückgabe", () => {
     expect(isProtocolCandidate(acc, "return", { handedOver: true, returned: false })).toBe(true);
     expect(isProtocolCandidate(acc, "return", { handedOver: false, returned: false })).toBe(true);

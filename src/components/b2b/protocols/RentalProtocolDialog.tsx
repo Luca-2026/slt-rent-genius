@@ -29,6 +29,7 @@ import { MeasurementFields, emptyMeasurement, validMeasurement, selectedMeasurem
 import { prepareProtocolPhoto, protocolPhotoBase64 } from "@/lib/imageCompress";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { useAuth } from "@/hooks/useAuth";
+import { registerSigningSurface } from "@/lib/signingOverlays";
 import { deleteProtocolDraft, readProtocolDraft, writeProtocolDraft } from "@/lib/protocolDraft";
 import type { RentalInquiry } from "@/components/b2b/inquiries/types";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
@@ -78,6 +79,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const { user } = useAuth();
   const isReturn = kind === "return";
   const label = isReturn ? "Rückgabeprotokoll" : "Übergabeprotokoll";
+  useEffect(() => open ? registerSigningSurface() : undefined, [open]);
 
   const [idChecked, setIdChecked] = useState(false);
   const [idDocType, setIdDocType] = useState("");
@@ -533,7 +535,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
                 {!isReturn && (
                   <div className="flex items-start gap-3">
                     <Checkbox id="agb" checked={agbAccepted} onCheckedChange={(v) => setAgbAccepted(v === true)} />
-                    <label htmlFor="agb" className="text-sm cursor-pointer">Der Mieter hat die Allgemeinen Geschäftsbedingungen und die Auftragsbestätigung erhalten und zur Kenntnis genommen.</label>
+                    <label htmlFor="agb" className="text-sm cursor-pointer">Der Mieter hat das Angebot und die Allgemeinen Geschäftsbedingungen erhalten und nimmt den Auftrag mit seiner Unterschrift verbindlich an.</label>
                   </div>
                 )}
                 {!isReturn && machine && (
