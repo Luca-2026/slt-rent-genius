@@ -90,7 +90,7 @@ export function protocolItemsFromInquiry(inq: InquiryLike): ProtocolItem[] {
   return name ? [{ name, quantity: inq.quantity && inq.quantity > 0 ? inq.quantity : 1, detail: null }] : [];
 }
 
-type CandidateRow = { status: unknown; order_confirmed_at?: string | null; closed_manually_at?: string | null };
+type CandidateRow = { status: unknown; offer_number?: string | null; offer_payload?: unknown; order_confirmed_at?: string | null; closed_manually_at?: string | null };
 
 /**
  * Welche Aufträge stehen zur Auswahl?
@@ -102,7 +102,10 @@ export function isProtocolCandidate(
   kind: ProtocolKind,
   state: { handedOver: boolean; returned: boolean },
 ): boolean {
-  if (String(row.status) !== "accepted") return false;
+  const accepted = String(row.status) === "accepted";
+  const awaitingAcceptance = ["new", "in_progress", "offer_sent"].includes(String(row.status)) && !!row.offer_number;
+  if (!accepted && !(kind === "delivery" && awaitingAcceptance)) return false;
+  if ((row.offer_payload as { undated_offer?: boolean } | null)?.undated_offer) return false;
   if ((row as { closed_manually_at?: string | null }).closed_manually_at) return false;
   if (state.returned) return false;
   // Rückgabe auch ohne Übergabeprotokoll möglich (Bestätigung im Dialog).
