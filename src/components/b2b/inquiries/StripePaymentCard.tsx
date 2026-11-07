@@ -10,6 +10,7 @@ import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { formatEuro } from "./offerMath";
+import { allPaymentsByBank } from "@/lib/bankTransferDiscount";
 
 interface LinkRow {
   id: string;
@@ -55,11 +56,14 @@ interface Props {
   table: "rental_inquiries" | "sales_inquiries";
   inquiryId: string;
   offerNumber: string | null | undefined;
+  payments?: unknown;
+  offerTotalGross?: number | null;
+  deposit?: number;
   onChanged: () => void;
 }
 
 /** Online-Zahlung (Stripe): Zahlungslink zum Angebot, Zahlungsstatus, Kautionserstattung. */
-export function StripePaymentCard({ table, inquiryId, offerNumber, onChanged }: Props) {
+export function StripePaymentCard({ table, inquiryId, offerNumber, payments, offerTotalGross, deposit = 0, onChanged }: Props) {
   const { toast } = useToast();
   const { canManageInventory } = useStaffAccess();
   // Kautionserstattung per Stripe: alle Standortmitarbeiter, Niederlassungsleitung und Admin.
@@ -99,10 +103,12 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, onChanged }: 
   if (!offerNumber) return null;
 
   const current = links.find((l) => l.status === "active") ?? links.find((l) => l.status === "paid") ?? links[0];
+  const received = Array.isArray(payments) ? payments.reduce((sum, p) => sum + Math.round((Number(p?.amount) || 0) * 100), 0) : 0;
+  const settledByBank = received > 0 && allPaymentsByBank(payments) && offerTotalGross != null && received >= Math.round(offerTotalGross * 100) + Math.round(deposit * 100);
   const paidLink = links.find((l) => l.status === "paid");
   const refundedCents = refunds.filter((r) => !["failed", "canceled"].includes(r.status)).reduce((s, r) => s + r.amount_cents, 0);
   const refundable = paidLink ? Math.max(0, paidLink.deposit_cents - refundedCents) : 0;
-  const linkUrl = current?.status === "active" ? `${window.location.origin.includes("app.") ? "https://www.slt-rental.de" : window.location.origin}/zahlung/${current.token}` : null;
+  const linkUrl = !settledByBank && current?.status === "active" ? `${window.location.origin.includes("app.") ? "https://www.slt-rental.de" : window.location.origin}/zahlung/${current.token}` : null;
 
   const createLink = async () => {
     setBusy(true);
@@ -165,9 +171,10 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, onChanged }: 
         <CreditCard className="h-4 w-4" /> Online-Zahlung (Stripe)
       </div>
 
-      {!current && <p className="text-xs text-muted-foreground">Noch kein Zahlungslink zu Angebot {offerNumber}.</p>}
+      {settledByBank && <p className="text-sm">Vollständig per Überweisung bezahlt – keine Online-Zahlung offen.</p>}
+      {!current && !settledByBank && <p className="text-xs text-muted-foreground">Noch kein Zahlungslink zu Angebot {offerNumber}.</p>}
 
-      {current && (
+      {current && !settledByBank && (
         <div className="space-y-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-medium">{STATUS_LABEL[current.status] ?? current.status}</span>
@@ -188,7 +195,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, onChanged }: 
             <Copy /> Link kopieren
           </Button>
         )}
-        {current?.status !== "paid" && (
+        {!settledByBank && current?.status !== "paid" && (
           <Button variant="outline" className="h-11 w-full px-3 py-0" onClick={createLink} disabled={busy}>
             {busy ? <Loader2 className="animate-spin" /> : <Link2 />}
             {current?.status === "active" ? "Neuen Link erstellen" : "Zahlungslink erstellen"}
