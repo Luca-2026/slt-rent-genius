@@ -12,6 +12,22 @@ export async function reconcileStripeRefund(service: any, refund: any, live: boo
   if (depositId) {
     const { error: syncError } = await service.rpc('sync_deposit_refund', { _id: depositId, _intent: intent, _refund_id: refund.id, _status: refund.status ?? 'pending', _amount: refund.amount });
     if (syncError) throw new Error('Kautionserstattungsstatus konnte nicht gespeichert werden');
+    if (refund.status === 'succeeded') {
+      const { data: link, error: linkError } = await service.from('offer_payment_links').select('inquiry_id,inquiry_table').eq('payment_intent_id', intent).eq('status', 'paid').limit(1).maybeSingle();
+      if (linkError) throw new Error('Kautionsabrechnung konnte nicht zugeordnet werden');
+      if (link?.inquiry_table === 'rental_inquiries') {
+        const { data: settlements, error: settlementError } = await service.from('deposit_settlements').select('id,balance').eq('rental_inquiry_id', link.inquiry_id).eq('payout_method', 'stripe').eq('payout_status', 'pending');
+        if (settlementError) throw new Error('Kautionsabrechnung konnte nicht gelesen werden');
+        for (const s of settlements ?? []) {
+          const { data: verified, error: verifyError } = await service.rpc('deposit_payout_verified', { _inquiry: link.inquiry_id, _cents: Math.round(Number(s.balance) * 100) });
+          if (verifyError) throw new Error('Kautionsauszahlung konnte nicht bestätigt werden');
+          if (verified) {
+            const { error: payoutError } = await service.from('deposit_settlements').update({ payout_status: 'paid', payout_date: new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()) }).eq('id', s.id).eq('payout_status', 'pending');
+            if (payoutError) throw new Error('Kautionsauszahlungsstatus konnte nicht gespeichert werden');
+          }
+        }
+      }
+    }
   }
   if (refund.metadata?.credit_note_id) {
     const { error: syncError } = await service.rpc('sync_credit_note_refund_v2', { _credit_id: refund.metadata.credit_note_id, _intent: intent, _refund_id: refund.id, _status: refund.status ?? 'pending', _amount: refund.amount });

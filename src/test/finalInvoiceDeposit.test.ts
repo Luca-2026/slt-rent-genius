@@ -16,7 +16,7 @@ describe("Schlussrechnung nach Kautionsabrechnung", () => {
     const p = settlementPayments([{ date: "2026-10-17", amount: 1029.63, label: "Stripe", reference: "cs_original" }, { date: "2026-10-20", amount: 47.6, label: "Stripe", reference: "cs_topup" }], 1077.23, summary, "C48T6Q");
     expect(p.reduce((s, line) => s + line.amount, 0)).toBe(377.23);
     expect(p.map(line => line.receipt_amount)).toEqual([1029.63, 47.6]);
-    expect(p.reduce((s, line) => s + (line.receipt_amount ?? line.amount) - line.amount, 0)).toBe(700);
+    expect(Math.round(p.reduce((s, line) => s + (line.receipt_amount ?? line.amount) - line.amount, 0) * 100)).toBe(70000);
     expect(Math.round((377.23 - 307.26) * 100)).toBe(6997);
   });
   it("bewahrt Pascals tatsächliche Überweisung 133,47 € bei 33,47 € Mietanrechnung und 100 € Kaution", () => {
