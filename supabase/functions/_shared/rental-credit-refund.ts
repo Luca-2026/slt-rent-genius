@@ -8,7 +8,10 @@ export async function rentalCreditRefund(service: any, invoiceId: string, userId
   const { data: siblings, error: siblingError } = await service.from("inquiry_invoices").select("id").eq("rental_inquiry_id", invoice.rental_inquiry_id).neq("id", invoiceId).neq("status", "draft").neq("status", "cancelled");
   if (siblingError || siblings?.length) throw new Error("Weitere Rechnungen oder Korrekturen erfordern gesonderte Abrechnung.");
   const amount = Math.round((Number(invoice.paid_amount) - Number(invoice.gross_amount)) * 100);
-  if (amount <= 0) throw new Error("Kein Mietguthaben in dieser Rechnung vorhanden.");
+  if (amount <= 0) {
+    if (action === "rental_credit_info") return { success: true, amount_cents: 0, status: "none", payout_method: "none" };
+    throw new Error("Kein Mietguthaben in dieser Rechnung vorhanden.");
+  }
   const { data: links, error: linksError } = await service.from("offer_payment_links").select("id").eq("inquiry_id", invoice.rental_inquiry_id).eq("inquiry_table", "rental_inquiries").eq("status", "paid");
   if (linksError) throw new Error("Originalzahlungen konnten nicht geprüft werden.");
   const payments = Array.isArray(invoice.payments) ? invoice.payments : [];
