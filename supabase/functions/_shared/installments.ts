@@ -214,6 +214,10 @@ export function applyOpenEndedBilling<T extends { rental_end?: string; rental_en
   return { ...item, rental_end: undefined, rental_end_time: undefined };
 }
 
+export function hasMissingOpenEndedPrice(items: Array<{ period_free?: boolean; unit_price: number }>): boolean {
+  return items.some(item => !item.period_free && !(item.unit_price > 0));
+}
+
 /** Only duration-based rental lines inherit the open-ended minimum; one-off extras stay unchanged. */
 export function applyOpenEndedPeriod<T extends { unit?: string; duration?: number; rental_end?: string }>(
   item: T, unit: OpenEndedUnit, duration: number,

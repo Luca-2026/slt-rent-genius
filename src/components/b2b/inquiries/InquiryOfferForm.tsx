@@ -4,7 +4,7 @@ import { LogisticsServiceFields } from "./LogisticsServiceFields";
 import { isLogisticsService, logisticsService, migrateServiceCosts, SERVICE_UNITS, serviceUnit, type ServiceKind } from "./logisticsServices";
 import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
 import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLegacyPeriod, undatedOfferLine } from "./offerCalendarPeriod";
-import { applyOpenEndedBilling, applyOpenEndedPeriod, normalizeOpenEndedUnit, normalizeOpenEndedDuration, type OpenEndedUnit } from "@/lib/installments";
+import { applyOpenEndedBilling, applyOpenEndedPeriod, hasMissingOpenEndedPrice, normalizeOpenEndedUnit, normalizeOpenEndedDuration, type OpenEndedUnit } from "@/lib/installments";
 import { isDraftEditEvent } from "@/lib/draftEditIntent";
 import { matchesDocumentPreview } from "../../../../supabase/functions/_shared/invoice-preview";
 import { CLEANING_UNIT_GROSS, CLEANING_UNIT_MINUTES, CLEANING_UNIT_NET, chargeMeasure, chargeQuantityText, quantityFromText, cleaningChargeGross, cleaningSuggested, depositSettlementNote, settleDeposit } from "@/lib/returnCharges";
@@ -1377,6 +1377,10 @@ export function InquiryOfferForm({
   useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
 
   const preview = async () => {
+    if (openEnded && independentPricing && hasMissingOpenEndedPrice(items)) {
+      toast({ title: "Mietpreis fehlt", description: "Bitte für jede Mietposition den Preis der gewählten Einheit festlegen.", variant: "destructive" });
+      return;
+    }
     if (items.some((i) => !i.product_name.trim() || i.quantity <= 0 || i.unit_price < 0)) {
       toast({ title: "Bitte alle Positionen ausfüllen", description: "Bezeichnung, Menge und Preis werden für die Vorschau benötigt.", variant: "destructive" });
       return;
@@ -2026,7 +2030,7 @@ export function InquiryOfferForm({
                   type="number"
                   min={0}
                   step="0.01"
-                  value={item.unit_price}
+                  value={eff.unit_price}
                   onChange={(e) =>
                     patchItem(index, { unit_price: Number(e.target.value) || 0, price_source: "manual", price_manual: true })
                   }

@@ -735,7 +735,7 @@ export async function generateOfferPdf(data: {
   if (iq && usedUnits.size) {
     const LEG: [string, string][] = [
       ["Stk", "St\u00FCck"], ["m\u00B2", "Quadratmeter"], ["lfm", "laufender Meter"],
-      ["arbeitstage", ""], ["miettage", ""], ["kalendertage", ""], ["wochen", ""], ["monate", ""], ["pauschal", ""],
+      ["arbeitstage", ""], ["miettage", ""], ["kalendertage", ""], ["wochen", ""], ["monate", ""], ["jahre", ""], ["pauschal", ""],
     ];
     const parts = LEG.filter(([k]) => usedUnits.has(k)).map(([k, v]) => {
       if (v) return `${k} = ${v}`;
