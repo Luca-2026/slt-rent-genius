@@ -1,0 +1,4 @@
+# Offer acceptance rules
+- Online-Angebotsannahme nur über offer_acceptance_links + öffentliche Function offer-accept (/angebot/<token>): ein Link je Angebotsfassung, neue Fassung macht alte ungültig, Annahme atomar einmalig mit Name, Unterschrift und AGB-Bestätigung – damit keine doppelte oder veraltete Annahme entsteht.
+- Vor-Ort-Annahme läuft über dieselbe offer_acceptance_links-Annahme (offer-accept action accept_onsite, Staff-JWT + can_edit_operations, accepted_channel='onsite') – nie ein zweiter Annahmepfad; Kunde erhält die Kopie per E-Mail.
+- Zahlungsablauf nach Online-Annahme über offer-accept (Weiterleitung + Vorkasse-/Rechnungstext); customer-email-policy unterdrückt zusätzliche Annahme-/automatische Zahlungsnachfragen. Manuelle payment-reminder bleiben ausdrücklich möglich; keine Änderung an Zahlungsbuchungen oder Auftragsstatus.
