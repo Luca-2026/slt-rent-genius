@@ -8,6 +8,14 @@ export function rentalPaymentPrices(payload: Record<string, unknown>) {
     hasBankDiscountPolicy(payload.bank_transfer_discount) ? payload.bank_transfer_discount.selected : "regular");
 }
 
+/** Keep an already agreed bank price on a revision; never infer it from a draft. */
+export function revisedRentalPaymentPolicy(previous: unknown, payments: unknown, enabled: boolean) {
+  if (!enabled) return null;
+  return { version: "bank-transfer-3-v1" as const, rate: 3 as const,
+    selected: hasBankDiscountPolicy(previous) && previous.selected === "bank" && allPaymentsByBank(payments)
+      ? "bank" as const : "regular" as const };
+}
+
 export function validateRentalPaymentDecision(input: { policy: unknown; method: RentalPaymentMethod; payments: unknown; hasIssuedInvoice: boolean; hasSettlement: boolean }) {
   if (!hasBankDiscountPolicy(input.policy)) throw new Error("Für dieses Angebot wurde kein Überweisungsrabatt vereinbart.");
   if (input.hasSettlement) throw new Error("Kaution bereits abgerechnet. Zahlungswechsel gesperrt.");

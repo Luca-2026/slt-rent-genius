@@ -1,5 +1,6 @@
 import { salesOfferLine, salesPaymentTerms, salesPaymentText, FINANCING_INFORMATION, normalizeSalesFinancing } from "../_shared/sales-offer.ts";
 import { newBankDiscountPolicy, withoutBankDiscount, priceBankTransfer } from "../_shared/bank-transfer-discount.ts";
+import { revisedRentalPaymentPolicy } from "../_shared/rental-payment-decision.ts";
 import { bankDiscountLive, hasRentalPaymentChoice, inquiryBankDiscountEnabled, offerChoiceDiscountLive } from "../_shared/payment-incentive-rollout.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { UNDATED_OFFER_NOTE } from "../_shared/undated-offer.ts";
@@ -248,7 +249,7 @@ Deno.serve(async (req: Request) => {
       coupon = await applyFeedbackCoupon(service, body.coupon_code, "inquiry", inquiry.id, inquiry.b2b_profile_id, items);
       items = coupon.items;
     } catch (e) { return json({ error: (e as Error).message }, 409); }
-    const totals = buildOfferTotals(
+    let totals = buildOfferTotals(
       items,
       deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + returnLocationCost,
     );
@@ -324,6 +325,12 @@ Deno.serve(async (req: Request) => {
     }
     if (inquiryType === "sales") paymentTerms = salesPaymentTerms(inquiry.customer_kind, requestedTerms);
     const discountEnabled = hasRentalPaymentChoice(inquiryType, paymentTerms, undatedOffer) && inquiryBankDiscountEnabled(discountRolloutEnabled, inquiry.raw_payload);
+    const paymentPolicy = revisedRentalPaymentPolicy(inquiry.offer_payload?.bank_transfer_discount, inquiry.payments, discountEnabled);
+    if (paymentPolicy?.selected === "bank") {
+      const priced = priceBankTransfer(items, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + returnLocationCost, "bank");
+      items = priced.items;
+      totals = priced.totals;
+    }
     const pdfNotes = [undatedOffer ? UNDATED_OFFER_NOTE : null, supersedesText, returnLocationText, openEnded ? openEndedNote(minMonths, openEndedUnit, body.open_ended_independent_pricing === true) : null, notes, coupon.code ? `Gutschein ${coupon.code}: ${money(coupon.saving)} netto Rabatt, in den Positionspreisen enthalten.` : null].filter(Boolean).join("\n\n") || null;
     const paymentDueDays = paymentTerms === "net_7" ? 7 : paymentTerms === "net_30" ? 30 : 14;
 
@@ -845,7 +852,7 @@ Deno.serve(async (req: Request) => {
         ...(inquiryType === "rental" ? { delivery_requested: deliveryRequested } : {}),
         // Snapshot des Angebots – Grundlage für die spätere Rechnung (inkl. Zusatzoptionen)
         offer_payload: {
-          ...(discountEnabled ? { bank_transfer_discount: newBankDiscountPolicy() } : {}),
+          ...(paymentPolicy ? { bank_transfer_discount: paymentPolicy } : {}),
           ...(inquiryType === "sales" ? { business_type: "sales", financing: financing ?? { enabled: false } } : {}),
           coupon_code: coupon.code,
           coupon_saving_net: coupon.saving,

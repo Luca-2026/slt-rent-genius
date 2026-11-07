@@ -5,6 +5,12 @@ import { buildOfferTotals } from "../../supabase/functions/_shared/inquiry-offer
 const policy = { ...newBankDiscountPolicy(), selected: "bank" as const };
 const line = (net: number) => ({ product_name: "Miete", quantity: 1, unit_price: net, discount_percent: 0 });
 describe("installments and final bank rebate", () => {
+  it("retains Pascal's 1.04 gross rebate once on the invoice without creating rental credit", () => {
+    const result = invoiceBankDiscount(priceBankTransfer([line(29)], 0, "bank").items, 0, policy, "invoice", false);
+    expect(buildOfferTotals(result.items).grossAmount).toBe(33.47);
+    expect(result.items[0].addons?.filter(a => a.key === "bank_transfer_discount_v1")).toHaveLength(1);
+    expect(Math.round((133.47 - 100 - buildOfferTotals(result.items).grossAmount) * 100)).toBe(0);
+  });
   it("does not advertise a new payment incentive on invoices", () => {
     expect(invoiceBankDiscount([line(100)], 0, newBankDiscountPolicy(), "invoice", false).note).toBeNull();
     expect(invoiceBankDiscount([line(100)], 0, policy, "invoice", false).note).toBeNull();

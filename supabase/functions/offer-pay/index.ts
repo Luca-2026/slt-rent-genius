@@ -55,6 +55,12 @@ Deno.serve(async (req: Request) => {
       } catch (error) { return json({ error: error instanceof Error ? error.message : "Online-Zahlung muss zuerst abgeglichen werden." }, 409); }
     }
     const policy = inquiry.offer_payload?.bank_transfer_discount;
+    if (action === "checkout" && hasBankDiscountPolicy(policy) && policy.selected === "bank") {
+      const received = (Array.isArray(inquiry.payments) ? inquiry.payments : []).reduce((sum: number, payment: { amount?: unknown }) => sum + toCents(payment.amount), 0);
+      if (planPaymentAmounts({ gross: inquiry.offer_total_gross, deposit: inquiry.offer_payload?.deposit, paidCents: received }).openCents <= 0) {
+        return json({ error: "Dieser Auftrag ist bereits vollständig per Überweisung bezahlt." }, 409);
+      }
+    }
     if ((action === "select_method" || action === "checkout") && hasBankDiscountPolicy(policy)) {
       const method = action === "checkout" ? "regular" : body?.method;
       if (method !== "bank" && method !== "regular") return json({ error: "Ungültige Zahlungsart" }, 400);

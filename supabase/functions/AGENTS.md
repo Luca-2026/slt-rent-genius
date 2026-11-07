@@ -1,4 +1,5 @@
 # Edge function rules
+- Offer revisions preserve a previously selected bank rebate with pure bank receipts in items, totals and payment policy; fully bank-paid orders cannot reopen checkout at the undiscounted price.
 - Registered test invoice issuance completes automatic credit PDFs through test-invoice-documents and returns before customer mail; failed PDF completion remains retryable without duplicate accounting credits.
 - Direct rental-credit refunds share credit_note_refunds and the original-payment cap; invoiceWithRefunds appends the current payment statement to the original invoice for opening/resending, never creates a separate refund PDF or changes taxable totals. Bank completion requires pure bank evidence and an immutable transfer reference.
 - Transfer QR amounts use document-transfer for shared offer/invoice PDFs; reserve separate text/code columns and never request payment for settled invoices or credits. Invoice refund confirmations group only confirmed payouts by their recorded method.
