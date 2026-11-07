@@ -15,12 +15,14 @@
 import { useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Search, Users, Receipt, FileText, Package } from "lucide-react";
+import { matchesStaffSearch, normalizeStaffSearch } from "@/lib/staffSearch";
+import { Button } from "@/components/ui/button";
 
 export type AdminSearchHit =
   | { type: "customer"; id: string; tab: "customers" }
   | { type: "invoice"; id: string; tab: "invoices" }
   | { type: "offer"; id: string; tab: "offers" }
-  | { type: "reservation"; id: string; tab: "reservations" };
+  | { type: "reservation"; id: string; tab: "reservations"; kind?: "rental" | "sales" };
 
 interface CustomerLite {
   id: string;
@@ -36,6 +38,8 @@ interface InvoiceLite {
   invoice_number: string;
   customer_company?: string | null;
   status: string;
+  customer_name?: string | null;
+  order_code?: string | null;
 }
 interface OfferLite {
   id: string;
@@ -46,6 +50,14 @@ interface ReservationLite {
   id: string;
   product_name?: string | null;
   status: string;
+  order_code?: string | null;
+  customer_name?: string | null;
+  company_name?: string | null;
+  customer_email?: string | null;
+  offer_number?: string | null;
+  order_confirmation_number?: string | null;
+  booking_id?: string | null;
+  kind?: "rental" | "sales";
 }
 
 interface AdminGlobalSearchProps {
@@ -82,14 +94,13 @@ export function AdminGlobalSearch({
   const [open, setOpen] = useState(false);
 
   const hits = useMemo<DisplayHit[]>(() => {
-    const q = query.trim().toLowerCase();
+    const q = normalizeStaffSearch(query);
     if (q.length < 2) return [];
     const out: DisplayHit[] = [];
 
     for (const c of customers) {
       const contactName = `${c.contact_first_name ?? ""} ${c.contact_last_name ?? ""}`.trim();
-      const haystack = `${c.company_name} ${contactName} ${c.tax_id ?? ""} ${c.contact_email ?? ""}`.toLowerCase();
-      if (haystack.includes(q)) {
+      if (matchesStaffSearch(q, [c.id, c.company_name, contactName, c.tax_id, c.contact_email, c.city])) {
         // Sub-Zeile mit unterscheidender Information: E-Mail + ggf. Stadt + ggf. USt-IdNr.
         const parts: string[] = [];
         if (c.contact_email) parts.push(c.contact_email);
@@ -106,8 +117,7 @@ export function AdminGlobalSearch({
     }
     for (const i of invoices) {
       if (
-        i.invoice_number.toLowerCase().includes(q) ||
-        (i.customer_company ?? "").toLowerCase().includes(q)
+        matchesStaffSearch(q, [i.id, i.invoice_number, i.customer_company, i.customer_name, i.order_code])
       ) {
         out.push({
           key: `invoice-${i.id}`,
@@ -119,7 +129,7 @@ export function AdminGlobalSearch({
       }
     }
     for (const o of offers) {
-      if (o.offer_number.toLowerCase().includes(q)) {
+      if (matchesStaffSearch(q, [o.id, o.offer_number])) {
         out.push({
           key: `offer-${o.id}`,
           type: "offer",
@@ -130,13 +140,13 @@ export function AdminGlobalSearch({
       }
     }
     for (const r of reservations) {
-      if ((r.product_name ?? "").toLowerCase().includes(q) || r.id.toLowerCase().startsWith(q)) {
+      if (matchesStaffSearch(q, [r.id, r.booking_id, r.order_code, r.product_name, r.customer_name, r.company_name, r.customer_email, r.offer_number, r.order_confirmation_number])) {
         out.push({
           key: `reservation-${r.id}`,
           type: "reservation",
           label: r.product_name || r.id.slice(0, 8),
-          sub: `Anfrage · ${r.status}`,
-          hit: { type: "reservation", id: r.id, tab: "reservations" },
+          sub: [r.order_code ? `#${r.order_code}` : r.id.slice(0, 8), r.kind === "sales" ? "Verkauf" : "Miete", r.status].join(" · "),
+          hit: { type: "reservation", id: r.id, tab: "reservations", kind: r.kind },
         });
       }
     }
@@ -162,7 +172,8 @@ export function AdminGlobalSearch({
           }}
           onFocus={() => setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 150)}
-          placeholder="Suche: Kunde, Rechnungs-Nr, Angebots-Nr, Anfrage…"
+          placeholder="Suche: Name, Auftrags-ID, Buchungs-ID, Belegnummer…"
+          aria-label="Vorgänge suchen"
           className="pl-9"
         />
       </div>
@@ -176,11 +187,12 @@ export function AdminGlobalSearch({
                 const Icon = ICONS[h.type];
                 return (
                   <li key={h.key}>
-                    <button
+                    <Button
+                      variant="ghost"
                       type="button"
                       onMouseDown={(e) => e.preventDefault()}
                       onClick={() => pick(h.hit)}
-                      className="w-full text-left px-3 py-2 hover:bg-muted/60 flex items-center gap-3"
+                      className="w-full justify-start text-left px-3 py-2 hover:bg-muted/60 flex items-center gap-3"
                     >
                       <Icon className="h-4 w-4 text-primary shrink-0" />
                       <div className="min-w-0 flex-1">
@@ -189,7 +201,7 @@ export function AdminGlobalSearch({
                           <p className="text-xs text-muted-foreground truncate">{h.sub}</p>
                         )}
                       </div>
-                    </button>
+                    </Button>
                   </li>
                 );
               })}
