@@ -24,6 +24,7 @@ import {
   type SettlementDeduction,
 } from "@/lib/depositSettlement";
 import { formatEuro } from "./offerMath";
+import { depositRefundPayment } from "@/lib/depositRefundPayment";
 
 type Row = Record<string, any>;
 
@@ -132,15 +133,18 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
     try {
       const { data: links } = await supabase
         .from("offer_payment_links")
-        .select("id")
+        .select("id,status,deposit_cents,paid_cents")
         .eq("inquiry_table", "rental_inquiries")
         .eq("inquiry_id", inquiry.id)
         .eq("status", "paid")
         .gt("deposit_cents", 0)
-        .order("paid_at", { ascending: false })
-        .limit(1);
-      const link = links?.[0];
-      if (!link) throw new Error("Keine bezahlte Online-Zahlung mit Kaution gefunden.");
+        .order("paid_at", { ascending: false });
+      if (!links?.length) throw new Error("Keine bezahlte Online-Zahlung mit Kaution gefunden.");
+      const { data: refunds, error: refundError } = await supabase.from("deposit_refunds").select("link_id,amount_cents,status").in("link_id", links.map(l => l.id));
+      if (refundError) throw new Error("Erstattungsstatus konnte nicht geprüft werden.");
+      const choice = depositRefundPayment(links, refunds ?? [], Math.round(Number(settlement.balance) * 100));
+      if (!choice) throw new Error("Keine einzelne Originalzahlung deckt die offene Kaution. Zahlungsaufteilung muss geprüft werden.");
+      const link = choice.link;
       const { data, error } = await invokeWithAuth<{ success?: boolean; error?: string; status?: string }>("offer-payment-admin", {
         action: "refund_deposit",
         link_id: link.id,
@@ -189,7 +193,6 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
               {busy ? <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" /> : <Undo2 className="h-3.5 w-3.5 mr-1" />}
               Jetzt über Stripe erstatten
             </Button>
-            <Button size="sm" variant="outline" onClick={markPayout} disabled={busy}>Manuell erstattet – als erledigt markieren</Button>
           </div>
         )}
         <p className="text-xs text-muted-foreground">Korrekturen nur per Gutschrift.</p>

@@ -96,7 +96,7 @@ const eur = (n: number) => `${n.toFixed(2).replace(".", ",").replace(/\B(?=(\d{3
 export function payoutText(sum: DepositSummary): string {
   if (sum.refund <= 0) return "";
   const on = sum.payoutDate ? ` am ${deDate(sum.payoutDate)}` : "";
-  const pending = sum.payoutStatus === "pending";
+  const pending = sum.payoutStatus !== "paid";
   switch (sum.payoutMethod) {
     case "cash": return pending ? "wird bar ausgezahlt" : `bar ausgezahlt${on}`;
     case "transfer": return pending ? "wird per Überweisung erstattet" : `per Überweisung erstattet${on}`;
