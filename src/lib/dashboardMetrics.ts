@@ -50,10 +50,13 @@ export function isAutomaticSignBooking(row: PipelineInquiryRow): boolean {
   return !!payload && typeof payload === "object" && "direct_booking" in payload && payload.direct_booking === true;
 }
 
-/** Operational confirmation tasks follow the staff branch, including for admins. */
-export function filterStaffConfirmationTasks<T extends { location?: string | null }>(rows: T[], staffLocation: string | null | undefined): T[] {
+/** Known branches stay isolated; admins also handle tasks awaiting branch assignment. */
+export function filterStaffConfirmationTasks<T extends { location?: string | null }>(rows: T[], staffLocation: string | null | undefined, includeUnassigned = false): T[] {
   const branch = taskLocationKey(staffLocation);
-  return branch ? rows.filter(row => taskLocationKey(row.location) === branch) : [];
+  return rows.filter(row => {
+    const location = taskLocationKey(row.location);
+    return location === null ? includeUnassigned : !!branch && location === branch;
+  });
 }
 
 /** Mietende nach Berliner Datum/Uhrzeit; ohne Uhrzeit erst nach Ende des Tages. */

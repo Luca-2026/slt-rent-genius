@@ -25,6 +25,7 @@ type Row = {
   open: number;
   overdue: boolean;
   deadline: string | null;
+  unassigned: boolean;
 };
 
 const euro = (n: number) => n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
@@ -38,7 +39,7 @@ const LABEL: Record<Row["state"], string> = {
 const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30"]);
 
 /** All accepted inquiries awaiting confirmation, including manual acceptance. */
-export function AcceptedOffersPayments({ staffLocation }: { staffLocation: string | null | undefined }) {
+export function AcceptedOffersPayments({ staffLocation, includeUnassigned = false }: { staffLocation: string | null | undefined; includeUnassigned?: boolean }) {
   const [rows, setRows] = useState<Row[]>([]);
   const seen = useRef<Map<string, Row["state"]> | null>(null);
   const [error, setError] = useState(false);
@@ -59,7 +60,7 @@ export function AcceptedOffersPayments({ staffLocation }: { staffLocation: strin
       const list = filterStaffConfirmationTasks([
         ...(rent.data ?? []).map((i) => ({ ...i, table: "rental_inquiries" })),
         ...(sale.data ?? []).map((i) => ({ ...i, table: "sales_inquiries" })),
-      ], staffLocation).filter((i) => isAwaitingOfferConfirmation(i, now) || (i.table === "rental_inquiries" && needsRentalCloseout(i, now)));
+      ], staffLocation, includeUnassigned).filter((i) => isAwaitingOfferConfirmation(i, now) || (i.table === "rental_inquiries" && needsRentalCloseout(i, now)));
       if (!list.length) { if (active) { setRows([]); setError(false); } return; }
       const ids = list.map((i) => i.id);
       const [acc, links, delivery, returns, invoices] = await Promise.all([
@@ -96,7 +97,7 @@ export function AcceptedOffersPayments({ staffLocation }: { staffLocation: strin
         out.push({
           inquiryId: i.id, table: i.table, offer: i.offer_number ?? "", acceptedAt: a?.accepted_at ?? null,
           signer: a?.signer_name ?? null, customer: i.company_name || ("customer_name" in i ? i.customer_name : [i.first_name, i.last_name].filter(Boolean).join(" ")) || "",
-          state, paid, open, ended, tasks, end: "end_date" in i ? effectiveEnd(i) : null,
+          state, paid, open, ended, tasks, unassigned: filterStaffConfirmationTasks([i], null, true).length > 0, end: "end_date" in i ? effectiveEnd(i) : null,
           overdue: isPaymentOverdue({ status: i.status, order_confirmed_at: i.order_confirmed_at, payment_followup_sent_at: i.payment_followup_sent_at, payment_terms: payload.payment_terms ?? "vorkasse", gross: i.offer_total_gross, deposit: payload.deposit, paid_cents: Math.round(paid * 100) }, new Date()),
           deadline: paymentDeadline(i.payment_followup_sent_at)?.toISOString() ?? null,
         });
@@ -128,7 +129,7 @@ export function AcceptedOffersPayments({ staffLocation }: { staffLocation: strin
       .subscribe();
     const timer = window.setInterval(load, 60_000);
     return () => { active = false; window.clearInterval(timer); supabase.removeChannel(ch); };
-  }, [staffLocation]);
+  }, [staffLocation, includeUnassigned]);
 
   if (error) return <p role="alert" className="text-sm text-destructive">Angenommene Angebote konnten nicht aktualisiert werden. Bitte lade die Seite erneut.</p>;
   if (!rows.length) return null;
@@ -204,6 +205,7 @@ export function AcceptedOffersPayments({ staffLocation }: { staffLocation: strin
             >
               <div className="min-w-0 space-y-1.5">
                 <strong className="block break-words font-medium text-foreground">{r.customer}</strong>
+                {r.unassigned && <span className="block text-xs text-muted-foreground">Standort noch zuzuordnen</span>}
                 <span className="block break-words text-xs text-muted-foreground">{r.offer} · {r.acceptedAt ? `online angenommen ${new Date(r.acceptedAt).toLocaleString("de-DE", { timeZone: "Europe/Berlin", dateStyle: "short", timeStyle: "short" })}${r.signer ? ` von ${r.signer}` : ""}` : "Im Portal als angenommen erfasst"}</span>
               <span className={cn(
                 "inline-block max-w-full whitespace-normal break-words rounded-md px-2 py-1 text-xs font-medium",

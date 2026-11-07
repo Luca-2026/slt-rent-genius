@@ -155,6 +155,7 @@ export default function StaffHome() {
   const [dayLocation, setDayLocation] = useState<DayLocationFilter | null>(null);
   const activeDayLocation: DayLocationFilter = dayLocation ?? defaultDayLocation(staffProfile?.location);
   const [openSales, setOpenSales] = useState(0);
+  const [salesConfirmationRows, setSalesConfirmationRows] = useState<{ status: string; location: string | null; order_confirmed_at: string | null; offer_total_gross: number | null }[]>([]);
   const [inquiries, setInquiries] = useState<InquiryRow[]>([]);
   const [todos, setTodos] = useState<TodoRow[]>([]);
   const [invoices, setInvoices] = useState<InquiryInvoiceRow[]>([]);
@@ -199,11 +200,12 @@ export default function StaffHome() {
         supabase.from("staff_todo_lists").select("id,title,due_date,status,location,sign_booking_id").neq("status", "done"),
         isAdmin ? supabase.from("inquiry_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,paid_amount,credited_amount,due_date") : Promise.resolve({ data: [] }),
         isAdmin ? supabase.from("b2b_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,due_date") : Promise.resolve({ data: [] }),
-        supabase.from("sales_inquiries").select("status"),
+        supabase.from("sales_inquiries").select("status,location,order_confirmed_at,offer_total_gross"),
         supabase.from("b2b_profiles").select("id,company_name,status,credit_limit,credit_limit_requested_at,deletion_requested_at,created_at").order("created_at", { ascending: false }),
       ]);
       setProfiles((prof.data as ProfileRow[] | null) ?? []);
       setOpenSales(((sales.data as { status: string }[] | null) ?? []).filter((r) => isOpenInquiry(r.status)).length);
+      setSalesConfirmationRows(sales.data ?? []);
       setInquiries((inq.data as InquiryRow[] | null) ?? []);
       setTodos((td.data as TodoRow[] | null) ?? []);
       setInvoices((inv.data as InquiryInvoiceRow[] | null) ?? []);
@@ -241,7 +243,7 @@ export default function StaffHome() {
     })
     .sort((a, b) => (effectiveEnd(a) ?? "").localeCompare(effectiveEnd(b) ?? ""));
   const running = confirmed.filter((r) => isRunningRental({ ...r, handed_over: protocols.byInquiry.has(r.id) && !!protocols.byInquiry.get(r.id)?.delivery }, today)).length;
-  const awaitingConfirmation = filterStaffConfirmationTasks(inquiries, staffProfile?.location).filter((r) => isAwaitingOfferConfirmation(r, now)).length;
+  const awaitingConfirmation = filterStaffConfirmationTasks([...inquiries, ...salesConfirmationRows], staffProfile?.location, isAdmin).filter((r) => isAwaitingOfferConfirmation(r, now)).length;
   const unprocessed = inquiries.filter(isUnprocessedInquiry).length;
   const customerRequests = profiles.flatMap((p) => ([
     needsAction(p, "freigabe") && { p, kind: "freigabe", label: "Freischaltung durchführen" },
