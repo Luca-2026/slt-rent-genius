@@ -1170,6 +1170,13 @@
       "when": 1794055111058,
       "tag": "0166_include_order_refunds_in_execution_reconciliation",
       "breakpoints": true
+    },
+    {
+      "idx": 167,
+      "version": "7",
+      "when": 1794055171488,
+      "tag": "0167_fix_order_refund_allocation_completion_guard",
+      "breakpoints": true
     }
   ]
 }
