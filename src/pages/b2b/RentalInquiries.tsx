@@ -1,4 +1,5 @@
 import { rentalPeriodOf } from "@/lib/rentalPeriod";
+import { matchesStaffSearch } from "@/lib/staffSearch";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -77,9 +78,7 @@ export default function RentalInquiries() {
       if (!matchesSegment(segmentOf(r), segment)) return false;
       if (locationFilter !== "all" && normalizeLocation(r.location) !== locationFilter) return false;
       if (!q) return true;
-      return [r.order_code, r.order_code ? `#${r.order_code}` : null, r.product_name, r.customer_name, r.customer_email, r.company_name, r.location, r.customer_city]
-        .filter(Boolean)
-        .some((v) => String(v).toLowerCase().includes(q));
+      return matchesStaffSearch(q, [r.id, r.order_code, r.offer_number, r.order_confirmation_number, r.product_name, r.customer_name, r.customer_email, r.company_name, r.location, r.customer_city]);
     });
   }, [rows, search, statusFilter, segment, locationFilter, protocols.byInquiry, mineOnly, user?.id]);
   const myPendingCount = useMemo(() => rows.filter((r) => isMyPendingInquiry(r, user?.id)).length, [rows, user?.id]);

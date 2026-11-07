@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { matchesStaffSearch } from "@/lib/staffSearch";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { FileDown, ArrowUpRight, RefreshCw, Search } from "lucide-react";
@@ -49,7 +50,7 @@ export default function SignBookings() {
     } finally { setOpening(null); }
   };
   const visible = rows.filter(b => (location === "all" || b.location === location) && (status === "all" || b.status === status) &&
-    [b.inquiry?.order_code, b.inquiry?.customer_name, b.inquiry?.company_name, b.address].some(value => (value || "").toLocaleLowerCase("de").includes(search.trim().toLocaleLowerCase("de"))));
+    matchesStaffSearch(search, [b.id, b.inquiry_id, b.inquiry?.order_code, b.inquiry?.customer_name, b.inquiry?.company_name, b.inquiry?.customer_email, b.address]));
 
   return <B2BPortalLayout title="Halteverbote">
     {accessLoading ? <p className="text-muted-foreground">Lädt …</p> : !isStaff ? <p>Nur für Mitarbeiter.</p> : <>
