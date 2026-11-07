@@ -10,6 +10,15 @@ const row: SettlementRow = {
 };
 
 describe("Schlussrechnung nach Kautionsabrechnung", () => {
+  it("bewahrt Pascals tatsächliche Überweisung 133,47 € bei 33,47 € Mietanrechnung und 100 € Kaution", () => {
+    const summary = depositSummary({ ...row, deposit_held: 100, offset_amount: 0, balance: 100, payout_method: "transfer", payout_date: "2026-11-07" });
+    const payments = settlementPayments([{ date: "2026-11-06", amount: 133.47, label: "Banküberweisung", reference: "" }], 133.47, summary, "9DFW9V");
+    expect(payments).toHaveLength(1);
+    expect(payments[0].receipt_amount).toBe(133.47);
+    expect(payments[0].amount).toBe(33.47);
+    expect(summary.refund).toBe(100);
+    expect(Math.round((33.47 - payments[0].amount) * 100)).toBe(0);
+  });
   it("behält 123,76 € Mietguthaben bei separat zurückgezahlten 500 € Kaution", () => {
     const summary = depositSummary({ ...row, deposit_held: 500, offset_amount: 0, balance: 500 });
     const p = settlementPayments([{ date: '2026-11-05', amount: 1180.68, label: 'Banküberweisung', reference: '' }], 1180.68, summary, '96ASUG');

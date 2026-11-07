@@ -31,7 +31,7 @@ export interface DepositSummary {
   settledDate: string;
 }
 
-export interface PaymentLine { date: string; amount: number; label: string; reference: string }
+export interface PaymentLine { date: string; amount: number; label: string; reference: string; receipt_amount?: number }
 
 export function depositSummary(s: SettlementRow): DepositSummary {
   const balance = r2(Number(s.balance) || 0);
@@ -80,7 +80,7 @@ export function settlementPayments(
     if (isDepositLine(p)) continue;
     if (left <= 0) break;
     const use = r2(Math.min(Number(p.amount) || 0, left));
-    if (use > 0) out.push({ ...p, amount: use });
+    if (use > 0) out.push({ ...p, amount: use, ...(Number(p.amount) > use ? { receipt_amount: Number(p.amount) } : {}) });
     left = r2(left - use);
   }
   if (sum.offset > 0) {
