@@ -1,4 +1,5 @@
 import { codedSubject } from "./order-code.ts";
+import { shouldSendCustomerEmail } from "./customer-email-policy.ts";
 declare const Deno: { env: { get(name: string): string | undefined } };
 import { LOCATION_CONTACTS, resolveLocationKey } from "./inquiry-offer-math.ts";
 import { operationalEmailRecipient } from "./test-email-routing.ts";
@@ -37,6 +38,8 @@ export async function processOfferFollowups(service: any, onlyLinkId?: string) {
     const { data: previous, error: historyError } = await service.from("offer_followup_deliveries").select("*").eq("link_id", link.id).order("created_at", { ascending: false });
     if (historyError) throw historyError;
     const kind = link.status === "declined" ? "decline" : "followup";
+    // Expiry and staff decline notices remain active; customers receive the offer only.
+    if (kind === "followup" && !shouldSendCustomerEmail("offer_followup")) continue;
     if (kind === "followup" && (link.inquiry_table !== "rental_inquiries" || inquiry.status !== "offer_sent")) continue;
     const prior = (previous ?? []).filter((p: any) => p.kind === kind);
     if (kind === "decline" && prior.some((p: any) => p.status === "sent")) continue;

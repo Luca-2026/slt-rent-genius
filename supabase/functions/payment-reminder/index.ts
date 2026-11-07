@@ -1,4 +1,5 @@
 import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
+import { shouldSendCustomerEmail } from "../_shared/customer-email-policy.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { processOfferFollowups } from "../_shared/offer-followup-delivery.ts";
 /**
@@ -72,7 +73,7 @@ Deno.serve(async (req) => {
       if (plan.openCents <= 0) return json({ error: "Kein offener Betrag – keine Erinnerung nötig" }, 409);
       due.push({ table, r: row, terms, deposit, paidCents, plan, manual: true });
     }
-    for (const table of manual ? [] : TABLES) {
+    for (const table of manual || !shouldSendCustomerEmail("automatic_payment_reminder") ? [] : TABLES) {
       const cols = table === "rental_inquiries"
         ? "id, status, customer_email, customer_name, customer_salutation, address_form, crm_customer_id, company_name, location, offer_number, offer_total_gross, offer_payload, payments, offer_accepted_at, payment_followup_sent_at, order_confirmed_at"
         : "id, status, customer_email, first_name, last_name, salutation, crm_customer_id, company_name, location, offer_number, offer_total_gross, offer_payload, payments, offer_accepted_at, payment_followup_sent_at, order_confirmed_at";
