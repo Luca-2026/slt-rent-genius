@@ -9,11 +9,9 @@ import { mirrorDamagesToInventory } from "../_shared/inventory-damages.ts";
 import { renderProtocolPdf, berlin, type ProtocolPdfPhoto } from "./pdf.ts";
 import { requestDeliverySignature } from "../_shared/delivery-signature.ts";
 import { protocolItemQuantity } from "../_shared/protocol-quantity.ts";
+import { sendHandoverConfirmation } from "../_shared/handover-confirmation.ts";
+import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
@@ -117,7 +115,9 @@ Deno.serve(async (req) => {
     const { data: inq, error: inqErr } = await svc.from("rental_inquiries").select("*").eq("id", b.rental_inquiry_id).maybeSingle();
     if (inqErr || !inq) return json({ error: "Mietanfrage nicht gefunden." }, 404);
     if (b.customer_not_present && !isReturn && !inq.customer_email) return json({ error: "E-Mail-Adresse für die Kundenunterschrift fehlt." }, 400);
-    if (inq.status !== "accepted") return json({ error: "Protokolle sind nur f\u00FCr angenommene Auftr\u00E4ge m\u00F6glich." }, 409);
+    const pendingOffer = !isReturn && !b.customer_not_present && !!inq.offer_number && ["new", "in_progress", "offer_sent"].includes(inq.status);
+    if (inq.status !== "accepted" && !pendingOffer) return json({ error: "Zuerst ein aktuelles Angebot erstellen und vom Kunden unterschreiben lassen." }, 409);
+    if (!isReturn && (inq.offer_payload as { undated_offer?: boolean } | null)?.undated_offer) return json({ error: "Zuerst einen verbindlichen Mietzeitraum vereinbaren." }, 409);
     if (!isReturn) {
       const offerItems = Array.isArray((inq.offer_payload as any)?.items) ? (inq.offer_payload as any).items : [];
       b.items = b.items.map(item => {
@@ -357,7 +357,11 @@ ${damageRows.length ? `<p style="color:#b91c1c;"><strong>${damageRows.length} Sc
       }
     }
 
-    return json({ success: true, id: protocolId, number, file_url: fileUrl, email_sent: emailSent, recipient, photos: storedPhotos.length });
+    const confirmationSent = !isReturn && !b.customer_not_present ? await sendHandoverConfirmation(protocolId) : null;
+    return json({ success: true, id: protocolId, number, file_url: fileUrl, email_sent: emailSent, recipient, photos: storedPhotos.length,
+      confirmation_sent: confirmationSent,
+      ...(!isReturn && confirmationSent === false ? { warning: "Übergabe gespeichert und Auftrag verbindlich bestätigt. Die automatische AB konnte noch nicht versendet werden; bitte im Auftrag erneut senden." } : {}),
+    });
   } catch (e) {
     console.error("generate-rental-protocol", e);
     return json({ error: (e as Error).message || "Protokoll konnte nicht erstellt werden." }, 500);
