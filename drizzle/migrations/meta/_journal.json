@@ -1142,6 +1142,13 @@
       "when": 1794052141661,
       "tag": "0162_require_deposit_payout_provider_evidence",
       "breakpoints": true
+    },
+    {
+      "idx": 163,
+      "version": "7",
+      "when": 1794052554210,
+      "tag": "0163_superadmin_only_manual_rental_closeout",
+      "breakpoints": true
     }
   ]
 }
