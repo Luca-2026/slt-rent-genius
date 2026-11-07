@@ -1156,6 +1156,34 @@
       "when": 1794054311474,
       "tag": "0164_accept_stripe_paypal_refund_receipts",
       "breakpoints": true
+    },
+    {
+      "idx": 165,
+      "version": "7",
+      "when": 1794055046331,
+      "tag": "0165_pre_invoice_rental_refund_and_issue_lock",
+      "breakpoints": true
+    },
+    {
+      "idx": 166,
+      "version": "7",
+      "when": 1794055111058,
+      "tag": "0166_include_order_refunds_in_execution_reconciliation",
+      "breakpoints": true
+    },
+    {
+      "idx": 167,
+      "version": "7",
+      "when": 1794055171488,
+      "tag": "0167_fix_order_refund_allocation_completion_guard",
+      "breakpoints": true
+    },
+    {
+      "idx": 168,
+      "version": "7",
+      "when": 1794055555933,
+      "tag": "0168_protect_order_refund_allocation_terminal_states",
+      "breakpoints": true
     }
   ]
 }

@@ -24,6 +24,7 @@ import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { invoiceWithRefunds } from "../_shared/invoice-with-refunds.ts";
+import { settledInvoiceBalance } from "../_shared/invoice-refund-balance.ts";
 import { depositSummary, depositSummaryNote, inferChargeMeasure, measureUnitLabel, settlementAppliesToNewInvoice, settlementPayments, type DepositSummary, type SettlementRow } from "../_shared/final-invoice-deposit.ts";
 import { addonExplanation, invoiceExtraFields } from "../_shared/inquiry-offer-math.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
@@ -132,6 +133,8 @@ Deno.serve(async (req: Request) => {
     if (!body || typeof body !== "object") return json({ error: "Ungültige Anfrage" }, 400);
     if (body.preview !== undefined && typeof body.preview !== "boolean") return json({ error: "Ungültiger Vorschau-Modus" }, 400);
     const isPreview = body.preview === true;
+    const prepareRefund = body.prepare_refund === true;
+    if (prepareRefund && !isPreview) return json({ error: "Erstattungsgrundlage nur zusammen mit Vorschau vorbereiten" }, 400);
     if (isPreview && body.resend_invoice_id) return json({ error: "Vorschau und erneuter Versand sind getrennte Aktionen" }, 400);
 
     const resendKey = Deno.env.get("RESEND_API_KEY");
@@ -458,6 +461,27 @@ Deno.serve(async (req: Request) => {
       }
     }
     const amountPaid = Math.round(payments.reduce((s: number, p: RecordedPayment) => s + p.amount, 0) * 100) / 100;
+    let refundBasisId: string | null = null;
+    let rentalRefund: { amount: number; method: string; date: string } | undefined;
+    let refundBlock: string | null = null;
+    if (inquiryType === "rental" && !isDepositSettlement && ["invoice", "final"].includes(invoiceKind) && (depositInfo || invoiceKind === "final")) {
+      if (prepareRefund) {
+        const { data: basis, error: basisError } = await service.from("rental_refund_bases").upsert({ inquiry_id: inquiryId, gross_amount: totals.grossAmount, paid_amount: amountPaid, payments, updated_at: new Date().toISOString() }, { onConflict: "inquiry_id" }).select("id").single();
+        if (basisError || !basis) return json({ error: basisError?.message ?? "Erstattungsgrundlage nicht gespeichert" }, 409);
+        refundBasisId = basis.id;
+      }
+      const { data: basis, error: basisReadError } = await service.from("rental_refund_bases").select("id,gross_amount,paid_amount").eq("inquiry_id", inquiryId).maybeSingle();
+      if (basisReadError) return json({ error: "Erstattungsgrundlage konnte nicht geprüft werden" }, 409);
+      if (basis) {
+        refundBasisId = basis.id;
+        const { data: claim, error: claimError } = await service.from("rental_order_refunds").select("status,amount_cents,payout_method,updated_at").eq("basis_id", basis.id).maybeSingle();
+        if (claimError) return json({ error: "Erstattungsstatus konnte nicht geprüft werden" }, 409);
+        if (claim?.status === "succeeded" && Number(basis.gross_amount) === totals.grossAmount && Number(basis.paid_amount) === amountPaid) rentalRefund = { amount: claim.amount_cents / 100, method: claim.payout_method, date: claim.updated_at.slice(0, 10) };
+      }
+      const { error: checkError } = await service.rpc("check_rental_invoice_refunds", { _inquiry: inquiryId, _gross: totals.grossAmount, _paid: amountPaid });
+      refundBlock = checkError?.message ?? null;
+      if (!isPreview && refundBlock) return json({ error: refundBlock }, 409);
+    }
 
 
     const addrIn = body.delivery_address && typeof body.delivery_address === "object"
@@ -573,6 +597,7 @@ Deno.serve(async (req: Request) => {
       const dn = depositSummaryNote(depositInfo);
       if (dn && !(notes ?? "").includes("Kautionsabrechnung vom")) notes = [notes, dn].filter(Boolean).join("\n\n");
     }
+    if (rentalRefund) notes = [notes, `Mietguthaben ${money(rentalRefund.amount)} bereits am ${rentalRefund.date} ${rentalRefund.method === "transfer" ? "per Überweisung" : "über Stripe auf das ursprüngliche Zahlungsmittel"} erstattet. Zahlungsstand nach Erstattung: ${money(Math.max(0, settledInvoiceBalance(totals.grossAmount, amountPaid, rentalRefund.amount)))}.`].filter(Boolean).join("\n\n");
     const form = await resolveAddressForm(service, inquiry);
     const pdfBytes = await generateOfferPdf({
       documentGreeting: { addressForm: form, salutation: salutationLine({ address_form: form, salutation: inquiry.customer_salutation ?? inquiry.salutation, name: customerName }) },
@@ -612,11 +637,12 @@ Deno.serve(async (req: Request) => {
       paymentTerms,
       paymentTermsCustom: paymentTerms === "custom" ? paymentTermsCustom : undefined,
       payments,
+      rentalRefund,
 
     });
 
     // Return before any storage, invoice, payment, schedule or mail mutation.
-    if (isPreview) return json({ preview: true, pdf_base64: encodeBase64(pdfBytes), gross_amount: totals.grossAmount });
+    if (isPreview) return json({ preview: true, pdf_base64: encodeBase64(pdfBytes), gross_amount: totals.grossAmount, refund_block: refundBlock, refund_basis_id: refundBasisId });
 
     const safeName = (profile.company_name || "Kunde")
       .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue")
@@ -638,7 +664,7 @@ Deno.serve(async (req: Request) => {
     const fileUrl = signed?.signedUrl || "";
 
     // ── E-Mail an den Kunden (persönlich formuliert, mit Bankdaten und Restbetrag) ──
-    const balanceDue = Math.round((totals.grossAmount - amountPaid) * 100) / 100;
+    const balanceDue = settledInvoiceBalance(totals.grossAmount, amountPaid, rentalRefund?.amount);
     const fullyPaid = balanceDue <= 0.009;
 
     const rowsHtml = items.map((i) => {
@@ -745,6 +771,7 @@ Deno.serve(async (req: Request) => {
       .from("inquiry_invoices")
       .insert({
         invoice_number: invoiceNumber,
+        rental_refund_basis_id: refundBasisId,
         invoice_kind: invoiceKind,
         parent_invoice_id: parentInvoiceId,
         offer_number: sourceOfferNumber,

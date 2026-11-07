@@ -5,6 +5,11 @@ import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 export async function rentalCreditRefund(service: any, invoiceId: string, userId: string, action: string, bankReference?: string) {
   const { data: invoice, error } = await service.from("inquiry_invoices").select("*").eq("id", invoiceId).single();
   if (error || !invoice?.rental_inquiry_id || !["invoice", "final"].includes(invoice.invoice_kind) || ["draft", "cancelled"].includes(invoice.status) || invoice.parent_invoice_id || invoice.deducted_installments?.length) throw new Error("Keine gültige erstmalige Mietrechnung.");
+  if (invoice.rental_refund_basis_id) {
+    const { data: claim, error: claimError } = await service.from("rental_order_refunds").select("amount_cents,status,payout_method").eq("basis_id", invoice.rental_refund_basis_id).maybeSingle();
+    if (claimError || (claim && claim.status !== "succeeded")) throw new Error("Erstattungsstand der Schlussrechnung muss geprüft werden. Nicht zusätzlich erstatten.");
+    return { success: true, amount_cents: claim?.amount_cents ?? 0, status: claim?.status ?? "none", payout_method: claim?.payout_method ?? "none", pdf_base64: encodeBase64(await invoiceWithRefunds(service, invoice)) };
+  }
   const { data: siblings, error: siblingError } = await service.from("inquiry_invoices").select("id").eq("rental_inquiry_id", invoice.rental_inquiry_id).neq("id", invoiceId).neq("status", "draft").neq("status", "cancelled");
   if (siblingError || siblings?.length) throw new Error("Weitere Rechnungen oder Korrekturen erfordern gesonderte Abrechnung.");
   const amount = Math.round((Number(invoice.paid_amount) - Number(invoice.gross_amount)) * 100);

@@ -1,4 +1,7 @@
 export interface InvoiceRefund { status: string; amount_cents: number; payout_method: string; allocations?: { status: string; amount_cents: number }[] }
+export function settledInvoiceBalance(gross: number, paid: number, refunded = 0) {
+  return (Math.round(gross * 100) - Math.round(paid * 100) + Math.round(refunded * 100)) / 100;
+}
 export function confirmedRefundsByMethod(refunds: InvoiceRefund[]) {
   return refunds.reduce((sum, r) => {
     if (r.payout_method === "transfer" && r.status === "succeeded") sum.transfer_cents += r.amount_cents;

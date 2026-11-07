@@ -1,0 +1,6 @@
+DO $$ DECLARE definition text; BEGIN
+SELECT pg_get_functiondef('public.assert_stripe_refund_execution_capacity(text,uuid,uuid)'::regprocedure) INTO definition;
+definition:=replace(definition,'IF used>paid',E'SELECT used+COALESCE(sum((a->>''amount_cents'')::bigint),0) INTO used FROM public.rental_order_refunds r CROSS JOIN LATERAL jsonb_array_elements(r.allocations) a WHERE a->>''payment_intent''=_intent AND COALESCE(a->>''status'',''creating'') NOT IN (''failed'',''canceled'') AND NOT EXISTS(SELECT 1 FROM public.stripe_refund_receipts p WHERE p.refund_id=a->>''refund_id'');\nIF used>paid');
+definition:=replace(definition,E')) THEN RAISE EXCEPTION ''Externe Erstattung',E') AND NOT EXISTS(SELECT 1 FROM public.rental_order_refunds r CROSS JOIN LATERAL jsonb_array_elements(r.allocations) a WHERE a->>''refund_id''=p.refund_id AND a->>''payment_intent''=p.payment_intent AND (a->>''amount_cents'')::bigint=p.amount_cents)) THEN RAISE EXCEPTION ''Externe Erstattung');
+EXECUTE definition;
+END $$;

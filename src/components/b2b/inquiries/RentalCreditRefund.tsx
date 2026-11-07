@@ -8,7 +8,7 @@ import { formatEuro } from "./offerMath";
 import { FileText, Undo2 } from "lucide-react";
 
 type Result = { success: boolean; error?: string; amount_cents: number; status: string; payout_method: string; pdf_url?: string; pdf_base64?: string };
-export function RentalCreditRefund({ invoiceId }: { invoiceId: string }) {
+export function RentalCreditRefund({ invoiceId, inquiryId, onDone }: { invoiceId?: string; inquiryId?: string; onDone?: () => void }) {
   const [result, setResult] = useState<Result | null>(null);
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -18,9 +18,11 @@ export function RentalCreditRefund({ invoiceId }: { invoiceId: string }) {
     if (busy) return;
     setBusy(true);
     try {
-      const { data, error } = await invokeWithAuth<Result>("offer-payment-admin", { action, invoice_id: invoiceId, ...(action === "confirm_rental_credit_transfer" ? { bank_reference: reference } : {}) });
+      const orderAction = action === "rental_credit_info" ? "order_credit_info" : action === "refund_rental_credit" ? "refund_order_credit" : "confirm_order_credit_transfer";
+      const { data, error } = await invokeWithAuth<Result>("offer-payment-admin", { action: inquiryId ? orderAction : action, ...(inquiryId ? { inquiry_id: inquiryId } : { invoice_id: invoiceId }), ...(action === "confirm_rental_credit_transfer" ? { bank_reference: reference } : {}) });
       if (error || !data?.success) { toast({ title: "Mietguthaben nicht abgeschlossen", description: data?.error || "Status erneut prüfen; nicht zusätzlich erstatten.", variant: "destructive" }); return; }
       setResult(data); setOpen(true);
+      if (data.status === "succeeded") onDone?.();
     } catch {
       toast({ title: "Mietguthaben konnte nicht geprüft werden", description: "Bitte erneut prüfen; keine zusätzliche Erstattung ausführen.", variant: "destructive" });
     } finally { setBusy(false); }
@@ -35,13 +37,14 @@ export function RentalCreditRefund({ invoiceId }: { invoiceId: string }) {
   return <>
     <Button variant="outline" size="sm" disabled={busy} onClick={() => call("rental_credit_info")}><Undo2 className="h-4 w-4 mr-1" />Mietguthaben / Erstattung</Button>
     <Dialog open={open} onOpenChange={v => !busy && setOpen(v)}><DialogContent className="max-w-lg">
-      <DialogHeader><DialogTitle>Mietguthaben {formatEuro((result?.amount_cents ?? 0) / 100)}</DialogTitle><DialogDescription>Kaution und Mietguthaben bleiben getrennt. Der Rabatt ist in der Rechnung bereits berücksichtigt.</DialogDescription></DialogHeader>
+      <DialogHeader><DialogTitle>Mietguthaben {formatEuro((result?.amount_cents ?? 0) / 100)}</DialogTitle><DialogDescription>{inquiryId ? "Kaution und Mietguthaben bleiben getrennt. Die Schlussrechnung folgt erst nach bestätigter Erstattung." : "Kaution und Mietguthaben bleiben getrennt. Der Rabatt ist in der Rechnung bereits berücksichtigt."}</DialogDescription></DialogHeader>
       <p className="text-sm">{result?.status === "none" ? "Kein Mietguthaben in dieser Rechnung vorhanden." : result?.status === "succeeded" ? "Erstattung bestätigt" : result?.status === "pending" ? "Erstattung wird verarbeitet" : result?.status === "creating" ? "Erstattungsauftrag vorbereitet; Auszahlung noch nicht bestätigt" : "Noch nicht beauftragt"}</p>
       {result?.payout_method === "transfer" && result.status === "creating" && <><p className="text-sm">Überweise ausschließlich den ausgewiesenen Mietguthabenbetrag. Bestätige erst danach mit dem Banknachweis.</p><Input aria-label="Banknachweis" placeholder="Bank-Buchungsreferenz" value={reference} onChange={e => setReference(e.target.value)} maxLength={200} /></>}
       <DialogFooter className="flex-wrap gap-2">{(result?.pdf_url || result?.pdf_base64) && <Button variant="outline" onClick={pdf}><FileText className="h-4 w-4 mr-1" />Rechnung öffnen</Button>}
         {result?.status === "available" && <Button disabled={busy} onClick={() => call("refund_rental_credit")}>{result.payout_method === "transfer" ? "Überweisungsauftrag vorbereiten" : "Verbindlich auf ursprüngliche Zahlung erstatten"}</Button>}
         {result?.payout_method === "transfer" && result.status === "creating" && <Button disabled={busy || reference.trim().length < 3} onClick={() => call("confirm_rental_credit_transfer")}>Ausgeführte Überweisung bestätigen</Button>}
         {result?.payout_method === "stripe" && result.status === "creating" && <Button disabled={busy} onClick={() => call("refund_rental_credit")}>Gespeicherten Auftrag abgleichen</Button>}
+        {result?.payout_method === "stripe" && ["pending", "requires_action"].includes(result.status) && <Button disabled={busy} onClick={() => call("refund_rental_credit")}>Erstattungsstatus abgleichen</Button>}
       </DialogFooter>
     </DialogContent></Dialog>
   </>;
