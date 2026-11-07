@@ -53,6 +53,7 @@ function singularUnit(unit?: string): string {
 export interface InquiryOfferItem extends OfferLogistics {
   payment_cost_kind?: "rental" | "damage" | "municipal" | "deposit";
   product_name: string;
+  period_free?: boolean;
   /** CMS-Slug des Artikels – Grundlage der Bestandsprüfung. */
   product_slug?: string;
   /** Tatsächliche Stückzahl (quantity = Stückzahl × Dauer). */
