@@ -3084,6 +3084,7 @@ export type Database = {
           payment_terms_custom: string | null
           payments: Json
           rental_inquiry_id: string | null
+          rental_refund_basis_id: string | null
           return_location: string | null
           return_location_cost: number
           sales_inquiry_id: string | null
@@ -3150,6 +3151,7 @@ export type Database = {
           payment_terms_custom?: string | null
           payments?: Json
           rental_inquiry_id?: string | null
+          rental_refund_basis_id?: string | null
           return_location?: string | null
           return_location_cost?: number
           sales_inquiry_id?: string | null
@@ -3216,6 +3218,7 @@ export type Database = {
           payment_terms_custom?: string | null
           payments?: Json
           rental_inquiry_id?: string | null
+          rental_refund_basis_id?: string | null
           return_location?: string | null
           return_location_cost?: number
           sales_inquiry_id?: string | null
@@ -3248,6 +3251,13 @@ export type Database = {
             columns: ["rental_inquiry_id"]
             isOneToOne: false
             referencedRelation: "rental_inquiries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inquiry_invoices_rental_refund_basis_id_fkey"
+            columns: ["rental_refund_basis_id"]
+            isOneToOne: false
+            referencedRelation: "rental_refund_bases"
             referencedColumns: ["id"]
           },
           {
@@ -4877,6 +4887,53 @@ export type Database = {
           },
         ]
       }
+      rental_order_refunds: {
+        Row: {
+          allocations: Json
+          amount_cents: number
+          bank_reference: string | null
+          basis_id: string
+          created_at: string
+          created_by: string
+          id: string
+          payout_method: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          allocations?: Json
+          amount_cents: number
+          bank_reference?: string | null
+          basis_id: string
+          created_at?: string
+          created_by: string
+          id?: string
+          payout_method?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          allocations?: Json
+          amount_cents?: number
+          bank_reference?: string | null
+          basis_id?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          payout_method?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_order_refunds_basis_id_fkey"
+            columns: ["basis_id"]
+            isOneToOne: true
+            referencedRelation: "rental_refund_bases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rental_order_revisions: {
         Row: {
           agreed_at: string
@@ -4950,6 +5007,44 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      rental_refund_bases: {
+        Row: {
+          created_at: string
+          gross_amount: number
+          id: string
+          inquiry_id: string
+          paid_amount: number
+          payments: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          gross_amount: number
+          id?: string
+          inquiry_id: string
+          paid_amount: number
+          payments: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          gross_amount?: number
+          id?: string
+          inquiry_id?: string
+          paid_amount?: number
+          payments?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_refund_bases_inquiry_id_fkey"
+            columns: ["inquiry_id"]
+            isOneToOne: true
+            referencedRelation: "rental_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sales_article_costs: {
         Row: {
@@ -6540,6 +6635,7 @@ export type Database = {
           payment_terms_custom: string | null
           payments: Json
           rental_inquiry_id: string | null
+          rental_refund_basis_id: string | null
           return_location: string | null
           return_location_cost: number
           sales_inquiry_id: string | null
@@ -6648,6 +6744,10 @@ export type Database = {
           p_order: string
           p_profile?: string
         }
+        Returns: Json
+      }
+      check_rental_invoice_refunds: {
+        Args: { _gross: number; _inquiry: string; _paid: number }
         Returns: Json
       }
       claim_rental_checkout: {
@@ -6938,6 +7038,7 @@ export type Database = {
           payment_terms_custom: string | null
           payments: Json
           rental_inquiry_id: string | null
+          rental_refund_basis_id: string | null
           return_location: string | null
           return_location_cost: number
           sales_inquiry_id: string | null
@@ -7218,6 +7319,16 @@ export type Database = {
         Args: {
           _amount: number
           _id: string
+          _intent: string
+          _refund_id: string
+          _status: string
+        }
+        Returns: undefined
+      }
+      sync_rental_order_refund: {
+        Args: {
+          _amount: number
+          _basis: string
           _intent: string
           _refund_id: string
           _status: string
