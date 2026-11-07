@@ -84,7 +84,7 @@ export async function generateOfferPdf(data: {
    * Bereits geleistete (Teil-)Zahlungen, z. B. Vorkasse auf das Angebot.
    * Werden im Summenblock ausgewiesen und vom Rechnungsbetrag abgezogen.
    */
-  payments?: { date?: string; amount: number; label?: string; reference?: string }[];
+  payments?: { date?: string; amount: number; label?: string; reference?: string; receipt_amount?: number }[];
   /** Schlussrechnung nach Kautionsabrechnung: erhaltene, verrechnete und erstattete Kaution. */
   depositSettlement?: import("./final-invoice-deposit.ts").DepositSummary;
   /**
@@ -890,14 +890,22 @@ export async function generateOfferPdf(data: {
       const label = [p.label || "Zahlungseingang", p.date ? fd(p.date) : "", reference ? `(${reference})` : ""]
         .filter(Boolean)
         .join(" ");
-      const amountText = `-${fm(Number(p.amount))}`;
+      const receiptAmount = Number(p.receipt_amount) || Number(p.amount);
+      const amountText = fm(receiptAmount);
       const labelLines = wt(label, font, 9, CW - font.widthOfTextAtSize(amountText, 9) - 16);
       need(labelLines.length * 12 + 52);
       labelLines.forEach((line, i) => dt(pg, line, ML, y - i * 12, font, 9, MUTED));
-      dtr(pg, `-${fm(Number(p.amount))}`, vx, y, font, 9, MUTED);
+      dtr(pg, amountText, vx, y, font, 9, MUTED);
       y -= labelLines.length * 12;
+      if (receiptAmount > Number(p.amount)) {
+        const allocation = `Davon auf diese Rechnung angerechnet: ${fm(Number(p.amount))}; Kautionsanteil: ${fm(receiptAmount - Number(p.amount))}`;
+        const allocationLines = wt(allocation, font, 8, CW);
+        need(allocationLines.length * 11 + 52);
+        allocationLines.forEach((line, i) => dt(pg, line, ML, y - i * 11, font, 8, MUTED));
+        y -= allocationLines.length * 11;
+      }
     }
-    dt(pg, "Bereits gezahlt", tx, y, bold, 9, MUTED);
+    dt(pg, "Angerechnete Zahlungen", tx, y, bold, 9, MUTED);
     dtr(pg, `-${fm(amountPaid)}`, vx, y, bold, 9, MUTED);
     y -= 26;
 
@@ -1025,7 +1033,7 @@ export async function generateOfferPdf(data: {
     if (settled) {
       dt(
         pg,
-        `Der Rechnungsbetrag ist durch ${T("deine", "Ihre")} Zahlung${payments.length > 1 ? "en" : ""} von ${fm(amountPaid)} vollständig ausgeglichen. Vielen Dank!`,
+        `Der Rechnungsbetrag ist durch angerechnete Zahlungen von ${fm(amountPaid)} vollständig ausgeglichen. Vielen Dank!`,
         ML + 16, by, font, 9, INK,
       );
       by -= 14;
