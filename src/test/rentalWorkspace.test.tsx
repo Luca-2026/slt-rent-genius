@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { InquiryDetailPanel } from "@/components/b2b/inquiries/InquiryDetailPanel";
 
 vi.mock("@/hooks/useAuth", () => ({ useAuth: () => ({ user: { id: "staff" }, isAdmin: false }) }));
@@ -22,10 +22,11 @@ vi.mock("@/components/b2b/inquiries/ReturnChargesSummary", () => ({ ReturnCharge
 vi.mock("@/components/b2b/inquiries/RejectInquiryDialog", () => ({ RejectInquiryDialog: () => null }));
 vi.mock("@/components/b2b/inquiries/OnSiteOfferSignDialog", () => ({ OnSiteOfferSignDialog: () => null }));
 
+beforeAll(() => { Element.prototype.scrollIntoView = vi.fn(); });
 afterEach(cleanup);
 const inquiry = { id: "workspace-test", status: "accepted", location: "bonn", assigned_to: "staff", assigned_name: "Staff", internal_notes: null, offer_number: "ANG-TEST", offer_file_url: null, offer_total_gross: 119, offer_sent_at: null };
 function openWorkspace() {
-  render(<MemoryRouter><InquiryDetailPanel table="rental_inquiries" inquiryType="rental" inquiry={inquiry} defaultItems={[{ product_name: "Bagger", quantity: 1, duration: 1, unit_price: 100, discount_percent: 0 }]} details={null} onChanged={vi.fn()} /></MemoryRouter>);
+  render(<MemoryRouter><InquiryDetailPanel layout="page" table="rental_inquiries" inquiryType="rental" inquiry={inquiry} defaultItems={[{ product_name: "Bagger", quantity: 1, duration: 1, unit_price: 100, discount_percent: 0 }]} details={null} onChanged={vi.fn()} /></MemoryRouter>);
 }
 describe("rental document workspace", () => {
   it("opens only on an explicit action and retains edits across collapse/reopen", () => {
