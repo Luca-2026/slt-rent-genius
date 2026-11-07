@@ -46,7 +46,7 @@ it('700 deposit plus 69.97 rental refund before invoice shares original capacity
  await db.query("SELECT sync_rental_order_refund($1,$2,'pyr_credit','succeeded',6997)",[f.basis,f.intent]);
  const result=await db.query<{check_rental_invoice_refunds:{refunded_cents:number}}>('SELECT check_rental_invoice_refunds($1,307.26,377.23)',[f.inquiry]);
  expect(result.rows[0].check_rental_invoice_refunds.refunded_cents).toBe(6997);
- expect(Math.round((307.26-377.23+69.97)*100)).toBe(0);
+ expect(30726-37723+6997).toBe(0);
  await expect(claim(f)).rejects.toThrow();
  await expect(db.query('UPDATE rental_refund_bases SET gross_amount=300 WHERE id=$1',[f.basis])).rejects.toThrow('nicht geändert');
 });
