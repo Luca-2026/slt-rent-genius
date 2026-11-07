@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SignaturePad } from "@/components/b2b/SignaturePad";
-import { supabase } from "@/integrations/supabase/client";
+import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { toast } from "sonner";
 import { PenLine } from "lucide-react";
 
@@ -41,8 +41,7 @@ export function OnSiteOfferSignDialog({ open, onOpenChange, inquiryId, inquiryTa
     if (!ready) return;
     setBusy(true);
     try {
-      const { data, error } = await supabase.functions.invoke("offer-accept", {
-        body: {
+      const { data, error } = await invokeWithAuth("offer-accept", {
           action: "accept_onsite",
           inquiry_table: inquiryTable,
           inquiry_id: inquiryId,
@@ -51,7 +50,6 @@ export function OnSiteOfferSignDialog({ open, onOpenChange, inquiryId, inquiryTa
           signature_data: signature,
           agb_accepted: true,
           binding_accepted: true,
-        },
       });
       if (error || !data?.success) {
         toast.error(data?.error || "Annahme fehlgeschlagen. Bitte erneut versuchen.");
