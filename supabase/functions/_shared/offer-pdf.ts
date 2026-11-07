@@ -754,7 +754,7 @@ export async function generateOfferPdf(data: {
   // ── Summenblock (rechtsbündig, wie Rechnung) ──
   // Höhe exakt aus den tatsächlich gedruckten Zeilen berechnen, damit der Block
   // weder in die Fußzeile läuft noch unnötig auf eine neue Seite rutscht.
-  const paidRows = (data.payments || []).filter((p) => Number(p.amount) > 0);
+  const paidRows = (data.payments || []).filter((p) => Number(p.amount) > 0 || Number(p.receipt_amount) > 0);
   const summaryRows =
     ((data.servicesWithPrices || []).some((s) => (s.amount || 0) > 0) ||
       (data.deliveryCostDelivery || 0) + (data.deliveryCostReturn || 0) + (data.deliveryCost || 0) > 0
@@ -825,7 +825,7 @@ export async function generateOfferPdf(data: {
     dt(pg, "Kaution erhalten (umsatzsteuerfrei)", tx, y, font, 9, MUTED); dtr(pg, fm(ds.held), vx, y, font, 9); y -= 13;
     if (ds.offset > 0) { dt(pg, "davon mit Rückgabekosten verrechnet", tx, y, font, 9, MUTED); dtr(pg, `-${fm(ds.offset)}`, vx, y, font, 9); y -= 13; }
     if (ds.refund > 0) {
-      dt(pg, ds.payoutStatus === "pending" ? "Restkaution – Erstattung offen" : "Restkaution an Kunden erstattet", tx, y, bold, 9); dtr(pg, fm(ds.refund), vx, y, bold, 9); y -= 11;
+      dt(pg, ds.payoutStatus !== "paid" ? "Restkaution – Erstattung offen" : "Restkaution an Kunden erstattet", tx, y, bold, 9); dtr(pg, fm(ds.refund), vx, y, bold, 9); y -= 11;
       dt(pg, payoutText(ds), tx, y, font, 8, MUTED); y -= 13;
     } else {
       dt(pg, "Kaution vollständig verrechnet", tx, y, font, 9, MUTED); dtr(pg, fm(0), vx, y, font, 9); y -= 13;
@@ -841,7 +841,7 @@ export async function generateOfferPdf(data: {
   y -= 18;
 
   // ── Bereits geleistete (Teil-)Zahlungen und Restbetrag ──
-  const payments = (data.payments || []).filter((p) => Number(p.amount) > 0);
+  const payments = (data.payments || []).filter((p) => Number(p.amount) > 0 || Number(p.receipt_amount) > 0);
   const amountPaid = Math.round(payments.reduce((sum, p) => sum + Number(p.amount || 0), 0) * 100) / 100;
   const requiredTotal = Math.round((data.grossAmount + (isOC ? Number(data.deposit) || 0 : 0)) * 100) / 100;
   const balanceDue = Math.round((requiredTotal - amountPaid) * 100) / 100;

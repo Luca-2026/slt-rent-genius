@@ -1,5 +1,5 @@
 import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
-import { reconcileRefundsBeforeExecution } from "../_shared/refund-reconciliation.ts";
+import { reconcileRefundsBeforeExecution, reconcileStripeRefund } from "../_shared/refund-reconciliation.ts";
 import { selectStaffRentalPayment } from "../_shared/staff-payment-decision.ts";
 import { recordRentalPayments } from "../_shared/record-rental-payments.ts";
 /**
@@ -195,8 +195,7 @@ Deno.serve(async (req: Request) => {
         },
         { idempotencyKey: `deposit-refund-${body.request_id}` },
       );
-      const { error: syncErr } = await service.rpc("sync_deposit_refund", { _id: reserved.id, _intent: link.payment_intent_id, _refund_id: refund.id, _status: refund.status ?? "pending", _amount: refund.amount });
-      if (syncErr) return json({ error: "Erstattung wurde angenommen; Statusabgleich ist offen. Nicht manuell erneut erstatten." }, 409);
+      await reconcileStripeRefund(service, refund, !isStripeTestMode());
 
       // Keep the persisted refund result independent of email delivery.
       return json({ success: true, refund_id: refund.id, status: refund.status, customer_mailed: false });

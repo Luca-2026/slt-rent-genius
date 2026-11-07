@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { formatEuro } from "./offerMath";
 import { allPaymentsByBank } from "@/lib/bankTransferDiscount";
+import { depositRefundPayment } from "@/lib/depositRefundPayment";
 
 interface LinkRow {
   id: string;
@@ -27,6 +28,7 @@ interface LinkRow {
   created_at: string;
 }
 interface RefundRow {
+  link_id: string;
   id: string;
   amount_cents: number;
   status: string;
@@ -89,7 +91,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
     if (ids.length) {
       const { data: r } = await supabase
         .from("deposit_refunds")
-        .select("id, amount_cents, status, reason, created_at, created_by_name")
+        .select("id, link_id, amount_cents, status, reason, created_at, created_by_name")
         .in("link_id", ids)
         .order("created_at", { ascending: false });
       setRefunds((r ?? []) as RefundRow[]);
@@ -105,9 +107,10 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
   const current = links.find((l) => l.status === "active") ?? links.find((l) => l.status === "paid") ?? links[0];
   const received = Array.isArray(payments) ? payments.reduce((sum, p) => sum + Math.round((Number(p?.amount) || 0) * 100), 0) : 0;
   const settledByBank = received > 0 && allPaymentsByBank(payments) && offerTotalGross != null && received >= Math.round(offerTotalGross * 100) + Math.round(deposit * 100);
-  const paidLink = links.find((l) => l.status === "paid");
+  const refundChoice = depositRefundPayment(links, refunds);
+  const paidLink = refundChoice?.link;
   const refundedCents = refunds.filter((r) => !["failed", "canceled"].includes(r.status)).reduce((s, r) => s + r.amount_cents, 0);
-  const refundable = paidLink ? Math.max(0, paidLink.deposit_cents - refundedCents) : 0;
+  const refundable = refundChoice?.available ?? 0;
   const linkUrl = !settledByBank && current?.status === "active" ? `${window.location.origin.includes("app.") ? "https://www.slt-rental.de" : window.location.origin}/zahlung/${current.token}` : null;
 
   const createLink = async () => {

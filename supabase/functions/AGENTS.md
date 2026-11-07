@@ -1,4 +1,5 @@
 # Edge function rules
+- Stripe deposit payout completion requires matching succeeded durable provider receipts; reconciliation updates pending settlements only after the full balance is verified, never from a manual paid flag.
 - Offer revisions preserve a previously selected bank rebate with pure bank receipts in items, totals and payment policy; fully bank-paid orders cannot reopen checkout at the undiscounted price.
 - Registered test invoice issuance completes automatic credit PDFs through test-invoice-documents and returns before customer mail; failed PDF completion remains retryable without duplicate accounting credits.
 - Direct rental-credit refunds share credit_note_refunds and the original-payment cap; invoiceWithRefunds appends the current payment statement to the original invoice for opening/resending, never creates a separate refund PDF or changes taxable totals. Bank completion requires pure bank evidence and an immutable transfer reference.

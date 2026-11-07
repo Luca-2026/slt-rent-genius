@@ -6714,6 +6714,10 @@ export type Database = {
         Args: { _approve: boolean; _id: string; _note: string }
         Returns: undefined
       }
+      deposit_payout_verified: {
+        Args: { _cents: number; _inquiry: string }
+        Returns: boolean
+      }
       drain_sign_booking_processor: { Args: never; Returns: undefined }
       ensure_rental_feedback_invitation: {
         Args: { p_invoice: string; p_kind: string }

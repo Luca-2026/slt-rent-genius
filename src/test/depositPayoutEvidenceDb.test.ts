@@ -1,0 +1,30 @@
+import { PGlite } from "@electric-sql/pglite";
+import { readFileSync } from "node:fs";
+import { beforeAll, afterAll, it, expect } from "vitest";
+const db = new PGlite();
+beforeAll(async () => {
+  await db.exec(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role;
+    CREATE SCHEMA auth; CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql AS $$ SELECT '00000000-0000-0000-0000-000000000001'::uuid $$;
+    CREATE FUNCTION public.can_edit_operations(uuid) RETURNS boolean LANGUAGE sql AS $$ SELECT true $$;
+    CREATE TABLE offer_payment_links(id uuid,inquiry_id uuid,inquiry_table text,payment_intent_id text,livemode boolean);
+    CREATE TABLE deposit_refunds(link_id uuid,amount_cents integer,stripe_refund_id text,status text);
+    CREATE TABLE stripe_refund_receipts(refund_id text,payment_intent text,amount_cents integer,livemode boolean,status text,currency text);
+    CREATE TABLE deposit_settlements(id uuid,rental_inquiry_id uuid,balance numeric,payout_method text,payout_status text,payout_date date);
+    CREATE TRIGGER immutable BEFORE UPDATE ON deposit_settlements FOR EACH ROW EXECUTE FUNCTION public.placeholder();`.replace("CREATE TRIGGER immutable BEFORE UPDATE ON deposit_settlements FOR EACH ROW EXECUTE FUNCTION public.placeholder();", ""));
+  await db.exec(readFileSync("drizzle/migrations/0162_require_deposit_payout_provider_evidence.sql", "utf8"));
+  await db.exec("CREATE TRIGGER immutable BEFORE UPDATE ON deposit_settlements FOR EACH ROW EXECUTE FUNCTION public.guard_deposit_settlement_immutable()");
+}, 30000);
+afterAll(() => db.close());
+it("Florian: 700 € cannot be marked refunded without actual Stripe evidence", async () => {
+  const id=crypto.randomUUID(), inquiry=crypto.randomUUID();
+  await db.query("INSERT INTO deposit_settlements VALUES($1,$2,700,'stripe','pending',null)", [id,inquiry]);
+  await expect(db.query("SELECT mark_deposit_payout_done($1)",[id])).rejects.toThrow("Zahlungsbelege");
+  await expect(db.query("UPDATE deposit_settlements SET payout_status='paid' WHERE id=$1",[id])).rejects.toThrow("Zahlungsbelege");
+  const link=crypto.randomUUID();
+  await db.query("INSERT INTO offer_payment_links VALUES($1,$2,'rental_inquiries','pi_original',true)",[link,inquiry]);
+  await db.query("INSERT INTO deposit_refunds VALUES($1,70000,'re_real','succeeded')",[link]);
+  await expect(db.query("SELECT mark_deposit_payout_done($1)",[id])).rejects.toThrow("Zahlungsbelege");
+  await db.exec("INSERT INTO stripe_refund_receipts VALUES('re_real','pi_original',70000,true,'succeeded','eur')");
+  await db.query("SELECT mark_deposit_payout_done($1)",[id]);
+  expect((await db.query<{payout_status:string}>("SELECT payout_status FROM deposit_settlements WHERE id=$1",[id])).rows[0]?.payout_status).toBe("paid");
+});

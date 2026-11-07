@@ -1135,6 +1135,13 @@
       "when": 1794050763834,
       "tag": "0161_signed_handover_confirms_rental_order",
       "breakpoints": true
+    },
+    {
+      "idx": 162,
+      "version": "7",
+      "when": 1794052141661,
+      "tag": "0162_require_deposit_payout_provider_evidence",
+      "breakpoints": true
     }
   ]
 }

@@ -78,9 +78,8 @@ export function settlementPayments(
   const out: PaymentLine[] = [];
   for (const p of payments) {
     if (isDepositLine(p)) continue;
-    if (left <= 0) break;
     const use = r2(Math.min(Number(p.amount) || 0, left));
-    if (use > 0) out.push({ ...p, amount: use, ...(Number(p.amount) > use ? { receipt_amount: Number(p.amount) } : {}) });
+    if (Number(p.amount) > 0) out.push({ ...p, amount: use, ...(Number(p.amount) > use ? { receipt_amount: Number(p.amount) } : {}) });
     left = r2(left - use);
   }
   if (sum.offset > 0) {
@@ -96,7 +95,7 @@ const eur = (n: number) => `${n.toFixed(2).replace(".", ",").replace(/\B(?=(\d{3
 export function payoutText(sum: DepositSummary): string {
   if (sum.refund <= 0) return "";
   const on = sum.payoutDate ? ` am ${deDate(sum.payoutDate)}` : "";
-  const pending = sum.payoutStatus === "pending";
+  const pending = sum.payoutStatus !== "paid";
   switch (sum.payoutMethod) {
     case "cash": return pending ? "wird bar ausgezahlt" : `bar ausgezahlt${on}`;
     case "transfer": return pending ? "wird per Überweisung erstattet" : `per Überweisung erstattet${on}`;
