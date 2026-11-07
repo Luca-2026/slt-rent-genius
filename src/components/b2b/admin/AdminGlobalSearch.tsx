@@ -150,7 +150,10 @@ export function AdminGlobalSearch({
         });
       }
     }
-    return out.slice(0, 12);
+    const exactIds = new Set(reservations.filter(r =>
+      [r.id, r.booking_id, r.order_code, r.offer_number, r.order_confirmation_number].some(value => value && normalizeStaffSearch(value) === q)
+    ).map(r => `reservation-${r.id}`));
+    return out.sort((a, b) => Number(exactIds.has(b.key)) - Number(exactIds.has(a.key))).slice(0, 12);
   }, [query, customers, invoices, offers, reservations]);
 
   const pick = (hit: AdminSearchHit) => {
