@@ -1,7 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { hasRentalEnded, isAwaitingOfferConfirmation, rentalCloseoutTasks, filterStaffConfirmationTasks, needsRentalCloseout } from "@/lib/dashboardMetrics";
+import { hasRentalEnded, isAwaitingOfferConfirmation, rentalCloseoutTasks, filterStaffConfirmationTasks, needsRentalCloseout, isOperationalProtocolComplete } from "@/lib/dashboardMetrics";
 
 describe("accepted offers on staff home", () => {
+  it("Claus: Mitarbeiter-Übergabe, Mitarbeiter-Rückgabe und Schlussrechnung beseitigen Abschlussaufgaben", () => {
+    expect(rentalCloseoutTasks({ deliverySigned: isOperationalProtocolComplete("signed_staff_only"), returnSigned: isOperationalProtocolComplete("signed_staff_only"), invoiced: true })).toEqual([]);
+  });
+  it("Armin: Mitarbeiter-Übergabe und Rechnung ersetzen kein fehlendes Rückgabeprotokoll", () => {
+    expect(rentalCloseoutTasks({ deliverySigned: isOperationalProtocolComplete("signed_staff_only"), returnSigned: isOperationalProtocolComplete(null), invoiced: true })).toEqual(["Rückgabe klären · Rückgabeprotokoll fehlt"]);
+  });
+  it("Entwürfe und ausstehende Unterschriften sind keine abgeschlossenen Protokolle", () => {
+    expect(isOperationalProtocolComplete("draft")).toBe(false);
+    expect(isOperationalProtocolComplete("pending_customer_signature")).toBe(false);
+    expect(isOperationalProtocolComplete("signed")).toBe(true);
+  });
   it("admins retain unassigned accepted sales alongside their own branch, never another branch", () => {
     const rows = [
       { id: "sale", location: null, status: "accepted", offer_total_gross: 119, order_confirmed_at: null },

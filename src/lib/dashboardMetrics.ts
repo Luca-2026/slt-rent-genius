@@ -81,6 +81,11 @@ export function needsRentalCloseout(row: PipelineInquiryRow, now: Date = new Dat
   return !!row.order_confirmed_at || row.status === "accepted";
 }
 
+/** Operational completion is independent of the customer's subsequent signature. */
+export function isOperationalProtocolComplete(status: string | null | undefined): boolean {
+  return status === "signed" || status === "signed_staff_only";
+}
+
 export function rentalCloseoutTasks(state: { deliverySigned: boolean; returnSigned: boolean; invoiced: boolean }): string[] {
   return [!state.deliverySigned && "Übergabeprotokoll fehlt", !state.returnSigned && "Rückgabe klären · Rückgabeprotokoll fehlt", !state.invoiced && "Schlussrechnung fehlt"].filter((v): v is string => typeof v === "string");
 }
