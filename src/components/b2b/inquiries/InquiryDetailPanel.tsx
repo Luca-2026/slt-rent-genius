@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { ExternalLink, FileCheck2, FilePlus2, PenLine, Pencil, Receipt, Trash2, UserCheck, UserMinus, Wallet } from "lucide-react";
+import { ChevronUp, ExternalLink, FileCheck2, FilePlus2, PenLine, Pencil, Receipt, Trash2, UserCheck, UserMinus, Wallet } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -455,8 +455,10 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const [docMode, setDocModeState] = useState<DocMode>(() =>
     initialDocMode(inquiryType, inquiry.id, inquiry.offer_number, !!offerSnapshot),
   );
+  const [editorOpen, setEditorOpen] = useState(inquiryType !== "rental");
   const setDocMode = useCallback(
     (mode: DocMode) => {
+      setEditorOpen(true);
       setDocModeState(mode);
       rememberDocMode(inquiry.id, mode);
     },
@@ -495,6 +497,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
     // sonst springt eine angefangene Überarbeitung zurück auf das leere Neu-Angebot.
     if (lastInquiryId.current !== inquiry.id) {
       lastInquiryId.current = inquiry.id;
+      setEditorOpen(inquiryType !== "rental");
       setDocModeState(initialDocMode(inquiryType, inquiry.id, inquiry.offer_number, !!offerSnapshot));
     }
     loadInvoices();
@@ -758,7 +761,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         inquiryType={inquiryType}
         inquiry={inquiry as Record<string, any>}
         senderName={actorName}
-        onDone={onChanged}
+        onDone={() => { setEditorOpen(false); onChanged(); }}
         onEdit={() => setDocMode("amendment")}
       />}
     </>
@@ -784,7 +787,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
     <>
       {invoices.length > 0 && (
         <div className="rounded-lg border border-border p-3 text-sm space-y-2">
-          <div className="font-semibold">Rechnungen zu dieser Anfrage</div>
+          <div className="font-semibold">Rechnungen zu diesem {inquiryType === "rental" ? "Mietvorgang" : "Vorgang"}</div>
           {invoices.map((inv) => (
             <div key={inv.id} className="flex flex-wrap items-center gap-2">
               <span className="font-medium">{KIND_LABEL[inv.invoice_kind] ?? "Rechnung"} {inv.invoice_number}</span>
@@ -832,12 +835,12 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               <Button
                 key={mode}
                 size="sm"
-                variant={docMode === mode || (mode === "invoice" && docMode === "final") ? "default" : "outline"}
-                className="h-9 w-full justify-start"
+                variant={editorOpen && (docMode === mode || (mode === "invoice" && docMode === "final")) ? "default" : "outline"}
+                className="min-h-10 w-full justify-start"
                 onClick={() => setDocMode(mode)}
               >
                 <Icon className="h-4 w-4 mr-2 shrink-0" />
-                <span className="truncate">{label}</span>
+                <span className="min-w-0 break-words">{label}</span>
               </Button>
             ))}
         </div>
@@ -847,7 +850,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             <span className="truncate">Vor Ort unterschreiben lassen</span>
           </Button>
         )}
-        <div>
+        {editorOpen && <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
           <div className="font-semibold text-sm">
             {docMode === "amendment" ? "Auftragsbestätigung bearbeiten" : docMode === "offer" ? "Angebot erstellen" : docMode === "revise" ? `Angebot ${inquiry.offer_number} überarbeiten` : docMode === "final" ? "Schlussrechnung erstellen" : docMode === "order" ? "Auftragsbestätigung erstellen" : docMode === "deposit" ? "Kautionsabrechnung" : "Rechnung erstellen"}
           </div>
@@ -865,7 +869,23 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               : "Endabrechnung: Positionen und Leistungszeitraum an die tatsächliche Miete anpassen (z. B. Verlängerung). Bereits erfasste Zahlungen werden abgezogen, die Rechnungsnummer wird beim Versand vergeben."}
           </p>
         </div>
+        <Button variant="ghost" size="icon" aria-label="Dokumentbearbeitung einklappen" title="Dokumentbearbeitung einklappen" onClick={() => setEditorOpen(false)}><ChevronUp className="h-4 w-4" /></Button>
+        </div>}
         </div>
+        {!editorOpen && inquiryType === "rental" && (
+          <section aria-label="Positionen im Mietvorgang" className="space-y-2">
+            <h3 className="text-sm font-semibold">Positionen im Mietvorgang</h3>
+            <ul className="divide-y divide-border border-y border-border">
+              {(offerSnapshot?.items ?? defaultItems).map((item, index) => <li key={index} className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-1 py-3 text-sm">
+                <span className="min-w-0 break-words font-medium">{item.name_override || item.product_name}</span>
+                <span className="tabular-nums">{item.quantity} {item.quantity_unit === "m2" ? "m²" : item.quantity_unit === "lfm" ? "lfm" : "Stk."}</span>
+                <span className="col-span-2 text-xs text-muted-foreground">{item.duration ?? 1} {item.unit ?? "Miettage"}{inquiry.offer_number ? ` · ${formatEuro(item.unit_price)} netto${item.discount_percent ? ` · ${item.discount_percent} % Rabatt` : ""}` : ""}</span>
+              </li>)}
+            </ul>
+            {inquiry.offer_total_gross != null && <div className="flex justify-between gap-3 text-sm"><span>Auftragssumme brutto</span><strong className="tabular-nums">{formatEuro(inquiry.offer_total_gross)}</strong></div>}
+          </section>
+        )}
+        <div hidden={!editorOpen}>
         {docMode === "order" ? (
           orderEl
         ) : docMode === "deposit" ? (
@@ -873,7 +893,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             inquiry={inquiry as Record<string, any>}
             staffName={actorName}
             canMarkStripePayout={isAdmin || isBranchManager}
-            onDone={() => { loadInvoices(); onChanged(); void deposit.reload(); }}
+            onDone={() => { setEditorOpen(false); loadInvoices(); onChanged(); void deposit.reload(); }}
           />
         ) : (
         <InquiryOfferForm
@@ -936,11 +956,13 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           stickyActions={layout === "page"}
           onSent={() => {
             if(docMode === "amendment") setDocMode("order");
+            else setEditorOpen(false);
             loadInvoices();
             onChanged();
           }}
         />
         )}
+        </div>
         {inquiry.offer_number && (
           <OnSiteOfferSignDialog
             open={onSiteSignOpen}

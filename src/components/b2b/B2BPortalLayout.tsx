@@ -57,7 +57,7 @@ const customerNavItems = [
 const adminNavItems = [
   { href: "/", label: "Startseite", icon: Home },
   { href: "/b2b/admin", label: "Portal-Buchungen", icon: Settings },
-  { href: "/b2b/mietanfragen", label: "Mietanfragen", icon: Inbox },
+  { href: "/b2b/mietanfragen", label: "Mietvorgänge", icon: Inbox },
   { href: "/b2b/angebotsuebersicht", label: "Angebote (alle)", icon: FileText },
   { href: "/b2b/verkaufsanfragen", label: "Verkaufsanfragen", icon: ShoppingCart },
   { href: "/b2b/anfrage-rechnungen", label: "Rechnungen", icon: Receipt },
@@ -67,7 +67,7 @@ const adminNavItems = [
 
 const staffNavItems = [
   { href: "/", label: "Startseite", icon: Home },
-  { href: "/b2b/mietanfragen", label: "Mietanfragen", icon: Inbox },
+  { href: "/b2b/mietanfragen", label: "Mietvorgänge", icon: Inbox },
   { href: "/b2b/angebotsuebersicht", label: "Angebote (alle)", icon: FileText },
   { href: "/b2b/verkaufsanfragen", label: "Verkaufsanfragen", icon: ShoppingCart },
   { href: "/b2b/anfrage-rechnungen", label: "Rechnungen", icon: Receipt },

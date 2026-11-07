@@ -187,7 +187,7 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
         .maybeSingle();
       if (error) throw error;
 
-      toast.success("Mietanfrage angelegt – Angebot kann jetzt erstellt werden.");
+      toast.success("Mietvorgang angelegt – Angebot kann jetzt erstellt werden.");
       reset();
       onOpenChange(false);
       onCreated((inserted as { id?: string } | null)?.id);
@@ -202,7 +202,7 @@ export function NewRentalInquiryDialog({ open, onOpenChange, onCreated }: Props)
     <Dialog open={open} onOpenChange={(o) => { onOpenChange(o); if (!o) reset(); }}>
       <DialogContent className="flex h-[100dvh] max-h-[100dvh] w-full max-w-none flex-col gap-0 overflow-hidden rounded-none p-0 sm:h-auto sm:max-h-[90vh] sm:w-[calc(100%-2rem)] sm:max-w-2xl sm:rounded-lg">
         <DialogHeader className="shrink-0 border-b px-4 py-4 sm:px-6">
-          <DialogTitle>Mietanfrage manuell aufnehmen</DialogTitle>
+          <DialogTitle>Mietvorgang manuell anlegen</DialogTitle>
         </DialogHeader>
 
         <div className="flex-1 space-y-4 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6">

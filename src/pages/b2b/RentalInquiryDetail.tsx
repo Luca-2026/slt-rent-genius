@@ -50,19 +50,19 @@ export default function RentalInquiryDetail() {
 
   if (!accessLoading && !isStaff) {
     return (
-      <B2BPortalLayout title="Mietanfrage">
+      <B2BPortalLayout title="Mietvorgang">
         <p className="text-muted-foreground">Kein Zugriff auf diesen Bereich.</p>
       </B2BPortalLayout>
     );
   }
 
   return (
-    <B2BPortalLayout title={selected?.product_name || "Mietanfrage"}>
+    <B2BPortalLayout title={selected?.product_name || "Mietvorgang"}>
       {backLink}
       {loading && !selected ? (
         <p className="text-muted-foreground">Wird geladen …</p>
       ) : !selected ? (
-        <p className="text-muted-foreground">Anfrage nicht gefunden.</p>
+        <p className="text-muted-foreground">Mietvorgang nicht gefunden.</p>
       ) : (
         <InquiryDetailPanel
           key={selected.id}

@@ -303,7 +303,7 @@ export default function StaffHome() {
           {searchError && <p role="alert" className="text-sm text-destructive">Die Suche konnte nicht vollständig geladen werden. Bitte die Seite erneut laden.</p>}
           {/* 1. Handlungsbedarf */}
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <ActionStat label="Neue Mietanfragen" value={unprocessed} to="/b2b/mietanfragen" icon={Inbox} highlight />
+            <ActionStat label="Neue Mietvorgänge" value={unprocessed} to="/b2b/mietanfragen" icon={Inbox} highlight />
             <ActionStat label="Bestätigung offen" value={awaitingConfirmation} to="/b2b/mietanfragen?status=accepted" icon={FileCheck2} highlight />
             <ActionStat label="Laufende Mieten" value={running} to="/b2b/mietanfragen?status=running" icon={Package} />
             <ActionStat label="Verkaufsanfragen" value={openSales} to="/b2b/verkaufsanfragen" icon={ShoppingCart} />
