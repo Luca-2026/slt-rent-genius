@@ -253,6 +253,8 @@ const App = () => (
               <Route path="/b2b/start" element={<StaffHome />} />
               <Route path="/b2b/mietvorgaenge" element={<RentalInquiries />} />
               <Route path="/b2b/mietvorgaenge/:id" element={<RentalInquiryDetail />} />
+              <Route path="/b2b/mietanfragen" element={<Navigate to="/b2b/mietvorgaenge" replace />} />
+              <Route path="/b2b/mietanfragen/:id" element={<Navigate to={`/b2b/mietvorgaenge/${window.location.pathname.split("/").pop()}`} replace />} />
               <Route path="/b2b/angebotsuebersicht" element={<OfferOverview />} />
               <Route path="/b2b/transporte" element={<TransportOrders />} />
               <Route path="/b2b/halteverbote" element={<SignBookings />} />
