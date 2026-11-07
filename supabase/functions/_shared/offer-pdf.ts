@@ -87,6 +87,7 @@ export async function generateOfferPdf(data: {
   payments?: { date?: string; amount: number; label?: string; reference?: string; receipt_amount?: number }[];
   /** Schlussrechnung nach Kautionsabrechnung: erhaltene, verrechnete und erstattete Kaution. */
   depositSettlement?: import("./final-invoice-deposit.ts").DepositSummary;
+  rentalRefund?: { amount: number; method: string; date: string };
   /**
    * Paket 4: nur Angebote aus Mietanfragen. Gesetzt → Block „Ihre Daten“, Anrede,
    * Auftragsart, Gruppen, Spalten Menge/Dauer, Legende und Angebotsbedingungen.
@@ -844,7 +845,7 @@ export async function generateOfferPdf(data: {
   const payments = (data.payments || []).filter((p) => Number(p.amount) > 0 || Number(p.receipt_amount) > 0);
   const amountPaid = Math.round(payments.reduce((sum, p) => sum + Number(p.amount || 0), 0) * 100) / 100;
   const requiredTotal = Math.round((data.grossAmount + (isOC ? Number(data.deposit) || 0 : 0)) * 100) / 100;
-  const balanceDue = Math.round((requiredTotal - amountPaid) * 100) / 100;
+  const balanceDue = Math.round((requiredTotal - amountPaid + (data.rentalRefund?.amount ?? 0)) * 100) / 100;
   if (isCreditNote) {
     // Rechnungskorrektur: Hinweis zur Erstattung bzw. Verrechnung statt Zahlungsaufforderung
     const refundAmount = Math.max(0, Number(data.creditRefundAmount) || 0);
@@ -908,6 +909,15 @@ export async function generateOfferPdf(data: {
     dt(pg, "Angerechnete Zahlungen", tx, y, bold, 9, MUTED);
     dtr(pg, `-${fm(amountPaid)}`, vx, y, bold, 9, MUTED);
     y -= 26;
+
+    if (data.rentalRefund && data.rentalRefund.amount > 0) {
+      need(60);
+      const refundLabel = `Mietguthaben erstattet ${fd(data.rentalRefund.date)} · ${data.rentalRefund.method === "transfer" ? "Überweisung" : "auf ursprüngliches Zahlungsmittel (Stripe)"}`;
+      const refundLines = wt(refundLabel, font, 9, CW - 90);
+      refundLines.forEach((line, i) => dt(pg, line, ML, y - i * 12, font, 9, MUTED));
+      dtr(pg, fm(data.rentalRefund.amount), vx, y, bold, 9, MUTED);
+      y -= refundLines.length * 12 + 12;
+    }
 
     const fullyPaid = balanceDue <= 0.009;
     const accent = fullyPaid ? rgb(0.05, 0.45, 0.25) : ORANGE;

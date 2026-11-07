@@ -13,6 +13,7 @@ import { z } from "https://esm.sh/zod@3.23.8";
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { creditRefund } from "../_shared/credit-refund.ts";
 import { rentalCreditRefund } from "../_shared/rental-credit-refund.ts";
+import { preInvoiceRefund } from "../_shared/pre-invoice-refund.ts";
 import {
   ensurePaymentLink,
   isStripeConfigured,
@@ -25,6 +26,9 @@ import {
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 const Body = z.discriminatedUnion("action", [
+  z.object({ action: z.literal("order_credit_info"), inquiry_id: z.string().uuid() }),
+  z.object({ action: z.literal("refund_order_credit"), inquiry_id: z.string().uuid() }),
+  z.object({ action: z.literal("confirm_order_credit_transfer"), inquiry_id: z.string().uuid(), bank_reference: z.string().trim().min(3).max(200) }),
   z.object({ action: z.literal("sync_deposit_refunds"), inquiry_id: z.string().uuid() }),
   z.object({ action: z.literal("rental_credit_info"), invoice_id: z.string().uuid() }),
   z.object({ action: z.literal("refund_rental_credit"), invoice_id: z.string().uuid() }),
@@ -65,6 +69,12 @@ Deno.serve(async (req: Request) => {
     const parsed = Body.safeParse(await req.json().catch(() => null));
     if (!parsed.success) return json({ error: "Ungültige Anfrage" }, 400);
     const body = parsed.data;
+    if (["order_credit_info", "refund_order_credit", "confirm_order_credit_transfer"].includes(body.action) && "inquiry_id" in body) {
+      const { data: roles, error: roleError } = await service.from("user_roles").select("role").eq("user_id", user.id).in("role", ["admin", "niederlassungsleiter"]);
+      if (roleError || !roles?.length) return json({ error: "Keine Berechtigung für Mietguthabenerstattungen" }, 403);
+      try { return json(await preInvoiceRefund(service, body.inquiry_id, user.id, body.action, "bank_reference" in body ? body.bank_reference : undefined)); }
+      catch (error) { return json({ success: false, error: error instanceof Error ? error.message : "Erstattungsstatus ungeklärt" }, 409); }
+    }
     if (body.action === "record_payments") {
       try { return json(await recordRentalPayments(service, body.inquiry_id, user.id, body.expected_payments, body.payments)); }
       catch (error) { return json({ error: error instanceof Error ? error.message : "Zahlungen nicht gespeichert" }, 409); }

@@ -221,7 +221,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
         )}
         <div className="space-y-2 border-t border-border pt-3">
           <p className="font-semibold">2. Überschüssiges Mietguthaben</p>
-          {invoices.length === 0 ? <p className="text-xs text-muted-foreground">Zuerst die Rechnung mit dem nachträglichen Rabatt ausstellen. Das Guthaben wird daraus berechnet und separat auf die ursprüngliche Zahlung erstattet.</p> : invoices.map(inv => <div key={inv.id} className="space-y-1">
+          {invoices.length === 0 ? <div className="space-y-2"><p className="text-xs text-muted-foreground">Rechnungsvorschau mit dem endgültigen Rabatt prüfen und dort die Erstattungsgrundlage vorbereiten. Erst nach bestätigter Kautions- und Mietguthabenerstattung die Schlussrechnung ausstellen.</p>{canMarkStripePayout && <RentalCreditRefund inquiryId={inquiry.id} onDone={onDone} />}</div> : invoices.map(inv => <div key={inv.id} className="space-y-1">
             {line(inv.invoice_number, formatEuro(Math.max(0, Number(inv.paid_amount) - Number(inv.gross_amount))))}
             {canMarkStripePayout && <RentalCreditRefund invoiceId={inv.id} />}
           </div>)}
