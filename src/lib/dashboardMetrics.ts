@@ -29,6 +29,7 @@ export interface PortalInvoiceRow {
 }
 
 import { effectiveEnd } from "@/lib/calendarEntries";
+import { taskLocationKey } from "@/lib/myTasks";
 
 export interface PipelineInquiryRow {
   status: string;
@@ -39,6 +40,20 @@ export interface PipelineInquiryRow {
   end_time?: string | null;
   offer_payload?: unknown;
   closed_manually_at?: string | null;
+  source?: string | null;
+}
+
+/** Direct bookings own their automatic confirmation, never a manual AB task. */
+export function isAutomaticSignBooking(row: PipelineInquiryRow): boolean {
+  if (row.source === "sign_direct_booking") return true;
+  const payload = row.offer_payload;
+  return !!payload && typeof payload === "object" && "direct_booking" in payload && payload.direct_booking === true;
+}
+
+/** Operational confirmation tasks follow the staff branch, including for admins. */
+export function filterStaffConfirmationTasks<T extends { location?: string | null }>(rows: T[], staffLocation: string | null | undefined): T[] {
+  const branch = taskLocationKey(staffLocation);
+  return branch ? rows.filter(row => taskLocationKey(row.location) === branch) : [];
 }
 
 /** Mietende nach Berliner Datum/Uhrzeit; ohne Uhrzeit erst nach Ende des Tages. */
@@ -54,7 +69,7 @@ export function hasRentalEnded(row: PipelineInquiryRow, now: Date = new Date()):
 
 /** Acceptance age is irrelevant; an ended rental belongs to closeout instead. */
 export function isAwaitingOfferConfirmation(row: PipelineInquiryRow, now: Date = new Date()): boolean {
-  return row.status === "accepted" && !row.order_confirmed_at && !hasRentalEnded(row, now);
+  return row.status === "accepted" && !row.order_confirmed_at && !isAutomaticSignBooking(row) && !hasRentalEnded(row, now);
 }
 
 /** Closeout only for real orders: confirmed, or accepted (awaiting confirmation). "done" without confirmation = closed request, never a to-do. */

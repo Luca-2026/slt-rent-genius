@@ -1,7 +1,27 @@
 import { describe, expect, it } from "vitest";
-import { hasRentalEnded, isAwaitingOfferConfirmation, rentalCloseoutTasks } from "@/lib/dashboardMetrics";
+import { hasRentalEnded, isAwaitingOfferConfirmation, rentalCloseoutTasks, filterStaffConfirmationTasks, needsRentalCloseout } from "@/lib/dashboardMetrics";
 
 describe("accepted offers on staff home", () => {
+  it("automatische Schilderbuchungen benötigen auch vor dem PDF-Versand keine manuelle AB", () => {
+    const row = { status: "accepted", offer_total_gross: 39, end_date: "2026-11-10", order_confirmed_at: null };
+    const now = new Date("2026-11-07T04:30:00Z");
+    expect(isAwaitingOfferConfirmation({ ...row, source: "sign_direct_booking" }, now)).toBe(false);
+    expect(isAwaitingOfferConfirmation({ ...row, offer_payload: { direct_booking: true } }, now)).toBe(false);
+    expect(isAwaitingOfferConfirmation({ ...row, offer_payload: { direct_booking: false } }, now)).toBe(true);
+  });
+  it("Luca und Ralf sehen nur Bonner Bestätigungsaufgaben", () => {
+    const rows = [{ id: "B", location: "Bonn" }, { id: "K", location: "Krefeld" }, { id: "M", location: "Mülheim an der Ruhr" }];
+    expect(filterStaffConfirmationTasks(rows, "Bonn").map(r => r.id)).toEqual(["B"]);
+  });
+  it("Benedikt und Carmen sehen Krefeld einschließlich Mülheim, nicht Bonn", () => {
+    const rows = [{ id: "B", location: "bonn" }, { id: "K", location: "Krefeld" }, { id: "M", location: "Mülheim an der Ruhr" }];
+    expect(filterStaffConfirmationTasks(rows, "Krefeld").map(r => r.id)).toEqual(["K", "M"]);
+    expect(filterStaffConfirmationTasks(rows, "Mülheim an der Ruhr").map(r => r.id)).toEqual(["K", "M"]);
+    expect(filterStaffConfirmationTasks(rows, null)).toEqual([]);
+  });
+  it("automatische Schilderbuchungen behalten ihre Abschlussaufgaben nach Mietende", () => {
+    expect(needsRentalCloseout({ status: "accepted", source: "sign_direct_booking", offer_total_gross: 39, end_date: "2026-11-06", order_confirmed_at: "2026-11-03" }, new Date("2026-11-07T04:30:00Z"))).toBe(true);
+  });
   it("Linus: Ende vor Beginn löst am Ausgabetag keine Abschlussarbeiten aus", () => {
     expect(hasRentalEnded({ status: "accepted", offer_total_gross: 17.85, start_date: "2026-10-20", end_date: "2026-10-13", end_time: "17:30", offer_payload: { items: [{ rental_start: "2026-10-20", rental_end: "2026-10-13" }] } }, new Date("2026-10-20T06:20:00Z"))).toBe(false);
   });

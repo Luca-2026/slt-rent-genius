@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { visibleGroups, itemHref } from "@/components/b2b/StaffNav";
 import {
-  formatEuro, pipeline, receivables, revenueSummary, isAwaitingOfferConfirmation,
+  formatEuro, pipeline, receivables, revenueSummary, isAwaitingOfferConfirmation, filterStaffConfirmationTasks,
   type InquiryInvoiceRow, type PortalInvoiceRow,
 } from "@/lib/dashboardMetrics";
 import { isOpenInquiry, isUnprocessedInquiry } from "@/lib/inquiryStatus";
@@ -49,6 +49,7 @@ interface InquiryRow {
   location: string | null;
   requested_items: unknown;
   offer_payload: unknown;
+  source: string | null;
 }
 interface TodoRow { id: string; title: string; due_date: string | null; status: string; location: string | null; sign_booking_id?: string | null }
 
@@ -194,7 +195,7 @@ export default function StaffHome() {
     if (accessLoading || !isStaff) return;
     (async () => {
       const [inq, td, inv, pinv, sales, prof] = await Promise.all([
-        supabase.from("rental_inquiries").select("id,status,assigned_to,offer_total_gross,order_confirmed_at,start_date,start_time,end_date,end_time,order_code,customer_name,company_name,product_name,quantity,location,requested_items,offer_payload,closed_manually_at"),
+        supabase.from("rental_inquiries").select("source,id,status,assigned_to,offer_total_gross,order_confirmed_at,start_date,start_time,end_date,end_time,order_code,customer_name,company_name,product_name,quantity,location,requested_items,offer_payload,closed_manually_at"),
         supabase.from("staff_todo_lists").select("id,title,due_date,status,location,sign_booking_id").neq("status", "done"),
         isAdmin ? supabase.from("inquiry_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,paid_amount,credited_amount,due_date") : Promise.resolve({ data: [] }),
         isAdmin ? supabase.from("b2b_invoices").select("invoice_kind,status,invoice_date,net_amount,gross_amount,due_date") : Promise.resolve({ data: [] }),
@@ -240,7 +241,7 @@ export default function StaffHome() {
     })
     .sort((a, b) => (effectiveEnd(a) ?? "").localeCompare(effectiveEnd(b) ?? ""));
   const running = confirmed.filter((r) => isRunningRental({ ...r, handed_over: protocols.byInquiry.has(r.id) && !!protocols.byInquiry.get(r.id)?.delivery }, today)).length;
-  const awaitingConfirmation = inquiries.filter((r) => isAwaitingOfferConfirmation(r)).length;
+  const awaitingConfirmation = filterStaffConfirmationTasks(inquiries, staffProfile?.location).filter((r) => isAwaitingOfferConfirmation(r, now)).length;
   const unprocessed = inquiries.filter(isUnprocessedInquiry).length;
   const customerRequests = profiles.flatMap((p) => ([
     needsAction(p, "freigabe") && { p, kind: "freigabe", label: "Freischaltung durchführen" },
@@ -370,7 +371,7 @@ export default function StaffHome() {
             )}
           </div>
 
-          <AcceptedOffersPayments />
+          <AcceptedOffersPayments staffLocation={staffProfile?.location} />
 
           <DepositSettlementsDue location={activeDayLocation} />
 

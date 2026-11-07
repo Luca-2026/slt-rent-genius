@@ -4,7 +4,7 @@ import { BellRing, CheckCircle2, ChevronDown, ChevronRight, ChevronUp } from "lu
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
-import { hasRentalEnded, needsRentalCloseout, rentalCloseoutTasks, isAwaitingOfferConfirmation } from "@/lib/dashboardMetrics";
+import { hasRentalEnded, needsRentalCloseout, rentalCloseoutTasks, isAwaitingOfferConfirmation, filterStaffConfirmationTasks } from "@/lib/dashboardMetrics";
 import { isPaymentOverdue, paymentDeadline } from "../../../../supabase/functions/_shared/payment-followup";
 
 import { effectiveEnd } from "@/lib/calendarEntries";
@@ -38,7 +38,7 @@ const LABEL: Record<Row["state"], string> = {
 const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30"]);
 
 /** All accepted inquiries awaiting confirmation, including manual acceptance. */
-export function AcceptedOffersPayments() {
+export function AcceptedOffersPayments({ staffLocation }: { staffLocation: string | null | undefined }) {
   const [rows, setRows] = useState<Row[]>([]);
   const seen = useRef<Map<string, Row["state"]> | null>(null);
   const [error, setError] = useState(false);
@@ -46,18 +46,20 @@ export function AcceptedOffersPayments() {
 
   useEffect(() => {
     let active = true;
+    seen.current = null;
+    setRows([]);
     const load = async () => {
       const now = new Date();
-      const cols = "start_date, end_date, end_time, id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, customer_name, company_name, closed_manually_at";
+      const cols = "source, location, start_date, end_date, end_time, id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, customer_name, company_name, closed_manually_at";
       const [rent, sale] = await Promise.all([
         supabase.from("rental_inquiries").select(cols).in("status", ["accepted", "done"]),
-        supabase.from("sales_inquiries").select("id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, first_name, last_name, company_name").eq("status", "accepted").is("order_confirmed_at", null),
+        supabase.from("sales_inquiries").select("location, id, status, customer_kind, offer_number, offer_sent_at, payments, offer_total_gross, offer_payload, order_confirmed_at, payment_followup_sent_at, first_name, last_name, company_name").eq("status", "accepted").is("order_confirmed_at", null),
       ]);
       if (rent.error || sale.error) { if (active) setError(true); return; }
-      const list = [
+      const list = filterStaffConfirmationTasks([
         ...(rent.data ?? []).map((i) => ({ ...i, table: "rental_inquiries" })),
         ...(sale.data ?? []).map((i) => ({ ...i, table: "sales_inquiries" })),
-      ].filter((i) => isAwaitingOfferConfirmation(i, now) || (i.table === "rental_inquiries" && needsRentalCloseout(i, now)));
+      ], staffLocation).filter((i) => isAwaitingOfferConfirmation(i, now) || (i.table === "rental_inquiries" && needsRentalCloseout(i, now)));
       if (!list.length) { if (active) { setRows([]); setError(false); } return; }
       const ids = list.map((i) => i.id);
       const [acc, links, delivery, returns, invoices] = await Promise.all([
@@ -126,7 +128,7 @@ export function AcceptedOffersPayments() {
       .subscribe();
     const timer = window.setInterval(load, 60_000);
     return () => { active = false; window.clearInterval(timer); supabase.removeChannel(ch); };
-  }, []);
+  }, [staffLocation]);
 
   if (error) return <p role="alert" className="text-sm text-destructive">Angenommene Angebote konnten nicht aktualisiert werden. Bitte lade die Seite erneut.</p>;
   if (!rows.length) return null;
