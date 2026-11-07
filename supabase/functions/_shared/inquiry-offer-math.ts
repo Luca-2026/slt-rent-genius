@@ -47,6 +47,7 @@ function singularUnit(unit?: string): string {
   if (u.startsWith("kalendertag")) return "Kalendertag";
   if (u.startsWith("woche")) return "Woche";
   if (u.startsWith("monat")) return "Monat";
+  if (u.startsWith("jahr")) return "Jahr";
   return "";
 }
 
@@ -262,7 +263,7 @@ export function normalizeInquiryOfferItems(raw: unknown, undated = false): Inqui
     const item = undated || source.period_free === true ? withoutOfferDates(source) : source;
     if (item.vat_rate !== undefined && item.vat_rate !== 0 && item.vat_rate !== 19) throw new Error(`Position ${index + 1}: ungültiger Mehrwertsteuersatz`);
     if (undated) {
-      if (!["miettage", "kalendertage", "arbeitstage", "wochen", "monate", "pauschal", "stueck", "stunden"].includes(String(item.unit_code))) throw new Error(`Position ${index + 1}: ungültige Einheit für das Preisangebot`);
+      if (!["miettage", "kalendertage", "arbeitstage", "wochen", "monate", "jahre", "pauschal", "stueck", "stunden"].includes(String(item.unit_code))) throw new Error(`Position ${index + 1}: ungültige Einheit für das Preisangebot`);
       if (!Number.isFinite(Number(item.duration)) || Number(item.duration) <= 0 || Number(item.duration) > 10000) throw new Error(`Position ${index + 1}: beispielhafte Mietdauer fehlt`);
       if (Math.abs(Number(item.quantity) - Number(item.articles) * Number(item.duration)) > 0.001) throw new Error(`Position ${index + 1}: Menge und Mietdauer stimmen nicht überein`);
     }

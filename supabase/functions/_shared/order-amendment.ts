@@ -2,7 +2,7 @@ import { normalizeInquiryOfferItems, buildOfferTotals, normalizeOfferGroups, nor
 import { assertCalendarInsurance } from './insurance-validation.ts';
 import { hasBankDiscountPolicy, priceBankTransfer, withoutBankDiscount } from "./bank-transfer-discount.ts";
 import { validCalendarDate } from "./public-rental-period.ts";
-import { normalizeOpenEndedUnit, normalizeOpenEndedDuration } from "./installments.ts";
+import { normalizeOpenEndedUnit, normalizeOpenEndedDuration, hasMissingOpenEndedPrice } from "./installments.ts";
 import { salesOfferLine, salesPaymentTerms, normalizeSalesFinancing } from "./sales-offer.ts";
 export function buildSalesOrderAmendment(body: Record<string, unknown>, current: Record<string, unknown>, customerKind: unknown) {
   const raw = Array.isArray(body.items) ? body.items : [];
@@ -28,6 +28,7 @@ export function buildSalesOrderAmendment(body: Record<string, unknown>, current:
 }
 export function buildOrderAmendment<T extends Record<string, unknown>>(body: Record<string, unknown>, current: T, location: string) {
   let items = withoutBankDiscount(normalizeInquiryOfferItems(body.items));
+  if (body.open_ended === true && body.open_ended_independent_pricing === true && hasMissingOpenEndedPrice(items)) throw new Error("Bitte für jede Mietposition den Preis der gewählten Einheit festlegen.");
   assertCalendarInsurance(items);
   for (const item of items) {
     if (item.period_free) continue;
@@ -50,6 +51,7 @@ export function buildOrderAmendment<T extends Record<string, unknown>>(body: Rec
     groups: normalizeOfferGroups(body.groups), extra_fields: normalizeExtraFields(body.extra_fields),
     order_type: body.order_type === "delivery" ? "delivery" : "pickup", return_mode: body.return_mode === "collection" ? "collection" : "customer", notes: typeof body.notes === "string" ? body.notes.slice(0,4000) : null,
     open_ended: body.open_ended === true, open_ended_unit: openEndedUnit, minimum_duration: minimumDuration,
+    open_ended_independent_pricing: body.open_ended_independent_pricing === true,
     min_months: openEndedUnit === "monate" ? minimumDuration : null,
     use_saturday: body.use_saturday === true, use_sunday: body.use_sunday === true };
 }

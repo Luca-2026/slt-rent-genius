@@ -9,13 +9,13 @@ export function OpenEndedPeriodFields({ unit, duration, disabled, onChange }: {
 }) {
   return <div className="grid grid-cols-2 gap-3">
     <div className="min-w-0 space-y-1">
-      <Label htmlFor="open-ended-duration">Mindestmietzeit</Label>
+      <Label className="block min-h-10 text-xs sm:min-h-4" htmlFor="open-ended-duration">Mindestmietzeit</Label>
       <Input id="open-ended-duration" type="number" inputMode="numeric" min={1}
         max={unit === "monate" ? 60 : undefined} step={1} value={duration} disabled={disabled}
         onChange={(e) => onChange(unit, normalizeOpenEndedDuration(e.target.value, unit))} />
     </div>
     <div className="min-w-0 space-y-1">
-      <Label htmlFor="open-ended-unit">Einheit</Label>
+      <Label className="block min-h-10 text-xs sm:min-h-4" htmlFor="open-ended-unit">Einheit Mindestmietzeit</Label>
       <Select value={unit} disabled={disabled} onValueChange={(value) => {
         const next = normalizeOpenEndedUnit(value);
         onChange(next, normalizeOpenEndedDuration(duration, next));

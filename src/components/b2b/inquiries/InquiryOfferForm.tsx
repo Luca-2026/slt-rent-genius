@@ -4,7 +4,7 @@ import { LogisticsServiceFields } from "./LogisticsServiceFields";
 import { isLogisticsService, logisticsService, migrateServiceCosts, SERVICE_UNITS, serviceUnit, type ServiceKind } from "./logisticsServices";
 import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
 import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLegacyPeriod, undatedOfferLine } from "./offerCalendarPeriod";
-import { applyOpenEndedPeriod, normalizeOpenEndedUnit, normalizeOpenEndedDuration, openEndedUnitSingular, type OpenEndedUnit } from "@/lib/installments";
+import { applyOpenEndedBilling, applyOpenEndedPeriod, hasMissingOpenEndedPrice, normalizeOpenEndedUnit, normalizeOpenEndedDuration, type OpenEndedUnit } from "@/lib/installments";
 import { isDraftEditEvent } from "@/lib/draftEditIntent";
 import { matchesDocumentPreview } from "../../../../supabase/functions/_shared/invoice-preview";
 import { CLEANING_UNIT_GROSS, CLEANING_UNIT_MINUTES, CLEANING_UNIT_NET, chargeMeasure, chargeQuantityText, quantityFromText, cleaningChargeGross, cleaningSuggested, depositSettlementNote, settleDeposit } from "@/lib/returnCharges";
@@ -362,6 +362,7 @@ interface Props {
     min_months?: number | null;
     minimum_duration?: number | null;
     open_ended_unit?: OpenEndedUnit;
+    open_ended_independent_pricing?: boolean;
     use_saturday?: boolean;
     use_sunday?: boolean;
     /** Paket 3b – fehlen bei alten Angeboten. */
@@ -506,6 +507,7 @@ export function InquiryOfferForm({
   const canUndated = mode === "offer" && inquiryType === "rental";
   const [undatedOffer, setUndatedOffer] = useState(canUndated && !!(draft?.undatedOffer ?? defaultMeta?.undated_offer));
   const [openEnded, setOpenEnded] = useState<boolean>(canOpenEnded && !!(draft?.openEnded ?? defaultMeta?.open_ended));
+  const [independentPricing, setIndependentPricing] = useState<boolean>(draft?.independentPricing ?? defaultMeta?.open_ended_independent_pricing ?? !(draft?.openEnded ?? defaultMeta?.open_ended));
   const [openEndedUnit, setOpenEndedUnit] = useState<OpenEndedUnit>(normalizeOpenEndedUnit(draft?.openEndedUnit ?? defaultMeta?.open_ended_unit));
   const [minMonths, setMinMonths] = useState<number>(normalizeOpenEndedDuration(draft?.minMonths ?? defaultMeta?.minimum_duration ?? defaultMeta?.min_months ?? 1, openEndedUnit));
   /** Paket 2: Staffel-/Dauerrechnung nur im Mietangebot (Rechnungen übernehmen die Angebotswerte). */
@@ -716,6 +718,7 @@ export function InquiryOfferForm({
     setNotes(d.notes ?? "");
     setCouponCode(d.couponCode ?? defaultCouponCode);
     setOpenEnded(canOpenEnded && !!d.openEnded);
+    setIndependentPricing(d.independentPricing ?? !d.openEnded);
     setUndatedOffer(canUndated && !!d.undatedOffer);
     setOpenEndedUnit(normalizeOpenEndedUnit(d.openEndedUnit));
     setMinMonths(normalizeOpenEndedDuration(d.minMonths ?? 1, normalizeOpenEndedUnit(d.openEndedUnit)));
@@ -782,6 +785,7 @@ export function InquiryOfferForm({
         paymentTermsCustom,
         notes,
         openEnded,
+        independentPricing,
         undatedOffer,
         minMonths,
         openEndedUnit,
@@ -825,6 +829,7 @@ export function InquiryOfferForm({
     paymentTermsCustom,
     notes,
     openEnded,
+    independentPricing,
     undatedOffer,
     minMonths,
     openEndedUnit,
@@ -866,6 +871,7 @@ export function InquiryOfferForm({
     setNotes(defaultMeta?.notes ?? "");
     setTermsText(defaultMeta?.terms_text ?? null);
     setOpenEnded(canOpenEnded && !!defaultMeta?.open_ended);
+    setIndependentPricing(defaultMeta?.open_ended_independent_pricing ?? !defaultMeta?.open_ended);
     setUndatedOffer(canUndated && !!defaultMeta?.undated_offer);
     setOpenEndedUnit(normalizeOpenEndedUnit(defaultMeta?.open_ended_unit));
     setMinMonths(normalizeOpenEndedDuration(defaultMeta?.minimum_duration ?? defaultMeta?.min_months ?? 1, normalizeOpenEndedUnit(defaultMeta?.open_ended_unit)));
@@ -881,16 +887,16 @@ export function InquiryOfferForm({
     () =>
       items.map((item, i) => {
         if (isSalesOffer) return recalcAddons(salesOfferLine(item));
-        const inherited = undatedOffer ? applyRentalPricing({ ...undatedOfferLine(item), undated_offer: true }, dayOpts) : applyInheritedPeriod(item, i, items[0]);
+        const inherited = undatedOffer ? applyRentalPricing({ ...undatedOfferLine(item), undated_offer: true }, dayOpts) : openEnded && independentPricing ? item : applyInheritedPeriod(item, i, items[0]);
         const calendar = pricingActive && !openEnded ? calendarDuration(inherited, { use_saturday: inherited.use_saturday ?? useSaturday, use_sunday: inherited.use_sunday ?? useSunday }) : inherited;
         const unit = inherited.unit ?? "kalendertage";
         // Unbefristet: zeitabhängige Positionen werden als Preis pro Monat geführt.
         const monthly = openEnded && !inherited.period_free && unit !== "pauschal" && unit !== "stueck"
-          ? applyOpenEndedPeriod(inherited, openEndedUnit, minMonths)
+          ? independentPricing ? applyOpenEndedBilling(inherited) : applyOpenEndedPeriod(inherited, openEndedUnit, minMonths)
           : calendar;
         return recalcAddons(monthly);
       }),
-    [items, isSalesOffer, openEnded, undatedOffer, minMonths, openEndedUnit, pricingActive, useSaturday, useSunday],
+    [items, isSalesOffer, openEnded, independentPricing, undatedOffer, minMonths, openEndedUnit, pricingActive, useSaturday, useSunday],
   );
 
   // ----------------------------------------------------------------
@@ -1019,6 +1025,12 @@ export function InquiryOfferForm({
   /** Wie patchItem, rechnet danach Dauer/Staffelpreis neu (ohne Handpreis-Marker). */
   const patchPriced = (index: number, patch: Partial<FormLine>) =>
     setItems((prev) => {
+      if (openEnded && independentPricing) return prev.map((item, i) => {
+        if (i !== index) return item;
+        const next = { ...item, ...patch };
+        if (patch.unit && patch.unit !== item.unit && !item.period_free) return { ...next, unit_price: 0, price_source: undefined, price_manual: true, tier_label: undefined };
+        return next;
+      });
       const next = prev.map((item, i) => i === index ? { ...item, ...patch } : item);
       return next.map((item, i) => {
         if (i !== index && (index !== 0 || item.custom_period)) return item;
@@ -1319,7 +1331,7 @@ export function InquiryOfferForm({
         ...(isSalesOffer ? { financing: { enabled: financingEnabled, note: financingNote } } : {}),
         valid_days: validDays,
         ...(canUndated ? { undated_offer: undatedOffer } : {}),
-        ...(canOpenEnded ? { open_ended: openEnded, ...(openEnded ? { open_ended_unit: openEndedUnit, minimum_duration: minMonths, ...(openEndedUnit === "monate" ? { min_months: minMonths } : {}) } : {}) } : {}),
+        ...(canOpenEnded ? { open_ended: openEnded, ...(openEnded ? { open_ended_independent_pricing: independentPricing, open_ended_unit: openEndedUnit, minimum_duration: minMonths, ...(openEndedUnit === "monate" ? { min_months: minMonths } : {}) } : {}) } : {}),
         ...(pricingActive ? { use_saturday: useSaturday, use_sunday: useSunday } : {}),
         notes: [notes.trim(), settlementNote].filter(Boolean).join("\n\n"),
         ...(groups.length ? { groups } : {}),
@@ -1365,6 +1377,10 @@ export function InquiryOfferForm({
   useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
 
   const preview = async () => {
+    if (openEnded && independentPricing && hasMissingOpenEndedPrice(items)) {
+      toast({ title: "Mietpreis fehlt", description: "Bitte für jede Mietposition den Preis der gewählten Einheit festlegen.", variant: "destructive" });
+      return;
+    }
     if (items.some((i) => !i.product_name.trim() || i.quantity <= 0 || i.unit_price < 0)) {
       toast({ title: "Bitte alle Positionen ausfüllen", description: "Bezeichnung, Menge und Preis werden für die Vorschau benötigt.", variant: "destructive" });
       return;
@@ -1612,11 +1628,11 @@ export function InquiryOfferForm({
             <span className="font-medium">Ohne festen Mietzeitraum (unverbindliches Preisangebot)</span>
           </label>}
           <label className="flex items-start gap-2 cursor-pointer">
-            <Checkbox checked={openEnded} disabled={disabled || undatedOffer} onCheckedChange={(v) => setOpenEnded(v === true)} className="mt-0.5" />
+            <Checkbox aria-label="Unbefristete Miete" checked={openEnded} disabled={disabled || undatedOffer} onCheckedChange={(v) => { setOpenEnded(v === true); if (v === true) setIndependentPricing(true); }} className="mt-0.5" />
             <span>
               <span className="font-medium">Unbefristete Miete (ohne Enddatum)</span>
               <span className="block text-xs text-muted-foreground">
-                Mietpreise gelten je {openEndedUnitSingular(openEndedUnit)}. Die Mindestmietzeit wird im Angebot vereinbart;
+                Mietpreise und Einheiten je Position. Die Mindestmietzeit wird separat vereinbart;
                 nach Rückgabe erfolgt die Schlussrechnung mit Verrechnung der Abschläge.
               </span>
             </span>
@@ -1625,7 +1641,7 @@ export function InquiryOfferForm({
             <div className="space-y-2 pl-6">
               <OpenEndedPeriodFields unit={openEndedUnit} duration={minMonths} disabled={disabled}
                 onChange={(unit, duration) => { setOpenEndedUnit(unit); setMinMonths(duration); }} />
-              <p className="text-xs text-muted-foreground">Mietpositionen: Preis je {openEndedUnitSingular(openEndedUnit)} × Mindestmietzeit. Einzelpreise bitte für die gewählte Einheit prüfen.</p>
+              {!independentPricing && <Button variant="outline" onClick={() => { setItems(unpricedEffectiveItems); setIndependentPricing(true); }}>Preiseinheiten separat bearbeiten</Button>}
             </div>
           )}
         </div>
@@ -1678,7 +1694,7 @@ export function InquiryOfferForm({
           const item = items[index];
           if (isLogisticsService(item)) return null;
           const eff = effectiveItems[index] ?? item;
-          const inherited = !undatedOffer && index > 0 && !item.custom_period;
+          const inherited = !undatedOffer && !(openEnded && independentPricing) && index > 0 && !item.custom_period;
           /** Pauschalposition: fester Preis, keine Mietdauer-Multiplikation. */
           const isFlatRate = (eff.unit ?? "kalendertage") === "pauschal";
           return (
@@ -1956,7 +1972,7 @@ export function InquiryOfferForm({
                 </div>
               </div>
               {!isSalesOffer && <div className="min-w-0">
-                <Label className="text-xs">Dauer</Label>
+                <Label className="text-xs">{openEnded && independentPricing ? "Abrechnungseinheiten" : "Dauer"}</Label>
                 <div className="flex gap-1">
                   {isFlatRate ? (
                     <div className="flex h-10 flex-1 items-center rounded-md border border-input bg-muted/40 px-3 text-sm text-muted-foreground" data-testid="duration-flat">
@@ -1972,12 +1988,12 @@ export function InquiryOfferForm({
                       onChange={(e) => !undatedOffer && item.duration_override !== undefined
                         ? patchPriced(index, { duration_override: Math.min(10000, Math.max(1, Number(e.target.value) || 1)) })
                         : patchItem(index, { duration: Number(e.target.value) || 0 })}
-                      disabled={disabled || (!undatedOffer && inherited) || (pricingActive && !openEnded && !undatedOffer && !!eff.rental_start && !!eff.rental_end && item.duration_override === undefined) || (openEnded && !isFlatRate && eff.unit !== "stueck")}
+                      disabled={disabled || (!undatedOffer && inherited) || (pricingActive && !openEnded && !undatedOffer && !!eff.rental_start && !!eff.rental_end && item.duration_override === undefined) || (openEnded && !independentPricing && !isFlatRate && eff.unit !== "stueck")}
                     />
                   )}
                   <Select
                     value={eff.unit ?? "kalendertage"}
-                    disabled={disabled || (!undatedOffer && inherited) || (openEnded && !isFlatRate && eff.unit !== "stueck")}
+                    disabled={disabled || (!undatedOffer && inherited) || (openEnded && !independentPricing && !isFlatRate && eff.unit !== "stueck")}
                     onValueChange={(v) =>
                       patchPriced(index, {
                         unit: v as OfferUnit,
@@ -2009,12 +2025,12 @@ export function InquiryOfferForm({
                 </p>
               </div>}
               <div>
-                <Label className="text-xs">{isFlatRate ? "Pauschalpreis netto" : "Einzelpreis netto"}</Label>
+                <Label className="text-xs">{isFlatRate ? "Pauschalpreis netto" : openEnded && independentPricing ? `Preis netto je ${unitLabel(1, eff.unit ?? "kalendertage")}` : "Einzelpreis netto"}</Label>
                 <NumberInput
                   type="number"
                   min={0}
                   step="0.01"
-                  value={item.unit_price}
+                  value={eff.unit_price}
                   onChange={(e) =>
                     patchItem(index, { unit_price: Number(e.target.value) || 0, price_source: "manual", price_manual: true })
                   }
@@ -2029,6 +2045,13 @@ export function InquiryOfferForm({
                       : `Aus CMS: ${formatEuro(item.unit_price)} netto${item.tier_label ? ` (${item.tier_label})` : ""} – anpassbar`}
                   </p>
                 ) : null}
+                {openEnded && independentPricing && item.pricing?.scheme === "bau" && <div className="mt-2 flex flex-wrap gap-1">
+                  {([1, 3, 10, 20] as const).map((days) => {
+                    const price = item.pricing?.prices[days === 1 ? "price_from_1_rd" : days === 3 ? "price_from_3_rd" : days === 10 ? "price_from_10_rd" : "price_from_20_rd"];
+                    if (price == null || price <= 0) return null;
+                    return <Button key={days} variant="outline" size="sm" onClick={() => patchItem(index, { unit: "miettage", unit_manual: true, unit_price: price, price_manual: true, tier_label: `ab ${days} Miettagen`, price_source: "cms" })} disabled={disabled}>Ab {days} MT · {formatEuro(price)}/MT</Button>;
+                  })}
+                </div>}
 
               </div>
               <div>

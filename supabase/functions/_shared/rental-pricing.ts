@@ -10,7 +10,7 @@
  * Preise sind Nettopreise aus dem CMS.
  */
 
-export type PricingUnit = "stunden" | "stueck" | "pauschal" | "arbeitstage" | "miettage" | "kalendertage" | "wochen" | "monate";
+export type PricingUnit = "stunden" | "stueck" | "pauschal" | "arbeitstage" | "miettage" | "kalendertage" | "wochen" | "monate" | "jahre";
 export type PricingScheme = "bau" | "event";
 
 export interface RentalMoment {
@@ -180,6 +180,8 @@ export function rentalDuration(
       return Math.max(1, Math.ceil(calendarDays / 7));
     case "monate":
       return Math.max(1, Math.ceil(calendarDays / 30));
+    case "jahre":
+      return Math.max(1, Math.ceil(calendarDays / 365));
     case "arbeitstage": {
       let n = 0;
       for (let d = sd; d <= Math.max(sd, ed); d++) {
@@ -321,6 +323,7 @@ const LABELS: Record<PricingUnit, { one: string; many: string; short: string }> 
   kalendertage: { one: "Kalendertag", many: "Kalendertage", short: "KT" },
   wochen: { one: "Woche", many: "Wochen", short: "Wo." },
   monate: { one: "Monat", many: "Monate", short: "Mon." },
+  jahre: { one: "Jahr", many: "Jahre", short: "J." },
 };
 
 /** Einzahl bei 1, sonst Mehrzahl – z. B. (1, "miettage") → "Miettag". */

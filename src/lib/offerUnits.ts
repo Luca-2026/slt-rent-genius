@@ -10,6 +10,7 @@ export const OFFER_UNITS: { value: OfferUnit; label: string; short: string }[] =
   { value: "kalendertage", label: "Kalendertage", short: unitAbbreviation("kalendertage") },
   { value: "wochen", label: "Wochen", short: unitAbbreviation("wochen") },
   { value: "monate", label: "Monate", short: unitAbbreviation("monate") },
+  { value: "jahre", label: "Jahre", short: unitAbbreviation("jahre") },
   { value: "stueck", label: "Stück", short: unitAbbreviation("stueck") },
   { value: "pauschal", label: "Pauschalpreis", short: unitAbbreviation("pauschal") },
   { value: "arbeitstage", label: "Arbeitstage (alt)", short: unitAbbreviation("arbeitstage") },
