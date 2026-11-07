@@ -1,4 +1,5 @@
 import { OrderCodeBadge } from "@/components/b2b/inquiries/OrderCodeBadge";
+import { matchesStaffSearch } from "@/lib/staffSearch";
 import { useMemo, useState } from "react";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useSalesInquiries } from "@/hooks/useInquiries";
@@ -35,9 +36,7 @@ export default function SalesInquiries() {
       if (onlyOpen && !isOpenInquiry(r.status)) return false;
       if (kind !== "all" && r.kind !== kind) return false;
       if (!q) return true;
-      return [salesInquiryTitle(r), salesInquiryCustomer(r), r.customer_email, r.location]
-        .filter(Boolean)
-        .some((v) => String(v).toLowerCase().includes(q));
+      return matchesStaffSearch(q, [r.id, r.order_code, r.offer_number, salesInquiryTitle(r), [r.first_name, r.last_name].filter(Boolean).join(" "), r.company_name, r.customer_email, r.location]);
     });
   }, [rows, search, onlyOpen, kind]);
 
@@ -57,7 +56,7 @@ export default function SalesInquiries() {
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Suche nach Artikel, Kunde, Standort …"
+          placeholder="Suche nach Auftrag, Artikel, Kunde, Standort …"
           className="sm:max-w-sm"
         />
         <Button variant={onlyOpen ? "default" : "outline"} onClick={() => setOnlyOpen((v) => !v)}>

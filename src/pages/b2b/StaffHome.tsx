@@ -1,4 +1,6 @@
 import { isRunningRental, isReturnOverdue } from "@/lib/inquiryStatus";
+import { loadAllSearchRows } from "@/lib/staffSearch";
+import type { Tables } from "@/integrations/supabase/types";
 import { useRentalProtocolStatus } from "@/hooks/useRentalProtocolStatus";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -166,30 +168,41 @@ export default function StaffHome() {
   const navigate = useNavigate();
   const [searchCustomers, setSearchCustomers] = useState<{ id: string; company_name: string; contact_first_name?: string; contact_last_name?: string; contact_email?: string; tax_id?: string | null; city?: string | null; b2b_profile_id: string | null }[]>([]);
   const [searchInvoices, setSearchInvoices] = useState<{ id: string; invoice_number: string; customer_company?: string | null; status: string }[]>([]);
+  const [searchOrders, setSearchOrders] = useState<(Pick<Tables<"rental_inquiries">, "id" | "order_code" | "customer_name" | "company_name" | "customer_email" | "product_name" | "offer_number" | "order_confirmation_number" | "status"> & { kind: "rental" | "sales"; booking_id?: string })[]>([]);
+  const [searchError, setSearchError] = useState(false);
 
   useEffect(() => {
     if (accessLoading || !isStaff) return;
     (async () => {
-      const [crm, inv] = await Promise.all([
-        supabase.from("crm_customers").select("id,company_name,first_name,last_name,email,vat_id,city,b2b_profile_id").order("created_at", { ascending: false }).limit(2000),
-        isAdmin ? supabase.from("inquiry_invoices").select("id,invoice_number,company_name,customer_name,status").order("created_at", { ascending: false }).limit(2000) : Promise.resolve({ data: [] }),
+      setSearchError(false);
+      const [crm, inv, rentals, sales, bookings] = await Promise.all([
+        loadAllSearchRows((from, to) => supabase.from("crm_customers").select("id,company_name,first_name,last_name,email,vat_id,city,b2b_profile_id").order("id").range(from, to)),
+        isAdmin ? loadAllSearchRows((from, to) => supabase.from("inquiry_invoices").select("id,invoice_number,company_name,customer_name,status").order("id").range(from, to)) : Promise.resolve([]),
+        loadAllSearchRows((from, to) => supabase.from("rental_inquiries").select("id,order_code,customer_name,company_name,customer_email,product_name,offer_number,order_confirmation_number,status").order("id").range(from, to)),
+        loadAllSearchRows((from, to) => supabase.from("sales_inquiries").select("id,order_code,first_name,last_name,company_name,customer_email,brand,model,offer_number,order_confirmation_number,status").order("id").range(from, to)),
+        loadAllSearchRows((from, to) => supabase.from("sign_bookings").select("id,inquiry_id").order("id").range(from, to)),
       ]);
-      setSearchCustomers(((crm.data ?? []) as any[]).map((c) => ({
+      setSearchCustomers(crm.map((c) => ({
         id: c.id, company_name: c.company_name || `${c.first_name ?? ""} ${c.last_name ?? ""}`.trim() || c.email || "Kunde",
         contact_first_name: c.first_name ?? undefined, contact_last_name: c.last_name ?? undefined,
         contact_email: c.email ?? undefined, tax_id: c.vat_id, city: c.city, b2b_profile_id: c.b2b_profile_id,
       })));
-      setSearchInvoices(((inv.data ?? []) as any[]).map((i) => ({
-        id: i.id, invoice_number: i.invoice_number, customer_company: i.company_name || i.customer_name, status: i.status,
+      setSearchInvoices(inv.map((i) => ({
+        id: i.id, invoice_number: i.invoice_number, customer_company: i.company_name, customer_name: i.customer_name, status: i.status,
       })));
-    })();
+      const bookingByInquiry = new Map(bookings.map(b => [b.inquiry_id, b.id]));
+      setSearchOrders([
+        ...rentals.map(r => ({ ...r, kind: "rental" as const, booking_id: bookingByInquiry.get(r.id) })),
+        ...sales.map(r => ({ ...r, customer_name: [r.first_name, r.last_name].filter(Boolean).join(" "), product_name: [r.brand, r.model].filter(Boolean).join(" "), kind: "sales" as const })),
+      ]);
+    })().catch(() => setSearchError(true));
   }, [accessLoading, isStaff, isAdmin]);
 
   const onSearchSelect = (hit: AdminSearchHit) => {
     if (hit.type === "customer") {
       navigate(`/b2b/kundendaten?kunde=${encodeURIComponent(hit.id)}&aktion=bearbeiten`);
     } else if (hit.type === "invoice") navigate("/b2b/anfrage-rechnungen");
-    else if (hit.type === "reservation") navigate(`/b2b/mietanfragen/${hit.id}`);
+    else if (hit.type === "reservation") navigate(hit.kind === "sales" ? `/b2b/verkaufsanfragen?anfrage=${encodeURIComponent(hit.id)}` : `/b2b/mietanfragen/${hit.id}`);
   };
 
   useEffect(() => {
@@ -284,9 +297,10 @@ export default function StaffHome() {
             customers={searchCustomers}
             invoices={searchInvoices}
             offers={[]}
-            reservations={inquiries.map((r) => ({ id: r.id, product_name: `${r.company_name || r.customer_name || ""} · ${r.product_name ?? ""}`, status: r.status }))}
+            reservations={searchOrders.map((r) => ({ ...r, product_name: `${r.company_name || r.customer_name || ""} · ${r.product_name ?? ""}` }))}
             onSelect={onSearchSelect}
           />
+          {searchError && <p role="alert" className="text-sm text-destructive">Die Suche konnte nicht vollständig geladen werden. Bitte die Seite erneut laden.</p>}
           {/* 1. Handlungsbedarf */}
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             <ActionStat label="Neue Mietanfragen" value={unprocessed} to="/b2b/mietanfragen" icon={Inbox} highlight />
