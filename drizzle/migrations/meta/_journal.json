@@ -1184,6 +1184,13 @@
       "when": 1794055555933,
       "tag": "0168_protect_order_refund_allocation_terminal_states",
       "breakpoints": true
+    },
+    {
+      "idx": 169,
+      "version": "7",
+      "when": 1794055852249,
+      "tag": "0169_allow_newly_sent_started_rental_offer_acceptance",
+      "breakpoints": true
     }
   ]
 }
