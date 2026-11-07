@@ -1,5 +1,6 @@
 import { SALES_PAYMENT_OPTIONS, salesPaymentTerms, salesOfferLine, type SalesFinancing } from "../../../../supabase/functions/_shared/sales-offer";
 import { bankDiscountPresentation, editorBankDiscount } from "@/lib/editorBankDiscount";
+import { invoiceServicePeriod } from "@/lib/invoiceServicePeriod";
 import { LogisticsServiceFields } from "./LogisticsServiceFields";
 import { isLogisticsService, logisticsService, migrateServiceCosts, SERVICE_UNITS, serviceUnit, type ServiceKind } from "./logisticsServices";
 import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
@@ -522,11 +523,15 @@ export function InquiryOfferForm({
       ...(defaultPayments ?? []).filter(isStripePayment)],
   );
   /** Leistungszeitraum der Rechnung (nur im Rechnungsmodus sichtbar). */
+  const initialServicePeriod = invoiceServicePeriod(
+    { start: draft?.servicePeriodStart, end: draft?.servicePeriodEnd }, defaultServicePeriod,
+    inquiryType === "rental" ? rentalPeriod : undefined, inquiryType === "rental" ? defaultItems : [],
+  );
   const [servicePeriodStart, setServicePeriodStart] = useState(
-    draft?.servicePeriodStart ?? defaultServicePeriod?.start ?? "",
+    initialServicePeriod.start,
   );
   const [servicePeriodEnd, setServicePeriodEnd] = useState(
-    draft?.servicePeriodEnd ?? defaultServicePeriod?.end ?? "",
+    initialServicePeriod.end,
   );
 
   // Standard immer Vorkasse (auch Geschäftskunden), damit nie versehentlich „auf Rechnung“ rausgeht.
@@ -711,8 +716,10 @@ export function InquiryOfferForm({
     setDeposit(d.deposit ?? 0);
     setValidDays(d.validDays ?? 14);
     setPayments(((d.payments as OfferPayment[]) ?? []).filter((p) => !isStripePayment(p)));
-    setServicePeriodStart(d.servicePeriodStart ?? "");
-    setServicePeriodEnd(d.servicePeriodEnd ?? "");
+    const restoredServicePeriod = invoiceServicePeriod({ start: d.servicePeriodStart, end: d.servicePeriodEnd }, defaultServicePeriod,
+      inquiryType === "rental" ? rentalPeriod : undefined, inquiryType === "rental" ? (d.items ?? defaultItems) : []);
+    setServicePeriodStart(restoredServicePeriod.start);
+    setServicePeriodEnd(restoredServicePeriod.end);
     if (d.paymentTerms) setPaymentTerms(isSalesOffer ? salesPaymentTerms(customerKind, d.paymentTerms) : safeCustomerPaymentTerms(customerKind, d.paymentTerms, isInvoice));
     setPaymentTermsCustom(d.paymentTermsCustom ?? "");
     setNotes(d.notes ?? "");
@@ -1605,12 +1612,14 @@ export function InquiryOfferForm({
             <Input
               type="date"
               value={servicePeriodStart}
+              aria-label="Leistungszeitraum von"
               onChange={(e) => setServicePeriodStart(e.target.value)}
               disabled={disabled}
             />
             <Input
               type="date"
               value={servicePeriodEnd}
+              aria-label="Leistungszeitraum bis"
               onChange={(e) => setServicePeriodEnd(e.target.value)}
               disabled={disabled}
             />
