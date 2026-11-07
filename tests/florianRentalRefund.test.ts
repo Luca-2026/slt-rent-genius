@@ -11,12 +11,12 @@ beforeEach(() => {
   stripe.refunds.create.mockResolvedValue({ id: "pyr_credit", payment_intent: "pi_original", amount: 6997, currency: "eur", status: "succeeded", metadata: { credit_note_id: "invoice" } });
 });
 
-function serviceFixture() {
+function serviceFixture(orderCredit = false) {
   let claim: any = null;
   const invoice = { id: "invoice", rental_inquiry_id: "florian", status: "paid", invoice_kind: "final", paid_amount: 377.23, gross_amount: 307.26, invoice_number: "RE-TEST", payments: [{ reference: "cs_original", amount: 377.23 }] };
   const service = {
     rpc: vi.fn(async (name: string, args: any) => {
-      if (name === "sync_credit_note_refund_v2") {
+      if (name === "sync_credit_note_refund_v2" || name === "sync_rental_order_refund") {
         claim.allocations = claim.allocations.map((a: any) => ({ ...a, refund_id: args._refund_id, status: args._status }));
         claim.status = "succeeded";
       }
@@ -25,11 +25,11 @@ function serviceFixture() {
     from(table: string) {
       let lookup = false;
       const q: any = {
-        select: () => q, eq: (key: string) => { if (table === "inquiry_invoices" && key === "id") lookup = true; return q; }, neq: () => q,
+        select: () => q, eq: (key: string) => { if ((table === "inquiry_invoices" || table === "rental_refund_bases") && key === "id") lookup = true; return q; }, neq: () => q,
         insert: (data: any) => { claim = { ...data, status: "creating", created_at: new Date().toISOString() }; return q; },
-        maybeSingle: async () => ({ data: table === "inquiry_invoices" ? invoice : claim, error: null }),
-        single: async () => ({ data: table === "inquiry_invoices" ? invoice : claim, error: null }),
-        then: (resolve: any) => resolve({ data: table === "inquiry_invoices" ? lookup ? invoice : [] : table === "deposit_refunds" ? [] : claim, error: null }),
+        maybeSingle: async () => ({ data: table === "rental_refund_bases" ? { ...invoice, inquiry_id: "florian" } : table === "inquiry_invoices" ? invoice : claim, error: null }),
+        single: async () => ({ data: table === "rental_refund_bases" ? { ...invoice, inquiry_id: "florian" } : table === "inquiry_invoices" ? invoice : claim, error: null }),
+        then: (resolve: any) => resolve({ data: table === "inquiry_invoices" ? orderCredit ? [] : lookup ? invoice : [] : table === "deposit_refunds" ? [] : claim, error: null }),
       };
       return q;
     },
@@ -58,4 +58,17 @@ it("Florian: insufficient original-payment capacity blocks rental refund before 
   await expect(creditRefund(f.service, "invoice", "admin", true, true)).rejects.toThrow("Kein vollständig");
   expect(f.claim()).toBeNull();
   expect(stripe.refunds.create).not.toHaveBeenCalled();
+});
+
+it("Florian: refunds 69.97 before invoice issuance, persists pyr_ receipt and never executes twice", async () => {
+  const f = serviceFixture(true);
+  stripe.refunds.create.mockResolvedValue({ id: "pyr_credit", payment_intent: "pi_original", amount: 6997, currency: "eur", status: "succeeded", metadata: { rental_basis_id: "invoice" } });
+  expect((await creditRefund(f.service, "invoice", "admin", false, true, true)).amount_cents).toBe(6997);
+  const result = await creditRefund(f.service, "invoice", "admin", true, true, true);
+  expect(result.status).toBe("succeeded");
+  expect(f.service.rpc).toHaveBeenCalledWith("sync_rental_order_refund", expect.objectContaining({ _basis: "invoice", _amount: 6997, _refund_id: "pyr_credit" }));
+  await creditRefund(f.service, "invoice", "admin", true, true, true);
+  expect(stripe.refunds.create).toHaveBeenCalledTimes(1);
+  expect(f.claim().basis_id).toBe("invoice");
+  expect(f.invoice.paid_amount).toBe(377.23);
 });

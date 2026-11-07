@@ -10,6 +10,7 @@ export async function creditRefund(service: any, creditId: string, userId: strin
   if (creditError || !credit || credit.status === "draft" || credit.status === "cancelled" || (rentalCredit ? !["invoice", "final"].includes(credit.invoice_kind) || !credit.rental_inquiry_id || credit.parent_invoice_id || credit.deducted_installments?.length : credit.invoice_kind !== "credit_note" || !credit.parent_invoice_id)) {
     throw new Error("Keine ausgestellte Gutschrift gefunden.");
   }
+  if (!orderCredit && credit.rental_refund_basis_id) throw new Error("Mietguthaben wurde vor Rechnungsstellung abgerechnet. Keine zweite Erstattung auslösen.");
   const { data: parent, error: parentError } = rentalCredit ? { data: credit, error: null } : await service.from("inquiry_invoices").select("*").eq("id", credit.parent_invoice_id).single();
   if (parentError || !parent) throw new Error("Ursprungsrechnung nicht gefunden.");
   const { data: previous, error: previousError } = await service.from("inquiry_invoices").select("gross_amount, created_at, id").eq("parent_invoice_id", parent.id).eq("invoice_kind", "credit_note").neq("status", "draft").neq("status", "cancelled");
