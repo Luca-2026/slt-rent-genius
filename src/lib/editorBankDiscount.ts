@@ -1,6 +1,17 @@
-import { priceBankTransfer, hasBankDiscountPolicy } from "../../supabase/functions/_shared/bank-transfer-discount";
+import { BANK_DISCOUNT_KEY, priceBankTransfer, hasBankDiscountPolicy } from "../../supabase/functions/_shared/bank-transfer-discount";
 import { invoiceBankDiscount } from "../../supabase/functions/_shared/invoice-bank-discount";
 import type { OfferLine } from "@/components/b2b/inquiries/offerMath";
+
+/** Separate the automatic rebate from editable services without changing stored pricing. */
+export function bankDiscountPresentation(line: Pick<OfferLine, "addons">) {
+  const addons = line.addons ?? [];
+  const automatic = addons.filter(addon => addon.key === BANK_DISCOUNT_KEY);
+  return {
+    editableAddons: addons.filter(addon => addon.key !== BANK_DISCOUNT_KEY),
+    automaticAddons: automatic,
+    discountNet: Math.round(automatic.reduce((sum, addon) => sum + addon.amount, 0) * 100) / 100,
+  };
+}
 
 /** Convert editor article counts to server billing quantities exactly once. */
 export function editorBankDiscount<T extends OfferLine>(lines: T[], costs: number, policy: unknown, kind: "amendment" | "invoice" | "supplement" | "final", settlement = false): (T & Pick<OfferLine, "addons">)[] {

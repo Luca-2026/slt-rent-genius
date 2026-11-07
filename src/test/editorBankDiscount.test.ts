@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { editorBankDiscount } from "@/lib/editorBankDiscount";
+import { bankDiscountPresentation, editorBankDiscount } from "@/lib/editorBankDiscount";
 import { buildOfferTotals } from "@/components/b2b/inquiries/offerMath";
 import { BANK_DISCOUNT_KEY, newBankDiscountPolicy } from "../../supabase/functions/_shared/bank-transfer-discount";
 const policy = { ...newBankDiscountPolicy(), selected: "bank" as const };
@@ -20,4 +20,12 @@ it("explicit reset to zero restores the 3 percent rebate without accumulating it
 it("settlement costs are not discounted again", () => {
   const lines = [{ product_name: "Kosten", quantity: 1, unit_price: 100, discount_percent: 0 }];
   expect(buildOfferTotals(editorBankDiscount(lines, 0, policy, "invoice", true)).grossAmount).toBe(119);
+});
+it("keeps the automatic 3 percent rebate out of editable services while preserving the invoice amount", () => {
+  const priced = editorBankDiscount([{ product_name: "Miete", quantity: 1, duration: 1, unit_price: 29, discount_percent: 0 }], 0, policy, "invoice");
+  const display = bankDiscountPresentation(priced[0]);
+  expect(display.editableAddons).toEqual([]);
+  expect(display.discountNet).toBe(-0.87);
+  expect(buildOfferTotals(priced).grossAmount).toBe(33.47);
+  expect(buildOfferTotals([{ ...priced[0], addons: [...display.editableAddons, ...display.automaticAddons] }]).grossAmount).toBe(33.47);
 });

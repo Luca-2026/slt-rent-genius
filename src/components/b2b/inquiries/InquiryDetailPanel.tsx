@@ -50,6 +50,7 @@ import { InstallmentCard } from "./InstallmentCard";
 
 import type { OfferUnit } from "@/lib/offerUnits";
 import { unitLabel } from "@/lib/offerUnits";
+import { bankDiscountPresentation } from "@/lib/editorBankDiscount";
 
 /** Einheitenbezeichnung aus dem Angebots-Snapshot zurück auf den Schlüssel mappen. */
 const UNIT_BY_LABEL: Record<string, OfferUnit> = {
@@ -911,6 +912,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
                 <span className="min-w-0 break-words font-medium">{item.name_override || item.product_name}</span>
                 <span className="tabular-nums">{item.quantity} {item.quantity_unit === "m2" ? "m²" : item.quantity_unit === "lfm" ? "lfm" : "Stk."}</span>
                 <span className="col-span-2 text-xs text-muted-foreground">{item.duration ?? 1} {unitLabel(item.duration ?? 1, item.unit ?? "miettage")}{inquiry.offer_number ? ` · ${formatEuro(item.unit_price)} netto${item.discount_percent ? ` · ${item.discount_percent} % Rabatt` : ""}` : ""}</span>
+                {bankDiscountPresentation(item).discountNet < 0 && <span className="col-span-2 text-xs font-medium">3 % Überweisungsrabatt: {formatEuro(bankDiscountPresentation(item).discountNet)} netto · bereits berücksichtigt</span>}
               </li>)}
             </ul>
             {inquiry.offer_total_gross != null && <div className="flex justify-between gap-3 text-sm"><span>Auftragssumme brutto</span><strong className="tabular-nums">{formatEuro(inquiry.offer_total_gross)}</strong></div>}
