@@ -582,7 +582,7 @@ export async function generateOfferPdf(data: {
     if (iq) {
       const qu = QTY_ABBR[item.quantity_unit || "stk"] || "Stk";
       const serviceUnits: Record<string, string> = { "Abrechnung: Personalstunden": "Pers.-Std.", "Abrechnung: Stunden": "Std.", "Abrechnung: Tagespauschale": "Tagespausch.", "Abrechnung: Pauschale": "Pausch." };
-      const serviceUnit = item.period_free ? serviceUnits[item.description] : undefined;
+      const serviceUnit = ["Aufbau", "Abbau"].includes(item.product_name) ? serviceUnits[item.description] : undefined;
       if (serviceUnit) {
         iqQty = `${String(item.articles || item.quantity || 1).replace(".", ",")} ${serviceUnit}`;
         iqDur = "\u2013";
