@@ -3870,7 +3870,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           question: "Welche Zeltgröße brauche ich für wie viele Gäste in Bonn?",
           answer:
-            "Faustregel: Stehempfang 0,5–0,8 m²/Person, Sitzdinner an Bierzeltgarnituren 0,8–1,0 m²/Person, Bankett mit runden Tischen 1,2–1,5 m²/Person. Für 60 Personen Sitzdinner ist ein 5 × 10 m Partyzelt (50 m²) zu klein – realistisch sind 6 × 12 m. Wir beraten am Standort Bonn-Mehlem (Drachenburgstraße 1B) zur passenden Größe inklusive Tanzfläche, Buffet- und Bar-Bereich – telefonisch unter 0228 504 660 61.",
+            "Faustregel: Stehempfang 0,5–0,8 m²/Person, Sitzdinner an Bierzeltgarnituren 0,8–1,0 m²/Person, Bankett mit runden Tischen 1,2–1,5 m²/Person. Für 60 Personen Sitzdinner ist ein 5 × 10 m Partyzelt (50 m²) zu klein – realistisch sind 6 × 12 m. Wir beraten am Standort Bonn-Mehlem (Drachenburgstraße 8) zur passenden Größe inklusive Tanzfläche, Buffet- und Bar-Bereich – telefonisch unter 0228 504 660 61.",
         },
         {
           question: "Sind Partyzelte ab einer bestimmten Größe genehmigungspflichtig?",
@@ -3950,7 +3950,7 @@ export const categoryExpertContent: ExpertContentMap = {
         {
           h3: "Lieferung im Raum Bonn/Rhein-Sieg: was wir abdecken",
           paragraphs: [
-            "Vom Standort Bonn-Mehlem (Drachenburgstraße 1B) liefern wir Zelte und Eventmöbel im gesamten Bonner Stadtgebiet, dem Rhein-Sieg-Kreis (Königswinter, Bad Honnef, Niederkassel, Troisdorf, Sankt Augustin, Siegburg, Hennef, Meckenheim, Rheinbach), Bonn-Beuel/Hardtberg sowie auf der linken Rheinseite bis Bornheim und Wesseling. Über die B9 und A555/A565 sind alle Liefergebiete unkompliziert erreichbar.",
+            "Vom Standort Bonn-Mehlem (Drachenburgstraße 8) liefern wir Zelte und Eventmöbel im gesamten Bonner Stadtgebiet, dem Rhein-Sieg-Kreis (Königswinter, Bad Honnef, Niederkassel, Troisdorf, Sankt Augustin, Siegburg, Hennef, Meckenheim, Rheinbach), Bonn-Beuel/Hardtberg sowie auf der linken Rheinseite bis Bornheim und Wesseling. Über die B9 und A555/A565 sind alle Liefergebiete unkompliziert erreichbar.",
             "Selbstabholung von Bierzeltgarnituren, Stehtischen, Stühlen und Kleinzelten ist möglich; benötigt wird ein passender Anhänger oder Transporter (siehe Kategorie Anhänger, am Standort Bonn vor Ort). Größere Zelte ab 5 × 10 m vermieten wir aus Sicherheits- und Standsicherheitsgründen ausschließlich mit Lieferung und Aufbau durch unser Team. Anfragen unter 0228 504 660 61.",
           ],
         },

@@ -37,7 +37,7 @@ function getLocalAreaMetaDesc(area: LocalArea): string {
   const displayName = areaDisplayNames[area.slug] || area.name;
   // Sonderfälle: Hauptstandorte
   if (area.slug === "krefeld") return "Baumaschinen, Anhänger & Equipment mieten in Krefeld. Direkt am Standort Anrather Str. 291. Online buchbar, Tiefpreisgarantie.";
-  if (area.slug === "bonn") return "Baumaschinen, Anhänger & Equipment mieten in Bonn. Direkt am Standort Drachenburgstraße 5. Online buchbar, Tiefpreisgarantie.";
+  if (area.slug === "bonn") return "Baumaschinen, Anhänger & Equipment mieten in Bonn. Direkt am Standort Drachenburgstraße 8. Online buchbar, Tiefpreisgarantie.";
   if (area.slug === "muelheim-an-der-ruhr") return "Baumaschinen, Anhänger & Equipment mieten in Mülheim an der Ruhr. Bobcat-Spezialist. Online 24/7 buchbar – SLT Rental.";
   const standort = locationStandortNames[area.locationId] || "Krefeld";
   return `Baumaschinen, Anhänger & Equipment mieten für ${displayName} – Lieferung vom SLT Rental Standort ${standort}. Online buchbar, Tiefpreisgarantie.`;
