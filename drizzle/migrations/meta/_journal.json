@@ -1212,6 +1212,13 @@
       "when": 1794208545239,
       "tag": "0172_return_reminder_text_delivery_ids",
       "breakpoints": true
+    },
+    {
+      "idx": 173,
+      "version": "7",
+      "when": 1794213413029,
+      "tag": "0173_invoice_preserves_pending_rental_protocols",
+      "breakpoints": true
     }
   ]
 }
