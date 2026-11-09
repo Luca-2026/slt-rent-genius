@@ -1219,6 +1219,13 @@
       "when": 1794213413029,
       "tag": "0173_invoice_preserves_pending_rental_protocols",
       "breakpoints": true
+    },
+    {
+      "idx": 174,
+      "version": "7",
+      "when": 1794214801134,
+      "tag": "0174_branch_manager_customer_document_read",
+      "breakpoints": true
     }
   ]
 }
