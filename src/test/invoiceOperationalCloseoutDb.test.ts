@@ -10,7 +10,7 @@ beforeAll(async () => {
     CREATE TABLE b2b_return_protocols(rental_inquiry_id uuid, status text);
     CREATE TABLE inquiry_invoices(rental_inquiry_id uuid, sales_inquiry_id uuid, invoice_kind text, status text);
   `);
-  await db.exec(readFileSync("/tmp/invoice-closeout-migration.sql", "utf8"));
+  await db.exec(readFileSync("drizzle/migrations/0173_invoice_preserves_pending_rental_protocols.sql", "utf8"));
   await db.exec(`CREATE TRIGGER invoice_closeout AFTER INSERT ON inquiry_invoices FOR EACH ROW EXECUTE FUNCTION close_rental_inquiry_on_invoice()`);
 }, 30000);
 afterAll(() => db.close());
