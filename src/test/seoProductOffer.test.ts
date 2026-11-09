@@ -16,4 +16,11 @@ describe('unchanged CMS price in rental structured data', () => {
   it('never converts an event bundle into a daily offer', () => {
     expect(seoRentalOffer({ dailyNet: 100, eventBundle: true, url: '/test' })).toBeUndefined();
   });
+  it('exports the genuine package price for 1–3 days without declaring a daily rate', () => {
+    const offer = seoRentalOffer({ eventBundle: true, bundleNet: 6, pricePerDay: 'ab 6,00 €', url: '/test' });
+    expect(offer?.price).toBe('7.14');
+    expect(offer?.eligibleDuration).toEqual({ '@type': 'QuantitativeValue', minValue: 1, maxValue: 3, unitCode: 'DAY' });
+    expect(offer?.priceSpecification['@type']).toBe('PriceSpecification');
+    expect(offer?.priceSpecification).not.toHaveProperty('unitCode');
+  });
 });

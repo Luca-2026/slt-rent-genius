@@ -304,6 +304,7 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
       .replace(/an (?:krefeld|bonn|muelheim)@slt-rental\.de gesendet/gi, `an ${locationEmail} gesendet`);
   };
   const productUrl = abs(`/mieten/${p.locationId}/${p.category}/${p.id}`);
+  const offer = seoRentalOffer({ pricePerMonth: p.pricePerMonth, pricePerDay: p.pricePerDay, dailyNet: p.seoDailyNet, eventBundle: p.seoEventBundle, bundleNet: p.seoBundleNet, url: productUrl });
   const image = p.image
     ? p.image.startsWith("http")
       ? p.image
@@ -329,16 +330,16 @@ export function buildProductSchemas(p: PrerenderProduct | undefined): JsonLd[] {
           })),
         }
       : {}),
-    ...(seoRentalOffer({ pricePerMonth: p.pricePerMonth, pricePerDay: p.pricePerDay, dailyNet: p.seoDailyNet, eventBundle: p.seoEventBundle, url: productUrl })
-      ? { offers: seoRentalOffer({ pricePerMonth: p.pricePerMonth, pricePerDay: p.pricePerDay, dailyNet: p.seoDailyNet, eventBundle: p.seoEventBundle, url: productUrl }) }
-      : {}),
+    ...(offer ? { offers: offer } : {}),
   };
 
   // strip undefineds to keep JSON tidy
   Object.keys(product).forEach((k) => product[k] === undefined && delete product[k]);
 
   const out: JsonLd[] = [
-    product,
+    // Quote-only articles have no Product rich-result evidence. Keep the page,
+    // breadcrumbs and local business, without inventing prices or ratings.
+    ...(offer ? [product] : []),
     localBusiness(p.locationId),
   ];
 

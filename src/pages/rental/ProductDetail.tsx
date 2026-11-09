@@ -397,6 +397,7 @@ export default function ProductDetail() {
       }
 
 
+      const offer = seoRentalOffer({ pricePerMonth: product.pricePerMonth, pricePerDay: product.pricePerDay, dailyNet: product.pricingScheme === "bau" ? product.priceFrom1Rd : undefined, eventBundle: product.pricingScheme === "event" && Boolean(product.priceBase13Cd), bundleNet: product.priceBase13Cd, url: canonicalUrl, availability: getProductAvailability(product, location.id, { categoryId }).schemaAvailability });
       const jsonLd: Record<string, unknown> = {
         "@context": "https://schema.org",
         "@type": "Product",
@@ -406,9 +407,7 @@ export default function ProductDetail() {
         "url": canonicalUrl,
         "category": category.title,
         "sku": product.id,
-        ...(seoRentalOffer({ pricePerMonth: product.pricePerMonth, pricePerDay: product.pricePerDay, dailyNet: product.pricingScheme === "bau" ? product.priceFrom1Rd : undefined, eventBundle: product.pricingScheme === "event" && Boolean(product.priceBase13Cd), url: canonicalUrl, availability: getProductAvailability(product, location.id, { categoryId }).schemaAvailability })
-          ? { offers: seoRentalOffer({ pricePerMonth: product.pricePerMonth, pricePerDay: product.pricePerDay, dailyNet: product.pricingScheme === "bau" ? product.priceFrom1Rd : undefined, eventBundle: product.pricingScheme === "event" && Boolean(product.priceBase13Cd), url: canonicalUrl, availability: getProductAvailability(product, location.id, { categoryId }).schemaAvailability }) }
-          : {}),
+        ...(offer ? { offers: offer } : {}),
 
       };
       // Add brand + model if modelName exists
@@ -426,7 +425,7 @@ export default function ProductDetail() {
       // Real location reviews belong only to the location, not every product.
       const locRating = REAL_LOCATION_REVIEWS[locationId];
 
-      const jsonLdArray: Record<string, unknown>[] = [jsonLd];
+      const jsonLdArray: Record<string, unknown>[] = offer ? [jsonLd] : [];
 
       // LocalBusiness JSON-LD for the active location (links Product → verified GBP via sameAs)
       const localBusiness = { ...SLT_LOCATION_JSONLD(location.id) } as Record<string, unknown>;
