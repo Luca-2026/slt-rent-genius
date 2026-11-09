@@ -1,6 +1,6 @@
 import { formatRentalMoment, rentalPeriodOf } from "@/lib/rentalPeriod";
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ChevronDown } from "lucide-react";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useRentalInquiries } from "@/hooks/useInquiries";
@@ -38,6 +38,7 @@ export default function RentalInquiryDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { isStaff, loading: accessLoading } = useStaffAccess();
+  const { user } = useAuth();
   const { rows, loading, reload } = useRentalInquiries();
   const protocols = useRentalProtocolStatus();
   const selected = rows.find((r) => r.id === id) ?? null;
