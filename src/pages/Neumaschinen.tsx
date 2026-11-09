@@ -134,12 +134,6 @@ const jsonLdAutoDealer = {
       { "@type": "OfferCatalog", name: "Hercu-Erdraketen", description: "Pneumatische Bodendurchschlagsgeräte (Erdraketen) von Hercu Pneumatic – SLT Rental ist autorisierter Vertriebs- und Servicepartner in NRW" },
     ],
   },
-  makesOffer: [
-    { "@type": "Offer", itemOffered: { "@type": "Product", name: "LiuGong Bagger", category: "Baumaschinen" } },
-    { "@type": "Offer", itemOffered: { "@type": "Product", name: "BAUMAX Rüttelplatten", category: "Verdichtungstechnik" } },
-    { "@type": "Offer", itemOffered: { "@type": "Product", name: "Temared PKW-Anhänger", category: "Anhänger" } },
-    { "@type": "Offer", itemOffered: { "@type": "Product", name: "Hercu-Erdraketen", brand: "Hercu", category: "Erdrakete / Bodendurchschlagsgerät" } },
-  ],
 };
 
 const brandDbNames: Record<string, string> = {
@@ -537,7 +531,7 @@ export default function Neumaschinen() {
         jsonLd={[
           {
             "@context": "https://schema.org",
-            "@type": "WebPage",
+            "@type": "CollectionPage",
             "@id": "https://www.slt-rental.de/verkauf/neumaschinen#webpage",
             url: "https://www.slt-rental.de/verkauf/neumaschinen",
             name: "Neue Baumaschinen und Zubehör kaufen | SLT Rental",
@@ -561,40 +555,11 @@ export default function Neumaschinen() {
               "@type": "ListItem",
               position: i + 1,
               item: {
-                "@type": "Product",
+                // The collection links to product pages; only those pages own
+                // the complete Product/Offer/image data for rich results.
+                "@type": "WebPage",
                 name: m.name,
-                url: `https://www.slt-rental.de/verkauf/neumaschinen/${m.slug}`,
-                brand: m.brand ? { "@type": "Brand", name: m.brand } : undefined,
-                category: m.category || undefined,
-                offers: m.price_gross && !m.price_on_request
-                  ? {
-                      "@type": "Offer",
-                      price: String(m.price_gross),
-                      priceCurrency: "EUR",
-                      availability: "https://schema.org/InStock",
-                      url: `https://www.slt-rental.de/verkauf/neumaschinen/${m.slug}`,
-                      priceValidUntil: new Date(new Date().getFullYear(), 11, 31).toISOString().split("T")[0],
-                      ...(m.compare_at_price && Number(m.compare_at_price) > Number(m.price_gross)
-                        ? {
-                            priceSpecification: [
-                              {
-                                "@type": "UnitPriceSpecification",
-                                price: Number(m.price_gross).toFixed(2),
-                                priceCurrency: "EUR",
-                                valueAddedTaxIncluded: true,
-                              },
-                              {
-                                "@type": "UnitPriceSpecification",
-                                priceType: "https://schema.org/ListPrice",
-                                price: Number(m.compare_at_price).toFixed(2),
-                                priceCurrency: "EUR",
-                                valueAddedTaxIncluded: true,
-                              },
-                            ],
-                          }
-                        : {}),
-                    }
-                  : undefined,
+                url: `https://www.slt-rental.de/verkauf/neumaschinen/${encodeURIComponent(m.slug)}/`,
               },
             })),
           },
