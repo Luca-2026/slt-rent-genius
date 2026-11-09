@@ -96,8 +96,7 @@ Deno.serve(async (req) => {
 
   if (suppressError) {
     console.error('Failed to upsert suppressed email', {
-      code: suppressError.code,
-      message: suppressError.message,
+      error: suppressError,
       email_redacted: normalizedEmail[0] + '***@' + normalizedEmail.split('@')[1],
     })
     return jsonResponse({ error: 'Failed to write suppression' }, 500)
@@ -121,8 +120,7 @@ Deno.serve(async (req) => {
   if (insertError) {
     // Non-fatal — log and continue. The suppression was already recorded.
     console.warn('Failed to insert email_send_log', {
-      code: insertError.code,
-      message: insertError.message,
+      error: insertError,
     })
   }
 
