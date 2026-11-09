@@ -6,39 +6,7 @@ import { TEMPLATES } from '../_shared/transactional-email-templates/registry.ts'
 import { z } from 'npm:zod@3.25.76'
 import { resolveAddressForm } from '../_shared/salutation.ts'
 import { returnReminderContent } from '../_shared/return-reminder-content.ts'
-
-// Configuration baked in at scaffold time — do NOT change these manually.
-// To update, re-run the email domain setup flow.
-const SITE_NAME = "SLT Rental"
-// SENDER_DOMAIN is the verified sender FQDN: a delegated subdomain (e.g., "notify.example.com"), or, on a
-// domain registered through Lovable, the domain itself or a name under it (e.g., "example.com", "app.example.com").
-// It MUST match the sender verified in Lovable's email setup.
-// The email API looks up this exact domain; a mismatch causes "No email domain record found".
-const SENDER_DOMAIN = "notify.slt-rental.de"
-// FROM_DOMAIN is the domain shown in the From: header (e.g., "example.com").
-// When display_from_root is enabled, this can be the root domain for cleaner branding,
-// even though actual sending uses the subdomain above.
-const FROM_DOMAIN = "slt-rental.de"
-
-function redactEmail(email: string | null | undefined): string {
-  if (!email) return '***'
-  const [localPart, domain] = email.split('@')
-  if (!localPart || !domain) return '***'
-  return `${localPart[0]}***@${domain}`
-}
-
-// Generate a cryptographically random 32-byte hex token
-function generateToken(): string {
-  const bytes = new Uint8Array(32)
-  crypto.getRandomValues(bytes)
-  return Array.from(bytes)
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('')
-}
-
-// Auth note: this function uses verify_jwt = true in config.toml, so Supabase's
-// gateway validates the caller's JWT (anon or service_role) before the request
-// reaches this code. No in-function auth check is needed.
+import { sendReturnReminder, ReminderSendError } from '../_shared/return-reminder-resend.ts'
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -63,7 +31,6 @@ Deno.serve(async (req) => {
   // Parse request body
   let templateName: string
   let recipientEmail: string
-  let idempotencyKey: string
   let messageId: string
   let templateData: Record<string, any> = {}
   let reminder: Record<string, any> | undefined
@@ -101,14 +68,13 @@ Deno.serve(async (req) => {
     const { data: claim, error: claimError } = await client.rpc('claim_rental_return_reminder', { _inquiry: inquiry.id, _stage: stage, _expected_email: expectedEmail, _no_response: noResponseConfirmed ?? false })
     if (claimError || !claim?.delivery) return json({ error: claimError?.message ?? 'Versand konnte nicht vorbereitet werden' }, 409)
     reminder = claim.delivery
-    if (claim.already_queued) return json({ success: true, alreadyQueued: true })
+    if (claim.already_queued) return json({ success: true, alreadyQueued: true, sent: reminder?.status === 'sent' })
     const snapshot = reminder?.customer_snapshot ?? {}
     templateData = { stage, ...returnReminderContent(stage, snapshot.name ?? '', form), orderCode: snapshot.order_code, productName: snapshot.product_name, endDate: new Date(`${snapshot.end_date}T12:00:00Z`).toLocaleDateString('de-DE', { timeZone: 'Europe/Berlin' }), replyTo: reminder?.reply_to }
     templateName = 'rental-return-reminder'
     recipientEmail = reminder?.recipient_email
     replyTo = reminder?.reply_to
     messageId = reminder?.message_id
-    idempotencyKey = `rental-return-${reminder?.id}`
   } catch {
     return new Response(
       JSON.stringify({ error: 'Die Erinnerung konnte nicht vorbereitet werden' }),
@@ -165,167 +131,6 @@ Deno.serve(async (req) => {
   // Create Supabase client with service role (bypasses RLS)
   const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-  // 2. Check suppression list (fail-closed: if we can't verify, don't send)
-  const { data: suppressed, error: suppressionError } = await supabase
-    .from('suppressed_emails')
-    .select('id')
-    .eq('email', effectiveRecipient.toLowerCase())
-    .maybeSingle()
-
-  if (suppressionError) {
-    console.error('Suppression check failed — refusing to send', {
-      code: suppressionError.code,
-      message: suppressionError.message,
-      recipient_redacted: redactEmail(effectiveRecipient),
-    })
-    return new Response(
-      JSON.stringify({ error: 'Failed to verify suppression status' }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
-    )
-  }
-
-  if (suppressed) {
-    // Log the suppressed attempt
-    await supabase.from('email_send_log').insert({
-      message_id: messageId,
-      template_name: templateName,
-      recipient_email: effectiveRecipient,
-      status: 'suppressed',
-    })
-
-    console.log('Email suppressed', { templateName, recipient_redacted: redactEmail(effectiveRecipient) })
-    return new Response(
-      JSON.stringify({ success: false, reason: 'email_suppressed' }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
-    )
-  }
-
-  // 3. Get or create unsubscribe token (one token per email address)
-  const normalizedEmail = effectiveRecipient.toLowerCase()
-  let unsubscribeToken: string
-
-  // Check for existing token for this email
-  const { data: existingToken, error: tokenLookupError } = await supabase
-    .from('email_unsubscribe_tokens')
-    .select('token, used_at')
-    .eq('email', normalizedEmail)
-    .maybeSingle()
-
-  if (tokenLookupError) {
-    console.error('Token lookup failed', {
-      code: tokenLookupError.code,
-      message: tokenLookupError.message,
-      email_redacted: redactEmail(normalizedEmail),
-    })
-    await supabase.from('email_send_log').insert({
-      message_id: messageId,
-      template_name: templateName,
-      recipient_email: effectiveRecipient,
-      status: 'failed',
-      error_message: 'Failed to look up unsubscribe token',
-    })
-    return new Response(
-      JSON.stringify({ error: 'Failed to prepare email' }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
-    )
-  }
-
-  if (existingToken && !existingToken.used_at) {
-    // Reuse existing unused token
-    unsubscribeToken = existingToken.token
-  } else if (!existingToken) {
-    // Create new token — upsert handles concurrent inserts gracefully
-    unsubscribeToken = generateToken()
-    const { error: tokenError } = await supabase
-      .from('email_unsubscribe_tokens')
-      .upsert(
-        { token: unsubscribeToken, email: normalizedEmail },
-        { onConflict: 'email', ignoreDuplicates: true }
-      )
-
-    if (tokenError) {
-      console.error('Failed to create unsubscribe token', {
-        code: tokenError.code,
-        message: tokenError.message,
-      })
-      await supabase.from('email_send_log').insert({
-        message_id: messageId,
-        template_name: templateName,
-        recipient_email: effectiveRecipient,
-        status: 'failed',
-        error_message: 'Failed to create unsubscribe token',
-      })
-      return new Response(
-        JSON.stringify({ error: 'Failed to prepare email' }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        }
-      )
-    }
-
-    // If another request raced us, our upsert was silently ignored.
-    // Re-read to get the actual stored token.
-    const { data: storedToken, error: reReadError } = await supabase
-      .from('email_unsubscribe_tokens')
-      .select('token')
-      .eq('email', normalizedEmail)
-      .maybeSingle()
-
-    if (reReadError || !storedToken) {
-      console.error('Failed to read back unsubscribe token after upsert', {
-        code: reReadError?.code,
-        message: reReadError?.message,
-        email_redacted: redactEmail(normalizedEmail),
-      })
-      await supabase.from('email_send_log').insert({
-        message_id: messageId,
-        template_name: templateName,
-        recipient_email: effectiveRecipient,
-        status: 'failed',
-        error_message: 'Failed to confirm unsubscribe token storage',
-      })
-      return new Response(
-        JSON.stringify({ error: 'Failed to prepare email' }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        }
-      )
-    }
-    unsubscribeToken = storedToken.token
-  } else {
-    // Token exists but is already used — email should have been caught by suppression check above.
-    // This is a safety fallback; log and skip sending.
-    console.warn('Unsubscribe token already used but email not suppressed', {
-      email_redacted: redactEmail(normalizedEmail),
-    })
-    await supabase.from('email_send_log').insert({
-      message_id: messageId,
-      template_name: templateName,
-      recipient_email: effectiveRecipient,
-      status: 'suppressed',
-      error_message:
-        'Unsubscribe token used but email missing from suppressed list',
-    })
-    return new Response(
-      JSON.stringify({ success: false, reason: 'email_suppressed' }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
-    )
-  }
-
   // 4. Render React Email template to HTML and plain text
   const html = await renderAsync(
     React.createElement(template.component, templateData)
@@ -341,69 +146,44 @@ Deno.serve(async (req) => {
       ? template.subject(templateData)
       : template.subject
 
-  // 5. Enqueue the pre-rendered email for async processing by the dispatcher.
-  // The dispatcher (process-email-queue) handles sending, retries, and rate-limit backoff.
-
-  // Log pending BEFORE enqueue so we have a record even if enqueue crashes
-  await supabase.from('email_send_log').insert({
-    message_id: messageId,
-    template_name: templateName,
-    recipient_email: effectiveRecipient,
-    status: 'pending',
-  })
-
-  const { error: enqueueError } = await supabase.rpc('enqueue_email', {
-    queue_name: 'transactional_emails',
-    payload: {
-      message_id: messageId,
-      to: effectiveRecipient,
-      from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
-      sender_domain: SENDER_DOMAIN,
-      reply_to: replyTo,
-      subject: resolvedSubject,
-      html,
-      text: plainText,
-      purpose: 'transactional',
-      label: templateName,
-      idempotency_key: idempotencyKey,
-      unsubscribe_token: unsubscribeToken,
-      queued_at: new Date().toISOString(),
-    },
-  })
-
-  if (enqueueError) {
-    console.error('Failed to enqueue email', {
-      code: enqueueError.code,
-      message: enqueueError.message,
-      templateName,
-      recipient_redacted: redactEmail(effectiveRecipient),
-    })
-
-    await supabase.from('email_send_log').insert({
-      message_id: messageId,
-      template_name: templateName,
-      recipient_email: effectiveRecipient,
-      status: 'failed',
-      error_message: 'Failed to enqueue email',
-    })
-
-    return new Response(JSON.stringify({ error: 'Failed to enqueue email' }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+  // This endpoint is exclusively for manual return reminders. Existing mail settings stay untouched.
+  const key = Deno.env.get('RESEND_API_KEY')
+  if (!key) return json({ error: 'Resend-Versand ist nicht konfiguriert' }, 503)
+  const log = async (status: string, error_message?: string, metadata?: Record<string, unknown>) => {
+    const { error } = await supabase.from('email_send_log').insert({ message_id: messageId, template_name: templateName, recipient_email: effectiveRecipient, status, error_message, metadata: { provider: 'resend', ...metadata } })
+    if (error) throw new Error('Versandbeleg konnte nicht gespeichert werden')
   }
-
-  console.log('Transactional email enqueued', { templateName, recipient_redacted: redactEmail(effectiveRecipient) })
-  if (reminder) {
-    const { error: saveError } = await supabase.from('rental_return_reminders').update({ status: 'queued', queued_at: new Date().toISOString() }).eq('id', reminder.id)
-    if (saveError) return json({ error: 'Versand vorbereitet, aber Verlauf nicht aktualisiert. Bitte neu laden; nicht erneut senden.' }, 500)
+  // Never bypass an existing recipient suppression.
+  const { data: suppressed, error: suppressionError } = await supabase.from('suppressed_emails').select('id').eq('email', effectiveRecipient.toLowerCase()).limit(1).maybeSingle()
+  if (suppressionError) return json({ error: 'Empfängersperre konnte nicht geprüft werden' }, 503)
+  if (suppressed) {
+    await log('suppressed')
+    await supabase.from('rental_return_reminders').update({ status: 'suppressed' }).eq('id', reminder?.id)
+    return json({ success: false, reason: 'email_suppressed' })
   }
-
-  return new Response(
-    JSON.stringify({ success: true, queued: true }),
-    {
-      status: 200,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  if (!reminder?.id || !replyTo) return json({ error: 'Erinnerungsbeleg unvollständig' }, 500)
+  // Set queued before dispatch: uncertain delivery remains blocked, never blindly resent.
+  const { error: pendingError } = await supabase.from('rental_return_reminders').update({ status: 'queued', queued_at: new Date().toISOString() }).eq('id', reminder.id)
+  if (pendingError) return json({ error: 'Versand konnte nicht sicher vorbereitet werden' }, 500)
+  try {
+    await log('pending')
+    const providerId = await sendReturnReminder(key, {
+      deliveryId: reminder.id,
+      from: `SLT Rental <noreply@${Deno.env.get('RESEND_DOMAIN') || 'slt-rental.de'}>`,
+      recipient: effectiveRecipient, replyTo, subject: resolvedSubject, html, text: plainText,
+    })
+    await log('sent', undefined, { provider_id: providerId, reply_to: replyTo })
+    const { error: savedError } = await supabase.from('rental_return_reminders').update({ status: 'sent' }).eq('id', reminder.id)
+    if (savedError) return json({ error: 'Versendet, aber Verlauf nicht aktualisiert. Bitte Status prüfen; nicht erneut senden.' }, 500)
+    return json({ success: true, sent: true })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Versand nicht bestätigt'
+    console.error('Return reminder send not confirmed:', message)
+    if (error instanceof ReminderSendError && !error.uncertain) {
+      await log('failed', message)
+      await supabase.from('rental_return_reminders').update({ status: 'failed' }).eq('id', reminder.id)
     }
-  )
+    // Transport failures or receipt-write failures keep the pending claim locked.
+    return json({ error: message, status: error instanceof ReminderSendError ? error.status : 500 }, error instanceof ReminderSendError ? error.status : 500)
+  }
 })

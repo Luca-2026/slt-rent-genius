@@ -36,8 +36,8 @@ export function ReturnReminderActions({ inquiryId }: { inquiryId: string }) {
     try {
       const { data, error: failure } = await invokeWithAuth('send-transactional-email', { inquiryId, action: 'send', stage: preview.stage, expectedEmail: email, noResponseConfirmed: confirmed });
       if (failure || data?.error || !data?.success) throw new Error(data?.error ?? (data?.reason === 'email_suppressed' ? 'Diese Kundenadresse empfängt keine App-E-Mails.' : 'Versand fehlgeschlagen'));
-      toast({ title: data.alreadyQueued ? 'Erinnerung bereits vorbereitet' : 'Erinnerung für Versand vorgemerkt' }); setPreview(null); await load();
-    } catch (e) { toast({ title: 'Erinnerung nicht versendet', description: e instanceof Error ? e.message : 'Bitte erneut versuchen', variant: 'destructive' }); }
+      toast({ title: data.sent ? 'Erinnerung versendet' : 'Versand bereits vorbereitet – Status prüfen' }); setPreview(null); await load();
+    } catch (e) { toast({ title: 'Versand nicht bestätigt', description: e instanceof Error ? e.message : 'Bitte erneut versuchen', variant: 'destructive' }); await load(); }
     finally { setBusy(false); }
   }
   const blocked = (stage: number) => history.some(h => h.stage === stage && ['sent','pending','queued','preparing'].includes(h.status));

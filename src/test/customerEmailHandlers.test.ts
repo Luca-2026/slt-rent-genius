@@ -27,7 +27,7 @@ describe("customer mail suppression in real edge handlers (no money/mail)", () =
     const creditRefund = vi.fn(async () => ({ success: true, status: "succeeded", amount_cents: 4000 }));
     const service = { auth: { getUser: async () => ({ data: { user: { id: "staff" } } }) }, rpc: async () => ({ data: true }),
       from: () => { const q = { select: () => q, eq: () => q, in: async () => ({ data: [{ role: "admin" }] }) }; return q; } };
-    const run = handler("offer-payment-admin", { createClient: () => service, isStripeConfigured: () => true, creditRefund, fetch });
+  const run = handler("offer-payment-admin", { corsHeaders: { 'Access-Control-Allow-Origin': '*' }, createClient: () => service, isStripeConfigured: () => true, creditRefund, fetch });
     const response = await run(new Request("https://local.test", { method: "POST", headers: { Authorization: "Bearer isolated" }, body: JSON.stringify({ action: "refund_credit_note", credit_note_id: "credit" }) }));
     expect(response.status).toBe(200);
     expect(await response.json()).toMatchObject({ success: true, amount_cents: 4000, customer_mailed: false });
