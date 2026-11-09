@@ -5133,6 +5133,62 @@ export type Database = {
           },
         ]
       }
+      rental_return_reminders: {
+        Row: {
+          actor_id: string
+          actor_name: string
+          created_at: string
+          customer_snapshot: Json
+          id: string
+          message_id: string
+          no_response_confirmed: boolean
+          queued_at: string | null
+          recipient_email: string
+          rental_inquiry_id: string
+          reply_to: string
+          stage: number
+          status: string
+        }
+        Insert: {
+          actor_id: string
+          actor_name: string
+          created_at?: string
+          customer_snapshot: Json
+          id?: string
+          message_id?: string
+          no_response_confirmed?: boolean
+          queued_at?: string | null
+          recipient_email: string
+          rental_inquiry_id: string
+          reply_to: string
+          stage: number
+          status?: string
+        }
+        Update: {
+          actor_id?: string
+          actor_name?: string
+          created_at?: string
+          customer_snapshot?: Json
+          id?: string
+          message_id?: string
+          no_response_confirmed?: boolean
+          queued_at?: string | null
+          recipient_email?: string
+          rental_inquiry_id?: string
+          reply_to?: string
+          stage?: number
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_return_reminders_rental_inquiry_id_fkey"
+            columns: ["rental_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "rental_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sales_article_costs: {
         Row: {
           article_id: string
@@ -6813,6 +6869,10 @@ export type Database = {
         Returns: boolean
       }
       can_manage_credit_checks: { Args: { _actor: string }; Returns: boolean }
+      can_send_rental_return_reminder: {
+        Args: { _actor: string; _location: string }
+        Returns: boolean
+      }
       cash_register_for_location: { Args: { _loc: string }; Returns: string }
       change_rental_inquiry_location: {
         Args: { _inquiry_id: string; _new_location: string }
@@ -6864,6 +6924,15 @@ export type Database = {
       claim_rental_checkout: {
         Args: { _claim: string; _link: string; _version: number }
         Returns: boolean
+      }
+      claim_rental_return_reminder: {
+        Args: {
+          _expected_email: string
+          _inquiry: string
+          _no_response?: boolean
+          _stage: number
+        }
+        Returns: Json
       }
       close_expired_rental_inquiries: { Args: never; Returns: number }
       close_rental_without_protocol: {

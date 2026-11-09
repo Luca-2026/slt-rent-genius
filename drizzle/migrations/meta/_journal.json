@@ -1191,6 +1191,13 @@
       "when": 1794055852249,
       "tag": "0169_allow_newly_sent_started_rental_offer_acceptance",
       "breakpoints": true
+    },
+    {
+      "idx": 170,
+      "version": "7",
+      "when": 1794208286815,
+      "tag": "0170_manual_rental_return_reminders",
+      "breakpoints": true
     }
   ]
 }
