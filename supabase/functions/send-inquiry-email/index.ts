@@ -24,7 +24,7 @@ const cartSchema = z.object({
 }).refine(value => !value.deliveryRequested || !!(value.deliveryStreet?.trim() && value.deliveryPostalCode?.trim() && value.deliveryCity?.trim()));
 
 
-const SLT_LOGO = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
+const SLT_LOGO = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-rental-logo-email.png";
 const COMPANY_NAME = "SLT Technology Group GmbH & Co. KG";
 
 function escapeHtml(input: unknown): string {

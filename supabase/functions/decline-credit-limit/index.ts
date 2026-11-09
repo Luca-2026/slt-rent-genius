@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 const SLT_LOGO =
-  "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
+  "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-rental-logo-email.png";
 
 // Source of truth: src/data/locationData.ts (spelled out to avoid inventing data)
 const LOCATION_LABEL: Record<string, string> = {

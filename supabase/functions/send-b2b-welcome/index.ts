@@ -136,7 +136,7 @@ Deno.serve(async (req) => {
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#ffffff;border-collapse:collapse;">
         <tr>
           <td align="center" style="padding:24px 32px;background:#ffffff;border-bottom:3px solid #ff8e02;">
-            <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-rental-logo.png" alt="SLT Rental" height="48" style="display:block;height:48px;border:0;outline:none;text-decoration:none;">
+            <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-rental-logo-email.png" alt="SLT Rental" height="48" style="display:block;height:48px;border:0;outline:none;text-decoration:none;">
           </td>
         </tr>
         <tr>

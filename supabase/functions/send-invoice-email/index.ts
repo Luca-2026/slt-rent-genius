@@ -136,7 +136,7 @@ Deno.serve(async (req: Request) => {
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
     <div style="background:#ffffff;padding:25px 40px;text-align:center;border-bottom:3px solid #00507d;">
-      <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental Logo" style="height:70px;width:auto;" />
+      <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-rental-logo-email.png" alt="SLT-Rental Logo" style="height:70px;width:auto;" />
     </div>
     <div style="background:#00507d;padding:14px 40px;text-align:center;">
       <p style="color:#ffffff;margin:0;font-size:15px;font-weight:600;">${t("Deine", "Ihre")} ${escapeHtml(docLabel)}</p>

@@ -226,7 +226,7 @@ Deno.serve(async (req: Request) => {
             body.role === "buchhaltung" ? "Buchhaltung" :
             "Lesezugriff";
 
-          const logoUrl = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png";
+          const logoUrl = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-rental-logo-email.png";
 
           const emailHtml = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f8;">
