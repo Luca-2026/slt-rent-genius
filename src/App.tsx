@@ -78,6 +78,7 @@ const KnowledgeBase = lazy(() => import("./pages/KnowledgeBase"));
 const AGB = lazy(() => import("./pages/AGB"));
 const Impressum = lazy(() => import("./pages/Impressum"));
 const Datenschutz = lazy(() => import("./pages/Datenschutz"));
+const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const Tiefpreisgarantie = lazy(() => import("./pages/Tiefpreisgarantie"));
 
 const VerkaufDanke = lazy(() => import("./pages/VerkaufDanke"));
@@ -268,6 +269,7 @@ const App = () => (
               <Route path="/b2b" element={<B2BLogin />} />
               
               {/* Catch-all */}
+              <Route path="/unsubscribe" element={<Unsubscribe />} />
               <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>

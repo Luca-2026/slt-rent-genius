@@ -3,6 +3,7 @@ import { normalizeOpenEndedUnit, normalizeOpenEndedDuration, type OpenEndedUnit 
 import { DepositSettlementCard } from "./DepositSettlementCard";
 import { CreditNoteRefund } from "./CreditNoteRefund";
 import { RentalCreditRefund } from "./RentalCreditRefund";
+import { ReturnReminderActions } from "./ReturnReminderActions";
 import { InvoicePdfButton } from "./InvoicePdfButton";
 import { requestedCoupon } from "@/lib/requestedCoupon";
 import { ReturnChargesSummary } from "./ReturnChargesSummary";
@@ -883,6 +884,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           </Button>
         )}
         {protocolSection}
+        {inquiryType === "rental" && (isAdmin || isBranchManager) && <ReturnReminderActions key={`${inquiry.id}:${inquiry.status}`} inquiryId={inquiry.id} />}
         {editorOpen && <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="font-semibold text-sm">

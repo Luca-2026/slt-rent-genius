@@ -3,6 +3,9 @@ import { renderAsync } from 'npm:@react-email/components@0.0.22'
 import { createClient } from 'npm:@supabase/supabase-js@2'
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
 import { TEMPLATES } from '../_shared/transactional-email-templates/registry.ts'
+import { z } from 'npm:zod@3.25.76'
+import { resolveAddressForm } from '../_shared/salutation.ts'
+import { returnReminderContent } from '../_shared/return-reminder-content.ts'
 
 // Configuration baked in at scaffold time — do NOT change these manually.
 // To update, re-run the email domain setup flow.
@@ -63,18 +66,52 @@ Deno.serve(async (req) => {
   let idempotencyKey: string
   let messageId: string
   let templateData: Record<string, any> = {}
+  let reminder: Record<string, any> | undefined
+  let replyTo: string | undefined
+  const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
   try {
     const body = await req.json()
-    templateName = body.templateName || body.template_name
-    recipientEmail = body.recipientEmail || body.recipient_email
-    messageId = crypto.randomUUID()
-    idempotencyKey = body.idempotencyKey || body.idempotency_key || messageId
-    if (body.templateData && typeof body.templateData === 'object') {
-      templateData = body.templateData
+    const parsed = z.object({ inquiryId: z.string().uuid(), action: z.enum(['status','preview','send']), stage: z.union([z.literal(1),z.literal(2)]).optional(), expectedEmail: z.string().email().max(255).optional(), noResponseConfirmed: z.boolean().optional() }).strict().safeParse(body)
+    if (!parsed.success) return json({ error: 'Ungültige Erinnerungsanfrage' }, 400)
+    const authorization = req.headers.get('Authorization') ?? ''
+    const client = createClient(supabaseUrl, Deno.env.get('SUPABASE_ANON_KEY') ?? '', { global: { headers: { Authorization: authorization } } })
+    const { data: { user }, error: authError } = await client.auth.getUser(authorization.replace(/^Bearer\s+/i, ''))
+    if (authError || !user) return json({ error: 'Bitte erneut anmelden' }, 401)
+    const svc = createClient(supabaseUrl, supabaseServiceKey)
+    const { data: inquiry, error: readError } = await svc.from('rental_inquiries').select('*').eq('id', parsed.data.inquiryId).single()
+    if (readError || !inquiry) return json({ error: 'Auftrag nicht gefunden' }, 404)
+    const { data: permitted, error: permissionError } = await svc.rpc('can_send_rental_return_reminder', { _actor: user.id, _location: inquiry.location })
+    if (permissionError || !permitted) return json({ error: 'Keine Berechtigung für Rückgabeerinnerungen an diesem Standort' }, 403)
+    const { data: history, error: historyError } = await svc.from('rental_return_reminders').select('*').eq('rental_inquiry_id', inquiry.id).order('stage')
+    if (historyError) return json({ error: 'Versandverlauf konnte nicht geladen werden' }, 500)
+    const deliveries = []
+    for (const h of history ?? []) {
+      const { data: log, error: logError } = await svc.from('email_send_log').select('status,created_at').eq('message_id', h.message_id).order('created_at', { ascending: false }).limit(1).maybeSingle()
+      if (logError) return json({ error: 'Versandstatus konnte nicht geprüft werden' }, 500)
+      deliveries.push({ ...h, status: log?.status ?? h.status, sent_at: log?.status === 'sent' ? log.created_at : null })
     }
+    if (parsed.data.action === 'status') return json({ deliveries, recipientEmail: inquiry.customer_email })
+    const { stage, expectedEmail, noResponseConfirmed } = parsed.data
+    if (!stage || !expectedEmail) return json({ error: 'Stufe und Kundenadresse fehlen' }, 400)
+    if (expectedEmail.trim().toLowerCase() !== String(inquiry.customer_email).trim().toLowerCase()) return json({ error: 'Kundenadresse geändert. Bitte neu laden' }, 409)
+    const form = await resolveAddressForm(svc, inquiry)
+    const content = returnReminderContent(stage, inquiry.customer_name ?? '', form)
+    templateData = { stage, ...content, orderCode: inquiry.order_code, productName: inquiry.product_name, endDate: inquiry.end_date, replyTo: inquiry.location_email }
+    if (parsed.data.action === 'preview') return json({ ...content, recipientEmail: inquiry.customer_email, orderCode: inquiry.order_code })
+    const { data: claim, error: claimError } = await client.rpc('claim_rental_return_reminder', { _inquiry: inquiry.id, _stage: stage, _expected_email: expectedEmail, _no_response: noResponseConfirmed ?? false })
+    if (claimError || !claim?.delivery) return json({ error: claimError?.message ?? 'Versand konnte nicht vorbereitet werden' }, 409)
+    reminder = claim.delivery
+    if (claim.already_queued) return json({ success: true, alreadyQueued: true })
+    const snapshot = reminder?.customer_snapshot ?? {}
+    templateData = { stage, ...returnReminderContent(stage, snapshot.name ?? '', form), orderCode: snapshot.order_code, productName: snapshot.product_name, endDate: new Date(`${snapshot.end_date}T12:00:00Z`).toLocaleDateString('de-DE', { timeZone: 'Europe/Berlin' }), replyTo: reminder?.reply_to }
+    templateName = 'rental-return-reminder'
+    recipientEmail = reminder?.recipient_email
+    replyTo = reminder?.reply_to
+    messageId = reminder?.message_id
+    idempotencyKey = `rental-return-${reminder?.id}`
   } catch {
     return new Response(
-      JSON.stringify({ error: 'Invalid JSON in request body' }),
+      JSON.stringify({ error: 'Die Erinnerung konnte nicht vorbereitet werden' }),
       {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -322,6 +359,7 @@ Deno.serve(async (req) => {
       to: effectiveRecipient,
       from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
       sender_domain: SENDER_DOMAIN,
+      reply_to: replyTo,
       subject: resolvedSubject,
       html,
       text: plainText,
@@ -356,6 +394,10 @@ Deno.serve(async (req) => {
   }
 
   console.log('Transactional email enqueued', { templateName, recipient_redacted: redactEmail(effectiveRecipient) })
+  if (reminder) {
+    const { error: saveError } = await supabase.from('rental_return_reminders').update({ status: 'queued', queued_at: new Date().toISOString() }).eq('id', reminder.id)
+    if (saveError) return json({ error: 'Versand vorbereitet, aber Verlauf nicht aktualisiert. Bitte neu laden; nicht erneut senden.' }, 500)
+  }
 
   return new Response(
     JSON.stringify({ success: true, queued: true }),
