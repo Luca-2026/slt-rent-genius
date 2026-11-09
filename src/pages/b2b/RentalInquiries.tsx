@@ -134,6 +134,8 @@ export default function RentalInquiries() {
   }, [loading]);
 
   if (!accessLoading && !isStaff) {
+    // Eingeloggte Geschäftskunden mit alten Links/Lesezeichen auf ihre eigene Übersicht umleiten.
+    if (user) return <Navigate to="/b2b/anfragen" replace />;
     return (
       <B2BPortalLayout title="Mietvorgänge">
         <p className="text-muted-foreground">Kein Zugriff auf diesen Bereich.</p>
