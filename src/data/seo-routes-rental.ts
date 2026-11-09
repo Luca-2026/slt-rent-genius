@@ -197,6 +197,7 @@ export interface PrerenderProduct {
   pricePerDay?: string;
   seoDailyNet?: number | null;
   seoEventBundle?: boolean;
+  seoBundleNet?: number | null;
   pricePerMonth?: string;
   priceWeekend?: string;
   priceUnitLabel?: string;

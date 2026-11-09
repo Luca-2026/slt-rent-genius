@@ -331,6 +331,7 @@ if (managedProducts.length) {
         route.productData.pricePerDay = m.price_per_day ?? undefined;
         route.productData.seoDailyNet = m.pricing_scheme === "bau" ? m.price_from_1_rd : undefined;
         route.productData.seoEventBundle = m.pricing_scheme === "event" && Boolean(m.price_base_1_3_cd);
+        route.productData.seoBundleNet = m.pricing_scheme === "event" ? m.price_base_1_3_cd : undefined;
         route.productData.pricePerMonth = m.price_per_month ?? undefined;
         route.productData.priceWeekend = m.price_weekend ?? undefined;
         route.productData.priceUnitLabel = m.price_unit_label ?? undefined;
@@ -512,6 +513,7 @@ const enriched = allRoutes.map((route) => {
         seoPriceSource: route.productData.seoDailyNet ? String(route.productData.seoDailyNet) : undefined,
         seoDailyNet: route.productData.seoDailyNet,
         seoEventBundle: route.productData.seoEventBundle,
+        seoBundleNet: route.productData.seoBundleNet,
         seoGrossPrice: displayPrice(route.productData.seoDailyNet || route.productData.pricePerDay || route.productData.pricePerMonth || route.productData.priceWeekend, "private"),
         pricePerMonth: route.productData.pricePerMonth,
         priceWeekend: route.productData.priceWeekend,
