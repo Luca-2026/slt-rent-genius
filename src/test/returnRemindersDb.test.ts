@@ -8,8 +8,8 @@ beforeAll(async()=>{
     CREATE TABLE user_roles(user_id uuid,role text); CREATE FUNCTION has_role(_user_id uuid,_role text) RETURNS boolean LANGUAGE sql AS $$ SELECT EXISTS(SELECT 1 FROM user_roles WHERE user_id=_user_id AND role=_role) $$;
     CREATE TABLE staff_profiles(user_id uuid,is_active boolean,location text,first_name text,last_name text);
     CREATE TABLE rental_inquiries(id uuid primary key,status text,location text,closed_manually_at timestamptz,order_confirmed_at timestamptz,offer_payload jsonb,raw_payload jsonb,start_date text,end_date text,end_time text,customer_email text,customer_name text,order_code text,product_name text,crm_customer_id uuid,address_form text);
-    CREATE TABLE b2b_return_protocols(rental_inquiry_id uuid,status text); CREATE TABLE email_send_log(message_id uuid,status text,created_at timestamptz default now());`);
-  for(const p of ['0170_manual_rental_return_reminders','0171_return_reminder_retry_identity']) await db.exec(readFileSync(`drizzle/migrations/${p}.sql`,'utf8'));
+    CREATE TABLE b2b_return_protocols(rental_inquiry_id uuid,status text); CREATE TABLE email_send_log(message_id text,status text,created_at timestamptz default now());`);
+  for(const p of ['0170_manual_rental_return_reminders','0171_return_reminder_retry_identity','0172_return_reminder_text_delivery_ids']) await db.exec(readFileSync(`drizzle/migrations/${p}.sql`,'utf8'));
 },30000);
 afterAll(()=>db.close());
 async function role(role:string,location='bonn',active=true){await db.exec('DELETE FROM user_roles; DELETE FROM staff_profiles;'); await db.query('INSERT INTO user_roles VALUES($1,$2)',[actor,role]);await db.query("INSERT INTO staff_profiles VALUES($1,$2,$3,'Luca','Test')",[actor,active,location]);}
