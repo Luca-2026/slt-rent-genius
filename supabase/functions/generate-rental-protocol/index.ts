@@ -327,7 +327,7 @@ Deno.serve(async (req) => {
       const greeting = esc(salutationLine({ address_form: form, salutation: inq.customer_salutation, name: inq.customer_name }));
       const html = `<!DOCTYPE html><html lang="de"><body style="margin:0;background:#f4f6f8;font-family:Arial,Helvetica,sans-serif;color:#1f2328;">
 <div style="max-width:600px;margin:0 auto;background:#ffffff;">
-<div style="padding:24px 32px;text-align:center;border-bottom:3px solid #00507d;"><img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-logo.png" alt="SLT-Rental" style="height:64px;width:auto;"></div>
+<div style="padding:24px 32px;text-align:center;border-bottom:3px solid #00507d;"><img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-rental-logo-email.png" alt="SLT-Rental" style="height:64px;width:auto;"></div>
 <div style="padding:28px 32px;font-size:15px;line-height:1.55;">
 <p>${greeting}</p>
 <p>anbei ${t("erh\u00E4ltst du", "erhalten Sie")} das ${title} <strong>${esc(number)}</strong> vom ${esc(berlin(now))} als PDF.</p>

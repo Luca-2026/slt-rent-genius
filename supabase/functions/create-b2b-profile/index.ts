@@ -94,7 +94,7 @@ async function sendAdminNotification(params: {
 <body style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;background:#f5f5f5;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
     <div style="background:#ffffff;padding:24px 32px;text-align:center;border-bottom:3px solid #f97316;">
-      <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-rental-logo.png" alt="SLT Rental" style="height:48px;" />
+      <img src="https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-rental-logo-email.png" alt="SLT Rental" style="height:48px;" />
     </div>
     <div style="padding:32px;">
       <h1 style="color:#1a1a1a;font-size:20px;margin:0 0 16px;">Neue B2B-Registrierung</h1>
