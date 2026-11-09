@@ -1205,6 +1205,13 @@
       "when": 1794208395742,
       "tag": "0171_return_reminder_retry_identity",
       "breakpoints": true
+    },
+    {
+      "idx": 172,
+      "version": "7",
+      "when": 1794208545239,
+      "tag": "0172_return_reminder_text_delivery_ids",
+      "breakpoints": true
     }
   ]
 }
