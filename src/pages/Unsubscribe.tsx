@@ -8,7 +8,7 @@ export default function Unsubscribe() {
   useEffect(() => {
     if (!token) { setState('invalid'); return; }
     let alive = true;
-    fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/handle-email-unsubscribe?token=${encodeURIComponent(token)}`, { headers: { apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY } }).then(async r => { const d = await r.json(); if(alive) setState(!r.ok ? 'invalid' : d.already_unsubscribed ? 'success' : 'valid'); }).catch(() => { if(alive) setState('error'); });
+    fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/handle-email-unsubscribe?token=${encodeURIComponent(token)}`, { headers: { apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY } }).then(async r => { const d = await r.json(); if(alive) setState(!r.ok ? 'invalid' : d.reason === 'already_unsubscribed' ? 'success' : d.valid ? 'valid' : 'invalid'); }).catch(() => { if(alive) setState('error'); });
     return () => { alive = false; };
   }, [token]);
   async function confirm() { setState('loading'); const {data,error} = await supabase.functions.invoke('handle-email-unsubscribe',{body:{token}}); setState(!error && data?.success ? 'success' : 'error'); }
