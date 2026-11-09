@@ -1,6 +1,13 @@
 import { createClient } from 'npm:@supabase/supabase-js@2'
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
 
+function redactEmail(email: string | null | undefined): string {
+  if (!email) return '***'
+  const [localPart, domain] = email.split('@')
+  if (!localPart || !domain) return '***'
+  return `${localPart[0]}***@${domain}`
+}
+
 function jsonResponse(data: Record<string, unknown>, status = 200): Response {
   return new Response(JSON.stringify(data), {
     status,
@@ -95,7 +102,11 @@ Deno.serve(async (req) => {
     .maybeSingle()
 
   if (updateError) {
-    console.error('Failed to mark token as used')
+    console.error('Failed to mark token as used', {
+      code: updateError.code,
+      message: updateError.message,
+      email_redacted: redactEmail(tokenRecord.email),
+    })
     return jsonResponse({ error: 'Failed to process unsubscribe' }, 500)
   }
 
@@ -112,12 +123,15 @@ Deno.serve(async (req) => {
     )
 
   if (suppressError) {
-    // Database errors can contain the affected email in their message/details.
-    console.error('Failed to suppress email')
+    console.error('Failed to suppress email', {
+      code: suppressError.code,
+      message: suppressError.message,
+      email_redacted: redactEmail(tokenRecord.email),
+    })
     return jsonResponse({ error: 'Failed to process unsubscribe' }, 500)
   }
 
-  console.log('Email unsubscribed')
+  console.log('Email unsubscribed', { email_redacted: redactEmail(tokenRecord.email) })
 
   return jsonResponse({ success: true })
 })
