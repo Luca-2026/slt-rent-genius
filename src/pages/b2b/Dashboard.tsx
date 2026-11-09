@@ -450,7 +450,7 @@ export default function B2BDashboard() {
             </Link>
 
             {/* 3. Mietvorgänge */}
-            <Link to="/b2b/mietvorgaenge" className="block h-full">
+            <Link to="/b2b/anfragen" className="block h-full">
               <Card className="h-full flex flex-col hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader className="pb-2">
                   <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-2">
