@@ -1191,6 +1191,27 @@
       "when": 1794055852249,
       "tag": "0169_allow_newly_sent_started_rental_offer_acceptance",
       "breakpoints": true
+    },
+    {
+      "idx": 170,
+      "version": "7",
+      "when": 1794208286815,
+      "tag": "0170_manual_rental_return_reminders",
+      "breakpoints": true
+    },
+    {
+      "idx": 171,
+      "version": "7",
+      "when": 1794208395742,
+      "tag": "0171_return_reminder_retry_identity",
+      "breakpoints": true
+    },
+    {
+      "idx": 172,
+      "version": "7",
+      "when": 1794208545239,
+      "tag": "0172_return_reminder_text_delivery_ids",
+      "breakpoints": true
     }
   ]
 }
