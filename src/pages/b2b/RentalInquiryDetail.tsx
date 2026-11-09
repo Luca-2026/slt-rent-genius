@@ -5,6 +5,7 @@ import { ArrowLeft, ChevronDown } from "lucide-react";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useRentalInquiries } from "@/hooks/useInquiries";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
+import { useAuth } from "@/hooks/useAuth";
 import { useRentalProtocolStatus } from "@/hooks/useRentalProtocolStatus";
 import { InquiryDetailPanel } from "@/components/b2b/inquiries/InquiryDetailPanel";
 import { RentalProtocolSection } from "@/components/b2b/protocols/RentalProtocolSection";
@@ -50,6 +51,8 @@ export default function RentalInquiryDetail() {
   );
 
   if (!accessLoading && !isStaff) {
+    // Eingeloggte Geschäftskunden mit alten Detail-Links auf ihre eigene Übersicht umleiten.
+    if (user) return <Navigate to="/b2b/anfragen" replace />;
     return (
       <B2BPortalLayout title="Mietvorgang">
         <p className="text-muted-foreground">Kein Zugriff auf diesen Bereich.</p>
