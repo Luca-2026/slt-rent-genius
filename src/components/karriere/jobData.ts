@@ -41,6 +41,7 @@ export interface JobListing {
   salaryMin?: number;
   salaryMax?: number;
   salaryUnit?: "YEAR" | "MONTH" | "HOUR";
+  minijob?: boolean;
   /** Allow remote work */
   remote?: boolean;
   /** SEO meta override */
@@ -76,42 +77,53 @@ export const jobListings: JobListing[] = [
   {
     id: "lieferfahrer",
     slug: "lieferfahrer-vermietung-krefeld-bonn",
-    shortPitch: "Werde Teil unseres Logistik-Teams und liefere Baumaschinen, Anhänger & Equipment direkt zu unseren Kunden in NRW – in Krefeld oder Bonn.",
+    shortPitch: "Dein Minijob in Krefeld oder Bonn: 20 € brutto pro Stunde für Lieferungen, Rücknahmen und Materialpflege – mit flexibler Zeiteinteilung und vollständiger Einarbeitung.",
     locations: [DEFAULT_LOC_KREFELD, DEFAULT_LOC_BONN],
-    employmentType: ["FULL_TIME", "PART_TIME"],
+    employmentType: ["PART_TIME"],
+    minijob: true,
     datePosted: "2026-10-02",
     validThrough: "2027-02-28",
     industry: "Vermietung & Logistik",
-    salaryMin: 14,
-    salaryMax: 18,
+    salaryMin: 20,
+    salaryMax: 20,
     salaryUnit: "HOUR",
     tasks: [
       "Auslieferung und Abholung von Baumaschinen, Anhängern und Eventtechnik ab Krefeld oder Bonn",
       "Sicheres Verladen und Sichern der Mietgegenstände",
       "Kurze Einweisung der Kunden vor Ort",
+      "Rücknahme von Mietgegenständen am Standort und Dokumentation ihres Zustands",
+      "Reinigung, Materialpflege und Vorbereitung von Mietgegenständen für den nächsten Einsatz",
       "Pflege und Sichtprüfung von Fahrzeug und Anhänger",
+      "Passende Aufträge über unser digitales Vermiet-System übernehmen und den Ablauf dokumentieren",
     ],
-    seoTitle: "Lieferfahrer / Aushilfe (m/w/d) Krefeld & Bonn – SLT Rental",
-    seoDescription: "Aushilfe / Lieferfahrer in Krefeld und Bonn gesucht. Baumaschinen & Anhänger ausliefern, BE-Führerschein erforderlich. Jetzt bei SLT Rental bewerben.",
+    seoTitle: "Minijob Lieferfahrer (m/w/d) Bonn & Krefeld – 20 €/Std.",
+    seoDescription: "Minijob in Bonn oder Krefeld: 20 € brutto/Std., Lieferungen, Rücknahmen und Materialpflege. Flexible Arbeitszeiten, Einarbeitung und Jahresbonus.",
     faqs: [
-      { question: "Brauche ich Vorerfahrung mit Baumaschinen?", answer: "Nein. Wichtig sind Führerschein BE und technisches Interesse – wir arbeiten dich ein." },
-      { question: "Ist eine Anstellung in Teilzeit möglich?", answer: "Ja, Vollzeit und Teilzeit sind möglich. Auch Aushilfen / Minijob auf Anfrage." },
+      { question: "Brauche ich Vorerfahrung mit Baumaschinen?", answer: "Nein. Wichtig sind Führerschein BE, handwerkliches Geschick und Motivation. Wir arbeiten dich vollständig in Transporte, Rücknahmen, Materialpflege und unser digitales Vermiet-System ein." },
+      { question: "Wie viel darf ich im Minijob verdienen?", answer: "2026 liegt die Verdienstgrenze bei durchschnittlich 603 € brutto im Monat beziehungsweise 7.236 € bei zwölfmonatiger Beschäftigung. Ab 1. Januar 2027 sind es 633 € monatlich beziehungsweise 7.596 € jährlich. Bei 20 € brutto pro Stunde entsprechen 603 € rechnerisch 30,15 Stunden pro Monat ohne Bonus. Vorhersehbare Sonderzahlungen wie der Jahresbonus sind bei der Verdienstplanung zu berücksichtigen; deshalb stimmen wir Stundenumfang und Bonus gemeinsam ab." },
+      { question: "Wie flexibel sind die Arbeitszeiten?", answer: "Du kannst dir deine Arbeitszeit nach Absprache flexibel einteilen und passende Aufträge über unser digitales Vermiet-System übernehmen. Vereinbarte Liefer- und Rücknahmetermine bleiben verbindlich." },
+      { question: "Bekomme ich als Minijobber auch einen Bonus?", answer: "Ja. Wir schütten jährlich einen vom Unternehmenserfolg abhängigen Bonus aus – auch an Minijobber. Du gehörst als vollwertiges Mitglied zum Team und erhältst eine vollständige Einarbeitung. Die Bonushöhe hängt vom Unternehmenserfolg ab; bei der Planung beachten wir die geltende Minijob-Verdienstgrenze." },
     ],
-    title: "Aushilfe / Lieferfahrer (m/w/d) für Vermietgegenstände",
+    title: "Auslieferungsfahrer / Auslieferungsfahrerin (m/w/d) – Minijob",
     location: "Krefeld und Bonn",
-    type: "Vollzeit / Aushilfe",
+    type: "Minijob",
     startDate: "ab sofort",
-    description: "Zur Unterstützung unseres Teams suchen wir eine motivierte Aushilfe für die Auslieferung und Abholung von Vermietgegenständen wie Baumaschinen, Arbeitsbühnen und Eventtechnik. Du bist verantwortlich für den sicheren Transport und sorgst für einen freundlichen Kundenkontakt vor Ort.",
+    description: "Für unsere Standorte Bonn und Krefeld suchen wir motivierte Auslieferungsfahrer und Auslieferungsfahrerinnen auf Minijob-Basis für 20 € brutto pro Stunde. Bei uns geht es nicht nur ums Fahren: Du lieferst Mietgegenstände wie Baumaschinen, Arbeitsbühnen und Eventtechnik aus, nimmst sie zurück und kümmerst dich um Reinigung, Materialpflege und die Vorbereitung für den nächsten Einsatz. Du bist ein vollwertiges Teammitglied und wirst vollständig eingearbeitet. Deine Arbeitszeit kannst du nach Absprache flexibel einteilen und passende Aufträge über unser digitales Vermiet-System übernehmen. Zusätzlich schütten wir jährlich einen unternehmensabhängigen Bonus aus – auch für Minijobber. Die Minijob-Verdienstgrenze beträgt 2026 durchschnittlich 603 € brutto monatlich (7.236 € bei zwölf Monaten), ab 2027 633 € monatlich (7.596 € jährlich). Vorhersehbare Bonuszahlungen berücksichtigen wir bei der gemeinsamen Stunden- und Verdienstplanung.",
     requirements: [
       "Führerschein der Klasse BE (Pflichtvoraussetzung)",
+      "Handwerkliches Geschick, Motivation und Freude am Anpacken",
       "Technisches Verständnis und Verantwortungsbewusstsein",
       "Zuverlässigkeit und gepflegtes Auftreten",
       "Gute Deutschkenntnisse"
     ],
     benefits: [
-      "Flexible Arbeitszeiten",
+      "20 € brutto pro Stunde auf Minijob-Basis",
+      "Flexible Zeiteinteilung nach Absprache, passend zu vereinbarten Kundenterminen",
+      "Auftragsübernahme über unser digitales Vermiet-System",
+      "Jährlicher, vom Unternehmenserfolg abhängiger Bonus – auch für Minijobber",
+      "Vollwertige Zugehörigkeit zum Team und vollständige Einarbeitung",
       "Abwechslungsreiche Tätigkeit in einem familiären Team",
-      "Faire Vergütung und gute Einarbeitung"
+      "Gemeinsame Stunden- und Bonusplanung innerhalb der geltenden Minijob-Verdienstgrenze"
     ],
     specificFields: [
       {
@@ -132,7 +144,7 @@ export const jobListings: JobListing[] = [
         id: "availability",
         label: "Gewünschte Arbeitszeit",
         type: "select",
-        options: ["Vollzeit", "Teilzeit", "Aushilfe / Minijob", "Flexibel"],
+        options: ["Minijob – feste Zeiten nach Absprache", "Minijob – flexible Zeiten nach Absprache"],
         required: true
       },
       {
@@ -314,7 +326,7 @@ export const jobListings: JobListing[] = [
   {
     id: "vertrieb",
     slug: "vertriebsmitarbeiter-baumaschinen-zoomlion-nrw",
-    shortPitch: "Verkaufe als LiuGong-Händler in NRW – mit Firmenwagen, Homeoffice-Option und KI-gestützten Vertriebstools.",
+    shortPitch: "Verkaufe Baumaschinen und Zubehör in NRW – mit Bonn oder Krefeld als Basis, Firmenwagen und Homeoffice-Option.",
     locations: [DEFAULT_LOC_KREFELD, DEFAULT_LOC_BONN],
     employmentType: ["FULL_TIME"],
     datePosted: "2026-10-02",
@@ -330,8 +342,8 @@ export const jobListings: JobListing[] = [
       "Aufbau und Pflege von Kundenbeziehungen in NRW",
       "Nutzung von CRM und KI-gestützten Vertriebstools",
     ],
-    seoTitle: "Vertriebsmitarbeiter Baumaschinen (m/w/d) NRW – SLT Rental",
-    seoDescription: "Vertriebsmitarbeiter (m/w/d) für LiuGong-Baumaschinen in NRW gesucht. Firmenwagen, Homeoffice, KI-gestützte Tools. Jetzt bei SLT Rental bewerben.",
+    seoTitle: "Vertrieb Baumaschinen & Zubehör – Bonn & Krefeld | SLT Rental",
+    seoDescription: "Vertriebsmitarbeiter (m/w/d) für Baumaschinen und Zubehör in Bonn oder Krefeld gesucht. Vollzeit, Firmenwagen und Homeoffice-Option. Jetzt bewerben.",
     faqs: [
       { question: "Wo ist mein Einsatzgebiet?", answer: "Schwerpunkt Nordrhein-Westfalen mit den Standorten Krefeld und Bonn als Basis." },
       { question: "Gibt es einen Firmenwagen?", answer: "Ja, inklusive privater Nutzung." },
@@ -340,7 +352,7 @@ export const jobListings: JobListing[] = [
     location: "Homeoffice oder Büro in Bonn / Krefeld",
     type: "Vollzeit",
     startDate: "01.02.2026",
-    description: "Zur Erweiterung unseres Vertriebsteams suchen wir einen engagierten Vertriebsmitarbeiter (m/w/d) für den Verkauf von Baumaschinen und Zubehör. Als LiuGong-Händler in NRW bieten wir ein starkes Produktportfolio mit hervorragendem Preis-Leistungs-Verhältnis. Sie nutzen KI-gestützte Vertriebstools und moderne CRM-Systeme, um Kunden kompetent zu beraten, datenbasierte Lösungen zu entwickeln und den gesamten Verkaufsprozess effizient zu begleiten. Durch den Einsatz von Künstlicher Intelligenz und digitalen Prozessen heben wir uns klar vom Wettbewerb ab.",
+    description: "Für den Verkauf von Baumaschinen und Zubehör suchen wir einen engagierten Vertriebsmitarbeiter (m/w/d) mit Bonn oder Krefeld als Basis. Du berätst Kunden zu passenden Maschinen und Zubehör, erstellst Angebote und begleitest den Verkaufsprozess bis zum Abschluss und zur Übergabe. Als LiuGong-Händler in NRW verbinden wir persönliche Kundenberatung mit modernen CRM-Systemen und digitalen Vertriebstools. Du baust Kundenbeziehungen in Nordrhein-Westfalen auf und pflegst bestehende Kontakte – im Büro, beim Kunden und nach Absprache im Homeoffice.",
     requirements: [
       "Erfahrung im technischen Vertrieb, idealerweise im Bereich Baumaschinen, Industrieprodukte oder Vermietung",
       "Sicheres Auftreten und Verhandlungsgeschick",

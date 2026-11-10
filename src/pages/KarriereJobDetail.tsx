@@ -33,7 +33,7 @@ function formatSalary(min?: number, max?: number, unit?: "YEAR" | "MONTH" | "HOU
   const fmt = (n: number) =>
     new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 }).format(n);
   const suffix = unit === "HOUR" ? "€/Std." : unit === "MONTH" ? "€/Monat" : "€/Jahr";
-  return `${fmt(min)}–${fmt(max)} ${suffix}`;
+  return `${min === max ? fmt(min) : `${fmt(min)}–${fmt(max)}`} ${suffix} brutto`;
 }
 
 export default function KarriereJobDetail() {

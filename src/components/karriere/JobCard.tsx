@@ -14,7 +14,7 @@ function formatSalary(min?: number, max?: number, unit?: "YEAR" | "MONTH" | "HOU
   if (!min || !max) return null;
   const fmt = (n: number) => new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 }).format(n);
   const suffix = unit === "HOUR" ? "€/Std." : unit === "MONTH" ? "€/Mon." : "€/Jahr";
-  return `${fmt(min)}–${fmt(max)} ${suffix}`;
+  return `${min === max ? fmt(min) : `${fmt(min)}–${fmt(max)}`} ${suffix} brutto`;
 }
 
 export function JobCard({ job }: JobCardProps) {
@@ -47,7 +47,8 @@ export function JobCard({ job }: JobCardProps) {
               {job.employmentType.includes("FULL_TIME") && (
                 <Badge variant="outline" className="text-xs">Vollzeit</Badge>
               )}
-              {job.employmentType.includes("PART_TIME") && (
+              {job.minijob && <Badge variant="outline" className="text-xs">Minijob</Badge>}
+              {job.employmentType.includes("PART_TIME") && !job.minijob && (
                 <Badge variant="outline" className="text-xs">Teilzeit</Badge>
               )}
               {job.remote && <Badge variant="outline" className="text-xs">Homeoffice möglich</Badge>}
