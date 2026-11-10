@@ -42,7 +42,7 @@ describe("stale chunk recovery", () => {
   });
 
   it("schedules one automatic reload and blocks another within 15 seconds", () => {
-    const schedule = vi.spyOn(window, "setTimeout").mockReturnValue(1);
+    const schedule = vi.spyOn(window, "setTimeout");
     expect(recoverFromChunkLoadError(firefoxError)).toBe(true);
     const reloadCalls = () => schedule.mock.calls.filter(([callback]) => String(callback).includes("location.reload"));
     expect(reloadCalls()).toHaveLength(1);
