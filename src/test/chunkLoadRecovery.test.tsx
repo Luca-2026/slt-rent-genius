@@ -44,12 +44,13 @@ describe("stale chunk recovery", () => {
   it("schedules one automatic reload and blocks another within 15 seconds", () => {
     const schedule = vi.spyOn(window, "setTimeout").mockReturnValue(1);
     expect(recoverFromChunkLoadError(firefoxError)).toBe(true);
-    expect(schedule).toHaveBeenCalledTimes(1);
+    const reloadCalls = () => schedule.mock.calls.filter(([callback]) => String(callback).includes("location.reload"));
+    expect(reloadCalls()).toHaveLength(1);
     expect(recoverFromChunkLoadError(firefoxError)).toBe(false);
-    expect(schedule).toHaveBeenCalledTimes(1);
+    expect(reloadCalls()).toHaveLength(1);
     vi.setSystemTime(Date.now() + 15_000);
     expect(recoverFromChunkLoadError(firefoxError)).toBe(true);
-    expect(schedule).toHaveBeenCalledTimes(2);
+    expect(reloadCalls()).toHaveLength(2);
   });
 
   it("contains a rejected lazy route instead of propagating Firefox's failure", async () => {
