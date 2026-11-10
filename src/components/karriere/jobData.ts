@@ -331,7 +331,7 @@ export const jobListings: JobListing[] = [
     location: "Bonn",
     locations: [DEFAULT_LOC_BONN],
     type: "Arbeitszeit nach Absprache",
-    employmentType: ["FULL_TIME", "PART_TIME"],
+    employmentType: ["OTHER"],
     startDate: "nach Absprache",
     datePosted: "2026-11-10",
     validThrough: "2027-02-28",
