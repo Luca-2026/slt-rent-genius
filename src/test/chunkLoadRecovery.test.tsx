@@ -58,12 +58,12 @@ describe("stale chunk recovery", () => {
       href: window.location.href, timestamp: Date.now(),
     }));
     vi.spyOn(console, "error").mockImplementation(() => {});
+    const caught = vi.spyOn(ChunkLoadErrorBoundary.prototype, "componentDidCatch");
     const FailedRoute = lazy(() => Promise.reject(firefoxError));
-    const { container } = render(
+    render(
       <ChunkLoadErrorBoundary><Suspense fallback={null}><FailedRoute /></Suspense></ChunkLoadErrorBoundary>,
     );
-    // A contained failure is the behavioral contract, not specific copy/markup.
-    await vi.waitFor(() => expect(container.textContent?.length).toBeGreaterThan(0));
+    await vi.waitFor(() => expect(caught).toHaveBeenCalledWith(firefoxError, expect.any(Object)));
     expect(recoverFromChunkLoadError(firefoxError)).toBe(false);
   });
 });
