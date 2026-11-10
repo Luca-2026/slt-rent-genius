@@ -16,12 +16,23 @@ describe("DATEV-Kassen-CSV", () => {
     const csv = buildDatevCashCsv([{ amount: 120.5, paymentDate: "2026-11-03", orderCode: "#AB12CD", customerName: "Max; Muster" }]);
     expect(lines(csv)[1].split(";")).toHaveLength(13);
   });
-  it("wie DATEV-Export: RechNr = Auftrags-ID, Belegtext „Rental“, USt 0, Kost1 leer", () => {
+  it("ordnet die Auftrags-ID Kost1 zu und behält sie zusätzlich als RechNr", () => {
     const row = lines(buildDatevCashCsv([{ amount: 120.5, paymentDate: "2026-11-03", orderCode: "#AB12CD", documentNumber: "RE-M-2026-11-0001", customerName: "Max Muster" }]))[1].split(";");
     expect(row[2]).toBe("AB12CD");
     expect(row[4]).toBe("Rental");
     expect(row[5]).toBe("0,00");
+    expect(row[8]).toBe("AB12CD");
+  });
+  it("ordnet auch Barauszahlungen ihrer Auftrags-ID in Kost1 zu", () => {
+    const row = lines(buildDatevCashCsv([{ amount: -76.2, paymentDate: "2026-11-09", orderCode: "7KQY76" }]))[1].split(";");
+    expect(row[8]).toBe("7KQY76");
+    expect(row[2]).toBe("7KQY76");
+    expect(row[1]).toBe("-76,20");
+  });
+  it("erfindet ohne Auftrags-ID keine Kostenstelle aus einer Belegnummer", () => {
+    const row = lines(buildDatevCashCsv([{ amount: 119, paymentDate: "2026-11-09", documentNumber: "RE-M-2026-11-0009" }]))[1].split(";");
     expect(row[8]).toBe("");
+    expect(row[2]).toBe("RE-M-2026-11-0009");
   });
   it("Datei ist Windows-1252 kodiert (ä = 0xE4)", () => {
     const bytes = encodeWindows1252(DATEV_CASH_HEADER);

@@ -1,7 +1,7 @@
 // DATEV Kassenbuch online – Standard-ASCII-Import (Dok.-Nr. 1002367).
 // 13 Spalten, Semikolon, Windows-1252 (wie der DATEV-Kassenexport), CRLF, Kopfzeile immer vollständig.
-// Belegtext "Rental" und Auftrags-ID als RechNr entsprechen dem echten DATEV-Kassenexport;
-// Kost1 bleibt leer, weil nicht angelegte Kostenstellen den Import abbrechen.
+// Belegtext "Rental"; die Auftrags-ID steht in Kost1 für die buchhalterische Zuordnung
+// und bleibt zusätzlich als RechNr erhalten.
 export const DATEV_CASH_HEADER =
   '"Währung";"VorzBetrag";"RechNr";"BelegDatum";"Belegtext";"UStSatz";"BU";"Gegenkonto";"Kost1";"Kost2";"Kostmenge";"Skonto";"Nachricht"';
 
@@ -47,7 +47,7 @@ export function buildDatevCashCsv(entries: CashEntry[]): string {
       "0,00",
       "",
       "",
-      "",
+      datevKost1(e.orderCode),
       "",
       "",
       "",
@@ -61,7 +61,8 @@ const CP1252_EXTRA: Record<string, number> = { "€": 0x80, "‚": 0x82, "„": 
 export function encodeWindows1252(text: string): Uint8Array {
   const out: number[] = [];
   for (const ch of text) {
-    const c = ch.codePointAt(0)!;
+    const c = ch.codePointAt(0);
+    if (c === undefined) continue;
     if (c < 0x80 || (c >= 0xa0 && c <= 0xff)) out.push(c);
     else out.push(CP1252_EXTRA[ch] ?? 0x3f);
   }
