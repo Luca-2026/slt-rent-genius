@@ -109,6 +109,7 @@ lines.push(
   "",
 
   "# === 2b-3. Karriere: besetzte/umbenannte Stellen ===",
+  "RewriteRule ^karriere/(vertriebsmitarbeiter-baumaschinen-zoomlion-nrw|vertrieb)/?$ /karriere/ [L,R=301]",
   "RewriteRule ^karriere/standortleiter-niederlassungsleiter-vermietung-bonn/?$ /karriere/ [L,R=301]",
   "RewriteRule ^karriere/lieferfahrer-baumaschinen-krefeld/?$ /karriere/lieferfahrer-vermietung-krefeld-bonn/ [L,R=301]",
   "RewriteRule ^karriere/baumaschinentechniker-servicetechniker-krefeld/?$ /karriere/baumaschinentechniker-servicetechniker-krefeld-bonn/ [L,R=301]",
