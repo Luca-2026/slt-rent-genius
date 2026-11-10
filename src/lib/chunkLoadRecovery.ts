@@ -13,6 +13,8 @@ const STALE_CHUNK_PATTERNS = [
   // stale chunk hash after a re-deploy. Auto-reload to pick up fresh chunks.
   /_result\.default/i,
   /undefined is not an object \(evaluating ['"]?\w+\._result\.default/i,
+  // Firefox reports the undefined lazy result separately from the property.
+  /can't access property ["']default["'],\s*[\w$]+\._result is undefined/i,
 ];
 
 const getMessage = (value: unknown): string => {
