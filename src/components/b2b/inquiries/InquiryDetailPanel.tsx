@@ -4,6 +4,7 @@ import { DepositSettlementCard } from "./DepositSettlementCard";
 import { CreditNoteRefund } from "./CreditNoteRefund";
 import { RentalCreditRefund } from "./RentalCreditRefund";
 import { ReturnReminderActions } from "./ReturnReminderActions";
+import { ResendOfferButton } from "./ResendOfferButton";
 import { InvoicePdfButton } from "./InvoicePdfButton";
 import { requestedCoupon } from "@/lib/requestedCoupon";
 import { ReturnChargesSummary } from "./ReturnChargesSummary";
@@ -737,6 +738,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               PDF öffnen <ExternalLink className="h-3.5 w-3.5" />
             </a>
           )}
+          {inquiry.offer_file_url && <div className="pt-2"><ResendOfferButton inquiryId={inquiry.id} inquiryType={inquiryType} onChanged={onChanged} /></div>}
         </div>
       )}
     </>
