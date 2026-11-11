@@ -918,6 +918,9 @@ Deno.serve(async (req: Request) => {
       console.error("Versandstatus konnte nicht gespeichert werden:", dispatchStateError.message);
       return json({ error: "Angebot gespeichert; Versandstatus konnte nicht bestätigt werden. Bitte vor erneutem Versand prüfen.", email_sent: emailSent, offer_number: offerNumber }, 500);
     }
+    if (!emailSent) {
+      return json({ error: "Angebot gespeichert, aber E-Mail nicht versendet. Bitte den Vorgang neu laden und ‚Angebot erneut senden‘ verwenden; keine neue Fassung erstellen.", offer_saved: true, email_sent: false, offer_number: offerNumber }, 502);
+    }
 
     // Verknüpfte Telefonate gelten als erledigt, sobald das Angebot gesendet wurde
     if (emailSent && inquiryType === "rental") {
