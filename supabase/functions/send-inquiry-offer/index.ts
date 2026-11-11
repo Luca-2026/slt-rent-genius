@@ -1,3 +1,4 @@
+import { persistOfferBeforeDispatch } from "./persistence.ts";
 import { salesOfferLine, salesPaymentTerms, salesPaymentText, FINANCING_INFORMATION, normalizeSalesFinancing } from "../_shared/sales-offer.ts";
 import { newBankDiscountPolicy, withoutBankDiscount, priceBankTransfer } from "../_shared/bank-transfer-discount.ts";
 import { revisedRentalPaymentPolicy } from "../_shared/rental-payment-decision.ts";
@@ -81,8 +82,8 @@ Deno.serve(async (req: Request) => {
 
     const token = authHeader.replace("Bearer ", "");
     const service = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
       { auth: { persistSession: false } },
     );
 
@@ -189,7 +190,7 @@ Deno.serve(async (req: Request) => {
     // Angebot zu dieser Anfrage versendet, wird kein zweites erzeugt/gemailt.
     // Eine bewusste Überarbeitung der aktuellen Fassung ist davon ausgenommen.
     const lastSentAt = inquiry.offer_sent_at ? Date.parse(inquiry.offer_sent_at) : 0;
-    if (body.preview !== true && !isRevision && lastSentAt && Date.now() - lastSentAt < 2 * 60 * 1000) {
+    if (body.preview !== true && inquiry.email_sent === true && !isRevision && lastSentAt && Date.now() - lastSentAt < 2 * 60 * 1000) {
       console.log("Duplicate send suppressed for inquiry", inquiryId);
       return json({
         success: true,
@@ -587,19 +588,99 @@ Deno.serve(async (req: Request) => {
       return json({ error: "Angebots-PDF konnte nicht gespeichert werden" }, 500);
     }
 
-    const { data: signed } = await service.storage
+    const { data: signed, error: signedError } = await service.storage
       .from("b2b-invoices")
       .createSignedUrl(filePath, 60 * 60 * 24 * 365);
-    const fileUrl = signed?.signedUrl || "";
+    if (signedError || !signed?.signedUrl) return json({ error: "Angebots-PDF konnte nicht bereitgestellt werden. Nichts versendet." }, 500);
+    const fileUrl = signed.signedUrl;
+
+    // Save before any acceptance/payment link is replaced or any customer mail is sent.
+    // The version check prevents two colleagues dispatching different snapshots concurrently.
+    try {
+      await persistOfferBeforeDispatch(() => service
+      .from(table)
+      .update({
+        status: "offer_sent",
+        email_sent: false,
+        // Wer das Angebot versendet, übernimmt den Auftrag automatisch
+        // (außer er ist bereits einem anderen Kollegen zugewiesen).
+        ...(inquiry.assigned_to && inquiry.assigned_to !== user.id ? {} : {
+          assigned_to: user.id,
+          assigned_name: staffName !== "SLT Rental" ? staffName : (user.email ?? staffName),
+          assigned_at: new Date().toISOString(),
+        }),
+        offer_number: offerNumber,
+        offer_file_url: fileUrl,
+        offer_total_gross: totals.grossAmount,
+        offer_sent_at: new Date().toISOString(),
+        // im Portal geänderte Lieferadresse zurückschreiben
+        delivery_street: deliveryRequested ? deliveryAddress.street || null : null,
+        delivery_postal_code: deliveryRequested ? deliveryAddress.postal_code || null : null,
+        delivery_city: deliveryRequested ? deliveryAddress.city || null : null,
+        ...(inquiryType === "rental" ? { delivery_requested: deliveryRequested } : {}),
+        // Snapshot des Angebots – Grundlage für die spätere Rechnung (inkl. Zusatzoptionen)
+        offer_payload: {
+          ...(paymentPolicy ? { bank_transfer_discount: paymentPolicy } : {}),
+          ...(inquiryType === "sales" ? { business_type: "sales", financing: financing ?? { enabled: false } } : {}),
+          coupon_code: coupon.code,
+          coupon_saving_net: coupon.saving,
+          offer_number: offerNumber,
+          base_offer_number: baseOfferNumber,
+          version,
+          supersedes,
+          delivery_requested: deliveryRequested,
+          delivery_address: deliveryAddress,
+          created_at: new Date().toISOString(),
+          items,
+          delivery_cost_delivery: deliveryCostDelivery,
+          delivery_cost_return: deliveryCostReturn,
+          setup_cost: setupCost,
+          dismantle_cost: dismantleCost,
+          return_location: returnLoc?.key ?? null,
+          return_location_cost: returnLocationCost,
+          deposit,
+          payment_terms: paymentTerms,
+          payment_terms_custom: paymentTermsCustom || null,
+          valid_days: validDays,
+          notes,
+          totals,
+          open_ended: openEnded,
+          open_ended_independent_pricing: openEnded && body.open_ended_independent_pricing === true,
+          undated_offer: undatedOffer,
+          ...(openEnded ? { open_ended_unit: openEndedUnit, minimum_duration: minMonths, ...(openEndedUnit === "monate" ? { min_months: minMonths } : {}) } : {}),
+          use_saturday: body.use_saturday === true,
+          use_sunday: body.use_sunday === true,
+          ...(offerGroups ? { groups: offerGroups } : {}),
+          ...(extraFields ? { extra_fields: extraFields } : {}),
+          ...(orderType ? { order_type: orderType } : {}),
+          return_mode: body.return_mode === "collection" ? "collection" : "customer",
+          ...(isRentalOffer ? { terms_text: termsRaw, address_form: addressForm } : {}),
+        },
+        ...(inquiryType === "rental"
+          ? {
+              installment_open_ended: openEnded,
+              feedback_coupon_code: coupon.code,
+              ...(openEnded ? { installment_amount_net: monthlyNetFromOffer(items as unknown as Array<Record<string, unknown>>) || null } : {}),
+            }
+          : {}),
+
+      })
+
+      .eq("id", inquiry.id)
+      .eq("updated_at", inquiry.updated_at)
+      .select("id")
+      .maybeSingle());
+
+    } catch (error) {
+      console.error("Angebotsspeicherung fehlgeschlagen:", error instanceof Error ? error.message : error);
+      return json({ error: error instanceof Error ? error.message : "Angebot nicht gespeichert und nicht versendet." }, 409);
+    }
 
     if (coupon.code) {
       const { error } = await service.rpc("reserve_rental_coupon", { p_code: coupon.code, p_kind: "inquiry", p_order: inquiry.id, p_profile: inquiry.b2b_profile_id, p_offer: offerNumber, p_until: validUntil.toISOString().slice(0, 10) + "T23:59:59Z" });
       if (error) return json({ error: error.message }, 409);
     }
-    if (inquiryType === "rental") {
-      const { error } = await service.from(table).update({ feedback_coupon_code: coupon.code }).eq("id", inquiry.id);
-      if (error) return json({ error: "Gutscheinzuordnung konnte nicht gespeichert werden" }, 500);
-    }
+
 
     // ── passende AGB als zweiter Anhang (B2C für Privat-, B2B für Geschäftskunden) ──
     const customerKind = inquiry.customer_kind === "business" ? "business" : "private";
@@ -830,78 +911,19 @@ Deno.serve(async (req: Request) => {
       console.log("RESEND_API_KEY fehlt – Angebot wurde nur erzeugt, nicht versendet");
     }
 
-    const { error: updErr } = await service
-      .from(table)
-      .update({
-        status: "offer_sent",
-        // Wer das Angebot versendet, übernimmt den Auftrag automatisch
-        // (außer er ist bereits einem anderen Kollegen zugewiesen).
-        ...(inquiry.assigned_to && inquiry.assigned_to !== user.id ? {} : {
-          assigned_to: user.id,
-          assigned_name: staffName !== "SLT Rental" ? staffName : (user.email ?? staffName),
-          assigned_at: new Date().toISOString(),
-        }),
-        offer_number: offerNumber,
-        offer_file_url: fileUrl,
-        offer_total_gross: totals.grossAmount,
-        offer_sent_at: new Date().toISOString(),
-        // im Portal geänderte Lieferadresse zurückschreiben
-        delivery_street: deliveryRequested ? deliveryAddress.street || null : null,
-        delivery_postal_code: deliveryRequested ? deliveryAddress.postal_code || null : null,
-        delivery_city: deliveryRequested ? deliveryAddress.city || null : null,
-        ...(inquiryType === "rental" ? { delivery_requested: deliveryRequested } : {}),
-        // Snapshot des Angebots – Grundlage für die spätere Rechnung (inkl. Zusatzoptionen)
-        offer_payload: {
-          ...(paymentPolicy ? { bank_transfer_discount: paymentPolicy } : {}),
-          ...(inquiryType === "sales" ? { business_type: "sales", financing: financing ?? { enabled: false } } : {}),
-          coupon_code: coupon.code,
-          coupon_saving_net: coupon.saving,
-          offer_number: offerNumber,
-          base_offer_number: baseOfferNumber,
-          version,
-          supersedes,
-          delivery_requested: deliveryRequested,
-          delivery_address: deliveryAddress,
-          created_at: new Date().toISOString(),
-          items,
-          delivery_cost_delivery: deliveryCostDelivery,
-          delivery_cost_return: deliveryCostReturn,
-          setup_cost: setupCost,
-          dismantle_cost: dismantleCost,
-          return_location: returnLoc?.key ?? null,
-          return_location_cost: returnLocationCost,
-          deposit,
-          payment_terms: paymentTerms,
-          payment_terms_custom: paymentTermsCustom || null,
-          valid_days: validDays,
-          notes,
-          totals,
-          open_ended: openEnded,
-          open_ended_independent_pricing: openEnded && body.open_ended_independent_pricing === true,
-          undated_offer: undatedOffer,
-          ...(openEnded ? { open_ended_unit: openEndedUnit, minimum_duration: minMonths, ...(openEndedUnit === "monate" ? { min_months: minMonths } : {}) } : {}),
-          use_saturday: body.use_saturday === true,
-          use_sunday: body.use_sunday === true,
-          ...(offerGroups ? { groups: offerGroups } : {}),
-          ...(extraFields ? { extra_fields: extraFields } : {}),
-          ...(orderType ? { order_type: orderType } : {}),
-          return_mode: body.return_mode === "collection" ? "collection" : "customer",
-          ...(isRentalOffer ? { terms_text: termsRaw, address_form: addressForm } : {}),
-        },
-        ...(inquiryType === "rental"
-          ? {
-              installment_open_ended: openEnded,
-              ...(openEnded ? { installment_amount_net: monthlyNetFromOffer(items as unknown as Array<Record<string, unknown>>) || null } : {}),
-            }
-          : {}),
-
-      })
-
-      .eq("id", inquiry.id);
-    if (updErr) console.error("Status-Update fehlgeschlagen:", updErr.message);
+    const { error: dispatchStateError } = await service.from(table)
+      .update({ email_sent: emailSent })
+      .eq("id", inquiry.id).eq("offer_number", offerNumber);
+    if (dispatchStateError) {
+      console.error("Versandstatus konnte nicht gespeichert werden:", dispatchStateError.message);
+      return json({ error: "Angebot gespeichert; Versandstatus konnte nicht bestätigt werden. Bitte vor erneutem Versand prüfen.", email_sent: emailSent, offer_number: offerNumber }, 500);
+    }
+    if (!emailSent) {
+      return json({ error: "Angebot gespeichert, aber E-Mail nicht versendet. Bitte den Vorgang neu laden und ‚Angebot erneut senden‘ verwenden; keine neue Fassung erstellen.", offer_saved: true, email_sent: false, offer_number: offerNumber }, 502);
+    }
 
     // Verknüpfte Telefonate gelten als erledigt, sobald das Angebot gesendet wurde
-    if (!updErr && inquiryType === "rental") {
+    if (emailSent && inquiryType === "rental") {
       const { error: callErr } = await service
         .from("phone_calls")
         .update({ status: "done" })
