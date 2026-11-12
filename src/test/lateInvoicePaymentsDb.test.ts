@@ -42,3 +42,16 @@ it('requires a matching confirmed provider receipt',async()=>{
 it('rejects direct staff calls to the service-only reconciliation',async()=>{
  await db.exec("SET test.role='authenticated'"); await expect(db.query('SELECT sync_single_rental_invoice_receipts($1)',[crypto.randomUUID()])).rejects.toThrow('Not authorized'); await db.exec("SET test.role='service_role'");
 });
+it('keeps a genuine unpaid balance on partial receipt',async()=>{
+ const {r,i}=await fixture();
+ await db.query("UPDATE rental_inquiries SET payments=jsonb_set(payments,'{0,amount}','20') WHERE id=$1",[r]);
+ await db.query('UPDATE offer_payment_links SET amount_cents=2000 WHERE inquiry_id=$1',[r]);
+ await db.query('SELECT sync_single_rental_invoice_receipts($1)',[r]);
+ const x=(await db.query<{paid_amount:string,status:string}>('SELECT paid_amount,status FROM inquiry_invoices WHERE id=$1',[i])).rows[0];
+ expect(Number(x.paid_amount)).toBe(20); expect(x.status).toBe('open'); expect(60.69-Number(x.paid_amount)).toBeCloseTo(40.69,2);
+});
+it('never allocates Stripe receipts to a credit note',async()=>{
+ const {r,i}=await fixture(); await db.query("UPDATE inquiry_invoices SET invoice_kind='credit_note' WHERE id=$1",[i]);
+ await db.query('SELECT sync_single_rental_invoice_receipts($1)',[r]);
+ expect(Number((await db.query<{paid_amount:string}>('SELECT paid_amount FROM inquiry_invoices WHERE id=$1',[i])).rows[0].paid_amount)).toBe(0);
+});
