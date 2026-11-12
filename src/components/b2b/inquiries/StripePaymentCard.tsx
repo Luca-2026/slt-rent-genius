@@ -107,7 +107,10 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
 
   const current = links.find((l) => l.status === "active") ?? links.find((l) => l.status === "paid") ?? links[0];
   const received = Array.isArray(payments) ? payments.reduce((sum, p) => sum + Math.round((Number(p?.amount) || 0) * 100), 0) : 0;
-  const settledByBank = received > 0 && allPaymentsByBank(payments) && offerTotalGross != null && received >= Math.round(offerTotalGross * 100) + Math.round(deposit * 100);
+  const coveredByRecorded = received > 0 && offerTotalGross != null && received >= Math.round(offerTotalGross * 100) + Math.round(deposit * 100);
+  const paidByBank = coveredByRecorded && allPaymentsByBank(payments);
+  // Any recorded receipts (bank, cash, card terminal) covering rent + deposit settle the order; a stale online link must not look payable.
+  const settledByBank = coveredByRecorded && current?.status !== "paid";
   const refundChoice = depositRefundPayment(links, refunds);
   const paidLink = refundChoice?.link;
   const refundedCents = refunds.filter((r) => !["failed", "canceled"].includes(r.status)).reduce((s, r) => s + r.amount_cents, 0);
@@ -186,7 +189,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
         <CreditCard className="h-4 w-4" /> Online-Zahlung (Stripe)
       </div>
 
-      {settledByBank && <p className="text-sm">Vollständig per Überweisung bezahlt – keine Online-Zahlung offen.</p>}
+      {settledByBank && <p className="text-sm">{paidByBank ? "Vollständig per Überweisung bezahlt" : "Vollständig bezahlt (erfasste Zahlungen)"} – keine Online-Zahlung offen.</p>}
       {!current && !settledByBank && <p className="text-xs text-muted-foreground">Noch kein Zahlungslink zu Angebot {offerNumber}.</p>}
 
       {current && !settledByBank && (
