@@ -1,0 +1,1 @@
+UPDATE public.offer_payment_links SET status='superseded' WHERE status='active' AND inquiry_id IN ('2b47363d-8c1a-442d-b063-10b1a9e74113','a7988c54-9d55-4e0d-af64-2ec19741089a');
