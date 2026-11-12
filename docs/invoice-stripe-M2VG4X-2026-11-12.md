@@ -15,6 +15,10 @@
 - Eine Bestandsabfrage auf offene normale Rechnungen ohne Rechnungszahlung trotz Stripe-Auftragseingang ergab vorher einen Treffer, danach null. Das ist keine vollständige Prüfung sämtlicher Teilzahlungen/Abschläge.
 
 ## Grenzen
+- Folgeprüfung 12.11. ab 17:57 UTC: zusätzliche Wiederholungslücke gefunden und behoben. `settle_rental_stripe_receipt_v2` schließt den Zahlungsbeleg bereits vor dem Rechnungsabgleich ab; zuvor quittierte die Wiederholzustellung deshalb sofort 200, selbst wenn der Rechnungsabgleich zuvor fehlgeschlagen war. Wiederholungen bestätigter Mietzahlungen rufen jetzt denselben idempotenten Rechnungsabgleich erneut auf; erneute Lesefehler/Abgleichfehler liefern 500 statt falscher Erfolgsmeldung.
+- Aktualisierte `stripe-webhook` erfolgreich eingespielt. 31 Vitest-Prüfungen bestanden (einschließlich Abgleichfehler/Wiederholung, Mehrrechnungen, Teilzahlung 20 € mit 40,69 € Rest, Kaution 100 €, kein Gutschriftenabgleich und geschützte Zahlungswahl), zusätzlich drei PDF-Prüfungen bestanden. Aktuelles Buildsignal: OK.
+- Erneut mit Lucas echtem Mitarbeiterzugang geöffnet: RE-M-2026-11-0009 bezahlt, 60,69 € angerechnet, 0 € offen; PDF-Klick HTTP 200 und Zahlungsnachtrag ausgelesen. Keine offenen normalen Rechnungen ohne Zahlung trotz Stripe-Auftragseingang bei erneuter gezielter Bestandsabfrage.
+- Fehlerwiederholung isoliert getestet; keine absichtlich gestörte produktive Stripe-Zustellung oder neue externe Zahlung ausgeführt. Eine vollständige Provider-Ende-zu-Ende-Abnahme ist damit nicht belegt. Mehrrechnungen/Abschläge/Sondererstattungen bleiben bewusst vom automatischen Einzelrechnungsabgleich ausgeschlossen.
 - Keine Kundenmail, neue Zahlung oder Erstattung ausgelöst. Die Kautionserstattung bleibt eigenständiger Mitarbeiterablauf.
 - Kein neuer externer Stripe-Zahlungslauf mit Kundengeld getestet. Ralfs eigene Sitzung nicht getestet; tatsächlicher Mitarbeiterablauf als Luca geprüft.
 - Bereits versendete PDF-Anhänge ändern sich nicht; Öffnen/Neuversand verwendet die Rechnung mit ergänztem Zahlungsnachweis.

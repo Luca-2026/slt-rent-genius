@@ -1,4 +1,5 @@
 # Shared helper rules
+- Stripe receipt invoice reconciliation uses stripe-invoice-sync on first and duplicate webhook deliveries; committed order receipts must not suppress retries after a failed invoice allocation.
 - Optional per-line delivery_at/collection_at are local Berlin moments normalized by _shared/offer-logistics and printed through calendarDescription; offerInsurancePeriod uses them for inclusive insurance days with per-endpoint rental-calendar fallback. Rental billing and availability stay calendar-based; manual insurance overrides and issued snapshots are preserved.
 - Open-ended rentals share unit/minimum-duration normalization in _shared/installments.ts; manual inquiries keep these in raw_payload, offers in immutable snapshots, and day-based rates must never be inferred as monthly installment amounts.
 - New open-ended offers persist independent-pricing metadata: per-line rate/unit/count stay separate from contractual minimum duration. Legacy snapshots retain their old semantics until explicitly switched; tariff unit changes require a new rate, and maintained daily tiers are never silently relabeled as weekly/monthly/yearly rates.
