@@ -80,13 +80,7 @@ const money = (n: number) =>
 const fmtDE = (d: Date) => d.toLocaleDateString("de-DE");
 const isoDate = (d: Date) => d.toISOString().slice(0, 10);
 
-const PAYMENT_DAYS: Record<string, number> = {
-  vorkasse: 0,
-  net_7: 7,
-  net_14: 14,
-  net_30: 30,
-};
-const ALLOWED_PAYMENT_TERMS = ["net_7", "net_14", "net_30", "vorkasse", "custom"];
+import { invoicePaymentAgreement } from "../_shared/customer-payment-terms.ts";
 
 interface RecordedPayment {
   date: string;
@@ -397,13 +391,10 @@ Deno.serve(async (req: Request) => {
     const companyName: string | null = inquiry.company_name || null;
     const isBusiness = inquiry.customer_kind === "business";
 
-    const requestedTerms = typeof body.payment_terms === "string" ? body.payment_terms : "";
-    const paymentTermsCustom = str(body.payment_terms_custom, 600);
-    let paymentTerms = ALLOWED_PAYMENT_TERMS.includes(requestedTerms)
-      ? requestedTerms
-      : (isBusiness ? "net_14" : "vorkasse");
-    if (paymentTerms === "custom" && !paymentTermsCustom) paymentTerms = isBusiness ? "net_14" : "vorkasse";
-    const paymentDueDays = PAYMENT_DAYS[paymentTerms] ?? 14;
+    const agreement = invoicePaymentAgreement(inquiry.customer_kind, body.payment_terms, inquiry.offer_payload?.payment_terms, body.payment_terms_custom, inquiry.offer_payload?.payment_terms_custom);
+    const paymentTerms = agreement.terms;
+    const paymentTermsCustom = agreement.custom;
+    const paymentDueDays = agreement.days;
 
     const invoiceDate = new Date();
     const dueDate = new Date(invoiceDate.getTime() + paymentDueDays * 86400000);

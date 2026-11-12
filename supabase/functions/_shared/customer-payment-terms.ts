@@ -11,3 +11,16 @@ export function safeCustomerPaymentTerms(customerKind: unknown, terms: string, i
   }
   return normalized;
 }
+
+/** Invoice defaults inherit the agreement, while explicit staff choices remain explicit. */
+export function invoicePaymentAgreement(customerKind: unknown, requested: unknown, offered: unknown, requestedCustom: unknown, offeredCustom: unknown) {
+  const allowed = ["net_7", "net_14", "net_30", "vorkasse", "custom"];
+  const explicit = typeof requested === "string" && allowed.includes(requested);
+  const agreed = typeof offered === "string" && allowed.includes(offered) ? offered : null;
+  let terms = explicit ? requested as string : agreed ?? (customerKind === "business" ? "net_14" : "vorkasse");
+  const custom = String((explicit ? requestedCustom : offeredCustom) ?? "").trim().slice(0, 600);
+  if (terms === "custom" && !custom) terms = customerKind === "business" ? "net_14" : "vorkasse";
+  terms = safeCustomerPaymentTerms(customerKind, terms, true);
+  const days: Record<string, number> = { vorkasse: 0, net_7: 7, net_14: 14, net_30: 30 };
+  return { terms, custom: terms === "custom" ? custom : "", days: days[terms] ?? 14 };
+}

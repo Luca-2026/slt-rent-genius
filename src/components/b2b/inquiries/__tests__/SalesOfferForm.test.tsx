@@ -64,6 +64,12 @@ vi.mock("@/hooks/useSalesCatalog", () => ({ loadSalesCatalog: async () => [], lo
 vi.mock("../SalesProductCombobox", () => ({ SalesProductCombobox: () => null }));
 
 describe("sales-only quote flow", () => {
+  it.each(["rental", "sales"] as const)("inherits agreed fourteen-day terms into the %s invoice request", async inquiryType => {
+    open({ inquiryType, mode: "invoice", defaultMeta: { payment_terms: "net_14" } });
+    fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
+    await waitFor(() => expect(fixtures.invoke).toHaveBeenCalled());
+    expect(fixtures.invoke.mock.calls[0][1].payment_terms).toBe("net_14");
+  });
   it.each(["amendment", "invoice"] as const)("%s serializes newly entered manual discount and recalculated bank rebate", async mode => {
     open({ mode, discountPolicy: { version: "bank-transfer-3-v1", rate: 3, selected: "bank" }, defaultItems: [{ ...line(), price_manual: true, rental_start: "2026-11-10", rental_end: "2026-11-10", addons: [{ key: "bank_transfer_discount_v1", label: "alt", amount: -3, manual: true }] }] });
     await waitFor(() => expect(discounts().length).toBeGreaterThan(0));

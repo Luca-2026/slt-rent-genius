@@ -1,4 +1,5 @@
 # Inquiries
+- Invoice editors inherit payment_terms and custom conditions from the operational offer snapshot alongside customer references; explicit draft/staff choices remain visible and are not silently replaced.
 - Unchanged offer resends use ResendOfferButton and resend-inquiry-offer with server-owned recipient confirmation, existing PDF and acceptance link; this prevents revisions or new document numbers for address corrections.
 - Deposit refund controls reconcile provider evidence before execution and resume unresolved durable requests; depositRefundPayment only chooses new unreserved receipts. Pre-invoice rental refunds use an explicitly prepared server-calculated preview basis; final invoice controls stay blocked until confirmed payouts, never a second claim for reserved capacity.
 - Invoice service-period defaults use invoiceServicePeriod to inherit agreed rental item dates with inquiry fallback; nonempty manual dates survive draft restoration, while empty legacy drafts and reset regain the rental default.
