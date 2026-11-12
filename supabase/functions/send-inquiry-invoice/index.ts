@@ -140,6 +140,13 @@ Deno.serve(async (req: Request) => {
     const resendKey = Deno.env.get("RESEND_API_KEY");
     const str = (v: unknown, max = 200) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
+    if (typeof body.sync_order_payments === "string") {
+      if (!/^[0-9a-f-]{36}$/i.test(body.sync_order_payments)) return json({ error: "Ungültige Auftrags-ID" }, 400);
+      const { data, error } = await service.rpc("sync_single_rental_invoice_receipts", { _inquiry: body.sync_order_payments });
+      if (error) return json({ error: "Zahlungen konnten nicht abgeglichen werden" }, 409);
+      return json({ success: true, result: data });
+    }
+
     if (typeof body.invoice_pdf_id === "string") {
       if (!/^[0-9a-f-]{36}$/i.test(body.invoice_pdf_id)) return json({ error: "Ungültige Rechnungs-ID" }, 400);
       const { data: invoice, error } = await service.from("inquiry_invoices").select("*").eq("id", body.invoice_pdf_id).single();

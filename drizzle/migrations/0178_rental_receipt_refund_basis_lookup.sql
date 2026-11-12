@@ -1,0 +1,1 @@
+DO $fix$ DECLARE d text; BEGIN SELECT pg_get_functiondef('public.sync_single_rental_invoice_receipts(uuid)'::regprocedure) INTO d; d:=replace(d,'SELECT 1 FROM public.rental_order_refunds WHERE inquiry_id=_inquiry','SELECT 1 FROM public.rental_order_refunds rr JOIN public.rental_refund_bases rb ON rb.id=rr.basis_id WHERE rb.inquiry_id=_inquiry'); EXECUTE d; END $fix$;

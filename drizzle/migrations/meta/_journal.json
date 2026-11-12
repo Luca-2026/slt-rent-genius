@@ -1240,6 +1240,20 @@
       "when": 1794501511471,
       "tag": "0176_amendment_guard_settled_links",
       "breakpoints": true
+    },
+    {
+      "idx": 177,
+      "version": "7",
+      "when": 1794505483822,
+      "tag": "0177_single_rental_invoice_stripe_receipts",
+      "breakpoints": true
+    },
+    {
+      "idx": 178,
+      "version": "7",
+      "when": 1794505514528,
+      "tag": "0178_rental_receipt_refund_basis_lookup",
+      "breakpoints": true
     }
   ]
 }

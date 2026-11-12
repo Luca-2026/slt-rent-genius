@@ -7541,6 +7541,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      sync_single_rental_invoice_receipts: {
+        Args: { _inquiry: string }
+        Returns: Json
+      }
       timesheet_locked_through: { Args: never; Returns: string }
       update_b2b_profile_with_pending: {
         Args: {
