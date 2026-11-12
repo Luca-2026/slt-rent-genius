@@ -1,5 +1,6 @@
 import { codedSubject } from "../_shared/order-code.ts";
 import { reconcileStripeRefund } from "../_shared/refund-reconciliation.ts";
+import { syncInvoiceForStripeReceipt } from "../_shared/stripe-invoice-sync.ts";
 /**
  * Stripe-Zahlungsmeldung. Öffentlicher Endpunkt – abgesichert über die Stripe-Signatur
  * (STRIPE_WEBHOOK_SECRET). Verarbeitet:
@@ -45,7 +46,23 @@ Deno.serve(async (req: Request) => {
     if ((dupErr as { code?: string }).code === "23505") {
       const { data: prior, error: priorError } = await service.from("stripe_webhook_events").select("result").eq("event_id", event.id).maybeSingle();
       if (priorError) return new Response("Error", { status: 500 });
-      if (prior?.result) return new Response(JSON.stringify({ duplicate: true }), { status: 200 });
+      if (prior?.result) {
+        try {
+          if (event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") {
+            const session = event.data.object as Stripe.Checkout.Session;
+            const linkId = session.metadata?.link_id ?? session.client_reference_id;
+            if (session.payment_status === "paid" && linkId && (prior.result === "booked" || prior.result === "already_booked")) {
+              const { data: link, error: linkError } = await service.from("offer_payment_links").select("inquiry_table,inquiry_id").eq("id", linkId).maybeSingle();
+              if (linkError || !link) throw new Error("Zahlungslink für erneuten Rechnungsabgleich nicht lesbar");
+              await syncInvoiceForStripeReceipt(service, prior.result, link.inquiry_table, link.inquiry_id);
+            }
+          }
+          return new Response(JSON.stringify({ duplicate: true }), { status: 200 });
+        } catch (error) {
+          console.error("Erneuter Rechnungsabgleich fehlgeschlagen:", error);
+          return new Response("Error", { status: 500 });
+        }
+      }
       // Received is not committed: retry work left unfinished by a terminated process.
     } else {
       console.error("Ereignis konnte nicht gespeichert werden:", dupErr.message);
@@ -85,10 +102,7 @@ Deno.serve(async (req: Request) => {
           _claim: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(session.metadata?.checkout_claim ?? "") ? session.metadata.checkout_claim : null,
         });
         if (settleError) throw new Error(`Zahlung konnte nicht atomar gebucht werden: ${settleError.message}`);
-        if (settled?.result === "booked" || settled?.result === "already_booked") {
-          const { error: invoiceError } = await service.rpc("sync_single_rental_invoice_receipts", { _inquiry: link.inquiry_id });
-          if (invoiceError) throw new Error(`Rechnungszahlung konnte nicht abgeglichen werden: ${invoiceError.message}`);
-        }
+        await syncInvoiceForStripeReceipt(service, settled?.result, link.inquiry_table, link.inquiry_id);
         if (settled?.added && Deno.env.get("RESEND_API_KEY")) {
           const { data: customer } = await service.from("rental_inquiries").select("customer_email,location").eq("id", link.inquiry_id).maybeSingle();
           const loc = LOCATION_CONTACTS[resolveLocationKey(customer?.location)];
