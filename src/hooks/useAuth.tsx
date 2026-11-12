@@ -55,6 +55,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [rolesChecked, setRolesChecked] = useState(false);
+  // Scheitert die Rechteprüfung endgültig, darf niemand als Kunde eingestuft werden.
+  const [roleCheckFailed, setRoleCheckFailed] = useState(false);
   const [authorizedPersonInfo, setAuthorizedPersonInfo] = useState<AuthorizedPersonInfo | null>(null);
   const loggedLoginTokens = useRef<Set<string>>(new Set());
   const currentUserId = useRef<string | null>(null);
@@ -99,6 +101,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const checkAdminRole = async (userId: string) => {
     // Rollenprüfung mit Wiederholung: Ist das Backend kurz nicht erreichbar,
     // darf ein Admin nicht als Kunde eingestuft werden (sonst Kundenansicht).
+    setRoleCheckFailed(false);
     try {
       for (let attempt = 0; attempt < 4; attempt++) {
         const [roleRes, superRes] = await Promise.all([
@@ -117,6 +120,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
         await new Promise((r) => setTimeout(r, 800 * (attempt + 1)));
       }
+      if (currentUserId.current === userId) setRoleCheckFailed(true);
     } finally {
       if (currentUserId.current === userId) setRolesChecked(true);
     }
@@ -163,6 +167,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setIsAdmin(false);
           setIsSuperAdmin(false);
           setAuthorizedPersonInfo(null);
+          setRoleCheckFailed(false);
           setRolesChecked(true);
         }
       }
@@ -215,6 +220,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsSuperAdmin(false);
     setAuthorizedPersonInfo(null);
     setRolesChecked(true);
+    setRoleCheckFailed(false);
     await supabase.auth.signOut();
   };
 
@@ -241,7 +247,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         refreshB2BProfile,
       }}
     >
-      {children}
+      {user && roleCheckFailed ? (
+        <div role="alert" className="min-h-screen flex items-center justify-center bg-background p-6">
+          <div className="max-w-md w-full rounded-lg border border-border bg-card p-6 text-center space-y-4">
+            <h1 className="text-xl font-semibold text-foreground">Berechtigungen konnten nicht geladen werden</h1>
+            <p className="text-sm text-muted-foreground">
+              Die Verbindung war gerade gestört. Damit keine falsche Ansicht erscheint, wird die Seite erst nach erfolgreicher Prüfung angezeigt.
+            </p>
+            <button
+              type="button"
+              className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+              onClick={() => { setRolesChecked(false); checkAdminRole(user.id); }}
+            >
+              Erneut versuchen
+            </button>
+          </div>
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 }
