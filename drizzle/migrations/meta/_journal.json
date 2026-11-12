@@ -1233,6 +1233,13 @@
       "when": 1794460188724,
       "tag": "0175_supersede_links_after_bank_payment_5cqazz_a9axpe",
       "breakpoints": true
+    },
+    {
+      "idx": 176,
+      "version": "7",
+      "when": 1794501511471,
+      "tag": "0176_amendment_guard_settled_links",
+      "breakpoints": true
     }
   ]
 }
