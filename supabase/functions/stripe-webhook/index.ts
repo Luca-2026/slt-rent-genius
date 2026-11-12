@@ -85,6 +85,10 @@ Deno.serve(async (req: Request) => {
           _claim: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(session.metadata?.checkout_claim ?? "") ? session.metadata.checkout_claim : null,
         });
         if (settleError) throw new Error(`Zahlung konnte nicht atomar gebucht werden: ${settleError.message}`);
+        if (settled?.result === "booked" || settled?.result === "already_booked") {
+          const { error: invoiceError } = await service.rpc("sync_single_rental_invoice_receipts", { _inquiry: link.inquiry_id });
+          if (invoiceError) throw new Error(`Rechnungszahlung konnte nicht abgeglichen werden: ${invoiceError.message}`);
+        }
         if (settled?.added && Deno.env.get("RESEND_API_KEY")) {
           const { data: customer } = await service.from("rental_inquiries").select("customer_email,location").eq("id", link.inquiry_id).maybeSingle();
           const loc = LOCATION_CONTACTS[resolveLocationKey(customer?.location)];
