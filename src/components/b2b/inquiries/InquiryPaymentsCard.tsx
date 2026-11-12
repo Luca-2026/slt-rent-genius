@@ -75,6 +75,8 @@ interface Props {
   offerTotalGross?: number | null;
   /** Kaution laut Angebot – wird mit überwiesen und zählt zum offenen Betrag. */
   deposit?: number | null;
+  /** Summe der ausgestellten Rechnungen brutto (ohne Storno/Gutschrift) – hat Vorrang vor der Angebotssumme. */
+  invoiceGross?: number | null;
   disabled?: boolean;
   /** Versendetes Angebot – Voraussetzung für die manuelle Zahlungserinnerung. */
   offerNumber?: string | null;
@@ -89,7 +91,7 @@ interface Props {
  * Zahlungseingänge zu einer Anfrage erfassen – schon bevor die Rechnung erstellt wird
  * (z. B. Vorkasse auf das Angebot). Die Rechnung übernimmt diese Zahlungen später.
  */
-export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGross, deposit, disabled, offerNumber, customerEmail, lastReminderAt, discountPolicy, offerPayload, onChanged }: Props) {
+export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGross, deposit, invoiceGross, disabled, offerNumber, customerEmail, lastReminderAt, discountPolicy, offerPayload, onChanged }: Props) {
   const { toast } = useToast();
   const [rows, setRows] = useState<InquiryPayment[]>(() => parseInquiryPayments(payments));
   const [saving, setSaving] = useState(false);
@@ -120,7 +122,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
   );
   const bankPreview = table === "rental_inquiries" && hasBankDiscountPolicy(discountPolicy) && offerPayload && rows.length > 0 && allPaymentsByBank(rows)
     ? rentalPaymentPrices({ ...offerPayload, bank_transfer_discount: { ...discountPolicy, selected: "bank" } }) : null;
-  const required = offerTotalGross != null ? Math.round(((bankPreview?.bankTotals.grossAmount ?? Number(offerTotalGross)) + (Number(deposit) || 0)) * 100) / 100 : null;
+  const required = invoiceGross != null ? Math.round((invoiceGross + (Number(deposit) || 0)) * 100) / 100 : offerTotalGross != null ? Math.round(((bankPreview?.bankTotals.grossAmount ?? Number(offerTotalGross)) + (Number(deposit) || 0)) * 100) / 100 : null;
   const open = required != null ? Math.round((required - total) * 100) / 100 : null;
   const saved = useMemo(() => JSON.stringify(parseInquiryPayments(payments)), [payments]);
   const dirty = JSON.stringify(parseInquiryPayments(rows)) !== saved;
@@ -323,6 +325,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
           {required != null && Number(deposit) > 0 && (
             <span className="ml-2 text-muted-foreground">von {formatEuro(required)} inkl. Kaution</span>
           )}
+          {invoiceGross != null && <span className="ml-2 text-muted-foreground">laut Rechnung</span>}
         </span>
           {open != null && (
             <span className={open > 0 ? "block text-destructive font-semibold" : "block text-primary font-semibold"}>

@@ -278,6 +278,13 @@ export function offerPayloadToLines(payload: unknown): {
   };
 }
 
+/** Offener Betrag richtet sich nach ausgestellten Rechnungen, sobald es sie gibt – nicht nach dem Angebot. */
+export function issuedInvoiceGross(invoices: { invoice_kind: string; status: string; gross_amount: number | null; credited_amount: number | null }[]): number | null {
+  const issued = invoices.filter((i) => !["draft", "cancelled"].includes(i.status) && !["credit_note", "deposit_settlement"].includes(i.invoice_kind) && i.gross_amount != null);
+  if (issued.length === 0) return null;
+  return Math.round(issued.reduce((s, i) => s + Number(i.gross_amount) - (Number(i.credited_amount) || 0), 0) * 100) / 100;
+}
+
 /** Kurzform einer Rechnung für die Übersicht im Anfragen-Detail. */
 
 interface InvoiceRow {
@@ -750,6 +757,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         inquiryId={inquiry.id}
         payments={(inquiry as { payments?: unknown }).payments}
         offerTotalGross={inquiry.offer_total_gross}
+        invoiceGross={issuedInvoiceGross(invoices)}
         deposit={Number((inquiry.offer_payload as { deposit?: unknown } | null)?.deposit) || 0}
         offerNumber={inquiry.offer_number}
         discountPolicy={(inquiry.offer_payload as { bank_transfer_discount?: unknown } | null)?.bank_transfer_discount}
