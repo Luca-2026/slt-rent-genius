@@ -2047,7 +2047,7 @@ export function InquiryOfferForm({
                         unit_manual: true,
                         duration_override: undefined,
                         // Pauschalpreis gilt für den gesamten Auftrag – Dauer fest 1.
-                        ...(["pauschal", "stueck", "stunden"].includes(v) ? { period_free: true, custom_period: true, rental_start: undefined, rental_end: undefined, rental_start_time: undefined, rental_end_time: undefined, delivery_at: undefined, collection_at: undefined, ...(v !== "stunden" ? { duration: 1 } : {}) } : { period_free: false }),
+                        ...(["pauschal", "stueck", "stunden"].includes(v) && item.pricing?.scheme !== "woche" ? { period_free: true, custom_period: true, rental_start: undefined, rental_end: undefined, rental_start_time: undefined, rental_end_time: undefined, delivery_at: undefined, collection_at: undefined, ...(v !== "stunden" ? { duration: 1 } : {}) } : { period_free: false }),
                       })
                     }
                   >
