@@ -2263,7 +2263,7 @@ export function InquiryOfferForm({
           return (
             <p className="text-[11px] text-muted-foreground" data-testid="unit-legend">
               {[...qUsed.map((q) => `${q.short} = ${q.label}`), ...used.filter((u) => u !== "pauschal").map((u) => `${unitAbbreviation(u)} = ${unitLabel(2, u)}`)].join(" · ")}
-              {used.includes("miettage") ? " · 1 Miettag = 24 Std. gem. AGB" : ""}
+              {used.includes("miettage") || effectiveItems.some(item => item.price_basis === "week") ? " · 1 Miettag = 24 Std. gem. AGB" : ""}
             </p>
           );
         })()}

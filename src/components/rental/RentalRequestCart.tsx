@@ -57,7 +57,7 @@ export function openRentalRequest(product: Product, location: LocationData) {
     update({ open: true, expired: false, edit: item });
   }
 }
-type Quote = { deposit: number | null; id: string; product_name: string; category: string; unit: string; duration: number; unit_price: number | null; rental_net: number | null; addons: { key: string; label: string; amount: number | null; deductible: number | null }[]; options: { key: string; label: string; amount: number | null; is_default: boolean; surcharge_percent?: number; deductible?: number }[] };
+type Quote = { pricing_scheme?: string; deposit: number | null; id: string; product_name: string; category: string; unit: string; duration: number; unit_price: number | null; rental_net: number | null; addons: { key: string; label: string; amount: number | null; deductible: number | null }[]; options: { key: string; label: string; amount: number | null; is_default: boolean; surcharge_percent?: number; deductible?: number }[] };
 const emptyContact = { name: "", email: "", phone: "", street: "", postalCode: "", city: "", couponCode: "", message: "", deliveryRequested: false, pickupConfirmed: false, deliveryStreet: "", deliveryPostalCode: "", deliveryCity: "" };
 
 export function RentalCartButton() {
@@ -116,7 +116,8 @@ export function RentalRequestCart() {
   }, [edit?.product_slug, managed]);
   const tariffProduct = managed.find(p => p.slug === edit?.product_slug);
   const tariffs = tariffProduct ? resolveProductPrices({ ...tariffProduct, prices_same_all_locations: tariffRows.length === 0 }, edit?.location, tariffRows) : null;
-  const weekendNet = tariffs?.price_weekend_num ?? (edit ? weekendPrices.get(edit.product_slug) : null) ?? null;
+  const isWeek = tariffProduct?.pricing_scheme === "woche";
+  const weekendNet = isWeek ? null : tariffs?.price_weekend_num ?? (edit ? weekendPrices.get(edit.product_slug) : null) ?? null;
   const quoteKey = JSON.stringify(quoteItems);
   const coupon = usePublicCoupon(contact.couponCode, contact.email, items.map(item => item.product_slug), JSON.stringify(items));
   useEffect(() => {

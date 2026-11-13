@@ -54,6 +54,6 @@ export async function publicRentalQuote(service: any, items: any[]) {
       addons.push({ key: alternative.key, label: alternative.label, amount: tierAmount(alternative), deductible: alternative.deductible ?? null });
     }
     const depositPerItem = catalogDeposit(product);
-    return { deposit: depositPerItem === null ? null : Math.round(depositPerItem * item.quantity * 100) / 100, id: item.id, product_name: product.name, category: product.category, unit: line.unit, duration: line.duration, unit_price: unitPrice, rental_net: unitPrice === null ? null : Math.round(item.quantity * line.duration * unitPrice * 100) / 100, addons, options: options.map((o: any) => ({ key: o.key, label: o.label, is_default: o.is_default === true, surcharge_percent: o.surcharge_percent, deductible: o.deductible, amount: Number(o.surcharge_percent) > 0 ? tierAmount(o) : calculate(o) })) };
+    return { pricing_scheme: product.pricing_scheme, deposit: depositPerItem === null ? null : Math.round(depositPerItem * item.quantity * 100) / 100, id: item.id, product_name: product.name, category: product.category, unit: line.unit, duration: line.duration, unit_price: unitPrice, rental_net: unitPrice === null ? null : Math.round(item.quantity * line.duration * unitPrice * 100) / 100, addons, options: options.map((o: any) => ({ key: o.key, label: o.label, is_default: o.is_default === true, surcharge_percent: o.surcharge_percent, deductible: o.deductible, amount: Number(o.surcharge_percent) > 0 ? tierAmount(o) : calculate(o) })) };
   });
 }

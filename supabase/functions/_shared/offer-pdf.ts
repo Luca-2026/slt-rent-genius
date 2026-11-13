@@ -588,6 +588,11 @@ export async function generateOfferPdf(data: {
       if (serviceUnit) {
         iqQty = `${String(item.articles || item.quantity || 1).replace(".", ",")} ${serviceUnit}`;
         iqDur = "\u2013";
+      } else if (item.price_basis === "week") {
+        iqQty = `${item.articles || item.quantity || 1} ${qu}`;
+        iqDur = "pauschal";
+        usedUnits.add(qu);
+        usedUnits.add("miettage");
       } else if (item.price_basis === "weekend") {
         iqQty = `${item.articles || item.quantity || 1} ${qu}`;
         iqDur = "Wochenende";
