@@ -220,7 +220,7 @@ interface CustomerPriceRow {
 const DT_INPUT = "w-full min-w-0 max-w-full appearance-none px-2 text-left [&::-webkit-date-and-time-value]:text-left [&::-webkit-date-and-time-value]:min-h-[1.25rem]";
 
 const PRICE_COLUMNS =
-  "id,pricing_scheme,prices_same_all_locations,price_per_day,price_from_1_rd,price_from_3_rd,price_from_10_rd,price_from_20_rd,price_weekend_num,price_base_1_3_cd,surcharge_per_cd_from_4,surcharge_per_cd_from_8";
+  "id,pricing_scheme,prices_same_all_locations,price_per_day,price_from_1_rd,price_from_3_rd,price_from_10_rd,price_from_20_rd,price_weekend_num,price_base_1_3_cd,surcharge_per_cd_from_4,surcharge_per_cd_from_8,price_short_1_3_rd,price_from_1_week,price_from_2_weeks,price_from_3_weeks,price_from_4_weeks";
 
 async function loadRentalPricing(
   slug: string | null | undefined,
@@ -260,7 +260,7 @@ function applyRentalPricing(item: FormLine, dayOpts: RentalDayOptions): FormLine
     durationOverride: item.undated_offer ? item.duration ?? 1 : item.duration_override,
     opts: { use_saturday: item.use_saturday ?? dayOpts.use_saturday, use_sunday: item.use_sunday ?? dayOpts.use_sunday },
   });
-  const base: FormLine = { ...item, product_name: p.base_name };
+  const base: FormLine = { ...item, product_name: p.base_name, rental_period_label: p.scheme === "woche" && r.kind === "tier" ? r.label : undefined };
   if (r.kind === "weekend") {
     return { ...base, product_name: p.base_name + WEEKEND_SUFFIX, unit: "pauschal", duration: 1, unit_price: r.unit_price, price_source: "cms", price_basis: "weekend", tier_label: r.label };
   }
@@ -278,7 +278,7 @@ function applyRentalPricing(item: FormLine, dayOpts: RentalDayOptions): FormLine
       ...(item.discount_auto ? { discount_percent: 0, discount_auto: false } : {}),
     };
   }
-  return { ...base, unit: r.unit, duration: r.duration, unit_price: r.unit_price, price_source: "cms", price_basis: "tier", tier_label: r.label };
+  return { ...base, unit: r.unit, duration: r.duration, unit_price: r.unit_price, price_source: "cms", price_basis: p.scheme === "woche" ? "week" : "tier", tier_label: r.label };
 }
 
 const PAYMENT_OPTIONS: Record<"business" | "private", { value: string; label: string }[]> = {
@@ -1036,8 +1036,16 @@ export function InquiryOfferForm({
 
   const patchItem = (index: number, patch: Partial<FormLine>) =>
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, ...patch } : item)));
+  const [periodRecalculation, setPeriodRecalculation] = useState<{ index: number; patch: Partial<FormLine> } | null>(null);
   /** Wie patchItem, rechnet danach Dauer/Staffelpreis neu (ohne Handpreis-Marker). */
-  const patchPriced = (index: number, patch: Partial<FormLine>) =>
+  const patchPriced = (index: number, patch: Partial<FormLine>, confirmed = false) => {
+    const current = items[index];
+    const changesPeriod = ["rental_start", "rental_end", "rental_start_time", "rental_end_time", "custom_period"].some(key => key in patch);
+    const affected = items.filter((item, i) => i === index || (index === 0 && !item.custom_period));
+    if (!confirmed && changesPeriod && affected.some(item => ["event", "woche"].includes(item.pricing?.scheme ?? "") && (item.price_manual || item.unit_manual))) {
+      setPeriodRecalculation({ index, patch });
+      return;
+    }
     setItems((prev) => {
       if (openEnded && independentPricing) return prev.map((item, i) => {
         if (i !== index) return item;
@@ -1052,6 +1060,7 @@ export function InquiryOfferForm({
         return pricingActive && !undatedOffer ? applyRentalPricing(inherited, dayOpts) : inherited;
       });
     });
+  };
   const changeDayOpts = (next: RentalDayOptions) => {
     setUseSaturday(!!next.use_saturday);
     setUseSunday(!!next.use_sunday);
@@ -2760,6 +2769,31 @@ export function InquiryOfferForm({
           void send();
         }}
       />
+      <Dialog open={periodRecalculation !== null} onOpenChange={open => { if (!open) setPeriodRecalculation(null); }}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Zeitraum angepasst, Preis neu berechnen?</DialogTitle></DialogHeader>
+          <div className="flex justify-end gap-2">
+            <Button type="button" variant="outline" onClick={() => {
+              if (!periodRecalculation) return;
+              const { index, patch } = periodRecalculation;
+              setItems(prev => prev.map((item, i) => {
+                if (i !== index && (index !== 0 || item.custom_period)) return item;
+                return calendarDuration(applyInheritedPeriod(i === index ? { ...item, ...patch } : item, i, index === 0 ? { ...prev[0], ...patch } : prev[0]), dayOpts);
+              }));
+              setPeriodRecalculation(null);
+            }}>Ablehnen</Button>
+            <Button type="button" onClick={() => {
+              if (!periodRecalculation) return;
+              const { index, patch } = periodRecalculation;
+              setItems(prev => {
+                const next = prev.map((item, i) => i === index ? { ...item, ...patch } : item);
+                return next.map((item, i) => i === index || (index === 0 && !item.custom_period) ? applyRentalPricing({ ...applyInheritedPeriod(item, i, next[0]), price_manual: false, unit_manual: false }, dayOpts) : item);
+              });
+              setPeriodRecalculation(null);
+            }}>Übernehmen</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {!stickyActions && actionBar}
       <Dialog open={!!previewUrl} onOpenChange={(o) => { if (!o) setPreviewUrl(null); }}>

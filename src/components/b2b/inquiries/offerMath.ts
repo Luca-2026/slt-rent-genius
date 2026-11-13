@@ -65,7 +65,8 @@ export interface OfferLine extends OfferLogistics {
   /** Einzelpreis von Hand geändert – keine automatische Neuberechnung (Paket 2) */
   price_manual?: boolean;
   /** Herkunft des Einzelpreises: Staffel, Wochenendtarif oder Kundenpreis (Paket 2) */
-  price_basis?: "tier" | "weekend" | "customer";
+  price_basis?: "tier" | "weekend" | "customer" | "week";
+  rental_period_label?: string;
   /** Bild-URL aus dem CMS – wird im Angebots-PDF eingebettet. */
   image_url?: string;
   /** Zusatzoptionen (Versicherungen etc.) dieser Position */

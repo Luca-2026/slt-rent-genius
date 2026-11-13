@@ -28,7 +28,7 @@ export function calendarDescription(line: OfferLine): string {
     const [year, month, day] = date.slice(0, 10).split("-");
     return `${day}.${month}.${year}${time ? `, ${time}` : ""}`;
   };
-  const period = `Mietzeitraum: ${moment(line.rental_start, line.rental_start_time)}${line.rental_end ? ` – ${moment(line.rental_end, line.rental_end_time)}` : ""}`;
+  const period = `Mietzeitraum${line.rental_period_label ? ` ${line.rental_period_label}` : ":"} ${moment(line.rental_start, line.rental_start_time)}${line.rental_end ? ` – ${moment(line.rental_end, line.rental_end_time)}` : ""}`;
   return [text, period, ...logisticsDescription(line)].filter(Boolean).join(" · ");
 }
 
