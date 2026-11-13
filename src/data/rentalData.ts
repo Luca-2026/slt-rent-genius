@@ -243,7 +243,12 @@ export interface Product {
   /** Interne CMS-ID (nur bei Managed-Artikeln) – z. B. für Standortpreise. */
   managedId?: string;
   /** Preisschema und Staffelpreise aus dem CMS (netto). */
-  pricingScheme?: "bau" | "event";
+  pricingScheme?: "bau" | "event" | "woche";
+  priceShort13Rd?: number | null;
+  priceFrom1Week?: number | null;
+  priceFrom2Weeks?: number | null;
+  priceFrom3Weeks?: number | null;
+  priceFrom4Weeks?: number | null;
   priceFrom1Rd?: number | null;
   priceFrom3Rd?: number | null;
   priceFrom10Rd?: number | null;

@@ -10,6 +10,7 @@
 - Article and changed location-price patches save in one permission-scoped save_managed_article transaction with a stable UUID for retries, preventing partial saves and duplicate new articles.
 - Article autosaves serialize snapshots through useArticleAutosave; drafts are written immediately, save acknowledgements apply only to the submitted snapshot, and instance tabs stay mounted to preserve pending input during refetches and navigation.
 - CMS operating hours, fuel tank and battery-level settings are independent flags; disabling hours never clears either level option.
+ - Weekly pricing has separate nullable net fields in product and location rows; category changes never change the independently selected pricing scheme, and weekly inputs never regenerate legacy daily prices.
 - Diese Datei ist für jedes Änderungspaket zur Maske freigegeben und wird mit den Regeln mitgepflegt.
 - Trailer saves preserve maintained legacy daily starting-price amounts and monthly text instead of regenerating them from Bau tiers; legacyDayText retains the starting-price prefix for other categories as well. This prevents unrelated specification edits from changing advertised prices while Rentware remains authoritative.
 - Bestand je Standort (`stocked_locations`, Schalter „Am Standort vorhanden“/„Auf Anfrage von anderem Standort“) steuert Verfügbarkeitshinweis, Filter „nur vor Ort“ und Anfragetext über `isStockedAt` (src/lib/productAvailability.ts); Rentware-Code entscheidet nur noch über Online-Buchung und Warenkorb. Ohne Feld gilt die alte Code-Regel.

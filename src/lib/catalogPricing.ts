@@ -68,6 +68,7 @@ export interface PricedCatalogRow {
   pricing_scheme?: string | null;
   price_from_1_rd?: number | null;
   price_base_1_3_cd?: number | null;
+  price_from_1_week?: number | null;
 }
 
 export interface ResolvedPrice {
@@ -98,6 +99,10 @@ async function resolveGrossCatalogPrice(
   row: PricedCatalogRow | null | undefined,
 ): Promise<ResolvedPrice | undefined> {
   if (!row) return undefined;
+  if (row.pricing_scheme === "woche") {
+    const price = row.price_from_1_week;
+    return typeof price === "number" && price > 0 ? { price, unit: "wochen" } : undefined;
+  }
   // Staffelpreise (Paket 2) zuerst: Grundpreis je nach Schema.
   const tierBase = row.pricing_scheme === "bau" ? row.price_from_1_rd : row.price_base_1_3_cd;
   if (typeof tierBase === "number" && Number.isFinite(tierBase) && tierBase > 0) {

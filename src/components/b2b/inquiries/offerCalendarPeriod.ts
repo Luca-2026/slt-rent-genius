@@ -17,7 +17,7 @@ export function undatedOfferLine<T extends OfferLine>(line: T): T {
 const LEGACY_PERIOD = /^(?:Mietzeitraum:\s*)?(?:(?:Mo|Di|Mi|Do|Fr|Sa|So)\.?[,]?\s*)?\d{1,2}\.\s*\d{1,2}\.\s*\d{4}(?:[,]?\s*\d{1,2}:\d{2})?(?:\s*[–—-]\s*(?:(?:Mo|Di|Mi|Do|Fr|Sa|So)\.?[,]?\s*)?\d{1,2}\.\s*\d{1,2}\.\s*\d{4}(?:[,]?\s*\d{1,2}:\d{2})?)?$/;
 
 export function withoutLegacyPeriod(text?: string | null): string {
-  return (text ?? "").split(/\s*·\s*|\n/).filter((part) => !LEGACY_PERIOD.test(part.trim()) && !/^(?:Lieferung|Rückholung): \d{2}\.\d{2}\.\d{4}, \d{2}:\d{2}$/.test(part.trim())).join(" · ").trim();
+  return (text ?? "").split(/\s*·\s*|\n/).filter((part) => !LEGACY_PERIOD.test(part.trim().replace(/^Mietzeitraum (?:\d+ Wochen?|1 bis 3 Miettage) /, "Mietzeitraum: ")) && !/^(?:Lieferung|Rückholung): \d{2}\.\d{2}\.\d{4}, \d{2}:\d{2}$/.test(part.trim())).join(" · ").trim();
 }
 
 export function calendarDescription(line: OfferLine): string {
@@ -28,7 +28,7 @@ export function calendarDescription(line: OfferLine): string {
     const [year, month, day] = date.slice(0, 10).split("-");
     return `${day}.${month}.${year}${time ? `, ${time}` : ""}`;
   };
-  const period = `Mietzeitraum: ${moment(line.rental_start, line.rental_start_time)}${line.rental_end ? ` – ${moment(line.rental_end, line.rental_end_time)}` : ""}`;
+  const period = `Mietzeitraum${line.rental_period_label ? ` ${line.rental_period_label}` : ":"} ${moment(line.rental_start, line.rental_start_time)}${line.rental_end ? ` – ${moment(line.rental_end, line.rental_end_time)}` : ""}`;
   return [text, period, ...logisticsDescription(line)].filter(Boolean).join(" · ");
 }
 

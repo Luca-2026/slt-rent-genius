@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
 
-export type PricingScheme = "bau" | "event";
+export type PricingScheme = "bau" | "event" | "woche";
 
 export const PRICE_FIELDS = [
   "price_from_1_rd",
@@ -19,6 +19,11 @@ export const PRICE_FIELDS = [
   "price_base_1_3_cd",
   "surcharge_per_cd_from_4",
   "surcharge_per_cd_from_8",
+  "price_short_1_3_rd",
+  "price_from_1_week",
+  "price_from_2_weeks",
+  "price_from_3_weeks",
+  "price_from_4_weeks",
 ] as const;
 export type PriceField = (typeof PRICE_FIELDS)[number];
 /** Eingaben als Text (deutsches Komma erlaubt). */
@@ -98,11 +103,13 @@ export function legacyMonthText(
 
 /** Tagespreis, der in price_per_day zurückgeschrieben wird. */
 export function legacyDayPrice(scheme: PricingScheme, set: PriceSet): number | null {
+  if (scheme === "woche") return null;
   return parsePriceInput(scheme === "event" ? set.price_base_1_3_cd : set.price_from_1_rd);
 }
 
 /** Rentware trailers retain their maintained starting price, not the Bau base rate. */
 export function legacyDayText(category: string, scheme: PricingScheme, set: PriceSet, existingText: string | null): string | null {
+  if (scheme === "woche") return existingText;
   if (category === "anhaenger") {
     const text = existingText?.trim();
     return text ? (/^ab\b/i.test(text) ? text : `ab ${text}`) : null;
@@ -192,9 +199,17 @@ const EVENT_FIELDS: { key: PriceField; label: string; hint?: string }[] = [
   { key: "surcharge_per_cd_from_8", label: "Aufschlag je KT ab 8 KT", hint: "Leer = automatisch 50 % bzw. 20 % des Grundpreises." },
   { key: "price_weekend_num", label: "Wochenende (Fr. 16 Uhr – Mo. 09:30 Uhr)" },
 ];
+const WEEK_FIELDS: { key: PriceField; label: string; hint?: string }[] = [
+  { key: "price_short_1_3_rd", label: "1 bis 3 Miettage (Pauschale)", hint: "Leer = Preis ab 1 Woche." },
+  { key: "price_from_1_week", label: "ab 1 Woche (je Woche)" },
+  { key: "price_from_2_weeks", label: "ab 2 Wochen (je Woche)" },
+  { key: "price_from_3_weeks", label: "ab 3 Wochen (je Woche)" },
+  { key: "price_from_4_weeks", label: "ab 4 Wochen (je Woche)", hint: "Leere Wochenstufe = nächstniedrigere gefüllte Stufe." },
+];
 
 /** Pflichtfeld des Schemas: Event = Grundpreis 1–3 KT, Bau = ab 1 Miettag. */
 export function basePriceField(scheme: PricingScheme): PriceField {
+  if (scheme === "woche") return "price_from_1_week";
   return scheme === "event" ? "price_base_1_3_cd" : "price_from_1_rd";
 }
 
@@ -210,6 +225,7 @@ export function basePriceRequired(_a: { is_published: boolean; on_request: boole
 export const NO_BASE_PRICE_HINT = "Ohne Grundpreis wird auf der Webseite kein Preis angezeigt.";
 
 export function schemeFields(scheme: PricingScheme) {
+  if (scheme === "woche") return WEEK_FIELDS;
   return scheme === "event" ? EVENT_FIELDS : BAU_FIELDS;
 }
 

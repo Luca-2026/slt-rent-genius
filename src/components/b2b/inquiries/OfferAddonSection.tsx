@@ -32,7 +32,7 @@ export function lineContext(item: OfferLine): AddonLineContext {
   return {
     articles: item.quantity || 1,
     duration: unit === "pauschal" ? 1 : item.duration && item.duration > 0 ? item.duration : 1,
-    days_per_unit: timeBased ? daysPerUnit(unit) : null,
+    days_per_unit: item.price_basis === "week" && item.rental_start && item.rental_end ? insuranceCalendarDays({ date: item.rental_start }, { date: item.rental_end }) : timeBased ? daysPerUnit(unit) : null,
     unit_price: item.unit_price || 0,
     discount_percent: 0,
   };

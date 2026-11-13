@@ -29,7 +29,7 @@ import { depositSummary, depositSummaryNote, inferChargeMeasure, measureUnitLabe
 import { addonExplanation, invoiceExtraFields } from "../_shared/inquiry-offer-math.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
 import {
-  addMonths,
+  nextInstallmentDate,
   billedInstallmentNet,
   deductionNote,
   installmentDeductions,
@@ -882,8 +882,8 @@ Deno.serve(async (req: Request) => {
       const interval = Math.max(1, Number(inquiry.installment_interval_months) || 1);
       const today = isoDate(new Date());
       const base = inquiry.installment_next_due && inquiry.installment_next_due > today ? inquiry.installment_next_due : (inquiry.installment_next_due || today);
-      let next = addMonths(base, interval);
-      while (next <= today) next = addMonths(next, interval);
+      let next = nextInstallmentDate(base, interval, inquiry.installment_interval_days);
+      while (next <= today) next = nextInstallmentDate(next, interval, inquiry.installment_interval_days);
       const { error: planErr } = await service
         .from(table)
         .update({ installment_next_due: next, installment_reminded_on: null })

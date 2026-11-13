@@ -1,4 +1,5 @@
 # Inquiries
+ - Weekly tariffs use elapsed 24-hour blocks with full started weeks and serialize as one period-labelled flat line; manual period/unit changes require an explicit price decision, and four-week installments use an additive day interval without changing historical monthly schedules.
 - Offer time selectors share quarter-hour options and preserve legacy values until edited; appended positions inherit the final group, and catalogue selections retain valid groups so new lines stay last through grouping and serialization.
 - Invoice editors inherit payment_terms and custom conditions from the operational offer snapshot alongside customer references; explicit draft/staff choices remain visible and are not silently replaced.
 - Unchanged offer resends use ResendOfferButton and resend-inquiry-offer with server-owned recipient confirmation, existing PDF and acceptance link; this prevents revisions or new document numbers for address corrections.

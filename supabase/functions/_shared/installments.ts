@@ -27,8 +27,12 @@ export function addDays(iso: string, days: number): string {
 }
 
 /** Vorgeschlagener Leistungszeitraum eines Abschlags: Beginn bis Tag vor Beginn + Intervall. */
-export function installmentPeriod(start: string, intervalMonths = 1): { start: string; end: string } {
-  return { start: start.slice(0, 10), end: addDays(addMonths(start, Math.max(1, intervalMonths)), -1) };
+export function nextInstallmentDate(start: string, intervalMonths = 1, intervalDays?: number | null): string {
+  return intervalDays === 28 ? addDays(start, 28) : addMonths(start, Math.max(1, intervalMonths));
+}
+
+export function installmentPeriod(start: string, intervalMonths = 1, intervalDays?: number | null): { start: string; end: string } {
+  return { start: start.slice(0, 10), end: addDays(nextInstallmentDate(start, intervalMonths, intervalDays), -1) };
 }
 
 export interface InstallmentInvoiceRow {

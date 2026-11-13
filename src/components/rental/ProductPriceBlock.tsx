@@ -83,15 +83,19 @@ export function ProductPriceBlock({
     mainValue = displayPrice(signPublicBaseGrossCents(signConfig) / 119, type);
     mainUnit = "für 1–10 Tage";
   }
+  if (!isSign && product.pricingScheme === "woche") {
+    mainValue = product.priceFrom1Week != null ? displayPrice(product.priceFrom1Week, type) : "Preis auf Anfrage";
+    mainUnit = product.priceFrom1Week != null ? "/ Woche" : "";
+  }
 
   const hasPrice = isSign || mainValue !== "Preis auf Anfrage";
 
   // Zusatztarife (nur, was nicht schon Hauptpreis ist)
   const extras: Array<{ label: string; value: string }> = [];
-  if (!isSign && !hideExtras && product.priceWeekend && mainValue !== priceText(product.priceWeekend, type)) {
+  if (!isSign && product.pricingScheme !== "woche" && !hideExtras && product.priceWeekend && mainValue !== priceText(product.priceWeekend, type)) {
     extras.push({ label: "Wochenende", value: priceText(product.priceWeekend, type) });
   }
-  if (!isSign && !hideExtras && product.pricePerMonth && mainValue !== priceText(product.pricePerMonth, type)) {
+  if (!isSign && product.pricingScheme !== "woche" && !hideExtras && product.pricePerMonth && mainValue !== priceText(product.pricePerMonth, type)) {
     extras.push({
       label: product.minRentalMonths
         ? `Monat (ab ${product.minRentalMonths} Mon.)`
@@ -143,6 +147,11 @@ export function productManagedPrices(product: Product, location?: string | null,
       price_from_20_rd: product.priceFrom20Rd ?? null,
       price_weekend_num: product.priceWeekendNum ?? null,
       price_base_1_3_cd: product.priceBase13Cd ?? null,
+      price_short_1_3_rd: product.priceShort13Rd ?? null,
+      price_from_1_week: product.priceFrom1Week ?? null,
+      price_from_2_weeks: product.priceFrom2Weeks ?? null,
+      price_from_3_weeks: product.priceFrom3Weeks ?? null,
+      price_from_4_weeks: product.priceFrom4Weeks ?? null,
       surcharge_per_cd_from_4: product.surchargePerCdFrom4 ?? null,
       surcharge_per_cd_from_8: product.surchargePerCdFrom8 ?? null,
     },
@@ -168,7 +177,12 @@ export function RentalPriceTiers({ product, location, locationRows = [], classNa
   const rows: Array<{ label: string; value: string }> = [];
   if (product.id === SIGN_PRODUCT_SLUG || product.id === `bonn-${SIGN_PRODUCT_SLUG}`) return null;
 
-  if (product.pricingScheme === "bau") {
+  if (product.pricingScheme === "woche") {
+    if (prices.price_short_1_3_rd != null) rows.push({ label: "1 bis 3 Miettage", value: displayPrice(prices.price_short_1_3_rd, type) });
+    for (const [weeks, rate] of [[1, prices.price_from_1_week], [2, prices.price_from_2_weeks], [3, prices.price_from_3_weeks], [4, prices.price_from_4_weeks]] as const) {
+      if (rate != null) rows.push({ label: `ab ${weeks} ${weeks === 1 ? "Woche" : "Wochen"}`, value: `${displayPrice(rate, type)} je Woche` });
+    }
+  } else if (product.pricingScheme === "bau") {
     if (prices.price_from_1_rd !== null) rows.push({ label: "ab 1 Miettag", value: `${displayPrice(prices.price_from_1_rd, type)} / Miettag` });
     if (prices.price_from_3_rd !== null) rows.push({ label: "ab 3 Miettagen", value: `${displayPrice(prices.price_from_3_rd, type)} / Miettag` });
     if (prices.price_from_10_rd !== null) rows.push({ label: "ab 10 Miettagen", value: `${displayPrice(prices.price_from_10_rd, type)} / Miettag` });
@@ -178,7 +192,7 @@ export function RentalPriceTiers({ product, location, locationRows = [], classNa
     if (prices.surcharge_per_cd_from_4 !== null) rows.push({ label: "ab 4 Kalendertagen", value: `+ ${displayPrice(prices.surcharge_per_cd_from_4, type)} / Tag` });
     if (prices.surcharge_per_cd_from_8 !== null) rows.push({ label: "ab 8 Kalendertagen", value: `+ ${displayPrice(prices.surcharge_per_cd_from_8, type)} / Tag` });
   }
-  if (prices.price_weekend_num !== null) {
+  if (product.pricingScheme !== "woche" && prices.price_weekend_num !== null) {
     rows.push({ label: "Wochenendtarif (Fr 16:00 – Mo 09:30)", value: displayPrice(prices.price_weekend_num, type) });
   }
 
@@ -195,6 +209,7 @@ export function RentalPriceTiers({ product, location, locationRows = [], classNa
           </li>
         ))}
       </ul>
+      {product.pricingScheme === "woche" && <p className="mt-2 text-xs text-muted-foreground">1 Miettag = 24 Stunden. Ab dem 4. Miettag Abrechnung je angefangener Woche.</p>}
     </div>
   );
 }

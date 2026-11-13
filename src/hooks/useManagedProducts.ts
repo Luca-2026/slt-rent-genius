@@ -51,7 +51,12 @@ export interface ManagedProductRow {
   image_alts?: string[] | null;
   /** Event | Bau; Preisschema ist separat wählbar. */
   main_category?: "event" | "bau";
-  pricing_scheme?: "event" | "bau";
+  pricing_scheme?: "event" | "bau" | "woche";
+  price_short_1_3_rd?: number | null;
+  price_from_1_week?: number | null;
+  price_from_2_weeks?: number | null;
+  price_from_3_weeks?: number | null;
+  price_from_4_weeks?: number | null;
   price_from_1_rd?: number | null;
   price_from_3_rd?: number | null;
   price_from_10_rd?: number | null;
@@ -128,6 +133,11 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
     relatedSlugs: row.related_slugs?.length ? row.related_slugs : undefined,
     managedId: row.id,
     pricingScheme: row.pricing_scheme ?? undefined,
+    priceShort13Rd: row.price_short_1_3_rd ?? null,
+    priceFrom1Week: row.price_from_1_week ?? null,
+    priceFrom2Weeks: row.price_from_2_weeks ?? null,
+    priceFrom3Weeks: row.price_from_3_weeks ?? null,
+    priceFrom4Weeks: row.price_from_4_weeks ?? null,
     priceFrom1Rd: row.price_from_1_rd ?? null,
     priceFrom3Rd: row.price_from_3_rd ?? null,
     priceFrom10Rd: row.price_from_10_rd ?? null,

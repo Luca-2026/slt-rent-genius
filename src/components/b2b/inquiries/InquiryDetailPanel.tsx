@@ -179,6 +179,8 @@ export function offerPayloadToLines(payload: unknown): {
     vat_rate: raw.vat_rate === 0 ? 0 : 19,
     ...(["rental", "damage", "municipal", "deposit"].includes(String(raw.payment_cost_kind)) ? { payment_cost_kind: raw.payment_cost_kind as OfferLine["payment_cost_kind"] } : {}),
     description: split.description,
+    ...(raw.price_basis === "week" ? { price_basis: "week" as const } : {}),
+    ...(typeof raw.rental_period_label === "string" ? { rental_period_label: raw.rental_period_label } : {}),
     quantity: split.quantity,
     duration: split.duration,
     duration_override: Number(raw.duration_override) > 0 ? Number(raw.duration_override) : undefined,
