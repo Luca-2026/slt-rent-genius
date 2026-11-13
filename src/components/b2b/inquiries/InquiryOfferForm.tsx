@@ -868,6 +868,7 @@ export function InquiryOfferForm({
     setDraftRestored(false);
     setCouponCode(defaultCouponCode);
     if (isSalesOffer) { setFinancingEnabled(defaultMeta?.financing ? defaultMeta.financing.enabled : financingRequest?.desired === true); setFinancingNote(defaultMeta?.financing?.note ?? ""); }
+    setPeriodRecalculations({});
     setItems(defaultItems.length ? migrateServiceCosts(defaultItems, defaultCosts?.setup_cost ?? 0, defaultCosts?.dismantle_cost ?? 0) as FormLine[] : [emptyLine()]);
     setDelivery(defaultDelivery ?? emptyDelivery);
     setDeliveryCostDelivery(defaultCosts?.delivery_cost_delivery ?? 0);
@@ -1324,6 +1325,7 @@ export function InquiryOfferForm({
               : baseDescription;
           return {
             ...rest,
+            ...( _um ? { duration_override: duration } : {}),
             description,
             // Für die spätere Bestandsprüfung: echte Stückzahl und Zeitraum
             // getrennt mitschreiben (quantity ist Artikel × Dauer).
@@ -1878,7 +1880,7 @@ export function InquiryOfferForm({
                 size="icon"
                 className="ml-auto sm:ml-0"
                 onClick={() => setItems((prev) => prev.filter((_, i) => i !== index))}
-                disabled={disabled || items.length === 1}
+                disabled={disabled || items.length === 1 || Object.keys(periodRecalculations).length > 0}
                 aria-label="Position entfernen"
               >
                 <Trash2 className="h-4 w-4" />

@@ -631,7 +631,7 @@ export function ProductBookingDialog({
 
                     {/* W4: Wochenend-Nutzungstage + unverbindliche Preisschätzung */}
                     <div className="space-y-2 rounded-lg border border-border bg-muted/30 p-3">
-                      {product?.pricingScheme !== "woche" && <div className="flex flex-col gap-2 sm:flex-row sm:gap-6">
+                      {product?.pricingScheme === "bau" && <div className="flex flex-col gap-2 sm:flex-row sm:gap-6">
                         <label className="flex items-center gap-2 text-sm cursor-pointer">
                           <Checkbox
                             checked={form.useSaturday}
@@ -647,7 +647,7 @@ export function ProductBookingDialog({
                           Sonntag als Nutzungstag
                         </label>
                       </div>}
-                      {product?.pricingScheme !== "woche" && <p className="text-xs text-muted-foreground leading-relaxed">
+                      {product?.pricingScheme === "bau" && <p className="text-xs text-muted-foreground leading-relaxed">
                         <Info className="inline h-3 w-3 mr-1 -mt-0.5" aria-hidden="true" />
                         Bei Mietzeiträumen ab 5 Miettagen zählen Samstag und Sonntag nur mit, wenn du sie hier ankreuzt – z. B. wenn du das Gerät am Wochenende weiter nutzt.
                       </p>}
