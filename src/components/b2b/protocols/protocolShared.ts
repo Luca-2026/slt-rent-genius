@@ -219,5 +219,5 @@ export const serializeExtraCharges = (list: ExtraCharge[]) =>
       label: c.label.trim(),
       quantity: toNumber(c.quantity) || 1,
       unit_price: chargeGrossPrice(toNumber(c.unitPrice), c.priceBasis),
-      notes: c.notes || (c.unit === "15min" ? `${toNumber(c.quantity) || 1} × 15 Min (${Math.round((toNumber(c.quantity) || 1) * 15)} Min) × ${toNumber(c.unitPrice).toFixed(2).replace(".", ",")} € je 15 Min` : c.unit === "l" ? `${toNumber(c.quantity) || 1} l × ${toNumber(c.unitPrice).toFixed(2).replace(".", ",")} €/l` : null),
+      notes: c.notes || (c.unit === "15min" ? `${toNumber(c.quantity) || 1} × 15 Min (${Math.round((toNumber(c.quantity) || 1) * 15)} Min) × ${c.unitPrice} € ${c.priceBasis === "net" ? "netto" : "brutto"} je 15 Min` : c.unit === "l" ? `${toNumber(c.quantity) || 1} l × ${c.unitPrice} €/l ${c.priceBasis === "net" ? "netto" : "brutto"}` : null),
     }));

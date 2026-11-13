@@ -43,9 +43,12 @@ export function fuelSuggested(deliveryLevel: string | null | undefined, returnLe
 export const round2 = (n: number) => Math.round(n * 100) / 100;
 
 export const RECHARGE_NET = 20;
-/** New free/recharge inputs are net; historic and fuel/cleaning inputs remain gross. */
+/** New inputs are net; unmarked historic drafts remain gross. */
 export const chargeGrossPrice = (price: number, basis?: "net" | "gross") =>
   basis === "net" ? Math.round(price * 1.19 * 10000) / 10000 : price;
+
+/** Preserve the agreed gross fuel tariff rather than rounding the net liter rate to cents. */
+export const fuelPriceNet = (gross: number) => Math.round(gross / 1.19 * 1_000_000) / 1_000_000;
 
 /** Kraftstoffkosten brutto = Liter × Literpreis. */
 export function fuelChargeGross(liters: number, pricePerLiter: number): number {

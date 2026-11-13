@@ -12,7 +12,7 @@ import {
   EXTRA_CHARGE_TEMPLATES, emptyExtraCharge, extraChargeTotal, formatEuro,
   sumExtraCharges, type ExtraCharge,
 } from "./protocolShared";
-import { CLEANING_UNIT_GROSS, CLEANING_UNIT_MINUTES, CLEANING_UNIT_NET, FUEL_PRICES, RECHARGE_NET, cleaningMinutesLabel } from "@/lib/returnCharges";
+import { CLEANING_UNIT_MINUTES, CLEANING_UNIT_NET, FUEL_PRICES, RECHARGE_NET, cleaningMinutesLabel, fuelPriceNet } from "@/lib/returnCharges";
 
 export interface ChargeSuggestion { kind: "cleaning" | "fuel"; text: string; itemName?: string }
 
@@ -28,15 +28,17 @@ interface Props {
 }
 
 const price = (n: number) => n.toFixed(2).replace(".", ",");
+const fuelNet = (n: number) => fuelPriceNet(n).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 6, useGrouping: false });
 
 export const cleaningCharge = (): ExtraCharge => ({
-  ...emptyExtraCharge("Reinigung (Mehraufwand laut AGB)"), quantity: "1", unitPrice: price(CLEANING_UNIT_GROSS), unit: "15min",
+  ...emptyExtraCharge("Reinigung (Mehraufwand laut AGB)"), quantity: "1", unitPrice: price(CLEANING_UNIT_NET), unit: "15min", priceBasis: "net",
 });
 export const fuelCharge = (fuel: (typeof FUEL_PRICES)[number], itemName?: string): ExtraCharge => ({
   ...emptyExtraCharge(`Kraftstoff ${fuel.label} nachgetankt${itemName ? ` – ${itemName}` : ""}`),
-  quantity: "", unitPrice: price(fuel.pricePerLiter), unit: "l",
+  quantity: "", unitPrice: fuelNet(fuel.pricePerLiter), unit: "l", priceBasis: "net",
 });
 export const rechargeCharge = (): ExtraCharge => ({ ...emptyExtraCharge("Nachladung"), unitPrice: price(RECHARGE_NET), priceBasis: "net" });
+export const templateCharge = (tpl: { label: string; unitPrice: string }): ExtraCharge => ({ ...emptyExtraCharge(tpl.label), unitPrice: tpl.unitPrice, priceBasis: "net" });
 
 export function ExtraChargesStep({ charges, onChange, suggestions = [], depositHint, fixedCharges = [] }: Props) {
   const update = (id: string, patch: Partial<ExtraCharge>) =>
@@ -46,7 +48,7 @@ export function ExtraChargesStep({ charges, onChange, suggestions = [], depositH
   return (
     <div className="space-y-3">
       <p className="text-sm text-muted-foreground">
-        Freie Positionen und Nachladung: Preise netto. Reinigung und Kraftstoff: Preise brutto. Die Gesamtsumme wird brutto mit der Kaution verrechnet.
+        Preise netto zzgl. 19 % USt. Die Gesamtsumme wird brutto mit der Kaution verrechnet.
       </p>
 
       {suggestions.map((s, i) => (
@@ -54,13 +56,13 @@ export function ExtraChargesStep({ charges, onChange, suggestions = [], depositH
           <p className="text-sm">{s.text}</p>
           {s.kind === "cleaning" ? (
             <Button type="button" size="sm" variant="outline" disabled={hasCleaning} onClick={() => onChange([...charges, cleaningCharge()])}>
-              <Sparkles className="h-3.5 w-3.5 mr-1" /> {hasCleaning ? "Reinigung erfasst" : `Reinigung ${CLEANING_UNIT_MINUTES} Min · ${formatEuro(CLEANING_UNIT_GROSS)} hinzufügen`}
+              <Sparkles className="h-3.5 w-3.5 mr-1" /> {hasCleaning ? "Reinigung erfasst" : `Reinigung ${CLEANING_UNIT_MINUTES} Min · ${formatEuro(CLEANING_UNIT_NET)} netto hinzufügen`}
             </Button>
           ) : (
             <div className="flex flex-wrap gap-2">
               {FUEL_PRICES.map((f) => (
                 <Button key={f.value} type="button" size="sm" variant="outline" onClick={() => onChange([...charges, fuelCharge(f, s.itemName)])}>
-                  <Fuel className="h-3.5 w-3.5 mr-1" /> {f.label} {price(f.pricePerLiter)} €/l
+                  <Fuel className="h-3.5 w-3.5 mr-1" /> {f.label} {fuelNet(f.pricePerLiter)} €/l netto
                 </Button>
               ))}
             </div>
@@ -77,12 +79,12 @@ export function ExtraChargesStep({ charges, onChange, suggestions = [], depositH
         </Button>
         {FUEL_PRICES.map((f) => (
           <Button key={f.value} variant="outline" size="sm" onClick={() => onChange([...charges, fuelCharge(f)])}>
-            <Plus className="h-3.5 w-3.5 mr-1" /> {f.label} ({price(f.pricePerLiter)} €/l)
+            <Plus className="h-3.5 w-3.5 mr-1" /> {f.label} ({fuelNet(f.pricePerLiter)} €/l netto)
           </Button>
         ))}
         {EXTRA_CHARGE_TEMPLATES.filter((t) => !/reinigung|kraftstoff/i.test(t.label)).map((tpl) => (
           <Button key={tpl.label} variant="outline" size="sm"
-            onClick={() => onChange([...charges, { ...emptyExtraCharge(tpl.label), unitPrice: tpl.unitPrice }])}>
+            onClick={() => onChange([...charges, templateCharge(tpl)])}>
             <Plus className="h-3.5 w-3.5 mr-1" /> {tpl.label}
           </Button>
         ))}
@@ -111,7 +113,7 @@ export function ExtraChargesStep({ charges, onChange, suggestions = [], depositH
                     onChange={(e) => update(charge.id, { quantity: e.target.value })} className="h-11 text-sm" />
                 </div>
                 <div>
-                  <Label className="text-xs">{liters ? "Literpreis (brutto)" : cleaning ? `Preis je ${CLEANING_UNIT_MINUTES} Min (brutto)` : `Einzelpreis (${charge.priceBasis === "net" ? "netto" : "brutto"})`}</Label>
+                  <Label className="text-xs">{liters ? `Literpreis (${charge.priceBasis === "net" ? "netto" : "brutto"})` : cleaning ? `Preis je ${CLEANING_UNIT_MINUTES} Min (${charge.priceBasis === "net" ? "netto" : "brutto"})` : `Einzelpreis (${charge.priceBasis === "net" ? "netto" : "brutto"})`}</Label>
                   <Input inputMode="decimal" value={charge.unitPrice} placeholder="0,00"
                     onChange={(e) => update(charge.id, { unitPrice: e.target.value })} className="h-11 text-sm" />
                 </div>
