@@ -10,7 +10,7 @@ import { installmentPeriod, nextInstallmentDate } from "@/lib/installments";
 const prices = { price_short_1_3_rd: 60, price_from_1_week: 100, price_from_2_weeks: 90, price_from_3_weeks: 80, price_from_4_weeks: 70, price_weekend_num: 1 };
 describe("Preis-Woche: supplied tariff examples", () => {
   it("reopening weekly descriptions does not duplicate the agreed period", () => {
-    const line = { product_name: "Bautrockner", quantity: 1, unit_price: 180, rental_start: "2026-11-16", rental_end: "2026-11-27", rental_start_time: "08:00", rental_end_time: "16:00", rental_period_label: "2 Wochen" };
+    const line = { product_name: "Bautrockner", quantity: 1, unit_price: 180, discount_percent: 0, rental_start: "2026-11-16", rental_end: "2026-11-27", rental_start_time: "08:00", rental_end_time: "16:00", rental_period_label: "2 Wochen" };
     const description = calendarDescription(line);
     expect(calendarDescription({ ...line, description })).toBe(description);
   });
