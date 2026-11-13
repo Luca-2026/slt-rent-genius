@@ -34,19 +34,20 @@ export async function publicRentalQuote(service: any, items: any[]) {
     const alternative = selected.find((o: any) => Number(o.surcharge_percent) > 0);
     const base = defaults[0];
     const insuranceDays = insuranceCalendarDays({ date: item.start_date }, { date: item.end_date });
+    const priceDays = product.pricing_scheme === "woche" ? insuranceDays : daysPerUnit(line.unit);
     const calculate = (option: any) => {
       // Legacy reduction entries express a request, not a validated insurance tariff.
       if (String(option.key).startsWith("sb_reduktion") && !option.surcharge_percent) return null;
       if (option.key === FREE_CANCELLATION_OPTION.key) return cancellationAmount(unitPrice === null ? null : item.quantity * line.duration * unitPrice);
       if (unitPrice === null && option.price_type === "percent") return null;
-      return computeAddonAmount({ price_type: option.price_type, rate: Number(option.price), basis: option.full_period_default && daysPerUnit(line.unit) ? "full_period" : "line", days: insuranceDays }, { articles: item.quantity, duration: line.duration, unit_price: unitPrice ?? 0, discount_percent: 0, days_per_unit: daysPerUnit(line.unit) });
+      return computeAddonAmount({ price_type: option.price_type, rate: Number(option.price), basis: option.full_period_default && priceDays ? "full_period" : "line", days: insuranceDays }, { articles: item.quantity, duration: line.duration, unit_price: unitPrice ?? 0, discount_percent: 0, days_per_unit: priceDays });
     };
     const tierAmount = (tier: any) => {
-      if (!base || unitPrice === null || !daysPerUnit(line.unit)) return null;
-      const basePerDay = computeAddonAmount({ price_type: base.price_type, rate: Number(base.price), basis: "full_period", days: 1 }, { articles: 1, duration: line.duration, unit_price: unitPrice, discount_percent: 0, days_per_unit: daysPerUnit(line.unit) });
+      if (!base || unitPrice === null || !priceDays) return null;
+      const basePerDay = computeAddonAmount({ price_type: base.price_type, rate: Number(base.price), basis: "full_period", days: 1 }, { articles: 1, duration: line.duration, unit_price: unitPrice, discount_percent: 0, days_per_unit: priceDays });
       if (basePerDay === null) return null;
       const perDay = Math.round((basePerDay * Number(tier.surcharge_percent) / 100 + Number.EPSILON) * 100) / 100;
-      return computeAddonAmount({ price_type: "per_unit", rate: perDay, basis: "full_period", days: insuranceDays }, { articles: item.quantity, duration: line.duration, unit_price: unitPrice, discount_percent: 0, days_per_unit: daysPerUnit(line.unit) });
+      return computeAddonAmount({ price_type: "per_unit", rate: perDay, basis: "full_period", days: insuranceDays }, { articles: item.quantity, duration: line.duration, unit_price: unitPrice, discount_percent: 0, days_per_unit: priceDays });
     };
     const chosen = [...defaults, ...selected.filter((o: any) => !o.is_default && !(Number(o.surcharge_percent) > 0))];
     const addons = chosen.map((o: any) => ({ key: o.key, label: o.label, amount: calculate(o), deductible: o.deductible ?? null }));

@@ -10,6 +10,12 @@ function service(p = product) {
   } };
 }
 describe("Öffentliche CMS-Preisvorschau", () => {
+  it("weekly request uses the same 180 net flat tariff and calendar-day insurance", async () => {
+    const p = { ...product, pricing_scheme: "woche", price_short_1_3_rd: 60, price_from_1_week: 100, price_from_2_weeks: 90, deposit_amount: 150 };
+    const [quote] = await publicRentalQuote(service(p), [{ ...row, start_date: "2026-11-16", end_date: "2026-11-27", selected_addons: [] }]);
+    expect(quote).toMatchObject({ pricing_scheme: "woche", unit: "pauschal", duration: 1, rental_net: 180, deposit: 150 });
+    expect(quote.addons.find((a: any) => a.key === "insurance")?.amount).toBe(18);
+  });
   it("übernimmt unbepreiste Haftungsreduzierung als Wunsch ohne erfundenen Preis", async () => {
     const p = { ...product, addon_options: [...product.addon_options, { key: "sb_reduktion", label: "Reduzierung Selbstbehalt", price: 15, price_type: "percent", deductible: 1000 }] } as any;
     const [quote] = await publicRentalQuote(service(p), [{ ...row, selected_addons: ["sb_reduktion"] }]);
