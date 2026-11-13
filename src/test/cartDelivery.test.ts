@@ -7,13 +7,13 @@ describe("cartDeliveryQuote – teuerster Artikel bestimmt den Liefertarif", () 
       { category: "moebel-zelte", product_name: "Stehtisch", quantity: 10 },
       { category: "erdbewegung", product_name: "2,7t Minibagger", quantity: 1 },
     ], 15);
-    expect(q).toMatchObject({ status: "priced", tarif: "C", product_name: "2,7t Minibagger", two_machines: false, brutto: 260 });
+    expect(q).toMatchObject({ status: "priced", tarif: "C", product_name: "2,7t Minibagger", two_machines: false, net: 260, brutto: 309.4 });
   });
   it("nur Eventartikel nutzt Tarif A", () => {
-    expect(cartDeliveryQuote([{ category: "moebel-zelte", product_name: "Stehtisch", quantity: 10 }], 10)).toMatchObject({ status: "priced", tarif: "A", brutto: 160 });
+    expect(cartDeliveryQuote([{ category: "moebel-zelte", product_name: "Stehtisch", quantity: 10 }], 10)).toMatchObject({ status: "priced", tarif: "A", net: 160, brutto: 190.4 });
   });
   it("zwei Maschinen erhalten den Maschinen-Aufschlag des höchsten Tarifs", () => {
-    expect(cartDeliveryQuote([{ category: "erdbewegung", product_name: "2t Minibagger", quantity: 2 }], 5)).toMatchObject({ tarif: "B", two_machines: true, brutto: 195 });
+    expect(cartDeliveryQuote([{ category: "erdbewegung", product_name: "2t Minibagger", quantity: 2 }], 5)).toMatchObject({ tarif: "B", two_machines: true, net: 195, brutto: 232.05 });
   });
   it("Geräte über 3 t sind Tieflader und damit auf Anfrage", () => {
     expect(cartDeliveryQuote([{ category: "erdbewegung", product_name: "6t Minibagger", quantity: 1 }, { category: "werkzeuge", product_name: "Rüttelplatte", quantity: 1 }], 10)).toMatchObject({ status: "on_request", reason: "tieflader" });

@@ -5,7 +5,7 @@
 import { tariffs, type Tariff, type TariffKey, type TariffDistance } from "../../../supabase/functions/_shared/delivery-tariffs";
 export { tariffs, TIEFLADER_AB_KG, parseWeightKg, deliverySubtypeKey, deliveryTariffFor, cartDeliveryQuote, type TariffKey, type TariffDistance, type Tariff, type CartDeliveryQuote } from "../../../supabase/functions/_shared/delivery-tariffs";
 
-// Zusatzkosten (Konstanten aus CSV)
+// Zusatzkosten NETTO (bisherige Zahlen unverändert übernommen)
 export const ZUSATZKOSTEN = {
   geruest: {
     aufschlagProMeter: 8, // pro Meter Arbeitshöhe über 4,4 m
@@ -135,7 +135,7 @@ function findDistanceEntry(tariff: Tariff, km: number): TariffDistance {
 export function calculatePrice(input: CalculatePriceInput): CalculatePriceResult {
   const tariff = tariffs[input.tarif];
   const entry = findDistanceEntry(tariff, input.km);
-  const basis = entry.brutto;
+  const basis = entry.net;
 
   let zwischensumme = basis;
 

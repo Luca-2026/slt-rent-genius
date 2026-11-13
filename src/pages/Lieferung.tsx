@@ -11,6 +11,9 @@ import { Truck, Calculator, Info, MapPin, Package, Clock, Zap, CalendarDays } fr
 import { Link } from "react-router-dom";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { AddressDistanceInput, type LocationOriginId } from "@/components/delivery/AddressDistanceInput";
+import { useCustomerType } from "@/hooks/useCustomerType";
+import { displayPrice, vatNote } from "@/lib/priceDisplay";
+import { CustomerTypeToggle } from "@/components/rental/CustomerTypePrompt";
 import {
   tariffs,
   categoryConfigs,
@@ -27,6 +30,7 @@ const LOCATION_OPTIONS: { id: LocationOriginId; label: string; address: string }
 const categoryEntries = Object.entries(categoryConfigs);
 
 export default function Lieferung() {
+  const { type } = useCustomerType();
   const [categoryKey, setCategoryKey] = useState<string>("erdbewegung");
   const [subtypeKey, setSubtypeKey] = useState<string | null>(
     categoryConfigs["erdbewegung"].defaultSubtype ?? null
@@ -259,7 +263,7 @@ export default function Lieferung() {
                         <Label htmlFor="express" className="text-sm font-medium flex items-center gap-1">
                           <Zap className="h-4 w-4" /> Express-Lieferung
                         </Label>
-                        <p className="text-xs text-muted-foreground">Innerhalb 4 h, +50,00 € pauschal</p>
+                        <p className="text-xs text-muted-foreground">Innerhalb 4 h, +{displayPrice(50, type)} pauschal · {vatNote(type)}</p>
                       </div>
                       <Switch id="express" checked={express} onCheckedChange={setExpress} />
                     </div>
@@ -287,13 +291,13 @@ export default function Lieferung() {
                             step={0.5}
                           />
                           <p className="text-xs text-muted-foreground">
-                            Über 4,4 m: +8,00 € pro zusätzlichem Meter
+                            Über 4,4 m: +{displayPrice(8, type)} pro zusätzlichem Meter · {vatNote(type)}
                           </p>
                         </div>
                         <div className="flex items-center justify-between">
                           <div>
                             <Label htmlFor="aufbau" className="text-sm font-medium">Aufbau-Service vor Ort</Label>
-                            <p className="text-xs text-muted-foreground">75,00 € Basis + 15,00 €/m</p>
+                            <p className="text-xs text-muted-foreground">{displayPrice(75, type)} Basis + {displayPrice(15, type)}/m · {vatNote(type)}</p>
                           </div>
                           <Switch id="aufbau" checked={aufbauService} onCheckedChange={setAufbauService} />
                         </div>
@@ -311,12 +315,12 @@ export default function Lieferung() {
                             value={moebelAnzahl}
                             onChange={(e) => setMoebelAnzahl(Math.max(0, parseInt(e.target.value) || 0))}
                           />
-                          <p className="text-xs text-muted-foreground">Ab 5 Stück: +2,00 € je Stück</p>
+                          <p className="text-xs text-muted-foreground">Ab 5 Stück: +{displayPrice(2, type)} je Stück · {vatNote(type)}</p>
                         </div>
                         <div className="flex items-center justify-between pt-2 border-t">
                           <div>
                             <Label htmlFor="moebel-aufbau" className="text-sm font-medium">Aufbau-Service vor Ort</Label>
-                            <p className="text-xs text-muted-foreground">75,00 € Basis + 10,00 €/Garnitur, 75,00 €/Zelt</p>
+                            <p className="text-xs text-muted-foreground">{displayPrice(75, type)} Basis + {displayPrice(10, type)}/Garnitur, {displayPrice(75, type)}/Zelt · {vatNote(type)}</p>
                           </div>
                           <Switch id="moebel-aufbau" checked={moebelAufbauService} onCheckedChange={setMoebelAufbauService} />
                         </div>
@@ -358,6 +362,7 @@ export default function Lieferung() {
                     <CardTitle className="text-lg text-primary-foreground">Deine Lieferkosten</CardTitle>
                   </CardHeader>
                   <CardContent className="pt-6 space-y-4">
+                    <CustomerTypeToggle />
                     {activeSubtype?.onRequest ? (
                       <div className="text-center space-y-2">
                         <p className="text-2xl font-bold text-primary">Auf Anfrage</p>
@@ -368,9 +373,9 @@ export default function Lieferung() {
                     ) : (
                     <div className="text-center">
                       <p className="text-4xl lg:text-5xl font-bold text-primary">
-                        {result.total.toFixed(2).replace(".", ",")} €
+                        {displayPrice(result.total, type)}
                       </p>
-                      <p className="text-sm text-muted-foreground mt-1">inkl. MwSt.</p>
+                      <p className="text-sm text-muted-foreground mt-1">{vatNote(type)}</p>
                     </div>
                     )}
 
@@ -387,7 +392,7 @@ export default function Lieferung() {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Basispreis:</span>
-                        <span className="font-medium">{result.basis.toFixed(2).replace(".", ",")} €</span>
+                          <span className="font-medium">{displayPrice(result.basis, type)}</span>
                       </div>
                       {twoMachines && tariff.multiplier2Maschinen > 1 && (
                         <div className="flex justify-between">
@@ -404,31 +409,31 @@ export default function Lieferung() {
                       {result.geruestHoehenAufschlag > 0 && (
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Höhen-Aufschlag:</span>
-                          <span className="font-medium">+{result.geruestHoehenAufschlag.toFixed(2).replace(".", ",")} €</span>
+                          <span className="font-medium">+{displayPrice(result.geruestHoehenAufschlag, type)}</span>
                         </div>
                       )}
                       {result.geruestAufbau > 0 && (
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Aufbau-Service:</span>
-                          <span className="font-medium">+{result.geruestAufbau.toFixed(2).replace(".", ",")} €</span>
+                          <span className="font-medium">+{displayPrice(result.geruestAufbau, type)}</span>
                         </div>
                       )}
                       {result.moebelAufschlag > 0 && (
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Möbel-Aufschlag:</span>
-                          <span className="font-medium">+{result.moebelAufschlag.toFixed(2).replace(".", ",")} €</span>
+                          <span className="font-medium">+{displayPrice(result.moebelAufschlag, type)}</span>
                         </div>
                       )}
                       {result.moebelAufbau > 0 && (
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Aufbau-Service Möbel:</span>
-                          <span className="font-medium">+{result.moebelAufbau.toFixed(2).replace(".", ",")} €</span>
+                          <span className="font-medium">+{displayPrice(result.moebelAufbau, type)}</span>
                         </div>
                       )}
                       {express && (
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Express:</span>
-                          <span className="font-medium">+50,00 €</span>
+                          <span className="font-medium">+{displayPrice(50, type)}</span>
                         </div>
                       )}
                       {wochenende && (
