@@ -1178,6 +1178,7 @@ export type Database = {
           surcharge_per_cd_from_8: number | null
           tags: string[]
           tier_prices_manual: string[]
+          tracks_battery_level: boolean
           tracks_operating_hours: boolean
           updated_at: string
           updated_by: string | null
@@ -1250,6 +1251,7 @@ export type Database = {
           surcharge_per_cd_from_8?: number | null
           tags?: string[]
           tier_prices_manual?: string[]
+          tracks_battery_level?: boolean
           tracks_operating_hours?: boolean
           updated_at?: string
           updated_by?: string | null
@@ -1322,6 +1324,7 @@ export type Database = {
           surcharge_per_cd_from_8?: number | null
           tags?: string[]
           tier_prices_manual?: string[]
+          tracks_battery_level?: boolean
           tracks_operating_hours?: boolean
           updated_at?: string
           updated_by?: string | null
