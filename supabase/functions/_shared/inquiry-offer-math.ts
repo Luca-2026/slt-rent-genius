@@ -313,7 +313,7 @@ export function normalizeInquiryOfferItems(raw: unknown, undated = false): Inqui
       ...logistics,
       unit_code: item.unit_code ? String(item.unit_code).slice(0, 20) : undefined,
       price_manual: item.price_manual === true ? true : undefined,
-      price_basis: item.price_basis === "tier" || item.price_basis === "weekend" || item.price_basis === "customer" || item.price_basis === "week" ? item.price_basis : undefined,
+      price_basis: item.price_basis === "tier" || item.price_basis === "weekend" || item.price_basis === "customer" || item.price_basis === "week" || item.price_basis === "event" ? item.price_basis : undefined,
       rental_period_label: item.rental_period_label ? String(item.rental_period_label).slice(0, 80) : undefined,
       image_url: item.image_url ? String(item.image_url).slice(0, 500) : undefined,
       group_id: item.group_id ? String(item.group_id).slice(0, 60) : undefined,

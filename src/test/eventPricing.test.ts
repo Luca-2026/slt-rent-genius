@@ -19,7 +19,7 @@ describe("Event flat period pricing", () => {
     const result=client.computeRentalLinePrice({scheme:"event",prices:{price_base_1_3_cd:15,surcharge_per_cd_from_4:5.83},start:{date:"2026-11-12"},end:{date:"2026-11-15"}});
     expect(result).toMatchObject({unit:"pauschal",duration:1,unit_price:20.83});
     if(result.kind==="duration_only") throw new Error("Missing price");
-    expect(lineTotal({product_name:"Bierglas",quantity:3,duration:1,unit:result.unit,unit_price:result.unit_price})).toBe(62.49);
+    expect(lineTotal({quantity:3,duration:1,unit_price:result.unit_price})).toBe(62.49);
   });
   it("Friday 16:00 to Monday 09:30 defaults to base 100",()=> {
     for(const mod of [client,server]) expect(mod.computeRentalLinePrice({scheme:"event",prices:{price_base_1_3_cd:100},start:{date:"2026-11-13",time:"16:00"},end:{date:"2026-11-16",time:"09:30"}})).toMatchObject({kind:"weekend",unit_price:100,duration:1});
@@ -40,7 +40,7 @@ describe("Event flat period pricing", () => {
     expect(client.computeRentalLinePrice({scheme:"event",unit:"wochen",durationOverride:3,prices:{price_base_1_3_cd:100},start:{date:"2026-11-13"},end:{date:"2026-11-16"}})).toEqual({kind:"duration_only",unit:"wochen",duration:3});
   });
   it("discounts apply to the complete period price",()=> {
-    expect(lineTotal({product_name:"Event",quantity:3,duration:1,unit:"pauschal",unit_price:20.83,discount_percent:10})).toBe(56.24);
+    expect(lineTotal({quantity:3,duration:1,unit_price:20.83,discount_percent:10})).toBe(56.24);
   });
   it("snapshot normalization and reopening retain flat amounts and event basis",()=> {
     const saved=normalizeInquiryOfferItems([{product_name:"Event",quantity:3,articles:3,duration:1,unit_code:"pauschal",unit:"Pauschal",unit_price:20.83,price_basis:"event",rental_period_label:"4 Kalendertage",rental_start:"2026-11-12",rental_end:"2026-11-15"}]);
