@@ -406,7 +406,7 @@ function initialDocMode(inquiryType: string, inquiryId: string, offerNumber: str
 
 export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, defaultDelivery, details, onChanged, onDeleted, layout = "stacked", mobileDetails, protocolSection }: Props) {
   const { user, isAdmin } = useAuth();
-  const { isBranchManager } = useStaffAccess();
+  const { isBranchManager, canManageInventory } = useStaffAccess();
   const { toast } = useToast();
   const canDelete = isAdmin;
   const [deleting, setDeleting] = useState(false);
@@ -871,7 +871,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             { mode: "invoice", label: "Rechnung erstellen", icon: Receipt, show: true },
             { mode: "amendment", label: "AB bearbeiten", icon: Pencil, show: inquiry.status === "accepted" && !!inquiry.offer_number },
             { mode: "order", label: "Auftragsbestätigung", icon: FileCheck2, show: layout === "page" && inquiry.status === "accepted" && !!inquiry.offer_number },
-            { mode: "deposit", label: "Kaution abrechnen", icon: Wallet, show: inquiryType === "rental" && !!inquiry.offer_number },
+            { mode: "deposit", label: "Kaution abrechnen / erstatten", icon: Wallet, show: inquiryType === "rental" && canManageInventory },
           ] as { mode: DocMode; label: string; icon: typeof Pencil; show: boolean }[])
             .filter((b) => b.show)
             .map(({ mode, label, icon: Icon }) => (
@@ -938,7 +938,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           <DepositSettlementCard
             inquiry={inquiry as Record<string, any>}
             staffName={actorName}
-            canMarkStripePayout={isAdmin || isBranchManager}
+            canMarkStripePayout={canManageInventory}
             onDone={() => { setEditorOpen(false); loadInvoices(); onChanged(); void deposit.reload(); }}
           />
         ) : (

@@ -103,7 +103,8 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
     load();
   }, [load]);
 
-  if (!offerNumber) return null;
+  // Existing receipts remain refundable even when no offer number is stored.
+  if (!offerNumber && links.length === 0 && refunds.length === 0) return null;
 
   const current = links.find((l) => l.status === "active") ?? links.find((l) => l.status === "paid") ?? links[0];
   const received = Array.isArray(payments) ? payments.reduce((sum, p) => sum + Math.round((Number(p?.amount) || 0) * 100), 0) : 0;
@@ -213,7 +214,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
             <Copy /> Link kopieren
           </Button>
         )}
-        {!settledByBank && current?.status !== "paid" && (
+        {offerNumber && !settledByBank && current?.status !== "paid" && (
           <Button variant="outline" className="h-11 w-full px-3 py-0" onClick={createLink} disabled={busy}>
             {busy ? <Loader2 className="animate-spin" /> : <Link2 />}
             {current?.status === "active" ? "Neuen Link erstellen" : "Zahlungslink erstellen"}
