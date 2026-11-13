@@ -126,7 +126,7 @@ export async function searchProducts(query: string, location: string | null) {
       name: r.name, model: r.model_name, category: r.category,
       locations: locs,
       specs, weight_kg: r.weight_kg ?? null,
-      short_description: String(r.description ?? "").slice(0, 220),
+      short_description: isSignBookingItem({ product_name: r.name, product_url: `/mieten/${linkLoc}/${r.category}/${r.slug}/` }) ? "Halteverbotsschilder online buchen; für Aufstellung/Abholung Rundum-Sorglos wählen. Genehmigung vorhanden: vorhandene Genehmigung auswählen und hochladen. Aktuelle Vorlaufzeiten und Termine prüft der Checkout." : String(r.description ?? "").slice(0, 220),
       online_bookable: isSignBookingItem({ product_name: r.name, product_url: `/mieten/${linkLoc}/${r.category}/${r.slug}/` }) || (Boolean(r.rentware_code) && !r.on_request),
       booking_policy: signBookingRedirect([{ product_name: r.name, product_url: `/mieten/${linkLoc}/${r.category}/${r.slug}/` }], linkLoc),
       url: linkLoc ? `${SITE}/mieten/${linkLoc}/${r.category}/${r.slug}/` : null,

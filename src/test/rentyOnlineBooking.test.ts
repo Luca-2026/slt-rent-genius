@@ -1,7 +1,16 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { signBookingRedirect } from "../../supabase/functions/public-chat/online-booking-policy";
+vi.mock("https://esm.sh/@supabase/supabase-js@2.57.4", () => ({ createClient: vi.fn() }));
+vi.mock("../../supabase/functions/_shared/inquiry-store.ts", () => ({ saveRentalInquiry: vi.fn(), rentalInquiryLink: vi.fn() }));
+import { submitInquiry, type InquiryArgs } from "../../supabase/functions/public-chat/renty-inquiry";
+import { saveRentalInquiry } from "../../supabase/functions/_shared/inquiry-store";
 
 describe("Renty Halteverbot online buchen", () => {
+  it("der echte Sender blockiert Schilder vor Pflichtfeldprüfung und jeglicher Speicherung", async () => {
+    const result = await submitInquiry({ location: "bonn", items: [{ product_name: "Halteverbotsschilder-Komplettset inklusive Aufstellung und Abholung, ohne Beantragung", quantity: 1, product_url: null }] } as InquiryArgs, { ip: "test", transcript: "Genehmigung vorhanden" });
+    expect(result).toMatchObject({ ok: false, online_booking_required: true });
+    expect(saveRentalInquiry).not.toHaveBeenCalled();
+  });
   it("Komplettset mit Aufstellung/Abholung ohne Beantragung geht nach Bonn", () => {
     const result = signBookingRedirect([{ product_name: "Halteverbotsschilder-Komplettset inklusive Aufstellung und Abholung, ohne Beantragung" }], "bonn");
     expect(result?.online_booking_required).toBe(true);
