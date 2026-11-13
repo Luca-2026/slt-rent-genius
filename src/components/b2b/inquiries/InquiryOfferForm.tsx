@@ -454,6 +454,7 @@ export function InquiryOfferForm({
   // Nach der Kautionsabrechnung gilt nur der aktuelle Stand – ein älterer Entwurf würde Abzüge und Zahlungen verfälschen.
   const draftRef = useRef(ignoreDraft ? null : readInquiryDraft<Record<string, any>>(draftKey));
   const draft = draftRef.current;
+  const [periodRecalculations, setPeriodRecalculations] = useState<Record<number, FormLine>>(draft?.periodRecalculations ?? {});
   const [draftRestored, setDraftRestored] = useState(!!draft);
   const [couponCode, setCouponCode] = useState(draft?.couponCode ?? defaultCouponCode);
 
@@ -708,6 +709,7 @@ export function InquiryOfferForm({
   }, []);
 
   const applyDraftData = (d: Record<string, any>) => {
+    setPeriodRecalculations(d.periodRecalculations ?? {});
     if (isSalesOffer) { setFinancingEnabled(d.financing?.enabled === true); setFinancingNote(d.financing?.note ?? ""); }
     if (Array.isArray(d.items) && d.items.length) setItems(migrateServiceCosts(d.items as FormLine[], d.setupCost ?? 0, d.dismantleCost ?? 0) as FormLine[]);
     if (d.delivery) setDelivery(d.delivery as OfferDeliveryAddress);
@@ -777,6 +779,7 @@ export function InquiryOfferForm({
     if (disabled) return;
     const timer = window.setTimeout(() => {
       const snapshot = {
+        periodRecalculations,
         couponCode,
         ...(isSalesOffer ? { financing: { enabled: financingEnabled, note: financingNote } } : {}),
         items,
@@ -818,6 +821,7 @@ export function InquiryOfferForm({
     }, 1200);
     return () => window.clearTimeout(timer);
   }, [
+    periodRecalculations,
     couponCode,
     financingEnabled,
     financingNote,
@@ -1037,7 +1041,6 @@ export function InquiryOfferForm({
 
   const patchItem = (index: number, patch: Partial<FormLine>) =>
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, ...patch } : item)));
-  const [periodRecalculations, setPeriodRecalculations] = useState<Record<number, FormLine>>({});
   const decidePeriod = (index: number, accept: boolean) => {
     const candidate = periodRecalculations[index];
     if (!candidate) return;
@@ -1406,6 +1409,7 @@ export function InquiryOfferForm({
   useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
 
   const preview = async (prepareRefund = false) => {
+    if (Object.keys(periodRecalculations).length) return;
     if (openEnded && independentPricing && hasMissingOpenEndedPrice(items)) {
       toast({ title: "Mietpreis fehlt", description: "Bitte für jede Mietposition den Preis der gewählten Einheit festlegen.", variant: "destructive" });
       return;
@@ -1761,7 +1765,7 @@ export function InquiryOfferForm({
                 <div className="flex shrink-0 flex-row items-center sm:flex-col">
                   <button
                     type="button"
-                    draggable={!disabled}
+                    draggable={!disabled && !Object.keys(periodRecalculations).length}
                     disabled={disabled}
                     aria-label={`Position ${index + 1} verschieben`}
                     title="Ziehen zum Verschieben"
@@ -2046,7 +2050,7 @@ export function InquiryOfferForm({
                       onChange={(e) => !undatedOffer && item.duration_override !== undefined
                         ? patchPriced(index, { duration_override: Math.min(10000, Math.max(1, Number(e.target.value) || 1)) })
                         : patchItem(index, { duration: Number(e.target.value) || 0 })}
-                      disabled={disabled || (!undatedOffer && inherited) || (pricingActive && !openEnded && !undatedOffer && !!eff.rental_start && !!eff.rental_end && item.duration_override === undefined) || (openEnded && !independentPricing && !isFlatRate && eff.unit !== "stueck")}
+                      disabled={disabled || (!undatedOffer && inherited) || (pricingActive && !openEnded && !undatedOffer && !!eff.rental_start && !!eff.rental_end && item.duration_override === undefined && !item.unit_manual) || (openEnded && !independentPricing && !isFlatRate && eff.unit !== "stueck")}
                     />
                   )}
                   <Select
@@ -2056,9 +2060,10 @@ export function InquiryOfferForm({
                       patchPriced(index, {
                         unit: v as OfferUnit,
                         unit_manual: true,
+                        price_manual: true,
                         duration_override: undefined,
                         // Pauschalpreis gilt für den gesamten Auftrag – Dauer fest 1.
-                        ...(["pauschal", "stueck", "stunden"].includes(v) && item.pricing?.scheme !== "woche" ? { period_free: true, custom_period: true, rental_start: undefined, rental_end: undefined, rental_start_time: undefined, rental_end_time: undefined, delivery_at: undefined, collection_at: undefined, ...(v !== "stunden" ? { duration: 1 } : {}) } : { period_free: false }),
+                        ...(["pauschal", "stueck", "stunden"].includes(v) && !["woche", "event"].includes(item.pricing?.scheme ?? "") ? { period_free: true, custom_period: true, rental_start: undefined, rental_end: undefined, rental_start_time: undefined, rental_end_time: undefined, delivery_at: undefined, collection_at: undefined, ...(v !== "stunden" ? { duration: 1 } : {}) } : { period_free: false }),
                       })
                     }
                   >

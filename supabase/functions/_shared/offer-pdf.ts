@@ -589,7 +589,7 @@ export async function generateOfferPdf(data: {
         iqQty = `${String(item.articles || item.quantity || 1).replace(".", ",")} ${serviceUnit}`;
         iqDur = "\u2013";
       } else if (item.price_basis === "event" || (item.price_basis === "weekend" && item.rental_period_label === "Wochenende")) {
-        iqQty = `${articles} ${qu}`;
+        iqQty = `${item.articles || item.quantity || 1} ${qu}`;
         iqDur = "";
         usedUnits.add(qu);
       } else if (item.price_basis === "week") {

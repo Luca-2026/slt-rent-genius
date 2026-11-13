@@ -459,7 +459,7 @@ export function resolveProductPrices(
   }
   const out = {} as ManagedPrices;
   for (const k of PRICE_KEYS) out[k] = k.startsWith("surcharge_") ? nonnegative(source[k]) : num(source[k]);
-  if (product.pricing_scheme !== "woche" && PRICE_KEYS.every((k) => out[k] === null)) {
+  if (!["woche", "event"].includes(product.pricing_scheme ?? "") && PRICE_KEYS.every((k) => out[k] === null)) {
     const legacy = parseLegacyPrice(product.price_per_day);
     if (legacy !== null) {
       if (product.pricing_scheme === "bau") out.price_from_1_rd = legacy;
