@@ -5,6 +5,7 @@
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { submitInquiry, type InquiryArgs } from "./renty-inquiry.ts";
+import { isSignBookingItem, signBookingRedirect } from "./online-booking-policy.ts";
 
 const MODEL = "openai/gpt-6-astra";
 const SITE = "https://www.slt-rental.de";
@@ -32,7 +33,7 @@ const TOOLS = [
     type: "function",
     name: "submit_rental_inquiry",
     strict: true,
-    description: "Sendet die Mietanfrage an das SLT-Team (erscheint im Portal, Standort wird per E-Mail informiert). NUR aufrufen, wenn alle Pflichtangaben vorliegen UND der Kunde die Zusammenfassung ausdrücklich bestätigt hat. Gibt fehlende Angaben zurück, falls etwas fehlt.",
+    description: "Sendet eine manuelle Mietanfrage an das SLT-Team. NIEMALS für Halteverbotsschilder/Sets, auch nicht mit Aufstellung/Abholung oder vorhandener Genehmigung: direkt Onlinebuchung verlinken. Sonst NUR bei vollständigen Pflichtangaben und ausdrücklich bestätigter Zusammenfassung.",
     parameters: {
       type: "object",
       additionalProperties: false,
@@ -125,8 +126,9 @@ export async function searchProducts(query: string, location: string | null) {
       name: r.name, model: r.model_name, category: r.category,
       locations: locs,
       specs, weight_kg: r.weight_kg ?? null,
-      short_description: String(r.description ?? "").slice(0, 220),
-      online_bookable: Boolean(r.rentware_code) && !r.on_request,
+      short_description: isSignBookingItem({ product_name: r.name, product_url: `/mieten/${linkLoc}/${r.category}/${r.slug}/` }) ? "Halteverbotsschilder online buchen; für Aufstellung/Abholung Rundum-Sorglos wählen. Genehmigung vorhanden: vorhandene Genehmigung auswählen und hochladen. Aktuelle Vorlaufzeiten und Termine prüft der Checkout." : String(r.description ?? "").slice(0, 220),
+      online_bookable: isSignBookingItem({ product_name: r.name, product_url: `/mieten/${linkLoc}/${r.category}/${r.slug}/` }) || (Boolean(r.rentware_code) && !r.on_request),
+      booking_policy: signBookingRedirect([{ product_name: r.name, product_url: `/mieten/${linkLoc}/${r.category}/${r.slug}/` }], linkLoc),
       url: linkLoc ? `${SITE}/mieten/${linkLoc}/${r.category}/${r.slug}/` : null,
     };
   });

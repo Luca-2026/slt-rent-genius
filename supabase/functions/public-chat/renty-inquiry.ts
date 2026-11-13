@@ -5,6 +5,7 @@
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { saveRentalInquiry, rentalInquiryLink } from "../_shared/inquiry-store.ts";
+import { signBookingRedirect } from "./online-booking-policy.ts";
 
 export type LocationId = "krefeld" | "bonn" | "muelheim";
 
@@ -128,6 +129,8 @@ function service() {
 }
 
 export async function submitInquiry(raw: InquiryArgs, ctx: { ip: string; transcript: string }) {
+  const redirect = signBookingRedirect(Array.isArray(raw?.items) ? raw.items : [], raw?.location);
+  if (redirect) return redirect;
   const { errors, value: v } = validateInquiry(raw);
   if (errors.length) return { ok: false, missing_or_invalid: errors };
 
