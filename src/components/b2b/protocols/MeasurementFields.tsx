@@ -28,7 +28,7 @@ export function MeasurementFields({ name, value, onChange, allowHours = true, al
   return (
     <div className="space-y-3 rounded-md border p-3">
       <p className="text-sm font-medium break-words">{name}</p>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+      <div className="flex flex-wrap gap-x-4 gap-y-2">
         {fields.map(([key, label]) => (
           <label key={key} className="flex min-h-11 items-center gap-2 text-sm cursor-pointer">
             <Checkbox checked={value[key]} onCheckedChange={(checked) => set({ [key]: checked === true })} aria-label={`${label} für ${name} erfassen`} />

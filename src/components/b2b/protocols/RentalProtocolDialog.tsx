@@ -257,7 +257,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       const r = readings[i];
       const prev = prevReadings[it.name.trim().toLowerCase()];
       return r?.useFuel && fuelSuggested(prev?.fuel ?? null, r.fuel)
-        ? [{ kind: "fuel" as const, itemName: it.name, text: `${it.name}: Tank bei Rückgabe ${FUEL_LEVELS.find((f) => f.value === r.fuel)?.label ?? r.fuel}${prev?.fuel ? `, bei Übergabe ${FUEL_LEVELS.find((f) => f.value === prev.fuel)?.label ?? prev.fuel}` : ""} – nachgetankte Liter erfassen:` }]
+        ? [{ kind: "fuel" as const, itemName: it.name, text: `${it.name}: Tank bei Rückgabe ${fuelLevelLabel(r.fuel)}${prev?.fuel ? `, bei Übergabe ${fuelLevelLabel(prev.fuel)}` : ""} – nachgetankte Liter erfassen:` }]
         : [];
     }),
   ];
@@ -418,7 +418,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
               return <div key={i} className="space-y-2">
                 <MeasurementFields name={it.name} value={{ ...emptyMeasurement(), ...readings[i] }} onChange={(m) => setReading(i, m)}
                   allowHours={cmsFor(i)?.hours ?? true} allowFuel={cmsFor(i)?.tank ?? true} />
-                {isReturn && prev && (prev.mileage != null || prev.hours != null || !!prev.fuel) && <p className="text-xs text-muted-foreground pl-2">Bei Übergabe: {[prev.mileage != null ? `${prev.mileage} km` : "", prev.hours != null ? `${prev.hours} h` : "", prev.fuel ? `Tank ${FUEL_LEVELS.find((f) => f.value === prev.fuel)?.label ?? prev.fuel}` : ""].filter(Boolean).join(" · ")}</p>}
+                {isReturn && prev && (prev.mileage != null || prev.hours != null || !!prev.fuel) && <p className="text-xs text-muted-foreground pl-2">Bei Übergabe: {[prev.mileage != null ? `${prev.mileage} km` : "", prev.hours != null ? `${prev.hours} h` : "", prev.fuel ? `Tank ${fuelLevelLabel(prev.fuel)}` : ""].filter(Boolean).join(" · ")}</p>}
                 <div className="rounded-md border p-3 space-y-2">
                   <Label className="text-xs">Sauberkeit / Verschmutzung{isReturn ? " *" : " (optional)"}</Label>
                   <div className="grid grid-cols-5 gap-2">
