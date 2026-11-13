@@ -745,7 +745,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                   <Label>Hauptkategorie *</Label>
                   <Select
                     value={form.main_category || undefined}
-                    onValueChange={(v) => setForm((f) => ({ ...f, main_category: v as PricingScheme, pricing_scheme: v as PricingScheme }))}
+                    onValueChange={(v) => setForm((f) => ({ ...f, main_category: v as "bau" | "event" }))}
                   >
                     <SelectTrigger aria-label="Hauptkategorie"><SelectValue placeholder="Event oder Bau wählen" /></SelectTrigger>
                     <SelectContent>
@@ -753,7 +753,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                       <SelectItem value="bau">Bau</SelectItem>
                     </SelectContent>
                   </Select>
-                  <p className="text-[11px] text-muted-foreground mt-1">Belegt das Preisschema vor; das Preisschema ist unter „Preise“ separat änderbar.</p>
+                  <p className="text-[11px] text-muted-foreground mt-1">Das Preisschema wird unter „Preise“ unabhängig gewählt.</p>
                 </div>
                 <div>
                   <Label>Kategorie *</Label>
@@ -932,6 +932,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
                     <SelectContent>
                       <SelectItem value="bau">Preis-Bau (je Miettag, gestaffelt)</SelectItem>
                       <SelectItem value="event">Preis-Event (Kalendertage)</SelectItem>
+                      <SelectItem value="woche">Preis-Woche (je angefangener Woche)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

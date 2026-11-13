@@ -197,3 +197,4 @@
 - [x] InquiryOfferForm: Feld Angebotsbedingungen
 - [x] CMS-Maske Textbausteine + Menü
 - [x] AGENTS.md-Regel, Prüfpunkte testen
+ - [ ] Preis-Woche: CMS, Netto-Wochenstaffeln, 168-Stunden-Berechnung, Website/Anfrage, pauschale Angebote und vorgegebene Rechentests.
