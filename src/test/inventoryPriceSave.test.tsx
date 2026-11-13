@@ -13,6 +13,7 @@ vi.mock("@/integrations/supabase/client", () => ({ supabase: {
   from: (table: string) => {
     const query: Record<string, unknown> = { then: (resolve: (r: unknown) => unknown) => Promise.resolve({ data: [], error: null }).then(resolve) };
     query.select = () => query; query.eq = () => query;
+    query.order = () => query; query.limit = () => query;
     query.update = (payload: unknown) => { mocks.update(table, payload); return query; };
     query.upsert = (payload: unknown) => { mocks.upsert(table, payload); return query; };
     return query;
