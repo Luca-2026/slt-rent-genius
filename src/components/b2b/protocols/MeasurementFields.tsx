@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FUEL_LEVELS } from "./protocolShared";
+import { validFuelLevel } from "../../../../supabase/functions/_shared/protocolMeasurements";
 
 export type Measurement = {
   hours: string; fuel: string; mileage: string;
@@ -10,7 +11,7 @@ export type Measurement = {
 };
 export const emptyMeasurement = (): Measurement => ({ hours: "", fuel: "", mileage: "", useHours: false, useFuel: false, useMileage: false });
 export const validMeasurement = (m: Measurement) =>
-  (!m.useHours || validCounter(m.hours)) && (!m.useMileage || validCounter(m.mileage)) && (!m.useFuel || !!m.fuel);
+  (!m.useHours || validCounter(m.hours)) && (!m.useMileage || validCounter(m.mileage)) && (!m.useFuel || validFuelLevel(m.fuel));
 export const validCounter = (v: string) => /^\d{1,9}(?:[,.]\d{1,2})?$/.test(v.trim()) && Number(v.replace(",", ".")) <= 999999999;
 export const counterValue = (v: string) => Number(v.replace(",", "."));
 export const selectedMeasurement = (m: Measurement) => ({
@@ -39,7 +40,7 @@ export function MeasurementFields({ name, value, onChange, allowHours = true, al
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {value.useMileage && <div className="space-y-1"><Label>Kilometerstand (km) *</Label><Input aria-label={`Kilometerstand ${name}`} value={value.mileage} onChange={(e) => set({ mileage: e.target.value.replace(/[^\d,.]/g, "").slice(0, 12) })} inputMode="decimal" placeholder="z. B. 12500" className="h-11" /></div>}
           {value.useHours && <div className="space-y-1"><Label>Betriebsstunden (h) *</Label><Input aria-label={`Betriebsstunden ${name}`} value={value.hours} onChange={(e) => set({ hours: e.target.value.replace(/[^\d,.]/g, "").slice(0, 12) })} inputMode="decimal" placeholder="z. B. 1250,5" className="h-11" /></div>}
-          {value.useFuel && <div className="space-y-1"><Label>Tankfüllstand *</Label><Select value={value.fuel} onValueChange={(fuel) => set({ fuel })}><SelectTrigger aria-label={`Tankfüllstand ${name}`} className="h-11"><SelectValue placeholder="Auswählen" /></SelectTrigger><SelectContent>{FUEL_LEVELS.map((f) => <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>)}</SelectContent></Select></div>}
+          {value.useFuel && <div className="space-y-1"><Label>Tankfüllstand *</Label><Select value={value.fuel.startsWith("text:") ? "individuell" : value.fuel} onValueChange={(fuel) => set({ fuel: fuel === "individuell" ? "text:" : fuel })}><SelectTrigger aria-label={`Tankfüllstand ${name}`} className="h-11"><SelectValue placeholder="Auswählen" /></SelectTrigger><SelectContent>{FUEL_LEVELS.map((f) => <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>)}<SelectItem value="individuell">Individuell</SelectItem></SelectContent></Select>{value.fuel.startsWith("text:") && <Input aria-label={`Individueller Füllstand ${name}`} value={value.fuel.slice(5)} maxLength={15} placeholder="z. B. 70% oder 70L" onChange={(e) => set({ fuel: `text:${e.target.value}` })} className="h-11" />}</div>}
         </div>
       )}
     </div>
