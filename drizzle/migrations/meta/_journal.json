@@ -1268,6 +1268,13 @@
       "when": 1794563054870,
       "tag": "0180_pin_selected_email_queue_function_search_paths",
       "breakpoints": true
+    },
+    {
+      "idx": 181,
+      "version": "7",
+      "when": 1794566188147,
+      "tag": "0181_independent_article_battery_level_option",
+      "breakpoints": true
     }
   ]
 }

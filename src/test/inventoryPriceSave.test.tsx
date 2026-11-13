@@ -13,6 +13,7 @@ vi.mock("@/integrations/supabase/client", () => ({ supabase: {
   from: (table: string) => {
     const query: Record<string, unknown> = { then: (resolve: (r: unknown) => unknown) => Promise.resolve({ data: [], error: null }).then(resolve) };
     query.select = () => query; query.eq = () => query;
+    query.order = () => query; query.limit = () => query;
     query.update = (payload: unknown) => { mocks.update(table, payload); return query; };
     query.upsert = (payload: unknown) => { mocks.upsert(table, payload); return query; };
     return query;
@@ -22,6 +23,30 @@ const product = (overrides = {}) => ({ id: "test-article", name: "TEST Artikel",
 beforeEach(() => { mocks.update.mockClear(); mocks.upsert.mockClear(); mocks.error.mockClear(); mocks.rpc.mockReset(); mocks.rpc.mockResolvedValue({ data: "test-article", error: null }); });
 afterEach(cleanup);
 describe("actual CMS article save", () => {
+  it("saves tank tracking without operating hours", async () => {
+    render(<InventoryEditorDialog open onOpenChange={vi.fn()} onSaved={vi.fn()} initial={product({ tracks_operating_hours: false, has_fuel_tank: false })} />);
+    fireEvent.mouseDown(screen.getByRole("tab", { name: "Technik" }), { button: 0, ctrlKey: false });
+    fireEvent.click(await screen.findByRole("checkbox", { name: "Hat einen Tank – Tankfüllstand abfragen" }));
+    fireEvent.click(screen.getByRole("button", { name: /^Speichern$/ }));
+    await waitFor(() => expect(mocks.rpc).toHaveBeenCalled());
+    expect(mocks.rpc.mock.calls[0][1]._article).toMatchObject({ tracks_operating_hours: false, has_fuel_tank: true, tracks_battery_level: false });
+  });
+  it("saves battery tracking without tank or operating hours", async () => {
+    render(<InventoryEditorDialog open onOpenChange={vi.fn()} onSaved={vi.fn()} initial={product({ tracks_operating_hours: false, has_fuel_tank: false })} />);
+    fireEvent.mouseDown(screen.getByRole("tab", { name: "Technik" }), { button: 0, ctrlKey: false });
+    fireEvent.click(await screen.findByRole("checkbox", { name: "Hat einen Akku – Akkufüllstand abfragen" }));
+    fireEvent.click(screen.getByRole("button", { name: /^Speichern$/ }));
+    await waitFor(() => expect(mocks.rpc).toHaveBeenCalled());
+    expect(mocks.rpc.mock.calls[0][1]._article).toMatchObject({ tracks_operating_hours: false, has_fuel_tank: false, tracks_battery_level: true });
+  });
+  it("turning off operating hours preserves both independent level settings", async () => {
+    render(<InventoryEditorDialog open onOpenChange={vi.fn()} onSaved={vi.fn()} initial={product({ tracks_operating_hours: true, has_fuel_tank: true, tracks_battery_level: true })} />);
+    fireEvent.mouseDown(screen.getByRole("tab", { name: "Technik" }), { button: 0, ctrlKey: false });
+    fireEvent.click(await screen.findByRole("checkbox", { name: /Betriebsstunden in Übergabe/ }));
+    fireEvent.click(screen.getByRole("button", { name: /^Speichern$/ }));
+    await waitFor(() => expect(mocks.rpc).toHaveBeenCalled());
+    expect(mocks.rpc.mock.calls[0][1]._article).toMatchObject({ tracks_operating_hours: false, has_fuel_tank: true, tracks_battery_level: true });
+  });
   it.each([true, false])("saves published content independently of shared prices=%s", async (samePrices) => {
     render(<InventoryEditorDialog open onOpenChange={vi.fn()} onSaved={vi.fn()} initial={product({ prices_same_all_locations: samePrices })} />);
     fireEvent.change(screen.getByDisplayValue("TEST Artikel"), { target: { value: "TEST Artikel bearbeitet" } });

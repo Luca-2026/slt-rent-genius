@@ -1,0 +1,2 @@
+ALTER TABLE public.b2b_managed_products ADD COLUMN IF NOT EXISTS tracks_battery_level boolean NOT NULL DEFAULT false;
+COMMENT ON COLUMN public.b2b_managed_products.tracks_battery_level IS 'Independent CMS option to request battery charge level; separate from fuel tank and operating-hour tracking.';
