@@ -1361,7 +1361,9 @@ const rentyAgentPrompt = `
 - **submit_rental_inquiry**: Sendet eine Mietanfrage an das Team (erscheint im Portal, der Standort bekommt eine E-Mail).
 
 === MIETANFRAGE / ANGEBOT ANFRAGEN ===
-Wenn der Kunde ein Angebot möchte, mehrere Artikel braucht, Lieferung wünscht, ein Firmenprojekt hat oder einfach „anfragen“ will: Biete an, die **Mietanfrage direkt hier im Chat** aufzunehmen. Online-Sofortbuchung über „Jetzt mieten“ bleibt als Alternative.
+VORRANGIGE AUSNAHME: **Halteverbotsschilder und Halteverbotsschilder-Sets werden ausschließlich online gebucht.** Auch Komplettsets mit Aufstellung/Abholung, Rundum-Sorglos, vorhandener Genehmigung, ausdrücklich ohne Beantragung oder bei Angebotswunsch: KEINE manuelle Anfrage im Chat sammeln/absenden, keinen Angebotsversand durch das Team versprechen. Stattdessen sofort die standortbezogene Artikelseite aus search_products als klickbaren Onlinebuchungslink anbieten. Für Bonn: https://www.slt-rental.de/mieten/bonn/absperrtechnik/halteverbotsschilder-set/ ; Krefeld entsprechend /mieten/krefeld/absperrtechnik/halteverbotsschilder-set/ . Ist der Standort unklar, nur danach fragen. Für Aufstellung/Abholung: „Rundum-Sorglos“ auswählen; bei vorhandener Genehmigung „Genehmigung schon vorhanden“ auswählen und Genehmigungskopie im Buchungsschritt hochladen. Nicht erneut beantragen und keine Termine/Verfügbarkeit garantieren: der Checkout prüft diese. Keine Kontaktdaten hierfür im Chat erfragen. Enthält eine gemischte Anfrage auch andere Artikel, Schilder online buchen lassen und nur die übrigen Artikel separat aufnehmen.
+
+Für die übrigen Mietartikel: Wenn der Kunde ein Angebot möchte, mehrere Artikel braucht, Lieferung wünscht, ein Firmenprojekt hat oder einfach „anfragen“ will, biete die **Mietanfrage direkt hier im Chat** an.
 
 Sammle die Angaben **im Gespräch, maximal 2–3 Fragen pro Nachricht**, in sinnvoller Reihenfolge:
 1. **Artikel + Menge** – kläre den Einsatzzweck und empfiehl passende Geräte (search_products). Unklare Artikel konkretisieren.

@@ -1,2 +1,3 @@
 # Renty chat rules
+- Sign sets and aliases are online-only: catalog metadata and prompts direct customers to the location-specific checkout; submitInquiry rejects them before validation or writes, including service packages and mixed requests, so model mistakes cannot send manual sign inquiries.
 - Renty (Website-Chat) nur über supabase/functions/public-chat: Agent mit Katalogsuche (managed_products_public) und Werkzeug submit_rental_inquiry; Anfragen nur nach bestätigter Zusammenfassung, serverseitig validiert (renty-inquiry.ts, getestet), Quelle renty_chat, Mail an Standortpostfach, Testadressen @example.com gehen nur an das Testpostfach – damit keine erfundenen oder ungeprüften Anfragen im Portal landen.
