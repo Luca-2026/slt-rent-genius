@@ -8,9 +8,17 @@ export async function recordRentalPayments(service: any, id: string, actor: stri
   const policy = inquiry.offer_payload?.bank_transfer_discount;
   let bankPayload = null;
   if (payments.length > 0 && allPaymentsByBank(payments) && hasBankDiscountPolicy(policy) && policy.selected !== "bank") {
-    const changed = { ...inquiry.offer_payload, bank_transfer_discount: { ...policy, selected: "bank" } };
-    const priced = rentalPaymentPrices(changed);
-    bankPayload = { ...changed, items: priced.items, totals: priced.totals };
+    // A receipt is not a request to correct an issued document's agreed price.
+    const { data: invoices, error: invoiceError } = await service.from("inquiry_invoices")
+      .select("id").eq("rental_inquiry_id", id).not("status", "in", "(draft,cancelled)").limit(1);
+    const { data: settlements, error: settlementError } = await service.from("deposit_settlements")
+      .select("id").eq("rental_inquiry_id", id).limit(1);
+    if (invoiceError || settlementError) throw new Error("Belegstatus konnte nicht geprüft werden.");
+    if (!invoices?.length && !settlements?.length) {
+      const changed = { ...inquiry.offer_payload, bank_transfer_discount: { ...policy, selected: "bank" } };
+      const priced = rentalPaymentPrices(changed);
+      bankPayload = { ...changed, items: priced.items, totals: priced.totals };
+    }
   }
   const { data, error: saveError } = await service.rpc("record_rental_staff_payments", {
     _id: id, _actor: actor, _expected_payments: expectedPayments ?? [],
