@@ -1047,9 +1047,14 @@ export type Database = {
           managed_product_id: string
           price_base_1_3_cd: number | null
           price_from_1_rd: number | null
+          price_from_1_week: number | null
           price_from_10_rd: number | null
+          price_from_2_weeks: number | null
           price_from_20_rd: number | null
           price_from_3_rd: number | null
+          price_from_3_weeks: number | null
+          price_from_4_weeks: number | null
+          price_short_1_3_rd: number | null
           price_weekend_num: number | null
           surcharge_per_cd_from_4: number | null
           surcharge_per_cd_from_8: number | null
@@ -1063,9 +1068,14 @@ export type Database = {
           managed_product_id: string
           price_base_1_3_cd?: number | null
           price_from_1_rd?: number | null
+          price_from_1_week?: number | null
           price_from_10_rd?: number | null
+          price_from_2_weeks?: number | null
           price_from_20_rd?: number | null
           price_from_3_rd?: number | null
+          price_from_3_weeks?: number | null
+          price_from_4_weeks?: number | null
+          price_short_1_3_rd?: number | null
           price_weekend_num?: number | null
           surcharge_per_cd_from_4?: number | null
           surcharge_per_cd_from_8?: number | null
@@ -1079,9 +1089,14 @@ export type Database = {
           managed_product_id?: string
           price_base_1_3_cd?: number | null
           price_from_1_rd?: number | null
+          price_from_1_week?: number | null
           price_from_10_rd?: number | null
+          price_from_2_weeks?: number | null
           price_from_20_rd?: number | null
           price_from_3_rd?: number | null
+          price_from_3_weeks?: number | null
+          price_from_4_weeks?: number | null
+          price_short_1_3_rd?: number | null
           price_weekend_num?: number | null
           surcharge_per_cd_from_4?: number | null
           surcharge_per_cd_from_8?: number | null
@@ -1142,11 +1157,16 @@ export type Database = {
           pdf_url: string | null
           price_base_1_3_cd: number | null
           price_from_1_rd: number | null
+          price_from_1_week: number | null
           price_from_10_rd: number | null
+          price_from_2_weeks: number | null
           price_from_20_rd: number | null
           price_from_3_rd: number | null
+          price_from_3_weeks: number | null
+          price_from_4_weeks: number | null
           price_per_day: string | null
           price_per_month: string | null
+          price_short_1_3_rd: number | null
           price_unit_label: string | null
           price_weekend: string | null
           price_weekend_num: number | null
@@ -1215,11 +1235,16 @@ export type Database = {
           pdf_url?: string | null
           price_base_1_3_cd?: number | null
           price_from_1_rd?: number | null
+          price_from_1_week?: number | null
           price_from_10_rd?: number | null
+          price_from_2_weeks?: number | null
           price_from_20_rd?: number | null
           price_from_3_rd?: number | null
+          price_from_3_weeks?: number | null
+          price_from_4_weeks?: number | null
           price_per_day?: string | null
           price_per_month?: string | null
+          price_short_1_3_rd?: number | null
           price_unit_label?: string | null
           price_weekend?: string | null
           price_weekend_num?: number | null
@@ -1288,11 +1313,16 @@ export type Database = {
           pdf_url?: string | null
           price_base_1_3_cd?: number | null
           price_from_1_rd?: number | null
+          price_from_1_week?: number | null
           price_from_10_rd?: number | null
+          price_from_2_weeks?: number | null
           price_from_20_rd?: number | null
           price_from_3_rd?: number | null
+          price_from_3_weeks?: number | null
+          price_from_4_weeks?: number | null
           price_per_day?: string | null
           price_per_month?: string | null
+          price_short_1_3_rd?: number | null
           price_unit_label?: string | null
           price_weekend?: string | null
           price_weekend_num?: number | null
@@ -6550,11 +6580,16 @@ export type Database = {
           pdf_url: string | null
           price_base_1_3_cd: number | null
           price_from_1_rd: number | null
+          price_from_1_week: number | null
           price_from_10_rd: number | null
+          price_from_2_weeks: number | null
           price_from_20_rd: number | null
           price_from_3_rd: number | null
+          price_from_3_weeks: number | null
+          price_from_4_weeks: number | null
           price_per_day: string | null
           price_per_month: string | null
+          price_short_1_3_rd: number | null
           price_unit_label: string | null
           price_weekend: string | null
           price_weekend_num: number | null
@@ -6584,118 +6619,6 @@ export type Database = {
           video_urls: string[] | null
           weight_kg: number | null
         }
-        Insert: {
-          addon_options?: Json | null
-          available_locations?: string[] | null
-          category?: string | null
-          created_at?: string | null
-          deposit_amount?: number | null
-          description?: string | null
-          detailed_description?: string | null
-          drive_type?: string | null
-          external_manual_url?: string | null
-          features?: string[] | null
-          id?: string | null
-          image_alts?: string[] | null
-          images?: string[] | null
-          main_category?: string | null
-          min_rental_months?: number | null
-          model_name?: string | null
-          name?: string | null
-          on_request?: boolean | null
-          pdf_url?: string | null
-          price_base_1_3_cd?: number | null
-          price_from_1_rd?: number | null
-          price_from_10_rd?: number | null
-          price_from_20_rd?: number | null
-          price_from_3_rd?: number | null
-          price_per_day?: string | null
-          price_per_month?: string | null
-          price_unit_label?: string | null
-          price_weekend?: string | null
-          price_weekend_num?: number | null
-          pricing_scheme?: string | null
-          related_slugs?: string[] | null
-          rental_notes?: string[] | null
-          rentware_code?: Json | null
-          seo_faqs?: Json | null
-          seo_local_content?: Json | null
-          seo_meta_description?: string | null
-          seo_title?: string | null
-          seo_use_case_bau?: string | null
-          seo_use_case_event?: string | null
-          seo_use_case_privat?: string | null
-          slug?: string | null
-          sort_order?: number | null
-          spec_order?: string[] | null
-          specifications?: Json | null
-          stocked_locations?: string[] | null
-          subcategory?: string | null
-          suggested_accessory_slugs?: string[] | null
-          surcharge_per_cd_from_4?: number | null
-          surcharge_per_cd_from_8?: number | null
-          tags?: string[] | null
-          updated_at?: string | null
-          video_url?: string | null
-          video_urls?: string[] | null
-          weight_kg?: number | null
-        }
-        Update: {
-          addon_options?: Json | null
-          available_locations?: string[] | null
-          category?: string | null
-          created_at?: string | null
-          deposit_amount?: number | null
-          description?: string | null
-          detailed_description?: string | null
-          drive_type?: string | null
-          external_manual_url?: string | null
-          features?: string[] | null
-          id?: string | null
-          image_alts?: string[] | null
-          images?: string[] | null
-          main_category?: string | null
-          min_rental_months?: number | null
-          model_name?: string | null
-          name?: string | null
-          on_request?: boolean | null
-          pdf_url?: string | null
-          price_base_1_3_cd?: number | null
-          price_from_1_rd?: number | null
-          price_from_10_rd?: number | null
-          price_from_20_rd?: number | null
-          price_from_3_rd?: number | null
-          price_per_day?: string | null
-          price_per_month?: string | null
-          price_unit_label?: string | null
-          price_weekend?: string | null
-          price_weekend_num?: number | null
-          pricing_scheme?: string | null
-          related_slugs?: string[] | null
-          rental_notes?: string[] | null
-          rentware_code?: Json | null
-          seo_faqs?: Json | null
-          seo_local_content?: Json | null
-          seo_meta_description?: string | null
-          seo_title?: string | null
-          seo_use_case_bau?: string | null
-          seo_use_case_event?: string | null
-          seo_use_case_privat?: string | null
-          slug?: string | null
-          sort_order?: number | null
-          spec_order?: string[] | null
-          specifications?: Json | null
-          stocked_locations?: string[] | null
-          subcategory?: string | null
-          suggested_accessory_slugs?: string[] | null
-          surcharge_per_cd_from_4?: number | null
-          surcharge_per_cd_from_8?: number | null
-          tags?: string[] | null
-          updated_at?: string | null
-          video_url?: string | null
-          video_urls?: string[] | null
-          weight_kg?: number | null
-        }
         Relationships: []
       }
       public_product_prices: {
@@ -6704,9 +6627,14 @@ export type Database = {
           managed_product_id: string | null
           price_base_1_3_cd: number | null
           price_from_1_rd: number | null
+          price_from_1_week: number | null
           price_from_10_rd: number | null
+          price_from_2_weeks: number | null
           price_from_20_rd: number | null
           price_from_3_rd: number | null
+          price_from_3_weeks: number | null
+          price_from_4_weeks: number | null
+          price_short_1_3_rd: number | null
           price_weekend_num: number | null
           surcharge_per_cd_from_4: number | null
           surcharge_per_cd_from_8: number | null

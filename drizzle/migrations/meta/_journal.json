@@ -1275,6 +1275,13 @@
       "when": 1794566188147,
       "tag": "0181_independent_article_battery_level_option",
       "breakpoints": true
+    },
+    {
+      "idx": 182,
+      "version": "7",
+      "when": 1794569516903,
+      "tag": "0182_weekly_rental_price_scheme",
+      "breakpoints": true
     }
   ]
 }
