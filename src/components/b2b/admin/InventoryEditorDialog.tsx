@@ -421,7 +421,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   };
 
   const requestClose = async () => {
-    if (dirty && !await autosave.flush()) return;
+    if (!await autosave.flush()) return;
     onOpenChange(false);
   };
 
@@ -662,7 +662,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
       dirtyBaselineRef.current = JSON.stringify(form);
       if (loadedIdRef.current && JSON.stringify(formRef.current) === JSON.stringify(form)) clearCmsDraft(cmsDraftKey("inventory", loadedIdRef.current));
       setDirty(JSON.stringify(formRef.current) !== JSON.stringify(form));
-      onSaved();
+      await onSaved();
       if (!automatic) { toast.success(initial ? "Artikel aktualisiert" : "Artikel angelegt"); onOpenChange(false); }
       return true;
     } catch (e) {

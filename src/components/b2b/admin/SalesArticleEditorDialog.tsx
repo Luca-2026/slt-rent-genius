@@ -434,6 +434,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         };
         const q = supabase.from("new_machines");
         const id = articleIdentity.current ?? crypto.randomUUID();
+        articleIdentity.current = id;
         const { data: saved, error } = articleIdentity.current
           ? await (q.update(payload as never).eq("id", id).select("id").single())
           : await (q.upsert({ ...payload, id } as never).select("id").single());
@@ -462,6 +463,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         };
         const q = supabase.from("used_machines");
         const id = articleIdentity.current ?? crypto.randomUUID();
+        articleIdentity.current = id;
         const { data: saved, error } = articleIdentity.current
           ? await (q.update(payload as never).eq("id", id).select("id").single())
           : await (q.upsert({ ...payload, id } as never).select("id").single());
