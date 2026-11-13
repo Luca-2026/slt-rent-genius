@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { allowPublicRequest } from "../_shared/publicRateLimit.ts";
+import { allowPaidPublicRequest } from "../_shared/publicRateLimit.ts";
 import { LOCATION_ORIGINS, routeDistance } from "../_shared/route-distance.ts";
 
 const corsHeaders = {
@@ -33,7 +33,7 @@ serve(async (req) => {
       const placeId = String(body.placeId ?? "");
       const postalCode = String(body.postalCode ?? "");
       if (action === "details" ? !/^[A-Za-z0-9_-]{1,300}$/.test(placeId) : !/^\d{5}$/.test(postalCode)) return json({ error: "Ungültige Eingabe" }, 400);
-      if (!(await allowPublicRequest(req, "geo-address-details", 120, 3600))) return json({ error: "Zu viele Anfragen" }, 429);
+      if (!(await allowPaidPublicRequest(req, "geo-address-details", 60, 3000))) return json({ error: "Zu viele Anfragen" }, 429);
       let components: any[] = [];
       if (action === "details") {
         const response = await fetch(`https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}`, { headers: { "X-Goog-Api-Key": apiKey, "X-Goog-FieldMask": "addressComponents" } });
@@ -54,7 +54,7 @@ serve(async (req) => {
       const sessionToken = String(body.sessionToken ?? "");
       if (input.length < 3) return json({ suggestions: [] });
       if (input.length > 200 || sessionToken.length > 100) return json({ error: "Ungültige Eingabe" }, 400);
-      if (!(await allowPublicRequest(req, "geo-autocomplete", 300, 3600))) {
+      if (!(await allowPaidPublicRequest(req, "geo-autocomplete", 150, 8000))) {
         return json({ error: "Zu viele Anfragen. Bitte versuche es später erneut." }, 429);
       }
 
@@ -107,7 +107,7 @@ serve(async (req) => {
         return json({ error: "placeId or address is required" }, 400);
       }
       const destination = placeId ? { placeId } : { address };
-      if (!(await allowPublicRequest(req, "geo-distance", 60, 3600))) {
+      if (!(await allowPaidPublicRequest(req, "geo-distance", 30, 1500))) {
         return json({ error: "Zu viele Anfragen. Bitte versuche es später erneut." }, 429);
       }
 
@@ -138,7 +138,7 @@ serve(async (req) => {
     return json({ error: "Unknown action" }, 400);
   } catch (err) {
     console.error(err);
-    return json({ error: String(err) }, 500);
+    return json({ error: "Interner Fehler" }, 500);
   }
 });
 

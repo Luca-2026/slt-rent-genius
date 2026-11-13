@@ -20,6 +20,9 @@ export interface CashEntry {
 const clean = (s: unknown, max: number) =>
   String(s ?? "").replace(/[;"\r\n\t]+/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
 
+// Freitext aus Kundeneingaben darf in Excel/LibreOffice nicht als Formel starten.
+export const neutralizeFormula = (s: string) => (/^[=+\-@\t\r]/.test(s) ? `'${s}` : s);
+
 export const datevAmount = (n: number) => {
   const cents = Math.round(Math.abs(n) * 100);
   return `${n < 0 ? "-" : "+"}${Math.floor(cents / 100)},${String(cents % 100).padStart(2, "0")}`;
@@ -31,9 +34,9 @@ export const datevDate = (iso: string) => `${iso.slice(8, 10)}${iso.slice(5, 7)}
 export const datevRechNr = (e: CashEntry, i: number) =>
   (String(e.orderCode || e.documentNumber || `KASSE${i + 1}`).replace(/[^A-Za-z0-9$&%*+\-/]/g, "")).slice(0, 36) || `KASSE${i + 1}`;
 
-export const datevKost1 = (code?: string | null) => clean(String(code ?? "").replace(/^#/, ""), 36);
+export const datevKost1 = (code?: string | null) => neutralizeFormula(clean(String(code ?? "").replace(/^#/, ""), 36));
 
-export const customerLabel = (e: CashEntry) => clean(e.customerName || e.companyName || "Unbekannt", 60);
+export const customerLabel = (e: CashEntry) => neutralizeFormula(clean(e.customerName || e.companyName || "Unbekannt", 60));
 
 export function buildDatevCashCsv(entries: CashEntry[]): string {
   const rows = entries
@@ -51,7 +54,7 @@ export function buildDatevCashCsv(entries: CashEntry[]): string {
       "",
       "",
       "",
-      clean([e.label, e.customerName || e.companyName, e.documentNumber].filter(Boolean).join(" "), 120),
+      neutralizeFormula(clean([e.label, e.customerName || e.companyName, e.documentNumber].filter(Boolean).join(" "), 120)),
     ].join(";"));
   return [DATEV_CASH_HEADER, ...rows].join("\r\n") + "\r\n";
 }

@@ -1,6 +1,6 @@
 import { RENTAL_LINK_PATHS } from "./rental-link-catalog.ts";
 import { runRenty, GatewayError, catalogPaths } from "./renty-agent.ts";
-import { allowPublicRequest } from "../_shared/publicRateLimit.ts";
+import { allowPaidPublicRequest } from "../_shared/publicRateLimit.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -1436,7 +1436,7 @@ Deno.serve(async (req: Request) => {
     }
 
     // Paid AI gateway: cap requests per visitor (public website chat).
-    if (!(await allowPublicRequest(req, "public-chat", 40, 3600))) {
+    if (!(await allowPaidPublicRequest(req, "public-chat", 40, 2000))) {
       return new Response(JSON.stringify({ error: "Du hast gerade sehr viele Nachrichten gesendet. Bitte versuche es in einer Stunde erneut oder ruf uns an: 02151 417 990 4." }), {
         status: 429,
         headers: { ...corsHeaders, "Content-Type": "application/json" },

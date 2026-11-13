@@ -96,6 +96,20 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    // Niederlassungsleitung nur für Kunden des eigenen Standorts
+    const isAdmin = roleRows.some((r: { role: string }) => r.role === "admin");
+    if (!isAdmin) {
+      const { data: allowed, error: allowErr } = profile.assigned_location
+        ? await admin.rpc("can_manage_b2b_onboarding", { _actor: authUser.id, _location: profile.assigned_location })
+        : { data: false, error: null };
+      if (allowErr || allowed !== true) {
+        return new Response(JSON.stringify({ error: "Keine Berechtigung für diesen Standort" }), {
+          status: 403,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+    }
+
     // Fetch approving admin's staff profile for personal contact details
     const { data: staff } = await admin
       .from("staff_profiles")
