@@ -1,5 +1,7 @@
 /** Fail-closed rules for the narrowly scoped sign checkout. Money is integer cents. */
 export const SIGN_PRODUCT_SLUG = "halteverbotsschilder-set";
+export const SIGN_ADDITIONAL_SLUG = "vz-1060-31-ra1-gr-1";
+export const SIGN_ADDITIONAL_NAME = "2x VZ 1060 31 (Haltverbot auch auf dem Seitenstreifen)";
 export const SIGN_HOLD_HOURS = 24;
 export const SIGN_BASE_RENTAL_DAYS = 10;
 export const SIGN_MAX_RENTAL_DAYS = 100;
