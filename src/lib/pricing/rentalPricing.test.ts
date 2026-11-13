@@ -69,9 +69,9 @@ describe("1b defaultUnit", () => {
     expect(computeRentalLinePrice(input)).toMatchObject({ duration: 10, unit_price: 68 });
     expect(mirror.computeRentalLinePrice(input)).toEqual(computeRentalLinePrice(input));
   });
-  it("bau → miettage, event → kalendertage", () => {
+  it("bau → miettage, event → pauschal", () => {
     expect(defaultUnit({ pricing_scheme: "bau" })).toBe("miettage");
-    expect(defaultUnit({ pricing_scheme: "event" })).toBe("kalendertage");
+    expect(defaultUnit({ pricing_scheme: "event" })).toBe("pauschal");
   });
 });
 

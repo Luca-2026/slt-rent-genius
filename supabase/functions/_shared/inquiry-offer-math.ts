@@ -72,7 +72,7 @@ export interface InquiryOfferItem extends OfferLogistics {
   rental_end_time?: string;
   unit_code?: string;
   price_manual?: boolean;
-  price_basis?: "tier" | "weekend" | "customer" | "week";
+  price_basis?: "tier" | "weekend" | "customer" | "week" | "event";
   rental_period_label?: string;
   /** Öffentliche Bild-URL des CMS-Artikels (wird im PDF eingebettet). */
   image_url?: string;

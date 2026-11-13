@@ -4,6 +4,7 @@ import { bankDiscountPresentation, editorBankDiscount } from "@/lib/editorBankDi
 import { invoiceServicePeriod } from "@/lib/invoiceServicePeriod";
 import { LogisticsServiceFields } from "./LogisticsServiceFields";
 import { OfferTimeSelect } from "./OfferTimeSelect";
+import { rentalDuration as eventCalendarDays } from "@/lib/pricing/rentalPricing";
 import { appendOfferPosition } from "./offerEditorRules";
 import { isLogisticsService, logisticsService, migrateServiceCosts, SERVICE_UNITS, serviceUnit, type ServiceKind } from "./logisticsServices";
 import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
@@ -260,7 +261,7 @@ function applyRentalPricing(item: FormLine, dayOpts: RentalDayOptions): FormLine
     durationOverride: item.undated_offer ? item.duration ?? 1 : item.duration_override,
     opts: { use_saturday: item.use_saturday ?? dayOpts.use_saturday, use_sunday: item.use_sunday ?? dayOpts.use_sunday },
   });
-  const base: FormLine = { ...item, product_name: p.base_name, rental_period_label: p.scheme === "woche" && r.kind === "tier" ? r.label : undefined };
+  const base: FormLine = { ...item, product_name: p.base_name, rental_period_label: p.scheme === "event" ? (r.kind === "weekend" ? "Wochenende" : eventCalendarDays({ date: item.rental_start }, { date: item.rental_end }, "kalendertage") <= 3 ? "1 bis 3 Kalendertage" : `${eventCalendarDays({ date: item.rental_start }, { date: item.rental_end }, "kalendertage")} Kalendertage`) : p.scheme === "woche" && r.kind === "tier" ? r.label : undefined };
   if (r.kind === "weekend") {
     return { ...base, product_name: p.base_name + WEEKEND_SUFFIX, unit: "pauschal", duration: 1, unit_price: r.unit_price, price_source: "cms", price_basis: "weekend", tier_label: r.label };
   }
@@ -278,7 +279,7 @@ function applyRentalPricing(item: FormLine, dayOpts: RentalDayOptions): FormLine
       ...(item.discount_auto ? { discount_percent: 0, discount_auto: false } : {}),
     };
   }
-  return { ...base, unit: r.unit, duration: r.duration, unit_price: r.unit_price, price_source: "cms", price_basis: p.scheme === "woche" ? "week" : "tier", tier_label: r.label };
+  return { ...base, unit: r.unit, duration: r.duration, unit_price: r.unit_price, price_source: "cms", price_basis: p.scheme === "woche" ? "week" : p.scheme === "event" ? "event" : "tier", tier_label: r.label };
 }
 
 const PAYMENT_OPTIONS: Record<"business" | "private", { value: string; label: string }[]> = {
@@ -1036,30 +1037,33 @@ export function InquiryOfferForm({
 
   const patchItem = (index: number, patch: Partial<FormLine>) =>
     setItems((prev) => prev.map((item, i) => (i === index ? { ...item, ...patch } : item)));
-  const [periodRecalculation, setPeriodRecalculation] = useState<{ index: number; patch: Partial<FormLine> } | null>(null);
-  /** Wie patchItem, rechnet danach Dauer/Staffelpreis neu (ohne Handpreis-Marker). */
-  const patchPriced = (index: number, patch: Partial<FormLine>, confirmed = false) => {
-    const current = items[index];
+  const [periodRecalculations, setPeriodRecalculations] = useState<Record<number, FormLine>>({});
+  const decidePeriod = (index: number, accept: boolean) => {
+    const candidate = periodRecalculations[index];
+    if (!candidate) return;
+    if (accept) setItems(prev => prev.map((item, i) => i === index ? candidate : item));
+    setPeriodRecalculations(prev => { const next = { ...prev }; delete next[index]; return next; });
+  };
+  const decideAllPeriods = (accept: boolean) => {
+    if (accept) setItems(prev => prev.map((item, i) => periodRecalculations[i] ?? item));
+    setPeriodRecalculations({});
+  };
+  const patchPriced = (index: number, patch: Partial<FormLine>) => {
     const changesPeriod = ["rental_start", "rental_end", "rental_start_time", "rental_end_time", "custom_period"].some(key => key in patch);
-    const affected = items.filter((item, i) => i === index || (index === 0 && !item.custom_period));
-    if (!confirmed && changesPeriod && affected.some(item => ["event", "woche"].includes(item.pricing?.scheme ?? "") && (item.price_manual || item.unit_manual))) {
-      setPeriodRecalculation({ index, patch });
-      return;
-    }
-    setItems((prev) => {
-      if (openEnded && independentPricing) return prev.map((item, i) => {
-        if (i !== index) return item;
-        const next = { ...item, ...patch };
-        if (patch.unit && patch.unit !== item.unit && !item.period_free) return { ...next, unit_price: 0, price_source: undefined, price_manual: true, tier_label: undefined };
-        return next;
-      });
-      const next = prev.map((item, i) => i === index ? { ...item, ...patch } : item);
-      return next.map((item, i) => {
-        if (i !== index && (index !== 0 || item.custom_period)) return item;
-        const inherited = applyInheritedPeriod(item, i, next[0]);
-        return pricingActive && !undatedOffer ? applyRentalPricing(inherited, dayOpts) : inherited;
-      });
+    const next = items.map((item, i) => i === index ? { ...item, ...patch } : item);
+    const pending = { ...periodRecalculations };
+    const updated = next.map((item, i) => {
+      if (i !== index && (index !== 0 || item.custom_period)) return item;
+      if (openEnded && independentPricing) return patch.unit && patch.unit !== items[i]?.unit && !item.period_free ? { ...item, unit_price: 0, price_source: undefined, price_manual: true, tier_label: undefined } : item;
+      const inherited = applyInheritedPeriod(item, i, next[0]);
+      if (changesPeriod && ["event", "woche"].includes(item.pricing?.scheme ?? "") && (item.price_manual || item.unit_manual)) {
+        pending[i] = applyRentalPricing({ ...inherited, price_manual: false, unit_manual: false, duration_override: undefined }, dayOpts);
+        return calendarDuration(inherited, dayOpts);
+      }
+      return pricingActive && !undatedOffer ? applyRentalPricing(inherited, dayOpts) : inherited;
     });
+    setItems(updated);
+    setPeriodRecalculations(pending);
   };
   const changeDayOpts = (next: RentalDayOptions) => {
     setUseSaturday(!!next.use_saturday);
@@ -1437,6 +1441,7 @@ export function InquiryOfferForm({
   const previewOk = matchesDocumentPreview(previewedKey, buildBody());
 
   const send = async () => {
+    if (Object.keys(periodRecalculations).length) return;
     if (refundBlock) return;
     if (sendBlock) return;
     if (!matchesDocumentPreview(previewedKey, buildBody())) return;
@@ -1540,7 +1545,7 @@ export function InquiryOfferForm({
     </Button>
   );
   const sendButton = (
-    <Button data-draft-neutral onClick={send} disabled={disabled || sending || checking || !previewOk || !!sendBlock || !!refundBlock || (isAmendment && agreementNote.trim().length < 5)} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
+    <Button data-draft-neutral onClick={send} disabled={disabled || Object.keys(periodRecalculations).length > 0 || sending || checking || !previewOk || !!sendBlock || !!refundBlock || (isAmendment && agreementNote.trim().length < 5)} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
       <Send className="h-4 w-4 mr-2" />
       {isAmendment ? (sending ? "Auftragsänderung wird gespeichert …" : "Auftragsänderung speichern") : isInvoice
         ? sending
@@ -1745,6 +1750,11 @@ export function InquiryOfferForm({
             onDragEnd={() => { setDragIdx(null); setOverIdx(null); }}
             className={`rounded-lg border border-border p-3 space-y-2 transition-colors ${dragIdx === index ? "opacity-40" : ""} ${overIdx === index && dragIdx !== null && dragIdx !== index ? "ring-2 ring-primary/50" : ""}`}
           >
+            {periodRecalculations[index] && <div className="border border-primary bg-muted p-3 space-y-2" role="alert">
+              <p className="font-medium text-sm">Achtung: Zeitraum angepasst. Preis neu berechnen?</p>
+              <p className="text-sm">Bisher: {item.quantity} Stk, {formatEuro(item.quantity * (item.duration ?? 1) * item.unit_price)} {item.unit === "pauschal" ? "pauschal" : item.unit} (manuell). Neu nach Staffel: {item.quantity} Stk, {formatEuro(item.quantity * periodRecalculations[index].unit_price)} pauschal.</p>
+              <div className="flex gap-2"><Button type="button" size="sm" onClick={() => decidePeriod(index, true)}>Übernehmen</Button><Button type="button" size="sm" variant="outline" onClick={() => decidePeriod(index, false)}>Ablehnen</Button></div>
+            </div>}
             <div className="flex flex-wrap gap-2 items-start sm:flex-nowrap">
               {!isInvoice && (
                 <div className="flex shrink-0 flex-row items-center sm:flex-col">
@@ -2089,7 +2099,7 @@ export function InquiryOfferForm({
                   <p className="mt-1 text-[11px] text-muted-foreground">
                     {inquiryType === "sales"
                       ? "Preis aus CMS (netto) – anpassbar"
-                      : `Aus CMS: ${formatEuro(item.unit_price)} netto${item.tier_label ? ` (${item.tier_label})` : ""} – anpassbar`}
+                      : item.price_basis === "event" ? `Aus CMS: ${item.tier_label} netto` : `Aus CMS: ${formatEuro(item.unit_price)} netto${item.tier_label ? ` (${item.tier_label})` : ""} – anpassbar`}
                   </p>
                 ) : null}
                 {openEnded && independentPricing && item.pricing?.scheme === "bau" && <div className="mt-2 flex flex-wrap gap-1">
@@ -2769,31 +2779,6 @@ export function InquiryOfferForm({
           void send();
         }}
       />
-      <Dialog open={periodRecalculation !== null} onOpenChange={open => { if (!open) setPeriodRecalculation(null); }}>
-        <DialogContent>
-          <DialogHeader><DialogTitle>Zeitraum angepasst, Preis neu berechnen?</DialogTitle></DialogHeader>
-          <div className="flex justify-end gap-2">
-            <Button type="button" variant="outline" onClick={() => {
-              if (!periodRecalculation) return;
-              const { index, patch } = periodRecalculation;
-              setItems(prev => prev.map((item, i) => {
-                if (i !== index && (index !== 0 || item.custom_period)) return item;
-                return calendarDuration(applyInheritedPeriod(i === index ? { ...item, ...patch } : item, i, index === 0 ? { ...prev[0], ...patch } : prev[0]), dayOpts);
-              }));
-              setPeriodRecalculation(null);
-            }}>Ablehnen</Button>
-            <Button type="button" onClick={() => {
-              if (!periodRecalculation) return;
-              const { index, patch } = periodRecalculation;
-              setItems(prev => {
-                const next = prev.map((item, i) => i === index ? { ...item, ...patch } : item);
-                return next.map((item, i) => i === index || (index === 0 && !item.custom_period) ? applyRentalPricing({ ...applyInheritedPeriod(item, i, next[0]), price_manual: false, unit_manual: false }, dayOpts) : item);
-              });
-              setPeriodRecalculation(null);
-            }}>Übernehmen</Button>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       {!stickyActions && actionBar}
       <Dialog open={!!previewUrl} onOpenChange={(o) => { if (!o) setPreviewUrl(null); }}>
@@ -2812,7 +2797,7 @@ export function InquiryOfferForm({
               </Button>
             )}
             <Button variant="outline" onClick={() => setPreviewUrl(null)}>Zurück zum Bearbeiten</Button>
-            <Button onClick={() => { setPreviewUrl(null); void send(); }} disabled={disabled || sending || checking || !previewOk || !!sendBlock || !!refundBlock || (isAmendment && agreementNote.trim().length < 5)}>
+            <Button onClick={() => { setPreviewUrl(null); void send(); }} disabled={disabled || Object.keys(periodRecalculations).length > 0 || sending || checking || !previewOk || !!sendBlock || !!refundBlock || (isAmendment && agreementNote.trim().length < 5)}>
               <Send className="h-4 w-4 mr-2" />{isAmendment ? "Auftragsänderung speichern" : isInvoice ? "Rechnung final erstellen und senden" : "Angebot jetzt senden"}
             </Button>
           </div>

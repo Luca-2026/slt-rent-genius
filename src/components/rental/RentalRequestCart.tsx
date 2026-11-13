@@ -117,7 +117,7 @@ export function RentalRequestCart() {
   const tariffProduct = managed.find(p => p.slug === edit?.product_slug);
   const tariffs = tariffProduct ? resolveProductPrices({ ...tariffProduct, prices_same_all_locations: tariffRows.length === 0 }, edit?.location, tariffRows) : null;
   const isWeek = tariffProduct?.pricing_scheme === "woche";
-  const weekendNet = isWeek ? null : tariffs?.price_weekend_num ?? (edit ? weekendPrices.get(edit.product_slug) : null) ?? null;
+  const weekendNet = isWeek ? null : tariffs?.price_weekend_num ?? (tariffProduct?.pricingScheme === "event" ? tariffs?.price_base_1_3_cd : null) ?? (edit ? weekendPrices.get(edit.product_slug) : null) ?? null;
   const quoteKey = JSON.stringify(quoteItems);
   const coupon = usePublicCoupon(contact.couponCode, contact.email, items.map(item => item.product_slug), JSON.stringify(items));
   useEffect(() => {

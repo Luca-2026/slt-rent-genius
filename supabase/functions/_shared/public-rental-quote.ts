@@ -34,7 +34,7 @@ export async function publicRentalQuote(service: any, items: any[]) {
     const alternative = selected.find((o: any) => Number(o.surcharge_percent) > 0);
     const base = defaults[0];
     const insuranceDays = insuranceCalendarDays({ date: item.start_date }, { date: item.end_date });
-    const priceDays = product.pricing_scheme === "woche" ? insuranceDays : daysPerUnit(line.unit);
+    const priceDays = ["woche", "event"].includes(product.pricing_scheme) ? insuranceDays : daysPerUnit(line.unit);
     const calculate = (option: any) => {
       // Legacy reduction entries express a request, not a validated insurance tariff.
       if (String(option.key).startsWith("sb_reduktion") && !option.surcharge_percent) return null;
