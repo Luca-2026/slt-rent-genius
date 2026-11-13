@@ -104,6 +104,8 @@ export function ProductInstancesDialog({
           />
         ) : (
           <InstancesList
+            key={productId}
+            registerSave={registerSave}
             productId={productId}
             availableLocations={availableLocations}
             onSelect={setSelectedInstance}
@@ -118,13 +120,14 @@ export function ProductInstancesDialog({
 // Liste aller Einzelartikel
 // ============================================================
 function InstancesList({
-  productId, availableLocations, onSelect,
-}: { productId: string; availableLocations: string[]; onSelect: (i: ProductInstance) => void }) {
+  productId, availableLocations, onSelect, registerSave,
+}: { productId: string; availableLocations: string[]; onSelect: (i: ProductInstance) => void; registerSave: RegisterSave }) {
   const { canManageInventory } = useStaffAccess();
   const { data: instances = [], isLoading, refetch } = useProductInstances(productId);
   const invalidate = useInvalidateInstances();
   const [adding, setAdding] = useState(false);
-  const [form, setForm] = useState({
+  const identity = useRef(crypto.randomUUID());
+  const initialForm = {
     serial_number: "",
     internal_inventory_number: "",
     location: availableLocations[0] ?? "krefeld",
@@ -134,10 +137,13 @@ function InstancesList({
     supplier: "",
     current_operating_hours: "",
     notes: "",
-  });
+  };
+  const { form, setForm, flush, state } = usePersistentArticleForm(cmsDraftKey("instance-new", productId), initialForm, save, canManageInventory);
+  useEffect(() => registerSave(flush), [registerSave, flush]);
 
-  async function save() {
+  async function save(form: typeof initialForm) {
     const payload: Record<string, unknown> = {
+      id: identity.current,
       managed_product_id: productId,
       serial_number: form.serial_number.trim() || null,
       internal_inventory_number: form.internal_inventory_number.trim() || null,
@@ -149,13 +155,11 @@ function InstancesList({
       current_operating_hours: form.current_operating_hours ? Number(form.current_operating_hours) : 0,
       notes: form.notes.trim() || null,
     };
-    const { error } = await (supabase.from("b2b_product_instances" as never) as any).insert(payload);
-    if (error) return toast.error(error.message);
-    toast.success("Einzelartikel angelegt");
-    setAdding(false);
-    setForm({ ...form, serial_number: "", internal_inventory_number: "", purchase_date: "", purchase_price: "", supplier: "", current_operating_hours: "", notes: "" });
+    const { error } = await (supabase.from("b2b_product_instances" as never) as any).upsert(payload).select("id").single();
+    if (error) { toast.error(error.message); return false; }
     invalidate(productId);
     refetch();
+    return true;
   }
 
   async function del(id: string) {
@@ -174,7 +178,7 @@ function InstancesList({
           {instances.length} Einzelartikel {instances.length ? `(${instances.filter(i => i.status === "available").length} verfügbar)` : ""}
         </p>
         {canManageInventory && (
-          <Button size="sm" onClick={() => setAdding(!adding)}>
+          <Button size="sm" onClick={async () => { if (adding) { if (!await flush()) return; setAdding(false); } else { identity.current = crypto.randomUUID(); setForm(initialForm); setAdding(true); } }}>
             <Plus className="h-4 w-4 mr-1" /> {adding ? "Abbrechen" : "Neuer Einzelartikel"}
           </Button>
         )}
@@ -223,7 +227,8 @@ function InstancesList({
           <Field label="Notizen">
             <Textarea rows={2} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
           </Field>
-          {canManageInventory && <Button onClick={save}>Speichern</Button>}
+          <p role="status" className="text-xs text-muted-foreground">{state === "saved" ? "Gespeichert" : state === "error" ? "Speichern fehlgeschlagen · Eingaben gesichert" : "Wird gespeichert …"}</p>
+          {canManageInventory && <Button onClick={() => void flush()} disabled={state === "saving"}>Speichern</Button>}
         </div>
       )}
 
@@ -305,10 +310,10 @@ function InstanceDetail({
           <StammdatenTab registerSave={registerSave} instance={instance} onSaved={() => invalidate(instance.managed_product_id, instance.id)} />
         </TabsContent>
         <TabsContent value="hours" forceMount className="data-[state=inactive]:hidden">
-          <HoursTab instance={instance} onSaved={() => invalidate(instance.managed_product_id, instance.id)} />
+          <HoursTab registerSave={registerSave} instance={instance} onSaved={() => invalidate(instance.managed_product_id, instance.id)} />
         </TabsContent>
         <TabsContent value="intervals" forceMount className="data-[state=inactive]:hidden">
-          <IntervalsTab instance={instance} productCategory={productCategory} onChanged={() => invalidate(instance.managed_product_id, instance.id)} />
+          <IntervalsTab registerSave={registerSave} instance={instance} productCategory={productCategory} onChanged={() => invalidate(instance.managed_product_id, instance.id)} />
         </TabsContent>
         <TabsContent value="history">
           <HistoryTab instanceId={instance.id} />
@@ -373,27 +378,30 @@ function StammdatenTab({ instance, onSaved, registerSave }: { instance: ProductI
   );
 }
 
-function HoursTab({ instance, onSaved }: { instance: ProductInstance; onSaved: () => void }) {
+function HoursTab({ instance, onSaved, registerSave }: { instance: ProductInstance; onSaved: () => void; registerSave: RegisterSave }) {
   const { canManageInventory } = useStaffAccess();
   const draftKey = cmsDraftKey("instance-hours", instance.id);
-  const [draft, setDraft] = useState(() => readCmsDraft<{ hours: string; note: string }>(draftKey)?.form ?? { hours: "", note: "" });
-  const { hours, note } = draft;
-  const setHours = (hours: string) => setDraft(prev => ({ ...prev, hours }));
-  const setNote = (note: string) => setDraft(prev => ({ ...prev, note }));
-  useEffect(() => { if (hours || note) writeCmsDraft(draftKey, draft); else clearCmsDraft(draftKey); }, [draft, draftKey, hours, note]);
+  const readingId = useRef(crypto.randomUUID());
+  const { form, setForm, flush, state } = usePersistentArticleForm(draftKey, { hours: "", note: "" }, add, canManageInventory);
+  const { hours, note } = form;
+  const setHours = (hours: string) => setForm(prev => ({ ...prev, hours }));
+  const setNote = (note: string) => setForm(prev => ({ ...prev, note }));
+  useEffect(() => registerSave(flush), [registerSave, flush]);
 
-  async function add() {
+  async function add({ hours, note }: { hours: string; note: string }) {
+    if (!hours.trim()) return false;
     const h = Number(hours);
-    if (!Number.isFinite(h) || h < 0) return toast.error("Ungültige Stundenangabe");
+    if (!Number.isFinite(h) || h < 0) { toast.error("Ungültige Stundenangabe"); return false; }
     const { error: e1 } = await (supabase.from("b2b_instance_hours_log" as never) as any)
-      .insert({ instance_id: instance.id, hours: h, note: note.trim() || null });
-    if (e1) return toast.error(e1.message);
+      .upsert({ id: readingId.current, instance_id: instance.id, hours: h, note: note.trim() || null });
+    if (e1) { toast.error(e1.message); return false; }
     if (h > (instance.current_operating_hours ?? 0)) {
-      await (supabase.from("b2b_product_instances" as never) as any)
-        .update({ current_operating_hours: h }).eq("id", instance.id);
+      const { error } = await (supabase.from("b2b_product_instances" as never) as any)
+        .update({ current_operating_hours: h }).eq("id", instance.id).select("id").single();
+      if (error) { toast.error(error.message); return false; }
     }
-    toast.success("Betriebsstunden eingetragen");
-    setHours(""); setNote(""); onSaved();
+    onSaved();
+    return true;
   }
 
   return (
@@ -405,8 +413,9 @@ function HoursTab({ instance, onSaved }: { instance: ProductInstance; onSaved: (
         <Field label="Notiz (optional)">
           <Input value={note} onChange={(e) => setNote(e.target.value)} placeholder="z.B. abgelesen bei Rückgabe" />
         </Field>
-        <Button onClick={add} disabled={!canManageInventory}>Eintragen</Button>
+        <Button onClick={() => void flush()} disabled={!canManageInventory || state === "saving"}>Eintragen</Button>
       </div>
+      <p role="status" className="text-xs text-muted-foreground">{state === "saved" ? "Gespeichert" : state === "error" ? "Speicherung ausstehend · Eingaben gesichert" : "Wird gespeichert …"}</p>
       <p className="text-xs text-muted-foreground">
         Aktueller Stand: <b>{instance.current_operating_hours ?? 0} h</b>.
         Der Zählerstand wird nur erhöht, wenn der neue Wert größer ist.
@@ -415,16 +424,15 @@ function HoursTab({ instance, onSaved }: { instance: ProductInstance; onSaved: (
   );
 }
 
-function IntervalsTab({ instance, productCategory, onChanged }: { instance: ProductInstance; productCategory: string; onChanged: () => void }) {
+function IntervalsTab({ instance, productCategory, onChanged, registerSave }: { instance: ProductInstance; productCategory: string; onChanged: () => void; registerSave: RegisterSave }) {
   const { canManageInventory } = useStaffAccess();
   const { data: intervals = [], refetch } = useMaintenanceIntervals(instance.id);
   const suggestions = useMemo(() => getMaintenanceSuggestions(productCategory), [productCategory]);
   const complete = useCompleteMaintenance();
   const [adding, setAdding] = useState(false);
   const draftKey = cmsDraftKey("instance-interval", instance.id);
-  const [form, setForm] = useState(() => readCmsDraft<{
-    title: string; interval_type: IntervalType; interval_value: string; next_due_at: string; next_due_hours: string; warn_days_before: string; notes: string;
-  }>(draftKey)?.form ?? ({
+  const identity = useRef(crypto.randomUUID());
+  const initialForm = {
     title: "",
     interval_type: "years" as IntervalType,
     interval_value: "1",
@@ -432,8 +440,9 @@ function IntervalsTab({ instance, productCategory, onChanged }: { instance: Prod
     next_due_hours: "",
     warn_days_before: "14",
     notes: "",
-  }));
-  useEffect(() => { if (form.title || form.notes || form.next_due_at || form.next_due_hours) writeCmsDraft(draftKey, form); }, [form, draftKey]);
+  };
+  const { form, setForm, flush, state } = usePersistentArticleForm(draftKey, initialForm, addCustom, canManageInventory);
+  useEffect(() => registerSave(flush), [registerSave, flush]);
 
   async function addSuggestion(s: { title: string; type: IntervalType; value: number | null }) {
     const nextDue = s.type === "hours"
@@ -452,9 +461,10 @@ function IntervalsTab({ instance, productCategory, onChanged }: { instance: Prod
     refetch();
   }
 
-  async function addCustom() {
-    if (!form.title.trim()) return toast.error("Titel fehlt");
-    const { error } = await (supabase.from("b2b_maintenance_intervals" as never) as any).insert({
+  async function addCustom(form: typeof initialForm) {
+    if (!form.title.trim()) return false;
+    const { error } = await (supabase.from("b2b_maintenance_intervals" as never) as any).upsert({
+      id: identity.current,
       instance_id: instance.id,
       title: form.title.trim(),
       interval_type: form.interval_type,
@@ -464,12 +474,9 @@ function IntervalsTab({ instance, productCategory, onChanged }: { instance: Prod
       warn_days_before: form.warn_days_before ? Number(form.warn_days_before) : 14,
       notes: form.notes.trim() || null,
     });
-    if (error) return toast.error(error.message);
-    toast.success("Intervall angelegt");
-    setAdding(false);
-    clearCmsDraft(draftKey);
-    setForm({ title: "", interval_type: "years", interval_value: "1", next_due_at: "", next_due_hours: "", warn_days_before: "14", notes: "" });
+    if (error) { toast.error(error.message); return false; }
     refetch();
+    return true;
   }
 
   async function del(id: string) {
@@ -517,7 +524,7 @@ function IntervalsTab({ instance, productCategory, onChanged }: { instance: Prod
 
       <div className="flex justify-end">
         {canManageInventory && (
-          <Button size="sm" variant="outline" onClick={() => setAdding(!adding)}>
+          <Button size="sm" variant="outline" onClick={async () => { if (adding) { if (!await flush()) return; setAdding(false); } else { identity.current = crypto.randomUUID(); setForm(initialForm); setAdding(true); } }}>
             <Plus className="h-4 w-4 mr-1" /> {adding ? "Abbrechen" : "Individuelles Intervall"}
           </Button>
         )}
@@ -551,7 +558,8 @@ function IntervalsTab({ instance, productCategory, onChanged }: { instance: Prod
             <Field label="Warnung X Tage vorher"><Input type="number" value={form.warn_days_before} onChange={(e) => setForm({ ...form, warn_days_before: e.target.value })} /></Field>
           </div>
           <Field label="Notiz"><Textarea rows={2} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} /></Field>
-          <Button onClick={addCustom}>Anlegen</Button>
+          <p role="status" className="text-xs text-muted-foreground">{state === "saved" ? "Gespeichert" : state === "error" ? "Speicherung ausstehend · Eingaben gesichert" : "Wird gespeichert …"}</p>
+          <Button onClick={() => void flush()} disabled={state === "saving"}>Speichern</Button>
         </div>
       )}
 
