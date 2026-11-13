@@ -1734,6 +1734,7 @@ export function InquiryOfferForm({
               Position hierher ziehen oder an der Position die Gruppe wählen.
             </p>
           )}
+        {Object.keys(periodRecalculations).length > 1 && <div className="flex gap-2"><Button type="button" variant="outline" onClick={() => decideAllPeriods(true)}>Alle übernehmen</Button><Button type="button" variant="outline" onClick={() => decideAllPeriods(false)}>Alle ablehnen</Button></div>}
         {indices.map((index) => {
           const item = items[index];
           if (isLogisticsService(item)) return null;

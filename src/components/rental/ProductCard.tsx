@@ -40,11 +40,12 @@ export function ProductCard({ product: rawProduct, onClick, linkTo }: ProductCar
     ? (product.pricePerMonth ? { value: formatPriceValue(product.pricePerMonth), unit: "/Monat" } :
        product.priceWeekend ? { value: formatPriceValue(product.priceWeekend), unit: "/Wochenende" } : undefined)
     : undefined;
+  const isEvent = product.pricingScheme === "event";
   const isWeek = product.pricingScheme === "woche";
-  const displayPrice = isWeek ? (product.priceFrom1Week != null ? formatNetPrice(product.priceFrom1Week, type) : undefined) : isSign ? (signConfig?.standardGrossCents ? formatNetPrice(signConfig.standardGrossCents / 119, type) : undefined) : (product.pricePerDay ? formatPriceValue(product.pricePerDay) : undefined) || seoPriceFrom || fallbackMain?.value;
-  const displayUnit = isWeek ? "/Woche" : isSign ? " für 1–10 Tage" : fallbackMain ? fallbackMain.unit : (product.priceUnitLabel ?? "/Tag");
+  const displayPrice = isEvent ? (product.priceBase13Cd != null ? formatNetPrice(product.priceBase13Cd, type) : undefined) : isWeek ? (product.priceFrom1Week != null ? formatNetPrice(product.priceFrom1Week, type) : undefined) : isSign ? (signConfig?.standardGrossCents ? formatNetPrice(signConfig.standardGrossCents / 119, type) : undefined) : (product.pricePerDay ? formatPriceValue(product.pricePerDay) : undefined) || seoPriceFrom || fallbackMain?.value;
+  const displayUnit = isEvent ? "für 1 bis 3 Kalendertage" : isWeek ? "/Woche" : isSign ? " für 1–10 Tage" : fallbackMain ? fallbackMain.unit : (product.priceUnitLabel ?? "/Tag");
   const showWeekendRow = !isSign && !isWeek && Boolean(product.priceWeekend) && formatPriceValue(product.priceWeekend ?? "") !== displayPrice;
-  const showMonthRow = !isSign && !isWeek && Boolean(product.pricePerMonth) && formatPriceValue(product.pricePerMonth ?? "") !== displayPrice;
+  const showMonthRow = !isSign && !isWeek && !isEvent && Boolean(product.pricePerMonth) && formatPriceValue(product.pricePerMonth ?? "") !== displayPrice;
 
   const handlePrev = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
