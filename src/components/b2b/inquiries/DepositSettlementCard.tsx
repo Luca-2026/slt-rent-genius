@@ -307,7 +307,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
             <SelectContent>
               <SelectItem value="cash">Bar (heute ausgezahlt)</SelectItem>
               <SelectItem value="transfer">Überweisung (heute veranlasst)</SelectItem>
-              {hasStripePayment && <SelectItem value="stripe">Stripe – Freigabe durch Admin/Niederlassungsleitung</SelectItem>}
+              {hasStripePayment && <SelectItem value="stripe">Stripe – ursprüngliches Zahlungsmittel</SelectItem>}
             </SelectContent>
           </Select>
         </div>
