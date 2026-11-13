@@ -5,9 +5,15 @@ import { emptyPriceSet, schemeFields, applyBauTierAutofill } from "@/components/
 import { calendarDescription } from "@/components/b2b/inquiries/offerCalendarPeriod";
 import { lineTotal } from "@/components/b2b/inquiries/offerMath";
 import { displayPrice } from "@/lib/priceDisplay";
+import { installmentPeriod, nextInstallmentDate } from "@/lib/installments";
 
 const prices = { price_short_1_3_rd: 60, price_from_1_week: 100, price_from_2_weeks: 90, price_from_3_weeks: 80, price_from_4_weeks: 70, price_weekend_num: 1 };
 describe("Preis-Woche: supplied tariff examples", () => {
+  it("follow-up invoices recur after exactly four weeks, not one calendar month", () => {
+    expect(installmentPeriod("2026-11-16", 1, 28)).toEqual({ start: "2026-11-16", end: "2026-12-13" });
+    expect(nextInstallmentDate("2026-11-16", 1, 28)).toBe("2026-12-14");
+    expect(nextInstallmentDate("2026-11-16", 1)).toBe("2026-12-16");
+  });
   it.each([[2, 60], [4, 100], [7, 100], [8, 180], [15, 240], [22, 280], [42, 420]])("%i rental days cost %i net", (days, total) => {
     expect(tierPriceWeek(prices, days)?.total).toBe(total);
     expect(server.tierPriceWeek(prices, days)?.total).toBe(total);

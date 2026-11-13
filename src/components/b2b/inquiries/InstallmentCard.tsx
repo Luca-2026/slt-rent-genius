@@ -58,7 +58,7 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
   // Plan
   const [enabled, setEnabled] = useState<boolean>(!!inquiry.installment_enabled);
   const [amount, setAmount] = useState<string>(suggestion ? String(suggestion) : "");
-  const [interval, setInterval] = useState<string>(String(inquiry.installment_interval_months ?? 1));
+  const [interval, setInterval] = useState<string>(inquiry.installment_interval_days === 28 || (!inquiry.installment_enabled && offerPayload?.items?.some(item => item.price_basis === "week")) ? "28d" : String(inquiry.installment_interval_months ?? 1));
   const [nextDue, setNextDue] = useState<string>(inquiry.installment_next_due ?? today);
   const [savingPlan, setSavingPlan] = useState(false);
 
@@ -95,6 +95,7 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
       installment_enabled: enabled,
       installment_amount_net: net > 0 ? r2(net) : null,
       installment_interval_months: Number(interval) || 1,
+      ...(inquiryType === "rental" ? { installment_interval_days: interval === "28d" ? 28 : null } : {}),
       installment_next_due: enabled ? nextDue : null,
       installment_reminded_on: null,
     } as never).eq("id", inquiry.id);
@@ -109,7 +110,7 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
 
   const openDialog = () => {
     const start = inquiry.installment_next_due && inquiry.installment_enabled ? inquiry.installment_next_due : today;
-    const p = installmentPeriod(start, Number(inquiry.installment_interval_months) || 1);
+    const p = installmentPeriod(start, Number(inquiry.installment_interval_months) || 1, inquiry.installment_interval_days === 28 ? 28 : interval === "28d" ? 28 : null);
     setPeriodStart(p.start);
     setPeriodEnd(p.end);
     setMode("amount");
@@ -203,6 +204,7 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
                   <Select value={interval} onValueChange={setInterval}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
+                      {inquiryType === "rental" && <SelectItem value="28d">Alle 4 Wochen</SelectItem>}
                       <SelectItem value="1">Monatlich</SelectItem>
                       <SelectItem value="2">Alle 2 Monate</SelectItem>
                       <SelectItem value="3">Vierteljährlich</SelectItem>
