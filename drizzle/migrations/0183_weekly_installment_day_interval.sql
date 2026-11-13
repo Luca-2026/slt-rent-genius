@@ -1,0 +1,3 @@
+ALTER TABLE public.rental_inquiries ADD COLUMN installment_interval_days integer;
+ALTER TABLE public.rental_inquiries ADD CONSTRAINT rental_installment_interval_days_check CHECK (installment_interval_days IS NULL OR installment_interval_days = 28);
+COMMENT ON COLUMN public.rental_inquiries.installment_interval_days IS 'Explicit 28-day / four-week installment schedule; null preserves the existing monthly schedule.';

@@ -4706,6 +4706,7 @@ export type Database = {
           id: string
           installment_amount_net: number | null
           installment_enabled: boolean
+          installment_interval_days: number | null
           installment_interval_months: number
           installment_next_due: string | null
           installment_open_ended: boolean
@@ -4785,6 +4786,7 @@ export type Database = {
           id?: string
           installment_amount_net?: number | null
           installment_enabled?: boolean
+          installment_interval_days?: number | null
           installment_interval_months?: number
           installment_next_due?: string | null
           installment_open_ended?: boolean
@@ -4864,6 +4866,7 @@ export type Database = {
           id?: string
           installment_amount_net?: number | null
           installment_enabled?: boolean
+          installment_interval_days?: number | null
           installment_interval_months?: number
           installment_next_due?: string | null
           installment_open_ended?: boolean

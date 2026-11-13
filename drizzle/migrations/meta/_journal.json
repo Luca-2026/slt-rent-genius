@@ -1282,6 +1282,13 @@
       "when": 1794569516903,
       "tag": "0182_weekly_rental_price_scheme",
       "breakpoints": true
+    },
+    {
+      "idx": 183,
+      "version": "7",
+      "when": 1794569698355,
+      "tag": "0183_weekly_installment_day_interval",
+      "breakpoints": true
     }
   ]
 }
