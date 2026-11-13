@@ -288,6 +288,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   const loadedIdRef = useRef<string | null>(null);
   const pendingFormRef = useRef<FormState | null>(null);
   const [restoredAt, setRestoredAt] = useState<number | null>(null);
+  const [locationPricesLoaded, setLocationPricesLoaded] = useState(false);
   // Einzelgeräte je Bestandsstandort (Mülheim an der Ruhr zählt zu Krefeld).
   const [instanceCounts, setInstanceCounts] = useState<Record<string, number> | null>(null);
   useEffect(() => {
@@ -340,13 +341,17 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
 
   // Standortpreise nachladen (eigene Tabelle) und in Formular + Baseline übernehmen
   useEffect(() => {
-    if (!open || !initial?.id) return;
+    setLocationPricesLoaded(false);
+    if (!open) return;
+    if (!initial?.id) { setLocationPricesLoaded(true); return; }
     let cancelled = false;
     (async () => {
       const { data, error } = await (supabase.from("b2b_managed_product_location_prices" as never) as any)
         .select("*")
         .eq("managed_product_id", initial.id);
-      if (cancelled || error || !data?.length) return;
+      if (cancelled) return;
+      if (error) { toast.error("Standortpreise konnten nicht geladen werden. Eingaben bleiben gesichert; bitte erneut öffnen."); return; }
+      if (!data?.length) { setLocationPricesLoaded(true); return; }
       const patch = { krefeld: emptyPriceSet(), bonn: emptyPriceSet(), muelheim: emptyPriceSet() } as Record<LocId, PriceSet>;
       const manualPatch = { krefeld: [], bonn: [], muelheim: [] } as Record<LocId, string[]>;
       for (const r of data as Array<{ location: LocId; tier_prices_manual?: string[] }>) {
@@ -363,6 +368,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
           dirtyBaselineRef.current = JSON.stringify({ ...base, location_prices: patch, location_tiers_manual: manualPatch });
         } catch { /* ignore */ }
       }
+      setLocationPricesLoaded(true);
     })();
     return () => { cancelled = true; };
   }, [open, initial?.id]);
@@ -674,7 +680,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   }
 
   const autosave = useArticleAutosave({ value: form, baseline: dirtyBaselineRef.current,
-    enabled: open && !!loadedIdRef.current && !pendingFormRef.current && !uploading && !aiLoading,
+    enabled: open && locationPricesLoaded && !!loadedIdRef.current && !pendingFormRef.current && !uploading && !aiLoading,
     save: (snapshot) => handleSave(snapshot, true) });
 
   return (

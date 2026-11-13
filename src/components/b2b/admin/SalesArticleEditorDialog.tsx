@@ -289,8 +289,9 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
       .eq("article_kind", kind)
       .eq("article_id", row.id)
       .maybeSingle()
-      .then(({ data }) => {
+      .then(({ data, error }) => {
         if (cancelled) return;
+        if (error && canEditCosts) { toast.error("Einkaufsdaten konnten nicht geladen werden. Bitte erneut öffnen; Eingaben bleiben gesichert."); return; }
         const purchase = data?.purchase_price_net != null ? String(data.purchase_price_net) : "";
         const overhead = String(data?.overhead_percent ?? DEFAULT_OVERHEAD_PERCENT);
         setPurchase(purchase);
@@ -491,7 +492,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
       if (JSON.stringify(formRef.current) === baselineRef.current) clearCmsDraft(draftKey);
       setDirty(JSON.stringify(formRef.current) !== baselineRef.current);
       if (!automatic) { toast.success(row ? "Artikel gespeichert" : "Artikel angelegt"); onOpenChange(false); }
-      onSaved();
+      await onSaved();
       return true;
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Speichern fehlgeschlagen.");
