@@ -1254,6 +1254,13 @@
       "when": 1794505514528,
       "tag": "0178_rental_receipt_refund_basis_lookup",
       "breakpoints": true
+    },
+    {
+      "idx": 179,
+      "version": "7",
+      "when": 1794562808106,
+      "tag": "0179_sign_booking_non_retryable_capacity_rejections",
+      "breakpoints": true
     }
   ]
 }

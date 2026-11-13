@@ -36,9 +36,9 @@ export default function ZahlungOnline() {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const { data, error: err } = await supabase.functions.invoke("offer-pay", { body: { token, action: "info" } });
+    const { data, error: err } = await supabase.functions.invoke("offer-pay", { timeout: 15000, body: { token, action: "info" } });
     if (err || !data || (data as { error?: string }).error) {
-      setError("Dieser Zahlungslink ist nicht gültig. Bitte wende dich an dein SLT-Rental-Team.");
+      setError("Die Zahlungsdaten konnten nicht geladen werden. Bitte erneut versuchen oder dein SLT-Rental-Team kontaktieren.");
       setInfo(null);
     } else {
       const d = data as PayInfo;
@@ -58,13 +58,15 @@ export default function ZahlungOnline() {
     setStarting(true);
     setError(null);
     const { data, error: err } = await supabase.functions.invoke("offer-pay", {
+      timeout: 30000,
       body: { token, action: "checkout", choice, origin: window.location.origin },
     });
     const url = (data as { url?: string } | null)?.url;
     if (err || !url) {
-      setError((data as { error?: string } | null)?.error ?? "Die Zahlung konnte nicht gestartet werden. Bitte versuche es erneut.");
+      let message = (data as { error?: string } | null)?.error;
+      try { message ??= (await err?.context?.json())?.error; } catch { /* keep retryable fallback */ }
+      setError(message ?? "Die Zahlung konnte nicht gestartet werden. Bitte versuche es mit diesem Zahlungslink erneut.");
       setStarting(false);
-      load();
       return;
     }
     window.location.href = url;
@@ -72,7 +74,7 @@ export default function ZahlungOnline() {
   const selectMethod = async (next: "online" | "bank") => {
     if (!info?.bank_discount) { setMethod(next); return; }
     setStarting(true); setError(null);
-    const { data, error: err } = await supabase.functions.invoke("offer-pay", { body: { token, action: "select_method", method: next === "bank" ? "bank" : "regular" } });
+    const { data, error: err } = await supabase.functions.invoke("offer-pay", { timeout: 15000, body: { token, action: "select_method", method: next === "bank" ? "bank" : "regular" } });
     if (err || data?.error) {
       let message = data?.error;
       try { message ??= (await err?.context?.json())?.error; } catch { /* controlled fallback */ }
@@ -94,9 +96,10 @@ export default function ZahlungOnline() {
             {loading ? (
               <div className="flex justify-center py-10"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>
             ) : !info ? (
-              <div className="flex gap-3 text-foreground">
+              <div className="space-y-3 text-foreground">
                 <AlertTriangle className="h-6 w-6 shrink-0 text-destructive" />
                 <p>{error}</p>
+                <Button variant="outline" onClick={() => void load()}>Erneut versuchen</Button>
               </div>
             ) : info.status === "paid" || justPaid ? (
               <div className="text-center space-y-3">

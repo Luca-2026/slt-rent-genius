@@ -48,13 +48,20 @@ export function SignBookingCheckout({ items, requestId, expiresAt, customerKind,
   const [receipt, setReceipt] = useState<Receipt | null>(null);
   const first = items[0], quantity = items.reduce((sum, item) => sum + item.quantity, 0);
   const identical = !!first && items.every(item => item.location === first.location && item.start_date === first.start_date && item.end_date === first.end_date && item.start_time === first.start_time && item.end_time === first.end_time && item.selected_addons.length === 0);
-  useEffect(() => { let active = true; supabase.functions.invoke("sign-booking", { body: { action: "config" } }).then(({ data, error }) => { if (active) { setConfig(data?.config ?? null); setAdditionalSigns(data?.additionalSigns ?? []); if (error) setError("Buchungspreise derzeit nicht verfügbar."); } }); return () => { active = false; }; }, []);
+  useEffect(() => { let active = true; supabase.functions.invoke("sign-booking", { body: { action: "config" }, timeout: 15000 }).then(({ data, error }) => { if (active) { setConfig(data?.config ?? null); setAdditionalSigns(data?.additionalSigns ?? []); if (error) setError("Buchungspreise derzeit nicht verfügbar."); } }); return () => { active = false; }; }, []);
   useEffect(() => {
     if (!receiptToken) return;
     let active = true;
-    const read = async () => { const { data, error } = await supabase.functions.invoke("sign-booking", { body: { action: "info", token: receiptToken } }); if (active && !error && !data?.error) setReceipt(data); };
-    void read(); const timer = window.setInterval(read, 5000);
-    return () => { active = false; clearInterval(timer); };
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const read = async () => {
+      const { data, error } = await supabase.functions.invoke("sign-booking", { body: { action: "info", token: receiptToken }, timeout: 15000 });
+      if (!active) return;
+      if (!error && !data?.error) { setReceipt(data); setError(""); }
+      else setError("Buchungsstand konnte nicht geladen werden. Bitte erneut versuchen; keine neue Buchung anlegen.");
+      timer = setTimeout(read, 5000);
+    };
+    void read();
+    return () => { active = false; clearTimeout(timer); };
   }, [receiptToken]);
   const upload = async (file: File | undefined) => {
     if (!file) return; setPermit(null); setBusy(true); setError("");
@@ -71,7 +78,7 @@ export function SignBookingCheckout({ items, requestId, expiresAt, customerKind,
   };
   const submit = async (event: React.FormEvent) => {
     event.preventDefault(); setAttempted(true); if (contactInvalid) { setError("Bitte Kontaktdaten und Adresse vollständig angeben."); document.getElementById(`sign-${Object.keys(contactErrors)[0]}`)?.focus(); return; } if (pkg === "standard" && permitPeriodError) { setError(permitPeriodError); document.getElementById("sign-permit-from")?.focus(); return; } if (!first || busy || !pkg || !terms || leadError || (pkg === "sorglos" && permitMode === "existing" && !permit)) return; setBusy(true); setError("");
-    const { data, error } = await supabase.functions.invoke("sign-booking", { body: { action: "reserve", requestId, cartExpiresAt: expiresAt, location: first.location, package: pkg, quantity, start_date: first.start_date, end_date: first.end_date, start_time: first.start_time, end_time: first.end_time, ...fields, customerKind, termsAccepted: terms, bankDiscountShown: config?.bank_discount_enabled === true, termsVersion: SIGN_TERMS_VERSION, permitMode: pkg === "sorglos" ? permitMode : undefined, pickupConfirmed: pickup, municipalFeesAccepted: fees, additionalSigns: Object.entries(selectedSigns).filter(([, quantity]) => quantity > 0).map(([slug, quantity]) => ({ slug, quantity })), permitToken: uploadAllowed ? permit?.token ?? null : null, ...(pkg === "standard" ? permitPeriod : {}) } });
+    const { data, error } = await supabase.functions.invoke("sign-booking", { timeout: 30000, body: { action: "reserve", requestId, cartExpiresAt: expiresAt, location: first.location, package: pkg, quantity, start_date: first.start_date, end_date: first.end_date, start_time: first.start_time, end_time: first.end_time, ...fields, customerKind, termsAccepted: terms, bankDiscountShown: config?.bank_discount_enabled === true, termsVersion: SIGN_TERMS_VERSION, permitMode: pkg === "sorglos" ? permitMode : undefined, pickupConfirmed: pickup, municipalFeesAccepted: fees, additionalSigns: Object.entries(selectedSigns).filter(([, quantity]) => quantity > 0).map(([slug, quantity]) => ({ slug, quantity })), permitToken: uploadAllowed ? permit?.token ?? null : null, ...(pkg === "standard" ? permitPeriod : {}) } });
     setBusy(false);
     if (error || data?.error || !data?.token) { let message = data?.error; try { message ??= (await error?.context?.json())?.error; } catch { /* fallback */ } setError(message ?? "Buchung nicht abgeschlossen. Bitte erneut versuchen."); return; }
     setReceiptToken(data.token); try { localStorage.setItem(storageKey, data.token); } catch { /* local state remains */ } onReserved();
