@@ -23,6 +23,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { NewMachineRow, SalesArticleKind, UsedMachineRow } from "@/hooks/useSalesCatalog";
 import { grossToNet, invalidateSalesCatalog } from "@/hooks/useSalesCatalog";
 import { DEFAULT_OVERHEAD_PERCENT, minimumPrice } from "@/lib/salesPricing";
+import { useArticleAutosave } from "@/hooks/useArticleAutosave";
 
 interface Props {
   open: boolean;
@@ -231,8 +232,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
       clearCmsDraft(draftKey);
       return;
     }
-    const t = setTimeout(() => writeCmsDraft(draftKey, form), 400);
-    return () => clearTimeout(t);
+    writeCmsDraft(draftKey, form);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, open]);
 
@@ -263,23 +263,25 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
     setRestoredAt(null);
   };
 
-  const requestClose = () => {
-    if (dirty && !readOnly) {
-      const ok = window.confirm("Es gibt ungespeicherte Änderungen. Wirklich schließen und Änderungen verwerfen?");
-      if (!ok) return;
-      clearCmsDraft(draftKey);
-    }
+  const requestClose = async () => {
+    if (!readOnly && !await autosave.flush()) return;
     onOpenChange(false);
   };
 
   // Interne Kalkulation (Einkaufspreis, Gemeinkosten) – separat und nicht öffentlich gespeichert.
   const [purchase, setPurchase] = useState("");
   const [overhead, setOverhead] = useState(String(DEFAULT_OVERHEAD_PERCENT));
+  const costsBaseline = useRef("");
+  const articleIdentity = useRef<string | null>(null);
+  const [costsLoaded, setCostsLoaded] = useState(false);
   useEffect(() => {
     if (!open) return;
+    articleIdentity.current = row?.id ?? null;
+    setCostsLoaded(false);
+    costsBaseline.current = "";
     setPurchase("");
     setOverhead(String(DEFAULT_OVERHEAD_PERCENT));
-    if (!row) return;
+    if (!row) { costsBaseline.current = JSON.stringify({ purchase: "", overhead: String(DEFAULT_OVERHEAD_PERCENT) }); setCostsLoaded(true); return; }
     let cancelled = false;
     supabase
       .from("sales_article_costs")
@@ -288,14 +290,18 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
       .eq("article_id", row.id)
       .maybeSingle()
       .then(({ data }) => {
-        if (cancelled || !data) return;
-        setPurchase(data.purchase_price_net != null ? String(data.purchase_price_net) : "");
-        setOverhead(String(data.overhead_percent ?? DEFAULT_OVERHEAD_PERCENT));
+        if (cancelled) return;
+        const purchase = data?.purchase_price_net != null ? String(data.purchase_price_net) : "";
+        const overhead = String(data?.overhead_percent ?? DEFAULT_OVERHEAD_PERCENT);
+        setPurchase(purchase);
+        setOverhead(overhead);
+        costsBaseline.current = JSON.stringify({ purchase, overhead });
+        setCostsLoaded(true);
       });
     return () => {
       cancelled = true;
     };
-  }, [open, row, kind]);
+  }, [open, row?.id, kind]);
 
   const targetNet = form.price && !form.price_on_request
     ? (isNew ? grossToNet(Number(form.price), Number(form.vat_rate) || 19) : Number(form.price))
@@ -380,14 +386,15 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
     }
   }
 
-  const save = async () => {
+  const save = async (snapshot: { form: FormState; purchase: string; overhead: string }, automatic = false): Promise<boolean> => {
+    const { form, purchase, overhead } = snapshot;
     if (!form.brand.trim() || !form.model.trim()) {
-      toast.error("Hersteller und Modell sind Pflichtfelder.");
-      return;
+      if (!automatic) toast.error("Hersteller und Modell sind Pflichtfelder.");
+      return false;
     }
     if (!form.category.trim()) {
-      toast.error("Bitte eine Kategorie angeben.");
-      return;
+      if (!automatic) toast.error("Bitte eine Kategorie angeben.");
+      return false;
     }
     const slug = form.slug.trim() || slugify(displayName);
     const images = form.images.map((i) => i.trim()).filter(Boolean);
@@ -426,9 +433,11 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
           content,
         };
         const q = supabase.from("new_machines");
-        const { data: saved, error } = row
-          ? await (q.update(payload as never).eq("id", row.id).select("id").single())
-          : await (q.insert(payload as never).select("id").single());
+        const id = articleIdentity.current ?? crypto.randomUUID();
+        const { data: saved, error } = articleIdentity.current
+          ? await (q.update(payload as never).eq("id", id).select("id").single())
+          : await (q.upsert({ ...payload, id } as never).select("id").single());
+        articleIdentity.current = id;
         if (error) throw error;
         savedId = (saved as { id: string } | null)?.id ?? row?.id ?? null;
       } else {
@@ -452,13 +461,15 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
           content,
         };
         const q = supabase.from("used_machines");
-        const { data: saved, error } = row
-          ? await (q.update(payload as never).eq("id", row.id).select("id").single())
-          : await (q.insert(payload as never).select("id").single());
+        const id = articleIdentity.current ?? crypto.randomUUID();
+        const { data: saved, error } = articleIdentity.current
+          ? await (q.update(payload as never).eq("id", id).select("id").single())
+          : await (q.upsert({ ...payload, id } as never).select("id").single());
+        articleIdentity.current = id;
         if (error) throw error;
         savedId = (saved as { id: string } | null)?.id ?? row?.id ?? null;
       }
-      if (savedId && canEditCosts) {
+      if (savedId && canEditCosts && JSON.stringify({ purchase, overhead }) !== costsBaseline.current) {
         const { error: costError } = await supabase.from("sales_article_costs").upsert(
           {
             article_kind: kind,
@@ -471,17 +482,25 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         if (costError) throw costError;
       }
       invalidateSalesCatalog();
-      toast.success(row ? "Artikel gespeichert" : "Artikel angelegt");
-      clearCmsDraft(draftKey);
-      setDirty(false);
-      onOpenChange(false);
+      baselineRef.current = JSON.stringify(form);
+      costsBaseline.current = JSON.stringify({ purchase, overhead });
+      if (JSON.stringify(formRef.current) === baselineRef.current) clearCmsDraft(draftKey);
+      setDirty(JSON.stringify(formRef.current) !== baselineRef.current);
+      if (!automatic) { toast.success(row ? "Artikel gespeichert" : "Artikel angelegt"); onOpenChange(false); }
       onSaved();
+      return true;
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Speichern fehlgeschlagen.");
+      return false;
     } finally {
       setSaving(false);
     }
   };
+
+  const autosave = useArticleAutosave({ value: { form, purchase, overhead },
+    baseline: baselineRef.current && costsBaseline.current ? JSON.stringify({ form: JSON.parse(baselineRef.current), ...JSON.parse(costsBaseline.current) }) : "",
+    enabled: open && !readOnly && costsLoaded && !pendingFormRef.current && !uploading && !aiField,
+    save: (snapshot) => save(snapshot, true) });
 
   const AiButton = ({ field }: { field: Parameters<typeof generate>[0] }) => (
     <Button type="button" variant="outline" size="sm" disabled={readOnly || aiField !== null} onClick={() => generate(field)}>
@@ -493,6 +512,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) requestClose(); else onOpenChange(true); }}>
       <DialogContent
+        data-article-autosave
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => { if (dirty) e.preventDefault(); }}
@@ -872,11 +892,12 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         </div>
 
         <DialogFooter className="shrink-0 gap-3 border-t bg-background px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:gap-2 sm:px-6">
+          <span role="status" className="text-xs text-muted-foreground self-center">{autosave.state === "saved" ? "Gespeichert" : autosave.state === "error" ? "Speicherung ausstehend" : "Wird gespeichert …"}</span>
           <Button variant="outline" className="w-full sm:w-auto" onClick={requestClose} disabled={saving}>
-            {readOnly ? "Schließen" : "Abbrechen"}
+            Schließen
           </Button>
           {!readOnly && (
-            <Button className="w-full sm:w-auto" onClick={save} disabled={saving}>
+            <Button className="w-full sm:w-auto" onClick={async () => { if (await autosave.flush()) onOpenChange(false); }} disabled={saving}>
               {saving ? "Wird gespeichert …" : "Speichern"}
             </Button>
           )}
