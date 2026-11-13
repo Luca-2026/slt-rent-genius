@@ -1,4 +1,5 @@
 # Shared helper rules
+- Staff bank receipts preserve issued invoice/settlement prices instead of implicitly requesting a rebate switch; document-read failures block recording to prevent price drift.
  - Weekly rental tariffs use tierPriceWeek in both rental-pricing mirrors, counting elapsed 24-hour blocks without Bau weekend exclusions; weekly offers serialize one flat amount and explicit period labels, while nextInstallmentDate preserves monthly plans unless a day interval is saved.
 - Delivery tariff bands are net; cartDeliveryQuote adds VAT once while website calculators use shared customer-type display, keeping new inquiry quotes consistent without rewriting issued documents.
 - Stripe receipt invoice reconciliation uses stripe-invoice-sync on first and duplicate webhook deliveries; committed order receipts must not suppress retries after a failed invoice allocation.

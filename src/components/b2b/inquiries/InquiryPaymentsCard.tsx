@@ -120,7 +120,7 @@ export function InquiryPaymentsCard({ table, inquiryId, payments, offerTotalGros
     () => Math.round(rows.reduce((s, p) => s + (Number(p.amount) || 0), 0) * 100) / 100,
     [rows],
   );
-  const bankPreview = table === "rental_inquiries" && hasBankDiscountPolicy(discountPolicy) && offerPayload && rows.length > 0 && allPaymentsByBank(rows)
+  const bankPreview = table === "rental_inquiries" && invoiceGross == null && hasBankDiscountPolicy(discountPolicy) && offerPayload && rows.length > 0 && allPaymentsByBank(rows)
     ? rentalPaymentPrices({ ...offerPayload, bank_transfer_discount: { ...discountPolicy, selected: "bank" } }) : null;
   const required = invoiceGross != null ? Math.round((invoiceGross + (Number(deposit) || 0)) * 100) / 100 : offerTotalGross != null ? Math.round(((bankPreview?.bankTotals.grossAmount ?? Number(offerTotalGross)) + (Number(deposit) || 0)) * 100) / 100 : null;
   const open = required != null ? Math.round((required - total) * 100) / 100 : null;
