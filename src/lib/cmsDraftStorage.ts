@@ -10,7 +10,7 @@ import { clearInquiryDraft, readInquiryDraft, writeInquiryDraft } from "@/compon
 
 const PREFIX = "slt.cms-draft.v1";
 
-export type CmsEditorKind = "inventory" | "sales-new" | "sales-used";
+export type CmsEditorKind = "inventory" | "sales-new" | "sales-used" | "instance" | "instance-new" | "instance-hours" | "instance-interval";
 
 export function cmsDraftKey(editor: CmsEditorKind, id: string) {
   return `${PREFIX}:${editor}:${id}`;
