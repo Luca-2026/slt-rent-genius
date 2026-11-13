@@ -19,7 +19,7 @@ describe("Event flat period pricing", () => {
     const result=client.computeRentalLinePrice({scheme:"event",prices:{price_base_1_3_cd:15,surcharge_per_cd_from_4:5.83},start:{date:"2026-11-12"},end:{date:"2026-11-15"}});
     expect(result).toMatchObject({unit:"pauschal",duration:1,unit_price:20.83});
     if(result.kind==="duration_only") throw new Error("Missing price");
-    expect(lineTotal({quantity:3,duration:1,unit_price:result.unit_price})).toBe(62.49);
+    expect(lineTotal({quantity:3,duration:1,unit_price:result.unit_price,discount_percent:0})).toBe(62.49);
   });
   it("Friday 16:00 to Monday 09:30 defaults to base 100",()=> {
     for(const mod of [client,server]) expect(mod.computeRentalLinePrice({scheme:"event",prices:{price_base_1_3_cd:100},start:{date:"2026-11-13",time:"16:00"},end:{date:"2026-11-16",time:"09:30"}})).toMatchObject({kind:"weekend",unit_price:100,duration:1});

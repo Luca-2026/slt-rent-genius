@@ -906,11 +906,12 @@ export function InquiryOfferForm({
         if (isSalesOffer) return recalcAddons(salesOfferLine(item));
         const inherited = undatedOffer ? applyRentalPricing({ ...undatedOfferLine(item), undated_offer: true }, dayOpts) : openEnded && independentPricing ? item : applyInheritedPeriod(item, i, items[0]);
         const calendar = pricingActive && !openEnded ? calendarDuration(inherited, { use_saturday: inherited.use_saturday ?? useSaturday, use_sunday: inherited.use_sunday ?? useSunday }) : inherited;
+        const manualCalendar = inherited.unit_manual ? { ...calendar, duration: inherited.duration } : calendar;
         const unit = inherited.unit ?? "kalendertage";
         // Unbefristet: zeitabhängige Positionen werden als Preis pro Monat geführt.
         const monthly = openEnded && !inherited.period_free && unit !== "pauschal" && unit !== "stueck"
           ? independentPricing ? applyOpenEndedBilling(inherited) : applyOpenEndedPeriod(inherited, openEndedUnit, minMonths)
-          : calendar;
+          : manualCalendar;
         return recalcAddons(monthly);
       }),
     [items, isSalesOffer, openEnded, independentPricing, undatedOffer, minMonths, openEndedUnit, pricingActive, useSaturday, useSunday],
@@ -1061,7 +1062,7 @@ export function InquiryOfferForm({
       const inherited = applyInheritedPeriod(item, i, next[0]);
       if (changesPeriod && ["event", "woche"].includes(item.pricing?.scheme ?? "") && (item.price_manual || item.unit_manual)) {
         pending[i] = applyRentalPricing({ ...inherited, price_manual: false, unit_manual: false, duration_override: undefined }, dayOpts);
-        return calendarDuration(inherited, dayOpts);
+        return item.unit_manual ? { ...calendarDuration(inherited, dayOpts), duration: item.duration } : calendarDuration(inherited, dayOpts);
       }
       return pricingActive && !undatedOffer ? applyRentalPricing(inherited, dayOpts) : inherited;
     });
