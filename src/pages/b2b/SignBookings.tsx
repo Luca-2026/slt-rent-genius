@@ -14,6 +14,13 @@ import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { toast } from "sonner";
 
 const date = (value: string | null) => value ? new Date(`${value.slice(0, 10)}T12:00:00Z`).toLocaleDateString("de-DE") : "–";
+const permitTime = (snapshot: unknown, key: string): string => {
+  if (!snapshot || typeof snapshot !== "object" || !("request" in snapshot)) return "";
+  const request = snapshot.request;
+  if (!request || typeof request !== "object" || !(key in request)) return "";
+  const value = (request as Record<string, unknown>)[key];
+  return typeof value === "string" && /^([01]\d|2[0-3]):00$/.test(value) ? `${value} Uhr` : "";
+};
 const statusLabels: Record<string, string> = { paid: "Bezahlt", reserved: "Reserviert", expired: "Abgelaufen", review: "Zahlung prüfen" };
 
 export default function SignBookings() {
@@ -26,7 +33,7 @@ export default function SignBookings() {
     queryKey: ["staff-sign-bookings"],
     enabled: !accessLoading && isStaff,
     queryFn: async () => {
-      const bookings = await supabase.from("sign_bookings").select("id,inquiry_id,location,package,quantity,start_date,end_date,status,permit_mode,permit_path,permit_valid_from,permit_valid_until,permit_issued_on,confirmation_sent_at,staff_notified_at").order("start_date", { ascending: true });
+      const bookings = await supabase.from("sign_bookings").select("id,inquiry_id,location,package,quantity,start_date,end_date,status,permit_mode,permit_path,permit_valid_from,permit_valid_until,permit_issued_on,snapshot,confirmation_sent_at,staff_notified_at").order("start_date", { ascending: true });
       if (bookings.error) throw bookings.error;
       if (!bookings.data.length) return [];
       const inquiries = await supabase.from("rental_inquiries").select("id,order_code,customer_name,company_name,customer_email,customer_phone,delivery_street,delivery_postal_code,delivery_city,internal_notes,status").in("id", bookings.data.map(b => b.inquiry_id));
@@ -68,7 +75,7 @@ export default function SignBookings() {
           </div>
           <dl className="grid gap-3 text-sm sm:grid-cols-2">
             <div><dt className="text-muted-foreground">Mietzeitraum</dt><dd>{date(b.start_date)} – {date(b.end_date)}</dd></div>
-            <div><dt className="text-muted-foreground">Genehmigungszeitraum / Beklebung</dt><dd>{b.permit_valid_from ? `${date(b.permit_valid_from)} – ${date(b.permit_valid_until)}` : "Nicht hinterlegt"}</dd></div>
+            <div><dt className="text-muted-foreground">Genehmigungszeitraum / Beklebung</dt><dd>{b.permit_valid_from ? `${date(b.permit_valid_from)} ${permitTime(b.snapshot, "permitValidFromTime")} – ${date(b.permit_valid_until)} ${permitTime(b.snapshot, "permitValidUntilTime")}` : "Nicht hinterlegt"}</dd></div>
             <div><dt className="text-muted-foreground">Genehmigung vom</dt><dd>{b.permit_issued_on ? date(b.permit_issued_on) : "Nicht hinterlegt"}</dd></div>
             <div><dt className="text-muted-foreground">Genehmigung</dt><dd>{b.permit_mode === "slt" ? "Beantragung durch SLT" : b.permit_mode === "existing" ? "Vom Kunden vorhanden" : b.package === "standard" ? "Angaben durch den Kunden" : "Nicht hinterlegt"}</dd></div>
             {b.address && <div className="sm:col-span-2"><dt className="text-muted-foreground">Aufstelladresse</dt><dd className="break-words whitespace-pre-line">{b.address}</dd></div>}

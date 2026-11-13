@@ -1289,6 +1289,13 @@
       "when": 1794569698355,
       "tag": "0183_weekly_installment_day_interval",
       "breakpoints": true
+    },
+    {
+      "idx": 184,
+      "version": "7",
+      "when": 1794573086392,
+      "tag": "0184_sign_additional_pair_booking",
+      "breakpoints": true
     }
   ]
 }
