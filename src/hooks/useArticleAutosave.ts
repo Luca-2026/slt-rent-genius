@@ -14,6 +14,7 @@ export function useArticleAutosave<T>({ value, baseline, enabled, save }: {
 
   const flush = async (): Promise<boolean> => {
     if (running.current) return running.current;
+    if (!latest.current.enabled && JSON.stringify(latest.current.value) !== latest.current.baseline) return false;
     const work = async () => {
       while (latest.current.enabled && JSON.stringify(latest.current.value) !== latest.current.baseline) {
         const current = latest.current;

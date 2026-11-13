@@ -6,7 +6,7 @@
  */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePersistentArticleForm } from "@/hooks/usePersistentArticleForm";
-import { cmsDraftKey, readCmsDraft, writeCmsDraft, clearCmsDraft } from "@/lib/cmsDraftStorage";
+import { cmsDraftKey } from "@/lib/cmsDraftStorage";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -128,6 +128,7 @@ function InstancesList({
   const [adding, setAdding] = useState(false);
   const identity = useRef(crypto.randomUUID());
   const initialForm = {
+    id: identity.current,
     serial_number: "",
     internal_inventory_number: "",
     location: availableLocations[0] ?? "krefeld",
@@ -138,12 +139,12 @@ function InstancesList({
     current_operating_hours: "",
     notes: "",
   };
-  const { form, setForm, flush, state } = usePersistentArticleForm(cmsDraftKey("instance-new", productId), initialForm, save, canManageInventory);
+  const { form, setForm, reset, flush, state } = usePersistentArticleForm(cmsDraftKey("instance-new", productId), initialForm, save, canManageInventory);
   useEffect(() => registerSave(flush), [registerSave, flush]);
 
   async function save(form: typeof initialForm) {
     const payload: Record<string, unknown> = {
-      id: identity.current,
+      id: form.id,
       managed_product_id: productId,
       serial_number: form.serial_number.trim() || null,
       internal_inventory_number: form.internal_inventory_number.trim() || null,
@@ -178,7 +179,7 @@ function InstancesList({
           {instances.length} Einzelartikel {instances.length ? `(${instances.filter(i => i.status === "available").length} verfügbar)` : ""}
         </p>
         {canManageInventory && (
-          <Button size="sm" onClick={async () => { if (adding) { if (!await flush()) return; setAdding(false); } else { identity.current = crypto.randomUUID(); setForm(initialForm); setAdding(true); } }}>
+          <Button size="sm" onClick={async () => { if (adding) { if (!await flush()) return; setAdding(false); } else { if (state === "saved") reset({ ...initialForm, id: crypto.randomUUID() }); setAdding(true); } }}>
             <Plus className="h-4 w-4 mr-1" /> {adding ? "Abbrechen" : "Neuer Einzelartikel"}
           </Button>
         )}
@@ -382,18 +383,18 @@ function HoursTab({ instance, onSaved, registerSave }: { instance: ProductInstan
   const { canManageInventory } = useStaffAccess();
   const draftKey = cmsDraftKey("instance-hours", instance.id);
   const readingId = useRef(crypto.randomUUID());
-  const { form, setForm, flush, state } = usePersistentArticleForm(draftKey, { hours: "", note: "" }, add, canManageInventory);
+  const { form, setForm, flush, state } = usePersistentArticleForm(draftKey, { id: readingId.current, hours: "", note: "" }, add, canManageInventory);
   const { hours, note } = form;
   const setHours = (hours: string) => setForm(prev => ({ ...prev, hours }));
   const setNote = (note: string) => setForm(prev => ({ ...prev, note }));
   useEffect(() => registerSave(flush), [registerSave, flush]);
 
-  async function add({ hours, note }: { hours: string; note: string }) {
+  async function add({ id, hours, note }: { id: string; hours: string; note: string }) {
     if (!hours.trim()) return false;
     const h = Number(hours);
     if (!Number.isFinite(h) || h < 0) { toast.error("Ungültige Stundenangabe"); return false; }
     const { error: e1 } = await (supabase.from("b2b_instance_hours_log" as never) as any)
-      .upsert({ id: readingId.current, instance_id: instance.id, hours: h, note: note.trim() || null });
+      .upsert({ id, instance_id: instance.id, hours: h, note: note.trim() || null });
     if (e1) { toast.error(e1.message); return false; }
     if (h > (instance.current_operating_hours ?? 0)) {
       const { error } = await (supabase.from("b2b_product_instances" as never) as any)
@@ -433,6 +434,7 @@ function IntervalsTab({ instance, productCategory, onChanged, registerSave }: { 
   const draftKey = cmsDraftKey("instance-interval", instance.id);
   const identity = useRef(crypto.randomUUID());
   const initialForm = {
+    id: identity.current,
     title: "",
     interval_type: "years" as IntervalType,
     interval_value: "1",
@@ -441,7 +443,7 @@ function IntervalsTab({ instance, productCategory, onChanged, registerSave }: { 
     warn_days_before: "14",
     notes: "",
   };
-  const { form, setForm, flush, state } = usePersistentArticleForm(draftKey, initialForm, addCustom, canManageInventory);
+  const { form, setForm, reset, flush, state } = usePersistentArticleForm(draftKey, initialForm, addCustom, canManageInventory);
   useEffect(() => registerSave(flush), [registerSave, flush]);
 
   async function addSuggestion(s: { title: string; type: IntervalType; value: number | null }) {
@@ -464,7 +466,7 @@ function IntervalsTab({ instance, productCategory, onChanged, registerSave }: { 
   async function addCustom(form: typeof initialForm) {
     if (!form.title.trim()) return false;
     const { error } = await (supabase.from("b2b_maintenance_intervals" as never) as any).upsert({
-      id: identity.current,
+      id: form.id,
       instance_id: instance.id,
       title: form.title.trim(),
       interval_type: form.interval_type,
@@ -524,7 +526,7 @@ function IntervalsTab({ instance, productCategory, onChanged, registerSave }: { 
 
       <div className="flex justify-end">
         {canManageInventory && (
-          <Button size="sm" variant="outline" onClick={async () => { if (adding) { if (!await flush()) return; setAdding(false); } else { identity.current = crypto.randomUUID(); setForm(initialForm); setAdding(true); } }}>
+          <Button size="sm" variant="outline" onClick={async () => { if (adding) { if (!await flush()) return; setAdding(false); } else { if (state === "saved") reset({ ...initialForm, id: crypto.randomUUID() }); setAdding(true); } }}>
             <Plus className="h-4 w-4 mr-1" /> {adding ? "Abbrechen" : "Individuelles Intervall"}
           </Button>
         )}

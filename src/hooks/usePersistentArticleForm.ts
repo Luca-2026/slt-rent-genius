@@ -17,5 +17,6 @@ export function usePersistentArticleForm<T extends object>(key: string, initial:
       if (JSON.stringify(current.current) === baseline.current) clearCmsDraft(key);
       return true;
     } });
-  return { form, setForm, ...autosave };
+  const reset = (next: T) => { baseline.current = JSON.stringify(next); current.current = next; setForm(next); clearCmsDraft(key); };
+  return { form, setForm, reset, ...autosave };
 }
