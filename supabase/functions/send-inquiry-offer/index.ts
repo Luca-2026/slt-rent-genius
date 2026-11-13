@@ -389,6 +389,8 @@ Deno.serve(async (req: Request) => {
         hasBau = (bau ?? []).length > 0;
       }
       termsPrint = printableTerms(termsText, hasBau);
+      const { data: eventProducts } = slugs.length ? await service.from("b2b_managed_products").select("slug").in("slug", slugs).eq("pricing_scheme", "event") : { data: [] };
+      if ((eventProducts ?? []).length) termsPrint += "\n\nEvent-Artikel werden zum Pauschalpreis für den angegebenen Mietzeitraum vermietet. Eine frühere Rückgabe führt nicht zu einer anteiligen Erstattung.";
     }
     if (inquiryType === "sales") {
       addressForm = normalizeAddressForm(inquiry.address_form);
@@ -413,6 +415,7 @@ Deno.serve(async (req: Request) => {
       duration: i.duration,
       unit_code: i.unit_code,
       price_basis: i.price_basis,
+      rental_period_label: i.rental_period_label,
       quantity: i.quantity,
       unit: i.unit,
       unit_price: i.unit_price,

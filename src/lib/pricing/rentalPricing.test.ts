@@ -69,9 +69,9 @@ describe("1b defaultUnit", () => {
     expect(computeRentalLinePrice(input)).toMatchObject({ duration: 10, unit_price: 68 });
     expect(mirror.computeRentalLinePrice(input)).toEqual(computeRentalLinePrice(input));
   });
-  it("bau → miettage, event → kalendertage", () => {
+  it("bau → miettage, event → pauschal", () => {
     expect(defaultUnit({ pricing_scheme: "bau" })).toBe("miettage");
-    expect(defaultUnit({ pricing_scheme: "event" })).toBe("kalendertage");
+    expect(defaultUnit({ pricing_scheme: "event" })).toBe("pauschal");
   });
 });
 
@@ -141,7 +141,7 @@ describe("1h resolveProductPrices", () => {
     expect(resolveProductPrices({ ...product, prices_same_all_locations: true }, "bonn", [{ location: "bonn", price_from_1_rd: 90 }]).price_from_1_rd).toBe(100));
   it("Fallback auf price_per_day", () => {
     expect(resolveProductPrices({ pricing_scheme: "bau", price_per_day: "89,00 €/Tag" }, null).price_from_1_rd).toBe(89);
-    expect(resolveProductPrices({ pricing_scheme: "event", price_per_day: "89,00 €/Tag" }, null).price_base_1_3_cd).toBe(89);
+    expect(resolveProductPrices({ pricing_scheme: "event", price_per_day: "89,00 €/Tag" }, null).price_base_1_3_cd).toBeNull();
   });
 });
 

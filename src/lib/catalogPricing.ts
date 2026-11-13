@@ -73,7 +73,7 @@ export interface PricedCatalogRow {
 
 export interface ResolvedPrice {
   price: number;
-  unit: "kalendertage" | "miettage" | "wochen" | "monate" | "stueck";
+  unit: "kalendertage" | "miettage" | "wochen" | "monate" | "stueck" | "pauschal";
 }
 
 /** Mietpreise im CMS sind Nettopreise; die Website rechnet für Privatkunden brutto (src/lib/priceDisplay.ts). */
@@ -102,6 +102,10 @@ async function resolveGrossCatalogPrice(
   if (row.pricing_scheme === "woche") {
     const price = row.price_from_1_week;
     return typeof price === "number" && price > 0 ? { price, unit: "wochen" } : undefined;
+  }
+  if (row.pricing_scheme === "event") {
+    const price = row.price_base_1_3_cd;
+    return typeof price === "number" && price > 0 ? { price, unit: "pauschal" } : undefined;
   }
   // Staffelpreise (Paket 2) zuerst: Grundpreis je nach Schema.
   const tierBase = row.pricing_scheme === "bau" ? row.price_from_1_rd : row.price_base_1_3_cd;

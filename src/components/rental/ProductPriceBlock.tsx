@@ -79,6 +79,10 @@ export function ProductPriceBlock({
     mainValue = "Preis auf Anfrage";
     mainUnit = "";
   }
+  if (!isSign && product.pricingScheme === "event") {
+    mainValue = product.priceBase13Cd != null ? displayPrice(product.priceBase13Cd, type) : "Preis auf Anfrage";
+    mainUnit = product.priceBase13Cd != null ? "für 1 bis 3 Kalendertage" : "";
+  }
   if (isSign) {
     mainValue = displayPrice(signPublicBaseGrossCents(signConfig) / 119, type);
     mainUnit = "für 1–10 Tage";
@@ -189,11 +193,12 @@ export function RentalPriceTiers({ product, location, locationRows = [], classNa
     if (prices.price_from_20_rd !== null) rows.push({ label: "ab 20 Miettagen", value: `${displayPrice(prices.price_from_20_rd, type)} / Miettag` });
   } else {
     if (prices.price_base_1_3_cd !== null) rows.push({ label: "1–3 Kalendertage", value: displayPrice(prices.price_base_1_3_cd, type) });
-    if (prices.surcharge_per_cd_from_4 !== null) rows.push({ label: "ab 4 Kalendertagen", value: `+ ${displayPrice(prices.surcharge_per_cd_from_4, type)} / Tag` });
-    if (prices.surcharge_per_cd_from_8 !== null) rows.push({ label: "ab 8 Kalendertagen", value: `+ ${displayPrice(prices.surcharge_per_cd_from_8, type)} / Tag` });
+    if (prices.price_base_1_3_cd !== null) rows.push({ label: "Aufschlag je Kalendertag ab 4 KT", value: displayPrice(prices.surcharge_per_cd_from_4 ?? prices.price_base_1_3_cd * 0.5, type) });
+    if (prices.price_base_1_3_cd !== null) rows.push({ label: "Aufschlag je Kalendertag ab 8 KT", value: displayPrice(prices.surcharge_per_cd_from_8 ?? prices.price_base_1_3_cd * 0.2, type) });
   }
-  if (product.pricingScheme !== "woche" && prices.price_weekend_num !== null) {
-    rows.push({ label: "Wochenendtarif (Fr 16:00 – Mo 09:30)", value: displayPrice(prices.price_weekend_num, type) });
+  const weekend = prices.price_weekend_num ?? (product.pricingScheme === "event" ? prices.price_base_1_3_cd : null);
+  if (product.pricingScheme !== "woche" && weekend !== null) {
+    rows.push({ label: "Wochenendtarif (Fr 16:00 – Mo 09:30)", value: displayPrice(weekend, type) });
   }
 
   if (rows.length === 0) return null;

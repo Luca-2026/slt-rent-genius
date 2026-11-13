@@ -72,7 +72,7 @@ export interface InquiryOfferItem extends OfferLogistics {
   rental_end_time?: string;
   unit_code?: string;
   price_manual?: boolean;
-  price_basis?: "tier" | "weekend" | "customer" | "week";
+  price_basis?: "tier" | "weekend" | "customer" | "week" | "event";
   rental_period_label?: string;
   /** Öffentliche Bild-URL des CMS-Artikels (wird im PDF eingebettet). */
   image_url?: string;
@@ -313,7 +313,7 @@ export function normalizeInquiryOfferItems(raw: unknown, undated = false): Inqui
       ...logistics,
       unit_code: item.unit_code ? String(item.unit_code).slice(0, 20) : undefined,
       price_manual: item.price_manual === true ? true : undefined,
-      price_basis: item.price_basis === "tier" || item.price_basis === "weekend" || item.price_basis === "customer" || item.price_basis === "week" ? item.price_basis : undefined,
+      price_basis: item.price_basis === "tier" || item.price_basis === "weekend" || item.price_basis === "customer" || item.price_basis === "week" || item.price_basis === "event" ? item.price_basis : undefined,
       rental_period_label: item.rental_period_label ? String(item.rental_period_label).slice(0, 80) : undefined,
       image_url: item.image_url ? String(item.image_url).slice(0, 500) : undefined,
       group_id: item.group_id ? String(item.group_id).slice(0, 60) : undefined,

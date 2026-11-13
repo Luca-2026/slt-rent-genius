@@ -477,7 +477,7 @@ export async function generateOfferPdf(data: {
     dt(pg, "Pos.", ML + 2, yy, bold, 8.5, BRAND);
     dt(pg, "Bezeichnung", ML + 32, yy, bold, 8.5, BRAND);
     dtr(pg, "Menge", qtyColRight, yy, bold, 8.5, BRAND);
-    dt(pg, iq ? "Dauer" : "Einheit", unitColX, yy, bold, 8.5, BRAND);
+    if (!iq || data.items.some(item => item.price_basis !== "event" && !(item.price_basis === "weekend" && item.rental_period_label === "Wochenende"))) dt(pg, iq ? "Dauer" : "Einheit", unitColX, yy, bold, 8.5, BRAND);
     dtr(pg, "Einzelpreis", ML + CW * 0.85, yy, bold, 8.5, BRAND);
     dtr(pg, "Gesamt", W - MR - 4, yy, bold, 8.5, BRAND);
     pg.drawRectangle({ x: ML, y: yy - 5, width: CW, height: 2, color: BRAND });
@@ -588,6 +588,10 @@ export async function generateOfferPdf(data: {
       if (serviceUnit) {
         iqQty = `${String(item.articles || item.quantity || 1).replace(".", ",")} ${serviceUnit}`;
         iqDur = "\u2013";
+      } else if (item.price_basis === "event" || (item.price_basis === "weekend" && item.rental_period_label === "Wochenende")) {
+        iqQty = `${item.articles || item.quantity || 1} ${qu}`;
+        iqDur = "";
+        usedUnits.add(qu);
       } else if (item.price_basis === "week") {
         iqQty = `${item.articles || item.quantity || 1} ${qu}`;
         iqDur = "pauschal";
@@ -627,6 +631,7 @@ export async function generateOfferPdf(data: {
     const rowNameW = Math.min(nameColW, qtyColRight - font.widthOfTextAtSize(safe(qtyText), 9.5) - 10 - textColX);
     const nameLines = wt(nameText, bold, 9.5, rowNameW);
     const subLines: string[] = [];
+    if (item.price_basis === "event") subLines.push("Pauschalpreis für den Mietzeitraum");
     if (item.description) subLines.push(...wt(item.description, font, 8, nameColW));
     // Schadensersatzpositionen sind nicht steuerbar – ausweisen laut GoBD.
     if (Number(item.vat_rate) === 0) subLines.push(...wt("Nicht steuerbarer Schadensersatz (0 % USt)", font, 8, nameColW));

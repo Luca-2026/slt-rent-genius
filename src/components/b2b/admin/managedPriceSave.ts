@@ -24,12 +24,16 @@ export function managedPricePatch(current: ManagedPriceState, previous?: Managed
   for (const key of ["pricing_scheme", "prices_same_all_locations", "tier_prices_manual"] as const) {
     if (changed(key)) patch[key] = current[key];
   }
+  if (current.pricing_scheme === "event" && ("price_base_1_3_cd" in patch || !previous) && !current.prices.price_weekend_num.trim() && patch.price_base_1_3_cd != null) {
+    patch.price_weekend_num = patch.price_base_1_3_cd;
+    patch.price_weekend = `${Number(patch.price_base_1_3_cd).toFixed(2).replace(".", ",")} €`;
+  }
   const baseChanged = basePriceField(current.pricing_scheme) in patch;
   const schemeBaseChanged = previous && changed("pricing_scheme") && priceSetToColumns(current.prices)[basePriceField(current.pricing_scheme)] !== null;
   if (baseChanged || schemeBaseChanged || changed("price_per_day")) {
     patch.price_per_day = legacyDayText(current.category, current.pricing_scheme, current.prices, current.price_per_day.trim() || null);
   }
-  if ("price_weekend_num" in patch || changed("price_weekend")) {
+  if (("price_weekend_num" in patch && (current.pricing_scheme !== "event" || current.prices.price_weekend_num.trim() || patch.price_weekend_num === null)) || changed("price_weekend")) {
     patch.price_weekend = legacyWeekendText(current.prices, previous ? priceSetToColumns(previous.prices).price_weekend_num : null, current.price_weekend.trim() || null);
   }
   if ("price_from_20_rd" in patch || changed("price_per_month")) {

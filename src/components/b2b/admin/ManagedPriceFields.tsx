@@ -197,7 +197,7 @@ const EVENT_FIELDS: { key: PriceField; label: string; hint?: string }[] = [
   { key: "price_base_1_3_cd", label: "1–3 Kalendertage (Grundpreis)" },
   { key: "surcharge_per_cd_from_4", label: "Aufschlag je KT ab 4 KT", hint: "Leer = automatisch 50 % bzw. 20 % des Grundpreises." },
   { key: "surcharge_per_cd_from_8", label: "Aufschlag je KT ab 8 KT", hint: "Leer = automatisch 50 % bzw. 20 % des Grundpreises." },
-  { key: "price_weekend_num", label: "Wochenende (Fr. 16 Uhr – Mo. 09:30 Uhr)" },
+  { key: "price_weekend_num", label: "Wochenende (Fr. 16 Uhr – Mo. 09:30 Uhr)", hint: "Leer = Grundpreis 1 bis 3 Kalendertage." },
 ];
 const WEEK_FIELDS: { key: PriceField; label: string; hint?: string }[] = [
   { key: "price_short_1_3_rd", label: "1 bis 3 Miettage (Pauschale)", hint: "Leer = Preis ab 1 Woche." },

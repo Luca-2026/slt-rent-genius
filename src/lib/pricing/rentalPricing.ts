@@ -210,10 +210,16 @@ export function insuranceCalendarDays(start: RentalMoment, end: RentalMoment): n
 
 export function defaultUnit(product: { pricing_scheme?: string | null }): PricingUnit {
   if (product.pricing_scheme === "woche") return "pauschal";
-  return product.pricing_scheme === "bau" ? "miettage" : "kalendertage";
+  return product.pricing_scheme === "event" ? "pauschal" : product.pricing_scheme === "bau" ? "miettage" : "kalendertage";
 }
 
 // ---------------------------------------------------------------- 1c/1d) Staffeln
+
+const nonnegative = (v: unknown): number | null => {
+  if (v === null || v === undefined || v === "") return null;
+  const n = Number(v);
+  return Number.isFinite(n) && n >= 0 ? n : null;
+};
 
 const num = (v: unknown): number | null => {
   const n = typeof v === "number" ? v : v === null || v === undefined || v === "" ? NaN : Number(v);
@@ -256,8 +262,8 @@ export function tierPriceEvent(prices: Partial<ManagedPrices>, calendarDays: num
   if (days <= 3) return { total: round2(base), perDay: round2(base / days), label: "Grundpreis 1–3 Kalendertage" };
   const from8 = days >= 8;
   const rate = from8
-    ? num(prices.surcharge_per_cd_from_8) ?? base * 0.2
-    : num(prices.surcharge_per_cd_from_4) ?? base * 0.5;
+    ? nonnegative(prices.surcharge_per_cd_from_8) ?? base * 0.2
+    : nonnegative(prices.surcharge_per_cd_from_4) ?? base * 0.5;
   const total = round2(base + (days - 3) * rate);
   return { total, perDay: round2(total / days), label: from8 ? "Aufschlag ab 8 Kalendertagen" : "Aufschlag ab 4 Kalendertagen" };
 }
@@ -330,6 +336,22 @@ export function computeRentalLinePrice(input: {
     if (tier && (input.unit == null || unit === "pauschal")) return { kind: "tier", unit: "pauschal", duration: 1, unit_price: tier.total, label: tier.label };
     const duration = unit === "wochen" ? (override ?? Math.ceil(days / 7)) : unit === "miettage" ? (override ?? days) : rentalDuration(input.start, input.end, unit, input.opts);
     return { kind: "duration_only", unit, duration };
+  }
+  if (input.scheme === "event") {
+    const days = override ?? rentalDuration(input.start, input.end, "kalendertage");
+    const automatic = input.unit == null || unit === "pauschal";
+    if (!automatic) return { kind: "duration_only", unit, duration: override ?? rentalDuration(input.start, input.end, unit, input.opts) };
+    const weekend = override === undefined ? weekendTariff(input.start, input.end, { ...input.prices, price_weekend_num: input.prices.price_weekend_num ?? input.prices.price_base_1_3_cd }) : null;
+    if (weekend) return { kind: "weekend", unit: "pauschal", duration: 1, unit_price: weekend.price, label: "Wochenende" };
+    const tier = tierPriceEvent(input.prices, days);
+    if (tier) {
+      const base = Number(input.prices.price_base_1_3_cd);
+      const rate = days >= 8 ? nonnegative(input.prices.surcharge_per_cd_from_8) ?? base * 0.2 : nonnegative(input.prices.surcharge_per_cd_from_4) ?? base * 0.5;
+      const euro = (n: number) => n.toFixed(2).replace(".", ",") + " €";
+      const label = days <= 3 ? `Grundpreis ${euro(base)}` : `Grundpreis ${euro(base)} + ${days - 3} KT × ${euro(rate)} = ${euro(tier.total)}`;
+      return { kind: "tier", unit: "pauschal", duration: 1, unit_price: tier.total, label };
+    }
+    return { kind: "duration_only", unit: "pauschal", duration: 1 };
   }
   const isDefaultUnit = unit === defaultUnit({ pricing_scheme: input.scheme ?? null });
   if (isDefaultUnit && override === undefined) {
@@ -436,8 +458,8 @@ export function resolveProductPrices(
     if (row) source = row;
   }
   const out = {} as ManagedPrices;
-  for (const k of PRICE_KEYS) out[k] = num(source[k]);
-  if (product.pricing_scheme !== "woche" && PRICE_KEYS.every((k) => out[k] === null)) {
+  for (const k of PRICE_KEYS) out[k] = k.startsWith("surcharge_") ? nonnegative(source[k]) : num(source[k]);
+  if (!["woche", "event"].includes(product.pricing_scheme ?? "") && PRICE_KEYS.every((k) => out[k] === null)) {
     const legacy = parseLegacyPrice(product.price_per_day);
     if (legacy !== null) {
       if (product.pricing_scheme === "bau") out.price_from_1_rd = legacy;
