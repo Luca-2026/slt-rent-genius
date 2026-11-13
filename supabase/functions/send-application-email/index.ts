@@ -1,11 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { applicationSubmission, attachmentContent } from "./submission.ts";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 
 const SLT_LOGO = "https://ccmxitxgyznethanixlg.supabase.co/storage/v1/object/public/brand-assets/slt-rental-logo-email.png";
 const COMPANY_NAME = "SLT Technology Group GmbH & Co. KG";
@@ -67,7 +63,10 @@ serve(async (req) => {
         resume_url: resumePath, resume_filename: resumeFilename,
         cover_letter_url: coverLetterPath, cover_letter_filename: coverLetterFilename || null,
       });
-      if (error) throw new Error("Application storage failed");
+      if (error) {
+        console.error("Application storage failed:", { code: error.code, message: error.message });
+        throw new Error("Application storage failed");
+      }
     } catch (error) {
       if (uploads.length) await supabase.storage.from("bewerbungen").remove(uploads);
       throw error;
