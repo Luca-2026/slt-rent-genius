@@ -11,7 +11,7 @@
  */
 
 export type PricingUnit = "stunden" | "stueck" | "pauschal" | "arbeitstage" | "miettage" | "kalendertage" | "wochen" | "monate" | "jahre";
-export type PricingScheme = "bau" | "event";
+export type PricingScheme = "bau" | "event" | "woche";
 
 export interface RentalMoment {
   date: string | null | undefined;
@@ -32,6 +32,11 @@ export interface ManagedPrices {
   price_base_1_3_cd: number | null;
   surcharge_per_cd_from_4: number | null;
   surcharge_per_cd_from_8: number | null;
+  price_short_1_3_rd?: number | null;
+  price_from_1_week?: number | null;
+  price_from_2_weeks?: number | null;
+  price_from_3_weeks?: number | null;
+  price_from_4_weeks?: number | null;
 }
 
 export const DEFAULT_START_TIME = "08:00";
@@ -97,7 +102,8 @@ function offsetMs(instant: number): number {
 export function berlinInstant(moment: RentalMoment | null | undefined, fallbackTime: string): number | null {
   const d = /^(\d{4})-(\d{2})-(\d{2})/.exec(moment?.date ?? "");
   if (!d) return null;
-  const t = /^(\d{1,2}):(\d{2})/.exec(moment?.time || fallbackTime) ?? /^(\d{1,2}):(\d{2})/.exec(fallbackTime)!;
+  const t = /^(\d{1,2}):(\d{2})/.exec(moment?.time || fallbackTime) ?? /^(\d{1,2}):(\d{2})/.exec(fallbackTime);
+  if (!t) return null;
   const naive = Date.UTC(+d[1], +d[2] - 1, +d[3], +t[1], +t[2]);
   let instant = naive - offsetMs(naive);
   instant = naive - offsetMs(instant);
@@ -203,6 +209,7 @@ export function insuranceCalendarDays(start: RentalMoment, end: RentalMoment): n
 // ---------------------------------------------------------------- 1b) Einheit
 
 export function defaultUnit(product: { pricing_scheme?: string | null }): PricingUnit {
+  if (product.pricing_scheme === "woche") return "pauschal";
   return product.pricing_scheme === "bau" ? "miettage" : "kalendertage";
 }
 
@@ -255,6 +262,28 @@ export function tierPriceEvent(prices: Partial<ManagedPrices>, calendarDays: num
   return { total, perDay: round2(total / days), label: from8 ? "Aufschlag ab 8 Kalendertagen" : "Aufschlag ab 4 Kalendertagen" };
 }
 
+export interface WeekTier {
+  total: number;
+  weeks: number;
+  rentalDays: number;
+  rate: number;
+  label: string;
+}
+
+/** Elapsed 24-hour blocks; all weekends count, each started 168-hour week is billed. */
+export function tierPriceWeek(prices: Partial<ManagedPrices>, rentalDays: number): WeekTier | null {
+  const days = Math.max(1, Math.ceil(rentalDays));
+  const weeks = Math.ceil(days / 7);
+  const short = num(prices.price_short_1_3_rd);
+  if (days <= 3 && short !== null) return { total: round2(short), weeks: 1, rentalDays: days, rate: short, label: "1 bis 3 Miettage" };
+  const tiers: [number, unknown][] = [[4, prices.price_from_4_weeks], [3, prices.price_from_3_weeks], [2, prices.price_from_2_weeks], [1, prices.price_from_1_week]];
+  for (const [threshold, value] of tiers) {
+    const rate = num(value);
+    if (weeks >= threshold && rate !== null) return { total: round2(rate * weeks), weeks, rentalDays: days, rate, label: `${weeks} ${weeks === 1 ? "Woche" : "Wochen"}` };
+  }
+  return null;
+}
+
 // ---------------------------------------------------------------- 1e) Wochenendtarif
 
 /** Abholung Freitag ab 16:00 UND Rückgabe am folgenden Montag bis 09:30 – sonst null. */
@@ -295,6 +324,13 @@ export function computeRentalLinePrice(input: {
 }): LinePrice {
   const unit = input.unit ?? defaultUnit({ pricing_scheme: input.scheme ?? null });
   const override = Number.isFinite(input.durationOverride) && Number(input.durationOverride) > 0 && Number(input.durationOverride) <= 10000 ? input.durationOverride : undefined;
+  if (input.scheme === "woche") {
+    const days = override !== undefined ? (unit === "wochen" ? override * 7 : override) : rentalBlockCount(input.start, input.end);
+    const tier = tierPriceWeek(input.prices, days);
+    if (tier && (input.unit == null || unit === "pauschal")) return { kind: "tier", unit: "pauschal", duration: 1, unit_price: tier.total, label: tier.label };
+    const duration = unit === "wochen" ? (override ?? Math.ceil(days / 7)) : unit === "miettage" ? (override ?? days) : rentalDuration(input.start, input.end, unit, input.opts);
+    return { kind: "duration_only", unit, duration };
+  }
   const isDefaultUnit = unit === defaultUnit({ pricing_scheme: input.scheme ?? null });
   if (isDefaultUnit && override === undefined) {
     const we = weekendTariff(input.start, input.end, input.prices);
@@ -359,6 +395,11 @@ const PRICE_KEYS: (keyof ManagedPrices)[] = [
   "price_base_1_3_cd",
   "surcharge_per_cd_from_4",
   "surcharge_per_cd_from_8",
+  "price_short_1_3_rd",
+  "price_from_1_week",
+  "price_from_2_weeks",
+  "price_from_3_weeks",
+  "price_from_4_weeks",
 ];
 
 const normLoc = (v: string | null | undefined) =>
@@ -396,7 +437,7 @@ export function resolveProductPrices(
   }
   const out = {} as ManagedPrices;
   for (const k of PRICE_KEYS) out[k] = num(source[k]);
-  if (PRICE_KEYS.every((k) => out[k] === null)) {
+  if (product.pricing_scheme !== "woche" && PRICE_KEYS.every((k) => out[k] === null)) {
     const legacy = parseLegacyPrice(product.price_per_day);
     if (legacy !== null) {
       if (product.pricing_scheme === "bau") out.price_from_1_rd = legacy;
