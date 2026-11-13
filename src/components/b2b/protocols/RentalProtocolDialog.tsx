@@ -20,7 +20,7 @@ import { ProtocolWizard, type WizardStep } from "@/components/b2b/protocols/Prot
 import { DamagesStep } from "@/components/b2b/protocols/DamagesStep";
 import { IdCheckStep } from "@/components/b2b/protocols/IdCheckStep";
 import { ExtraChargesStep, type ChargeSuggestion } from "@/components/b2b/protocols/ExtraChargesStep";
-import { cleaningChargeGross, fuelSuggested, CLEANING_UNIT_GROSS } from "@/lib/returnCharges";
+import { cleaningChargeGross, fuelSuggested, CLEANING_UNIT_NET } from "@/lib/returnCharges";
 import { CLEANING_RATE_PER_15_MIN, CLEANLINESS_HINT, FUEL_LEVELS, isDirty, isMachineLike, toNumber, formatEuro, serializeExtraCharges, sumExtraCharges, extraChargeTotal, emptyExtraCharge, type ExtraCharge, type ProtocolDamage } from "@/components/b2b/protocols/protocolShared";
 import { fuelLevelLabel } from "../../../../supabase/functions/_shared/protocolMeasurements";
 import {
@@ -208,7 +208,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     const c = cleanlinessFor(i);
     const n = Math.round(toNumber(c.units));
     return isDirty(c.rating) && n > 0
-      ? [{ ...emptyExtraCharge(`Reinigungsservice ${it.name}`), quantity: String(n), unitPrice: String(CLEANING_UNIT_GROSS), unit: "15min", notes: c.comment.trim() }]
+      ? [{ ...emptyExtraCharge(`Reinigungsservice ${it.name}`), quantity: String(n), unitPrice: String(CLEANING_UNIT_NET), priceBasis: "net", unit: "15min", notes: c.comment.trim() }]
       : [];
   });
   const allCharges = [...charges, ...cleaningCharges];
