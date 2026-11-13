@@ -25,4 +25,10 @@ describe("Individuelle Füllstände und Netto-Zusatzkosten", () => {
   it("bestehende Brutto-Entwürfe werden nicht nachträglich verteuert", () => {
     expect(extraChargeTotal({ ...emptyExtraCharge("Alt"), unitPrice: "70" })).toBe(70);
   });
+  it("Netto-Einzelpreise werden bei mehreren Stück nicht vorzeitig auf Bruttocents gerundet", () => {
+    const c = { ...emptyExtraCharge("Kleinteil"), quantity: "3", unitPrice: "0,03", priceBasis: "net" as const };
+    const saved = serializeExtraCharges([c])[0];
+    const gross = Math.round(saved.quantity * saved.unit_price * 100) / 100;
+    expect(Math.round(gross / 1.19 * 100) / 100).toBe(0.09);
+  });
 });
