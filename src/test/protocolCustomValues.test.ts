@@ -13,11 +13,13 @@ describe("Individuelle Füllstände und Netto-Zusatzkosten", () => {
     expect(c.unitPrice).toBe("20,00");
     expect(extraChargeTotal(c)).toBe(23.8);
   });
-  it.each(FUEL_PRICES)("$label: Netto-Literpreis erhält den bestehenden Bruttotarif", (fuel) => {
+  it.each([{ value: "diesel", net: 2.85, gross100: 339.15 }, { value: "benzin", net: 2.95, gross100: 351.05 }, { value: "adblue", net: 1.85, gross100: 220.15 }])("$value: bisherige Zahl ist jetzt netto", ({ value, net, gross100 }) => {
+    const fuel = FUEL_PRICES.find(f => f.value === value);
+    if (!fuel) throw new Error("Kraftstoff fehlt");
     const c = { ...fuelCharge(fuel), quantity: "100" };
     expect(c.priceBasis).toBe("net");
-    expect(serializeExtraCharges([c])[0].unit_price).toBe(fuel.pricePerLiter);
-    expect(extraChargeTotal(c)).toBe(fuel.pricePerLiter * 100);
+    expect(Number(c.unitPrice.replace(",", "."))).toBe(net);
+    expect(extraChargeTotal(c)).toBe(gross100);
   });
   it.each(EXTRA_CHARGE_TEMPLATES)("$label: Vorlagenpreis wird netto gerechnet", (tpl) => {
     const c = templateCharge({ ...tpl, unitPrice: "20" });

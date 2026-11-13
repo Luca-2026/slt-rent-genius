@@ -4,7 +4,7 @@
  * Getestet in src/test/returnCharges.test.ts.
  */
 
-/** Literpreise brutto laut Mietbedingungen. */
+/** Literpreise NETTO laut Luca (13.11.2026); bisherige Zahlen unverändert übernommen. */
 export const FUEL_PRICES = [
   { value: "diesel", label: "Diesel", pricePerLiter: 2.85 },
   { value: "benzin", label: "Benzin", pricePerLiter: 2.95 },
@@ -47,13 +47,10 @@ export const RECHARGE_NET = 20;
 export const chargeGrossPrice = (price: number, basis?: "net" | "gross") =>
   basis === "net" ? Math.round(price * 1.19 * 10000) / 10000 : price;
 
-/** Preserve the agreed gross fuel tariff rather than rounding the net liter rate to cents. */
-export const fuelPriceNet = (gross: number) => Math.round(gross / 1.19 * 1_000_000) / 1_000_000;
-
-/** Kraftstoffkosten brutto = Liter × Literpreis. */
+/** Kraftstoffkosten brutto = Liter × Netto-Literpreis × 1,19. */
 export function fuelChargeGross(liters: number, pricePerLiter: number): number {
   if (!(liters > 0) || !(pricePerLiter > 0)) return 0;
-  return round2(liters * pricePerLiter);
+  return round2(liters * pricePerLiter * 1.19);
 }
 
 export interface DepositSettlement {

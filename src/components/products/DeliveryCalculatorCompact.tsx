@@ -16,6 +16,9 @@ import {
   TIEFLADER_AB_KG,
 } from "@/data/lieferkosten";
 import { AddressDistanceInput, type LocationOriginId } from "@/components/delivery/AddressDistanceInput";
+import { useCustomerType } from "@/hooks/useCustomerType";
+import { displayPrice, vatNote } from "@/lib/priceDisplay";
+import { CustomerTypeToggle } from "@/components/rental/CustomerTypePrompt";
 
 interface DeliveryCalculatorCompactProps {
   productCategoryId?: string;
@@ -49,6 +52,7 @@ export function DeliveryCalculatorCompact({
   originLocationId,
 }: DeliveryCalculatorCompactProps) {
   const { t } = useTranslation();
+  const { type } = useCustomerType();
 
   // Determine initial category key
   const initialCategoryKey = (() => {
@@ -167,6 +171,7 @@ export function DeliveryCalculatorCompact({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
+        <CustomerTypeToggle />
         {showCategoryDropdown && (
           <div className="space-y-2">
             <Label className="text-sm font-medium">{t("rental.deviceCategory")}</Label>
@@ -292,9 +297,9 @@ export function DeliveryCalculatorCompact({
                 {includeReturn ? t("rental.roundTripLabel") : t("rental.oneWayLabel")}
               </p>
               <p className="text-2xl font-bold text-headline">
-                {result.total.toFixed(0)} €
-                <span className="text-sm font-normal text-muted-foreground ml-1">{t("rental.gross")}</span>
+                {displayPrice(result.total, type)}
               </p>
+              <p className="text-xs text-muted-foreground">{vatNote(type)}</p>
             </div>
             <Calculator className="h-8 w-8 text-accent" />
           </div>

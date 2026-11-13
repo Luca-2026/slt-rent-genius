@@ -12,7 +12,7 @@ import {
   EXTRA_CHARGE_TEMPLATES, emptyExtraCharge, extraChargeTotal, formatEuro,
   sumExtraCharges, type ExtraCharge,
 } from "./protocolShared";
-import { CLEANING_UNIT_MINUTES, CLEANING_UNIT_NET, FUEL_PRICES, RECHARGE_NET, cleaningMinutesLabel, fuelPriceNet } from "@/lib/returnCharges";
+import { CLEANING_UNIT_MINUTES, CLEANING_UNIT_NET, FUEL_PRICES, RECHARGE_NET, cleaningMinutesLabel } from "@/lib/returnCharges";
 
 export interface ChargeSuggestion { kind: "cleaning" | "fuel"; text: string; itemName?: string }
 
@@ -28,7 +28,7 @@ interface Props {
 }
 
 const price = (n: number) => n.toFixed(2).replace(".", ",");
-const fuelNet = (n: number) => fuelPriceNet(n).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 6, useGrouping: false });
+const fuelNet = price;
 
 export const cleaningCharge = (): ExtraCharge => ({
   ...emptyExtraCharge("Reinigung (Mehraufwand laut AGB)"), quantity: "1", unitPrice: price(CLEANING_UNIT_NET), unit: "15min", priceBasis: "net",

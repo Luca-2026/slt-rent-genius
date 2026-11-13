@@ -1,4 +1,5 @@
 # Shared helper rules
+- Delivery tariff bands are net; cartDeliveryQuote adds VAT once while website calculators use shared customer-type display, keeping new inquiry quotes consistent without rewriting issued documents.
 - Stripe receipt invoice reconciliation uses stripe-invoice-sync on first and duplicate webhook deliveries; committed order receipts must not suppress retries after a failed invoice allocation.
 - Optional per-line delivery_at/collection_at are local Berlin moments normalized by _shared/offer-logistics and printed through calendarDescription; offerInsurancePeriod uses them for inclusive insurance days with per-endpoint rental-calendar fallback. Rental billing and availability stay calendar-based; manual insurance overrides and issued snapshots are preserved.
 - Open-ended rentals share unit/minimum-duration normalization in _shared/installments.ts; manual inquiries keep these in raw_payload, offers in immutable snapshots, and day-based rates must never be inferred as monthly installment amounts.
