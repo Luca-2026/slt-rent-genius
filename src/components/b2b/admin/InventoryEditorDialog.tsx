@@ -30,6 +30,7 @@ import {
 } from "./ManagedPriceFields";
 import { InsuranceTiersEditor, serializeAddonOptions, type InsuranceMeta } from "./InsuranceTiersEditor";
 import { changedPriceColumns, managedPricePatch } from "./managedPriceSave";
+import { useArticleAutosave } from "@/hooks/useArticleAutosave";
 
 const LOCATIONS = [
   { id: "krefeld", label: "Krefeld" },
@@ -287,6 +288,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   const loadedIdRef = useRef<string | null>(null);
   const pendingFormRef = useRef<FormState | null>(null);
   const [restoredAt, setRestoredAt] = useState<number | null>(null);
+  const [locationPricesLoaded, setLocationPricesLoaded] = useState(false);
   // Einzelgeräte je Bestandsstandort (Mülheim an der Ruhr zählt zu Krefeld).
   const [instanceCounts, setInstanceCounts] = useState<Record<string, number> | null>(null);
   useEffect(() => {
@@ -339,13 +341,17 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
 
   // Standortpreise nachladen (eigene Tabelle) und in Formular + Baseline übernehmen
   useEffect(() => {
-    if (!open || !initial?.id) return;
+    setLocationPricesLoaded(false);
+    if (!open) return;
+    if (!initial?.id) { setLocationPricesLoaded(true); return; }
     let cancelled = false;
     (async () => {
       const { data, error } = await (supabase.from("b2b_managed_product_location_prices" as never) as any)
         .select("*")
         .eq("managed_product_id", initial.id);
-      if (cancelled || error || !data?.length) return;
+      if (cancelled) return;
+      if (error) { toast.error("Standortpreise konnten nicht geladen werden. Eingaben bleiben gesichert; bitte erneut öffnen."); return; }
+      if (!data?.length) { setLocationPricesLoaded(true); return; }
       const patch = { krefeld: emptyPriceSet(), bonn: emptyPriceSet(), muelheim: emptyPriceSet() } as Record<LocId, PriceSet>;
       const manualPatch = { krefeld: [], bonn: [], muelheim: [] } as Record<LocId, string[]>;
       for (const r of data as Array<{ location: LocId; tier_prices_manual?: string[] }>) {
@@ -362,6 +368,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
           dirtyBaselineRef.current = JSON.stringify({ ...base, location_prices: patch, location_tiers_manual: manualPatch });
         } catch { /* ignore */ }
       }
+      setLocationPricesLoaded(true);
     })();
     return () => { cancelled = true; };
   }, [open, initial?.id]);
@@ -388,8 +395,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
       clearCmsDraft(key);
       return;
     }
-    const t = setTimeout(() => writeCmsDraft(key, form), 400);
-    return () => clearTimeout(t);
+    writeCmsDraft(key, form);
   }, [form, open]);
 
   // Beim Ausblenden des Tabs sofort sichern (Mobilgeräte verwerfen Hintergrund-Tabs ohne Vorwarnung)
@@ -420,15 +426,8 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
     setRestoredAt(null);
   };
 
-  const requestClose = () => {
-    if (dirty) {
-      const ok = window.confirm(
-        "Es gibt ungespeicherte Änderungen. Wirklich schließen und Änderungen verwerfen?",
-      );
-      if (!ok) return;
-    }
-    if (loadedIdRef.current) clearCmsDraft(cmsDraftKey("inventory", loadedIdRef.current));
-    setDirty(false);
+  const requestClose = async () => {
+    if (!await autosave.flush()) return;
     onOpenChange(false);
   };
 
@@ -540,27 +539,24 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
     }
   }
 
-  async function handleSave() {
+  async function handleSave(form: FormState, automatic = false): Promise<boolean> {
     const deposit = form.deposit_amount?.trim() ? Number(form.deposit_amount.replace(",", ".")) : null;
-    if (deposit != null && (!Number.isFinite(deposit) || deposit < 0)) { toast.error("Bitte eine gültige Kaution ab 0 € eingeben"); setTab("preise"); return; }
+    if (deposit != null && (!Number.isFinite(deposit) || deposit < 0)) { if (!automatic) { toast.error("Bitte eine gültige Kaution ab 0 € eingeben"); setTab("preise"); } return false; }
     if (!form.name.trim() || !form.slug.trim() || !form.category) {
-      toast.error("Bitte Name, Slug und Kategorie ausfüllen");
-      setTab("basis");
-      return;
+      if (!automatic) { toast.error("Bitte Name, Slug und Kategorie ausfüllen"); setTab("basis"); }
+      return false;
     }
     if (!form.available_locations.length) {
-      toast.error("Bitte mindestens einen Standort auswählen");
-      setTab("basis");
-      return;
+      if (!automatic) { toast.error("Bitte mindestens einen Standort auswählen"); setTab("basis"); }
+      return false;
     }
     if (!form.main_category) {
-      toast.error("Bitte Hauptkategorie (Event oder Bau) wählen");
-      setTab("basis");
-      return;
+      if (!automatic) { toast.error("Bitte Hauptkategorie (Event oder Bau) wählen"); setTab("basis"); }
+      return false;
     }
     setSaving(true);
     try {
-      const priceBaseline: FormState | undefined = initial && dirtyBaselineRef.current
+      const priceBaseline: FormState | undefined = (initial || saveIdentityRef.current) && dirtyBaselineRef.current
         ? JSON.parse(dirtyBaselineRef.current) as FormState : undefined;
       // Konsistenz-Check: bei gesetztem Rentware-Code "auf Anfrage"-Sätze aus Content strippen
       let detailedDesc = form.detailed_description;
@@ -669,24 +665,28 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         _location_prices: JSON.parse(JSON.stringify(locationPrices)),
       });
       if (error) throw error;
-      saveIdentityRef.current = null;
-
-      toast.success(initial ? "Artikel aktualisiert" : "Artikel angelegt");
-      if (loadedIdRef.current) clearCmsDraft(cmsDraftKey("inventory", loadedIdRef.current));
-      setDirty(false);
-      onSaved();
-      onOpenChange(false);
-
+      dirtyBaselineRef.current = JSON.stringify(form);
+      if (loadedIdRef.current && JSON.stringify(formRef.current) === JSON.stringify(form)) clearCmsDraft(cmsDraftKey("inventory", loadedIdRef.current));
+      setDirty(JSON.stringify(formRef.current) !== JSON.stringify(form));
+      await onSaved();
+      if (!automatic) { toast.success(initial ? "Artikel aktualisiert" : "Artikel angelegt"); onOpenChange(false); }
+      return true;
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Speichern fehlgeschlagen");
+      return false;
     } finally {
       setSaving(false);
     }
   }
 
+  const autosave = useArticleAutosave({ value: form, baseline: dirtyBaselineRef.current,
+    enabled: open && locationPricesLoaded && !!loadedIdRef.current && !pendingFormRef.current && !uploading && !aiLoading,
+    save: (snapshot) => handleSave(snapshot, true) });
+
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) requestClose(); else onOpenChange(true); }}>
       <DialogContent
+        data-article-autosave
         className="max-w-4xl w-[calc(100vw-1.5rem)] sm:w-full max-h-[92vh] overflow-hidden flex flex-col p-4 sm:p-6"
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
@@ -1344,8 +1344,9 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         </Tabs>
 
         <DialogFooter>
-          <Button variant="outline" onClick={requestClose}>Abbrechen</Button>
-          <Button onClick={handleSave} disabled={saving}>
+          <span role="status" className="text-xs text-muted-foreground self-center">{saving ? "Wird gespeichert …" : dirty ? "Eingaben gesichert · Speicherung ausstehend" : "Gespeichert"}</span>
+          <Button variant="outline" onClick={requestClose} disabled={saving}>Schließen</Button>
+          <Button onClick={async () => { if (await autosave.flush()) onOpenChange(false); }} disabled={saving}>
             {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
             {initial ? "Speichern" : "Anlegen"}
           </Button>
