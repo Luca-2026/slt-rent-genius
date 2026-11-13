@@ -42,6 +42,11 @@ export function fuelSuggested(deliveryLevel: string | null | undefined, returnLe
 
 export const round2 = (n: number) => Math.round(n * 100) / 100;
 
+export const RECHARGE_NET = 20;
+/** New free/recharge inputs are net; historic and fuel/cleaning inputs remain gross. */
+export const chargeGrossPrice = (price: number, basis?: "net" | "gross") =>
+  basis === "net" ? Math.round(price * 1.19 * 10000) / 10000 : price;
+
 /** Kraftstoffkosten brutto = Liter × Literpreis. */
 export function fuelChargeGross(liters: number, pricePerLiter: number): number {
   if (!(liters > 0) || !(pricePerLiter > 0)) return 0;

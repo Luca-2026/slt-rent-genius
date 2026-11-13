@@ -4,6 +4,7 @@
  * und der Foto-Upload werden von beiden Protokollen genutzt.
  */
 import { supabase } from "@/integrations/supabase/client";
+import { chargeGrossPrice } from "@/lib/returnCharges";
 
 export const DAMAGE_CATEGORIES = [
   { value: "kratzer", label: "Kratzer" },
@@ -59,6 +60,7 @@ export interface ExtraCharge {
   notes: string;
   /** „l“ = Liter (Kraftstoff), „15min“ = Reinigung je 15 Minuten, sonst Stück/Pauschal. */
   unit?: string;
+  priceBasis?: "net" | "gross";
 }
 
 export const EXTRA_CHARGE_TEMPLATES: { label: string; unitPrice: string }[] = [
@@ -82,7 +84,7 @@ export const toNumber = (v: string) => {
   return Number.isFinite(n) ? n : 0;
 };
 
-export const extraChargeTotal = (c: ExtraCharge) => toNumber(c.quantity) * toNumber(c.unitPrice);
+export const extraChargeTotal = (c: ExtraCharge) => Math.round(toNumber(c.quantity) * chargeGrossPrice(toNumber(c.unitPrice), c.priceBasis) * 100) / 100;
 
 export const sumExtraCharges = (list: ExtraCharge[]) =>
   list.reduce((sum, c) => sum + extraChargeTotal(c), 0);
@@ -216,6 +218,6 @@ export const serializeExtraCharges = (list: ExtraCharge[]) =>
     .map((c) => ({
       label: c.label.trim(),
       quantity: toNumber(c.quantity) || 1,
-      unit_price: toNumber(c.unitPrice),
+      unit_price: chargeGrossPrice(toNumber(c.unitPrice), c.priceBasis),
       notes: c.notes || (c.unit === "15min" ? `${toNumber(c.quantity) || 1} × 15 Min (${Math.round((toNumber(c.quantity) || 1) * 15)} Min) × ${toNumber(c.unitPrice).toFixed(2).replace(".", ",")} € je 15 Min` : c.unit === "l" ? `${toNumber(c.quantity) || 1} l × ${toNumber(c.unitPrice).toFixed(2).replace(".", ",")} €/l` : null),
     }));

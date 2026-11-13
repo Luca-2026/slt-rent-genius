@@ -2,6 +2,8 @@
 export interface ProtocolMeasurement { item_name: string; operating_hours: string; fuel_level: string; mileage: string }
 const FUELS = new Map([ ["voll", "Voll (100 %)"], ["dreiviertel", "3/4 (75 %)"], ["halb", "1/2 (50 %)"], ["viertel", "1/4 (25 %)"], ["leer", "Leer"] ]);
 const counter = (value: string) => /^\d{1,9}(?:[,.]\d{1,2})?$/.test(value) && Number(value.replace(",", ".")) <= 999999999;
+export const validFuelLevel = (value: string) => FUELS.has(value) || (value.startsWith("text:") && value.length <= 20 && /^[\p{L}\p{N} %.,/()+-]{1,15}$/u.test(value.slice(5)) && !!value.slice(5).trim());
+export const fuelLevelLabel = (value: string) => value.startsWith("text:") ? value.slice(5) : FUELS.get(value) ?? value;
 
 export function parseProtocolMeasurements(raw: unknown): ProtocolMeasurement[] {
   if (raw === undefined) return [];
@@ -14,7 +16,7 @@ export function parseProtocolMeasurements(raw: unknown): ProtocolMeasurement[] {
     const hours = String(operating_hours ?? "").trim();
     const fuel = String(fuel_level ?? "").trim();
     const km = String(mileage ?? "").trim();
-    if ((!hours && !fuel && !km) || (hours && !counter(hours)) || (km && !counter(km)) || (fuel && !FUELS.has(fuel))) throw new Error("Ungültige Messwerte.");
+    if ((!hours && !fuel && !km) || (hours && !counter(hours)) || (km && !counter(km)) || (fuel && !validFuelLevel(fuel))) throw new Error("Ungültige Messwerte.");
     return { item_name: item_name.trim(), operating_hours: hours, fuel_level: fuel, mileage: km };
   });
 }
@@ -22,5 +24,5 @@ export function parseProtocolMeasurements(raw: unknown): ProtocolMeasurement[] {
 export const measurementRows = (m: ProtocolMeasurement) => [
   ...(m.mileage ? [{ label: "Kilometerstand", value: `${m.mileage} km` }] : []),
   ...(m.operating_hours ? [{ label: "Betriebsstunden", value: `${m.operating_hours} h` }] : []),
-  ...(m.fuel_level ? [{ label: "Tankfüllstand", value: FUELS.get(m.fuel_level) ?? "" }] : []),
+  ...(m.fuel_level ? [{ label: "Tankfüllstand", value: fuelLevelLabel(m.fuel_level) }] : []),
 ];

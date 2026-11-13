@@ -21,7 +21,8 @@ import { DamagesStep } from "@/components/b2b/protocols/DamagesStep";
 import { IdCheckStep } from "@/components/b2b/protocols/IdCheckStep";
 import { ExtraChargesStep, type ChargeSuggestion } from "@/components/b2b/protocols/ExtraChargesStep";
 import { cleaningChargeGross, fuelSuggested, CLEANING_UNIT_GROSS } from "@/lib/returnCharges";
-import { CLEANING_RATE_PER_15_MIN, CLEANLINESS_HINT, FUEL_LEVELS, isDirty, isMachineLike, toNumber, formatEuro, serializeExtraCharges, sumExtraCharges, emptyExtraCharge, type ExtraCharge, type ProtocolDamage } from "@/components/b2b/protocols/protocolShared";
+import { CLEANING_RATE_PER_15_MIN, CLEANLINESS_HINT, FUEL_LEVELS, isDirty, isMachineLike, toNumber, formatEuro, serializeExtraCharges, sumExtraCharges, extraChargeTotal, emptyExtraCharge, type ExtraCharge, type ProtocolDamage } from "@/components/b2b/protocols/protocolShared";
+import { fuelLevelLabel } from "../../../../supabase/functions/_shared/protocolMeasurements";
 import {
   MAX_PROTOCOL_PHOTOS, formatPhotoTimestamp, photoTakenAt, protocolItemsFromInquiry, remainingPhotoSlots, type ProtocolKind,
 } from "@/lib/rentalProtocol";
@@ -256,7 +257,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       const r = readings[i];
       const prev = prevReadings[it.name.trim().toLowerCase()];
       return r?.useFuel && fuelSuggested(prev?.fuel ?? null, r.fuel)
-        ? [{ kind: "fuel" as const, itemName: it.name, text: `${it.name}: Tank bei Rückgabe ${FUEL_LEVELS.find((f) => f.value === r.fuel)?.label ?? r.fuel}${prev?.fuel ? `, bei Übergabe ${FUEL_LEVELS.find((f) => f.value === prev.fuel)?.label ?? prev.fuel}` : ""} – nachgetankte Liter erfassen:` }]
+        ? [{ kind: "fuel" as const, itemName: it.name, text: `${it.name}: Tank bei Rückgabe ${fuelLevelLabel(r.fuel)}${prev?.fuel ? `, bei Übergabe ${fuelLevelLabel(prev.fuel)}` : ""} – nachgetankte Liter erfassen:` }]
         : [];
     }),
   ];
@@ -311,7 +312,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
           customer_not_present: customerNotPresent,
           customer_signature: customerNotPresent ? null : customerSignature,
           customer_signer_name: customerNotPresent ? null : signerName.trim(),
-          id_checked: !isReturn && !customerNotPresent && idChecked, id_check_type: !isReturn && idDocType ? idDocType : null,
+          id_checked: !isReturn && !customerNotPresent && idChecked, id_check_type: !isReturn && !customerNotPresent && idDocType ? idDocType : null,
           agb_accepted: !customerNotPresent && !isReturn && agbAccepted,
           items_confirmed: !customerNotPresent && itemsConfirmed,
           operating_hours: machineReadings.filter((m) => m.operating_hours).map((m) => `${m.item_name}: ${m.operating_hours}`).join("; ").slice(0, 40) || null,
@@ -392,9 +393,14 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       title: "Ausweis abgleichen",
       summary: customerNotPresent ? "Kunde nicht anwesend" : idChecked ? "Abgeglichen" : "Pflicht",
       done: idDone,
-      content: customerNotPresent
-        ? <p className="text-sm text-muted-foreground">Kunde ist nicht anwesend – kein Ausweisabgleich möglich.</p>
-        : <IdCheckStep checked={idChecked} onCheckedChange={setIdChecked} docType={idDocType} onDocTypeChange={setIdDocType} customerName={inquiry.customer_name ?? undefined} />,
+      content: <div className="space-y-4">
+        <div className="flex items-start gap-3 rounded-lg border p-3">
+          <Checkbox id="not-present" checked={customerNotPresent} onCheckedChange={(v) => setCustomerNotPresent(v === true)} />
+          <label htmlFor="not-present" className="text-sm cursor-pointer">Kunde ist nicht anwesend (z. B. Lieferung an Baustelle) – der Kunde erhält das Protokoll per E-Mail zur nachträglichen digitalen Unterschrift.</label>
+        </div>
+        {customerNotPresent ? <p className="text-sm text-muted-foreground">Kunde ist nicht anwesend – kein Ausweisabgleich möglich.</p>
+          : <IdCheckStep checked={idChecked} onCheckedChange={setIdChecked} docType={idDocType} onDocTypeChange={setIdDocType} customerName={inquiry.customer_name ?? undefined} />}
+      </div>,
     }] : []),
     {
       id: "equipment",
@@ -412,7 +418,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
               return <div key={i} className="space-y-2">
                 <MeasurementFields name={it.name} value={{ ...emptyMeasurement(), ...readings[i] }} onChange={(m) => setReading(i, m)}
                   allowHours={cmsFor(i)?.hours ?? true} allowFuel={cmsFor(i)?.tank ?? true} />
-                {isReturn && prev && (prev.mileage != null || prev.hours != null || !!prev.fuel) && <p className="text-xs text-muted-foreground pl-2">Bei Übergabe: {[prev.mileage != null ? `${prev.mileage} km` : "", prev.hours != null ? `${prev.hours} h` : "", prev.fuel ? `Tank ${FUEL_LEVELS.find((f) => f.value === prev.fuel)?.label ?? prev.fuel}` : ""].filter(Boolean).join(" · ")}</p>}
+                {isReturn && prev && (prev.mileage != null || prev.hours != null || !!prev.fuel) && <p className="text-xs text-muted-foreground pl-2">Bei Übergabe: {[prev.mileage != null ? `${prev.mileage} km` : "", prev.hours != null ? `${prev.hours} h` : "", prev.fuel ? `Tank ${fuelLevelLabel(prev.fuel)}` : ""].filter(Boolean).join(" · ")}</p>}
                 <div className="rounded-md border p-3 space-y-2">
                   <Label className="text-xs">Sauberkeit / Verschmutzung{isReturn ? " *" : " (optional)"}</Label>
                   <div className="grid grid-cols-5 gap-2">
@@ -525,10 +531,10 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       done: signaturesDone && legalDone,
       content: (
         <div className="space-y-4">
-          <div className="flex items-start gap-3 rounded-lg border p-3">
+          {isReturn && <div className="flex items-start gap-3 rounded-lg border p-3">
             <Checkbox id="not-present" checked={customerNotPresent} onCheckedChange={(v) => setCustomerNotPresent(v === true)} />
             <label htmlFor="not-present" className="text-sm cursor-pointer">Kunde ist nicht anwesend (z. B. Lieferung an Baustelle) – {isReturn ? "das Protokoll wird ohne Kundenunterschrift erstellt und so vermerkt." : "der Kunde erhält das Protokoll per E-Mail zur nachträglichen digitalen Unterschrift."}</label>
-          </div>
+          </div>}
           {!customerNotPresent && (
             <>
               <div className="space-y-2 rounded-lg border p-3">
@@ -547,7 +553,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
                 {isReturn && allCharges.length > 0 && (
                   <div className="rounded-md bg-muted/60 p-2 text-sm space-y-0.5">
                     <p className="font-medium">Zusatzkosten</p>
-                    {allCharges.map((c) => <p key={c.id} className="flex justify-between gap-2"><span className="break-words">{c.label}{c.unit === "l" ? ` (${c.quantity} l)` : ""}</span><span className="shrink-0">{formatEuro(toNumber(c.quantity) * toNumber(c.unitPrice))}</span></p>)}
+                    {allCharges.map((c) => <p key={c.id} className="flex justify-between gap-2"><span className="break-words">{c.label}{c.unit === "l" ? ` (${c.quantity} l)` : ""}</span><span className="shrink-0">{formatEuro(extraChargeTotal(c))}</span></p>)}
                     <p className="flex justify-between gap-2 font-semibold border-t pt-1"><span>Summe brutto</span><span>{formatEuro(chargesTotal)}</span></p>
                   </div>
                 )}

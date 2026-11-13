@@ -12,7 +12,7 @@ import {
   EXTRA_CHARGE_TEMPLATES, emptyExtraCharge, extraChargeTotal, formatEuro,
   sumExtraCharges, type ExtraCharge,
 } from "./protocolShared";
-import { CLEANING_UNIT_GROSS, CLEANING_UNIT_MINUTES, CLEANING_UNIT_NET, FUEL_PRICES, cleaningMinutesLabel } from "@/lib/returnCharges";
+import { CLEANING_UNIT_GROSS, CLEANING_UNIT_MINUTES, CLEANING_UNIT_NET, FUEL_PRICES, RECHARGE_NET, cleaningMinutesLabel } from "@/lib/returnCharges";
 
 export interface ChargeSuggestion { kind: "cleaning" | "fuel"; text: string; itemName?: string }
 
@@ -36,6 +36,7 @@ export const fuelCharge = (fuel: (typeof FUEL_PRICES)[number], itemName?: string
   ...emptyExtraCharge(`Kraftstoff ${fuel.label} nachgetankt${itemName ? ` – ${itemName}` : ""}`),
   quantity: "", unitPrice: price(fuel.pricePerLiter), unit: "l",
 });
+export const rechargeCharge = (): ExtraCharge => ({ ...emptyExtraCharge("Nachladung"), unitPrice: price(RECHARGE_NET), priceBasis: "net" });
 
 export function ExtraChargesStep({ charges, onChange, suggestions = [], depositHint, fixedCharges = [] }: Props) {
   const update = (id: string, patch: Partial<ExtraCharge>) =>
@@ -45,7 +46,7 @@ export function ExtraChargesStep({ charges, onChange, suggestions = [], depositH
   return (
     <div className="space-y-3">
       <p className="text-sm text-muted-foreground">
-        Beträge brutto. Der Kunde bestätigt sie mit seiner Unterschrift; sie werden in die Rechnung übernommen und mit einer gezahlten Kaution verrechnet.
+        Freie Positionen und Nachladung: Preise netto. Reinigung und Kraftstoff: Preise brutto. Die Gesamtsumme wird brutto mit der Kaution verrechnet.
       </p>
 
       {suggestions.map((s, i) => (
@@ -68,6 +69,9 @@ export function ExtraChargesStep({ charges, onChange, suggestions = [], depositH
       ))}
 
       <div className="flex flex-wrap gap-2">
+        <Button variant="outline" size="sm" onClick={() => onChange([...charges, rechargeCharge()])}>
+          <Plus className="h-3.5 w-3.5 mr-1" /> Nachladung (20 € netto)
+        </Button>
         <Button variant="outline" size="sm" onClick={() => onChange([...charges, cleaningCharge()])}>
           <Plus className="h-3.5 w-3.5 mr-1" /> Reinigung
         </Button>
@@ -107,7 +111,7 @@ export function ExtraChargesStep({ charges, onChange, suggestions = [], depositH
                     onChange={(e) => update(charge.id, { quantity: e.target.value })} className="h-11 text-sm" />
                 </div>
                 <div>
-                  <Label className="text-xs">{liters ? "Literpreis (brutto)" : cleaning ? `Preis je ${CLEANING_UNIT_MINUTES} Min (brutto)` : "Einzelpreis (brutto)"}</Label>
+                  <Label className="text-xs">{liters ? "Literpreis (brutto)" : cleaning ? `Preis je ${CLEANING_UNIT_MINUTES} Min (brutto)` : `Einzelpreis (${charge.priceBasis === "net" ? "netto" : "brutto"})`}</Label>
                   <Input inputMode="decimal" value={charge.unitPrice} placeholder="0,00"
                     onChange={(e) => update(charge.id, { unitPrice: e.target.value })} className="h-11 text-sm" />
                 </div>
@@ -115,14 +119,14 @@ export function ExtraChargesStep({ charges, onChange, suggestions = [], depositH
               <p className="text-xs text-right text-muted-foreground">
                 {liters ? `${charge.quantity || "0"} l × ${charge.unitPrice || "0"} € = `
                   : cleaning ? `${charge.quantity || "0"} × ${CLEANING_UNIT_MINUTES} Min (${cleaningMinutesLabel(Number(String(charge.quantity).replace(",", ".")) || 0)}) × ${charge.unitPrice || "0"} € = `
-                  : "Zwischensumme: "}{formatEuro(extraChargeTotal(charge))}
+                  : "Zwischensumme: "}{formatEuro(extraChargeTotal(charge))} brutto
               </p>
             </CardContent>
           </Card>
         );
       })}
 
-      <Button variant="outline" onClick={() => onChange([...charges, emptyExtraCharge()])} className="w-full">
+      <Button variant="outline" onClick={() => onChange([...charges, { ...emptyExtraCharge(), priceBasis: "net" }])} className="w-full">
         <Plus className="h-4 w-4 mr-1.5" /> Freie Position hinzufügen
       </Button>
 
