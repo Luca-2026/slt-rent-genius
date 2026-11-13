@@ -7,7 +7,7 @@ import { validCalendarDate, validPublicRentalPeriod } from "../_shared/public-re
 import { SIGN_PERMIT_MAX_BYTES, validSignPermit } from "../_shared/sign-permit.ts";
 import { signPermitPeriodError } from "../_shared/sign-permit-period.ts";
 import { routeDistance } from "../_shared/route-distance.ts";
-import { signSetupGrossCents } from "../_shared/sign-direct-booking.ts";
+import { signSetupGrossCents, SIGN_ADDITIONAL_SLUG, SIGN_ADDITIONAL_NAME } from "../_shared/sign-direct-booking.ts";
 import { signLeadError } from "../_shared/sign-booking-lead.ts";
 import { SIGN_TERMS_VERSION, SIGN_TERMS_HASHES } from "../_shared/sign-legal.ts";
 
@@ -26,6 +26,7 @@ const booking = z.object({
   additionalSigns: z.array(z.object({ slug: text(150), quantity: z.number().int().min(1).max(100) })).max(30).default([]),
   zoneStreet: z.string().trim().max(200), zonePostalCode: z.string().trim().max(20), zoneCity: z.string().trim().max(100), message: z.string().max(4000), permitToken: z.string().regex(/^[A-Za-z0-9_-]{20,64}$/).nullable(),
   permitValidFrom: z.string().optional(), permitValidUntil: z.string().optional(), permitIssuedOn: z.string().optional(),
+  permitValidFromTime: z.string().optional(), permitValidUntilTime: z.string().optional(),
 }).refine(v => Object.keys(bookingContactErrors(v)).length === 0).refine(v => v.package === "standard" ? v.pickupConfirmed : v.municipalFeesAccepted && v.zoneStreet.length > 3 && v.zonePostalCode.length > 3 && v.zoneCity.length > 1);
 
 Deno.serve(async req => {
@@ -54,9 +55,9 @@ Deno.serve(async req => {
     if (rateError || !allowed) return json({ error: "Bitte später erneut versuchen" }, 429);
     if (raw.action === "config") {
       const { data: p } = await service.from("b2b_managed_products").select("direct_booking_config").eq("slug", "halteverbotsschilder-set").eq("is_published", true).maybeSingle();
-      const { data: signs, error: signsError } = await service.from("b2b_managed_products").select("slug,name,images,available_locations").eq("is_published", true).eq("category", "absperrtechnik").or("slug.ilike.%zusatz%,slug.like.vz-1000-%").order("name");
+      const { data: signs, error: signsError } = await service.from("b2b_managed_products").select("slug,name,images,available_locations").eq("is_published", true).eq("category", "absperrtechnik").eq("slug", SIGN_ADDITIONAL_SLUG);
       if (signsError) throw signsError;
-      return json({ config: p?.direct_booking_config ? { ...p.direct_booking_config, bank_discount_enabled: await bankDiscountLive(service) } : null, additionalSigns: signs ?? [] });
+      return json({ config: p?.direct_booking_config ? { ...p.direct_booking_config, bank_discount_enabled: await bankDiscountLive(service) } : null, additionalSigns: (signs ?? []).map(sign => ({ ...sign, name: SIGN_ADDITIONAL_NAME })) });
     }
     if (raw.action === "availability") {
       const parsed = z.object({ location: z.enum(["bonn", "krefeld"]), from: z.string().refine(validCalendarDate), to: z.string().refine(validCalendarDate) }).safeParse(raw);
@@ -108,7 +109,7 @@ Deno.serve(async req => {
     if (!existing) {
       const leadError = signLeadError(body.package, body.permitMode, body.start_date, body.start_time);
       if (leadError) return json({ error: leadError }, 400);
-      if (body.package === "standard") { const periodError = signPermitPeriodError({ permitValidFrom, permitValidUntil, permitIssuedOn }, body.start_date, body.end_date); if (periodError) return json({ error: periodError }, 400); }
+      if (body.package === "standard") { const periodError = signPermitPeriodError({ permitValidFrom, permitValidUntil, permitIssuedOn, permitValidFromTime: body.permitValidFromTime, permitValidUntilTime: body.permitValidUntilTime }, body.start_date, body.end_date); if (periodError) return json({ error: periodError }, 400); }
       if (body.package === "sorglos" && body.permitMode === "existing" && !permitToken) return json({ error: "Bitte vorhandene Genehmigung hochladen" }, 400);
     }
     if (!existing && (cartExpiresAt <= Date.now() || cartExpiresAt > Date.now() + 900000)) return json({ error: "Warenkorb abgelaufen" }, 409);
