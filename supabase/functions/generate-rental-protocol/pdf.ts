@@ -3,6 +3,7 @@
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFImage, type PDFPage } from "https://esm.sh/pdf-lib@1.17.1";
 import { drawUnifiedFooter, resolvePdfLocation, FOOTER_TOP } from "../_shared/pdf-footer.ts";
 import { SLT_COMPANY } from "../_shared/offer-company.ts";
+import { fuelLevelLabel } from "../_shared/protocolMeasurements.ts";
 
 export interface ProtocolPdfPhoto { bytes: Uint8Array; takenAt: string; caption: string | null; damageNo: number | null }
 export interface ProtocolPdfDamage {
@@ -244,7 +245,7 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
   if (rd.length) {
      for (const m of rd) {
        const hasItemCleanliness = (data.condition.itemCleanliness ?? []).some((c) => c.item_name === m.item_name);
-       const values = [m.mileage ? `Kilometerstand: ${m.mileage} km` : "", m.operating_hours ? `Betriebsstunden: ${m.operating_hours} h` : "", m.fuel_level && m.fuel_level !== "kein_tank" ? `Tank: ${FUEL[m.fuel_level] ?? m.fuel_level}` : "", m.cleanliness && !hasItemCleanliness ? `Sauberkeit: ${m.cleanliness}/5` : ""].filter(Boolean);
+       const values = [m.mileage ? `Kilometerstand: ${m.mileage} km` : "", m.operating_hours ? `Betriebsstunden: ${m.operating_hours} h` : "", m.fuel_level && m.fuel_level !== "kein_tank" ? `Tank: ${fuelLevelLabel(m.fuel_level)}` : "", m.cleanliness && !hasItemCleanliness ? `Sauberkeit: ${m.cleanliness}/5` : ""].filter(Boolean);
        if (values.length) kv(m.item_name, values.join(" \u00B7 "));
      }
      for (const c of data.condition.itemCleanliness ?? []) {
@@ -253,7 +254,7 @@ export async function renderProtocolPdf(data: ProtocolPdfData): Promise<Uint8Arr
      }
   } else {
     if (data.condition.operatingHours) kv("Betriebsstunden", data.condition.operatingHours);
-    if (data.condition.fuelLevel) kv("Tankf\u00FCllstand", FUEL[data.condition.fuelLevel] ?? data.condition.fuelLevel);
+    if (data.condition.fuelLevel) kv("Tankf\u00FCllstand", fuelLevelLabel(data.condition.fuelLevel));
   }
   if (data.condition.cleanliness) kv("Sauberkeit", `${data.condition.cleanliness} von 5 (1 = sehr verschmutzt, 5 = sauber)`);
   kv(isReturn ? "Zustand / M\u00E4ngel" : "Bekannte M\u00E4ngel", data.condition.knownDefects || "Keine angegeben");
