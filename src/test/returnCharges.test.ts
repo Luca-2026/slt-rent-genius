@@ -18,10 +18,10 @@ describe("Zusatzkosten bei Rücknahme", () => {
     expect(cleaningSuggested(null)).toBe(false);
   });
   it("Literpreise laut Mietbedingungen", () => {
-    expect(FUEL_PRICES.find((f) => f.value === "diesel")!.pricePerLiter).toBe(2.85);
-    expect(FUEL_PRICES.find((f) => f.value === "benzin")!.pricePerLiter).toBe(2.95);
-    expect(FUEL_PRICES.find((f) => f.value === "adblue")!.pricePerLiter).toBe(1.85);
-    expect(fuelChargeGross(12.5, 2.85)).toBe(35.63);
+    expect(FUEL_PRICES.find((f) => f.value === "diesel")?.pricePerLiter).toBe(2.85);
+    expect(FUEL_PRICES.find((f) => f.value === "benzin")?.pricePerLiter).toBe(2.95);
+    expect(FUEL_PRICES.find((f) => f.value === "adblue")?.pricePerLiter).toBe(1.85);
+    expect(fuelChargeGross(12.5, 2.85)).toBe(42.39);
     expect(fuelChargeGross(0, 2.85)).toBe(0);
   });
   it("Kraftstoff nur, wenn weniger als bei Übergabe", () => {
