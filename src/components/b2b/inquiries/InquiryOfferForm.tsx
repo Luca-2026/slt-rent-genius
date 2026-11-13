@@ -3,6 +3,8 @@ import { RentalCreditRefund } from "./RentalCreditRefund";
 import { bankDiscountPresentation, editorBankDiscount } from "@/lib/editorBankDiscount";
 import { invoiceServicePeriod } from "@/lib/invoiceServicePeriod";
 import { LogisticsServiceFields } from "./LogisticsServiceFields";
+import { OfferTimeSelect } from "./OfferTimeSelect";
+import { appendOfferPosition } from "./offerEditorRules";
 import { isLogisticsService, logisticsService, migrateServiceCosts, SERVICE_UNITS, serviceUnit, type ServiceKind } from "./logisticsServices";
 import { OpenEndedPeriodFields } from "./OpenEndedPeriodFields";
 import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLegacyPeriod, undatedOfferLine } from "./offerCalendarPeriod";
@@ -1833,7 +1835,7 @@ export function InquiryOfferForm({
                     // eine von Hand gewählte eigene Gruppe bleibt erhalten.
                     const currentGroup = groups.find((g) => g.id === item.group_id);
                     let nextGroups = groups;
-                    if (product && !isInvoice && (!currentGroup || currentGroup.source === "category")) {
+                    if (product && !isInvoice && !currentGroup) {
                       const catName = await categoryNameFor(product.category);
                       const ensured = ensureCategoryGroup(groups, catName);
                       nextGroups = ensured.groups;
@@ -1907,8 +1909,8 @@ export function InquiryOfferForm({
                 </div>
                 <div className="min-w-0">
                   <Label className="text-xs">Uhrzeit</Label>
-                  <Input type="time" aria-label="Uhrzeit Mietbeginn" className={DT_INPUT} value={eff.rental_start_time ?? ""} placeholder="08:00" disabled={disabled || inherited}
-                    onChange={(e) => patchPriced(index, { rental_start_time: e.target.value || undefined, custom_period: true })} />
+                  <OfferTimeSelect label="Uhrzeit Mietbeginn" value={eff.rental_start_time ?? ""} disabled={disabled || inherited}
+                    onChange={value => patchPriced(index, { rental_start_time: value || undefined, custom_period: true })} />
                 </div>
                 <div className="min-w-0">
                   <Label className="text-xs">Mietende</Label>
@@ -1917,8 +1919,8 @@ export function InquiryOfferForm({
                 </div>
                 <div className="min-w-0">
                   <Label className="text-xs">Uhrzeit</Label>
-                  <Input type="time" aria-label="Uhrzeit Mietende" className={DT_INPUT} value={eff.rental_end_time ?? ""} placeholder="17:00" disabled={disabled || inherited}
-                    onChange={(e) => patchPriced(index, { rental_end_time: e.target.value || undefined, custom_period: true })} />
+                  <OfferTimeSelect label="Uhrzeit Mietende" value={eff.rental_end_time ?? ""} disabled={disabled || inherited}
+                    onChange={value => patchPriced(index, { rental_end_time: value || undefined, custom_period: true })} />
                 </div>
               </div>
             )}
@@ -1933,13 +1935,21 @@ export function InquiryOfferForm({
                   <div className="grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-2">
                     <div className="min-w-0">
                       <Label className="text-xs">Lieferzeitpunkt</Label>
-                      <Input type="datetime-local" aria-label="Lieferzeitpunkt" className={DT_INPUT} value={item.delivery_at ?? ""} disabled={disabled}
-                        onChange={(e) => patchItem(index, { delivery_at: e.target.value })} />
+                      <div className="grid grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-2">
+                        <Input type="date" aria-label="Lieferdatum" className={DT_INPUT} value={item.delivery_at?.slice(0, 10) ?? ""} disabled={disabled}
+                          onChange={e => patchItem(index, { delivery_at: e.target.value ? `${e.target.value}T${item.delivery_at?.slice(11, 16) || "08:00"}` : "" })} />
+                        <OfferTimeSelect label="Uhrzeit Lieferung" value={item.delivery_at?.slice(11, 16) ?? ""} disabled={disabled || !item.delivery_at?.slice(0, 10)}
+                          onChange={value => patchItem(index, { delivery_at: value ? `${item.delivery_at?.slice(0, 10)}T${value}` : "" })} />
+                      </div>
                     </div>
                     <div className="min-w-0">
                       <Label className="text-xs">Rückholzeitpunkt</Label>
-                      <Input type="datetime-local" aria-label="Rückholzeitpunkt" className={DT_INPUT} value={item.collection_at ?? ""} disabled={disabled}
-                        onChange={(e) => patchItem(index, { collection_at: e.target.value })} />
+                      <div className="grid grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-2">
+                        <Input type="date" aria-label="Rückholdatum" className={DT_INPUT} value={item.collection_at?.slice(0, 10) ?? ""} disabled={disabled}
+                          onChange={e => patchItem(index, { collection_at: e.target.value ? `${e.target.value}T${item.collection_at?.slice(11, 16) || "17:00"}` : "" })} />
+                        <OfferTimeSelect label="Uhrzeit Rückholung" value={item.collection_at?.slice(11, 16) ?? ""} disabled={disabled || !item.collection_at?.slice(0, 10)}
+                          onChange={value => patchItem(index, { collection_at: value ? `${item.collection_at?.slice(0, 10)}T${value}` : "" })} />
+                      </div>
                     </div>
                   </div>
                 )}
@@ -2212,14 +2222,14 @@ export function InquiryOfferForm({
             variant="outline"
             size="sm"
             onClick={() =>
-              setItems((prev) => [...prev, {
+              setItems((prev) => appendOfferPosition(prev, {
                 ...emptyLine(),
                 ...(isSalesOffer ? { unit: "stueck" as const, duration: 1 } : {}),
                 rental_start: prev[0]?.rental_start ?? rentalPeriod?.start ?? undefined,
                 rental_end: prev[0]?.rental_end ?? rentalPeriod?.end ?? undefined,
                 rental_start_time: prev[0]?.rental_start_time,
                 rental_end_time: prev[0]?.rental_end_time,
-              }])
+              }, groups))
             }
             disabled={disabled}
           >

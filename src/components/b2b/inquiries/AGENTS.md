@@ -1,4 +1,5 @@
 # Inquiries
+- Offer time selectors share quarter-hour options and preserve legacy values until edited; appended positions inherit the final group, and catalogue selections retain valid groups so new lines stay last through grouping and serialization.
 - Invoice editors inherit payment_terms and custom conditions from the operational offer snapshot alongside customer references; explicit draft/staff choices remain visible and are not silently replaced.
 - Unchanged offer resends use ResendOfferButton and resend-inquiry-offer with server-owned recipient confirmation, existing PDF and acceptance link; this prevents revisions or new document numbers for address corrections.
 - Deposit refund controls reconcile provider evidence before execution and resume unresolved durable requests; depositRefundPayment only chooses new unreserved receipts. Pre-invoice rental refunds use an explicitly prepared server-calculated preview basis; final invoice controls stay blocked until confirmed payouts, never a second claim for reserved capacity.
