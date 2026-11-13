@@ -1,20 +1,20 @@
 // Zentrale Liefertarife – geteilt zwischen Website (src/data/lieferkosten) und Edge Functions.
-// Quelle: lieferpreise-slt-tarife-NEU-v4-2.csv / mapping-NEU-v2-2.csv. Beträge sind BRUTTO.
+// Quelle: lieferpreise-slt-tarife-NEU-v4-2.csv / mapping-NEU-v2-2.csv. Beträge sind NETTO (bisherige Zahlen unverändert, Luca 13.11.2026).
 
 export type TariffKey = "A" | "B" | "C";
-export interface TariffDistance { km: number; brutto: number }
+export interface TariffDistance { km: number; net: number }
 export interface Tariff { key: TariffKey; name: string; vehicle: string; multiplier2Maschinen: number; distances: TariffDistance[] }
 
 export const tariffs: Record<TariffKey, Tariff> = {
   A: { key: "A", name: "Sprinter Standard", vehicle: "Sprinter solo", multiplier2Maschinen: 1.0, distances: [
-    { km: 5, brutto: 50 }, { km: 10, brutto: 80 }, { km: 15, brutto: 100 }, { km: 20, brutto: 130 }, { km: 25, brutto: 135 },
-    { km: 30, brutto: 155 }, { km: 35, brutto: 180 }, { km: 40, brutto: 180 }, { km: 45, brutto: 200 }, { km: 50, brutto: 220 } ] },
+    { km: 5, net: 50 }, { km: 10, net: 80 }, { km: 15, net: 100 }, { km: 20, net: 130 }, { km: 25, net: 135 },
+    { km: 30, net: 155 }, { km: 35, net: 180 }, { km: 40, net: 180 }, { km: 45, net: 200 }, { km: 50, net: 220 } ] },
   B: { key: "B", name: "Sprinter + 2,5t-Anhänger (Baumaschinen < 2 t)", vehicle: "Sprinter mit Pkw-Anhänger", multiplier2Maschinen: 1.3, distances: [
-    { km: 5, brutto: 75 }, { km: 10, brutto: 95 }, { km: 15, brutto: 115 }, { km: 20, brutto: 145 }, { km: 25, brutto: 150 },
-    { km: 30, brutto: 175 }, { km: 35, brutto: 200 }, { km: 40, brutto: 200 }, { km: 45, brutto: 225 }, { km: 50, brutto: 245 } ] },
+    { km: 5, net: 75 }, { km: 10, net: 95 }, { km: 15, net: 115 }, { km: 20, net: 145 }, { km: 25, net: 150 },
+    { km: 30, net: 175 }, { km: 35, net: 200 }, { km: 40, net: 200 }, { km: 45, net: 225 }, { km: 50, net: 245 } ] },
   C: { key: "C", name: "Sprinter + 3,5t-Baumaschinenanhänger (Baumaschinen < 3,5 t)", vehicle: "Sprinter mit Baumaschinenanhänger", multiplier2Maschinen: 1.8, distances: [
-    { km: 5, brutto: 95 }, { km: 10, brutto: 105 }, { km: 15, brutto: 130 }, { km: 20, brutto: 160 }, { km: 25, brutto: 170 },
-    { km: 30, brutto: 195 }, { km: 35, brutto: 220 }, { km: 40, brutto: 225 }, { km: 45, brutto: 250 }, { km: 50, brutto: 275 } ] },
+    { km: 5, net: 95 }, { km: 10, net: 105 }, { km: 15, net: 130 }, { km: 20, net: 160 }, { km: 25, net: 170 },
+    { km: 30, net: 195 }, { km: 35, net: 220 }, { km: 40, net: 225 }, { km: 45, net: 250 }, { km: 50, net: 275 } ] },
 };
 
 export const TIEFLADER_AB_KG = 3000;
@@ -67,10 +67,10 @@ export function deliveryTariffFor(category: string, productName?: string | null)
   return { tarif: sub ? SUBTYPE_TARIFF[sub] : "A", onRequest: false };
 }
 
-export function tariffBrutto(tarif: TariffKey, km: number): { brutto: number; band: number } {
+export function tariffNet(tarif: TariffKey, km: number): { net: number; band: number } {
   const sorted = [...tariffs[tarif].distances].sort((a, b) => a.km - b.km);
   const entry = sorted.find(e => km <= e.km) ?? sorted[sorted.length - 1];
-  return { brutto: entry.brutto, band: entry.km };
+  return { net: entry.net, band: entry.km };
 }
 
 export type CartDeliveryQuote =
@@ -94,7 +94,7 @@ export function cartDeliveryQuote(lines: { category: string; product_name: strin
   const tarif = top.tarif!;
   const machineUnits = rated.filter(r => r.tarif === "B" || r.tarif === "C").reduce((sum, r) => sum + r.line.quantity, 0);
   const twoMachines = machineUnits >= 2 && tariffs[tarif].multiplier2Maschinen > 1;
-  const { brutto: base, band } = tariffBrutto(tarif, km);
-  const brutto = Math.round(base * (twoMachines ? tariffs[tarif].multiplier2Maschinen : 1) * 2 * 100) / 100;
-  return { status: "priced", tarif, tariff_name: tariffs[tarif].name, product_name: top.line.product_name, km, band, two_machines: twoMachines, brutto, net: Math.round((brutto / 1.19) * 100) / 100 };
+  const { net: base, band } = tariffNet(tarif, km);
+  const net = Math.round(base * (twoMachines ? tariffs[tarif].multiplier2Maschinen : 1) * 2 * 100) / 100;
+  return { status: "priced", tarif, tariff_name: tariffs[tarif].name, product_name: top.line.product_name, km, band, two_machines: twoMachines, net, brutto: Math.round(net * 1.19 * 100) / 100 };
 }
