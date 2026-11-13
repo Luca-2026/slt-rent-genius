@@ -4,7 +4,7 @@ import { Phone, RefreshCw, Inbox, Clock, ExternalLink, Check, Undo2 } from "luci
 import { supabase } from "@/integrations/supabase/client";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
-import { usePhoneCalls, type PhoneCall } from "@/hooks/usePhoneCalls";
+import { usePhoneCalls, usePhoneCallTranscript, type PhoneCall } from "@/hooks/usePhoneCalls";
 import { INTENT_LABEL, PRIORITY_LABEL, priorityDisplayLabel, PRIORITY_ORDER, type CallIntent, type CallPriority } from "@/lib/callPriority";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -246,12 +246,13 @@ function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => voi
     if (msg) toast({ title: "Auswertung fehlgeschlagen", description: msg, variant: "destructive" });
     else { toast({ title: "Neu ausgewertet" }); onChanged(); }
   };
+  const transcript = usePhoneCallTranscript(call.id);
   const importText = [
     call.caller_phone ? `Anrufernummer: ${call.caller_phone}` : null,
     call.company_name ? `Firma: ${call.company_name}` : null,
     call.customer_name ?? call.caller_name ? `Name: ${call.customer_name ?? call.caller_name}` : null,
     call.email ? `E-Mail: ${call.email}` : null,
-    call.transcript ?? call.provider_summary ?? call.summary,
+    transcript ?? call.provider_summary ?? call.summary,
   ].filter(Boolean).join("\n");
   const createInquiry = async (r: Parameters<typeof createInquiryFromImport>[0]) => {
     const id = await createInquiryFromImport(r);
@@ -329,10 +330,10 @@ function CallDetail({ call, onChanged }: { call: PhoneCall; onChanged: () => voi
         <Button size="sm" className="mt-2" variant="outline" disabled={busy || notes === (call.notes ?? "")} onClick={() => update({ notes: notes.trim() || null })}>Notiz speichern</Button>
       </section>
 
-      {call.transcript && (
+      {transcript && (
         <section>
           <h3 className="mb-1 text-sm font-semibold">Transkript</h3>
-          <pre className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-md bg-muted p-3 text-xs">{call.transcript}</pre>
+          <pre className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-md bg-muted p-3 text-xs">{transcript}</pre>
         </section>
       )}
     </div>
