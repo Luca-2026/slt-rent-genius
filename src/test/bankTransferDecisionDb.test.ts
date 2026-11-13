@@ -28,6 +28,7 @@ beforeAll(async () => {
   await db.exec(`CREATE FUNCTION public.can_edit_operations(uuid) RETURNS boolean LANGUAGE sql AS $$ SELECT true $$;`);
   await db.exec(readFileSync("drizzle/migrations/0134_record_rental_bank_payments_atomically.sql", "utf8"));
   await db.exec(readFileSync("drizzle/migrations/0135_protect_manual_rental_provider_receipts.sql", "utf8"));
+  await db.exec(readFileSync("drizzle/migrations/0185_staff_payment_conflict_non_retryable.sql", "utf8"));
 }, 30000);
 afterAll(() => db.close());
 async function fixture(payments: unknown[] = []) {
@@ -40,6 +41,19 @@ async function fixture(payments: unknown[] = []) {
 }
 const decide = (id: string, payload: unknown, expected = 0, method = "bank") => db.query("SELECT select_rental_payment_method($1,'TEST',$2,$3,$4::jsonb)", [id, expected, method, JSON.stringify(payload)]);
 describe("protected persisted bank discount", () => {
+  it("returns a non-retryable HTTP 409 conflict for stale payments without recording money", async () => {
+    const f = await fixture();
+    const record = db.query("SELECT record_rental_staff_payments($1,$2,$3::jsonb,0,$4::jsonb,NULL)", [f.id, crypto.randomUUID(), JSON.stringify([{ label: "Banküberweisung", amount: 1 }]), JSON.stringify([{ label: "Banküberweisung", amount: 226.97 }])]);
+    await expect(record).rejects.toMatchObject({ code: "PT409" });
+    const row = (await db.query<{ payments: unknown[]; paid_amount: number | null }>("SELECT payments,paid_amount FROM rental_inquiries WHERE id=$1", [f.id])).rows[0];
+    expect(row?.payments).toEqual([]);
+    expect(row?.paid_amount).toBeNull();
+  });
+  it("returns a non-retryable conflict for a stale payment version", async () => {
+    const f = await fixture();
+    await expect(db.query("SELECT record_rental_staff_payments($1,$2,'[]'::jsonb,1,$3::jsonb,NULL)", [f.id, crypto.randomUUID(), JSON.stringify([{ label: "Banküberweisung", amount: 226.97 }])])).rejects.toMatchObject({ code: "PT409" });
+    expect((await db.query<{ payments: unknown[] }>("SELECT payments FROM rental_inquiries WHERE id=$1", [f.id])).rows[0]?.payments).toEqual([]);
+  });
   it("cannot forge or remove provider receipts through the new staff save endpoint", async () => {
     const receipt = { label: "Online-Zahlung (Stripe)", provider: "stripe", reference: "cs_real", amount: 10 };
     const empty = await fixture();

@@ -1,4 +1,5 @@
 # Shared helper rules
+- Stale staff payment snapshots return PT409 instead of 40001; optimistic validation must reject once, not trigger database API serialization retry storms.
 - Staff bank receipts preserve issued invoice/settlement prices instead of implicitly requesting a rebate switch; document-read failures block recording to prevent price drift.
  - Weekly rental tariffs use tierPriceWeek in both rental-pricing mirrors, counting elapsed 24-hour blocks without Bau weekend exclusions; weekly offers serialize one flat amount and explicit period labels, while nextInstallmentDate preserves monthly plans unless a day interval is saved.
 - Delivery tariff bands are net; cartDeliveryQuote adds VAT once while website calculators use shared customer-type display, keeping new inquiry quotes consistent without rewriting issued documents.
