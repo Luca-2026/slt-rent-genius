@@ -477,7 +477,7 @@ Deno.serve(async (req: Request) => {
     let refundBasisId: string | null = null;
     let rentalRefund: { amount: number; method: string; date: string } | undefined;
     let refundBlock: string | null = null;
-    if (inquiryType === "rental" && !cancellationInvoice && !isDepositSettlement && ["invoice", "final"].includes(invoiceKind) && (depositInfo || invoiceKind === "final")) {
+    if (inquiryType === "rental" && !isDepositSettlement && ["invoice", "final"].includes(invoiceKind) && (cancellationInvoice || depositInfo || invoiceKind === "final")) {
       if (prepareRefund) {
         const { data: basis, error: basisError } = await service.from("rental_refund_bases").upsert({ inquiry_id: inquiryId, gross_amount: totals.grossAmount, paid_amount: amountPaid, payments, updated_at: new Date().toISOString() }, { onConflict: "inquiry_id" }).select("id").single();
         if (basisError || !basis) return json({ error: basisError?.message ?? "Erstattungsgrundlage nicht gespeichert" }, 409);
@@ -491,8 +491,12 @@ Deno.serve(async (req: Request) => {
         if (claimError) return json({ error: "Erstattungsstatus konnte nicht geprüft werden" }, 409);
         if (claim?.status === "succeeded" && Number(basis.gross_amount) === totals.grossAmount && Number(basis.paid_amount) === amountPaid) rentalRefund = { amount: claim.amount_cents / 100, method: claim.payout_method, date: claim.updated_at.slice(0, 10) };
       }
-      const { error: checkError } = await service.rpc("check_rental_invoice_refunds", { _inquiry: inquiryId, _gross: totals.grossAmount, _paid: amountPaid });
-      refundBlock = checkError?.message ?? null;
+      // A cancellation may still be invoiced first. Once a pre-invoice refund
+      // basis exists, it must be completed and printed, never refunded twice.
+      if (!cancellationInvoice || basis || prepareRefund) {
+        const { error: checkError } = await service.rpc("check_rental_invoice_refunds", { _inquiry: inquiryId, _gross: totals.grossAmount, _paid: amountPaid });
+        refundBlock = checkError?.message ?? null;
+      }
       if (!isPreview && refundBlock) return json({ error: refundBlock }, 409);
     }
 
