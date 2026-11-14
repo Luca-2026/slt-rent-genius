@@ -8,7 +8,7 @@ import { formatEuro } from "./offerMath";
 import { FileText, Undo2 } from "lucide-react";
 
 type Result = { success: boolean; error?: string; amount_cents: number; status: string; payout_method: string; pdf_url?: string; pdf_base64?: string };
-export function RentalCreditRefund({ invoiceId, inquiryId, onDone }: { invoiceId?: string; inquiryId?: string; onDone?: () => void }) {
+export function RentalCreditRefund({ invoiceId, inquiryId, onDone, prepareBasis }: { invoiceId?: string; inquiryId?: string; onDone?: () => void; prepareBasis?: () => Promise<boolean> }) {
   const [result, setResult] = useState<Result | null>(null);
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -18,6 +18,7 @@ export function RentalCreditRefund({ invoiceId, inquiryId, onDone }: { invoiceId
     if (busy) return;
     setBusy(true);
     try {
+      if (action === "rental_credit_info" && prepareBasis && !await prepareBasis()) return;
       const orderAction = action === "rental_credit_info" ? "order_credit_info" : action === "refund_rental_credit" ? "refund_order_credit" : "confirm_order_credit_transfer";
       const { data, error } = await invokeWithAuth<Result>("offer-payment-admin", { action: inquiryId ? orderAction : action, ...(inquiryId ? { inquiry_id: inquiryId } : { invoice_id: invoiceId }), ...(action === "confirm_rental_credit_transfer" ? { bank_reference: reference } : {}) });
       if (error || !data?.success) { toast({ title: "Mietguthaben nicht abgeschlossen", description: data?.error || "Status erneut prüfen; nicht zusätzlich erstatten.", variant: "destructive" }); return; }

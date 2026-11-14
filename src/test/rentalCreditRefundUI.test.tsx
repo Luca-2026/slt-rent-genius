@@ -6,6 +6,25 @@ vi.mock("@/lib/invokeWithAuth", () => ({ invokeWithAuth: invoke }));
 vi.mock("@/hooks/use-toast", () => ({ useToast: () => ({ toast }) }));
 afterEach(() => { cleanup(); vi.clearAllMocks(); });
 describe("rental credit information", () => {
+  it("prepares an unnumbered basis and refunds 49 euros without an invoice id", async () => {
+    const prepare = vi.fn().mockResolvedValue(true);
+    invoke.mockResolvedValueOnce({ data: { success: true, amount_cents: 4900, status: "available", payout_method: "stripe" }, error: null })
+      .mockResolvedValueOnce({ data: { success: true, amount_cents: 4900, status: "succeeded", payout_method: "stripe" }, error: null });
+    render(<RentalCreditRefund inquiryId="cancelled-order" prepareBasis={prepare} />);
+    fireEvent.click(screen.getByRole("button", { name: "Mietguthaben / Erstattung" }));
+    await screen.findByRole("dialog");
+    expect(prepare).toHaveBeenCalledOnce();
+    expect(invoke).toHaveBeenNthCalledWith(1, "offer-payment-admin", { action: "order_credit_info", inquiry_id: "cancelled-order" });
+    fireEvent.click(screen.getByRole("button", { name: "Verbindlich auf ursprüngliche Zahlung erstatten" }));
+    await waitFor(() => expect(invoke).toHaveBeenNthCalledWith(2, "offer-payment-admin", { action: "refund_order_credit", inquiry_id: "cancelled-order" }));
+    expect(prepare).toHaveBeenCalledOnce();
+  });
+  it("does not request a refund when the cancellation basis cannot be prepared", async () => {
+    render(<RentalCreditRefund inquiryId="cancelled-order" prepareBasis={vi.fn().mockResolvedValue(false)} />);
+    fireEvent.click(screen.getByRole("button", { name: "Mietguthaben / Erstattung" }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "Mietguthaben / Erstattung" })).toBeEnabled());
+    expect(invoke).not.toHaveBeenCalled();
+  });
   it("shows zero credit without offering a payout", async () => {
     invoke.mockResolvedValue({ data: { success: true, amount_cents: 0, status: "none", payout_method: "none" }, error: null });
     render(<RentalCreditRefund invoiceId="invoice" />);

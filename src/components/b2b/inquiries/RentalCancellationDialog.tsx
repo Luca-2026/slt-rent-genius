@@ -62,19 +62,20 @@ export function RentalCancellationDialog({ inquiryId, business, onChanged }: { i
     } catch { setError("Storno konnte nicht geprüft werden."); }
     finally { setBusy(false); }
   };
-  const invoice = async (preview: boolean) => {
-    if (!result?.snapshot || busy) return;
+  const invoice = async (preview: boolean, prepareRefund = false): Promise<boolean> => {
+    if (!result?.snapshot || busy) return false;
     setBusy(true); setError("");
     try {
-      const { data, error: failure } = await invokeWithAuth<Result & { id?: string; invoice_id?: string }>("send-inquiry-invoice", { inquiry_type: "rental", inquiry_id: inquiryId, cancellation_invoice: true, preview, payment_terms: "vorkasse", notes: result.snapshot.reason });
-      if (failure || data?.error) { setError(data?.error ?? "Rechnung nicht abgeschlossen."); return; }
-      if (preview && data?.pdf_base64) { showPdf(data.pdf_base64); setPreviewed(true); }
+      const { data, error: failure } = await invokeWithAuth<Result & { id?: string; invoice_id?: string }>("send-inquiry-invoice", { inquiry_type: "rental", inquiry_id: inquiryId, cancellation_invoice: true, preview, prepare_refund: prepareRefund, payment_terms: "vorkasse", notes: result.snapshot.reason });
+      if (failure || data?.error) { setError(data?.error ?? "Rechnung nicht abgeschlossen."); return false; }
+      if (preview && data?.pdf_base64 && !prepareRefund) { showPdf(data.pdf_base64); setPreviewed(true); }
       if (!preview) {
         toast({ title: `Stornorechnung ${data?.invoice_number ?? ""} erstellt` });
         const { data: rows } = await supabase.from("inquiry_invoices").select("id").eq("rental_inquiry_id", inquiryId).eq("invoice_kind", "invoice").neq("status", "draft").neq("status", "cancelled").order("created_at", { ascending: false }).limit(1);
         setInvoiceId(rows?.[0]?.id ?? null); onChanged();
       }
-    } catch { setError("Rechnung konnte nicht abgeschlossen werden. Vor Wiederholung Belege prüfen."); }
+      return true;
+    } catch { setError("Rechnung konnte nicht abgeschlossen werden. Vor Wiederholung Belege prüfen."); return false; }
     finally { setBusy(false); }
   };
   const valid = received && reason.trim().length >= 3 && vat !== "" && tax && (mode === "agb" ? terms : fee.trim() !== "" && Number.isFinite(Number(fee.replace(",", "."))) && Number(fee.replace(",", ".")) >= 0);
@@ -94,7 +95,7 @@ export function RentalCancellationDialog({ inquiryId, business, onChanged }: { i
       </div>}
       {result?.snapshot && <dl className="grid grid-cols-2 gap-2 border-y border-border py-3 text-sm"><dt>Stornogebühr ({result.snapshot.price_basis === "net" ? "netto" : "brutto"})</dt><dd className="text-right">{formatEuro(result.snapshot.fee_cents / 100)}</dd><dt>Einbehaltener Optionsaufpreis netto</dt><dd className="text-right">{formatEuro(result.snapshot.retained_option_net_cents / 100)}</dd><dt>Rechnungsbetrag brutto</dt><dd className="text-right font-semibold">{formatEuro(result.snapshot.totals.grossAmount)}</dd><dt>Zahlungen insgesamt inkl. Kaution</dt><dd className="text-right">{formatEuro(result.snapshot.paid_cents / 100)}</dd><dt>Kaution separat</dt><dd className="text-right">{formatEuro(result.snapshot.deposit)}</dd></dl>}
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-      {invoiceId && <RentalCreditRefund invoiceId={invoiceId} onDone={onChanged} />}
+      {confirmed && <RentalCreditRefund invoiceId={invoiceId ?? undefined} inquiryId={invoiceId ? undefined : inquiryId} prepareBasis={invoiceId ? undefined : () => invoice(true, true)} onDone={() => { setPreviewed(false); onChanged(); }} />}
       <DialogFooter className="flex-wrap gap-2">
         {!confirmed ? <><Button variant="outline" disabled={busy || !valid} onClick={() => void call("preview")}><Eye className="mr-2 h-4 w-4" />Storno prüfen</Button><Button disabled={busy || !result?.snapshot || !valid} onClick={() => void call("confirm")}>Verbindlich stornieren</Button></> : <><Button variant="outline" disabled={busy} onClick={() => void invoice(true)}><Eye className="mr-2 h-4 w-4" />Rechnungsvorschau</Button><Button disabled={busy || !previewed || !!invoiceId} onClick={() => void invoice(false)}><Receipt className="mr-2 h-4 w-4" />Rechnung erstellen und senden</Button></>}
       </DialogFooter>
