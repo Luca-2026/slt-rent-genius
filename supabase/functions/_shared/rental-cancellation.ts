@@ -95,3 +95,13 @@ export function estimateRentalCancellation(input: RentalCancellationInput): Rent
     executionAllowed: false,
   };
 }
+
+/** Individual fees are entered as the final compensation amount, not a rental day rate. */
+export function cancellationInvoiceItems(feeCents: number, priceBasis: "gross" | "net", vatRate: 0 | 19, paidOptionNetCents = 0) {
+  if (!validCents(feeCents) || !validCents(paidOptionNetCents) || ![0, 19].includes(vatRate) || !["gross", "net"].includes(priceBasis)) throw new Error("Ungültige Stornogebühr");
+  const net = priceBasis === "gross" ? Math.round(feeCents / (1 + vatRate / 100)) : feeCents;
+  return [
+    { product_name: "Stornogebühr", description: vatRate === 0 ? "Pauschalierte Entschädigung; nicht steuerbar" : "Vereinbarte Stornoleistung", quantity: 1, articles: 1, duration: 1, unit: "Pauschal", unit_price: net / 100, discount_percent: 0, vat_rate: vatRate, period_free: true },
+    ...(paidOptionNetCents > 0 ? [{ product_name: "Stornooption – einbehaltener Aufpreis", description: "Vereinbarter Aufpreis für kostenfreie Stornierung", quantity: 1, articles: 1, duration: 1, unit: "Pauschal", unit_price: paidOptionNetCents / 100, discount_percent: 0, vat_rate: 19 as const, period_free: true }] : []),
+  ];
+}
