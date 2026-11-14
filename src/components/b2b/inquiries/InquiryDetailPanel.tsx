@@ -1,6 +1,7 @@
 import type { SalesFinancing } from "../../../../supabase/functions/_shared/sales-offer";
 import { normalizeOpenEndedUnit, normalizeOpenEndedDuration, type OpenEndedUnit } from "@/lib/installments";
 import { DepositSettlementCard } from "./DepositSettlementCard";
+import { RentalCancellationDialog } from "./RentalCancellationDialog";
 import { CreditNoteRefund } from "./CreditNoteRefund";
 import { RentalCreditRefund } from "./RentalCreditRefund";
 import { ReturnReminderActions } from "./ReturnReminderActions";
@@ -583,7 +584,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             ))}
           </SelectContent>
         </Select>
-        {inquiry.status !== "rejected" && (
+        {inquiryType === "rental" && canManageInventory && <RentalCancellationDialog key={inquiry.id} inquiryId={inquiry.id} business={inquiry.customer_kind === "business"} onChanged={() => { loadInvoices(); onChanged(); }} />}
+        {inquiry.status !== "rejected" && inquiry.status !== "cancelled" && (
           <RejectInquiryDialog
             inquiryType={inquiryType}
             inquiryId={inquiry.id}

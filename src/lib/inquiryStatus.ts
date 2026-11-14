@@ -12,6 +12,7 @@ export const INQUIRY_STATUSES = [
   "accepted",
   "rejected",
   "done",
+  "cancelled",
 ] as const;
 
 export type InquiryStatus = (typeof INQUIRY_STATUSES)[number];
@@ -23,6 +24,7 @@ export const INQUIRY_STATUS_LABELS: Record<InquiryStatus, string> = {
   accepted: "Angenommen",
   rejected: "Abgelehnt",
   done: "Erledigt",
+  cancelled: "Storniert",
 };
 
 /** Tailwind classes using semantic tokens for the status badge. */
@@ -33,6 +35,7 @@ export const INQUIRY_STATUS_CLASSES: Record<InquiryStatus, string> = {
   accepted: "bg-emerald-600 text-white",
   rejected: "bg-destructive text-destructive-foreground",
   done: "bg-muted text-muted-foreground",
+  cancelled: "bg-destructive text-destructive-foreground",
 };
 
 /** Statuses that still need someone to act. Drives the navigation badge. */
@@ -57,6 +60,7 @@ const ALLOWED_TRANSITIONS: Record<InquiryStatus, InquiryStatus[]> = {
   accepted: ["done", "rejected"],
   rejected: ["in_progress", "done"],
   done: ["in_progress"],
+  cancelled: [],
 };
 
 export function canTransition(from: unknown, to: InquiryStatus): boolean {
@@ -78,7 +82,7 @@ export function isUnprocessedInquiry(row: { status: unknown; assigned_to?: strin
   return !row.assigned_to && (s === "new" || s === "in_progress");
 }
 
-export type InquiryListFilter = "unprocessed" | "working" | "offer_sent" | "accepted" | "upcoming" | "running" | "completed" | "rejected" | "all";
+export type InquiryListFilter = "unprocessed" | "working" | "offer_sent" | "accepted" | "upcoming" | "running" | "completed" | "rejected" | "cancelled" | "all";
 
 type ListRow = {
   status: unknown;
@@ -138,6 +142,7 @@ export const INQUIRY_LIST_FILTERS: { value: InquiryListFilter; label: string }[]
   { value: "running", label: "Laufende Mietvorgänge" },
   { value: "completed", label: "Abgeschlossen (abgerechnet)" },
   { value: "rejected", label: "Abgelehnt" },
+  { value: "cancelled", label: "Storniert" },
 ];
 
 export function matchesInquiryListFilter(
@@ -156,6 +161,7 @@ export function matchesInquiryListFilter(
     case "running": return isRunningRental(row, today);
     case "completed": return s === "done";
     case "rejected": return s === "rejected";
+    case "cancelled": return s === "cancelled";
   }
 }
 

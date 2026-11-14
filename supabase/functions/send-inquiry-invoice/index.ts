@@ -230,6 +230,18 @@ Deno.serve(async (req: Request) => {
       .eq("id", inquiryId)
       .maybeSingle();
     if (inqErr || !inquiry) return json({ error: "Anfrage nicht gefunden" }, 404);
+    const cancellationInvoice = inquiryType === "rental" && body.cancellation_invoice === true;
+    if (cancellationInvoice) {
+      if (!inquiry.cancelled_at || !inquiry.cancellation_payload?.invoice_items) return json({ error: "Zuerst den Auftrag verbindlich stornieren" }, 409);
+      const { data: prior, error: priorError } = await service.from("inquiry_invoices").select("id,invoice_number").eq("rental_inquiry_id", inquiryId).neq("status", "draft").neq("status", "cancelled");
+      if (priorError || prior?.length) return json({ error: "Stornorechnung oder weitere Belege bereits vorhanden. Bitte bestehende Rechnung öffnen." }, 409);
+      if (invoiceKind !== "invoice") return json({ error: "Stornoabrechnung verwendet eine Einzelrechnung" }, 400);
+      body.items = inquiry.cancellation_payload.invoice_items;
+      body.payments = inquiry.payments;
+      body.notes = `Stornierung: ${inquiry.cancellation_payload.reason}`;
+      for (const key of ["delivery_cost_delivery", "delivery_cost_return", "setup_cost", "dismantle_cost", "deposit", "return_location_cost"]) body[key] = 0;
+      body.return_location = null;
+    }
     if (!allowsCustomerPaymentTerms(inquiry.customer_kind, body.payment_terms)) {
       return json({ error: "Privatkunden zahlen nicht auf Rechnung. Bitte sofortige Zahlung wählen." }, 400);
     }
@@ -316,7 +328,7 @@ Deno.serve(async (req: Request) => {
     let notes: string | null =
       [userNotes, deductionNote(deductions, (iso) => new Date(iso).toLocaleDateString("de-DE"))].filter(Boolean).join("\n\n") || null;
 
-    const discountPolicy = inquiryType === "rental" ? inquiry.offer_payload?.bank_transfer_discount : null;
+    const discountPolicy = inquiryType === "rental" && !cancellationInvoice ? inquiry.offer_payload?.bank_transfer_discount : null;
     if (hasBankDiscountPolicy(discountPolicy)) {
       if (discountPolicy.selected === "bank" && body.deposit_settlement !== true) {
         if (!allPaymentsByBank(inquiry.payments)) return json({ error: "Gemischte Zahlungen: zuerst Zahlungsart und Belege korrigieren." }, 409);
@@ -334,7 +346,7 @@ Deno.serve(async (req: Request) => {
       if (totals.netAmount < 0) {
         return json({ error: "Die Abschläge übersteigen den Gesamtbetrag – bitte Positionen prüfen oder einen Abschlag per Gutschrift korrigieren." }, 400);
       }
-    } else {
+    } else if (!cancellationInvoice || totals.netAmount !== 0) {
       try {
         assertPositiveTotal(totals.netAmount);
       } catch (e) {
