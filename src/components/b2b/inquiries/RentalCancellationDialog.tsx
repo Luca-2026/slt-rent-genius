@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Ban, Eye, Receipt } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { useToast } from "@/hooks/use-toast";
 import { RentalCreditRefund } from "./RentalCreditRefund";
 import { formatEuro } from "./offerMath";
+import { supabase } from "@/integrations/supabase/client";
 
 type Snapshot = { reason: string; fee_cents: number; price_basis: string; retained_option_net_cents: number; totals: { grossAmount: number }; invoice_items: unknown[]; paid_cents: number; deposit: number };
 type Result = { success?: boolean; error?: string; confirmed?: boolean; expected_updated_at?: string; snapshot?: Snapshot; pdf_base64?: string; invoice_number?: string };
@@ -32,6 +33,17 @@ export function RentalCancellationDialog({ inquiryId, business, onChanged }: { i
   const [invoiceId, setInvoiceId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const { toast } = useToast();
+  useEffect(() => {
+    if (!open) return;
+    let alive = true;
+    supabase.from("rental_inquiries").select("cancelled_at,cancellation_payload").eq("id", inquiryId).single().then(({ data, error: readError }) => {
+      if (!alive) return;
+      if (readError) { setError("Stornostand konnte nicht geladen werden."); return; }
+      if (data.cancelled_at) { setConfirmed(true); setResult({ success: true, confirmed: true, snapshot: data.cancellation_payload as unknown as Snapshot }); }
+    });
+    supabase.from("inquiry_invoices").select("id").eq("rental_inquiry_id", inquiryId).eq("invoice_kind", "invoice").neq("status", "draft").neq("status", "cancelled").order("created_at", { ascending: false }).limit(1).then(({ data }) => { if (alive) setInvoiceId(data?.[0]?.id ?? null); });
+    return () => { alive = false; };
+  }, [open, inquiryId]);
   const invalidate = () => { if (!confirmed) setResult(null); setPreviewed(false); setError(""); };
   const showPdf = (base64: string) => {
     const url = URL.createObjectURL(new Blob([Uint8Array.from(atob(base64), c => c.charCodeAt(0))], { type: "application/pdf" }));
@@ -57,7 +69,6 @@ export function RentalCancellationDialog({ inquiryId, business, onChanged }: { i
       if (preview && data?.pdf_base64) { showPdf(data.pdf_base64); setPreviewed(true); }
       if (!preview) {
         toast({ title: `Stornorechnung ${data?.invoice_number ?? ""} erstellt` });
-        const { supabase } = await import("@/integrations/supabase/client");
         const { data: rows } = await supabase.from("inquiry_invoices").select("id").eq("rental_inquiry_id", inquiryId).eq("invoice_kind", "invoice").neq("status", "draft").neq("status", "cancelled").order("created_at", { ascending: false }).limit(1);
         setInvoiceId(rows?.[0]?.id ?? null); onChanged();
       }
