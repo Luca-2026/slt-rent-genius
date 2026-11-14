@@ -1310,6 +1310,13 @@
       "when": 1794658631590,
       "tag": "0186_rental_order_cancellation_workflow",
       "breakpoints": true
+    },
+    {
+      "idx": 187,
+      "version": "7",
+      "when": 1794658775624,
+      "tag": "0187_rental_cancellation_atomic_guards",
+      "breakpoints": true
     }
   ]
 }
