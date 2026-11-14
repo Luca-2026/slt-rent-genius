@@ -1303,6 +1303,13 @@
       "when": 1794588287509,
       "tag": "0185_staff_payment_conflict_non_retryable",
       "breakpoints": true
+    },
+    {
+      "idx": 186,
+      "version": "7",
+      "when": 1794658631590,
+      "tag": "0186_rental_order_cancellation_workflow",
+      "breakpoints": true
     }
   ]
 }
