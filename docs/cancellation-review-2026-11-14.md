@@ -17,6 +17,12 @@ Der geschützte Storno speichert den Betrag unveränderlich, protokolliert den M
 
 Echter Luca-Mitarbeiterablauf am neu registrierten Testauftrag #P8RJFX: individuelle 70 € nicht steuerbare Gebühr → Vorschau → Storno → originale Rechnungsvorschau → RE-M-2026-11-0026. Rechnung gespeichert und PDF mit 70 € / Stornogebühr / Auftrags-ID gelesen. Automatische vollständige Neutralisierung GS-M-2026-11-0003 über −70 €, Original credited_amount=70/status=cancelled. Kein Kundenversand, keine echte Zahlung oder Erstattung. Storno nach Neuladen erhalten. Desktop und 390px-Dialog geprüft; Cookieüberlagerung entdeckt und für geöffneten Dialog beseitigt.
 
+## Erstattung vor Rechnung (Ergänzung 13:09 UTC)
+
+Nach bestätigtem Storno ist „Mietguthaben / Erstattung“ auch ohne Rechnung erreichbar. Der bestehende Rechnungssender bereitet dafür nur die unnummerierte, serverberechnete Vorschaugrundlage vor; keine Rechnung oder Mail wird erzeugt. Die spätere Rechnung liest bestätigte Erstattungen und verknüpft dieselbe Grundlage, damit keine zweite Mieterstattung möglich ist. Unabgeschlossene vorbereitete Erstattungen sperren deren endgültige Fakturierung wie beim bisherigen Vor-Rechnungsweg.
+
+87 Tests erfolgreich, darunter Erstattung ohne Rechnungs-ID, Fehler beim Vorbereiten, gemeinsame Stripe-Grenze und finale Belegfreigabe nach bestätigtem Nachweis. Echter Luca-Zugang am bereits stornierten #UHSMCV: 29,75 € Mietguthaben mit ursprünglicher Stripe-Auszahlung angeboten; 100 € Kaution nicht als Mietguthaben gerechnet. Datenbank bestätigt 0 Rechnungen und 0 Auszahlungsaufträge. Keine Auszahlung angeklickt; tatsächliche Provider-Auszahlung und anschließende echte PDF sind weiterhin nicht geprüft.
+
 ## Noch offene Fälle
 
 - Bestehende ausgestellte Rechnungen/Abschläge: integrierte Korrekturabrechnung nicht implementiert; aktuell ausdrückliche Sperre statt doppelter Forderung/Erstattung. Vorhandene Rechnungs-Gutschrift bleibt separat nutzbar.
