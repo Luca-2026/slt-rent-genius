@@ -12,6 +12,7 @@ import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { formatEuro } from "./offerMath";
 import { allPaymentsByBank } from "@/lib/bankTransferDiscount";
 import { depositRefundPayment, pendingDepositRefund } from "@/lib/depositRefundPayment";
+import { RentalCreditRefund } from "./RentalCreditRefund";
 
 interface LinkRow {
   id: string;
@@ -62,11 +63,13 @@ interface Props {
   payments?: unknown;
   offerTotalGross?: number | null;
   deposit?: number;
+  cancelled?: boolean;
+  rentalRefundInvoiceId?: string;
   onChanged: () => void;
 }
 
 /** Online-Zahlung (Stripe): Zahlungslink zum Angebot, Zahlungsstatus, Kautionserstattung. */
-export function StripePaymentCard({ table, inquiryId, offerNumber, payments, offerTotalGross, deposit = 0, onChanged }: Props) {
+export function StripePaymentCard({ table, inquiryId, offerNumber, payments, offerTotalGross, deposit = 0, cancelled = false, rentalRefundInvoiceId, onChanged }: Props) {
   const { toast } = useToast();
   const { canManageInventory } = useStaffAccess();
   // Kautionserstattung per Stripe: alle Standortmitarbeiter, Niederlassungsleitung und Admin.
@@ -158,6 +161,18 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
     setDialog(true);
   };
 
+  const prepareCancellationRefund = async () => {
+    const { data, error } = await invokeWithAuth<{ error?: string }>("send-inquiry-invoice", {
+      inquiry_type: "rental", inquiry_id: inquiryId, cancellation_invoice: true,
+      preview: true, prepare_refund: true, payment_terms: "vorkasse",
+    });
+    if (error || data?.error) {
+      toast({ title: "Mieterstattung nicht vorbereitet", description: data?.error ?? "Bitte die Stornoabrechnung prüfen.", variant: "destructive" });
+      return false;
+    }
+    return true;
+  };
+
   const refund = async () => {
     if (!paidLink) return;
     const c = Math.round((Number(amount) || 0) * 100);
@@ -214,7 +229,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
             <Copy /> Link kopieren
           </Button>
         )}
-        {offerNumber && !settledByBank && current?.status !== "paid" && (
+        {offerNumber && !cancelled && !settledByBank && current?.status !== "paid" && (
           <Button variant="outline" className="h-11 w-full px-3 py-0" onClick={createLink} disabled={busy}>
             {busy ? <Loader2 className="animate-spin" /> : <Link2 />}
             {current?.status === "active" ? "Neuen Link erstellen" : "Zahlungslink erstellen"}
@@ -226,6 +241,12 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
             <Undo2 /> Kaution erstatten
           </Button>
         )}
+        {cancelled && table === "rental_inquiries" && canRefund && <RentalCreditRefund
+          invoiceId={rentalRefundInvoiceId}
+          inquiryId={rentalRefundInvoiceId ? undefined : inquiryId}
+          prepareBasis={rentalRefundInvoiceId ? undefined : prepareCancellationRefund}
+          onDone={() => { void load(); onChanged(); }}
+        />}
       </div>
 
       {paidLink && paidLink.deposit_cents > 0 && (

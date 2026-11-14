@@ -782,6 +782,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         payments={(inquiry as { payments?: unknown }).payments}
         offerTotalGross={inquiry.offer_total_gross}
         deposit={Number((inquiry.offer_payload as { deposit?: unknown } | null)?.deposit) || 0}
+        cancelled={inquiry.status === "cancelled"}
+        rentalRefundInvoiceId={invoices.find(inv => inv.invoice_kind === "invoice" && !["draft", "cancelled"].includes(inv.status))?.id}
         onChanged={onChanged}
       />}
     </>

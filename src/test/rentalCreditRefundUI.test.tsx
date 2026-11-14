@@ -6,13 +6,14 @@ vi.mock("@/lib/invokeWithAuth", () => ({ invokeWithAuth: invoke }));
 vi.mock("@/hooks/use-toast", () => ({ useToast: () => ({ toast }) }));
 afterEach(() => { cleanup(); vi.clearAllMocks(); });
 describe("rental credit information", () => {
-  it("prepares an unnumbered basis and refunds 49 euros without an invoice id", async () => {
+  it("offers UHSMCV's 29.75 euro rent separately from its 100 euro deposit without an invoice id", async () => {
     const prepare = vi.fn().mockResolvedValue(true);
-    invoke.mockResolvedValueOnce({ data: { success: true, amount_cents: 4900, status: "available", payout_method: "stripe" }, error: null })
-      .mockResolvedValueOnce({ data: { success: true, amount_cents: 4900, status: "succeeded", payout_method: "stripe" }, error: null });
+    invoke.mockResolvedValueOnce({ data: { success: true, amount_cents: 2975, status: "available", payout_method: "stripe" }, error: null })
+      .mockResolvedValueOnce({ data: { success: true, amount_cents: 2975, status: "succeeded", payout_method: "stripe" }, error: null });
     render(<RentalCreditRefund inquiryId="cancelled-order" prepareBasis={prepare} />);
     fireEvent.click(screen.getByRole("button", { name: "Mietguthaben / Erstattung" }));
     await screen.findByRole("dialog");
+    expect(screen.getByRole("heading", { name: /29,75/ })).toBeInTheDocument();
     expect(prepare).toHaveBeenCalledOnce();
     expect(invoke).toHaveBeenNthCalledWith(1, "offer-payment-admin", { action: "order_credit_info", inquiry_id: "cancelled-order" });
     fireEvent.click(screen.getByRole("button", { name: "Verbindlich auf ursprüngliche Zahlung erstatten" }));
