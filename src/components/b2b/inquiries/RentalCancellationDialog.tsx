@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { RentalCreditRefund } from "./RentalCreditRefund";
 import { formatEuro } from "./offerMath";
 import { supabase } from "@/integrations/supabase/client";
+import { registerSigningSurface } from "@/lib/signingOverlays";
 
 type Snapshot = { reason: string; fee_cents: number; price_basis: string; retained_option_net_cents: number; totals: { grossAmount: number }; invoice_items: unknown[]; paid_cents: number; deposit: number };
 type Result = { success?: boolean; error?: string; confirmed?: boolean; expected_updated_at?: string; snapshot?: Snapshot; pdf_base64?: string; invoice_number?: string };
@@ -33,6 +34,7 @@ export function RentalCancellationDialog({ inquiryId, business, onChanged }: { i
   const [invoiceId, setInvoiceId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const { toast } = useToast();
+  useEffect(() => { if (open) return registerSigningSurface(); }, [open]);
   useEffect(() => {
     if (!open) return;
     let alive = true;

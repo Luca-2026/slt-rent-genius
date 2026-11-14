@@ -98,10 +98,11 @@ Deno.serve(async (req: Request) => {
       const table = body.inquiry_type === "rental" ? "rental_inquiries" : "sales_inquiries";
       const { data: inquiry } = await service
         .from(table)
-        .select("id, offer_number, offer_total_gross, offer_payload, payments, customer_email")
+        .select("id, offer_number, offer_total_gross, offer_payload, payments, customer_email, status")
         .eq("id", body.inquiry_id)
         .maybeSingle();
       if (!inquiry) return json({ error: "Anfrage nicht gefunden" }, 404);
+      if (inquiry.status === "cancelled") return json({ error: "Stornierter Auftrag: keinen Zahlungslink zum Originalangebot anlegen." }, 409);
       if (!inquiry.offer_number || !(Number(inquiry.offer_total_gross) > 0)) {
         return json({ error: "Zu dieser Anfrage wurde noch kein Angebot versendet." }, 409);
       }
