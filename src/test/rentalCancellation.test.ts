@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { estimateRentalCancellation, type RentalCancellationInput } from "../../supabase/functions/_shared/rental-cancellation";
+import { estimateRentalCancellation, cancellationInvoiceItems, type RentalCancellationInput } from "../../supabase/functions/_shared/rental-cancellation";
+import { buildOfferTotals } from "../../supabase/functions/_shared/inquiry-offer-math";
+import { canTransition, matchesInquiryListFilter, isOpenInquiry } from "@/lib/inquiryStatus";
 
 const START = Date.parse("2026-11-30T09:00:00+01:00");
 const input = (hours: number, overrides: Partial<RentalCancellationInput> = {}): RentalCancellationInput => ({
@@ -11,6 +13,29 @@ const input = (hours: number, overrides: Partial<RentalCancellationInput> = {}):
 });
 
 describe("AGB-Storno: reine Vorschau ohne automatische Durchführung", () => {
+  it("übernimmt individuelle Privatkundengebühr 70 € brutto genau einmal", () => {
+    expect(buildOfferTotals(cancellationInvoiceItems(7000, "gross", 19)).grossAmount).toBe(70);
+  });
+  it("berechnet individuelle Firmengebühr 70 € netto mit ausdrücklich gewählten 19 %", () => {
+    expect(buildOfferTotals(cancellationInvoiceItems(7000, "net", 19)).grossAmount).toBe(83.3);
+  });
+  it("schlägt auf nicht steuerbare 70 € Entschädigung keine Umsatzsteuer auf", () => {
+    expect(buildOfferTotals(cancellationInvoiceItems(7000, "gross", 0)).grossAmount).toBe(70);
+  });
+  it("behält bezahlte Option 5 € netto bei gebührenfreier Stornierung", () => {
+    expect(buildOfferTotals(cancellationInvoiceItems(0, "gross", 0, 500)).grossAmount).toBe(5.95);
+  });
+  it("lässt individuelle Kulanzgebühr 0 € zu", () => {
+    expect(buildOfferTotals(cancellationInvoiceItems(0, "gross", 0)).grossAmount).toBe(0);
+  });
+  it("akzeptiert keine negativen manuellen Stornogebühren", () => {
+    expect(() => cancellationInvoiceItems(-1, "net", 0)).toThrow();
+  });
+  it("zeigt Stornos im eigenen Filter, nicht als offen und nicht wiedereröffnbar", () => {
+    expect(matchesInquiryListFilter({ status: "cancelled" }, "cancelled")).toBe(true);
+    expect(isOpenInquiry("cancelled")).toBe(false);
+    expect(canTransition("cancelled", "in_progress")).toBe(false);
+  });
   for (const [hours, privateRate, businessRate] of [
     [400, 25, 30], [336, 25, 30], [336 + 1 / 60, 25, 30], [336 - 1 / 60, 40, 50],
     [168, 40, 50], [168 + 1 / 60, 40, 50], [168 - 1 / 60, 60, 70],
