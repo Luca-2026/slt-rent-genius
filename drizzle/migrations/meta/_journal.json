@@ -1317,6 +1317,13 @@
       "when": 1794658775624,
       "tag": "0187_rental_cancellation_atomic_guards",
       "breakpoints": true
+    },
+    {
+      "idx": 188,
+      "version": "7",
+      "when": 1794658801145,
+      "tag": "0188_cancellation_sign_task_completion_guard",
+      "breakpoints": true
     }
   ]
 }

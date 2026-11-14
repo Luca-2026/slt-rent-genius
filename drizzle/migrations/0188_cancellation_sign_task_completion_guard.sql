@@ -1,0 +1,1 @@
+DO $$ DECLARE definition text; BEGIN SELECT pg_get_functiondef('public.confirm_rental_cancellation(uuid,uuid,timestamptz,jsonb)'::regprocedure) INTO definition; definition:=replace(definition,'it.completed_at IS NOT NULL','it.is_done = true'); EXECUTE definition; END $$;
