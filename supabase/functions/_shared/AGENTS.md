@@ -1,4 +1,5 @@
 # Shared helper rules
+- Rental cancellation estimates use rental-cancellation with evidenced contract terms and explicit-offset instants; execution stays blocked until legal/tax approval, so estimates cannot issue documents or release stock prematurely.
 - Stale staff payment snapshots return PT409 instead of 40001; optimistic validation must reject once, not trigger database API serialization retry storms.
 - Staff bank receipts preserve issued invoice/settlement prices instead of implicitly requesting a rebate switch; document-read failures block recording to prevent price drift.
  - Weekly rental tariffs use tierPriceWeek in both rental-pricing mirrors, counting elapsed 24-hour blocks without Bau weekend exclusions; weekly offers serialize one flat amount and explicit period labels, while nextInstallmentDate preserves monthly plans unless a day interval is saved.
