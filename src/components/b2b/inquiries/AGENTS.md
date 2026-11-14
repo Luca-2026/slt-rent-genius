@@ -1,4 +1,5 @@
 # Inquiries
+- RentalCancellationDialog persists a server-validated fee snapshot before offering invoice preview/send; individual fees replace the AGB fee, original contracts remain unchanged, and existing-invoice cases require explicit correction to avoid duplicate payment claims.
 - Event tariff amounts are flat per article, with persisted inline period decisions blocking dispatch; normalization and reopening retain event basis so quantities never multiply calendar days again.
  - Weekly tariffs use elapsed 24-hour blocks with full started weeks and serialize as one period-labelled flat line; manual period/unit changes require an explicit price decision, and four-week installments use an additive day interval without changing historical monthly schedules.
 - Offer time selectors share quarter-hour options and preserve legacy values until edited; appended positions inherit the final group, and catalogue selections retain valid groups so new lines stay last through grouping and serialization.

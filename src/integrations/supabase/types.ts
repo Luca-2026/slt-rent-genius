@@ -4679,6 +4679,8 @@ export type Database = {
           availability_pending: boolean
           b2b_profile_id: string | null
           b2b_reservation_id: string | null
+          cancellation_payload: Json | null
+          cancelled_at: string | null
           category_slug: string | null
           closed_manually_at: string | null
           closed_manually_by: string | null
@@ -4759,6 +4761,8 @@ export type Database = {
           availability_pending?: boolean
           b2b_profile_id?: string | null
           b2b_reservation_id?: string | null
+          cancellation_payload?: Json | null
+          cancelled_at?: string | null
           category_slug?: string | null
           closed_manually_at?: string | null
           closed_manually_by?: string | null
@@ -4839,6 +4843,8 @@ export type Database = {
           availability_pending?: boolean
           b2b_profile_id?: string | null
           b2b_reservation_id?: string | null
+          cancellation_payload?: Json | null
+          cancelled_at?: string | null
           category_slug?: string | null
           closed_manually_at?: string | null
           closed_manually_by?: string | null
@@ -5564,6 +5570,7 @@ export type Database = {
       }
       sign_bookings: {
         Row: {
+          cancelled_at: string | null
           confirmation_file_path: string | null
           confirmation_sent_at: string | null
           confirmed_at: string | null
@@ -5594,6 +5601,7 @@ export type Database = {
           total_cents: number
         }
         Insert: {
+          cancelled_at?: string | null
           confirmation_file_path?: string | null
           confirmation_sent_at?: string | null
           confirmed_at?: string | null
@@ -5624,6 +5632,7 @@ export type Database = {
           total_cents: number
         }
         Update: {
+          cancelled_at?: string | null
           confirmation_file_path?: string | null
           confirmation_sent_at?: string | null
           confirmed_at?: string | null
@@ -6903,6 +6912,15 @@ export type Database = {
       confirm_b2b_email: { Args: { _user_id: string }; Returns: undefined }
       confirm_order: {
         Args: { decisions: Json; inquiry_id: string }
+        Returns: Json
+      }
+      confirm_rental_cancellation: {
+        Args: {
+          _actor: string
+          _expected: string
+          _inquiry: string
+          _snapshot: Json
+        }
         Returns: Json
       }
       credit_registered_test_invoice: {
