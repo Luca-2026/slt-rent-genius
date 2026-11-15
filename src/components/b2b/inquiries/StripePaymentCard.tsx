@@ -12,7 +12,6 @@ import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { formatEuro } from "./offerMath";
 import { allPaymentsByBank } from "@/lib/bankTransferDiscount";
 import { depositRefundPayment, pendingDepositRefund } from "@/lib/depositRefundPayment";
-import { RentalCreditRefund } from "./RentalCreditRefund";
 
 interface LinkRow {
   id: string;
@@ -161,18 +160,6 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
     setDialog(true);
   };
 
-  const prepareCancellationRefund = async () => {
-    const { data, error } = await invokeWithAuth<{ error?: string }>("send-inquiry-invoice", {
-      inquiry_type: "rental", inquiry_id: inquiryId, cancellation_invoice: true,
-      preview: true, prepare_refund: true, payment_terms: "vorkasse",
-    });
-    if (error || data?.error) {
-      toast({ title: "Mieterstattung nicht vorbereitet", description: data?.error ?? "Bitte die Stornoabrechnung prüfen.", variant: "destructive" });
-      return false;
-    }
-    return true;
-  };
-
   const refund = async () => {
     if (!paidLink) return;
     const c = Math.round((Number(amount) || 0) * 100);
@@ -241,12 +228,6 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
             <Undo2 /> Kaution erstatten
           </Button>
         )}
-        {false && cancelled && table === "rental_inquiries" && canRefund && <RentalCreditRefund
-          invoiceId={rentalRefundInvoiceId}
-          inquiryId={rentalRefundInvoiceId ? undefined : inquiryId}
-          prepareBasis={rentalRefundInvoiceId ? undefined : prepareCancellationRefund}
-          onDone={() => { void load(); onChanged(); }}
-        />}
       </div>
 
       {paidLink && paidLink.deposit_cents > 0 && (

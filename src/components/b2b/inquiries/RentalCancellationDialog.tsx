@@ -9,7 +9,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { useToast } from "@/hooks/use-toast";
-import { RentalCreditRefund } from "./RentalCreditRefund";
 import { OrderRefundOverview } from "./OrderRefundOverview";
 import { formatEuro } from "./offerMath";
 import { supabase } from "@/integrations/supabase/client";
