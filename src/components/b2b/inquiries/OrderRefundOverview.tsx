@@ -92,7 +92,14 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
       <div><Label htmlFor="order-rent-refund">Mietguthaben (€), maximal {eur(data?.rent_available ?? 0)}</Label><Input id="order-rent-refund" inputMode="decimal" disabled={!data?.can_refund_rent} value={rent} onChange={e => setRent(e.target.value)}/></div>
       <p className="font-semibold">Gesamt: {eur(Number.isFinite(selected) ? selected : 0)}</p>
       {error && <p role="alert" className="text-destructive">{error}</p>}
-      <Button disabled={busy || !valid} onClick={async () => { const result = await call("order_refund_execute", { request_id: requestId, deposit_cents: amount(deposit), rent_cents: amount(rent) }); if (result) { setOpen(false); onChanged(); } }}>Verbindlich erstatten</Button>
+      <Button disabled={busy || !valid} onClick={async () => {
+        if (inquiry.status === "cancelled") {
+          setBusy(true);
+          const basis = await invokeWithAuth<{ error?: string }>("send-inquiry-invoice", { inquiry_type: "rental", inquiry_id: inquiry.id, cancellation_invoice: true, preview: true, prepare_refund: true, payment_terms: "vorkasse" });
+          if (basis.error || basis.data?.error) { setError(basis.data?.error ?? "Stornoabrechnung nicht vorbereitet"); setBusy(false); return; }
+        }
+        const result = await call("order_refund_execute", { request_id: requestId, deposit_cents: amount(deposit), rent_cents: amount(rent) }); if (result) { setOpen(false); onChanged(); }
+      }}>Verbindlich erstatten</Button>
     </DialogContent></Dialog>
   </section>;
 }

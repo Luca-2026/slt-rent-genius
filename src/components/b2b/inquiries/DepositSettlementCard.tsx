@@ -26,6 +26,7 @@ import {
 import { formatEuro } from "./offerMath";
 import { depositRefundPayment, pendingDepositRefund } from "@/lib/depositRefundPayment";
 import { RentalCreditRefund } from "./RentalCreditRefund";
+import { OrderRefundOverview } from "./OrderRefundOverview";
 
 type Row = Record<string, any>;
 
@@ -211,21 +212,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
           {new Date(settlement.settled_at).toLocaleString("de-DE", { timeZone: "Europe/Berlin" })} von {settlement.settled_by_name ?? "—"}
           {bal > 0 ? ` · ${PAYOUT_LABEL[settlement.payout_method]}${settlement.payout_status === "pending" ? " – Auszahlung offen" : settlement.payout_date ? ` am ${new Date(settlement.payout_date).toLocaleDateString("de-DE")}` : ""}` : ""}
         </p>
-        {settlement.payout_status === "pending" && settlement.payout_method === "stripe" && canMarkStripePayout && (
-          <div className="flex flex-wrap gap-2 pt-1">
-            <Button size="sm" onClick={executeStripePayout} disabled={busy}>
-              {busy ? <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" /> : <Undo2 className="h-3.5 w-3.5 mr-1" />}
-              {unresolved ? "Erstattungsstatus abgleichen" : "Kaution über Stripe erstatten"}
-            </Button>
-          </div>
-        )}
-        <div className="space-y-2 border-t border-border pt-3">
-          <p className="font-semibold">2. Überschüssiges Mietguthaben</p>
-          {invoices.length === 0 ? <div className="space-y-2"><p className="text-xs text-muted-foreground">Rechnungsvorschau mit dem endgültigen Rabatt prüfen und dort die Erstattungsgrundlage vorbereiten. Erst nach bestätigter Kautions- und Mietguthabenerstattung die Schlussrechnung ausstellen.</p>{canMarkStripePayout && <RentalCreditRefund inquiryId={inquiry.id} onDone={onDone} />}</div> : invoices.map(inv => <div key={inv.id} className="space-y-1">
-            {line(inv.invoice_number, formatEuro(Math.max(0, Number(inv.paid_amount) - Number(inv.gross_amount))))}
-            {canMarkStripePayout && <RentalCreditRefund invoiceId={inv.id} />}
-          </div>)}
-        </div>
+        {canMarkStripePayout && <OrderRefundOverview compact inquiry={inquiry} onChanged={onDone} />}
         <p className="text-xs text-muted-foreground">Korrekturen nur per Gutschrift.</p>
       </div>
     );

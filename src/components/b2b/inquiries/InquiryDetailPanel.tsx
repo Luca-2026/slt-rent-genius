@@ -750,7 +750,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               PDF öffnen <ExternalLink className="h-3.5 w-3.5" />
             </a>
           )}
-          {inquiry.offer_file_url && <div className="pt-2"><ResendOfferButton inquiryId={inquiry.id} inquiryType={inquiryType} onChanged={onChanged} /></div>}
+          {inquiry.status !== "cancelled" && inquiry.offer_file_url && <div className="pt-2"><ResendOfferButton inquiryId={inquiry.id} inquiryType={inquiryType} onChanged={onChanged} /></div>}
         </div>
       )}
     </>
@@ -1046,7 +1046,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             {locationEl}
           </DesktopOnly>
           <div className="hidden lg:block">{details}</div>
-          <OfferAcceptanceNotice inquiryId={inquiry.id} />
+          {inquiry.status !== "cancelled" && <OfferAcceptanceNotice inquiryId={inquiry.id} />}
           {paymentsEl}
           {stripeEl}
           {installmentEl}
@@ -1066,7 +1066,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
 
   return (
     <div className="space-y-5">
-      <OfferAcceptanceNotice inquiryId={inquiry.id} />
+      {inquiry.status !== "cancelled" && <OfferAcceptanceNotice inquiryId={inquiry.id} />}
       {draftsEl}
       {headerEl}
       {inquiryType === "rental" && <OrderRefundOverview inquiry={inquiry as Record<string, any>} onChanged={() => { loadInvoices(); onChanged(); }} />}

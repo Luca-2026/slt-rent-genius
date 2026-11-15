@@ -25,6 +25,7 @@ export async function orderRefund(service: any, actor: string, body: any) {
   const { data: requests, error: requestError } = await service.from("order_refund_requests").select("*").eq("inquiry_id", inquiry.id).order("created_at", { ascending: false });
   if (requestError) throw new Error("Erstattungsstatus nicht lesbar");
   if (body.action === "order_refund_confirm_manual") {
+    if (!requests?.some((r: any) => r.id === body.request_id)) throw new Error("Erstattungsauftrag gehört nicht zu diesem Auftrag");
     const { error } = await service.rpc("confirm_order_refund_manual", { _id: body.request_id, _actor: actor, _reference: body.reference });
     if (error) throw new Error(error.message);
   }
@@ -55,6 +56,7 @@ export async function orderRefund(service: any, actor: string, body: any) {
     if (request.inquiry_id !== inquiry.id || request.deposit_cents !== body.deposit_cents || request.rent_cents !== body.rent_cents) throw new Error("Gespeicherter Erstattungsauftrag darf nicht geändert werden");
     if (request.rent_cents > 0 && !admin && !manager) throw new Error("Keine Berechtigung für Mieterstattungen");
     if (request.payout_method === "stripe" && request.status !== "succeeded") {
+      if (!stripe) throw new Error("Originalzahlung nicht lesbar");
       for (const allocation of request.allocations) {
         if (allocation.refund_id) continue;
         let known;
