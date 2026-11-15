@@ -152,4 +152,21 @@ it('calendar includes staff bookings and B2B reservations',async()=>{
  const result=await db.query<{days:{remaining:number}[]}>("SELECT sign_calendar_availability('bonn','2027-11-01','2027-11-03') AS days");
  expect(result.rows[0]?.days.map(d=>d.remaining)).toEqual([0,0,0]);
 });
+it('books the two maintained Mülheim sets without borrowing Krefeld stock', async () => {
+ await db.exec(readFileSync('drizzle/migrations/0193_sign_booking_all_maintained_locations.sql','utf8'));
+ await db.exec(`UPDATE b2b_managed_products SET available_locations=ARRAY['bonn','krefeld','muelheim'], quantities=quantities||'{"muelheim":2}'::jsonb WHERE slug='halteverbotsschilder-set'`);
+ const body={...base,location:'muelheim',quantity:2,start_date:'2031-02-03',end_date:'2031-02-05'};
+ const request=crypto.randomUUID();
+ const b=await reserve(body,request); if(!b) throw new Error('Missing booking');
+ expect((await reserve(body,request))?.id).toBe(b.id);
+ const row=(await db.query<{location:string;location_email:string}>('SELECT location,location_email FROM rental_inquiries WHERE id=$1',[b.inquiry_id])).rows[0];
+ expect(row).toEqual({location:'Mülheim an der Ruhr',location_email:'muelheim@slt-rental.de'});
+ expect((await db.query<{days:{remaining:number}[]}>('SELECT sign_calendar_availability($1,$2,$3) AS days',['muelheim',body.start_date,body.end_date])).rows[0]?.days.map(d=>d.remaining)).toEqual([0,0,0]);
+ await expect(reserve({...body,quantity:1})).rejects.toThrow('Nicht genügend Sets');
+ expect((await db.query<{days:{remaining:number}[]}>('SELECT sign_calendar_availability($1,$2,$3) AS days',['krefeld',body.start_date,body.end_date])).rows[0]?.days.map(d=>d.remaining)).toEqual([10,10,10]);
+ await db.query("UPDATE sign_bookings SET expires_at=now()-interval '1 second' WHERE id=$1",[b.id]);
+ expect((await db.query<{days:{remaining:number}[]}>('SELECT sign_calendar_availability($1,$2,$3) AS days',['muelheim',body.start_date,body.end_date])).rows[0]?.days.map(d=>d.remaining)).toEqual([2,2,2]);
+ await db.exec(`UPDATE b2b_managed_products SET available_locations=ARRAY['bonn','krefeld'] WHERE slug='halteverbotsschilder-set'`);
+ await expect(reserve({...body,start_date:'2031-03-03',end_date:'2031-03-05'})).rejects.toThrow('Ungültige Buchung');
+});
 });
