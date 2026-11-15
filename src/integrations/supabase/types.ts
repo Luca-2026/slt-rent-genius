@@ -6964,6 +6964,10 @@ export type Database = {
         Args: { decisions: Json; inquiry_id: string }
         Returns: Json
       }
+      confirm_order_refund_manual: {
+        Args: { _actor: string; _id: string; _reference: string }
+        Returns: undefined
+      }
       confirm_rental_cancellation: {
         Args: {
           _actor: string
@@ -7175,6 +7179,10 @@ export type Database = {
       }
       offer_link_deadline_by_id: { Args: { p_id: string }; Returns: string }
       onsite_b2b_password_set: { Args: { _user: string }; Returns: boolean }
+      order_confirmed_rental_refunds: {
+        Args: { _inquiry: string }
+        Returns: Json
+      }
       order_refund_totals: { Args: { _inquiry: string }; Returns: Json }
       parse_price_text: { Args: { _raw: string }; Returns: number }
       read_email_batch: {
