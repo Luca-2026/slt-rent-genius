@@ -430,8 +430,24 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   };
 
   const requestClose = async () => {
+    if (!validateForm(form, true)) {
+      const key = cmsDraftKey("inventory", loadedIdRef.current ?? "__new__");
+      writeCmsDraft(key, form);
+      if (JSON.stringify(readCmsDraft<FormState>(key)?.form) !== JSON.stringify(form)) {
+        toast.error("Entwurf konnte nicht gesichert werden. Bitte das Fenster geöffnet lassen.");
+        return;
+      }
+      toast.info("Unvollständiger Artikel als Entwurf auf diesem Gerät gesichert.");
+      onOpenChange(false);
+      return;
+    }
     if (!await autosave.flush()) return;
     onOpenChange(false);
+  };
+
+  const requestSave = async () => {
+    if (!validateForm(form)) return;
+    if (await autosave.flush()) onOpenChange(false);
   };
 
 
@@ -542,7 +558,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
     }
   }
 
-  async function handleSave(form: FormState, automatic = false): Promise<boolean> {
+  function validateForm(form: FormState, automatic = false): boolean {
     const deposit = form.deposit_amount?.trim() ? Number(form.deposit_amount.replace(",", ".")) : null;
     if (deposit != null && (!Number.isFinite(deposit) || deposit < 0)) { if (!automatic) { toast.error("Bitte eine gültige Kaution ab 0 € eingeben"); setTab("preise"); } return false; }
     if (!form.name.trim() || !form.slug.trim() || !form.category) {
@@ -557,6 +573,11 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
       if (!automatic) { toast.error("Bitte Hauptkategorie (Event oder Bau) wählen"); setTab("basis"); }
       return false;
     }
+    return true;
+  }
+
+  async function handleSave(form: FormState, automatic = false): Promise<boolean> {
+    if (!validateForm(form, automatic)) return false;
     setSaving(true);
     try {
       const priceBaseline: FormState | undefined = (initial || saveIdentityRef.current) && dirtyBaselineRef.current
@@ -694,7 +715,6 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         className="max-w-4xl w-[calc(100vw-1.5rem)] sm:w-full max-h-[92vh] overflow-hidden flex flex-col p-4 sm:p-6"
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
-        onEscapeKeyDown={(e) => { if (dirty) e.preventDefault(); }}
       >
 
         <DialogHeader>
@@ -1353,7 +1373,7 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
         <DialogFooter>
           <span role="status" className="text-xs text-muted-foreground self-center">{saving ? "Wird gespeichert …" : dirty ? "Eingaben gesichert · Speicherung ausstehend" : "Gespeichert"}</span>
           <Button variant="outline" onClick={requestClose} disabled={saving}>Schließen</Button>
-          <Button onClick={async () => { if (await autosave.flush()) onOpenChange(false); }} disabled={saving}>
+          <Button onClick={requestSave} disabled={saving}>
             {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
             {initial ? "Speichern" : "Anlegen"}
           </Button>
