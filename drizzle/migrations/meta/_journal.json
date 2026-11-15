@@ -1338,6 +1338,13 @@
       "when": 1794740196828,
       "tag": "0190_combined_refund_capacity_and_invoice_evidence",
       "breakpoints": true
+    },
+    {
+      "idx": 191,
+      "version": "7",
+      "when": 1794740440335,
+      "tag": "0191_freeze_combined_refund_claims_and_scope_execution",
+      "breakpoints": true
     }
   ]
 }
