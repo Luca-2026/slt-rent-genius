@@ -19,7 +19,7 @@ beforeAll(async () => {
     CREATE TABLE deposit_refunds(id uuid PRIMARY KEY,link_id uuid,amount_cents integer,status text,stripe_refund_id text);
     CREATE TABLE credit_note_refunds(id uuid PRIMARY KEY,credit_note_id uuid,amount_cents integer,allocations jsonb,status text);
   `);
-  for (const file of ["0141_serialize_shared_original_payment_refunds","0147_durable_external_stripe_refund_receipts","0165_pre_invoice_rental_refund_and_issue_lock","0166_include_order_refunds_in_execution_reconciliation","0167_fix_order_refund_allocation_completion_guard","0168_protect_order_refund_allocation_terminal_states","0189_combined_order_refund_requests","0190_combined_refund_capacity_and_invoice_evidence","0191_freeze_combined_refund_claims_and_scope_execution"]) await db.exec(readFileSync(`drizzle/migrations/${file}.sql`,"utf8"));
+  for (const file of ["0141_serialize_shared_original_payment_refunds","0147_durable_external_stripe_refund_receipts","0165_pre_invoice_rental_refund_and_issue_lock","0166_include_order_refunds_in_execution_reconciliation","0167_fix_order_refund_allocation_completion_guard","0168_protect_order_refund_allocation_terminal_states","0189_combined_order_refund_requests","0190_combined_refund_capacity_and_invoice_evidence","0191_freeze_combined_refund_claims_and_scope_execution","0192_combined_refund_lock_order_and_execution_gate"]) await db.exec(readFileSync(`drizzle/migrations/${file}.sql`,"utf8"));
 },30000);
 afterAll(() => db.close());
 async function fixture() {
