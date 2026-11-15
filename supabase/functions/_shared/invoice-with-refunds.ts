@@ -11,8 +11,11 @@ export async function invoiceWithRefunds(service: any, invoice: any): Promise<Ui
   const { data: file, error: fileError } = await service.storage.from("b2b-invoices").download(invoice.file_path);
   if (fileError || !file) throw new Error("Ursprüngliches Rechnungs-PDF konnte nicht geladen werden.");
   const bytes = new Uint8Array(await file.arrayBuffer());
-  const { data: refunds, error } = await service.from("credit_note_refunds").select("*").eq("credit_note_id", invoice.id).eq("refund_kind", "rental_credit");
+  const { data: legacyRefunds, error } = await service.from("credit_note_refunds").select("*").eq("credit_note_id", invoice.id).eq("refund_kind", "rental_credit");
   if (error) throw new Error("Erstattungsstand konnte nicht sicher gelesen werden.");
+  const { data: combined, error: combinedError } = invoice.rental_inquiry_id ? await service.from("order_refund_requests").select("*").eq("inquiry_id",invoice.rental_inquiry_id).gt("rent_cents",0) : { data: [], error: null };
+  if (combinedError) throw new Error("Gemeinsame Erstattungsnachweise nicht lesbar.");
+  const refunds = [...(legacyRefunds ?? []), ...(combined ?? []).map((r: any) => ({ ...r, amount_cents: r.rent_cents, updated_at: r.completed_at ?? r.created_at, allocations: (r.allocations ?? []).map((a: any) => ({ ...a, amount_cents: a.rent_cents })) }))];
   const latePayments = lateInvoicePaymentStatement(invoice);
   if (!refunds?.length && !latePayments.payments.length) return bytes;
   const balance = invoiceRefundBalance(invoice, refunds ?? []);

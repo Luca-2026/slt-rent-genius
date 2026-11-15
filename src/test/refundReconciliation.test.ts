@@ -5,6 +5,10 @@ function fixture() {
  return {rpc:vi.fn().mockResolvedValue({error:null}),from:()=>q};
 }
 const refund={id:'re_external',payment_intent:'pi_original',amount:12376,currency:'eur',livemode:true,status:'succeeded',metadata:{}};
+it('combined refunds persist the same verified provider receipt and sync one request',async()=>{
+ const service=fixture();await reconcileStripeRefund(service,{...refund,amount:12975,metadata:{order_refund_request:'combined'}},true);
+ expect(service.rpc).toHaveBeenCalledWith('sync_order_refund',{_id:'combined',_intent:'pi_original',_refund:'re_external',_status:'succeeded',_amount:12975});
+});
 it('marks the 700 € settlement paid only after matching provider evidence, never just a refund request',async()=>{
  const updates:unknown[]=[];
  const service={rpc:vi.fn(async(name:string)=>({data:name==='deposit_payout_verified',error:null})),from:(table:string)=>{

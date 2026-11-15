@@ -14,6 +14,7 @@ import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { creditRefund } from "../_shared/credit-refund.ts";
 import { rentalCreditRefund } from "../_shared/rental-credit-refund.ts";
 import { preInvoiceRefund } from "../_shared/pre-invoice-refund.ts";
+import { orderRefund } from "../_shared/order-refund.ts";
 import {
   ensurePaymentLink,
   isStripeConfigured,
@@ -26,6 +27,10 @@ import {
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 const Body = z.discriminatedUnion("action", [
+  z.object({ action: z.literal("order_refund_info"), inquiry_id: z.string().uuid() }),
+  z.object({ action: z.literal("order_refund_sync"), inquiry_id: z.string().uuid() }),
+  z.object({ action: z.literal("order_refund_execute"), inquiry_id: z.string().uuid(), request_id: z.string().uuid(), deposit_cents: z.number().int().min(0).max(10000000), rent_cents: z.number().int().min(0).max(10000000) }),
+  z.object({ action: z.literal("order_refund_confirm_manual"), inquiry_id: z.string().uuid(), request_id: z.string().uuid(), reference: z.string().trim().min(3).max(200) }),
   z.object({ action: z.literal("order_credit_info"), inquiry_id: z.string().uuid() }),
   z.object({ action: z.literal("refund_order_credit"), inquiry_id: z.string().uuid() }),
   z.object({ action: z.literal("confirm_order_credit_transfer"), inquiry_id: z.string().uuid(), bank_reference: z.string().trim().min(3).max(200) }),
@@ -69,6 +74,10 @@ Deno.serve(async (req: Request) => {
     const parsed = Body.safeParse(await req.json().catch(() => null));
     if (!parsed.success) return json({ error: "Ungültige Anfrage" }, 400);
     const body = parsed.data;
+    if (body.action.startsWith("order_refund_")) {
+      try { return json(await orderRefund(service, user.id, body)); }
+      catch (error) { return json({ success: false, error: error instanceof Error && !/[rs]k_(live|test)_/.test(error.message) ? error.message : "Erstattungsstatus ungeklärt; nicht zusätzlich auszahlen" }, 409); }
+    }
     if (["order_credit_info", "refund_order_credit", "confirm_order_credit_transfer"].includes(body.action) && "inquiry_id" in body) {
       const { data: roles, error: roleError } = await service.from("user_roles").select("role").eq("user_id", user.id).in("role", ["admin", "niederlassungsleiter"]);
       if (roleError || !roles?.length) return json({ error: "Keine Berechtigung für Mietguthabenerstattungen" }, 403);

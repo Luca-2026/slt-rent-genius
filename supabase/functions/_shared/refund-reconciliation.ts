@@ -37,6 +37,10 @@ export async function reconcileStripeRefund(service: any, refund: any, live: boo
     const { error: syncError } = await service.rpc('sync_rental_order_refund', { _basis: refund.metadata.rental_basis_id, _intent: intent, _refund_id: refund.id, _status: refund.status ?? 'pending', _amount: refund.amount });
     if (syncError) throw new Error('Mietguthabenerstattung konnte nicht bestätigt werden');
   }
+  if (refund.metadata?.order_refund_request) {
+    const { error } = await service.rpc('sync_order_refund', { _id: refund.metadata.order_refund_request, _intent: intent, _refund: refund.id, _status: refund.status ?? 'pending', _amount: refund.amount });
+    if (error) throw new Error('Gemeinsame Erstattung konnte nicht bestätigt werden');
+  }
 }
 
 export async function reconcileRefundsBeforeExecution(service: any, stripe: any, intent: string, live: boolean) {

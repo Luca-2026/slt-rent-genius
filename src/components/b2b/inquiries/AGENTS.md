@@ -1,5 +1,5 @@
 # Inquiries
-- Cancelled orders expose rental refunds beside Stripe deposit refunds using the same invoice/pre-invoice flow; never expand the deposit-only cap to include rent.
+- OrderRefundOverview shows separate deposit/rent balances and recorded actors above documents; combined payouts remain live-gated until isolated verification, preserving existing protected payout routes in the meantime.
 - RentalCancellationDialog persists a server-validated fee snapshot before invoice preview/send or pre-invoice rental refund; the refund prepares an unnumbered server preview basis and shares existing payment caps. Individual fees replace the AGB fee; existing-invoice cases require explicit correction to avoid duplicate claims.
 - Event tariff amounts are flat per article, with persisted inline period decisions blocking dispatch; normalization and reopening retain event basis so quantities never multiply calendar days again.
  - Weekly tariffs use elapsed 24-hour blocks with full started weeks and serialize as one period-labelled flat line; manual period/unit changes require an explicit price decision, and four-week installments use an additive day interval without changing historical monthly schedules.

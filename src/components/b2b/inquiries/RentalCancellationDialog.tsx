@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { useToast } from "@/hooks/use-toast";
+import { OrderRefundOverview } from "./OrderRefundOverview";
 import { RentalCreditRefund } from "./RentalCreditRefund";
 import { formatEuro } from "./offerMath";
 import { supabase } from "@/integrations/supabase/client";
@@ -17,7 +18,7 @@ import { registerSigningSurface } from "@/lib/signingOverlays";
 type Snapshot = { reason: string; fee_cents: number; price_basis: string; retained_option_net_cents: number; totals: { grossAmount: number }; invoice_items: unknown[]; paid_cents: number; deposit: number };
 type Result = { success?: boolean; error?: string; confirmed?: boolean; expected_updated_at?: string; snapshot?: Snapshot; pdf_base64?: string; invoice_number?: string };
 
-export function RentalCancellationDialog({ inquiryId, business, onChanged }: { inquiryId: string; business: boolean; onChanged: () => void }) {
+export function RentalCancellationDialog({ inquiryId, business, onChanged, cancelled = false }: { inquiryId: string; business: boolean; onChanged: () => void; cancelled?: boolean }) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState("agb");
   const [fee, setFee] = useState("");
@@ -29,7 +30,8 @@ export function RentalCancellationDialog({ inquiryId, business, onChanged }: { i
   const [tax, setTax] = useState(false);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
-  const [confirmed, setConfirmed] = useState(false);
+  const [confirmed, setConfirmed] = useState(cancelled);
+  const [loaded, setLoaded] = useState(false);
   const [previewed, setPreviewed] = useState(false);
   const [invoiceId, setInvoiceId] = useState<string | null>(null);
   const [error, setError] = useState("");
@@ -37,11 +39,13 @@ export function RentalCancellationDialog({ inquiryId, business, onChanged }: { i
   useEffect(() => { if (open) return registerSigningSurface(); }, [open]);
   useEffect(() => {
     if (!open) return;
+    setLoaded(false);
     let alive = true;
     supabase.from("rental_inquiries").select("cancelled_at,cancellation_payload").eq("id", inquiryId).single().then(({ data, error: readError }) => {
       if (!alive) return;
       if (readError) { setError("Stornostand konnte nicht geladen werden."); return; }
       if (data.cancelled_at) { setConfirmed(true); setResult({ success: true, confirmed: true, snapshot: data.cancellation_payload as unknown as Snapshot }); }
+      setLoaded(true);
     });
     supabase.from("inquiry_invoices").select("id").eq("rental_inquiry_id", inquiryId).eq("invoice_kind", "invoice").neq("status", "draft").neq("status", "cancelled").order("created_at", { ascending: false }).limit(1).then(({ data }) => { if (alive) setInvoiceId(data?.[0]?.id ?? null); });
     return () => { alive = false; };
@@ -80,10 +84,11 @@ export function RentalCancellationDialog({ inquiryId, business, onChanged }: { i
   };
   const valid = received && reason.trim().length >= 3 && vat !== "" && tax && (mode === "agb" ? terms : fee.trim() !== "" && Number.isFinite(Number(fee.replace(",", "."))) && Number(fee.replace(",", ".")) >= 0);
   return <>
-    <Button variant="outline" size="sm" onClick={() => setOpen(true)}><Ban className="mr-2 h-4 w-4" />Auftrag stornieren / abrechnen</Button>
+    <Button variant="outline" size="sm" onClick={() => setOpen(true)}><Ban className="mr-2 h-4 w-4" />{cancelled || confirmed ? "Stornoabrechnung ansehen" : "Auftrag stornieren"}</Button>
     <Dialog open={open} onOpenChange={v => !busy && setOpen(v)}><DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto">
       <DialogHeader><DialogTitle>{confirmed ? "Stornoabrechnung" : "Auftrag stornieren"}</DialogTitle><DialogDescription>{business ? "Geschäftskunde · Gebührenbasis netto" : "Privatkunde · Gebührenbasis brutto"}</DialogDescription></DialogHeader>
-      {!confirmed && <div className="space-y-4">
+      {!loaded && <p role="status">Stornostand wird geprüft …</p>}
+      {loaded && !confirmed && <div className="space-y-4">
         <Label>Gebührenermittlung</Label><Select value={mode} onValueChange={v => { invalidate(); setMode(v); }}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="agb">Gemäß AGB</SelectItem><SelectItem value="individual">Individuelle Gebühr</SelectItem></SelectContent></Select>
         {mode === "individual" && <div><Label htmlFor="cancel-fee">Stornogebühr {business ? "netto" : "brutto"} (€)</Label><Input id="cancel-fee" inputMode="decimal" value={fee} onChange={e => { invalidate(); setFee(e.target.value); }} /></div>}
         <div><Label htmlFor="cancel-received">Storno eingegangen am (lokale Uhrzeit)</Label><Input id="cancel-received" type="datetime-local" value={received} onChange={e => { invalidate(); setReceived(e.target.value); }} /></div>
@@ -95,9 +100,10 @@ export function RentalCancellationDialog({ inquiryId, business, onChanged }: { i
       </div>}
       {result?.snapshot && <dl className="grid grid-cols-2 gap-2 border-y border-border py-3 text-sm"><dt>Stornogebühr ({result.snapshot.price_basis === "net" ? "netto" : "brutto"})</dt><dd className="text-right">{formatEuro(result.snapshot.fee_cents / 100)}</dd><dt>Einbehaltener Optionsaufpreis netto</dt><dd className="text-right">{formatEuro(result.snapshot.retained_option_net_cents / 100)}</dd><dt>Rechnungsbetrag brutto</dt><dd className="text-right font-semibold">{formatEuro(result.snapshot.totals.grossAmount)}</dd><dt>Zahlungen insgesamt inkl. Kaution</dt><dd className="text-right">{formatEuro(result.snapshot.paid_cents / 100)}</dd><dt>Kaution separat</dt><dd className="text-right">{formatEuro(result.snapshot.deposit)}</dd></dl>}
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-      {confirmed && <RentalCreditRefund invoiceId={invoiceId ?? undefined} inquiryId={invoiceId ? undefined : inquiryId} prepareBasis={invoiceId ? undefined : () => invoice(true, true)} onDone={() => { setPreviewed(false); onChanged(); }} />}
+      {loaded && confirmed && <OrderRefundOverview compact inquiry={{ id: inquiryId, status: "cancelled" }} onChanged={() => { setPreviewed(false); onChanged(); }} />}
+      {loaded && confirmed && <RentalCreditRefund invoiceId={invoiceId ?? undefined} inquiryId={invoiceId ? undefined : inquiryId} prepareBasis={invoiceId ? undefined : () => invoice(true,true)} onDone={onChanged} />}
       <DialogFooter className="flex-wrap gap-2">
-        {!confirmed ? <><Button variant="outline" disabled={busy || !valid} onClick={() => void call("preview")}><Eye className="mr-2 h-4 w-4" />Storno prüfen</Button><Button disabled={busy || !result?.snapshot || !valid} onClick={() => void call("confirm")}>Verbindlich stornieren</Button></> : <><Button variant="outline" disabled={busy} onClick={() => void invoice(true)}><Eye className="mr-2 h-4 w-4" />Rechnungsvorschau</Button><Button disabled={busy || !previewed || !!invoiceId} onClick={() => void invoice(false)}><Receipt className="mr-2 h-4 w-4" />Rechnung erstellen und senden</Button></>}
+        {loaded && (!confirmed ? <><Button variant="outline" disabled={busy || !valid} onClick={() => void call("preview")}><Eye className="mr-2 h-4 w-4" />Storno prüfen</Button><Button disabled={busy || !result?.snapshot || !valid} onClick={() => void call("confirm")}>Verbindlich stornieren</Button></> : <><Button variant="outline" disabled={busy} onClick={() => void invoice(true)}><Eye className="mr-2 h-4 w-4" />Rechnungsvorschau</Button><Button disabled={busy || !previewed || !!invoiceId} onClick={() => void invoice(false)}><Receipt className="mr-2 h-4 w-4" />Rechnung erstellen und senden</Button></>)}
       </DialogFooter>
     </DialogContent></Dialog>
   </>;

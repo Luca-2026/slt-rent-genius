@@ -1324,6 +1324,34 @@
       "when": 1794658801145,
       "tag": "0188_cancellation_sign_task_completion_guard",
       "breakpoints": true
+    },
+    {
+      "idx": 189,
+      "version": "7",
+      "when": 1794740172344,
+      "tag": "0189_combined_order_refund_requests",
+      "breakpoints": true
+    },
+    {
+      "idx": 190,
+      "version": "7",
+      "when": 1794740196828,
+      "tag": "0190_combined_refund_capacity_and_invoice_evidence",
+      "breakpoints": true
+    },
+    {
+      "idx": 191,
+      "version": "7",
+      "when": 1794740440335,
+      "tag": "0191_freeze_combined_refund_claims_and_scope_execution",
+      "breakpoints": true
+    },
+    {
+      "idx": 192,
+      "version": "7",
+      "when": 1794740571315,
+      "tag": "0192_combined_refund_lock_order_and_execution_gate",
+      "breakpoints": true
     }
   ]
 }
