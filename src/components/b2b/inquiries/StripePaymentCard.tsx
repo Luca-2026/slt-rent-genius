@@ -223,7 +223,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
           </Button>
         )}
         {unresolved && canRefund && <Button variant="outline" className="h-11 w-full px-3 py-0" disabled={busy} onClick={syncRefund}><RotateCcw /> Erstattungsstatus abgleichen</Button>}
-        {!cancelled && !unresolved && paidLink && paidLink.deposit_cents > 0 && canRefund && (
+        {!unresolved && paidLink && paidLink.deposit_cents > 0 && canRefund && refundable > 0 && (
           <Button className="h-11 w-full px-3 py-0" onClick={openRefund} disabled={busy || refundable <= 0}>
             <Undo2 /> Kaution erstatten
           </Button>

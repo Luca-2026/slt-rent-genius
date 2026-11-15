@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { useToast } from "@/hooks/use-toast";
 import { OrderRefundOverview } from "./OrderRefundOverview";
+import { RentalCreditRefund } from "./RentalCreditRefund";
 import { formatEuro } from "./offerMath";
 import { supabase } from "@/integrations/supabase/client";
 import { registerSigningSurface } from "@/lib/signingOverlays";
@@ -100,6 +101,7 @@ export function RentalCancellationDialog({ inquiryId, business, onChanged, cance
       {result?.snapshot && <dl className="grid grid-cols-2 gap-2 border-y border-border py-3 text-sm"><dt>Stornogebühr ({result.snapshot.price_basis === "net" ? "netto" : "brutto"})</dt><dd className="text-right">{formatEuro(result.snapshot.fee_cents / 100)}</dd><dt>Einbehaltener Optionsaufpreis netto</dt><dd className="text-right">{formatEuro(result.snapshot.retained_option_net_cents / 100)}</dd><dt>Rechnungsbetrag brutto</dt><dd className="text-right font-semibold">{formatEuro(result.snapshot.totals.grossAmount)}</dd><dt>Zahlungen insgesamt inkl. Kaution</dt><dd className="text-right">{formatEuro(result.snapshot.paid_cents / 100)}</dd><dt>Kaution separat</dt><dd className="text-right">{formatEuro(result.snapshot.deposit)}</dd></dl>}
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
       {loaded && confirmed && <OrderRefundOverview compact inquiry={{ id: inquiryId, status: "cancelled" }} onChanged={() => { setPreviewed(false); onChanged(); }} />}
+      {loaded && confirmed && <RentalCreditRefund invoiceId={invoiceId ?? undefined} inquiryId={invoiceId ? undefined : inquiryId} prepareBasis={invoiceId ? undefined : () => invoice(true,true)} onDone={onChanged} />}
       <DialogFooter className="flex-wrap gap-2">
         {loaded && (!confirmed ? <><Button variant="outline" disabled={busy || !valid} onClick={() => void call("preview")}><Eye className="mr-2 h-4 w-4" />Storno prüfen</Button><Button disabled={busy || !result?.snapshot || !valid} onClick={() => void call("confirm")}>Verbindlich stornieren</Button></> : <><Button variant="outline" disabled={busy} onClick={() => void invoice(true)}><Eye className="mr-2 h-4 w-4" />Rechnungsvorschau</Button><Button disabled={busy || !previewed || !!invoiceId} onClick={() => void invoice(false)}><Receipt className="mr-2 h-4 w-4" />Rechnung erstellen und senden</Button></>)}
       </DialogFooter>

@@ -30,6 +30,7 @@ export async function orderRefund(service: any, actor: string, body: any) {
     if (error) throw new Error(error.message);
   }
   if (body.action === "order_refund_execute") {
+    if (!isStripeTestMode()) throw new Error("Gemeinsame Live-Erstattung noch nicht freigegeben: isolierte Zahlungsprüfung ausstehend. Historische Auszahlungen bleiben erhalten.");
     let request = requests?.find((r: any) => r.id === body.request_id);
     if (!request) {
       if (totals.pending || totals.blocked_reason) throw new Error(totals.blocked_reason ?? "Erstattung bereits in Bearbeitung");
@@ -72,5 +73,5 @@ export async function orderRefund(service: any, actor: string, body: any) {
   const { data: finalTotals, error: finalError } = await service.rpc("order_refund_totals", { _inquiry: inquiry.id });
   const { data: finalRequests, error: finalRequestError } = await service.from("order_refund_requests").select("*").eq("inquiry_id", inquiry.id).order("created_at", { ascending: false });
   if (finalError || finalRequestError) throw new Error("Erstattungsstatus ungeklärt; nicht zusätzlich auszahlen");
-  return { success: true, ...finalTotals, can_refund_rent: Boolean(admin || manager), requests: finalRequests };
+  return { success: true, ...finalTotals, execution_available: isStripeTestMode(), can_refund_rent: Boolean(admin || manager), requests: finalRequests };
 }

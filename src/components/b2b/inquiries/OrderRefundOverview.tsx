@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { formatEuro } from "./offerMath";
 import { RotateCcw, Undo2 } from "lucide-react";
 
-type Totals = { success: boolean; error?: string; paid_cents: number; deposit_available: number; rent_available: number; deposit_used: number; rent_used: number; pending: boolean; blocked_reason?: string; can_refund_rent: boolean; requests: RequestRow[] };
+type Totals = { success: boolean; error?: string; execution_available: boolean; paid_cents: number; deposit_available: number; rent_available: number; deposit_used: number; rent_used: number; pending: boolean; blocked_reason?: string; can_refund_rent: boolean; requests: RequestRow[] };
 type RequestRow = { id: string; deposit_cents: number; rent_cents: number; payout_method: string; status: string; created_at: string; completed_at?: string; created_by: string };
 type HistoryRow = { id: string; at: string; actor: string; label: string; detail: string };
 const eur = (n: number) => formatEuro(n / 100);
@@ -77,6 +77,7 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
       {!compact && <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4"><div>Erhalten<strong className="block">{eur(data.paid_cents)}</strong></div><div>Kaution bereits beauftragt / erstattet<strong className="block">{eur(data.deposit_used)}</strong></div><div>Miete bereits beauftragt / erstattet<strong className="block">{eur(data.rent_used)}</strong></div><div>Noch zu erstatten<strong className="block">{eur(total)}</strong></div></div>}
       {!total && !data.pending && data.paid_cents > 0 && data.deposit_used+data.rent_used >= data.paid_cents && <p className="font-semibold text-primary">Vollständig erstattet · {eur(data.paid_cents)} · offen 0,00 €</p>}
       {data.blocked_reason && <p className="text-sm text-muted-foreground">{data.blocked_reason}</p>}
+      {!data.execution_available && total > 0 && <p className="text-sm text-muted-foreground">Gemeinsame Auszahlung noch nicht freigegeben. Bestehende Erstattungswege bleiben im Auftrag verfügbar.</p>}
       <div className="flex flex-wrap gap-2">
         {!data.pending && !data.blocked_reason && total > 0 && <Button onClick={start} disabled={busy}><Undo2 className="mr-2 h-4 w-4"/>Erstattung</Button>}
         {data.pending && <><p className="text-sm">Erstattung in Bearbeitung – keine weitere Auszahlung starten.</p><Button variant="outline" disabled={busy} onClick={() => void call("order_refund_sync")}><RotateCcw className="mr-2 h-4 w-4"/>Status prüfen</Button></>}
@@ -92,7 +93,7 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
       <div><Label htmlFor="order-rent-refund">Mietguthaben (€), maximal {eur(data?.rent_available ?? 0)}</Label><Input id="order-rent-refund" inputMode="decimal" disabled={!data?.can_refund_rent} value={rent} onChange={e => setRent(e.target.value)}/></div>
       <p className="font-semibold">Gesamt: {eur(Number.isFinite(selected) ? selected : 0)}</p>
       {error && <p role="alert" className="text-destructive">{error}</p>}
-      <Button disabled={busy || !valid} onClick={async () => {
+      <Button disabled={busy || !valid || !data?.execution_available} onClick={async () => {
         if (inquiry.status === "cancelled") {
           setBusy(true);
           const basis = await invokeWithAuth<{ error?: string }>("send-inquiry-invoice", { inquiry_type: "rental", inquiry_id: inquiry.id, cancellation_invoice: true, preview: true, prepare_refund: true, payment_terms: "vorkasse" });

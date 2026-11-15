@@ -213,6 +213,8 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
           {bal > 0 ? ` · ${PAYOUT_LABEL[settlement.payout_method]}${settlement.payout_status === "pending" ? " – Auszahlung offen" : settlement.payout_date ? ` am ${new Date(settlement.payout_date).toLocaleDateString("de-DE")}` : ""}` : ""}
         </p>
         {canMarkStripePayout && <OrderRefundOverview compact inquiry={inquiry} onChanged={onDone} />}
+        {settlement.payout_status === "pending" && settlement.payout_method === "stripe" && canMarkStripePayout && <Button size="sm" onClick={executeStripePayout} disabled={busy}>{unresolved ? "Erstattungsstatus abgleichen" : "Kaution über Stripe erstatten"}</Button>}
+        {canMarkStripePayout && (invoices.length === 0 ? <RentalCreditRefund inquiryId={inquiry.id} onDone={onDone}/> : invoices.map(inv => <RentalCreditRefund key={inv.id} invoiceId={inv.id} onDone={onDone}/>))}
         <p className="text-xs text-muted-foreground">Korrekturen nur per Gutschrift.</p>
       </div>
     );
