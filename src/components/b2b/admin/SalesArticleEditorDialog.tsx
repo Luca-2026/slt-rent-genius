@@ -281,7 +281,6 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
   const requestSave = async () => {
     if (!validateForm(form)) return;
     if (await autosave.flush()) onOpenChange(false);
-    else toast.error("Artikel noch nicht gespeichert. Eingaben bleiben erhalten; bitte erneut versuchen.");
   };
 
   // Interne Kalkulation (Einkaufspreis, Gemeinkosten) – separat und nicht öffentlich gespeichert.

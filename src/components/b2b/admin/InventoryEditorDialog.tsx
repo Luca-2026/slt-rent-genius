@@ -448,7 +448,6 @@ export function InventoryEditorDialog({ open, onOpenChange, initial, onSaved }: 
   const requestSave = async () => {
     if (!validateForm(form)) return;
     if (await autosave.flush()) onOpenChange(false);
-    else toast.error("Artikel noch nicht gespeichert. Eingaben bleiben erhalten; bitte erneut versuchen.");
   };
 
 

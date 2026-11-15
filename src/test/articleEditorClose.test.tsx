@@ -26,9 +26,9 @@ describe("incomplete article editors", () => {
       ? <InventoryEditorDialog open onOpenChange={onOpenChange} onSaved={vi.fn()} />
       : <SalesArticleEditorDialog open kind="new" row={null} onOpenChange={onOpenChange} onSaved={vi.fn()} />;
     const first = render(editor());
-    const input = screen.getAllByRole("textbox")[0];
+    const input = kind === "sales" ? screen.getByLabelText("Hersteller / Marke") : screen.getAllByRole("textbox")[0];
     fireEvent.change(input, { target: { value: "Unvollständiger Artikel" } });
-    fireEvent.click(screen.getByRole("button", { name: "Schließen", exact: true }));
+    fireEvent.click(screen.getByRole("button", { name: /^Schließen$/ }));
     await waitFor(() => expect(onOpenChange).toHaveBeenCalledWith(false));
     const draft = readCmsDraft<Record<string, unknown>>(cmsDraftKey(kind === "rental" ? "inventory" : "sales-new", kind === "rental" ? "__new__" : "new"));
     expect(draft?.form[kind === "rental" ? "name" : "brand"]).toBe("Unvollständiger Artikel");
@@ -44,7 +44,7 @@ describe("incomplete article editors", () => {
       ? <InventoryEditorDialog open onOpenChange={onOpenChange} onSaved={vi.fn()} />
       : <SalesArticleEditorDialog open kind="new" row={null} onOpenChange={onOpenChange} onSaved={vi.fn()} />);
     fireEvent.change(screen.getAllByRole("textbox")[0], { target: { value: "Incomplete" } });
-    fireEvent.click(screen.getByRole("button", { name: kind === "rental" ? "Anlegen" : "Speichern", exact: true }));
+    fireEvent.click(screen.getByRole("button", { name: kind === "rental" ? /^Anlegen$/ : /^Speichern$/ }));
     await waitFor(() => expect(mocks.error).toHaveBeenCalled());
     expect(onOpenChange).not.toHaveBeenCalled();
     expect(mocks.rpc).not.toHaveBeenCalled();
