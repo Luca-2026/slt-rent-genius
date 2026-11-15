@@ -264,8 +264,24 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
   };
 
   const requestClose = async () => {
+    if (!readOnly && !validateForm(form, true)) {
+      writeCmsDraft(draftKey, form);
+      if (JSON.stringify(readCmsDraft<FormState>(draftKey)?.form) !== JSON.stringify(form)) {
+        toast.error("Entwurf konnte nicht gesichert werden. Bitte das Fenster geöffnet lassen.");
+        return;
+      }
+      toast.info("Unvollständiger Artikel als Entwurf auf diesem Gerät gesichert.");
+      onOpenChange(false);
+      return;
+    }
     if (!readOnly && !await autosave.flush()) return;
     onOpenChange(false);
+  };
+
+  const requestSave = async () => {
+    if (!validateForm(form)) return;
+    if (await autosave.flush()) onOpenChange(false);
+    else toast.error("Artikel noch nicht gespeichert. Eingaben bleiben erhalten; bitte erneut versuchen.");
   };
 
   // Interne Kalkulation (Einkaufspreis, Gemeinkosten) – separat und nicht öffentlich gespeichert.
@@ -387,8 +403,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
     }
   }
 
-  const save = async (snapshot: { form: FormState; purchase: string; overhead: string }, automatic = false): Promise<boolean> => {
-    const { form, purchase, overhead } = snapshot;
+  function validateForm(form: FormState, automatic = false): boolean {
     if (!form.brand.trim() || !form.model.trim()) {
       if (!automatic) toast.error("Hersteller und Modell sind Pflichtfelder.");
       return false;
@@ -397,6 +412,12 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
       if (!automatic) toast.error("Bitte eine Kategorie angeben.");
       return false;
     }
+    return true;
+  }
+
+  const save = async (snapshot: { form: FormState; purchase: string; overhead: string }, automatic = false): Promise<boolean> => {
+    const { form, purchase, overhead } = snapshot;
+    if (!validateForm(form, automatic)) return false;
     const slug = form.slug.trim() || slugify(displayName);
     const images = form.images.map((i) => i.trim()).filter(Boolean);
     const content = {
@@ -520,7 +541,6 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         data-article-autosave
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
-        onEscapeKeyDown={(e) => { if (dirty) e.preventDefault(); }}
         className="flex h-[100dvh] max-h-[100dvh] w-full max-w-none flex-col gap-0 overflow-hidden rounded-none p-0 sm:h-auto sm:max-h-[90vh] sm:w-[calc(100%-2rem)] sm:max-w-3xl sm:rounded-lg">
         <DialogHeader className="shrink-0 border-b px-4 py-4 sm:px-6">
           <DialogTitle>
@@ -902,7 +922,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
             Schließen
           </Button>
           {!readOnly && (
-            <Button className="w-full sm:w-auto" onClick={async () => { if (await autosave.flush()) onOpenChange(false); }} disabled={saving}>
+            <Button className="w-full sm:w-auto" onClick={requestSave} disabled={saving}>
               {saving ? "Wird gespeichert …" : "Speichern"}
             </Button>
           )}
