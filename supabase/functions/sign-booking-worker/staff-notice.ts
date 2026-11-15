@@ -1,3 +1,4 @@
+import { signLocationName } from "../_shared/sign-direct-booking.ts";
 const esc = (value: unknown) => String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const de = (d: string | null | undefined) => d ? d.split("-").reverse().join(".") : "–";
 type Booking = { snapshot?: { request?: { permitValidFromTime?: string; permitValidUntilTime?: string } }; package: string; quantity: number; location: string; start_date: string; end_date: string; start_time?: string | null; end_time?: string | null; permit_mode?: string | null; permit_valid_from?: string | null; permit_valid_until?: string | null; permit_issued_on?: string | null; total_cents: number };
@@ -11,7 +12,7 @@ export function signStaffNotice(b: Booking, inq: Inquiry, link: string, permitAt
     : permitAttached ? "Genehmigung ist angehängt." : b.permit_mode === "slt" ? "Genehmigung muss durch SLT beantragt werden." : "Keine Genehmigung hochgeladen.";
   const rows: [string, string][] = [
     ["Buchungsreferenz", `#${esc(inq.order_code)}${inq.offer_number ? ` · ${esc(inq.offer_number)}` : ""}`],
-    ["Paket", esc(pkg)], ["Menge", `${b.quantity} Sets`], ["Standort", b.location === "bonn" ? "Bonn" : "Krefeld"],
+    ["Paket", esc(pkg)], ["Menge", `${b.quantity} Sets`], ["Standort", esc(signLocationName(b.location))],
     ["Mietzeitraum", `${de(b.start_date)} ${esc(b.start_time ?? "")} – ${de(b.end_date)} ${esc(b.end_time ?? "")}`],
     ["Genehmigung", permit], ["Bezahlt", new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(b.total_cents / 100)],
     ["Kunde", esc([inq.company_name, inq.customer_name].filter(Boolean).join(" · "))], ["Kontakt", esc([inq.customer_phone, inq.customer_email].filter(Boolean).join(" · "))],

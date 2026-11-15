@@ -25,9 +25,9 @@ describe("Halteverbotsschilder direct booking", () => {
     expect(signBookingPrice(c, { ...input, distanceKm: null })).toBeNull();
   });
   it("uses the 49 euro package for a weekend and all ten days alike", () => { for (const rentalDays of [1,3,10]) expect(signBookingPrice(config,{package:"standard",quantity:1,rentalDays,municipalFeesCents:null})?.grossCents).toBe(4900); });
-  it("only permits the existing sets in Krefeld and Bonn", () => {
-    for (const location of ["krefeld", "bonn"]) expect(eligibleSignCart([{ product_slug: "halteverbotsschilder-set", location, quantity: 1 }])).toBe(true);
-    expect(eligibleSignCart([{ product_slug: "halteverbotsschilder-set", location: "muelheim", quantity: 1 }])).toBe(false);
+  it("permits the existing sets at all maintained locations", () => {
+    for (const location of ["krefeld", "bonn", "muelheim"]) expect(eligibleSignCart([{ product_slug: "halteverbotsschilder-set", location, quantity: 1 }])).toBe(true);
+    expect(eligibleSignCart([{ product_slug: "halteverbotsschilder-set", location: "unknown", quantity: 1 }])).toBe(false);
     expect(eligibleSignCart([{ product_slug: "minibagger", location: "bonn", quantity: 1 }])).toBe(false);
     expect(eligibleSignCart([])).toBe(false);
     expect(eligibleSignCart([{ product_slug: "halteverbotsschilder-set", location: "bonn", quantity: 1 }, { product_slug: "bauzaun", location: "bonn", quantity: 1 }])).toBe(false);

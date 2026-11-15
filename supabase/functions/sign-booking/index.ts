@@ -7,7 +7,7 @@ import { validCalendarDate, validPublicRentalPeriod } from "../_shared/public-re
 import { SIGN_PERMIT_MAX_BYTES, validSignPermit } from "../_shared/sign-permit.ts";
 import { signPermitPeriodError } from "../_shared/sign-permit-period.ts";
 import { routeDistance } from "../_shared/route-distance.ts";
-import { signSetupGrossCents, SIGN_ADDITIONAL_SLUG, SIGN_ADDITIONAL_NAME } from "../_shared/sign-direct-booking.ts";
+import { signSetupGrossCents, SIGN_ADDITIONAL_SLUG, SIGN_ADDITIONAL_NAME, SIGN_LOCATIONS } from "../_shared/sign-direct-booking.ts";
 import { signLeadError } from "../_shared/sign-booking-lead.ts";
 import { SIGN_TERMS_VERSION, SIGN_TERMS_HASHES } from "../_shared/sign-legal.ts";
 
@@ -18,7 +18,7 @@ import { hasBankDiscountPolicy, newBankDiscountPolicy } from "../_shared/bank-tr
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json", "Cache-Control": "no-store" } });
 const text = (max: number) => z.string().trim().min(1).max(max);
 const booking = z.object({
-  requestId: z.string().uuid(), cartExpiresAt: z.number().finite(), location: z.enum(["krefeld", "bonn"]), package: z.enum(["standard", "sorglos"]), quantity: z.number().int().min(1).max(10),
+  requestId: z.string().uuid(), cartExpiresAt: z.number().finite(), location: z.enum(SIGN_LOCATIONS), package: z.enum(["standard", "sorglos"]), quantity: z.number().int().min(1).max(10),
   start_date: z.string().refine(validCalendarDate), end_date: z.string().refine(validCalendarDate), start_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/), end_time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
   name: text(200), email: z.string().trim().email().max(180).transform(v => v.toLowerCase()), phone: text(50).refine(v => v.replace(/\D/g, "").length >= 6), street: text(200), postalCode: text(20), city: text(100), customerKind: z.enum(["private", "business"]),
   termsAccepted: z.literal(true), municipalFeesAccepted: z.boolean(), pickupConfirmed: z.boolean(), bankDiscountShown: z.boolean().optional(),
@@ -60,14 +60,14 @@ Deno.serve(async req => {
       return json({ config: p?.direct_booking_config ? { ...p.direct_booking_config, bank_discount_enabled: await bankDiscountLive(service) } : null, additionalSigns: (signs ?? []).map(sign => ({ ...sign, name: SIGN_ADDITIONAL_NAME })) });
     }
     if (raw.action === "availability") {
-      const parsed = z.object({ location: z.enum(["bonn", "krefeld"]), from: z.string().refine(validCalendarDate), to: z.string().refine(validCalendarDate) }).safeParse(raw);
+      const parsed = z.object({ location: z.enum(SIGN_LOCATIONS), from: z.string().refine(validCalendarDate), to: z.string().refine(validCalendarDate) }).safeParse(raw);
       if (!parsed.success) return json({ error: "Ungültiger Zeitraum" }, 400);
       const { data, error } = await service.rpc("sign_calendar_availability", { _location: parsed.data.location, _from: parsed.data.from, _to: parsed.data.to });
       if (error) return json({ error: "Belegung konnte nicht geladen werden" }, 400);
       return json({ days: data });
     }
     if (raw.action === "setup-quote") {
-      const parsed = z.object({ location: z.enum(["bonn", "krefeld"]), street: text(200), postalCode: z.string().regex(/^\d{5}$/), city: text(100) }).safeParse(raw);
+      const parsed = z.object({ location: z.enum(SIGN_LOCATIONS), street: text(200), postalCode: z.string().regex(/^\d{5}$/), city: text(100) }).safeParse(raw);
       if (!parsed.success) return json({ error: "Bitte vollständige Aufstelladresse angeben" }, 400);
       const apiKey = Deno.env.get("GOOGLE_PLACES_API_KEY");
       const distance = apiKey ? await routeDistance(apiKey, parsed.data.location, { address: `${parsed.data.street}, ${parsed.data.postalCode} ${parsed.data.city}, Deutschland` }) : null;

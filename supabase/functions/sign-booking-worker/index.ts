@@ -5,6 +5,7 @@ import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
 import { SLT_COMPANY } from "../_shared/company.ts";
 import { operationalEmailRecipient } from "../_shared/test-email-routing.ts";
+import { signLocationName } from "../_shared/sign-direct-booking.ts";
 import { signStaffNotice } from "./staff-notice.ts";
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 const esc = (value: unknown) => String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -45,7 +46,7 @@ Deno.serve(async req => {
       const encoded = btoa(Array.from(bytes, byte => String.fromCharCode(byte)).join(""));
       const response = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${resend}`, "Content-Type": "application/json", "Idempotency-Key": `sign-confirm-${b.id}` }, body: JSON.stringify({
         from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`, to: [inq.customer_email], reply_to: `${b.location}@slt-rental.de`, subject: `Auftragsbestätigung #${inq.order_code} – Halteverbotsschilder`,
-        html: `<p>${esc(salutationLine({ address_form: form, name: inq.customer_name }))}</p><p>${byForm(form, "Deine", "Ihre")} Zahlung ist vollständig eingegangen. ${byForm(form, "Deine", "Ihre")} Buchung <strong>#${esc(inq.order_code)}</strong> über ${b.quantity} Sets ist bestätigt.</p><p>Standort: ${b.location === "bonn" ? "Bonn" : "Krefeld"}<br>Mietzeit: ${esc(b.start_date)} bis ${esc(b.end_date)}</p>${b.package === "sorglos" ? "<p>Städtische Gebühren werden zusätzlich separat abgerechnet.</p>" : ""}<p>Die Auftragsbestätigung ist als PDF beigefügt.</p><p>Freundliche Grüße<br>${esc(SLT_COMPANY.brand)}</p>`, attachments: [{ filename: `Auftragsbestaetigung_${inq.order_code}.pdf`, content: encoded }],
+        html: `<p>${esc(salutationLine({ address_form: form, name: inq.customer_name }))}</p><p>${byForm(form, "Deine", "Ihre")} Zahlung ist vollständig eingegangen. ${byForm(form, "Deine", "Ihre")} Buchung <strong>#${esc(inq.order_code)}</strong> über ${b.quantity} Sets ist bestätigt.</p><p>Standort: ${esc(signLocationName(b.location))}<br>Mietzeit: ${esc(b.start_date)} bis ${esc(b.end_date)}</p>${b.package === "sorglos" ? "<p>Städtische Gebühren werden zusätzlich separat abgerechnet.</p>" : ""}<p>Die Auftragsbestätigung ist als PDF beigefügt.</p><p>Freundliche Grüße<br>${esc(SLT_COMPANY.brand)}</p>`, attachments: [{ filename: `Auftragsbestaetigung_${inq.order_code}.pdf`, content: encoded }],
       }) });
       if (!response.ok) throw new Error(`Confirmation email failed (${response.status})`);
       const { error: finishError } = await service.rpc("finish_sign_confirmation", { _id: b.id, _path: path, _url: signed.signedUrl });
