@@ -2,6 +2,7 @@ import type { SalesFinancing } from "../../../../supabase/functions/_shared/sale
 import { normalizeOpenEndedUnit, normalizeOpenEndedDuration, type OpenEndedUnit } from "@/lib/installments";
 import { DepositSettlementCard } from "./DepositSettlementCard";
 import { RentalCancellationDialog } from "./RentalCancellationDialog";
+import { OrderRefundOverview } from "./OrderRefundOverview";
 import { CreditNoteRefund } from "./CreditNoteRefund";
 import { RentalCreditRefund } from "./RentalCreditRefund";
 import { ReturnReminderActions } from "./ReturnReminderActions";
@@ -565,7 +566,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             <UserCheck className="h-3.5 w-3.5 mr-1" /> Übernehmen
           </Button>
         )}
-        <Select
+        {inquiry.status !== "cancelled" && <Select
           value=""
           onValueChange={(value) => setStatus(inquiry.id, inquiry.status, value as InquiryStatus)}
         >
@@ -583,8 +584,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               </SelectItem>
             ))}
           </SelectContent>
-        </Select>
-        {inquiryType === "rental" && canManageInventory && <RentalCancellationDialog key={inquiry.id} inquiryId={inquiry.id} business={inquiry.customer_kind === "business"} onChanged={() => { loadInvoices(); onChanged(); }} />}
+        </Select>}
+        {inquiryType === "rental" && canManageInventory && <RentalCancellationDialog key={`${inquiry.id}:${inquiry.status}`} cancelled={inquiry.status === "cancelled"} inquiryId={inquiry.id} business={inquiry.customer_kind === "business"} onChanged={() => { loadInvoices(); onChanged(); }} />}
         {inquiry.status !== "rejected" && inquiry.status !== "cancelled" && (
           <RejectInquiryDialog
             inquiryType={inquiryType}
@@ -831,7 +832,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               </span>
               <InquiryStatusBadge status={inv.status} />
               {inquiryType === "rental" && inv.invoice_kind === "credit_note" && !["draft", "cancelled"].includes(inv.status) && <CreditNoteRefund creditId={inv.id} onChanged={() => { loadInvoices(); onChanged(); }} />}
-              {inquiryType === "rental" && ["invoice", "final"].includes(inv.invoice_kind) && !["draft", "cancelled"].includes(inv.status) && <RentalCreditRefund invoiceId={inv.id} />}
+              {inquiryType === "rental" && inquiry.status !== "cancelled" && ["invoice", "final"].includes(inv.invoice_kind) && !["draft", "cancelled"].includes(inv.status) && <RentalCreditRefund invoiceId={inv.id} />}
               {inv.file_url && inv.invoice_kind !== "credit_note" ? <InvoicePdfButton invoiceId={inv.id} /> : inv.file_url && (
                 <a
                   href={inv.file_url}
@@ -851,7 +852,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const docEl = (
     <>
       <div ref={docSectionRef}>
-        {inquiryType === "rental" && (
+        {inquiryType === "rental" && inquiry.status !== "cancelled" && (
           <Button
             variant="outline"
             className="mb-3 min-h-12 w-full justify-between gap-3 px-4 py-3"
@@ -872,12 +873,12 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         <div className="mb-4 space-y-3 rounded-lg border border-primary/30 bg-primary/5 p-3">
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {([
-            { mode: "offer", label: inquiry.offer_number ? "Neues Angebot" : "Angebot erstellen", icon: FilePlus2, show: true },
-            { mode: "revise", label: "Angebot überarbeiten", icon: Pencil, show: !!(offerSnapshot && inquiry.offer_number) },
+            { mode: "offer", label: inquiry.offer_number ? "Neues Angebot" : "Angebot erstellen", icon: FilePlus2, show: inquiry.status !== "cancelled" },
+            { mode: "revise", label: "Angebot überarbeiten", icon: Pencil, show: inquiry.status !== "cancelled" && !!(offerSnapshot && inquiry.offer_number) },
             { mode: "invoice", label: "Rechnung erstellen", icon: Receipt, show: true },
             { mode: "amendment", label: "AB bearbeiten", icon: Pencil, show: inquiry.status === "accepted" && !!inquiry.offer_number },
             { mode: "order", label: "Auftragsbestätigung", icon: FileCheck2, show: layout === "page" && inquiry.status === "accepted" && !!inquiry.offer_number },
-            { mode: "deposit", label: "Kaution abrechnen / erstatten", icon: Wallet, show: inquiryType === "rental" && canManageInventory },
+            { mode: "deposit", label: "Kaution abrechnen / erstatten", icon: Wallet, show: inquiryType === "rental" && canManageInventory && inquiry.status !== "cancelled" },
           ] as { mode: DocMode; label: string; icon: typeof Pencil; show: boolean }[])
             .filter((b) => b.show)
             .map(({ mode, label, icon: Icon }) => (
@@ -899,8 +900,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             <span className="truncate">Vor Ort unterschreiben lassen</span>
           </Button>
         )}
-        {protocolSection}
-        {inquiryType === "rental" && (isAdmin || isBranchManager) && <ReturnReminderActions key={`${inquiry.id}:${inquiry.status}`} inquiryId={inquiry.id} />}
+        {inquiry.status !== "cancelled" && protocolSection}
+        {inquiryType === "rental" && inquiry.status !== "cancelled" && (isAdmin || isBranchManager) && <ReturnReminderActions key={`${inquiry.id}:${inquiry.status}`} inquiryId={inquiry.id} />}
         {editorOpen && <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="font-semibold text-sm">
@@ -1055,6 +1056,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         </aside>
         <section className="min-w-0 space-y-5 lg:col-span-2">
           {headerEl}
+          {inquiryType === "rental" && <OrderRefundOverview inquiry={inquiry as Record<string, any>} onChanged={() => { loadInvoices(); onChanged(); }} />}
           {draftsEl}
           {docEl}
         </section>
@@ -1067,6 +1069,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
       <OfferAcceptanceNotice inquiryId={inquiry.id} />
       {draftsEl}
       {headerEl}
+      {inquiryType === "rental" && <OrderRefundOverview inquiry={inquiry as Record<string, any>} onChanged={() => { loadInvoices(); onChanged(); }} />}
       {customerEl}
       {locationEl}
       {details}

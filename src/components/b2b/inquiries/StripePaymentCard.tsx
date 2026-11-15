@@ -236,12 +236,12 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
           </Button>
         )}
         {unresolved && canRefund && <Button variant="outline" className="h-11 w-full px-3 py-0" disabled={busy} onClick={syncRefund}><RotateCcw /> Erstattungsstatus abgleichen</Button>}
-        {!unresolved && paidLink && paidLink.deposit_cents > 0 && canRefund && (
+        {!cancelled && !unresolved && paidLink && paidLink.deposit_cents > 0 && canRefund && (
           <Button className="h-11 w-full px-3 py-0" onClick={openRefund} disabled={busy || refundable <= 0}>
             <Undo2 /> Kaution erstatten
           </Button>
         )}
-        {cancelled && table === "rental_inquiries" && canRefund && <RentalCreditRefund
+        {false && cancelled && table === "rental_inquiries" && canRefund && <RentalCreditRefund
           invoiceId={rentalRefundInvoiceId}
           inquiryId={rentalRefundInvoiceId ? undefined : inquiryId}
           prepareBasis={rentalRefundInvoiceId ? undefined : prepareCancellationRefund}

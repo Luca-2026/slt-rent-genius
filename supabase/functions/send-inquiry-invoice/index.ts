@@ -468,9 +468,20 @@ Deno.serve(async (req: Request) => {
         const agreed = inquiry.offer_payload?.deposit;
         const surplus = Math.max(0, storedTotal - (Number(inquiry.offer_total_gross) || 0));
         const held = agreed == null ? surplus : Math.min(surplus, Math.max(0, Number(agreed) || 0));
-        if (held > 0) payments = settlementPayments(storedPayments, storedTotal, {
-          held, offset: 0, refund: 0, due: 0, payoutMethod: null, payoutStatus: null, payoutDate: null, settledDate: isoDate(new Date()),
-        }, (inquiry as { order_code?: string | null }).order_code ?? null);
+        if (held > 0) {
+          let summary: DepositSummary = { held, offset: 0, refund: 0, due: 0, payoutMethod: null, payoutStatus: null, payoutDate: null, settledDate: isoDate(new Date()) };
+          if (cancellationInvoice) {
+            const { data: links, error: linksError } = await service.from("offer_payment_links").select("id").eq("inquiry_id", inquiryId).eq("status", "paid");
+            if (linksError) return json({ error: "Kautionsnachweise nicht lesbar" }, 409);
+            const { data: refunds, error: refundsError } = links?.length ? await service.from("deposit_refunds").select("amount_cents,status,created_at").in("link_id", links.map(l => l.id)).eq("status", "succeeded") : { data: [], error: null };
+            const { data: combined, error: combinedError } = await service.from("order_refund_requests").select("deposit_cents,payout_method,completed_at").eq("inquiry_id", inquiryId).eq("status", "succeeded");
+            if (refundsError || combinedError) return json({ error: "Kautionserstattungen nicht lesbar" }, 409);
+            const refunded = (refunds ?? []).reduce((sum,r) => sum+r.amount_cents,0)+(combined ?? []).reduce((sum,r) => sum+r.deposit_cents,0);
+            summary = { ...summary, refund: refunded/100, payoutMethod: links?.length ? "stripe" : combined?.[0]?.payout_method ?? null, payoutStatus: refunded >= Math.round(held*100) ? "paid" : "pending", payoutDate: combined?.[0]?.completed_at?.slice(0,10) ?? refunds?.[0]?.created_at.slice(0,10) ?? null };
+            depositInfo = summary;
+          }
+          payments = settlementPayments(storedPayments, storedTotal, summary, (inquiry as { order_code?: string | null }).order_code ?? null);
+        }
       }
     }
     const amountPaid = Math.round(payments.reduce((s: number, p: RecordedPayment) => s + p.amount, 0) * 100) / 100;
@@ -490,6 +501,9 @@ Deno.serve(async (req: Request) => {
         const { data: claim, error: claimError } = await service.from("rental_order_refunds").select("status,amount_cents,payout_method,updated_at").eq("basis_id", basis.id).maybeSingle();
         if (claimError) return json({ error: "Erstattungsstatus konnte nicht geprüft werden" }, 409);
         if (claim?.status === "succeeded" && Number(basis.gross_amount) === totals.grossAmount && Number(basis.paid_amount) === amountPaid) rentalRefund = { amount: claim.amount_cents / 100, method: claim.payout_method, date: claim.updated_at.slice(0, 10) };
+        const { data: combined, error: combinedError } = await service.rpc("order_confirmed_rental_refunds", { _inquiry: inquiryId });
+        if (combinedError) return json({ error: "Gemeinsame Erstattungsnachweise nicht lesbar" },409);
+        if (combined?.amount_cents > 0) rentalRefund = { amount: (rentalRefund?.amount ?? 0)+combined.amount_cents/100, method: combined.method, date: String(combined.date).slice(0,10) };
       }
       // A cancellation may still be invoiced first. Once a pre-invoice refund
       // basis exists, it must be completed and printed, never refunded twice.
