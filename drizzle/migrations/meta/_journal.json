@@ -1345,6 +1345,13 @@
       "when": 1794740440335,
       "tag": "0191_freeze_combined_refund_claims_and_scope_execution",
       "breakpoints": true
+    },
+    {
+      "idx": 192,
+      "version": "7",
+      "when": 1794740571315,
+      "tag": "0192_combined_refund_lock_order_and_execution_gate",
+      "breakpoints": true
     }
   ]
 }

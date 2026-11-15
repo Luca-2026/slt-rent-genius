@@ -4057,6 +4057,7 @@ export type Database = {
           created_at: string
           created_by: string
           deposit_cents: number
+          execution_verified: boolean
           id: string
           inquiry_id: string
           payout_method: string
@@ -4070,6 +4071,7 @@ export type Database = {
           created_at?: string
           created_by: string
           deposit_cents?: number
+          execution_verified?: boolean
           id: string
           inquiry_id: string
           payout_method: string
@@ -4083,6 +4085,7 @@ export type Database = {
           created_at?: string
           created_by?: string
           deposit_cents?: number
+          execution_verified?: boolean
           id?: string
           inquiry_id?: string
           payout_method?: string
@@ -7350,6 +7353,7 @@ export type Database = {
           created_at: string
           created_by: string
           deposit_cents: number
+          execution_verified: boolean
           id: string
           inquiry_id: string
           payout_method: string
