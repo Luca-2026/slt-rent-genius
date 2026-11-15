@@ -4049,6 +4049,56 @@ export type Database = {
         }
         Relationships: []
       }
+      order_refund_requests: {
+        Row: {
+          allocations: Json
+          bank_reference: string | null
+          completed_at: string | null
+          created_at: string
+          created_by: string
+          deposit_cents: number
+          id: string
+          inquiry_id: string
+          payout_method: string
+          rent_cents: number
+          status: string
+        }
+        Insert: {
+          allocations?: Json
+          bank_reference?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by: string
+          deposit_cents?: number
+          id: string
+          inquiry_id: string
+          payout_method: string
+          rent_cents?: number
+          status?: string
+        }
+        Update: {
+          allocations?: Json
+          bank_reference?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string
+          deposit_cents?: number
+          id?: string
+          inquiry_id?: string
+          payout_method?: string
+          rent_cents?: number
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_refund_requests_inquiry_id_fkey"
+            columns: ["inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "rental_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       phone_calls: {
         Row: {
           ai_priority: string | null
@@ -7125,6 +7175,7 @@ export type Database = {
       }
       offer_link_deadline_by_id: { Args: { p_id: string }; Returns: string }
       onsite_b2b_password_set: { Args: { _user: string }; Returns: boolean }
+      order_refund_totals: { Args: { _inquiry: string }; Returns: Json }
       parse_price_text: { Args: { _raw: string }; Returns: number }
       read_email_batch: {
         Args: { batch_size: number; queue_name: string; vt: number }
@@ -7273,6 +7324,36 @@ export type Database = {
           _recipient: string
         }
         Returns: string
+      }
+      reserve_order_refund: {
+        Args: {
+          _actor: string
+          _allocations: Json
+          _deposit: number
+          _id: string
+          _inquiry: string
+          _method: string
+          _rent: number
+        }
+        Returns: {
+          allocations: Json
+          bank_reference: string | null
+          completed_at: string | null
+          created_at: string
+          created_by: string
+          deposit_cents: number
+          id: string
+          inquiry_id: string
+          payout_method: string
+          rent_cents: number
+          status: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "order_refund_requests"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       reserve_rental_coupon: {
         Args: {
@@ -7479,6 +7560,16 @@ export type Database = {
           _id: string
           _intent: string
           _refund_id: string
+          _status: string
+        }
+        Returns: undefined
+      }
+      sync_order_refund: {
+        Args: {
+          _amount: number
+          _id: string
+          _intent: string
+          _refund: string
           _status: string
         }
         Returns: undefined
