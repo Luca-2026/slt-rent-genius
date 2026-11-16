@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { customerSignedReservationIds } from "@/lib/inquiryStatus";
+import { customerSignedReservationIds, isRunningReservation } from "@/lib/inquiryStatus";
 
 describe("Kundenübergabe in alten Portalansichten", () => {
   it("zählt direkte und angebotsverknüpfte Kundenunterschriften, keine Mitarbeiterprotokolle", () => {
@@ -16,5 +16,13 @@ describe("Kundenübergabe in alten Portalansichten", () => {
   });
   it("keine Übergabe bedeutet keine aktive Miete", () => {
     expect(customerSignedReservationIds([], [{ id: "offer", reservation_id: "late" }]).size).toBe(0);
+  });
+  it("historische active-Flags reichen nicht, erledigte Datensätze bleiben erledigt", () => {
+    expect(isRunningReservation({ id: "late", status: "active" }, new Set())).toBe(false);
+    expect(isRunningReservation({ id: "late", status: "confirmed" }, new Set())).toBe(false);
+    expect(isRunningReservation({ id: "late", status: "confirmed" }, new Set(["late"]))).toBe(true);
+    expect(isRunningReservation({ id: "late", status: "active" }, new Set(["late"]))).toBe(true);
+    expect(isRunningReservation({ id: "late", status: "completed" }, new Set(["late"]))).toBe(false);
+    expect(isRunningReservation({ id: "late", status: "cancelled" }, new Set(["late"]))).toBe(false);
   });
 });

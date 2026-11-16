@@ -17,6 +17,7 @@ export const ReservationStatus = {
   Pending: "pending",
   OfferSent: "offer_sent",
   Confirmed: "confirmed",
+  Active: "active",
   Cancelled: "cancelled",
   Completed: "completed",
 } as const;
@@ -32,6 +33,7 @@ export const RESERVATION_STATUS_ORDER: ReservationStatus[] = [
   ReservationStatus.Pending,
   ReservationStatus.OfferSent,
   ReservationStatus.Confirmed,
+  ReservationStatus.Active,
   ReservationStatus.Completed,
   ReservationStatus.Cancelled,
 ];
@@ -46,6 +48,7 @@ export const RESERVATION_STATUS_META: Record<ReservationStatus, ReservationStatu
   [ReservationStatus.Pending]:   { label: "Ausstehend",       variant: "secondary",   icon: Clock },
   [ReservationStatus.OfferSent]: { label: "Angebot erhalten", variant: "outline",     icon: Send },
   [ReservationStatus.Confirmed]: { label: "Bestätigt",        variant: "default",     icon: CheckCircle2 },
+  [ReservationStatus.Active]:    { label: "Laufend – übergeben", variant: "default", icon: CheckCircle2 },
   [ReservationStatus.Cancelled]: { label: "Storniert",        variant: "destructive", icon: XCircle },
   [ReservationStatus.Completed]: { label: "Abgeschlossen",    variant: "outline",     icon: CheckCircle2 },
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { customerSignedReservationIds, isRunningReservation } from "@/lib/inquiryStatus";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -66,7 +67,7 @@ export default function MyReservations() {
   const fetchData = async () => {
     if (!user) return;
     setLoading(true);
-    const [resResult, offersResult] = await Promise.all([
+    const [resResult, offersResult, deliveryResult] = await Promise.all([
       supabase
         .from("b2b_reservations")
         .select("*")
@@ -77,10 +78,16 @@ export default function MyReservations() {
         .select("id, reservation_id, offer_number, offer_date, valid_until, status, gross_amount, file_url")
         .neq("status", "draft")
         .order("created_at", { ascending: false }),
+      supabase.from("b2b_delivery_notes").select("status,reservation_id,offer_id").eq("status", "signed"),
     ]);
 
     if (!resResult.error && resResult.data) {
-      setReservations(resResult.data);
+      const signed = customerSignedReservationIds(deliveryResult.data ?? [], offersResult.data ?? []);
+      setReservations(resResult.data.map((r) => ({ ...r,
+        status: r.status === "confirmed" || r.status === "active"
+          ? isRunningReservation(r, signed) ? "active" : "confirmed"
+          : r.status,
+      })));
     }
     if (!offersResult.error && offersResult.data) {
       setOffers(offersResult.data as Offer[]);

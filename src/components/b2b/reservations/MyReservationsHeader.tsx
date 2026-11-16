@@ -109,6 +109,7 @@ export function MyReservationsFilterBar({
             <SelectItem value="pending">Ausstehend</SelectItem>
             <SelectItem value="offer_sent">Angebot erhalten</SelectItem>
             <SelectItem value="confirmed">Bestätigt</SelectItem>
+            <SelectItem value="active">Laufend – übergeben</SelectItem>
             <SelectItem value="completed">Abgeschlossen</SelectItem>
             <SelectItem value="cancelled">Storniert</SelectItem>
           </SelectContent>

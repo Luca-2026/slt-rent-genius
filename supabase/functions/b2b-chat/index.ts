@@ -60,8 +60,6 @@ Deno.serve(async (req: Request) => {
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
         .limit(10),
-      supabase.from("b2b_delivery_notes").select("status,reservation_id,offer_id").eq("status", "signed"),
-      supabase.from("b2b_offers").select("id,reservation_id"),
       supabase
         .from("b2b_invoices")
         .select("invoice_number, invoice_date, due_date, gross_amount, status, payment_due_days")
@@ -69,6 +67,8 @@ Deno.serve(async (req: Request) => {
           (await supabase.from("b2b_profiles").select("id").eq("user_id", user.id).single()).data?.id || "")
         .order("created_at", { ascending: false })
         .limit(10),
+      supabase.from("b2b_delivery_notes").select("status,reservation_id,offer_id").eq("status", "signed"),
+      supabase.from("b2b_offers").select("id,reservation_id"),
     ]);
 
     const profile = profileRes.data;
