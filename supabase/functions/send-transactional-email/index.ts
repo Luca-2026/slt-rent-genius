@@ -57,7 +57,11 @@ Deno.serve(async (req) => {
       if (logError) return json({ error: 'Versandstatus konnte nicht geprüft werden' }, 500)
       deliveries.push({ ...h, status: log?.status ?? h.status, sent_at: log?.status === 'sent' ? log.created_at : null })
     }
-    if (parsed.data.action === 'status') return json({ deliveries, recipientEmail: inquiry.customer_email })
+    const { data: handovers, error: handoverError } = await svc.from('b2b_delivery_notes').select('id').eq('rental_inquiry_id', inquiry.id).eq('status', 'signed').limit(1)
+    if (handoverError) return json({ error: 'Kundenübergabe konnte nicht geprüft werden' }, 500)
+    const customerHandoverSigned = !!handovers?.length
+    if (parsed.data.action === 'status') return json({ deliveries, recipientEmail: inquiry.customer_email, customerHandoverSigned })
+    if (!customerHandoverSigned) return json({ error: 'Kundenseitig unterschriebene Übergabe fehlt' }, 409)
     const { stage, expectedEmail, noResponseConfirmed } = parsed.data
     if (!stage || !expectedEmail) return json({ error: 'Stufe und Kundenadresse fehlen' }, 400)
     if (expectedEmail.trim().toLowerCase() !== String(inquiry.customer_email).trim().toLowerCase()) return json({ error: 'Kundenadresse geändert. Bitte neu laden' }, 409)
