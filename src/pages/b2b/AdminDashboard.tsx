@@ -128,7 +128,7 @@ interface InvoiceSurcharge {
 // ─── Component ────────────────────────────────────────────
 const ADMIN_TAB_TITLES: Record<string, { title: string; subtitle?: string }> = {
   reservations: { title: "Anfragen (Portal, Altfälle)", subtitle: "Anfragen aus dem bisherigen Portal-System – neue Portal-Anfragen erscheinen unter Mietvorgänge" },
-  rentals: { title: "Laufende Mietvorgänge", subtitle: "Bestätigte und aktive Mieten von Firmenkunden" },
+  rentals: { title: "Mietvorgänge (Portal, Altfälle)", subtitle: "Bestätigte und aktive Mieten von Firmenkunden" },
   offers: { title: "Angebote (Portal, Altfälle)", subtitle: "Angebote an Firmenkunden mit Portalkonto" },
   "delivery-notes": { title: "Übergabeprotokolle" },
   "return-protocols": { title: "Rücknahmeprotokolle" },

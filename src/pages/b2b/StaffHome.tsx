@@ -241,7 +241,7 @@ export default function StaffHome() {
   const confirmedAll = inquiries.filter((r) => (r.status === "accepted" || r.status === "done") && r.order_confirmed_at);
   // Manuell abgeschlossene Aufträge sind erledigt: keine Prüf-, Überfällig- oder Laufend-Hinweise mehr.
   const confirmed = confirmedAll.filter((r) => !(r as { closed_manually_at?: string | null }).closed_manually_at);
-  const signedDelivery = new Set([...protocols.byInquiry].filter(([, s]) => s.delivery).map(([id]) => id));
+  const signedDelivery = new Set([...protocols.byInquiry].filter(([, s]) => hasCustomerSignedHandover(s.delivery)).map(([id]) => id));
   const signedReturn = new Set([...[...protocols.byInquiry].filter(([, s]) => s.ret).map(([id]) => id), ...confirmedAll.filter((r) => (r as { closed_manually_at?: string | null }).closed_manually_at).map((r) => r.id)]);
   const todayEntries = buildCalendarEntries(confirmedAll, signedDelivery, signedReturn)
     .filter((e) => e.date === today)

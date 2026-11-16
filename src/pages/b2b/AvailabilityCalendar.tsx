@@ -34,7 +34,7 @@ export default function AvailabilityCalendar() {
         .select("id, status, start_date, start_time, end_date, end_time, location, customer_name, company_name, order_code, order_confirmed_at, product_name, quantity, requested_items, offer_payload, closed_manually_at")
         .in("status", ["accepted", "done"])
         .not("start_date", "is", null),
-      (supabase.from("b2b_delivery_notes" as any) as any).select("rental_inquiry_id").not("signed_at", "is", null),
+      supabase.from("b2b_delivery_notes").select("rental_inquiry_id").eq("status", "signed"),
       (supabase.from("b2b_return_protocols" as any) as any).select("rental_inquiry_id").not("signed_at", "is", null),
       (supabase.from("b2b_product_instances" as any) as any).select("id, internal_inventory_number, serial_number, location, status, managed_product_id"),
       (supabase.from("b2b_instance_allocations" as any) as any).select("instance_id, from_at, to_at, rental_inquiry_id"),
