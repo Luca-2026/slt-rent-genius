@@ -13,7 +13,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Eye, EyeOff, ShoppingCart, ImageOff } from "lucide-react";
+import { Plus, Pencil, Copy, Trash2, Eye, EyeOff, ShoppingCart, ImageOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
@@ -27,6 +27,7 @@ import {
   type UsedMachineRow,
 } from "@/hooks/useSalesCatalog";
 import { SalesArticleEditorDialog } from "./SalesArticleEditorDialog";
+import { salesArticleCopy } from "@/lib/salesArticleEditing";
 
 const euro = (v: number | null) =>
   v == null ? "–" : new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(v);
@@ -44,7 +45,7 @@ export function AdminSalesCatalogTab() {
   const [tab, setTab] = useState<SalesArticleKind>("new");
   const [search, setSearch] = useState("");
   const [catFilter, setCatFilter] = useState("all");
-  const [editing, setEditing] = useState<{ kind: SalesArticleKind; row: NewMachineRow | UsedMachineRow | null } | null>(null);
+  const [editing, setEditing] = useState<{ kind: SalesArticleKind; row: NewMachineRow | UsedMachineRow | null; copyFrom?: NewMachineRow | UsedMachineRow; copySourceId?: string } | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<{ kind: SalesArticleKind; id: string; label: string } | null>(null);
 
   const categories = useMemo(() => {
@@ -138,6 +139,9 @@ export function AdminSalesCatalogTab() {
         </Button>
         {canManageInventory && (
           <>
+            <Button size="sm" variant="outline" title="Artikel kopieren" aria-label="Artikel kopieren" onClick={() => setEditing({ kind, row: null, copyFrom: salesArticleCopy(kind, row, crypto.randomUUID()), copySourceId: row.id })}>
+              <Copy className="h-4 w-4" />
+            </Button>
             <Button size="sm" variant="outline" onClick={() => toggleVisible(kind, row)}>
               {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </Button>
@@ -247,6 +251,8 @@ export function AdminSalesCatalogTab() {
         open={!!editing}
         kind={editing?.kind ?? "new"}
         row={editing?.row ?? null}
+        copyFrom={editing?.copyFrom}
+        copySourceId={editing?.copySourceId}
         readOnly={!canManageInventory}
         onOpenChange={(o) => !o && setEditing(null)}
         onSaved={reload}

@@ -4,7 +4,7 @@ import { InventoryEditorDialog } from "@/components/b2b/admin/InventoryEditorDia
 import { SalesArticleEditorDialog } from "@/components/b2b/admin/SalesArticleEditorDialog";
 import { cmsDraftKey, readCmsDraft } from "@/lib/cmsDraftStorage";
 
-const mocks = vi.hoisted(() => ({ error: vi.fn(), rpc: vi.fn(), info: vi.fn() }));
+const mocks = vi.hoisted(() => ({ error: vi.fn(), rpc: vi.fn(), info: vi.fn(), upsert: vi.fn() }));
 vi.mock("sonner", () => ({ toast: { error: mocks.error, success: vi.fn(), info: mocks.info } }));
 vi.mock("@/hooks/useStaffAccess", () => ({ useStaffAccess: () => ({ canEditCosts: true }) }));
 vi.mock("@/hooks/useManagedProducts", () => ({ resolveSubcategory: () => "", useAdminManagedProducts: () => ({ data: [] }) }));
@@ -13,6 +13,8 @@ vi.mock("@/integrations/supabase/client", () => ({ supabase: {
   from: () => {
     const query: Record<string, unknown> = { then: (resolve: (r: unknown) => unknown) => Promise.resolve({ data: [], error: null }).then(resolve) };
     query.select = () => query; query.eq = () => query; query.order = () => query; query.limit = () => query;
+    query.upsert = (payload: unknown) => { mocks.upsert(payload); return query; };
+    query.single = () => Promise.resolve({ data: { id: "saved-sales-test" }, error: null });
     return query;
   },
 } }));
@@ -20,6 +22,16 @@ beforeEach(() => { localStorage.clear(); vi.clearAllMocks(); });
 afterEach(() => { cleanup(); localStorage.clear(); });
 
 describe("incomplete article editors", () => {
+  it("saves sales goods without a model and closes after an acknowledged autosave", async () => {
+    const onOpenChange = vi.fn();
+    render(<SalesArticleEditorDialog open kind="new" row={null} onOpenChange={onOpenChange} onSaved={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Hersteller / Marke"), { target: { value: "Schrankenzaun RA1" } });
+    fireEvent.change(screen.getByLabelText("Kategorie"), { target: { value: "Absperr- & Verkehrstechnik" } });
+    await waitFor(() => expect(mocks.upsert).toHaveBeenCalledWith(expect.objectContaining({ brand: "Schrankenzaun RA1", model: "", category: "Absperr- & Verkehrstechnik" })), { timeout: 3000 });
+    fireEvent.click(screen.getByRole("button", { name: /^Speichern$/ }));
+    await waitFor(() => expect(onOpenChange).toHaveBeenCalledWith(false));
+    expect(mocks.error).not.toHaveBeenCalled();
+  });
   it.each(["rental", "sales"])("keeps incomplete %s input when closing and restores it on reopening", async (kind) => {
     const onOpenChange = vi.fn();
     const editor = () => kind === "rental"
