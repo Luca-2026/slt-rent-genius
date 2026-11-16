@@ -11,12 +11,15 @@ import { RotateCcw, Undo2 } from "lucide-react";
 type Totals = { success: boolean; error?: string; execution_available: boolean; paid_cents: number; deposit_available: number; rent_available: number; deposit_used: number; rent_used: number; pending: boolean; blocked_reason?: string; can_refund_rent: boolean; requests: RequestRow[] };
 type RequestRow = { id: string; deposit_cents: number; rent_cents: number; payout_method: string; status: string; created_at: string; completed_at?: string; created_by: string };
 type HistoryRow = { id: string; at: string; actor: string; label: string; detail: string };
+const EVENT_LABELS: Record<string, string> = { order_cancelled: "Auftrag storniert", order_confirmed: "Auftrag bestätigt", order_bound_by_handover: "Auftrag durch Übergabe verbindlich", refund_completed: "Auszahlung bestätigt", deposit_settled: "Kaution abgerechnet", closed_without_return_protocol: "Abgeschlossen ohne Rückgabeprotokoll", return_without_delivery: "Rückgabe ohne Auslieferung" };
+const eventDetail = (event: string, d: Record<string, unknown>) => event === "deposit_settled" ? `Kautionsbetrag ${formatEuro(Number(d.balance ?? 0))} · Auszahlung siehe Kautionseintrag` : String(d.reason ?? "");
 const eur = (n: number) => formatEuro(n / 100);
 const time = (s: string) => new Date(s).toLocaleString("de-DE", { timeZone: "Europe/Berlin" });
 export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { inquiry: Record<string, any>; onChanged: () => void; compact?: boolean }) {
   const [data, setData] = useState<Totals | null>(null);
   const [history, setHistory] = useState<HistoryRow[]>([]);
   const [error, setError] = useState("");
+  const [openPayout, setOpenPayout] = useState<{ balance: number; method: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [open, setOpen] = useState(false);
   const [deposit, setDeposit] = useState("0");
@@ -37,12 +40,13 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
   useEffect(() => {
     let alive = true;
     void (async () => {
-      const [events, links, basis, staff, invoices] = await Promise.all([
+      const [events, links, basis, staff, invoices, settle] = await Promise.all([
         supabase.from("rental_inquiry_events").select("id,event,details,user_id,created_at").eq("rental_inquiry_id", inquiry.id).order("created_at", { ascending: false }).limit(100),
         supabase.from("offer_payment_links").select("id").eq("inquiry_id", inquiry.id).eq("inquiry_table", "rental_inquiries"),
         supabase.from("rental_refund_bases").select("id").eq("inquiry_id", inquiry.id).maybeSingle(),
         supabase.from("staff_profiles").select("user_id,first_name,last_name"),
         supabase.from("inquiry_invoices").select("id,invoice_number,invoice_kind,created_at").eq("rental_inquiry_id", inquiry.id),
+        supabase.from("deposit_settlements").select("balance,payout_method,payout_status").eq("rental_inquiry_id", inquiry.id).maybeSingle(),
       ]);
       if ([events.error, links.error, basis.error, staff.error, invoices.error].some(Boolean)) { if (alive) setError("Historie konnte nicht vollständig geladen werden."); return; }
       const [deposits, rentals, credits] = await Promise.all([
@@ -51,9 +55,12 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
         invoices.data?.length ? supabase.from("credit_note_refunds").select("*").in("credit_note_id", invoices.data.map(i => i.id)) : Promise.resolve({ data: [], error: null }),
       ]);
       if (deposits.error || rentals.error || credits.error) { if (alive) setError("Erstattungshistorie nicht vollständig verfügbar."); return; }
+      const refundedDeposit = (deposits.data ?? []).filter(r => r.status === "succeeded").reduce((a, r) => a + Number(r.amount_cents), 0);
+      const openCents = settle.data && settle.data.payout_status === "pending" ? Math.round(Number(settle.data.balance) * 100) - Math.max(refundedDeposit, data?.deposit_used ?? 0) : 0;
+      if (alive) setOpenPayout(openCents > 0 && settle.data ? { balance: openCents / 100, method: settle.data.payout_method } : null);
       const names = new Map((staff.data ?? []).map(s => [s.user_id, `${s.first_name} ${s.last_name}`.trim()]));
       const actor = (id: string | null | undefined) => id ? names.get(id) ?? "Erfasser unbekannt" : "Erfasser unbekannt";
-      const rows: HistoryRow[] = (events.data ?? []).map(e => ({ id: e.id, at: e.created_at, actor: actor(e.user_id), label: e.event === "order_cancelled" ? "Auftrag storniert" : e.event === "order_confirmed" ? "Auftrag bestätigt" : e.event === "refund_completed" ? "Auszahlung bestätigt" : "Auftragsaktion", detail: String((e.details as Record<string, unknown>)?.reason ?? "") }));
+      const rows: HistoryRow[] = (events.data ?? []).map(e => ({ id: e.id, at: e.created_at, actor: actor(e.user_id), label: EVENT_LABELS[e.event] ?? "Auftragsaktion", detail: eventDetail(e.event, (e.details ?? {}) as Record<string, unknown>) }));
       for (const [index, p] of (inquiry.payments ?? []).entries()) rows.push({ id: `payment-${index}`, at: p.recorded_at ?? p.date, actor: p.recorded_by ?? actor(p.recorded_by_id), label: `Zahlung erhalten · ${formatEuro(Number(p.amount))}`, detail: p.label ?? "" });
       for (const [kind, refunds] of [["Kaution", deposits.data], ["Miete", rentals.data], ["Rechnungsguthaben", credits.data]] as const) {
         for (const r of refunds ?? []) rows.push({ id: r.id, at: r.created_at, actor: actor(r.created_by), label: `${kind} · ${eur(r.amount_cents)} · ${r.status === "succeeded" ? "erstattet" : "Erstattungsauftrag: " + r.status}`, detail: "payout_method" in r ? String(r.payout_method) === "stripe" ? "Ursprüngliches Zahlungsmittel (Stripe)" : String(r.payout_method) : "Ursprüngliches Zahlungsmittel (Stripe)" });
@@ -85,6 +92,7 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
         {manual && <><Input aria-label="Auszahlungsnachweis" value={reference} onChange={e => setReference(e.target.value)} placeholder="Auszahlungsnachweis"/><Button disabled={busy || reference.trim().length<3} onClick={() => void call("order_refund_confirm_manual", { request_id: manual.id, reference }).then(onChanged)}>Tatsächliche Auszahlung bestätigen</Button></>}
       </div>
     </>}
+    {openPayout && <p role="alert" className="rounded-md border border-destructive p-2 text-sm font-semibold text-destructive">Kaution abgerechnet, aber {formatEuro(openPayout.balance)} noch nicht ausgezahlt{openPayout.method === "stripe" ? " – unter „Kaution“ jetzt „Kaution über Stripe erstatten“ ausführen." : "."}</p>}
     {!data && !error && <p role="status" className="text-sm">Zahlungsstand wird geprüft …</p>}
     {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
     {!compact && <><h4 className="text-sm font-semibold">Auftragshistorie</h4><ol className="max-h-64 space-y-3 overflow-y-auto text-sm">{history.map(r => <li key={r.id} className="border-l-2 border-border pl-3"><strong>{r.label}</strong><div className="text-xs text-muted-foreground">{time(r.at)} · {r.actor}</div>{r.detail && <p className="text-xs">{r.detail}</p>}</li>)}</ol></>}
