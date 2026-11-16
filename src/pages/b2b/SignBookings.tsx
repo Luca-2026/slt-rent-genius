@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { initialSignBookingLocation, sortSignBookings, canPrepareSignBooking } from "@/lib/signBookingOverview";
+import { Checkbox } from "@/components/ui/checkbox";
 import { matchesStaffSearch } from "@/lib/staffSearch";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
@@ -24,16 +26,18 @@ const permitTime = (snapshot: unknown, key: string): string => {
 const statusLabels: Record<string, string> = { paid: "Bezahlt", reserved: "Reserviert", expired: "Abgelaufen", review: "Zahlung prüfen" };
 
 export default function SignBookings() {
-  const { isStaff, loading: accessLoading } = useStaffAccess();
+  const { isStaff, isAdmin, staffProfile, loading: accessLoading } = useStaffAccess();
   const [search, setSearch] = useState("");
-  const [location, setLocation] = useState(() => localStorage.getItem("slt.signBookings.location") || "all");
+  const [chosenLocation, setLocation] = useState<string | null>(null);
+  const location = chosenLocation ?? initialSignBookingLocation(staffProfile?.location);
   const [status, setStatus] = useState(() => localStorage.getItem("slt.signBookings.status") || "all");
   const [opening, setOpening] = useState<string | null>(null);
+  const [saving, setSaving] = useState<Set<string>>(new Set());
   const { data: rows = [], isPending, isFetching, error, refetch } = useQuery({
     queryKey: ["staff-sign-bookings"],
     enabled: !accessLoading && isStaff,
     queryFn: async () => {
-      const bookings = await supabase.from("sign_bookings").select("id,inquiry_id,location,package,quantity,start_date,end_date,status,permit_mode,permit_path,permit_valid_from,permit_valid_until,permit_issued_on,snapshot,confirmation_sent_at,staff_notified_at").order("start_date", { ascending: true });
+      const bookings = await supabase.from("sign_bookings").select("id,inquiry_id,location,package,quantity,start_date,end_date,status,cancelled_at,prepared_at,prepared_by,permit_mode,permit_path,permit_valid_from,permit_valid_until,permit_issued_on,snapshot,confirmation_sent_at,staff_notified_at").order("start_date", { ascending: true });
       if (bookings.error) throw bookings.error;
       if (!bookings.data.length) return [];
       const inquiries = await supabase.from("rental_inquiries").select("id,order_code,customer_name,company_name,customer_email,customer_phone,delivery_street,delivery_postal_code,delivery_city,internal_notes,status").in("id", bookings.data.map(b => b.inquiry_id));
@@ -56,14 +60,29 @@ export default function SignBookings() {
       toast.error("Genehmigung konnte nicht geöffnet werden. Bitte erneut versuchen.");
     } finally { setOpening(null); }
   };
-  const visible = rows.filter(b => (location === "all" || b.location === location) && (status === "all" || b.status === status) &&
-    matchesStaffSearch(search, [b.id, b.inquiry_id, b.inquiry?.order_code, b.inquiry?.customer_name, b.inquiry?.company_name, b.inquiry?.customer_email, b.address]));
+  const today = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Berlin" }).format(new Date());
+  const visible = sortSignBookings(rows.filter(b => (location === "all" || b.location === location) && (status === "all" || b.status === status) &&
+    matchesStaffSearch(search, [b.id, b.inquiry_id, b.inquiry?.order_code, b.inquiry?.customer_name, b.inquiry?.company_name, b.inquiry?.customer_email, b.address])), today);
+  const prepare = async (b: typeof rows[number], checked: boolean) => {
+    if (saving.has(b.id)) return;
+    setSaving(current => new Set(current).add(b.id));
+    try {
+      const result = await supabase.rpc("set_sign_booking_prepared", { _booking: b.id, _prepared: checked, _expected: b.prepared_at as unknown as string });
+      if (result.error) throw result.error;
+      const refreshed = await refetch();
+      if (refreshed.error) throw refreshed.error;
+      toast.success(checked ? "Schild als vorbereitet gespeichert." : "Vorbereitungshaken entfernt.");
+    } catch (err) {
+      toast.error(err && typeof err === "object" && "message" in err ? String(err.message) : "Vorbereitung konnte nicht gespeichert werden. Bitte aktualisieren.");
+      void refetch();
+    } finally { setSaving(current => { const next = new Set(current); next.delete(b.id); return next; }); }
+  };
 
   return <B2BPortalLayout title="Halteverbote">
     {accessLoading ? <p className="text-muted-foreground">Lädt …</p> : !isStaff ? <p>Nur für Mitarbeiter.</p> : <>
       <div className="mb-5 flex flex-wrap gap-2">
         <div className="relative min-w-0 flex-1 basis-56"><Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" /><Input aria-label="Halteverbote suchen" placeholder="Auftrag, Kunde oder Adresse" className="pl-9" value={search} onChange={e => setSearch(e.target.value)} /></div>
-        <Select value={location} onValueChange={v => { setLocation(v); localStorage.setItem("slt.signBookings.location", v); }}><SelectTrigger aria-label="Standort" className="w-full sm:w-52"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Alle Standorte</SelectItem><SelectItem value="krefeld">Krefeld</SelectItem><SelectItem value="bonn">Bonn</SelectItem><SelectItem value="muelheim">Mülheim an der Ruhr</SelectItem></SelectContent></Select>
+        <Select value={location} onValueChange={setLocation}><SelectTrigger aria-label="Standort" className="w-full sm:w-52"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Alle Standorte</SelectItem><SelectItem value="krefeld">Krefeld</SelectItem><SelectItem value="bonn">Bonn</SelectItem><SelectItem value="muelheim">Mülheim an der Ruhr</SelectItem></SelectContent></Select>
         <Select value={status} onValueChange={v => { setStatus(v); localStorage.setItem("slt.signBookings.status", v); }}><SelectTrigger aria-label="Buchungsstatus" className="w-full sm:w-44"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Alle Buchungen</SelectItem>{Object.entries(statusLabels).map(([value, label]) => <SelectItem key={value} value={value}>{label}</SelectItem>)}</SelectContent></Select>
         <Button variant="outline" size="icon" aria-label="Aktualisieren" title="Aktualisieren" disabled={isFetching} onClick={() => void refetch()}><RefreshCw className={`h-4 w-4 ${isFetching ? "animate-spin" : ""}`} /></Button>
       </div>
@@ -73,6 +92,10 @@ export default function SignBookings() {
             <div className="min-w-0 space-y-1"><div className="flex flex-wrap items-center gap-2"><span className="font-semibold">{b.inquiry?.order_code ? `#${b.inquiry.order_code}` : "Halteverbot"}</span><Badge variant={b.status === "review" ? "destructive" : "secondary"}>{statusLabels[b.status] || b.status}</Badge><span className="text-sm text-muted-foreground">{getLocationDisplayName(b.location)}</span></div><p className="font-medium break-words">{b.inquiry?.company_name || b.inquiry?.customer_name || "–"}</p><p className="text-sm">{b.package === "standard" ? "Schildermiete · Selbstabholung" : "Rundum-sorglos-Paket"} · {b.quantity} {b.quantity === 1 ? "Set" : "Sets"}</p></div>
             <Button asChild variant="outline" size="sm"><Link to={`/b2b/mietvorgaenge/${b.inquiry_id}`}>Auftrag öffnen<ArrowUpRight className="ml-1 h-4 w-4" /></Link></Button>
           </div>
+          <label className="flex min-h-11 w-fit max-w-full cursor-pointer items-center gap-3 text-sm font-medium">
+            <Checkbox aria-label={`Schild vorbereitet ${b.inquiry?.order_code ? `#${b.inquiry.order_code}` : b.id}`} checked={!!b.prepared_at} disabled={saving.has(b.id) || !canPrepareSignBooking(b) || !(isAdmin || initialSignBookingLocation(staffProfile?.location) === b.location || (["krefeld", "muelheim"].includes(staffProfile?.location ?? "") && ["krefeld", "muelheim"].includes(b.location)))} onCheckedChange={value => void prepare(b, value === true)} className="h-6 w-6" />
+            <span>{saving.has(b.id) ? "Wird gespeichert …" : "Schild vorbereitet"}{b.prepared_at && <span className="block text-xs font-normal text-muted-foreground">{new Date(b.prepared_at).toLocaleString("de-DE", { timeZone: "Europe/Berlin" })}</span>}</span>
+          </label>
           <dl className="grid gap-3 text-sm sm:grid-cols-2">
             <div><dt className="text-muted-foreground">Mietzeitraum</dt><dd>{date(b.start_date)} – {date(b.end_date)}</dd></div>
             <div><dt className="text-muted-foreground">Genehmigungszeitraum / Beklebung</dt><dd>{b.permit_valid_from ? `${date(b.permit_valid_from)} ${permitTime(b.snapshot, "permitValidFromTime")} – ${date(b.permit_valid_until)} ${permitTime(b.snapshot, "permitValidUntilTime")}` : "Nicht hinterlegt"}</dd></div>
