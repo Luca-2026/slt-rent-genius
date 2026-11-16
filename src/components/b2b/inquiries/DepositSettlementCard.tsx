@@ -120,7 +120,12 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
         _notes: notes || (null as never),
       });
       if (rpcErr) throw new Error(rpcErr.message.replace(/^CONFLICT:\s*/, ""));
-      toast({ title: "Kaution abgerechnet", description: result.refund > 0 ? `Erstattung ${formatEuro(result.refund)} – ${PAYOUT_LABEL[payout]}` : result.due > 0 ? `Nachzahlung ${formatEuro(result.due)} kommt auf die Schlussrechnung` : "Saldo ausgeglichen" });
+      if (result.refund > 0 && payout === "stripe") {
+        // Abrechnung und tatsächliche Stripe-Erstattung in einem Schritt – sonst bleibt die Auszahlung unbemerkt offen.
+        const { data: saved } = await supabase.from("deposit_settlements").select("*").eq("rental_inquiry_id", inquiry.id).maybeSingle();
+        if (saved) { setBusy(false); await executeStripePayout(saved as Row); onDone(); return; }
+      }
+      toast({ title: "Kaution abgerechnet", description: result.refund > 0 ? `Erstattung ${formatEuro(result.refund)} – ${PAYOUT_LABEL[payout]} · Auszahlung noch offen` : result.due > 0 ? `Nachzahlung ${formatEuro(result.due)} kommt auf die Schlussrechnung` : "Saldo ausgeglichen" });
       await load();
       onDone();
     } catch (e) {
@@ -130,15 +135,15 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
     }
   };
 
-  const markPayout = async () => {
-    if (!settlement) return;
-    const { error } = await supabase.rpc("mark_deposit_payout_done", { _settlement_id: settlement.id });
+  const markPayout = async (target: Row | null = settlement) => {
+    if (!target) return;
+    const { error } = await supabase.rpc("mark_deposit_payout_done", { _settlement_id: target.id });
     if (error) toast({ title: "Nicht gespeichert", description: error.message, variant: "destructive" });
     else void load();
   };
 
   // Stripe-Erstattung wirklich auslösen (über die bezahlte Online-Zahlung des Auftrags), dann als erledigt markieren.
-  const executeStripePayout = async () => {
+  const executeStripePayout = async (settlement: Row | null = currentSettlementRow) => {
     if (!settlement || busy) return;
     setBusy(true);
     try {
@@ -177,9 +182,9 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
         request_id: pending?.request_id ?? settlement.id,
       });
       if (error || !data?.success) throw new Error(data?.error ?? "Erstattung nicht ausgeführt.");
-      if (data.status === "succeeded") await markPayout();
+      if (data.status === "succeeded") await markPayout(settlement);
       else await load();
-      toast({ title: "Stripe-Erstattung ausgelöst", description: `${formatEuro(Number(settlement.balance))} gehen auf die ursprüngliche Zahlungsart zurück.` });
+      toast({ title: data.status === "succeeded" ? "Kaution über Stripe erstattet" : "Stripe-Erstattung beauftragt", description: `${formatEuro(Number(settlement.balance))} gehen auf die ursprüngliche Zahlungsart zurück.` });
     } catch (e) {
       toast({ title: "Stripe-Erstattung fehlgeschlagen", description: e instanceof Error ? e.message : String(e), variant: "destructive" });
     } finally {
@@ -213,7 +218,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
           {bal > 0 ? ` · ${PAYOUT_LABEL[settlement.payout_method]}${settlement.payout_status === "pending" ? " – Auszahlung offen" : settlement.payout_date ? ` am ${new Date(settlement.payout_date).toLocaleDateString("de-DE")}` : ""}` : ""}
         </p>
         {canMarkStripePayout && <OrderRefundOverview compact inquiry={inquiry} onChanged={onDone} />}
-        {settlement.payout_status === "pending" && settlement.payout_method === "stripe" && canMarkStripePayout && <Button size="sm" onClick={executeStripePayout} disabled={busy}>{unresolved ? "Erstattungsstatus abgleichen" : "Kaution über Stripe erstatten"}</Button>}
+        {settlement.payout_status === "pending" && settlement.payout_method === "stripe" && canMarkStripePayout && <Button size="sm" onClick={() => void executeStripePayout()} disabled={busy}>{unresolved ? "Erstattungsstatus abgleichen" : "Kaution über Stripe erstatten"}</Button>}
         {canMarkStripePayout && (invoices.length === 0 ? <RentalCreditRefund inquiryId={inquiry.id} onDone={onDone}/> : invoices.map(inv => <RentalCreditRefund key={inv.id} invoiceId={inv.id} onDone={onDone}/>))}
         <p className="text-xs text-muted-foreground">Korrekturen nur per Gutschrift.</p>
       </div>
