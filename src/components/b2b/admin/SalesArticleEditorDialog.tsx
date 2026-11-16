@@ -423,7 +423,7 @@ export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySource
     const slug = form.slug.trim() || slugify(snapshotName);
     const images = form.images.map((i) => i.trim()).filter(Boolean);
     const content = {
-      ...((row?.content as Record<string, unknown>) ?? {}),
+      ...(((row ?? copyFrom)?.content as Record<string, unknown>) ?? {}),
       highlights: form.highlights.filter(Boolean),
       faq: form.faqs.filter((f) => f.q && f.a),
       seoTitle: form.seo_title.trim() || undefined,
