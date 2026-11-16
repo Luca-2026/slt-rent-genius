@@ -19,7 +19,7 @@ beforeAll(async () => {
 }, 30000);
 afterAll(() => db.close());
 it("persists one checkbox with real actor and supports removal without changing booking status", async () => {
-  const result = await db.query<{prepared_at: string; prepared_by: string; status: string}>("SELECT (set_sign_booking_prepared($1,true,NULL)).*", [id]);
+  const result = await db.query<{prepared_at: string; prepared_by: string; status: string}>("SELECT * FROM set_sign_booking_prepared($1,true,NULL)", [id]);
   expect(result.rows[0].prepared_by).toBe(actor);
   expect(result.rows[0].status).toBe("paid");
   expect(result.rows[0].prepared_at).toBeTruthy();
