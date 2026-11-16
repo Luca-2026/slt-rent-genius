@@ -232,6 +232,8 @@ Deno.serve(async (req: Request) => {
         },
       ];
       for (const mail of mails) {
+        // Online acceptance is visible in the order; no duplicate notice to the team.
+        if (mail === mails[0] && !onsiteStaff) continue;
         // Onsite signers still need their contract copy; online acceptance is shown on the payment page.
         if (mail === mails[1] && !onsiteStaff && !shouldSendCustomerEmail("online_acceptance_confirmation")) continue;
         if (!mail.to?.[0]) continue;
