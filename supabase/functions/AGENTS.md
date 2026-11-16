@@ -1,4 +1,5 @@
 # Edge function rules
+- Sales delivery notes use sales-delivery-note and immutable sales_delivery_notes with existing operation permissions; PDFs share the legal footer, preserve originals and record digital signatures or uploaded signed paper, without rental or payment side effects.
 - Legacy portal activation and device-return eligibility require a signed customer delivery note; planned dates and historic active flags are not evidence, and terminal reservations are never reactivated.
 - Manual return reminders use claim_rental_return_reminder and send-transactional-email with server-owned recipient/branch snapshots, Berlin operational deadlines, explicit no-response confirmation and durable stage IDs; no scheduler initiates reminders, and only provider-accepted first reminders enable escalation.
 - Stripe deposit payout completion requires matching succeeded durable provider receipts; reconciliation updates pending settlements only after the full balance is verified, never from a manual paid flag.

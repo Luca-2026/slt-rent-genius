@@ -1,6 +1,7 @@
 import type { SalesFinancing } from "../../../../supabase/functions/_shared/sales-offer";
 import { normalizeOpenEndedUnit, normalizeOpenEndedDuration, type OpenEndedUnit } from "@/lib/installments";
 import { DepositSettlementCard } from "./DepositSettlementCard";
+import { SalesDeliverySection } from "@/components/b2b/protocols/SalesDeliverySection";
 import { RentalCancellationDialog } from "./RentalCancellationDialog";
 import { OrderRefundOverview } from "./OrderRefundOverview";
 import { CreditNoteRefund } from "./CreditNoteRefund";
@@ -330,6 +331,7 @@ interface Props {
     raw_payload?: unknown;
     feedback_coupon_code?: string | null;
     order_code?: string | null;
+    order_confirmed_at?: string | null;
 
     offer_file_url: string | null;
     offer_total_gross: number | null;
@@ -1079,6 +1081,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
       {paymentsEl}
       {stripeEl}
       {orderEl}
+      {inquiryType === "sales" && canManageInventory && <SalesDeliverySection inquiryId={inquiry.id} confirmed={!!inquiry.order_confirmed_at && ["accepted", "done"].includes(inquiry.status)} />}
       {installmentEl}
       {invoicesEl}
       {docEl}
