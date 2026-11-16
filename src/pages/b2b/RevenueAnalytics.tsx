@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { categoryDisplayName } from "@/data/categoryModel";
+import { usedMachineCategoryRows } from "@/data/usedMachineDisplayNames";
 import { formatEuro, isoDay } from "@/lib/dashboardMetrics";
 import { SEGMENT_FILTER_OPTIONS, parseSegmentFilter, segmentOf } from "@/lib/customerSegment";
 import {
@@ -82,7 +83,7 @@ export default function RevenueAnalytics() {
         supabase.from("b2b_managed_products").select("name,category"),
         supabase.from("sales_inquiries").select("id,product_category"),
         supabase.from("new_machines").select("name,category"),
-        supabase.from("used_machines").select("model,category"),
+        supabase.from("used_machines").select("manufacturer,model,category"),
       ]);
       const firstErr = [inq, inqItems, portal, portalItems, products].find((r) => r.error)?.error;
       if (firstErr) { setError(firstErr.message); setLoading(false); return; }
@@ -136,7 +137,7 @@ export default function RevenueAnalytics() {
       setInvoices(list);
       setCatIndexes({ rental: buildCategoryIndex((products.data ?? []) as { name: string | null; category: string | null }[]), sales: buildCategoryIndex([
         ...((newM.data ?? []) as { name: string | null; category: string | null }[]),
-        ...((usedM.data ?? []) as { model: string | null; category: string | null }[]).map((u) => ({ name: u.model, category: u.category })),
+        ...usedMachineCategoryRows((usedM.data ?? []) as { manufacturer: string | null; model: string | null; category: string | null }[]),
       ]) });
       setLoading(false);
     })();
