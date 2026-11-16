@@ -5,7 +5,7 @@ export function salesDeliveryItems(payload: { items?: unknown }) {
     const text = offerItemText(i);
     const quantity = Number(i.articles ?? i.quantity);
     if (!text.product_name || !Number.isFinite(quantity) || quantity <= 0) throw new Error("Ungültige Verkaufsposition.");
-    return { name: String(text.product_name), description: String(text.description ?? ""), quantity, unit: String(i.unit || "Stück") };
+    return { name: String(text.product_name), description: String(text.description ?? ""), quantity, unit: ["stueck", "stück", ""].includes(String(i.unit ?? "").toLowerCase()) ? "Stück" : String(i.unit) };
   });
   if (!items.length) throw new Error("Keine Verkaufsware im bestätigten Auftrag.");
   return items;
