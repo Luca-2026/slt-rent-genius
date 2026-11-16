@@ -55,8 +55,8 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
         invoices.data?.length ? supabase.from("credit_note_refunds").select("*").in("credit_note_id", invoices.data.map(i => i.id)) : Promise.resolve({ data: [], error: null }),
       ]);
       if (deposits.error || rentals.error || credits.error) { if (alive) setError("Erstattungshistorie nicht vollständig verfügbar."); return; }
-      const refundedDeposit = (deposits.data ?? []).filter(r => r.status === "succeeded").reduce((a, r) => a + Number(r.amount_cents), 0) + (data?.deposit_used ?? 0);
-      const openCents = settle.data && settle.data.payout_status === "pending" ? Math.round(Number(settle.data.balance) * 100) - refundedDeposit : 0;
+      const refundedDeposit = (deposits.data ?? []).filter(r => r.status === "succeeded").reduce((a, r) => a + Number(r.amount_cents), 0);
+      const openCents = settle.data && settle.data.payout_status === "pending" ? Math.round(Number(settle.data.balance) * 100) - Math.max(refundedDeposit, data?.deposit_used ?? 0) : 0;
       if (alive) setOpenPayout(openCents > 0 && settle.data ? { balance: openCents / 100, method: settle.data.payout_method } : null);
       const names = new Map((staff.data ?? []).map(s => [s.user_id, `${s.first_name} ${s.last_name}`.trim()]));
       const actor = (id: string | null | undefined) => id ? names.get(id) ?? "Erfasser unbekannt" : "Erfasser unbekannt";
