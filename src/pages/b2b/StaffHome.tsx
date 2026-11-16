@@ -1,4 +1,4 @@
-import { isRunningRental, isReturnOverdue } from "@/lib/inquiryStatus";
+import { hasCustomerSignedHandover, isRunningRental, isReturnOverdue } from "@/lib/inquiryStatus";
 import { loadAllSearchRows } from "@/lib/staffSearch";
 import type { Tables } from "@/integrations/supabase/types";
 import { useRentalProtocolStatus } from "@/hooks/useRentalProtocolStatus";
@@ -252,10 +252,10 @@ export default function StaffHome() {
   const overdueReturns = filterByDayLocation(confirmed, activeDayLocation)
     .filter((r) => {
       const st = protocols.byInquiry.get(r.id);
-      return !st?.ret && isReturnOverdue({ ...r, handed_over: !!st?.delivery }, today);
+      return !st?.ret && isReturnOverdue({ ...r, handed_over: hasCustomerSignedHandover(st?.delivery) }, today);
     })
     .sort((a, b) => (effectiveEnd(a) ?? "").localeCompare(effectiveEnd(b) ?? ""));
-  const running = confirmed.filter((r) => isRunningRental({ ...r, handed_over: protocols.byInquiry.has(r.id) && !!protocols.byInquiry.get(r.id)?.delivery }, today)).length;
+  const running = confirmed.filter((r) => isRunningRental({ ...r, handed_over: hasCustomerSignedHandover(protocols.byInquiry.get(r.id)?.delivery) }, today)).length;
   const awaitingConfirmation = filterStaffConfirmationTasks([...inquiries, ...salesConfirmationRows], staffProfile?.location, isAdmin).filter((r) => isAwaitingOfferConfirmation(r, now)).length;
   const unprocessed = inquiries.filter(isUnprocessedInquiry).length;
   const customerRequests = profiles.flatMap((p) => ([

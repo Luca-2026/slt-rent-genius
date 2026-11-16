@@ -47,7 +47,7 @@ describe("inquiryStatus", () => {
 import { isUnprocessedInquiry, matchesInquiryListFilter, isReturnOverdue } from "@/lib/inquiryStatus";
 describe("offene Anfragen", () => {
   it("Linus: heutige Ausgabe mit widersprüchlichem Ende ist nicht sieben Tage überfällig", () => {
-    const row = { status: "accepted", order_confirmed_at: "2026-10-14", start_date: "2026-10-20", end_date: "2026-10-13" };
+    const row = { status: "accepted", handed_over: true, order_confirmed_at: "2026-10-14", start_date: "2026-10-20", end_date: "2026-10-13" };
     expect(isReturnOverdue(row, "2026-10-20")).toBe(false);
     expect(isReturnOverdue({ ...row, end_date: "2026-10-20" }, "2026-10-21")).toBe(true);
   });
@@ -69,7 +69,8 @@ describe("offene Anfragen", () => {
     const ab = "2026-09-30T10:00:00Z";
     expect(matchesInquiryListFilter({ status: "accepted", order_confirmed_at: null }, "running")).toBe(false);
     expect(matchesInquiryListFilter({ status: "accepted", order_confirmed_at: null }, "accepted")).toBe(true);
-    expect(matchesInquiryListFilter({ status: "accepted", order_confirmed_at: ab }, "running")).toBe(true);
+    expect(matchesInquiryListFilter({ status: "accepted", order_confirmed_at: ab }, "running")).toBe(false);
+    expect(matchesInquiryListFilter({ status: "accepted", order_confirmed_at: ab, handed_over: true }, "running")).toBe(true);
     expect(matchesInquiryListFilter({ status: "accepted", order_confirmed_at: ab }, "accepted")).toBe(false);
     expect(matchesInquiryListFilter({ status: "done", order_confirmed_at: ab }, "running")).toBe(false);
     expect(matchesInquiryListFilter({ status: "done", order_confirmed_at: ab }, "completed")).toBe(true);

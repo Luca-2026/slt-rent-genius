@@ -3,7 +3,7 @@ import {
   MAX_PROTOCOL_PHOTOS, acceptedPhotoCount, formatPhotoTimestamp, isProtocolCandidate,
   photoTakenAt, protocolItemsFromInquiry, remainingPhotoSlots,
 } from "@/lib/rentalProtocol";
-import { isReturnOverdue, isRunningRental, isUpcomingRental, matchesInquiryListFilter } from "@/lib/inquiryStatus";
+import { hasCustomerSignedHandover, isReturnOverdue, isRunningRental, isUpcomingRental, matchesInquiryListFilter } from "@/lib/inquiryStatus";
 
 describe("Foto-Limit", () => {
   it("erlaubt genau 15 Fotos", () => {
@@ -65,7 +65,7 @@ describe("Auftragsauswahl", () => {
   });
 });
 
-describe("Laufende Mietvorgänge nach Zeitraum", () => {
+describe("Laufende Mietvorgänge nach Kundenübergabe", () => {
   const today = "2026-09-30";
   const base = { status: "accepted", order_confirmed_at: "2026-09-29T10:00:00Z" };
   it("Miete 20.–21.10. ist bevorstehend, nicht laufend", () => {
@@ -75,16 +75,30 @@ describe("Laufende Mietvorgänge nach Zeitraum", () => {
     expect(matchesInquiryListFilter(r, "running", today)).toBe(false);
     expect(matchesInquiryListFilter(r, "upcoming", today)).toBe(true);
   });
-  it("Mietbeginn heute oder vorbei = laufend", () => {
-    expect(isRunningRental({ ...base, start_date: "2026-09-30 08:00" }, today)).toBe(true);
-    expect(isRunningRental({ ...base, start_date: "2026-09-25", end_date: "2026-10-05" }, today)).toBe(true);
+  it("heute 09 Uhr oder vergangener Mietbeginn ohne Übergabe bleibt bestätigt", () => {
+    for (const start_date of ["2026-09-30 09:00", "2026-09-25", null]) {
+      const row = { ...base, start_date, end_date: "2026-09-26" };
+      expect(isRunningRental(row, today)).toBe(false);
+      expect(matchesInquiryListFilter(row, "upcoming", today)).toBe(true);
+      expect(isReturnOverdue(row, today)).toBe(false);
+    }
+  });
+  it("nur Kundenunterschrift, nicht Mitarbeiterunterschrift oder Entwurf, startet die Miete", () => {
+    for (const status of ["signed_staff_only", "pending_customer_signature", "draft", null]) {
+      expect(hasCustomerSignedHandover({ status })).toBe(false);
+      expect(isRunningRental({ ...base, handed_over: hasCustomerSignedHandover({ status }) }, today)).toBe(false);
+    }
+    expect(hasCustomerSignedHandover(undefined)).toBe(false);
+    const signed = { ...base, handed_over: hasCustomerSignedHandover({ status: "signed" }) };
+    expect(isRunningRental(signed, today)).toBe(true);
+    expect(matchesInquiryListFilter(signed, "upcoming", today)).toBe(false);
   });
   it("Frühe Übergabe zählt als laufend", () => {
     expect(isRunningRental({ ...base, start_date: "2026-10-20", handed_over: true }, today)).toBe(true);
   });
   it("Mietende überschritten = Rückgabe überfällig", () => {
-    expect(isReturnOverdue({ ...base, start_date: "2026-09-20", end_date: "2026-09-25" }, today)).toBe(true);
-    expect(isReturnOverdue({ ...base, start_date: "2026-09-20", end_date: "2026-09-30" }, today)).toBe(false);
+    expect(isReturnOverdue({ ...base, handed_over: true, start_date: "2026-09-20", end_date: "2026-09-25" }, today)).toBe(true);
+    expect(isReturnOverdue({ ...base, handed_over: true, start_date: "2026-09-20", end_date: "2026-09-30" }, today)).toBe(false);
   });
   it("ohne Auftragsbestätigung nie laufend", () => {
     expect(isRunningRental({ status: "accepted", start_date: "2026-09-01" }, today)).toBe(false);
