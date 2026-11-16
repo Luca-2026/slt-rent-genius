@@ -106,6 +106,29 @@ describe("calendarEntries", () => {
     const entries = buildCalendarEntries([inq], new Set(), new Set());
     expect(entries[0].itemsLabel).toBe("2× Bagger, Anhänger");
   });
+  it("zeigt bestätigte Ersatzartikel und Stückzahl statt ursprünglicher Anfrage oder Miettage", () => {
+    const row = { ...base, requested_items: [{ product_name: "Angefragter Bagger", quantity: 3 }], offer_payload: { items: [
+      { product_name: "Bestätigter Radlader", articles: 2, quantity: 14, duration: 7, unit: "Miettage" },
+      { product_name: "Katalogname", name_override: "Bestätigter Anhänger", articles: 1, quantity: 7, unit: "Miettage" },
+      { product_name: "Nicht gewählte Option", optional: true },
+    ] } };
+    const before = JSON.stringify(row);
+    expect(buildCalendarEntries([row], new Set(), new Set()).map(e => e.itemsLabel)).toEqual([
+      "2× Bestätigter Radlader, Bestätigter Anhänger", "2× Bestätigter Radlader, Bestätigter Anhänger",
+    ]);
+    expect(JSON.stringify(row)).toBe(before);
+  });
+  it("liest alte Angebotsstückzahlen ohne Dauer-Multiplikation", () => {
+    const row = { ...base, offer_payload: { items: [
+      { product_name: "Bagger", quantity: 15, unit: "Kalendertage", description: "3 Artikel × 5 Kalendertage" },
+      { product_name: "Rüttelplatte", quantity: 7, unit: "Miettage" },
+      { product_name: "Set", quantity: 2, unit: "Stück" },
+    ] } };
+    expect(buildCalendarEntries([row], new Set(), new Set())[0].itemsLabel).toBe("3× Bagger, Rüttelplatte, 2× Set");
+  });
+  it("fügt bei vorhandenen bestätigten Positionen keine Anfrageartikel hinzu", () => {
+    expect(buildCalendarEntries([{ ...base, offer_payload: { items: [{ optional: true, product_name: "Option" }] } }], new Set(), new Set())[0].itemsLabel).toBe("Mietauftrag");
+  });
 
   it("Wochenstart ist Montag, Woche hat 7 Tage", () => {
     // 17.10.2026 ist ein Samstag

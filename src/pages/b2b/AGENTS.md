@@ -1,4 +1,5 @@
 - Calendar week and device views share CalendarLocationFilter and persisted location state; device filtering uses matchesCalendarLocation to normalize location names consistently.
+- Calendar item labels use the operational offer snapshot and offerItemText overrides before legacy request fallback; articles are piece/set counts, never billed duration. DayEntryCard clamps long content with a separate expansion button so order navigation stays accessible.
 - Rental list phases and StaffHome running/overdue counts use inquiryStatus with hasCustomerSignedHandover; protocol existence alone is not signature evidence, keeping filters and counts aligned.
 - Legacy portal active badges/counts resolve signed delivery notes through customerSignedReservationIds (direct reservation or offer link); calendars keep planned entries but mark delivery complete only with a customer-signed protocol.
 - Staff Halteverbote reads existing sign_bookings and linked inquiries; permit PDFs use short-lived authenticated sign-permits URLs, with no duplicate storage or changes to booking workflows.

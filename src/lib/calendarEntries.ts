@@ -7,6 +7,8 @@
  * Abweichende Positionsdaten im Angebot gewinnen (frühester Beginn, spätestes Ende).
  */
 
+import { offerItemText } from "../../supabase/functions/_shared/offer-item-text";
+
 export interface CalendarInquiry {
   id: string;
   status: string;
@@ -85,6 +87,22 @@ export function hasInvalidRentalPeriod(inq: { start_date?: string | null; end_da
 }
 
 function itemsLabel(inq: CalendarInquiry): string {
+  const offered = (inq.offer_payload as { items?: unknown } | null)?.items;
+  if (Array.isArray(offered) && offered.length) {
+    const parts = offered.flatMap((item) => {
+      if (!item || typeof item !== "object" || item.optional === true) return [];
+      const name = String(offerItemText(item).product_name ?? "").trim();
+      if (!name) return [];
+      const suffix = String(item.description ?? "").match(/\s*(\d+)\s*Artikel\s*[×x]\s*(\d+)\s*([A-Za-zÄÖÜäöüß]+)\s*$/);
+      const unit = String(item.unit_code ?? item.unit ?? "").trim().toLowerCase();
+      const piece = ["", "stück", "stueck", "pauschal", "pauschale", "set", "sets"].includes(unit);
+      const articles = Number(item.articles);
+      const qty = articles > 0 ? articles : suffix ? Number(suffix[1]) : piece ? Number(item.quantity) || 1 : 1;
+      return [qty > 1 ? `${qty}× ${name}` : name];
+    });
+    // An vorhandener Auftragspositionsliste niemals angefragte, entfernte Artikel ergänzen.
+    return parts.join(", ") || "Mietauftrag";
+  }
   const raw = Array.isArray(inq.requested_items) ? (inq.requested_items as Array<{ product_name?: unknown; quantity?: unknown }>) : [];
   const parts = raw
     .map((r) => {
