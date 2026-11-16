@@ -24,11 +24,14 @@ import type { NewMachineRow, SalesArticleKind, UsedMachineRow } from "@/hooks/us
 import { grossToNet, invalidateSalesCatalog } from "@/hooks/useSalesCatalog";
 import { DEFAULT_OVERHEAD_PERCENT, minimumPrice } from "@/lib/salesPricing";
 import { useArticleAutosave } from "@/hooks/useArticleAutosave";
+import { salesArticleValidation } from "@/lib/salesArticleEditing";
 
 interface Props {
   open: boolean;
   kind: SalesArticleKind;
   row: NewMachineRow | UsedMachineRow | null;
+  copyFrom?: NewMachineRow | UsedMachineRow | null;
+  copySourceId?: string;
   readOnly?: boolean;
   onOpenChange: (open: boolean) => void;
   onSaved: () => void;
@@ -118,7 +121,7 @@ function toFaqList(raw: unknown): Faq[] {
     .filter((f): f is Faq => f !== null);
 }
 
-export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChange, onSaved }: Props) {
+export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySourceId, readOnly, onOpenChange, onSaved }: Props) {
   const { canEditCosts } = useStaffAccess();
   const costsLocked = readOnly || !canEditCosts;
   const [form, setForm] = useState<FormState>({ ...emptyForm });
@@ -129,11 +132,12 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
   const isNew = kind === "new";
 
   const buildForm = (): FormState => {
-    if (!row) {
+    const source = row ?? copyFrom;
+    if (!source) {
       return { ...emptyForm };
     }
     if (isNew) {
-      const r = row as NewMachineRow;
+      const r = source as NewMachineRow;
       const content = (r.content ?? {}) as Record<string, unknown>;
       return {
         ...emptyForm,
@@ -161,7 +165,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         seo_description: String(content.seoDescription ?? ""),
       };
     } else {
-      const r = row as UsedMachineRow;
+      const r = source as UsedMachineRow;
       const content = (r.content ?? {}) as Record<string, unknown>;
       return {
         ...emptyForm,
@@ -188,7 +192,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
     }
   };
 
-  const draftId = `${row?.id ?? "new"}`;
+  const draftId = `${row?.id ?? (copyFrom ? `copy-${copyFrom.id}` : "new")}`;
   const draftEditor = isNew ? "sales-new" : "sales-used";
   const draftKey = cmsDraftKey(draftEditor, draftId);
   const baselineRef = useRef("");
@@ -291,18 +295,19 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
   const [costsLoaded, setCostsLoaded] = useState(false);
   useEffect(() => {
     if (!open) return;
-    articleIdentity.current = row?.id ?? null;
+    articleIdentity.current = row?.id ?? copyFrom?.id ?? null;
     setCostsLoaded(false);
     costsBaseline.current = "";
     setPurchase("");
     setOverhead(String(DEFAULT_OVERHEAD_PERCENT));
-    if (!row) { costsBaseline.current = JSON.stringify({ purchase: "", overhead: String(DEFAULT_OVERHEAD_PERCENT) }); setCostsLoaded(true); return; }
+    const costSourceId = row?.id ?? copySourceId;
+    if (!costSourceId) { costsBaseline.current = JSON.stringify({ purchase: "", overhead: String(DEFAULT_OVERHEAD_PERCENT) }); setCostsLoaded(true); return; }
     let cancelled = false;
     supabase
       .from("sales_article_costs")
       .select("purchase_price_net, overhead_percent")
       .eq("article_kind", kind)
-      .eq("article_id", row.id)
+      .eq("article_id", costSourceId)
       .maybeSingle()
       .then(({ data, error }) => {
         if (cancelled) return;
@@ -311,13 +316,13 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         const overhead = String(data?.overhead_percent ?? DEFAULT_OVERHEAD_PERCENT);
         setPurchase(purchase);
         setOverhead(overhead);
-        costsBaseline.current = JSON.stringify({ purchase, overhead });
+        costsBaseline.current = JSON.stringify(copyFrom && canEditCosts ? { purchase: "", overhead: String(DEFAULT_OVERHEAD_PERCENT) } : { purchase, overhead });
         setCostsLoaded(true);
       });
     return () => {
       cancelled = true;
     };
-  }, [open, row?.id, kind]);
+  }, [open, row?.id, copyFrom?.id, copySourceId, kind, canEditCosts]);
 
   const targetNet = form.price && !form.price_on_request
     ? (isNew ? grossToNet(Number(form.price), Number(form.vat_rate) || 19) : Number(form.price))
@@ -379,7 +384,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
     try {
       const uploaded: string[] = [];
       for (const file of Array.from(files)) {
-        const rawExt = file.name.includes(".") ? file.name.split(".").pop()! : "";
+        const rawExt = file.name.includes(".") ? file.name.split(".").pop() ?? "" : "";
         const ext = (rawExt || (file.type.split("/")[1] ?? "bin")).toLowerCase().replace(/[^a-z0-9]/g, "");
         const folder = form.slug.trim() || slugify(displayName) || "verkauf";
         const path = `sales-images/${kind}/${folder}/${crypto.randomUUID()}.${ext}`;
@@ -403,12 +408,9 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
   }
 
   function validateForm(form: FormState, automatic = false): boolean {
-    if (!form.brand.trim() || !form.model.trim()) {
-      if (!automatic) toast.error("Hersteller und Modell sind Pflichtfelder.");
-      return false;
-    }
-    if (!form.category.trim()) {
-      if (!automatic) toast.error("Bitte eine Kategorie angeben.");
+    const error = salesArticleValidation(form);
+    if (error) {
+      if (!automatic) toast.error(error);
       return false;
     }
     return true;
@@ -417,7 +419,8 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
   const save = async (snapshot: { form: FormState; purchase: string; overhead: string }, automatic = false): Promise<boolean> => {
     const { form, purchase, overhead } = snapshot;
     if (!validateForm(form, automatic)) return false;
-    const slug = form.slug.trim() || slugify(displayName);
+    const snapshotName = [form.brand, form.model].filter(Boolean).join(" ").trim();
+    const slug = form.slug.trim() || slugify(snapshotName);
     const images = form.images.map((i) => i.trim()).filter(Boolean);
     const content = {
       ...((row?.content as Record<string, unknown>) ?? {}),
@@ -435,7 +438,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
           slug,
           brand: form.brand.trim(),
           model: form.model.trim(),
-          name: form.name.trim() || displayName,
+          name: form.name.trim() || snapshotName,
           category: form.category.trim(),
           article_number: form.article_number.trim() || null,
           short_description: form.short_description.trim() || null,
@@ -543,7 +546,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
         className="flex h-[100dvh] max-h-[100dvh] w-full max-w-none flex-col gap-0 overflow-hidden rounded-none p-0 sm:h-auto sm:max-h-[90vh] sm:w-[calc(100%-2rem)] sm:max-w-3xl sm:rounded-lg">
         <DialogHeader className="shrink-0 border-b px-4 py-4 sm:px-6">
           <DialogTitle>
-            {row ? "Verkaufsartikel bearbeiten" : "Verkaufsartikel anlegen"} ·{" "}
+            {row ? "Verkaufsartikel bearbeiten" : copyFrom ? "Verkaufsartikel kopieren" : "Verkaufsartikel anlegen"} ·{" "}
             {isNew ? "Neuartikel" : "Gebrauchtartikel"}
           </DialogTitle>
         </DialogHeader>
@@ -573,7 +576,7 @@ export function SalesArticleEditorDialog({ open, kind, row, readOnly, onOpenChan
                   <datalist id="sa-brand-suggestions">{["LiuGong", "BAUMAX", "Temared", "Hercu"].map((b) => <option key={b} value={b} />)}</datalist>
                 </div>
                 <div>
-                  <Label htmlFor="sa-model">Modell</Label>
+                  <Label htmlFor="sa-model">Modell (optional)</Label>
                   <Input id="sa-model" value={form.model} disabled={readOnly} onChange={(e) => set("model", e.target.value)} maxLength={160} />
                 </div>
                 <div>
