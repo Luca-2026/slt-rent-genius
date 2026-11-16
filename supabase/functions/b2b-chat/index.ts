@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { customerSignedReservationIds, isRunningReservation } from "../_shared/rental-phase.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -47,7 +48,7 @@ Deno.serve(async (req: Request) => {
     }
 
     // Fetch customer context in parallel
-    const [profileRes, reservationsRes, invoicesRes] = await Promise.all([
+    const [profileRes, reservationsRes, invoicesRes, deliveryRes, offerRes] = await Promise.all([
       supabase
         .from("b2b_profiles")
         .select("company_name, contact_first_name, contact_last_name, status, credit_limit, used_credit, payment_due_days, assigned_location, city")
@@ -55,10 +56,12 @@ Deno.serve(async (req: Request) => {
         .single(),
       supabase
         .from("b2b_reservations")
-        .select("product_name, start_date, end_date, status, location, quantity, discounted_price, original_price")
+        .select("id, product_name, start_date, end_date, status, location, quantity, discounted_price, original_price")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
         .limit(10),
+      supabase.from("b2b_delivery_notes").select("status,reservation_id,offer_id").eq("status", "signed"),
+      supabase.from("b2b_offers").select("id,reservation_id"),
       supabase
         .from("b2b_invoices")
         .select("invoice_number, invoice_date, due_date, gross_amount, status, payment_due_days")
@@ -79,12 +82,14 @@ Deno.serve(async (req: Request) => {
 
     const openInvoices = invoices.filter(i => i.status === "open" || i.status === "overdue");
     const overdueInvoices = invoices.filter(i => i.status === "overdue");
-    const activeRentals = reservations.filter(r => r.status === "confirmed" || r.status === "active");
+    const signedReservations = customerSignedReservationIds(deliveryRes.data ?? [], offerRes.data ?? []);
+    const activeRentals = reservations.filter(r => isRunningReservation(r, signedReservations));
 
     // Build system prompt with customer context
     const systemPrompt = `Du bist ein freundlicher KI-Assistent für das B2B-Portal von SLT Rent (Baumaschinen- und Geräteverleih). Du hilfst Kunden bei Fragen zu ihren Mietverträgen, Rechnungen und ihrem Konto.
 
 WICHTIG: Antworte immer auf Deutsch, sei präzise und freundlich. Verwende die bereitgestellten Kundendaten, um personalisierte Antworten zu geben.
+Ein bestätigter Auftrag ohne kundenseitig unterschriebene Übergabe ist nicht laufend, auch wenn sein geplanter Mietbeginn überschritten ist.
 
 === KUNDENDATEN ===
 Unternehmen: ${profile?.company_name || "Unbekannt"}

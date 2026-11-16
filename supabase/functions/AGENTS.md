@@ -1,4 +1,5 @@
 # Edge function rules
+- Legacy portal activation and device-return eligibility require a signed customer delivery note; planned dates and historic active flags are not evidence, and terminal reservations are never reactivated.
 - Manual return reminders use claim_rental_return_reminder and send-transactional-email with server-owned recipient/branch snapshots, Berlin operational deadlines, explicit no-response confirmation and durable stage IDs; no scheduler initiates reminders, and only provider-accepted first reminders enable escalation.
 - Stripe deposit payout completion requires matching succeeded durable provider receipts; reconciliation updates pending settlements only after the full balance is verified, never from a manual paid flag.
 - Provider receipts accept card re_ and PayPal/local-payment pyr_ IDs with immutable facts; deposit status synchronization is read-only at Stripe, and deposit plus credit execution both persist receipts through refund-reconciliation before displaying completion.

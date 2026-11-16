@@ -242,7 +242,7 @@ Deno.serve(async (req: Request) => {
           start_date: firstItem?.rental_start || new Date().toISOString().split("T")[0],
           end_date: firstItem?.rental_end || null,
           quantity: firstItem?.quantity || 1,
-          status: "active",
+          status: "confirmed",
           original_price: offer.net_amount || null,
           discounted_price: offer.net_amount || null,
           notes: `Automatisch erstellt aus Angebot ${offer.offer_number}`,
@@ -482,13 +482,14 @@ Deno.serve(async (req: Request) => {
     }
 
     // Update reservation status to "active" (Mietvorgang ist jetzt aktiv)
-    if (offer.reservation_id) {
+    if (offer.reservation_id && deliveryNoteStatus === "signed") {
       // Check for grouped reservations
       if (reservation?.rental_group_id) {
         const { error: groupUpdateErr } = await serviceClient
           .from("b2b_reservations")
           .update({ status: "active" })
-          .eq("rental_group_id", reservation.rental_group_id);
+          .eq("rental_group_id", reservation.rental_group_id)
+          .in("status", ["confirmed", "active"]);
         if (groupUpdateErr) {
           console.error("Error updating grouped reservations to active:", groupUpdateErr);
         } else {
@@ -498,7 +499,8 @@ Deno.serve(async (req: Request) => {
         await serviceClient
           .from("b2b_reservations")
           .update({ status: "active" })
-          .eq("id", offer.reservation_id);
+          .eq("id", offer.reservation_id)
+          .in("status", ["confirmed", "active"]);
         console.log("Reservation set to active:", offer.reservation_id);
       }
     }
