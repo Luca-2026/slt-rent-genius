@@ -331,6 +331,7 @@ interface Props {
     raw_payload?: unknown;
     feedback_coupon_code?: string | null;
     order_code?: string | null;
+    order_confirmed_at?: string | null;
 
     offer_file_url: string | null;
     offer_total_gross: number | null;
