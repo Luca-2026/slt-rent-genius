@@ -284,6 +284,12 @@ export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySource
 
   const requestSave = async () => {
     if (!validateForm(form)) return;
+    // focusout may start an autosave before this click; an already acknowledged
+    // snapshot still counts as a successful explicit save.
+    if (JSON.stringify(form) === baselineRef.current && JSON.stringify({ purchase, overhead }) === costsBaseline.current) {
+      onOpenChange(false);
+      return;
+    }
     if (await autosave.flush()) onOpenChange(false);
   };
 
