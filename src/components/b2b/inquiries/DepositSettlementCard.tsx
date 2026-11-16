@@ -110,7 +110,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
 
   const settle = async () => {
     if (problem || busy) return;
-    if (!window.confirm(`Kaution jetzt abrechnen? ${result.refund > 0 ? `Erstattung ${formatEuro(result.refund)}` : result.due > 0 ? `Nachzahlung ${formatEuro(result.due)}` : "Saldo 0 €"}. Danach ist die Abrechnung gesperrt.`)) return;
+    if (!window.confirm(`Kaution jetzt abrechnen? ${result.refund > 0 ? `Erstattung ${formatEuro(result.refund)}${payout === "stripe" ? " – wird sofort über Stripe auf die ursprüngliche Zahlung erstattet" : ""}` : result.due > 0 ? `Nachzahlung ${formatEuro(result.due)}` : "Saldo 0 €"}. Danach ist die Abrechnung gesperrt.`)) return;
     setBusy(true);
     try {
       const { error: rpcErr } = await supabase.rpc("settle_deposit", {
