@@ -336,6 +336,9 @@ export const jobListings: JobListing[] = [
     datePosted: "2026-11-10",
     validThrough: "2027-02-28",
     industry: "Vermietung / Standortbetrieb",
+    salaryMin: 3500,
+    salaryMax: 3500,
+    salaryUnit: "MONTH",
     seoTitle: "Standortmitarbeiter Vermietung (m/w/d) Bonn | SLT Rental",
     seoDescription: "Standortmitarbeiter in Bonn gesucht: Mietgeräte ausgeben und zurücknehmen, Angebote erstellen, ausliefern. BE-Pflicht, Bonus und Aufstiegsmöglichkeiten.",
     description: "Für unseren Standort Bonn suchen wir einen motivierten Standortmitarbeiter (m/w/d), der das Tagesgeschäft übernimmt. Du bist für unsere Kunden da, gibst Mietgegenstände heraus, nimmst sie zurück, erstellst Angebote und übernimmst Auslieferungen. Dabei arbeitest du mit modernen digitalen Tools und unserem digitalen Vermiet-System. Ein Führerschein der Klasse BE ist Pflicht. Dich erwarten flache Hierarchien, ein cooles, junges Team, flexible Arbeitszeiten nach Absprache und die Möglichkeit, dich weiterzuentwickeln und aufzusteigen.",
@@ -355,6 +358,7 @@ export const jobListings: JobListing[] = [
       "Offenheit für moderne digitale Tools und Teamarbeit",
     ],
     benefits: [
+      "3.500 € brutto pro Monat plus Bonus",
       "Attraktive Bonusregelung mit jährlichem, vom Unternehmenserfolg abhängigem Bonus",
       "Flache Hierarchien und kurze Entscheidungswege",
       "Ein cooles, junges Team, in dem du vollwertig dazugehörst",

@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { jobListings } from "../components/karriere/jobData";
+import { SLT_JOBPOSTING_JSONLD } from "../components/SEO";
+import { ALL_ROUTES } from "../data/seo-routes-rental";
 
 describe("recruitment terms", () => {
   it("offers the delivery minijob at exactly 20 EUR gross per hour", () => {
@@ -30,5 +32,30 @@ describe("recruitment terms", () => {
     const job = jobListings.find((entry) => entry.id === "standortmitarbeiter-bonn");
     expect(job?.askDriversLicense).toBe(true);
     expect(job?.specificFields.find((field) => field.id === "driversLicense")?.required).toBe(true);
+  });
+  it("publishes the Bonn base salary at 3500 EUR gross per month, excluding the variable bonus", () => {
+    const job = jobListings.find((entry) => entry.id === "standortmitarbeiter-bonn");
+    expect(job?.salaryMin).toBe(3500);
+    expect(job?.salaryMax).toBe(3500);
+    expect(job?.salaryUnit).toBe("MONTH");
+    if (!job) throw new Error("Missing Bonn vacancy");
+    const expected = {
+      "@type": "MonetaryAmount",
+      currency: "EUR",
+      value: { "@type": "QuantitativeValue", minValue: 3500, maxValue: 3500, unitText: "MONTH" },
+    };
+    const live = SLT_JOBPOSTING_JSONLD({
+      title: job.title,
+      description: job.description,
+      datePosted: job.datePosted ?? "",
+      employmentType: job.employmentType,
+      identifier: job.id,
+      url: `https://www.slt-rental.de/karriere/${job.slug}/`,
+      locations: job.locations,
+      baseSalary: { min: job.salaryMin ?? 0, max: job.salaryMax ?? 0, unitText: job.salaryUnit ?? "YEAR" },
+    });
+    expect(live.baseSalary).toEqual(expected);
+    const route = ALL_ROUTES.find((entry) => entry.path === `/karriere/${job.slug}/`);
+    expect(JSON.stringify(route)).toContain(JSON.stringify(expected));
   });
 });
