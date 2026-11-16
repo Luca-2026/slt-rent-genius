@@ -5317,6 +5317,65 @@ export type Database = {
         }
         Relationships: []
       }
+      sales_delivery_notes: {
+        Row: {
+          created_at: string
+          created_by: string
+          delivery_note_number: string
+          file_path: string
+          id: string
+          receipt_method: string | null
+          receipt_recorded_at: string | null
+          receipt_recorded_by: string | null
+          received_at: string | null
+          sales_inquiry_id: string
+          signature_data: string | null
+          signed_file_path: string | null
+          signer_name: string | null
+          snapshot: Json
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          delivery_note_number?: string
+          file_path: string
+          id: string
+          receipt_method?: string | null
+          receipt_recorded_at?: string | null
+          receipt_recorded_by?: string | null
+          received_at?: string | null
+          sales_inquiry_id: string
+          signature_data?: string | null
+          signed_file_path?: string | null
+          signer_name?: string | null
+          snapshot: Json
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          delivery_note_number?: string
+          file_path?: string
+          id?: string
+          receipt_method?: string | null
+          receipt_recorded_at?: string | null
+          receipt_recorded_by?: string | null
+          received_at?: string | null
+          sales_inquiry_id?: string
+          signature_data?: string | null
+          signed_file_path?: string | null
+          signer_name?: string | null
+          snapshot?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sales_delivery_notes_sales_inquiry_id_fkey"
+            columns: ["sales_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "sales_inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sales_inquiries: {
         Row: {
           addons: Json
