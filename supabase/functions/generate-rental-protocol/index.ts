@@ -1,5 +1,6 @@
 import { codedSubject } from "../_shared/order-code.ts";
 import { validFuelLevel } from "../_shared/protocolMeasurements.ts";
+import { protocolSignedPlace } from "../_shared/protocol-signed-place.ts";
 import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
 // Übergabe- und Rückgabeprotokoll zu einer Mietanfrage (Privat- und Firmenkunden).
 // Fotos (max. 15) kommen verkleinert als Base64, werden gespeichert und ins PDF eingebettet.
@@ -28,6 +29,7 @@ const Body = z.object({
   customer_not_present: z.boolean(),
   customer_signature: z.string().startsWith("data:image/png;base64,").max(600_000).nullable(),
   customer_signer_name: z.string().trim().max(120).nullable(),
+  signed_place: z.string().trim().max(120).nullable().optional(),
   id_checked: z.boolean(),
   id_check_type: z.string().max(40).nullable(),
   agb_accepted: z.boolean(),
@@ -168,6 +170,7 @@ Deno.serve(async (req) => {
     const extraChargesTotal = Math.round(extraCharges.reduce((s, c) => s + c.quantity * c.unit_price, 0) * 100) / 100;
     const lk = locKey(inq.location);
     const loc = LOCATIONS[lk];
+    const signedPlace = protocolSignedPlace(b.kind, b.signed_place, inq, loc.name);
     const payload = (inq.offer_payload ?? {}) as Record<string, any>;
     const sigBytes = (s: string | null) => (s ? decodeBase64(s.split(",")[1] ?? "") : null);
     const deliveryAddress = inq.delivery_requested && (inq.delivery_street || inq.delivery_city)
@@ -196,7 +199,7 @@ Deno.serve(async (req) => {
         knownDefects: b.known_defects, notes: b.notes, allReturned: isReturn ? b.all_items_returned : null, missingNotes: b.missing_items_notes,
         itemCleanliness: b.item_cleanliness,
       },
-      signedPlace: loc.name,
+      signedPlace,
       idCheck: { checked: b.id_checked, type: b.id_check_type },
       confirmations: { instructed: b.instructed, agb: b.agb_accepted, items: b.items_confirmed, customerNotPresent: b.customer_not_present },
       damages: damageRows.map((d) => ({
@@ -237,7 +240,7 @@ Deno.serve(async (req) => {
       staff_signature_data: b.staff_signature, staff_name: b.staff_name, notes: b.notes,
       // Rückgaben ohne anwesenden Kunden sind mit der Mitarbeiterunterschrift final (keine spätere Kundenunterschrift);
       // nur Übergaben warten auf die nachträgliche Kundenunterschrift (Kalender liest signed_at).
-      signed_at: b.customer_not_present && !isReturn ? null : now.toISOString(), signed_place: loc.name, file_url: fileUrl, file_name: fileName, photo_urls: photoUrls,
+      signed_at: b.customer_not_present && !isReturn ? null : now.toISOString(), signed_place: signedPlace || null, file_url: fileUrl, file_name: fileName, photo_urls: photoUrls,
       id_checked: b.id_checked, id_check_type: b.id_check_type, id_checked_at: b.id_checked ? now.toISOString() : null,
       protocol_data: protocolData,
     };

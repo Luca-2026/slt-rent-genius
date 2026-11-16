@@ -23,6 +23,7 @@ import { ExtraChargesStep, type ChargeSuggestion } from "@/components/b2b/protoc
 import { cleaningChargeGross, fuelSuggested, CLEANING_UNIT_NET } from "@/lib/returnCharges";
 import { CLEANING_RATE_PER_15_MIN, CLEANLINESS_HINT, FUEL_LEVELS, isDirty, isMachineLike, toNumber, formatEuro, serializeExtraCharges, sumExtraCharges, extraChargeTotal, emptyExtraCharge, type ExtraCharge, type ProtocolDamage } from "@/components/b2b/protocols/protocolShared";
 import { fuelLevelLabel } from "../../../../supabase/functions/_shared/protocolMeasurements";
+import { protocolSignedPlace } from "../../../../supabase/functions/_shared/protocol-signed-place";
 import {
   MAX_PROTOCOL_PHOTOS, formatPhotoTimestamp, photoTakenAt, protocolItemsFromInquiry, remainingPhotoSlots, type ProtocolKind,
 } from "@/lib/rentalProtocol";
@@ -48,6 +49,7 @@ interface SavedProtocol {
   damages: (Omit<ProtocolDamage, "photos"> & { photos: { file: File }[] })[];
   agbAccepted: boolean; itemsConfirmed: boolean; customerNotPresent: boolean;
   signerName: string; customerSignature: string | null; staffName: string;
+  signedPlace?: string;
   staffSignature: string | null; sendEmail: boolean; charges?: ExtraCharge[];
 }
 
@@ -101,6 +103,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
   const [itemsConfirmed, setItemsConfirmed] = useState(false);
   const [customerNotPresent, setCustomerNotPresent] = useState(false);
   const [signerName, setSignerName] = useState("");
+  const [signedPlace, setSignedPlace] = useState("");
   const [customerSignature, setCustomerSignature] = useState<string | null>(null);
   const [staffName, setStaffName] = useState("");
   const [staffSignature, setStaffSignature] = useState<string | null>(null);
@@ -153,6 +156,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
     setKnownDefects(""); setNotes(""); setAllReturned(true); setMissingNotes(""); setPhotos([]); setDamages([]); setCharges([]);
     setAgbAccepted(false); setItemsConfirmed(false); setCustomerNotPresent(false);
     setSignerName(inquiry.company_name ? inquiry.customer_name ?? "" : inquiry.customer_name ?? "");
+    setSignedPlace(protocolSignedPlace(kind, undefined, inquiry, inquiry.location ? getLocationDisplayName(inquiry.location) : ""));
     setCustomerSignature(null); setStaffSignature(null); setStaffName(displayName && !displayName.includes("@") ? displayName : "");
     setSendEmail(true); setResult(null); setProgress("");
     void readProtocolDraft<SavedProtocol>(key).then((draft) => {
@@ -166,6 +170,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       setDamages(d.damages.map((damage) => ({ ...damage, photos: damage.photos.map((p) => ({ file: p.file, preview: URL.createObjectURL(p.file) })) })));
       setAgbAccepted(d.agbAccepted); setItemsConfirmed(d.itemsConfirmed);
       setCustomerNotPresent(d.customerNotPresent); setSignerName(d.signerName);
+      if (d.signedPlace !== undefined) setSignedPlace(d.signedPlace);
       setCustomerSignature(d.customerSignature); setStaffName(d.staffName);
       setStaffSignature(d.staffSignature); setSendEmail(d.sendEmail); setCharges(d.charges ?? []);
       toast.info("Protokollentwurf wiederhergestellt.");
@@ -182,10 +187,10 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       allReturned, missingNotes, photos: photos.map(({ id, file, caption }) => ({ id, file, caption })),
       damages: damages.map(({ photos: damagePhotos, ...damage }) => ({ ...damage, photos: damagePhotos.map(({ file }) => ({ file })) })),
       agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature,
-      staffName, staffSignature, sendEmail, charges,
+      staffName, staffSignature, sendEmail, charges, signedPlace,
     };
     void writeProtocolDraft(draftKey, value).catch(() => toast.error("Entwurf konnte auf diesem Gerät nicht gespeichert werden. Bitte Speicherplatz prüfen."));
-  }, [draftKey, readyFor, result, idChecked, idDocType, cleanlinessByItem, readings, machineIdx, instructed, knownDefects, notes, allReturned, missingNotes, photos, damages, agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature, staffName, staffSignature, sendEmail, charges]);
+  }, [draftKey, readyFor, result, idChecked, idDocType, cleanlinessByItem, readings, machineIdx, instructed, knownDefects, notes, allReturned, missingNotes, photos, damages, agbAccepted, itemsConfirmed, customerNotPresent, signerName, customerSignature, staffName, staffSignature, sendEmail, charges, signedPlace]);
 
   useEffect(() => {
     if (!open) return;
@@ -308,6 +313,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       const { data, error } = await supabase.functions.invoke("generate-rental-protocol", {
         body: {
           kind, rental_inquiry_id: inquiry.id,
+          ...(!isReturn ? { signed_place: signedPlace.trim() } : {}),
           staff_name: staffName.trim(), staff_signature: staffSignature,
           customer_not_present: customerNotPresent,
           customer_signature: customerNotPresent ? null : customerSignature,
@@ -531,6 +537,10 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
       done: signaturesDone && legalDone,
       content: (
         <div className="space-y-4">
+          {!isReturn && <div>
+            <Label htmlFor="protocol-signed-place" className="text-xs">Unterschriftsort (optional)</Label>
+            <Input id="protocol-signed-place" value={signedPlace} onChange={(e) => setSignedPlace(e.target.value)} maxLength={120} className="h-11" autoComplete="off" />
+          </div>}
           {isReturn && <div className="flex items-start gap-3 rounded-lg border p-3">
             <Checkbox id="not-present" checked={customerNotPresent} onCheckedChange={(v) => setCustomerNotPresent(v === true)} />
             <label htmlFor="not-present" className="text-sm cursor-pointer">Kunde ist nicht anwesend (z. B. Lieferung an Baustelle) – {isReturn ? "das Protokoll wird ohne Kundenunterschrift erstellt und so vermerkt." : "der Kunde erhält das Protokoll per E-Mail zur nachträglichen digitalen Unterschrift."}</label>
@@ -573,7 +583,7 @@ export function RentalProtocolDialog({ kind, inquiry, open, onOpenChange, onCrea
               <SignatureBlock title="Unterschrift Kunde" value={customerSignature} onChange={setCustomerSignature} />
               <p className="text-xs text-muted-foreground flex items-center gap-1.5">
                 <Clock className="h-3.5 w-3.5" />
-                Ort und Zeit werden beim Abschluss automatisch erfasst: {inquiry.location ? getLocationDisplayName(inquiry.location) : "—"}, {now.toLocaleString("de-DE", { dateStyle: "medium", timeStyle: "short" })} Uhr
+                {isReturn ? `Ort: ${inquiry.location ? getLocationDisplayName(inquiry.location) : "—"} · ` : signedPlace.trim() ? `Ort: ${signedPlace.trim()} · ` : ""}Zeitpunkt: {now.toLocaleString("de-DE", { dateStyle: "medium", timeStyle: "short" })} Uhr
               </p>
             </>
           )}
