@@ -40,6 +40,8 @@ export interface PipelineInquiryRow {
   end_time?: string | null;
   offer_payload?: unknown;
   closed_manually_at?: string | null;
+  handed_over?: boolean;
+  returned?: boolean;
   source?: string | null;
 }
 
@@ -72,12 +74,15 @@ export function hasRentalEnded(row: PipelineInquiryRow, now: Date = new Date()):
 
 /** Acceptance age is irrelevant; an ended rental belongs to closeout instead. */
 export function isAwaitingOfferConfirmation(row: PipelineInquiryRow, now: Date = new Date()): boolean {
-  return row.status === "accepted" && !row.order_confirmed_at && !isAutomaticSignBooking(row) && !hasRentalEnded(row, now);
+  return row.status === "accepted" && !row.order_confirmed_at && !isAutomaticSignBooking(row) && !(row.handed_over && hasRentalEnded(row, now));
 }
 
 /** Closeout only for real orders: confirmed, or accepted (awaiting confirmation). "done" without confirmation = closed request, never a to-do. */
 export function needsRentalCloseout(row: PipelineInquiryRow, now: Date = new Date()): boolean {
   if (!hasRentalEnded(row, now)) return false;
+  // Completed historical orders keep their closeout evidence; pending handovers
+  // never become ended rentals merely because the planned end passed.
+  if (!row.handed_over && !row.returned && !row.closed_manually_at && row.status !== "done") return false;
   return !!row.order_confirmed_at || row.status === "accepted";
 }
 
