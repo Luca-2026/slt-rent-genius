@@ -8,7 +8,7 @@ import { formatEuro } from "./offerMath";
 import { FileText, Undo2 } from "lucide-react";
 
 type Result = { success: boolean; error?: string; amount_cents: number; status: string; payout_method: string; pdf_url?: string; pdf_base64?: string };
-export function RentalCreditRefund({ invoiceId, inquiryId, onDone, prepareBasis }: { invoiceId?: string; inquiryId?: string; onDone?: () => void; prepareBasis?: () => Promise<boolean> }) {
+export function RentalCreditRefund({ invoiceId, inquiryId, onDone, prepareBasis, fullWidth = false }: { invoiceId?: string; inquiryId?: string; onDone?: () => void; prepareBasis?: () => Promise<boolean>; fullWidth?: boolean }) {
   const [result, setResult] = useState<Result | null>(null);
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -36,7 +36,7 @@ export function RentalCreditRefund({ invoiceId, inquiryId, onDone, prepareBasis 
     window.open(url, "_blank", "noopener,noreferrer"); setTimeout(() => URL.revokeObjectURL(url), 60000);
   };
   return <>
-    <Button variant="outline" size="sm" disabled={busy} onClick={() => call("rental_credit_info")}><Undo2 className="h-4 w-4 mr-1" />Mietguthaben / Erstattung</Button>
+    <Button variant="outline" size={fullWidth ? "default" : "sm"} className={fullWidth ? "h-11 w-full" : undefined} disabled={busy} onClick={() => call("rental_credit_info")}><Undo2 className="h-4 w-4 mr-1" />Mietguthaben / Erstattung</Button>
     <Dialog open={open} onOpenChange={v => !busy && setOpen(v)}><DialogContent className="max-w-lg">
       <DialogHeader><DialogTitle>Mietguthaben {formatEuro((result?.amount_cents ?? 0) / 100)}</DialogTitle><DialogDescription>{inquiryId ? "Kaution und Mietguthaben bleiben getrennt. Die Schlussrechnung folgt erst nach bestätigter Erstattung." : "Kaution und Mietguthaben bleiben getrennt. Der Rabatt ist in der Rechnung bereits berücksichtigt."}</DialogDescription></DialogHeader>
       <p className="text-sm">{result?.status === "none" ? "Kein Mietguthaben in dieser Rechnung vorhanden." : result?.status === "succeeded" ? "Erstattung bestätigt" : result?.status === "pending" ? "Erstattung wird verarbeitet" : result?.status === "creating" ? "Erstattungsauftrag vorbereitet; Auszahlung noch nicht bestätigt" : "Noch nicht beauftragt"}</p>

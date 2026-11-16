@@ -26,7 +26,6 @@ import {
 import { formatEuro } from "./offerMath";
 import { depositRefundPayment, pendingDepositRefund } from "@/lib/depositRefundPayment";
 import { RentalCreditRefund } from "./RentalCreditRefund";
-import { OrderRefundOverview } from "./OrderRefundOverview";
 
 type Row = Record<string, any>;
 
@@ -38,13 +37,14 @@ const PAYOUT_LABEL: Record<string, string> = {
 };
 
 interface Props {
+  showRentalRefunds?: boolean;
   inquiry: Row;
   staffName: string;
   canMarkStripePayout: boolean;
   onDone: () => void;
 }
 
-export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout, onDone }: Props) {
+export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout, onDone, showRentalRefunds = true }: Props) {
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [settlement, setSettlement] = useState<Row | null>(null);
@@ -218,9 +218,8 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
           {new Date(settlement.settled_at).toLocaleString("de-DE", { timeZone: "Europe/Berlin" })} von {settlement.settled_by_name ?? "—"}
           {bal > 0 ? ` · ${PAYOUT_LABEL[settlement.payout_method]}${settlement.payout_status === "pending" ? " – Auszahlung offen" : settlement.payout_date ? ` am ${new Date(settlement.payout_date).toLocaleDateString("de-DE")}` : ""}` : ""}
         </p>
-        {canMarkStripePayout && <OrderRefundOverview compact inquiry={inquiry} onChanged={onDone} />}
-        {settlement.payout_status === "pending" && settlement.payout_method === "stripe" && canMarkStripePayout && <Button size="sm" onClick={() => void executeStripePayout()} disabled={busy}>{unresolved ? "Erstattungsstatus abgleichen" : "Kaution über Stripe erstatten"}</Button>}
-        {canMarkStripePayout && (invoices.length === 0 ? <RentalCreditRefund inquiryId={inquiry.id} onDone={onDone}/> : invoices.map(inv => <RentalCreditRefund key={inv.id} invoiceId={inv.id} onDone={onDone}/>))}
+        {settlement.payout_status === "pending" && settlement.payout_method === "stripe" && canMarkStripePayout && <Button className="h-11 w-full" onClick={() => void executeStripePayout()} disabled={busy}>{unresolved ? "Erstattungsstatus abgleichen" : "Kaution erstatten"}</Button>}
+        {showRentalRefunds && canMarkStripePayout && (invoices.length === 0 ? <RentalCreditRefund inquiryId={inquiry.id} onDone={onDone}/> : invoices.map(inv => <RentalCreditRefund key={inv.id} invoiceId={inv.id} onDone={onDone}/>))}
         <p className="text-xs text-muted-foreground">Korrekturen nur per Gutschrift.</p>
       </div>
     );

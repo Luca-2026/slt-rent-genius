@@ -4,7 +4,6 @@ import { DepositSettlementCard } from "./DepositSettlementCard";
 import { RentalCancellationDialog } from "./RentalCancellationDialog";
 import { OrderRefundOverview } from "./OrderRefundOverview";
 import { CreditNoteRefund } from "./CreditNoteRefund";
-import { RentalCreditRefund } from "./RentalCreditRefund";
 import { ReturnReminderActions } from "./ReturnReminderActions";
 import { ResendOfferButton } from "./ResendOfferButton";
 import { InvoicePdfButton } from "./InvoicePdfButton";
@@ -777,6 +776,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const stripeEl = (
     <>
       {inquiryType === "rental" && <StripePaymentCard
+        showRefundActions={false}
         table={table}
         inquiryId={inquiry.id}
         offerNumber={inquiry.offer_number}
@@ -832,7 +832,6 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
               </span>
               <InquiryStatusBadge status={inv.status} />
               {inquiryType === "rental" && inv.invoice_kind === "credit_note" && !["draft", "cancelled"].includes(inv.status) && <CreditNoteRefund creditId={inv.id} onChanged={() => { loadInvoices(); onChanged(); }} />}
-              {inquiryType === "rental" && inquiry.status !== "cancelled" && ["invoice", "final"].includes(inv.invoice_kind) && !["draft", "cancelled"].includes(inv.status) && <RentalCreditRefund invoiceId={inv.id} />}
               {inv.file_url && inv.invoice_kind !== "credit_note" ? <InvoicePdfButton invoiceId={inv.id} /> : inv.file_url && (
                 <a
                   href={inv.file_url}
@@ -878,7 +877,6 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             { mode: "invoice", label: "Rechnung erstellen", icon: Receipt, show: true },
             { mode: "amendment", label: "AB bearbeiten", icon: Pencil, show: inquiry.status === "accepted" && !!inquiry.offer_number },
             { mode: "order", label: "Auftragsbestätigung", icon: FileCheck2, show: layout === "page" && inquiry.status === "accepted" && !!inquiry.offer_number },
-            { mode: "deposit", label: "Kaution abrechnen / erstatten", icon: Wallet, show: inquiryType === "rental" && canManageInventory && inquiry.status !== "cancelled" },
           ] as { mode: DocMode; label: string; icon: typeof Pencil; show: boolean }[])
             .filter((b) => b.show)
             .map(({ mode, label, icon: Icon }) => (
@@ -943,6 +941,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           orderEl
         ) : docMode === "deposit" ? (
           <DepositSettlementCard
+            showRentalRefunds={false}
             inquiry={inquiry as Record<string, any>}
             staffName={actorName}
             canMarkStripePayout={canManageInventory}
@@ -1056,7 +1055,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         </aside>
         <section className="min-w-0 space-y-5 lg:col-span-2">
           {headerEl}
-          {inquiryType === "rental" && <OrderRefundOverview inquiry={inquiry as Record<string, any>} onChanged={() => { loadInvoices(); onChanged(); }} />}
+          {inquiryType === "rental" && <OrderRefundOverview inquiry={inquiry as Record<string, any>} invoiceIds={invoices.filter(inv => ["invoice", "final"].includes(inv.invoice_kind) && !["draft", "cancelled"].includes(inv.status)).map(inv => inv.id)} onChanged={() => { loadInvoices(); onChanged(); }} />}
           {draftsEl}
           {docEl}
         </section>
@@ -1069,7 +1068,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
       {inquiry.status !== "cancelled" && <OfferAcceptanceNotice inquiryId={inquiry.id} />}
       {draftsEl}
       {headerEl}
-      {inquiryType === "rental" && <OrderRefundOverview inquiry={inquiry as Record<string, any>} onChanged={() => { loadInvoices(); onChanged(); }} />}
+      {inquiryType === "rental" && <OrderRefundOverview inquiry={inquiry as Record<string, any>} invoiceIds={invoices.filter(inv => ["invoice", "final"].includes(inv.invoice_kind) && !["draft", "cancelled"].includes(inv.status)).map(inv => inv.id)} onChanged={() => { loadInvoices(); onChanged(); }} />}
       {customerEl}
       {locationEl}
       {details}
