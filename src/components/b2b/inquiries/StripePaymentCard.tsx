@@ -56,6 +56,7 @@ const REFUND_LABEL: Record<string, string> = {
 const cents = (c: number) => formatEuro(c / 100);
 
 interface Props {
+  showRefundActions?: boolean;
   table: "rental_inquiries" | "sales_inquiries";
   inquiryId: string;
   offerNumber: string | null | undefined;
@@ -68,7 +69,7 @@ interface Props {
 }
 
 /** Online-Zahlung (Stripe): Zahlungslink zum Angebot, Zahlungsstatus, Kautionserstattung. */
-export function StripePaymentCard({ table, inquiryId, offerNumber, payments, offerTotalGross, deposit = 0, cancelled = false, rentalRefundInvoiceId, onChanged }: Props) {
+export function StripePaymentCard({ table, inquiryId, offerNumber, payments, offerTotalGross, deposit = 0, cancelled = false, rentalRefundInvoiceId, onChanged, showRefundActions = true }: Props) {
   const { toast } = useToast();
   const { canManageInventory } = useStaffAccess();
   // Kautionserstattung per Stripe: alle Standortmitarbeiter, Niederlassungsleitung und Admin.
@@ -222,8 +223,8 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
             {current?.status === "active" ? "Neuen Link erstellen" : "Zahlungslink erstellen"}
           </Button>
         )}
-        {unresolved && canRefund && <Button variant="outline" className="h-11 w-full px-3 py-0" disabled={busy} onClick={syncRefund}><RotateCcw /> Erstattungsstatus abgleichen</Button>}
-        {!unresolved && paidLink && paidLink.deposit_cents > 0 && canRefund && refundable > 0 && (
+        {showRefundActions && unresolved && canRefund && <Button variant="outline" className="h-11 w-full px-3 py-0" disabled={busy} onClick={syncRefund}><RotateCcw /> Erstattungsstatus abgleichen</Button>}
+        {showRefundActions && !unresolved && paidLink && paidLink.deposit_cents > 0 && canRefund && refundable > 0 && (
           <Button className="h-11 w-full px-3 py-0" onClick={openRefund} disabled={busy || refundable <= 0}>
             <Undo2 /> Kaution erstatten
           </Button>

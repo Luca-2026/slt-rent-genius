@@ -7,6 +7,10 @@ import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { formatEuro } from "./offerMath";
 import { RotateCcw, Undo2 } from "lucide-react";
+import { DepositSettlementCard } from "./DepositSettlementCard";
+import { StripePaymentCard } from "./StripePaymentCard";
+import { RentalCreditRefund } from "./RentalCreditRefund";
+import { useStaffAccess } from "@/hooks/useStaffAccess";
 
 type Totals = { success: boolean; error?: string; execution_available: boolean; paid_cents: number; deposit_available: number; rent_available: number; deposit_used: number; rent_used: number; pending: boolean; blocked_reason?: string; can_refund_rent: boolean; requests: RequestRow[] };
 type RequestRow = { id: string; deposit_cents: number; rent_cents: number; payout_method: string; status: string; created_at: string; completed_at?: string; created_by: string };
@@ -15,7 +19,10 @@ const EVENT_LABELS: Record<string, string> = { order_cancelled: "Auftrag stornie
 const eventDetail = (event: string, d: Record<string, unknown>) => event === "deposit_settled" ? `Kautionsbetrag ${formatEuro(Number(d.balance ?? 0))} · Auszahlung siehe Kautionseintrag` : String(d.reason ?? "");
 const eur = (n: number) => formatEuro(n / 100);
 const time = (s: string) => new Date(s).toLocaleString("de-DE", { timeZone: "Europe/Berlin" });
-export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { inquiry: Record<string, any>; onChanged: () => void; compact?: boolean }) {
+export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoiceIds = [] }: { inquiry: Record<string, any>; onChanged: () => void; compact?: boolean; invoiceIds?: string[] }) {
+  const { canManageInventory, displayName } = useStaffAccess();
+  const [legacyOpen, setLegacyOpen] = useState(false);
+  const [hasSettlement, setHasSettlement] = useState(false);
   const [data, setData] = useState<Totals | null>(null);
   const [history, setHistory] = useState<HistoryRow[]>([]);
   const [error, setError] = useState("");
@@ -57,7 +64,10 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
       if (deposits.error || rentals.error || credits.error) { if (alive) setError("Erstattungshistorie nicht vollständig verfügbar."); return; }
       const refundedDeposit = (deposits.data ?? []).filter(r => r.status === "succeeded").reduce((a, r) => a + Number(r.amount_cents), 0);
       const openCents = settle.data && settle.data.payout_status === "pending" ? Math.round(Number(settle.data.balance) * 100) - Math.max(refundedDeposit, data?.deposit_used ?? 0) : 0;
-      if (alive) setOpenPayout(openCents > 0 && settle.data ? { balance: openCents / 100, method: settle.data.payout_method } : null);
+      if (alive) {
+        setHasSettlement(!!settle.data);
+        setOpenPayout(openCents > 0 && settle.data ? { balance: openCents / 100, method: settle.data.payout_method } : null);
+      }
       const names = new Map((staff.data ?? []).map(s => [s.user_id, `${s.first_name} ${s.last_name}`.trim()]));
       const actor = (id: string | null | undefined) => id ? names.get(id) ?? "Erfasser unbekannt" : "Erfasser unbekannt";
       const rows: HistoryRow[] = (events.data ?? []).map(e => ({ id: e.id, at: e.created_at, actor: actor(e.user_id), label: EVENT_LABELS[e.event] ?? "Auftragsaktion", detail: eventDetail(e.event, (e.details ?? {}) as Record<string, unknown>) }));
@@ -84,18 +94,23 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
       {!compact && <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4"><div>Erhalten<strong className="block">{eur(data.paid_cents)}</strong></div><div>Kaution bereits beauftragt / erstattet<strong className="block">{eur(data.deposit_used)}</strong></div><div>Miete bereits beauftragt / erstattet<strong className="block">{eur(data.rent_used)}</strong></div><div>Noch zu erstatten<strong className="block">{eur(total)}</strong></div></div>}
       {!total && !data.pending && data.paid_cents > 0 && data.deposit_used+data.rent_used >= data.paid_cents && <p className="font-semibold text-primary">Vollständig erstattet · {eur(data.paid_cents)} · offen 0,00 €</p>}
       {data.blocked_reason && <p className="text-sm text-muted-foreground">{data.blocked_reason}</p>}
-      {!data.execution_available && total > 0 && <p className="text-sm text-muted-foreground">Gemeinsame Auszahlung noch nicht freigegeben. Bestehende Erstattungswege bleiben im Auftrag verfügbar.</p>}
       <div className="flex flex-wrap gap-2">
-        {!data.pending && !data.blocked_reason && total > 0 && <Button onClick={start} disabled={busy}><Undo2 className="mr-2 h-4 w-4"/>Erstattung</Button>}
+        {!data.pending && canManageInventory && (total > 0 || openPayout || !hasSettlement) && <Button className="h-11 w-full sm:w-64" onClick={() => data.execution_available && !data.blocked_reason ? start() : setLegacyOpen(true)} disabled={busy}><Undo2 className="mr-2 h-4 w-4"/>Erstattung bearbeiten</Button>}
         {data.pending && <><p className="text-sm">Erstattung in Bearbeitung – keine weitere Auszahlung starten.</p><Button variant="outline" disabled={busy} onClick={() => void call("order_refund_sync")}><RotateCcw className="mr-2 h-4 w-4"/>Status prüfen</Button></>}
         {resume && <Button variant="outline" disabled={busy} onClick={() => void call("order_refund_execute", { request_id: resume.id, deposit_cents: resume.deposit_cents, rent_cents: resume.rent_cents }).then(onChanged)}>Gespeicherten Versuch fortsetzen</Button>}
         {manual && <><Input aria-label="Auszahlungsnachweis" value={reference} onChange={e => setReference(e.target.value)} placeholder="Auszahlungsnachweis"/><Button disabled={busy || reference.trim().length<3} onClick={() => void call("order_refund_confirm_manual", { request_id: manual.id, reference }).then(onChanged)}>Tatsächliche Auszahlung bestätigen</Button></>}
       </div>
     </>}
-    {openPayout && <p role="alert" className="rounded-md border border-destructive p-2 text-sm font-semibold text-destructive">Kaution abgerechnet, aber {formatEuro(openPayout.balance)} noch nicht ausgezahlt{openPayout.method === "stripe" ? " – unter „Kaution“ jetzt „Kaution über Stripe erstatten“ ausführen." : "."}</p>}
+    {openPayout && <p role="alert" className="rounded-md border border-destructive p-2 text-sm font-semibold text-destructive">Kaution abgerechnet, aber {formatEuro(openPayout.balance)} noch nicht ausgezahlt.</p>}
     {!data && !error && <p role="status" className="text-sm">Zahlungsstand wird geprüft …</p>}
     {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
     {!compact && <><h4 className="text-sm font-semibold">Auftragshistorie</h4><ol className="max-h-64 space-y-3 overflow-y-auto text-sm">{history.map(r => <li key={r.id} className="border-l-2 border-border pl-3"><strong>{r.label}</strong><div className="text-xs text-muted-foreground">{time(r.at)} · {r.actor}</div>{r.detail && <p className="text-xs">{r.detail}</p>}</li>)}</ol></>}
+    <Dialog open={legacyOpen} onOpenChange={setLegacyOpen}><DialogContent className="max-h-[85dvh] overflow-y-auto sm:max-w-xl">
+      <DialogHeader><DialogTitle>Erstattung bearbeiten</DialogTitle><DialogDescription>Auftrag {inquiry.order_code ? `#${inquiry.order_code}` : ""} · Kaution und Mietguthaben auf das ursprüngliche Zahlungsmittel.</DialogDescription></DialogHeader>
+      {inquiry.status !== "cancelled" && <DepositSettlementCard inquiry={inquiry} staffName={displayName} canMarkStripePayout={canManageInventory} showRentalRefunds={false} onDone={() => { void call(); onChanged(); }} />}
+      {(!hasSettlement || inquiry.status === "cancelled") && <StripePaymentCard table="rental_inquiries" inquiryId={inquiry.id} offerNumber={inquiry.offer_number} payments={inquiry.payments} offerTotalGross={inquiry.offer_total_gross} deposit={Number(inquiry.offer_payload?.deposit) || 0} cancelled={inquiry.status === "cancelled"} onChanged={() => { void call(); onChanged(); }} />}
+      {(data?.rent_available ?? 0) > 0 && <div className="space-y-2"><h4 className="text-sm font-semibold">Mietguthaben</h4>{invoiceIds.length ? invoiceIds.map(id => <RentalCreditRefund key={id} invoiceId={id} fullWidth onDone={() => { void call(); onChanged(); }} />) : <RentalCreditRefund inquiryId={inquiry.id} fullWidth onDone={() => { void call(); onChanged(); }} />}</div>}
+    </DialogContent></Dialog>
     <Dialog open={open} onOpenChange={v => !busy && setOpen(v)}><DialogContent><DialogHeader><DialogTitle>Erstattung bestätigen</DialogTitle><DialogDescription>Rückzahlung auf das ursprüngliche Zahlungsmittel.</DialogDescription></DialogHeader>
       <div><Label htmlFor="order-deposit-refund">Kaution (€), maximal {eur(data?.deposit_available ?? 0)}</Label><Input id="order-deposit-refund" inputMode="decimal" value={deposit} onChange={e => setDeposit(e.target.value)}/></div>
       <div><Label htmlFor="order-rent-refund">Mietguthaben (€), maximal {eur(data?.rent_available ?? 0)}</Label><Input id="order-rent-refund" inputMode="decimal" disabled={!data?.can_refund_rent} value={rent} onChange={e => setRent(e.target.value)}/></div>

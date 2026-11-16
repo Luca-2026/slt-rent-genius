@@ -1,6 +1,6 @@
 # Inquiries
 - Return reminder history remains readable before handover; previews and both send stages require customer-signed delivery evidence in the service and claim RPC, preserving existing role/location guards.
-- OrderRefundOverview shows separate deposit/rent balances and recorded actors above documents; combined payouts remain live-gated until isolated verification, preserving existing protected payout routes in the meantime.
+- OrderRefundOverview owns the rental order's central refund entry and history; sidebar Stripe and invoice rows do not duplicate payout actions. Its dialog reuses protected deposit/rental routes while combined payouts remain live-gated; preparation/settlement never implies an executed payout.
 - RentalCancellationDialog persists a server-validated fee snapshot before invoice preview/send or pre-invoice rental refund; the refund prepares an unnumbered server preview basis and shares existing payment caps. Individual fees replace the AGB fee; existing-invoice cases require explicit correction to avoid duplicate claims.
 - Event tariff amounts are flat per article, with persisted inline period decisions blocking dispatch; normalization and reopening retain event basis so quantities never multiply calendar days again.
  - Weekly tariffs use elapsed 24-hour blocks with full started weeks and serialize as one period-labelled flat line; manual period/unit changes require an explicit price decision, and four-week installments use an additive day interval without changing historical monthly schedules.
