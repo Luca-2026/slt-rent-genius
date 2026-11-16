@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { hasCustomerSignedHandover } from "@/lib/inquiryStatus";
+import { customerSignedReservationIds } from "@/lib/inquiryStatus";
 
 import { supabase } from "@/integrations/supabase/client";
 import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
@@ -157,6 +157,9 @@ export function AdminRentalsTab({
   }, [reservations]);
 
   const groups = useMemo(() => groupReservations(reservations), [reservations]);
+  const customerSignedReservations = useMemo(() => customerSignedReservationIds(
+    deliveryNotes.map((d) => ({ ...d, status: d.status ?? null })), offers,
+  ), [deliveryNotes, offers]);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -194,10 +197,7 @@ export function AdminRentalsTab({
     if (res.status === "completed") {
       return <Badge variant="secondary" className="text-xs whitespace-nowrap">Beendet</Badge>;
     }
-    const offerIds = offers.filter((o) => o.reservation_id === res.id).map((o) => o.id);
-    const signed = deliveryNotes.some((d) =>
-      (d.reservation_id === res.id || (!!d.offer_id && offerIds.includes(d.offer_id))) &&
-      hasCustomerSignedHandover({ status: d.status ?? null }));
+    const signed = customerSignedReservations.has(res.id);
     if ((res.status === "confirmed" || res.status === "active") && !signed) {
       return <Badge variant="outline" className="text-xs whitespace-normal">Bestätigt – Mietbeginn steht bevor</Badge>;
     }

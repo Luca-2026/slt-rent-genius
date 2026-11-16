@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { customerSignedReservationIds } from "@/lib/inquiryStatus";
 import {
   Package,
   Receipt,
@@ -131,17 +132,14 @@ export function DashboardKpis({ profileId, creditLimit, usedCredit }: DashboardK
         .select("id", { count: "exact", head: true })
         .eq("b2b_profile_id", profileId)
         .eq("status", "pending_customer_signature"),
-      supabase.from("b2b_delivery_notes").select("reservation_id,offer_id").eq("b2b_profile_id", profileId).eq("status", "signed"),
+      supabase.from("b2b_delivery_notes").select("reservation_id,offer_id,status").eq("b2b_profile_id", profileId).eq("status", "signed"),
       supabase.from("b2b_offers").select("id,reservation_id").eq("b2b_profile_id", profileId),
     ]);
 
     const openInvoicesAmount =
       openInvRes.data?.reduce((sum, row: { gross_amount: number | null }) => sum + (row.gross_amount ?? 0), 0) ?? 0;
 
-    const signedReservations = new Set((signedDnRes.data ?? []).flatMap((d) => {
-      const reservation = d.reservation_id ?? rentalOffersRes.data?.find((o) => o.id === d.offer_id)?.reservation_id;
-      return reservation ? [reservation] : [];
-    }));
+    const signedReservations = customerSignedReservationIds(signedDnRes.data ?? [], rentalOffersRes.data ?? []);
     setKpis({
       activeRentals: (activeRes.data ?? []).filter((r) => signedReservations.has(r.id)).length,
       upcomingReturns: upcomingRes.count ?? 0,
