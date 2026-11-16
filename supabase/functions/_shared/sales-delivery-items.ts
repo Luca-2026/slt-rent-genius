@@ -1,0 +1,12 @@
+import { offerItemText } from "./offer-item-text.ts";
+export function salesDeliveryItems(payload: { items?: unknown }) {
+  if (!Array.isArray(payload.items)) throw new Error("Bestätigte Verkaufspositionen fehlen.");
+  const items = payload.items.filter(i => i && typeof i === "object" && i.optional !== true && i.line_kind !== "service").map(i => {
+    const text = offerItemText(i);
+    const quantity = Number(i.articles ?? i.quantity);
+    if (!text.product_name || !Number.isFinite(quantity) || quantity <= 0) throw new Error("Ungültige Verkaufsposition.");
+    return { name: String(text.product_name), description: String(text.description ?? ""), quantity, unit: String(i.unit || "Stück") };
+  });
+  if (!items.length) throw new Error("Keine Verkaufsware im bestätigten Auftrag.");
+  return items;
+}
