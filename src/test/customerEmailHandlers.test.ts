@@ -22,6 +22,28 @@ function handler(file: string, dependencies: Record<string, unknown>) {
 }
 
 describe("customer mail suppression in real edge handlers (no money/mail)", () => {
+  it.each(["rental_inquiries", "sales_inquiries"])("stores online acceptance in %s without sending the unnecessary team email", async (table) => {
+    const fetch = vi.fn();
+    const updates: Record<string, unknown>[] = [];
+    const inquiry = { id: "order", status: "offer_sent", offer_number: "ANG-TEST", customer_email: "customer@example.test", location: "bonn", offer_payload: { payment_terms: "net_14" } };
+    const link = { id: "link", inquiry_id: "order", inquiry_table: table, status: "active", offer_number: "ANG-TEST", gross_amount: 114.35 };
+    const service = { rpc: async (name: string) => ({ data: name === "check_public_rate_limit" ? true : null }),
+      from: (name: string) => {
+        let updating = false;
+        const result = () => ({ data: updating ? { id: "link" } : name === "offer_acceptance_links" ? link : inquiry });
+        const q = { select: () => q, eq: () => q, update: (patch: Record<string, unknown>) => { updating = true; updates.push(patch); return q; }, maybeSingle: async () => result(), then: (resolve: (v: unknown) => unknown) => Promise.resolve(result()).then(resolve) };
+        return q;
+      } };
+    const run = handler("offer-accept", { createClient: () => service, allowsBindingOffer: () => true,
+      LOCATION_CONTACTS: { bonn: { name: "Bonn", email: "team@example.test", phone: "" } }, resolveLocationKey: () => "bonn", isPrepayTerms: () => false,
+      shouldSendCustomerEmail, operationalEmailRecipient: (_: string, email: string) => email,
+      documentEmailRecipients: (email: string) => ({ to: [email] }), codedSubject: async (_: unknown, subject: string) => subject, fetch });
+    const response = await run(new Request("https://local.test", { method: "POST", body: JSON.stringify({ action: "accept", token: "isolated-token", signer_name: "Customer", signature_data: "data:image/png;base64,AA==", agb_accepted: true, binding_accepted: true }) }));
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({ success: true, status: "accepted" });
+    expect(updates).toContainEqual(expect.objectContaining({ status: "accepted", signer_name: "Customer", accepted_channel: "online", agb_accepted: true }));
+    expect(fetch).not.toHaveBeenCalled();
+  });
   it("completes a credit refund without an extra customer email", async () => {
     const fetch = vi.fn();
     const creditRefund = vi.fn(async () => ({ success: true, status: "succeeded", amount_cents: 4000 }));
