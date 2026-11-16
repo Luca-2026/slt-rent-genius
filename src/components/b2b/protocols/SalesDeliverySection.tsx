@@ -20,7 +20,7 @@ export function SalesDeliverySection({inquiryId,confirmed}:{inquiryId:string;con
  const [notes,setNotes]=useState<Note[]>([]),[busy,setBusy]=useState(false),[error,setError]=useState("");
  const [mode,setMode]=useState<"create"|"digital"|"paper"|null>(null),[selected,setSelected]=useState<Note|null>(null);
  const [name,setName]=useState(""),[comment,setComment]=useState(""),[signature,setSignature]=useState<string|null>(null),[checked,setChecked]=useState(false),[file,setFile]=useState<File|null>(null),[receivedDate,setReceivedDate]=useState("");
- const [requestId,setRequestId]=useState(()=>crypto.randomUUID());
+ const [requestId,setRequestId]=useState<string>(()=>crypto.randomUUID());
  const draftKey=user&&mode?`sales-delivery:${user.id}:${inquiryId}:${selected?.id??"new"}:${mode}`:null;
  useEffect(()=>{if(!ready||!draftKey)return;void writeProtocolDraft<Draft>(draftKey,{name,comment,signature,checked,file,receivedDate,requestId}).catch(()=>toast.error("Entwurf konnte auf diesem Gerät nicht gespeichert werden."));},[ready,draftKey,name,comment,signature,checked,file,receivedDate,requestId]);
  const load=async()=>{const result=await supabase.from("sales_delivery_notes").select("*").eq("sales_inquiry_id",inquiryId).order("created_at",{ascending:false});if(result.error){setError("Lieferscheine konnten nicht geladen werden.");return;}setNotes(result.data);setError("");};
