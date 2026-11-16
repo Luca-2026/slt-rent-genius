@@ -1,4 +1,5 @@
 # Protocol rules
+- SalesDeliverySection uses sales-delivery-note for immutable confirmed-sale snapshots and separate digital/paper receipt evidence; it never invokes rental handover, allocations, pricing or invoice status changes.
 - Signed handovers bind current offers and allocate inventory atomically through the delivery-note trigger; automatic AB dispatch reuses the existing sender with persisted signature evidence and provider idempotency. Document actions include protocols without opening the position editor.
 - Protocol dialogs use exactly one scroll container (the dialog itself; step list sticky, footer sticky) so mouse wheel, touchpad and touch scroll everywhere; never nest a height-limited or overscroll-contained region inside, it traps scrolling.
 - Protokollentwürfe je Mitarbeiter, Auftrag und Art mit Foto-Dateien in IndexedDB sichern und erst nach erfolgreichem Abschluss löschen – mobile Kamera und Browser-Neustart dürfen keine Erfassung vernichten.
