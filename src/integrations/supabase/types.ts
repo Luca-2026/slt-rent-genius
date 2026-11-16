@@ -5641,6 +5641,8 @@ export type Database = {
           permit_path: string | null
           permit_valid_from: string | null
           permit_valid_until: string | null
+          prepared_at: string | null
+          prepared_by: string | null
           quantity: number
           request_id: string
           snapshot: Json
@@ -5672,6 +5674,8 @@ export type Database = {
           permit_path?: string | null
           permit_valid_from?: string | null
           permit_valid_until?: string | null
+          prepared_at?: string | null
+          prepared_by?: string | null
           quantity: number
           request_id: string
           snapshot: Json
@@ -5703,6 +5707,8 @@ export type Database = {
           permit_path?: string | null
           permit_valid_from?: string | null
           permit_valid_until?: string | null
+          prepared_at?: string | null
+          prepared_by?: string | null
           quantity?: number
           request_id?: string
           snapshot?: Json
@@ -7420,6 +7426,48 @@ export type Database = {
           _payload: Json
         }
         Returns: Json
+      }
+      set_sign_booking_prepared: {
+        Args: { _booking: string; _expected: string; _prepared: boolean }
+        Returns: {
+          cancelled_at: string | null
+          confirmation_file_path: string | null
+          confirmation_sent_at: string | null
+          confirmed_at: string | null
+          created_at: string
+          deposit_cents: number
+          end_date: string
+          expires_at: string
+          gross_cents: number
+          id: string
+          inquiry_id: string
+          location: string
+          package: string
+          permit_issued_on: string | null
+          permit_mode: string | null
+          permit_path: string | null
+          permit_valid_from: string | null
+          permit_valid_until: string | null
+          prepared_at: string | null
+          prepared_by: string | null
+          quantity: number
+          request_id: string
+          snapshot: Json
+          staff_notified_at: string | null
+          start_date: string
+          status: string
+          terms_accepted_at: string | null
+          terms_document_hash: string | null
+          terms_version: string | null
+          token: string
+          total_cents: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "sign_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       settle_deposit: {
         Args: {
