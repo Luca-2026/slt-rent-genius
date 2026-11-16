@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { AnimatedSection } from "@/components/ui/animated-section";
 import { ArrowRight, Tag, Package } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getUsedMachineHeading } from "@/data/usedMachineDisplayNames";
 
 function formatPrice(price: number | null, onRequest: boolean, fallback: string) {
   if (onRequest || !price) return fallback;
@@ -116,7 +117,7 @@ export function UsedMachinesSlider() {
                     {m.manufacturer}
                   </p>
                   <p className="font-semibold text-headline text-sm leading-tight line-clamp-2 min-h-[2.5rem] mb-1 group-hover:text-accent transition-colors">
-                    {m.model}
+                    {getUsedMachineHeading(m)}
                   </p>
                   <p className="text-xs text-muted-foreground flex-1">
                     {[

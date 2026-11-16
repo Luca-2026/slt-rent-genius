@@ -17,7 +17,7 @@ import { FinancingCalculator, type FinancingSelection } from "@/components/sales
 import { financingEligible } from "@/lib/financing";
 import { FinancingTeaser } from "@/components/sales/FinancingTeaser";
 import { LazyVideo } from "@/components/used/LazyVideo";
-import { getUsedMachineDisplayModel } from "@/data/usedMachineDisplayNames";
+import { getUsedMachineHeading, getUsedMachineName } from "@/data/usedMachineDisplayNames";
 
 const locationLabels: Record<string, string> = {
   krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr",
@@ -89,10 +89,11 @@ export default function SLTUsedDetail() {
   const showroomLocs: string[] = showroomLocsForData;
   const showroomNames = showroomLocs.map((l: string) => locationLabels[l] || l).join(" oder ");
 
-  const displayModel = getUsedMachineDisplayModel(machine.model);
+  const displayModel = getUsedMachineHeading(machine);
+  const displayName = getUsedMachineName(machine);
 
-  const title = `${machine.manufacturer} ${displayModel} gebraucht kaufen | SLT Used`;
-  const description = `${machine.manufacturer} ${displayModel}${machine.year ? `, Bj. ${machine.year}` : ""}${machine.hours != null ? `, ${machine.hours} Bh` : ""} – geprüfte Gebrauchtmaschine aus dem SLT-Mietpark${machine.location ? `, Standort ${locationLabels[machine.location] || machine.location}` : ""}. ${priceNet ? `Sonderpreis ${formatPrice(priceNet, false)} netto.` : "Preis auf Anfrage."}`;
+  const title = `${displayName} gebraucht kaufen | SLT Used`;
+  const description = `${displayName}${machine.year ? `, Bj. ${machine.year}` : ""}${machine.hours != null ? `, ${machine.hours} Bh` : ""} – geprüfte Gebrauchtmaschine aus dem SLT-Mietpark${machine.location ? `, Standort ${locationLabels[machine.location] || machine.location}` : ""}. ${priceNet ? `Sonderpreis ${formatPrice(priceNet, false)} netto.` : "Preis auf Anfrage."}`;
   const seoKeywords: string[] = Array.isArray(content.seoKeywords) ? content.seoKeywords : [];
 
   // ---- JSON-LD: Product + Offer + BreadcrumbList ----
@@ -170,7 +171,7 @@ export default function SLTUsedDetail() {
   const productJsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: `${machine.manufacturer} ${displayModel}`,
+    name: displayName,
     description: machine.description || description,
     sku: machine.reference_number || machine.id,
     ...(machine.reference_number ? { mpn: machine.reference_number } : {}),
@@ -191,7 +192,7 @@ export default function SLTUsedDetail() {
       { "@type": "ListItem", position: 1, name: "Start", item: `${BASE_URL}/` },
       { "@type": "ListItem", position: 2, name: "Verkauf", item: `${BASE_URL}/verkauf` },
       { "@type": "ListItem", position: 3, name: "Gebrauchtmaschinen", item: `${BASE_URL}/verkauf/gebrauchtmaschinen` },
-      { "@type": "ListItem", position: 4, name: `${machine.manufacturer} ${displayModel}`, item: `${BASE_URL}${canonicalPath}` },
+      { "@type": "ListItem", position: 4, name: displayName, item: `${BASE_URL}${canonicalPath}` },
     ],
   };
 
