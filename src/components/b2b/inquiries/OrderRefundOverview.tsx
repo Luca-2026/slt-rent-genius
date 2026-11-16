@@ -48,7 +48,6 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
         supabase.from("inquiry_invoices").select("id,invoice_number,invoice_kind,created_at").eq("rental_inquiry_id", inquiry.id),
         supabase.from("deposit_settlements").select("balance,payout_method,payout_status").eq("rental_inquiry_id", inquiry.id).maybeSingle(),
       ]);
-      if (alive) setOpenPayout(settle.data && settle.data.payout_status === "pending" && Number(settle.data.balance) > 0 ? { balance: Number(settle.data.balance), method: settle.data.payout_method } : null);
       if ([events.error, links.error, basis.error, staff.error, invoices.error].some(Boolean)) { if (alive) setError("Historie konnte nicht vollständig geladen werden."); return; }
       const [deposits, rentals, credits] = await Promise.all([
         links.data?.length ? supabase.from("deposit_refunds").select("*").in("link_id", links.data.map(l => l.id)) : Promise.resolve({ data: [], error: null }),
@@ -56,6 +55,9 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
         invoices.data?.length ? supabase.from("credit_note_refunds").select("*").in("credit_note_id", invoices.data.map(i => i.id)) : Promise.resolve({ data: [], error: null }),
       ]);
       if (deposits.error || rentals.error || credits.error) { if (alive) setError("Erstattungshistorie nicht vollständig verfügbar."); return; }
+      const refundedDeposit = (deposits.data ?? []).filter(r => r.status === "succeeded").reduce((a, r) => a + Number(r.amount_cents), 0) + (data?.deposit_used ?? 0);
+      const openCents = settle.data && settle.data.payout_status === "pending" ? Math.round(Number(settle.data.balance) * 100) - refundedDeposit : 0;
+      if (alive) setOpenPayout(openCents > 0 && settle.data ? { balance: openCents / 100, method: settle.data.payout_method } : null);
       const names = new Map((staff.data ?? []).map(s => [s.user_id, `${s.first_name} ${s.last_name}`.trim()]));
       const actor = (id: string | null | undefined) => id ? names.get(id) ?? "Erfasser unbekannt" : "Erfasser unbekannt";
       const rows: HistoryRow[] = (events.data ?? []).map(e => ({ id: e.id, at: e.created_at, actor: actor(e.user_id), label: EVENT_LABELS[e.event] ?? "Auftragsaktion", detail: eventDetail(e.event, (e.details ?? {}) as Record<string, unknown>) }));
