@@ -4,7 +4,7 @@ import { BellRing, CheckCircle2, ChevronDown, ChevronRight, ChevronUp } from "lu
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
-import { hasRentalEnded, needsRentalCloseout, rentalCloseoutTasks, isAwaitingOfferConfirmation, filterStaffConfirmationTasks, isOperationalProtocolComplete } from "@/lib/dashboardMetrics";
+import { needsRentalCloseout, rentalCloseoutTasks, isAwaitingOfferConfirmation, filterStaffConfirmationTasks, isOperationalProtocolComplete } from "@/lib/dashboardMetrics";
 import { isPaymentOverdue, paymentDeadline } from "../../../../supabase/functions/_shared/payment-followup";
 
 import { effectiveEnd } from "@/lib/calendarEntries";

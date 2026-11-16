@@ -194,7 +194,7 @@ export function AdminRentalsTab({
     if (res.status === "pending") {
       return <Badge variant="outline" className="border-amber-500 text-amber-700 bg-amber-50 text-xs whitespace-nowrap">Offen</Badge>;
     }
-    if (res.status === "completed") {
+    if (res.status === "completed" || hasReturnProtocol(res.id)) {
       return <Badge variant="secondary" className="text-xs whitespace-nowrap">Beendet</Badge>;
     }
     const signed = customerSignedReservations.has(res.id);
