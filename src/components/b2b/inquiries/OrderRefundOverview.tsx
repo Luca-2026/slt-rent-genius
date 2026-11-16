@@ -40,7 +40,7 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
   useEffect(() => {
     let alive = true;
     void (async () => {
-      const [events, links, basis, staff, invoices] = await Promise.all([
+      const [events, links, basis, staff, invoices, settle] = await Promise.all([
         supabase.from("rental_inquiry_events").select("id,event,details,user_id,created_at").eq("rental_inquiry_id", inquiry.id).order("created_at", { ascending: false }).limit(100),
         supabase.from("offer_payment_links").select("id").eq("inquiry_id", inquiry.id).eq("inquiry_table", "rental_inquiries"),
         supabase.from("rental_refund_bases").select("id").eq("inquiry_id", inquiry.id).maybeSingle(),
@@ -48,7 +48,7 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
         supabase.from("inquiry_invoices").select("id,invoice_number,invoice_kind,created_at").eq("rental_inquiry_id", inquiry.id),
         supabase.from("deposit_settlements").select("balance,payout_method,payout_status").eq("rental_inquiry_id", inquiry.id).maybeSingle(),
       ]);
-      const settlement = arguments.length >= 0 ? undefined : undefined;
+      if (alive) setOpenPayout(settle.data && settle.data.payout_status === "pending" && Number(settle.data.balance) > 0 ? { balance: Number(settle.data.balance), method: settle.data.payout_method } : null);
       if ([events.error, links.error, basis.error, staff.error, invoices.error].some(Boolean)) { if (alive) setError("Historie konnte nicht vollständig geladen werden."); return; }
       const [deposits, rentals, credits] = await Promise.all([
         links.data?.length ? supabase.from("deposit_refunds").select("*").in("link_id", links.data.map(l => l.id)) : Promise.resolve({ data: [], error: null }),
@@ -90,6 +90,7 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
         {manual && <><Input aria-label="Auszahlungsnachweis" value={reference} onChange={e => setReference(e.target.value)} placeholder="Auszahlungsnachweis"/><Button disabled={busy || reference.trim().length<3} onClick={() => void call("order_refund_confirm_manual", { request_id: manual.id, reference }).then(onChanged)}>Tatsächliche Auszahlung bestätigen</Button></>}
       </div>
     </>}
+    {openPayout && <p role="alert" className="rounded-md border border-destructive p-2 text-sm font-semibold text-destructive">Kaution abgerechnet, aber {formatEuro(openPayout.balance)} noch nicht ausgezahlt{openPayout.method === "stripe" ? " – unter „Kaution“ jetzt „Kaution über Stripe erstatten“ ausführen." : "."}</p>}
     {!data && !error && <p role="status" className="text-sm">Zahlungsstand wird geprüft …</p>}
     {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
     {!compact && <><h4 className="text-sm font-semibold">Auftragshistorie</h4><ol className="max-h-64 space-y-3 overflow-y-auto text-sm">{history.map(r => <li key={r.id} className="border-l-2 border-border pl-3"><strong>{r.label}</strong><div className="text-xs text-muted-foreground">{time(r.at)} · {r.actor}</div>{r.detail && <p className="text-xs">{r.detail}</p>}</li>)}</ol></>}
