@@ -143,7 +143,7 @@ export function ReservationRow({
       </TableCell>
       <TableCell className="text-right">
         <div className="flex items-center gap-1.5 justify-end">
-          {r.status === "confirmed" && (
+          {r.status === "active" && (
             <Button
               size="sm"
               variant="outline"
@@ -234,7 +234,7 @@ export function ReservationMobileCard({
           />
         </div>
       )}
-      {r.status === "confirmed" && (
+      {r.status === "active" && (
         <Button
           size="sm"
           variant="outline"

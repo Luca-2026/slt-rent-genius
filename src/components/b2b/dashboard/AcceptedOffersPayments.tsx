@@ -4,11 +4,12 @@ import { BellRing, CheckCircle2, ChevronDown, ChevronRight, ChevronUp } from "lu
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
-import { hasRentalEnded, needsRentalCloseout, rentalCloseoutTasks, isAwaitingOfferConfirmation, filterStaffConfirmationTasks, isOperationalProtocolComplete } from "@/lib/dashboardMetrics";
+import { needsRentalCloseout, rentalCloseoutTasks, isAwaitingOfferConfirmation, filterStaffConfirmationTasks, isOperationalProtocolComplete } from "@/lib/dashboardMetrics";
 import { isPaymentOverdue, paymentDeadline } from "../../../../supabase/functions/_shared/payment-followup";
 
 import { effectiveEnd } from "@/lib/calendarEntries";
 import { Button } from "@/components/ui/button";
+import { hasCustomerSignedHandover } from "@/lib/inquiryStatus";
 
 type Row = {
   ended: boolean;
@@ -60,7 +61,7 @@ export function AcceptedOffersPayments({ staffLocation, includeUnassigned = fals
       const list = filterStaffConfirmationTasks([
         ...(rent.data ?? []).map((i) => ({ ...i, table: "rental_inquiries" })),
         ...(sale.data ?? []).map((i) => ({ ...i, table: "sales_inquiries" })),
-      ], staffLocation, includeUnassigned).filter((i) => isAwaitingOfferConfirmation(i, now) || (i.table === "rental_inquiries" && needsRentalCloseout(i, now)));
+      ], staffLocation, includeUnassigned);
       if (!list.length) { if (active) { setRows([]); setError(false); } return; }
       const ids = list.map((i) => i.id);
       const [acc, links, delivery, returns, invoices] = await Promise.all([
@@ -74,7 +75,12 @@ export function AcceptedOffersPayments({ staffLocation, includeUnassigned = fals
       const protocolsFailed = !!(delivery.error || returns.error || invoices.error);
       const out: Row[] = [];
       for (const i of list) {
-        const ended = i.table === "rental_inquiries" && hasRentalEnded(i, now);
+        const phase = { ...i,
+          handed_over: (delivery.data ?? []).some((p) => p.rental_inquiry_id === i.id && hasCustomerSignedHandover(p)),
+          returned: (returns.data ?? []).some((p) => p.rental_inquiry_id === i.id && isOperationalProtocolComplete(p.status)),
+        };
+        const ended = i.table === "rental_inquiries" && needsRentalCloseout(phase, now);
+        if (!ended && !isAwaitingOfferConfirmation(phase, now)) continue;
         const tasks = ended ? rentalCloseoutTasks({
           deliverySigned: ("closed_manually_at" in i && !!i.closed_manually_at) || (delivery.data ?? []).some((p) => p.rental_inquiry_id === i.id && isOperationalProtocolComplete(p.status)),
           returnSigned: ("closed_manually_at" in i && !!i.closed_manually_at) || (returns.data ?? []).some((p) => p.rental_inquiry_id === i.id && isOperationalProtocolComplete(p.status)),

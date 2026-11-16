@@ -1,4 +1,4 @@
-import { isRunningRental, isReturnOverdue } from "@/lib/inquiryStatus";
+import { hasCustomerSignedHandover, isRunningRental, isReturnOverdue } from "@/lib/inquiryStatus";
 import { loadAllSearchRows } from "@/lib/staffSearch";
 import type { Tables } from "@/integrations/supabase/types";
 import { useRentalProtocolStatus } from "@/hooks/useRentalProtocolStatus";
@@ -241,7 +241,7 @@ export default function StaffHome() {
   const confirmedAll = inquiries.filter((r) => (r.status === "accepted" || r.status === "done") && r.order_confirmed_at);
   // Manuell abgeschlossene Aufträge sind erledigt: keine Prüf-, Überfällig- oder Laufend-Hinweise mehr.
   const confirmed = confirmedAll.filter((r) => !(r as { closed_manually_at?: string | null }).closed_manually_at);
-  const signedDelivery = new Set([...protocols.byInquiry].filter(([, s]) => s.delivery).map(([id]) => id));
+  const signedDelivery = new Set([...protocols.byInquiry].filter(([, s]) => hasCustomerSignedHandover(s.delivery)).map(([id]) => id));
   const signedReturn = new Set([...[...protocols.byInquiry].filter(([, s]) => s.ret).map(([id]) => id), ...confirmedAll.filter((r) => (r as { closed_manually_at?: string | null }).closed_manually_at).map((r) => r.id)]);
   const todayEntries = buildCalendarEntries(confirmedAll, signedDelivery, signedReturn)
     .filter((e) => e.date === today)
@@ -252,10 +252,10 @@ export default function StaffHome() {
   const overdueReturns = filterByDayLocation(confirmed, activeDayLocation)
     .filter((r) => {
       const st = protocols.byInquiry.get(r.id);
-      return !st?.ret && isReturnOverdue({ ...r, handed_over: !!st?.delivery }, today);
+      return !st?.ret && isReturnOverdue({ ...r, handed_over: hasCustomerSignedHandover(st?.delivery) }, today);
     })
     .sort((a, b) => (effectiveEnd(a) ?? "").localeCompare(effectiveEnd(b) ?? ""));
-  const running = confirmed.filter((r) => isRunningRental({ ...r, handed_over: protocols.byInquiry.has(r.id) && !!protocols.byInquiry.get(r.id)?.delivery }, today)).length;
+  const running = confirmed.filter((r) => isRunningRental({ ...r, handed_over: hasCustomerSignedHandover(protocols.byInquiry.get(r.id)?.delivery) }, today)).length;
   const awaitingConfirmation = filterStaffConfirmationTasks([...inquiries, ...salesConfirmationRows], staffProfile?.location, isAdmin).filter((r) => isAwaitingOfferConfirmation(r, now)).length;
   const unprocessed = inquiries.filter(isUnprocessedInquiry).length;
   const customerRequests = profiles.flatMap((p) => ([

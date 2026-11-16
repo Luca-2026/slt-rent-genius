@@ -1,4 +1,5 @@
 # Shared helper rules
+- rental-phase owns direct/offer-linked customer signature evidence and legacy reservation running eligibility for browser, chat and return validation, avoiding divergent phase rules.
 - Sign direct booking shares SIGN_LOCATIONS across cart and request validation; reservation/calendar checks use published article locations and separate quantities, preventing cross-location stock pooling.
 - Rental cancellations use evidenced AGB estimates or explicit individual fees with staff-confirmed tax treatment; immutable snapshots feed the existing invoice/refund paths, while existing invoices and performed handovers require separate correction rather than duplicate claims.
 - Stale staff payment snapshots return PT409 instead of 40001; optimistic validation must reject once, not trigger database API serialization retry storms.

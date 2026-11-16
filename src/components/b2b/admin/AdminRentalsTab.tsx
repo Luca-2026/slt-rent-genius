@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { customerSignedReservationIds } from "@/lib/inquiryStatus";
 
 import { supabase } from "@/integrations/supabase/client";
 import { openInvoiceInNewWindow } from "@/utils/invoiceViewer";
@@ -59,6 +60,7 @@ interface DocumentInfo {
   number: string;
   reservation_id: string | null;
   offer_id?: string | null;
+  status?: string | null;
 }
 
 interface RentalGroup {
@@ -139,12 +141,12 @@ export function AdminRentalsTab({
   useEffect(() => {
     const fetchDocs = async () => {
       const [dnRes, rpRes] = await Promise.all([
-        supabase.from("b2b_delivery_notes").select("id, file_url, delivery_note_number, reservation_id, offer_id"),
+        supabase.from("b2b_delivery_notes").select("id, file_url, delivery_note_number, reservation_id, offer_id, status"),
         supabase.from("b2b_return_protocols").select("id, file_url, return_protocol_number, reservation_id"),
       ]);
       if (dnRes.data) setDeliveryNotes(dnRes.data.map((d: any) => ({
         id: d.id, file_url: d.file_url, number: d.delivery_note_number,
-        reservation_id: d.reservation_id, offer_id: d.offer_id,
+        reservation_id: d.reservation_id, offer_id: d.offer_id, status: d.status,
       })));
       if (rpRes.data) setReturnProtocols(rpRes.data.map((r: any) => ({
         id: r.id, file_url: r.file_url, number: r.return_protocol_number,
@@ -155,6 +157,9 @@ export function AdminRentalsTab({
   }, [reservations]);
 
   const groups = useMemo(() => groupReservations(reservations), [reservations]);
+  const customerSignedReservations = useMemo(() => customerSignedReservationIds(
+    deliveryNotes.map((d) => ({ ...d, status: d.status ?? null })), offers,
+  ), [deliveryNotes, offers]);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -189,10 +194,14 @@ export function AdminRentalsTab({
     if (res.status === "pending") {
       return <Badge variant="outline" className="border-amber-500 text-amber-700 bg-amber-50 text-xs whitespace-nowrap">Offen</Badge>;
     }
-    if (res.status === "completed") {
+    if (res.status === "completed" || hasReturnProtocol(res.id)) {
       return <Badge variant="secondary" className="text-xs whitespace-nowrap">Beendet</Badge>;
     }
-    if (isActive(res)) {
+    const signed = customerSignedReservations.has(res.id);
+    if ((res.status === "confirmed" || res.status === "active") && !signed) {
+      return <Badge variant="outline" className="text-xs whitespace-normal">Bestätigt – Mietbeginn steht bevor</Badge>;
+    }
+    if (signed && res.status !== "cancelled") {
       return <Badge className="bg-primary/10 text-primary border-primary/20 text-xs whitespace-nowrap">Aktiv</Badge>;
     }
     return <Badge variant="secondary" className="text-xs whitespace-nowrap">Beendet</Badge>;

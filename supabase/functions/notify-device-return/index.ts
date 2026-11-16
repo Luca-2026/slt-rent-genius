@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { customerSignedReservationIds, isRunningReservation } from "../_shared/rental-phase.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -74,10 +75,14 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // Only confirmed reservations can be returned
-    if (reservation.status !== "confirmed") {
+    const [notes, offers] = await Promise.all([
+      serviceClient.from("b2b_delivery_notes").select("status,reservation_id,offer_id").eq("b2b_profile_id", reservation.b2b_profile_id).eq("status", "signed"),
+      serviceClient.from("b2b_offers").select("id,reservation_id").eq("b2b_profile_id", reservation.b2b_profile_id),
+    ]);
+    if (notes.error || offers.error) throw new Error("Kundenübergabe konnte nicht geprüft werden.");
+    if (!isRunningReservation(reservation, customerSignedReservationIds(notes.data ?? [], offers.data ?? []))) {
       return new Response(
-        JSON.stringify({ error: `Gerät kann im Status '${reservation.status}' nicht freigemeldet werden` }),
+        JSON.stringify({ error: "Gerät kann erst nach kundenseitig unterschriebener Übergabe freigemeldet werden." }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }

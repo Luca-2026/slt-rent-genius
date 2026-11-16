@@ -5,7 +5,7 @@
  * Mounted at the top of the customer dashboard for at-a-glance overview.
  *
  * Data sources (all already protected by existing RLS):
- * - Aktive Mieten     → b2b_reservations  status=confirmed AND today ∈ [start_date, end_date]
+ * - Aktive Mieten     → bestätigte Reservierungen mit kundenseitig signierter Übergabe
  * - Anstehende Rückg. → b2b_reservations  status=confirmed AND end_date in next 7 days
  * - Offene Rechnungen → b2b_invoices      status ∈ (open, overdue)   → sum(gross_amount)
  * - Freies Kreditlim. → b2b_profiles      credit_limit - used_credit (from prop)
@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { customerSignedReservationIds } from "@/lib/inquiryStatus";
 import {
   Package,
   Receipt,
@@ -91,14 +92,14 @@ export function DashboardKpis({ profileId, creditLimit, usedCredit }: DashboardK
       offersRes,
       dnRes,
       rpRes,
+      signedDnRes,
+      rentalOffersRes,
     ] = await Promise.all([
       supabase
         .from("b2b_reservations")
-        .select("id", { count: "exact", head: true })
+        .select("id")
         .eq("b2b_profile_id", profileId)
-        .eq("status", "confirmed")
-        .lte("start_date", today)
-        .gte("end_date", today),
+        .in("status", ["confirmed", "active"]),
       supabase
         .from("b2b_reservations")
         .select("id", { count: "exact", head: true })
@@ -131,13 +132,16 @@ export function DashboardKpis({ profileId, creditLimit, usedCredit }: DashboardK
         .select("id", { count: "exact", head: true })
         .eq("b2b_profile_id", profileId)
         .eq("status", "pending_customer_signature"),
+      supabase.from("b2b_delivery_notes").select("reservation_id,offer_id,status").eq("b2b_profile_id", profileId).eq("status", "signed"),
+      supabase.from("b2b_offers").select("id,reservation_id").eq("b2b_profile_id", profileId),
     ]);
 
     const openInvoicesAmount =
       openInvRes.data?.reduce((sum, row: { gross_amount: number | null }) => sum + (row.gross_amount ?? 0), 0) ?? 0;
 
+    const signedReservations = customerSignedReservationIds(signedDnRes.data ?? [], rentalOffersRes.data ?? []);
     setKpis({
-      activeRentals: activeRes.count ?? 0,
+      activeRentals: (activeRes.data ?? []).filter((r) => signedReservations.has(r.id)).length,
       upcomingReturns: upcomingRes.count ?? 0,
       openInvoicesAmount,
       openInvoicesCount: openInvRes.count ?? 0,

@@ -15,10 +15,12 @@ export function ReturnReminderActions({ inquiryId }: { inquiryId: string }) {
   const [error, setError] = useState('');
   const [preview, setPreview] = useState<{ stage: 1 | 2; greeting: string; paragraphs: string[] } | null>(null);
   const [confirmed, setConfirmed] = useState(false);
+  const [customerHandoverSigned, setCustomerHandoverSigned] = useState(false);
   const load = useCallback(async () => {
     const { data, error: failure } = await invokeWithAuth('send-transactional-email', { inquiryId, action: 'status' });
     if (failure || data?.error) { setError(data?.error ?? 'Versandverlauf nicht verfügbar'); return; }
     setError(''); setHistory(data.deliveries ?? []); setEmail(data.recipientEmail ?? '');
+    setCustomerHandoverSigned(data.customerHandoverSigned === true);
   }, [inquiryId]);
   useEffect(() => { void load(); }, [load]);
   async function open(stage: 1 | 2) {
@@ -45,8 +47,8 @@ export function ReturnReminderActions({ inquiryId }: { inquiryId: string }) {
     <h3 className="text-sm font-semibold">Rückgabeerinnerungen</h3>
     {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-      <Button variant="outline" className="min-h-11 w-full" disabled={busy || !!error || !email || blocked(1)} onClick={() => void open(1)}><Mail />Freundliche Erinnerung</Button>
-      <Button variant="outline" className="min-h-11 w-full" disabled={busy || !!error || !email || blocked(2) || !history.some(h => h.stage === 1 && h.status === 'sent')} onClick={() => void open(2)}><Mail />Bestimmte Rückgabeaufforderung</Button>
+      <Button variant="outline" className="min-h-11 w-full" disabled={busy || !customerHandoverSigned || !!error || !email || blocked(1)} onClick={() => void open(1)}><Mail />Freundliche Erinnerung</Button>
+      <Button variant="outline" className="min-h-11 w-full" disabled={busy || !customerHandoverSigned || !!error || !email || blocked(2) || !history.some(h => h.stage === 1 && h.status === 'sent')} onClick={() => void open(2)}><Mail />Bestimmte Rückgabeaufforderung</Button>
     </div>
     {history.map(h => <p key={h.id} className="break-words text-xs text-muted-foreground">Stufe {h.stage} · {h.status === 'sent' ? 'Versendet' : ['pending','queued'].includes(h.status) ? 'Versand ausstehend' : h.status === 'dlq' || h.status === 'failed' ? 'Versand fehlgeschlagen' : h.status === 'suppressed' ? 'Adresse gesperrt' : 'In Vorbereitung'} · {h.actor_name} · {h.recipient_email} · {new Date(h.sent_at ?? h.created_at).toLocaleString('de-DE', { timeZone: 'Europe/Berlin' })}</p>)}
     <Button variant="ghost" size="sm" disabled={busy} onClick={() => void load()}>Versandstatus aktualisieren</Button>

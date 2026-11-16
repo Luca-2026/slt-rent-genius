@@ -43,7 +43,7 @@ describe("accepted offers on staff home", () => {
     expect(filterStaffConfirmationTasks(rows, null)).toEqual([]);
   });
   it("automatische Schilderbuchungen behalten ihre Abschlussaufgaben nach Mietende", () => {
-    expect(needsRentalCloseout({ status: "accepted", source: "sign_direct_booking", offer_total_gross: 39, end_date: "2026-11-06", order_confirmed_at: "2026-11-03" }, new Date("2026-11-07T04:30:00Z"))).toBe(true);
+    expect(needsRentalCloseout({ status: "accepted", handed_over: true, source: "sign_direct_booking", offer_total_gross: 39, end_date: "2026-11-06", order_confirmed_at: "2026-11-03" }, new Date("2026-11-07T04:30:00Z"))).toBe(true);
   });
   it("Linus: Ende vor Beginn löst am Ausgabetag keine Abschlussarbeiten aus", () => {
     expect(hasRentalEnded({ status: "accepted", offer_total_gross: 17.85, start_date: "2026-10-20", end_date: "2026-10-13", end_time: "17:30", offer_payload: { items: [{ rental_start: "2026-10-20", rental_end: "2026-10-13" }] } }, new Date("2026-10-20T06:20:00Z"))).toBe(false);
@@ -64,7 +64,7 @@ describe("accepted offers on staff home", () => {
     expect(isAwaitingOfferConfirmation({ status: "offer_sent", offer_total_gross: 1.19 })).toBe(false);
   });
   it("Andre Krieger: Mietende 19.10., bezahlt am 19.10., am 20.10. keine neue Bestätigung", () => {
-    const row = { status: "accepted", offer_total_gross: 301.07, end_date: "2026-10-19", end_time: "17:00", order_confirmed_at: null };
+    const row = { status: "accepted", handed_over: true, offer_total_gross: 301.07, end_date: "2026-10-19", end_time: "17:00", order_confirmed_at: null };
     expect(hasRentalEnded(row, new Date("2026-10-20T06:15:00Z"))).toBe(true);
     expect(isAwaitingOfferConfirmation(row, new Date("2026-10-20T06:15:00Z"))).toBe(false);
     expect(rentalCloseoutTasks({ deliverySigned: true, returnSigned: false, invoiced: false })).toEqual(["Rückgabe klären · Rückgabeprotokoll fehlt", "Schlussrechnung fehlt"]);
@@ -82,5 +82,15 @@ describe("accepted offers on staff home", () => {
   it("vollständig dokumentierte Miete benötigt keinen Abschlusshinweis", () => {
     expect(rentalCloseoutTasks({ deliverySigned: true, returnSigned: true, invoiced: true })).toEqual([]);
     expect(rentalCloseoutTasks({ deliverySigned: false, returnSigned: true, invoiced: true })).toEqual(["Übergabeprotokoll fehlt"]);
+  });
+  it("überschrittenes Mietende ohne Kundenübergabe ist keine beendete Miete", () => {
+    const row = { status: "accepted", offer_total_gross: 119, end_date: "2026-11-13", order_confirmed_at: "2026-11-12" };
+    const now = new Date("2026-11-16T09:00:00Z");
+    expect(needsRentalCloseout(row, now)).toBe(false);
+    expect(needsRentalCloseout({ ...row, handed_over: false }, now)).toBe(false);
+    expect(needsRentalCloseout({ ...row, handed_over: true }, now)).toBe(true);
+    expect(needsRentalCloseout({ ...row, status: "done" }, now)).toBe(true);
+    expect(needsRentalCloseout({ ...row, returned: true }, now)).toBe(true);
+    expect(isAwaitingOfferConfirmation({ ...row, order_confirmed_at: null }, now)).toBe(true);
   });
 });

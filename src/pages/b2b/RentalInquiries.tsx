@@ -19,7 +19,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { INQUIRY_LIST_FILTERS, isReturnOverdue, isRunningRental, isUpcomingRental, matchesInquiryListFilter, parseInquiryListFilter, DEFAULT_INQUIRY_LIST_FILTER, isMyPendingInquiry, todayIso } from "@/lib/inquiryStatus";
+import { INQUIRY_LIST_FILTERS, hasCustomerSignedHandover, isReturnOverdue, isRunningRental, isUpcomingRental, matchesInquiryListFilter, parseInquiryListFilter, DEFAULT_INQUIRY_LIST_FILTER, isMyPendingInquiry, todayIso } from "@/lib/inquiryStatus";
 import { useRentalProtocolStatus } from "@/hooks/useRentalProtocolStatus";
 import { type RentalInquiry } from "@/components/b2b/inquiries/types";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
@@ -41,7 +41,7 @@ export default function RentalInquiries() {
   const location = useLocation();
   const protocols = useRentalProtocolStatus();
   const today = todayIso();
-  const withProtocol = (r: RentalInquiry) => ({ ...r, handed_over: !!protocols.byInquiry.get(r.id)?.delivery });
+  const withProtocol = (r: RentalInquiry) => ({ ...r, handed_over: hasCustomerSignedHandover(protocols.byInquiry.get(r.id)?.delivery) });
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const openInquiry = (id: string) => {
@@ -216,7 +216,7 @@ export default function RentalInquiries() {
         }}
       />
 
-      {loading || !filtersInitialized ? (
+      {loading || protocols.loading || !filtersInitialized ? (
         <p className="text-muted-foreground">Wird geladen …</p>
       ) : filtered.length === 0 ? (
         <p className="text-muted-foreground">Keine Anfragen gefunden.</p>
@@ -263,7 +263,7 @@ export default function RentalInquiries() {
 function RentalPhaseBadge({ inquiry, returned, today }: { inquiry: RentalInquiry & { handed_over: boolean }; returned: boolean; today: string }) {
   if (returned && inquiry.status === "accepted") return <Badge variant="secondary">Zurückgegeben – Rechnung offen</Badge>;
   if (isReturnOverdue(inquiry, today) && !returned) return <Badge variant="destructive">Rückgabe überfällig</Badge>;
-  if (isRunningRental(inquiry, today)) return <Badge className="bg-primary text-primary-foreground">{inquiry.handed_over ? "Läuft – übergeben" : "Läuft – Übergabe offen"}</Badge>;
+  if (isRunningRental(inquiry, today)) return <Badge className="bg-primary text-primary-foreground">Läuft – übergeben</Badge>;
   if (isUpcomingRental(inquiry, today)) return <Badge variant="outline">Mietbeginn steht bevor</Badge>;
   return null;
 }

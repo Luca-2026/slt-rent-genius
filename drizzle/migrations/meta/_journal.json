@@ -1359,6 +1359,13 @@
       "when": 1794770877306,
       "tag": "0193_sign_booking_all_maintained_locations",
       "breakpoints": true
+    },
+    {
+      "idx": 194,
+      "version": "7",
+      "when": 1794846450298,
+      "tag": "0194_return_reminder_requires_customer_handover",
+      "breakpoints": true
     }
   ]
 }

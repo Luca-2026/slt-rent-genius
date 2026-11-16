@@ -3,7 +3,7 @@
  * B2B portal. Kept pure so it can be unit tested.
  */
 
-import { effectiveEnd, effectiveStart } from "@/lib/calendarEntries";
+import { effectiveEnd } from "@/lib/calendarEntries";
 
 export const INQUIRY_STATUSES = [
   "new",
@@ -91,9 +91,16 @@ type ListRow = {
   start_date?: string | null;
   end_date?: string | null;
   offer_payload?: unknown;
-  /** Übergabeprotokoll existiert bereits (Gerät ist beim Kunden). */
+  /** Übergabeprotokoll ist vom Kunden unterschrieben. */
   handed_over?: boolean;
 };
+
+/** Mitarbeiterunterschrift oder Entwurf ersetzen die Kundenunterschrift nicht. */
+export function hasCustomerSignedHandover(protocol: { status: string | null } | null | undefined): boolean {
+  return protocol?.status === "signed";
+}
+
+export { customerSignedReservationIds, isRunningReservation } from "../../supabase/functions/_shared/rental-phase";
 
 /** Heutiges Datum als YYYY-MM-DD in lokaler Zeit (Berlin im Portal). */
 export function todayIso(now: Date = new Date()): string {
@@ -108,19 +115,14 @@ function isConfirmedOrder(row: ListRow): boolean {
 }
 
 /**
- * Laufender Mietvorgang: Auftragsbestätigung versendet, noch keine Rechnung
- * UND der Mietzeitraum hat begonnen (oder die Übergabe ist schon erfolgt).
- * Aufträge mit Mietbeginn in der Zukunft sind „bevorstehend“, nicht laufend.
+ * Laufender Mietvorgang: bestätigter Auftrag mit kundenseitig unterschriebener
+ * Übergabe. Der geplante Mietbeginn allein belegt keine tatsächliche Übergabe.
  */
-export function isRunningRental(row: ListRow, today: string = todayIso()): boolean {
-  if (!isConfirmedOrder(row)) return false;
-  if (row.handed_over) return true;
-  const start = effectiveStart({ start_date: row.start_date ?? null, offer_payload: row.offer_payload });
-  if (!start) return true; // ohne Mietbeginn nicht verstecken
-  return start <= today;
+export function isRunningRental(row: ListRow, _today: string = todayIso()): boolean {
+  return isConfirmedOrder(row) && row.handed_over === true;
 }
 
-/** Bestätigter Auftrag, Mietbeginn liegt noch in der Zukunft. */
+/** Bestätigter Auftrag ohne Kundenunterschrift, auch bei verspäteter Übergabe. */
 export function isUpcomingRental(row: ListRow, today: string = todayIso()): boolean {
   return isConfirmedOrder(row) && !isRunningRental(row, today);
 }
