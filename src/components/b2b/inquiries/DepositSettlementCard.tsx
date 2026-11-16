@@ -48,6 +48,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [settlement, setSettlement] = useState<Row | null>(null);
+  const currentSettlementRow = settlement;
   const [hasProtocol, setHasProtocol] = useState(false);
   const [deductions, setDeductions] = useState<SettlementDeduction[]>([]);
   const [payout, setPayout] = useState<string>(() => {

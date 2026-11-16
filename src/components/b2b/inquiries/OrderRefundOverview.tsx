@@ -11,6 +11,8 @@ import { RotateCcw, Undo2 } from "lucide-react";
 type Totals = { success: boolean; error?: string; execution_available: boolean; paid_cents: number; deposit_available: number; rent_available: number; deposit_used: number; rent_used: number; pending: boolean; blocked_reason?: string; can_refund_rent: boolean; requests: RequestRow[] };
 type RequestRow = { id: string; deposit_cents: number; rent_cents: number; payout_method: string; status: string; created_at: string; completed_at?: string; created_by: string };
 type HistoryRow = { id: string; at: string; actor: string; label: string; detail: string };
+const EVENT_LABELS: Record<string, string> = { order_cancelled: "Auftrag storniert", order_confirmed: "Auftrag bestätigt", order_bound_by_handover: "Auftrag durch Übergabe verbindlich", refund_completed: "Auszahlung bestätigt", deposit_settled: "Kaution abgerechnet", closed_without_return_protocol: "Abgeschlossen ohne Rückgabeprotokoll", return_without_delivery: "Rückgabe ohne Auslieferung" };
+const eventDetail = (event: string, d: Record<string, unknown>) => event === "deposit_settled" ? `Kautionsbetrag ${formatEuro(Number(d.balance ?? 0))} · Auszahlung siehe Kautionseintrag` : String(d.reason ?? "");
 const eur = (n: number) => formatEuro(n / 100);
 const time = (s: string) => new Date(s).toLocaleString("de-DE", { timeZone: "Europe/Berlin" });
 export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { inquiry: Record<string, any>; onChanged: () => void; compact?: boolean }) {
@@ -53,7 +55,7 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
       if (deposits.error || rentals.error || credits.error) { if (alive) setError("Erstattungshistorie nicht vollständig verfügbar."); return; }
       const names = new Map((staff.data ?? []).map(s => [s.user_id, `${s.first_name} ${s.last_name}`.trim()]));
       const actor = (id: string | null | undefined) => id ? names.get(id) ?? "Erfasser unbekannt" : "Erfasser unbekannt";
-      const rows: HistoryRow[] = (events.data ?? []).map(e => ({ id: e.id, at: e.created_at, actor: actor(e.user_id), label: e.event === "order_cancelled" ? "Auftrag storniert" : e.event === "order_confirmed" ? "Auftrag bestätigt" : e.event === "refund_completed" ? "Auszahlung bestätigt" : "Auftragsaktion", detail: String((e.details as Record<string, unknown>)?.reason ?? "") }));
+      const rows: HistoryRow[] = (events.data ?? []).map(e => ({ id: e.id, at: e.created_at, actor: actor(e.user_id), label: EVENT_LABELS[e.event] ?? "Auftragsaktion", detail: eventDetail(e.event, (e.details ?? {}) as Record<string, unknown>) }));
       for (const [index, p] of (inquiry.payments ?? []).entries()) rows.push({ id: `payment-${index}`, at: p.recorded_at ?? p.date, actor: p.recorded_by ?? actor(p.recorded_by_id), label: `Zahlung erhalten · ${formatEuro(Number(p.amount))}`, detail: p.label ?? "" });
       for (const [kind, refunds] of [["Kaution", deposits.data], ["Miete", rentals.data], ["Rechnungsguthaben", credits.data]] as const) {
         for (const r of refunds ?? []) rows.push({ id: r.id, at: r.created_at, actor: actor(r.created_by), label: `${kind} · ${eur(r.amount_cents)} · ${r.status === "succeeded" ? "erstattet" : "Erstattungsauftrag: " + r.status}`, detail: "payout_method" in r ? String(r.payout_method) === "stripe" ? "Ursprüngliches Zahlungsmittel (Stripe)" : String(r.payout_method) : "Ursprüngliches Zahlungsmittel (Stripe)" });
