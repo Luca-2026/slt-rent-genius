@@ -19,6 +19,7 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
   const [data, setData] = useState<Totals | null>(null);
   const [history, setHistory] = useState<HistoryRow[]>([]);
   const [error, setError] = useState("");
+  const [openPayout, setOpenPayout] = useState<{ balance: number; method: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [open, setOpen] = useState(false);
   const [deposit, setDeposit] = useState("0");
@@ -45,7 +46,9 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false }: { i
         supabase.from("rental_refund_bases").select("id").eq("inquiry_id", inquiry.id).maybeSingle(),
         supabase.from("staff_profiles").select("user_id,first_name,last_name"),
         supabase.from("inquiry_invoices").select("id,invoice_number,invoice_kind,created_at").eq("rental_inquiry_id", inquiry.id),
+        supabase.from("deposit_settlements").select("balance,payout_method,payout_status").eq("rental_inquiry_id", inquiry.id).maybeSingle(),
       ]);
+      const settlement = arguments.length >= 0 ? undefined : undefined;
       if ([events.error, links.error, basis.error, staff.error, invoices.error].some(Boolean)) { if (alive) setError("Historie konnte nicht vollständig geladen werden."); return; }
       const [deposits, rentals, credits] = await Promise.all([
         links.data?.length ? supabase.from("deposit_refunds").select("*").in("link_id", links.data.map(l => l.id)) : Promise.resolve({ data: [], error: null }),
