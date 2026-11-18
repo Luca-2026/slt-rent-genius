@@ -1380,6 +1380,13 @@
       "when": 1794848129928,
       "tag": "0196_sales_delivery_notes",
       "breakpoints": true
+    },
+    {
+      "idx": 197,
+      "version": "7",
+      "when": 1795026198492,
+      "tag": "0197_revoke_delete_email_public",
+      "breakpoints": true
     }
   ]
 }
