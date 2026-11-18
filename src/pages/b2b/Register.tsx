@@ -315,20 +315,7 @@ export default function B2BRegister() {
           console.error("Profile creation failed (non-blocking):", profileErr);
         }
 
-        // Admin notification is sent server-side from create-b2b-profile.
-
-        // Send welcome email to the customer (Resend, DE, Du-Form)
-        try {
-          await withTimeout(
-            supabase.functions.invoke("send-b2b-welcome", {
-              body: { email, firstName, companyName, postalCode },
-            }),
-            20_000,
-            "Willkommens-Mail",
-          );
-        } catch (welcomeErr) {
-          console.error("Welcome email failed (non-blocking):", welcomeErr);
-        }
+        // Admin notification and welcome email are sent server-side from create-b2b-profile.
 
         clearTimeout(stuckTimer);
         toast({

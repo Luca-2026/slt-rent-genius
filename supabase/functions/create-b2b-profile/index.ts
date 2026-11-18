@@ -406,6 +406,17 @@ Deno.serve(async (req) => {
       console.error("Admin notification failed (non-blocking):", notifyErr);
     }
 
+    // Welcome mail is triggered server-side so the mail function stays internal-only.
+    try {
+      await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-b2b-welcome`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ email, firstName, companyName, postalCode }),
+      });
+    } catch (welcomeErr) {
+      console.error("Welcome email failed (non-blocking):", welcomeErr);
+    }
+
     return new Response(JSON.stringify({ success: true, profile_id: profile.id, notified: true }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

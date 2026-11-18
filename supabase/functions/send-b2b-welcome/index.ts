@@ -84,6 +84,21 @@ Deno.serve(async (req) => {
       );
     }
     const { email } = parsed.data;
+    // Nur interne Aufrufe (create-b2b-profile) oder die angemeldete Person selbst.
+    const bearer = (req.headers.get("Authorization") ?? "").replace(/^Bearer\s+/i, "");
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+    let authorized = !!bearer && bearer === serviceKey;
+    if (!authorized && bearer) {
+      const { createClient: mk } = await import("https://esm.sh/@supabase/supabase-js@2.57.4");
+      const authClient = mk(Deno.env.get("SUPABASE_URL")!, serviceKey, { auth: { persistSession: false } });
+      const { data: caller } = await authClient.auth.getUser(bearer);
+      authorized = !!caller?.user?.email && caller.user.email.toLowerCase() === email.toLowerCase();
+    }
+    if (!authorized) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     // Nur an frisch registrierte Portalprofile, genau einmal; Inhalte aus der Datenbank.
     const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2.57.4");
     const svc = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
