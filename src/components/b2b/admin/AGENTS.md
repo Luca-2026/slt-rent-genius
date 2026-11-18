@@ -19,3 +19,4 @@
 - Onsite B2B onboarding uses onsite-b2b-customer with atomic CRM linking, private document uploads and DB approval guards; active branch managers are location-scoped, and invitation OTP verification precedes customer-owned password setup.
 - Internal fee/personnel articles use fixed offer_unit/price/VAT fields and stay unpublished; staff offer selection reads the protected full catalogue, never broadens the public view.
 - SalesArticleEditorDialog uses salesArticleEditing for optional model validation and independent hidden copies; copy IDs/slugs are fresh, reference identifiers cleared, and protected costs are copied only with existing cost permission, preventing source edits or accidental publication.
+- Sales article fields opt out of browser autocomplete with article-specific input names; browser contact/address suggestions must not populate unrelated product fields. Manufacturer/category datalist suggestions remain available.

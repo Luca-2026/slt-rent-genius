@@ -18,10 +18,34 @@ vi.mock("@/integrations/supabase/client", () => ({ supabase: {
     return query;
   },
 } }));
-beforeEach(() => { localStorage.clear(); vi.clearAllMocks(); });
-afterEach(() => { cleanup(); localStorage.clear(); });
+beforeEach(() => {
+  localStorage.clear(); vi.clearAllMocks();
+  vi.stubGlobal("ResizeObserver", class { observe() {} unobserve() {} disconnect() {} });
+});
+afterEach(() => { cleanup(); localStorage.clear(); vi.unstubAllGlobals(); });
 
 describe("incomplete article editors", () => {
+  it.each(["new", "used"] as const)("keeps %s sales fields independent through saving and parent refreshes", async (kind) => {
+    const props = { open: true, kind, row: null, onOpenChange: vi.fn(), onSaved: vi.fn() };
+    const editor = render(<SalesArticleEditorDialog {...props} />);
+    const fields = [
+      ["Hersteller / Marke", "Schrankenzaun RA1"],
+      ["Kategorie", "Absperr- & Verkehrstechnik"],
+      ["Artikel-/Referenznummer", "V-1060"],
+      ["Modell (optional)", "Eigenes Modell"],
+    ];
+    for (const [label, value] of fields) {
+      fireEvent.change(screen.getByLabelText(label), { target: { value } });
+    }
+    await waitFor(() => expect(mocks.upsert).toHaveBeenCalledWith(expect.objectContaining({ model: "Eigenes Modell", category: "Absperr- & Verkehrstechnik" })), { timeout: 3000 });
+    editor.rerender(<SalesArticleEditorDialog {...props} onSaved={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Modell (optional)"), { target: { value: "" } });
+    fireEvent.change(screen.getByLabelText("Artikel-/Referenznummer"), { target: { value: "V-1061" } });
+    await waitFor(() => expect(mocks.upsert).toHaveBeenLastCalledWith(expect.objectContaining({ model: "", category: "Absperr- & Verkehrstechnik", [kind === "new" ? "article_number" : "reference_number"]: "V-1061" })), { timeout: 3000 });
+    expect((screen.getByLabelText("Hersteller / Marke") as HTMLInputElement).value).toBe("Schrankenzaun RA1");
+    expect((screen.getByLabelText("Kategorie") as HTMLInputElement).value).toBe("Absperr- & Verkehrstechnik");
+    expect(props.onOpenChange).not.toHaveBeenCalled();
+  });
   it("saves sales goods without a model and closes after an acknowledged autosave", async () => {
     const onOpenChange = vi.fn();
     render(<SalesArticleEditorDialog open kind="new" row={null} onOpenChange={onOpenChange} onSaved={vi.fn()} />);

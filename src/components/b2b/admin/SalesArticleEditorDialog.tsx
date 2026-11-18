@@ -566,7 +566,7 @@ export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySource
           </div>
         )}
 
-        <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6">
+        <form autoComplete="off" onSubmit={(event) => event.preventDefault()} className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6">
           <Tabs defaultValue="basis">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="basis">Basis</TabsTrigger>
@@ -578,21 +578,21 @@ export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySource
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
                   <Label htmlFor="sa-brand">Hersteller / Marke</Label>
-                  <Input id="sa-brand" value={form.brand} disabled={readOnly} onChange={(e) => set("brand", e.target.value)} maxLength={120} list="sa-brand-suggestions" />
+                  <Input id="sa-brand" name="sales-article-brand" autoComplete="off" value={form.brand} disabled={readOnly} onChange={(e) => set("brand", e.target.value)} maxLength={120} list="sa-brand-suggestions" />
                   <datalist id="sa-brand-suggestions">{["LiuGong", "BAUMAX", "Temared", "Hercu"].map((b) => <option key={b} value={b} />)}</datalist>
                 </div>
                 <div>
                   <Label htmlFor="sa-model">Modell (optional)</Label>
-                  <Input id="sa-model" value={form.model} disabled={readOnly} onChange={(e) => set("model", e.target.value)} maxLength={160} />
+                  <Input id="sa-model" name="sales-article-model" autoComplete="off" value={form.model} disabled={readOnly} onChange={(e) => set("model", e.target.value)} maxLength={160} />
                 </div>
                 <div>
                   <Label htmlFor="sa-category">Kategorie</Label>
-                  <Input id="sa-category" value={form.category} disabled={readOnly} onChange={(e) => set("category", e.target.value)} maxLength={80} list="sa-category-suggestions" />
+                  <Input id="sa-category" name="sales-article-category" autoComplete="off" value={form.category} disabled={readOnly} onChange={(e) => set("category", e.target.value)} maxLength={80} list="sa-category-suggestions" />
                   <datalist id="sa-category-suggestions">{["Bagger", "Minibagger", "Radlader"].map((c) => <option key={c} value={c} />)}</datalist>
                 </div>
                 <div>
                   <Label htmlFor="sa-article">Artikel-/Referenznummer</Label>
-                  <Input id="sa-article" value={form.article_number} disabled={readOnly} onChange={(e) => set("article_number", e.target.value)} maxLength={80} />
+                  <Input id="sa-article" name="sales-article-reference" autoComplete="off" value={form.article_number} disabled={readOnly} onChange={(e) => set("article_number", e.target.value)} maxLength={80} />
                 </div>
                 <div className="sm:col-span-2">
                   <Label htmlFor="sa-slug">Slug (URL)</Label>
@@ -608,7 +608,7 @@ export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySource
                 {isNew && (
                   <div className="sm:col-span-2">
                     <Label htmlFor="sa-name">Anzeigename (optional)</Label>
-                    <Input id="sa-name" value={form.name} disabled={readOnly} onChange={(e) => set("name", e.target.value)} maxLength={200} />
+                  <Input id="sa-name" name="sales-article-display-name" autoComplete="off" value={form.name} disabled={readOnly} onChange={(e) => set("name", e.target.value)} maxLength={200} />
                   </div>
                 )}
                 <div>
@@ -922,7 +922,7 @@ export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySource
               </div>
             </TabsContent>
           </Tabs>
-        </div>
+        </form>
 
         <DialogFooter className="shrink-0 gap-3 border-t bg-background px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:gap-2 sm:px-6">
           <span role="status" className="text-xs text-muted-foreground self-center">{autosave.state === "saved" ? "Gespeichert" : autosave.state === "error" ? "Speicherung ausstehend" : "Wird gespeichert …"}</span>
