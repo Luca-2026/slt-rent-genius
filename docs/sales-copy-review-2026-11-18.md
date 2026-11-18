@@ -9,3 +9,17 @@
 - Build OK. No rental article, settled record, permission or setting changed. Not published.
 
 Previous unrelated limitation remains: the reported browser multi-field autofill/blockade was not reproduced in Chromium; native Safari with the user's saved autofill profile is unavailable. This fix addresses the independently confirmed copy-creation issue.
+
+## Wider copy-flow review
+Rule: saving a sales copy creates a separate article even without edits and never changes the original.
+
+- New and used catalog copy buttons: current entry-point and editor props read again; both use the same corrected editor and a fresh copy UUID. No alternate sales copy entry point found in src.
+- Copy helper: full current code read; deep-clones source facts, clears reference identifiers and uses an independent ID/slug with hidden publication state.
+- Immediate Save, Close, automatic save, draft restoration and subsequent editing: current initialization, close/save, cost-loading and write sections read again; the copy is initially unsaved, both close/save flush serialized writes, and acknowledgements replace the baseline only after successful writes. Existing article edits retain their saved baseline.
+- Cost-right differences: current loading/write paths read; copying no longer depends on a cost difference, and existing cost-write permission remains unchanged. Both permission variants covered by regression tests; only admin rights exercised live.
+- Retry/offline: full current useArticleAutosave read; failed writes do not acknowledge the snapshot, online recovery retries and stable articleIdentity reuses the same copy ID. No live network-failure injection performed in this request.
+- Catalog after creation / page reload: admin and public catalog loaders read; admin reads include hidden copies, public selection intentionally includes visible articles only. Actual staff readback was verified for both new and used copies.
+- Background page generation: both sales-table GET sections read; they do not create, update or delete copies. No copy scheduler or Edge Function referencing either article table found by current code search.
+- Active database functions/triggers: fresh live inspection found no public function body referencing either article table. The sole noninternal article trigger updates new_machines.updated_at only; no alternate copy mechanism or suppression of creation.
+
+No additional confirmed violation of the copy-creation rule found. No further app code changed during this wider review. Existing settled records, rental articles, permissions and settings unchanged; publication still pending.
