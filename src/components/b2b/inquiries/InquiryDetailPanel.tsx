@@ -2,6 +2,7 @@ import type { SalesFinancing } from "../../../../supabase/functions/_shared/sale
 import { normalizeOpenEndedUnit, normalizeOpenEndedDuration, type OpenEndedUnit } from "@/lib/installments";
 import { DepositSettlementCard } from "./DepositSettlementCard";
 import { SalesDeliverySection } from "@/components/b2b/protocols/SalesDeliverySection";
+import { salesDeliveryAllowed } from "../../../../supabase/functions/_shared/sales-delivery-eligibility";
 import { RentalCancellationDialog } from "./RentalCancellationDialog";
 import { OrderRefundOverview } from "./OrderRefundOverview";
 import { CreditNoteRefund } from "./CreditNoteRefund";
@@ -1081,7 +1082,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
       {paymentsEl}
       {stripeEl}
       {orderEl}
-      {inquiryType === "sales" && canManageInventory && <SalesDeliverySection inquiryId={inquiry.id} confirmed={!!inquiry.order_confirmed_at && ["accepted", "done"].includes(inquiry.status)} />}
+      {inquiryType === "sales" && canManageInventory && <SalesDeliverySection inquiryId={inquiry.id} confirmed={salesDeliveryAllowed(inquiry, invoices)} />}
       {installmentEl}
       {invoicesEl}
       {docEl}

@@ -2,6 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { z } from "https://esm.sh/zod@3.23.8";
 import { salesDeliveryItems } from "../_shared/sales-delivery-items.ts";
+import { salesDeliveryAllowed, salesDeliveryInvoice } from "../_shared/sales-delivery-eligibility.ts";
 import { salesDeliveryPdf } from "./pdf.ts";
 const json=(v:unknown,status=200)=>new Response(JSON.stringify(v),{status,headers:{...corsHeaders,"Content-Type":"application/json"}});
 const Body=z.discriminatedUnion("action",[
@@ -23,9 +24,14 @@ Deno.serve(async req=>{
    const {data:existing}=await svc.from("sales_delivery_notes").select("*").eq("id",b.request_id).maybeSingle();
    if(existing){if(existing.sales_inquiry_id!==b.inquiry_id)return json({error:"Ungültige Wiederholung."},409);return json({success:true,id:existing.id});}
    const {data:i,error}=await svc.from("sales_inquiries").select("*").eq("id",b.inquiry_id).single();if(error||!i)return json({error:"Verkaufsauftrag nicht gefunden."},404);
-   if(!i.order_confirmed_at||!["accepted","done"].includes(i.status))return json({error:"Zuerst den Verkaufsauftrag bestätigen und die Auftragsbestätigung erstellen."},409);
-   const items=salesDeliveryItems(i.offer_payload||{});
-   const snapshot={items,order_code:i.order_code,offer_number:i.offer_number,order_confirmation_number:i.order_confirmation_number,location:i.location,customer:i.company_name||[i.first_name,i.last_name].filter(Boolean).join(" "),address:[i.billing_street,i.billing_postal_code,i.billing_city].filter(Boolean).join(" "),delivery_address:[i.delivery_street,i.delivery_postal_code,i.delivery_city].filter(Boolean).join(" "),notes:b.notes,created_at:new Date().toISOString()};
+   let invoices: any[]=[];
+   if(!i.order_confirmed_at){const result=await svc.from("inquiry_invoices").select("*").eq("sales_inquiry_id",i.id).order("created_at",{ascending:false});if(result.error)throw result.error;invoices=result.data??[];}
+   if(!salesDeliveryAllowed(i,invoices))return json({error:"Es fehlt eine Auftragsbestätigung oder eine gültige Rechnung zum erledigten Verkaufsauftrag."},409);
+   const invoice=salesDeliveryInvoice(i,invoices);
+   let items=salesDeliveryItems(i.offer_payload||{});
+   if(invoice){const result=await svc.from("inquiry_invoice_items").select("product_name,description,quantity,unit").eq("invoice_id",invoice.id).order("position");if(result.error)throw result.error;items=salesDeliveryItems({items:result.data??[]});}
+   const source=invoice??i;
+   const snapshot={items,source_invoice_id:invoice?.id??null,source_invoice_number:invoice?.invoice_number??null,order_code:i.order_code,offer_number:i.offer_number,order_confirmation_number:i.order_confirmation_number,location:source.location,customer:source.company_name||source.customer_name||[i.first_name,i.last_name].filter(Boolean).join(" "),address:[invoice?source.customer_street:i.billing_street,invoice?source.customer_postal_code:i.billing_postal_code,invoice?source.customer_city:i.billing_city].filter(Boolean).join(" "),delivery_address:[source.delivery_street,source.delivery_postal_code,source.delivery_city].filter(Boolean).join(" "),notes:b.notes,created_at:new Date().toISOString()};
    const {data:number,error:numErr}=await svc.rpc("generate_delivery_note_number");if(numErr)throw numErr;
    const path=`sales-delivery/${b.inquiry_id}/${b.request_id}/original.pdf`;const bytes=await salesDeliveryPdf(snapshot,number);
    const upload=await svc.storage.from("b2b-invoices").upload(path,bytes,{contentType:"application/pdf",upsert:false});if(upload.error)throw upload.error;
