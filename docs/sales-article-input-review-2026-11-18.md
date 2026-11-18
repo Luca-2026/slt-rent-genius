@@ -19,3 +19,22 @@ Browser können Autovervollständigungswünsche ignorieren. Ein Safari-spezifisc
 
 ## Grenzen
 Keine native iOS-/Safari-Sitzung mit Lucas gespeicherten Autovervollständigungsdaten verfügbar. Bildschirmgrößen wurden in Chromium geprüft, nicht auf physischen Geräten. Keine Mietartikel, Rechte, Einstellungen, Kundendokumente oder Zahlungen geändert. Nicht veröffentlicht.
+
+## Nachprüfung der übrigen Verkaufswege
+Regel: Eine Verkaufsartikel-Eingabe verändert nur das gewählte Feld; andere Felder bleiben weiter editierbar. Bewusstes Kopieren oder Auswählen eines Artikels ist davon zu unterscheiden.
+
+| Stelle | Gelesener Umfang / Ergebnis |
+| --- | --- |
+| Neu-/Gebrauchtartikel: Basis, Technik/Bilder, SEO | Vollständige gemeinsame SalesArticleEditorDialog-Maske gelesen; einzelne Feldsetter erhalten den übrigen Zustand. Autosave deaktiviert keine Artikelfeld-Eingabe. |
+| Lokale Entwürfe, Wiederöffnen, Hintergrund-Tab, Speichern | Initialisierung, Entwurfs- und Speicherabschnitte erneut gelesen; Wiederherstellung nur bei Öffnen/Artikelwechsel, Bestätigung nur für den abgesendeten Zustand. useArticleAutosave im vorigen Prüflauf vollständig gelesen und getestet. |
+| Kopieren, Bearbeiten, Sichtbarkeit, Löschen | AdminSalesCatalogTab vollständig gelesen; getrennte Bearbeitungsdaten, Kopie über structuredClone mit eigener Identität. salesArticleEditing erneut vollständig gelesen; kein Überschreiben des Originals. |
+| Technische Daten sortieren | SortableRows vollständig gelesen; nur explizites Verschieben ändert die Reihenfolge, Textfelder werden nicht gesperrt. |
+| KI-Vorschläge | Client-Aufruf erneut gelesen, admin-generate-sales-content vollständig gelesen; nur nach bewusstem KI-Klick wird das ausgewählte Inhaltsfeld übernommen, keine Artikel-Stammdaten und keine Tabellenwrites durch die Funktion. |
+| Verkaufsangebot / AB-Änderungseditor: Auswahl und Wiederherstellung | SalesProductCombobox vollständig, salesbezogene Auswahl-/Anreicherungsabschnitte von InquiryOfferForm gelesen; Suchtexte ändern nichts bis zur expliziten Auswahl. Auswahl übernimmt die betreffende Angebotsposition, schreibt keine Verkaufsartikeltabelle. Kein vollständiger Dokumentversandtest. |
+| Öffentliche Neuartikel-Listen, Herstellerliste, Detail, Gebrauchtliste/Detail, beide Startseitenvorschauen | Alle jeweiligen Tabellen-Leseabschnitte jetzt gelesen; ausschließlich select, keine Schreiboperation auf Artikel. Die übrigen Seitenabschnitte wurden in dieser Nachprüfung nicht vollständig gelesen. |
+| Verkaufsauswertung | Tabellen-Leseabschnitt gelesen; ausschließlich select, keine Artikelfeldänderung. |
+| Hintergrund-Seitenerstellung | Verkaufsartikel-Leseabschnitte in scripts/exportRoutes.ts gelesen; GET-Lesezugriffe, kein Schreiben. |
+| Öffentliche Kauf-/Gebrauchtanfrage-Sender | Speicherung der getrennten Hersteller-/Modell-/Kategorieangaben und Tabellenoperationen gelesen; Schreiben über inquiry-store, nicht in Verkaufsartikeltabellen. Keine neue Anfrage versendet. |
+| Aktive Datenbankfunktionen/-Trigger | Live-Abfrage nach allen public-Funktionskörpern mit new_machines/used_machines und allen nichtinternen Triggern beider Tabellen: keine solche Funktion, lediglich Neuartikel-Trigger aktualisiert updated_at; keine Feldkopie oder Feldsperre. |
+
+Keine weitere belegte Abweichung zur beschriebenen Eingaberegel gefunden. Mietmasken sind bewusst nicht geändert oder als nachgeprüft bezeichnet. Bezahlte/versendete/erstattete/abgeschlossene Bestandsdaten, Rechte, Einstellungen und Beispieldaten bleiben unverändert.
