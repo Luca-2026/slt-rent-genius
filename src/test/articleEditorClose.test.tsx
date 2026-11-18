@@ -1,12 +1,14 @@
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { InventoryEditorDialog } from "@/components/b2b/admin/InventoryEditorDialog";
 import { SalesArticleEditorDialog } from "@/components/b2b/admin/SalesArticleEditorDialog";
 import { cmsDraftKey, readCmsDraft } from "@/lib/cmsDraftStorage";
+import { salesArticleCopy } from "@/lib/salesArticleEditing";
+import type { NewMachineRow, UsedMachineRow } from "@/hooks/useSalesCatalog";
 
-const mocks = vi.hoisted(() => ({ error: vi.fn(), rpc: vi.fn(), info: vi.fn(), upsert: vi.fn() }));
+const mocks = vi.hoisted(() => ({ error: vi.fn(), rpc: vi.fn(), info: vi.fn(), upsert: vi.fn(), canEditCosts: true }));
 vi.mock("sonner", () => ({ toast: { error: mocks.error, success: vi.fn(), info: mocks.info } }));
-vi.mock("@/hooks/useStaffAccess", () => ({ useStaffAccess: () => ({ canEditCosts: true }) }));
+vi.mock("@/hooks/useStaffAccess", () => ({ useStaffAccess: () => ({ canEditCosts: mocks.canEditCosts }) }));
 vi.mock("@/hooks/useManagedProducts", () => ({ resolveSubcategory: () => "", useAdminManagedProducts: () => ({ data: [] }) }));
 vi.mock("@/integrations/supabase/client", () => ({ supabase: {
   rpc: mocks.rpc,
@@ -15,16 +17,35 @@ vi.mock("@/integrations/supabase/client", () => ({ supabase: {
     query.select = () => query; query.eq = () => query; query.order = () => query; query.limit = () => query;
     query.upsert = (payload: unknown) => { mocks.upsert(payload); return query; };
     query.single = () => Promise.resolve({ data: { id: "saved-sales-test" }, error: null });
+    query.maybeSingle = () => Promise.resolve({ data: null, error: null });
     return query;
   },
 } }));
 beforeEach(() => {
   localStorage.clear(); vi.clearAllMocks();
+  mocks.canEditCosts = true;
   vi.stubGlobal("ResizeObserver", class { observe() {} unobserve() {} disconnect() {} });
 });
 afterEach(() => { cleanup(); localStorage.clear(); vi.unstubAllGlobals(); });
 
 describe("incomplete article editors", () => {
+  it.each([
+    ["new", true], ["new", false], ["used", true], ["used", false],
+  ] as const)("creates an unchanged %s copy with cost permission %s before closing", async (kind, canEditCosts) => {
+    mocks.canEditCosts = canEditCosts;
+    const source = { id: "source-id", slug: "source-slug", brand: "Source", manufacturer: "Source", model: "", category: "Goods", name: "Source", is_active: true, status: "available", article_number: "ORIGINAL", reference_number: "ORIGINAL", content: {}, images: [], specifications: {} } as unknown as NewMachineRow & UsedMachineRow;
+    const copyFrom = salesArticleCopy(kind, source, "copy-id");
+    const onOpenChange = vi.fn();
+    render(<SalesArticleEditorDialog open kind={kind} row={null} copyFrom={copyFrom} copySourceId={source.id} onOpenChange={onOpenChange} onSaved={vi.fn()} />);
+    await act(async () => { await Promise.resolve(); });
+    // No field edits: opening the copy is itself an unsaved creation.
+    fireEvent.click(screen.getByRole("button", { name: /^Speichern$/ }));
+    await waitFor(() => expect(onOpenChange).toHaveBeenCalledWith(false));
+    expect(mocks.upsert).toHaveBeenCalledWith(expect.objectContaining({ id: "copy-id", slug: "source-slug-kopie-copy-id", model: "", [kind === "new" ? "is_active" : "status"]: kind === "new" ? false : "hidden" }));
+    expect(mocks.upsert).toHaveBeenCalledTimes(1);
+    expect(source.id).toBe("source-id");
+    expect(source.slug).toBe("source-slug");
+  });
   it.each(["new", "used"] as const)("keeps %s sales fields independent through saving and parent refreshes", async (kind) => {
     const props = { open: true, kind, row: null, onOpenChange: vi.fn(), onSaved: vi.fn() };
     const editor = render(<SalesArticleEditorDialog {...props} />);

@@ -216,7 +216,9 @@ export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySource
     const draft = readCmsDraft<FormState>(draftKey);
     const next: FormState = draft ? { ...base, ...draft.form } : base;
     pendingFormRef.current = next;
-    baselineRef.current = JSON.stringify(base);
+    // A prefilled copy has not been persisted yet. Keep it dirty until the
+    // first successful upsert; afterwards normal snapshot acknowledgements apply.
+    baselineRef.current = JSON.stringify(copyFrom && !row ? emptyForm : base);
     loadedKeyRef.current = draftKey;
     setForm(next);
     setRestoredAt(draft?.savedAt ?? null);
@@ -930,7 +932,7 @@ export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySource
             Schließen
           </Button>
           {!readOnly && (
-            <Button className="w-full sm:w-auto" onClick={requestSave} disabled={saving}>
+            <Button className="w-full sm:w-auto" onPointerDown={(event) => event.preventDefault()} onClick={requestSave} disabled={saving || !costsLoaded}>
               {saving ? "Wird gespeichert …" : "Speichern"}
             </Button>
           )}
