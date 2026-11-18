@@ -10,3 +10,7 @@ export function salesDeliveryItems(payload: { items?: unknown }) {
   if (!items.length) throw new Error("Keine Verkaufsware im bestätigten Auftrag.");
   return items;
 }
+/** An issued invoice is sufficient evidence; a missing legacy offer must not block its goods. */
+export function salesDeliverySourceItems(offer: { items?: unknown }, invoiceItems?: unknown[]) {
+  return salesDeliveryItems(invoiceItems === undefined ? offer : { items: invoiceItems });
+}

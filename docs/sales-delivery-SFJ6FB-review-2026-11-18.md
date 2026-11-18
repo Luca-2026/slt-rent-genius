@@ -18,6 +18,17 @@
 - Erste Signaturprüfung übersah den expliziten Unterschrift-speichern-Schritt; wiederholt erfolgreich. Erster Papier-Test hatte eine zukünftige Empfangszeit und wurde korrekt abgelehnt; mit vergangenem Datum gespeichert.
 
 ## Grenzen
+## Systemweite Nachprüfung
+- Neuartikel, Gebrauchtartikel und Verkauf aus Mietartikeln: SalesInquiries und useInquiries vollständig gelesen; alle öffnen dieselbe korrigierte InquiryDetailPanel-Aktion, keine separate AB-Sperre.
+- Lieferscheinliste, Erstellung, Speichern, Wiederholung, Original-PDF und erneutes Öffnen: SalesDeliverySection und sales-delivery-note vollständig erneut gelesen; dieselbe Freigabe, vorhandene Nachweise ohne AB-Sperre lesbar.
+- Digitale Unterschrift und Papierupload: Code erneut gelesen; nur vorhandenen Lieferschein vorausgesetzt, keine neue AB-/Phasenprüfung. Empfang bleibt getrennt von Erstellung.
+- Lokale Entwürfe: protocolDraft vollständig gelesen; je Benutzer/Auftrag/Nachweis/Modus, stabile Wiederholungs-ID und Löschung nach Erfolg; keine AB-Sperre.
+- Warenquelle und PDF: sales-delivery-items und pdf vollständig gelesen. Weitere Abweichung korrigiert: Rechnungswaren wurden erst nach unnötiger Validierung des alten Angebots geladen. Jetzt direkt die Rechnung verwenden, auch bei fehlenden Altangebotspositionen; eine leere Rechnung bleibt gesperrt. Zwei zusätzliche konkrete Regressionstests.
+- Kundenakte: customerDocuments vollständig gelesen; keine Lieferschein-Erstellung oder AB-Sperre. Verkaufs-Lieferscheine werden dort derzeit nicht aufgelistet; eigenständige Erweiterung nicht Teil der gemeldeten Erstellungsblockade.
+- Hintergrundjobs/Export: sämtliche Referenzen auf sales_delivery_notes/sales-delivery-note in src, Funktionen und scripts gesucht; kein anderer Schreiber/automatischer Lieferscheinjob gefunden.
+- Aktive Datenbankfunktionen guard_sales_delivery_receipt und generate_delivery_note_number vollständig aus der Datenbank gelesen: Unveränderlichkeit/Empfangsvollständigkeit bzw. Sequenz, keine AB-/Statussperre; unverändert.
+
+## Verbleibende Prüfgrenzen
 - Keine reale Kundenunterschrift, Lieferung, Zahlung oder Mail ausgelöst. Kundenauftrag bleibt erledigt ohne AB; vorhandene Belege unverändert.
 - Physischer Druck, nativer Safari und Benedikts eigene Sitzung nicht geprüft. Rechte unverändert, serverseitiger bestehender can_edit_operations-Schutz erhalten.
 - Oberfläche nicht veröffentlicht. Kleine Handyaufnahmen teilweise durch Cookiehinweis verdeckt; Interaktionen und Neuladezustand waren erfolgreich.
