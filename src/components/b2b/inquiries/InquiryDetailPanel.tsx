@@ -416,6 +416,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   const { toast } = useToast();
   const canDelete = isAdmin;
   const [deleting, setDeleting] = useState(false);
+  const [refundActionTarget, setRefundActionTarget] = useState<HTMLDivElement | null>(null);
   // Paket 4: Anrede-Form der verknüpften Kundenakte (Quelle der Wahrheit, sonst die Anfrage)
   const [crmAddressForm, setCrmAddressForm] = useState<string | null>(null);
   const crmCustomerId = (inquiry as { crm_customer_id?: string | null }).crm_customer_id ?? null;
@@ -887,13 +888,14 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
                 key={mode}
                 size="sm"
                 variant={editorOpen && (docMode === mode || (mode === "invoice" && docMode === "final")) ? "default" : "outline"}
-                className="min-h-10 w-full justify-start"
+                className="min-h-11 w-full justify-start"
                 onClick={() => setDocMode(mode)}
               >
                 <Icon className="h-4 w-4 mr-2 shrink-0" />
                 <span className="min-w-0 break-words">{label}</span>
               </Button>
             ))}
+          {inquiryType === "rental" && <div ref={setRefundActionTarget} className="empty:hidden" />}
         </div>
         {canSignOfferOnSite({ offerNumber: inquiry.offer_number, status: inquiry.status, alreadyAccepted: !!offerAcceptedAt }) && (
           <Button size="sm" variant="outline" className="h-9 w-full justify-start border-primary/50" onClick={() => setOnSiteSignOpen(true)}>
@@ -1058,7 +1060,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         </aside>
         <section className="min-w-0 space-y-5 lg:col-span-2">
           {headerEl}
-          {inquiryType === "rental" && <OrderRefundOverview inquiry={inquiry as Record<string, any>} invoiceIds={invoices.filter(inv => ["invoice", "final"].includes(inv.invoice_kind) && !["draft", "cancelled"].includes(inv.status)).map(inv => inv.id)} onChanged={() => { loadInvoices(); onChanged(); }} />}
+          {inquiryType === "rental" && <OrderRefundOverview actionTarget={refundActionTarget} inquiry={inquiry as Record<string, any>} invoiceIds={invoices.filter(inv => ["invoice", "final"].includes(inv.invoice_kind) && !["draft", "cancelled"].includes(inv.status)).map(inv => inv.id)} onChanged={() => { loadInvoices(); onChanged(); }} />}
           {draftsEl}
           {docEl}
         </section>
@@ -1071,7 +1073,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
       {inquiry.status !== "cancelled" && <OfferAcceptanceNotice inquiryId={inquiry.id} />}
       {draftsEl}
       {headerEl}
-      {inquiryType === "rental" && <OrderRefundOverview inquiry={inquiry as Record<string, any>} invoiceIds={invoices.filter(inv => ["invoice", "final"].includes(inv.invoice_kind) && !["draft", "cancelled"].includes(inv.status)).map(inv => inv.id)} onChanged={() => { loadInvoices(); onChanged(); }} />}
+      {inquiryType === "rental" && <OrderRefundOverview actionTarget={refundActionTarget} inquiry={inquiry as Record<string, any>} invoiceIds={invoices.filter(inv => ["invoice", "final"].includes(inv.invoice_kind) && !["draft", "cancelled"].includes(inv.status)).map(inv => inv.id)} onChanged={() => { loadInvoices(); onChanged(); }} />}
       {customerEl}
       {locationEl}
       {details}

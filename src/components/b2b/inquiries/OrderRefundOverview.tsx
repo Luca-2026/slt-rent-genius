@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,7 +20,7 @@ const EVENT_LABELS: Record<string, string> = { order_cancelled: "Auftrag stornie
 const eventDetail = (event: string, d: Record<string, unknown>) => event === "deposit_settled" ? `Kautionsbetrag ${formatEuro(Number(d.balance ?? 0))} · Auszahlung siehe Kautionseintrag` : String(d.reason ?? "");
 const eur = (n: number) => formatEuro(n / 100);
 const time = (s: string) => new Date(s).toLocaleString("de-DE", { timeZone: "Europe/Berlin" });
-export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoiceIds = [] }: { inquiry: Record<string, any>; onChanged: () => void; compact?: boolean; invoiceIds?: string[] }) {
+export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoiceIds = [], actionTarget }: { inquiry: Record<string, any>; onChanged: () => void; compact?: boolean; invoiceIds?: string[]; actionTarget?: HTMLElement | null }) {
   const { canManageInventory, displayName } = useStaffAccess();
   const [legacyOpen, setLegacyOpen] = useState(false);
   const [hasSettlement, setHasSettlement] = useState(false);
@@ -88,14 +89,18 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoi
   const selected = amount(deposit) + amount(rent);
   const valid = data && [amount(deposit),amount(rent)].every(n => Number.isSafeInteger(n) && n >= 0) && amount(deposit) <= data.deposit_available && amount(rent) <= data.rent_available && selected > 0;
   const start = () => { setDeposit(String((data?.deposit_available ?? 0)/100)); setRent(String(data?.can_refund_rent ? (data.rent_available/100) : 0)); setRequestId(crypto.randomUUID()); setOpen(true); };
+  const refundAction = data && !data.pending && canManageInventory && (total > 0 || openPayout || !hasSettlement)
+    ? <Button variant={actionTarget ? "outline" : "default"} className={actionTarget ? "min-h-11 w-full justify-start" : "h-11 w-full sm:w-64"} onClick={() => data.execution_available && !data.blocked_reason ? start() : setLegacyOpen(true)} disabled={busy}><Undo2 className="mr-2 h-4 w-4 shrink-0"/>Erstattung bearbeiten</Button>
+    : null;
   return <section className="space-y-3 border-y border-border py-4" aria-label="Zahlungsstand und Auftragshistorie">
+    {actionTarget && refundAction && createPortal(refundAction, actionTarget)}
     {!compact && <h3 className="font-semibold">Zahlungsstand &amp; Verlauf</h3>}
     {data && <>
       {!compact && <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4"><div>Erhalten<strong className="block">{eur(data.paid_cents)}</strong></div><div>Kaution bereits beauftragt / erstattet<strong className="block">{eur(data.deposit_used)}</strong></div><div>Miete bereits beauftragt / erstattet<strong className="block">{eur(data.rent_used)}</strong></div><div>Noch zu erstatten<strong className="block">{eur(total)}</strong></div></div>}
       {!total && !data.pending && data.paid_cents > 0 && data.deposit_used+data.rent_used >= data.paid_cents && <p className="font-semibold text-primary">Vollständig erstattet · {eur(data.paid_cents)} · offen 0,00 €</p>}
       {data.blocked_reason && <p className="text-sm text-muted-foreground">{data.blocked_reason}</p>}
       <div className="flex flex-wrap gap-2">
-        {!data.pending && canManageInventory && (total > 0 || openPayout || !hasSettlement) && <Button className="h-11 w-full sm:w-64" onClick={() => data.execution_available && !data.blocked_reason ? start() : setLegacyOpen(true)} disabled={busy}><Undo2 className="mr-2 h-4 w-4"/>Erstattung bearbeiten</Button>}
+        {!actionTarget && refundAction}
         {data.pending && <><p className="text-sm">Erstattung in Bearbeitung – keine weitere Auszahlung starten.</p><Button variant="outline" disabled={busy} onClick={() => void call("order_refund_sync")}><RotateCcw className="mr-2 h-4 w-4"/>Status prüfen</Button></>}
         {resume && <Button variant="outline" disabled={busy} onClick={() => void call("order_refund_execute", { request_id: resume.id, deposit_cents: resume.deposit_cents, rent_cents: resume.rent_cents }).then(onChanged)}>Gespeicherten Versuch fortsetzen</Button>}
         {manual && <><Input aria-label="Auszahlungsnachweis" value={reference} onChange={e => setReference(e.target.value)} placeholder="Auszahlungsnachweis"/><Button disabled={busy || reference.trim().length<3} onClick={() => void call("order_refund_confirm_manual", { request_id: manual.id, reference }).then(onChanged)}>Tatsächliche Auszahlung bestätigen</Button></>}
