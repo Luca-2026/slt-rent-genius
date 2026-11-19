@@ -6723,6 +6723,7 @@ export type Database = {
           price_unit_label: string | null
           price_weekend: string | null
           price_weekend_num: number | null
+          prices_same_all_locations: boolean | null
           pricing_scheme: string | null
           related_slugs: string[] | null
           rental_notes: string[] | null

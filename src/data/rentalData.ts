@@ -244,6 +244,7 @@ export interface Product {
   managedId?: string;
   /** Preisschema und Staffelpreise aus dem CMS (netto). */
   pricingScheme?: "bau" | "event" | "woche";
+  pricesSameAllLocations?: boolean;
   priceShort13Rd?: number | null;
   priceFrom1Week?: number | null;
   priceFrom2Weeks?: number | null;

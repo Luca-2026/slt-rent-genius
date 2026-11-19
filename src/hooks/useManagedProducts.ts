@@ -133,6 +133,7 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
     relatedSlugs: row.related_slugs?.length ? row.related_slugs : undefined,
     managedId: row.id,
     pricingScheme: row.pricing_scheme ?? undefined,
+    pricesSameAllLocations: row.prices_same_all_locations,
     priceShort13Rd: row.price_short_1_3_rd ?? null,
     priceFrom1Week: row.price_from_1_week ?? null,
     priceFrom2Weeks: row.price_from_2_weeks ?? null,

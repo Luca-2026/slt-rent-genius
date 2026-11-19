@@ -1394,6 +1394,13 @@
       "when": 1795078374774,
       "tag": "0198_deposit_settlement_recognize_prior_stripe_refund",
       "breakpoints": true
+    },
+    {
+      "idx": 199,
+      "version": "7",
+      "when": 1795103055477,
+      "tag": "0199_public_product_shared_price_flag",
+      "breakpoints": true
     }
   ]
 }

@@ -1,4 +1,7 @@
-import { formatPriceValue } from "@/components/rental/ProductPriceBlock";
+import { formatPriceValue, RentalPriceTiers } from "@/components/rental/ProductPriceBlock";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import type { LocationPriceRow } from "@/lib/pricing/rentalPricing";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useMemo, useEffect, useState } from "react";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
@@ -41,6 +44,16 @@ export default function B2BProductDetail() {
   const category = useMemo(() => getCategoryById(categoryId || ""), [categoryId]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const product = useMemo(() => getProductById(productId || ""), [productId, cmsVersion]);
+  const { data: locationRows = [] } = useQuery({
+    queryKey: ["public-product-prices", product?.managedId],
+    enabled: !!product?.managedId,
+    staleTime: 60_000,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("public_product_prices" as never).select("*").eq("managed_product_id", product?.managedId as never);
+      if (error) throw error;
+      return (data as unknown as LocationPriceRow[]) ?? [];
+    },
+  });
 
   const discount = useMemo(
     () => (categoryId ? getDiscountForCategory(categoryId) : 0),
@@ -204,6 +217,8 @@ export default function B2BProductDetail() {
             <B2BInquiryCard
               product={product}
               discount={discount}
+              locationId={location.id}
+              locationRows={locationRows}
               onInquiry={() => setInquiryProduct(product)}
             />
           </div>
@@ -452,6 +467,8 @@ export default function B2BProductDetail() {
             <B2BInquiryCard
               product={product}
               discount={discount}
+              locationId={location.id}
+              locationRows={locationRows}
               onInquiry={() => setInquiryProduct(product)}
             />
           </div>
@@ -538,10 +555,14 @@ export default function B2BProductDetail() {
 function B2BInquiryCard({
   product,
   discount,
+  locationId,
+  locationRows,
   onInquiry,
 }: {
   product: Product;
   discount: number;
+  locationId: string;
+  locationRows: LocationPriceRow[];
   onInquiry: () => void;
 }) {
   const hasDiscount = discount > 0;
@@ -579,6 +600,8 @@ function B2BInquiryCard({
           <p className="text-xs text-muted-foreground mt-1">auf den Listenpreis</p>
         </div>
       )}
+
+      {product.managedId && <RentalPriceTiers product={product} location={locationId} locationRows={locationRows} customerType="business" />}
 
       {/* 1h Promise */}
       <div className="flex items-center gap-2 bg-primary/5 rounded-lg p-2.5 border border-primary/10">

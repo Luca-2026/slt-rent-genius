@@ -144,6 +144,7 @@ export function productManagedPrices(product: Product, location?: string | null,
     {
       id: product.managedId ?? null,
       pricing_scheme: product.pricingScheme ?? null,
+      prices_same_all_locations: product.pricesSameAllLocations,
       price_per_day: product.pricePerDay ?? null,
       price_from_1_rd: product.priceFrom1Rd ?? null,
       price_from_3_rd: product.priceFrom3Rd ?? null,
@@ -169,14 +170,16 @@ export interface RentalPriceTiersProps {
   location?: string | null;
   locationRows?: LocationPriceRow[];
   className?: string;
+  customerType?: CustomerType;
 }
 
 /**
  * W1: Block „Preisstaffel“ mit den gepflegten Staffeln (nur gefüllte Stufen).
  * Nur für Artikel ohne Rentware-Code gedacht – die Einblendung steuert die Seite.
  */
-export function RentalPriceTiers({ product, location, locationRows = [], className }: RentalPriceTiersProps) {
-  const { type } = useCustomerType();
+export function RentalPriceTiers({ product, location, locationRows = [], className, customerType }: RentalPriceTiersProps) {
+  const customer = useCustomerType();
+  const type = customerType ?? customer.type;
   const prices = productManagedPrices(product, location, locationRows);
   const rows: Array<{ label: string; value: string }> = [];
   if (product.id === SIGN_PRODUCT_SLUG || product.id === `bonn-${SIGN_PRODUCT_SLUG}`) return null;
