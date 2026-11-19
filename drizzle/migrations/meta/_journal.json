@@ -1387,6 +1387,13 @@
       "when": 1795026198492,
       "tag": "0197_revoke_delete_email_public",
       "breakpoints": true
+    },
+    {
+      "idx": 198,
+      "version": "7",
+      "when": 1795078374774,
+      "tag": "0198_deposit_settlement_recognize_prior_stripe_refund",
+      "breakpoints": true
     }
   ]
 }
