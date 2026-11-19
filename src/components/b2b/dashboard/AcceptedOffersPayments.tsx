@@ -40,7 +40,7 @@ const LABEL: Record<Row["state"], string> = {
 const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30"]);
 
 /** All accepted inquiries awaiting confirmation, including manual acceptance. */
-export function AcceptedOffersPayments({ staffLocation, includeUnassigned = false }: { staffLocation: string | null | undefined; includeUnassigned?: boolean }) {
+export function AcceptedOffersPayments({ staffLocation, includeUnassigned = false, closeoutOnly = false }: { staffLocation: string | null | undefined; includeUnassigned?: boolean; closeoutOnly?: boolean }) {
   const [rows, setRows] = useState<Row[]>([]);
   const seen = useRef<Map<string, Row["state"]> | null>(null);
   const [error, setError] = useState(false);
@@ -80,6 +80,7 @@ export function AcceptedOffersPayments({ staffLocation, includeUnassigned = fals
           returned: (returns.data ?? []).some((p) => p.rental_inquiry_id === i.id && isOperationalProtocolComplete(p.status)),
         };
         const ended = i.table === "rental_inquiries" && needsRentalCloseout(phase, now);
+        if (closeoutOnly && !ended) continue;
         if (!ended && !isAwaitingOfferConfirmation(phase, now)) continue;
         const tasks = ended ? rentalCloseoutTasks({
           deliverySigned: ("closed_manually_at" in i && !!i.closed_manually_at) || (delivery.data ?? []).some((p) => p.rental_inquiry_id === i.id && isOperationalProtocolComplete(p.status)),
@@ -135,7 +136,7 @@ export function AcceptedOffersPayments({ staffLocation, includeUnassigned = fals
       .subscribe();
     const timer = window.setInterval(load, 60_000);
     return () => { active = false; window.clearInterval(timer); supabase.removeChannel(ch); };
-  }, [staffLocation, includeUnassigned]);
+  }, [staffLocation, includeUnassigned, closeoutOnly]);
 
   if (error) return <p role="alert" className="text-sm text-destructive">Angenommene Angebote konnten nicht aktualisiert werden. Bitte lade die Seite erneut.</p>;
   if (!rows.length) return null;

@@ -21,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { INQUIRY_LIST_FILTERS, hasCustomerSignedHandover, isReturnOverdue, isRunningRental, isUpcomingRental, matchesInquiryListFilter, parseInquiryListFilter, DEFAULT_INQUIRY_LIST_FILTER, isMyPendingInquiry, todayIso } from "@/lib/inquiryStatus";
 import { useRentalProtocolStatus } from "@/hooks/useRentalProtocolStatus";
+import { useDepositRefundDues } from "@/hooks/useDepositRefundDues";
 import { type RentalInquiry } from "@/components/b2b/inquiries/types";
 import { getLocationDisplayName } from "@/utils/plzLocationMapping";
 import { NewRentalInquiryDialog } from "@/components/b2b/inquiries/NewRentalInquiryDialog";
@@ -40,8 +41,9 @@ export default function RentalInquiries() {
   const { rows, loading, reload } = useRentalInquiries();
   const location = useLocation();
   const protocols = useRentalProtocolStatus();
+  const deposits = useDepositRefundDues();
   const today = todayIso();
-  const withProtocol = (r: RentalInquiry) => ({ ...r, handed_over: hasCustomerSignedHandover(protocols.byInquiry.get(r.id)?.delivery) });
+  const withProtocol = (r: RentalInquiry) => ({ ...r, handed_over: hasCustomerSignedHandover(protocols.byInquiry.get(r.id)?.delivery), deposit_refund_due: deposits.dues.has(r.id) });
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const openInquiry = (id: string) => {
@@ -80,7 +82,7 @@ export default function RentalInquiries() {
       if (!q) return true;
       return matchesStaffSearch(q, [r.id, r.order_code, r.offer_number, r.order_confirmation_number, r.product_name, r.customer_name, r.customer_email, r.company_name, r.location, r.customer_city]);
     });
-  }, [rows, search, statusFilter, segment, locationFilter, protocols.byInquiry, mineOnly, user?.id]);
+  }, [rows, search, statusFilter, segment, locationFilter, protocols.byInquiry, deposits.dues, mineOnly, user?.id]);
   const myPendingCount = useMemo(() => rows.filter((r) => isMyPendingInquiry(r, user?.id)).length, [rows, user?.id]);
   const toggleMine = () => {
     const next = new URLSearchParams(searchParams);
@@ -216,7 +218,8 @@ export default function RentalInquiries() {
         }}
       />
 
-      {loading || protocols.loading || !filtersInitialized ? (
+      {statusFilter === "deposit_refund" && deposits.error && <p role="alert" className="text-sm text-destructive">Kautionsstände konnten nicht vollständig geladen werden. Bitte die Seite erneut laden.</p>}
+      {loading || protocols.loading || (statusFilter === "deposit_refund" && deposits.loading) || !filtersInitialized ? (
         <p className="text-muted-foreground">Wird geladen …</p>
       ) : filtered.length === 0 ? (
         <p className="text-muted-foreground">Keine Anfragen gefunden.</p>
@@ -237,6 +240,7 @@ export default function RentalInquiries() {
                     <InquirySourceBadges inquiry={r} />
                     {(r as any).availability_pending && <Badge variant="destructive">Verfügbarkeit klären</Badge>}
                     <RentalPhaseBadge inquiry={withProtocol(r)} returned={!!protocols.byInquiry.get(r.id)?.ret} today={today} />
+                    {statusFilter === "deposit_refund" && deposits.dues.get(r.id) && <Badge variant="outline">{deposits.dues.get(r.id)?.stage === "processing" ? "Erstattung in Bearbeitung" : deposits.dues.get(r.id)?.stage === "settlement" ? "Kaution abrechnen" : "Auszahlung offen"} · {deposits.dues.get(r.id)?.amount.toLocaleString("de-DE", { style: "currency", currency: "EUR" })}</Badge>}
                   </div>
                   <p className="text-sm text-muted-foreground break-words">
                     {r.company_name ? `${r.company_name} · ` : ""}

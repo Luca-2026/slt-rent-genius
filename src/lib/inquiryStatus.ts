@@ -82,7 +82,7 @@ export function isUnprocessedInquiry(row: { status: unknown; assigned_to?: strin
   return !row.assigned_to && (s === "new" || s === "in_progress");
 }
 
-export type InquiryListFilter = "unprocessed" | "working" | "offer_sent" | "accepted" | "upcoming" | "running" | "completed" | "rejected" | "cancelled" | "all";
+export type InquiryListFilter = "unprocessed" | "working" | "offer_sent" | "accepted" | "upcoming" | "running" | "deposit_refund" | "completed" | "rejected" | "cancelled" | "all";
 
 type ListRow = {
   status: unknown;
@@ -93,6 +93,7 @@ type ListRow = {
   offer_payload?: unknown;
   /** Übergabeprotokoll ist vom Kunden unterschrieben. */
   handed_over?: boolean;
+  deposit_refund_due?: boolean;
 };
 
 /** Mitarbeiterunterschrift oder Entwurf ersetzen die Kundenunterschrift nicht. */
@@ -142,6 +143,7 @@ export const INQUIRY_LIST_FILTERS: { value: InquiryListFilter; label: string }[]
   { value: "accepted", label: "Angenommen (Auftragsbestätigung offen)" },
   { value: "upcoming", label: "Bestätigt – Mietbeginn steht bevor" },
   { value: "running", label: "Laufende Mietvorgänge" },
+  { value: "deposit_refund", label: "Kaution zu erstatten" },
   { value: "completed", label: "Abgeschlossen (abgerechnet)" },
   { value: "rejected", label: "Abgelehnt" },
   { value: "cancelled", label: "Storniert" },
@@ -161,6 +163,7 @@ export function matchesInquiryListFilter(
     case "accepted": return s === "accepted" && !row.order_confirmed_at;
     case "upcoming": return isUpcomingRental(row, today);
     case "running": return isRunningRental(row, today);
+    case "deposit_refund": return row.deposit_refund_due === true;
     case "completed": return s === "done";
     case "rejected": return s === "rejected";
     case "cancelled": return s === "cancelled";

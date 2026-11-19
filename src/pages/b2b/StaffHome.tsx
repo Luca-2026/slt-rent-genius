@@ -25,8 +25,8 @@ import { usePhoneCalls, isUrgentCall } from "@/hooks/usePhoneCalls";
 import { priorityDisplayLabel } from "@/lib/callPriority";
 import { DAY_LOCATION_OPTIONS, defaultDayLocation, filterByDayLocation, type DayLocationFilter } from "@/lib/dayLocationFilter";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AcceptedOffersPayments } from "@/components/b2b/dashboard/AcceptedOffersPayments";
 import { DepositSettlementsDue } from "@/components/b2b/dashboard/DepositSettlementsDue";
+import { AcceptedOffersPayments } from "@/components/b2b/dashboard/AcceptedOffersPayments";
 import { DayEntryCard } from "@/components/b2b/calendar/DayEntryCard";
 import { CalendarLegend } from "@/components/b2b/calendar/CalendarLegend";
 import { buildCalendarEntries, groupEntriesByDay, workingDayWindowEnd, workingDaysInWindow, effectiveEnd, hasInvalidRentalPeriod, normalizeLoc, type DayEntry } from "@/lib/calendarEntries";
@@ -387,9 +387,8 @@ export default function StaffHome() {
             )}
           </div>
 
-          <AcceptedOffersPayments staffLocation={staffProfile?.location} includeUnassigned={isAdmin} />
-
           <DepositSettlementsDue location={activeDayLocation} />
+          <AcceptedOffersPayments staffLocation={staffProfile?.location} includeUnassigned={isAdmin} closeoutOnly />
 
           <UrgentCalls />
 
