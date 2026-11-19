@@ -726,6 +726,9 @@ export default function ProductDetail() {
                   categoryId={categoryId}
                   onBook={() => setShowBookingDialog(true)}
                   dailyPriceFrom={productSEO?.dailyPriceFrom}
+                  showTierPrices={showTierPrices}
+                  tierProduct={rawProduct ?? product}
+                  locationRows={locationPriceRows ?? []}
                   t={t}
                 />
               </div>
@@ -1472,6 +1475,9 @@ function MobileBookingCard({
   categoryId,
   onBook,
   dailyPriceFrom,
+  showTierPrices,
+  tierProduct,
+  locationRows,
   t,
 }: {
   product: Product;
@@ -1479,6 +1485,9 @@ function MobileBookingCard({
   categoryId?: string;
   onBook: () => void;
   dailyPriceFrom?: number;
+  showTierPrices: boolean;
+  tierProduct: Product;
+  locationRows: LocationPriceRow[];
   t: (key: string) => string;
 }) {
   if (!location) return null;
@@ -1490,7 +1499,9 @@ function MobileBookingCard({
             product={product}
             dailyPriceFrom={dailyPriceFrom}
             perDayLabel={t("rental.perDay")}
+            hideExtras={showTierPrices}
           />}
+          {showTierPrices && <RentalPriceTiers product={tierProduct} location={location.id} locationRows={locationRows} className="mt-3 border-t border-border pt-3" />}
 
           {showPrice && <p className="text-[11px] text-muted-foreground mt-1">{product.pricePerMonth && product.minRentalMonths ? `Mindestbuchungszeit ${product.minRentalMonths} Monate` : ""}</p>}
         </div>
