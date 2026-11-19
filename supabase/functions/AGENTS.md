@@ -1,5 +1,6 @@
 # Edge function rules
 - Sales delivery notes use sales-delivery-note and immutable sales_delivery_notes with existing operation permissions; PDFs share the legal footer, preserve originals and record digital signatures or uploaded signed paper, without rental or payment side effects.
+- New sales delivery PDFs use the invoice's DIN-5008 Form-B geometry, branded header and structured postal lines; legacy snapshots remain readable and issued originals are never regenerated on opening.
 - Sales delivery eligibility is shared with the UI: completed sales without an AB require an issued uncredited full/final invoice matching the offer; new notes freeze invoice goods/customer facts without reopening the order.
 - Legacy portal activation and device-return eligibility require a signed customer delivery note; planned dates and historic active flags are not evidence, and terminal reservations are never reactivated.
 - Manual return reminders use claim_rental_return_reminder and send-transactional-email with server-owned recipient/branch snapshots, Berlin operational deadlines, explicit no-response confirmation and durable stage IDs; no scheduler initiates reminders, and only provider-accepted first reminders enable escalation.
