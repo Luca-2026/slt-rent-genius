@@ -21,3 +21,4 @@
 - SalesArticleEditorDialog uses salesArticleEditing for optional model validation and independent hidden copies; copy IDs/slugs are fresh, reference identifiers cleared, and protected costs are copied only with existing cost permission, preventing source edits or accidental publication.
 - Sales article fields opt out of browser autocomplete with article-specific input names; browser contact/address suggestions must not populate unrelated product fields. Manufacturer/category datalist suggestions remain available.
 - Prefilled sales copies start against the empty-form baseline until their first successful upsert, so unchanged copies are created independently of protected cost data and retain normal serialized autosave/retry handling.
+- Sales editor child components have stable module-level identities; field changes and focusout autosaves must not remount controls, because Radix can redirect focus to the dialog during a pointer field switch.

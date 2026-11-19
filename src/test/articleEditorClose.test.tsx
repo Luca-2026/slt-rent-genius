@@ -29,6 +29,31 @@ beforeEach(() => {
 afterEach(() => { cleanup(); localStorage.clear(); vi.unstubAllGlobals(); });
 
 describe("incomplete article editors", () => {
+  it.each(["new", "used"] as const)("keeps %s field-switch focus during focusout autosaves", async (kind) => {
+    render(<SalesArticleEditorDialog open kind={kind} row={null} onOpenChange={vi.fn()} onSaved={vi.fn()} />);
+    const brand = screen.getByLabelText("Hersteller / Marke");
+    const category = screen.getByLabelText("Kategorie");
+    const model = screen.getByLabelText("Modell (optional)");
+    fireEvent.change(brand, { target: { value: "Schrankenzaun RA1" } });
+    fireEvent.change(category, { target: { value: "Absperrtechnik" } });
+    await waitFor(() => expect(mocks.upsert).toHaveBeenCalled(), { timeout: 3000 });
+    // Browser field switch: the old field blurs before the next field focuses.
+    // A save-state render must not remove child controls in this gap.
+    await act(async () => {
+      category.focus();
+      // jsdom reports body as relatedTarget; browsers report null during
+      // pointer switches. Suppress that synthetic focusout, then emit null.
+      category.addEventListener("focusout", (event) => event.stopPropagation(), { once: true });
+      category.blur();
+      fireEvent.focusOut(category, { relatedTarget: null });
+      await Promise.resolve();
+    });
+    expect(document.activeElement).toBe(document.body);
+    act(() => model.focus());
+    fireEvent.change(model, { target: { value: "RA1" } });
+    await waitFor(() => expect(mocks.upsert).toHaveBeenLastCalledWith(expect.objectContaining({ model: "RA1" })), { timeout: 3000 });
+    expect(document.activeElement).toBe(model);
+  });
   it.each([
     ["new", true], ["new", false], ["used", true], ["used", false],
   ] as const)("creates an unchanged %s copy with cost permission %s before closing", async (kind, canEditCosts) => {

@@ -121,6 +121,22 @@ function toFaqList(raw: unknown): Faq[] {
     .filter((f): f is Faq => f !== null);
 }
 
+type SalesContentField = "short_description" | "description" | "seo_title" | "seo_description" | "faqs" | "highlights";
+
+// Stable component identity: recreating this component inside the editor
+// removes buttons on every keystroke and interrupts Radix's field focus.
+function SalesAiButton({ field, readOnly, aiField, generate }: {
+  field: SalesContentField;
+  readOnly?: boolean;
+  aiField: string | null;
+  generate: (field: SalesContentField) => Promise<void>;
+}) {
+  return <Button type="button" variant="outline" size="sm" disabled={readOnly || aiField !== null} onClick={() => generate(field)}>
+    {aiField === field ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+    <span className="ml-1">KI</span>
+  </Button>;
+}
+
 export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySourceId, readOnly, onOpenChange, onSaved }: Props) {
   const { canEditCosts } = useStaffAccess();
   const costsLocked = readOnly || !canEditCosts;
@@ -538,13 +554,6 @@ export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySource
     enabled: open && !readOnly && costsLoaded && !pendingFormRef.current && !uploading && !aiField,
     save: (snapshot) => save(snapshot, true) });
 
-  const AiButton = ({ field }: { field: Parameters<typeof generate>[0] }) => (
-    <Button type="button" variant="outline" size="sm" disabled={readOnly || aiField !== null} onClick={() => generate(field)}>
-      {aiField === field ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
-      <span className="ml-1">KI</span>
-    </Button>
-  );
-
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) requestClose(); else onOpenChange(true); }}>
       <DialogContent
@@ -738,7 +747,7 @@ export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySource
                   <div>
                     <div className="flex items-center justify-between">
                       <Label htmlFor="sa-short">Kurzbeschreibung</Label>
-                      <AiButton field="short_description" />
+                      <SalesAiButton field="short_description" readOnly={readOnly} aiField={aiField} generate={generate} />
                     </div>
                     <Textarea id="sa-short" rows={2} value={form.short_description} disabled={readOnly} onChange={(e) => set("short_description", e.target.value)} maxLength={400} />
                   </div>
@@ -748,7 +757,7 @@ export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySource
               <div>
                 <div className="flex items-center justify-between">
                   <Label htmlFor="sa-desc">Beschreibung</Label>
-                  <AiButton field="description" />
+                  <SalesAiButton field="description" readOnly={readOnly} aiField={aiField} generate={generate} />
                 </div>
                 <Textarea id="sa-desc" rows={7} value={form.description} disabled={readOnly} onChange={(e) => set("description", e.target.value)} maxLength={6000} />
               </div>
@@ -863,7 +872,7 @@ export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySource
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label>Highlights</Label>
-                  <AiButton field="highlights" />
+                  <SalesAiButton field="highlights" readOnly={readOnly} aiField={aiField} generate={generate} />
                 </div>
                 {form.highlights.map((h, i) => (
                   <div key={i} className="flex gap-2">
@@ -886,14 +895,14 @@ export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySource
               <div>
                 <div className="flex items-center justify-between">
                   <Label htmlFor="sa-seotitle">SEO-Title</Label>
-                  <AiButton field="seo_title" />
+                  <SalesAiButton field="seo_title" readOnly={readOnly} aiField={aiField} generate={generate} />
                 </div>
                 <Input id="sa-seotitle" value={form.seo_title} disabled={readOnly} onChange={(e) => set("seo_title", e.target.value)} maxLength={120} />
               </div>
               <div>
                 <div className="flex items-center justify-between">
                   <Label htmlFor="sa-seodesc">Meta-Description</Label>
-                  <AiButton field="seo_description" />
+                  <SalesAiButton field="seo_description" readOnly={readOnly} aiField={aiField} generate={generate} />
                 </div>
                 <Textarea id="sa-seodesc" rows={3} value={form.seo_description} disabled={readOnly} onChange={(e) => set("seo_description", e.target.value)} maxLength={300} />
               </div>
@@ -901,7 +910,7 @@ export function SalesArticleEditorDialog({ open, kind, row, copyFrom, copySource
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label>FAQ</Label>
-                  <AiButton field="faqs" />
+                  <SalesAiButton field="faqs" readOnly={readOnly} aiField={aiField} generate={generate} />
                 </div>
                 {form.faqs.map((faq, i) => (
                   <div key={i} className="space-y-2 rounded-md border border-border p-2">
