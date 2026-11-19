@@ -44,6 +44,31 @@ Keine unbehandelten Browserfehler und kein horizontaler Seitenüberlauf in diese
 - Abschlusskontrolle: keine Testartikel dieser Prüfung mehr vorhanden. Vorhandene Verkaufsartikel, Mietartikel, Belege, Rechte und Einstellungen unverändert.
 
 ## Prüfgrenzen und Veröffentlichung
+## Ergänzende Verkaufs-Nachprüfung
+Regel: Verkaufsartikelfelder müssen beim Tippen, Feldwechsel und automatischen Speichern bedienbar bleiben; die Eingaben dürfen dabei nicht verloren gehen.
+
+Die folgenden Stellen wurden in dieser Nachprüfung im Code gelesen. „Code gelesen“ ist kein zusätzlicher vollständiger Live-Test:
+
+| Stelle / Ablauf | Befund zur gemeldeten Feldsperre |
+|---|---|
+| Neu- und Gebrauchtartikel: Basis, Technik/Bilder, Highlights, SEO und FAQ | Alle sechs KI-Schaltflächen verwenden die korrigierte stabile Komponente. Eingabefelder bleiben unabhängig vom laufenden Autosave bedienbar. |
+| Kopieren und bestehende Artikel bearbeiten | Derselbe korrigierte Editor; eigene Kopier-ID, keine erneute Initialisierung durch Listenaktualisierungen. |
+| Artikelübersicht: Suche, Kategorie, Öffnen, Sichtbarkeit, Löschen | Suche ist ein stabiles Eingabefeld außerhalb des Dialogs; keine zusätzliche Artikelbearbeitungsmaske. Listenkarte enthält keine Texteingabe. |
+| Technische Daten / Zeilensortierung | Stabil definierte Zeilenkomponente; Ziehen nur am Griff, Texteingaben werden nicht durch laufendes Speichern deaktiviert. |
+| Entwurf, Schließen, Wiederöffnen, Online-Wiederholung | Formularentwurf und serialisierte Speicherung vorhanden; kein weiterer Fokuswechsel im Speichermechanismus. Einkaufspreise werden bewusst nicht im allgemeinen lokalen Formularentwurf gespeichert. |
+| Bild-Upload und KI-Vorschläge | Nur die jeweilige Aktion ist während ihres Aufrufs gesperrt; übrige Texteingaben bleiben bedienbar. Kein erneuter echter Upload/KI-Aufruf. |
+| Manuelle Verkaufsanfrage und Verkaufsartikel-Auswahl | Eigener Dialog und Suchauswahl mit stabilen Eingabefeldern; keine Artikel-Autosave-Feldsperre. |
+| Verkaufsangebot / AB-Überarbeitung: Katalogsuche und Positionsbeschreibung | Gemeinsame Verkaufsartikelauswahl; Beschreibungsfeld direkt gerendert, Abschnittskomponente außerhalb des Formulars definiert. Kein zusätzliches Modell-Pflichtfeld im Auswahlweg. Nur relevante Verkaufsauswahl-/Eingabeblöcke gelesen, kein vollständiger neuer Dokumentabschluss. |
+| Öffentliche Neuartikel-Detailanfrage, Gebrauchtartikel-/allgemeine Suchanfrage | Eigene Dialoge ohne Artikel-Autosave; direkte Eingabefelder. Lokale Fehlermeldungskomponenten zeigen bei gültiger Eingabe keine Elemente und entsprechen nicht der nachgewiesenen Ursache durch ständig entfernte KI-Buttons. |
+| Allgemeine Neumaschinen-Kaufanfrage | Anders aufgebautes Seitenformular mit direkt gerenderten Eingaben; Kategorie bewusst erst nach Markenwahl auswählbar, Modell optional. Keine automatische Artikelspeicherung. |
+| Öffentliche Verkaufslisten, Detailseiten, Startseitenvorschauen | Quellen und Eingabestellen ermittelt: Artikel werden dort gelesen bzw. für Anfragen ausgewählt, nicht als CMS-Artikel bearbeitet. Keine zweite Artikelmaske. Keine erneute vollständige Prüfung aller Seitentexte oder Dokumente. |
+| Anfrage-Speicherfunktionen und gemeinsamer inquiry-store | Speichern eigene Verkaufsanfragen, nicht die Artikelmaske; kein clientseitiger Cursorzugriff. |
+| Live-Datenbankfunktionen und Artikeltrigger | Katalogabfrage: keine Public-Funktion referenziert new_machines/used_machines. Die beiden vorhandenen app-eigenen Trigger für Neuartikel und Einkaufskosten aktualisieren nur updated_at; kein Bearbeitungszwang oder Fokuszugriff. |
+| Hintergrundjobs | Keine direkte Cron-Referenz auf Neu-/Gebrauchtartikel oder Verkaufsartikelkosten; im Funktionscode keine direkte Verwendung dieser Artikeltabellen. Indirekte Dokument-/Mailjobs wurden nicht insgesamt als funktionsgeprüft erklärt. |
+
+Keine weitere Stelle mit derselben belegten Feldsperrenursache gefunden; deshalb keine zusätzlichen Verhaltens-, Daten- oder Rechteänderungen. Die ursprünglichen Prüfgrenzen unten bleiben bestehen.
+
+## Verbleibende Prüfgrenzen und Veröffentlichung
 - Geprüft wurde Chromium mit den drei genannten Bildschirmgrößen, nicht natives Safari auf einem echten iPhone/iPad.
 - Andere Mitarbeiterkonten wurden nicht separat angemeldet; bestehende Rechte wurden nicht verändert.
 - Bild-Upload, KI-Generierung und anschließender Angebots-/Rechnungsversand waren nicht Gegenstand dieser Feldsperrenprüfung und wurden nicht neu ausgeführt.
