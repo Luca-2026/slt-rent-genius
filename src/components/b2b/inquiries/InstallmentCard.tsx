@@ -17,9 +17,10 @@ import { useToast } from "@/hooks/use-toast";
 import { formatEuro, VAT_RATE } from "./offerMath";
 import {
   billedInstallmentNet, installmentDeductions, installmentPeriod, isInstallmentDue,
-  monthlyNetFromOffer, percentOf, sumDeductions, validateInstallment, type InstallmentInvoiceRow,
+  monthlyNetFromOffer, sumDeductions, validateInstallment, type InstallmentInvoiceRow,
 } from "@/lib/installments";
 import { isoDay } from "@/lib/dashboardMetrics";
+import { buildInstallmentPositions, offeredInstallmentPositions } from "../../../../supabase/functions/_shared/installment-positions";
 
 const PAYMENT_OPTIONS = [
   { value: "net_14", label: "Zahlbar innerhalb von 14 Tagen" },
@@ -64,8 +65,10 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
 
   // Dialog
   const [open, setOpen] = useState(false);
-  const [mode, setMode] = useState<"amount" | "percent">("amount");
-  const [value, setValue] = useState("");
+  const [quantities, setQuantities] = useState<string[]>([]);
+  const offeredPositions = useMemo(() => {
+    try { return offeredInstallmentPositions(offerPayload); } catch { return []; }
+  }, [offerPayload]);
   const [periodStart, setPeriodStart] = useState("");
   const [periodEnd, setPeriodEnd] = useState("");
   const [terms, setTerms] = useState(inquiry.customer_kind === "business" ? "net_14" : "vorkasse");
@@ -113,18 +116,23 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
     const p = installmentPeriod(start, Number(inquiry.installment_interval_months) || 1, inquiry.installment_interval_days === 28 ? 28 : interval === "28d" ? 28 : null);
     setPeriodStart(p.start);
     setPeriodEnd(p.end);
-    setMode("amount");
-    setValue(suggestion ? String(suggestion) : "");
+    setQuantities(offeredPositions.map(position => String(position.quantity)));
+    const agreedTerms = (inquiry.offer_payload as { payment_terms?: string } | null)?.payment_terms;
+    setTerms(inquiry.customer_kind === "business" && PAYMENT_OPTIONS.some(option => option.value === agreedTerms) ? agreedTerms as string : "vorkasse");
     setNotes("");
     setPreviewedKey(null);
     setPreviewUrl(null);
     setOpen(true);
   };
 
-  const parsed = Number(value.replace(",", ".")) || 0;
-  const net = mode === "percent" ? percentOf(orderNet ?? 0, parsed) : r2(parsed);
-  const vat = r2(net * VAT_RATE / 100);
-  const problem = validateInstallment(net, { openEnded, orderNet, alreadyBilledNet: billedNet });
+  const decisions = quantities.map((quantity, index) => ({ index, quantity: quantity.trim() ? Number(quantity.replace(",", ".")) : NaN }));
+  let calculation: ReturnType<typeof buildInstallmentPositions> | undefined;
+  let positionProblem: string | null = null;
+  try { calculation = buildInstallmentPositions(offerPayload, decisions); }
+  catch (error) { positionProblem = error instanceof Error ? error.message : "Bitte Positionsmengen prüfen."; }
+  const net = calculation?.totals.netAmount ?? 0;
+  const vat = calculation?.totals.vatAmount ?? 0;
+  const problem = positionProblem || validateInstallment(net, { openEnded, orderNet, alreadyBilledNet: billedNet });
 
   const buildBody = () => ({
         invoice_kind: "installment",
@@ -132,6 +140,8 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
         inquiry_id: inquiry.id,
         location: inquiry.location,
         installment_net: net,
+        installment_positions: decisions,
+        installment_offer_updated_at: inquiry.updated_at,
         service_period_start: periodStart || null,
         service_period_end: periodEnd || null,
         payment_terms: terms,
@@ -258,7 +268,7 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-3xl max-h-[90dvh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Abschlagsrechnung erstellen</DialogTitle>
             <DialogDescription>
@@ -266,15 +276,20 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
-            <div className="flex gap-2">
-              <Button size="sm" type="button" variant={mode === "amount" ? "default" : "outline"} onClick={() => setMode("amount")}>Betrag</Button>
-              <Button size="sm" type="button" variant={mode === "percent" ? "default" : "outline"} disabled={!orderNet} onClick={() => setMode("percent")}>
-                Prozent vom Auftrag
-              </Button>
-            </div>
-            <div>
-              <Label className="text-xs">{mode === "percent" ? "Prozent des Auftragswerts (netto)" : "Betrag netto"}</Label>
-              <Input inputMode="decimal" value={value} onChange={(e) => setValue(e.target.value)} />
+            <div className="divide-y divide-border">
+              {offeredPositions.map((position, index) => (
+                <div key={index} className="py-3 space-y-2">
+                  <div className="font-medium break-words">{index + 1}. {position.product_name}</div>
+                  {position.description && <p className="text-xs text-muted-foreground break-words">{position.description}</p>}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 items-end">
+                    <div><Label htmlFor={`installment-quantity-${index}`} className="text-xs">Menge ({position.unit || "Stück"})</Label>
+                      <Input id={`installment-quantity-${index}`} aria-label={`Menge ${position.product_name}`} inputMode="decimal" value={quantities[index] ?? ""} onChange={(e) => setQuantities(current => current.map((value, i) => i === index ? e.target.value : value))} />
+                    </div>
+                    <div className="text-xs"><span className="text-muted-foreground">Einzelpreis netto</span><div>{formatEuro(position.unit_price)}{position.discount_percent > 0 && <span className="block text-muted-foreground">− {position.discount_percent} % Rabatt</span>}</div></div>
+                    <div className="text-sm sm:text-right"><span className="text-xs text-muted-foreground">Gesamt netto</span><div>{formatEuro(r2((decisions[index]?.quantity || 0) * position.unit_price * (1 - position.discount_percent / 100)))}</div></div>
+                  </div>
+                </div>
+              ))}
             </div>
             <div className="grid gap-2 sm:grid-cols-2">
               <div>
@@ -304,7 +319,7 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
               <div className="flex justify-between text-muted-foreground"><span>USt. {VAT_RATE} %</span><span>{formatEuro(vat)}</span></div>
               <div className="flex justify-between font-semibold"><span>Brutto</span><span>{formatEuro(r2(net + vat))}</span></div>
             </div>
-            {problem && value && <p className="text-xs text-destructive">{problem}</p>}
+            {problem && <p className="text-xs text-destructive" role="alert">{problem}</p>}
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>Abbrechen</Button>

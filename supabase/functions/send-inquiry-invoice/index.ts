@@ -4,6 +4,7 @@ import { allPaymentsByBank, hasBankDiscountPolicy } from "../_shared/bank-transf
 import { invoiceBankDiscount } from "../_shared/invoice-bank-discount.ts";
 import { rentalFeedbackEmail } from "../_shared/feedback-coupons.ts";
 import { invoiceNumberForGeneration } from "../_shared/invoice-preview.ts";
+import { buildInstallmentPositions } from "../_shared/installment-positions.ts";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
@@ -264,7 +265,15 @@ Deno.serve(async (req: Request) => {
       const priorRows = (prior ?? []) as InstallmentInvoiceRow[];
       if (invoiceKind === "installment") {
         installmentNumber = nextInstallmentNumber(priorRows);
-        const net = Math.round((Number(body.installment_net) || 0) * 100) / 100;
+        let net = Math.round((Number(body.installment_net) || 0) * 100) / 100;
+        if (body.installment_positions !== undefined) {
+          if (body.installment_offer_updated_at !== inquiry.updated_at) return json({ error: "Der Auftrag wurde zwischenzeitlich geändert. Bitte neu laden und die Abschlagsrechnung erneut prüfen." }, 409);
+          try {
+            const calculated = buildInstallmentPositions(inquiry.offer_payload, body.installment_positions);
+            body.items = calculated.items;
+            net = calculated.totals.netAmount;
+          } catch (error) { return json({ error: error instanceof Error ? error.message : "Ungültige Abschlagspositionen" }, 400); }
+        }
         const offerNet = Number((inquiry.offer_payload as { totals?: { netAmount?: number } } | null)?.totals?.netAmount) || null;
         const problem = validateInstallment(net, {
           openEnded: Boolean(inquiry.installment_open_ended),
@@ -275,7 +284,7 @@ Deno.serve(async (req: Request) => {
         if (!inquiry.offer_number) return json({ error: "Abschlagsrechnungen setzen ein Angebot voraus" }, 400);
         const ps = str(body.service_period_start, 10);
         const pe = str(body.service_period_end, 10);
-        body.items = [{
+        if (body.installment_positions === undefined) body.items = [{
           product_name: `${installmentNumber}. Abschlag auf Angebot ${inquiry.offer_number}`,
           description: ps
             ? `Abschlagszahlung für den Leistungszeitraum ${new Date(ps).toLocaleDateString("de-DE")}${pe ? ` – ${new Date(pe).toLocaleDateString("de-DE")}` : ""}`
@@ -336,9 +345,11 @@ Deno.serve(async (req: Request) => {
       if (discountPolicy.selected === "bank" && body.deposit_settlement !== true) {
         if (!allPaymentsByBank(inquiry.payments)) return json({ error: "Gemischte Zahlungen: zuerst Zahlungsart und Belege korrigieren." }, 409);
       }
-      const invoiceDiscount = invoiceBankDiscount(items, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + returnLocationCost, discountPolicy, invoiceKind, body.deposit_settlement === true);
-      items = invoiceDiscount.items;
-      notes = [notes, invoiceDiscount.note].filter(Boolean).join("\n\n");
+      if (invoiceKind !== "installment" || body.installment_positions === undefined) {
+        const invoiceDiscount = invoiceBankDiscount(items, deliveryCostDelivery + deliveryCostReturn + setupCost + dismantleCost + returnLocationCost, discountPolicy, invoiceKind, body.deposit_settlement === true);
+        items = invoiceDiscount.items;
+        notes = [notes, invoiceDiscount.note].filter(Boolean).join("\n\n");
+      }
     }
     const totals = buildOfferTotals(
       items,
