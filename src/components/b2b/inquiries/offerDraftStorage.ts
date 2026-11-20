@@ -88,10 +88,20 @@ export async function fetchServerDraft(key: string): Promise<ServerInquiryDraft 
   };
 }
 
-export async function saveServerDraft(key: string, inquiryType: string, inquiryId: string, data: Record<string, unknown>) {
-  const me = await currentStaff();
-  if (!me) return;
-  await supabase.from("inquiry_doc_drafts").upsert({
+const draftWrites = new Map<string, Promise<void>>();
+function enqueueDraftWrite(key: string, operation: () => Promise<void>): Promise<void> {
+  const pending = (draftWrites.get(key) ?? Promise.resolve()).catch(() => undefined).then(operation);
+  draftWrites.set(key, pending);
+  const cleanup = () => { if (draftWrites.get(key) === pending) draftWrites.delete(key); };
+  void pending.then(cleanup, cleanup);
+  return pending;
+}
+
+export function saveServerDraft(key: string, inquiryType: string, inquiryId: string, data: Record<string, unknown>) {
+  return enqueueDraftWrite(key, async () => {
+    const me = await currentStaff();
+    if (!me) throw new Error("Deine Anmeldung ist abgelaufen. Der gemeinsame Entwurf wurde nicht gespeichert.");
+    const { error } = await supabase.from("inquiry_doc_drafts").upsert({
     draft_key: key,
     inquiry_type: inquiryType,
     inquiry_id: inquiryId,
@@ -99,11 +109,16 @@ export async function saveServerDraft(key: string, inquiryType: string, inquiryI
     updated_by: me.uid,
     updated_by_name: me.name,
     updated_at: new Date().toISOString(),
+    });
+    if (error) throw new Error(error.message);
   });
 }
 
-export async function deleteServerDraft(key: string) {
-  await supabase.from("inquiry_doc_drafts").delete().eq("draft_key", key);
+export function deleteServerDraft(key: string) {
+  return enqueueDraftWrite(key, async () => {
+    const { error } = await supabase.from("inquiry_doc_drafts").delete().eq("draft_key", key);
+    if (error) throw new Error(error.message);
+  });
 }
 
 /** Alle offenen Server-Entwürfe einer Anfrage (für Hinweise im Auftrag). */

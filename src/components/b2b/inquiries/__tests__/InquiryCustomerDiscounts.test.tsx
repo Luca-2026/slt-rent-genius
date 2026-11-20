@@ -14,8 +14,8 @@ vi.mock("../offerDraftStorage", () => ({
   inquiryDraftKey: () => "test-draft",
   readInquiryDraft: () => fixtures.draft,
   fetchServerDraft: async () => null,
-  writeInquiryDraft: vi.fn(), saveServerDraft: vi.fn(),
-  clearInquiryDraft: vi.fn(), deleteServerDraft: vi.fn(),
+  writeInquiryDraft: vi.fn(), saveServerDraft: vi.fn().mockResolvedValue(undefined),
+  clearInquiryDraft: vi.fn(), deleteServerDraft: vi.fn().mockResolvedValue(undefined),
 }));
 vi.mock("@/integrations/supabase/client", () => ({ supabase: {
   auth: { getUser: async () => ({ data: { user: { id: "staff" } } }) },

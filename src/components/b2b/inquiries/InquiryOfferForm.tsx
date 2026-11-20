@@ -783,8 +783,7 @@ export function InquiryOfferForm({
   /** Entwurf laufend sichern (leicht verzögert, damit Tippen nicht bremst). */
   useEffect(() => {
     if (disabled) return;
-    const timer = window.setTimeout(() => {
-      const snapshot = {
+    const snapshot = {
         ...(isAmendment ? { agreementNote, agreedAt } : {}),
         periodRecalculations,
         couponCode,
@@ -819,10 +818,13 @@ export function InquiryOfferForm({
         differentReturn,
         termsText,
       };
-      // Reines Öffnen (noch ohne CMS-Preise) darf keinen Entwurf anlegen – sonst überschreibt er beim nächsten Laden die Preise.
-      if (userTouchedRef.current || draftRef.current) writeInquiryDraft(draftKey, snapshot);
+    // Lokale Sicherung darf nicht auf den verzögerten Serverlauf warten.
+    if (userTouchedRef.current || draftRef.current) writeInquiryDraft(draftKey, snapshot);
+    const timer = window.setTimeout(() => {
       if (userTouchedRef.current) {
-        void saveServerDraft(draftKey, inquiryType, inquiryId, snapshot);
+        void saveServerDraft(draftKey, inquiryType, inquiryId, snapshot).catch(() => {
+          toast({ title: "Gemeinsamer Entwurf nicht gespeichert", description: "Die Eingaben bleiben auf diesem Gerät erhalten. Bitte Verbindung und Anmeldung prüfen und erneut versuchen.", variant: "destructive" });
+        });
       }
       dirtyRef.current = true;
     }, 1200);
@@ -870,10 +872,13 @@ export function InquiryOfferForm({
 
   /** Entwurf verwerfen und Formular auf die Ausgangswerte zurücksetzen. */
   const discardDraft = () => {
+    userTouchedRef.current = false;
     setAgreementNote("");
     setAgreedAt(currentAgreementTime());
     clearInquiryDraft(draftKey);
-    void deleteServerDraft(draftKey);
+    void deleteServerDraft(draftKey).catch(() => {
+      toast({ title: "Gemeinsamer Entwurf nicht gelöscht", description: "Bitte erneut verwerfen, bevor du den Auftrag verlässt.", variant: "destructive" });
+    });
     dirtyRef.current = false;
     setRemoteDraft(null);
     draftRef.current = null;
@@ -1557,7 +1562,9 @@ export function InquiryOfferForm({
     userTouchedRef.current = false;
     dirtyRef.current = false;
     clearInquiryDraft(draftKey);
-    void deleteServerDraft(draftKey);
+    void deleteServerDraft(draftKey).catch(() => {
+      toast({ title: "Alter Entwurf noch vorhanden", description: "Der Abschluss war erfolgreich, aber der alte gemeinsame Entwurf konnte nicht entfernt werden. Bitte diesen nicht erneut übernehmen.", variant: "destructive" });
+    });
     draftRef.current = null;
     setDraftRestored(false);
     onSent?.();

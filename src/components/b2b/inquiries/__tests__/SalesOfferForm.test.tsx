@@ -8,16 +8,18 @@ const fixtures = vi.hoisted(() => ({
   invoke: vi.fn(),
   queries: vi.fn(),
   saveDraft: vi.fn(),
+  localWrite: vi.fn(),
+  toast: vi.fn(),
   remote: null as null | { data: Record<string, unknown>; updatedBy: string; updatedAt: string },
 }));
-vi.mock("@/hooks/use-toast", () => ({ useToast: () => ({ toast: vi.fn() }) }));
+vi.mock("@/hooks/use-toast", () => ({ useToast: () => ({ toast: fixtures.toast }) }));
 vi.mock("@/lib/invokeWithAuth", () => ({ invokeWithAuth: fixtures.invoke }));
 vi.mock("../offerDraftStorage", () => ({
   inquiryDraftKey: () => "test-draft",
   readInquiryDraft: () => fixtures.draft,
   fetchServerDraft: async () => fixtures.remote,
-  writeInquiryDraft: vi.fn(), saveServerDraft: fixtures.saveDraft,
-  clearInquiryDraft: vi.fn(), deleteServerDraft: vi.fn(),
+  writeInquiryDraft: fixtures.localWrite, saveServerDraft: fixtures.saveDraft,
+  clearInquiryDraft: vi.fn(), deleteServerDraft: vi.fn().mockResolvedValue(undefined),
 }));
 vi.mock("@/integrations/supabase/client", () => ({ supabase: {
   auth: { getUser: async () => ({ data: { user: { id: "staff" } } }) },
@@ -59,13 +61,37 @@ function open(props: Partial<React.ComponentProps<typeof InquiryOfferForm>> = {}
 function discounts() {
   return screen.getAllByRole("spinbutton").filter((input) => input.getAttribute("max") === "100") as HTMLInputElement[];
 }
-beforeEach(() => { fixtures.draft = null; fixtures.remote = null; fixtures.saveDraft.mockClear(); fixtures.specialPrice = 0; fixtures.invoke.mockReset(); fixtures.invoke.mockResolvedValue({ data: null, error: null }); fixtures.queries.mockClear(); });
+beforeEach(() => { fixtures.draft = null; fixtures.remote = null; fixtures.saveDraft.mockReset().mockResolvedValue(undefined); fixtures.localWrite.mockClear(); fixtures.toast.mockClear(); fixtures.specialPrice = 0; fixtures.invoke.mockReset(); fixtures.invoke.mockResolvedValue({ data: null, error: null }); fixtures.queries.mockClear(); });
 afterEach(cleanup);
 
 vi.mock("@/hooks/useSalesCatalog", () => ({ loadSalesCatalog: async () => [], loadSalesCosts: async () => [] }));
 vi.mock("../SalesProductCombobox", () => ({ SalesProductCombobox: () => null }));
 
 describe("sales-only quote flow", () => {
+  it.each(["rental", "sales"] as const)("saves %s amendment edits locally before the server debounce", inquiryType => {
+    open({ inquiryType, mode: "amendment" });
+    fixtures.localWrite.mockClear();
+    fireEvent.change(screen.getByLabelText(/Telefonische.*Vereinbarung/), { target: { value: "Telefonisch vereinbart" } });
+    expect(fixtures.localWrite.mock.calls.at(-1)?.[1].agreementNote).toBe("Telefonisch vereinbart");
+    expect(fixtures.saveDraft).not.toHaveBeenCalled();
+  });
+  it("reports a rejected shared draft while retaining local inputs", async () => {
+    fixtures.saveDraft.mockRejectedValueOnce(new Error("offline"));
+    open({ mode: "amendment" });
+    fireEvent.change(screen.getByLabelText(/Telefonische.*Vereinbarung/), { target: { value: "Telefonisch vereinbart" } });
+    await waitFor(() => expect(fixtures.toast).toHaveBeenCalledWith(expect.objectContaining({ variant: "destructive" })), { timeout: 2500 });
+    expect(fixtures.localWrite.mock.calls.at(-1)?.[1].agreementNote).toBe("Telefonisch vereinbart");
+  });
+  it("does not recreate a discarded amendment draft", async () => {
+    fixtures.draft = { agreementNote: "Alter Entwurf" };
+    open({ mode: "amendment" });
+    fireEvent.change(screen.getByLabelText(/Telefonische.*Vereinbarung/), { target: { value: "Neue Eingabe" } });
+    fireEvent.click(screen.getByRole("button", { name: /Entwurf verwerfen/ }));
+    fixtures.localWrite.mockClear();
+    await new Promise(resolve => setTimeout(resolve, 1400));
+    expect(fixtures.saveDraft).not.toHaveBeenCalled();
+    expect(fixtures.localWrite).not.toHaveBeenCalled();
+  });
   it("keeps amendment agreement evidence in the first server draft after editing", async () => {
     open({ mode: "amendment" });
     fireEvent.change(screen.getByLabelText(/Telefonische.*Vereinbarung/), { target: { value: "Verlängerung telefonisch vereinbart" } });
