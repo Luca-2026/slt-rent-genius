@@ -7,14 +7,16 @@ const fixtures = vi.hoisted(() => ({
   specialPrice: 0,
   invoke: vi.fn(),
   queries: vi.fn(),
+  saveDraft: vi.fn(),
+  remote: null as null | { data: Record<string, unknown>; updatedBy: string; updatedAt: string },
 }));
 vi.mock("@/hooks/use-toast", () => ({ useToast: () => ({ toast: vi.fn() }) }));
 vi.mock("@/lib/invokeWithAuth", () => ({ invokeWithAuth: fixtures.invoke }));
 vi.mock("../offerDraftStorage", () => ({
   inquiryDraftKey: () => "test-draft",
   readInquiryDraft: () => fixtures.draft,
-  fetchServerDraft: async () => null,
-  writeInquiryDraft: vi.fn(), saveServerDraft: vi.fn(),
+  fetchServerDraft: async () => fixtures.remote,
+  writeInquiryDraft: vi.fn(), saveServerDraft: fixtures.saveDraft,
   clearInquiryDraft: vi.fn(), deleteServerDraft: vi.fn(),
 }));
 vi.mock("@/integrations/supabase/client", () => ({ supabase: {
@@ -57,13 +59,36 @@ function open(props: Partial<React.ComponentProps<typeof InquiryOfferForm>> = {}
 function discounts() {
   return screen.getAllByRole("spinbutton").filter((input) => input.getAttribute("max") === "100") as HTMLInputElement[];
 }
-beforeEach(() => { fixtures.draft = null; fixtures.specialPrice = 0; fixtures.invoke.mockReset(); fixtures.invoke.mockResolvedValue({ data: null, error: null }); fixtures.queries.mockClear(); });
+beforeEach(() => { fixtures.draft = null; fixtures.remote = null; fixtures.saveDraft.mockClear(); fixtures.specialPrice = 0; fixtures.invoke.mockReset(); fixtures.invoke.mockResolvedValue({ data: null, error: null }); fixtures.queries.mockClear(); });
 afterEach(cleanup);
 
 vi.mock("@/hooks/useSalesCatalog", () => ({ loadSalesCatalog: async () => [], loadSalesCosts: async () => [] }));
 vi.mock("../SalesProductCombobox", () => ({ SalesProductCombobox: () => null }));
 
 describe("sales-only quote flow", () => {
+  it("keeps amendment agreement evidence in the first server draft after editing", async () => {
+    open({ mode: "amendment" });
+    fireEvent.change(screen.getByLabelText(/Telefonische.*Vereinbarung/), { target: { value: "Verlängerung telefonisch vereinbart" } });
+    fireEvent.change(screen.getByLabelText(/Vereinbart am/), { target: { value: "2026-11-20T17:00" } });
+    await waitFor(() => expect(fixtures.saveDraft).toHaveBeenCalled(), { timeout: 2500 });
+    expect(fixtures.saveDraft.mock.calls.at(-1)?.[3]).toEqual(expect.objectContaining({ agreementNote: "Verlängerung telefonisch vereinbart", agreedAt: "2026-11-20T17:00" }));
+  });
+  it.each(["local", "server"])("restores %s amendment note and date into the preview request", async source => {
+    const evidence = { agreementNote: "Verlängerung telefonisch vereinbart", agreedAt: "2026-11-20T17:00" };
+    if (source === "local") fixtures.draft = evidence;
+    else fixtures.remote = { data: evidence, updatedBy: "staff", updatedAt: "2026-11-20T17:00:00Z" };
+    open({ mode: "amendment" });
+    await waitFor(() => expect((screen.getByLabelText(/Telefonische.*Vereinbarung/) as HTMLInputElement).value).toBe(evidence.agreementNote));
+    fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
+    await waitFor(() => expect(fixtures.invoke).toHaveBeenCalled());
+    expect(fixtures.invoke.mock.calls[0][1].agreement_note).toBe(evidence.agreementNote);
+    expect(fixtures.invoke.mock.calls[0][1].agreed_at).toBe(new Date(evidence.agreedAt).toISOString());
+  });
+  it("does not request an amendment preview without agreement evidence", async () => {
+    open({ mode: "amendment" });
+    fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
+    expect(fixtures.invoke).not.toHaveBeenCalled();
+  });
   it.each(["rental", "sales"] as const)("inherits agreed fourteen-day terms into the %s invoice request", async inquiryType => {
     open({ inquiryType, mode: "invoice", defaultMeta: { payment_terms: "net_14" } });
     fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));

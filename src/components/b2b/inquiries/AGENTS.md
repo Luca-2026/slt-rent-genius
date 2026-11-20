@@ -1,4 +1,5 @@
 # Inquiries
+- Amendment drafts retain agreement note/time with position edits from the first interaction; missing agreement evidence is explained before preview, and completed saves cannot recreate drafts.
 - Return reminder history remains readable before handover; previews and both send stages require customer-signed delivery evidence in the service and claim RPC, preserving existing role/location guards.
 - OrderRefundOverview owns the rental order's central refund entry and history; sidebar Stripe and invoice rows do not duplicate payout actions. Its dialog reuses protected deposit/rental routes while combined payouts remain live-gated; preparation/settlement never implies an executed payout.
 - Portal the single refund entry into InquiryDetailPanel's document action grid; retain state and eligibility in OrderRefundOverview to avoid duplicate payout paths.

@@ -444,8 +444,6 @@ export function InquiryOfferForm({
   const [financingEnabled, setFinancingEnabled] = useState(false);
   const [financingNote, setFinancingNote] = useState("");
   const isAmendment = mode === "amendment";
-  const [agreementNote,setAgreementNote] = useState("");
-  const [agreedAt,setAgreedAt] = useState(() => { const now = new Date(); return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0,16); });
   const isSupplement = isInvoice && invoiceKind === "supplement";
   const { toast } = useToast();
 
@@ -454,6 +452,10 @@ export function InquiryOfferForm({
   // Nach der Kautionsabrechnung gilt nur der aktuelle Stand – ein älterer Entwurf würde Abzüge und Zahlungen verfälschen.
   const draftRef = useRef(ignoreDraft ? null : readInquiryDraft<Record<string, any>>(draftKey));
   const draft = draftRef.current;
+  const currentAgreementTime = () => { const now = new Date(); return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16); };
+  const [agreementNote, setAgreementNote] = useState<string>(draft?.agreementNote ?? "");
+  const [agreedAt, setAgreedAt] = useState<string>(draft?.agreedAt ?? currentAgreementTime());
+  const agreementMissing = isAmendment && (agreementNote.trim().length < 5 || !Number.isFinite(Date.parse(agreedAt)));
   const [periodRecalculations, setPeriodRecalculations] = useState<Record<number, FormLine>>(draft?.periodRecalculations ?? {});
   const [draftRestored, setDraftRestored] = useState(!!draft);
   const [couponCode, setCouponCode] = useState(draft?.couponCode ?? defaultCouponCode);
@@ -709,6 +711,10 @@ export function InquiryOfferForm({
   }, []);
 
   const applyDraftData = (d: Record<string, any>) => {
+    if (isAmendment) {
+      setAgreementNote(typeof d.agreementNote === "string" ? d.agreementNote : "");
+      setAgreedAt(typeof d.agreedAt === "string" && d.agreedAt ? d.agreedAt : currentAgreementTime());
+    }
     setPeriodRecalculations(d.periodRecalculations ?? {});
     if (isSalesOffer) { setFinancingEnabled(d.financing?.enabled === true); setFinancingNote(d.financing?.note ?? ""); }
     if (Array.isArray(d.items) && d.items.length) setItems(migrateServiceCosts(d.items as FormLine[], d.setupCost ?? 0, d.dismantleCost ?? 0) as FormLine[]);
@@ -779,6 +785,7 @@ export function InquiryOfferForm({
     if (disabled) return;
     const timer = window.setTimeout(() => {
       const snapshot = {
+        ...(isAmendment ? { agreementNote, agreedAt } : {}),
         periodRecalculations,
         couponCode,
         ...(isSalesOffer ? { financing: { enabled: financingEnabled, note: financingNote } } : {}),
@@ -814,13 +821,16 @@ export function InquiryOfferForm({
       };
       // Reines Öffnen (noch ohne CMS-Preise) darf keinen Entwurf anlegen – sonst überschreibt er beim nächsten Laden die Preise.
       if (userTouchedRef.current || draftRef.current) writeInquiryDraft(draftKey, snapshot);
-      if (dirtyRef.current && userTouchedRef.current) {
+      if (userTouchedRef.current) {
         void saveServerDraft(draftKey, inquiryType, inquiryId, snapshot);
       }
       dirtyRef.current = true;
     }, 1200);
     return () => window.clearTimeout(timer);
   }, [
+    isAmendment,
+    agreementNote,
+    agreedAt,
     periodRecalculations,
     couponCode,
     financingEnabled,
@@ -860,6 +870,8 @@ export function InquiryOfferForm({
 
   /** Entwurf verwerfen und Formular auf die Ausgangswerte zurücksetzen. */
   const discardDraft = () => {
+    setAgreementNote("");
+    setAgreedAt(currentAgreementTime());
     clearInquiryDraft(draftKey);
     void deleteServerDraft(draftKey);
     dirtyRef.current = false;
@@ -1412,6 +1424,10 @@ export function InquiryOfferForm({
   useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
 
   const preview = async (prepareRefund = false) => {
+    if (agreementMissing) {
+      toast({ title: "Vereinbarung fehlt", description: "Bitte die vereinbarte Änderung kurz beschreiben (mindestens 5 Zeichen) und das Vereinbarungsdatum ergänzen.", variant: "destructive" });
+      return;
+    }
     if (Object.keys(periodRecalculations).length) return;
     if (openEnded && independentPricing && hasMissingOpenEndedPrice(items)) {
       toast({ title: "Mietpreis fehlt", description: "Bitte für jede Mietposition den Preis der gewählten Einheit festlegen.", variant: "destructive" });
@@ -1448,6 +1464,7 @@ export function InquiryOfferForm({
   const previewOk = matchesDocumentPreview(previewedKey, buildBody());
 
   const send = async () => {
+    if (agreementMissing) return;
     if (Object.keys(periodRecalculations).length) return;
     if (refundBlock) return;
     if (sendBlock) return;
@@ -1537,6 +1554,8 @@ export function InquiryOfferForm({
       takenChargesRef.current = [];
     }
     // Entwurf ist abgearbeitet – Zwischenspeicher leeren.
+    userTouchedRef.current = false;
+    dirtyRef.current = false;
     clearInquiryDraft(draftKey);
     void deleteServerDraft(draftKey);
     draftRef.current = null;
@@ -1552,7 +1571,7 @@ export function InquiryOfferForm({
     </Button>
   );
   const sendButton = (
-    <Button data-draft-neutral onClick={send} disabled={disabled || Object.keys(periodRecalculations).length > 0 || sending || checking || !previewOk || !!sendBlock || !!refundBlock || (isAmendment && agreementNote.trim().length < 5)} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
+    <Button data-draft-neutral onClick={send} disabled={disabled || Object.keys(periodRecalculations).length > 0 || sending || checking || !previewOk || !!sendBlock || !!refundBlock || agreementMissing} className={stickyActions ? "h-9 w-full sm:w-auto" : "w-full"}>
       <Send className="h-4 w-4 mr-2" />
       {isAmendment ? (sending ? "Auftragsänderung wird gespeichert …" : "Auftragsänderung speichern") : isInvoice
         ? sending
@@ -1569,7 +1588,9 @@ export function InquiryOfferForm({
       <Button type="button" size="sm" variant="outline" className="mt-2 h-8" onClick={sendBlock.onAction}>{sendBlock.actionLabel}</Button>
     </div>
   );
-  const previewHint = !previewOk && <p className="text-xs text-muted-foreground">Vor dem Senden bitte die PDF-Vorschau des aktuellen Stands ansehen.</p>;
+  const previewHint = agreementMissing
+    ? <p role="alert" className="text-xs text-destructive">Vereinbarung fehlt: Bitte Änderung und Vereinbarungsdatum ergänzen.</p>
+    : !previewOk && <p className="text-xs text-muted-foreground">Vor dem Senden bitte die PDF-Vorschau des aktuellen Stands ansehen.</p>;
   const refundNotice = isInvoice && inquiryType === "rental" && refundBlock && <div role="alert" className="space-y-2 border-t border-border pt-2 text-sm">
     <p className="text-destructive">{refundBlock}</p>
     <div className="flex flex-wrap gap-2">
@@ -2806,7 +2827,7 @@ export function InquiryOfferForm({
               </Button>
             )}
             <Button variant="outline" onClick={() => setPreviewUrl(null)}>Zurück zum Bearbeiten</Button>
-            <Button onClick={() => { setPreviewUrl(null); void send(); }} disabled={disabled || Object.keys(periodRecalculations).length > 0 || sending || checking || !previewOk || !!sendBlock || !!refundBlock || (isAmendment && agreementNote.trim().length < 5)}>
+            <Button onClick={() => { setPreviewUrl(null); void send(); }} disabled={disabled || Object.keys(periodRecalculations).length > 0 || sending || checking || !previewOk || !!sendBlock || !!refundBlock || agreementMissing}>
               <Send className="h-4 w-4 mr-2" />{isAmendment ? "Auftragsänderung speichern" : isInvoice ? "Rechnung final erstellen und senden" : "Angebot jetzt senden"}
             </Button>
           </div>
