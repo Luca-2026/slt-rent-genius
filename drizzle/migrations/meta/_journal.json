@@ -1401,6 +1401,13 @@
       "when": 1795103055477,
       "tag": "0199_public_product_shared_price_flag",
       "breakpoints": true
+    },
+    {
+      "idx": 200,
+      "version": "7",
+      "when": 1795210503328,
+      "tag": "0200_scope_definer_lookups_to_caller",
+      "breakpoints": true
     }
   ]
 }
