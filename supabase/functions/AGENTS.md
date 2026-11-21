@@ -1,4 +1,5 @@
 # Edge function rules
+- Portal invoices resolve payment terms from explicit staff input, then offer evidence, then profile; numeric day agreements survive finalization and share the PDF/database date to prevent fourteen-day fallback.
 - Sales delivery notes use sales-delivery-note and immutable sales_delivery_notes with existing operation permissions; PDFs share the legal footer, preserve originals and record digital signatures or uploaded signed paper, without rental or payment side effects.
 - New sales delivery PDFs use the invoice's DIN-5008 Form-B geometry, branded header and structured postal lines; legacy snapshots remain readable and issued originals are never regenerated on opening.
 - Sales delivery eligibility is shared with the UI: completed sales without an AB require an issued uncredited full/final invoice matching the offer; new notes freeze invoice goods/customer facts without reopening the order.

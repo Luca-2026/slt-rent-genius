@@ -1,5 +1,5 @@
 # Shared helper rules
-- Invoice custom deadlines use customer-payment-terms to derive a single calendar-day term after invoice date; uncomputable terms block issuance before numbering instead of silently imposing fourteen days. Issued invoices remain unchanged.
+- Invoice deadlines use customer-payment-terms: custom calendar-day terms after invoice date block issuance when uncomputable; portal numeric terms survive finalization and drive PDF/labels/compute_invoice_due_date. Installments retain custom text; custom confirmations require staff acknowledgement without invented prepayment/checkout deadlines; issued invoices remain unchanged.
 - rental-phase owns direct/offer-linked customer signature evidence and legacy reservation running eligibility for browser, chat and return validation, avoiding divergent phase rules.
 - Sign direct booking shares SIGN_LOCATIONS across cart and request validation; reservation/calendar checks use published article locations and separate quantities, preventing cross-location stock pooling.
 - Rental cancellations use evidenced AGB estimates or explicit individual fees with staff-confirmed tax treatment; immutable snapshots feed the existing invoice/refund paths, while existing invoices and performed handovers require separate correction rather than duplicate claims.

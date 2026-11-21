@@ -944,7 +944,7 @@ export async function generateOfferPdf(data: {
 
   // ── Zahlungsbedingungen ──
   const hasCreditLimit = data.profile.credit_limit && data.profile.credit_limit > 0;
-  const paymentDueDays = data.profile.payment_due_days || 14;
+  const paymentDueDays = data.profile.payment_due_days ?? 14;
   const PAYMENT_TEXTS: Record<string, string> = {
     vorkasse: "Zahlungsbedingungen: Vorkasse komplett vor Mietbeginn \u2013 wahlweise per \u00DCberweisung unter Angabe der Angebotsnummer oder online \u00FCber den pers\u00F6nlichen Zahlungslink aus der Angebots-E-Mail.",
     net_7: "Zahlungsbedingungen: Zahlung innerhalb von 7 Tagen nach Rechnungsstellung (netto).",
@@ -992,7 +992,7 @@ export async function generateOfferPdf(data: {
     ["IBAN / BIC:", `${SLT_COMPANY.iban} | ${SLT_COMPANY.bic}`],
     ["Verwendungszweck:", withCode(ref)],
   ];
-  const paysOnInvoice = ["net_7", "net_14", "net_30", "net_60"].includes(String(data.paymentTerms || ""));
+  const paysOnInvoice = ["net_7", "net_14", "net_30", "net_60", "custom"].includes(String(data.paymentTerms || ""));
 
   if (docType === "offer" && data.undatedOffer) {
     drawInfoBox("Unverbindliches Preisangebot", "Ohne festen Mietzeitraum. Die ausgewiesene Mietdauer dient als Preisbeispiel. Es wird kein Gerät reserviert; derzeit ist keine Zahlung fällig. Vor einer verbindlichen Beauftragung sind Zeitraum und Verfügbarkeit gesondert zu bestätigen.", rgb(0.94, 0.96, 0.98), BRAND);
@@ -1011,7 +1011,7 @@ export async function generateOfferPdf(data: {
         "Zahlungshinweis \u2013 offener Restbetrag",
         `${T("Deine", "Ihre")} Teilzahlung \u00FCber ${fm(amountPaid)} ist bei uns eingegangen. Offen ist noch ein Restbetrag von ${fm(balanceDue)}. ` +
           (paysOnInvoice
-            ? "Dieser ist gem\u00E4\u00DF den vereinbarten Zahlungsbedingungen f\u00E4llig."
+            ? (customPaymentText ?? "Dieser ist gem\u00E4\u00DF den vereinbarten Zahlungsbedingungen f\u00E4llig.")
             : data.businessType === "sales"
               ? T("Bitte überweise diesen spätestens vor Übergabe auf folgendes Konto:", "Bitte überweisen Sie diesen spätestens vor Übergabe auf folgendes Konto:")
               : T("Bitte \u00FCberweise diesen sp\u00E4testens vor Mietbeginn auf folgendes Konto:", "Bitte \u00FCberweisen Sie diesen sp\u00E4testens vor Mietbeginn auf folgendes Konto:")),
@@ -1021,7 +1021,7 @@ export async function generateOfferPdf(data: {
     } else {
       drawInfoBox(
         "Zahlungshinweis",
-        `Die Zahlung von ${fm(requiredTotal)} ${paysOnInvoice ? "erfolgt gemäß den vereinbarten Zahlungsbedingungen nach Rechnungsstellung" : data.businessType === "sales" ? "ist vor Übergabe bzw. Lieferung vollständig per Banküberweisung zu zahlen" : "ist gemäß den vereinbarten Zahlungsbedingungen vor Mietbeginn zu zahlen"}. Bisher ist noch keine Zahlung eingegangen.`,
+        `Die Zahlung von ${fm(requiredTotal)} ${paysOnInvoice ? "erfolgt gemäß den vereinbarten Zahlungsbedingungen" : data.businessType === "sales" ? "ist vor Übergabe bzw. Lieferung vollständig per Banküberweisung zu zahlen" : "ist gemäß den vereinbarten Zahlungsbedingungen vor Mietbeginn zu zahlen"}. Bisher ist noch keine Zahlung eingegangen.${customPaymentText ? ` ${customPaymentText}` : ""}`,
         rgb(0.995, 0.97, 0.93), ORANGE,
       );
     }

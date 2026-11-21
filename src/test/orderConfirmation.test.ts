@@ -14,6 +14,13 @@ describe("evaluateOrderPayment", () => {
     expect(r.canSend).toBe(true);
     expect(r.needsAcknowledgement).toBe(true);
   });
+  it("respects individual invoice conditions without imposing prepayment, requiring staff acknowledgement", () => {
+    const result = evaluateOrderPayment({ gross: 500, payments: [], paymentTerms: "custom" });
+    expect(result.paysOnInvoice).toBe(true);
+    expect(result.canSend).toBe(true);
+    expect(result.needsAcknowledgement).toBe(true);
+    expect(result.paidCents).toBe(0);
+  });
 
   it("erkennt Teilzahlung und offenen Rest (inkl. Kaution)", () => {
     const r = evaluateOrderPayment({ gross: 595, deposit: 200, payments: [{ amount: 595 }], paymentTerms: "vorkasse" });

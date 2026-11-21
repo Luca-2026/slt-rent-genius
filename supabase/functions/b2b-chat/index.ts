@@ -98,7 +98,7 @@ Kontostatus: ${profile?.status === "approved" ? "Freigegeben" : profile?.status 
 Standort: ${profile?.assigned_location || profile?.city || "Nicht zugewiesen"}
 Kreditlimit: ${profile?.credit_limit?.toLocaleString("de-DE") || 0} €
 Genutztes Kreditlimit: ${profile?.used_credit?.toLocaleString("de-DE") || 0} € (${creditUsagePercent}%)
-Zahlungsziel: ${profile?.payment_due_days || 14} Tage
+Allgemeines Zahlungsziel: ${profile?.payment_due_days ?? 14} Tage. Bei einzelnen Rechnungen gelten deren gespeicherte Fälligkeitsdaten, nicht automatisch dieses allgemeine Zahlungsziel.
 
 === AKTIVE MIETVORGÄNGE (${activeRentals.length}) ===
 ${activeRentals.length === 0 ? "Keine aktiven Mietvorgänge" : activeRentals.map(r =>

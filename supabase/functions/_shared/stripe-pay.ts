@@ -19,7 +19,7 @@ export const ALLOWED_RETURN_ORIGINS = [
   "https://id-preview--c9a26e89-cf04-49b4-979b-2963f0a95cb1.lovable.app",
   "http://localhost:8080",
 ];
-export const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30"]);
+export const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30", "custom"]);
 
 export const toCents = (v: unknown): number => {
   const n = Number(v);

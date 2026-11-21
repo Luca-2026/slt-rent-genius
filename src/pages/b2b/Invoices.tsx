@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
+import { invoicePaymentDaysLabel } from "../../../supabase/functions/_shared/customer-payment-terms";
 
 interface Invoice {
   id: string;
@@ -36,6 +37,7 @@ interface Invoice {
   file_name: string | null;
   notes: string | null;
   payment_terms: string | null;
+  payment_due_days?: number;
   created_at: string;
   invoice_kind: string;
 
@@ -72,7 +74,7 @@ export default function B2BInvoices() {
     
     const { data, error } = await supabase
       .from("b2b_invoices")
-      .select("id, invoice_number, invoice_date, due_date, amount, net_amount, vat_rate, vat_amount, gross_amount, is_reverse_charge, status, file_url, file_name, notes, payment_terms, created_at, invoice_kind")
+      .select("id, invoice_number, invoice_date, due_date, amount, net_amount, vat_rate, vat_amount, gross_amount, is_reverse_charge, status, file_url, file_name, notes, payment_terms, payment_due_days, created_at, invoice_kind")
       .neq("status", "draft")
       .order("invoice_date", { ascending: false });
 
@@ -287,7 +289,7 @@ export default function B2BInvoices() {
                           <div>
                             <p>{formatDate(inv.due_date)}</p>
                             {inv.payment_terms && (
-                              <p className="text-[10px] text-muted-foreground">{paymentTermsLabel(inv.payment_terms)}</p>
+                              <p className="text-[10px] text-muted-foreground">{inv.payment_due_days != null ? invoicePaymentDaysLabel(inv.payment_due_days) : paymentTermsLabel(inv.payment_terms)}</p>
                             )}
                           </div>
                         ) : "–"}

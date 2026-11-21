@@ -1408,6 +1408,13 @@
       "when": 1795210503328,
       "tag": "0200_scope_definer_lookups_to_caller",
       "breakpoints": true
+    },
+    {
+      "idx": 201,
+      "version": "7",
+      "when": 1795267305635,
+      "tag": "0201_preserve_portal_invoice_payment_deadline",
+      "breakpoints": true
     }
   ]
 }

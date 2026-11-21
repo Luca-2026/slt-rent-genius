@@ -321,9 +321,9 @@ Deno.serve(async (req: Request) => {
     let paymentTerms = ALLOWED_PAYMENT_TERMS.includes(requestedTerms)
       ? requestedTerms
       : (isBusiness ? "net_14" : "anzahlung_30");
-    // Ohne Freitext ist "custom" nicht darstellbar – dann Standardkondition.
+    // Never replace an explicitly chosen individual agreement with fourteen days.
     if (paymentTerms === "custom" && !paymentTermsCustom) {
-      paymentTerms = isBusiness ? "net_14" : "anzahlung_30";
+      return json({ error: "Bitte die individuellen Zahlungsbedingungen eintragen." }, 400);
     }
     if (inquiryType === "sales") paymentTerms = salesPaymentTerms(inquiry.customer_kind, requestedTerms);
     const discountEnabled = hasRentalPaymentChoice(inquiryType, paymentTerms, undatedOffer) && inquiryBankDiscountEnabled(discountRolloutEnabled, inquiry.raw_payload);
@@ -872,7 +872,7 @@ Deno.serve(async (req: Request) => {
   </div>`}
   <div style="background:#eef4f9;border-left:4px solid #00507d;padding:12px 16px;margin:20px 0;border-radius:4px;">
     <strong>${F("Wann ist dein Auftrag verbindlich?", "Wann ist Ihr Auftrag verbindlich?")}</strong><br>
-    ${["net_7", "net_14", "net_30"].includes(paymentTerms) ? F("Nach deiner Annahme erhältst du unsere Auftragsbestätigung.", "Nach Ihrer Annahme erhalten Sie unsere Auftragsbestätigung.") : F("Sobald deine Zahlung bei uns eingegangen ist, erhältst du unsere Auftragsbestätigung.", "Sobald Ihre Zahlung bei uns eingegangen ist, erhalten Sie unsere Auftragsbestätigung.")}
+    ${["net_7", "net_14", "net_30", "custom"].includes(paymentTerms) ? F("Nach deiner Annahme erhältst du unsere Auftragsbestätigung.", "Nach Ihrer Annahme erhalten Sie unsere Auftragsbestätigung.") : F("Sobald deine Zahlung bei uns eingegangen ist, erhältst du unsere Auftragsbestätigung.", "Sobald Ihre Zahlung bei uns eingegangen ist, erhalten Sie unsere Auftragsbestätigung.")}
     ${inquiryType === "sales" ? "Maßgeblich für die Abwicklung des Kaufs sind unsere Auftragsbestätigung und die vereinbarten Verkaufsbedingungen." : F("Erst mit der Auftragsbestätigung wird die Miete verbindlich und dein Auftrag gilt als angenommen. Maßgeblich ist allein die Auftragsbestätigung – sie dient dir als Nachweis, dass wir deinen Auftrag angenommen haben.", "Erst mit der Auftragsbestätigung wird die Miete verbindlich und Ihr Auftrag gilt als angenommen. Maßgeblich ist allein die Auftragsbestätigung – sie dient Ihnen als Nachweis, dass wir Ihren Auftrag angenommen haben.")}
   </div>
   `}

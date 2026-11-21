@@ -28,6 +28,22 @@ export function invoicePaymentDueDate(invoiceDate: Date, days: number): Date {
   return date;
 }
 
+/** Portal numeric terms are a saved agreement, not a hint to replace on finalization. */
+export function portalInvoicePaymentDays(requestedTerms: unknown, requestedDays: unknown, savedTerms: unknown, savedDays: unknown): number {
+  const fixed: Record<string, number> = { vorkasse: 0, net_7: 7, net_14: 14, net_30: 30 };
+  const validDays = (value: unknown): value is number => typeof value === "number" && Number.isInteger(value) && value >= 0 && value <= 365;
+  if (requestedTerms === "vorkasse") return 0;
+  if (validDays(requestedDays)) return requestedDays;
+  if (typeof requestedTerms === "string" && fixed[requestedTerms] !== undefined) return fixed[requestedTerms];
+  if (savedTerms === "vorkasse") return 0;
+  if (validDays(savedDays)) return savedDays;
+  return typeof savedTerms === "string" ? fixed[savedTerms] ?? 14 : 14;
+}
+
+export function invoicePaymentDaysLabel(days: number | null | undefined): string {
+  return days === 0 ? "Vorkasse" : days != null ? `${days} Tage netto` : "Gemäß Vereinbarung";
+}
+
 /** Invoice defaults inherit the agreement, while explicit staff choices remain explicit. */
 export function invoicePaymentAgreement(customerKind: unknown, requested: unknown, offered: unknown, requestedCustom: unknown, offeredCustom: unknown) {
   const allowed = ["net_7", "net_14", "net_30", "vorkasse", "custom"];

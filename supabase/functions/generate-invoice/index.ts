@@ -7,6 +7,7 @@ import { PDFDocument, rgb, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
 import { embedProductImages, normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 import { SLT_COMPANY } from "./company.ts";
 import { generateDocumentPdf } from "./pdf.ts";
+import { invoicePaymentDueDate, portalInvoicePaymentDays } from "../_shared/customer-payment-terms.ts";
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { z } from 'npm:zod@3';
 
@@ -68,16 +69,6 @@ interface InvoiceRequest {
   is_proforma?: boolean;
   save_as_draft?: boolean;
   delivery_address?: { street?: string; postal_code?: string; city?: string };
-}
-
-function daysForTerms(t: PaymentTerms | null | undefined): number {
-  switch (t) {
-    case 'vorkasse': return 0;
-    case 'net_7': return 7;
-    case 'net_30': return 30;
-    case 'net_14':
-    default: return 14;
-  }
 }
 
 Deno.serve(async (req: Request) => {
@@ -167,8 +158,8 @@ Deno.serve(async (req: Request) => {
       const finalNumber = numData as string;
       const finalDate = new Date().toISOString().split("T")[0];
       const effTerms: PaymentTerms = (bodyPaymentTerms ?? draft.payment_terms ?? 'net_14') as PaymentTerms;
-      const dueDays = daysForTerms(effTerms);
-      const finalDueDate = new Date(Date.now() + dueDays * 86400000).toISOString().split("T")[0];
+      const dueDays = portalInvoicePaymentDays(bodyPaymentTerms, bodyPaymentDueDays, draft.payment_terms, draft.payment_due_days);
+      const finalDueDate = invoicePaymentDueDate(new Date(`${finalDate}T00:00:00Z`), dueDays).toISOString().split("T")[0];
 
       // Build PDF from stored items – respect item_type so services/surcharges render in their own blocks
       const allDraftItems = draftItems || [];
@@ -230,13 +221,14 @@ Deno.serve(async (req: Request) => {
       const { data: signed } = await serviceClient2.storage.from("b2b-invoices").createSignedUrl(filePath, 60 * 60 * 24 * 365);
       const fileUrl = signed?.signedUrl || "";
 
-      // UPDATE draft → open (Trigger compute_invoice_due_date ist alleinige Quelle für due_date)
+      // Freeze the same date used in the PDF; the trigger validates draft finalization.
       const { error: updErr } = await serviceClient2.from("b2b_invoices").update({
         invoice_number: finalNumber,
         invoice_date: finalDate,
         status: 'open',
         payment_terms: effTerms,
         payment_due_days: dueDays,
+        due_date: finalDueDate,
         file_url: fileUrl,
         file_name: fileName,
         notes: notes ?? draft.notes,
@@ -362,7 +354,14 @@ Deno.serve(async (req: Request) => {
       city: originalInvoice.customer_city ?? profile.city,
       country: originalInvoice.customer_country ?? profile.country,
     };
-    const payment_due_days = is_proforma ? 0 : (bodyPaymentDueDays ?? profile.payment_due_days ?? 14);
+    let sourcePaymentTerms: string | undefined;
+    if (source_offer_id && !is_correction) {
+      const { data: sourceOffer, error: sourceError } = await serviceClient.from("b2b_offers").select("b2b_profile_id,notes").eq("id", source_offer_id).maybeSingle();
+      if (sourceError || !sourceOffer || sourceOffer.b2b_profile_id !== profile.id) return new Response(JSON.stringify({ error: "Zahlungsbedingungen des zugehörigen Angebots konnten nicht gelesen werden." }), { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      sourcePaymentTerms = String(sourceOffer.notes ?? "").match(/\[PAYMENT:(vorkasse|net_7|net_14|net_30)\]/)?.[1];
+    }
+    const effectivePaymentTerms = is_proforma ? "vorkasse" : bodyPaymentTerms ?? sourcePaymentTerms ?? profile.default_payment_terms ?? "net_14";
+    const payment_due_days = is_proforma ? 0 : portalInvoicePaymentDays(bodyPaymentTerms ?? sourcePaymentTerms, bodyPaymentDueDays, profile.default_payment_terms, profile.payment_due_days);
 
     // Determine reverse charge status
     const isReverseCharge = originalInvoice ? originalInvoice.is_reverse_charge : !!(profile.tax_id && profile.vat_id_verified);
@@ -476,7 +475,7 @@ Deno.serve(async (req: Request) => {
         invoiceNumber = invoiceNumData as string;
       }
       invoiceDate = new Date().toISOString().split("T")[0];
-      dueDate = new Date(Date.now() + payment_due_days * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+      dueDate = invoicePaymentDueDate(new Date(`${invoiceDate}T00:00:00Z`), payment_due_days).toISOString().split("T")[0];
       console.log("Invoice number generated:", invoiceNumber, "isProforma:", is_proforma);
 
       // Separate items by type for PDF rendering
@@ -567,7 +566,7 @@ Deno.serve(async (req: Request) => {
         reservation_id: reservation_id || null,
         invoice_number: invoiceNumber,
         invoice_date: invoiceDate,
-        // due_date wird per Trigger compute_invoice_due_date gesetzt (single source of truth)
+        due_date: dueDate,
         amount: grossAmount,
         net_amount: netAmount,
         vat_rate: vatRate,
@@ -588,7 +587,7 @@ Deno.serve(async (req: Request) => {
         customer_city: profile.city,
         customer_country: profile.country || "Deutschland",
         payment_due_days: payment_due_days,
-        payment_terms: (bodyPaymentTerms ?? profile.default_payment_terms ?? 'net_14'),
+        payment_terms: effectivePaymentTerms,
         source_offer_id: source_offer_id || null,
         email_sent: false,
       })

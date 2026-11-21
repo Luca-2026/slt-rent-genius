@@ -419,6 +419,7 @@ export default function AdminDashboard() {
 
         // Extract delivery address from offer notes [DELADDR:street|postal_code|city]
         const offerNotes = offer.notes || "";
+        const offeredPaymentTerms = offerNotes.match(/\[PAYMENT:(vorkasse|net_7|net_14|net_30)\]/)?.[1];
         const delAddrMatch = offerNotes.match(/\[DELADDR:([^|]*)\|([^|]*)\|([^\]]*)\]/);
         const deliveryAddress = delAddrMatch
           ? { street: delAddrMatch[1], postal_code: delAddrMatch[2], city: delAddrMatch[3] }
@@ -435,7 +436,8 @@ export default function AdminDashboard() {
           is_proforma: proformaMode,
           delivery_address: deliveryAddress,
           source_offer_id: offer.id,
-          payment_terms: proformaMode ? 'vorkasse' : (offerProfile?.default_payment_terms ?? 'net_14'),
+          payment_terms: proformaMode ? 'vorkasse' : (offeredPaymentTerms ?? offerProfile?.default_payment_terms ?? 'net_14'),
+          payment_due_days: proformaMode ? 0 : offeredPaymentTerms ? undefined : offerProfile?.payment_due_days,
         };
 
       } else if (reservation) {

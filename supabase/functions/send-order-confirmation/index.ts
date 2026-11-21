@@ -47,7 +47,7 @@ const toCents = (v: unknown) => {
   const n = Number(v);
   return Number.isFinite(n) && n > 0 ? Math.round(n * 100) : 0;
 };
-const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30"]);
+const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30", "custom"]);
 function evaluateOrderPayment(input: { gross: unknown; deposit?: unknown; payments: { amount: unknown }[]; paymentTerms?: unknown }) {
   const grossCents = toCents(input.gross);
   const depositCents = toCents(input.deposit);
@@ -205,6 +205,7 @@ Deno.serve(async (req) => {
     ${deposit > 0 ? `<p style="margin:4px 0;">Kaution: <strong>${money(deposit)}</strong> (wird nach ordnungsgemäßer Rückgabe erstattet)</p><p style="margin:4px 0;">Gesamt zu zahlen: <strong>${money(required)}</strong></p>` : ""}
     ${paymentList}
     ${statusLine}
+    ${payload.payment_terms === "custom" ? `<p style="white-space:pre-wrap;">${esc(payload.payment_terms_custom || "")}</p>` : ""}
     ${overLine}
   </div>
   ${note ? `<p style="white-space:pre-wrap;border-left:4px solid #00507d;padding:8px 16px;">${esc(note)}</p>` : ""}

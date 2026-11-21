@@ -21,12 +21,14 @@ import {
 } from "@/lib/installments";
 import { isoDay } from "@/lib/dashboardMetrics";
 import { buildInstallmentPositions, offeredInstallmentPositions } from "../../../../supabase/functions/_shared/installment-positions";
+import { invoicePaymentAgreement } from "../../../../supabase/functions/_shared/customer-payment-terms";
 
 const PAYMENT_OPTIONS = [
   { value: "net_14", label: "Zahlbar innerhalb von 14 Tagen" },
   { value: "net_7", label: "Zahlbar innerhalb von 7 Tagen" },
   { value: "net_30", label: "Zahlbar innerhalb von 30 Tagen" },
   { value: "vorkasse", label: "Sofort fällig ohne Abzug" },
+  { value: "custom", label: "Individuelle Zahlungsbedingungen …" },
 ];
 
 interface Props {
@@ -72,6 +74,7 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
   const [periodStart, setPeriodStart] = useState("");
   const [periodEnd, setPeriodEnd] = useState("");
   const [terms, setTerms] = useState(inquiry.customer_kind === "business" ? "net_14" : "vorkasse");
+  const [customTerms, setCustomTerms] = useState("");
   const [notes, setNotes] = useState("");
   const [sending, setSending] = useState(false);
   const [previewing, setPreviewing] = useState(false);
@@ -117,8 +120,10 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
     setPeriodStart(p.start);
     setPeriodEnd(p.end);
     setQuantities(offeredPositions.map(position => String(position.quantity)));
-    const agreedTerms = (inquiry.offer_payload as { payment_terms?: string } | null)?.payment_terms;
-    setTerms(inquiry.customer_kind === "business" && PAYMENT_OPTIONS.some(option => option.value === agreedTerms) ? agreedTerms as string : "vorkasse");
+    const payload = inquiry.offer_payload as { payment_terms?: string; payment_terms_custom?: string } | null;
+    const agreement = invoicePaymentAgreement(inquiry.customer_kind, undefined, payload?.payment_terms ?? "vorkasse", undefined, payload?.payment_terms_custom);
+    setTerms(agreement.terms);
+    setCustomTerms(agreement.custom);
     setNotes("");
     setPreviewedKey(null);
     setPreviewUrl(null);
@@ -145,6 +150,7 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
         service_period_start: periodStart || null,
         service_period_end: periodEnd || null,
         payment_terms: terms,
+        payment_terms_custom: terms === "custom" ? customTerms.trim() : null,
         notes,
         staff_name: staffName,
   });
@@ -309,6 +315,7 @@ export function InstallmentCard({ table, inquiryType, inquiry, invoices, staffNa
                   {PAYMENT_OPTIONS.filter((o) => inquiry.customer_kind === "business" || o.value === "vorkasse").map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                 </SelectContent>
               </Select>
+              {terms === "custom" && <Textarea aria-label="Individuelle Zahlungsbedingungen" className="mt-2" rows={3} maxLength={600} value={customTerms} onChange={(event) => setCustomTerms(event.target.value)} />}
             </div>
             <div>
               <Label className="text-xs">Anmerkung (optional, erscheint auf der Rechnung)</Label>

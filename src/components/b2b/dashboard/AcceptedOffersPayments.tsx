@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { needsRentalCloseout, rentalCloseoutTasks, isAwaitingOfferConfirmation, filterStaffConfirmationTasks, isOperationalProtocolComplete } from "@/lib/dashboardMetrics";
-import { isPaymentOverdue, paymentDeadline } from "../../../../supabase/functions/_shared/payment-followup";
+import { isPaymentOverdue, isPrepayTerms, paymentDeadline } from "../../../../supabase/functions/_shared/payment-followup";
 
 import { effectiveEnd } from "@/lib/calendarEntries";
 import { Button } from "@/components/ui/button";
@@ -37,7 +37,6 @@ const LABEL: Record<Row["state"], string> = {
   open: "Zahlung offen",
   invoice: "Zahlung auf Rechnung",
 };
-const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30"]);
 
 /** All accepted inquiries awaiting confirmation, including manual acceptance. */
 export function AcceptedOffersPayments({ staffLocation, includeUnassigned = false, closeoutOnly = false }: { staffLocation: string | null | undefined; includeUnassigned?: boolean; closeoutOnly?: boolean }) {
@@ -98,7 +97,7 @@ export function AcceptedOffersPayments({ staffLocation, includeUnassigned = fals
         const open = Math.max(0, Math.round((total - paid) * 100) / 100);
         const link = (links.data ?? []).find((l) => l.inquiry_id === i.id && l.offer_number === i.offer_number);
         const state: Row["state"] = open <= 0 ? "paid"
-          : i.customer_kind === "business" && INVOICE_TERMS.has(payload.payment_terms ?? "") ? "invoice"
+          : i.customer_kind === "business" && !isPrepayTerms(payload.payment_terms) ? "invoice"
           : paid > 0 ? "partial"
           : link?.stripe_session_id ? "checkout" : "open";
         out.push({

@@ -171,9 +171,8 @@ export async function generateDocumentPdf(data: {
     const termsLabel = proformaFlag
       ? "Vorkasse"
       : data.totals?.paymentDueDays === 0 ? "Vorkasse"
-      : data.totals?.paymentDueDays === 7 ? "7 Tage netto"
-      : data.totals?.paymentDueDays === 30 ? "30 Tage netto"
-      : "14 Tage netto";
+      : data.totals?.paymentDueDays != null ? `${data.totals.paymentDueDays} Tage netto`
+      : "Gemäß Vereinbarung";
     infoRow("Zahlungskondition:", termsLabel);
     infoRow("Ansprechpartner:", SLT_COMPANY.managingDirector);
 

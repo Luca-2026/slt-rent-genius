@@ -14,6 +14,11 @@ describe("Nachfass-E-Mail 1 Stunde nach Annahme", () => {
     expect(needsPaymentFollowup({ ...base, offer_accepted_at: "2026-10-13T15:30:00Z" }, now)).toBe(false));
   it("nur einmal", () => expect(needsPaymentFollowup({ ...base, payment_followup_sent_at: "2026-10-13T15:56:00Z" }, now)).toBe(false));
   it("nicht bei Zahlung auf Rechnung", () => expect(needsPaymentFollowup({ ...base, payment_terms: "net_14" }, now)).toBe(false));
+  it("individual invoice terms never receive the automatic 24-hour prepayment deadline", () => {
+    const individual = { ...base, payment_terms: "custom", payment_followup_sent_at: "2026-10-12T10:00:00Z" };
+    expect(needsPaymentFollowup({ ...individual, payment_followup_sent_at: null }, now)).toBe(false);
+    expect(isPaymentOverdue(individual, now)).toBe(false);
+  });
   it("nicht wenn voll bezahlt (Miete + Kaution)", () => expect(needsPaymentFollowup({ ...base, paid_cents: 15000 }, now)).toBe(false));
   it("Vorkasse: nur Miete ohne Kaution reicht nicht", () => expect(needsPaymentFollowup({ ...base, paid_cents: 10000 }, now)).toBe(true));
   it("Anzahlung 30 % reicht", () =>

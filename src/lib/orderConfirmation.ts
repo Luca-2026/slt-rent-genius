@@ -41,7 +41,7 @@ export interface OrderPaymentEvaluation {
   blockReason: string | null;
 }
 
-const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30"]);
+const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30", "custom"]);
 const toCents = (v: unknown) => {
   const n = Number(v);
   return Number.isFinite(n) && n > 0 ? Math.round(n * 100) : 0;

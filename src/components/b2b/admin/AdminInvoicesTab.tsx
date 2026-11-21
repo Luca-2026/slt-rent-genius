@@ -25,6 +25,7 @@ import { de } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { usePagedList, PaginationBar } from "./ClientPagination";
+import { invoicePaymentDaysLabel } from "../../../../supabase/functions/_shared/customer-payment-terms";
 
 interface Invoice {
   id: string;
@@ -43,6 +44,7 @@ interface Invoice {
   reservation_id: string | null;
   source_offer_id?: string | null;
   payment_terms?: string | null;
+  payment_due_days?: number;
   created_at: string;
   notes: string | null;
   invoice_kind?: string;
@@ -405,7 +407,7 @@ export function AdminInvoicesTab({
                             <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-red-600 border-red-300">Gutschrift</Badge>
                           )}
                         </div>
-                        <p className="text-[10px] text-muted-foreground mt-0.5">{paymentTermsLabel(inv.payment_terms)}</p>
+                        <p className="text-[10px] text-muted-foreground mt-0.5">{inv.payment_due_days != null ? invoicePaymentDaysLabel(inv.payment_due_days) : paymentTermsLabel(inv.payment_terms)}</p>
                       </TableCell>
                       <TableCell className="text-sm">{inv.customer_company || "–"}</TableCell>
                       <TableCell className="text-sm">{inv.invoice_date ? formatDate(inv.invoice_date) : "–"}</TableCell>

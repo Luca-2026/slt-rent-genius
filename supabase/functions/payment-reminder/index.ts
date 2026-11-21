@@ -136,7 +136,7 @@ Deno.serve(async (req) => {
 <div style="max-width:600px;margin:0 auto;padding:24px;">
 <h2 style="color:#00507d;margin:0 0 16px;">${t("Deine", "Ihre")} Zahlung steht noch aus</h2>
 <p>${esc(greeting)}</p>
-${table === "sales_inquiries" ? `<p>Zum Angebot <strong>${esc(r.offer_number)}</strong> steht noch ein Betrag aus. Bitte überweise diesen gemäß den vereinbarten Zahlungsbedingungen.</p>` : intro}
+${table === "sales_inquiries" || (isManual && terms === "custom") ? `<p>Zum Angebot <strong>${esc(r.offer_number)}</strong> steht noch ein Betrag aus. Bitte überweise diesen gemäß den vereinbarten Zahlungsbedingungen.</p>${isManual && terms === "custom" ? `<p>${esc(r.offer_payload?.payment_terms_custom ?? "")}</p>` : ""}` : intro}
 <p style="font-size:18px;margin:20px 0;">${minCents < plan.openCents ? `Fällige Anzahlung: <strong>${money(minCents)}</strong><br><span style="font-size:13px;color:#6b7280;">Gesamt offen: ${money(plan.openCents)}</span>` : `Offener Betrag: <strong>${money(plan.openCents)}</strong>`}${plan.depositCents > 0 ? `<br><span style="font-size:13px;color:#6b7280;">inkl. Kaution ${money(plan.depositCents)} (wird nach Rückgabe erstattet)</span>` : ""}</p>
 ${payUrl ? `<p style="text-align:center;margin:24px 0;"><a href="${esc(payUrl)}" style="background:#ff8e02;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:bold;display:inline-block;">Jetzt online bezahlen</a></p>` : ""}
 <p>${payUrl ? "Alternativ per Überweisung:" : t("Bitte überweise den Betrag auf folgendes Konto:", "Bitte überweisen Sie den Betrag auf folgendes Konto:")}</p>

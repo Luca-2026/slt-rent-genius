@@ -23,6 +23,7 @@ Deno.test("Link nur für Vorkasse; Testmodus nur Testadresse", () => {
   const base = { paymentTerms: "anzahlung_30", customerEmail: "kunde@firma.de", testMode: false, openCents: 100 };
   assertEquals(shouldOfferPaymentLink(base), true);
   assertEquals(shouldOfferPaymentLink({ ...base, paymentTerms: "net_14" }), false);
+  assertEquals(shouldOfferPaymentLink({ ...base, paymentTerms: "custom" }), false);
   assertEquals(shouldOfferPaymentLink({ ...base, testMode: true }), false);
   assertEquals(shouldOfferPaymentLink({ ...base, testMode: true, customerEmail: " Luca@Sandhoff.org " }), true);
   assertEquals(shouldOfferPaymentLink({ ...base, openCents: 0 }), false);

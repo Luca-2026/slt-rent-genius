@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { invoicePaymentAgreement, invoicePaymentDueDate } from "../../supabase/functions/_shared/customer-payment-terms";
+import { invoicePaymentAgreement, invoicePaymentDueDate, portalInvoicePaymentDays } from "../../supabase/functions/_shared/customer-payment-terms";
 
 it("inherits Blumen Peeters' agreed fourteen-day invoice term", () => {
   expect(invoicePaymentAgreement("business", undefined, "net_14", undefined, undefined)).toEqual({ terms: "net_14", days: 14, custom: "" });
@@ -27,4 +27,16 @@ it.each(["", "Zahlung nach Vereinbarung", "14 Tage nach Rechnungseingang", "3 Ar
 });
 it("keeps immediate payment for private customers despite a custom deadline", () => {
   expect(invoicePaymentAgreement("private", "custom", undefined, "3 Kalendertage nach Rechnungsdatum", undefined)).toEqual({ terms: "vorkasse", days: 0, custom: "" });
+});
+it("keeps the portal's saved three-day deadline through finalization", () => {
+  expect(portalInvoicePaymentDays(undefined, undefined, "net_14", 3)).toBe(3);
+});
+it("uses an explicitly selected portal term consistently in PDF and stored date", () => {
+  expect(portalInvoicePaymentDays("net_7", undefined, "net_14", 14)).toBe(7);
+});
+it("retains an explicit numeric portal deadline", () => {
+  expect(portalInvoicePaymentDays("net_14", 3, "net_14", 14)).toBe(3);
+});
+it("does not give proforma prepayments an invoice deadline", () => {
+  expect(portalInvoicePaymentDays("vorkasse", 3, "net_14", 14)).toBe(0);
 });
