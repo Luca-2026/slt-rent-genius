@@ -81,7 +81,7 @@ const money = (n: number) =>
 const fmtDE = (d: Date) => d.toLocaleDateString("de-DE");
 const isoDate = (d: Date) => d.toISOString().slice(0, 10);
 
-import { invoicePaymentAgreement } from "../_shared/customer-payment-terms.ts";
+import { invoicePaymentAgreement, invoicePaymentDueDate } from "../_shared/customer-payment-terms.ts";
 
 interface RecordedPayment {
   date: string;
@@ -421,9 +421,10 @@ Deno.serve(async (req: Request) => {
     const paymentTerms = agreement.terms;
     const paymentTermsCustom = agreement.custom;
     const paymentDueDays = agreement.days;
+    if (paymentDueDays === null) return json({ error: "Aus den individuellen Zahlungsbedingungen lässt sich kein eindeutiges Fälligkeitsdatum berechnen. Bitte ein Zahlungsziel wie „innerhalb von 3 Kalendertagen nach Rechnungsdatum“ oder eine feste Zahlungsfrist auswählen. Es wurde keine Rechnung erstellt." }, 400);
 
     const invoiceDate = new Date();
-    const dueDate = new Date(invoiceDate.getTime() + paymentDueDays * 86400000);
+    const dueDate = invoicePaymentDueDate(invoiceDate, paymentDueDays);
 
     const servicePeriodStart = str(body.service_period_start, 10) || null;
     const servicePeriodEnd = str(body.service_period_end, 10) || null;
