@@ -2,6 +2,7 @@ import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
 import { BANK_DISCOUNT_TERMS, hasBankDiscountPolicy } from "../_shared/bank-transfer-discount.ts";
 import { rentalPaymentPrices, validateRentalPaymentDecision } from "../_shared/rental-payment-decision.ts";
 import { reconcileRentalCheckout } from "../_shared/rental-checkout-recovery.ts";
+import { signPaymentState, signCheckoutExpiry, signResidualPlan } from "../_shared/sign-amendment.ts";
 /**
  * Öffentlicher Zahlungslink zum Angebot (/zahlung/<token>).
  * Der unratbare Token ist das Geheimnis; Beträge kommen immer aus der Datenbank.
@@ -92,13 +93,13 @@ Deno.serve(async (req: Request) => {
         inquiry.payment_decision_version += 1;
       }
     } else if (action === "select_method") return json({ error: "Für dieses Angebot wurde kein Überweisungsrabatt vereinbart." }, 400);
-    const { data: signBooking } = link.inquiry_table === "rental_inquiries"
+    const { data: signBooking, error: signReadError } = link.inquiry_table === "rental_inquiries"
       ? await service.from("sign_bookings").select("status,expires_at").eq("inquiry_id", inquiry.id).maybeSingle()
-      : { data: null };
+      : { data: null, error: null };
+    if (signReadError) return json({ error: "Buchungsstatus konnte nicht geprüft werden." }, 503);
 
     // Aktueller Stand: nur die zuletzt versendete Angebotsfassung ist bezahlbar.
     let status: string = link.status;
-    if (signBooking && (signBooking.status !== "reserved" || Date.parse(signBooking.expires_at) <= Date.now())) status = signBooking.status === "paid" ? "paid" : "superseded";
     if (status === "active" && inquiry.offer_number !== link.offer_number) status = "superseded";
 
     const paidCents = (Array.isArray(inquiry.payments) ? inquiry.payments : []).reduce(
@@ -108,8 +109,9 @@ Deno.serve(async (req: Request) => {
     const payload = (inquiry.offer_payload ?? {}) as { deposit?: unknown; payment_terms?: unknown };
     const deposit = Number(payload.deposit) || 0;
     const terms = typeof payload.payment_terms === "string" ? payload.payment_terms : "vorkasse";
-    const plan = planPaymentAmounts({ gross: inquiry.offer_total_gross, deposit, paidCents });
-    const options = paymentOptions({ gross: inquiry.offer_total_gross, deposit, paidCents, terms });
+    const plan = signResidualPlan(planPaymentAmounts({ gross: inquiry.offer_total_gross, deposit, paidCents }), inquiry.offer_payload, inquiry.order_revision);
+    status = signPaymentState({ booking: signBooking, revision: Number(inquiry.order_revision ?? 0), linkStatus: status, openCents: plan.openCents });
+    const options = paymentOptions({ gross: inquiry.offer_total_gross, deposit, paidCents, terms }).map(option => signResidualPlan({ ...option, openCents: option.amountCents }, inquiry.offer_payload, inquiry.order_revision));
     if (status === "active" && plan.openCents <= 0) status = "paid";
     // Nach einer Anzahlung bleibt der Link für den Restbetrag gültig.
     if (!signBooking && status === "paid" && plan.openCents > 0 && inquiry.offer_number === link.offer_number) status = "active";
@@ -126,6 +128,7 @@ Deno.serve(async (req: Request) => {
       } : {}),
       status,
       offer_number: link.offer_number,
+      order_revision: Number(inquiry.order_revision ?? 0),
       order_code: inquiry.order_code ?? null,
       payment_terms: terms,
       paid_cents: paidCents,
@@ -152,7 +155,7 @@ Deno.serve(async (req: Request) => {
 
     const origin = ALLOWED_RETURN_ORIGINS.includes(String(body?.origin)) ? String(body.origin) : PAY_BASE;
     const stripe = stripeClient();
-    const sessionExpires = signBooking ? Math.min(Math.floor(Date.parse(signBooking.expires_at) / 1000), Math.floor(Date.now() / 1000) + 23 * 3600) : Math.floor(Date.now() / 1000) + 23 * 3600;
+    const sessionExpires = signCheckoutExpiry(signBooking);
     if (sessionExpires < Math.floor(Date.now() / 1000) + 1800) return json({ error: "Die Reservierung läuft in weniger als 30 Minuten ab. Bitte den Standort kontaktieren." }, 409);
     let claim = crypto.randomUUID();
     const lineItems = [

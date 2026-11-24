@@ -14,9 +14,10 @@ import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
 import { normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
 
 import { buildOrderAmendment, buildSalesOrderAmendment } from "../_shared/order-amendment.ts";
+import { signResidualPlan } from "../_shared/sign-amendment.ts";
 import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts";
 import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
-import { ensurePaymentLink, planPaymentAmounts, isStripeConfigured } from "../_shared/stripe-pay.ts";
+import { ensurePaymentLink, planPaymentAmounts, isStripeConfigured, isStripeTestMode, shouldOfferPaymentLink } from "../_shared/stripe-pay.ts";
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -123,7 +124,7 @@ Deno.serve(async (req) => {
       if (Number(body.expected_revision) !== (inq.order_revision ?? 0)) return json({error:"Auftrag wurde inzwischen geändert. Bitte neu laden."},409);
       try { payload = inquiryType === "sales" ? buildSalesOrderAmendment(body,payload,inq.customer_kind) : buildOrderAmendment(body,payload,inq.location); } catch(e) { return json({error:e instanceof Error ? e.message : "Ungültige Änderung"},400); }
     }
-    const items: any[] = Array.isArray(payload.items) ? payload.items.map((item: any) => ({ ...item, ...offerItemText(item) })) : [];
+    const items: any[] = Array.isArray(payload.items) ? payload.items.map((item: any) => ({ ...item, ...offerItemText(item), rental_start: item.rental_start ?? item.start_date, rental_end: item.rental_end ?? item.end_date })) : [];
     const payments: any[] = (Array.isArray(inq.payments) ? inq.payments : []).filter((p: any) => toCents(p?.amount) > 0);
     const ev = evaluateOrderPayment({
       gross: amendment ? payload?.totals?.grossAmount : inq.offer_total_gross ?? payload?.totals?.grossAmount,
@@ -149,6 +150,20 @@ Deno.serve(async (req) => {
     const required = ev.requiredCents / 100;
     const paid = ev.paidCents / 100;
     const open = ev.openCents / 100;
+    let paymentUrl: string | null = null;
+    if (!preview && !amendment && inquiryType === "rental" && Number(inq.order_revision ?? 0) > 0 && ev.openCents > 0 && !ev.paysOnInvoice) {
+      if (!isStripeConfigured() || !shouldOfferPaymentLink({ paymentTerms: String(payload.payment_terms ?? "vorkasse"), customerEmail: inq.customer_email, testMode: isStripeTestMode(), openCents: ev.openCents })) return json({ error: "Restzahlungslink ist derzeit nicht verfügbar. Auftragsänderung bleibt gespeichert; bitte Zahlungsweg prüfen." }, 409);
+      const { data: activeLinks, error: linkReadError } = await service.from("offer_payment_links").select("token,amount_cents,stripe_session_id,checkout_claim").eq("inquiry_table", "rental_inquiries").eq("inquiry_id", inquiryId).eq("status", "active");
+      if (linkReadError) return json({ error: "Restzahlungslink konnte nicht geprüft werden." }, 503);
+      const matching = activeLinks?.find((link: { amount_cents: number }) => link.amount_cents === ev.openCents);
+      if (matching) paymentUrl = `https://www.slt-rental.de/zahlung/${matching.token}`;
+      else {
+        if (activeLinks?.some((link: { stripe_session_id: string | null; checkout_claim: string | null }) => link.stripe_session_id || link.checkout_claim)) return json({ error: "Laufende Online-Zahlung zuerst abgleichen; kein weiterer Zahlungslink angelegt." }, 409);
+        const link = await ensurePaymentLink(service, { table: "rental_inquiries", inquiryId, customerEmail: inq.customer_email, offerNumber: inq.offer_number, plan: signResidualPlan(planPaymentAmounts({ gross, deposit, paidCents: ev.paidCents }), payload, inq.order_revision), createdBy: user.id });
+        if (!link) return json({ error: "Auftragsänderung gespeichert, aber Restzahlungslink konnte nicht angelegt werden. Bitte Versand erneut prüfen." }, 503);
+        paymentUrl = link.url;
+      }
+    }
 
     const customerName = inquiryType === "rental"
       ? inq.customer_name || ""
@@ -178,7 +193,9 @@ Deno.serve(async (req) => {
       intro = t(`vielen Dank – deine Zahlung ist vollständig bei uns eingegangen.`, `vielen Dank – Ihre Zahlung ist vollständig bei uns eingegangen.`);
       statusLine = `<p style="margin:4px 0;"><strong>Der Betrag ist vollständig beglichen.</strong></p>`;
     } else if (ev.state === "partial") {
-      intro = t(`vielen Dank – deine Teilzahlung über ${money(paid)} ist bei uns eingegangen.`, `vielen Dank – Ihre Teilzahlung über ${money(paid)} ist bei uns eingegangen.`);
+      intro = Number(inq.order_revision ?? 0) > 0
+        ? t("wir bestätigen die vereinbarten Ergänzungen zu deinem Auftrag.", "wir bestätigen die vereinbarten Ergänzungen zu Ihrem Auftrag.")
+        : t(`vielen Dank – deine Teilzahlung über ${money(paid)} ist bei uns eingegangen.`, `vielen Dank – Ihre Teilzahlung über ${money(paid)} ist bei uns eingegangen.`);
       statusLine = ev.paysOnInvoice
         ? `<p style="margin:4px 0;">Offener Restbetrag: <strong>${money(open)}</strong> – fällig gemäß den vereinbarten Zahlungsbedingungen.</p>`
         : `<p style="margin:4px 0;">Offener Restbetrag: <strong>${money(open)}</strong> – ${t("bitte", "bitte")} ${dueWhen} überweisen (${ref}).</p>`;
@@ -205,6 +222,7 @@ Deno.serve(async (req) => {
     ${deposit > 0 ? `<p style="margin:4px 0;">Kaution: <strong>${money(deposit)}</strong> (wird nach ordnungsgemäßer Rückgabe erstattet)</p><p style="margin:4px 0;">Gesamt zu zahlen: <strong>${money(required)}</strong></p>` : ""}
     ${paymentList}
     ${statusLine}
+    ${paymentUrl ? `<p style="margin:12px 0 4px;"><a href="${esc(paymentUrl)}" style="color:#00507d;font-weight:bold;">Offenen Restbetrag von ${money(open)} bezahlen</a></p>` : ""}
     ${payload.payment_terms === "custom" ? `<p style="white-space:pre-wrap;">${esc(payload.payment_terms_custom || "")}</p>` : ""}
     ${overLine}
   </div>
@@ -328,13 +346,8 @@ Deno.serve(async (req) => {
         const actor = createClient(serviceUrl,anonKey,{global:{headers:{Authorization:auth}},auth:{persistSession:false}});
         const {error:saveError}=await actor.rpc(inquiryType === "sales" ? "save_sales_order_amendment" : "save_rental_order_amendment",{_id:inquiryId,_expected:body.expected_revision,_payload:payload,_note:body.agreement_note,_agreed_at:body.agreed_at});
         if(saveError) return json({error:saveError.message},409);
-        let paymentUrl=null;
-        if(inquiryType === "rental" && ev.openCents>0 && isStripeConfigured()) {
-          const link=await ensurePaymentLink(service,{table:"rental_inquiries",inquiryId,customerEmail:inq.customer_email,offerNumber:inq.offer_number,plan:planPaymentAmounts({gross,deposit,paidCents:ev.paidCents}),createdBy:user.id});
-          paymentUrl=link?.url ?? null;
-        }
-        // Saving changes does not bypass existing payment gates. Send the current AB from its card after payment.
-        return json({success:true,saved:true,version:revision,totals:payload.totals,payment_url:paymentUrl,open_cents:ev.openCents});
+        // Save first; the matching AB review/send creates or reuses the residual link.
+        return json({success:true,saved:true,version:revision,totals:payload.totals,open_cents:ev.openCents});
       }
       const safeName = String(profile.company_name)
         .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/Ä/g, "Ae").replace(/Ö/g, "Oe").replace(/Ü/g, "Ue").replace(/ß/g, "ss")

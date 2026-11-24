@@ -1,8 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { canPrepareSignBooking, initialSignBookingLocation, sortSignBookings } from "@/lib/signBookingOverview";
+import { canPrepareSignBooking, initialSignBookingLocation, sortSignBookings, signOutstandingCents } from "@/lib/signBookingOverview";
 
 const booking = (id: string, start_date: string, end_date = start_date, status = "paid") => ({ id, start_date, end_date, status });
 describe("Staff sign booking overview", () => {
+  it("shows only the extra 6 euros after a 39 euro package and 100 euro deposit have been paid", () => {
+    const inquiry = { offer_total_gross: 45, offer_payload: { deposit: 100 }, payments: [{ amount: 139 }] };
+    expect(signOutstandingCents(inquiry)).toBe(600);
+    expect(signOutstandingCents({ ...inquiry, payments: [{ amount: 139 }, { amount: 6 }] })).toBe(0);
+    expect(signOutstandingCents()).toBeNull();
+  });
   it("defaults to the actual employee/admin branch", () => {
     expect(initialSignBookingLocation("Bonn")).toBe("bonn");
     expect(initialSignBookingLocation("Mülheim an der Ruhr")).toBe("muelheim");

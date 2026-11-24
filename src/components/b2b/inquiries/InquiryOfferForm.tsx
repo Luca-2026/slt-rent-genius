@@ -1,4 +1,5 @@
 import { SALES_PAYMENT_OPTIONS, salesPaymentTerms, salesOfferLine, type SalesFinancing } from "../../../../supabase/functions/_shared/sales-offer";
+import { signAmendmentTotals } from "../../../../supabase/functions/_shared/sign-amendment";
 import { RentalCreditRefund } from "./RentalCreditRefund";
 import { bankDiscountPresentation, editorBankDiscount } from "@/lib/editorBankDiscount";
 import { invoiceServicePeriod } from "@/lib/invoiceServicePeriod";
@@ -331,6 +332,7 @@ interface Props {
   /** "offer" (Standard) erzeugt ein Angebot, "invoice" eine Rechnung bzw. einen Nachtrag. */
   mode?: "offer" | "invoice" | "amendment";
   expectedRevision?: number;
+  signBookingPayload?: Record<string, unknown> | null;
   invoiceKind?: "invoice" | "supplement" | "final";
   parentInvoiceId?: string | null;
   parentInvoiceNumber?: string | null;
@@ -422,6 +424,7 @@ export function InquiryOfferForm({
   onSent,
   mode = "offer",
   expectedRevision = 0,
+  signBookingPayload = null,
   invoiceKind = "invoice",
   parentInvoiceId = null,
   parentInvoiceNumber = null,
@@ -1037,8 +1040,10 @@ export function InquiryOfferForm({
     [unpricedEffectiveItems, inquiryType, isAmendment, isInvoice, discountPolicy, invoiceKind, ignoreDraft, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost, activeReturnCost]);
 
   const totals = useMemo(
-    () => buildOfferTotals(effectiveItems, deliveryCostDelivery + (isSalesOffer ? 0 : deliveryCostReturn) + setupCost + (isSalesOffer ? 0 : dismantleCost) + activeReturnCost),
-    [effectiveItems, isSalesOffer, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost, activeReturnCost],
+    () => isAmendment && signBookingPayload?.direct_booking === true
+      ? signAmendmentTotals(signBookingPayload, effectiveItems.slice(Array.isArray(signBookingPayload.items) ? signBookingPayload.items.length : 0).map(item => ({ ...item, quantity: item.quantity * (item.unit === "pauschal" ? 1 : item.duration || 1), unit_price: Math.round(item.unit_price * 100) / 100 })))
+      : buildOfferTotals(effectiveItems, deliveryCostDelivery + (isSalesOffer ? 0 : deliveryCostReturn) + setupCost + (isSalesOffer ? 0 : dismantleCost) + activeReturnCost),
+    [effectiveItems, isAmendment, signBookingPayload, isSalesOffer, deliveryCostDelivery, deliveryCostReturn, setupCost, dismantleCost, activeReturnCost],
   );
   const bankDiscountNet = Math.round(effectiveItems.reduce((sum, line) => sum + bankDiscountPresentation(line).discountNet, 0) * 100) / 100;
   const editableAddonsNet = Math.round((totals.addonsNet - bankDiscountNet) * 100) / 100;

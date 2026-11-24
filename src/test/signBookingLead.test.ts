@@ -14,9 +14,11 @@ describe("Genehmigungsvorlauf", () => {
     expect(nrwWorkday("2027-03-26")).toBe(false);
     expect(nrwWorkday("2027-05-27")).toBe(false);
   });
-  it("erfordert exakt 96 Stunden mit Berliner Uhrzeit bei vorhandener Genehmigung", () => {
-    expect(signLeadError("sorglos", "existing", "2026-11-07", "10:59", now)).not.toBeNull();
-    expect(signLeadError("sorglos", "existing", "2026-11-07", "11:00", now)).toBeNull();
+  it("erfordert exakt 72 Stunden mit Berliner Uhrzeit bei vorhandener Genehmigung", () => {
+    expect(signEarliestDay("existing", now)).toBe("2026-11-06");
+    expect(signLeadError("sorglos", "existing", "2026-11-06", "10:59", now)).not.toBeNull();
+    expect(signLeadError("sorglos", "existing", "2026-11-06", "11:00", now)).toBeNull();
+    expect(signLeadError("sorglos", "existing", "2026-11-06", "12:00", now)).toBeNull();
   });
   it("erzwingt die Genehmigungswahl nur für Aufstellpakete", () => {
     expect(signLeadError("sorglos", undefined, "2026-12-01", "10:00", now)).not.toBeNull();

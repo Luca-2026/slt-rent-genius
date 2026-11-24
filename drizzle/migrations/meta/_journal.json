@@ -1471,6 +1471,20 @@
       "when": 1795503240285,
       "tag": "0209_revenue_separate_reporting_locations",
       "breakpoints": true
+    },
+    {
+      "idx": 210,
+      "version": "7",
+      "when": 1795533261232,
+      "tag": "0210_paid_sign_booking_amendments",
+      "breakpoints": true
+    },
+    {
+      "idx": 211,
+      "version": "7",
+      "when": 1795533812314,
+      "tag": "0211_sign_existing_permit_72_hour_lead",
+      "breakpoints": true
     }
   ]
 }

@@ -1,4 +1,5 @@
 import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
+import { signResidualPlan } from "../_shared/sign-amendment.ts";
 import { shouldSendCustomerEmail } from "../_shared/customer-email-policy.ts";
 import { codedSubject } from "../_shared/order-code.ts";
 import { processOfferFollowups } from "../_shared/offer-followup-delivery.ts";
@@ -59,7 +60,7 @@ Deno.serve(async (req) => {
       const table = TABLES.find((t) => t === manual.table);
       if (!table || typeof manual.inquiry_id !== "string" || !/^[0-9a-f-]{36}$/i.test(manual.inquiry_id)) return json({ error: "Ungültige Anfrage" }, 400);
       const cols = table === "rental_inquiries"
-        ? "id, status, customer_email, customer_name, customer_salutation, address_form, crm_customer_id, company_name, location, offer_number, offer_total_gross, offer_payload, payments"
+        ? "id, status, customer_email, customer_name, customer_salutation, address_form, crm_customer_id, company_name, location, offer_number, offer_total_gross, offer_payload, payments, order_revision"
         : "id, status, customer_email, first_name, last_name, salutation, crm_customer_id, company_name, location, offer_number, offer_total_gross, offer_payload, payments";
       const { data: r, error } = await service.from(table).select(cols).eq("id", manual.inquiry_id).maybeSingle();
       if (error || !r) return json({ error: "Anfrage nicht gefunden" }, 404);
@@ -69,7 +70,7 @@ Deno.serve(async (req) => {
       const payload = (row.offer_payload ?? {}) as { deposit?: unknown; payment_terms?: unknown };
       const terms = typeof payload.payment_terms === "string" ? payload.payment_terms : "vorkasse";
       const deposit = table === "sales_inquiries" ? 0 : Number(payload.deposit) || 0;
-      const plan = planPaymentAmounts({ gross: row.offer_total_gross, deposit, paidCents });
+      const plan = signResidualPlan(planPaymentAmounts({ gross: row.offer_total_gross, deposit, paidCents }), row.offer_payload, row.order_revision);
       if (plan.openCents <= 0) return json({ error: "Kein offener Betrag – keine Erinnerung nötig" }, 409);
       due.push({ table, r: row, terms, deposit, paidCents, plan, manual: true });
     }
@@ -116,7 +117,7 @@ Deno.serve(async (req) => {
           table, inquiryId: r.id, customerEmail: r.customer_email, offerNumber: r.offer_number, plan,
         }))?.url ?? null;
       }
-      const opts = paymentOptions({ gross: r.offer_total_gross, deposit, paidCents, terms });
+      const opts = paymentOptions({ gross: r.offer_total_gross, deposit, paidCents, terms }).map(option => signResidualPlan({ ...option, openCents: option.amountCents }, r.offer_payload, r.order_revision));
       const minCents = opts.find((o) => o.choice === "anzahlung")?.amountCents ?? plan.openCents;
       const deadline = paymentDeadline(sentAt)!.toLocaleString("de-DE", { timeZone: "Europe/Berlin", dateStyle: "medium", timeStyle: "short" });
       const loc = LOCATION_CONTACTS[resolveLocationKey(r.location)];

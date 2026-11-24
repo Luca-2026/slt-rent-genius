@@ -3,6 +3,13 @@ export function initialSignBookingLocation(value?: string | null): string {
   return ["bonn", "krefeld", "muelheim"].includes(normalized) ? normalized : "all";
 }
 
+export function signOutstandingCents(inquiry?: { offer_total_gross?: unknown; offer_payload?: unknown; payments?: unknown }): number | null {
+  if (inquiry?.offer_total_gross == null || !Number.isFinite(Number(inquiry.offer_total_gross))) return null;
+  const deposit = Number((inquiry.offer_payload as { deposit?: unknown } | null)?.deposit ?? 0);
+  const paid = (Array.isArray(inquiry.payments) ? inquiry.payments : []).reduce((sum, payment) => sum + Math.round(Number(payment?.amount ?? 0) * 100), 0);
+  return Math.max(0, Math.round(Number(inquiry.offer_total_gross) * 100) + Math.round(deposit * 100) - paid);
+}
+
 type Booking = { id: string; start_date: string; end_date: string; status: string; cancelled_at?: string | null; inquiry?: { status: string } };
 export function canPrepareSignBooking(b: Booking): boolean {
   return !b.cancelled_at && ["paid", "reserved", "review"].includes(b.status) && !["done", "cancelled", "rejected"].includes(b.inquiry?.status ?? "");

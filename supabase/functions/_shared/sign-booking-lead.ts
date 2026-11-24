@@ -1,4 +1,5 @@
 export type SignPermitMode = "existing" | "slt";
+export const SIGN_EXISTING_PERMIT_LEAD_HOURS = 72;
 export function berlinDay(now: number): string {
   const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Berlin", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
   return ["year", "month", "day"].map(key => parts.find(p => p.type === key)?.value).join("-");
@@ -14,7 +15,7 @@ export function nrwWorkday(day: string): boolean {
   return new Date(`${day}T12:00:00Z`).getUTCDay() !== 0 && !["01-01", "05-01", "10-03", "11-01", "12-25", "12-26"].includes(day.slice(5)) && ![-2, 1, 39, 50, 60].some(offset => day === dayShift(easter, offset));
 }
 export function signEarliestDay(mode: SignPermitMode, now = Date.now()): string {
-  if (mode === "existing") return berlinDay(now + 96 * 3600000);
+  if (mode === "existing") return berlinDay(now + SIGN_EXISTING_PERMIT_LEAD_HOURS * 3600000);
   let day = berlinDay(now), count = 0;
   while (count < 14) { day = dayShift(day, 1); if (nrwWorkday(day)) count++; }
   return day;
@@ -29,5 +30,5 @@ export function signLeadError(pkg: string, mode: SignPermitMode | null | undefin
   if (pkg !== "sorglos") return null;
   if (mode !== "existing" && mode !== "slt") return "Bitte wählen: Genehmigung schon vorhanden oder Genehmigung durch SLT.";
   if (mode === "slt") return day >= signEarliestDay(mode, now) ? null : "Genehmigung durch SLT benötigt mindestens 14 Werktage Vorlauf (Mo–Sa, ohne NRW-Feiertage).";
-  return berlinTimestamp(day, time) >= now + 96 * 3600000 ? null : "Bei vorhandener Genehmigung benötigen wir mindestens 96 Stunden Vorlauf bis zur Aufstellung.";
+  return berlinTimestamp(day, time) >= now + SIGN_EXISTING_PERMIT_LEAD_HOURS * 3600000 ? null : `Bei vorhandener Genehmigung benötigen wir mindestens ${SIGN_EXISTING_PERMIT_LEAD_HOURS} Stunden Vorlauf bis zur Aufstellung.`;
 }

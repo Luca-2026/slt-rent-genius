@@ -11,6 +11,7 @@ import { PaymentMethods } from "@/components/PaymentMethods";
 interface PayInfo {
   status: "active" | "paid" | "superseded" | "void" | "amount_mismatch";
   offer_number: string;
+  order_revision?: number;
   rent_cents: number;
   deposit_cents: number;
   amount_cents: number;
@@ -106,7 +107,9 @@ export default function ZahlungOnline() {
                 <CheckCircle2 className="h-14 w-14 text-primary mx-auto" />
                 <h1 className="text-2xl font-bold text-foreground">Vielen Dank für deine Zahlung</h1>
                 <p className="text-muted-foreground">
-                  {info.status === "paid"
+                  {Number(info.order_revision ?? 0) > 0
+                    ? info.status === "paid" ? "Deine Restzahlung ist eingegangen und deinem Auftrag zugeordnet." : "Deine Restzahlung wird gerade verarbeitet."
+                    : info.status === "paid"
                     ? `Wir haben deine Zahlung zu Angebot ${info.offer_number} erhalten. Die Auftragsbestätigung bekommst du in Kürze per E-Mail.`
                     : "Deine Zahlung wird gerade verarbeitet. Sobald sie bei uns eingegangen ist, bekommst du die Auftragsbestätigung per E-Mail."}
                 </p>
@@ -122,7 +125,7 @@ export default function ZahlungOnline() {
               <div className="space-y-6">
                 <div>
                   <p className="text-sm text-muted-foreground">Angebot {info.offer_number}</p>
-                    <h1 className="text-2xl font-bold text-foreground">Angebot bezahlen</h1>
+                    <h1 className="text-2xl font-bold text-foreground">{Number(info.order_revision ?? 0) > 0 ? "Restbetrag bezahlen" : "Angebot bezahlen"}</h1>
                 </div>
                 {(info.paid_cents ?? 0) > 0 && (
                   <p className="text-sm text-muted-foreground">Bereits bezahlt: {eur(info.paid_cents ?? 0)}. Offen ist noch der Restbetrag.</p>
@@ -214,7 +217,7 @@ export default function ZahlungOnline() {
                         />
                       </div>
                     )}
-                    <p className="text-xs text-muted-foreground pt-2">Sobald die Überweisung bei uns eingegangen ist, bekommst du die Auftragsbestätigung per E-Mail.</p>
+                    <p className="text-xs text-muted-foreground pt-2">{Number(info.order_revision ?? 0) > 0 ? "Deine Überweisung wird als weiterer Zahlungseingang zu deinem Auftrag erfasst." : "Sobald die Überweisung bei uns eingegangen ist, bekommst du die Auftragsbestätigung per E-Mail."}</p>
                   </div>
                 ) : null}
               </div>

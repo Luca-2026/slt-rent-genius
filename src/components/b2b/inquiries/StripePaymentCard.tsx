@@ -112,6 +112,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
   const current = links.find((l) => l.status === "active") ?? links.find((l) => l.status === "paid") ?? links[0];
   const received = Array.isArray(payments) ? payments.reduce((sum, p) => sum + Math.round((Number(p?.amount) || 0) * 100), 0) : 0;
   const coveredByRecorded = received > 0 && offerTotalGross != null && received >= Math.round(offerTotalGross * 100) + Math.round(deposit * 100);
+  const openCents = offerTotalGross != null ? Math.max(0, Math.round(offerTotalGross * 100) + Math.round(deposit * 100) - received) : null;
   const paidByBank = coveredByRecorded && allPaymentsByBank(payments);
   // Any recorded receipts (bank, cash, card terminal) covering rent + deposit settle the order; a stale online link must not look payable.
   const settledByBank = coveredByRecorded && current?.status !== "paid";
@@ -194,6 +195,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
       </div>
 
       {settledByBank && <p className="text-sm">{paidByBank ? "Vollständig per Überweisung bezahlt" : "Vollständig bezahlt (erfasste Zahlungen)"} – keine Online-Zahlung offen.</p>}
+      {openCents != null && openCents > 0 && <p className="font-semibold text-destructive">Aktuell offen: {cents(openCents)}</p>}
       {!current && !settledByBank && <p className="text-xs text-muted-foreground">Noch kein Zahlungslink zu Angebot {offerNumber}.</p>}
 
       {current && !settledByBank && (
@@ -217,7 +219,7 @@ export function StripePaymentCard({ table, inquiryId, offerNumber, payments, off
             <Copy /> Link kopieren
           </Button>
         )}
-        {offerNumber && !cancelled && !settledByBank && current?.status !== "paid" && (
+        {offerNumber && !cancelled && !coveredByRecorded && (current?.status !== "paid" || (openCents != null && openCents > 0)) && (
           <Button variant="outline" className="h-11 w-full px-3 py-0" onClick={createLink} disabled={busy}>
             {busy ? <Loader2 className="animate-spin" /> : <Link2 />}
             {current?.status === "active" ? "Neuen Link erstellen" : "Zahlungslink erstellen"}

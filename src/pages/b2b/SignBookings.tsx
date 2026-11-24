@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { initialSignBookingLocation, sortSignBookings, canPrepareSignBooking } from "@/lib/signBookingOverview";
+import { initialSignBookingLocation, sortSignBookings, canPrepareSignBooking, signOutstandingCents } from "@/lib/signBookingOverview";
 import { Checkbox } from "@/components/ui/checkbox";
 import { matchesStaffSearch } from "@/lib/staffSearch";
 import { useQuery } from "@tanstack/react-query";
@@ -40,10 +40,10 @@ export default function SignBookings() {
       const bookings = await supabase.from("sign_bookings").select("id,inquiry_id,location,package,quantity,start_date,end_date,status,cancelled_at,prepared_at,prepared_by,permit_mode,permit_path,permit_valid_from,permit_valid_until,permit_issued_on,snapshot,confirmation_sent_at,staff_notified_at").order("start_date", { ascending: true });
       if (bookings.error) throw bookings.error;
       if (!bookings.data.length) return [];
-      const inquiries = await supabase.from("rental_inquiries").select("id,order_code,customer_name,company_name,customer_email,customer_phone,delivery_street,delivery_postal_code,delivery_city,internal_notes,status").in("id", bookings.data.map(b => b.inquiry_id));
+      const inquiries = await supabase.from("rental_inquiries").select("id,order_code,customer_name,company_name,customer_email,customer_phone,delivery_street,delivery_postal_code,delivery_city,internal_notes,status,offer_total_gross,offer_payload,payments,order_revision").in("id", bookings.data.map(b => b.inquiry_id));
       if (inquiries.error) throw inquiries.error;
       const byId = new Map(inquiries.data.map(i => [i.id, i]));
-      return bookings.data.map(b => ({ ...b, inquiry: byId.get(b.inquiry_id), address: [byId.get(b.inquiry_id)?.delivery_street, byId.get(b.inquiry_id)?.delivery_postal_code, byId.get(b.inquiry_id)?.delivery_city].filter(Boolean).join(" ") }));
+      return bookings.data.map(b => ({ ...b, inquiry: byId.get(b.inquiry_id), openCents: signOutstandingCents(byId.get(b.inquiry_id)), address: [byId.get(b.inquiry_id)?.delivery_street, byId.get(b.inquiry_id)?.delivery_postal_code, byId.get(b.inquiry_id)?.delivery_city].filter(Boolean).join(" ") }));
     },
   });
   const openPermit = async (path: string) => {
@@ -92,6 +92,7 @@ export default function SignBookings() {
             <div className="min-w-0 space-y-1"><div className="flex flex-wrap items-center gap-2"><span className="font-semibold">{b.inquiry?.order_code ? `#${b.inquiry.order_code}` : "Halteverbot"}</span><Badge variant={b.status === "review" ? "destructive" : "secondary"}>{statusLabels[b.status] || b.status}</Badge><span className="text-sm text-muted-foreground">{getLocationDisplayName(b.location)}</span></div><p className="font-medium break-words">{b.inquiry?.company_name || b.inquiry?.customer_name || "–"}</p><p className="text-sm">{b.package === "standard" ? "Schildermiete · Selbstabholung" : "Rundum-sorglos-Paket"} · {b.quantity} {b.quantity === 1 ? "Set" : "Sets"}</p></div>
             <Button asChild variant="outline" size="sm"><Link to={`/b2b/mietvorgaenge/${b.inquiry_id}`}>Auftrag öffnen<ArrowUpRight className="ml-1 h-4 w-4" /></Link></Button>
           </div>
+          {Number(b.inquiry?.order_revision ?? 0) > 0 && b.openCents != null && b.openCents > 0 && <p className="font-semibold text-destructive">Nachtrag offen: {(b.openCents / 100).toLocaleString("de-DE", { style: "currency", currency: "EUR" })}</p>}
           <label className="flex min-h-11 w-fit max-w-full cursor-pointer items-center gap-3 text-sm font-medium">
             <Checkbox aria-label={`Schild vorbereitet ${b.inquiry?.order_code ? `#${b.inquiry.order_code}` : b.id}`} checked={!!b.prepared_at} disabled={saving.has(b.id) || !canPrepareSignBooking(b) || !(isAdmin || initialSignBookingLocation(staffProfile?.location) === b.location || (["krefeld", "muelheim"].includes(staffProfile?.location ?? "") && ["krefeld", "muelheim"].includes(b.location)))} onCheckedChange={value => void prepare(b, value === true)} className="h-6 w-6" />
             <span>{saving.has(b.id) ? "Wird gespeichert …" : "Schild vorbereitet"}{b.prepared_at && <span className="block text-xs font-normal text-muted-foreground">{new Date(b.prepared_at).toLocaleString("de-DE", { timeZone: "Europe/Berlin" })}</span>}</span>

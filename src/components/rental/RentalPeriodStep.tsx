@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SIGN_PRODUCT_SLUG, signLastRentalDate, validSignRentalRange } from "../../../supabase/functions/_shared/sign-direct-booking";
-import { signEarliestDay, signLeadError } from "../../../supabase/functions/_shared/sign-booking-lead";
+import { signEarliestDay, signLeadError, SIGN_EXISTING_PERMIT_LEAD_HOURS } from "../../../supabase/functions/_shared/sign-booking-lead";
 import { de } from "date-fns/locale";
 import { format, startOfDay, startOfMonth, endOfMonth } from "date-fns";
 import { Minus, Plus, CalendarDays, BadgePercent } from "lucide-react";
@@ -95,7 +95,7 @@ export function RentalPeriodStep({ edit, patch, weekendPrice, weekendActive, wee
       {!weekendActive && <Button type="button" size="sm" variant="outline" className="col-span-2 w-full border-accent sm:col-span-1 sm:col-start-2 sm:w-fit" onClick={() => { const fri = nextWeekendStart(new Date()); patch({ start_date: toIso(fri), start_time: "16:00", end_date: toIso(addDays(fri, 3)), end_time: "09:30" }); }}>Nächstes Wochenende wählen</Button>}
     </div>}
     {isSign && <p role="status" className="text-sm font-semibold">1–10 Tage zum Grundpreis.{baseLastDate && <> Enthalten bis {format(fromIso(baseLastDate), "dd.MM.yyyy")}.</>}</p>}
-    {edit.sign_package === "sorglos" && <p role="status" className="text-sm font-semibold text-primary">Früheste Aufstellung: {minSetupDay.split("-").reverse().join(".")} · {edit.sign_permit_mode === "slt" ? "14 Werktage (Mo–Sa, ohne NRW-Feiertage)" : "mindestens 96 Stunden Vorlauf"}</p>}
+    {edit.sign_package === "sorglos" && <p role="status" className="text-sm font-semibold text-primary">Früheste Aufstellung: {minSetupDay.split("-").reverse().join(".")} · {edit.sign_permit_mode === "slt" ? "14 Werktage (Mo–Sa, ohne NRW-Feiertage)" : `mindestens ${SIGN_EXISTING_PERMIT_LEAD_HOURS} Stunden Vorlauf`}</p>}
     {edit.start_date && leadError && <p role="alert" className="text-sm text-destructive">{leadError}</p>}
     {isSign && availabilityLoading && <p className="text-sm text-muted-foreground">Belegung wird geprüft …</p>}
     {availabilityError && <p role="alert" className="text-sm text-destructive">{availabilityError}</p>}

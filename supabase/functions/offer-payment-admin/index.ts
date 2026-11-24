@@ -1,4 +1,5 @@
 import { onlineOfferPaymentAllowed } from "../_shared/sales-offer.ts";
+import { signResidualPlan } from "../_shared/sign-amendment.ts";
 import { reconcileRefundsBeforeExecution, reconcileStripeRefund } from "../_shared/refund-reconciliation.ts";
 import { selectStaffRentalPayment } from "../_shared/staff-payment-decision.ts";
 import { recordRentalPayments } from "../_shared/record-rental-payments.ts";
@@ -107,7 +108,7 @@ Deno.serve(async (req: Request) => {
       const table = body.inquiry_type === "rental" ? "rental_inquiries" : "sales_inquiries";
       const { data: inquiry } = await service
         .from(table)
-        .select("id, offer_number, offer_total_gross, offer_payload, payments, customer_email, status")
+        .select("id, offer_number, offer_total_gross, offer_payload, payments, customer_email, status, order_revision")
         .eq("id", body.inquiry_id)
         .maybeSingle();
       if (!inquiry) return json({ error: "Anfrage nicht gefunden" }, 404);
@@ -120,7 +121,7 @@ Deno.serve(async (req: Request) => {
         0,
       );
       const deposit = Number((inquiry.offer_payload as { deposit?: unknown } | null)?.deposit) || 0;
-      const plan = planPaymentAmounts({ gross: inquiry.offer_total_gross, deposit, paidCents });
+      const plan = signResidualPlan(planPaymentAmounts({ gross: inquiry.offer_total_gross, deposit, paidCents }), inquiry.offer_payload, inquiry.order_revision);
       if (plan.openCents <= 0) return json({ error: "Das Angebot ist bereits vollständig bezahlt." }, 409);
       const link = await ensurePaymentLink(service, {
         table,

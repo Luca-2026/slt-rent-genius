@@ -1,4 +1,5 @@
 # Inquiries
+- Paid sign amendments append extras without rewriting the booked package/deposit/hold; amended confirmations use current balances and include the residual payment link, while original automatic confirmations stay independent.
 - Document drafts save locally immediately and serialize server writes/deletes with visible failures; amendment note/time restore with edits, and discard/completion stop autosave to prevent resurrection.
 - Return reminder history remains readable before handover; previews and both send stages require customer-signed delivery evidence in the service and claim RPC, preserving existing role/location guards.
 - OrderRefundOverview owns the rental order's central refund entry and history; sidebar Stripe and invoice rows do not duplicate payout actions. Its dialog reuses protected deposit/rental routes while combined payouts remain live-gated; preparation/settlement never implies an executed payout.

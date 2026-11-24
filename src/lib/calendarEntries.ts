@@ -58,8 +58,8 @@ const timeOf = (v: string | null | undefined): string | null => {
 
 /** Positionen mit abweichendem Zeitraum aus dem Angebot (Snapshot). */
 function payloadItems(payload: unknown): Array<{ rental_start?: string; rental_end?: string }> {
-  const items = ((payload as { items?: unknown } | null)?.items ?? []) as Array<{ rental_start?: string; rental_end?: string }>;
-  return Array.isArray(items) ? items : [];
+  const items = ((payload as { items?: unknown } | null)?.items ?? []) as Array<{ rental_start?: string; rental_end?: string; start_date?: string; end_date?: string }>;
+  return Array.isArray(items) ? items.map(item => ({ ...item, rental_start: item.rental_start ?? item.start_date, rental_end: item.rental_end ?? item.end_date })) : [];
 }
 
 /** Effektiver Mietbeginn (früheste Position, sonst Anfrage). */

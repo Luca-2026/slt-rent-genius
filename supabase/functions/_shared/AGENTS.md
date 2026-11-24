@@ -1,4 +1,5 @@
 # Shared helper rules
+- sign-amendment preserves paid package lines and deposit while appending extras; residual checkout ignores only paid original holds, never expired unpaid bookings or unresolved provider attempts.
 - Invoice deadlines use customer-payment-terms: custom calendar-day terms after invoice date block issuance when uncomputable; portal numeric terms survive finalization and drive PDF/labels/compute_invoice_due_date. Installments retain custom text; custom confirmations require staff acknowledgement without invented prepayment/checkout deadlines; issued invoices remain unchanged.
 - rental-phase owns direct/offer-linked customer signature evidence and legacy reservation running eligibility for browser, chat and return validation, avoiding divergent phase rules.
 - Sign direct booking shares SIGN_LOCATIONS across cart and request validation; reservation/calendar checks use published article locations and separate quantities, preventing cross-location stock pooling.

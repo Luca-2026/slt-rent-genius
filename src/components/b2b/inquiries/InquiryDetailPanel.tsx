@@ -194,8 +194,8 @@ export function offerPayloadToLines(payload: unknown): {
     custom_period: true,
     unit_price: Number(raw.unit_price) || 0,
     discount_percent: Number(raw.discount_percent) || 0,
-    rental_start: typeof raw.rental_start === "string" ? raw.rental_start : undefined,
-    rental_end: typeof raw.rental_end === "string" ? raw.rental_end : undefined,
+    rental_start: typeof raw.rental_start === "string" ? raw.rental_start : typeof raw.start_date === "string" ? raw.start_date : undefined,
+    rental_end: typeof raw.rental_end === "string" ? raw.rental_end : typeof raw.end_date === "string" ? raw.end_date : undefined,
     delivery_at: typeof raw.delivery_at === "string" ? raw.delivery_at : undefined,
     collection_at: typeof raw.collection_at === "string" ? raw.collection_at : undefined,
     ...(typeof raw.rental_start_time === "string" ? { rental_start_time: raw.rental_start_time } : {}),
@@ -795,7 +795,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
   );
   const orderEl = (
     <>
-      {(inquiry.offer_payload as { direct_booking?: boolean } | null)?.direct_booking ? <SignBookingStatus inquiryId={inquiry.id} /> : <OrderConfirmationCard
+      {(inquiry.offer_payload as { direct_booking?: boolean } | null)?.direct_booking && <SignBookingStatus inquiryId={inquiry.id} amended={Number((inquiry as Record<string, unknown>).order_revision ?? 0) > 0} />}
+      {(!(inquiry.offer_payload as { direct_booking?: boolean } | null)?.direct_booking || Number((inquiry as Record<string, unknown>).order_revision ?? 0) > 0) && <OrderConfirmationCard
         inquiryType={inquiryType}
         inquiry={inquiry as Record<string, any>}
         senderName={actorName}
@@ -1007,6 +1008,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
           customerKind={inquiry.customer_kind === "business" ? "business" : "private"}
           mode={docMode === "amendment" ? "amendment" : docMode === "invoice" || docMode === "final" ? "invoice" : "offer"}
           expectedRevision={Number((inquiry as Record<string, unknown>).order_revision ?? 0)}
+          signBookingPayload={(inquiry.offer_payload as Record<string, unknown> | null)?.direct_booking ? inquiry.offer_payload as Record<string, unknown> : null}
           invoiceKind={docMode === "final" ? "final" : "invoice"}
           staffName={actorName}
           disabled={busy}

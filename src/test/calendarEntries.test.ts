@@ -35,6 +35,14 @@ const base = {
 };
 
 describe("calendarEntries", () => {
+  it("retains original sign dates when a later additional article uses rental dates", () => {
+    const row = { ...base, start_date: "2026-11-24", end_date: "2026-12-03", offer_payload: { items: [
+      { start_date: "2026-11-24", end_date: "2026-12-03" },
+      { rental_start: "2026-11-26", rental_end: "2026-12-01" },
+    ] } };
+    expect(effectiveStart(row)).toBe("2026-11-24");
+    expect(effectiveEnd(row)).toBe("2026-12-03");
+  });
   it("shows explicit delivery and collection dates rather than customer pickups", () => {
     const entries = buildCalendarEntries([{ ...base, offer_payload: { items: [{ delivery_at: "2026-10-19T12:30", collection_at: "2026-10-24T15:00" }] } }],new Set(),new Set());
     expect(entries.map(e => [e.kind,e.date,e.time])).toEqual([["delivery","2026-10-19","12:30"],["collection","2026-10-24","15:00"]]);

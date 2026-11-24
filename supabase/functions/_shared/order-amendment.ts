@@ -4,6 +4,7 @@ import { hasBankDiscountPolicy, priceBankTransfer, withoutBankDiscount } from ".
 import { validCalendarDate } from "./public-rental-period.ts";
 import { normalizeOpenEndedUnit, normalizeOpenEndedDuration, hasMissingOpenEndedPrice } from "./installments.ts";
 import { salesOfferLine, salesPaymentTerms, normalizeSalesFinancing } from "./sales-offer.ts";
+import { preserveSignBookingItems, signAmendmentTotals } from "./sign-amendment.ts";
 export function buildSalesOrderAmendment(body: Record<string, unknown>, current: Record<string, unknown>, customerKind: unknown) {
   const raw = Array.isArray(body.items) ? body.items : [];
   const items = normalizeInquiryOfferItems(raw.map((line) => {
@@ -28,6 +29,18 @@ export function buildSalesOrderAmendment(body: Record<string, unknown>, current:
 }
 export function buildOrderAmendment<T extends Record<string, unknown>>(body: Record<string, unknown>, current: T, location: string) {
   let items = withoutBankDiscount(normalizeInquiryOfferItems(body.items));
+  if (current.direct_booking === true) {
+    if (Number(body.deposit) !== Number(current.deposit)) throw new Error("Die Kaution der bezahlten Schilderbuchung bleibt unverändert.");
+    const preserved = preserveSignBookingItems(items as unknown as Record<string, unknown>[], current);
+    // Original raw prices and facts survive normalization; only appended items are new.
+    const extras = items.slice(Array.isArray(current.items) ? current.items.length : 0);
+    const totals = signAmendmentTotals(current, extras);
+    for (const item of extras) {
+      if (!item.period_free && (!item.rental_start || !validCalendarDate(item.rental_start) || !item.rental_end || !validCalendarDate(item.rental_end) || item.rental_end < item.rental_start)) throw new Error("Bitte gültige Mietzeiträume für Zusatzartikel angeben.");
+    }
+    assertCalendarInsurance(extras);
+    return { ...current, items: preserved as unknown as typeof items, totals, deposit: Number(current.deposit), return_mode: current.return_mode === "collection" ? "collection" as const : current.return_mode === "customer" ? "customer" as const : undefined };
+  }
   if (body.open_ended === true && body.open_ended_independent_pricing === true && hasMissingOpenEndedPrice(items)) throw new Error("Bitte für jede Mietposition den Preis der gewählten Einheit festlegen.");
   assertCalendarInsurance(items);
   for (const item of items) {
