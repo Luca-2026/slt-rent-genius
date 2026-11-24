@@ -1443,6 +1443,27 @@
       "when": 1795499653120,
       "tag": "0205_revenue_document_access",
       "breakpoints": true
+    },
+    {
+      "idx": 206,
+      "version": "7",
+      "when": 1795501337343,
+      "tag": "0206_revenue_preserve_pdf_and_offer_deltas",
+      "breakpoints": true
+    },
+    {
+      "idx": 207,
+      "version": "7",
+      "when": 1795501532365,
+      "tag": "0207_revenue_pdf_version_evidence",
+      "breakpoints": true
+    },
+    {
+      "idx": 208,
+      "version": "7",
+      "when": 1795501633395,
+      "tag": "0208_revenue_ignore_unproven_breakdowns",
+      "breakpoints": true
     }
   ]
 }

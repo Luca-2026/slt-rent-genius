@@ -79,7 +79,7 @@ export default function RevenueAnalytics() {
     try {
       const { data: document, error } = await supabase.rpc("get_revenue_document", { p_event_id: entry.id });
       if (error || !document || typeof document !== "object" || Array.isArray(document) || typeof document.url !== "string") throw new Error(error?.message || "Beleg nicht vorhanden");
-      if (entry.source_table === "inquiry_invoices" && entry.event_kind !== "credit_note") {
+      if (entry.source_table === "inquiry_invoices" && entry.event_kind !== "credit_note" && entry.status !== "cancelled") {
         const { data: pdf, error: pdfError } = await invokeWithAuth<{ pdf_base64: string }>("send-inquiry-invoice", { invoice_pdf_id: entry.source_id });
         if (pdfError || !pdf?.pdf_base64) throw new Error("Rechnungs-PDF konnte nicht geladen werden.");
         const url = URL.createObjectURL(new Blob([Uint8Array.from(atob(pdf.pdf_base64), c => c.charCodeAt(0))], { type: "application/pdf" }));

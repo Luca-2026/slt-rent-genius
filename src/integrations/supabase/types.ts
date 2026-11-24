@@ -5290,6 +5290,7 @@ export type Database = {
           created_at: string
           customer_name: string | null
           document_number: string | null
+          document_url: string | null
           event_date: string | null
           event_kind: string
           id: string
@@ -5309,6 +5310,7 @@ export type Database = {
           created_at?: string
           customer_name?: string | null
           document_number?: string | null
+          document_url?: string | null
           event_date?: string | null
           event_kind: string
           id: string
@@ -5328,6 +5330,7 @@ export type Database = {
           created_at?: string
           customer_name?: string | null
           document_number?: string | null
+          document_url?: string | null
           event_date?: string | null
           event_kind?: string
           id?: string
