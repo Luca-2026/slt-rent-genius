@@ -5284,6 +5284,66 @@ export type Database = {
           },
         ]
       }
+      revenue_events: {
+        Row: {
+          business: string
+          created_at: string
+          customer_name: string | null
+          document_number: string | null
+          event_date: string | null
+          event_kind: string
+          id: string
+          lines: Json
+          location: string | null
+          net_amount: number | null
+          occurred_at: string | null
+          order_code: string | null
+          segment: string
+          source_id: string
+          source_table: string
+          stage: string
+          warning: string | null
+        }
+        Insert: {
+          business: string
+          created_at?: string
+          customer_name?: string | null
+          document_number?: string | null
+          event_date?: string | null
+          event_kind: string
+          id: string
+          lines?: Json
+          location?: string | null
+          net_amount?: number | null
+          occurred_at?: string | null
+          order_code?: string | null
+          segment: string
+          source_id: string
+          source_table: string
+          stage: string
+          warning?: string | null
+        }
+        Update: {
+          business?: string
+          created_at?: string
+          customer_name?: string | null
+          document_number?: string | null
+          event_date?: string | null
+          event_kind?: string
+          id?: string
+          lines?: Json
+          location?: string | null
+          net_amount?: number | null
+          occurred_at?: string | null
+          order_code?: string | null
+          segment?: string
+          source_id?: string
+          source_table?: string
+          stage?: string
+          warning?: string | null
+        }
+        Relationships: []
+      }
       sales_article_costs: {
         Row: {
           article_id: string
@@ -6902,6 +6962,7 @@ export type Database = {
         Returns: undefined
       }
       backfill_allocations: { Args: { dry_run?: boolean }; Returns: Json }
+      backfill_revenue_events: { Args: never; Returns: undefined }
       begin_rental_checkout: {
         Args: {
           _claim: string
@@ -6934,6 +6995,18 @@ export type Database = {
       can_send_rental_return_reminder: {
         Args: { _actor: string; _location: string }
         Returns: boolean
+      }
+      capture_document_revenue: {
+        Args: { r: Json; t: string }
+        Returns: undefined
+      }
+      capture_inquiry_revenue: {
+        Args: { live?: boolean; r: Json; t: string }
+        Returns: undefined
+      }
+      capture_revision_revenue: {
+        Args: { r: Json; t: string }
+        Returns: undefined
       }
       cash_register_for_location: { Args: { _loc: string }; Returns: string }
       change_rental_inquiry_location: {
@@ -7144,6 +7217,20 @@ export type Database = {
           used_credit: number
           vat_id_verified: boolean
         }[]
+      }
+      get_revenue_document: { Args: { p_event_id: string }; Returns: Json }
+      get_revenue_report: {
+        Args: {
+          p_business?: string
+          p_category?: string
+          p_from: string
+          p_location?: string
+          p_offset?: number
+          p_segment?: string
+          p_stage?: string
+          p_to: string
+        }
+        Returns: Json
       }
       get_user_email: { Args: { _user_id: string }; Returns: string }
       has_role: {
@@ -7453,6 +7540,27 @@ export type Database = {
         }
         Returns: Json
       }
+      revenue_branch: { Args: { p: string }; Returns: string }
+      revenue_lines: {
+        Args: { business: string; items: Json; payload: Json; total: number }
+        Returns: Json
+      }
+      revenue_number: { Args: { p: string }; Returns: number }
+      revenue_record: {
+        Args: {
+          custom_lines?: Json
+          k: string
+          net: number
+          payload: Json
+          r: Json
+          s: string
+          stamp: string
+          t: string
+        }
+        Returns: undefined
+      }
+      revenue_scope: { Args: never; Returns: Json }
+      revenue_time: { Args: { p: string }; Returns: string }
       save_managed_article: {
         Args: { _article: Json; _id: string; _location_prices?: Json }
         Returns: string

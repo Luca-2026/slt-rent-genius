@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { visibleGroups, itemHref } from "@/components/b2b/StaffNav";
 import {
-  formatEuro, pipeline, receivables, revenueSummary, isAwaitingOfferConfirmation, filterStaffConfirmationTasks,
+  formatEuro, pipeline, receivables, isAwaitingOfferConfirmation, filterStaffConfirmationTasks,
   type InquiryInvoiceRow, type PortalInvoiceRow,
 } from "@/lib/dashboardMetrics";
 import { isOpenInquiry, isUnprocessedInquiry } from "@/lib/inquiryStatus";
@@ -27,6 +27,7 @@ import { DAY_LOCATION_OPTIONS, defaultDayLocation, filterByDayLocation, type Day
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DepositSettlementsDue } from "@/components/b2b/dashboard/DepositSettlementsDue";
 import { AcceptedOffersPayments } from "@/components/b2b/dashboard/AcceptedOffersPayments";
+import { RevenueHomeSummary } from "@/components/b2b/dashboard/RevenueHomeSummary";
 import { DayEntryCard } from "@/components/b2b/calendar/DayEntryCard";
 import { CalendarLegend } from "@/components/b2b/calendar/CalendarLegend";
 import { buildCalendarEntries, groupEntriesByDay, workingDayWindowEnd, workingDaysInWindow, effectiveEnd, hasInvalidRentalPeriod, normalizeLoc, type DayEntry } from "@/lib/calendarEntries";
@@ -153,7 +154,7 @@ function OverdueReturns({ rows, today }: { rows: InquiryRow[]; today: string }) 
 }
 
 export default function StaffHome() {
-  const { isStaff, isAdmin, canViewInventory, displayName, staffProfile, loading: accessLoading } = useStaffAccess();
+  const { isStaff, isAdmin, canViewInventory, canViewRevenue, displayName, staffProfile, loading: accessLoading } = useStaffAccess();
   const [dayLocation, setDayLocation] = useState<DayLocationFilter | null>(null);
   const activeDayLocation: DayLocationFilter = dayLocation ?? defaultDayLocation(staffProfile?.location);
   const [openSales, setOpenSales] = useState(0);
@@ -233,7 +234,6 @@ export default function StaffHome() {
     return () => window.clearInterval(timer);
   }, []);
   const today = now.toLocaleDateString("en-CA", { timeZone: "Europe/Berlin" });
-  const rev = useMemo(() => revenueSummary(invoices, portalInvoices, now), [invoices, portalInvoices, now]);
   const rec = useMemo(() => receivables(invoices, portalInvoices, now), [invoices, portalInvoices, now]);
   const pipe = useMemo(() => pipeline(inquiries), [inquiries]);
 
@@ -284,7 +284,7 @@ export default function StaffHome() {
     return <B2BPortalLayout title="Startseite"><p className="text-muted-foreground">Kein Zugriff auf diesen Bereich.</p></B2BPortalLayout>;
   }
 
-  const groups = visibleGroups(isAdmin, canViewInventory);
+  const groups = visibleGroups(isAdmin, canViewInventory, false, canViewRevenue);
 
   return (
     <B2BPortalLayout
@@ -311,11 +311,11 @@ export default function StaffHome() {
 
           {/* 2. Heute + Finanzen – Kalender führt die Startseite an */}
 
-          <div className={cn("grid gap-5 [&>*]:min-w-0", isAdmin && "lg:grid-cols-5")}>
+          <div className={cn("grid gap-5 [&>*]:min-w-0", canViewRevenue && "lg:grid-cols-5")}>
             <Panel
               title="Nächste Termine & Arbeiten"
               icon={CalendarCheck}
-              className={cn(isAdmin && "lg:col-span-3")}
+              className={cn(canViewRevenue && "lg:col-span-3")}
               action={
                 <div className="flex items-center gap-2">
                   <Select value={activeDayLocation} onValueChange={(v) => setDayLocation(v as DayLocationFilter)}>
@@ -363,19 +363,10 @@ export default function StaffHome() {
               </div>
             </Panel>
 
-            {isAdmin && (
+            {canViewRevenue && (
               <Panel title="Finanzen" icon={TrendingUp} className="lg:col-span-2">
-                <p className="px-4 pt-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Umsatz fakturiert · netto</p>
-                <div className="grid grid-cols-2 gap-px bg-border sm:grid-cols-4 lg:grid-cols-2 m-4 mt-2 overflow-hidden rounded-lg border border-border">
-                  {[
-                    ["Heute", rev.day], ["Woche", rev.week], [monthName, rev.month], [String(now.getFullYear()), rev.year],
-                  ].map(([l, v]) => (
-                    <Link key={String(l)} to="/b2b/anfrage-rechnungen" className="bg-card px-3 py-2.5 hover:bg-muted">
-                      <span className="block text-xs capitalize text-muted-foreground">{l}</span>
-                      <span className="block text-lg font-bold tabular-nums text-foreground">{formatEuro(Number(v))}</span>
-                    </Link>
-                  ))}
-                </div>
+                <RevenueHomeSummary now={now} />
+                {isAdmin && <>
                 <p className="border-t border-border px-4 pt-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Pipeline & Forderungen · brutto</p>
                 <div className="py-1">
                   <MoneyRow label="Angebote offen" hint={`${pipe.offeredCount} gesendet`} value={formatEuro(pipe.offered)} to="/b2b/mietvorgaenge?status=offer_sent" />
@@ -383,6 +374,7 @@ export default function StaffHome() {
                   <MoneyRow label="Offene Forderungen" value={formatEuro(rec.open)} to="/b2b/anfrage-rechnungen" />
                   <MoneyRow label="davon überfällig" hint={`${rec.overdueCount} Rechnungen`} value={formatEuro(rec.overdue)} to="/b2b/anfrage-rechnungen" tone={rec.overdue > 0 ? "danger" : undefined} />
                 </div>
+                </>}
               </Panel>
             )}
           </div>

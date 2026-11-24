@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { canViewRevenue } from "@/lib/revenueReport";
 
 export interface StaffMember {
   id: string;
@@ -30,6 +31,7 @@ export function useStaffAccess() {
       if (!user) {
         setStaffProfile(null);
         setCanEditOps(false);
+        setIsBranchManager(false);
         setLoading(false);
         return;
       }
@@ -84,8 +86,10 @@ export function useStaffAccess() {
     /** Inventar-/CMS-/Verkaufsartikel-Pflege: Admin, Niederlassungsleiter, Standortmitarbeiter. */
     canManageInventory: isAdmin || canEditOps,
     canManageCMS: isAdmin || canEditOps,
-    /** Einkaufspreise & Gemeinkosten, Umsatzauswertung, Team, Audit-Log: nur Admin (Vollzugriff). */
+    /** Einkaufspreise & Gemeinkosten, Team und Audit-Log bleiben Admin-only. */
     canEditCosts: isAdmin,
+    /** Auswertungen: Admin oder aktiver Niederlassungsleiter mit zugeordnetem Standort. Server prüft erneut. */
+    canViewRevenue: canViewRevenue(isAdmin, isBranchManager, !!staffProfile, staffProfile?.location),
     /** Niederlassungsleiter: Kreditlimit bis 2.000 € vergeben / ablehnen. */
     isBranchManager,
     staffProfile,

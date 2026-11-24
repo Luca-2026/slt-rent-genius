@@ -79,7 +79,7 @@ const staffNavItems = [
 
 export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutProps) {
   const { user, b2bProfile, loading, signOut, isAdmin } = useAuth();
-  const { isStaff, canViewInventory, isBranchManager, staffProfile } = useStaffAccess();
+  const { isStaff, canViewInventory, isBranchManager, staffProfile, canViewRevenue } = useStaffAccess();
   const applicationName = isAdmin || isStaff ? "SLT Rental App" : "B2B-Portal";
   const canManageCredit = canManageCreditChecks(isAdmin, isBranchManager, Boolean(staffProfile));
   const { count: openTodoCount } = useStaffWork();
@@ -133,7 +133,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
   if (!user) return null;
 
   const staffBadges = { rental: inquiryCounts.rental, sales: inquiryCounts.sales, todos: openTodoCount, calls: phoneCalls.filter(isUrgentCall).length };
-  const staffActiveLabel = visibleGroups(isAdmin, canViewInventory, canManageCredit)
+  const staffActiveLabel = visibleGroups(isAdmin, canViewInventory, canManageCredit, canViewRevenue)
     .flatMap((g) => g.items)
     .find((i) => isItemActive(i, location.pathname, location.search))?.label;
 
@@ -186,7 +186,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
                     <SheetTitle className="text-left">{applicationName}</SheetTitle>
                   </SheetHeader>
                   <div className="p-3">
-                    <StaffNav isAdmin={isAdmin} canViewInventory={canViewInventory} canManageCredit={canManageCredit} badges={staffBadges} onNavigate={() => setMobileNavOpen(false)} />
+                    <StaffNav isAdmin={isAdmin} canViewInventory={canViewInventory} canManageCredit={canManageCredit} canViewRevenue={canViewRevenue} badges={staffBadges} onNavigate={() => setMobileNavOpen(false)} />
                   </div>
                 </SheetContent>
               </Sheet>
@@ -197,7 +197,7 @@ export function B2BPortalLayout({ children, title, subtitle }: B2BPortalLayoutPr
               <aside className="hidden lg:block">
                 <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-1">
                   <p className="mb-3 px-3 text-sm font-semibold text-primary">{applicationName}</p>
-                  <StaffNav isAdmin={isAdmin} canViewInventory={canViewInventory} canManageCredit={canManageCredit} badges={staffBadges} />
+                  <StaffNav isAdmin={isAdmin} canViewInventory={canViewInventory} canManageCredit={canManageCredit} canViewRevenue={canViewRevenue} badges={staffBadges} />
                 </div>
               </aside>
               <div className="min-w-0">{children}</div>

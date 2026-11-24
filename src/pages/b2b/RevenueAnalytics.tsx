@@ -1,324 +1,172 @@
-import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { Download, MapPin, Tags, Package } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { useState } from "react";
+import { useSearchParams, Link } from "react-router-dom";
+import { Download, ChevronLeft, ChevronRight, Filter, RefreshCw, FileText, ArrowUpRight, MapPin, Loader2 } from "lucide-react";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ReferenceLine } from "recharts";
 import { supabase } from "@/integrations/supabase/client";
 import { B2BPortalLayout } from "@/components/b2b/B2BPortalLayout";
-import { useStaffAccess } from "@/hooks/useStaffAccess";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { useStaffAccess } from "@/hooks/useStaffAccess";
+import { useAuth } from "@/hooks/useAuth";
+import { useRevenueReport, fetchRevenueReport } from "@/hooks/useRevenueReport";
+import { useToast } from "@/hooks/use-toast";
+import { openStorageDocument } from "@/lib/openStorageDocument";
+import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { categoryDisplayName } from "@/data/categoryModel";
-import { usedMachineCategoryRows } from "@/data/usedMachineDisplayNames";
-import { formatEuro, isoDay } from "@/lib/dashboardMetrics";
-import { SEGMENT_FILTER_OPTIONS, parseSegmentFilter, segmentOf } from "@/lib/customerSegment";
-import {
-  analyze, buildCategoryIndex, toCsv, UNKNOWN_LOCATION,
-  type AnalyticsInvoice, type Bucket, type Business,
-} from "@/lib/revenueAnalytics";
+import { SEGMENT_FILTER_OPTIONS, parseSegmentFilter } from "@/lib/customerSegment";
+import { cn } from "@/lib/utils";
+import { csvCell } from "@/lib/csvCell";
+import { berlinDay, revenueRange, shiftRevenuePeriod, REVENUE_PERIODS, REVENUE_STAGES, revenueBranch, revenueLocationLabel, revenueMoney, revenueEntryCsv, type RevenuePeriod, type RevenueBusiness, type RevenueStage, type RevenueEntry, type RevenueBucket } from "@/lib/revenueReport";
 
-const LOCATION_LABEL: Record<string, string> = { krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr", [UNKNOWN_LOCATION]: UNKNOWN_LOCATION };
-const locLabel = (k: string) => LOCATION_LABEL[k] ?? k;
-const catLabel = (k: string) => { const d = categoryDisplayName(k); return d && d !== k ? d : k; };
-
-type Preset = "month" | "last_month" | "quarter" | "year" | "last_year" | "all" | "custom";
-const PRESETS: { value: Preset; label: string }[] = [
-  { value: "month", label: "Dieser Monat" },
-  { value: "last_month", label: "Letzter Monat" },
-  { value: "quarter", label: "Dieses Quartal" },
-  { value: "year", label: "Dieses Jahr" },
-  { value: "last_year", label: "Letztes Jahr" },
-  { value: "all", label: "Gesamter Zeitraum" },
-  { value: "custom", label: "Eigener Zeitraum" },
-];
-
-function presetRange(p: Preset, now = new Date()): [string | null, string | null] {
-  const y = now.getFullYear(), m = now.getMonth();
-  const d = (yy: number, mm: number, dd: number) => isoDay(new Date(yy, mm, dd));
-  switch (p) {
-    case "month": return [d(y, m, 1), d(y, m + 1, 0)];
-    case "last_month": return [d(y, m - 1, 1), d(y, m, 0)];
-    case "quarter": { const q = Math.floor(m / 3) * 3; return [d(y, q, 1), d(y, q + 3, 0)]; }
-    case "year": return [d(y, 0, 1), d(y, 11, 31)];
-    case "last_year": return [d(y - 1, 0, 1), d(y - 1, 11, 31)];
-    default: return [null, null];
-  }
+const dateLabel = (s: string) => new Date(`${s}T12:00:00Z`).toLocaleDateString("de-DE", { timeZone: "Europe/Berlin" });
+const catLabel = (s: string) => categoryDisplayName(s) || s;
+const statusLabel: Record<string, string> = { accepted: "Angenommen", done: "Erledigt", offer_sent: "Angebot gesendet", open: "Offen", paid: "Bezahlt", cancelled: "Storniert", overdue: "Überfällig", rejected: "Abgelehnt", in_progress: "In Bearbeitung", sent: "Versendet" };
+const kindLabel = (s: string) => ({ invoice: "Rechnung", credit_note: "Gutschrift", installment: "Abschlag", final: "Schlussrechnung", supplement: "Nachberechnung" }[s] || (s.startsWith("Versand ") ? "Angebotsversand" : s));
+function saveCsv(csv: string, name: string) {
+  const url = URL.createObjectURL(new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" }));
+  const a = document.createElement("a"); a.href = url; a.download = `${name}.csv`; a.click(); URL.revokeObjectURL(url);
 }
-
-const n = (v: unknown) => Number(v) || 0;
-
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return <div className="min-w-0 space-y-1"><span className="block text-xs font-medium text-muted-foreground">{label}</span>{children}</div>;
+}
 export default function RevenueAnalytics() {
-  const { isAdmin, loading: accessLoading } = useStaffAccess();
+  const { user } = useAuth();
+  const { isAdmin, canViewRevenue, staffProfile, loading: accessLoading } = useStaffAccess();
+  const { toast } = useToast();
   const [params, setParams] = useSearchParams();
-  const business = (params.get("bereich") === "verkauf" ? "sales" : "rental") as Business;
-  const preset = (params.get("zeitraum") as Preset) || "year";
-  const location = params.get("standort") || "all";
-  const segment = parseSegmentFilter(params.get("kunden"));
+  const today = berlinDay();
+  const preset = params.get("zeitraum") ?? "month";
+  const period = (REVENUE_PERIODS.some(p => p.value === preset) ? preset : preset === "last_month" ? "month" : "year") as RevenuePeriod;
+  const anchor = params.get("datum") ?? (preset === "last_month" ? shiftRevenuePeriod("month", today, -1) : today);
+  const range = period === "custom" ? { from: params.get("von") || today, to: params.get("bis") || today } : revenueRange(period, anchor, today);
+  const business = (params.get("bereich") === "verkauf" ? "sales" : params.get("bereich") === "miete" ? "rental" : "all") as RevenueBusiness;
+  const stage = (REVENUE_STAGES.some(s => s.value === params.get("stufe")) ? params.get("stufe") : "invoiced") as RevenueStage;
+  // A hostile URL is still forwarded to the server and rejected, not silently honoured.
+  const location = params.get("standort") || (isAdmin ? "all" : revenueBranch(staffProfile?.location) || "all");
   const category = params.get("kategorie") || "all";
-  const [customFrom, setCustomFrom] = useState(params.get("von") ?? "");
-  const [customTo, setCustomTo] = useState(params.get("bis") ?? "");
-
-  const [invoices, setInvoices] = useState<AnalyticsInvoice[]>([]);
-  const [catIndexes, setCatIndexes] = useState<{ rental: Map<string, string>; sales: Map<string, string> }>({ rental: new Map(), sales: new Map() });
-  const catIndex = catIndexes[business];
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const set = (k: string, v: string | null) => {
-    const next = new URLSearchParams(params);
-    if (v === null || v === "all" || v === "") next.delete(k); else next.set(k, v);
-    if (k === "bereich") next.delete("kategorie");
+  const segment = parseSegmentFilter(params.get("kunden"));
+  const offset = Math.max(0, Number(params.get("seite") || 0)) * 100;
+  const query = { ...range, business, stage, location, category, segment, offset };
+  const validRange = /^\d{4}-\d{2}-\d{2}$/.test(range.from) && /^\d{4}-\d{2}-\d{2}$/.test(range.to) && range.from <= range.to;
+  const report = useRevenueReport(query, !accessLoading && canViewRevenue && validRange, user?.id);
+  const [exporting, setExporting] = useState(false);
+  const [opening, setOpening] = useState<string | null>(null);
+  const data = report.data;
+  const set = (changes: Record<string, string | null>) => {
+    const next = new URLSearchParams(params); next.delete("seite");
+    Object.entries(changes).forEach(([k, v]) => { if (!v || v === "all") next.delete(k); else next.set(k, v); });
     setParams(next, { replace: true });
   };
-
-  useEffect(() => {
-    if (accessLoading || !isAdmin) return;
-    (async () => {
-      const [inq, inqItems, portal, portalItems, products, sales, newM, usedM] = await Promise.all([
-        supabase.from("inquiry_invoices").select("id,inquiry_type,invoice_kind,status,invoice_date,net_amount,location,customer_kind,sales_inquiry_id,delivery_cost_delivery,delivery_cost_return,setup_cost,dismantle_cost,return_location_cost"),
-        supabase.from("inquiry_invoice_items").select("invoice_id,product_name,total_price"),
-        supabase.from("b2b_invoices").select("id,invoice_kind,status,invoice_date,net_amount,reservation_id,b2b_profile_id,delivery_cost,source_offer_id"),
-        supabase.from("b2b_invoice_items").select("invoice_id,product_name,total_price"),
-        supabase.from("b2b_managed_products").select("name,category"),
-        supabase.from("sales_inquiries").select("id,product_category"),
-        supabase.from("new_machines").select("name,category"),
-        supabase.from("used_machines").select("manufacturer,model,category"),
-      ]);
-      const firstErr = [inq, inqItems, portal, portalItems, products].find((r) => r.error)?.error;
-      if (firstErr) { setError(firstErr.message); setLoading(false); return; }
-
-      const portalRows = (portal.data ?? []) as { id: string; invoice_kind: string | null; status: string; invoice_date: string | null; net_amount: number | null; reservation_id: string | null; b2b_profile_id: string | null; delivery_cost: number | null; source_offer_id: string | null }[];
-      const resIds = portalRows.map((r) => r.reservation_id).filter(Boolean) as string[];
-      const profIds = portalRows.map((r) => r.b2b_profile_id).filter(Boolean) as string[];
-      const offerIds = portalRows.map((r) => r.source_offer_id).filter(Boolean) as string[];
-      const [res, prof, offerItems] = await Promise.all([
-        resIds.length ? supabase.from("b2b_reservations").select("id,location,product_name").in("id", resIds) : Promise.resolve({ data: [] }),
-        profIds.length ? supabase.from("b2b_profiles").select("id,assigned_location").in("id", profIds) : Promise.resolve({ data: [] }),
-        offerIds.length ? supabase.from("b2b_offer_items").select("offer_id,product_name,total_price").in("offer_id", offerIds) : Promise.resolve({ data: [] }),
-      ]);
-      const offerItemMap = new Map<string, { product_name: string | null; total_price: number | null }[]>();
-      ((offerItems.data ?? []) as { offer_id: string; product_name: string | null; total_price: number | null }[]).forEach((o) => offerItemMap.set(o.offer_id, [...(offerItemMap.get(o.offer_id) ?? []), o]));
-      const resRows = (res.data ?? []) as { id: string; location: string | null; product_name: string | null }[];
-      const resLoc = new Map(resRows.map((r) => [r.id, r.location]));
-      const resProduct = new Map(resRows.map((r) => [r.id, r.product_name]));
-      const profLoc = new Map(((prof.data ?? []) as { id: string; assigned_location: string | null }[]).map((r) => [r.id, r.assigned_location]));
-      const salesCat = new Map(((sales.data ?? []) as { id: string; product_category: string | null }[]).map((r) => [r.id, r.product_category]));
-
-      const group = <T extends { invoice_id: string }>(rows: T[]) => {
-        const m = new Map<string, T[]>();
-        rows.forEach((r) => m.set(r.invoice_id, [...(m.get(r.invoice_id) ?? []), r]));
-        return m;
-      };
-      const iItems = group((inqItems.data ?? []) as { invoice_id: string; product_name: string | null; total_price: number | null }[]);
-      const pItems = group((portalItems.data ?? []) as { invoice_id: string; product_name: string | null; total_price: number | null }[]);
-
-      const list: AnalyticsInvoice[] = [
-        ...((inq.data ?? []) as { id: string; inquiry_type: string | null; invoice_kind: string | null; status: string; invoice_date: string | null; net_amount: number | null; location: string | null; customer_kind: string | null; sales_inquiry_id: string | null; delivery_cost_delivery: number | null; delivery_cost_return: number | null; setup_cost: number | null; dismantle_cost: number | null; return_location_cost: number | null }[]).map((r) => ({
-          id: r.id, source: "inquiry" as const,
-          business: (r.inquiry_type === "sales" ? "sales" : "rental") as Business,
-          invoice_kind: r.invoice_kind, status: r.status, invoice_date: r.invoice_date, net_amount: n(r.net_amount),
-          location: r.location, segment: segmentOf({ customer_kind: r.customer_kind }),
-          fallbackCategory: r.sales_inquiry_id ? salesCat.get(r.sales_inquiry_id) ?? null : null,
-          serviceAmount: n(r.delivery_cost_delivery) + n(r.delivery_cost_return) + n(r.setup_cost) + n(r.dismantle_cost) + n(r.return_location_cost),
-          items: iItems.get(r.id) ?? [],
-        })),
-        ...portalRows.map((r) => ({
-          id: r.id, source: "portal" as const, business: "rental" as Business, invoice_kind: r.invoice_kind,
-          status: r.status, invoice_date: r.invoice_date, net_amount: n(r.net_amount),
-          location: (r.reservation_id && resLoc.get(r.reservation_id)) || (r.b2b_profile_id && profLoc.get(r.b2b_profile_id)) || null,
-          segment: "portal" as const,
-          // ohne eigene Positionen: Positionen aus dem zugrunde liegenden Angebot
-          items: pItems.get(r.id) ?? (r.source_offer_id ? offerItemMap.get(r.source_offer_id) ?? [] : []),
-          serviceAmount: n(r.delivery_cost),
-          fallbackArticle: r.reservation_id ? resProduct.get(r.reservation_id) ?? null : null,
-        })),
-      ];
-      setInvoices(list);
-      setCatIndexes({ rental: buildCategoryIndex((products.data ?? []) as { name: string | null; category: string | null }[]), sales: buildCategoryIndex([
-        ...((newM.data ?? []) as { name: string | null; category: string | null }[]),
-        ...usedMachineCategoryRows((usedM.data ?? []) as { manufacturer: string | null; model: string | null; category: string | null }[]),
-      ]) });
-      setLoading(false);
-    })();
-  }, [accessLoading, isAdmin]);
-
-  const [from, to] = preset === "custom" ? [params.get("von") || null, params.get("bis") || null] : presetRange(preset);
-  const filter = { business, from, to, location, segment, category };
-  const result = useMemo(() => analyze(invoices, catIndex, filter), [invoices, catIndex, business, from, to, location, segment, category]); // eslint-disable-line react-hooks/exhaustive-deps
-  // Optionen ohne eigenen Filter ermitteln, damit man immer zurückwechseln kann
-  const allCats = useMemo(() => analyze(invoices, catIndex, { ...filter, category: "all" }).byCategory.map((c) => c.key), [invoices, catIndex, business, from, to, location, segment]); // eslint-disable-line react-hooks/exhaustive-deps
-  const locations = useMemo(() => {
-    const s = new Set(["krefeld", "bonn", "muelheim"]);
-    invoices.forEach((i) => s.add(i.location || UNKNOWN_LOCATION));
-    return [...s];
-  }, [invoices]);
-
-  const download = (name: string, rows: Bucket[], withCat: boolean, labelFn?: (k: string) => string) => {
-    const csv = toCsv(rows.map((r) => ({ ...r, label: labelFn ? labelFn(r.key) : r.label, category: r.category ? catLabel(r.category) : r.category })), result.total, withCat);
-    const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `umsatz-${business === "sales" ? "verkauf" : "vermietung"}-${name}-${from ?? "alle"}_${to ?? "alle"}.csv`;
-    a.click();
-    URL.revokeObjectURL(a.href);
+  const exportEntries = async () => {
+    setExporting(true);
+    try {
+      const rows: RevenueEntry[] = [];
+      for (let page = 0; ; page += 100) {
+        const result = await fetchRevenueReport({ ...query, offset: page });
+        rows.push(...result.entries);
+        if (rows.length >= result.total_count || !result.entries.length) break;
+      }
+      saveCsv(revenueEntryCsv(rows), `auswertung-${stage}-${business}-${range.from}-${range.to}`);
+    } catch (e) { toast({ title: "Export nicht erstellt", description: e instanceof Error ? e.message : "Bitte erneut versuchen.", variant: "destructive" }); }
+    finally { setExporting(false); }
   };
-
-  if (!accessLoading && !isAdmin) {
-    return <B2BPortalLayout title="Umsatzauswertung"><p className="text-muted-foreground">Nur für Admins.</p></B2BPortalLayout>;
-  }
-
-  const periodText = from || to ? `${from ? new Date(from).toLocaleDateString("de-DE") : "…"} – ${to ? new Date(to).toLocaleDateString("de-DE") : "…"}` : "Gesamter Zeitraum";
-
-  return (
-    <B2BPortalLayout title="Umsatzauswertung" subtitle="Fakturierter Umsatz netto nach Standort, Kategorie und Artikel">
-      <div className="space-y-5">
-        {/* Bereich */}
-        <div className="inline-flex rounded-lg border border-border bg-card p-1" role="tablist">
-          {([["rental", "Vermietung"], ["sales", "Verkauf"]] as const).map(([v, l]) => (
-            <button key={v} role="tab" aria-selected={business === v} onClick={() => set("bereich", v === "sales" ? "verkauf" : null)}
-              className={cn("rounded-md px-4 py-1.5 text-sm font-medium transition-colors", business === v ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}>
-              {l}
-            </button>
-          ))}
+  const openPdf = async (entry: RevenueEntry) => {
+    setOpening(entry.id);
+    const tab = window.open("about:blank", "_blank"); if (tab) tab.opener = null;
+    try {
+      const { data: document, error } = await supabase.rpc("get_revenue_document", { p_event_id: entry.id });
+      if (error || !document || typeof document !== "object" || Array.isArray(document) || typeof document.url !== "string") throw new Error(error?.message || "Beleg nicht vorhanden");
+      if (entry.source_table === "inquiry_invoices" && entry.event_kind !== "credit_note") {
+        const { data: pdf, error: pdfError } = await invokeWithAuth<{ pdf_base64: string }>("send-inquiry-invoice", { invoice_pdf_id: entry.source_id });
+        if (pdfError || !pdf?.pdf_base64) throw new Error("Rechnungs-PDF konnte nicht geladen werden.");
+        const url = URL.createObjectURL(new Blob([Uint8Array.from(atob(pdf.pdf_base64), c => c.charCodeAt(0))], { type: "application/pdf" }));
+        if (tab) tab.location.href = url; else window.open(url, "_blank", "noopener,noreferrer");
+        window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+      } else {
+        const marker = "/b2b-invoices/"; const at = document.url.indexOf(marker);
+        const path = decodeURIComponent((at >= 0 ? document.url.slice(at + marker.length) : document.url).split("?")[0]);
+        const { data: signed, error: signingError } = await supabase.storage.from("b2b-invoices").createSignedUrl(path, 600);
+        if (signingError || !signed?.signedUrl) throw new Error("Beleg konnte nicht geöffnet werden.");
+        if (tab) tab.location.href = signed.signedUrl; else await openStorageDocument(document.url, "b2b-invoices");
+      }
+    } catch (e) { tab?.close(); toast({ title: "Beleg nicht geöffnet", description: e instanceof Error ? e.message : "Bitte erneut versuchen.", variant: "destructive" }); }
+    finally { setOpening(null); }
+  };
+  if (!accessLoading && !canViewRevenue) return <B2BPortalLayout title="Umsatzauswertung"><p role="alert" className="text-muted-foreground">Keine Berechtigung zur Umsatzauswertung.</p></B2BPortalLayout>;
+  return <B2BPortalLayout title="Umsatzauswertung" subtitle="Angebote · Aufträge · Fakturierter Umsatz">
+    <div className="space-y-6 min-w-0">
+      <div className="flex flex-wrap items-end gap-3 border-b border-border pb-4">
+        <div className="flex flex-wrap gap-1" role="group" aria-label="Geschäftsart">
+          {([["all", "Gesamt"], ["rental", "Miete"], ["sales", "Verkauf"]] as const).map(([v, l]) => <Button key={v} size="sm" variant={business === v ? "default" : "outline"} aria-pressed={business === v} onClick={() => set({ bereich: v === "sales" ? "verkauf" : v === "rental" ? "miete" : null, kategorie: null })}>{l}</Button>)}
         </div>
-
-        {/* Filter */}
-        <div className="grid gap-3 rounded-xl border border-border bg-card p-4 sm:grid-cols-2 lg:grid-cols-4">
-          <FilterField label="Zeitraum">
-            <Select value={preset} onValueChange={(v) => set("zeitraum", v === "year" ? null : v)}>
-              <SelectTrigger aria-label="Zeitraum"><SelectValue /></SelectTrigger>
-              <SelectContent>{PRESETS.map((p) => <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>)}</SelectContent>
-            </Select>
-          </FilterField>
-          <FilterField label="Standort">
-            <Select value={location} onValueChange={(v) => set("standort", v)}>
-              <SelectTrigger aria-label="Standort"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Alle Standorte</SelectItem>
-                {locations.map((l) => <SelectItem key={l} value={l}>{locLabel(l)}</SelectItem>)}
-              </SelectContent>
-            </Select>
-          </FilterField>
-          <FilterField label="Kundengruppe">
-            <Select value={segment} onValueChange={(v) => set("kunden", v)}>
-              <SelectTrigger aria-label="Kundengruppe"><SelectValue /></SelectTrigger>
-              <SelectContent>{SEGMENT_FILTER_OPTIONS.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}</SelectContent>
-            </Select>
-          </FilterField>
-          <FilterField label="Kategorie">
-            <Select value={category} onValueChange={(v) => set("kategorie", v)}>
-              <SelectTrigger aria-label="Kategorie"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Alle Kategorien</SelectItem>
-                {[...new Set([...allCats, ...(category !== "all" ? [category] : [])])].map((c) => <SelectItem key={c} value={c}>{catLabel(c)}</SelectItem>)}
-              </SelectContent>
-            </Select>
-          </FilterField>
-          {preset === "custom" && (
-            <div className="grid grid-cols-2 gap-3 sm:col-span-2 lg:col-span-4 lg:max-w-md">
-              <FilterField label="Von"><Input type="date" value={customFrom} onChange={(e) => { setCustomFrom(e.target.value); set("von", e.target.value); }} /></FilterField>
-              <FilterField label="Bis"><Input type="date" value={customTo} onChange={(e) => { setCustomTo(e.target.value); set("bis", e.target.value); }} /></FilterField>
-            </div>
-          )}
+        <div className="ml-auto flex items-center gap-2 min-w-0">
+          <MapPin className="h-4 w-4 shrink-0 text-primary" />
+          {isAdmin ? <Select value={location} onValueChange={v => set({ standort: v })}><SelectTrigger aria-label="Auswertungsstandort" className="h-9 w-[220px] max-w-full text-xs"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Beide Standorte</SelectItem><SelectItem value="bonn">Bonn</SelectItem><SelectItem value="krefeld">Krefeld inkl. Mülheim an der Ruhr</SelectItem><SelectItem value="unassigned">Nicht zugeordnet / prüfen</SelectItem></SelectContent></Select> : <span className="text-sm font-semibold break-words">{revenueLocationLabel(data?.scope.location ?? revenueBranch(staffProfile?.location))}</span>}
         </div>
-
-        {loading ? <p className="text-muted-foreground">Wird geladen …</p> : error ? <p className="text-destructive">Fehler beim Laden: {error}</p> : (
-          <>
-            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-              <Stat label="Umsatz netto" value={formatEuro(result.total)} strong />
-              <Stat label="Rechnungen" value={String(result.invoiceCount)} />
-              <Stat label="Ø je Rechnung" value={formatEuro(result.invoiceCount ? result.total / result.invoiceCount : 0)} />
-              <Stat label="Zeitraum" value={periodText} small />
-            </div>
-
-            {result.invoiceCount === 0 ? (
-              <p className="rounded-xl border border-dashed border-border bg-card p-8 text-center text-sm text-muted-foreground">
-                Für diese Auswahl gibt es keine Rechnungen{business === "sales" ? " aus Verkäufen" : ""}.
-              </p>
-            ) : (
-              <div className="grid gap-5 lg:grid-cols-2 [&>*]:min-w-0">
-                <BucketTable title="Umsatz nach Standort" icon={MapPin} rows={result.byLocation} total={result.total} labelFn={locLabel}
-                  onRow={(k) => set("standort", location === k ? null : k)} activeKey={location}
-                  onCsv={() => download("standorte", result.byLocation, false, locLabel)} />
-                <BucketTable title="Umsatz nach Kategorie" icon={Tags} rows={result.byCategory} total={result.total} labelFn={catLabel}
-                  onRow={(k) => set("kategorie", category === k ? null : k)} activeKey={category}
-                  onCsv={() => download("kategorien", result.byCategory, false, catLabel)} />
-                <BucketTable className="lg:col-span-2" title="Umsatz nach Artikel" icon={Package} rows={result.byArticle} total={result.total} showCategory
-                  onCsv={() => download("artikel", result.byArticle, true)} />
-              </div>
-            )}
-            <p className="text-xs text-muted-foreground">
-              Grundlage: geschriebene Rechnungen nach Rechnungsdatum, netto. Stornierte Rechnungen und ihre Gutschriften heben sich auf, Entwürfe und Kautionen zählen nicht.
-              Liefer-, Aufbau- und Abbaukosten stehen unter „Lieferung & Service“, Versicherungen unter „Versicherung & Zusatzoptionen“. Beträge ohne passende Rechnungsposition stehen unter „Nicht aufgeschlüsselt“. Die Summen aller Tabellen ergeben immer den Gesamtumsatz. Ein Klick auf einen Standort oder eine Kategorie filtert die Ansicht.
-            </p>
-          </>
-        )}
       </div>
-    </B2BPortalLayout>
-  );
-}
-
-function FilterField({ label, children }: { label: string; children: React.ReactNode }) {
-  return <label className="block space-y-1"><span className="text-xs font-medium text-muted-foreground">{label}</span>{children}</label>;
-}
-
-function Stat({ label, value, strong, small }: { label: string; value: string; strong?: boolean; small?: boolean }) {
-  return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className={cn("mt-1 font-bold tabular-nums", small ? "text-sm" : "text-xl", strong ? "text-primary" : "text-foreground")}>{value}</p>
+      <div className="flex flex-wrap items-end gap-3">
+        <Field label="Zeitraum"><Select value={period} onValueChange={v => set({ zeitraum: v, datum: today, von: range.from, bis: range.to })}><SelectTrigger className="w-[170px]" aria-label="Zeitraum"><SelectValue /></SelectTrigger><SelectContent>{REVENUE_PERIODS.map(p => <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>)}</SelectContent></Select></Field>
+        {period !== "custom" ? <div className="flex items-center gap-2 flex-wrap">
+          <Button size="icon" variant="outline" aria-label="Vorheriger Zeitraum" title="Vorheriger Zeitraum" onClick={() => set({ datum: shiftRevenuePeriod(period, anchor, -1) })}><ChevronLeft className="h-4 w-4" /></Button>
+          <span className="text-sm font-medium tabular-nums">{dateLabel(range.from)}{range.from !== range.to && ` – ${dateLabel(range.to)}`}</span>
+          <Button size="icon" variant="outline" aria-label="Nächster Zeitraum" title="Nächster Zeitraum" disabled={anchor >= today} onClick={() => set({ datum: shiftRevenuePeriod(period, anchor, 1) })}><ChevronRight className="h-4 w-4" /></Button>
+          <Button variant="ghost" size="sm" onClick={() => set({ datum: today })}>Aktuell</Button>
+        </div> : <div className="grid grid-cols-2 gap-2 max-w-full"><Field label="Von"><Input type="date" aria-label="Von" value={range.from} onChange={e => set({ von: e.target.value })} /></Field><Field label="Bis"><Input type="date" aria-label="Bis" value={range.to} onChange={e => set({ bis: e.target.value })} /></Field></div>}
+      </div>
+      <Collapsible className="border-b border-border pb-3">
+        <CollapsibleTrigger asChild><Button variant="ghost" size="sm" className="gap-2"><Filter className="h-4 w-4" />Weitere Filter{category !== "all" || segment !== "all" ? " · aktiv" : ""}</Button></CollapsibleTrigger>
+        <CollapsibleContent className="grid gap-3 sm:grid-cols-2 pt-3">
+          <Field label="Kundengruppe"><Select value={segment} onValueChange={v => set({ kunden: v })}><SelectTrigger aria-label="Kundengruppe"><SelectValue /></SelectTrigger><SelectContent>{SEGMENT_FILTER_OPTIONS.map(s => <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>)}</SelectContent></Select></Field>
+          <Field label="Kategorie"><Select value={category} onValueChange={v => set({ kategorie: v })}><SelectTrigger aria-label="Kategorie"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Alle Kategorien</SelectItem>{[...new Set([...(data?.categories ?? []), ...(category !== "all" ? [category] : [])])].map(c => <SelectItem key={c} value={c}>{catLabel(c)}</SelectItem>)}</SelectContent></Select></Field>
+        </CollapsibleContent>
+      </Collapsible>
+      {!validRange ? <p role="alert" className="text-destructive">Bitte einen gültigen Zeitraum wählen; Ende nicht vor Beginn.</p> : report.isError ? <div role="alert" className="space-y-2"><p className="text-destructive">{report.error.message}</p><Button variant="outline" onClick={() => void report.refetch()}><RefreshCw className="h-4 w-4 mr-2" />Erneut laden</Button></div> : !data ? <p role="status" className="text-muted-foreground">Auswertung wird geladen …</p> : <>
+        <div className="grid gap-3 md:grid-cols-3" aria-label="Auswertungskennzahlen">
+          {REVENUE_STAGES.map(s => { const metric = data.summary[s.value]; return <Button key={s.value} variant="outline" onClick={() => set({ stufe: s.value })} aria-pressed={stage === s.value} className={cn("h-auto min-h-[142px] w-full min-w-0 whitespace-normal items-start flex-col gap-2 p-4 text-left", stage === s.value && "border-primary bg-primary/5")}>
+            <span className="text-xs font-medium text-muted-foreground">{s.label}</span>
+            <span className="text-xl font-bold tabular-nums break-all text-foreground">{metric.unknown && metric.count === metric.unknown ? "Nicht belegt" : revenueMoney(metric.net)}{metric.unknown > 0 && metric.count !== metric.unknown ? "*" : ""}</span>
+            <span className="text-xs text-muted-foreground">{metric.count} Belege / Änderungen{metric.unknown > 0 ? ` · ${metric.unknown} ohne eindeutigen Betrag` : ""}</span>
+            {business === "all" && <span className="grid w-full grid-cols-2 gap-2 border-t border-border pt-2 text-xs"><span>Miete<span className="block font-semibold tabular-nums">{revenueMoney(metric.rental)}</span></span><span>Verkauf<span className="block font-semibold tabular-nums">{revenueMoney(metric.sales)}</span></span></span>}
+          </Button>; })}
+        </div>
+        {data.warnings > 0 && <p role="note" className="border-l-4 border-accent bg-accent/5 px-3 py-2 text-sm text-foreground">{data.warnings} Nachweise mit fehlender historischer Zuordnung oder unvollständigen Beträgen. Die Summen enthalten nur eindeutig belegte Werte.</p>}
+        <section aria-label="Zeitverlauf" className="min-w-0 border-b border-border pb-4">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-3"><h2 className="text-base font-semibold">{REVENUE_STAGES.find(s => s.value === stage)?.label} · netto</h2><div className="flex gap-4 text-xs"><span className="flex gap-1.5 items-center"><span className="h-2.5 w-2.5 bg-primary" />Miete</span><span className="flex gap-1.5 items-center"><span className="h-2.5 w-2.5 bg-accent" />Verkauf</span></div></div>
+          {data.trend.length ? <ChartContainer config={{ rental: { label: "Miete", color: "hsl(var(--primary))" }, sales: { label: "Verkauf", color: "hsl(var(--accent))" } }} className="h-[260px] w-full aspect-auto">
+            <BarChart data={data.trend} accessibilityLayer margin={{ left: 0, right: 8, top: 8, bottom: 0 }}><CartesianGrid vertical={false} /><XAxis dataKey="day" tickLine={false} axisLine={false} minTickGap={40} tickFormatter={v => dateLabel(v).slice(0, 5)} /><YAxis tickLine={false} axisLine={false} width={62} tickFormatter={v => Number(v).toLocaleString("de-DE", { notation: "compact" })} /><ReferenceLine y={0} stroke="hsl(var(--border))" /><ChartTooltip content={<ChartTooltipContent labelFormatter={v => dateLabel(String(v))} formatter={(v, name) => <span className="flex w-full justify-between gap-4"><span>{name === "rental" ? "Miete" : "Verkauf"}</span><strong>{revenueMoney(Number(v))}</strong></span>} />} /><Bar dataKey="rental" fill="var(--color-rental)" maxBarSize={28} isAnimationActive={false} /><Bar dataKey="sales" fill="var(--color-sales)" maxBarSize={28} isAnimationActive={false} /></BarChart>
+          </ChartContainer> : <p className="py-8 text-center text-muted-foreground">Keine Belege in dieser Auswahl.</p>}
+        </section>
+        <section aria-label="Belegliste" className="min-w-0">
+          <header className="flex flex-wrap justify-between items-center gap-3 mb-3"><h2 className="font-semibold">Belege & Änderungen <span className="text-sm font-normal text-muted-foreground">({data.total_count})</span></h2><Button variant="outline" size="sm" disabled={exporting || !data.total_count} onClick={() => void exportEntries()}>{exporting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Download className="h-4 w-4 mr-2" />}CSV</Button></header>
+          <ul className="divide-y divide-border border-y border-border">
+            {data.entries.map(e => <li key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] gap-2 py-3 sm:grid-cols-[100px_minmax(0,1fr)_auto]">
+              <span className="text-xs tabular-nums text-muted-foreground col-span-2 sm:col-span-1">{e.event_date ? dateLabel(e.event_date) : "Datum nicht belegt"}</span>
+              <div className="min-w-0"><p className="text-sm font-semibold break-words">{e.document_number || "Ohne Dokumentnummer"}{e.order_code && <span className="ml-2 font-mono text-primary">#{e.order_code}</span>}</p><p className="text-sm break-words">{e.customer_name || "Kunde nicht hinterlegt"}</p><p className="text-xs text-muted-foreground break-words">{e.business === "sales" ? "Verkauf" : "Miete"} · {kindLabel(e.event_kind)}{e.status && ` · ${statusLabel[e.status] || e.status}`}{isAdmin && ` · ${revenueLocationLabel(e.location)}`}</p>{e.warning && <p className="mt-1 text-xs text-destructive break-words">{e.warning}</p>}</div>
+              <div className="text-right shrink-0"><p className={cn("text-sm font-semibold tabular-nums", (e.net_amount ?? 0) < 0 && "text-destructive")}>{e.net_amount == null ? "Nicht belegt" : revenueMoney(e.net_amount)}</p><div className="mt-2 flex justify-end gap-1">
+                {!e.event_kind.startsWith("Änderung") && e.event_kind !== "Auftragsstorno" && <Button variant="ghost" size="icon" className="h-8 w-8" title="PDF öffnen" aria-label={`PDF ${e.document_number || "Beleg"} öffnen`} disabled={opening !== null} onClick={() => void openPdf(e)}>{opening === e.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}</Button>}
+                {e.source_table === "rental_inquiries" && <Button asChild variant="ghost" size="icon" className="h-8 w-8"><Link title="Mietvorgang öffnen" aria-label={`Mietvorgang ${e.order_code || ""} öffnen`} to={`/b2b/mietvorgaenge/${e.source_id}`}><ArrowUpRight className="h-4 w-4" /></Link></Button>}
+                {e.source_table === "sales_inquiries" && <Button asChild variant="ghost" size="icon" className="h-8 w-8"><Link title="Verkaufsvorgang öffnen" aria-label={`Verkaufsvorgang ${e.order_code || ""} öffnen`} to={`/b2b/verkaufsanfragen?anfrage=${e.source_id}`}><ArrowUpRight className="h-4 w-4" /></Link></Button>}
+              </div></div>
+            </li>)}
+          </ul>
+          {!data.entries.length && <p className="py-5 text-sm text-muted-foreground">Keine passenden Belege.</p>}
+          {data.total_count > 100 && <div className="flex items-center justify-between gap-2 mt-3"><Button variant="outline" size="sm" disabled={!offset} onClick={() => { const next = new URLSearchParams(params); next.set("seite", String(offset / 100 - 1)); setParams(next); }}><ChevronLeft className="h-4 w-4" />Zurück</Button><span className="text-xs text-muted-foreground">{offset + 1}–{Math.min(offset + 100, data.total_count)} / {data.total_count}</span><Button variant="outline" size="sm" disabled={offset + 100 >= data.total_count} onClick={() => { const next = new URLSearchParams(params); next.set("seite", String(offset / 100 + 1)); setParams(next); }}>Weiter<ChevronRight className="h-4 w-4" /></Button></div>}
+        </section>
+        <div className="grid gap-5 lg:grid-cols-2 [&>*]:min-w-0">
+          {isAdmin && <Buckets title="Nach Standort" rows={data.by_location} label={revenueLocationLabel} onSelect={k => set({ standort: location === k ? null : k })} />}
+          <Buckets title="Nach Kategorie" rows={data.by_category} label={catLabel} onSelect={k => set({ kategorie: category === k ? null : k })} />
+          <Buckets title="Nach Artikel" rows={data.by_article} className="lg:col-span-2" />
+        </div>
+        <p className="text-xs leading-relaxed text-muted-foreground">Nur hier gespeicherte Belege · netto · Berliner Kalenderzeit. Kautionen und Entwürfe zählen nicht. Angebots- und Auftragsvolumen sind kein zusätzlicher fakturierter Umsatz. Überarbeitungen zählen als Wertänderung; Gutschriften mindern am Belegdatum. Nicht erfasste externe Umsätze, Deckungsbeiträge und Bonusberechnungen sind nicht enthalten.</p>
+      </>}
     </div>
-  );
+  </B2BPortalLayout>;
 }
-
-function BucketTable({ title, icon: Icon, rows, total, labelFn, onRow, activeKey, onCsv, showCategory, className }: {
-  title: string; icon: LucideIcon; rows: Bucket[]; total: number; labelFn?: (k: string) => string;
-  onRow?: (k: string) => void; activeKey?: string; onCsv: () => void; showCategory?: boolean; className?: string;
-}) {
+function Buckets({ title, rows, label, onSelect, className }: { title: string; rows: RevenueBucket[]; label?: (s: string) => string; onSelect?: (key: string) => void; className?: string }) {
   const [all, setAll] = useState(false);
-  const shown = all ? rows : rows.slice(0, 15);
-  const max = Math.max(...rows.map((r) => Math.abs(r.revenue)), 1);
-  return (
-    <section className={cn("rounded-xl border border-border bg-card", className)}>
-      <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
-        <h2 className="flex items-center gap-2 text-sm font-semibold"><Icon className="h-4 w-4 text-primary" aria-hidden="true" />{title}<span className="text-xs font-normal text-muted-foreground">({rows.length})</span></h2>
-        <Button variant="ghost" size="sm" onClick={onCsv}><Download className="mr-1 h-4 w-4" />CSV</Button>
-      </header>
-      <ul className="divide-y divide-border">
-        {shown.map((r) => {
-          const share = total ? (r.revenue / total) * 100 : 0;
-          const inner = (
-            <>
-              <div className="flex items-baseline justify-between gap-3">
-                <span className="min-w-0">
-                  <span className="block truncate text-sm font-medium text-foreground">{labelFn ? labelFn(r.key) : r.label}</span>
-                  <span className="block text-xs text-muted-foreground">{showCategory && r.category ? `${catLabel(r.category)} · ` : ""}{r.count} {r.count === 1 ? "Rechnung" : "Rechnungen"}</span>
-                </span>
-                <span className="shrink-0 text-right">
-                  <span className={cn("block text-sm font-semibold tabular-nums", r.revenue < 0 ? "text-destructive" : "text-foreground")}>{formatEuro(r.revenue)}</span>
-                  <span className="block text-xs tabular-nums text-muted-foreground">{share.toFixed(1).replace(".", ",")} %</span>
-                </span>
-              </div>
-              <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-muted">
-                <div className="h-full rounded-full bg-primary" style={{ width: `${Math.max(0, (r.revenue / max) * 100)}%` }} />
-              </div>
-            </>
-          );
-          return (
-            <li key={r.key}>
-              {onRow ? (
-                <button type="button" onClick={() => onRow(r.key)} className={cn("block w-full px-4 py-2.5 text-left hover:bg-muted", activeKey === r.key && "bg-muted")}>{inner}</button>
-              ) : <div className="px-4 py-2.5">{inner}</div>}
-            </li>
-          );
-        })}
-      </ul>
-      {rows.length > 15 && (
-        <button type="button" onClick={() => setAll(!all)} className="w-full border-t border-border px-4 py-2 text-sm font-medium text-primary hover:bg-muted">
-          {all ? "Weniger anzeigen" : `Alle ${rows.length} anzeigen`}
-        </button>
-      )}
-    </section>
-  );
+  const csv = () => saveCsv([["Bezeichnung", "Kategorie", "Netto (EUR)", "Belege / Änderungen"].join(";"), ...rows.map(r => [label?.(r.key) || r.label, r.category ? catLabel(r.category) : "", r.revenue.toFixed(2).replace(".", ","), String(r.count)].map(csvCell).join(";"))].join("\n"), `auswertung-${title}`);
+  return <section className={cn("border-t border-border pt-3", className)}><header className="flex justify-between gap-3 mb-2"><h2 className="font-semibold text-sm">{title}</h2><Button variant="ghost" size="sm" disabled={!rows.length} onClick={csv}><Download className="h-4 w-4 mr-1" />CSV</Button></header><ul className="divide-y divide-border">{(all ? rows : rows.slice(0, 10)).map(r => <li key={r.key}>{onSelect ? <Button variant="ghost" onClick={() => onSelect(r.key)} className="h-auto w-full justify-between gap-3 py-2 whitespace-normal text-left"><span className="min-w-0 break-words text-xs">{label?.(r.key) || r.label}</span><span className="shrink-0 tabular-nums text-xs font-semibold">{revenueMoney(r.revenue)}</span></Button> : <div className="flex justify-between gap-3 py-2 text-xs"><span className="min-w-0 break-words">{r.label}{r.category && <span className="block text-muted-foreground">{catLabel(r.category)}</span>}</span><span className="shrink-0 font-semibold tabular-nums">{revenueMoney(r.revenue)}</span></div>}</li>)}</ul>{rows.length > 10 && <Button variant="ghost" size="sm" onClick={() => setAll(v => !v)}>{all ? "Weniger" : `Alle ${rows.length} anzeigen`}</Button>}{!rows.length && <p className="text-sm text-muted-foreground">Keine Werte.</p>}</section>;
 }

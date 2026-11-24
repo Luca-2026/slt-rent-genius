@@ -1415,6 +1415,34 @@
       "when": 1795267305635,
       "tag": "0201_preserve_portal_invoice_payment_deadline",
       "breakpoints": true
+    },
+    {
+      "idx": 202,
+      "version": "7",
+      "when": 1795499462064,
+      "tag": "0202_revenue_events_schema",
+      "breakpoints": true
+    },
+    {
+      "idx": 203,
+      "version": "7",
+      "when": 1795499519890,
+      "tag": "0203_revenue_capture_events",
+      "breakpoints": true
+    },
+    {
+      "idx": 204,
+      "version": "7",
+      "when": 1795499584693,
+      "tag": "0204_protected_revenue_reports",
+      "breakpoints": true
+    },
+    {
+      "idx": 205,
+      "version": "7",
+      "when": 1795499653120,
+      "tag": "0205_revenue_document_access",
+      "breakpoints": true
     }
   ]
 }

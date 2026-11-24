@@ -16,7 +16,7 @@ export interface StaffNavItem {
   status?: string;
   icon: LucideIcon;
   /** wer den Eintrag sieht */
-  access: "staff" | "admin" | "inventory" | "credit";
+  access: "staff" | "admin" | "inventory" | "credit" | "revenue";
   badgeKey?: "rental" | "sales" | "todos" | "calls";
 }
 
@@ -43,7 +43,7 @@ export const STAFF_NAV: StaffNavGroup[] = [
     label: "Abrechnung",
     items: [
       { label: "Rechnungen & Gutschriften", path: "/b2b/anfrage-rechnungen", icon: Receipt, access: "staff" },
-      { label: "Umsatzauswertung", path: "/b2b/auswertungen", icon: BarChart3, access: "admin" },
+      { label: "Umsatzauswertung", path: "/b2b/auswertungen", icon: BarChart3, access: "revenue" },
     ],
   },
   {
@@ -109,19 +109,20 @@ interface Props {
   isAdmin: boolean;
   canViewInventory: boolean;
   canManageCredit?: boolean;
+  canViewRevenue?: boolean;
   badges: { rental: number; sales: number; todos: number; calls?: number };
   onNavigate?: () => void;
 }
 
-export function visibleGroups(isAdmin: boolean, canViewInventory: boolean, canManageCredit = false) {
+export function visibleGroups(isAdmin: boolean, canViewInventory: boolean, canManageCredit = false, canViewRevenue = false) {
   const allowed = (i: StaffNavItem) =>
-    i.access === "staff" || (i.access === "admin" && isAdmin) || (i.access === "inventory" && canViewInventory) || (i.access === "credit" && (isAdmin || canManageCredit));
+    i.access === "staff" || (i.access === "admin" && isAdmin) || (i.access === "inventory" && canViewInventory) || (i.access === "credit" && (isAdmin || canManageCredit)) || (i.access === "revenue" && (isAdmin || canViewRevenue));
   return STAFF_NAV.map((g) => ({ ...g, items: g.items.filter(allowed) })).filter((g) => g.items.length > 0);
 }
 
-export function StaffNav({ isAdmin, canViewInventory, canManageCredit = false, badges, onNavigate }: Props) {
+export function StaffNav({ isAdmin, canViewInventory, canManageCredit = false, canViewRevenue = false, badges, onNavigate }: Props) {
   const { pathname, search } = useLocation();
-  const groups = visibleGroups(isAdmin, canViewInventory, canManageCredit);
+  const groups = visibleGroups(isAdmin, canViewInventory, canManageCredit, canViewRevenue);
 
   const renderItem = (item: StaffNavItem) => {
     const active = isItemActive(item, pathname, search);
