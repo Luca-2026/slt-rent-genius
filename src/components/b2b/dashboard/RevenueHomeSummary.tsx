@@ -21,7 +21,7 @@ export function RevenueHomeSummary({ now }: { now: Date }) {
       {isAdmin ? <Select value={location} onValueChange={setSelectedLocation}><SelectTrigger className="w-full h-8 text-xs" aria-label="Umsatzstandort"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="bonn">Bonn</SelectItem><SelectItem value="krefeld">Krefeld inkl. Mülheim an der Ruhr</SelectItem><SelectItem value="all">Beide Standorte</SelectItem></SelectContent></Select> : <span className="text-xs text-foreground break-words">{revenueLocationLabel(report.data?.scope.location ?? revenueBranch(staffProfile?.location))}</span>}
     </div>
     {report.isError ? <p role="alert" className="text-sm text-destructive">Umsatz konnte nicht geladen werden.</p> : !report.data ? <p role="status" className="text-sm text-muted-foreground">Umsatz wird geladen …</p> : <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 divide-y divide-border">
+      <div className="grid grid-cols-1 divide-y divide-border">
         {periods.map(period => {
           const range = revenueRange(period.value, today, today);
           const total = report.data?.trend.filter(t => t.day >= range.from && t.day <= range.to).reduce((sum, t) => sum + t.net, 0) ?? 0;
