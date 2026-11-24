@@ -34,7 +34,8 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 export default function RevenueAnalytics() {
   const { user } = useAuth();
-  const { isAdmin, canViewRevenue, staffProfile, loading: accessLoading } = useStaffAccess();
+  const { isAdmin: adminRole, isSuperAdmin, canViewRevenue, staffProfile, loading: accessLoading } = useStaffAccess();
+  const isAdmin = adminRole || isSuperAdmin;
   const { toast } = useToast();
   const [params, setParams] = useSearchParams();
   const today = berlinDay();
@@ -98,20 +99,21 @@ export default function RevenueAnalytics() {
   if (!accessLoading && !canViewRevenue) return <B2BPortalLayout title="Umsatzauswertung"><p role="alert" className="text-muted-foreground">Keine Berechtigung zur Umsatzauswertung.</p></B2BPortalLayout>;
   return <B2BPortalLayout title="Umsatzauswertung" subtitle="Angebote · Aufträge · Fakturierter Umsatz">
     <div className="space-y-6 min-w-0">
-      <div className="flex flex-wrap items-end gap-3 border-b border-border pb-4">
+      <div className="flex flex-col items-start gap-3 border-b border-border pb-4">
+        <div className="w-full min-w-0 sm:w-[280px]">
+          <Field label="Standort">
+            {isAdmin ? <Select value={location} onValueChange={v => set({ standort: v })}><SelectTrigger aria-label="Auswertungsstandort" className="h-10 w-full text-left text-sm [&>span]:flex-1 [&>span]:text-left"><MapPin className="mr-2 h-4 w-4 shrink-0 text-primary" /><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Alle Standorte</SelectItem><SelectItem value="bonn">Bonn</SelectItem><SelectItem value="krefeld">Krefeld</SelectItem><SelectItem value="muelheim">Mülheim an der Ruhr</SelectItem><SelectItem value="unassigned">Nicht zugeordnet / prüfen</SelectItem></SelectContent></Select> : <span className="flex min-h-10 items-center gap-2 text-sm font-semibold break-words"><MapPin className="h-4 w-4 shrink-0 text-primary" />{revenueLocationLabel(data?.scope.location ?? revenueBranch(staffProfile?.location))}</span>}
+          </Field>
+        </div>
         <div className="flex flex-wrap gap-1" role="group" aria-label="Geschäftsart">
           {([["all", "Gesamt"], ["rental", "Miete"], ["sales", "Verkauf"]] as const).map(([v, l]) => <Button key={v} size="sm" variant={business === v ? "default" : "outline"} aria-pressed={business === v} onClick={() => set({ bereich: v === "sales" ? "verkauf" : v === "rental" ? "miete" : null, kategorie: null })}>{l}</Button>)}
         </div>
-        <div className="ml-auto flex items-center gap-2 min-w-0">
-          <MapPin className="h-4 w-4 shrink-0 text-primary" />
-          {isAdmin ? <Select value={location} onValueChange={v => set({ standort: v })}><SelectTrigger aria-label="Auswertungsstandort" className="h-9 w-[220px] max-w-full text-xs"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Beide Standorte</SelectItem><SelectItem value="bonn">Bonn</SelectItem><SelectItem value="krefeld">Krefeld inkl. Mülheim an der Ruhr</SelectItem><SelectItem value="unassigned">Nicht zugeordnet / prüfen</SelectItem></SelectContent></Select> : <span className="text-sm font-semibold break-words">{revenueLocationLabel(data?.scope.location ?? revenueBranch(staffProfile?.location))}</span>}
-        </div>
       </div>
-      <div className="flex flex-wrap items-end gap-3">
-        <Field label="Zeitraum"><Select value={period} onValueChange={v => set({ zeitraum: v, datum: today, von: range.from, bis: range.to })}><SelectTrigger className="w-[170px]" aria-label="Zeitraum"><SelectValue /></SelectTrigger><SelectContent>{REVENUE_PERIODS.map(p => <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>)}</SelectContent></Select></Field>
-        {period !== "custom" ? <div className="flex items-center gap-2 flex-wrap">
+      <div className="flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-end [&>div]:w-full sm:[&>div]:w-auto">
+        <Field label="Zeitraum"><Select value={period} onValueChange={v => set({ zeitraum: v, datum: today, von: range.from, bis: range.to })}><SelectTrigger className="w-full sm:w-[170px]" aria-label="Zeitraum"><SelectValue /></SelectTrigger><SelectContent>{REVENUE_PERIODS.map(p => <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>)}</SelectContent></Select></Field>
+        {period !== "custom" ? <div className="flex items-center gap-2 flex-wrap min-w-0">
           <Button size="icon" variant="outline" aria-label="Vorheriger Zeitraum" title="Vorheriger Zeitraum" onClick={() => set({ datum: shiftRevenuePeriod(period, anchor, -1) })}><ChevronLeft className="h-4 w-4" /></Button>
-          <span className="text-sm font-medium tabular-nums">{dateLabel(range.from)}{range.from !== range.to && ` – ${dateLabel(range.to)}`}</span>
+          <span className="text-xs sm:text-sm font-medium tabular-nums">{dateLabel(range.from)}{range.from !== range.to && ` – ${dateLabel(range.to)}`}</span>
           <Button size="icon" variant="outline" aria-label="Nächster Zeitraum" title="Nächster Zeitraum" disabled={anchor >= today} onClick={() => set({ datum: shiftRevenuePeriod(period, anchor, 1) })}><ChevronRight className="h-4 w-4" /></Button>
           <Button variant="ghost" size="sm" onClick={() => set({ datum: today })}>Aktuell</Button>
         </div> : <div className="grid grid-cols-2 gap-2 max-w-full"><Field label="Von"><Input type="date" aria-label="Von" value={range.from} onChange={e => set({ von: e.target.value })} /></Field><Field label="Bis"><Input type="date" aria-label="Bis" value={range.to} onChange={e => set({ bis: e.target.value })} /></Field></div>}
@@ -142,10 +144,10 @@ export default function RevenueAnalytics() {
         <section aria-label="Belegliste" className="min-w-0">
           <header className="flex flex-wrap justify-between items-center gap-3 mb-3"><h2 className="font-semibold">Belege & Änderungen <span className="text-sm font-normal text-muted-foreground">({data.total_count})</span></h2><Button variant="outline" size="sm" disabled={exporting || !data.total_count} onClick={() => void exportEntries()}>{exporting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Download className="h-4 w-4 mr-2" />}CSV</Button></header>
           <ul className="divide-y divide-border border-y border-border">
-            {data.entries.map(e => <li key={e.id} className="grid grid-cols-[minmax(0,1fr)_auto] gap-2 py-3 sm:grid-cols-[100px_minmax(0,1fr)_auto]">
+            {data.entries.map(e => <li key={e.id} className="grid grid-cols-[minmax(0,1fr)_minmax(0,110px)] gap-2 py-3 sm:grid-cols-[100px_minmax(0,1fr)_auto]">
               <span className="text-xs tabular-nums text-muted-foreground col-span-2 sm:col-span-1">{e.event_date ? dateLabel(e.event_date) : "Datum nicht belegt"}</span>
               <div className="min-w-0"><p className="text-sm font-semibold break-words">{e.document_number || "Ohne Dokumentnummer"}{e.order_code && <span className="ml-2 font-mono text-primary">#{e.order_code}</span>}</p><p className="text-sm break-words">{e.customer_name || "Kunde nicht hinterlegt"}</p><p className="text-xs text-muted-foreground break-words">{e.business === "sales" ? "Verkauf" : "Miete"} · {kindLabel(e.event_kind)}{e.status && ` · ${statusLabel[e.status] || e.status}`}{isAdmin && ` · ${revenueLocationLabel(e.location)}`}</p>{e.warning && <p className="mt-1 text-xs text-destructive break-words">{e.warning}</p>}</div>
-              <div className="text-right shrink-0"><p className={cn("text-sm font-semibold tabular-nums", (e.net_amount ?? 0) < 0 && "text-destructive")}>{e.net_amount == null ? "Nicht belegt" : revenueMoney(e.net_amount)}</p><div className="mt-2 flex justify-end gap-1">
+              <div className="min-w-0 text-right"><p className={cn("text-sm font-semibold tabular-nums break-words", (e.net_amount ?? 0) < 0 && "text-destructive")}>{e.net_amount == null ? "Nicht belegt" : revenueMoney(e.net_amount)}</p><div className="mt-2 flex justify-end gap-1">
                 {!e.event_kind.startsWith("Änderung") && e.event_kind !== "Auftragsstorno" && <Button variant="ghost" size="icon" className="h-8 w-8" title="PDF öffnen" aria-label={`PDF ${e.document_number || "Beleg"} öffnen`} disabled={opening !== null} onClick={() => void openPdf(e)}>{opening === e.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}</Button>}
                 {e.source_table === "rental_inquiries" && <Button asChild variant="ghost" size="icon" className="h-8 w-8"><Link title="Mietvorgang öffnen" aria-label={`Mietvorgang ${e.order_code || ""} öffnen`} to={`/b2b/mietvorgaenge/${e.source_id}`}><ArrowUpRight className="h-4 w-4" /></Link></Button>}
                 {e.source_table === "sales_inquiries" && <Button asChild variant="ghost" size="icon" className="h-8 w-8"><Link title="Verkaufsvorgang öffnen" aria-label={`Verkaufsvorgang ${e.order_code || ""} öffnen`} to={`/b2b/verkaufsanfragen?anfrage=${e.source_id}`}><ArrowUpRight className="h-4 w-4" /></Link></Button>}

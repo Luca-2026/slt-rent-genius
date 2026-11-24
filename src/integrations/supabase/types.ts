@@ -5299,6 +5299,7 @@ export type Database = {
           net_amount: number | null
           occurred_at: string | null
           order_code: string | null
+          reporting_location: string | null
           segment: string
           source_id: string
           source_table: string
@@ -5319,6 +5320,7 @@ export type Database = {
           net_amount?: number | null
           occurred_at?: string | null
           order_code?: string | null
+          reporting_location?: string | null
           segment: string
           source_id: string
           source_table: string
@@ -5339,6 +5341,7 @@ export type Database = {
           net_amount?: number | null
           occurred_at?: string | null
           order_code?: string | null
+          reporting_location?: string | null
           segment?: string
           source_id?: string
           source_table?: string
@@ -7563,6 +7566,7 @@ export type Database = {
         Returns: undefined
       }
       revenue_scope: { Args: never; Returns: Json }
+      revenue_site: { Args: { p: string }; Returns: string }
       revenue_time: { Args: { p: string }; Returns: string }
       save_managed_article: {
         Args: { _article: Json; _id: string; _location_prices?: Json }

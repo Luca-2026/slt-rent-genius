@@ -9,6 +9,7 @@ const ralf = "10000000-0000-0000-0000-000000000002";
 const krefeld = "10000000-0000-0000-0000-000000000003";
 const staff = "10000000-0000-0000-0000-000000000004";
 const inactive = "10000000-0000-0000-0000-000000000005";
+const superadmin = "10000000-0000-0000-0000-000000000006";
 const source = "20000000-0000-0000-0000-000000000001";
 const payload = (net: number, name = "Maschine") => ({ offer_number: "ANG-M-1", totals: { netAmount: net, grossAmount: Math.round(net * 119) / 100 }, items: [{ product_name: name, quantity: 1, unit_price: net }] });
 beforeAll(async () => {
@@ -17,7 +18,7 @@ beforeAll(async () => {
     CREATE FUNCTION auth.role() RETURNS text LANGUAGE sql AS $$ SELECT coalesce(nullif(current_setting('request.jwt.claim.role',true),''),'service_role') $$;
     CREATE TABLE user_roles(user_id uuid,role text);
     CREATE FUNCTION has_role(p uuid,r text) RETURNS boolean LANGUAGE sql SECURITY DEFINER AS $$ SELECT EXISTS(SELECT 1 FROM user_roles WHERE user_id=p AND role=r) $$;
-    CREATE FUNCTION is_super_admin(p uuid) RETURNS boolean LANGUAGE sql SECURITY DEFINER AS $$ SELECT has_role(p,'admin') $$;
+    CREATE FUNCTION is_super_admin(p uuid) RETURNS boolean LANGUAGE sql SECURITY DEFINER AS $$ SELECT has_role(p,'admin') OR has_role(p,'super_admin') $$;
     CREATE TABLE staff_profiles(user_id uuid,location text,is_active boolean);
     GRANT USAGE ON SCHEMA public,auth TO authenticated,anon,service_role;
     GRANT SELECT ON staff_profiles TO authenticated;
@@ -37,7 +38,11 @@ beforeAll(async () => {
     CREATE TABLE b2b_invoice_items(LIKE inquiry_invoice_items);
     CREATE TABLE b2b_offer_items(id uuid,offer_id uuid,product_name text,total_price numeric);`);
   for (const file of ["0202_revenue_events_schema.sql", "0203_revenue_capture_events.sql", "0204_protected_revenue_reports.sql", "0205_revenue_document_access.sql", "0206_revenue_preserve_pdf_and_offer_deltas.sql", "0207_revenue_pdf_version_evidence.sql", "0208_revenue_ignore_unproven_breakdowns.sql"]) await db.exec(readFileSync(`drizzle/migrations/${file}`, "utf8"));
+  await db.exec(`INSERT INTO inquiry_invoices(id,invoice_date,status,invoice_kind,inquiry_type,location,net_amount)
+    VALUES('c0000000-0000-0000-0000-000000000001','2025-12-01','open','invoice','rental','muelheim',145);`);
+  await db.exec(readFileSync("drizzle/migrations/0209_revenue_separate_reporting_locations.sql", "utf8"));
   await db.query("INSERT INTO user_roles VALUES($1,'admin'),($2,'niederlassungsleiter'),($3,'niederlassungsleiter'),($4,'standort_mitarbeiter'),($5,'niederlassungsleiter')", [admin, ralf, krefeld, staff, inactive]);
+  await db.query("INSERT INTO user_roles VALUES($1,'super_admin')", [superadmin]);
   await db.query("INSERT INTO staff_profiles VALUES($1,'bonn',true),($2,'Mülheim an der Ruhr',true),($3,'bonn',true),($4,'bonn',false)", [ralf, krefeld, staff, inactive]);
   await db.query("INSERT INTO rental_inquiries(id,location,status,order_code,offer_number,offer_payload,email_sent) VALUES($1,'bonn','new','6ZHACN','ANG-M-1',$2,false)", [source, JSON.stringify(payload(100))]);
 }, 30000);
@@ -195,4 +200,54 @@ it("cancelled originals and their credits retain both documentary PDFs without a
   expect(r?.summary.invoiced.net).toBe(0);
   expect(r?.total_count).toBe(2);
   expect((await db.query<{ doc: { url: string } }>("SELECT get_revenue_document('inquiry_invoices:90000000-0000-0000-0000-000000000001:invoiced:invoice') doc")).rows[0]?.doc.url).toBe("original-invoice.pdf");
+});
+it("Krefeld and Mülheim revenue remain individually filterable without changing the organizational total", async () => {
+  await identity(null, "service_role");
+  await db.exec(`INSERT INTO inquiry_invoices(id,invoice_date,status,invoice_kind,inquiry_type,location,net_amount) VALUES
+    ('a0000000-0000-0000-0000-000000000001','2026-02-01','open','invoice','rental','krefeld',200),
+    ('a0000000-0000-0000-0000-000000000002','2026-02-01','open','invoice','rental','Mülheim an der Ruhr',145),
+    ('a0000000-0000-0000-0000-000000000003','2026-02-01','open','invoice','rental','bonn',300);`);
+  await identity(admin);
+  expect((await report("krefeld", "invoiced", "2026-02-01", "2026-02-01"))?.summary.invoiced.net).toBe(200);
+  const m = await report("muelheim", "invoiced", "2026-02-01", "2026-02-01");
+  expect(m?.summary.invoiced.net).toBe(145);
+  expect(m?.entries.map(e => e.location)).toEqual(["muelheim"]);
+  expect((await report("all", "invoiced", "2026-02-01", "2026-02-01"))?.by_location.map(b => b.key).sort()).toEqual(["bonn", "krefeld", "muelheim"]);
+  await identity(krefeld);
+  expect((await report("all", "invoiced", "2026-02-01", "2026-02-01"))?.summary.invoiced.net).toBe(345);
+});
+it("Ralf sees only Bonn and cannot request either Krefeld or Mülheim", async () => {
+  await identity(ralf); await db.exec("SET ROLE authenticated");
+  expect((await report("all", "invoiced", "2026-02-01", "2026-02-01"))?.summary.invoiced.net).toBe(300);
+  await expect(report("muelheim")).rejects.toMatchObject({ code: "42501" });
+  await expect(report("krefeld")).rejects.toMatchObject({ code: "42501" });
+  const visible = (await db.query<{ location: string; reporting_location: string | null }>("SELECT location,reporting_location FROM revenue_events")).rows;
+  expect(visible.every(e => e.location === "bonn" && (e.reporting_location === "bonn" || e.reporting_location === null))).toBe(true);
+  await db.exec("RESET ROLE");
+});
+it("superadmins without a separate admin role can evaluate Ralf's Bonn and every site", async () => {
+  await identity(superadmin); await db.exec("SET ROLE authenticated");
+  expect((await report("bonn", "invoiced", "2026-02-01", "2026-02-01"))?.summary.invoiced.net).toBe(300);
+  expect((await report("muelheim", "invoiced", "2026-02-01", "2026-02-01"))?.summary.invoiced.net).toBe(145);
+  expect((await report("krefeld", "invoiced", "2026-02-01", "2026-02-01"))?.summary.invoiced.net).toBe(200);
+  expect((await db.query<{ n: number }>("SELECT count(*)::int n FROM revenue_events WHERE reporting_location='muelheim' AND event_date='2026-02-01'")).rows[0]?.n).toBe(1);
+  await db.exec("RESET ROLE");
+});
+it("Mülheim sent and accepted offers retain their separate site when captured", async () => {
+  await identity(null, "service_role");
+  const id = "b0000000-0000-0000-0000-000000000001";
+  await db.query("INSERT INTO rental_inquiries(id,location,offer_number,offer_payload) VALUES($1,'Mülheim','ANG-MH',$2)", [id, JSON.stringify({ ...payload(120), offer_number: "ANG-MH" })]);
+  await db.query("INSERT INTO offer_acceptance_links(id,inquiry_table,inquiry_id,offer_number,gross_amount,dispatched_at,accepted_at) VALUES($1,'rental_inquiries',$1,'ANG-MH',142.8,'2026-01-02','2026-01-03')", [id]);
+  await identity(admin);
+  const r = await report("muelheim", "offered", "2026-01-01", "2026-01-31");
+  expect(r?.summary.offered.net).toBe(120);
+  expect(r?.summary.accepted.net).toBe(120);
+  expect(r?.entries[0]?.location).toBe("muelheim");
+  expect((await report("krefeld", "offered", "2026-01-01", "2026-01-31"))?.total_count).toBe(0);
+});
+it("existing Mülheim invoices gain a separate site without changing their amount or organizational scope", async () => {
+  await identity(admin);
+  const row = (await db.query<{ location: string; reporting_location: string; net: number }>("SELECT location,reporting_location,net_amount::float net FROM revenue_events WHERE source_id='c0000000-0000-0000-0000-000000000001'")).rows[0];
+  expect(row).toEqual({ location: "krefeld", reporting_location: "muelheim", net: 145 });
+  expect((await report("muelheim", "invoiced", "2025-12-01", "2025-12-01"))?.summary.invoiced.net).toBe(145);
 });

@@ -89,7 +89,7 @@ export function useStaffAccess() {
     /** Einkaufspreise & Gemeinkosten, Team und Audit-Log bleiben Admin-only. */
     canEditCosts: isAdmin,
     /** Auswertungen: Admin oder aktiver Niederlassungsleiter mit zugeordnetem Standort. Server prüft erneut. */
-    canViewRevenue: canViewRevenue(isAdmin, isBranchManager, !!staffProfile, staffProfile?.location),
+    canViewRevenue: canViewRevenue(isAdmin || isSuperAdmin, isBranchManager, !!staffProfile, staffProfile?.location),
     /** Niederlassungsleiter: Kreditlimit bis 2.000 € vergeben / ablehnen. */
     isBranchManager,
     staffProfile,

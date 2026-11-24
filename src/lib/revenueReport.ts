@@ -14,7 +14,7 @@ export const REVENUE_PERIODS: { value: RevenuePeriod; label: string }[] = [
   { value: "year", label: "Jahr" }, { value: "custom", label: "Eigener Zeitraum" },
 ];
 export const revenueMoney = (value: number) => value.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
-export const revenueLocationLabel = (value: string | null) => value === "bonn" ? "Bonn" : value === "krefeld" ? "Krefeld einschließlich Mülheim an der Ruhr" : "Nicht zugeordnet / prüfen";
+export const revenueLocationLabel = (value: string | null) => value === "bonn" ? "Bonn" : value === "krefeld" ? "Krefeld" : value === "muelheim" ? "Mülheim an der Ruhr" : "Nicht zugeordnet / prüfen";
 export function revenueBranch(value?: string | null): string | null {
   const location = value?.toLowerCase() ?? "";
   if (location.includes("bonn")) return "bonn";

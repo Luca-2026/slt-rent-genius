@@ -27,6 +27,9 @@ describe("Berliner Umsatzzeiträume", () => {
 it("preserves explicit protected location and stage query parameters", () => {
   expect(revenueQueryArgs({ from: "2026-11-01", to: "2026-11-24", stage: "accepted", business: "sales", location: "bonn", offset: 100 })).toMatchObject({ p_location: "bonn", p_stage: "accepted", p_business: "sales", p_offset: 100 });
 });
+it("passes Mülheim as a separate report filter rather than converting it to Krefeld", () => {
+  expect(revenueQueryArgs({ from: "2026-11-01", to: "2026-11-24", location: "muelheim" }).p_location).toBe("muelheim");
+});
 it("unknown net amounts stay empty in exports rather than being invented as zero", () => {
   const csv = revenueEntryCsv([{ id: "1", source_id: "2", source_table: "rental_inquiries", stage: "accepted", business: "rental", event_date: "2026-11-24", document_number: "ANG-1", order_code: "6ZHACN", customer_name: "Kunde", location: "bonn", net_amount: null, event_kind: "Annahme", warning: "Netto nicht belegt", status: "accepted" }]);
   expect(csv.split("\n")[1]?.split(";").slice(-2).map(s => s.replace(/^"|"$/g, ""))).toEqual(["", "Netto nicht belegt"]);
