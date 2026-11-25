@@ -16,6 +16,7 @@ import {
   Construction,
   Truck,
   Wrench,
+  Calculator,
   ArrowRight,
   ExternalLink,
   Phone,
@@ -29,6 +30,7 @@ const sections = [
   { id: "aufbau", label: "Auf- & Abbau" },
   { id: "lieferung", label: "Anlieferung & Abholung" },
   { id: "werkstatt", label: "Werkstatt & Reparatur" },
+  { id: "rechner", label: "Rechner & Tools" },
 ];
 
 function useActiveSection(ids: string[]) {
@@ -243,6 +245,22 @@ export default function Dienstleistungen() {
           "Annahme von Fremdgeräten nach Terminvereinbarung",
         ]}
         cta={{ label: "Werkstatttermin anfragen", to: "/kontakt" }}
+      />
+
+      {/* Section 6 — Rechner & Tools */}
+      <ServiceSection
+        id="rechner"
+        icon={Calculator}
+        title="Rechner & Tools"
+        text="Kostenlose Online-Rechner zur Bedarfsermittlung: Finden Sie in wenigen Schritten die passenden Geräte für Ihr Projekt – inklusive Mengen, Mietdauer und Preisrichtwerten."
+        items={[
+          "Bautrockner-Rechner: Geräteanzahl und Trocknungsdauer nach Raumgröße",
+          "Baustromrechner: passender Verteiler, Kabel und Aggregat nach Leistungsbedarf",
+          "Empfehlungen direkt in den Warenkorb legen",
+          "Richtwerte auf Basis unserer hinterlegten Mietpreise",
+        ]}
+        cta={{ label: "Zu den Rechnern", to: "/tools" }}
+        alt
       />
 
       {/* SEO Content — Beiträge */}

@@ -192,6 +192,7 @@ export function Header() {
 
   const serviceItems: DropdownItem[] = [
     { to: "/dienstleistungen", label: t("nav.services") },
+    { to: "/tools", label: t("nav.tools", "Rechner & Tools") },
     { to: "/so-funktionierts", label: t("nav.howItWorks") },
     { to: "/hilfe", label: t("nav.help") },
     { to: "/ratgeber", label: "Ratgeber" },
