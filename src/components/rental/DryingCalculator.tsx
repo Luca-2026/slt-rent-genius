@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { useCustomerType } from "@/hooks/useCustomerType";
 import { formatEuro, priceFor, vatNote } from "@/lib/priceDisplay";
 import { resolveProductPrices, tierPriceBau, type LocationPriceRow } from "@/lib/pricing/rentalPricing";
-import { calculateDrying, DRYER_LARGE_SLUG, DRYER_SMALL_SLUG, FAN_TIME_REDUCTION } from "@/lib/dryingCalculator";
+import { calculateDrying, DRYER_LARGE_SLUG, DRYER_SMALL_SLUG, FAN_TIME_REDUCTION, FAN_SLUG } from "@/lib/dryingCalculator";
 
 const COLS = "id,slug,name,pricing_scheme,prices_same_all_locations,price_per_day,price_from_1_rd,price_from_3_rd,price_from_10_rd,price_from_20_rd,price_weekend_num,price_base_1_3_cd,surcharge_per_cd_from_4,surcharge_per_cd_from_8,price_from_1_week,price_from_2_weeks,price_from_3_weeks,price_from_4_weeks,price_short_1_3_rd";
 const num = (v: string) => parseFloat(v.replace(",", ".")) || 0;
@@ -22,7 +22,7 @@ export function DryingCalculator({ locationId }: { locationId: string }) {
   const { data } = useQuery({
     queryKey: ["drying-calc-prices", locationId],
     queryFn: async () => {
-      const { data: products } = await supabase.from("b2b_managed_products").select(COLS).in("slug", [DRYER_SMALL_SLUG, DRYER_LARGE_SLUG]);
+      const { data: products } = await supabase.from("b2b_managed_products").select(COLS).in("slug", [DRYER_SMALL_SLUG, DRYER_LARGE_SLUG, FAN_SLUG]);
       const ids = (products ?? []).map((p: { id: string }) => p.id);
       const { data: rows } = ids.length ? await supabase.from("b2b_managed_product_location_prices").select("*").in("managed_product_id", ids) : { data: [] };
       return { products: (products ?? []) as any[], rows: (rows ?? []) as LocationPriceRow[] };
@@ -38,6 +38,14 @@ export function DryingCalculator({ locationId }: { locationId: string }) {
     if (!lo || !hi) return null;
     return { min: lo.rate * result.days.min * result.dryer.qty, max: hi.rate * result.days.max * result.dryer.qty };
   }, [result, dryer, data, locationId]);
+  const fan = data?.products.find((p) => p.slug === FAN_SLUG);
+  const fanPrice = useMemo(() => {
+    if (!result || !fan || result.fans === 0) return null;
+    const prices = resolveProductPrices(fan, locationId, data?.rows);
+    const lo = tierPriceBau(prices, result.days.min); const hi = tierPriceBau(prices, result.days.max);
+    if (!lo || !hi) return null;
+    return { min: lo.rate * result.days.min * result.fans, max: hi.rate * result.days.max * result.fans };
+  }, [result, fan, data, locationId]);
 
   const field = (id: string, label: string, v: string, set: (s: string) => void) => (
     <div className="space-y-1.5 min-w-0">
@@ -70,7 +78,7 @@ export function DryingCalculator({ locationId }: { locationId: string }) {
           </div>
           <ul className="space-y-1.5 text-sm">
             <li className="flex gap-2"><Droplets className="h-4 w-4 mt-0.5 flex-shrink-0" /><span><strong>{result.dryer.qty} ×</strong> {dryer?.name ?? (result.dryer.slug === DRYER_SMALL_SLUG ? "Bautrockner 20L/Tag" : "Bautrockner 50L/Tag")}</span></li>
-            {result.fans > 0 && <li className="flex gap-2"><Wind className="h-4 w-4 mt-0.5 flex-shrink-0" /><span><strong>{result.fans} ×</strong> Lüfter zur Luftumwälzung</span></li>}
+            {result.fans > 0 && <li className="flex gap-2"><Wind className="h-4 w-4 mt-0.5 flex-shrink-0" /><span><strong>{result.fans} ×</strong> {fan?.name ?? "Turbolüfter"} zur Luftumwälzung</span></li>}
           </ul>
           <div>
             <div className="opacity-80 text-sm">Voraussichtliche Mietdauer</div>
@@ -81,6 +89,7 @@ export function DryingCalculator({ locationId }: { locationId: string }) {
             <div className="opacity-80 text-sm">Mietpreis Bautrockner (Richtwert{fans ? ", ohne Lüfter" : ""})</div>
             <div className="text-lg font-bold">{price ? `${formatEuro(priceFor(price.min, type))} – ${formatEuro(priceFor(price.max, type))}` : "Preis auf Anfrage"}</div>
             {price && <div className="text-xs opacity-80">{vatNote(type)}, nach unseren Staffelpreisen</div>}
+            {result.fans > 0 && <div className="mt-2 text-sm">Mietpreis {fan?.name ?? "Turbolüfter"}: <strong>{fanPrice ? `${formatEuro(priceFor(fanPrice.min, type))} – ${formatEuro(priceFor(fanPrice.max, type))}` : "auf Anfrage"}</strong></div>}
           </div>
         </div>
       )}

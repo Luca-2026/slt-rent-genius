@@ -5,6 +5,7 @@
  */
 export const DRYER_SMALL_SLUG = "bautrockner-kt200";
 export const DRYER_LARGE_SLUG = "bautrockner-kt553";
+export const FAN_SLUG = "turboluefter";
 export const SMALL_DRYER_MAX_M2 = 20;
 export const LARGE_DRYER_M2 = 50;
 export const FAN_TIME_REDUCTION = 0.15;
