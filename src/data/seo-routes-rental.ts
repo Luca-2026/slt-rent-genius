@@ -33,6 +33,7 @@ import { getLocalCategoryContent } from "./localCategoryContent";
 import { getProductAvailability } from "@/lib/productAvailability";
 import { getDrivingLicenseInfo, resolveProductFaqs } from "./productPageContent";
 
+import { TOOLS_INDEX_SEO, TOOL_SEO } from "./toolsSeo";
 const BASE_URL = "https://www.slt-rental.de";
 const DEFAULT_OG_IMAGE = `${BASE_URL}/images/og/default-slt-rental.png`;
 
@@ -447,6 +448,29 @@ const STATIC_ROUTES: SeoRoute[] = [
     changefreq: "monthly",
     priority: 0.6,
   },
+  {
+    path: TOOLS_INDEX_SEO.path,
+    routeType: "page",
+    title: TOOLS_INDEX_SEO.title,
+    description: TOOLS_INDEX_SEO.description,
+    h1: TOOLS_INDEX_SEO.h1,
+    intro: [TOOLS_INDEX_SEO.intro],
+    linkSections: [{ heading: "Unsere Rechner", links: (Object.keys(TOOL_SEO) as (keyof typeof TOOL_SEO)[]).map((s) => ({ name: TOOL_SEO[s].h1, path: `/tools/${s}` })) }],
+    changefreq: "monthly",
+    priority: 0.6,
+  },
+  ...(Object.keys(TOOL_SEO) as (keyof typeof TOOL_SEO)[]).map((s) => ({
+    path: `/tools/${s}`,
+    routeType: "page" as const,
+    title: TOOL_SEO[s].title,
+    description: TOOL_SEO[s].description,
+    h1: TOOL_SEO[s].h1,
+    intro: [TOOL_SEO[s].intro, ...TOOL_SEO[s].sections.map((x) => `${x.h2}: ${x.text}`)],
+    breadcrumbs: [{ name: "Rechner & Tools", path: "/tools" }, { name: TOOL_SEO[s].h1, path: `/tools/${s}` }],
+    inlineSchemas: [{ "@context": "https://schema.org", "@type": "WebApplication", name: TOOL_SEO[s].h1, url: `https://www.slt-rental.de/tools/${s}/`, applicationCategory: "UtilitiesApplication", operatingSystem: "Web", inLanguage: "de-DE", isAccessibleForFree: true, provider: { "@id": "https://www.slt-rental.de/#organization" } }],
+    changefreq: "monthly",
+    priority: 0.6,
+  })),
   {
     path: "/lieferung",
     routeType: "page",
