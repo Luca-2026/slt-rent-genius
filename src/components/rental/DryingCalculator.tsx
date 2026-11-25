@@ -51,7 +51,7 @@ export function DryingCalculator({ locationId, showToolsLink = true }: { locatio
   const field = (id: string, label: string, v: string, set: (s: string) => void) => (
     <div className="space-y-1.5 min-w-0">
       <Label htmlFor={id}>{label}</Label>
-      <Input id={id} inputMode="decimal" value={v} onChange={(e) => set(e.target.value)} placeholder="z. B. 5" />
+      <Input id={id} inputMode="decimal" value={v} onChange={(e) => set(e.target.value)} onFocus={(e) => e.currentTarget.select()} placeholder="z. B. 5" />
     </div>
   );
 

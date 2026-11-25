@@ -71,3 +71,20 @@ export function calculatePower(i: PowerInput): PowerResult | null {
     overCapacity: !dist || (!i.gridConnection && !gen),
   };
 }
+
+/** Elektrische Aufnahmeleistung (kW) aus CMS-Specs; Verbrennungsmotoren (PS) und Akkugeräte bleiben außen vor. */
+const POWER_KEYS = ["Leistungsaufnahme", "Nenneingangsleistung", "Max. Leistung", "Leistung", "Motorleistung"];
+export function consumerPowerKw(specs?: Record<string, string> | null): number | null {
+  if (!specs) return null;
+  if (Object.entries(specs).some(([k, v]) => /Kraftstoff|Tankinhalt|Motor$|Akku/i.test(k) || /Diesel|Benzin/i.test(v))) return null;
+  for (const key of POWER_KEYS) {
+    const raw = specs[key];
+    if (!raw || /PS|kVA|Akku/i.test(raw)) continue;
+    const vals = [...raw.matchAll(/(\d+(?:[.,]\d+)*)\s*(kW|W)\b/g)].map(([, n, u]) => {
+      const v = u === "kW" ? parseFloat(n.replace(/\./g, "").replace(",", ".")) : parseFloat(n.replace(/\./g, "").replace(",", ".")) / 1000;
+      return v;
+    }).filter((v) => v > 0);
+    if (vals.length) return Math.round(Math.max(...vals) * 100) / 100;
+  }
+  return null;
+}

@@ -40,3 +40,14 @@ describe("Baustromrechner", () => {
     expect(calculatePower({ consumers: [{ kw: 0, qty: 1 }], gridConnection: true, distanceM: 5 })).toBeNull();
   });
 });
+
+import { consumerPowerKw } from "@/lib/powerCalculator";
+describe("consumerPowerKw", () => {
+  it("liest elektrische Leistung aus CMS-Angaben", () => {
+    expect(consumerPowerKw({ Leistung: "1.100 W" })).toBe(1.1);
+    expect(consumerPowerKw({ Leistungsaufnahme: "2 kW" })).toBe(2);
+    expect(consumerPowerKw({ "Motorleistung (brutto)": "35,5 kW (48 PS)", Motorleistung: "35,5 kW (48 PS)" })).toBeNull();
+    expect(consumerPowerKw({ Motorleistung: "35,5 kW", Tankinhalt: "58 l" })).toBeNull();
+    expect(consumerPowerKw({ Spannung: "230 V" })).toBeNull();
+  });
+});
