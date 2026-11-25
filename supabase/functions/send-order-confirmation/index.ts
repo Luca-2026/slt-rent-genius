@@ -152,16 +152,17 @@ Deno.serve(async (req) => {
     const open = ev.openCents / 100;
     let paymentUrl: string | null = null;
     if (!preview && !amendment && inquiryType === "rental" && Number(inq.order_revision ?? 0) > 0 && ev.openCents > 0 && !ev.paysOnInvoice) {
-      if (!isStripeConfigured() || !shouldOfferPaymentLink({ paymentTerms: String(payload.payment_terms ?? "vorkasse"), customerEmail: inq.customer_email, testMode: isStripeTestMode(), openCents: ev.openCents })) return json({ error: "Restzahlungslink ist derzeit nicht verfügbar. Auftragsänderung bleibt gespeichert; bitte Zahlungsweg prüfen." }, 409);
-      const { data: activeLinks, error: linkReadError } = await service.from("offer_payment_links").select("token,amount_cents,stripe_session_id,checkout_claim").eq("inquiry_table", "rental_inquiries").eq("inquiry_id", inquiryId).eq("status", "active");
-      if (linkReadError) return json({ error: "Restzahlungslink konnte nicht geprüft werden." }, 503);
-      const matching = activeLinks?.find((link: { amount_cents: number }) => link.amount_cents === ev.openCents);
-      if (matching) paymentUrl = `https://www.slt-rental.de/zahlung/${matching.token}`;
-      else {
-        if (activeLinks?.some((link: { stripe_session_id: string | null; checkout_claim: string | null }) => link.stripe_session_id || link.checkout_claim)) return json({ error: "Laufende Online-Zahlung zuerst abgleichen; kein weiterer Zahlungslink angelegt." }, 409);
-        const link = await ensurePaymentLink(service, { table: "rental_inquiries", inquiryId, customerEmail: inq.customer_email, offerNumber: inq.offer_number, plan: signResidualPlan(planPaymentAmounts({ gross, deposit, paidCents: ev.paidCents }), payload, inq.order_revision), createdBy: user.id });
-        if (!link) return json({ error: "Auftragsänderung gespeichert, aber Restzahlungslink konnte nicht angelegt werden. Bitte Versand erneut prüfen." }, 503);
-        paymentUrl = link.url;
+      // Restzahlungslink ist optional: Versand der AB darf nie daran scheitern (Überweisung bleibt möglich).
+      if (isStripeConfigured() && shouldOfferPaymentLink({ paymentTerms: String(payload.payment_terms ?? "vorkasse"), customerEmail: inq.customer_email, testMode: isStripeTestMode(), openCents: ev.openCents })) {
+        const { data: activeLinks, error: linkReadError } = await service.from("offer_payment_links").select("token,amount_cents,stripe_session_id,checkout_claim").eq("inquiry_table", "rental_inquiries").eq("inquiry_id", inquiryId).eq("status", "active");
+        const matching = linkReadError ? null : activeLinks?.find((link: { amount_cents: number }) => link.amount_cents === ev.openCents);
+        if (matching) paymentUrl = `https://www.slt-rental.de/zahlung/${matching.token}`;
+        else if (!linkReadError && !activeLinks?.some((link: { checkout_claim: string | null }) => link.checkout_claim)) {
+          try {
+            const link = await ensurePaymentLink(service, { table: "rental_inquiries", inquiryId, customerEmail: inq.customer_email, offerNumber: inq.offer_number, plan: signResidualPlan(planPaymentAmounts({ gross, deposit, paidCents: ev.paidCents }), payload, inq.order_revision), createdBy: user.id });
+            paymentUrl = link?.url ?? null;
+          } catch (e) { console.error("residual payment link failed", e); }
+        }
       }
     }
 
