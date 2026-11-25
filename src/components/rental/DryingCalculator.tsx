@@ -8,12 +8,13 @@ import { Switch } from "@/components/ui/switch";
 import { useCustomerType } from "@/hooks/useCustomerType";
 import { formatEuro, priceFor, vatNote } from "@/lib/priceDisplay";
 import { resolveProductPrices, tierPriceBau, type LocationPriceRow } from "@/lib/pricing/rentalPricing";
+import { CalculatorRecommendations, ToolsLink } from "./CalculatorRecommendations";
 import { calculateDrying, DRYER_LARGE_SLUG, DRYER_SMALL_SLUG, FAN_TIME_REDUCTION, FAN_SLUG } from "@/lib/dryingCalculator";
 
 const COLS = "id,slug,name,pricing_scheme,prices_same_all_locations,price_per_day,price_from_1_rd,price_from_3_rd,price_from_10_rd,price_from_20_rd,price_weekend_num,price_base_1_3_cd,surcharge_per_cd_from_4,surcharge_per_cd_from_8,price_from_1_week,price_from_2_weeks,price_from_3_weeks,price_from_4_weeks,price_short_1_3_rd";
 const num = (v: string) => parseFloat(v.replace(",", ".")) || 0;
 
-export function DryingCalculator({ locationId }: { locationId: string }) {
+export function DryingCalculator({ locationId, showToolsLink = true }: { locationId: string; showToolsLink?: boolean }) {
   const { type } = useCustomerType();
   const [l, setL] = useState(""); const [w, setW] = useState(""); const [h, setH] = useState("2,5");
   const [water, setWater] = useState(false); const [fans, setFans] = useState(true);
@@ -93,10 +94,12 @@ export function DryingCalculator({ locationId }: { locationId: string }) {
           </div>
         </div>
       )}
+      {result && <CalculatorRecommendations locationId={locationId} days={result.days.max} showPrices={false} lines={[{ slug: result.dryer.slug, qty: result.dryer.qty }, ...(result.fans > 0 ? [{ slug: FAN_SLUG, qty: result.fans }] : [])]} fallbackNames={{ [FAN_SLUG]: "Turbolüfter" }} />}
       {!fans && result && (
         <p className="mt-3 text-sm flex gap-2 text-headline"><Wind className="h-4 w-4 mt-0.5 text-accent flex-shrink-0" />Tipp: Mit zusätzlichen Lüftern verkürzt sich die Trocknungszeit um ca. {Math.round(FAN_TIME_REDUCTION * 100)} %.</p>
       )}
       <p className="mt-3 text-xs text-muted-foreground flex gap-2"><Info className="h-3.5 w-3.5 mt-0.5 flex-shrink-0" />Die tatsächliche Dauer hängt von Schadensumfang, Durchfeuchtung der Bauteile und Messwerten ab. Estrich- oder Deckentrocknung auf Anfrage.</p>
+      {showToolsLink && <ToolsLink />}
     </section>
   );
 }

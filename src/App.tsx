@@ -89,6 +89,8 @@ const SLTUsedDetail = lazy(() => import("./pages/SLTUsedDetail"));
 const Neumaschinen = lazy(() => import("./pages/Neumaschinen"));
 const NeumaschineDetail = lazy(() => import("./pages/NeumaschineDetail"));
 const Ratgeber = lazy(() => import("./pages/Ratgeber"));
+const ToolsIndex = lazy(() => import("./pages/tools/ToolsPage").then(m => ({ default: m.ToolsIndex })));
+const ToolDetail = lazy(() => import("./pages/tools/ToolsPage").then(m => ({ default: m.ToolDetail })));
 const RatgeberArticle = lazy(() => import("./pages/RatgeberArticle"));
 const Vergleich = lazy(() => import("./pages/Vergleich"));
 const VergleichIndex = lazy(() => import("./pages/VergleichIndex"));
@@ -199,6 +201,8 @@ const App = () => (
               <Route path="/verkauf/neumaschinen/slt-hp65-krt-erdrakete" element={<Navigate to="/verkauf/neumaschinen/hercu-hp65-krt-erdrakete/" replace />} />
               
               {/* Ratgeber / Blog */}
+              <Route path="/tools" element={<ToolsIndex />} />
+              <Route path="/tools/:slug" element={<ToolDetail />} />
               <Route path="/ratgeber" element={<Ratgeber />} />
               <Route path="/ratgeber/:slug" element={<RatgeberArticle />} />
 

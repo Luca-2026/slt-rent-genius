@@ -54,6 +54,7 @@ export function Footer() {
     { to: "/karriere", label: t("footer.career") },
     { to: "/kontakt", label: t("footer.contact") },
     { to: "/ratgeber", label: t("footer.guide") },
+    { to: "/tools", label: t("footer.tools", "Rechner & Tools") },
     { to: "/dienstleistungen", label: t("footer.services") },
     { to: "/vergleich", label: t("footer.comparison") },
     { to: "/glasfaserausbau-maschinen-mieten", label: t("footer.fiberOptic") },
