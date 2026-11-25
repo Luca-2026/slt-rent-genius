@@ -129,7 +129,7 @@ export function offerPayloadToLines(payload: unknown): {
     financing?: SalesFinancing; undated_offer?: boolean; use_saturday?: boolean; use_sunday?: boolean;
     open_ended_independent_pricing?: boolean;
     /** Paket 3b – fehlen bei alten Angeboten. */
-    groups?: OfferGroup[]; extra_fields?: OfferExtraFields; order_type?: OrderType; terms_text?: string;
+    groups?: OfferGroup[]; extra_fields?: OfferExtraFields; order_type?: OrderType; terms_text?: string; hide_item_prices?: boolean;
   };
   delivery: OfferDeliveryAddress | null;
 } | null {
@@ -156,7 +156,7 @@ export function offerPayloadToLines(payload: unknown): {
         min_months?: number; minimum_duration?: number; open_ended_unit?: OpenEndedUnit;
         groups?: unknown;
         extra_fields?: unknown;
-        order_type?: unknown; terms_text?: unknown;
+        order_type?: unknown; terms_text?: unknown; hide_item_prices?: boolean;
         delivery_requested?: boolean;
         delivery_address?: { street?: string; postal_code?: string; city?: string };
       }
@@ -267,6 +267,7 @@ export function offerPayloadToLines(payload: unknown): {
       minimum_duration: normalizeOpenEndedDuration(p.minimum_duration ?? p.min_months, normalizeOpenEndedUnit(p.open_ended_unit)),
       min_months: Number(p.min_months) >= 1 ? Math.floor(Number(p.min_months)) : 1,
       ...(parseGroups(p.groups).length ? { groups: parseGroups(p.groups) } : {}),
+      ...(p.hide_item_prices === true ? { hide_item_prices: true } : {}),
       ...(cleanExtraFields(p.extra_fields) ? { extra_fields: cleanExtraFields(p.extra_fields) } : {}),
       ...(p.order_type === "delivery" || p.order_type === "pickup" ? { order_type: p.order_type as OrderType } : {}),
       ...(typeof p.terms_text === "string" && p.terms_text.trim() ? { terms_text: p.terms_text } : {}),

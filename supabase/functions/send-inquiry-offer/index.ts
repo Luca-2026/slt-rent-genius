@@ -551,6 +551,7 @@ Deno.serve(async (req: Request) => {
       deliveryAddress: deliveryRequested ? deliveryAddress : undefined,
       paymentTerms,
       paymentTermsCustom: paymentTerms === "custom" ? paymentTermsCustom : undefined,
+      hideItemPrices: isRentalOffer && body.hide_item_prices === true,
       inquiryOffer: isRentalOffer
         ? {
             addressForm,
@@ -655,6 +656,7 @@ Deno.serve(async (req: Request) => {
           use_saturday: body.use_saturday === true,
           use_sunday: body.use_sunday === true,
           ...(offerGroups ? { groups: offerGroups } : {}),
+          ...(isRentalOffer && body.hide_item_prices === true ? { hide_item_prices: true } : {}),
           ...(extraFields ? { extra_fields: extraFields } : {}),
           ...(orderType ? { order_type: orderType } : {}),
           return_mode: body.return_mode === "collection" ? "collection" : "customer",

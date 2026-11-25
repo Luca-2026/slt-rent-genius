@@ -94,6 +94,10 @@ export async function generateOfferPdf(data: {
    * Auftragsart, Gruppen, Spalten Menge/Dauer, Legende und Angebotsbedingungen.
    * Alle anderen Dokumente (Rechnung, Gutschrift, AB, Portal-Angebot) bleiben unverändert.
    */
+  /** Nur Gruppensummen statt Einzelpreise (manuell je Angebot; gilt für Angebot, AB, Rechnung). */
+  hideItemPrices?: boolean;
+  /** Gruppen für AB/Rechnung (beim Angebot über inquiryOffer.groups). */
+  priceGroups?: { id: string; name: string }[];
   inquiryOffer?: {
     addressForm: "du" | "sie";
     salutation: string;
@@ -216,7 +220,9 @@ export async function generateOfferPdf(data: {
   const dt = (pg: any, t: string, x: number, yy: number, f = font, s = 9.5, c = INK) => {
     try { pg.drawText(safe(t), { x, y: yy, size: s, font: f, color: c }); } catch {}
   };
+  let suppressTablePrices = false;
   const dtr = (pg: any, t: string, xRight: number, yy: number, f = font, s = 9.5, c = INK) => {
+    if (suppressTablePrices && (Math.abs(xRight - (ML + CW * 0.85)) < 0.01 || Math.abs(xRight - (W - MR - 4)) < 0.01)) return;
     try {
       const txt = safe(t);
       const tw = f.widthOfTextAtSize(txt, s);
@@ -478,8 +484,10 @@ export async function generateOfferPdf(data: {
     dt(pg, "Bezeichnung", ML + 32, yy, bold, 8.5, BRAND);
     dtr(pg, "Menge", qtyColRight, yy, bold, 8.5, BRAND);
     if (!iq || data.items.some(item => item.price_basis !== "event" && !(item.price_basis === "weekend" && item.rental_period_label === "Wochenende"))) dt(pg, iq ? "Dauer" : "Einheit", unitColX, yy, bold, 8.5, BRAND);
-    dtr(pg, "Einzelpreis", ML + CW * 0.85, yy, bold, 8.5, BRAND);
-    dtr(pg, "Gesamt", W - MR - 4, yy, bold, 8.5, BRAND);
+    if (!data.hideItemPrices) {
+      dtr(pg, "Einzelpreis", ML + CW * 0.85, yy, bold, 8.5, BRAND);
+      dtr(pg, "Gesamt", W - MR - 4, yy, bold, 8.5, BRAND);
+    }
     pg.drawRectangle({ x: ML, y: yy - 5, width: CW, height: 2, color: BRAND });
     return yy - 16;
   };
@@ -561,12 +569,27 @@ export async function generateOfferPdf(data: {
   let discountTotal = 0;
   const QTY_ABBR: Record<string, string> = { stk: "Stk", m2: "m\u00B2", lfm: "lfm" };
   const usedUnits = new Set<string>();
-  const groupNames = new Map((iq?.groups ?? []).map((g) => [g.id, g.name]));
+  const hidePrices = data.hideItemPrices === true;
+  const groupNames = new Map((iq?.groups ?? data.priceGroups ?? []).map((g) => [g.id, g.name]));
   let lastGroup: string | null = null;
+  let groupSum = 0;
+  const flushGroupSum = () => {
+    if (!hidePrices || lastGroup === null) return;
+    const title = lastGroup ? groupNames.get(lastGroup)! : "Positionen";
+    need(20);
+    suppressTablePrices = false;
+    dt(pg, `Summe ${title}`, textColX, y - 10, bold, 9.5, BRAND);
+    dtr(pg, fm(Math.round(groupSum * 100) / 100), totalRight, y - 10, bold, 9.5, BRAND);
+    suppressTablePrices = true;
+    y -= 20;
+    groupSum = 0;
+  };
+  suppressTablePrices = hidePrices;
   data.items.forEach((item: any, idx: number) => {
-    if (iq && groupNames.size) {
+    if ((iq || hidePrices) && (groupNames.size || hidePrices)) {
       const gid = item.group_id && groupNames.has(item.group_id) ? item.group_id : "";
       if (gid !== lastGroup) {
+        flushGroupSum();
         lastGroup = gid;
         const title = gid ? groupNames.get(gid)! : "Positionen";
         need(22 + 40);
@@ -576,6 +599,7 @@ export async function generateOfferPdf(data: {
         rowZebra = false;
       }
     }
+    groupSum += Number(item.total_price) || 0;
     const img = item.image_url ? imageCache.get(item.image_url) : null;
     const nameText = safe(item.product_name);
     // Paket 4: Menge (Stück + Mengeneinheit) und Dauer (Anzahl + Einheit) getrennt
@@ -644,14 +668,14 @@ export async function generateOfferPdf(data: {
     const pct = Number(item.discount_percent) || 0;
     const grossLine = Math.round((item.quantity || 0) * (item.unit_price || 0) * 100) / 100;
     const savings = Math.round(grossLine * (pct / 100) * 100) / 100;
-    const discountLines = pct > 0
+    const discountLines = pct > 0 && !hidePrices
       ? wt(`Listenpreis ${fm(grossLine)} \u2013 Rabatt ${fm2(pct)} % = -${fm(savings)}`, bold, 8, nameColW)
       : [];
     if (pct > 0) discountTotal += savings;
     let rowH = 10 + nameLines.length * 12 + (subLines.length ? 4 + subLines.length * 10 : 0) +
       (discountLines.length ? 3 + discountLines.length * 10 : 0);
     if (img) rowH = Math.max(rowH, IMG + 14);
-    if (pct > 0) rowH = Math.max(rowH, 34);
+    if (pct > 0 && !hidePrices) rowH = Math.max(rowH, 34);
 
     // Position und ihre Zusatzoptionen (z. B. Maschinenbruchversicherung) bilden einen Block:
     // passt er nicht mehr komplett auf die Seite, wandert er geschlossen auf die nächste.
@@ -710,6 +734,8 @@ export async function generateOfferPdf(data: {
     }
   });
 
+  flushGroupSum();
+
   // ── Logistik-Positionen ──
   const deliveryRow = (label: string, amount: number) => {
     renderRow(26, (top) => {
@@ -762,6 +788,7 @@ export async function generateOfferPdf(data: {
   }
   y -= 26;
   tableClosed = true;
+  suppressTablePrices = false;
 
   // ── Summenblock (rechtsbündig, wie Rechnung) ──
   // Höhe exakt aus den tatsächlich gedruckten Zeilen berechnen, damit der Block

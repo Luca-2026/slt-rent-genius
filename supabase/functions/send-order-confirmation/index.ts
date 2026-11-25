@@ -275,6 +275,7 @@ Deno.serve(async (req) => {
         total_price: Math.round((Number(i.quantity) || 0) * (Number(i.unit_price) || 0) * (1 - (Number(i.discount_percent) || 0) / 100) * 100) / 100,
         rental_start: i.rental_start,
         rental_end: i.rental_end,
+        group_id: (i as { group_id?: string }).group_id,
         image_url: normalizeImageUrl(i.image_url) as string | null,
       }));
       const missing = pdfItems.filter((i) => !i.image_url).map((i) => i.product_name);
@@ -310,6 +311,8 @@ Deno.serve(async (req) => {
       const pdfBytes = await generateOfferPdf({
       orderCode: (inq as { order_code?: string | null }).order_code ?? null,
         documentType: "order_confirmation",
+        hideItemPrices: payload.hide_item_prices === true,
+        priceGroups: Array.isArray(payload.groups) ? payload.groups.map((g: { id: string; name: string }) => ({ id: String(g.id), name: String(g.name ?? "") })) : undefined,
         businessType: inquiryType,
         extraFields: payload.extra_fields,
         orderConfirmationGreeting: { addressForm: form, salutation: greeting },

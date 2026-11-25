@@ -374,6 +374,8 @@ interface Props {
     use_sunday?: boolean;
     /** Paket 3b – fehlen bei alten Angeboten. */
     groups?: OfferGroup[];
+    /** Nur Gruppensummen statt Einzelpreise auf Angebot, AB und Rechnung (manuell, Standard aus). */
+    hide_item_prices?: boolean;
     extra_fields?: OfferExtraFields;
     order_type?: OrderType;
     /** Paket 4: geänderte Angebotsbedingungen (null = Textbaustein). */
@@ -482,6 +484,7 @@ export function InquiryOfferForm({
   );
   /** Paket 3b: Positionsgruppen, Zusatzfelder (Besteller, Kostenstelle, Bauvorhaben) und Auftragsart. */
   const [groups, setGroups] = useState<OfferGroup[]>((draft?.groups as OfferGroup[]) ?? defaultMeta?.groups ?? []);
+  const [hideItemPrices, setHideItemPrices] = useState<boolean>(typeof draft?.hideItemPrices === "boolean" ? (draft.hideItemPrices as boolean) : defaultMeta?.hide_item_prices === true);
   const [extraFields, setExtraFields] = useState<Partial<Record<keyof OfferExtraFields, string>>>(
     { ...defaultMeta?.extra_fields, ...(draft?.extraFields as Partial<Record<keyof OfferExtraFields, string>> | undefined) },
   );
@@ -747,6 +750,7 @@ export function InquiryOfferForm({
     setUseSaturday(!!(d.items?.[0]?.use_saturday ?? d.useSaturday ?? defaultItems[0]?.use_saturday ?? defaultMeta?.use_saturday));
     setUseSunday(!!(d.items?.[0]?.use_sunday ?? d.useSunday ?? defaultItems[0]?.use_sunday ?? defaultMeta?.use_sunday));
     setGroups(Array.isArray(d.groups) ? (d.groups as OfferGroup[]) : []);
+    setHideItemPrices(d.hideItemPrices === true);
     setExtraFields({ ...defaultMeta?.extra_fields, ...(d.extraFields as Partial<Record<keyof OfferExtraFields, string>> | undefined) });
     setOrderType(d.orderType === "delivery" ? "delivery" : "pickup");
     setTermsText(typeof d.termsText === "string" ? d.termsText : null);
@@ -815,6 +819,7 @@ export function InquiryOfferForm({
         useSaturday,
         useSunday,
         groups,
+        hideItemPrices,
         extraFields,
         orderType,
         returnMode,
@@ -866,6 +871,7 @@ export function InquiryOfferForm({
     useSaturday,
     useSunday,
     groups,
+    hideItemPrices,
     extraFields,
     orderType,
     returnMode,
@@ -916,6 +922,7 @@ export function InquiryOfferForm({
     setUseSaturday(!!(defaultItems[0]?.use_saturday ?? defaultMeta?.use_saturday));
     setUseSunday(!!(defaultItems[0]?.use_sunday ?? defaultMeta?.use_sunday));
     setGroups(defaultMeta?.groups ?? []);
+    setHideItemPrices(defaultMeta?.hide_item_prices === true);
     setExtraFields(defaultMeta?.extra_fields ?? {});
     setOrderType(nextOrderType(defaultMeta?.order_type ?? (defaultDelivery?.requested ? "delivery" : "pickup"), defaultCosts?.delivery_cost_delivery ?? 0, 0));
   };
@@ -1390,6 +1397,7 @@ export function InquiryOfferForm({
         ...(pricingActive ? { use_saturday: useSaturday, use_sunday: useSunday } : {}),
         notes: [notes.trim(), settlementNote].filter(Boolean).join("\n\n"),
         ...(groups.length ? { groups } : {}),
+        ...(inquiryType === "rental" ? { hide_item_prices: hideItemPrices } : {}),
         ...(cleanExtraFields(extraFields) ? { extra_fields: cleanExtraFields(extraFields) } : {}),
         ...(showTerms ? { terms_text: termsText !== null && termsText.trim() && termsText.trim() !== termsDefault ? termsText.trim() : null } : {}),
         order_type: orderType,
@@ -1742,6 +1750,15 @@ export function InquiryOfferForm({
             Einsatz Sonntag
           </label>
         </div>
+      )}
+      {inquiryType === "rental" && (
+        <label className="flex items-start gap-2 rounded-md border border-border p-3 text-sm cursor-pointer" data-testid="hide-item-prices">
+          <Checkbox checked={hideItemPrices} disabled={disabled} onCheckedChange={(v) => setHideItemPrices(v === true)} className="mt-0.5" />
+          <span>
+            <span className="font-medium">Nur Gruppenpreise zeigen</span>
+            <span className="block text-xs text-muted-foreground">Kunde sieht auf Angebot, Auftragsbestätigung und Rechnung keine Einzelpreise, nur je Gruppe eine Summe. Positionen ohne Gruppe werden unter „Positionen“ zusammengefasst.</span>
+          </span>
+        </label>
       )}
       <div className="space-y-3">
         {groupedIndices(groups, items).map(({ group, indices }) => (

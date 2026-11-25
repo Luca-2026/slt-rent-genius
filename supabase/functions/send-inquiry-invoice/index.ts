@@ -572,7 +572,11 @@ Deno.serve(async (req: Request) => {
       payment_due_days: paymentDueDays,
     };
 
+    // Nur-Gruppenpreise: Gruppe je Position aus dem Angebot übernehmen (auch wenn der Editor sie nicht mitschickt).
+    const offerPayloadForGroups = (inquiry.offer_payload ?? {}) as { hide_item_prices?: boolean; groups?: { id: string; name: string }[]; items?: { product_name?: string; group_id?: string }[] };
+    const groupByName = new Map((offerPayloadForGroups.items ?? []).filter((x) => x.group_id && x.product_name).map((x) => [String(x.product_name), String(x.group_id)]));
     const pdfItems = items.map((i) => ({
+      group_id: (i as { group_id?: string }).group_id || groupByName.get(String(i.product_name)) || undefined,
       product_name: i.name_override || i.product_name,
       description: i.description_override || i.description,
       quantity: i.quantity,
@@ -648,6 +652,8 @@ Deno.serve(async (req: Request) => {
       depositSettlement: depositInfo ?? undefined,
       orderCode: (inquiry as { order_code?: string | null }).order_code ?? null,
       documentType: invoiceKind,
+      hideItemPrices: inquiryType === "rental" && offerPayloadForGroups.hide_item_prices === true,
+      priceGroups: Array.isArray(offerPayloadForGroups.groups) ? offerPayloadForGroups.groups.map((g) => ({ id: String(g.id), name: String(g.name ?? "") })) : undefined,
       businessType: inquiryType,
       offerNumber: invoiceNumber,
       offerDate: isoDate(invoiceDate),
