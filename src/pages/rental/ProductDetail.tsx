@@ -59,6 +59,7 @@ import { RatgeberTeaserBlock } from "@/components/ratgeber/RatgeberTeaserBlock";
 import { getArticlesForCategory } from "@/data/blogArticles";
 import { getDrivingLicenseInfo, localizeProductText, resolveProductFaqs } from "@/data/productPageContent";
 import { SignPackagePrices } from "@/components/rental/SignPackagePrices";
+import { DryingCalculator } from "@/components/rental/DryingCalculator";
 
 const LEGACY_PRODUCT_ID_REDIRECTS: Record<string, string> = {
   "bonn-stampfer-gs72": "/mieten/bonn/verdichtung/stampfer-gs72-xh/",
@@ -946,6 +947,8 @@ export default function ProductDetail() {
               {(product.id === "halteverbotsschilder-set" || product.id === "bonn-halteverbotsschilder-set") && (
                 <HalteverbotsSeoSection locationId={location.id} />
               )}
+
+              {/bautrockner-kt(200|553)/.test(product.id) && <DryingCalculator locationId={location.id} />}
 
               {/* Rental Notes (e.g. operating hours, fuel costs) */}
               {product.rentalNotes && product.rentalNotes.length > 0 && (
