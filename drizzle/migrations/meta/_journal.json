@@ -1485,6 +1485,13 @@
       "when": 1795533812314,
       "tag": "0211_sign_existing_permit_72_hour_lead",
       "breakpoints": true
+    },
+    {
+      "idx": 212,
+      "version": "7",
+      "when": 1795582830587,
+      "tag": "0212_fix_rental_amendment_date_types",
+      "breakpoints": true
     }
   ]
 }

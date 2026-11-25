@@ -11,7 +11,7 @@ beforeAll(async () => {
   CREATE FUNCTION auth.role() RETURNS text LANGUAGE sql AS $$ SELECT 'service_role'::text $$;
   CREATE FUNCTION can_edit_operations(uuid) RETURNS boolean LANGUAGE sql AS $$ SELECT true $$;
   CREATE FUNCTION is_staff_member(uuid) RETURNS boolean LANGUAGE sql AS $$ SELECT true $$;
-  CREATE TABLE rental_inquiries(id uuid PRIMARY KEY,status text,offer_number text,offer_payload jsonb,offer_total_gross numeric,start_date date,end_date date,offer_file_url text,offer_sent_at timestamptz,offer_accepted_at timestamptz,order_confirmation_number text,order_confirmation_file_url text,availability_pending boolean,b2b_reservation_id uuid,payments jsonb,payment_decision_version int DEFAULT 0);
+  CREATE TABLE rental_inquiries(id uuid PRIMARY KEY,status text,offer_number text,offer_payload jsonb,offer_total_gross numeric,start_date text,end_date text,offer_file_url text,offer_sent_at timestamptz,offer_accepted_at timestamptz,order_confirmation_number text,order_confirmation_file_url text,availability_pending boolean,b2b_reservation_id uuid,payments jsonb,payment_decision_version int DEFAULT 0);
   CREATE TABLE b2b_reservations(id uuid,inquiry_id uuid,start_date date,end_date date,updated_at timestamptz);
   CREATE TABLE deposit_settlements(rental_inquiry_id uuid);
   CREATE TABLE offer_payment_links(id uuid PRIMARY KEY,inquiry_id uuid,inquiry_table text,offer_number text,status text,stripe_session_id text,payment_intent_id text,amount_cents int,checkout_claim uuid,checkout_claimed_at timestamptz,checkout_request jsonb,updated_at timestamptz);
@@ -26,6 +26,7 @@ beforeAll(async () => {
   const checkout = readFileSync("drizzle/migrations/0129_durable_rental_checkout_attempts.sql", "utf8").split("COMMENT ON COLUMN")[0].replace("AND id<>l.id AND status='active'", "AND id<>l.id");
   await db.exec(checkout);
   await db.exec(readFileSync("drizzle/migrations/0210_paid_sign_booking_amendments.sql", "utf8"));
+  await db.exec(readFileSync("drizzle/migrations/0212_fix_rental_amendment_date_types.sql", "utf8"));
   await db.exec("CREATE TRIGGER sign_payment AFTER UPDATE OF payments ON rental_inquiries FOR EACH ROW EXECUTE FUNCTION sign_booking_payment_state()");
 }, 30000);
 afterAll(() => db.close());
@@ -39,6 +40,15 @@ async function fixture(status = "paid") {
 }
 const save = (id: string, payload: unknown = amended) => db.query("SELECT save_rental_order_amendment($1,0,$2,'Zusatzzeichen nach Genehmigungsprüfung',now())", [id, JSON.stringify(payload)]);
 describe("Protected paid sign amendments", () => {
+  it("saves a normal rental amendment with several separately adjusted rental periods", async () => {
+    const id = crypto.randomUUID();
+    const base = { deposit: 0, payment_terms: "vorkasse", items: [{ product_slug: "bagger", quantity: 1, unit_price: 100, rental_start: "2026-11-18", rental_end: "2026-11-20" }], totals: { netAmount: 100, vatAmount: 19, grossAmount: 119 } };
+    await db.query("INSERT INTO rental_inquiries(id,status,offer_number,offer_payload,offer_total_gross,start_date,end_date,payments) VALUES($1,'accepted','ANG-NORMAL',$2,119,'2026-11-18','2026-11-20','[]')", [id, JSON.stringify(base)]);
+    const next = { ...base, items: [base.items[0], { product_slug: "radlader", quantity: 2, unit_price: 50, rental_start: "2026-11-16", rental_end: "2026-11-18" }, { product_slug: "bagger", quantity: 4, unit_price: 100, rental_start: "2026-11-24", rental_end: "2026-11-27" }], totals: { netAmount: 600, vatAmount: 114, grossAmount: 714 } };
+    await db.query("SELECT save_rental_order_amendment($1,0,$2,'Telefonisch verlängert',now())", [id, JSON.stringify(next)]);
+    const { rows } = await db.query<any>("SELECT start_date,end_date,order_revision FROM rental_inquiries WHERE id=$1", [id]);
+    expect(rows[0]).toMatchObject({ start_date: "2026-11-16", end_date: "2026-11-27", order_revision: 1 });
+  });
   it("saves appended signs, immutable original evidence and a 6 euro residual without altering the paid booking", async () => {
     const id = await fixture(); await save(id);
     const { rows } = await db.query<any>("SELECT r.offer_total_gross,r.order_revision,r.original_accepted_offer,r.start_date::text,r.end_date::text,b.status,b.snapshot FROM rental_inquiries r JOIN sign_bookings b ON b.inquiry_id=r.id WHERE r.id=$1", [id]);
