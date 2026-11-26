@@ -3,6 +3,7 @@ import { signResidualPlan } from "../_shared/sign-amendment.ts";
 import { reconcileRefundsBeforeExecution, reconcileStripeRefund } from "../_shared/refund-reconciliation.ts";
 import { selectStaffRentalPayment } from "../_shared/staff-payment-decision.ts";
 import { recordRentalPayments } from "../_shared/record-rental-payments.ts";
+import { setRentalCheckoutStripe } from "../_shared/rental-checkout-recovery.ts";
 /**
  * Mitarbeiter-Funktionen zur Online-Zahlung (Bearer-Auth, Rollenprüfung serverseitig):
  *  - create_link:     Zahlungslink zu einem bereits versendeten Angebot erzeugen (alle Mitarbeiter)
@@ -24,6 +25,8 @@ import {
   stripeClient,
   toCents,
 } from "../_shared/stripe-pay.ts";
+
+setRentalCheckoutStripe(() => stripeClient());
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });

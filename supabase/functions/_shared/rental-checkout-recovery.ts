@@ -26,6 +26,10 @@ export async function reconcileRentalCheckout(service: any, stripe: any, link: a
   link.stripe_session_id = null; link.checkout_claim = null; link.checkout_request = null; link.checkout_claimed_at = null;
 }
 
+/** Edge functions register their statically bundled Stripe client; runtime imports are not bundled. */
+let stripeFactory: (() => any) | null = null;
+export function setRentalCheckoutStripe(factory: () => any) { stripeFactory = factory; }
+
 /** Before staff change the payable price, end unpaid online checkouts; a paid one must be booked first. */
 export async function endUnpaidRentalCheckouts(service: any, inquiryId: string): Promise<void> {
   const { data: links, error } = await service.from("offer_payment_links").select("*")
@@ -33,10 +37,8 @@ export async function endUnpaidRentalCheckouts(service: any, inquiryId: string):
     .or("stripe_session_id.not.is.null,checkout_claim.not.is.null");
   if (error) throw new Error("Online-Zahlungsstatus konnte nicht geprüft werden.");
   if (!links?.length) return;
-  // Variable specifier keeps the Deno-only Stripe module out of the browser typecheck.
-  const stripeModule = "./stripe-pay.ts";
-  const { stripeClient } = await import(stripeModule);
-  const stripe = stripeClient();
+  if (!stripeFactory) throw new Error("Online-Zahlungsstatus konnte nicht geprüft werden.");
+  const stripe = stripeFactory();
   for (const link of links) {
     if (link.stripe_session_id) {
       const session = await stripe.checkout.sessions.retrieve(link.stripe_session_id);
