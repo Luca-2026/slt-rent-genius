@@ -17,7 +17,9 @@ import { buildOrderAmendment, buildSalesOrderAmendment } from "../_shared/order-
 import { signResidualPlan } from "../_shared/sign-amendment.ts";
 import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts";
 import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
-import { ensurePaymentLink, planPaymentAmounts, isStripeConfigured, isStripeTestMode, shouldOfferPaymentLink } from "../_shared/stripe-pay.ts";
+import { ensurePaymentLink, planPaymentAmounts, isStripeConfigured, isStripeTestMode, shouldOfferPaymentLink, stripeClient } from "../_shared/stripe-pay.ts";
+import { endUnpaidRentalCheckouts, setRentalCheckoutStripe } from "../_shared/rental-checkout-recovery.ts";
+setRentalCheckoutStripe(() => stripeClient());
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -348,6 +350,10 @@ Deno.serve(async (req) => {
       if (preview) return json({preview:true,pdf_base64:encodeBase64(pdfBytes),totals:payload.totals});
       if (amendment) {
         const actor = createClient(serviceUrl,anonKey,{global:{headers:{Authorization:auth}},auth:{persistSession:false}});
+        // An abandoned, unpaid checkout must not block a staff amendment; a paid one still must be booked first.
+        if (inquiryType === "rental" && isStripeConfigured()) {
+          try { await endUnpaidRentalCheckouts(service, inquiryId); } catch (e) { return json({ error: e instanceof Error ? e.message : "Online-Zahlung konnte nicht geprüft werden." }, 409); }
+        }
         const {error:saveError}=await actor.rpc(inquiryType === "sales" ? "save_sales_order_amendment" : "save_rental_order_amendment",{_id:inquiryId,_expected:body.expected_revision,_payload:payload,_note:body.agreement_note,_agreed_at:body.agreed_at});
         if(saveError) return json({error:saveError.message},409);
         // Save first; the matching AB review/send creates or reuses the residual link.
