@@ -49,7 +49,7 @@ import { SignBookingStatus } from "./SignBookingStatus";
 import { InquiryPaymentsCard, parseInquiryPayments } from "./InquiryPaymentsCard";
 import { StripePaymentCard } from "./StripePaymentCard";
 import type { OfferLine, OfferLineAddon } from "./offerMath";
-import { formatEuro, parseGroups, cleanExtraFields, type OfferGroup, type OfferExtraFields, type OrderType, type QuantityUnit } from "./offerMath";
+import { formatEuro, parseGroups, cleanExtraFields, quantityUnitShort, withoutBillingDuration, type OfferGroup, type OfferExtraFields, type OrderType, type QuantityUnit } from "./offerMath";
 import { useAuth } from "@/hooks/useAuth";
 import { InstallmentCard } from "./InstallmentCard";
 
@@ -204,7 +204,8 @@ export function offerPayloadToLines(payload: unknown): {
     image_url: typeof raw.image_url === "string" ? raw.image_url : undefined,
     // Paket 3b (fehlen bei alten Angeboten)
     ...(typeof raw.group_id === "string" ? { group_id: raw.group_id } : {}),
-    ...(raw.quantity_unit === "m2" || raw.quantity_unit === "lfm" ? { quantity_unit: raw.quantity_unit as QuantityUnit } : {}),
+    ...(raw.quantity_unit === "m2" || raw.quantity_unit === "lfm" || raw.quantity_unit === "liter" ? { quantity_unit: raw.quantity_unit as QuantityUnit } : {}),
+    ...(raw.measure && typeof raw.measure === "object" ? { measure: raw.measure as OfferLine["measure"] } : {}),
     ...(typeof raw.name_override === "string" && raw.name_override ? { name_override: raw.name_override } : {}),
     ...(typeof raw.description_override === "string" && raw.description_override ? { description_override: raw.description_override } : {}),
     addons: Array.isArray(raw.addons)
@@ -935,8 +936,8 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
             <ul className="divide-y divide-border border-y border-border">
               {(offerSnapshot?.items ?? defaultItems).map((item, index) => <li key={index} className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-1 py-3 text-sm">
                 <span className="min-w-0 break-words font-medium">{item.name_override || item.product_name}</span>
-                <span className="tabular-nums">{item.quantity} {item.quantity_unit === "m2" ? "m²" : item.quantity_unit === "lfm" ? "lfm" : "Stk."}</span>
-                <span className="col-span-2 text-xs text-muted-foreground">{item.duration ?? 1} {unitLabel(item.duration ?? 1, item.unit ?? "miettage")}{inquiry.offer_number ? ` · ${formatEuro(item.unit_price)} netto${item.discount_percent ? ` · ${item.discount_percent} % Rabatt` : ""}` : ""}</span>
+                <span className="tabular-nums">{item.quantity} {quantityUnitShort(item.quantity_unit)}</span>
+                <span className="col-span-2 text-xs text-muted-foreground">{withoutBillingDuration(item) ? "Ohne Mietdauer" : `${item.duration ?? 1} ${unitLabel(item.duration ?? 1, item.unit ?? "miettage")}`}{inquiry.offer_number ? ` · ${formatEuro(item.unit_price)} netto${item.discount_percent ? ` · ${item.discount_percent} % Rabatt` : ""}` : ""}</span>
                 {bankDiscountPresentation(item).discountNet < 0 && <span className="col-span-2 text-xs font-medium">3 % Überweisungsrabatt: {formatEuro(bankDiscountPresentation(item).discountNet)} netto · bereits berücksichtigt</span>}
               </li>)}
             </ul>

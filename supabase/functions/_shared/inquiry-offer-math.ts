@@ -80,7 +80,7 @@ export interface InquiryOfferItem extends OfferLogistics {
   addons?: InquiryOfferAddon[];
   /** Paket 3b: Gruppe, Mengeneinheit, Dauer und Overrides (nur dieses Angebot). */
   group_id?: string;
-  quantity_unit?: "stk" | "m2" | "lfm";
+  quantity_unit?: "stk" | "m2" | "lfm" | "liter";
   duration?: number;
   duration_override?: number;
   use_saturday?: boolean;
@@ -290,6 +290,11 @@ export function normalizeInquiryOfferItems(raw: unknown, undated = false): Inqui
     const articles =
       Number.isFinite(Number(item.articles)) && Number(item.articles) > 0 ? normalizeQuantity(Number(item.articles)) : 1;
     const unitStr = item.unit ? String(item.unit).slice(0, 40) : undefined;
+    // Bei echten Litermengen darf der aus dem Protokoll abgeleitete Nettopreis vier
+    // Nachkommastellen behalten, damit die bereits festgelegte Positionssumme centgleich bleibt.
+    const normalizedUnitPrice = source.period_free === true && item.quantity_unit === "liter"
+      ? Math.round((unitPrice + Number.EPSILON) * 10000) / 10000
+      : round2(unitPrice);
     const logistics = normalizeOfferLogistics(item);
     if (logistics.delivery_at || logistics.collection_at) offerInsurancePeriod({ ...logistics, rental_start: typeof item.rental_start === "string" ? item.rental_start : undefined, rental_end: typeof item.rental_end === "string" ? item.rental_end : undefined });
     return {
@@ -304,7 +309,7 @@ export function normalizeInquiryOfferItems(raw: unknown, undated = false): Inqui
       description: item.description ? String(item.description).slice(0, 500) : undefined,
       quantity: normalizeQuantity(quantity),
       unit: item.unit ? String(item.unit).slice(0, 40) : undefined,
-      unit_price: round2(unitPrice),
+      unit_price: normalizedUnitPrice,
       discount_percent: round2(discount),
       rental_start: item.rental_start ? String(item.rental_start).slice(0, 40) : undefined,
       rental_end: item.rental_end ? String(item.rental_end).slice(0, 40) : undefined,
@@ -317,7 +322,7 @@ export function normalizeInquiryOfferItems(raw: unknown, undated = false): Inqui
       rental_period_label: item.rental_period_label ? String(item.rental_period_label).slice(0, 80) : undefined,
       image_url: item.image_url ? String(item.image_url).slice(0, 500) : undefined,
       group_id: item.group_id ? String(item.group_id).slice(0, 60) : undefined,
-      quantity_unit: item.quantity_unit === "m2" || item.quantity_unit === "lfm" || item.quantity_unit === "stk" ? item.quantity_unit : undefined,
+      quantity_unit: item.quantity_unit === "m2" || item.quantity_unit === "lfm" || item.quantity_unit === "liter" || item.quantity_unit === "stk" ? item.quantity_unit : undefined,
       duration: Number(item.duration) > 0 && Number(item.duration) <= 10000 ? Math.round(Number(item.duration) * 100) / 100 : undefined,
       duration_override: Number(item.duration_override) > 0 && Number(item.duration_override) <= 10000 ? Math.round(Number(item.duration_override) * 100) / 100 : undefined,
       ...(typeof item.use_saturday === "boolean" ? { use_saturday: item.use_saturday } : {}),
@@ -333,7 +338,7 @@ export function normalizeInquiryOfferItems(raw: unknown, undated = false): Inqui
         articles,
         quantity: normalizeQuantity(quantity),
         unit: unitStr,
-        unit_price: round2(unitPrice),
+        unit_price: normalizedUnitPrice,
         discount_percent: round2(discount),
       }),
     };

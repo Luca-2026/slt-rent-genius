@@ -13,7 +13,7 @@ import { calendarDescription, calendarDuration, inheritCalendarPeriod, withoutLe
 import { applyOpenEndedBilling, applyOpenEndedPeriod, hasMissingOpenEndedPrice, normalizeOpenEndedUnit, normalizeOpenEndedDuration, type OpenEndedUnit } from "@/lib/installments";
 import { isDraftEditEvent } from "@/lib/draftEditIntent";
 import { matchesDocumentPreview } from "../../../../supabase/functions/_shared/invoice-preview";
-import { CLEANING_UNIT_GROSS, CLEANING_UNIT_MINUTES, CLEANING_UNIT_NET, chargeMeasure, chargeQuantityText, quantityFromText, cleaningChargeGross, cleaningSuggested, depositSettlementNote, settleDeposit } from "@/lib/returnCharges";
+import { CLEANING_UNIT_GROSS, CLEANING_UNIT_MINUTES, CLEANING_UNIT_NET, chargeMeasure, chargeQuantityText, literProtocolCharge, withoutLiterQuantityText, quantityFromText, cleaningChargeGross, cleaningSuggested, depositSettlementNote, settleDeposit } from "@/lib/returnCharges";
 import { invokeWithAuth } from "@/lib/invokeWithAuth";
 import { needsOfferDepositWarning } from "@/lib/offerDeposit";
 import { OfferDepositWarning } from "@/components/b2b/OfferDepositWarning";
@@ -64,6 +64,7 @@ import {
   orderItemsByGroups,
   isReturnChargeLine,
   quantityUnitShort,
+  withoutBillingDuration,
   type OfferExtraFields,
   type OfferGroup,
   type OfferLine,
@@ -672,20 +673,26 @@ export function InquiryOfferForm({
     takenChargesRef.current = [...takenChargesRef.current, charge];
     setTakenCharges(takenChargesRef.current);
     setPendingCharges((prev) => prev.filter((c) => c.id !== charge.id));
+    const netTotal = charge.source === "damage" ? charge.gross : Math.round((charge.gross / 1.19) * 100) / 100;
+    const liter = charge.source === "damage" ? null : literProtocolCharge(charge.label, charge.description, charge.gross);
     setItems((prev) => [
       ...prev,
       {
         product_name: charge.label,
-        description: charge.description ?? "",
-        quantity: 1,
+        description: liter ? liter.description : charge.description ?? "",
+        quantity: liter?.quantity ?? 1,
+        quantity_unit: liter ? "liter" : undefined,
         duration: 1,
-        unit: "pauschal",
+        unit: liter ? "stueck" : "pauschal",
+        period_free: !!liter,
+        custom_period: !!liter,
         // Schadensersatz ist nicht steuerbar (brutto = netto), Service mit 19 % USt.
-        unit_price: charge.source === "damage" ? charge.gross : Math.round((charge.gross / 1.19) * 100) / 100,
+        unit_price: liter?.unit_price ?? netTotal,
+        price_manual: true,
         discount_percent: 0,
         vat_rate: charge.source === "damage" ? 0 : 19,
-        measure: charge.source === "damage" ? undefined
-          : chargeMeasure(charge.label, quantityFromText(charge.description), Math.round((charge.gross / 1.19) * 100) / 100),
+        measure: charge.source === "damage" || liter ? undefined
+          : chargeMeasure(charge.label, quantityFromText(charge.description), netTotal),
         protocol_charge_source: charge.source === "suggestion" ? "settlement" : charge.source,
       } as FormLine,
     ]);
@@ -1337,9 +1344,9 @@ export function InquiryOfferForm({
             return { ...sale, articles: sale.quantity, quantity: sale.quantity, duration: 1, unit_code: "stueck", unit: quantityUnitShort(sale.quantity_unit), description: sale.description_override?.trim() || sale.description };
           }
           const unit = (rest.unit ?? "kalendertage") as OfferUnit;
-          // Pauschalpositionen haben keine Dauer – der Preis gilt für den
-          // gesamten Auftrag, unabhängig von der Mietzeit.
-          const duration = unit === "pauschal" ? 1 : rest.duration && rest.duration > 0 ? rest.duration : 1;
+          const noDuration = withoutBillingDuration(rest);
+          // Pauschal- und ausdrücklich dauerfreie Positionen werden nur über ihre Menge berechnet.
+          const duration = unit === "pauschal" || noDuration ? 1 : rest.duration && rest.duration > 0 ? rest.duration : 1;
           const articles = rest.quantity || 1;
           const qUnit = rest.quantity_unit ?? "stk";
           // Beschreibung nur für diesen Auftrag hat Vorrang vor der Stammbeschreibung.
@@ -1347,14 +1354,14 @@ export function InquiryOfferForm({
           // Die PDF-Zeile zeigt Menge × Einheit; mehrere Artikel (bzw. m²/lfm) werden in der
           // Beschreibung ausgewiesen, damit die Summe nachvollziehbar bleibt.
           const description =
-            !isLogisticsService(rest) && (articles > 1 || qUnit !== "stk") && unit !== "pauschal"
+            !isLogisticsService(rest) && !noDuration && (articles > 1 || qUnit !== "stk") && unit !== "pauschal"
               ? [baseDescription, `${articles} ${qUnit === "stk" ? "Artikel" : quantityUnitShort(qUnit)} × ${duration} ${unitLabel(duration, unit)}`]
                   .filter(Boolean)
                   .join(" · ")
               : baseDescription;
           return {
             ...rest,
-            ...( _um ? { duration_override: duration } : {}),
+            ...(_um && !noDuration ? { duration_override: duration } : noDuration ? { duration_override: undefined } : {}),
             description,
             // Für die spätere Bestandsprüfung: echte Stückzahl und Zeitraum
             // getrennt mitschreiben (quantity ist Artikel × Dauer).
@@ -1362,11 +1369,11 @@ export function InquiryOfferForm({
             rental_start: undatedOffer || rest.period_free ? undefined : rest.rental_start ?? checkStart ?? undefined,
             rental_end: undatedOffer || openEnded || rest.period_free ? undefined : rest.rental_end ?? checkEnd ?? undefined,
             quantity: articles * duration,
-            unit: isLogisticsService(rest) ? SERVICE_UNITS.find(u => u.value === serviceUnit(rest))?.label ?? "Pauschale" : unitLabel(articles * duration, unit),
+            unit: isLogisticsService(rest) ? SERVICE_UNITS.find(u => u.value === serviceUnit(rest))?.label ?? "Pauschale" : noDuration ? quantityUnitShort(qUnit) : unitLabel(articles * duration, unit),
             unit_code: unit,
             // Paket 3b: Dauer separat (quantity bleibt Artikel × Dauer für die Summenfunktionen).
             duration,
-            ...(rest.quantity_unit && rest.quantity_unit !== "stk" ? { quantity_unit: rest.quantity_unit } : { quantity_unit: undefined }),
+            ...(rest.quantity_unit && rest.quantity_unit !== "stk" ? { quantity_unit: rest.quantity_unit } : noDuration ? { quantity_unit: "stk" } : { quantity_unit: undefined }),
             name_override: rest.name_override || undefined,
             description_override: rest.description_override ? baseDescription : undefined,
             // Optionale Stufen bleiben im Angebot (Betrag zählt nicht), in Rechnungen entfallen sie.
@@ -1799,6 +1806,7 @@ export function InquiryOfferForm({
           const inherited = !undatedOffer && !(openEnded && independentPricing) && index > 0 && !item.custom_period;
           /** Pauschalposition: fester Preis, keine Mietdauer-Multiplikation. */
           const isFlatRate = (eff.unit ?? "kalendertage") === "pauschal";
+          const noDuration = withoutBillingDuration(eff);
           return (
           <div
             key={index}
@@ -2068,7 +2076,8 @@ export function InquiryOfferForm({
                 <div className="flex gap-1">
                   <NumberInput
                     type="number"
-                    min={1}
+                    min={item.quantity_unit === "liter" ? 0.01 : 1}
+                    step={item.quantity_unit === "liter" ? 0.01 : 1}
                     className="min-w-0 flex-1"
                     value={item.quantity}
                     onChange={(e) => patchItem(index, { quantity: Number(e.target.value) || 0 })}
@@ -2077,7 +2086,31 @@ export function InquiryOfferForm({
                   <Select
                     value={item.quantity_unit ?? "stk"}
                     disabled={disabled}
-                    onValueChange={(v) => patchItem(index, { quantity_unit: v as QuantityUnit })}
+                    onValueChange={(v) => {
+                      const quantityUnit = v as QuantityUnit;
+                      if (quantityUnit !== "liter") {
+                        patchItem(index, { quantity_unit: quantityUnit });
+                        return;
+                      }
+                      const measured = item.measure?.unit === "liter" ? item.measure : undefined;
+                      patchItem(index, {
+                        quantity_unit: "liter",
+                        period_free: true,
+                        custom_period: true,
+                        unit: "stueck",
+                        unit_manual: true,
+                        price_manual: true,
+                        duration: 1,
+                        duration_override: undefined,
+                        rental_start: undefined,
+                        rental_end: undefined,
+                        rental_start_time: undefined,
+                        rental_end_time: undefined,
+                        delivery_at: undefined,
+                        collection_at: undefined,
+                        ...(measured ? { quantity: measured.quantity, unit_price: measured.unit_price, measure: undefined, description: withoutLiterQuantityText(item.description) } : {}),
+                      });
+                    }}
                   >
                     <SelectTrigger className="h-10 w-[4.5rem] shrink-0" aria-label="Mengeneinheit"><SelectValue /></SelectTrigger>
                     <SelectContent>
@@ -2089,9 +2122,9 @@ export function InquiryOfferForm({
               {!isSalesOffer && <div className="min-w-0">
                 <Label className="text-xs">{openEnded && independentPricing ? "Abrechnungseinheiten" : "Dauer"}</Label>
                 <div className="flex gap-1">
-                  {isFlatRate ? (
-                    <div className="flex h-10 flex-1 items-center rounded-md border border-input bg-muted/40 px-3 text-sm text-muted-foreground" data-testid="duration-flat">
-                      pauschal
+                  {isFlatRate || noDuration ? (
+                    <div className="flex h-10 flex-1 items-center rounded-md border border-input bg-muted/40 px-3 text-sm text-muted-foreground" data-testid={noDuration ? "duration-none" : "duration-flat"}>
+                      {noDuration ? "ohne Dauer" : "pauschal"}
                     </div>
                   ) : (
                     <NumberInput
@@ -2107,9 +2140,27 @@ export function InquiryOfferForm({
                     />
                   )}
                   <Select
-                    value={eff.unit ?? "kalendertage"}
+                    value={noDuration ? "__none" : eff.unit ?? "kalendertage"}
                     disabled={disabled || (!undatedOffer && inherited) || (openEnded && !independentPricing && !isFlatRate && eff.unit !== "stueck")}
-                    onValueChange={(v) =>
+                    onValueChange={(v) => {
+                      if (v === "__none") {
+                        patchItem(index, {
+                          unit: "stueck",
+                          unit_manual: true,
+                          price_manual: true,
+                          period_free: true,
+                          custom_period: true,
+                          duration: 1,
+                          duration_override: undefined,
+                          rental_start: undefined,
+                          rental_end: undefined,
+                          rental_start_time: undefined,
+                          rental_end_time: undefined,
+                          delivery_at: undefined,
+                          collection_at: undefined,
+                        });
+                        return;
+                      }
                       patchPriced(index, {
                         unit: v as OfferUnit,
                         unit_manual: true,
@@ -2117,18 +2168,19 @@ export function InquiryOfferForm({
                         duration_override: undefined,
                         // Pauschalpreis gilt für den gesamten Auftrag – Dauer fest 1.
                         ...(["pauschal", "stueck", "stunden"].includes(v) && !["woche", "event"].includes(item.pricing?.scheme ?? "") ? { period_free: true, custom_period: true, rental_start: undefined, rental_end: undefined, rental_start_time: undefined, rental_end_time: undefined, delivery_at: undefined, collection_at: undefined, ...(v !== "stunden" ? { duration: 1 } : {}) } : { period_free: false }),
-                      })
-                    }
+                      });
+                    }}
                   >
                     <SelectTrigger className="h-10 min-w-0 flex-1" aria-label="Einheit der Dauer"><SelectValue /></SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="__none">Ohne Dauer</SelectItem>
                       {OFFER_UNITS.map((u) => (
                         <SelectItem key={u.value} value={u.value}>{u.label}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
-                {pricingActive && !openEnded && !undatedOffer && !isFlatRate && eff.unit !== "stueck" && (
+                {pricingActive && !openEnded && !undatedOffer && !isFlatRate && !noDuration && eff.unit !== "stueck" && (
                   <div className="mt-2 flex items-start gap-2 text-xs">
                     <Checkbox aria-label="Dauer manuell festlegen" checked={item.duration_override !== undefined} disabled={disabled || inherited}
                       onCheckedChange={(checked) => patchPriced(index, { duration_override: checked === true ? (eff.duration ?? 1) : undefined })} />
@@ -2136,12 +2188,12 @@ export function InquiryOfferForm({
                   </div>
                 )}
                 <p className="mt-1 text-[11px] text-muted-foreground">
-                  {item.quantity || 0} {quantityUnitShort(item.quantity_unit)} ×{" "}
-                  {isFlatRate ? "pauschal" : `${eff.duration ?? 1} ${unitAbbreviation((eff.unit ?? "kalendertage") as OfferUnit)}`}
+                  {item.quantity || 0} {quantityUnitShort(item.quantity_unit)}
+                  {!noDuration && <> ×{" "}{isFlatRate ? "pauschal" : `${eff.duration ?? 1} ${unitAbbreviation((eff.unit ?? "kalendertage") as OfferUnit)}`}</>}
                 </p>
               </div>}
               <div>
-                <Label className="text-xs">{isFlatRate ? "Pauschalpreis netto" : openEnded && independentPricing ? `Preis netto je ${unitLabel(1, eff.unit ?? "kalendertage")}` : "Einzelpreis netto"}</Label>
+                <Label className="text-xs">{isFlatRate ? "Pauschalpreis netto" : noDuration && (item.quantity_unit ?? "stk") !== "stk" ? `Preis netto je ${quantityUnitShort(item.quantity_unit)}` : openEnded && independentPricing ? `Preis netto je ${unitLabel(1, eff.unit ?? "kalendertage")}` : "Einzelpreis netto"}</Label>
                 <NumberInput
                   type="number"
                   min={0}

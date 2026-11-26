@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { InquiryOfferForm } from "../InquiryOfferForm";
 
@@ -61,7 +61,11 @@ function open(props: Partial<React.ComponentProps<typeof InquiryOfferForm>> = {}
 function discounts() {
   return screen.getAllByRole("spinbutton").filter((input) => input.getAttribute("max") === "100") as HTMLInputElement[];
 }
-beforeEach(() => { fixtures.draft = null; fixtures.remote = null; fixtures.saveDraft.mockReset().mockResolvedValue(undefined); fixtures.localWrite.mockClear(); fixtures.toast.mockClear(); fixtures.specialPrice = 0; fixtures.invoke.mockReset(); fixtures.invoke.mockResolvedValue({ data: null, error: null }); fixtures.queries.mockClear(); });
+async function choose(combobox: HTMLElement, option: string) {
+  fireEvent.keyDown(combobox, { key: "ArrowDown" });
+  fireEvent.click(await screen.findByRole("option", { name: option }));
+}
+beforeEach(() => { window.HTMLElement.prototype.scrollIntoView = vi.fn(); fixtures.draft = null; fixtures.remote = null; fixtures.saveDraft.mockReset().mockResolvedValue(undefined); fixtures.localWrite.mockClear(); fixtures.toast.mockClear(); fixtures.specialPrice = 0; fixtures.invoke.mockReset(); fixtures.invoke.mockResolvedValue({ data: null, error: null }); fixtures.queries.mockClear(); });
 afterEach(cleanup);
 
 vi.mock("@/hooks/useSalesCatalog", () => ({ loadSalesCatalog: async () => [], loadSalesCosts: async () => [] }));
@@ -175,5 +179,54 @@ describe("sales-only quote flow", () => {
     fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
     await waitFor(() => expect(fixtures.invoke).toHaveBeenCalled());
     expect(fixtures.invoke.mock.calls[0][1].financing.enabled).toBe(false);
+  });
+  it("wählt eine manuell eingetragene Dauer vollständig ab", async () => {
+    open({ defaultItems: [{ ...line(), duration: 10, duration_override: 10, price_manual: true, rental_start: "2026-11-20", rental_end: "2026-11-30" }] });
+    await choose(screen.getByRole("combobox", { name: "Einheit der Dauer" }), "Ohne Dauer");
+    expect(screen.getByTestId("duration-none")).toHaveTextContent("ohne Dauer");
+    expect(screen.queryByLabelText("Abgerechnete Dauer")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Mietbeginn")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
+    await waitFor(() => expect(fixtures.invoke).toHaveBeenCalled());
+    expect(fixtures.invoke.mock.calls[0][1].items[0]).toEqual(expect.objectContaining({ duration: 1, duration_override: undefined, period_free: true, rental_start: undefined, rental_end: undefined }));
+  });
+  it("wählt Liter und verwendet die eingegebene Menge ohne Dauer-Multiplikation", async () => {
+    open({ defaultItems: [{ ...line(), unit: "pauschal" as const, period_free: true, custom_period: true, price_manual: true }] });
+    const position = screen.getByTestId("offer-position");
+    await choose(within(position).getByRole("combobox", { name: "Mengeneinheit" }), "Liter");
+    const quantity = within(position).getAllByRole("spinbutton")[0];
+    fireEvent.change(quantity, { target: { value: "24" } });
+    expect(screen.getByTestId("duration-none")).toHaveTextContent("ohne Dauer");
+    expect(within(position).getByText("24 Liter", { exact: false })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
+    await waitFor(() => expect(fixtures.invoke).toHaveBeenCalled());
+    expect(fixtures.invoke.mock.calls[0][1].items[0]).toEqual(expect.objectContaining({ quantity: 24, articles: 24, quantity_unit: "liter", duration: 1, period_free: true }));
+  });
+  it("serialisiert einen zugefügten Verkaufsartikel ohne manuell abgewählte Dauer und Mietzeitraum", async () => {
+    open({ defaultItems: [{
+      product_name: "Batterien für Warnlampen",
+      quantity: 2,
+      duration: 10,
+      unit: "stueck" as const,
+      unit_price: 7.5,
+      discount_percent: 0,
+      period_free: true,
+      custom_period: true,
+      rental_start: "2026-11-20",
+      rental_end: "2026-11-30",
+    }] });
+    fireEvent.click(screen.getByRole("button", { name: /Vorschau/ }));
+    await waitFor(() => expect(fixtures.invoke).toHaveBeenCalled());
+    expect(fixtures.invoke.mock.calls[0][1].items[0]).toEqual(expect.objectContaining({
+      product_name: "Batterien für Warnlampen",
+      quantity: 2,
+      articles: 2,
+      duration: 1,
+      duration_override: undefined,
+      unit_code: "stueck",
+      period_free: true,
+      rental_start: undefined,
+      rental_end: undefined,
+    }));
   });
 });

@@ -134,3 +134,20 @@ export function quantityFromText(text: string | null | undefined): number {
   const n = Number(m[1].replace(/\./g, "").replace(",", "."));
   return Number.isFinite(n) ? n : 0;
 }
+
+export function withoutLiterQuantityText(description: string | null | undefined): string {
+  return String(description ?? "")
+    .split(" · ")
+    .filter((part) => !/^\s*[\d.,]+\s+Liter\s+à\s+/i.test(part))
+    .join(" · ")
+    .trim();
+}
+
+/** Kraftstoff aus dem Protokoll als echte Literposition statt Pauschale mit Dauer. */
+export function literProtocolCharge(label: string, description: string | null | undefined, grossTotal: number) {
+  if (chargeUnitKind(label) !== "liter") return null;
+  const netTotal = round2(grossTotal / 1.19);
+  const measure = chargeMeasure(label, quantityFromText(description), netTotal);
+  if (!measure || measure.unit !== "liter") return null;
+  return { quantity: measure.quantity, unit_price: measure.unit_price, description: withoutLiterQuantityText(description) };
+}

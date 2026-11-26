@@ -239,3 +239,4 @@
 - [x] CMS-Maske Textbausteine + Menü
 - [x] AGENTS.md-Regel, Prüfpunkte testen
 - [x] Preis-Woche: CMS, Netto-Wochenstaffeln, 168-Stunden-Berechnung, Website/Anfrage, pauschale Angebote und vorgegebene Rechentests; CMS-Speichern/Wiederöffnen mit Mitarbeiterzugang geprüft und Testartikel zurückgesetzt. Finaler Versand einer Wochenrechnung nicht ausgeführt.
+- [x] Angebotspositionen: Liter als echte Menge, Dauer je Position vollständig abwählbar, Verkaufs-/Kraftstoffpositionen ohne Mietzeitraum; Protokollkraftstoff übernimmt tatsächliche Liter und centgenaue Summe. 78 Fachtests plus 7 PDF-Tests bestanden, Typen/Build OK; drei Belegfunktionen eingespielt, keine echten Belege verändert. Mitarbeiter-Live-/Mobil-/Desktop-Sichtprüfung blockiert: angemeldeter Luca-Zugang ist Kundenkonto; isolierte PDFs visuell geprüft.

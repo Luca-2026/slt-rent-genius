@@ -567,7 +567,7 @@ export async function generateOfferPdf(data: {
 
   // ── Positionen ──
   let discountTotal = 0;
-  const QTY_ABBR: Record<string, string> = { stk: "Stk", m2: "m\u00B2", lfm: "lfm" };
+  const QTY_ABBR: Record<string, string> = { stk: "Stk", m2: "m\u00B2", lfm: "lfm", liter: "Liter" };
   const usedUnits = new Set<string>();
   const hidePrices = data.hideItemPrices === true;
   const groupNames = new Map((iq?.groups ?? data.priceGroups ?? []).map((g) => [g.id, g.name]));
@@ -605,6 +605,7 @@ export async function generateOfferPdf(data: {
     // Paket 4: Menge (Stück + Mengeneinheit) und Dauer (Anzahl + Einheit) getrennt
     let iqQty: string | null = null;
     let iqDur: string | null = null;
+    const noDuration = item.period_free === true && (item.unit_code === "stueck" || item.quantity_unit === "liter");
     if (iq) {
       const qu = QTY_ABBR[item.quantity_unit || "stk"] || "Stk";
       const serviceUnits: Record<string, string> = { "Abrechnung: Personalstunden": "Pers.-Std.", "Abrechnung: Stunden": "Std.", "Abrechnung: Tagespauschale": "Tagespausch.", "Abrechnung: Pauschale": "Pausch." };
@@ -612,6 +613,10 @@ export async function generateOfferPdf(data: {
       if (serviceUnit) {
         iqQty = `${String(item.articles || item.quantity || 1).replace(".", ",")} ${serviceUnit}`;
         iqDur = "\u2013";
+      } else if (noDuration) {
+        iqQty = `${String(item.articles || item.quantity || 1).replace(".", ",")} ${qu}`;
+        iqDur = "\u2013";
+        usedUnits.add(qu);
       } else if (item.price_basis === "event" || (item.price_basis === "weekend" && item.rental_period_label === "Wochenende")) {
         iqQty = `${item.articles || item.quantity || 1} ${qu}`;
         iqDur = "";
@@ -661,7 +666,7 @@ export async function generateOfferPdf(data: {
     if (Number(item.vat_rate) === 0) subLines.push(...wt("Nicht steuerbarer Schadensersatz (0 % USt)", font, 8, nameColW));
     // Zeitraum steht bereits in der Beschreibung → nicht doppelt als "Mietzeitraum" ausgeben
     const descHasPeriod = typeof item.description === "string" && /\d{1,2}\.\d{1,2}\.\d{4}/.test(item.description);
-    if (!isSalesOffer && item.rental_start && !descHasPeriod && !measure) {
+    if (!isSalesOffer && !item.period_free && item.rental_start && !descHasPeriod && !measure) {
       subLines.push(...wt(`Mietzeitraum: ${fd(item.rental_start)}${item.rental_end ? " - " + fd(item.rental_end) : ""}`, font, 8, nameColW));
     }
     // Rabattzeile: Listenpreis, Rabattsatz und Ersparnis transparent ausweisen
@@ -702,8 +707,8 @@ export async function generateOfferPdf(data: {
       const discTop = subTop - subLines.length * 10 - (subLines.length ? 3 : 0);
       discountLines.forEach((ln, li) => dt(pg, ln, textColX, discTop - li * 10, bold, 8, ORANGE));
       dtr(pg, qtyText, qtyColRight, top - 10, font, 9.5);
-      dt(pg, isSalesOffer ? (item.quantity_unit === "m2" ? "m²" : item.quantity_unit === "lfm" ? "lfm" : "Stück") : iqDur ?? deriveUnit(item), unitColX, top - 10, font, 9.5, MUTED);
-      dtr(pg, measure ? fmU(Number(measure.unit_price)) : fm(item.unit_price), unitPriceRight, top - 10, font, 9.5);
+      dt(pg, isSalesOffer ? (item.quantity_unit === "m2" ? "m²" : item.quantity_unit === "lfm" ? "lfm" : item.quantity_unit === "liter" ? "Liter" : "Stück") : iqDur ?? deriveUnit(item), unitColX, top - 10, font, 9.5, MUTED);
+      dtr(pg, measure ? fmU(Number(measure.unit_price)) : noDuration && item.quantity_unit === "liter" ? fmU(item.unit_price) : fm(item.unit_price), unitPriceRight, top - 10, font, 9.5);
       if (pct > 0) dtr(pg, `-${fm2(pct)} %`, unitPriceRight, top - 22, bold, 8, ORANGE);
       dtr(pg, fm(item.total_price), totalRight, top - 10, bold, 9.5);
     });
@@ -772,7 +777,7 @@ export async function generateOfferPdf(data: {
   pg.drawRectangle({ x: ML, y, width: CW, height: 0.5, color: LINE });
   if (iq && usedUnits.size) {
     const LEG: [string, string][] = [
-      ["Stk", "St\u00FCck"], ["m\u00B2", "Quadratmeter"], ["lfm", "laufender Meter"],
+      ["Stk", "St\u00FCck"], ["m\u00B2", "Quadratmeter"], ["lfm", "laufender Meter"], ["Liter", "Liter"],
       ["arbeitstage", ""], ["miettage", ""], ["kalendertage", ""], ["wochen", ""], ["monate", ""], ["jahre", ""], ["pauschal", ""],
     ];
     const parts = LEG.filter(([k]) => usedUnits.has(k)).map(([k, v]) => {

@@ -114,7 +114,7 @@ Deno.serve(async (req: Request) => {
     if (body.undated_offer === true && (inquiryType !== "rental" || body.open_ended === true)) return json({ error: "Unverbindliches Preisangebot nur für Miete ohne festen Zeitraum" }, 400);
     let items: InquiryOfferItem[];
     try {
-      const input = inquiryType === "sales" && Array.isArray(body.items) ? body.items.map((item: any) => { const sale = salesOfferLine(item); return { ...sale, articles: sale.quantity, unit_code: "stueck", unit: sale.quantity_unit === "m2" ? "m²" : sale.quantity_unit === "lfm" ? "lfm" : "Stück" }; }) : body.items;
+      const input = inquiryType === "sales" && Array.isArray(body.items) ? body.items.map((item: any) => { const sale = salesOfferLine(item); return { ...sale, articles: sale.quantity, unit_code: "stueck", unit: sale.quantity_unit === "m2" ? "m²" : sale.quantity_unit === "lfm" ? "lfm" : sale.quantity_unit === "liter" ? "Liter" : "Stück" }; }) : body.items;
       items = normalizeInquiryOfferItems(input, undatedOffer);
       if (body.open_ended === true && body.open_ended_independent_pricing === true && hasMissingOpenEndedPrice(items)) throw new Error("Bitte für jede Mietposition den Preis der gewählten Einheit festlegen.");
       if (inquiryType === "rental") {
@@ -413,6 +413,7 @@ Deno.serve(async (req: Request) => {
       group_id: i.group_id,
       articles: i.articles,
       quantity_unit: i.quantity_unit,
+      period_free: i.period_free,
       duration: i.duration,
       unit_code: i.unit_code,
       price_basis: i.price_basis,

@@ -94,14 +94,20 @@ export function isReturnChargeLine(line: Pick<OfferLine, "protocol_charge_source
 
 // ---------------------------------------------------------------- Paket 3b: Felder und Positionen
 
-export type QuantityUnit = "stk" | "m2" | "lfm";
+export type QuantityUnit = "stk" | "m2" | "lfm" | "liter";
 export const QUANTITY_UNITS: { value: QuantityUnit; label: string; short: string }[] = [
   { value: "stk", label: "Stück", short: "Stk" },
   { value: "m2", label: "Quadratmeter", short: "m²" },
   { value: "lfm", label: "Laufende Meter", short: "lfm" },
+  { value: "liter", label: "Liter", short: "Liter" },
 ];
 export function quantityUnitShort(u?: QuantityUnit | null): string {
   return QUANTITY_UNITS.find((q) => q.value === u)?.short ?? "Stk";
+}
+
+/** Einmalige Mengenposition: keine Mietdauer und kein Mietzeitraum. */
+export function withoutBillingDuration(line: Pick<OfferLine, "period_free" | "unit" | "quantity_unit">): boolean {
+  return line.period_free === true && (line.unit === "stueck" || line.quantity_unit === "liter");
 }
 
 export type OrderType = "pickup" | "delivery";
