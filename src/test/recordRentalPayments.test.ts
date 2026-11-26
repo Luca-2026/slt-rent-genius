@@ -8,7 +8,7 @@ const fixture = (selected: "bank" | "regular" = "regular", documents: { issued?:
   return { from: (table: string) => {
     if (table === "rental_inquiries") return query;
     const result = { data: (table === "inquiry_invoices" ? documents.issued : documents.settlement) ? [{ id: "issued" }] : [], error: documents.readError ? new Error("Unavailable") : null };
-    const docs: any = { select: () => docs, eq: () => docs, not: () => docs, limit: async () => result };
+    const docs: any = { select: () => docs, eq: () => docs, not: () => docs, limit: async () => result, or: async () => ({ data: [], error: null }) };
     return docs;
   }, rpc: vi.fn().mockResolvedValue({ data: { success: true, gross: 115.43 }, error: null }) };
 };
