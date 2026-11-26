@@ -33,7 +33,9 @@ export async function endUnpaidRentalCheckouts(service: any, inquiryId: string):
     .or("stripe_session_id.not.is.null,checkout_claim.not.is.null");
   if (error) throw new Error("Online-Zahlungsstatus konnte nicht geprüft werden.");
   if (!links?.length) return;
-  const { stripeClient } = await import("./stripe-pay.ts");
+  // Variable specifier keeps the Deno-only Stripe module out of the browser typecheck.
+  const stripeModule = "./stripe-pay.ts";
+  const { stripeClient } = await import(stripeModule);
   const stripe = stripeClient();
   for (const link of links) {
     if (link.stripe_session_id) {
