@@ -8,7 +8,7 @@ function serviceFixture(options: { issued?: boolean; settlement?: boolean; readE
   const rpc = vi.fn().mockResolvedValue({ data: { gross: 115.43 }, error: null });
   const from = (table: string) => {
     const response = table === "rental_inquiries" ? { data: inquiry, error: null } : { data: (table === "inquiry_invoices" ? options.issued : options.settlement) ? [{ id: "issued" }] : [], error: options.readError ? new Error("Unavailable") : null };
-    const query: any = { select: () => query, eq: () => query, not: () => query, limit: () => Promise.resolve(response), maybeSingle: () => Promise.resolve(response) };
+    const query: any = { select: () => query, eq: () => query, or: async () => ({ data: [], error: null }), not: () => query, limit: () => Promise.resolve(response), maybeSingle: () => Promise.resolve(response) };
     return query;
   };
   return { from, rpc };

@@ -25,3 +25,21 @@ export async function reconcileRentalCheckout(service: any, stripe: any, link: a
   if (error || data !== true) throw new Error(error?.message ?? "Zahlungsversuch wurde inzwischen geändert.");
   link.stripe_session_id = null; link.checkout_claim = null; link.checkout_request = null; link.checkout_claimed_at = null;
 }
+
+/** Before staff change the payable price, end unpaid online checkouts; a paid one must be booked first. */
+export async function endUnpaidRentalCheckouts(service: any, inquiryId: string): Promise<void> {
+  const { data: links, error } = await service.from("offer_payment_links").select("*")
+    .eq("inquiry_table", "rental_inquiries").eq("inquiry_id", inquiryId).eq("status", "active")
+    .or("stripe_session_id.not.is.null,checkout_claim.not.is.null");
+  if (error) throw new Error("Online-Zahlungsstatus konnte nicht geprüft werden.");
+  if (!links?.length) return;
+  const { stripeClient } = await import("./stripe-pay.ts");
+  const stripe = stripeClient();
+  for (const link of links) {
+    if (link.stripe_session_id) {
+      const session = await stripe.checkout.sessions.retrieve(link.stripe_session_id);
+      if (session.status === "complete" || session.payment_status === "paid") throw new Error("Für diesen Auftrag ist eine Online-Zahlung eingegangen. Bitte zuerst deren Verbuchung abwarten.");
+    }
+    await reconcileRentalCheckout(service, stripe, link);
+  }
+}

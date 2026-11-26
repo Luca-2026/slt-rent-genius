@@ -1,4 +1,5 @@
 import { hasBankDiscountPolicy, type RentalPaymentMethod } from "./bank-transfer-discount.ts";
+import { endUnpaidRentalCheckouts } from "./rental-checkout-recovery.ts";
 import { rentalPaymentPrices, validateRentalPaymentDecision } from "./rental-payment-decision.ts";
 
 /** Staff use the same protected decision as customers, never a browser-written price. */
@@ -11,7 +12,7 @@ export async function selectStaffRentalPayment(service: any, inquiryId: string, 
   if (invoiceError || settlementError) throw new Error("Belegstatus konnte nicht geprüft werden.");
   validateRentalPaymentDecision({ policy, method, payments: inquiry.payments, hasIssuedInvoice: Boolean(invoices?.length), hasSettlement: Boolean(settlements?.length) });
   if (method === policy.selected) return { success: true, gross: inquiry.offer_total_gross };
-  // RPC intentionally blocks active/unknown provider attempts; staff never blindly retires one.
+  await endUnpaidRentalCheckouts(service, inquiryId);
   const changed = { ...inquiry.offer_payload, bank_transfer_discount: { ...policy, selected: method } };
   const priced = rentalPaymentPrices(changed);
   const payload = { ...changed, items: priced.items, totals: priced.totals };

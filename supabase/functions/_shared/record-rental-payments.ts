@@ -1,6 +1,6 @@
 import { allPaymentsByBank, hasBankDiscountPolicy } from "./bank-transfer-discount.ts";
 import { rentalPaymentPrices } from "./rental-payment-decision.ts";
-import { reconcileRentalCheckout } from "./rental-checkout-recovery.ts";
+import { endUnpaidRentalCheckouts } from "./rental-checkout-recovery.ts";
 
 /** One transaction records the receipt and payment-price decision, never a fake discount payment. */
 export async function recordRentalPayments(service: any, id: string, actor: string, expectedPayments: unknown, payments: unknown[]) {
@@ -19,22 +19,7 @@ export async function recordRentalPayments(service: any, id: string, actor: stri
       const changed = { ...inquiry.offer_payload, bank_transfer_discount: { ...policy, selected: "bank" } };
       const priced = rentalPaymentPrices(changed);
       bankPayload = { ...changed, items: priced.items, totals: priced.totals };
-      // An unpaid open online checkout would keep the higher price payable; end it safely first.
-      const { data: links, error: linkError } = await service.from("offer_payment_links").select("*")
-        .eq("inquiry_table", "rental_inquiries").eq("inquiry_id", id).eq("status", "active")
-        .or("stripe_session_id.not.is.null,checkout_claim.not.is.null");
-      if (linkError) throw new Error("Online-Zahlungsstatus konnte nicht geprüft werden.");
-      if (links?.length) {
-        const { stripeClient } = await import("./stripe-pay.ts");
-        const stripe = stripeClient();
-        for (const link of links) {
-          if (link.stripe_session_id) {
-            const session = await stripe.checkout.sessions.retrieve(link.stripe_session_id);
-            if (session.status === "complete" || session.payment_status === "paid") throw new Error("Für diesen Auftrag ist eine Online-Zahlung eingegangen. Bitte zuerst deren Verbuchung abwarten.");
-          }
-          await reconcileRentalCheckout(service, stripe, link);
-        }
-      }
+      await endUnpaidRentalCheckouts(service, id);
     }
   }
   const { data, error: saveError } = await service.rpc("record_rental_staff_payments", {
