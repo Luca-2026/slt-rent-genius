@@ -48,5 +48,4 @@
 - Inquiry rules: see inquiries/AGENTS.md; logistics determine insurance periods through shared offerInsurancePeriod, never rental billing or availability; duration_override changes billed rental duration only.
 - Accepted rental amendments preserve original offer evidence and append immutable revisions while atomically updating operational periods, reservations and allocations; new ABs use versioned PDF paths, so historical documents and issued invoices cannot be overwritten.
 - Kassenprotokoll: Barzahlungen („Bar…“) per Trigger append-only in cash_journal (Entfernen = Storno, Rechnungen nur spätere Eingänge gegen Doppelzählung); deposit-refund-digest versendet 18 Uhr Berlin Tagesabschluss mit je einer DATEV-CSV pro Kasse (cash_register über cash_register_for_location, Mülheim → Krefeld) aus _shared/datev-cash-csv.ts, da DATEV je Kasse importiert.
-- Excavation access: CMS-spec reserve tiers in excavationCalculator (<0/<5/<10 cm), unknown widths = check.
 - Public SEO localization/hub/legacy-slug rules: see src/data/AGENTS.md.
