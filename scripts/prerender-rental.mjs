@@ -460,7 +460,8 @@ function buildHeadBlock(route, globalSchemas) {
     `<meta property="og:description" content="${escapeAttr(route.description)}">`,
     `<meta property="og:type" content="${ogType}">`,
     `<meta property="og:image" content="${escapeAttr(ogImage)}">`,
-    `<meta property="og:image:alt" content="${escapeAttr(route.h1 || route.title)}">`,
+    `<meta property="og:image:alt" content="${escapeAttr(route.ogImageAlt || route.h1 || route.title)}">`,
+    ...(route.ogImageWidth && route.ogImageHeight ? [`<meta property="og:image:width" content="${route.ogImageWidth}">`, `<meta property="og:image:height" content="${route.ogImageHeight}">`, `<meta property="og:image:type" content="image/png">`] : []),
     `<meta property="og:url" content="${escapeAttr(canonical)}">`,
     `<meta property="og:site_name" content="SLT Rental">`,
     `<meta property="og:locale" content="de_DE">`,
@@ -468,6 +469,7 @@ function buildHeadBlock(route, globalSchemas) {
     `<meta name="twitter:title" content="${escapeAttr(titleFull)}">`,
     `<meta name="twitter:description" content="${escapeAttr(route.description)}">`,
     `<meta name="twitter:image" content="${escapeAttr(ogImage)}">`,
+    ...(route.ogImageAlt ? [`<meta name="twitter:image:alt" content="${escapeAttr(route.ogImageAlt)}">`] : []),
   ];
 
   for (const s of globalSchemas) lines.push(jsonLdScript(s));

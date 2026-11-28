@@ -246,4 +246,4 @@
 - [x] Warenkorb nur geeignete Geräte; sonst „Passende Maschine anfragen"
 - [x] Share-URL robust validieren, Expertenwerte inkl. 0 % Auflockerung
 - [x] PDF-Projektbericht A4 statt window.print()
-- [ ] OG-Bild Aushubrechner: wartet auf Upload des freigegebenen Motivs nach public/images/og/aushubrechner-1200x630.png, danach TOOL_OG_IMAGES in src/data/toolsSeo.ts eintragen
+- [x] OG-Bild Aushubrechner eingebunden (public/images/og/aushubrechner.png, WebP unter public/images/tools/)

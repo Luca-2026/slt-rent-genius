@@ -9,6 +9,8 @@ interface SEOProps {
   description: string;
   canonical?: string;
   ogImage?: string;
+  /** Nur für Seiten mit eigenem Motiv; ohne Angabe bleibt der Kopf anderer Seiten unverändert. */
+  ogImageAlt?: string;
   ogType?: string;
   noIndex?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
@@ -23,6 +25,7 @@ export function SEO({
   description,
   canonical,
   ogImage = DEFAULT_OG_IMAGE,
+  ogImageAlt,
   ogType = "website",
   noIndex = false,
   jsonLd,
@@ -61,6 +64,7 @@ export function SEO({
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:type" content="image/png" />
+      {ogImageAlt && <meta property="og:image:alt" content={ogImageAlt} />}
       {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
       <meta property="og:site_name" content="SLT Rental" />
       <meta property="og:locale" content="de_DE" />
@@ -70,6 +74,7 @@ export function SEO({
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
+      {ogImageAlt && <meta name="twitter:image:alt" content={ogImageAlt} />}
 
       {/* JSON-LD */}
       {jsonLd && (

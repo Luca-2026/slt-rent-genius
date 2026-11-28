@@ -50,7 +50,10 @@ export const TOOL_SEO = {
 } as const;
 export type ToolSlug = keyof typeof TOOL_SEO;
 
-/** Pfad des freigegebenen Aushubrechner-Vorschaubilds (1200×630) – erst eintragen, wenn die Datei im Projekt liegt. */
-export const AUSHUB_OG_IMAGE_PATH = "/images/og/aushubrechner-1200x630.png";
+/** Freigegebenes Aushubrechner-Motiv: PNG 1200×630 für Social/OG, WebP für die Seiten selbst. */
+export const AUSHUB_OG_IMAGE_PATH = "/images/og/aushubrechner.png";
+export const AUSHUB_PAGE_IMAGE = { src: "/images/tools/aushubrechner.webp", width: 1200, height: 630, alt: "SLT Rental Aushubrechner: Minibagger an einer Baugrube mit 12 m³ Aushub – Erdaushub und passende Mietmaschinen berechnen" };
 /** Eigene Vorschaubilder je Rechner (absolut); fehlt ein Eintrag, gilt das Standardbild. */
-export const TOOL_OG_IMAGES: Partial<Record<keyof typeof TOOL_SEO, { url: string; alt: string }>> = {};
+export const TOOL_OG_IMAGES: Partial<Record<keyof typeof TOOL_SEO, { url: string; alt: string; width: number; height: number }>> = {
+  aushubrechner: { url: `https://www.slt-rental.de${AUSHUB_OG_IMAGE_PATH}`, alt: AUSHUB_PAGE_IMAGE.alt, width: 1200, height: 630 },
+};

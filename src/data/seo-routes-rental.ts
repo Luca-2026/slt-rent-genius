@@ -140,6 +140,8 @@ export interface SeoRoute {
   intro: string[];
   canonical?: string;
   ogImage?: string;
+  /** Optional: ALT-Text und Maße des eigenen Vorschaubilds (nur wenn gesetzt im Kopf ausgegeben). */
+  ogImageAlt?: string; ogImageWidth?: number; ogImageHeight?: number;
   /** Bilder für die Image-Sitemap (absolute URL + Bildtitel). */
   sitemapImages?: { loc: string; title: string }[];
   ogType?: "website" | "article" | "product";
@@ -467,7 +469,7 @@ const STATIC_ROUTES: SeoRoute[] = [
     h1: TOOL_SEO[s].h1,
     intro: [TOOL_SEO[s].intro, ...TOOL_SEO[s].sections.map((x) => `${x.h2}: ${x.text}`)],
     breadcrumbs: [{ name: "Rechner & Tools", path: "/tools" }, { name: TOOL_SEO[s].h1, path: `/tools/${s}` }],
-    ...(TOOL_OG_IMAGES[s] ? { ogImage: TOOL_OG_IMAGES[s]!.url } : {}),
+    ...(TOOL_OG_IMAGES[s] ? { ogImage: TOOL_OG_IMAGES[s]!.url, ogImageAlt: TOOL_OG_IMAGES[s]!.alt, ogImageWidth: TOOL_OG_IMAGES[s]!.width, ogImageHeight: TOOL_OG_IMAGES[s]!.height } : {}),
     inlineSchemas: [{ "@context": "https://schema.org", "@type": "WebApplication", name: TOOL_SEO[s].h1, url: `https://www.slt-rental.de/tools/${s}/`, applicationCategory: "UtilitiesApplication", operatingSystem: "Web", inLanguage: "de-DE", isAccessibleForFree: true, provider: { "@id": "https://www.slt-rental.de/#organization" } }],
     changefreq: "monthly",
     priority: 0.6,

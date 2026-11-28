@@ -7,7 +7,7 @@ import { PowerCalculator } from "@/components/rental/PowerCalculator";
 import { ExcavationCalculator } from "@/components/rental/ExcavationCalculator";
 import { locations } from "@/data/rentalData";
 import { LOCATION_LABELS } from "@/lib/inventoryAvailability";
-import { TOOLS_INDEX_SEO, TOOL_SEO, TOOL_OG_IMAGES } from "@/data/toolsSeo";
+import { TOOLS_INDEX_SEO, TOOL_SEO, TOOL_OG_IMAGES, AUSHUB_PAGE_IMAGE } from "@/data/toolsSeo";
 
 const TOOLS = {
   "bautrockner-rechner": { title: "Bautrockner-Rechner", icon: Calculator, text: "Gerätebedarf, Trocknungsdauer und Mietpreis für die Raumtrocknung als Richtwert.", seo: "Bautrockner-Rechner – Geräte & Mietdauer berechnen | SLT Rental", desc: "Berechne kostenlos, wie viele Bautrockner und Lüfter du brauchst und wie lange die Trocknung ungefähr dauert – mit Mietpreis-Richtwert." },
@@ -36,6 +36,7 @@ export function ToolsIndex() {
         <div className="grid gap-4 sm:grid-cols-2">
           {(Object.keys(TOOLS) as Slug[]).map((s) => { const t = TOOLS[s]; const Icon = t.icon; return (
             <Link key={s} to={`/tools/${s}`} className="group rounded-xl border border-border bg-card p-5 hover:border-primary">
+              {s === "aushubrechner" && <img src={AUSHUB_PAGE_IMAGE.src} width={AUSHUB_PAGE_IMAGE.width} height={AUSHUB_PAGE_IMAGE.height} alt={AUSHUB_PAGE_IMAGE.alt} loading="lazy" decoding="async" className="mb-3 w-full h-auto rounded-lg" />}
               <Icon className="h-6 w-6 text-primary mb-2" />
               <h2 className="text-lg font-semibold text-headline">{t.title}</h2>
               <p className="text-sm text-muted-foreground mt-1">{t.text}</p>
@@ -57,7 +58,7 @@ export function ToolDetail() {
   const loc = picked ?? locations[0].id;
   return (
     <Layout>
-      <SEO title={seo.title} description={seo.description} canonical={`/tools/${slug}`} ogImage={TOOL_OG_IMAGES[slug as Slug]?.url} jsonLd={[
+      <SEO title={seo.title} description={seo.description} canonical={`/tools/${slug}`} ogImage={TOOL_OG_IMAGES[slug as Slug]?.url} ogImageAlt={TOOL_OG_IMAGES[slug as Slug]?.alt} jsonLd={[
         { "@context": "https://schema.org", "@type": "WebApplication", name: seo.h1, url: `https://www.slt-rental.de/tools/${slug}/`, applicationCategory: "UtilitiesApplication", operatingSystem: "Web", inLanguage: "de-DE", isAccessibleForFree: true, provider: { "@id": "https://www.slt-rental.de/#organization" } },
         { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
           { "@type": "ListItem", position: 1, name: "Rechner & Tools", item: "https://www.slt-rental.de/tools/" },
@@ -68,6 +69,7 @@ export function ToolDetail() {
         <Link to="/tools" className="text-sm text-primary hover:underline">← Alle Rechner & Tools</Link>
         <h1 className="text-2xl md:text-3xl font-bold text-headline mt-2 mb-2">{seo.h1}</h1>
         <p className="text-muted-foreground mb-4">{seo.intro}</p>
+        {slug === "aushubrechner" && <img src={AUSHUB_PAGE_IMAGE.src} width={AUSHUB_PAGE_IMAGE.width} height={AUSHUB_PAGE_IMAGE.height} alt={AUSHUB_PAGE_IMAGE.alt} decoding="async" className="mb-5 w-full max-w-2xl h-auto rounded-xl border border-border" />}
         <p className="text-sm font-medium mb-2">Standort für Geräte und Preise</p>
         <LocationPicker value={slug === "aushubrechner" ? picked ?? "" : loc} onChange={(v) => setParams({ standort: v }, { replace: true })} />
         <div className="mt-5">
