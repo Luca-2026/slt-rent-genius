@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-// @ts-expect-error – Build-Skript ohne Typdeklaration
 import { redirectHtml } from "../../scripts/emit-legacy-redirect-pages.mjs";
 import { RENAMED_PRODUCT_SLUGS } from "@/data/categoryModel";
 
