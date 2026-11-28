@@ -1,9 +1,10 @@
 import { Link, useParams, useSearchParams, Navigate } from "react-router-dom";
-import { Calculator, Zap, ArrowRight } from "lucide-react";
+import { Calculator, Zap, ArrowRight, Shovel } from "lucide-react";
 import { Layout } from "@/components/layout";
 import { SEO } from "@/components/SEO";
 import { DryingCalculator } from "@/components/rental/DryingCalculator";
 import { PowerCalculator } from "@/components/rental/PowerCalculator";
+import { ExcavationCalculator } from "@/components/rental/ExcavationCalculator";
 import { locations } from "@/data/rentalData";
 import { LOCATION_LABELS } from "@/lib/inventoryAvailability";
 import { TOOLS_INDEX_SEO, TOOL_SEO } from "@/data/toolsSeo";
@@ -11,6 +12,7 @@ import { TOOLS_INDEX_SEO, TOOL_SEO } from "@/data/toolsSeo";
 const TOOLS = {
   "bautrockner-rechner": { title: "Bautrockner-Rechner", icon: Calculator, text: "Gerätebedarf, Trocknungsdauer und Mietpreis für die Raumtrocknung als Richtwert.", seo: "Bautrockner-Rechner – Geräte & Mietdauer berechnen | SLT Rental", desc: "Berechne kostenlos, wie viele Bautrockner und Lüfter du brauchst und wie lange die Trocknung ungefähr dauert – mit Mietpreis-Richtwert." },
   "baustromrechner": { title: "Baustromrechner", icon: Zap, text: "Leistungsbedarf, Baustromverteiler, CEE-Kabel und Aggregat für deine Baustelle als Richtwert.", seo: "Baustromrechner – Verteiler, Kabel & Aggregat | SLT Rental", desc: "Berechne den Strombedarf deiner Baustelle und finde passende Baustromverteiler, CEE-Kabel und Stromaggregate zur Miete." },
+  "aushubrechner": { title: "Aushubrechner & Baggerfinder", icon: Shovel, text: "Berechne Erdaushub, Erdgewicht, Transportbedarf und finde die passenden Bagger und Dumper für dein Projekt.", seo: "", desc: "" },
 } as const;
 type Slug = keyof typeof TOOLS;
 
@@ -51,7 +53,8 @@ export function ToolDetail() {
   if (!slug || !(slug in TOOLS)) return <Navigate to="/tools" replace />;
   const tool = TOOLS[slug as Slug];
   const seo = TOOL_SEO[slug as Slug];
-  const loc = locations.some((l) => l.id === params.get("standort")) ? params.get("standort")! : locations[0].id;
+  const picked = locations.some((l) => l.id === params.get("standort")) ? params.get("standort")! : undefined;
+  const loc = picked ?? locations[0].id;
   return (
     <Layout>
       <SEO title={seo.title} description={seo.description} canonical={`/tools/${slug}`} jsonLd={[
@@ -61,14 +64,14 @@ export function ToolDetail() {
           { "@type": "ListItem", position: 2, name: tool.title, item: `https://www.slt-rental.de/tools/${slug}/` },
         ] },
       ]} />
-      <section className="section-container py-8 md:py-12 max-w-3xl">
+      <section className={`section-container py-8 md:py-12 ${slug === "aushubrechner" ? "max-w-5xl" : "max-w-3xl"}`}>
         <Link to="/tools" className="text-sm text-primary hover:underline">← Alle Rechner & Tools</Link>
         <h1 className="text-2xl md:text-3xl font-bold text-headline mt-2 mb-2">{seo.h1}</h1>
         <p className="text-muted-foreground mb-4">{seo.intro}</p>
         <p className="text-sm font-medium mb-2">Standort für Geräte und Preise</p>
-        <LocationPicker value={loc} onChange={(v) => setParams({ standort: v }, { replace: true })} />
+        <LocationPicker value={slug === "aushubrechner" ? picked ?? "" : loc} onChange={(v) => setParams({ standort: v }, { replace: true })} />
         <div className="mt-5">
-          {slug === "bautrockner-rechner" ? <DryingCalculator key={loc} locationId={loc} showToolsLink={false} /> : <PowerCalculator key={loc} locationId={loc} showToolsLink={false} />}
+          {slug === "aushubrechner" ? <ExcavationCalculator key={picked} locationId={picked} showToolsLink={false} /> : slug === "bautrockner-rechner" ? <DryingCalculator key={loc} locationId={loc} showToolsLink={false} /> : <PowerCalculator key={loc} locationId={loc} showToolsLink={false} />}
         </div>
         <div className="mt-10 space-y-6">
           {seo.sections.map((x) => (
@@ -77,6 +80,7 @@ export function ToolDetail() {
               <p className="text-muted-foreground">{x.text}</p>
             </div>
           ))}
+          {slug === "aushubrechner" && <p className="text-muted-foreground">Erdbewegung mieten: <Link className="text-primary hover:underline" to="/mieten/krefeld/erdbewegung">in Krefeld</Link>, <Link className="text-primary hover:underline" to="/mieten/bonn/erdbewegung">in Bonn</Link> und <Link className="text-primary hover:underline" to="/mieten/muelheim/erdbewegung">in Mülheim an der Ruhr</Link>.</p>}
         </div>
       </section>
     </Layout>

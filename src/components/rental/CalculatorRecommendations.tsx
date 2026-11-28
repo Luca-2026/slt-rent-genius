@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ShoppingCart, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { getLocationById, type Product } from "@/data/rentalData";
+import { getLocationById, getProductsForLocationCategory, type Product } from "@/data/rentalData";
 import { useManagedProductsVersion } from "@/data/managedProductsCache";
 import { useCustomerType } from "@/hooks/useCustomerType";
 import { formatEuro, priceFor, vatNote } from "@/lib/priceDisplay";
@@ -40,8 +40,8 @@ export function linePrice(data: ReturnType<typeof useCalculatorPrices>["data"], 
 /** Findet den Artikel am Standort (veröffentlicht + dort verfügbar) samt Kategorie für den Link. */
 function findAtLocation(locationId: string, slug: string): { product: Product; category: string } | null {
   const loc = getLocationById(locationId);
-  for (const [category, list] of Object.entries(loc?.products ?? {})) {
-    const product = list.find((p) => p.id === slug);
+  for (const category of Object.keys(loc?.products ?? {})) {
+    const product = getProductsForLocationCategory(locationId, category).find((p) => p.id === slug);
     if (product) return { product, category };
   }
   return null;

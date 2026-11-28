@@ -19,6 +19,7 @@ import {
 import { useManagedProductsVersion } from "@/data/managedProductsCache";
 import { ProductCard } from "@/components/rental/ProductCard";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
+import { ExcavationCalculator } from "@/components/rental/ExcavationCalculator";
 import { DeliveryCalculatorCompact } from "@/components/products/DeliveryCalculatorCompact";
 import { TrailerFilter, type TrailerFilterState } from "@/components/rental/TrailerFilter";
 import { CategoryFilter, type CategoryFilterState } from "@/components/rental/CategoryFilter";
@@ -1830,6 +1831,14 @@ export default function CategoryProducts() {
           </section>
         );
       })()}
+
+      {category.id === "erdbewegung" && (
+        <section className="pt-4 lg:pt-6">
+          <div className="section-container">
+            <ExcavationCalculator locationId={location.id} heading="Wie viel Erde möchtest du bewegen?" collapsible />
+          </div>
+        </section>
+      )}
 
       {/* Products */}
       <section className="py-8 lg:py-12">
