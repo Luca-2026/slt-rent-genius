@@ -1,32 +1,23 @@
-# Abnahme-Audit Aushubrechner und OG-Bild (28.11.2026)
+# Bonner Anhänger-Konflikt beheben und Teilrelease
 
-Freigabeempfehlung: Nicht freigeben. Zuerst Rechnerlogik und OG-Bild/Prerender korrigieren, danach erneut prüfen.
+## Diagnose (rein lesend geprüft)
+- Artikel: „3500 kg Baumaschinenanhänger", Slug `baumaschinen-3500`, ID `22e0dac9-…`, veröffentlicht. CMS-Bestand `quantities`: Bonn 1, Krefeld 2, Mülheim 0. Keine Einzelgeräte angelegt, keine Reservierungen am 04.12.
+- Aktueller Auftrag #NWHAP2 (angenommen, 04.12. 08:30–16:30) ist korrekt ausgenommen, blockiert sich also nicht selbst.
+- Ursache: Das Angebot #CYPWN5 (nur versendet, keine AB) blockiert. Es hat Positionsdaten 30.11. bis 30.11., die Anfrage selbst läuft aber vom 02.11. bis 04.12. `check_inventory_availability` liest nur `rental_inquiries.start_date/end_date` und ignoriert `item.rental_start/rental_end`. Außerdem zählt es Status `in_progress`/`offer_sent` mit. Beide Anhänger-Positionen von #CYPWN5 ergeben zusammen „belegt 2“, also frei = max(1 − 2, 0) = 0.
+- Nach der vorhandenen Regel ist der Bonner Anhänger am 04.12. frei: Belegung zählt nur bei versendeter AB, und die Positionszeit endet am 30.11. Ralf hat recht.
+- Warum kein Ordern-Button: In `AvailabilityDecisionDialog.tsx` listet `orderableLocations` nur `other_locations`. `check_availability` füllt dieses Feld nur bei `src = 'instances'`. Bei CMS-Bestand bleibt es leer, deshalb erscheint der Hinweistext.
 
-## Belegte Ergebnisse
-| Prüfpunkt | Ergebnis | Beleg |
-|---|---|---|
-| Unit-Tests Aushubrechner | Pass (9/9) | `bunx vitest run src/test` → src/test/excavationCalculator.test.ts 9 Tests |
-| Gesamte Testsuite | Fail (9 von 1420) | signDirectBooking (1), rentalWorkspace (7), customerEmailHandlers (1); betreffen nicht den Rechner |
-| Fehlende Grabtiefe über 1 m wird als Prüfen markiert | Fail | excavationCalculator.ts Z. 106: nur Hinweistext, `check` bleibt false |
-| Bekannte unzureichende Grabtiefe unter 1 m | Fail | Z. 105: Tiefe wird erst ab DEPTH_CHECK_FROM_M bewertet |
-| Ungeeignete Rückfallgeräte als Hauptempfehlung | Fail | Z. 130: `main = all[0].a` auch wenn ok=false |
-| Kranalternative nur nach fachlicher Prüfung | Fail | Z. 128/132: Kranhinweis automatisch, ohne Prüfkennzeichen |
-| Maschinenpaket/Warenkorb nur geeignete Geräte | Fail (laut Code-Hinweis, Z. 130 speist main) | lines übernimmt main ohne Eignungsfilter |
-| Dumper mit unbekannter Breite | Fail laut Code-Hinweis; nicht separat nachgelesen | – |
-| OG-Datei vorhanden, HTTP 200, image/png, absolute URL | Pass | public/images/og/default-slt-rental.png; curl → 200, content-type image/png |
-| OG-Größe 1200×630 | Fail | Datei ist 1376×768 |
-| Eigenes OG-Bild für Tools | Fail | /tools und /tools/aushubrechner nutzen default-slt-rental.png |
-| Prerender /tools/aushubrechner: Canonical/og:url | Fail | Live-HTML zeigt Canonical und og:url der Startseite und Startseiten-Titel |
-| Prerender /tools: Canonical | Pass | `https://www.slt-rental.de/tools/` |
-| Twitter-Tags | Pass (Startseitenwerte, für Aushubseite daher fachlich Fail) | twitter:card summary_large_image vorhanden |
+## Fix (kleinster sicherer Weg, noch nicht umgesetzt)
+1. `check_inventory_availability`, Zweig `inquiry_lines`: Zeitraum über `slt_item_period(i, item)` bestimmen, also mit Positionsdaten und Anfrage als Rückfall, und mit Zeitstempeln statt reinem Datum vergleichen. Nur `accepted` mit `order_confirmed_at` als Belegung zählen. Offene Angebote nur als Hinweis in `conflicts` zurückgeben, nicht in `booked`.
+2. In `check_availability` (Zweig quantities) `other_locations` für Krefeld/Bonn mit derselben Funktion berechnen. Mülheim läuft über `slt_stock_location`, also nicht doppelt.
+3. Dialog: Ordern auch bei `source = 'quantities'` anbieten, wenn am anderen Standort frei ≥ benötigt. Die Entscheidung speichert wie bisher `order_from` mit Überführung, ohne künstliche Einzelgeräte. `confirm_order` prüft serverseitig erneut, also kein Überbuchen.
+4. Abgrenzung: „Von X ordern“ ist eine Überführung aus dem Bestand eines anderen Standorts. Zeitraum- oder Standortwechsel des Auftrags läuft weiter über `change_rental_inquiry_location` bzw. das AB-Bearbeiten. Ein Umbuchen einzelner Geräte bleibt nur bei Einzelgeräten möglich.
 
-## Nicht getestet
-Browser-Tests im Preview (drei Standorte, Standortwechsel, Produktlinks/Bilder, Testfälle 40 m²×30 cm, Graben, Kreis, Nutzlast, 20 m²×120 cm, 80/100 cm Zufahrt, manipulierte URL, Extremwerte, Mobilansicht, Share-Link mit Expertenwerten, lokaler Warenkorb), Vergleich mit public-rental-quote, Abgrenzung auf Anfrage/Rentware, visuelle Prüfung von Wort-Bild-Marke und Farben. Diese Punkte gelten nicht als bestanden.
+Testfälle (PGlite): Positionszeitraum statt Anfragezeitraum; offenes Angebot blockiert nicht, bestätigte AB schon; eigener Auftrag ausgenommen; Mülheim/Krefeld gemeinsam; Grenze 1 von 1; anderer Standort mit Bestand zeigt Ordern, ohne Bestand nicht; `confirm_order` lehnt Überbuchung ab.
 
-## Vorgeschlagene Korrekturen (nach Freigabe)
-1. assessExcavator: Tiefe immer bewerten, wenn bekannt; fehlende Grabtiefe über 1 m mit check=true.
-2. recommendExcavators: ungeeignete Geräte nie als main; stattdessen "Beratung nötig" mit Kranhinweis als Prüfbedarf.
-3. Maschinenpaket/Warenkorb nur ok && !check.
-4. Dumper ohne Breite bei angegebener Zufahrt als ungeprüft.
-5. Eigenes Tools-OG-Bild 1200×630 und Prerender-Eintrag für /tools/aushubrechner.
-6. Danach Browser-Smoke-Tests aller oben genannten Fälle.
+## Release (Teilveröffentlichung)
+- Lovable veröffentlicht immer den ganzen aktuellen Frontend-Stand. Einzelne Commits oder Branches lassen sich nicht auswählen. Die UI aus 1B.2, 1B.3 und 1C ist also im Build enthalten.
+- Datenbank: 0213 und 0214 liegen nur in `docs/prepared` bzw. `drizzle/prepared` und werden durch die Veröffentlichung nicht angewendet. Die URL-Historie ist per `CMS_URL_HISTORY_ENABLED=false` aus.
+- Storno-Erstattung in der UI erscheint nur, wenn der Server `manual_cancel_refund_available` liefert. Ohne Migration bleibt sie also fail-closed.
+- Edge-Funktionen werden bei Lovable unabhängig vom Veröffentlichen ausgerollt. Ob der Code aus 1B.2/1B.3 bereits live läuft, kann ich von hier nicht bestätigen. Das muss vor der Veröffentlichung geprüft werden.
+- Ergebnis: Bedingtes GO. Es gibt keine echte Isolation, aber alle Finanz- und History-Teile sind serverseitig gesperrt. Vorher erforderlich: CI-Vollbuild mit Export/Prerender/Sitemap, kritische Smokes (Startseite, drei Standorte, Artikelseite, Warenkorb-Abschluss ohne Absenden, Rechner/PDF, Mitarbeiter-Login, Auftragsdetail mit Erstattungskarte bei normalem und storniertem Auftrag) und die Prüfung des Edge-Stands. Falls einer davon fehlschlägt: NO-GO. Sicherer Ausweg ist dann, die betroffenen Commits per Revert zurückzunehmen, statt einen Branch auszuwählen.
