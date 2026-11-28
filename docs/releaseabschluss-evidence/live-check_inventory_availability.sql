@@ -1,0 +1,158 @@
+CREATE OR REPLACE FUNCTION public.check_inventory_availability(_slug text, _location text, _start date, _end date, _exclude_inquiry_id uuid DEFAULT NULL::uuid, _exclude_reservation_id uuid DEFAULT NULL::uuid)
+ RETURNS TABLE(stock integer, stock_source text, booked integer, conflicts jsonb)
+ LANGUAGE plpgsql
+ STABLE SECURITY DEFINER
+ SET search_path TO 'public'
+AS $function$
+DECLARE
+  v_loc text := public.slt_stock_location(_location);
+  v_product_id uuid; v_product_name text; v_quantities jsonb; v_cms int; v_instances int;
+  v_start date := COALESCE(_start, CURRENT_DATE);
+  v_end date := COALESCE(_end, _start, CURRENT_DATE);
+BEGIN
+  IF NOT (public.is_staff_member(auth.uid()) OR public.has_role(auth.uid(), 'admin')) THEN
+    RAISE EXCEPTION 'Nicht berechtigt';
+  END IF;
+  IF v_end < v_start THEN v_end := v_start; END IF;
+
+  SELECT p.id, p.name, p.quantities INTO v_product_id, v_product_name, v_quantities
+  FROM public.b2b_managed_products p WHERE p.slug = _slug;
+
+  v_cms := public.slt_quantity_at(v_quantities, v_loc);
+  SELECT count(*)::int INTO v_instances FROM public.b2b_product_instances i
+  WHERE i.managed_product_id = v_product_id
+    AND public.slt_stock_location(i.location::text) = v_loc
+    AND i.status NOT IN ('retired', 'lost');
+
+  -- Einzelgeräte mit Seriennummer haben Vorrang; Menge nur für Artikel ohne Einzelgeräte.
+  IF EXISTS (SELECT 1 FROM public.b2b_product_instances i WHERE i.managed_product_id = v_product_id AND i.status NOT IN ('retired','lost')) THEN
+    stock := COALESCE(v_instances, 0); stock_source := 'instances';
+  ELSIF v_cms IS NOT NULL THEN
+    stock := v_cms; stock_source := 'cms';
+  ELSE
+    stock := NULL; stock_source := 'none';
+  END IF;
+
+  WITH inquiry_lines AS (
+    SELECT i.id, COALESCE(i.offer_number, 'Anfrage') AS ref, i.customer_name,
+      public.slt_try_date(i.start_date) AS s,
+      GREATEST(COALESCE(public.slt_try_date(i.end_date), public.slt_try_date(i.start_date)), public.slt_try_date(i.start_date)) AS e,
+      GREATEST(COALESCE(NULLIF(item ->> 'articles', '')::int, NULLIF(substring(COALESCE(item ->> 'description', '') from '(\d+)\s*Artikel'), '')::int, 1), 1) AS qty
+    FROM public.rental_inquiries i
+    CROSS JOIN LATERAL jsonb_array_elements(COALESCE(i.offer_payload -> 'items', '[]'::jsonb)) AS item
+    WHERE i.status IN ('in_progress', 'offer_sent', 'accepted')
+      AND (_exclude_inquiry_id IS NULL OR i.id <> _exclude_inquiry_id)
+      AND public.slt_stock_location(i.location) = v_loc
+      AND (item ->> 'product_slug' = _slug OR (v_product_name IS NOT NULL AND lower(item ->> 'product_name') = lower(v_product_name)))
+  ),
+  inquiry_raw AS (
+    SELECT i.id, COALESCE(i.offer_number, 'Anfrage') AS ref, i.customer_name,
+      public.slt_try_date(i.start_date) AS s,
+      GREATEST(COALESCE(public.slt_try_date(i.end_date), public.slt_try_date(i.start_date)), public.slt_try_date(i.start_date)) AS e,
+      GREATEST(COALESCE(i.quantity, 1), 1) AS qty
+    FROM public.rental_inquiries i
+    WHERE i.status IN ('in_progress', 'offer_sent', 'accepted')
+      AND (i.offer_payload IS NULL OR jsonb_array_length(COALESCE(i.offer_payload -> 'items', '[]'::jsonb)) = 0)
+      AND (_exclude_inquiry_id IS NULL OR i.id <> _exclude_inquiry_id)
+      AND public.slt_stock_location(i.location) = v_loc
+      AND (i.product_id = _slug OR (v_product_name IS NOT NULL AND lower(i.product_name) = lower(v_product_name)))
+  ),
+  reservations AS (
+    SELECT r.id, 'Reservierung' AS ref, r.product_name AS customer_name, r.start_date AS s,
+      GREATEST(COALESCE(r.end_date, r.start_date), r.start_date) AS e,
+      GREATEST(COALESCE(r.quantity, 1), 1) AS qty
+    FROM public.b2b_reservations r
+    WHERE r.status IN ('pending', 'offer_sent', 'confirmed', 'active')
+      AND (_exclude_reservation_id IS NULL OR r.id <> _exclude_reservation_id)
+      AND public.slt_stock_location(r.location) = v_loc
+      AND (r.product_id = _slug OR (v_product_name IS NOT NULL AND lower(r.product_name) = lower(v_product_name)))
+  ),
+  all_rows AS (SELECT * FROM inquiry_lines UNION ALL SELECT * FROM inquiry_raw UNION ALL SELECT * FROM reservations),
+  overlapping AS (
+    SELECT * FROM all_rows
+    WHERE s IS NOT NULL AND daterange(s, GREATEST(COALESCE(e, s), s), '[]') && daterange(v_start, v_end, '[]')
+  )
+  SELECT COALESCE(sum(qty), 0)::int,
+    COALESCE(jsonb_agg(jsonb_build_object('id', id, 'ref', ref, 'label', customer_name, 'start', s, 'end', GREATEST(COALESCE(e, s), s), 'quantity', qty) ORDER BY s), '[]'::jsonb)
+  INTO booked, conflicts FROM overlapping;
+  RETURN NEXT;
+END;
+$function$
+ hash:c2928f57ab698b172fddcd38dfe59257 proname:check_inventory_availability] map[acl:{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres,sandbox_exec_ccmxitxgyznethanixlg=X/postgres} args:inquiry_id uuid, decisions jsonb definition:CREATE OR REPLACE FUNCTION public.confirm_order(inquiry_id uuid, decisions jsonb)
+ RETURNS jsonb
+ LANGUAGE plpgsql
+ SECURITY DEFINER
+ SET search_path TO 'public'
+AS $function$
+DECLARE
+  inq public.rental_inquiries; uid uuid := auth.uid(); mode text := COALESCE(decisions->>'mode','confirm');
+  it jsonb; idx int := -1; p record; per record; loc text; need int; d jsonb; src_loc text; inst uuid; k int;
+  payload jsonb; extra jsonb := '[]'::jsonb; n_alloc int := 0; n_trans int := 0; cost numeric; charged boolean; tracked boolean;
+BEGIN
+  IF NOT public.can_edit_operations(uid) THEN RAISE EXCEPTION 'Keine Berechtigung'; END IF;
+  SELECT * INTO inq FROM public.rental_inquiries r WHERE r.id = inquiry_id FOR UPDATE;
+  IF NOT FOUND THEN RAISE EXCEPTION 'Anfrage nicht gefunden'; END IF;
+  IF mode = 'pending' THEN
+    UPDATE public.rental_inquiries SET availability_pending = true WHERE id = inq.id;
+    INSERT INTO public.rental_inquiry_events(rental_inquiry_id, event, details, user_id) VALUES (inq.id, 'availability_pending', decisions, uid);
+    RETURN jsonb_build_object('mode', mode);
+  ELSIF mode = 'reject' THEN
+    UPDATE public.rental_inquiries SET status = 'rejected', availability_pending = false WHERE id = inq.id;
+    INSERT INTO public.rental_inquiry_events(rental_inquiry_id, event, details, user_id) VALUES (inq.id, 'availability_rejected', decisions, uid);
+    RETURN jsonb_build_object('mode', mode);
+  ELSIF mode <> 'confirm' THEN RAISE EXCEPTION 'Ungültige Entscheidung';
+  END IF;
+  IF inq.status <> 'accepted' THEN RAISE EXCEPTION 'Nur angenommene Angebote können bestätigt werden'; END IF;
+  -- Bereits belegt (erneuter Versand): nichts doppelt buchen
+  IF EXISTS (SELECT 1 FROM public.b2b_instance_allocations a WHERE a.rental_inquiry_id = inq.id) THEN
+    RETURN jsonb_build_object('mode', mode, 'already_allocated', true);
+  END IF;
+  loc := public.slt_normalize_location(inq.location);
+  payload := COALESCE(inq.offer_payload, '{}'::jsonb);
+  FOR it IN SELECT * FROM jsonb_array_elements(COALESCE(payload->'items','[]'::jsonb)) LOOP
+    idx := idx + 1;
+    CONTINUE WHEN COALESCE(it->>'product_slug','') = '';
+    SELECT id, name INTO p FROM public.b2b_managed_products WHERE slug = it->>'product_slug';
+    CONTINUE WHEN NOT FOUND;
+    tracked := EXISTS (SELECT 1 FROM public.b2b_product_instances WHERE managed_product_id = p.id);
+    CONTINUE WHEN NOT tracked;
+    SELECT * INTO per FROM public.slt_item_period(inq, it);
+    CONTINUE WHEN per.from_at IS NULL;
+    need := GREATEST(COALESCE(NULLIF(it->>'articles','')::numeric, 1)::int, 1);
+    d := decisions->'items'->(idx::text);
+    FOR k IN 1..need LOOP
+      inst := NULL;
+      SELECT f INTO inst FROM public.slt_free_instances(p.id, loc, per.from_at, per.to_at, NULL) f LIMIT 1;
+      IF inst IS NULL THEN
+        IF d IS NULL OR d->>'action' <> 'order_from' THEN
+          RAISE EXCEPTION '% ist am Standort % im Zeitraum nicht verfügbar', COALESCE(it->>'product_name', p.name), loc;
+        END IF;
+        src_loc := public.slt_normalize_location(d->>'source');
+        SELECT f INTO inst FROM public.slt_free_instances(p.id, src_loc, per.from_at, per.to_at, NULL) f LIMIT 1;
+        IF inst IS NULL THEN RAISE EXCEPTION '% ist auch in % nicht frei', COALESCE(it->>'product_name', p.name), src_loc; END IF;
+        cost := NULLIF(d->>'transport_cost','')::numeric;
+        charged := COALESCE((d->>'cost_charged')::boolean, false) AND COALESCE(cost,0) > 0;
+        INSERT INTO public.b2b_transport_orders(instance_id, managed_product_id, from_location, to_location, due_at, rental_inquiry_id, transport_cost, cost_charged, created_by)
+          VALUES (inst, p.id, src_loc, loc, per.from_at, inq.id, cost, charged, uid);
+        UPDATE public.b2b_product_instances SET location = loc, updated_by = uid, updated_at = now() WHERE id = inst;
+        n_trans := n_trans + 1;
+        IF charged THEN
+          extra := extra || jsonb_build_object('product_name', 'Überführung ' || COALESCE(it->>'product_name', p.name),
+            'description', 'Überführung von ' || initcap(src_loc) || ' nach ' || initcap(loc),
+            'quantity', 1, 'articles', 1, 'unit', 'pauschal', 'unit_price', cost, 'discount_percent', 0);
+        END IF;
+      END IF;
+      INSERT INTO public.b2b_instance_allocations(instance_id, rental_inquiry_id, managed_product_id, from_at, to_at, kind, created_by)
+        VALUES (inst, inq.id, p.id, per.from_at, per.to_at, 'rental', uid);
+      n_alloc := n_alloc + 1;
+    END LOOP;
+  END LOOP;
+  IF jsonb_array_length(extra) > 0 THEN
+    payload := jsonb_set(payload, '{items}', COALESCE(payload->'items','[]'::jsonb) || extra);
+    UPDATE public.rental_inquiries SET offer_payload = payload WHERE id = inq.id;
+  END IF;
+  UPDATE public.rental_inquiries SET availability_pending = false, order_confirmed_at = COALESCE(order_confirmed_at, now()) WHERE id = inq.id;
+  INSERT INTO public.rental_inquiry_events(rental_inquiry_id, event, details, user_id)
+    VALUES (inq.id, 'order_confirmed', jsonb_build_object('decisions', decisions, 'allocations', n_alloc, 'transports', n_trans, 'charged_items', extra), uid);
+  RETURN jsonb_build_object('mode', mode, 'allocations', n_alloc, 'transports', n_trans);
+END $function$;

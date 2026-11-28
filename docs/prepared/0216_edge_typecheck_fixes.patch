@@ -1,0 +1,53 @@
+--- a/supabase/functions/send-order-confirmation/index.ts
++++ b/supabase/functions/send-order-confirmation/index.ts
+@@ -7,7 +7,10 @@
+  * kommt der Auftrag verbindlich zustande.
+  */
+ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
+-import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
++const corsHeaders = {
++  "Access-Control-Allow-Origin": "*",
++  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
++};
+ import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
+ import { generateOfferPdf } from "../_shared/offer-pdf.ts";
+ import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
+--- a/supabase/functions/_shared/insurance-validation.ts
++++ b/supabase/functions/_shared/insurance-validation.ts
+@@ -5,10 +5,11 @@
+ export function assertCalendarInsurance(items: InquiryOfferItem[]) {
+   for (const [index, item] of items.entries()) for (const addon of item.addons ?? []) {
+     if (!/maschinenbruch/i.test(`${addon.key} ${addon.label}`)) continue;
+-    if (addon.basis !== 'full_period' || !['per_unit','percent'].includes(addon.price_type ?? '') || !Number.isInteger(addon.days) || Number(addon.days) < 1 || Number(addon.days) > 3660 || !Number.isFinite(addon.rate) || Number(addon.rate) < 0) throw new Error(`Position ${index+1}: Maschinenbruchversicherung benötigt Tagessatz und Kalendertage; alte Pauschale bitte ausdrücklich umstellen.`);
++    const priceType = addon.price_type;
++    if (addon.basis !== 'full_period' || (priceType !== 'per_unit' && priceType !== 'percent') || !Number.isInteger(addon.days) || Number(addon.days) < 1 || Number(addon.days) > 3660 || !Number.isFinite(addon.rate) || Number(addon.rate) < 0) throw new Error(`Position ${index+1}: Maschinenbruchversicherung benötigt Tagessatz und Kalendertage; alte Pauschale bitte ausdrücklich umstellen.`);
+     if (!/selbstbehalt\s*[:\-]?\s*\d/i.test(`${addon.note ?? ''} ${addon.label}`)) throw new Error(`Position ${index+1}: Selbstbehalt der Maschinenbruchversicherung fehlt.`);
+     const articles=Math.max(1,Number(item.articles)||1);
+-    const expected=computeAddonAmount({price_type:addon.price_type,rate:Number(addon.rate),basis:'full_period',days:addon.days},{articles,duration:item.quantity/articles,days_per_unit:daysPerUnit(item.unit),unit_price:item.unit_price,discount_percent:item.discount_percent});
++    const expected=computeAddonAmount({price_type:priceType,rate:Number(addon.rate),basis:'full_period',days:addon.days},{articles,duration:item.quantity/articles,days_per_unit:daysPerUnit(item.unit),unit_price:item.unit_price,discount_percent:item.discount_percent});
+     if (expected === null || Math.abs(expected-addon.amount)>0.011) throw new Error(`Position ${index+1}: Versicherungssumme stimmt nicht mit Tagessatz und Kalendertagen überein.`);
+   }
+ }--- a/supabase/functions/sign-booking/index.ts
++++ b/supabase/functions/sign-booking/index.ts
+@@ -1,5 +1,8 @@
+ import { createClient } from "npm:@supabase/supabase-js@2";
+-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
++const corsHeaders = {
++  "Access-Control-Allow-Origin": "*",
++  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
++};
+ import { z } from "npm:zod@3";
+ import { ensurePaymentLink, isStripeConfigured, newToken, planPaymentAmounts } from "../_shared/stripe-pay.ts";
+ import { SLT_COMPANY } from "../_shared/company.ts";
+--- a/supabase/functions/sign-booking-worker/index.ts
++++ b/supabase/functions/sign-booking-worker/index.ts
+@@ -1,5 +1,8 @@
+ import { createClient } from "npm:@supabase/supabase-js@2";
+-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
++const corsHeaders = {
++  "Access-Control-Allow-Origin": "*",
++  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
++};
+ import { isCronCall, staffUserId } from "../_shared/cronAuth.ts";
+ import { generateOfferPdf } from "../_shared/offer-pdf.ts";
+ import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";

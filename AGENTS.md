@@ -51,5 +51,7 @@
 - Public SEO localization/hub/legacy-slug rules: see src/data/AGENTS.md.
 - CMS publication: static SEO artifacts (prerender/sitemap/llms) regenerate only on an approved publish; never auto-publish from CMS saves (would release unapproved code). Refresh logic in src/lib/publicationRefresh.ts stays disabled; exportRoutes rejects incomplete CMS snapshots via exact count.
 - Reviewed finance SQL stays outside automatic migration history in docs/prepared until separate activation approval; cancelled cash refunds fail closed pending approved journal/closed-period reconciliation, preventing an unsupported success or duplicate payout.
+- No-deployment release checks stage Edge fixes as reviewed patches outside supabase/functions; type-check a temporary mirror because editing managed function sources can deploy immediately.
+- Refund overview totals use authoritative remaining claims and complete payout evidence; provisional receipt surplus never becomes executable rent credit or an asserted final total.
 - Public full catalogues use bounded UUID/composite-key pagination with exact counts and two matching complete content reads; this detects truncation/churn without claiming an MVCC snapshot. Unknown/expired catalogue freshness never revives static articles.
 - CMS URL history is captured by a prepared-only atomic article trigger and resolved through current published UUID/location routes; existing legacy generators consume the same resolver after separate activation, preserving current-route precedence and private-data isolation.

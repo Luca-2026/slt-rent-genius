@@ -272,3 +272,12 @@ Keine Live-Schreiboperationen, Migrationen, Secrets, Veröffentlichungen oder re
 - [x] Bonner Anhänger-Konflikt (04.12.): Hotfix-SQL docs/prepared/0215_availability_item_period_hotfix.sql (Positionszeitraum, nur angenommene Aufträge binden, Berliner Kalendertag), 10 PGlite-Tests; Dialoghinweis für CMS-Mengenartikel. Nicht angewendet.
 - [ ] 0215 produktiv anwenden – wartet auf Freigabe Luca; danach #NWHAP2 lesend prüfen.
 - [ ] Mengenbasierte Überführung „Von X ordern“: confirm_order bucht für CMS-Mengenartikel weder Prüfung noch Transfer – braucht eigene Erweiterung (Mengen-Transferreservierung), bis dahin Button aus.
+
+## Abschlussreleasecheck 72EJQ5 (28.11.2026)
+- [x] Auftrag und Erstattungsnachweise ausschließlich lesend rekonstruiert: Bankeingang 713,32 €, operativ 193,92 € Miete/500 € Kaution, keine gespeicherten Auszahlungen/Basis/Rechnung; externen Kontoauszug nicht geprüft.
+- [x] Getrennte Kautions-/Mietguthabenübersicht, vorhandener Vorschau-Einstieg, Pending-/Fehler-/Nachweisschutz korrigiert; 1.791 Tests grün und isolierte Erstattungsstrecke mobil/Desktop bestanden.
+- [x] 0215 gegen Live-Definitionen/Rollback/ACL geprüft, bestätigte done-Aufträge und gleiche aktuelle Mengenpositionen konservativ abgesichert; 13 lokale DB-Tests. Edge-Typfixes ausschließlich als Patch außerhalb deploybarer Pfade vorbereitet; zehn Deno-Einstiege in Spiegelkopie grün.
+- [x] Vorhandene 42+12 Browserchecks wiederholt, Bericht docs/releaseabschluss-72EJQ5-2026-11-28.md mit getrennten NO-GO-Entscheidungen erstellt; 0213/0214 und sämtliche deploybaren Edgequellen unverändert.
+- [ ] Website-Freigabe: aktueller erlaubter CI-Vollbuild/Export/Prerender/Sitemap, produktive Edge-Versionen und isolierte authentifizierte Kompatibilitätsabnahme fehlen.
+- [ ] 0215-Freigabe: atomare konkurrierende CMS-Mengenbestätigung/PostgreSQL-Nachweis fehlt; keine Mengenüberführung aktivieren, #NWHAP2 nicht live korrigiert.
+- [ ] 0216-Edgepatch aktivieren: gesonderte ausdrückliche Freigabe fehlt; automatische Aktivierung durch Quelledits deshalb vermieden.

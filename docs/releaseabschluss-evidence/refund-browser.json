@@ -1,0 +1,32 @@
+[
+  {
+    "width": 390,
+    "flow": "missing basis -> existing preview action -> isolated bank preparation -> evidence -> confirmed 19.40",
+    "result": "PASS",
+    "calls": [
+      "order_refund_info",
+      "order_credit_info",
+      "order_credit_info",
+      "refund_order_credit",
+      "confirm_order_credit_transfer",
+      "order_refund_info"
+    ],
+    "externalBlocked": [],
+    "errors": []
+  },
+  {
+    "width": 1280,
+    "flow": "missing basis -> existing preview action -> isolated bank preparation -> evidence -> confirmed 19.40",
+    "result": "PASS",
+    "calls": [
+      "order_refund_info",
+      "order_credit_info",
+      "order_credit_info",
+      "refund_order_credit",
+      "confirm_order_credit_transfer",
+      "order_refund_info"
+    ],
+    "externalBlocked": [],
+    "errors": []
+  }
+]

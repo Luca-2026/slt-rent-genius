@@ -20,8 +20,22 @@ beforeAll(async () => {
     CREATE TABLE credit_note_refunds(id uuid PRIMARY KEY,credit_note_id uuid,amount_cents integer,allocations jsonb,status text);
   `);
   for (const file of ["0141_serialize_shared_original_payment_refunds","0147_durable_external_stripe_refund_receipts","0165_pre_invoice_rental_refund_and_issue_lock","0166_include_order_refunds_in_execution_reconciliation","0167_fix_order_refund_allocation_completion_guard","0168_protect_order_refund_allocation_terminal_states","0189_combined_order_refund_requests","0190_combined_refund_capacity_and_invoice_evidence","0191_freeze_combined_refund_claims_and_scope_execution","0192_combined_refund_lock_order_and_execution_gate"]) await db.exec(readFileSync(`drizzle/migrations/${file}.sql`,"utf8"));
+  // Exact read-only production definition captured during this release check, not prepared finance SQL.
+  await db.exec(readFileSync("docs/releaseabschluss-evidence/live-order_refund_totals.sql","utf8"));
 },30000);
 afterAll(() => db.close());
+it("72EJQ5 authoritative basis: no invoice means no executable rent credit, prepared basis unlocks only 19.40",async()=>{
+  const id=crypto.randomUUID(),basis=crypto.randomUUID();
+  await db.query("INSERT INTO rental_inquiries VALUES($1,'krefeld',$2,$3,193.92,null,null)",[id,JSON.stringify([{amount:713.32,label:'Banküberweisung'}]),JSON.stringify({deposit:500,totals:{grossAmount:193.92}})]);
+  const read=async()=> (await db.query<{t:{deposit_available:number;rent_available:number;deposit_used:number;rent_used:number}}>("SELECT order_refund_totals($1) t",[id])).rows[0].t;
+  expect(await read()).toMatchObject({deposit_available:50000,rent_available:0});
+  await db.query("INSERT INTO rental_refund_bases(id,inquiry_id,gross_amount,paid_amount,payments) VALUES($1,$2,193.92,213.32,$3)",[basis,id,JSON.stringify([{amount:213.32,label:'Banküberweisung'}])]);
+  expect(await read()).toMatchObject({deposit_available:50000,rent_available:1940});
+  await db.query("INSERT INTO deposit_settlements VALUES($1,$2,500,'paid','transfer')",[crypto.randomUUID(),id]);
+  expect(await read()).toMatchObject({deposit_available:0,deposit_used:50000,rent_available:1940});
+  await db.query("INSERT INTO rental_order_refunds(basis_id,amount_cents,allocations,created_by,payout_method) VALUES($1,1940,'[]',$2,'transfer')",[basis,crypto.randomUUID()]);
+  expect(await read()).toMatchObject({deposit_available:0,rent_available:0,rent_used:1940});
+});
 async function fixture() {
   const id=crypto.randomUUID(),link=crypto.randomUUID(),actor=crypto.randomUUID(),intent=`pi_${crypto.randomUUID()}`;
   await db.query("INSERT INTO rental_inquiries VALUES($1,'krefeld',$2,$3,0,now(),$4)",[id,JSON.stringify([{amount:129.75,label:"Stripe",reference:intent}]),JSON.stringify({deposit:100,totals:{grossAmount:29.75}}),JSON.stringify({totals:{grossAmount:0}})]);

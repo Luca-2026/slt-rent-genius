@@ -12,6 +12,8 @@ import { DepositSettlementCard } from "./DepositSettlementCard";
 import { StripePaymentCard } from "./StripePaymentCard";
 import { RentalCreditRefund } from "./RentalCreditRefund";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
+import { computeSettlement, sumPayments } from "@/lib/depositSettlement";
+import { orderRefundSummary, reservedRefundCents } from "@/lib/orderRefundSummary";
 
 type Totals = { success: boolean; error?: string; execution_available: boolean; manual_cancel_refund_available?: boolean; manual_cash_blocked?: boolean; manual_method?: "cash" | "transfer" | null; paid_cents: number; deposit_available: number; rent_available: number; deposit_used: number; rent_used: number; pending: boolean; blocked_reason?: string; can_refund_rent: boolean; requests: RequestRow[] };
 type RequestRow = { id: string; deposit_cents: number; rent_cents: number; payout_method: string; status: string; created_at: string; completed_at?: string; created_by: string };
@@ -20,13 +22,16 @@ const EVENT_LABELS: Record<string, string> = { order_cancelled: "Auftrag stornie
 const eventDetail = (event: string, d: Record<string, unknown>) => event === "deposit_settled" ? `Kautionsbetrag ${formatEuro(Number(d.balance ?? 0))} · Auszahlung siehe Kautionseintrag` : String(d.reason ?? "");
 const eur = (n: number) => formatEuro(n / 100);
 const time = (s: string) => new Date(s).toLocaleString("de-DE", { timeZone: "Europe/Berlin" });
-export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoiceIds = [], actionTarget }: { inquiry: Record<string, any>; onChanged: () => void; compact?: boolean; invoiceIds?: string[]; actionTarget?: HTMLElement | null }) {
+export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoiceIds = [], actionTarget, onPrepareRentalBasis }: { inquiry: Record<string, any>; onChanged: () => void; compact?: boolean; invoiceIds?: string[]; actionTarget?: HTMLElement | null; onPrepareRentalBasis?: () => void }) {
   const { canManageInventory, displayName } = useStaffAccess();
   const [legacyOpen, setLegacyOpen] = useState(false);
   const [hasSettlement, setHasSettlement] = useState(false);
   const [data, setData] = useState<Totals | null>(null);
   const [history, setHistory] = useState<HistoryRow[]>([]);
   const [error, setError] = useState("");
+  const [evidenceReady, setEvidenceReady] = useState(false);
+  const [basisKnown, setBasisKnown] = useState(false);
+  const [reserved, setReserved] = useState({ deposit: 0, rent: 0 });
   const [openPayout, setOpenPayout] = useState<{ balance: number; method: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [open, setOpen] = useState(false);
@@ -42,22 +47,23 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoi
       if (result.error || !result.data?.success) throw new Error(result.data?.error ?? "Zahlungsstand nicht verfügbar");
       setData(result.data);
       return result.data;
-    } catch (e) { setError(e instanceof Error ? e.message : "Erstattungsstatus ungeklärt"); return null; }
+    } catch (e) { if (action === "order_refund_info") setData(null); setError(e instanceof Error ? e.message : "Erstattungsstatus ungeklärt"); return null; }
     finally { setBusy(false); }
   }, [inquiry.id]);
   useEffect(() => { void call(); }, [call, inquiry.payments, inquiry.status]);
   useEffect(() => {
     let alive = true;
+    setEvidenceReady(false);
     void (async () => {
       const [events, links, basis, staff, invoices, settle] = await Promise.all([
         supabase.from("rental_inquiry_events").select("id,event,details,user_id,created_at").eq("rental_inquiry_id", inquiry.id).order("created_at", { ascending: false }).limit(100),
         supabase.from("offer_payment_links").select("id").eq("inquiry_id", inquiry.id).eq("inquiry_table", "rental_inquiries"),
         supabase.from("rental_refund_bases").select("id").eq("inquiry_id", inquiry.id).maybeSingle(),
         supabase.from("staff_profiles").select("user_id,first_name,last_name"),
-        supabase.from("inquiry_invoices").select("id,invoice_number,invoice_kind,created_at").eq("rental_inquiry_id", inquiry.id),
+        supabase.from("inquiry_invoices").select("id,invoice_number,invoice_kind,created_at,status").eq("rental_inquiry_id", inquiry.id),
         supabase.from("deposit_settlements").select("balance,payout_method,payout_status").eq("rental_inquiry_id", inquiry.id).maybeSingle(),
       ]);
-      if ([events.error, links.error, basis.error, staff.error, invoices.error].some(Boolean)) { if (alive) setError("Historie konnte nicht vollständig geladen werden."); return; }
+      if ([events.error, links.error, basis.error, staff.error, invoices.error, settle.error].some(Boolean)) { if (alive) setError("Historie konnte nicht vollständig geladen werden."); return; }
       const [deposits, rentals, credits] = await Promise.all([
         links.data?.length ? supabase.from("deposit_refunds").select("*").in("link_id", links.data.map(l => l.id)) : Promise.resolve({ data: [], error: null }),
         basis.data ? supabase.from("rental_order_refunds").select("*").eq("basis_id", basis.data.id) : Promise.resolve({ data: [], error: null }),
@@ -67,6 +73,14 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoi
       const refundedDeposit = (deposits.data ?? []).filter(r => r.status === "succeeded").reduce((a, r) => a + Number(r.amount_cents), 0);
       const openCents = settle.data && settle.data.payout_status === "pending" ? Math.round(Number(settle.data.balance) * 100) - Math.max(refundedDeposit, data?.deposit_used ?? 0) : 0;
       if (alive) {
+        const issued = (invoices.data ?? []).filter(i => !["draft", "cancelled"].includes(i.status));
+        setBasisKnown(Boolean(basis.data) || (issued.length === 1 && ["invoice", "final"].includes(issued[0].invoice_kind)));
+        const activeRequests = (data?.requests ?? []).filter(r => !["succeeded", "failed", "canceled"].includes(r.status));
+        setReserved({
+          deposit: reservedRefundCents(deposits.data ?? []) + activeRequests.reduce((sum, r) => sum + r.deposit_cents, 0),
+          rent: reservedRefundCents([...(rentals.data ?? []), ...(credits.data ?? [])]) + activeRequests.reduce((sum, r) => sum + r.rent_cents, 0),
+        });
+        setEvidenceReady(true);
         setHasSettlement(!!settle.data);
         setOpenPayout(openCents > 0 && settle.data ? { balance: openCents / 100, method: settle.data.payout_method } : null);
       }
@@ -84,6 +98,18 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoi
     return () => { alive = false; };
   }, [inquiry.id, inquiry.payments, inquiry.status, data]);
   const total = (data?.deposit_available ?? 0) + (data?.rent_available ?? 0);
+  const summary = data ? orderRefundSummary({ deposit_available: data.deposit_available, rent_available: data.rent_available, deposit_used: data.deposit_used, rent_used: data.rent_used }, reserved, basisKnown && hasSettlement && !data.blocked_reason, evidenceReady) : null;
+  const estimatedCredit = computeSettlement({ paid: sumPayments(inquiry.payments), rent: Number(inquiry.offer_total_gross) || 0, deposit: inquiry.offer_payload?.deposit == null ? undefined : Number(inquiry.offer_payload.deposit), deductions: [] }).rentalCredit;
+  const balance = (n: number | null | undefined) => n == null ? "Stand ungeklärt" : eur(n);
+  const balanceOverview = data && <div className="space-y-2 text-sm" data-testid="refund-balances">
+    <dl className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div><dt>{hasSettlement ? "Kautionserstattung noch offen" : "Kaution vor Abrechnung"}</dt><dd className="font-semibold">{evidenceReady ? eur(data.deposit_available) : "Stand ungeklärt"}</dd><dd className="text-xs text-muted-foreground">Bestätigt {balance(summary?.depositConfirmed)} · In Bearbeitung {balance(summary?.depositPending)}</dd></div>
+      <div><dt>Mietguthaben noch offen</dt><dd className="font-semibold">{basisKnown ? balance(evidenceReady ? data.rent_available : null) : "Belegbasis fehlt"}</dd><dd className="text-xs text-muted-foreground">Bestätigt {balance(summary?.rentConfirmed)} · In Bearbeitung {balance(summary?.rentPending)}</dd></div>
+    </dl>
+    <p className="font-semibold">Gesamterstattung / noch offen: {summary?.open == null ? "erst nach vollständiger Abrechnung bestimmbar" : eur(summary.open)}</p>
+    {!basisKnown && <p className="text-xs text-muted-foreground">{estimatedCredit > 0 ? `Rechnerisches Mietguthaben vor Belegprüfung: ${formatEuro(estimatedCredit)}. ` : ""}Zuerst die endgültige Rechnungsvorschau prüfen und dort „Erstattungsgrundlage vorbereiten“ wählen. Keine Rechnung versenden, solange die erforderlichen Erstattungen offen sind.</p>}
+    <p className="text-xs text-muted-foreground">Kaution und Mietguthaben werden separat ausgeführt. Veranlasst ist nicht bestätigt; beauftragte Beträge nicht erneut auszahlen.</p>
+  </div>;
   const amount = (v: string) => Math.round(Number(v.replace(",", ".")) * 100);
   const cashBlocked = Boolean(data?.manual_cash_blocked || (inquiry.status === "cancelled" && data?.requests.some(r => r.status === "creating" && r.payout_method === "cash")));
   const manual = data?.requests.find(r => r.status === "creating" && r.payout_method === "transfer");
@@ -94,14 +120,14 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoi
   const methodLabel = (m?: string | null) => m === "cash" ? "bar" : m === "transfer" ? "per Überweisung" : "auf das ursprüngliche Zahlungsmittel";
   const today = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Berlin" });
   const start = () => { setDeposit(String((data?.deposit_available ?? 0)/100)); setRent(String(data?.can_refund_rent && !manualCancel ? (data.rent_available/100) : 0)); setRequestId(crypto.randomUUID()); setOpen(true); };
-  const refundAction = data && !cashBlocked && !data.pending && canManageInventory && (total > 0 || openPayout || !hasSettlement)
-    ? <Button variant={actionTarget ? "outline" : "default"} className={actionTarget ? "min-h-11 w-full justify-start" : "h-11 w-full sm:w-64"} onClick={() => (data.execution_available || data.manual_cancel_refund_available) && !data.blocked_reason ? start() : setLegacyOpen(true)} disabled={busy}><Undo2 className="mr-2 h-4 w-4 shrink-0"/>Erstattung bearbeiten</Button>
+  const refundAction = data && !error && !cashBlocked && canManageInventory
+    ? <Button variant={actionTarget ? "outline" : "default"} className={actionTarget ? "min-h-11 w-full justify-start" : "h-11 w-full sm:w-64"} onClick={() => !data.pending && total > 0 && (data.execution_available || data.manual_cancel_refund_available) && !data.blocked_reason ? start() : setLegacyOpen(true)} disabled={busy}><Undo2 className="mr-2 h-4 w-4 shrink-0"/>Erstattung bearbeiten</Button>
     : null;
   return <section className="space-y-3 border-y border-border py-4" aria-label="Zahlungsstand und Auftragshistorie">
     {actionTarget && refundAction && createPortal(refundAction, actionTarget)}
     {!compact && <h3 className="font-semibold">Zahlungsstand &amp; Verlauf</h3>}
     {data && <>
-      {!compact && <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4"><div>Erhalten<strong className="block">{eur(data.paid_cents)}</strong></div><div>Kaution bereits beauftragt / erstattet<strong className="block">{eur(data.deposit_used)}</strong></div><div>Miete bereits beauftragt / erstattet<strong className="block">{eur(data.rent_used)}</strong></div><div>Noch zu erstatten<strong className="block">{eur(total)}</strong></div></div>}
+      {!compact && <><p className="text-sm">Erhalten <strong>{eur(data.paid_cents)}</strong></p>{balanceOverview}</>}
       {!total && !data.pending && data.paid_cents > 0 && data.deposit_used+data.rent_used >= data.paid_cents && <p className="font-semibold text-primary">Vollständig erstattet · {eur(data.paid_cents)} · offen 0,00 €</p>}
       {data.blocked_reason && <p className="text-sm text-muted-foreground">{data.blocked_reason}</p>}
       {cashBlocked && <p role="alert" className="text-sm text-destructive">Storno-Barauszahlung gesperrt: Kassenbuchnachweis und Kassenperioden müssen zuerst mit der Buchhaltung geklärt werden. Bereits ausgezahltes Geld nicht erneut erstatten.</p>}
@@ -126,11 +152,13 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoi
     {!compact && <><h4 className="text-sm font-semibold">Auftragshistorie</h4><ol className="max-h-64 space-y-3 overflow-y-auto text-sm">{history.map(r => <li key={r.id} className="border-l-2 border-border pl-3"><strong>{r.label}</strong><div className="text-xs text-muted-foreground">{time(r.at)} · {r.actor}</div>{r.detail && <p className="text-xs">{r.detail}</p>}</li>)}</ol></>}
     <Dialog open={legacyOpen} onOpenChange={setLegacyOpen}><DialogContent className="max-h-[85dvh] overflow-y-auto sm:max-w-xl">
       <DialogHeader><DialogTitle>Erstattung bearbeiten</DialogTitle><DialogDescription>Auftrag {inquiry.order_code ? `#${inquiry.order_code}` : ""} · Kaution und Mietguthaben auf das ursprüngliche Zahlungsmittel.</DialogDescription></DialogHeader>
-      {inquiry.status !== "cancelled" && <DepositSettlementCard inquiry={inquiry} staffName={displayName} canMarkStripePayout={canManageInventory} showRentalRefunds={false} onDone={() => { void call(); onChanged(); }} />}
-      {(!hasSettlement || inquiry.status === "cancelled") && <StripePaymentCard table="rental_inquiries" inquiryId={inquiry.id} offerNumber={inquiry.offer_number} payments={inquiry.payments} offerTotalGross={inquiry.offer_total_gross} deposit={Number(inquiry.offer_payload?.deposit) || 0} cancelled={inquiry.status === "cancelled"} onChanged={() => { void call(); onChanged(); }} />}
-      {(data?.rent_available ?? 0) > 0 && <div className="space-y-2"><h4 className="text-sm font-semibold">Mietguthaben</h4>{invoiceIds.length ? invoiceIds.map(id => <RentalCreditRefund key={id} invoiceId={id} fullWidth onDone={() => { void call(); onChanged(); }} />) : <RentalCreditRefund inquiryId={inquiry.id} fullWidth onDone={() => { void call(); onChanged(); }} />}</div>}
+      {balanceOverview}
+      {!evidenceReady && <p role="alert" className="text-sm text-destructive">Erstattungsnachweise werden geprüft. Keine neue Auszahlung starten.</p>}
+      {evidenceReady && !data?.pending && inquiry.status !== "cancelled" && <DepositSettlementCard inquiry={inquiry} staffName={displayName} canMarkStripePayout={canManageInventory} showRentalRefunds={false} onDone={() => { void call(); onChanged(); }} />}
+      {evidenceReady && !data?.pending && (!hasSettlement || inquiry.status === "cancelled") && <StripePaymentCard table="rental_inquiries" inquiryId={inquiry.id} offerNumber={inquiry.offer_number} payments={inquiry.payments} offerTotalGross={inquiry.offer_total_gross} deposit={Number(inquiry.offer_payload?.deposit) || 0} cancelled={inquiry.status === "cancelled"} onChanged={() => { void call(); onChanged(); }} />}
+      {data?.can_refund_rent && <div className="space-y-2"><h4 className="text-sm font-semibold">Mietguthaben</h4>{!basisKnown && onPrepareRentalBasis && inquiry.status !== "cancelled" && <Button variant="outline" className="min-h-11 w-full" onClick={() => { setLegacyOpen(false); onPrepareRentalBasis(); }}>Endgültige Rechnungsvorschau öffnen</Button>}{invoiceIds.length ? invoiceIds.map(id => <RentalCreditRefund preventNewRefund={!evidenceReady || data.pending} key={id} invoiceId={id} fullWidth onDone={() => { void call(); onChanged(); }} />) : <RentalCreditRefund preventNewRefund={!evidenceReady || data.pending} inquiryId={inquiry.id} fullWidth onDone={() => { void call(); onChanged(); }} />}</div>}
     </DialogContent></Dialog>
-    <Dialog open={open} onOpenChange={v => !busy && setOpen(v)}><DialogContent><DialogHeader><DialogTitle>Erstattung bestätigen</DialogTitle><DialogDescription>{manualCancel ? `Stornierter Auftrag: Die Kautionsrückzahlung ${methodLabel(data?.manual_method)} wird als ausstehend angelegt. Nach der tatsächlichen Auszahlung bitte mit Datum und Beleg bestätigen.` : "Rückzahlung auf das ursprüngliche Zahlungsmittel."}</DialogDescription></DialogHeader>
+    <Dialog open={open} onOpenChange={v => !busy && setOpen(v)}><DialogContent className="max-h-[85dvh] overflow-y-auto"><DialogHeader><DialogTitle>Erstattung bestätigen</DialogTitle><DialogDescription>{manualCancel ? `Stornierter Auftrag: Die Kautionsrückzahlung ${methodLabel(data?.manual_method)} wird als ausstehend angelegt. Nach der tatsächlichen Auszahlung bitte mit Datum und Beleg bestätigen.` : "Rückzahlung auf das ursprüngliche Zahlungsmittel."}</DialogDescription></DialogHeader>
       <div><Label htmlFor="order-deposit-refund">Kaution (€), maximal {eur(data?.deposit_available ?? 0)}</Label><Input id="order-deposit-refund" inputMode="decimal" value={deposit} onChange={e => setDeposit(e.target.value)}/></div>
       <div><Label htmlFor="order-rent-refund">Mietguthaben (€), maximal {eur(data?.rent_available ?? 0)}</Label><Input id="order-rent-refund" inputMode="decimal" disabled={!data?.can_refund_rent || manualCancel} value={rent} onChange={e => setRent(e.target.value)}/></div>
       <p className="font-semibold">Gesamt: {eur(Number.isFinite(selected) ? selected : 0)}</p>

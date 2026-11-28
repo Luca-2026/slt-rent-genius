@@ -82,6 +82,29 @@ it("auch angenommener Auftrag belegt nur seinen Positionszeitraum, nicht den Anf
   expect((await check())[0]).toMatchObject({ free: 1, available: true });
 });
 
+it("bereits bestätigter done-Auftrag bleibt belegt, ohne AB erledigtes Angebot nicht", async () => {
+  await inquiry(CUR, "accepted", "2026-12-04", "2026-12-04", [trailer()]);
+  await inquiry(OTHER, "done", "2026-12-04", "2026-12-04", [trailer()]);
+  expect((await check())[0].free).toBe(1);
+  await db.query("UPDATE rental_inquiries SET order_confirmed_at=now() WHERE id=$1", [OTHER]);
+  expect((await check())[0]).toMatchObject({ free: 0, available: false });
+  await db.query("UPDATE rental_inquiries SET status='cancelled' WHERE id=$1", [OTHER]);
+  expect((await check())[0].free).toBe(1);
+});
+
+it("zwei überlappende aktuelle Mengenpositionen dürfen nicht dasselbe letzte Gerät verwenden", async () => {
+  await inquiry(CUR, "accepted", "2026-12-04", "2026-12-04", [trailer(), trailer()]);
+  const items = await check();
+  expect(items).toHaveLength(2);
+  expect(items.map(i => i.needed)).toEqual([2, 2]);
+  expect(items.every(i => i.available === false)).toBe(true);
+});
+
+it("unterschiedliche Tage der aktuellen Positionen werden nicht gemeinsam benötigt", async () => {
+  await inquiry(CUR, "accepted", "2026-12-04", "2026-12-05", [trailer({rental_start:'2026-12-04',rental_end:'2026-12-04'}), trailer({rental_start:'2026-12-05',rental_end:'2026-12-05'})]);
+  expect((await check()).map(i => i.needed)).toEqual([1, 1]);
+});
+
 it("echter bestätigter Konflikt bleibt: 1 von 1 belegt → frei 0, 2 benötigt bei 1 → nicht verfügbar", async () => {
   await inquiry(CUR, "accepted", "2026-12-04", "2026-12-04", [trailer()]);
   await inquiry(OTHER, "accepted", "2026-12-03", "2026-12-05", [trailer()]);

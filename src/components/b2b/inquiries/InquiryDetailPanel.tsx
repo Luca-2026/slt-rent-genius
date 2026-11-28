@@ -1064,7 +1064,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
         </aside>
         <section className="min-w-0 space-y-5 lg:col-span-2">
           {headerEl}
-          {inquiryType === "rental" && <OrderRefundOverview actionTarget={refundActionTarget} inquiry={inquiry as Record<string, any>} invoiceIds={invoices.filter(inv => ["invoice", "final"].includes(inv.invoice_kind) && !["draft", "cancelled"].includes(inv.status)).map(inv => inv.id)} onChanged={() => { loadInvoices(); onChanged(); }} />}
+          {inquiryType === "rental" && <OrderRefundOverview onPrepareRentalBasis={() => setDocMode("final")} actionTarget={refundActionTarget} inquiry={inquiry as Record<string, any>} invoiceIds={invoices.filter(inv => ["invoice", "final"].includes(inv.invoice_kind) && !["draft", "cancelled"].includes(inv.status)).map(inv => inv.id)} onChanged={() => { loadInvoices(); onChanged(); }} />}
           {draftsEl}
           {docEl}
         </section>
@@ -1077,7 +1077,7 @@ export function InquiryDetailPanel({ table, inquiryType, inquiry, defaultItems, 
       {inquiry.status !== "cancelled" && <OfferAcceptanceNotice inquiryId={inquiry.id} />}
       {draftsEl}
       {headerEl}
-      {inquiryType === "rental" && <OrderRefundOverview actionTarget={refundActionTarget} inquiry={inquiry as Record<string, any>} invoiceIds={invoices.filter(inv => ["invoice", "final"].includes(inv.invoice_kind) && !["draft", "cancelled"].includes(inv.status)).map(inv => inv.id)} onChanged={() => { loadInvoices(); onChanged(); }} />}
+      {inquiryType === "rental" && <OrderRefundOverview onPrepareRentalBasis={() => setDocMode("final")} actionTarget={refundActionTarget} inquiry={inquiry as Record<string, any>} invoiceIds={invoices.filter(inv => ["invoice", "final"].includes(inv.invoice_kind) && !["draft", "cancelled"].includes(inv.status)).map(inv => inv.id)} onChanged={() => { loadInvoices(); onChanged(); }} />}
       {customerEl}
       {locationEl}
       {details}

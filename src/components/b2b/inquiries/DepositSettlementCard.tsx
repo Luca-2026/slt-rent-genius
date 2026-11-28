@@ -60,10 +60,12 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
   const [busy, setBusy] = useState(false);
   const [invoices, setInvoices] = useState<Row[]>([]);
   const [unresolved, setUnresolved] = useState(false);
+  const [loadError, setLoadError] = useState("");
 
   const load = useCallback(async () => {
     setLoading(true);
-    const [{ data: s }, { data: protocols }, { data: issued }, { data: paidLinks }] = await Promise.all([
+    setLoadError("");
+    const [{ data: s, error: settlementError }, { data: protocols, error: protocolError }, { data: issued, error: invoiceError }, { data: paidLinks, error: linksError }] = await Promise.all([
       supabase.from("deposit_settlements").select("*").eq("rental_inquiry_id", inquiry.id).maybeSingle(),
       supabase
         .from("b2b_return_protocols")
@@ -72,9 +74,14 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
       supabase.from("inquiry_invoices").select("id,invoice_number,gross_amount,paid_amount,invoice_kind,status").eq("rental_inquiry_id", inquiry.id).in("invoice_kind", ["invoice", "final"]).not("status", "in", "(draft,cancelled)"),
       supabase.from("offer_payment_links").select("id").eq("inquiry_id", inquiry.id).eq("inquiry_table", "rental_inquiries").eq("status", "paid"),
     ]);
+    if (settlementError || protocolError || invoiceError || linksError) {
+      setLoadError("Abrechnung, Belege oder Zahlungsnachweise konnten nicht vollständig geladen werden. Keine Auszahlung bestätigen; erneut laden.");
+      setLoading(false); return;
+    }
     setInvoices(issued ?? []);
     if (paidLinks?.length) {
-      const { data: refunds } = await supabase.from("deposit_refunds").select("status").in("link_id", paidLinks.map(l => l.id));
+      const { data: refunds, error: refundsError } = await supabase.from("deposit_refunds").select("status").in("link_id", paidLinks.map(l => l.id));
+      if (refundsError) { setLoadError("Erstattungsnachweise konnten nicht geladen werden. Keine weitere Auszahlung starten."); setLoading(false); return; }
       setUnresolved((refunds ?? []).some(r => ["creating", "pending", "requires_action"].includes(r.status)));
     } else setUnresolved(false);
     setSettlement(s ?? null);
@@ -109,8 +116,8 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
   const patch = (i: number, p: Partial<SettlementDeduction>) => setDeductions((d) => d.map((x, j) => (j === i ? { ...x, ...p } : x)));
 
   const settle = async () => {
-    if (problem || busy) return;
-    if (!window.confirm(`Kaution jetzt abrechnen? ${result.refund > 0 ? `Erstattung ${formatEuro(result.refund)}${payout === "stripe" ? " – wird sofort über Stripe auf die ursprüngliche Zahlung erstattet" : ""}` : result.due > 0 ? `Nachzahlung ${formatEuro(result.due)}` : "Saldo 0 €"}. Danach ist die Abrechnung gesperrt.`)) return;
+    if (problem || busy || (result.refund > 0 && payout === "transfer" && notes.trim().length < 3)) return;
+    if (!window.confirm(`Kaution jetzt abrechnen? ${result.refund > 0 ? `Kautionserstattung ${formatEuro(result.refund)}${payout === "stripe" ? " – wird sofort über Stripe auf die ursprüngliche Zahlung erstattet" : " – damit bestätigst du die tatsächlich ausgeführte Auszahlung"}` : result.due > 0 ? `Nachzahlung ${formatEuro(result.due)}` : "Saldo 0 €"}. Mietguthaben wird separat erstattet. Danach ist die Abrechnung gesperrt.`)) return;
     setBusy(true);
     try {
       const { error: rpcErr } = await supabase.rpc("settle_deposit", {
@@ -126,7 +133,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
         const { data: saved } = await supabase.from("deposit_settlements").select("*").eq("rental_inquiry_id", inquiry.id).maybeSingle();
         if (saved) { setBusy(false); await executeStripePayout(saved as Row); onDone(); return; }
       }
-      toast({ title: "Kaution abgerechnet", description: result.refund > 0 ? `Erstattung ${formatEuro(result.refund)} – ${PAYOUT_LABEL[payout]} · Auszahlung noch offen` : result.due > 0 ? `Nachzahlung ${formatEuro(result.due)} kommt auf die Schlussrechnung` : "Saldo ausgeglichen" });
+      toast({ title: "Kaution abgerechnet", description: result.refund > 0 ? `Kautionserstattung ${formatEuro(result.refund)} – ${PAYOUT_LABEL[payout]} · ${payout === "stripe" ? "Auszahlung noch offen" : "tatsächliche Auszahlung bestätigt"}` : result.due > 0 ? `Nachzahlung ${formatEuro(result.due)} kommt auf die Schlussrechnung` : "Saldo ausgeglichen" });
       await load();
       onDone();
     } catch (e) {
@@ -196,6 +203,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
   };
 
   if (loading) return <div className="rounded-lg border border-border p-3 text-sm text-muted-foreground">Kautionsabrechnung wird geladen …</div>;
+  if (loadError) return <div role="alert" className="space-y-2 text-sm text-destructive"><p>{loadError}</p><Button variant="outline" onClick={() => void load()}>Erneut prüfen</Button></div>;
 
   const line = (label: string, value: string, strong = false) => (
     <div className={`flex justify-between gap-3 ${strong ? "font-semibold" : ""}`}>
@@ -212,7 +220,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
         {line("Gezahlt gesamt", formatEuro(Number(settlement.paid_amount)))}
         {line("davon Miete", `−${formatEuro(Number(settlement.rent_amount))}`)}
         {line("Kaution vorhanden", formatEuro(Number(settlement.deposit_held)))}
-        {Number(settlement.rental_credit) > 0 && line("Mietguthaben (Rechnung)", formatEuro(Number(settlement.rental_credit)))}
+        {Number(settlement.rental_credit) > 0 && <>{line("Mietguthaben (separat)", formatEuro(Number(settlement.rental_credit)))}<p className="text-xs text-muted-foreground">Dieser Betrag ist nicht in der Kautionserstattung enthalten. Aktuellen Auszahlungsstand unter Mietguthaben prüfen.</p></>}
         {(settlement.deductions as SettlementDeduction[]).filter((d) => !d.removed && d.gross > 0).map((d) => line(d.label, `−${formatEuro(d.gross)}`))}
         {line(bal >= 0 ? "1. Kautionserstattung" : "Nachzahlung Kunde", formatEuro(Math.abs(bal)), true)}
         <p className="text-xs text-muted-foreground">
@@ -236,7 +244,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
         {result.rentShortfall > 0
           ? line("Miete noch offen", formatEuro(result.rentShortfall))
           : line("= Kaution vorhanden", formatEuro(result.depositHeld), true)}
-        {result.rentalCredit > 0 && line("Mietguthaben (Rechnung)", formatEuro(result.rentalCredit))}
+        {result.rentalCredit > 0 && <>{line("Rechnerisches Mietguthaben (separat)", formatEuro(result.rentalCredit))}<p className="text-xs text-muted-foreground">Nicht in der Kautionserstattung enthalten. Endgültige Rechnungsvorschau und bereits erfolgte Erstattungen separat prüfen.</p></>}
       </div>
 
       <div className="space-y-2">
@@ -287,7 +295,7 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
       <div className="border-t border-border pt-2 space-y-1">
         {result.deductionsGross > 0 && line("Abzüge gesamt", `−${formatEuro(result.deductionsGross)}`)}
         {result.refund > 0
-          ? line("Erstattung an Kunden", formatEuro(result.refund), true)
+          ? line("Kautionserstattung", formatEuro(result.refund), true)
           : result.due > 0
           ? line("Nachzahlung Kunde", formatEuro(result.due), true)
           : line("Saldo", formatEuro(0), true)}
@@ -301,18 +309,19 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
             <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
             <SelectContent>
               <SelectItem value="cash">Bar (heute ausgezahlt)</SelectItem>
-              <SelectItem value="transfer">Überweisung (heute veranlasst)</SelectItem>
+              <SelectItem value="transfer">Überweisung (tatsächlich ausgeführt)</SelectItem>
               {hasStripePayment && <SelectItem value="stripe">Stripe – ursprüngliches Zahlungsmittel</SelectItem>}
             </SelectContent>
           </Select>
+          {payout === "transfer" && <p className="mt-1 text-xs text-muted-foreground">Abrechnen bestätigt die Auszahlung als erfolgt. Nur veranlasste oder noch ausstehende Überweisungen nicht bestätigen.</p>}
         </div>
       )}
       <div>
-        <Label className="text-xs">Notiz (optional)</Label>
+        <Label className="text-xs">{result.refund > 0 && payout === "transfer" ? "Banknachweis / Referenz (erforderlich)" : "Notiz (optional)"}</Label>
         <Textarea rows={2} value={notes} onChange={(e) => setNotes(e.target.value)} />
       </div>
       {problem && <p className="text-xs text-destructive">{problem}</p>}
-      <Button onClick={settle} disabled={!!problem || busy} className="w-full sm:w-auto">
+      <Button onClick={settle} disabled={!!problem || busy || (result.refund > 0 && payout === "transfer" && notes.trim().length < 3)} className="w-full sm:w-auto">
         {busy ? "Wird abgerechnet …" : "Abrechnen"}
       </Button>
       {result.deductionsGross > 0 && (

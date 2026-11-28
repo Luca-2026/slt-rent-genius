@@ -1,7 +1,8 @@
 -- HOTFIX 0215 (vorbereitet, NICHT angewendet): Mengenbasierte Verfügbarkeit
 -- 1) Belegung je Angebotsposition über slt_item_period (Positionsdaten, Anfrage nur Fallback, Europe/Berlin).
--- 2) Feste Belegung nur durch angenommene Aufträge (accepted); unverbindliche Angebote
---    (in_progress/offer_sent) zählen nicht als gebucht (Regel: AB/Annahme bindet, AGENTS/Memory).
+-- 2) Angenommene Aufträge inkl. ohne AB bleiben konservativ belegt; vorhandene ABs
+--    bleiben auch bei done/abweichendem Status belegt. Stornierte/abgelehnte Aufträge nicht.
+--    Unverbindliche Angebote ohne AB belegen nicht; B2B-Holds unverändert.
 -- 3) check_availability: Berliner Kalendertag statt UTC-Cast; other_locations auch für CMS-Mengen (nur Anzeige).
 -- Reservierungen (b2b_reservations) und Einzelgeräte-Allocations unverändert.
 -- Rollback: docs/prepared/0215_availability_item_period_rollback.sql
@@ -40,7 +41,7 @@ BEGIN
     FROM public.rental_inquiries i
     CROSS JOIN LATERAL jsonb_array_elements(COALESCE(i.offer_payload -> 'items', '[]'::jsonb)) AS item
     CROSS JOIN LATERAL public.slt_item_period(i, item) per
-    WHERE i.status = 'accepted'
+    WHERE i.status NOT IN ('cancelled', 'rejected') AND (i.status = 'accepted' OR i.order_confirmed_at IS NOT NULL)
       AND (_exclude_inquiry_id IS NULL OR i.id <> _exclude_inquiry_id)
       AND public.slt_stock_location(i.location) = v_loc
       AND (item ->> 'product_slug' = _slug OR (v_product_name IS NOT NULL AND lower(item ->> 'product_name') = lower(v_product_name)))
@@ -51,7 +52,7 @@ BEGIN
       GREATEST(COALESCE(public.slt_try_date(i.end_date), public.slt_try_date(i.start_date)), public.slt_try_date(i.start_date)) AS e,
       GREATEST(COALESCE(i.quantity, 1), 1) AS qty
     FROM public.rental_inquiries i
-    WHERE i.status = 'accepted'
+    WHERE i.status NOT IN ('cancelled', 'rejected') AND (i.status = 'accepted' OR i.order_confirmed_at IS NOT NULL)
       AND (i.offer_payload IS NULL OR jsonb_array_length(COALESCE(i.offer_payload -> 'items', '[]'::jsonb)) = 0)
       AND (_exclude_inquiry_id IS NULL OR i.id <> _exclude_inquiry_id)
       AND public.slt_stock_location(i.location) = v_loc
@@ -117,6 +118,15 @@ BEGIN
     src := 'untracked'; free := NULL; ok := true;
    ELSE
     src := 'quantities';
+    -- Konservative Tagesprüfung: gleiche überlappende Positionen der aktuellen Anfrage
+    -- gemeinsam prüfen, sonst könnten zwei Zeilen jeweils denselben letzten Artikel verwenden.
+    SELECT COALESCE(sum(GREATEST(COALESCE(NULLIF(sibling->>'articles','')::numeric,1)::int,1)), need)::int INTO need
+    FROM jsonb_array_elements(COALESCE(inq.offer_payload->'items','[]'::jsonb)) sibling
+    CROSS JOIN LATERAL public.slt_item_period(inq, sibling) sibling_period
+    WHERE sibling->>'product_slug' = it->>'product_slug'
+      AND sibling_period.from_at IS NOT NULL
+      AND daterange((sibling_period.from_at AT TIME ZONE 'Europe/Berlin')::date,
+        GREATEST((sibling_period.from_at AT TIME ZONE 'Europe/Berlin')::date,(sibling_period.to_at AT TIME ZONE 'Europe/Berlin')::date),'[]') && daterange(d1,GREATEST(d1,d2),'[]');
     SELECT c.booked INTO qbooked FROM public.check_inventory_availability(it->>'product_slug', loc, d1, d2, inq.id, NULL) c;
     free := GREATEST(qstock - COALESCE(qbooked,0), 0);
     ok := free >= need;

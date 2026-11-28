@@ -3,14 +3,14 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { DepositSettlementCard } from "@/components/b2b/inquiries/DepositSettlementCard";
 
 const { rpc, invoke, toast, state } = vi.hoisted(() => ({ rpc: vi.fn(), invoke: vi.fn(), toast: vi.fn(),
-  state: { saved: null as Record<string, unknown> | null, refunds: [] as Record<string, unknown>[] } }));
+  state: { saved: null as Record<string, unknown> | null, refunds: [] as Record<string, unknown>[], failRead: false } }));
 vi.mock("@/lib/invokeWithAuth", () => ({ invokeWithAuth: invoke }));
 vi.mock("@/hooks/use-toast", () => ({ useToast: () => ({ toast }) }));
 vi.mock("@/components/b2b/inquiries/RentalCreditRefund", () => ({ RentalCreditRefund: () => null }));
 vi.mock("@/integrations/supabase/client", () => ({ supabase: { rpc, from: (table: string) => {
   const result = () => ({ data: table === "deposit_settlements" ? state.saved : table === "offer_payment_links"
     ? [{ id: "link", status: "paid", deposit_cents: 10000, paid_cents: 21900 }]
-    : table === "deposit_refunds" ? state.refunds : [], error: null });
+    : table === "deposit_refunds" ? state.refunds : [], error: state.failRead ? {message:'fixture read failed'} : null });
   const q = { select: () => q, eq: () => q, in: () => q, not: () => q, gt: () => q, order: () => q,
     single: async () => result(), maybeSingle: async () => result(),
     then: (resolve: (v: ReturnType<typeof result>) => unknown) => Promise.resolve(result()).then(resolve) };
@@ -21,7 +21,7 @@ const inquiry = { id: "isolated-order", order_code: "TEST01", offer_total_gross:
 const saved = { id: "saved-request", rental_inquiry_id: inquiry.id, balance: 100, paid_amount: 219, rent_amount: 119,
   deposit_held: 100, deductions: [], settled_at: "2026-11-28T10:00:00Z", payout_method: "stripe", payout_status: "pending" };
 beforeEach(() => {
-  vi.clearAllMocks(); state.saved = { ...saved }; state.refunds = [];
+  vi.clearAllMocks(); state.saved = { ...saved }; state.refunds = []; state.failRead = false;
   vi.stubGlobal("fetch", vi.fn(() => { throw new Error("Network forbidden in financial fixture"); }));
   vi.spyOn(window, "confirm").mockReturnValue(true);
   rpc.mockResolvedValue({ error: null });
@@ -91,4 +91,15 @@ it("keeps a second click disabled while the first provider reconciliation is unr
   expect(button).toBeDisabled(); expect(invoke).toHaveBeenCalledTimes(1);
   release?.({ data: { success: false } });
   await waitFor(() => expect(screen.getByRole("button", { name: "Kaution erstatten" })).toBeEnabled());
+});
+it("failed document reads cannot be treated as an empty refundable settlement",async()=>{
+  state.failRead=true;open();await screen.findByRole('button',{name:'Erneut prüfen'});
+  expect(screen.queryByRole('button',{name:'Abrechnen'})).toBeNull();expect(rpc).not.toHaveBeenCalled();expect(invoke).not.toHaveBeenCalled();
+});
+it("a manual transfer cannot be confirmed without its bank reference",async()=>{
+  state.saved=null;
+  render(<DepositSettlementCard inquiry={{...inquiry,offer_total_gross:193.92,offer_payload:{deposit:500},payments:[{amount:713.32,label:'Banküberweisung'}]}} staffName="Fixture" canMarkStripePayout onDone={vi.fn()} showRentalRefunds={false}/>);
+  const button=await screen.findByRole('button',{name:'Abrechnen'});expect(button).toBeDisabled();
+  fireEvent.change(screen.getByRole('textbox'),{target:{value:'Bankbeleg Fixture'}});expect(button).toBeEnabled();
+  fireEvent.click(button);await waitFor(()=>expect(rpc).toHaveBeenCalledWith('settle_deposit',expect.objectContaining({_expected_balance:500,_payout_method:'transfer',_notes:'Bankbeleg Fixture'})));
 });

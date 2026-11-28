@@ -37,3 +37,10 @@ it("old combined 623.76 balance is rejected instead of paid", async () => {
   await expect(db.query("SELECT settle_deposit($1,'[]','transfer',623.76)", [id])).rejects.toThrow("Beträge haben sich geändert");
   expect((await db.query<{ count: number }>("SELECT count(*)::int AS count FROM deposit_settlements WHERE rental_inquiry_id=$1", [id])).rows[0]?.count).toBe(0);
 });
+it("72EJQ5 server preserves 500 deposit and 19.40 rental credit, rejecting a combined 519.40 payout",async()=>{
+  const id=crypto.randomUUID();await db.query("INSERT INTO rental_inquiries VALUES($1,'[{\"amount\":713.32}]',193.92,'{\"deposit\":500}')",[id]);
+  await expect(db.query("SELECT settle_deposit($1,'[]','transfer',519.40)",[id])).rejects.toThrow('Beträge haben sich geändert');
+  await db.query("SELECT settle_deposit($1,'[]','transfer',500)",[id]);
+  const row=(await db.query<{balance:string;rental_credit:string}>("SELECT * FROM deposit_settlements WHERE rental_inquiry_id=$1",[id])).rows[0];
+  expect(Number(row.balance)).toBe(500);expect(Number(row.rental_credit)).toBe(19.4);
+});
