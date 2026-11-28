@@ -54,4 +54,19 @@ export function parseCart(raw: string | null, now = Date.now()): RentalCart | nu
     if (!cart.items.every((row: RentalCartItem) => row.sign_package === undefined || row.sign_package === "standard" || row.sign_package === "sorglos")) return null;
     return cart;
   } catch { return null; }
+}/** Rechner-Paket: alle Positionen mit EINEM bestätigten Zeitraum, atomar – entweder alle gültigen Zeilen oder keine. */
+export type BundlePeriod = Pick<RentalCartItem, "start_date" | "start_time" | "end_date" | "end_time" | "use_saturday" | "use_sunday">;
+export function commitBundle(cart: RentalCart | null, rows: RentalCartItem[], period: BundlePeriod, now = Date.now()): { cart: RentalCart | null; added: RentalCartItem[]; skipped: RentalCartItem[]; error?: string } {
+  const live = cart && !cartExpired(cart, now) ? cart : null;
+  const withPeriod = rows.map(row => ({ ...row, ...period }));
+  const invalid = withPeriod.filter(row => !validPublicRentalPeriod(row));
+  if (invalid.length) return { cart: live, added: [], skipped: [], error: `Der gewählte Zeitraum passt nicht zu den Abhol- und Rückgabezeiten für: ${invalid.map(r => r.product_name).join(", ")}. Es wurde nichts übernommen – bitte wähle einen anderen Zeitraum.` };
+  const same = (a: RentalCartItem, b: RentalCartItem) => a.product_slug === b.product_slug && a.location === b.location && a.start_date === b.start_date && a.start_time === b.start_time && a.end_date === b.end_date && a.end_time === b.end_time;
+  const existing = live?.items ?? [];
+  const skipped = withPeriod.filter((row, i) => existing.some(e => same(e, row)) || withPeriod.slice(0, i).some(p => same(p, row)));
+  const added = withPeriod.filter(row => !skipped.includes(row));
+  if (existing.length + added.length > 30) return { cart: live, added: [], skipped: [], error: "Im Warenkorb ist nicht genug Platz für alle Geräte (max. 30 Positionen). Es wurde nichts übernommen." };
+  let next = live;
+  for (const row of added) next = addCartItem(next, row, now);
+  return { cart: next, added, skipped };
 }

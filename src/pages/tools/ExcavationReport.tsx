@@ -8,7 +8,7 @@ import { useCustomerType } from "@/hooks/useCustomerType";
 import { formatEuro, priceFor, vatNote } from "@/lib/priceDisplay";
 import { shapeVolume, decodeShare, INITIAL_STATE, PROJECTS, SOILS, CRANE_NOTE, TRENCH_SAFETY_DEPTH_M, type Assessment, type Fit } from "@/lib/excavationCalculator";
 import { useExcavationModel, productPath, statusLabel, SHAPE_LABELS, shapeText } from "@/components/rental/useExcavationModel";
-import { useCalculatorPrices } from "@/components/rental/CalculatorRecommendations";
+import { useCalculatorPrices, priceSnapshot } from "@/components/rental/CalculatorRecommendations";
 import { excavationLinePrice } from "@/lib/excavationPrice";
 import { shareUrl } from "@/components/rental/ExcavationCalculator";
 
@@ -53,10 +53,16 @@ html, body { background: #e5e7eb; }
 .rep-cta h2 { margin-top: 0; }
 .rep-cta svg { width: 26mm; height: 26mm; }
 .rep-claim { font-weight: 700; color: var(--b); font-size: 12pt; margin-top: 2mm; }
+.rep-pt th { width: auto; font-size: 8.5pt; } .rep-pt td:nth-child(n+2), .rep-pt th:nth-child(n+2) { white-space: nowrap; } .rep-pt td:last-child, .rep-pt th:last-child { text-align: right; }
+.rep-total { display: flex; flex-wrap: wrap; gap: 2mm 4mm; align-items: baseline; justify-content: flex-end; margin-top: 2mm; border-top: .4mm solid var(--b); padding-top: 2mm; break-inside: avoid; } .rep-total b { font-size: 16pt; color: var(--b); }
+.rep-costs { break-inside: avoid; overflow-x: auto; }
 .rep-bar { position: sticky; top: 0; z-index: 5; display: flex; gap: 8px; justify-content: center; padding: 10px; background: #00507d; }
 .rep-bar button { font: 600 14px Arial, sans-serif; padding: 8px 14px; border-radius: 6px; border: 0; background: #fff; color: #00507d; cursor: pointer; }
 @media screen and (max-width: 820px) { .rep { width: 100%; min-height: 0; padding: 16px; margin: 0; } .rep-kpis { grid-template-columns: repeat(2, 1fr); } .rep-head { flex-direction: column; } .rep-meta { text-align: left; } }
-@media print { html, body { background: #fff; } .rep { width: auto; min-height: 0; margin: 0; padding: 0; } .rep-bar { display: none; } * { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+@media print { html, body { background: #fff; } .rep { width: auto; min-height: 0; margin: 0; padding: 0; } .rep-pt th { width: auto; font-size: 8.5pt; } .rep-pt td:nth-child(n+2), .rep-pt th:nth-child(n+2) { white-space: nowrap; } .rep-pt td:last-child, .rep-pt th:last-child { text-align: right; }
+.rep-total { display: flex; flex-wrap: wrap; gap: 2mm 4mm; align-items: baseline; justify-content: flex-end; margin-top: 2mm; border-top: .4mm solid var(--b); padding-top: 2mm; break-inside: avoid; } .rep-total b { font-size: 16pt; color: var(--b); }
+.rep-costs { break-inside: avoid; overflow-x: auto; }
+.rep-bar { display: none; } * { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
 `;
 
 /** Eigenständiger A4-Projektbericht ohne Website-Rahmen; Inhalt nur aus der geteilten Konfiguration. */
@@ -70,6 +76,9 @@ export default function ExcavationReport() {
   const { type } = useCustomerType();
   const slugs = [pick.main, pick.compact, pick.strong, bestDumper].filter(Boolean).map((x) => x!.id);
   const prices = useCalculatorPrices(slugs);
+  const snap = priceSnapshot(prices, m.lines, locationId, c.days, excavationLinePrice);
+  const money = (net: number) => `${formatEuro(priceFor(net, type))}`;
+  const dayLabel = `${c.days} ${c.days === 1 ? "Miettag" : "Miettage"}`;
   const contact = locationData.find((l) => l.id === locationId);
   const link = shareUrl(s, locationId);
   const qr = useMemo(() => { try { const q = qrcode(0, "L"); q.addData(link); q.make(); return q.createSvgTag({ cellSize: 2, margin: 0, scalable: true }); } catch { return ""; } }, [link]);
@@ -80,17 +89,18 @@ export default function ExcavationReport() {
 
   // Erst drucken, wenn Preise und alle Bilder (Logo, Produkte) geladen sind.
   useEffect(() => {
-    if (prices.isLoading && slugs.length) return;
+    if (snap.status === "loading" || (prices.isLoading && slugs.length)) return;
     const imgs = [...(root.current?.querySelectorAll("img") ?? [])];
     let alive = true;
     Promise.all(imgs.map((i) => (i.complete ? Promise.resolve() : i.decode().catch(() => undefined)))).then(() => { if (alive) setReady(true); });
     return () => { alive = false; };
-  }, [prices.isLoading, slugs.length, m.machines.length]);
+  }, [prices.isLoading, snap.status, slugs.length, m.machines.length]);
   useEffect(() => {
     if (ready && !printed.current && params.get("vorschau") !== "1") { printed.current = true; setTimeout(() => window.print(), 300); }
   }, [ready, params]);
 
   const price = (id: string) => {
+    if (snap.status === "loading") return "Preis wird berechnet …";
     const p = locationId ? excavationLinePrice(prices.data, id, locationId, 1, c.days) : null;
     return p == null ? "Preis auf Anfrage" : `Richtwert ${formatEuro(priceFor(p, type))} ${vatNote(type)} für ${c.days} ${c.days === 1 ? "Miettag" : "Miettage"}`;
   };
@@ -156,8 +166,20 @@ export default function ExcavationReport() {
             {dumpers.filter((d) => d.a.status !== "fit").map((d) => card("Dumper", { id: d.id, name: d.name, status: d.a.status, ok: d.a.status !== "unfit", check: d.a.status === "check", reasons: [d.a.reason] }, false))}
           </div></>}
           {pick.crane && <p className="rep-muted">{CRANE_NOTE}</p>}
-          <p className="rep-muted">Preise: Richtwerte nach unserer Staffel, Stand {today}, ohne Lieferung, Versicherung, Kraftstoff und Kaution; ohne Wochenendtage. Verbindlich ist erst unser Angebot.</p>
         </>}
+
+        {locationId && <section className="rep-costs" data-testid="report-costs">
+          <h2>Voraussichtliche Mietkosten</h2>
+          {!m.lines.length ? <p>Für deine Angaben ist noch kein Gerät nach vorliegenden Daten bestätigt – deshalb nennen wir keinen Paketpreis. Den Preis erhältst du mit unserem Angebot nach Abstimmung.</p>
+          : snap.status === "loading" ? <p data-testid="report-price-status">Preise werden berechnet …</p>
+          : snap.status === "error" ? <p data-testid="report-price-status">Preise konnten gerade nicht geladen werden – bitte Bericht neu öffnen oder Preis bei uns anfragen.</p>
+          : <><table className="rep-pt"><thead><tr><th>Produkt</th><th>Menge</th><th>Mietdauer</th><th>Einzelpreis / Tag</th><th>Positionspreis</th></tr></thead><tbody>
+              {snap.items.map((i) => <tr key={i.slug}><td>{byId(i.slug)?.name ?? i.slug}</td><td>{i.qty}</td><td>{dayLabel}</td><td>{i.unitNet != null ? money(i.unitNet) : "Preis auf Anfrage"}</td><td data-testid={`report-line-${i.slug}`}>{i.lineNet != null ? money(i.lineNet) : "Preis auf Anfrage"}</td></tr>)}
+            </tbody></table>
+            {snap.knownNet > 0 && <div className="rep-total"><span>{snap.complete ? "Gesamt (Richtwert)" : "Teilsumme der bekannten Preise"}</span><b data-testid="report-total">{money(snap.knownNet)}</b><span className="rep-muted">{vatNote(type)}</span></div>}
+            {!snap.complete && <p className="rep-muted">Mindestens eine Position hat noch keinen hinterlegten Preis – daher kein Gesamtpreis.</p>}</>}
+          <p className="rep-muted">Unverbindlicher Richtwert für {dayLabel} nach unserer Preisstaffel, Stand {today} – kein verbindliches Angebot, da noch kein Kalenderzeitraum gewählt ist. Nicht enthalten: Lieferung, Maschinenbruchversicherung, Kraftstoff, Kaution und Zusatzleistungen; Wochenendtarife werden erst mit dem Kalenderzeitraum berechnet. Verbindlich ist erst unser Angebot.</p>
+        </section>}
 
         <div className="rep-box"><strong>Unverbindliche Planungshilfe.</strong> Alle Werte sind Schätzungen; Dichte und Auflockerung sind allgemeine Planungswerte. {deep ? "Ab 1,25 m Tiefe sind nach DIN 4124 grundsätzlich Böschung oder Verbau nötig, bei ungünstigem Boden auch früher. " : ""}Vor dem Graben Leitungen erkunden und Abstand zu Gebäuden halten.</div>
 

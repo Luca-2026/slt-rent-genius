@@ -20,9 +20,10 @@ export function useCalculatorPrices(slugs: string[]) {
     queryKey: ["calc-prices", key],
     enabled: key.length > 0,
     queryFn: async () => {
-      const { data: products } = await supabase.from("b2b_managed_products").select(COLS).in("slug", key);
+      const { data: products, error } = await supabase.from("b2b_managed_products").select(COLS).in("slug", key);
+      if (error) throw error;
       const ids = (products ?? []).map((p: { id: string }) => p.id);
-      const { data: rows } = ids.length ? await supabase.from("b2b_managed_product_location_prices").select("*").in("managed_product_id", ids) : { data: [] };
+      const { data: rows } = ids.length ? await supabase.from("public_product_prices").select("*").in("managed_product_id", ids) : { data: [] };
       return { products: (products ?? []) as any[], rows: (rows ?? []) as LocationPriceRow[] };
     },
     staleTime: 300000,
@@ -35,6 +36,15 @@ export function linePrice(data: ReturnType<typeof useCalculatorPrices>["data"], 
   if (!p || days < 1) return null;
   const tier = tierPriceBau(resolveProductPrices(p, locationId, data?.rows), days);
   return tier ? tier.rate * days * qty : null;
+}
+
+export type PriceSnapshot = { status: "loading" | "error" | "ready"; items: { slug: string; qty: number; days: number; lineNet: number | null; unitNet: number | null }[]; knownNet: number; complete: boolean };
+/** Ein Preis-Snapshot für Rechner und Projektbericht: gleiche Daten, gleiche Funktion, kein veralteter Stand. */
+export function priceSnapshot(query: { data?: ReturnType<typeof useCalculatorPrices>["data"]; isLoading: boolean; isError: boolean }, lines: { slug: string; qty: number }[], locationId: string | undefined, days: number, priceOf: typeof linePrice = linePrice): PriceSnapshot {
+  const status = !lines.length ? "ready" : query.isLoading || (!query.data && !query.isError) ? "loading" : query.isError ? "error" : "ready";
+  const items = lines.map((l) => { const lineNet = status === "ready" && locationId ? priceOf(query.data, l.slug, locationId, l.qty, days) : null; return { slug: l.slug, qty: l.qty, days, lineNet, unitNet: lineNet != null ? lineNet / l.qty / days : null }; });
+  const known = items.filter((i) => i.lineNet != null);
+  return { status, items, knownNet: Math.round(known.reduce((sum, i) => sum + i.lineNet!, 0) * 1e6) / 1e6, complete: status === "ready" && items.length > 0 && known.length === items.length };
 }
 
 /** Findet den Artikel am Standort (veröffentlicht + dort verfügbar) samt Kategorie für den Link. */
@@ -50,13 +60,13 @@ function findAtLocation(locationId: string, slug: string): { product: Product; c
 export function CalculatorRecommendations({ lines, locationId, days, fallbackNames = {}, showPrices = true, priceOf = linePrice }: { lines: { slug: string; qty: number }[]; locationId: string; days: number; fallbackNames?: Record<string, string>; showPrices?: boolean; priceOf?: typeof linePrice }) {
   const version = useManagedProductsVersion();
   const { type } = useCustomerType();
-  const { data } = useCalculatorPrices(lines.map((l) => l.slug));
+  const query = useCalculatorPrices(lines.map((l) => l.slug));
   const resolved = useMemo(() => lines.map((l) => ({ ...l, hit: findAtLocation(locationId, l.slug) })), [lines, locationId, version]);
   const location = getLocationById(locationId);
   const bookable = resolved.filter((r) => r.hit);
-  const prices = resolved.map((r) => priceOf(data, r.slug, locationId, r.qty, days));
-  const total = prices.every((p) => p != null) && prices.length ? prices.reduce((s, p) => s! + p!, 0)! : null;
-
+  const snap = priceSnapshot(query, resolved.map((r) => ({ slug: r.slug, qty: r.qty })), locationId, days, priceOf);
+  const prices = snap.items.map((i) => i.lineNet);
+  const names = bookable.map((r) => `${r.qty} × ${r.hit!.product.name}`);
   return (
     <div className="mt-4 space-y-3">
       <ul className="divide-y divide-border rounded-lg border border-border bg-background">
@@ -65,16 +75,18 @@ export function CalculatorRecommendations({ lines, locationId, days, fallbackNam
             <span className="min-w-0 break-words"><strong>{r.qty} ×</strong>{" "}
               {r.hit ? <Link className="text-primary underline-offset-2 hover:underline" to={`/mieten/${locationId}/${r.hit.category}/${r.slug}`}>{r.hit.product.name}</Link> : <>{fallbackNames[r.slug] ?? r.slug} <span className="text-muted-foreground">(auf Anfrage)</span></>}
             </span>
-            {showPrices && <span className="font-semibold">{prices[i] != null ? formatEuro(priceFor(prices[i]!, type)) : "Preis auf Anfrage"}</span>}
+            {showPrices && <span className="font-semibold" data-testid={`calc-price-${r.slug}`}>{snap.status === "loading" ? "Preis wird berechnet …" : snap.status === "error" ? "Preis derzeit nicht abrufbar" : prices[i] != null ? formatEuro(priceFor(prices[i]!, type)) : "Preis auf Anfrage"}</span>}
           </li>
         ))}
       </ul>
-      {showPrices && total != null && days > 0 && <p className="text-sm font-semibold flex flex-wrap justify-between gap-2"><span>Richtwert gesamt für {days} {days === 1 ? "Tag" : "Tage"}</span><span>{formatEuro(priceFor(total, type))} <span className="font-normal text-muted-foreground">{vatNote(type)}</span></span></p>}
-      {location && bookable.length > 0 && (
-        <Button className="w-full h-auto min-h-10 whitespace-normal" onClick={() => openRentalBundle(bookable.map((r) => ({ slug: r.slug, name: r.hit!.product.name, image: r.hit!.product.image, quantity: r.qty })), location)}>
-          <ShoppingCart className="h-4 w-4 shrink-0" /> Alle empfohlenen Geräte in den Warenkorb
+      {showPrices && snap.status === "ready" && snap.knownNet > 0 && days > 0 && <p className="text-sm font-semibold flex flex-wrap justify-between gap-2" data-testid="calc-total"><span>{snap.complete ? "Richtwert gesamt" : "Teilsumme der bekannten Preise"} für {days} {days === 1 ? "Miettag" : "Miettage"}</span><span>{formatEuro(priceFor(snap.knownNet, type))} <span className="font-normal text-muted-foreground">{vatNote(type)}</span></span></p>}
+      {showPrices && snap.status === "ready" && !snap.complete && snap.knownNet > 0 && <p className="text-xs text-muted-foreground">Ohne Positionen mit „Preis auf Anfrage“ – kein Gesamtpreis.</p>}
+      {location && bookable.length > 0 && (<>
+        <Button className="w-full h-auto min-h-10 whitespace-normal" aria-label={`${bookable.length === 1 ? "1 Gerät" : `${bookable.length} Geräte`} in den Warenkorb legen: ${names.join(", ")}`} onClick={() => openRentalBundle(bookable.map((r) => ({ slug: r.slug, name: r.hit!.product.name, image: r.hit!.product.image, quantity: r.qty })), location)}>
+          <ShoppingCart className="h-4 w-4 shrink-0" /> {bookable.length === 1 ? `${bookable[0].hit!.product.name} in den Warenkorb` : `Diese ${bookable.length} Geräte in den Warenkorb`}
         </Button>
-      )}
+        <p className="text-xs text-muted-foreground">Übernommen werden: {names.join(", ")}. Den gemeinsamen Mietzeitraum bestätigst du im nächsten Schritt.</p>
+      </>)}
       {bookable.length < resolved.length && <p className="text-xs text-muted-foreground">Artikel mit „auf Anfrage“ sind an diesem Standort nicht online anfragbar – sprich uns gern an.</p>}
     </div>
   );
