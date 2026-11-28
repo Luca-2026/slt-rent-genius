@@ -55,20 +55,32 @@ function pick(specs: Record<string, string> | undefined, re: RegExp) {
   const k = Object.keys(specs).find((x) => re.test(x));
   return k ? specs[k] : undefined;
 }
-/** Länge in Metern aus „1.100 mm“, „80 cm“, „3,12 m“. */
+/** Länge in Metern aus „1.100 mm“, „80 cm“, „3,12 m“ (erste Angabe). */
 function lengthM(v?: string): number | null {
-  if (!v) return null;
-  const m = v.match(/(\d[\d.,]*)\s*(mm|cm|m)\b/);
-  if (!m) return null;
-  const x = n(m[1]);
-  return m[2] === "mm" ? x / 1000 : m[2] === "cm" ? x / 100 : x;
+  return lengthsM(v)[0] ?? null;
+}
+/** Alle Längenangaben einer Zeile in Metern, z. B. „1.100 mm einfahrbar auf 710 mm“ → [1,1; 0,71]. */
+function lengthsM(v?: string): number[] {
+  if (!v) return [];
+  return [...v.matchAll(/(\d[\d.,]*)\s*(mm|cm|m)(?![a-zäöü²³])/gi)].map((m) => {
+    const x = n(m[1]); const u = m[2].toLowerCase();
+    return u === "mm" ? x / 1000 : u === "cm" ? x / 100 : x;
+  }).filter((x) => Number.isFinite(x) && x > 0);
+}
+const VARIABLE_WIDTH = /einfahrbar|eingefahren|ausgefahren|ausfahrbar|verstellbar|hydraulisch/i;
+/** Kleinste Transportbreite: je Bauteil (Fahrwerk, Planierschild) die eingefahrene Breite, über alle Bauteile die breiteste. */
+function transportWidthM(specs?: Record<string, string>): number | null {
+  if (!specs) return null;
+  const keys = Object.keys(specs).filter((k) => /gesamtbreite|transportbreite|unterwagenbreite|spurbreite|fahrwerksbreite|^breite$|planierschild/i.test(k));
+  const perPart = keys.map((k) => { const l = lengthsM(specs[k]); return l.length ? (VARIABLE_WIDTH.test(specs[k]) || VARIABLE_WIDTH.test(k) ? Math.min(...l) : l[0]) : null; });
+  // Getrennte Felder „… eingefahren“ / „… ausgefahren“: ausgefahrene Breite ist nicht die Transportbreite.
+  const usable = perPart.filter((x, i): x is number => x != null && !/ausgefahren/i.test(keys[i]));
+  return usable.length ? Math.max(...usable) : null;
 }
 export interface MachineData { weightKg: number | null; widthM: number | null; digDepthM: number | null; struckM3: number | null; payloadKg: number | null }
 export function readMachine(specs?: Record<string, string>): MachineData {
   const w = pick(specs, /betriebsgewicht|maschinengewicht/i);
   const wm = w?.match(/(\d[\d.,]*)\s*(kg|t)\b/i);
-  const width = pick(specs, /gesamtbreite|transportbreite|unterwagenbreite/i);
-  const retract = width?.match(/einfahrbar auf\s*(\d[\d.,]*\s*(mm|cm|m))/i);
   const depth = pick(specs, /grabtiefe/i);
   const mulde = pick(specs, /mulden/i);
   const mm = mulde?.match(/(\d[\d.,]*)\s*l\b/i); // erste Angabe = gestrichen
@@ -76,7 +88,7 @@ export function readMachine(specs?: Record<string, string>): MachineData {
   const pm = pay?.match(/(\d[\d.,]*)\s*kg/i);
   return {
     weightKg: wm ? n(wm[1]) * (wm[2].toLowerCase() === "t" ? 1000 : 1) : null,
-    widthM: lengthM(retract?.[1] ?? width),
+    widthM: transportWidthM(specs),
     digDepthM: lengthM(depth),
     struckM3: mm ? n(mm[1]) / 1000 : null,
     payloadKg: pm ? n(pm[1]) : null,
@@ -84,28 +96,57 @@ export function readMachine(specs?: Record<string, string>): MachineData {
 }
 
 // ---------- Empfehlung Bagger ----------
-export const ACCESS_CLEARANCE_M = 0.2; // Bewegungsspielraum zusätzlich zur schmalsten Maschinenbreite
+/**
+ * Interne Beratungsstufen für die Zufahrt (keine Herstellervorgabe): Reserve = lichte Zufahrt − kleinste Transportbreite.
+ * < 0 passt geometrisch nicht · < 5 cm sehr knapp · 5 bis < 10 cm potenziell passend · ab 10 cm gute geometrische Vorauswahl.
+ * Anbaugeräte, Engstellen und die Arbeitsbreite vor Ort bleiben immer zu prüfen.
+ */
+export const ACCESS_TIGHT_M = 0.05;
+export const ACCESS_GOOD_M = 0.1;
+export type AccessTier = "none" | "tight" | "possible" | "good";
+export function accessTier(widthM: number, accessM: number): AccessTier {
+  const r = Math.round((accessM - widthM) * 1000) / 1000;
+  return r < 0 ? "none" : r < ACCESS_TIGHT_M ? "tight" : r < ACCESS_GOOD_M ? "possible" : "good";
+}
+const cm = (m: number) => fmt(m * 100, 0);
+function accessReason(tier: AccessTier, widthM: number, accessM: number): string {
+  const w = cm(widthM), a = cm(accessM);
+  if (tier === "none") return `benötigt nominell mindestens ${Math.ceil(widthM * 100 - 1e-9)} cm lichte Durchfahrt – ${a} cm reichen nicht`;
+  if (tier === "tight") return `sehr knapp: ${w} cm Transportbreite bei ${a} cm Zufahrt – bitte persönlich prüfen lassen`;
+  if (tier === "possible") return `potenziell passend: ${w} cm Transportbreite bei ${a} cm Zufahrt – Engstellen und Anbaugeräte bitte genau prüfen`;
+  return `${w} cm Transportbreite bei ${a} cm Zufahrt – gute Vorauswahl, Engstellen und Arbeitsbreite vor Ort beachten`;
+}
 export const USABLE_DEPTH_SHARE = 0.8; // Planungsfaktor: nominelle Grabtiefe ≠ wirtschaftliche Arbeitstiefe (gilt für jede Tiefe)
 export const TRENCH_SAFETY_DEPTH_M = 1.25; // DIN 4124: ab 1,25 m Böschung oder Verbau (bei standfestem Boden; sonst früher)
+/** Lichte Zufahrt unter der kleinsten bekannten Maschinenbreite → dezente Rückfrage, keine automatische Korrektur. */
+export function accessSanityHint(accessM: number | undefined, cands: { data: MachineData }[]): string | null {
+  const widths = cands.map((c) => c.data.widthM).filter((w): w is number => w != null);
+  if (!accessM || !widths.length || accessM >= Math.min(...widths)) return null;
+  return `Meinst du wirklich ${cm(accessM)} cm? Bitte lichte Breite prüfen (z. B. 80 cm für ein schmales Gartentor).`;
+}
 /** Mindest-Betriebsgewicht nach Menge (Produktivität, qualitative Planungsregel). */
 export function minWeightForVolume(m3: number) { return m3 > 100 ? 5000 : m3 > 30 ? 2500 : m3 > 5 ? 1500 : 0; }
 
 /** fit = nach vorliegenden Daten passend · check = Eignung prüfen lassen (Daten fehlen) · unfit = nach Daten ungeeignet */
 export type Fit = "fit" | "check" | "unfit";
 export interface Candidate { id: string; name: string; data: MachineData }
-export interface Assessment { id: string; name: string; status: Fit; ok: boolean; check: boolean; reasons: string[]; tooWide?: boolean; weightKg?: number | null }
+export interface Assessment { id: string; name: string; status: Fit; ok: boolean; check: boolean; reasons: string[]; tooWide?: boolean; weightKg?: number | null; accessTier?: AccessTier; widthM?: number | null }
 /** depthM: null = Tiefe unbekannt (nur bekanntes Volumen) → keine Eignung behaupten. */
 export interface Need { volume: number; depthM: number | null; accessM?: number }
 
 const worst = (a: Fit, b: Fit): Fit => (a === "unfit" || b === "unfit" ? "unfit" : a === "check" || b === "check" ? "check" : "fit");
 
 export function assessExcavator(c: Candidate, need: Need): Assessment {
-  const r: string[] = []; let status: Fit = "fit", tooWide = false;
+  const r: string[] = []; let status: Fit = "fit", tooWide = false, tier: AccessTier | undefined;
   const { weightKg, widthM, digDepthM } = c.data;
   if (need.accessM) {
     if (widthM == null) { status = worst(status, "check"); r.push("Breite nicht hinterlegt – Zufahrt bitte mit uns prüfen"); }
-    else if (widthM + ACCESS_CLEARANCE_M > need.accessM) { status = "unfit"; tooWide = true; r.push(`passt mit ${fmt(widthM * 100, 0)} cm Breite nicht durch ${fmt(need.accessM * 100, 0)} cm Zufahrt (inkl. ${fmt(ACCESS_CLEARANCE_M * 100, 0)} cm Spielraum)`); }
-    else r.push(`passt mit ${fmt(widthM * 100, 0)} cm durch die Zufahrt`);
+    else {
+      tier = accessTier(widthM, need.accessM);
+      r.push(accessReason(tier, widthM, need.accessM));
+      if (tier === "none") { status = "unfit"; tooWide = true; }
+      else if (tier !== "good") status = worst(status, "check");
+    }
   }
   if (need.depthM == null) { status = worst(status, "check"); r.push("Aushubtiefe unbekannt – Eignung bitte mit uns prüfen"); }
   else if (need.depthM > 0) {
@@ -113,8 +154,8 @@ export function assessExcavator(c: Candidate, need: Need): Assessment {
     else if (digDepthM * USABLE_DEPTH_SHARE < need.depthM) { status = "unfit"; r.push(`Grabtiefe ${fmt(digDepthM)} m reicht für ${fmt(need.depthM)} m nicht sicher aus`); }
     else r.push(`Grabtiefe ${fmt(digDepthM)} m ausreichend`);
   }
-  if (weightKg != null && weightKg < minWeightForVolume(need.volume)) r.push("bei dieser Menge eher langsam");
-  return { id: c.id, name: c.name, status, ok: status !== "unfit", check: status === "check", reasons: r, tooWide, weightKg };
+  // Menge wirkt nur als weicher Rankingfaktor in recommendExcavators – ohne Leistungsdaten keine Aussage zur Geschwindigkeit.
+  return { id: c.id, name: c.name, status, ok: status !== "unfit", check: status === "check", reasons: r, tooWide, weightKg, accessTier: tier, widthM };
 }
 
 export const CRANE_NOTE = "Unverbindliche Alternative: Ob ein größerer Bagger per Kran eingehoben werden kann, muss ein qualifizierter Hebedienst prüfen – unter Berücksichtigung von Herstellerfreigabe und Anschlagpunkten, Platz, Last und Tragfähigkeit des Untergrunds. Eine Zusage ist damit nicht verbunden.";
@@ -140,23 +181,30 @@ export function recommendExcavators(cands: Candidate[], need: Need): ExcavatorPi
     const mi = idx >= 0 ? idx : fit.length - 1;
     main = fit[mi].a; compact = mi > 0 ? fit[mi - 1].a : undefined; strong = mi + 1 < fit.length ? fit[mi + 1].a : undefined;
     const bigger = all.find((x) => x.a.status !== "fit" && ref(x) >= minW && ref(x) > ref(fit[mi]));
-    if (idx < 0 && bigger) hints.push(`Ein größerer Bagger wie der ${bigger.c.name} könnte bei dieser Menge Zeit sparen; seine Eignung ist aber nicht bestätigt. Mit dem ${fit[mi].c.name} ist die Arbeit nach deinen Angaben machbar, dauert aber länger.`);
+    if (idx < 0 && bigger) hints.push(`Ein größerer Bagger wie der ${bigger.c.name} kann bei dieser Menge Zeit sparen; seine Eignung ist aber noch zu prüfen. Der ${fit[mi].c.name} passt nach deinen Angaben – zur Arbeitsdauer können wir ohne Leistungsdaten keine Zusage machen.`);
   } else if (all.length) {
     smallest = all[0].a;
-    hints.push(all[0].a.tooWide ? "Selbst unser kleinster Bagger passt nach den hinterlegten Daten nicht durch diese Zufahrt (inkl. Bewegungsspielraum). Bitte stimme das Projekt mit uns ab." : "Für deine Angaben fehlen technische Daten oder die Grabtiefe reicht nicht. Bitte stimme die Maschinenwahl mit uns ab.");
+    const s0 = all[0];
+    hints.push(s0.a.tooWide && s0.c.data.widthM != null
+      ? `Unser kompakter ${s0.c.name} benötigt nominell mindestens ${Math.ceil(s0.c.data.widthM * 100 - 1e-9)} cm lichte Durchfahrtsbreite. Gibt es eine alternative Zufahrt? Gerne prüfen wir eine Lösung für dein Projekt.`
+      : s0.a.accessTier === "tight" || s0.a.accessTier === "possible"
+        ? `Die Zufahrt ist für den ${s0.c.name} knapp. Bitte stimme das Projekt mit uns ab – wir prüfen Engstellen, Anbaugeräte und Arbeitsbreite vor Ort.`
+        : "Für deine Angaben fehlen technische Daten oder die Grabtiefe reicht nicht. Bitte stimme die Maschinenwahl mit uns ab.");
   }
   const crane = all.some((x) => x.a.tooWide) && (all.some((x) => x.a.tooWide && ref(x) >= minW && (!main || ref(x) > (main.weightKg ?? 0))) || !main);
   return { main, compact, strong, smallest, hints, crane, all: all.map((x) => x.a), review: all.filter((x) => x.a.status === "check").map((x) => x.a), unfit: all.filter((x) => x.a.status === "unfit").map((x) => x.a) };
 }
 
 // ---------- Dumper ----------
-export interface DumperAssessment { status: Fit; reason: string; trips: ReturnType<typeof dumperTrips> }
+export interface DumperAssessment { status: Fit; reason: string; trips: ReturnType<typeof dumperTrips>; accessTier?: AccessTier }
 export function assessDumper(data: MachineData, accessM: number | undefined, looseVolume: number, looseDensity: number, fill: number): DumperAssessment {
   const trips = dumperTrips(looseVolume, looseDensity, data.struckM3 ?? 0, data.payloadKg ?? 0, fill);
   if (accessM && data.widthM == null) return { status: "check", reason: "Breite nicht hinterlegt – Zufahrt bitte mit uns prüfen", trips };
-  if (accessM && data.widthM! + ACCESS_CLEARANCE_M > accessM) return { status: "unfit", reason: `passt mit ${fmt(data.widthM! * 100, 0)} cm Breite nicht durch die Zufahrt`, trips };
-  if (!trips) return { status: "check", reason: "Fahrtenzahl nicht berechenbar – Mulde oder Nutzlast nicht hinterlegt", trips };
-  return { status: "fit", reason: `ca. ${trips.trips} Fahrten (${fmt(trips.perTrip, 2)} m³ je Fahrt, begrenzt durch ${trips.limitedBy === "volume" ? `Mulde bei ${fmt(fill * 100, 0)} % Füllgrad` : "Nutzlast"})`, trips };
+  const tier = accessM && data.widthM != null ? accessTier(data.widthM, accessM) : undefined;
+  if (tier === "none") return { status: "unfit", reason: accessReason(tier, data.widthM!, accessM!), trips, accessTier: tier };
+  if (tier === "tight" || tier === "possible") return { status: "check", reason: accessReason(tier, data.widthM!, accessM!), trips, accessTier: tier };
+  if (!trips) return { status: "check", reason: "Fahrtenzahl nicht berechenbar – Mulde oder Nutzlast nicht hinterlegt", trips, accessTier: tier };
+  return { status: "fit", accessTier: tier, reason: `ca. ${trips.trips} Fahrten (${fmt(trips.perTrip, 2)} m³ je Fahrt, begrenzt durch ${trips.limitedBy === "volume" ? `Mulde bei ${fmt(fill * 100, 0)} % Füllgrad` : "Nutzlast"})`, trips };
 }
 
 // ---------- Formularzustand, Grenzwerte und geteilte Links ----------

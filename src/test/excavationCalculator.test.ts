@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { shapeVolume, soilResult, dumperTrips, readMachine, recommendExcavators, assessExcavator, assessDumper, computeState, sanitizeState, decodeShare, encodeShare, INITIAL_STATE, CRANE_NOTE } from "@/lib/excavationCalculator";
+import { shapeVolume, soilResult, dumperTrips, readMachine, recommendExcavators, assessExcavator, assessDumper, computeState, sanitizeState, decodeShare, encodeShare, INITIAL_STATE, CRANE_NOTE, accessSanityHint } from "@/lib/excavationCalculator";
 
 const e10z = { id: "bobcat-e10z", name: "1t", data: readMachine({ Betriebsgewicht: "1176 kg", Gesamtbreite: "1100 mm einfahrbar auf 710 mm" }) };
 const xe20 = { id: "xcmg-xe20e", name: "2t", data: readMachine({ Betriebsgewicht: "2050kg", Gesamtbreite: "1300 mm einfahrbar auf 990 mm" }) };
@@ -29,18 +29,19 @@ describe("Aushubrechner – Mengen", () => {
 
 describe("Aushubrechner – Eignung", () => {
   const known = [withDepth(e10z, "1.800 mm"), withDepth(xe20, "2.400 mm")];
-  it("80 cm Zufahrt: kleinster Bagger nur zur Orientierung, keine Empfehlung, Kran nur als unverbindliche Prüfung", () => {
+  it("80 cm Zufahrt (9 cm Reserve): 1t potenziell passend, prüfen lassen, Kran nur als unverbindliche Prüfung", () => {
     const p = recommendExcavators(known, { volume: 5, depthM: 0.3, accessM: 0.8 });
-    expect(p.main).toBeUndefined(); expect(p.smallest?.id).toBe("bobcat-e10z"); expect(p.smallest?.status).toBe("unfit"); expect(p.smallest?.tooWide).toBe(true);
+    expect(p.main).toBeUndefined(); expect(p.smallest?.id).toBe("bobcat-e10z"); expect(p.smallest?.status).toBe("check"); expect(p.smallest?.accessTier).toBe("possible");
     expect(p.crane).toBe(true); expect(CRANE_NOTE).toMatch(/qualifizierter Hebedienst.*keine Zusage|Zusage ist damit nicht verbunden/);
   });
-  it("85 cm Zufahrt: 1t (71 cm + 20 cm Spielraum) passt nicht", () => {
-    expect(assessExcavator(known[0], { volume: 5, depthM: 0.3, accessM: 0.85 }).status).toBe("unfit");
+  it("85 cm Zufahrt (14 cm Reserve): 1t gute geometrische Vorauswahl", () => {
+    const a = assessExcavator(known[0], { volume: 5, depthM: 0.3, accessM: 0.85 });
+    expect(a.status).toBe("fit"); expect(a.accessTier).toBe("good");
   });
-  it("100 cm Zufahrt: 1t passt und ist Empfehlung, 2t passt nicht", () => {
+  it("100 cm Zufahrt: 1t passt und ist Empfehlung, 2t sehr knapp – Zeitersparnis nur qualitativ", () => {
     const p = recommendExcavators(known, { volume: 24, depthM: 1.2, accessM: 1 });
     expect(p.main?.id).toBe("bobcat-e10z"); expect(p.main?.status).toBe("fit");
-    expect(p.unfit.map((a) => a.id)).toContain("xcmg-xe20e"); expect(p.hints[0]).toMatch(/Zeit sparen.*nicht bestätigt/);
+    expect(p.review.find((a) => a.id === "xcmg-xe20e")?.accessTier).toBe("tight"); expect(p.hints[0]).toMatch(/Zeit sparen.*noch zu prüfen.*keine Zusage/);
   });
   it("20 m² × 120 cm ohne hinterlegte Grabtiefe: nur prüfen lassen, keine feste Empfehlung", () => {
     const p = recommendExcavators([e10z, xe20], { volume: 24, depthM: 1.2 });
@@ -90,5 +91,39 @@ describe("Aushubrechner – Formular und geteilte Links", () => {
   it("Share-Link erhält Expertenwerte inklusive Modus", () => {
     const s = { ...INITIAL_STATE, expert: true, density: "1,9", loosening: "0", fill: "70", access: "100", days: "3" };
     expect(decodeShare(encodeShare(s))).toEqual(s);
+  });
+});
+
+describe("Aushubrechner – Bobcat E10Z mit Herstellerdaten (Zufahrtsstufen)", () => {
+  const specs = { Betriebsgewicht: "1176 kg", Gesamtbreite: "1100 mm einfahrbar auf 710 mm", Grabtiefe: "1820 mm", Planierschild: "1100 mm einfahrbar auf 710 mm" };
+  const real = { id: "minibagger-1t", name: "1t Minibagger", data: readMachine(specs) };
+  it("liest Transportbreite 71 cm und Grabtiefe 1,82 m", () => { expect(real.data.widthM).toBeCloseTo(0.71); expect(real.data.digDepthM).toBeCloseTo(1.82); });
+  const cases: [number, string, string][] = [[40, "none", "unfit"], [70, "none", "unfit"], [71, "tight", "check"], [75, "tight", "check"], [80, "possible", "check"], [85, "good", "fit"], [90, "good", "fit"], [100, "good", "fit"]];
+  for (const depth of [0.3, 1.2]) for (const [cmAccess, tier, status] of cases) it(`${cmAccess} cm Zufahrt, ${depth * 100} cm Tiefe → ${tier}/${status}`, () => {
+    const a = assessExcavator(real, { volume: 20 * depth, depthM: depth, accessM: cmAccess / 100 });
+    expect(a.accessTier).toBe(tier); expect(a.status).toBe(status);
+    expect(a.reasons.join(" ")).not.toMatch(/Grabtiefe nicht hinterlegt|langsam/);
+  });
+  it("40 cm: freundlicher Hinweis auf 71 cm, nie passend, plus Rückfrage zur Eingabe", () => {
+    const p = recommendExcavators([real], { volume: 6, depthM: 0.3, accessM: 0.4 });
+    expect(p.main).toBeUndefined(); expect(p.smallest?.status).toBe("unfit");
+    expect(p.hints[0]).toBe("Unser kompakter 1t Minibagger benötigt nominell mindestens 71 cm lichte Durchfahrtsbreite. Gibt es eine alternative Zufahrt? Gerne prüfen wir eine Lösung für dein Projekt.");
+    expect(accessSanityHint(0.4, [real])).toMatch(/^Meinst du wirklich 40 cm\?/); expect(accessSanityHint(0.71, [real])).toBeNull();
+  });
+  it("6 m³ bei 90 cm: E10Z Empfehlung ohne Langsam-Aussage", () => {
+    const p = recommendExcavators([real], { volume: 6, depthM: 0.3, accessM: 0.9 });
+    expect(p.main?.id).toBe("minibagger-1t"); expect(p.main?.reasons.join(" ")).not.toMatch(/langsam/);
+  });
+  it("Parser: eingefahren/ausgefahren als getrennte Felder und deutsche Trennzeichen", () => {
+    expect(readMachine({ "Spurbreite eingefahren": "0,71 m", "Spurbreite ausgefahren": "1.100 mm" }).widthM).toBeCloseTo(0.71);
+    expect(readMachine({ Gesamtbreite: "1.300 mm (eingefahren 990 mm)" }).widthM).toBeCloseTo(0.99);
+    expect(readMachine({ Gesamtbreite: "78 cm" }).widthM).toBeCloseTo(0.78);
+  });
+  it("Dumper nutzt dieselben Stufen (80 cm breit)", () => {
+    const d = readMachine({ Gesamtbreite: "80 cm", "Max. Tragfähigkeit": "800 kg", "Muldengröße": "305 l" });
+    expect(assessDumper(d, 0.79, 6, 1.33, 0.85).status).toBe("unfit");
+    expect(assessDumper(d, 0.82, 6, 1.33, 0.85).accessTier).toBe("tight");
+    expect(assessDumper(d, 0.87, 6, 1.33, 0.85).accessTier).toBe("possible");
+    expect(assessDumper(d, 0.9, 6, 1.33, 0.85).status).toBe("fit");
   });
 });

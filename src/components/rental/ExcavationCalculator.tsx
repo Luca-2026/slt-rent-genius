@@ -67,7 +67,7 @@ export function ExcavationCalculator({ locationId, currentProductId, heading = "
   useEffect(() => { try { sessionStorage.setItem(KEY, JSON.stringify(s)); } catch { /* */ } }, [s]);
   const set = (p: Partial<ExcState>) => setAll((o) => ({ s: { ...o.s, ...p }, badLink: o.badLink }));
   const m = useExcavationModel(s, locationId);
-  const { c, r, pick, dumpers, lines, byId, locName } = m;
+  const { c, r, pick, dumpers, lines, byId, locName, accessHint } = m;
   const soil = SOILS[s.soil];
   const current = currentProductId ? byId(currentProductId) : undefined;
   const currentAssess = current && /bagger/.test(current.sub) ? pick.all.find((a) => a.id === current.id) : undefined;
@@ -143,7 +143,7 @@ export function ExcavationCalculator({ locationId, currentProductId, heading = "
             <p className="text-xs text-muted-foreground">Geschätzter Planungswert: {f(soil.density)} t/m³, {soil.loosening} % Auflockerung</p>
           </div>
           <div className="grid grid-cols-2 gap-2">
-            <div className="space-y-1 min-w-0"><Label htmlFor="exc-access" className="text-xs">Schmalste Zufahrt (cm, optional)</Label><Input id="exc-access" inputMode="decimal" maxLength={12} aria-invalid={bad(s.access, PARAM_LIMITS.access)} className={bad(s.access, PARAM_LIMITS.access) ? "border-destructive" : ""} value={s.access} onFocus={(e) => e.currentTarget.select()} onChange={(e) => set({ access: e.target.value })} /></div>
+            <div className="space-y-1 min-w-0"><Label htmlFor="exc-access" className="text-xs">Schmalste Zufahrt (cm, optional)</Label><Input id="exc-access" inputMode="decimal" maxLength={12} aria-invalid={bad(s.access, PARAM_LIMITS.access)} className={bad(s.access, PARAM_LIMITS.access) ? "border-destructive" : ""} value={s.access} onFocus={(e) => e.currentTarget.select()} onChange={(e) => set({ access: e.target.value })} />{accessHint && <p className="text-xs text-muted-foreground" data-testid="access-hint">{accessHint}</p>}</div>
             <div className="space-y-1 min-w-0"><Label htmlFor="exc-days" className="text-xs">Miettage</Label><Input id="exc-days" inputMode="numeric" maxLength={12} aria-invalid={bad(s.days, PARAM_LIMITS.days)} className={bad(s.days, PARAM_LIMITS.days) ? "border-destructive" : ""} value={s.days} onFocus={(e) => e.currentTarget.select()} onChange={(e) => set({ days: e.target.value })} /></div>
           </div>
           <label className="flex items-center justify-between gap-3 text-sm"><span>Expertenmodus</span><Switch aria-label="Expertenmodus" checked={s.expert} onCheckedChange={(v) => set({ expert: v })} /></label>
@@ -166,7 +166,7 @@ export function ExcavationCalculator({ locationId, currentProductId, heading = "
 
           {!locationId ? <p className="text-sm text-muted-foreground">Wähle einen Standort, um passende Maschinen zu sehen.</p> : c.bank > 0 && (<>
             {currentAssess && <p className={`rounded-lg border p-3 text-sm ${BADGE[currentAssess.status]}`}>
-              <strong>Dieser Bagger:</strong> {currentAssess.tooWide ? "passt nicht durch deine Zufahrt." : currentAssess.status === "fit" ? "nach vorliegenden Daten passend." : currentAssess.status === "check" ? "Eignung bitte mit uns abstimmen – technische Daten fehlen." : "nach vorliegenden Daten ungeeignet."} {currentAssess.reasons.join(" · ")}</p>}
+              <strong>Dieser Bagger:</strong> {currentAssess.tooWide ? "passt nicht durch deine Zufahrt." : currentAssess.status === "fit" ? "nach vorliegenden Daten passend." : currentAssess.status === "check" ? "Eignung bitte mit uns abstimmen." : "nach vorliegenden Daten ungeeignet."} {currentAssess.reasons.join(" · ")}</p>}
             <div>
               <h3 className="text-sm font-semibold text-headline mb-1">Bagger in {locName}</h3>
               {(pick.main || pick.smallest) && <ul className="divide-y divide-border rounded-lg border border-border bg-background">

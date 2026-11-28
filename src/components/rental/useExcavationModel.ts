@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { LOCATION_LABELS } from "@/lib/inventoryAvailability";
 import { getLocationById, getProductsForLocationCategory } from "@/data/rentalData";
 import { useManagedProductsVersion } from "@/data/managedProductsCache";
-import { computeState, soilResult, readMachine, recommendExcavators, assessDumper, type ExcState, type Assessment } from "@/lib/excavationCalculator";
+import { computeState, soilResult, readMachine, recommendExcavators, accessSanityHint, assessDumper, type ExcState, type Assessment } from "@/lib/excavationCalculator";
 
 export interface Machine { id: string; name: string; image?: string; sub: string; onRequest: boolean; rentware: boolean; data: ReturnType<typeof readMachine> }
 /** Gemeinsame Auswertung für Rechner und Projektbericht – damit beide exakt dasselbe zeigen. */
@@ -23,10 +23,10 @@ export function useExcavationModel(s: ExcState, locationId?: string) {
   const lines = [pick.main && { slug: pick.main.id, qty: 1 }, bestDumper && { slug: bestDumper.id, qty: 1 }].filter(Boolean) as { slug: string; qty: number }[];
   const byId = (id: string) => machines.find((m) => m.id === id);
   const location = locationId ? getLocationById(locationId) : undefined;
-  return { c, r, machines, excavators, pick, dumpers, bestDumper, lines, byId, location, locName: location ? LOCATION_LABELS[location.id] ?? location.name : undefined };
+  return { c, r, accessHint: accessSanityHint(c.accessM, excavators), machines, excavators, pick, dumpers, bestDumper, lines, byId, location, locName: location ? LOCATION_LABELS[location.id] ?? location.name : undefined };
 }
 export const productPath = (locationId: string, id: string) => `/mieten/${locationId}/erdbewegung/${id}`;
-export const statusLabel = (a: Pick<Assessment, "status">) => (a.status === "fit" ? "Nach vorliegenden Daten passend" : a.status === "check" ? "Eignung prüfen lassen" : "Nach Daten ungeeignet");
+export const statusLabel = (a: Pick<Assessment, "status"> & { accessTier?: Assessment["accessTier"] }) => (a.status === "check" && a.accessTier === "tight" ? "Sehr knapp – persönliche Prüfung nötig" : a.status === "check" && a.accessTier === "possible" ? "Potenziell passend – genau prüfen lassen" : a.status === "fit" ? "Nach vorliegenden Daten passend" : a.status === "check" ? "Eignung prüfen lassen" : "Nach Daten ungeeignet");
 
 const n1 = (v: number, d = 1) => v.toLocaleString("de-DE", { minimumFractionDigits: d, maximumFractionDigits: d });
 export const SHAPE_LABELS: Record<string, string> = { rect: "Rechteck", area: "Fläche", trench: "Graben", circle: "Kreis", volume: "Bekanntes Volumen" };
