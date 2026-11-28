@@ -1,6 +1,6 @@
 # Agent rules
 - Routine customer mail gates use _shared/customer-email-policy; document, staff and required-action sends stay independent of suppressed acknowledgements.
-- SEO export reads published CMS facts without writes; generated head tags are Helmet-owned, URL segments encoded once, and rental structured-data prices use the shared display conversion. This prevents static/client drift and duplicated metadata without changing business data.
+- SEO export reads published CMS facts read-only; head tags Helmet-owned, URL segments encoded once, JSON-LD prices via shared display conversion (no static/client drift).
 - Subdirectories have their own AGENTS.md; read it before changing files there.
 - src/components/b2b/admin/AGENTS.md steuert die CMS-Artikelmaske: Preisschema je Artikel, Hauptkategorie und die Preisregeln (Pflicht, Rückfallstufen, Alt-Textfelder).
 - WhatsApp: locationWhatsAppContacts.ts + BonnWhatsAppContact; WhatsAppIcon.tsx = Markenglyph.
