@@ -5,7 +5,7 @@
 - src/components/b2b/admin/AGENTS.md steuert die CMS-Artikelmaske: Preisschema je Artikel, Hauptkategorie und die Preisregeln (Pflicht, Rückfallstufen, Alt-Textfelder).
 - WhatsApp: locationWhatsAppContacts.ts + BonnWhatsAppContact; WhatsAppIcon.tsx = Markenglyph.
 - Payment-term eligibility: _shared/customer-payment-terms.ts; validate before numbering, preserve issued snapshots.
-- Coupons: manual_rental_coupons is separate from feedback rewards; shared protected check/reserve/redeem functions and acceptance triggers consume once. Rates are server-validated; feedback-coupon-math excludes extras. Public requested_coupon_code stays in raw_payload until checked offer creation. Feedback completeness is enforced on insert; historic submissions remain idempotent.
+- Coupons: manual_rental_coupons is separate from feedback rewards; shared protected check/reserve/redeem functions and acceptance triggers consume once. Rates are server-validated; feedback-coupon-math excludes extras. Public requested_coupon_code stays in raw_payload until checked offer creation. Feedback completeness enforced on insert.
 - Signing overlays: ref counting + route gating.
 - Inquiry delivery signatures: absent customers receive hashed single-use delivery_signature_links; service-only complete_delivery_signature atomically stores customer signature/time and versioned signed PDF, preserving the staff protocol. Protocol quantities use quantity for piece/set lines, articles for duration lines.
 - Inquiry invoice previews: same final renderer, no number/write/mail side effects; editors require preview of current data.
@@ -19,7 +19,7 @@
 - Kundengruppen-Filter nur über src/lib/customerSegment.ts (Filter: Privat vs. Geschäftskunden inkl. B2B-Portal)
 - The customer registry's independent portal toggle uses matchesPortalRegistration with a linked B2B profile and URL state; keep the shared business segment inclusive to preserve other lists.
 - Credit assessments use append-only customer_credit_assessments with can_manage_credit_checks (admin or active branch manager); provider recommendations are separate from granted B2B limits and never change payment eligibility. Nonportal checks are explicit manual entries until Creditsafe integration is configured.
-- Credit company matching uses findCreditCustomerMatches for normalized suggestions; explicit selection confirms CRM association, and save-and-check persists the customer before navigating to the assessment.
+- Credit company matching: findCreditCustomerMatches suggests; explicit selection confirms; save-and-check persists before navigating.
 - Credit-limit escalation uses protected request/apply/reject RPCs with admin-only linked staff todos; a pending request never changes the limit, and explicit decisions close the shared task atomically.
 - StaffHome metrics: dashboardMetrics.ts; revenue includes cancelled originals and credits in both sources, all totals agree. Accepted offers: isAwaitingOfferConfirmation, no channel/age filter. Closeout: hasRentalEnded (Berlin), rentalCloseoutTasks. Calendar/list/dashboard dates use effectiveStart/effectiveEnd; end-before-start requires review, never overdue or an invented return date.
 - Offene Kundenanfragen (Freischaltung, Kreditlimit, Löschung) nur über src/lib/customerActions.ts (getestet) – gleiche Regel in Kundenkartei und Startseite; Portalkunden werden in der Kundenkartei über die Kundenakte bearbeitet.
