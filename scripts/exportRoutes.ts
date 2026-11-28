@@ -30,6 +30,7 @@ import { orderSpecs } from "../src/lib/specOrder";
 import { localizeProductText } from "../src/data/productPageContent";
 import { getLocationById as getRentalLocationById } from "../src/data/rentalData";
 import { PRODUCT_SUBCATEGORIES } from "../src/data/productSubcategories";
+import { validateCatalogSnapshot, parseContentRangeTotal } from "../src/lib/publicationRefresh";
 import { seoPublicImage } from "../src/lib/seoPublicImage";
 import { seoTopicRoutes } from "../src/data/seoTopicRoutes";
 import { displayPrice } from "../src/lib/priceDisplay";
@@ -54,7 +55,7 @@ async function fetchUsedMachineRoutes(): Promise<SeoRoute[]> {
       `?select=slug,manufacturer,model,year,hours,location,price_net,price_on_request,images,updated_at,status` +
       `&status=neq.sold`;
     const res = await fetch(endpoint, {
-      headers: { apikey: key, Authorization: `Bearer ${key}` },
+      headers: { apikey: key, Authorization: `Bearer ${key}`, Prefer: "count=exact" },
     });
     if (!res.ok) {
       console.warn(`[exportRoutes] used_machines fetch failed: ${res.status}`);
@@ -142,13 +143,16 @@ async function fetchManagedProducts(): Promise<ManagedProductRoutePayload[]> {
       `${url}/rest/v1/managed_products_public` +
       `?select=*&limit=10000`;
     const res = await fetch(endpoint, {
-      headers: { apikey: key, Authorization: `Bearer ${key}` },
+      headers: { apikey: key, Authorization: `Bearer ${key}`, Prefer: "count=exact" },
     });
     if (!res.ok) {
       throw new Error(`[exportRoutes] Authoritative CMS request failed: ${res.status}`);
     }
     const rows = (await res.json()) as ManagedProductRoutePayload[];
     if (!Array.isArray(rows) || !rows.length) throw new Error("Authoritative CMS returned no products; export blocked");
+    // Paket 1B: abgeschnittene/paginierte Antworten (PostgREST max-rows) dürfen keinen Teilkatalog erzeugen.
+    const check = validateCatalogSnapshot(rows, parseContentRangeTotal(res.headers.get("content-range")));
+    if (!check.ok) throw new Error(`Incomplete CMS snapshot (${check.reason}); export blocked`);
     return rows;
   } catch (err) {
     throw new Error(`[exportRoutes] CMS export blocked: ${(err as Error).message}`);
