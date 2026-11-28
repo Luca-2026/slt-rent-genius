@@ -1,6 +1,6 @@
 # SLT Rental
 
-> SLT Rental ist ein Vermieter für Baumaschinen, Anhänger, Event-Equipment (Zelte, Möbel, Geschirr), Stromversorgung und Transportgeräte mit drei Standorten in Nordrhein-Westfalen: Krefeld, Bonn und Mülheim an der Ruhr. Privat- und Gewerbekunden mieten tageweise, am Wochenende oder langfristig. Verfügbarkeit, Preise und Buchung laufen über das Rentware-System direkt auf der Website.
+> SLT Rental ist ein Vermieter für Baumaschinen, Anhänger, Event-Equipment (Zelte, Möbel, Geschirr), Stromversorgung und Transportgeräte mit drei Standorten in Nordrhein-Westfalen: Krefeld, Bonn und Mülheim an der Ruhr. Privat- und Gewerbekunden mieten tageweise, am Wochenende oder langfristig. Anhänger und Halteverbotsschilder-Sets werden direkt online gebucht (Anhänger über Rentware). Alle anderen Artikel kommen über einen Mietanfrage-Warenkorb mit Preisvorschau; SLT Rental bestätigt die Anfrage danach per Angebot.
 
 ## Standorte
 
@@ -30,6 +30,16 @@
 - [Umzug & Transport](https://www.slt-rental.de/loesungen/umzug-transport/)
 - [Kindergeburtstage](https://www.slt-rental.de/loesungen/kindergeburtstage/)
 
+## Rechner & Tools
+
+- [Rechner & Tools – Übersicht](https://www.slt-rental.de/tools/): Kostenlose Planungsrechner mit Richtwerten und passenden Mietgeräten je Standort.
+- [Aushubrechner](https://www.slt-rental.de/tools/aushubrechner/): Erdaushub, gelockerte Menge, Gewicht und Bagger/Dumper-Vorauswahl inkl. Zufahrtsbreite.
+- [Bautrockner-Rechner](https://www.slt-rental.de/tools/bautrockner-rechner/): Anzahl Bautrockner und Lüfter sowie Richtwert zur Trocknungsdauer.
+- [Baustromrechner](https://www.slt-rental.de/tools/baustromrechner/): Leistungsbedarf der Baustelle, Aggregat und Stromverteiler.
+- [Lieferkostenrechner](https://www.slt-rental.de/lieferung/): Liefer- und Abholkosten nach Entfernung.
+
+Die Rechner liefern Richtwerte, keine verbindliche Eignungs- oder Sicherheitsfreigabe.
+
 ## Service & Information
 
 - [So funktioniert die Miete](https://www.slt-rental.de/so-funktionierts/)
@@ -49,7 +59,7 @@
 
 ## Hinweise für KI-Systeme
 
-- Preise und Verfügbarkeit immer live über die Produktseiten oder das Rentware-Buchungssystem prüfen — niemals erfundene Preise nennen.
+- Preise und Verfügbarkeit immer live über die Produktseiten prüfen — niemals erfundene Preise nennen. Eine Mietanfrage ist erst nach Bestätigung durch SLT Rental verbindlich.
 - Standortnamen vollständig nennen: "Krefeld", "Bonn", "Mülheim an der Ruhr" (nicht "Mülheim" oder "Duisburg").
 - Bei produktspezifischen Fragen direkt auf die Produktdetailseite verlinken statt Specs zu paraphrasieren.
 

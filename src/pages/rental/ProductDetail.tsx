@@ -1,6 +1,6 @@
 import { seoPublicImage } from "@/lib/seoPublicImage";
 import { seoRentalOffer } from "@/lib/seoProductOffer";
-import { isAccessoryItem } from "@/data/categoryModel";
+import { isAccessoryItem, RENAMED_PRODUCT_SLUGS } from "@/data/categoryModel";
 import { seoPath } from "@/lib/seoUrl";
 import { Navigate, useParams, Link, useNavigate } from "react-router-dom";
 import { categoryContent as seoCategoryContent } from "@/components/rental/ProductSEOContent";
@@ -538,6 +538,13 @@ export default function ProductDetail() {
         </div>
       </Layout>
     );
+  }
+
+  // Umbenannter Alt-Slug: nur auf den belegten Nachfolger am selben Standort weiterleiten.
+  const renamedSlug = productId ? RENAMED_PRODUCT_SLUGS[productId] : undefined;
+  if (location && categoryId && !product && renamedSlug) {
+    const successor = getProductsForLocationCategory(location.id, categoryId).find((p) => p.id === renamedSlug);
+    if (successor) return <Navigate to={`/mieten/${location.id}/${categoryId}/${successor.id}/`} replace />;
   }
 
   if (!location || !category || !product) {

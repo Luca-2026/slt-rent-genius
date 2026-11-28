@@ -25,8 +25,10 @@ import {
   resolveLegacyProduct,
   resolveLegacyCategory,
 } from "../src/data/legacyRedirects";
-import { isSaleItem, isAccessoryItem, categoryDisplayName } from "../src/data/categoryModel";
+import { isSaleItem, isAccessoryItem, categoryDisplayName, RENAMED_PRODUCT_SLUGS } from "../src/data/categoryModel";
 import { orderSpecs } from "../src/lib/specOrder";
+import { localizeProductText } from "../src/data/productPageContent";
+import { getLocationById as getRentalLocationById } from "../src/data/rentalData";
 import { PRODUCT_SUBCATEGORIES } from "../src/data/productSubcategories";
 import { seoPublicImage } from "../src/lib/seoPublicImage";
 import { seoTopicRoutes } from "../src/data/seoTopicRoutes";
@@ -159,6 +161,12 @@ const LOCATION_DISPLAY_FOR_OVERRIDE: Record<string, string> = {
   bonn: "Bonn",
   muelheim: "Mülheim an der Ruhr",
 };
+const LOCATION_EMAIL_BY_NAME: Record<string, string> = Object.fromEntries(
+  Object.entries(LOCATION_DISPLAY_FOR_OVERRIDE).map(([id, name]) => [
+    name,
+    getRentalLocationById(id)?.email ?? `${id}@slt-rental.de`,
+  ]),
+);
 function clampTitle(s: string, max = 60) {
   if (s.length <= max) return s;
   const cut = s.slice(0, max);
@@ -217,19 +225,11 @@ function clampDescription(s: string, max = 155) {
 // Auf den Seiten der anderen Standorte ist das falsch und erzeugt zudem
 // Duplicate Content. Deshalb Ortsnamen immer auf den aktuellen Standort ziehen.
 function localizeToLocation(text: string, locName: string): string {
-  let out = text
-    .replace(/Krefeld\s*[&,/]\s*Bonn\s*[&,/]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locName)
-    .replace(/Bonn\s*[&,/]\s*Krefeld\s*[&,/]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locName)
-    .replace(/Krefeld\s*[&,/]\s*Bonn/gi, locName)
-    .replace(/Bonn\s*[&,/]\s*Krefeld/gi, locName)
-    .replace(/Krefeld\s*[&,/]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locName)
-    .replace(/Bonn\s*[&,/]\s*Mülheim(?:\s*an\s*der\s*Ruhr)?/gi, locName);
-  if (locName !== "Krefeld") out = out.replace(/\bKrefeld\b/g, locName);
-  if (locName !== "Bonn") out = out.replace(/\bBonn\b/g, locName);
-  if (!locName.startsWith("Mülheim")) {
-    out = out.replace(/\bMülheim(?:\s*an\s*der\s*Ruhr)?\b/g, locName);
-  }
-  return dedupeLocationName(out, locName);
+  // Gleiche Lokalisierung wie die React-Seite (Adresse, PLZ, Öffnungszeiten,
+  // E-Mail, „Hauptsitz Krefeld“-Schutz) – sonst entstehen im Prerender
+  // Mischadressen wie „Anrather Straße 291, 47807 Bonn“.
+  const email = LOCATION_EMAIL_BY_NAME[locName] ?? "mieten@slt-rental.de";
+  return dedupeLocationName(localizeProductText(text, { name: locName, email }), locName);
 }
 
 /**
@@ -431,6 +431,10 @@ for (const route of allRoutes) {
   };
   for (const [title, group] of groups) {
     if (group.length < 2) continue;
+    // Standort-Hub-Titel stammen aus src/data/hubSeo.ts und müssen exakt dem
+    // React-Titel entsprechen; Kollisionen (z. B. mit /mieten-in/…) bleiben
+    // sichtbar für die separate Kannibalisierungsprüfung statt Kunst-Suffixen.
+    if (group.some((r) => /^\/mieten\/[a-z]+$/.test(r.path))) continue;
     for (const r of group) {
       const slug = r.path.split("/").filter(Boolean).pop() || "";
       const known = new Set(
@@ -578,7 +582,8 @@ writeFileSync(outPath, JSON.stringify(payload), "utf-8");
 const legacyRules = buildLegacyRedirectRules();
 for (const old of ALL_ROUTES) {
   if (old.routeType !== "product" || !old.productData) continue;
-  const current = managedProducts.find(m => m.slug === old.productData?.id && m.available_locations.includes(old.productData.locationId));
+  const currentSlug = RENAMED_PRODUCT_SLUGS[old.productData.id] ?? old.productData.id;
+  const current = managedProducts.find(m => m.slug === currentSlug && m.available_locations.includes(old.productData.locationId));
   if (!current) continue;
   const target = `/mieten/${old.productData.locationId}/${current.category}/${current.slug}`;
   if (target !== old.path) legacyRules.unshift({ from: old.path, to: `${target}/`, kind: "product" });

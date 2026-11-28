@@ -57,3 +57,17 @@ describe("localizeProductText – Standortadressen", () => {
     expect(out).toBe("Abholung Drachenburgstraße 8.");
   });
 });
+
+describe("localizeProductText – Prerender-Regression Standortadresse", () => {
+  const faq = "Am SLT-Hauptsitz, Anrather Straße 291, 47807 Krefeld – Mo–Fr 08:00–18:00 Uhr und Sa 10:00–14:30 Uhr.";
+  it("erzeugt nie eine Krefelder Straße mit fremder Stadt", () => {
+    for (const loc of [bonn, muelheim]) {
+      const out = localizeProductText(faq, loc);
+      expect(out).not.toMatch(/Anrather Straße 291, 47807 (Bonn|Mülheim)/);
+      expect(out).not.toContain("47807");
+    }
+  });
+  it("lässt echte Verweise auf den Hauptsitz Krefeld stehen", () => {
+    expect(localizeProductText("Disposition aus unserem Hauptsitz Krefeld.", bonn)).toContain("Hauptsitz Krefeld");
+  });
+});

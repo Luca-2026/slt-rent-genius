@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { LOCATION_HUB_SEO_DESCRIPTIONS, locationHubTitle, locationHubH1 } from "@/data/hubSeo";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_LOCATION_JSONLD, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
@@ -51,38 +52,6 @@ const locationDescriptions: Record<string, { de: string; en: string }> = {
   },
 };
 
-// SEO-optimized meta descriptions (different from visible text for better CTR)
-const locationSeoDescriptions: Record<string, { de: string; en: string }> = {
-  krefeld: {
-    de: "Baumaschinen & Anhänger mieten in Krefeld ✓ Minibagger, Arbeitsbühnen, Event-Equipment ✓ 24/7 Anhänger-Abholung ✓ Tiefpreisgarantie",
-    en: "Rent construction equipment & trailers in Krefeld ✓ Mini excavators, aerial platforms, event equipment ✓ 24/7 trailer pickup ✓ Fair rental prices",
-  },
-  bonn: {
-    de: "Baumaschinen & Equipment mieten in Bonn ✓ Minibagger, Anhänger, Arbeitsbühnen, Hüpfburgen ✓ Lieferung auf die Baustelle ✓ Tiefpreisgarantie",
-    en: "Rent construction equipment in Bonn ✓ Mini excavators, trailers, aerial platforms ✓ Delivery to your site ✓ Weekend rates available",
-  },
-  muelheim: {
-    de: "Baumaschinen mieten in Mülheim an der Ruhr ✓ Bobcat-Bagger, Dumper, Radlader ✓ Erdbewegung ✓ Tiefpreisgarantie ✓ Lieferung im Ruhrgebiet",
-    en: "Rent construction equipment in Mülheim an der Ruhr ✓ Bobcat excavators, dumpers, wheel loaders ✓ Professional earthmoving ✓ Delivery in the Ruhr area",
-  },
-};
-
-// SEO-optimized title tags
-const locationSeoTitles: Record<string, { de: string; en: string }> = {
-  krefeld: {
-    de: "Baumaschinen & Anhänger mieten in Krefeld",
-    en: "Rent Equipment & Trailers in Krefeld",
-  },
-  bonn: {
-    de: "Baumaschinen & Equipment mieten in Bonn",
-    en: "Rent Equipment in Bonn – Best Price Guarantee",
-  },
-  muelheim: {
-    de: "Baumaschinen mieten in Mülheim an der Ruhr",
-    en: "Rent Construction Equipment in Mülheim an der Ruhr",
-  },
-};
-
 export default function LocationCategories() {
   const { locationId } = useParams<{ locationId: string }>();
   const navigate = useNavigate();
@@ -129,8 +98,8 @@ export default function LocationCategories() {
   return (
     <Layout>
       <SEO
-        title={`${locationSeoTitles[location.id]?.[lang] || locationSeoTitles[location.id]?.de || `Equipment mieten in ${location.name}`} | SLT Rental`}
-        description={locationSeoDescriptions[location.id]?.[lang] || locationSeoDescriptions[location.id]?.de || description}
+        title={locationHubTitle(location.id, lang)}
+        description={LOCATION_HUB_SEO_DESCRIPTIONS[location.id]?.[lang] || LOCATION_HUB_SEO_DESCRIPTIONS[location.id]?.de || description}
         canonical={`/mieten/${location.id}`}
         keywords={`Baumaschinen mieten ${location.name}, Anhänger mieten ${location.name}, Minibagger mieten ${location.name}, Equipment ${location.name}`}
         jsonLd={[
@@ -157,7 +126,7 @@ export default function LocationCategories() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center">
             <div>
               <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-primary-foreground mb-2 md:mb-4">
-                Baumaschinen & Equipment mieten in {location.name}
+                {locationHubH1(location.id)}
               </h1>
               <p className="text-primary-foreground/80 text-sm md:text-base lg:text-lg mb-5 md:mb-8">
                 {description}

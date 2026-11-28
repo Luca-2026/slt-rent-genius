@@ -1,4 +1,5 @@
 import { useState, lazy, Suspense, useEffect } from "react";
+import { HOME_SEO } from "@/data/hubSeo";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_ORGANIZATION_JSONLD } from "@/components/SEO";
@@ -72,8 +73,8 @@ export default function Index() {
   return (
     <Layout>
       <SEO
-        title="Baumaschinen & Equipment mieten in NRW | SLT Rental"
-        description="Baumaschinen, Anhänger & Event-Equipment mieten in NRW – Krefeld, Bonn & Mülheim. Über 1.700 Mietprodukte, Tiefpreisgarantie und Wochenendtarife."
+        title={HOME_SEO.title}
+        description={HOME_SEO.description}
         canonical="/"
         keywords="Baumaschinen mieten NRW, Anhänger mieten, Minibagger mieten, Arbeitsbühne mieten, Hüpfburg mieten, Event-Equipment mieten, Werkzeuge mieten, Krefeld, Bonn, Mülheim"
         jsonLd={SLT_ORGANIZATION_JSONLD}

@@ -31,7 +31,8 @@ import { solutionLinking } from "@/data/solutionLinking";
 import { jobListings } from "@/components/karriere/jobData";
 import { getLocalCategoryContent } from "./localCategoryContent";
 import { getProductAvailability } from "@/lib/productAvailability";
-import { getDrivingLicenseInfo, resolveProductFaqs } from "./productPageContent";
+import { getDrivingLicenseInfo, localizeProductText, resolveProductFaqs } from "./productPageContent";
+import { HOME_SEO, LOCATION_HUB_SEO_DESCRIPTIONS, locationHubH1, locationHubTitle } from "./hubSeo";
 
 import { TOOLS_INDEX_SEO, TOOL_SEO, TOOL_OG_IMAGES } from "./toolsSeo";
 const BASE_URL = "https://www.slt-rental.de";
@@ -292,10 +293,9 @@ const STATIC_ROUTES: SeoRoute[] = [
   {
     path: "/",
     routeType: "home",
-    title: "SLT Rental – Mietpark Krefeld, Bonn, Mülheim",
-    description:
-      "Baumaschinen, Anhänger und Event-Equipment mieten in NRW. SLT Rental – 3 Standorte, über 350 Geräte, Lieferung im Umkreis möglich.",
-    h1: "Mietpark für Baumaschinen, Anhänger & Event-Equipment in NRW",
+    title: HOME_SEO.title,
+    description: HOME_SEO.description,
+    h1: HOME_SEO.h1,
     intro: [
       "SLT Rental vermietet Baumaschinen, Anhänger, Aggregate und Event-Equipment an drei Standorten in Nordrhein-Westfalen: Krefeld (Hauptsitz), Bonn und Mülheim an der Ruhr.",
       "Über 350 Geräte für Bau, Garten- und Landschaftsbau, Industrie und Veranstaltungen – mit Lieferung in der gesamten Region und 24/7-Buchung für Anhänger.",
@@ -802,11 +802,14 @@ const MIETEN_LOCATION_ROUTES: SeoRoute[] = (locations as LocationData[]).map((lo
   return {
     path: `/mieten/${loc.id}`,
     routeType: "standort" as const,
-    title: clamp(`Mieten in ${locName} – Baumaschinen, Anhänger & Event | SLT Rental`, 60),
-    description: clampDesc(
-      `Mietpark in ${locName}: Baumaschinen, Anhänger, Werkzeuge und Event-Equipment. ${categoryCount} Kategorien direkt vor Ort buchbar.`,
-    ),
-    h1: `Mieten in ${locName}`,
+    // Gleiche Quelle wie die React-Seite (LocationCategories.tsx).
+    title: locationHubTitle(loc.id),
+    description:
+      LOCATION_HUB_SEO_DESCRIPTIONS[loc.id]?.de ||
+      clampDesc(
+        `Mietpark in ${locName}: Baumaschinen, Anhänger, Werkzeuge und Event-Equipment. ${categoryCount} Kategorien direkt vor Ort buchbar.`,
+      ),
+    h1: locationHubH1(loc.id),
     intro: [
       `Wähle eine Kategorie und buche dein Mietgerät direkt am Standort ${locName}.`,
     ],
@@ -1076,7 +1079,7 @@ for (const loc of locations as LocationData[]) {
       };
       const localize = (s: string | undefined) =>
         s
-          ? dedupeLoc(s.replace(/\bin Krefeld\b/g, `in ${locName}`).replace(/\bKrefeld\b/g, locName))
+          ? dedupeLoc(localizeProductText(s, { name: locName, email: loc.email }))
           : s;
 
       // Etappe 3.9: Verkaufsartikel bekommen nie „mieten" in Title/H1.

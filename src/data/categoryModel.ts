@@ -222,6 +222,17 @@ export const DUPLICATE_PRODUCT_CANONICAL: Record<string, string> = {
 };
 
 // ---------------------------------------------------------------
+// Umbenannte Artikel-Slugs (alte Website-ID → aktueller CMS-Slug).
+// Nur eindeutig belegte Nachfolger eintragen (gleiches Modell, gleiche
+// Kategorie); die Weiterleitung greift je Standort nur, wenn der
+// Nachfolger dort veröffentlicht ist.
+// bobcat-e10z → minibagger-1t: CMS-Modell „E10Z“, Bilder bobcat-e10z-*.jpg.
+// ---------------------------------------------------------------
+export const RENAMED_PRODUCT_SLUGS: Record<string, string> = {
+  "bobcat-e10z": "minibagger-1t",
+};
+
+// ---------------------------------------------------------------
 // 3.8 Zubehörartikel: bleiben buchbar und in der Kategorieliste,
 // die Einzelseiten bekommen aber „noindex, follow" und fallen aus
 // der Sitemap. Erkennung über den Artikel-Untertyp (Product.category).
