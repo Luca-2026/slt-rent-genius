@@ -13,7 +13,7 @@ import { StripePaymentCard } from "./StripePaymentCard";
 import { RentalCreditRefund } from "./RentalCreditRefund";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 
-type Totals = { success: boolean; error?: string; execution_available: boolean; paid_cents: number; deposit_available: number; rent_available: number; deposit_used: number; rent_used: number; pending: boolean; blocked_reason?: string; can_refund_rent: boolean; requests: RequestRow[] };
+type Totals = { success: boolean; error?: string; execution_available: boolean; manual_cancel_refund_available?: boolean; manual_method?: "cash" | "transfer" | null; paid_cents: number; deposit_available: number; rent_available: number; deposit_used: number; rent_used: number; pending: boolean; blocked_reason?: string; can_refund_rent: boolean; requests: RequestRow[] };
 type RequestRow = { id: string; deposit_cents: number; rent_cents: number; payout_method: string; status: string; created_at: string; completed_at?: string; created_by: string };
 type HistoryRow = { id: string; at: string; actor: string; label: string; detail: string };
 const EVENT_LABELS: Record<string, string> = { order_cancelled: "Auftrag storniert", order_confirmed: "Auftrag bestätigt", order_bound_by_handover: "Auftrag durch Übergabe verbindlich", refund_completed: "Auszahlung bestätigt", deposit_settled: "Kaution abgerechnet", closed_without_return_protocol: "Abgeschlossen ohne Rückgabeprotokoll", return_without_delivery: "Rückgabe ohne Auslieferung" };
@@ -33,6 +33,7 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoi
   const [deposit, setDeposit] = useState("0");
   const [rent, setRent] = useState("0");
   const [reference, setReference] = useState("");
+  const [paidOn, setPaidOn] = useState(() => new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Berlin" }));
   const [requestId, setRequestId] = useState(() => crypto.randomUUID());
   const call = useCallback(async (action = "order_refund_info", extra: Record<string, unknown> = {}) => {
     setBusy(true); setError("");
@@ -88,9 +89,12 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoi
   const resume = data?.requests.find(r => r.status === "creating" && r.payout_method === "stripe");
   const selected = amount(deposit) + amount(rent);
   const valid = data && [amount(deposit),amount(rent)].every(n => Number.isSafeInteger(n) && n >= 0) && amount(deposit) <= data.deposit_available && amount(rent) <= data.rent_available && selected > 0;
-  const start = () => { setDeposit(String((data?.deposit_available ?? 0)/100)); setRent(String(data?.can_refund_rent ? (data.rent_available/100) : 0)); setRequestId(crypto.randomUUID()); setOpen(true); };
+  const manualCancel = Boolean(data?.manual_cancel_refund_available && !data?.execution_available);
+  const methodLabel = (m?: string | null) => m === "cash" ? "bar" : m === "transfer" ? "per Überweisung" : "auf das ursprüngliche Zahlungsmittel";
+  const today = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Berlin" });
+  const start = () => { setDeposit(String((data?.deposit_available ?? 0)/100)); setRent(String(data?.can_refund_rent && !manualCancel ? (data.rent_available/100) : 0)); setRequestId(crypto.randomUUID()); setOpen(true); };
   const refundAction = data && !data.pending && canManageInventory && (total > 0 || openPayout || !hasSettlement)
-    ? <Button variant={actionTarget ? "outline" : "default"} className={actionTarget ? "min-h-11 w-full justify-start" : "h-11 w-full sm:w-64"} onClick={() => data.execution_available && !data.blocked_reason ? start() : setLegacyOpen(true)} disabled={busy}><Undo2 className="mr-2 h-4 w-4 shrink-0"/>Erstattung bearbeiten</Button>
+    ? <Button variant={actionTarget ? "outline" : "default"} className={actionTarget ? "min-h-11 w-full justify-start" : "h-11 w-full sm:w-64"} onClick={() => (data.execution_available || data.manual_cancel_refund_available) && !data.blocked_reason ? start() : setLegacyOpen(true)} disabled={busy}><Undo2 className="mr-2 h-4 w-4 shrink-0"/>Erstattung bearbeiten</Button>
     : null;
   return <section className="space-y-3 border-y border-border py-4" aria-label="Zahlungsstand und Auftragshistorie">
     {actionTarget && refundAction && createPortal(refundAction, actionTarget)}
@@ -103,7 +107,15 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoi
         {!actionTarget && refundAction}
         {data.pending && <><p className="text-sm">Erstattung in Bearbeitung – keine weitere Auszahlung starten.</p><Button variant="outline" disabled={busy} onClick={() => void call("order_refund_sync")}><RotateCcw className="mr-2 h-4 w-4"/>Status prüfen</Button></>}
         {resume && <Button variant="outline" disabled={busy} onClick={() => void call("order_refund_execute", { request_id: resume.id, deposit_cents: resume.deposit_cents, rent_cents: resume.rent_cents }).then(onChanged)}>Gespeicherten Versuch fortsetzen</Button>}
-        {manual && <><Input aria-label="Auszahlungsnachweis" value={reference} onChange={e => setReference(e.target.value)} placeholder="Auszahlungsnachweis"/><Button disabled={busy || reference.trim().length<3} onClick={() => void call("order_refund_confirm_manual", { request_id: manual.id, reference }).then(onChanged)}>Tatsächliche Auszahlung bestätigen</Button></>}
+        {manual && <div className="w-full space-y-2 rounded-md border border-border p-3" data-testid="manual-refund-confirm">
+          <p className="text-sm font-semibold">Rückzahlung ausstehend: {eur(manual.deposit_cents + manual.rent_cents)} {methodLabel(manual.payout_method)}</p>
+          <p className="text-xs text-muted-foreground">Erst bestätigen, wenn das Geld tatsächlich ausgezahlt wurde. Die Bestätigung löst keine Zahlung und keine E-Mail aus.</p>
+          <div className="grid gap-2 sm:grid-cols-2">
+            <div><Label htmlFor="manual-refund-date">Tatsächliches Auszahlungsdatum</Label><Input id="manual-refund-date" type="date" max={today} value={paidOn} onChange={e => setPaidOn(e.target.value)}/></div>
+            <div><Label htmlFor="manual-refund-reference">Belegreferenz</Label><Input id="manual-refund-reference" value={reference} onChange={e => setReference(e.target.value)} placeholder={manual.payout_method === "cash" ? "z. B. Kassenbeleg" : "z. B. Überweisungsreferenz"}/></div>
+          </div>
+          <Button disabled={busy || reference.trim().length<3 || !paidOn || paidOn > today} onClick={() => void call("order_refund_confirm_manual", { request_id: manual.id, reference: reference.trim(), paid_on: paidOn }).then(r => { if (r) { setReference(""); onChanged(); } })}>Tatsächliche Auszahlung bestätigen</Button>
+        </div>}
       </div>
     </>}
     {openPayout && <p role="alert" className="rounded-md border border-destructive p-2 text-sm font-semibold text-destructive">Kaution abgerechnet, aber {formatEuro(openPayout.balance)} noch nicht ausgezahlt.</p>}
@@ -116,19 +128,19 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoi
       {(!hasSettlement || inquiry.status === "cancelled") && <StripePaymentCard table="rental_inquiries" inquiryId={inquiry.id} offerNumber={inquiry.offer_number} payments={inquiry.payments} offerTotalGross={inquiry.offer_total_gross} deposit={Number(inquiry.offer_payload?.deposit) || 0} cancelled={inquiry.status === "cancelled"} onChanged={() => { void call(); onChanged(); }} />}
       {(data?.rent_available ?? 0) > 0 && <div className="space-y-2"><h4 className="text-sm font-semibold">Mietguthaben</h4>{invoiceIds.length ? invoiceIds.map(id => <RentalCreditRefund key={id} invoiceId={id} fullWidth onDone={() => { void call(); onChanged(); }} />) : <RentalCreditRefund inquiryId={inquiry.id} fullWidth onDone={() => { void call(); onChanged(); }} />}</div>}
     </DialogContent></Dialog>
-    <Dialog open={open} onOpenChange={v => !busy && setOpen(v)}><DialogContent><DialogHeader><DialogTitle>Erstattung bestätigen</DialogTitle><DialogDescription>Rückzahlung auf das ursprüngliche Zahlungsmittel.</DialogDescription></DialogHeader>
+    <Dialog open={open} onOpenChange={v => !busy && setOpen(v)}><DialogContent><DialogHeader><DialogTitle>Erstattung bestätigen</DialogTitle><DialogDescription>{manualCancel ? `Stornierter Auftrag: Die Kautionsrückzahlung ${methodLabel(data?.manual_method)} wird als ausstehend angelegt. Nach der tatsächlichen Auszahlung bitte mit Datum und Beleg bestätigen.` : "Rückzahlung auf das ursprüngliche Zahlungsmittel."}</DialogDescription></DialogHeader>
       <div><Label htmlFor="order-deposit-refund">Kaution (€), maximal {eur(data?.deposit_available ?? 0)}</Label><Input id="order-deposit-refund" inputMode="decimal" value={deposit} onChange={e => setDeposit(e.target.value)}/></div>
-      <div><Label htmlFor="order-rent-refund">Mietguthaben (€), maximal {eur(data?.rent_available ?? 0)}</Label><Input id="order-rent-refund" inputMode="decimal" disabled={!data?.can_refund_rent} value={rent} onChange={e => setRent(e.target.value)}/></div>
+      <div><Label htmlFor="order-rent-refund">Mietguthaben (€), maximal {eur(data?.rent_available ?? 0)}</Label><Input id="order-rent-refund" inputMode="decimal" disabled={!data?.can_refund_rent || manualCancel} value={rent} onChange={e => setRent(e.target.value)}/></div>
       <p className="font-semibold">Gesamt: {eur(Number.isFinite(selected) ? selected : 0)}</p>
       {error && <p role="alert" className="text-destructive">{error}</p>}
-      <Button disabled={busy || !valid || !data?.execution_available} onClick={async () => {
-        if (inquiry.status === "cancelled") {
+      <Button disabled={busy || !valid || !(data?.execution_available || manualCancel) || (manualCancel && amount(rent) > 0)} onClick={async () => {
+        if (inquiry.status === "cancelled" && !manualCancel) {
           setBusy(true);
           const basis = await invokeWithAuth<{ error?: string }>("send-inquiry-invoice", { inquiry_type: "rental", inquiry_id: inquiry.id, cancellation_invoice: true, preview: true, prepare_refund: true, payment_terms: "vorkasse" });
           if (basis.error || basis.data?.error) { setError(basis.data?.error ?? "Stornoabrechnung nicht vorbereitet"); setBusy(false); return; }
         }
         const result = await call("order_refund_execute", { request_id: requestId, deposit_cents: amount(deposit), rent_cents: amount(rent) }); if (result) { setOpen(false); onChanged(); }
-      }}>Verbindlich erstatten</Button>
+      }}>{manualCancel ? "Rückzahlung als ausstehend anlegen" : "Verbindlich erstatten"}</Button>
     </DialogContent></Dialog>
   </section>;
 }

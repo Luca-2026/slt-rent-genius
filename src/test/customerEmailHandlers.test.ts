@@ -3,6 +3,8 @@ import vm from "node:vm";
 import ts from "typescript";
 import { describe, expect, it, vi } from "vitest";
 import { shouldSendCustomerEmail } from "../../supabase/functions/_shared/customer-email-policy";
+import * as financeScope from "../../supabase/functions/_shared/finance-scope";
+const scopeDeps = { ...financeScope };
 
 // Execute the actual edge handler with isolated auth/storage/provider adapters.
 function handler(file: string, dependencies: Record<string, unknown>) {
@@ -48,10 +50,10 @@ describe("customer mail suppression in real edge handlers (no money/mail)", () =
     const fetch = vi.fn();
     const creditRefund = vi.fn(async () => ({ success: true, status: "succeeded", amount_cents: 4000 }));
     const service = { auth: { getUser: async () => ({ data: { user: { id: "staff" } } }) }, rpc: async () => ({ data: true }),
-      from: () => { const q = { select: () => q, eq: () => q, in: async () => ({ data: [{ role: "admin" }] }) }; return q; } };
+      from: () => { const q: any = { maybeSingle: async () => ({ data: { location: "bonn" } }), select: () => q, eq: () => q, in: async () => ({ data: [{ role: "admin" }] }) }; return q; } };
     const stripeClient = vi.fn(() => { throw new Error("Provider access forbidden in handler test"); });
     const setRentalCheckoutStripe = vi.fn();
-    const run = handler("offer-payment-admin", { corsHeaders: { 'Access-Control-Allow-Origin': '*' }, createClient: () => service, isStripeConfigured: () => true, creditRefund, setRentalCheckoutStripe, stripeClient, fetch });
+    const run = handler("offer-payment-admin", { ...scopeDeps, corsHeaders: { 'Access-Control-Allow-Origin': '*' }, createClient: () => service, isStripeConfigured: () => true, creditRefund, setRentalCheckoutStripe, stripeClient, fetch });
     const response = await run(new Request("https://local.test", { method: "POST", headers: { Authorization: "Bearer isolated" }, body: JSON.stringify({ action: "refund_credit_note", credit_note_id: "credit" }) }));
     expect(response.status).toBe(200);
     expect(await response.json()).toMatchObject({ success: true, amount_cents: 4000, customer_mailed: false });
@@ -64,8 +66,8 @@ describe("customer mail suppression in real edge handlers (no money/mail)", () =
     const fetch = vi.fn(() => { throw new Error("External access forbidden"); });
     const creditRefund = vi.fn(async () => ({ success: true, status, amount_cents: 4000 }));
     const service = { auth: { getUser: async () => ({ data: { user: { id: "staff" } } }) }, rpc: async () => ({ data: true }),
-      from: () => { const q = { select: () => q, eq: () => q, in: async () => ({ data: [{ role: "admin" }] }) }; return q; } };
-    const run = handler("offer-payment-admin", { corsHeaders: {}, createClient: () => service, isStripeConfigured: () => true,
+      from: () => { const q: any = { maybeSingle: async () => ({ data: { location: "bonn" } }), select: () => q, eq: () => q, in: async () => ({ data: [{ role: "admin" }] }) }; return q; } };
+    const run = handler("offer-payment-admin", { ...scopeDeps, corsHeaders: {}, createClient: () => service, isStripeConfigured: () => true,
       setRentalCheckoutStripe: vi.fn(), creditRefund, fetch });
     const response = await run(new Request("https://local.test", { method: "POST", headers: { Authorization: "Bearer isolated" }, body: JSON.stringify({ action: "refund_credit_note", credit_note_id: "credit" }) }));
     expect(await response.json()).toMatchObject({ status, customer_mailed: false });
@@ -75,8 +77,8 @@ describe("customer mail suppression in real edge handlers (no money/mail)", () =
     const fetch = vi.fn(() => { throw new Error("External access forbidden"); });
     const creditRefund = vi.fn(async () => { throw new Error("Provider outcome unknown"); });
     const service = { auth: { getUser: async () => ({ data: { user: { id: "staff" } } }) }, rpc: async () => ({ data: true }),
-      from: () => { const q = { select: () => q, eq: () => q, in: async () => ({ data: [{ role: "admin" }] }) }; return q; } };
-    const run = handler("offer-payment-admin", { corsHeaders: {}, createClient: () => service, isStripeConfigured: () => true,
+      from: () => { const q: any = { maybeSingle: async () => ({ data: { location: "bonn" } }), select: () => q, eq: () => q, in: async () => ({ data: [{ role: "admin" }] }) }; return q; } };
+    const run = handler("offer-payment-admin", { ...scopeDeps, corsHeaders: {}, createClient: () => service, isStripeConfigured: () => true,
       setRentalCheckoutStripe: vi.fn(), creditRefund, fetch });
     const response = await run(new Request("https://local.test", { method: "POST", headers: { Authorization: "Bearer isolated" }, body: JSON.stringify({ action: "refund_credit_note", credit_note_id: "credit" }) }));
     expect(await response.json()).toMatchObject({ success: false, error: "Provider outcome unknown" });
@@ -85,8 +87,8 @@ describe("customer mail suppression in real edge handlers (no money/mail)", () =
   it.each([null, "standort_mitarbeiter"])("denies credit execution without the required privileged role: %s", async (role) => {
     const creditRefund = vi.fn();
     const service = { auth: { getUser: async () => ({ data: { user: { id: "staff" } } }) }, rpc: async () => ({ data: true }),
-      from: () => { const q = { select: () => q, eq: () => q, in: async () => ({ data: role ? [{ role }] : [] }) }; return q; } };
-    const run = handler("offer-payment-admin", { corsHeaders: {}, createClient: () => service, isStripeConfigured: () => true,
+      from: () => { const q: any = { maybeSingle: async () => ({ data: { location: "bonn" } }), select: () => q, eq: () => q, in: async () => ({ data: role ? [{ role }] : [] }) }; return q; } };
+    const run = handler("offer-payment-admin", { ...scopeDeps, corsHeaders: {}, createClient: () => service, isStripeConfigured: () => true,
       setRentalCheckoutStripe: vi.fn(), creditRefund });
     const response = await run(new Request("https://local.test", { method: "POST", headers: { Authorization: "Bearer isolated" }, body: JSON.stringify({ action: "refund_credit_note", credit_note_id: "credit" }) }));
     expect(response.status).toBe(403);
@@ -104,5 +106,58 @@ describe("customer mail suppression in real edge handlers (no money/mail)", () =
     expect(from).not.toHaveBeenCalled();
     expect(fetch).not.toHaveBeenCalled();
     expect(processOfferFollowups).toHaveBeenCalledOnce();
+  });
+});
+describe("offer-payment-admin location scope before financial side effects", () => {
+  function scopedService(opts: { admin?: boolean; manager?: boolean; staff: string; orderLocation: string; roles: string[] }) {
+    const writes: string[] = [];
+    const service = { auth: { getUser: async () => ({ data: { user: { id: "staff" } } }) },
+      rpc: async (name: string, args: Record<string, unknown>) => ({ data: name === "has_role" ? (args._role === "admin" ? !!opts.admin : !!opts.manager) : true, error: null }),
+      from: (table: string) => {
+        const result = () => ({ error: null, data: table === "staff_profiles" ? [{ location: opts.staff }]
+          : table === "inquiry_invoices" ? { location: opts.orderLocation, rental_inquiry_id: "order", sales_inquiry_id: null }
+          : table === "rental_inquiries" ? { location: opts.orderLocation }
+          : table === "offer_payment_links" ? { id: "link", inquiry_table: "rental_inquiries", inquiry_id: "order", status: "paid", payment_intent_id: "pi_x", deposit_cents: 10000, livemode: true }
+          : null });
+        const q: any = { select: () => q, eq: () => q, in: async () => ({ data: opts.roles.map(role => ({ role })), error: null }), maybeSingle: async () => result(), single: async () => result(),
+          insert: () => { writes.push(table); return q; }, then: (r: (v: unknown) => unknown) => Promise.resolve(result()).then(r) };
+        return q;
+      } };
+    return { service, writes };
+  }
+  const deps = (service: unknown, creditRefund = vi.fn(), stripeClient = vi.fn(() => { throw new Error("Provider forbidden"); })) =>
+    ({ ...scopeDeps, corsHeaders: {}, createClient: () => service, isStripeConfigured: () => true, isStripeTestMode: () => false, setRentalCheckoutStripe: vi.fn(), creditRefund, stripeClient, fetch: vi.fn(() => { throw new Error("Network forbidden"); }) });
+  const post = (body: unknown) => new Request("https://local.test", { method: "POST", headers: { Authorization: "Bearer isolated" }, body: JSON.stringify(body) });
+  it("branch manager of Bonn cannot read or execute a Krefeld credit refund", async () => {
+    const { service } = scopedService({ manager: true, staff: "bonn", orderLocation: "krefeld", roles: ["niederlassungsleiter"] });
+    const creditRefund = vi.fn();
+    for (const action of ["credit_refund_info", "refund_credit_note"]) {
+      const res = await handler("offer-payment-admin", deps(service, creditRefund))(post({ action, credit_note_id: "credit" }));
+      expect(res.status).toBe(403);
+    }
+    expect(creditRefund).not.toHaveBeenCalled();
+  });
+  it("admin keeps central cross-location credit access", async () => {
+    const { service } = scopedService({ admin: true, staff: "bonn", orderLocation: "krefeld", roles: ["admin"] });
+    const creditRefund = vi.fn(async () => ({ success: true, status: "succeeded" }));
+    const res = await handler("offer-payment-admin", deps(service, creditRefund))(post({ action: "credit_refund_info", credit_note_id: "credit" }));
+    expect(res.status).toBe(200); expect(creditRefund).toHaveBeenCalledOnce();
+  });
+  it("Bonn staff cannot refund a Krefeld Stripe deposit: no reservation, no provider", async () => {
+    const { service, writes } = scopedService({ staff: "bonn", orderLocation: "krefeld", roles: ["standort_mitarbeiter"] });
+    const stripeClient = vi.fn(() => { throw new Error("Provider forbidden"); });
+    const res = await handler("offer-payment-admin", deps(service, vi.fn(), stripeClient))(post({ action: "refund_deposit", link_id: "link", amount_cents: 1000, request_id: "req" }));
+    expect(res.status).toBe(403); expect(writes).toEqual([]); expect(stripeClient).not.toHaveBeenCalled();
+  });
+  it("Bonn staff cannot sync Krefeld deposit refunds", async () => {
+    const { service } = scopedService({ staff: "bonn", orderLocation: "krefeld", roles: ["standort_mitarbeiter"] });
+    const stripeClient = vi.fn(() => { throw new Error("Provider forbidden"); });
+    const res = await handler("offer-payment-admin", deps(service, vi.fn(), stripeClient))(post({ action: "sync_deposit_refunds", inquiry_id: "order" }));
+    expect(res.status).toBe(403); expect(stripeClient).not.toHaveBeenCalled();
+  });
+  it("manipulated location parameters are ignored; the record decides", async () => {
+    const { service } = scopedService({ manager: true, staff: "bonn", orderLocation: "krefeld", roles: ["niederlassungsleiter"] });
+    const res = await handler("offer-payment-admin", deps(service))(post({ action: "order_credit_info", inquiry_id: "order", location: "bonn" }));
+    expect(res.status).toBe(403);
   });
 });

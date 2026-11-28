@@ -1,0 +1,72 @@
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { afterEach, beforeAll, expect, it, vi } from "vitest";
+const { invoke } = vi.hoisted(() => ({ invoke: vi.fn() }));
+vi.mock("@/lib/invokeWithAuth", () => ({ invokeWithAuth: invoke }));
+vi.mock("@/hooks/useStaffAccess", () => ({ useStaffAccess: () => ({ canManageInventory: true, displayName: "Staff" }) }));
+vi.mock("@/integrations/supabase/client", () => ({ supabase: { from: () => {
+  const result = { data: [], error: null };
+  const q: any = { select: () => q, eq: () => q, in: () => q, order: () => q, limit: () => q, maybeSingle: async () => ({ data: null, error: null }), then: (r: (v: typeof result) => unknown) => Promise.resolve(result).then(r) };
+  return q; } } }));
+vi.mock("@/components/b2b/inquiries/DepositSettlementCard", () => ({ DepositSettlementCard: () => <p>normaler Kautionseditor</p> }));
+vi.mock("@/components/b2b/inquiries/StripePaymentCard", () => ({ StripePaymentCard: () => null }));
+vi.mock("@/components/b2b/inquiries/RentalCreditRefund", () => ({ RentalCreditRefund: () => null }));
+import { OrderRefundOverview } from "@/components/b2b/inquiries/OrderRefundOverview";
+beforeAll(() => { Element.prototype.scrollIntoView = vi.fn(); });
+afterEach(() => { cleanup(); invoke.mockReset(); });
+const base = { success: true, execution_available: false, manual_cancel_refund_available: true, manual_method: "cash", paid_cents: 15000, deposit_available: 10000, rent_available: 0, deposit_used: 0, rent_used: 0, pending: false, can_refund_rent: false, requests: [] };
+const inquiry = { id: "11111111-1111-1111-1111-111111111111", status: "cancelled", payments: [{ amount: 150, label: "Bar" }], offer_payload: { deposit: 100 } };
+
+it("cancelled cash order: creates a pending manual payout, no invoice preparation, no normal settlement editor", async () => {
+  invoke.mockResolvedValue({ data: base, error: null });
+  const onChanged = vi.fn();
+  render(<OrderRefundOverview inquiry={inquiry} onChanged={onChanged} />);
+  fireEvent.click(await screen.findByRole("button", { name: "Erstattung bearbeiten" }));
+  expect(await screen.findByText(/als ausstehend angelegt/)).toBeVisible();
+  expect(screen.queryByText("normaler Kautionseditor")).toBeNull();
+  expect(screen.getByLabelText(/Mietguthaben/)).toBeDisabled();
+  fireEvent.change(screen.getByLabelText(/Kaution \(€\)/), { target: { value: "40" } });
+  const create = screen.getByRole("button", { name: "Rückzahlung als ausstehend anlegen" });
+  fireEvent.click(create); fireEvent.click(create);
+  await waitFor(() => expect(onChanged).toHaveBeenCalledTimes(1));
+  const executes = invoke.mock.calls.filter(c => c[1].action === "order_refund_execute");
+  expect(executes).toHaveLength(1);
+  expect(executes[0][1]).toMatchObject({ deposit_cents: 4000, rent_cents: 0 });
+  expect(invoke.mock.calls.some(c => c[0] === "send-inquiry-invoice")).toBe(false);
+});
+it("over-cap amount cannot be submitted", async () => {
+  invoke.mockResolvedValue({ data: base, error: null });
+  render(<OrderRefundOverview inquiry={inquiry} onChanged={vi.fn()} />);
+  fireEvent.click(await screen.findByRole("button", { name: "Erstattung bearbeiten" }));
+  fireEvent.change(await screen.findByLabelText(/Kaution \(€\)/), { target: { value: "100.01" } });
+  expect(screen.getByRole("button", { name: "Rückzahlung als ausstehend anlegen" })).toBeDisabled();
+});
+const pending = { ...base, pending: true, deposit_available: 6000, requests: [{ id: "req-1", deposit_cents: 4000, rent_cents: 0, payout_method: "cash", status: "creating", created_at: "2026-11-27T10:00:00Z", created_by: "s" }] };
+it("confirmation needs evidence and a past date, sends both, and only succeeds after the server persisted it", async () => {
+  invoke.mockResolvedValueOnce({ data: pending, error: null });
+  const onChanged = vi.fn();
+  render(<OrderRefundOverview inquiry={inquiry} onChanged={onChanged} />);
+  expect(await screen.findByText(/Rückzahlung ausstehend: 40,00/)).toBeVisible();
+  const btn = screen.getByRole("button", { name: "Tatsächliche Auszahlung bestätigen" });
+  expect(btn).toBeDisabled();
+  fireEvent.change(screen.getByLabelText("Belegreferenz"), { target: { value: "Kasse 7" } });
+  fireEvent.change(screen.getByLabelText("Tatsächliches Auszahlungsdatum"), { target: { value: "2999-01-01" } });
+  expect(btn).toBeDisabled();
+  fireEvent.change(screen.getByLabelText("Tatsächliches Auszahlungsdatum"), { target: { value: "2026-11-27" } });
+  invoke.mockResolvedValueOnce({ data: { success: false, error: "Keine Standortberechtigung" }, error: null });
+  fireEvent.click(btn);
+  expect(await screen.findByText("Keine Standortberechtigung")).toBeVisible();
+  expect(onChanged).not.toHaveBeenCalled();
+  invoke.mockResolvedValue({ data: { ...pending, pending: false, requests: [{ ...pending.requests[0], status: "succeeded" }] }, error: null });
+  fireEvent.click(screen.getByRole("button", { name: "Tatsächliche Auszahlung bestätigen" }));
+  await waitFor(() => expect(onChanged).toHaveBeenCalledTimes(1));
+  const confirms = invoke.mock.calls.filter(c => c[1].action === "order_refund_confirm_manual");
+  expect(confirms.at(-1)?.[1]).toMatchObject({ request_id: "req-1", reference: "Kasse 7", paid_on: "2026-11-27" });
+  expect(screen.queryByRole("button", { name: "Tatsächliche Auszahlung bestätigen" })).toBeNull();
+});
+it("non-cancelled orders keep the existing route (no manual creation offered)", async () => {
+  invoke.mockResolvedValue({ data: { ...base, manual_cancel_refund_available: false }, error: null });
+  render(<OrderRefundOverview inquiry={{ ...inquiry, status: "done" }} onChanged={vi.fn()} />);
+  fireEvent.click(await screen.findByRole("button", { name: "Erstattung bearbeiten" }));
+  expect(await screen.findByText("normaler Kautionseditor")).toBeVisible();
+  expect(screen.queryByRole("button", { name: "Rückzahlung als ausstehend anlegen" })).toBeNull();
+});

@@ -17,6 +17,7 @@ import { creditRefund } from "../_shared/credit-refund.ts";
 import { rentalCreditRefund } from "../_shared/rental-credit-refund.ts";
 import { preInvoiceRefund } from "../_shared/pre-invoice-refund.ts";
 import { orderRefund } from "../_shared/order-refund.ts";
+import { FinanceScopeError, assertFinanceLocation, inquiryLocation, invoiceLocation, loadFinanceActor, paymentLinkLocation } from "../_shared/finance-scope.ts";
 import {
   ensurePaymentLink,
   isStripeConfigured,
@@ -34,7 +35,7 @@ const Body = z.discriminatedUnion("action", [
   z.object({ action: z.literal("order_refund_info"), inquiry_id: z.string().uuid() }),
   z.object({ action: z.literal("order_refund_sync"), inquiry_id: z.string().uuid() }),
   z.object({ action: z.literal("order_refund_execute"), inquiry_id: z.string().uuid(), request_id: z.string().uuid(), deposit_cents: z.number().int().min(0).max(10000000), rent_cents: z.number().int().min(0).max(10000000) }),
-  z.object({ action: z.literal("order_refund_confirm_manual"), inquiry_id: z.string().uuid(), request_id: z.string().uuid(), reference: z.string().trim().min(3).max(200) }),
+  z.object({ action: z.literal("order_refund_confirm_manual"), inquiry_id: z.string().uuid(), request_id: z.string().uuid(), reference: z.string().trim().min(3).max(200), paid_on: z.string().regex(/^\d{4}-\d{2}-\d{2}$/) }),
   z.object({ action: z.literal("order_credit_info"), inquiry_id: z.string().uuid() }),
   z.object({ action: z.literal("refund_order_credit"), inquiry_id: z.string().uuid() }),
   z.object({ action: z.literal("confirm_order_credit_transfer"), inquiry_id: z.string().uuid(), bank_reference: z.string().trim().min(3).max(200) }),
@@ -78,6 +79,23 @@ Deno.serve(async (req: Request) => {
     const parsed = Body.safeParse(await req.json().catch(() => null));
     if (!parsed.success) return json({ error: "Ungültige Anfrage" }, 400);
     const body = parsed.data;
+    // Location scope from the authoritative record, before any read or financial side effect.
+    try {
+      const scope = await loadFinanceActor(service, user.id);
+      if (body.action === "order_credit_info" || body.action === "refund_order_credit" || body.action === "confirm_order_credit_transfer") assertFinanceLocation(scope, await inquiryLocation(service, "rental_inquiries", body.inquiry_id), { requireManager: true });
+      if (body.action === "rental_credit_info" || body.action === "refund_rental_credit" || body.action === "confirm_rental_credit_transfer") assertFinanceLocation(scope, await invoiceLocation(service, body.invoice_id), { requireManager: true });
+      if (body.action === "credit_refund_info" || body.action === "refund_credit_note") assertFinanceLocation(scope, await invoiceLocation(service, body.credit_note_id), { requireManager: true });
+      if (body.action === "sync_deposit_refunds") assertFinanceLocation(scope, await inquiryLocation(service, "rental_inquiries", body.inquiry_id));
+      if (body.action === "refund_deposit") {
+        const { data: scopedLink, error: scopedLinkError } = await service.from("offer_payment_links").select("inquiry_table,inquiry_id").eq("id", body.link_id).maybeSingle();
+        if (scopedLinkError) return json({ error: "Zahlung konnte nicht geprüft werden." }, 409);
+        if (!scopedLink) return json({ error: "Zu diesem Angebot liegt keine bezahlte Online-Zahlung vor." }, 409);
+        assertFinanceLocation(scope, await paymentLinkLocation(service, scopedLink));
+      }
+    } catch (error) {
+      if (error instanceof FinanceScopeError) return json({ success: false, error: error.message }, 403);
+      throw error;
+    }
     if (body.action.startsWith("order_refund_")) {
       try { return json(await orderRefund(service, user.id, body)); }
       catch (error) { return json({ success: false, error: error instanceof Error && !/[rs]k_(live|test)_/.test(error.message) ? error.message : "Erstattungsstatus ungeklärt; nicht zusätzlich auszahlen" }, 409); }
