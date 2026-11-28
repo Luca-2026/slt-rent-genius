@@ -14,7 +14,7 @@ function handler(file: string, dependencies: Record<string, unknown>) {
   const chain = new Proxy(schema, { get: (_, key) => key === "safeParse" ? (data: unknown) => ({ success: true, data }) : () => chain });
   Object.assign(schema, { safeParse: (data: unknown) => ({ success: true, data }) });
   const schemaZ = new Proxy(z, { get: () => () => chain });
-  vm.runInNewContext(compiled, { Request, Response, console, Date, Intl, ...dependencies, z: schemaZ,
+  vm.runInNewContext(compiled, { Request, Response, Error, console, Date, Intl, ...dependencies, z: schemaZ,
     Deno: { env: { get: () => "isolated-test" }, serve: (fn: typeof serve) => { serve = fn; } },
   });
   if (!serve) throw new Error("Handler not registered");
@@ -49,12 +49,48 @@ describe("customer mail suppression in real edge handlers (no money/mail)", () =
     const creditRefund = vi.fn(async () => ({ success: true, status: "succeeded", amount_cents: 4000 }));
     const service = { auth: { getUser: async () => ({ data: { user: { id: "staff" } } }) }, rpc: async () => ({ data: true }),
       from: () => { const q = { select: () => q, eq: () => q, in: async () => ({ data: [{ role: "admin" }] }) }; return q; } };
-  const run = handler("offer-payment-admin", { corsHeaders: { 'Access-Control-Allow-Origin': '*' }, createClient: () => service, isStripeConfigured: () => true, creditRefund, fetch });
+    const stripeClient = vi.fn(() => { throw new Error("Provider access forbidden in handler test"); });
+    const setRentalCheckoutStripe = vi.fn();
+    const run = handler("offer-payment-admin", { corsHeaders: { 'Access-Control-Allow-Origin': '*' }, createClient: () => service, isStripeConfigured: () => true, creditRefund, setRentalCheckoutStripe, stripeClient, fetch });
     const response = await run(new Request("https://local.test", { method: "POST", headers: { Authorization: "Bearer isolated" }, body: JSON.stringify({ action: "refund_credit_note", credit_note_id: "credit" }) }));
     expect(response.status).toBe(200);
     expect(await response.json()).toMatchObject({ success: true, amount_cents: 4000, customer_mailed: false });
     expect(creditRefund).toHaveBeenCalledWith(service, "credit", "staff", true);
+    expect(setRentalCheckoutStripe).toHaveBeenCalledOnce();
+    expect(stripeClient).not.toHaveBeenCalled();
     expect(fetch).not.toHaveBeenCalled();
+  });
+  it.each(["pending", "failed", "partial_failed"])("does not report %s credit refunds as a completed payout or send mail", async (status) => {
+    const fetch = vi.fn(() => { throw new Error("External access forbidden"); });
+    const creditRefund = vi.fn(async () => ({ success: true, status, amount_cents: 4000 }));
+    const service = { auth: { getUser: async () => ({ data: { user: { id: "staff" } } }) }, rpc: async () => ({ data: true }),
+      from: () => { const q = { select: () => q, eq: () => q, in: async () => ({ data: [{ role: "admin" }] }) }; return q; } };
+    const run = handler("offer-payment-admin", { corsHeaders: {}, createClient: () => service, isStripeConfigured: () => true,
+      setRentalCheckoutStripe: vi.fn(), creditRefund, fetch });
+    const response = await run(new Request("https://local.test", { method: "POST", headers: { Authorization: "Bearer isolated" }, body: JSON.stringify({ action: "refund_credit_note", credit_note_id: "credit" }) }));
+    expect(await response.json()).toMatchObject({ status, customer_mailed: false });
+    expect(fetch).not.toHaveBeenCalled();
+  });
+  it("preserves a refund failure and never sends a success mail", async () => {
+    const fetch = vi.fn(() => { throw new Error("External access forbidden"); });
+    const creditRefund = vi.fn(async () => { throw new Error("Provider outcome unknown"); });
+    const service = { auth: { getUser: async () => ({ data: { user: { id: "staff" } } }) }, rpc: async () => ({ data: true }),
+      from: () => { const q = { select: () => q, eq: () => q, in: async () => ({ data: [{ role: "admin" }] }) }; return q; } };
+    const run = handler("offer-payment-admin", { corsHeaders: {}, createClient: () => service, isStripeConfigured: () => true,
+      setRentalCheckoutStripe: vi.fn(), creditRefund, fetch });
+    const response = await run(new Request("https://local.test", { method: "POST", headers: { Authorization: "Bearer isolated" }, body: JSON.stringify({ action: "refund_credit_note", credit_note_id: "credit" }) }));
+    expect(await response.json()).toMatchObject({ success: false, error: "Provider outcome unknown" });
+    expect(fetch).not.toHaveBeenCalled();
+  });
+  it.each([null, "standort_mitarbeiter"])("denies credit execution without the required privileged role: %s", async (role) => {
+    const creditRefund = vi.fn();
+    const service = { auth: { getUser: async () => ({ data: { user: { id: "staff" } } }) }, rpc: async () => ({ data: true }),
+      from: () => { const q = { select: () => q, eq: () => q, in: async () => ({ data: role ? [{ role }] : [] }) }; return q; } };
+    const run = handler("offer-payment-admin", { corsHeaders: {}, createClient: () => service, isStripeConfigured: () => true,
+      setRentalCheckoutStripe: vi.fn(), creditRefund });
+    const response = await run(new Request("https://local.test", { method: "POST", headers: { Authorization: "Bearer isolated" }, body: JSON.stringify({ action: "refund_credit_note", credit_note_id: "credit" }) }));
+    expect(response.status).toBe(403);
+    expect(creditRefund).not.toHaveBeenCalled();
   });
   it("hourly job sends no customer payment reminder but still processes staff decline notices", async () => {
     const fetch = vi.fn();

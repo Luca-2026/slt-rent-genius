@@ -139,8 +139,8 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
   const markPayout = async (target: Row | null = settlement) => {
     if (!target) return;
     const { error } = await supabase.rpc("mark_deposit_payout_done", { _settlement_id: target.id });
-    if (error) toast({ title: "Nicht gespeichert", description: error.message, variant: "destructive" });
-    else void load();
+    if (error) throw new Error(error.message);
+    await load();
   };
 
   // Stripe-Erstattung wirklich auslösen (über die bezahlte Online-Zahlung des Auftrags), dann als erledigt markieren.
@@ -175,17 +175,18 @@ export function DepositSettlementCard({ inquiry, staffName, canMarkStripePayout,
       const choice = pendingLink ? { link: pendingLink } : depositRefundPayment(links, refunds ?? [], Math.round(Number(settlement.balance) * 100));
       if (!choice) throw new Error("Keine einzelne Originalzahlung deckt die offene Kaution. Zahlungsaufteilung muss geprüft werden.");
       const link = choice.link;
+      const amountCents = pending?.amount_cents ?? Math.round(Number(settlement.balance) * 100);
       const { data, error } = await invokeWithAuth<{ success?: boolean; error?: string; status?: string }>("offer-payment-admin", {
         action: "refund_deposit",
         link_id: link.id,
-        amount_cents: pending?.amount_cents ?? Math.round(Number(settlement.balance) * 100),
+        amount_cents: amountCents,
         reason: `Kautionsabrechnung Auftrag ${inquiry.order_code ?? ""}`.trim(),
         request_id: pending?.request_id ?? settlement.id,
       });
       if (error || !data?.success) throw new Error(data?.error ?? "Erstattung nicht ausgeführt.");
       if (data.status === "succeeded") await markPayout(settlement);
       else await load();
-      toast({ title: data.status === "succeeded" ? "Kaution über Stripe erstattet" : "Stripe-Erstattung beauftragt", description: `${formatEuro(Number(settlement.balance))} gehen auf die ursprüngliche Zahlungsart zurück.` });
+      toast({ title: data.status === "succeeded" ? "Kaution über Stripe erstattet" : "Stripe-Erstattung beauftragt", description: `${formatEuro(amountCents / 100)}${data.status === "succeeded" ? " wurden auf die ursprüngliche Zahlungsart erstattet." : " sind beauftragt; die Auszahlung ist noch nicht bestätigt."}` });
     } catch (e) {
       toast({ title: "Stripe-Erstattung fehlgeschlagen", description: e instanceof Error ? e.message : String(e), variant: "destructive" });
     } finally {

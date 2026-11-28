@@ -247,3 +247,14 @@
 - [x] Share-URL robust validieren, Expertenwerte inkl. 0 % Auflockerung
 - [x] PDF-Projektbericht A4 statt window.print()
 - [x] OG-Bild Aushubrechner eingebunden (public/images/og/aushubrechner.png, WebP unter public/images/tools/)
+
+# Arbeitspaket 1B.1
+- [x] Baseline neun Fehler reproduziert; 1629 bestanden, 9 fehlgeschlagen.
+- [x] Testfixtures und zwei belegte Kautions-Meldungs-/Belegfehler korrigiert; 1666 Tests bestanden.
+- [x] Finanzpfade/Rollen/Publikationsschutz geprüft; Bericht docs/paket1b1-betriebssicherheit-2026-11-28.md.
+- [x] 42 isolierte Browserprüfungen, drei 2-seitige A4-PDFs, vollständige Suite wiederholt; build OK.
+- [x] Grenzen/Rollback dokumentiert; Preview nur isolierte Abnahme, Produktion NO-GO.
+- [ ] Standortbindung älterer Refundpfade: fachliche Standortbefugnis bestätigen; keine Rechte-/DB-Änderung beauftragt.
+- [ ] Storno-Bar/Bank-Kaution: sicheren fachlichen Originalzahlungs-/Belegweg bestätigen.
+- [ ] Vollständige CMS/Auth/B2B/Provider-Abschlüsse: isolierte Testumgebung fehlt; keine Produktionsfreigabe.
+Keine Live-Schreiboperationen, Migrationen, Secrets, Veröffentlichungen oder realen Zahlungen/Mails.

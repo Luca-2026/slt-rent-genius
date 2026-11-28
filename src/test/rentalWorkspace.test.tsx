@@ -6,7 +6,15 @@ import { INQUIRY_STATUSES } from "@/lib/inquiryStatus";
 
 vi.mock("@/hooks/useAuth", () => ({ useAuth: () => ({ user: { id: "staff" }, isAdmin: false }) }));
 vi.mock("@/hooks/useStaffAccess", () => ({ useStaffAccess: () => ({ isStaff: true, isBranchManager: false, canManageInventory: true }) }));
-vi.mock("@/integrations/supabase/client", () => ({ supabase: { from: () => ({ select: () => ({ eq: () => ({ order: () => Promise.resolve({ data: [] }) }) }) }) } }));
+const { refundInfo, payoutEditor } = vi.hoisted(() => ({ refundInfo: vi.fn(), payoutEditor: vi.fn() }));
+vi.mock("@/lib/invokeWithAuth", () => ({ invokeWithAuth: refundInfo }));
+vi.mock("@/integrations/supabase/client", () => ({ supabase: { from: () => {
+  const result = { data: [], error: null };
+  const q = { select: () => q, eq: () => q, in: () => q, order: () => q, limit: () => q,
+    maybeSingle: async () => ({ data: null, error: null }),
+    then: (resolve: (v: typeof result) => unknown) => Promise.resolve(result).then(resolve) };
+  return q;
+} } }));
 vi.mock("@/components/b2b/inquiries/useInquiryActions", () => ({ useInquiryActions: () => ({ busy: false, actorName: "Staff", claim: vi.fn(), release: vi.fn(), setStatus: vi.fn(), saveNotes: vi.fn(), update: vi.fn() }) }));
 vi.mock("@/components/b2b/inquiries/useDepositState", () => ({ useDepositState: () => ({ loaded: true, settled: false, chargeLines: [], reload: vi.fn() }), depositBlocksInvoice: () => false, paymentsUpToRent: (p: unknown) => p }));
 vi.mock("@/components/b2b/inquiries/offerDraftStorage", () => ({ inquiryDraftKey: () => "draft", readInquiryDraft: () => null, listServerDraftsForInquiry: () => Promise.resolve([]) }));
@@ -15,7 +23,7 @@ vi.mock("@/components/b2b/inquiries/OrderConfirmationCard", () => ({ OrderConfir
 vi.mock("@/components/b2b/inquiries/InquiryCustomerCard", () => ({ InquiryCustomerCard: () => null }));
 vi.mock("@/components/b2b/inquiries/InquiryLocationSection", () => ({ InquiryLocationSection: () => null }));
 vi.mock("@/components/b2b/inquiries/InquiryPaymentsCard", () => ({ InquiryPaymentsCard: () => null, parseInquiryPayments: () => [] }));
-vi.mock("@/components/b2b/inquiries/StripePaymentCard", () => ({ StripePaymentCard: () => null }));
+vi.mock("@/components/b2b/inquiries/StripePaymentCard", () => ({ StripePaymentCard: (props: unknown) => { payoutEditor(props); return null; } }));
 vi.mock("@/components/b2b/inquiries/InstallmentCard", () => ({ InstallmentCard: () => null }));
 vi.mock("@/components/b2b/inquiries/OfferAcceptanceNotice", () => ({ OfferAcceptanceNotice: () => null }));
 vi.mock("@/components/b2b/inquiries/OfferDecisionHistory", () => ({ OfferDecisionHistory: () => null }));
@@ -37,11 +45,28 @@ describe("rental document workspace", () => {
     fireEvent.click(screen.getByRole("button", { name: "Rechnung erstellen" }));
     expect(screen.getByText("Modus invoice")).toBeVisible();
   });
-  it.each(INQUIRY_STATUSES)("allows location staff to open deposit refunds in phase %s without an offer", (status) => {
+  it.each(INQUIRY_STATUSES)("allows location staff to open deposit refunds in phase %s without an offer", async (status) => {
     depositEditor.mockClear();
-    render(<MemoryRouter><InquiryDetailPanel layout="page" table="rental_inquiries" inquiryType="rental" inquiry={{ ...inquiry, id: `deposit-${status}`, status, offer_number: null }} defaultItems={[]} details={null} onChanged={vi.fn()} /></MemoryRouter>);
-    fireEvent.click(screen.getByRole("button", { name: "Kaution abrechnen / erstatten" }));
-    expect(depositEditor).toHaveBeenCalledWith(expect.objectContaining({ canMarkStripePayout: true, inquiry: expect.objectContaining({ status, offer_number: null }) }));
+    payoutEditor.mockClear();
+    // Actual central refund route requires a successfully read payment balance;
+    // combined execution stays disabled, as in production. No endpoint is used.
+    refundInfo.mockResolvedValue({ data: { success: true, execution_available: false, paid_cents: 10000,
+      deposit_available: 10000, rent_available: 0, deposit_used: 0, rent_used: 0,
+      pending: false, can_refund_rent: false, requests: [] }, error: null });
+    const paidInquiry = { ...inquiry, id: `deposit-${status}`, status, offer_number: null, offer_total_gross: 0,
+      payments: [{ amount: 100, label: "Stripe", reference: "pi_isolated" }], offer_payload: { deposit: 100 } };
+    render(<MemoryRouter><InquiryDetailPanel layout="page" table="rental_inquiries" inquiryType="rental" inquiry={paidInquiry} defaultItems={[]} details={null} onChanged={vi.fn()} /></MemoryRouter>);
+    fireEvent.click(await screen.findByRole("button", { name: "Erstattung bearbeiten" }));
+    expect(await screen.findByRole("dialog")).toBeVisible();
+    expect(refundInfo).toHaveBeenCalledWith("offer-payment-admin", { action: "order_refund_info", inquiry_id: `deposit-${status}` });
+    if (status === "cancelled") {
+      // Cancellation deliberately uses the original-payment route, not settlement
+      // against the cancelled rent. Assert that route rather than weakening the test.
+      expect(payoutEditor).toHaveBeenCalledWith(expect.objectContaining({ cancelled: true, inquiryId: `deposit-${status}`, deposit: 100 }));
+      expect(depositEditor).not.toHaveBeenCalled();
+    } else {
+      expect(depositEditor).toHaveBeenCalledWith(expect.objectContaining({ canMarkStripePayout: true, inquiry: expect.objectContaining({ status, offer_number: null }) }));
+    }
   });
   it("opens accepted order positions as an amendment and retains the chosen workspace and draft when toggled", () => {
     openWorkspace();

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { eligibleSignCart, signBookingPrice, signCapacityAvailable, signHoldDeadline, signHoldExpired, signPaymentComplete, signLastRentalDate, validSignRentalRange, type SignBookingConfiguration } from "../../supabase/functions/_shared/sign-direct-booking";
+import { SIGN_MAX_RENTAL_DAYS, eligibleSignCart, signBookingPrice, signCapacityAvailable, signHoldDeadline, signHoldExpired, signPaymentComplete, signLastRentalDate, validSignRentalRange, type SignBookingConfiguration } from "../../supabase/functions/_shared/sign-direct-booking";
 
 const config: SignBookingConfiguration = { enabled: true, standardGrossCents: 4900, sorglosGrossCents: 19900, depositCents: 10000, maxRentalDays: 100, municipalFeesSeparate: true };
 describe("Halteverbotsschilder direct booking", () => {
@@ -16,7 +16,22 @@ describe("Halteverbotsschilder direct booking", () => {
   it("never adds deposit for additional signs", () => {
     expect(signBookingPrice({ ...config, additionalSignGrossCents: 500 }, { package: "standard", quantity: 1, rentalDays: 10, municipalFeesCents: null, additionalSignQuantity: 4 })).toEqual({ grossCents: 6900, depositCents: 10000, totalCents: 16900 });
   });
-  it("includes the selected start as day 1 and limits rental to day 100", () => { expect(signLastRentalDate("2027-03-01", 10)).toBe("2027-03-10"); expect(validSignRentalRange("2027-03-01", "2027-03-10")).toBe(true); expect(validSignRentalRange("2027-03-01", "2027-06-08")).toBe(true); expect(validSignRentalRange("2027-03-01", "2027-06-09")).toBe(false); });
+  it("includes start as day 1 and enforces the approved 180-day calendar boundary", () => {
+    expect(SIGN_MAX_RENTAL_DAYS).toBe(180);
+    expect(signLastRentalDate("2027-03-01", 10)).toBe("2027-03-10");
+    expect(signLastRentalDate("2027-03-01")).toBe("2027-08-27");
+    expect(validSignRentalRange("2027-03-01", "2027-08-26")).toBe(true);
+    expect(validSignRentalRange("2027-03-01", "2027-08-27")).toBe(true);
+    expect(validSignRentalRange("2027-03-01", "2027-08-28")).toBe(false);
+    expect(validSignRentalRange("2027-03-01", "2027-02-28")).toBe(false);
+    // Preserve custom/legacy CMS tariff limits rather than inventing prices.
+    expect(validSignRentalRange("2027-03-01", "2027-06-09", 100)).toBe(false);
+  });
+  it.each([179, 180, 181])("uses the approved CMS limit consistently for pricing at day %i", (rentalDays) => {
+    const result = signBookingPrice({ ...config, maxRentalDays: 180 }, { package: "standard", quantity: 1, rentalDays, municipalFeesCents: null });
+    if (rentalDays <= 180) expect(result?.grossCents).toBe(rentalDays * 490);
+    else expect(result).toBeNull();
+  });
   it("charges 199 through 15 km and 299 above 15 km", () => {
     const c = { ...config, sorglosRadiusKm: 15, sorglosOuterGrossCents: 29900 };
     const input = { package: "sorglos" as const, quantity: 1, rentalDays: 10, municipalFeesCents: null };
