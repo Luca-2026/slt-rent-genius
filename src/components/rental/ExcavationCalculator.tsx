@@ -36,6 +36,10 @@ function loadState(): State {
   return INITIAL;
 }
 
+function Thumb({ src, alt }: { src?: string; alt: string }) {
+  return <div className="h-16 w-16 shrink-0 overflow-hidden rounded-md border border-border bg-muted">{src && <img src={src} alt={alt} loading="lazy" className="h-full w-full object-contain" />}</div>;
+}
+
 export function excavationHeading(subcategory?: string) {
   if (!subcategory) return "Plane dein Erdbewegungsprojekt";
   if (/bagger/.test(subcategory)) return "Ist dieser Bagger für dein Projekt geeignet?";
@@ -66,7 +70,7 @@ export function ExcavationCalculator({ locationId, currentProductId, heading = "
 
   const machines = useMemo(() => {
     const list = locationId ? getProductsForLocationCategory(locationId, "erdbewegung") : [];
-    return list.map((p) => ({ id: p.id, name: p.name, sub: p.category ?? "", onRequest: !!p.onRequest, data: readMachine(p.specifications) }));
+    return list.map((p) => ({ id: p.id, name: p.name, image: p.image, sub: p.category ?? "", onRequest: !!p.onRequest, data: readMachine(p.specifications) }));
   }, [locationId, version]);
   const excavators = machines.filter((m) => /bagger/.test(m.sub));
   const pick = useMemo(() => recommendExcavators(excavators, { volume: bank, depthM: maxDepth, accessM }), [excavators, bank, maxDepth, accessM]);
@@ -92,11 +96,14 @@ export function ExcavationCalculator({ locationId, currentProductId, heading = "
     </div>
   );
   const machineRow = (title: string, a?: Assessment) => a && (
-    <li className="p-3 text-sm">
+    <li className="p-3 text-sm flex gap-3">
+      <Thumb src={machines.find((m) => m.id === a.id)?.image} alt={a.name} />
+      <div className="min-w-0">
       <p className="text-xs font-semibold uppercase tracking-wide text-accent">{title}</p>
       <Link to={`/mieten/${locationId}/erdbewegung/${a.id}`} className="font-semibold text-primary hover:underline">{a.name}</Link>
       {machines.find((m) => m.id === a.id)?.onRequest && <span className="ml-1 text-muted-foreground">(auf Anfrage)</span>}
       {a.reasons.length > 0 && <p className="text-muted-foreground">{a.reasons.join(" · ")}</p>}
+      </div>
     </li>
   );
 
@@ -165,17 +172,17 @@ export function ExcavationCalculator({ locationId, currentProductId, heading = "
               <strong>Dieser Bagger:</strong> {currentAssess.ok ? (currentAssess.check ? "Eignung bitte mit uns abstimmen – technische Daten fehlen." : "für deine Angaben geeignet.") : "für deine Angaben nicht geeignet."} {currentAssess.reasons.join(" · ")}</p>}
             <div>
               <h3 className="text-sm font-semibold text-headline mb-1">Passende Bagger in {locName}</h3>
-              {pick.main ? <ul className="divide-y divide-border rounded-lg border border-border bg-background">
-                {machineRow("Unsere Empfehlung", pick.main)}{machineRow("Kompakte Alternative", pick.compact)}{machineRow("Leistungsstarke Alternative", pick.strong)}
-              </ul> : <p className="text-sm text-muted-foreground">Für deine Angaben können wir keinen Bagger sicher empfehlen. {pick.unchecked.length > 0 ? `Bitte prüfen lassen: ${pick.unchecked.map((a) => a.name).join(", ")}.` : ""} Ruf uns an – wir beraten dich persönlich.</p>}
+              {pick.main ? <><ul className="divide-y divide-border rounded-lg border border-border bg-background">
+                {machineRow(pick.hints.length && !pick.compact && pick.unsuitable.length === excavators.length ? "Kleinster Bagger" : "Unsere Empfehlung", pick.main)}{machineRow("Kompakte Alternative", pick.compact)}{machineRow("Leistungsstarke Alternative", pick.strong)}
+              </ul>{pick.hints.map((h) => <p key={h} className="mt-2 flex gap-2 rounded-lg border border-accent/40 bg-accent/10 p-3 text-sm"><Info className="h-4 w-4 text-accent shrink-0 mt-0.5" />{h}</p>)}</> : <p className="text-sm text-muted-foreground">Für deine Angaben können wir keinen Bagger sicher empfehlen. {pick.unchecked.length > 0 ? `Bitte prüfen lassen: ${pick.unchecked.map((a) => a.name).join(", ")}.` : ""} Ruf uns an – wir beraten dich persönlich.</p>}
             </div>
             <div>
               <h3 className="text-sm font-semibold text-headline mb-1">Dumper für den Materialtransport</h3>
               <ul className="divide-y divide-border rounded-lg border border-border bg-background">
-                {dumpers.map((d) => <li key={d.id} className="p-3 text-sm">
+                {dumpers.map((d) => <li key={d.id} className="p-3 text-sm flex gap-3"><Thumb src={d.image} alt={d.name} /><div className="min-w-0">
                   <Link to={`/mieten/${locationId}/erdbewegung/${d.id}`} className="font-semibold text-primary hover:underline">{d.name}</Link>
                   <p className="text-muted-foreground">{d.fits === false ? "zu breit für deine Zufahrt" : d.trips ? `ca. ${d.trips.trips} Fahrten (${f(d.trips.perTrip, 2)} m³ je Fahrt, begrenzt durch ${d.trips.limitedBy === "volume" ? `Mulde bei ${f(fill * 100, 0)} % Füllgrad` : "Nutzlast"})` : "Fahrtenzahl nicht berechenbar – Mulde oder Nutzlast nicht hinterlegt"}</p>
-                </li>)}
+                </div></li>)}
               </ul>
             </div>
             {lines.length > 0 && <div><h3 className="text-sm font-semibold text-headline">Maschinenpaket anfragen</h3><CalculatorRecommendations lines={lines} locationId={locationId} days={days} /></div>}

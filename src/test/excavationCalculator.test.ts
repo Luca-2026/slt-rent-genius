@@ -23,16 +23,17 @@ describe("Aushubrechner", () => {
     const d = readMachine({ "Max. Tragfähigkeit": "800 kg", "Muldengröße": "305 l / 400 l (gestrichen / gehäuft)" });
     expect(d.struckM3).toBeCloseTo(0.305); expect(d.payloadKg).toBe(800);
   });
-  it("85 cm Zufahrt schließt 2t-Bagger (99 cm) aus, 1t (71 cm + 20 cm) ebenfalls", () => {
+  it("85 cm Zufahrt: kleinster Bagger trotzdem empfohlen, mit Kran-Hinweis", () => {
     const p = recommendExcavators([e10z, xe20], { volume: 5, depthM: 0, accessM: 0.85 });
-    expect(p.main).toBeUndefined(); expect(p.unsuitable.map((a) => a.id)).toEqual(["bobcat-e10z", "xcmg-xe20e"]);
+    expect(p.main?.id).toBe("bobcat-e10z"); expect(p.hints[0]).toMatch(/Kran/);
   });
-  it("95 cm Zufahrt: nur 1t-Bagger", () => {
-    const p = recommendExcavators([e10z, xe20], { volume: 12, depthM: 0, accessM: 0.95 });
-    expect(p.main?.id).toBe("bobcat-e10z"); expect(p.strong).toBeUndefined();
+  it("95 cm Zufahrt, große Menge: 1t empfohlen, Hinweis auf größeren Bagger per Kran", () => {
+    const big = { id: "b6", name: "6t", data: readMachine({ Betriebsgewicht: "5.700 kg", Transportbreite: "1.900 mm" }) };
+    const p = recommendExcavators([e10z, xe20, big], { volume: 150, depthM: 0, accessM: 0.95 });
+    expect(p.main?.id).toBe("bobcat-e10z"); expect(p.hints[0]).toMatch(/6t.*Kran/);
   });
-  it("fehlende Grabtiefe = prüfen statt empfehlen", () => {
-    const p = recommendExcavators([e10z], { volume: 3, depthM: 1.5 });
-    expect(p.main).toBeUndefined(); expect(p.unchecked[0].id).toBe("bobcat-e10z");
+  it("20 m² × 1,20 m ohne hinterlegte Grabtiefe: trotzdem Empfehlung", () => {
+    const p = recommendExcavators([e10z, xe20], { volume: 24, depthM: 1.2 });
+    expect(p.main).toBeDefined();
   });
 });

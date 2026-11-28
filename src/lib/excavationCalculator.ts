@@ -67,7 +67,7 @@ export interface MachineData { weightKg: number | null; widthM: number | null; d
 export function readMachine(specs?: Record<string, string>): MachineData {
   const w = pick(specs, /betriebsgewicht|maschinengewicht/i);
   const wm = w?.match(/(\d[\d.,]*)\s*(kg|t)\b/i);
-  const width = pick(specs, /gesamtbreite|transportbreite/i);
+  const width = pick(specs, /gesamtbreite|transportbreite|unterwagenbreite/i);
   const retract = width?.match(/einfahrbar auf\s*(\d[\d.,]*\s*(mm|cm|m))/i);
   const depth = pick(specs, /grabtiefe/i);
   const mulde = pick(specs, /mulden/i);
@@ -93,39 +93,45 @@ export const TRENCH_SAFETY_DEPTH_M = 1.25; // DIN 4124: ab 1,25 m Böschung oder
 export function minWeightForVolume(m3: number) { return m3 > 100 ? 5000 : m3 > 30 ? 2500 : m3 > 5 ? 1500 : 0; }
 
 export interface Candidate { id: string; name: string; data: MachineData }
-export interface Assessment { id: string; name: string; ok: boolean; check: boolean; reasons: string[] }
+export interface Assessment { id: string; name: string; ok: boolean; check: boolean; reasons: string[]; tooWide?: boolean; weightKg?: number | null }
 export function assessExcavator(c: Candidate, need: { volume: number; depthM: number; accessM?: number }): Assessment {
-  const r: string[] = []; let ok = true, check = false;
+  const r: string[] = []; let ok = true, check = false, tooWide = false;
   const { weightKg, widthM, digDepthM } = c.data;
+  if (need.accessM) {
+    if (widthM == null) { ok = false; check = true; r.push("Breite nicht hinterlegt – Zufahrt bitte mit uns prüfen"); }
+    else if (widthM + ACCESS_CLEARANCE_M > need.accessM) { ok = false; tooWide = true; r.push(`mit ${fmt(widthM * 100, 0)} cm Breite zu breit für ${fmt(need.accessM * 100, 0)} cm Zufahrt`); }
+    else r.push(`passt mit ${fmt(widthM * 100, 0)} cm durch die Zufahrt`);
+  }
   if (need.depthM > DEPTH_CHECK_FROM_M) {
-    if (digDepthM == null) { check = true; r.push("Grabtiefe nicht hinterlegt"); }
+    if (digDepthM == null) r.push(`Grabtiefe für ${fmt(need.depthM)} m bitte kurz mit uns abstimmen`);
     else if (digDepthM * USABLE_DEPTH_SHARE < need.depthM) { ok = false; r.push(`Grabtiefe ${fmt(digDepthM)} m reicht für ${fmt(need.depthM)} m nicht sicher aus`); }
     else r.push(`Grabtiefe ${fmt(digDepthM)} m ausreichend`);
   }
-  if (need.accessM) {
-    if (widthM == null) { check = true; r.push("Maschinenbreite nicht hinterlegt"); }
-    else if (widthM + ACCESS_CLEARANCE_M > need.accessM) { ok = false; r.push(`mit ${fmt(widthM * 100, 0)} cm Breite zu breit für ${fmt(need.accessM * 100, 0)} cm Zufahrt`); }
-    else r.push(`passt mit ${fmt(widthM * 100, 0)} cm durch die Zufahrt`);
-  }
-  if (weightKg == null) check = true;
-  else if (weightKg < minWeightForVolume(need.volume)) r.push("für diese Menge eher langsam");
-  return { id: c.id, name: c.name, ok, check, reasons: r };
+  if (weightKg != null && weightKg < minWeightForVolume(need.volume)) r.push("funktioniert, dauert bei dieser Menge aber länger");
+  return { id: c.id, name: c.name, ok, check, reasons: r, tooWide, weightKg };
 }
 
-export interface ExcavatorPick { main?: Assessment; compact?: Assessment; strong?: Assessment; unsuitable: Assessment[]; unchecked: Assessment[] }
+export interface ExcavatorPick { main?: Assessment; compact?: Assessment; strong?: Assessment; unsuitable: Assessment[]; unchecked: Assessment[]; hints: string[] }
+/** Empfiehlt immer mindestens den kleinsten Bagger, solange es einen gibt; Einschränkungen werden als Hinweis erklärt. */
 export function recommendExcavators(cands: Candidate[], need: { volume: number; depthM: number; accessM?: number }): ExcavatorPick {
   const sorted = [...cands].sort((a, b) => (a.data.weightKg ?? 1e9) - (b.data.weightKg ?? 1e9));
   const all = sorted.map((c) => ({ c, a: assessExcavator(c, need) }));
-  const fit = all.filter((x) => x.a.ok && !x.a.check);
+  const hints: string[] = [];
+  const fit = all.filter((x) => x.a.ok);
   const minW = minWeightForVolume(need.volume);
-  const mainIdx = fit.findIndex((x) => (x.c.data.weightKg ?? 0) >= minW);
-  const mi = mainIdx >= 0 ? mainIdx : fit.length - 1;
-  return {
-    main: fit[mi]?.a,
-    compact: mi > 0 ? fit[mi - 1].a : undefined,
-    strong: mi >= 0 && mi + 1 < fit.length ? fit[mi + 1].a : undefined,
-    unsuitable: all.filter((x) => !x.a.ok).map((x) => x.a),
-    unchecked: all.filter((x) => x.a.ok && x.a.check).map((x) => x.a),
-  };
+  let main: Assessment | undefined, compact: Assessment | undefined, strong: Assessment | undefined;
+  if (fit.length) {
+    const idx = fit.findIndex((x) => (x.c.data.weightKg ?? 0) >= minW);
+    const mi = idx >= 0 ? idx : fit.length - 1;
+    main = fit[mi].a; compact = mi > 0 ? fit[mi - 1].a : undefined; strong = mi + 1 < fit.length ? fit[mi + 1].a : undefined;
+    const bigger = all.find((x) => x.a.tooWide && (x.c.data.weightKg ?? 0) >= minW && (x.c.data.weightKg ?? 0) > (fit[mi].c.data.weightKg ?? 0));
+    if (idx < 0 && bigger) hints.push(`Bei dieser Menge wäre ein größerer Bagger wie der ${bigger.c.name} deutlich schneller. Er passt nicht durch die Zufahrt – prüfe, ob er per Kran hereingehoben werden kann. Mit dem ${fit[mi].c.name} funktioniert es auch, dauert aber entsprechend länger.`);
+  } else if (sorted.length) {
+    main = all[0].a;
+    hints.push(all[0].a.tooWide
+      ? `Selbst unser kleinster Bagger ist für diese Zufahrt (inkl. Bewegungsspielraum) zu breit. Prüfe, ob er per Kran hereingehoben werden kann oder ob eine andere Zufahrt möglich ist – wir beraten dich gern.`
+      : `Für diese Tiefe bitte die Maschinenwahl mit uns abstimmen.`);
+  }
+  return { main, compact, strong, hints, unsuitable: all.filter((x) => !x.a.ok).map((x) => x.a), unchecked: all.filter((x) => x.a.check).map((x) => x.a) };
 }
 const fmt = (v: number, d = 2) => v.toLocaleString("de-DE", { maximumFractionDigits: d });
