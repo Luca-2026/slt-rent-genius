@@ -1,0 +1,422 @@
+import { codedSubject } from "../_shared/order-code.ts";
+import { offerItemText } from "../_shared/offer-item-text.ts";
+import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";
+/**
+ * Sendet nach Zahlungseingang die Auftragsbestätigung zu einem angenommenen
+ * Angebot (Miet- oder Verkaufsanfrage). Erst mit Zugang dieser Bestätigung
+ * kommt der Auftrag verbindlich zustande.
+ */
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
+import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
+import { generateOfferPdf } from "../_shared/offer-pdf.ts";
+import { addonExplanation } from "../_shared/inquiry-offer-math.ts";
+import { normalizeImageUrl, resolveImagesByName } from "../_shared/product-images.ts";
+
+import { buildOrderAmendment, buildSalesOrderAmendment } from "../_shared/order-amendment.ts";
+import { signResidualPlan } from "../_shared/sign-amendment.ts";
+import { allowsCustomerPaymentTerms } from "../_shared/customer-payment-terms.ts";
+import { documentEmailRecipients } from "../_shared/test-email-routing.ts";
+import { ensurePaymentLink, planPaymentAmounts, isStripeConfigured, isStripeTestMode, shouldOfferPaymentLink, stripeClient } from "../_shared/stripe-pay.ts";
+import { endUnpaidRentalCheckouts, setRentalCheckoutStripe } from "../_shared/rental-checkout-recovery.ts";
+setRentalCheckoutStripe(() => stripeClient());
+
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
+const LOCATION_CONTACTS: Record<string, { name: string; email: string; phone: string }> = {
+  krefeld: { name: "Krefeld", email: "krefeld@slt-rental.de", phone: "02151 417 99 04" },
+  bonn: { name: "Bonn", email: "bonn@slt-rental.de", phone: "0228 504 660 61" },
+  muelheim: { name: "Mülheim an der Ruhr", email: "muelheim@slt-rental.de", phone: "02151 417 99 04" },
+};
+function locKey(raw: unknown): string {
+  const v = String(raw ?? "").toLowerCase();
+  if (v.includes("bonn")) return "bonn";
+  if (v.includes("mülheim") || v.includes("muelheim") || v.includes("mulheim")) return "muelheim";
+  return "krefeld";
+}
+const esc = (s: unknown) =>
+  s === null || s === undefined ? "" : String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+const money = (n: number) => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(n || 0);
+const fmtDate = (raw: unknown) => {
+  const v = typeof raw === "string" ? raw.slice(0, 10) : "";
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return "";
+  const [y, m, d] = v.split("-");
+  return `${d}.${m}.${y}`;
+};
+
+/** Spiegel von src/lib/orderConfirmation.ts (dort mit Tests). */
+const toCents = (v: unknown) => {
+  const n = Number(v);
+  return Number.isFinite(n) && n > 0 ? Math.round(n * 100) : 0;
+};
+const INVOICE_TERMS = new Set(["net_7", "net_14", "net_30", "custom"]);
+function evaluateOrderPayment(input: { gross: unknown; deposit?: unknown; payments: { amount: unknown }[]; paymentTerms?: unknown }) {
+  const grossCents = toCents(input.gross);
+  const depositCents = toCents(input.deposit);
+  const requiredCents = grossCents + depositCents;
+  const paidCents = input.payments.reduce((s: number, p) => s + toCents(p?.amount), 0);
+  const openCents = Math.max(0, requiredCents - paidCents);
+  const overpaidCents = Math.max(0, paidCents - requiredCents);
+  const paysOnInvoice = INVOICE_TERMS.has(String(input.paymentTerms ?? ""));
+  const state = grossCents <= 0 ? "no_total" : paidCents <= 0 ? "none" : openCents > 0 ? "partial" : "full";
+  let blockReason: string | null = null;
+  if (state === "no_total") blockReason = "Zu diesem Angebot ist keine Angebotssumme gespeichert.";
+  else if (state === "none" && !paysOnInvoice)
+    blockReason = "Es ist noch kein Zahlungseingang erfasst. Die Auftragsbestätigung kann erst nach Zahlungseingang versendet werden.";
+  return {
+    state, grossCents, depositCents, requiredCents, paidCents, openCents, overpaidCents, paysOnInvoice,
+    canSend: blockReason === null,
+    needsAcknowledgement: state === "partial" || (state === "none" && paysOnInvoice),
+    blockReason,
+  };
+}
+
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  try {
+    const auth = req.headers.get("Authorization");
+    if (!auth?.startsWith("Bearer ")) return json({ error: "Unauthorized" }, 401);
+    const serviceUrl = Deno.env.get("SUPABASE_URL"), serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"), anonKey = Deno.env.get("SUPABASE_ANON_KEY");
+    if (!serviceUrl || !serviceKey || !anonKey) return json({ error: "Dienst nicht konfiguriert" },500);
+    const service = createClient(serviceUrl, serviceKey, {
+      auth: { persistSession: false },
+    });
+    const body = await req.json().catch(() => null);
+    const internalHandover = auth === `Bearer ${serviceKey}` && typeof body?.handover_protocol_id === "string" && /^[0-9a-f-]{36}$/i.test(body.handover_protocol_id);
+    const { data: handover } = typeof body?.handover_protocol_id === "string" && /^[0-9a-f-]{36}$/i.test(body.handover_protocol_id) ? await service.from("b2b_delivery_notes").select("id,rental_inquiry_id,customer_signed_at,signature_data,agb_accepted,protocol_data").eq("id", body.handover_protocol_id).maybeSingle() : { data: null };
+    if (internalHandover && (!handover?.customer_signed_at || !handover.signature_data || !handover.agb_accepted)) return json({ error: "Keine unterschriebene Übergabe vorhanden." }, 409);
+    const { data: u } = internalHandover ? { data: { user: { id: handover?.protocol_data?.created_by } } } : await service.auth.getUser(auth.replace("Bearer ", ""));
+    const user = u?.user;
+    if (!user?.id) return json({ error: "Unauthorized" }, 401);
+    const { data: isStaff } = await service.rpc("can_edit_operations", { _user_id: user.id });
+    if (!isStaff) return json({ error: "Forbidden" }, 403);
+    const signedHandover = !!handover?.customer_signed_at && !!handover.signature_data && !!handover.agb_accepted;
+    const inquiryType = body?.inquiry_type;
+    const inquiryId = signedHandover ? handover?.rental_inquiry_id : body?.inquiry_id;
+    if (inquiryType !== "rental" && inquiryType !== "sales") return json({ error: "inquiry_type ungültig" }, 400);
+    if (typeof inquiryId !== "string" || inquiryId.length < 10) return json({ error: "inquiry_id fehlt" }, 400);
+    const note = typeof body?.note === "string" ? body.note.trim().slice(0, 800) : "";
+    const senderName = typeof body?.sender_name === "string" ? body.sender_name.trim().slice(0, 120) : "";
+    const amendment = body?.amendment === true;
+    const preview = body?.preview === true;
+    let attachPdf = preview || amendment || body?.attach_pdf === true;
+
+    const table = inquiryType === "rental" ? "rental_inquiries" : "sales_inquiries";
+    const { data: inq } = await service.from(table).select("*").eq("id", inquiryId).maybeSingle();
+    if (!inq) return json({ error: "Anfrage nicht gefunden" }, 404);
+    if (inq.status !== "accepted") return json({ error: "Nur angenommene Angebote können bestätigt werden." }, 400);
+    if (!inq.offer_number) return json({ error: "Zu dieser Anfrage gibt es kein Angebot." }, 400);
+    if (!inq.customer_email) return json({ error: "Keine Kunden-E-Mail hinterlegt." }, 400);
+    if (signedHandover && inquiryType !== "rental") return json({ error: "Nur Mietübergaben." }, 400);
+    if (signedHandover && inq.order_confirmation_number) return json({ success: true, already_sent: true, file_url: inq.order_confirmation_file_url });
+    if (signedHandover && !inq.order_confirmed_at) return json({ error: "Übergabe hat den Auftrag noch nicht bestätigt." }, 409);
+    if (signedHandover) attachPdf = true;
+
+    attachPdf = attachPdf || Number(inq.order_revision ?? 0) > 0;
+    if (!signedHandover && !amendment && Number(body.expected_revision ?? 0) !== Number(inq.order_revision ?? 0)) return json({error:"Auftragsfassung wurde inzwischen geändert. Bitte neu laden."},409);
+    const resendKey = Deno.env.get("RESEND_API_KEY");
+    if (!preview && !resendKey) return json({ error: "E-Mail-Versand nicht konfiguriert" }, 500);
+
+    let payload = (inq.offer_payload ?? {}) as Record<string, any>;
+    if (inquiryType === "rental" && payload.undated_offer === true) return json({ error: "Unverbindliches Preisangebot: zuerst einen festen Mietzeitraum vereinbaren und ein neues Angebot erstellen." }, 400);
+    if (amendment) {
+      if (!allowsCustomerPaymentTerms(inq.customer_kind, body.payment_terms)) return json({error:"Unzulässige Zahlungsbedingungen"},400);
+      if (typeof body.agreement_note !== "string" || body.agreement_note.trim().length < 5 || !Number.isFinite(Date.parse(body.agreed_at))) return json({error:"Bitte Vereinbarung mit Datum und Notiz dokumentieren"},400);
+      if (Number(body.expected_revision) !== (inq.order_revision ?? 0)) return json({error:"Auftrag wurde inzwischen geändert. Bitte neu laden."},409);
+      try { payload = inquiryType === "sales" ? buildSalesOrderAmendment(body,payload,inq.customer_kind) : buildOrderAmendment(body,payload,inq.location); } catch(e) { return json({error:e instanceof Error ? e.message : "Ungültige Änderung"},400); }
+    }
+    const items: any[] = Array.isArray(payload.items) ? payload.items.map((item: any) => ({ ...item, ...offerItemText(item), rental_start: item.rental_start ?? item.start_date, rental_end: item.rental_end ?? item.end_date })) : [];
+    const payments: any[] = (Array.isArray(inq.payments) ? inq.payments : []).filter((p: any) => toCents(p?.amount) > 0);
+    const ev = evaluateOrderPayment({
+      gross: amendment ? payload?.totals?.grossAmount : inq.offer_total_gross ?? payload?.totals?.grossAmount,
+      deposit: payload?.deposit,
+      payments,
+      paymentTerms: payload?.payment_terms,
+    });
+
+    // Server rechnet selbst – Anzeige im Portal darf nicht veraltet sein.
+    if (!signedHandover && !amendment && !preview && (
+      Number(body?.expected_paid_cents) !== ev.paidCents ||
+      Number(body?.expected_required_cents) !== ev.requiredCents
+    )) {
+      return json({ error: "Die Zahlungen oder die Angebotssumme wurden inzwischen geändert. Bitte die Anfrage neu laden und erneut prüfen." }, 409);
+    }
+    if (!signedHandover && !preview && !amendment && !ev.canSend) return json({ error: ev.blockReason }, 400);
+    if (!signedHandover && !preview && !amendment && ev.needsAcknowledgement && body?.acknowledge_open !== true) {
+      return json({ error: "Offener Betrag muss vor dem Versand ausdrücklich bestätigt werden." }, 400);
+    }
+
+    const gross = ev.grossCents / 100;
+    const deposit = ev.depositCents / 100;
+    const required = ev.requiredCents / 100;
+    const paid = ev.paidCents / 100;
+    const open = ev.openCents / 100;
+    let paymentUrl: string | null = null;
+    if (!preview && !amendment && inquiryType === "rental" && Number(inq.order_revision ?? 0) > 0 && ev.openCents > 0 && !ev.paysOnInvoice) {
+      // Restzahlungslink ist optional: Versand der AB darf nie daran scheitern (Überweisung bleibt möglich).
+      if (isStripeConfigured() && shouldOfferPaymentLink({ paymentTerms: String(payload.payment_terms ?? "vorkasse"), customerEmail: inq.customer_email, testMode: isStripeTestMode(), openCents: ev.openCents })) {
+        const { data: activeLinks, error: linkReadError } = await service.from("offer_payment_links").select("token,amount_cents,stripe_session_id,checkout_claim").eq("inquiry_table", "rental_inquiries").eq("inquiry_id", inquiryId).eq("status", "active");
+        const matching = linkReadError ? null : activeLinks?.find((link: { amount_cents: number }) => link.amount_cents === ev.openCents);
+        if (matching) paymentUrl = `https://www.slt-rental.de/zahlung/${matching.token}`;
+        else if (!linkReadError && !activeLinks?.some((link: { checkout_claim: string | null }) => link.checkout_claim)) {
+          try {
+            const link = await ensurePaymentLink(service, { table: "rental_inquiries", inquiryId, customerEmail: inq.customer_email, offerNumber: inq.offer_number, plan: signResidualPlan(planPaymentAmounts({ gross, deposit, paidCents: ev.paidCents }), payload, inq.order_revision), createdBy: user.id });
+            paymentUrl = link?.url ?? null;
+          } catch (e) { console.error("residual payment link failed", e); }
+        }
+      }
+    }
+
+    const customerName = inquiryType === "rental"
+      ? inq.customer_name || ""
+      : [inq.first_name, inq.last_name].filter(Boolean).join(" ");
+    const form = await resolveAddressForm(service, inq);
+    const t = (du: string, sie: string) => byForm(form, du, sie);
+    const greeting = salutationLine({ address_form: form, salutation: inq.customer_salutation ?? inq.salutation, name: customerName });
+    const loc = LOCATION_CONTACTS[locKey(inq.location)];
+    const starts = items.map(i=>i.rental_start).filter(Boolean).sort();
+    const ends = items.map(i=>i.rental_end).filter(Boolean).sort();
+    const periodStart = starts[0] ?? inq.start_date, periodEnd = ends.at(-1) ?? inq.end_date;
+    const period = inquiryType === "rental" && periodStart
+      ? `${fmtDate(periodStart)}${inq.start_time ? `, ${String(inq.start_time).slice(0, 5)} Uhr` : ""}${periodEnd ? ` bis ${fmtDate(periodEnd)}${inq.end_time ? `, ${String(inq.end_time).slice(0, 5)} Uhr` : ""}` : ""}`
+      : "";
+
+    const rows = items.map((i) => {
+      const qty = Number(i.quantity) || 1;
+      const range = i.rental_start ? ` (${fmtDate(i.rental_start)}${i.rental_end ? ` – ${fmtDate(i.rental_end)}` : ""})` : "";
+      return `<tr><td style="padding:6px 0;border-bottom:1px solid #e2e8f0;">${esc(i.product_name)}${esc(range)}</td><td style="padding:6px 0;border-bottom:1px solid #e2e8f0;text-align:right;white-space:nowrap;">${qty} ×</td></tr>`;
+    }).join("");
+
+    const dueWhen = inquiryType === "rental" ? "spätestens vor Mietbeginn" : "spätestens vor Übergabe";
+    const ref = `Verwendungszweck: ${esc(inq.offer_number)}`;
+    let intro: string;
+    let statusLine: string;
+    if (ev.state === "full") {
+      intro = t(`vielen Dank – deine Zahlung ist vollständig bei uns eingegangen.`, `vielen Dank – Ihre Zahlung ist vollständig bei uns eingegangen.`);
+      statusLine = `<p style="margin:4px 0;"><strong>Der Betrag ist vollständig beglichen.</strong></p>`;
+    } else if (ev.state === "partial") {
+      intro = Number(inq.order_revision ?? 0) > 0
+        ? t("wir bestätigen die vereinbarten Ergänzungen zu deinem Auftrag.", "wir bestätigen die vereinbarten Ergänzungen zu Ihrem Auftrag.")
+        : t(`vielen Dank – deine Teilzahlung über ${money(paid)} ist bei uns eingegangen.`, `vielen Dank – Ihre Teilzahlung über ${money(paid)} ist bei uns eingegangen.`);
+      statusLine = ev.paysOnInvoice
+        ? `<p style="margin:4px 0;">Offener Restbetrag: <strong>${money(open)}</strong> – fällig gemäß den vereinbarten Zahlungsbedingungen.</p>`
+        : `<p style="margin:4px 0;">Offener Restbetrag: <strong>${money(open)}</strong> – ${t("bitte", "bitte")} ${dueWhen} überweisen (${ref}).</p>`;
+    } else {
+      intro = t(`vielen Dank für deinen Auftrag.`, `vielen Dank für Ihren Auftrag.`);
+      statusLine = `<p style="margin:4px 0;">Zahlung: <strong>${money(required)}</strong> – fällig gemäß den vereinbarten Zahlungsbedingungen nach Rechnungsstellung. Bisher ist noch keine Zahlung eingegangen.</p>`;
+    }
+    const paymentList = payments.length
+      ? `<p style="margin:4px 0;">Eingegangene Zahlungen: <strong>${money(paid)}</strong></p><ul style="margin:4px 0 4px 18px;padding:0;">${payments.map((p) => `<li>${p?.date ? `${esc(fmtDate(p.date))}: ` : ""}${money(toCents(p.amount) / 100)}</li>`).join("")}</ul>`
+      : "";
+    const overLine = ev.overpaidCents > 0
+      ? `<p style="margin:4px 0;">${t(`Du hast ${money(ev.overpaidCents / 100)} mehr überwiesen als vereinbart. Wir melden uns dazu bei dir.`, `Sie haben ${money(ev.overpaidCents / 100)} mehr überwiesen als vereinbart. Wir melden uns dazu bei Ihnen.`)}</p>`
+      : "";
+
+    const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:16px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
+<div style="max-width:600px;margin:0 auto;">
+  <h2 style="color:#00507d;margin:0 0 16px;">${inq.order_revision ? `Geänderte Auftragsbestätigung · Fassung ${inq.order_revision} zu` : "Auftragsbestätigung zu"} Angebot ${esc(inq.offer_number)}</h2>
+  <p>${esc(greeting)}</p>
+  <p>${intro} Hiermit bestätigen wir ${t("dir", "Ihnen")} verbindlich den Auftrag auf Grundlage unseres Angebots <strong>${esc(inq.offer_number)}</strong>.</p>
+  ${period ? `<p><strong>Mietzeitraum:</strong> ${esc(period)}<br><strong>Standort:</strong> ${esc(loc.name)}</p>` : ""}
+  ${rows ? `<table role="presentation" style="width:100%;border-collapse:collapse;font-size:14px;margin:12px 0;">${rows}</table>` : ""}
+  <div style="background:#f1f5f9;border-radius:6px;padding:12px 16px;margin:16px 0;">
+    <p style="margin:4px 0;">Auftragssumme brutto: <strong>${money(gross)}</strong></p>
+    ${deposit > 0 ? `<p style="margin:4px 0;">Kaution: <strong>${money(deposit)}</strong> (wird nach ordnungsgemäßer Rückgabe erstattet)</p><p style="margin:4px 0;">Gesamt zu zahlen: <strong>${money(required)}</strong></p>` : ""}
+    ${paymentList}
+    ${statusLine}
+    ${paymentUrl ? `<p style="margin:12px 0 4px;"><a href="${esc(paymentUrl)}" style="color:#00507d;font-weight:bold;">Offenen Restbetrag von ${money(open)} bezahlen</a></p>` : ""}
+    ${payload.payment_terms === "custom" ? `<p style="white-space:pre-wrap;">${esc(payload.payment_terms_custom || "")}</p>` : ""}
+    ${overLine}
+  </div>
+  ${note ? `<p style="white-space:pre-wrap;border-left:4px solid #00507d;padding:8px 16px;">${esc(note)}</p>` : ""}
+  <div style="background:#fff7ed;border-left:4px solid #ff8e02;padding:12px 16px;margin:20px 0;border-radius:4px;font-size:14px;">
+    <strong>Verbindliche Auftragsannahme:</strong> Mit dieser Auftragsbestätigung haben wir ${t("deinen", "Ihren")} Auftrag angenommen – ${inquiryType === "rental" ? "die Miete" : "der Kauf"} ist damit verbindlich vereinbart. Diese Auftragsbestätigung dient ${t("dir", "Ihnen")} als Nachweis der Auftragsannahme. Es gelten unsere Allgemeinen Geschäftsbedingungen.
+  </div>
+  <p>Bei Fragen erreich${t("st du", "en Sie")} uns am Standort ${esc(loc.name)} unter Tel. ${esc(loc.phone)} oder <a href="mailto:${esc(loc.email)}" style="color:#00507d;">${esc(loc.email)}</a>.</p>
+  <p style="margin-top:24px;">Freundliche Grüße<br>${senderName ? `${esc(senderName)}<br>` : ""}${t("Dein", "Ihr")} SLT Rental Team – Standort ${esc(loc.name)}</p>
+</div></body></html>`;
+
+    // ── Optional: Auftragsbestätigung als PDF (gleiches Layout wie Angebot/Rechnung) ──
+    const revision = (inq.order_revision ?? 0) + (amendment ? 1 : 0);
+    const confirmationNumber = String(inq.offer_number).replace(/^ANG-/, "AB-") + (revision ? `-A${revision}` : "");
+    let pdfAttachment: { filename: string; content: string } | null = null;
+    let fileUrl: string | null = null;
+    if (attachPdf) {
+      const isBusiness = inq.customer_kind === "business";
+      const companyName = inq.company_name || "";
+      const street = inquiryType === "rental" ? inq.customer_street : (inq.billing_street || inq.delivery_street);
+      const zip = inquiryType === "rental" ? inq.customer_postal_code : (inq.billing_postal_code || inq.delivery_postal_code);
+      const city = inquiryType === "rental" ? inq.customer_city : (inq.billing_city || inq.delivery_city);
+      const sameName = companyName && companyName.trim() === customerName.trim();
+      const profile = {
+        id: "",
+        company_name: companyName || customerName || "Kunde",
+        legal_form: null,
+        contact_first_name: sameName ? "" : customerName,
+        contact_last_name: "",
+        street: street || "", house_number: "", postal_code: zip || "", city: city || "",
+        country: "Deutschland",
+        tax_id: inq.vat_id || null,
+        show_tax_id: isBusiness && Boolean(inq.vat_id),
+        contact_email: inq.customer_email,
+        contact_phone: inq.customer_phone || null,
+        credit_limit: 0,
+        payment_due_days: 14,
+      };
+      const pdfItems = items.map((i) => ({
+        product_name: i.product_name,
+        description: i.description,
+        quantity: Number(i.quantity) || 0,
+        articles: i.articles,
+        quantity_unit: i.quantity_unit,
+        period_free: i.period_free,
+        unit: i.unit,
+        vat_rate: i.vat_rate ?? 19,
+        unit_code: i.unit_code,
+        duration: i.duration,
+        price_basis: i.price_basis,
+        rental_period_label: i.rental_period_label,
+        measure: i.measure,
+        unit_price: Number(i.unit_price) || 0,
+        discount_percent: Number(i.discount_percent) || 0,
+        total_price: Math.round((Number(i.quantity) || 0) * (Number(i.unit_price) || 0) * (1 - (Number(i.discount_percent) || 0) / 100) * 100) / 100,
+        rental_start: i.rental_start,
+        rental_end: i.rental_end,
+        group_id: (i as { group_id?: string }).group_id,
+        image_url: normalizeImageUrl(i.image_url) as string | null,
+      }));
+      const missing = pdfItems.filter((i) => !i.image_url).map((i) => i.product_name);
+      if (missing.length) {
+        try {
+          const resolved = await resolveImagesByName(service, missing);
+          for (const it of pdfItems) if (!it.image_url) it.image_url = resolved.get((it.product_name || "").trim().toLowerCase()) || null;
+        } catch (e) { console.error("Bildauflösung fehlgeschlagen:", e); }
+      }
+      const num = (v: unknown) => Number(v) || 0;
+      const servicesWithPrices: any[] = items.flatMap((item, idx) =>
+        (Array.isArray(item.addons) ? item.addons : [])
+          .filter((a: any) => num(a?.amount) !== 0 && a?.optional !== true)
+          .map((a: any, ai: number) => ({
+            id: `${idx}-${a.key || ai}`,
+            name: a.note ? `${a.label} (${a.note})` : a.label,
+            description: addonExplanation(a, item) || undefined,
+            pricePercent: null,
+            amount: num(a.amount),
+            days: a?.basis === "full_period" && num(a?.days) > 0 ? num(a.days) : undefined,
+            allocations: [{ itemIndex: idx, amount: num(a.amount) }],
+          })),
+      );
+      if (num(payload.setup_cost) > 0) servicesWithPrices.push({ id: "setup", name: "Aufbau / Montage vor Ort", pricePercent: null, amount: num(payload.setup_cost), allocations: [] });
+      if (num(payload.dismantle_cost) > 0) servicesWithPrices.push({ id: "dismantle", name: "Abbau / Demontage vor Ort", pricePercent: null, amount: num(payload.dismantle_cost), allocations: [] });
+      if (num(payload.return_location_cost) > 0 && typeof payload.return_location === "string") {
+        const rlName = ({ krefeld: "Krefeld", bonn: "Bonn", muelheim: "Mülheim an der Ruhr" } as Record<string, string>)[payload.return_location] ?? payload.return_location;
+        servicesWithPrices.push({ id: "return-location", name: `Rückgabe an anderem Standort (${rlName})`, pricePercent: null, amount: num(payload.return_location_cost), allocations: [] });
+      }
+      const totals = payload.totals ?? {};
+      const deliveryAddress = payload.delivery_requested ? payload.delivery_address : undefined;
+      const today = new Date();
+      const pdfBytes = await generateOfferPdf({
+      orderCode: (inq as { order_code?: string | null }).order_code ?? null,
+        documentType: "order_confirmation",
+        hideItemPrices: payload.hide_item_prices === true,
+        priceGroups: Array.isArray(payload.groups) ? payload.groups.map((g: { id: string; name: string }) => ({ id: String(g.id), name: String(g.name ?? "") })) : undefined,
+        businessType: inquiryType,
+        extraFields: payload.extra_fields,
+        orderConfirmationGreeting: { addressForm: form, salutation: greeting },
+        offerNumber: confirmationNumber,
+        offerDate: today.toISOString().slice(0, 10),
+        validUntil: "",
+        profile,
+        items: pdfItems,
+        deliveryCost: num(payload.delivery_cost_delivery) + num(payload.delivery_cost_return),
+        deliveryCostDelivery: num(payload.delivery_cost_delivery),
+        deliveryCostReturn: num(payload.delivery_cost_return),
+        servicesSurcharge: servicesWithPrices.reduce((s, x) => s + x.amount, 0),
+        servicesWithPrices,
+        netAmount: num(totals.netAmount),
+        vatRate: num(totals.vatRate) || 19,
+        vatAmount: num(totals.vatAmount),
+        grossAmount: gross,
+        isReverseCharge: false,
+        notes: [revision ? `Geänderte Auftragsbestätigung · Fassung ${revision}` : "", note].filter(Boolean).join("\n") || null,
+        validDays: 0,
+        deposit,
+        staffName: senderName || "SLT Rental",
+        issuingLocation: locKey(inq.location),
+        deliveryAddress,
+        paymentTerms: payload.payment_terms,
+        paymentTermsCustom: payload.payment_terms_custom || undefined,
+        sourceOfferNumber: inq.offer_number,
+        sourceOfferDate: typeof inq.offer_sent_at === "string" ? inq.offer_sent_at.slice(0, 10) : undefined,
+        servicePeriodStart: inquiryType === "rental" && periodStart ? `${periodStart}${inq.start_time ? " " + String(inq.start_time).slice(0, 5) : ""}` : undefined,
+        servicePeriodEnd: inquiryType === "rental" && periodEnd ? `${periodEnd}${inq.end_time ? " " + String(inq.end_time).slice(0, 5) : ""}` : undefined,
+        payments: payments.map((p) => ({ date: p?.date, amount: toCents(p?.amount) / 100, label: p?.label, reference: p?.reference })),
+      });
+      if (preview) return json({preview:true,pdf_base64:encodeBase64(pdfBytes),totals:payload.totals});
+      if (amendment) {
+        const actor = createClient(serviceUrl,anonKey,{global:{headers:{Authorization:auth}},auth:{persistSession:false}});
+        // An abandoned, unpaid checkout must not block a staff amendment; a paid one still must be booked first.
+        if (inquiryType === "rental" && isStripeConfigured()) {
+          try { await endUnpaidRentalCheckouts(service, inquiryId); } catch (e) { return json({ error: e instanceof Error ? e.message : "Online-Zahlung konnte nicht geprüft werden." }, 409); }
+        }
+        const {error:saveError}=await actor.rpc(inquiryType === "sales" ? "save_sales_order_amendment" : "save_rental_order_amendment",{_id:inquiryId,_expected:body.expected_revision,_payload:payload,_note:body.agreement_note,_agreed_at:body.agreed_at});
+        if(saveError) return json({error:saveError.message},409);
+        // Save first; the matching AB review/send creates or reuses the residual link.
+        return json({success:true,saved:true,version:revision,totals:payload.totals,open_cents:ev.openCents});
+      }
+      const safeName = String(profile.company_name)
+        .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/Ä/g, "Ae").replace(/Ö/g, "Oe").replace(/Ü/g, "Ue").replace(/ß/g, "ss")
+        .replace(/[^a-zA-Z0-9_\- ]/g, "_").replace(/\s+/g, "_");
+      const fileName = `Auftragsbestaetigung_SLTRental_${confirmationNumber}_${safeName}.pdf`;
+      const filePath = `inquiry-order-confirmations/${inquiryType}/${inquiryId}/${confirmationNumber}/${crypto.randomUUID()}/${fileName}`;
+      const { error: upErr } = await service.storage.from("b2b-invoices")
+        .upload(filePath, pdfBytes, { contentType: "application/pdf", upsert: true });
+      if (upErr) {
+        console.error("Upload error:", upErr.message);
+        return json({ error: "PDF der Auftragsbestätigung konnte nicht gespeichert werden." }, 500);
+      }
+      const { data: signed } = await service.storage.from("b2b-invoices").createSignedUrl(filePath, 60 * 60 * 24 * 365);
+      fileUrl = signed?.signedUrl || null;
+      pdfAttachment = { filename: fileName, content: encodeBase64(pdfBytes) };
+    }
+
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json", ...(signedHandover ? { "Idempotency-Key": `handover-ab-${handover?.id}` } : {}) },
+      body: JSON.stringify({
+        from: `SLT-Rental <noreply@${Deno.env.get("RESEND_DOMAIN") || "slt-rental.de"}>`,
+        ...documentEmailRecipients(inq.customer_email,Array.from(new Set([loc.email, inq.location_email].filter((e) => e && e !== inq.customer_email)))),
+        reply_to: loc.email,
+        subject: await codedSubject(service, `Auftragsbestätigung zu ${t("deinem", "Ihrem")} Angebot ${inq.offer_number}`, { table, id: inq.id }),
+        html: pdfAttachment
+          ? html.replace("</h2>", `</h2><p style="color:#6b7280;font-size:13px;margin-top:-8px;">Die Auftragsbestätigung ${esc(confirmationNumber)} ${t("findest du", "finden Sie")} zusätzlich als PDF im Anhang.</p>`)
+          : html,
+        ...(pdfAttachment ? { attachments: [pdfAttachment] } : {}),
+      }),
+    });
+    if (!res.ok) {
+      const t = await res.text();
+      console.error("Resend error", res.status, t);
+      return json({ error: "E-Mail-Versand fehlgeschlagen", status: res.status, details: t }, 502);
+    }
+
+    const now = new Date();
+    if (inquiryType === "rental" && fileUrl) {
+      const { error: historyError } = await service.from("rental_order_confirmation_deliveries").insert({ rental_inquiry_id: inquiryId, version: revision, confirmation_number: confirmationNumber, file_url: fileUrl, snapshot: { offer_payload: payload, payments, order_code: inq.order_code }, sent_at: now.toISOString(), sent_by: user.id });
+      if (historyError) { console.error("AB history error",historyError.message); return json({ error: "E-Mail versendet, aber AB-Historie konnte nicht gespeichert werden. Bitte nicht erneut versenden." },500); }
+    }
+    const line = `[${now.toLocaleString("de-DE")}] Auftragsbestätigung zu ${inq.offer_number} versendet${senderName ? ` von ${senderName}` : ""}`;
+    await service.from(table).update({
+      order_confirmed_at: now.toISOString(),
+      order_confirmed_by_name: senderName || null,
+      ...(fileUrl ? { order_confirmation_number: confirmationNumber, order_confirmation_file_url: fileUrl } : {}),
+      internal_notes: [inq.internal_notes, line].filter(Boolean).join("\n"),
+    }).eq("id", inquiryId);
+
+    return json({ success: true, file_url: fileUrl });
+  } catch (err) {
+    console.error("send-order-confirmation error", err);
+    return json({ error: err instanceof Error ? err.message : "Unbekannter Fehler" }, 500);
+  }
+});

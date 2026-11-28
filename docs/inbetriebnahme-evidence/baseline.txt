@@ -1,0 +1,8 @@
+ ✓ src/test/issuedInvoiceGross.test.ts (2 tests) 3ms
+ ✓ src/test/hubSeo.test.ts (3 tests) 3ms
+
+ Test Files  240 passed (240)
+      Tests  1791 passed (1791)
+   Start at  15:30:37
+   Duration  49.83s (transform 5.67s, setup 12.77s, collect 30.96s, tests 167.18s, environment 68.40s, prepare 16.85s)
+

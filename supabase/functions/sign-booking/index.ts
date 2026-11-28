@@ -1,5 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { corsHeaders } from "npm:@supabase/supabase-js@2.119.2/cors";
 import { z } from "npm:zod@3";
 import { ensurePaymentLink, isStripeConfigured, newToken, planPaymentAmounts } from "../_shared/stripe-pay.ts";
 import { SLT_COMPANY } from "../_shared/company.ts";

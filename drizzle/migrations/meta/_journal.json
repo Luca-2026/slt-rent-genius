@@ -1492,6 +1492,13 @@
       "when": 1795582830587,
       "tag": "0212_fix_rental_amendment_date_types",
       "breakpoints": true
+    },
+    {
+      "idx": 213,
+      "version": "7",
+      "when": 1795880521589,
+      "tag": "0213_cms_quantity_atomic_availability_hotfix",
+      "breakpoints": true
     }
   ]
 }

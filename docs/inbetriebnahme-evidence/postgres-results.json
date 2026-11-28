@@ -1,0 +1,30 @@
+{
+  "passed": 24,
+  "cases": [
+    "two independent connections, last Bonn article: exactly one accepted+confirmed",
+    "duplicate current lines reject and roll back all changes",
+    "separate days may use same article",
+    "accepted without AB retains conservative hold",
+    "same normalized Krefeld pool accepts exactly existing quantity two",
+    "Bonn and Krefeld remain independent physical pools",
+    "live slt_stock_location leaves Muelheim pool separate and stock zero",
+    "B2B pending reservation blocks competing inquiry",
+    "linked B2B representation counts same booking once, other booking rejected",
+    "cancelled B2B hold releases capacity",
+    "cancelled inquiry releases capacity",
+    "done with AB still owns its contractual days",
+    "direct amendment/extension cannot bypass stock guard",
+    "legacy overbooking does not block price-only edits or releases",
+    "higher transaction isolation fails safely instead of stale-snapshot promise",
+    "existing protected confirm permission unchanged",
+    "tracked device transfer and transport costs unchanged",
+    "quantity zero remains unavailable even with another location stock",
+    "reverse line order: deterministic multi-product locks, no deadlock",
+    "missing dated booking evidence never reports free",
+    "synthetic NWHAP2/CYPWN5: Bonn free one, self excluded",
+    "B2B hold versus confirmation race: exactly one succeeds",
+    "concurrent extensions competing for last day: exactly one succeeds",
+    "CMS confirmation retry never fabricates devices or allocations"
+  ],
+  "engine": "PostgreSQL 17, independent psycopg2 connections, no managed env"
+}

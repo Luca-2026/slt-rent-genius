@@ -7737,6 +7737,42 @@ export type Database = {
         Args: { _protocol_id: string; _signature_data: string }
         Returns: undefined
       }
+      slt_cms_all_claims: {
+        Args: never
+        Returns: {
+          booking_id: string
+          first_day: string
+          last_day: string
+          pool: string
+          product_id: string
+          qty: number
+          representation: string
+        }[]
+      }
+      slt_cms_inquiry_claims: {
+        Args: { _row: Json }
+        Returns: {
+          first_day: string
+          last_day: string
+          pool: string
+          product_id: string
+          qty: number
+        }[]
+      }
+      slt_cms_reservation_claims: {
+        Args: { _row: Json }
+        Returns: {
+          first_day: string
+          last_day: string
+          pool: string
+          product_id: string
+          qty: number
+        }[]
+      }
+      slt_cms_validate_delta: {
+        Args: { _new: Json; _old: Json }
+        Returns: undefined
+      }
       slt_free_instances: {
         Args: {
           _exclude_inquiry: string

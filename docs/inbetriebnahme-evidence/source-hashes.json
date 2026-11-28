@@ -1,0 +1,6 @@
+{
+  "supabase/functions/_shared/insurance-validation.ts": "006bd904ad47f8c566a8769fa5018ed1aa3802af282ab8ca3f5780e91a0dc7f2",
+  "supabase/functions/send-order-confirmation/index.ts": "b300277299968500a0cacdc809663ee8b8df9f89a3165c01e27af82d7340e16d",
+  "supabase/functions/sign-booking/index.ts": "4126de48a1f64a69675e46be431b67309b0b588d577b14054c8eb190f6ea88ed",
+  "supabase/functions/sign-booking-worker/index.ts": "409e5ca304fccb89d7eef9bbd67e2f8ad228785a4a79915e149d0d5ab604d93f"
+}

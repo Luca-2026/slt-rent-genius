@@ -1,0 +1,8 @@
+ ✓ src/test/example.test.ts (1 test) 2ms
+ ✓ src/test/hubSeo.test.ts (3 tests) 3ms
+
+ Test Files  241 passed (241)
+      Tests  1796 passed (1796)
+   Start at  15:47:00
+   Duration  47.26s (transform 5.80s, setup 12.18s, collect 33.43s, tests 146.94s, environment 69.29s, prepare 16.94s)
+

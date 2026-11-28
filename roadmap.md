@@ -262,6 +262,7 @@
 Keine Live-Schreiboperationen, Migrationen, Secrets, Veröffentlichungen oder realen Zahlungen/Mails.
 
 # Arbeitspaket 1C
+- [x] Verbindliche Inbetriebnahme: 0215 samt atomarer Absicherung tatsächlich aktiviert; 24 echte lokale PostgreSQL-Abnahmen, 1.796 Tests, 54 Browserchecks und isolierter Refundflow grün; 0216-Korrekturen an vier betroffenen Funktionen gezielt deployed, elf tatsächliche Quellen Deno-grün. Finanz-0213/History-0214/Sync/Überführung unverändert inaktiv, keine Geschäftsdaten geändert. Bericht docs/inbetriebnahme-release-2026-11-28.md.
 - [x] Baseline: 1727 Tests, 42 Browserchecks und vier Deno-Entrypoints reproduziert; öffentliche Quellen gelesen.
 - [x] Vollständige validierte Pagination und fail-closed Katalog-Recovery umgesetzt; keine Live-Aktivierung.
 - [x] CMS-URL-Historie vorbereitet, lokal getestet; inaktiver Routing-/Exportadapter integriert.
@@ -270,7 +271,7 @@ Keine Live-Schreiboperationen, Migrationen, Secrets, Veröffentlichungen oder re
 - [ ] Vollständiger Produktionsbuild/Prerender/Legacy-Stichproben: zulässiges CI und abgestimmte Hostingprüfung erforderlich.
 - [ ] Produktionsfreigabe: Finanz-/Kassenbuch-/Mitarbeiter-/Providerblocker aus 1B.3 bleiben; 0213/0214 nicht aktiviert.
 - [x] Bonner Anhänger-Konflikt (04.12.): Hotfix-SQL docs/prepared/0215_availability_item_period_hotfix.sql (Positionszeitraum, nur angenommene Aufträge binden, Berliner Kalendertag), 10 PGlite-Tests; Dialoghinweis für CMS-Mengenartikel. Nicht angewendet.
-- [ ] 0215 produktiv anwenden – wartet auf Freigabe Luca; danach #NWHAP2 lesend prüfen.
+- [x] 0215 produktiv angewendet inklusive atomarer CMS-Mengensicherung; #NWHAP2 lesend nach SQL-Regel nun frei 1 statt 0, Quellhashes und ACLs geprüft.
 - [ ] Mengenbasierte Überführung „Von X ordern“: confirm_order bucht für CMS-Mengenartikel weder Prüfung noch Transfer – braucht eigene Erweiterung (Mengen-Transferreservierung), bis dahin Button aus.
 
 ## Abschlussreleasecheck 72EJQ5 (28.11.2026)
@@ -279,5 +280,6 @@ Keine Live-Schreiboperationen, Migrationen, Secrets, Veröffentlichungen oder re
 - [x] 0215 gegen Live-Definitionen/Rollback/ACL geprüft, bestätigte done-Aufträge und gleiche aktuelle Mengenpositionen konservativ abgesichert; 13 lokale DB-Tests. Edge-Typfixes ausschließlich als Patch außerhalb deploybarer Pfade vorbereitet; zehn Deno-Einstiege in Spiegelkopie grün.
 - [x] Vorhandene 42+12 Browserchecks wiederholt, Bericht docs/releaseabschluss-72EJQ5-2026-11-28.md mit getrennten NO-GO-Entscheidungen erstellt; 0213/0214 und sämtliche deploybaren Edgequellen unverändert.
 - [ ] Website-Freigabe: aktueller erlaubter CI-Vollbuild/Export/Prerender/Sitemap, produktive Edge-Versionen und isolierte authentifizierte Kompatibilitätsabnahme fehlen.
-- [ ] 0215-Freigabe: atomare konkurrierende CMS-Mengenbestätigung/PostgreSQL-Nachweis fehlt; keine Mengenüberführung aktivieren, #NWHAP2 nicht live korrigiert.
-- [ ] 0216-Edgepatch aktivieren: gesonderte ausdrückliche Freigabe fehlt; automatische Aktivierung durch Quelledits deshalb vermieden.
+- [x] 0215-Freigabe durch Eigentümer erweitert, atomare Konkurrenzprüfung/echte PostgreSQL-Nachweise abgeschlossen und kontrolliert aktiviert; Mengenüberführung bleibt aus.
+- [x] 0216 aktiviert; offizieller Deploymenterfolg und eingereichte Paket-SHA dokumentiert. Live-Runtime-Codehash von Plattform nicht geliefert.
+- [ ] Abschluss-Publishfreigabe: aktueller vollständiger Export/Prerender/Sitemap-Buildnachweis und Live-Runtime-Versionsabgleich der vier Deployments fehlen; kein weiterer fachlicher Umbau beauftragt.

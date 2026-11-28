@@ -1,5 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { corsHeaders } from "npm:@supabase/supabase-js@2.119.2/cors";
 import { isCronCall, staffUserId } from "../_shared/cronAuth.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutation.ts";

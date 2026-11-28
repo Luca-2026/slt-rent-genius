@@ -7,7 +7,7 @@ import { byForm, resolveAddressForm, salutationLine } from "../_shared/salutatio
  * kommt der Auftrag verbindlich zustande.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
-import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { corsHeaders } from 'npm:@supabase/supabase-js@2.119.2/cors';
 import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateOfferPdf } from "../_shared/offer-pdf.ts";
 import { addonExplanation } from "../_shared/inquiry-offer-math.ts";

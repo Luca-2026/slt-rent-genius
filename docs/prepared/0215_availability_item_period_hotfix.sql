@@ -44,7 +44,7 @@ BEGIN
     WHERE i.status NOT IN ('cancelled', 'rejected') AND (i.status = 'accepted' OR i.order_confirmed_at IS NOT NULL)
       AND (_exclude_inquiry_id IS NULL OR i.id <> _exclude_inquiry_id)
       AND public.slt_stock_location(i.location) = v_loc
-      AND (item ->> 'product_slug' = _slug OR (v_product_name IS NOT NULL AND lower(item ->> 'product_name') = lower(v_product_name)))
+      AND (item ->> 'product_slug' IN (_slug,v_product_id::text) OR (v_product_name IS NOT NULL AND lower(item ->> 'product_name') = lower(v_product_name)))
   ),
   inquiry_raw AS (
     SELECT i.id, COALESCE(i.offer_number, 'Anfrage') AS ref, i.customer_name,
@@ -56,7 +56,7 @@ BEGIN
       AND (i.offer_payload IS NULL OR jsonb_array_length(COALESCE(i.offer_payload -> 'items', '[]'::jsonb)) = 0)
       AND (_exclude_inquiry_id IS NULL OR i.id <> _exclude_inquiry_id)
       AND public.slt_stock_location(i.location) = v_loc
-      AND (i.product_id = _slug OR (v_product_name IS NOT NULL AND lower(i.product_name) = lower(v_product_name)))
+      AND (i.product_id IN (_slug,v_product_id::text) OR (v_product_name IS NOT NULL AND lower(i.product_name) = lower(v_product_name)))
   ),
   reservations AS (
     SELECT r.id, 'Reservierung' AS ref, r.product_name AS customer_name, r.start_date AS s,
@@ -65,8 +65,9 @@ BEGIN
     FROM public.b2b_reservations r
     WHERE r.status IN ('pending', 'offer_sent', 'confirmed', 'active')
       AND (_exclude_reservation_id IS NULL OR r.id <> _exclude_reservation_id)
+      AND (_exclude_inquiry_id IS NULL OR (r.inquiry_id IS DISTINCT FROM _exclude_inquiry_id AND NOT EXISTS (SELECT 1 FROM public.rental_inquiries own WHERE own.id=_exclude_inquiry_id AND own.b2b_reservation_id=r.id)))
       AND public.slt_stock_location(r.location) = v_loc
-      AND (r.product_id = _slug OR (v_product_name IS NOT NULL AND lower(r.product_name) = lower(v_product_name)))
+      AND (r.product_id IN (_slug,v_product_id::text) OR (v_product_name IS NOT NULL AND lower(r.product_name) = lower(v_product_name)))
   ),
   all_rows AS (SELECT * FROM inquiry_lines UNION ALL SELECT * FROM inquiry_raw UNION ALL SELECT * FROM reservations),
   overlapping AS (
@@ -123,7 +124,7 @@ BEGIN
     SELECT COALESCE(sum(GREATEST(COALESCE(NULLIF(sibling->>'articles','')::numeric,1)::int,1)), need)::int INTO need
     FROM jsonb_array_elements(COALESCE(inq.offer_payload->'items','[]'::jsonb)) sibling
     CROSS JOIN LATERAL public.slt_item_period(inq, sibling) sibling_period
-    WHERE sibling->>'product_slug' = it->>'product_slug'
+    WHERE (sibling->>'product_slug' IN (it->>'product_slug',p.id::text) OR lower(sibling->>'product_name')=lower(p.name))
       AND sibling_period.from_at IS NOT NULL
       AND daterange((sibling_period.from_at AT TIME ZONE 'Europe/Berlin')::date,
         GREATEST((sibling_period.from_at AT TIME ZONE 'Europe/Berlin')::date,(sibling_period.to_at AT TIME ZONE 'Europe/Berlin')::date),'[]') && daterange(d1,GREATEST(d1,d2),'[]');

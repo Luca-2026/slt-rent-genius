@@ -17,11 +17,11 @@ beforeAll(async () => {
     CREATE FUNCTION public.has_role(uuid, text) RETURNS boolean LANGUAGE sql AS $$ SELECT false $$;
     CREATE FUNCTION public.can_edit_operations(uuid) RETURNS boolean LANGUAGE sql AS $$ SELECT ok FROM allowed $$;
     CREATE TABLE public.rental_inquiries(id uuid PRIMARY KEY, status text, location text, start_date text, end_date text, start_time text, end_time text,
-      offer_payload jsonb, offer_number text, customer_name text, product_id text, product_name text, quantity int, order_confirmed_at timestamptz);
+      offer_payload jsonb, offer_number text, customer_name text, product_id text, product_name text, quantity int, order_confirmed_at timestamptz, b2b_reservation_id uuid);
     CREATE TABLE public.b2b_managed_products(id uuid PRIMARY KEY, slug text, name text, quantities jsonb);
     CREATE TABLE public.b2b_product_instances(id uuid PRIMARY KEY DEFAULT gen_random_uuid(), managed_product_id uuid, location text, status text, internal_inventory_number text, created_at timestamptz DEFAULT now());
     CREATE TABLE public.b2b_instance_allocations(instance_id uuid, rental_inquiry_id uuid, from_at timestamptz, to_at timestamptz);
-    CREATE TABLE public.b2b_reservations(id uuid PRIMARY KEY DEFAULT gen_random_uuid(), status text, location text, product_id text, product_name text, start_date date, end_date date, quantity int);
+    CREATE TABLE public.b2b_reservations(id uuid PRIMARY KEY DEFAULT gen_random_uuid(), status text, location text, product_id text, product_name text, start_date date, end_date date, quantity int, inquiry_id uuid);
     CREATE FUNCTION public.slt_try_date(_raw text) RETURNS date LANGUAGE sql IMMUTABLE AS $$
       SELECT CASE WHEN _raw ~ '^\\d{4}-\\d{2}-\\d{2}' THEN to_date(substring(_raw from 1 for 10), 'YYYY-MM-DD') ELSE NULL END $$;
     CREATE FUNCTION public.slt_normalize_location(_raw text) RETURNS text LANGUAGE sql IMMUTABLE AS $$
