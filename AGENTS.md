@@ -12,7 +12,7 @@
 - Percentage add-ons use the undiscounted rental basis in shared addon-calc, so rental discounts cannot reduce insurance or liability charges.
 - Public non-trailer requests use RentalRequestCart with an absolute deadline and server CMS quotes; only trailer routes load Rentware, coupon previews never reserve/redeem, and public-rental-period shares calendar validation and pickup windows between client/server to prevent drift.
 - Rental cart rules: see src/components/rental/AGENTS.md.
-- Cancellation-option owns the cancellation surcharge rate and rental-only amount; public quotes and service defaults share it, unknown rental amounts stay unknown. Rentware placement follows a reserved header slot, including the actual control inside nested shadow roots after hydration, to avoid navigation overlap and vertical drift.
+- Cancellation-option owns the cancellation surcharge rate and rental-only amount; public quotes and service defaults share it, unknown rental amounts stay unknown. Rentware sits in a reserved header slot (incl. nested shadow roots) to avoid overlap.
 <!-- LOVABLE:BEGIN -->
 - Inject the portal first-paint guard through the Vite HTML plugin before body parsing; hide only prerender fallback content on the exact portal host to preserve public SEO and the React portal.
 <!-- LOVABLE:END -->
@@ -48,4 +48,4 @@
 - Inquiry rules: see inquiries/AGENTS.md; logistics determine insurance periods through shared offerInsurancePeriod, never rental billing or availability; duration_override changes billed rental duration only.
 - Accepted rental amendments preserve original offer evidence and append immutable revisions while atomically updating operational periods, reservations and allocations; new ABs use versioned PDF paths, so historical documents and issued invoices cannot be overwritten.
 - Kassenprotokoll: Barzahlungen („Bar…“) per Trigger append-only in cash_journal (Entfernen = Storno, Rechnungen nur spätere Eingänge gegen Doppelzählung); deposit-refund-digest versendet 18 Uhr Berlin Tagesabschluss mit je einer DATEV-CSV pro Kasse (cash_register über cash_register_for_location, Mülheim → Krefeld) aus _shared/datev-cash-csv.ts, da DATEV je Kasse importiert.
-- Excavation access fit uses reserve tiers (clear width − smallest transport width: <0 unfit, <5 cm tight/check, <10 cm possible/check, ≥10 cm good) from CMS specs only; internal advisory tiers, not manufacturer clearances, so unknown widths stay check.
+- Excavation access: CMS-spec reserve tiers in excavationCalculator (<0/<5/<10 cm), unknown widths = check.
