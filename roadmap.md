@@ -269,3 +269,6 @@ Keine Live-Schreiboperationen, Migrationen, Secrets, Veröffentlichungen oder re
 - [ ] Aktivierte History/CMS-Auth-E2E/PostgreSQL-Parallelität: sichere isolierte Umgebung und separate 0214-Freigabe fehlen.
 - [ ] Vollständiger Produktionsbuild/Prerender/Legacy-Stichproben: zulässiges CI und abgestimmte Hostingprüfung erforderlich.
 - [ ] Produktionsfreigabe: Finanz-/Kassenbuch-/Mitarbeiter-/Providerblocker aus 1B.3 bleiben; 0213/0214 nicht aktiviert.
+- [x] Bonner Anhänger-Konflikt (04.12.): Hotfix-SQL docs/prepared/0215_availability_item_period_hotfix.sql (Positionszeitraum, nur angenommene Aufträge binden, Berliner Kalendertag), 10 PGlite-Tests; Dialoghinweis für CMS-Mengenartikel. Nicht angewendet.
+- [ ] 0215 produktiv anwenden – wartet auf Freigabe Luca; danach #NWHAP2 lesend prüfen.
+- [ ] Mengenbasierte Überführung „Von X ordern“: confirm_order bucht für CMS-Mengenartikel weder Prüfung noch Transfer – braucht eigene Erweiterung (Mengen-Transferreservierung), bis dahin Button aus.

@@ -41,3 +41,4 @@
 - Deposit allocation caps at the explicit offer snapshot deposit and preserves excess rent payments as rental_credit for invoice evidence; missing legacy values retain historical allocation, and issued settlements must never be rewritten. Final-invoice payments come from stored receipts, not clipped browser drafts.
 - Rechnungsversand ist gesperrt, solange eine Kaution (Zahlung über Miete) nicht abgerechnet ist (useDepositState/depositBlocksInvoice, getestet); ohne Kaution übernimmt die Rechnung unberechnete Rückgabekosten, nach Abrechnung zählen Zahlungen nur bis zur Miete.
 - Shared-helper rules: see supabase/functions/_shared/AGENTS.md.
+- Quantity availability (prepared 0215) counts only accepted orders per item period via slt_item_period on Berlin dates; open offers never book stock. CMS-quantity "order from" stays disabled until confirm_order validates and persists quantity transfers, so no unchecked cross-site promise.

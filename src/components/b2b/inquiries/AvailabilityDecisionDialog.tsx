@@ -52,7 +52,11 @@ export function AvailabilityDecisionDialog({ result, busy, onCancel, onSubmit }:
                   {i.free != null ? ` (frei ${i.free} von benötigt ${i.needed})` : ""}. Von anderem Standort ordern?
                 </p>
                 {i.source === "quantities" && (
-                  <p className="text-muted-foreground">Für diesen Artikel sind keine Einzelgeräte angelegt – Prüfung nur über den CMS-Bestand, Ordern daher nicht möglich.</p>
+                  <p className="text-muted-foreground">
+                    Dieser Artikel wird über den CMS-Bestand geführt (keine Einzelgeräte). Eine Überführung kann hier noch nicht automatisch gebucht werden – bitte mit dem anderen Standort abstimmen und dann „Rücksprache mit Kunde“ wählen.
+                    {Object.entries(i.other_locations ?? {}).filter(([, n]) => n > 0).length > 0 &&
+                      ` Laut CMS-Bestand frei: ${Object.entries(i.other_locations).filter(([, n]) => n > 0).map(([l, n]) => `${locName(l)} ${n}`).join(", ")}.`}
+                  </p>
                 )}
                 <div className="flex flex-wrap gap-2">
                   {locs.map((l) => (
