@@ -10,6 +10,7 @@ import imgBenedikt from "@/assets/team/benedikt-noechel.jpg";
 import imgRalf from "@/assets/team/ralf-doehler.jpg";
 import { bonnDirectContact } from "@/data/bonnContact";
 import { publicPickupHours } from "../../supabase/functions/_shared/public-rental-period";
+import { PUBLIC_LOCATION_FACTS } from "../../supabase/functions/_shared/public-locations";
 
 export interface LocationManager {
   name: string;
@@ -78,18 +79,9 @@ export const locationData: LocationInfo[] = [
     shortName: "KR",
     subtitle: "Hauptsitz",
     description: "Miete bei uns Minibagger, Anhänger, Stromaggregate und vieles mehr für dein nächstes Projekt zum besten Preis!",
-    address: "Anrather Straße 291",
-    city: "47807 Krefeld-Fichtenhain",
-    phone: "02151 417 99 04",
-    email: "krefeld@slt-rental.de",
+    ...PUBLIC_LOCATION_FACTS.krefeld,
     image: imgKrefeld,
     manager: { name: "Benedikt Nöchel", role: "locations.locationManager", image: imgBenedikt, email: "b.noechel@slt-rental.de" },
-    hours: [
-      { day: "Mo. - Fr.", time: "08:00 - 18:00 Uhr" },
-      { day: "Sa.", time: "10:00 - 14:30 Uhr*" },
-      { day: "So.", time: "Geschlossen" },
-    ],
-    hoursNote: "*Samstags früher nach vorheriger Buchung möglich.",
     pickupHours: publicPickupHours.krefeld,
     features: ["Große Auswahl", "Hauptsitz", "Werkstatt vor Ort", "24/7 Anhänger-Buchung"],
     mapUrl: "https://maps.google.com/?q=Anrather+Straße+291+47807+Krefeld",
@@ -121,19 +113,9 @@ export const locationData: LocationInfo[] = [
     shortName: "BN",
     subtitle: "Filiale",
     description: "Miete bei uns Minibagger, Anhänger, Stromaggregate und vieles mehr für dein nächstes Projekt zum besten Preis!",
-    address: "Drachenburgstraße 8",
-    city: "53179 Bonn",
-    phone: "0228 504 660 61",
-    email: "bonn@slt-rental.de",
+    ...PUBLIC_LOCATION_FACTS.bonn,
     image: imgBonn,
     manager: { name: bonnDirectContact.name, role: "locations.locationManager", image: imgRalf, email: "r.doehler@slt-rental.de" },
-    hours: [
-      { day: "Mo. - Do.", time: "07:00 - 16:30 Uhr" },
-      { day: "Fr.", time: "07:00 - 18:00 Uhr" },
-      { day: "Sa.", time: "Geschlossen" },
-      { day: "So.", time: "Geschlossen" },
-    ],
-    hoursNote: "Anhänger-Abholung und -Rückgabe per Code weiterhin 24/7.",
     pickupHours: publicPickupHours.bonn,
     
     
@@ -167,16 +149,9 @@ export const locationData: LocationInfo[] = [
     shortName: "MH",
     subtitle: "Corporate Filiale SLT x Bobcat",
     description: "Miete bei uns Minibagger, Anhänger und mehr für dein nächstes Projekt zum besten Preis!",
-    address: "Ruhrorter Str. 122",
-    city: "45478 Mülheim an der Ruhr",
-    phone: "02151 417 99 04",
-    email: "muelheim@slt-rental.de",
+    ...PUBLIC_LOCATION_FACTS.muelheim,
     image: imgMuelheim,
     manager: { name: "Andreas Mühlenhof", role: "locations.locationManager", image: null, email: "muelheim@slt-rental.de" },
-    hours: [
-      { day: "Online-Buchung", time: "24/7 verfügbar" },
-      { day: "Abholung", time: "nach Vereinbarung" },
-    ],
     features: ["Bagger & Anhänger", "Ruhrgebiet-Nähe", "24/7 Anhänger-Buchung", "Schnelle Abwicklung"],
     mapUrl: "https://maps.google.com/?q=Ruhrorter+Str.+122+45478+Mülheim",
     serviceCharacter: "service-handover",

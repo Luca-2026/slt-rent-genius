@@ -1,5 +1,6 @@
 import { RENTAL_LINK_PATHS } from "./rental-link-catalog.ts";
 import { runRenty, GatewayError, catalogPaths } from "./renty-agent.ts";
+import { validateContext, contextPrompt } from "./renty-tools.ts";
 import { allowPaidPublicRequest } from "../_shared/publicRateLimit.ts";
 
 const corsHeaders = {
@@ -1130,6 +1131,10 @@ function markdownLabelForPath(path: string | null) {
     return parts[3] ? labelFromSlug(parts[3]) : `${category} in ${loc}`;
   }
   if (path.startsWith("/lieferung")) return "Lieferkostenrechner";
+  if (path.startsWith("/tools/aushubrechner")) return "Aushubrechner";
+  if (path.startsWith("/tools/bautrockner-rechner")) return "Bautrockner-Rechner";
+  if (path.startsWith("/tools/baustromrechner")) return "Baustromrechner";
+  if (path.startsWith("/tools")) return "Rechner & Tools";
   if (path.startsWith("/b2b")) return "B2B-Portal";
   if (path.startsWith("/hilfe")) return "Hilfe-Seite";
   if (path.startsWith("/ratgeber")) return "Ratgeber";
@@ -1355,6 +1360,14 @@ function streamText(text: string) {
 }
 
 const rentyAgentPrompt = `
+=== RECHNER, TOOLS UND AKTUELLES WISSEN (Werkzeuge) ===
+- Bei Aushub, Pool, Terrasse, Graben, Fundament, Baugrube: Aushubrechner aktiv anbieten. Fehlende Pflichtmaße (Fläche bzw. Länge/Breite, Tiefe) und für die Maschinenwahl Standort und schmalste lichte Zufahrt erfragen, dann calculate_excavation aufrufen. Nur die Werte aus dem Ergebnis nennen; Status „prüfen lassen“ oder „ungeeignet“ nie als passend darstellen. Zufahrt unter der Maschinenbreite: Hinweis aus hints/access_hint wörtlich sinngemäß übernehmen. calculator_url als Link „Berechnung im Aushubrechner öffnen“ anbieten.
+- Bei Wasserschaden/Bautrocknung: Raummaße erfragen, calculate_drying aufrufen, Bautrockner-Rechner verlinken.
+- Bei Baustrom/Aggregat/Verteiler: Verbraucher (kW oder Gerät) und Anzahl, Netzanschluss ja/nein und Entfernung erfragen, calculate_power aufrufen, Baustromrechner verlinken.
+- Tool-Links nur aus search_tools bzw. calculator_url; Lieferkosten nie selbst beziffern, sondern den Lieferkostenrechner verlinken.
+- Adressen/Öffnungszeiten im Zweifel mit get_location_info prüfen; diese Werte gehen vor dem Briefing.
+- Rechnerergebnisse sind Richtwerte, keine Verfügbarkeits- oder Preiszusage. Preise nur über die Produktseite.
+
 
 === WERKZEUGE ===
 - **search_products**: Durchsucht den echten Mietkatalog (Name, Modell, technische Daten, Standorte, Artikel-Link). Nutze es IMMER, bevor du konkrete Geräte, technische Daten oder Artikel-Links nennst. Nenne nur Daten und Links aus dem Ergebnis. Liefert die Suche nichts Passendes, sag das offen und verlinke die passende Standort-Kategorie.
@@ -1435,6 +1448,8 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    const pageContext = validateContext(rawBody?.context);
+
     // Paid AI gateway: cap requests per visitor (public website chat).
     if (!(await allowPaidPublicRequest(req, "public-chat", 40, 2000))) {
       return new Response(JSON.stringify({ error: "Du hast gerade sehr viele Nachrichten gesendet. Bitte versuche es in einer Stunde erneut oder ruf uns an: 02151 417 990 4." }), {
@@ -1449,7 +1464,7 @@ Deno.serve(async (req: Request) => {
     try {
       const stream = await runRenty({
         apiKey: LOVABLE_API_KEY,
-        instructions: systemPrompt + rentyAgentPrompt.replace("{{TODAY}}", berlinToday()),
+        instructions: systemPrompt + rentyAgentPrompt.replace("{{TODAY}}", berlinToday()) + contextPrompt(pageContext),
         messages,
         ip,
         sanitize: sanitizeAssistantText,

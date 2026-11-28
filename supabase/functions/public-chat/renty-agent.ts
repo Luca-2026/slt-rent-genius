@@ -6,6 +6,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { submitInquiry, type InquiryArgs } from "./renty-inquiry.ts";
 import { isSignBookingItem, signBookingRedirect } from "./online-booking-policy.ts";
+import { searchTools, locationInfo, calculateExcavation, calculateDryingTool, calculatePowerTool, relevantSpecs, machineFacts, publicToolPaths } from "./renty-tools.ts";
 
 const MODEL = "openai/gpt-6-astra";
 const SITE = "https://www.slt-rental.de";
@@ -71,6 +72,37 @@ const TOOLS = [
   },
 ];
 
+const nullableNumber = { type: ["number", "null"] };
+const locParam = { type: ["string", "null"], enum: ["krefeld", "bonn", "muelheim", null] };
+const READ_TOOLS = [
+  { type: "function", name: "search_tools", strict: true,
+    description: "Liefert die echten Online-Rechner und Tools von SLT Rental (Aushubrechner, Bautrockner-Rechner, Baustromrechner, Lieferkostenrechner, Übersicht) mit kanonischen Links. Nutzen, bevor du ein Tool verlinkst.",
+    parameters: { type: "object", additionalProperties: false, required: ["query"], properties: { query: { type: "string" } } } },
+  { type: "function", name: "get_location_info", strict: true,
+    description: "Aktuelle Adresse, Telefon, E-Mail und Öffnungszeiten der Standorte aus den Website-Stammdaten.",
+    parameters: { type: "object", additionalProperties: false, required: ["location"], properties: { location: locParam } } },
+  { type: "function", name: "calculate_excavation", strict: true,
+    description: "Berechnet Aushub (gewachsen/gelockert/Gewicht) und Bagger/Dumper-Eignung exakt wie der Website-Aushubrechner und liefert einen Link mit der Projektkonfiguration. Fehlende Maße vorher erfragen; Zufahrt (lichte Breite) für Maschinenwahl erfragen.",
+    parameters: { type: "object", additionalProperties: false, required: ["location", "shapes", "soil", "access_cm", "days", "density_t_m3", "loosening_pct"], properties: {
+      location: locParam,
+      shapes: { type: "array", items: { type: "object", additionalProperties: false, required: ["kind", "area_m2", "length_m", "width_m", "width_cm", "diameter_m", "depth_cm", "volume_m3"], properties: {
+        kind: { type: "string", enum: ["area", "rect", "trench", "circle", "volume"], description: "area=Fläche m²+Tiefe; rect=Länge m×Breite m×Tiefe; trench=Graben Länge m×Breite cm×Tiefe; circle=Durchmesser m×Tiefe; volume=bekanntes Volumen m³" },
+        area_m2: nullableNumber, length_m: nullableNumber, width_m: nullableNumber, width_cm: nullableNumber, diameter_m: nullableNumber, depth_cm: nullableNumber, volume_m3: nullableNumber } } },
+      soil: { type: ["string", "null"], enum: ["mutterboden", "sand", "kies", "lehm", "ton", "gemischt", "steinig", "unbekannt", null] },
+      access_cm: { ...nullableNumber, description: "Schmalste lichte Zufahrt in cm, null wenn unbekannt" },
+      days: nullableNumber, density_t_m3: { ...nullableNumber, description: "nur wenn Kunde explizit nennt" }, loosening_pct: { ...nullableNumber, description: "nur wenn Kunde explizit nennt" } } } },
+  { type: "function", name: "calculate_drying", strict: true,
+    description: "Berechnet Bautrockner-Anzahl, Turbolüfter und Trocknungsdauer exakt wie der Website-Bautrockner-Rechner.",
+    parameters: { type: "object", additionalProperties: false, required: ["location", "length_m", "width_m", "height_m", "standing_water", "with_fans"], properties: {
+      location: locParam, length_m: { type: "number" }, width_m: { type: "number" }, height_m: { type: "number" }, standing_water: { type: "boolean" }, with_fans: { type: "boolean" } } } },
+  { type: "function", name: "calculate_power", strict: true,
+    description: "Berechnet Baustrombedarf (kW, kVA, A), Verteiler, CEE-Kabel und ggf. Aggregat exakt wie der Website-Baustromrechner. Verbraucher als kW oder als Katalog-Slug.",
+    parameters: { type: "object", additionalProperties: false, required: ["location", "consumers", "grid_connection", "distance_m"], properties: {
+      location: locParam,
+      consumers: { type: "array", items: { type: "object", additionalProperties: false, required: ["kw", "product_slug", "qty"], properties: { kw: nullableNumber, product_slug: { type: ["string", "null"] }, qty: { type: "integer" } } } },
+      grid_connection: { type: "boolean", description: "true = Baustromanschluss vorhanden, false = Aggregat nötig" }, distance_m: { type: "number" } } } },
+];
+
 function db() {
   const url = Deno.env.get("SUPABASE_URL"), key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   return url && key ? createClient(url, key, { auth: { persistSession: false } }) : null;
@@ -93,7 +125,7 @@ async function catalog() {
 
 export async function catalogPaths(): Promise<string[]> {
   const rows = await catalog();
-  return rows.flatMap((r) => (r.available_locations ?? []).map((l: string) => `/mieten/${l}/${r.category}/${r.slug}/`));
+  return [...rows.flatMap((r) => (r.available_locations ?? []).map((l: string) => `/mieten/${l}/${r.category}/${r.slug}/`)), ...publicToolPaths()];
 }
 
 export async function searchProducts(query: string, location: string | null) {
@@ -121,11 +153,11 @@ export async function searchProducts(query: string, location: string | null) {
   return scored.map(({ r }) => {
     const locs: string[] = r.available_locations ?? [];
     const linkLoc = location && locs.includes(location) ? location : locs[0];
-    const specs = Object.entries(r.specifications ?? {}).slice(0, 8).map(([k, v]) => `${k}: ${v}`);
+    const specs = relevantSpecs(r.specifications);
     return {
       name: r.name, model: r.model_name, category: r.category,
       locations: locs,
-      specs, weight_kg: r.weight_kg ?? null,
+      specs, weight_kg: r.weight_kg ?? null, machine: machineFacts(r),
       short_description: isSignBookingItem({ product_name: r.name, product_url: `/mieten/${linkLoc}/${r.category}/${r.slug}/` }) ? "Halteverbotsschilder online buchen; für Aufstellung/Abholung Rundum-Sorglos wählen. Genehmigung vorhanden: vorhandene Genehmigung auswählen und hochladen. Aktuelle Vorlaufzeiten und Termine prüft der Checkout." : String(r.description ?? "").slice(0, 220),
       online_bookable: isSignBookingItem({ product_name: r.name, product_url: `/mieten/${linkLoc}/${r.category}/${r.slug}/` }) || (Boolean(r.rentware_code) && !r.on_request),
       booking_policy: signBookingRedirect([{ product_name: r.name, product_url: `/mieten/${linkLoc}/${r.category}/${r.slug}/` }], linkLoc),
@@ -177,7 +209,7 @@ async function callGateway(apiKey: string, input: unknown[], instructions: strin
       model: MODEL,
       instructions,
       input,
-      tools: TOOLS,
+      tools: [...TOOLS, ...READ_TOOLS],
       stream: true,
       store: false,
       reasoning: { effort: "low" },
@@ -240,6 +272,11 @@ export async function runRenty(opts: {
             try {
               const args = JSON.parse(call.arguments || "{}");
               if (call.name === "search_products") output = { results: await searchProducts(String(args.query ?? ""), args.location ?? null) };
+              else if (call.name === "search_tools") output = searchTools(String(args.query ?? ""));
+              else if (call.name === "get_location_info") output = locationInfo(args.location ?? null);
+              else if (call.name === "calculate_excavation") output = calculateExcavation(args, await catalog());
+              else if (call.name === "calculate_drying") output = calculateDryingTool(args, await catalog());
+              else if (call.name === "calculate_power") output = calculatePowerTool(args, await catalog());
               else if (call.name === "submit_rental_inquiry") output = await submitInquiry(args as InquiryArgs, { ip: opts.ip, transcript });
               else output = { error: "unknown tool" };
             } catch (e) {
