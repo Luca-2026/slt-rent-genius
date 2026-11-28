@@ -13,7 +13,7 @@ import { StripePaymentCard } from "./StripePaymentCard";
 import { RentalCreditRefund } from "./RentalCreditRefund";
 import { useStaffAccess } from "@/hooks/useStaffAccess";
 
-type Totals = { success: boolean; error?: string; execution_available: boolean; manual_cancel_refund_available?: boolean; manual_method?: "cash" | "transfer" | null; paid_cents: number; deposit_available: number; rent_available: number; deposit_used: number; rent_used: number; pending: boolean; blocked_reason?: string; can_refund_rent: boolean; requests: RequestRow[] };
+type Totals = { success: boolean; error?: string; execution_available: boolean; manual_cancel_refund_available?: boolean; manual_cash_blocked?: boolean; manual_method?: "cash" | "transfer" | null; paid_cents: number; deposit_available: number; rent_available: number; deposit_used: number; rent_used: number; pending: boolean; blocked_reason?: string; can_refund_rent: boolean; requests: RequestRow[] };
 type RequestRow = { id: string; deposit_cents: number; rent_cents: number; payout_method: string; status: string; created_at: string; completed_at?: string; created_by: string };
 type HistoryRow = { id: string; at: string; actor: string; label: string; detail: string };
 const EVENT_LABELS: Record<string, string> = { order_cancelled: "Auftrag storniert", order_confirmed: "Auftrag bestätigt", order_bound_by_handover: "Auftrag durch Übergabe verbindlich", refund_completed: "Auszahlung bestätigt", deposit_settled: "Kaution abgerechnet", closed_without_return_protocol: "Abgeschlossen ohne Rückgabeprotokoll", return_without_delivery: "Rückgabe ohne Auslieferung" };
@@ -85,7 +85,8 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoi
   }, [inquiry.id, inquiry.payments, inquiry.status, data]);
   const total = (data?.deposit_available ?? 0) + (data?.rent_available ?? 0);
   const amount = (v: string) => Math.round(Number(v.replace(",", ".")) * 100);
-  const manual = data?.requests.find(r => r.status === "creating" && r.payout_method !== "stripe");
+  const cashBlocked = Boolean(data?.manual_cash_blocked || (inquiry.status === "cancelled" && data?.requests.some(r => r.status === "creating" && r.payout_method === "cash")));
+  const manual = data?.requests.find(r => r.status === "creating" && r.payout_method === "transfer");
   const resume = data?.requests.find(r => r.status === "creating" && r.payout_method === "stripe");
   const selected = amount(deposit) + amount(rent);
   const valid = data && [amount(deposit),amount(rent)].every(n => Number.isSafeInteger(n) && n >= 0) && amount(deposit) <= data.deposit_available && amount(rent) <= data.rent_available && selected > 0;
@@ -93,7 +94,7 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoi
   const methodLabel = (m?: string | null) => m === "cash" ? "bar" : m === "transfer" ? "per Überweisung" : "auf das ursprüngliche Zahlungsmittel";
   const today = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Berlin" });
   const start = () => { setDeposit(String((data?.deposit_available ?? 0)/100)); setRent(String(data?.can_refund_rent && !manualCancel ? (data.rent_available/100) : 0)); setRequestId(crypto.randomUUID()); setOpen(true); };
-  const refundAction = data && !data.pending && canManageInventory && (total > 0 || openPayout || !hasSettlement)
+  const refundAction = data && !cashBlocked && !data.pending && canManageInventory && (total > 0 || openPayout || !hasSettlement)
     ? <Button variant={actionTarget ? "outline" : "default"} className={actionTarget ? "min-h-11 w-full justify-start" : "h-11 w-full sm:w-64"} onClick={() => (data.execution_available || data.manual_cancel_refund_available) && !data.blocked_reason ? start() : setLegacyOpen(true)} disabled={busy}><Undo2 className="mr-2 h-4 w-4 shrink-0"/>Erstattung bearbeiten</Button>
     : null;
   return <section className="space-y-3 border-y border-border py-4" aria-label="Zahlungsstand und Auftragshistorie">
@@ -103,6 +104,7 @@ export function OrderRefundOverview({ inquiry, onChanged, compact = false, invoi
       {!compact && <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4"><div>Erhalten<strong className="block">{eur(data.paid_cents)}</strong></div><div>Kaution bereits beauftragt / erstattet<strong className="block">{eur(data.deposit_used)}</strong></div><div>Miete bereits beauftragt / erstattet<strong className="block">{eur(data.rent_used)}</strong></div><div>Noch zu erstatten<strong className="block">{eur(total)}</strong></div></div>}
       {!total && !data.pending && data.paid_cents > 0 && data.deposit_used+data.rent_used >= data.paid_cents && <p className="font-semibold text-primary">Vollständig erstattet · {eur(data.paid_cents)} · offen 0,00 €</p>}
       {data.blocked_reason && <p className="text-sm text-muted-foreground">{data.blocked_reason}</p>}
+      {cashBlocked && <p role="alert" className="text-sm text-destructive">Storno-Barauszahlung gesperrt: Kassenbuchnachweis und Kassenperioden müssen zuerst mit der Buchhaltung geklärt werden. Bereits ausgezahltes Geld nicht erneut erstatten.</p>}
       <div className="flex flex-wrap gap-2">
         {!actionTarget && refundAction}
         {data.pending && <><p className="text-sm">Erstattung in Bearbeitung – keine weitere Auszahlung starten.</p><Button variant="outline" disabled={busy} onClick={() => void call("order_refund_sync")}><RotateCcw className="mr-2 h-4 w-4"/>Status prüfen</Button></>}

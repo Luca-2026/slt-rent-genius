@@ -12,7 +12,10 @@ import { setRentalCheckoutStripe } from "../_shared/rental-checkout-recovery.ts"
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { z } from "https://esm.sh/zod@3.23.8";
-import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+};
 import { creditRefund } from "../_shared/credit-refund.ts";
 import { rentalCreditRefund } from "../_shared/rental-credit-refund.ts";
 import { preInvoiceRefund } from "../_shared/pre-invoice-refund.ts";
@@ -96,7 +99,7 @@ Deno.serve(async (req: Request) => {
       if (error instanceof FinanceScopeError) return json({ success: false, error: error.message }, 403);
       throw error;
     }
-    if (body.action.startsWith("order_refund_")) {
+    if (body.action === "order_refund_info" || body.action === "order_refund_sync" || body.action === "order_refund_execute" || body.action === "order_refund_confirm_manual") {
       try { return json(await orderRefund(service, user.id, body)); }
       catch (error) { return json({ success: false, error: error instanceof Error && !/[rs]k_(live|test)_/.test(error.message) ? error.message : "Erstattungsstatus ungeklärt; nicht zusätzlich auszahlen" }, 409); }
     }
@@ -170,7 +173,7 @@ Deno.serve(async (req: Request) => {
     if (body.action === "refund_credit_note" || body.action === "credit_refund_info") {
       try {
         const execute = body.action === "refund_credit_note";
-        const result: any = await creditRefund(service, body.credit_note_id, user.id, execute);
+        const result = await creditRefund(service, body.credit_note_id, user.id, execute);
         // Refund evidence is provided by the invoice, not a separate customer email.
         result.customer_mailed = false;
         return json(result);
@@ -203,6 +206,8 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    // Exhaustive runtime boundary: an unhandled action must never enter a deposit refund.
+    if (body.action !== "refund_deposit") return json({ error: "Ungültige Erstattungsaktion" }, 400);
     const { data: link } = await service.from("offer_payment_links").select("*").eq("id", body.link_id).maybeSingle();
     if (!link || link.status !== "paid" || !link.payment_intent_id) {
       return json({ error: "Zu diesem Angebot liegt keine bezahlte Online-Zahlung vor." }, 409);
@@ -239,6 +244,8 @@ Deno.serve(async (req: Request) => {
         if (candidate.metadata?.deposit_refund_id === reserved.id) { knownRefund = candidate; break; }
       }
       if (!knownRefund && prior && new Date(prior.created_at).getTime() < Date.now() - 23 * 60 * 60 * 1000) return json({ error: "Älterer Erstattungsversuch ist ungeklärt. Erst den Zahlungsstatus abgleichen; keine neue Erstattung auslösen." }, 409);
+      // Re-read current authority on retries, immediately before provider work.
+      assertFinanceLocation(await loadFinanceActor(service, user.id), await paymentLinkLocation(service, link));
       if (!knownRefund) await reconcileRefundsBeforeExecution(service, stripe, link.payment_intent_id, !isStripeTestMode());
       const refund = knownRefund ?? await stripe.refunds.create(
         {

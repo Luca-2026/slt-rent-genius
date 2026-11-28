@@ -13,10 +13,10 @@ vi.mock("@/components/b2b/inquiries/RentalCreditRefund", () => ({ RentalCreditRe
 import { OrderRefundOverview } from "@/components/b2b/inquiries/OrderRefundOverview";
 beforeAll(() => { Element.prototype.scrollIntoView = vi.fn(); });
 afterEach(() => { cleanup(); invoke.mockReset(); });
-const base = { success: true, execution_available: false, manual_cancel_refund_available: true, manual_method: "cash", paid_cents: 15000, deposit_available: 10000, rent_available: 0, deposit_used: 0, rent_used: 0, pending: false, can_refund_rent: false, requests: [] };
-const inquiry = { id: "11111111-1111-1111-1111-111111111111", status: "cancelled", payments: [{ amount: 150, label: "Bar" }], offer_payload: { deposit: 100 } };
+const base = { success: true, execution_available: false, manual_cancel_refund_available: true, manual_method: "transfer", paid_cents: 15000, deposit_available: 10000, rent_available: 0, deposit_used: 0, rent_used: 0, pending: false, can_refund_rent: false, requests: [] };
+const inquiry = { id: "11111111-1111-1111-1111-111111111111", status: "cancelled", payments: [{ amount: 150, label: "Überweisung" }], offer_payload: { deposit: 100 } };
 
-it("cancelled cash order: creates a pending manual payout, no invoice preparation, no normal settlement editor", async () => {
+it("cancelled bank order: creates a pending manual payout, no invoice preparation, no normal settlement editor", async () => {
   invoke.mockResolvedValue({ data: base, error: null });
   const onChanged = vi.fn();
   render(<OrderRefundOverview inquiry={inquiry} onChanged={onChanged} />);
@@ -40,7 +40,7 @@ it("over-cap amount cannot be submitted", async () => {
   fireEvent.change(await screen.findByLabelText(/Kaution \(€\)/), { target: { value: "100.01" } });
   expect(screen.getByRole("button", { name: "Rückzahlung als ausstehend anlegen" })).toBeDisabled();
 });
-const pending = { ...base, pending: true, deposit_available: 6000, requests: [{ id: "req-1", deposit_cents: 4000, rent_cents: 0, payout_method: "cash", status: "creating", created_at: "2026-11-27T10:00:00Z", created_by: "s" }] };
+const pending = { ...base, pending: true, deposit_available: 6000, requests: [{ id: "req-1", deposit_cents: 4000, rent_cents: 0, payout_method: "transfer", status: "creating", created_at: "2026-11-27T10:00:00Z", created_by: "s" }] };
 it("confirmation needs evidence and a past date, sends both, and only succeeds after the server persisted it", async () => {
   invoke.mockResolvedValueOnce({ data: pending, error: null });
   const onChanged = vi.fn();
@@ -69,4 +69,13 @@ it("non-cancelled orders keep the existing route (no manual creation offered)", 
   fireEvent.click(await screen.findByRole("button", { name: "Erstattung bearbeiten" }));
   expect(await screen.findByText("normaler Kautionseditor")).toBeVisible();
   expect(screen.queryByRole("button", { name: "Rückzahlung als ausstehend anlegen" })).toBeNull();
+});
+it.each([false,true])("cash cancellation is fail-closed before any payout/confirmation: pending=%s", async (isPending) => {
+  const requests = isPending ? [{ ...pending.requests[0], payout_method: "cash" }] : [];
+  invoke.mockResolvedValue({ data: { ...base, manual_cancel_refund_available: false, manual_cash_blocked: true, manual_method: "cash", pending: isPending, requests }, error: null });
+  render(<OrderRefundOverview inquiry={{ ...inquiry, payments: [{ amount: 150, label: "Bar" }] }} onChanged={vi.fn()} />);
+  expect(await screen.findByText(/Kassenbuchnachweis und Kassenperioden/)).toBeVisible();
+  expect(screen.queryByRole("button", { name: "Tatsächliche Auszahlung bestätigen" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Erstattung bearbeiten" })).toBeNull();
+  expect(invoke.mock.calls.every(c => c[1].action === "order_refund_info")).toBe(true);
 });

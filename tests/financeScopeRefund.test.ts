@@ -65,12 +65,12 @@ it("revoked operations right blocks before any reservation", async () => {
   await expect(orderRefund(service, "staff", exec())).rejects.toThrow();
   expect(calls).not.toContain("reserve_order_refund");
 });
-it("cancelled cash deposit: live reservation as pending without provider", async () => {
+it("cancelled cash deposit stays blocked without journal and period approval; no reservation", async () => {
   const { service, calls } = fixture({ cancelled: true });
-  const r = await orderRefund(service, "staff", exec());
-  expect(calls).toContain("reserve_order_refund");
-  expect(service.rpc.mock.calls.find(c => c[0] === "reserve_order_refund")?.[1]).toMatchObject({ _method: "cash", _deposit: 10000, _rent: 0, _allocations: [] });
-  expect(r.manual_cancel_refund_available).toBe(true); expect(r.execution_available).toBe(false);
+  await expect(orderRefund(service, "staff", exec())).rejects.toThrow("Kassenbuchnachweis und Kassenperioden");
+  expect(calls).not.toContain("reserve_order_refund");
+  const r = await orderRefund(service, "staff", { action: "order_refund_info", inquiry_id: "order" });
+  expect(r.manual_cancel_refund_available).toBe(false); expect(r.execution_available).toBe(false);
 });
 it("cancelled bank deposit uses transfer", async () => {
   const { service } = fixture({ cancelled: true, payments: [{ amount: 60, label: "Überweisung" }, { amount: 40, label: "Bank" }] });
@@ -94,10 +94,13 @@ it("not cancelled cash orders remain live-gated (no change to normal settlement)
   await expect(orderRefund(fixture({}).service, "staff", exec())).rejects.toThrow("Live-Erstattung");
 });
 it("manual confirmation passes evidence and date; stripe requests cannot be confirmed manually", async () => {
-  const req = { id: "req", inquiry_id: "order", payout_method: "cash", status: "creating", deposit_cents: 10000, rent_cents: 0 };
+  const req = { id: "req", inquiry_id: "order", payout_method: "transfer", status: "creating", deposit_cents: 10000, rent_cents: 0 };
   const ok = fixture({ cancelled: true, requests: [req] });
   await orderRefund(ok.service, "staff", { action: "order_refund_confirm_manual", inquiry_id: "order", request_id: "req", reference: "Kasse 12", paid_on: "2026-11-27" });
   expect(ok.service.rpc.mock.calls.find(c => c[0] === "confirm_manual_order_refund")?.[1]).toMatchObject({ _actor: "staff", _reference: "Kasse 12", _paid_on: "2026-11-27" });
+  const cash = fixture({ cancelled: true, requests: [{ ...req, payout_method: "cash" }] });
+  await expect(orderRefund(cash.service, "staff", { action: "order_refund_confirm_manual", inquiry_id: "order", request_id: "req", reference: "x12", paid_on: "2026-11-27" })).rejects.toThrow("Kassenbuchnachweis");
+  expect(cash.calls).not.toContain("confirm_manual_order_refund");
   const st = fixture({ cancelled: true, requests: [{ ...req, payout_method: "stripe" }] });
   await expect(orderRefund(st.service, "staff", { action: "order_refund_confirm_manual", inquiry_id: "order", request_id: "req", reference: "x12", paid_on: "2026-11-27" })).rejects.toThrow("Providerbeleg");
   const foreign = fixture({ cancelled: true, requests: [] });

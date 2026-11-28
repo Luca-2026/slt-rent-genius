@@ -5,7 +5,9 @@
  * can_edit_operations AND (admin OR an active staff_profile at the record's location).
  * The location is always read from the authoritative record, never from request input.
  */
+import type { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 export class FinanceScopeError extends Error { status = 403; }
+const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === "object" && value !== null && !Array.isArray(value);
 
 export function normalizeFinanceLocation(raw: unknown): string | null {
   if (typeof raw !== "string" || !raw.trim()) return null;
@@ -18,7 +20,7 @@ export function normalizeFinanceLocation(raw: unknown): string | null {
 
 export type FinanceActor = { admin: boolean; manager: boolean; canEdit: boolean; locations: string[] };
 
-export async function loadFinanceActor(service: any, actor: string): Promise<FinanceActor> {
+export async function loadFinanceActor(service: SupabaseClient, actor: string): Promise<FinanceActor> {
   const [admin, manager, canEdit, staff] = await Promise.all([
     service.rpc("has_role", { _user_id: actor, _role: "admin" }),
     service.rpc("has_role", { _user_id: actor, _role: "niederlassungsleiter" }),
@@ -27,7 +29,7 @@ export async function loadFinanceActor(service: any, actor: string): Promise<Fin
   ]);
   if (admin.error || manager.error || canEdit.error || staff.error) throw new FinanceScopeError("Berechtigung konnte nicht geprüft werden.");
   const rows = Array.isArray(staff.data) ? staff.data : staff.data ? [staff.data] : [];
-  const locations = [...new Set(rows.map((r: { location?: unknown }) => normalizeFinanceLocation(r.location)).filter(Boolean) as string[])];
+  const locations = [...new Set(rows.map(r => normalizeFinanceLocation(isRecord(r) ? r.location : null)).filter((location): location is string => location !== null))];
   return { admin: admin.data === true, manager: manager.data === true, canEdit: canEdit.data === true, locations };
 }
 
@@ -43,23 +45,24 @@ export function assertFinanceLocation(scope: FinanceActor, rawLocation: unknown,
 }
 
 /** Authoritative order location for a rental or sales inquiry. */
-export async function inquiryLocation(service: any, table: "rental_inquiries" | "sales_inquiries", id: string): Promise<string | null> {
+export async function inquiryLocation(service: SupabaseClient, table: "rental_inquiries" | "sales_inquiries", id: string): Promise<string | null> {
   const { data, error } = await service.from(table).select("location").eq("id", id).maybeSingle();
   if (error) throw new FinanceScopeError("Auftrag konnte nicht geprüft werden.");
-  if (!data) throw new FinanceScopeError("Auftrag nicht gefunden.");
-  return data.location ?? null;
+  if (!isRecord(data)) throw new FinanceScopeError("Auftrag nicht gefunden.");
+  return typeof data.location === "string" ? data.location : null;
 }
 
 /** Invoice/credit location: linked order wins; a conflicting invoice location is ambiguous. */
-export async function invoiceLocation(service: any, invoiceId: string): Promise<string | null> {
+export async function invoiceLocation(service: SupabaseClient, invoiceId: string): Promise<string | null> {
   const { data, error } = await service.from("inquiry_invoices").select("location,rental_inquiry_id,sales_inquiry_id").eq("id", invoiceId).maybeSingle();
   if (error) throw new FinanceScopeError("Beleg konnte nicht geprüft werden.");
-  if (!data) throw new FinanceScopeError("Beleg nicht gefunden.");
-  const order = data.rental_inquiry_id ? await inquiryLocation(service, "rental_inquiries", data.rental_inquiry_id)
-    : data.sales_inquiry_id ? await inquiryLocation(service, "sales_inquiries", data.sales_inquiry_id) : null;
+  if (!isRecord(data)) throw new FinanceScopeError("Beleg nicht gefunden.");
+  if (data.rental_inquiry_id && data.sales_inquiry_id) return null;
+  const order = typeof data.rental_inquiry_id === "string" ? await inquiryLocation(service, "rental_inquiries", data.rental_inquiry_id)
+    : typeof data.sales_inquiry_id === "string" ? await inquiryLocation(service, "sales_inquiries", data.sales_inquiry_id) : null;
   const a = normalizeFinanceLocation(order), b = normalizeFinanceLocation(data.location);
   if (a && b && a !== b) return null; // ambiguous → handled as unassigned
-  return a ?? b;
+  return data.rental_inquiry_id || data.sales_inquiry_id ? a : b;
 }
 
 /** Payment link → its order's location (rental or sales only). */

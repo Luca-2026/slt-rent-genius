@@ -1,0 +1,4 @@
+Ausgang: ab8d397813507f235504c73eeed9bd16d69ba573
+Endstand: Commit, der diesen Evidence-Satz und den Paket-1B.3-Bericht enthält.
+Eindeutigen Hash lesen: git log -1 --format=%H -- docs/paket1b3-evidence/commit-reference.txt
+Kein produktiver Rollout erfolgt; Original-Prepared-0213 unverändert.
