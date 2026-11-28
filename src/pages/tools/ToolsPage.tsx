@@ -7,7 +7,7 @@ import { PowerCalculator } from "@/components/rental/PowerCalculator";
 import { ExcavationCalculator } from "@/components/rental/ExcavationCalculator";
 import { locations } from "@/data/rentalData";
 import { LOCATION_LABELS } from "@/lib/inventoryAvailability";
-import { TOOLS_INDEX_SEO, TOOL_SEO } from "@/data/toolsSeo";
+import { TOOLS_INDEX_SEO, TOOL_SEO, TOOL_OG_IMAGES } from "@/data/toolsSeo";
 
 const TOOLS = {
   "bautrockner-rechner": { title: "Bautrockner-Rechner", icon: Calculator, text: "Gerätebedarf, Trocknungsdauer und Mietpreis für die Raumtrocknung als Richtwert.", seo: "Bautrockner-Rechner – Geräte & Mietdauer berechnen | SLT Rental", desc: "Berechne kostenlos, wie viele Bautrockner und Lüfter du brauchst und wie lange die Trocknung ungefähr dauert – mit Mietpreis-Richtwert." },
@@ -57,7 +57,7 @@ export function ToolDetail() {
   const loc = picked ?? locations[0].id;
   return (
     <Layout>
-      <SEO title={seo.title} description={seo.description} canonical={`/tools/${slug}`} jsonLd={[
+      <SEO title={seo.title} description={seo.description} canonical={`/tools/${slug}`} ogImage={TOOL_OG_IMAGES[slug as Slug]?.url} jsonLd={[
         { "@context": "https://schema.org", "@type": "WebApplication", name: seo.h1, url: `https://www.slt-rental.de/tools/${slug}/`, applicationCategory: "UtilitiesApplication", operatingSystem: "Web", inLanguage: "de-DE", isAccessibleForFree: true, provider: { "@id": "https://www.slt-rental.de/#organization" } },
         { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
           { "@type": "ListItem", position: 1, name: "Rechner & Tools", item: "https://www.slt-rental.de/tools/" },

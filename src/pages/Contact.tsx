@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout";
 import { SEO, SLT_BREADCRUMB_JSONLD } from "@/components/SEO";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -21,7 +21,9 @@ export default function Contact() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState("");
+  // Rechner können Projektdaten vorausfüllen (nur Formularinhalt, gesendet wird erst durch den Kunden).
+  const prefill = (useLocation().state as { prefill?: { location?: string; subject?: string; message?: string } } | null)?.prefill;
+  const [selectedLocation, setSelectedLocation] = useState(locationData.some((l) => l.id === prefill?.location) ? prefill!.location! : "");
 
   const contactInfo = [
     { icon: Phone, title: t("contact.phoneTitle"), primary: t("contact.phoneNumber"), secondary: t("contact.phoneHours"), href: "tel:+49021514179904" },
@@ -165,11 +167,11 @@ export default function Contact() {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.subject")} *</label>
-                        <Input name="subject" placeholder="Anfrage zu Minibagger" required />
+                        <Input name="subject" placeholder="Anfrage zu Minibagger" defaultValue={prefill?.subject?.slice(0, 200)} required />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-headline mb-1.5">{t("contact.message")} *</label>
-                        <Textarea name="message" placeholder="..." rows={5} required />
+                        <Textarea name="message" placeholder="..." rows={prefill?.message ? 10 : 5} defaultValue={prefill?.message?.slice(0, 4000)} required />
                       </div>
                       <div className="flex items-start gap-2">
                         <input type="checkbox" id="privacy" className="mt-1" required />

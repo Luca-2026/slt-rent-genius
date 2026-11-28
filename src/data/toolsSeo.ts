@@ -3,9 +3,9 @@
 // Alle Aussagen entsprechen der Rechenlogik in src/lib/dryingCalculator.ts und src/lib/powerCalculator.ts.
 export const TOOLS_INDEX_SEO = {
   path: "/tools",
-  title: "Rechner & Tools für Bau und Trocknung | SLT Rental",
-  description: "Kostenlose Online-Rechner für Bautrocknung und Baustrom: Gerätebedarf, Mietdauer und passende Mietgeräte in Krefeld, Bonn und Mülheim an der Ruhr.",
-  h1: "Rechner & Tools für Baustelle und Trocknung",
+  title: "Rechner & Tools: Aushub, Baustrom, Trocknung | SLT Rental",
+  description: "Kostenlose Online-Rechner für Erdaushub, Baustrom und Bautrocknung: Erdmenge, Gerätebedarf und passende Mietgeräte in Krefeld, Bonn und Mülheim an der Ruhr.",
+  h1: "Rechner & Tools für Erdaushub, Baustelle und Trocknung",
   intro: "Kostenlose Rechner mit Richtwerten für deine Planung – mit passenden Mietgeräten an deinem Standort zum direkten Anfragen.",
 };
 
@@ -49,3 +49,8 @@ export const TOOL_SEO = {
   },
 } as const;
 export type ToolSlug = keyof typeof TOOL_SEO;
+
+/** Pfad des freigegebenen Aushubrechner-Vorschaubilds (1200×630) – erst eintragen, wenn die Datei im Projekt liegt. */
+export const AUSHUB_OG_IMAGE_PATH = "/images/og/aushubrechner-1200x630.png";
+/** Eigene Vorschaubilder je Rechner (absolut); fehlt ein Eintrag, gilt das Standardbild. */
+export const TOOL_OG_IMAGES: Partial<Record<keyof typeof TOOL_SEO, { url: string; alt: string }>> = {};

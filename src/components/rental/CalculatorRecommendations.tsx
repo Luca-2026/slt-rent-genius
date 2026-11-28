@@ -47,14 +47,14 @@ function findAtLocation(locationId: string, slug: string): { product: Product; c
   return null;
 }
 
-export function CalculatorRecommendations({ lines, locationId, days, fallbackNames = {}, showPrices = true }: { lines: { slug: string; qty: number }[]; locationId: string; days: number; fallbackNames?: Record<string, string>; showPrices?: boolean }) {
+export function CalculatorRecommendations({ lines, locationId, days, fallbackNames = {}, showPrices = true, priceOf = linePrice }: { lines: { slug: string; qty: number }[]; locationId: string; days: number; fallbackNames?: Record<string, string>; showPrices?: boolean; priceOf?: typeof linePrice }) {
   const version = useManagedProductsVersion();
   const { type } = useCustomerType();
   const { data } = useCalculatorPrices(lines.map((l) => l.slug));
   const resolved = useMemo(() => lines.map((l) => ({ ...l, hit: findAtLocation(locationId, l.slug) })), [lines, locationId, version]);
   const location = getLocationById(locationId);
   const bookable = resolved.filter((r) => r.hit);
-  const prices = resolved.map((r) => linePrice(data, r.slug, locationId, r.qty, days));
+  const prices = resolved.map((r) => priceOf(data, r.slug, locationId, r.qty, days));
   const total = prices.every((p) => p != null) && prices.length ? prices.reduce((s, p) => s! + p!, 0)! : null;
 
   return (

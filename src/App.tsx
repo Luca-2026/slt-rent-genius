@@ -90,6 +90,7 @@ const Neumaschinen = lazy(() => import("./pages/Neumaschinen"));
 const NeumaschineDetail = lazy(() => import("./pages/NeumaschineDetail"));
 const Ratgeber = lazy(() => import("./pages/Ratgeber"));
 const ToolsIndex = lazy(() => import("./pages/tools/ToolsPage").then(m => ({ default: m.ToolsIndex })));
+const ExcavationReport = lazy(() => import("./pages/tools/ExcavationReport"));
 const ToolDetail = lazy(() => import("./pages/tools/ToolsPage").then(m => ({ default: m.ToolDetail })));
 const RatgeberArticle = lazy(() => import("./pages/RatgeberArticle"));
 const Vergleich = lazy(() => import("./pages/Vergleich"));
@@ -202,6 +203,7 @@ const App = () => (
               
               {/* Ratgeber / Blog */}
               <Route path="/tools" element={<ToolsIndex />} />
+              <Route path="/tools/aushubrechner/bericht" element={<ExcavationReport />} />
               <Route path="/tools/:slug" element={<ToolDetail />} />
               <Route path="/ratgeber" element={<Ratgeber />} />
               <Route path="/ratgeber/:slug" element={<RatgeberArticle />} />

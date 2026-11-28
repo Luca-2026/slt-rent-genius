@@ -33,7 +33,7 @@ import { getLocalCategoryContent } from "./localCategoryContent";
 import { getProductAvailability } from "@/lib/productAvailability";
 import { getDrivingLicenseInfo, resolveProductFaqs } from "./productPageContent";
 
-import { TOOLS_INDEX_SEO, TOOL_SEO } from "./toolsSeo";
+import { TOOLS_INDEX_SEO, TOOL_SEO, TOOL_OG_IMAGES } from "./toolsSeo";
 const BASE_URL = "https://www.slt-rental.de";
 const DEFAULT_OG_IMAGE = `${BASE_URL}/images/og/default-slt-rental.png`;
 
@@ -467,6 +467,7 @@ const STATIC_ROUTES: SeoRoute[] = [
     h1: TOOL_SEO[s].h1,
     intro: [TOOL_SEO[s].intro, ...TOOL_SEO[s].sections.map((x) => `${x.h2}: ${x.text}`)],
     breadcrumbs: [{ name: "Rechner & Tools", path: "/tools" }, { name: TOOL_SEO[s].h1, path: `/tools/${s}` }],
+    ...(TOOL_OG_IMAGES[s] ? { ogImage: TOOL_OG_IMAGES[s]!.url } : {}),
     inlineSchemas: [{ "@context": "https://schema.org", "@type": "WebApplication", name: TOOL_SEO[s].h1, url: `https://www.slt-rental.de/tools/${s}/`, applicationCategory: "UtilitiesApplication", operatingSystem: "Web", inLanguage: "de-DE", isAccessibleForFree: true, provider: { "@id": "https://www.slt-rental.de/#organization" } }],
     changefreq: "monthly",
     priority: 0.6,

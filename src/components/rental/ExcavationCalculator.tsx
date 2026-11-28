@@ -1,44 +1,55 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { Shovel, Plus, Trash2, Info, AlertTriangle, Printer, Share2, RotateCcw, ChevronDown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Shovel, Plus, Trash2, Info, AlertTriangle, FileText, Share2, RotateCcw, ChevronDown, MessageSquare } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { getLocationById, getProductsForLocationCategory } from "@/data/rentalData";
-import { useManagedProductsVersion } from "@/data/managedProductsCache";
 import { CalculatorRecommendations, ToolsLink } from "./CalculatorRecommendations";
+import { excavationLinePrice } from "@/lib/excavationPrice";
+import { useExcavationModel, productPath, statusLabel, inquiryMessage, type Machine } from "./useExcavationModel";
 import {
-  SOILS, type SoilKey, type Shape, type ShapeKind, shapeVolume, shapeDepthM, soilResult, dumperTrips, readMachine,
-  recommendExcavators, TRENCH_SAFETY_DEPTH_M, type Assessment,
+  SOILS, type SoilKey, type ShapeKind, TRENCH_SAFETY_DEPTH_M, type Assessment, type Fit, CRANE_NOTE, PROJECTS,
+  INITIAL_STATE, type ExcState, sanitizeState, decodeShare, encodeShare, SHAPE_LIMITS, PARAM_LIMITS, inRange, MAX_SHAPES,
 } from "@/lib/excavationCalculator";
 
-const PROJECTS = ["Terrasse oder Pflasterfläche", "Garten und Geländemodellierung", "Pool oder Schwimmbecken", "Fundament", "Kabel- oder Rohrgraben", "Baugrube", "Einfahrt oder Parkplatz", "Sonstiges Aushubprojekt"];
-const SHAPES: { kind: ShapeKind; label: string; fields: [keyof Shape, string][] }[] = [
+const SHAPES: { kind: ShapeKind; label: string; fields: ["a" | "b" | "c", string][] }[] = [
   { kind: "rect", label: "Rechteck", fields: [["a", "Länge (m)"], ["b", "Breite (m)"], ["c", "Tiefe (cm)"]] },
   { kind: "area", label: "Fläche", fields: [["a", "Fläche (m²)"], ["c", "Tiefe (cm)"]] },
   { kind: "trench", label: "Graben", fields: [["a", "Länge (m)"], ["b", "Breite (cm)"], ["c", "Tiefe (cm)"]] },
   { kind: "circle", label: "Kreis", fields: [["a", "Durchmesser (m)"], ["c", "Tiefe (cm)"]] },
   { kind: "volume", label: "Bekanntes Volumen", fields: [["a", "Volumen (m³)"]] },
 ];
-interface State { project: number; shapes: { kind: ShapeKind; v: Record<string, string> }[]; soil: SoilKey; density: string; loosening: string; access: string; fill: string; days: string }
-const INITIAL: State = { project: 0, shapes: [{ kind: "area", v: { a: "40", c: "30" } }], soil: "unbekannt", density: "", loosening: "", access: "", fill: "85", days: "1" };
 const KEY = "slt-excavation-calc";
-const num = (v?: string) => { const x = parseFloat((v ?? "").replace(",", ".")); return isFinite(x) && x > 0 ? x : 0; };
 const f = (v: number, d = 1) => v.toLocaleString("de-DE", { minimumFractionDigits: d, maximumFractionDigits: d });
 
-function loadState(): State {
+/** Geteilter Link hat Vorrang, wird danach in die Sitzung übernommen und aus der Adresse entfernt,
+ *  damit ein Standortwechsel die zwischenzeitlich geänderten Werte nicht überschreibt. */
+function loadState(): { s: ExcState; badLink: boolean } {
   try {
-    const p = new URLSearchParams(window.location.search).get("aushub");
-    if (p) return { ...INITIAL, ...JSON.parse(decodeURIComponent(atob(p))) };
-    const s = sessionStorage.getItem(KEY); if (s) return { ...INITIAL, ...JSON.parse(s) };
-  } catch { /* ungültige Daten ignorieren */ }
-  return INITIAL;
+    const url = new URL(window.location.href);
+    const p = url.searchParams.get("aushub");
+    if (p != null) {
+      const s = decodeShare(p);
+      url.searchParams.delete("aushub");
+      window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+      if (s) { sessionStorage.setItem(KEY, JSON.stringify(s)); return { s, badLink: false }; }
+      return { s: INITIAL_STATE, badLink: true };
+    }
+    const raw = sessionStorage.getItem(KEY);
+    const s = raw ? sanitizeState(JSON.parse(raw)) : null;
+    if (s) return { s, badLink: false };
+  } catch { /* gesperrter Speicher oder ungültige Daten */ }
+  return { s: INITIAL_STATE, badLink: false };
 }
+export const reportUrl = (s: ExcState, locationId?: string) => `/tools/aushubrechner/bericht?${locationId ? `standort=${locationId}&` : ""}aushub=${encodeURIComponent(encodeShare(s))}`;
+export const shareUrl = (s: ExcState, locationId?: string) => `https://www.slt-rental.de/tools/aushubrechner/?${locationId ? `standort=${locationId}&` : ""}aushub=${encodeURIComponent(encodeShare(s))}`;
 
 function Thumb({ src, alt }: { src?: string; alt: string }) {
   return <div className="h-16 w-16 shrink-0 overflow-hidden rounded-md border border-border bg-muted">{src && <img src={src} alt={alt} loading="lazy" className="h-full w-full object-contain" />}</div>;
 }
+const BADGE: Record<Fit, string> = { fit: "border-primary/40 bg-primary/10 text-primary", check: "border-accent/50 bg-accent/10 text-foreground", unfit: "border-destructive/40 bg-destructive/10 text-destructive" };
+export const availability = (m?: Machine) => (m?.rentware ? "online buchbar" : m?.onRequest ? "auf Anfrage" : "im Mietkatalog");
 
 export function excavationHeading(subcategory?: string) {
   if (!subcategory) return "Plane dein Erdbewegungsprojekt";
@@ -49,44 +60,28 @@ export function excavationHeading(subcategory?: string) {
 }
 
 export function ExcavationCalculator({ locationId, currentProductId, heading = "Aushubrechner", collapsible = false, showToolsLink = true }: { locationId?: string; currentProductId?: string; heading?: string; collapsible?: boolean; showToolsLink?: boolean }) {
-  const [s, setS] = useState<State>(loadState);
+  const [{ s, badLink }, setAll] = useState(loadState);
   const [open, setOpen] = useState(!collapsible);
-  const [expert, setExpert] = useState(false);
   const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => { try { sessionStorage.setItem(KEY, JSON.stringify(s)); } catch { /* */ } }, [s]);
-  const set = (p: Partial<State>) => setS((o) => ({ ...o, ...p }));
-  const version = useManagedProductsVersion();
-
-  const shapes: Shape[] = s.shapes.map((x) => ({ kind: x.kind, a: num(x.v.a), b: num(x.v.b), c: num(x.v.c) }));
-  const bank = shapes.reduce((t, x) => t + shapeVolume(x), 0);
-  const maxDepth = Math.max(0, ...shapes.map(shapeDepthM));
+  const set = (p: Partial<ExcState>) => setAll((o) => ({ s: { ...o.s, ...p }, badLink: o.badLink }));
+  const m = useExcavationModel(s, locationId);
+  const { c, r, pick, dumpers, lines, byId, locName } = m;
   const soil = SOILS[s.soil];
-  const density = (expert && num(s.density)) || soil.density;
-  const loosening = expert && s.loosening !== "" ? Math.max(0, parseFloat(s.loosening.replace(",", ".")) || 0) : soil.loosening;
-  const r = soilResult(bank, density, loosening);
-  const accessM = num(s.access) / 100 || undefined;
-  const fill = Math.min(1, (num(s.fill) || 85) / 100);
-  const days = Math.max(1, Math.round(num(s.days) || 1));
-
-  const machines = useMemo(() => {
-    const list = locationId ? getProductsForLocationCategory(locationId, "erdbewegung") : [];
-    return list.map((p) => ({ id: p.id, name: p.name, image: p.image, sub: p.category ?? "", onRequest: !!p.onRequest, data: readMachine(p.specifications) }));
-  }, [locationId, version]);
-  const excavators = machines.filter((m) => /bagger/.test(m.sub));
-  const pick = useMemo(() => recommendExcavators(excavators, { volume: bank, depthM: maxDepth, accessM }), [excavators, bank, maxDepth, accessM]);
-  const dumpers = machines.filter((m) => /dumper/.test(m.sub)).map((m) => ({ ...m, trips: dumperTrips(r.loose, r.looseDensity, m.data.struckM3 ?? 0, m.data.payloadKg ?? 0, fill), fits: accessM == null || m.data.widthM == null ? null : m.data.widthM + 0.2 <= accessM }));
-  const bestDumper = dumpers.filter((d) => d.trips && d.fits !== false).sort((a, b) => a.trips!.trips - b.trips!.trips)[0];
-  const current = currentProductId ? machines.find((m) => m.id === currentProductId) : undefined;
-  const currentAssess: Assessment | undefined = current && /bagger/.test(current.sub) ? [pick.main, pick.compact, pick.strong, ...pick.unsuitable, ...pick.unchecked].find((a) => a?.id === current.id) : undefined;
-  const safety = maxDepth > TRENCH_SAFETY_DEPTH_M || [3, 5].includes(s.project) || bank > 100;
-  const lines = [pick.main && { slug: pick.main.id, qty: 1 }, bestDumper && { slug: bestDumper.id, qty: 1 }].filter(Boolean) as { slug: string; qty: number }[];
-  const locName = locationId ? getLocationById(locationId)?.name : undefined;
+  const current = currentProductId ? byId(currentProductId) : undefined;
+  const currentAssess = current && /bagger/.test(current.sub) ? pick.all.find((a) => a.id === current.id) : undefined;
+  const deep = c.depthM != null && c.depthM > TRENCH_SAFETY_DEPTH_M;
+  const safety = deep || [3, 5].includes(s.project) || c.bank > 100;
+  const shown = new Set([pick.main, pick.compact, pick.strong, pick.smallest].filter(Boolean).map((a) => a!.id));
 
   const share = async () => {
-    const url = `https://www.slt-rental.de/tools/aushubrechner${locationId ? `?standort=${locationId}&` : "?"}aushub=${btoa(encodeURIComponent(JSON.stringify(s)))}`;
+    const url = shareUrl(s, locationId);
     try { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { window.prompt("Link kopieren", url); }
   };
-  const setShape = (i: number, p: Partial<State["shapes"][number]>) => set({ shapes: s.shapes.map((x, j) => (j === i ? { ...x, ...p } : x)) });
+  const ask = () => navigate("/kontakt", { state: { prefill: { location: locationId, subject: `Aushubprojekt: ${PROJECTS[s.project]}`, message: inquiryMessage(m, PROJECTS[s.project], soil.label, shareUrl(s, locationId)) } } });
+  const setShape = (i: number, p: Partial<ExcState["shapes"][number]>) => set({ shapes: s.shapes.map((x, j) => (j === i ? { ...x, ...p } : x)) });
+  const bad = (v: string | undefined, lim: readonly [number, number]) => inRange(v, lim) === null;
 
   const tile = (label: string, value: string, note?: string) => (
     <div className="rounded-lg border border-border bg-background p-3 min-w-0">
@@ -95,22 +90,23 @@ export function ExcavationCalculator({ locationId, currentProductId, heading = "
       {note && <p className="text-xs text-muted-foreground">{note}</p>}
     </div>
   );
-  const machineRow = (title: string, a?: Assessment) => a && (
-    <li className="p-3 text-sm flex gap-3">
-      <Thumb src={machines.find((m) => m.id === a.id)?.image} alt={a.name} />
+  const row = (title: string, a?: Assessment, status: Fit | "orient" = a?.status ?? "check") => { if (!a) return null; const mm = byId(a.id); return (
+    <li key={title + a.id} className="p-3 text-sm flex gap-3" data-testid={`exc-machine-${a.id}`}>
+      <Thumb src={mm?.image} alt={a.name} />
       <div className="min-w-0">
-      <p className="text-xs font-semibold uppercase tracking-wide text-accent">{title}</p>
-      <Link to={`/mieten/${locationId}/erdbewegung/${a.id}`} className="font-semibold text-primary hover:underline">{a.name}</Link>
-      {machines.find((m) => m.id === a.id)?.onRequest && <span className="ml-1 text-muted-foreground">(auf Anfrage)</span>}
-      {a.reasons.length > 0 && <p className="text-muted-foreground">{a.reasons.join(" · ")}</p>}
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{title}</p>
+        <Link to={productPath(locationId!, a.id)} className="font-semibold text-primary hover:underline break-words">{a.name}</Link>
+        <span className="ml-1 text-xs text-muted-foreground">({availability(mm)})</span>
+        <p className="mt-1"><span className={`inline-block rounded border px-1.5 py-0.5 text-xs font-medium ${BADGE[status === "orient" ? a.status : status]}`}>{a.tooWide ? "Passt nicht durch Zufahrt" : statusLabel(a)}</span></p>
+        {a.reasons.length > 0 && <p className="text-muted-foreground mt-1">{a.reasons.join(" · ")}</p>}
       </div>
-    </li>
-  );
+    </li>); };
 
   return (
-    <section className="bg-card rounded-xl border border-border p-4 sm:p-5 print:border-0" aria-labelledby="exc-calc">
+    <section className="bg-card rounded-xl border border-border p-4 sm:p-5" aria-labelledby="exc-calc">
       <h2 id="exc-calc" className="text-base sm:text-lg font-semibold text-headline mb-1 flex items-center gap-2"><Shovel className="h-5 w-5 text-primary flex-shrink-0" /> {heading}</h2>
       <p className="text-sm text-muted-foreground mb-3">Berechne deinen Erdaushub und finde passende Baumaschinen{locName ? ` an unserem Standort in ${locName}` : ""}.</p>
+      {badLink && <p role="alert" className="mb-3 rounded-lg border border-accent/40 bg-accent/10 p-3 text-sm">Der geteilte Link enthielt ungültige Daten. Wir haben mit den Standardwerten begonnen.</p>}
       {collapsible && !open && <Button onClick={() => setOpen(true)} className="h-auto min-h-10 whitespace-normal">Aushub & Maschinenbedarf berechnen <ChevronDown className="h-4 w-4" /></Button>}
       {open && (<div className="grid gap-5 lg:grid-cols-2">
         <div className="space-y-4 min-w-0">
@@ -130,69 +126,86 @@ export function ExcavationCalculator({ locationId, currentProductId, heading = "
                 {SHAPES.map((x) => <button key={x.kind} type="button" role="radio" aria-checked={sh.kind === x.kind} onClick={() => setShape(i, { kind: x.kind, v: {} })} className={`rounded-md border px-2.5 py-1 text-xs font-medium ${sh.kind === x.kind ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background"}`}>{x.label}</button>)}
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {def.fields.map(([k, label]) => (
+                {def.fields.map(([k, label]) => { const lim = SHAPE_LIMITS[sh.kind][k]!; const err = bad(sh.v[k], lim); return (
                   <div key={k} className="space-y-1 min-w-0">
                     <Label htmlFor={`exc-${i}-${k}`} className="text-xs">{label}</Label>
-                    <Input id={`exc-${i}-${k}`} inputMode="decimal" value={sh.v[k] ?? ""} onFocus={(e) => e.currentTarget.select()} onChange={(e) => setShape(i, { v: { ...sh.v, [k]: e.target.value } })} />
-                  </div>))}
+                    <Input id={`exc-${i}-${k}`} inputMode="decimal" maxLength={12} aria-invalid={err} className={err ? "border-destructive" : ""} value={sh.v[k] ?? ""} onFocus={(e) => e.currentTarget.select()} onChange={(e) => setShape(i, { v: { ...sh.v, [k]: e.target.value } })} />
+                    {err && <p className="text-xs text-destructive">{f(lim[0], lim[0] < 1 ? 2 : 0)} bis {f(lim[1], 0)}</p>}
+                  </div>); })}
               </div>
             </fieldset>); })}
-          <Button type="button" variant="outline" size="sm" onClick={() => set({ shapes: [...s.shapes, { kind: "rect", v: {} }] })}><Plus className="h-4 w-4" /> Teilfläche hinzufügen</Button>
+          {s.shapes.length < MAX_SHAPES && <Button type="button" variant="outline" size="sm" onClick={() => set({ shapes: [...s.shapes, { kind: "rect", v: {} }] })}><Plus className="h-4 w-4" /> Teilfläche hinzufügen</Button>}
           <div className="space-y-1.5">
             <Label htmlFor="exc-soil">Bodenart</Label>
             <select id="exc-soil" className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm" value={s.soil} onChange={(e) => set({ soil: e.target.value as SoilKey })}>
               {(Object.keys(SOILS) as SoilKey[]).map((k) => <option key={k} value={k}>{SOILS[k].label}</option>)}
             </select>
-            <p className="text-xs text-muted-foreground">Planungswert: {f(soil.density)} t/m³, {soil.loosening} % Auflockerung</p>
+            <p className="text-xs text-muted-foreground">Geschätzter Planungswert: {f(soil.density)} t/m³, {soil.loosening} % Auflockerung</p>
           </div>
           <div className="grid grid-cols-2 gap-2">
-            <div className="space-y-1 min-w-0"><Label htmlFor="exc-access" className="text-xs">Schmalste Zufahrt (cm, optional)</Label><Input id="exc-access" inputMode="decimal" value={s.access} onFocus={(e) => e.currentTarget.select()} onChange={(e) => set({ access: e.target.value })} /></div>
-            <div className="space-y-1 min-w-0"><Label htmlFor="exc-days" className="text-xs">Miettage</Label><Input id="exc-days" inputMode="numeric" value={s.days} onFocus={(e) => e.currentTarget.select()} onChange={(e) => set({ days: e.target.value })} /></div>
+            <div className="space-y-1 min-w-0"><Label htmlFor="exc-access" className="text-xs">Schmalste Zufahrt (cm, optional)</Label><Input id="exc-access" inputMode="decimal" maxLength={12} aria-invalid={bad(s.access, PARAM_LIMITS.access)} className={bad(s.access, PARAM_LIMITS.access) ? "border-destructive" : ""} value={s.access} onFocus={(e) => e.currentTarget.select()} onChange={(e) => set({ access: e.target.value })} /></div>
+            <div className="space-y-1 min-w-0"><Label htmlFor="exc-days" className="text-xs">Miettage</Label><Input id="exc-days" inputMode="numeric" maxLength={12} aria-invalid={bad(s.days, PARAM_LIMITS.days)} className={bad(s.days, PARAM_LIMITS.days) ? "border-destructive" : ""} value={s.days} onFocus={(e) => e.currentTarget.select()} onChange={(e) => set({ days: e.target.value })} /></div>
           </div>
-          <label className="flex items-center justify-between gap-3 text-sm"><span>Expertenmodus</span><Switch checked={expert} onCheckedChange={setExpert} /></label>
-          {expert && <div className="grid grid-cols-3 gap-2">
-            <div className="space-y-1 min-w-0"><Label htmlFor="exc-d" className="text-xs">Dichte (t/m³)</Label><Input id="exc-d" inputMode="decimal" placeholder={f(soil.density)} value={s.density} onChange={(e) => set({ density: e.target.value })} /></div>
-            <div className="space-y-1 min-w-0"><Label htmlFor="exc-l" className="text-xs">Auflockerung (%)</Label><Input id="exc-l" inputMode="decimal" placeholder={String(soil.loosening)} value={s.loosening} onChange={(e) => set({ loosening: e.target.value })} /></div>
-            <div className="space-y-1 min-w-0"><Label htmlFor="exc-f" className="text-xs">Füllgrad Mulde (%)</Label><Input id="exc-f" inputMode="decimal" value={s.fill} onChange={(e) => set({ fill: e.target.value })} /></div>
+          <label className="flex items-center justify-between gap-3 text-sm"><span>Expertenmodus</span><Switch aria-label="Expertenmodus" checked={s.expert} onCheckedChange={(v) => set({ expert: v })} /></label>
+          {s.expert && <div className="grid grid-cols-3 gap-2">
+            {([["exc-d", "Dichte (t/m³)", "density", f(soil.density)], ["exc-l", "Auflockerung (%)", "loosening", String(soil.loosening)], ["exc-f", "Füllgrad Mulde (%)", "fill", "85"]] as const).map(([id, label, key, ph]) => { const err = bad(s[key], PARAM_LIMITS[key]); return (
+              <div key={id} className="space-y-1 min-w-0"><Label htmlFor={id} className="text-xs">{label}</Label><Input id={id} inputMode="decimal" maxLength={12} placeholder={ph} aria-invalid={err} className={err ? "border-destructive" : ""} value={s[key]} onChange={(e) => set({ [key]: e.target.value })} /></div>); })}
           </div>}
         </div>
 
         <div className="space-y-4 min-w-0">
+          {c.invalid.length > 0 && <p role="alert" className="rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm">Bitte prüfe: {c.invalid.join(", ")}. Ungültige Werte fließen nicht in die Berechnung ein.</p>}
           <div className="grid grid-cols-2 gap-2">
             {tile("Gewachsener Boden", `${f(r.bank)} m³`)}
-            {tile("Aufgelockerter Boden", `${f(r.loose)} m³`, `bei ${f(loosening, 0)} % Auflockerung`)}
-            {tile("Geschätztes Erdgewicht", `${f(r.tons)} t`, `bei ${f(density)} t/m³`)}
+            {tile("Aufgelockerter Boden", `${f(r.loose)} m³`, `bei ${f(c.loosening, 0)} % Auflockerung`)}
+            {tile("Geschätztes Erdgewicht", `${f(r.tons)} t`, `bei ${f(c.density)} t/m³`)}
             {tile("Zusätzliches Volumen", `${f(r.extra)} m³`, "durch Auflockerung")}
           </div>
           {safety && <p className="flex gap-2 rounded-lg border border-accent/40 bg-accent/10 p-3 text-sm"><AlertTriangle className="h-4 w-4 text-accent shrink-0 mt-0.5" />
-            {maxDepth > TRENCH_SAFETY_DEPTH_M ? `Ab ${f(TRENCH_SAFETY_DEPTH_M, 2)} m Tiefe sind Böschung oder Verbau vorgeschrieben (DIN 4124). ` : ""}Bei Baugruben, Fundamenten und großen Mengen beraten wir dich gern persönlich – Leitungen vorher erkunden, Abstand zu Gebäuden beachten.</p>}
+            <span>{deep ? `Ab ${f(TRENCH_SAFETY_DEPTH_M, 2)} m Tiefe sind nach DIN 4124 grundsätzlich Böschung oder Verbau nötig – bei nicht standfestem Boden, Wasser oder Lasten am Rand auch schon früher. ` : ""}Leitungen vorher erkunden und Abstand zu Gebäuden beachten. Bei Baugruben, Fundamenten und großen Mengen beraten wir dich gern persönlich.</span></p>}
 
-          {!locationId ? <p className="text-sm text-muted-foreground">Wähle einen Standort, um passende Maschinen zu sehen.</p> : bank > 0 && (<>
-            {currentAssess && <p className={`rounded-lg border p-3 text-sm ${currentAssess.ok && !currentAssess.check ? "border-primary/40 bg-primary/5" : "border-accent/40 bg-accent/10"}`}>
-              <strong>Dieser Bagger:</strong> {currentAssess.ok ? (currentAssess.check ? "Eignung bitte mit uns abstimmen – technische Daten fehlen." : "für deine Angaben geeignet.") : "für deine Angaben nicht geeignet."} {currentAssess.reasons.join(" · ")}</p>}
+          {!locationId ? <p className="text-sm text-muted-foreground">Wähle einen Standort, um passende Maschinen zu sehen.</p> : c.bank > 0 && (<>
+            {currentAssess && <p className={`rounded-lg border p-3 text-sm ${BADGE[currentAssess.status]}`}>
+              <strong>Dieser Bagger:</strong> {currentAssess.tooWide ? "passt nicht durch deine Zufahrt." : currentAssess.status === "fit" ? "nach vorliegenden Daten passend." : currentAssess.status === "check" ? "Eignung bitte mit uns abstimmen – technische Daten fehlen." : "nach vorliegenden Daten ungeeignet."} {currentAssess.reasons.join(" · ")}</p>}
             <div>
-              <h3 className="text-sm font-semibold text-headline mb-1">Passende Bagger in {locName}</h3>
-              {pick.main ? <><ul className="divide-y divide-border rounded-lg border border-border bg-background">
-                {machineRow(pick.hints.length && !pick.compact && pick.unsuitable.length === excavators.length ? "Kleinster Bagger" : "Unsere Empfehlung", pick.main)}{machineRow("Kompakte Alternative", pick.compact)}{machineRow("Leistungsstarke Alternative", pick.strong)}
-              </ul>{pick.hints.map((h) => <p key={h} className="mt-2 flex gap-2 rounded-lg border border-accent/40 bg-accent/10 p-3 text-sm"><Info className="h-4 w-4 text-accent shrink-0 mt-0.5" />{h}</p>)}</> : <p className="text-sm text-muted-foreground">Für deine Angaben können wir keinen Bagger sicher empfehlen. {pick.unchecked.length > 0 ? `Bitte prüfen lassen: ${pick.unchecked.map((a) => a.name).join(", ")}.` : ""} Ruf uns an – wir beraten dich persönlich.</p>}
+              <h3 className="text-sm font-semibold text-headline mb-1">Bagger in {locName}</h3>
+              {(pick.main || pick.smallest) && <ul className="divide-y divide-border rounded-lg border border-border bg-background">
+                {row("Empfehlung – nach vorliegenden Daten passend", pick.main)}{row("Kompaktere Alternative – passend", pick.compact)}{row("Stärkere Alternative – passend", pick.strong)}
+                {row("Kleinster Bagger – zur Orientierung, Eignung nicht bestätigt", pick.smallest, "orient")}
+              </ul>}
+              {pick.hints.map((h) => <p key={h} className="mt-2 flex gap-2 rounded-lg border border-accent/40 bg-accent/10 p-3 text-sm"><Info className="h-4 w-4 text-accent shrink-0 mt-0.5" />{h}</p>)}
+              {pick.review.filter((a) => !shown.has(a.id)).length > 0 && <><h4 className="mt-3 text-sm font-semibold">Alternative – Eignung prüfen lassen</h4>
+                <ul className="divide-y divide-border rounded-lg border border-border bg-background">{pick.review.filter((a) => !shown.has(a.id)).map((a) => row("Alternative – Eignung prüfen lassen", a))}</ul></>}
+              {pick.unfit.filter((a) => !shown.has(a.id)).length > 0 && <><h4 className="mt-3 text-sm font-semibold">Nach Daten ungeeignet</h4>
+                <ul className="divide-y divide-border rounded-lg border border-border bg-background">{pick.unfit.filter((a) => !shown.has(a.id)).map((a) => row(a.tooWide ? "Passt nicht durch Zufahrt" : "Ungeeignet", a))}</ul></>}
+              {pick.crane && <p className="mt-2 text-xs text-muted-foreground">{CRANE_NOTE}</p>}
             </div>
             <div>
               <h3 className="text-sm font-semibold text-headline mb-1">Dumper für den Materialtransport</h3>
               <ul className="divide-y divide-border rounded-lg border border-border bg-background">
-                {dumpers.map((d) => <li key={d.id} className="p-3 text-sm flex gap-3"><Thumb src={d.image} alt={d.name} /><div className="min-w-0">
-                  <Link to={`/mieten/${locationId}/erdbewegung/${d.id}`} className="font-semibold text-primary hover:underline">{d.name}</Link>
-                  <p className="text-muted-foreground">{d.fits === false ? "zu breit für deine Zufahrt" : d.trips ? `ca. ${d.trips.trips} Fahrten (${f(d.trips.perTrip, 2)} m³ je Fahrt, begrenzt durch ${d.trips.limitedBy === "volume" ? `Mulde bei ${f(fill * 100, 0)} % Füllgrad` : "Nutzlast"})` : "Fahrtenzahl nicht berechenbar – Mulde oder Nutzlast nicht hinterlegt"}</p>
+                {dumpers.map((d) => <li key={d.id} className="p-3 text-sm flex gap-3" data-testid={`exc-machine-${d.id}`}><Thumb src={d.image} alt={d.name} /><div className="min-w-0">
+                  <Link to={productPath(locationId, d.id)} className="font-semibold text-primary hover:underline break-words">{d.name}</Link>
+                  <span className="ml-1 text-xs text-muted-foreground">({availability(d)})</span>
+                  <p className="mt-1"><span className={`inline-block rounded border px-1.5 py-0.5 text-xs font-medium ${BADGE[d.a.status]}`}>{statusLabel(d.a)}</span></p>
+                  <p className="text-muted-foreground mt-1">{d.a.reason}</p>
                 </div></li>)}
               </ul>
             </div>
-            {lines.length > 0 && <div><h3 className="text-sm font-semibold text-headline">Maschinenpaket anfragen</h3><CalculatorRecommendations lines={lines} locationId={locationId} days={days} /></div>}
+            {lines.length > 0 && <div><h3 className="text-sm font-semibold text-headline">Passende Geräte anfragen</h3>
+              <p className="text-xs text-muted-foreground">Nur nach vorliegenden Daten passende Geräte. Mietzeitraum wählst du im Warenkorb; Verfügbarkeit bestätigen wir nach Prüfung. Preise sind Richtwerte nach Staffel ohne Lieferung, Versicherung und Kaution.</p>
+              <CalculatorRecommendations lines={lines} locationId={locationId} days={c.days} priceOf={excavationLinePrice} /></div>}
+            <div className="rounded-lg border border-primary/40 bg-primary/5 p-3 space-y-2">
+              <p className="text-sm font-semibold text-headline">{lines.length ? "Unsicher? Projekt mit SLT abstimmen" : "Passende Maschine anfragen"}</p>
+              <p className="text-xs text-muted-foreground">Wir übernehmen deine Projektdaten ins Kontaktformular. Gesendet wird erst, wenn du es abschickst.</p>
+              <Button type="button" className="w-full h-auto min-h-10 whitespace-normal" variant={lines.length ? "outline" : "default"} onClick={ask}><MessageSquare className="h-4 w-4" /> {lines.length ? "Projekt mit SLT abstimmen" : "Passende Maschine anfragen"}</Button>
+            </div>
           </>)}
-          <div className="flex flex-wrap gap-2 print:hidden">
+          <div className="flex flex-wrap gap-2">
             <Button type="button" variant="outline" size="sm" onClick={share}><Share2 className="h-4 w-4" /> {copied ? "Link kopiert" : "Link teilen"}</Button>
-            <Button type="button" variant="outline" size="sm" onClick={() => window.print()}><Printer className="h-4 w-4" /> Drucken / PDF</Button>
-            <Button type="button" variant="ghost" size="sm" onClick={() => setS(INITIAL)}><RotateCcw className="h-4 w-4" /> Zurücksetzen</Button>
+            <Button type="button" variant="outline" size="sm" onClick={() => window.open(reportUrl(s, locationId), "_blank", "noopener")}><FileText className="h-4 w-4" /> Projektbericht als PDF</Button>
+            <Button type="button" variant="ghost" size="sm" onClick={() => setAll({ s: INITIAL_STATE, badLink: false })}><RotateCcw className="h-4 w-4" /> Zurücksetzen</Button>
           </div>
-          <p className="flex gap-2 text-xs text-muted-foreground"><Info className="h-4 w-4 shrink-0" />Alle Berechnungen und Maschinenempfehlungen dienen als unverbindliche Planungshilfe. Die tatsächliche Aushubmenge, das Erdgewicht und die benötigte Maschinenleistung hängen unter anderem von Bodenbeschaffenheit, Feuchtigkeit, Baustellenbedingungen und Bedienererfahrung ab. Bei komplexen Erdarbeiten beraten wir dich gerne persönlich.</p>
+          <p className="flex gap-2 text-xs text-muted-foreground"><Info className="h-4 w-4 shrink-0" />Alle Berechnungen und Maschinenempfehlungen sind unverbindliche Schätzungen. Dichte und Auflockerung sind allgemeine Planungswerte; Aushubmenge, Erdgewicht und Maschinenleistung hängen unter anderem von Bodenbeschaffenheit, Feuchtigkeit, Baustelle und Bedienererfahrung ab. Fehlen technische Daten eines Geräts, kennzeichnen wir es als „Eignung prüfen lassen“.</p>
           {showToolsLink && <Link to="/tools/aushubrechner" className="text-sm text-primary hover:underline">Zum Aushubrechner mit Ratgeber</Link>}
         </div>
       </div>)}

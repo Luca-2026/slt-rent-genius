@@ -240,3 +240,10 @@
 - [x] AGENTS.md-Regel, Prüfpunkte testen
 - [x] Preis-Woche: CMS, Netto-Wochenstaffeln, 168-Stunden-Berechnung, Website/Anfrage, pauschale Angebote und vorgegebene Rechentests; CMS-Speichern/Wiederöffnen mit Mitarbeiterzugang geprüft und Testartikel zurückgesetzt. Finaler Versand einer Wochenrechnung nicht ausgeführt.
 - [x] Angebotspositionen: Liter als echte Menge, Dauer je Position vollständig abwählbar, Verkaufs-/Kraftstoffpositionen ohne Mietzeitraum; Protokollkraftstoff übernimmt tatsächliche Liter und centgenaue Summe. 78 Fachtests plus 7 PDF-Tests bestanden, Typen/Build OK; drei Belegfunktionen eingespielt, keine echten Belege verändert. Mitarbeiter-Live-/Mobil-/Desktop-Sichtprüfung blockiert: angemeldeter Luca-Zugang ist Kundenkonto; isolierte PDFs visuell geprüft.
+
+## Aushubrechner Abnahme-Korrekturen (28.11.2026)
+- [x] Eignungslogik: Empfehlung / Alternative prüfen / passt nicht; Grabtiefe jede Tiefe; unbekannte Breite (auch Dumper) prüfbedürftig
+- [x] Warenkorb nur geeignete Geräte; sonst „Passende Maschine anfragen"
+- [x] Share-URL robust validieren, Expertenwerte inkl. 0 % Auflockerung
+- [x] PDF-Projektbericht A4 statt window.print()
+- [ ] OG-Bild Aushubrechner: wartet auf Upload des freigegebenen Motivs nach public/images/og/aushubrechner-1200x630.png, danach TOOL_OG_IMAGES in src/data/toolsSeo.ts eintragen
