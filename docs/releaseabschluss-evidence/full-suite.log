@@ -1,0 +1,12 @@
+ ✓ src/test/rentalCartDeposit.test.ts (3 tests) 5ms
+ ✓ src/test/setSize.test.ts (1 test) 3ms
+ ✓ src/test/example.test.ts (1 test) 3ms
+ ✓ src/test/hubSeo.test.ts (3 tests) 4ms
+ ✓ src/test/bonnContact.test.ts (1 test) 3ms
+ ✓ src/test/issuedInvoiceGross.test.ts (2 tests) 3ms
+
+ Test Files  240 passed (240)
+      Tests  1791 passed (1791)
+   Start at  15:23:23
+   Duration  49.17s (transform 6.37s, setup 11.95s, collect 33.34s, tests 164.18s, environment 67.39s, prepare 16.76s)
+

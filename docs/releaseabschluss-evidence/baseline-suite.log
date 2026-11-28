@@ -1,0 +1,8 @@
+ ✓ src/test/bonnContact.test.ts (1 test) 2ms
+ ✓ src/test/example.test.ts (1 test) 2ms
+
+ Test Files  238 passed (238)
+      Tests  1769 passed (1769)
+   Start at  15:09:58
+   Duration  55.11s (transform 8.81s, setup 13.61s, collect 38.69s, tests 197.36s, environment 68.46s, prepare 16.70s)
+
