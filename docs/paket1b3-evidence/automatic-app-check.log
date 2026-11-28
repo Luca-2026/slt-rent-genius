@@ -1,0 +1,55 @@
+=== build 2026-11-28T12:26:22Z ===
+build OK
+
+=== build 2026-11-28T12:27:33Z ===
+build OK
+
+=== build 2026-11-28T12:31:09Z ===
+--- typecheck ---
+supabase/functions/_shared/finance-scope.ts(8,37): error TS2307: Cannot find module 'https://esm.sh/@supabase/supabase-js@2.57.4' or its corresponding type declarations.
+supabase/functions/_shared/finance-scope.ts(33,104): error TS2322: Type 'unknown[]' is not assignable to type 'string[]'.
+Type 'unknown' is not assignable to type 'string'.
+
+=== build 2026-11-28T12:31:53Z ===
+build OK
+
+=== build 2026-11-28T12:33:06Z ===
+build OK
+
+=== build 2026-11-28T12:33:46Z ===
+build OK
+
+=== build 2026-11-28T12:34:08Z ===
+build OK
+
+=== build 2026-11-28T12:34:31Z ===
+build OK
+
+=== build 2026-11-28T12:35:45Z ===
+build OK
+
+=== build 2026-11-28T12:36:40Z ===
+build OK
+
+=== build 2026-11-28T12:37:32Z ===
+build OK
+
+=== build 2026-11-28T12:37:59Z ===
+--- typecheck ---
+src/test/financeHandlerValidation.test.ts(39,39): error TS2322: Type '{ select: () => ...; eq: () => ...; then: (resolve: (result: unknown) => unknown) => Promise<unknown>; }' is not assignable to type 'never'.
+
+=== build 2026-11-28T12:39:04Z ===
+--- typecheck ---
+src/test/financeHandlerValidation.test.ts(39,39): error TS2322: Type '{ select: () => ...; eq: () => ...; then: (resolve: (result: unknown) => unknown) => Promise<unknown>; }' is not assignable to type 'never'.
+
+=== build 2026-11-28T12:39:35Z ===
+build OK
+
+=== build 2026-11-28T12:39:52Z ===
+build OK
+
+=== build 2026-11-28T12:43:01Z ===
+build OK
+
+=== build 2026-11-28T12:44:15Z ===
+build OK

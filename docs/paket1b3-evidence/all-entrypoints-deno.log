@@ -1,0 +1,4 @@
+[0m[32mCheck[0m supabase/functions/offer-payment-admin/index.ts
+[0m[32mCheck[0m supabase/functions/deposit-refund-digest/index.ts
+[0m[32mCheck[0m supabase/functions/stripe-webhook/index.ts
+[0m[32mCheck[0m supabase/functions/send-inquiry-invoice/index.ts

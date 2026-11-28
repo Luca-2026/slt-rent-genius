@@ -1,0 +1,41 @@
+
+ RUN  v3.2.4 /dev-server
+
+ ✓ tests/financeScopeRefund.test.ts (14 tests) 15ms
+ ✓ src/test/manualCancelRefundUI.test.tsx (6 tests) 319ms
+ ❯ src/test/financeReleaseDb.test.ts (10 tests | 1 failed) 1529ms
+   ✓ reproduces original 1B.2 missing cash-journal payout and preserves the old financial evidence 3ms
+   ✓ reviewed artifact is repeatable with real settlement definition, rows and all policies intact 6ms
+   ✓ cash cancellation fails closed even with an existing cash voucher; no duplicate journal or successful status 11ms
+   ✓ bank partial and full refund, multiple receipts, queued retries and original-payment cap; no cash booking 19ms
+   ✓ date/reference validation and legacy direct RPC cannot bypass recorded evidence 9ms
+   ✓ audit persistence failure rolls back completion atomically; retry retains one evidence 9ms
+   ✓ authority revoked or order moved before confirmation denies the old actor; admin retains cross-location 8ms
+   ✓ changed original-payment method and duplicate paid settlement block confirmation 7ms
+   × real normal cash settlement posts exactly once with existing register/date/DATEV mapping; Bank/Stripe never cash 18ms
+     → null value in column "id" of relation "deposit_settlements" violates not-null constraint
+   ✓ actual authenticated SELECT RLS separates Bonn/Krefeld/Mülheim; multiple profiles and revoked rights 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/financeReleaseDb.test.ts > real normal cash settlement posts exactly once with existing register/date/DATEV mapping; Bank/Stripe never cash
+error: null value in column "id" of relation "deposit_settlements" violates not-null constraint
+ ❯ pe.Oe ../persist/node_modules/@electric-sql/pg-protocol/src/parser.ts:442:11
+ ❯ pe.tt ../persist/node_modules/@electric-sql/pg-protocol/src/parser.ts:220:16
+ ❯ pe.parse ../persist/node_modules/@electric-sql/pg-protocol/src/parser.ts:104:21
+ ❯ D.ze ../persist/node_modules/@electric-sql/pglite/src/pglite.ts:795:26
+ ❯ ../persist/node_modules/@electric-sql/pglite/src/pglite.ts:746:16
+ ❯ null.<anonymous> wasm:/wasm/022aac12:1:5416408
+ ❯ null.<anonymous> wasm:/wasm/022aac12:1:2185682
+ ❯ null.<anonymous> wasm:/wasm/022aac12:1:2215499
+ ❯ null.<anonymous> wasm:/wasm/022aac12:1:2216064
+ ❯ null.<anonymous> wasm:/wasm/022aac12:1:5074876
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 29 passed (30)
+   Start at  12:36:47
+   Duration  2.19s (transform 216ms, setup 113ms, collect 447ms, tests 1.86s, environment 645ms, prepare 140ms)
+

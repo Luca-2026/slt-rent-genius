@@ -1,0 +1,27 @@
+
+ RUN  v3.2.4 /dev-server
+
+stderr | src/test/financeAuthority.test.ts > dual rental/sales linkage is ambiguous and triggers no order lookup
+GoTrueClient@sb-isolated-auth-token:1 (2.90.1) 2026-11-28T12:38:10.116Z Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+
+stderr | src/test/financeAuthority.test.ts > conflicting invoice/order locations are denied to non-admins
+GoTrueClient@sb-isolated-auth-token:2 (2.90.1) 2026-11-28T12:38:10.120Z Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+
+stderr | src/test/financeAuthority.test.ts > standalone legacy invoice retains its own documented location
+GoTrueClient@sb-isolated-auth-token:3 (2.90.1) 2026-11-28T12:38:10.124Z Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+
+stderr | src/test/financeAuthority.test.ts > real SDK adapter reads all active profile locations and current operations revocation
+GoTrueClient@sb-isolated-auth-token:4 (2.90.1) 2026-11-28T12:38:10.127Z Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+
+stderr | src/test/financeAuthority.test.ts > real SDK adapter reads all active profile locations and current operations revocation
+GoTrueClient@sb-isolated-auth-token:5 (2.90.1) 2026-11-28T12:38:10.133Z Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+
+ ✓ src/test/financeAuthority.test.ts (5 tests) 35ms
+ ✓ src/test/financeHandlerValidation.test.ts (10 tests) 239ms
+ ✓ src/test/financeReleaseDb.test.ts (13 tests) 1573ms
+
+ Test Files  3 passed (3)
+      Tests  28 passed (28)
+   Start at  12:38:09
+   Duration  2.33s (transform 82ms, setup 104ms, collect 644ms, tests 1.85s, environment 661ms, prepare 158ms)
+
