@@ -7,4 +7,5 @@
  *
  * Etappe 6 wird den Flag entfernen und die statischen Daten aus dem Bundle nehmen.
  */
-export const USE_STATIC_FALLBACK = true;
+// Unverified historical articles must not return during outages or initial loading.
+export const USE_STATIC_FALLBACK = false;

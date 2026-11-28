@@ -1,13 +1,12 @@
 /**
  * Modul-Cache für CMS-Managed-Products.
  * Wird beim App-Start einmal aus DB gefüllt (via ManagedProductsProvider) und von den
- * Helpers in rentalData.ts konsultiert. Ab Etappe 4 ist die DB die alleinige Quelle
- * im regulären Pfad; der statische Fallback greift nur, solange der Cache noch nicht
- * geladen wurde oder ein DB-Fehler auftrat (siehe `USE_STATIC_FALLBACK`).
+ * Helpers in rentalData.ts konsultiert. Nur frisch bestätigte vollständige CMS-Daten
+ * sind öffentlich nutzbar; Fehler und Ablauf reaktivieren niemals historische Artikel.
  */
 import { useSyncExternalStore } from "react";
 import type { Product } from "@/data/rentalData";
-import { USE_STATIC_FALLBACK } from "@/config/featureFlags";
+import { CATALOG_FRESH_MS } from "../../supabase/functions/_shared/catalog-pagination";
 
 
 export interface ManagedProductCacheEntry {
@@ -22,6 +21,8 @@ export type ManagedProductsCacheStatus = "idle" | "loaded" | "error";
 let cache: ManagedProductCacheEntry[] = [];
 let status: ManagedProductsCacheStatus = "idle";
 let version = 0;
+let verifiedAt = 0;
+let expiryTimer: ReturnType<typeof setTimeout> | undefined;
 const listeners = new Set<() => void>();
 
 /** React-Hook: liefert eine Zahl, die sich bei jeder Cache-Änderung erhöht. */
@@ -37,22 +38,26 @@ export function useManagedProductsVersion(): number {
 export function setManagedProductsCache(entries: ManagedProductCacheEntry[]) {
   cache = entries;
   status = "loaded";
+  verifiedAt = Date.now();
+  clearTimeout(expiryTimer);
+  expiryTimer = setTimeout(() => { if (getManagedProductsCacheStatus() === "error") setManagedProductsCacheError(); }, CATALOG_FRESH_MS);
   version++;
   for (const l of listeners) l();
 }
 
 export function setManagedProductsCacheError() {
+  clearTimeout(expiryTimer);
   status = "error";
   version++;
   for (const l of listeners) l();
 }
 
 export function getManagedProductsCache(): ManagedProductCacheEntry[] {
-  return cache;
+  return getManagedProductsCacheStatus() === "loaded" ? cache : [];
 }
 
 export function getManagedProductsCacheStatus(): ManagedProductsCacheStatus {
-  return status;
+  return status === "loaded" && Date.now() - verifiedAt >= CATALOG_FRESH_MS ? "error" : status;
 }
 
 export function subscribeManagedProducts(listener: () => void): () => void {
@@ -72,17 +77,14 @@ function sortProducts(list: Product[]): Product[] {
 /**
  * Reguläre Merge-Funktion (Etappe 4):
  * - `status === "loaded"` → **ausschließlich** DB-Datensätze (statische Liste wird verworfen).
- * - `status === "error"` und Fallback aktiv → statische Liste als Notfall-Fallback.
- * - `status === "idle"` (initialer Load) und Fallback aktiv → statische Liste, um Weißseiten
- *   während des ersten Fetches zu vermeiden. Sobald der Cache "loaded" ist, kippt der Merge
- *   automatisch auf DB-only.
+ * - Fehler/initiales Laden/Ablauf → keine unbestätigten Artikel, allgemeine Seiten bleiben.
  */
 export function mergeWithCache(
   locationId: string,
   categoryId: string,
   staticList: Product[],
 ): Product[] {
-  if (status === "loaded") {
+  if (getManagedProductsCacheStatus() === "loaded") {
     const dbList = cache
       .filter((e) => e.availableLocations.includes(locationId))
       .filter((e) => categoryId === "alle" || e.category === categoryId)
@@ -91,22 +93,20 @@ export function mergeWithCache(
   }
 
   // status === "idle" | "error" → Fallback-Pfad
-  if (!USE_STATIC_FALLBACK) return [];
-  return sortProducts(staticList);
+  return [];
 }
 
 /**
  * Suche nach einem einzelnen Produkt.
  * - `status === "loaded"`: nur Cache-Treffer zählen (DB ist Single Source of Truth).
- * - `status === "idle" | "error"` + Fallback aktiv: Cache-Treffer bevorzugt, sonst gibt der
- *   Aufrufer über den statischen Pfad weiter.
+ * - Fehler/initiales Laden/Ablauf: kein Treffer aus unbestätigten Daten.
  */
 export function findInCache(productId: string): {
   product: Product;
   locationIds: string[];
   categoryId: string;
 } | undefined {
-  const entry = cache.find((e) => e.slug === productId);
+  const entry = getManagedProductsCache().find((e) => e.slug === productId);
   if (!entry) return undefined;
   return {
     product: entry.product,
@@ -117,6 +117,5 @@ export function findInCache(productId: string): {
 
 /** True, wenn getProductById den statischen Fallback konsultieren darf. */
 export function shouldUseStaticFallbackForLookup(): boolean {
-  if (status === "loaded") return false;
-  return USE_STATIC_FALLBACK;
+  return false;
 }

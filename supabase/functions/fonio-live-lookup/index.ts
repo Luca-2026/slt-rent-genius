@@ -6,6 +6,7 @@
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { providedSecret, safeEqual } from "../_shared/fonioPayload.ts";
+import { readRestCatalog } from "../_shared/catalog-rest.ts";
 import { availabilityStatus, AVAILABILITY_TEXT, searchProducts, matchCaller, type LookupProduct, type CallerRow } from "../_shared/liveLookup.ts";
 
 const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, x-fonio-secret, content-type" };
@@ -48,11 +49,13 @@ Deno.serve(async (req) => {
 
   if (query.trim().length < 2) return json({ ergebnis: "Bitte den gewünschten Artikel nennen." });
   if (!cache || Date.now() - cache.at > 60_000) {
-    const { data, error } = await svc.from("b2b_managed_products")
-      .select("slug,name,model_name,category,subcategory,rentware_code,price_per_day,price_weekend,price_per_month,price_unit_label,direct_booking_config")
-      .eq("is_published", true);
-    if (error) return json({ ergebnis: "Artikeldaten gerade nicht abrufbar. Das Team meldet sich." }, 200);
-    cache = { at: Date.now(), rows: (data ?? []) as LookupProduct[] };
+    cache = null;
+    const url = Deno.env.get("SUPABASE_URL"), key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    if (!url || !key) return json({ ergebnis: "Artikeldaten gerade nicht abrufbar. Das Team meldet sich." }, 200);
+    try {
+      const rows = await readRestCatalog<LookupProduct & { id: string }>(url, key, "b2b_managed_products", { select: "id,slug,name,model_name,category,subcategory,rentware_code,price_per_day,price_weekend,price_per_month,price_unit_label,direct_booking_config,updated_at", is_published: "eq.true" });
+      cache = { at: Date.now(), rows };
+    } catch { return json({ ergebnis: "Artikeldaten gerade nicht abrufbar. Das Team meldet sich." }, 200); }
   }
   const found = searchProducts(cache.rows, query, location, action === "availability" ? 3 : 5);
   if (!found.length) return json({ ergebnis: "Kein passender Artikel im Katalog gefunden. Bitte Anfrage aufnehmen, das Team prüft.", artikel: [] });

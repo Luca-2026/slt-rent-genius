@@ -6,6 +6,8 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { submitInquiry, type InquiryArgs } from "./renty-inquiry.ts";
 import { isSignBookingItem, signBookingRedirect } from "./online-booking-policy.ts";
+import { readRestCatalog } from "../_shared/catalog-rest.ts";
+import { CATALOG_FRESH_MS, validatePublicProduct } from "../_shared/catalog-pagination.ts";
 import { searchTools, locationInfo, calculateExcavation, calculateDryingTool, calculatePowerTool, relevantSpecs, machineFacts, publicToolPaths } from "./renty-tools.ts";
 
 const MODEL = "openai/gpt-6-astra";
@@ -113,20 +115,20 @@ const STOP = new Set(["ich", "brauche", "suche", "einen", "eine", "ein", "der", 
 
 let catalogCache: { at: number; rows: any[] } | null = null;
 async function catalog() {
-  if (catalogCache && Date.now() - catalogCache.at < 10 * 60 * 1000) return catalogCache.rows;
-  const client = db();
-  if (!client) return [];
-  const { data, error } = await client.from("managed_products_public")
-    .select("slug,name,model_name,category,subcategory,available_locations,description,specifications,tags,on_request,rentware_code,weight_kg");
-  if (error) { console.error("[renty] catalog", error.message); return catalogCache?.rows ?? []; }
-  catalogCache = { at: Date.now(), rows: data ?? [] };
-  return catalogCache.rows;
+  if (catalogCache && Date.now() - catalogCache.at < CATALOG_FRESH_MS) return catalogCache.rows;
+  const url = Deno.env.get("SUPABASE_URL"), key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!url || !key) throw new Error("Artikeldaten gerade nicht abrufbar; bitte Beratung anbieten, nicht als fehlenden Bestand auslegen.");
+  catalogCache = null;
+  const rows = await readRestCatalog(url, key, "managed_products_public", { select: "id,slug,name,model_name,category,subcategory,available_locations,description,specifications,tags,on_request,rentware_code,weight_kg,updated_at" }, validatePublicProduct);
+  catalogCache = { at: Date.now(), rows };
+  return rows;
 }
 
 export async function catalogPaths(): Promise<string[]> {
-  const rows = await catalog();
+  const rows = await catalog().catch(() => []);
   return [...rows.flatMap((r) => (r.available_locations ?? []).map((l: string) => `/mieten/${l}/${r.category}/${r.slug}/`)), ...publicToolPaths()];
 }
+export const catalogVerifiedAt = () => catalogCache?.at ?? 0;
 
 export async function searchProducts(query: string, location: string | null) {
   const tokens = norm(query).match(/[a-z0-9]+/g)?.filter((t) => t.length > 1 && !STOP.has(t)) ?? [];
@@ -274,14 +276,17 @@ export async function runRenty(opts: {
               if (call.name === "search_products") output = { results: await searchProducts(String(args.query ?? ""), args.location ?? null) };
               else if (call.name === "search_tools") output = searchTools(String(args.query ?? ""));
               else if (call.name === "get_location_info") output = locationInfo(args.location ?? null);
-              else if (call.name === "calculate_excavation") output = calculateExcavation(args, await catalog());
-              else if (call.name === "calculate_drying") output = calculateDryingTool(args, await catalog());
-              else if (call.name === "calculate_power") output = calculatePowerTool(args, await catalog());
+              else if (["calculate_excavation", "calculate_drying", "calculate_power"].includes(call.name)) {
+                let available = true;
+                const rows = await catalog().catch(() => { available = false; return []; });
+                const result = call.name === "calculate_excavation" ? calculateExcavation(args, rows) : call.name === "calculate_drying" ? calculateDryingTool(args, rows) : calculatePowerTool(args, rows);
+                output = { ...result, catalog_status: available ? "verified" : "unavailable", ...(!available ? { catalog_notice: "Artikelberatung und Preise derzeit nicht prüfbar. Reine Mengenberechnung bleibt möglich. Bitte das Standortteam kontaktieren; keine fehlenden Bestände behaupten." } : {}) };
+              }
               else if (call.name === "submit_rental_inquiry") output = await submitInquiry(args as InquiryArgs, { ip: opts.ip, transcript });
               else output = { error: "unknown tool" };
             } catch (e) {
               console.error("[renty] tool", call.name, e);
-              output = { error: "Werkzeug fehlgeschlagen" };
+              output = { error: "Artikeldaten oder Werkzeug derzeit nicht abrufbar. Bitte das Standortteam zur Beratung anbieten; keine Preise, Eignung oder fehlenden Bestand behaupten." };
             }
             input.push({ type: "function_call_output", call_id: call.call_id, output: JSON.stringify(output) });
           }

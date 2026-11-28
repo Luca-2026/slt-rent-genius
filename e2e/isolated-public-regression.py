@@ -1,6 +1,6 @@
 import asyncio, json, base64
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 from playwright.async_api import async_playwright
 PROJECT=Path(__file__).resolve().parents[1]
 ROOT=Path('/tmp/browser/paket1b1-regression')
@@ -31,6 +31,14 @@ async def main():
     seen.append([req.method,table])
     if req.method not in ['GET','HEAD']: forbidden.append(req.url); return await route.abort()
     data=PRODUCTS if table in ['managed_products_public','b2b_managed_products'] else PRICES if table in ['public_product_prices','b2b_managed_product_location_prices'] else []
+    params=parse_qs(u.query)
+    if table=='managed_products_public':
+     data=sorted(data,key=lambda p:p['id'])
+     cursor=params.get('id',[''])[0]
+     if cursor.startswith('gt.'): data=[p for p in data if p['id']>cursor[3:]]
+     total=len(data)
+     data=data[:int(params.get('limit',['500'])[0])]
+     return await route.fulfill(status=200,content_type='application/json',headers={'content-range':f'0-{max(0,len(data)-1)}/{total}','access-control-expose-headers':'content-range'},body=json.dumps(data))
     return await route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
    if '/functions/v1/' in u.path:
     name=u.path.split('/functions/v1/')[1]; seen.append([req.method,name])

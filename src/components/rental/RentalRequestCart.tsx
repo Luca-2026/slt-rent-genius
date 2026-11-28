@@ -39,6 +39,7 @@ import { rentalCartDeposit } from "@/lib/rentalCartDeposit";
 import { useCartDraft } from "./useCartDraft";
 import { bookingContactErrors } from "../../../supabase/functions/_shared/booking-contact";
 import { hasBankDiscountPolicy } from "@/lib/bankTransferDiscount";
+import { findInCache, getManagedProductsCacheStatus, useManagedProductsVersion } from "@/data/managedProductsCache";
 
 let state: { cart: RentalCart | null; open: boolean; edit: RentalCartItem | null; expired: boolean; notice?: string; noticeError?: boolean } = { cart: null, open: false, edit: null, expired: false };
 const listeners = new Set<() => void>();
@@ -48,6 +49,8 @@ const weekendPrices = new Map<string, number>();
 function update(next: Partial<typeof state>) { state = { ...state, ...next }; listeners.forEach(fn => fn()); }
 function save(cart: RentalCart | null) { update({ cart }); try { if (cart) localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart)); else localStorage.removeItem(CART_STORAGE_KEY); } catch { /* session state still works */ } }
 export function openRentalRequest(product: Product, location: LocationData) {
+  const current = findInCache(product.id);
+  if (!current?.locationIds.includes(location.id)) { update({ open: true, notice: "Artikeldaten gerade nicht prüfbar. Dein Warenkorb bleibt erhalten; bitte versuche es erneut oder kontaktiere das Standortteam.", noticeError: true }); return; }
   if (typeof product.priceWeekendNum === "number" && product.priceWeekendNum > 0) weekendPrices.set(product.id, product.priceWeekendNum);
   const item = withCartPeriod(state.cart, { id: crypto.randomUUID(), product_slug: product.id, product_name: product.name, image: product.image, location: location.id, quantity: 1, start_date: "", start_time: "", end_date: "", end_time: "", selected_addons: [], use_saturday: false, use_sunday: false });
   if (item.product_slug !== SIGN_PRODUCT_SLUG && validPublicRentalPeriod(item) && (state.cart?.items.length ?? 0) < 30) {
@@ -73,6 +76,7 @@ function finishBundle(rows: RentalCartItem[], period: RentalCartItem): boolean {
   return true;
 }
 export function openRentalBundle(lines: { slug: string; name: string; image?: string; quantity: number }[], location: LocationData) {
+  if (lines.some(l => !findInCache(l.slug)?.locationIds.includes(location.id))) { update({ open: true, notice: "Das Paket konnte nicht erneut geprüft werden. Dein Warenkorb bleibt unverändert. Bitte versuche es in Kürze erneut.", noticeError: true }); return; }
   const rows = lines.filter(l => l.slug !== SIGN_PRODUCT_SLUG && l.quantity >= 1).map(l => ({ id: crypto.randomUUID(), product_slug: l.slug, product_name: l.name, image: l.image, location: location.id, quantity: Math.min(9999, Math.round(l.quantity)), start_date: "", start_time: "", end_date: "", end_time: "", selected_addons: [], use_saturday: false, use_sunday: false } as RentalCartItem));
   if (!rows.length) return;
   const first = withCartPeriod(state.cart, rows[0]);
@@ -101,8 +105,10 @@ export function RentalRequestCart() {
   const checkoutQueue = useRef<string[] | null>(null);
   const toContact = useRef(false);
   const [step, setStep] = useState<"package" | "period" | "accessories" | "options" | "cart" | "contact">("cart");
-  const { data: managedData } = useManagedProducts();
-  const managed = managedData ?? EMPTY_MANAGED;
+  const cmsVersion = useManagedProductsVersion();
+  const managedQuery = useManagedProducts();
+  const catalogueReady = getManagedProductsCacheStatus() === "loaded" && !managedQuery.isError;
+  const managed = catalogueReady ? managedQuery.data ?? EMPTY_MANAGED : EMPTY_MANAGED;
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [quoteError, setQuoteError] = useState("");
   const [quoteNotice, setQuoteNotice] = useState("");
@@ -141,7 +147,7 @@ export function RentalRequestCart() {
   const tariffProduct = managed.find(p => p.slug === edit?.product_slug);
   const tariffs = tariffProduct ? resolveProductPrices({ ...tariffProduct, prices_same_all_locations: tariffRows.length === 0 }, edit?.location, tariffRows) : null;
   const isWeek = tariffProduct?.pricing_scheme === "woche";
-  const weekendNet = isWeek ? null : tariffs?.price_weekend_num ?? (tariffProduct?.pricing_scheme === "event" ? tariffs?.price_base_1_3_cd : null) ?? (edit ? weekendPrices.get(edit.product_slug) : null) ?? null;
+  const weekendNet = !catalogueReady || isWeek ? null : tariffs?.price_weekend_num ?? (tariffProduct?.pricing_scheme === "event" ? tariffs?.price_base_1_3_cd : null) ?? (edit ? weekendPrices.get(edit.product_slug) : null) ?? null;
   const quoteKey = JSON.stringify(quoteItems);
   const coupon = usePublicCoupon(contact.couponCode, contact.email, items.map(item => item.product_slug), JSON.stringify(items));
   useEffect(() => {
@@ -159,6 +165,7 @@ export function RentalRequestCart() {
   }, [snapshot.open]);
   useEffect(() => {
     if (!snapshot.open || !quoteItems.length ) { setQuotes([]); setLoading(false); setQuoteError(""); setBankDiscountAvailable(false); return; }
+    if (!catalogueReady) { setQuotes([]); setLoading(false); setBankDiscountAvailable(false); setQuoteError("Artikeldaten gerade nicht prüfbar. Dein Warenkorb bleibt erhalten. Bitte versuche es in Kürze erneut."); return; }
     let cancelled = false;
     setLoading(true); setQuoteError(""); setQuoteNotice(""); setBankDiscountAvailable(false);
     const timer = setTimeout(async () => {
@@ -177,7 +184,7 @@ export function RentalRequestCart() {
       setQuoteNotice(error && !blocking ? "Die Preise konnten gerade nicht berechnet werden. Du kannst trotzdem anfragen – die Preise erhältst du mit unserem Angebot." : "");
     }, 400);
     return () => { cancelled = true; clearTimeout(timer); };
-  }, [quoteKey, snapshot.open, signConfig]);
+  }, [quoteKey, snapshot.open, signConfig, catalogueReady, cmsVersion]);
   const inCheckout = !!checkoutQueue.current && !!edit;
   // Zusatzartikel und Versicherungen erst im Checkout: Artikel nacheinander durchlaufen, danach Kontaktdaten.
   const startCheckout = () => {
@@ -229,6 +236,7 @@ export function RentalRequestCart() {
   const partial = quotes.length !== quoteItems.length || quotes.some(line => line.rental_net === null || line.addons.some(addon => addon.amount === null));
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (!catalogueReady || getManagedProductsCacheStatus() !== "loaded") { setSendError("Artikel bitte nach Wiederherstellung erneut prüfen. Dein Warenkorb bleibt erhalten."); return; }
     if (contactInvalid) { setSendError("Bitte Kontaktdaten und Adresse vollständig angeben."); return; }
     if (sending || !state.cart || cartExpired(state.cart) || !coupon.valid || !items.length) return;
     if (pickupConfirmationRequired(contact.deliveryRequested, contact.pickupConfirmed)) { setSendError("Bitte bestätige, dass du die Artikel selbst abholst."); return; }

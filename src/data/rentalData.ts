@@ -2323,7 +2323,11 @@ export function getCompatibleAccessories(machineId: string, locationId: string):
   const erdbewegung = location.products["erdbewegung"] || [];
   const anhaenger = location.products["anhaenger"] || [];
   const allProducts = [...erdbewegung, ...anhaenger];
-  return allProducts.filter((p) => p.compatibleMachines?.includes(machineId));
+  // Legacy compatibility is only a reference list, never authority for article facts.
+  return allProducts.filter((p) => p.compatibleMachines?.includes(machineId)).flatMap(p => {
+    const current = getProductById(p.id);
+    return current ? [current] : [];
+  });
 }
 
 // Generate SEO-friendly slug from product name

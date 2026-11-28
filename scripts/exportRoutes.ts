@@ -30,10 +30,14 @@ import { orderSpecs } from "../src/lib/specOrder";
 import { localizeProductText } from "../src/data/productPageContent";
 import { getLocationById as getRentalLocationById } from "../src/data/rentalData";
 import { PRODUCT_SUBCATEGORIES } from "../src/data/productSubcategories";
-import { validateCatalogSnapshot, parseContentRangeTotal } from "../src/lib/publicationRefresh";
+import { readRestCatalog } from "../supabase/functions/_shared/catalog-rest";
+import { canonicalCatalog, validatePublicProduct } from "../supabase/functions/_shared/catalog-pagination";
+import { readRestLocationPrices, type PublicLocationPrice } from "../supabase/functions/_shared/catalog-location-prices";
+import { productPath, resolveHistoricalProduct, type PublicUrlRedirect } from "../supabase/functions/_shared/product-url-history";
 import { seoPublicImage } from "../src/lib/seoPublicImage";
 import { seoTopicRoutes } from "../src/data/seoTopicRoutes";
 import { displayPrice } from "../src/lib/priceDisplay";
+import { resolveProductPrices, type LocationPriceRow } from "../supabase/functions/_shared/rental-pricing";
 
 const distDir = resolve(process.env.SEO_OUTPUT_DIR || resolve(process.cwd(), "dist"));
 if (!existsSync(distDir)) mkdirSync(distDir, { recursive: true });
@@ -46,28 +50,16 @@ async function fetchUsedMachineRoutes(): Promise<SeoRoute[]> {
   const url = process.env.VITE_SUPABASE_URL;
   const key = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
   if (!url || !key) {
-    console.warn("[exportRoutes] No Supabase env – skipping used-machine routes");
-    return [];
+    throw new Error("Authoritative catalogue configuration unavailable");
   }
   try {
-    const endpoint =
-      `${url}/rest/v1/used_machines` +
-      `?select=slug,manufacturer,model,year,hours,location,price_net,price_on_request,images,updated_at,status` +
-      `&status=neq.sold`;
-    const res = await fetch(endpoint, {
-      headers: { apikey: key, Authorization: `Bearer ${key}`, Prefer: "count=exact" },
-    });
-    if (!res.ok) {
-      console.warn(`[exportRoutes] used_machines fetch failed: ${res.status}`);
-      return [];
-    }
-    const rows = (await res.json()) as UsedMachineSeoInput[];
+    const rows = await readRestCatalog<UsedMachineSeoInput & { id: string }>(url, key, "used_machines", { select: "id,slug,manufacturer,model,year,hours,location,price_net,price_on_request,images,updated_at,status", status: "neq.sold" });
+    if (rows.some(r => !r.slug || !r.manufacturer || !r.model)) throw new Error("Invalid used-machine catalogue");
     return rows
       .filter((r) => r && r.slug && r.manufacturer && r.model)
       .map(buildUsedMachineRoute);
   } catch (err) {
-    console.warn(`[exportRoutes] used_machines fetch error: ${(err as Error).message}`);
-    return [];
+    throw new Error(`[exportRoutes] used-machine export blocked: ${(err as Error).message}`);
   }
 }
 
@@ -75,28 +67,16 @@ async function fetchNewMachineRoutes(): Promise<SeoRoute[]> {
   const url = process.env.VITE_SUPABASE_URL;
   const key = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
   if (!url || !key) {
-    console.warn("[exportRoutes] No Supabase env – skipping new-machine routes");
-    return [];
+    throw new Error("Authoritative catalogue configuration unavailable");
   }
   try {
-    const endpoint =
-      `${url}/rest/v1/new_machines` +
-      `?select=slug,brand,model,name,category,price_gross,price_on_request,vat_rate,short_description,images,updated_at,is_active` +
-      `&is_active=eq.true`;
-    const res = await fetch(endpoint, {
-      headers: { apikey: key, Authorization: `Bearer ${key}` },
-    });
-    if (!res.ok) {
-      console.warn(`[exportRoutes] new_machines fetch failed: ${res.status}`);
-      return [];
-    }
-    const rows = (await res.json()) as NewMachineSeoInput[];
+    const rows = await readRestCatalog<NewMachineSeoInput & { id: string }>(url, key, "new_machines", { select: "id,slug,brand,model,name,category,price_gross,price_on_request,vat_rate,short_description,images,updated_at,is_active", is_active: "eq.true" });
+    if (rows.some(r => !r.slug || !r.brand || !r.model)) throw new Error("Invalid new-machine catalogue");
     return rows
       .filter((r) => r && r.slug && r.brand && r.model)
       .map(buildNewMachineRoute);
   } catch (err) {
-    console.warn(`[exportRoutes] new_machines fetch error: ${(err as Error).message}`);
-    return [];
+    throw new Error(`[exportRoutes] new-machine export blocked: ${(err as Error).message}`);
   }
 }
 
@@ -107,6 +87,7 @@ async function fetchNewMachineRoutes(): Promise<SeoRoute[]> {
 // build freezes names/descriptions from src/data/**/*Products.ts.
 // ---------------------------------------------------------------
 interface ManagedProductRoutePayload {
+  id: string;
   slug: string;
   name: string;
   description: string | null;
@@ -130,6 +111,7 @@ interface ManagedProductRoutePayload {
   pricing_scheme?: string | null;
   price_from_1_rd?: number | null;
   price_base_1_3_cd?: number | null;
+  prices_same_all_locations?: boolean;
 }
 
 async function fetchManagedProducts(): Promise<ManagedProductRoutePayload[]> {
@@ -139,21 +121,7 @@ async function fetchManagedProducts(): Promise<ManagedProductRoutePayload[]> {
     throw new Error("[exportRoutes] Authoritative CMS configuration unavailable; export blocked");
   }
   try {
-    const endpoint =
-      `${url}/rest/v1/managed_products_public` +
-      `?select=*&limit=10000`;
-    const res = await fetch(endpoint, {
-      headers: { apikey: key, Authorization: `Bearer ${key}`, Prefer: "count=exact" },
-    });
-    if (!res.ok) {
-      throw new Error(`[exportRoutes] Authoritative CMS request failed: ${res.status}`);
-    }
-    const rows = (await res.json()) as ManagedProductRoutePayload[];
-    if (!Array.isArray(rows) || !rows.length) throw new Error("Authoritative CMS returned no products; export blocked");
-    // Paket 1B: abgeschnittene/paginierte Antworten (PostgREST max-rows) dürfen keinen Teilkatalog erzeugen.
-    const check = validateCatalogSnapshot(rows, parseContentRangeTotal(res.headers.get("content-range")));
-    if (!check.ok) throw new Error(`Incomplete CMS snapshot (${check.reason}); export blocked`);
-    return rows;
+    return await readRestCatalog<ManagedProductRoutePayload>(url, key, "managed_products_public", { select: "*" }, validatePublicProduct);
   } catch (err) {
     throw new Error(`[exportRoutes] CMS export blocked: ${(err as Error).message}`);
   }
@@ -251,15 +219,34 @@ function dedupeLocationName(text: string, locName: string): string {
   return out;
 }
 
-const [usedMachineRoutes, newMachineRoutes, managedProducts] = await Promise.all([
+async function fetchRentalBundle() {
+  const url = process.env.VITE_SUPABASE_URL, key = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) throw new Error("CMS configuration missing");
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const products = await fetchManagedProducts();
+    const prices = await readRestLocationPrices(url, key);
+    const verifyProducts = await fetchManagedProducts();
+    const verifyPrices = await readRestLocationPrices(url, key);
+    if (canonicalCatalog(products) === canonicalCatalog(verifyProducts) && canonicalCatalog(prices) === canonicalCatalog(verifyPrices)) return { products, prices };
+  }
+  throw new Error("CMS product/price bundle changed; export blocked");
+}
+const [usedMachineRoutes, newMachineRoutes, rentalBundle] = await Promise.all([
   fetchUsedMachineRoutes(),
   fetchNewMachineRoutes(),
-  fetchManagedProducts(),
+  fetchRentalBundle(),
 ]);
+const managedProducts = rentalBundle.products;
+let urlHistory: PublicUrlRedirect[] = [];
+if (process.env.CMS_URL_HISTORY_ENABLED === "true") {
+  const url = process.env.VITE_SUPABASE_URL, key = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) throw new Error("CMS history configuration missing");
+  urlHistory = await readRestCatalog<PublicUrlRedirect>(url, key, "public_product_url_redirects", { select: "*" });
+}
 const allRoutes: SeoRoute[] = [...ALL_ROUTES, ...usedMachineRoutes, ...newMachineRoutes, ...seoTopicRoutes];
 
 // Apply CMS overrides on matching product routes (by path).
-if (managedProducts.length) {
+{
   const routeByPath = new Map<string, SeoRoute>();
   for (const r of allRoutes) if (r.routeType === "product") routeByPath.set(r.path, r);
   let overridden = 0;
@@ -277,7 +264,7 @@ if (managedProducts.length) {
           .filter((f) => f.q && f.a)
       : [];
     for (const loc of m.available_locations || []) {
-      const path = `/mieten/${loc}/${m.category}/${m.slug}`;
+      const path = productPath(loc, m.category, m.slug);
       let route = routeByPath.get(path);
       const previous = allRoutes.find(r => r.routeType === "product" && r.productData?.id === m.slug && r.productData.locationId === loc);
       if (!route) {
@@ -333,15 +320,16 @@ if (managedProducts.length) {
         route.productData.modelName = m.model_name ?? undefined;
         route.productData.specifications = m.specifications ? orderSpecs(m.specifications, m.spec_order) : undefined;
         route.productData.pricePerDay = m.price_per_day ?? undefined;
-        route.productData.seoDailyNet = m.pricing_scheme === "bau" ? m.price_from_1_rd : undefined;
+        const effectivePrices = resolveProductPrices({ ...m, pricing_scheme: m.pricing_scheme === "bau" || m.pricing_scheme === "event" || m.pricing_scheme === "woche" ? m.pricing_scheme : undefined }, loc, rentalBundle.prices as LocationPriceRow[]);
+        route.productData.seoDailyNet = m.pricing_scheme === "bau" ? effectivePrices.price_from_1_rd : undefined;
         route.productData.seoEventBundle = m.pricing_scheme === "event" && Boolean(m.price_base_1_3_cd);
-        route.productData.seoBundleNet = m.pricing_scheme === "event" ? m.price_base_1_3_cd : undefined;
+        route.productData.seoBundleNet = m.pricing_scheme === "event" ? effectivePrices.price_base_1_3_cd : undefined;
         route.productData.pricePerMonth = m.price_per_month ?? undefined;
         route.productData.priceWeekend = m.price_weekend ?? undefined;
         route.productData.priceUnitLabel = m.price_unit_label ?? undefined;
         route.productData.minRentalMonths = m.min_rental_months ?? undefined;
         route.productData.availabilityText = m.stocked_locations?.includes(loc) ? "Am Standort verfügbar" : "Auf Anfrage";
-        route.productData.bookingHint = m.rentware_code?.[loc] ? "Online buchbar" : "Mietanfrage";
+        route.productData.bookingHint = m.category === "anhaenger" && m.rentware_code?.[loc] ? "Online buchbar" : "Mietanfrage";
         route.productData.alternatives = undefined;
         route.productData.accessories = undefined;
         // CMS-FAQs gewinnen; belegte Fallbacks sichern weiterhin mindestens drei Antworten.
@@ -373,7 +361,7 @@ if (managedProducts.length) {
   // Statische Artikelrouten ohne passenden CMS-Eintrag würden „Produkt nicht gefunden“ liefern
   // und dürfen weder vorgerendert noch in die Sitemap aufgenommen werden.
   const published = new Set<string>();
-  for (const m of managedProducts) for (const loc of m.available_locations || []) published.add(`/mieten/${loc}/${m.category}/${m.slug}`);
+  for (const m of managedProducts) for (const loc of m.available_locations || []) published.add(productPath(loc, m.category, m.slug));
   let dropped = 0;
   for (let i = allRoutes.length - 1; i >= 0; i--) {
     const r = allRoutes[i];
@@ -584,6 +572,10 @@ writeFileSync(outPath, JSON.stringify(payload), "utf-8");
 
 // Legacy-301-Mappings (Alt-URLs → konkrete Produkt-/Kategorieseiten)
 const legacyRules = buildLegacyRedirectRules();
+for (const h of urlHistory) {
+  const target = resolveHistoricalProduct(h.old_path, managedProducts, urlHistory);
+  if (target) legacyRules.unshift({ from: h.old_path, to: `${target}/`, kind: "product" });
+}
 for (const old of ALL_ROUTES) {
   if (old.routeType !== "product" || !old.productData) continue;
   const currentSlug = RENAMED_PRODUCT_SLUGS[old.productData.id] ?? old.productData.id;
@@ -639,9 +631,18 @@ try {
 }
 
 const legacyPath = resolve(distDir, ".legacy-redirects.json");
+// Keep known legacy sources, but never emit redirects onto an absent product,
+// overwrite a valid current route or create a chain. Existing category mappings remain.
+const validPaths = new Set(allRoutes.map(r => r.path.replace(/\/+$/, "")));
+const seenSources = new Set<string>();
+const validatedLegacyRules = legacyRules.filter(r => {
+  const from = r.from.replace(/\/+$/, ""), to = r.to.replace(/\/+$/, "");
+  if (from === to || validPaths.has(from) || seenSources.has(from) || !validPaths.has(to)) return false;
+  seenSources.add(from); return true;
+});
 writeFileSync(
   legacyPath,
-  JSON.stringify({ generatedAt: new Date().toISOString(), rules: legacyRules }),
+  JSON.stringify({ generatedAt: new Date().toISOString(), rules: validatedLegacyRules }),
   "utf-8",
 );
 console.log(

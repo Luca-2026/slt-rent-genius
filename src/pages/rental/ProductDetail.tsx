@@ -2,6 +2,9 @@ import { seoPublicImage } from "@/lib/seoPublicImage";
 import { seoRentalOffer } from "@/lib/seoProductOffer";
 import { isAccessoryItem, RENAMED_PRODUCT_SLUGS } from "@/data/categoryModel";
 import { seoPath } from "@/lib/seoUrl";
+import { getProductUrlHistory } from "@/lib/productUrlHistory";
+import { productPath, resolveHistoricalProduct } from "../../../supabase/functions/_shared/product-url-history";
+import { getManagedProductsCache } from "@/data/managedProductsCache";
 import { Navigate, useParams, Link, useNavigate } from "react-router-dom";
 import { categoryContent as seoCategoryContent } from "@/components/rental/ProductSEOContent";
 import { getProductSEO, productSEOData } from "@/data/productSEOData";
@@ -112,9 +115,10 @@ export default function ProductDetail() {
       const found = allLocationProducts.find((p) => p.id === productId);
       if (found) return found;
     }
-    return getProductById(productId || "");
+    return undefined;
   }, [productId, location, categoryId, cmsVersion]);
-  const product = useTranslatedProduct(rawProduct);
+  const exactProduct = location && categoryId && getProductsForLocationCategory(location.id, categoryId).find(p => p.id === rawProduct?.id);
+  const product = useTranslatedProduct(exactProduct);
 
   // Artikel ohne Rentware-Code am Standort = auf Anfrage: Rentware-Warenkorb ausblenden,
   // damit das Anfrageformular im Vordergrund steht.
@@ -525,7 +529,10 @@ export default function ProductDetail() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [images.length]);
 
-  if (!product && productId && LEGACY_PRODUCT_ID_REDIRECTS[productId]) {
+  const routeProducts = getManagedProductsCache().map(e => ({ id: e.product.managedId ?? "", slug: e.slug, category: e.category, available_locations: e.availableLocations }));
+  const historicalTarget = locationId && categoryId && productId ? resolveHistoricalProduct(productPath(locationId, categoryId, productId), routeProducts, getProductUrlHistory()) : null;
+  if (!product && historicalTarget) return <Navigate to={`${historicalTarget}/`} replace />;
+  if (!product && productId && LEGACY_PRODUCT_ID_REDIRECTS[productId] && routeProducts.some(p => p.available_locations.some(l => `${productPath(l, p.category, p.slug)}/` === LEGACY_PRODUCT_ID_REDIRECTS[productId]))) {
     return <Navigate to={LEGACY_PRODUCT_ID_REDIRECTS[productId]} replace />;
   }
 
@@ -539,6 +546,14 @@ export default function ProductDetail() {
       </Layout>
     );
   }
+
+  if (location && !product && getManagedProductsCacheStatus() === "error") return <Layout>
+    <SEO title="Mietartikel | SLT Rental" description="Beratung zu deinem Mietprojekt bei SLT Rental." />
+    <div className="section-container py-20 space-y-4"><h1 className="text-2xl font-bold">Artikeldaten gerade nicht abrufbar</h1>
+      <p>Bitte versuche es in Kürze erneut. Unser Team berät dich gern zu deinem Projekt.</p>
+      <Button asChild><a href={`tel:${location.phone}`}><Phone className="h-4 w-4" />{location.phone}</a></Button>
+      <Button asChild variant="outline"><Link to={`/mieten/${location.id}`}>Zum Standort</Link></Button>
+    </div></Layout>;
 
   // Umbenannter Alt-Slug: nur auf den belegten Nachfolger am selben Standort weiterleiten.
   const renamedSlug = productId ? RENAMED_PRODUCT_SLUGS[productId] : undefined;

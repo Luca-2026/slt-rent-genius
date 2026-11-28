@@ -54,7 +54,6 @@ export interface SnapshotCheck { ok: boolean; reason?: string }
 /** Ein Snapshot ist nur gültig, wenn er vollständig ist (exakte Zählung) und keine Unveröffentlichten enthält. */
 export function validateCatalogSnapshot(rows: unknown, expectedCount: number | null): SnapshotCheck {
   if (!Array.isArray(rows)) return { ok: false, reason: "Antwort ist keine Liste" };
-  if (rows.length === 0) return { ok: false, reason: "leerer Katalog" };
   if (expectedCount === null || !Number.isFinite(expectedCount)) return { ok: false, reason: "Gesamtzahl unbekannt" };
   if (rows.length !== expectedCount) return { ok: false, reason: `unvollständig: ${rows.length} von ${expectedCount}` };
   const ids = new Set<string>();

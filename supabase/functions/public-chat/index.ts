@@ -1,5 +1,6 @@
 import { RENTAL_LINK_PATHS } from "./rental-link-catalog.ts";
-import { runRenty, GatewayError, catalogPaths } from "./renty-agent.ts";
+import { runRenty, GatewayError, catalogPaths, catalogVerifiedAt } from "./renty-agent.ts";
+import { CATALOG_FRESH_MS } from "../_shared/catalog-pagination.ts";
 import { validateContext, contextPrompt } from "./renty-tools.ts";
 import { allowPaidPublicRequest } from "../_shared/publicRateLimit.ts";
 
@@ -367,7 +368,8 @@ type ChatMessage = { role?: string; content?: string };
 type RentalLink = { label: string; path: string; url: string };
 
 const SITE_ORIGIN = "https://www.slt-rental.de";
-const verifiedRentalPathSet = new Set<string>(RENTAL_LINK_PATHS);
+// Static links verify general category/location content, never article freshness.
+const verifiedRentalPathSet = new Set<string>(RENTAL_LINK_PATHS.filter(path => path.split("/").filter(Boolean).length <= 3));
 
 const categoryTerms: Array<{ id: string; label: string; terms: string[] }> = [
   { id: "anhaenger", label: "Anhänger", terms: ["anhänger", "anhaenger", "planenanhänger", "planenanhaenger", "kofferanhänger", "kastenanhänger", "trailer"] },
@@ -1109,15 +1111,15 @@ function pathFromSltUrl(rawUrl: string) {
   }
 }
 
-function fallbackUrlFromPath(path: string | null) {
+function fallbackUrlFromPath(path: string | null, allowedPaths: ReadonlySet<string> = verifiedRentalPathSet) {
   if (!path) return null;
   const parts = path.split("/").filter(Boolean);
   if (parts[0] !== "mieten") return null;
   const categoryPath = parts.length >= 3 ? `/mieten/${parts[1]}/${parts[2]}/` : null;
   const locationPath = parts.length >= 2 ? `/mieten/${parts[1]}/` : null;
-  return categoryPath && verifiedRentalPathSet.has(categoryPath)
+  return categoryPath && allowedPaths.has(categoryPath)
     ? `${SITE_ORIGIN}${categoryPath}`
-    : locationPath && verifiedRentalPathSet.has(locationPath)
+    : locationPath && allowedPaths.has(locationPath)
       ? `${SITE_ORIGIN}${locationPath}`
       : null;
 }
@@ -1141,18 +1143,18 @@ function markdownLabelForPath(path: string | null) {
   return "Link öffnen";
 }
 
-function sanitizeAssistantText(text: string) {
+function sanitizeAssistantText(text: string, allowedPaths: ReadonlySet<string> = verifiedRentalPathSet) {
   const markdownSanitized = text.replace(/\[([^\]]+)\]\((https?:\/\/(?:www\.)?slt-rental\.de\/mieten\/[^\s)]+)\)/g, (match, label, url) => {
     const path = pathFromSltUrl(url);
-    if (path && verifiedRentalPathSet.has(path)) return `[${label}](${SITE_ORIGIN}${path})`;
-    const fallback = fallbackUrlFromPath(path);
+    if (path && allowedPaths.has(path)) return `[${label}](${SITE_ORIGIN}${path})`;
+    const fallback = fallbackUrlFromPath(path, allowedPaths);
     return fallback ? `[${label}](${fallback})` : label;
   });
 
   const rentalSanitized = markdownSanitized.replace(/(?<!\]\()https?:\/\/(?:www\.)?slt-rental\.de\/mieten\/[^\s)\]}]+/g, (url) => {
     const path = pathFromSltUrl(url);
-    if (path && verifiedRentalPathSet.has(path)) return `[${markdownLabelForPath(path)}](${SITE_ORIGIN}${path})`;
-    const fallback = fallbackUrlFromPath(path);
+    if (path && allowedPaths.has(path)) return `[${markdownLabelForPath(path)}](${SITE_ORIGIN}${path})`;
+    const fallback = fallbackUrlFromPath(path, allowedPaths);
     return fallback ? `[${markdownLabelForPath(path)}](${fallback})` : "die passende Kategorie auf slt-rental.de";
   });
 
@@ -1459,7 +1461,8 @@ Deno.serve(async (req: Request) => {
     }
 
     // Produkt-Links aus dem CMS gelten als verifiziert.
-    for (const path of await catalogPaths().catch(() => [] as string[])) verifiedRentalPathSet.add(path);
+    const requestPaths = new Set([...verifiedRentalPathSet, ...await catalogPaths().catch(() => [] as string[])]);
+    const verifiedAt = catalogVerifiedAt();
     const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
     try {
       const stream = await runRenty({
@@ -1467,7 +1470,7 @@ Deno.serve(async (req: Request) => {
         instructions: systemPrompt + rentyAgentPrompt.replace("{{TODAY}}", berlinToday()) + contextPrompt(pageContext),
         messages,
         ip,
-        sanitize: sanitizeAssistantText,
+        sanitize: text => sanitizeAssistantText(text, Date.now() - verifiedAt < CATALOG_FRESH_MS ? requestPaths : verifiedRentalPathSet),
       });
       return new Response(stream, { headers: { ...corsHeaders, "Content-Type": "text/event-stream" } });
     } catch (e) {

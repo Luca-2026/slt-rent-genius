@@ -2,11 +2,13 @@
  * Lädt beim App-Start alle veröffentlichten CMS-Artikel aus DB in den globalen Cache,
  * damit die synchronen Helpers in `rentalData.ts` sie mit den TS-Artikeln mergen können.
  * Reagiert außerdem auf Realtime-Änderungen an `b2b_managed_products`.
- * Bei DB-/Netzwerkfehlern setzt der Provider den Cache in den Status "error",
- * damit der statische Fallback aus `USE_STATIC_FALLBACK` greifen kann (Etappe 4).
+ * Bei DB-/Netzwerkfehlern setzt der Provider den Cache in den Status "error";
+ * unbestätigte historische Artikel bleiben gesperrt, regelmäßige Reads ermöglichen Recovery.
  */
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { loadPublicCatalog } from "@/lib/publicCatalog";
+import { loadProductUrlHistory } from "@/lib/productUrlHistory";
 import {
   setManagedProductsCache,
   setManagedProductsCacheError,
@@ -17,17 +19,12 @@ import {
   type ManagedProductRow,
 } from "@/hooks/useManagedProducts";
 
-async function loadCache() {
+let pending: Promise<void> | null = null;
+let reloadRequested = false;
+async function loadCacheOnce() {
   try {
-    const { data, error } = await supabase
-      .from("managed_products_public" as never)
-      .select("*");
-    if (error) {
-      console.warn("[ManagedProductsProvider] load failed:", error.message);
-      setManagedProductsCacheError();
-      return;
-    }
-    const rows = (data as unknown as ManagedProductRow[]) ?? [];
+    const rows = await loadPublicCatalog();
+    await loadProductUrlHistory();
     const entries: ManagedProductCacheEntry[] = rows.map((r) => ({
       slug: r.slug,
       category: r.category,
@@ -41,9 +38,20 @@ async function loadCache() {
   }
 }
 
+function loadCache() {
+  if (pending) { reloadRequested = true; return pending; }
+  pending = (async () => {
+    do { reloadRequested = false; await loadCacheOnce(); } while (reloadRequested);
+  })().finally(() => { pending = null; });
+  return pending;
+}
+
 export function ManagedProductsProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     loadCache();
+    const refresh = setInterval(() => loadCache(), 30_000);
+    const onFocus = () => loadCache();
+    window.addEventListener("focus", onFocus);
     let channel: ReturnType<typeof supabase.channel> | null = null;
     try {
       channel = supabase
@@ -59,6 +67,8 @@ export function ManagedProductsProvider({ children }: { children: React.ReactNod
       console.warn("Live catalogue updates unavailable", error);
     }
     return () => {
+      clearInterval(refresh);
+      window.removeEventListener("focus", onFocus);
       if (channel) {
         try {
           supabase.removeChannel(channel);

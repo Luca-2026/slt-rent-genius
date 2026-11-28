@@ -2,6 +2,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-li
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { RentalRequestCart, RentalCartButton } from "@/components/rental/RentalRequestCart";
+import { setManagedProductsCache } from "@/data/managedProductsCache";
 
 const { config, invoke } = vi.hoisted(() => ({
   config: { enabled: true, standardGrossCents: 3900, standardRentalTiers: [{ fromDays: 1, grossCents: 3900, extraDayGrossCents: 0 }, { fromDays: 11, grossCents: 5500, extraDayGrossCents: 1000 }, { fromDays: 14, grossCents: 8500, extraDayGrossCents: 500 }, { fromDays: 22, grossCents: 12000, extraDayGrossCents: 200 }, { fromDays: 40, grossCents: 15500, extraDayGrossCents: 100 }], sorglosGrossCents: 19900, depositCents: 10000, maxRentalDays: 100 },
@@ -14,6 +15,7 @@ vi.mock("@/components/rental/SignPackageSelection", () => ({ useSignBookingConfi
 vi.mock("@/components/rental/useSignSetupQuote", () => ({ useSignSetupQuote: () => ({ key: "", cents: null, loading: false }) }));
 
 beforeEach(() => {
+  setManagedProductsCache([{ slug: "halteverbotsschilder-set", category: "absperrtechnik", availableLocations: ["krefeld"], product: { id: "halteverbotsschilder-set", name: "Synthetic sign catalogue" } }]);
   vi.stubGlobal("ResizeObserver", class { observe() {} unobserve() {} disconnect() {} });
   localStorage.clear();
   localStorage.setItem("slt-customer-type", "private");

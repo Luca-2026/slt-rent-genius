@@ -1,7 +1,21 @@
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
-import { resolveLegacyCategory, resolveLegacyProduct } from "@/data/legacyRedirects";
+import { buildLegacyRedirectRules, resolveLegacyCategory, resolveLegacyProduct } from "@/data/legacyRedirects";
+import { getManagedProductsCache, getManagedProductsCacheStatus, useManagedProductsVersion } from "@/data/managedProductsCache";
+import { productPath } from "../../supabase/functions/_shared/product-url-history";
+import NotFound from "@/pages/NotFound";
+const knownLegacySources = new Set(buildLegacyRedirectRules().map(r => r.from.replace(/\/+$/, "")));
+
+function useVerifiedLegacyProduct(slug: string, locationId?: string): string | null {
+  useManagedProductsVersion();
+  if (getManagedProductsCacheStatus() !== "loaded") return null;
+  if (!knownLegacySources.has(`${locationId ? `/produkte-${locationId}` : "/produkte"}/${slug}`)) return null;
+  const target = resolveLegacyProduct(slug, locationId);
+  if (target.kind !== "product") return target.kind === "category" ? target.path : null;
+  const match = getManagedProductsCache().find(e => e.availableLocations.some(l => (!locationId || locationId === l) && productPath(l, e.category, e.slug) === target.path));
+  return match ? target.path : null;
+}
 
 /**
  * Redirects old /produkte/:productSlug URLs to the best matching target
@@ -11,13 +25,13 @@ import { resolveLegacyCategory, resolveLegacyProduct } from "@/data/legacyRedire
 export function LegacyProductRedirect() {
   const { productSlug } = useParams<{ productSlug: string }>();
   const navigate = useNavigate();
+  const path = useVerifiedLegacyProduct(productSlug || "");
 
   useEffect(() => {
-    const target = resolveLegacyProduct(productSlug || "");
-    navigate(target.path, { replace: true });
-  }, [productSlug, navigate]);
+    if (path) navigate(path, { replace: true });
+  }, [path, navigate]);
 
-  return null;
+  return path || getManagedProductsCacheStatus() === "idle" ? null : <NotFound />;
 }
 
 /**
@@ -26,13 +40,13 @@ export function LegacyProductRedirect() {
 export function LegacyLocationProductRedirect({ locationId }: { locationId: string }) {
   const { productSlug } = useParams<{ productSlug: string }>();
   const navigate = useNavigate();
+  const path = useVerifiedLegacyProduct(productSlug || "", locationId);
 
   useEffect(() => {
-    const target = resolveLegacyProduct(productSlug || "", locationId);
-    navigate(target.path, { replace: true });
-  }, [productSlug, locationId, navigate]);
+    if (path) navigate(path, { replace: true });
+  }, [path, navigate]);
 
-  return null;
+  return path || getManagedProductsCacheStatus() === "idle" ? null : <NotFound />;
 }
 
 /**

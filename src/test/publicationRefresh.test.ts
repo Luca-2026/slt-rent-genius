@@ -30,8 +30,9 @@ describe("classifyChange", () => {
 });
 
 describe("validateCatalogSnapshot", () => {
-  it("rejects empty, partial, unknown-count, duplicate and draft rows", () => {
-    expect(validateCatalogSnapshot([], 0).ok).toBe(false);
+  it("accepts confirmed empty, rejects partial, unknown-count, duplicate and draft rows", () => {
+    expect(validateCatalogSnapshot([], 0).ok).toBe(true);
+    expect(validateCatalogSnapshot([], 1).ok).toBe(false);
     expect(validateCatalogSnapshot(rows(1000), 1393).ok).toBe(false);
     expect(validateCatalogSnapshot(rows(3), null).ok).toBe(false);
     expect(validateCatalogSnapshot([...rows(2), { id: "id0", slug: "s0" }], 3).ok).toBe(false);
@@ -83,7 +84,7 @@ describe("refresh coordinator", () => {
     let n = 0; const activated: string[] = [];
     const c = createRefreshCoordinator<string>({ enabled: true, maxAttempts: 3, sleep: noSleep, adapter: {
       build: async () => { n++; if (n === 1) return { artifact: "good", rows: rows(2), expectedCount: 2 };
-        if (n === 2) throw new Error("timeout"); if (n === 3) return { artifact: "empty", rows: [], expectedCount: 0 };
+        if (n === 2) throw new Error("timeout"); if (n === 3) return { artifact: "empty-partial", rows: [], expectedCount: 2 };
         return { artifact: "partial", rows: rows(1000), expectedCount: 1200 }; },
       activate: async (a) => { activated.push(a); },
     } });

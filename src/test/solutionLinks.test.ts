@@ -1,4 +1,8 @@
-import { describe, it, expect } from "vitest";
+import { afterEach, beforeEach, describe, it, expect } from "vitest";
+import { seedPublicStaticCatalogFixture } from "./fixtures/publicStaticCatalog";
+import { setManagedProductsCache } from "@/data/managedProductsCache";
+beforeEach(seedPublicStaticCatalogFixture);
+afterEach(() => setManagedProductsCache([]));
 import { solutionLinking } from "@/data/solutionLinking";
 import { solutionData } from "@/pages/Loesungen";
 import { blogArticles } from "@/data/blogArticles";

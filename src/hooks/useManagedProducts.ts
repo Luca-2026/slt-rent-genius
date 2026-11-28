@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Product } from "@/data/rentalData";
 import { PRODUCT_SUBCATEGORIES } from "@/data/productSubcategories";
+import { loadPublicCatalog } from "@/lib/publicCatalog";
 
 
 export interface ManagedProductRow {
@@ -155,13 +156,7 @@ export function managedRowToProduct(row: ManagedProductRow): Product {
 export function useManagedProducts() {
   return useQuery({
     queryKey: ["managed-products-public"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("managed_products_public" as never)
-        .select("*");
-      if (error) throw error;
-      return (data as unknown as ManagedProductRow[]) ?? [];
-    },
+    queryFn: loadPublicCatalog,
     staleTime: 60_000,
   });
 }

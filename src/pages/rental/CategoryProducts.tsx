@@ -16,7 +16,7 @@ import {
   getProductsForLocationCategory,
   type Product
 } from "@/data/rentalData";
-import { useManagedProductsVersion } from "@/data/managedProductsCache";
+import { getManagedProductsCacheStatus, useManagedProductsVersion } from "@/data/managedProductsCache";
 import { ProductCard } from "@/components/rental/ProductCard";
 import { ProductBookingDialog } from "@/components/rental/ProductBookingDialog";
 import { ExcavationCalculator } from "@/components/rental/ExcavationCalculator";
@@ -71,22 +71,11 @@ export default function CategoryProducts() {
     import("@/data/rentalData").then(({ getProductWithContext, locations }) => {
       // Try exact match
       const ctx = getProductWithContext(legacySlug);
-      if (ctx) {
+      if (ctx && ctx.locationId === locationId) {
         navigate(`/mieten/${ctx.locationId}/${ctx.categoryId}/${ctx.product.id}`, { replace: true });
         return;
       }
-      // Try normalised match
-      const norm = (s: string) => s.toLowerCase().replace(/ä/g, "a").replace(/ö/g, "o").replace(/ü/g, "u").replace(/ß/g, "ss");
-      const normalised = norm(legacySlug);
-      for (const loc of locations) {
-        for (const [catId, products] of Object.entries(loc.products)) {
-          const found = products.find((p) => norm(p.id) === normalised);
-          if (found) {
-            navigate(`/mieten/${loc.id}/${catId}/${found.id}`, { replace: true });
-            return;
-          }
-        }
-      }
+      // No static article or cross-location fallback after deactivation/outage.
       // Fallback: stay on current page without the query param
       navigate(`/mieten/${locationId}/${categoryId || "alle"}`, { replace: true });
     });
@@ -2029,10 +2018,10 @@ export default function CategoryProducts() {
                 <Package className="h-10 w-10 text-muted-foreground" />
               </div>
                <h3 className="text-xl font-semibold text-foreground mb-2">
-                 {t("rental.noProductsYet")}
+                 {getManagedProductsCacheStatus() === "error" ? "Artikeldaten gerade nicht abrufbar" : getManagedProductsCacheStatus() === "idle" ? "Artikel werden geladen …" : t("rental.noProductsYet")}
                </h3>
                <p className="text-muted-foreground max-w-md mx-auto mb-6">
-                 {t("rental.noProductsYetDesc")}
+                 {getManagedProductsCacheStatus() === "loaded" ? t("rental.noProductsYetDesc") : "Bitte versuche es in Kürze erneut. Unser Standortteam berät dich gern zu deinem Projekt."}
                </p>
                <div className="flex justify-center gap-4">
                 <a href={`tel:${location.phone.replace(/\s/g, '')}`}>

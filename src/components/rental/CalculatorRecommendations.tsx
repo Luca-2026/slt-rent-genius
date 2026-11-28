@@ -5,7 +5,7 @@ import { ShoppingCart, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { getLocationById, getProductsForLocationCategory, type Product } from "@/data/rentalData";
-import { useManagedProductsVersion } from "@/data/managedProductsCache";
+import { getManagedProductsCacheStatus, useManagedProductsVersion } from "@/data/managedProductsCache";
 import { useCustomerType } from "@/hooks/useCustomerType";
 import { formatEuro, priceFor, vatNote } from "@/lib/priceDisplay";
 import { resolveProductPrices, tierPriceBau, type LocationPriceRow } from "@/lib/pricing/rentalPricing";
@@ -16,18 +16,22 @@ const COLS = "id,slug,name,pricing_scheme,prices_same_all_locations,price_per_da
 /** Lädt CMS-Preise der empfohlenen Artikel, damit Rechner und Artikelseite dieselben Staffelpreise nutzen. */
 export function useCalculatorPrices(slugs: string[]) {
   const key = [...new Set(slugs)].sort();
-  return useQuery({
+  const query = useQuery({
     queryKey: ["calc-prices", key],
     enabled: key.length > 0,
     queryFn: async () => {
-      const { data: products, error } = await supabase.from("b2b_managed_products").select(COLS).in("slug", key);
+      const { data: products, error } = await supabase.from("managed_products_public").select(COLS).in("slug", key);
       if (error) throw error;
       const ids = (products ?? []).map((p: { id: string }) => p.id);
-      const { data: rows } = ids.length ? await supabase.from("public_product_prices").select("*").in("managed_product_id", ids) : { data: [] };
+      const { data: rows, error: priceError } = ids.length ? await supabase.from("public_product_prices").select("*").in("managed_product_id", ids) : { data: [], error: null };
+      if (priceError) throw priceError;
       return { products: (products ?? []) as any[], rows: (rows ?? []) as LocationPriceRow[] };
     },
-    staleTime: 300000,
+    staleTime: 60_000,
+    refetchInterval: 30_000,
   });
+  const expired = !!query.data && Date.now() - query.dataUpdatedAt >= 60_000;
+  return { ...query, data: query.isError || expired ? undefined : query.data, isError: query.isError || expired };
 }
 
 /** Mietpreis-Richtwert (netto) für Menge × Tage nach Bau-Staffel; null = auf Anfrage. */
@@ -64,11 +68,13 @@ export function CalculatorRecommendations({ lines, locationId, days, fallbackNam
   const resolved = useMemo(() => lines.map((l) => ({ ...l, hit: findAtLocation(locationId, l.slug) })), [lines, locationId, version]);
   const location = getLocationById(locationId);
   const bookable = resolved.filter((r) => r.hit);
-  const snap = priceSnapshot(query, resolved.map((r) => ({ slug: r.slug, qty: r.qty })), locationId, days, priceOf);
+  const catalogueReady = getManagedProductsCacheStatus() === "loaded";
+  const snap = priceSnapshot(catalogueReady ? query : { isLoading: false, isError: true }, resolved.map((r) => ({ slug: r.slug, qty: r.qty })), locationId, days, priceOf);
   const prices = snap.items.map((i) => i.lineNet);
   const names = bookable.map((r) => `${r.qty} × ${r.hit!.product.name}`);
   return (
     <div className="mt-4 space-y-3">
+      {!catalogueReady && <p role="status" className="text-sm text-muted-foreground">Artikeldaten gerade nicht abrufbar. Die Mengenberechnung bleibt möglich; zu passenden Geräten berät dich unser Standortteam.</p>}
       <ul className="divide-y divide-border rounded-lg border border-border bg-background">
         {resolved.map((r, i) => (
           <li key={r.slug} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 p-3 text-sm">

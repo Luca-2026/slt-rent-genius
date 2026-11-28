@@ -260,3 +260,12 @@
 - [ ] Storno-Bar/Bank-Kaution: sicheren fachlichen Originalzahlungs-/Belegweg bestätigen.
 - [ ] Vollständige CMS/Auth/B2B/Provider-Abschlüsse: isolierte Testumgebung fehlt; keine Produktionsfreigabe.
 Keine Live-Schreiboperationen, Migrationen, Secrets, Veröffentlichungen oder realen Zahlungen/Mails.
+
+# Arbeitspaket 1C
+- [x] Baseline: 1727 Tests, 42 Browserchecks und vier Deno-Entrypoints reproduziert; öffentliche Quellen gelesen.
+- [x] Vollständige validierte Pagination und fail-closed Katalog-Recovery umgesetzt; keine Live-Aktivierung.
+- [x] CMS-URL-Historie vorbereitet, lokal getestet; inaktiver Routing-/Exportadapter integriert.
+- [x] 1759 Tests, 42 öffentliche +12 Recovery-Browserchecks, sechs Deno-Entrypoints; Bericht/Evidence archiviert.
+- [ ] Aktivierte History/CMS-Auth-E2E/PostgreSQL-Parallelität: sichere isolierte Umgebung und separate 0214-Freigabe fehlen.
+- [ ] Vollständiger Produktionsbuild/Prerender/Legacy-Stichproben: zulässiges CI und abgestimmte Hostingprüfung erforderlich.
+- [ ] Produktionsfreigabe: Finanz-/Kassenbuch-/Mitarbeiter-/Providerblocker aus 1B.3 bleiben; 0213/0214 nicht aktiviert.

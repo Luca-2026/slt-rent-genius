@@ -8,7 +8,8 @@ import { Switch } from "@/components/ui/switch";
 import { useCustomerType } from "@/hooks/useCustomerType";
 import { formatEuro, priceFor, vatNote } from "@/lib/priceDisplay";
 import { resolveProductPrices, tierPriceBau, type LocationPriceRow } from "@/lib/pricing/rentalPricing";
-import { CalculatorRecommendations, ToolsLink } from "./CalculatorRecommendations";
+import { CalculatorRecommendations, ToolsLink, useCalculatorPrices } from "./CalculatorRecommendations";
+import { findInCache, getManagedProductsCacheStatus, useManagedProductsVersion } from "@/data/managedProductsCache";
 import { calculateDrying, DRYER_LARGE_SLUG, DRYER_SMALL_SLUG, FAN_TIME_REDUCTION, FAN_SLUG } from "@/lib/dryingCalculator";
 
 const COLS = "id,slug,name,pricing_scheme,prices_same_all_locations,price_per_day,price_from_1_rd,price_from_3_rd,price_from_10_rd,price_from_20_rd,price_weekend_num,price_base_1_3_cd,surcharge_per_cd_from_4,surcharge_per_cd_from_8,price_from_1_week,price_from_2_weeks,price_from_3_weeks,price_from_4_weeks,price_short_1_3_rd";
@@ -20,18 +21,11 @@ export function DryingCalculator({ locationId, showToolsLink = true }: { locatio
   const [water, setWater] = useState(false); const [fans, setFans] = useState(true);
   const result = useMemo(() => calculateDrying({ length: num(l), width: num(w), height: num(h), standingWater: water, withFans: fans }), [l, w, h, water, fans]);
 
-  const { data } = useQuery({
-    queryKey: ["drying-calc-prices", locationId],
-    queryFn: async () => {
-      const { data: products } = await supabase.from("b2b_managed_products").select(COLS).in("slug", [DRYER_SMALL_SLUG, DRYER_LARGE_SLUG, FAN_SLUG]);
-      const ids = (products ?? []).map((p: { id: string }) => p.id);
-      const { data: rows } = ids.length ? await supabase.from("b2b_managed_product_location_prices").select("*").in("managed_product_id", ids) : { data: [] };
-      return { products: (products ?? []) as any[], rows: (rows ?? []) as LocationPriceRow[] };
-    },
-    staleTime: 300000,
-  });
+  useManagedProductsVersion();
+  const query = useCalculatorPrices([DRYER_SMALL_SLUG, DRYER_LARGE_SLUG, FAN_SLUG]);
+  const data = getManagedProductsCacheStatus() === "loaded" && !query.isError ? query.data : undefined;
 
-  const dryer = data?.products.find((p) => p.slug === result?.dryer.slug);
+  const dryer = data?.products.find((p) => p.slug === result?.dryer.slug && findInCache(p.slug)?.locationIds.includes(locationId));
   const price = useMemo(() => {
     if (!result || !dryer) return null;
     const prices = resolveProductPrices(dryer, locationId, data?.rows);
@@ -39,7 +33,7 @@ export function DryingCalculator({ locationId, showToolsLink = true }: { locatio
     if (!lo || !hi) return null;
     return { min: lo.rate * result.days.min * result.dryer.qty, max: hi.rate * result.days.max * result.dryer.qty };
   }, [result, dryer, data, locationId]);
-  const fan = data?.products.find((p) => p.slug === FAN_SLUG);
+  const fan = data?.products.find((p) => p.slug === FAN_SLUG && findInCache(p.slug)?.locationIds.includes(locationId));
   const fanPrice = useMemo(() => {
     if (!result || !fan || result.fans === 0) return null;
     const prices = resolveProductPrices(fan, locationId, data?.rows);
